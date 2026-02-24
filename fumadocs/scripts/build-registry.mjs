@@ -83,6 +83,7 @@ export type RegistryKey = keyof typeof registry;
 
   const registryDir = path.join(rootDir, '.registry');
   const registryFile = path.join(registryDir, 'demos.tsx');
+  const jsonFile = path.join(registryDir, 'demos.json');
 
   // Ensure directory exists
   if (!fs.existsSync(registryDir)) {
@@ -90,8 +91,31 @@ export type RegistryKey = keyof typeof registry;
   }
 
   fs.writeFileSync(registryFile, index);
+
+  // Also write JSON with only source data (no dynamic imports)
+  const jsonData = {};
+  for (const item of demoFiles) {
+    const name = path.basename(item, '.demo.tsx');
+    const fullPath = path.join(rootDir, item);
+    let fileContent = '';
+    try {
+      fileContent = fs.readFileSync(fullPath, 'utf8');
+    } catch (err) {
+      console.warn(`Could not read file content for ${fullPath}: ${err}`);
+    }
+
+    jsonData[name] = {
+      name,
+      file: item.replace(/\\/g, '/'),
+      source: fileContent,
+    };
+  }
+
+  fs.writeFileSync(jsonFile, JSON.stringify(jsonData, null, 2));
+
   console.log(`✅ Successfully built ${demoFiles.length} registry items!`);
-  console.log(`📝 Registry file: ${registryFile}\n`);
+  console.log(`Registry file: ${registryFile}`);
+  console.log(`JSON file:     ${jsonFile}\n`);
 }
 
 buildRegistry().catch(err => {

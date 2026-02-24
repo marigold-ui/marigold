@@ -71,6 +71,7 @@
     "build:themes": "turbo run --filter \"@marigold/theme*...\" build",
     "registry": "pnpm --filter @marigold/docs registry",
     "build:component-props": "pnpm --filter @marigold/docs build:component-props",
+    "build:md-docs": "pnpm --filter fumadocs build:md-docs",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:unit": "vitest --config vite.config.ts --project=unit-tests",
