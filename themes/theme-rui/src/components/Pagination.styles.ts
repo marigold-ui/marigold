@@ -1,11 +1,10 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import { buttonBase } from './Button.styles';
 
 export const Pagination: ThemeComponent<'Pagination'> = {
   container: cva({ base: 'flex items-center justify-center space-x-2' }),
   navigationButton: cva({
     base: [
-      ...buttonBase,
+      'ui-button-base',
       'hover:bg-current/10',
       'h-9 py-2 gap-1 px-2.5',
       /**
@@ -17,7 +16,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   }),
   pageButton: cva({
     base: [
-      ...buttonBase,
+      'ui-button-base',
       'bg-background size-9',
       'data-[selected=true]:ui-surface data-[selected=true]:shadow-elevation-border',
     ],

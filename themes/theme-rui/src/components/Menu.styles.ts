@@ -1,5 +1,4 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import { buttonBase } from './Button.styles';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva({
@@ -31,7 +30,7 @@ export const Menu: ThemeComponent<'Menu'> = {
   }),
   button: cva({
     base: [
-      ...buttonBase,
+      'ui-button-base',
       'duration-150 active:scale-[0.97] pressed:not-aria-expanded:scale-[0.97]',
       'pending:ui-state-disabled',
     ],

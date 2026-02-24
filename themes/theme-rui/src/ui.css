@@ -128,6 +128,22 @@
 }
 
 /*
+ * Base styles shared by all button-like elements (Button, ToggleButton, Menu.button,
+ * Pagination buttons, IconButton).
+ */
+@utility ui-button-base {
+  @apply inline-flex items-center justify-center gap-2;
+  @apply rounded-surface font-medium whitespace-nowrap transition-[color,box-shadow,transform];
+  @apply ui-interactive;
+  @apply border border-transparent;
+
+  & svg {
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+}
+
+/*
  * Applies press/tap scale feedback (150ms, 97% scale on :active and [data-pressed]).
  * Used by button-like elements that are not regular Buttons (which have a different
  * pressed:not-aria-expanded variant).
