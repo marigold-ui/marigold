@@ -1,11 +1,13 @@
 import type { Code } from 'mdast';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import { registry } from '../../../.registry/demos';
+import demoRegistry from '../../../.registry/demos.json';
 import { MdxJsxElement, getJsxAttr } from './shared';
 
-function getRegistry(): Record<string, any> {
-  return registry;
+type DemoRegistry = Record<string, { source: string }>;
+
+function getRegistry(): DemoRegistry {
+  return demoRegistry as DemoRegistry;
 }
 
 export function remarkResolveComponentDemo() {

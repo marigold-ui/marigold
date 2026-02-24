@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "private": true,
   "scripts": {
-    "build": "pnpm run build:registry && pnpm run build:changelog && pnpm run build:md-docs && next build",
+    "build": "pnpm run build:registry && pnpm run build:changelog && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",

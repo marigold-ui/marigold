@@ -1,13 +1,13 @@
 import { source } from '@/lib/source';
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import { NextResponse } from 'next/server';
+import { parseMdxToMarkdown } from '../parser';
 
-const OUTPUT_DIR = path.resolve(process.cwd(), 'app/mcp/out');
+const CONTENT_DIR = path.resolve(process.cwd(), 'content');
 
 /**
- * Serve pre-built markdown files generated at build time.
- * Use: pnpm run build:md-docs before next build
+ * Parse MDX to markdown at build time (SSG).
+ * ComponentDemo sources come from .registry/demos.json (pure data, no Client imports).
  */
 export const dynamic = 'force-static';
 
@@ -26,19 +26,29 @@ export async function GET(
   const { slug } = await params;
   const slugPath = slug.join('/');
 
-  // Map slug to pre-built markdown filename (e.g., "components-button" -> "components-button.md")
-  const filename = slugPath.replace(/\//g, '-') + '.md';
-  const filePath = path.join(OUTPUT_DIR, filename);
+  const candidates = [
+    `${slugPath}.mdx`,
+    `${slugPath}/${slug.at(-1)}.mdx`,
+    `${slugPath}/index.mdx`,
+  ];
 
-  try {
-    const markdown = await fs.readFile(filePath, 'utf-8');
-    return new Response(markdown, {
-      headers: {
-        'Content-Type': 'text/markdown; charset=utf-8',
-        'Cache-Control': 'public, max-age=31536000, immutable',
-      },
-    });
-  } catch {
-    return NextResponse.json({ error: 'Page not found' }, { status: 404 });
+  for (const candidate of candidates) {
+    try {
+      const result = await parseMdxToMarkdown({
+        filePath: candidate,
+        contentDir: CONTENT_DIR,
+      });
+
+      return new Response(result.markdown, {
+        headers: {
+          'Content-Type': 'text/markdown; charset=utf-8',
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+      });
+    } catch {
+      continue;
+    }
   }
+
+  return NextResponse.json({ error: 'Page not found' }, { status: 404 });
 }
