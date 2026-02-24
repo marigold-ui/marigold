@@ -1,41 +1,43 @@
 'use client';
 
+import { Link } from 'fumadocs-core/framework';
 import { Card } from 'fumadocs-ui/components/card';
-import { Aside, Link, Stack } from '@marigold/components';
 import { ExternalLink } from './icons/ExternalLink';
 
 export const StorybookHintMessage = ({ component }: { component: string }) => {
-  const onPress = () => {
-    // Track analytics if needed
+  const href = `https://marigold-latest.vercel.app/?path=/story/components-${component.toLowerCase()}--basic`;
+
+  const handleClick = () => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'storybook_visit', {
-        component,
-      });
+      (window as any).gtag('event', 'storybook_visit', { component });
     }
   };
 
   return (
     <Card title="">
-      <Aside space={4}>
-        <div className="flex h-full items-center">
+      <div className="flex gap-4">
+        <div className="flex h-full shrink-0 items-center">
           <StorybookIcon />
         </div>
-        <Stack space={2}>
+        <div className="flex flex-col gap-2">
           <div className="text-sm">
             Did you know? You can explore, test, and customize props live in
-            Marigold's storybook. Watch the effects they have in real-time!
+            Marigold&apos;s storybook. Watch the effects they have in real-time!
           </div>
           <div className="text-sm">
             <Link
-              href={`https://marigold-latest.vercel.app/?path=/story/components-${component.toLowerCase()}--basic`}
-              onPress={onPress}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleClick}
+              className="text-fd-primary inline-flex items-center gap-0.5 hover:underline"
             >
               View {component} stories
               <ExternalLink className="text-text-primary-muted ml-0.5 inline size-[14px] align-text-bottom" />
             </Link>
           </div>
-        </Stack>
-      </Aside>
+        </div>
+      </div>
     </Card>
   );
 };

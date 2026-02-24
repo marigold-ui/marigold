@@ -1,6 +1,10 @@
 import { getAllBlogPosts } from '@/lib/blog';
-import { DateFormat } from '@/ui';
+import dayjs from 'dayjs';
 import Link from 'fumadocs-core/link';
+
+function formatDateMedium(date: Date | string): string {
+  return dayjs(date).format('MMM D, YYYY');
+}
 
 export const PostList = () => {
   const sortedPosts = getAllBlogPosts();
@@ -15,7 +19,7 @@ export const PostList = () => {
         <div key={post.slug}>
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
             <Link href={post.slug} className="no-underline">
-              {post.title} - <DateFormat value={post.date} dateStyle="medium" />
+              {post.title} - {formatDateMedium(post.date)}
             </Link>
           </h2>
           {post.introduction && (

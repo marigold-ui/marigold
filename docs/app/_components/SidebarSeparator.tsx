@@ -1,11 +1,11 @@
 'use client';
 
+import { cn } from '@/lib/cn';
 import {
   SidebarSeparator as FumadocsSidebarSeparator,
   useFolderDepth,
 } from 'fumadocs-ui/components/sidebar/base';
 import React from 'react';
-import { cn } from '@marigold/system';
 
 //  ref: https://github.com/fuma-nama/fumadocs/blob/dev/apps/docs/content/docs/ui/layouts/docs.mdx
 export const SidebarSeparator: React.FC<{

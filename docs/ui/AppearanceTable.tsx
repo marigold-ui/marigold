@@ -1,10 +1,10 @@
 'use client';
 
+import type { AppearanceComponentName } from '@/lib/utils';
 import { getAppearance } from '@/lib/utils';
-import type { Theme } from '@marigold/system';
 
 export interface AppearanceTableProps {
-  component: keyof Theme['components'];
+  component: AppearanceComponentName;
 }
 
 export const AppearanceTable = ({ component }: AppearanceTableProps) => {

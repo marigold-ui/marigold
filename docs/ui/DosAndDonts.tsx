@@ -1,8 +1,7 @@
 'use client';
 
+import { cn } from '@/lib/cn';
 import type { PropsWithChildren } from 'react';
-import { Tiles } from '@marigold/components';
-import { cn } from '@marigold/system';
 
 // Shared Child Components
 // ---------------
@@ -72,16 +71,14 @@ export const Dont = ({ children }: PropsWithChildren) => (
       >
         <path d="M19.8281 5.74868L18.2513 4.17188L12 10.4232L5.74868 4.17188L4.17188 5.74868L10.4232 12L4.17188 18.2513L5.74868 19.8281L12 13.5768L18.2513 19.8281L19.8281 18.2513L13.5768 12L19.8281 5.74868Z"></path>
       </svg>
-      <div className="m-0 text-sm font-bold uppercase">Don't</div>
+      <div className="m-0 text-sm font-bold uppercase">Don&apos;t</div>
     </Title>
     {children}
   </Container>
 );
 
 export const GuidelineTiles = ({ children }: PropsWithChildren) => (
-  <div className="my-5">
-    <Tiles space={5} stretch tilesWidth="300px">
-      {children}
-    </Tiles>
+  <div className="my-5 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 *:min-w-0">
+    {children}
   </div>
 );

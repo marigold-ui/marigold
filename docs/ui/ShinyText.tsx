@@ -1,7 +1,7 @@
 'use client';
 
+import { cn } from '@/lib/cn';
 import { CSSProperties, FC, ReactNode } from 'react';
-import { cn } from '@marigold/system';
 
 interface AnimatedShinyTextProps {
   children: ReactNode;
