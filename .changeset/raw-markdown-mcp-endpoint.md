@@ -1,5 +1,5 @@
 ---
-"fumadocs": patch
+"fumadocs": docs
 ---
 
 feat(DST-1163): Add raw markdown MCP endpoint for documentation pages
