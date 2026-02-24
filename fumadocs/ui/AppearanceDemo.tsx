@@ -22,7 +22,7 @@ import type { Theme } from '@marigold/system';
 // ---------------
 interface AppearancePickerProps {
   label: string;
-  options: string[];
+  options: readonly string[];
   value: string;
   onChange: (val: string) => void;
   disabled?: boolean;

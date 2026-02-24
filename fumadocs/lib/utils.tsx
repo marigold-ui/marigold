@@ -1,5 +1,5 @@
-import appearances from '@/.registry/appearances.json';
 import type { Theme } from '@marigold/system';
+import { appearances } from '@marigold/theme-rui/appearances';
 
 interface NestedStringObject {
   [key: string]: NestedStringObject | string;
@@ -28,7 +28,10 @@ export const getAppearance = (
   name: keyof Theme['components'] | (string & {})
 ) => {
   const entry = (
-    appearances as Record<string, { variant: string[]; size: string[] }>
+    appearances as Record<
+      string,
+      { variant: readonly string[]; size: readonly string[] }
+    >
   )[name];
   return entry ?? { variant: [], size: [] };
 };

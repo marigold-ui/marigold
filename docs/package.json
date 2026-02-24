@@ -6,7 +6,7 @@
     "dev": "pnpm build:registry && next dev --webpack",
     "build": "pnpm build:registry && pnpm build:component-props && pnpm build:changelog && next build --webpack",
     "start": "next start",
-    "build:registry": "zx ./scripts/build-registry.mjs && node ./scripts/build-appearances.mjs",
+    "build:registry": "zx ./scripts/build-registry.mjs",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs",
     "build:contentlayer": "pnpm contentlayer2 build"
