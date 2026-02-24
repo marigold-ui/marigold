@@ -6,8 +6,7 @@ export const buttonBase = [
   'inline-flex items-center justify-center gap-2',
   'whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform]',
   '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-  'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
-  'cursor-pointer',
+  'ui-interactive',
 ] as const;
 
 export const Button: ThemeComponent<'Button'> = cva({

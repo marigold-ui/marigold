@@ -1,20 +1,12 @@
 import { ThemeComponent, cva } from '@marigold/system';
-
-const button = [
-  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors',
-  'focus-visible:ui-state-focus outline-none',
-  'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground',
-  '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-  'hover:bg-current/10',
-  'cursor-pointer',
-];
+import { buttonBase } from './Button.styles';
 
 export const Pagination: ThemeComponent<'Pagination'> = {
   container: cva({ base: 'flex items-center justify-center space-x-2' }),
   navigationButton: cva({
     base: [
-      ...button,
-      'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground',
+      ...buttonBase,
+      'hover:bg-current/10',
       'h-9 py-2 gap-1 px-2.5',
       /**
        * Removes the spacing from the button when when there are hidden
@@ -25,7 +17,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   }),
   pageButton: cva({
     base: [
-      ...button,
+      ...buttonBase,
       'bg-background size-9',
       'data-[selected=true]:ui-surface data-[selected=true]:shadow-elevation-border',
     ],

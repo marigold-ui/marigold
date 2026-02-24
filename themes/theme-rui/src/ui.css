@@ -86,3 +86,13 @@
 @utility ui-state-readonly {
   --ui-background-color: var(--color-muted);
 }
+
+/*
+ * Applies focus ring, disabled state, and pointer cursor to any interactive element.
+ * Combines: focus-visible:ui-state-focus, outline-none, disabled:ui-state-disabled, cursor-pointer
+ */
+@utility ui-interactive {
+  @apply cursor-pointer outline-none;
+  @apply focus-visible:ui-state-focus;
+  @apply disabled:ui-state-disabled;
+}

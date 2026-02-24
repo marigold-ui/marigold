@@ -35,7 +35,7 @@ export const Tag: ThemeComponent<'Tag'> = {
   removeAll: cva({
     base: [
       'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
-      'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
+      'ui-press',
       'focus-visible:ui-state-focus outline-none',
       'cursor-pointer',
       'text-link text-xs util-touch-hitbox',
