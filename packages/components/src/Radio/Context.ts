@@ -7,7 +7,5 @@ export interface RadioGroupContextProps {
   width?: WidthProp['width'];
 }
 
-export const RadioGroupContext = createContext<RadioGroupContextProps>(
-  null as any
-);
+export const RadioGroupContext = createContext<RadioGroupContextProps>({});
 export const useRadioGroupContext = () => useContext(RadioGroupContext);

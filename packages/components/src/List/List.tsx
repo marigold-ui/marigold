@@ -29,7 +29,7 @@ export const List = ({
 
   return (
     <Component {...props} className={classNames[as]}>
-      <ListContext.Provider value={{ classNames: classNames.item }}>
+      <ListContext.Provider value={{ classNames }}>
         {children}
       </ListContext.Provider>
     </Component>
