@@ -4,7 +4,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
   container: cva({
     base: [
       'relative w-fit',
-      'flex items-center justify-between justify-items-center gap-4',
+      'flex items-center justify-between justify-items-center gap-14',
       'px-6 py-3',
       'shadow-elevation-overlay',
       'ui-surface-contrast',
@@ -15,13 +15,13 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'exiting:animate-slide-out',
     ],
   }),
-  selection: cva({ base: 'flex items-center gap-4' }),
+  selection: cva({ base: 'flex items-center gap-2' }),
   count: cva({
     base: 'flex items-center text-sm font-medium whitespace-nowrap',
   }),
   toolbar: cva({
     base: [
-      'flex items-center gap-2',
+      'flex items-center gap-0',
       'flex-1 justify-center',
       'overflow-x-auto',
     ],
