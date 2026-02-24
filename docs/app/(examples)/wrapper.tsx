@@ -1,8 +1,11 @@
 'use client';
 
 import { ruiTheme } from '@/theme';
-import { MarigoldProvider, OverlayContainerProvider } from '@/ui';
 import type { PropsWithChildren } from 'react';
+import {
+  MarigoldProvider,
+  OverlayContainerProvider,
+} from '@marigold/components';
 import { cn } from '@marigold/system';
 
 export interface WrapperProps {

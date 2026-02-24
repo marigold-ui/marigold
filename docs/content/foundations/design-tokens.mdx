@@ -1,7 +1,6 @@
 ---
 title: Design Tokens
-caption: Here are all design tokens for each theme listed.
-order: 3
+description: Here are all design tokens for each theme listet.
 ---
 
 Design tokens are the foundational elements of our design system, defining key aspects of our product's visual language. They enable consistency and flexibility, allowing us to maintain a unified look and feel across all user interfaces.
@@ -23,25 +22,22 @@ The `Value` corresponds to the class name from [Tailwind CSS](https://tailwindcs
 
 We have tokens for:
 
-<Tabs>
-  <Tabs.List>
-    <Tabs.Item id="fontSize">Font Size</Tabs.Item>
-    <Tabs.Item id="fontWeight">Font Weight</Tabs.Item>
-    <Tabs.Item id="fontStyle">Font Style</Tabs.Item>
-    <Tabs.Item id="textAlign">Text Align</Tabs.Item>
-  </Tabs.List>
-  <Tabs.TabPanel id="fontSize">
+<Tabs
+  items={['Font Size', 'Font Weight', 'Font Style', 'Text Align']}
+  defaultIndex={0}
+>
+  <Tab value="Font Size">
     <FontSizes />
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="fontWeight">
+  </Tab>
+  <Tab value="Font Weight">
     <FontWeights />
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="fontStyle">
+  </Tab>
+  <Tab value="Font Style">
     <FontStyle />
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="textAlign">
+  </Tab>
+  <Tab value="Text Align">
     <TextAlign />
-  </Tabs.TabPanel>
+  </Tab>
 </Tabs>
 
 ### Headlines
@@ -68,15 +64,11 @@ Standardized border radius contribute to a clean and modern design. These proper
 
 Consistent alignment ensures that elements are arranged in a purposeful manner, enhancing clarity and user comprehension.
 
-<Tabs>
-  <Tabs.List>
-    <Tabs.Item id="alignX">Horizontal</Tabs.Item>
-    <Tabs.Item id="alignY">Vertical</Tabs.Item>
-  </Tabs.List>
-  <Tabs.TabPanel id="alignX">
+<Tabs items={['Horizontal', 'Vertical']} defaultIndex={0}>
+  <Tab value="Horizontal">
     <AlignmentsX />
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="alignY">
+  </Tab>
+  <Tab value="Vertical">
     <AlignmentsY />
-  </Tabs.TabPanel>
+  </Tab>
 </Tabs>

@@ -3,7 +3,7 @@ import { Button, EmptyState, Table } from '@marigold/components';
 export default () => (
   <Table aria-label="Events Table">
     <Table.Header>
-      <Table.Column>Event Name</Table.Column>
+      <Table.Column rowHeader>Event Name</Table.Column>
       <Table.Column>Date</Table.Column>
       <Table.Column>Venue</Table.Column>
       <Table.Column>Status</Table.Column>

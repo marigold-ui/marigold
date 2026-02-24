@@ -1,5 +1,5 @@
+import { cn } from '@/lib/cn';
 import type { ReactNode } from 'react';
-import { cn } from '@marigold/system';
 
 const variants = {
   default: 'border-border bg-bg-body',

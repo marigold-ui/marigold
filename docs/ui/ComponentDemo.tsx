@@ -1,85 +1,112 @@
-import { registry } from '@/registry/demos';
-import { ruiTheme } from '@/theme';
-import { Card, MarigoldProvider, OverlayContainerProvider, Tabs } from '@/ui';
-import { track } from '@vercel/analytics/react';
-import type { ComponentType, ReactNode } from 'react';
+'use client';
 
-// Helpers
-// ---------------
-const Preview = ({ name }: { name: keyof typeof registry }) => {
-  const Demo: ComponentType<any> = registry[name].demo;
-
-  return (
-    <Card variant="content" p={0}>
-      <div
-        data-theme="rui"
-        className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
-      >
-        <OverlayContainerProvider container="portalContainer">
-          <MarigoldProvider theme={ruiTheme}>
-            <div className="not-prose size-full overflow-x-auto p-4">
-              <Demo />
-            </div>
-          </MarigoldProvider>
-        </OverlayContainerProvider>
-      </div>
-    </Card>
-  );
-};
+import { type RegistryKey, registry } from '@/.registry/demos';
+import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { type ComponentType, type ReactNode } from 'react';
+import {
+  MarigoldProvider,
+  OverlayContainerProvider,
+} from '@marigold/components';
+import { theme as ruiTheme } from '@marigold/theme-rui';
 
 // Props
 // ---------------
 export interface ComponentDemoProps {
   /**
-   * Use to get and parse the demo in rehype
-   * @internal
+   * The name of the demo in the registry (e.g., "button-appearance")
+   * Use this when referencing by registry key
    */
-  file: string;
+  name?: RegistryKey;
   /**
-   * Use to pass the metastring to `rehype-pretty-code`
-   * (see https://rehype-pretty.pages.dev/#meta-strings)
-   * @internal
+   * Path to the demo file relative to the MDX file (e.g., "./button-appearance.demo.tsx")
+   * The file path will be converted to a registry key
    */
-  meta: string;
-  name: keyof typeof registry;
-  source: string;
-  mode?: 'preview' | 'full';
+  file?: string;
+  /**
+   * Display mode: 'preview' shows only the preview, 'code' shows only code,
+   * 'full' shows both in tabs (default)
+   */
+  mode?: 'preview' | 'code' | 'full';
   children?: ReactNode;
 }
+
+/**
+ * Convert a file path to a registry key
+ * e.g., "./button-appearance.demo.tsx" -> "button-appearance"
+ */
+function fileToRegistryKey(file: string): string {
+  // Remove leading ./ or ../
+  const normalized = file.replace(/^\.\//, '').replace(/^\.\.\//, '');
+  // Extract the base name without .demo.tsx
+  const match = normalized.match(/([^/]+)\.demo\.tsx$/);
+  return match ? match[1] : normalized;
+}
+
+// Preview wrapper component
+// ---------------
+const Preview = ({ name }: { name: RegistryKey }) => {
+  const Demo: ComponentType<any> = registry[name].demo;
+
+  return (
+    <div
+      data-theme="rui"
+      className="flex min-h-[150px] w-full flex-col [&>*:first-child]:flex [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
+    >
+      <OverlayContainerProvider container="portalContainer">
+        <MarigoldProvider theme={ruiTheme} className="bg-background w-full">
+          <div className="not-prose w-full overflow-x-auto p-4">
+            <Demo />
+          </div>
+        </MarigoldProvider>
+      </OverlayContainerProvider>
+    </div>
+  );
+};
 
 // Component
 // ---------------
 export const ComponentDemo = ({
   name,
-  children,
+  file,
   mode = 'full',
 }: ComponentDemoProps) => {
-  if (!registry[name]) {
-    throw Error(`No demo with name "${name}" found in the registry.`);
+  // Resolve the registry key from either name or file prop
+  const registryKey = name ?? (file ? fileToRegistryKey(file) : undefined);
+
+  if (!registryKey || !registry[registryKey as RegistryKey]) {
+    const identifier = name ?? file ?? 'undefined';
+    return (
+      <div className="rounded-lg border border-red-500 bg-red-50 p-4 text-red-700">
+        <strong>Error:</strong> No demo with identifier &quot;{identifier}&quot;
+        found in the registry.
+      </div>
+    );
   }
 
-  if (mode !== 'full') {
-    return <Preview name={name} />;
+  const key = registryKey as RegistryKey;
+  const entry = registry[key];
+  const codeString = entry.source ?? '';
+
+  // Preview only mode
+  if (mode === 'preview') {
+    return <Preview name={key} />;
   }
 
-  const onSelectionChange = (key: string) => {
-    track('Demo Tab', { tab: key });
-  };
+  // Code only mode
+  if (mode === 'code') {
+    return <DynamicCodeBlock lang="tsx" code={codeString} />;
+  }
 
+  // Full mode with Preview + Code tabs
   return (
-    <Tabs
-      variant="demo"
-      defaultSelectedKey="preview"
-      onSelectionChange={onSelectionChange}
-    >
-      <Tabs.List>
-        <Tabs.Item id="preview">Preview</Tabs.Item>
-        <Tabs.Item id="code">Code</Tabs.Item>
-      </Tabs.List>
-      <Tabs.TabPanel id="preview">
-        <Preview name={name} />
-      </Tabs.TabPanel>
-      <Tabs.TabPanel id="code">{children}</Tabs.TabPanel>
+    <Tabs items={['Preview', 'Code']} defaultIndex={0}>
+      <Tab value="Preview" className="p-0">
+        <Preview name={key} />
+      </Tab>
+      <Tab value="Code">
+        <DynamicCodeBlock lang="tsx" code={codeString} />
+      </Tab>
     </Tabs>
   );
 };

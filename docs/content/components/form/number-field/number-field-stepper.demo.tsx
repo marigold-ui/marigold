@@ -4,7 +4,7 @@ export default () => (
   <Stack space={5}>
     <div>
       <Headline level={3}>Confirm Guests</Headline>
-      <Text>Who’s going on your trip?</Text>
+      <Text>Who's going on your trip?</Text>
     </div>
     <NumberField
       defaultValue={3}

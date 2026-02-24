@@ -1,4 +1,3 @@
-import { Table } from '@/ui';
 import { ReactNode } from 'react';
 
 export interface ColorCanvasProps {
@@ -21,34 +20,30 @@ interface ColorPalettesProps {
 }
 
 const ColorTable = ({ property, modifiers = [''] }: ColorPalettesProps) => (
-  <Table
-    aria-labelledby={`${property} token table`}
-    variant="colorTable"
-    stretch
-  >
-    <Table.Header>
-      <Table.Column key={'name'} isRowHeader>
-        Name
-      </Table.Column>
-      <Table.Column key={'color'}>Color</Table.Column>
-    </Table.Header>
-    <Table.Body>
+  <table aria-labelledby={`${property} token table`} style={{ width: '100%' }}>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Color</th>
+      </tr>
+    </thead>
+    <tbody>
       {modifiers.map(modifier => (
-        <Table.Row key={modifier}>
-          <Table.Cell>
+        <tr key={modifier}>
+          <td>
             <code className="before:content-none after:content-none">
               {property ? `${property}-${modifier}` : modifier}
             </code>
-          </Table.Cell>
-          <Table.Cell>
+          </td>
+          <td>
             <ColorCanvas
               color={`var(--color-${property ? `${property}-` : ''}${modifier})`}
             />
-          </Table.Cell>
-        </Table.Row>
+          </td>
+        </tr>
       ))}
-    </Table.Body>
-  </Table>
+    </tbody>
+  </table>
 );
 
 export const ColorPalettes = ({ name }: { name: string }) => (

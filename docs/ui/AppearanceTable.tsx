@@ -1,7 +1,7 @@
 'use client';
 
 import { getAppearance } from '@/lib/utils';
-import { Table, Theme } from '@/ui';
+import type { Theme } from '@marigold/system';
 
 export interface AppearanceTableProps {
   component: keyof Theme['components'];
@@ -11,42 +11,42 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
   const appearances = getAppearance(component);
 
   return (
-    <Table aria-labelledby="appearance table" variant="hover" stretch>
-      <Table.Header>
-        <Table.Column key={'property'} isRowHeader>
-          Property
-        </Table.Column>
-        <Table.Column key={'type'}>Type</Table.Column>
-        <Table.Column key={'description'}>Description</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
+    <table aria-labelledby="appearance table" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
             <code className="before:content-none after:content-none">
               variant
             </code>
-          </Table.Cell>
-          <Table.Cell>
+          </td>
+          <td>
             <code className="before:content-none after:content-none">
               {appearances.variant.length
                 ? appearances.variant.join(' | ')
                 : '-'}
             </code>
-          </Table.Cell>
-          <Table.Cell>The available variants of this component.</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
+          </td>
+          <td>The available variants of this component.</td>
+        </tr>
+        <tr>
+          <td>
             <code className="before:content-none after:content-none">size</code>
-          </Table.Cell>
-          <Table.Cell>
+          </td>
+          <td>
             <code className="before:content-none after:content-none">
               {appearances.size.length ? appearances.size.join(' | ') : '-'}
             </code>
-          </Table.Cell>
-          <Table.Cell>The available sizes of this component.</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+          </td>
+          <td>The available sizes of this component.</td>
+        </tr>
+      </tbody>
+    </table>
   );
 };

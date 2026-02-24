@@ -1,7 +1,6 @@
 ---
-title: Token Guidelines
+title: Tokens Guidelines
 caption: Learn about the structure and application of our design tokens
-order: 4
 ---
 
 On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
@@ -39,13 +38,10 @@ The property prefix (bg-, text-, border-) is added when using tokens in Tailwind
 
 A carefully curated set of semantic colors ensures our product maintains a consistent and recognizable palette. Our color tokens are organized by their semantic meaning and intended use case.
 
-<SectionMessage variant="info">
-  <SectionMessage.Title>Icon Color</SectionMessage.Title>
-  <SectionMessage.Content>
-    Text color tokens can also be employed to colorize icons since they all have
-    the `currentColor` CSS rule applied.
-  </SectionMessage.Content>
-</SectionMessage>
+<Callout title="Icon Color">
+  Text color tokens can also be employed to colorize icons since they all have
+  the `currentColor` CSS rule applied.
+</Callout>
 
 ### Background and foreground system
 
@@ -157,14 +153,11 @@ There are no semantic values assigned to these tokens, as their usage does not n
 
 Height tokens follow a 4-pixel grid convention, implying that their values are adjusted in increments of 4 pixels. Each token represents a multiplier of that grid. For example, a value of 2 would equate to 8 pixels.
 
-<SectionMessage variant="info">
-  <SectionMessage.Title>Not mandatory</SectionMessage.Title>
-  <SectionMessage.Content>
-    The relevance of height is limited to specific components. In numerous
-    cases, a component's size must align with its contents. Therefore, the use
-    of tokens is not obligatory in every instance.
-  </SectionMessage.Content>
-</SectionMessage>
+<Callout title="Not mandatory">
+  The relevance of height is limited to specific components. In numerous cases,
+  a component's size must align with its contents. Therefore, the use of tokens
+  is not obligatory in every instance.
+</Callout>
 
 #### Intents
 

@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "baseUrl": ".",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
+    "strict": false,
     "strictNullChecks": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": false,
@@ -12,7 +14,6 @@
     "noImplicitThis": true,
     "useUnknownInCatchVariables": true,
     "forceConsistentCasingInFileNames": true,
-    "noUnusedLocals": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -21,37 +22,21 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "paths": {
+      "@/*": ["./*"],
+      "fumadocs-mdx:collections/*": [".source/*"]
+    },
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@marigold/*/styles.css": ["../themes/*/dist/styles.css"],
-      "@marigold/*": ["../packages/*/src", "../themes/*/src"],
-      "@/registry/*": ["./.registry/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"],
-      ".storybook/*": ["../.storybook/*"],
-      // cva does not export types officially; map deep import for TS
-      "class-variance-authority/dist/types": [
-        "../packages/system/node_modules/class-variance-authority/dist/types"
-      ]
-    },
-    "strict": false,
-    "types": ["vitest/globals", "react", "react-dom"]
+    ]
   },
   "include": [
+    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "next-env.d.ts",
     ".next/types/**/*.ts",
-    "../packages/**/*.ts",
-    "../packages/**/*.tsx",
-    "../.next/types/**/*.ts",
-    "contentlayer.config.ts",
-    "scripts/build-registry.mjs",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

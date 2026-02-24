@@ -1,4 +1,6 @@
-import { Stack } from '@/ui';
+'use client';
+
+import { Stack } from '@marigold/components';
 import { AppliedFilter } from './applied-filter';
 import { Toolbar } from './toolbar';
 import { VenuesView } from './venues-view';
