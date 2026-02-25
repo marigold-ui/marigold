@@ -32,7 +32,7 @@ export const DrawerModal = ({
   return isSmallScreen ? (
     <MobileModal>{children}</MobileModal>
   ) : (
-    <NonModal {...props} className={cn('fixed', className)}>
+    <NonModal {...props} className={cn('fixed z-50', className)}>
       {children}
     </NonModal>
   );
