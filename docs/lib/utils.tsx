@@ -28,10 +28,7 @@ export const getAppearance = (
   name: keyof Theme['components'] | (string & {})
 ) => {
   const entry = (
-    appearances as Record<
-      string,
-      { variant: readonly string[]; size: readonly string[] }
-    >
+    appearances as Record<string, { variant: string[]; size: string[] }>
   )[name];
   return entry ?? { variant: [], size: [] };
 };

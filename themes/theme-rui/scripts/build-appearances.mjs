@@ -168,12 +168,7 @@ async function main() {
     lines.push(`  },`);
   }
 
-  lines.push(
-    '} as const;',
-    '',
-    'export type Appearances = typeof appearances;',
-    ''
-  );
+  lines.push('};', '', 'export type Appearances = typeof appearances;', '');
 
   const outFile = resolve(__dirname, '../src/appearances.ts');
   await writeFile(outFile, lines.join('\n'), 'utf-8');
