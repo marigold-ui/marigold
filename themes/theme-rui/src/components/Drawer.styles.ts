@@ -14,7 +14,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   container: cva({
     base: [
       'w-full relative grid-rows-[auto_1fr_auto]',
-      'ui-surface shadow-elevation-overlay util-scrollbar',
+      'rounded-xl ui-surface shadow-elevation-overlay util-scrollbar',
       'placement-right:h-full placement-left:h-full',
       'placement-top:w-full placement-bottom:w-full',
     ],
