@@ -4,10 +4,11 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   overlay: cva({
     base: [
       'group/overlay',
-      'placement-top:inset-x-3 placement-top:top-3 placement-top:entering:animate-slide-in-top placement-top:exiting:animate-slide-out-top',
-      'placement-bottom:inset-x-3 placement-bottom:bottom-3 placement-bottom:entering:animate-slide-in-bottom placement-bottom:exiting:animate-slide-out-bottom',
-      'placement-left:inset-y-3 placement-left:left-3 placement-left:entering:animate-slide-in-left placement-left:exiting:animate-slide-out-left',
-      'placement-right:inset-y-3 placement-right:right-3 placement-right:entering:animate-slide-in-right placement-right:exiting:animate-slide-out-right',
+      '[--slide-offset:1rem]',
+      'placement-top:inset-x-4 placement-top:top-4 placement-top:entering:animate-slide-in-top placement-top:exiting:animate-slide-out-top',
+      'placement-bottom:inset-x-4 placement-bottom:bottom-4 placement-bottom:entering:animate-slide-in-bottom placement-bottom:exiting:animate-slide-out-bottom',
+      'placement-left:inset-y-4 placement-left:left-4 placement-left:entering:animate-slide-in-left placement-left:exiting:animate-slide-out-left',
+      'placement-right:inset-y-4 placement-right:right-4 placement-right:entering:animate-slide-in-right placement-right:exiting:animate-slide-out-right',
     ],
   }),
   container: cva({
