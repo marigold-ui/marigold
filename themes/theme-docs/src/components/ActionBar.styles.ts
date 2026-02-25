@@ -10,7 +10,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'rounded-full font-medium',
     ],
   }),
-  selection: cva({ base: 'flex items-center gap-2' }),
+  selection: cva({ base: 'flex items-center' }),
   count: cva({
     base: 'flex items-center text-sm font-medium whitespace-nowrap',
   }),
