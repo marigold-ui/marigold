@@ -36,6 +36,18 @@ export const Surface = meta.story({
         <Base className="ui-surface shadow-elevation-raised">raised</Base>
         <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
       </Inline>
+      <Inline space="peer">
+        <Base className="ui-surface-contrast">contrast</Base>
+        <Base className="ui-surface-contrast shadow-elevation-border">
+          contrast / border
+        </Base>
+        <Base className="ui-surface-contrast shadow-elevation-raised">
+          contrast / raised
+        </Base>
+        <Base className="ui-surface-contrast shadow-elevation-overlay">
+          contrast / overlay
+        </Base>
+      </Inline>
       <Headline level="3">UI State</Headline>
       <Inline space="peer">
         <Base className="ui-surface shadow-elevation-border ui-state-error">
@@ -60,6 +72,14 @@ export const Surface = meta.story({
         <Base className="ui-surface ui-state-disabled">disabled</Base>
         <Base className="ui-surface ui-state-error">error</Base>
         <Base className="ui-surface ui-state-readonly">readonly</Base>
+      </Inline>
+      <Inline space="peer">
+        <Base className="ui-surface-contrast ui-state-focus">
+          contrast / focus
+        </Base>
+        <Base className="ui-surface-contrast ui-state-disabled">
+          contrast / disabled
+        </Base>
       </Inline>
       <Headline level="3">Input</Headline>
       <Inline space="peer">
