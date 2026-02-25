@@ -17,7 +17,7 @@ export const ActionButton = ({ onPress, children }: ActionButtonProps) => {
   const classNames = useClassNames({ component: 'ActionBar' });
 
   return (
-    <Button onPress={onPress} className={classNames.button}>
+    <Button onPress={onPress} className={classNames.actionButton}>
       {children}
     </Button>
   );

@@ -37,7 +37,7 @@ export type Theme = {
       | 'count'
       | 'toolbar'
       | 'clearButton'
-      | 'button',
+      | 'actionButton',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;

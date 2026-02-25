@@ -21,11 +21,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
     base: 'flex items-center text-sm font-medium whitespace-nowrap',
   }),
   toolbar: cva({
-    base: [
-      'flex items-center gap-0',
-      'flex-1 justify-center',
-      'overflow-x-auto',
-    ],
+    base: ['flex items-center', 'flex-1 justify-center', 'overflow-x-auto'],
   }),
   clearButton: cva({
     base: [
@@ -37,7 +33,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       '[&_svg]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
     ],
   }),
-  button: cva({
+  actionButton: cva({
     base: [
       ...buttonBase,
       'hover:bg-current/10',
