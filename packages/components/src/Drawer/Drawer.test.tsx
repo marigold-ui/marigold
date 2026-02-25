@@ -50,8 +50,8 @@ test('slides from the left', async () => {
   expect(drawerModal).toHaveClass(
     'placement-left:exiting:animate-slide-out-left'
   );
-  expect(drawerModal).toHaveClass('placement-left:top-0');
-  expect(drawerModal).toHaveClass('placement-left:left-0');
+  expect(drawerModal).toHaveClass('placement-left:inset-y-3');
+  expect(drawerModal).toHaveClass('placement-left:left-3');
 });
 
 test('can be closed with esc key', async () => {
