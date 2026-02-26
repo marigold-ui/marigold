@@ -1,5 +1,5 @@
-import appearances from '@/.registry/appearances.json';
 import type { Theme } from '@marigold/system';
+import { appearances } from '@marigold/theme-rui/appearances';
 
 interface NestedStringObject {
   [key: string]: NestedStringObject | string;
