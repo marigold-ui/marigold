@@ -5,7 +5,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   container: cva({
     base: [
       'flex flex-col gap-0 rounded-xl p-6 overflow-y-auto',
-      'ui-surface shadow-elevation-overlay util-scrollbar',
+      'ui-surface shadow-elevation-overlay ui-scrollbar',
     ],
     variants: {
       variant: {},

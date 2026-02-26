@@ -5,7 +5,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   navigationButton: cva({
     base: [
       'ui-button-base',
-      'hover:bg-current/10',
+      'text-sm hover:bg-current/10',
       'h-9 py-2 gap-1 px-2.5',
       /**
        * Removes the spacing from the button when when there are hidden
@@ -17,7 +17,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   pageButton: cva({
     base: [
       'ui-button-base',
-      'bg-background size-9',
+      'text-sm bg-background size-9',
       'data-[selected=true]:ui-surface data-[selected=true]:shadow-elevation-border',
     ],
   }),

@@ -12,7 +12,7 @@ export const Collapsible: ThemeComponent<'Collapsible'> = {
     variants: {
       variant: {
         default: '',
-        link: 'text-link util-touch-hitbox',
+        link: 'text-link ui-touch-hitbox',
       },
       size: {
         default: 'text-sm',

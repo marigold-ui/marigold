@@ -38,7 +38,7 @@ export const Tag: ThemeComponent<'Tag'> = {
       'ui-press',
       'focus-visible:ui-state-focus outline-none',
       'cursor-pointer',
-      'text-link text-xs util-touch-hitbox',
+      'text-link text-xs ui-touch-hitbox',
     ],
   }),
 };

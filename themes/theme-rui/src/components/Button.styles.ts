@@ -3,7 +3,7 @@ import { cva } from '@marigold/system';
 
 export const Button: ThemeComponent<'Button'> = cva({
   base: [
-    'ui-button-base',
+    'ui-button-base gap-2',
     'duration-150 active:scale-[0.97] pressed:not-aria-expanded:scale-[0.97]',
     'pending:ui-state-disabled',
   ],
@@ -22,7 +22,7 @@ export const Button: ThemeComponent<'Button'> = cva({
       destructive:
         'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       'destructive-ghost': 'text-destructive hover:bg-current/8',
-      link: 'text-link util-touch-hitbox',
+      link: 'text-link ui-touch-hitbox',
     },
     size: {
       default: 'text-sm',

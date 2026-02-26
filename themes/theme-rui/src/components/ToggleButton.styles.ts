@@ -16,7 +16,7 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   }),
   button: cva({
     base: [
-      'ui-button-base',
+      'ui-button-base gap-2',
 
       // ToggleButton-specific styles
       'ui-surface shadow-elevation-border',

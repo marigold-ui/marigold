@@ -9,7 +9,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'shadow-elevation-overlay',
       'bg-brand text-brand-foreground border-brand',
       'rounded-full font-medium transition-colors',
-      'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+      'ui-interactive',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
       'entering:animate-slide-in',
       'exiting:animate-slide-out',
