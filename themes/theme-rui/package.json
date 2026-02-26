@@ -14,10 +14,12 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.mts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
     "./appearances": {
+      "types": "./dist/appearances.d.mts",
       "require": "./dist/appearances.js",
       "import": "./dist/appearances.mjs"
     },

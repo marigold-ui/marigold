@@ -22,7 +22,7 @@ export const iterateTokens = (colors: NestedStringObject, prefix = '') => {
 
 /**
  * Get variants and sizes (= appearances) from a component.
- * Reads from build-time generated appearances.json.
+ * Reads from @marigold/theme-rui/appearances.
  */
 export const getAppearance = (
   name: keyof Theme['components'] | (string & {})
