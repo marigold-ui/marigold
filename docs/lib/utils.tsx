@@ -1,10 +1,10 @@
-import appearances from '@/.registry/appearances.json';
+import { appearances } from '@marigold/theme-rui/appearances';
 
 interface NestedStringObject {
   [key: string]: NestedStringObject | string;
 }
 
-/** Component names from build-time appearances.json (matches Marigold theme components). */
+/** Component names from theme appearances (matches Marigold theme components). */
 export type AppearanceComponentName = string;
 
 // used to iterate through the colors and combine it in the right way e.g. 'bg-surface-sunken'
@@ -27,9 +27,7 @@ export const iterateTokens = (colors: NestedStringObject, prefix = '') => {
  * Reads from @marigold/theme-rui/appearances.
  */
 export const getAppearance = (name: AppearanceComponentName) => {
-  const entry = (
-    appearances as Record<string, { variant: string[]; size: string[] }>
-  )[name];
+  const entry = appearances[name];
   return entry ?? { variant: [], size: [] };
 };
 
