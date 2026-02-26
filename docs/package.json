@@ -9,8 +9,8 @@
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
     "postinstall": "fumadocs-mdx && pnpm run build:registry",
     "lint": "eslint",
-    "registry": "node scripts/build-registry.mjs && node scripts/build-appearances.mjs",
-    "build:registry": "node scripts/build-registry.mjs && node scripts/build-appearances.mjs",
+    "registry": "node scripts/build-registry.mjs",
+    "build:registry": "node scripts/build-registry.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
