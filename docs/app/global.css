@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* rui theme */
+@import '@marigold/theme-rui/styles.css';
+
+/* demos */
+@source './../content/**/*.{js,ts,jsx,tsx,mdx}';
+
+/* from docs */
+@source './../ui/**/*.{js,ts,jsx,tsx,mdx}';
+@source './**/*.{js,ts,jsx,tsx,mdx}';
+
+/* marigold components */
+@source './../../packages/{components,system}/**/*.{tsx,ts}';
+@source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
+@source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
+
+@layer base {
+  :root {
+    --page-padding: 0.75rem;
+    --page-padding-md: 2rem;
+    --page-padding-xl: 3rem;
+    --page-header-height: 56px;
+    --breakpoint-lg: 1024px;
+  }
+}

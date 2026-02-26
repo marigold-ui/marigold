@@ -1,81 +1,143 @@
-import { baseUrl } from '@/lib/config';
-import { Headline } from '@/ui';
-import { allContentPages } from 'contentlayer/generated';
-import { Metadata } from 'next';
+import { PostList } from '@/components/PostList';
+import { getPageImage, source } from '@/lib/source';
+import { getMDXComponents } from '@/mdx-components';
+import {
+  AlignmentsX,
+  AlignmentsY,
+  AppearanceDemo,
+  AppearanceTable,
+  BorderRadius,
+  Center,
+  ColorPalettes,
+  ColorTokenTable,
+  Columns,
+  ComponentDemo,
+  DateFormat,
+  Do,
+  DoDescription,
+  DoFigure,
+  Dont,
+  DontDescription,
+  DontFigure,
+  FeedbackComponentsTable,
+  GuidelineTiles,
+  IconList,
+  RelativeTime,
+  Spacing,
+  SpacingTokensTable,
+  Stack,
+  StorybookHintMessage,
+  TeaserList,
+} from '@/ui';
+import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
+import {
+  DocsBody,
+  DocsDescription,
+  DocsPage,
+  DocsTitle,
+} from 'fumadocs-ui/layouts/docs/page';
+import { createRelativeLink } from 'fumadocs-ui/mdx';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { RelativeTime } from '@/ui/RelativeTime';
-import { TocContainer } from '@/ui/Toc';
-import { Mdx } from '@/ui/mdx';
 
-interface ContentPageProps {
-  params: Promise<{ slug: string[] }>;
-}
+const Page = async (props: PageProps<'/[...slug]'>) => {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
 
-async function getPageFromParams(params: ContentPageProps['params']) {
-  const slug = (await params)?.slug?.join('/');
-  const page = allContentPages.find(page => page.slug === slug);
+  const MDX = page.data.body;
+  const lastModified = page.data.lastModified;
 
-  return page || null;
-}
-
-export async function generateMetadata({
-  params,
-}: ContentPageProps): Promise<Metadata> {
-  const page = await getPageFromParams(params);
-
-  return page
-    ? {
-        title: page.title,
-        description: page.caption,
-        applicationName: 'Marigold Design System',
-        appleWebApp: {
-          title: 'Marigold Design System',
-        },
-        metadataBase: new URL(baseUrl),
-        openGraph: {
-          siteName: 'Marigold Design System',
-          title: page.title,
-          description: page.caption,
-          images: `${baseUrl}/api/og.png?title=${encodeURIComponent(page.title)}`,
-          type: 'website',
-        },
-        twitter: {
-          card: 'summary_large_image',
-          creator: '@reservix',
-        },
-      }
-    : {};
-}
-
-export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
-  return allContentPages.map(page => ({
-    slug: page.slug.split('/'),
-  }));
-}
-
-export default async function ContentPage({ params }: ContentPageProps) {
-  const page = await getPageFromParams(params);
-  if (!page) {
-    notFound();
-  }
+  // Disable TOC for all releases pages
+  const isReleasesPage = params.slug?.[0] === 'releases';
+  const toc = isReleasesPage ? undefined : page.data.toc;
 
   return (
-    <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
-      <div className="col-span-full">
-        <Headline level={1}>{page.title}</Headline>
-        <div className="text-secondary-400 pt-1">{page.caption}</div>
-      </div>
-      <div className="prose max-w-[70ch]">
-        <Mdx title={page.title} code={page.body.code} />
-        <div className="text-text-primary-muted pt-8 text-xs italic">
-          Last update: <RelativeTime date={new Date(page.modified)} />
-        </div>
-      </div>
-      {page.toc === false ? null : (
-        <div className="col-start-2 hidden min-[1400px]:block">
-          <TocContainer />
-        </div>
-      )}
-    </article>
+    <DocsPage
+      tableOfContent={{
+        single: true,
+      }}
+      toc={toc}
+      full={page.data.full}
+    >
+      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsDescription className="mb-0">
+        {page.data.description}
+      </DocsDescription>
+      <DocsBody>
+        <MDX
+          components={getMDXComponents({
+            // this allows you to link to other pages with relative file paths
+            a: createRelativeLink(source, page) as any,
+
+            Columns,
+            Stack,
+            Center,
+
+            ImageZoom,
+            ColorTokenTable,
+            ColorPalettes,
+
+            SpacingTokens: SpacingTokensTable,
+
+            Spacing,
+            BorderRadius,
+            AlignmentsX,
+            AlignmentsY,
+
+            IconList,
+            PostList,
+
+            DateFormat,
+
+            Do,
+            DoFigure,
+            DoDescription,
+            Dont,
+            DontFigure,
+            DontDescription,
+            GuidelineTiles,
+
+            TeaserList,
+
+            FeedbackComponentsTable,
+
+            AppearanceDemo,
+            AppearanceTable,
+            ComponentDemo,
+            StorybookHintMessage,
+          })}
+        />
+        {lastModified && (
+          <div className="text-fd-muted-foreground pt-8 text-xs italic">
+            Last update: <RelativeTime date={lastModified} />
+          </div>
+        )}
+      </DocsBody>
+    </DocsPage>
   );
-}
+};
+
+export const generateStaticParams = async () => {
+  const params = await source.generateParams();
+  // Filter out empty slugs (root path) - handled by home page
+  return params.filter(param => param.slug && param.slug.length > 0);
+};
+
+export const generateMetadata = async (
+  props: PageProps<'/[...slug]'>
+): Promise<Metadata> => {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
+
+  return {
+    title: page.data.title,
+    description: page.data.description,
+    openGraph: {
+      images: getPageImage(page).url,
+    },
+  };
+};
+
+export default Page;

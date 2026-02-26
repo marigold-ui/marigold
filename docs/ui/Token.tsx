@@ -1,13 +1,14 @@
 'use client';
 
-import { Card, Inline, Stack, Table, alignment, cn, paddingSpace } from '@/ui';
+import { Inline, Stack, alignment, cn, paddingSpace } from '@/ui';
+import { Card } from 'fumadocs-ui/components/card';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
 
 export const AlignmentsX = () => {
   return (
-    <Card>
+    <Card title="Alignments X">
       <Stack space={3}>
         {Object.entries(alignment.horizontal.alignmentX).map(([key]) => (
           <div className="h-full bg-slate-200 p-2" key={key}>
@@ -29,7 +30,7 @@ export const AlignmentsX = () => {
 
 export const AlignmentsY = () => {
   return (
-    <Card>
+    <Card title="Alignments Y">
       <Stack space={3}>
         {Object.entries(alignment.vertical.alignmentY).map(([key]) => (
           <div className="h-44 bg-slate-200 p-2" key={key}>
@@ -51,7 +52,7 @@ export const AlignmentsY = () => {
 };
 
 export const BorderRadius = () => (
-  <Card>
+  <Card title="Border Radius">
     <Inline space={8}>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
@@ -117,55 +118,139 @@ export const Breakpoints = () => {
 
   return (
     <div data-theme="rui">
-      <Table aria-label="breakpoints" stretch>
-        <Table.Header>
-          <Table.Column key={'name'}>Name</Table.Column>
-          <Table.Column key={'value'}>Breaks at</Table.Column>
-        </Table.Header>
-        <Table.Body>
+      <table aria-label="breakpoints" style={{ width: '100%' }}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Breaks at</th>
+          </tr>
+        </thead>
+        <tbody>
           {Object.entries(breakpoints).map(([key, value]) => (
-            <Table.Row key={key}>
-              <Table.Cell>
+            <tr key={key}>
+              <td>
                 <code className="before:content-none after:content-none">
                   {key}
                 </code>
-              </Table.Cell>
-              <Table.Cell>{value}</Table.Cell>
-            </Table.Row>
+              </td>
+              <td>{value}</td>
+            </tr>
           ))}
-        </Table.Body>
-      </Table>
+        </tbody>
+      </table>
     </div>
   );
 };
 
 export const Spacing = () => {
   return (
-    <Table aria-label="spaces" stretch>
-      <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
-        <Table.Column key={'value'}>Value</Table.Column>
-        <Table.Column key={'example'}>Example</Table.Column>
-      </Table.Header>
-      <Table.Body>
+    <table aria-label="spaces" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
         {Object.keys(paddingSpace)
           .sort((a, b) => parseFloat(a) - parseFloat(b))
           .map(key => (
-            <Table.Row key={key}>
-              <Table.Cell>
+            <tr key={key}>
+              <td>
                 <code className="before:content-none after:content-none">
                   {key}
                 </code>
-              </Table.Cell>
-              <Table.Cell>{Number(key) * 4}px</Table.Cell>
-              <Table.Cell>
+              </td>
+              <td>{Number(key) * 4}px</td>
+              <td>
                 <div className={cn(`pl-${key}`, 'bg-slate-300')}>
                   <div className="h-3 bg-white"></div>
                 </div>
-              </Table.Cell>
-            </Table.Row>
+              </td>
+            </tr>
           ))}
-      </Table.Body>
-    </Table>
+      </tbody>
+    </table>
+  );
+};
+
+export const SpacingTokensTable = () => {
+  return (
+    <table aria-label="spacing tokens" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Value</th>
+          <th>Description</th>
+          <th>Relevant components</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <code className="before:content-none after:content-none">
+              container
+            </code>
+          </td>
+          <td>50rem (800px)</td>
+          <td>Used width or max-width for the form container.</td>
+          <td>
+            {'<div>'}, {'<Form>'}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code className="before:content-none after:content-none">
+              section
+            </code>
+          </td>
+          <td>3.5rem (56px)</td>
+          <td>Used for creating space between different form sections.</td>
+          <td>{'<Stack>'}</td>
+        </tr>
+        <tr>
+          <td>
+            <code className="before:content-none after:content-none">
+              fieldY
+            </code>
+          </td>
+          <td>2rem (32px)</td>
+          <td>
+            Used for creating vertical space between individual form fields in a
+            section.
+          </td>
+          <td>{'<Stack>'}</td>
+        </tr>
+        <tr>
+          <td>
+            <code className="before:content-none after:content-none">
+              fieldX
+            </code>
+          </td>
+          <td>1.25rem (20px)</td>
+          <td>
+            Used for creating horizontal space between individual form fields in
+            a section.
+          </td>
+          <td>{'<Inline>'}</td>
+        </tr>
+        <tr>
+          <td>
+            <code className="before:content-none after:content-none">
+              group
+            </code>
+          </td>
+          <td>1rem (16px)</td>
+          <td>
+            Used for grouping related fields (address components, date/time
+            fields) or multiple accordion sections together.
+          </td>
+          <td>
+            {'<Stack>'}, {'<Inset>'}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };

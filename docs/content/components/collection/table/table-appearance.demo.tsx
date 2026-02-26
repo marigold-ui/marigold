@@ -1,63 +1,54 @@
-import { venueTypes, venues } from '@/lib/data/venues';
-import type { TableProps } from '@marigold/components';
-import { NumericFormat, Table, Text } from '@marigold/components';
+import { DateFormat } from '@/ui';
+import { I18nProvider, TableProps } from '@marigold/components';
+import { Table } from '@marigold/components';
 
 const columns = [
+  { name: 'Id', key: 'id' },
+  { name: 'Event', key: 'event' },
+  { name: 'Date', key: 'date' },
+];
+
+const items: { [key: string]: string }[] = [
   {
-    name: 'Venue',
-    key: 'name',
-    width: '1fr',
-    alignX: 'left',
-    rowHeader: true,
+    id: '1234',
+    event: 'Concert',
+    date: '2024-01-10',
   },
   {
-    name: 'Type',
-    key: 'type',
-    width: '1fr',
-    alignX: 'left',
-    rowHeader: false,
+    id: '82374',
+    event: 'Open Air Festival',
+    date: '2024-07-09',
   },
   {
-    name: 'City',
-    key: 'city',
-    width: '1fr',
-    alignX: 'left',
-    rowHeader: false,
+    id: '724423',
+    event: 'Live on Stage',
+    date: '2024-11-25',
   },
   {
-    name: 'Capacity',
-    key: 'capacity',
-    width: 100,
-    alignX: 'right',
-    rowHeader: false,
+    id: '23497',
+    event: 'Open Air Summertime',
+    date: '2024-06-01',
   },
-] as const;
+];
 
 export default (props: TableProps) => (
   <Table {...props}>
     <Table.Header columns={columns}>
       {column => (
-        <Table.Column
-          width={column.width}
-          alignX={column.alignX}
-          rowHeader={column.rowHeader}
-        >
+        <Table.Column rowHeader={column.key === 'id'}>
           {column.name}
         </Table.Column>
       )}
     </Table.Header>
-    <Table.Body items={venues.slice(2, 5)}>
+    <Table.Body items={items}>
       {item => (
         <Table.Row key={item.id}>
+          <Table.Cell>{item.id}</Table.Cell>
+          <Table.Cell>{item.event}</Table.Cell>
           <Table.Cell>
-            <Text weight="medium">{item.name}</Text>
-          </Table.Cell>
-          <Table.Cell>{venueTypes[item.type]}</Table.Cell>
-          <Table.Cell>
-            {item.city}, {item.country}
-          </Table.Cell>
-          <Table.Cell>
-            <NumericFormat value={item.capacity} />
+            <I18nProvider locale="de-DE">
+              <DateFormat dateStyle="full" value={new Date(`${item.date}`)} />
+            </I18nProvider>
           </Table.Cell>
         </Table.Row>
       )}

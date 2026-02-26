@@ -1,6 +1,7 @@
+'use client';
+
+import { cn } from '@/lib/cn';
 import type { PropsWithChildren } from 'react';
-import { Tiles } from '@marigold/components';
-import { cn } from '@marigold/system';
 
 // Shared Child Components
 // ---------------
@@ -19,7 +20,7 @@ const Container = ({
 const Title = ({ children }: PropsWithChildren) => (
   <div
     className={cn(
-      '[grid-area:title]',
+      'text-neutral-900 [grid-area:title] dark:text-neutral-900',
       'group-data-[type=do]:bg-bg-success group-data-[type=do]:border-border-success group-data-[type=dont]:border-border-error group-data-[type=dont]:bg-bg-error',
       'flex items-center gap-2 border-t-4 px-4 pt-4 pb-2 font-bold uppercase'
     )}
@@ -28,15 +29,19 @@ const Title = ({ children }: PropsWithChildren) => (
   </div>
 );
 
-const Figure = ({ children }: PropsWithChildren) => (
+export const DoFigure = ({ children }: PropsWithChildren) => (
   <div className="not-prose [grid-area:figure]">{children}</div>
 );
 
-const Description = ({ children }: PropsWithChildren) => (
-  <div className="group-data-[type=do]:bg-bg-success group-data-[type=dont]:bg-bg-error px-4 pb-4 text-sm text-pretty [grid-area:description] *:m-0 *:leading-relaxed">
+export const DoDescription = ({ children }: PropsWithChildren) => (
+  <div className="group-data-[type=do]:bg-bg-success group-data-[type=dont]:bg-bg-error px-4 pb-4 text-sm text-pretty text-neutral-900 [grid-area:description] *:m-0 *:leading-relaxed dark:text-neutral-900">
     {children}
   </div>
 );
+
+// Alias for Dont (same components)
+export const DontFigure = DoFigure;
+export const DontDescription = DoDescription;
 
 // Do
 // ---------------
@@ -55,9 +60,6 @@ export const Do = ({ children }: PropsWithChildren) => (
   </Container>
 );
 
-Do.Figure = Figure;
-Do.Description = Description;
-
 // Dont
 // ---------------
 export const Dont = ({ children }: PropsWithChildren) => (
@@ -69,19 +71,14 @@ export const Dont = ({ children }: PropsWithChildren) => (
       >
         <path d="M19.8281 5.74868L18.2513 4.17188L12 10.4232L5.74868 4.17188L4.17188 5.74868L10.4232 12L4.17188 18.2513L5.74868 19.8281L12 13.5768L18.2513 19.8281L19.8281 18.2513L13.5768 12L19.8281 5.74868Z"></path>
       </svg>
-      <div className="m-0 text-sm font-bold uppercase">Don't</div>
+      <div className="m-0 text-sm font-bold uppercase">Don&apos;t</div>
     </Title>
     {children}
   </Container>
 );
 
-Dont.Figure = Figure;
-Dont.Description = Description;
-
 export const GuidelineTiles = ({ children }: PropsWithChildren) => (
-  <div className="my-5">
-    <Tiles space={5} stretch tilesWidth="300px">
-      {children}
-    </Tiles>
+  <div className="my-5 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 *:min-w-0">
+    {children}
   </div>
 );

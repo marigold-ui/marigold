@@ -8,14 +8,6 @@ import {
 } from '@marigold/components';
 
 export default () => {
-  const columns = [
-    { id: 1, name: 'Name', key: 'name' },
-    { id: 2, name: 'Gender', key: 'gender' },
-    { id: 3, name: 'Skin Color', key: 'skin_color' },
-    { id: 4, name: 'height', key: 'height' },
-    { id: 5, name: 'Weight', key: 'mass' },
-  ];
-
   const [result, setResult] = useState<{ [key: string]: string }[] | null>(
     null
   );
@@ -60,13 +52,21 @@ export default () => {
       </Autocomplete>
       {result === null ? null : result.length > 0 ? (
         <Table aria-label="Character results" selectionMode="none">
-          <Table.Header columns={columns}>
-            {column => <Table.Column>{(column as any).name}</Table.Column>}
+          <Table.Header>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Gender</Table.Column>
+            <Table.Column>Skin Color</Table.Column>
+            <Table.Column>Height</Table.Column>
+            <Table.Column>Weight</Table.Column>
           </Table.Header>
           <Table.Body items={result}>
             {item => (
-              <Table.Row columns={columns}>
-                {column => <Table.Cell>{item[column.id]}</Table.Cell>}
+              <Table.Row key={item.name} id={item.name}>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{item.gender}</Table.Cell>
+                <Table.Cell>{item.skin_color}</Table.Cell>
+                <Table.Cell>{item.height}</Table.Cell>
+                <Table.Cell>{item.mass}</Table.Cell>
               </Table.Row>
             )}
           </Table.Body>

@@ -9,12 +9,10 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "paths": {
-      "contentlayer/generated": ["./docs/.contentlayer/generated"],
       "@/registry/*": ["./docs/.registry/*"],
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
-      "@marigold/theme-rui/appearances": ["./themes/theme-rui/src/appearances"],
-      "@/*": ["./docs/*", "./fumadocs/*"],
-      "fumadocs-mdx:collections/*": ["./fumadocs/.source/*"],
+      "@/*": ["./docs/*"],
+      "fumadocs-mdx:collections/*": ["./docs/.source/*"],
       // cva does not export the types officially
       "class-variance-authority/dist/types": [
         "./packages/system/node_modules/class-variance-authority/dist/types"
@@ -29,7 +27,7 @@
     "vite.config.ts",
     "**/dist/*",
     "**/node_modules/*",
-    "fumadocs/**/*",
+    "docs/**/*",
     ".claude/**/*"
   ]
 }

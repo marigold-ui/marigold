@@ -1,184 +1,212 @@
-// @ts-check
-import { readFile, readdir, writeFile } from 'node:fs/promises';
-import { createRequire } from 'node:module';
-import { basename, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+#!/usr/bin/env node
+/**
+ * Scans theme component style files and generates src/appearances.ts
+ * with variant/size keys per component. Used by docs for AppearanceTable.
+ */
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const require = createRequire(import.meta.url);
-const ts = require('typescript');
-
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
-
-console.log('🎨 Generating appearances data...');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const themeRoot = path.join(__dirname, '..');
+const componentsDir = path.join(themeRoot, 'src', 'components');
 
 /**
- * Components that share styles with another component.
- * Key = component name in docs, Value = component name in theme.
+ * Find matching closing brace; start at content[i] (after opening {).
+ * Returns end index (exclusive).
  */
-const sharedAppearances = {
-  LinkButton: 'Button',
-  ToggleButtonGroup: 'ToggleButton',
-};
+function findBlockEnd(content, startIndex) {
+  let depth = 1;
+  let i = startIndex;
+  while (i < content.length && depth > 0) {
+    const ch = content[i];
+    if (ch === '{') depth++;
+    else if (ch === '}') depth--;
+    i++;
+  }
+  return i;
+}
+
+// Keys that are cva/config internals or state names, not variant/size option names
+const SKIP_KEYS = new Set([
+  'class',
+  'variant',
+  'size',
+  'variants',
+  'defaultVariants',
+  'compoundVariants',
+  'expanded',
+  'hover',
+  'pending',
+  'disabled',
+  'focus',
+  'focus-visible',
+  'in-first',
+  'not-last',
+  'first-child',
+  'last',
+  'dragging',
+  'selected',
+  'marker',
+  'td',
+  'tr',
+  'grid',
+  'muted',
+  'fit',
+  'inverted',
+  'data-large',
+  'data-medium',
+  'data-small',
+  'data-selection-mode',
+  'cell-x-padding',
+  'cell-y-padding',
+  'header-height',
+  'dialog-width',
+  'placement-bottom',
+  'placement-left',
+  'placement-right',
+  'placement-top',
+]);
 
 /**
- * Extract property name keys from a `variants` object literal in a cva() call.
- * Returns `{ variant: string[], size: string[] }`.
+ * Extract keys from a block like { primary: ..., secondary: ... }.
+ * Only match keys at line start (with optional indent) to avoid capturing
+ * "key: value" inside string values. Skip known config/keyword keys.
  */
-function extractVariantKeys(cvaArg) {
-  if (!cvaArg || !ts.isObjectLiteralExpression(cvaArg)) {
-    return { variant: [], size: [] };
+function extractKeys(blockContent) {
+  const keys = new Set();
+  const lines = blockContent.split('\n');
+  for (const line of lines) {
+    const m = line.match(/^\s*'?([a-zA-Z][a-zA-Z0-9-]*)'?\s*:/);
+    if (m && !SKIP_KEYS.has(m[1])) keys.add(m[1]);
+  }
+  return [...keys];
+}
+
+/**
+ * Find all "variant: {" or "size: {" blocks in content and collect keys.
+ */
+function collectVariantSizeKeys(content) {
+  const variants = new Set();
+  const sizes = new Set();
+  const variantMarker = 'variant:';
+  const sizeMarker = 'size:';
+
+  let idx = 0;
+  while (idx < content.length) {
+    const vPos = content.indexOf(variantMarker, idx);
+    const sPos = content.indexOf(sizeMarker, idx);
+
+    let nextPos = content.length;
+    if (vPos !== -1) nextPos = Math.min(nextPos, vPos);
+    if (sPos !== -1) nextPos = Math.min(nextPos, sPos);
+    if (nextPos === content.length) break;
+
+    if (vPos !== -1 && vPos === nextPos) {
+      const afterMarker = content.slice(vPos + variantMarker.length);
+      const openBrace = afterMarker.indexOf('{');
+      if (openBrace !== -1) {
+        const blockStart = vPos + variantMarker.length + openBrace + 1;
+        const blockEnd = findBlockEnd(content, blockStart);
+        const block = content.slice(blockStart, blockEnd - 1);
+        extractKeys(block).forEach(k => variants.add(k));
+      }
+      idx = vPos + 1;
+    } else if (sPos !== -1 && sPos === nextPos) {
+      const afterMarker = content.slice(sPos + sizeMarker.length);
+      const openBrace = afterMarker.indexOf('{');
+      if (openBrace !== -1) {
+        const blockStart = sPos + sizeMarker.length + openBrace + 1;
+        const blockEnd = findBlockEnd(content, blockStart);
+        const block = content.slice(blockStart, blockEnd - 1);
+        extractKeys(block).forEach(k => sizes.add(k));
+      }
+      idx = sPos + 1;
+    } else {
+      idx = nextPos + 1;
+    }
   }
 
-  const variantProp = cvaArg.properties.find(
-    p => ts.isPropertyAssignment(p) && p.name.getText() === 'variants'
+  return { variant: [...variants].sort(), size: [...sizes].sort() };
+}
+
+/**
+ * Get component name from "export const ComponentName: ThemeComponent..."
+ */
+function getComponentName(content) {
+  const m = content.match(
+    /export\s+const\s+([A-Za-z0-9]+)\s*:\s*ThemeComponent/
   );
-
-  if (
-    !variantProp ||
-    !ts.isPropertyAssignment(variantProp) ||
-    !ts.isObjectLiteralExpression(variantProp.initializer)
-  ) {
-    return { variant: [], size: [] };
-  }
-
-  const result = { variant: [], size: [] };
-
-  for (const prop of variantProp.initializer.properties) {
-    if (!ts.isPropertyAssignment(prop)) continue;
-    const name = prop.name.getText();
-    if (name !== 'variant' && name !== 'size') continue;
-
-    if (ts.isObjectLiteralExpression(prop.initializer)) {
-      result[name] = prop.initializer.properties
-        .filter(p => ts.isPropertyAssignment(p))
-        .map(p => {
-          const keyNode = p.name;
-          if (ts.isStringLiteral(keyNode)) return keyNode.text;
-          if (ts.isComputedPropertyName(keyNode)) return keyNode.getText();
-          return keyNode.getText();
-        });
-    }
-  }
-
-  return result;
+  return m ? m[1] : null;
 }
 
-/**
- * Find all cva() call expressions in a node (recursively).
- */
-function findCvaCalls(node) {
-  const calls = [];
-  function visit(n) {
-    if (
-      ts.isCallExpression(n) &&
-      ts.isIdentifier(n.expression) &&
-      n.expression.text === 'cva'
-    ) {
-      calls.push(n);
-    }
-    ts.forEachChild(n, visit);
+function buildAppearances() {
+  if (!fs.existsSync(componentsDir)) {
+    console.error('Components dir not found:', componentsDir);
+    process.exit(1);
   }
-  visit(node);
-  return calls;
-}
 
-async function main() {
-  const stylesDir = resolve(__dirname, '../src/components');
-  const dirEntries = await readdir(stylesDir);
-  const files = dirEntries
-    .filter(f => f.endsWith('.styles.ts'))
-    .map(f => join(stylesDir, f));
-
-  /** @type {Record<string, { variant: string[], size: string[] }>} */
+  const files = fs
+    .readdirSync(componentsDir)
+    .filter(f => f.endsWith('.styles.ts'));
   const appearances = {};
 
-  for (const filePath of files) {
-    const source = await readFile(filePath, 'utf-8');
-    const sourceFile = ts.createSourceFile(
-      basename(filePath),
-      source,
-      ts.ScriptTarget.Latest,
-      true
-    );
+  for (const file of files) {
+    const filePath = path.join(componentsDir, file);
+    const content = fs.readFileSync(filePath, 'utf8');
+    const name = getComponentName(content);
+    if (!name) continue;
 
-    // Find exported variable declarations (e.g. `export const Button = ...`)
-    for (const stmt of sourceFile.statements) {
-      if (
-        !ts.isVariableStatement(stmt) ||
-        !stmt.modifiers?.some(m => m.kind === ts.SyntaxKind.ExportKeyword)
-      ) {
-        continue;
-      }
-
-      for (const decl of stmt.declarationList.declarations) {
-        if (!ts.isIdentifier(decl.name) || !decl.initializer) continue;
-        const componentName = decl.name.text;
-
-        // Skip non-component exports (e.g. `buttonBase`)
-        if (componentName[0] !== componentName[0].toUpperCase()) continue;
-
-        if (ts.isCallExpression(decl.initializer)) {
-          // Single-slot: export const X = cva({...})
-          const arg = decl.initializer.arguments[0];
-          appearances[componentName] = extractVariantKeys(arg);
-        } else if (ts.isObjectLiteralExpression(decl.initializer)) {
-          // Multi-slot: export const X = { slot: cva({...}), ... }
-          const variantKeys = new Set();
-          const sizeKeys = new Set();
-
-          const cvaCalls = findCvaCalls(decl.initializer);
-          for (const call of cvaCalls) {
-            const keys = extractVariantKeys(call.arguments[0]);
-            for (const k of keys.variant) variantKeys.add(k);
-            for (const k of keys.size) sizeKeys.add(k);
-          }
-
-          appearances[componentName] = {
-            variant: [...variantKeys],
-            size: [...sizeKeys],
-          };
-        }
-      }
+    const { variant, size } = collectVariantSizeKeys(content);
+    if (variant.length > 0 || size.length > 0) {
+      appearances[name] = { variant, size };
     }
   }
 
-  // Add shared appearances (components that reuse another component's styles)
-  for (const [alias, target] of Object.entries(sharedAppearances)) {
-    if (appearances[target]) {
-      appearances[alias] = appearances[target];
-    }
-  }
-
-  // Generate TypeScript source file
+  const outPath = path.join(themeRoot, 'src', 'appearances.ts');
   const lines = [
-    '// Auto-generated by scripts/build-appearances.mjs — DO NOT EDIT',
-    "// Run 'pnpm build' in themes/theme-rui to regenerate.",
+    '/**',
+    ' * Component appearances (variant/size keys) for themed components.',
+    ' * Auto-generated by scripts/build-appearances.mjs. Do not edit by hand.',
+    ' */',
+    'export type Appearances = Record<string, { variant: string[]; size: string[] }>;',
     '',
-    'export const appearances = {',
+    'export const appearances: Appearances = {',
+    ...Object.entries(appearances)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(
+        ([comp, { variant, size }]) =>
+          `  ${comp}: { variant: ${JSON.stringify(variant)}, size: ${JSON.stringify(size)} },`
+      ),
+    '};',
+    '',
   ];
-
-  for (const [name, { variant, size }] of Object.entries(appearances).sort(
-    ([a], [b]) => a.localeCompare(b)
-  )) {
-    lines.push(`  ${name}: {`);
-    lines.push(
-      `    variant: [${variant.map(v => JSON.stringify(v)).join(', ')}],`
-    );
-    lines.push(`    size: [${size.map(s => JSON.stringify(s)).join(', ')}],`);
-    lines.push(`  },`);
-  }
-
-  lines.push('};', '', 'export type Appearances = typeof appearances;', '');
-
-  const outFile = resolve(__dirname, '../src/appearances.ts');
-  await writeFile(outFile, lines.join('\n'), 'utf-8');
-
+  fs.writeFileSync(outPath, lines.join('\n'), 'utf8');
   console.log(
-    `✅ Generated appearances for ${Object.keys(appearances).length} components → src/appearances.ts`
+    'Generated',
+    outPath,
+    'with',
+    Object.keys(appearances).length,
+    'components'
   );
+
+  // In monorepo, also write docs registry so docs can show variant/size tables
+  const docsRegistry = path.join(
+    themeRoot,
+    '..',
+    '..',
+    'docs',
+    '.registry',
+    'appearances.json'
+  );
+  if (fs.existsSync(path.dirname(docsRegistry))) {
+    fs.writeFileSync(
+      docsRegistry,
+      JSON.stringify(appearances, null, 2),
+      'utf8'
+    );
+    console.log('Updated', docsRegistry);
+  }
 }
 
-main().catch(err => {
-  console.error('Failed to generate appearances:', err);
-  process.exit(1);
-});
+buildAppearances();

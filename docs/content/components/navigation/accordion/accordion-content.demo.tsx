@@ -21,12 +21,12 @@ export default () => {
           despite having fewer words than a novel, might seem insurmountably
           long due to the complexity of the information it conveys. If we
           consider word count alone, we might look at examples such as epic
-          poems—Homer's Iliad and Odyssey, Dante’s Inferno, or Paradise Lost by
+          poems—Homer's Iliad and Odyssey, Dante's Inferno, or Paradise Lost by
           John Milton—each containing thousands of lines of intricate poetry. In
           contrast, modern novels like War and Peace by Leo Tolstoy, Les
           Misérables by Victor Hugo, or Infinite Jest by David Foster Wallace
           are all known for their massive word counts, often surpassing several
-          hundred thousand words. Beyond literature, let’s think about other
+          hundred thousand words. Beyond literature, let's think about other
           forms of text that can be considered large. Scientific research
           papers, encyclopedic entries, legal documents, and government
           regulations all contribute to the vast sea of extensive writings that
@@ -67,7 +67,7 @@ export default () => {
           processes. We are surrounded by vast quantities of written
           information, whether we engage with it fully or merely skim its
           surface. To conclude, a large amount of text is more than just a high
-          word count—it’s a reflection of complexity, density, and the human
+          word count—it's a reflection of complexity, density, and the human
           need to document, explain, and communicate. From literature to legal
           documents, from programming guides to social media discussions, the
           world is full of extensive writings that serve countless purposes. And

@@ -1,4 +1,4 @@
-import { cn } from '@marigold/system';
+import { cn } from '@/lib/cn';
 
 export const ExternalLink = ({ className }: { className?: string }) => (
   <svg

@@ -1,20 +1,16 @@
 ---
 title: Installation
-caption: How to setup and get started with Marigold.
-order: 2
+description: How to setup and get started with Marigold.
 ---
 
 To integrate Marigold into your React app, follow the steps outlined below. Marigold provides a wide range of pre-designed UI components. However, Marigold's components come with no styling by default. To ensure a perfect fit with your product's appearance, you must also install one of the predefined themes.
 
 Please bear in mind that certain steps may vary depending on your specific setup. You can find examples for the most common setups down below.
 
-<SectionMessage variant="info">
-  <SectionMessage.Title> Good to know!</SectionMessage.Title>
-  <SectionMessage.Content>
-    Experience Marigold right away by trying it out in our [interactive
-    playground](https://play.marigold-ui.io/)!
-  </SectionMessage.Content>
-</SectionMessage>
+<Callout title="Good to know!">
+  Experience Marigold right away by trying it out in our [interactive
+  playground](https://play.marigold-ui.io/)!
+</Callout>
 
 ## Installation
 
@@ -22,34 +18,9 @@ Begin by instaling the core Marigold package (`@marigold/components`) into your 
 
 Execute the following command in your project's directory:
 
-<Tabs>
-<Tabs.List>
-    <Tabs.Item id="npm">npm</Tabs.Item>
-    <Tabs.Item id="pnpm">pnpm</Tabs.Item>
-    <Tabs.Item id="yarn">yarn</Tabs.Item>
-</Tabs.List>
-  <Tabs.TabPanel id="npm">
-    {/* prettier-ignore */}
-    ```bash
-    npm install @marigold/components --save
-    ```
-
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="pnpm">
-    {/* prettier-ignore */}
-    ```bash
-    pnpm add @marigold/components
-    ```
-
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="yarn">
-    {/* prettier-ignore */}
-    ```bash
-    yarn add @marigold/components
-    ```
-
-  </Tabs.TabPanel>
-</Tabs>
+```npm
+npm install @marigold/components --save
+```
 
 ## Tooling
 
@@ -125,14 +96,11 @@ module.exports = {
 };
 ```
 
-<SectionMessage variant="info">
-  <SectionMessage.Title>TypeScript Configuration</SectionMessage.Title>
-  <SectionMessage.Content>
-    If you are using TypeScript, make sure to set the [module
-    resolution](https://www.typescriptlang.org/tsconfig#moduleResolution) to
-    `'nodenext'` since the theme packages are using ESM.
-  </SectionMessage.Content>
-</SectionMessage>
+<Callout title="TypeScript Configuration">
+  If you are using TypeScript, make sure to set the [module
+  resolution](https://www.typescriptlang.org/tsconfig#moduleResolution) to
+  `'nodenext'` since the theme packages are using ESM.
+</Callout>
 
 After configuring Tailwind CSS, wrap your app with the MarigoldProvider. Unlike before, you no longer have to import the CSS file of the selected theme separately you only need to import your own created CSS file in the project.
 
@@ -168,36 +136,9 @@ To load the Inter font with Font Source when using with the RUI theme, you can f
 
 First, add the font as a dependency to your project:
 
-<Tabs>
-  <Tabs.List>
-    <Tabs.Item id="npm">npm</Tabs.Item>
-    <Tabs.Item id="pnpm">pnpm</Tabs.Item>
-    <Tabs.Item id="yarn">yarn</Tabs.Item>
-  </Tabs.List>
-  <Tabs.TabPanel id="npm">
-    {/* prettier-ignore */}
-    ```bash
-    npm install @fontsource-variable/inter --save
-    ```
-
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="pnpm">
-
-    {/* prettier-ignore */}
-    ```bash
-    pnpm add @fontsource-variable/inter
-    ```
-
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="yarn">
-
-    {/* prettier-ignore */}
-    ```bash
-    yarn add @fontsource-variable/inter
-    ```
-
-  </Tabs.TabPanel>
-</Tabs>
+```npm
+npm install @marigold/components --save
+```
 
 Afterwards, import the package into your project.
 

@@ -1,7 +1,6 @@
 ---
 title: Design Tokens
-caption: Here are all design tokens for each theme listed.
-order: 3
+description: Here are all design tokens for each theme listet.
 ---
 
 Design tokens are the foundational elements of our design system, defining key aspects of our product's visual language. They enable consistency and flexibility, allowing us to maintain a unified look and feel across all user interfaces.
@@ -21,40 +20,13 @@ For formatting dates or numbers we already have some helper components: [Numeric
 
 The `Value` corresponds to the class name from [Tailwind CSS](https://tailwindcss.com/docs/font-size).
 
-We have tokens for:
-
-<Tabs>
-  <Tabs.List>
-    <Tabs.Item id="fontSize">Font Size</Tabs.Item>
-    <Tabs.Item id="fontWeight">Font Weight</Tabs.Item>
-    <Tabs.Item id="fontStyle">Font Style</Tabs.Item>
-    <Tabs.Item id="textAlign">Text Align</Tabs.Item>
-  </Tabs.List>
-  <Tabs.TabPanel id="fontSize">
-    <FontSizes />
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="fontWeight">
-    <FontWeights />
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="fontStyle">
-    <FontStyle />
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="textAlign">
-    <TextAlign />
-  </Tabs.TabPanel>
-</Tabs>
-
 ### Headlines
 
-The `<Headline>` component supports by default certain styles. They are listed as Tailwind class names.
-
-<Headlines />
+The `<Headline>` component supports by default certain styles. They are listed as [Tailwind class names](https://tailwindcss.com/docs/font-size) (font size, weight, and line height).
 
 ## Spacing
 
 Consistent spacing ensures harmonious layouts and enhances visual flow. The defined spacing scale helps create balanced and accessible interfaces across different screen sizes. It's used for `gap`, `padding`, `width` and `margin`.
-
-<Spacing />
 
 Besides this there are percentage values available for `width` property, which is found in form components. You can use them similar to the tokens above. Here is a list of the values: [Tailwind percentage tokens](https://tailwindcss.com/docs/width#percentage-widths)
 
@@ -68,15 +40,11 @@ Standardized border radius contribute to a clean and modern design. These proper
 
 Consistent alignment ensures that elements are arranged in a purposeful manner, enhancing clarity and user comprehension.
 
-<Tabs>
-  <Tabs.List>
-    <Tabs.Item id="alignX">Horizontal</Tabs.Item>
-    <Tabs.Item id="alignY">Vertical</Tabs.Item>
-  </Tabs.List>
-  <Tabs.TabPanel id="alignX">
+<Tabs items={['Horizontal', 'Vertical']} defaultIndex={0}>
+  <Tab value="Horizontal">
     <AlignmentsX />
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="alignY">
+  </Tab>
+  <Tab value="Vertical">
     <AlignmentsY />
-  </Tabs.TabPanel>
+  </Tab>
 </Tabs>

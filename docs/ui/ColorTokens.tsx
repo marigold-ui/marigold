@@ -1,6 +1,5 @@
 'use client';
 
-import { Headline } from '@/ui';
 import {
   BaseSemanticTokens,
   ColorPalettes,
@@ -11,23 +10,25 @@ import {
 export const ColorTokenTable = () => {
   return (
     <div className="bg-transparent" data-theme={'rui'}>
-      <Headline level={3}>Stone</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold first:mt-0">Stone</h3>
       <ColorPalettes name="stone" />
-      <Headline level={3}>Orange</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold">Orange</h3>
       <ColorPalettes name="orange" />
-      <Headline level={3}>Blue</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold">Blue</h3>
       <ColorPalettes name="blue" />
-      <Headline level={3}>Yellow</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold">Yellow</h3>
       <ColorPalettes name="yellow" />
-      <Headline level={3}>Green</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold">Green</h3>
       <ColorPalettes name="green" />
-      <Headline level={3}>Red</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold">Red</h3>
       <ColorPalettes name="red" />
-      <Headline level={3}>Base Semantic Tokens</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold">Base Semantic Tokens</h3>
       <BaseSemanticTokens />
-      <Headline level={3}>Feedback Semantic Tokens</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold">
+        Feedback Semantic Tokens
+      </h3>
       <FeedbackSemanticTokens />
-      <Headline level={3}>State Semantic Tokens</Headline>
+      <h3 className="mt-6 mb-2 text-lg font-semibold">State Semantic Tokens</h3>
       <StateSemanticTokens />
     </div>
   );

@@ -1,8 +1,10 @@
-'use-client';
+'use client';
 
-import { Button, Card, Icons, Text, Tiles, cn } from '@/ui';
+import { cn } from '@/lib/cn';
+import { Card } from 'fumadocs-ui/components/card';
 import { useRef, useState } from 'react';
 import { useCopyToClipboard, useDebounce } from 'react-use';
+import * as Icons from '@marigold/icons';
 
 export interface IconListProps {
   icons: (keyof typeof Icons)[];
@@ -15,7 +17,7 @@ export interface IconListItemProps {
 const IconListItem = ({ icon }: IconListItemProps) => {
   const Component = Icons[icon];
 
-  const svgRef = useRef<SVGElement>(undefined);
+  const svgRef = useRef<SVGSVGElement>(null);
   const [isCopied, setCopied] = useState(false);
   const [, copyToClipboard] = useCopyToClipboard();
   const [isReady, cancel] = useDebounce(() => setCopied(false), 2000, [
@@ -43,34 +45,34 @@ const IconListItem = ({ icon }: IconListItemProps) => {
 
   return (
     <div className="mt-2 [&>button]:h-auto [&>button]:w-full [&>button]:p-0">
-      <Button onPress={handleClick}>
-        <Card p={3} variant="hovering">
+      <button
+        type="button"
+        onClick={handleClick}
+        className="focus-visible:ring-border-focus cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      >
+        <Card className="w-full p-3" title="">
           <div className="relative grid h-24 w-full place-items-center">
             <div
               className={cn(
                 isCopied ? 'opacity-100' : 'opacity-0',
-                'bg-bg-surface absolute flex size-full items-center justify-center font-medium tracking-wider whitespace-nowrap select-none'
+                'bg-fd-card absolute flex size-full items-center justify-center font-medium tracking-wider whitespace-nowrap select-none'
               )}
             >
               {isCopied ? 'COPIED!' : 'COPY SVG'}
             </div>
-            <Component width={48} height={48} ref={svgRef as any} />
+            <Component width={48} height={48} ref={svgRef} />
           </div>
         </Card>
-      </Button>
-      <Text size="small" align="center">
-        {icon}
-      </Text>
+      </button>
+      <span className="block text-center text-sm">{icon}</span>
     </div>
   );
 };
 
 export const IconList = ({ icons }: IconListProps) => (
-  <div className="w-full">
-    <Tiles tilesWidth="7.5rem" space={4}>
-      {icons.map(icon => (
-        <IconListItem key={icon} icon={icon} />
-      ))}
-    </Tiles>
+  <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(7.5rem,1fr))] gap-4 *:min-w-0">
+    {icons.map(icon => (
+      <IconListItem key={icon} icon={icon} />
+    ))}
   </div>
 );

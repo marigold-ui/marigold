@@ -1,26 +1,30 @@
 {
   "name": "@marigold/docs",
-  "version": "17.1.0",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
-    "dev": "pnpm build:registry && next dev --webpack",
-    "build": "pnpm build:registry && pnpm build:component-props && pnpm build:changelog && next build --webpack",
+    "build": "pnpm run build:registry && pnpm run build:changelog && next build",
+    "dev": "next dev",
     "start": "next start",
-    "build:registry": "zx ./scripts/build-registry.mjs",
-    "build:component-props": "zx ./scripts/build-component-props.mjs",
-    "build:changelog": "zx ./scripts/build-changelog.mjs",
-    "build:contentlayer": "pnpm contentlayer2 build"
+    "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
+    "postinstall": "fumadocs-mdx && pnpm run build:registry",
+    "lint": "eslint",
+    "registry": "node scripts/build-registry.mjs",
+    "build:registry": "node scripts/build-registry.mjs",
+    "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
-    "@emotion/is-prop-valid": "1.4.0",
+    "@internationalized/date": "^3.11.0",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
-    "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@octokit/core": "7.0.6",
     "@react-aria/i18n": "3.12.15",
+    "fumadocs-core": "^16.5.0",
+    "fumadocs-mdx": "14.2.7",
+    "fumadocs-ui": "16.4.10",
     "@tailwindcss/postcss": "4.2.1",
     "@tailwindcss/typography": "0.5.19",
     "@tanstack/react-query": "5.90.21",
@@ -37,8 +41,8 @@
     "mdx-bundler": "10.1.1",
     "motion": "12.34.3",
     "next": "16.1.6",
-    "next-contentlayer2": "0.5.8",
     "nuqs": "2.8.8",
+    "tailwind-merge": "^3.4.0",
     "react": "19.2.4",
     "react-docgen-typescript": "2.4.0",
     "react-dom": "19.2.4",
@@ -55,23 +59,20 @@
     "tailwind-scrollbar": "4.0.2",
     "tailwindcss": "4.2.1",
     "zod": "4.3.6",
-    "zod-form-data": "3.0.1",
-    "zx": "8.8.5"
+    "zod-form-data": "3.0.1"
   },
   "devDependencies": {
-    "@internationalized/date": "3.11.0",
-    "@types/node": "24.10.13",
-    "@types/react": "19.2.14",
-    "@types/react-dom": "19.2.3",
-    "tailwindcss-animate": "1.0.7",
-    "typescript": "5.9.3",
-    "unist-builder": "4.0.0",
-    "unist-util-visit": "5.1.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.2.14",
-      "@types/react-dom": "19.2.3"
-    }
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^25.0.5",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "16.1.6",
+    "fumadocs-typescript": "^5.1.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "zx": "8.8.5"
   }
 }
