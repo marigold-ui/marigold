@@ -35,13 +35,13 @@ const Page = () => {
             </p>
             <div className="flex justify-center gap-6">
               <Link
-                className="bg-text-primary rounded-xs px-8 py-3.5 leading-none text-white transition-all hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+                className="rounded-xs bg-slate-900 px-8 py-3.5 leading-none text-white transition-all hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
                 href="/getting-started/installation"
               >
                 <span className="inline-block translate-y-px">Get started</span>
               </Link>
               <Link
-                className="border-text-primary rounded-xs border-2 px-8 py-3.5 leading-none hover:bg-slate-100 dark:border-white dark:text-white dark:hover:bg-white/10"
+                className="rounded-xs border-2 border-slate-900 px-8 py-3.5 leading-none text-slate-900 transition-all hover:bg-slate-100 dark:border-white dark:text-white dark:hover:bg-white/10"
                 href="/components/application/provider"
               >
                 Explore Components
