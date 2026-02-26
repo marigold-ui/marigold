@@ -38,7 +38,7 @@ export const Settings = () => (
               className="block w-32 rounded-full"
             />
           </div>
-          <Stack space="peer" alignX="left">
+          <Stack space="regular" alignX="left">
             <TextField label="Full name" defaultValue={user.name} />
             <TextField label="Username" defaultValue={user.id} />
             <TextField
@@ -56,7 +56,7 @@ export const Settings = () => (
         </Columns>
       </Tabs.TabPanel>
       <Tabs.TabPanel id="security">
-        <Stack space="peer" alignX="left">
+        <Stack space="regular" alignX="left">
           <Checkbox
             label="Two-factor authentication (2FA)"
             description="Two-factor authentication adds an extra layer of security by
@@ -68,7 +68,7 @@ export const Settings = () => (
         </Stack>
       </Tabs.TabPanel>
       <Tabs.TabPanel id="notifications">
-        <Stack space="peer" alignX="left">
+        <Stack space="regular" alignX="left">
           <Select label="Email Digest Frequency" defaultValue="weekly">
             <Select.Option id="daily">Daily</Select.Option>
             <Select.Option id="weekly">Weekly</Select.Option>

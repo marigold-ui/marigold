@@ -16,7 +16,7 @@ const FormPage = () => (
           <OrganizerInfo />
           <RegistrationSettings />
         </Stack>
-        <Inline space="peer">
+        <Inline space="regular">
           <Button variant="primary">Save</Button>
           <Button variant="secondary">Cancel</Button>
         </Inline>

@@ -30,13 +30,13 @@ test('renders correctly', () => {
 
   expect(dateField).toMatchInlineSnapshot(`
     <div
-      class="group/field flex min-w-0 flex-col w-(--container-width) space-y-2"
+      class="group/field flex min-w-0 flex-col w-(--container-width)"
       data-rac=""
       data-testid="dateField"
       style="--container-width: 100%; --field-width: 100%;"
     >
       <span
-        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex"
+        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex in-field:mb-1.5"
         id="react-aria-_r_1_"
       >
         My Label
@@ -185,7 +185,7 @@ test('renders correctly', () => {
         />
       </div>
       <div
-        class="text-xs text-muted-foreground group-disabled/field:text-disabled-foreground group-invalid/field:text-destructive has-[+_[aria-hidden=true]]:mb-0"
+        class="in-field:mt-1 text-xs text-muted-foreground group-disabled/field:text-disabled-foreground group-invalid/field:text-destructive has-[+_[aria-hidden=true]]:mb-0"
       >
         <span
           class="react-aria-Text"

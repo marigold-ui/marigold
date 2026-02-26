@@ -42,7 +42,7 @@ export const HelpText = ({
   }
 
   return (
-    <div className={cn(classNames.container)}>
+    <div className={cn('in-field:mt-1', classNames.container)}>
       <FieldError {...props} className="flex flex-col">
         {validation => {
           /**

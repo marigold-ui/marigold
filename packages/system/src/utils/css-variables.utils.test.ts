@@ -140,8 +140,8 @@ describe('createSpacingVar', () => {
     ['margin', 'group', { '--margin': 'var(--spacing-group)' }],
     [
       'custom-spacing-name',
-      'peer',
-      { '--custom-spacing-name': 'var(--spacing-peer)' },
+      'regular',
+      { '--custom-spacing-name': 'var(--spacing-regular)' },
     ],
   ])(
     'should create spacing var for name "%s" with value "%s"',

@@ -1,3 +1,3 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
-export const Field: ThemeComponent<'Field'> = cva({ base: 'space-y-2' });
+export const Field: ThemeComponent<'Field'> = cva({ base: '' });

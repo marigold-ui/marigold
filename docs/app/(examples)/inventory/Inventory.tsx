@@ -44,7 +44,7 @@ const venue = venues.find(v => v.id === '9')!;
 export const Inventory = () => (
   <Form autoComplete="off">
     <Columns columns={[1, 1, 1]} space={8} collapseAt="800px">
-      <Stack space="peer">
+      <Stack space="regular">
         <Headline level="4">Shipping Address</Headline>
         <TextField label="Full name" required />
         <TextField label="Street" required />
