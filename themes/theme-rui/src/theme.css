@@ -191,13 +191,11 @@
 
   /* RELATIONAL SPACING */
 
-  --spacing-joined: --spacing(0.25);
-  --spacing-tight: --spacing(1);
+  --spacing-tight: --spacing(1.5);
   --spacing-related: --spacing(2);
-  --spacing-regular: --spacing(4);
-  --spacing-group: --spacing(8);
-  --spacing-section: --spacing(16);
-  --spacing-context: --spacing(32);
+  --spacing-regular: --spacing(6);
+  --spacing-group: --spacing(12);
+  --spacing-section: --spacing(24);
 
   /* INSET SPACING */
 

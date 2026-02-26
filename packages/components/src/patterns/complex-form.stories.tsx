@@ -35,11 +35,11 @@ export const EmployeeOnboarding = meta.story({
         </Stack>
 
         {/* Form Body */}
-        <Stack space="group">
+        <Stack space="section">
           {/* Section 1: Personal Information */}
-          <Stack space="regular">
-            <Headline level={3}>Personal Information</Headline>
-            <Stack>
+          <Stack space="group">
+            <Stack space="regular">
+              <Headline level={3}>Personal Information</Headline>
               <Inline space="related" alignY="input" noWrap>
                 <TextField label="First Name" width="1/2" required />
                 <TextField label="Last Name" width="1/2" required />
@@ -52,27 +52,29 @@ export const EmployeeOnboarding = meta.story({
                 required
               />
             </Stack>
-            <TextField label="Phone Number" type="tel" width="1/2" />
-            <DatePicker label="Date of Birth" width="1/2" />
-            <Select
-              label="Nationality"
-              placeholder="Select a country"
-              width="1/2"
-            >
-              <Select.Option id="de">Germany</Select.Option>
-              <Select.Option id="at">Austria</Select.Option>
-              <Select.Option id="ch">Switzerland</Select.Option>
-              <Select.Option id="us">United States</Select.Option>
-              <Select.Option id="gb">United Kingdom</Select.Option>
-              <Select.Option id="fr">France</Select.Option>
-              <Select.Option id="other">Other</Select.Option>
-            </Select>
-            <TextArea
-              label="Home Address"
-              description="Street, city, postal code, and country"
-              width="2/3"
-              rows={3}
-            />
+            <Stack space="regular">
+              <TextField label="Phone Number" type="tel" width="1/2" />
+              <DatePicker label="Date of Birth" width="1/2" />
+              <Select
+                label="Nationality"
+                placeholder="Select a country"
+                width="1/2"
+              >
+                <Select.Option id="de">Germany</Select.Option>
+                <Select.Option id="at">Austria</Select.Option>
+                <Select.Option id="ch">Switzerland</Select.Option>
+                <Select.Option id="us">United States</Select.Option>
+                <Select.Option id="gb">United Kingdom</Select.Option>
+                <Select.Option id="fr">France</Select.Option>
+                <Select.Option id="other">Other</Select.Option>
+              </Select>
+              <TextArea
+                label="Home Address"
+                description="Street, city, postal code, and country"
+                width="2/3"
+                rows={3}
+              />
+            </Stack>
           </Stack>
 
           {/* Section 2: Employment Details */}

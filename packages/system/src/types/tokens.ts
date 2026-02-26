@@ -7,10 +7,8 @@
  * contexts and density settings.
  */
 export type SpacingTokens =
-  | 'joined'
   | 'tight'
   | 'related'
   | 'regular'
   | 'group'
-  | 'section'
-  | 'context';
+  | 'section';

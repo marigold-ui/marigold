@@ -150,7 +150,7 @@ describe('createSpacingVar', () => {
     }
   );
 
-  it.each(['joined', 'tight', 'related', 'group', 'region'])(
+  it.each(['tight', 'related', 'group'])(
     'should reference spacing token "%s"',
     token => {
       expect(createSpacingVar('space', token)).toEqual({
