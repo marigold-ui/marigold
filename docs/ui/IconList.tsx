@@ -48,14 +48,14 @@ const IconListItem = ({ icon }: IconListItemProps) => {
       <button
         type="button"
         onClick={handleClick}
-        className="border-border-default bg-bg-surface hover:bg-bg-surface-hover focus-visible:ring-border-focus cursor-pointer rounded-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        className="focus-visible:ring-border-focus cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
       >
         <Card className="w-full p-3" title="">
           <div className="relative grid h-24 w-full place-items-center">
             <div
               className={cn(
                 isCopied ? 'opacity-100' : 'opacity-0',
-                'bg-bg-surface absolute flex size-full items-center justify-center font-medium tracking-wider whitespace-nowrap select-none'
+                'bg-fd-card absolute flex size-full items-center justify-center font-medium tracking-wider whitespace-nowrap select-none'
               )}
             >
               {isCopied ? 'COPIED!' : 'COPY SVG'}
