@@ -194,7 +194,7 @@
   --spacing-joined: --spacing(0.25);
   --spacing-tight: --spacing(1);
   --spacing-related: --spacing(2);
-  --spacing-peer: --spacing(4);
+  --spacing-regular: --spacing(4);
   --spacing-group: --spacing(8);
   --spacing-section: --spacing(16);
   --spacing-context: --spacing(32);
