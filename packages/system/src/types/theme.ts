@@ -32,7 +32,12 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
-      'container' | 'selection' | 'count' | 'toolbar' | 'clearButton',
+      | 'container'
+      | 'selection'
+      | 'count'
+      | 'toolbar'
+      | 'clearButton'
+      | 'actionButton',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
