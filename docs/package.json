@@ -19,7 +19,6 @@
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
-    "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@octokit/core": "7.0.6",
     "@react-aria/i18n": "3.12.15",

@@ -7,7 +7,6 @@
     "packages/system/release",
     "packages/types/release",
     "---themes---",
-    "themes/theme-docs/release",
     "themes/theme-rui/release",
     "---docs---",
     "docs/release",
