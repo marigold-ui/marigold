@@ -5,7 +5,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     base: [
       'ui-surface shadow-elevation-border h-input',
       'has-invalid:ui-state-error',
-      'has-disabled:ui-state-disabled',
+      'group-data-disabled/field:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',
       'has-focus:ui-state-focus outline-none',
     ],

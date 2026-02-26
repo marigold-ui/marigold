@@ -14,14 +14,10 @@ export interface ActionButtonProps {
 }
 
 export const ActionButton = ({ onPress, children }: ActionButtonProps) => {
-  const classNames = useClassNames({
-    component: 'Button',
-    variant: 'ghost',
-    size: 'default',
-  });
+  const classNames = useClassNames({ component: 'ActionBar' });
 
   return (
-    <Button onPress={onPress} className={classNames}>
+    <Button onPress={onPress} className={classNames.actionButton}>
       {children}
     </Button>
   );
