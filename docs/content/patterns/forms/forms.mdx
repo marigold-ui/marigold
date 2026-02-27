@@ -76,15 +76,9 @@ Use sections when your form has multiple purposes or collects different types of
 
 #### Spacing between sections
 
-Forms with multiple sections should maintain spacing between sections using `<Stack space='section'>`.
+Forms with multiple sections should maintain spacing between sections using `<Stack space='section'>`. Each section should include a `<Headline>` as part of its field stack to provide clear context.
 
-<Image
-  src="/forms/section-spacing.png"
-  alt="Section spacing"
-  width={305}
-  height={322}
-  className="mx-auto block"
-/>
+<ComponentDemo file="./form-spacing-section.demo.tsx" mode="preview" />
 
 ### Fields
 
@@ -112,17 +106,13 @@ Following a predictable field order helps users build mental models and reduces 
 
 #### Spacing between fields
 
-Proper spacing between fields creates a clear visual hierarchy and improves form readability. Use the token `fieldY` for vertical spacing between individual fields within a section, and the token `fieldX` for horizontal spacing between fields that are positioned on the same line.
+Proper spacing between fields creates a clear visual hierarchy and improves form readability. Use `regular` as the baseline vertical spacing between individual fields within a section, and `related` for horizontal spacing between paired fields on the same line (e.g. Postal Code + City).
 
-<Image
-  src="/forms/field-spacing.png"
-  alt="Fields spacing"
-  width={394}
-  height={512}
-  className="mx-auto block"
-/>
+Use `tight` when placing a description directly under a section headline to keep the headline and its supporting text closely associated.
 
-When grouping related field, such as address components or date and time fields, you can create visual associations that make the form easier to understand. Use a `<Stack>` component to organize related fields and apply the `group` spacing token to maintain consistent spacing within the group.
+<ComponentDemo file="./form-spacing-field.demo.tsx" mode="preview" />
+
+When grouping related fields, such as address components or date and time fields, you can create visual associations that make the form easier to understand. Fields within a group use `regular` spacing, while `group` spacing goes _between_ sets of grouped fields to create a visual break. This pattern is especially helpful for sections with many fields, where you need to separate logical clusters (e.g. an address block from a contact block) without introducing a full section break.
 
 Grouping fields together provides additional context and makes the interface easier to scan:
 
@@ -153,7 +143,7 @@ We provide a set of spacing tokens to help you apply consistent spacing througho
 <Table aria-label="spacing tokens">
   <Table.Header>
     <Table.Column>Token</Table.Column>
-    <Table.Column>Value</Table.Column>
+    <Table.Column>CSS Variable</Table.Column>
     <Table.Column>Description</Table.Column>
     <Table.Column>Relevant components</Table.Column>
   </Table.Header>
@@ -161,32 +151,38 @@ We provide a set of spacing tokens to help you apply consistent spacing througho
     <Table.Row key={0}>
       <Table.Cell>`container`</Table.Cell>
       <Table.Cell>50rem (800px)</Table.Cell>
-      <Table.Cell>Used width or max-width for the form container.</Table.Cell>
+      <Table.Cell>Max-width for the form container.</Table.Cell>
       <Table.Cell>`<div>`, `<Form>`</Table.Cell>
     </Table.Row>
     <Table.Row key={1}>
       <Table.Cell>`section`</Table.Cell>
-      <Table.Cell>4rem (64px)</Table.Cell>
-      <Table.Cell>Used for creating space between different form sections.</Table.Cell>
+      <Table.Cell>`--spacing-section`</Table.Cell>
+      <Table.Cell>Space between different form sections.</Table.Cell>
       <Table.Cell>`<Stack>`</Table.Cell>
     </Table.Row>
     <Table.Row key={2}>
-      <Table.Cell>`group`</Table.Cell>
-      <Table.Cell>2rem (32px)</Table.Cell>
-      <Table.Cell>Used for creating vertical space between individual form fields in a section.</Table.Cell>
+      <Table.Cell>`regular`</Table.Cell>
+      <Table.Cell>`--spacing-regular`</Table.Cell>
+      <Table.Cell>Baseline vertical space between form fields within a section.</Table.Cell>
       <Table.Cell>`<Stack>`</Table.Cell>
     </Table.Row>
     <Table.Row key={3}>
-      <Table.Cell>`regular`</Table.Cell>
-      <Table.Cell>1rem (16px)</Table.Cell>
-      <Table.Cell>Used for creating horizontal space between individual form fields in a section.</Table.Cell>
+      <Table.Cell>`group`</Table.Cell>
+      <Table.Cell>`--spacing-group`</Table.Cell>
+      <Table.Cell>Space between groups of related fields within a section.</Table.Cell>
+      <Table.Cell>`<Stack>`, `<Inset>`</Table.Cell>
+    </Table.Row>
+    <Table.Row key={4}>
+      <Table.Cell>`related`</Table.Cell>
+      <Table.Cell>`--spacing-related`</Table.Cell>
+      <Table.Cell>Space between fields that form a unit (e.g. postal code + city, start date + end date).</Table.Cell>
       <Table.Cell>`<Inline>`</Table.Cell>
     </Table.Row>
-      <Table.Row key={4}>
-      <Table.Cell>`related`</Table.Cell>
-      <Table.Cell>0.5rem (8px)</Table.Cell>
-      <Table.Cell>Used for grouping related fields (address components, date/time fields) or multiple accordion sections together.</Table.Cell>
-      <Table.Cell>`<Stack>`, `<Inset>`</Table.Cell>
+    <Table.Row key={5}>
+      <Table.Cell>`tight`</Table.Cell>
+      <Table.Cell>`--spacing-tight`</Table.Cell>
+      <Table.Cell>Space between a headline and its description text.</Table.Cell>
+      <Table.Cell>`<Stack>`</Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
