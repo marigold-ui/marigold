@@ -95,7 +95,7 @@ const meta = preview.meta({
         Object.defineProperty(window, 'matchMedia', {
           writable: true,
           value: (query: string) => ({
-            matches: query === '(max-width: 600px)',
+            matches: query === '(width < 640px)',
             media: query,
             onchange: null,
             addListener: () => {},

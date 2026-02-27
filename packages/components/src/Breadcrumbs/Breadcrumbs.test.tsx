@@ -1,21 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, Collapsed } from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 const user = userEvent.setup();
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 test('renders breadcrumb items correctly', () => {
   render(<Basic.Component />);
