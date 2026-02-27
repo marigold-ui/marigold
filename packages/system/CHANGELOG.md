@@ -1,5 +1,38 @@
 # @marigold/system
 
+## 17.2.0
+
+### Minor Changes
+
+- ed928a0: Update ActionBar with enter/exit animations, keyboard support, and built-in Table integration.
+  - Add `useActionBar` hook and `ActionBarContext` for managing selection state between ActionBar and Table
+  - Add `actionBar` render prop to Table for automatic selection wiring and ActionBar positioning
+  - Add enter/exit animations using `motion/react` and react-aria `useEnterAnimation`/`useExitAnimation`
+  - Add Escape key support to clear selection via `FocusScope` and `useKeyboard`
+  - Add screen reader announcement when ActionBar appears
+  - Add localized `selectedCount`/`selectedAll` messages (en-US, de-DE)
+  - Update ActionBar theme slots: rename `actions` to `toolbar`, add `selection` slot
+  - Update theme type definition to match new slot names
+
+- b115fda: Migrate from `class-variance-authority` to `cva` and simplify `extendTheme` via function composition.
+  - Replace `class-variance-authority` dependency with `cva` (v1 beta), which has built-in Tailwind merge support via `defineConfig`
+  - Refactor the custom `cva` wrapper to use `cva`'s `defineConfig` with a `twMerge` hook, storing variant configs in a WeakMap (for docs introspection) instead of a `.variants` property
+  - Simplify `extendTheme` to compose style functions directly (`cn(existingFn(props), newFn(props))`) instead of extracting and merging variant configs — this preserves `defaultVariants` and `compoundVariants` that were previously lost during merging
+  - Update all theme style files in `theme-docs` and `theme-rui` to the new `cva` API (object config with `base`/`variants`/`compoundVariants` keys)
+
+### Patch Changes
+
+- 91eb222: Update ActionBar styling with surface contrast and dedicated button slot.
+  - Apply `ui-surface-contrast` utility to ActionBar container for adaptive theming
+  - Add `button` slot to ActionBar theme for properly styled action buttons (replaces `Button.ghost`)
+  - Add `clearButton` hover/focus/disabled styles using theme-aware utilities
+  - Add `ActionBar.styles.ts` to `theme-docs` with matching dark surface appearance
+  - Update `ActionButton` to use `ActionBar.button` classNames instead of `Button.ghost`
+  - Replace `CloseButton` with `IconButton` for the clear selection button
+  - Update stories to use `lucide-react` icons directly
+
+- cf56729: Add explicit `types` condition to package exports for reliable type resolution.
+
 ## 17.1.0
 
 ### Minor Changes
