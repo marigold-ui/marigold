@@ -9,20 +9,28 @@ import {
   WithError,
 } from './DatePicker.stories';
 
+/**
+ * Dispatches a paste event with the given text on an element.
+ * In a real browser, `userEvent.paste()` may not trigger React's onPaste
+ * handler on ancestor elements reliably. We use Object.defineProperty
+ * because Firefox's ClipboardEvent constructor ignores the clipboardData option.
+ */
+const firePaste = (element: Element, text: string) => {
+  const pasteEvent = new Event('paste', {
+    bubbles: true,
+    cancelable: true,
+  });
+  Object.defineProperty(pasteEvent, 'clipboardData', {
+    value: {
+      getData: () => text,
+    },
+  });
+  element.dispatchEvent(pasteEvent);
+};
+
 const user = userEvent.setup();
 
 describe('DatePicker', () => {
-  beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: () => ({
-        matches: false,
-        addListener: () => {},
-        removeListener: () => {},
-      }),
-    });
-  });
-
   describe('basics', () => {
     test('renders date picker with specified date', () => {
       render(<WithDefaultValue.Component />);
@@ -381,7 +389,7 @@ describe('paste handling', () => {
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    await user.paste('2025-09-24');
+    firePaste(group, '2025-09-24');
     const changedDate = onChange.mock.calls[0][0];
 
     expect(onChange).toHaveBeenCalled();
@@ -396,7 +404,7 @@ describe('paste handling', () => {
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    await user.paste('09/24/2025');
+    firePaste(group, '09/24/2025');
     const changedDate = onChange.mock.calls[0][0];
 
     expect(onChange).toHaveBeenCalled();
@@ -411,7 +419,7 @@ describe('paste handling', () => {
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    await user.paste('24.09.2025');
+    firePaste(group, '24.09.2025');
 
     const changedDate = onChange.mock.calls[0][0];
 
@@ -427,7 +435,7 @@ describe('paste handling', () => {
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    await user.paste('invalid-date');
+    firePaste(group, 'invalid-date');
 
     expect(onChange).not.toHaveBeenCalled();
   });

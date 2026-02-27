@@ -39,7 +39,7 @@ test('dialog can be opened by button', async () => {
   await user.click(button);
 
   const dialog = screen.getByRole('dialog');
-  expect(dialog).toBeVisible();
+  await waitFor(() => expect(dialog).toBeVisible());
 });
 
 test('optionally renders a close button', async () => {
@@ -50,7 +50,7 @@ test('optionally renders a close button', async () => {
   await user.click(button);
 
   const dialog = screen.getByRole('dialog');
-  expect(dialog).toBeVisible();
+  await waitFor(() => expect(dialog).toBeVisible());
 
   // The close button is the first child of the dialog (rendered before content)
   const closeButton = dialog.firstChild as HTMLButtonElement;
@@ -58,7 +58,7 @@ test('optionally renders a close button', async () => {
   expect(closeButton.tagName).toBe('BUTTON');
 
   await user.click(closeButton);
-  expect(dialog).not.toBeVisible();
+  await waitFor(() => expect(dialog).not.toBeVisible());
 });
 
 test('supports closing the dialog with escape key', async () => {
@@ -67,7 +67,7 @@ test('supports closing the dialog with escape key', async () => {
   const button = screen.getByText('Open');
   await user.click(button);
 
-  expect(screen.getByRole('dialog')).toBeVisible();
+  await waitFor(() => expect(screen.getByRole('dialog')).toBeVisible());
   await user.keyboard('{Escape}');
 
   await waitFor(() => {
@@ -86,7 +86,7 @@ test('close Dialog by clicking on the Underlay', async () => {
 
   await user.click(document.body);
 
-  expect(dialog).not.toBeVisible();
+  await waitFor(() => expect(dialog).not.toBeVisible());
 });
 
 test('supports title for accessibility reasons', async () => {

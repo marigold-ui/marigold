@@ -1,8 +1,10 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
 import { Basic, LeftPlacement } from './Drawer.stories';
+
+const originalMatchMedia = window.matchMedia;
 
 let isSmallScreen = false;
 const mockMatchMedia = () =>
@@ -12,6 +14,15 @@ const mockMatchMedia = () =>
     };
   });
 window.matchMedia = mockMatchMedia();
+
+afterEach(() => {
+  isSmallScreen = false;
+  window.matchMedia = mockMatchMedia();
+});
+
+afterAll(() => {
+  window.matchMedia = originalMatchMedia;
+});
 
 const user = userEvent.setup();
 
@@ -33,7 +44,7 @@ test('opens/closes via trigger', async () => {
 
   await user.click(button);
 
-  expect(drawer).not.toBeInTheDocument();
+  await waitFor(() => expect(drawer).not.toBeInTheDocument());
 });
 
 test('slides from the left', async () => {
@@ -64,7 +75,7 @@ test('can be closed with esc key', async () => {
   expect(drawer).toBeInTheDocument();
 
   await user.keyboard('{Escape}');
-  expect(drawer).not.toBeInTheDocument();
+  await waitFor(() => expect(drawer).not.toBeInTheDocument());
 });
 
 test('disable closing via esc key', async () => {
@@ -92,7 +103,7 @@ test('can be closed via button with [slot="close"]', async () => {
   const close = screen.getByRole('button', { name: 'Close' });
   await user.click(close);
 
-  expect(drawer).not.toBeInTheDocument();
+  await waitFor(() => expect(drawer).not.toBeInTheDocument());
 });
 
 test('has "complementary" role by default', async () => {
@@ -134,7 +145,7 @@ test('able to close via close button', async () => {
   const close = screen.getByLabelText('Dismiss drawer');
   await user.click(close);
 
-  expect(drawer).not.toBeInTheDocument();
+  await waitFor(() => expect(drawer).not.toBeInTheDocument());
 });
 
 test('uses modal on small screens', async () => {

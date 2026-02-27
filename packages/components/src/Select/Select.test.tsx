@@ -6,17 +6,6 @@ import { Basic, Sections } from './Select.stories';
 
 const user = userEvent.setup();
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => {
-    return {
-      matches: false,
-      addListener: () => {},
-      removeListener: () => {},
-    };
-  },
-});
-
 test('renders a field (label, helptext, select)', () => {
   render(
     <Basic.Component

@@ -32,10 +32,19 @@ export default mergeConfig(
           plugins: [tsconfigPaths()],
           test: {
             name: 'unit-tests',
-            environment: 'jsdom',
-            // Use jsdom for browser-like tests
             setupFiles: ['./vitest.setup.ts'],
             globals: true,
+            browser: {
+              enabled: true,
+              provider: playwright(),
+              headless: !process.env.HEADED,
+              instances: [
+                {
+                  browser: 'firefox',
+                  viewport: { width: 1280, height: 720 },
+                },
+              ],
+            },
           },
         },
         {
@@ -63,7 +72,7 @@ export default mergeConfig(
               enabled: true,
               // Make sure to install Playwright
               provider: playwright(),
-              headless: true,
+              headless: !process.env.HEADED,
               instances: [{ browser: 'firefox' }],
               commands: {
                 mouseDrag: defineBrowserCommand(

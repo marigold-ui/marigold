@@ -15,17 +15,6 @@ afterEach(() => {
   errorMock.mockRestore();
 });
 
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia([
-  'screen and (min-width: 40em)',
-  'screen and (min-width: 52em)',
-  'screen and (min-width: 64em)',
-]);
-
 test('support cascading themes', () => {
   const outerTheme = {
     name: 'outer',

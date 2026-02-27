@@ -4,14 +4,17 @@ import { vi } from 'vitest';
 import { useResponsiveValue } from '@marigold/system';
 import { ThemeProvider } from './useTheme';
 
-/**
- * We need to mock `matchMedia` because JSON does not
- * implements it.
- */
+const originalMatchMedia = window.matchMedia;
+
 const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
+
+afterEach(() => {
+  window.matchMedia = originalMatchMedia;
+  vi.restoreAllMocks();
+});
 
 test('return first value if no breakpoint matches', () => {
   window.matchMedia = mockMatchMedia([]);
@@ -82,9 +85,11 @@ test('responds to resize event', () => {
   ]);
 
   let resize: () => void;
-  window.addEventListener = vi.fn().mockImplementation((event, cb) => {
-    if (event === 'resize') resize = cb;
-  });
+  vi.spyOn(window, 'addEventListener').mockImplementation(
+    (event: string, cb: EventListenerOrEventListenerObject) => {
+      if (event === 'resize') resize = cb as () => void;
+    }
+  );
 
   const { result } = renderHook(() =>
     useResponsiveValue(['one', 'two', 'three', 'four'])

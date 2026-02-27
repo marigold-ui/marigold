@@ -5,20 +5,6 @@ import { vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
 import { Basic, BasicActionMenu, MenuSection } from './Menu.stories';
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-  }));
-
-window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-
 const user = userEvent.setup();
 
 test('renders the button but no menu by default', () => {

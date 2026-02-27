@@ -5,19 +5,6 @@ import { Basic } from './ComboBox.stories';
 
 const user = userEvent.setup();
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => ({
-    matches: false,
-    addListener: () => {},
-    removeListener: () => {},
-  }),
-});
-
 test('renders an input', () => {
   renderWithOverlay(<Basic.Component />);
 

@@ -103,13 +103,17 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
               {...ariaProps}
               className={breadcrumbsItem}
             >
-              <a
-                href={href}
-                className={cn(link, isLast && current)}
-                aria-current={isLast ? 'page' : undefined}
-              >
-                {itemChildren}
-              </a>
+              {href ? (
+                <a
+                  href={href}
+                  className={cn(link, isLast && current)}
+                  aria-current={isLast ? 'page' : undefined}
+                >
+                  {itemChildren}
+                </a>
+              ) : (
+                itemChildren
+              )}
 
               {!isLast && (
                 <ChevronRight

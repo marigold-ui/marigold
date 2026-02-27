@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components';
 import { MockInstance, vi } from 'vitest';
@@ -77,7 +77,9 @@ test('closes on primary button press', async () => {
 
   await user.click(screen.getByRole('button', { name: 'Confirm' }));
 
-  expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+  );
 });
 
 test('calls onCancel on cancel button press', async () => {
@@ -95,7 +97,9 @@ test('closes on cancel button press', async () => {
 
   await user.click(screen.getByRole('button', { name: 'Cancel' }));
 
-  expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+  );
 });
 
 test('autoFocuses the action button if autoFocusButton is set to "action"', async () => {

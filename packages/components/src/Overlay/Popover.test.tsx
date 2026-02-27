@@ -3,19 +3,6 @@ import { screen } from '@testing-library/react';
 import { renderWithOverlay } from '../test.utils';
 import { Basic, OpenPopover } from './Popover.stories';
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => ({
-    matches: false,
-    addListener: () => {},
-    removeListener: () => {},
-  }),
-});
-
 test('renders open popover', () => {
   renderWithOverlay(<OpenPopover.Component />);
 

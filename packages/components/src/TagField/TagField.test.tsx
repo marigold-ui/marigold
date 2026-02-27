@@ -4,17 +4,6 @@ import { Basic, Controlled } from './TagField.stories';
 
 const user = userEvent.setup();
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => {
-    return {
-      matches: false,
-      addListener: () => {},
-      removeListener: () => {},
-    };
-  },
-});
-
 test('renders a field (label, helptext, tagfield)', () => {
   render(
     <Basic.Component

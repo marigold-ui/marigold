@@ -1,9 +1,5 @@
-/**
- * @jest-environment jsdom
- */
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { Select } from '../Select/Select';
 import { MarigoldProvider } from './MarigoldProvider';
@@ -50,17 +46,6 @@ const theme: Theme = {
     },
   },
 };
-
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia([
-  'screen and (min-width: 40em)',
-  'screen and (min-width: 52em)',
-  'screen and (min-width: 64em)',
-]);
 
 test('renders into a given container', async () => {
   render(

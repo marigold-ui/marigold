@@ -5,19 +5,6 @@ import { Basic, WithSections } from './Autocomplete.stories';
 
 const user = userEvent.setup();
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => ({
-    matches: false,
-    addListener: () => {},
-    removeListener: () => {},
-  }),
-});
-
 // Tests
 // ---------------
 test('renders an input', () => {
@@ -146,8 +133,10 @@ test('opens the suggestions on arrow down (manual)', async () => {
   const input = screen.getByRole('combobox');
   await user.type(input, '{arrowdown}');
 
-  const suggestions = await screen.findByText('Harry Potter');
-  expect(suggestions).toBeVisible();
+  const suggestion = await screen.findByRole('option', {
+    name: 'Harry Potter',
+  });
+  expect(suggestion).toBeVisible();
 });
 
 test('shows suggestions based on user input', async () => {
@@ -156,11 +145,19 @@ test('shows suggestions based on user input', async () => {
   const input = screen.getByRole('combobox');
   await user.type(input, 'ha');
 
-  expect(screen.getByText('Harry Potter')).toBeInTheDocument();
+  expect(
+    screen.getByRole('option', { name: 'Harry Potter' })
+  ).toBeInTheDocument();
 
-  expect(screen.queryByText('Lord of the Rings')).not.toBeInTheDocument();
-  expect(screen.queryByText('Star Trek')).not.toBeInTheDocument();
-  expect(screen.queryByText('Firefly')).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('option', { name: 'Lord of the Rings' })
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('option', { name: 'Star Trek' })
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('option', { name: 'Firefly' })
+  ).not.toBeInTheDocument();
 });
 
 test('supports disabling suggestions', async () => {

@@ -1,15 +1,24 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
 import { EditableCell } from './Table.stories';
 
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
+const originalMatchMedia = window.matchMedia;
+
+const mockMatchMedia = (matchingQueries: string[]) =>
+  vi.fn().mockImplementation((query: string) => ({
+    matches: matchingQueries.includes(query),
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   }));
 
-// Default to desktop view for most tests
-window.matchMedia = mockMatchMedia([]);
+afterAll(() => {
+  window.matchMedia = originalMatchMedia;
+});
 
 describe('TableEditableCell - Basic Rendering', () => {
   test('renders editable cell with edit button', () => {

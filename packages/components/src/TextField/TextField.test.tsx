@@ -10,17 +10,6 @@ import {
 
 const user = userEvent.setup();
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => {
-    return {
-      matches: false,
-      addListener: () => {},
-      removeListener: () => {},
-    };
-  },
-});
-
 test('renders an text input', () => {
   render(<Basic.Component data-testid="text-field" />);
 
