@@ -76,7 +76,7 @@ Accordions can replace regular sections to create collapsible groups of fields. 
 
 Groups are sub-clusters of related fields within a section. Use them when a section contains many fields that benefit from additional visual separation, for example an address block within a personal information section.
 
-Wrap a group with `<Stack space="group">` to arrange the fields vertically, visually separating it from surrounding fields.
+To create a group, wrap the fields with `<Inset spaceY="group">` to add vertical spacing that visually separates the group from surrounding fields. Inside the group, use `<Stack space="regular">` to space the fields as usual. The `group` token only controls the separation _around_ the group, not the spacing between fields within it.
 
 <ComponentDemo file="./form-spacing-fields.demo.tsx" />
 
