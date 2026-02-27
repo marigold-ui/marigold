@@ -1,5 +1,16 @@
 # @marigold/icons
 
+## 1.3.34
+
+### Patch Changes
+
+- cf56729: Add explicit `types` condition to package exports for reliable type resolution.
+- Updated dependencies [91eb222]
+- Updated dependencies [ed928a0]
+- Updated dependencies [cf56729]
+- Updated dependencies [b115fda]
+  - @marigold/system@17.2.0
+
 ## 1.3.33
 
 ### Patch Changes

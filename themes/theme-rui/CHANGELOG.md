@@ -1,5 +1,56 @@
 # @marigold/theme-rui
 
+## 5.2.0
+
+### Minor Changes
+
+- ed928a0: Update ActionBar with enter/exit animations, keyboard support, and built-in Table integration.
+  - Add `useActionBar` hook and `ActionBarContext` for managing selection state between ActionBar and Table
+  - Add `actionBar` render prop to Table for automatic selection wiring and ActionBar positioning
+  - Add enter/exit animations using `motion/react` and react-aria `useEnterAnimation`/`useExitAnimation`
+  - Add Escape key support to clear selection via `FocusScope` and `useKeyboard`
+  - Add screen reader announcement when ActionBar appears
+  - Add localized `selectedCount`/`selectedAll` messages (en-US, de-DE)
+  - Update ActionBar theme slots: rename `actions` to `toolbar`, add `selection` slot
+  - Update theme type definition to match new slot names
+
+- e6091b6: Export `appearances` map from `@marigold/theme-rui/appearances`
+
+  The theme package now exports a typed `appearances` object (and `Appearances` type) via `@marigold/theme-rui/appearances`. This map is auto-generated during the build from component style files and contains the available `variant`/`size` keys for each themed component.
+
+  This removes the duplicated `build-appearances.mjs` scripts that previously existed in both `docs` and `fumadocs`, replacing them with a single source of truth in the theme package.
+
+- b115fda: Migrate from `class-variance-authority` to `cva` and simplify `extendTheme` via function composition.
+  - Replace `class-variance-authority` dependency with `cva` (v1 beta), which has built-in Tailwind merge support via `defineConfig`
+  - Refactor the custom `cva` wrapper to use `cva`'s `defineConfig` with a `twMerge` hook, storing variant configs in a WeakMap (for docs introspection) instead of a `.variants` property
+  - Simplify `extendTheme` to compose style functions directly (`cn(existingFn(props), newFn(props))`) instead of extracting and merging variant configs — this preserves `defaultVariants` and `compoundVariants` that were previously lost during merging
+  - Update all theme style files in `theme-docs` and `theme-rui` to the new `cva` API (object config with `base`/`variants`/`compoundVariants` keys)
+
+### Patch Changes
+
+- 91eb222: Update ActionBar styling with surface contrast and dedicated button slot.
+  - Apply `ui-surface-contrast` utility to ActionBar container for adaptive theming
+  - Add `button` slot to ActionBar theme for properly styled action buttons (replaces `Button.ghost`)
+  - Add `clearButton` hover/focus/disabled styles using theme-aware utilities
+  - Add `ActionBar.styles.ts` to `theme-docs` with matching dark surface appearance
+  - Update `ActionButton` to use `ActionBar.button` classNames instead of `Button.ghost`
+  - Replace `CloseButton` with `IconButton` for the clear selection button
+  - Update stories to use `lucide-react` icons directly
+
+- cf56729: Add explicit `types` condition to package exports for reliable type resolution.
+- b61ba43: Refined elevation shadow tokens: `shadow-elevation-border` is slightly more subtle with symmetric spread; `shadow-elevation-raised` softens the crisp first layer and is a touch darker overall.
+- a3e3e8e: Replace fixed `hover:bg-hover hover:text-foreground` with `hover:bg-current/10` on ghost-style buttons. The new value uses `currentColor` at 10% opacity so the hover background adapts to any container (light or dark) without forcing a fixed stone-100 background or overriding text color. Applied consistently to `Button` (ghost, destructive-ghost), `IconButton`, `Pagination`, `Tabs`, and `Table` editable-cell action buttons.
+- 9de007c: Align `Menu` button styles with `Button` by reusing `buttonBase` — consistent sizing, hover, disabled, and pending states across both components.
+- ed2baef: fix(NumberField): prevent group from appearing disabled when stepper hits min/max boundary
+- Updated dependencies [91eb222]
+- Updated dependencies [ed928a0]
+- Updated dependencies [cf56729]
+- Updated dependencies [3019d28]
+- Updated dependencies [95c22b6]
+- Updated dependencies [b115fda]
+  - @marigold/components@17.2.0
+  - @marigold/system@17.2.0
+
 ## 5.1.0
 
 ### Minor Changes

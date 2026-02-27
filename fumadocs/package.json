@@ -1,6 +1,6 @@
 {
   "name": "fumadocs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
     "build": "pnpm run build:registry && pnpm run build:changelog && next build",

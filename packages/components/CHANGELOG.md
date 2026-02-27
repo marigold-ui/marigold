@@ -1,5 +1,38 @@
 # @marigold/components
 
+## 17.2.0
+
+### Minor Changes
+
+- ed928a0: Update ActionBar with enter/exit animations, keyboard support, and built-in Table integration.
+  - Add `useActionBar` hook and `ActionBarContext` for managing selection state between ActionBar and Table
+  - Add `actionBar` render prop to Table for automatic selection wiring and ActionBar positioning
+  - Add enter/exit animations using `motion/react` and react-aria `useEnterAnimation`/`useExitAnimation`
+  - Add Escape key support to clear selection via `FocusScope` and `useKeyboard`
+  - Add screen reader announcement when ActionBar appears
+  - Add localized `selectedCount`/`selectedAll` messages (en-US, de-DE)
+  - Update ActionBar theme slots: rename `actions` to `toolbar`, add `selection` slot
+  - Update theme type definition to match new slot names
+
+### Patch Changes
+
+- 91eb222: Update ActionBar styling with surface contrast and dedicated button slot.
+  - Apply `ui-surface-contrast` utility to ActionBar container for adaptive theming
+  - Add `button` slot to ActionBar theme for properly styled action buttons (replaces `Button.ghost`)
+  - Add `clearButton` hover/focus/disabled styles using theme-aware utilities
+  - Add `ActionBar.styles.ts` to `theme-docs` with matching dark surface appearance
+  - Update `ActionButton` to use `ActionBar.button` classNames instead of `Button.ghost`
+  - Replace `CloseButton` with `IconButton` for the clear selection button
+  - Update stories to use `lucide-react` icons directly
+
+- 3019d28: Add `z-50` to the non-modal (desktop) Drawer overlay so it renders above sticky table headers and other positioned content. The mobile modal path already had `z-50`.
+- 95c22b6: feat(DST-1214): Replace hardcoded English strings with centralized intl messages for proper i18n support. Components like Toast, Drawer, Pagination, SectionMessage, ProgressCircle, ActionBar, and TagField now use `useLocalizedStringFormatter` so their aria-labels are translated when the locale changes. Consolidates SearchInput's local intl messages into the shared `intl/messages.ts` file and converts parameterized messages to functions for clean variable interpolation.
+- Updated dependencies [91eb222]
+- Updated dependencies [ed928a0]
+- Updated dependencies [cf56729]
+- Updated dependencies [b115fda]
+  - @marigold/system@17.2.0
+
 ## 17.1.0
 
 ### Minor Changes
