@@ -4,18 +4,20 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   overlay: cva({
     base: [
       'group/overlay',
-      'placement-top:w-full placement-top:entering:animate-slide-in-top placement-top:exiting:animate-slide-out-top placement-top:top-0 placement-top:left-0',
-      'placement-bottom:w-full placement-bottom:entering:animate-slide-in-bottom placement-bottom:exiting:animate-slide-out-bottom placement-bottom:bottom-0 placement-bottom:left-0',
-      'placement-left:entering:animate-slide-in-left placement-left:exiting:animate-slide-out-left placement-left:top-0 placement-left:left-0',
-      'placement-right:entering:animate-slide-in-right placement-right:exiting:animate-slide-out-right placement-right:top-0 placement-right:right-0',
+      '[--slide-offset:1rem]',
+      'placement-top:inset-x-4 placement-top:top-4 placement-top:entering:animate-slide-in-top placement-top:exiting:animate-slide-out-top',
+      'placement-bottom:inset-x-4 placement-bottom:bottom-4 placement-bottom:entering:animate-slide-in-bottom placement-bottom:exiting:animate-slide-out-bottom',
+      'placement-left:inset-y-4 placement-left:left-4 placement-left:entering:animate-slide-in-left placement-left:exiting:animate-slide-out-left',
+      'placement-right:inset-y-4 placement-right:right-4 placement-right:entering:animate-slide-in-right placement-right:exiting:animate-slide-out-right',
     ],
   }),
   container: cva({
     base: [
       'w-full relative grid-rows-[auto_1fr_auto]',
-      // TODO: if we keep placement we need direction aware shadows
-      'bg-surface border-surface-border shadow-elevation-overlay util-scrollbar',
-      'placement-right:border-l placement-left:border-r placement-top:border-b placement-bottom:border-t',
+      'rounded-xl ui-surface util-scrollbar',
+      'shadow-[var(--shadow-elevation-overlay),0_0_3px_1px_oklch(0_0_0/0.06)]',
+      '[--ui-border-color:oklch(from_var(--color-surface-border)_calc(l_-_0.1)_c_h)]',
+      'placement-right:h-full placement-left:h-full',
       'placement-top:w-full placement-bottom:w-full',
     ],
     variants: {
