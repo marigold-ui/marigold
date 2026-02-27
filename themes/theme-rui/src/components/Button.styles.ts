@@ -1,19 +1,9 @@
 import type { ThemeComponent } from '@marigold/system';
 import { cva } from '@marigold/system';
 
-// Shared base styles for Button and ToggleButton
-export const buttonBase = [
-  'inline-flex items-center justify-center gap-2',
-  'whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform]',
-  '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-  'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
-  'cursor-pointer',
-  'border border-transparent',
-] as const;
-
 export const Button: ThemeComponent<'Button'> = cva({
   base: [
-    ...buttonBase,
+    'ui-button-base gap-2',
     'duration-150 active:scale-[0.97] pressed:not-aria-expanded:scale-[0.97]',
     'pending:ui-state-disabled',
   ],
@@ -32,7 +22,7 @@ export const Button: ThemeComponent<'Button'> = cva({
       destructive:
         'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       'destructive-ghost': 'text-destructive hover:bg-current/8',
-      link: 'text-link util-touch-hitbox',
+      link: 'text-link ui-touch-hitbox',
     },
     size: {
       default: 'text-sm',

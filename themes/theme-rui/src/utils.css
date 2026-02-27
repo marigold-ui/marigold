@@ -5,63 +5,6 @@
  * encapsulate common design decisions across the theme.
  */
 
-/*
- * Applies a touch-friendly hitbox to elements, ensuring they are easily tappable on touch devices. 
- * This is important for accessibility, as it helps meet WCAG guidelines for minimum touch target size 
- * and improves usability for users with motor impairments.
- */
-@utility util-touch-hitbox {
-  position: relative;
-  &:before {
-    content: '';
-    position: absolute;
-    display: block;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    /* Touch target minimum 24x24px (WCAG 2.1 AA) */
-    /* For WCAG 2.2 compliance, update to 44x44px */
-    /* Uses z-100 to ensure hitbox is above content but below system overlays */
-    min-height: 24px;
-    min-width: 24px;
-    z-index: 100;
-  }
-}
-
-/*
- * Custom scrollbar styling to match the theme's design.
- * This utility provides a consistent look for scrollbars across different browsers.
- */
-@utility util-scrollbar {
-  scrollbar-width: auto;
-  scrollbar-color: var(--color-scrollbar) var(--color-scrollbar-track);
-
-  &::-webkit-scrollbar {
-    display: block;
-    width: 12px;
-    height: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: var(--color-scrollbar-track);
-    border-radius: var(--radius-full);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    transition: background-color 0.2s var(--ease-out-quad);
-    background-color: var(--color-scrollbar);
-    border-radius: var(--radius-full);
-    border: 0px solid transparent;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-scrollbar-hover);
-  }
-}
-
-/* ==========================================================  */
-
 /* ========================= */
 /*    Surface & Elevation    */
 /* ========================= */

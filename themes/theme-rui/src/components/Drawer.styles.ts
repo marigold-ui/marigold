@@ -14,7 +14,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
     base: [
       'w-full relative grid-rows-[auto_1fr_auto]',
       // TODO: if we keep placement we need direction aware shadows
-      'bg-surface border-surface-border shadow-elevation-overlay util-scrollbar',
+      'bg-surface border-surface-border shadow-elevation-overlay ui-scrollbar',
       'placement-right:border-l placement-left:border-r placement-top:border-b placement-bottom:border-t',
       'placement-top:w-full placement-bottom:w-full',
     ],
@@ -27,10 +27,8 @@ export const Drawer: ThemeComponent<'Drawer'> = {
     },
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
-  header: cva({ base: 'border-border border-b px-6 py-4' }),
+  header: cva({ base: 'ui-panel-header' }),
   title: cva({ base: 'font-semibold text-base' }),
   content: cva({ base: 'px-6 py-4 overflow-y-auto outline-none' }),
-  actions: cva({
-    base: 'flex flex-row gap-3 justify-end border-border border-t px-6 py-4',
-  }),
+  actions: cva({ base: 'ui-panel-actions' }),
 };
