@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MockInstance, vi } from 'vitest';
 import { cva, useTheme } from '@marigold/system';
+import { mockMatchMedia } from '../test.utils';
 import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup
@@ -14,11 +15,6 @@ beforeEach(() => {
 afterEach(() => {
   errorMock.mockRestore();
 });
-
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
 
 window.matchMedia = mockMatchMedia([
   'screen and (min-width: 40em)',

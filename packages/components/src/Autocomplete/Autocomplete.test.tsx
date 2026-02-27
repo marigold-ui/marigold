@@ -1,22 +1,11 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, WithSections } from './Autocomplete.stories';
 
 const user = userEvent.setup();
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => ({
-    matches: false,
-    addListener: () => {},
-    removeListener: () => {},
-  }),
-});
+window.matchMedia = mockMatchMedia([]);
 
 // Tests
 // ---------------

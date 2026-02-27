@@ -2,6 +2,7 @@ import { CalendarDate } from '@internationalized/date';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { mockMatchMedia } from '../test.utils';
 import {
   Basic,
   UnavailableDate,
@@ -11,18 +12,9 @@ import {
 
 const user = userEvent.setup();
 
-describe('DatePicker', () => {
-  beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: () => ({
-        matches: false,
-        addListener: () => {},
-        removeListener: () => {},
-      }),
-    });
-  });
+window.matchMedia = mockMatchMedia([]);
 
+describe('DatePicker', () => {
   describe('basics', () => {
     test('renders date picker with specified date', () => {
       render(<WithDefaultValue.Component />);
