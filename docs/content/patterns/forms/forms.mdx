@@ -4,19 +4,19 @@ caption: Guidelines for building a consistent form structure
 order: 1
 ---
 
-Forms are the backbone of data submission, making their design critical to the user experience. These guidelines ensure every form in your application is consistent, usable, and accessible, covering layout, spacing, and content organization.
+How you design forms affects whether people can actually use them. This page covers layout, spacing, and content organization so your forms stay consistent and accessible.
 
-For technical implementation details, state management, and validation patterns, refer to our [Form Implementation](/patterns/form-implementation) guide.
+For implementation details, state management, and validation, see the [Form Implementation](/patterns/form-implementation) guide.
 
 ## Layout & Structure
 
-The foundation of effective form design lies in thoughtful layout and structure. How you arrange elements on the page, use whitespace, and organize content directly impacts user comprehension and completion rates. A well-structured form creates a clear visual hierarchy and logical flow that guides users through the data entry process efficiently.
+Layout and structure determine whether a form feels easy or overwhelming. Good spacing and a clear visual hierarchy help people move through a form without getting lost.
 
 ### Overall form layout
 
-Forms should be left-aligned to follow natural reading flow and maintain consistency across your application. To ensure optimal readability across all devices, limit form width to a maximum of 800px using the `container` spacing token.
+Left-align your forms to match natural reading flow. Keep the width at 800px max (use the `container` spacing token) so nothing gets too wide to read comfortably.
 
-Whitespace plays a crucial role in form usability. It prevents visual clutter, enhances focus, and creates clear separation between sections and fields. Strategic use of whitespace makes forms easier to scan and complete, ultimately improving the user experience. We provide spacing tokens to help you apply consistent spacing throughout your forms.
+Whitespace matters more than most people think. Enough breathing room between sections and fields keeps the form scannable and prevents everything from blurring together. Use our spacing tokens to keep that whitespace consistent.
 
 <GuidelineTiles>
   <Do>
@@ -44,25 +44,35 @@ Whitespace plays a crucial role in form usability. It prevents visual clutter, e
 
 ### Available components
 
-We have various components suitable for forms. You can find a detailed guide on the [Form Fields](../../foundations/form-fields) page.
+See the [Form Fields](../../foundations/form-fields) page for a full guide on input components.
 
-Besides that we have some other components which you may need to build well-structured forms:
+Beyond those, you'll likely need some of these to put a form together:
 
 - **Layout components**: [`<Stack>`](../../components/layout/stack/) and [`<Inset>`](../../components/layout/inset/) to organize fields and sections.
 - **Accordion**: Group fields with an [accordion](../../components/navigation/accordion/) for lengthy forms or optional fields. Use accordions for sections that can be collapsed to save space and reduce cognitive load.
 - **Buttons**: Use primary [buttons](../../components/actions/button/) for form submission, secondary for additional actions like "View PDF".
 - **Links**: Use [links](../../components/navigation/link/) for navigation to privacy policies or terms of service, not for form actions.
-- **Feedback components**: You can use feedback components like [`<SectionMessage>`](../../components/content/section-message/) and [`<Toast>`](../../components/overlay/toast/) to provide additional information or context.
+- **Feedback components**: [`<SectionMessage>`](../../components/content/section-message/) and [`<Toast>`](../../components/overlay/toast/) for inline hints or notifications.
 
 ## Content Organization
 
-Forms use three levels of hierarchy to organize content. **Sections** divide the form into distinct topics, **groups** cluster related fields within a section, and **fields** are the individual inputs. Spacing between elements signals how closely they are related. Tighter spacing means a stronger relationship, wider spacing creates visual separation.
+Forms have three levels of hierarchy: **sections** divide the form into topics, **groups** cluster related fields within a section, and **fields** are the individual inputs. Spacing signals how closely things belong together. Tighter spacing means a stronger relationship, wider spacing separates them.
+
+<SectionMessage>
+  <SectionMessage.Title>Want to learn more about spacing?</SectionMessage.Title>
+  <SectionMessage.Content>
+    Visit the [Spacing](/foundations/spacing) page for a full overview of our
+    spacing tokens and how to use them.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ### Section
 
-Sections help organize related fields together, making forms easier to scan and understand. They are particularly effective when your form collects different types of data or has more than 6-8 fields.
+Sections split a form by topic so longer forms stay scannable. They pay off once a form collects different kinds of data or grows past 6-8 fields.
 
-Use `<Stack space="section">` between sections. Within each section, use a headline followed by its fields in a `<Stack space="regular">`.
+Separate sections with `<Stack space="section">`. Inside each section, add a headline and wrap the fields in a `<Stack space="regular">`.
+
+Section headlines can have a short description underneath. Use `<Text>` with the `muted` variant for this, and wrap both in a `<Stack space="tight">` so they feel connected.
 
 <ComponentDemo file="./form-section.demo.tsx" />
 
@@ -82,11 +92,11 @@ To create a group, wrap the fields with `<Inset spaceY="group">` to add vertical
 
 #### Accordions within sections
 
-Accordions can also be used _within_ a section to group content, allowing users to focus on the most important fields while keeping additional options accessible. The demo above shows both patterns.
+Accordions can also be used _within_ a section to group content. This lets users focus on what matters while still having access to additional options. The demo above shows both patterns.
 
 ### Field
 
-Individual fields are the building blocks of your form. Their arrangement and sizing directly impact how users navigate and complete the form.
+How you arrange and size individual fields affects how easily people can work through the form.
 
 <GuidelineTiles>
   <Do>
@@ -112,35 +122,35 @@ Spacing between fields uses these tokens:
 
 ### Required vs. optional fields
 
-These fields must be filled out for the form to be submitted. They are clearly indicated with an asterisk (\*) next to the label. Optional fields do not have this indicator, allowing users to skip them if they choose.
+Required fields are marked with an asterisk (\*) next to the label. Optional fields have no indicator, so users can skip them.
 
 ## Actions
 
-Form actions guide users through completion and submission. Every form requires a primary submit action, but many forms benefit from additional secondary actions that provide alternative paths or supplementary functionality.
+Every form needs a primary submit action. Many forms also benefit from secondary actions like "Save as Draft" or "Reset".
 
 ### Using additional actions in forms
 
-Additional actions can enhance the user experience by providing options like "view PDF", "Reset", or "Save as Draft". These actions should be clearly differentiated from the primary submit action to avoid confusion.
+Actions like "View PDF", "Reset", or "Save as Draft" should look clearly different from the primary submit button so people don't confuse them.
 
-Place the action near the related field where the action is for with that context is given. Links should be placed usually next or below the related field.
+Place each action near the field it relates to. Links usually go next to or below their related field.
 
 <ComponentDemo file="./form-link.demo.tsx" mode="preview" />
 
 ### Submit placement
 
-The submit button should be positioned at the bottom of the form, aligned to the left to follow the natural reading flow. Place the primary action first, followed by secondary actions with appropriate spacing.
+Put the submit button at the bottom of the form, aligned left. Primary action comes first, then secondary actions with appropriate spacing.
 
 <ComponentDemo file="./form-action.demo.tsx" mode="preview" />
 
 ## Admin- and Mastermark
 
-Some forms may require special fields that are only accessible to users with administrator or master user roles. These fields should be clearly marked and separated from regular fields to avoid confusion.
+Some fields are only relevant for administrators or master users. Mark and separate these from regular fields so other users aren't confused by them.
 
-You can find a complete usage guide on the [Admin- and Mastermark](/patterns/admin-master-mark) page.
+See the [Admin- and Mastermark](/patterns/admin-master-mark) page for the full usage guide.
 
 ## Full demo
 
-Here is a full example of a well-structured form with sections using the guidelines mentioned above. This is a fictional event registration form that includes various field types, sections, and actions.
+Below is a fictional event registration form that puts all of these guidelines together: sections, field types, and actions.
 
 <Stack space={2}>
   <Center>[View Demo](/pattern/form)</Center>
@@ -157,8 +167,7 @@ Here is a full example of a well-structured form with sections using the guideli
     {
       title: 'Form Fields',
       href: '../../foundations/form-fields',
-      caption:
-        'Here you can find a comprehensive guide for working with form fields.',
+      caption: 'A guide to all available form field components.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
