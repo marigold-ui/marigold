@@ -25,7 +25,7 @@ test('supports base styling', () => {
   const { label, container, track, thumb } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex in-field:mb-1.5"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive in-field:mb-1.5 inline-flex"`
   );
   expect(container.className).toMatchInlineSnapshot(
     `"w-full group/switch flex items-center gap-[1ch] disabled:cursor-not-allowed disabled:text-disabled-foreground"`
@@ -67,7 +67,7 @@ test('allows to set width via prop', () => {
   const { label } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex in-field:mb-1.5"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive in-field:mb-1.5 inline-flex"`
   );
 });
 
