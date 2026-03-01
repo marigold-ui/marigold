@@ -45,7 +45,7 @@ export default () => {
     <Tiles space="related" stretch>
       <VenueCard id="10" />
       <VenueCard id="6" />
-      <VenueCard id="13" />
+      <VenueCard id="4" />
       <VenueCard id="8" />
     </Tiles>
   );
