@@ -19,7 +19,7 @@ Relation describes the connection between elements. It defines hierarchy and gro
 
 When elements are strongly related, the bond is tight, and they pull close together. When they are distinct, the bond relaxes, and they drift apart.
 
-To select the correct token for space, think in terms of _nouns_ (e.g., peer, group) because you are defining the nature of the relationship between neighbors. You are not asking "How large should this space be?" but rather "How closely related are these two elements?"
+To select the correct token for space, think in terms of _nouns_ (e.g., regular, group) because you are defining the nature of the relationship between neighbors. You are not asking "How large should this space be?" but rather "How closely related are these two elements?"
 
 ### Scale
 
@@ -35,16 +35,6 @@ The relational scale has 7 tokens, each with a specific purpose. This ensures a 
   </Table.Header>
   <Table.Body>
     <Table.Row>
-      <Table.Cell>**Joined**</Table.Cell>
-      <Table.Cell>
-        Elements appear attached to each other. They touch to function as a
-        single interactive object, communicating that they act as one unit.
-      </Table.Cell>
-      <Table.Cell>
-        <Text fontStyle='italic' color="text-primary-muted">Segmented controls, button groups, ...</Text>
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
       <Table.Cell>**Tight**</Table.Cell>
       <Table.Cell>
         Refers to packed containers side-by-side without any wasted space, like
@@ -53,39 +43,42 @@ The relational scale has 7 tokens, each with a specific purpose. This ensures a 
         breathing room.
       </Table.Cell>
       <Table.Cell>
-        <Text fontStyle='italic' color="text-primary-muted">Data table rows, multi-line card metadata, ...</Text>
+        <Text fontStyle='italic' color="text-primary-muted">Data table rows, multi-line card metadata, Headline + Description, ...</Text>
       </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>**Related**</Table.Cell>
       <Table.Cell>
-        This is the minimal unit of separation needed to acknowledge two
-        elements are distinct. The small gap communicates that they form a
-        single conceptual pair or thought, such as a label and its input field.
+        The small gap communicates that two distinct elements form a
+        single conceptual pair or unit. Use it for elements that belong
+        together but are each self-contained, such as paired form fields
+        (e.g. Start Date + End Date, Postal Code + City) or an icon
+        next to a text label.
       </Table.Cell>
       <Table.Cell>
-        <Text fontStyle='italic' color="text-primary-muted">Label + Input, Icon + Text, Headline + Subhead, ...</Text>
+        <Text fontStyle='italic' color="text-primary-muted">Paired form fields, Icon + Text, Headline + Subhead, ...</Text>
       </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>**Peer**</Table.Cell>
+      <Table.Cell>**Regular**</Table.Cell>
       <Table.Cell>
         The wider, balanced space indicates two individual, self-contained
-        elements standing as equals (Peers) within the same content flow. This
-        is the page's standard reading rhythm.
+        elements standing as equals within the same content flow. This is
+        the baseline rhythm for form fields and the page's standard reading
+        rhythm.
       </Table.Cell>
-      <Table.Cell><Text fontStyle='italic' color="text-primary-muted">Standard form rows, list items, paragraphs, ...</Text></Table.Cell>
+      <Table.Cell><Text fontStyle='italic' color="text-primary-muted">Baseline form field spacing, list items, paragraphs, ...</Text></Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>**Group**</Table.Cell>
       <Table.Cell>
-        The substantial gap signifies logical separation or a change in zone.
-        This is the level of space needed to clearly divide major content
-        containers like a billing address section from a shipping address
-        section.
+        A substantial gap that visually clusters related elements into a
+        sub-group within a larger context. It separates a block of content
+        from its surroundings, signaling that the enclosed elements belong
+        together as a logical unit.
       </Table.Cell>
       <Table.Cell>
-        <Text fontStyle='italic' color="text-primary-muted">Cards in a grid, separating Fieldsets (e.g., Billing vs. Shipping), ...</Text>
+        <Text fontStyle='italic' color="text-primary-muted">Cards in a grid, address block within a form, content clusters in a sidebar, ...</Text>
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -97,17 +90,6 @@ The relational scale has 7 tokens, each with a specific purpose. This ensures a 
       </Table.Cell>
       <Table.Cell>
         <Text fontStyle='italic' color="text-primary-muted">Hero area vs. Page Content, Filter Bar vs. Results Grid, Chart vs. Data Table, ...</Text>
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>**Context**</Table.Cell>
-      <Table.Cell>
-        Signifies a complete change in context or environment. Acts as a
-        narrative break that allows the user to mentally reset before engaging
-        with a new theme, such as moving from feature content to the footer.
-      </Table.Cell>
-      <Table.Cell>
-        <Text fontStyle='italic' color="text-primary-muted">Landing page sections (e.g., Features vs. Pricing), Content vs. Footer, ...</Text>
       </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -139,7 +121,7 @@ The grid axis handles the macro-layout skeleton where items flow in both X and Y
 
 #### CSS Tokens
 
-You can construct relational CSS variables using the syntax shown below. By inserting a specific scale value (like `peer` or `group`), you can apply these tokens to gap or margin classes.
+You can construct relational CSS variables using the syntax shown below. By inserting a specific scale value (like `regular` or `group`), you can apply these tokens to gap or margin classes.
 
 {/* prettier-ignore-start */}
 

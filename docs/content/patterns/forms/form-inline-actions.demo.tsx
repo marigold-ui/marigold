@@ -44,7 +44,7 @@ export default () => {
   };
 
   return (
-    <Stack space="group">
+    <Stack space="regular">
       <Inline alignY="input" space="related" noWrap>
         <Select
           label="Venue"
@@ -65,7 +65,7 @@ export default () => {
       </Inline>
       <TextField label="Name" value={name} onChange={setName} />
       <TextField label="Street" value={street} onChange={setStreet} />
-      <Inline space={5}>
+      <Inline space="related">
         <TextField
           label="Postcode"
           width={20}
@@ -74,7 +74,7 @@ export default () => {
         />
         <TextField label="City" width={44} value={city} onChange={setCity} />
       </Inline>
-      <Stack space="group">
+      <Stack space="tight">
         <Select
           label="Country"
           placeholder="Select country"

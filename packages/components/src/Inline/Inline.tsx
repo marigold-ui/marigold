@@ -6,7 +6,7 @@ import type { AriaRegionProps } from '@marigold/types';
 const inlineAlignmentY = {
   ...alignment.horizontal.alignmentY,
   input:
-    'items-end [&:has([slot=description])]:items-end [&:has([slot=description])_>*:not(:has([slot=description]))]:mb-6 [&:has([slot=errorMessage])_>*:not(:has([slot=errorMessage]))]:mb-6',
+    'items-end [&:has([slot=description])]:items-end [&:has([slot=description])_>*:not(:has([slot=description]))]:mb-5 [&:has([slot=errorMessage])_>*:not(:has([slot=errorMessage]))]:mb-5',
 };
 
 // Props

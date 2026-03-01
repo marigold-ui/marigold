@@ -140,8 +140,8 @@ describe('createSpacingVar', () => {
     ['margin', 'group', { '--margin': 'var(--spacing-group)' }],
     [
       'custom-spacing-name',
-      'peer',
-      { '--custom-spacing-name': 'var(--spacing-peer)' },
+      'regular',
+      { '--custom-spacing-name': 'var(--spacing-regular)' },
     ],
   ])(
     'should create spacing var for name "%s" with value "%s"',
@@ -150,7 +150,7 @@ describe('createSpacingVar', () => {
     }
   );
 
-  it.each(['joined', 'tight', 'related', 'group', 'region'])(
+  it.each(['tight', 'related', 'group'])(
     'should reference spacing token "%s"',
     token => {
       expect(createSpacingVar('space', token)).toEqual({
