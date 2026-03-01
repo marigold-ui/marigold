@@ -34,10 +34,15 @@ export default () => {
             {showSpacing && (
               <VisualSpacing orientation="vertical" space="regular" />
             )}
-            <Inline space="related">
-              <TextField label="First Name" width="1/3" required />
-              <TextField label="Last Name" width="1/2" required />
-            </Inline>
+            <div className="pb-8">
+              <Inline space="related">
+                <TextField label="First Name" width="1/3" required />
+                {showSpacing && (
+                  <VisualSpacing space="related" orientation="horizontal" />
+                )}
+                <TextField label="Last Name" width="1/2" required />
+              </Inline>
+            </div>
             {showSpacing && (
               <VisualSpacing orientation="vertical" space="regular" />
             )}

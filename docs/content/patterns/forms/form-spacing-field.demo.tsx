@@ -36,7 +36,7 @@ export default () => {
             {showSpacing && (
               <VisualSpacing space="regular" orientation="vertical" />
             )}
-            <div className={showSpacing ? 'pb-8' : ''}>
+            <div className="pb-8">
               <Inline space="related">
                 <TextField label="Postal Code" width={20} />
                 {showSpacing && (
