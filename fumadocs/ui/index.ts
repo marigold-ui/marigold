@@ -18,3 +18,6 @@ export * from './StorybookHintMessage';
 export * from './ComponentDemo';
 export * from './ShinyText';
 export * from './Rectangle';
+export * from './VisualSpacing';
+export * from './FadeContainer';
+export * from './Wireframe';
