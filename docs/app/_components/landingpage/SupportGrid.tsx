@@ -102,11 +102,8 @@ export const SupportGrid = () => {
           </Inline>
           <p className="balance pt-4 leading-7">
             Got a great idea or a request? We love to hear it! Take a peek at
-            our{' '}
-            <Link href="/getting-started/governance-process">
-              contribution guide
-            </Link>{' '}
-            first to keep things tidy.
+            our <Link href="/foundations">contribution guide</Link> first to
+            keep things tidy.
           </p>
         </Card>
       </BlurFade>

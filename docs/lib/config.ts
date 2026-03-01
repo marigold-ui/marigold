@@ -10,10 +10,6 @@ export const siteConfig = {
   version: process.env.version,
   navigation: [
     {
-      name: 'Getting Started',
-      slug: 'getting-started',
-    },
-    {
       name: 'Foundations',
       slug: 'foundations',
     },

@@ -17,12 +17,17 @@ const nextConfig = {
     return [
       {
         source: '/getting-started',
-        destination: '/getting-started/overview',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/getting-started/:path*',
+        destination: '/',
         permanent: true,
       },
       {
         source: '/introduction/getting-started',
-        destination: '/getting-started/overview',
+        destination: '/',
         permanent: true,
       },
       {
