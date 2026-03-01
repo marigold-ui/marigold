@@ -36,10 +36,15 @@ export default () => {
             {showSpacing && (
               <VisualSpacing space="regular" orientation="vertical" />
             )}
-            <Inline space="related">
-              <TextField label="Postal Code" width={20} />
-              <TextField label="City" width={40} />
-            </Inline>
+            <div className={showSpacing ? 'pb-8' : ''}>
+              <Inline space="related">
+                <TextField label="Postal Code" width={20} />
+                {showSpacing && (
+                  <VisualSpacing space="related" orientation="horizontal" />
+                )}
+                <TextField label="City" width={40} />
+              </Inline>
+            </div>
           </Stack>
         </Stack>
       </Inset>
