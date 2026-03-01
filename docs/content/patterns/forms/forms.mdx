@@ -110,13 +110,15 @@ Accordions can also be used _within_ a section to group content. This lets users
 
 ## Actions
 
-Every form needs a primary submit action. Many forms also benefit from secondary actions like "Save as Draft" or "Reset".
+Forms usually need more than just a submit button. Links, secondary buttons, and other controls handle everything from navigation to drafts. The key is making each action easy to find and hard to confuse with the primary submit.
 
-### Using additional actions in forms
+### Inline actions
 
-Actions like "View PDF", "Reset", or "Save as Draft" should look clearly different from the primary submit button so people don't confuse them.
+Some actions belong inside the form body, next to the fields they relate to.
 
-Place each action near the field it relates to. Links usually go next to or below their related field.
+- **Links for navigation-like actions.** Opening a map, viewing a PDF, or linking to terms of service. These aren't form operations, so style them as links. Place them near the field they support.
+- **Secondary buttons for form operations.** "Create new", "Reset", or "Save as Draft" should be visually distinct from the primary submit so people don't hit the wrong one.
+- **Put each action close to what it affects.** An action buried at the bottom of the form is easy to miss when it only matters for one specific field.
 
 <ComponentDemo file="./form-link.demo.tsx" mode="preview" />
 
