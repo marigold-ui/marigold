@@ -92,21 +92,19 @@ Section headlines can have a short description underneath. Use `<Text>` with the
 
 <ComponentDemo file="./form-section.demo.tsx" mode="preview" />
 
-#### Accordions as sections
-
-Accordions can replace regular sections to create collapsible groups of fields. This is useful for optional information or advanced settings that don't need to be visible by default. Ensure required fields remain visible and are not hidden within collapsed sections.
-
-<ComponentDemo file="./form-accordion.demo.tsx" />
-
 ### Group
 
 Groups are sub-clusters of related fields within a section. Use them when a section contains many fields that benefit from additional visual separation, for example an address block within a personal information section.
 
 To create a group, wrap the fields with `<Stack space="group">` to add spacing that visually separates the group from surrounding fields. Inside the group, use `<Stack space="regular">` to space the fields as usual. The `group` token only controls the separation _around_ the group, not the spacing between fields within it.
 
-<ComponentDemo file="./form-spacing-fields.demo.tsx" />
+<ComponentDemo file="./form-spacing-fields.demo.tsx" mode="preview" />
 
-#### Accordions within sections
+### Accordions
+
+Accordions can replace regular sections to create collapsible groups of fields. This is useful for optional information or advanced settings that don't need to be visible by default. Ensure required fields remain visible and are not hidden within collapsed sections.
+
+<ComponentDemo file="./form-accordion.demo.tsx" />
 
 Accordions can also be used _within_ a section to group content. This lets users focus on what matters while still having access to additional options. The demo above shows both patterns.
 
