@@ -1,9 +1,7 @@
----
-title: Forms
+--title: Forms
 caption: Guidelines for building a consistent form structure
 order: 1
----
-
+--
 How you design forms affects whether people can actually use them. This page covers layout, spacing, and content organization so your forms stay consistent and accessible.
 
 For implementation details, state management, and validation, see the [Form Implementation](/patterns/form-implementation) guide.
@@ -56,7 +54,7 @@ Beyond those, you'll likely need some of these to put a form together:
 
 ## Content Organization
 
-Forms have three levels of hierarchy: **sections** divide the form into topics, **groups** cluster related fields within a section, and **fields** are the individual inputs. Spacing signals how closely things belong together. Tighter spacing means a stronger relationship, wider spacing separates them.
+Forms have three levels of hierarchy: **fields** are the individual inputs, **sections** divide the form into topics, and **groups** cluster related fields within a section. Spacing signals how closely things belong together. Tighter spacing means a stronger relationship, wider spacing separates them.
 
 <SectionMessage>
   <SectionMessage.Title>Want to learn more about spacing?</SectionMessage.Title>
@@ -65,6 +63,23 @@ Forms have three levels of hierarchy: **sections** divide the form into topics, 
     spacing tokens and how to use them.
   </SectionMessage.Content>
 </SectionMessage>
+
+### Field
+
+Fields are the most fundamental building block of any form. How you arrange and size them affects how easily people can work through it.
+
+- **Use a predictable order.** People expect forms to follow a logical sequence, like personal info before payment or name before email. A familiar order reduces cognitive load because users don't have to search for what comes next. When in doubt, follow the conventions people already know from similar forms.
+- **Place required fields before optional ones.** Within each section, lead with what the user _must_ fill in. This lets people complete the essentials first and decide later whether to provide optional details. It also prevents frustration: nobody wants to discover required fields buried at the bottom after filling in optional ones.
+- **Position dependent fields right after their parent.** If selecting a country changes the list of available states, those two fields should sit next to each other. Placing dependent fields immediately after the field they depend on makes the relationship obvious and prevents confusion when values change.
+- **Match field width to expected content.** A postal code field doesn't need the same width as a street address. Setting a maximum width based on the expected input length gives users a visual hint about what's expected and keeps the form looking tidy.
+
+Spacing between fields uses the following tokens:
+
+- **`regular`**: Default vertical spacing between fields. Use `<Stack space="regular">` within any section or group.
+- **`related`**: For two fields that form a logical unit, such as start/end dates or postcode + city. Use `<Stack space="related">` for related pairs.
+- **`tight`**: Connects a headline to its description or a field to a supplementary link. Use when two elements should be perceived as a single unit.
+
+<ComponentDemo file="./form-spacing-field.demo.tsx" />
 
 ### Section
 
@@ -86,39 +101,13 @@ Accordions can replace regular sections to create collapsible groups of fields. 
 
 Groups are sub-clusters of related fields within a section. Use them when a section contains many fields that benefit from additional visual separation, for example an address block within a personal information section.
 
-To create a group, wrap the fields with `<Inset spaceY="group">` to add vertical spacing that visually separates the group from surrounding fields. Inside the group, use `<Stack space="regular">` to space the fields as usual. The `group` token only controls the separation _around_ the group, not the spacing between fields within it.
+To create a group, wrap the fields with `<Stack space="group">` to add spacing that visually separates the group from surrounding fields. Inside the group, use `<Stack space="regular">` to space the fields as usual. The `group` token only controls the separation _around_ the group, not the spacing between fields within it.
 
 <ComponentDemo file="./form-spacing-fields.demo.tsx" />
 
 #### Accordions within sections
 
 Accordions can also be used _within_ a section to group content. This lets users focus on what matters while still having access to additional options. The demo above shows both patterns.
-
-### Field
-
-How you arrange and size individual fields affects how easily people can work through the form.
-
-<GuidelineTiles>
-  <Do>
-    <Do.Description>
-      <ul>
-        <li>Follow a predictable order of fields when creating forms.</li>
-        <li>Place required fields before optional ones within each section.</li>
-        <li>Position dependent fields immediately after their parent field.</li>
-        <li>
-          Fields should have a maximum width based on their expected content
-          length.
-        </li>
-      </ul>
-    </Do.Description>
-  </Do>
-</GuidelineTiles>
-
-Spacing between fields uses these tokens:
-
-- **`regular`**: Default vertical spacing between fields. Use `<Stack space="regular">` within any section or group.
-- **`related`**: For two fields that form a logical unit, such as start/end dates or postcode + city. Use `<Inline space="related">` for horizontal pairs.
-- **`tight`**: Connects a headline to its description or a field to a supplementary link. Use when two elements should be perceived as a single unit.
 
 ### Required vs. optional fields
 
