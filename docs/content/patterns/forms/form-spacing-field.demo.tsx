@@ -1,25 +1,48 @@
-import { Headline, Stack, TextField } from '@marigold/components';
+'use client';
+
+import { useState } from 'react';
+import {
+  Headline,
+  Inline,
+  Inset,
+  Stack,
+  Switch,
+  TextField,
+} from '@marigold/components';
 import { VisualSpacing } from '@/ui/VisualSpacing';
 
-export default () => (
-  <Stack space="regular">
-    <Headline level={2}>Shipping Address</Headline>
-    <TextField label="Name" required />
-    <VisualSpacing space="regular" orientation="vertical" />
-    <TextField label="Street" required />
-    <VisualSpacing space="regular" orientation="vertical" />
-    <Stack space="related">
-      <TextField label="Postal Code" width={20} />
-      <VisualSpacing space="related" orientation="vertical" />
-      <TextField label="City" width={40} />
+export default () => {
+  const [showSpacing, setShowSpacing] = useState(false);
+
+  return (
+    <Stack space="8">
+      <Switch
+        label="Show spacing"
+        selected={showSpacing}
+        onChange={setShowSpacing}
+      />
+      <Inset spaceX={20}>
+        <Stack space="group">
+          <Stack space="regular">
+            <Headline level={2}>Shipping Address</Headline>
+            {showSpacing && (
+              <VisualSpacing space="regular" orientation="vertical" />
+            )}
+            <TextField label="Name" width="2/3" required />
+            {showSpacing && (
+              <VisualSpacing space="regular" orientation="vertical" />
+            )}
+            <TextField label="Street" width="2/3" required />
+            {showSpacing && (
+              <VisualSpacing space="regular" orientation="vertical" />
+            )}
+            <Inline space="related">
+              <TextField label="Postal Code" width={20} />
+              <TextField label="City" width={40} />
+            </Inline>
+          </Stack>
+        </Stack>
+      </Inset>
     </Stack>
-    <VisualSpacing space="group" orientation="vertical" />
-    <Stack space="group">
-      <Stack space="regular">
-        <TextField label="Phone" />
-        <VisualSpacing space="regular" orientation="vertical" />
-        <TextField label="Email" type="email" />
-      </Stack>
-    </Stack>
-  </Stack>
-);
+  );
+};

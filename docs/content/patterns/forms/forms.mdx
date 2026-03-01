@@ -1,7 +1,9 @@
---title: Forms
+---
+title: Forms
 caption: Guidelines for building a consistent form structure
 order: 1
---
+---
+
 How you design forms affects whether people can actually use them. This page covers layout, spacing, and content organization so your forms stay consistent and accessible.
 
 For implementation details, state management, and validation, see the [Form Implementation](/patterns/form-implementation) guide.
@@ -73,11 +75,10 @@ Fields are the most fundamental building block of any form. How you arrange and 
 - **Position dependent fields right after their parent.** If selecting a country changes the list of available states, those two fields should sit next to each other. Placing dependent fields immediately after the field they depend on makes the relationship obvious and prevents confusion when values change.
 - **Match field width to expected content.** A postal code field doesn't need the same width as a street address. Setting a maximum width based on the expected input length gives users a visual hint about what's expected and keeps the form looking tidy.
 
-Spacing between fields uses the following tokens:
+Fields stack vertically by default, but some belong side by side. Two spacing tokens handle this:
 
-- **`regular`**: Default vertical spacing between fields. Use `<Stack space="regular">` within any section or group.
-- **`related`**: For two fields that form a logical unit, such as start/end dates or postcode + city. Use `<Stack space="related">` for related pairs.
-- **`tight`**: Connects a headline to its description or a field to a supplementary link. Use when two elements should be perceived as a single unit.
+- **`regular`**: Vertical spacing between stacked fields. Wrap fields in `<Stack space="regular">` within any section or group.
+- **`related`**: Horizontal spacing for fields that belong together, like postcode + city or start/end dates. Place them side by side with `<Inline space="related">`.
 
 <ComponentDemo file="./form-spacing-field.demo.tsx" />
 
