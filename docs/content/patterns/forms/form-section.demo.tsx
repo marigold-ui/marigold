@@ -51,11 +51,11 @@ export default () => {
             {showSpacing && (
               <VisualSpacing orientation="vertical" space="regular" />
             )}
-            <TextField label="Username" required />
+            <TextField label="Username" required width="2/3" />
             {showSpacing && (
               <VisualSpacing orientation="vertical" space="regular" />
             )}
-            <TextField label="Password" type="password" required />
+            <TextField label="Password" type="password" required width="2/3" />
           </Stack>
         </Stack>
       </Inset>
