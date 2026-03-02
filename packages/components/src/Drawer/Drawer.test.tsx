@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
-import { Basic, LeftPlacement } from './Drawer.stories';
+import { Basic } from './Drawer.stories';
 
 let isSmallScreen = false;
 const mockMatchMedia = () =>
@@ -34,24 +34,6 @@ test('opens/closes via trigger', async () => {
   await user.click(button);
 
   expect(drawer).not.toBeInTheDocument();
-});
-
-test('slides from the left', async () => {
-  renderWithOverlay(<LeftPlacement.Component />);
-
-  const button = screen.getByRole('button', { name: 'Open Left Drawer' });
-  await user.click(button);
-
-  const drawerModal = screen.getByTestId('drawer-modal');
-  expect(drawerModal).toBeInTheDocument();
-  expect(drawerModal).toHaveClass(
-    'placement-left:entering:animate-slide-in-left'
-  );
-  expect(drawerModal).toHaveClass(
-    'placement-left:exiting:animate-slide-out-left'
-  );
-  expect(drawerModal).toHaveClass('placement-left:inset-y-4');
-  expect(drawerModal).toHaveClass('placement-left:left-4');
 });
 
 test('can be closed with esc key', async () => {

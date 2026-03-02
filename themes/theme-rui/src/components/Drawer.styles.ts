@@ -5,10 +5,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
     base: [
       'group/overlay',
       '[--slide-offset:1rem]',
-      'placement-top:inset-x-4 placement-top:top-4 placement-top:entering:animate-slide-in-top placement-top:exiting:animate-slide-out-top',
-      'placement-bottom:inset-x-4 placement-bottom:bottom-4 placement-bottom:entering:animate-slide-in-bottom placement-bottom:exiting:animate-slide-out-bottom',
-      'placement-left:inset-y-4 placement-left:left-4 placement-left:entering:animate-slide-in-left placement-left:exiting:animate-slide-out-left',
-      'placement-right:inset-y-4 placement-right:right-4 placement-right:entering:animate-slide-in-right placement-right:exiting:animate-slide-out-right',
+      'inset-y-4 right-4 entering:animate-slide-in-right exiting:animate-slide-out-right',
     ],
   }),
   container: cva({
@@ -17,14 +14,13 @@ export const Drawer: ThemeComponent<'Drawer'> = {
       'rounded-xl ui-surface util-scrollbar',
       'shadow-[var(--shadow-elevation-overlay),0_0_3px_1px_oklch(0_0_0/0.06)]',
       '[--ui-border-color:oklch(from_var(--color-surface-border)_calc(l_-_0.1)_c_h)]',
-      'placement-right:h-full placement-left:h-full',
-      'placement-top:w-full placement-bottom:w-full',
+      'h-full',
     ],
     variants: {
       size: {
-        xsmall: 'w-64 placement-top:sm:h-48 placement-bottom:sm:h-48',
-        small: 'w-72 placement-top:sm:h-64 placement-bottom:sm:h-64',
-        medium: 'w-96 placement-top:sm:h-80 placement-bottom:sm:h-80',
+        xsmall: 'w-64',
+        small: 'w-72',
+        medium: 'w-96',
       },
     },
   }),
