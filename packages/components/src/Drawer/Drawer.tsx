@@ -34,12 +34,6 @@ export interface DrawerProps extends Omit<
    * @default true
    */
 
-  /**
-   * The placement of the drawer on the screen.
-   * @default right
-   */
-  placement?: 'top' | 'bottom' | 'left' | 'right';
-
   keyboardDismissable?: boolean;
 
   /**
@@ -69,7 +63,6 @@ export const Drawer = ({
   keyboardDismissable,
   closeButton,
   role = 'complementary',
-  placement = 'right',
   ...props
 }: DrawerProps) => {
   const ref = useRef<HTMLElement | null>(null);
@@ -96,7 +89,6 @@ export const Drawer = ({
       open={open}
       keyboardDismissable={keyboardDismissable}
       data-testid="drawer-modal"
-      data-placement={placement}
     >
       <DrawerContext.Provider value={{ variant, size }}>
         <Dialog
@@ -109,7 +101,6 @@ export const Drawer = ({
             "grid [grid-template-areas:'title'_'content'_'actions']",
             classNames.container
           )}
-          data-placement={placement}
         >
           {closeButton && (
             <CloseButton

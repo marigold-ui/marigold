@@ -4,7 +4,7 @@ export default function () {
   return (
     <Drawer.Trigger>
       <Button>Open Help</Button>
-      <Drawer placement="right">
+      <Drawer>
         <Drawer.Title>Quick Help</Drawer.Title>
         <Drawer.Content>
           <Stack space={4}>

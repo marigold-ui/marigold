@@ -16,9 +16,7 @@ const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
 
 // Props
 // ---------------
-interface DrawerModalProps extends NonModalProps {
-  placement?: 'left' | 'right' | 'top' | 'bottom';
-}
+type DrawerModalProps = NonModalProps;
 
 // Component
 // ---------------
