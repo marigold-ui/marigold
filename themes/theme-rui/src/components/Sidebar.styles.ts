@@ -31,7 +31,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3 z-50', 'size-7'] }),
   header: cva({ base: 'border-border border-b px-4 py-3' }),
-  content: cva({ base: 'px-4 py-2 overflow-y-auto outline-none' }),
+  content: cva({
+    base: 'flex flex-col px-4 py-2 overflow-y-auto outline-none',
+  }),
   footer: cva({ base: 'border-border border-t px-4 py-3' }),
   toggle: cva({
     base: [
@@ -40,9 +42,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'size-button [&_svg]:size-6',
     ],
   }),
-  group: cva({ base: 'flex flex-col gap-1 py-2' }),
+  group: cva({ base: '' }),
   groupLabel: cva({
-    base: 'px-2 h-[30px] pt-3 pb-0.5 text-xs font-medium text-muted-foreground uppercase tracking-wider',
+    base: 'px-2 h-[30px] pt-3 pb-0.5 mb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider',
   }),
   menu: cva({ base: 'flex flex-col gap-0.5 list-none p-0 m-0' }),
   menuItem: cva({ base: '' }),

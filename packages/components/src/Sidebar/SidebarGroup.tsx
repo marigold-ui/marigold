@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { useSidebar } from './Context';
 
 export interface SidebarGroupLabelProps {
@@ -22,16 +22,5 @@ export interface SidebarGroupProps {
 }
 
 export const SidebarGroup = ({ children }: SidebarGroupProps) => {
-  const { variant, size } = useSidebar();
-  const classNames = useClassNames({
-    component: 'Sidebar',
-    variant,
-    size,
-  });
-
-  return (
-    <div role="group" className={cn(classNames.group)}>
-      {children}
-    </div>
-  );
+  return <>{children}</>;
 };

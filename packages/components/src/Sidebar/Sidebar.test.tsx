@@ -206,6 +206,52 @@ test('supports right side placement', () => {
   expect(nav).toHaveAttribute('data-side', 'right');
 });
 
+test('keyboard navigation works within groups', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Content>
+          <Sidebar.Group>
+            <Sidebar.GroupLabel>Navigation</Sidebar.GroupLabel>
+            <Sidebar.Nav>
+              <Sidebar.Item href="/home">Home</Sidebar.Item>
+              <Sidebar.Item href="/about">About</Sidebar.Item>
+              <Sidebar.Item href="/contact">Contact</Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar.Group>
+        </Sidebar.Content>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  const home = screen.getByText('Home');
+  const about = screen.getByText('About');
+  const contact = screen.getByText('Contact');
+
+  // Focus first item
+  home.focus();
+
+  // ArrowDown moves to next item
+  await user.keyboard('{ArrowDown}');
+  expect(about).toHaveFocus();
+
+  // ArrowDown again
+  await user.keyboard('{ArrowDown}');
+  expect(contact).toHaveFocus();
+
+  // ArrowUp moves back
+  await user.keyboard('{ArrowUp}');
+  expect(about).toHaveFocus();
+
+  // Home key jumps to first
+  await user.keyboard('{Home}');
+  expect(home).toHaveFocus();
+
+  // End key jumps to last
+  await user.keyboard('{End}');
+  expect(contact).toHaveFocus();
+});
+
 test('branch items show chevron and navigate to sub-panel', async () => {
   render(
     <Sidebar.Provider>
