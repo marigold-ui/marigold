@@ -286,7 +286,9 @@ export const SidebarNav = <T extends object = object>({
       <motion.div
         animate={{ height: height === 'auto' ? 'auto' : height }}
         transition={
-          shouldReduceMotion ? { duration: 0 } : { ...tweenTransition }
+          shouldReduceMotion || state.direction === 'backward'
+            ? { duration: 0 }
+            : { ...tweenTransition }
         }
       >
         <AnimatePresence initial={false} mode="popLayout">

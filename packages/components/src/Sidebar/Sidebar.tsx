@@ -76,12 +76,11 @@ const DesktopSidebar = ({
       aria-label={ariaLabel ?? 'Sidebar'}
       data-state={state}
       data-side={side}
-      className={cn(
-        "grid grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
-        classNames.root
-      )}
+      className={classNames.root}
     >
-      {children}
+      <div className="grid h-full w-64 grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
+        {children}
+      </div>
     </nav>
   );
 };

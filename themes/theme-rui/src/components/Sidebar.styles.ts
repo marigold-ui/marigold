@@ -3,10 +3,10 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const Sidebar: ThemeComponent<'Sidebar'> = {
   root: cva({
     base: [
-      'relative h-full grid-rows-[auto_1fr_auto]',
+      'relative h-full overflow-hidden',
       'bg-surface border-surface-border ui-elevation-overlay util-scrollbar',
       'data-[state=expanded]:w-64',
-      'data-[state=collapsed]:w-0 data-[state=collapsed]:overflow-hidden',
+      'data-[state=collapsed]:w-0',
       'transition-[width] duration-200 ease-in-out',
       'data-[side=left]:border-r data-[side=right]:border-l',
     ],
