@@ -7,7 +7,13 @@ import {
   useRef,
   useState,
 } from 'react';
-import type { KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react';
+import type {
+  FocusEvent,
+  KeyboardEvent,
+  MouseEvent,
+  ReactNode,
+  RefObject,
+} from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
@@ -50,7 +56,13 @@ const tweenTransition = {
   ease: [0.25, 0.1, 0.25, 1.0] as [number, number, number, number],
 };
 
-// Inner panel content (uses FocusManager)
+// Roving tabindex: query all menuitems in a container
+const getMenuItems = (container: HTMLElement | null) =>
+  Array.from(
+    container?.querySelectorAll('[role="menuitem"]') ?? []
+  ) as HTMLElement[];
+
+// Inner panel content (uses FocusScope + roving tabindex)
 // ---------------
 const InnerPanelContent = ({
   nodes,
@@ -68,6 +80,15 @@ const InnerPanelContent = ({
   panelRef: RefObject<HTMLUListElement | null>;
 }) => {
   const focusManager = useFocusManager();
+
+  // Keep roving tabindex in sync whenever a menuitem receives focus
+  const handleMenuFocus = (e: FocusEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.getAttribute('role') !== 'menuitem') return;
+    for (const item of getMenuItems(panelRef.current)) {
+      item.tabIndex = item === target ? 0 : -1;
+    }
+  };
 
   const handleKeyDown =
     (action: () => void) => (e: KeyboardEvent<HTMLElement>) => {
@@ -100,13 +121,22 @@ const InnerPanelContent = ({
       }
     };
 
+  // Render counter: first menuitem gets tabIndex=0, rest get -1
+  let itemCount = 0;
+
   return (
-    <ul ref={panelRef} role="menu" className={cn(classNames.menu)}>
+    <ul
+      ref={panelRef}
+      role="menu"
+      className={cn(classNames.menu)}
+      onFocus={handleMenuFocus}
+    >
       {onBack && (
         <li role="none">
           <button
             type="button"
             role="menuitem"
+            tabIndex={itemCount++ === 0 ? 0 : -1}
             aria-label={`Back to ${backLabel ?? 'Back'}`}
             data-back-button
             className={cn(classNames.subNavBackButton)}
@@ -139,6 +169,7 @@ const InnerPanelContent = ({
               <button
                 type="button"
                 role="menuitem"
+                tabIndex={itemCount++ === 0 ? 0 : -1}
                 aria-haspopup="true"
                 data-key={node.key}
                 className={cn(classNames.menuButton, 'justify-between')}
@@ -174,6 +205,7 @@ const InnerPanelContent = ({
             <Element
               {...elementProps}
               role="menuitem"
+              tabIndex={itemCount++ === 0 ? 0 : -1}
               data-key={node.key}
               aria-current={node.active ? 'page' : undefined}
               data-active={node.active || undefined}
@@ -260,23 +292,29 @@ export const SidebarNav = <T extends object = object>({
   useEffect(() => {
     if (!panelRef.current) return;
 
+    const items = getMenuItems(panelRef.current);
+    let target: HTMLElement | null = null;
+
     if (state.direction === 'backward' && state.lastTriggerKey) {
-      const trigger = panelRef.current.querySelector(
+      target = panelRef.current.querySelector(
         `[data-key="${state.lastTriggerKey}"]`
       );
-      (trigger as HTMLElement)?.focus();
     } else if (state.direction === 'forward' && state.stack.length > 0) {
-      // Focus back button or first focusable item
-      const backButton = panelRef.current.querySelector('[data-back-button]');
-      if (backButton) {
-        (backButton as HTMLElement).focus();
-      } else {
-        const first = panelRef.current.querySelector(
-          'button, a'
-        ) as HTMLElement;
-        first?.focus();
-      }
+      target =
+        (panelRef.current.querySelector('[data-back-button]') as HTMLElement) ??
+        items[0] ??
+        null;
     }
+
+    // Update roving tabindex to match focused element
+    for (const item of items) {
+      item.tabIndex = item === target ? 0 : -1;
+    }
+    if (!target && items.length > 0) {
+      items[0].tabIndex = 0;
+    }
+
+    target?.focus();
   }, [panelKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const slideOffset = 8;
