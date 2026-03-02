@@ -17,14 +17,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   footer: cva({ base: 'border-border border-t px-6 py-4' }),
   toggle: cva({
     base: [
-      'inline-flex items-center justify-center',
-      'whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform]',
-      '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-      'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
-      'cursor-pointer',
-      'duration-150 active:scale-[0.97]',
-      'ui-surface',
-      'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
+      'ui-button-base ui-press',
+      'hover:bg-current/10',
       'size-button [&_svg]:size-4',
     ],
   }),

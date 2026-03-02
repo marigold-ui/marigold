@@ -8,12 +8,8 @@ import { SidebarContent } from './SidebarContent';
 import { SidebarFooter } from './SidebarFooter';
 import { SidebarGroup, SidebarGroupLabel } from './SidebarGroup';
 import { SidebarHeader } from './SidebarHeader';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './SidebarMenu';
-import {
-  SidebarMenuSub,
-  SidebarMenuSubTrigger,
-  SidebarSubNav,
-} from './SidebarSubNav';
+import { SidebarItem, SidebarSeparator } from './SidebarItem';
+import { SidebarNav } from './SidebarNav';
 import { SidebarToggle } from './SidebarToggle';
 
 // Props
@@ -108,10 +104,7 @@ Sidebar.Content = SidebarContent;
 Sidebar.Footer = SidebarFooter;
 Sidebar.Group = SidebarGroup;
 Sidebar.GroupLabel = SidebarGroupLabel;
-Sidebar.Menu = SidebarMenu;
-Sidebar.MenuItem = SidebarMenuItem;
-Sidebar.MenuButton = SidebarMenuButton;
-Sidebar.SubNav = SidebarSubNav;
-Sidebar.MenuSub = SidebarMenuSub;
-Sidebar.MenuSubTrigger = SidebarMenuSubTrigger;
+Sidebar.Nav = SidebarNav;
+Sidebar.Item = SidebarItem;
+Sidebar.Separator = SidebarSeparator;
 Sidebar.Toggle = SidebarToggle;

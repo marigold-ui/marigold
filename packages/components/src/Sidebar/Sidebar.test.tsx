@@ -12,6 +12,8 @@ const mockMatchMedia = () =>
   vi.fn().mockImplementation(() => {
     return {
       matches: isSmallScreen,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
     };
   });
 window.matchMedia = mockMatchMedia();
@@ -59,11 +61,9 @@ test('renders with sub-components', () => {
         <Sidebar.Content>
           <Sidebar.Group>
             <Sidebar.GroupLabel>Section</Sidebar.GroupLabel>
-            <Sidebar.Menu>
-              <Sidebar.MenuItem>
-                <Sidebar.MenuButton>Home</Sidebar.MenuButton>
-              </Sidebar.MenuItem>
-            </Sidebar.Menu>
+            <Sidebar.Nav>
+              <Sidebar.Item href="/home">Home</Sidebar.Item>
+            </Sidebar.Nav>
           </Sidebar.Group>
         </Sidebar.Content>
         <Sidebar.Footer>Footer</Sidebar.Footer>
@@ -127,14 +127,10 @@ test('active state with aria-current', () => {
     <Sidebar.Provider>
       <Sidebar>
         <Sidebar.Content>
-          <Sidebar.Menu>
-            <Sidebar.MenuItem>
-              <Sidebar.MenuButton active>Home</Sidebar.MenuButton>
-            </Sidebar.MenuItem>
-            <Sidebar.MenuItem>
-              <Sidebar.MenuButton>About</Sidebar.MenuButton>
-            </Sidebar.MenuItem>
-          </Sidebar.Menu>
+          <Sidebar.Nav>
+            <Sidebar.Item active>Home</Sidebar.Item>
+            <Sidebar.Item>About</Sidebar.Item>
+          </Sidebar.Nav>
         </Sidebar.Content>
       </Sidebar>
     </Sidebar.Provider>
@@ -163,11 +159,9 @@ test('renders menu button as link when href is provided', () => {
     <Sidebar.Provider>
       <Sidebar>
         <Sidebar.Content>
-          <Sidebar.Menu>
-            <Sidebar.MenuItem>
-              <Sidebar.MenuButton href="/home">Home</Sidebar.MenuButton>
-            </Sidebar.MenuItem>
-          </Sidebar.Menu>
+          <Sidebar.Nav>
+            <Sidebar.Item href="/home">Home</Sidebar.Item>
+          </Sidebar.Nav>
         </Sidebar.Content>
       </Sidebar>
     </Sidebar.Provider>
@@ -208,4 +202,45 @@ test('supports right side placement', () => {
 
   const nav = screen.getByRole('navigation');
   expect(nav).toHaveAttribute('data-side', 'right');
+});
+
+test('branch items show chevron and navigate to sub-panel', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Content>
+          <Sidebar.Nav>
+            <Sidebar.Item href="/home">Home</Sidebar.Item>
+            <Sidebar.Item id="settings" textValue="Settings">
+              Settings
+              <Sidebar.Item href="/general">General</Sidebar.Item>
+              <Sidebar.Item href="/security">Security</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar.Content>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  // Root panel: Home + Settings trigger
+  expect(screen.getByText('Home')).toBeInTheDocument();
+  const settingsTrigger = screen.getByRole('button', { name: /Settings/ });
+  expect(settingsTrigger).toHaveAttribute('aria-haspopup', 'true');
+
+  // Navigate into settings
+  await user.click(settingsTrigger);
+
+  // Sub-panel should show General and Security
+  expect(screen.getByText('General')).toBeInTheDocument();
+  expect(screen.getByText('Security')).toBeInTheDocument();
+
+  // Back button should be visible
+  const backButton = screen.getByRole('button', { name: /Back/ });
+  expect(backButton).toBeInTheDocument();
+
+  // Navigate back
+  await user.click(backButton);
+
+  // Root panel visible again
+  expect(screen.getByText('Home')).toBeInTheDocument();
 });

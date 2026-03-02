@@ -47,95 +47,63 @@ const Layout = ({
           </Sidebar.Header>
           <Sidebar.Content>
             <Sidebar.Group>
-              <Sidebar.SubNav>
-                <Sidebar.MenuSub id="root" label="Main">
-                  <Sidebar.Menu>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuButton
-                        href="/overview"
-                        active={activePage === 'overview'}
-                        onPress={() => setActivePage('overview')}
-                      >
-                        Overview
-                      </Sidebar.MenuButton>
-                    </Sidebar.MenuItem>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuButton
-                        href="/analytics"
-                        active={activePage === 'analytics'}
-                        onPress={() => setActivePage('analytics')}
-                      >
-                        Analytics
-                      </Sidebar.MenuButton>
-                    </Sidebar.MenuItem>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuSubTrigger submenuId="management">
-                        Management
-                      </Sidebar.MenuSubTrigger>
-                    </Sidebar.MenuItem>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuSubTrigger submenuId="settings">
-                        Settings
-                      </Sidebar.MenuSubTrigger>
-                    </Sidebar.MenuItem>
-                  </Sidebar.Menu>
-                </Sidebar.MenuSub>
-
-                <Sidebar.MenuSub id="management" label="Management">
-                  <Sidebar.Menu>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuButton
-                        href="/users"
-                        active={activePage === 'users'}
-                        onPress={() => setActivePage('users')}
-                      >
-                        Users
-                      </Sidebar.MenuButton>
-                    </Sidebar.MenuItem>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuButton
-                        href="/teams"
-                        active={activePage === 'teams'}
-                        onPress={() => setActivePage('teams')}
-                      >
-                        Teams
-                      </Sidebar.MenuButton>
-                    </Sidebar.MenuItem>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuButton
-                        href="/billing"
-                        active={activePage === 'billing'}
-                        onPress={() => setActivePage('billing')}
-                      >
-                        Billing
-                      </Sidebar.MenuButton>
-                    </Sidebar.MenuItem>
-                  </Sidebar.Menu>
-                </Sidebar.MenuSub>
-
-                <Sidebar.MenuSub id="settings" label="Settings">
-                  <Sidebar.Menu>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuButton
-                        href="/general"
-                        active={activePage === 'general'}
-                        onPress={() => setActivePage('general')}
-                      >
-                        General
-                      </Sidebar.MenuButton>
-                    </Sidebar.MenuItem>
-                    <Sidebar.MenuItem>
-                      <Sidebar.MenuButton
-                        href="/security"
-                        active={activePage === 'security'}
-                        onPress={() => setActivePage('security')}
-                      >
-                        Security
-                      </Sidebar.MenuButton>
-                    </Sidebar.MenuItem>
-                  </Sidebar.Menu>
-                </Sidebar.MenuSub>
-              </Sidebar.SubNav>
+              <Sidebar.Nav>
+                <Sidebar.Item
+                  href="/overview"
+                  active={activePage === 'overview'}
+                  onPress={() => setActivePage('overview')}
+                >
+                  Overview
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/analytics"
+                  active={activePage === 'analytics'}
+                  onPress={() => setActivePage('analytics')}
+                >
+                  Analytics
+                </Sidebar.Item>
+                <Sidebar.Item id="management" textValue="Management">
+                  Management
+                  <Sidebar.Item
+                    href="/users"
+                    active={activePage === 'users'}
+                    onPress={() => setActivePage('users')}
+                  >
+                    Users
+                  </Sidebar.Item>
+                  <Sidebar.Item
+                    href="/teams"
+                    active={activePage === 'teams'}
+                    onPress={() => setActivePage('teams')}
+                  >
+                    Teams
+                  </Sidebar.Item>
+                  <Sidebar.Item
+                    href="/billing"
+                    active={activePage === 'billing'}
+                    onPress={() => setActivePage('billing')}
+                  >
+                    Billing
+                  </Sidebar.Item>
+                </Sidebar.Item>
+                <Sidebar.Item id="settings" textValue="Settings">
+                  Settings
+                  <Sidebar.Item
+                    href="/general"
+                    active={activePage === 'general'}
+                    onPress={() => setActivePage('general')}
+                  >
+                    General
+                  </Sidebar.Item>
+                  <Sidebar.Item
+                    href="/security"
+                    active={activePage === 'security'}
+                    onPress={() => setActivePage('security')}
+                  >
+                    Security
+                  </Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
             </Sidebar.Group>
           </Sidebar.Content>
           <Sidebar.Footer>
