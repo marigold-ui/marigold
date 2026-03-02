@@ -366,20 +366,20 @@
   }
 
   /* Sidebar panel transitions */
-  --animate-panel-enter-forward: panel-enter-forward 200ms
-    cubic-bezier(0.25, 0.1, 0.25, 1) both;
-  --animate-panel-exit-forward: panel-exit-forward 200ms
-    cubic-bezier(0.25, 0.1, 0.25, 1) both;
-  --animate-panel-enter-backward: panel-enter-backward 200ms
-    cubic-bezier(0.25, 0.1, 0.25, 1) both;
-  --animate-panel-exit-backward: panel-exit-backward 200ms
-    cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  --animate-panel-enter-forward: panel-enter-forward 150ms
+    cubic-bezier(0.2, 0, 0, 1) both;
+  --animate-panel-exit-forward: panel-exit-forward 150ms
+    cubic-bezier(0.2, 0, 0, 1) both;
+  --animate-panel-enter-backward: panel-enter-backward 150ms
+    cubic-bezier(0.2, 0, 0, 1) both;
+  --animate-panel-exit-backward: panel-exit-backward 150ms
+    cubic-bezier(0.2, 0, 0, 1) both;
 
   @keyframes panel-enter-forward {
     from {
-      transform: translateX(8px);
+      transform: translateX(6px);
       opacity: 0;
-      filter: blur(2px);
+      filter: blur(1px);
     }
     to {
       transform: translateX(0);
@@ -395,17 +395,17 @@
       filter: blur(0);
     }
     to {
-      transform: translateX(-8px);
+      transform: translateX(-6px);
       opacity: 0;
-      filter: blur(2px);
+      filter: blur(1px);
     }
   }
 
   @keyframes panel-enter-backward {
     from {
-      transform: translateX(-8px);
+      transform: translateX(-6px);
       opacity: 0;
-      filter: blur(2px);
+      filter: blur(1px);
     }
     to {
       transform: translateX(0);
@@ -421,9 +421,9 @@
       filter: blur(0);
     }
     to {
-      transform: translateX(8px);
+      transform: translateX(6px);
       opacity: 0;
-      filter: blur(2px);
+      filter: blur(1px);
     }
   }
 

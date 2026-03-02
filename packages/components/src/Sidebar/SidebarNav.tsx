@@ -413,7 +413,7 @@ export const SidebarNav = <T extends object = object>({
   // Cleanup fallback for environments where onAnimationEnd doesn't fire (e.g. JSDOM)
   useEffect(() => {
     if (!exitingPanel) return;
-    const timer = setTimeout(() => setExitingPanel(null), 250);
+    const timer = setTimeout(() => setExitingPanel(null), 200);
     return () => clearTimeout(timer);
   }, [exitingPanel]);
 
@@ -426,7 +426,7 @@ export const SidebarNav = <T extends object = object>({
           height: height === 'auto' ? 'auto' : height,
           transition: skipHeightTransition
             ? 'none'
-            : 'height 200ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+            : 'height 150ms cubic-bezier(0.2, 0, 0, 1)',
           position: 'relative',
           overflow: 'hidden',
         }}
