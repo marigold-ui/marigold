@@ -1,6 +1,6 @@
 import {
   useCallback,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useReducer,
   useRef,
@@ -15,6 +15,7 @@ import type {
 } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useResizeObserver } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
@@ -230,6 +231,30 @@ interface ExitingPanel {
   stackLength: number;
 }
 
+// Snapshot current panel info before navigation
+// ---------------
+const snapshotCurrentPanel = (
+  stack: string[],
+  collection: SidebarCollection
+): Omit<ExitingPanel, 'direction'> => {
+  const activeKey = stack.length > 0 ? stack[stack.length - 1] : null;
+  const activeItem = activeKey ? collection.getItem(activeKey) : undefined;
+  const activeNodes =
+    activeItem?.type === 'item' ? activeItem.children : collection.rootNodes;
+  const currentLabel = (() => {
+    if (stack.length === 0) return null;
+    const currentKey = stack[stack.length - 1];
+    const currentNode = collection.getItem(currentKey);
+    return currentNode?.type === 'item' ? currentNode.textValue : null;
+  })();
+  return {
+    key: activeKey ?? 'root',
+    nodes: activeNodes,
+    backLabel: currentLabel,
+    stackLength: stack.length,
+  };
+};
+
 // SidebarNav
 // ---------------
 export interface SidebarNavProps<T = object> {
@@ -268,66 +293,32 @@ export const SidebarNav = <T extends object = object>({
     lastTriggerKey: null,
   });
 
-  // Snapshot current panel info before navigation
-  const prevPanelRef = useRef<{
-    key: string;
-    nodes: SidebarNode[];
-    backLabel: string | null;
-    stackLength: number;
-  } | null>(null);
+  // Exiting panel state for CSS transitions
+  const [exitingPanel, setExitingPanel] = useState<ExitingPanel | null>(null);
+  const cleanupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const push = useCallback(
     (id: string) => {
-      // Snapshot current panel before pushing
-      const activeKey =
-        state.stack.length > 0 ? state.stack[state.stack.length - 1] : null;
-      const activeItem = activeKey ? collection.getItem(activeKey) : undefined;
-      const activeNodes =
-        activeItem?.type === 'item'
-          ? activeItem.children
-          : collection.rootNodes;
-      const currentLabel = (() => {
-        if (state.stack.length === 0) return null;
-        const currentKey = state.stack[state.stack.length - 1];
-        const currentNode = collection.getItem(currentKey);
-        return currentNode?.type === 'item' ? currentNode.textValue : null;
-      })();
-
-      prevPanelRef.current = {
-        key: activeKey ?? 'root',
-        nodes: activeNodes,
-        backLabel: currentLabel,
-        stackLength: state.stack.length,
-      };
-
+      if (!reducedMotion) {
+        const snapshot = snapshotCurrentPanel(state.stack, collection);
+        setExitingPanel({ ...snapshot, direction: 'forward' });
+        clearTimeout(cleanupTimerRef.current!);
+        cleanupTimerRef.current = setTimeout(() => setExitingPanel(null), 200);
+      }
       dispatch({ type: 'push', id });
     },
-    [state.stack, collection]
+    [state.stack, collection, reducedMotion]
   );
 
   const pop = useCallback(() => {
-    // Snapshot current panel before popping
-    const activeKey =
-      state.stack.length > 0 ? state.stack[state.stack.length - 1] : null;
-    const activeItem = activeKey ? collection.getItem(activeKey) : undefined;
-    const activeNodes =
-      activeItem?.type === 'item' ? activeItem.children : collection.rootNodes;
-    const currentLabel = (() => {
-      if (state.stack.length === 0) return null;
-      const currentKey = state.stack[state.stack.length - 1];
-      const currentNode = collection.getItem(currentKey);
-      return currentNode?.type === 'item' ? currentNode.textValue : null;
-    })();
-
-    prevPanelRef.current = {
-      key: activeKey ?? 'root',
-      nodes: activeNodes,
-      backLabel: currentLabel,
-      stackLength: state.stack.length,
-    };
-
+    if (!reducedMotion) {
+      const snapshot = snapshotCurrentPanel(state.stack, collection);
+      setExitingPanel({ ...snapshot, direction: 'backward' });
+      clearTimeout(cleanupTimerRef.current!);
+      cleanupTimerRef.current = setTimeout(() => setExitingPanel(null), 200);
+    }
     dispatch({ type: 'pop' });
-  }, [state.stack, collection]);
+  }, [state.stack, collection, reducedMotion]);
 
   // Determine active panel nodes
   const activeKey =
@@ -346,40 +337,26 @@ export const SidebarNav = <T extends object = object>({
     return currentNode?.type === 'item' ? currentNode.textValue : null;
   })();
 
-  // Exiting panel state for CSS transitions
-  const [exitingPanel, setExitingPanel] = useState<ExitingPanel | null>(null);
-
   // Height animation
   const contentRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number | 'auto'>('auto');
 
   const panelKey = activeKey ?? 'root';
 
-  // Set exiting panel when panelKey changes
-  const prevPanelKeyRef = useRef(panelKey);
-  useEffect(() => {
-    if (prevPanelKeyRef.current !== panelKey && prevPanelRef.current) {
-      if (!reducedMotion) {
-        setExitingPanel({
-          ...prevPanelRef.current,
-          direction: state.direction,
-        });
+  // Height animation via ResizeObserver
+  useResizeObserver({
+    ref: contentRef,
+    onResize: () => {
+      if (contentRef.current) {
+        setHeight(contentRef.current.scrollHeight);
       }
-      prevPanelRef.current = null;
-    }
-    prevPanelKeyRef.current = panelKey;
-  }, [panelKey, state.direction, reducedMotion]);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setHeight(contentRef.current.scrollHeight);
-    }
-  }, [activeKey]);
+    },
+  });
 
   // Focus management on panel transitions
   const panelRef = useRef<HTMLUListElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!panelRef.current) return;
 
     const items = getMenuItems(panelRef.current);
@@ -407,13 +384,6 @@ export const SidebarNav = <T extends object = object>({
     target?.focus();
   }, [panelKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Cleanup fallback for environments where onAnimationEnd doesn't fire (e.g. JSDOM)
-  useEffect(() => {
-    if (!exitingPanel) return;
-    const timer = setTimeout(() => setExitingPanel(null), 200);
-    return () => clearTimeout(timer);
-  }, [exitingPanel]);
-
   const skipHeightTransition = reducedMotion || state.direction === 'backward';
 
   return (
@@ -439,7 +409,11 @@ export const SidebarNav = <T extends object = object>({
             )}
             inert
             aria-hidden="true"
-            onAnimationEnd={() => setExitingPanel(null)}
+            onAnimationEnd={() => {
+              clearTimeout(cleanupTimerRef.current!);
+              cleanupTimerRef.current = null;
+              setExitingPanel(null);
+            }}
           >
             <InnerPanelContent
               nodes={exitingPanel.nodes}
