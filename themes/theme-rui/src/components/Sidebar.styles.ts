@@ -1,6 +1,24 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Sidebar: ThemeComponent<'Sidebar'> = {
+  overlay: cva({
+    base: [
+      'fixed inset-0 h-(--visual-viewport-height)',
+      'entering:animate-in entering:fade-in entering:duration-300 entering:ease-out',
+      'exiting:animate-out exiting:fade-out exiting:duration-200 exiting:ease-in',
+    ],
+  }),
+  modal: cva({
+    base: [
+      'flex h-full *:flex-1',
+      'data-[side=left]:justify-start',
+      'data-[side=right]:justify-end',
+      'data-[side=left]:entering:animate-slide-in-left',
+      'data-[side=left]:exiting:animate-slide-out-left',
+      'data-[side=right]:entering:animate-slide-in-right',
+      'data-[side=right]:exiting:animate-slide-out-right',
+    ],
+  }),
   root: cva({
     base: [
       'relative h-full overflow-hidden',

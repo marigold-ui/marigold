@@ -39,31 +39,10 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
     <ModalOverlay
       isOpen={openMobile}
       onOpenChange={setOpenMobile}
-      className={({ isEntering, isExiting }) =>
-        cn(
-          'fixed inset-0 z-50 h-(--visual-viewport-height)',
-          isEntering ? 'animate-in fade-in duration-300 ease-out' : '',
-          isExiting ? 'animate-out fade-out duration-200 ease-in' : ''
-        )
-      }
+      className={cn('z-50', classNames.overlay)}
       isDismissable
     >
-      <Modal
-        className={({ isEntering, isExiting }) =>
-          cn(
-            'flex h-full *:flex-1',
-            side === 'right' ? 'justify-end' : 'justify-start',
-            isEntering &&
-              (side === 'right'
-                ? 'animate-slide-in-right'
-                : 'animate-slide-in-left'),
-            isExiting &&
-              (side === 'right'
-                ? 'animate-slide-out-right'
-                : 'animate-slide-out-left')
-          )
-        }
-      >
+      <Modal data-side={side} className={classNames.modal}>
         <nav
           aria-label={stringFormatter.format('appNavigation')}
           className={cn('h-full', classNames.root)}

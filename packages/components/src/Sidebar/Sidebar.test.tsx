@@ -23,6 +23,8 @@ const theme: Theme = {
   components: {
     Sidebar: {
       root: cva({}),
+      overlay: cva({}),
+      modal: cva({}),
       closeButton: cva({}),
       header: cva({}),
       content: cva({}),

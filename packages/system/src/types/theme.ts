@@ -259,6 +259,8 @@ export type Theme = {
     >;
     Sidebar?: Record<
       | 'root'
+      | 'overlay'
+      | 'modal'
       | 'closeButton'
       | 'header'
       | 'content'
