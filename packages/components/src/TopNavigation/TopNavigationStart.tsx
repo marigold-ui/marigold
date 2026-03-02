@@ -11,6 +11,9 @@ export interface TopNavigationStartProps {
    * Vertical alignment of the items inside the start slot.
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
+  /**
+   * The children of the component.
+   */
   children?: ReactNode;
 }
 

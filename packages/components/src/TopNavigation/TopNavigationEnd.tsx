@@ -11,6 +11,9 @@ export interface TopNavigationEndProps {
    * Vertical alignment of the items inside the end slot.
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
+  /**
+   * The children of the component.
+   */
   children?: ReactNode;
 }
 

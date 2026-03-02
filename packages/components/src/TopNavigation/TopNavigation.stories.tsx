@@ -94,7 +94,7 @@ export const NavBarPattern = meta.story({
       <TopNavigation.Start>
         <Logo />
       </TopNavigation.Start>
-      <TopNavigation.Center alignY="bottom">
+      <TopNavigation.Middle alignY="bottom">
         <Tabs selectedKey="home">
           <Tabs.List aria-label="Navigation">
             <Tabs.Item id="home" href="#">
@@ -108,7 +108,7 @@ export const NavBarPattern = meta.story({
             </Tabs.Item>
           </Tabs.List>
         </Tabs>
-      </TopNavigation.Center>
+      </TopNavigation.Middle>
       <TopNavigation.End>
         <Inline space={2} alignY="center">
           <Inline space={1} alignX="right" alignY="top">
@@ -169,7 +169,7 @@ export const WithSearchField = meta.story({
       <TopNavigation.Start>
         <Logo />
       </TopNavigation.Start>
-      <TopNavigation.Center alignX="between">
+      <TopNavigation.Middle alignX="between">
         <Breadcrumbs>
           <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
           <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
@@ -178,7 +178,7 @@ export const WithSearchField = meta.story({
           </Breadcrumbs.Item>
         </Breadcrumbs>
         <SearchField placeholder="Search..." width={48} />
-      </TopNavigation.Center>
+      </TopNavigation.Middle>
       <TopNavigation.End>
         <Stack alignX="right">
           <Text>Jane Doe</Text>
