@@ -1,2 +1,2 @@
 - when on a sub path in the sidebar do not show "back" but the name of the parent item
--
+- when item is clicked that has children, automatically navigate to the first item in the list
