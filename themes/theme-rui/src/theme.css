@@ -377,9 +377,9 @@
 
   @keyframes panel-enter-forward {
     from {
-      transform: translateX(6px);
+      transform: translateX(8px);
       opacity: 0;
-      filter: blur(1px);
+      filter: blur(2px);
     }
     to {
       transform: translateX(0);
@@ -395,17 +395,17 @@
       filter: blur(0);
     }
     to {
-      transform: translateX(-6px);
+      transform: translateX(-8px);
       opacity: 0;
-      filter: blur(1px);
+      filter: blur(2px);
     }
   }
 
   @keyframes panel-enter-backward {
     from {
-      transform: translateX(-6px);
+      transform: translateX(-8px);
       opacity: 0;
-      filter: blur(1px);
+      filter: blur(2px);
     }
     to {
       transform: translateX(0);
@@ -421,9 +421,9 @@
       filter: blur(0);
     }
     to {
-      transform: translateX(6px);
+      transform: translateX(8px);
       opacity: 0;
-      filter: blur(1px);
+      filter: blur(2px);
     }
   }
 

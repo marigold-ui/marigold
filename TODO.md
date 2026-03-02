@@ -4,3 +4,5 @@
 - all items needs to be of the same height so animations for/back do not look weird?
 - do we support additional sections and section headers
 - fix styling of back header, caret aligned etc
+- move icon into the component
+- different icon for mobile version?

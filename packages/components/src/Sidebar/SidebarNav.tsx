@@ -362,7 +362,7 @@ export const SidebarNav = <T extends object = object>({
     }
 
     target?.focus();
-  }, [panelKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [panelKey, state.direction, state.lastTriggerKey, state.stack.length]);
 
   return (
     <nav aria-label={ariaLabel} className={cn(classNames.subNav)}>
