@@ -16,10 +16,8 @@ export const Tray: ThemeComponent<'Tray'> = {
   dragHandle: cva({
     base: 'bg-surface-border mx-auto mt-2 h-1.5 w-12 rounded-full',
   }),
-  header: cva({ base: 'border-border border-b px-6 py-4' }),
+  header: cva({ base: 'ui-panel-header' }),
   title: cva({ base: 'font-semibold text-base' }),
   content: cva({ base: 'overflow-y-auto outline-none p-2' }),
-  actions: cva({
-    base: 'flex flex-row gap-3 justify-end border-border border-t px-6 py-4',
-  }),
+  actions: cva({ base: 'ui-panel-actions' }),
 };

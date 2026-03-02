@@ -7,7 +7,7 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
       'hover:ui-state-focus hover:text-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
       'focus-visible:ui-state-focus outline-none',
-      'cursor-pointer util-touch-hitbox',
+      'cursor-pointer ui-touch-hitbox',
     ],
     variants: {
       variant: {
@@ -25,7 +25,7 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
   container: cva({
     base: [
       'outline-none',
-      'ui-surface shadow-elevation-overlay util-scrollbar',
+      'ui-surface shadow-elevation-overlay ui-scrollbar',
       'p-5',
       'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
     ],
