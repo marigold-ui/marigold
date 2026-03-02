@@ -43,7 +43,7 @@ const Layout = ({
       <div className="flex h-screen">
         <Sidebar>
           <Sidebar.Header>
-            <Text weight="bold">Admin Panel</Text>
+            <Text weight="bold">Acme Inc.</Text>
           </Sidebar.Header>
           <Sidebar.Content>
             <Sidebar.Group>
@@ -107,7 +107,7 @@ const Layout = ({
             </Sidebar.Group>
           </Sidebar.Content>
           <Sidebar.Footer>
-            <Text fontSize="xs">Logged in as admin</Text>
+            <Text fontSize="xs">Footer content</Text>
           </Sidebar.Footer>
         </Sidebar>
         <main className="flex-1 p-4">
@@ -125,14 +125,6 @@ const Layout = ({
 
 export const Basic = meta.story({
   render: () => <Layout />,
-});
-
-export const Collapsible = meta.story({
-  render: () => (
-    <Layout>
-      <Text>Click the toggle to collapse/expand the sidebar.</Text>
-    </Layout>
-  ),
 });
 
 export const Controlled = meta.story({
