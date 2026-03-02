@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
+import type React from 'react';
 import { useState } from 'react';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
@@ -6,13 +7,16 @@ import { Stack } from '../Stack/Stack';
 
 // SVG building blocks from lucide PanelLeftClose (24×24)
 const FRAME = <rect width="18" height="18" x="3" y="3" rx="2" />;
-const CHEVRON_CLOSE = 'm16 15-3-3 3-3';
+
+// Chevron paths with identical command structure for smooth morphing
+const CHEVRON_LEFT = 'M 16 15 L 13 12 L 16 9'; // < points left (expanded)
+const CHEVRON_RIGHT = 'M 13 15 L 16 12 L 13 9'; // > points right (collapsed)
 
 // Spring-like cubic-bezier (slight overshoot)
 const SPRING_BEZIER = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
 
 // ---------------------------------------------------------------------------
-// Panel Slide (motion/react) — divider shifts + chevron rotates
+// Panel Slide (motion/react) — divider shifts + chevron morphs
 // ---------------------------------------------------------------------------
 const PanelSlide = ({ expanded }: { expanded: boolean }) => {
   const reduce = useReducedMotion();
@@ -35,15 +39,12 @@ const PanelSlide = ({ expanded }: { expanded: boolean }) => {
     >
       {FRAME}
       <motion.g animate={{ x: expanded ? 0 : -3 }} transition={spring}>
-        <path d="M9 3v18" />
+        <path d="M9 4v16" />
       </motion.g>
-      <motion.g
-        style={{ transformOrigin: '15px 12px' }}
-        animate={{ rotate: expanded ? 0 : 180 }}
+      <motion.path
+        animate={{ d: expanded ? CHEVRON_LEFT : CHEVRON_RIGHT }}
         transition={spring}
-      >
-        <path d={CHEVRON_CLOSE} />
-      </motion.g>
+      />
     </svg>
   );
 };
@@ -71,17 +72,16 @@ const PanelSlideCss = ({ expanded }: { expanded: boolean }) => (
         transition: `transform 200ms ${SPRING_BEZIER}`,
       }}
     >
-      <path d="M9 3v18" />
+      <path d="M9 4v16" />
     </g>
-    <g
-      style={{
-        transformOrigin: '15px 12px',
-        transform: expanded ? 'rotate(0deg)' : 'rotate(180deg)',
-        transition: `transform 200ms ${SPRING_BEZIER}`,
-      }}
-    >
-      <path d={CHEVRON_CLOSE} />
-    </g>
+    <path
+      style={
+        {
+          d: `path("${expanded ? CHEVRON_LEFT : CHEVRON_RIGHT}")`,
+          transition: `d 200ms ${SPRING_BEZIER}`,
+        } as React.CSSProperties
+      }
+    />
   </svg>
 );
 
