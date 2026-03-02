@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
+import { mockMatchMedia } from '../test.utils';
 import {
   ApplicationShell,
   NavBarPattern,
@@ -9,13 +10,9 @@ import {
 
 /**
  * We need to mock `matchMedia` because jsdom does not
- * implement it (required by Menu's useSmallScreen).
+ * implement it (required by useSmallScreen).
  */
-window.matchMedia = vi.fn().mockImplementation(query => ({
-  matches: false,
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-}));
+window.matchMedia = mockMatchMedia([]);
 
 describe('TopNavigation', () => {
   it('renders a nav element with the correct aria-label', () => {
@@ -60,5 +57,33 @@ describe('TopNavigation', () => {
     render(<NavBarPattern.Component />);
     const nav = screen.getByRole('navigation', { name: 'Main navigation' });
     expect(nav.className).toMatch(/grid/);
+  });
+
+  describe('mobile responsiveness', () => {
+    afterEach(() => {
+      window.matchMedia = mockMatchMedia([]);
+    });
+
+    it('uses two-row grid layout on small screens', () => {
+      window.matchMedia = mockMatchMedia(['(width < 640px)']);
+      render(<NavBarPattern.Component />);
+      const nav = screen.getByRole('navigation', { name: 'Main navigation' });
+      expect(nav.className).toMatch(/grid/);
+    });
+
+    it('keeps all three slots visible on small screens', () => {
+      window.matchMedia = mockMatchMedia(['(width < 640px)']);
+      render(<NavBarPattern.Component />);
+      expect(screen.getByText('Home')).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'User menu' })
+      ).toBeInTheDocument();
+    });
+
+    it('hides verbose user info on small screens', () => {
+      window.matchMedia = mockMatchMedia(['(width < 640px)']);
+      render(<NavBarPattern.Component />);
+      expect(screen.queryByText('Jane Doe')).not.toBeInTheDocument();
+    });
   });
 });

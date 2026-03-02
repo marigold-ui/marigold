@@ -1,8 +1,10 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Logout, SettingDots, User } from '@marigold/icons';
+import { useSmallScreen } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
+import { Button } from '../Button/Button';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
@@ -72,6 +74,47 @@ const Logo = () => (
   </svg>
 );
 
+const UserMenu = () => (
+  <ActionMenu aria-label="User menu">
+    <Menu.Section title="Account">
+      <Menu.Item id="profile" textValue="Profile">
+        <User size={16} /> Profile
+      </Menu.Item>
+      <Menu.Item id="settings" textValue="Settings">
+        <SettingDots size={16} /> Settings
+      </Menu.Item>
+      <Menu.Item id="sign-out" textValue="Sign out">
+        <Logout size={16} /> Sign out
+      </Menu.Item>
+    </Menu.Section>
+  </ActionMenu>
+);
+
+const UserSection = () => {
+  const isSmallScreen = useSmallScreen();
+
+  if (isSmallScreen) {
+    return <UserMenu />;
+  }
+
+  return (
+    <Inline space={2} alignY="center" noWrap>
+      <Stack>
+        <Inline space={1} alignY="center">
+          <Text size="sm" weight="bold">
+            Jane Doe
+          </Text>
+          <Badge variant="master">Master</Badge>
+        </Inline>
+        <Text size="xs" variant="muted">
+          Global Entertainment Solutions Inc.
+        </Text>
+      </Stack>
+      <UserMenu />
+    </Inline>
+  );
+};
+
 const meta = preview.meta({
   title: 'Components/TopNavigation',
   component: TopNavigation,
@@ -91,6 +134,7 @@ export const NavBarPattern = meta.story({
   render: args => (
     <TopNavigation {...args}>
       <TopNavigation.Start>
+        <Button size="icon">SB</Button>
         <Logo />
       </TopNavigation.Start>
       <TopNavigation.Middle alignY="bottom">
@@ -109,32 +153,7 @@ export const NavBarPattern = meta.story({
         </Tabs>
       </TopNavigation.Middle>
       <TopNavigation.End>
-        <Inline space={2} alignY="center">
-          <Stack>
-            <Inline space={1} alignY="center">
-              <Text size="sm" weight="bold">
-                Jane Doe
-              </Text>
-              <Badge variant="master">Master</Badge>
-            </Inline>
-            <Text size="xs" variant="muted">
-              Global Entertainment Solutions Inc.
-            </Text>
-          </Stack>
-          <ActionMenu aria-label="User menu">
-            <Menu.Section title="Account">
-              <Menu.Item id="profile" textValue="Profile">
-                <User size={16} /> Profile
-              </Menu.Item>
-              <Menu.Item id="settings" textValue="Settings">
-                <SettingDots size={16} /> Settings
-              </Menu.Item>
-              <Menu.Item id="sign-out" textValue="Sign out">
-                <Logout size={16} /> Sign out
-              </Menu.Item>
-            </Menu.Section>
-          </ActionMenu>
-        </Inline>
+        <UserSection />
       </TopNavigation.End>
     </TopNavigation>
   ),
@@ -143,7 +162,9 @@ export const NavBarPattern = meta.story({
     await expect(nav).toBeInTheDocument();
 
     await expect(canvas.getByText('Home')).toBeInTheDocument();
-    await expect(canvas.getByText('Jane Doe')).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: 'User menu' })
+    ).toBeInTheDocument();
   },
 });
 
@@ -154,6 +175,7 @@ export const WithSearchField = meta.story({
   render: args => (
     <TopNavigation {...args}>
       <TopNavigation.Start>
+        <Button size="icon">SB</Button>
         <Logo />
       </TopNavigation.Start>
       <TopNavigation.Middle alignX="between">
@@ -167,32 +189,7 @@ export const WithSearchField = meta.story({
         <SearchField placeholder="Search..." width={48} />
       </TopNavigation.Middle>
       <TopNavigation.End>
-        <Inline space={2} alignY="center">
-          <Stack>
-            <Inline space={1} alignY="center">
-              <Text size="sm" weight="bold">
-                Jane Doe
-              </Text>
-              <Badge variant="master">Master</Badge>
-            </Inline>
-            <Text size="xs" variant="muted">
-              Global Entertainment Solutions Inc.
-            </Text>
-          </Stack>
-          <ActionMenu aria-label="User menu">
-            <Menu.Section title="Account">
-              <Menu.Item id="profile" textValue="Profile">
-                <User size={16} /> Profile
-              </Menu.Item>
-              <Menu.Item id="settings" textValue="Settings">
-                <SettingDots size={16} /> Settings
-              </Menu.Item>
-              <Menu.Item id="sign-out" textValue="Sign out">
-                <Logout size={16} /> Sign out
-              </Menu.Item>
-            </Menu.Section>
-          </ActionMenu>
-        </Inline>
+        <UserSection />
       </TopNavigation.End>
     </TopNavigation>
   ),
@@ -207,6 +204,7 @@ export const ApplicationShell = meta.story({
     <div style={{ height: '200vh' }}>
       <TopNavigation {...args}>
         <TopNavigation.Start>
+          <Button size="icon">SB</Button>
           <Logo />
         </TopNavigation.Start>
         <TopNavigation.Middle>
@@ -219,29 +217,7 @@ export const ApplicationShell = meta.story({
           </Breadcrumbs>
         </TopNavigation.Middle>
         <TopNavigation.End>
-          <Inline space={2} alignY="center">
-            <Stack>
-              <Text size="sm" weight="bold">
-                Jane Doe
-              </Text>
-              <Text size="xs" variant="muted">
-                Global Entertainment Solutions Inc.
-              </Text>
-            </Stack>
-            <ActionMenu aria-label="User menu">
-              <Menu.Section title="Account">
-                <Menu.Item id="profile" textValue="Profile">
-                  <User size={16} /> Profile
-                </Menu.Item>
-                <Menu.Item id="settings" textValue="Settings">
-                  <SettingDots size={16} /> Settings
-                </Menu.Item>
-                <Menu.Item id="sign-out" textValue="Sign out">
-                  <Logout size={16} /> Sign out
-                </Menu.Item>
-              </Menu.Section>
-            </ActionMenu>
-          </Inline>
+          <UserSection />
         </TopNavigation.End>
       </TopNavigation>
       <div style={{ padding: '2rem' }}>

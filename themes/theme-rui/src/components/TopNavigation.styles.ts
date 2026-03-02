@@ -5,7 +5,7 @@ export const TopNavigation: ThemeComponent<'TopNavigation'> = {
     base: [
       'w-full min-h-14',
       'bg-background border-b border-border shadow-elevation-border',
-      'gap-12 px-4',
+      'gap-4 px-3 sm:gap-12 sm:px-4',
     ],
   }),
   start: cva({ base: 'flex items-center gap-4' }),
