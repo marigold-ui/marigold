@@ -42,4 +42,13 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
     ],
   }),
+  subNav: cva({ base: 'relative overflow-hidden' }),
+  subNavBackButton: cva({
+    base: [
+      'flex items-center gap-1 w-full px-6 py-1.5 text-sm rounded',
+      'text-text-primary-muted hover:text-text-primary transition-colors',
+      'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
+      'cursor-pointer mb-1',
+    ],
+  }),
 };
