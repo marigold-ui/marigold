@@ -6,7 +6,7 @@ badge: beta
 
 The `<Drawer>` component is a flexible UI element used to present additional content is a side-in panel, typically from the edge of the screen. Unlike dialogs, it doesn't block interaction with the rest of the page, making it ideal for non-modal interactions.
 
-Key features of the `<Drawer>` component include customizable placemnt, adjustable sizes and abilitly to remain non-modal for uninterrupted page interaction.
+Key features of the `<Drawer>` component include adjustable sizes and the ability to remain non-modal for uninterrupted page interaction.
 
 ## Anatomy
 
@@ -78,17 +78,6 @@ Drawers can provide utilities like quick help, a chat panel, or notes. These sta
 ### Filter
 
 A common use case for drawers is displaying filter panels. Drawers provide a non-intrusive way to expose filtering options while keeping the main content visible and interactive. This allows users to adjust filters, apply changes, and immediately see updated results without leaving the page, for more information about the filter you can visit [Filter pattern](/patterns/filter).
-
-### Placement
-
-The `<Drawer>` can be placed on any edge of the screen using `placement` prop,, placement should relfect the type of content and user's workflow:
-
-- **right(most common)**: details, contextual utilities.
-- **left**: navigaiton, or menus that help users to swich between different views.
-- **top**: lightweight global actions like notifications, announcements, or system alerts. Best for transient information that needs quick visibility but not long interaction.
-- **bottom**: short confirmation actions, quick reply forms, or pickers. Ideal for focused tasks that don't require leaving the current screen.
-
-<ComponentDemo name="drawer-placement" />
 
 ## Props
 

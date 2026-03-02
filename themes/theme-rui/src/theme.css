@@ -310,7 +310,7 @@
 
   @keyframes slide-in-right {
     from {
-      transform: translateX(100%);
+      transform: translateX(calc(100% + var(--slide-offset, 0px)));
     }
 
     to {
@@ -325,7 +325,7 @@
 
   @keyframes slide-in-left {
     from {
-      transform: translateX(-100%);
+      transform: translateX(calc(-100% - var(--slide-offset, 0px)));
     }
 
     to {
@@ -340,7 +340,7 @@
 
   @keyframes slide-in-top {
     from {
-      transform: translateY(-100%);
+      transform: translateY(calc(-100% - var(--slide-offset, 0px)));
     }
 
     to {
@@ -355,7 +355,7 @@
 
   @keyframes slide-in-bottom {
     from {
-      transform: translateY(100%);
+      transform: translateY(calc(100% + var(--slide-offset, 0px)));
     }
 
     to {

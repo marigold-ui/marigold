@@ -95,8 +95,7 @@ const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
         <SearchInput
           ref={ref}
           className={{
-            action:
-              'util-touch-hitbox pr-2 group-data-[empty=true]/field:hidden',
+            action: 'ui-touch-hitbox pr-2 group-data-[empty=true]/field:hidden',
           }}
         />
       </FieldBase>

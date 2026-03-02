@@ -6,6 +6,6 @@ export const DatePicker: ThemeComponent<'DatePicker'> = cva({
     'text-muted-foreground/80',
     'hover:text-brand',
     'disabled:cursor-not-allowed',
-    'util-touch-hitbox',
+    'ui-touch-hitbox',
   ],
 });

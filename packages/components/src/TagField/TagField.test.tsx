@@ -1,19 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { mockMatchMedia } from '../test.utils';
 import { Basic, Controlled } from './TagField.stories';
 
 const user = userEvent.setup();
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => {
-    return {
-      matches: false,
-      addListener: () => {},
-      removeListener: () => {},
-    };
-  },
-});
+window.matchMedia = mockMatchMedia([]);
 
 test('renders a field (label, helptext, tagfield)', () => {
   render(
