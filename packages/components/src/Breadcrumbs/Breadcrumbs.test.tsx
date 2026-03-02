@@ -1,10 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, Collapsed } from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 const user = userEvent.setup();
+
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 test('renders breadcrumb items correctly', () => {
   render(<Basic.Component />);

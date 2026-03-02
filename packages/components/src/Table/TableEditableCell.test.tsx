@@ -1,24 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { mockMatchMedia } from '../test.utils';
 import { EditableCell } from './Table.stories';
 
-const originalMatchMedia = window.matchMedia;
-
-const mockMatchMedia = (matchingQueries: string[]) =>
-  vi.fn().mockImplementation((query: string) => ({
-    matches: matchingQueries.includes(query),
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }));
-
-afterAll(() => {
-  window.matchMedia = originalMatchMedia;
-});
+// Default to desktop view for most tests
+window.matchMedia = mockMatchMedia([]);
 
 describe('TableEditableCell - Basic Rendering', () => {
   test('renders editable cell with edit button', () => {
@@ -181,7 +167,7 @@ describe('TableEditableCell - Responsive Behavior', () => {
   test('small screen shows text buttons in dialog', async () => {
     const user = userEvent.setup();
     // Set small screen mode
-    window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+    window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
     render(<EditableCell.Component />);
 

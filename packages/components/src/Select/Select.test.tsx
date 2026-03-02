@@ -1,10 +1,12 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, Sections } from './Select.stories';
 
 const user = userEvent.setup();
+
+window.matchMedia = mockMatchMedia([]);
 
 test('renders a field (label, helptext, select)', () => {
   render(

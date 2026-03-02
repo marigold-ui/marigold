@@ -1,7 +1,9 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './ContextualHelp.stories';
+
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();

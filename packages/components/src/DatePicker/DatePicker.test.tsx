@@ -2,6 +2,7 @@ import { CalendarDate } from '@internationalized/date';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { mockMatchMedia } from '../test.utils';
 import {
   Basic,
   UnavailableDate,
@@ -29,6 +30,8 @@ const firePaste = (element: Element, text: string) => {
 };
 
 const user = userEvent.setup();
+
+window.matchMedia = mockMatchMedia([]);
 
 describe('DatePicker', () => {
   describe('basics', () => {

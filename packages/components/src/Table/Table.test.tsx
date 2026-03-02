@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { mockMatchMedia } from '../test.utils';
 import { Table } from './Table';
 import {
   Basic,
@@ -15,6 +16,8 @@ import {
 } from './Table.stories';
 import { renderDragPreview } from './TableDragPreview';
 import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
+
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 describe('Basic Rendering', () => {
   test('renders table element with proper structure', () => {

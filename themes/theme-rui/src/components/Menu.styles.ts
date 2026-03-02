@@ -1,5 +1,4 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import { buttonBase } from './Button.styles';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva({
@@ -12,7 +11,7 @@ export const Menu: ThemeComponent<'Menu'> = {
   }),
   item: cva({
     base: [
-      'relative flex cursor-pointer items-center gap-2 rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap',
+      'relative flex cursor-pointer items-center gap-2 rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
       'disabled:text-disabled-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
     ],
@@ -31,7 +30,7 @@ export const Menu: ThemeComponent<'Menu'> = {
   }),
   button: cva({
     base: [
-      ...buttonBase,
+      'ui-button-base gap-2',
       'duration-150 active:scale-[0.97] pressed:not-aria-expanded:scale-[0.97]',
       'pending:ui-state-disabled',
     ],

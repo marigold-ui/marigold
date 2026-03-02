@@ -1,9 +1,11 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, WithSections } from './Autocomplete.stories';
 
 const user = userEvent.setup();
+
+window.matchMedia = mockMatchMedia([]);
 
 // Tests
 // ---------------

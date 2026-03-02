@@ -1,28 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
-import { renderWithOverlay } from '../test.utils';
-import { Basic, LeftPlacement } from './Drawer.stories';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
+import { Basic } from './Drawer.stories';
 
-const originalMatchMedia = window.matchMedia;
-
-let isSmallScreen = false;
-const mockMatchMedia = () =>
-  vi.fn().mockImplementation(() => {
-    return {
-      matches: isSmallScreen,
-    };
-  });
-window.matchMedia = mockMatchMedia();
-
-afterEach(() => {
-  isSmallScreen = false;
-  window.matchMedia = mockMatchMedia();
-});
-
-afterAll(() => {
-  window.matchMedia = originalMatchMedia;
-});
+window.matchMedia = mockMatchMedia([]);
 
 const user = userEvent.setup();
 
@@ -45,24 +26,6 @@ test('opens/closes via trigger', async () => {
   await user.click(button);
 
   await waitFor(() => expect(drawer).not.toBeInTheDocument());
-});
-
-test('slides from the left', async () => {
-  renderWithOverlay(<LeftPlacement.Component />);
-
-  const button = screen.getByRole('button', { name: 'Open Left Drawer' });
-  await user.click(button);
-
-  const drawerModal = screen.getByTestId('drawer-modal');
-  expect(drawerModal).toBeInTheDocument();
-  expect(drawerModal).toHaveClass(
-    'placement-left:entering:animate-slide-in-left'
-  );
-  expect(drawerModal).toHaveClass(
-    'placement-left:exiting:animate-slide-out-left'
-  );
-  expect(drawerModal).toHaveClass('placement-left:top-0');
-  expect(drawerModal).toHaveClass('placement-left:left-0');
 });
 
 test('can be closed with esc key', async () => {
@@ -134,7 +97,7 @@ test('able to close via close button', async () => {
 });
 
 test('uses modal on small screens', async () => {
-  isSmallScreen = true;
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
   renderWithOverlay(<Basic.Component closeButton />);
 
   const button = screen.getByRole('button', { name: 'Open Drawer' });

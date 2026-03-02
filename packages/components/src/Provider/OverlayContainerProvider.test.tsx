@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Theme, cva } from '@marigold/system';
 import { Select } from '../Select/Select';
+import { mockMatchMedia } from '../test.utils';
 import { MarigoldProvider } from './MarigoldProvider';
 import { OverlayContainerProvider } from './OverlayContainerProvider';
 
@@ -46,6 +47,12 @@ const theme: Theme = {
     },
   },
 };
+
+window.matchMedia = mockMatchMedia([
+  'screen and (min-width: 40em)',
+  'screen and (min-width: 52em)',
+  'screen and (min-width: 64em)',
+]);
 
 test('renders into a given container', async () => {
   render(
