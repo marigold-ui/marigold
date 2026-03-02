@@ -1,4 +1,4 @@
-import { ClassValue, ConfigSchema } from '../utils/className.utils';
+import { ClassValue } from '../utils/className.utils';
 
 export interface NestedStringObject {
   [key: string]: NestedStringObject | string;
@@ -17,7 +17,6 @@ export interface ComponentStyleFunction<
       className?: ClassValue;
     } & Partial<Additional>
   ): string;
-  variants: ConfigSchema | undefined;
 }
 
 export type Theme = {
@@ -33,7 +32,12 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
-      'container' | 'count' | 'actions' | 'clearButton',
+      | 'container'
+      | 'selection'
+      | 'count'
+      | 'toolbar'
+      | 'clearButton'
+      | 'actionButton',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
@@ -67,6 +71,16 @@ export type Theme = {
       | 'overlay'
       | 'closeButton'
       | 'container'
+      | 'header'
+      | 'title'
+      | 'content'
+      | 'actions',
+      ComponentStyleFunction<string, string>
+    >;
+    Tray?: Record<
+      | 'overlay'
+      | 'container'
+      | 'dragHandle'
       | 'header'
       | 'title'
       | 'content'
@@ -144,11 +158,32 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<
+      | 'table'
+      | 'head'
+      | 'column'
+      | 'body'
+      | 'row'
+      | 'cell'
+      | 'dragHandle'
+      | 'dragPreview'
+      | 'dragPreviewCounter'
+      | 'dropIndicator'
+      | 'editablePopover'
+      | 'editTrigger'
+      | 'editCancel'
+      | 'editSave',
+      ComponentStyleFunction<string, string>
+    >;
+    LegacyTable?: Record<
       'table' | 'headerRow' | 'header' | 'thead' | 'body' | 'row' | 'cell',
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
       'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
+      ComponentStyleFunction<string, string>
+    >;
+    TagField?: Record<
+      'trigger' | 'tagGroup' | 'listItems' | 'container',
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
@@ -180,6 +215,8 @@ export type Theme = {
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
       | 'calendar'
+      | 'calendarContainer'
+      | 'calendarMonth'
       | 'calendarListboxButton'
       | 'calendarCell'
       | 'calendarControllers'
@@ -189,7 +226,14 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
-    ComboBox?: ComponentStyleFunction<string, string>;
+    ComboBox?: Record<
+      'icon' | 'mobileTrigger',
+      ComponentStyleFunction<string, string>
+    >;
+    Autocomplete?: Record<
+      'mobileTrigger',
+      ComponentStyleFunction<string, string>
+    >;
     Loader?: Record<
       'container' | 'loader' | 'label',
       ComponentStyleFunction<string, string>

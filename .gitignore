@@ -4,6 +4,7 @@
 *.pem
 
 # generated files
+themes/theme-rui/src/appearances.ts
 node_modules
 .swc
 coverage

@@ -1,0 +1,98 @@
+---
+title: Columns
+description: Position content in one row.
+---
+
+The `<Columns>` component is used to create structured and flexible layouts that organize content efficiently. It is a responsive component with sized columns in one row based on a [flex system](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox).
+
+## Usage
+
+With the `<Columns>` component you specify the numbers of columns to get a layout with evenly distributed column cells. The `columns` property defines the width of the children. This is written as array, whose length and the count of children must be the same.
+
+The `<Columns>` component is ideal for arranging content in a line. This can be for example if you have a table-like structure.
+
+In this example the columns are filled with **interactive** elements. This is a good use case for a column component. Unlike as in `<Table>` you can use the interactive elements without loosing the accessibility features of the components.
+
+<ComponentDemo name="table-layout-columns" />
+
+### Page layout
+
+With `<Columns>` you also have the possibility to create a whole, responsive page layout. This can be helpful if you anyway need to have certain parts of the application.
+
+<ComponentDemo name="layout-columns" />
+
+### Fixed widths
+
+Sometimes you need to set an element at the start or at the end of a column. You can use the `fit` value for the `columns` property to align it to the chosen position. The column width will be always fitting the content. While the other values take the width content based according to the space still available.
+
+<ComponentDemo name="fit-width-columns" />
+
+You can also add space between the columns and set a `collapseAt` prop to collapse the columns at a certain width. This is convenient for a good responsivness.
+
+### Stretch to height of parent
+
+By using the `stretch` prop you can make the container to take full height.
+
+<Callout title="Note">
+  Setting the the `stretch` prop is usually not necessary since the columns will
+  expand with their children anyway.
+</Callout>
+
+<ComponentDemo name="stretch-columns" />
+
+Here is another interactive example on how to use the `stretch` prop.
+
+<Callout title="Note">
+  You must define a parent for the columns that sets a `height`. Otherwise
+  setting the height in a column to `100%` will not have any effect.
+</Callout>
+
+<ComponentDemo name="stretch-columns-switch" />
+
+## Props
+
+<StorybookHintMessage component={'Columns'} />
+
+### Columns
+
+<AutoTypeTable path="Columns" name="ColumnsProps" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Flexbox',
+      href: 'https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox',
+      caption: 'Learn how CSS flexbox layouts work.',
+      icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" />
+</svg>
+
+      ),
+    },
+
+]}
+/>

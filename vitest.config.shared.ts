@@ -21,7 +21,6 @@ export default defineConfig({
         '**/*.stories.tsx',
         'storybook-static/**',
         '**/theme-plugins/**',
-        'packages/components/src/_propTableTypes/**',
         '**/**/*.config.*',
         '**/**/index.*',
         'packages/components/src/hooks.ts',

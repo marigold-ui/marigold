@@ -11,7 +11,13 @@ const inlineAlignmentY = {
 
 // Props
 // ---------------
-export interface InlineProps extends SpaceProp<SpacingTokens>, AriaRegionProps {
+export interface InlineProps extends AriaRegionProps {
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
+
   /**
    * The children of the component.
    */

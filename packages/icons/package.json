@@ -1,7 +1,7 @@
 {
   "name": "@marigold/icons",
   "description": "Marigold Icons",
-  "version": "1.3.30",
+  "version": "1.3.33",
   "license": "MIT",
   "keywords": [
     "marigold",
@@ -14,6 +14,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.mts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
@@ -39,7 +40,7 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "tsdown": "0.16.8"
+    "tsdown": "0.20.3"
   },
   "scripts": {
     "build": "tsdown src/index.ts",

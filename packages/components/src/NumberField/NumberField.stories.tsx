@@ -151,7 +151,13 @@ export const WithUnit = meta.story({
 export const MinMax = meta.story({
   render: args => (
     <>
-      <NumberField minValue={0} maxValue={100} step={10} {...args} />
+      <NumberField
+        minValue={0}
+        maxValue={100}
+        step={10}
+        defaultValue={0}
+        {...args}
+      />
       <small>min: 0, max: 100</small>
     </>
   ),

@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # This requires a "ternary" logic to pick the right ref:
           # 1. If PR push: Use the PR head SHA.

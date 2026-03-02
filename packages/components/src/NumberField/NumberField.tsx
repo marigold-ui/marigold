@@ -27,6 +27,7 @@ export interface NumberFieldProps
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default full
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
 
@@ -106,7 +107,12 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         data-readonly={readOnly ? 'true' : undefined}
         data-stepper={showStepper ? 'true' : undefined}
       >
-        <Group className={cn('flex items-stretch', classNames.group)}>
+        <Group
+          className={cn(
+            'flex w-(--field-width) max-w-full min-w-0 items-stretch',
+            classNames.group
+          )}
+        >
           {showStepper && (
             <StepButton
               className={classNames.stepper}

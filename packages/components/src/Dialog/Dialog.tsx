@@ -72,7 +72,7 @@ const InnerDialog = forwardRef(
 // ---------------
 export interface DialogProps
   extends
-    Omit<RAC.DialogProps, 'className' | 'style'>,
+    Omit<RAC.DialogProps, 'className' | 'style' | 'render'>,
     Pick<ModalProps, 'open' | 'onOpenChange'> {
   variant?: string;
   size?: 'xsmall' | 'small' | 'medium' | (string & {});

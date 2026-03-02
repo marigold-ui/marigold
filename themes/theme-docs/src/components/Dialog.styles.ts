@@ -1,14 +1,16 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Dialog: ThemeComponent<'Dialog'> = {
-  closeButton: cva('absolute top-4 right-4 ml-4', {
+  closeButton: cva({
+    base: 'absolute top-4 right-4 ml-4',
     variants: {
       variant: {
         fullscreen: ['size-6', 'right-4 top-4'],
       },
     },
   }),
-  container: cva('bg-bg-surface', {
+  container: cva({
+    base: 'bg-bg-surface',
     variants: {
       variant: {
         default: 'relative rounded-lg shadow-lg',
@@ -26,8 +28,8 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       variant: 'default',
     },
   }),
-  header: cva(''),
-  title: cva(''),
-  content: cva(''),
-  actions: cva(''),
+  header: cva({ base: '' }),
+  title: cva({ base: '' }),
+  content: cva({ base: '' }),
+  actions: cva({ base: '' }),
 };

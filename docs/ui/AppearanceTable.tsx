@@ -1,7 +1,6 @@
 'use client';
 
 import { getAppearance } from '@/lib/utils';
-import { ruiTheme } from '@/theme';
 import { Table, Theme } from '@/ui';
 
 export interface AppearanceTableProps {
@@ -9,12 +8,14 @@ export interface AppearanceTableProps {
 }
 
 export const AppearanceTable = ({ component }: AppearanceTableProps) => {
-  const appearances = getAppearance(component, ruiTheme);
+  const appearances = getAppearance(component);
 
   return (
     <Table aria-labelledby="appearance table" variant="hover" stretch>
       <Table.Header>
-        <Table.Column key={'property'}>Property</Table.Column>
+        <Table.Column key={'property'} isRowHeader>
+          Property
+        </Table.Column>
         <Table.Column key={'type'}>Type</Table.Column>
         <Table.Column key={'description'}>Description</Table.Column>
       </Table.Header>

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MockInstance, vi } from 'vitest';
 import { cva, useTheme } from '@marigold/system';
+import { mockMatchMedia } from '../test.utils';
 import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup
@@ -15,11 +16,6 @@ afterEach(() => {
   errorMock.mockRestore();
 });
 
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
 window.matchMedia = mockMatchMedia([
   'screen and (min-width: 40em)',
   'screen and (min-width: 52em)',
@@ -33,17 +29,17 @@ test('support cascading themes', () => {
       primary: 'coral',
     },
     components: {
-      Button: cva(),
-      Modal: cva(),
+      Button: cva({}),
+      Modal: cva({}),
       Dialog: {
-        container: cva(),
-        closeButton: cva(),
-        header: cva(),
-        content: cva(),
-        actions: cva(),
-        title: cva(),
+        container: cva({}),
+        closeButton: cva({}),
+        header: cva({}),
+        content: cva({}),
+        actions: cva({}),
+        title: cva({}),
       },
-      Underlay: cva(),
+      Underlay: cva({}),
     },
   };
 
@@ -53,18 +49,18 @@ test('support cascading themes', () => {
       primary: 'gainsboro',
     },
     components: {
-      Text: cva('text-black'),
-      Button: cva(),
-      Modal: cva(),
+      Text: cva({ base: 'text-black' }),
+      Button: cva({}),
+      Modal: cva({}),
       Dialog: {
-        container: cva(),
-        closeButton: cva(),
-        header: cva(),
-        content: cva(),
-        actions: cva(),
-        title: cva(),
+        container: cva({}),
+        closeButton: cva({}),
+        header: cva({}),
+        content: cva({}),
+        actions: cva({}),
+        title: cva({}),
       },
-      Underlay: cva(),
+      Underlay: cva({}),
     },
   };
 
@@ -118,17 +114,17 @@ test('cascading without a selector is allowed when inner theme has not root styl
       primary: 'coral',
     },
     components: {
-      Button: cva(),
-      Modal: cva(),
+      Button: cva({}),
+      Modal: cva({}),
       Dialog: {
-        container: cva(),
-        closeButton: cva(),
-        header: cva(),
-        content: cva(),
-        actions: cva(),
-        title: cva(),
+        container: cva({}),
+        closeButton: cva({}),
+        header: cva({}),
+        content: cva({}),
+        actions: cva({}),
+        title: cva({}),
       },
-      Underlay: cva(),
+      Underlay: cva({}),
     },
   };
 
@@ -138,17 +134,17 @@ test('cascading without a selector is allowed when inner theme has not root styl
       primary: 'gainsboro',
     },
     components: {
-      Button: cva(),
-      Modal: cva(),
+      Button: cva({}),
+      Modal: cva({}),
       Dialog: {
-        container: cva(),
-        closeButton: cva(),
-        header: cva(),
-        content: cva(),
-        actions: cva(),
-        title: cva(),
+        container: cva({}),
+        closeButton: cva({}),
+        header: cva({}),
+        content: cva({}),
+        actions: cva({}),
+        title: cva({}),
       },
-      Underlay: cva(),
+      Underlay: cva({}),
     },
   };
 
@@ -168,17 +164,17 @@ test('using classname prop', () => {
       primary: 'coral',
     },
     components: {
-      Button: cva(),
-      Modal: cva(),
+      Button: cva({}),
+      Modal: cva({}),
       Dialog: {
-        container: cva(),
-        closeButton: cva(),
-        header: cva(),
-        content: cva(),
-        actions: cva(),
-        title: cva(),
+        container: cva({}),
+        closeButton: cva({}),
+        header: cva({}),
+        content: cva({}),
+        actions: cva({}),
+        title: cva({}),
       },
-      Underlay: cva(),
+      Underlay: cva({}),
     },
   };
 

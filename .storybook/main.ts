@@ -4,7 +4,6 @@ export default defineMain({
   stories: [
     '../packages/components/src/**/*.stories.tsx',
     '../packages/system/src/**/*.stories.tsx',
-    '../themes/**/*.stories.tsx',
   ],
   addons: [
     '@storybook/addon-a11y',
@@ -23,4 +22,13 @@ export default defineMain({
     experimentalTestSyntax: true,
   },
   staticDirs: ['./assets'],
+  viteFinal: config => {
+    config.optimizeDeps ??= {};
+    config.optimizeDeps.include ??= [];
+    config.optimizeDeps.include.push(
+      'react-select',
+      '@storybook/react-dom-shim'
+    );
+    return config;
+  },
 });

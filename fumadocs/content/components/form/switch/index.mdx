@@ -1,0 +1,100 @@
+---
+title: Switch
+description: Component that switches between two states.
+---
+
+The `<Switch>` component allows the users to select between two states, e.g. on and off.  
+It consists of a visual selection indicator and a label.
+
+Users may click or touch a Switch to toggle the state, or use the tab key to navigate to it and the space key to toggle it.
+
+## Anatomy
+
+<ImageZoom
+  src="/switch/switch-anatomy.jpg"
+  alt="Anatomy of table"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+The styles are separated into some parts (container, label, thumb, track) that you can style in a custom variant.
+
+## Appearance
+
+<AppearanceDemo component={'Switch'} />
+
+<AppearanceTable component={'Switch'} />
+
+## Usage
+
+Switches are best used to adjust settings and other standalone options. They make a binary selection, like on and off or true and false.
+
+The effects of a switch should start immediately, without needing to save.
+
+<GuidelineTiles>
+  <Do>
+    <DoFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/switch/switch-do-settings.jpg"
+        alt="Immediately activate or deactivate something"
+      />
+    </DoFigure>
+    <DoDescription>
+      <strong>Immediately</strong> activate or deactivate something.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/switch/switch-dont-settings.jpg"
+        alt="Don't use save actions with switches."
+      />
+    </DontFigure>
+    <DontDescription>
+      Avoid using a switch to select multiple options that require people to
+      save. Switches should be immediate.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<GuidelineTiles>
+  <Dont>
+    <DontFigure>
+      <ImageZoom
+        className="w-full"
+        width={700}
+        height={700}
+        src="/switch/switch-dont-opposing-options.jpg"
+        alt="Avoid using switches to toggle between opposing options."
+      />
+    </DontFigure>
+    <DontDescription>
+      Avoid using switches to toggle between opposing options.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Props
+
+<StorybookHintMessage component={'Switch'} />
+
+### Switch
+
+<AutoTypeTable path="Switch" name="SwitchProps" />
+
+## Alternative components
+
+Alternative selection controls can be used to enter decisions or declare preferences such as settings or dialogs.
+
+<ul>
+  <li>
+    [Checkbox](/components/form/checkbox): Select multiple related options in a
+    list.
+  </li>
+  <li>[Radio](/components/form/radio): Select a single option in a list.</li>
+</ul>

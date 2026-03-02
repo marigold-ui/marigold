@@ -61,7 +61,7 @@ export const Basic = meta.story({
     });
 
     await step('Click on the next button', async () => {
-      const nextButton = canvas.getByLabelText('Page next');
+      const nextButton = canvas.getByLabelText('Next page');
 
       await userEvent.click(nextButton);
 
@@ -72,7 +72,7 @@ export const Basic = meta.story({
     });
 
     await step('Click on the previous button', async () => {
-      const prevButton = canvas.getByLabelText('Page previous');
+      const prevButton = canvas.getByLabelText('Previous page');
 
       await userEvent.click(prevButton);
 
@@ -177,7 +177,7 @@ export const FullScreenSize = meta.story({
         <Select
           width={40}
           aria-label="Page size"
-          defaultSelectedKey="10"
+          defaultValue="10"
           label="Results per page"
         >
           <Select.Option id="10">10</Select.Option>
@@ -218,56 +218,52 @@ export const WithTable = meta.story({
     const currentData = mockData.slice(startIndex, endIndex);
 
     return (
-      <div className="w-[800px]">
-        <Stack alignX="left" space={4}>
-          <Table aria-label="label" stretch {...args}>
-            <Table.Header>
-              <Table.Column>ID</Table.Column>
-              <Table.Column>Name</Table.Column>
-              <Table.Column>Email</Table.Column>
-              <Table.Column>Role</Table.Column>
-              <Table.Column>Status</Table.Column>
-            </Table.Header>
-            <Table.Body items={currentData}>
-              {item => (
-                <Table.Row key={item.id}>
-                  <Table.Cell>{item.id}</Table.Cell>
-                  <Table.Cell>{item.name}</Table.Cell>
-                  <Table.Cell>{item.email}</Table.Cell>
-                  <Table.Cell>{item.role}</Table.Cell>
-                  <Table.Cell>{item.status}</Table.Cell>
-                </Table.Row>
-              )}
-            </Table.Body>
-          </Table>
-          <Inline alignY="center" space={11}>
-            <Text fontSize="sm">
-              Showing {startIndex + 1} - {endIndex} of {mockData.length}
-            </Text>
-            <Split />
-            <Pagination
-              {...args}
-              totalItems={mockData.length}
-              pageSize={pageSize}
-              page={currentPage}
-              onChange={setCurrentPage}
-            />
-            <Split />
-            <Inline alignY="center" space={4}>
-              <Text fontSize="sm">Results per page</Text>
-              <Select
-                width={'fit'}
-                value={pageSize.toString()}
-                onChange={val => setPageSize(parseInt(`${val}`))}
-              >
-                <Select.Option id="10">10</Select.Option>
-                <Select.Option id="20">20</Select.Option>
-                <Select.Option id={'30'}>30</Select.Option>
-              </Select>
-            </Inline>
+      <Stack space={4}>
+        <Table aria-label="label" {...args}>
+          <Table.Header>
+            <Table.Column>ID</Table.Column>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Role</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body items={currentData}>
+            {item => (
+              <Table.Row key={item.id}>
+                <Table.Cell>{item.id}</Table.Cell>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell>{item.role}</Table.Cell>
+                <Table.Cell>{item.status}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+        <Inline alignY="center" alignX="between">
+          <Text fontSize="sm">
+            Showing {startIndex + 1} - {endIndex} of {mockData.length}
+          </Text>
+          <Pagination
+            {...args}
+            totalItems={mockData.length}
+            pageSize={pageSize}
+            page={currentPage}
+            onChange={setCurrentPage}
+          />
+          <Inline alignY="center" space={4}>
+            <Text fontSize="sm">Results per page</Text>
+            <Select
+              width={'fit'}
+              value={pageSize.toString()}
+              onChange={val => setPageSize(parseInt(`${val}`))}
+            >
+              <Select.Option id="10">10</Select.Option>
+              <Select.Option id="20">20</Select.Option>
+              <Select.Option id="30">30</Select.Option>
+            </Select>
           </Inline>
-        </Stack>
-      </div>
+        </Inline>
+      </Stack>
     );
   },
 });
@@ -290,7 +286,7 @@ export const DisabledPreviousButton = meta.story({
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const previousButton = canvas.getByLabelText('Page previous');
+    const previousButton = canvas.getByLabelText('Previous page');
 
     await userEvent.click(previousButton);
 
@@ -306,7 +302,7 @@ export const DisabledNextButton = meta.story({
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const nextButton = canvas.getByLabelText('Page next');
+    const nextButton = canvas.getByLabelText('Next page');
 
     await userEvent.click(nextButton);
 

@@ -1,0 +1,3 @@
+{
+  "pages": ["contextual-help", "dialog", "drawer", "menu", "toast", "tooltip"]
+}

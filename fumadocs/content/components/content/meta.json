@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "badge",
+    "card",
+    "divider",
+    "headline",
+    "icon",
+    "list",
+    "loader",
+    "section-message",
+    "svg",
+    "text",
+    "visually-hidden"
+  ]
+}

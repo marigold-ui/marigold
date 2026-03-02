@@ -12,6 +12,11 @@ export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
 export { ActionButton } from './ActionBar/ActionButton';
 export type { ActionButtonProps } from './ActionBar/ActionButton';
+export { useActionBar } from './ActionBar/useActionBar';
+export type {
+  UseActionBarProps,
+  UseActionBarReturn,
+} from './ActionBar/useActionBar';
 
 export { Aside } from './Aside/Aside';
 export type { AsideProps } from './Aside/Aside';
@@ -221,7 +226,17 @@ export { Switch } from './Switch/Switch';
 export type { SwitchProps } from './Switch/Switch';
 
 export { Table } from './Table/Table';
-export type { TableProps } from './Table/Table';
+export type {
+  TableProps,
+  TableHeaderProps,
+  TableColumnProps,
+  TableBodyProps,
+  TableRowProps,
+  TableCellProps,
+  TableEditableCellProps,
+  TableDropIndicatorProps,
+  TableDragPreviewProps,
+} from './Table/Table';
 
 export { Sidebar } from './Sidebar/Sidebar';
 export type { SidebarProps } from './Sidebar/Sidebar';
@@ -231,6 +246,9 @@ export type { TabsProps } from './Tabs/Tabs';
 
 export { Tag } from './TagGroup/Tag';
 export type { TagProps } from './TagGroup/Tag';
+
+export { TagField } from './TagField/TagField';
+export type { TagFieldProps } from './TagField/TagField';
 
 export { TagGroup } from './TagGroup/TagGroup';
 export type { TagGroupProps } from './TagGroup/TagGroup';
@@ -273,6 +291,9 @@ export type { ToggleButtonProps } from './ToggleButton/ToggleButton';
 
 export { ToggleButtonGroup } from './ToggleButton/ToggleButtonGroup';
 export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
+
+export { Tray } from './Tray/Tray';
+export type { TrayProps } from './Tray/Tray';
 
 // Utility exports
 export * from './utils/form.utils';

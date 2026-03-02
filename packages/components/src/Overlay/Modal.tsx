@@ -6,7 +6,7 @@ import { Underlay } from './Underlay';
 
 // Props
 // ---------------
-export interface ModalProps extends RAC.ModalOverlayProps {
+export interface ModalProps extends Omit<RAC.ModalOverlayProps, 'render'> {
   /** Whether the overlay is open by default (controlled). */
   open?: boolean;
   /**

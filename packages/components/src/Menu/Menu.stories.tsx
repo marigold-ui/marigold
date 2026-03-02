@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, spyOn, userEvent } from 'storybook/test';
+import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
@@ -289,7 +289,10 @@ export const LinksMenu: any = meta.story({
 export const BasicActionMenu: any = meta.story({
   render: args => {
     return (
-      <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
+      <ActionMenu
+        onAction={action => alert(`Action: ${String(action)}`)}
+        {...args}
+      >
         <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
         <ActionMenu.Item id="settings">Settings</ActionMenu.Item>
         <ActionMenu.Item id="delete" variant="destructive">
@@ -323,4 +326,102 @@ export const OpenMenuRemotely: any = meta.story({
       </>
     );
   },
+});
+
+export const Mobile: any = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => {
+    return (
+      <Menu {...args} label="Mobile Menu">
+        <Menu.Item id="home">Home</Menu.Item>
+        <Menu.Item id="profile">Profile</Menu.Item>
+        <Menu.Item id="settings">Settings</Menu.Item>
+        <Menu.Item id="logout">Logout</Menu.Item>
+      </Menu>
+    );
+  },
+});
+
+Mobile.test('Mobile Menu interaction', async ({ canvas, step }: any) => {
+  const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
+
+  await step('Verify tray content is visible', async () => {
+    const dialog = await canvas.findByRole('dialog');
+
+    await waitFor(() => expect(dialog).toBeVisible());
+  });
+
+  await step('Verify menu items are visible', async () => {
+    expect(canvas.getByText('Home')).toBeVisible();
+    expect(canvas.getByText('Profile')).toBeVisible();
+    expect(canvas.getByText('Settings')).toBeVisible();
+    expect(canvas.getByText('Logout')).toBeVisible();
+  });
+
+  await step('Select menu item', async () => {
+    const menuItem = canvas.getByText('Profile');
+
+    await userEvent.click(menuItem);
+  });
+
+  await step('Verify tray is closed after selection', async () => {
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+});
+
+Mobile.test(
+  'Mobile Menu keyboard navigation',
+  async ({ canvas, step }: any) => {
+    const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Navigate menu with arrow keys', async () => {
+      await userEvent.keyboard('{ArrowDown}');
+      await userEvent.keyboard('{ArrowDown}');
+    });
+
+    await step('Select item with Enter key', async () => {
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Verify tray is closed', async () => {
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+  }
+);
+
+Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }: any) => {
+  const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  });
+
+  await step('Close tray with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
 });

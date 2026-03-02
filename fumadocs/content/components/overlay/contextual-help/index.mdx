@@ -1,0 +1,92 @@
+---
+title: ContextualHelp
+description: Displays contextual help via popover on button click
+---
+
+The `<ContextualHelp>` component provides inline assistance to help users understand specific parts of your interface. It displays a small button with an icon that, when clicked, opens a popover with explanatory content. This content can be rich and interactive, unlike tooltips which are intended for brief, passive messages.
+
+Use `<ContextualHelp>` when users might need deeper guidance or context, especially for complex settings, form inputs, or unfamiliar actions.
+
+## Anatomy
+
+<ImageZoom
+  src="/contextualhelp/contextualhelp-anatomy.jpg"
+  alt="Anatomy of tooltip"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Trigger button:** A small icon button that activates the help popover.
+- **Popover:** A floating container for detailed help content.
+- **Dialog content:** Custom content area that may contain headings, paragraphs, or even interactive elements.
+
+## Appearance
+
+<AppearanceDemo component={'ContextualHelp'} />
+
+## Usage
+
+ContextualHelp is ideal when brief tooltips are insufficient and users might benefit from more elaborate information. Avoid overusing it—too many help popovers can clutter the UI. Use tooltips for short, simple hints (e.g., labeling an icon), and reserve ContextualHelp for situations where users need deeper guidance or clarification. Aim to use it selectively on parts of your app where extra support truly adds value.
+
+<GuidelineTiles>
+  <Do>
+    <DoFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        alt="Use contextual help for fields that users frequently misunderstand."
+        src="/contextualhelp/contextualhelp-do.jpg"
+      />
+    </DoFigure>
+    <DoDescription>
+      Use contextual help for fields that users frequently misunderstand.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        alt="Don't use contextual help for obvious or self-explanatory features."
+        src="/contextualhelp/contextualhelp-dont.jpg"
+      />
+    </DontFigure>
+    <DontDescription>
+      Don't use contextual help for obvious or self-explanatory features.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### With form fields
+
+ContextualHelp can be placed directly next to form field labels to provide additional context or guidance for specific inputs. This is particularly useful when:
+
+- **Explaining format requirements**: Help users understand expected input patterns (e.g., email formats, phone number conventions, or date formats).
+- **Clarifying technical terms**: Provide definitions for industry-specific jargon or unfamiliar concepts without cluttering the label itself.
+- **Offering examples**: Show sample values or scenarios to guide users toward correct input.
+- **Explaining data usage**: Inform users why certain information is needed or how it will be used, especially for sensitive data.
+
+Keep labels concise and use ContextualHelp to elaborate. This keeps your form clean while ensuring users can access detailed guidance when needed. Place the help icon immediately after the label text to maintain a clear visual relationship between the field and its explanation.
+
+<ComponentDemo name="contextual-help-label" />
+
+### Custom placement
+
+The position of the popover can be customized using the placement prop. Available options include `top`, `bottom`, `left`, `right`, and aligned variants like `bottom start`.
+
+<ComponentDemo name="contextual-help-placement" />
+
+### Interactive content
+
+Unlike tooltips, ContextualHelp supports complex and interactive content inside the popover—such as links, buttons, or structured text.
+
+<ComponentDemo name="contextual-help-interactive" />
+
+## Props
+
+<StorybookHintMessage component={'ContextualHelp'} />
+
+### ContextualHelp
+
+<AutoTypeTable path="ContextualHelp" name="ContextualHelpProps" />

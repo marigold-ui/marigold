@@ -1,4 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
+import { useRef } from 'react';
 import preview from '.storybook/preview';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
@@ -93,11 +94,7 @@ export const Selected = meta.story({
             />
           </Stack>
           <Stack space={5}>
-            <Select
-              label="Department"
-              width={40}
-              defaultSelectedKey={'engineering'}
-            >
+            <Select label="Department" width={40} defaultValue={'engineering'}>
               <Select.Option id="engineering">Engineering</Select.Option>
               <Select.Option id="design">Design</Select.Option>
               <Select.Option id="product">Product</Select.Option>
@@ -156,4 +153,35 @@ export const Selected = meta.story({
       </Form>
     );
   },
+});
+
+const FormWithRef = () => {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  return (
+    <Stack space={4}>
+      <Form ref={formRef} data-testid="form-with-ref">
+        <Stack space={5}>
+          <TextField label="Name" name="name" />
+          <TextField label="Email" type="email" name="email" />
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Stack>
+      </Form>
+      <Button
+        onPress={() => {
+          if (formRef.current) {
+            formRef.current.reset();
+          }
+        }}
+      >
+        Reset Form
+      </Button>
+    </Stack>
+  );
+};
+
+export const WithRef = meta.story({
+  render: () => <FormWithRef />,
 });

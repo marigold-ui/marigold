@@ -1,8 +1,8 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import { buttonBase } from './Button.styles';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
-  group: cva('group inline-flex ui-surface', {
+  group: cva({
+    base: 'group inline-flex ui-surface shadow-elevation-border',
     variants: {
       size: {
         default: 'text-sm',
@@ -14,12 +14,12 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       size: 'default',
     },
   }),
-  button: cva(
-    [
-      ...buttonBase,
+  button: cva({
+    base: [
+      'ui-button-base gap-2',
 
       // ToggleButton-specific styles
-      'ui-surface',
+      'ui-surface shadow-elevation-border',
       'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
       'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
       'selected:[--ui-background-color:var(--color-input)] selected:shadow-none',
@@ -29,31 +29,29 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'in-[.group]:first:rounded-l-surface',
       'in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0',
     ],
-    {
-      variants: {
-        size: {
-          default: 'text-sm',
-          small: 'text-xs',
-          icon: '',
-        },
+    variants: {
+      size: {
+        default: 'text-sm',
+        small: 'text-xs',
+        icon: '',
       },
-      defaultVariants: {
+    },
+    defaultVariants: {
+      size: 'default',
+    },
+    compoundVariants: [
+      {
         size: 'default',
+        class: 'h-button px-4 py-2 [&_svg]:size-4',
       },
-      compoundVariants: [
-        {
-          size: 'default',
-          class: 'h-button px-4 py-2 [&_svg]:size-4',
-        },
-        {
-          size: 'small',
-          class: 'h-button-small px-3 [&_svg]:size-3.5',
-        },
-        {
-          size: 'icon',
-          class: 'size-button [&_svg]:size-4',
-        },
-      ],
-    }
-  ),
+      {
+        size: 'small',
+        class: 'h-button-small px-3 [&_svg]:size-3.5',
+      },
+      {
+        size: 'icon',
+        class: 'size-button [&_svg]:size-4',
+      },
+    ],
+  }),
 };

@@ -33,6 +33,7 @@ export interface SearchFieldProps
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default full
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
 
@@ -94,8 +95,7 @@ const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
         <SearchInput
           ref={ref}
           className={{
-            action:
-              'util-touch-hitbox pr-2 group-data-[empty=true]/field:hidden',
+            action: 'ui-touch-hitbox pr-2 group-data-[empty=true]/field:hidden',
           }}
         />
       </FieldBase>

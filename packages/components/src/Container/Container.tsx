@@ -35,8 +35,12 @@ export const gridColumn = {
 
 // Props
 // ---------------
-export interface ContainerProps
-  extends SpaceProp<SpacingTokens>, AriaRegionProps {
+export interface ContainerProps extends AriaRegionProps {
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
   children?: ReactNode;
   /**
    * Width of the container.

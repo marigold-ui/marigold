@@ -142,7 +142,7 @@ export const internal = [
       },
       {
         name: 'Developer Guidelines',
-        slug: '__internal__/component-guidelines',
+        slug: '__internal__/development-guidelines',
       },
     ],
   },

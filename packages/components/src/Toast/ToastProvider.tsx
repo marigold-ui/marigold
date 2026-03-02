@@ -46,7 +46,7 @@ const ToastProvider = ({ position = 'bottom-right' }: ToastProviderProps) => {
     component: 'Toast',
   });
   return (
-    <ToastRegion queue={queue} className={`${classNames[position]} z-50 gap-2`}>
+    <ToastRegion queue={queue} className={`${classNames[position]} z-80 gap-2`}>
       {({ toast }) => <Toast toast={toast} />}
     </ToastRegion>
   );

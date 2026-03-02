@@ -1,0 +1,69 @@
+---
+title: Aside
+description: Component to seperate content from the main content.
+---
+
+The `<Aside>` component is a responsive layout element designed for displaying side content next to main content. It ensures the side content has a fixed width while the main content dynamically adjusts to fill the remaining space.
+
+## Usage
+
+Use the `<Aside>` for building layouts were you need to have one dynamic main content with a fixed side content. On smaller screens, e.g. on mobile devices, the content is automatically shifted one below the other when 50% of the width is reached. You can also adjust this by setting the `wrap` property to a percentage value.
+
+<Callout title="Important">
+The `<Aside>` must have exactly two children, where none is a `<Fragment>`.
+</Callout>
+
+The example shows a simple `<Aside>` component. If you have a look on the code tab you get to know how to set the `side`, `sideWidth` and `space` prop.
+
+Through `space` you can define the gap between the contents.
+With `sideWidth` you define the width for the side content and with `side` you define the side on which the side content will appear.
+
+<ComponentDemo name="aside" />
+
+## Props
+
+<StorybookHintMessage component={'Aside'} />
+
+### Aside
+
+<AutoTypeTable path="Aside" name="AsideProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Grid](/components/layout/grid): When things get more complex the `<Grid>` component is the right choice.
+    It allows you to create complex layouts with multiple columns and rows.
+  </li>
+  <li>
+    [Columns](/components/layout/columns): You can position your content in one row with the `<Columns>` component. The component is used to create structured and flexible layouts that organize content efficiently.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

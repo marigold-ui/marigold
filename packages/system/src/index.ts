@@ -2,7 +2,9 @@
 export { SVG } from './components/SVG/SVG';
 export type { SVGProps } from './components/SVG/SVG';
 export { DateFormat } from './components/Formatters/DateFormat';
+export type { DateFormatProps } from './components/Formatters/DateFormat';
 export { NumericFormat } from './components/Formatters/NumericFormat';
+export type { NumericFormatProps } from './components/Formatters/NumericFormat';
 export type { NumerFormatterOptions } from './components/Formatters/NumericFormat';
 
 // Hooks
@@ -61,6 +63,7 @@ export {
   alignment,
   placeItems,
   textAlign,
+  verticalAlign,
   aspect,
   cursorStyle,
 } from './style-props';
@@ -84,6 +87,7 @@ export type {
   PaddingBottomProp,
   PlaceItemsProp,
   TextAlignProp,
+  VerticalAlignProp,
   SpaceProp,
   WidthProp,
   MaxWidthProp,
@@ -91,21 +95,15 @@ export type {
 } from './style-props';
 
 // Utils
-export type {
-  ClassValue,
-  VariantProps,
-  ConfigSchema,
-  ConfigVariants,
-  ConfigVariantsMulti,
-  Config,
-  Props,
-} from './utils/className.utils';
+export type { ClassValue, VariantProps } from './utils/className.utils';
 export { cva, cn } from './utils/className.utils';
 export type { Scale, ScaleValue } from './utils/css-variables.utils';
 export {
   createVar,
   createSpacingVar,
+  createWidthVar,
   ensureCssVar,
+  isFraction,
   isScale,
   isValidCssCustomPropertyName,
 } from './utils/css-variables.utils';

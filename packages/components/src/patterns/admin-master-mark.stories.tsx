@@ -23,7 +23,7 @@ export const TableRows = meta.story({
   render: () => (
     <Table aria-label="Settings Table">
       <Table.Header>
-        <Table.Column>Setting</Table.Column>
+        <Table.Column rowHeader>Setting</Table.Column>
         <Table.Column>Description</Table.Column>
         <Table.Column>Value</Table.Column>
       </Table.Header>

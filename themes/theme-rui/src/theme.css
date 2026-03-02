@@ -137,6 +137,28 @@
   --color-surface-border: var(--color-stone-300);
   --radius-surface: var(--radius-lg);
 
+  /* ==================== */
+  /*       ELEVATION      */
+  /* ==================== */
+  /* Based on https://www.joshwcomeau.com/shadow-palette/ */
+
+  /* Border elevation - subtle shadow for input elements and cards */
+  --shadow-elevation-border:
+    0px 0.3px 0.3px oklch(0 0 0 / 0.14), 0px 1px 1.2px -3px oklch(0 0 0 / 0.12);
+
+  /* Raised elevation - moderate shadow for cards, tiles, and containers */
+  --shadow-elevation-raised:
+    0px 0.3px 0.8px oklch(0 0 0 / 0.28),
+    0px 1.4px 1.3px -2px oklch(0 0 0 / 0.21),
+    0px 6.7px 6px -4px oklch(0 0 0 / 0.15);
+
+  /* Overlay elevation - prominent shadow for modals, dialogs, popovers */
+  --shadow-elevation-overlay:
+    0px 0.1px 0.1px oklch(0 0 0 / 0.32),
+    0px 1px 0.9px -1.3px oklch(0 0 0 / 0.26),
+    -0.1px 4px 3.6px -2.7px oklch(0 0 0 / 0.2),
+    -0.2px 12px 10.8px -4px oklch(0 0 0 / 0.14);
+
   /* ---- OLD (to be removed when updating docs) --- */
 
   --surface-sunken: var(--color-muted);
@@ -244,13 +266,39 @@
   @keyframes fade-in-up {
     from {
       opacity: 0;
-      transform: translateY(15px);
       filter: blur(6px);
+      transform: translateY(15px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
       filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  /* ActionBar enter/exit */
+  --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
+  --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(16px);
     }
   }
 
@@ -264,7 +312,7 @@
 
   @keyframes slide-in-right {
     from {
-      transform: translateX(100%);
+      transform: translateX(calc(100% + var(--slide-offset, 0px)));
     }
 
     to {
@@ -279,7 +327,7 @@
 
   @keyframes slide-in-left {
     from {
-      transform: translateX(-100%);
+      transform: translateX(calc(-100% - var(--slide-offset, 0px)));
     }
 
     to {
@@ -294,7 +342,7 @@
 
   @keyframes slide-in-top {
     from {
-      transform: translateY(-100%);
+      transform: translateY(calc(-100% - var(--slide-offset, 0px)));
     }
 
     to {
@@ -309,7 +357,7 @@
 
   @keyframes slide-in-bottom {
     from {
-      transform: translateY(100%);
+      transform: translateY(calc(100% + var(--slide-offset, 0px)));
     }
 
     to {

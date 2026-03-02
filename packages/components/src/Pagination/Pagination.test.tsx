@@ -24,8 +24,8 @@ describe('Pagination tests', () => {
   test('renders previous and next buttons', () => {
     render(<Basic.Component totalItems={20} pageSize={10} />);
 
-    const previousButton = screen.getByLabelText('Page previous');
-    const nextButton = screen.getByLabelText('Page next');
+    const previousButton = screen.getByLabelText('Previous page');
+    const nextButton = screen.getByLabelText('Next page');
 
     expect(previousButton).toBeInTheDocument();
     expect(nextButton).toBeInTheDocument();
@@ -57,8 +57,8 @@ describe('Pagination tests', () => {
   test('renders disabled buttons when no data is available', () => {
     render(<Basic.Component totalItems={0} pageSize={10} />);
 
-    const previousButton = screen.getByLabelText('Page previous');
-    const nextButton = screen.getByLabelText('Page next');
+    const previousButton = screen.getByLabelText('Previous page');
+    const nextButton = screen.getByLabelText('Next page');
     const pageButton = screen.getByLabelText('Page 1');
 
     expect(previousButton).toBeDisabled();
@@ -91,11 +91,11 @@ describe('Pagination tests', () => {
 
   it.each([
     ['Page 1', 1],
-    ['Page previous', 2],
-    ['Page previous', 3],
-    ['Page previous', 4],
-    ['Page previous', 5],
-    ['Page previous', 8],
+    ['Previous page', 2],
+    ['Previous page', 3],
+    ['Previous page', 4],
+    ['Previous page', 5],
+    ['Previous page', 8],
   ])(
     `should focus %s when using tab and default page is Page %i`,
     async (expected, page) => {
@@ -112,8 +112,8 @@ describe('Pagination tests', () => {
   test('use control labels', async () => {
     render(<WithButtonLabels.Component />);
 
-    const previousButton = screen.getByLabelText('Page previous');
-    const nextPageButton = screen.getByLabelText('Page next');
+    const previousButton = screen.getByLabelText('Previous page');
+    const nextPageButton = screen.getByLabelText('Next page');
 
     expect(previousButton).toHaveTextContent('Previous');
     expect(nextPageButton).toHaveTextContent('Next');

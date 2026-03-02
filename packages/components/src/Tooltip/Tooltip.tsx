@@ -28,7 +28,10 @@ const _Tooltip = ({ children, variant, size, open, ...rest }: TooltipProps) => {
   const classNames = useClassNames({ component: 'Tooltip', variant, size });
 
   return (
-    <Tooltip {...props} className={cn('group/tooltip', classNames.container)}>
+    <Tooltip
+      {...props}
+      className={cn('group/tooltip z-30', classNames.container)}
+    >
       <OverlayArrow className={classNames.arrow}>
         <TooltipArrow />
       </OverlayArrow>

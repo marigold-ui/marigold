@@ -1,24 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { ContextualHelpProps } from './ContextualHelp';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './ContextualHelp.stories';
 
-const BasicComponent = (props: Partial<ContextualHelpProps>) => (
-  <div id="storybook-root">
-    <Basic.Component {...props} />
-  </div>
-);
-
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();
@@ -31,13 +16,13 @@ afterEach(() => {
 });
 
 test('does not render popover by default', () => {
-  render(<BasicComponent />);
+  renderWithOverlay(<Basic.Component />);
 
   expect(screen.queryByText(/This feature explains/)).toBeNull();
 });
 
 test('shows popover on click', async () => {
-  render(<BasicComponent />);
+  renderWithOverlay(<Basic.Component />);
 
   const button = screen.getByRole('button');
 
@@ -47,7 +32,7 @@ test('shows popover on click', async () => {
 });
 
 test('closes popover on outside click', async () => {
-  render(<BasicComponent defaultOpen={true} />);
+  renderWithOverlay(<Basic.Component defaultOpen={true} />);
 
   await userEvent.click(document.body);
 
@@ -55,7 +40,7 @@ test('closes popover on outside click', async () => {
 });
 
 test('closes popover on Escape key', async () => {
-  render(<BasicComponent defaultOpen={true} />);
+  renderWithOverlay(<Basic.Component defaultOpen={true} />);
 
   await userEvent.keyboard('{Escape}');
 

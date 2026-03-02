@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Facebook } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
-import preview from '.storybook/preview';
 
 const meta = preview.meta({
   title: 'Components/Button',
@@ -129,6 +129,23 @@ export const ButtonVariants = meta.story({
 
     await expect(args.onPress).toHaveBeenCalledTimes(5);
   },
+});
+
+export const GhostOnBackground = meta.story({
+  render: args => (
+    <Stack space={4}>
+      <div className="bg-brand text-brand-foreground flex items-center justify-center rounded p-8">
+        <Button {...args} variant="ghost">
+          Ghost on Dark
+        </Button>
+      </div>
+      <div className="bg-background text-foreground flex items-center justify-center rounded border p-8">
+        <Button {...args} variant="ghost">
+          Ghost on Light
+        </Button>
+      </div>
+    </Stack>
+  ),
 });
 
 export const WithIcon = meta.story({

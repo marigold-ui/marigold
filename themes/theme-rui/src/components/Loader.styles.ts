@@ -1,7 +1,8 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Loader: ThemeComponent<'Loader'> = {
-  container: cva('grid place-items-center text-brand', {
+  container: cva({
+    base: 'grid place-items-center text-brand',
     variants: {
       variant: {
         default: '',
@@ -18,7 +19,8 @@ export const Loader: ThemeComponent<'Loader'> = {
       size: 'default',
     },
   }),
-  loader: cva('size-full', {
+  loader: cva({
+    base: 'size-full',
     variants: {
       variant: {
         default: '',
@@ -35,5 +37,5 @@ export const Loader: ThemeComponent<'Loader'> = {
       size: 'default',
     },
   }),
-  label: cva('text-current text-sm'),
+  label: cva({ base: 'text-current text-sm' }),
 };

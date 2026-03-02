@@ -1,61 +1,54 @@
-import { type JSX, useRef } from 'react';
-import { useFocusRing } from '@react-aria/focus';
-import { useTableCell } from '@react-aria/table';
-import { mergeProps } from '@react-aria/utils';
-import { GridNode } from '@react-types/grid';
-import { useStateProps } from '@marigold/system';
+import type { ReactNode } from 'react';
+import type RAC from 'react-aria-components';
+import { Cell } from 'react-aria-components';
+import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
+import { TableCellContent } from './TableCellContent';
 
-export interface TableCellProps {
-  align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
-  alignY?: Exclude<
-    JSX.IntrinsicElements['td']['valign'],
-    'baseline' | 'sub' | 'super' | 'bottom'
-  >;
-  cell: GridNode<object>;
+// Props
+// ---------------
+type RemovedProps = 'className' | 'style' | 'children';
+
+export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
+  /**
+   * The content of the cell.
+   */
+  children?: ReactNode;
+  /**
+   * Horizontal text alignment of the cell content.
+   * @default 'left'
+   */
+  alignX?: keyof typeof textAlign;
+  /**
+   * Text overflow behavior for this specific cell. Overrides the table-level overflow setting.
+   * @default undefined (inherits from table)
+   */
+  overflow?: 'truncate' | 'wrap';
 }
 
-export const TableCell = ({
-  cell,
-  align = 'left',
-  alignY = 'middle',
+// Component
+// ---------------
+const TableCell = ({
+  children,
+  alignX,
+  overflow: cellOverflow,
+  ...props
 }: TableCellProps) => {
-  const ref = useRef(null);
-  const { interactive, state, classNames } = useTableContext();
-  const disabled = state.disabledKeys.has(cell.parentKey!);
-  const { gridCellProps } = useTableCell(
-    {
-      node: cell,
-    },
-    state,
-    ref
-  );
-  const cellProps = interactive
-    ? gridCellProps
-    : {
-        /**
-         * Override `react-aria` handler so users can select text.
-         * Solution from https://github.com/adobe/react-spectrum/issues/2585
-         */
-        ...gridCellProps,
-        onMouseDown: (e: MouseEvent) => e.stopPropagation(),
-        onPointerDown: (e: MouseEvent) => e.stopPropagation(),
-      };
-
-  const { focusProps, isFocusVisible } = useFocusRing();
-  const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
+  const { classNames, alignY = 'middle' } = useTableContext();
 
   return (
-    <td
-      ref={ref}
-      className={classNames?.cell}
-      {...mergeProps(cellProps, focusProps)}
-      {...stateProps}
-      align={align}
-      valign={alignY}
-      data-rac
-    >
-      {cell.rendered}
-    </td>
+    <Cell className={cn(classNames.cell, verticalAlign[alignY])} {...props}>
+      {({ columnIndex }) => (
+        <TableCellContent
+          columnIndex={columnIndex}
+          alignX={alignX}
+          cellOverflow={cellOverflow}
+        >
+          {children}
+        </TableCellContent>
+      )}
+    </Cell>
   );
 };
+
+export { TableCell };

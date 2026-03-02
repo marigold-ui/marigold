@@ -1,20 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import { createRef, forwardRef } from 'react';
-import { TextAreaProps } from './TextArea';
+import { createRef } from 'react';
 import { Basic } from './TextArea.stories';
 
-// Setup
-// ---------------
-const BasicComponent = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  (props, ref) => (
-    <div id="storybook-root">
-      <Basic.Component {...props} ref={ref} />
-    </div>
-  )
-);
-
 test('renders an textarea', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toBeInTheDocument();
@@ -22,14 +11,14 @@ test('renders an textarea', () => {
 });
 
 test('supports disabled', () => {
-  render(<BasicComponent disabled />);
+  render(<Basic.Component disabled />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toBeDisabled();
 });
 
 test('supports required', () => {
-  render(<BasicComponent required />);
+  render(<Basic.Component required />);
 
   const textArea = screen.getByRole('textbox');
   /** Note that the required attribute is not passed down! */
@@ -37,14 +26,14 @@ test('supports required', () => {
 });
 
 test('supports readonly', () => {
-  render(<BasicComponent readOnly />);
+  render(<Basic.Component readOnly />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveAttribute('readonly');
 });
 
 test('supports field structure', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component />);
 
   const label = screen.queryByText('Label');
   expect(label).toBeInTheDocument();
@@ -57,7 +46,7 @@ test('supports field structure', () => {
 });
 
 test('supports field structure (with error)', () => {
-  render(<BasicComponent error={true} />);
+  render(<Basic.Component error={true} />);
 
   const label = screen.queryByText('Label');
   expect(label).toBeInTheDocument();
@@ -70,7 +59,7 @@ test('supports field structure (with error)', () => {
 });
 
 test('correctly sets up aria attributes', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component />);
 
   const label = screen.getByText('Label');
   const textArea = screen.getByRole('textbox');
@@ -94,7 +83,7 @@ test('correctly sets up aria attributes', () => {
 });
 
 test('correctly sets up aria attributes (with error)', () => {
-  render(<BasicComponent error={true} />);
+  render(<Basic.Component error={true} />);
 
   const label = screen.getByText('Label');
   const textArea = screen.getByRole('textbox');
@@ -119,14 +108,14 @@ test('correctly sets up aria attributes (with error)', () => {
 });
 
 test('can have default value', () => {
-  render(<BasicComponent defaultValue="Default Value" />);
+  render(<Basic.Component defaultValue="Default Value" />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveValue('Default Value');
 });
 
 test('passes down "rows" attribute', () => {
-  render(<BasicComponent defaultValue="Default Value" rows={5} />);
+  render(<Basic.Component defaultValue="Default Value" rows={5} />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveAttribute('rows', '5');
@@ -134,7 +123,7 @@ test('passes down "rows" attribute', () => {
 
 test('forwards ref', () => {
   const ref = createRef<HTMLTextAreaElement>();
-  render(<BasicComponent ref={ref} />);
+  render(<Basic.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);
 });

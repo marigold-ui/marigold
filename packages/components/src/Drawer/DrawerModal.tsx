@@ -8,7 +8,7 @@ import type { NonModalProps } from '../Overlay/NonModal';
 const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
   <ModalOverlay
     {...props}
-    className="fixed inset-0 z-40 h-(--visual-viewport-height)"
+    className="fixed inset-0 z-50 h-(--visual-viewport-height)"
   >
     <Modal className="flex *:flex-1">{children}</Modal>
   </ModalOverlay>
@@ -16,9 +16,7 @@ const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
 
 // Props
 // ---------------
-interface DrawerModalProps extends NonModalProps {
-  placement?: 'left' | 'right' | 'top' | 'bottom';
-}
+type DrawerModalProps = NonModalProps;
 
 // Component
 // ---------------
@@ -32,7 +30,7 @@ export const DrawerModal = ({
   return isSmallScreen ? (
     <MobileModal>{children}</MobileModal>
   ) : (
-    <NonModal {...props} className={cn('fixed', className)}>
+    <NonModal {...props} className={cn('fixed z-50', className)}>
       {children}
     </NonModal>
   );

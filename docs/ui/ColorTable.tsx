@@ -1,5 +1,5 @@
+import { Table } from '@/ui';
 import { ReactNode } from 'react';
-import { Table } from '@marigold/components';
 
 export interface ColorCanvasProps {
   children?: ReactNode;
@@ -27,7 +27,9 @@ const ColorTable = ({ property, modifiers = [''] }: ColorPalettesProps) => (
     stretch
   >
     <Table.Header>
-      <Table.Column key={'name'}>Name</Table.Column>
+      <Table.Column key={'name'} isRowHeader>
+        Name
+      </Table.Column>
       <Table.Column key={'color'}>Color</Table.Column>
     </Table.Header>
     <Table.Body>

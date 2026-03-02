@@ -2,6 +2,7 @@
 
 /* own theme */
 @import './../../themes/theme-docs/dist/theme.css';
+
 /* rui theme */
 @import './../../themes/theme-rui/dist/styles.css';
 
@@ -61,3 +62,5 @@
     --pre-padding-x: 1rem;
   }
 }
+
+@plugin '@tailwindcss/typography';

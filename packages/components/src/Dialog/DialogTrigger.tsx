@@ -15,7 +15,7 @@ type RemovedProps =
 
 export interface DialogTriggerProps
   extends
-    Omit<RAC.DialogTriggerProps, 'isOpen'>,
+    Omit<RAC.DialogTriggerProps, 'isOpen' | 'render'>,
     Omit<DialogContextProps, RemovedProps> {
   /** Whether the overlay is open by default (controlled). */
   open?: boolean;

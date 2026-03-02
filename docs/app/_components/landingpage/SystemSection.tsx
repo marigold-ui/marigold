@@ -26,7 +26,7 @@ export const SystemSection = () => {
                     label="Ticket Name"
                     defaultValue="Platinum Package"
                   />
-                  <Select label="Ticket Type" defaultSelectedKey="vip">
+                  <Select label="Ticket Type" defaultValue="vip">
                     <Select.Option id="general">
                       General Admission
                     </Select.Option>
