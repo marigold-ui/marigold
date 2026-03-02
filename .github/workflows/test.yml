@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: accessibility-report
-          path: ./config/storybook/artifacts/accessibilityReport.html
+          path: ./storybook/artifacts/accessibilityReport.html
           overwrite: 'true'
       - name: Get PR number
         uses: jwalton/gh-find-current-pr@master
