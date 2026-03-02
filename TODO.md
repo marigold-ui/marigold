@@ -3,3 +3,7 @@
 - animation glitch: when navigating back from the last child item, animation is coming from the top too
 - header should show parent item
 - make example more complex, separator, groups, more items, subheadings?
+- all items needs to be of the same height so animations for/back do not look weird
+- do we support additional sections and section headers
+- fix styling of back header, caret aligned etc
+- the animation is still not as great. maybe try to fix it again?
