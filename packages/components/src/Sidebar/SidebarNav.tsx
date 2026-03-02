@@ -294,15 +294,12 @@ export const SidebarNav = <T extends object = object>({
 
   // Exiting panel state for CSS transitions
   const [exitingPanel, setExitingPanel] = useState<ExitingPanel | null>(null);
-  const cleanupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const push = useCallback(
     (id: string) => {
       if (!reducedMotion) {
         const snapshot = snapshotCurrentPanel(state.stack, collection);
         setExitingPanel({ ...snapshot, direction: 'forward' });
-        clearTimeout(cleanupTimerRef.current!);
-        cleanupTimerRef.current = setTimeout(() => setExitingPanel(null), 200);
       }
       dispatch({ type: 'push', id });
     },
@@ -313,8 +310,6 @@ export const SidebarNav = <T extends object = object>({
     if (!reducedMotion) {
       const snapshot = snapshotCurrentPanel(state.stack, collection);
       setExitingPanel({ ...snapshot, direction: 'backward' });
-      clearTimeout(cleanupTimerRef.current!);
-      cleanupTimerRef.current = setTimeout(() => setExitingPanel(null), 200);
     }
     dispatch({ type: 'pop' });
   }, [state.stack, collection, reducedMotion]);
@@ -383,11 +378,7 @@ export const SidebarNav = <T extends object = object>({
             )}
             inert
             aria-hidden="true"
-            onAnimationEnd={() => {
-              clearTimeout(cleanupTimerRef.current!);
-              cleanupTimerRef.current = null;
-              setExitingPanel(null);
-            }}
+            onAnimationEnd={() => setExitingPanel(null)}
           >
             <InnerPanelContent
               nodes={exitingPanel.nodes}
