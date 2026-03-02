@@ -240,6 +240,11 @@ export type {
 
 export { Sidebar } from './Sidebar/Sidebar';
 export type { SidebarProps } from './Sidebar/Sidebar';
+export type {
+  SidebarSubNavProps,
+  SidebarMenuSubProps,
+  SidebarMenuSubTriggerProps,
+} from './Sidebar/SidebarSubNav';
 
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';

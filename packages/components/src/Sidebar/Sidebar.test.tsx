@@ -31,6 +31,8 @@ const theme: Theme = {
       menu: cva({}),
       menuItem: cva({}),
       menuButton: cva({}),
+      subNav: cva({}),
+      subNavBackButton: cva({}),
     },
     Button: cva({}),
     CloseButton: cva({}),

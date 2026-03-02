@@ -16,18 +16,16 @@ const meta = preview.meta({
 });
 
 const pages = {
-  overview: { label: 'Overview', group: 'Main' },
-  analytics: { label: 'Analytics', group: 'Main' },
-  users: { label: 'Users', group: 'Management' },
-  teams: { label: 'Teams', group: 'Management' },
-  billing: { label: 'Billing', group: 'Management' },
-  general: { label: 'General', group: 'Settings' },
-  security: { label: 'Security', group: 'Settings' },
+  overview: { label: 'Overview' },
+  analytics: { label: 'Analytics' },
+  users: { label: 'Users' },
+  teams: { label: 'Teams' },
+  billing: { label: 'Billing' },
+  general: { label: 'General' },
+  security: { label: 'Security' },
 } as const;
 
 type PageId = keyof typeof pages;
-
-const groups = ['Main', 'Management', 'Settings'] as const;
 
 const Layout = ({
   children,
@@ -48,26 +46,97 @@ const Layout = ({
             <Text weight="bold">Admin Panel</Text>
           </Sidebar.Header>
           <Sidebar.Content>
-            {groups.map(group => (
-              <Sidebar.Group key={group}>
-                <Sidebar.GroupLabel>{group}</Sidebar.GroupLabel>
-                <Sidebar.Menu>
-                  {(Object.entries(pages) as [PageId, (typeof pages)[PageId]][])
-                    .filter(([, page]) => page.group === group)
-                    .map(([id, page]) => (
-                      <Sidebar.MenuItem key={id}>
-                        <Sidebar.MenuButton
-                          href={`/${id}`}
-                          active={activePage === id}
-                          onPress={() => setActivePage(id)}
-                        >
-                          {page.label}
-                        </Sidebar.MenuButton>
-                      </Sidebar.MenuItem>
-                    ))}
-                </Sidebar.Menu>
-              </Sidebar.Group>
-            ))}
+            <Sidebar.Group>
+              <Sidebar.SubNav>
+                <Sidebar.MenuSub id="root" label="Main">
+                  <Sidebar.Menu>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuButton
+                        href="/overview"
+                        active={activePage === 'overview'}
+                        onPress={() => setActivePage('overview')}
+                      >
+                        Overview
+                      </Sidebar.MenuButton>
+                    </Sidebar.MenuItem>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuButton
+                        href="/analytics"
+                        active={activePage === 'analytics'}
+                        onPress={() => setActivePage('analytics')}
+                      >
+                        Analytics
+                      </Sidebar.MenuButton>
+                    </Sidebar.MenuItem>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuSubTrigger submenuId="management">
+                        Management
+                      </Sidebar.MenuSubTrigger>
+                    </Sidebar.MenuItem>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuSubTrigger submenuId="settings">
+                        Settings
+                      </Sidebar.MenuSubTrigger>
+                    </Sidebar.MenuItem>
+                  </Sidebar.Menu>
+                </Sidebar.MenuSub>
+
+                <Sidebar.MenuSub id="management" label="Management">
+                  <Sidebar.Menu>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuButton
+                        href="/users"
+                        active={activePage === 'users'}
+                        onPress={() => setActivePage('users')}
+                      >
+                        Users
+                      </Sidebar.MenuButton>
+                    </Sidebar.MenuItem>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuButton
+                        href="/teams"
+                        active={activePage === 'teams'}
+                        onPress={() => setActivePage('teams')}
+                      >
+                        Teams
+                      </Sidebar.MenuButton>
+                    </Sidebar.MenuItem>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuButton
+                        href="/billing"
+                        active={activePage === 'billing'}
+                        onPress={() => setActivePage('billing')}
+                      >
+                        Billing
+                      </Sidebar.MenuButton>
+                    </Sidebar.MenuItem>
+                  </Sidebar.Menu>
+                </Sidebar.MenuSub>
+
+                <Sidebar.MenuSub id="settings" label="Settings">
+                  <Sidebar.Menu>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuButton
+                        href="/general"
+                        active={activePage === 'general'}
+                        onPress={() => setActivePage('general')}
+                      >
+                        General
+                      </Sidebar.MenuButton>
+                    </Sidebar.MenuItem>
+                    <Sidebar.MenuItem>
+                      <Sidebar.MenuButton
+                        href="/security"
+                        active={activePage === 'security'}
+                        onPress={() => setActivePage('security')}
+                      >
+                        Security
+                      </Sidebar.MenuButton>
+                    </Sidebar.MenuItem>
+                  </Sidebar.Menu>
+                </Sidebar.MenuSub>
+              </Sidebar.SubNav>
+            </Sidebar.Group>
           </Sidebar.Content>
           <Sidebar.Footer>
             <Text fontSize="xs">Logged in as admin</Text>

@@ -20,7 +20,7 @@ export const Showcase = meta.story({
             {expanded ? 'Collapse' : 'Expand'}
           </Button>
           <div className="flex items-center gap-8">
-            <SidebarToggle expanded={expanded} size={32} />
+            <SidebarToggle expanded={expanded} size={32} strokeWidth={1.5} />
           </div>
         </Stack>
       </div>

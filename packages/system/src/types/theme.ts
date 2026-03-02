@@ -268,7 +268,9 @@ export type Theme = {
       | 'groupLabel'
       | 'menu'
       | 'menuItem'
-      | 'menuButton',
+      | 'menuButton'
+      | 'subNav'
+      | 'subNavBackButton',
       ComponentStyleFunction<string, string>
     >;
   };

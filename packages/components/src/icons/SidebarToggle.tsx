@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { CSSProperties } from 'react';
 import { cn } from '@marigold/system';
 import type { IconProps } from './Icons.types';
 
@@ -43,7 +43,7 @@ export const SidebarToggle = ({
         {
           d: `path("${expanded ? CHEVRON_LEFT : CHEVRON_RIGHT}")`,
           transition: `d 200ms ${SPRING_BEZIER}`,
-        } as React.CSSProperties
+        } as CSSProperties
       }
     />
   </svg>
