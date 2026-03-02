@@ -2,22 +2,10 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, BasicActionMenu, MenuSection } from './Menu.stories';
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-  }));
-
-window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 const user = userEvent.setup();
 
