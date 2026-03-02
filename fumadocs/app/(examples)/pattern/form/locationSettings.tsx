@@ -27,7 +27,7 @@ export const LocationSettings = () => {
         label="Location Description"
         description="Provide additional details about the event location"
       />
-      <Inset spaceY="group">
+      <Inset spaceY={12}>
         <Stack space="group">
           <Inline alignY="input" space="related" noWrap>
             <Select label="Venue">
