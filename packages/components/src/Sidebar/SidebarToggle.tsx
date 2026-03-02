@@ -1,5 +1,5 @@
-import { PanelLeftClose } from 'lucide-react';
 import { cn, useClassNames } from '@marigold/system';
+import { SidebarToggleIcon } from '../icons/SidebarToggleIcon';
 import { useSidebar } from './Context';
 
 export const SidebarToggle = () => {
@@ -18,7 +18,7 @@ export const SidebarToggle = () => {
       onClick={toggleSidebar}
       className={cn(classNames.toggle)}
     >
-      <PanelLeftClose />
+      <SidebarToggleIcon expanded={state === 'expanded'} />
     </button>
   );
 };

@@ -6,16 +6,16 @@ const CHEVRON_LEFT = 'M 16 15 L 13 12 L 16 9';
 const CHEVRON_RIGHT = 'M 13 15 L 16 12 L 13 9';
 const SPRING_BEZIER = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-export interface SidebarToggleProps extends IconProps {
+export interface SidebarToggleIconProps extends IconProps {
   expanded?: boolean;
 }
 
-export const SidebarToggle = ({
+export const SidebarToggleIcon = ({
   size = 24,
   className,
   expanded = true,
   ...props
-}: SidebarToggleProps) => (
+}: SidebarToggleIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}

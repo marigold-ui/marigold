@@ -2,11 +2,11 @@ import { useState } from 'react';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
-import { SidebarToggle } from './SidebarToggle';
+import { SidebarToggleIcon } from './SidebarToggleIcon';
 
 const meta = preview.meta({
-  title: 'Icon/SidebarToggle',
-  component: SidebarToggle,
+  title: 'Icon/SidebarToggleIcon',
+  component: SidebarToggleIcon,
 });
 
 export const Showcase = meta.story({
@@ -20,7 +20,11 @@ export const Showcase = meta.story({
             {expanded ? 'Collapse' : 'Expand'}
           </Button>
           <div className="flex items-center gap-8">
-            <SidebarToggle expanded={expanded} size={32} strokeWidth={1.5} />
+            <SidebarToggleIcon
+              expanded={expanded}
+              size={32}
+              strokeWidth={1.5}
+            />
           </div>
         </Stack>
       </div>
