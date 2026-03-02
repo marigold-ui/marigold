@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import {
+  ApplicationShell,
   NavBarPattern,
-  Sticky,
   WithSearchField,
 } from './TopNavigation.stories';
 
@@ -27,22 +27,17 @@ describe('TopNavigation', () => {
   it('renders all three slots', () => {
     render(<NavBarPattern.Component />);
     expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Logout')).toBeInTheDocument();
+    expect(screen.getByText('Jane Doe')).toBeInTheDocument();
   });
 
   it('applies sticky classes when sticky prop is set', () => {
-    render(<Sticky.Component />);
-    const nav = screen.getByRole('navigation', { name: 'Sticky navigation' });
+    render(<ApplicationShell.Component />);
+    const nav = screen.getByRole('navigation', {
+      name: 'Application navigation',
+    });
     expect(nav.className).toMatch(/sticky/);
     expect(nav.className).toMatch(/top-0/);
     expect(nav.className).toMatch(/z-1/);
-  });
-
-  it('works without Center slot', () => {
-    render(<Sticky.Component />);
-    const nav = screen.getByRole('navigation', { name: 'Sticky navigation' });
-    expect(nav).toBeInTheDocument();
-    expect(screen.getByText('Logout')).toBeInTheDocument();
   });
 
   it('renders with search field and breadcrumbs', () => {

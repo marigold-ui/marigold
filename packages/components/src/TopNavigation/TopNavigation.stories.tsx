@@ -1,9 +1,8 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Logout } from '@marigold/icons';
+import { Logout, SettingDots, User } from '@marigold/icons';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
-import { Button } from '../Button/Button';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
@@ -111,18 +110,30 @@ export const NavBarPattern = meta.story({
       </TopNavigation.Middle>
       <TopNavigation.End>
         <Inline space={2} alignY="center">
-          <Inline space={1} alignX="right" alignY="top">
-            <Stack space={2} alignY="center">
-              <Stack alignX="right">
-                <Text>Jane Doe</Text>
-                <Text size="xs">ACME Corp</Text>
-              </Stack>
-            </Stack>
-            <Badge variant="master">Master</Badge>
-          </Inline>
-          <Button variant="ghost">
-            <Logout size={16} /> Logout
-          </Button>
+          <Stack>
+            <Inline space={1} alignY="center">
+              <Text size="sm" weight="bold">
+                Jane Doe
+              </Text>
+              <Badge variant="master">Master</Badge>
+            </Inline>
+            <Text size="xs" variant="muted">
+              Global Entertainment Solutions Inc.
+            </Text>
+          </Stack>
+          <ActionMenu aria-label="User menu">
+            <Menu.Section title="Account">
+              <Menu.Item id="profile" textValue="Profile">
+                <User size={16} /> Profile
+              </Menu.Item>
+              <Menu.Item id="settings" textValue="Settings">
+                <SettingDots size={16} /> Settings
+              </Menu.Item>
+            </Menu.Section>
+            <Menu.Item id="sign-out" textValue="Sign out">
+              <Logout size={16} /> Sign out
+            </Menu.Item>
+          </ActionMenu>
         </Inline>
       </TopNavigation.End>
     </TopNavigation>
@@ -132,32 +143,8 @@ export const NavBarPattern = meta.story({
     await expect(nav).toBeInTheDocument();
 
     await expect(canvas.getByText('Home')).toBeInTheDocument();
-    await expect(canvas.getByText('Logout')).toBeInTheDocument();
+    await expect(canvas.getByText('Jane Doe')).toBeInTheDocument();
   },
-});
-
-export const Sticky = meta.story({
-  args: {
-    'aria-label': 'Sticky navigation',
-    sticky: true,
-  },
-  render: args => (
-    <div style={{ height: '200vh' }}>
-      <TopNavigation {...args}>
-        <TopNavigation.Start>
-          <Logo />
-        </TopNavigation.Start>
-        <TopNavigation.End>
-          <Button variant="ghost">
-            <Logout size={16} /> Logout
-          </Button>
-        </TopNavigation.End>
-      </TopNavigation>
-      <div style={{ padding: '2rem' }}>
-        <Text>Scroll down to see sticky behavior.</Text>
-      </div>
-    </div>
-  ),
 });
 
 export const WithSearchField = meta.story({
@@ -180,16 +167,96 @@ export const WithSearchField = meta.story({
         <SearchField placeholder="Search..." width={48} />
       </TopNavigation.Middle>
       <TopNavigation.End>
-        <Stack alignX="right">
-          <Text>Jane Doe</Text>
-          <Text size="xs">ACME Corp</Text>
-        </Stack>
-        <ActionMenu>
-          <Menu.Item id="profile">Profile</Menu.Item>
-          <Menu.Item id="settings">Settings</Menu.Item>
-          <Menu.Item id="logout">Logout</Menu.Item>
-        </ActionMenu>
+        <Inline space={2} alignY="center">
+          <Stack>
+            <Inline space={1} alignY="center">
+              <Text size="sm" weight="bold">
+                Jane Doe
+              </Text>
+              <Badge variant="master">Master</Badge>
+            </Inline>
+            <Text size="xs" variant="muted">
+              Global Entertainment Solutions Inc.
+            </Text>
+          </Stack>
+          <ActionMenu aria-label="User menu">
+            <Menu.Section title="Account">
+              <Menu.Item id="profile" textValue="Profile">
+                <User size={16} /> Profile
+              </Menu.Item>
+              <Menu.Item id="settings" textValue="Settings">
+                <SettingDots size={16} /> Settings
+              </Menu.Item>
+            </Menu.Section>
+            <Menu.Item id="sign-out" textValue="Sign out">
+              <Logout size={16} /> Sign out
+            </Menu.Item>
+          </ActionMenu>
+        </Inline>
       </TopNavigation.End>
     </TopNavigation>
+  ),
+});
+
+export const ApplicationShell = meta.story({
+  args: {
+    'aria-label': 'Application navigation',
+    sticky: true,
+  },
+  render: args => (
+    <div style={{ height: '200vh' }}>
+      <TopNavigation {...args}>
+        <TopNavigation.Start>
+          <Logo />
+        </TopNavigation.Start>
+        <TopNavigation.Middle>
+          <Breadcrumbs>
+            <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+            <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
+            <Breadcrumbs.Item href="/events/summer-festival">
+              Summer Festival
+            </Breadcrumbs.Item>
+          </Breadcrumbs>
+        </TopNavigation.Middle>
+        <TopNavigation.End>
+          <Inline space={2} alignY="center">
+            <Stack>
+              <Text size="sm" weight="bold">
+                Jane Doe
+              </Text>
+              <Text size="xs" variant="muted">
+                Global Entertainment Solutions Inc.
+              </Text>
+            </Stack>
+            <ActionMenu aria-label="User menu">
+              <Menu.Section title="Account">
+                <Menu.Item id="profile" textValue="Profile">
+                  <User size={16} /> Profile
+                </Menu.Item>
+                <Menu.Item id="settings" textValue="Settings">
+                  <SettingDots size={16} /> Settings
+                </Menu.Item>
+              </Menu.Section>
+              <Menu.Section title="">
+                <Menu.Item id="sign-out" textValue="Sign out">
+                  <Logout size={16} /> Sign out
+                </Menu.Item>
+              </Menu.Section>
+            </ActionMenu>
+          </Inline>
+        </TopNavigation.End>
+      </TopNavigation>
+      <div style={{ padding: '2rem' }}>
+        <Stack space={4}>
+          <Text weight="bold" size="xl">
+            Summer Festival
+          </Text>
+          <Text>
+            Manage your event details, ticket sales, and attendee information
+            from this dashboard.
+          </Text>
+        </Stack>
+      </div>
+    </div>
   ),
 });
