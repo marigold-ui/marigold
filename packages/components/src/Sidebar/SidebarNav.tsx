@@ -50,18 +50,6 @@ const tweenTransition = {
   ease: [0.25, 0.1, 0.25, 1.0] as [number, number, number, number],
 };
 
-// Resolve dynamic items
-// ---------------
-const resolveChildren = <T,>(
-  items: Iterable<T> | undefined,
-  children: ReactNode | ((item: T) => ReactNode)
-): ReactNode => {
-  if (items && typeof children === 'function') {
-    return Array.from(items).map(item => children(item));
-  }
-  return children as ReactNode;
-};
-
 // Inner panel content (uses FocusManager)
 // ---------------
 const InnerPanelContent = ({
@@ -220,11 +208,13 @@ export const SidebarNav = <T extends object = object>({
   const classNames = useClassNames({ component: 'Sidebar', variant, size });
   const shouldReduceMotion = useReducedMotion();
 
-  const resolved = resolveChildren(items, children);
-  const collection: SidebarCollection = useMemo(
-    () => buildCollection(resolved),
-    [resolved]
-  );
+  const collection: SidebarCollection = useMemo(() => {
+    const resolved =
+      items && typeof children === 'function'
+        ? Array.from(items).map(item => children(item))
+        : (children as ReactNode);
+    return buildCollection(resolved);
+  }, [items, children]);
 
   const [state, dispatch] = useReducer(navReducer, {
     stack: [],
@@ -238,9 +228,9 @@ export const SidebarNav = <T extends object = object>({
   // Determine active panel nodes
   const activeKey =
     state.stack.length > 0 ? state.stack[state.stack.length - 1] : null;
-  const activeNodes = activeKey
-    ? (collection.getItem(activeKey)?.children ?? [])
-    : collection.rootNodes;
+  const activeItem = activeKey ? collection.getItem(activeKey) : undefined;
+  const activeNodes =
+    activeItem?.type === 'item' ? activeItem.children : collection.rootNodes;
 
   // Determine parent label for back button
   const parentLabel = (() => {
@@ -250,7 +240,7 @@ export const SidebarNav = <T extends object = object>({
     }
     const parentKey = state.stack[state.stack.length - 2];
     const parentNode = collection.getItem(parentKey);
-    return parentNode?.textValue ?? 'Back';
+    return parentNode?.type === 'item' ? parentNode.textValue : 'Back';
   })();
 
   // Height animation

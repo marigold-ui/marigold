@@ -1,18 +1,26 @@
 import { Children, isValidElement } from 'react';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import type { SidebarItemProps } from './SidebarItem';
 
 // Types
 // ---------------
-export interface SidebarNode {
-  type: 'item' | 'separator' | 'group-label';
+export interface SidebarItemNode {
+  type: 'item';
   key: string;
   textValue: string;
-  triggerContent: ReactNode;
+  triggerContent: ReactNode[];
   children: SidebarNode[];
   href?: string;
   onPress?: () => void;
   active?: boolean;
 }
+
+export interface SidebarSeparatorNode {
+  type: 'separator';
+  key: string;
+}
+
+export type SidebarNode = SidebarItemNode | SidebarSeparatorNode;
 
 export interface SidebarCollection {
   rootNodes: SidebarNode[];
@@ -21,11 +29,13 @@ export interface SidebarCollection {
 
 // Type guards (brand-based, safe across HOCs and bundles)
 // ---------------
-const isSidebarItem = (child: ReactNode): boolean =>
+const isSidebarItem = (
+  child: ReactNode
+): child is ReactElement<SidebarItemProps> =>
   isValidElement(child) &&
   (child.type as { __SIDEBAR_ITEM__?: boolean }).__SIDEBAR_ITEM__ === true;
 
-const isSidebarSeparator = (child: ReactNode): boolean =>
+const isSidebarSeparator = (child: ReactNode): child is ReactElement =>
   isValidElement(child) &&
   (child.type as { __SIDEBAR_SEPARATOR__?: boolean }).__SIDEBAR_SEPARATOR__ ===
     true;
@@ -34,19 +44,17 @@ const isSidebarSeparator = (child: ReactNode): boolean =>
 // ---------------
 
 /**
- * Extract a text value from children. If children is a string,
- * return it directly. Otherwise return empty string (user should
+ * Extract a text value from children. If any child is a string,
+ * concatenate them. Otherwise return empty string (user should
  * provide textValue explicitly).
  */
-const extractTextValue = (children: ReactNode): string => {
-  if (typeof children === 'string') return children;
-
+const extractTextValue = (children: readonly ReactNode[]): string => {
   let text = '';
-  Children.forEach(children, child => {
+  for (const child of children) {
     if (typeof child === 'string') {
       text += child;
     }
-  });
+  }
   return text.trim();
 };
 
@@ -73,80 +81,60 @@ const separateChildren = (
   return { itemChildren, triggerContent };
 };
 
-// Build collection
+// Build collection (single pass: build + index)
 // ---------------
 const buildNodes = (
-  children: ReactNode,
-  counter: { value: number }
+  flatChildren: readonly ReactNode[],
+  counter: { value: number },
+  index: Map<string, SidebarNode>
 ): SidebarNode[] => {
   const nodes: SidebarNode[] = [];
-  const flat = Children.toArray(children);
 
-  for (const child of flat) {
-    if (!isValidElement(child)) continue;
-
+  for (const child of flatChildren) {
     if (isSidebarSeparator(child)) {
-      nodes.push({
+      const node: SidebarSeparatorNode = {
         type: 'separator',
         key: `sep-${counter.value++}`,
-        textValue: '',
-        triggerContent: null,
-        children: [],
-      });
+      };
+      index.set(node.key, node);
+      nodes.push(node);
       continue;
     }
 
     if (isSidebarItem(child)) {
-      const props = child.props as {
-        id?: string;
-        textValue?: string;
-        href?: string;
-        onPress?: () => void;
-        active?: boolean;
-        children?: ReactNode;
-      };
+      const { itemChildren, triggerContent } = separateChildren(
+        child.props.children
+      );
 
-      const { itemChildren, triggerContent } = separateChildren(props.children);
-
-      const key = props.id || `item-${counter.value++}`;
+      const key = child.props.id || `item-${counter.value++}`;
       const textValue =
-        props.textValue || extractTextValue(triggerContent as ReactNode);
+        child.props.textValue || extractTextValue(triggerContent);
 
-      nodes.push({
+      const node: SidebarItemNode = {
         type: 'item',
         key,
         textValue,
-        triggerContent:
-          triggerContent.length === 1 ? triggerContent[0] : triggerContent,
+        triggerContent,
         children:
-          itemChildren.length > 0 ? buildNodes(itemChildren, counter) : [],
-        href: props.href,
-        onPress: props.onPress,
-        active: props.active,
-      });
+          itemChildren.length > 0
+            ? buildNodes(itemChildren, counter, index)
+            : [],
+        href: child.props.href,
+        onPress: child.props.onPress,
+        active: child.props.active,
+      };
+      index.set(node.key, node);
+      nodes.push(node);
     }
   }
 
   return nodes;
 };
 
-const indexNodes = (
-  nodes: SidebarNode[],
-  map: Map<string, SidebarNode>
-): void => {
-  for (const node of nodes) {
-    map.set(node.key, node);
-    if (node.children.length > 0) {
-      indexNodes(node.children, map);
-    }
-  }
-};
-
 export const buildCollection = (children: ReactNode): SidebarCollection => {
   const counter = { value: 0 };
-  const rootNodes = buildNodes(children, counter);
   const index = new Map<string, SidebarNode>();
-  indexNodes(rootNodes, index);
+  const rootNodes = buildNodes(Children.toArray(children), counter, index);
 
   return {
     rootNodes,
