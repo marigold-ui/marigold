@@ -1,17 +1,9 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, LeftPlacement } from './Drawer.stories';
 
-let isSmallScreen = false;
-const mockMatchMedia = () =>
-  vi.fn().mockImplementation(() => {
-    return {
-      matches: isSmallScreen,
-    };
-  });
-window.matchMedia = mockMatchMedia();
+window.matchMedia = mockMatchMedia([]);
 
 const user = userEvent.setup();
 
@@ -138,7 +130,7 @@ test('able to close via close button', async () => {
 });
 
 test('uses modal on small screens', async () => {
-  isSmallScreen = true;
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
   renderWithOverlay(<Basic.Component closeButton />);
 
   const button = screen.getByRole('button', { name: 'Open Drawer' });
