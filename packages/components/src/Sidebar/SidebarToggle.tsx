@@ -18,7 +18,7 @@ export const SidebarToggle = () => {
       onClick={toggleSidebar}
       className={cn(classNames.toggle)}
     >
-      <SidebarToggleIcon expanded={state === 'expanded'} />
+      <SidebarToggleIcon expanded={state === 'expanded'} strokeWidth={1.5} />
     </button>
   );
 };

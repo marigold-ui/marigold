@@ -1,0 +1,2 @@
+- when on a sub path in the sidebar do not show "back" but the name of the parent item
+-

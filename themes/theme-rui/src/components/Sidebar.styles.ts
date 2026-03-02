@@ -19,7 +19,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       'ui-button-base ui-press',
       'hover:bg-current/10',
-      'size-button [&_svg]:size-4',
+      'size-button [&_svg]:size-6',
     ],
   }),
   group: cva({ base: 'flex flex-col gap-1 py-2' }),
