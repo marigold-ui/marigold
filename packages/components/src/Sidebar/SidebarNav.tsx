@@ -15,7 +15,6 @@ import type {
 } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useResizeObserver } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
@@ -337,21 +336,7 @@ export const SidebarNav = <T extends object = object>({
     return currentNode?.type === 'item' ? currentNode.textValue : null;
   })();
 
-  // Height animation
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number | 'auto'>('auto');
-
   const panelKey = activeKey ?? 'root';
-
-  // Height animation via ResizeObserver
-  useResizeObserver({
-    ref: contentRef,
-    onResize: () => {
-      if (contentRef.current) {
-        setHeight(contentRef.current.scrollHeight);
-      }
-    },
-  });
 
   // Focus management on panel transitions
   const panelRef = useRef<HTMLUListElement>(null);
@@ -384,20 +369,9 @@ export const SidebarNav = <T extends object = object>({
     target?.focus();
   }, [panelKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const skipHeightTransition = reducedMotion || state.direction === 'backward';
-
   return (
     <nav aria-label={ariaLabel} className={cn(classNames.subNav)}>
-      <div
-        style={{
-          height: height === 'auto' ? 'auto' : height,
-          transition: skipHeightTransition
-            ? 'none'
-            : 'height 150ms cubic-bezier(0.2, 0, 0, 1)',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
+      <div className="relative overflow-hidden">
         {/* Exiting panel (absolutely positioned, inert) */}
         {exitingPanel && (
           <div
@@ -429,7 +403,6 @@ export const SidebarNav = <T extends object = object>({
 
         {/* Active panel */}
         <div
-          ref={contentRef}
           className={cn(
             exitingPanel
               ? state.direction === 'forward'
