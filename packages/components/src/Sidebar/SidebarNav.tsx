@@ -286,18 +286,17 @@ export const SidebarNav = <T extends object = object>({
         activeItem?.type === 'item'
           ? activeItem.children
           : collection.rootNodes;
-      const parentLabel = (() => {
+      const currentLabel = (() => {
         if (state.stack.length === 0) return null;
-        if (state.stack.length === 1) return null;
-        const parentKey = state.stack[state.stack.length - 2];
-        const parentNode = collection.getItem(parentKey);
-        return parentNode?.type === 'item' ? parentNode.textValue : null;
+        const currentKey = state.stack[state.stack.length - 1];
+        const currentNode = collection.getItem(currentKey);
+        return currentNode?.type === 'item' ? currentNode.textValue : null;
       })();
 
       prevPanelRef.current = {
         key: activeKey ?? 'root',
         nodes: activeNodes,
-        backLabel: parentLabel,
+        backLabel: currentLabel,
         stackLength: state.stack.length,
       };
 
@@ -313,18 +312,17 @@ export const SidebarNav = <T extends object = object>({
     const activeItem = activeKey ? collection.getItem(activeKey) : undefined;
     const activeNodes =
       activeItem?.type === 'item' ? activeItem.children : collection.rootNodes;
-    const parentLabel = (() => {
+    const currentLabel = (() => {
       if (state.stack.length === 0) return null;
-      if (state.stack.length === 1) return null;
-      const parentKey = state.stack[state.stack.length - 2];
-      const parentNode = collection.getItem(parentKey);
-      return parentNode?.type === 'item' ? parentNode.textValue : null;
+      const currentKey = state.stack[state.stack.length - 1];
+      const currentNode = collection.getItem(currentKey);
+      return currentNode?.type === 'item' ? currentNode.textValue : null;
     })();
 
     prevPanelRef.current = {
       key: activeKey ?? 'root',
       nodes: activeNodes,
-      backLabel: parentLabel,
+      backLabel: currentLabel,
       stackLength: state.stack.length,
     };
 
@@ -340,13 +338,12 @@ export const SidebarNav = <T extends object = object>({
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  // Determine parent label for back button
+  // Determine current item label for back button
   const parentLabel = (() => {
     if (state.stack.length === 0) return null;
-    if (state.stack.length === 1) return null;
-    const parentKey = state.stack[state.stack.length - 2];
-    const parentNode = collection.getItem(parentKey);
-    return parentNode?.type === 'item' ? parentNode.textValue : null;
+    const currentKey = state.stack[state.stack.length - 1];
+    const currentNode = collection.getItem(currentKey);
+    return currentNode?.type === 'item' ? currentNode.textValue : null;
   })();
 
   // Exiting panel state for CSS transitions
