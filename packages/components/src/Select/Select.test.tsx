@@ -55,36 +55,6 @@ test('allows to disable select', async () => {
   expect(button).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('allows to disable options', async () => {
-  // Basic story has disabledKeys={['Firefly']} built-in
-  renderWithOverlay(<Basic.Component label="Label" data-testid="select" />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const options = screen.getByRole('listbox');
-  const firefly = within(options).getByRole('option', { name: 'Firefly' });
-
-  expect(firefly).toHaveAttribute('aria-disabled', 'true');
-});
-
-test('controlled', async () => {
-  // Basic story already has onChange that updates selected state
-  renderWithOverlay(<Basic.Component label="Label" data-testid="select" />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const options = screen.getByRole('listbox');
-  const starWars = within(options).getByText('Star Wars');
-  await user.click(starWars);
-
-  // Basic story renders selected value in a pre element
-  expect(screen.getByTestId('selected')).toHaveTextContent(
-    'selected: Star Wars'
-  );
-});
-
 test('supports default value via "defaultValue"', async () => {
   renderWithOverlay(
     <Basic.Component

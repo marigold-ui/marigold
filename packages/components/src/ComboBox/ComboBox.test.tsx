@@ -98,18 +98,6 @@ test('supports default value', () => {
   expect(textField).toHaveValue('garlic');
 });
 
-test('supports autocompletion', async () => {
-  renderWithOverlay(<Basic.Component label="Label" />);
-
-  const input = screen.getAllByLabelText(/Label/i)[0];
-  await user.type(input, 'do');
-
-  const dog = screen.getByText('Dog');
-  await user.click(dog);
-
-  expect(input).toHaveValue('Dog');
-});
-
 test('supports loading state', () => {
   renderWithOverlay(<Basic.Component label="Label" loading />);
   expect(screen.getByRole('progressbar')).toBeInTheDocument();

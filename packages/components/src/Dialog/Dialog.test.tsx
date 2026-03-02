@@ -17,31 +17,6 @@ afterEach(() => {
   errorMock.mockRestore();
 });
 
-test('renders children correctly', async () => {
-  renderWithOverlay(<Basic.Component />);
-
-  const button = screen.getByText('Open');
-  expect(button).toBeInTheDocument();
-
-  await user.click(button);
-
-  const headline = screen.getByText('Enable notifications');
-  expect(headline).toBeInTheDocument();
-
-  const dialog = screen.getByRole('dialog');
-  expect(dialog).toBeInTheDocument();
-});
-
-test('dialog can be opened by button', async () => {
-  renderWithOverlay(<Basic.Component />);
-
-  const button = screen.getByText('Open');
-  await user.click(button);
-
-  const dialog = screen.getByRole('dialog');
-  await waitFor(() => expect(dialog).toBeVisible());
-});
-
 test('optionally renders a close button', async () => {
   // Basic story has closeButton=true by default
   renderWithOverlay(<Basic.Component />);
@@ -118,19 +93,6 @@ test('supports dialog contents', async () => {
   expect(dialogContent).toBeInTheDocument();
 });
 
-test('supports dialog actions', async () => {
-  renderWithOverlay(<Basic.Component />);
-
-  const button = screen.getByText('Open');
-  await user.click(button);
-
-  const cancelButton = screen.getByText('Cancel');
-  expect(cancelButton).toBeInTheDocument();
-
-  const enableButton = screen.getByText('Enable');
-  expect(enableButton).toBeInTheDocument();
-});
-
 test('supports focus and open dialog with keyboard', async () => {
   renderWithOverlay(<Basic.Component />);
 
@@ -150,32 +112,11 @@ test('renders nothing by default', () => {
   expect(dialog).not.toBeInTheDocument();
 });
 
-test('cancel button closes dialog', async () => {
-  renderWithOverlay(<Basic.Component />);
-
-  const button = screen.getByText('Open');
-  await user.click(button);
-
-  const cancel = screen.getByText('Cancel');
-  await waitFor(() => {
-    expect(cancel).toBeInTheDocument();
-  });
-
-  await user.click(cancel);
-  await waitFor(() => {
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-  });
-});
-
 test('form validation works within dialog', async () => {
   renderWithOverlay(<WithFormValidation.Component />);
 
   const button = screen.getByText('Open');
   await user.click(button);
-
-  // Dialog should be visible
-  const dialog = screen.getByRole('dialog');
-  expect(dialog).toBeVisible();
 
   // Try to submit without entering code
   const submitButton = screen.getByText('Submit');

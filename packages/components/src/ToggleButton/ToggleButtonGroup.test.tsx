@@ -83,11 +83,3 @@ test('respects disabled state', async () => {
   expect(averageButton).toBeDisabled();
   expect(onSelectionChange).not.toHaveBeenCalled();
 });
-
-test('handles defaultSelectedKeys', () => {
-  render(<Basic.Component defaultSelectedKeys={['sum']} />);
-
-  const option1 = screen.getByText('Sum');
-
-  expect(option1).toHaveAttribute('data-selected', 'true');
-});

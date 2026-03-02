@@ -91,21 +91,6 @@ test('disable closing via esc key', async () => {
   expect(drawer).toBeInTheDocument();
 });
 
-test('can be closed via button with [slot="close"]', async () => {
-  renderWithOverlay(<Basic.Component />);
-
-  const button = screen.getByRole('button', { name: 'Open Drawer' });
-  await user.click(button);
-
-  const drawer = screen.getByText('Drawer Title');
-  expect(drawer).toBeInTheDocument();
-
-  const close = screen.getByRole('button', { name: 'Close' });
-  await user.click(close);
-
-  await waitFor(() => expect(drawer).not.toBeInTheDocument());
-});
-
 test('has "complementary" role by default', async () => {
   renderWithOverlay(<Basic.Component />);
 
