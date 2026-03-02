@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
 import { Modal, ModalOverlay } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
+import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarProvider } from './Context';
 import { SidebarContent } from './SidebarContent';
@@ -26,6 +28,7 @@ export interface SidebarProps {
 // ---------------
 const MobileSidebar = ({ children }: { children: ReactNode }) => {
   const { openMobile, setOpenMobile, side, variant, size } = useSidebar();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'Sidebar',
     variant,
@@ -61,9 +64,12 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
           )
         }
       >
-        <nav aria-label="Sidebar" className={cn('h-full', classNames.root)}>
+        <nav
+          aria-label={stringFormatter.format('appNavigation')}
+          className={cn('h-full', classNames.root)}
+        >
           <CloseButton
-            aria-label="Close sidebar"
+            aria-label={stringFormatter.format('closeNavigation')}
             className={classNames.closeButton}
             onPress={() => setOpenMobile(false)}
           />
@@ -81,6 +87,7 @@ const DesktopSidebar = ({
   'aria-label': ariaLabel,
 }: SidebarProps) => {
   const { state, side, variant, size } = useSidebar();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'Sidebar',
     variant,
@@ -89,7 +96,7 @@ const DesktopSidebar = ({
 
   return (
     <nav
-      aria-label={ariaLabel ?? 'Sidebar'}
+      aria-label={ariaLabel ?? stringFormatter.format('appNavigation')}
       data-state={state}
       data-side={side}
       className={classNames.root}

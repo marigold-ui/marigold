@@ -4,6 +4,7 @@ type LocalizedMessage = string | ((vars: Variables) => string);
 export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
   'de-DE': {
     actionsAvailable: 'Aktionen verfügbar.',
+    appNavigation: 'App-Navigation',
     back: 'Zurück',
     backTo: vars => `Zurück zu ${vars?.label}`,
     allItemsSelected: 'Alle Elemente ausgewählt',
@@ -12,6 +13,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     clearSearch: 'Suche zurücksetzen',
     clearSelectionAriaLabel: 'Auswahl löschen',
     close: 'Schließen',
+    closeNavigation: 'Navigation schließen',
     dismissDrawer: 'Seitenleiste schließen',
     dropZoneLabel: 'Dateien hierher ziehen',
     edit: 'Bearbeiten',
@@ -37,10 +39,12 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showLessCount: vars => `${vars?.count} weniger anzeigen`,
     showMore: 'Mehr anzeigen',
     showMoreCount: vars => `${vars?.count} weitere anzeigen`,
+    toggleNavigation: 'Navigation umschalten',
     uploadLabel: 'Hochladen',
   },
   'en-US': {
     actionsAvailable: 'Actions available.',
+    appNavigation: 'App navigation',
     back: 'Back',
     backTo: vars => `Back to ${vars?.label}`,
     allItemsSelected: 'All items selected',
@@ -49,6 +53,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     clearSearch: 'Clear search',
     clearSelectionAriaLabel: 'Clear selection',
     close: 'Close',
+    closeNavigation: 'Close navigation',
     dismissDrawer: 'Dismiss drawer',
     dropZoneLabel: 'Drop files here',
     edit: 'Edit',
@@ -74,6 +79,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showLessCount: vars => `Show ${vars?.count} less`,
     showMore: 'Show more',
     showMoreCount: vars => `Show ${vars?.count} more`,
+    toggleNavigation: 'Toggle navigation',
     uploadLabel: 'Upload',
   },
 };
