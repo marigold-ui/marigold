@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 import { useSidebar } from './Context';
 
@@ -57,7 +57,15 @@ export const SidebarMenuButton = ({
 
   const Element = href ? 'a' : 'button';
   const elementProps = href
-    ? { href }
+    ? {
+        href,
+        onClick: onPress
+          ? (e: MouseEvent) => {
+              e.preventDefault();
+              onPress();
+            }
+          : undefined,
+      }
     : { type: 'button' as const, onClick: onPress };
 
   return (
