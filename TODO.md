@@ -2,3 +2,4 @@
 - when item is clicked that has children, automatically navigate to the first item in the list
 - animation glitch: when navigating back from the last child item, animation is coming from the top too
 - header should show parent item
+- make example more complex, separator, groups, more items, subheadings?

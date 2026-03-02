@@ -1,4 +1,3 @@
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   useCallback,
   useEffect,
@@ -50,12 +49,6 @@ const navReducer = (state: NavState, action: NavAction): NavState => {
     default:
       return state;
   }
-};
-
-const tweenTransition = {
-  type: 'tween' as const,
-  duration: 0.2,
-  ease: [0.25, 0.1, 0.25, 1.0] as [number, number, number, number],
 };
 
 // Roving tabindex: query all menuitems in a container
@@ -227,6 +220,16 @@ const InnerPanelContent = ({
   );
 };
 
+// Exiting panel snapshot
+// ---------------
+interface ExitingPanel {
+  key: string;
+  nodes: SidebarNode[];
+  direction: 'forward' | 'backward';
+  backLabel: string | null;
+  stackLength: number;
+}
+
 // SidebarNav
 // ---------------
 export interface SidebarNavProps<T = object> {
@@ -244,7 +247,12 @@ export const SidebarNav = <T extends object = object>({
 }: SidebarNavProps<T>) => {
   const { variant, size } = useSidebar();
   const classNames = useClassNames({ component: 'Sidebar', variant, size });
-  const shouldReduceMotion = useReducedMotion();
+
+  const [reducedMotion] = useState(() =>
+    typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false
+  );
 
   const collection: SidebarCollection = useMemo(() => {
     const resolved =
@@ -260,8 +268,68 @@ export const SidebarNav = <T extends object = object>({
     lastTriggerKey: null,
   });
 
-  const push = useCallback((id: string) => dispatch({ type: 'push', id }), []);
-  const pop = useCallback(() => dispatch({ type: 'pop' }), []);
+  // Snapshot current panel info before navigation
+  const prevPanelRef = useRef<{
+    key: string;
+    nodes: SidebarNode[];
+    backLabel: string | null;
+    stackLength: number;
+  } | null>(null);
+
+  const push = useCallback(
+    (id: string) => {
+      // Snapshot current panel before pushing
+      const activeKey =
+        state.stack.length > 0 ? state.stack[state.stack.length - 1] : null;
+      const activeItem = activeKey ? collection.getItem(activeKey) : undefined;
+      const activeNodes =
+        activeItem?.type === 'item'
+          ? activeItem.children
+          : collection.rootNodes;
+      const parentLabel = (() => {
+        if (state.stack.length === 0) return null;
+        if (state.stack.length === 1) return null;
+        const parentKey = state.stack[state.stack.length - 2];
+        const parentNode = collection.getItem(parentKey);
+        return parentNode?.type === 'item' ? parentNode.textValue : null;
+      })();
+
+      prevPanelRef.current = {
+        key: activeKey ?? 'root',
+        nodes: activeNodes,
+        backLabel: parentLabel,
+        stackLength: state.stack.length,
+      };
+
+      dispatch({ type: 'push', id });
+    },
+    [state.stack, collection]
+  );
+
+  const pop = useCallback(() => {
+    // Snapshot current panel before popping
+    const activeKey =
+      state.stack.length > 0 ? state.stack[state.stack.length - 1] : null;
+    const activeItem = activeKey ? collection.getItem(activeKey) : undefined;
+    const activeNodes =
+      activeItem?.type === 'item' ? activeItem.children : collection.rootNodes;
+    const parentLabel = (() => {
+      if (state.stack.length === 0) return null;
+      if (state.stack.length === 1) return null;
+      const parentKey = state.stack[state.stack.length - 2];
+      const parentNode = collection.getItem(parentKey);
+      return parentNode?.type === 'item' ? parentNode.textValue : null;
+    })();
+
+    prevPanelRef.current = {
+      key: activeKey ?? 'root',
+      nodes: activeNodes,
+      backLabel: parentLabel,
+      stackLength: state.stack.length,
+    };
+
+    dispatch({ type: 'pop' });
+  }, [state.stack, collection]);
 
   // Determine active panel nodes
   const activeKey =
@@ -275,18 +343,35 @@ export const SidebarNav = <T extends object = object>({
   // Determine parent label for back button
   const parentLabel = (() => {
     if (state.stack.length === 0) return null;
-    if (state.stack.length === 1) {
-      // At first sub-level, no parent item — use generic "back"
-      return null;
-    }
+    if (state.stack.length === 1) return null;
     const parentKey = state.stack[state.stack.length - 2];
     const parentNode = collection.getItem(parentKey);
     return parentNode?.type === 'item' ? parentNode.textValue : null;
   })();
 
+  // Exiting panel state for CSS transitions
+  const [exitingPanel, setExitingPanel] = useState<ExitingPanel | null>(null);
+
   // Height animation
   const contentRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number | 'auto'>('auto');
+
+  const panelKey = activeKey ?? 'root';
+
+  // Set exiting panel when panelKey changes
+  const prevPanelKeyRef = useRef(panelKey);
+  useEffect(() => {
+    if (prevPanelKeyRef.current !== panelKey && prevPanelRef.current) {
+      if (!reducedMotion) {
+        setExitingPanel({
+          ...prevPanelRef.current,
+          direction: state.direction,
+        });
+      }
+      prevPanelRef.current = null;
+    }
+    prevPanelKeyRef.current = panelKey;
+  }, [panelKey, state.direction, reducedMotion]);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -296,7 +381,6 @@ export const SidebarNav = <T extends object = object>({
 
   // Focus management on panel transitions
   const panelRef = useRef<HTMLUListElement>(null);
-  const panelKey = activeKey ?? 'root';
 
   useEffect(() => {
     if (!panelRef.current) return;
@@ -326,55 +410,76 @@ export const SidebarNav = <T extends object = object>({
     target?.focus();
   }, [panelKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const slideOffset = 8;
+  // Cleanup fallback for environments where onAnimationEnd doesn't fire (e.g. JSDOM)
+  useEffect(() => {
+    if (!exitingPanel) return;
+    const timer = setTimeout(() => setExitingPanel(null), 250);
+    return () => clearTimeout(timer);
+  }, [exitingPanel]);
+
+  const skipHeightTransition = reducedMotion || state.direction === 'backward';
 
   return (
     <nav aria-label={ariaLabel} className={cn(classNames.subNav)}>
-      <motion.div
-        animate={{ height: height === 'auto' ? 'auto' : height }}
-        transition={
-          shouldReduceMotion || state.direction === 'backward'
-            ? { duration: 0 }
-            : { ...tweenTransition }
-        }
+      <div
+        style={{
+          height: height === 'auto' ? 'auto' : height,
+          transition: skipHeightTransition
+            ? 'none'
+            : 'height 200ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
       >
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.div
-            key={panelKey}
-            ref={contentRef}
-            initial={{
-              x: state.direction === 'forward' ? slideOffset : -slideOffset,
-              opacity: 0,
-              filter: 'blur(2px)',
-            }}
-            animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
-            exit={{
-              x: state.direction === 'forward' ? -slideOffset : slideOffset,
-              opacity: 0,
-              filter: 'blur(2px)',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-            }}
-            transition={
-              shouldReduceMotion ? { duration: 0 } : { ...tweenTransition }
-            }
+        {/* Exiting panel (absolutely positioned, inert) */}
+        {exitingPanel && (
+          <div
+            className={cn(
+              'absolute inset-0',
+              exitingPanel.direction === 'forward'
+                ? 'animate-panel-exit-forward'
+                : 'animate-panel-exit-backward'
+            )}
+            inert
+            aria-hidden="true"
+            onAnimationEnd={() => setExitingPanel(null)}
           >
-            <FocusScope>
-              <InnerPanelContent
-                nodes={activeNodes}
-                onNavigate={push}
-                onBack={state.stack.length > 0 ? pop : undefined}
-                backLabel={parentLabel}
-                classNames={classNames}
-                panelRef={panelRef}
-                stringFormatter={stringFormatter}
-              />
-            </FocusScope>
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
+            <InnerPanelContent
+              nodes={exitingPanel.nodes}
+              onNavigate={() => {}}
+              onBack={exitingPanel.stackLength > 0 ? () => {} : undefined}
+              backLabel={exitingPanel.backLabel}
+              classNames={classNames}
+              panelRef={{ current: null }}
+              stringFormatter={stringFormatter}
+            />
+          </div>
+        )}
+
+        {/* Active panel */}
+        <div
+          ref={contentRef}
+          className={cn(
+            exitingPanel
+              ? state.direction === 'forward'
+                ? 'animate-panel-enter-forward'
+                : 'animate-panel-enter-backward'
+              : undefined
+          )}
+        >
+          <FocusScope>
+            <InnerPanelContent
+              nodes={activeNodes}
+              onNavigate={push}
+              onBack={state.stack.length > 0 ? pop : undefined}
+              backLabel={parentLabel}
+              classNames={classNames}
+              panelRef={panelRef}
+              stringFormatter={stringFormatter}
+            />
+          </FocusScope>
+        </div>
+      </div>
     </nav>
   );
 };
