@@ -17,9 +17,12 @@ export interface SidebarItemProps {
   children?: ReactNode;
 }
 
-export const SidebarItem = (_props: SidebarItemProps): ReactElement | null =>
-  null;
+const _SidebarItem = (_props: SidebarItemProps): ReactElement | null => null;
+_SidebarItem.__SIDEBAR_ITEM__ = true as const;
+export const SidebarItem = _SidebarItem;
 
 // SidebarSeparator — visual divider marker (renders null)
 // ---------------
-export const SidebarSeparator = (): ReactElement | null => null;
+const _SidebarSeparator = (): ReactElement | null => null;
+_SidebarSeparator.__SIDEBAR_SEPARATOR__ = true as const;
+export const SidebarSeparator = _SidebarSeparator;

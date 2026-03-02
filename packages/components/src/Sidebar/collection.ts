@@ -1,7 +1,5 @@
 import { Children, isValidElement } from 'react';
 import type { ReactNode } from 'react';
-import { SidebarItem } from './SidebarItem';
-import { SidebarSeparator } from './SidebarItem';
 
 // Types
 // ---------------
@@ -20,6 +18,17 @@ export interface SidebarCollection {
   rootNodes: SidebarNode[];
   getItem(key: string): SidebarNode | undefined;
 }
+
+// Type guards (brand-based, safe across HOCs and bundles)
+// ---------------
+const isSidebarItem = (child: ReactNode): boolean =>
+  isValidElement(child) &&
+  (child.type as { __SIDEBAR_ITEM__?: boolean }).__SIDEBAR_ITEM__ === true;
+
+const isSidebarSeparator = (child: ReactNode): boolean =>
+  isValidElement(child) &&
+  (child.type as { __SIDEBAR_SEPARATOR__?: boolean }).__SIDEBAR_SEPARATOR__ ===
+    true;
 
 // Helpers
 // ---------------
@@ -52,42 +61,42 @@ const separateChildren = (
   const itemChildren: ReactNode[] = [];
   const triggerContent: ReactNode[] = [];
 
-  Children.forEach(children, child => {
-    if (
-      isValidElement(child) &&
-      (child.type === SidebarItem || child.type === SidebarSeparator)
-    ) {
+  const flat = Children.toArray(children);
+  for (const child of flat) {
+    if (isSidebarItem(child) || isSidebarSeparator(child)) {
       itemChildren.push(child);
     } else {
       triggerContent.push(child);
     }
-  });
+  }
 
   return { itemChildren, triggerContent };
 };
 
-let autoId = 0;
-
 // Build collection
 // ---------------
-const buildNodes = (children: ReactNode): SidebarNode[] => {
+const buildNodes = (
+  children: ReactNode,
+  counter: { value: number }
+): SidebarNode[] => {
   const nodes: SidebarNode[] = [];
+  const flat = Children.toArray(children);
 
-  Children.forEach(children, child => {
-    if (!isValidElement(child)) return;
+  for (const child of flat) {
+    if (!isValidElement(child)) continue;
 
-    if (child.type === SidebarSeparator) {
+    if (isSidebarSeparator(child)) {
       nodes.push({
         type: 'separator',
-        key: `sep-${autoId++}`,
+        key: `sep-${counter.value++}`,
         textValue: '',
         triggerContent: null,
         children: [],
       });
-      return;
+      continue;
     }
 
-    if (child.type === SidebarItem) {
+    if (isSidebarItem(child)) {
       const props = child.props as {
         id?: string;
         textValue?: string;
@@ -99,39 +108,24 @@ const buildNodes = (children: ReactNode): SidebarNode[] => {
 
       const { itemChildren, triggerContent } = separateChildren(props.children);
 
-      const key = props.id || `item-${autoId++}`;
+      const key = props.id || `item-${counter.value++}`;
       const textValue =
         props.textValue || extractTextValue(triggerContent as ReactNode);
 
-      if (itemChildren.length > 0) {
-        // Branch node — has sub-items
-        nodes.push({
-          type: 'item',
-          key,
-          textValue,
-          triggerContent:
-            triggerContent.length === 1 ? triggerContent[0] : triggerContent,
-          children: buildNodes(itemChildren),
-          href: props.href,
-          onPress: props.onPress,
-          active: props.active,
-        });
-      } else {
-        // Leaf node
-        nodes.push({
-          type: 'item',
-          key,
-          textValue,
-          triggerContent:
-            triggerContent.length === 1 ? triggerContent[0] : triggerContent,
-          children: [],
-          href: props.href,
-          onPress: props.onPress,
-          active: props.active,
-        });
-      }
+      nodes.push({
+        type: 'item',
+        key,
+        textValue,
+        triggerContent:
+          triggerContent.length === 1 ? triggerContent[0] : triggerContent,
+        children:
+          itemChildren.length > 0 ? buildNodes(itemChildren, counter) : [],
+        href: props.href,
+        onPress: props.onPress,
+        active: props.active,
+      });
     }
-  });
+  }
 
   return nodes;
 };
@@ -149,8 +143,8 @@ const indexNodes = (
 };
 
 export const buildCollection = (children: ReactNode): SidebarCollection => {
-  autoId = 0;
-  const rootNodes = buildNodes(children);
+  const counter = { value: 0 };
+  const rootNodes = buildNodes(children, counter);
   const index = new Map<string, SidebarNode>();
   indexNodes(rootNodes, index);
 
