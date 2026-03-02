@@ -67,6 +67,9 @@ const InnerPanelContent = ({
   classNames,
   panelRef,
   stringFormatter,
+  animationState,
+  direction,
+  onAnimationEnd,
 }: {
   nodes: SidebarNode[];
   onNavigate: (key: string) => void;
@@ -75,6 +78,9 @@ const InnerPanelContent = ({
   classNames: Record<string, string>;
   panelRef: RefObject<HTMLUListElement | null>;
   stringFormatter: ReturnType<typeof useLocalizedStringFormatter>;
+  animationState?: 'entering' | 'exiting';
+  direction?: 'forward' | 'backward';
+  onAnimationEnd?: () => void;
 }) => {
   const focusManager = useFocusManager();
 
@@ -127,6 +133,12 @@ const InnerPanelContent = ({
       role="menu"
       className={cn(classNames.menu)}
       onFocus={handleMenuFocus}
+      data-entering={animationState === 'entering' || undefined}
+      data-exiting={animationState === 'exiting' || undefined}
+      data-direction={direction}
+      onAnimationEnd={onAnimationEnd}
+      inert={animationState === 'exiting' || undefined}
+      aria-hidden={animationState === 'exiting' || undefined}
     >
       {onBack && (
         <li role="none">
@@ -366,55 +378,33 @@ export const SidebarNav = <T extends object = object>({
 
   return (
     <nav aria-label={ariaLabel} className={cn(classNames.subNav)}>
-      <div className="relative overflow-hidden">
-        {/* Exiting panel (absolutely positioned, inert) */}
-        {exitingPanel && (
-          <div
-            className={cn(
-              'absolute inset-0',
-              exitingPanel.direction === 'forward'
-                ? 'animate-panel-exit-forward'
-                : 'animate-panel-exit-backward'
-            )}
-            inert
-            aria-hidden="true"
-            onAnimationEnd={() => setExitingPanel(null)}
-          >
-            <InnerPanelContent
-              nodes={exitingPanel.nodes}
-              onNavigate={() => {}}
-              onBack={exitingPanel.stackLength > 0 ? () => {} : undefined}
-              backLabel={exitingPanel.backLabel}
-              classNames={classNames}
-              panelRef={{ current: null }}
-              stringFormatter={stringFormatter}
-            />
-          </div>
-        )}
-
-        {/* Active panel */}
-        <div
-          className={cn(
-            exitingPanel
-              ? state.direction === 'forward'
-                ? 'animate-panel-enter-forward'
-                : 'animate-panel-enter-backward'
-              : undefined
-          )}
-        >
-          <FocusScope>
-            <InnerPanelContent
-              nodes={activeNodes}
-              onNavigate={push}
-              onBack={state.stack.length > 0 ? pop : undefined}
-              backLabel={parentLabel}
-              classNames={classNames}
-              panelRef={panelRef}
-              stringFormatter={stringFormatter}
-            />
-          </FocusScope>
-        </div>
-      </div>
+      {exitingPanel && (
+        <InnerPanelContent
+          nodes={exitingPanel.nodes}
+          onNavigate={() => {}}
+          onBack={exitingPanel.stackLength > 0 ? () => {} : undefined}
+          backLabel={exitingPanel.backLabel}
+          classNames={classNames}
+          panelRef={{ current: null }}
+          stringFormatter={stringFormatter}
+          animationState="exiting"
+          direction={exitingPanel.direction}
+          onAnimationEnd={() => setExitingPanel(null)}
+        />
+      )}
+      <FocusScope>
+        <InnerPanelContent
+          nodes={activeNodes}
+          onNavigate={push}
+          onBack={state.stack.length > 0 ? pop : undefined}
+          backLabel={parentLabel}
+          classNames={classNames}
+          panelRef={panelRef}
+          stringFormatter={stringFormatter}
+          animationState={exitingPanel ? 'entering' : undefined}
+          direction={exitingPanel ? state.direction : undefined}
+        />
+      </FocusScope>
     </nav>
   );
 };

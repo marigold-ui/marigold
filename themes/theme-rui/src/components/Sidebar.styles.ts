@@ -46,7 +46,16 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   groupLabel: cva({
     base: 'px-2 h-[30px] pt-3 pb-0.5 mb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider',
   }),
-  menu: cva({ base: 'flex flex-col gap-0.5 list-none p-0 m-0' }),
+  menu: cva({
+    base: [
+      'flex flex-col gap-0.5 list-none p-0 m-0',
+      'data-[exiting]:absolute data-[exiting]:inset-0',
+      'data-[entering]:data-[direction=forward]:animate-panel-enter-forward',
+      'data-[entering]:data-[direction=backward]:animate-panel-enter-backward',
+      'data-[exiting]:data-[direction=forward]:animate-panel-exit-forward',
+      'data-[exiting]:data-[direction=backward]:animate-panel-exit-backward',
+    ],
+  }),
   menuItem: cva({ base: '' }),
   menuButton: cva({
     base: [
