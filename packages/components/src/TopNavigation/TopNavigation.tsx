@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from 'react';
+import type { ForwardRefExoticComponent, ReactNode, Ref } from 'react';
 import { forwardRef } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 import { TopNavigationProvider } from './Context';
@@ -18,6 +18,14 @@ export interface TopNavigationProps {
 
 // Component
 // ---------------
+interface TopNavigationComponent extends ForwardRefExoticComponent<
+  TopNavigationProps & React.RefAttributes<HTMLElement>
+> {
+  Start: typeof TopNavigationStart;
+  Center: typeof TopNavigationCenter;
+  End: typeof TopNavigationEnd;
+}
+
 const _TopNavigation = forwardRef(
   (
     { variant, size, sticky, children, ...props }: TopNavigationProps,
@@ -45,12 +53,10 @@ const _TopNavigation = forwardRef(
       </TopNavigationProvider>
     );
   }
-);
+) as TopNavigationComponent;
 
-_TopNavigation.displayName = 'TopNavigation';
+_TopNavigation.Start = TopNavigationStart;
+_TopNavigation.Center = TopNavigationCenter;
+_TopNavigation.End = TopNavigationEnd;
 
-export const TopNavigation = Object.assign(_TopNavigation, {
-  Start: TopNavigationStart,
-  Center: TopNavigationCenter,
-  End: TopNavigationEnd,
-});
+export { _TopNavigation as TopNavigation };

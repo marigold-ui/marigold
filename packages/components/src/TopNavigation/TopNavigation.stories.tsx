@@ -1,9 +1,14 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Logout } from '@marigold/icons';
+import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
 import { Button } from '../Button/Button';
+import { Inline } from '../Inline/Inline';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
+import { SearchField } from '../SearchField/SearchField';
+import { Stack } from '../Stack/Stack';
 import { Tabs } from '../Tabs/Tabs';
 import { Text } from '../Text/Text';
 import { TopNavigation } from './TopNavigation';
@@ -89,25 +94,36 @@ export const NavBarPattern = meta.story({
       <TopNavigation.Start>
         <Logo />
       </TopNavigation.Start>
-      <TopNavigation.Center>
+      <TopNavigation.Center alignY="bottom">
         <Tabs selectedKey="home">
           <Tabs.List aria-label="Navigation">
-            <Tabs.Item id="home" href="https://www.marigold-ui.io">
+            <Tabs.Item id="home" href="#">
               Home
             </Tabs.Item>
-            <Tabs.Item id="settings" href="https://www.reservix.de">
+            <Tabs.Item id="settings" href="#">
               Settings
             </Tabs.Item>
-            <Tabs.Item id="messages" href="https://www.reservix.net">
+            <Tabs.Item id="messages" href="#">
               Messages
             </Tabs.Item>
           </Tabs.List>
         </Tabs>
       </TopNavigation.Center>
       <TopNavigation.End>
-        <Button variant="ghost">
-          <Logout size={16} /> Logout
-        </Button>
+        <Inline space={2} alignY="center">
+          <Inline space={1} alignX="right" alignY="top">
+            <Stack space={2} alignY="center">
+              <Stack alignX="right">
+                <Text>Jane Doe</Text>
+                <Text size="xs">ACME Corp</Text>
+              </Stack>
+            </Stack>
+            <Badge variant="master">Master</Badge>
+          </Inline>
+          <Button variant="ghost">
+            <Logout size={16} /> Logout
+          </Button>
+        </Inline>
       </TopNavigation.End>
     </TopNavigation>
   ),
@@ -118,40 +134,6 @@ export const NavBarPattern = meta.story({
     await expect(canvas.getByText('Home')).toBeInTheDocument();
     await expect(canvas.getByText('Logout')).toBeInTheDocument();
   },
-});
-
-export const BreadcrumbNavBar = meta.story({
-  args: {
-    'aria-label': 'Page context',
-  },
-  render: args => (
-    <TopNavigation {...args}>
-      <TopNavigation.Start>
-        <Logo />
-        <Breadcrumbs>
-          <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
-          <Breadcrumbs.Item href="/events/details">
-            Event Details
-          </Breadcrumbs.Item>
-        </Breadcrumbs>
-      </TopNavigation.Start>
-      <TopNavigation.End>
-        <Menu label="ACME Corp">
-          <Menu.Item id="acme">ACME Corp</Menu.Item>
-          <Menu.Item id="globex">Globex Inc</Menu.Item>
-        </Menu>
-        <Menu label="Jane Doe">
-          <Menu.Item id="profile">Profile</Menu.Item>
-          <Menu.Item id="settings">Settings</Menu.Item>
-          <Menu.Item id="logout">Logout</Menu.Item>
-        </Menu>
-        <Button variant="ghost">
-          <Logout size={16} /> Logout
-        </Button>
-      </TopNavigation.End>
-    </TopNavigation>
-  ),
 });
 
 export const Sticky = meta.story({
@@ -175,5 +157,39 @@ export const Sticky = meta.story({
         <Text>Scroll down to see sticky behavior.</Text>
       </div>
     </div>
+  ),
+});
+
+export const WithSearchField = meta.story({
+  args: {
+    'aria-label': 'Search navigation',
+  },
+  render: args => (
+    <TopNavigation {...args}>
+      <TopNavigation.Start>
+        <Logo />
+      </TopNavigation.Start>
+      <TopNavigation.Center alignX="between">
+        <Breadcrumbs>
+          <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="/events/details">
+            Event Details
+          </Breadcrumbs.Item>
+        </Breadcrumbs>
+        <SearchField placeholder="Search..." width={48} />
+      </TopNavigation.Center>
+      <TopNavigation.End>
+        <Stack alignX="right">
+          <Text>Jane Doe</Text>
+          <Text size="xs">ACME Corp</Text>
+        </Stack>
+        <ActionMenu>
+          <Menu.Item id="profile">Profile</Menu.Item>
+          <Menu.Item id="settings">Settings</Menu.Item>
+          <Menu.Item id="logout">Logout</Menu.Item>
+        </ActionMenu>
+      </TopNavigation.End>
+    </TopNavigation>
   ),
 });

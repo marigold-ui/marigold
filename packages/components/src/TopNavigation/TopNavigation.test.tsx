@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import {
-  BreadcrumbNavBar,
   NavBarPattern,
   Sticky,
+  WithSearchField,
 } from './TopNavigation.stories';
 
 /**
@@ -39,11 +39,19 @@ describe('TopNavigation', () => {
   });
 
   it('works without Center slot', () => {
-    render(<BreadcrumbNavBar.Component />);
-    const nav = screen.getByRole('navigation', { name: 'Page context' });
+    render(<Sticky.Component />);
+    const nav = screen.getByRole('navigation', { name: 'Sticky navigation' });
+    expect(nav).toBeInTheDocument();
+    expect(screen.getByText('Logout')).toBeInTheDocument();
+  });
+
+  it('renders with search field and breadcrumbs', () => {
+    render(<WithSearchField.Component />);
+    const nav = screen.getByRole('navigation', {
+      name: 'Search navigation',
+    });
     expect(nav).toBeInTheDocument();
     expect(screen.getByText('Events')).toBeInTheDocument();
-    expect(screen.getByText('ACME Corp')).toBeInTheDocument();
   });
 
   it('forwards ref to nav element', () => {

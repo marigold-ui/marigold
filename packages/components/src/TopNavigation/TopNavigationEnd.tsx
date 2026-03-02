@@ -1,19 +1,38 @@
 import type { ReactNode } from 'react';
-import { useClassNames } from '@marigold/system';
+import { alignment, cn, useClassNames } from '@marigold/system';
 import { TopNavigationContext } from './Context';
 
 export interface TopNavigationEndProps {
+  /**
+   * Horizontal alignment of the items inside the end slot.
+   */
+  alignX?: keyof typeof alignment.horizontal.alignmentX;
+  /**
+   * Vertical alignment of the items inside the end slot.
+   */
+  alignY?: keyof typeof alignment.horizontal.alignmentY;
   children?: ReactNode;
 }
 
-export const TopNavigationEnd = ({ children }: TopNavigationEndProps) => {
+export const TopNavigationEnd = ({
+  alignX,
+  alignY,
+  children,
+}: TopNavigationEndProps) => {
   const classNames = useClassNames({
     component: 'TopNavigation',
     context: TopNavigationContext,
   });
 
   return (
-    <div className={classNames.end} style={{ gridArea: 'end' }}>
+    <div
+      className={cn(
+        classNames.end,
+        alignX && alignment.horizontal.alignmentX[alignX],
+        alignY && alignment.horizontal.alignmentY[alignY]
+      )}
+      style={{ gridArea: 'end' }}
+    >
       {children}
     </div>
   );
