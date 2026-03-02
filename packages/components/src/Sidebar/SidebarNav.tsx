@@ -15,9 +15,11 @@ import type {
   RefObject,
 } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
+import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { buildCollection } from './collection';
 import type { SidebarCollection, SidebarNode } from './collection';
@@ -71,6 +73,7 @@ const InnerPanelContent = ({
   backLabel,
   classNames,
   panelRef,
+  stringFormatter,
 }: {
   nodes: SidebarNode[];
   onNavigate: (key: string) => void;
@@ -78,6 +81,7 @@ const InnerPanelContent = ({
   backLabel?: string | null;
   classNames: Record<string, string>;
   panelRef: RefObject<HTMLUListElement | null>;
+  stringFormatter: ReturnType<typeof useLocalizedStringFormatter>;
 }) => {
   const focusManager = useFocusManager();
 
@@ -137,7 +141,9 @@ const InnerPanelContent = ({
             type="button"
             role="menuitem"
             tabIndex={itemCount++ === 0 ? 0 : -1}
-            aria-label={`Back to ${backLabel ?? 'Back'}`}
+            aria-label={stringFormatter.format('backTo', {
+              label: backLabel ?? stringFormatter.format('back'),
+            })}
             data-back-button
             className={cn(classNames.subNavBackButton)}
             onClick={onBack}
@@ -147,7 +153,7 @@ const InnerPanelContent = ({
               <ChevronLeft size={16} />
             </span>
             <span className="truncate text-center font-medium">
-              {backLabel ?? 'Back'}
+              {backLabel ?? stringFormatter.format('back')}
             </span>
             <span aria-hidden="true" />
           </button>
@@ -264,15 +270,18 @@ export const SidebarNav = <T extends object = object>({
   const activeNodes =
     activeItem?.type === 'item' ? activeItem.children : collection.rootNodes;
 
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
   // Determine parent label for back button
   const parentLabel = (() => {
     if (state.stack.length === 0) return null;
     if (state.stack.length === 1) {
-      return 'Back';
+      // At first sub-level, no parent item — use generic "back"
+      return null;
     }
     const parentKey = state.stack[state.stack.length - 2];
     const parentNode = collection.getItem(parentKey);
-    return parentNode?.type === 'item' ? parentNode.textValue : 'Back';
+    return parentNode?.type === 'item' ? parentNode.textValue : null;
   })();
 
   // Height animation
@@ -360,6 +369,7 @@ export const SidebarNav = <T extends object = object>({
                 backLabel={parentLabel}
                 classNames={classNames}
                 panelRef={panelRef}
+                stringFormatter={stringFormatter}
               />
             </FocusScope>
           </motion.div>

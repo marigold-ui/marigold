@@ -4,6 +4,8 @@ type LocalizedMessage = string | ((vars: Variables) => string);
 export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
   'de-DE': {
     actionsAvailable: 'Aktionen verfügbar.',
+    back: 'Zurück',
+    backTo: vars => `Zurück zu ${vars?.label}`,
     allItemsSelected: 'Alle Elemente ausgewählt',
     bulkActionsAriaLabel: 'Massenaktionen',
     cancel: 'Abbrechen',
@@ -39,6 +41,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
   },
   'en-US': {
     actionsAvailable: 'Actions available.',
+    back: 'Back',
+    backTo: vars => `Back to ${vars?.label}`,
     allItemsSelected: 'All items selected',
     bulkActionsAriaLabel: 'Bulk Actions',
     cancel: 'Cancel',
