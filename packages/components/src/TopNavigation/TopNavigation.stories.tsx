@@ -129,10 +129,10 @@ export const NavBarPattern = meta.story({
               <Menu.Item id="settings" textValue="Settings">
                 <SettingDots size={16} /> Settings
               </Menu.Item>
+              <Menu.Item id="sign-out" textValue="Sign out">
+                <Logout size={16} /> Sign out
+              </Menu.Item>
             </Menu.Section>
-            <Menu.Item id="sign-out" textValue="Sign out">
-              <Logout size={16} /> Sign out
-            </Menu.Item>
           </ActionMenu>
         </Inline>
       </TopNavigation.End>
@@ -187,10 +187,10 @@ export const WithSearchField = meta.story({
               <Menu.Item id="settings" textValue="Settings">
                 <SettingDots size={16} /> Settings
               </Menu.Item>
+              <Menu.Item id="sign-out" textValue="Sign out">
+                <Logout size={16} /> Sign out
+              </Menu.Item>
             </Menu.Section>
-            <Menu.Item id="sign-out" textValue="Sign out">
-              <Logout size={16} /> Sign out
-            </Menu.Item>
           </ActionMenu>
         </Inline>
       </TopNavigation.End>
@@ -236,8 +236,6 @@ export const ApplicationShell = meta.story({
                 <Menu.Item id="settings" textValue="Settings">
                   <SettingDots size={16} /> Settings
                 </Menu.Item>
-              </Menu.Section>
-              <Menu.Section title="">
                 <Menu.Item id="sign-out" textValue="Sign out">
                   <Logout size={16} /> Sign out
                 </Menu.Item>
