@@ -1,5 +1,4 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import { buttonBase } from './Button.styles';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
@@ -17,7 +16,7 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   }),
   button: cva({
     base: [
-      ...buttonBase,
+      'ui-button-base gap-2',
 
       // ToggleButton-specific styles
       'ui-surface shadow-elevation-border',

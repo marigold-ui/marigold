@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { vi } from 'vitest';
+import { mockMatchMedia } from '../test.utils';
 import { Table } from './Table';
 import {
   Basic,
@@ -17,12 +17,7 @@ import {
 import { renderDragPreview } from './TableDragPreview';
 import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
 
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 describe('Basic Rendering', () => {
   test('renders table element with proper structure', () => {
