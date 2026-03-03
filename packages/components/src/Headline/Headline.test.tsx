@@ -120,6 +120,7 @@ test('get theme color', () => {
     <h1
       class="text-3xl font-extrabold max-w-(--maxHeadlineWidth) text-left"
       data-testid="headline"
+      style="color: var(--color-emerald, emerald);"
     >
       This is a Headline!!
     </h1>

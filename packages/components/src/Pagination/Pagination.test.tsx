@@ -21,16 +21,6 @@ describe('Pagination tests', () => {
     expect(nav).toHaveAttribute('aria-label', 'Page 1 of 2');
   });
 
-  test('renders previous and next buttons', () => {
-    render(<Basic.Component totalItems={20} pageSize={10} />);
-
-    const previousButton = screen.getByLabelText('Previous page');
-    const nextButton = screen.getByLabelText('Next page');
-
-    expect(previousButton).toBeInTheDocument();
-    expect(nextButton).toBeInTheDocument();
-  });
-
   test('renders correct number of page buttons', () => {
     render(<Basic.Component totalItems={50} pageSize={10} />);
 

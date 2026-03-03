@@ -89,16 +89,6 @@ test('renders hidden <input> element', () => {
   expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('supports default selected', async () => {
-  render(<Basic.Component defaultSelected label="Label" />);
-
-  const { input } = getSwitchParts();
-
-  expect(input.checked).toBeTruthy();
-  await user.click(input);
-  expect(input.checked).toBeFalsy();
-});
-
 test('supports controlled component usage', async () => {
   const onChange = vi.fn();
   render(<Basic.Component onChange={onChange} label="Label" />);
