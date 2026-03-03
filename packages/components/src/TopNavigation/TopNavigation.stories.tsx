@@ -1,7 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Logout, SettingDots, User } from '@marigold/icons';
-import { useSmallScreen } from '@marigold/system';
+import { useResponsiveValue } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
 import { Button } from '../Button/Button';
@@ -74,6 +74,16 @@ const Logo = () => (
   </svg>
 );
 
+const LogoSection = () => {
+  const showLogo = useResponsiveValue([false, false, true, true, true]);
+  return (
+    <>
+      <Button size="icon">SB</Button>
+      {showLogo && <Logo />}
+    </>
+  );
+};
+
 const UserMenu = () => (
   <ActionMenu aria-label="User menu">
     <Menu.Section title="Account">
@@ -91,9 +101,9 @@ const UserMenu = () => (
 );
 
 const UserSection = () => {
-  const isSmallScreen = useSmallScreen();
+  const showDetails = useResponsiveValue([false, false, true, true, true]);
 
-  if (isSmallScreen) {
+  if (!showDetails) {
     return <UserMenu />;
   }
 
@@ -134,8 +144,7 @@ export const NavBarPattern = meta.story({
   render: args => (
     <TopNavigation {...args}>
       <TopNavigation.Start>
-        <Button size="icon">SB</Button>
-        <Logo />
+        <LogoSection />
       </TopNavigation.Start>
       <TopNavigation.Middle alignY="bottom">
         <Tabs selectedKey="home">
@@ -148,6 +157,12 @@ export const NavBarPattern = meta.story({
             </Tabs.Item>
             <Tabs.Item id="messages" href="#">
               Messages
+            </Tabs.Item>
+            <Tabs.Item id="analytics" href="#">
+              Analytics
+            </Tabs.Item>
+            <Tabs.Item id="reports" href="#">
+              Reports
             </Tabs.Item>
           </Tabs.List>
         </Tabs>
@@ -168,6 +183,18 @@ export const NavBarPattern = meta.story({
   },
 });
 
+const CollapsedBreadcrumbs = () => {
+  const maxVisibleItems = useResponsiveValue([2, 2, 3, undefined, undefined]);
+  return (
+    <Breadcrumbs maxVisibleItems={maxVisibleItems}>
+      <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="/events/summer">Summer</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="/events/details">Event Details</Breadcrumbs.Item>
+    </Breadcrumbs>
+  );
+};
+
 export const WithSearchField = meta.story({
   args: {
     'aria-label': 'Search navigation',
@@ -175,17 +202,10 @@ export const WithSearchField = meta.story({
   render: args => (
     <TopNavigation {...args}>
       <TopNavigation.Start>
-        <Button size="icon">SB</Button>
-        <Logo />
+        <LogoSection />
       </TopNavigation.Start>
       <TopNavigation.Middle alignX="between">
-        <Breadcrumbs>
-          <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
-          <Breadcrumbs.Item href="/events/details">
-            Event Details
-          </Breadcrumbs.Item>
-        </Breadcrumbs>
+        <CollapsedBreadcrumbs />
         <SearchField placeholder="Search..." width={48} />
       </TopNavigation.Middle>
       <TopNavigation.End>
@@ -204,17 +224,10 @@ export const ApplicationShell = meta.story({
     <div style={{ height: '200vh' }}>
       <TopNavigation {...args}>
         <TopNavigation.Start>
-          <Button size="icon">SB</Button>
-          <Logo />
+          <LogoSection />
         </TopNavigation.Start>
         <TopNavigation.Middle>
-          <Breadcrumbs>
-            <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
-            <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
-            <Breadcrumbs.Item href="/events/summer-festival">
-              Summer Festival
-            </Breadcrumbs.Item>
-          </Breadcrumbs>
+          <CollapsedBreadcrumbs />
         </TopNavigation.Middle>
         <TopNavigation.End>
           <UserSection />

@@ -1,6 +1,6 @@
 import type { ForwardRefExoticComponent, ReactNode, Ref } from 'react';
 import { forwardRef } from 'react';
-import { cn, useClassNames, useSmallScreen } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { TopNavigationProvider } from './Context';
 import { TopNavigationEnd } from './TopNavigationEnd';
 import { TopNavigationMiddle } from './TopNavigationMiddle';
@@ -41,7 +41,6 @@ const _TopNavigation = forwardRef(
     { variant, size, sticky, children, ...props }: TopNavigationProps,
     ref: Ref<HTMLElement>
   ) => {
-    const isSmallScreen = useSmallScreen();
     const classNames = useClassNames({
       component: 'TopNavigation',
       variant,
@@ -54,17 +53,12 @@ const _TopNavigation = forwardRef(
           ref={ref}
           {...props}
           className={cn(
-            'grid',
-            isSmallScreen
-              ? 'grid-cols-[1fr_auto]'
-              : 'grid-cols-[auto_1fr_auto]',
+            'grid grid-cols-[auto_1fr_auto]',
             sticky && 'sticky top-0 z-1',
             classNames.container
           )}
           style={{
-            gridTemplateAreas: isSmallScreen
-              ? '"start end" "middle middle"'
-              : '"start middle end"',
+            gridTemplateAreas: '"start middle end"',
           }}
         >
           {children}

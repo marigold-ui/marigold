@@ -30,6 +30,7 @@ export const TopNavigationStart = ({
   return (
     <div
       className={cn(
+        'min-w-0',
         classNames.start,
         alignX && alignment.horizontal.alignmentX[alignX],
         alignY && alignment.horizontal.alignmentY[alignY]

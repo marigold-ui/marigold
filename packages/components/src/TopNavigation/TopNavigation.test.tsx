@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { mockMatchMedia } from '../test.utils';
 import {
   ApplicationShell,
@@ -24,7 +24,9 @@ describe('TopNavigation', () => {
   it('renders all three slots', () => {
     render(<NavBarPattern.Component />);
     expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Jane Doe')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'User menu' })
+    ).toBeInTheDocument();
   });
 
   it('applies sticky classes when sticky prop is set', () => {
@@ -43,7 +45,7 @@ describe('TopNavigation', () => {
       name: 'Search navigation',
     });
     expect(nav).toBeInTheDocument();
-    expect(screen.getByText('Events')).toBeInTheDocument();
+    expect(screen.getByText('Event Details')).toBeInTheDocument();
   });
 
   it('forwards ref to nav element', () => {
@@ -57,33 +59,24 @@ describe('TopNavigation', () => {
     render(<NavBarPattern.Component />);
     const nav = screen.getByRole('navigation', { name: 'Main navigation' });
     expect(nav.className).toMatch(/grid/);
+    expect(nav.style.gridTemplateAreas).toBe('"start middle end"');
   });
 
-  describe('mobile responsiveness', () => {
-    afterEach(() => {
-      window.matchMedia = mockMatchMedia([]);
-    });
-
-    it('uses two-row grid layout on small screens', () => {
-      window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  describe('overflow protection', () => {
+    it('applies min-w-0 to all slots', () => {
       render(<NavBarPattern.Component />);
       const nav = screen.getByRole('navigation', { name: 'Main navigation' });
-      expect(nav.className).toMatch(/grid/);
+      const slots = nav.querySelectorAll('[style*="grid-area"]');
+      slots.forEach(slot => {
+        expect(slot.className).toMatch(/min-w-0/);
+      });
     });
 
-    it('keeps all three slots visible on small screens', () => {
-      window.matchMedia = mockMatchMedia(['(width < 640px)']);
+    it('applies overflow-x-auto to middle slot', () => {
       render(<NavBarPattern.Component />);
-      expect(screen.getByText('Home')).toBeInTheDocument();
-      expect(
-        screen.getByRole('button', { name: 'User menu' })
-      ).toBeInTheDocument();
-    });
-
-    it('hides verbose user info on small screens', () => {
-      window.matchMedia = mockMatchMedia(['(width < 640px)']);
-      render(<NavBarPattern.Component />);
-      expect(screen.queryByText('Jane Doe')).not.toBeInTheDocument();
+      const nav = screen.getByRole('navigation', { name: 'Main navigation' });
+      const middleSlot = nav.querySelector('[style*="grid-area: middle"]');
+      expect(middleSlot?.className).toMatch(/overflow-x-auto/);
     });
   });
 });

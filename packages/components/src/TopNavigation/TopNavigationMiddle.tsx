@@ -31,6 +31,7 @@ export const TopNavigationMiddle = ({
   return (
     <div
       className={cn(
+        'min-w-0',
         classNames.middle,
         alignX && alignment.horizontal.alignmentX[alignX],
         alignY && alignment.horizontal.alignmentY[alignY]
