@@ -6,12 +6,13 @@ import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarProvider } from './Context';
-import { SidebarContent } from './SidebarContent';
-import { SidebarFooter } from './SidebarFooter';
-import { SidebarGroupLabel } from './SidebarGroup';
-import { SidebarHeader } from './SidebarHeader';
-import { SidebarItem, SidebarSeparator } from './SidebarItem';
+import {
+  SidebarGroupLabel,
+  SidebarItem,
+  SidebarSeparator,
+} from './SidebarItem';
 import { SidebarNav } from './SidebarNav';
+import { SidebarContent, SidebarFooter, SidebarHeader } from './SidebarSlots';
 import { SidebarToggle } from './SidebarToggle';
 
 // Props

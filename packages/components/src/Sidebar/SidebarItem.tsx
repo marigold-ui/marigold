@@ -26,3 +26,15 @@ export const SidebarItem = _SidebarItem;
 const _SidebarSeparator = (): ReactElement | null => null;
 _SidebarSeparator.__SIDEBAR_SEPARATOR__ = true as const;
 export const SidebarSeparator = _SidebarSeparator;
+
+// SidebarGroupLabel — section label marker (renders null)
+// ---------------
+export interface SidebarGroupLabelProps {
+  children?: ReactNode;
+}
+
+const _SidebarGroupLabel = (
+  _props: SidebarGroupLabelProps
+): ReactElement | null => null;
+_SidebarGroupLabel.__SIDEBAR_GROUP_LABEL__ = true as const;
+export const SidebarGroupLabel = _SidebarGroupLabel;

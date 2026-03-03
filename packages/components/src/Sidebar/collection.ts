@@ -1,7 +1,6 @@
 import { Children, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
-import type { SidebarGroupLabelProps } from './SidebarGroup';
-import type { SidebarItemProps } from './SidebarItem';
+import type { SidebarGroupLabelProps, SidebarItemProps } from './SidebarItem';
 
 // Types
 // ---------------
