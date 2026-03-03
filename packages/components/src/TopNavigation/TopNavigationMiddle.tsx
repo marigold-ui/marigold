@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
+import { forwardRef } from 'react';
 import { alignment, cn, useClassNames } from '@marigold/system';
 import { TopNavigationContext } from './Context';
 
@@ -22,28 +23,29 @@ export interface TopNavigationMiddleProps {
   children?: ReactNode;
 }
 
-export const TopNavigationMiddle = ({
-  alignX,
-  alignY = 'center',
-  children,
-  ...props
-}: TopNavigationMiddleProps) => {
-  const classNames = useClassNames({
-    component: 'TopNavigation',
-    context: TopNavigationContext,
-  });
+export const TopNavigationMiddle = forwardRef(
+  (
+    { alignX, alignY = 'center', children, ...props }: TopNavigationMiddleProps,
+    ref: Ref<HTMLElement>
+  ) => {
+    const classNames = useClassNames({
+      component: 'TopNavigation',
+      context: TopNavigationContext,
+    });
 
-  return (
-    <nav
-      {...props}
-      className={cn(
-        'min-w-0 [grid-area:middle]',
-        classNames.middle,
-        alignX && alignment.horizontal.alignmentX[alignX],
-        alignY && alignment.horizontal.alignmentY[alignY]
-      )}
-    >
-      {children}
-    </nav>
-  );
-};
+    return (
+      <nav
+        ref={ref}
+        {...props}
+        className={cn(
+          'min-w-0 [grid-area:middle]',
+          classNames.middle,
+          alignX && alignment.horizontal.alignmentX[alignX],
+          alignY && alignment.horizontal.alignmentY[alignY]
+        )}
+      >
+        {children}
+      </nav>
+    );
+  }
+);
