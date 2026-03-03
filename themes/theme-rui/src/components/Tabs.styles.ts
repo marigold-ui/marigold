@@ -16,7 +16,12 @@ export const Tabs: ThemeComponent<'Tabs'> = {
       'hover:bg-current/10',
       'disabled:pointer-events-none disabled:opacity-50',
       'selected:text-foreground selected:hover:bg-current/10',
-      'data-[selected=true]:after:bg-foreground after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5',
+    ],
+  }),
+  tabIndicator: cva({
+    base: [
+      'absolute inset-x-0 bottom-0 -mb-1 h-0.5 bg-foreground',
+      'origin-left',
     ],
   }),
   tabpanel: cva({
