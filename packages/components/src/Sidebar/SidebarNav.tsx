@@ -1,7 +1,8 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Link, Separator } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useLayoutEffect } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
