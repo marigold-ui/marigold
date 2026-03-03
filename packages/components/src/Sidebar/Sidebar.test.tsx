@@ -15,6 +15,10 @@ import {
 } from './SidebarItem';
 import { buildCollection, findActiveBranch } from './collection';
 
+// Testing Library has no API for querying ancestor elements.
+// eslint-disable-next-line testing-library/no-node-access
+const closest = (el: HTMLElement, sel: string) => el.closest(sel);
+
 let isSmallScreen = false;
 const mockMatchMedia = () =>
   vi.fn().mockImplementation(() => {
@@ -216,7 +220,7 @@ test('supports right side placement', () => {
   );
 
   // The sidebar shell is a div with data-side
-  const shell = screen.getByText('Home').closest('[data-side]');
+  const shell = closest(screen.getByText('Home'), '[data-side]');
   expect(shell).toHaveAttribute('data-side', 'right');
 });
 
@@ -260,14 +264,15 @@ test('sub-panel opens when child is active', () => {
   );
 
   // Root panel should be in "before" position (not active)
-  const rootPanel = screen
-    .getByRole('link', { name: 'Home' })
-    .closest('[data-position]');
+  const rootPanel = closest(
+    screen.getByRole('link', { name: 'Home' }),
+    '[data-position]'
+  );
   expect(rootPanel).toHaveAttribute('data-position', 'before');
 
   // Settings sub-panel should be active
   const generalLink = screen.getByRole('link', { name: 'General' });
-  const settingsPanel = generalLink.closest('[data-position]');
+  const settingsPanel = closest(generalLink, '[data-position]');
   expect(settingsPanel).toHaveAttribute('data-position', 'active');
 
   // Back button should be visible in the active panel
@@ -295,7 +300,7 @@ test('back button returns to root panel', async () => {
 
   // Settings sub-panel is active
   const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -306,7 +311,7 @@ test('back button returns to root panel', async () => {
 
   // Root panel should now be active
   const homeLink = screen.getByRole('link', { name: 'Home' });
-  expect(homeLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(homeLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -332,7 +337,7 @@ test('re-entering the same branch after back reopens sub-panel', async () => {
 
   // Settings sub-panel starts active
   const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -342,7 +347,7 @@ test('re-entering the same branch after back reopens sub-panel', async () => {
   await user.click(backButton);
 
   const homeLink = screen.getByRole('link', { name: 'Home' });
-  expect(homeLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(homeLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -351,7 +356,7 @@ test('re-entering the same branch after back reopens sub-panel', async () => {
   const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
   await user.click(settingsTrigger);
 
-  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -401,7 +406,7 @@ test('navigating between branches via stateful active prop', async () => {
 
   // Management sub-panel starts active (because /users is active)
   const usersLink = screen.getByRole('link', { name: 'Users' });
-  expect(usersLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -410,7 +415,7 @@ test('navigating between branches via stateful active prop', async () => {
   await user.click(screen.getByRole('button', { name: /Back to Management/ }));
 
   const overviewLink = screen.getByRole('link', { name: 'Overview' });
-  expect(overviewLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -420,7 +425,7 @@ test('navigating between branches via stateful active prop', async () => {
   await user.click(settingsTrigger);
 
   const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -428,7 +433,7 @@ test('navigating between branches via stateful active prop', async () => {
   // Click back from settings → root
   await user.click(screen.getByRole('button', { name: /Back to Settings/ }));
 
-  expect(overviewLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -437,7 +442,7 @@ test('navigating between branches via stateful active prop', async () => {
   const managementTrigger = screen.getByRole('link', { name: /Management/ });
   await user.click(managementTrigger);
 
-  expect(usersLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -457,7 +462,7 @@ test('data-state attribute reflects expanded/collapsed', async () => {
     </Sidebar.Provider>
   );
 
-  const shell = screen.getByText('Home').closest('[data-state]');
+  const shell = closest(screen.getByText('Home'), '[data-state]');
   expect(shell).toHaveAttribute('data-state', 'expanded');
 
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
@@ -486,15 +491,17 @@ test('non-active panels have inert attribute', () => {
   );
 
   // Root panel is in "before" position → should be inert
-  const rootPanel = screen
-    .getByRole('link', { name: 'Home' })
-    .closest('[data-position]');
+  const rootPanel = closest(
+    screen.getByRole('link', { name: 'Home' }),
+    '[data-position]'
+  );
   expect(rootPanel).toHaveAttribute('inert');
 
   // Settings panel is active → should NOT be inert
-  const activePanel = screen
-    .getByRole('link', { name: 'General' })
-    .closest('[data-position]');
+  const activePanel = closest(
+    screen.getByRole('link', { name: 'General' }),
+    '[data-position]'
+  );
   expect(activePanel).not.toHaveAttribute('inert');
 });
 
@@ -517,7 +524,7 @@ test('focus moves to back button when drilling into branch', async () => {
   await user.click(settingsTrigger);
 
   const backButton = screen.getByRole('button', { name: /Back to Settings/ });
-  expect(document.activeElement).toBe(backButton);
+  expect(backButton).toHaveFocus();
 });
 
 test('focus returns to branch trigger when going back', async () => {
@@ -541,7 +548,7 @@ test('focus returns to branch trigger when going back', async () => {
   await user.click(backButton);
 
   const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
-  expect(document.activeElement).toBe(settingsTrigger);
+  expect(settingsTrigger).toHaveFocus();
 });
 
 test('toggle writes sidebar state to cookie', async () => {
@@ -586,7 +593,7 @@ test('cookie overrides defaultOpen', () => {
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
-  const shell = screen.getByText('Home').closest('[data-state]');
+  const shell = closest(screen.getByText('Home'), '[data-state]');
   expect(shell).toHaveAttribute('data-state', 'collapsed');
 });
 
@@ -607,7 +614,7 @@ test('defaultOpen={false} starts sidebar collapsed', () => {
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
-  const shell = screen.getByText('Home').closest('[data-state]');
+  const shell = closest(screen.getByText('Home'), '[data-state]');
   expect(shell).toHaveAttribute('data-state', 'collapsed');
 });
 
@@ -813,7 +820,7 @@ test('switching branches directly updates focus to back button', async () => {
 
   // Management panel is active (because /users is active)
   const usersLink = screen.getByRole('link', { name: 'Users' });
-  expect(usersLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -827,14 +834,14 @@ test('switching branches directly updates focus to back button', async () => {
   await user.click(settingsTrigger);
 
   const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Back button in settings panel should be focused
   const backButton = screen.getByRole('button', { name: /Back to Settings/ });
-  expect(document.activeElement).toBe(backButton);
+  expect(backButton).toHaveFocus();
 });
 
 test('group label inside branch renders correctly', () => {
@@ -968,7 +975,7 @@ test('direct branch-to-branch switch via active prop change focuses back button'
 
   // Management panel is active (because /users is active)
   const usersLink = screen.getByRole('link', { name: 'Users' });
-  expect(usersLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -978,14 +985,14 @@ test('direct branch-to-branch switch via active prop change focuses back button'
 
   // Settings panel should now be active
   const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Focus should be on the back button (branch-to-branch switch)
   const backButton = screen.getByRole('button', { name: /Back to Settings/ });
-  expect(document.activeElement).toBe(backButton);
+  expect(backButton).toHaveFocus();
 });
 
 test('branch item onPress fires when clicking branch trigger', async () => {
