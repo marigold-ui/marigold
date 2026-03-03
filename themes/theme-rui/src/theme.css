@@ -62,7 +62,7 @@
   --color-destructive-muted-foreground: var(--color-red-950);
 
   /* used for success elements, like icons */
-  --color-success: var(--color-green-600);
+  --color-success: var(--color-green-500);
   --color-success-foreground: var(--color-white);
 
   /* muted variant of success token, used in badge */
@@ -71,8 +71,8 @@
   --color-success-muted-foreground: var(--color-green-950);
 
   /* used for warning elements, like icons */
-  --color-warning: var(--color-yellow-500);
-  --color-warning-foreground: var(--color-stone-950);
+  --color-warning: var(--color-yellow-400);
+  --color-warning-foreground: var(--color-white);
 
   /* muted variant of warning token, used in badge */
   --color-warning-muted-accent: var(--color-yellow-600);
@@ -90,7 +90,7 @@
 
   /* visible hints for access control (master- and admin-mark) */
   --color-access-master: var(--color-orange-100);
-  --color-access-master-foreground: var(--color-orange-700);
+  --color-access-master-foreground: var(--color-orange-500);
 
   --color-access-admin: var(--color-purple-100);
   --color-access-admin-foreground: var(--color-purple-800);
