@@ -1,4 +1,4 @@
-import { render, renderHook, screen } from '@testing-library/react';
+import { render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UseConfirmation } from './ConfirmationDialog.stories';
 import { useConfirmation } from './useConfirmation';
@@ -42,7 +42,9 @@ test('can open multiple confirmation dialogs sequentially', async () => {
   const cancelButton = screen.getByRole('button', { name: 'Cancel' });
   await user.click(cancelButton);
 
-  expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+  );
 
   const deleteButton = screen.getByRole('button', { name: 'Delete' });
   await user.click(deleteButton);
