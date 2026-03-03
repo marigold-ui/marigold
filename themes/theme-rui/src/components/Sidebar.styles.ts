@@ -48,12 +48,20 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   menu: cva({
     base: [
-      'flex flex-col gap-0.5 list-none p-0 m-0',
-      'data-[exiting]:absolute data-[exiting]:inset-0',
-      'data-[entering]:data-[direction=forward]:animate-panel-enter-forward',
-      'data-[entering]:data-[direction=backward]:animate-panel-enter-backward',
-      'data-[exiting]:data-[direction=forward]:animate-panel-exit-forward',
-      'data-[exiting]:data-[direction=backward]:animate-panel-exit-backward',
+      'flex flex-col gap-0.5',
+      'transition-[visibility,opacity,transform,filter] duration-200 ease-out',
+
+      'data-[position=before]:absolute data-[position=before]:inset-x-0 data-[position=before]:top-0',
+      'data-[position=before]:invisible data-[position=before]:opacity-0',
+      'data-[position=before]:-translate-x-2 data-[position=before]:blur-[2px]',
+      'data-[position=before]:pointer-events-none',
+
+      'data-[position=after]:absolute data-[position=after]:inset-x-0 data-[position=after]:top-0',
+      'data-[position=after]:invisible data-[position=after]:opacity-0',
+      'data-[position=after]:translate-x-2 data-[position=after]:blur-[2px]',
+      'data-[position=after]:pointer-events-none',
+
+      'motion-reduce:transition-none',
     ],
   }),
   menuItem: cva({ base: '' }),

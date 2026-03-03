@@ -81,6 +81,44 @@ const separateChildren = (
   return { itemChildren, triggerContent };
 };
 
+// Find the first leaf descendant's href (for branch items without explicit href)
+// ---------------
+const firstLeafHref = (nodes: SidebarNode[]): string | undefined => {
+  for (const node of nodes) {
+    if (node.type !== 'item') continue;
+    if (node.children.length === 0) return node.href;
+    const found = firstLeafHref(node.children);
+    if (found) return found;
+  }
+  return undefined;
+};
+
+// Find which root-level branch contains an active item
+// ---------------
+export const findActiveBranch = (
+  collection: SidebarCollection
+): string | null => {
+  const hasActive = (nodes: SidebarNode[]): boolean => {
+    for (const node of nodes) {
+      if (node.type !== 'item') continue;
+      if (node.active) return true;
+      if (node.children.length > 0 && hasActive(node.children)) return true;
+    }
+    return false;
+  };
+
+  for (const node of collection.rootNodes) {
+    if (
+      node.type === 'item' &&
+      node.children.length > 0 &&
+      hasActive(node.children)
+    ) {
+      return node.key;
+    }
+  }
+  return null;
+};
+
 // Build collection (single pass: build + index)
 // ---------------
 const buildNodes = (
@@ -110,16 +148,16 @@ const buildNodes = (
       const textValue =
         child.props.textValue || extractTextValue(triggerContent);
 
+      const childNodes =
+        itemChildren.length > 0 ? buildNodes(itemChildren, counter, index) : [];
+
       const node: SidebarItemNode = {
         type: 'item',
         key,
         textValue,
         triggerContent,
-        children:
-          itemChildren.length > 0
-            ? buildNodes(itemChildren, counter, index)
-            : [],
-        href: child.props.href,
+        children: childNodes,
+        href: child.props.href ?? firstLeafHref(childNodes),
         onPress: child.props.onPress,
         active: child.props.active,
       };

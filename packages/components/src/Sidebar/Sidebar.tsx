@@ -18,8 +18,6 @@ import { SidebarToggle } from './SidebarToggle';
 // ---------------
 export interface SidebarProps {
   children?: ReactNode;
-  /** Accessible label for the nav landmark. */
-  'aria-label'?: string;
   variant?: string;
   size?: string;
 }
@@ -43,17 +41,14 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
       isDismissable
     >
       <Modal data-side={side} className={classNames.modal}>
-        <nav
-          aria-label={stringFormatter.format('appNavigation')}
-          className={cn('h-full', classNames.root)}
-        >
+        <div className={cn('h-full', classNames.root)}>
           <CloseButton
             aria-label={stringFormatter.format('closeNavigation')}
             className={classNames.closeButton}
             onPress={() => setOpenMobile(false)}
           />
           {children}
-        </nav>
+        </div>
       </Modal>
     </ModalOverlay>
   );
@@ -61,12 +56,8 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
 
 // Desktop Sidebar
 // ---------------
-const DesktopSidebar = ({
-  children,
-  'aria-label': ariaLabel,
-}: SidebarProps) => {
+const DesktopSidebar = ({ children }: SidebarProps) => {
   const { state, side, variant, size } = useSidebar();
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'Sidebar',
     variant,
@@ -74,16 +65,11 @@ const DesktopSidebar = ({
   });
 
   return (
-    <nav
-      aria-label={ariaLabel ?? stringFormatter.format('appNavigation')}
-      data-state={state}
-      data-side={side}
-      className={classNames.root}
-    >
+    <div data-state={state} data-side={side} className={classNames.root}>
       <div className="grid h-full w-64 grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
         {children}
       </div>
-    </nav>
+    </div>
   );
 };
 

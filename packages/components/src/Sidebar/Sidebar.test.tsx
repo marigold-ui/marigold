@@ -58,12 +58,12 @@ beforeEach(() => {
 test('renders with sub-components', () => {
   render(
     <Sidebar.Provider>
-      <Sidebar aria-label="Main navigation">
+      <Sidebar>
         <Sidebar.Header>Header</Sidebar.Header>
         <Sidebar.Content>
           <Sidebar.Group>
             <Sidebar.GroupLabel>Section</Sidebar.GroupLabel>
-            <Sidebar.Nav>
+            <Sidebar.Nav aria-label="Main navigation">
               <Sidebar.Item href="/home">Home</Sidebar.Item>
             </Sidebar.Nav>
           </Sidebar.Group>
@@ -73,7 +73,9 @@ test('renders with sub-components', () => {
     </Sidebar.Provider>
   );
 
-  expect(screen.getByRole('navigation')).toBeInTheDocument();
+  expect(
+    screen.getByRole('navigation', { name: 'Main navigation' })
+  ).toBeInTheDocument();
   expect(screen.getByText('Header')).toBeInTheDocument();
   expect(screen.getByText('Home')).toBeInTheDocument();
   expect(screen.getByText('Footer')).toBeInTheDocument();
@@ -92,7 +94,7 @@ test('toggle expand/collapse via toggle button', async () => {
     </Sidebar.Provider>
   );
 
-  const trigger = screen.getByRole('button', { name: 'Toggle sidebar' });
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
   await user.click(trigger);
@@ -114,7 +116,7 @@ test('keyboard shortcut Cmd+B toggles sidebar', async () => {
     </Sidebar.Provider>
   );
 
-  const toggle = screen.getByRole('button', { name: 'Toggle sidebar' });
+  const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
   await user.keyboard('{Meta>}b{/Meta}');
@@ -130,19 +132,21 @@ test('active state with aria-current', () => {
       <Sidebar>
         <Sidebar.Content>
           <Sidebar.Nav>
-            <Sidebar.Item active>Home</Sidebar.Item>
-            <Sidebar.Item>About</Sidebar.Item>
+            <Sidebar.Item href="/home" active>
+              Home
+            </Sidebar.Item>
+            <Sidebar.Item href="/about">About</Sidebar.Item>
           </Sidebar.Nav>
         </Sidebar.Content>
       </Sidebar>
     </Sidebar.Provider>
   );
 
-  const homeButton = screen.getByText('Home');
-  expect(homeButton).toHaveAttribute('aria-current', 'page');
+  const homeLink = screen.getByRole('link', { name: 'Home' });
+  expect(homeLink).toHaveAttribute('aria-current', 'page');
 
-  const aboutButton = screen.getByText('About');
-  expect(aboutButton).not.toHaveAttribute('aria-current');
+  const aboutLink = screen.getByRole('link', { name: 'About' });
+  expect(aboutLink).not.toHaveAttribute('aria-current');
 });
 
 test('useSidebar throws outside provider', () => {
@@ -156,7 +160,7 @@ test('useSidebar throws outside provider', () => {
   spy.mockRestore();
 });
 
-test('renders menu button as link when href is provided', () => {
+test('renders items as links with href', () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
@@ -169,8 +173,7 @@ test('renders menu button as link when href is provided', () => {
     </Sidebar.Provider>
   );
 
-  const link = screen.getByText('Home');
-  expect(link.tagName).toBe('A');
+  const link = screen.getByRole('link', { name: 'Home' });
   expect(link).toHaveAttribute('href', '/home');
 });
 
@@ -202,57 +205,12 @@ test('supports right side placement', () => {
     </Sidebar.Provider>
   );
 
-  const nav = screen.getByRole('navigation');
-  expect(nav).toHaveAttribute('data-side', 'right');
+  // The sidebar shell is a div with data-side
+  const shell = screen.getByText('Content').closest('[data-side]');
+  expect(shell).toHaveAttribute('data-side', 'right');
 });
 
-test('keyboard navigation works within groups', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Content>
-          <Sidebar.Group>
-            <Sidebar.GroupLabel>Navigation</Sidebar.GroupLabel>
-            <Sidebar.Nav>
-              <Sidebar.Item href="/home">Home</Sidebar.Item>
-              <Sidebar.Item href="/about">About</Sidebar.Item>
-              <Sidebar.Item href="/contact">Contact</Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar.Group>
-        </Sidebar.Content>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
-
-  const home = screen.getByText('Home');
-  const about = screen.getByText('About');
-  const contact = screen.getByText('Contact');
-
-  // Focus first item
-  home.focus();
-
-  // ArrowDown moves to next item
-  await user.keyboard('{ArrowDown}');
-  expect(about).toHaveFocus();
-
-  // ArrowDown again
-  await user.keyboard('{ArrowDown}');
-  expect(contact).toHaveFocus();
-
-  // ArrowUp moves back
-  await user.keyboard('{ArrowUp}');
-  expect(about).toHaveFocus();
-
-  // Home key jumps to first
-  await user.keyboard('{Home}');
-  expect(home).toHaveFocus();
-
-  // End key jumps to last
-  await user.keyboard('{End}');
-  expect(contact).toHaveFocus();
-});
-
-test('branch items show chevron and navigate to sub-panel', async () => {
+test('branch items render as links with auto-derived href', () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
@@ -270,25 +228,82 @@ test('branch items show chevron and navigate to sub-panel', async () => {
     </Sidebar.Provider>
   );
 
-  // Root panel: Home + Settings trigger
-  expect(screen.getByText('Home')).toBeInTheDocument();
-  const settingsTrigger = screen.getByRole('button', { name: /Settings/ });
-  expect(settingsTrigger).toHaveAttribute('aria-haspopup', 'true');
+  // Branch item "Settings" should be a link with href from first child
+  const settingsLink = screen.getByRole('link', { name: /Settings/ });
+  expect(settingsLink).toHaveAttribute('href', '/general');
+});
 
-  // Navigate into settings
-  await user.click(settingsTrigger);
+test('sub-panel opens when child is active', () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Content>
+          <Sidebar.Nav>
+            <Sidebar.Item href="/home">Home</Sidebar.Item>
+            <Sidebar.Item id="settings" textValue="Settings">
+              Settings
+              <Sidebar.Item href="/general" active>
+                General
+              </Sidebar.Item>
+              <Sidebar.Item href="/security">Security</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar.Content>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
 
-  // Sub-panel should show General and Security
-  expect(screen.getByText('General')).toBeInTheDocument();
-  expect(screen.getByText('Security')).toBeInTheDocument();
+  // Root panel should be in "before" position (not active)
+  const rootPanel = screen
+    .getByRole('link', { name: 'Home' })
+    .closest('[data-position]');
+  expect(rootPanel).toHaveAttribute('data-position', 'before');
 
-  // Back button should be visible
+  // Settings sub-panel should be active
+  const generalLink = screen.getByRole('link', { name: 'General' });
+  const settingsPanel = generalLink.closest('[data-position]');
+  expect(settingsPanel).toHaveAttribute('data-position', 'active');
+
+  // Back button should be visible in the active panel
   const backButton = screen.getByRole('button', { name: /Back/ });
   expect(backButton).toBeInTheDocument();
+});
 
-  // Navigate back
+test('back button returns to root panel', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Content>
+          <Sidebar.Nav>
+            <Sidebar.Item href="/home">Home</Sidebar.Item>
+            <Sidebar.Item id="settings" textValue="Settings">
+              Settings
+              <Sidebar.Item href="/general" active>
+                General
+              </Sidebar.Item>
+              <Sidebar.Item href="/security">Security</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar.Content>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  // Settings sub-panel is active
+  const generalLink = screen.getByRole('link', { name: 'General' });
+  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click back
+  const backButton = screen.getByRole('button', { name: /Back/ });
   await user.click(backButton);
 
-  // Root panel visible again
-  expect(screen.getByText('Home')).toBeInTheDocument();
+  // Root panel should now be active
+  const homeLink = screen.getByRole('link', { name: 'Home' });
+  expect(homeLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
 });

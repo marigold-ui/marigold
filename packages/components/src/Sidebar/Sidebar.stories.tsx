@@ -3,6 +3,7 @@ import { useState } from 'react';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';
+import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Text } from '../Text/Text';
 import { Sidebar } from './Sidebar';
 
@@ -15,17 +16,15 @@ const meta = preview.meta({
   },
 });
 
-const pages = {
-  overview: { label: 'Overview' },
-  analytics: { label: 'Analytics' },
-  users: { label: 'Users' },
-  teams: { label: 'Teams' },
-  billing: { label: 'Billing' },
-  general: { label: 'General' },
-  security: { label: 'Security' },
-} as const;
-
-type PageId = keyof typeof pages;
+const pages: Record<string, { label: string }> = {
+  '/overview': { label: 'Overview' },
+  '/analytics': { label: 'Analytics' },
+  '/users': { label: 'Users' },
+  '/teams': { label: 'Teams' },
+  '/billing': { label: 'Billing' },
+  '/general': { label: 'General' },
+  '/security': { label: 'Security' },
+};
 
 const Layout = ({
   children,
@@ -36,90 +35,86 @@ const Layout = ({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) => {
-  const [activePage, setActivePage] = useState<PageId>('overview');
+  const [currentPath, setCurrentPath] = useState('/overview');
 
   return (
-    <Sidebar.Provider open={open} onOpenChange={onOpenChange}>
-      <div className="flex h-screen">
-        <Sidebar>
-          <Sidebar.Header>
-            <Text weight="bold">Acme Inc.</Text>
-          </Sidebar.Header>
-          <Sidebar.Content>
-            <Sidebar.Group>
-              <Sidebar.Nav>
-                <Sidebar.Item
-                  href="/overview"
-                  active={activePage === 'overview'}
-                  onPress={() => setActivePage('overview')}
-                >
-                  Overview
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/analytics"
-                  active={activePage === 'analytics'}
-                  onPress={() => setActivePage('analytics')}
-                >
-                  Analytics
-                </Sidebar.Item>
-                <Sidebar.Item id="management" textValue="Management">
-                  Management
+    <RouterProvider navigate={setCurrentPath}>
+      <Sidebar.Provider open={open} onOpenChange={onOpenChange}>
+        <div className="flex h-screen">
+          <Sidebar>
+            <Sidebar.Header>
+              <Text weight="bold">Acme Inc.</Text>
+            </Sidebar.Header>
+            <Sidebar.Content>
+              <Sidebar.Group>
+                <Sidebar.Nav>
                   <Sidebar.Item
-                    href="/users"
-                    active={activePage === 'users'}
-                    onPress={() => setActivePage('users')}
+                    href="/overview"
+                    active={currentPath === '/overview'}
                   >
-                    Users
+                    Overview
                   </Sidebar.Item>
                   <Sidebar.Item
-                    href="/teams"
-                    active={activePage === 'teams'}
-                    onPress={() => setActivePage('teams')}
+                    href="/analytics"
+                    active={currentPath === '/analytics'}
                   >
-                    Teams
+                    Analytics
                   </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/billing"
-                    active={activePage === 'billing'}
-                    onPress={() => setActivePage('billing')}
-                  >
-                    Billing
+                  <Sidebar.Item id="management" textValue="Management">
+                    Management
+                    <Sidebar.Item
+                      href="/users"
+                      active={currentPath === '/users'}
+                    >
+                      Users
+                    </Sidebar.Item>
+                    <Sidebar.Item
+                      href="/teams"
+                      active={currentPath === '/teams'}
+                    >
+                      Teams
+                    </Sidebar.Item>
+                    <Sidebar.Item
+                      href="/billing"
+                      active={currentPath === '/billing'}
+                    >
+                      Billing
+                    </Sidebar.Item>
                   </Sidebar.Item>
-                </Sidebar.Item>
-                <Sidebar.Item id="settings" textValue="Settings">
-                  Settings
-                  <Sidebar.Item
-                    href="/general"
-                    active={activePage === 'general'}
-                    onPress={() => setActivePage('general')}
-                  >
-                    General
+                  <Sidebar.Item id="settings" textValue="Settings">
+                    Settings
+                    <Sidebar.Item
+                      href="/general"
+                      active={currentPath === '/general'}
+                    >
+                      General
+                    </Sidebar.Item>
+                    <Sidebar.Item
+                      href="/security"
+                      active={currentPath === '/security'}
+                    >
+                      Security
+                    </Sidebar.Item>
                   </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/security"
-                    active={activePage === 'security'}
-                    onPress={() => setActivePage('security')}
-                  >
-                    Security
-                  </Sidebar.Item>
-                </Sidebar.Item>
-              </Sidebar.Nav>
-            </Sidebar.Group>
-          </Sidebar.Content>
-          <Sidebar.Footer>
-            <Text fontSize="xs">Footer content</Text>
-          </Sidebar.Footer>
-        </Sidebar>
-        <main className="flex-1 p-4">
-          <Sidebar.Toggle />
-          <Headline level={2}>{pages[activePage].label}</Headline>
-          <Text>
-            You are viewing the <strong>{pages[activePage].label}</strong> page.
-          </Text>
-          {children}
-        </main>
-      </div>
-    </Sidebar.Provider>
+                </Sidebar.Nav>
+              </Sidebar.Group>
+            </Sidebar.Content>
+            <Sidebar.Footer>
+              <Text fontSize="xs">Footer content</Text>
+            </Sidebar.Footer>
+          </Sidebar>
+          <main className="flex-1 p-4">
+            <Sidebar.Toggle />
+            <Headline level={2}>{pages[currentPath]?.label}</Headline>
+            <Text>
+              You are viewing the <strong>{pages[currentPath]?.label}</strong>{' '}
+              page.
+            </Text>
+            {children}
+          </main>
+        </div>
+      </Sidebar.Provider>
+    </RouterProvider>
   );
 };
 
@@ -143,207 +138,189 @@ export const Controlled = meta.story({
 
 // Complex story — ticketing system navigation
 // ---------------
-const complexPages = {
-  dashboard: { label: 'Dashboard' },
-  myTickets: { label: 'My Tickets' },
-  allTickets: { label: 'All Tickets' },
-  unassigned: { label: 'Unassigned' },
-  urgent: { label: 'Urgent' },
-  pendingReview: { label: 'Pending Review' },
-  archivedTickets: { label: 'Archived' },
-  activeProjects: { label: 'Active' },
-  completedProjects: { label: 'Completed' },
-  archivedProjects: { label: 'Archived' },
-  customers: { label: 'Customers' },
-  knowledgeBase: { label: 'Knowledge Base' },
-  ticketVolume: { label: 'Ticket Volume' },
-  responseTimes: { label: 'Response Times' },
-  slaCompliance: { label: 'SLA Compliance' },
-  agentPerformance: { label: 'Agent Performance' },
-  customerSatisfaction: { label: 'Customer Satisfaction' },
-  teamOverview: { label: 'Team Overview' },
-} as const;
-
-type ComplexPageId = keyof typeof complexPages;
+const complexPages: Record<string, { label: string }> = {
+  '/dashboard': { label: 'Dashboard' },
+  '/my-tickets': { label: 'My Tickets' },
+  '/all-tickets': { label: 'All Tickets' },
+  '/unassigned': { label: 'Unassigned' },
+  '/urgent': { label: 'Urgent' },
+  '/pending-review': { label: 'Pending Review' },
+  '/archived-tickets': { label: 'Archived' },
+  '/active-projects': { label: 'Active' },
+  '/completed-projects': { label: 'Completed' },
+  '/archived-projects': { label: 'Archived' },
+  '/customers': { label: 'Customers' },
+  '/knowledge-base': { label: 'Knowledge Base' },
+  '/ticket-volume': { label: 'Ticket Volume' },
+  '/response-times': { label: 'Response Times' },
+  '/sla-compliance': { label: 'SLA Compliance' },
+  '/agent-performance': { label: 'Agent Performance' },
+  '/customer-satisfaction': { label: 'Customer Satisfaction' },
+  '/team-overview': { label: 'Team Overview' },
+};
 
 export const Complex = meta.story({
   render: () => {
-    const [activePage, setActivePage] = useState<ComplexPageId>('dashboard');
+    const [currentPath, setCurrentPath] = useState('/dashboard');
 
     return (
-      <Sidebar.Provider>
-        <div className="flex h-screen">
-          <Sidebar>
-            <Sidebar.Header>
-              <Text weight="bold">TicketDesk</Text>
-            </Sidebar.Header>
-            <Sidebar.Content>
-              <Sidebar.Group>
-                <Sidebar.Nav>
-                  <Sidebar.Item
-                    href="/dashboard"
-                    active={activePage === 'dashboard'}
-                    onPress={() => setActivePage('dashboard')}
-                  >
-                    Dashboard
-                  </Sidebar.Item>
-                  <Sidebar.Item id="tickets" textValue="Tickets">
-                    Tickets
+      <RouterProvider navigate={setCurrentPath}>
+        <Sidebar.Provider>
+          <div className="flex h-screen">
+            <Sidebar>
+              <Sidebar.Header>
+                <Text weight="bold">TicketDesk</Text>
+              </Sidebar.Header>
+              <Sidebar.Content>
+                <Sidebar.Group>
+                  <Sidebar.Nav>
                     <Sidebar.Item
-                      href="/my-tickets"
-                      active={activePage === 'myTickets'}
-                      onPress={() => setActivePage('myTickets')}
+                      href="/dashboard"
+                      active={currentPath === '/dashboard'}
                     >
-                      My Tickets
+                      Dashboard
+                    </Sidebar.Item>
+                    <Sidebar.Item id="tickets" textValue="Tickets">
+                      Tickets
+                      <Sidebar.Item
+                        href="/my-tickets"
+                        active={currentPath === '/my-tickets'}
+                      >
+                        My Tickets
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/all-tickets"
+                        active={currentPath === '/all-tickets'}
+                      >
+                        All Tickets
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/unassigned"
+                        active={currentPath === '/unassigned'}
+                      >
+                        Unassigned
+                      </Sidebar.Item>
+                      <Sidebar.Separator />
+                      <Sidebar.Item
+                        href="/urgent"
+                        active={currentPath === '/urgent'}
+                      >
+                        Urgent
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/pending-review"
+                        active={currentPath === '/pending-review'}
+                      >
+                        Pending Review
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/archived-tickets"
+                        active={currentPath === '/archived-tickets'}
+                      >
+                        Archived
+                      </Sidebar.Item>
+                    </Sidebar.Item>
+                  </Sidebar.Nav>
+                </Sidebar.Group>
+                <Sidebar.Group>
+                  <Sidebar.GroupLabel>Workspace</Sidebar.GroupLabel>
+                  <Sidebar.Nav>
+                    <Sidebar.Item id="projects" textValue="Projects">
+                      Projects
+                      <Sidebar.Item
+                        href="/active-projects"
+                        active={currentPath === '/active-projects'}
+                      >
+                        Active
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/completed-projects"
+                        active={currentPath === '/completed-projects'}
+                      >
+                        Completed
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/archived-projects"
+                        active={currentPath === '/archived-projects'}
+                      >
+                        Archived
+                      </Sidebar.Item>
                     </Sidebar.Item>
                     <Sidebar.Item
-                      href="/all-tickets"
-                      active={activePage === 'allTickets'}
-                      onPress={() => setActivePage('allTickets')}
+                      href="/customers"
+                      active={currentPath === '/customers'}
                     >
-                      All Tickets
+                      Customers
                     </Sidebar.Item>
                     <Sidebar.Item
-                      href="/unassigned"
-                      active={activePage === 'unassigned'}
-                      onPress={() => setActivePage('unassigned')}
+                      href="/knowledge-base"
+                      active={currentPath === '/knowledge-base'}
                     >
-                      Unassigned
+                      Knowledge Base
                     </Sidebar.Item>
-                    <Sidebar.Separator />
-                    <Sidebar.Item
-                      href="/urgent"
-                      active={activePage === 'urgent'}
-                      onPress={() => setActivePage('urgent')}
-                    >
-                      Urgent
+                  </Sidebar.Nav>
+                </Sidebar.Group>
+                <hr className="bg-border my-1 h-px border-0" />
+                <Sidebar.Group>
+                  <Sidebar.Nav>
+                    <Sidebar.Item id="reports" textValue="Reports">
+                      Reports
+                      <Sidebar.Item
+                        href="/ticket-volume"
+                        active={currentPath === '/ticket-volume'}
+                      >
+                        Ticket Volume
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/response-times"
+                        active={currentPath === '/response-times'}
+                      >
+                        Response Times
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/sla-compliance"
+                        active={currentPath === '/sla-compliance'}
+                      >
+                        SLA Compliance
+                      </Sidebar.Item>
+                      <Sidebar.Separator />
+                      <Sidebar.Item
+                        href="/agent-performance"
+                        active={currentPath === '/agent-performance'}
+                      >
+                        Agent Performance
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/customer-satisfaction"
+                        active={currentPath === '/customer-satisfaction'}
+                      >
+                        Customer Satisfaction
+                      </Sidebar.Item>
+                      <Sidebar.Item
+                        href="/team-overview"
+                        active={currentPath === '/team-overview'}
+                      >
+                        Team Overview
+                      </Sidebar.Item>
                     </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/pending-review"
-                      active={activePage === 'pendingReview'}
-                      onPress={() => setActivePage('pendingReview')}
-                    >
-                      Pending Review
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/archived-tickets"
-                      active={activePage === 'archivedTickets'}
-                      onPress={() => setActivePage('archivedTickets')}
-                    >
-                      Archived
-                    </Sidebar.Item>
-                  </Sidebar.Item>
-                </Sidebar.Nav>
-              </Sidebar.Group>
-              <Sidebar.Group>
-                <Sidebar.GroupLabel>Workspace</Sidebar.GroupLabel>
-                <Sidebar.Nav>
-                  <Sidebar.Item id="projects" textValue="Projects">
-                    Projects
-                    <Sidebar.Item
-                      href="/active-projects"
-                      active={activePage === 'activeProjects'}
-                      onPress={() => setActivePage('activeProjects')}
-                    >
-                      Active
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/completed-projects"
-                      active={activePage === 'completedProjects'}
-                      onPress={() => setActivePage('completedProjects')}
-                    >
-                      Completed
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/archived-projects"
-                      active={activePage === 'archivedProjects'}
-                      onPress={() => setActivePage('archivedProjects')}
-                    >
-                      Archived
-                    </Sidebar.Item>
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/customers"
-                    active={activePage === 'customers'}
-                    onPress={() => setActivePage('customers')}
-                  >
-                    Customers
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/knowledge-base"
-                    active={activePage === 'knowledgeBase'}
-                    onPress={() => setActivePage('knowledgeBase')}
-                  >
-                    Knowledge Base
-                  </Sidebar.Item>
-                </Sidebar.Nav>
-              </Sidebar.Group>
-              <hr className="bg-border my-1 h-px border-0" />
-              <Sidebar.Group>
-                <Sidebar.Nav>
-                  <Sidebar.Item id="reports" textValue="Reports">
-                    Reports
-                    <Sidebar.Item
-                      href="/ticket-volume"
-                      active={activePage === 'ticketVolume'}
-                      onPress={() => setActivePage('ticketVolume')}
-                    >
-                      Ticket Volume
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/response-times"
-                      active={activePage === 'responseTimes'}
-                      onPress={() => setActivePage('responseTimes')}
-                    >
-                      Response Times
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/sla-compliance"
-                      active={activePage === 'slaCompliance'}
-                      onPress={() => setActivePage('slaCompliance')}
-                    >
-                      SLA Compliance
-                    </Sidebar.Item>
-                    <Sidebar.Separator />
-                    <Sidebar.Item
-                      href="/agent-performance"
-                      active={activePage === 'agentPerformance'}
-                      onPress={() => setActivePage('agentPerformance')}
-                    >
-                      Agent Performance
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/customer-satisfaction"
-                      active={activePage === 'customerSatisfaction'}
-                      onPress={() => setActivePage('customerSatisfaction')}
-                    >
-                      Customer Satisfaction
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/team-overview"
-                      active={activePage === 'teamOverview'}
-                      onPress={() => setActivePage('teamOverview')}
-                    >
-                      Team Overview
-                    </Sidebar.Item>
-                  </Sidebar.Item>
-                </Sidebar.Nav>
-              </Sidebar.Group>
-            </Sidebar.Content>
-            <Sidebar.Footer>
-              <Text fontSize="xs">Footer content</Text>
-            </Sidebar.Footer>
-          </Sidebar>
-          <main className="flex-1 p-4">
-            <Sidebar.Toggle />
-            <Headline level={2}>{complexPages[activePage].label}</Headline>
-            <Text>
-              You are viewing the{' '}
-              <strong>{complexPages[activePage].label}</strong> page.
-            </Text>
-          </main>
-        </div>
-      </Sidebar.Provider>
+                  </Sidebar.Nav>
+                </Sidebar.Group>
+              </Sidebar.Content>
+              <Sidebar.Footer>
+                <Text fontSize="xs">Footer content</Text>
+              </Sidebar.Footer>
+            </Sidebar>
+            <main className="flex-1 p-4">
+              <Sidebar.Toggle />
+              <Headline level={2}>{complexPages[currentPath]?.label}</Headline>
+              <Text>
+                You are viewing the{' '}
+                <strong>{complexPages[currentPath]?.label}</strong> page.
+              </Text>
+            </main>
+          </div>
+        </Sidebar.Provider>
+      </RouterProvider>
     );
   },
 });
