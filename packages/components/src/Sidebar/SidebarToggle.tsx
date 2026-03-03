@@ -19,7 +19,7 @@ export const SidebarToggle = () => {
       aria-expanded={state === 'expanded'}
       aria-label={stringFormatter.format('toggleNavigation')}
       onClick={toggleSidebar}
-      className={cn(classNames.toggle)}
+      className={cn('group/icon', classNames.toggle)}
     >
       <SidebarToggleIcon expanded={state === 'expanded'} strokeWidth={1.5} />
     </button>
