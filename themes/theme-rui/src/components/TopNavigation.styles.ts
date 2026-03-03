@@ -6,16 +6,14 @@ export const TopNavigation: ThemeComponent<'TopNavigation'> = {
       'w-full min-h-14',
       'bg-background border-b border-border shadow-elevation-border',
       'gap-4 px-3 pt-2 sm:gap-6 md:gap-8 lg:gap-12',
-      // align tabs border with header border
-      'mb-2',
     ],
   }),
   start: cva({ base: 'flex items-center gap-4' }),
   middle: cva({
     base: [
       'flex items-end ui-scrollbar overflow-x-auto overflow-y-hidden whitespace-nowrap h-full snap-mandatory',
-      // needed for tabs in navigation
-      '*:-mb-px',
+      // align tab underlines flush with header border only when tabs are present
+      'has-[role=tablist]:*:-mb-px',
     ],
   }),
   end: cva({ base: 'flex items-center justify-end gap-4' }),
