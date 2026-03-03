@@ -1,30 +1,21 @@
 import { createContext, useContext } from 'react';
-import type { PropsWithChildren } from 'react';
+import type { ComponentClassNames } from '@marigold/system';
 
 export interface TopNavigationContextProps {
+  classNames: ComponentClassNames<'TopNavigation'>;
   variant?: string;
   size?: string;
 }
 
-export const TopNavigationContext = createContext<
-  TopNavigationContextProps | undefined
->(undefined);
-
-export const TopNavigationProvider = ({
-  value,
-  children,
-}: PropsWithChildren<{ value: TopNavigationContextProps }>) => (
-  <TopNavigationContext.Provider value={value}>
-    {children}
-  </TopNavigationContext.Provider>
-);
+export const TopNavigationContext =
+  createContext<TopNavigationContextProps | null>(null);
 
 export const useTopNavigationContext = () => {
-  const ctx = useContext(TopNavigationContext);
-  if (!ctx) {
+  const context = useContext(TopNavigationContext);
+  if (context === null) {
     throw new Error(
-      'useTopNavigationContext must be used within a TopNavigationProvider'
+      'useTopNavigationContext must be used within a <TopNavigation> component'
     );
   }
-  return ctx;
+  return context;
 };

@@ -1,7 +1,7 @@
 import type { ReactNode, Ref } from 'react';
 import { forwardRef } from 'react';
-import { alignment, cn, useClassNames } from '@marigold/system';
-import { TopNavigationContext } from './Context';
+import { alignment, cn } from '@marigold/system';
+import { useTopNavigationContext } from './Context';
 
 export interface TopNavigationMiddleProps {
   /**
@@ -28,10 +28,7 @@ export const TopNavigationMiddle = forwardRef(
     { alignX, alignY = 'center', children, ...props }: TopNavigationMiddleProps,
     ref: Ref<HTMLElement>
   ) => {
-    const classNames = useClassNames({
-      component: 'TopNavigation',
-      context: TopNavigationContext,
-    });
+    const { classNames } = useTopNavigationContext();
 
     return (
       <nav

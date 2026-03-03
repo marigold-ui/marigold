@@ -1,7 +1,7 @@
 import type { ForwardRefExoticComponent, ReactNode, Ref } from 'react';
 import { forwardRef } from 'react';
 import { cn, useClassNames } from '@marigold/system';
-import { TopNavigationProvider } from './Context';
+import { TopNavigationContext } from './Context';
 import { TopNavigationEnd } from './TopNavigationEnd';
 import { TopNavigationMiddle } from './TopNavigationMiddle';
 import { TopNavigationStart } from './TopNavigationStart';
@@ -48,7 +48,7 @@ const _TopNavigation = forwardRef(
     });
 
     return (
-      <TopNavigationProvider value={{ variant, size }}>
+      <TopNavigationContext.Provider value={{ variant, size, classNames }}>
         <header
           ref={ref}
           {...props}
@@ -60,7 +60,7 @@ const _TopNavigation = forwardRef(
         >
           {children}
         </header>
-      </TopNavigationProvider>
+      </TopNavigationContext.Provider>
     );
   }
 ) as TopNavigationComponent;

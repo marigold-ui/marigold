@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { alignment, cn, useClassNames } from '@marigold/system';
-import { TopNavigationContext } from './Context';
+import { alignment, cn } from '@marigold/system';
+import { useTopNavigationContext } from './Context';
 
 export interface TopNavigationEndProps {
   /**
@@ -27,10 +27,7 @@ export const TopNavigationEnd = ({
   children,
   ...props
 }: TopNavigationEndProps) => {
-  const classNames = useClassNames({
-    component: 'TopNavigation',
-    context: TopNavigationContext,
-  });
+  const { classNames } = useTopNavigationContext();
 
   return (
     <nav
