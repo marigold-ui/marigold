@@ -3,14 +3,20 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const TopNavigation: ThemeComponent<'TopNavigation'> = {
   container: cva({
     base: [
-      'w-full h-14',
+      'w-full min-h-14',
       'bg-background border-b border-border shadow-elevation-border',
-      'gap-4 px-3 my-2 sm:gap-12 sm:px-4',
+      'gap-4 px-3 pt-2 sm:gap-6 md:gap-8 lg:gap-12',
+      // align tabs border with header border
+      'mb-2',
     ],
   }),
   start: cva({ base: 'flex items-center gap-4' }),
   middle: cva({
-    base: 'flex items-end *:-mb-px ui-scrollbar overflow-x-auto overflow-y-hidden whitespace-nowrap h-full snap-mandatory',
+    base: [
+      'flex items-end ui-scrollbar overflow-x-auto overflow-y-hidden whitespace-nowrap h-full snap-mandatory',
+      // needed for tabs in navigation
+      '*:-mb-px',
+    ],
   }),
   end: cva({ base: 'flex items-center justify-end gap-4' }),
 };
