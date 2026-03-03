@@ -8,6 +8,12 @@ import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { setup } from '../test.utils';
 import { useSidebar } from './Context';
 import { Sidebar } from './Sidebar';
+import {
+  SidebarGroupLabel,
+  SidebarItem,
+  SidebarSeparator,
+} from './SidebarItem';
+import { buildCollection, findActiveBranch } from './collection';
 
 let isSmallScreen = false;
 const mockMatchMedia = () =>
@@ -729,4 +735,355 @@ test('dynamic items via items prop and render function', () => {
     const link = screen.getByRole('link', { name: item.label });
     expect(link).toHaveAttribute('href', item.url);
   }
+});
+
+test('nested branches derive href from deepest first leaf', () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item id="outer" textValue="Outer">
+            Outer
+            <Sidebar.Item id="inner" textValue="Inner">
+              Inner
+              <Sidebar.Item href="/deep-leaf">Deep Leaf</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  // Outer branch should auto-derive href from the deepest first leaf
+  const outerLink = screen.getByRole('link', { name: /Outer/ });
+  expect(outerLink).toHaveAttribute('href', '/deep-leaf');
+});
+
+test('branch without any leaf hrefs renders without href', () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item id="empty-branch" textValue="Empty">
+            Empty
+            <Sidebar.Item>No href child</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  // Branch item should render as a link without href attribute
+  const trigger = screen.getByRole('link', { name: /Empty/ });
+  expect(trigger).not.toHaveAttribute('href');
+});
+
+test('switching branches directly updates focus to back button', async () => {
+  const SidebarWithBranchSwitch = () => {
+    const [currentPath, setCurrentPath] = useState('/users');
+
+    return (
+      <RouterProvider navigate={setCurrentPath}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="management" textValue="Management">
+                Management
+                <Sidebar.Item href="/users" active={currentPath === '/users'}>
+                  Users
+                </Sidebar.Item>
+              </Sidebar.Item>
+              <Sidebar.Item id="settings" textValue="Settings">
+                Settings
+                <Sidebar.Item
+                  href="/general"
+                  active={currentPath === '/general'}
+                >
+                  General
+                </Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </RouterProvider>
+    );
+  };
+
+  render(<SidebarWithBranchSwitch />);
+
+  // Management panel is active (because /users is active)
+  const usersLink = screen.getByRole('link', { name: 'Users' });
+  expect(usersLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click Settings trigger from root → navigates to /general
+  // First go back to root
+  await user.click(screen.getByRole('button', { name: /Back to Management/ }));
+
+  // Now click Settings (switches directly to settings branch)
+  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
+  await user.click(settingsTrigger);
+
+  const generalLink = screen.getByRole('link', { name: 'General' });
+  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Back button in settings panel should be focused
+  const backButton = screen.getByRole('button', { name: /Back to Settings/ });
+  expect(document.activeElement).toBe(backButton);
+});
+
+test('group label inside branch renders correctly', () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.GroupLabel>Account</Sidebar.GroupLabel>
+            <Sidebar.Item href="/profile" active>
+              Profile
+            </Sidebar.Item>
+            <Sidebar.Separator />
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  // Sub-panel is active (because /profile is active)
+  expect(screen.getByText('Account')).toBeInTheDocument();
+  expect(screen.getByText('Profile')).toBeInTheDocument();
+  expect(screen.getByRole('separator')).toBeInTheDocument();
+});
+
+test('marker components return null when called directly', () => {
+  expect(Sidebar.Item({})).toBeNull();
+  expect(Sidebar.Separator()).toBeNull();
+  expect(Sidebar.GroupLabel({})).toBeNull();
+});
+
+test('item with explicit id uses that id as key', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item id="custom-id" href="/page">
+            Custom ID Item
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  const link = screen.getByRole('link', { name: 'Custom ID Item' });
+  expect(link).toHaveAttribute('data-key', 'custom-id');
+});
+
+test('item without explicit id gets auto-generated key', () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/page">Auto ID Item</Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  const link = screen.getByRole('link', { name: 'Auto ID Item' });
+  // Auto-generated keys follow the pattern "item-N"
+  expect(link).toHaveAttribute('data-key');
+  expect(link.getAttribute('data-key')).toMatch(/^item-\d+$/);
+});
+
+test('textValue auto-extracted from string children', () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item id="branch">
+            My Section
+            <Sidebar.Item href="/child" active>
+              Child
+            </Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  // Back button should show auto-extracted textValue "My Section"
+  const backButton = screen.getByRole('button', {
+    name: /Back to My Section/,
+  });
+  expect(backButton).toBeInTheDocument();
+});
+
+test('direct branch-to-branch switch via active prop change focuses back button', async () => {
+  // This tests the case where openBranch changes from one non-null value
+  // to another non-null value (lines 223-225 in SidebarNav.tsx)
+  const SidebarWithDirectSwitch = () => {
+    const [currentPath, setCurrentPath] = useState('/users');
+
+    return (
+      <>
+        <button
+          data-testid="switch-to-settings"
+          onClick={() => setCurrentPath('/general')}
+        >
+          Go to Settings
+        </button>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="management" textValue="Management">
+                Management
+                <Sidebar.Item href="/users" active={currentPath === '/users'}>
+                  Users
+                </Sidebar.Item>
+              </Sidebar.Item>
+              <Sidebar.Item id="settings" textValue="Settings">
+                Settings
+                <Sidebar.Item
+                  href="/general"
+                  active={currentPath === '/general'}
+                >
+                  General
+                </Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </>
+    );
+  };
+
+  render(<SidebarWithDirectSwitch />);
+
+  // Management panel is active (because /users is active)
+  const usersLink = screen.getByRole('link', { name: 'Users' });
+  expect(usersLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Directly switch active branch from management → settings (no root in between)
+  await user.click(screen.getByTestId('switch-to-settings'));
+
+  // Settings panel should now be active
+  const generalLink = screen.getByRole('link', { name: 'General' });
+  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Focus should be on the back button (branch-to-branch switch)
+  const backButton = screen.getByRole('button', { name: /Back to Settings/ });
+  expect(document.activeElement).toBe(backButton);
+});
+
+test('branch item onPress fires when clicking branch trigger', async () => {
+  const handlePress = vi.fn();
+
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item
+            id="settings"
+            textValue="Settings"
+            onPress={handlePress}
+          >
+            Settings
+            <Sidebar.Item href="/general">General</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
+  await user.click(settingsTrigger);
+  expect(handlePress).toHaveBeenCalledOnce();
+});
+
+// collection.ts unit tests
+// ---------------
+test('buildCollection.getItem returns nodes by key', () => {
+  const jsx = [
+    <SidebarItem key="home" id="home" href="/home">
+      Home
+    </SidebarItem>,
+    <SidebarSeparator key="sep" />,
+    <SidebarItem key="about" id="about" href="/about">
+      About
+    </SidebarItem>,
+  ];
+
+  const collection = buildCollection(jsx);
+  const home = collection.getItem('home');
+  expect(home).toBeDefined();
+  expect(home?.type).toBe('item');
+
+  const about = collection.getItem('about');
+  expect(about).toBeDefined();
+
+  // Non-existent key returns undefined
+  expect(collection.getItem('nonexistent')).toBeUndefined();
+});
+
+test('findActiveBranch returns null when no item is active', () => {
+  const jsx = [
+    <SidebarItem key="home" id="home" href="/home">
+      Home
+    </SidebarItem>,
+    <SidebarItem key="branch" id="branch" textValue="Branch">
+      Branch
+      <SidebarItem href="/child">Child</SidebarItem>
+    </SidebarItem>,
+  ];
+
+  const collection = buildCollection(jsx);
+  expect(findActiveBranch(collection)).toBeNull();
+});
+
+test('findActiveBranch returns null when active item is at root level', () => {
+  const jsx = [
+    <SidebarItem key="home" id="home" href="/home" active>
+      Home
+    </SidebarItem>,
+    <SidebarItem key="branch" id="branch" textValue="Branch">
+      Branch
+      <SidebarItem href="/child">Child</SidebarItem>
+    </SidebarItem>,
+  ];
+
+  const collection = buildCollection(jsx);
+  // Active item is at root, not inside a branch
+  expect(findActiveBranch(collection)).toBeNull();
+});
+
+test('buildCollection handles group labels and separators in index', () => {
+  const jsx = [
+    <SidebarGroupLabel key="label">Section</SidebarGroupLabel>,
+    <SidebarItem key="item" id="item-1" href="/page">
+      Page
+    </SidebarItem>,
+    <SidebarSeparator key="sep" />,
+  ];
+
+  const collection = buildCollection(jsx);
+  expect(collection.rootNodes).toHaveLength(3);
+  expect(collection.rootNodes[0].type).toBe('groupLabel');
+  expect(collection.rootNodes[1].type).toBe('item');
+  expect(collection.rootNodes[2].type).toBe('separator');
+
+  // All nodes should be accessible via getItem
+  expect(collection.getItem('item-1')).toBeDefined();
 });
