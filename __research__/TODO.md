@@ -1,8 +1,6 @@
-- when on a sub path in the sidebar do not show "back" but the name of the parent item
 - when item is clicked that has children, automatically navigate to the first item in the list
-- make example more complex, separator, groups, more items, subheadings?
 - all items needs to be of the same height so animations for/back do not look weird?
-- do we support additional sections and section headers
 - fix styling of back header, caret aligned etc
 - move icon into the component
 - different icon for mobile version?
+- focus ring is broooooken
