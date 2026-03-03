@@ -47,7 +47,9 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
             className={classNames.closeButton}
             onPress={() => setOpenMobile(false)}
           />
-          {children}
+          <div className="grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
+            {children}
+          </div>
         </div>
       </Modal>
     </ModalOverlay>

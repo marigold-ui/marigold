@@ -49,16 +49,20 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   menu: cva({
     base: [
       'flex flex-col gap-0.5',
-      'transition-[visibility,opacity,translate,filter] duration-200 ease-out',
+      'transition-[visibility,opacity,translate,filter] duration-300 ease-out sm:duration-200',
 
+      // Panel behind (already visited) — slides left
       'data-[position=before]:absolute data-[position=before]:inset-x-0 data-[position=before]:top-0',
       'data-[position=before]:invisible data-[position=before]:opacity-0',
-      'data-[position=before]:-translate-x-2 data-[position=before]:blur-[2px]',
+      'data-[position=before]:-translate-x-1/3 data-[position=before]:sm:-translate-x-2',
+      'data-[position=before]:sm:blur-[2px]',
       'data-[position=before]:pointer-events-none',
 
+      // Panel ahead (not yet visited) — slides right
       'data-[position=after]:absolute data-[position=after]:inset-x-0 data-[position=after]:top-0',
       'data-[position=after]:invisible data-[position=after]:opacity-0',
-      'data-[position=after]:translate-x-2 data-[position=after]:blur-[2px]',
+      'data-[position=after]:translate-x-1/3 data-[position=after]:sm:translate-x-2',
+      'data-[position=after]:sm:blur-[2px]',
       'data-[position=after]:pointer-events-none',
 
       'motion-reduce:transition-none',
