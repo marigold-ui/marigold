@@ -1,8 +1,10 @@
 import { renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
 import { vi } from 'vitest';
 import type { Theme } from '@marigold/system';
 import { cva } from '@marigold/system';
+import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { setup } from '../test.utils';
 import { useSidebar } from './Context';
 import { Sidebar } from './Sidebar';
@@ -303,6 +305,141 @@ test('back button returns to root panel', async () => {
   // Root panel should now be active
   const homeLink = screen.getByRole('link', { name: 'Home' });
   expect(homeLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+});
+
+test('re-entering the same branch after back reopens sub-panel', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Content>
+          <Sidebar.Nav>
+            <Sidebar.Item href="/home">Home</Sidebar.Item>
+            <Sidebar.Item id="settings" textValue="Settings">
+              Settings
+              <Sidebar.Item href="/general" active>
+                General
+              </Sidebar.Item>
+              <Sidebar.Item href="/security">Security</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar.Content>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  // Settings sub-panel starts active
+  const generalLink = screen.getByRole('link', { name: 'General' });
+  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click back → root panel shown
+  const backButton = screen.getByRole('button', { name: /Back/ });
+  await user.click(backButton);
+
+  const homeLink = screen.getByRole('link', { name: 'Home' });
+  expect(homeLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click the Settings branch trigger again → sub-panel should reopen
+  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
+  await user.click(settingsTrigger);
+
+  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+});
+
+test('navigating between branches via stateful active prop', async () => {
+  const SidebarWithRouter = () => {
+    const [currentPath, setCurrentPath] = useState('/users');
+
+    return (
+      <RouterProvider navigate={setCurrentPath}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Content>
+              <Sidebar.Nav>
+                <Sidebar.Item
+                  href="/overview"
+                  active={currentPath === '/overview'}
+                >
+                  Overview
+                </Sidebar.Item>
+                <Sidebar.Item id="management" textValue="Management">
+                  Management
+                  <Sidebar.Item href="/users" active={currentPath === '/users'}>
+                    Users
+                  </Sidebar.Item>
+                  <Sidebar.Item href="/teams" active={currentPath === '/teams'}>
+                    Teams
+                  </Sidebar.Item>
+                </Sidebar.Item>
+                <Sidebar.Item id="settings" textValue="Settings">
+                  Settings
+                  <Sidebar.Item
+                    href="/general"
+                    active={currentPath === '/general'}
+                  >
+                    General
+                  </Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar.Content>
+          </Sidebar>
+        </Sidebar.Provider>
+      </RouterProvider>
+    );
+  };
+
+  render(<SidebarWithRouter />);
+
+  // Management sub-panel starts active (because /users is active)
+  const usersLink = screen.getByRole('link', { name: 'Users' });
+  expect(usersLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click back → root (use specific label since multiple back buttons exist)
+  await user.click(screen.getByRole('button', { name: /Back to Management/ }));
+
+  const overviewLink = screen.getByRole('link', { name: 'Overview' });
+  expect(overviewLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click Settings → navigates to /general, switches to settings panel
+  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
+  await user.click(settingsTrigger);
+
+  const generalLink = screen.getByRole('link', { name: 'General' });
+  expect(generalLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click back from settings → root
+  await user.click(screen.getByRole('button', { name: /Back to Settings/ }));
+
+  expect(overviewLink.closest('[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click Management → navigates to /users, opens management panel
+  const managementTrigger = screen.getByRole('link', { name: /Management/ });
+  await user.click(managementTrigger);
+
+  expect(usersLink.closest('[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );

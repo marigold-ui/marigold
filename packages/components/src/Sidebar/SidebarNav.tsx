@@ -46,6 +46,7 @@ const panelPosition = (
 const InnerPanelContent = ({
   nodes,
   onBack,
+  onBranchClick,
   backLabel,
   classNames,
   position,
@@ -53,6 +54,7 @@ const InnerPanelContent = ({
 }: {
   nodes: SidebarNode[];
   onBack?: () => void;
+  onBranchClick?: (key: string) => void;
   backLabel?: string | null;
   classNames: Record<string, string>;
   position: 'active' | 'before' | 'after';
@@ -98,7 +100,10 @@ const InnerPanelContent = ({
                 href={node.href}
                 data-key={node.key}
                 className={cn(classNames.menuButton, 'justify-between')}
-                onPress={node.onPress}
+                onPress={() => {
+                  onBranchClick?.(node.key);
+                  node.onPress?.();
+                }}
               >
                 <span>{node.triggerContent}</span>
                 <ChevronRight size={16} />
@@ -159,17 +164,17 @@ export const SidebarNav = <T extends object = object>({
     [collection]
   );
 
-  // Track which branch the back button was pressed for.
-  // When activeBranch changes (user navigates), the comparison
-  // naturally fails and the override is cleared — no effect needed.
-  const [forcedRootFor, setForcedRootFor] = useState<string | null | undefined>(
-    undefined
-  );
-  const forcedRoot =
-    forcedRootFor !== undefined && forcedRootFor === activeBranch;
+  // Explicit panel state — which branch panel is shown (null = root).
+  // This is independently settable (via back button or branch click)
+  // but syncs when the URL-derived activeBranch changes.
+  const [openBranch, setOpenBranch] = useState<string | null>(activeBranch);
+  const [prevActiveBranch, setPrevActiveBranch] = useState(activeBranch);
 
-  // The open branch key (or null for root)
-  const openBranch = forcedRoot ? null : activeBranch;
+  if (activeBranch !== prevActiveBranch) {
+    setPrevActiveBranch(activeBranch);
+    setOpenBranch(activeBranch);
+  }
+
   const stack = openBranch ? [openBranch] : [];
 
   // Collect all branch nodes for always-mounted panels
@@ -219,6 +224,7 @@ export const SidebarNav = <T extends object = object>({
         nodes={collection.rootNodes}
         position={panelPosition('root', stack)}
         classNames={classNames}
+        onBranchClick={setOpenBranch}
         stringFormatter={stringFormatter}
       />
       {branchNodes.map(branch => (
@@ -226,7 +232,8 @@ export const SidebarNav = <T extends object = object>({
           key={branch.key}
           nodes={branch.children}
           position={panelPosition(branch.key, stack)}
-          onBack={() => setForcedRootFor(activeBranch)}
+          onBack={() => setOpenBranch(null)}
+          onBranchClick={setOpenBranch}
           backLabel={branch.textValue}
           classNames={classNames}
           stringFormatter={stringFormatter}
