@@ -26,7 +26,7 @@ export interface SidebarProps {
 // Mobile Sheet
 // ---------------
 const MobileSidebar = ({ children }: { children: ReactNode }) => {
-  const { openMobile, setOpenMobile, variant, size } = useSidebar();
+  const { state, toggleSidebar, variant, size } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'Sidebar',
@@ -36,8 +36,8 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
 
   return (
     <ModalOverlay
-      isOpen={openMobile}
-      onOpenChange={setOpenMobile}
+      isOpen={state === 'expanded'}
+      onOpenChange={open => !open && toggleSidebar()}
       className={cn('z-50', classNames.overlay)}
       isDismissable
     >
@@ -46,7 +46,7 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
           <CloseButton
             aria-label={stringFormatter.format('closeNavigation')}
             className={classNames.closeButton}
-            onPress={() => setOpenMobile(false)}
+            onPress={toggleSidebar}
           />
           <div className="grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
             {children}

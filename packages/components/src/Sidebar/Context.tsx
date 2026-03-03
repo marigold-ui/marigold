@@ -15,12 +15,8 @@ export type SidebarState = 'expanded' | 'collapsed';
 
 export interface SidebarContextValue {
   state: SidebarState;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  openMobile: boolean;
-  setOpenMobile: (open: boolean) => void;
-  isMobile: boolean;
   toggleSidebar: () => void;
+  isMobile: boolean;
   variant?: string;
   size?: string;
 }
@@ -79,36 +75,33 @@ export const SidebarProvider = ({
 }: SidebarProviderProps) => {
   const isMobile = useSmallScreen();
 
+  // Desktop state (cookie-backed)
   const [_open, _setOpen] = useState(() => {
     const cookie = readCookie();
     if (cookie) return cookie === 'expanded';
     return defaultOpen;
   });
 
-  const open = controlledOpen ?? _open;
+  // Mobile state (always starts closed)
+  const [_openMobile, _setOpenMobile] = useState(false);
 
-  const setOpen = useCallback(
-    (value: boolean) => {
-      const newState: SidebarState = value ? 'expanded' : 'collapsed';
-      writeCookie(newState);
-      if (onOpenChange) {
-        onOpenChange(value);
-      } else {
-        _setOpen(value);
-      }
-    },
-    [onOpenChange]
-  );
-
-  const [openMobile, setOpenMobile] = useState(false);
+  const isOpen = controlledOpen ?? (isMobile ? _openMobile : _open);
 
   const toggleSidebar = useCallback(() => {
-    if (isMobile) {
-      setOpenMobile(prev => !prev);
-    } else {
-      setOpen(!open);
+    const newOpen = !isOpen;
+
+    if (onOpenChange) {
+      onOpenChange(newOpen);
+      return;
     }
-  }, [isMobile, open, setOpen]);
+
+    if (isMobile) {
+      _setOpenMobile(prev => !prev);
+    } else {
+      writeCookie(newOpen ? 'expanded' : 'collapsed');
+      _setOpen(newOpen);
+    }
+  }, [isOpen, isMobile, onOpenChange]);
 
   // Keyboard shortcut: Cmd+B / Ctrl+B
   useEffect(() => {
@@ -122,31 +115,17 @@ export const SidebarProvider = ({
     return () => window.removeEventListener('keydown', handler);
   }, [toggleSidebar]);
 
-  const state: SidebarState = open ? 'expanded' : 'collapsed';
+  const state: SidebarState = isOpen ? 'expanded' : 'collapsed';
 
   const value = useMemo(
     () => ({
       state,
-      open,
-      setOpen,
-      openMobile,
-      setOpenMobile,
-      isMobile,
       toggleSidebar,
+      isMobile,
       variant,
       size,
     }),
-    [
-      state,
-      open,
-      setOpen,
-      openMobile,
-      setOpenMobile,
-      isMobile,
-      toggleSidebar,
-      variant,
-      size,
-    ]
+    [state, toggleSidebar, isMobile, variant, size]
   );
 
   return (

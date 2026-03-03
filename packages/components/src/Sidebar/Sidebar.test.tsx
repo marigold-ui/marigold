@@ -64,7 +64,7 @@ beforeEach(() => {
   isSmallScreen = false;
   window.matchMedia = mockMatchMedia();
   // Clear cookies
-  document.cookie = 'sidebar:state=;max-age=0';
+  document.cookie = 'marigold:sidebar:state=;max-age=0';
 });
 
 test('renders with sub-components', () => {
@@ -552,14 +552,14 @@ test('toggle writes sidebar state to cookie', async () => {
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
 
   await user.click(trigger);
-  expect(document.cookie).toContain('sidebar:state=collapsed');
+  expect(document.cookie).toContain('marigold:sidebar:state=collapsed');
 
   await user.click(trigger);
-  expect(document.cookie).toContain('sidebar:state=expanded');
+  expect(document.cookie).toContain('marigold:sidebar:state=expanded');
 });
 
 test('cookie overrides defaultOpen', () => {
-  document.cookie = 'sidebar:state=collapsed;path=/;max-age=604800';
+  document.cookie = 'marigold:sidebar:state=collapsed;path=/;max-age=604800';
 
   render(
     <Sidebar.Provider defaultOpen={true}>
