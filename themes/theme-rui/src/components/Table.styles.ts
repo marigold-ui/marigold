@@ -138,9 +138,8 @@ export const Table: ThemeComponent<'Table'> = {
       'flex items-center justify-center',
       'text-foreground/60',
       'size-button aspect-square rounded-surface transition-[color,background,transform]',
-      'cursor-pointer',
-      'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
-      'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
+      'ui-interactive',
+      'ui-press',
       'hover:bg-current/10',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5',
     ],
@@ -148,12 +147,12 @@ export const Table: ThemeComponent<'Table'> = {
   editCancel: cva({
     base: [
       'inline-flex items-center justify-center',
-      'min-[600px]:text-foreground/60 font-medium',
-      'text-sm h-button-small min-[600px]:size-button min-[600px]:aspect-square rounded-surface transition-[color,background,transform]',
+      'sm:text-foreground/60 font-medium',
+      'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'ml-1.5', // some extra spacing between buttons and field
       'focus-visible:ui-state-focus outline-none',
-      'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
+      'ui-press',
       'hover:bg-current/10',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5',
     ],
@@ -161,11 +160,11 @@ export const Table: ThemeComponent<'Table'> = {
   editSave: cva({
     base: [
       'inline-flex items-center justify-center',
-      'min-[600px]:text-foreground/60 font-medium',
-      'text-sm h-button-small min-[600px]:size-button min-[600px]:aspect-square rounded-surface transition-[color,background,transform]',
+      'sm:text-foreground/60 font-medium',
+      'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'focus-visible:ui-state-focus outline-none',
-      'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
+      'ui-press',
       'hover:bg-current/10',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4.5',
     ],

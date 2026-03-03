@@ -131,7 +131,7 @@ const Page = () => {
                 easily tailor components to match unique brands, styles, and
                 design needs.
               </SectionContent>
-              <SectionLink href="/getting-started/installation#theming">
+              <SectionLink href="/foundations/design-tokens">
                 Explore theming possibilities
               </SectionLink>
             </div>

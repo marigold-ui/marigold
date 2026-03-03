@@ -1,5 +1,4 @@
 import { type ThemeComponent, cva } from '@marigold/system';
-import { buttonBase } from './Button.styles';
 
 export const ActionBar: ThemeComponent<'ActionBar'> = {
   container: cva({
@@ -10,7 +9,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'shadow-elevation-overlay',
       'ui-surface-contrast',
       'rounded-full font-medium',
-      'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+      'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
       'entering:animate-slide-in',
       'exiting:animate-slide-out',
@@ -40,7 +39,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
   }),
   actionButton: cva({
     base: [
-      ...buttonBase,
+      'ui-button-base',
       'hover:bg-current/10',
       'text-sm h-button p-squish-relaxed [&_svg]:size-4',
     ],

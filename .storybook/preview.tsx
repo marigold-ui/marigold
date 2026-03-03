@@ -7,9 +7,9 @@ import './styles.css';
 
 const customViewports = {
   smallScreen: {
-    name: 'Small Screen (600px)',
+    name: 'Small Screen (639px)',
     styles: {
-      width: '600px',
+      width: '639px',
       height: '900px',
     },
     type: 'mobile' as const,
