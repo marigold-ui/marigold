@@ -173,7 +173,7 @@ export const NavBarPattern = meta.story({
     </TopNavigation>
   ),
   play: async ({ canvas }) => {
-    const nav = canvas.getByRole('navigation', { name: 'Main navigation' });
+    const nav = canvas.getByRole('banner', { name: 'Main navigation' });
     await expect(nav).toBeInTheDocument();
 
     await expect(canvas.getByText('Home')).toBeInTheDocument();

@@ -10,9 +10,9 @@ import { TopNavigationStart } from './TopNavigationStart';
 // ---------------
 export interface TopNavigationProps {
   /**
-   * Accessible label for the navigation landmark.
+   * Accessible label for the header landmark.
    */
-  'aria-label': string;
+  'aria-label'?: string;
   variant?: string;
   size?: string;
   /**
@@ -49,20 +49,17 @@ const _TopNavigation = forwardRef(
 
     return (
       <TopNavigationProvider value={{ variant, size }}>
-        <nav
+        <header
           ref={ref}
           {...props}
           className={cn(
-            'grid grid-cols-[auto_1fr_auto]',
+            'grid grid-cols-[auto_1fr_auto] [grid-template-areas:"start_middle_end"]',
             sticky && 'sticky top-0 z-1',
             classNames.container
           )}
-          style={{
-            gridTemplateAreas: '"start middle end"',
-          }}
         >
           {children}
-        </nav>
+        </header>
       </TopNavigationProvider>
     );
   }

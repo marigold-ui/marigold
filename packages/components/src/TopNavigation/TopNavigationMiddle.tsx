@@ -4,6 +4,10 @@ import { TopNavigationContext } from './Context';
 
 export interface TopNavigationMiddleProps {
   /**
+   * Accessible label for the navigation landmark.
+   */
+  'aria-label'?: string;
+  /**
    * Horizontal alignment of the items inside the middle slot.
    * @default 'left'
    */
@@ -22,6 +26,7 @@ export const TopNavigationMiddle = ({
   alignX,
   alignY = 'center',
   children,
+  ...props
 }: TopNavigationMiddleProps) => {
   const classNames = useClassNames({
     component: 'TopNavigation',
@@ -29,7 +34,8 @@ export const TopNavigationMiddle = ({
   });
 
   return (
-    <div
+    <nav
+      {...props}
       className={cn(
         'min-w-0',
         classNames.middle,
@@ -39,6 +45,6 @@ export const TopNavigationMiddle = ({
       style={{ gridArea: 'middle' }}
     >
       {children}
-    </div>
+    </nav>
   );
 };

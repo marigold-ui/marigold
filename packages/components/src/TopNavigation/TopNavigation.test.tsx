@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { describe, expect, it } from 'vitest';
 import { mockMatchMedia } from '../test.utils';
 import {
   ApplicationShell,
@@ -15,14 +14,17 @@ import {
 window.matchMedia = mockMatchMedia([]);
 
 describe('TopNavigation', () => {
-  it('renders a nav element with the correct aria-label', () => {
+  it('renders a header element with the banner role', () => {
     render(<NavBarPattern.Component />);
-    const nav = screen.getByRole('navigation', { name: 'Main navigation' });
-    expect(nav).toBeInTheDocument();
+
+    const header = screen.getByRole('banner', { name: 'Main navigation' });
+
+    expect(header).toBeInTheDocument();
   });
 
   it('renders all three slots', () => {
     render(<NavBarPattern.Component />);
+
     expect(screen.getByText('Home')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'User menu' })
@@ -31,9 +33,11 @@ describe('TopNavigation', () => {
 
   it('applies sticky classes when sticky prop is set', () => {
     render(<ApplicationShell.Component />);
-    const nav = screen.getByRole('navigation', {
+
+    const nav = screen.getByRole('banner', {
       name: 'Application navigation',
     });
+
     expect(nav.className).toMatch(/sticky/);
     expect(nav.className).toMatch(/top-0/);
     expect(nav.className).toMatch(/z-1/);
@@ -41,23 +45,29 @@ describe('TopNavigation', () => {
 
   it('renders with search field and breadcrumbs', () => {
     render(<WithSearchField.Component />);
-    const nav = screen.getByRole('navigation', {
+
+    const nav = screen.getByRole('banner', {
       name: 'Search navigation',
     });
+
     expect(nav).toBeInTheDocument();
     expect(screen.getByText('Event Details')).toBeInTheDocument();
   });
 
   it('forwards ref to nav element', () => {
     const ref = createRef<HTMLElement>();
+
     render(<NavBarPattern.Component ref={ref} />);
+
     expect(ref.current).toBeInstanceOf(HTMLElement);
-    expect(ref.current?.tagName).toBe('NAV');
+    expect(ref.current?.tagName).toBe('HEADER');
   });
 
   it('applies grid layout classes', () => {
     render(<NavBarPattern.Component />);
-    const nav = screen.getByRole('navigation', { name: 'Main navigation' });
+
+    const nav = screen.getByRole('banner', { name: 'Main navigation' });
+
     expect(nav.className).toMatch(/grid/);
     expect(nav.style.gridTemplateAreas).toBe('"start middle end"');
   });
@@ -65,8 +75,11 @@ describe('TopNavigation', () => {
   describe('overflow protection', () => {
     it('applies min-w-0 to all slots', () => {
       render(<NavBarPattern.Component />);
-      const nav = screen.getByRole('navigation', { name: 'Main navigation' });
+
+      const nav = screen.getByRole('banner', { name: 'Main navigation' });
+      // eslint-disable-next-line testing-library/no-node-access
       const slots = nav.querySelectorAll('[style*="grid-area"]');
+
       slots.forEach(slot => {
         expect(slot.className).toMatch(/min-w-0/);
       });
@@ -74,8 +87,11 @@ describe('TopNavigation', () => {
 
     it('applies overflow-x-auto to middle slot', () => {
       render(<NavBarPattern.Component />);
-      const nav = screen.getByRole('navigation', { name: 'Main navigation' });
+
+      const nav = screen.getByRole('banner', { name: 'Main navigation' });
+      // eslint-disable-next-line testing-library/no-node-access
       const middleSlot = nav.querySelector('[style*="grid-area: middle"]');
+
       expect(middleSlot?.className).toMatch(/overflow-x-auto/);
     });
   });

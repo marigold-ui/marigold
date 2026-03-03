@@ -4,6 +4,10 @@ import { TopNavigationContext } from './Context';
 
 export interface TopNavigationEndProps {
   /**
+   * Accessible label for the navigation landmark.
+   */
+  'aria-label'?: string;
+  /**
    * Horizontal alignment of the items inside the end slot.
    */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
@@ -21,6 +25,7 @@ export const TopNavigationEnd = ({
   alignX,
   alignY,
   children,
+  ...props
 }: TopNavigationEndProps) => {
   const classNames = useClassNames({
     component: 'TopNavigation',
@@ -28,7 +33,8 @@ export const TopNavigationEnd = ({
   });
 
   return (
-    <div
+    <nav
+      {...props}
       className={cn(
         'min-w-0',
         classNames.end,
@@ -38,6 +44,6 @@ export const TopNavigationEnd = ({
       style={{ gridArea: 'end' }}
     >
       {children}
-    </div>
+    </nav>
   );
 };
