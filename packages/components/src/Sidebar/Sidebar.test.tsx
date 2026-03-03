@@ -32,6 +32,7 @@ const theme: Theme = {
       content: cva({}),
       footer: cva({}),
       toggle: cva({}),
+      separator: cva({}),
       groupLabel: cva({}),
       menu: cva({}),
       menuItem: cva({}),

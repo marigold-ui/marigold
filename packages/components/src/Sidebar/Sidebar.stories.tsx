@@ -59,6 +59,7 @@ const Layout = ({
                 >
                   Analytics
                 </Sidebar.Item>
+                <Sidebar.Separator />
                 <Sidebar.Item id="management" textValue="Management">
                   Management
                   <Sidebar.Item href="/users" active={currentPath === '/users'}>
@@ -74,20 +75,18 @@ const Layout = ({
                     Billing
                   </Sidebar.Item>
                 </Sidebar.Item>
-                <Sidebar.Item id="settings" textValue="Settings">
-                  Settings
-                  <Sidebar.Item
-                    href="/general"
-                    active={currentPath === '/general'}
-                  >
-                    General
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/security"
-                    active={currentPath === '/security'}
-                  >
-                    Security
-                  </Sidebar.Item>
+                <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
+                <Sidebar.Item
+                  href="/general"
+                  active={currentPath === '/general'}
+                >
+                  General
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/security"
+                  active={currentPath === '/security'}
+                >
+                  Security
                 </Sidebar.Item>
               </Sidebar.Nav>
             </Sidebar.Content>

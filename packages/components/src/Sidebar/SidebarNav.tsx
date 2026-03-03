@@ -1,6 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Link } from 'react-aria-components';
+import { Link, Separator } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
@@ -89,7 +89,9 @@ const InnerPanelContent = ({
       )}
       {nodes.map(node => {
         if (node.type === 'separator') {
-          return <hr key={node.key} className="bg-border my-1 h-px border-0" />;
+          return (
+            <Separator key={node.key} className={cn(classNames.separator)} />
+          );
         }
 
         if (node.type === 'groupLabel') {

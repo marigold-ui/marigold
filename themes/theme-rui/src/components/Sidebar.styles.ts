@@ -42,8 +42,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'size-button [&_svg]:size-6',
     ],
   }),
+  separator: cva({ base: 'bg-border my-1 h-px border-0' }),
   groupLabel: cva({
-    base: 'px-2 h-[30px] pt-3 pb-0.5 mb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider',
+    base: 'px-2 h-7.5 pt-3 pb-0.5 mb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider',
   }),
   menu: cva({
     base: [
