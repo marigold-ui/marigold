@@ -436,3 +436,297 @@ test('navigating between branches via stateful active prop', async () => {
     'active'
   );
 });
+
+test('data-state attribute reflects expanded/collapsed', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+      <main>
+        <Sidebar.Toggle />
+      </main>
+    </Sidebar.Provider>
+  );
+
+  const shell = screen.getByText('Home').closest('[data-state]');
+  expect(shell).toHaveAttribute('data-state', 'expanded');
+
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  await user.click(trigger);
+  expect(shell).toHaveAttribute('data-state', 'collapsed');
+
+  await user.click(trigger);
+  expect(shell).toHaveAttribute('data-state', 'expanded');
+});
+
+test('non-active panels have inert attribute', () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.Item href="/general" active>
+              General
+            </Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  // Root panel is in "before" position → should be inert
+  const rootPanel = screen
+    .getByRole('link', { name: 'Home' })
+    .closest('[data-position]');
+  expect(rootPanel).toHaveAttribute('inert');
+
+  // Settings panel is active → should NOT be inert
+  const activePanel = screen
+    .getByRole('link', { name: 'General' })
+    .closest('[data-position]');
+  expect(activePanel).not.toHaveAttribute('inert');
+});
+
+test('focus moves to back button when drilling into branch', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.Item href="/general">General</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
+  await user.click(settingsTrigger);
+
+  const backButton = screen.getByRole('button', { name: /Back to Settings/ });
+  expect(document.activeElement).toBe(backButton);
+});
+
+test('focus returns to branch trigger when going back', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.Item href="/general" active>
+              General
+            </Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  const backButton = screen.getByRole('button', { name: /Back to Settings/ });
+  await user.click(backButton);
+
+  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
+  expect(document.activeElement).toBe(settingsTrigger);
+});
+
+test('toggle writes sidebar state to cookie', async () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+      <main>
+        <Sidebar.Toggle />
+      </main>
+    </Sidebar.Provider>
+  );
+
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+
+  await user.click(trigger);
+  expect(document.cookie).toContain('sidebar:state=collapsed');
+
+  await user.click(trigger);
+  expect(document.cookie).toContain('sidebar:state=expanded');
+});
+
+test('cookie overrides defaultOpen', () => {
+  document.cookie = 'sidebar:state=collapsed;path=/;max-age=604800';
+
+  render(
+    <Sidebar.Provider defaultOpen={true}>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+      <main>
+        <Sidebar.Toggle />
+      </main>
+    </Sidebar.Provider>
+  );
+
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+  const shell = screen.getByText('Home').closest('[data-state]');
+  expect(shell).toHaveAttribute('data-state', 'collapsed');
+});
+
+test('defaultOpen={false} starts sidebar collapsed', () => {
+  render(
+    <Sidebar.Provider defaultOpen={false}>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+      <main>
+        <Sidebar.Toggle />
+      </main>
+    </Sidebar.Provider>
+  );
+
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+  const shell = screen.getByText('Home').closest('[data-state]');
+  expect(shell).toHaveAttribute('data-state', 'collapsed');
+});
+
+test('controlled mode with open and onOpenChange', async () => {
+  const Controlled = () => {
+    const [open, setOpen] = useState(true);
+    return (
+      <Sidebar.Provider open={open} onOpenChange={setOpen}>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item href="/home">Home</Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+        <main>
+          <Sidebar.Toggle />
+          <span data-testid="state">{open ? 'open' : 'closed'}</span>
+        </main>
+      </Sidebar.Provider>
+    );
+  };
+
+  render(<Controlled />);
+
+  expect(screen.getByTestId('state')).toHaveTextContent('open');
+
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  await user.click(trigger);
+  expect(screen.getByTestId('state')).toHaveTextContent('closed');
+
+  await user.click(trigger);
+  expect(screen.getByTestId('state')).toHaveTextContent('open');
+});
+
+test('mobile toggle opens sheet, close button closes it', async () => {
+  isSmallScreen = true;
+  window.matchMedia = mockMatchMedia();
+
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+      <main>
+        <Sidebar.Toggle />
+      </main>
+    </Sidebar.Provider>
+  );
+
+  // Content is not visible on mobile until toggled
+  expect(screen.queryByText('Home')).not.toBeInTheDocument();
+
+  // Open the mobile sheet
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  await user.click(trigger);
+  expect(screen.getByText('Home')).toBeInTheDocument();
+
+  // Close via close button
+  const closeButton = screen.getByRole('button', {
+    name: 'Close navigation',
+  });
+  await user.click(closeButton);
+  expect(screen.queryByText('Home')).not.toBeInTheDocument();
+});
+
+test('separator renders as divider element', () => {
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+          <Sidebar.Separator />
+          <Sidebar.Item href="/about">About</Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  expect(screen.getByRole('separator')).toBeInTheDocument();
+});
+
+test('onPress callback fires on item click', async () => {
+  const handlePress = vi.fn();
+
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home" onPress={handlePress}>
+            Home
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  const link = screen.getByRole('link', { name: 'Home' });
+  await user.click(link);
+  expect(handlePress).toHaveBeenCalledOnce();
+});
+
+test('dynamic items via items prop and render function', () => {
+  const navItems = [
+    { id: '1', label: 'Dashboard', url: '/dashboard' },
+    { id: '2', label: 'Profile', url: '/profile' },
+    { id: '3', label: 'Settings', url: '/settings' },
+  ];
+
+  render(
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav items={navItems}>
+          {item => (
+            <Sidebar.Item key={item.id} href={item.url}>
+              {item.label}
+            </Sidebar.Item>
+          )}
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  );
+
+  for (const item of navItems) {
+    const link = screen.getByRole('link', { name: item.label });
+    expect(link).toHaveAttribute('href', item.url);
+  }
+});
