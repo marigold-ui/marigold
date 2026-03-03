@@ -233,31 +233,29 @@ export const SidebarNav = <T extends object = object>({
     <nav
       ref={navRef}
       aria-label={ariaLabel}
-      className={cn(
-        'overflow-y-auto [grid-area:content]',
-        classNames.content,
-        classNames.subNav
-      )}
+      className={cn('overflow-y-auto [grid-area:content]', classNames.content)}
     >
-      <InnerPanelContent
-        nodes={collection.rootNodes}
-        position={panelPosition('root', stack)}
-        classNames={classNames}
-        onBranchClick={setOpenBranch}
-        stringFormatter={stringFormatter}
-      />
-      {branchNodes.map(branch => (
+      <div className={classNames.subNav}>
         <InnerPanelContent
-          key={branch.key}
-          nodes={branch.children}
-          position={panelPosition(branch.key, stack)}
-          onBack={() => setOpenBranch(null)}
-          onBranchClick={setOpenBranch}
-          backLabel={branch.textValue}
+          nodes={collection.rootNodes}
+          position={panelPosition('root', stack)}
           classNames={classNames}
+          onBranchClick={setOpenBranch}
           stringFormatter={stringFormatter}
         />
-      ))}
+        {branchNodes.map(branch => (
+          <InnerPanelContent
+            key={branch.key}
+            nodes={branch.children}
+            position={panelPosition(branch.key, stack)}
+            onBack={() => setOpenBranch(null)}
+            onBranchClick={setOpenBranch}
+            backLabel={branch.textValue}
+            classNames={classNames}
+            stringFormatter={stringFormatter}
+          />
+        ))}
+      </div>
     </nav>
   );
 };
