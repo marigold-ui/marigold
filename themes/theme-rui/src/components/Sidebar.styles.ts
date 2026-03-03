@@ -11,12 +11,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   modal: cva({
     base: [
       'flex h-full *:flex-1',
-      'data-[side=left]:justify-start',
-      'data-[side=right]:justify-end',
-      'data-[side=left]:entering:animate-slide-in-left',
-      'data-[side=left]:exiting:animate-slide-out-left',
-      'data-[side=right]:entering:animate-slide-in-right',
-      'data-[side=right]:exiting:animate-slide-out-right',
+      'justify-start',
+      'entering:animate-slide-in-left',
+      'exiting:animate-slide-out-left',
     ],
   }),
   root: cva({
@@ -26,7 +23,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'data-[state=expanded]:w-64',
       'data-[state=collapsed]:w-0',
       'transition-[width] duration-200 ease-in-out',
-      'data-[side=left]:border-r data-[side=right]:border-l',
+      'border-r',
     ],
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3 z-50', 'size-7'] }),

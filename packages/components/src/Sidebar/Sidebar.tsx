@@ -26,7 +26,7 @@ export interface SidebarProps {
 // Mobile Sheet
 // ---------------
 const MobileSidebar = ({ children }: { children: ReactNode }) => {
-  const { openMobile, setOpenMobile, side, variant, size } = useSidebar();
+  const { openMobile, setOpenMobile, variant, size } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'Sidebar',
@@ -41,7 +41,7 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
       className={cn('z-50', classNames.overlay)}
       isDismissable
     >
-      <Modal data-side={side} className={classNames.modal}>
+      <Modal className={classNames.modal}>
         <div className={cn('h-full', classNames.root)}>
           <CloseButton
             aria-label={stringFormatter.format('closeNavigation')}
@@ -60,7 +60,7 @@ const MobileSidebar = ({ children }: { children: ReactNode }) => {
 // Desktop Sidebar
 // ---------------
 const DesktopSidebar = ({ children }: SidebarProps) => {
-  const { state, side, variant, size } = useSidebar();
+  const { state, variant, size } = useSidebar();
   const classNames = useClassNames({
     component: 'Sidebar',
     variant,
@@ -68,7 +68,7 @@ const DesktopSidebar = ({ children }: SidebarProps) => {
   });
 
   return (
-    <div data-state={state} data-side={side} className={classNames.root}>
+    <div data-state={state} className={classNames.root}>
       <div className="grid h-full w-64 grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
         {children}
       </div>

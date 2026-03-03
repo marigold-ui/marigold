@@ -208,22 +208,6 @@ test('mobile renders sheet overlay', () => {
   expect(screen.queryByText('Home')).not.toBeInTheDocument();
 });
 
-test('supports right side placement', () => {
-  render(
-    <Sidebar.Provider side="right">
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
-
-  // The sidebar shell is a div with data-side
-  const shell = closest(screen.getByText('Home'), '[data-side]');
-  expect(shell).toHaveAttribute('data-side', 'right');
-});
-
 test('branch items render as links with auto-derived href', () => {
   render(
     <Sidebar.Provider>

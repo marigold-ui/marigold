@@ -23,7 +23,6 @@ export interface SidebarContextValue {
   toggleSidebar: () => void;
   variant?: string;
   size?: string;
-  side: 'left' | 'right';
 }
 
 export const SidebarContext = createContext<SidebarContextValue | null>(null);
@@ -40,7 +39,7 @@ export const useSidebar = (): SidebarContextValue => {
 
 // Cookie helpers
 // ---------------
-const COOKIE_NAME = 'sidebar:state';
+const COOKIE_NAME = 'marigold:sidebar:state';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 const readCookie = (): SidebarState | undefined => {
@@ -66,8 +65,6 @@ export interface SidebarProviderProps {
   open?: boolean;
   /** Callback when open state changes. */
   onOpenChange?: (open: boolean) => void;
-  /** Side the sidebar is placed on. */
-  side?: 'left' | 'right';
   variant?: string;
   size?: string;
 }
@@ -77,7 +74,6 @@ export const SidebarProvider = ({
   defaultOpen = true,
   open: controlledOpen,
   onOpenChange,
-  side = 'left',
   variant,
   size,
 }: SidebarProviderProps) => {
@@ -139,7 +135,6 @@ export const SidebarProvider = ({
       toggleSidebar,
       variant,
       size,
-      side,
     }),
     [
       state,
@@ -151,7 +146,6 @@ export const SidebarProvider = ({
       toggleSidebar,
       variant,
       size,
-      side,
     ]
   );
 
