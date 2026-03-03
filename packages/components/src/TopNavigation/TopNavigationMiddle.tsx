@@ -37,12 +37,11 @@ export const TopNavigationMiddle = ({
     <nav
       {...props}
       className={cn(
-        'min-w-0',
+        'min-w-0 [grid-area:middle]',
         classNames.middle,
         alignX && alignment.horizontal.alignmentX[alignX],
         alignY && alignment.horizontal.alignmentY[alignY]
       )}
-      style={{ gridArea: 'middle' }}
     >
       {children}
     </nav>

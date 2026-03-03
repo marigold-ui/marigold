@@ -36,12 +36,11 @@ export const TopNavigationEnd = ({
     <nav
       {...props}
       className={cn(
-        'min-w-0',
+        'min-w-0 [grid-area:end]',
         classNames.end,
         alignX && alignment.horizontal.alignmentX[alignX],
         alignY && alignment.horizontal.alignmentY[alignY]
       )}
-      style={{ gridArea: 'end' }}
     >
       {children}
     </nav>

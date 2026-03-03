@@ -30,12 +30,11 @@ export const TopNavigationStart = ({
   return (
     <div
       className={cn(
-        'min-w-0',
+        'min-w-0 [grid-area:start]',
         classNames.start,
         alignX && alignment.horizontal.alignmentX[alignX],
         alignY && alignment.horizontal.alignmentY[alignY]
       )}
-      style={{ gridArea: 'start' }}
     >
       {children}
     </div>

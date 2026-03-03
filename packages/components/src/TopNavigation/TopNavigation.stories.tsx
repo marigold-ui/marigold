@@ -85,7 +85,7 @@ const LogoSection = () => {
 };
 
 const UserMenu = () => (
-  <ActionMenu aria-label="User menu">
+  <ActionMenu aria-label="User menu" variant="ghost">
     <Menu.Section title="Account">
       <Menu.Item id="profile" textValue="Profile">
         <User size={16} /> Profile
