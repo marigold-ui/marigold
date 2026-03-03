@@ -48,7 +48,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   menu: cva({
     base: [
       'flex flex-col gap-0.5',
-      'transition-[visibility,opacity,transform,filter] duration-200 ease-out',
+      'transition-[visibility,opacity,translate,filter] duration-200 ease-out',
 
       'data-[position=before]:absolute data-[position=before]:inset-x-0 data-[position=before]:top-0',
       'data-[position=before]:invisible data-[position=before]:opacity-0',
