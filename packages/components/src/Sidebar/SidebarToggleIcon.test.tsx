@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { SidebarToggleIconIcon } from './SidebarToggleIconIcon';
+import { SidebarToggleIcon } from './SidebarToggleIcon';
 
 test('renders with default props (expanded)', () => {
   render(<SidebarToggleIcon data-testid="icon" />);

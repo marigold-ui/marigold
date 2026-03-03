@@ -1,8 +1,8 @@
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
-import { SidebarToggleIcon } from '../icons/SidebarToggleIcon';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
+import { SidebarToggleIcon } from './SidebarToggleIcon';
 
 export const SidebarToggle = () => {
   const { toggleSidebar, state, variant, size } = useSidebar();

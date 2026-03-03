@@ -1,5 +1,3 @@
-- when item is clicked that has children, automatically navigate to the first item in the list
-- all items needs to be of the same height so animations for/back do not look weird?
 - fix styling of back header, caret aligned etc
 - move icon into the component
 - different icon for mobile version?

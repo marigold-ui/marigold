@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { cn } from '@marigold/system';
-import type { IconProps } from './Icons.types';
+import type { IconProps } from '../icons/Icons.types';
 
 const CHEVRON_LEFT = 'M 16 15 L 13 12 L 16 9';
 const CHEVRON_RIGHT = 'M 13 15 L 16 12 L 13 9';
