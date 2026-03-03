@@ -92,6 +92,14 @@ const InnerPanelContent = ({
           return <hr key={node.key} className="bg-border my-1 h-px border-0" />;
         }
 
+        if (node.type === 'groupLabel') {
+          return (
+            <div key={node.key} className={cn(classNames.groupLabel)}>
+              {node.content}
+            </div>
+          );
+        }
+
         // Branch item — has children, renders as Link to first child's href
         if (node.children.length > 0) {
           return (

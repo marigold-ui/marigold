@@ -266,7 +266,6 @@ export type Theme = {
       | 'content'
       | 'footer'
       | 'toggle'
-      | 'group'
       | 'groupLabel'
       | 'menu'
       | 'menuItem'

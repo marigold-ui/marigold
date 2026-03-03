@@ -1,5 +1,6 @@
 import { Children, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
+import type { SidebarGroupLabelProps } from './SidebarGroup';
 import type { SidebarItemProps } from './SidebarItem';
 
 // Types
@@ -20,7 +21,16 @@ export interface SidebarSeparatorNode {
   key: string;
 }
 
-export type SidebarNode = SidebarItemNode | SidebarSeparatorNode;
+export interface SidebarGroupLabelNode {
+  type: 'groupLabel';
+  key: string;
+  content: ReactNode;
+}
+
+export type SidebarNode =
+  | SidebarItemNode
+  | SidebarSeparatorNode
+  | SidebarGroupLabelNode;
 
 export interface SidebarCollection {
   rootNodes: SidebarNode[];
@@ -39,6 +49,13 @@ const isSidebarSeparator = (child: ReactNode): child is ReactElement =>
   isValidElement(child) &&
   (child.type as { __SIDEBAR_SEPARATOR__?: boolean }).__SIDEBAR_SEPARATOR__ ===
     true;
+
+const isSidebarGroupLabel = (
+  child: ReactNode
+): child is ReactElement<SidebarGroupLabelProps> =>
+  isValidElement(child) &&
+  (child.type as { __SIDEBAR_GROUP_LABEL__?: boolean })
+    .__SIDEBAR_GROUP_LABEL__ === true;
 
 // Helpers
 // ---------------
@@ -71,7 +88,11 @@ const separateChildren = (
 
   const flat = Children.toArray(children);
   for (const child of flat) {
-    if (isSidebarItem(child) || isSidebarSeparator(child)) {
+    if (
+      isSidebarItem(child) ||
+      isSidebarSeparator(child) ||
+      isSidebarGroupLabel(child)
+    ) {
       itemChildren.push(child);
     } else {
       triggerContent.push(child);
@@ -133,6 +154,17 @@ const buildNodes = (
       const node: SidebarSeparatorNode = {
         type: 'separator',
         key: `sep-${counter.value++}`,
+      };
+      index.set(node.key, node);
+      nodes.push(node);
+      continue;
+    }
+
+    if (isSidebarGroupLabel(child)) {
+      const node: SidebarGroupLabelNode = {
+        type: 'groupLabel',
+        key: `grouplabel-${counter.value++}`,
+        content: child.props.children,
       };
       index.set(node.key, node);
       nodes.push(node);

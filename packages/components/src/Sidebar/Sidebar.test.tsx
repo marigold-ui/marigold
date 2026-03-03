@@ -32,7 +32,6 @@ const theme: Theme = {
       content: cva({}),
       footer: cva({}),
       toggle: cva({}),
-      group: cva({}),
       groupLabel: cva({}),
       menu: cva({}),
       menuItem: cva({}),
@@ -63,12 +62,10 @@ test('renders with sub-components', () => {
       <Sidebar>
         <Sidebar.Header>Header</Sidebar.Header>
         <Sidebar.Content>
-          <Sidebar.Group>
+          <Sidebar.Nav aria-label="Main navigation">
             <Sidebar.GroupLabel>Section</Sidebar.GroupLabel>
-            <Sidebar.Nav aria-label="Main navigation">
-              <Sidebar.Item href="/home">Home</Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar.Group>
+            <Sidebar.Item href="/home">Home</Sidebar.Item>
+          </Sidebar.Nav>
         </Sidebar.Content>
         <Sidebar.Footer>Footer</Sidebar.Footer>
       </Sidebar>
