@@ -160,7 +160,6 @@ const InnerPanelContent = ({
             <span className="truncate text-center font-medium">
               {backLabel ?? stringFormatter.format('back')}
             </span>
-            <span aria-hidden="true" />
           </button>
         </li>
       )}
