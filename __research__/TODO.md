@@ -4,3 +4,4 @@
 - move icon into the component
 - different icon for mobile version?
 - focus ring is broooooken
+- reduce motion, this should be already there in the main to stop all animation?
