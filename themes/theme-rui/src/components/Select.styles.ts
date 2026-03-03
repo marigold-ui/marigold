@@ -1,7 +1,7 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Select: ThemeComponent<'Select'> = {
-  icon: cva({ base: 'text-muted-foreground/80' }),
+  icon: cva({ base: 'text-muted-foreground' }),
   select: cva({
     base: [
       'ui-surface shadow-elevation-border ui-input h-input ',

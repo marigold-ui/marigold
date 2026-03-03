@@ -101,13 +101,13 @@
     Currently used for: helptext, icons inside inputs, readonly background inside inputs, variant for text 
   */
   --color-muted: var(--color-stone-100);
-  --color-muted-foreground: var(--color-stone-500);
+  --color-muted-foreground: var(--color-stone-600);
 
   --color-disabled: var(--color-stone-200);
-  --color-disabled-foreground: var(--color-stone-400);
+  --color-disabled-foreground: var(--color-stone-500);
 
   /* used for placeholder color */
-  --color-placeholder: var(--color-stone-500);
+  --color-placeholder: var(--color-stone-600);
   /* used for outline/border as ring*/
   --color-ring: var(--color-stone-400);
 
