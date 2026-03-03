@@ -58,6 +58,6 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     },
   }),
   icon: cva({
-    base: 'pointer-events-none shrink-0 opacity-60 transition-transform duration-250',
+    base: 'pointer-events-none shrink-0 text-muted-foreground transition-transform duration-250',
   }),
 };

@@ -121,8 +121,8 @@ export const Table: ThemeComponent<'Table'> = {
   dropIndicator: cva({
     base: [
       'relative',
-      'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-stone-300',
-      'drop-target:before:z-10 drop-target:before:bg-stone-800',
+      'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-border',
+      'drop-target:before:z-10 drop-target:before:bg-brand',
     ],
   }),
 
