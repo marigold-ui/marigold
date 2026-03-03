@@ -1,3 +1,2 @@
 - fix styling of back header, caret aligned etc
-- different icon for mobile version?
 - focus ring is broooooken

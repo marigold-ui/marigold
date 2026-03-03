@@ -12,7 +12,7 @@ import {
   SidebarSeparator,
 } from './SidebarItem';
 import { SidebarNav } from './SidebarNav';
-import { SidebarContent, SidebarFooter, SidebarHeader } from './SidebarSlots';
+import { SidebarFooter, SidebarHeader } from './SidebarSlots';
 import { SidebarToggle } from './SidebarToggle';
 
 // Props
@@ -90,7 +90,6 @@ export const Sidebar = (props: SidebarProps) => {
 
 Sidebar.Provider = SidebarProvider;
 Sidebar.Header = SidebarHeader;
-Sidebar.Content = SidebarContent;
 Sidebar.Footer = SidebarFooter;
 Sidebar.GroupLabel = SidebarGroupLabel;
 Sidebar.Nav = SidebarNav;

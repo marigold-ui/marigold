@@ -229,7 +229,15 @@ export const SidebarNav = <T extends object = object>({
   }, [openBranch]);
 
   return (
-    <nav ref={navRef} aria-label={ariaLabel} className={cn(classNames.subNav)}>
+    <nav
+      ref={navRef}
+      aria-label={ariaLabel}
+      className={cn(
+        'overflow-y-auto [grid-area:content]',
+        classNames.content,
+        classNames.subNav
+      )}
+    >
       <InnerPanelContent
         nodes={collection.rootNodes}
         position={panelPosition('root', stack)}

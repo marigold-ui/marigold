@@ -62,12 +62,12 @@ test('renders with sub-components', () => {
     <Sidebar.Provider>
       <Sidebar>
         <Sidebar.Header>Header</Sidebar.Header>
-        <Sidebar.Content>
-          <Sidebar.Nav aria-label="Main navigation">
-            <Sidebar.GroupLabel>Section</Sidebar.GroupLabel>
-            <Sidebar.Item href="/home">Home</Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar.Content>
+
+        <Sidebar.Nav aria-label="Main navigation">
+          <Sidebar.GroupLabel>Section</Sidebar.GroupLabel>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
+
         <Sidebar.Footer>Footer</Sidebar.Footer>
       </Sidebar>
     </Sidebar.Provider>
@@ -86,7 +86,9 @@ test('toggle expand/collapse via toggle button', async () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>Content</Sidebar.Content>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
       <main>
         <Sidebar.Toggle />
@@ -108,7 +110,9 @@ test('keyboard shortcut Cmd+B toggles sidebar', async () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>Content</Sidebar.Content>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
       <main>
         <Sidebar.Toggle />
@@ -130,14 +134,12 @@ test('active state with aria-current', () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>
-          <Sidebar.Nav>
-            <Sidebar.Item href="/home" active>
-              Home
-            </Sidebar.Item>
-            <Sidebar.Item href="/about">About</Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar.Content>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home" active>
+            Home
+          </Sidebar.Item>
+          <Sidebar.Item href="/about">About</Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
     </Sidebar.Provider>
   );
@@ -164,11 +166,9 @@ test('renders items as links with href', () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>
-          <Sidebar.Nav>
-            <Sidebar.Item href="/home">Home</Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar.Content>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
     </Sidebar.Provider>
   );
@@ -184,7 +184,9 @@ test('mobile renders sheet overlay', () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>Content</Sidebar.Content>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
       <main>
         <Sidebar.Toggle />
@@ -193,20 +195,22 @@ test('mobile renders sheet overlay', () => {
   );
 
   // On mobile, sidebar content is not visible until toggled
-  expect(screen.queryByText('Content')).not.toBeInTheDocument();
+  expect(screen.queryByText('Home')).not.toBeInTheDocument();
 });
 
 test('supports right side placement', () => {
   render(
     <Sidebar.Provider side="right">
       <Sidebar>
-        <Sidebar.Content>Content</Sidebar.Content>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
     </Sidebar.Provider>
   );
 
   // The sidebar shell is a div with data-side
-  const shell = screen.getByText('Content').closest('[data-side]');
+  const shell = screen.getByText('Home').closest('[data-side]');
   expect(shell).toHaveAttribute('data-side', 'right');
 });
 
@@ -214,16 +218,14 @@ test('branch items render as links with auto-derived href', () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>
-          <Sidebar.Nav>
-            <Sidebar.Item href="/home">Home</Sidebar.Item>
-            <Sidebar.Item id="settings" textValue="Settings">
-              Settings
-              <Sidebar.Item href="/general">General</Sidebar.Item>
-              <Sidebar.Item href="/security">Security</Sidebar.Item>
-            </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar.Content>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.Item href="/general">General</Sidebar.Item>
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
     </Sidebar.Provider>
   );
@@ -237,18 +239,16 @@ test('sub-panel opens when child is active', () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>
-          <Sidebar.Nav>
-            <Sidebar.Item href="/home">Home</Sidebar.Item>
-            <Sidebar.Item id="settings" textValue="Settings">
-              Settings
-              <Sidebar.Item href="/general" active>
-                General
-              </Sidebar.Item>
-              <Sidebar.Item href="/security">Security</Sidebar.Item>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.Item href="/general" active>
+              General
             </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar.Content>
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
     </Sidebar.Provider>
   );
@@ -273,18 +273,16 @@ test('back button returns to root panel', async () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>
-          <Sidebar.Nav>
-            <Sidebar.Item href="/home">Home</Sidebar.Item>
-            <Sidebar.Item id="settings" textValue="Settings">
-              Settings
-              <Sidebar.Item href="/general" active>
-                General
-              </Sidebar.Item>
-              <Sidebar.Item href="/security">Security</Sidebar.Item>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.Item href="/general" active>
+              General
             </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar.Content>
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
     </Sidebar.Provider>
   );
@@ -312,18 +310,16 @@ test('re-entering the same branch after back reopens sub-panel', async () => {
   render(
     <Sidebar.Provider>
       <Sidebar>
-        <Sidebar.Content>
-          <Sidebar.Nav>
-            <Sidebar.Item href="/home">Home</Sidebar.Item>
-            <Sidebar.Item id="settings" textValue="Settings">
-              Settings
-              <Sidebar.Item href="/general" active>
-                General
-              </Sidebar.Item>
-              <Sidebar.Item href="/security">Security</Sidebar.Item>
+        <Sidebar.Nav>
+          <Sidebar.Item href="/home">Home</Sidebar.Item>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.Item href="/general" active>
+              General
             </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar.Content>
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
       </Sidebar>
     </Sidebar.Provider>
   );
@@ -363,34 +359,32 @@ test('navigating between branches via stateful active prop', async () => {
       <RouterProvider navigate={setCurrentPath}>
         <Sidebar.Provider>
           <Sidebar>
-            <Sidebar.Content>
-              <Sidebar.Nav>
+            <Sidebar.Nav>
+              <Sidebar.Item
+                href="/overview"
+                active={currentPath === '/overview'}
+              >
+                Overview
+              </Sidebar.Item>
+              <Sidebar.Item id="management" textValue="Management">
+                Management
+                <Sidebar.Item href="/users" active={currentPath === '/users'}>
+                  Users
+                </Sidebar.Item>
+                <Sidebar.Item href="/teams" active={currentPath === '/teams'}>
+                  Teams
+                </Sidebar.Item>
+              </Sidebar.Item>
+              <Sidebar.Item id="settings" textValue="Settings">
+                Settings
                 <Sidebar.Item
-                  href="/overview"
-                  active={currentPath === '/overview'}
+                  href="/general"
+                  active={currentPath === '/general'}
                 >
-                  Overview
+                  General
                 </Sidebar.Item>
-                <Sidebar.Item id="management" textValue="Management">
-                  Management
-                  <Sidebar.Item href="/users" active={currentPath === '/users'}>
-                    Users
-                  </Sidebar.Item>
-                  <Sidebar.Item href="/teams" active={currentPath === '/teams'}>
-                    Teams
-                  </Sidebar.Item>
-                </Sidebar.Item>
-                <Sidebar.Item id="settings" textValue="Settings">
-                  Settings
-                  <Sidebar.Item
-                    href="/general"
-                    active={currentPath === '/general'}
-                  >
-                    General
-                  </Sidebar.Item>
-                </Sidebar.Item>
-              </Sidebar.Nav>
-            </Sidebar.Content>
+              </Sidebar.Item>
+            </Sidebar.Nav>
           </Sidebar>
         </Sidebar.Provider>
       </RouterProvider>
