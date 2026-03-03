@@ -5,3 +5,4 @@
 - different icon for mobile version?
 - focus ring is broooooken
 - reduce motion, this should be already there in the main to stop all animation?
+- toggle icon animation is not working with the button
