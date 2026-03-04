@@ -110,7 +110,7 @@ const InnerPanelContent = ({
                 node.onPress?.();
               }}
             >
-              <span>{node.triggerContent}</span>
+              <span className="truncate">{node.triggerContent}</span>
               <ChevronRight size={16} />
             </Link>
           );

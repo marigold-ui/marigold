@@ -74,7 +74,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   backButton: cva({
     base: [
       'grid grid-cols-[2.25rem_1fr_2.25rem] items-center w-full px-2 h-9 text-sm rounded-md',
-      'text-muted-foreground hover:text-foreground transition-colors',
+      'text-muted-foreground hover:text-foreground hover:bg-hover transition-colors',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
       'cursor-pointer mb-1',
