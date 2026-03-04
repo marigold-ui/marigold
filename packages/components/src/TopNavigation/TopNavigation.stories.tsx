@@ -144,23 +144,13 @@ export const WithTabs = meta.story({
         <LogoSection />
       </TopNavigation.Start>
       <TopNavigation.Middle alignY="bottom">
-        <Tabs selectedKey="home">
+        <Tabs defaultSelectedKey="home">
           <Tabs.List aria-label="Navigation">
-            <Tabs.Item id="home" href="#">
-              Home
-            </Tabs.Item>
-            <Tabs.Item id="settings" href="#">
-              Settings
-            </Tabs.Item>
-            <Tabs.Item id="messages" href="#">
-              Messages
-            </Tabs.Item>
-            <Tabs.Item id="analytics" href="#">
-              Analytics
-            </Tabs.Item>
-            <Tabs.Item id="reports" href="#">
-              Reports
-            </Tabs.Item>
+            <Tabs.Item id="home">Home</Tabs.Item>
+            <Tabs.Item id="settings">Settings</Tabs.Item>
+            <Tabs.Item id="messages">Messages</Tabs.Item>
+            <Tabs.Item id="analytics">Analytics</Tabs.Item>
+            <Tabs.Item id="reports">Reports</Tabs.Item>
           </Tabs.List>
         </Tabs>
       </TopNavigation.Middle>
