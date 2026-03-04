@@ -22,7 +22,7 @@ export const SidebarToggle = () => {
   const shortcut = isMac ? '⌘B' : 'Ctrl+B';
 
   return (
-    <Tooltip.Trigger>
+    <Tooltip.Trigger delay={2500}>
       <Button
         aria-expanded={state === 'expanded'}
         aria-label={stringFormatter.format('toggleNavigation')}
