@@ -63,7 +63,7 @@ const InnerPanelContent = ({
 }) => {
   return (
     <div
-      className={cn(classNames.menu)}
+      className={cn(classNames.panel)}
       data-position={position}
       inert={position !== 'active' || undefined}
     >
@@ -74,7 +74,7 @@ const InnerPanelContent = ({
             aria-label={stringFormatter.format('backTo', {
               label: backLabel ?? stringFormatter.format('back'),
             })}
-            className={cn(classNames.subNavBackButton)}
+            className={cn(classNames.backButton)}
             onPress={onBack}
           >
             <span className="flex items-center justify-center">
@@ -105,37 +105,35 @@ const InnerPanelContent = ({
         // Branch item — has children, renders as Link to first child's href
         if (node.children.length > 0) {
           return (
-            <div key={node.key} className={cn(classNames.menuItem)}>
-              <Link
-                href={node.href}
-                data-key={node.key}
-                className={cn(classNames.menuButton, 'justify-between')}
-                onPress={() => {
-                  onBranchClick?.(node.key);
-                  node.onPress?.();
-                }}
-              >
-                <span>{node.triggerContent}</span>
-                <ChevronRight size={16} />
-              </Link>
-            </div>
+            <Link
+              key={node.key}
+              href={node.href}
+              data-key={node.key}
+              className={cn(classNames.navLink, 'justify-between')}
+              onPress={() => {
+                onBranchClick?.(node.key);
+                node.onPress?.();
+              }}
+            >
+              <span>{node.triggerContent}</span>
+              <ChevronRight size={16} />
+            </Link>
           );
         }
 
         // Leaf item — always a Link
         return (
-          <div key={node.key} className={cn(classNames.menuItem)}>
-            <Link
-              href={node.href}
-              data-key={node.key}
-              aria-current={node.active ? 'page' : undefined}
-              data-active={node.active || undefined}
-              className={cn(classNames.menuButton)}
-              onPress={node.onPress}
-            >
-              {node.triggerContent}
-            </Link>
-          </div>
+          <Link
+            key={node.key}
+            href={node.href}
+            data-key={node.key}
+            aria-current={node.active ? 'page' : undefined}
+            data-active={node.active || undefined}
+            className={cn(classNames.navLink)}
+            onPress={node.onPress}
+          >
+            {node.triggerContent}
+          </Link>
         );
       })}
     </div>
@@ -228,7 +226,7 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
           classNames.content
         )}
       >
-        <div className={cn('shrink-0', classNames.subNav)}>
+        <div className={cn('shrink-0', classNames.panelGroup)}>
           <InnerPanelContent
             nodes={collection.rootNodes}
             position={panelPosition('root', stack)}

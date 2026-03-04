@@ -5,3 +5,4 @@
 - overflow for nav content
 - why is variant and size in the context and not classnames
 - tooltip for the toggle button that also shows the shortcut?
+- sidebar tests should use stories

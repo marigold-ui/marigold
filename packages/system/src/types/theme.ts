@@ -268,11 +268,10 @@ export type Theme = {
       | 'toggle'
       | 'separator'
       | 'groupLabel'
-      | 'menu'
-      | 'menuItem'
-      | 'menuButton'
-      | 'subNav'
-      | 'subNavBackButton',
+      | 'panel'
+      | 'navLink'
+      | 'panelGroup'
+      | 'backButton',
       ComponentStyleFunction<string, string>
     >;
   };

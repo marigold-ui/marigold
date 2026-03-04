@@ -43,7 +43,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   groupLabel: cva({
     base: 'px-2 h-7.5 pt-3 pb-0.5 mb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider',
   }),
-  menu: cva({
+  panel: cva({
     base: [
       'flex flex-col gap-0.5',
       'transition-[visibility,opacity,translate,filter] duration-300 ease-out sm:duration-200',
@@ -65,8 +65,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:transition-none',
     ],
   }),
-  menuItem: cva({ base: '' }),
-  menuButton: cva({
+  navLink: cva({
     base: [
       'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
       'text-muted-foreground hover:text-foreground hover:bg-hover transition-colors',
@@ -75,8 +74,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
     ],
   }),
-  subNav: cva({ base: 'relative overflow-hidden' }),
-  subNavBackButton: cva({
+  panelGroup: cva({ base: 'relative overflow-hidden' }),
+  backButton: cva({
     base: [
       'grid grid-cols-[2.25rem_1fr_2.25rem] items-center w-full px-2 h-9 text-sm rounded-md',
       'text-muted-foreground hover:text-foreground transition-colors',
