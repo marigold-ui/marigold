@@ -63,7 +63,6 @@
     "@types/node": "24.10.13",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "tailwindcss-animate": "1.0.7",
     "typescript": "5.9.3",
     "unist-builder": "4.0.0",
     "unist-util-visit": "5.1.0"
