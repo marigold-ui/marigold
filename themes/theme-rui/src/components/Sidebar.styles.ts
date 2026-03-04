@@ -70,7 +70,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
       'text-muted-foreground hover:text-foreground hover:bg-hover transition-colors',
-      'data-active:bg-selected data-active:text-foreground data-active:font-medium',
+      // 'data-active:bg-selected data-active:text-foreground data-active:font-medium',
+      'data-active:bg-orange-500/15 data-active:text-orange-700 data-active:font-medium',
       'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
     ],
   }),

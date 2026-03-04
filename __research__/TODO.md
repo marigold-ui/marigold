@@ -1,3 +1,4 @@
 - fix styling of back header, caret aligned etc
 - focus ring is broooooken
 - want to use more selector from RAC can we adjust that?
+- go through styling parts naming
