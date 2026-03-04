@@ -182,12 +182,6 @@ const CollapsedBreadcrumbs = () => {
   );
 };
 
-const ResponsiveSearchField = () => {
-  const showSearch = useResponsiveValue([false, true, true, true, true]);
-  if (!showSearch) return null;
-  return <SearchField placeholder="Search..." width={48} />;
-};
-
 export const WithSearchField = meta.story({
   render: args => (
     <TopNavigation {...args}>
@@ -195,8 +189,7 @@ export const WithSearchField = meta.story({
         <LogoSection />
       </TopNavigation.Start>
       <TopNavigation.Middle alignX="between">
-        <CollapsedBreadcrumbs />
-        <ResponsiveSearchField />
+        <SearchField placeholder="Search..." />
       </TopNavigation.Middle>
       <TopNavigation.End>
         <UserSection />

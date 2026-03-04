@@ -11,7 +11,8 @@ export const TopNavigation: ThemeComponent<'TopNavigation'> = {
   start: cva({ base: 'flex justify-start gap-4' }),
   middle: cva({
     base: [
-      'flex items-end ui-scrollbar overflow-x-auto overflow-y-hidden whitespace-nowrap h-full snap-mandatory',
+      'flex items-end ui-scrollbar overflow-x-auto overflow-y-hidden snap-mandatory',
+      'p-1 -m-1',
       // align tab underlines flush with header border only when tabs are present
       'has-[role=tablist]:*:-mb-px',
     ],
