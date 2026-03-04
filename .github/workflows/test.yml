@@ -33,10 +33,41 @@ jobs:
         run: pnpm install
 
       # Action
-      - name: Download latest Playwright Browsers
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install
       - name: Run Test Coverage
         run: pnpm test:coverage
+
+      - name: Upload Accessibility Report
+        id: artifact-upload-step
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: accessibility-report
+          path: ./storybook/artifacts/accessibilityReport.html
+          overwrite: 'true'
+      - name: Get PR number
+        uses: jwalton/gh-find-current-pr@master
+        id: findPr
+        with:
+          state: open
+      - name: Accessibility Report Preview
+        if: success() && steps.findPr.outputs.number
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          pr-number: ${{ steps.findPr.outputs.number }}
+          message: |
+            Accessibility tests executed. Download the report [here](${{ steps.artifact-upload-step.outputs.artifact-url }}).
 
       - name: 'Report Coverage'
         uses: davelosert/vitest-coverage-report-action@v2

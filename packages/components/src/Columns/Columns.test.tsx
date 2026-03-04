@@ -65,7 +65,11 @@ describe('Columns', () => {
       const columns = screen.getByTestId('columns');
       const firstColumn = columns.firstElementChild as HTMLElement;
 
-      expect(firstColumn).toHaveStyle('flexBasis: calc((0em - 100%) * 999)');
+      // collapseAt is set as a CSS variable, flex-basis comes from Tailwind class
+      expect(firstColumn.style.getPropertyValue('--collapseAt')).toBe('0em');
+      expect(firstColumn).toHaveClass(
+        'basis-[calc((var(--collapseAt)-100%)*999)]'
+      );
     });
 
     test('applies custom collapseAt value', () => {
@@ -74,7 +78,11 @@ describe('Columns', () => {
       const columns = screen.getByTestId('columns');
       const firstColumn = columns.firstElementChild as HTMLElement;
 
-      expect(firstColumn).toHaveStyle('flexBasis: calc((50em - 100%) * 999)');
+      // collapseAt is set as a CSS variable, flex-basis comes from Tailwind class
+      expect(firstColumn.style.getPropertyValue('--collapseAt')).toBe('50em');
+      expect(firstColumn).toHaveClass(
+        'basis-[calc((var(--collapseAt)-100%)*999)]'
+      );
     });
   });
 
