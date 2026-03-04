@@ -1,5 +1,6 @@
 import { render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
@@ -11,11 +12,7 @@ import {
   Complex,
   Controlled,
   DefaultCollapsed,
-  DirectBranchSwitch,
-  GroupLabelInBranch,
-  NestedBranches,
   WithActiveBranch,
-  WithoutHref,
 } from './Sidebar.stories';
 import {
   SidebarGroupLabel,
@@ -439,7 +436,23 @@ test('branch item onPress fires when clicking branch trigger', async () => {
 });
 
 test('nested branches derive href from deepest first leaf', () => {
-  render(<NestedBranches.Component />);
+  render(
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item id="outer" textValue="Outer">
+              Outer
+              <Sidebar.Item id="inner" textValue="Inner">
+                Inner
+                <Sidebar.Item href="/deep-leaf">Deep Leaf</Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
+  );
 
   // Outer branch should auto-derive href from the deepest first leaf
   const outerLink = screen.getByRole('link', { name: /Outer/ });
@@ -447,7 +460,20 @@ test('nested branches derive href from deepest first leaf', () => {
 });
 
 test('branch without any leaf hrefs renders without href', () => {
-  render(<WithoutHref.Component />);
+  render(
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item id="empty-branch" textValue="Empty">
+              Empty
+              <Sidebar.Item>No href child</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
+  );
 
   // Branch item should render as a link without href attribute
   const trigger = screen.getByRole('link', { name: /Empty/ });
@@ -455,7 +481,25 @@ test('branch without any leaf hrefs renders without href', () => {
 });
 
 test('group label inside branch renders correctly', () => {
-  render(<GroupLabelInBranch.Component />);
+  render(
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item id="settings" textValue="Settings">
+              Settings
+              <Sidebar.GroupLabel>Account</Sidebar.GroupLabel>
+              <Sidebar.Item href="/profile" active>
+                Profile
+              </Sidebar.Item>
+              <Sidebar.Separator />
+              <Sidebar.Item href="/security">Security</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
+  );
 
   // Sub-panel is active (because /profile is active)
   expect(screen.getByText('Account')).toBeInTheDocument();
@@ -511,17 +555,68 @@ test('item without explicit id gets auto-generated key', () => {
 });
 
 test('textValue auto-extracted from string children', () => {
-  render(<GroupLabelInBranch.Component />);
+  render(
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item id="branch">
+              My Section
+              <Sidebar.Item href="/child" active>
+                Child
+              </Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
+  );
 
-  // Back button should show auto-extracted textValue "Settings"
+  // Back button should show auto-extracted textValue "My Section"
   const backButton = screen.getByRole('button', {
-    name: /Back to Settings/,
+    name: /Back to My Section/,
   });
   expect(backButton).toBeInTheDocument();
 });
 
 test('direct branch-to-branch switch via active prop change focuses back button', async () => {
-  render(<DirectBranchSwitch.Component />);
+  const DirectBranchSwitch = () => {
+    const [currentPath, setCurrentPath] = useState('/users');
+
+    return (
+      <MarigoldProvider theme={theme}>
+        <button
+          data-testid="switch-to-settings"
+          onClick={() => setCurrentPath('/general')}
+        >
+          Go to Settings
+        </button>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="management" textValue="Management">
+                Management
+                <Sidebar.Item href="/users" active={currentPath === '/users'}>
+                  Users
+                </Sidebar.Item>
+              </Sidebar.Item>
+              <Sidebar.Item id="settings" textValue="Settings">
+                Settings
+                <Sidebar.Item
+                  href="/general"
+                  active={currentPath === '/general'}
+                >
+                  General
+                </Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    );
+  };
+
+  render(<DirectBranchSwitch />);
 
   // Management panel is active (because /users is active)
   const usersLink = screen.getByRole('link', { name: 'Users' });
