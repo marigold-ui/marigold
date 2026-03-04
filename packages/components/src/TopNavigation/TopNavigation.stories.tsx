@@ -136,7 +136,7 @@ const meta = preview.meta({
   },
 });
 
-export const NavBarPattern = meta.story({
+export const WithTabs = meta.story({
   tags: ['component-test'],
   render: args => (
     <TopNavigation {...args}>

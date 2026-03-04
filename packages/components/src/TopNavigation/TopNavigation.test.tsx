@@ -4,8 +4,8 @@ import { mockMatchMedia } from '../test.utils';
 import { useTopNavigationContext } from './Context';
 import {
   ApplicationShell,
-  NavBarPattern,
   WithSearchField,
+  WithTabs,
 } from './TopNavigation.stories';
 
 /**
@@ -21,7 +21,7 @@ test('throws when context is used outside TopNavigation', () => {
 });
 
 test('renders a header element with the banner role', () => {
-  render(<NavBarPattern.Component />);
+  render(<WithTabs.Component />);
 
   const header = screen.getByRole('banner');
 
@@ -29,7 +29,7 @@ test('renders a header element with the banner role', () => {
 });
 
 test('renders all three slots', () => {
-  render(<NavBarPattern.Component />);
+  render(<WithTabs.Component />);
 
   expect(screen.getByText('Home')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'User menu' })).toBeInTheDocument();
@@ -57,14 +57,14 @@ test('renders with search field and breadcrumbs', () => {
 test('forwards ref to header element', () => {
   const ref = createRef<HTMLElement>();
 
-  render(<NavBarPattern.Component ref={ref} />);
+  render(<WithTabs.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLElement);
   expect(ref.current?.tagName).toBe('HEADER');
 });
 
 test('applies grid layout classes', () => {
-  render(<NavBarPattern.Component />);
+  render(<WithTabs.Component />);
 
   const nav = screen.getByRole('banner');
 
@@ -73,7 +73,7 @@ test('applies grid layout classes', () => {
 });
 
 test('applies min-w-0 to all slots', () => {
-  render(<NavBarPattern.Component />);
+  render(<WithTabs.Component />);
 
   const nav = screen.getByRole('banner');
   // eslint-disable-next-line testing-library/no-node-access
@@ -85,7 +85,7 @@ test('applies min-w-0 to all slots', () => {
 });
 
 test('applies overflow-x-auto to middle slot', () => {
-  render(<NavBarPattern.Component />);
+  render(<WithTabs.Component />);
 
   const middleSlot = screen.getByRole('navigation', {
     name: 'Global navigation',
