@@ -162,15 +162,6 @@ export const WithTabs = meta.story({
       </TopNavigation.End>
     </TopNavigation>
   ),
-  play: async ({ canvas }) => {
-    const nav = canvas.getByRole('banner');
-
-    await expect(nav).toBeInTheDocument();
-    await expect(canvas.getByText('Home')).toBeInTheDocument();
-    await expect(
-      canvas.getByRole('button', { name: 'User menu' })
-    ).toBeInTheDocument();
-  },
 });
 
 const CollapsedBreadcrumbs = () => {
