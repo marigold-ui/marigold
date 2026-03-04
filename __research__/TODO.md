@@ -2,3 +2,5 @@
 - focus ring is broooooken
 - want to use more selector from RAC can we adjust that?
 - go through styling parts naming
+- overflow for nav content
+- why is variant and size in the context and not classnames
