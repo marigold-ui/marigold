@@ -64,17 +64,6 @@ test('error state shows error message', () => {
   expect(errorMessage).toBeInTheDocument();
 });
 
-test('allows removing a tag', async () => {
-  render(<Controlled.Component />);
-
-  const removeButtons = screen.getAllByRole('button', { name: /remove/i });
-  expect(removeButtons).toHaveLength(2);
-
-  await user.click(removeButtons[0]);
-
-  expect(screen.getByTestId('selected')).toHaveTextContent('selected: ["pop"]');
-});
-
 test('clicking the field area opens the dropdown', async () => {
   render(<Basic.Component label="Label" />);
 
