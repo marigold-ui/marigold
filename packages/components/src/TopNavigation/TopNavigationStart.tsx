@@ -17,7 +17,7 @@ export interface TopNavigationStartProps {
 
 export const TopNavigationStart = forwardRef(
   (
-    { alignY = 'center', children }: TopNavigationStartProps,
+    { alignY = 'center', children, ...props }: TopNavigationStartProps,
     ref: Ref<HTMLDivElement>
   ) => {
     const { classNames } = useTopNavigationContext();
@@ -25,6 +25,7 @@ export const TopNavigationStart = forwardRef(
     return (
       <div
         ref={ref}
+        {...props}
         className={cn(
           'min-w-0 [grid-area:start]',
           classNames.start,

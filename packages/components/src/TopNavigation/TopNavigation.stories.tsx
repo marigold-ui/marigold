@@ -1,5 +1,4 @@
 import { PanelRightClose } from 'lucide-react';
-import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Logout, SettingDots, User } from '@marigold/icons';
 import { useResponsiveValue } from '@marigold/system';
