@@ -1,7 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 
-// SidebarItem — data carrier (renders null, consumed by collection builder)
-// ---------------
+// Data carrier — renders null, consumed by collection builder
 export interface SidebarItemProps {
   /** Unique key for branch items (auto-generated if omitted). */
   id?: string;
@@ -21,14 +20,12 @@ const _SidebarItem = (_props: SidebarItemProps): ReactElement | null => null;
 _SidebarItem.__SIDEBAR_ITEM__ = true as const;
 export const SidebarItem = _SidebarItem;
 
-// SidebarSeparator — visual divider marker (renders null)
-// ---------------
+// Renders null — visual divider marker consumed by collection builder
 const _SidebarSeparator = (): ReactElement | null => null;
 _SidebarSeparator.__SIDEBAR_SEPARATOR__ = true as const;
 export const SidebarSeparator = _SidebarSeparator;
 
-// SidebarGroupLabel — section label marker (renders null)
-// ---------------
+// Renders null — section label marker consumed by collection builder
 export interface SidebarGroupLabelProps {
   children?: ReactNode;
 }

@@ -2,8 +2,6 @@ import { Children, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { SidebarGroupLabelProps, SidebarItemProps } from './SidebarItem';
 
-// Types
-// ---------------
 export interface SidebarItemNode {
   type: 'item';
   key: string;
@@ -37,7 +35,6 @@ export interface SidebarCollection {
 }
 
 // Type guards (brand-based, safe across HOCs and bundles)
-// ---------------
 const isSidebarItem = (
   child: ReactNode
 ): child is ReactElement<SidebarItemProps> =>
@@ -55,9 +52,6 @@ const isSidebarGroupLabel = (
   isValidElement(child) &&
   (child.type as { __SIDEBAR_GROUP_LABEL__?: boolean })
     .__SIDEBAR_GROUP_LABEL__ === true;
-
-// Helpers
-// ---------------
 
 /**
  * Extract a text value from children. If any child is a string,
@@ -102,7 +96,6 @@ const separateChildren = (
 };
 
 // Find the first leaf descendant's href (for branch items without explicit href)
-// ---------------
 const firstLeafHref = (nodes: SidebarNode[]): string | undefined => {
   for (const node of nodes) {
     if (node.type !== 'item') continue;
@@ -114,7 +107,6 @@ const firstLeafHref = (nodes: SidebarNode[]): string | undefined => {
 };
 
 // Find which root-level branch contains an active item
-// ---------------
 export const findActiveBranch = (
   collection: SidebarCollection
 ): string | null => {
@@ -140,7 +132,6 @@ export const findActiveBranch = (
 };
 
 // Build collection (single pass: build + index)
-// ---------------
 const buildNodes = (
   flatChildren: readonly ReactNode[],
   counter: { value: number },

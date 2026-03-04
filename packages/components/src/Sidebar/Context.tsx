@@ -10,8 +10,6 @@ import type { ReactNode } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 
-// Types
-// ---------------
 export type SidebarState = 'expanded' | 'collapsed';
 
 export interface SidebarContextValue {
@@ -23,8 +21,6 @@ export interface SidebarContextValue {
 
 export const SidebarContext = createContext<SidebarContextValue | null>(null);
 
-// Hook
-// ---------------
 export const useSidebar = (): SidebarContextValue => {
   const ctx = useContext(SidebarContext);
   if (!ctx) {
@@ -33,8 +29,6 @@ export const useSidebar = (): SidebarContextValue => {
   return ctx;
 };
 
-// Cookie helpers
-// ---------------
 const COOKIE_NAME = 'marigold:sidebar:state';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
@@ -51,8 +45,6 @@ const writeCookie = (state: SidebarState) => {
   document.cookie = `${COOKIE_NAME}=${state};path=/;max-age=${COOKIE_MAX_AGE}`;
 };
 
-// Provider
-// ---------------
 export interface SidebarProviderProps {
   children: ReactNode;
   /** Default open state for desktop sidebar. */

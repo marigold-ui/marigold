@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { fn } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';
@@ -30,16 +31,24 @@ const Layout = ({
   children,
   open,
   onOpenChange,
+  initialPath = '/overview',
+  defaultOpen,
 }: {
   children?: ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  initialPath?: string;
+  defaultOpen?: boolean;
 }) => {
-  const [currentPath, setCurrentPath] = useState('/overview');
+  const [currentPath, setCurrentPath] = useState(initialPath);
 
   return (
     <RouterProvider navigate={setCurrentPath}>
-      <Sidebar.Provider open={open} onOpenChange={onOpenChange}>
+      <Sidebar.Provider
+        open={open}
+        onOpenChange={onOpenChange}
+        defaultOpen={defaultOpen}
+      >
         <div className="flex h-screen">
           <Sidebar>
             <Sidebar.Header>
@@ -122,8 +131,6 @@ export const Controlled = meta.story({
   },
 });
 
-// Complex story — ticketing system navigation
-// ---------------
 const complexPages: Record<string, { label: string }> = {
   '/dashboard': { label: 'Dashboard' },
   '/my-tickets': { label: 'My Tickets' },
@@ -295,6 +302,130 @@ export const Complex = meta.story({
           </div>
         </Sidebar.Provider>
       </RouterProvider>
+    );
+  },
+});
+
+export const WithActiveBranch = meta.story({
+  render: () => <Layout initialPath="/users" />,
+});
+
+export const DefaultCollapsed = meta.story({
+  render: () => <Layout defaultOpen={false} />,
+});
+
+export const NestedBranches = meta.story({
+  render: () => (
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item id="outer" textValue="Outer">
+            Outer
+            <Sidebar.Item id="inner" textValue="Inner">
+              Inner
+              <Sidebar.Item href="/deep-leaf">Deep Leaf</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  ),
+});
+
+export const WithoutHref = meta.story({
+  render: () => (
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item id="empty-branch" textValue="Empty">
+            Empty
+            <Sidebar.Item>No href child</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  ),
+});
+
+export const GroupLabelInBranch = meta.story({
+  render: () => (
+    <Sidebar.Provider>
+      <Sidebar>
+        <Sidebar.Nav>
+          <Sidebar.Item id="settings" textValue="Settings">
+            Settings
+            <Sidebar.GroupLabel>Account</Sidebar.GroupLabel>
+            <Sidebar.Item href="/profile" active>
+              Profile
+            </Sidebar.Item>
+            <Sidebar.Separator />
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar>
+    </Sidebar.Provider>
+  ),
+});
+
+export const WithOnPress = meta.story({
+  render: () => {
+    const handlePress = fn();
+    return (
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item href="/home" onPress={handlePress}>
+              Home
+            </Sidebar.Item>
+            <Sidebar.Item
+              id="settings"
+              textValue="Settings"
+              onPress={handlePress}
+            >
+              Settings
+              <Sidebar.Item href="/general">General</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    );
+  },
+});
+
+export const DirectBranchSwitch = meta.story({
+  render: () => {
+    const [currentPath, setCurrentPath] = useState('/users');
+
+    return (
+      <>
+        <button
+          data-testid="switch-to-settings"
+          onClick={() => setCurrentPath('/general')}
+        >
+          Go to Settings
+        </button>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="management" textValue="Management">
+                Management
+                <Sidebar.Item href="/users" active={currentPath === '/users'}>
+                  Users
+                </Sidebar.Item>
+              </Sidebar.Item>
+              <Sidebar.Item id="settings" textValue="Settings">
+                Settings
+                <Sidebar.Item
+                  href="/general"
+                  active={currentPath === '/general'}
+                >
+                  General
+                </Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </>
     );
   },
 });

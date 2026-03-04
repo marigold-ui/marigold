@@ -15,9 +15,6 @@ import type {
   SidebarNode,
 } from './collection';
 
-// Utilities
-// ---------------
-
 // Recursively collect all branch nodes (items with children) at every depth
 const collectBranches = (nodes: SidebarNode[]): SidebarItemNode[] => {
   const result: SidebarItemNode[] = [];
@@ -42,8 +39,6 @@ const panelPosition = (
   return idx >= 0 && idx < stack.length - 1 ? 'before' : 'after';
 };
 
-// Inner panel content
-// ---------------
 const InnerPanelContent = ({
   nodes,
   onBack,
@@ -140,8 +135,6 @@ const InnerPanelContent = ({
   );
 };
 
-// SidebarNav
-// ---------------
 export interface SidebarNavProps {
   children?: ReactNode;
   'aria-label'?: string;

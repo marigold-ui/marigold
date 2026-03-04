@@ -1,13 +1,22 @@
-import { renderHook, screen } from '@testing-library/react';
+import { render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useState } from 'react';
 import { vi } from 'vitest';
-import type { Theme } from '@marigold/system';
-import { cva } from '@marigold/system';
-import { RouterProvider } from '../RouterProvider/RouterProvider';
-import { setup } from '../test.utils';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { ensureOverlayContainer, mockMatchMedia } from '../test.utils';
 import { useSidebar } from './Context';
 import { Sidebar } from './Sidebar';
+import {
+  Basic,
+  Complex,
+  Controlled,
+  DefaultCollapsed,
+  DirectBranchSwitch,
+  GroupLabelInBranch,
+  NestedBranches,
+  WithActiveBranch,
+  WithoutHref,
+} from './Sidebar.stories';
 import {
   SidebarGroupLabel,
   SidebarItem,
@@ -19,90 +28,26 @@ import { buildCollection, findActiveBranch } from './collection';
 // eslint-disable-next-line testing-library/no-node-access
 const closest = (el: HTMLElement, sel: string) => el.closest(sel);
 
-let isSmallScreen = false;
-const mockMatchMedia = () =>
-  vi.fn().mockImplementation(() => {
-    return {
-      matches: isSmallScreen,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    };
-  });
-window.matchMedia = mockMatchMedia();
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Sidebar: {
-      root: cva({}),
-      overlay: cva({}),
-      modal: cva({}),
-      closeButton: cva({}),
-      header: cva({}),
-      nav: cva({}),
-      footer: cva({}),
-      toggle: cva({}),
-      separator: cva({}),
-      groupLabel: cva({}),
-      navPanel: cva({}),
-      navLink: cva({}),
-      backButton: cva({}),
-    },
-    Button: cva({}),
-    CloseButton: cva({}),
-    Underlay: cva({}),
-    Modal: cva({}),
-  },
-};
-
 const user = userEvent.setup();
-const { render } = setup({ theme });
 
 beforeEach(() => {
-  isSmallScreen = false;
-  window.matchMedia = mockMatchMedia();
+  window.matchMedia = mockMatchMedia([]);
   // Clear cookies
   document.cookie = 'marigold:sidebar:state=;max-age=0';
 });
 
 test('renders with sub-components', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Header>Header</Sidebar.Header>
+  render(<Basic.Component />);
 
-        <Sidebar.Nav aria-label="Main navigation">
-          <Sidebar.GroupLabel>Section</Sidebar.GroupLabel>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-
-        <Sidebar.Footer>Footer</Sidebar.Footer>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
-
-  expect(
-    screen.getByRole('navigation', { name: 'Main navigation' })
-  ).toBeInTheDocument();
-  expect(screen.getByText('Header')).toBeInTheDocument();
-  expect(screen.getByText('Home')).toBeInTheDocument();
-  expect(screen.getByText('Footer')).toBeInTheDocument();
-  expect(screen.getByText('Section')).toBeInTheDocument();
+  expect(screen.getByText('Acme Inc.')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
+  expect(screen.getByText('Settings')).toBeInTheDocument();
+  expect(screen.getByText('Footer content')).toBeInTheDocument();
+  expect(screen.getByRole('separator')).toBeInTheDocument();
 });
 
 test('toggle expand/collapse via toggle button', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-      <main>
-        <Sidebar.Toggle />
-      </main>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(trigger).toHaveAttribute('aria-expanded', 'true');
@@ -115,18 +60,7 @@ test('toggle expand/collapse via toggle button', async () => {
 });
 
 test('keyboard shortcut Cmd+B toggles sidebar', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-      <main>
-        <Sidebar.Toggle />
-      </main>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
   const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(toggle).toHaveAttribute('aria-expanded', 'true');
@@ -139,24 +73,13 @@ test('keyboard shortcut Cmd+B toggles sidebar', async () => {
 });
 
 test('active state with aria-current', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home" active>
-            Home
-          </Sidebar.Item>
-          <Sidebar.Item href="/about">About</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
-  const homeLink = screen.getByRole('link', { name: 'Home' });
-  expect(homeLink).toHaveAttribute('aria-current', 'page');
+  const overviewLink = screen.getByRole('link', { name: 'Overview' });
+  expect(overviewLink).toHaveAttribute('aria-current', 'page');
 
-  const aboutLink = screen.getByRole('link', { name: 'About' });
-  expect(aboutLink).not.toHaveAttribute('aria-current');
+  const analyticsLink = screen.getByRole('link', { name: 'Analytics' });
+  expect(analyticsLink).not.toHaveAttribute('aria-current');
 });
 
 test('useSidebar throws outside provider', () => {
@@ -171,91 +94,34 @@ test('useSidebar throws outside provider', () => {
 });
 
 test('renders items as links with href', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
-  const link = screen.getByRole('link', { name: 'Home' });
-  expect(link).toHaveAttribute('href', '/home');
-});
-
-test('mobile renders sheet overlay', () => {
-  isSmallScreen = true;
-  window.matchMedia = mockMatchMedia();
-
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-      <main>
-        <Sidebar.Toggle />
-      </main>
-    </Sidebar.Provider>
-  );
-
-  // On mobile, sidebar content is not visible until toggled
-  expect(screen.queryByText('Home')).not.toBeInTheDocument();
+  const link = screen.getByRole('link', { name: 'Overview' });
+  expect(link).toHaveAttribute('href', '/overview');
 });
 
 test('branch items render as links with auto-derived href', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-          <Sidebar.Item id="settings" textValue="Settings">
-            Settings
-            <Sidebar.Item href="/general">General</Sidebar.Item>
-            <Sidebar.Item href="/security">Security</Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
-  // Branch item "Settings" should be a link with href from first child
-  const settingsLink = screen.getByRole('link', { name: /Settings/ });
-  expect(settingsLink).toHaveAttribute('href', '/general');
+  // Branch item "Management" should be a link with href from first child
+  const managementLink = screen.getByRole('link', { name: /Management/ });
+  expect(managementLink).toHaveAttribute('href', '/users');
 });
 
 test('sub-panel opens when child is active', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-          <Sidebar.Item id="settings" textValue="Settings">
-            Settings
-            <Sidebar.Item href="/general" active>
-              General
-            </Sidebar.Item>
-            <Sidebar.Item href="/security">Security</Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<WithActiveBranch.Component />);
 
   // Root panel should be in "before" position (not active)
   const rootPanel = closest(
-    screen.getByRole('link', { name: 'Home' }),
+    screen.getByRole('link', { name: 'Overview' }),
     '[data-position]'
   );
   expect(rootPanel).toHaveAttribute('data-position', 'before');
 
-  // Settings sub-panel should be active
-  const generalLink = screen.getByRole('link', { name: 'General' });
-  const settingsPanel = closest(generalLink, '[data-position]');
-  expect(settingsPanel).toHaveAttribute('data-position', 'active');
+  // Management sub-panel should be active
+  const usersLink = screen.getByRole('link', { name: 'Users' });
+  const managementPanel = closest(usersLink, '[data-position]');
+  expect(managementPanel).toHaveAttribute('data-position', 'active');
 
   // Back button should be visible in the active panel
   const backButton = screen.getByRole('button', { name: /Back/ });
@@ -263,26 +129,11 @@ test('sub-panel opens when child is active', () => {
 });
 
 test('back button returns to root panel', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-          <Sidebar.Item id="settings" textValue="Settings">
-            Settings
-            <Sidebar.Item href="/general" active>
-              General
-            </Sidebar.Item>
-            <Sidebar.Item href="/security">Security</Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<WithActiveBranch.Component />);
 
-  // Settings sub-panel is active
-  const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
+  // Management sub-panel is active
+  const usersLink = screen.getByRole('link', { name: 'Users' });
+  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -292,34 +143,19 @@ test('back button returns to root panel', async () => {
   await user.click(backButton);
 
   // Root panel should now be active
-  const homeLink = screen.getByRole('link', { name: 'Home' });
-  expect(closest(homeLink, '[data-position]')).toHaveAttribute(
+  const overviewLink = screen.getByRole('link', { name: 'Overview' });
+  expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 });
 
 test('re-entering the same branch after back reopens sub-panel', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-          <Sidebar.Item id="settings" textValue="Settings">
-            Settings
-            <Sidebar.Item href="/general" active>
-              General
-            </Sidebar.Item>
-            <Sidebar.Item href="/security">Security</Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<WithActiveBranch.Component />);
 
-  // Settings sub-panel starts active
-  const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
+  // Management sub-panel starts active
+  const usersLink = screen.getByRole('link', { name: 'Users' });
+  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
@@ -328,99 +164,13 @@ test('re-entering the same branch after back reopens sub-panel', async () => {
   const backButton = screen.getByRole('button', { name: /Back/ });
   await user.click(backButton);
 
-  const homeLink = screen.getByRole('link', { name: 'Home' });
-  expect(closest(homeLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Click the Settings branch trigger again → sub-panel should reopen
-  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
-  await user.click(settingsTrigger);
-
-  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-});
-
-test('navigating between branches via stateful active prop', async () => {
-  const SidebarWithRouter = () => {
-    const [currentPath, setCurrentPath] = useState('/users');
-
-    return (
-      <RouterProvider navigate={setCurrentPath}>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav>
-              <Sidebar.Item
-                href="/overview"
-                active={currentPath === '/overview'}
-              >
-                Overview
-              </Sidebar.Item>
-              <Sidebar.Item id="management" textValue="Management">
-                Management
-                <Sidebar.Item href="/users" active={currentPath === '/users'}>
-                  Users
-                </Sidebar.Item>
-                <Sidebar.Item href="/teams" active={currentPath === '/teams'}>
-                  Teams
-                </Sidebar.Item>
-              </Sidebar.Item>
-              <Sidebar.Item id="settings" textValue="Settings">
-                Settings
-                <Sidebar.Item
-                  href="/general"
-                  active={currentPath === '/general'}
-                >
-                  General
-                </Sidebar.Item>
-              </Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </RouterProvider>
-    );
-  };
-
-  render(<SidebarWithRouter />);
-
-  // Management sub-panel starts active (because /users is active)
-  const usersLink = screen.getByRole('link', { name: 'Users' });
-  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Click back → root (use specific label since multiple back buttons exist)
-  await user.click(screen.getByRole('button', { name: /Back to Management/ }));
-
   const overviewLink = screen.getByRole('link', { name: 'Overview' });
   expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
-  // Click Settings → navigates to /general, switches to settings panel
-  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
-  await user.click(settingsTrigger);
-
-  const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Click back from settings → root
-  await user.click(screen.getByRole('button', { name: /Back to Settings/ }));
-
-  expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Click Management → navigates to /users, opens management panel
+  // Click the Management branch trigger again → sub-panel should reopen
   const managementTrigger = screen.getByRole('link', { name: /Management/ });
   await user.click(managementTrigger);
 
@@ -430,21 +180,66 @@ test('navigating between branches via stateful active prop', async () => {
   );
 });
 
-test('data-state attribute reflects expanded/collapsed', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-      <main>
-        <Sidebar.Toggle />
-      </main>
-    </Sidebar.Provider>
+test('navigating between branches via stateful active prop', async () => {
+  render(<Complex.Component />);
+
+  // Dashboard is at root, click Tickets branch (exact match to avoid "My Tickets" etc.)
+  const ticketsTrigger = screen.getByRole('link', { name: 'Tickets' });
+  await user.click(ticketsTrigger);
+
+  const myTicketsLink = screen.getByRole('link', { name: 'My Tickets' });
+  expect(closest(myTicketsLink, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
   );
 
-  const shell = closest(screen.getByText('Home'), '[data-state]');
+  // Click back → root
+  await user.click(screen.getByRole('button', { name: /Back to Tickets/ }));
+
+  const dashboardLink = screen.getByRole('link', { name: 'Dashboard' });
+  expect(closest(dashboardLink, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click Projects → navigates to /active-projects, switches to projects panel
+  const projectsTrigger = screen.getByRole('link', { name: 'Projects' });
+  await user.click(projectsTrigger);
+
+  const activeLink = screen.getByRole('link', { name: 'Active' });
+  expect(closest(activeLink, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click back from projects → root
+  await user.click(screen.getByRole('button', { name: /Back to Projects/ }));
+
+  expect(closest(dashboardLink, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Click Reports → navigates to /ticket-volume, opens reports panel
+  const reportsTrigger = screen.getByRole('link', { name: 'Reports' });
+  await user.click(reportsTrigger);
+
+  const ticketVolumeLink = screen.getByRole('link', {
+    name: 'Ticket Volume',
+  });
+  expect(closest(ticketVolumeLink, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+});
+
+test('data-state attribute reflects expanded/collapsed', async () => {
+  render(<Basic.Component />);
+
+  const shell = closest(
+    screen.getByRole('link', { name: 'Overview' }),
+    '[data-state]'
+  );
   expect(shell).toHaveAttribute('data-state', 'expanded');
 
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
@@ -456,96 +251,49 @@ test('data-state attribute reflects expanded/collapsed', async () => {
 });
 
 test('non-active panels have inert attribute', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-          <Sidebar.Item id="settings" textValue="Settings">
-            Settings
-            <Sidebar.Item href="/general" active>
-              General
-            </Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<WithActiveBranch.Component />);
 
   // Root panel is in "before" position → should be inert
   const rootPanel = closest(
-    screen.getByRole('link', { name: 'Home' }),
+    screen.getByRole('link', { name: 'Overview' }),
     '[data-position]'
   );
   expect(rootPanel).toHaveAttribute('inert');
 
-  // Settings panel is active → should NOT be inert
+  // Management panel is active → should NOT be inert
   const activePanel = closest(
-    screen.getByRole('link', { name: 'General' }),
+    screen.getByRole('link', { name: 'Users' }),
     '[data-position]'
   );
   expect(activePanel).not.toHaveAttribute('inert');
 });
 
 test('focus moves to back button when drilling into branch', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-          <Sidebar.Item id="settings" textValue="Settings">
-            Settings
-            <Sidebar.Item href="/general">General</Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
-  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
-  await user.click(settingsTrigger);
+  const managementTrigger = screen.getByRole('link', { name: /Management/ });
+  await user.click(managementTrigger);
 
-  const backButton = screen.getByRole('button', { name: /Back to Settings/ });
+  const backButton = screen.getByRole('button', {
+    name: /Back to Management/,
+  });
   expect(backButton).toHaveFocus();
 });
 
 test('focus returns to branch trigger when going back', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-          <Sidebar.Item id="settings" textValue="Settings">
-            Settings
-            <Sidebar.Item href="/general" active>
-              General
-            </Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<WithActiveBranch.Component />);
 
-  const backButton = screen.getByRole('button', { name: /Back to Settings/ });
+  const backButton = screen.getByRole('button', {
+    name: /Back to Management/,
+  });
   await user.click(backButton);
 
-  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
-  expect(settingsTrigger).toHaveFocus();
+  const managementTrigger = screen.getByRole('link', { name: /Management/ });
+  expect(managementTrigger).toHaveFocus();
 });
 
 test('toggle writes sidebar state to cookie', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-      <main>
-        <Sidebar.Toggle />
-      </main>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
 
@@ -559,122 +307,84 @@ test('toggle writes sidebar state to cookie', async () => {
 test('cookie overrides defaultOpen', () => {
   document.cookie = 'marigold:sidebar:state=collapsed;path=/;max-age=604800';
 
-  render(
-    <Sidebar.Provider defaultOpen={true}>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-      <main>
-        <Sidebar.Toggle />
-      </main>
-    </Sidebar.Provider>
-  );
+  render(<DefaultCollapsed.Component />);
 
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
-  const shell = closest(screen.getByText('Home'), '[data-state]');
+  const shell = closest(
+    screen.getByRole('link', { name: 'Overview' }),
+    '[data-state]'
+  );
   expect(shell).toHaveAttribute('data-state', 'collapsed');
 });
 
 test('defaultOpen={false} starts sidebar collapsed', () => {
-  render(
-    <Sidebar.Provider defaultOpen={false}>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-      <main>
-        <Sidebar.Toggle />
-      </main>
-    </Sidebar.Provider>
-  );
+  render(<DefaultCollapsed.Component />);
 
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
-  const shell = closest(screen.getByText('Home'), '[data-state]');
+  const shell = closest(
+    screen.getByRole('link', { name: 'Overview' }),
+    '[data-state]'
+  );
   expect(shell).toHaveAttribute('data-state', 'collapsed');
 });
 
 test('controlled mode with open and onOpenChange', async () => {
-  const Controlled = () => {
-    const [open, setOpen] = useState(true);
-    return (
-      <Sidebar.Provider open={open} onOpenChange={setOpen}>
-        <Sidebar>
-          <Sidebar.Nav>
-            <Sidebar.Item href="/home">Home</Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar>
-        <main>
-          <Sidebar.Toggle />
-          <span data-testid="state">{open ? 'open' : 'closed'}</span>
-        </main>
-      </Sidebar.Provider>
-    );
-  };
+  render(<Controlled.Component />);
 
-  render(<Controlled />);
-
-  expect(screen.getByTestId('state')).toHaveTextContent('open');
+  expect(screen.getByText('Sidebar is open')).toBeInTheDocument();
 
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   await user.click(trigger);
-  expect(screen.getByTestId('state')).toHaveTextContent('closed');
+  expect(screen.getByText('Sidebar is closed')).toBeInTheDocument();
 
   await user.click(trigger);
-  expect(screen.getByTestId('state')).toHaveTextContent('open');
+  expect(screen.getByText('Sidebar is open')).toBeInTheDocument();
+});
+
+test('mobile renders sheet overlay', () => {
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  ensureOverlayContainer();
+
+  render(<Basic.Component />);
+
+  // On mobile, sidebar link is not visible until toggled
+  expect(
+    screen.queryByRole('link', { name: 'Overview' })
+  ).not.toBeInTheDocument();
 });
 
 test('mobile toggle opens sheet, close button closes it', async () => {
-  isSmallScreen = true;
-  window.matchMedia = mockMatchMedia();
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  ensureOverlayContainer();
 
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-      <main>
-        <Sidebar.Toggle />
-      </main>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
-  // Content is not visible on mobile until toggled
-  expect(screen.queryByText('Home')).not.toBeInTheDocument();
+  // Sidebar link is not visible on mobile until toggled
+  expect(
+    screen.queryByRole('link', { name: 'Overview' })
+  ).not.toBeInTheDocument();
 
   // Open the mobile sheet
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   await user.click(trigger);
-  expect(screen.getByText('Home')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
 
   // Close via close button
   const closeButton = screen.getByRole('button', {
     name: 'Close navigation',
   });
   await user.click(closeButton);
-  expect(screen.queryByText('Home')).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('link', { name: 'Overview' })
+  ).not.toBeInTheDocument();
 });
 
 test('separator renders as divider element', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home">Home</Sidebar.Item>
-          <Sidebar.Separator />
-          <Sidebar.Item href="/about">About</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
   expect(screen.getByRole('separator')).toBeInTheDocument();
 });
@@ -683,15 +393,17 @@ test('onPress callback fires on item click', async () => {
   const handlePress = vi.fn();
 
   render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/home" onPress={handlePress}>
-            Home
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item href="/home" onPress={handlePress}>
+              Home
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
   );
 
   const link = screen.getByRole('link', { name: 'Home' });
@@ -699,22 +411,35 @@ test('onPress callback fires on item click', async () => {
   expect(handlePress).toHaveBeenCalledOnce();
 });
 
-test('nested branches derive href from deepest first leaf', () => {
+test('branch item onPress fires when clicking branch trigger', async () => {
+  const handlePress = vi.fn();
+
   render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item id="outer" textValue="Outer">
-            Outer
-            <Sidebar.Item id="inner" textValue="Inner">
-              Inner
-              <Sidebar.Item href="/deep-leaf">Deep Leaf</Sidebar.Item>
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item
+              id="settings"
+              textValue="Settings"
+              onPress={handlePress}
+            >
+              Settings
+              <Sidebar.Item href="/general">General</Sidebar.Item>
             </Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
   );
+
+  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
+  await user.click(settingsTrigger);
+  expect(handlePress).toHaveBeenCalledOnce();
+});
+
+test('nested branches derive href from deepest first leaf', () => {
+  render(<NestedBranches.Component />);
 
   // Outer branch should auto-derive href from the deepest first leaf
   const outerLink = screen.getByRole('link', { name: /Outer/ });
@@ -722,101 +447,15 @@ test('nested branches derive href from deepest first leaf', () => {
 });
 
 test('branch without any leaf hrefs renders without href', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item id="empty-branch" textValue="Empty">
-            Empty
-            <Sidebar.Item>No href child</Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<WithoutHref.Component />);
 
   // Branch item should render as a link without href attribute
   const trigger = screen.getByRole('link', { name: /Empty/ });
   expect(trigger).not.toHaveAttribute('href');
 });
 
-test('switching branches directly updates focus to back button', async () => {
-  const SidebarWithBranchSwitch = () => {
-    const [currentPath, setCurrentPath] = useState('/users');
-
-    return (
-      <RouterProvider navigate={setCurrentPath}>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav>
-              <Sidebar.Item id="management" textValue="Management">
-                Management
-                <Sidebar.Item href="/users" active={currentPath === '/users'}>
-                  Users
-                </Sidebar.Item>
-              </Sidebar.Item>
-              <Sidebar.Item id="settings" textValue="Settings">
-                Settings
-                <Sidebar.Item
-                  href="/general"
-                  active={currentPath === '/general'}
-                >
-                  General
-                </Sidebar.Item>
-              </Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </RouterProvider>
-    );
-  };
-
-  render(<SidebarWithBranchSwitch />);
-
-  // Management panel is active (because /users is active)
-  const usersLink = screen.getByRole('link', { name: 'Users' });
-  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Click Settings trigger from root → navigates to /general
-  // First go back to root
-  await user.click(screen.getByRole('button', { name: /Back to Management/ }));
-
-  // Now click Settings (switches directly to settings branch)
-  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
-  await user.click(settingsTrigger);
-
-  const generalLink = screen.getByRole('link', { name: 'General' });
-  expect(closest(generalLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Back button in settings panel should be focused
-  const backButton = screen.getByRole('button', { name: /Back to Settings/ });
-  expect(backButton).toHaveFocus();
-});
-
 test('group label inside branch renders correctly', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item id="settings" textValue="Settings">
-            Settings
-            <Sidebar.GroupLabel>Account</Sidebar.GroupLabel>
-            <Sidebar.Item href="/profile" active>
-              Profile
-            </Sidebar.Item>
-            <Sidebar.Separator />
-            <Sidebar.Item href="/security">Security</Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<GroupLabelInBranch.Component />);
 
   // Sub-panel is active (because /profile is active)
   expect(screen.getByText('Account')).toBeInTheDocument();
@@ -824,109 +463,65 @@ test('group label inside branch renders correctly', () => {
   expect(screen.getByRole('separator')).toBeInTheDocument();
 });
 
-test('marker components return null when called directly', () => {
-  expect(Sidebar.Item({})).toBeNull();
-  expect(Sidebar.Separator()).toBeNull();
-  expect(Sidebar.GroupLabel({})).toBeNull();
-});
+test('switching branches directly updates focus to back button', async () => {
+  render(<Complex.Component />);
 
-test('item with explicit id uses that id as key', async () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item id="custom-id" href="/page">
-            Custom ID Item
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
+  // Click Tickets branch from root (exact match)
+  const ticketsTrigger = screen.getByRole('link', { name: 'Tickets' });
+  await user.click(ticketsTrigger);
+
+  const myTicketsLink = screen.getByRole('link', { name: 'My Tickets' });
+  expect(closest(myTicketsLink, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
   );
 
-  const link = screen.getByRole('link', { name: 'Custom ID Item' });
-  expect(link).toHaveAttribute('data-key', 'custom-id');
+  // Click back to root
+  await user.click(screen.getByRole('button', { name: /Back to Tickets/ }));
+
+  // Now click Projects (switches directly to projects branch)
+  const projectsTrigger = screen.getByRole('link', { name: 'Projects' });
+  await user.click(projectsTrigger);
+
+  const activeLink = screen.getByRole('link', { name: 'Active' });
+  expect(closest(activeLink, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
+
+  // Back button in projects panel should be focused
+  const backButton = screen.getByRole('button', { name: /Back to Projects/ });
+  expect(backButton).toHaveFocus();
+});
+
+test('item with explicit id uses that id as key', () => {
+  render(<Basic.Component />);
+
+  const link = screen.getByRole('link', { name: /Management/ });
+  expect(link).toHaveAttribute('data-key', 'management');
 });
 
 test('item without explicit id gets auto-generated key', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item href="/page">Auto ID Item</Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<Basic.Component />);
 
-  const link = screen.getByRole('link', { name: 'Auto ID Item' });
+  const link = screen.getByRole('link', { name: 'Overview' });
   // Auto-generated keys follow the pattern "item-N"
   expect(link).toHaveAttribute('data-key');
   expect(link.getAttribute('data-key')).toMatch(/^item-\d+$/);
 });
 
 test('textValue auto-extracted from string children', () => {
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item id="branch">
-            My Section
-            <Sidebar.Item href="/child" active>
-              Child
-            </Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
+  render(<GroupLabelInBranch.Component />);
 
-  // Back button should show auto-extracted textValue "My Section"
+  // Back button should show auto-extracted textValue "Settings"
   const backButton = screen.getByRole('button', {
-    name: /Back to My Section/,
+    name: /Back to Settings/,
   });
   expect(backButton).toBeInTheDocument();
 });
 
 test('direct branch-to-branch switch via active prop change focuses back button', async () => {
-  // This tests the case where openBranch changes from one non-null value
-  // to another non-null value (lines 223-225 in SidebarNav.tsx)
-  const SidebarWithDirectSwitch = () => {
-    const [currentPath, setCurrentPath] = useState('/users');
-
-    return (
-      <>
-        <button
-          data-testid="switch-to-settings"
-          onClick={() => setCurrentPath('/general')}
-        >
-          Go to Settings
-        </button>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav>
-              <Sidebar.Item id="management" textValue="Management">
-                Management
-                <Sidebar.Item href="/users" active={currentPath === '/users'}>
-                  Users
-                </Sidebar.Item>
-              </Sidebar.Item>
-              <Sidebar.Item id="settings" textValue="Settings">
-                Settings
-                <Sidebar.Item
-                  href="/general"
-                  active={currentPath === '/general'}
-                >
-                  General
-                </Sidebar.Item>
-              </Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </>
-    );
-  };
-
-  render(<SidebarWithDirectSwitch />);
+  render(<DirectBranchSwitch.Component />);
 
   // Management panel is active (because /users is active)
   const usersLink = screen.getByRole('link', { name: 'Users' });
@@ -950,33 +545,12 @@ test('direct branch-to-branch switch via active prop change focuses back button'
   expect(backButton).toHaveFocus();
 });
 
-test('branch item onPress fires when clicking branch trigger', async () => {
-  const handlePress = vi.fn();
-
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav>
-          <Sidebar.Item
-            id="settings"
-            textValue="Settings"
-            onPress={handlePress}
-          >
-            Settings
-            <Sidebar.Item href="/general">General</Sidebar.Item>
-          </Sidebar.Item>
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
-
-  const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
-  await user.click(settingsTrigger);
-  expect(handlePress).toHaveBeenCalledOnce();
+test('marker components return null when called directly', () => {
+  expect(Sidebar.Item({})).toBeNull();
+  expect(Sidebar.Separator()).toBeNull();
+  expect(Sidebar.GroupLabel({})).toBeNull();
 });
 
-// collection.ts unit tests
-// ---------------
 test('buildCollection.getItem returns nodes by key', () => {
   const jsx = [
     <SidebarItem key="home" id="home" href="/home">

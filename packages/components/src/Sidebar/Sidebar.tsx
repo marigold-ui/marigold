@@ -20,16 +20,12 @@ import { SidebarNav } from './SidebarNav';
 import { SidebarFooter, SidebarHeader } from './SidebarSlots';
 import { SidebarToggle } from './SidebarToggle';
 
-// Props
-// ---------------
 export interface SidebarProps {
   children?: ReactNode;
   variant?: string;
   size?: string;
 }
 
-// Compound Component Interface
-// ---------------
 interface SidebarComponent extends ForwardRefExoticComponent<
   SidebarProps & RefAttributes<HTMLDivElement>
 > {
@@ -43,8 +39,6 @@ interface SidebarComponent extends ForwardRefExoticComponent<
   Toggle: typeof SidebarToggle;
 }
 
-// Component
-// ---------------
 const _Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
   ({ children }, ref) => {
     const { isMobile, state, toggleSidebar, classNames } = useSidebar();
