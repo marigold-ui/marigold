@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { alignment, cn } from '@marigold/system';
+import { intlMessages } from '../intl/messages';
 import { useTopNavigationContext } from './Context';
 
 export interface TopNavigationEndProps {
@@ -22,15 +24,18 @@ export interface TopNavigationEndProps {
 }
 
 export const TopNavigationEnd = ({
+  'aria-label': ariaLabel,
   alignX,
   alignY,
   children,
   ...props
 }: TopNavigationEndProps) => {
   const { classNames } = useTopNavigationContext();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <nav
+      aria-label={ariaLabel ?? stringFormatter.format('globalNavigation')}
       {...props}
       className={cn(
         'min-w-0 [grid-area:end]',

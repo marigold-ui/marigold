@@ -138,9 +138,6 @@ const meta = preview.meta({
 
 export const NavBarPattern = meta.story({
   tags: ['component-test'],
-  args: {
-    'aria-label': 'Main navigation',
-  },
   render: args => (
     <TopNavigation {...args}>
       <TopNavigation.Start>
@@ -196,9 +193,6 @@ const CollapsedBreadcrumbs = () => {
 };
 
 export const WithSearchField = meta.story({
-  args: {
-    'aria-label': 'Search navigation',
-  },
   render: args => (
     <TopNavigation {...args}>
       <TopNavigation.Start>
@@ -217,7 +211,6 @@ export const WithSearchField = meta.story({
 
 export const ApplicationShell = meta.story({
   args: {
-    'aria-label': 'Application navigation',
     sticky: true,
   },
   render: args => (

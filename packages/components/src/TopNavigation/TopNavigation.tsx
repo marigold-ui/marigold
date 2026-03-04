@@ -9,10 +9,6 @@ import { TopNavigationStart } from './TopNavigationStart';
 // Props
 // ---------------
 export interface TopNavigationProps {
-  /**
-   * Accessible label for the header landmark.
-   */
-  'aria-label'?: string;
   variant?: string;
   size?: string;
   /**

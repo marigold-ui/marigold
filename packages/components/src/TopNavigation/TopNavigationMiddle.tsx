@@ -1,6 +1,8 @@
 import type { ReactNode, Ref } from 'react';
 import { forwardRef } from 'react';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { alignment, cn } from '@marigold/system';
+import { intlMessages } from '../intl/messages';
 import { useTopNavigationContext } from './Context';
 
 export interface TopNavigationMiddleProps {
@@ -25,14 +27,22 @@ export interface TopNavigationMiddleProps {
 
 export const TopNavigationMiddle = forwardRef(
   (
-    { alignX, alignY = 'center', children, ...props }: TopNavigationMiddleProps,
+    {
+      'aria-label': ariaLabel,
+      alignX,
+      alignY = 'center',
+      children,
+      ...props
+    }: TopNavigationMiddleProps,
     ref: Ref<HTMLElement>
   ) => {
     const { classNames } = useTopNavigationContext();
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
     return (
       <nav
         ref={ref}
+        aria-label={ariaLabel ?? stringFormatter.format('globalNavigation')}
         {...props}
         className={cn(
           'min-w-0 [grid-area:middle]',
