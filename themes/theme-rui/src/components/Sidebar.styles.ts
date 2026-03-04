@@ -24,11 +24,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
   content: cva({ base: 'sm:w-64' }),
-  header: cva({ base: 'border-border border-b px-4 py-3' }),
+  header: cva({ base: 'border-border border-b px-6 py-3' }),
   nav: cva({
     base: 'flex flex-col px-4 py-2 overflow-y-auto outline-none',
   }),
-  footer: cva({ base: 'border-border border-t px-4 py-3' }),
+  footer: cva({ base: 'border-border border-t px-6 py-3' }),
   toggle: cva({
     base: [
       'ui-button-base ui-press',
@@ -65,7 +65,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   navLink: cva({
     base: [
       'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
-      'text-muted-foreground hover:text-foreground hover:bg-hover transition-colors',
+      'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
       'data-active:bg-selected data-active:text-foreground data-active:font-medium',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
@@ -73,8 +73,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   backButton: cva({
     base: [
-      'grid grid-cols-[2.25rem_1fr_2.25rem] items-center w-full px-2 h-9 text-sm rounded-md',
-      'text-muted-foreground hover:text-foreground hover:bg-hover transition-colors',
+      'flex items-center gap-2 w-full pl-0.5 pr-2 h-9 text-sm rounded-md',
+      'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
       'cursor-pointer mb-1',
