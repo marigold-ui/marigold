@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Button, Link, Separator } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useLayoutEffect, useObjectRef } from '@react-aria/utils';
-import { cn, useClassNames } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
@@ -149,8 +149,7 @@ export interface SidebarNavProps {
 
 const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
   ({ children, 'aria-label': ariaLabel }, forwardedRef) => {
-    const { variant, size } = useSidebar();
-    const classNames = useClassNames({ component: 'Sidebar', variant, size });
+    const { classNames } = useSidebar();
 
     const collection: SidebarCollection = useMemo(
       () => buildCollection(children),

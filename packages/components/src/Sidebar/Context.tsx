@@ -7,7 +7,8 @@ import {
   useState,
 } from 'react';
 import type { ReactNode } from 'react';
-import { useSmallScreen } from '@marigold/system';
+import type { ComponentClassNames } from '@marigold/system';
+import { useClassNames, useSmallScreen } from '@marigold/system';
 
 // Types
 // ---------------
@@ -17,8 +18,7 @@ export interface SidebarContextValue {
   state: SidebarState;
   toggleSidebar: () => void;
   isMobile: boolean;
-  variant?: string;
-  size?: string;
+  classNames: ComponentClassNames<'Sidebar'>;
 }
 
 export const SidebarContext = createContext<SidebarContextValue | null>(null);
@@ -74,6 +74,7 @@ export const SidebarProvider = ({
   size,
 }: SidebarProviderProps) => {
   const isMobile = useSmallScreen();
+  const classNames = useClassNames({ component: 'Sidebar', variant, size });
 
   // Desktop state (cookie-backed)
   const [_open, _setOpen] = useState(() => {
@@ -122,10 +123,9 @@ export const SidebarProvider = ({
       state,
       toggleSidebar,
       isMobile,
-      variant,
-      size,
+      classNames,
     }),
-    [state, toggleSidebar, isMobile, variant, size]
+    [state, toggleSidebar, isMobile, classNames]
   );
 
   return (

@@ -6,7 +6,7 @@ import type {
 } from 'react';
 import { Modal, ModalOverlay } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, useClassNames } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
@@ -47,13 +47,8 @@ interface SidebarComponent extends ForwardRefExoticComponent<
 // ---------------
 const _Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
   ({ children }, ref) => {
-    const { isMobile, state, toggleSidebar, variant, size } = useSidebar();
+    const { isMobile, state, toggleSidebar, classNames } = useSidebar();
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
-    const classNames = useClassNames({
-      component: 'Sidebar',
-      variant,
-      size,
-    });
 
     const content = (
       <div

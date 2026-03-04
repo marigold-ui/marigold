@@ -1,6 +1,6 @@
 import { Button } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, useClassNames } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
@@ -11,13 +11,8 @@ const isMac =
   /Mac|iPhone|iPad/.test(navigator.userAgent);
 
 export const SidebarToggle = () => {
-  const { toggleSidebar, state, variant, size } = useSidebar();
+  const { toggleSidebar, state, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const classNames = useClassNames({
-    component: 'Sidebar',
-    variant,
-    size,
-  });
 
   const shortcut = isMac ? '⌘B' : 'Ctrl+B';
 
