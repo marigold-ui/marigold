@@ -263,7 +263,7 @@ export type Theme = {
       | 'modal'
       | 'closeButton'
       | 'header'
-      | 'content'
+      | 'nav'
       | 'footer'
       | 'toggle'
       | 'separator'

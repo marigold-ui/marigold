@@ -28,7 +28,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3 z-50', 'size-7'] }),
   header: cva({ base: 'border-border border-b px-4 py-3' }),
-  content: cva({
+  nav: cva({
     base: 'flex flex-col px-4 py-2 overflow-y-auto outline-none',
   }),
   footer: cva({ base: 'border-border border-t px-4 py-3' }),

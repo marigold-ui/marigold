@@ -223,7 +223,7 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
         aria-label={ariaLabel}
         className={cn(
           'ui-scrollbar min-h-0 overflow-y-auto [grid-area:content]',
-          classNames.content
+          classNames.nav
         )}
       >
         <div className={cn('shrink-0', classNames.panelGroup)}>
