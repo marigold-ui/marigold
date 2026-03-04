@@ -40,6 +40,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showMore: 'Mehr anzeigen',
     showMoreCount: vars => `${vars?.count} weitere anzeigen`,
     toggleNavigation: 'Navigation umschalten',
+    toggleNavigationTooltip: (vars: Variables) =>
+      `Navigation ein-/ausblenden (${vars?.shortcut})`,
     uploadLabel: 'Hochladen',
   },
   'en-US': {
@@ -80,6 +82,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showMore: 'Show more',
     showMoreCount: vars => `Show ${vars?.count} more`,
     toggleNavigation: 'Toggle navigation',
+    toggleNavigationTooltip: (vars: Variables) =>
+      `Toggle navigation (${vars?.shortcut})`,
     uploadLabel: 'Upload',
   },
 };

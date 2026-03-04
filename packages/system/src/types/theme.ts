@@ -268,9 +268,8 @@ export type Theme = {
       | 'toggle'
       | 'separator'
       | 'groupLabel'
-      | 'panel'
+      | 'navPanel'
       | 'navLink'
-      | 'panelGroup'
       | 'backButton',
       ComponentStyleFunction<string, string>
     >;

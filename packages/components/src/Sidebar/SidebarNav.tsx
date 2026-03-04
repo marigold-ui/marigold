@@ -63,7 +63,7 @@ const InnerPanelContent = ({
 }) => {
   return (
     <div
-      className={cn(classNames.panel)}
+      className={cn(classNames.navPanel)}
       data-position={position}
       inert={position !== 'active' || undefined}
     >
@@ -226,7 +226,7 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
           classNames.nav
         )}
       >
-        <div className={cn('shrink-0', classNames.panelGroup)}>
+        <div className="relative shrink-0 overflow-hidden">
           <InnerPanelContent
             nodes={collection.rootNodes}
             position={panelPosition('root', stack)}
