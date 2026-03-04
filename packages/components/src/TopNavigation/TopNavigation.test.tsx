@@ -3,7 +3,7 @@ import { createRef } from 'react';
 import { mockMatchMedia } from '../test.utils';
 import { useTopNavigationContext } from './Context';
 import {
-  ApplicationShell,
+  WithBreadcrumbs,
   WithSearchField,
   WithTabs,
 } from './TopNavigation.stories';
@@ -36,7 +36,7 @@ test('renders all three slots', () => {
 });
 
 test('applies sticky classes when sticky prop is set', () => {
-  render(<ApplicationShell.Component />);
+  render(<WithBreadcrumbs.Component />);
 
   const nav = screen.getByRole('banner');
 
