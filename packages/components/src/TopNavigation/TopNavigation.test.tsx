@@ -31,8 +31,9 @@ test('renders a header element with the banner role', () => {
 test('renders all three slots', () => {
   render(<WithTabs.Component />);
 
-  expect(screen.getByText('Home')).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: 'User menu' })).toBeInTheDocument();
+  const nav = screen.getByRole('banner');
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(nav.children).toHaveLength(3);
 });
 
 test('applies sticky classes when sticky prop is set', () => {
@@ -43,15 +44,6 @@ test('applies sticky classes when sticky prop is set', () => {
   expect(nav.className).toMatch(/sticky/);
   expect(nav.className).toMatch(/top-0/);
   expect(nav.className).toMatch(/z-1/);
-});
-
-test('renders with search field and breadcrumbs', () => {
-  render(<WithSearchField.Component />);
-
-  const nav = screen.getByRole('banner');
-
-  expect(nav).toBeInTheDocument();
-  expect(screen.getByRole('searchbox')).toBeInTheDocument();
 });
 
 test('forwards ref to header element', () => {
@@ -92,4 +84,14 @@ test('applies overflow-x-auto to middle slot', () => {
   });
 
   expect(middleSlot.className).toMatch(/overflow-x-auto/);
+});
+
+test('applies alignX class to middle slot', () => {
+  render(<WithSearchField.Component />);
+
+  const middleSlot = screen.getByRole('navigation', {
+    name: 'SearchField',
+  });
+
+  expect(middleSlot.className).toMatch(/justify-center/);
 });

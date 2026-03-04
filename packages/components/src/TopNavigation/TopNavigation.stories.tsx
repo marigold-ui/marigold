@@ -1,3 +1,4 @@
+import { PanelRightClose } from 'lucide-react';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Logout, SettingDots, User } from '@marigold/icons';
@@ -78,7 +79,9 @@ const LogoSection = () => {
   const showLogo = useResponsiveValue([false, false, true, true, true]);
   return (
     <>
-      <Button size="icon">SB</Button>
+      <Button variant="icon">
+        <PanelRightClose />
+      </Button>
       {showLogo && <Logo />}
     </>
   );
@@ -161,8 +164,8 @@ export const WithTabs = meta.story({
   ),
   play: async ({ canvas }) => {
     const nav = canvas.getByRole('banner');
-    await expect(nav).toBeInTheDocument();
 
+    await expect(nav).toBeInTheDocument();
     await expect(canvas.getByText('Home')).toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: 'User menu' })
@@ -188,7 +191,7 @@ export const WithSearchField = meta.story({
       <TopNavigation.Start>
         <LogoSection />
       </TopNavigation.Start>
-      <TopNavigation.Middle alignX="between">
+      <TopNavigation.Middle aria-label="SearchField" alignX="center">
         <SearchField placeholder="Search..." />
       </TopNavigation.Middle>
       <TopNavigation.End>
