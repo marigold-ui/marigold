@@ -7,14 +7,12 @@ import { useTopNavigationContext } from './Context';
 export interface TopNavigationEndProps {
   /**
    * Accessible label for the navigation landmark.
+   * @default 'Global navigation'
    */
   'aria-label'?: string;
   /**
-   * Horizontal alignment of the items inside the end slot.
-   */
-  alignX?: keyof typeof alignment.horizontal.alignmentX;
-  /**
    * Vertical alignment of the items inside the end slot.
+   * @default 'center'
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
   /**
@@ -25,8 +23,7 @@ export interface TopNavigationEndProps {
 
 export const TopNavigationEnd = ({
   'aria-label': ariaLabel,
-  alignX,
-  alignY,
+  alignY = 'center',
   children,
   ...props
 }: TopNavigationEndProps) => {
@@ -40,7 +37,6 @@ export const TopNavigationEnd = ({
       className={cn(
         'min-w-0 [grid-area:end]',
         classNames.end,
-        alignX && alignment.horizontal.alignmentX[alignX],
         alignY && alignment.horizontal.alignmentY[alignY]
       )}
     >

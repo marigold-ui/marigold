@@ -8,15 +8,16 @@ import { useTopNavigationContext } from './Context';
 export interface TopNavigationMiddleProps {
   /**
    * Accessible label for the navigation landmark.
+   * @default 'Global navigation'
    */
   'aria-label'?: string;
   /**
    * Horizontal alignment of the items inside the middle slot.
-   * @default 'left'
    */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
   /**
    * Vertical alignment of the items inside the middle slot.
+   * @default 'center'
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
   /**

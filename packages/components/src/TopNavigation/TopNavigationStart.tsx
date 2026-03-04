@@ -4,11 +4,8 @@ import { useTopNavigationContext } from './Context';
 
 export interface TopNavigationStartProps {
   /**
-   * Horizontal alignment of the items inside the start slot.
-   */
-  alignX?: keyof typeof alignment.horizontal.alignmentX;
-  /**
    * Vertical alignment of the items inside the start slot.
+   * @default 'center'
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
   /**
@@ -18,8 +15,7 @@ export interface TopNavigationStartProps {
 }
 
 export const TopNavigationStart = ({
-  alignX,
-  alignY,
+  alignY = 'center',
   children,
 }: TopNavigationStartProps) => {
   const { classNames } = useTopNavigationContext();
@@ -29,7 +25,6 @@ export const TopNavigationStart = ({
       className={cn(
         'min-w-0 [grid-area:start]',
         classNames.start,
-        alignX && alignment.horizontal.alignmentX[alignX],
         alignY && alignment.horizontal.alignmentY[alignY]
       )}
     >
