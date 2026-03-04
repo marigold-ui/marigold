@@ -270,7 +270,8 @@ export type Theme = {
       | 'groupLabel'
       | 'navPanel'
       | 'navLink'
-      | 'backButton',
+      | 'backButton'
+      | 'content',
       ComponentStyleFunction<string, string>
     >;
   };

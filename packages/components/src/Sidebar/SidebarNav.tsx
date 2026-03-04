@@ -212,7 +212,7 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
     return (
       <nav
         ref={navRef}
-        aria-label={ariaLabel}
+        aria-label={ariaLabel || stringFormatter.format('appNavigation')}
         className={cn(
           'ui-scrollbar min-h-0 overflow-y-auto [grid-area:content]',
           classNames.nav

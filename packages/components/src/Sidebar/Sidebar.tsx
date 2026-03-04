@@ -53,14 +53,14 @@ const _Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
         {isMobile && (
           <CloseButton
             aria-label={stringFormatter.format('closeNavigation')}
-            className={classNames.closeButton}
+            className={cn('z-50', classNames.closeButton)}
             onPress={toggleSidebar}
           />
         )}
         <div
           className={cn(
             "grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
-            !isMobile && 'w-64'
+            classNames.content
           )}
         >
           {children}

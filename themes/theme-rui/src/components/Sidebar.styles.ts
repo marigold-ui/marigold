@@ -8,6 +8,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'justify-start',
       'entering:animate-slide-in-left',
       'exiting:animate-slide-out-left',
+      'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
     ],
   }),
   root: cva({
@@ -17,10 +18,12 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'sm:data-[state=expanded]:w-64',
       'sm:data-[state=collapsed]:w-0',
       'sm:transition-[width] sm:duration-200 sm:ease-in-out',
+      'motion-reduce:sm:transition-none',
       'border-r',
     ],
   }),
-  closeButton: cva({ base: ['absolute top-3.5 right-3 z-50', 'size-7'] }),
+  closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
+  content: cva({ base: 'sm:w-64' }),
   header: cva({ base: 'border-border border-b px-4 py-3' }),
   nav: cva({
     base: 'flex flex-col px-4 py-2 overflow-y-auto outline-none',
@@ -63,8 +66,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
       'text-muted-foreground hover:text-foreground hover:bg-hover transition-colors',
-      // 'data-active:bg-selected data-active:text-foreground data-active:font-medium',
-      'data-active:bg-orange-500/15 data-active:text-orange-700 data-active:font-medium',
+      'data-active:bg-selected data-active:text-foreground data-active:font-medium',
+      'motion-reduce:transition-none',
       'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
     ],
   }),
@@ -72,6 +75,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       'grid grid-cols-[2.25rem_1fr_2.25rem] items-center w-full px-2 h-9 text-sm rounded-md',
       'text-muted-foreground hover:text-foreground transition-colors',
+      'motion-reduce:transition-none',
       'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
       'cursor-pointer mb-1',
     ],
