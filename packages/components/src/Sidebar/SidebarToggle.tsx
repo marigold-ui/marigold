@@ -1,3 +1,4 @@
+import { Button } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
@@ -14,14 +15,13 @@ export const SidebarToggle = () => {
   });
 
   return (
-    <button
-      type="button"
+    <Button
       aria-expanded={state === 'expanded'}
       aria-label={stringFormatter.format('toggleNavigation')}
-      onClick={toggleSidebar}
+      onPress={toggleSidebar}
       className={cn('group/icon', classNames.toggle)}
     >
       <SidebarToggleIcon expanded={state === 'expanded'} strokeWidth={1.5} />
-    </button>
+    </Button>
   );
 };

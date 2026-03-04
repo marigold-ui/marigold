@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import type { ReactNode } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 import { useSidebar } from './Context';
@@ -10,24 +11,28 @@ export interface SidebarSlotProps {
 
 // SidebarHeader
 // ---------------
-export const SidebarHeader = ({ children }: SidebarSlotProps) => {
-  const { variant, size } = useSidebar();
-  const classNames = useClassNames({ component: 'Sidebar', variant, size });
-  return (
-    <div className={cn('[grid-area:header]', classNames.header)}>
-      {children}
-    </div>
-  );
-};
+export const SidebarHeader = forwardRef<HTMLDivElement, SidebarSlotProps>(
+  ({ children }, ref) => {
+    const { variant, size } = useSidebar();
+    const classNames = useClassNames({ component: 'Sidebar', variant, size });
+    return (
+      <div ref={ref} className={cn('[grid-area:header]', classNames.header)}>
+        {children}
+      </div>
+    );
+  }
+);
 
 // SidebarFooter
 // ---------------
-export const SidebarFooter = ({ children }: SidebarSlotProps) => {
-  const { variant, size } = useSidebar();
-  const classNames = useClassNames({ component: 'Sidebar', variant, size });
-  return (
-    <div className={cn('[grid-area:footer]', classNames.footer)}>
-      {children}
-    </div>
-  );
-};
+export const SidebarFooter = forwardRef<HTMLDivElement, SidebarSlotProps>(
+  ({ children }, ref) => {
+    const { variant, size } = useSidebar();
+    const classNames = useClassNames({ component: 'Sidebar', variant, size });
+    return (
+      <div ref={ref} className={cn('[grid-area:footer]', classNames.footer)}>
+        {children}
+      </div>
+    );
+  }
+);

@@ -701,33 +701,6 @@ test('onPress callback fires on item click', async () => {
   expect(handlePress).toHaveBeenCalledOnce();
 });
 
-test('dynamic items via items prop and render function', () => {
-  const navItems = [
-    { id: '1', label: 'Dashboard', url: '/dashboard' },
-    { id: '2', label: 'Profile', url: '/profile' },
-    { id: '3', label: 'Settings', url: '/settings' },
-  ];
-
-  render(
-    <Sidebar.Provider>
-      <Sidebar>
-        <Sidebar.Nav items={navItems}>
-          {item => (
-            <Sidebar.Item key={item.id} href={item.url}>
-              {item.label}
-            </Sidebar.Item>
-          )}
-        </Sidebar.Nav>
-      </Sidebar>
-    </Sidebar.Provider>
-  );
-
-  for (const item of navItems) {
-    const link = screen.getByRole('link', { name: item.label });
-    expect(link).toHaveAttribute('href', item.url);
-  }
-});
-
 test('nested branches derive href from deepest first leaf', () => {
   render(
     <Sidebar.Provider>

@@ -1,4 +1,9 @@
-import type { ReactNode } from 'react';
+import { forwardRef } from 'react';
+import type {
+  ForwardRefExoticComponent,
+  ReactNode,
+  RefAttributes,
+} from 'react';
 import { Modal, ModalOverlay } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
@@ -23,76 +28,97 @@ export interface SidebarProps {
   size?: string;
 }
 
+// Compound Component Interface
+// ---------------
+interface SidebarComponent extends ForwardRefExoticComponent<
+  SidebarProps & RefAttributes<HTMLDivElement>
+> {
+  Provider: typeof SidebarProvider;
+  Header: typeof SidebarHeader;
+  Footer: typeof SidebarFooter;
+  GroupLabel: typeof SidebarGroupLabel;
+  Nav: typeof SidebarNav;
+  Item: typeof SidebarItem;
+  Separator: typeof SidebarSeparator;
+  Toggle: typeof SidebarToggle;
+}
+
 // Mobile Sheet
 // ---------------
-const MobileSidebar = ({ children }: { children: ReactNode }) => {
-  const { state, toggleSidebar, variant, size } = useSidebar();
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const classNames = useClassNames({
-    component: 'Sidebar',
-    variant,
-    size,
-  });
+const MobileSidebar = forwardRef<HTMLDivElement, { children: ReactNode }>(
+  ({ children }, ref) => {
+    const { state, toggleSidebar, variant, size } = useSidebar();
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
+    const classNames = useClassNames({
+      component: 'Sidebar',
+      variant,
+      size,
+    });
 
-  return (
-    <ModalOverlay
-      isOpen={state === 'expanded'}
-      onOpenChange={open => !open && toggleSidebar()}
-      className={cn('z-50', classNames.overlay)}
-      isDismissable
-    >
-      <Modal className={classNames.modal}>
-        <div className={cn('h-full', classNames.root)}>
-          <CloseButton
-            aria-label={stringFormatter.format('closeNavigation')}
-            className={classNames.closeButton}
-            onPress={toggleSidebar}
-          />
-          <div className="grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
-            {children}
+    return (
+      <ModalOverlay
+        isOpen={state === 'expanded'}
+        onOpenChange={open => !open && toggleSidebar()}
+        className={cn('z-50', classNames.overlay)}
+        isDismissable
+      >
+        <Modal className={classNames.modal}>
+          <div ref={ref} className={cn('h-full', classNames.root)}>
+            <CloseButton
+              aria-label={stringFormatter.format('closeNavigation')}
+              className={classNames.closeButton}
+              onPress={toggleSidebar}
+            />
+            <div className="grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
+              {children}
+            </div>
           </div>
-        </div>
-      </Modal>
-    </ModalOverlay>
-  );
-};
+        </Modal>
+      </ModalOverlay>
+    );
+  }
+);
 
 // Desktop Sidebar
 // ---------------
-const DesktopSidebar = ({ children }: SidebarProps) => {
-  const { state, variant, size } = useSidebar();
-  const classNames = useClassNames({
-    component: 'Sidebar',
-    variant,
-    size,
-  });
+const DesktopSidebar = forwardRef<HTMLDivElement, SidebarProps>(
+  ({ children }, ref) => {
+    const { state, variant, size } = useSidebar();
+    const classNames = useClassNames({
+      component: 'Sidebar',
+      variant,
+      size,
+    });
 
-  return (
-    <div data-state={state} className={classNames.root}>
-      <div className="grid h-full w-64 grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
-        {children}
+    return (
+      <div ref={ref} data-state={state} className={classNames.root}>
+        <div className="grid h-full w-64 grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']">
+          {children}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 // Component
 // ---------------
-export const Sidebar = (props: SidebarProps) => {
+const _Sidebar = forwardRef<HTMLDivElement, SidebarProps>((props, ref) => {
   const { isMobile } = useSidebar();
 
   if (isMobile) {
-    return <MobileSidebar>{props.children}</MobileSidebar>;
+    return <MobileSidebar ref={ref}>{props.children}</MobileSidebar>;
   }
 
-  return <DesktopSidebar {...props} />;
-};
+  return <DesktopSidebar ref={ref} {...props} />;
+}) as SidebarComponent;
 
-Sidebar.Provider = SidebarProvider;
-Sidebar.Header = SidebarHeader;
-Sidebar.Footer = SidebarFooter;
-Sidebar.GroupLabel = SidebarGroupLabel;
-Sidebar.Nav = SidebarNav;
-Sidebar.Item = SidebarItem;
-Sidebar.Separator = SidebarSeparator;
-Sidebar.Toggle = SidebarToggle;
+_Sidebar.Provider = SidebarProvider;
+_Sidebar.Header = SidebarHeader;
+_Sidebar.Footer = SidebarFooter;
+_Sidebar.GroupLabel = SidebarGroupLabel;
+_Sidebar.Nav = SidebarNav;
+_Sidebar.Item = SidebarItem;
+_Sidebar.Separator = SidebarSeparator;
+_Sidebar.Toggle = SidebarToggle;
+
+export { _Sidebar as Sidebar };

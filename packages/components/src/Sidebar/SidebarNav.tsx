@@ -1,8 +1,8 @@
-import { useMemo, useRef, useState } from 'react';
+import { forwardRef, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Link, Separator } from 'react-aria-components';
+import { Button, Link, Separator } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useLayoutEffect } from '@react-aria/utils';
+import { useLayoutEffect, useObjectRef } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
@@ -69,14 +69,13 @@ const InnerPanelContent = ({
     >
       {onBack && (
         <div>
-          <button
-            type="button"
+          <Button
             data-back-button
             aria-label={stringFormatter.format('backTo', {
               label: backLabel ?? stringFormatter.format('back'),
             })}
             className={cn(classNames.subNavBackButton)}
-            onClick={onBack}
+            onPress={onBack}
           >
             <span className="flex items-center justify-center">
               <ChevronLeft size={16} />
@@ -85,7 +84,7 @@ const InnerPanelContent = ({
               {backLabel ?? stringFormatter.format('back')}
             </span>
             <span aria-hidden="true" />
-          </button>
+          </Button>
         </div>
       )}
       {nodes.map(node => {
@@ -145,117 +144,114 @@ const InnerPanelContent = ({
 
 // SidebarNav
 // ---------------
-export interface SidebarNavProps<T = object> {
-  /** Static children or render function for dynamic items. */
-  children?: ReactNode | ((item: T) => ReactNode);
-  /** Dynamic items collection. When provided, children must be a render function. */
-  items?: Iterable<T>;
+export interface SidebarNavProps {
+  children?: ReactNode;
   'aria-label'?: string;
 }
 
-export const SidebarNav = <T extends object = object>({
-  children,
-  items,
-  'aria-label': ariaLabel,
-}: SidebarNavProps<T>) => {
-  const { variant, size } = useSidebar();
-  const classNames = useClassNames({ component: 'Sidebar', variant, size });
+const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
+  ({ children, 'aria-label': ariaLabel }, forwardedRef) => {
+    const { variant, size } = useSidebar();
+    const classNames = useClassNames({ component: 'Sidebar', variant, size });
 
-  const collection: SidebarCollection = useMemo(() => {
-    const resolved =
-      items && typeof children === 'function'
-        ? Array.from(items).map(item => children(item))
-        : (children as ReactNode);
-    return buildCollection(resolved);
-  }, [items, children]);
+    const collection: SidebarCollection = useMemo(
+      () => buildCollection(children),
+      [children]
+    );
 
-  // Derive which branch contains the active item
-  const activeBranch = useMemo(
-    () => findActiveBranch(collection),
-    [collection]
-  );
+    // Derive which branch contains the active item
+    const activeBranch = useMemo(
+      () => findActiveBranch(collection),
+      [collection]
+    );
 
-  // Explicit panel state — which branch panel is shown (null = root).
-  // This is independently settable (via back button or branch click)
-  // but syncs when the URL-derived activeBranch changes.
-  const [openBranch, setOpenBranch] = useState<string | null>(activeBranch);
-  const [prevActiveBranch, setPrevActiveBranch] = useState(activeBranch);
+    // Explicit panel state — which branch panel is shown (null = root).
+    // This is independently settable (via back button or branch click)
+    // but syncs when the URL-derived activeBranch changes.
+    const [openBranch, setOpenBranch] = useState<string | null>(activeBranch);
+    const [prevActiveBranch, setPrevActiveBranch] = useState(activeBranch);
 
-  if (activeBranch !== prevActiveBranch) {
-    setPrevActiveBranch(activeBranch);
-    setOpenBranch(activeBranch);
-  }
-
-  const stack = openBranch ? [openBranch] : [];
-
-  // Collect all branch nodes for always-mounted panels
-  const branchNodes = useMemo(
-    () => collectBranches(collection.rootNodes),
-    [collection]
-  );
-
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
-
-  // Focus management on panel transitions
-  const navRef = useRef<HTMLElement>(null);
-  const prevOpenBranch = useRef(openBranch);
-
-  useLayoutEffect(() => {
-    const prev = prevOpenBranch.current;
-    prevOpenBranch.current = openBranch;
-
-    // Skip on initial render
-    if (prev === openBranch) return;
-    if (!navRef.current) return;
-
-    const activePanel = navRef.current.querySelector(
-      '[data-position="active"]'
-    ) as HTMLElement | null;
-    if (!activePanel) return;
-
-    let target: HTMLElement | null = null;
-
-    if (openBranch && !prev) {
-      // Went forward (root → branch): focus back button
-      target = activePanel.querySelector('[data-back-button]');
-    } else if (!openBranch && prev) {
-      // Went back (branch → root): focus the trigger that was clicked
-      target = activePanel.querySelector(`[data-key="${prev}"]`);
-    } else if (openBranch && prev && openBranch !== prev) {
-      // Switched branches: focus back button
-      target = activePanel.querySelector('[data-back-button]');
+    if (activeBranch !== prevActiveBranch) {
+      setPrevActiveBranch(activeBranch);
+      setOpenBranch(activeBranch);
     }
 
-    target?.focus();
-  }, [openBranch]);
+    const stack = openBranch ? [openBranch] : [];
 
-  return (
-    <nav
-      ref={navRef}
-      aria-label={ariaLabel}
-      className={cn('overflow-y-auto [grid-area:content]', classNames.content)}
-    >
-      <div className={classNames.subNav}>
-        <InnerPanelContent
-          nodes={collection.rootNodes}
-          position={panelPosition('root', stack)}
-          classNames={classNames}
-          onBranchClick={setOpenBranch}
-          stringFormatter={stringFormatter}
-        />
-        {branchNodes.map(branch => (
+    // Collect all branch nodes for always-mounted panels
+    const branchNodes = useMemo(
+      () => collectBranches(collection.rootNodes),
+      [collection]
+    );
+
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+    // Focus management on panel transitions
+    const navRef = useObjectRef(forwardedRef);
+    const prevOpenBranch = useRef(openBranch);
+
+    useLayoutEffect(() => {
+      const prev = prevOpenBranch.current;
+      prevOpenBranch.current = openBranch;
+
+      // Skip on initial render
+      if (prev === openBranch) return;
+      if (!navRef.current) return;
+
+      const activePanel = navRef.current.querySelector(
+        '[data-position="active"]'
+      ) as HTMLElement | null;
+      if (!activePanel) return;
+
+      let target: HTMLElement | null = null;
+
+      if (openBranch && !prev) {
+        // Went forward (root → branch): focus back button
+        target = activePanel.querySelector('[data-back-button]');
+      } else if (!openBranch && prev) {
+        // Went back (branch → root): focus the trigger that was clicked
+        target = activePanel.querySelector(`[data-key="${prev}"]`);
+      } else if (openBranch && prev && openBranch !== prev) {
+        // Switched branches: focus back button
+        target = activePanel.querySelector('[data-back-button]');
+      }
+
+      target?.focus();
+    }, [navRef, openBranch]);
+
+    return (
+      <nav
+        ref={navRef}
+        aria-label={ariaLabel}
+        className={cn(
+          'ui-scrollbar min-h-0 overflow-y-auto [grid-area:content]',
+          classNames.content
+        )}
+      >
+        <div className={cn('shrink-0', classNames.subNav)}>
           <InnerPanelContent
-            key={branch.key}
-            nodes={branch.children}
-            position={panelPosition(branch.key, stack)}
-            onBack={() => setOpenBranch(null)}
-            onBranchClick={setOpenBranch}
-            backLabel={branch.textValue}
+            nodes={collection.rootNodes}
+            position={panelPosition('root', stack)}
             classNames={classNames}
+            onBranchClick={setOpenBranch}
             stringFormatter={stringFormatter}
           />
-        ))}
-      </div>
-    </nav>
-  );
-};
+          {branchNodes.map(branch => (
+            <InnerPanelContent
+              key={branch.key}
+              nodes={branch.children}
+              position={panelPosition(branch.key, stack)}
+              onBack={() => setOpenBranch(null)}
+              onBranchClick={setOpenBranch}
+              backLabel={branch.textValue}
+              classNames={classNames}
+              stringFormatter={stringFormatter}
+            />
+          ))}
+        </div>
+      </nav>
+    );
+  }
+);
+
+export { SidebarNav };
