@@ -294,7 +294,9 @@ export const BasicActionMenu: any = meta.story({
         {...args}
       >
         <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
-        <ActionMenu.Item id="settings">Settings</ActionMenu.Item>
+        <ActionMenu.Item id="settings">
+          <Delete /> Settings
+        </ActionMenu.Item>
         <ActionMenu.Item id="delete" variant="destructive">
           <Delete /> Delete
         </ActionMenu.Item>

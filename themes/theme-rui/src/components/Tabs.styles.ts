@@ -14,7 +14,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
       '[&_svg]:shrink-0',
       'focus-visible:ui-state-focus outline-none',
       'hover:bg-current/10',
-      'disabled:pointer-events-none disabled:opacity-50',
+      'disabled:pointer-events-none disabled:text-disabled-foreground',
       'selected:text-foreground selected:hover:bg-current/10',
       'data-[selected=true]:after:bg-foreground after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5',
     ],
