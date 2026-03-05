@@ -123,7 +123,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
         isDisabled={disabled}
         className={cn(
           container,
-          maxVisibleItems == 'auto' && 'whitespace-nowrap'
+          maxVisibleItems === 'auto' && 'whitespace-nowrap'
         )}
       >
         {displayedItems.map((item, index) => {
