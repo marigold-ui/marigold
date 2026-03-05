@@ -15,7 +15,7 @@ export default () => {
   const [showSpacing, setShowSpacing] = useState(false);
 
   return (
-    <Stack space="8">
+    <Stack space="group">
       <Switch
         label="Show spacing"
         selected={showSpacing}
