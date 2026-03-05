@@ -121,8 +121,8 @@ export const Table: ThemeComponent<'Table'> = {
   dropIndicator: cva({
     base: [
       'relative',
-      'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-stone-300',
-      'drop-target:before:z-10 drop-target:before:bg-stone-800',
+      'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-border',
+      'drop-target:before:z-10 drop-target:before:bg-brand',
     ],
   }),
 
@@ -136,7 +136,7 @@ export const Table: ThemeComponent<'Table'> = {
   editTrigger: cva({
     base: [
       'flex items-center justify-center',
-      'text-foreground/60',
+      'text-muted-foreground',
       'size-button aspect-square rounded-surface transition-[color,background,transform]',
       'ui-interactive',
       'ui-press',
@@ -147,7 +147,7 @@ export const Table: ThemeComponent<'Table'> = {
   editCancel: cva({
     base: [
       'inline-flex items-center justify-center',
-      'sm:text-foreground/60 font-medium',
+      'sm:text-muted-foreground font-medium',
       'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'ml-1.5', // some extra spacing between buttons and field
@@ -160,7 +160,7 @@ export const Table: ThemeComponent<'Table'> = {
   editSave: cva({
     base: [
       'inline-flex items-center justify-center',
-      'sm:text-foreground/60 font-medium',
+      'sm:text-muted-foreground font-medium',
       'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'focus-visible:ui-state-focus outline-none',

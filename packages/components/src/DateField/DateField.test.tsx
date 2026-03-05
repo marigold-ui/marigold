@@ -89,7 +89,7 @@ test('renders correctly', () => {
             aria-valuenow="1"
             aria-valuetext="1"
             autocorrect="off"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             contenteditable="true"
             data-rac=""
             data-type="day"
@@ -111,7 +111,7 @@ test('renders correctly', () => {
           </span>
           <span
             aria-hidden="true"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             data-rac=""
             data-type="literal"
           >
@@ -131,7 +131,7 @@ test('renders correctly', () => {
             aria-valuenow="1"
             aria-valuetext="1 – Januar"
             autocorrect="off"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             contenteditable="true"
             data-rac=""
             data-type="month"
@@ -153,7 +153,7 @@ test('renders correctly', () => {
           </span>
           <span
             aria-hidden="true"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             data-rac=""
             data-type="literal"
           >
@@ -173,7 +173,7 @@ test('renders correctly', () => {
             aria-valuenow="2026"
             aria-valuetext="2026"
             autocorrect="off"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             contenteditable="true"
             data-rac=""
             data-type="year"
