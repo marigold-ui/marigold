@@ -32,6 +32,8 @@ export const SidebarPanel = ({
   return (
     <div
       ref={panelRef}
+      role="region"
+      aria-label={backLabel ?? stringFormatter.format('appNavigation')}
       className={cn(classNames.navPanel)}
       data-position={position}
       inert={position !== 'active' || undefined}
@@ -48,12 +50,11 @@ export const SidebarPanel = ({
             onPress={onBack}
           >
             <span className="flex items-center justify-center">
-              <ChevronLeft size={16} />
+              <ChevronLeft aria-hidden="true" size={16} />
             </span>
             <span className="truncate text-center font-medium">
               {backLabel ?? stringFormatter.format('back')}
             </span>
-            <span aria-hidden="true" />
           </Button>
         </div>
       )}
@@ -66,7 +67,12 @@ export const SidebarPanel = ({
 
         if (node.type === 'groupLabel') {
           return (
-            <div key={node.key} className={cn(classNames.groupLabel)}>
+            <div
+              key={node.key}
+              role="heading"
+              aria-level={2}
+              className={cn(classNames.groupLabel)}
+            >
               {node.content}
             </div>
           );
@@ -86,7 +92,7 @@ export const SidebarPanel = ({
               }}
             >
               <span className="truncate">{node.triggerContent}</span>
-              <ChevronRight size={16} />
+              <ChevronRight aria-hidden="true" size={16} />
             </Link>
           );
         }
