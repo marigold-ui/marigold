@@ -4,88 +4,13 @@ description: Persistent navigation panel for organizing app-level navigation.
 badge: beta
 ---
 
-# {/\*
-
-# PLAN: Sidebar Component Documentation
-
-This document follows the standard Marigold component doc structure (frontmatter →
-intro → anatomy → appearance → usage → props → alternatives → related) and enriches
-each section with findings from SIDEBAR-RESEARCH.md.
-
-Sources referenced throughout:
-
-- Carbon Design System (IBM) — UI Shell Left Panel
-- Adobe Spectrum — Side Navigation
-- Shadcn/ui Sidebar
-- Material UI (MUI) — Drawer / Navigation Drawer
-- Primer (GitHub) — NavList
-- Nielsen Norman Group (NN/g) — research articles on vertical nav
-
-================================================================================
-\*/}
-
-{/\*
-────────────────────────────────────────────────────────────────────────────────
-INTRO (no heading)
-────────────────────────────────────────────────────────────────────────────────
-
-Content needed:
-
-- 2-3 sentences: what it is, its purpose, key differentiators
-- Mention: persistent vertical nav, compound component, drill-down sub-nav,
-  responsive (desktop panel ↔ mobile sheet), cookie-persisted state
-- Use backtick component name: `<Sidebar>`
-
-Tone reference: see Tabs intro — factual, concise, focused on what the component
-enables the user to do.
-\*/}
-
-The `<Sidebar>` provides persistent, app-level navigation typically placed on the left side of the screen. It organizes navigation items into a vertical list, supports drill-down sub-navigation, and adapts responsively between desktop and mobile layouts.
-
-{/\*
-────────────────────────────────────────────────────────────────────────────────
+The `<Sidebar>` provides persistent, app-level navigation placed on the left side of the screen. It organizes navigation items into a vertical list, supports drill-down sub-navigation for nested sections, and adapts between a desktop panel and a mobile sheet overlay.
 
 ## Anatomy
 
-────────────────────────────────────────────────────────────────────────────────
+The `<Sidebar>` uses a compound component pattern. The outermost `<Sidebar.Provider>` manages state and responsive behavior. Inside, `<Sidebar>` renders a grid with three slots: a sticky header, scrollable navigation content, and a sticky footer.
 
-Content needed:
-
-1. Short prose paragraph explaining the compound component structure
-   - Mention: Provider wraps everything, Sidebar is a CSS Grid (header/content/footer),
-     Nav holds items via a collection system
-2. Anatomy image (needs to be created)
-   - File: /sidebar/sidebar-anatomy.jpg
-   - Should show: Provider boundary, Sidebar panel, Header slot, Nav area with
-     items/groups/separators, Footer slot, Toggle button outside in main content
-   - Annotate each part with its sub-component name
-3. Bulleted list of each part with <b>Name:</b> format:
-   - Provider — state management, mobile detection, context
-   - Sidebar — the panel itself (CSS Grid: header / content / footer)
-   - Header — sticky top slot (branding, logos, workspace switcher)
-   - Navigation (Nav) — scrollable, holds items, supports drill-down panels
-   - Item — leaf link OR branch (has children → opens sub-panel)
-   - Group label — non-interactive section heading
-   - Separator — visual divider between groups
-   - Footer — sticky bottom slot (user profile, settings, secondary actions)
-   - Toggle — button placed OUTSIDE sidebar, in main content area
-4. Compound component callout (same as Tabs doc)
-   \*/}
-
-## Anatomy
-
-The `<Sidebar>` uses a compound component pattern. The outermost `<Sidebar.Provider>` manages state and responsive behavior. Inside, `<Sidebar>` renders a CSS Grid with three slots: header, scrollable content, and footer.
-
-{/\* TODO: Create anatomy image
-
-   <ImageZoom
-     src="/sidebar/sidebar-anatomy.jpg"
-     alt="Anatomy of sidebar"
-     width={800}
-     height={550}
-     className="mx-auto block"
-   />
-*/}
+{/* TODO: Create anatomy image at /public/sidebar/sidebar-anatomy.jpg */}
 
 <ul>
   <li><b>Provider:</b> Wraps the sidebar and main content. Manages open/close state, mobile detection, and context for all sub-components. Use `<Sidebar.Provider>`.</li>
@@ -105,70 +30,29 @@ The `<Sidebar>` uses a compound component pattern. The outermost `<Sidebar.Provi
   app.
 </Callout>
 
-{/\*
-────────────────────────────────────────────────────────────────────────────────
-
-## Appearance
-
-────────────────────────────────────────────────────────────────────────────────
-
-Content needed:
-
-- AppearanceDemo and AppearanceTable components (auto-generated from theme)
-- Before these work, the Sidebar needs to be registered in the appearance system
-- Theme slots to document: root, overlay, modal, closeButton, content, header,
-  nav, footer, toggle, separator, groupLabel, navPanel, navLink, backButton
-  (14 total)
-  \*/}
-
 ## Appearance
 
 {/\* TODO: Register Sidebar in appearance system, then uncomment:
 
-   <AppearanceDemo component={'Sidebar'} />
-   <AppearanceTable component={'Sidebar'} />
+<AppearanceDemo component={'Sidebar'} />
+<AppearanceTable component={'Sidebar'} />
 */}
-
-{/\*
-────────────────────────────────────────────────────────────────────────────────
 
 ## Usage
 
-────────────────────────────────────────────────────────────────────────────────
+Use `<Sidebar>` when your application has **more than five navigation items** or users need to **frequently switch between sections**. It works well for complex apps with deep hierarchies — admin panels, SaaS platforms, and enterprise tools.
 
-Opening paragraph content needed:
+For simpler sites with only a handful of top-level pages, prefer horizontal navigation or `<Tabs>` instead.
 
-- When to use: >5 nav items, frequent section switching, complex apps with deep
-  hierarchies (Carbon). SaaS, enterprise, B2B tools (NN/g).
-- When NOT to use: simple sites with few pages → horizontal nav or Tabs;
-  content-heavy sites where screen space is critical; mobile-only apps → bottom
-  tabs or hamburger
-- Basic demo showing a complete sidebar with header, grouped items, and footer
-
-Top-level Do/Don't tiles summarizing the most important guidelines:
-Do: keep visible on desktop, indicate current page, use text+icon labels
-Don't: hide behind hamburger on desktop, icons without text, >3 nesting levels
-\*/}
-
-## Usage
-
-Use `<Sidebar>` when your application has **more than five navigation items** or users need to **frequently switch between sections**. Sidebars are ideal for complex apps with deep hierarchies — SaaS platforms, enterprise tools, and B2B applications.
-
-For simpler sites with few top-level pages, prefer horizontal navigation or `<Tabs>` instead.
-
-{/\* TODO: Create demo — complete sidebar with header (logo), 2-3 groups with
-GroupLabels, a few leaf items, one branch item, and a footer with user avatar.
-
-   <ComponentDemo name="sidebar-basic" />
-*/}
+<ComponentDemo name="sidebar-basic" />
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
       <ul>
         <li>
-          Keep the sidebar visible on desktop — navigation aids understanding of
-          scope
+          Keep the sidebar visible on desktop — it helps users understand the
+          scope of the application
         </li>
         <li>Always indicate the current page clearly</li>
         <li>Use text labels alongside icons</li>
@@ -180,39 +64,15 @@ GroupLabels, a few leaf items, one branch item, and a footer with user avatar.
       <ul>
         <li>Don't hide navigation behind a hamburger on desktop</li>
         <li>Don't use icons without text labels</li>
-        <li>Don't nest deeper than 3 levels</li>
+        <li>Don't nest deeper than one level</li>
       </ul>
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
-{/\*
-──────────────────────────────────────────────────────────────
-
 ### Structure and layout
 
-──────────────────────────────────────────────────────────────
-
-Content needed:
-
-- Explain the Provider → Sidebar → main content wrapping requirement
-- Show the canonical JSX structure as a code block
-- Mention: Provider MUST wrap both sidebar and main content (not just sidebar)
-- Explain the CSS Grid layout: header / scrollable nav / footer
-- Note that Toggle goes OUTSIDE the sidebar, inside <main>
-- Mention width: sidebar uses ~16rem (256px) expanded, transitions to 0 when
-  collapsed (offcanvas pattern — no icon-only mode)
-
-Research backing (NN/g):
-
-- Always place on the left (right-rail blindness)
-- Optimal width: 240-300px expanded
-- Use contrasting background to distinguish from content area
-  \*/}
-
-### Structure and layout
-
-The `<Sidebar>` is placed on the left side of the screen alongside the main content area. The `<Sidebar.Provider>` must wrap both the sidebar and the page content so that toggling and responsive behavior work correctly.
+The `<Sidebar.Provider>` must wrap both the sidebar and the page content so that toggling and responsive behavior work correctly. Place the `<Sidebar.Toggle>` in the main content area, not inside the sidebar.
 
 ```tsx
 <Sidebar.Provider>
@@ -230,42 +90,9 @@ The `<Sidebar>` is placed on the left side of the screen alongside the main cont
 </Sidebar.Provider>
 ```
 
-{/\*
-──────────────────────────────────────────────────────────────
+### Organizing navigation items
 
-### Navigation organization
-
-──────────────────────────────────────────────────────────────
-
-Content needed:
-
-- How to use GroupLabel and Separator to create logical sections
-- Principle: group items by user goal, not by system structure (Carbon)
-- Prioritize items top-to-bottom by importance/frequency (NN/g: users scan
-  top of list first)
-- Warn against unbounded content in nav (Carbon: "usability drops rapidly
-  with too many items")
-
-Demo needed:
-
-- Sidebar with 2-3 groups: e.g. "Main" (Dashboard, Orders, Products),
-  "Settings" (Account, Billing), separated by GroupLabels and Separators
-
-Do/Don't:
-
-- Do: logical groups aligned to user goals, most important items first
-- Don't: user-generated/unbounded content in nav, arbitrarily ordered items
-  \*/}
-
-### Navigation organization
-
-Organize items into **logical groups** aligned to user goals. Use `<Sidebar.GroupLabel>` for section headings and `<Sidebar.Separator>` for visual dividers between groups. Prioritize items top-to-bottom by importance.
-
-{/\* TODO: Create demo — sidebar with GroupLabels ("Main", "Settings") and
-Separators between sections.
-
-   <ComponentDemo name="sidebar-groups" />
-*/}
+Use `<Sidebar.GroupLabel>` for section headings and `<Sidebar.Separator>` for visual dividers between groups. Group items by **user goals**, not by internal system structure. Place the most important items at the top — users scan vertical lists from top to bottom.
 
 <GuidelineTiles>
   <Do>
@@ -282,31 +109,9 @@ Separators between sections.
   </Dont>
 </GuidelineTiles>
 
-{/\*
-──────────────────────────────────────────────────────────────
-
 ### Labels
 
-──────────────────────────────────────────────────────────────
-
-Content needed:
-
-- Labels should be short, descriptive, in sentence case (Spectrum)
-- Front-load the keyword — users scan the first word of each label (NN/g:
-  "left-aligned, keyword-front-loaded labels scan best")
-- Don't truncate labels — wrap text instead (Spectrum)
-- Consistent behavior: either all top-level items navigate+expand, or they
-  only expand — never mix (Spectrum)
-
-Do/Don't:
-
-- Do: sentence case, succinct labels, keyword first (e.g. "Order history")
-- Don't: vague labels ("Miscellaneous"), Title Case, truncated text
-  \*/}
-
-### Labels
-
-Use **short, descriptive, keyword-front-loaded** labels in sentence case. Users scan vertical lists quickly, so the first word of each label should carry the most meaning.
+Use **short, descriptive labels** in sentence case. Front-load the keyword — users scan the first word of each label, so it should carry the most meaning (e.g. "Order history" rather than "History of orders").
 
 <GuidelineTiles>
   <Do>
@@ -323,174 +128,21 @@ Use **short, descriptive, keyword-front-loaded** labels in sentence case. Users 
   </Dont>
 </GuidelineTiles>
 
-{/\*
-──────────────────────────────────────────────────────────────
-
-### Icons
-
-──────────────────────────────────────────────────────────────
-
-Content needed:
-
-- Icons can be added to first-level items via the `icon` prop on Sidebar.Item
-- Only use when they "add essential value and have a strong association with
-  the text" (Spectrum)
-- Never use icons without text labels — "a word is worth a thousand pictures"
-  (NN/g); icon-only acceptable only for daily-use apps where users learn
-  patterns (NN/g)
-- Don't mix icon and text-only items in the same group (Spectrum)
-- Icons only on first-level items, not on nested/sub-panel items (Spectrum)
-
-Demo needed:
-
-- Sidebar with icons on top-level items (Dashboard → grid icon,
-  Orders → shopping bag, Settings → gear)
-
-Do/Don't:
-
-- Do: icons on first-level items, always paired with text
-- Don't: icon-only nav, mixing icon/text-only items in same group,
-  icons on nested items
-  \*/}
-
-### Icons
-
-Icons can be added to first-level navigation items to improve recognition. Only use icons when they **add essential value and have a strong association** with the label. Avoid mixing icon items and text-only items in the same group.
-
-{/\* TODO: Create demo — sidebar items with leading icons.
-
-   <ComponentDemo name="sidebar-icons" />
-*/}
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use icons only on first-level items, paired with text labels.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't use icons without text labels — a word is worth a thousand pictures.
-      Icon-only nav increases ambiguity.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-{/\*
-──────────────────────────────────────────────────────────────
-
 ### Drill-down navigation
 
-──────────────────────────────────────────────────────────────
+Items that have nested children become **branch items**. Clicking a branch opens a sub-panel that slides in from the right. A back button at the top of the sub-panel returns to the root level.
 
-Content needed:
+This keeps the sidebar width consistent and avoids deep indentation. The sidebar supports **one level** of drill-down nesting.
 
-- Explain the drill-down pattern: branch items (items with children) open a
-  sub-panel that slides in from the right
-- Back button appears at top of sub-panel to return to root
-- Supports ONE level of nesting (Marigold constraint; Spectrum recommends
-  max 3 levels, but our drill-down pattern works best with 1)
-- Width stays consistent during drill-down (no layout shift)
-- Active branches auto-open on mount so the user sees the relevant section
-  immediately
-- Branch items auto-derive their href from their first leaf descendant
-
-Focus management during drill-down:
-
-- Focus moves to back button when drilling in
-- Focus returns to the branch trigger when navigating back
-- Non-active panels should be inert (Spectrum a11y guideline)
-
-Demo needed:
-
-- Sidebar with a "Products" branch that drills into sub-items
-  (All products, Categories, Inventory)
-
-Callout:
-
-- Note that branch items act as both a navigation trigger AND a drill-down
-  toggle — they navigate to the first child's href while also opening the
-  sub-panel
-  \*/}
-
-### Drill-down navigation
-
-Branch items open a sub-panel that slides in from the right, revealing nested navigation. A back button returns to the root level. This pattern supports **one level of nesting** and keeps the sidebar width consistent.
-
-Active branches auto-open on mount so users always see the relevant section.
-
-{/\* TODO: Create demo — sidebar with a branch item ("Products") that drills
-into sub-items (All products, Categories, Inventory).
-
-   <ComponentDemo name="sidebar-drilldown" />
-*/}
-
-{/\*
-──────────────────────────────────────────────────────────────
+<ComponentDemo name="sidebar-drilldown" />
 
 ### Active state and current page
 
-──────────────────────────────────────────────────────────────
+Clearly indicating the current page is the most important job of the navigation. Set the `active` prop on `<Sidebar.Item>` to mark the current page — this applies `aria-current="page"` and a visual highlight.
 
-Content needed:
+When an active item is inside a branch, **the branch auto-opens on mount** so users always see where they are without extra clicks.
 
-- This is the "single most important" job of navigation (NN/g)
-- Set `active` prop on <Sidebar.Item> to mark the current page
-- Active item gets: aria-current="page" (a11y), distinct visual treatment
-  (background, font weight, left border — defined by theme)
-- When an active item is inside a branch, the branch auto-opens on mount
-  so the user always sees where they are
-- Failing to indicate current location is "the most common mistake" (NN/g)
-
-Demo needed:
-
-- Sidebar with one item marked active, showing the visual highlight
-- Optionally a second demo with active item inside a drill-down branch
-
-Do/Don't:
-
-- Do: always set active on the current page item, provide clear visual
-  differentiation
-- Don't: forget to set aria-current="page", use subtle/unclear active styling
-  \*/}
-
-### Active state and current page
-
-Indicating the current location is the **most important** job of the navigation. The active item uses `aria-current="page"` for accessibility and receives a distinct visual treatment (background, font weight, or left border).
-
-Set `active` on `<Sidebar.Item>` to mark the current page. When an item inside a branch is active, the branch auto-opens on mount.
-
-{/\* TODO: Create demo — sidebar with one item marked as active.
-
-   <ComponentDemo name="sidebar-active" />
-*/}
-
-{/\*
-──────────────────────────────────────────────────────────────
-
-### Collapsing and toggling
-
-──────────────────────────────────────────────────────────────
-
-Content needed:
-
-- Two ways to toggle: <Sidebar.Toggle> button and Cmd+B / Ctrl+B shortcut
-- Toggle button should be placed in the main content area (not inside sidebar)
-- Collapsed state = offcanvas (width transitions to 0), not icon-only
-  (Shadcn documents 3 modes: offcanvas, icon, none — Marigold uses offcanvas)
-- State persisted across page loads via cookie: "marigold:sidebar:state"
-  with 7-day expiry (Shadcn uses localStorage; we chose cookies for SSR compat)
-- Cmd+B is the de facto standard (Shadcn, VS Code, Marigold)
-
-Demo needed:
-
-- Interactive demo where user can click toggle or use Cmd+B
-
-Callout:
-
-- Mention keyboard shortcut prominently — it's a power-user feature that
-  significantly improves workflow
-  \*/}
+<ComponentDemo name="sidebar-active-branch" />
 
 ### Collapsing and toggling
 
@@ -499,179 +151,27 @@ The sidebar can be collapsed or expanded using:
 - The `<Sidebar.Toggle>` button placed in the main content area
 - The keyboard shortcut <kbd>Cmd+B</kbd> (Mac) / <kbd>Ctrl+B</kbd> (Windows/Linux)
 
-The collapsed/expanded state is **persisted across page loads** via a cookie (`marigold:sidebar:state`, 7-day expiry), so the sidebar remembers the user's preference.
-
-{/\* TODO: Create demo — sidebar with toggle button, user can collapse/expand.
-
-   <ComponentDemo name="sidebar-toggle" />
-*/}
-
-{/\*
-──────────────────────────────────────────────────────────────
-
-### Controlled mode
-
-──────────────────────────────────────────────────────────────
-
-Content needed:
-
-- By default, sidebar manages its own state (uncontrolled, via defaultOpen)
-- For programmatic control: use open + onOpenChange on <Sidebar.Provider>
-- Use case: app needs to close sidebar based on external events, or sync
-  sidebar state with URL/route
-- Show controlled example with React state
-
-Demo needed:
-
-- Sidebar controlled by external buttons (Open / Close) or a checkbox
-  \*/}
-
-### Controlled mode
-
-By default, the sidebar manages its own open/close state. For full control, use the `open` and `onOpenChange` props on `<Sidebar.Provider>`.
-
-{/\* TODO: Create demo — sidebar controlled by external state.
-
-   <ComponentDemo name="sidebar-controlled" />
-*/}
-
-{/\*
-──────────────────────────────────────────────────────────────
+The collapsed/expanded state is **persisted across page loads** via a cookie, so the sidebar remembers the user's preference.
 
 ### Responsive behavior
 
-──────────────────────────────────────────────────────────────
+On **desktop** (above 640px), the sidebar is a persistent panel alongside main content with a smooth width transition when toggling.
 
-Content needed:
-
-- Desktop (>640px): persistent panel alongside main content, smooth CSS
-  transition on width when toggling, state persisted via cookie
-- Mobile (<640px): renders as a modal sheet overlay (dismissable), triggered
-  by <Sidebar.Toggle>, includes close button inside, overlay with backdrop
-- Breakpoint detected via useSmallScreen() at 640px
-- Mobile state is independent from desktop state — always starts closed
-- Focus trapped within overlay on mobile (a11y requirement)
-- Escape key dismisses mobile overlay
-
-Research backing:
-
-- Carbon: "as a header scales down, header links should collapse into a
-  left-panel hamburger menu"
-- MUI: temporary drawer on mobile (<1200px), permanent on desktop
-- General: touch-friendly tap targets on mobile
-
-Demo needed:
-
-- Ideally a demo that shows both states, or a callout explaining to resize
-  the browser to see the mobile behavior
-
-Callout:
-
-- Mobile always starts closed regardless of cookie state
-- Mobile state is independent from desktop
-  \*/}
-
-### Responsive behavior
-
-On **desktop** (>640px), the sidebar is a persistent panel alongside main content with a smooth width transition when toggling.
-
-On **mobile** (<640px), the sidebar renders as a **modal sheet overlay** triggered by `<Sidebar.Toggle>`. It always starts closed on mobile and includes a close button. Focus is trapped within the overlay while open.
-
-{/\* TODO: Create demo — if possible show responsive behavior, or add a note
-to resize the browser window.
-
-   <ComponentDemo name="sidebar-responsive" />
-*/}
+On **mobile** (below 640px), the sidebar renders as a **modal sheet overlay** triggered by `<Sidebar.Toggle>`. It includes a close button, traps focus while open, and can be dismissed with <kbd>Escape</kbd>.
 
 <Callout title="Mobile behavior">
-  On mobile, the sidebar state is independent from desktop. The persisted cookie
-  state only applies to desktop. Mobile always starts closed.
+  On mobile, the sidebar always starts closed regardless of the persisted
+  desktop state. Mobile and desktop states are independent.
 </Callout>
 
-{/\*
-──────────────────────────────────────────────────────────────
-
 ### Accessibility
 
-──────────────────────────────────────────────────────────────
-
-Content needed:
-
-ARIA attributes used (table format):
-| Attribute | Where | Purpose |
-|-----------------------|--------------------------|--------------------------------------|
-| role="navigation" | <nav> element | Landmark recognition |
-| aria-label | <nav> element | Distinguish from other nav landmarks |
-| aria-current="page" | Active <Sidebar.Item> | Indicates current page |
-| aria-expanded | Branch items | Expand/collapse state |
-
-Keyboard interactions (table format):
-| Key | Action |
-|-----------------------|---------------------------------------------|
-| Cmd+B / Ctrl+B | Toggle sidebar open/close (global) |
-| Enter / Space | Activate link or toggle branch |
-| Escape | Close mobile overlay |
-
-Focus management:
-
-- Drill-in: focus moves to back button in sub-panel
-- Drill-out (back): focus returns to the branch trigger that opened the panel
-- Non-active panels are inert (no focus trapping in hidden panels)
-- Mobile overlay: full focus trap while open
-
-Internationalization:
-
-- All built-in strings (back button label, toggle label) go through
-  useLocalizedStringFormatter with DE/EN support
-
-Screen reader considerations:
-
-- <nav> landmark with accessible label
-- Semantic HTML (<nav>, <a>, <button>) used throughout
-- Back button has descriptive label: "Back to {section name}"
-- Close button on mobile overlay has accessible label
-  \*/}
-
-### Accessibility
-
-The sidebar implements several accessibility patterns:
-
+- **Landmark:** The sidebar renders as a `<nav>` element with an accessible label
 - **Keyboard shortcut:** <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> globally toggles the sidebar
 - **Focus management:** Focus moves to the back button when drilling into a sub-panel, and returns to the branch trigger when navigating back
 - **Active state:** `aria-current="page"` on the current navigation item
 - **Mobile overlay:** Focus trapping and <kbd>Escape</kbd> to dismiss
-- **Internationalization:** All strings support localization (DE/EN)
-
-{/\*
-────────────────────────────────────────────────────────────────────────────────
-
-## Props
-
-────────────────────────────────────────────────────────────────────────────────
-
-Content needed:
-
-- StorybookHintMessage link at the top
-- One ### subsection per sub-component with AutoTypeTable
-- Sub-components: Provider, Sidebar, Header, Nav, Item, GroupLabel,
-  Separator, Footer, Toggle
-- For key components (Provider, Item), include a manual summary table
-  highlighting the most important props until AutoTypeTable is wired up
-
-Manual prop highlights:
-
-Sidebar.Provider:
-| defaultOpen | boolean | true | Initial state (uncontrolled) |
-| open | boolean | — | Controlled open state |
-| onOpenChange | (open: boolean) => void | — | Callback on state change |
-
-Sidebar.Item:
-| label | string | — | Display text |
-| href | string | — | URL (branch items auto-derive) |
-| active | boolean | false| Marks as current page |
-| icon | ReactNode | — | Leading icon |
-| children | ReactNode | — | Nested items → creates branch |
-\*/}
+- **Internationalization:** Built-in strings support localization (DE/EN)
 
 ## Props
 
@@ -679,133 +179,47 @@ Sidebar.Item:
 
 ### Sidebar.Provider
 
-{/* TODO: <AutoTypeTable path="Sidebar/SidebarProvider" name="SidebarProviderProps" /> */}
-
-| Prop           | Type                      | Default | Description                       |
-| -------------- | ------------------------- | ------- | --------------------------------- |
-| `defaultOpen`  | `boolean`                 | `true`  | Initial open state (uncontrolled) |
-| `open`         | `boolean`                 | —       | Controlled open state             |
-| `onOpenChange` | `(open: boolean) => void` | —       | Callback when open state changes  |
+<AutoTypeTable path="Sidebar/Context" name="SidebarProviderProps" />
 
 ### Sidebar
 
-{/* TODO: <AutoTypeTable path="Sidebar" name="SidebarProps" /> */}
+<AutoTypeTable path="Sidebar" name="SidebarProps" />
 
 ### Sidebar.Header
 
-{/* TODO: <AutoTypeTable path="Sidebar/SidebarHeader" name="SidebarHeaderProps" /> */}
+<AutoTypeTable path="Sidebar/SidebarSlots" name="SidebarSlotProps" />
 
 ### Sidebar.Nav
 
-{/* TODO: <AutoTypeTable path="Sidebar/SidebarNav" name="SidebarNavProps" /> */}
+<AutoTypeTable path="Sidebar/SidebarNav" name="SidebarNavProps" />
 
 ### Sidebar.Item
 
-{/* TODO: <AutoTypeTable path="Sidebar/SidebarItem" name="SidebarItemProps" /> */}
-
-| Prop       | Type        | Default | Description                                                              |
-| ---------- | ----------- | ------- | ------------------------------------------------------------------------ |
-| `label`    | `string`    | —       | Display text for the item                                                |
-| `href`     | `string`    | —       | URL for leaf items. Branch items auto-derive href from first descendant. |
-| `active`   | `boolean`   | `false` | Marks the item as current page (`aria-current="page"`)                   |
-| `children` | `ReactNode` | —       | Nested `<Sidebar.Item>` elements create a branch with drill-down         |
+<AutoTypeTable path="Sidebar/SidebarItem" name="SidebarItemProps" />
 
 ### Sidebar.GroupLabel
 
-{/* TODO: <AutoTypeTable path="Sidebar/SidebarGroupLabel" name="SidebarGroupLabelProps" /> */}
-
-### Sidebar.Separator
-
-{/* TODO: <AutoTypeTable path="Sidebar/SidebarSeparator" name="SidebarSeparatorProps" /> */}
+<AutoTypeTable path="Sidebar/SidebarItem" name="SidebarGroupLabelProps" />
 
 ### Sidebar.Footer
 
-{/* TODO: <AutoTypeTable path="Sidebar/SidebarFooter" name="SidebarFooterProps" /> */}
-
-### Sidebar.Toggle
-
-{/* TODO: <AutoTypeTable path="Sidebar/SidebarToggle" name="SidebarToggleProps" /> */}
-
-{/\*
-────────────────────────────────────────────────────────────────────────────────
-
-## Alternative components
-
-────────────────────────────────────────────────────────────────────────────────
-
-Content needed:
-
-- Tabs: same hierarchy level, switching views within a page (not app-level nav)
-- Accordion: collapsing content sections, not navigation
-- Breadcrumbs: show location in hierarchy, complement sidebar but don't replace it
-- Drawer: for temporary overlay panels with arbitrary content (not structured nav)
-  \*/}
+<AutoTypeTable path="Sidebar/SidebarSlots" name="SidebarSlotProps" />
 
 ## Alternative components
 
 <ul>
   <li>
-    [Tabs](/components/navigation/tabs): Use tabs when content groups are at the
-    same hierarchy level and users need to switch between views within a single
-    page, not across the application.
+    [Tabs](/components/navigation/tabs): Use when content groups are at the same
+    hierarchy level and users switch between views within a single page, not
+    across the application.
   </li>
   <li>
-    [Accordion](/components/navigation/accordion): Use accordions for collapsing
-    content sections within a page, not for app-level navigation.
+    [Accordion](/components/navigation/accordion): Use for collapsing content
+    sections within a page, not for app-level navigation.
   </li>
   <li>
-    [Breadcrumbs](/components/navigation/breadcrumbs): Use breadcrumbs to show
-    the user's location within a hierarchy. Breadcrumbs complement a sidebar but
-    don't replace it.
+    [Breadcrumbs](/components/navigation/breadcrumbs): Use to show the user's
+    location within a hierarchy. Breadcrumbs complement a sidebar but don't
+    replace it.
   </li>
 </ul>
-
-{/\*
-────────────────────────────────────────────────────────────────────────────────
-
-## Related (optional, uncomment when pattern page exists)
-
-────────────────────────────────────────────────────────────────────────────────
-
-<TeaserList
-  items={[
-    {
-      title: 'Navigation pattern',
-      href: '../../patterns/navigation',
-      caption: 'How to structure navigation across your application.',
-    },
-  ]}
-/>
-*/}
-
-# {/\*
-
-# TODO CHECKLIST — work items before this doc is complete
-
-Assets:
-[ ] Create anatomy image: /public/sidebar/sidebar-anatomy.jpg - Annotate: Provider boundary, Sidebar panel, Header, Nav, Items,
-GroupLabel, Separator, Footer, Toggle
-
-Demos (colocated .demo.tsx files):
-[ ] sidebar-basic.demo.tsx — Complete sidebar with header, groups, footer
-[ ] sidebar-groups.demo.tsx — Focus on GroupLabel and Separator usage
-[ ] sidebar-icons.demo.tsx — Items with leading icons
-[ ] sidebar-drilldown.demo.tsx — Branch item with sub-panel drill-down
-[ ] sidebar-active.demo.tsx — Active state highlighting
-[ ] sidebar-toggle.demo.tsx — Collapsing/expanding with toggle button
-[ ] sidebar-controlled.demo.tsx — Controlled mode with external state
-[ ] sidebar-responsive.demo.tsx — Responsive behavior (or resize note)
-
-Integration:
-[ ] Register Sidebar in AppearanceDemo/AppearanceTable system
-[ ] Wire up AutoTypeTable for all sub-components
-[ ] Add StorybookHintMessage once Storybook stories exist
-[ ] Create/link navigation pattern page in Related section
-
-Review:
-[ ] Verify all props match actual component API
-[ ] Confirm theme slot names match implementation
-[ ] Test all demos render correctly
-[ ] Accessibility review of documented ARIA patterns
-================================================================================
-\*/}
