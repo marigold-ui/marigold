@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Breadcrumbs } from './Breadcrumbs';
 
@@ -17,7 +18,7 @@ const meta = preview.meta({
       control: 'boolean',
     },
     maxVisibleItems: {
-      control: 'number',
+      control: 'text',
     },
   },
   args: {
@@ -29,6 +30,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  args: { maxVisibleItems: 10 },
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
@@ -61,7 +63,7 @@ export const Collapsed = meta.story({
 
 export const ManyItems = meta.story({
   render: args => (
-    <Breadcrumbs {...args} maxVisibleItems={3}>
+    <Breadcrumbs {...args} maxVisibleItems={2}>
       {[...Array(30).keys()].map(i => (
         <Breadcrumbs.Item key={i} href={`https://marigold-ui.io/`}>
           Breadcrumb {i + 1}
@@ -69,4 +71,28 @@ export const ManyItems = meta.story({
       ))}
     </Breadcrumbs>
   ),
+});
+
+export const AutoCollapse = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <div className="border-border w-75 resize-x overflow-auto border p-2">
+      <Breadcrumbs>
+        <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
+        <Breadcrumbs.Item href="/events/summer">
+          Summer Festival
+        </Breadcrumbs.Item>
+        <Breadcrumbs.Item href="/events/details">
+          Event Details Page
+        </Breadcrumbs.Item>
+      </Breadcrumbs>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const ellipsis = canvas.getByRole('button', {
+      name: 'These breadcrumbs are hidden',
+    });
+    await expect(ellipsis).toBeInTheDocument();
+  },
 });

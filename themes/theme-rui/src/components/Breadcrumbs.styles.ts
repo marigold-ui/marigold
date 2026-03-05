@@ -4,7 +4,7 @@ import { cva } from '@marigold/system';
 export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
   container: cva({
     base: [
-      'flex flex-wrap items-center gap-1.5 wrap-break-word text-sm sm:gap-2.5 text-muted-foreground',
+      'flex flex-nowrap overflow-hidden items-center gap-1 wrap-break-word text-sm sm:gap-1.5 text-muted-foreground',
     ],
     variants: {
       variant: {

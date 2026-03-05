@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic, Collapsed } from './Breadcrumbs.stories';
+import {
+  AutoCollapse,
+  Basic,
+  Collapsed,
+  ManyItems,
+} from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 const user = userEvent.setup();
@@ -90,6 +95,45 @@ test('expand collapsed items', async () => {
   expect(
     screen.getByRole('menuitem', { name: 'Breadcrumb2' })
   ).toBeInTheDocument();
+});
+
+test('auto-collapse starts collapsed with current item visible', () => {
+  renderWithOverlay(<AutoCollapse.Component />);
+
+  // Auto mode starts collapsed (ellipsis + current).
+  // In jsdom there is no ResizeObserver, so it stays collapsed.
+  expect(
+    screen.getByRole('link', { name: 'Event Details Page' })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
+  ).toBeInTheDocument();
+
+  // All other items are hidden inside the ellipsis menu
+  expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('link', { name: 'Events' })
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('link', { name: 'Summer Festival' })
+  ).not.toBeInTheDocument();
+});
+
+test('maxVisibleItems=2 shows only ellipsis and current item', () => {
+  renderWithOverlay(<ManyItems.Component />);
+
+  // Current (last) item is visible
+  expect(
+    screen.getByRole('link', { name: 'Breadcrumb 30' })
+  ).toBeInTheDocument();
+  // Ellipsis is visible
+  expect(
+    screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
+  ).toBeInTheDocument();
+  // First item is hidden (maxVisibleItems=2 hides everything except current)
+  expect(
+    screen.queryByRole('link', { name: 'Breadcrumb 1' })
+  ).not.toBeInTheDocument();
 });
 
 test('BreadcrumbsItem renders nothing', () => {
