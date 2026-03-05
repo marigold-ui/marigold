@@ -579,7 +579,7 @@ test('textValue auto-extracted from string children', () => {
   expect(backButton).toBeInTheDocument();
 });
 
-test('direct branch-to-branch switch via active prop change focuses back button', async () => {
+test('direct branch-to-branch switch via active prop change focuses active item', async () => {
   const DirectBranchSwitch = () => {
     const [currentPath, setCurrentPath] = useState('/users');
 
@@ -635,9 +635,8 @@ test('direct branch-to-branch switch via active prop change focuses back button'
     'active'
   );
 
-  // Focus should be on the back button (branch-to-branch switch)
-  const backButton = screen.getByRole('button', { name: /Back to Settings/ });
-  expect(backButton).toHaveFocus();
+  // Focus should be on the active item (not back button)
+  expect(generalLink).toHaveFocus();
 });
 
 test('marker components return null when called directly', () => {
@@ -698,6 +697,171 @@ test('findActiveBranch returns null when active item is at root level', () => {
   const collection = buildCollection(jsx);
   // Active item is at root, not inside a branch
   expect(findActiveBranch(collection)).toBeNull();
+});
+
+// --- Keyboard Navigation Tests ---
+
+test('ArrowDown moves focus to next item', async () => {
+  render(<Basic.Component />);
+
+  const overview = screen.getByRole('link', { name: 'Overview' });
+  const analytics = screen.getByRole('link', { name: 'Analytics' });
+
+  // Tab into sidebar nav to focus the active item (Overview)
+  overview.focus();
+  expect(overview).toHaveFocus();
+
+  await user.keyboard('{ArrowDown}');
+  expect(analytics).toHaveFocus();
+});
+
+test('ArrowUp moves focus to previous item', async () => {
+  render(<Basic.Component />);
+
+  const overview = screen.getByRole('link', { name: 'Overview' });
+  const analytics = screen.getByRole('link', { name: 'Analytics' });
+
+  analytics.focus();
+  expect(analytics).toHaveFocus();
+
+  await user.keyboard('{ArrowUp}');
+  expect(overview).toHaveFocus();
+});
+
+test('ArrowDown wraps from last item to first', async () => {
+  render(<Basic.Component />);
+
+  const security = screen.getByRole('link', { name: 'Security' });
+  const overview = screen.getByRole('link', { name: 'Overview' });
+
+  security.focus();
+  expect(security).toHaveFocus();
+
+  await user.keyboard('{ArrowDown}');
+  expect(overview).toHaveFocus();
+});
+
+test('ArrowUp wraps from first item to last', async () => {
+  render(<Basic.Component />);
+
+  const overview = screen.getByRole('link', { name: 'Overview' });
+  const security = screen.getByRole('link', { name: 'Security' });
+
+  overview.focus();
+  expect(overview).toHaveFocus();
+
+  await user.keyboard('{ArrowUp}');
+  expect(security).toHaveFocus();
+});
+
+test('Home key jumps to first item', async () => {
+  render(<Basic.Component />);
+
+  const security = screen.getByRole('link', { name: 'Security' });
+  const overview = screen.getByRole('link', { name: 'Overview' });
+
+  security.focus();
+  expect(security).toHaveFocus();
+
+  await user.keyboard('{Home}');
+  expect(overview).toHaveFocus();
+});
+
+test('End key jumps to last item', async () => {
+  render(<Basic.Component />);
+
+  const overview = screen.getByRole('link', { name: 'Overview' });
+  const security = screen.getByRole('link', { name: 'Security' });
+
+  overview.focus();
+  expect(overview).toHaveFocus();
+
+  await user.keyboard('{End}');
+  expect(security).toHaveFocus();
+});
+
+test('separators and group labels are skipped during arrow navigation', async () => {
+  render(<Basic.Component />);
+
+  // Root panel: Overview, Analytics, [separator], Management, [group label "Settings"], General, Security
+  const analytics = screen.getByRole('link', { name: 'Analytics' });
+  const management = screen.getByRole('link', { name: /Management/ });
+
+  analytics.focus();
+  expect(analytics).toHaveFocus();
+
+  // ArrowDown should skip the separator and land on Management
+  await user.keyboard('{ArrowDown}');
+  expect(management).toHaveFocus();
+
+  // ArrowDown should skip the group label and land on General
+  const general = screen.getByRole('link', { name: 'General' });
+  await user.keyboard('{ArrowDown}');
+  expect(general).toHaveFocus();
+});
+
+test('arrow navigation in sub-panel includes back button', async () => {
+  render(<WithActiveBranch.Component />);
+
+  // WithActiveBranch starts with /users active, Management panel is active
+  const usersLink = screen.getByRole('link', { name: 'Users' });
+  const backButton = screen.getByRole('button', { name: /Back to Management/ });
+
+  // Users is the active item, it should be the default focus target
+  usersLink.focus();
+  expect(usersLink).toHaveFocus();
+
+  // ArrowUp should go to back button (wrapping from first item to last goes to Billing,
+  // but going up from Users: Users is after back button in DOM order)
+  // Actually, DOM order is: back button, Users, Teams, Billing
+  // ArrowUp from Users → back button
+  await user.keyboard('{ArrowUp}');
+  expect(backButton).toHaveFocus();
+
+  // ArrowDown from back button → Users
+  await user.keyboard('{ArrowDown}');
+  expect(usersLink).toHaveFocus();
+});
+
+test('panel transition focuses active item when one exists (not back button)', async () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav>
+            <Sidebar.Item id="branch" textValue="Branch">
+              Branch
+              <Sidebar.Item href="/child-a" active>
+                Child A
+              </Sidebar.Item>
+              <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
+  );
+
+  // Click the branch trigger to open the sub-panel
+  const branchTrigger = screen.getByRole('link', { name: /Branch/ });
+  await user.click(branchTrigger);
+
+  // Focus should be on the active item (Child A), not the back button
+  const childA = screen.getByRole('link', { name: 'Child A' });
+  expect(childA).toHaveFocus();
+});
+
+test('panel transition falls back to back button when no active item', async () => {
+  render(<Basic.Component />);
+
+  // Click Management trigger — no children are active
+  const managementTrigger = screen.getByRole('link', { name: /Management/ });
+  await user.click(managementTrigger);
+
+  const backButton = screen.getByRole('button', {
+    name: /Back to Management/,
+  });
+  expect(backButton).toHaveFocus();
 });
 
 test('buildCollection handles group labels and separators in index', () => {

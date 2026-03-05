@@ -1,6 +1,7 @@
 import { forwardRef, useMemo, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { KeyboardEvent, ReactNode } from 'react';
 import { Button, Link, Separator } from 'react-aria-components';
+import { createFocusManager } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useLayoutEffect, useObjectRef } from '@react-aria/utils';
 import { cn } from '@marigold/system';
@@ -39,15 +40,7 @@ const panelPosition = (
   return idx >= 0 && idx < stack.length - 1 ? 'before' : 'after';
 };
 
-const InnerPanelContent = ({
-  nodes,
-  onBack,
-  onBranchClick,
-  backLabel,
-  classNames,
-  position,
-  stringFormatter,
-}: {
+interface PanelProps {
   nodes: SidebarNode[];
   onBack?: () => void;
   onBranchClick?: (key: string) => void;
@@ -55,12 +48,48 @@ const InnerPanelContent = ({
   classNames: Record<string, string>;
   position: 'active' | 'before' | 'after';
   stringFormatter: ReturnType<typeof useLocalizedStringFormatter>;
-}) => {
+}
+
+const SidebarPanel = ({
+  nodes,
+  onBack,
+  onBranchClick,
+  backLabel,
+  classNames,
+  position,
+  stringFormatter,
+}: PanelProps) => {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const focusManager = createFocusManager(panelRef);
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        focusManager.focusNext({ wrap: true });
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        focusManager.focusPrevious({ wrap: true });
+        break;
+      case 'Home':
+        e.preventDefault();
+        focusManager.focusFirst();
+        break;
+      case 'End':
+        e.preventDefault();
+        focusManager.focusLast();
+        break;
+    }
+  };
+
   return (
     <div
+      ref={panelRef}
       className={cn(classNames.navPanel)}
       data-position={position}
       inert={position !== 'active' || undefined}
+      onKeyDown={handleKeyDown}
     >
       {onBack && (
         <div>
@@ -193,18 +222,15 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
       ) as HTMLElement | null;
       if (!activePanel) return;
 
-      let target: HTMLElement | null = null;
+      // Try active item first for all transitions
+      const activeItem = activePanel.querySelector(
+        '[aria-current="page"]'
+      ) as HTMLElement | null;
 
-      if (openBranch && !prev) {
-        // Went forward (root → branch): focus back button
-        target = activePanel.querySelector('[data-back-button]');
-      } else if (!openBranch && prev) {
-        // Went back (branch → root): focus the trigger that was clicked
-        target = activePanel.querySelector(`[data-key="${prev}"]`);
-      } else if (openBranch && prev && openBranch !== prev) {
-        // Switched branches: focus back button
-        target = activePanel.querySelector('[data-back-button]');
-      }
+      // Going back: focus the branch trigger we came from; otherwise: back button
+      const fallbackSelector =
+        !openBranch && prev ? `[data-key="${prev}"]` : '[data-back-button]';
+      const target = activeItem ?? activePanel.querySelector(fallbackSelector);
 
       target?.focus();
     }, [navRef, openBranch]);
@@ -214,12 +240,12 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
         ref={navRef}
         aria-label={ariaLabel || stringFormatter.format('appNavigation')}
         className={cn(
-          'ui-scrollbar min-h-0 overflow-y-auto [grid-area:content]',
+          'min-h-0 overflow-y-auto [grid-area:content]',
           classNames.nav
         )}
       >
         <div className="relative shrink-0 overflow-hidden">
-          <InnerPanelContent
+          <SidebarPanel
             nodes={collection.rootNodes}
             position={panelPosition('root', stack)}
             classNames={classNames}
@@ -227,7 +253,7 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
             stringFormatter={stringFormatter}
           />
           {branchNodes.map(branch => (
-            <InnerPanelContent
+            <SidebarPanel
               key={branch.key}
               nodes={branch.children}
               position={panelPosition(branch.key, stack)}

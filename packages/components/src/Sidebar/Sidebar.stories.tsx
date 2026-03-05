@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';
@@ -311,4 +312,45 @@ export const WithActiveBranch = meta.story({
 
 export const DefaultCollapsed = meta.story({
   render: () => <Layout defaultOpen={false} />,
+});
+
+export const KeyboardNavigation = meta.story({
+  tags: ['component-test'],
+  render: () => <Layout />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Overview is the active item, focus it
+    const overview = canvas.getByRole('link', { name: 'Overview' });
+    await userEvent.click(overview);
+    await expect(overview).toHaveFocus();
+
+    // ArrowDown → Analytics
+    await userEvent.keyboard('{ArrowDown}');
+    const analytics = canvas.getByRole('link', { name: 'Analytics' });
+    await expect(analytics).toHaveFocus();
+
+    // ArrowDown → Management (skips separator)
+    await userEvent.keyboard('{ArrowDown}');
+    const management = canvas.getByRole('link', { name: /Management/ });
+    await expect(management).toHaveFocus();
+
+    // ArrowDown → General (skips group label)
+    await userEvent.keyboard('{ArrowDown}');
+    const general = canvas.getByRole('link', { name: 'General' });
+    await expect(general).toHaveFocus();
+
+    // End → Security (last item)
+    await userEvent.keyboard('{End}');
+    const security = canvas.getByRole('link', { name: 'Security' });
+    await expect(security).toHaveFocus();
+
+    // Home → Overview (first item)
+    await userEvent.keyboard('{Home}');
+    await expect(overview).toHaveFocus();
+
+    // ArrowUp wraps to last item (Security)
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(security).toHaveFocus();
+  },
 });
