@@ -26,7 +26,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   content: cva({ base: 'sm:w-64' }),
   header: cva({ base: 'border-border border-b px-6 py-3' }),
   nav: cva({
-    base: 'flex flex-col px-4 py-2 overflow-y-auto outline-none',
+    base: [
+      'flex flex-col px-3 py-1 overflow-y-auto outline-none',
+      'ui-scrollbar',
+    ],
   }),
   footer: cva({ base: 'border-border border-t px-6 py-3' }),
   toggle: cva({
@@ -42,7 +45,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   navPanel: cva({
     base: [
-      'flex flex-col gap-0.5',
+      'flex flex-col gap-0.5 p-1',
       'transition-[visibility,opacity,translate,filter] duration-300 ease-out sm:duration-200',
 
       // Panel behind (already visited) — slides left
@@ -68,7 +71,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
       'data-active:bg-selected data-active:text-foreground data-active:font-medium',
       'motion-reduce:transition-none',
-      'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
+      'outline-none focus-visible:ui-state-focus',
     ],
   }),
   backButton: cva({
@@ -76,7 +79,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'flex items-center gap-2 w-full pl-0.5 pr-2 h-9 text-sm rounded-md',
       'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
       'motion-reduce:transition-none',
-      'outline-none focus-visible:ring-2 focus-visible:ring-outline-focus',
+      'outline-none focus-visible:ui-state-focus',
       'cursor-pointer mb-1',
     ],
   }),
