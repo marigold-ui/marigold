@@ -1,5 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createRef } from 'react';
+import { vi } from 'vitest';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import {
   AutoCollapse,
@@ -8,6 +11,7 @@ import {
   ManyItems,
 } from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
+import { useAutoCollapse } from './useAutoCollapse';
 
 const user = userEvent.setup();
 
@@ -142,4 +146,161 @@ test('BreadcrumbsItem renders nothing', () => {
   );
 
   expect(screen.queryByText('Test Item')).not.toBeInTheDocument();
+});
+
+test('forwards ref as object ref', () => {
+  const ref = createRef<HTMLOListElement>();
+
+  render(<Basic.Component ref={ref} />);
+
+  expect(ref.current).toBeInstanceOf(HTMLOListElement);
+});
+
+test('does not collapse when items equal maxVisibleItems', () => {
+  render(<Basic.Component maxVisibleItems={3} />);
+
+  expect(screen.getByText('Home')).toBeInTheDocument();
+  expect(screen.getByText('Breadcrumb1')).toBeInTheDocument();
+  expect(screen.getByText('Breadcrumb2')).toBeInTheDocument();
+  expect(screen.queryByText('...')).not.toBeInTheDocument();
+});
+
+test('does not collapse when maxVisibleItems is less than 2', () => {
+  render(<Basic.Component maxVisibleItems={1} />);
+
+  expect(screen.getByText('Home')).toBeInTheDocument();
+  expect(screen.getByText('Breadcrumb1')).toBeInTheDocument();
+  expect(screen.getByText('Breadcrumb2')).toBeInTheDocument();
+  expect(screen.queryByText('...')).not.toBeInTheDocument();
+});
+
+test('forwards callback ref', () => {
+  const ref = vi.fn();
+
+  render(<Basic.Component ref={ref} />);
+
+  expect(ref).toHaveBeenCalledWith(expect.any(HTMLOListElement));
+});
+
+// --- useAutoCollapse hook tests ---
+
+let capturedOnResize: (() => void) | undefined;
+
+vi.mock('@react-aria/utils', async importOriginal => {
+  const actual = await importOriginal<typeof import('@react-aria/utils')>();
+  return {
+    ...actual,
+    useResizeObserver: ({ onResize }: { onResize: () => void }) => {
+      capturedOnResize = onResize;
+    },
+  };
+});
+
+const createMockElement = (
+  clientWidth: number,
+  scrollWidth: number
+): HTMLOListElement =>
+  ({ clientWidth, scrollWidth }) as unknown as HTMLOListElement;
+
+test('useAutoCollapse expands when container has space', () => {
+  const ref = { current: createMockElement(500, 300) };
+
+  const { result } = renderHook(() => useAutoCollapse(ref, 5));
+
+  // Initial state is MIN_VISIBLE (2)
+  expect(result.current).toBe(2);
+
+  // Trigger resize — no overflow, should expand
+  act(() => {
+    capturedOnResize!();
+  });
+
+  expect(result.current).toBe(3);
+});
+
+test('useAutoCollapse collapses when container overflows', () => {
+  const ref = { current: createMockElement(500, 300) };
+
+  const { result } = renderHook(() => useAutoCollapse(ref, 5));
+
+  // Expand first
+  act(() => {
+    capturedOnResize!();
+  });
+  expect(result.current).toBe(3);
+
+  // Simulate overflow
+  ref.current = createMockElement(300, 500);
+  act(() => {
+    capturedOnResize!();
+  });
+
+  expect(result.current).toBe(2);
+});
+
+test('useAutoCollapse does not expand below previous overflow width', () => {
+  const ref = { current: createMockElement(500, 300) };
+
+  const { result } = renderHook(() => useAutoCollapse(ref, 5));
+
+  // Expand
+  act(() => {
+    capturedOnResize!();
+  });
+  expect(result.current).toBe(3);
+
+  // Overflow at width 300
+  ref.current = createMockElement(300, 500);
+  act(() => {
+    capturedOnResize!();
+  });
+  expect(result.current).toBe(2);
+
+  // Resize but still at or below overflow width — should not expand
+  ref.current = createMockElement(300, 200);
+  act(() => {
+    capturedOnResize!();
+  });
+  expect(result.current).toBe(2);
+
+  // Resize above overflow width — should expand
+  ref.current = createMockElement(400, 200);
+  act(() => {
+    capturedOnResize!();
+  });
+  expect(result.current).toBe(3);
+});
+
+test('useAutoCollapse resets when totalItems changes', () => {
+  const ref = { current: createMockElement(500, 300) };
+
+  const { result, rerender } = renderHook(
+    ({ total }) => useAutoCollapse(ref, total),
+    { initialProps: { total: 5 } }
+  );
+
+  // Expand
+  act(() => {
+    capturedOnResize!();
+  });
+  expect(result.current).toBe(3);
+
+  // Change totalItems — should reset to MIN_VISIBLE
+  rerender({ total: 8 });
+  expect(result.current).toBe(2);
+});
+
+test('useAutoCollapse no-ops when ref is null', () => {
+  const ref = { current: null };
+
+  const { result } = renderHook(() => useAutoCollapse(ref, 5));
+
+  expect(result.current).toBe(2);
+
+  // onResize with null ref should not throw
+  act(() => {
+    capturedOnResize!();
+  });
+
+  expect(result.current).toBe(2);
 });
