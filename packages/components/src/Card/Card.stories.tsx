@@ -1,4 +1,5 @@
 import preview from '.storybook/preview';
+import { Badge, Stack } from '@marigold/components';
 import { Container } from '../Container/Container';
 import { Headline } from '../Headline/Headline';
 import { Text } from '../Text/Text';
@@ -148,5 +149,48 @@ export const PaddingAndSpace = meta.story({
         </Text>
       </Container>
     </Card>
+  ),
+});
+
+export const MasterAndAdmin = meta.story({
+  render: args => (
+    <Stack space={5}>
+      <Card {...args} variant="master">
+        <Container>
+          <Headline level="2">
+            Master Access <Badge variant="master">Master</Badge>
+          </Headline>
+        </Container>
+        <Text>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+          ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
+          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+          takimata sanctus est Lorem ipsum dolor sit amet.
+        </Text>
+      </Card>
+      <Card {...args} variant="admin">
+        <Container>
+          <Headline level="2">
+            Admin Access <Badge variant="admin">Admin</Badge>
+          </Headline>
+        </Container>
+        <Text>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+          ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
+          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+          takimata sanctus est Lorem ipsum dolor sit amet.
+        </Text>
+      </Card>
+    </Stack>
   ),
 });

@@ -1,6 +1,6 @@
 ---
 title: TagField
-caption: A multi-select field that displays selected items as removable tags with a searchable dropdown.
+description: A multi-select field that displays selected items as removable tags with a searchable dropdown.
 badge: beta
 ---
 
@@ -14,7 +14,7 @@ The component is built on react-aria, providing full keyboard navigation, screen
 
 A `<TagField>` consists of a label, a trigger area with tags and an add button, and a popover containing a search input and an options list.
 
-<Image
+<ImageZoom
   src="/tag-field/tag-field-anatomy.svg"
   alt="Anatomy of TagField component"
   width={800}
@@ -57,9 +57,9 @@ A `<TagField>` consists of a label, a trigger area with tags and an add button, 
 
 ## Appearance
 
-<AppearanceDemo component={title} />
+<AppearanceDemo component={'TagField'} />
 
-<AppearanceTable component={title} />
+<AppearanceTable component={'TagField'} />
 
 ## Usage
 
@@ -69,13 +69,13 @@ The `<TagField>` works best when users need to select multiple items from a list
 
 When the list of options becomes large or covers distinct categories, grouping them into sections helps users find what they are looking for. Use the `<TagField.Section>` component to wrap related options, providing a `header` for each group to add structure and context.
 
-<ComponentDemo file="./tag-field-section.demo.tsx" />
+<ComponentDemo name="tag-field-section" />
 
 ### Preventing selection of specific options
 
 In some cases, certain options should be visible but not selectable. For example, an option may be temporarily unavailable or restricted based on the user's permissions. Use the `disabledKeys` prop to mark specific options as non-interactive while keeping them visible in the list.
 
-<ComponentDemo file="./tag-field-disabled-items.demo.tsx" />
+<ComponentDemo name="tag-field-disabled-items" />
 
 ### Keep option text concise
 
@@ -83,16 +83,16 @@ Option labels should be short and scannable so users can quickly identify the it
 
 <GuidelineTiles>
   <Do>
-    <Do.Description>
+    <DoDescription>
       Use short, recognizable option labels like "Rock", "Jazz", or
       "Electronic".
-    </Do.Description>
+    </DoDescription>
   </Do>
   <Dont>
-    <Dont.Description>
+    <DontDescription>
       Don't use long descriptions as option labels, such as "Rock and Roll
       (including classic and modern sub-genres)".
-    </Dont.Description>
+    </DontDescription>
   </Dont>
 </GuidelineTiles>
 
@@ -118,19 +118,19 @@ When the popover opens, the search input receives focus automatically, allowing 
 
 ## Props
 
+<StorybookHintMessage component={'TagField'} />
+
 ### TagField
 
-<StorybookHintMessage component={title} />
-
-<PropsTable component={title} />
+<AutoTypeTable path="TagField" name="TagFieldProps" />
 
 ### TagField.Option
 
-<PropsTable component="ListBoxItem" />
+<AutoTypeTable path="ListBox/ListBoxItem" name="ListBoxItemProps" />
 
 ### TagField.Section
 
-<PropsTable component="ListBoxSection" />
+<AutoTypeTable path="ListBox/ListBoxSection" name="SectionProps" />
 
 ## Alternative components
 
