@@ -1,3 +1,4 @@
+import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Tabs } from './Tabs';
 
@@ -24,6 +25,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => {
     return (
       <Tabs aria-label="tabs" {...args}>
@@ -45,6 +47,23 @@ export const Basic = meta.story({
         </Tabs.TabPanel>
       </Tabs>
     );
+  },
+  play: async ({ canvas }) => {
+    const indicator = canvas.getByTestId('tab-indicator');
+    const initialLeft = indicator.getBoundingClientRect().left;
+
+    await userEvent.click(canvas.getByText('Keyboard Settings'));
+
+    // Wait for the indicator transition (duration 0.25s)
+    await new Promise(resolve => setTimeout(resolve, 350));
+
+    const indicatorAfter = canvas.getByTestId('tab-indicator');
+    const finalLeft = indicatorAfter.getBoundingClientRect().left;
+
+    await expect(finalLeft).toBeGreaterThan(initialLeft);
+    await expect(
+      canvas.getByText(/Customize the key bindings and input behavior/)
+    ).toBeVisible();
   },
 });
 

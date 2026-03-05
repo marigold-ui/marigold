@@ -35,12 +35,11 @@ const _Tab = (props: TabProps) => {
       {renderProps => (
         <>
           {/* Internal check to support both functional and static children */}
-          {typeof content === 'function'
-            ? content(renderProps)
-            : content}
+          {typeof content === 'function' ? content(renderProps) : content}
 
           {renderProps.isSelected && (
             <motion.span
+              data-testid="tab-indicator"
               layoutId={TAB_INDICATOR_LAYOUT_ID}
               className={cn('rounded-none', classNames.tabIndicator)}
               transition={INDICATOR_TRANSITION}
