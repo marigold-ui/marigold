@@ -15,15 +15,13 @@ export const DateField: ThemeComponent<'DateField'> = {
   input: cva({ base: ['ui-input', 'cursor-text'] }),
   segment: cva({
     base: [
-      'inline rounded p-0.5 text-foreground caret-transparent outline-0 type-literal:px-0 data-focused:data-placeholder:text-foreground data-focused:text-foreground  type-literal:text-placeholder',
+      'group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent',
+      'text-foreground',
+      'data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0',
+      'data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',
-      'data-focused:bg-focus',
       'data-placeholder:disabled:text-disabled-foreground',
-      'invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive data-placeholder:text-placeholder',
-      'group/segment',
-      'outline-0',
-      'whitespace-pre',
-      'data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none',
+      'invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground',
     ],
   }),
   action: cva({

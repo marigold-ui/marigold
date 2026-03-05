@@ -1,0 +1,152 @@
+---
+title: Spacing
+description: How spacing is applied and used.
+badge: alpha
+---
+
+Space is the invisible structure of our interface, not merely empty pixels, but the active connectivity that dictates hierarchy and logic. It follows a simple principle: distance signals relationship. Stronger bonds (like a label and input) require closer proximity.
+
+To ensure consistency, we rely on semantic tokens instead of arbitrary values. This decouples intent from mathematics, allowing the interface to adapt across contexts. While a [4px grid](https://uxdesign.cc/the-4px-baseline-grid-89485012dea6) provides the underlying rhythm, these raw values are strictly a fallback. Semantic tokens should always be the primary choice to preserve design intent.
+
+Effective spacing manages two distinct roles: the relationship between objects (relation) and the internal density of an object (inset).
+
+## Relation (Space)
+
+Relation describes the connection between elements. It defines hierarchy and grouping for margins, flex gaps, and grid gaps. The fundamental rule is:
+
+> The tighter the space, the stronger the relationship.
+
+When elements are strongly related, the bond is tight, and they pull close together. When they are distinct, the bond relaxes, and they drift apart.
+
+To select the correct token for space, think in terms of _nouns_ (e.g., regular, group) because you are defining the nature of the relationship between neighbors. You are not asking "How large should this space be?" but rather "How closely related are these two elements?"
+
+### Scale
+
+The relational scale has 7 tokens, each with a specific purpose. This ensures a consistent rhythm across the interface, covering everything from small details to large page sections.
+
+- **Tight** - Refers to packed containers side-by-side without any wasted space, like a dense list of data cells or entries in a table. It communicates high-density scanning where maximum information is prioritized over breathing room. _Common patterns: Data table rows, multi-line card metadata, Headline + Description, ..._
+- **Related** - The small gap communicates that two distinct elements form a single conceptual pair or unit. Use it for elements that belong together but are each self-contained, such as paired form fields (e.g. Start Date + End Date, Postal Code + City) or an icon next to a text label. _Common patterns: Paired form fields, Icon + Text, Headline + Subhead, ..._
+- **Regular** - The wider, balanced space indicates two individual, self-contained elements standing as equals within the same content flow. This is the baseline rhythm for form fields and the page's standard reading rhythm. _Common patterns: Baseline form field spacing, list items, paragraphs, ..._
+- **Group** - A substantial gap that visually clusters related elements into a sub-group within a larger context. It separates a block of content from its surroundings, signaling that the enclosed elements belong together as a logical unit. _Common patterns: Cards in a grid, address block within a form, content clusters in a sidebar, ..._
+- **Section** - Defines distinct sections of the layout structure. Creates necessary breathing room between primary areas like the main content and a sidebar, keeping them separate yet part of the same view. _Common patterns: Hero area vs. Page Content, Filter Bar vs. Results Grid, Chart vs. Data Table, ..._
+
+### Flow
+
+Spacing is applied differently depending on the direction of content flow. Identifying the axis of flow ensures we apply the relational scale in a way that respects the component's internal logic.
+
+#### Stack (Vertical flow)
+
+The stack axis manages vertical rhythm, addressing how elements pile on top of one another down the page (Y-axis). This flow separates vertical siblings, like a label sitting above an input or paragraphs in an article.
+
+<ComponentDemo name="spacing-stack" mode="preview" />
+
+#### Inline (Horizontal flow)
+
+The inline axis governs the horizontal association of elements, managing how neighbors sit side-by-side (X-axis). This context determines the separation between horizontal siblings, such as buttons in a toolbar or an icon next to text.
+
+<ComponentDemo name="spacing-inline" mode="preview" />
+
+#### Grid (Two-directional flow)
+
+The grid axis handles the macro-layout skeleton where items flow in both X and Y directions simultaneously. This two-directional structure defines the gutters in complex layouts like dashboard masonry or image galleries, establishing a consistent rhythm across the entire 2-dimensional plane.
+
+<ComponentDemo name="spacing-grid" mode="preview" />
+
+#### CSS Tokens
+
+You can construct relational CSS variables using the syntax shown below. By inserting a specific scale value (like `regular` or `group`), you can apply these tokens to gap or margin classes.
+
+- **Relational** - `--spacing-<relational scale>`
+
+### Grouping
+
+There are distinct ways to group content to guide the user's eye.
+
+**Explicit grouping** uses visible boundaries like outlines, dividers, and cards to enclose related content. This is particularly effective for defining distinct interactive zones or isolating specific data sets from the surrounding layout.
+
+**Implicit grouping** relies on proximity and open space to establish these relationships without visual lines. By placing related items close together, the eye naturally perceives them as a unit, reducing the need for heavy graphical dividers.
+
+#### Not everything needs a container
+
+A common pitfall in modern UI design is the overuse of explicit grouping where every piece of content is placed inside a box or a card. "Container fatigue" creates visual clutter and adds unnecessary weight to the interface.
+
+Implicit grouping offers a cleaner alternative by leveraging the Relation tokens defined above. By simply placing related items closer together (using `tight` or `related`) and separating groups with larger gaps (using `group` or `section`), you create hierarchy naturally.
+
+**Benefits of Implicit Grouping:**
+
+- Reduced Visual Noise: Removing borders makes the interface lighter.
+- Scannability: Fewer obstacles (lines) allow for faster scanning.
+- Natural Hierarchy: Whitespace signals separation without cognitive load.
+
+<ComponentDemo name="spacing-grouping" mode="preview" />
+
+## Inset (Padding)
+
+Inset defines the internal breathing room of a container. It acts as a density dial: low inset (compact) optimizes for scanning data, while high inset (spacious) improves focus and touch interaction. Unlike the stack or inline axes which manage relationships between siblings, inset defines the relationship between a parent container and its children, pushing inward to frame content.
+
+To choose a token, use _adjectives_ instead of nouns. You aren't defining a relationship between neighbors, but the intrinsic quality of the component itself. Is it compact? Is it regular?
+
+This decouples density from context, ensuring components remain portable and predictable. A button preserves its internal structure (its inset) regardless of where it is placed. It could be inside a spacious marketing card, a standard modal, or a narrow sidebar. Instead of the layout parent implicitly shrinking or growing elements, the component declares its own physics.
+
+### Scale
+
+The scale has 5 tokens, each with a specific purpose. This ensures consistent density across the interface, covering everything from small details to large page sections.
+
+- **Tight** - Applies minimal padding to maximize information density. It is used when screen real estate is scarce and scanning speed is critical. _Common patterns: Data table cells, dense tooltips, micro-tags, ..._
+- **Snug** - Creates a condensed look for small interactive elements. It fits content tightly to ensure elements can sit comfortably within restricted bars or dense layouts. _Common patterns: Chips, badges, compact toolbar items, ..._
+- **Regular** - The default volume for standard interactions. It provides a comfortable touch target and balanced white space for general UI components. _Common patterns: Buttons, standard cards, input fields, form blocks, ..._
+- **Relaxed** - Introduces significant breathing room to separate distinct zones. It is used for containers that need to draw attention or stand apart from the main flow. _Common patterns: Modals, generous cards, alert banners, ..._
+- **Loose** - A structural inset for major layout blocks. It provides massive internal space to slow down the reading rhythm and frame high-impact content. _Common patterns: Hero sections, onboarding slides, empty states, ..._
+
+### Optical Corrections
+
+While a square inset (equal padding on all sides) is the default, UI elements often require optical correction to look balanced. A button with equal padding often looks oddly tall, and a mobile card with standard padding loses too much horizontal space.
+
+To solve this, we use _squish_ and _stretch_ modifiers. These generate a single token containing distinct values for the horizontal and vertical axes. These corrections maintain visual balance by reducing one dimension (either X or Y) to the next smallest step on the scale. For example, a 16px inset steps down to 8px on the compressed axis.
+
+<ComponentDemo name="spacing-inset" mode="preview" />
+
+#### Squish (Vertical Compression)
+
+Squish modifiers apply vertical compression to elements like buttons or table rows that need to align horizontally with the grid but maintain a compact vertical profile. By keeping the standard width and reducing the height, we preserve alignment while saving vertical space.
+
+#### Stretch (Horizontal Compression)
+
+Stretch modifiers apply horizontal compression, which is essential for mobile layouts or narrow columns (like sidebars) where screen real estate is limited. This approach maintains the vertical rhythm and breathing room so the design doesn't feel cramped, but reduces the horizontal padding to maximize content width.
+
+#### CSS Tokens
+
+You can construct inset CSS variables using the syntax shown below. By inserting a specific scale value (like `snug` or `relaxed`) and adding a geometry prefix (`square`, `squish`, or `stretch`), you can apply these tokens to padding properties.
+
+- **Square** - `--spacing-square-<inset scale>`
+- **Squish** - `--spacing-squish-<inset scale>`
+- **Stretch** - `--spacing-stretch-<inset scale>`
+
+### Consistent Height
+
+While semantic padding is preferred for most containers, certain interactive elements (like text inputs and buttons) require pixel-perfect height matching across different browsers. Browsers often calculate line-height and padding slightly differently, leading to sub-pixel mismatches.
+
+In these cases, it is more effective to zero out vertical padding and rely on a fixed height token. This ensures the component occupies the exact same vertical space on every platform. By pairing this fixed height with explicit vertical centering (e.g. `align-items: center`), you ensure that text and icons remain perfectly balanced within the container.
+
+<Callout title="The Regulatory Minimum">
+  Based on WCAG 2.2 Success Criterion 2.5.8 (Level AA), the absolute minimum
+  size for a mouse target is 24 by 24 pixels. This does not require the
+  visible element to be 24px, but the *interactive container* (hit area) must
+  be at least 24px.
+
+If the target is smaller than 24px, it must have sufficient spacing so that
+a 24px diameter circle centered on it does not touch any adjacent target.
+
+</Callout>
+
+## Composition
+
+Spacing is contextual rather than absolute, defined by the immediate container an element inhabits rather than the global page layout. To maintain a consistent rhythm, we treat every layout container as a self-contained universe where rules apply relative to that specific context, allowing the same semantic values to scale seamlessly across the hierarchy.
+
+For example, consider the `related` token, which is typically used to separate distinct zones. Inside a single card (micro level), you use `related` to separate the header from the body content. On the dashboard (macro level), you use that same `related` token to separate one card from the next.
+
+<ComponentDemo name="spacing-composition" mode="preview" />
+
+It might seem intuitive to make the page-level spacing larger than the card-level spacing. However, because the cards usually have visible boundaries (explicit grouping), that visual weight already handles the heavy lifting of separation.
+
+You don't need to double the whitespace to tell the user "these are two different cards." The border does that job. The spacing token simply ensures they adhere to the system's rhythm. By reusing the same token, you create a fractal-like consistency where the interface feels harmonious from the smallest detail to the widest layout.

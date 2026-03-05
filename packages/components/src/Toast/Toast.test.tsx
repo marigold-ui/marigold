@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Basic } from './Toast.stories';
 import { useToast } from './ToastQueue';
@@ -29,7 +29,7 @@ describe('Toast', () => {
     await act(async () => {
       await addToast({ title: 'Dies ist eine Toast-Nachricht!' });
     });
-    const toast = screen.getByText('Dies ist eine Toast-Nachricht!');
+    const toast = await screen.findByText('Dies ist eine Toast-Nachricht!');
 
     expect(toast).toBeInTheDocument();
   });
@@ -57,12 +57,12 @@ describe('Toast', () => {
     const button = screen.getByRole('button', { name: 'Show Toast' });
 
     await userEvent.click(button);
-    const toast = screen.getByText('Dies ist eine Toast-Nachricht!');
+    const toast = await screen.findByText('Dies ist eine Toast-Nachricht!');
     await act(async () => {
       await clearToasts();
     });
 
-    expect(toast).not.toBeInTheDocument();
+    await waitFor(() => expect(toast).not.toBeInTheDocument());
   });
 
   test('renders action when provided', async () => {
