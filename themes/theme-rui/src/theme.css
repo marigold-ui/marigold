@@ -16,7 +16,6 @@
 */
 
 @plugin 'tailwindcss-react-aria-components';
-@plugin 'tailwindcss-animate';
 
 @theme static {
   --font-sans: Inter, system-ui, sans-serif;
@@ -244,20 +243,18 @@
   --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
   --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
 
-  --fade-in-duration: 0.25s;
-  --fade-out-duration: 0.15s;
+  --fade-in-duration: 0.3s;
+  --fade-out-duration: 0.2s;
 
-  --animate-fade-in: fade-in var(--fade-in-duration) var(--ease-out-cubic);
-  --animate-fade-out: fade-in var(--fade-out-duration) reverse;
+  --animate-fade-in: fade-in var(--fade-in-duration) ease-out;
+  --animate-fade-out: fade-in var(--fade-out-duration) ease-in reverse;
 
   @keyframes fade-in {
     from {
       opacity: 0;
-      filter: blur(6px);
     }
     to {
       opacity: 1;
-      filter: blur(0);
     }
   }
 
