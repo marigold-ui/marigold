@@ -1,8 +1,27 @@
 import { CalendarDate } from '@internationalized/date';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Basic } from './DateField.stories';
+
+/**
+ * Dispatches a paste event with the given text on an element.
+ * In a real browser, `userEvent.paste()` may not trigger React's onPaste
+ * handler on ancestor elements reliably. We use Object.defineProperty
+ * because Firefox's ClipboardEvent constructor ignores the clipboardData option.
+ */
+const firePaste = (element: Element, text: string) => {
+  const pasteEvent = new Event('paste', {
+    bubbles: true,
+    cancelable: true,
+  });
+  Object.defineProperty(pasteEvent, 'clipboardData', {
+    value: {
+      getData: () => text,
+    },
+  });
+  element.dispatchEvent(pasteEvent);
+};
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();
@@ -70,7 +89,7 @@ test('renders correctly', () => {
             aria-valuenow="1"
             aria-valuetext="1"
             autocorrect="off"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             contenteditable="true"
             data-rac=""
             data-type="day"
@@ -92,7 +111,7 @@ test('renders correctly', () => {
           </span>
           <span
             aria-hidden="true"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             data-rac=""
             data-type="literal"
           >
@@ -112,7 +131,7 @@ test('renders correctly', () => {
             aria-valuenow="1"
             aria-valuetext="1 – Januar"
             autocorrect="off"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             contenteditable="true"
             data-rac=""
             data-type="month"
@@ -134,7 +153,7 @@ test('renders correctly', () => {
           </span>
           <span
             aria-hidden="true"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             data-rac=""
             data-type="literal"
           >
@@ -154,7 +173,7 @@ test('renders correctly', () => {
             aria-valuenow="2026"
             aria-valuetext="2026"
             autocorrect="off"
-            class="inline p-0.5 caret-transparent type-literal:px-0 data-focused:data-placeholder:text-foreground type-literal:text-placeholder disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:data-focused:bg-destructive invalid:data-focused:data-placeholder:text-destructive-foreground invalid:data-focused:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-placeholder:text-placeholder text-foreground data-focused:bg-focus data-focused:text-foreground rounded leading-none"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
             contenteditable="true"
             data-rac=""
             data-type="year"
@@ -273,7 +292,7 @@ test('calls onChange when pasting a valid date', async () => {
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  await user.paste('2024-12-25');
+  firePaste(group, '2024-12-25');
 
   expect(onChangeSpy).toHaveBeenCalledWith(new CalendarDate(2024, 12, 25));
   expect(onChangeSpy).toHaveBeenCalledTimes(1);
@@ -286,14 +305,18 @@ test('updates field state when pasting without onChange callback', async () => {
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  await user.paste('2024-12-25');
+  act(() => {
+    firePaste(group, '2024-12-25');
+  });
 
   const segments = screen.getAllByRole('spinbutton');
   const [daySegment, monthSegment, yearSegment] = segments;
 
-  expect(daySegment).toHaveTextContent('25');
-  expect(monthSegment).toHaveTextContent('12');
-  expect(yearSegment).toHaveTextContent('2024');
+  await waitFor(() => {
+    expect(daySegment).toHaveTextContent('25');
+    expect(monthSegment).toHaveTextContent('12');
+    expect(yearSegment).toHaveTextContent('2024');
+  });
 });
 
 test.each([
@@ -325,7 +348,7 @@ test.each([
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  await user.paste(input);
+  firePaste(group, input);
 
   expect(onChangeSpy).toHaveBeenCalledWith(expected);
 });
@@ -338,7 +361,7 @@ test('does not call onChange when pasting invalid date', async () => {
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  await user.paste('not a date');
+  firePaste(group, 'not a date');
 
   expect(onChangeSpy).not.toHaveBeenCalled();
 });
@@ -351,7 +374,7 @@ test('does not call onChange when pasting invalid date format', async () => {
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  await user.paste('32/13/2024'); // Invalid day and month
+  firePaste(group, '32/13/2024'); // Invalid day and month
 
   expect(onChangeSpy).not.toHaveBeenCalled();
 });
@@ -385,7 +408,7 @@ test.each([
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    await user.paste(input);
+    firePaste(group, input);
 
     expect(onChangeSpy).toHaveBeenCalledWith(expected);
   }
@@ -411,20 +434,19 @@ test.each([
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  await user.paste(input);
+  firePaste(group, input);
 
   expect(onChangeSpy).not.toHaveBeenCalled();
 });
 
-test('show console warning when pasting fails', async () => {
-  const user = userEvent.setup();
+test('show console warning when pasting fails', () => {
   const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
   render(<Basic.Component label="date field" />);
 
   const group = screen.getAllByRole('group')[0];
-  await user.click(group);
 
-  await expect(user.paste(undefined)).resolves.not.toThrow();
+  // Pasting undefined/empty should not throw or warn
+  firePaste(group, '');
   expect(consoleWarnSpy).not.toHaveBeenCalled();
 });
