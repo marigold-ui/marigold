@@ -1,9 +1,10 @@
-import { render, renderHook, screen } from '@testing-library/react';
+import { render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { ensureOverlayContainer, mockMatchMedia } from '../test.utils';
 import { useSidebar } from './Context';
 import { Sidebar } from './Sidebar';
@@ -25,12 +26,36 @@ import { buildCollection, findActiveBranch } from './collection';
 // eslint-disable-next-line testing-library/no-node-access
 const closest = (el: HTMLElement, sel: string) => el.closest(sel);
 
+// In-browser tests: `inert` panels remove elements from the a11y tree,
+// so getByRole can't find them. Use getByText (DOM search) + closest instead.
+// eslint-disable-next-line testing-library/no-node-access
+const linkByText = (name: string) =>
+  screen.getByText(name, { selector: 'a' }) as HTMLElement;
+
 const user = userEvent.setup();
 
 beforeEach(() => {
+  vi.useFakeTimers({
+    shouldAdvanceTime: true,
+    // Fast-forward idle tooltip/overlay timers (2500ms tooltip delay etc.)
+    advanceTimeDelta: 40,
+  });
   window.matchMedia = mockMatchMedia([]);
-  // Clear cookies
   document.cookie = 'marigold:sidebar:state=;max-age=0';
+});
+
+afterEach(async () => {
+  // Flush remaining timers (tooltip delays, modal transitions)
+  await vi.runAllTimersAsync();
+  vi.useRealTimers();
+
+  // Remove overlay container to prevent React Aria modal/portal state leaking
+  const overlay = document.getElementById('storybook-root');
+  if (overlay) overlay.remove();
+
+  document.body.removeAttribute('aria-hidden');
+  document.body.removeAttribute('style');
+  document.documentElement.removeAttribute('style');
 });
 
 test('renders with sub-components', () => {
@@ -108,11 +133,9 @@ test('branch items render as links with auto-derived href', () => {
 test('sub-panel opens when child is active', () => {
   render(<WithActiveBranch.Component />);
 
-  // Root panel should be in "before" position (not active)
-  const rootPanel = closest(
-    screen.getByRole('link', { name: 'Overview' }),
-    '[data-position]'
-  );
+  // Root panel should be in "before" position (not active).
+  // Use linkByText because the root panel is inert (invisible to getByRole).
+  const rootPanel = closest(linkByText('Overview'), '[data-position]');
   expect(rootPanel).toHaveAttribute('data-position', 'before');
 
   // Management sub-panel should be active
@@ -129,18 +152,18 @@ test('back button returns to root panel', async () => {
   render(<WithActiveBranch.Component />);
 
   // Management sub-panel is active
-  const usersLink = screen.getByRole('link', { name: 'Users' });
+  const usersLink = await screen.findByRole('link', { name: 'Users' });
   expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Click back
-  const backButton = screen.getByRole('button', { name: /Back/ });
+  const backButton = await screen.findByRole('button', { name: /Back/ });
   await user.click(backButton);
 
-  // Root panel should now be active
-  const overviewLink = screen.getByRole('link', { name: 'Overview' });
+  // Root panel transitions to active (wait for CSS visibility)
+  const overviewLink = await screen.findByRole('link', { name: 'Overview' });
   expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
@@ -151,83 +174,93 @@ test('re-entering the same branch after back reopens sub-panel', async () => {
   render(<WithActiveBranch.Component />);
 
   // Management sub-panel starts active
-  const usersLink = screen.getByRole('link', { name: 'Users' });
+  const usersLink = await screen.findByRole('link', { name: 'Users' });
   expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Click back → root panel shown
-  const backButton = screen.getByRole('button', { name: /Back/ });
+  const backButton = await screen.findByRole('button', { name: /Back/ });
   await user.click(backButton);
 
-  const overviewLink = screen.getByRole('link', { name: 'Overview' });
+  const overviewLink = await screen.findByRole('link', { name: 'Overview' });
   expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Click the Management branch trigger again → sub-panel should reopen
-  const managementTrigger = screen.getByRole('link', { name: /Management/ });
+  const managementTrigger = await screen.findByRole('link', {
+    name: /Management/,
+  });
   await user.click(managementTrigger);
 
-  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
+  // Wait for panel transition, then check Users is in the active panel
+  await waitFor(() => {
+    expect(closest(linkByText('Users'), '[data-position]')).toHaveAttribute(
+      'data-position',
+      'active'
+    );
+  });
 });
 
 test('navigating between branches via stateful active prop', async () => {
   render(<Complex.Component />);
 
-  // Dashboard is at root, click Tickets branch (exact match to avoid "My Tickets" etc.)
+  // Dashboard is at root, click Tickets branch
   const ticketsTrigger = screen.getByRole('link', { name: 'Tickets' });
   await user.click(ticketsTrigger);
 
-  const myTicketsLink = screen.getByRole('link', { name: 'My Tickets' });
+  // Wait for panel transition, then check Tickets sub-panel is active
+  const myTicketsLink = await screen.findByRole('link', { name: 'My Tickets' });
   expect(closest(myTicketsLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Click back → root
-  await user.click(screen.getByRole('button', { name: /Back to Tickets/ }));
+  const backToTickets = await screen.findByRole('button', {
+    name: /Back to Tickets/,
+  });
+  await user.click(backToTickets);
 
-  const dashboardLink = screen.getByRole('link', { name: 'Dashboard' });
+  const dashboardLink = await screen.findByRole('link', { name: 'Dashboard' });
   expect(closest(dashboardLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
-  // Click Projects → navigates to /active-projects, switches to projects panel
-  const projectsTrigger = screen.getByRole('link', { name: 'Projects' });
-  await user.click(projectsTrigger);
+  // Click Projects → opens projects panel
+  await user.click(await screen.findByRole('link', { name: 'Projects' }));
 
-  const activeLink = screen.getByRole('link', { name: 'Active' });
+  const activeLink = await screen.findByRole('link', { name: 'Active' });
   expect(closest(activeLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Click back from projects → root
-  await user.click(screen.getByRole('button', { name: /Back to Projects/ }));
-
-  expect(closest(dashboardLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
+  await user.click(
+    await screen.findByRole('button', { name: /Back to Projects/ })
   );
 
-  // Click Reports → navigates to /ticket-volume, opens reports panel
-  const reportsTrigger = screen.getByRole('link', { name: 'Reports' });
-  await user.click(reportsTrigger);
+  expect(
+    closest(
+      await screen.findByRole('link', { name: 'Dashboard' }),
+      '[data-position]'
+    )
+  ).toHaveAttribute('data-position', 'active');
 
-  const ticketVolumeLink = screen.getByRole('link', {
-    name: 'Ticket Volume',
-  });
-  expect(closest(ticketVolumeLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
+  // Click Reports → opens reports panel
+  await user.click(await screen.findByRole('link', { name: 'Reports' }));
+
+  expect(
+    closest(
+      await screen.findByRole('link', { name: 'Ticket Volume' }),
+      '[data-position]'
+    )
+  ).toHaveAttribute('data-position', 'active');
 });
 
 test('data-state attribute reflects expanded/collapsed', async () => {
@@ -250,11 +283,9 @@ test('data-state attribute reflects expanded/collapsed', async () => {
 test('non-active panels have inert attribute', () => {
   render(<WithActiveBranch.Component />);
 
-  // Root panel is in "before" position → should be inert
-  const rootPanel = closest(
-    screen.getByRole('link', { name: 'Overview' }),
-    '[data-position]'
-  );
+  // Root panel is in "before" position → should be inert.
+  // Use linkByText since inert elements are invisible to getByRole.
+  const rootPanel = closest(linkByText('Overview'), '[data-position]');
   expect(rootPanel).toHaveAttribute('inert');
 
   // Management panel is active → should NOT be inert
@@ -265,27 +296,33 @@ test('non-active panels have inert attribute', () => {
   expect(activePanel).not.toHaveAttribute('inert');
 });
 
-test('focus moves to back button when drilling into branch', async () => {
+test('focus moves to active item when drilling into branch with active child', async () => {
   render(<Basic.Component />);
 
   const managementTrigger = screen.getByRole('link', { name: /Management/ });
   await user.click(managementTrigger);
 
-  const backButton = screen.getByRole('button', {
-    name: /Back to Management/,
-  });
-  expect(backButton).toHaveFocus();
+  // After drilling in, navigate callback sets path to /users, making Users
+  // the active item. Focus goes to the active item, not the back button.
+  const usersLink = await screen.findByRole('link', { name: 'Users' });
+  // Focus is deferred via rAF in usePanelFocus — advance timers to trigger it
+  await vi.advanceTimersByTimeAsync(50);
+  expect(usersLink).toHaveFocus();
 });
 
 test('focus returns to branch trigger when going back', async () => {
   render(<WithActiveBranch.Component />);
 
-  const backButton = screen.getByRole('button', {
+  const backButton = await screen.findByRole('button', {
     name: /Back to Management/,
   });
   await user.click(backButton);
 
-  const managementTrigger = screen.getByRole('link', { name: /Management/ });
+  // After going back, root panel transitions to active (wait for visibility)
+  const managementTrigger = await screen.findByRole('link', {
+    name: /Management/,
+  });
+  await vi.advanceTimersByTimeAsync(50);
   expect(managementTrigger).toHaveFocus();
 });
 
@@ -355,6 +392,7 @@ test('mobile renders sheet overlay', () => {
 });
 
 test('mobile toggle opens sheet, close button closes it', async () => {
+  const mobileUser = userEvent.setup();
   window.matchMedia = mockMatchMedia(['(width < 640px)']);
   ensureOverlayContainer();
 
@@ -367,17 +405,21 @@ test('mobile toggle opens sheet, close button closes it', async () => {
 
   // Open the mobile sheet
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
-  await user.click(trigger);
+  await mobileUser.click(trigger);
   expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
 
   // Close via close button
   const closeButton = screen.getByRole('button', {
     name: 'Close navigation',
   });
-  await user.click(closeButton);
-  expect(
-    screen.queryByRole('link', { name: 'Overview' })
-  ).not.toBeInTheDocument();
+  await mobileUser.click(closeButton);
+
+  // Modal close may be async (transition-based)
+  await waitFor(() => {
+    expect(
+      screen.queryByRole('link', { name: 'Overview' })
+    ).not.toBeInTheDocument();
+  });
 });
 
 test('separator renders as divider element', () => {
@@ -390,17 +432,19 @@ test('onPress callback fires on item click', async () => {
   const handlePress = vi.fn();
 
   render(
-    <MarigoldProvider theme={theme}>
-      <Sidebar.Provider>
-        <Sidebar>
-          <Sidebar.Nav>
-            <Sidebar.Item href="/home" onPress={handlePress}>
-              Home
-            </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar>
-      </Sidebar.Provider>
-    </MarigoldProvider>
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item href="/home" onPress={handlePress}>
+                Home
+              </Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
   );
 
   const link = screen.getByRole('link', { name: 'Home' });
@@ -412,22 +456,24 @@ test('branch item onPress fires when clicking branch trigger', async () => {
   const handlePress = vi.fn();
 
   render(
-    <MarigoldProvider theme={theme}>
-      <Sidebar.Provider>
-        <Sidebar>
-          <Sidebar.Nav>
-            <Sidebar.Item
-              id="settings"
-              textValue="Settings"
-              onPress={handlePress}
-            >
-              Settings
-              <Sidebar.Item href="/general">General</Sidebar.Item>
-            </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar>
-      </Sidebar.Provider>
-    </MarigoldProvider>
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item
+                id="settings"
+                textValue="Settings"
+                onPress={handlePress}
+              >
+                Settings
+                <Sidebar.Item href="/general">General</Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
   );
 
   const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
@@ -437,21 +483,23 @@ test('branch item onPress fires when clicking branch trigger', async () => {
 
 test('nested branches derive href from deepest first leaf', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Sidebar.Provider>
-        <Sidebar>
-          <Sidebar.Nav>
-            <Sidebar.Item id="outer" textValue="Outer">
-              Outer
-              <Sidebar.Item id="inner" textValue="Inner">
-                Inner
-                <Sidebar.Item href="/deep-leaf">Deep Leaf</Sidebar.Item>
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="outer" textValue="Outer">
+                Outer
+                <Sidebar.Item id="inner" textValue="Inner">
+                  Inner
+                  <Sidebar.Item href="/deep-leaf">Deep Leaf</Sidebar.Item>
+                </Sidebar.Item>
               </Sidebar.Item>
-            </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar>
-      </Sidebar.Provider>
-    </MarigoldProvider>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
   );
 
   // Outer branch should auto-derive href from the deepest first leaf
@@ -461,18 +509,20 @@ test('nested branches derive href from deepest first leaf', () => {
 
 test('branch without any leaf hrefs renders without href', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Sidebar.Provider>
-        <Sidebar>
-          <Sidebar.Nav>
-            <Sidebar.Item id="empty-branch" textValue="Empty">
-              Empty
-              <Sidebar.Item>No href child</Sidebar.Item>
-            </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar>
-      </Sidebar.Provider>
-    </MarigoldProvider>
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="empty-branch" textValue="Empty">
+                Empty
+                <Sidebar.Item>No href child</Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
   );
 
   // Branch item should render as a link without href attribute
@@ -482,23 +532,25 @@ test('branch without any leaf hrefs renders without href', () => {
 
 test('group label inside branch renders correctly', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Sidebar.Provider>
-        <Sidebar>
-          <Sidebar.Nav>
-            <Sidebar.Item id="settings" textValue="Settings">
-              Settings
-              <Sidebar.GroupLabel>Account</Sidebar.GroupLabel>
-              <Sidebar.Item href="/profile" active>
-                Profile
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="settings" textValue="Settings">
+                Settings
+                <Sidebar.GroupLabel>Account</Sidebar.GroupLabel>
+                <Sidebar.Item href="/profile" active>
+                  Profile
+                </Sidebar.Item>
+                <Sidebar.Separator />
+                <Sidebar.Item href="/security">Security</Sidebar.Item>
               </Sidebar.Item>
-              <Sidebar.Separator />
-              <Sidebar.Item href="/security">Security</Sidebar.Item>
-            </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar>
-      </Sidebar.Provider>
-    </MarigoldProvider>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
   );
 
   // Sub-panel is active (because /profile is active)
@@ -507,35 +559,40 @@ test('group label inside branch renders correctly', () => {
   expect(screen.getByRole('separator')).toBeInTheDocument();
 });
 
-test('switching branches directly updates focus to back button', async () => {
+test('switching branches focuses active item in new branch', async () => {
   render(<Complex.Component />);
 
   // Click Tickets branch from root (exact match)
   const ticketsTrigger = screen.getByRole('link', { name: 'Tickets' });
   await user.click(ticketsTrigger);
 
-  const myTicketsLink = screen.getByRole('link', { name: 'My Tickets' });
+  // Wait for panel visibility transition
+  const myTicketsLink = await screen.findByRole('link', { name: 'My Tickets' });
   expect(closest(myTicketsLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Click back to root
-  await user.click(screen.getByRole('button', { name: /Back to Tickets/ }));
+  const backToTickets = await screen.findByRole('button', {
+    name: /Back to Tickets/,
+  });
+  await user.click(backToTickets);
 
   // Now click Projects (switches directly to projects branch)
-  const projectsTrigger = screen.getByRole('link', { name: 'Projects' });
+  const projectsTrigger = await screen.findByRole('link', { name: 'Projects' });
   await user.click(projectsTrigger);
 
-  const activeLink = screen.getByRole('link', { name: 'Active' });
+  // Navigate callback sets path to /active-projects, making Active the active item
+  const activeLink = await screen.findByRole('link', { name: 'Active' });
   expect(closest(activeLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
-  // Back button in projects panel should be focused
-  const backButton = screen.getByRole('button', { name: /Back to Projects/ });
-  expect(backButton).toHaveFocus();
+  // Active item receives focus (not back button) since it has aria-current="page"
+  await vi.advanceTimersByTimeAsync(50);
+  expect(activeLink).toHaveFocus();
 });
 
 test('item with explicit id uses that id as key', () => {
@@ -556,20 +613,22 @@ test('item without explicit id gets auto-generated key', () => {
 
 test('textValue auto-extracted from string children', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Sidebar.Provider>
-        <Sidebar>
-          <Sidebar.Nav>
-            <Sidebar.Item id="branch">
-              My Section
-              <Sidebar.Item href="/child" active>
-                Child
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="branch">
+                My Section
+                <Sidebar.Item href="/child" active>
+                  Child
+                </Sidebar.Item>
               </Sidebar.Item>
-            </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar>
-      </Sidebar.Provider>
-    </MarigoldProvider>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
   );
 
   // Back button should show auto-extracted textValue "My Section"
@@ -584,42 +643,44 @@ test('direct branch-to-branch switch via active prop change focuses active item'
     const [currentPath, setCurrentPath] = useState('/users');
 
     return (
-      <MarigoldProvider theme={theme}>
-        <button
-          data-testid="switch-to-settings"
-          onClick={() => setCurrentPath('/general')}
-        >
-          Go to Settings
-        </button>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav>
-              <Sidebar.Item id="management" textValue="Management">
-                Management
-                <Sidebar.Item href="/users" active={currentPath === '/users'}>
-                  Users
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <button
+            data-testid="switch-to-settings"
+            onClick={() => setCurrentPath('/general')}
+          >
+            Go to Settings
+          </button>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav>
+                <Sidebar.Item id="management" textValue="Management">
+                  Management
+                  <Sidebar.Item href="/users" active={currentPath === '/users'}>
+                    Users
+                  </Sidebar.Item>
                 </Sidebar.Item>
-              </Sidebar.Item>
-              <Sidebar.Item id="settings" textValue="Settings">
-                Settings
-                <Sidebar.Item
-                  href="/general"
-                  active={currentPath === '/general'}
-                >
-                  General
+                <Sidebar.Item id="settings" textValue="Settings">
+                  Settings
+                  <Sidebar.Item
+                    href="/general"
+                    active={currentPath === '/general'}
+                  >
+                    General
+                  </Sidebar.Item>
                 </Sidebar.Item>
-              </Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </MarigoldProvider>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
     );
   };
 
   render(<DirectBranchSwitch />);
 
   // Management panel is active (because /users is active)
-  const usersLink = screen.getByRole('link', { name: 'Users' });
+  const usersLink = await screen.findByRole('link', { name: 'Users' });
   expect(closest(usersLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
@@ -628,14 +689,15 @@ test('direct branch-to-branch switch via active prop change focuses active item'
   // Directly switch active branch from management → settings (no root in between)
   await user.click(screen.getByTestId('switch-to-settings'));
 
-  // Settings panel should now be active
-  const generalLink = screen.getByRole('link', { name: 'General' });
+  // Settings panel transitions to active (wait for CSS visibility)
+  const generalLink = await screen.findByRole('link', { name: 'General' });
   expect(closest(generalLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
   // Focus should be on the active item (not back button)
+  await vi.advanceTimersByTimeAsync(50);
   expect(generalLink).toHaveFocus();
 });
 
@@ -824,43 +886,93 @@ test('arrow navigation in sub-panel includes back button', async () => {
 });
 
 test('panel transition focuses active item when one exists (not back button)', async () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Sidebar.Provider>
-        <Sidebar>
-          <Sidebar.Nav>
-            <Sidebar.Item id="branch" textValue="Branch">
-              Branch
-              <Sidebar.Item href="/child-a" active>
-                Child A
-              </Sidebar.Item>
-              <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
-            </Sidebar.Item>
-          </Sidebar.Nav>
-        </Sidebar>
-      </Sidebar.Provider>
-    </MarigoldProvider>
-  );
+  const PanelFocusTest = () => {
+    const [activePath, setActivePath] = useState<string | null>(null);
 
-  // Click the branch trigger to open the sub-panel
+    return (
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <button
+            data-testid="activate-child-a"
+            onClick={() => setActivePath('/child-a')}
+          >
+            Activate
+          </button>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav>
+                <Sidebar.Item id="branch" textValue="Branch">
+                  Branch
+                  <Sidebar.Item
+                    href="/child-a"
+                    active={activePath === '/child-a'}
+                  >
+                    Child A
+                  </Sidebar.Item>
+                  <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+  };
+
+  render(<PanelFocusTest />);
+
+  // Branch trigger is in root panel (active)
   const branchTrigger = screen.getByRole('link', { name: /Branch/ });
   await user.click(branchTrigger);
 
-  // Focus should be on the active item (Child A), not the back button
-  const childA = screen.getByRole('link', { name: 'Child A' });
+  // Sub-panel opens (no active child yet) — focus goes to back button
+  const backButton = await screen.findByRole('button', {
+    name: /Back to Branch/,
+  });
+  await vi.advanceTimersByTimeAsync(50);
+  expect(backButton).toHaveFocus();
+
+  // Go back to root, then activate child and re-enter
+  await user.click(backButton);
+  await vi.advanceTimersByTimeAsync(50);
+
+  // Activate Child A which will auto-open the branch panel
+  await user.click(screen.getByTestId('activate-child-a'));
+
+  // Branch panel opens with Child A active → focus should be on Child A
+  const childA = await screen.findByRole('link', { name: 'Child A' });
+  await vi.advanceTimersByTimeAsync(50);
   expect(childA).toHaveFocus();
 });
 
 test('panel transition falls back to back button when no active item', async () => {
-  render(<Basic.Component />);
+  render(
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item id="branch" textValue="Branch">
+                Branch
+                <Sidebar.Item href="/child-a">Child A</Sidebar.Item>
+                <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
+  );
 
-  // Click Management trigger — no children are active
-  const managementTrigger = screen.getByRole('link', { name: /Management/ });
-  await user.click(managementTrigger);
+  // Click branch trigger — no children have active prop
+  const branchTrigger = screen.getByRole('link', { name: /Branch/ });
+  await user.click(branchTrigger);
 
-  const backButton = screen.getByRole('button', {
-    name: /Back to Management/,
+  // Focus falls back to back button since no active item exists
+  const backButton = await screen.findByRole('button', {
+    name: /Back to Branch/,
   });
+  await vi.advanceTimersByTimeAsync(50);
   expect(backButton).toHaveFocus();
 });
 
