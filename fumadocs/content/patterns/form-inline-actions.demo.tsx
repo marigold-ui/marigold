@@ -1,6 +1,5 @@
 import { venues } from '@/lib/data/venues';
 import { useState } from 'react';
-import { Key } from 'react';
 import {
   Button,
   Inline,
@@ -23,10 +22,9 @@ export default () => {
     new Set(venues.map(venue => venue.country))
   );
 
-  const handleVenueChange = (value: Key | null) => {
-    if (!value) return;
-    setSelectedVenueId(String(value));
-    const venue = venues.find(v => v.id === value);
+  const handleVenueChange = (venueId: string) => {
+    setSelectedVenueId(venueId);
+    const venue = venues.find(v => v.id === venueId);
     if (venue) {
       setName(venue.name);
       setStreet(venue.street);
@@ -46,8 +44,8 @@ export default () => {
   };
 
   return (
-    <Stack space="group">
-      <Inline alignY="input" space="related">
+    <Stack space="regular">
+      <Inline alignY="input" space="related" noWrap>
         <Select
           label="Venue"
           value={selectedVenueId}
@@ -67,7 +65,7 @@ export default () => {
       </Inline>
       <TextField label="Name" value={name} onChange={setName} />
       <TextField label="Street" value={street} onChange={setStreet} />
-      <Inline space={5}>
+      <Inline space="related">
         <TextField
           label="Postcode"
           width={20}
@@ -76,7 +74,7 @@ export default () => {
         />
         <TextField label="City" width={44} value={city} onChange={setCity} />
       </Inline>
-      <Stack space="group">
+      <Stack space="tight">
         <Select
           label="Country"
           placeholder="Select country"

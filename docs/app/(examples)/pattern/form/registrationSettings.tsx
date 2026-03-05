@@ -29,7 +29,7 @@ export const RegistrationSettings = () => (
             type="email"
           />
 
-          <Inset spaceY="group">
+          <Inset spaceY={12}>
             <Stack space="group">
               <Checkbox label="Enable waitlist" />
               <Checkbox label="Limit registrations to specific domains" />
