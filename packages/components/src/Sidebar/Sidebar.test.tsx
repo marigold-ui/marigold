@@ -305,8 +305,8 @@ test('focus moves to active item when drilling into branch with active child', a
   // After drilling in, navigate callback sets path to /users, making Users
   // the active item. Focus goes to the active item, not the back button.
   const usersLink = await screen.findByRole('link', { name: 'Users' });
-  // Focus is deferred via rAF in usePanelFocus — advance timers to trigger it
-  await vi.advanceTimersByTimeAsync(50);
+  // Focus is deferred until after panel transition in usePanelFocus — advance timers past the timeout fallback
+  await vi.advanceTimersByTimeAsync(400);
   expect(usersLink).toHaveFocus();
 });
 
@@ -322,7 +322,7 @@ test('focus returns to branch trigger when going back', async () => {
   const managementTrigger = await screen.findByRole('link', {
     name: /Management/,
   });
-  await vi.advanceTimersByTimeAsync(50);
+  await vi.advanceTimersByTimeAsync(400);
   expect(managementTrigger).toHaveFocus();
 });
 
@@ -591,7 +591,7 @@ test('switching branches focuses active item in new branch', async () => {
   );
 
   // Active item receives focus (not back button) since it has aria-current="page"
-  await vi.advanceTimersByTimeAsync(50);
+  await vi.advanceTimersByTimeAsync(400);
   expect(activeLink).toHaveFocus();
 });
 
@@ -697,7 +697,7 @@ test('direct branch-to-branch switch via active prop change focuses active item'
   );
 
   // Focus should be on the active item (not back button)
-  await vi.advanceTimersByTimeAsync(50);
+  await vi.advanceTimersByTimeAsync(400);
   expect(generalLink).toHaveFocus();
 });
 
@@ -929,19 +929,19 @@ test('panel transition focuses active item when one exists (not back button)', a
   const backButton = await screen.findByRole('button', {
     name: /Back to Branch/,
   });
-  await vi.advanceTimersByTimeAsync(50);
+  await vi.advanceTimersByTimeAsync(400);
   expect(backButton).toHaveFocus();
 
   // Go back to root, then activate child and re-enter
   await user.click(backButton);
-  await vi.advanceTimersByTimeAsync(50);
+  await vi.advanceTimersByTimeAsync(400);
 
   // Activate Child A which will auto-open the branch panel
   await user.click(screen.getByTestId('activate-child-a'));
 
   // Branch panel opens with Child A active → focus should be on Child A
   const childA = await screen.findByRole('link', { name: 'Child A' });
-  await vi.advanceTimersByTimeAsync(50);
+  await vi.advanceTimersByTimeAsync(400);
   expect(childA).toHaveFocus();
 });
 
@@ -972,7 +972,7 @@ test('panel transition falls back to back button when no active item', async () 
   const backButton = await screen.findByRole('button', {
     name: /Back to Branch/,
   });
-  await vi.advanceTimersByTimeAsync(50);
+  await vi.advanceTimersByTimeAsync(400);
   expect(backButton).toHaveFocus();
 });
 

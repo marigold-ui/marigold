@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { KeyboardEvent, RefObject } from 'react';
 import { createFocusManager } from '@react-aria/focus';
+import { isFocusVisible } from '@react-aria/interactions';
 import { useLayoutEffect, useObjectRef } from '@react-aria/utils';
 
 // Derive position from stack — determines CSS transition state
@@ -82,7 +83,55 @@ export const usePanelFocus = ({
       !openBranch && prev ? `[data-key="${prev}"]` : '[data-back-button]';
     const target = activeItem ?? activePanel.querySelector(fallbackSelector);
 
-    target?.focus();
+    // Capture keyboard modality before any async wait so we can preserve
+    // focus-visible state (browser loses modality context across async boundaries).
+    const showFocusRing = isFocusVisible();
+
+    const focusTarget = () => {
+      (target as HTMLElement | null)?.focus({
+        focusVisible: showFocusRing,
+      } as FocusOptions);
+    };
+
+    // Check if the panel has a running CSS transition we should wait for.
+    const duration = parseFloat(
+      getComputedStyle(activePanel).transitionDuration
+    );
+
+    if (duration > 0) {
+      // Wait for the panel's opacity transition to finish before focusing.
+      // Use a flag to ensure focus is only called once (transitionend or timeout).
+      let done = false;
+
+      const onTransitionEnd = (e: TransitionEvent) => {
+        if (e.propertyName !== 'opacity' || done) return;
+        done = true;
+        activePanel.removeEventListener('transitionend', onTransitionEnd);
+        focusTarget();
+      };
+
+      activePanel.addEventListener('transitionend', onTransitionEnd);
+
+      // Timeout fallback in case transitionend doesn't fire (e.g. interrupted)
+      const timeoutId = setTimeout(
+        () => {
+          if (done) return;
+          done = true;
+          activePanel.removeEventListener('transitionend', onTransitionEnd);
+          focusTarget();
+        },
+        duration * 1000 + 50
+      );
+
+      return () => {
+        activePanel.removeEventListener('transitionend', onTransitionEnd);
+        clearTimeout(timeoutId);
+      };
+    }
+
+    // No transition (e.g. prefers-reduced-motion) — fall back to rAF
+    const rafId = requestAnimationFrame(focusTarget);
+    return () => cancelAnimationFrame(rafId);
   }, [navRef, openBranch]);
 
   return navRef;
