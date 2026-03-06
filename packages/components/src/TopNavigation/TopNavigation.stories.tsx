@@ -139,7 +139,6 @@ const meta = preview.meta({
 });
 
 export const WithTabs = meta.story({
-  tags: ['component-test'],
   render: args => (
     <TopNavigation {...args}>
       <TopNavigation.Start>
