@@ -89,7 +89,7 @@ export const AutoCollapse = meta.story({
     </div>
   ),
   play: async ({ canvas }) => {
-    const ellipsis = canvas.getByRole('button', {
+    const ellipsis = await canvas.findByRole('button', {
       name: 'These breadcrumbs are hidden',
     });
     await expect(ellipsis).toBeInTheDocument();
