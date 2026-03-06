@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import type { KeyboardEvent, RefObject } from 'react';
 import { createFocusManager } from '@react-aria/focus';
 import { isFocusVisible } from '@react-aria/interactions';
@@ -23,27 +23,30 @@ export interface PanelKeyboardProps {
 export const usePanelKeyboard = (
   panelRef: RefObject<HTMLDivElement | null>
 ): PanelKeyboardProps => {
-  const focusManager = createFocusManager(panelRef);
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        focusManager.focusNext({ wrap: true });
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        focusManager.focusPrevious({ wrap: true });
-        break;
-      case 'Home':
-        e.preventDefault();
-        focusManager.focusFirst();
-        break;
-      case 'End':
-        e.preventDefault();
-        focusManager.focusLast();
-        break;
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLDivElement>) => {
+      const focusManager = createFocusManager(panelRef);
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          focusManager.focusNext({ wrap: true });
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          focusManager.focusPrevious({ wrap: true });
+          break;
+        case 'Home':
+          e.preventDefault();
+          focusManager.focusFirst();
+          break;
+        case 'End':
+          e.preventDefault();
+          focusManager.focusLast();
+          break;
+      }
+    },
+    [panelRef]
+  );
 
   return { onKeyDown: handleKeyDown };
 };
@@ -80,7 +83,9 @@ export const usePanelFocus = ({
 
     // Going back: focus the branch trigger we came from; otherwise: back button
     const fallbackSelector =
-      !openBranch && prev ? `[data-key="${prev}"]` : '[data-back-button]';
+      !openBranch && prev
+        ? `[data-key="${CSS.escape(prev)}"]`
+        : '[data-back-button]';
     const target = activeItem ?? activePanel.querySelector(fallbackSelector);
 
     // Capture keyboard modality before any async wait so we can preserve
@@ -132,7 +137,7 @@ export const usePanelFocus = ({
     // No transition (e.g. prefers-reduced-motion) — fall back to rAF
     const rafId = requestAnimationFrame(focusTarget);
     return () => cancelAnimationFrame(rafId);
-  }, [navRef, openBranch]);
+  }, [openBranch]);
 
   return navRef;
 };
