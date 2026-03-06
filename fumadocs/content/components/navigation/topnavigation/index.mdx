@@ -1,0 +1,143 @@
+---
+title: TopNavigation
+description: A component for building a persistent top navigation bar with flexible slot-based layout.
+badge: beta
+---
+
+The `<TopNavigation>` is a compound component that provides a consistent, accessible navigation bar at the top of an application. It uses a three-slot layout with start, middle, and end sections, giving you full control over how branding, navigation links, and user actions are arranged.
+
+`<TopNavigation>` is ideal for application shells where the top bar needs to accommodate a logo, primary navigation, and utility actions like search or user menus. It renders a semantic `<header>` element, while the middle and end slots use `<nav>` landmarks with appropriate ARIA labels for screen reader accessibility.
+
+## Anatomy
+
+The `<TopNavigation>` component uses a compound component pattern with three slots arranged in a CSS grid layout.
+
+<ImageZoom
+  src="/topnavigation/topnavigation-anatomy.svg"
+  alt="Anatomy of TopNavigation"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+<ul>
+  <li><b>Container:</b> The outer `<header>` element that holds the three-column grid layout. Use the root `<TopNavigation>` component.</li>
+  <li><b>Start:</b> The left-aligned slot, typically used for branding such as a logo or app name. Use `<TopNavigation.Start>`.</li>
+  <li><b>Middle:</b> The flexible center slot, rendered as a `<nav>` element. Commonly holds primary navigation like tabs, breadcrumbs, or a search field. Use `<TopNavigation.Middle>`.</li>
+  <li><b>End:</b> The right-aligned slot, also rendered as a `<nav>` element. Typically contains utility actions such as user menus, notifications, or settings. Use `<TopNavigation.End>`.</li>
+</ul>
+
+<Callout title="Info">
+  `<TopNavigation>` is a <b>compound component</b>. If you don't know what that means or you want to explore more about it, you can find a [tutorial](https://marigold-rapp.vercel.app/compound-component) for this topic in our reference app.
+</Callout>
+
+## Appearance
+
+<AppearanceDemo component={'TopNavigation'} />
+
+<AppearanceTable component={'TopNavigation'} />
+
+## Usage
+
+The `<TopNavigation>` component organizes the top-level navigation of an application into three distinct sections. Place branding content in `<TopNavigation.Start>`, primary navigation in `<TopNavigation.Middle>`, and utility actions in `<TopNavigation.End>`.
+
+### Basic layout
+
+Place branding in `<TopNavigation.Start>`, navigation links in `<TopNavigation.Middle>`, and utility actions like sign-in in `<TopNavigation.End>`.
+
+### Centering content in the middle slot
+
+Some layouts call for centered content in the navigation bar, such as a search field. Use the `alignX` prop on `<TopNavigation.Middle>` to horizontally center its content within the available space. Note that `alignX` only applies to the Middle slot — Start and End are always aligned to their respective edges.
+
+<ComponentDemo name="topnavigation-search" />
+
+### Keeping navigation visible while scrolling
+
+On pages with long content, users may need to scroll far down the page and lose access to navigation. Setting the `sticky` prop keeps the navigation bar fixed at the top of the viewport so users can always navigate without scrolling back up.
+
+<ComponentDemo name="topnavigation-sticky" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use sticky navigation for long pages where users need persistent access to
+      navigation or breadcrumbs.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use sticky navigation on compact pages where the content fits within
+      the viewport, as it takes up valuable screen space unnecessarily.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Combining with Sidebar
+
+For applications with multiple levels of navigation, combine `<TopNavigation>` with the [Sidebar](/components/navigation/sidebar) component. The top bar covers global concerns like branding and utility actions, while the Sidebar handles sub-navigation within each section.
+
+The `<TopNavigation.Middle>` slot can hold Tabs, Breadcrumbs, or be left empty depending on the application's needs. In this example, Tabs represent the top-level sections. Use `alignY="bottom"` to visually connect the active tab indicator with the content below.
+
+<ComponentDemo name="topnavigation-tabs" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      - Use meaningful `aria-label` props when multiple `<nav>` landmarks exist on the page. Middle and End both render `<nav>`, so distinct labels help screen reader users differentiate them.
+      - Use the Start slot for consistent branding (logo or app name) across all pages.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      - Don't place too many items in the navigation bar. Prioritize the most important actions and group secondary ones in menus.
+      - Don't use TopNavigation for page-level section navigation — use Tabs or Breadcrumbs directly instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Accessibility
+
+The `<TopNavigation>` renders a semantic `<header>` element, while `<TopNavigation.Middle>` and `<TopNavigation.End>` each render a `<nav>` landmark. When both are present, screen readers detect multiple navigation landmarks, so provide distinct `aria-label` values to help users differentiate them (e.g., "Main navigation" vs "User actions").
+
+## Props
+
+<StorybookHintMessage component={'TopNavigation'} />
+
+### TopNavigation
+
+<AutoTypeTable path="TopNavigation" name="TopNavigationProps" />
+
+### TopNavigation.Start
+
+<AutoTypeTable
+  path="TopNavigation/TopNavigationStart"
+  name="TopNavigationStartProps"
+/>
+
+### TopNavigation.Middle
+
+<AutoTypeTable
+  path="TopNavigation/TopNavigationMiddle"
+  name="TopNavigationMiddleProps"
+/>
+
+### TopNavigation.End
+
+<AutoTypeTable
+  path="TopNavigation/TopNavigationEnd"
+  name="TopNavigationEndProps"
+/>
+
+## Alternative components
+
+<ul>
+  <li>
+    [Tabs](/components/navigation/tabs): If you only need tab-based navigation
+    without a full navigation bar layout, use Tabs directly.
+  </li>
+  <li>
+    [Breadcrumbs](/components/navigation/breadcrumbs): For displaying
+    hierarchical navigation paths that can be placed inside or outside of a
+    TopNavigation.
+  </li>
+</ul>
