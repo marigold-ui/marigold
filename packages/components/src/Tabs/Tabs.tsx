@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type RAC from 'react-aria-components';
 import { Tabs } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
@@ -28,13 +29,14 @@ const _Tabs = ({ disabled, variant, size = 'medium', ...rest }: TabsProps) => {
     isDisabled: disabled,
     ...rest,
   };
+  const tabIndicatorLayoutId = useId();
   const classNames = useClassNames({
     component: 'Tabs',
     size,
     variant,
   });
   return (
-    <TabContext.Provider value={{ classNames }}>
+    <TabContext.Provider value={{ classNames, tabIndicatorLayoutId }}>
       <Tabs {...props} className={classNames.container}>
         {props.children}
       </Tabs>

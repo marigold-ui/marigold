@@ -8,8 +8,6 @@ import { useTabContext } from './Context';
 // ----------------------
 export type TabProps = Omit<RAC.TabProps, 'className' | 'style'>;
 
-const TAB_INDICATOR_LAYOUT_ID = 'tab-indicator';
-
 const INDICATOR_TRANSITION = {
   duration: 0.25,
   ease: [0.165, 0.84, 0.44, 1] as const,
@@ -18,9 +16,8 @@ const INDICATOR_TRANSITION = {
 // component
 // ----------------------
 const _Tab = (props: TabProps) => {
-  const { classNames } = useTabContext();
+  const { classNames, tabIndicatorLayoutId } = useTabContext();
   const { children: content, ...restProps } = props;
-
   return (
     <Tab
       {...restProps}
@@ -40,7 +37,7 @@ const _Tab = (props: TabProps) => {
           {renderProps.isSelected && (
             <motion.span
               data-testid="tab-indicator"
-              layoutId={TAB_INDICATOR_LAYOUT_ID}
+              layoutId={tabIndicatorLayoutId}
               className={cn('rounded-none', classNames.tabIndicator)}
               transition={INDICATOR_TRANSITION}
             />
