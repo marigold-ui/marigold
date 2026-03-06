@@ -13,9 +13,15 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   tabsList: cva({ base: 'mb-4 border-b' }),
   tab: cva({
     base: [
-      'text-text-primary-muted aria-selected:text-text-primary px-2 py-1 text-sm font-medium',
-      'aria-selected:border-border-primary -m-px border-b-2 border-transparent',
+      'relative text-text-primary-muted aria-selected:text-text-primary px-2 py-1 text-sm font-medium',
+      '-m-px border-b-2 border-transparent',
       'focus:outline-hidden focus-visible:ui-state-focus',
+    ],
+  }),
+  tabIndicator: cva({
+    base: [
+      'absolute inset-x-0 bottom-0 -mb-px h-0.5 border-b-2 border-border-primary',
+      'origin-left',
     ],
   }),
 };
