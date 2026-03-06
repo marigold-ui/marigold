@@ -28,7 +28,6 @@ import {
   IconList,
   RelativeTime,
   Spacing,
-  SpacingTokensTable,
   Stack,
   StorybookHintMessage,
   TeaserList,
@@ -88,8 +87,6 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
             FontSizes,
             FontStyle,
             TextAlign,
-            SpacingTokens: SpacingTokensTable,
-
             Spacing,
             BorderRadius,
             AlignmentsX,
