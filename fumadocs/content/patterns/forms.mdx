@@ -72,7 +72,7 @@ Use sections when your form has multiple purposes or collects different types of
 
 - **Progressive disclosure**: When some fields are conditional based on previous selections, sections help users understand the relationship between their choices and additional requirements.
 
-<ComponentDemo file="./form-section.demo.tsx" />
+<ComponentDemo name="form-section" />
 
 #### Spacing between sections
 
@@ -92,7 +92,7 @@ Individual fields are the building blocks of your form. Their arrangement, sizin
 
 Following a predictable field order helps users build mental models and reduces the time spent deciding what to fill out next. Prioritizing required fields ensures critical information is collected first, while positioning dependent fields near their triggers maintains context and prevents confusion. Field widths that match expected content length provide visual cues about the type and amount of information needed, making forms more intuitive and efficient to complete.
 
-<ComponentDemo file="./form-spacing-fields.demo.tsx" />
+<ComponentDemo name="form-spacing-fields" />
 
 <GuidelineTiles>
   <Do>
@@ -140,7 +140,7 @@ Accordions can be used effectively in two ways within forms:
 
 When using accordions, ensure that required fields remain visible and are not hidden within collapsed sections to maintain accessibility and usability.
 
-<ComponentDemo file="./form-accordion.demo.tsx" />
+<ComponentDemo name="form-accordion" />
 
 ### Required vs. optional fields
 
@@ -150,7 +150,77 @@ These fields must be filled out for the form to be submitted. They are clearly i
 
 We provide a set of spacing tokens to help you apply consistent spacing throughout your forms. These tokens are designed to cover spacing needs for form layouts, including spacing between sections, fields, and groups of related fields.
 
-<SpacingTokens />
+<table aria-label="spacing tokens">
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Value</th>
+      <th>Description</th>
+      <th>Relevant components</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>container</code>
+      </td>
+      <td>50rem (800px)</td>
+      <td>Used width or max-width for the form container.</td>
+      <td>
+        <code>&lt;div&gt;</code>, <code>&lt;Form&gt;</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>section</code>
+      </td>
+      <td>4rem (64px)</td>
+      <td>Used for creating space between different form sections.</td>
+      <td>
+        <code>&lt;Stack&gt;</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>group</code>
+      </td>
+      <td>2rem (32px)</td>
+      <td>
+        Used for creating vertical space between individual form fields in a
+        section.
+      </td>
+      <td>
+        <code>&lt;Stack&gt;</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>peer</code>
+      </td>
+      <td>1rem (16px)</td>
+      <td>
+        Used for creating horizontal space between individual form fields in a
+        section.
+      </td>
+      <td>
+        <code>&lt;Inline&gt;</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>related</code>
+      </td>
+      <td>0.5rem (8px)</td>
+      <td>
+        Used for grouping related fields (address components, date/time fields)
+        or multiple accordion sections together.
+      </td>
+      <td>
+        <code>&lt;Stack&gt;</code>, <code>&lt;Inset&gt;</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Actions
 
@@ -162,13 +232,13 @@ Additional actions can enhance the user experience by providing options like "vi
 
 Place the action near the related field where the action is for with that context is given. Links should be placed usually next or below the related field.
 
-<ComponentDemo file="./form-link.demo.tsx" mode="preview" />
+<ComponentDemo name="form-link" mode="preview" />
 
 ### Submit placement
 
 The submit button should be positioned at the bottom of the form, aligned to the left to follow the natural reading flow. Place the primary action first, followed by secondary actions with appropriate spacing.
 
-<ComponentDemo file="./form-action.demo.tsx" mode="preview" />
+<ComponentDemo name="form-action" mode="preview" />
 
 ## Admin- and Mastermark
 
