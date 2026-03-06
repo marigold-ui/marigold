@@ -1,0 +1,221 @@
+---
+title: Sidebar
+description: Persistent navigation panel for organizing app-level navigation.
+badge: beta
+---
+
+The `<Sidebar>` provides persistent, app-level navigation placed on the left side of the screen. It organizes navigation items into a vertical list, supports drill-down sub-navigation for nested sections, and adapts between a desktop panel and a mobile sheet overlay.
+
+## Anatomy
+
+The `<Sidebar>` uses a compound component pattern. The outermost `<Sidebar.Provider>` manages state and responsive behavior. Inside, `<Sidebar>` renders a grid with three slots: a sticky header, scrollable navigation content, and a sticky footer.
+
+{/* TODO: Create anatomy image at /public/sidebar/sidebar-anatomy.jpg */}
+
+<ul>
+  <li><b>Provider:</b> Wraps the sidebar and main content. Manages open/close state, mobile detection, and context for all sub-components. Use `<Sidebar.Provider>`.</li>
+  <li><b>Sidebar:</b> The panel itself, rendered as a grid with header, content, and footer slots.</li>
+  <li><b>Header:</b> Sticky top area for branding, logos, or workspace switchers. Use `<Sidebar.Header>`.</li>
+  <li><b>Navigation:</b> Scrollable area containing nav items with drill-down panel support. Use `<Sidebar.Nav>`.</li>
+  <li><b>Item:</b> A navigation entry — either a leaf link or a branch that opens a sub-panel. Use `<Sidebar.Item>`.</li>
+  <li><b>Group label:</b> A non-interactive section heading to organize items into logical groups. Use `<Sidebar.GroupLabel>`.</li>
+  <li><b>Separator:</b> A visual divider between groups of items. Use `<Sidebar.Separator>`.</li>
+  <li><b>Footer:</b> Sticky bottom area for user profiles, settings, or secondary actions. Use `<Sidebar.Footer>`.</li>
+  <li><b>Toggle:</b> A button placed outside the sidebar (in main content) to open/close it. Use `<Sidebar.Toggle>`.</li>
+</ul>
+
+<Callout title="Info">
+  `<Sidebar>` is a <b>compound component</b>. If you don't know what that means or you want to explore more
+  about it you find a [tutorial](https://marigold-rapp.vercel.app/compound-component) for this topic in our reference
+  app.
+</Callout>
+
+## Appearance
+
+{/* TODO: Register Sidebar in appearance system, then uncomment: <AppearanceDemo component={'Sidebar'} /> <AppearanceTable component={'Sidebar'} /> */}
+
+## Usage
+
+Use `<Sidebar>` when your application has **more than five navigation items** or users need to **frequently switch between sections**. It works well for complex apps with deep hierarchies — admin panels, SaaS platforms, and enterprise tools.
+
+For simpler sites with only a handful of top-level pages, prefer horizontal navigation or `<Tabs>` instead.
+
+<ComponentDemo name="sidebar-basic" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>
+          Keep the sidebar visible on desktop — it helps users understand the
+          scope of the application
+        </li>
+        <li>Always indicate the current page clearly</li>
+        <li>Use text labels alongside icons</li>
+      </ul>
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>Don't hide navigation behind a hamburger on desktop</li>
+        <li>Don't use icons without text labels</li>
+        <li>Don't nest deeper than one level</li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Structure and layout
+
+The `<Sidebar.Provider>` must wrap both the sidebar and the page content so that toggling and responsive behavior work correctly. Place the `<Sidebar.Toggle>` in the main content area, not inside the sidebar.
+
+```tsx
+<Sidebar.Provider>
+  <Sidebar>
+    <Sidebar.Header />
+    <Sidebar.Nav>
+      <Sidebar.Item />
+    </Sidebar.Nav>
+    <Sidebar.Footer />
+  </Sidebar>
+  <main>
+    <Sidebar.Toggle />
+    {/* page content */}
+  </main>
+</Sidebar.Provider>
+```
+
+### Organizing navigation items
+
+Use `<Sidebar.GroupLabel>` for section headings and `<Sidebar.Separator>` for visual dividers between groups. Group items by **user goals**, not by internal system structure. Place the most important items at the top — users scan vertical lists from top to bottom.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Create logical groups aligned to user goals, with the most important items
+      first.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't place user-generated or unbounded content in the navigation — it can
+      grow unpredictably and degrade usability.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Labels
+
+Use **short, descriptive labels** in sentence case. Front-load the keyword — users scan the first word of each label, so it should carry the most meaning (e.g. "Order history" rather than "History of orders").
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use sentence case and succinct, scannable labels (e.g. "Order history",
+      "Account settings").
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use vague labels (e.g. "Miscellaneous", "Other") or Title Case for
+      navigation items.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Drill-down navigation
+
+Items that have nested children become **branch items**. Clicking a branch opens a sub-panel that slides in from the right. A back button at the top of the sub-panel returns to the root level.
+
+This keeps the sidebar width consistent and avoids deep indentation. The sidebar supports **one level** of drill-down nesting.
+
+<ComponentDemo name="sidebar-drilldown" />
+
+### Active state and current page
+
+Clearly indicating the current page is the most important job of the navigation. Set the `active` prop on `<Sidebar.Item>` to mark the current page — this applies `aria-current="page"` and a visual highlight.
+
+When an active item is inside a branch, **the branch auto-opens on mount** so users always see where they are without extra clicks.
+
+<ComponentDemo name="sidebar-active-branch" />
+
+### Collapsing and toggling
+
+The sidebar can be collapsed or expanded using:
+
+- The `<Sidebar.Toggle>` button placed in the main content area
+- The keyboard shortcut <kbd>Cmd+B</kbd> (Mac) / <kbd>Ctrl+B</kbd> (Windows/Linux)
+
+The collapsed/expanded state is **persisted across page loads** via a cookie, so the sidebar remembers the user's preference.
+
+### Responsive behavior
+
+On **desktop** (above 640px), the sidebar is a persistent panel alongside main content with a smooth width transition when toggling.
+
+On **mobile** (below 640px), the sidebar renders as a **modal sheet overlay** triggered by `<Sidebar.Toggle>`. It includes a close button, traps focus while open, and can be dismissed with <kbd>Escape</kbd>.
+
+<Callout title="Mobile behavior">
+  On mobile, the sidebar always starts closed regardless of the persisted
+  desktop state. Mobile and desktop states are independent.
+</Callout>
+
+### Accessibility
+
+- **Landmark:** The sidebar renders as a `<nav>` element with an accessible label
+- **Keyboard shortcut:** <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> globally toggles the sidebar
+- **Focus management:** Focus moves to the back button when drilling into a sub-panel, and returns to the branch trigger when navigating back
+- **Active state:** `aria-current="page"` on the current navigation item
+- **Mobile overlay:** Focus trapping and <kbd>Escape</kbd> to dismiss
+- **Internationalization:** Built-in strings support localization (DE/EN)
+
+## Props
+
+{/* TODO: <StorybookHintMessage component={'Sidebar'} /> */}
+
+### Sidebar.Provider
+
+<AutoTypeTable path="Sidebar/Context" name="SidebarProviderProps" />
+
+### Sidebar
+
+<AutoTypeTable path="Sidebar" name="SidebarProps" />
+
+### Sidebar.Header
+
+<AutoTypeTable path="Sidebar/SidebarSlots" name="SidebarSlotProps" />
+
+### Sidebar.Nav
+
+<AutoTypeTable path="Sidebar/SidebarNav" name="SidebarNavProps" />
+
+### Sidebar.Item
+
+<AutoTypeTable path="Sidebar/SidebarItem" name="SidebarItemProps" />
+
+### Sidebar.GroupLabel
+
+<AutoTypeTable path="Sidebar/SidebarItem" name="SidebarGroupLabelProps" />
+
+### Sidebar.Footer
+
+<AutoTypeTable path="Sidebar/SidebarSlots" name="SidebarSlotProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Tabs](/components/navigation/tabs): Use when content groups are at the same
+    hierarchy level and users switch between views within a single page, not
+    across the application.
+  </li>
+  <li>
+    [Accordion](/components/navigation/accordion): Use for collapsing content
+    sections within a page, not for app-level navigation.
+  </li>
+  <li>
+    [Breadcrumbs](/components/navigation/breadcrumbs): Use to show the user's
+    location within a hierarchy. Breadcrumbs complement a sidebar but don't
+    replace it.
+  </li>
+</ul>
