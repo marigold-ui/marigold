@@ -30,7 +30,6 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  args: { maxVisibleItems: 10 },
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>

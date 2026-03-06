@@ -5,20 +5,19 @@ const MIN_VISIBLE = 2;
 export const NULL_REF = { current: null };
 
 /**
- * Starts fully collapsed (ellipsis + current) and progressively
- * expands until the container overflows.
+ * Starts fully expanded and collapses when the container overflows.
+ * Re-expands when the container grows beyond the last overflow width.
  */
 export const useAutoCollapse = (
   ref: RefObject<HTMLOListElement | null>,
   totalItems: number
 ): number => {
-  const [state, setState] = useState({ maxVisible: MIN_VISIBLE, totalItems });
+  const [state, setState] = useState({ maxVisible: totalItems, totalItems });
   const overflowWidth = useRef<number | null>(null);
 
-  // Reset when item count changes — store totalItems in state so
-  // the comparison is pure (no ref mutation during render)
+  // Reset when item count changes
   if (state.totalItems !== totalItems) {
-    setState({ maxVisible: MIN_VISIBLE, totalItems });
+    setState({ maxVisible: totalItems, totalItems });
   }
 
   const onResize = useCallback(() => {
