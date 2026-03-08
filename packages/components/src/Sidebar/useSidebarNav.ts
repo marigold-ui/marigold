@@ -1,8 +1,9 @@
-import { useCallback, useRef } from 'react';
-import type { KeyboardEvent, RefObject } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import type { FocusEvent, KeyboardEvent, RefObject } from 'react';
 import { createFocusManager } from '@react-aria/focus';
 import { isFocusVisible } from '@react-aria/interactions';
 import { useLayoutEffect, useObjectRef } from '@react-aria/utils';
+import type { SidebarNode } from './collection';
 
 // Derive position from stack — determines CSS transition state
 export const panelPosition = (
@@ -140,4 +141,48 @@ export const usePanelFocus = ({
   }, [openBranch]);
 
   return navRef;
+};
+
+export interface UseRovingTabIndexProps {
+  panelRef: RefObject<HTMLDivElement | null>;
+  nodes: SidebarNode[];
+}
+
+export const useRovingTabIndex = ({
+  panelRef,
+  nodes,
+}: UseRovingTabIndexProps) => {
+  const [currentKey, setCurrentKey] = useState<string | null>(null);
+
+  const defaultKey = useMemo(() => {
+    const active = nodes.find(n => n.type === 'item' && n.active);
+    if (active) return active.key;
+    return nodes.find(n => n.type === 'item')?.key ?? '__back__';
+  }, [nodes]);
+
+  const rovingKey = currentKey ?? defaultKey;
+
+  // Set tabIndex imperatively — RAC Link doesn't expose a tabIndex prop
+  useLayoutEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+    panel.querySelectorAll<HTMLElement>('a, button').forEach(el => {
+      const key =
+        el.dataset.key ??
+        (el.hasAttribute('data-back-button') ? '__back__' : null);
+      el.tabIndex = key === rovingKey ? 0 : -1;
+    });
+  }, [rovingKey, panelRef]);
+
+  const onFocus = useCallback((e: FocusEvent) => {
+    const el = e.target as HTMLElement;
+    const key =
+      el.dataset?.key ??
+      (el.hasAttribute('data-back-button') ? '__back__' : null);
+    if (key) {
+      setCurrentKey(key);
+    }
+  }, []);
+
+  return { onFocus };
 };

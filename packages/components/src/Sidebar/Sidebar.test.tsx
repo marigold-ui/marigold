@@ -976,6 +976,57 @@ test('panel transition falls back to back button when no active item', async () 
   expect(backButton).toHaveFocus();
 });
 
+// --- Roving Tabindex Tests ---
+
+test('only one nav item has tabIndex=0 in the active panel', () => {
+  render(<Basic.Component />);
+
+  const links = screen.getAllByRole('link');
+  const tabbable = links.filter(l => l.tabIndex === 0);
+  const nonTabbable = links.filter(l => l.tabIndex === -1);
+
+  expect(tabbable).toHaveLength(1);
+  // The active item (Overview) should be the tab stop
+  expect(tabbable[0]).toHaveAttribute('aria-current', 'page');
+  expect(nonTabbable.length).toBeGreaterThan(0);
+});
+
+test('arrow key updates which item has tabIndex=0', async () => {
+  render(<Basic.Component />);
+
+  const overview = screen.getByRole('link', { name: 'Overview' });
+  const analytics = screen.getByRole('link', { name: 'Analytics' });
+
+  expect(overview).toHaveAttribute('tabindex', '0');
+  expect(analytics).toHaveAttribute('tabindex', '-1');
+
+  overview.focus();
+  await user.keyboard('{ArrowDown}');
+
+  expect(analytics).toHaveFocus();
+  expect(analytics).toHaveAttribute('tabindex', '0');
+  expect(overview).toHaveAttribute('tabindex', '-1');
+});
+
+test('back button participates in roving tabindex', async () => {
+  render(<WithActiveBranch.Component />);
+
+  const backButton = screen.getByRole('button', { name: /Back to Management/ });
+  const usersLink = screen.getByRole('link', { name: 'Users' });
+
+  // Users is active, so it should be the tab stop
+  expect(usersLink).toHaveAttribute('tabindex', '0');
+  expect(backButton).toHaveAttribute('tabindex', '-1');
+
+  // Arrow up to back button
+  usersLink.focus();
+  await user.keyboard('{ArrowUp}');
+
+  expect(backButton).toHaveFocus();
+  expect(backButton).toHaveAttribute('tabindex', '0');
+  expect(usersLink).toHaveAttribute('tabindex', '-1');
+});
+
 test('buildCollection handles group labels and separators in index', () => {
   const jsx = [
     <SidebarGroupLabel key="label">Section</SidebarGroupLabel>,

@@ -5,7 +5,7 @@ import { cn } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import type { SidebarNode } from './collection';
-import { usePanelKeyboard } from './useSidebarNav';
+import { usePanelKeyboard, useRovingTabIndex } from './useSidebarNav';
 
 export interface SidebarPanelProps {
   nodes: SidebarNode[];
@@ -28,6 +28,7 @@ export const SidebarPanel = ({
 }: SidebarPanelProps) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const { onKeyDown } = usePanelKeyboard(panelRef);
+  const { onFocus } = useRovingTabIndex({ panelRef, nodes });
 
   return (
     <div
@@ -38,6 +39,7 @@ export const SidebarPanel = ({
       data-position={position}
       inert={position !== 'active' || undefined}
       onKeyDown={onKeyDown}
+      onFocus={onFocus}
     >
       {onBack && (
         <div>
