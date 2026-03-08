@@ -5,7 +5,7 @@ import { cn } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarPanel } from './SidebarPanel';
-import { panelPosition, usePanelFocus } from './useSidebarNav';
+import { panelPosition } from './useSidebarNav';
 import { useSidebarNavState } from './useSidebarNavState';
 
 export interface SidebarNavProps {
@@ -18,13 +18,11 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
     const { classNames } = useSidebar();
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    const { collection, branchNodes, openBranch, stack, setOpenBranch } =
-      useSidebarNavState(children);
-
-    const navRef = usePanelFocus({
-      openBranch,
-      forwardedRef: forwardedRef as React.RefObject<HTMLElement | null>,
-    });
+    const { collection, branchNodes, stack, navRef, setOpenBranch } =
+      useSidebarNavState({
+        children,
+        forwardedRef: forwardedRef as React.RefObject<HTMLElement | null>,
+      });
 
     return (
       <nav
