@@ -46,7 +46,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   navPanel: cva({
     base: [
       'flex flex-col gap-0.5 p-1',
-      'transition-[visibility,opacity,translate,filter] duration-300 ease-out sm:duration-200',
+      'transition-[opacity,translate,filter] duration-300 ease-out sm:duration-200',
 
       // Panel behind (already visited) — slides left
       'data-[position=before]:absolute data-[position=before]:inset-x-0 data-[position=before]:top-0',

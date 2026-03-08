@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { Button, Separator } from 'react-aria-components';
 import type { LocalizedStringFormatter } from '@react-aria/i18n';
+import { isFocusVisible } from '@react-aria/interactions';
 import { cn } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
@@ -28,25 +29,23 @@ const BackButton = ({
   const { tabIndex, onFocus } = useRovingItem('__back__');
 
   return (
-    <div>
-      <Button
-        data-back-button
-        aria-label={stringFormatter.format('backTo', {
-          label: backLabel ?? stringFormatter.format('back'),
-        })}
-        className={cn(className)}
-        onPress={onBack}
-        excludeFromTabOrder={tabIndex < 0}
-        onFocus={onFocus}
-      >
-        <span className="flex items-center justify-center">
-          <ChevronLeft aria-hidden="true" size={16} />
-        </span>
-        <span className="truncate text-center font-medium">
-          {backLabel ?? stringFormatter.format('back')}
-        </span>
-      </Button>
-    </div>
+    <Button
+      data-back-button
+      aria-label={stringFormatter.format('backTo', {
+        label: backLabel ?? stringFormatter.format('back'),
+      })}
+      className={cn(className)}
+      onPress={onBack}
+      excludeFromTabOrder={tabIndex < 0}
+      onFocus={onFocus}
+    >
+      <span className="flex items-center justify-center">
+        <ChevronLeft aria-hidden="true" size={16} />
+      </span>
+      <span className="truncate text-center font-medium">
+        {backLabel ?? stringFormatter.format('back')}
+      </span>
+    </Button>
   );
 };
 
@@ -58,6 +57,8 @@ export interface SidebarPanelProps {
   classNames: Record<string, string>;
   position: 'active' | 'before' | 'after';
   stringFormatter: LocalizedStringFormatter;
+  /** Key of the item to focus when this panel becomes active (fallback after active item). */
+  autoFocusKey?: string | null;
 }
 
 export const SidebarPanel = ({
@@ -68,9 +69,36 @@ export const SidebarPanel = ({
   classNames,
   position,
   stringFormatter,
+  autoFocusKey,
 }: SidebarPanelProps) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const { onKeyDown } = usePanelKeyboard(panelRef);
+
+  // Focus the right element when this panel becomes active
+  const prevPositionRef = useRef(position);
+  useLayoutEffect(() => {
+    const wasActive = prevPositionRef.current === 'active';
+    prevPositionRef.current = position;
+
+    if (position !== 'active' || wasActive) return;
+    if (!panelRef.current) return;
+
+    const showFocusRing = isFocusVisible();
+
+    const activeItem = panelRef.current.querySelector(
+      '[aria-current="page"]'
+    ) as HTMLElement | null;
+
+    const fallbackSelector = autoFocusKey
+      ? `[data-key="${CSS.escape(autoFocusKey)}"]`
+      : '[data-back-button]';
+    const fallback = panelRef.current.querySelector(
+      fallbackSelector
+    ) as HTMLElement | null;
+
+    const target = activeItem ?? fallback;
+    target?.focus({ focusVisible: showFocusRing } as FocusOptions);
+  }, [position, autoFocusKey]);
 
   return (
     <RovingTabIndexProvider nodes={nodes}>
@@ -94,7 +122,7 @@ export const SidebarPanel = ({
         {nodes.map(node => {
           if (node.type === 'separator') {
             return (
-              <Separator key={node.key} className={cn(classNames.separator)} />
+              <Separator key={node.key} className={classNames.separator} />
             );
           }
 
@@ -104,7 +132,7 @@ export const SidebarPanel = ({
                 key={node.key}
                 role="heading"
                 aria-level={2}
-                className={cn(classNames.groupLabel)}
+                className={classNames.groupLabel}
               >
                 {node.content}
               </div>

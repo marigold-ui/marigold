@@ -525,8 +525,8 @@ test('branch without any leaf hrefs renders without href', () => {
     </RouterProvider>
   );
 
-  // Branch item should render as a link without href attribute
-  const trigger = screen.getByRole('link', { name: /Empty/ });
+  // Branch item should render as a button when it has no href
+  const trigger = screen.getByRole('button', { name: /Empty/ });
   expect(trigger).not.toHaveAttribute('href');
 });
 

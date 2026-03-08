@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useCallback, useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
@@ -18,15 +18,22 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
     const { classNames } = useSidebar();
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    const { collection, branchNodes, stack, navRef, setOpenBranch } =
-      useSidebarNavState({
-        children,
-        forwardedRef: forwardedRef as React.RefObject<HTMLElement | null>,
-      });
+    const { collection, branchNodes, stack, setOpenBranch } =
+      useSidebarNavState({ children });
+
+    const handleBack = useCallback(() => setOpenBranch(null), [setOpenBranch]);
+
+    // Track previous open branch so root panel can return focus to the branch trigger
+    const currentOpenBranch = stack[0] ?? null;
+    const prevOpenBranchRef = useRef(currentOpenBranch);
+    const returnFocusKey = prevOpenBranchRef.current;
+    useEffect(() => {
+      prevOpenBranchRef.current = currentOpenBranch;
+    });
 
     return (
       <nav
-        ref={navRef}
+        ref={forwardedRef}
         aria-label={ariaLabel || stringFormatter.format('appNavigation')}
         className={cn(
           'min-h-0 overflow-y-auto [grid-area:content]',
@@ -40,13 +47,14 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
             classNames={classNames}
             onBranchClick={setOpenBranch}
             stringFormatter={stringFormatter}
+            autoFocusKey={returnFocusKey}
           />
           {branchNodes.map(branch => (
             <SidebarPanel
               key={branch.key}
               nodes={branch.children}
               position={panelPosition(branch.key, stack)}
-              onBack={() => setOpenBranch(null)}
+              onBack={handleBack}
               onBranchClick={setOpenBranch}
               backLabel={branch.textValue}
               classNames={classNames}

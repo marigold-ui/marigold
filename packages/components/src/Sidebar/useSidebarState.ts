@@ -4,12 +4,11 @@ export type SidebarState = 'expanded' | 'collapsed';
 
 const COOKIE_NAME = 'marigold:sidebar:state';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+const COOKIE_RE = new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]*)`);
 
 const readCookie = (): SidebarState | undefined => {
   if (typeof document === 'undefined') return undefined;
-  const match = document.cookie.match(
-    new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]*)`)
-  );
+  const match = document.cookie.match(COOKIE_RE);
   return match ? (match[1] as SidebarState) : undefined;
 };
 
@@ -29,7 +28,6 @@ export interface UseSidebarStateProps {
 
 export interface SidebarStateResult {
   readonly state: SidebarState;
-  readonly isMobile: boolean;
   toggleSidebar: () => void;
 }
 
@@ -85,8 +83,5 @@ export const useSidebarState = (
 
   const state: SidebarState = isOpen ? 'expanded' : 'collapsed';
 
-  return useMemo(
-    () => ({ state, toggleSidebar, isMobile }),
-    [state, toggleSidebar, isMobile]
-  );
+  return useMemo(() => ({ state, toggleSidebar }), [state, toggleSidebar]);
 };

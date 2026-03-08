@@ -28,9 +28,10 @@ export interface PanelKeyboardProps {
 export const usePanelKeyboard = (
   panelRef: RefObject<HTMLDivElement | null>
 ): PanelKeyboardProps => {
+  const focusManager = useMemo(() => createFocusManager(panelRef), [panelRef]);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
-      const focusManager = createFocusManager(panelRef);
       switch (e.key) {
         case 'ArrowDown':
           e.preventDefault();
@@ -50,7 +51,7 @@ export const usePanelKeyboard = (
           break;
       }
     },
-    [panelRef]
+    [focusManager]
   );
 
   return { onKeyDown: handleKeyDown };

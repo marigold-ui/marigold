@@ -9,8 +9,7 @@ import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
-import { useSidebar } from './Context';
-import { SidebarProvider } from './Context';
+import { SidebarProvider, useSidebar } from './Context';
 import {
   SidebarGroupLabel,
   SidebarItem,
