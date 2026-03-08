@@ -26,7 +26,7 @@ export const SidebarLink = ({
   ref: forwardedRef,
   'aria-current': ariaCurrent,
   'data-key': dataKey,
-  ...dataProps
+  'data-active': dataActive,
 }: SidebarLinkProps) => {
   const ref = useObjectRef(forwardedRef);
   const router = useRouter();
@@ -36,7 +36,7 @@ export const SidebarLink = ({
   return (
     <a
       {...routerLinkProps}
-      {...dataProps}
+      data-active={dataActive}
       data-key={dataKey}
       ref={ref}
       href={href}

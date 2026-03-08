@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export type SidebarState = 'expanded' | 'collapsed';
 
@@ -52,22 +52,24 @@ export const useSidebarState = (
   const [_openMobile, _setOpenMobile] = useState(false);
 
   const isOpen = controlledOpen ?? (isMobile ? _openMobile : _open);
+  const state: SidebarState = isOpen ? 'expanded' : 'collapsed';
 
   const toggleSidebar = useCallback(() => {
-    const newOpen = !isOpen;
-
     if (onOpenChange) {
-      onOpenChange(newOpen);
+      onOpenChange(!isOpen);
       return;
     }
 
     if (isMobile) {
       _setOpenMobile(prev => !prev);
     } else {
-      writeCookie(newOpen ? 'expanded' : 'collapsed');
-      _setOpen(newOpen);
+      _setOpen(prev => {
+        const next = !prev;
+        writeCookie(next ? 'expanded' : 'collapsed');
+        return next;
+      });
     }
-  }, [isOpen, isMobile, onOpenChange]);
+  }, [isMobile, isOpen, onOpenChange]);
 
   // Keyboard shortcut: Cmd+B / Ctrl+B
   useEffect(() => {
@@ -81,7 +83,5 @@ export const useSidebarState = (
     return () => window.removeEventListener('keydown', handler);
   }, [toggleSidebar]);
 
-  const state: SidebarState = isOpen ? 'expanded' : 'collapsed';
-
-  return useMemo(() => ({ state, toggleSidebar }), [state, toggleSidebar]);
+  return { state, toggleSidebar };
 };

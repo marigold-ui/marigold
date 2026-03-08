@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useRef } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
@@ -25,11 +25,11 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
 
     // Track previous open branch so root panel can return focus to the branch trigger
     const currentOpenBranch = stack[0] ?? null;
-    const prevOpenBranchRef = useRef(currentOpenBranch);
-    const returnFocusKey = prevOpenBranchRef.current;
-    useEffect(() => {
-      prevOpenBranchRef.current = currentOpenBranch;
-    });
+    const [prevOpenBranch, setPrevOpenBranch] = useState(currentOpenBranch);
+    const returnFocusKey = prevOpenBranch;
+    if (prevOpenBranch !== currentOpenBranch) {
+      setPrevOpenBranch(currentOpenBranch);
+    }
 
     return (
       <nav
@@ -44,9 +44,7 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
           <SidebarPanel
             nodes={collection.rootNodes}
             position={panelPosition('root', stack)}
-            classNames={classNames}
             onBranchClick={setOpenBranch}
-            stringFormatter={stringFormatter}
             autoFocusKey={returnFocusKey}
           />
           {branchNodes.map(branch => (
@@ -57,8 +55,6 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
               onBack={handleBack}
               onBranchClick={setOpenBranch}
               backLabel={branch.textValue}
-              classNames={classNames}
-              stringFormatter={stringFormatter}
             />
           ))}
         </div>

@@ -33,13 +33,14 @@ export interface UseSidebarNavStateProps {
 export const useSidebarNavState = ({
   children,
 }: UseSidebarNavStateProps): SidebarNavStateResult => {
-  const collection = useMemo(() => buildCollection(children), [children]);
-
-  // Derive which branch contains the active item
-  const activeBranch = useMemo(
-    () => findActiveBranch(collection),
-    [collection]
-  );
+  const { collection, activeBranch, branchNodes } = useMemo(() => {
+    const col = buildCollection(children);
+    return {
+      collection: col,
+      activeBranch: findActiveBranch(col),
+      branchNodes: collectBranches(col.rootNodes),
+    };
+  }, [children]);
 
   // Explicit panel state — which branch panel is shown (null = root).
   // Syncs when the URL-derived activeBranch changes.
@@ -52,11 +53,6 @@ export const useSidebarNavState = ({
   }
 
   const stack = openBranch ? [openBranch] : [];
-
-  const branchNodes = useMemo(
-    () => collectBranches(collection.rootNodes),
-    [collection]
-  );
 
   return { collection, branchNodes, stack, setOpenBranch };
 };

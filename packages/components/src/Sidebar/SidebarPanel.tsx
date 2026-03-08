@@ -1,10 +1,12 @@
 import { useLayoutEffect, useRef } from 'react';
 import { Button, Separator } from 'react-aria-components';
-import type { LocalizedStringFormatter } from '@react-aria/i18n';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
 import { cn } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
+import { intlMessages } from '../intl/messages';
+import { useSidebar } from './Context';
 import { SidebarLink } from './SidebarLink';
 import type { SidebarNode } from './collection';
 import {
@@ -17,15 +19,10 @@ interface BackButtonProps {
   onBack: () => void;
   backLabel: string | null | undefined;
   className: string;
-  stringFormatter: LocalizedStringFormatter;
 }
 
-const BackButton = ({
-  onBack,
-  backLabel,
-  className,
-  stringFormatter,
-}: BackButtonProps) => {
+const BackButton = ({ onBack, backLabel, className }: BackButtonProps) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const { tabIndex, onFocus } = useRovingItem('__back__');
 
   return (
@@ -54,9 +51,7 @@ export interface SidebarPanelProps {
   onBack?: () => void;
   onBranchClick?: (key: string) => void;
   backLabel?: string | null;
-  classNames: Record<string, string>;
   position: 'active' | 'before' | 'after';
-  stringFormatter: LocalizedStringFormatter;
   /** Key of the item to focus when this panel becomes active (fallback after active item). */
   autoFocusKey?: string | null;
 }
@@ -66,11 +61,11 @@ export const SidebarPanel = ({
   onBack,
   onBranchClick,
   backLabel,
-  classNames,
   position,
-  stringFormatter,
   autoFocusKey,
 }: SidebarPanelProps) => {
+  const { classNames } = useSidebar();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const panelRef = useRef<HTMLDivElement>(null);
   const { onKeyDown } = usePanelKeyboard(panelRef);
 
@@ -116,7 +111,6 @@ export const SidebarPanel = ({
             onBack={onBack}
             backLabel={backLabel}
             className={classNames.backButton}
-            stringFormatter={stringFormatter}
           />
         )}
         {nodes.map(node => {
