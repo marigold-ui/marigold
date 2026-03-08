@@ -1,9 +1,10 @@
 import { useRef } from 'react';
-import { Button, Link, Separator } from 'react-aria-components';
+import { Button, Separator } from 'react-aria-components';
 import type { LocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
+import { SidebarLink } from './SidebarLink';
 import type { SidebarNode } from './collection';
 import { usePanelKeyboard, useRovingTabIndex } from './useSidebarNav';
 
@@ -28,7 +29,7 @@ export const SidebarPanel = ({
 }: SidebarPanelProps) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const { onKeyDown } = usePanelKeyboard(panelRef);
-  const { onFocus } = useRovingTabIndex({ panelRef, nodes });
+  const { onFocus, tabIndexForKey } = useRovingTabIndex({ nodes });
 
   return (
     <div
@@ -50,6 +51,7 @@ export const SidebarPanel = ({
             })}
             className={cn(classNames.backButton)}
             onPress={onBack}
+            excludeFromTabOrder={tabIndexForKey('__back__') < 0}
           >
             <span className="flex items-center justify-center">
               <ChevronLeft aria-hidden="true" size={16} />
@@ -83,11 +85,12 @@ export const SidebarPanel = ({
         // Branch item — has children, renders as Link to first child's href
         if (node.children.length > 0) {
           return (
-            <Link
+            <SidebarLink
               key={node.key}
               href={node.href}
               data-key={node.key}
               className={cn(classNames.navLink, 'justify-between')}
+              tabIndex={tabIndexForKey(node.key)}
               onPress={() => {
                 onBranchClick?.(node.key);
                 node.onPress?.();
@@ -95,23 +98,24 @@ export const SidebarPanel = ({
             >
               <span className="truncate">{node.triggerContent}</span>
               <ChevronRight aria-hidden="true" size={16} />
-            </Link>
+            </SidebarLink>
           );
         }
 
         // Leaf item — always a Link
         return (
-          <Link
+          <SidebarLink
             key={node.key}
             href={node.href}
             data-key={node.key}
             aria-current={node.active ? 'page' : undefined}
             data-active={node.active || undefined}
             className={cn(classNames.navLink)}
+            tabIndex={tabIndexForKey(node.key)}
             onPress={node.onPress}
           >
             {node.triggerContent}
-          </Link>
+          </SidebarLink>
         );
       })}
     </div>

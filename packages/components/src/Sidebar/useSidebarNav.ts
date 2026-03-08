@@ -144,14 +144,10 @@ export const usePanelFocus = ({
 };
 
 export interface UseRovingTabIndexProps {
-  panelRef: RefObject<HTMLDivElement | null>;
   nodes: SidebarNode[];
 }
 
-export const useRovingTabIndex = ({
-  panelRef,
-  nodes,
-}: UseRovingTabIndexProps) => {
+export const useRovingTabIndex = ({ nodes }: UseRovingTabIndexProps) => {
   const [currentKey, setCurrentKey] = useState<string | null>(null);
 
   const defaultKey = useMemo(() => {
@@ -162,17 +158,10 @@ export const useRovingTabIndex = ({
 
   const rovingKey = currentKey ?? defaultKey;
 
-  // Set tabIndex imperatively — RAC Link doesn't expose a tabIndex prop
-  useLayoutEffect(() => {
-    const panel = panelRef.current;
-    if (!panel) return;
-    panel.querySelectorAll<HTMLElement>('a, button').forEach(el => {
-      const key =
-        el.dataset.key ??
-        (el.hasAttribute('data-back-button') ? '__back__' : null);
-      el.tabIndex = key === rovingKey ? 0 : -1;
-    });
-  }, [rovingKey, panelRef]);
+  const tabIndexForKey = useCallback(
+    (key: string) => (key === rovingKey ? 0 : -1),
+    [rovingKey]
+  );
 
   const onFocus = useCallback((e: FocusEvent) => {
     const el = e.target as HTMLElement;
@@ -184,5 +173,5 @@ export const useRovingTabIndex = ({
     }
   }, []);
 
-  return { onFocus };
+  return { onFocus, tabIndexForKey };
 };
