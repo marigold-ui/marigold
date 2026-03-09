@@ -52,138 +52,86 @@ A sidebar consists of a panel alongside the main content area. The panel is orga
 
 ## Usage
 
-Use `<Sidebar>` when your application has **more than five navigation items** or users need to **frequently switch between sections**. It works well for complex apps with deep hierarchies like admin panels, SaaS platforms, and enterprise tools.
+The sidebar is the central navigation of every application. It is part of the default app layout and how users move between sections. It sits on the left side of the screen and is organized into a header for branding, a scrollable navigation area, and a footer for secondary actions. On mobile, it adapts to a sheet overlay.
 
-For simpler sites with only a handful of top-level pages, prefer horizontal navigation or `<Tabs>` instead.
+### Organizing navigation
 
-<ComponentDemo name="sidebar-basic" />
+Think about what your users need to get to most often and put those items at the top. People scan vertical lists from top to bottom, so the order matters.
 
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      <ul>
-        <li>
-          Keep the sidebar visible on desktop so users can understand the scope
-          of the application
-        </li>
-        <li>Always indicate the current page clearly</li>
-        <li>Use text labels alongside icons</li>
-      </ul>
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      <ul>
-        <li>Don't hide navigation behind a hamburger on desktop</li>
-        <li>Don't use icons without text labels</li>
-        <li>Don't nest deeper than one level</li>
-      </ul>
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+A common mistake is to sort items alphabetically or mirror the internal system structure. Both ignore how people actually work. An "Analytics" link sorted to the top alphabetically is unhelpful if users open it once a month, while "Orders", the thing they check ten times a day, is buried further down. Order by frequency of use, not by the alphabet or your org chart.
 
-### Structure and layout
+When the list gets long, break it into groups using section headings (`<Sidebar.GroupLabel>`) and visual dividers (`<Sidebar.Separator>`). Group items by what the user is trying to do, not by how your system is structured internally. Avoid putting user-generated or unbounded content in the navigation, since lists that can grow without limit make the sidebar hard to use.
 
-The `<Sidebar.Provider>` must wrap both the sidebar and the page content so that toggling and responsive behavior work correctly. Place the `<Sidebar.Toggle>` in the main content area, not inside the sidebar.
-
-```tsx
-<Sidebar.Provider>
-  <Sidebar>
-    <Sidebar.Header />
-    <Sidebar.Nav>
-      <Sidebar.Item />
-    </Sidebar.Nav>
-    <Sidebar.Footer />
-  </Sidebar>
-  <main>
-    <Sidebar.Toggle />
-    {/* page content */}
-  </main>
-</Sidebar.Provider>
-```
-
-### Organizing navigation items
-
-Use `<Sidebar.GroupLabel>` for section headings and `<Sidebar.Separator>` for visual dividers between groups. Group items by **user goals**, not by internal system structure. Place the most important items at the top because users scan vertical lists from top to bottom.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Create logical groups aligned to user goals, with the most important items
-      first.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't place user-generated or unbounded content in the navigation. It can
-      grow unpredictably and degrade usability.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+If users need to see all items at a glance, groups with headings are the right choice. If a section has its own sub-pages that users only visit occasionally, nest them behind a branch item instead. See [drill-down navigation](#drill-down-navigation) for more on nesting.
 
 ### Labels
 
-Use **short, descriptive labels** in sentence case. Front-load the keyword since users scan the first word of each label, so it should carry the most meaning (e.g. "Order history" rather than "History of orders").
+Keep labels short and use sentence case. The first word of each label should carry the most meaning, since users tend to scan just the beginning. "Order history" is easier to scan than "History of orders." Similarly, a label like "Orders" is better than "Transaction management module."
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use sentence case and succinct, scannable labels (e.g. "Order history",
-      "Account settings").
+      Use sentence case and short labels (e.g. "Order history", "Account
+      settings").
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't use vague labels (e.g. "Miscellaneous", "Other") or Title Case for
-      navigation items.
+      Don't use vague labels like "Miscellaneous" or "Other". Avoid Title Case
+      for navigation items.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
 ### Drill-down navigation
 
-Items that have nested children become **branch items**. Clicking a branch opens a sub-panel that slides in from the right. A back button at the top of the sub-panel returns to the root level.
+Some sections have sub-pages. Instead of showing everything at once, these items open a sub-panel that slides in from the right. A back button at the top of the sub-panel returns to the previous level.
 
-This keeps the sidebar width consistent and avoids deep indentation. The sidebar supports **one level** of drill-down nesting.
+The sidebar supports two levels of navigation: the root level and one level of drill-down. Deeper nesting makes navigation harder to follow and slower to use, so we limit it to two levels.
 
 <ComponentDemo name="sidebar-drilldown" />
 
-### Active state and current page
+### Showing the current page
 
-Clearly indicating the current page is the most important job of the navigation. Set the `active` prop on `<Sidebar.Item>` to mark the current page. This applies `aria-current="page"` and a visual highlight.
+The most important job of the sidebar is telling users where they are. Mark the current page by setting `active` on the corresponding `<Sidebar.Item>`. This highlights the item and lets assistive technologies announce it as the current page.
 
-When an active item is inside a branch, **the branch auto-opens on mount** so users always see where they are without extra clicks.
+If the current page is inside a drill-down section, the sidebar opens that section automatically so users always see their location without extra clicks.
 
 <ComponentDemo name="sidebar-active-branch" />
 
-### Collapsing and toggling
+### Header and footer
 
-The sidebar can be collapsed or expanded using:
+The header is a sticky area at the top of the sidebar. Use it for your brand logo — it should be visible at all times so users know which application they are in.
 
-- The `<Sidebar.Toggle>` button placed in the main content area
-- The keyboard shortcut <kbd>Cmd+B</kbd> (Mac) / <kbd>Ctrl+B</kbd> (Windows/Linux)
+The footer is a sticky area at the bottom. Think of it as a utility zone for secondary actions that should not compete with the main navigation. Common candidates are a user profile or avatar (with a dropdown for account settings and logout), a help link, or app-level settings.
 
-The collapsed/expanded state is **persisted across page loads** via a cookie, so the sidebar remembers the user's preference.
+### Collapsing
 
-### Responsive behavior
+Users can collapse or expand the sidebar with the toggle button or the keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd>. The sidebar remembers this preference across page loads.
 
-On **desktop** (above 640px), the sidebar is a persistent panel alongside main content with a smooth width transition when toggling.
+### On mobile
 
-On **mobile** (below 640px), the sidebar renders as a **modal sheet overlay** triggered by `<Sidebar.Toggle>`. It includes a close button, traps focus while open, and can be dismissed with <kbd>Escape</kbd>.
+On screens below 640px, the sidebar becomes a sheet overlay instead of a persistent panel. It opens via the toggle button and can be closed with <kbd>Escape</kbd> or the close button. On mobile the sidebar always starts closed, regardless of the desktop preference.
 
-<Callout title="Mobile behavior">
-  On mobile, the sidebar always starts closed regardless of the persisted
-  desktop state. Mobile and desktop states are independent.
-</Callout>
+### Icons
+
+The sidebar currently does not have a dedicated icon design. If your application needs icons alongside navigation labels, this should be coordinated across all applications first to ensure consistency. For now, use text-only labels.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>Use text labels for all navigation items.</DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't add icons to navigation items without coordinating with the design
+      system team first.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Accessibility
 
-- **Landmark:** The sidebar renders as a `<nav>` element with an accessible label
-- **Keyboard shortcut:** <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> globally toggles the sidebar
-- **Focus management:** Focus moves to the back button when drilling into a sub-panel, and returns to the branch trigger when navigating back
-- **Active state:** `aria-current="page"` on the current navigation item
-- **Mobile overlay:** Focus trapping and <kbd>Escape</kbd> to dismiss
-- **Internationalization:** Built-in strings support localization (DE/EN)
+The sidebar renders as a `<nav>` element so screen readers can identify it as a navigation landmark. The keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> toggles it globally. When drilling into a sub-panel, focus moves to the back button, and returns to the branch trigger when navigating back. The active item is announced as the current page. On mobile, the overlay traps focus and can be dismissed with <kbd>Escape</kbd>. Built-in strings support German and English localization.
 
 ## Props
 
