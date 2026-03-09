@@ -52,10 +52,10 @@ export const Basic = meta.story({
     // Arrange
     const indicator = canvas.getByTestId('tab-indicator');
     const initialLeft = indicator.getBoundingClientRect().left;
+    const keyboardTab = canvas.getByText('Keyboard Settings');
 
     // Act
-    await userEvent.click(canvas.getByText('Keyboard Settings'));
-    await new Promise(resolve => setTimeout(resolve, 350)); // indicator transition (0.25s)
+    await userEvent.click(keyboardTab);
 
     // Assert
     const indicatorAfter = canvas.getByTestId('tab-indicator');
