@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { ReactElement, ReactNode } from 'react';
 
 // Data carrier — renders null, consumed by collection builder
