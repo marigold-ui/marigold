@@ -10,35 +10,49 @@ The `<Sidebar>` provides persistent, app-level navigation placed on the left sid
 
 ## Anatomy
 
-The `<Sidebar>` uses a compound component pattern. The outermost `<Sidebar.Provider>` manages state and responsive behavior. Inside, `<Sidebar>` renders a grid with three slots: a sticky header, scrollable navigation content, and a sticky footer.
+A sidebar consists of a panel alongside the main content area. The panel is organized into three zones: a sticky header, a scrollable navigation area, and a sticky footer.
 
 <SidebarAnatomy />
 
 <ul>
-  <li><b>Provider:</b> Wraps the sidebar and main content. Manages open/close state, mobile detection, and context for all sub-components. Use `<Sidebar.Provider>`.</li>
-  <li><b>Sidebar:</b> The panel itself, rendered as a grid with header, content, and footer slots.</li>
-  <li><b>Header:</b> Sticky top area for branding, logos, or workspace switchers. Use `<Sidebar.Header>`.</li>
-  <li><b>Navigation:</b> Scrollable area containing nav items with drill-down panel support. Use `<Sidebar.Nav>`.</li>
-  <li><b>Item:</b> A navigation entry — either a leaf link or a branch that opens a sub-panel. Use `<Sidebar.Item>`.</li>
-  <li><b>Group label:</b> A non-interactive section heading to organize items into logical groups. Use `<Sidebar.GroupLabel>`.</li>
-  <li><b>Separator:</b> A visual divider between groups of items. Use `<Sidebar.Separator>`.</li>
-  <li><b>Footer:</b> Sticky bottom area for user profiles, settings, or secondary actions. Use `<Sidebar.Footer>`.</li>
-  <li><b>Toggle:</b> A button placed outside the sidebar (in main content) to open/close it. Use `<Sidebar.Toggle>`.</li>
+  <li>
+    <b>Header:</b> Sticky top area for branding, logos, or workspace switchers.
+  </li>
+  <li>
+    <b>Group label:</b> A non-interactive section heading to organize items into
+    logical groups.
+  </li>
+  <li>
+    <b>Navigation:</b> Scrollable area containing navigation items with
+    drill-down support.
+  </li>
+  <li>
+    <b>Sidebar:</b> The panel itself, with header, navigation, and footer zones.
+  </li>
+  <li>
+    <b>Toggle:</b> A button placed outside the sidebar to open or close it.
+  </li>
+  <li>
+    <b>Item:</b> A navigation entry that is either a link or a branch that opens
+    a sub-panel.
+  </li>
+  <li>
+    <b>Separator:</b> A visual divider between groups of items.
+  </li>
+  <li>
+    <b>Footer:</b> Sticky bottom area for user profiles, settings, or secondary
+    actions.
+  </li>
 </ul>
-
-<Callout title="Info">
-  `<Sidebar>` is a <b>compound component</b>. If you don't know what that means or you want to explore more
-  about it you find a [tutorial](https://marigold-rapp.vercel.app/compound-component) for this topic in our reference
-  app.
-</Callout>
 
 ## Appearance
 
-{/* TODO: Register Sidebar in appearance system, then uncomment: <AppearanceDemo component={'Sidebar'} /> <AppearanceTable component={'Sidebar'} /> */}
+<AppearanceDemo component={'Sidebar'} />
+<AppearanceTable component={'Sidebar'} />
 
 ## Usage
 
-Use `<Sidebar>` when your application has **more than five navigation items** or users need to **frequently switch between sections**. It works well for complex apps with deep hierarchies — admin panels, SaaS platforms, and enterprise tools.
+Use `<Sidebar>` when your application has **more than five navigation items** or users need to **frequently switch between sections**. It works well for complex apps with deep hierarchies like admin panels, SaaS platforms, and enterprise tools.
 
 For simpler sites with only a handful of top-level pages, prefer horizontal navigation or `<Tabs>` instead.
 
@@ -49,8 +63,8 @@ For simpler sites with only a handful of top-level pages, prefer horizontal navi
     <DoDescription>
       <ul>
         <li>
-          Keep the sidebar visible on desktop — it helps users understand the
-          scope of the application
+          Keep the sidebar visible on desktop so users can understand the scope
+          of the application
         </li>
         <li>Always indicate the current page clearly</li>
         <li>Use text labels alongside icons</li>
@@ -90,7 +104,7 @@ The `<Sidebar.Provider>` must wrap both the sidebar and the page content so that
 
 ### Organizing navigation items
 
-Use `<Sidebar.GroupLabel>` for section headings and `<Sidebar.Separator>` for visual dividers between groups. Group items by **user goals**, not by internal system structure. Place the most important items at the top — users scan vertical lists from top to bottom.
+Use `<Sidebar.GroupLabel>` for section headings and `<Sidebar.Separator>` for visual dividers between groups. Group items by **user goals**, not by internal system structure. Place the most important items at the top because users scan vertical lists from top to bottom.
 
 <GuidelineTiles>
   <Do>
@@ -101,7 +115,7 @@ Use `<Sidebar.GroupLabel>` for section headings and `<Sidebar.Separator>` for vi
   </Do>
   <Dont>
     <DontDescription>
-      Don't place user-generated or unbounded content in the navigation — it can
+      Don't place user-generated or unbounded content in the navigation. It can
       grow unpredictably and degrade usability.
     </DontDescription>
   </Dont>
@@ -109,7 +123,7 @@ Use `<Sidebar.GroupLabel>` for section headings and `<Sidebar.Separator>` for vi
 
 ### Labels
 
-Use **short, descriptive labels** in sentence case. Front-load the keyword — users scan the first word of each label, so it should carry the most meaning (e.g. "Order history" rather than "History of orders").
+Use **short, descriptive labels** in sentence case. Front-load the keyword since users scan the first word of each label, so it should carry the most meaning (e.g. "Order history" rather than "History of orders").
 
 <GuidelineTiles>
   <Do>
@@ -136,7 +150,7 @@ This keeps the sidebar width consistent and avoids deep indentation. The sidebar
 
 ### Active state and current page
 
-Clearly indicating the current page is the most important job of the navigation. Set the `active` prop on `<Sidebar.Item>` to mark the current page — this applies `aria-current="page"` and a visual highlight.
+Clearly indicating the current page is the most important job of the navigation. Set the `active` prop on `<Sidebar.Item>` to mark the current page. This applies `aria-current="page"` and a visual highlight.
 
 When an active item is inside a branch, **the branch auto-opens on mount** so users always see where they are without extra clicks.
 
