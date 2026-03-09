@@ -4,13 +4,15 @@ description: Persistent navigation panel for organizing app-level navigation.
 badge: beta
 ---
 
+import { SidebarAnatomy } from './sidebar-anatomy';
+
 The `<Sidebar>` provides persistent, app-level navigation placed on the left side of the screen. It organizes navigation items into a vertical list, supports drill-down sub-navigation for nested sections, and adapts between a desktop panel and a mobile sheet overlay.
 
 ## Anatomy
 
 The `<Sidebar>` uses a compound component pattern. The outermost `<Sidebar.Provider>` manages state and responsive behavior. Inside, `<Sidebar>` renders a grid with three slots: a sticky header, scrollable navigation content, and a sticky footer.
 
-{/* TODO: Create anatomy image at /public/sidebar/sidebar-anatomy.jpg */}
+<SidebarAnatomy />
 
 <ul>
   <li><b>Provider:</b> Wraps the sidebar and main content. Manages open/close state, mobile detection, and context for all sub-components. Use `<Sidebar.Provider>`.</li>
