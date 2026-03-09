@@ -4,6 +4,7 @@ import { cn } from '@marigold/system';
 import { useSidebar } from './Context';
 
 export interface SidebarSlotProps {
+  /** Content to render inside the sidebar slot. */
   children?: ReactNode;
 }
 

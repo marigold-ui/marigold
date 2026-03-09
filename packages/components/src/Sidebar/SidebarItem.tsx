@@ -28,6 +28,7 @@ export const SidebarSeparator = _SidebarSeparator;
 
 // Label marker, consumed by collection builder
 export interface SidebarGroupLabelProps {
+  /** The label content for the group. */
   children?: ReactNode;
 }
 

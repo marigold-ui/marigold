@@ -9,7 +9,9 @@ import { panelPosition, useLastDistinctValue } from './useSidebarNav';
 import { useSidebarNavState } from './useSidebarNavState';
 
 export interface SidebarNavProps {
+  /** Navigation items, typically `Sidebar.Item`, `Sidebar.Separator`, and `Sidebar.GroupLabel`. */
   children?: ReactNode;
+  /** Accessible label for the navigation landmark. Defaults to a localized "App Navigation" string. */
   'aria-label'?: string;
 }
 

@@ -13,6 +13,7 @@ const reducedMotion =
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export interface SidebarToggleIconProps extends IconProps {
+  /** Whether the sidebar is currently expanded. Controls the chevron direction. */
   expanded?: boolean;
 }
 
