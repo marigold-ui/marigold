@@ -57,8 +57,6 @@ export const usePanelKeyboard = (
   return { onKeyDown: handleKeyDown };
 };
 
-// --- Roving TabIndex Context ---
-
 interface RovingTabIndexContextValue {
   focusedKey: string;
   setFocusedKey: (key: string) => void;

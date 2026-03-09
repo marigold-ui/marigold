@@ -7,7 +7,6 @@ import type {
   SidebarNode,
 } from './collection';
 
-// Recursively collect all branch nodes (items with children) at every depth
 const collectBranches = (nodes: SidebarNode[]): SidebarItemNode[] => {
   const result: SidebarItemNode[] = [];
   for (const node of nodes) {

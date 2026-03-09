@@ -95,7 +95,6 @@ const separateChildren = (
   return { itemChildren, triggerContent };
 };
 
-// Find the first leaf descendant's href (for branch items without explicit href)
 const firstLeafHref = (nodes: SidebarNode[]): string | undefined => {
   for (const node of nodes) {
     if (node.type !== 'item') continue;
@@ -106,7 +105,6 @@ const firstLeafHref = (nodes: SidebarNode[]): string | undefined => {
   return undefined;
 };
 
-// Find which root-level branch contains an active item
 export const findActiveBranch = (
   collection: SidebarCollection
 ): string | null => {

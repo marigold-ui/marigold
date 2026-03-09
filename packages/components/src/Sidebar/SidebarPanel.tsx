@@ -133,7 +133,6 @@ export const SidebarPanel = ({
             );
           }
 
-          // Branch item — has children, renders as Link to first child's href
           if (node.children.length > 0) {
             return (
               <SidebarLink
@@ -152,7 +151,6 @@ export const SidebarPanel = ({
             );
           }
 
-          // Leaf item — always a Link
           return (
             <SidebarLink
               key={node.key}
