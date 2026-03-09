@@ -117,7 +117,6 @@ export const SidebarFolder = ({
     ? (item.index as ItemWithBadge).badge
     : undefined;
 
-  // Simple check: if folder is in path, or if any folder in path matches by name
   const isActive =
     path.includes(item) ||
     path.some(node => node.type === 'folder' && node.name === item.name);
@@ -133,6 +132,7 @@ export const SidebarFolder = ({
         <StyledSidebarFolderLink
           href={item.index.url}
           external={item.index.external}
+          active={isActive}
         >
           {item.icon}
           {item.name}
