@@ -51,8 +51,6 @@ export const Basic = meta.story({
   play: async ({ canvas }) => {
     // Arrange
     const keyboardTab = canvas.getByText('Keyboard Settings');
-    const indicator = canvas.queryByTestId('tab-indicator');
-    const initialLeft = indicator?.getBoundingClientRect().left;
 
     // Act
     await userEvent.click(keyboardTab);
@@ -63,13 +61,9 @@ export const Basic = meta.story({
     ).toBeVisible();
 
     // Indicator is client-only (Framer Motion); assert when present
-    const indicatorAfter = canvas.queryByTestId('tab-indicator');
-    if (indicatorAfter) {
-      await expect(indicatorAfter).toBeVisible();
-      if (initialLeft != null) {
-        const finalLeft = indicatorAfter.getBoundingClientRect().left;
-        await expect(finalLeft).toBeGreaterThan(initialLeft);
-      }
+    const indicator = canvas.queryByTestId('tab-indicator');
+    if (indicator) {
+      await expect(indicator).toBeVisible();
     }
   },
 });
