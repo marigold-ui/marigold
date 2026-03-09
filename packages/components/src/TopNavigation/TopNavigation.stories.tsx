@@ -106,11 +106,11 @@ const UserSection = () => {
   return (
     <Inline space={2} alignY="center" noWrap>
       <Stack>
-        <Inline space={1} alignY="center">
+        <Inline space={1} alignY="center" noWrap>
           <Text size="sm" weight="bold">
             {showDetails ? 'Jane Doe' : 'JD'}
           </Text>
-          <Badge variant="master">Master</Badge>
+          <Badge variant="master">{showDetails ? 'Master' : 'M'}</Badge>
         </Inline>
         {showDetails && (
           <Text size="xs" variant="muted">
