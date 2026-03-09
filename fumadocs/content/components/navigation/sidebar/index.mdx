@@ -14,41 +14,23 @@ A sidebar consists of a panel alongside the main content area. The panel is orga
 
 <SidebarAnatomy />
 
-<ul>
-  <li>
-    <b>Header:</b> Sticky top area for branding, logos, or workspace switchers.
-  </li>
-  <li>
-    <b>Group label:</b> A non-interactive section heading to organize items into
-    logical groups.
-  </li>
-  <li>
-    <b>Navigation:</b> Scrollable area containing navigation items with
-    drill-down support.
-  </li>
-  <li>
-    <b>Sidebar:</b> The panel itself, with header, navigation, and footer zones.
-  </li>
-  <li>
-    <b>Toggle:</b> A button placed outside the sidebar to open or close it.
-  </li>
-  <li>
-    <b>Item:</b> A navigation entry that is either a link or a branch that opens
-    a sub-panel.
-  </li>
-  <li>
-    <b>Separator:</b> A visual divider between groups of items.
-  </li>
-  <li>
-    <b>Footer:</b> Sticky bottom area for user profiles, settings, or secondary
-    actions.
-  </li>
-</ul>
+- **Header:** Sticky top area for branding, logos, or workspace switchers.
+- **Group label:** A non-interactive section heading to organize items into
+  logical groups.
+- **Navigation:** Scrollable area containing navigation items with
+  drill-down support.
+- **Sidebar:** The panel itself, with header, navigation, and footer zones.
+- **Toggle:** A button placed outside the sidebar to open or close it.
+- **Item:** A navigation entry that is either a link or a branch that opens
+  a sub-panel.
+- **Separator:** A visual divider between groups of items.
+- **Footer:** Sticky bottom area for user profiles, settings, or secondary
+  actions.
 
 ## Appearance
 
-<AppearanceDemo component={'Sidebar'} />
-<AppearanceTable component={'Sidebar'} />
+<AppearanceDemo component="Sidebar" />
+<AppearanceTable component="Sidebar" />
 
 ## Usage
 
@@ -66,44 +48,27 @@ If users need to see all items at a glance, groups with headings are the right c
 
 ### Labels
 
-Keep labels short and use sentence case. The first word of each label should carry the most meaning, since users tend to scan just the beginning. "Order history" is easier to scan than "History of orders." Similarly, a label like "Orders" is better than "Transaction management module."
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use sentence case and short labels (e.g. "Order history", "Account
-      settings").
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't use vague labels like "Miscellaneous" or "Other". Avoid Title Case
-      for navigation items.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+Keep labels short The first word of each label should carry the most meaning, since users tend to scan just the beginning. "Order history" is easier to scan than "History of orders." Similarly, a label like "Orders" is better than "Transaction management module."
 
 ### Drill-down navigation
 
-Some sections have sub-pages. Instead of showing everything at once, these items open a sub-panel that slides in from the right. A back button at the top of the sub-panel returns to the previous level.
+Use drill-down when a group of sub-pages belongs together under one parent, like "Settings" with sub-pages for profile, notifications, and security. Clicking a branch item opens a sub-panel with a back button to return.
 
-The sidebar supports two levels of navigation: the root level and one level of drill-down. Deeper nesting makes navigation harder to follow and slower to use, so we limit it to two levels.
+Don't use drill-down just to shorten a long list. Every branch adds a click, so it should only be used when the sub-pages form a clear group.
+
+The sidebar supports one level of nesting. More levels would force users to remember where they are in a deep hierarchy, and navigating back through multiple levels gets tedious fast. If your content needs more depth, reconsider how you organize your sections rather than adding more nesting.
 
 <ComponentDemo name="sidebar-drilldown" />
 
-### Showing the current page
+### Detail pages
 
-The most important job of the sidebar is telling users where they are. Mark the current page by setting `active` on the corresponding `<Sidebar.Item>`. This highlights the item and lets assistive technologies announce it as the current page.
+The sidebar shows sections and categories, not individual records. When a user opens a specific order from the "Orders" page, the detail view fills the main content area. The sidebar does not change. "Orders" stays highlighted so the user can tell which section they are in.
 
-If the current page is inside a drill-down section, the sidebar opens that section automatically so users always see their location without extra clicks.
+Do not add individual records as sidebar items. A sidebar that lists every order or ticket grows without limit and becomes unusable. The sidebar points to the list; the list points to the detail.
 
-<ComponentDemo name="sidebar-active-branch" />
+For hierarchies deeper than two levels, pair the sidebar with [breadcrumbs](/components/navigation/breadcrumbs). The sidebar lets users move between sections, breadcrumbs show the path back (e.g. Orders > ORD-4712).
 
-### Header and footer
-
-The header is a sticky area at the top of the sidebar. Use it for your brand logo — it should be visible at all times so users know which application they are in.
-
-The footer is a sticky area at the bottom. Think of it as a utility zone for secondary actions that should not compete with the main navigation. Common candidates are a user profile or avatar (with a dropdown for account settings and logout), a help link, or app-level settings.
+<ComponentDemo name="sidebar-detail-page" />
 
 ### Collapsing
 
@@ -115,19 +80,7 @@ On screens below 640px, the sidebar becomes a sheet overlay instead of a persist
 
 ### Icons
 
-The sidebar currently does not have a dedicated icon design. If your application needs icons alongside navigation labels, this should be coordinated across all applications first to ensure consistency. For now, use text-only labels.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>Use text labels for all navigation items.</DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't add icons to navigation items without coordinating with the design
-      system team first.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+The sidebar currently does not have dedicated icon support. If your application needs icons alongside navigation labels, this should be coordinated across all applications first to ensure consistency. For now, use text-only labels.
 
 ### Accessibility
 
@@ -135,7 +88,7 @@ The sidebar renders as a `<nav>` element so screen readers can identify it as a 
 
 ## Props
 
-{/* TODO: <StorybookHintMessage component={'Sidebar'} /> */}
+<StorybookHintMessage component="Sidebar" />
 
 ### Sidebar.Provider
 
@@ -167,19 +120,11 @@ The sidebar renders as a `<nav>` element so screen readers can identify it as a 
 
 ## Alternative components
 
-<ul>
-  <li>
-    [Tabs](/components/navigation/tabs): Use when content groups are at the same
-    hierarchy level and users switch between views within a single page, not
-    across the application.
-  </li>
-  <li>
-    [Accordion](/components/navigation/accordion): Use for collapsing content
-    sections within a page, not for app-level navigation.
-  </li>
-  <li>
-    [Breadcrumbs](/components/navigation/breadcrumbs): Use to show the user's
-    location within a hierarchy. Breadcrumbs complement a sidebar but don't
-    replace it.
-  </li>
-</ul>
+- [Tabs](/components/navigation/tabs): Use when content groups are at the same
+  hierarchy level and users switch between views within a single page, not
+  across the application.
+- [Accordion](/components/navigation/accordion): Use for collapsing content
+  sections within a page, not for app-level navigation.
+- [Breadcrumbs](/components/navigation/breadcrumbs): Use to show the user's
+  location within a hierarchy. Breadcrumbs complement a sidebar but don't
+  replace it.

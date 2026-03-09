@@ -8,10 +8,10 @@ export default () => {
   return (
     <RouterProvider navigate={setCurrentPath}>
       <Sidebar.Provider>
-        <div className="flex h-[400px]">
+        <div className="flex h-100">
           <Sidebar>
             <Sidebar.Header>
-              <Text weight="bold">Shop Admin</Text>
+              <Text weight="bold">My App</Text>
             </Sidebar.Header>
             <Sidebar.Nav>
               <Sidebar.Item
@@ -20,48 +20,36 @@ export default () => {
               >
                 Dashboard
               </Sidebar.Item>
-              <Sidebar.Item id="products" textValue="Products">
-                Products
-                <Sidebar.Item
-                  href="/all-products"
-                  active={currentPath === '/all-products'}
-                >
-                  All products
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/categories"
-                  active={currentPath === '/categories'}
-                >
-                  Categories
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/inventory"
-                  active={currentPath === '/inventory'}
-                >
-                  Inventory
-                </Sidebar.Item>
+              <Sidebar.Item href="/orders" active={currentPath === '/orders'}>
+                Orders
               </Sidebar.Item>
-              <Sidebar.Item id="customers" textValue="Customers">
+              <Sidebar.Item
+                href="/customers"
+                active={currentPath === '/customers'}
+              >
                 Customers
-                <Sidebar.Item
-                  href="/all-customers"
-                  active={currentPath === '/all-customers'}
-                >
-                  All customers
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/segments"
-                  active={currentPath === '/segments'}
-                >
-                  Segments
-                </Sidebar.Item>
               </Sidebar.Item>
               <Sidebar.Separator />
-              <Sidebar.Item
-                href="/settings"
-                active={currentPath === '/settings'}
-              >
+              <Sidebar.Item id="settings" textValue="Settings">
                 Settings
+                <Sidebar.Item
+                  href="/settings/profile"
+                  active={currentPath === '/settings/profile'}
+                >
+                  Profile
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/settings/notifications"
+                  active={currentPath === '/settings/notifications'}
+                >
+                  Notifications
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/settings/security"
+                  active={currentPath === '/settings/security'}
+                >
+                  Security
+                </Sidebar.Item>
               </Sidebar.Item>
             </Sidebar.Nav>
           </Sidebar>
@@ -69,13 +57,12 @@ export default () => {
             <Sidebar.Toggle />
             <Headline level={2}>
               {currentPath
+                .replace(/^\/settings\//, '')
                 .replace('/', '')
                 .replace(/-/g, ' ')
                 .replace(/^\w/, c => c.toUpperCase())}
             </Headline>
-            <Text>
-              Click "Products" or "Customers" to see the drill-down panel.
-            </Text>
+            <Text>Click "Settings" to see the drill-down panel.</Text>
           </main>
         </div>
       </Sidebar.Provider>
