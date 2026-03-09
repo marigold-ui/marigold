@@ -16,8 +16,7 @@ import { TopNavigation } from './TopNavigation';
 
 const Logo = () => (
   <svg
-    width="120"
-    height="39"
+    className="h-auto w-15 sm:w-20 md:w-25 lg:w-30"
     viewBox="0 0 120 39"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -75,13 +74,12 @@ const Logo = () => (
 );
 
 const LogoSection = () => {
-  const showLogo = useResponsiveValue([false, false, true, true, true]);
   return (
     <>
       <Button variant="icon">
         <PanelRightClose />
       </Button>
-      {showLogo && <Logo />}
+      <Logo />
     </>
   );
 };
@@ -105,22 +103,20 @@ const UserMenu = () => (
 const UserSection = () => {
   const showDetails = useResponsiveValue([false, false, true, true, true]);
 
-  if (!showDetails) {
-    return <UserMenu />;
-  }
-
   return (
     <Inline space={2} alignY="center" noWrap>
       <Stack>
         <Inline space={1} alignY="center">
           <Text size="sm" weight="bold">
-            Jane Doe
+            {showDetails ? 'Jane Doe' : 'JD'}
           </Text>
           <Badge variant="master">Master</Badge>
         </Inline>
-        <Text size="xs" variant="muted">
-          Global Entertainment Solutions Inc.
-        </Text>
+        {showDetails && (
+          <Text size="xs" variant="muted">
+            Global Entertainment Solutions Inc.
+          </Text>
+        )}
       </Stack>
       <UserMenu />
     </Inline>
@@ -219,5 +215,18 @@ export const WithBreadcrumbs = meta.story({
         </Stack>
       </div>
     </div>
+  ),
+});
+
+export const WithoutMiddle = meta.story({
+  render: args => (
+    <TopNavigation {...args}>
+      <TopNavigation.Start>
+        <LogoSection />
+      </TopNavigation.Start>
+      <TopNavigation.End>
+        <UserSection />
+      </TopNavigation.End>
+    </TopNavigation>
   ),
 });
