@@ -45,12 +45,12 @@ import ruiTheme from '@marigold/theme-rui';
 import customTheme from './custom-theme';
 
 export default () => (
-  <MarigoldProvider theme={rui}>
+  <MarigoldProvider theme={ruiTheme}>
     <Card p={4}>
       <Stack space={4}>
-        This area is still using the <strong>rui theme</strong>.
-        <MarigoldProvider theme={ruiTheme} className="bg-transparent">
-          This area is still using the <strong>rui theme</strong>.
+        This area uses the <strong>rui theme</strong>.
+        <MarigoldProvider theme={customTheme} className="bg-transparent">
+          This area uses the <strong>custom theme</strong>.
         </MarigoldProvider>
       </Stack>
     </Card>
