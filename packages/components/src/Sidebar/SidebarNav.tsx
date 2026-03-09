@@ -1,11 +1,11 @@
-import { forwardRef, useCallback, useState } from 'react';
+import { forwardRef, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarPanel } from './SidebarPanel';
-import { panelPosition } from './useSidebarNav';
+import { panelPosition, useLastDistinctValue } from './useSidebarNav';
 import { useSidebarNavState } from './useSidebarNavState';
 
 export interface SidebarNavProps {
@@ -23,13 +23,13 @@ const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
 
     const handleBack = useCallback(() => setOpenBranch(null), [setOpenBranch]);
 
-    // Track previous open branch so root panel can return focus to the branch trigger
+    // Track previous open branch so root panel can return focus to the branch trigger.
     const currentOpenBranch = stack[0] ?? null;
-    const [prevOpenBranch, setPrevOpenBranch] = useState(currentOpenBranch);
-    const returnFocusKey = prevOpenBranch;
-    if (prevOpenBranch !== currentOpenBranch) {
-      setPrevOpenBranch(currentOpenBranch);
-    }
+    const prevOpenBranch = useLastDistinctValue(currentOpenBranch);
+    const returnFocusKey =
+      currentOpenBranch === null && prevOpenBranch != null
+        ? prevOpenBranch
+        : null;
 
     return (
       <nav

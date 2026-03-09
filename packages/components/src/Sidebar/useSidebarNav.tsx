@@ -96,6 +96,23 @@ export const RovingTabIndexProvider = ({
   );
 };
 
+/**
+ * Tracks a value across renders and returns the last *different* value.
+ * On the first render or if the value has never changed, returns `undefined`.
+ */
+export const useLastDistinctValue = <T,>(value: T): T | undefined => {
+  const [prev, setPrev] = useState<{ current: T; previous: T | undefined }>({
+    current: value,
+    previous: undefined,
+  });
+
+  if (prev.current !== value) {
+    setPrev({ current: value, previous: prev.current });
+  }
+
+  return prev.previous;
+};
+
 export const useRovingItem = (key: string) => {
   const ctx = useContext(RovingTabIndexContext);
   if (!ctx) {
