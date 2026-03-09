@@ -49,17 +49,17 @@ export const Basic = meta.story({
     );
   },
   play: async ({ canvas }) => {
+    // Arrange
     const indicator = canvas.getByTestId('tab-indicator');
     const initialLeft = indicator.getBoundingClientRect().left;
 
+    // Act
     await userEvent.click(canvas.getByText('Keyboard Settings'));
+    await new Promise(resolve => setTimeout(resolve, 350)); // indicator transition (0.25s)
 
-    // Wait for the indicator transition (duration 0.25s)
-    await new Promise(resolve => setTimeout(resolve, 350));
-
+    // Assert
     const indicatorAfter = canvas.getByTestId('tab-indicator');
     const finalLeft = indicatorAfter.getBoundingClientRect().left;
-
     await expect(finalLeft).toBeGreaterThan(initialLeft);
     await expect(
       canvas.getByText(/Customize the key bindings and input behavior/)
