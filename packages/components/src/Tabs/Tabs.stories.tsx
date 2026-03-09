@@ -1,4 +1,4 @@
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Tabs } from './Tabs';
 
@@ -48,23 +48,28 @@ export const Basic = meta.story({
       </Tabs>
     );
   },
-  play: async ({ canvas }) => {
-    // Arrange
-    const keyboardTab = canvas.getByText('Keyboard Settings');
+  play: async ({ canvas, step }) => {
+    let keyboardTab: ReturnType<typeof canvas.getByRole>;
 
-    // Act
-    await userEvent.click(keyboardTab);
+    await step('Arrange', async () => {
+      keyboardTab = await waitFor(() =>
+        canvas.getByRole('tab', { name: 'Keyboard Settings' })
+      );
+    });
 
-    // Assert
-    await expect(
-      canvas.getByText(/Customize the key bindings and input behavior/)
-    ).toBeVisible();
+    await step('Act', async () => {
+      await userEvent.click(keyboardTab!);
+    });
 
-    // Indicator is client-only (Framer Motion); assert when present
-    const indicator = canvas.queryByTestId('tab-indicator');
-    if (indicator) {
+    await step('Assert', async () => {
+      await expect(
+        canvas.getByText(/Customize the key bindings and input behavior/)
+      ).toBeVisible();
+      const indicator = await waitFor(() =>
+        canvas.getByTestId('tab-indicator')
+      );
       await expect(indicator).toBeVisible();
-    }
+    });
   },
 });
 
