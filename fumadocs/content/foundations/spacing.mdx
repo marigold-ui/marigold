@@ -24,11 +24,13 @@ To select the correct token for space, think in terms of _nouns_ (e.g., regular,
 
 The relational scale has 7 tokens, each with a specific purpose. This ensures a consistent rhythm across the interface, covering everything from small details to large page sections.
 
-- **Tight** - Refers to packed containers side-by-side without any wasted space, like a dense list of data cells or entries in a table. It communicates high-density scanning where maximum information is prioritized over breathing room. _Common patterns: Data table rows, multi-line card metadata, Headline + Description, ..._
-- **Related** - The small gap communicates that two distinct elements form a single conceptual pair or unit. Use it for elements that belong together but are each self-contained, such as paired form fields (e.g. Start Date + End Date, Postal Code + City) or an icon next to a text label. _Common patterns: Paired form fields, Icon + Text, Headline + Subhead, ..._
-- **Regular** - The wider, balanced space indicates two individual, self-contained elements standing as equals within the same content flow. This is the baseline rhythm for form fields and the page's standard reading rhythm. _Common patterns: Baseline form field spacing, list items, paragraphs, ..._
-- **Group** - A substantial gap that visually clusters related elements into a sub-group within a larger context. It separates a block of content from its surroundings, signaling that the enclosed elements belong together as a logical unit. _Common patterns: Cards in a grid, address block within a form, content clusters in a sidebar, ..._
-- **Section** - Defines distinct sections of the layout structure. Creates necessary breathing room between primary areas like the main content and a sidebar, keeping them separate yet part of the same view. _Common patterns: Hero area vs. Page Content, Filter Bar vs. Results Grid, Chart vs. Data Table, ..._
+| Token | Description | Common Patterns |
+| --- | --- | --- |
+| **Tight** | Refers to packed containers side-by-side without any wasted space, like a dense list of data cells or entries in a table. It communicates high-density scanning where maximum information is prioritized over breathing room. | _Data table rows, multi-line card metadata, Headline + Description, ..._ |
+| **Related** | The small gap communicates that two distinct elements form a single conceptual pair or unit. Use it for elements that belong together but are each self-contained, such as paired form fields (e.g. Start Date + End Date, Postal Code + City) or an icon next to a text label. | _Paired form fields, Icon + Text, Headline + Subhead, ..._ |
+| **Regular** | The wider, balanced space indicates two individual, self-contained elements standing as equals within the same content flow. This is the baseline rhythm for form fields and the page's standard reading rhythm. | _Baseline form field spacing, list items, paragraphs, ..._ |
+| **Group** | A substantial gap that visually clusters related elements into a sub-group within a larger context. It separates a block of content from its surroundings, signaling that the enclosed elements belong together as a logical unit. | _Cards in a grid, address block within a form, content clusters in a sidebar, ..._ |
+| **Section** | Defines distinct sections of the layout structure. Creates necessary breathing room between primary areas like the main content and a sidebar, keeping them separate yet part of the same view. | _Hero area vs. Page Content, Filter Bar vs. Results Grid, Chart vs. Data Table, ..._ |
 
 ### Flow
 
@@ -56,7 +58,9 @@ The grid axis handles the macro-layout skeleton where items flow in both X and Y
 
 You can construct relational CSS variables using the syntax shown below. By inserting a specific scale value (like `regular` or `group`), you can apply these tokens to gap or margin classes.
 
-- **Relational** - `--spacing-<relational scale>`
+| Token Type | CSS Variable |
+| --- | --- |
+| Relational | `--spacing-<relational scale>` |
 
 ### Grouping
 
@@ -92,11 +96,13 @@ This decouples density from context, ensuring components remain portable and pre
 
 The scale has 5 tokens, each with a specific purpose. This ensures consistent density across the interface, covering everything from small details to large page sections.
 
-- **Tight** - Applies minimal padding to maximize information density. It is used when screen real estate is scarce and scanning speed is critical. _Common patterns: Data table cells, dense tooltips, micro-tags, ..._
-- **Snug** - Creates a condensed look for small interactive elements. It fits content tightly to ensure elements can sit comfortably within restricted bars or dense layouts. _Common patterns: Chips, badges, compact toolbar items, ..._
-- **Regular** - The default volume for standard interactions. It provides a comfortable touch target and balanced white space for general UI components. _Common patterns: Buttons, standard cards, input fields, form blocks, ..._
-- **Relaxed** - Introduces significant breathing room to separate distinct zones. It is used for containers that need to draw attention or stand apart from the main flow. _Common patterns: Modals, generous cards, alert banners, ..._
-- **Loose** - A structural inset for major layout blocks. It provides massive internal space to slow down the reading rhythm and frame high-impact content. _Common patterns: Hero sections, onboarding slides, empty states, ..._
+| Token | Description | Common Patterns |
+| --- | --- | --- |
+| **Tight** | Applies minimal padding to maximize information density. It is used when screen real estate is scarce and scanning speed is critical. | _Data table cells, dense tooltips, micro-tags, ..._ |
+| **Snug** | Creates a condensed look for small interactive elements. It fits content tightly to ensure elements can sit comfortably within restricted bars or dense layouts. | _Chips, badges, compact toolbar items, ..._ |
+| **Regular** | The default volume for standard interactions. It provides a comfortable touch target and balanced white space for general UI components. | _Buttons, standard cards, input fields, form blocks, ..._ |
+| **Relaxed** | Introduces significant breathing room to separate distinct zones. It is used for containers that need to draw attention or stand apart from the main flow. | _Modals, generous cards, alert banners, ..._ |
+| **Loose** | A structural inset for major layout blocks. It provides massive internal space to slow down the reading rhythm and frame high-impact content. | _Hero sections, onboarding slides, empty states, ..._ |
 
 ### Optical Corrections
 
@@ -118,9 +124,11 @@ Stretch modifiers apply horizontal compression, which is essential for mobile la
 
 You can construct inset CSS variables using the syntax shown below. By inserting a specific scale value (like `snug` or `relaxed`) and adding a geometry prefix (`square`, `squish`, or `stretch`), you can apply these tokens to padding properties.
 
-- **Square** - `--spacing-square-<inset scale>`
-- **Squish** - `--spacing-squish-<inset scale>`
-- **Stretch** - `--spacing-stretch-<inset scale>`
+| Token Type | CSS Variable |
+| --- | --- |
+| Square | `--spacing-square-<inset scale>` |
+| Squish | `--spacing-squish-<inset scale>` |
+| Stretch | `--spacing-stretch-<inset scale>` |
 
 ### Consistent Height
 

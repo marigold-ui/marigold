@@ -108,7 +108,7 @@ export default () => {
               <VisualSpacing orientation="vertical" space="regular" />
             )}
             <div className={showSpacing ? 'pb-8' : ''}>
-              <Inline space="related" alignY="input">
+              <Inline space="related">
                 <TextField label="Postal Code" width={20} />
                 {showSpacing && (
                   <VisualSpacing space="related" orientation="horizontal" />

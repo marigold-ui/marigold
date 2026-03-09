@@ -7,7 +7,7 @@ const classNames = {
     base: ['relative bg-pink-100'],
     variants: {
       orientation: {
-        horizontal: ['-mx-(--space) w-(--space) h-full'],
+        horizontal: ['-mx-(--space) w-(--space)'],
         vertical: ['-my-(--space) h-(--space) w-full'],
       },
     },
@@ -88,29 +88,36 @@ export const VisualInset = ({
   spaceY,
   children,
 }: VisualInsetProps) => (
-  <div className={cn('relative flex w-max items-center', className)}>
-    <div className="p-1">
-      <div className="bg-pink-100">
-        <div className="flex">
-          <VisualSpacing
-            space={spaceX as SpacingTokens}
-            orientation="horizontal"
-          />
-          {children}
-          <VisualSpacing
-            space={spaceX as SpacingTokens}
-            orientation="horizontal"
-          />
-        </div>
-        <div className="relative flex items-center">
-          <VisualSpacing
-            space={spaceY as SpacingTokens}
-            orientation="vertical"
-            hideGuide
-          />
-          <div className="text-xs/1 font-semibold text-pink-600">{name}</div>
-        </div>
+  <div className={cn('relative w-max', className)}>
+    <div className="flex items-center">
+      {/* Y-axis annotation — outside, to the left */}
+      <div className="mr-1.5 flex items-center gap-1 text-xs/1 font-semibold text-pink-600">
+        {name}
+        <div
+          className={classNames.icon({ orientation: 'vertical' })}
+          style={createVar({ space: `var(--spacing-${spaceY})` })}
+        />
       </div>
+
+      {/* Container with pink bg — padding area shows as pink */}
+      <div
+        className="bg-pink-100"
+        style={createVar({
+          spaceX: `var(--spacing-${spaceX})`,
+          spaceY: `var(--spacing-${spaceY})`,
+        })}
+      >
+        <div className="px-(--spaceX) py-(--spaceY)">{children}</div>
+      </div>
+    </div>
+
+    {/* X-axis annotation — outside, below */}
+    <div className="flex flex-col items-center gap-1 pt-1.5 text-xs/1 font-semibold text-pink-600">
+      <div
+        className={classNames.icon({ orientation: 'horizontal' })}
+        style={createVar({ space: `var(--spacing-${spaceX})` })}
+      />
+      {name}
     </div>
   </div>
 );
