@@ -41,10 +41,6 @@ The `<TopNavigation>` component uses a compound component pattern with three slo
 
 The `<TopNavigation>` component organizes the top-level navigation of an application into three distinct sections. Place branding content in `<TopNavigation.Start>`, primary navigation in `<TopNavigation.Middle>`, and utility actions in `<TopNavigation.End>`.
 
-### Basic layout
-
-Place branding in `<TopNavigation.Start>`, navigation links in `<TopNavigation.Middle>`, and utility actions like sign-in in `<TopNavigation.End>`.
-
 ### Centering content in the middle slot
 
 Some layouts call for centered content in the navigation bar, such as a search field. Use the `alignX` prop on `<TopNavigation.Middle>` to horizontally center its content within the available space. Note that `alignX` only applies to the Middle slot — Start and End are always aligned to their respective edges.
@@ -74,23 +70,22 @@ On pages with long content, users may need to scroll far down the page and lose 
 
 ### Combining with Sidebar
 
-For applications with multiple levels of navigation, combine `<TopNavigation>` with the [Sidebar](/components/navigation/sidebar) component. The top bar covers global concerns like branding and utility actions, while the Sidebar handles sub-navigation within each section.
+For applications with multiple levels of navigation, combine `<TopNavigation>` with the [Sidebar](/components/navigation/sidebar) component. The top bar handles global concerns
+like branding and utility actions, while the Sidebar provides contextual sub-navigation within each section.
 
-The `<TopNavigation.Middle>` slot can hold Tabs, Breadcrumbs, or be left empty depending on the application's needs. In this example, Tabs represent the top-level sections. Use `alignY="bottom"` to visually connect the active tab indicator with the content below.
-
-<ComponentDemo name="topnavigation-tabs" />
+The `<TopNavigation.Middle>` slot adapts to your application's navigation model. Use it for **Tabs** when the top-level pages are peers the user switches between, for **Breadcrumbs** when the page hierarchy matters and users need a trail back to parent sections, or leave it **empty** when the Sidebar alone provides sufficient navigation. This
+flexibility lets the `<TopNavigation>` and `<Sidebar>` work as complementary layers — the top bar orients users globally, while the Sidebar guides them locally within the current
+section.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      - Use meaningful `aria-label` props when multiple `<nav>` landmarks exist on the page. Middle and End both render `<nav>`, so distinct labels help screen reader users differentiate them.
-      - Use the Start slot for consistent branding (logo or app name) across all pages.
+      Use meaningful `aria-label` props when multiple `<nav>` landmarks exist on the page. Middle and End both render `<nav>`, so distinct labels help screen reader users differentiate them.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      - Don't place too many items in the navigation bar. Prioritize the most important actions and group secondary ones in menus.
-      - Don't use TopNavigation for page-level section navigation — use Tabs or Breadcrumbs directly instead.
+    Don't place too many items in the navigation bar. Prioritize the most important actions and group secondary ones in menus.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
