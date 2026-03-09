@@ -2,6 +2,8 @@ import type { PropsWithChildren } from 'react';
 import type { Scale, SpacingTokens } from '@marigold/system';
 import { cn, createVar, cva } from '@marigold/system';
 
+const labelClass = 'text-xs/1 font-semibold text-pink-600';
+
 const classNames = {
   container: cva({
     base: ['relative bg-pink-100'],
@@ -19,23 +21,20 @@ const classNames = {
         horizontal: [
           'h-2 w-(--space)',
           'border-x-2',
-          'before:top-full before:left-0 before:mt-[3px]',
+          'before:top-full before:left-0 before:mt-0.75',
           'before:h-0.5 before:w-[calc(var(--space)-2px)]',
         ],
         vertical: [
           'w-2 h-(--space)',
           'border-y-2',
-          'before:left-full before:top-0 before:ml-[3px]',
+          'before:left-full before:top-0 before:ml-0.75',
           'before:w-0.5 before:h-[calc(var(--space)-2px)]',
         ],
       },
     },
   }),
   guide: cva({
-    base: [
-      'absolute flex items-center gap-1',
-      'text-xs/1 font-semibold text-pink-600',
-    ],
+    base: ['absolute flex items-center gap-1', labelClass],
     variants: {
       orientation: {
         horizontal: ['flex-col', 'left-0 right-0 top-full mt-1.5'],
@@ -46,7 +45,7 @@ const classNames = {
 };
 
 export interface VisualSpacingProps {
-  space: SpacingTokens;
+  space: SpacingTokens | Scale;
   orientation: 'horizontal' | 'vertical';
   hideGuide?: boolean;
 }
@@ -72,50 +71,70 @@ export const VisualSpacing = ({
 export interface VisualInsetProps {
   className?: string;
   /**
-   * We need a name here an the tokens (sadly) need to be used hardcoded
-   * since for the demo we need to have a seperateed x/y value.
+   * We need a name here and the tokens (sadly) need to be used hardcoded
+   * since for the demo we need to have a separated x/y value.
    */
   name: string;
   spaceX: Scale;
   spaceY: Scale;
-  children: PropsWithChildren['children'];
 }
 
 export const VisualInset = ({
+  children,
   className,
   name,
   spaceX,
   spaceY,
-  children,
-}: VisualInsetProps) => (
-  <div className={cn('relative w-max', className)}>
-    <div className="flex items-center">
-      {/* Y-axis annotation — outside, to the left */}
-      <div className="mr-1.5 flex items-center gap-1 text-xs/1 font-semibold text-pink-600">
-        {name}
-        <div
-          className={classNames.icon({ orientation: 'vertical' })}
-          style={createVar({ space: `var(--spacing-${spaceY})` })}
-        />
-      </div>
-
-      {/* Container with pink bg — padding area shows as pink */}
-      <div
-        className="bg-pink-100"
-        style={createVar({
-          spaceX: `var(--spacing-${spaceX})`,
-          spaceY: `var(--spacing-${spaceY})`,
-        })}
-      >
-        <div className="px-(--spaceX) py-(--spaceY)">{children}</div>
+}: PropsWithChildren<VisualInsetProps>) => (
+  <div
+    className="size-full"
+    data-hello
+    style={createVar({
+      'space-y': `calc(var(--spacing)*${spaceY})`,
+      'space-x': `calc(var(--spacing)*${spaceX})`,
+    })}
+  >
+    <div
+      className={cn(
+        'size-full overflow-hidden bg-pink-100 px-(--space-x) py-(--space-y)',
+        className
+      )}
+    >
+      <div className="text-secondary-700 grid size-full place-items-center bg-white text-xs font-medium">
+        {children}
       </div>
     </div>
-
-    {/* X-axis annotation — outside, below */}
-    <div className="flex flex-col items-center gap-1 pt-1.5 text-xs/1 font-semibold text-pink-600">
+    {/* left guide */}
+    <div
+      className={classNames.guide({
+        orientation: 'vertical',
+        className: [
+          'right-full left-auto mr-1.5 ml-0',
+          'top-auto bottom-0 translate-0',
+          'flex-row-reverse',
+        ],
+      })}
+    >
       <div
-        className={classNames.icon({ orientation: 'horizontal' })}
-        style={createVar({ space: `var(--spacing-${spaceX})` })}
+        className={classNames.icon({
+          orientation: 'vertical',
+          className: 'h-(--space-y) before:h-[calc(var(--space-y)-2px)]',
+        })}
+      />
+      {name}
+    </div>
+    {/* bottom guide */}
+    <div
+      className={classNames.guide({
+        orientation: 'horizontal',
+        className: 'items-start',
+      })}
+    >
+      <div
+        className={classNames.icon({
+          orientation: 'horizontal',
+          className: 'w-(--space-x) before:w-[calc(var(--space-x)-2px)]',
+        })}
       />
       {name}
     </div>
