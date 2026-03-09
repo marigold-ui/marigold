@@ -32,7 +32,13 @@ export function badgePlugin(): LoaderPlugin {
         if (badge) {
           (node as ItemWithBadge).badge = badge;
         }
-
+        if (
+          'url' in node &&
+          typeof (node as { url: string }).url === 'string'
+        ) {
+          const u = (node as { url: string }).url;
+          if (u && !u.startsWith('/')) (node as { url: string }).url = '/' + u;
+        }
         return node;
       },
     },
