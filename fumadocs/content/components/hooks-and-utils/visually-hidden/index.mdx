@@ -1,6 +1,6 @@
 ---
 title: VisuallyHidden
-caption: Hide children but keep content accessible
+description: Hide children but keep content accessible
 ---
 
 `<VisuallyHidden>` is a component that visually hides its children while keeping them accessible to screen readers and assistive technologies.
@@ -28,24 +28,24 @@ You should use `<VisuallyHidden>` when you want to make information available to
 
 This is especially useful for accessibility purposes—such as labeling icon-only buttons, adding helpful instructions to form fields, or including context like headings or descriptions that assist navigation for screen reader users. By doing so, you ensure your interface remains clean and visually simple for sighted users while still being fully accessible and understandable for those relying on assistive technologies.
 
-<ComponentDemo file="./visually-hidden-a11y.demo.tsx" />
+<ComponentDemo name="visually-hidden-a11y" />
 
 <GuidelineTiles>
     <Do>
-        <Do.Description>
+        <DoDescription>
         Use `VisuallyHidden` to add meaningful accessibility enhancements.
-        </Do.Description>
+        </DoDescription>
     </Do>
     <Dont>
-        <Dont.Description>
-        Don’t use `<VisuallyHidden>` to compensate for poorly labeled or structured elements—fix the design instead.
-        </Dont.Description>
+        <DontDescription>
+        Don't use `<VisuallyHidden>` to compensate for poorly labeled or structured elements—fix the design instead.
+        </DontDescription>
     </Dont>
 </GuidelineTiles>
 
 ### Supplemental context
 
-Sometimes you need to include additional context that isn’t necessary to show visually but is important for users who rely on screen readers. For example, this could be clarifying instructions, status updates, or descriptions that help non-visual users understand what’s happening on the page.
+Sometimes you need to include additional context that isn't necessary to show visually but is important for users who rely on screen readers. For example, this could be clarifying instructions, status updates, or descriptions that help non-visual users understand what's happening on the page.
 
 Using a visually hidden element ensures that this information is announced by assistive technologies without disrupting the visual layout or overwhelming sighted users with extra text.
 
@@ -55,6 +55,6 @@ Using a visually hidden element ensures that this information is announced by as
 
 ## Props
 
-<StorybookHintMessage component={title} />
+<StorybookHintMessage component={'VisuallyHidden'} />
 
-<PropsTable component={title} />
+The `<VisuallyHidden>` component accepts standard HTML element props since it's a wrapper around a `<div>` element. It accepts all standard React props like `children`, `className`, and other HTML attributes.
