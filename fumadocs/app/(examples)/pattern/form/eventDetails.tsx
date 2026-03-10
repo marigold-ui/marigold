@@ -13,7 +13,7 @@ import {
 
 export const EventDetails = () => {
   return (
-    <Stack space="group">
+    <Stack space="regular">
       <Headline level={2}>Event Details</Headline>
       <TextField
         label="Event Name"
@@ -46,7 +46,7 @@ export const EventDetails = () => {
         <Accordion.Item id="advanced-event-settings">
           <Accordion.Header>Advanced Event Settings</Accordion.Header>
           <Accordion.Content>
-            <Stack space="group">
+            <Stack space="regular">
               <TextField label="Event Code" description="Optional event code" />
               <Select
                 label="Event Visibility"
