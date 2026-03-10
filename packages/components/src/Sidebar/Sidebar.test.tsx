@@ -114,7 +114,6 @@ test('active state with aria-current', () => {
 
   const overviewLink = screen.getByRole('link', { name: 'Overview' });
   const analyticsLink = screen.getByRole('link', { name: 'Analytics' });
-
   expect(overviewLink).toHaveAttribute('aria-current', 'page');
   expect(analyticsLink).not.toHaveAttribute('aria-current');
 });
@@ -134,7 +133,6 @@ test('renders items as links with href', () => {
   render(<Basic.Component />);
 
   const link = screen.getByRole('link', { name: 'Overview' });
-
   expect(link).toHaveAttribute('href', '/overview');
 });
 
@@ -142,7 +140,6 @@ test('branch items render as links with auto-derived href', () => {
   render(<Basic.Component />);
 
   const managementLink = screen.getByRole('link', { name: /Management/ });
-
   expect(managementLink).toHaveAttribute('href', '/users');
 });
 
@@ -341,6 +338,7 @@ test('toggle writes expanded state to cookie', async () => {
 
 test('cookie overrides defaultOpen', () => {
   document.cookie = 'marigold:sidebar:state=collapsed;path=/;max-age=604800';
+
   render(<DefaultCollapsed.Component />);
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   const shell = closest(
@@ -354,6 +352,7 @@ test('cookie overrides defaultOpen', () => {
 
 test('defaultOpen={false} starts sidebar collapsed', () => {
   render(<DefaultCollapsed.Component />);
+
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   const shell = closest(
     screen.getByRole('link', { name: 'Overview' }),
@@ -595,7 +594,6 @@ test('item with explicit id uses that id as key', () => {
   render(<Basic.Component />);
 
   const link = screen.getByRole('link', { name: /Management/ });
-
   expect(link).toHaveAttribute('data-key', 'management');
 });
 
@@ -775,6 +773,7 @@ test('ArrowDown moves focus to next item', async () => {
   expect(overview).toHaveFocus();
 
   await user.keyboard('{ArrowDown}');
+
   expect(analytics).toHaveFocus();
 });
 
@@ -788,6 +787,7 @@ test('ArrowUp moves focus to previous item', async () => {
   expect(analytics).toHaveFocus();
 
   await user.keyboard('{ArrowUp}');
+
   expect(overview).toHaveFocus();
 });
 
@@ -801,6 +801,7 @@ test('ArrowDown wraps from last item to first', async () => {
   expect(security).toHaveFocus();
 
   await user.keyboard('{ArrowDown}');
+
   expect(overview).toHaveFocus();
 });
 
@@ -814,6 +815,7 @@ test('ArrowUp wraps from first item to last', async () => {
   expect(overview).toHaveFocus();
 
   await user.keyboard('{ArrowUp}');
+
   expect(security).toHaveFocus();
 });
 
@@ -827,6 +829,7 @@ test('Home key jumps to first item', async () => {
   expect(security).toHaveFocus();
 
   await user.keyboard('{Home}');
+
   expect(overview).toHaveFocus();
 });
 
@@ -840,6 +843,7 @@ test('End key jumps to last item', async () => {
   expect(overview).toHaveFocus();
 
   await user.keyboard('{End}');
+
   expect(security).toHaveFocus();
 });
 
@@ -855,11 +859,13 @@ test('separators and group labels are skipped during arrow navigation', async ()
 
   // ArrowDown should skip the separator and land on Management
   await user.keyboard('{ArrowDown}');
+
   expect(management).toHaveFocus();
 
   // ArrowDown should skip the group label and land on General
   const general = screen.getByRole('link', { name: 'General' });
   await user.keyboard('{ArrowDown}');
+
   expect(general).toHaveFocus();
 });
 
@@ -879,10 +885,12 @@ test('arrow navigation in sub-panel includes back button', async () => {
   // Actually, DOM order is: back button, Users, Teams, Billing
   // ArrowUp from Users → back button
   await user.keyboard('{ArrowUp}');
+
   expect(backButton).toHaveFocus();
 
   // ArrowDown from back button → Users
   await user.keyboard('{ArrowDown}');
+
   expect(usersLink).toHaveFocus();
 });
 
