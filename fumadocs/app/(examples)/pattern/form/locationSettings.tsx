@@ -94,7 +94,7 @@ export const LocationSettings = () => {
         <Accordion.Item id="advanced-location-settings">
           <Accordion.Header>Advanced Location Settings</Accordion.Header>
           <Accordion.Content>
-            <Stack space={8}>
+            <Stack space="regular">
               <TextField
                 label="Room"
                 description="Specify room or area within the venue"
