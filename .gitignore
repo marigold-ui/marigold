@@ -40,3 +40,6 @@ next-env.d.ts
 
 # Jetbrains IDE
 .idea
+
+# Playwright MCP
+.playwright-mcp

@@ -42,7 +42,7 @@ const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
 
 export default () => {
   return (
-    <Tiles space="related" stretch>
+    <Tiles space="related" tilesWidth="300px" stretch>
       <VenueCard id="10" />
       <VenueCard id="6" />
       <VenueCard id="8" />

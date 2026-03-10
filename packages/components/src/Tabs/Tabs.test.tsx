@@ -1,6 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Basic, WithDisabledKeys, WithSelectedTab } from './Tabs.stories';
+import {
+  Basic,
+  WithDisabledKeys,
+  WithRenderProps,
+  WithSelectedTab,
+} from './Tabs.stories';
 
 const user = userEvent.setup();
 
@@ -68,4 +73,25 @@ test('tablist has correct container structure', () => {
   const tablist = screen.getByRole('tablist');
   expect(tablist).toBeInTheDocument();
   expect(tablist).toHaveAttribute('aria-label', 'Input settings');
+});
+
+test('supports render prop children on Tabs.Item', async () => {
+  // Arrange
+  render(<WithRenderProps.Component />);
+  const securityTab = screen.getByRole('tab', { name: 'Security' });
+
+  // Assert (initial state)
+  expect(
+    screen.getByRole('tab', { name: 'General (current)' })
+  ).toBeInTheDocument();
+  expect(securityTab).toBeInTheDocument();
+
+  // Act
+  await user.click(securityTab);
+
+  // Assert
+  expect(
+    screen.getByRole('tab', { name: 'Security (current)' })
+  ).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: 'General' })).toBeInTheDocument();
 });

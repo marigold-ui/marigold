@@ -311,11 +311,6 @@ export const gapSpace = {
   72: 'gap-72',
   80: 'gap-80',
   96: 'gap-96',
-  section: 'gap-[var(--spacing-section)]',
-  fieldY: 'gap-[var(--spacing-fieldY)]',
-  fieldX: 'gap-[var(--spacing-fieldX)]',
-  container: 'gap-[var(--spacing-container)]',
-  group: 'gap-[var(--spacing-group)]',
 } as const;
 
 export const paddingSpace = {
@@ -427,11 +422,6 @@ export const paddingSpaceY = {
   72: 'py-72',
   80: 'py-80',
   96: 'py-96',
-  section: 'py-[var(--spacing-section)]',
-  fieldY: 'py-[var(--spacing-field-Y)]',
-  fieldX: 'py-[var(--spacing-field-X)]',
-  container: 'py-[var(--spacing-container)]',
-  group: 'py-[var(--spacing-group)]',
 } as const;
 
 export const paddingRight = {
