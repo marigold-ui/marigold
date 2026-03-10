@@ -46,9 +46,20 @@ When the list gets long, break it into groups using section headings (`<Sidebar.
 
 If users need to see all items at a glance, groups with headings are the right choice. If a section has its own sub-pages that users only visit occasionally, nest them behind a branch item instead. See [drill-down navigation](#drill-down-navigation) for more on nesting.
 
-### Labels
-
-Keep labels short The first word of each label should carry the most meaning, since users tend to scan just the beginning. "Order history" is easier to scan than "History of orders." Similarly, a label like "Orders" is better than "Transaction management module."
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep labels short. Lead with the most meaningful word, since users scan
+      the beginning first. "Order history" beats "History of orders."
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use long, technical labels like "Transaction management module" when
+      a simple word like "Orders" works.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Drill-down navigation
 
@@ -69,6 +80,21 @@ Do not add individual records as sidebar items. A sidebar that lists every order
 For hierarchies deeper than two levels, pair the sidebar with [breadcrumbs](/components/navigation/breadcrumbs). The sidebar lets users move between sections, breadcrumbs show the path back (e.g. Orders > ORD-4712).
 
 <ComponentDemo name="sidebar-detail-page" />
+
+<GuidelineTiles>
+  <Dont>
+    <DontDescription>
+      Don't add individual records as sidebar items. The sidebar points to the
+      list; the list points to the detail.
+    </DontDescription>
+  </Dont>
+  <Do>
+    <DoDescription>
+      For hierarchies deeper than two levels, pair the sidebar with
+      [breadcrumbs](/components/navigation/breadcrumbs) to show the path back.
+    </DoDescription>
+  </Do>
+</GuidelineTiles>
 
 ### Collapsing
 
