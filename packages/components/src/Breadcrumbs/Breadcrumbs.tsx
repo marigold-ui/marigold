@@ -9,6 +9,7 @@ import {
   useRef,
 } from 'react';
 import {
+  Link,
   Breadcrumb as RACBreadcrumb,
   Breadcrumbs as RACBreadcrumbs,
   BreadcrumbsProps as RACBreadcrumbsProps,
@@ -53,6 +54,8 @@ export interface BreadcrumbsComponent extends ForwardRefExoticComponent<
   Item: typeof BreadcrumbsItem;
 }
 
+const NULL_REF = { current: null };
+
 const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
   (
     { children, variant, size, disabled, maxVisibleItems = 'auto', ...props },
@@ -69,7 +72,6 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       size,
     });
 
-    const NULL_REF = { current: null };
     const items = Children.toArray(children);
     const total = items.length;
 
@@ -96,16 +98,10 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
         : items.slice(1, -1)
       : [];
 
-    const ellipsis = (
-      <BreadcrumbsItem key="ellipsis" href="">
-        <BreadcrumbEllipsis hiddenItems={hiddenItems} />
-      </BreadcrumbsItem>
-    );
-
     const displayedItems = shouldCollapse
       ? effectiveMax === 2
-        ? [ellipsis, items[total - 1]]
-        : [items[0], ellipsis, items[total - 1]]
+        ? [null, items[total - 1]]
+        : [items[0], null, items[total - 1]]
       : items;
 
     const mergedRef = useCallback(
@@ -128,9 +124,21 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
         )}
       >
         {displayedItems.map((item, index) => {
-          if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
+          // Render ellipsis breadcrumb for collapsed items
+          if (item === null) {
+            return (
+              <RACBreadcrumb key="ellipsis" className={breadcrumbsItem}>
+                <BreadcrumbEllipsis hiddenItems={hiddenItems} />
+                <ChevronRight
+                  aria-hidden="true"
+                  size={16}
+                  data-testid="breadcrumb-chevronright"
+                />
+              </RACBreadcrumb>
+            );
+          }
 
-          const isLast = index === displayedItems.length - 1;
+          if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
 
           const { href, children: itemChildren, ...ariaProps } = item.props;
 
@@ -140,24 +148,19 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
               {...ariaProps}
               className={breadcrumbsItem}
             >
-              {href ? (
-                <a
-                  href={href}
-                  className={cn(link, isLast && current)}
-                  aria-current={isLast ? 'page' : undefined}
-                >
-                  {itemChildren}
-                </a>
-              ) : (
-                itemChildren
-              )}
-
-              {!isLast && (
-                <ChevronRight
-                  aria-hidden="true"
-                  size={16}
-                  data-testid="breadcrumb-chevronright"
-                />
+              {({ isCurrent }) => (
+                <>
+                  <Link href={href} className={cn(link, isCurrent && current)}>
+                    {itemChildren}
+                  </Link>
+                  {!isCurrent && (
+                    <ChevronRight
+                      aria-hidden="true"
+                      size={16}
+                      data-testid="breadcrumb-chevronright"
+                    />
+                  )}
+                </>
               )}
             </RACBreadcrumb>
           );
