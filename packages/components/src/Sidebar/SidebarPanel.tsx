@@ -31,7 +31,7 @@ const BackButton = ({ onBack, backLabel, className }: BackButtonProps) => {
       aria-label={stringFormatter.format('backTo', {
         label: backLabel ?? stringFormatter.format('back'),
       })}
-      className={cn(className)}
+      className={className}
       onPress={onBack}
       excludeFromTabOrder={tabIndex < 0}
       onFocus={onFocus}
@@ -101,7 +101,7 @@ export const SidebarPanel = ({
         ref={panelRef}
         role="region"
         aria-label={backLabel ?? stringFormatter.format('appNavigation')}
-        className={cn(classNames.navPanel)}
+        className={classNames.navPanel}
         data-position={position}
         inert={position !== 'active' || undefined}
         onKeyDown={onKeyDown}

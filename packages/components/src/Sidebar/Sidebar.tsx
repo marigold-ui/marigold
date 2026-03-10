@@ -45,31 +45,6 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
   const { isMobile, state, toggleSidebar, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  const aside = (
-    <aside
-      ref={ref}
-      aria-label={stringFormatter.format('sidebar')}
-      data-state={state}
-      className={cn(isMobile && 'h-full', classNames.root)}
-    >
-      {isMobile && (
-        <CloseButton
-          aria-label={stringFormatter.format('closeNavigation')}
-          className={cn('z-50', classNames.closeButton)}
-          onPress={toggleSidebar}
-        />
-      )}
-      <div
-        className={cn(
-          "grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
-          classNames.content
-        )}
-      >
-        {children}
-      </div>
-    </aside>
-  );
-
   if (isMobile) {
     return (
       <ModalOverlay
@@ -81,12 +56,49 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
         )}
         isDismissable
       >
-        <Modal className={classNames.modal}>{aside}</Modal>
+        <Modal className={classNames.modal}>
+          <aside
+            ref={ref}
+            aria-label={stringFormatter.format('sidebar')}
+            data-state={state}
+            className={cn('h-full', classNames.root)}
+          >
+            <CloseButton
+              aria-label={stringFormatter.format('closeNavigation')}
+              className={cn('z-50', classNames.closeButton)}
+              onPress={toggleSidebar}
+            />
+            <div
+              className={cn(
+                "grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
+                classNames.content
+              )}
+            >
+              {children}
+            </div>
+          </aside>
+        </Modal>
       </ModalOverlay>
     );
   }
 
-  return aside;
+  return (
+    <aside
+      ref={ref}
+      aria-label={stringFormatter.format('sidebar')}
+      data-state={state}
+      className={classNames.root}
+    >
+      <div
+        className={cn(
+          "grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
+          classNames.content
+        )}
+      >
+        {children}
+      </div>
+    </aside>
+  );
 }) as SidebarComponent;
 
 _Sidebar.Provider = SidebarProvider;

@@ -67,24 +67,27 @@ test('renders with sub-components', () => {
   expect(screen.getByRole('separator')).toBeInTheDocument();
 });
 
-test('toggle expand/collapse via toggle button', async () => {
+test('toggle button collapses expanded sidebar', async () => {
   render(<Basic.Component />);
-
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
-  expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
   await user.click(trigger);
+
   expect(trigger).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('toggle button re-expands collapsed sidebar', async () => {
+  render(<DefaultCollapsed.Component />);
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
 
   await user.click(trigger);
+
   expect(trigger).toHaveAttribute('aria-expanded', 'true');
 });
 
 test('keyboard shortcut Cmd+B collapses sidebar', async () => {
   render(<Basic.Component />);
-
   const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
-  expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
   await user.keyboard('{Meta>}b{/Meta}');
 
@@ -93,7 +96,6 @@ test('keyboard shortcut Cmd+B collapses sidebar', async () => {
 
 test('keyboard shortcut Cmd+B expands sidebar', async () => {
   render(<Basic.Component />);
-
   const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
   await user.keyboard('{Meta>}b{/Meta}');
 
@@ -104,11 +106,10 @@ test('keyboard shortcut Cmd+B expands sidebar', async () => {
 
 test('active state with aria-current', () => {
   render(<Basic.Component />);
-
   const overviewLink = screen.getByRole('link', { name: 'Overview' });
-  expect(overviewLink).toHaveAttribute('aria-current', 'page');
-
   const analyticsLink = screen.getByRole('link', { name: 'Analytics' });
+
+  expect(overviewLink).toHaveAttribute('aria-current', 'page');
   expect(analyticsLink).not.toHaveAttribute('aria-current');
 });
 
@@ -132,45 +133,29 @@ test('renders items as links with href', () => {
 
 test('branch items render as links with auto-derived href', () => {
   render(<Basic.Component />);
-
-  // Branch item "Management" should be a link with href from first child
   const managementLink = screen.getByRole('link', { name: /Management/ });
+
   expect(managementLink).toHaveAttribute('href', '/users');
 });
 
 test('sub-panel opens when child is active', () => {
   render(<WithActiveBranch.Component />);
-
-  // Root panel should be in "before" position (not active).
-  // Use linkByText because the root panel is inert (invisible to getByRole).
   const rootPanel = closest(linkByText('Overview'), '[data-position]');
-  expect(rootPanel).toHaveAttribute('data-position', 'before');
-
-  // Management sub-panel should be active
   const usersLink = screen.getByRole('link', { name: 'Users' });
   const managementPanel = closest(usersLink, '[data-position]');
-  expect(managementPanel).toHaveAttribute('data-position', 'active');
-
-  // Back button should be visible in the active panel
   const backButton = screen.getByRole('button', { name: /Back/ });
+
+  expect(rootPanel).toHaveAttribute('data-position', 'before');
+  expect(managementPanel).toHaveAttribute('data-position', 'active');
   expect(backButton).toBeInTheDocument();
 });
 
 test('back button returns to root panel', async () => {
   render(<WithActiveBranch.Component />);
-
-  // Management sub-panel is active
-  const usersLink = await screen.findByRole('link', { name: 'Users' });
-  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Click back
   const backButton = await screen.findByRole('button', { name: /Back/ });
+
   await user.click(backButton);
 
-  // Root panel transitions to active (wait for CSS visibility)
   const overviewLink = await screen.findByRole('link', { name: 'Overview' });
   expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
     'data-position',
@@ -181,30 +166,17 @@ test('back button returns to root panel', async () => {
 test('re-entering the same branch after back reopens sub-panel', async () => {
   render(<WithActiveBranch.Component />);
 
-  // Management sub-panel starts active
-  const usersLink = await screen.findByRole('link', { name: 'Users' });
-  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Click back → root panel shown
+  // Go back to root
   const backButton = await screen.findByRole('button', { name: /Back/ });
   await user.click(backButton);
+  await screen.findByRole('link', { name: 'Overview' });
 
-  const overviewLink = await screen.findByRole('link', { name: 'Overview' });
-  expect(closest(overviewLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-
-  // Click the Management branch trigger again → sub-panel should reopen
+  // Re-enter the Management branch
   const managementTrigger = await screen.findByRole('link', {
     name: /Management/,
   });
   await user.click(managementTrigger);
 
-  // Wait for panel transition, then check Users is in the active panel
   await waitFor(() => {
     expect(closest(linkByText('Users'), '[data-position]')).toHaveAttribute(
       'data-position',
@@ -216,22 +188,19 @@ test('re-entering the same branch after back reopens sub-panel', async () => {
 test('navigating between branches via stateful active prop', async () => {
   render(<Complex.Component />);
 
-  // Dashboard is at root, click Tickets branch
-  const ticketsTrigger = screen.getByRole('link', { name: 'Tickets' });
-  await user.click(ticketsTrigger);
+  // Navigate into Tickets branch
+  await user.click(screen.getByRole('link', { name: 'Tickets' }));
 
-  // Wait for panel transition, then check Tickets sub-panel is active
   const myTicketsLink = await screen.findByRole('link', { name: 'My Tickets' });
   expect(closest(myTicketsLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
 
-  // Click back → root
-  const backToTickets = await screen.findByRole('button', {
-    name: /Back to Tickets/,
-  });
-  await user.click(backToTickets);
+  // Back to root
+  await user.click(
+    await screen.findByRole('button', { name: /Back to Tickets/ })
+  );
 
   const dashboardLink = await screen.findByRole('link', { name: 'Dashboard' });
   expect(closest(dashboardLink, '[data-position]')).toHaveAttribute(
@@ -239,7 +208,7 @@ test('navigating between branches via stateful active prop', async () => {
     'active'
   );
 
-  // Click Projects → opens projects panel
+  // Navigate into Projects branch
   await user.click(await screen.findByRole('link', { name: 'Projects' }));
 
   const activeLink = await screen.findByRole('link', { name: 'Active' });
@@ -248,43 +217,52 @@ test('navigating between branches via stateful active prop', async () => {
     'active'
   );
 
-  // Click back from projects → root
+  // Back to root
   await user.click(
     await screen.findByRole('button', { name: /Back to Projects/ })
   );
 
-  expect(
-    closest(
-      await screen.findByRole('link', { name: 'Dashboard' }),
-      '[data-position]'
-    )
-  ).toHaveAttribute('data-position', 'active');
+  const dashboardLink2 = await screen.findByRole('link', { name: 'Dashboard' });
+  expect(closest(dashboardLink2, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
 
-  // Click Reports → opens reports panel
+  // Navigate into Reports branch
   await user.click(await screen.findByRole('link', { name: 'Reports' }));
 
-  expect(
-    closest(
-      await screen.findByRole('link', { name: 'Ticket Volume' }),
-      '[data-position]'
-    )
-  ).toHaveAttribute('data-position', 'active');
+  const ticketVolume = await screen.findByRole('link', {
+    name: 'Ticket Volume',
+  });
+  expect(closest(ticketVolume, '[data-position]')).toHaveAttribute(
+    'data-position',
+    'active'
+  );
 });
 
-test('data-state attribute reflects expanded/collapsed', async () => {
+test('data-state attribute reflects collapsed after toggle', async () => {
   render(<Basic.Component />);
-
   const shell = closest(
     screen.getByRole('link', { name: 'Overview' }),
     '[data-state]'
   );
-  expect(shell).toHaveAttribute('data-state', 'expanded');
-
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
-  await user.click(trigger);
-  expect(shell).toHaveAttribute('data-state', 'collapsed');
 
   await user.click(trigger);
+
+  expect(shell).toHaveAttribute('data-state', 'collapsed');
+});
+
+test('data-state attribute reflects expanded after toggle', async () => {
+  render(<DefaultCollapsed.Component />);
+  const shell = closest(
+    screen.getByRole('link', { name: 'Overview' }),
+    '[data-state]'
+  );
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+
+  await user.click(trigger);
+
   expect(shell).toHaveAttribute('data-state', 'expanded');
 });
 
@@ -334,56 +312,65 @@ test('focus returns to branch trigger when going back', async () => {
   expect(managementTrigger).toHaveFocus();
 });
 
-test('toggle writes sidebar state to cookie', async () => {
+test('toggle writes collapsed state to cookie', async () => {
   render(<Basic.Component />);
-
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
 
   await user.click(trigger);
+
   expect(document.cookie).toContain('marigold:sidebar:state=collapsed');
+});
+
+test('toggle writes expanded state to cookie', async () => {
+  render(<DefaultCollapsed.Component />);
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
 
   await user.click(trigger);
+
   expect(document.cookie).toContain('marigold:sidebar:state=expanded');
 });
 
 test('cookie overrides defaultOpen', () => {
   document.cookie = 'marigold:sidebar:state=collapsed;path=/;max-age=604800';
-
   render(<DefaultCollapsed.Component />);
-
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
-  expect(trigger).toHaveAttribute('aria-expanded', 'false');
-
   const shell = closest(
     screen.getByRole('link', { name: 'Overview' }),
     '[data-state]'
   );
+
+  expect(trigger).toHaveAttribute('aria-expanded', 'false');
   expect(shell).toHaveAttribute('data-state', 'collapsed');
 });
 
 test('defaultOpen={false} starts sidebar collapsed', () => {
   render(<DefaultCollapsed.Component />);
-
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
-  expect(trigger).toHaveAttribute('aria-expanded', 'false');
-
   const shell = closest(
     screen.getByRole('link', { name: 'Overview' }),
     '[data-state]'
   );
+
+  expect(trigger).toHaveAttribute('aria-expanded', 'false');
   expect(shell).toHaveAttribute('data-state', 'collapsed');
 });
 
-test('controlled mode with open and onOpenChange', async () => {
+test('controlled mode toggles via onOpenChange', async () => {
   render(<Controlled.Component />);
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
 
-  expect(screen.getByText('Sidebar is open')).toBeInTheDocument();
+  await user.click(trigger);
 
+  expect(screen.getByText('Sidebar is closed')).toBeInTheDocument();
+});
+
+test('controlled mode re-opens via onOpenChange', async () => {
+  render(<Controlled.Component />);
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   await user.click(trigger);
-  expect(screen.getByText('Sidebar is closed')).toBeInTheDocument();
 
   await user.click(trigger);
+
   expect(screen.getByText('Sidebar is open')).toBeInTheDocument();
 });
 
@@ -453,8 +440,8 @@ test('onPress callback fires on item click', async () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
   const link = screen.getByRole('link', { name: 'Home' });
+
   await user.click(link);
 
   expect(handlePress).toHaveBeenCalledOnce();
@@ -484,6 +471,7 @@ test('branch item onPress fires when clicking branch trigger', async () => {
   );
 
   const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
+
   await user.click(settingsTrigger);
 
   expect(handlePress).toHaveBeenCalledOnce();
@@ -570,36 +558,25 @@ test('group label inside branch renders correctly', () => {
 test('switching branches focuses active item in new branch', async () => {
   render(<Complex.Component />);
 
-  // Click Tickets branch from root (exact match)
-  const ticketsTrigger = screen.getByRole('link', { name: 'Tickets' });
-  await user.click(ticketsTrigger);
-
-  // Wait for panel visibility transition
-  const myTicketsLink = await screen.findByRole('link', { name: 'My Tickets' });
-  expect(closest(myTicketsLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
+  // Navigate into Tickets, then back to root
+  await user.click(screen.getByRole('link', { name: 'Tickets' }));
+  await screen.findByRole('link', { name: 'My Tickets' });
+  await user.click(
+    await screen.findByRole('button', { name: /Back to Tickets/ })
   );
 
-  // Click back to root
-  const backToTickets = await screen.findByRole('button', {
-    name: /Back to Tickets/,
-  });
-  await user.click(backToTickets);
-
-  // Now click Projects (switches directly to projects branch)
+  // Switch to Projects branch
   const projectsTrigger = await screen.findByRole('link', { name: 'Projects' });
   await user.click(projectsTrigger);
 
-  // Navigate callback sets path to /active-projects, making Active the active item
+  // Active item receives focus (not back button) since it has aria-current="page"
   const activeLink = await screen.findByRole('link', { name: 'Active' });
+  await vi.advanceTimersByTimeAsync(400);
+
   expect(closest(activeLink, '[data-position]')).toHaveAttribute(
     'data-position',
     'active'
   );
-
-  // Active item receives focus (not back button) since it has aria-current="page"
-  await vi.advanceTimersByTimeAsync(400);
   expect(activeLink).toHaveFocus();
 });
 
