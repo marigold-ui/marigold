@@ -18,7 +18,8 @@ const meta = preview.meta({
       control: 'boolean',
     },
     maxVisibleItems: {
-      control: 'text',
+      control: 'select',
+      options: ['auto', 1, 2, 3, 4, 5],
     },
   },
   args: {
@@ -45,7 +46,7 @@ export const Basic = meta.story({
 
 export const Collapsed = meta.story({
   render: args => (
-    <Breadcrumbs {...args} maxVisibleItems={3}>
+    <Breadcrumbs maxVisibleItems={3} {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
       <Breadcrumbs.Item href="https://marigold-ui.io">
         Breadcrumb1
@@ -62,7 +63,7 @@ export const Collapsed = meta.story({
 
 export const ManyItems = meta.story({
   render: args => (
-    <Breadcrumbs {...args} maxVisibleItems={2}>
+    <Breadcrumbs maxVisibleItems={2} {...args}>
       {[...Array(30).keys()].map(i => (
         <Breadcrumbs.Item key={i} href={`https://marigold-ui.io/`}>
           Breadcrumb {i + 1}
@@ -74,17 +75,13 @@ export const ManyItems = meta.story({
 
 export const AutoCollapse = meta.story({
   tags: ['component-test'],
-  render: () => (
+  render: args => (
     <div className="border-border w-75 resize-x overflow-auto border p-2">
-      <Breadcrumbs>
-        <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
-        <Breadcrumbs.Item href="/events/summer">
-          Summer Festival
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item href="/events/details">
-          Event Details Page
-        </Breadcrumbs.Item>
+      <Breadcrumbs {...args}>
+        <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item href="#">Events</Breadcrumbs.Item>
+        <Breadcrumbs.Item href="#">Summer Festival</Breadcrumbs.Item>
+        <Breadcrumbs.Item href="#">Event Details Page</Breadcrumbs.Item>
       </Breadcrumbs>
     </div>
   ),
@@ -92,6 +89,7 @@ export const AutoCollapse = meta.story({
     const ellipsis = await canvas.findByRole('button', {
       name: 'These breadcrumbs are hidden',
     });
+
     await expect(ellipsis).toBeInTheDocument();
   },
 });
