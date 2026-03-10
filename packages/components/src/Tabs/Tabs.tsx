@@ -29,14 +29,13 @@ const _Tabs = ({ disabled, variant, size = 'medium', ...rest }: TabsProps) => {
     isDisabled: disabled,
     ...rest,
   };
-  const tabIndicatorLayoutId = useId();
   const classNames = useClassNames({
     component: 'Tabs',
     size,
     variant,
   });
   return (
-    <TabContext.Provider value={{ classNames, tabIndicatorLayoutId }}>
+    <TabContext.Provider value={{ classNames }}>
       <Tabs {...props} className={classNames.container}>
         {props.children}
       </Tabs>

@@ -16,7 +16,7 @@ const INDICATOR_TRANSITION = {
 // component
 // ----------------------
 const _Tab = (props: TabProps) => {
-  const { classNames, tabIndicatorLayoutId } = useTabContext();
+  const { classNames } = useTabContext();
   const { children: content, ...restProps } = props;
   return (
     <Tab
@@ -37,9 +37,9 @@ const _Tab = (props: TabProps) => {
           {renderProps.isSelected && (
             <motion.span
               data-testid="tab-indicator"
-              layoutId={tabIndicatorLayoutId}
               className={cn('rounded-none', classNames.tabIndicator)}
               transition={INDICATOR_TRANSITION}
+              layoutId={'tab-indicator'}
             />
           )}
         </>
