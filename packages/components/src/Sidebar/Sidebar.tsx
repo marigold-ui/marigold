@@ -45,7 +45,7 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
   const { isMobile, state, toggleSidebar, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  const content = (
+  const aside = (
     <aside
       ref={ref}
       aria-label={stringFormatter.format('sidebar')}
@@ -75,15 +75,18 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
       <ModalOverlay
         isOpen={state === 'expanded'}
         onOpenChange={open => !open && toggleSidebar()}
-        className={cn('z-50', classNames.overlay)}
+        className={cn(
+          'fixed inset-0 z-50 h-(--visual-viewport-height)',
+          classNames.overlay
+        )}
         isDismissable
       >
-        <Modal className={classNames.modal}>{content}</Modal>
+        <Modal className={classNames.modal}>{aside}</Modal>
       </ModalOverlay>
     );
   }
 
-  return content;
+  return aside;
 }) as SidebarComponent;
 
 _Sidebar.Provider = SidebarProvider;

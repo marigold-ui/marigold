@@ -158,7 +158,7 @@ export const SidebarPanel = ({
               data-key={node.key}
               aria-current={node.active ? 'page' : undefined}
               data-active={node.active || undefined}
-              className={cn(classNames.navLink)}
+              className={classNames.navLink}
               onPress={node.onPress}
             >
               {node.triggerContent}

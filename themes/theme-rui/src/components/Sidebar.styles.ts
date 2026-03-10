@@ -1,7 +1,7 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Sidebar: ThemeComponent<'Sidebar'> = {
-  overlay: cva({ base: 'fixed inset-0 h-(--visual-viewport-height)' }),
+  overlay: cva({}),
   modal: cva({
     base: [
       'flex h-full *:flex-1',
@@ -24,14 +24,14 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
   content: cva({ base: 'sm:w-64' }),
-  header: cva({ base: 'border-border border-b px-6 py-3' }),
+  header: cva({ base: 'ui-panel-header' }),
   nav: cva({
     base: [
       'flex flex-col px-3 py-1 overflow-y-auto outline-none',
       'ui-scrollbar',
     ],
   }),
-  footer: cva({ base: 'border-border border-t px-6 py-3' }),
+  footer: cva({ base: 'ui-panel-actions' }),
   toggle: cva({
     base: [
       'ui-button-base ui-press',

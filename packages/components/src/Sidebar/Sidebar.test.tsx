@@ -80,16 +80,25 @@ test('toggle expand/collapse via toggle button', async () => {
   expect(trigger).toHaveAttribute('aria-expanded', 'true');
 });
 
-test('keyboard shortcut Cmd+B toggles sidebar', async () => {
+test('keyboard shortcut Cmd+B collapses sidebar', async () => {
   render(<Basic.Component />);
 
   const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
   expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
   await user.keyboard('{Meta>}b{/Meta}');
+
   expect(toggle).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('keyboard shortcut Cmd+B expands sidebar', async () => {
+  render(<Basic.Component />);
+
+  const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
+  await user.keyboard('{Meta>}b{/Meta}');
 
   await user.keyboard('{Meta>}b{/Meta}');
+
   expect(toggle).toHaveAttribute('aria-expanded', 'true');
 });
 
@@ -429,7 +438,6 @@ test('separator renders as divider element', () => {
 
 test('onPress callback fires on item click', async () => {
   const handlePress = vi.fn();
-
   render(
     <RouterProvider navigate={() => {}}>
       <MarigoldProvider theme={theme}>
@@ -448,12 +456,12 @@ test('onPress callback fires on item click', async () => {
 
   const link = screen.getByRole('link', { name: 'Home' });
   await user.click(link);
+
   expect(handlePress).toHaveBeenCalledOnce();
 });
 
 test('branch item onPress fires when clicking branch trigger', async () => {
   const handlePress = vi.fn();
-
   render(
     <RouterProvider navigate={() => {}}>
       <MarigoldProvider theme={theme}>
@@ -477,6 +485,7 @@ test('branch item onPress fires when clicking branch trigger', async () => {
 
   const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
   await user.click(settingsTrigger);
+
   expect(handlePress).toHaveBeenCalledOnce();
 });
 
