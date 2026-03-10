@@ -98,7 +98,7 @@ test('auto-collapse starts expanded showing all items', () => {
   ).toBeInTheDocument();
 });
 
-test('maxVisibleItems=2 shows only ellipsis and current item', () => {
+test('show only ellipsis and current item when collapsed to minimum', () => {
   renderWithOverlay(<ManyItems.Component />);
 
   expect(
@@ -128,7 +128,7 @@ test('forwards ref as object ref', () => {
   expect(ref.current).toBeInstanceOf(HTMLOListElement);
 });
 
-test('does not collapse when items equal maxVisibleItems', () => {
+test('does not collapse when items equal visible limit', () => {
   render(<Basic.Component maxVisibleItems={3} />);
 
   expect(screen.getByText('Home')).toBeInTheDocument();
