@@ -48,6 +48,7 @@ const theme: Theme = {
           },
         },
       }),
+      tabIndicator: cva({ base: 'absolute bottom-0 h-0.5 bg-red-500' }),
     },
   },
 };
@@ -71,6 +72,7 @@ test('Accepting styles for component with multiple slots', () => {
     {
       Tabs: {
         tabpanel: cva({ base: 'bg-bg-accent rounded-md p-3 text-white' }),
+        tabIndicator: cva({ base: '' }),
       },
     },
     theme
@@ -122,6 +124,7 @@ test('Should support new variant and existing size', () => {
             },
           },
         }),
+        tabIndicator: cva({ base: '' }),
       },
     },
     theme

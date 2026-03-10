@@ -61,6 +61,8 @@ vi.mock('motion/react', async () => {
   return {
     AnimatePresence: ({ children }: { children: React.ReactNode }) =>
       React.createElement(React.Fragment, null, children),
+    LayoutGroup: ({ children }: { children: React.ReactNode }) =>
+      React.createElement(React.Fragment, null, children),
     motion: {
       create: (Component: React.ComponentType<any>) =>
         React.forwardRef(function MotionWrapper(props: any, ref: any) {

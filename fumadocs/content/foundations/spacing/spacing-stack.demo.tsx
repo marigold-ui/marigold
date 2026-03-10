@@ -6,11 +6,11 @@ import { Box } from '@/ui/Wireframe';
 export default () => (
   <FadeContainer fade="vertical">
     <div className="grid place-items-center *:w-1/2">
-      <Stack alignX="left" space="peer">
+      <Stack alignX="left" space="regular">
         <Box className="h-20" />
-        <VisualSpacing orientation="vertical" space="peer" />
+        <VisualSpacing orientation="vertical" space="regular" />
         <Box className="h-20" />
-        <VisualSpacing orientation="vertical" space="peer" />
+        <VisualSpacing orientation="vertical" space="regular" />
         <Box className="h-20" />
       </Stack>
     </div>
