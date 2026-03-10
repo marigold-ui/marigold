@@ -74,16 +74,20 @@ test('tablist has correct container structure', () => {
 });
 
 test('supports render prop children on Tabs.Item', async () => {
+  // Arrange
   render(<WithRenderProps.Component />);
+  const securityTab = screen.getByRole('tab', { name: 'Security' });
 
-  // Default selected tab (first) shows "(current)" via render prop
+  // Assert (initial state)
   expect(
     screen.getByRole('tab', { name: 'General (current)' })
   ).toBeInTheDocument();
-  expect(screen.getByRole('tab', { name: 'Security' })).toBeInTheDocument();
+  expect(securityTab).toBeInTheDocument();
 
-  // Selecting another tab updates its label; previous tab loses "(current)"
-  await user.click(screen.getByRole('tab', { name: 'Security' }));
+  // Act
+  await user.click(securityTab);
+
+  // Assert
   expect(
     screen.getByRole('tab', { name: 'Security (current)' })
   ).toBeInTheDocument();
