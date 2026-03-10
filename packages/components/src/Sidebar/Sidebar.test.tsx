@@ -21,6 +21,11 @@ import {
   SidebarSeparator,
 } from './SidebarItem';
 import { buildCollection, findActiveBranch } from './collection';
+import {
+  panelPosition,
+  useLastDistinctValue,
+  useRovingItem,
+} from './useSidebarNav';
 
 // Testing Library has no API for querying ancestor elements.
 // eslint-disable-next-line testing-library/no-node-access
@@ -1038,4 +1043,142 @@ test('buildCollection handles group labels and separators in index', () => {
   expect(collection.rootNodes[1].type).toBe('item');
   expect(collection.rootNodes[2].type).toBe('separator');
   expect(collection.getItem('item-1')).toBeDefined();
+});
+
+// --- collection.ts edge-case tests ---
+
+test('buildCollection skips unrecognized children', () => {
+  const jsx = [
+    <SidebarItem key="a" id="a" href="/a">
+      A
+    </SidebarItem>,
+    <div key="unknown">I am not a sidebar element</div>,
+    <SidebarItem key="b" id="b" href="/b">
+      B
+    </SidebarItem>,
+  ];
+
+  const collection = buildCollection(jsx);
+
+  expect(collection.rootNodes).toHaveLength(2);
+  expect(collection.rootNodes[0].key).toBe('a');
+  expect(collection.rootNodes[1].key).toBe('b');
+});
+
+test('buildCollection extracts textValue from non-string children as empty', () => {
+  const jsx = [
+    <SidebarItem key="icon-item" id="icon-item">
+      {/* Only non-string children: icon element + nested SidebarItem */}
+      <span>Icon</span>
+      <SidebarItem href="/child" active>
+        Child
+      </SidebarItem>
+    </SidebarItem>,
+  ];
+
+  const collection = buildCollection(jsx);
+  const node = collection.getItem('icon-item');
+
+  expect(node).toBeDefined();
+  // textValue should be empty since there are no direct string children
+  expect(node?.type === 'item' && node.textValue).toBe('');
+});
+
+test('findActiveBranch finds deeply nested active item', () => {
+  const jsx = [
+    <SidebarItem key="root-branch" id="root-branch" textValue="Root Branch">
+      Root Branch
+      <SidebarItem id="mid-branch" textValue="Mid Branch">
+        Mid Branch
+        <SidebarItem href="/deep" active>
+          Deep Leaf
+        </SidebarItem>
+      </SidebarItem>
+    </SidebarItem>,
+  ];
+
+  const collection = buildCollection(jsx);
+
+  expect(findActiveBranch(collection)).toBe('root-branch');
+});
+
+test('firstLeafHref returns undefined when branch has no leaf hrefs', () => {
+  const jsx = [
+    <SidebarItem key="empty" id="empty" textValue="Empty">
+      Empty
+      <SidebarItem>No href</SidebarItem>
+    </SidebarItem>,
+  ];
+
+  const collection = buildCollection(jsx);
+  const node = collection.getItem('empty');
+
+  // Branch node should have undefined href since no leaf has an href
+  expect(node?.type === 'item' && node.href).toBeUndefined();
+});
+
+// --- panelPosition utility tests ---
+
+test('panelPosition returns active for root when stack is empty', () => {
+  expect(panelPosition('root', [])).toBe('active');
+});
+
+test('panelPosition returns before for root when stack has entries', () => {
+  expect(panelPosition('root', ['branch-a'])).toBe('before');
+});
+
+test('panelPosition returns active for key at top of stack', () => {
+  expect(panelPosition('branch-a', ['branch-a'])).toBe('active');
+});
+
+test('panelPosition returns before for key earlier in stack', () => {
+  expect(panelPosition('branch-a', ['branch-a', 'branch-b'])).toBe('before');
+});
+
+test('panelPosition returns after for key not in stack', () => {
+  expect(panelPosition('branch-c', ['branch-a'])).toBe('after');
+});
+
+// --- useRovingItem error outside provider ---
+
+test('useRovingItem throws outside RovingTabIndexProvider', () => {
+  const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+  expect(() => {
+    renderHook(() => useRovingItem('some-key'));
+  }).toThrow('useRovingItem must be used within a RovingTabIndexProvider');
+
+  spy.mockRestore();
+});
+
+// --- useLastDistinctValue hook ---
+
+test('useLastDistinctValue returns undefined on first render', () => {
+  const { result } = renderHook(() => useLastDistinctValue('a'));
+
+  expect(result.current).toBeUndefined();
+});
+
+test('useLastDistinctValue returns previous value after change', () => {
+  const { result, rerender } = renderHook(
+    ({ value }) => useLastDistinctValue(value),
+    { initialProps: { value: 'a' } }
+  );
+
+  expect(result.current).toBeUndefined();
+
+  rerender({ value: 'b' });
+
+  expect(result.current).toBe('a');
+});
+
+// --- Ctrl+B keyboard shortcut (non-meta, ctrlKey) ---
+
+test('keyboard shortcut Ctrl+B toggles sidebar', async () => {
+  render(<Basic.Component />);
+  const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
+
+  await user.keyboard('{Control>}b{/Control}');
+
+  expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
