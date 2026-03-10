@@ -1,3 +1,4 @@
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Tabs } from './Tabs';
 
@@ -24,6 +25,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => {
     return (
       <Tabs aria-label="tabs" {...args}>
@@ -45,6 +47,29 @@ export const Basic = meta.story({
         </Tabs.TabPanel>
       </Tabs>
     );
+  },
+  play: async ({ canvas, step }) => {
+    let keyboardTab: ReturnType<typeof canvas.getByRole>;
+
+    await step('Arrange', async () => {
+      keyboardTab = await waitFor(() =>
+        canvas.getByRole('tab', { name: 'Keyboard Settings' })
+      );
+    });
+
+    await step('Act', async () => {
+      await userEvent.click(keyboardTab!);
+    });
+
+    await step('Assert', async () => {
+      await expect(
+        canvas.getByText(/Customize the key bindings and input behavior/)
+      ).toBeVisible();
+      const indicator = await waitFor(() =>
+        canvas.getByTestId('tab-indicator')
+      );
+      await expect(indicator).toBeVisible();
+    });
   },
 });
 
@@ -107,6 +132,37 @@ export const WithSelectedTab = meta.story({
           and receive messages, engage in conversations, and share interesting
           content with your network. Connect with friends, colleagues, and
           like-minded individuals in a private and secure environment.
+        </Tabs.TabPanel>
+      </Tabs>
+    );
+  },
+});
+
+export const WithRenderProps = meta.story({
+  tags: ['component-test'],
+  render: args => {
+    return (
+      <Tabs aria-label="tabs" {...args}>
+        <Tabs.List aria-label="Account settings">
+          <Tabs.Item id="general">
+            {({ isSelected }) => (isSelected ? 'General (current)' : 'General')}
+          </Tabs.Item>
+          <Tabs.Item id="security">
+            {({ isSelected }) =>
+              isSelected ? 'Security (current)' : 'Security'
+            }
+          </Tabs.Item>
+          <Tabs.Item id="notifications">Notifications</Tabs.Item>
+        </Tabs.List>
+        <Tabs.TabPanel id="general">
+          Set your display name, email, and default language. These details are
+          shown to other users.
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="security">
+          Manage your password, two-factor authentication, and active sessions.
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="notifications">
+          Choose how you receive emails and in-app notifications.
         </Tabs.TabPanel>
       </Tabs>
     );
