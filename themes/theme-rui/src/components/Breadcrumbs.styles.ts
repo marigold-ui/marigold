@@ -21,7 +21,7 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
       size: 'default',
     },
   }),
-  item: cva({ base: 'inline-flex items-center  gap-1.5 sm:gap-2.5' }),
+  item: cva({ base: 'inline-flex items-center gap-1.5 sm:gap-2.5' }),
   link: cva({ base: 'transition-colors hover:text-foreground cursor-pointer' }),
   current: cva({ base: 'font-normal text-foreground' }),
 };
