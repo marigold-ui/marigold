@@ -74,8 +74,6 @@ vi.mock('motion/react', async () => {
     useMotionValue: () => ({ get: () => 0, set: () => {} }),
     animate: mockAnimate,
     cubicBezier: () => [0, 0, 0, 0],
-    LayoutGroup: ({ children }: { children: React.ReactNode }) =>
-      React.createElement(React.Fragment, null, children),
   };
 });
 
