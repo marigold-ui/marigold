@@ -17,7 +17,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons/ChevronRight';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
 import { BreadcrumbsItem, BreadcrumbsItemProps } from './BreadcrumbsItem';
-import { NULL_REF, useAutoCollapse } from './useAutoCollapse';
+import { useAutoCollapse } from './useAutoCollapse';
 
 type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
@@ -69,6 +69,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       size,
     });
 
+    const NULL_REF = { current: null };
     const items = Children.toArray(children);
     const total = items.length;
 

@@ -2,7 +2,6 @@ import { type RefObject, useCallback, useRef, useState } from 'react';
 import { useResizeObserver } from '@react-aria/utils';
 
 const MIN_VISIBLE = 2;
-export const NULL_REF = { current: null };
 
 /**
  * Starts fully expanded and collapses when the container overflows.
@@ -37,10 +36,11 @@ export const useAutoCollapse = (
       width > overflowWidth.current
     ) {
       overflowWidth.current = null;
-      setState(prev => ({
-        ...prev,
-        maxVisible: Math.min(prev.maxVisible + 1, totalItems),
-      }));
+      setState(prev =>
+        prev.maxVisible >= totalItems
+          ? prev
+          : { ...prev, maxVisible: Math.min(prev.maxVisible + 1, totalItems) }
+      );
     }
   }, [ref, totalItems]);
 
