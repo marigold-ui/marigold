@@ -91,7 +91,7 @@ const _DateInput = ({
 }: DateInputProps) => {
   const classNames = useClassNames({ component: 'DateField', variant, size });
 
-  const handlePaste = async (event: React.ClipboardEvent) => {
+  const handlePaste = (event: React.ClipboardEvent) => {
     try {
       const clipboardData = event.clipboardData.getData('text');
 

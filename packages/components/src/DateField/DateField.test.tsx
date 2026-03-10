@@ -292,7 +292,7 @@ test('calls onChange when pasting a valid date', async () => {
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  firePaste(group, '2024-12-25');
+  act(() => firePaste(group, '2024-12-25'));
 
   expect(onChangeSpy).toHaveBeenCalledWith(new CalendarDate(2024, 12, 25));
   expect(onChangeSpy).toHaveBeenCalledTimes(1);
@@ -305,9 +305,7 @@ test('updates field state when pasting without onChange callback', async () => {
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  act(() => {
-    firePaste(group, '2024-12-25');
-  });
+  act(() => firePaste(group, '2024-12-25'));
 
   const segments = screen.getAllByRole('spinbutton');
   const [daySegment, monthSegment, yearSegment] = segments;
@@ -348,7 +346,7 @@ test.each([
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  firePaste(group, input);
+  act(() => firePaste(group, input));
 
   expect(onChangeSpy).toHaveBeenCalledWith(expected);
 });
@@ -361,7 +359,7 @@ test('does not call onChange when pasting invalid date', async () => {
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  firePaste(group, 'not a date');
+  act(() => firePaste(group, 'not a date'));
 
   expect(onChangeSpy).not.toHaveBeenCalled();
 });
@@ -374,7 +372,7 @@ test('does not call onChange when pasting invalid date format', async () => {
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  firePaste(group, '32/13/2024'); // Invalid day and month
+  act(() => firePaste(group, '32/13/2024')); // Invalid day and month
 
   expect(onChangeSpy).not.toHaveBeenCalled();
 });
@@ -408,7 +406,7 @@ test.each([
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    firePaste(group, input);
+    act(() => firePaste(group, input));
 
     expect(onChangeSpy).toHaveBeenCalledWith(expected);
   }
@@ -434,7 +432,7 @@ test.each([
 
   const group = screen.getAllByRole('group')[0];
   await user.click(group);
-  firePaste(group, input);
+  act(() => firePaste(group, input));
 
   expect(onChangeSpy).not.toHaveBeenCalled();
 });
@@ -447,6 +445,6 @@ test('show console warning when pasting fails', () => {
   const group = screen.getAllByRole('group')[0];
 
   // Pasting undefined/empty should not throw or warn
-  firePaste(group, '');
+  act(() => firePaste(group, ''));
   expect(consoleWarnSpy).not.toHaveBeenCalled();
 });
