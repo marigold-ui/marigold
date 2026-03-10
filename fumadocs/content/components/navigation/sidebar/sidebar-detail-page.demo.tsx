@@ -81,7 +81,7 @@ export default () => {
   return (
     <RouterProvider navigate={setCurrentPath}>
       <Sidebar.Provider>
-        <div className="flex h-[400px]">
+        <div className="flex h-100">
           <Sidebar>
             <Sidebar.Header>
               <Text weight="bold">My App</Text>
