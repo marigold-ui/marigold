@@ -7,7 +7,7 @@ const classNames = {
     base: ['relative bg-pink-100'],
     variants: {
       orientation: {
-        horizontal: ['-mx-(--space) w-(--space) h-full'],
+        horizontal: ['-mx-(--space) w-(--space)'],
         vertical: ['-my-(--space) h-(--space) w-full'],
       },
     },

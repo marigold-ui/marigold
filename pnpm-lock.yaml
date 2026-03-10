@@ -398,9 +398,6 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.14)
-      tailwindcss-animate:
-        specifier: 1.0.7
-        version: 1.0.7(tailwindcss@4.2.1)
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -718,9 +715,6 @@ importers:
       tailwind-scrollbar:
         specifier: 4.0.2
         version: 4.0.2(react@19.2.4)(tailwindcss@4.2.1)
-      tailwindcss-animate:
-        specifier: 1.0.7
-        version: 1.0.7(tailwindcss@4.2.1)
       tailwindcss-react-aria-components:
         specifier: 2.0.1
         version: 2.0.1(tailwindcss@4.2.1)
@@ -761,9 +755,6 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
-      tailwindcss-animate:
-        specifier: 1.0.7
-        version: 1.0.7(tailwindcss@4.2.1)
       tailwindcss-react-aria-components:
         specifier: ^2.0.1
         version: 2.0.1(tailwindcss@4.2.1)
@@ -8493,11 +8484,6 @@ packages:
     engines: {node: '>=12.13.0'}
     peerDependencies:
       tailwindcss: 4.x
-
-  tailwindcss-animate@1.0.7:
-    resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
 
   tailwindcss-react-aria-components@2.0.1:
     resolution: {integrity: sha512-yTAfYv9BE/gKczS+b8UiFMqxnrEYKKNE6Y4vAWzGadkHGb4Yuawp0SHbZKkZJQgFvK0KjO3JpCq/0kzR5jJ9tw==}
@@ -18760,10 +18746,6 @@ snapshots:
       tailwindcss: 4.2.1
     transitivePeerDependencies:
       - react
-
-  tailwindcss-animate@1.0.7(tailwindcss@4.2.1):
-    dependencies:
-      tailwindcss: 4.2.1
 
   tailwindcss-react-aria-components@2.0.1(tailwindcss@4.2.1):
     dependencies:
