@@ -21,13 +21,13 @@ export const LocationSettings = () => {
     new Set(venues.map(venue => venue.country))
   );
   return (
-    <Stack space="group">
+    <Stack space="regular">
       <Headline level={2}>Location & Capacity</Headline>
-      <TextField
-        label="Location Description"
-        description="Provide additional details about the event location"
-      />
-      <Inset spaceY={12}>
+      <Stack space="group">
+        <TextField
+          label="Location Description"
+          description="Provide additional details about the event location"
+        />
         <Stack space="regular">
           <Inline alignY="input" space="related" noWrap>
             <Select label="Venue">
@@ -59,62 +59,64 @@ export const LocationSettings = () => {
             </Link>
           </Stack>
         </Stack>
-      </Inset>
-      <Checkbox.Group label="Accessibility Features">
-        <Checkbox
-          value="wheelchair-accessible"
-          id="wheelchair-accessible"
-          label="Wheelchair accessible"
-        />
-        <Checkbox
-          value="elevator-access"
-          id="elevator-access"
-          label="Elevator access available"
-        />
-        <Checkbox
-          value="accessible-restrooms"
-          id="accessible-restrooms"
-          label="Accessible restrooms"
-        />
-        <Checkbox
-          value="hearing-loop"
-          id="hearing-loop"
-          label="Hearing loop system"
-        />
-        <Checkbox
-          id="sign-language-interpretation"
-          label="Sign language interpretation available"
-        />
-      </Checkbox.Group>
-      <TextField
-        label="Additional Accessibility Notes"
-        description="Any other accessibility information"
-      />
-      <Accordion variant="card">
-        <Accordion.Item id="advanced-location-settings">
-          <Accordion.Header>Advanced Location Settings</Accordion.Header>
-          <Accordion.Content>
-            <Stack space="regular">
-              <TextField
-                label="Room"
-                description="Specify room or area within the venue"
-              />
-              <Stack space={1}>
-                <TextField label="Online Meeting Link" type="url" />
-                <Link href="#" size="small">
-                  Open online meeting link
-                </Link>
-              </Stack>
-              <NumberField
-                label="Maximum Attendees"
-                description="Leave empty for unlimited capacity"
-                hideStepper
-                width={32}
-              />
-            </Stack>
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion>
+        <Stack space="regular">
+          <Checkbox.Group label="Accessibility Features">
+            <Checkbox
+              value="wheelchair-accessible"
+              id="wheelchair-accessible"
+              label="Wheelchair accessible"
+            />
+            <Checkbox
+              value="elevator-access"
+              id="elevator-access"
+              label="Elevator access available"
+            />
+            <Checkbox
+              value="accessible-restrooms"
+              id="accessible-restrooms"
+              label="Accessible restrooms"
+            />
+            <Checkbox
+              value="hearing-loop"
+              id="hearing-loop"
+              label="Hearing loop system"
+            />
+            <Checkbox
+              id="sign-language-interpretation"
+              label="Sign language interpretation available"
+            />
+          </Checkbox.Group>
+          <TextField
+            label="Additional Accessibility Notes"
+            description="Any other accessibility information"
+          />
+          <Accordion variant="card">
+            <Accordion.Item id="advanced-location-settings">
+              <Accordion.Header>Advanced Location Settings</Accordion.Header>
+              <Accordion.Content>
+                <Stack space="regular">
+                  <TextField
+                    label="Room"
+                    description="Specify room or area within the venue"
+                  />
+                  <Stack space={1}>
+                    <TextField label="Online Meeting Link" type="url" />
+                    <Link href="#" size="small">
+                      Open online meeting link
+                    </Link>
+                  </Stack>
+                  <NumberField
+                    label="Maximum Attendees"
+                    description="Leave empty for unlimited capacity"
+                    hideStepper
+                    width={32}
+                  />
+                </Stack>
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion>
+        </Stack>
+      </Stack>
     </Stack>
   );
 };
