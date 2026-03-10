@@ -137,3 +137,34 @@ export const WithSelectedTab = meta.story({
     );
   },
 });
+
+export const WithRenderProps = meta.story({
+  tags: ['component-test'],
+  render: args => {
+    return (
+      <Tabs aria-label="tabs" {...args}>
+        <Tabs.List aria-label="Account settings">
+          <Tabs.Item id="general">
+            {({ isSelected }) => (isSelected ? 'General (current)' : 'General')}
+          </Tabs.Item>
+          <Tabs.Item id="security">
+            {({ isSelected }) =>
+              isSelected ? 'Security (current)' : 'Security'
+            }
+          </Tabs.Item>
+          <Tabs.Item id="notifications">Notifications</Tabs.Item>
+        </Tabs.List>
+        <Tabs.TabPanel id="general">
+          Set your display name, email, and default language. These details are
+          shown to other users.
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="security">
+          Manage your password, two-factor authentication, and active sessions.
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="notifications">
+          Choose how you receive emails and in-app notifications.
+        </Tabs.TabPanel>
+      </Tabs>
+    );
+  },
+});
