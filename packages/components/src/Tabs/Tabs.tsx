@@ -1,4 +1,3 @@
-import { useId } from 'react';
 import type RAC from 'react-aria-components';
 import { Tabs } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
