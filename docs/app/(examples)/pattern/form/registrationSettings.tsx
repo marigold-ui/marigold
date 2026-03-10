@@ -40,7 +40,7 @@ export const RegistrationSettings = () => (
               />
             </Stack>
           </Inset>
-          <Stack space={1}>
+          <Stack space="tight">
             <TextField type="file" label="Upload Registration Document" />
             <Link href="#" size="small">
               View PDF

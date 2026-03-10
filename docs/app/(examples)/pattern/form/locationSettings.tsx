@@ -46,7 +46,7 @@ export const LocationSettings = () => {
             <TextField label="Postcode" width={20} />
             <TextField label="City" width={44} />
           </Inline>
-          <Stack space={1}>
+          <Stack space="tight">
             <Select label="Country" placeholder="Select country" width={40}>
               {uniqueCountries.map(country => (
                 <Select.Option key={country} id={country}>
@@ -94,12 +94,12 @@ export const LocationSettings = () => {
         <Accordion.Item id="advanced-location-settings">
           <Accordion.Header>Advanced Location Settings</Accordion.Header>
           <Accordion.Content>
-            <Stack space={8}>
+            <Stack space="regular">
               <TextField
                 label="Room"
                 description="Specify room or area within the venue"
               />
-              <Stack space={1}>
+              <Stack space="tight">
                 <TextField label="Online Meeting Link" type="url" />
                 <Link href="#" size="small">
                   Open online meeting link

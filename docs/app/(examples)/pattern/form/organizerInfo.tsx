@@ -56,7 +56,7 @@ export const OrganizerInfo = () => (
           <Checkbox label="Display organizer information publicly" />
           <Card variant="master" stretch>
             <Stack space="group" alignX="left">
-              <Inline space={2}>
+              <Inline space="related">
                 <Headline level={3}>Co-Organizer</Headline>
                 <Badge variant="master">Master</Badge>
               </Inline>

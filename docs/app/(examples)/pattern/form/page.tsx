@@ -12,7 +12,7 @@ const FormPage = () => (
       <Stack space="group">
         <EventDetails />
         <LocationSettings />
-        <Stack space={4}>
+        <Stack space="related">
           <OrganizerInfo />
           <RegistrationSettings />
         </Stack>
