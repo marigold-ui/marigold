@@ -172,7 +172,7 @@ const createMockElement = (
 ): HTMLOListElement =>
   ({ clientWidth, scrollWidth }) as unknown as HTMLOListElement;
 
-test('useAutoCollapse starts fully expanded', () => {
+test('auto-collapse starts fully expanded', () => {
   const ref = { current: createMockElement(500, 300) };
 
   const { result } = renderHook(() => useAutoCollapse(ref, 5));
@@ -180,7 +180,7 @@ test('useAutoCollapse starts fully expanded', () => {
   expect(result.current).toBe(5);
 });
 
-test('useAutoCollapse collapses when container overflows', () => {
+test('auto-collapse collapses when container overflows', () => {
   const ref = { current: createMockElement(300, 500) };
   const { result } = renderHook(() => useAutoCollapse(ref, 5));
 
@@ -191,7 +191,7 @@ test('useAutoCollapse collapses when container overflows', () => {
   expect(result.current).toBe(4);
 });
 
-test('useAutoCollapse does not expand below previous overflow width', () => {
+test('auto-collapse does not expand below previous overflow width', () => {
   const ref = { current: createMockElement(300, 500) };
   const { result } = renderHook(() => useAutoCollapse(ref, 5));
 
@@ -207,7 +207,7 @@ test('useAutoCollapse does not expand below previous overflow width', () => {
   expect(result.current).toBe(4);
 });
 
-test('useAutoCollapse expands when container grows beyond overflow width', () => {
+test('auto-collapse expands when container grows beyond overflow width', () => {
   const ref = { current: createMockElement(300, 500) };
   const { result } = renderHook(() => useAutoCollapse(ref, 5));
 
@@ -223,7 +223,7 @@ test('useAutoCollapse expands when container grows beyond overflow width', () =>
   expect(result.current).toBe(5);
 });
 
-test('useAutoCollapse resets when totalItems changes', () => {
+test('auto-collapse resets when item count changes', () => {
   const ref = { current: createMockElement(300, 500) };
   const { result, rerender } = renderHook(
     ({ total }) => useAutoCollapse(ref, total),
@@ -239,7 +239,7 @@ test('useAutoCollapse resets when totalItems changes', () => {
   expect(result.current).toBe(8);
 });
 
-test('useAutoCollapse no-ops when ref is null', () => {
+test('auto-collapse does nothing when ref is null', () => {
   const ref = { current: null };
   const { result } = renderHook(() => useAutoCollapse(ref, 5));
 
