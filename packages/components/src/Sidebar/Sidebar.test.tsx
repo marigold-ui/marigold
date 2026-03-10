@@ -106,6 +106,7 @@ test('keyboard shortcut Cmd+B expands sidebar', async () => {
 
 test('active state with aria-current', () => {
   render(<Basic.Component />);
+
   const overviewLink = screen.getByRole('link', { name: 'Overview' });
   const analyticsLink = screen.getByRole('link', { name: 'Analytics' });
 
@@ -128,11 +129,13 @@ test('renders items as links with href', () => {
   render(<Basic.Component />);
 
   const link = screen.getByRole('link', { name: 'Overview' });
+
   expect(link).toHaveAttribute('href', '/overview');
 });
 
 test('branch items render as links with auto-derived href', () => {
   render(<Basic.Component />);
+
   const managementLink = screen.getByRole('link', { name: /Management/ });
 
   expect(managementLink).toHaveAttribute('href', '/users');
@@ -140,6 +143,7 @@ test('branch items render as links with auto-derived href', () => {
 
 test('sub-panel opens when child is active', () => {
   render(<WithActiveBranch.Component />);
+
   const rootPanel = closest(linkByText('Overview'), '[data-position]');
   const usersLink = screen.getByRole('link', { name: 'Users' });
   const managementPanel = closest(usersLink, '[data-position]');
@@ -498,8 +502,9 @@ test('nested branches derive href from deepest first leaf', () => {
     </RouterProvider>
   );
 
-  // Outer branch should auto-derive href from the deepest first leaf
   const outerLink = screen.getByRole('link', { name: /Outer/ });
+
+  // Outer branch should auto-derive href from the deepest first leaf
   expect(outerLink).toHaveAttribute('href', '/deep-leaf');
 });
 
@@ -521,8 +526,9 @@ test('branch without any leaf hrefs renders without href', () => {
     </RouterProvider>
   );
 
-  // Branch item should render as a button when it has no href
   const trigger = screen.getByRole('button', { name: /Empty/ });
+
+  // Branch item should render as a button when it has no href
   expect(trigger).not.toHaveAttribute('href');
 });
 
@@ -584,6 +590,7 @@ test('item with explicit id uses that id as key', () => {
   render(<Basic.Component />);
 
   const link = screen.getByRole('link', { name: /Management/ });
+
   expect(link).toHaveAttribute('data-key', 'management');
 });
 
@@ -591,6 +598,7 @@ test('item without explicit id gets auto-generated key', () => {
   render(<Basic.Component />);
 
   const link = screen.getByRole('link', { name: 'Overview' });
+
   // Auto-generated keys follow the pattern "item-N"
   expect(link).toHaveAttribute('data-key');
   expect(link.getAttribute('data-key')).toMatch(/^item-\d+$/);
@@ -704,6 +712,7 @@ test('buildCollection.getItem returns nodes by key', () => {
   ];
 
   const collection = buildCollection(jsx);
+
   const home = collection.getItem('home');
   expect(home).toBeDefined();
   expect(home?.type).toBe('item');
@@ -727,6 +736,7 @@ test('findActiveBranch returns null when no item is active', () => {
   ];
 
   const collection = buildCollection(jsx);
+
   expect(findActiveBranch(collection)).toBeNull();
 });
 
@@ -742,6 +752,7 @@ test('findActiveBranch returns null when active item is at root level', () => {
   ];
 
   const collection = buildCollection(jsx);
+
   // Active item is at root, not inside a branch
   expect(findActiveBranch(collection)).toBeNull();
 });
@@ -971,7 +982,6 @@ test('only one nav item has tabIndex=0 in the active panel', () => {
   const nonTabbable = links.filter(l => l.tabIndex === -1);
 
   expect(tabbable).toHaveLength(1);
-  // The active item (Overview) should be the tab stop
   expect(tabbable[0]).toHaveAttribute('aria-current', 'page');
   expect(nonTabbable.length).toBeGreaterThan(0);
 });
@@ -1022,11 +1032,10 @@ test('buildCollection handles group labels and separators in index', () => {
   ];
 
   const collection = buildCollection(jsx);
+
   expect(collection.rootNodes).toHaveLength(3);
   expect(collection.rootNodes[0].type).toBe('groupLabel');
   expect(collection.rootNodes[1].type).toBe('item');
   expect(collection.rootNodes[2].type).toBe('separator');
-
-  // All nodes should be accessible via getItem
   expect(collection.getItem('item-1')).toBeDefined();
 });
