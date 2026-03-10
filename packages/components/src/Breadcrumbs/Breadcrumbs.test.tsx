@@ -137,7 +137,7 @@ test('does not collapse when items equal visible limit', () => {
   expect(screen.queryByText('...')).not.toBeInTheDocument();
 });
 
-test('does not collapse when maxVisibleItems is less than 2', () => {
+test('does not collapse when visible items limit is less than 2', () => {
   render(<Basic.Component maxVisibleItems={1} />);
 
   expect(screen.getByText('Home')).toBeInTheDocument();
