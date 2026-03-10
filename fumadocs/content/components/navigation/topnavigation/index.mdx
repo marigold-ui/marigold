@@ -4,7 +4,7 @@ description: A component for building a persistent top navigation bar with flexi
 badge: beta
 ---
 
-The `<TopNavigation>` is a compound component that provides a consistent, accessible navigation bar at the top of an application. It uses a three-slot layout with start, middle, and end sections, giving you full control over how branding, navigation links, and user actions are arranged.
+The `<TopNavigation>` is a component that provides a consistent, accessible navigation bar at the top of an application. It uses a three-slot layout with start, middle, and end sections, giving you full control over how branding, navigation links, and user actions are arranged.
 
 `<TopNavigation>` is ideal for application shells where the top bar needs to accommodate a logo, primary navigation, and utility actions like search or user menus. It renders a semantic `<header>` element, while the middle and end slots use `<nav>` landmarks with appropriate ARIA labels for screen reader accessibility.
 
@@ -21,15 +21,11 @@ The `<TopNavigation>` component uses a compound component pattern with three slo
 />
 
 <ul>
-  <li><b>Container:</b> The outer `<header>` element that holds the three-column grid layout. Use the root `<TopNavigation>` component.</li>
-  <li><b>Start:</b> The left-aligned slot, typically used for branding such as a logo or app name. Use `<TopNavigation.Start>`.</li>
-  <li><b>Middle:</b> The flexible center slot, rendered as a `<nav>` element. Commonly holds primary navigation like tabs, breadcrumbs, or a search field. Use `<TopNavigation.Middle>`.</li>
-  <li><b>End:</b> The right-aligned slot, also rendered as a `<nav>` element. Typically contains utility actions such as user menus, notifications, or settings. Use `<TopNavigation.End>`.</li>
+  <li><b>Container:</b> The outer `<header>` element that holds the three-column grid layout.</li>
+  <li><b>Start:</b> The left-aligned slot, typically used for branding such as a logo or app name.</li>
+  <li><b>Middle:</b> The flexible center slot, rendered as a `<nav>` element. Commonly holds primary navigation like tabs, breadcrumbs, or a search field.</li>
+  <li><b>End:</b> The right-aligned slot, also rendered as a `<nav>` element. Typically contains utility actions such as user menus, notifications, or settings.</li>
 </ul>
-
-<Callout title="Info">
-  `<TopNavigation>` is a <b>compound component</b>. If you don't know what that means or you want to explore more about it, you can find a [tutorial](https://marigold-rapp.vercel.app/compound-component) for this topic in our reference app.
-</Callout>
 
 ## Appearance
 
@@ -90,7 +86,7 @@ section.
   </Dont>
 </GuidelineTiles>
 
-## Mobile Navigation
+### Mobile Navigation
 
 Mobile navigation should prioritize simplicity. Reduce the number of visible items and use progressive disclosure to keep the interface focused.
 
