@@ -10,7 +10,6 @@ import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { SearchField } from '../SearchField/SearchField';
 import { Stack } from '../Stack/Stack';
-import { Tabs } from '../Tabs/Tabs';
 import { Text } from '../Text/Text';
 import { TopNavigation } from './TopNavigation';
 
@@ -132,30 +131,6 @@ const meta = preview.meta({
       description: 'Make the navigation sticky',
     },
   },
-});
-
-export const WithTabs = meta.story({
-  render: args => (
-    <TopNavigation {...args}>
-      <TopNavigation.Start>
-        <LogoSection />
-      </TopNavigation.Start>
-      <TopNavigation.Middle alignY="bottom">
-        <Tabs defaultSelectedKey="home">
-          <Tabs.List aria-label="Navigation">
-            <Tabs.Item id="home">Home</Tabs.Item>
-            <Tabs.Item id="settings">Settings</Tabs.Item>
-            <Tabs.Item id="messages">Messages</Tabs.Item>
-            <Tabs.Item id="analytics">Analytics</Tabs.Item>
-            <Tabs.Item id="reports">Reports</Tabs.Item>
-          </Tabs.List>
-        </Tabs>
-      </TopNavigation.Middle>
-      <TopNavigation.End>
-        <UserSection />
-      </TopNavigation.End>
-    </TopNavigation>
-  ),
 });
 
 const CollapsedBreadcrumbs = () => {

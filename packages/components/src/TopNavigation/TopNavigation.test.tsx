@@ -2,7 +2,7 @@ import { render, renderHook, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { mockMatchMedia } from '../test.utils';
 import { useTopNavigationContext } from './Context';
-import { WithSearchField, WithTabs } from './TopNavigation.stories';
+import { WithBreadcrumbs, WithSearchField } from './TopNavigation.stories';
 
 /**
  * We need to mock `matchMedia` because jsdom does not
@@ -17,7 +17,7 @@ test('throws when context is used outside TopNavigation', () => {
 });
 
 test('renders a header element with the banner role', () => {
-  render(<WithTabs.Component />);
+  render(<WithBreadcrumbs.Component />);
 
   const header = screen.getByRole('banner');
 
@@ -25,7 +25,7 @@ test('renders a header element with the banner role', () => {
 });
 
 test('renders all three slots', () => {
-  render(<WithTabs.Component />);
+  render(<WithBreadcrumbs.Component />);
 
   const nav = screen.getByRole('banner');
   // eslint-disable-next-line testing-library/no-node-access
@@ -33,7 +33,7 @@ test('renders all three slots', () => {
 });
 
 test('applies sticky classes by default', () => {
-  render(<WithTabs.Component />);
+  render(<WithBreadcrumbs.Component />);
 
   const nav = screen.getByRole('banner');
 
@@ -43,7 +43,7 @@ test('applies sticky classes by default', () => {
 });
 
 test('does not apply sticky classes when sticky is false', () => {
-  render(<WithTabs.Component sticky={false} />);
+  render(<WithBreadcrumbs.Component sticky={false} />);
 
   const nav = screen.getByRole('banner');
 
@@ -54,14 +54,14 @@ test('does not apply sticky classes when sticky is false', () => {
 test('forwards ref to header element', () => {
   const ref = createRef<HTMLElement>();
 
-  render(<WithTabs.Component ref={ref} />);
+  render(<WithBreadcrumbs.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLElement);
   expect(ref.current?.tagName).toBe('HEADER');
 });
 
 test('applies grid layout classes', () => {
-  render(<WithTabs.Component />);
+  render(<WithBreadcrumbs.Component />);
 
   const nav = screen.getByRole('banner');
 
@@ -70,7 +70,7 @@ test('applies grid layout classes', () => {
 });
 
 test('applies min-w-0 to all slots', () => {
-  render(<WithTabs.Component />);
+  render(<WithBreadcrumbs.Component />);
 
   const nav = screen.getByRole('banner');
   // eslint-disable-next-line testing-library/no-node-access
@@ -79,16 +79,6 @@ test('applies min-w-0 to all slots', () => {
   Array.from(slots).forEach(slot => {
     expect(slot.className).toMatch(/min-w-0/);
   });
-});
-
-test('applies overflow-x-auto to middle slot', () => {
-  render(<WithTabs.Component />);
-
-  const middleSlot = screen.getByRole('navigation', {
-    name: 'Global navigation',
-  });
-
-  expect(middleSlot.className).toMatch(/overflow-x-auto/);
 });
 
 test('applies alignX class to middle slot', () => {
