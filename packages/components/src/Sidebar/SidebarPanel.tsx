@@ -64,7 +64,7 @@ export const SidebarPanel = ({
   position,
   autoFocusKey,
 }: SidebarPanelProps) => {
-  const { classNames } = useSidebar();
+  const { classNames, isMobile, toggleSidebar } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const panelRef = useRef<HTMLDivElement>(null);
   const { onKeyDown } = usePanelKeyboard(panelRef);
@@ -159,7 +159,10 @@ export const SidebarPanel = ({
               aria-current={node.active ? 'page' : undefined}
               data-active={node.active || undefined}
               className={classNames.navLink}
-              onPress={node.onPress}
+              onPress={() => {
+                node.onPress?.();
+                if (isMobile) toggleSidebar();
+              }}
             >
               {node.triggerContent}
             </SidebarLink>

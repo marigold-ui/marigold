@@ -7,7 +7,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'flex h-full *:flex-1',
       'justify-start',
       'entering:animate-slide-in-left',
-      'exiting:animate-slide-out-left',
+      'exiting:animate-slide-out-left exiting:[--slide-out-duration:0.1s]',
       'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
     ],
   }),

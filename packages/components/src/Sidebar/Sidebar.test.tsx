@@ -425,6 +425,47 @@ test('mobile toggle opens sheet, close button closes it', async () => {
   });
 });
 
+test('mobile closes sheet when leaf nav item is clicked', async () => {
+  const mobileUser = userEvent.setup();
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  ensureOverlayContainer();
+
+  render(<Basic.Component />);
+
+  // Open the mobile sheet
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  await mobileUser.click(trigger);
+  expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
+
+  // Click a leaf nav item
+  await mobileUser.click(screen.getByRole('link', { name: 'Overview' }));
+
+  // Modal should close
+  await waitFor(() => {
+    expect(
+      screen.queryByRole('link', { name: 'Overview' })
+    ).not.toBeInTheDocument();
+  });
+});
+
+test('mobile keeps sheet open when branch item is clicked', async () => {
+  const mobileUser = userEvent.setup();
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  ensureOverlayContainer();
+
+  render(<Basic.Component />);
+
+  // Open the mobile sheet
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  await mobileUser.click(trigger);
+
+  // Click a branch item — should NOT close the modal, should open sub-panel
+  await mobileUser.click(screen.getByRole('link', { name: 'Management' }));
+
+  // Sub-panel should be visible (modal still open)
+  expect(linkByText('Users')).toBeInTheDocument();
+});
+
 test('separator renders as divider element', () => {
   render(<Basic.Component />);
 
