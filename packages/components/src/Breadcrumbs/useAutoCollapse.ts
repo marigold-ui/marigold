@@ -17,6 +17,7 @@ export const useAutoCollapse = (
   // Reset when item count changes
   if (state.totalItems !== totalItems) {
     setState({ maxVisible: totalItems, totalItems });
+    overflowWidth.current = null;
   }
 
   const onResize = useCallback(() => {

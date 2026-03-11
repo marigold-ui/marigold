@@ -85,6 +85,7 @@ export const AutoCollapse = meta.story({
       </Breadcrumbs>
     </div>
   ),
+
   play: async ({ canvas }) => {
     const ellipsis = await canvas.findByRole('button', {
       name: 'These breadcrumbs are hidden',

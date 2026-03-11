@@ -5,8 +5,6 @@ import {
   RefAttributes,
   forwardRef,
   isValidElement,
-  useCallback,
-  useRef,
 } from 'react';
 import {
   Link,
@@ -14,6 +12,7 @@ import {
   Breadcrumbs as RACBreadcrumbs,
   BreadcrumbsProps as RACBreadcrumbsProps,
 } from 'react-aria-components';
+import { useObjectRef } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons/ChevronRight';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
@@ -54,8 +53,6 @@ export interface BreadcrumbsComponent extends ForwardRefExoticComponent<
   Item: typeof BreadcrumbsItem;
 }
 
-const NULL_REF = { current: null };
-
 const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
   (
     { children, variant, size, disabled, maxVisibleItems = 'auto', ...props },
@@ -75,12 +72,9 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
     const items = Children.toArray(children);
     const total = items.length;
 
-    const internalRef = useRef<HTMLOListElement>(null);
+    const objRef = useObjectRef(ref);
 
-    const autoMax = useAutoCollapse(
-      maxVisibleItems === 'auto' ? internalRef : NULL_REF,
-      total
-    );
+    const autoMax = useAutoCollapse(objRef, total);
 
     const effectiveMax = maxVisibleItems === 'auto' ? autoMax : maxVisibleItems;
 
@@ -104,19 +98,10 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
         : [items[0], null, items[total - 1]]
       : items;
 
-    const mergedRef = useCallback(
-      (node: HTMLOListElement | null) => {
-        internalRef.current = node;
-        if (typeof ref === 'function') ref(node);
-        else if (ref) ref.current = node;
-      },
-      [ref]
-    );
-
     return (
       <RACBreadcrumbs
         {...props}
-        ref={mergedRef}
+        ref={objRef}
         isDisabled={disabled}
         className={cn(
           container,
