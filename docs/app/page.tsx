@@ -3,7 +3,6 @@ import type { PropsWithChildren } from 'react';
 import Image from 'next/image';
 import { BlurFade } from '@/ui/BlurFade';
 import { AnimatedShinyText } from '@/ui/ShinyText';
-import { getLatestPost } from '@/ui/blog/LatestPost';
 import { SiteHeader } from './_components/SiteHeader';
 import { AccessibiltySection } from './_components/landingpage/AccessibiltySection';
 import { CollaborationSection } from './_components/landingpage/CollaborationSection';
@@ -36,7 +35,6 @@ const SectionLink = ({
 // Page
 // ---------------
 const Page = () => {
-  const latestPost = getLatestPost();
   return (
     <>
       <SiteHeader />
@@ -45,9 +43,9 @@ const Page = () => {
         <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-(--breakpoint-lg) place-items-center text-center">
           <div className="-mx-(--page-padding-md) md:mx-0">
             <Center>
-              <Link href={`/${latestPost.slug}`} variant="shiny" size="xsmall">
+              <Link href="/components" variant="shiny" size="xsmall">
                 <AnimatedShinyText className="transition ease-out">
-                  🚀✨ View latest updates!
+                  🚀✨ Explore our components!
                 </AnimatedShinyText>
               </Link>
             </Center>
