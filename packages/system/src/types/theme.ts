@@ -209,7 +209,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tabs?: Record<
-      'container' | 'tabsList' | 'tabpanel' | 'tab',
+      'container' | 'tabsList' | 'tabpanel' | 'tab' | 'tabIndicator',
       ComponentStyleFunction<string, string>
     >;
     Underlay?: ComponentStyleFunction<string, string>;
