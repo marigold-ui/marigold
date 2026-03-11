@@ -5,6 +5,7 @@ import {
   RefAttributes,
   forwardRef,
   isValidElement,
+  useRef,
 } from 'react';
 import {
   Link,
@@ -73,8 +74,9 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
     const total = items.length;
 
     const objRef = useObjectRef(ref);
+    const hiddenRef = useRef<HTMLDivElement>(null);
 
-    const autoMax = useAutoCollapse(objRef, total);
+    const autoMax = useAutoCollapse(objRef, hiddenRef, total);
 
     const effectiveMax = maxVisibleItems === 'auto' ? autoMax : maxVisibleItems;
 
@@ -83,33 +85,40 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       effectiveMax >= 2 &&
       total > effectiveMax;
 
-    // Current (last) item is always visible.
-    // When maxVisibleItems=2: [ellipsis, current]
-    // When maxVisibleItems>=3: [first, ellipsis, current]
+    // When collapsed, show: [first, ellipsis, ...trailing, current]
+    // effectiveMax=2: [ellipsis, current] (no first item)
+    // effectiveMax=3: [first, ellipsis, current]
+    // effectiveMax=4: [first, ellipsis, item(n-1), current]
+    const sliceIndex = shouldCollapse
+      ? effectiveMax === 2
+        ? total - 1
+        : total - (effectiveMax - 2)
+      : 0;
+
     const hiddenItems = shouldCollapse
       ? effectiveMax === 2
         ? items.slice(0, -1)
-        : items.slice(1, -1)
+        : items.slice(1, sliceIndex)
       : [];
 
     const displayedItems = shouldCollapse
       ? effectiveMax === 2
-        ? [null, items[total - 1]]
-        : [items[0], null, items[total - 1]]
+        ? [null, ...items.slice(sliceIndex)]
+        : [items[0], null, ...items.slice(sliceIndex)]
       : items;
 
-    return (
+    const breadcrumbs = (
       <RACBreadcrumbs
         {...props}
         ref={objRef}
         isDisabled={disabled}
         className={cn(
           container,
-          maxVisibleItems === 'auto' && 'whitespace-nowrap'
+          maxVisibleItems === 'auto' &&
+            'flex-nowrap overflow-hidden whitespace-nowrap'
         )}
       >
         {displayedItems.map((item, index) => {
-          // Render ellipsis breadcrumb for collapsed items
           if (item === null) {
             return (
               <RACBreadcrumb key="ellipsis" className={breadcrumbsItem}>
@@ -151,6 +160,38 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
           );
         })}
       </RACBreadcrumbs>
+    );
+
+    if (maxVisibleItems !== 'auto') {
+      return breadcrumbs;
+    }
+
+    return (
+      <div className="relative">
+        <div
+          inert
+          ref={hiddenRef}
+          className="invisible absolute inset-0 flex gap-[inherit] overflow-hidden"
+        >
+          {items.map((item, idx) => {
+            if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
+            const { children: itemChildren } = item.props;
+            return (
+              <div data-hidden-breadcrumb key={idx} className={breadcrumbsItem}>
+                <span>{itemChildren}</span>
+                {idx < items.length - 1 && (
+                  <ChevronRight aria-hidden="true" size={16} />
+                )}
+              </div>
+            );
+          })}
+          <div data-hidden-ellipsis className={breadcrumbsItem}>
+            <span>...</span>
+            <ChevronRight aria-hidden="true" size={16} />
+          </div>
+        </div>
+        {breadcrumbs}
+      </div>
     );
   }
 ) as BreadcrumbsComponent;

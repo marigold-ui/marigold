@@ -1,51 +1,74 @@
-import { type RefObject, useCallback, useRef, useState } from 'react';
+import { type RefObject, useCallback, useLayoutEffect, useState } from 'react';
 import { useResizeObserver } from '@react-aria/utils';
 
 const MIN_VISIBLE = 2;
 
 /**
- * Starts fully expanded and collapses when the container overflows.
- * Re-expands when the container grows beyond the last overflow width.
+ * Measures hidden breadcrumb items in one pass to determine
+ * how many fit within the container width.
  */
 export const useAutoCollapse = (
-  ref: RefObject<HTMLOListElement | null>,
+  containerRef: RefObject<HTMLOListElement | null>,
+  hiddenRef: RefObject<HTMLDivElement | null>,
   totalItems: number
 ): number => {
-  const [state, setState] = useState({ maxVisible: totalItems, totalItems });
-  const overflowWidth = useRef<number | null>(null);
+  const [visibleItems, setVisibleItems] = useState(totalItems);
 
-  // Reset when item count changes
-  if (state.totalItems !== totalItems) {
-    setState({ maxVisible: totalItems, totalItems });
-    overflowWidth.current = null;
-  }
+  const calculate = useCallback(() => {
+    const container = containerRef.current;
+    const hidden = hiddenRef.current;
+    if (!container || !hidden) return;
 
-  const onResize = useCallback(() => {
-    const el = ref.current;
-    if (!el) return;
+    const containerWidth = container.clientWidth;
+    const gap = parseInt(getComputedStyle(container).gap, 10) || 0;
 
-    const width = el.clientWidth;
+    const breadcrumbs = Array.from(
+      hidden.querySelectorAll<HTMLElement>('[data-hidden-breadcrumb]')
+    );
+    const ellipsis = hidden.querySelector<HTMLElement>(
+      '[data-hidden-ellipsis]'
+    );
 
-    if (el.scrollWidth > width) {
-      overflowWidth.current = width;
-      setState(prev => ({
-        ...prev,
-        maxVisible: Math.max(MIN_VISIBLE, prev.maxVisible - 1),
-      }));
-    } else if (
-      overflowWidth.current === null ||
-      width > overflowWidth.current
-    ) {
-      overflowWidth.current = null;
-      setState(prev =>
-        prev.maxVisible >= totalItems
-          ? prev
-          : { ...prev, maxVisible: Math.min(prev.maxVisible + 1, totalItems) }
-      );
+    // +1 accounts for sub-pixel rounding in offsetWidth
+    const widths = breadcrumbs.map(el => el.offsetWidth + 1);
+    const ellipsisWidth = ellipsis ? ellipsis.offsetWidth + 1 : 0;
+
+    // Check if everything fits without collapsing
+    const totalWidth = widths.reduce(
+      (sum, w, i) => sum + w + (i > 0 ? gap : 0),
+      0
+    );
+    if (totalWidth <= containerWidth) {
+      setVisibleItems(totalItems);
+      return;
     }
-  }, [ref, totalItems]);
 
-  useResizeObserver({ ref, onResize });
+    // Always show: first + ellipsis + current (last)
+    const firstWidth = widths[0];
+    const lastWidth = widths[widths.length - 1];
+    let used = firstWidth + gap + ellipsisWidth + gap + lastWidth;
+    let count = 2; // first + last
 
-  return state.maxVisible;
+    // Add items from the end (before current) while they fit
+    for (let i = widths.length - 2; i >= 1; i--) {
+      const needed = widths[i] + gap;
+      if (used + needed > containerWidth) break;
+      used += needed;
+      count++;
+    }
+
+    setVisibleItems(Math.max(MIN_VISIBLE, count));
+  }, [containerRef, hiddenRef, totalItems]);
+
+  useResizeObserver({ ref: containerRef, onResize: calculate });
+
+  useLayoutEffect(() => {
+    if (totalItems > 0) {
+      // Defer to allow the hidden measurement div to be laid out first
+      const id = requestAnimationFrame(calculate);
+      return () => cancelAnimationFrame(id);
+    }
+  }, [totalItems, calculate]);
+
+  return visibleItems;
 };

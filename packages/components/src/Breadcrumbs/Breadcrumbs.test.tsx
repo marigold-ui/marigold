@@ -17,44 +17,23 @@ const user = userEvent.setup();
 
 window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
-test('renders breadcrumb items correctly', () => {
+test('renders items as links with separators', () => {
   render(<Basic.Component />);
 
-  expect(screen.getByText('Home')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb1')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb2')).toBeInTheDocument();
-});
-
-test('collapses breadcrumbs for too many items', async () => {
-  renderWithOverlay(<Collapsed.Component />);
-
-  await user.click(screen.getByText('...'));
-
-  expect(screen.getByText('Home')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb3')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb1')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb2')).toBeInTheDocument();
-});
-
-test('handles breadcrumbs links correctly', () => {
-  render(<Basic.Component />);
-
-  expect(screen.getByText('Home')).toHaveAttribute(
+  const links = screen.getAllByRole('link');
+  expect(links).toHaveLength(3);
+  expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute(
     'href',
     'https://marigold-ui.io'
   );
-  expect(screen.getAllByRole('link')).toHaveLength(3);
-});
-
-test('renders chevron separators', () => {
-  render(<Basic.Component />);
-
+  expect(screen.getByRole('link', { name: 'Breadcrumb1' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb2' })).toBeInTheDocument();
   expect(
     screen.queryAllByTestId('breadcrumb-chevronright').length
   ).toBeGreaterThan(0);
 });
 
-test('collapses breadcrumbs with links for too many items', () => {
+test('hides middle items behind ellipsis when collapsed', () => {
   renderWithOverlay(<Collapsed.Component />);
 
   expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
@@ -70,7 +49,7 @@ test('collapses breadcrumbs with links for too many items', () => {
   ).not.toBeInTheDocument();
 });
 
-test('expand collapsed items', async () => {
+test('reveals hidden items as menu items on ellipsis click', async () => {
   renderWithOverlay(<Collapsed.Component />);
 
   await user.click(
@@ -85,7 +64,7 @@ test('expand collapsed items', async () => {
   ).toBeInTheDocument();
 });
 
-test('auto-collapse starts expanded showing all items', () => {
+test('shows all items when maxVisibleItems is auto and space allows', () => {
   renderWithOverlay(<AutoCollapse.Component />);
 
   expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
@@ -98,7 +77,7 @@ test('auto-collapse starts expanded showing all items', () => {
   ).toBeInTheDocument();
 });
 
-test('show only ellipsis and current item when collapsed to minimum', () => {
+test('shows only ellipsis and current item when collapsed to minimum', () => {
   renderWithOverlay(<ManyItems.Component />);
 
   expect(
@@ -112,7 +91,36 @@ test('show only ellipsis and current item when collapsed to minimum', () => {
   ).not.toBeInTheDocument();
 });
 
-test('BreadcrumbsItem renders nothing', () => {
+test('does not collapse when items fit within visible limit', () => {
+  render(<Basic.Component maxVisibleItems={3} />);
+
+  expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb1' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb2' })).toBeInTheDocument();
+  expect(screen.queryByText('...')).not.toBeInTheDocument();
+});
+
+test('does not collapse when maxVisibleItems is less than 2', () => {
+  render(<Basic.Component maxVisibleItems={1} />);
+
+  expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb1' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb2' })).toBeInTheDocument();
+  expect(screen.queryByText('...')).not.toBeInTheDocument();
+});
+
+test('forwards ref', () => {
+  const objectRef = createRef<HTMLOListElement>();
+  const callbackRef = vi.fn();
+
+  render(<Basic.Component ref={objectRef} />);
+  render(<Basic.Component ref={callbackRef} />);
+
+  expect(objectRef.current).toBeInstanceOf(HTMLOListElement);
+  expect(callbackRef).toHaveBeenCalledWith(expect.any(HTMLOListElement));
+});
+
+test('BreadcrumbsItem renders nothing on its own', () => {
   render(
     <BreadcrumbsItem href="https://example.com">Test Item</BreadcrumbsItem>
   );
@@ -120,39 +128,7 @@ test('BreadcrumbsItem renders nothing', () => {
   expect(screen.queryByText('Test Item')).not.toBeInTheDocument();
 });
 
-test('forwards ref as object ref', () => {
-  const ref = createRef<HTMLOListElement>();
-
-  render(<Basic.Component ref={ref} />);
-
-  expect(ref.current).toBeInstanceOf(HTMLOListElement);
-});
-
-test('does not collapse when items equal visible limit', () => {
-  render(<Basic.Component maxVisibleItems={3} />);
-
-  expect(screen.getByText('Home')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb1')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb2')).toBeInTheDocument();
-  expect(screen.queryByText('...')).not.toBeInTheDocument();
-});
-
-test('does not collapse when visible items limit is less than 2', () => {
-  render(<Basic.Component maxVisibleItems={1} />);
-
-  expect(screen.getByText('Home')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb1')).toBeInTheDocument();
-  expect(screen.getByText('Breadcrumb2')).toBeInTheDocument();
-  expect(screen.queryByText('...')).not.toBeInTheDocument();
-});
-
-test('forwards callback ref', () => {
-  const ref = vi.fn();
-
-  render(<Basic.Component ref={ref} />);
-
-  expect(ref).toHaveBeenCalledWith(expect.any(HTMLOListElement));
-});
+// --- useAutoCollapse hook tests ---
 
 let capturedOnResize: (() => void) | undefined;
 
@@ -166,86 +142,120 @@ vi.mock('@react-aria/utils', async importOriginal => {
   };
 });
 
-const createMockElement = (
-  clientWidth: number,
-  scrollWidth: number
-): HTMLOListElement =>
-  ({ clientWidth, scrollWidth }) as unknown as HTMLOListElement;
+const createMockHiddenDiv = (
+  itemWidths: number[],
+  ellipsisWidth: number
+): HTMLDivElement => {
+  const breadcrumbEls = itemWidths.map(w => ({ offsetWidth: w }));
+  const ellipsisEl = { offsetWidth: ellipsisWidth };
 
-test('auto-collapse starts fully expanded', () => {
-  const ref = { current: createMockElement(500, 300) };
+  return {
+    querySelectorAll: (selector: string) => {
+      if (selector === '[data-hidden-breadcrumb]') return breadcrumbEls;
+      return [];
+    },
+    querySelector: (selector: string) => {
+      if (selector === '[data-hidden-ellipsis]') return ellipsisEl;
+      return null;
+    },
+  } as unknown as HTMLDivElement;
+};
 
-  const { result } = renderHook(() => useAutoCollapse(ref, 5));
+const createMockContainer = (clientWidth: number): HTMLOListElement =>
+  ({ clientWidth }) as unknown as HTMLOListElement;
 
-  expect(result.current).toBe(5);
-});
+const originalGetComputedStyle = window.getComputedStyle;
 
-test('auto-collapse collapses when container overflows', () => {
-  const ref = { current: createMockElement(300, 500) };
-  const { result } = renderHook(() => useAutoCollapse(ref, 5));
-
-  act(() => {
-    capturedOnResize!();
+describe('useAutoCollapse', () => {
+  beforeEach(() => {
+    window.getComputedStyle = vi.fn((el: Element) => {
+      if (el instanceof Element) {
+        return originalGetComputedStyle(el);
+      }
+      return { gap: '8' } as CSSStyleDeclaration;
+    }) as typeof window.getComputedStyle;
   });
 
-  expect(result.current).toBe(4);
-});
-
-test('auto-collapse does not expand below previous overflow width', () => {
-  const ref = { current: createMockElement(300, 500) };
-  const { result } = renderHook(() => useAutoCollapse(ref, 5));
-
-  act(() => {
-    capturedOnResize!();
+  afterEach(() => {
+    window.getComputedStyle = originalGetComputedStyle;
   });
 
-  ref.current = createMockElement(300, 200);
-  act(() => {
-    capturedOnResize!();
+  test('shows all items when they fit', () => {
+    // 5 items: 50+50+50+50+50 = 250, plus 4 gaps of 8 = 282. Container=300 → fits
+    const containerRef = { current: createMockContainer(300) };
+    const hiddenRef = {
+      current: createMockHiddenDiv([50, 50, 50, 50, 50], 30),
+    };
+    const { result } = renderHook(() =>
+      useAutoCollapse(containerRef, hiddenRef, 5)
+    );
+
+    act(() => capturedOnResize!());
+
+    expect(result.current).toBe(5);
   });
 
-  expect(result.current).toBe(4);
-});
+  test('collapses to minimum when nothing fits', () => {
+    // 5 items each 80px: total = 400 + 4*8 = 432. Container = 200.
+    // first(80) + gap(8) + ellipsis(31) + gap(8) + last(80) = 207 > 200 → stays at 2
+    const containerRef = { current: createMockContainer(200) };
+    const hiddenRef = {
+      current: createMockHiddenDiv([80, 80, 80, 80, 80], 30),
+    };
+    const { result } = renderHook(() =>
+      useAutoCollapse(containerRef, hiddenRef, 5)
+    );
 
-test('auto-collapse expands when container grows beyond overflow width', () => {
-  const ref = { current: createMockElement(300, 500) };
-  const { result } = renderHook(() => useAutoCollapse(ref, 5));
+    act(() => capturedOnResize!());
 
-  act(() => {
-    capturedOnResize!();
+    expect(result.current).toBe(2);
   });
 
-  ref.current = createMockElement(400, 200);
-  act(() => {
-    capturedOnResize!();
+  test('shows intermediate items when space allows', () => {
+    // 5 items: [60, 40, 40, 40, 60]. Ellipsis: 30. Gap: 8. Container: 250.
+    // first(60) + gap(8) + ellipsis(31) + gap(8) + last(60) = 167
+    // + item[3](40) + gap(8) = 215 → fits
+    // + item[2](40) + gap(8) = 263 > 250 → stop → count = 3
+    const containerRef = { current: createMockContainer(250) };
+    const hiddenRef = {
+      current: createMockHiddenDiv([60, 40, 40, 40, 60], 30),
+    };
+    const { result } = renderHook(() =>
+      useAutoCollapse(containerRef, hiddenRef, 5)
+    );
+
+    act(() => capturedOnResize!());
+    expect(result.current).toBe(3);
   });
 
-  expect(result.current).toBe(5);
-});
+  test('does nothing when refs are null', () => {
+    const containerRef = { current: null };
+    const hiddenRef = { current: null };
+    const { result } = renderHook(() =>
+      useAutoCollapse(containerRef, hiddenRef, 5)
+    );
 
-test('auto-collapse resets when item count changes', () => {
-  const ref = { current: createMockElement(300, 500) };
-  const { result, rerender } = renderHook(
-    ({ total }) => useAutoCollapse(ref, total),
-    { initialProps: { total: 5 } }
-  );
+    act(() => capturedOnResize!());
 
-  act(() => {
-    capturedOnResize!();
+    expect(result.current).toBe(5);
   });
 
-  rerender({ total: 8 });
+  test('resets when item count changes', async () => {
+    const containerRef = { current: createMockContainer(200) };
+    const hiddenRef = {
+      current: createMockHiddenDiv([80, 80, 80, 80, 80], 30),
+    };
+    const { result, rerender } = renderHook(
+      ({ total }) => useAutoCollapse(containerRef, hiddenRef, total),
+      { initialProps: { total: 5 } }
+    );
 
-  expect(result.current).toBe(8);
-});
+    act(() => capturedOnResize!());
+    containerRef.current = createMockContainer(800);
+    hiddenRef.current = createMockHiddenDiv([40, 40, 40], 30);
+    // eslint-disable-next-line testing-library/no-unnecessary-act -- async act needed to flush requestAnimationFrame in useLayoutEffect
+    await act(async () => rerender({ total: 3 }));
 
-test('auto-collapse does nothing when ref is null', () => {
-  const ref = { current: null };
-  const { result } = renderHook(() => useAutoCollapse(ref, 5));
-
-  act(() => {
-    capturedOnResize!();
+    expect(result.current).toBe(3);
   });
-
-  expect(result.current).toBe(5);
 });
