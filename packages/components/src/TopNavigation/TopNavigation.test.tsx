@@ -2,11 +2,7 @@ import { render, renderHook, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { mockMatchMedia } from '../test.utils';
 import { useTopNavigationContext } from './Context';
-import {
-  WithBreadcrumbs,
-  WithSearchField,
-  WithTabs,
-} from './TopNavigation.stories';
+import { WithSearchField, WithTabs } from './TopNavigation.stories';
 
 /**
  * We need to mock `matchMedia` because jsdom does not
@@ -36,14 +32,23 @@ test('renders all three slots', () => {
   expect(nav.children).toHaveLength(3);
 });
 
-test('applies sticky classes when sticky prop is set', () => {
-  render(<WithBreadcrumbs.Component />);
+test('applies sticky classes by default', () => {
+  render(<WithTabs.Component />);
 
   const nav = screen.getByRole('banner');
 
   expect(nav.className).toMatch(/sticky/);
   expect(nav.className).toMatch(/top-0/);
   expect(nav.className).toMatch(/z-1/);
+});
+
+test('does not apply sticky classes when sticky is false', () => {
+  render(<WithTabs.Component sticky={false} />);
+
+  const nav = screen.getByRole('banner');
+
+  expect(nav.className).not.toMatch(/sticky/);
+  expect(nav.className).not.toMatch(/top-0/);
 });
 
 test('forwards ref to header element', () => {

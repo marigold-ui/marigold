@@ -187,9 +187,6 @@ export const WithSearchField = meta.story({
 });
 
 export const WithBreadcrumbs = meta.story({
-  args: {
-    sticky: true,
-  },
   render: args => (
     <div style={{ height: '200vh' }}>
       <TopNavigation {...args}>

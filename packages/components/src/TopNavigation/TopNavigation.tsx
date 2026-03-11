@@ -13,7 +13,7 @@ export interface TopNavigationProps {
   size?: string;
   /**
    * If `true`, the navigation sticks to the top of the viewport on scroll.
-   * @default false
+   * @default true
    */
   sticky?: boolean;
   /**
@@ -34,7 +34,7 @@ interface TopNavigationComponent extends ForwardRefExoticComponent<
 
 const _TopNavigation = forwardRef(
   (
-    { variant, size, sticky, children, ...props }: TopNavigationProps,
+    { variant, size, sticky = true, children, ...props }: TopNavigationProps,
     ref: Ref<HTMLElement>
   ) => {
     const classNames = useClassNames({

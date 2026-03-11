@@ -9,7 +9,7 @@ import {
 
 export default () => (
   <div style={{ height: '300px', overflow: 'auto' }}>
-    <TopNavigation sticky>
+    <TopNavigation>
       <TopNavigation.Start>
         <Inline space={2} alignY="center">
           <Text weight="bold">Acme Inc.</Text>

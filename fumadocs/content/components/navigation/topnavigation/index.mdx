@@ -43,23 +43,25 @@ Some layouts call for centered content in the navigation bar, such as a search f
 
 <ComponentDemo name="topnavigation-search" />
 
-### Keeping navigation visible while scrolling
+### Sticky navigation
 
-On pages with long content, users may need to scroll far down the page and lose access to navigation. Setting the `sticky` prop keeps the navigation bar fixed at the top of the viewport so users can always navigate without scrolling back up.
+By default, `<TopNavigation>` sticks to the top of the viewport when users scroll, ensuring persistent access to navigation. This is the most common behavior for application shells.
+
+If the navigation bar is not needed while scrolling (e.g., on compact pages where content fits within the viewport), you can disable sticky behavior by setting `sticky={false}`.
 
 <ComponentDemo name="topnavigation-sticky" />
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use sticky navigation for long pages where users need persistent access to
-      navigation or breadcrumbs.
+      Keep the default sticky behavior for long pages where users need
+      persistent access to navigation or breadcrumbs.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't use sticky navigation on compact pages where the content fits within
-      the viewport, as it takes up valuable screen space unnecessarily.
+      Don't keep sticky navigation on compact pages where the content fits
+      within the viewport, as it takes up valuable screen space unnecessarily.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
