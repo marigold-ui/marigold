@@ -22,8 +22,8 @@ The `<TopNavigation>` component uses a compound component pattern with three slo
 
 <ul>
   <li><b>Container:</b> The outer `<header>` element that holds the three-column grid layout.</li>
-  <li><b>Start:</b> The left-aligned slot, typically used for branding such as a logo or app name.</li>
-  <li><b>Middle:</b> The flexible center slot, rendered as a `<nav>` element. Commonly holds primary navigation like tabs, breadcrumbs, or a search field.</li>
+  <li><b>Start:</b> The left-aligned slot, should be used for the side navigation toggle.</li>
+  <li><b>Middle:</b> The flexible center slot, rendered as a `<nav>` element. Commonly holds breadcrumbs, or a search field.</li>
   <li><b>End:</b> The right-aligned slot, also rendered as a `<nav>` element. Typically contains utility actions such as user menus, notifications, or settings.</li>
 </ul>
 
@@ -68,12 +68,9 @@ If the navigation bar is not needed while scrolling (e.g., on compact pages wher
 
 ### Combining with Sidebar
 
-For applications with multiple levels of navigation, combine `<TopNavigation>` with the [Sidebar](/components/navigation/sidebar) component. The top bar handles global concerns
-like branding and utility actions, while the Sidebar provides contextual sub-navigation within each section.
+For applications with multiple levels of navigation, combine `<TopNavigation>` with the [Sidebar](/components/navigation/sidebar) component to follow the recommended L-Shape layout structure. The top bar handles opening the sidebar and hosting global utility actions, while the Sidebar provides contextual navigation within each section.
 
-The `<TopNavigation.Middle>` slot adapts to your application's navigation model. Use it for **Tabs** when the top-level pages are peers the user switches between, for **Breadcrumbs** when the page hierarchy matters and users need a trail back to parent sections, or leave it **empty** when the Sidebar alone provides sufficient navigation. This
-flexibility lets the `<TopNavigation>` and `<Sidebar>` work as complementary layers — the top bar orients users globally, while the Sidebar guides them locally within the current
-section.
+The `<TopNavigation.Middle>` slot adapts to your application's navigation model. We recommend using it for **Breadcrumbs** to give users a clear trail back to parent sections, or for a **search field** to provide quick access to content across the application. This flexibility lets the `<TopNavigation>` and `<Sidebar>` work as complementary layers — the top bar orients users globally, while the Sidebar guides them locally within the current section.
 
 <GuidelineTiles>
   <Do>
