@@ -47,12 +47,12 @@ const _TopNavigation = forwardRef(
       <TopNavigationContext.Provider value={{ variant, size, classNames }}>
         <header
           ref={ref}
-          {...props}
           className={cn(
             'grid grid-cols-[auto_1fr_auto] [grid-template-areas:"start_middle_end"]',
             sticky && 'sticky top-0 z-1',
             classNames.container
           )}
+          {...props}
         >
           {children}
         </header>

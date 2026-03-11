@@ -41,12 +41,12 @@ export const TopNavigationEnd = forwardRef(
         aria-label={
           ariaLabel ?? stringFormatter.format('globalNavigationUtilities')
         }
-        {...props}
         className={cn(
           'min-w-0 [grid-area:end]',
           classNames.end,
           alignY && alignment.horizontal.alignmentY[alignY]
         )}
+        {...props}
       >
         {children}
       </nav>

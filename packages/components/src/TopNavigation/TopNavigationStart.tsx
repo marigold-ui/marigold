@@ -25,12 +25,12 @@ export const TopNavigationStart = forwardRef(
     return (
       <div
         ref={ref}
-        {...props}
         className={cn(
           'min-w-0 [grid-area:start]',
           classNames.start,
           alignY && alignment.horizontal.alignmentY[alignY]
         )}
+        {...props}
       >
         {children}
       </div>

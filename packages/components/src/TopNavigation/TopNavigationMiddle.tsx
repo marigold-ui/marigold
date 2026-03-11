@@ -44,13 +44,13 @@ export const TopNavigationMiddle = forwardRef(
       <nav
         ref={ref}
         aria-label={ariaLabel ?? stringFormatter.format('globalNavigation')}
-        {...props}
         className={cn(
           'min-w-0 [grid-area:middle]',
           classNames.middle,
           alignX && alignment.horizontal.alignmentX[alignX],
           alignY && alignment.horizontal.alignmentY[alignY]
         )}
+        {...props}
       >
         {children}
       </nav>
