@@ -54,8 +54,6 @@ import {
   Headlines,
   TextAlign,
 } from './Typography';
-import { LatestPost } from './blog/LatestPost';
-import { PostList } from './blog/PostList';
 
 // Typography
 
@@ -173,9 +171,6 @@ const components = {
   TeaserList,
   TextAlign,
   Toc,
-  // Blog-related
-  LatestPost,
-  PostList,
   // Marigold Components
   Badge,
   Card,
