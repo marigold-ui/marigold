@@ -26,6 +26,7 @@ export default mergeConfig(
           plugins: [tsconfigPaths()],
           test: {
             name: 'unit-tests',
+            exclude: ['**/*.stories.tsx'],
             setupFiles: ['./vitest.setup.ts'],
             globals: true,
             browser: {
