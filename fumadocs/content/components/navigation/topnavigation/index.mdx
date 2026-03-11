@@ -89,7 +89,7 @@ The `<TopNavigation.Middle>` slot adapts to your application's navigation model.
 
 Mobile navigation should prioritize simplicity. Reduce the number of visible items and use progressive disclosure to keep the interface focused.
 
-On small screens, the `<TopNavigation>` should be simplified:
+The `<TopNavigation>` itself does not handle responsive behavior — the components placed inside it are responsible for adapting to different screen sizes. On small screens:
 
 - **Collapse non-essential items:** Hide labels and show icon-only actions. Use `useResponsiveValue()` or `useSmallScreen()` to control visibility at each breakpoint.
 - **Breadcrumbs:** Use fewer segments on small screens. The [Breadcrumbs](/components/navigation/breadcrumbs) component supports collapsing via the `maxVisibleItems` prop.
