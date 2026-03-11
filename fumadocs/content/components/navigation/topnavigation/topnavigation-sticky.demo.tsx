@@ -1,7 +1,7 @@
+import { PanelRightClose } from 'lucide-react';
 import {
   Breadcrumbs,
   Button,
-  Inline,
   Stack,
   Text,
   TopNavigation,
@@ -11,9 +11,9 @@ export default () => (
   <div style={{ height: '300px', overflow: 'auto' }}>
     <TopNavigation>
       <TopNavigation.Start>
-        <Inline space={2} alignY="center">
-          <Text weight="bold">Acme Inc.</Text>
-        </Inline>
+        <Button variant="icon">
+          <PanelRightClose />
+        </Button>
       </TopNavigation.Start>
       <TopNavigation.Middle>
         <Breadcrumbs>

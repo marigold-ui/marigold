@@ -1,17 +1,12 @@
-import {
-  Button,
-  Inline,
-  SearchField,
-  Text,
-  TopNavigation,
-} from '@marigold/components';
+import { PanelRightClose } from 'lucide-react';
+import { Button, SearchField, TopNavigation } from '@marigold/components';
 
 export default () => (
   <TopNavigation>
     <TopNavigation.Start>
-      <Inline space={2} alignY="center">
-        <Text weight="bold">Acme Inc.</Text>
-      </Inline>
+      <Button variant="icon">
+        <PanelRightClose />
+      </Button>
     </TopNavigation.Start>
     <TopNavigation.Middle aria-label="Search" alignX="center">
       <SearchField placeholder="Search..." />

@@ -16,7 +16,7 @@
     <rect x="12" y="8" width="120" height="40" rx="4"
           fill="#f9fafb" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4, 3" />
     <text x="72" y="33" font-family="sans-serif" font-size="13px" fill="#6b7280"
-          text-anchor="middle">Logo / Brand</text>
+          text-anchor="middle">Sidebar Toggle</text>
 
     <!-- Middle slot -->
     <rect x="148" y="8" width="240" height="40" rx="4"

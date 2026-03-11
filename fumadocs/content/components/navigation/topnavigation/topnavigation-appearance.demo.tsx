@@ -1,7 +1,7 @@
+import { PanelRightClose } from 'lucide-react';
 import {
   Button,
   Inline,
-  Text,
   TopNavigation,
   TopNavigationProps,
 } from '@marigold/components';
@@ -9,9 +9,9 @@ import {
 export default (props: TopNavigationProps) => (
   <TopNavigation {...props}>
     <TopNavigation.Start>
-      <Inline space={2} alignY="center">
-        <Text weight="bold">Acme Inc.</Text>
-      </Inline>
+      <Button variant="icon">
+        <PanelRightClose />
+      </Button>
     </TopNavigation.Start>
     <TopNavigation.Middle>
       <Inline space={4}>
