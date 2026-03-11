@@ -117,10 +117,10 @@ describe('Inline', () => {
         '[&:has([slot=description])]:items-end'
       );
       expect(inline.className).toContain(
-        '[&:has([slot=description])_>*:not(:has([slot=description]))]:mb-6'
+        '[&:has([slot=description])_>*:not(:has([slot=description]))]:mb-5'
       );
       expect(inline.className).toContain(
-        '[&:has([slot=errorMessage])_>*:not(:has([slot=errorMessage]))]:mb-6'
+        '[&:has([slot=errorMessage])_>*:not(:has([slot=errorMessage]))]:mb-5'
       );
     });
   });
