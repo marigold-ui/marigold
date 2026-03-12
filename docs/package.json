@@ -1,5 +1,5 @@
 {
-  "name": "fumadocs",
+  "name": "@marigold/docs",
   "version": "0.0.3",
   "private": true,
   "scripts": {

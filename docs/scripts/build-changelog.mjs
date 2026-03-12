@@ -13,7 +13,7 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
 // only take the changelogs of the packages
-// Updated path: fumadocs is one level deeper, so we need ../../ to reach root
+// docs is one level deeper, so we need ../../ to reach root
 let changelogPath = await globby(
   ['{**,*}/CHANGELOG.md', '!**/node_modules/**'],
   {

@@ -10,7 +10,7 @@
     "themes/theme-docs/release",
     "themes/theme-rui/release",
     "---docs---",
-    "fumadocs/release",
+    "docs/release",
     "---config---",
     "config/eslint/release",
     "config/prettier/release",
