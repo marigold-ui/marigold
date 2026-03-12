@@ -9,7 +9,11 @@ export interface AppLayoutProps {
 // Sub-components
 // ---------------
 const AppLayoutHeader = ({ children }: { children?: ReactNode }) => {
-  return <div className="z-1 [grid-area:header]">{children}</div>;
+  return (
+    <div className="z-1 h-(--app-layout-header-height) [grid-area:header] *:h-full">
+      {children}
+    </div>
+  );
 };
 
 const AppLayoutSidebar = ({ children }: { children?: ReactNode }) => {
@@ -35,7 +39,7 @@ const _AppLayout = forwardRef(
     return (
       <div
         ref={ref}
-        className="grid h-dvh grid-cols-[auto_1fr] grid-rows-[auto_1fr] overflow-hidden [grid-template-areas:'sidebar_header'_'sidebar_main']"
+        className="grid h-dvh grid-cols-[auto_1fr] grid-rows-[var(--app-layout-header-height,auto)_1fr] overflow-hidden [--app-layout-header-height:3.5rem] [grid-template-areas:'sidebar_header'_'sidebar_main']"
         {...props}
       >
         {children}
