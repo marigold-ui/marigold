@@ -20,7 +20,7 @@ export const useAutoCollapse = (
     if (!container || !hidden) return;
 
     const containerWidth = container.clientWidth;
-    const gap = parseInt(getComputedStyle(container).gap, 10) || 0;
+    const gap = parseFloat(getComputedStyle(container).gap) || 0;
 
     const breadcrumbs = Array.from(
       hidden.querySelectorAll<HTMLElement>('[data-hidden-breadcrumb]')
@@ -43,7 +43,7 @@ export const useAutoCollapse = (
       return;
     }
 
-    // Always show: first + ellipsis + current (last)
+    // Start with first + ellipsis + current (last), then try adding more
     const firstWidth = widths[0];
     const lastWidth = widths[widths.length - 1];
     let used = firstWidth + gap + ellipsisWidth + gap + lastWidth;

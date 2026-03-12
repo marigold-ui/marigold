@@ -177,7 +177,11 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
             if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
             const { children: itemChildren } = item.props;
             return (
-              <div data-hidden-breadcrumb key={idx} className={breadcrumbsItem}>
+              <div
+                data-hidden-breadcrumb
+                key={idx}
+                className={cn('shrink-0', breadcrumbsItem)}
+              >
                 <span>{itemChildren}</span>
                 {idx < items.length - 1 && (
                   <ChevronRight aria-hidden="true" size={16} />
@@ -185,7 +189,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
               </div>
             );
           })}
-          <div data-hidden-ellipsis className={breadcrumbsItem}>
+          <div data-hidden-ellipsis className={cn('shrink-0', breadcrumbsItem)}>
             <span>...</span>
             <ChevronRight aria-hidden="true" size={16} />
           </div>
