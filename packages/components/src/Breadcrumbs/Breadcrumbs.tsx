@@ -18,6 +18,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons/ChevronRight';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
 import { BreadcrumbsItem, BreadcrumbsItemProps } from './BreadcrumbsItem';
+import { HiddenBreadcrumbs } from './HiddenBreadcrumbs';
 import { useAutoCollapse } from './useAutoCollapse';
 
 type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
@@ -167,35 +168,13 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
     }
 
     return (
-      <div className="relative">
-        <div
-          inert
-          ref={hiddenRef}
-          className="invisible absolute inset-0 flex gap-[inherit] overflow-hidden"
-        >
-          {items.map((item, idx) => {
-            if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
-            const { children: itemChildren } = item.props;
-            return (
-              <div
-                data-hidden-breadcrumb
-                key={idx}
-                className={cn('shrink-0', breadcrumbsItem)}
-              >
-                <span>{itemChildren}</span>
-                {idx < items.length - 1 && (
-                  <ChevronRight aria-hidden="true" size={16} />
-                )}
-              </div>
-            );
-          })}
-          <div data-hidden-ellipsis className={cn('shrink-0', breadcrumbsItem)}>
-            <span>...</span>
-            <ChevronRight aria-hidden="true" size={16} />
-          </div>
-        </div>
+      <HiddenBreadcrumbs
+        items={items}
+        itemClassName={breadcrumbsItem}
+        hiddenRef={hiddenRef}
+      >
         {breadcrumbs}
-      </div>
+      </HiddenBreadcrumbs>
     );
   }
 ) as BreadcrumbsComponent;
