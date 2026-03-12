@@ -9,11 +9,9 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "paths": {
-      "contentlayer/generated": ["./docs/.contentlayer/generated"],
-      "@/registry/*": ["./docs/.registry/*"],
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
       "@marigold/theme-rui/appearances": ["./themes/theme-rui/src/appearances"],
-      "@/*": ["./docs/*", "./fumadocs/*"],
+      "@/*": ["./fumadocs/*"],
       "fumadocs-mdx:collections/*": ["./fumadocs/.source/*"],
       // cva does not export the types officially
       "class-variance-authority/dist/types": [
