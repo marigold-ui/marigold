@@ -27,10 +27,8 @@ import {
   Text,
   Tiles,
 } from './';
-import { AppearanceDemo } from './AppearanceDemo';
 import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
-import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { Do, Dont, GuidelineTiles } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
@@ -54,8 +52,6 @@ import {
   Headlines,
   TextAlign,
 } from './Typography';
-import { LatestPost } from './blog/LatestPost';
-import { PostList } from './blog/PostList';
 
 // Typography
 
@@ -151,12 +147,10 @@ const components = {
   // Docs Components
   AlignmentsX,
   AlignmentsY,
-  AppearanceDemo,
   AppearanceTable,
   BorderRadius,
   Breakpoints,
   ColorTokenTable,
-  ComponentDemo,
   Do,
   Dont,
   GuidelineTiles,
@@ -173,9 +167,6 @@ const components = {
   TeaserList,
   TextAlign,
   Toc,
-  // Blog-related
-  LatestPost,
-  PostList,
   // Marigold Components
   Badge,
   Card,

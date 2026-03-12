@@ -51,7 +51,6 @@
     "../packages/**/*.tsx",
     "../.next/types/**/*.ts",
     "contentlayer.config.ts",
-    "scripts/build-registry.mjs",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
