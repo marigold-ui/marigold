@@ -19,7 +19,7 @@ export const useAutoCollapse = (
     const hidden = hiddenRef.current;
     if (!container || !hidden) return;
 
-    const containerWidth = container.clientWidth;
+    const containerWidth = container.getBoundingClientRect().width;
     const gap = parseFloat(getComputedStyle(container).gap) || 0;
 
     const breadcrumbs = Array.from(
@@ -29,9 +29,8 @@ export const useAutoCollapse = (
       '[data-hidden-ellipsis]'
     );
 
-    // +1 accounts for sub-pixel rounding in offsetWidth
-    const widths = breadcrumbs.map(el => el.offsetWidth + 1);
-    const ellipsisWidth = ellipsis ? ellipsis.offsetWidth + 1 : 0;
+    const widths = breadcrumbs.map(el => el.getBoundingClientRect().width);
+    const ellipsisWidth = ellipsis ? ellipsis.getBoundingClientRect().width : 0;
 
     // Check if everything fits without collapsing
     const totalWidth = widths.reduce(
@@ -47,7 +46,15 @@ export const useAutoCollapse = (
     const firstWidth = widths[0];
     const lastWidth = widths[widths.length - 1];
     let used = firstWidth + gap + ellipsisWidth + gap + lastWidth;
-    let count = 2; // first + last
+
+    // If even first + ellipsis + last doesn't fit, show only [ellipsis, last]
+    if (used > containerWidth) {
+      setVisibleItems(MIN_VISIBLE);
+      return;
+    }
+
+    // count tracks real items (first + last + any extras from the loop)
+    let count = 2;
 
     // Add items from the end (before current) while they fit
     for (let i = widths.length - 2; i >= 1; i--) {
@@ -57,7 +64,8 @@ export const useAutoCollapse = (
       count++;
     }
 
-    setVisibleItems(Math.max(MIN_VISIBLE, count));
+    // +1 because the component displays count real items PLUS the ellipsis
+    setVisibleItems(count + 1);
   }, [containerRef, hiddenRef, totalItems]);
 
   useResizeObserver({ ref: containerRef, onResize: calculate });

@@ -142,12 +142,16 @@ vi.mock('@react-aria/utils', async importOriginal => {
   };
 });
 
+const mockRect = (width: number) => ({
+  getBoundingClientRect: () => ({ width }) as DOMRect,
+});
+
 const createMockHiddenDiv = (
   itemWidths: number[],
   ellipsisWidth: number
 ): HTMLDivElement => {
-  const breadcrumbEls = itemWidths.map(w => ({ offsetWidth: w }));
-  const ellipsisEl = { offsetWidth: ellipsisWidth };
+  const breadcrumbEls = itemWidths.map(w => mockRect(w));
+  const ellipsisEl = mockRect(ellipsisWidth);
 
   return {
     querySelectorAll: (selector: string) => {
@@ -161,8 +165,8 @@ const createMockHiddenDiv = (
   } as unknown as HTMLDivElement;
 };
 
-const createMockContainer = (clientWidth: number): HTMLOListElement =>
-  ({ clientWidth }) as unknown as HTMLOListElement;
+const createMockContainer = (width: number): HTMLOListElement =>
+  mockRect(width) as unknown as HTMLOListElement;
 
 const originalGetComputedStyle = window.getComputedStyle;
 
@@ -197,7 +201,7 @@ describe('useAutoCollapse', () => {
 
   test('collapses to minimum when nothing fits', () => {
     // 5 items each 80px: total = 400 + 4*8 = 432. Container = 200.
-    // first(80) + gap(8) + ellipsis(31) + gap(8) + last(80) = 207 > 200 → stays at 2
+    // first(80) + gap(8) + ellipsis(30) + gap(8) + last(80) = 206 > 200 → stays at 2
     const containerRef = { current: createMockContainer(200) };
     const hiddenRef = {
       current: createMockHiddenDiv([80, 80, 80, 80, 80], 30),
@@ -213,9 +217,10 @@ describe('useAutoCollapse', () => {
 
   test('shows intermediate items when space allows', () => {
     // 5 items: [60, 40, 40, 40, 60]. Ellipsis: 30. Gap: 8. Container: 250.
-    // first(60) + gap(8) + ellipsis(31) + gap(8) + last(60) = 167
-    // + item[3](40) + gap(8) = 215 → fits
-    // + item[2](40) + gap(8) = 263 > 250 → stop → count = 3
+    // first(60) + gap(8) + ellipsis(30) + gap(8) + last(60) = 166 → fits
+    // + item[3](40) + gap(8) = 214 → fits (count=3)
+    // + item[2](40) + gap(8) = 262 > 250 → stop
+    // returns count(3) + 1 = 4 (displayed: [first, ellipsis, item[3], last])
     const containerRef = { current: createMockContainer(250) };
     const hiddenRef = {
       current: createMockHiddenDiv([60, 40, 40, 40, 60], 30),
@@ -225,7 +230,7 @@ describe('useAutoCollapse', () => {
     );
 
     act(() => capturedOnResize!());
-    expect(result.current).toBe(3);
+    expect(result.current).toBe(4);
   });
 
   test('does nothing when refs are null', () => {
