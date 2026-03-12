@@ -36,6 +36,8 @@ A sidebar consists of a panel alongside the main content area. The panel is orga
 
 The sidebar is the central navigation of every application. It is part of the default app layout and how users move between sections. It sits on the left side of the screen and is organized into a header for branding, a scrollable navigation area, and a footer for secondary actions. On mobile, it adapts to a sheet overlay.
 
+In most applications, the sidebar is paired with a [top navigation](/components/navigation/topnavigation) to form an L-shaped app shell. The top navigation handles global actions like search, breadcrumbs, and user menus, while the sidebar handles section-level navigation.
+
 <Callout>
   The sidebar does not have dedicated icon support yet. If your application
   needs icons alongside navigation labels, coordinate across all applications
@@ -46,7 +48,7 @@ The sidebar is the central navigation of every application. It is part of the de
 
 Above and below the scrollable navigation sit two sticky areas: the header and the footer. They stay visible while users scroll through nav items, but neither is meant for navigation itself.
 
-Put your branding in the header. The app logo, the product name, or both. It tells users where they are and that is all it should do.
+Put your branding in the header. The app logo, the product name, or both. It tells users where they are and that is all it should do. When using a [top navigation](/components/navigation/topnavigation), place the application logo in the sidebar header, not in the top navigation bar.
 
 Secondary actions go in the footer. A link to help or support, a settings shortcut, or a way to send feedback. Things users reach for occasionally, not on every visit.
 
@@ -112,7 +114,7 @@ For hierarchies deeper than two levels, pair the sidebar with [breadcrumbs](/com
 
 ### Collapsing
 
-Users can collapse or expand the sidebar with the toggle button or the keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd>. The sidebar remembers this preference across page loads.
+Users can collapse or expand the sidebar with the toggle button or the keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd>. The sidebar remembers this preference across page loads. When combined with a [top navigation](/components/navigation/topnavigation), the sidebar toggle button is typically placed in the top navigation's start slot.
 
 ### Accessibility
 
@@ -160,3 +162,6 @@ The sidebar renders as a `<nav>` element so screen readers can identify it as a 
 - [Breadcrumbs](/components/navigation/breadcrumbs): Use to show the user's
   location within a hierarchy. Breadcrumbs complement a sidebar but don't
   replace it.
+- [Top Navigation](/components/navigation/topnavigation): Use for the horizontal
+  top bar that houses global actions like search, breadcrumbs, and user menus.
+  Pair it with a sidebar for the standard L-shaped app shell.
