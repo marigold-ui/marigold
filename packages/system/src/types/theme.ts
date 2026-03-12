@@ -274,6 +274,10 @@ export type Theme = {
       | 'content',
       ComponentStyleFunction<string, string>
     >;
+    TopNavigation?: Record<
+      'container' | 'start' | 'middle' | 'end',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 

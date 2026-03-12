@@ -1,3 +1,10 @@
 {
-  "pages": ["accordion", "breadcrumbs", "pagination", "sidebar", "tabs"]
+  "pages": [
+    "accordion",
+    "breadcrumbs",
+    "pagination",
+    "sidebar",
+    "tabs",
+    "topnavigation"
+  ]
 }

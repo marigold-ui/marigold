@@ -284,6 +284,9 @@ export type { ToastProviderProps } from './Toast/ToastProvider';
 
 export { useToast } from './Toast/ToastQueue';
 
+export { TopNavigation } from './TopNavigation/TopNavigation';
+export type { TopNavigationProps } from './TopNavigation/TopNavigation';
+
 export { Tooltip } from './Tooltip/Tooltip';
 export type { TooltipProps } from './Tooltip/Tooltip';
 
