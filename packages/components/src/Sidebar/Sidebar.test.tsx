@@ -28,7 +28,7 @@ const closest = (el: HTMLElement, sel: string) => el.closest(sel);
 
 // In-browser tests: `inert` panels remove elements from the a11y tree,
 // so getByRole can't find them. Use getByText (DOM search) + closest instead.
-// eslint-disable-next-line testing-library/no-node-access
+
 const linkByText = (name: string) =>
   screen.getByText(name, { selector: 'a' }) as HTMLElement;
 
