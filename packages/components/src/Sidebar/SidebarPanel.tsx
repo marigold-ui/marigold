@@ -1,0 +1,174 @@
+import { useLayoutEffect, useRef } from 'react';
+import { Button, Separator } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { isFocusVisible } from '@react-aria/interactions';
+import { cn } from '@marigold/system';
+import { ChevronLeft } from '../icons/ChevronLeft';
+import { ChevronRight } from '../icons/ChevronRight';
+import { intlMessages } from '../intl/messages';
+import { useSidebar } from './Context';
+import { SidebarLink } from './SidebarLink';
+import type { SidebarNode } from './collection';
+import {
+  RovingTabIndexProvider,
+  usePanelKeyboard,
+  useRovingItem,
+} from './useSidebarNav';
+
+interface BackButtonProps {
+  onBack: () => void;
+  backLabel: string | null | undefined;
+  className: string;
+}
+
+const BackButton = ({ onBack, backLabel, className }: BackButtonProps) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const { tabIndex, onFocus } = useRovingItem('__back__');
+
+  return (
+    <Button
+      data-back-button
+      aria-label={stringFormatter.format('backTo', {
+        label: backLabel ?? stringFormatter.format('back'),
+      })}
+      className={className}
+      onPress={onBack}
+      excludeFromTabOrder={tabIndex < 0}
+      onFocus={onFocus}
+    >
+      <span className="flex items-center justify-center">
+        <ChevronLeft aria-hidden="true" size={16} />
+      </span>
+      <span className="truncate text-center font-medium">
+        {backLabel ?? stringFormatter.format('back')}
+      </span>
+    </Button>
+  );
+};
+
+export interface SidebarPanelProps {
+  nodes: SidebarNode[];
+  onBack?: () => void;
+  onBranchClick?: (key: string) => void;
+  backLabel?: string | null;
+  position: 'active' | 'before' | 'after';
+  /** Key of the item to focus when this panel becomes active (fallback after active item). */
+  autoFocusKey?: string | null;
+}
+
+export const SidebarPanel = ({
+  nodes,
+  onBack,
+  onBranchClick,
+  backLabel,
+  position,
+  autoFocusKey,
+}: SidebarPanelProps) => {
+  const { classNames, isMobile, toggleSidebar } = useSidebar();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const { onKeyDown } = usePanelKeyboard(panelRef);
+
+  // Focus the right element when this panel becomes active
+  const prevPositionRef = useRef(position);
+  useLayoutEffect(() => {
+    const wasActive = prevPositionRef.current === 'active';
+    prevPositionRef.current = position;
+
+    if (position !== 'active' || wasActive) return;
+    if (!panelRef.current) return;
+
+    const showFocusRing = isFocusVisible();
+
+    const activeItem = panelRef.current.querySelector(
+      '[aria-current="page"]'
+    ) as HTMLElement | null;
+
+    const fallbackSelector = autoFocusKey
+      ? `[data-key="${CSS.escape(autoFocusKey)}"]`
+      : '[data-back-button]';
+    const fallback = panelRef.current.querySelector(
+      fallbackSelector
+    ) as HTMLElement | null;
+
+    const target = activeItem ?? fallback;
+    target?.focus({ focusVisible: showFocusRing } as FocusOptions);
+  }, [position, autoFocusKey]);
+
+  return (
+    <RovingTabIndexProvider nodes={nodes}>
+      <div
+        ref={panelRef}
+        role="region"
+        aria-label={backLabel ?? stringFormatter.format('appNavigation')}
+        className={classNames.navPanel}
+        data-position={position}
+        inert={position !== 'active' || undefined}
+        onKeyDown={onKeyDown}
+      >
+        {onBack && (
+          <BackButton
+            onBack={onBack}
+            backLabel={backLabel}
+            className={classNames.backButton}
+          />
+        )}
+        {nodes.map(node => {
+          if (node.type === 'separator') {
+            return (
+              <Separator key={node.key} className={classNames.separator} />
+            );
+          }
+
+          if (node.type === 'groupLabel') {
+            return (
+              <div
+                key={node.key}
+                role="heading"
+                aria-level={2}
+                className={classNames.groupLabel}
+              >
+                {node.content}
+              </div>
+            );
+          }
+
+          if (node.children.length > 0) {
+            return (
+              <SidebarLink
+                key={node.key}
+                href={node.href}
+                data-key={node.key}
+                className={cn(classNames.navLink, 'justify-between')}
+                onPress={() => {
+                  onBranchClick?.(node.key);
+                  node.onPress?.();
+                }}
+              >
+                <span className="truncate">{node.triggerContent}</span>
+                <ChevronRight aria-hidden="true" size={16} />
+              </SidebarLink>
+            );
+          }
+
+          return (
+            <SidebarLink
+              key={node.key}
+              href={node.href}
+              data-key={node.key}
+              aria-current={node.active ? 'page' : undefined}
+              data-active={node.active || undefined}
+              className={classNames.navLink}
+              onPress={() => {
+                node.onPress?.();
+                if (isMobile) toggleSidebar();
+              }}
+            >
+              {node.triggerContent}
+            </SidebarLink>
+          );
+        })}
+      </div>
+    </RovingTabIndexProvider>
+  );
+};

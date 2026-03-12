@@ -179,12 +179,18 @@ const transformTypeValue = async val => {
   if (!ignorePrettier.includes(text)) {
     text = applyFormatSteps(text);
 
-    text = await prettier
-      .format(text, {
-        printWidth: 85,
-        parser: 'typescript',
-      })
-      .then(text => revertFormatSteps(text));
+    try {
+      text = await prettier
+        .format(text, {
+          printWidth: 85,
+          parser: 'typescript',
+        })
+        .then(text => revertFormatSteps(text));
+    } catch {
+      // Some type expressions (e.g. `SidebarNode[]`) are not valid
+      // standalone TypeScript expressions. Fall back to the raw text.
+      text = revertFormatSteps(text);
+    }
   }
 
   return codeToHtml(text.replace(/^\((.*)\)$/, '$1'), {

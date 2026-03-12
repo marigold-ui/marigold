@@ -257,6 +257,23 @@ export type Theme = {
       'group' | 'button',
       ComponentStyleFunction<string, string>
     >;
+    Sidebar?: Record<
+      | 'root'
+      | 'overlay'
+      | 'modal'
+      | 'closeButton'
+      | 'header'
+      | 'nav'
+      | 'footer'
+      | 'toggle'
+      | 'separator'
+      | 'groupLabel'
+      | 'navPanel'
+      | 'navLink'
+      | 'backButton'
+      | 'content',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 
