@@ -1,4 +1,4 @@
-# fumadocs
+# @marigold/docs
 
 ## 0.0.3
 
