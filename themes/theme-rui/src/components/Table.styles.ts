@@ -68,7 +68,7 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   column: cva({
     base: [
-      'h-(--header-height) px-(--cell-x-padding) align-middle',
+      'h-(--header-height) px-(--cell-x-padding) py-0 align-middle',
       'font-medium text-muted-foreground',
       'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
