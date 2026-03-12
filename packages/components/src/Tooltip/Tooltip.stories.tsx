@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Tooltip } from './Tooltip';
@@ -5,6 +6,13 @@ import { Tooltip } from './Tooltip';
 const meta = preview.meta({
   title: 'Components/Tooltip',
   component: Tooltip,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     offset: {
       control: {
@@ -79,5 +87,19 @@ export const Basic = meta.story({
         </Tooltip.Trigger>
       </div>
     );
+  },
+});
+
+export const OpenViaTooltipProp = Basic.extend({
+  tags: ['component-test'],
+  args: {
+    open: true,
+  },
+  play: async ({ canvas }) => {
+    const tooltips = await canvas.findAllByRole('tooltip');
+
+    await expect(tooltips).toHaveLength(2);
+    await expect(tooltips[0]).toBeVisible();
+    await expect(tooltips[1]).toBeVisible();
   },
 });

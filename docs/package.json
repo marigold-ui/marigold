@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "pnpm build:component-props && pnpm build:changelog && next build --webpack",
+    "build": "pnpm build:component-props && next build --webpack",
     "start": "next start",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
-    "build:changelog": "zx ./scripts/build-changelog.mjs",
     "build:contentlayer": "pnpm contentlayer2 build"
   },
   "dependencies": {
