@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useLayoutEffect } from 'react';
 import type RAC from 'react-aria-components';
 import { OverlayArrow, Tooltip } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { useTooltipContext } from './Context';
 import { TooltipArrow } from './TooltipArrow';
 import { TooltipTrigger } from './TooltipTrigger';
 
@@ -21,15 +22,18 @@ export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
 }
 
 const _Tooltip = ({ children, variant, size, open, ...rest }: TooltipProps) => {
-  const props = {
-    ...rest,
-    isOpen: open,
-  };
+  const { setOpen } = useTooltipContext();
+
+  useLayoutEffect(() => {
+    setOpen(open);
+    return () => setOpen(undefined);
+  }, [open, setOpen]);
+
   const classNames = useClassNames({ component: 'Tooltip', variant, size });
 
   return (
     <Tooltip
-      {...props}
+      {...rest}
       className={cn('group/tooltip z-30', classNames.container)}
     >
       <OverlayArrow className={classNames.arrow}>
