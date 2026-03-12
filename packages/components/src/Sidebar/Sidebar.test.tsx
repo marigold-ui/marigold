@@ -50,6 +50,7 @@ afterEach(async () => {
   vi.useRealTimers();
 
   // Remove overlay container to prevent React Aria modal/portal state leaking
+  // eslint-disable-next-line testing-library/no-node-access
   const overlay = document.getElementById('storybook-root');
   if (overlay) overlay.remove();
 
