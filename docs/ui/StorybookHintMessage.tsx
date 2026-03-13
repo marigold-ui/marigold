@@ -1,8 +1,46 @@
-import { Aside, Card, Link, Stack } from '@/ui';
-import { track } from '@vercel/analytics/react';
+'use client';
+
+import { Card } from 'fumadocs-ui/components/card';
+import { Aside, Link, Stack } from '@marigold/components';
 import { ExternalLink } from './icons/ExternalLink';
 
-const Storybook = () => (
+export const StorybookHintMessage = ({ component }: { component: string }) => {
+  const onPress = () => {
+    // Track analytics if needed
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'storybook_visit', {
+        component,
+      });
+    }
+  };
+
+  return (
+    <Card title="">
+      <Aside space={4}>
+        <div className="flex h-full items-center">
+          <StorybookIcon />
+        </div>
+        <Stack space={2}>
+          <div className="text-sm">
+            Did you know? You can explore, test, and customize props live in
+            Marigold's storybook. Watch the effects they have in real-time!
+          </div>
+          <div className="text-sm">
+            <Link
+              href={`https://marigold-latest.vercel.app/?path=/story/components-${component.toLowerCase()}--basic`}
+              onPress={onPress}
+            >
+              View {component} stories
+              <ExternalLink className="text-text-primary-muted ml-0.5 inline size-[14px] align-text-bottom" />
+            </Link>
+          </div>
+        </Stack>
+      </Aside>
+    </Card>
+  );
+};
+
+const StorybookIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -27,34 +65,3 @@ const Storybook = () => (
     />
   </svg>
 );
-
-export const StorybookHintMessage = ({ component }: { component: string }) => {
-  const onPress = () => {
-    track('Storybook Visit', { component });
-  };
-
-  return (
-    <Card variant="outline" px={3} py={4}>
-      <Aside space={4}>
-        <div className="flex h-full items-center">
-          <Storybook />
-        </div>
-        <Stack space={2}>
-          <div className="text-sm">
-            Did you know? You can explore, test, and customize props live in
-            Marigold's storybook. Watch the effects they have in real-time!
-          </div>
-          <div className="text-sm">
-            <Link
-              href={`https://marigold-latest.vercel.app/?path=/story/components-${component.toLocaleLowerCase()}--basic`}
-              onPress={onPress}
-            >
-              View {component} stories
-              <ExternalLink className="text-text-primary-muted ml-0.5 inline size-[14px] align-text-bottom" />
-            </Link>
-          </div>
-        </Stack>
-      </Aside>
-    </Card>
-  );
-};

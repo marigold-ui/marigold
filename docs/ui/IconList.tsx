@@ -1,6 +1,7 @@
 'use-client';
 
-import { Button, Card, Icons, Text, Tiles, cn } from '@/ui';
+import { Button, Icons, Text, Tiles, cn } from '@/ui';
+import { Card } from 'fumadocs-ui/components/card';
 import { useRef, useState } from 'react';
 import { useCopyToClipboard, useDebounce } from 'react-use';
 
@@ -44,7 +45,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
   return (
     <div className="mt-2 [&>button]:h-auto [&>button]:w-full [&>button]:p-0">
       <Button onPress={handleClick}>
-        <Card p={3} variant="hovering">
+        <Card className="w-full p-3" title="">
           <div className="relative grid h-24 w-full place-items-center">
             <div
               className={cn(
