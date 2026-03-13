@@ -1,0 +1,196 @@
+---
+title: App Shell
+description: L-shape layout combining sidebar navigation, top navigation, and main content.
+badge: alpha
+---
+
+The App Shell pattern provides a consistent application frame using a sidebar for primary navigation, a top navigation bar for contextual actions, and a main content area. Together, they form an L-shape layout where the sidebar spans the full height and the header stretches across the remaining width.
+
+This pattern is suited for applications with multiple sections or modules, where persistent navigation and contextual information need to be accessible at all times.
+
+## Anatomy
+
+The image below shows the three main areas of the App Shell and how they are arranged.
+
+<ImageZoom
+  className="mx-auto"
+  src="/app-shell/app-shell-anatomy.svg"
+  alt="App Shell Anatomy"
+  width="600"
+  height="400"
+/>
+
+- **Sidebar:** Persistent vertical navigation on the left side. Contains the application logo or name, primary navigation links, grouped sections, and an optional footer. The sidebar can be collapsed or expanded using a toggle.
+- **Header:** Horizontal bar at the top, next to the sidebar. Holds the sidebar toggle button, breadcrumbs for orientation, and user-related controls such as account menus or status badges.
+- **Main:** The primary content area, scrollable independently. This is where page-specific content is rendered, wrapped in appropriate spacing.
+
+## Composition
+
+The App Shell is composed of three components: [AppLayout](/components/layout/app-layout), [Sidebar](/components/navigation/sidebar), and [TopNavigation](/components/navigation/topnavigation). They are wired together using provider nesting:
+
+1. **`RouterProvider`** - Handles navigation between pages
+2. **`Sidebar.Provider`** - Manages sidebar open/collapsed state, shared between `Sidebar` and `Sidebar.Toggle`
+3. **`AppLayout`** - CSS Grid container that positions the three areas
+
+```tsx
+<RouterProvider navigate={navigate}>
+  <Sidebar.Provider defaultOpen>
+    <AppLayout>
+      <AppLayout.Sidebar>
+        <Sidebar>...</Sidebar>
+      </AppLayout.Sidebar>
+      <AppLayout.Header>
+        <TopNavigation>
+          <TopNavigation.Start>
+            <Sidebar.Toggle />
+          </TopNavigation.Start>
+          <TopNavigation.Middle>...</TopNavigation.Middle>
+          <TopNavigation.End>...</TopNavigation.End>
+        </TopNavigation>
+      </AppLayout.Header>
+      <AppLayout.Main>...</AppLayout.Main>
+    </AppLayout>
+  </Sidebar.Provider>
+</RouterProvider>
+```
+
+## Guidelines
+
+### Breadcrumbs for Orientation
+
+Use breadcrumbs in the header's middle section to show the user's current location within the application hierarchy. Avoid using tabs or other navigation elements in this area.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use breadcrumbs in the header middle area to show the current page
+      context.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't place tabs or additional navigation in the header middle area.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Sidebar for Primary Navigation Only
+
+The sidebar should contain the application's main navigation structure. Avoid placing actions, forms, or content unrelated to navigation in the sidebar.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use the sidebar exclusively for primary navigation links and grouped
+      sections.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't add action buttons, form fields, or unrelated content to the
+      sidebar.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Responsive Header Content
+
+The header content should adapt to available space. Keep the number of items reasonable and ensure they remain usable at different viewport sizes.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep header content concise and ensure it works at different widths.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't overload the header with too many elements that require horizontal
+      scrolling.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Demo
+
+A full-page example showing the complete App Shell pattern with sidebar navigation, breadcrumbs, user menu, and scrollable content.
+
+<Stack space={2}>
+  <Center>[View Demo](/pattern/app-shell)</Center>
+  <Center>
+    [View
+    Code](https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/pattern/app-shell)
+  </Center>
+</Stack>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'AppLayout',
+      href: '../../components/layout/app-layout',
+      caption:
+        'The grid container that positions sidebar, header, and main areas.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Sidebar',
+      href: '../../components/navigation/sidebar',
+      caption: 'Persistent vertical navigation with collapsible groups.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'TopNavigation',
+      href: '../../components/navigation/topnavigation',
+      caption:
+        'Horizontal bar for contextual actions, breadcrumbs, and user controls.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
