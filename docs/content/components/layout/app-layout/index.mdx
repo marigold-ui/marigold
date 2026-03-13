@@ -1,0 +1,110 @@
+---
+title: AppLayout
+description: L-shape application layout with sidebar, header, and main content areas.
+badge: beta
+---
+
+The `<AppLayout>` creates an L-shape application layout using CSS Grid. It places a sidebar on the left spanning the full height, with a header and scrollable main content area stacked on the right. The layout fills the full viewport height and prevents the page from scrolling — only the main content area scrolls.
+
+## Usage
+
+Use `<AppLayout>` when your application needs a persistent sidebar alongside a top navigation bar — the classic "L-shape" layout found in admin panels, dashboards, and enterprise tools.
+
+### Basic structure
+
+The three slot components can be placed in any order as children of `<AppLayout>`. The CSS Grid template ensures they render in the correct positions.
+
+```tsx
+<AppLayout>
+  <AppLayout.Sidebar>{/* Sidebar content */}</AppLayout.Sidebar>
+  <AppLayout.Header>{/* Top navigation */}</AppLayout.Header>
+  <AppLayout.Main>{/* Scrollable page content */}</AppLayout.Main>
+</AppLayout>
+```
+
+### Integration with Sidebar and TopNavigation
+
+`<AppLayout>` is designed to work with the `<Sidebar>` and `<TopNavigation>` components. Place the `<Sidebar.Provider>` outside `<AppLayout>` so the sidebar toggle and responsive behavior work across the entire layout.
+
+<ComponentDemo name="app-layout-full" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>Use `<AppLayout>` as the outermost layout wrapper for the page</li>
+        <li>Place `<Sidebar.Provider>` and `<RouterProvider>` outside `<AppLayout>`</li>
+        <li>Keep header content compact — it has a fixed height</li>
+      </ul>
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>Don't nest `<AppLayout>` inside other layout containers</li>
+        <li>Don't put scrollable content in `<AppLayout.Header>` — use `<AppLayout.Main>` for that</li>
+        <li>Don't use `<AppLayout>` for simple pages that only need a header or only a sidebar</li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Scrolling
+
+Only the `<AppLayout.Main>` area scrolls. The root container uses `overflow: hidden` to prevent the page itself from scrolling, while `<AppLayout.Main>` applies `overflow-y: auto`. The sidebar and header remain fixed in place as the user scrolls through the main content.
+
+### Responsive behavior
+
+`<AppLayout>` itself does not change its grid structure at different breakpoints — it always renders the three-area L-shape. Responsive behavior comes from the components placed inside the slots:
+
+- The `<Sidebar>` component handles its own responsive behavior (collapsing on desktop, rendering as a modal sheet on mobile)
+- The `<TopNavigation>` adapts its content layout at smaller widths
+
+When the `<Sidebar>` collapses, the sidebar grid column shrinks to `auto` width, and the header and main areas expand to fill the available space.
+
+### Accessibility
+
+- **Landmarks:** `<AppLayout.Main>` renders as `<main>`, providing a standard landmark region for screen readers. The sidebar landmark is provided by the `<Sidebar>` component placed inside `<AppLayout.Sidebar>`
+- **Scrollable region:** The main area is scrollable and can be navigated with keyboard (arrow keys, Page Up/Down, Home/End)
+- **Stacking order:** The header uses `z-index: 1` to ensure it stays above main content during scroll
+
+<Callout title="Note">
+  `<AppLayout>` is a structural layout component. Accessibility features like keyboard navigation, focus management, and ARIA attributes are provided by the components placed inside it — see [Sidebar](/components/navigation/sidebar) and [TopNavigation](/components/navigation/topnavigation) for their accessibility details.
+</Callout>
+
+## Props
+
+<StorybookHintMessage component={'AppLayout'} />
+
+### AppLayout
+
+<AutoTypeTable path="AppLayout" name="AppLayoutProps" />
+
+### AppLayout.Sidebar
+
+<AutoTypeTable path="AppLayout" name="AppLayoutSidebarProps" />
+
+### AppLayout.Header
+
+<AutoTypeTable path="AppLayout" name="AppLayoutHeaderProps" />
+
+### AppLayout.Main
+
+<AutoTypeTable path="AppLayout" name="AppLayoutMainProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Sidebar](/components/navigation/sidebar): Use standalone when you only need
+    side navigation without a fixed header bar.
+  </li>
+  <li>
+    [TopNavigation](/components/navigation/topnavigation): Use standalone for a
+    horizontal navigation bar without a sidebar.
+  </li>
+  <li>
+    [Grid](/components/layout/grid): Use for custom grid layouts that don't
+    follow the L-shape pattern.
+  </li>
+</ul>
