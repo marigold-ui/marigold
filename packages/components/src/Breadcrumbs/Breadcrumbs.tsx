@@ -5,16 +5,21 @@ import {
   RefAttributes,
   forwardRef,
   isValidElement,
+  useRef,
 } from 'react';
 import {
+  Link,
   Breadcrumb as RACBreadcrumb,
   Breadcrumbs as RACBreadcrumbs,
   BreadcrumbsProps as RACBreadcrumbsProps,
 } from 'react-aria-components';
+import { useObjectRef } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons/ChevronRight';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
 import { BreadcrumbsItem, BreadcrumbsItemProps } from './BreadcrumbsItem';
+import { HiddenBreadcrumbs } from './HiddenBreadcrumbs';
+import { useAutoCollapse } from './useAutoCollapse';
 
 type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
@@ -33,8 +38,10 @@ export interface BreadcrumbsProps extends Omit<
 
   /**
    * Maximum number of visible items before the breadcrumbs collapse.
+   * Set to `'auto'` to automatically collapse based on available space.
+   * @default 'auto'
    */
-  maxVisibleItems?: number;
+  maxVisibleItems?: number | 'auto';
 
   /**
    * The breadcrumb items to be displayed.
@@ -49,7 +56,10 @@ export interface BreadcrumbsComponent extends ForwardRefExoticComponent<
 }
 
 const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
-  ({ children, variant, size, disabled, maxVisibleItems, ...props }, ref) => {
+  (
+    { children, variant, size, disabled, maxVisibleItems = 'auto', ...props },
+    ref
+  ) => {
     const {
       container,
       item: breadcrumbsItem,
@@ -64,36 +74,66 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
     const items = Children.toArray(children);
     const total = items.length;
 
+    const objRef = useObjectRef(ref);
+    const hiddenRef = useRef<HTMLDivElement>(null);
+
+    const autoMax = useAutoCollapse(objRef, hiddenRef, total);
+
+    const effectiveMax = maxVisibleItems === 'auto' ? autoMax : maxVisibleItems;
+
     const shouldCollapse =
-      typeof maxVisibleItems === 'number' &&
-      maxVisibleItems >= 2 &&
-      total > maxVisibleItems;
+      typeof effectiveMax === 'number' &&
+      effectiveMax >= 2 &&
+      total > effectiveMax;
 
-    const hiddenItems = shouldCollapse ? items.slice(1, -1) : [];
+    // When collapsed, show: [first, ellipsis, ...trailing, current]
+    // effectiveMax=2: [ellipsis, current] (no first item)
+    // effectiveMax=3: [first, ellipsis, current]
+    // effectiveMax=4: [first, ellipsis, item(n-1), current]
+    const sliceIndex = shouldCollapse
+      ? effectiveMax === 2
+        ? total - 1
+        : total - (effectiveMax - 2)
+      : 0;
 
-    const ellipsis = (
-      <BreadcrumbsItem key="ellipsis" href="">
-        <BreadcrumbEllipsis hiddenItems={hiddenItems} />
-      </BreadcrumbsItem>
-    );
+    const hiddenItems = shouldCollapse
+      ? effectiveMax === 2
+        ? items.slice(0, -1)
+        : items.slice(1, sliceIndex)
+      : [];
 
     const displayedItems = shouldCollapse
-      ? maxVisibleItems === 2
-        ? [items[0], ellipsis]
-        : [items[0], ellipsis, items[total - 1]]
+      ? effectiveMax === 2
+        ? [null, ...items.slice(sliceIndex)]
+        : [items[0], null, ...items.slice(sliceIndex)]
       : items;
 
-    return (
+    const breadcrumbs = (
       <RACBreadcrumbs
         {...props}
-        ref={ref}
+        ref={objRef}
         isDisabled={disabled}
-        className={container}
+        className={cn(
+          container,
+          maxVisibleItems === 'auto' &&
+            'flex-nowrap overflow-hidden whitespace-nowrap'
+        )}
       >
         {displayedItems.map((item, index) => {
-          if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
+          if (item === null) {
+            return (
+              <RACBreadcrumb key="ellipsis" className={breadcrumbsItem}>
+                <BreadcrumbEllipsis hiddenItems={hiddenItems} />
+                <ChevronRight
+                  aria-hidden="true"
+                  size={16}
+                  data-testid="breadcrumb-chevronright"
+                />
+              </RACBreadcrumb>
+            );
+          }
 
-          const isLast = index === displayedItems.length - 1;
+          if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
 
           const { href, children: itemChildren, ...ariaProps } = item.props;
 
@@ -103,29 +143,38 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
               {...ariaProps}
               className={breadcrumbsItem}
             >
-              {href ? (
-                <a
-                  href={href}
-                  className={cn(link, isLast && current)}
-                  aria-current={isLast ? 'page' : undefined}
-                >
-                  {itemChildren}
-                </a>
-              ) : (
-                itemChildren
-              )}
-
-              {!isLast && (
-                <ChevronRight
-                  aria-hidden="true"
-                  size={16}
-                  data-testid="breadcrumb-chevronright"
-                />
+              {({ isCurrent }) => (
+                <>
+                  <Link href={href} className={cn(link, isCurrent && current)}>
+                    {itemChildren}
+                  </Link>
+                  {!isCurrent && (
+                    <ChevronRight
+                      aria-hidden="true"
+                      size={16}
+                      data-testid="breadcrumb-chevronright"
+                    />
+                  )}
+                </>
               )}
             </RACBreadcrumb>
           );
         })}
       </RACBreadcrumbs>
+    );
+
+    if (maxVisibleItems !== 'auto') {
+      return breadcrumbs;
+    }
+
+    return (
+      <HiddenBreadcrumbs
+        items={items}
+        itemClassName={breadcrumbsItem}
+        hiddenRef={hiddenRef}
+      >
+        {breadcrumbs}
+      </HiddenBreadcrumbs>
     );
   }
 ) as BreadcrumbsComponent;
