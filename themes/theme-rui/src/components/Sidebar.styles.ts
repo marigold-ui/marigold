@@ -1,13 +1,13 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Sidebar: ThemeComponent<'Sidebar'> = {
-  overlay: cva({ base: 'fixed inset-0 h-(--visual-viewport-height)' }),
+  overlay: cva({}),
   modal: cva({
     base: [
       'flex h-full *:flex-1',
       'justify-start',
       'entering:animate-slide-in-left',
-      'exiting:animate-slide-out-left',
+      'exiting:animate-slide-out-left exiting:[--slide-out-duration:0.1s]',
       'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
     ],
   }),
@@ -24,14 +24,14 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
   content: cva({ base: 'sm:w-64' }),
-  header: cva({ base: 'border-border border-b px-6 py-3 min-h-14' }),
+  header: cva({ base: 'ui-panel-header min-h-14' }),
   nav: cva({
     base: [
       'flex flex-col px-3 py-1 overflow-y-auto outline-none',
       'ui-scrollbar',
     ],
   }),
-  footer: cva({ base: 'border-border border-t px-6 py-3' }),
+  footer: cva({ base: 'ui-panel-actions' }),
   toggle: cva({
     base: [
       'ui-button-base ui-press',
@@ -46,7 +46,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   navPanel: cva({
     base: [
       'flex flex-col gap-0.5 p-1',
-      'transition-[visibility,opacity,translate,filter] duration-300 ease-out sm:duration-200',
+      'transition-[opacity,translate,filter] duration-300 ease-out sm:duration-200',
 
       // Panel behind (already visited) — slides left
       'data-[position=before]:absolute data-[position=before]:inset-x-0 data-[position=before]:top-0',

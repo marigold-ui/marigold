@@ -1,15 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export type SidebarState = 'expanded' | 'collapsed';
 
 const COOKIE_NAME = 'marigold:sidebar:state';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+const COOKIE_RE = new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]*)`);
 
 const readCookie = (): SidebarState | undefined => {
   if (typeof document === 'undefined') return undefined;
-  const match = document.cookie.match(
-    new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]*)`)
-  );
+  const match = document.cookie.match(COOKIE_RE);
   return match ? (match[1] as SidebarState) : undefined;
 };
 
@@ -29,7 +28,6 @@ export interface UseSidebarStateProps {
 
 export interface SidebarStateResult {
   readonly state: SidebarState;
-  readonly isMobile: boolean;
   toggleSidebar: () => void;
 }
 
@@ -54,22 +52,24 @@ export const useSidebarState = (
   const [_openMobile, _setOpenMobile] = useState(false);
 
   const isOpen = controlledOpen ?? (isMobile ? _openMobile : _open);
+  const state: SidebarState = isOpen ? 'expanded' : 'collapsed';
 
   const toggleSidebar = useCallback(() => {
-    const newOpen = !isOpen;
-
     if (onOpenChange) {
-      onOpenChange(newOpen);
+      onOpenChange(!isOpen);
       return;
     }
 
     if (isMobile) {
       _setOpenMobile(prev => !prev);
     } else {
-      writeCookie(newOpen ? 'expanded' : 'collapsed');
-      _setOpen(newOpen);
+      _setOpen(prev => {
+        const next = !prev;
+        writeCookie(next ? 'expanded' : 'collapsed');
+        return next;
+      });
     }
-  }, [isOpen, isMobile, onOpenChange]);
+  }, [isMobile, isOpen, onOpenChange]);
 
   // Keyboard shortcut: Cmd+B / Ctrl+B
   useEffect(() => {
@@ -83,10 +83,5 @@ export const useSidebarState = (
     return () => window.removeEventListener('keydown', handler);
   }, [toggleSidebar]);
 
-  const state: SidebarState = isOpen ? 'expanded' : 'collapsed';
-
-  return useMemo(
-    () => ({ state, toggleSidebar, isMobile }),
-    [state, toggleSidebar, isMobile]
-  );
+  return { state, toggleSidebar };
 };

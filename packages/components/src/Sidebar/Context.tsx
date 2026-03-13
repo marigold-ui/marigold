@@ -25,6 +25,7 @@ export const useSidebar = (): SidebarContextValue => {
 };
 
 export interface SidebarProviderProps {
+  /** Children of the component. */
   children: ReactNode;
   /** Default open state for desktop sidebar. */
   defaultOpen?: boolean;
@@ -32,7 +33,9 @@ export interface SidebarProviderProps {
   open?: boolean;
   /** Callback when open state changes. */
   onOpenChange?: (open: boolean) => void;
+  /** The visual style variant of the sidebar. */
   variant?: string;
+  /** The size of the sidebar. */
   size?: string;
 }
 

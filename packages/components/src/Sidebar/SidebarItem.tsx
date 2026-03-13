@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { ReactElement, ReactNode } from 'react';
 
 // Data carrier — renders null, consumed by collection builder
@@ -20,13 +21,14 @@ const _SidebarItem = (_props: SidebarItemProps): ReactElement | null => null;
 _SidebarItem.__SIDEBAR_ITEM__ = true as const;
 export const SidebarItem = _SidebarItem;
 
-// Renders null — visual divider marker consumed by collection builder
+// Divider marker, consumed by collection builder
 const _SidebarSeparator = (): ReactElement | null => null;
 _SidebarSeparator.__SIDEBAR_SEPARATOR__ = true as const;
 export const SidebarSeparator = _SidebarSeparator;
 
-// Renders null — section label marker consumed by collection builder
+// Label marker, consumed by collection builder
 export interface SidebarGroupLabelProps {
+  /** The label content for the group. */
   children?: ReactNode;
 }
 

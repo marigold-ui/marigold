@@ -117,18 +117,20 @@ export const Basic = meta.story({
   render: () => <Layout />,
 });
 
+const ControlledExample = () => {
+  const [open, setOpen] = useState(true);
+  return (
+    <Layout open={open} onOpenChange={setOpen}>
+      <Button onPress={() => setOpen(!open)}>
+        {open ? 'Close' : 'Open'} Sidebar
+      </Button>
+      <pre className="mt-2">Sidebar is {open ? 'open' : 'closed'}</pre>
+    </Layout>
+  );
+};
+
 export const Controlled = meta.story({
-  render: () => {
-    const [open, setOpen] = useState(true);
-    return (
-      <Layout open={open} onOpenChange={setOpen}>
-        <Button onPress={() => setOpen(!open)}>
-          {open ? 'Close' : 'Open'} Sidebar
-        </Button>
-        <pre className="mt-2">Sidebar is {open ? 'open' : 'closed'}</pre>
-      </Layout>
-    );
-  },
+  render: () => <ControlledExample />,
 });
 
 const complexPages: Record<string, { label: string }> = {
@@ -152,158 +154,157 @@ const complexPages: Record<string, { label: string }> = {
   '/team-overview': { label: 'Team Overview' },
 };
 
-export const Complex = meta.story({
-  render: () => {
-    const [currentPath, setCurrentPath] = useState('/dashboard');
+const ComplexExample = () => {
+  const [currentPath, setCurrentPath] = useState('/dashboard');
 
-    return (
-      <RouterProvider navigate={setCurrentPath}>
-        <Sidebar.Provider>
-          <div className="flex h-screen">
-            <Sidebar>
-              <Sidebar.Header>
-                <Text weight="bold">TicketDesk</Text>
-              </Sidebar.Header>
-              <Sidebar.Nav>
+  return (
+    <RouterProvider navigate={setCurrentPath}>
+      <Sidebar.Provider>
+        <div className="flex h-screen">
+          <Sidebar>
+            <Sidebar.Header>
+              <Text weight="bold">TicketDesk</Text>
+            </Sidebar.Header>
+            <Sidebar.Nav>
+              <Sidebar.Item
+                href="/dashboard"
+                active={currentPath === '/dashboard'}
+              >
+                Dashboard
+              </Sidebar.Item>
+              <Sidebar.Item id="tickets" textValue="Tickets">
+                Tickets
                 <Sidebar.Item
-                  href="/dashboard"
-                  active={currentPath === '/dashboard'}
+                  href="/my-tickets"
+                  active={currentPath === '/my-tickets'}
                 >
-                  Dashboard
-                </Sidebar.Item>
-                <Sidebar.Item id="tickets" textValue="Tickets">
-                  Tickets
-                  <Sidebar.Item
-                    href="/my-tickets"
-                    active={currentPath === '/my-tickets'}
-                  >
-                    My Tickets
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/all-tickets"
-                    active={currentPath === '/all-tickets'}
-                  >
-                    All Tickets
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/unassigned"
-                    active={currentPath === '/unassigned'}
-                  >
-                    Unassigned
-                  </Sidebar.Item>
-                  <Sidebar.Separator />
-                  <Sidebar.Item
-                    href="/urgent"
-                    active={currentPath === '/urgent'}
-                  >
-                    Urgent
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/pending-review"
-                    active={currentPath === '/pending-review'}
-                  >
-                    Pending Review
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/archived-tickets"
-                    active={currentPath === '/archived-tickets'}
-                  >
-                    Archived
-                  </Sidebar.Item>
-                </Sidebar.Item>
-                <Sidebar.GroupLabel>Workspace</Sidebar.GroupLabel>
-                <Sidebar.Item id="projects" textValue="Projects">
-                  Projects
-                  <Sidebar.Item
-                    href="/active-projects"
-                    active={currentPath === '/active-projects'}
-                  >
-                    Active
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/completed-projects"
-                    active={currentPath === '/completed-projects'}
-                  >
-                    Completed
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/archived-projects"
-                    active={currentPath === '/archived-projects'}
-                  >
-                    Archived
-                  </Sidebar.Item>
+                  My Tickets
                 </Sidebar.Item>
                 <Sidebar.Item
-                  href="/customers"
-                  active={currentPath === '/customers'}
+                  href="/all-tickets"
+                  active={currentPath === '/all-tickets'}
                 >
-                  Customers
+                  All Tickets
                 </Sidebar.Item>
                 <Sidebar.Item
-                  href="/knowledge-base"
-                  active={currentPath === '/knowledge-base'}
+                  href="/unassigned"
+                  active={currentPath === '/unassigned'}
                 >
-                  Knowledge Base
+                  Unassigned
                 </Sidebar.Item>
                 <Sidebar.Separator />
-                <Sidebar.Item id="reports" textValue="Reports">
-                  Reports
-                  <Sidebar.Item
-                    href="/ticket-volume"
-                    active={currentPath === '/ticket-volume'}
-                  >
-                    Ticket Volume
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/response-times"
-                    active={currentPath === '/response-times'}
-                  >
-                    Response Times
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/sla-compliance"
-                    active={currentPath === '/sla-compliance'}
-                  >
-                    SLA Compliance
-                  </Sidebar.Item>
-                  <Sidebar.Separator />
-                  <Sidebar.Item
-                    href="/agent-performance"
-                    active={currentPath === '/agent-performance'}
-                  >
-                    Agent Performance
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/customer-satisfaction"
-                    active={currentPath === '/customer-satisfaction'}
-                  >
-                    Customer Satisfaction
-                  </Sidebar.Item>
-                  <Sidebar.Item
-                    href="/team-overview"
-                    active={currentPath === '/team-overview'}
-                  >
-                    Team Overview
-                  </Sidebar.Item>
+                <Sidebar.Item href="/urgent" active={currentPath === '/urgent'}>
+                  Urgent
                 </Sidebar.Item>
-              </Sidebar.Nav>
-              <Sidebar.Footer>
-                <Text fontSize="xs">Footer content</Text>
-              </Sidebar.Footer>
-            </Sidebar>
-            <main className="flex-1 p-4">
-              <Sidebar.Toggle />
-              <Headline level={2}>{complexPages[currentPath]?.label}</Headline>
-              <Text>
-                You are viewing the{' '}
-                <strong>{complexPages[currentPath]?.label}</strong> page.
-              </Text>
-            </main>
-          </div>
-        </Sidebar.Provider>
-      </RouterProvider>
-    );
-  },
+                <Sidebar.Item
+                  href="/pending-review"
+                  active={currentPath === '/pending-review'}
+                >
+                  Pending Review
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/archived-tickets"
+                  active={currentPath === '/archived-tickets'}
+                >
+                  Archived
+                </Sidebar.Item>
+              </Sidebar.Item>
+              <Sidebar.GroupLabel>Workspace</Sidebar.GroupLabel>
+              <Sidebar.Item id="projects" textValue="Projects">
+                Projects
+                <Sidebar.Item
+                  href="/active-projects"
+                  active={currentPath === '/active-projects'}
+                >
+                  Active
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/completed-projects"
+                  active={currentPath === '/completed-projects'}
+                >
+                  Completed
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/archived-projects"
+                  active={currentPath === '/archived-projects'}
+                >
+                  Archived
+                </Sidebar.Item>
+              </Sidebar.Item>
+              <Sidebar.Item
+                href="/customers"
+                active={currentPath === '/customers'}
+              >
+                Customers
+              </Sidebar.Item>
+              <Sidebar.Item
+                href="/knowledge-base"
+                active={currentPath === '/knowledge-base'}
+              >
+                Knowledge Base
+              </Sidebar.Item>
+              <Sidebar.Separator />
+              <Sidebar.Item id="reports" textValue="Reports">
+                Reports
+                <Sidebar.Item
+                  href="/ticket-volume"
+                  active={currentPath === '/ticket-volume'}
+                >
+                  Ticket Volume
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/response-times"
+                  active={currentPath === '/response-times'}
+                >
+                  Response Times
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/sla-compliance"
+                  active={currentPath === '/sla-compliance'}
+                >
+                  SLA Compliance
+                </Sidebar.Item>
+                <Sidebar.Separator />
+                <Sidebar.Item
+                  href="/agent-performance"
+                  active={currentPath === '/agent-performance'}
+                >
+                  Agent Performance
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/customer-satisfaction"
+                  active={currentPath === '/customer-satisfaction'}
+                >
+                  Customer Satisfaction
+                </Sidebar.Item>
+                <Sidebar.Item
+                  href="/team-overview"
+                  active={currentPath === '/team-overview'}
+                >
+                  Team Overview
+                </Sidebar.Item>
+              </Sidebar.Item>
+            </Sidebar.Nav>
+            <Sidebar.Footer>
+              <Text fontSize="xs">Footer content</Text>
+            </Sidebar.Footer>
+          </Sidebar>
+          <main className="flex-1 p-4">
+            <Sidebar.Toggle />
+            <Headline level={2}>{complexPages[currentPath]?.label}</Headline>
+            <Text>
+              You are viewing the{' '}
+              <strong>{complexPages[currentPath]?.label}</strong> page.
+            </Text>
+          </main>
+        </div>
+      </Sidebar.Provider>
+    </RouterProvider>
+  );
+};
+
+export const Complex = meta.story({
+  render: () => <ComplexExample />,
 });
 
 export const WithActiveBranch = meta.story({

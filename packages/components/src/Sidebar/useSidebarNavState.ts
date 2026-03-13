@@ -7,7 +7,6 @@ import type {
   SidebarNode,
 } from './collection';
 
-// Recursively collect all branch nodes (items with children) at every depth
 const collectBranches = (nodes: SidebarNode[]): SidebarItemNode[] => {
   const result: SidebarItemNode[] = [];
   for (const node of nodes) {
@@ -22,21 +21,25 @@ const collectBranches = (nodes: SidebarNode[]): SidebarItemNode[] => {
 export interface SidebarNavStateResult {
   readonly collection: SidebarCollection;
   readonly branchNodes: SidebarItemNode[];
-  readonly openBranch: string | null;
   readonly stack: string[];
   setOpenBranch: (key: string | null) => void;
 }
 
-export const useSidebarNavState = (
-  children: ReactNode
-): SidebarNavStateResult => {
-  const collection = useMemo(() => buildCollection(children), [children]);
+export interface UseSidebarNavStateProps {
+  children: ReactNode;
+}
 
-  // Derive which branch contains the active item
-  const activeBranch = useMemo(
-    () => findActiveBranch(collection),
-    [collection]
-  );
+export const useSidebarNavState = ({
+  children,
+}: UseSidebarNavStateProps): SidebarNavStateResult => {
+  const { collection, activeBranch, branchNodes } = useMemo(() => {
+    const col = buildCollection(children);
+    return {
+      collection: col,
+      activeBranch: findActiveBranch(col),
+      branchNodes: collectBranches(col.rootNodes),
+    };
+  }, [children]);
 
   // Explicit panel state — which branch panel is shown (null = root).
   // Syncs when the URL-derived activeBranch changes.
@@ -50,10 +53,5 @@ export const useSidebarNavState = (
 
   const stack = openBranch ? [openBranch] : [];
 
-  const branchNodes = useMemo(
-    () => collectBranches(collection.rootNodes),
-    [collection]
-  );
-
-  return { collection, branchNodes, openBranch, stack, setOpenBranch };
+  return { collection, branchNodes, stack, setOpenBranch };
 };
