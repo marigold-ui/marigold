@@ -1,3 +1,5 @@
+'use client';
+
 import type { PropsWithChildren } from 'react';
 import { Tiles } from '@marigold/components';
 import { cn } from '@marigold/system';
@@ -19,7 +21,7 @@ const Container = ({
 const Title = ({ children }: PropsWithChildren) => (
   <div
     className={cn(
-      '[grid-area:title]',
+      'text-neutral-900 [grid-area:title] dark:text-neutral-900',
       'group-data-[type=do]:bg-bg-success group-data-[type=do]:border-border-success group-data-[type=dont]:border-border-error group-data-[type=dont]:bg-bg-error',
       'flex items-center gap-2 border-t-4 px-4 pt-4 pb-2 font-bold uppercase'
     )}
@@ -28,15 +30,19 @@ const Title = ({ children }: PropsWithChildren) => (
   </div>
 );
 
-const Figure = ({ children }: PropsWithChildren) => (
+export const DoFigure = ({ children }: PropsWithChildren) => (
   <div className="not-prose [grid-area:figure]">{children}</div>
 );
 
-const Description = ({ children }: PropsWithChildren) => (
-  <div className="group-data-[type=do]:bg-bg-success group-data-[type=dont]:bg-bg-error px-4 pb-4 text-sm text-pretty [grid-area:description] *:m-0 *:leading-relaxed">
+export const DoDescription = ({ children }: PropsWithChildren) => (
+  <div className="group-data-[type=do]:bg-bg-success group-data-[type=dont]:bg-bg-error px-4 pb-4 text-sm text-pretty text-neutral-900 [grid-area:description] *:m-0 *:leading-relaxed dark:text-neutral-900">
     {children}
   </div>
 );
+
+// Alias for Dont (same components)
+export const DontFigure = DoFigure;
+export const DontDescription = DoDescription;
 
 // Do
 // ---------------
@@ -55,9 +61,6 @@ export const Do = ({ children }: PropsWithChildren) => (
   </Container>
 );
 
-Do.Figure = Figure;
-Do.Description = Description;
-
 // Dont
 // ---------------
 export const Dont = ({ children }: PropsWithChildren) => (
@@ -74,9 +77,6 @@ export const Dont = ({ children }: PropsWithChildren) => (
     {children}
   </Container>
 );
-
-Dont.Figure = Figure;
-Dont.Description = Description;
 
 export const GuidelineTiles = ({ children }: PropsWithChildren) => (
   <div className="my-5">
