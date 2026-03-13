@@ -9,9 +9,30 @@ export interface AppLayoutProps {
   children?: ReactNode;
 }
 
+export interface AppLayoutHeaderProps {
+  /**
+   * Children of the component.
+   */
+  children?: ReactNode;
+}
+
+export interface AppLayoutSidebarProps {
+  /**
+   * Children of the component.
+   */
+  children?: ReactNode;
+}
+
+export interface AppLayoutMainProps {
+  /**
+   * Children of the component.
+   */
+  children?: ReactNode;
+}
+
 // Sub-components
 // ---------------
-const AppLayoutHeader = ({ children }: { children?: ReactNode }) => {
+const AppLayoutHeader = ({ children }: AppLayoutHeaderProps) => {
   return (
     <div className="z-1 h-(--app-layout-header-height) [grid-area:header] *:h-full">
       {children}
@@ -19,11 +40,11 @@ const AppLayoutHeader = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-const AppLayoutSidebar = ({ children }: { children?: ReactNode }) => {
+const AppLayoutSidebar = ({ children }: AppLayoutSidebarProps) => {
   return <div className="[grid-area:sidebar]">{children}</div>;
 };
 
-const AppLayoutMain = ({ children }: { children?: ReactNode }) => {
+const AppLayoutMain = ({ children }: AppLayoutMainProps) => {
   return <main className="overflow-y-auto [grid-area:main]">{children}</main>;
 };
 
