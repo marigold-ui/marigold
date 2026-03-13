@@ -6,19 +6,6 @@ badge: beta
 
 The `<AppLayout>` creates an L-shape application layout using CSS Grid. It places a sidebar on the left spanning the full height, with a header and scrollable main content area stacked on the right. The layout fills the full viewport height and prevents the page from scrolling — only the main content area scrolls.
 
-## Anatomy
-
-The `<AppLayout>` uses a compound component pattern with three slot components that map to named CSS Grid areas.
-
-{/* TODO: Create anatomy image at /public/app-layout/app-layout-anatomy.jpg */}
-
-<ul>
-  <li><b>AppLayout:</b> The root grid container. Sets up the L-shape grid with `sidebar`, `header`, and `main` areas.</li>
-  <li><b>AppLayout.Sidebar:</b> Left column spanning full height. Typically contains a `<Sidebar>` component.</li>
-  <li><b>AppLayout.Header:</b> Top-right area with a fixed height. Typically contains a `<TopNavigation>` component.</li>
-  <li><b>AppLayout.Main:</b> Bottom-right area that scrolls vertically when content overflows.</li>
-</ul>
-
 ## Usage
 
 Use `<AppLayout>` when your application needs a persistent sidebar alongside a top navigation bar — the classic "L-shape" layout found in admin panels, dashboards, and enterprise tools.
