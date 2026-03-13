@@ -257,6 +257,10 @@ export type Theme = {
       'group' | 'button',
       ComponentStyleFunction<string, string>
     >;
+    TopNavigation?: Record<
+      'container' | 'start' | 'middle' | 'end',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 
