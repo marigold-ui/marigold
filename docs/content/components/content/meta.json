@@ -9,7 +9,6 @@
     "loader",
     "section-message",
     "svg",
-    "text",
-    "visually-hidden"
+    "text"
   ]
 }
