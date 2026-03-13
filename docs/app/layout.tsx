@@ -1,24 +1,10 @@
 import { source } from '@/lib/source';
-import type { Node } from 'fumadocs-core/page-tree';
+import { flattenTree } from 'fumadocs-core/page-tree';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import './global.css';
-import { type PageEntry, Providers } from './providers';
-
-function collectPages(nodes: Node[]): PageEntry[] {
-  const pages: PageEntry[] = [];
-  for (const node of nodes) {
-    if (node.type === 'page' && typeof node.name === 'string') {
-      pages.push({ name: node.name, url: node.url });
-    } else if (node.type === 'folder') {
-      if (node.index && typeof node.index.name === 'string') {
-        pages.push({ name: node.index.name, url: node.index.url });
-      }
-      pages.push(...collectPages(node.children));
-    }
-  }
-  return pages;
-}
+import { Providers } from './providers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,7 +17,7 @@ const FAV_ICONS = {
   preview: '/logo-preview.svg',
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Marigold Design System',
   description: "Documentation of Reservix' Design System",
   icons: {
@@ -48,7 +34,14 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
         <Suspense>
-          <Providers pages={collectPages(source.pageTree.children)}>
+          <Providers
+            pages={flattenTree(source.pageTree.children)
+              .filter(
+                (item): item is typeof item & { name: string } =>
+                  typeof item.name === 'string'
+              )
+              .map(item => ({ name: item.name, url: item.url }))}
+          >
             {children}
           </Providers>
           <div id="portalContainer" data-theme="rui" className="not-prose" />

@@ -24,39 +24,37 @@ export default function CustomSearchDialog(props: SharedProps) {
   const pages = usePages();
   const router = useRouter();
 
-  const searchMap = useMemo(() => {
-    const map = new Map<string, { name: string; url: string }>();
-    for (const page of pages) {
-      map.set(page.name.toLowerCase(), page);
-    }
-    return map;
-  }, [pages]);
-
-  const pageTreeAction = useMemo<SearchItemType | undefined>(() => {
-    if (search.length === 0) return;
+  const pageTreeActions = useMemo<SearchItemType[]>(() => {
+    if (search.length === 0) return [];
 
     const normalized = search.toLowerCase();
-    for (const [k, page] of searchMap) {
-      if (!k.startsWith(normalized)) continue;
+    const matches = pages.filter(p =>
+      p.name.toLowerCase().includes(normalized)
+    );
 
-      return {
-        id: 'quick-action',
-        type: 'action',
-        node: (
-          <div className="text-fd-muted-foreground flex h-full items-center gap-2">
-            <ArrowRight className="size-4" />
-            <p>
-              Jump to{' '}
-              <span className="text-fd-foreground font-medium">
-                {page.name}
-              </span>
-            </p>
-          </div>
-        ),
-        onSelect: () => router.push(page.url),
-      };
-    }
-  }, [router, search, searchMap]);
+    return matches.map((match, i) => ({
+      id: `quick-action-${i}`,
+      type: 'action' as const,
+      node: (
+        <div className="text-fd-muted-foreground flex h-full items-center gap-2">
+          <ArrowRight className="size-4" />
+          <p>
+            Jump to{' '}
+            <span className="text-fd-foreground font-medium">{match.name}</span>
+          </p>
+        </div>
+      ),
+      onSelect: () => router.push(match.url),
+    }));
+  }, [router, search, pages]);
+
+  const items = useMemo(() => {
+    if (query.data === 'empty' && pageTreeActions.length === 0) return null;
+    return [
+      ...pageTreeActions,
+      ...(Array.isArray(query.data) ? query.data : []),
+    ];
+  }, [query.data, pageTreeActions]);
 
   return (
     <SearchDialog
@@ -72,16 +70,7 @@ export default function CustomSearchDialog(props: SharedProps) {
           <SearchDialogInput />
           <SearchDialogClose />
         </SearchDialogHeader>
-        <SearchDialogList
-          items={
-            query.data !== 'empty' || pageTreeAction
-              ? [
-                  ...(pageTreeAction ? [pageTreeAction] : []),
-                  ...(Array.isArray(query.data) ? query.data : []),
-                ]
-              : null
-          }
-        />
+        <SearchDialogList items={items} />
         <SearchDialogFooter />
       </SearchDialogContent>
     </SearchDialog>

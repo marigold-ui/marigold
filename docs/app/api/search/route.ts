@@ -31,14 +31,10 @@ function sortResultGroups(
   // Score each group: lower = better (sorted ascending)
   const scored = groups.map(group => {
     const page = group[0];
-    // Strip HTML tags from content for comparison (loop to handle nested tags)
-    let title = page.content;
-    let prev: string;
-    do {
-      prev = title;
-      title = title.replace(/<[^>]*>/g, '');
-    } while (title !== prev);
-    title = title.toLowerCase().trim();
+    const title = page.content
+      .replace(/<[^>]*>/g, '')
+      .toLowerCase()
+      .trim();
 
     let score: number;
     if (title === q) {
@@ -65,9 +61,10 @@ function sortResultGroups(
 }
 
 export async function GET(request: NextRequest) {
-  const query = request.nextUrl.searchParams.get('query') ?? '';
-  const tag = request.nextUrl.searchParams.get('tag') ?? undefined;
-  const locale = request.nextUrl.searchParams.get('locale') ?? undefined;
+  const { searchParams } = request.nextUrl;
+  const query = searchParams.get('query') ?? '';
+  const tag = searchParams.get('tag') ?? undefined;
+  const locale = searchParams.get('locale') ?? undefined;
 
   const results = await searchAPI.search(query, { tag, locale });
   const sorted = sortResultGroups(results, query);
