@@ -32,7 +32,8 @@ function sortResultGroups(
   const scored = groups.map(group => {
     const page = group[0];
     const title = page.content
-      .replace(/<[^>]*>/g, '')
+      .replaceAll('<mark>', '')
+      .replaceAll('</mark>', '')
       .toLowerCase()
       .trim();
 
