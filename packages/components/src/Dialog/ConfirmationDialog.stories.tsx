@@ -45,6 +45,7 @@ export const WithCallbacks = meta.story({
   },
   render: args => (
     <ConfirmationDialog.Trigger defaultOpen>
+      <Button>Open</Button>
       <ConfirmationDialog {...args}>{args.children}</ConfirmationDialog>
     </ConfirmationDialog.Trigger>
   ),

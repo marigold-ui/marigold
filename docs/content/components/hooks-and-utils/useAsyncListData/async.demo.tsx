@@ -8,13 +8,6 @@ export interface asyncData {
 }
 
 export default () => {
-  const columns = [
-    { id: 'name', name: 'Name', allowsSorting: true },
-    { id: 'height', name: 'Height', allowsSorting: true },
-    { id: 'mass', name: 'Mass', allowsSorting: true },
-    { id: 'birth_year', name: 'Birth Year', allowsSorting: true },
-  ];
-
   let list = useAsyncList<asyncData>({
     async load({ signal }) {
       let res = await fetch(`https://swapi.py4e.com/api/people/?search`, {
@@ -47,19 +40,27 @@ export default () => {
       sortDescriptor={list.sortDescriptor}
       onSortChange={list.sort}
     >
-      <Table.Header columns={columns}>
-        {column => (
-          <Table.Column key={column.id} allowsSorting={column.allowsSorting}>
-            {column.name}
-          </Table.Column>
-        )}
+      <Table.Header>
+        <Table.Column id="name" allowsSorting rowHeader>
+          Name
+        </Table.Column>
+        <Table.Column id="height" allowsSorting>
+          Height
+        </Table.Column>
+        <Table.Column id="mass" allowsSorting>
+          Mass
+        </Table.Column>
+        <Table.Column id="birth_year" allowsSorting>
+          Birth Year
+        </Table.Column>
       </Table.Header>
       <Table.Body items={list.items}>
         {item => (
-          <Table.Row columns={columns}>
-            {column => (
-              <Table.Cell>{item[column.id as keyof asyncData]}</Table.Cell>
-            )}
+          <Table.Row key={item.name} id={item.name}>
+            <Table.Cell>{item.name}</Table.Cell>
+            <Table.Cell>{item.height}</Table.Cell>
+            <Table.Cell>{item.mass}</Table.Cell>
+            <Table.Cell>{item.birth_year}</Table.Cell>
           </Table.Row>
         )}
       </Table.Body>

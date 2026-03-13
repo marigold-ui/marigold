@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { mockMatchMedia } from '../test.utils';
@@ -392,7 +392,7 @@ describe('paste handling', () => {
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    firePaste(group, '2025-09-24');
+    act(() => firePaste(group, '2025-09-24'));
     const changedDate = onChange.mock.calls[0][0];
 
     expect(onChange).toHaveBeenCalled();
@@ -407,7 +407,7 @@ describe('paste handling', () => {
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    firePaste(group, '09/24/2025');
+    act(() => firePaste(group, '09/24/2025'));
     const changedDate = onChange.mock.calls[0][0];
 
     expect(onChange).toHaveBeenCalled();
@@ -422,7 +422,7 @@ describe('paste handling', () => {
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    firePaste(group, '24.09.2025');
+    act(() => firePaste(group, '24.09.2025'));
 
     const changedDate = onChange.mock.calls[0][0];
 
@@ -438,7 +438,7 @@ describe('paste handling', () => {
 
     const group = screen.getAllByRole('group')[0];
     await user.click(group);
-    firePaste(group, 'invalid-date');
+    act(() => firePaste(group, 'invalid-date'));
 
     expect(onChange).not.toHaveBeenCalled();
   });

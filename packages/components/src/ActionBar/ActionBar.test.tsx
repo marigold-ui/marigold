@@ -94,7 +94,7 @@ test('calls onClearSelection when Escape is pressed', async () => {
   // Focus the clear selection button inside the toolbar, then press Escape
   const clearButton = screen.getByRole('button', { name: /clear selection/i });
 
-  clearButton.focus();
+  act(() => clearButton.focus());
   await user.keyboard('{Escape}');
 
   expect(onClearSelection).toHaveBeenCalledTimes(1);
