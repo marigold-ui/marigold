@@ -1,5 +1,38 @@
 # @marigold/docs
 
+## 17.2.0
+
+### Patch Changes
+
+- f63e57f: refactor(DST-1233): remove tailwindcss-animate, standardize overlay animations
+- Updated dependencies [91eb222]
+- Updated dependencies [ed928a0]
+- Updated dependencies [cf56729]
+- Updated dependencies [28eba72]
+- Updated dependencies [3019d28]
+- Updated dependencies [b61ba43]
+- Updated dependencies [e6091b6]
+- Updated dependencies [efbd292]
+- Updated dependencies [7ca2eb1]
+- Updated dependencies [f7870ce]
+- Updated dependencies [95c22b6]
+- Updated dependencies [a3e3e8e]
+- Updated dependencies [4a24ad6]
+- Updated dependencies [beebd7c]
+- Updated dependencies [9de007c]
+- Updated dependencies [ed2baef]
+- Updated dependencies [b115fda]
+- Updated dependencies [61bfc60]
+- Updated dependencies [a715f08]
+- Updated dependencies [600d09f]
+- Updated dependencies [1ec6788]
+- Updated dependencies [f63e57f]
+  - @marigold/components@17.2.0
+  - @marigold/theme-rui@5.2.0
+  - @marigold/theme-docs@4.2.0
+  - @marigold/system@17.2.0
+  - @marigold/icons@1.3.34
+
 ## 0.0.3
 
 ### Patch Changes
