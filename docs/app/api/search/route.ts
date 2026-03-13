@@ -31,11 +31,14 @@ function sortResultGroups(
   // Score each group: lower = better (sorted ascending)
   const scored = groups.map(group => {
     const page = group[0];
-    // Strip HTML tags from content for comparison
-    const title = page.content
-      .replace(/<[^>]*>/g, '')
-      .toLowerCase()
-      .trim();
+    // Strip HTML tags from content for comparison (loop to handle nested tags)
+    let title = page.content;
+    let prev: string;
+    do {
+      prev = title;
+      title = title.replace(/<[^>]*>/g, '');
+    } while (title !== prev);
+    title = title.toLowerCase().trim();
 
     let score: number;
     if (title === q) {
