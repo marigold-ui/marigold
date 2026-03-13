@@ -2,7 +2,11 @@ import { ReactNode, Ref, forwardRef } from 'react';
 
 // Props
 // ---------------
-export interface AppLayoutProps {
+type RemovedProps = 'className' | 'style';
+export interface AppLayoutProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  RemovedProps
+> {
   /**
    * Children of the component.
    */
