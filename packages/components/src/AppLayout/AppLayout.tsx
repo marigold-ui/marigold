@@ -3,6 +3,9 @@ import { ReactNode, Ref, forwardRef } from 'react';
 // Props
 // ---------------
 export interface AppLayoutProps {
+  /**
+   * Children of the component.
+   */
   children?: ReactNode;
 }
 
@@ -17,7 +20,7 @@ const AppLayoutHeader = ({ children }: { children?: ReactNode }) => {
 };
 
 const AppLayoutSidebar = ({ children }: { children?: ReactNode }) => {
-  return <aside className="[grid-area:sidebar]">{children}</aside>;
+  return <div className="[grid-area:sidebar]">{children}</div>;
 };
 
 const AppLayoutMain = ({ children }: { children?: ReactNode }) => {

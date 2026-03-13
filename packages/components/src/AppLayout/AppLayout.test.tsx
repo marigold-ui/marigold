@@ -11,11 +11,11 @@ describe('AppLayout', () => {
     expect(screen.getByText('Main')).toBeInTheDocument();
   });
 
-  test('renders sidebar as <aside> element', () => {
+  test('renders sidebar slot as <div> (not <aside>, since Sidebar provides its own)', () => {
     render(<Basic.Component />);
 
-    const sidebar = screen.getByText('Sidebar').closest('aside');
-    expect(sidebar).toBeInTheDocument();
+    const sidebarSlot = screen.getByText('Sidebar').closest('div');
+    expect(sidebarSlot).toBeInTheDocument();
   });
 
   test('renders main content as <main> element', () => {
@@ -28,9 +28,7 @@ describe('AppLayout', () => {
   test('applies grid layout to container', () => {
     render(<Basic.Component />);
 
-    const container = screen
-      .getByText('Sidebar')
-      .closest('aside')?.parentElement;
+    const container = screen.getByRole('main').parentElement;
     expect(container).toHaveClass('grid');
   });
 
