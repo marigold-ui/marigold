@@ -2,12 +2,11 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
-/* own theme */
-@import '@marigold/theme-docs/theme.css';
 /* rui theme */
+@import '@marigold/theme-rui/theme.css';
 @import '@marigold/theme-rui/styles.css';
 
-@source './../../themes/theme-docs/src/**/*.ts';
+@source './../../themes/theme-rui/src/**/*.ts';
 
 /* demos */
 @source './../content/**/*.{js,ts,jsx,tsx,mdx}';
