@@ -1,12 +1,25 @@
-import { SiteHeader } from '../_components/SiteHeader';
+import { SidebarFolder } from '@/app/_components/SidebarFolder';
+import { SidebarSeparator } from '@/app/_components/SidebarSeparator';
+import { baseOptions } from '@/lib/layout.shared';
+import { source } from '@/lib/source';
+import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 
-// Layout
-// ---------------
-const Layout = ({ children }: { children: React.ReactNode }) => (
-  <>
-    <SiteHeader />
-    {children}
-  </>
-);
+const Layout = ({ children }: LayoutProps<'/'>) => {
+  return (
+    <DocsLayout
+      tree={source.getPageTree()}
+      // We need the nav only
+      nav={baseOptions().nav}
+      sidebar={{
+        components: {
+          Separator: SidebarSeparator,
+          Folder: SidebarFolder,
+        },
+      }}
+    >
+      {children}
+    </DocsLayout>
+  );
+};
 
 export default Layout;
