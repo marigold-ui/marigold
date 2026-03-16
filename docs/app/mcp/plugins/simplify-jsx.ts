@@ -7,6 +7,7 @@ import {
   UNWRAP_SUB_COMPONENTS,
   VARIANT_EMOJI,
 } from './jsx-config';
+import type { MdxJsxAttribute } from './shared';
 import {
   MdxJsxElement,
   extractText,
@@ -24,7 +25,7 @@ export function remarkSimplifyJsx() {
       node: MdxJsxElement,
       index: number,
       parent: Parent
-    ): any => {
+    ): [typeof SKIP, number] | undefined | void => {
       const name = node.name;
 
       if (REMOVE_COMPONENTS.has(name)) {
@@ -181,11 +182,13 @@ export function remarkSimplifyJsx() {
 
       if (name === 'IconList') {
         const iconsAttr = node.attributes?.find(
-          (a: any) => a.name === 'icons'
-        ) as any;
-        if (iconsAttr?.value?.type === 'mdxJsxAttributeValueExpression') {
+          (a: MdxJsxAttribute) => a.name === 'icons'
+        ) as MdxJsxAttribute | undefined;
+        const iconsValue =
+          typeof iconsAttr?.value === 'object' ? iconsAttr.value : undefined;
+        if (iconsValue?.type === 'mdxJsxAttributeValueExpression') {
           try {
-            const expr = iconsAttr.value.value;
+            const expr = iconsValue.value;
             const iconNames = expr
               .replace(/[[\]'"\s]/g, '')
               .split(',')
@@ -217,11 +220,13 @@ export function remarkSimplifyJsx() {
 
       if (name === 'TeaserList') {
         const itemsAttr = node.attributes?.find(
-          (a: any) => a.name === 'items'
-        ) as any;
-        if (itemsAttr?.value?.type === 'mdxJsxAttributeValueExpression') {
+          (a: MdxJsxAttribute) => a.name === 'items'
+        ) as MdxJsxAttribute | undefined;
+        const itemsValue =
+          typeof itemsAttr?.value === 'object' ? itemsAttr.value : undefined;
+        if (itemsValue?.type === 'mdxJsxAttributeValueExpression') {
           try {
-            const expr = itemsAttr.value.value;
+            const expr = itemsValue.value;
             const items: { title: string; href: string; caption?: string }[] =
               [];
 
@@ -376,7 +381,7 @@ export function remarkSimplifyJsx() {
     );
 
     const cleanExpression = (
-      node: any,
+      node: Node & { value?: string },
       index: number,
       parent: Parent
     ): [typeof SKIP, number] | void => {
@@ -394,7 +399,7 @@ export function remarkSimplifyJsx() {
     visit(
       tree,
       'mdxFlowExpression',
-      (node: any, index, parent: Parent | undefined) => {
+      (node: Node & { value?: string }, index, parent: Parent | undefined) => {
         if (parent && typeof index === 'number')
           return cleanExpression(node, index, parent);
       }
@@ -403,7 +408,7 @@ export function remarkSimplifyJsx() {
     visit(
       tree,
       'mdxTextExpression',
-      (node: any, index, parent: Parent | undefined) => {
+      (node: Node & { value?: string }, index, parent: Parent | undefined) => {
         if (parent && typeof index === 'number')
           return cleanExpression(node, index, parent);
       }

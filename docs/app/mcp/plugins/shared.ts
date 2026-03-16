@@ -5,7 +5,15 @@ export interface MdxJsxAttribute {
   name: string;
   value:
     | string
-    | { type: string; value: string; data?: { estree?: { body?: any[] } } };
+    | {
+        type: string;
+        value: string;
+        data?: {
+          estree?: {
+            body?: Array<{ expression?: { name?: string } }>;
+          };
+        };
+      };
 }
 
 export interface MdxJsxElement extends Node {
