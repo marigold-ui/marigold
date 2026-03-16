@@ -24,11 +24,12 @@ export async function GET(
   { params }: { params: Promise<{ slug: string[] }> }
 ) {
   const { slug } = await params;
-  const slugPath = slug.join('/');
+  // Remove .md extension from URL slug if present
+  const slugPath = slug.join('/').replace(/\.md$/, '');
 
   const candidates = [
     `${slugPath}.mdx`,
-    `${slugPath}/${slug.at(-1)}.mdx`,
+    `${slugPath}/${slug.at(-1)?.replace(/\.md$/, '')}.mdx`,
     `${slugPath}/index.mdx`,
   ];
 
