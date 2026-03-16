@@ -7,15 +7,20 @@ const config = {
   reactStrictMode: true,
   // Needed for MCP parser plugins that use ts-morph on the server
   serverExternalPackages: ['ts-morph', 'typescript'],
+  async redirects() {
+    return [
+      {
+        source: '/mcp/:path((?!.*\\.md$).*)',
+        destination: '/mcp/:path.md',
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
         source: '/docs/:path*.mdx',
         destination: '/llms.mdx/docs/:path*',
-      },
-      {
-        source: '/mcp/:path*.mdx',
-        destination: '/mcp/:path*',
       },
     ];
   },

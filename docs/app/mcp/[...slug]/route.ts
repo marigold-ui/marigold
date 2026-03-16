@@ -14,9 +14,11 @@ export const dynamic = 'force-static';
 export const generateStaticParams = async () => {
   const params = await source.generateParams();
 
-  return params.filter(
-    param => Array.isArray(param.slug) && param.slug.length > 0
-  );
+  return params
+    .filter(param => Array.isArray(param.slug) && param.slug.length > 0)
+    .map(param => ({
+      slug: [...param.slug.slice(0, -1), `${param.slug.at(-1)}.md`],
+    }));
 };
 
 export async function GET(
