@@ -238,6 +238,12 @@ export type {
   TableDragPreviewProps,
 } from './Table/Table';
 
+export { Sidebar } from './Sidebar/Sidebar';
+export type { SidebarProps } from './Sidebar/Sidebar';
+export type { SidebarProviderProps } from './Sidebar/Context';
+export type { SidebarNavProps } from './Sidebar/SidebarNav';
+export type { SidebarItemProps } from './Sidebar/SidebarItem';
+
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';
 
