@@ -6,8 +6,6 @@ badge: alpha
 
 The App Shell is the standard frame for applications that need persistent navigation alongside contextual actions. It combines a [Sidebar](/components/navigation/sidebar), a [TopNavigation](/components/navigation/topnavigation), and a main content area into an L-shape layout using [AppLayout](/components/layout/app-layout).
 
-Use this pattern when your application has multiple sections or modules and users need navigation and contextual information visible at all times.
-
 ## Structure
 
 The App Shell divides the screen into three areas. The diagram below shows how they are arranged, and the code snippet shows how the components map to each area.
@@ -21,7 +19,7 @@ The App Shell divides the screen into three areas. The diagram below shows how t
 />
 
 - **Sidebar:** Sits on the left and spans the full height. It holds the application logo, primary navigation links, grouped sections, and an optional footer. Users can collapse or expand it with a toggle button.
-- **Top Navigation:** Stretches across the top next to the sidebar. It provides the sidebar toggle, breadcrumbs for orientation, and user-related controls such as account menus or status indicators.
+- **Top Navigation:** Stretches across the top next to the sidebar. It should provide the sidebar toggle, breadcrumbs for orientation, and user-related controls such as account menus or status indicators.
 - **Main:** Takes up the remaining space. This is the scrollable content area where page-specific content lives, typically wrapped in spacing via `<Inset>`.
 
 [`RouterProvider`](/components/application/routerprovider) handles page navigation, `Sidebar.Provider` manages the sidebar's open/collapsed state, and `AppLayout` positions everything on a CSS Grid. Place `Sidebar.Provider` _outside_ of `AppLayout` so the toggle in the header and the sidebar itself share the same state.
@@ -56,15 +54,17 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
 
 - **Logo placement:** Put the application logo or name in the sidebar header, not in the top navigation. The sidebar is the persistent brand anchor; the top navigation is for orientation and utility actions.
 - **Primary navigation:** All section-level links belong in the sidebar. Use groups (`<Sidebar.GroupLabel>`) and separators (`<Sidebar.Separator>`) to organize them. See the [Sidebar docs](/components/navigation/sidebar) for drill-down navigation and detail page patterns.
-- **Top navigation:** The top navigation exists primarily for [breadcrumbs](/components/navigation/breadcrumbs) and [search](/components/form/search-field). Breadcrumbs go in the middle slot to show users where they are in the hierarchy. A search field can replace or complement them when global search is a core workflow. Don't place tabs, links, or secondary navigation here. That's what the sidebar is for.
-- **Utility actions (top navigation, right side):** The end of the top navigation is reserved for user-facing utilities like account menus, notification badges, or status indicators. Keep it concise; too many items cause the header to overflow on smaller screens.
+- **Top navigation:** The top navigation exists primarily for [breadcrumbs](/components/navigation/breadcrumbs) and [search](/components/form/search-field). Breadcrumbs go in the middle slot to show users where they are in the hierarchy. A search field can replace or complement them when global search is a core workflow. Don't place tabs, links, or secondary navigation here. That's what the sidebar is for. See the [TopNavigation docs](/components/navigation/topnavigation) for further informations.
+- **Utility actions (top navigation, right side):** The end of the top navigation is reserved for user-facing utilities like account menus, notification badges, or status indicators. Keep it concise; too many items cause the navigation to overflow on smaller screens.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
       <ul>
         <li>Place the logo in the sidebar header.</li>
-        <li>Use breadcrumbs in the header middle slot for page context.</li>
+        <li>
+          Use breadcrumbs in the top navigation middle slot for page context.
+        </li>
         <li>Keep header content concise so it adapts to different widths.</li>
         <li>Use the sidebar exclusively for navigation links and groups.</li>
       </ul>
@@ -77,7 +77,7 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
           Don't place tabs or secondary navigation in the header middle slot.
         </li>
         <li>
-          Don't overload the header with elements that cause horizontal
+          Don't overload the top navigation with elements that cause horizontal
           scrolling.
         </li>
         <li>
@@ -90,7 +90,7 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
 
 ### Responsive behavior
 
-`AppLayout` always renders the L-shape grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
+`<AppLayout>` always renders the L-shape grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
 
 ## Full demo
 
