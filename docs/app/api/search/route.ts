@@ -12,10 +12,16 @@ const searchAPI = createFromSource(source, {
  * Group flat search results by page, then re-sort groups so that
  * pages whose title closely matches the query appear first.
  */
-function sortResultGroups(
+const sortResultGroups = (
   results: SortedResult[],
   query: string
-): SortedResult[] {
+): SortedResult[] => {
+  const q = query.toLowerCase().trim();
+
+  if (!q) {
+    return results;
+  }
+
   // Split flat results into groups (each starting with a page-type entry)
   const groups: SortedResult[][] = [];
   for (const result of results) {
@@ -26,14 +32,11 @@ function sortResultGroups(
     }
   }
 
-  const q = query.toLowerCase().trim();
-
   // Score each group: lower = better (sorted ascending)
   const scored = groups.map(group => {
     const page = group[0];
     const title = page.content
-      .replaceAll('<mark>', '')
-      .replaceAll('</mark>', '')
+      .replace(/<\/?mark>/g, '')
       .toLowerCase()
       .trim();
 
@@ -59,7 +62,7 @@ function sortResultGroups(
   scored.sort((a, b) => a.score - b.score);
 
   return scored.flatMap(s => s.group);
-}
+};
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
