@@ -24,7 +24,7 @@ Let's take a look at what's new!
 
 ### Sidebar (beta)
 
-A new `<Sidebar>` component for persistent app-level navigation. It features a compound component API, drill-down sub-navigation with animated transitions, collapse/expand via keyboard shortcut (Cmd+B / Ctrl+B) with localStorage persistence, a mobile-responsive sheet overlay, and full accessibility and i18n support.
+A new [`<Sidebar>`](/components/navigation/sidebar) component for persistent app-level navigation. It features a compound component API, drill-down sub-navigation with animated transitions, collapse/expand via keyboard shortcut (Cmd+B / Ctrl+B) with localStorage persistence, a mobile-responsive sheet overlay, and full accessibility and i18n support.
 
 ```tsx
 <Sidebar.Provider>
@@ -57,7 +57,7 @@ A new `<Sidebar>` component for persistent app-level navigation. It features a c
 
 ### TopNavigation (beta)
 
-A new `<TopNavigation>` component with a three-slot grid layout using the compound component pattern. It uses semantic HTML with `<header>` and `<nav>` landmarks, is sticky by default, and includes i18n ARIA labels.
+A new [`<TopNavigation>`](/components/navigation/topnavigation) component with a three-slot grid layout using the compound component pattern. It uses semantic HTML with `<header>` and `<nav>` landmarks, is sticky by default, and includes i18n ARIA labels.
 
 ```tsx
 <TopNavigation>
@@ -77,7 +77,7 @@ A new `<TopNavigation>` component with a three-slot grid layout using the compou
 
 ### ActionBar
 
-The `<ActionBar>` has been significantly enhanced with enter/exit animations, keyboard support (press Escape to clear selection), and built-in `<Table>` integration. The new `actionBar` render prop on `<Table>` automatically wires up selection state and positions the ActionBar relative to the table.
+The [`<ActionBar>`](/components/actions/actionbar) has been significantly enhanced with enter/exit animations, keyboard support (press Escape to clear selection), and built-in [`<Table>`](/components/collection/table) integration. The new `actionBar` render prop on `<Table>` automatically wires up selection state and positions the ActionBar relative to the table.
 
 ```tsx
 <Table
@@ -115,7 +115,7 @@ The `<ActionBar>` also received updated styling with a `ui-surface-contrast` uti
 
 ### Tabs
 
-The active tab underline now slides smoothly between items with an animated transition. This works automatically and requires no code changes.
+The active tab underline now slides smoothly between items with an animated transition. This works automatically and requires no code changes. See the [Tabs documentation](/components/navigation/tabs) for details.
 
 ## System
 
@@ -169,6 +169,8 @@ The semantic spacing system (introduced as alpha in v17.0.0) has been refined:
 <Stack space="regular">
 ```
 
+For the full token reference and usage examples, see the [Spacing guide](/foundations/spacing).
+
 ## Design
 
 - Improved color contrast ratios to meet WCAG AA standards. `muted-foreground` and `placeholder` bumped from stone-500 to stone-600 (7.55:1 ratio), `disabled-foreground` from stone-400 to stone-500 (4.71:1 ratio). Opacity modifiers on text colors have been removed across Calendar, ComboBox, Select, DatePicker, Input, Accordion, and Menu.
@@ -187,13 +189,13 @@ The semantic spacing system (introduced as alpha in v17.0.0) has been refined:
 ## Bug Fixes
 
 - Components with hardcoded English strings (Toast, Drawer, Pagination, SectionMessage, ProgressCircle, ActionBar, TagField, SearchInput) now use `useLocalizedStringFormatter` for proper i18n support. ARIA labels are automatically translated when the locale changes.
-- Fixed `<Tooltip>` positioning when using the controlled `open` prop.
-- Fixed `<NumberField>` group appearing disabled when the stepper hits a `min`/`max` boundary.
-- Added `z-50` to the non-modal (desktop) `<Drawer>` overlay so it renders above sticky table headers and other positioned content.
+- Fixed [`<Tooltip>`](/components/overlay/tooltip) positioning when using the controlled `open` prop.
+- Fixed [`<NumberField>`](/components/form/number-field) group appearing disabled when the stepper hits a `min`/`max` boundary.
+- Added `z-50` to the non-modal (desktop) [`<Drawer>`](/components/overlay/drawer) overlay so it renders above sticky table headers and other positioned content.
 - Set explicit `py-0` on table column headers to prevent external systems from overriding vertical padding.
 - Added card shadows to master and admin mark badges.
-- Reinforced floating `<Drawer>` panel boundary with a darker border and spread shadow.
-- Aligned `<Menu>` button styles with `<Button>` by reusing `buttonBase` for consistent sizing, hover, and disabled states.
+- Reinforced floating [`<Drawer>`](/components/overlay/drawer) panel boundary with a darker border and spread shadow.
+- Aligned [`<Menu>`](/components/overlay/menu) button styles with [`<Button>`](/components/actions/button) by reusing `buttonBase` for consistent sizing, hover, and disabled states.
 
 ---
 
