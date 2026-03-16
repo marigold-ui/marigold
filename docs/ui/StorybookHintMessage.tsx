@@ -1,7 +1,7 @@
 'use client';
 
+import { Link } from 'fumadocs-core/framework';
 import { Card } from 'fumadocs-ui/components/card';
-import { Aside, Link, Stack } from '@marigold/components';
 import { ExternalLink } from './icons/ExternalLink';
 
 export const StorybookHintMessage = ({ component }: { component: string }) => {
@@ -16,11 +16,9 @@ export const StorybookHintMessage = ({ component }: { component: string }) => {
 
   return (
     <Card title="">
-      <Aside space={4}>
-        <div className="flex h-full items-center">
-          <StorybookIcon />
-        </div>
-        <Stack space={2}>
+      <div className="flex items-start gap-4">
+        <StorybookIcon />
+        <div className="space-y-2">
           <div className="text-sm">
             Did you know? You can explore, test, and customize props live in
             Marigold's storybook. Watch the effects they have in real-time!
@@ -28,14 +26,14 @@ export const StorybookHintMessage = ({ component }: { component: string }) => {
           <div className="text-sm">
             <Link
               href={`https://marigold-latest.vercel.app/?path=/story/components-${component.toLowerCase()}--basic`}
-              onPress={onPress}
+              onClick={onPress}
             >
               View {component} stories
               <ExternalLink className="text-text-primary-muted ml-0.5 inline size-[14px] align-text-bottom" />
             </Link>
           </div>
-        </Stack>
-      </Aside>
+        </div>
+      </div>
     </Card>
   );
 };
