@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="600"
+   height="280"
+   viewBox="0 0 600 280"
+   fill="none"
+   xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(30, 80)">
+    <!-- Container background -->
+    <rect x="0" y="0" width="540" height="56" rx="6"
+          fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" />
+    <!-- Bottom border (inset to respect rounded corners) -->
+    <rect x="6" y="54" width="528" height="1.5" fill="#e5e7eb" />
+
+    <!-- Start slot -->
+    <rect x="12" y="8" width="120" height="40" rx="4"
+          fill="#f9fafb" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4, 3" />
+    <text x="72" y="33" font-family="sans-serif" font-size="13px" fill="#6b7280"
+          text-anchor="middle">Sidebar Toggle</text>
+
+    <!-- Middle slot -->
+    <rect x="148" y="8" width="240" height="40" rx="4"
+          fill="#f9fafb" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4, 3" />
+    <text x="202" y="33" font-family="sans-serif" font-size="12px" fill="#374151"
+          font-weight="500">Home</text>
+    <text x="260" y="33" font-family="sans-serif" font-size="12px" fill="#6b7280">Events</text>
+    <text x="324" y="33" font-family="sans-serif" font-size="12px" fill="#6b7280">Settings</text>
+    <!-- End slot -->
+    <rect x="404" y="8" width="124" height="40" rx="4"
+          fill="#f9fafb" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4, 3" />
+    <text x="466" y="33" font-family="sans-serif" font-size="13px" fill="#6b7280"
+          text-anchor="middle">User / Actions</text>
+
+    <!-- Connector lines -->
+    <g stroke="#9ca3af" stroke-width="1" stroke-dasharray="2, 2">
+      <!-- Container connector (top center) -->
+      <path d="M 270,0 V -30" />
+      <!-- Start connector -->
+      <path d="M 72,48 V 80" />
+      <!-- Middle connector -->
+      <path d="M 268,48 V 80" />
+      <!-- End connector -->
+      <path d="M 466,48 V 80" />
+    </g>
+
+    <!-- Labels -->
+    <g font-family="monospace" font-size="11px" fill="#6b7280" letter-spacing="0.05em">
+      <text x="270" y="-38" text-anchor="middle">CONTAINER</text>
+      <text x="72" y="100" text-anchor="middle">START</text>
+      <text x="268" y="100" text-anchor="middle">MIDDLE</text>
+      <text x="466" y="100" text-anchor="middle">END</text>
+    </g>
+
+    <!-- Dots -->
+    <g fill="#9ca3af">
+      <circle cx="270" cy="0" r="2.5" />
+      <circle cx="72" cy="48" r="2.5" />
+      <circle cx="268" cy="48" r="2.5" />
+      <circle cx="466" cy="48" r="2.5" />
+    </g>
+  </g>
+</svg>
