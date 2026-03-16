@@ -252,13 +252,11 @@ const AppShellPage = () => {
               </TopNavigation.Start>
               <TopNavigation.Middle>
                 <Breadcrumbs maxVisibleItems={maxVisibleItems}>
-                  <Breadcrumbs.Item>Home</Breadcrumbs.Item>
+                  <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
                   {page?.parent && (
                     <Breadcrumbs.Item href="#">{page.parent}</Breadcrumbs.Item>
                   )}
-                  <Breadcrumbs.Item href={currentPath}>
-                    {page?.label}
-                  </Breadcrumbs.Item>
+                  <Breadcrumbs.Item href="#">{page?.label}</Breadcrumbs.Item>
                 </Breadcrumbs>
               </TopNavigation.Middle>
               <TopNavigation.End>
