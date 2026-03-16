@@ -4,11 +4,11 @@ description: L-shape application layout with sidebar, header, and main content a
 badge: beta
 ---
 
-The `<AppLayout>` creates an L-shape application layout using CSS Grid. It places a sidebar on the left spanning the full height, with a header and scrollable main content area stacked on the right. The layout fills the full viewport height and prevents the page from scrolling — only the main content area scrolls.
+The `<AppLayout>` creates an L-shape application layout using CSS Grid. It places a sidebar on the left spanning the full height, with a header and scrollable main content area stacked on the right. The layout fills the full viewport height and prevents the page from scrolling. Only the main content area scrolls.
 
 ## Usage
 
-Use `<AppLayout>` when your application needs a persistent sidebar alongside a top navigation bar — the classic "L-shape" layout found in admin panels, dashboards, and enterprise tools.
+Use `<AppLayout>` when your application needs a persistent sidebar alongside a top navigation bar, the classic "L-shape" layout found in admin panels, dashboards, and enterprise tools.
 
 ### Basic structure
 
@@ -22,19 +22,14 @@ The three slot components can be placed in any order as children of `<AppLayout>
 </AppLayout>
 ```
 
-### Integration with Sidebar and TopNavigation
-
-`<AppLayout>` is designed to work with the `<Sidebar>` and `<TopNavigation>` components. Place the `<Sidebar.Provider>` outside `<AppLayout>` so the sidebar toggle and responsive behavior work across the entire layout.
-
-<ComponentDemo name="app-layout-full" />
+<ComponentDemo name="app-layout-basic" />
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
       <ul>
         <li>Use `<AppLayout>` as the outermost layout wrapper for the page</li>
-        <li>Place `<Sidebar.Provider>` and `<RouterProvider>` outside `<AppLayout>`</li>
-        <li>Keep header content compact — it has a fixed height</li>
+        <li>Keep header content compact since it has a fixed height</li>
       </ul>
     </DoDescription>
   </Do>
@@ -42,25 +37,24 @@ The three slot components can be placed in any order as children of `<AppLayout>
     <DontDescription>
       <ul>
         <li>Don't nest `<AppLayout>` inside other layout containers</li>
-        <li>Don't put scrollable content in `<AppLayout.Header>` — use `<AppLayout.Main>` for that</li>
+        <li>Don't put scrollable content in `<AppLayout.Header>`, use `<AppLayout.Main>` for that</li>
         <li>Don't use `<AppLayout>` for simple pages that only need a header or only a sidebar</li>
       </ul>
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
+### Integration with Sidebar and TopNavigation
+
+`<AppLayout>` is designed to work with the [`<Sidebar>`](/components/navigation/sidebar) and [`<TopNavigation>`](/components/navigation/topnavigation) components. For a complete guide on composing these components together, including content placement, provider nesting, and responsive behavior, see the [App Shell pattern](/patterns/app-shell).
+
 ### Scrolling
 
-Only the `<AppLayout.Main>` area scrolls. The root container uses `overflow: hidden` to prevent the page itself from scrolling, while `<AppLayout.Main>` applies `overflow-y: auto`. The sidebar and header remain fixed in place as the user scrolls through the main content.
+The sidebar and header always stay visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable. Because the grid keeps everything else in place, components inside the header or sidebar don't need their own sticky behavior.
 
 ### Responsive behavior
 
-`<AppLayout>` itself does not change its grid structure at different breakpoints — it always renders the three-area L-shape. Responsive behavior comes from the components placed inside the slots:
-
-- The `<Sidebar>` component handles its own responsive behavior (collapsing on desktop, rendering as a modal sheet on mobile)
-- The `<TopNavigation>` adapts its content layout at smaller widths
-
-When the `<Sidebar>` collapses, the sidebar grid column shrinks to `auto` width, and the header and main areas expand to fill the available space.
+`<AppLayout>` itself does not change its grid structure at different breakpoints. It always renders the three-area L-shape. Responsive behavior comes from the components placed inside of the slots.
 
 ### Accessibility
 
@@ -69,7 +63,7 @@ When the `<Sidebar>` collapses, the sidebar grid column shrinks to `auto` width,
 - **Stacking order:** The header uses `z-index: 1` to ensure it stays above main content during scroll
 
 <Callout title="Note">
-  `<AppLayout>` is a structural layout component. Accessibility features like keyboard navigation, focus management, and ARIA attributes are provided by the components placed inside it — see [Sidebar](/components/navigation/sidebar) and [TopNavigation](/components/navigation/topnavigation) for their accessibility details.
+  `<AppLayout>` is a structural layout component. Accessibility features like keyboard navigation, focus management, and ARIA attributes are provided by the components placed inside it. See [Sidebar](/components/navigation/sidebar) and [TopNavigation](/components/navigation/topnavigation) for their accessibility details.
 </Callout>
 
 ## Props
