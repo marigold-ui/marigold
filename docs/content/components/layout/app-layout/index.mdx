@@ -1,18 +1,18 @@
 ---
 title: AppLayout
-description: L-shape application layout with sidebar, header, and main content areas.
+description: A CSS Grid container with three named areas sidebar, header, and main.
 badge: beta
 ---
 
-The `<AppLayout>` creates an L-shape application layout using CSS Grid. It places a sidebar on the left spanning the full height, with a header and scrollable main content area stacked on the right. The layout fills the full viewport height and prevents the page from scrolling. Only the main content area scrolls.
+`<AppLayout>` is a CSS Grid container that divides the viewport into three areas: a full-height sidebar on the left, a fixed header on the top right, and a scrollable main area below the header. The grid fills `100dvh` and only `<AppLayout.Main>` scrolls. The sidebar and header stay in place.
+
+For a guide on composing `<AppLayout>` with [`<Sidebar>`](/components/navigation/sidebar) and [`<TopNavigation>`](/components/navigation/topnavigation) into a complete application frame, see the [App Shell pattern](/patterns/app-shell).
 
 ## Usage
 
-Use `<AppLayout>` when your application needs a persistent sidebar alongside a top navigation bar, the classic "L-shape" layout found in admin panels, dashboards, and enterprise tools.
-
 ### Basic structure
 
-The three slot components can be placed in any order as children of `<AppLayout>`. The CSS Grid template ensures they render in the correct positions.
+`<AppLayout>` provides three slot components. They can be placed in any order since the CSS Grid template handles positioning.
 
 ```tsx
 <AppLayout>
@@ -25,14 +25,6 @@ The three slot components can be placed in any order as children of `<AppLayout>
 <ComponentDemo name="app-layout-basic" />
 
 <GuidelineTiles>
-  <Do>
-    <DoDescription>
-      <ul>
-        <li>Use `<AppLayout>` as the outermost layout wrapper for the page</li>
-        <li>Keep header content compact since it has a fixed height</li>
-      </ul>
-    </DoDescription>
-  </Do>
   <Dont>
     <DontDescription>
       <ul>
@@ -44,17 +36,9 @@ The three slot components can be placed in any order as children of `<AppLayout>
   </Dont>
 </GuidelineTiles>
 
-### Integration with Sidebar and TopNavigation
-
-`<AppLayout>` is designed to work with the [`<Sidebar>`](/components/navigation/sidebar) and [`<TopNavigation>`](/components/navigation/topnavigation) components. For a complete guide on composing these components together, including content placement, provider nesting, and responsive behavior, see the [App Shell pattern](/patterns/app-shell).
-
 ### Scrolling
 
 The sidebar and header always stay visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable. Because the grid keeps everything else in place, components inside the header or sidebar don't need their own sticky behavior.
-
-### Responsive behavior
-
-`<AppLayout>` itself does not change its grid structure at different breakpoints. It always renders the three-area L-shape. Responsive behavior comes from the components placed inside of the slots.
 
 ### Accessibility
 
