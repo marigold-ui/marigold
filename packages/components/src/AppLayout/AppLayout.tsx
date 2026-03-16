@@ -1,4 +1,5 @@
-import { ReactNode, Ref, forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
+import { forwardRef } from 'react';
 
 // Props
 // ---------------
@@ -38,7 +39,7 @@ export interface AppLayoutMainProps {
 // ---------------
 const AppLayoutHeader = ({ children }: AppLayoutHeaderProps) => {
   return (
-    <div className="z-1 h-(--app-layout-header-height) [grid-area:header] *:h-full">
+    <div className="z-1 flex h-(--app-layout-header-height) [grid-area:header] [&>*]:h-full [&>*]:w-full">
       {children}
     </div>
   );
