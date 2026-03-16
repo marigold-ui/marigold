@@ -3,7 +3,7 @@ import { Logout, SettingDots, User } from '@marigold/icons';
 import { useResponsiveValue } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
-import { Button } from '../Button/Button';
+import { IconButton } from '../IconButton/IconButton';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
@@ -15,9 +15,9 @@ import { TopNavigation } from './TopNavigation';
 
 const LogoSection = () => {
   return (
-    <Button variant="icon" className="group/icon">
+    <IconButton className="group/icon">
       <SidebarToggleIcon strokeWidth={1.5} />
-    </Button>
+    </IconButton>
   );
 };
 
