@@ -1,4 +1,3 @@
-import { PanelRightClose } from 'lucide-react';
 import preview from '.storybook/preview';
 import { Logout, SettingDots, User } from '@marigold/icons';
 import { useResponsiveValue } from '@marigold/system';
@@ -9,14 +8,15 @@ import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { SearchField } from '../SearchField/SearchField';
+import { SidebarToggleIcon } from '../Sidebar/SidebarToggleIcon';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TopNavigation } from './TopNavigation';
 
 const LogoSection = () => {
   return (
-    <Button variant="icon">
-      <PanelRightClose />
+    <Button variant="icon" className="group/icon">
+      <SidebarToggleIcon strokeWidth={1.5} />
     </Button>
   );
 };
