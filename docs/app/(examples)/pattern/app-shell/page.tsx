@@ -176,9 +176,26 @@ const AppShellPage = () => {
           <AppLayout.Sidebar>
             <Sidebar>
               <Sidebar.Header>
-                <Text weight="bold" fontSize="lg">
-                  Acme Inc.
-                </Text>
+                <Inline space={2} alignY="center" noWrap>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 36 36"
+                    fill="none"
+                    className="size-8 shrink-0"
+                  >
+                    <rect width="36" height="36" rx="8" fill="currentColor" />
+                    <path
+                      d="M18 8L26 26H10L18 8Z"
+                      fill="white"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <Text weight="bold" fontSize="lg">
+                    Acme Inc.
+                  </Text>
+                </Inline>
               </Sidebar.Header>
               <Sidebar.Nav>
                 <Sidebar.Item
@@ -235,7 +252,7 @@ const AppShellPage = () => {
               </TopNavigation.Start>
               <TopNavigation.Middle>
                 <Breadcrumbs maxVisibleItems={maxVisibleItems}>
-                  <Breadcrumbs.Item href="/dashboard">Home</Breadcrumbs.Item>
+                  <Breadcrumbs.Item>Home</Breadcrumbs.Item>
                   {page?.parent && (
                     <Breadcrumbs.Item href="#">{page.parent}</Breadcrumbs.Item>
                   )}
