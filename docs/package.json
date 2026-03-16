@@ -13,7 +13,7 @@
     "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
-    "@internationalized/date": "^3.11.0",
+    "@internationalized/date": "^3.12.0",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
@@ -21,7 +21,7 @@
     "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@octokit/core": "7.0.6",
-    "@react-aria/i18n": "3.12.15",
+    "@react-aria/i18n": "3.12.16",
     "@tanstack/react-query": "^5.62.0",
     "dayjs": "^1.11.13",
     "dotenv": "17.3.1",
