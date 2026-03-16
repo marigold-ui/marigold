@@ -184,7 +184,6 @@ For the full token reference and usage examples, see the [Spacing guide](/founda
 - The theme package now exports a typed `appearances` object via `@marigold/theme-rui/appearances`, providing a single source of truth for available `variant`/`size` keys per component.
 - Added explicit `types` condition to package exports across `@marigold/system`, `@marigold/icons`, `@marigold/theme-rui`, and `@marigold/theme-docs` for reliable type resolution.
 - Removed `tailwindcss-animate` dependency and standardized overlay animations across all components.
-- Field-internal spacing (Label and HelpText margins) moved from theme style files into component implementations using a new `in-field` custom variant for consistent field layout across themes.
 
 ## Bug Fixes
 
@@ -193,7 +192,7 @@ For the full token reference and usage examples, see the [Spacing guide](/founda
 - Fixed [`<NumberField>`](/components/form/number-field) group appearing disabled when the stepper hits a `min`/`max` boundary.
 - Added `z-50` to the non-modal (desktop) [`<Drawer>`](/components/overlay/drawer) overlay so it renders above sticky table headers and other positioned content.
 - Set explicit `py-0` on table column headers to prevent external systems from overriding vertical padding.
-- Added card shadows to master and admin mark badges.
+- Added card shadows to master and admin mark variants of `<Card>`.
 - Reinforced floating [`<Drawer>`](/components/overlay/drawer) panel boundary with a darker border and spread shadow.
 - Aligned [`<Menu>`](/components/overlay/menu) button styles with [`<Button>`](/components/actions/button) by reusing `buttonBase` for consistent sizing, hover, and disabled states.
 
