@@ -2,6 +2,7 @@ import type { Node, Parent } from 'unist';
 import { SKIP, visit } from 'unist-util-visit';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { DOCS_DIR } from './project';
 import { MdxJsxElement } from './shared';
 
 interface ColorTokens {
@@ -18,8 +19,8 @@ async function loadColorTokens(): Promise<ColorTokens> {
   if (colorCache) return colorCache;
 
   // Read UI files for colors and modifiers
-  const colorTablePath = path.resolve(process.cwd(), 'ui/ColorTable.tsx');
-  const colorTokensPath = path.resolve(process.cwd(), 'ui/ColorTokens.tsx');
+  const colorTablePath = path.join(DOCS_DIR, 'ui/ColorTable.tsx');
+  const colorTokensPath = path.join(DOCS_DIR, 'ui/ColorTokens.tsx');
 
   const [colorTableTsx, colorTokensTsx] = await Promise.all([
     fs.readFile(colorTablePath, 'utf-8'),

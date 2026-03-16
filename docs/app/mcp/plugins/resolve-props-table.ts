@@ -1,3 +1,4 @@
+import type { Symbol as MorphSymbol, Node as TsMorphNode } from 'ts-morph';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
 import { getComponentPath, getSharedProject } from './project';
@@ -15,20 +16,33 @@ function simplifyType(typeText: string): string {
   return typeText;
 }
 
-function cleanDescription(desc: string): string {
+function decodeHtmlEntities(text: string): string {
   const entities: Record<string, string> = {
     amp: '&',
     lt: '<',
     gt: '>',
     quot: '"',
+    apos: "'",
     '#x27': "'",
     '#xA': ' ',
+    '#39': "'",
   };
 
-  return desc
-    .replace(/&([a-z#0-9]+);/gi, (match, entity) => entities[entity] || match)
-    .replace(/\s+/g, ' ')
-    .trim();
+  // Iteratively decode until stable to avoid double-encoding issues
+  let prev = '';
+  let current = text;
+  while (prev !== current) {
+    prev = current;
+    current = current.replace(
+      /&([a-z#0-9]+);/gi,
+      (match, entity) => entities[entity] || match
+    );
+  }
+  return current;
+}
+
+function cleanDescription(desc: string): string {
+  return decodeHtmlEntities(desc).replace(/\s+/g, ' ').trim();
 }
 
 export function remarkResolvePropsTable() {
@@ -52,7 +66,7 @@ export function remarkResolvePropsTable() {
           const exports = sf.getExportedDeclarations();
           const decl = exports.get(name)?.[0];
 
-          let props: any[] = [];
+          let props: MorphSymbol[] = [];
           if (decl) {
             const type = decl.getType();
             props = type.getProperties();
@@ -69,7 +83,8 @@ export function remarkResolvePropsTable() {
 
           props.sort((a, b) => a.getName().localeCompare(b.getName()));
 
-          (p.children as any)[i] = {
+          // remark AST table node has `align` but the base unist Node type doesn't
+          (p.children as Node[])[i] = {
             type: 'table',
             align: ['left', 'left', 'left', 'left'],
             children: [
@@ -81,12 +96,14 @@ export function remarkResolvePropsTable() {
                 })),
               },
               ...props.map(prop => {
-                const decl = prop.getDeclarations()[0];
+                const propDecl = prop.getDeclarations()[0] as TsMorphNode & {
+                  getJsDocs?: () => { getDescription(): string }[];
+                };
                 const rawDescription =
-                  decl?.getJsDocs()[0]?.getDescription() || '';
+                  propDecl?.getJsDocs?.()[0]?.getDescription() || '';
                 const description = cleanDescription(rawDescription);
 
-                const rawType = prop.getTypeAtLocation(decl).getText();
+                const rawType = prop.getTypeAtLocation(propDecl).getText();
                 const type = simplifyType(rawType);
 
                 return {
@@ -112,8 +129,8 @@ export function remarkResolvePropsTable() {
                 };
               }),
             ],
-          };
-        } catch (e) {
+          } as unknown as Node;
+        } catch {
           p.children.splice(i, 1);
         }
       }
