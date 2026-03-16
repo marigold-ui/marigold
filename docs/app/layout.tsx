@@ -1,3 +1,6 @@
+import { source } from '@/lib/source';
+import { flattenTree } from 'fumadocs-core/page-tree';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import './global.css';
@@ -14,7 +17,7 @@ const FAV_ICONS = {
   preview: '/logo-preview.svg',
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Marigold Design System',
   description: "Documentation of Reservix' Design System",
   icons: {
@@ -31,7 +34,16 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
         <Suspense>
-          <Providers>{children}</Providers>
+          <Providers
+            pages={flattenTree(source.pageTree.children)
+              .filter(
+                (item): item is typeof item & { name: string } =>
+                  typeof item.name === 'string'
+              )
+              .map(item => ({ name: item.name, url: item.url }))}
+          >
+            {children}
+          </Providers>
           <div id="portalContainer" data-theme="rui" className="not-prose" />
         </Suspense>
       </body>
