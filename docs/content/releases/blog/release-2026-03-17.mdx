@@ -121,11 +121,11 @@ The active tab underline now slides smoothly between items with an animated tran
 
 ### CVA Migration (Custom/Extended Themes Only)
 
-If you maintain a custom theme, note that `class-variance-authority` has been replaced with `cva` (v1 beta). The new API uses an object config with `base`, `variants`, `compoundVariants`, and `defaultVariants` keys. It also includes built-in Tailwind merge support, so you no longer need to handle class conflicts manually.
+If you maintain a custom theme, note that the `cva` function re-exported from `@marigold/system` has been upgraded to `cva` v1 (beta). The new API uses a single object config with `base`, `variants`, `compoundVariants`, and `defaultVariants` keys instead of positional arguments. It also includes built-in Tailwind merge support, so you no longer need to handle class conflicts manually.
 
 ```tsx
-// Before (class-variance-authority)
-import { cva } from 'class-variance-authority';
+// Before
+import { cva } from '@marigold/system';
 
 const button = cva(['base-classes'], {
   variants: {
@@ -135,7 +135,7 @@ const button = cva(['base-classes'], {
   },
 });
 
-// After (cva v1)
+// After
 import { cva } from '@marigold/system';
 
 const button = cva({
@@ -151,7 +151,7 @@ const button = cva({
 });
 ```
 
-The `extendTheme` utility has also been simplified. It now composes style functions directly instead of extracting and merging variant configs, which means `defaultVariants` and `compoundVariants` are properly preserved during theme extension.
+The `extendTheme` utility has also been simplified. Previously, it extracted variant configs from `cva` functions, manually merged them, and rebuilt new `cva` calls -- which dropped `defaultVariants` and `compoundVariants`, and threw errors on duplicate variant keys. It now composes style functions directly and resolves conflicts via Tailwind merge, so all variant configuration is properly preserved during theme extension.
 
 ## Spacing Tokens (alpha)
 
