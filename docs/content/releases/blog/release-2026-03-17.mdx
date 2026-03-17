@@ -160,19 +160,23 @@ The `extendTheme` utility has also been simplified. Previously, it extracted var
 
 ## Spacing Tokens (alpha)
 
-The semantic spacing system (introduced as alpha in v17.0.0) has been refined:
+The semantic spacing scale (introduced as alpha in v17.0.0) has been simplified from seven tokens down to five. The guiding principle stays the same -- tighter space signals a stronger relationship -- but the scale is now easier to reason about and covers real-world usage more effectively.
 
-- `peer` has been renamed to `regular` for better semantic clarity
-- `joined` and `context` have been removed
-- Scale values have been adjusted for better visual rhythm: tight (6px), regular (24px), group (48px), section (96px)
+The previous extremes, `joined` (1px) and `context` (128px), have been dropped. In practice, `joined` was rarely needed and `context` overlapped too much with `section`. Removing them reduces decision fatigue without losing meaningful control.
 
-```tsx
-// Before
-<Stack space="peer">
+`peer` has been renamed to `regular`, which better communicates that this is the default, baseline rhythm of the interface. The name also aligns with the inset scale, which uses `regular` in the same way.
 
-// After
-<Stack space="regular">
-```
+Scale values have been increased across the board for improved readability and stronger visual hierarchy:
+
+| Token     | Old  | New  |
+| --------- | ---- | ---- |
+| `tight`   | 4px  | 6px  |
+| `related` | 8px  | 8px  |
+| `regular` | 16px | 24px |
+| `group`   | 32px | 48px |
+| `section` | 64px | 96px |
+
+The [form patterns](/patterns/forms) have been updated to use the new tokens, showing how `section`, `group`, `regular`, and `related` work together to create clear visual hierarchy in real forms -- from major section breaks down to paired fields like postal code and city.
 
 For the full token reference and usage examples, see the [Spacing guide](/foundations/spacing).
 
