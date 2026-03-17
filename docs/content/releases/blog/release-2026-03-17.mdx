@@ -14,6 +14,7 @@ changed:
   - components/collection/listbox
   - components/actions/button
   - components/content/card
+  - components/navigation/breadcrumbs
 ---
 
 Spring is just around the corner, and Marigold v17.2.0 brings a fresh batch of features and improvements.
@@ -113,6 +114,10 @@ The [`<ActionBar>`](/components/actions/actionbar) has been significantly enhanc
 
 The `<ActionBar>` also received updated styling with a `ui-surface-contrast` utility for adaptive theming on dark surfaces and a dedicated button slot in the theme.
 
+### Breadcrumbs
+
+The [`<Breadcrumbs>`](/components/navigation/breadcrumbs) component now supports auto-collapse behavior. The `maxVisibleItems` prop defaults to `'auto'`, which uses a `ResizeObserver` to progressively show or hide breadcrumb items based on the available container width.
+
 ### Tabs
 
 The active tab underline now slides smoothly between items with an animated transition. This works automatically and requires no code changes. See the [Tabs documentation](/components/navigation/tabs) for details.
@@ -158,7 +163,7 @@ The `extendTheme` utility has also been simplified. Previously, it extracted var
 The semantic spacing system (introduced as alpha in v17.0.0) has been refined:
 
 - `peer` has been renamed to `regular` for better semantic clarity
-- Unused tokens `joined` and `context` have been removed
+- `joined` and `context` have been removed
 - Scale values have been adjusted for better visual rhythm: tight (6px), regular (24px), group (48px), section (96px)
 
 ```tsx
@@ -184,6 +189,20 @@ For the full token reference and usage examples, see the [Spacing guide](/founda
 - The theme package now exports a typed `appearances` object via `@marigold/theme-rui/appearances`, providing a single source of truth for available `variant`/`size` keys per component.
 - Added explicit `types` condition to package exports across `@marigold/system`, `@marigold/icons`, `@marigold/theme-rui`, and `@marigold/theme-docs` for reliable type resolution.
 - Removed `tailwindcss-animate` dependency and standardized overlay animations across all components.
+- Updated React Aria to the newest version.
+
+### Raw Markdown Endpoint for AI and External Tools
+
+Every documentation page is now available as clean, semantic Markdown via a new `/mcp/[...slug]` API route. This makes it easy for AI assistants, LLMs, and external tools to read and understand Marigold's documentation programmatically.
+
+The endpoint converts MDX pages through a processing pipeline that resolves interactive demos into TSX code blocks, generates prop tables from TypeScript source, and transforms custom JSX components (like `<SectionMessage>`, `<Do>`/`<Dont>`, `<Callout>`) into their Markdown equivalents. The result is a portable, readable document that retains the full content of each page without requiring a browser.
+
+```
+GET /mcp/components/actions/button.md
+Content-Type: text/markdown; charset=utf-8
+```
+
+Pages are statically generated at build time, so responses are fast and cacheable. The docs UI also includes a "Copy as Markdown" button and a "View as Markdown" link on every page, making it simple to grab content for use in prompts, wikis, or other documentation systems.
 
 ## Bug Fixes
 
