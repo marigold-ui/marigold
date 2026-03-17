@@ -1,9 +1,14 @@
-import { theme } from '@/theme';
-import { MarigoldProvider } from '@/ui';
-import { ReactNode, Suspense } from 'react';
-import { fontSans } from '@/theme/fonts';
-import { Analytics } from './_components/Analytics';
-import './globals.css';
+import { source } from '@/lib/source';
+import { flattenTree } from 'fumadocs-core/page-tree';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { Inter } from 'next/font/google';
+import './global.css';
+import { Providers } from './providers';
+
+const inter = Inter({
+  subsets: ['latin'],
+});
 
 // Metadata
 // ---------------
@@ -12,7 +17,7 @@ const FAV_ICONS = {
   preview: '/logo-preview.svg',
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Marigold Design System',
   description: "Documentation of Reservix' Design System",
   icons: {
@@ -24,20 +29,23 @@ export const metadata = {
 
 // Layout
 // ---------------
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = ({ children }: LayoutProps<'/'>) => {
   return (
-    <html
-      lang="en"
-      className="scrollbar scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full"
-    >
-      <body className={`${fontSans.className} min-h-screen`}>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col">
         <Suspense>
-          <MarigoldProvider theme={theme} className="bg-bg-body min-h-screen">
+          <Providers
+            pages={flattenTree(source.pageTree.children)
+              .filter(
+                (item): item is typeof item & { name: string } =>
+                  typeof item.name === 'string'
+              )
+              .map(item => ({ name: item.name, url: item.url }))}
+          >
             {children}
-          </MarigoldProvider>
+          </Providers>
           <div id="portalContainer" data-theme="rui" className="not-prose" />
         </Suspense>
-        <Analytics />
       </body>
     </html>
   );

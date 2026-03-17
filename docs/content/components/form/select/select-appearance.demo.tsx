@@ -1,4 +1,4 @@
-import { SelectProps } from '@marigold/components';
+import type { SelectProps } from '@marigold/components';
 import { Select } from '@marigold/components';
 
 export default (props: SelectProps<object>) => (

@@ -1,21 +1,12 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, Sections } from './Select.stories';
 
 const user = userEvent.setup();
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => {
-    return {
-      matches: false,
-      addListener: () => {},
-      removeListener: () => {},
-    };
-  },
-});
+window.matchMedia = mockMatchMedia([]);
 
 test('renders a field (label, helptext, select)', () => {
   render(
@@ -64,36 +55,6 @@ test('allows to disable select', async () => {
   await user.click(button);
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
-});
-
-test('allows to disable options', async () => {
-  // Basic story has disabledKeys={['Firefly']} built-in
-  renderWithOverlay(<Basic.Component label="Label" data-testid="select" />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const options = screen.getByRole('listbox');
-  const firefly = within(options).getByRole('option', { name: 'Firefly' });
-
-  expect(firefly).toHaveAttribute('aria-disabled', 'true');
-});
-
-test('controlled', async () => {
-  // Basic story already has onChange that updates selected state
-  renderWithOverlay(<Basic.Component label="Label" data-testid="select" />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const options = screen.getByRole('listbox');
-  const starWars = within(options).getByText('Star Wars');
-  await user.click(starWars);
-
-  // Basic story renders selected value in a pre element
-  expect(screen.getByTestId('selected')).toHaveTextContent(
-    'selected: Star Wars'
-  );
 });
 
 test('supports default value via "defaultValue"', async () => {

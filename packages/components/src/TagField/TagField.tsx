@@ -124,6 +124,7 @@ interface TagDisplayProps {
 
 const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
   const state = useContext(SelectStateContext);
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   if (!state) {
     return null;
@@ -145,7 +146,7 @@ const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
 
   return (
     <TagGroup
-      aria-label="Selected items"
+      aria-label={stringFormatter.format('selectedItems')}
       className={classNames.tagGroup}
       onRemove={
         disabled
@@ -190,7 +191,7 @@ const TagFieldDropdown = ({
 
   return (
     <Autocomplete filter={contains}>
-      <SearchField aria-label="Search" autoFocus>
+      <SearchField aria-label={stringFormatter.format('search')} autoFocus>
         <SearchInput placeholder={placeholder} />
       </SearchField>
       <ListBox

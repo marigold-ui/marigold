@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { vi } from 'vitest';
+import { mockMatchMedia } from '../test.utils';
 import { Table } from './Table';
 import {
   Basic,
@@ -17,12 +17,7 @@ import {
 import { renderDragPreview } from './TableDragPreview';
 import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
 
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 describe('Basic Rendering', () => {
   test('renders table element with proper structure', () => {
@@ -138,10 +133,10 @@ describe('Content', () => {
 });
 
 describe('Advanced Features', () => {
-  test('renders scrollable table with sticky header', async () => {
+  test('renders scrollable table with sticky header', () => {
     render(<ScrollableAndSticky.Component />);
 
-    const table = await screen.findByRole('grid');
+    const table = screen.getByRole('grid');
 
     expect(table).toBeInTheDocument();
   });
@@ -260,9 +255,8 @@ describe('Cell Alignment', () => {
 });
 
 describe('Sticky Header', () => {
-  test('applies sticky class to header', async () => {
+  test('applies sticky class to header', () => {
     render(<ScrollableAndSticky.Component />);
-    await screen.findByRole('grid');
 
     const columnHeader = screen.getByRole('columnheader', { name: 'ID' });
     // eslint-disable-next-line testing-library/no-node-access

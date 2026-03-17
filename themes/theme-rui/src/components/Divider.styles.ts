@@ -1,6 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Divider: ThemeComponent<'Divider'> = cva('bg-border h-px w-full', {
+export const Divider: ThemeComponent<'Divider'> = cva({
+  base: 'bg-border h-px w-full',
   variants: {
     variant: {
       default: '',

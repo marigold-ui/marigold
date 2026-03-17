@@ -4,6 +4,7 @@
 *.pem
 
 # generated files
+themes/theme-rui/src/appearances.ts
 node_modules
 .swc
 coverage
@@ -39,3 +40,6 @@ next-env.d.ts
 
 # Jetbrains IDE
 .idea
+
+# Playwright MCP
+.playwright-mcp

@@ -16,7 +16,6 @@
 */
 
 @plugin 'tailwindcss-react-aria-components';
-@plugin 'tailwindcss-animate';
 
 @theme static {
   --font-sans: Inter, system-ui, sans-serif;
@@ -101,13 +100,13 @@
     Currently used for: helptext, icons inside inputs, readonly background inside inputs, variant for text 
   */
   --color-muted: var(--color-stone-100);
-  --color-muted-foreground: var(--color-stone-500);
+  --color-muted-foreground: var(--color-stone-600);
 
   --color-disabled: var(--color-stone-200);
-  --color-disabled-foreground: var(--color-stone-400);
+  --color-disabled-foreground: var(--color-stone-500);
 
   /* used for placeholder color */
-  --color-placeholder: var(--color-stone-500);
+  --color-placeholder: var(--color-stone-600);
   /* used for outline/border as ring*/
   --color-ring: var(--color-stone-400);
 
@@ -144,14 +143,13 @@
 
   /* Border elevation - subtle shadow for input elements and cards */
   --shadow-elevation-border:
-    0px 0.3px 0.3px oklch(0 0 0 / 0.19),
-    0.1px 1.1px 1.2px -3px oklch(0 0 0 / 0.16);
+    0px 0.3px 0.3px oklch(0 0 0 / 0.14), 0px 1px 1.2px -3px oklch(0 0 0 / 0.12);
 
   /* Raised elevation - moderate shadow for cards, tiles, and containers */
   --shadow-elevation-raised:
-    0px 0.3px 0.3px oklch(0 0 0 / 0.23),
-    0px 1.4px 1.3px -2px oklch(0 0 0 / 0.17),
-    0px 6.7px 6px -4px oklch(0 0 0 / 0.12);
+    0px 0.3px 0.8px oklch(0 0 0 / 0.28),
+    0px 1.4px 1.3px -2px oklch(0 0 0 / 0.21),
+    0px 6.7px 6px -4px oklch(0 0 0 / 0.15);
 
   /* Overlay elevation - prominent shadow for modals, dialogs, popovers */
   --shadow-elevation-overlay:
@@ -192,13 +190,11 @@
 
   /* RELATIONAL SPACING */
 
-  --spacing-joined: --spacing(0.25);
-  --spacing-tight: --spacing(1);
+  --spacing-tight: --spacing(1.5);
   --spacing-related: --spacing(2);
-  --spacing-peer: --spacing(4);
-  --spacing-group: --spacing(8);
-  --spacing-section: --spacing(16);
-  --spacing-context: --spacing(32);
+  --spacing-regular: --spacing(6);
+  --spacing-group: --spacing(12);
+  --spacing-section: --spacing(24);
 
   /* INSET SPACING */
 
@@ -245,20 +241,18 @@
   --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
   --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
 
-  --fade-in-duration: 0.25s;
-  --fade-out-duration: 0.15s;
+  --fade-in-duration: 0.3s;
+  --fade-out-duration: 0.2s;
 
-  --animate-fade-in: fade-in var(--fade-in-duration) var(--ease-out-cubic);
-  --animate-fade-out: fade-in var(--fade-out-duration) reverse;
+  --animate-fade-in: fade-in var(--fade-in-duration) ease-out;
+  --animate-fade-out: fade-in var(--fade-out-duration) ease-in reverse;
 
   @keyframes fade-in {
     from {
       opacity: 0;
-      filter: blur(6px);
     }
     to {
       opacity: 1;
-      filter: blur(0);
     }
   }
 
@@ -267,13 +261,39 @@
   @keyframes fade-in-up {
     from {
       opacity: 0;
-      transform: translateY(15px);
       filter: blur(6px);
+      transform: translateY(15px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
       filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  /* ActionBar enter/exit */
+  --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
+  --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(16px);
     }
   }
 
@@ -283,11 +303,12 @@
 
   --animate-slide-in-right: slide-in-right var(--slide-in-duration)
     var(--ease-out-expo);
-  --animate-slide-out-right: slide-in-right var(--slide-out-duration) reverse;
+  --animate-slide-out-right: slide-in-right var(--slide-out-duration) reverse
+    forwards;
 
   @keyframes slide-in-right {
     from {
-      transform: translateX(100%);
+      transform: translateX(calc(100% + var(--slide-offset, 0px)));
     }
 
     to {
@@ -298,11 +319,12 @@
   /* animation slide in left*/
   --animate-slide-in-left: slide-in-left var(--slide-in-duration)
     var(--ease-out-expo);
-  --animate-slide-out-left: slide-in-left var(--slide-out-duration) reverse;
+  --animate-slide-out-left: slide-in-left var(--slide-out-duration) reverse
+    forwards;
 
   @keyframes slide-in-left {
     from {
-      transform: translateX(-100%);
+      transform: translateX(calc(-100% - var(--slide-offset, 0px)));
     }
 
     to {
@@ -313,11 +335,12 @@
   /* animation slide in top*/
   --animate-slide-in-top: slide-in-top var(--slide-in-duration)
     var(--ease-out-expo);
-  --animate-slide-out-top: slide-in-top var(--slide-out-duration) reverse;
+  --animate-slide-out-top: slide-in-top var(--slide-out-duration) reverse
+    forwards;
 
   @keyframes slide-in-top {
     from {
-      transform: translateY(-100%);
+      transform: translateY(calc(-100% - var(--slide-offset, 0px)));
     }
 
     to {
@@ -328,11 +351,12 @@
   /* animation slide in bottom*/
   --animate-slide-in-bottom: slide-in-bottom var(--slide-in-duration)
     var(--ease-out-expo);
-  --animate-slide-out-bottom: slide-in-bottom var(--slide-out-duration) reverse;
+  --animate-slide-out-bottom: slide-in-bottom var(--slide-out-duration) reverse
+    forwards;
 
   @keyframes slide-in-bottom {
     from {
-      transform: translateY(100%);
+      transform: translateY(calc(100% + var(--slide-offset, 0px)));
     }
 
     to {

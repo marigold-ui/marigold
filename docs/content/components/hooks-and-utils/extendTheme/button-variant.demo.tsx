@@ -5,7 +5,8 @@ export default () => {
   const currentTheme = useTheme();
   const theme = extendTheme(
     {
-      Button: cva('p-3', {
+      Button: cva({
+        base: 'p-3',
         variants: {
           variant: {
             tertiary: 'text-text-base bg-slate-200',

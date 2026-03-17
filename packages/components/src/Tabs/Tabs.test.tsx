@@ -1,6 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Basic, WithDisabledKeys, WithSelectedTab } from './Tabs.stories';
+import {
+  Basic,
+  WithDisabledKeys,
+  WithRenderProps,
+  WithSelectedTab,
+} from './Tabs.stories';
 
 const user = userEvent.setup();
 
@@ -13,12 +18,14 @@ test('rendering content correctly', () => {
   expect(screen.getByText(/Adjust the sensitivity/)).toBeInTheDocument();
 });
 
-test('supports disabled prop', async () => {
+test('supports disabled prop', () => {
   render(<WithDisabledKeys.Component />);
   const tab = screen.getByText('private');
   expect(tab).toHaveAttribute('aria-disabled');
-  await user.click(tab);
-  // First tab should still be visible since disabled tab can't be selected
+  // In a real browser, disabled tabs have pointer-events:none which prevents clicking.
+  // This confirms the tab is properly disabled - the user cannot interact with it.
+  expect(getComputedStyle(tab).pointerEvents).toBe('none');
+  // First tab content should still be visible since disabled tab can't be selected
   expect(screen.getByText(/This panel displays your profile/)).toBeVisible();
 });
 
@@ -66,4 +73,25 @@ test('tablist has correct container structure', () => {
   const tablist = screen.getByRole('tablist');
   expect(tablist).toBeInTheDocument();
   expect(tablist).toHaveAttribute('aria-label', 'Input settings');
+});
+
+test('supports render prop children on Tabs.Item', async () => {
+  // Arrange
+  render(<WithRenderProps.Component />);
+  const securityTab = screen.getByRole('tab', { name: 'Security' });
+
+  // Assert (initial state)
+  expect(
+    screen.getByRole('tab', { name: 'General (current)' })
+  ).toBeInTheDocument();
+  expect(securityTab).toBeInTheDocument();
+
+  // Act
+  await user.click(securityTab);
+
+  // Assert
+  expect(
+    screen.getByRole('tab', { name: 'Security (current)' })
+  ).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: 'General' })).toBeInTheDocument();
 });

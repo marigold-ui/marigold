@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Key } from '@react-types/shared';
 import { Accordion, TextField } from '@marigold/components';
 
 export default () => {
-  let [expandedKeys, setExpandedKeys] = useState<Set<Key>>(
+  let [expandedKeys, setExpandedKeys] = useState<Set<number | string>>(
     new Set(['personal'])
   );
 

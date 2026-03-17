@@ -95,15 +95,7 @@ export type {
 } from './style-props';
 
 // Utils
-export type {
-  ClassValue,
-  VariantProps,
-  ConfigSchema,
-  ConfigVariants,
-  ConfigVariantsMulti,
-  Config,
-  Props,
-} from './utils/className.utils';
+export type { ClassValue, VariantProps } from './utils/className.utils';
 export { cva, cn } from './utils/className.utils';
 export type { Scale, ScaleValue } from './utils/css-variables.utils';
 export {

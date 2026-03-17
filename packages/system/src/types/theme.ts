@@ -1,4 +1,4 @@
-import { ClassValue, ConfigSchema } from '../utils/className.utils';
+import { ClassValue } from '../utils/className.utils';
 
 export interface NestedStringObject {
   [key: string]: NestedStringObject | string;
@@ -17,7 +17,6 @@ export interface ComponentStyleFunction<
       className?: ClassValue;
     } & Partial<Additional>
   ): string;
-  variants: ConfigSchema | undefined;
 }
 
 export type Theme = {
@@ -33,7 +32,12 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
-      'container' | 'count' | 'actions' | 'clearButton',
+      | 'container'
+      | 'selection'
+      | 'count'
+      | 'toolbar'
+      | 'clearButton'
+      | 'actionButton',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
@@ -205,7 +209,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tabs?: Record<
-      'container' | 'tabsList' | 'tabpanel' | 'tab',
+      'container' | 'tabsList' | 'tabpanel' | 'tab' | 'tabIndicator',
       ComponentStyleFunction<string, string>
     >;
     Underlay?: ComponentStyleFunction<string, string>;
@@ -251,6 +255,27 @@ export type Theme = {
     >;
     ToggleButton?: Record<
       'group' | 'button',
+      ComponentStyleFunction<string, string>
+    >;
+    Sidebar?: Record<
+      | 'root'
+      | 'overlay'
+      | 'modal'
+      | 'closeButton'
+      | 'header'
+      | 'nav'
+      | 'footer'
+      | 'toggle'
+      | 'separator'
+      | 'groupLabel'
+      | 'navPanel'
+      | 'navLink'
+      | 'backButton'
+      | 'content',
+      ComponentStyleFunction<string, string>
+    >;
+    TopNavigation?: Record<
+      'container' | 'start' | 'middle' | 'end',
       ComponentStyleFunction<string, string>
     >;
   };

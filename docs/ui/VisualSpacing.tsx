@@ -2,51 +2,50 @@ import type { PropsWithChildren } from 'react';
 import type { Scale, SpacingTokens } from '@marigold/system';
 import { cn, createVar, cva } from '@marigold/system';
 
+const labelClass = 'text-xs/1 font-semibold text-pink-600';
+
 const classNames = {
-  container: cva(['relative bg-pink-100'], {
+  container: cva({
+    base: ['relative bg-pink-100'],
     variants: {
       orientation: {
-        horizontal: ['-mx-(--space) w-(--space) h-full'],
+        horizontal: ['-mx-(--space) w-(--space)'],
         vertical: ['-my-(--space) h-(--space) w-full'],
       },
     },
   }),
-  icon: cva(['border-pink-600', 'before:block before:bg-pink-600'], {
+  icon: cva({
+    base: ['border-pink-600', 'before:block before:bg-pink-600'],
     variants: {
       orientation: {
         horizontal: [
           'h-2 w-(--space)',
           'border-x-2',
-          'before:top-full before:left-0 before:mt-[3px]',
+          'before:top-full before:left-0 before:mt-0.75',
           'before:h-0.5 before:w-[calc(var(--space)-2px)]',
         ],
         vertical: [
           'w-2 h-(--space)',
           'border-y-2',
-          'before:left-full before:top-0 before:ml-[3px]',
+          'before:left-full before:top-0 before:ml-0.75',
           'before:w-0.5 before:h-[calc(var(--space)-2px)]',
         ],
       },
     },
   }),
-  guide: cva(
-    [
-      'absolute flex items-center gap-1',
-      'text-xs/1 font-semibold text-pink-600',
-    ],
-    {
-      variants: {
-        orientation: {
-          horizontal: ['flex-col', 'left-0 right-0 top-full mt-1.5'],
-          vertical: ['top-1/2 -translate-y-1/2 left-full ml-1.5'],
-        },
+  guide: cva({
+    base: ['absolute flex items-center gap-1', labelClass],
+    variants: {
+      orientation: {
+        horizontal: ['flex-col', 'left-0 right-0 top-full mt-1.5'],
+        vertical: ['top-1/2 -translate-y-1/2 left-full ml-1.5'],
       },
-    }
-  ),
+    },
+  }),
 };
 
 export interface VisualSpacingProps {
-  space: SpacingTokens;
+  space: SpacingTokens | Scale;
   orientation: 'horizontal' | 'vertical';
   hideGuide?: boolean;
 }
@@ -72,8 +71,8 @@ export const VisualSpacing = ({
 export interface VisualInsetProps {
   className?: string;
   /**
-   * We need a name here an the tokens (sadly) need to be used hardcoded
-   * since for the demo we need to have a seperateed x/y value.
+   * We need a name here and the tokens (sadly) need to be used hardcoded
+   * since for the demo we need to have a separated x/y value.
    */
   name: string;
   spaceX: Scale;

@@ -1,5 +1,68 @@
 # @marigold/components
 
+## 17.2.0
+
+### Minor Changes
+
+- ed928a0: Update ActionBar with enter/exit animations, keyboard support, and built-in Table integration.
+  - Add `useActionBar` hook and `ActionBarContext` for managing selection state between ActionBar and Table
+  - Add `actionBar` render prop to Table for automatic selection wiring and ActionBar positioning
+  - Add enter/exit animations using `motion/react` and react-aria `useEnterAnimation`/`useExitAnimation`
+  - Add Escape key support to clear selection via `FocusScope` and `useKeyboard`
+  - Add screen reader announcement when ActionBar appears
+  - Add localized `selectedCount`/`selectedAll` messages (en-US, de-DE)
+  - Update ActionBar theme slots: rename `actions` to `toolbar`, add `selection` slot
+  - Update theme type definition to match new slot names
+
+- 5d4c915: feat([DST-1240]): Add auto-collapse behavior to Breadcrumbs. The `maxVisibleItems` prop now defaults to `'auto'`, which uses a `ResizeObserver` to progressively show or hide breadcrumb items based on available container width.
+- 61bfc60: Refactor relational spacing scale for better semantic clarity and visual rhythm.
+  - Rename `--spacing-peer` token to `--spacing-regular`
+  - Remove unused `--spacing-joined` and `--spacing-context` tokens
+  - Adjust spacing scale values: tight (4px→6px), regular (16px→24px), group (32px→48px), section (64px→96px)
+  - Move field-internal spacing from theme (`Field.styles` `space-y-2`) into component implementations using new `in-field` custom variant
+  - Add `in-field:mb-1.5` to Label and `in-field:mt-1` to HelpText for consistent field layout
+  - Update `SpacingTokens` type to reflect new scale
+
+- 470d81c: feat(DST-979): Introduce a dedicated Sidebar component
+
+  Add new `Sidebar` component for persistent app-level navigation. Features compound component API (`Sidebar.Header`, `Sidebar.Nav`, `Sidebar.Item`, `Sidebar.Footer`, `Sidebar.Toggle`, etc.), drill-down sub-navigation with animated transitions, collapse/expand with keyboard shortcut (Cmd+B / Ctrl+B) and localStorage persistence, mobile-responsive sheet overlay, full accessibility support, and i18n (EN/DE).
+
+- c3bf8e4: feat([DST-1168]): Introduce TopNavigation Component
+  - Three-slot grid layout (`Start`, `Middle`, `End`) using compound component pattern
+  - Semantic HTML with `<header>` container and `<nav>` landmarks
+  - Sticky by default, configurable alignment, and i18n ARIA labels
+  - Theme styles for `theme-rui` and type definitions in `@marigold/system`
+
+### Patch Changes
+
+- 91eb222: Update ActionBar styling with surface contrast and dedicated button slot.
+  - Apply `ui-surface-contrast` utility to ActionBar container for adaptive theming
+  - Add `button` slot to ActionBar theme for properly styled action buttons (replaces `Button.ghost`)
+  - Add `clearButton` hover/focus/disabled styles using theme-aware utilities
+  - Update `ActionButton` to use `ActionBar.button` classNames instead of `Button.ghost`
+  - Replace `CloseButton` with `IconButton` for the clear selection button
+  - Update stories to use `lucide-react` icons directly
+
+- b3c7085: fix: Breadcrumbs auto-collapse now works correctly inside flex containers (e.g. TopNavigation). The hidden measurement wrapper uses `min-w-0 w-full` to prevent a feedback loop where collapsed content would shrink the container, keeping breadcrumbs permanently collapsed.
+- 3019d28: Add `z-50` to the non-modal (desktop) Drawer overlay so it renders above sticky table headers and other positioned content. The mobile modal path already had `z-50`.
+- efbd292: fix: Add LayoutGroup in Tray test mock, and exclude stories when running unit tests
+- 7ca2eb1: feat([DST-1227]): 💄 Implement Animated Transitions for Tabs Component, The active tab underline must slide smoothly between items
+- 95c22b6: feat(DST-1214): Replace hardcoded English strings with centralized intl messages for proper i18n support. Components like Toast, Drawer, Pagination, SectionMessage, ProgressCircle, ActionBar, and TagField now use `useLocalizedStringFormatter` so their aria-labels are translated when the locale changes. Consolidates SearchInput's local intl messages into the shared `intl/messages.ts` file and converts parameterized messages to functions for clean variable interpolation.
+- 4a24ad6: fix([DST-945]): Fix Tooltip controlled open prop positioning
+- 600d09f: fix(DSTSUP-233): Added card shadows to master- and adminmark
+- f63e57f: refactor(DST-1233): remove tailwindcss-animate, standardize overlay animations
+- d963df2: chore: Update React Aria to newest version
+- Updated dependencies [91eb222]
+- Updated dependencies [ed928a0]
+- Updated dependencies [cf56729]
+- Updated dependencies [7ca2eb1]
+- Updated dependencies [beebd7c]
+- Updated dependencies [b115fda]
+- Updated dependencies [61bfc60]
+- Updated dependencies [c3bf8e4]
+- Updated dependencies [d963df2]
+  - @marigold/system@17.2.0
+
 ## 17.1.0
 
 ### Minor Changes

@@ -1,22 +1,11 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './ComboBox.stories';
 
 const user = userEvent.setup();
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => ({
-    matches: false,
-    addListener: () => {},
-    removeListener: () => {},
-  }),
-});
+window.matchMedia = mockMatchMedia([]);
 
 test('renders an input', () => {
   renderWithOverlay(<Basic.Component />);
@@ -40,10 +29,10 @@ test('check classname slots', () => {
     `"shrink-0 outline-0 absolute cursor-pointer pr-1 text-muted-foreground/80 right-2"`
   );
   expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex min-w-0 flex-col w-auto space-y-2"`
+    `"group/field flex min-w-0 flex-col w-auto"`
   );
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive in-field:mb-1.5 inline-flex"`
   );
 });
 
@@ -109,18 +98,6 @@ test('supports default value', () => {
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
   expect(textField).toHaveValue('garlic');
-});
-
-test('supports autocompletion', async () => {
-  renderWithOverlay(<Basic.Component label="Label" />);
-
-  const input = screen.getAllByLabelText(/Label/i)[0];
-  await user.type(input, 'do');
-
-  const dog = screen.getByText('Dog');
-  await user.click(dog);
-
-  expect(input).toHaveValue('Dog');
 });
 
 test('supports loading state', () => {

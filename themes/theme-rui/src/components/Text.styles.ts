@@ -1,6 +1,6 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
-export const Text: ThemeComponent<'Text'> = cva('', {
+export const Text: ThemeComponent<'Text'> = cva({
   variants: {
     variant: {
       default: '',

@@ -1,8 +1,11 @@
 import { createContext, useContext } from 'react';
+import type { ComponentClassNames } from '@marigold/system';
 
 export interface ListContextProps {
-  classNames: string;
+  classNames: ComponentClassNames<'List'>;
 }
 
-export const ListContext = createContext<ListContextProps>({} as any);
+export const ListContext = createContext<ListContextProps>({
+  classNames: {} as ComponentClassNames<'List'>,
+});
 export const useListContext = () => useContext(ListContext);

@@ -1,6 +1,6 @@
 'use client';
 
-import { Headline } from '@/ui';
+import { Headline } from '@/ui/Headline';
 import {
   BaseSemanticTokens,
   ColorPalettes,

@@ -1,11 +1,13 @@
 import { type ReactNode, useRef, useState } from 'react';
 import { useButton } from '@react-aria/button';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { CircleAlert } from '../icons/CircleAlert';
 import { CircleCheck } from '../icons/CircleCheck';
 import { Info } from '../icons/Info';
 import { TriangleAlert } from '../icons/TriangleAlert';
+import { intlMessages } from '../intl/messages';
 import { SectionMessageContext } from './Context';
 import { SectionMessageContent } from './SectionMessageContent';
 import { SectionMessageTitle } from './SectionMessageTitle';
@@ -54,6 +56,7 @@ export const SectionMessage = ({
   ...props
 }: SectionMessageProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'SectionMessage',
     variant,
@@ -90,7 +93,7 @@ export const SectionMessage = ({
           <CloseButton
             {...buttonProps}
             ref={buttonRef}
-            aria-label="close"
+            aria-label={stringFormatter.format('close')}
             className={cn('[grid-area:close]', classNames.close)}
             onPress={handleClose}
           />

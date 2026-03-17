@@ -1,0 +1,23 @@
+{
+  "pages": [
+    "autocomplete",
+    "calendar",
+    "checkbox",
+    "combobox",
+    "datefield",
+    "datepicker",
+    "file-field",
+    "form",
+    "multiselect",
+    "number-field",
+    "radio",
+    "search-field",
+    "select",
+    "slider",
+    "switch",
+    "tag-field",
+    "textarea",
+    "textfield",
+    "timefield"
+  ]
+}

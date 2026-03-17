@@ -64,7 +64,7 @@ See @README.md for project overview and @package.json for available pnpm command
 - `packages/system` - Design system utilities and hooks
 - `packages/icons` - Icon components
 - `packages/types` - Shared TypeScript types
-- `themes/*` - Theme packages (theme-docs, theme-rui)
+- `themes/*` - Theme packages (theme-rui)
 - `docs` - Documentation site (Next.js)
 - `.storybook` - Storybook configuration
 

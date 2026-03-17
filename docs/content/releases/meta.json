@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "blog-overview",
+    "---packages---",
+    "packages/components/release",
+    "packages/icons/release",
+    "packages/system/release",
+    "packages/types/release",
+    "---themes---",
+    "themes/theme-rui/release",
+    "---docs---",
+    "docs/release",
+    "---config---",
+    "config/eslint/release",
+    "config/prettier/release",
+    "config/storybook/release",
+    "config/tsconfig/release"
+  ]
+}

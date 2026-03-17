@@ -12,7 +12,7 @@ export const ListItem = ({ children, ...props }: ListItemProps) => {
   const { classNames } = useListContext();
 
   return (
-    <li {...props} className={classNames}>
+    <li {...props} className={classNames.item}>
       {children}
     </li>
   );

@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "accordion",
+    "breadcrumbs",
+    "pagination",
+    "sidebar",
+    "tabs",
+    "topnavigation"
+  ]
+}

@@ -1,8 +1,10 @@
 import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
+import { intlMessages } from '../intl/messages';
 import { Ellipsis } from './Ellipsis';
 import { NavigationButton } from './NavigationButton';
 import { PageButton } from './PageButton';
@@ -57,6 +59,7 @@ const InnerPagination = ({
   controlLabels,
 }: InnerPaginationProps) => {
   const focusManager = useFocusManager();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages || totalPages === 0;
@@ -105,7 +108,7 @@ const InnerPagination = ({
     <>
       <NavigationButton
         onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-        aria-label="Page previous"
+        aria-label={stringFormatter.format('pagePrevious')}
         isDisabled={isFirstPage}
         controlLabel={controlLabels?.[0]}
         position="left"
@@ -136,7 +139,7 @@ const InnerPagination = ({
 
       <NavigationButton
         onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-        aria-label="Page next"
+        aria-label={stringFormatter.format('pageNext')}
         isDisabled={isLastPage}
         controlLabel={controlLabels?.[1]}
         position="right"
@@ -159,11 +162,15 @@ const _Pagination = ({
   const totalPages = Math.ceil(totalItems / pageSize);
   const pageRange = usePageRange({ currentPage, totalPages });
   const { container } = useClassNames({ component: 'Pagination' });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <nav
       className={container}
-      aria-label={`Page ${currentPage} of ${totalPages}`}
+      aria-label={stringFormatter.format('pageOfTotal', {
+        current: currentPage,
+        total: totalPages,
+      })}
     >
       <FocusScope restoreFocus>
         <InnerPagination

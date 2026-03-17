@@ -77,9 +77,9 @@ describe('Grid', () => {
 
       const grid = screen.getByTestId('grid');
 
-      expect(grid).toHaveStyle({
-        'grid-template-columns': '150px auto',
-      });
+      // In a real browser, computed style resolves "auto" and "fr" to px values.
+      // Check the inline style attribute instead.
+      expect(grid.style.gridTemplateColumns).toBe('150px auto');
     });
 
     test('converts numbers to fractions for rows', () => {
@@ -89,10 +89,10 @@ describe('Grid', () => {
 
       const grid = screen.getByTestId('grid');
 
-      expect(grid).toHaveStyle({
-        'grid-template-columns': '1fr 2fr',
-        'grid-template-rows': '1fr 3fr',
-      });
+      // In a real browser, computed style resolves "fr" to px values.
+      // Check the inline style attribute instead.
+      expect(grid.style.gridTemplateColumns).toBe('1fr 2fr');
+      expect(grid.style.gridTemplateRows).toBe('1fr 3fr');
     });
   });
 

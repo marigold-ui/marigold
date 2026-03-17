@@ -26,7 +26,11 @@ export default () => (
           width="1/2"
           defaultValue="Lumen Events"
         />
-        <Select label="Organizer Type" width={48} defaultValue={'promoter'}>
+        <Select
+          label="Organizer Type"
+          width={48}
+          defaultSelectedKey={'promoter'}
+        >
           <Select.Option id="agency">Agency</Select.Option>
           <Select.Option id="venue">Venue</Select.Option>
           <Select.Option id="promoter">Promoter</Select.Option>
@@ -41,7 +45,7 @@ export default () => (
             }
             width={56}
             description="Select the team responsible for this organizer."
-            defaultValue={'regional'}
+            defaultSelectedKey={'regional'}
           >
             <Select.Option id="inbound">Inbound Sales</Select.Option>
             <Select.Option id="outbound">Outbound Sales</Select.Option>
@@ -65,7 +69,7 @@ export default () => (
     <Tabs.TabPanel id="events">
       <Table aria-label="Event List">
         <Table.Header>
-          <Table.Column>Name</Table.Column>
+          <Table.Column rowHeader>Name</Table.Column>
           <Table.Column>Date</Table.Column>
           <Table.Column>Location</Table.Column>
           <Table.Column>Status</Table.Column>

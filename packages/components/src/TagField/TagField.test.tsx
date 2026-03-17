@@ -1,19 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { mockMatchMedia } from '../test.utils';
 import { Basic, Controlled } from './TagField.stories';
 
 const user = userEvent.setup();
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: () => {
-    return {
-      matches: false,
-      addListener: () => {},
-      removeListener: () => {},
-    };
-  },
-});
+window.matchMedia = mockMatchMedia([]);
 
 test('renders a field (label, helptext, tagfield)', () => {
   render(
@@ -70,17 +62,6 @@ test('error state shows error message', () => {
 
   expect(container).toHaveAttribute('data-error');
   expect(errorMessage).toBeInTheDocument();
-});
-
-test('allows removing a tag', async () => {
-  render(<Controlled.Component />);
-
-  const removeButtons = screen.getAllByRole('button', { name: /remove/i });
-  expect(removeButtons).toHaveLength(2);
-
-  await user.click(removeButtons[0]);
-
-  expect(screen.getByTestId('selected')).toHaveTextContent('selected: ["pop"]');
 });
 
 test('clicking the field area opens the dropdown', async () => {

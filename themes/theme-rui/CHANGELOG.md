@@ -1,5 +1,115 @@
 # @marigold/theme-rui
 
+## 5.2.0
+
+### Minor Changes
+
+- ed928a0: Update ActionBar with enter/exit animations, keyboard support, and built-in Table integration.
+  - Add `useActionBar` hook and `ActionBarContext` for managing selection state between ActionBar and Table
+  - Add `actionBar` render prop to Table for automatic selection wiring and ActionBar positioning
+  - Add enter/exit animations using `motion/react` and react-aria `useEnterAnimation`/`useExitAnimation`
+  - Add Escape key support to clear selection via `FocusScope` and `useKeyboard`
+  - Add screen reader announcement when ActionBar appears
+  - Add localized `selectedCount`/`selectedAll` messages (en-US, de-DE)
+  - Update ActionBar theme slots: rename `actions` to `toolbar`, add `selection` slot
+  - Update theme type definition to match new slot names
+
+- e6091b6: Export `appearances` map from `@marigold/theme-rui/appearances`
+
+  The theme package now exports a typed `appearances` object (and `Appearances` type) via `@marigold/theme-rui/appearances`. This map is auto-generated during the build from component style files and contains the available `variant`/`size` keys for each themed component.
+
+  This removes the duplicated `build-appearances.mjs` scripts that previously existed in `docs`, replacing them with a single source of truth in the theme package.
+
+- b115fda: Migrate from `class-variance-authority` to `cva` and simplify `extendTheme` via function composition.
+  - Replace `class-variance-authority` dependency with `cva` (v1 beta), which has built-in Tailwind merge support via `defineConfig`
+  - Refactor the custom `cva` wrapper to use `cva`'s `defineConfig` with a `twMerge` hook, storing variant configs in a WeakMap (for docs introspection) instead of a `.variants` property
+  - Simplify `extendTheme` to compose style functions directly (`cn(existingFn(props), newFn(props))`) instead of extracting and merging variant configs — this preserves `defaultVariants` and `compoundVariants` that were previously lost during merging
+  - Update all theme style files in `theme-rui` to the new `cva` API (object config with `base`/`variants`/`compoundVariants` keys)
+
+- 61bfc60: Refactor relational spacing scale for better semantic clarity and visual rhythm.
+  - Rename `--spacing-peer` token to `--spacing-regular`
+  - Remove unused `--spacing-joined` and `--spacing-context` tokens
+  - Adjust spacing scale values: tight (4px→6px), regular (16px→24px), group (32px→48px), section (64px→96px)
+  - Move field-internal spacing from theme (`Field.styles` `space-y-2`) into component implementations using new `in-field` custom variant
+  - Add `in-field:mb-1.5` to Label and `in-field:mt-1` to HelpText for consistent field layout
+  - Update `SpacingTokens` type to reflect new scale
+
+- 470d81c: feat(DST-979): Introduce a dedicated Sidebar component
+
+  Add new `Sidebar` component for persistent app-level navigation. Features compound component API (`Sidebar.Header`, `Sidebar.Nav`, `Sidebar.Item`, `Sidebar.Footer`, `Sidebar.Toggle`, etc.), drill-down sub-navigation with animated transitions, collapse/expand with keyboard shortcut (Cmd+B / Ctrl+B) and localStorage persistence, mobile-responsive sheet overlay, full accessibility support, and i18n (EN/DE).
+
+- c3bf8e4: feat([DST-1168]): Introduce TopNavigation Component
+  - Three-slot grid layout (`Start`, `Middle`, `End`) using compound component pattern
+  - Semantic HTML with `<header>` container and `<nav>` landmarks
+  - Sticky by default, configurable alignment, and i18n ARIA labels
+  - Theme styles for `theme-rui` and type definitions in `@marigold/system`
+
+### Patch Changes
+
+- 91eb222: Update ActionBar styling with surface contrast and dedicated button slot.
+  - Apply `ui-surface-contrast` utility to ActionBar container for adaptive theming
+  - Add `button` slot to ActionBar theme for properly styled action buttons (replaces `Button.ghost`)
+  - Add `clearButton` hover/focus/disabled styles using theme-aware utilities
+  - Update `ActionButton` to use `ActionBar.button` classNames instead of `Button.ghost`
+  - Replace `CloseButton` with `IconButton` for the clear selection button
+  - Update stories to use `lucide-react` icons directly
+
+- cf56729: Add explicit `types` condition to package exports for reliable type resolution.
+- 5d4c915: feat([DST-1240]): Add auto-collapse behavior to Breadcrumbs. The `maxVisibleItems` prop now defaults to `'auto'`, which uses a `ResizeObserver` to progressively show or hide breadcrumb items based on available container width.
+- 28eba72: Improve color contrast ratios to meet WCAG AA standards.
+
+  **Token changes (theme.css):**
+  - Bump `muted-foreground` from stone-500 to stone-600 (4.71:1 → 7.55:1)
+  - Bump `disabled-foreground` from stone-400 to stone-500 (2.37:1 → 4.71:1)
+  - Bump `placeholder` from stone-500 to stone-600 (4.71:1 → 7.55:1)
+
+  **Component fixes:**
+  - Remove opacity modifiers (`/80`, `/70`) on muted-foreground in Calendar, ComboBox, Select, DatePicker, and Input
+  - Replace `text-foreground/60` in Table editable cells with `text-muted-foreground`
+  - Replace `marker:text-foreground/50` in List with `marker:text-muted-foreground`
+  - Replace `opacity-60` in Accordion icon and Menu item SVGs with `text-muted-foreground`
+  - Replace `disabled:opacity-50` in Tabs with `disabled:text-disabled-foreground`
+  - Replace hardcoded `bg-stone-300`/`bg-stone-800` in Table drop indicator with `bg-border`/`bg-brand` tokens
+  - Fix bug where `disabled:text-gray-50` made Input icons nearly invisible
+
+- b61ba43: Refined elevation shadow tokens: `shadow-elevation-border` is slightly more subtle with symmetric spread; `shadow-elevation-raised` softens the crisp first layer and is a touch darker overall.
+- 7ca2eb1: feat([DST-1227]): 💄 Implement Animated Transitions for Tabs Component, The active tab underline must slide smoothly between items
+- f7870ce: Reinforce floating Drawer panel boundary with darker border and spread shadow
+- a3e3e8e: Replace fixed `hover:bg-hover hover:text-foreground` with `hover:bg-current/10` on ghost-style buttons. The new value uses `currentColor` at 10% opacity so the hover background adapts to any container (light or dark) without forcing a fixed stone-100 background or overriding text color. Applied consistently to `Button` (ghost, destructive-ghost), `IconButton`, `Pagination`, `Tabs`, and `Table` editable-cell action buttons.
+- beebd7c: Improve ListBox and Menu usability on mobile screens (DST-1210).
+  - Align `useSmallScreen` hook with Tailwind's `sm` breakpoint by deriving the value from `defaultTheme.screens.sm` using CSS Media Queries Level 4 range syntax (`width < 640px`)
+  - Add `max-sm:min-h-11` (44px) to ListBox and Menu items for WCAG 2.1 touch targets on mobile
+  - Replace `min-[600px]:` with `sm:` in Table editable cell styles for breakpoint consistency
+  - Refactor `useSmallScreen` to use `MediaQueryList.addEventListener('change')` instead of `window.resize`
+  - Extract shared `mockMatchMedia` test helper into `test.utils`
+
+- 9de007c: Align `Menu` button styles with `Button` by reusing `buttonBase` — consistent sizing, hover, disabled, and pending states across both components.
+- ed2baef: fix(NumberField): prevent group from appearing disabled when stepper hits min/max boundary
+- a715f08: Add shared CSS utilities `ui-interactive`, `ui-press`, `ui-panel-header`, and `ui-panel-actions` to reduce repeated style patterns across component theme files.
+- 600d09f: fix(DSTSUP-233): Added card shadows to master- and adminmark
+- 1ec6788: Set explicit `py-0` on table column headers to prevent external systems from overriding vertical padding
+- f63e57f: refactor(DST-1233): remove tailwindcss-animate, standardize overlay animations
+- Updated dependencies [91eb222]
+- Updated dependencies [ed928a0]
+- Updated dependencies [cf56729]
+- Updated dependencies [5d4c915]
+- Updated dependencies [b3c7085]
+- Updated dependencies [3019d28]
+- Updated dependencies [efbd292]
+- Updated dependencies [7ca2eb1]
+- Updated dependencies [95c22b6]
+- Updated dependencies [4a24ad6]
+- Updated dependencies [beebd7c]
+- Updated dependencies [b115fda]
+- Updated dependencies [61bfc60]
+- Updated dependencies [470d81c]
+- Updated dependencies [600d09f]
+- Updated dependencies [c3bf8e4]
+- Updated dependencies [f63e57f]
+- Updated dependencies [d963df2]
+  - @marigold/components@17.2.0
+  - @marigold/system@17.2.0
+
 ## 5.1.0
 
 ### Minor Changes

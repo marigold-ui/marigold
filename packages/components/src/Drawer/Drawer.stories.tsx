@@ -7,7 +7,6 @@ import { Form } from '../Form/Form';
 import { Select } from '../Select/Select';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
-import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Drawer } from './Drawer';
 
@@ -15,13 +14,6 @@ const meta = preview.meta({
   title: 'Components/Drawer',
   component: Drawer,
   argTypes: {
-    placement: {
-      control: {
-        type: 'radio',
-      },
-      description: 'The placement of the drawer on the screen.',
-      options: ['right', 'left', 'top', 'bottom'],
-    },
     size: {
       control: {
         type: 'radio',
@@ -100,35 +92,6 @@ export const Basic = meta.story({
   },
 });
 
-export const LeftPlacement = meta.story({
-  args: {
-    placement: 'left',
-  },
-  render: args => (
-    <Drawer.Trigger>
-      <Button>Open Left Drawer</Button>
-      <Drawer {...args}>
-        <Drawer.Title>Left Drawer</Drawer.Title>
-        <Drawer.Content>
-          <Stack space={8}>
-            <Text>This drawer slides in from the left side of the screen.</Text>
-            <Text>
-              It's perfect for navigation menus or additional controls that
-              should be easily accessible.
-            </Text>
-          </Stack>
-        </Drawer.Content>
-        <Drawer.Actions>
-          <Button slot="close">Close</Button>
-          <Button slot="close" variant="primary">
-            Confirm
-          </Button>
-        </Drawer.Actions>
-      </Drawer>
-    </Drawer.Trigger>
-  ),
-});
-
 export const WithForms = meta.story({
   render: args => (
     <Drawer.Trigger>
@@ -179,7 +142,6 @@ export const Controlled = meta.story({
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
-      console.log('open', open);
       setOpen(open);
     };
     return (

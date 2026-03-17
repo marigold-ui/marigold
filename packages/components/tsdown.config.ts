@@ -6,5 +6,6 @@ export default defineConfig({
   tsconfig: './tsconfig.build.json',
   dts: true,
   external: ['react', 'react-dom', 'react/jsx-runtime'],
+  inlineOnly: false,
   clean: true,
 });

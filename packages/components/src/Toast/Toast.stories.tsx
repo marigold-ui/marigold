@@ -7,9 +7,51 @@ import { Toast } from './Toast';
 import { ToastProvider, queue } from './ToastProvider';
 import { useToast } from './ToastQueue';
 
+// Toast stories use the queue API (not direct props), so we define
+// custom args that map to addToast() options rather than ToastProps.
+// Type casts are needed because Storybook infers args from Toast's
+// nested `toast.content` prop shape, which doesn't match flat controls.
+interface ToastStoryArgs {
+  title: string;
+  description: string;
+  variant: 'info' | 'success' | 'warning' | 'error';
+  timeout: number;
+}
+
+const toastArgs = (args: unknown) => args as ToastStoryArgs;
+
+const defaults = {
+  title: 'Dies ist eine Toast-Nachricht!',
+  description: 'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
+  variant: 'info' as const,
+  timeout: 0,
+};
+
 const meta = preview.meta({
   title: 'Components/Toast',
   component: Toast,
+  // Custom argTypes/args for the queue API (not matching ToastProps directly)
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['info', 'success', 'warning', 'error'],
+      description: 'The visual style of the toast',
+    },
+    title: {
+      control: 'text',
+      description: 'The title of the toast',
+    },
+    description: {
+      control: 'text',
+      description: 'The description of the toast',
+    },
+    timeout: {
+      control: 'number',
+      description:
+        'Auto-dismiss timeout in ms (0 = no auto-dismiss, minimum 5000ms)',
+    },
+  } as Record<string, unknown>,
+  args: defaults as unknown as Record<string, never>,
   beforeEach: () => {
     // Clear the toast queue before each story
     queue.clear();
@@ -25,7 +67,8 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: () => {
+  render: (_args: unknown) => {
+    const args = toastArgs(_args);
     const { addToast } = useToast();
     return (
       <>
@@ -33,11 +76,10 @@ export const Basic = meta.story({
         <Button
           onPress={() =>
             addToast({
-              title: 'Dies ist eine Toast-Nachricht!',
-              description:
-                'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
-              variant: 'info',
-              timeout: 0,
+              title: args.title,
+              description: args.description,
+              variant: args.variant,
+              timeout: args.timeout,
             })
           }
         >
@@ -54,31 +96,26 @@ export const Basic = meta.story({
     });
 
     await step('Toast with title and description appears', async () => {
+      await expect(await canvas.findByText(defaults.title)).toBeInTheDocument();
       await expect(
-        await canvas.findByText('Dies ist eine Toast-Nachricht!')
-      ).toBeInTheDocument();
-      await expect(
-        await canvas.findByText(
-          'Hier ist eine kurze Beschreibung der Toast-Nachricht.'
-        )
+        await canvas.findByText(defaults.description)
       ).toBeInTheDocument();
     });
     await step('Close the toast', async () => {
       const closeButton = canvas.getByRole('button', {
-        name: 'Close toast',
+        name: 'Close',
       });
       await userEvent.click(closeButton);
       // Wait briefly to allow the toast to disappear
       await new Promise(resolve => setTimeout(resolve, 300));
-      await expect(
-        canvas.queryByText('Dies ist eine Toast-Nachricht!')
-      ).not.toBeInTheDocument();
+      await expect(canvas.queryByText(defaults.title)).not.toBeInTheDocument();
     });
   },
 });
 
 export const ToggleToast = meta.story({
-  render: () => {
+  render: (_args: unknown) => {
+    const args = toastArgs(_args);
     const [toastKey, setToastKey] = useState<string | null>(null);
     const { addToast, removeToast } = useToast();
     return (
@@ -89,11 +126,10 @@ export const ToggleToast = meta.story({
             if (!toastKey) {
               setToastKey(
                 addToast({
-                  title: 'Dies ist eine Toast-Nachricht!',
-                  description:
-                    'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
-                  variant: 'info',
-                  timeout: 0,
+                  title: args.title,
+                  description: args.description,
+                  variant: args.variant,
+                  timeout: args.timeout,
                 })
               );
             } else {
@@ -116,36 +152,31 @@ export const ToggleToast = meta.story({
     });
 
     await step('Toast with title and description appears', async () => {
+      await expect(await canvas.findByText(defaults.title)).toBeInTheDocument();
       await expect(
-        await canvas.findByText('Dies ist eine Toast-Nachricht!')
-      ).toBeInTheDocument();
-      await expect(
-        await canvas.findByText(
-          'Hier ist eine kurze Beschreibung der Toast-Nachricht.'
-        )
+        await canvas.findByText(defaults.description)
       ).toBeInTheDocument();
     });
     await step('Close the toast', async () => {
       await userEvent.click(button);
       // Wait briefly to allow the toast to disappear
       await new Promise(resolve => setTimeout(resolve, 300));
-      await expect(
-        canvas.queryByText('Dies ist eine Toast-Nachricht!')
-      ).not.toBeInTheDocument();
+      await expect(canvas.queryByText(defaults.title)).not.toBeInTheDocument();
     });
   },
 });
 
 export const ToastContentTest = meta.story({
-  render: () => {
+  render: (_args: unknown) => {
+    const args = toastArgs(_args);
     return (
       <div style={{ position: 'fixed', bottom: 16, right: 16 }}>
         <Toast
           toast={{
             content: {
-              title: 'Toast für accessibility checks',
-              description: 'Dieser Toast dient nur zu Testzwecken.',
-              variant: 'info',
+              title: args.title,
+              description: args.description,
+              variant: args.variant,
             },
             key: 'toast-key',
           }}
@@ -156,7 +187,11 @@ export const ToastContentTest = meta.story({
 });
 
 export const WithLinks = meta.story({
-  render: () => {
+  args: {
+    title: 'Update Available',
+  } as unknown as Record<string, never>,
+  render: (_args: unknown) => {
+    const args = toastArgs(_args);
     const { addToast } = useToast();
     const description = (
       <>
@@ -178,10 +213,10 @@ export const WithLinks = meta.story({
         <Button
           onPress={() =>
             addToast({
-              title: 'Update Available',
+              title: args.title,
               description,
-              variant: 'info',
-              timeout: 0,
+              variant: args.variant,
+              timeout: args.timeout,
             })
           }
         >
@@ -194,7 +229,12 @@ export const WithLinks = meta.story({
 
 export const WithAction = meta.story({
   tags: ['component-test'],
-  render: () => {
+  args: {
+    title: 'Update Available',
+    description: 'A new version is available.',
+  } as unknown as Record<string, never>,
+  render: (_args: unknown) => {
+    const args = toastArgs(_args);
     const { addToast } = useToast();
 
     return (
@@ -203,10 +243,10 @@ export const WithAction = meta.story({
         <Button
           onPress={() =>
             addToast({
-              title: 'Update Available',
-              description: 'A new version is available.',
-              variant: 'info',
-              timeout: 0,
+              title: args.title,
+              description: args.description,
+              variant: args.variant,
+              timeout: args.timeout,
               action: (
                 <Button size="small" variant="primary">
                   Update now
