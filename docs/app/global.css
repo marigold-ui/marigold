@@ -5,8 +5,6 @@
 /* rui theme */
 @import '@marigold/theme-rui/styles.css';
 
-@source './../../themes/theme-rui/src/**/*.ts';
-
 /* demos */
 @source './../content/**/*.{js,ts,jsx,tsx,mdx}';
 
