@@ -78,7 +78,9 @@ A new [`<TopNavigation>`](/components/navigation/topnavigation) component with a
 
 ### ActionBar (alpha)
 
-The [`<ActionBar>`](/components/actions/actionbar) has been significantly enhanced with enter/exit animations, keyboard support (press Escape to clear selection), and built-in [`<Table>`](/components/collection/table) integration. The new `actionBar` render prop on `<Table>` automatically wires up selection state and positions the ActionBar relative to the table.
+The [`<ActionBar>`](/components/actions/actionbar) has been significantly enhanced with enter/exit animations, keyboard support (press Escape to clear selection), and built-in [`<Table>`](/components/collection/table) integration.
+
+The [`<Table>`](/components/collection/table) component does the heavy lifting: its new `actionBar` render prop automatically wires up selection state and positions the ActionBar relative to the table. Selecting rows reveals bulk actions, and the selection count updates automatically.
 
 ```tsx
 <Table
@@ -111,6 +113,8 @@ The [`<ActionBar>`](/components/actions/actionbar) has been significantly enhanc
   </Table.Body>
 </Table>
 ```
+
+Try the [interactive demo in Storybook](https://marigold-latest.vercel.app/?path=/story/components-actionbar--integrated-with-table).
 
 The `<ActionBar>` also received updated styling with a `ui-surface-contrast` utility for adaptive theming on dark surfaces and a dedicated button slot in the theme.
 
@@ -155,8 +159,6 @@ const button = cva({
   },
 });
 ```
-
-The `extendTheme` utility has also been simplified. Previously, it extracted variant configs from `cva` functions, manually merged them, and rebuilt new `cva` calls -- which dropped `defaultVariants` and `compoundVariants`, and threw errors on duplicate variant keys. It now composes style functions directly and resolves conflicts via Tailwind merge, so all variant configuration is properly preserved during theme extension.
 
 ## Spacing Tokens (alpha)
 
