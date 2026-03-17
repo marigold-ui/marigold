@@ -1,4 +1,8 @@
 import { PostList } from '@/components/PostList';
+import {
+  MarkdownCopyButton,
+  ViewOptionsPopover,
+} from '@/components/ai/page-actions';
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
@@ -20,18 +24,13 @@ import {
   DontDescription,
   DontFigure,
   FeedbackComponentsTable,
-  FontSizes,
-  FontStyle,
-  FontWeights,
   GuidelineTiles,
-  Headlines,
   IconList,
   RelativeTime,
   Spacing,
   Stack,
   StorybookHintMessage,
   TeaserList,
-  TextAlign,
 } from '@/ui';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import {
@@ -69,6 +68,13 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
       <DocsDescription className="mb-0">
         {page.data.description}
       </DocsDescription>
+      <div className="flex flex-row items-center gap-2 border-b pt-2 pb-6">
+        <MarkdownCopyButton markdownUrl={`/mcp${page.url}.md`} />
+        <ViewOptionsPopover
+          markdownUrl={`/mcp${page.url}.md`}
+          githubUrl={`https://github.com/marigold-ui/marigold/blob/main/docs/content/${page.path}`}
+        />
+      </div>
       <DocsBody>
         <MDX
           components={getMDXComponents({
@@ -83,11 +89,6 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
             ColorTokenTable,
             ColorPalettes,
 
-            Headlines,
-            FontWeights,
-            FontSizes,
-            FontStyle,
-            TextAlign,
             Spacing,
             BorderRadius,
             AlignmentsX,

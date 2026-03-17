@@ -69,19 +69,10 @@ const meta = preview.meta({
       description: 'Make the navigation sticky',
     },
   },
+  parameters: {
+    padding: false,
+  },
 });
-
-const CollapsedBreadcrumbs = () => {
-  const maxVisibleItems = useResponsiveValue([2, 2, 3, undefined, undefined]);
-  return (
-    <Breadcrumbs maxVisibleItems={maxVisibleItems}>
-      <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
-      <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
-      <Breadcrumbs.Item href="/events/summer">Summer</Breadcrumbs.Item>
-      <Breadcrumbs.Item href="/events/details">Event Details</Breadcrumbs.Item>
-    </Breadcrumbs>
-  );
-};
 
 export const WithSearchField = meta.story({
   render: args => (
@@ -107,7 +98,14 @@ export const WithBreadcrumbs = meta.story({
           <LogoSection />
         </TopNavigation.Start>
         <TopNavigation.Middle>
-          <CollapsedBreadcrumbs />
+          <Breadcrumbs>
+            <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+            <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
+            <Breadcrumbs.Item href="/events/summer">Summer</Breadcrumbs.Item>
+            <Breadcrumbs.Item href="/events/details">
+              Event Details
+            </Breadcrumbs.Item>
+          </Breadcrumbs>
         </TopNavigation.Middle>
         <TopNavigation.End>
           <UserSection />
