@@ -1,20 +1,19 @@
-import { ComponentProps, ReactNode, isValidElement } from 'react';
+import type { ReactNode } from 'react';
+import { isValidElement } from 'react';
 import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { IconButton } from '../IconButton/IconButton';
 import { Popover } from '../Overlay/Popover';
 import { intlMessages } from '../intl/messages';
-import { BreadcrumbsItemProps } from './BreadcrumbsItem';
+import type { BreadcrumbsItemProps } from './BreadcrumbsItem';
 
-interface BreadcrumbEllipsisProps extends ComponentProps<'span'> {
+interface BreadcrumbEllipsisProps {
   hiddenItems?: ReactNode[];
-  disabled?: boolean;
 }
 
 export const BreadcrumbEllipsis = ({
   hiddenItems = [],
-  disabled = false,
 }: BreadcrumbEllipsisProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   const { container, item: menuItem } = useClassNames({
@@ -38,7 +37,6 @@ export const BreadcrumbEllipsis = ({
                 key={`${href}-${index}`}
                 className={menuItem}
                 href={href}
-                isDisabled={disabled}
               >
                 {itemChildren}
               </MenuItem>
