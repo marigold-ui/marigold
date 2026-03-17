@@ -13,7 +13,6 @@ import {
   Text,
   TopNavigation,
 } from '@marigold/components';
-import { useResponsiveValue } from '@marigold/system';
 import { UserMenu } from '../user-menu';
 import { BASE, pages } from './navigation';
 
@@ -37,7 +36,6 @@ const UserSection = () => (
 const ShellLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
   const router = useRouter();
-  const maxVisibleItems = useResponsiveValue([2, 2, 3, undefined, undefined]);
 
   const slug = pathname.replace(BASE, '').replace(/^\//, '');
   const page = pages[slug];
@@ -109,7 +107,7 @@ const ShellLayout = ({ children }: PropsWithChildren) => {
                 <Sidebar.Toggle />
               </TopNavigation.Start>
               <TopNavigation.Middle>
-                <Breadcrumbs maxVisibleItems={maxVisibleItems}>
+                <Breadcrumbs>
                   <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
                   {page?.parent && (
                     <Breadcrumbs.Item href="#">{page.parent}</Breadcrumbs.Item>
