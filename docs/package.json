@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "0.0.3",
+  "version": "17.2.0",
   "private": true,
   "scripts": {
     "build": "pnpm run build:registry && pnpm run build:changelog && next build",
