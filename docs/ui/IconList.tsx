@@ -1,6 +1,6 @@
 'use-client';
 
-import { Button, Icons, Text, Tiles, cn } from '@/ui';
+import { Button, Icons, Tiles, cn } from '@/ui';
 import { Card } from 'fumadocs-ui/components/card';
 import { useRef, useState } from 'react';
 import { useCopyToClipboard, useDebounce } from 'react-use';
@@ -59,9 +59,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
           </div>
         </Card>
       </Button>
-      <Text size="small" align="center">
-        {icon}
-      </Text>
+      <p className="text-center text-sm">{icon}</p>
     </div>
   );
 };

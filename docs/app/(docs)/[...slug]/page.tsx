@@ -20,18 +20,13 @@ import {
   DontDescription,
   DontFigure,
   FeedbackComponentsTable,
-  FontSizes,
-  FontStyle,
-  FontWeights,
   GuidelineTiles,
-  Headlines,
   IconList,
   RelativeTime,
   Spacing,
   Stack,
   StorybookHintMessage,
   TeaserList,
-  TextAlign,
 } from '@/ui';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import {
@@ -83,11 +78,6 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
             ColorTokenTable,
             ColorPalettes,
 
-            Headlines,
-            FontWeights,
-            FontSizes,
-            FontStyle,
-            TextAlign,
             Spacing,
             BorderRadius,
             AlignmentsX,
