@@ -17,7 +17,7 @@ export const HiddenBreadcrumbs = ({
   hiddenRef,
   children,
 }: HiddenBreadcrumbsProps) => (
-  <div className="relative">
+  <div className="relative w-full min-w-0">
     <div
       inert
       ref={hiddenRef}
