@@ -238,6 +238,12 @@ export type {
   TableDragPreviewProps,
 } from './Table/Table';
 
+export { Sidebar } from './Sidebar/Sidebar';
+export type { SidebarProps } from './Sidebar/Sidebar';
+export type { SidebarProviderProps } from './Sidebar/Context';
+export type { SidebarNavProps } from './Sidebar/SidebarNav';
+export type { SidebarItemProps } from './Sidebar/SidebarItem';
+
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';
 
@@ -274,6 +280,9 @@ export { ToastProvider } from './Toast/ToastProvider';
 export type { ToastProviderProps } from './Toast/ToastProvider';
 
 export { useToast } from './Toast/ToastQueue';
+
+export { TopNavigation } from './TopNavigation/TopNavigation';
+export type { TopNavigationProps } from './TopNavigation/TopNavigation';
 
 export { Tooltip } from './Tooltip/Tooltip';
 export type { TooltipProps } from './Tooltip/Tooltip';

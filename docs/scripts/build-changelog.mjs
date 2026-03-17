@@ -125,8 +125,6 @@ const addFrontmatter = (sourceText, releases) => {
     }
     frontmatter += 'toc: false\n';
     frontmatter += '---\n\n';
-    // Add import for DateFormat component
-    frontmatter += 'import { DateFormat } from "@/ui";\n\n';
 
     return sourceText.replace(regex, frontmatter);
   }
@@ -146,9 +144,10 @@ const adjustContent = (sourceText, releases) => {
     const release = releases.find(r => r.version === version);
 
     if (release && release.releaseDate) {
-      // Format the date as ISO string for the Date constructor
-      const dateISO = release.releaseDate.toISOString();
-      const newContent = `${fullMatch} (Released on <DateFormat value={new Date("${dateISO}")} dateStyle="medium" />)`;
+      const formattedDate = release.releaseDate.toLocaleDateString('en-US', {
+        dateStyle: 'medium',
+      });
+      const newContent = `${fullMatch} (Released on ${formattedDate})`;
       replacements.push({
         version,
         fullMatch,
