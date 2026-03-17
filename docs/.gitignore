@@ -4,6 +4,7 @@
 # generated content
 .source
 .registry
+app/mcp/out
 
 # test & build
 /coverage

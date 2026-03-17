@@ -5,6 +5,17 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  // Needed for MCP parser plugins that use ts-morph on the server
+  serverExternalPackages: ['ts-morph', 'typescript'],
+  async redirects() {
+    return [
+      {
+        source: '/mcp/:path((?!.*\\.md$).*)',
+        destination: '/mcp/:path.md',
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

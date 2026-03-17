@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { I18nProvider, useDragAndDrop } from 'react-aria-components';
 import { useListData } from 'react-stately';
@@ -753,46 +752,12 @@ export const WithActions = meta.story({
 
 export const ScrollableAndSticky = meta.story({
   render: args => {
-    type Todo = {
-      userId: number;
-      id: number;
-      title: string;
-      completed: boolean;
-    };
-
-    const {
-      data: todos = [],
-      isLoading,
-      error,
-    } = useQuery<Todo[]>({
-      queryKey: ['todos'],
-      queryFn: async () => {
-        const res = await fetch('https://jsonplaceholder.typicode.com/todos');
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      },
-    });
-
-    if (isLoading) {
-      return (
-        <pre>
-          <code>Loading todos...</code>
-        </pre>
-      );
-    }
-
-    if (error) {
-      return (
-        <pre>
-          <code>
-            Error loading todos:{' '}
-            {error instanceof Error ? error.message : 'Unknown error'}
-          </code>
-        </pre>
-      );
-    }
+    const todos = Array.from({ length: 30 }, (_, i) => ({
+      id: i + 1,
+      title: `Todo item ${i + 1}`,
+      userId: (i % 5) + 1,
+      completed: i % 3 === 0,
+    }));
 
     return (
       <Stack>
