@@ -16,10 +16,12 @@ const CatchAllPage = () => {
   return (
     <Inset space={4}>
       <Stack space={4}>
-        <Headline level={2}>{page.label}</Headline>
-        <Text>
-          Manage your {page.label.toLowerCase()} settings and preferences.
-        </Text>
+        <Stack space="tight">
+          <Headline level={2}>{page.label}</Headline>
+          <Text size="sm">
+            Manage your {page.label.toLowerCase()} settings and preferences.
+          </Text>
+        </Stack>
         {Array.from({ length: 8 }, (_, i) => (
           <Card key={i} p={4}>
             <Text size="sm">

@@ -33,6 +33,9 @@ const UserSection = () => (
   </Inline>
 );
 
+const findSlugByLabel = (label: string) =>
+  Object.entries(pages).find(([, p]) => p.label === label)?.[0];
+
 const ShellLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -75,6 +78,12 @@ const ShellLayout = ({ children }: PropsWithChildren) => {
                 <Sidebar.Item href="/analytics" active={slug === 'analytics'}>
                   Analytics
                 </Sidebar.Item>
+                <Sidebar.Item
+                  href="/discounts"
+                  active={slug === 'discounts' || slug.startsWith('discounts/')}
+                >
+                  Discounts
+                </Sidebar.Item>
                 <Sidebar.Separator />
                 <Sidebar.Item id="management" textValue="Management">
                   Management
@@ -107,11 +116,21 @@ const ShellLayout = ({ children }: PropsWithChildren) => {
                 <Sidebar.Toggle />
               </TopNavigation.Start>
               <TopNavigation.Middle>
-                <Breadcrumbs>
-                  <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
-                  {page?.parent && (
-                    <Breadcrumbs.Item href="#">{page.parent}</Breadcrumbs.Item>
-                  )}
+                <Breadcrumbs maxVisibleItems={3}>
+                  <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+                  {page?.parent &&
+                    (() => {
+                      const parentSlug = findSlugByLabel(page.parent);
+                      return (
+                        <Breadcrumbs.Item
+                          href={
+                            parentSlug !== undefined ? `/${parentSlug}` : '#'
+                          }
+                        >
+                          {page.parent}
+                        </Breadcrumbs.Item>
+                      );
+                    })()}
                   <Breadcrumbs.Item href="#">{page?.label}</Breadcrumbs.Item>
                 </Breadcrumbs>
               </TopNavigation.Middle>

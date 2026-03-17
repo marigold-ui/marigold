@@ -6,6 +6,8 @@ export const pages: Record<string, { label: string; parent?: string }> = {
   users: { label: 'Users', parent: 'Management' },
   teams: { label: 'Teams', parent: 'Management' },
   billing: { label: 'Billing', parent: 'Management' },
+  discounts: { label: 'Discounts' },
+  'discounts/new': { label: 'New Discount', parent: 'Discounts' },
   general: { label: 'General', parent: 'Settings' },
   security: { label: 'Security', parent: 'Settings' },
 };
