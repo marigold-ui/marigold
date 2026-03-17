@@ -265,9 +265,6 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../packages/system
-      '@marigold/theme-docs':
-        specifier: workspace:*
-        version: link:../themes/theme-docs
       '@marigold/theme-rui':
         specifier: workspace:*
         version: link:../themes/theme-rui
@@ -571,52 +568,6 @@ importers:
         specifier: 19.2.14
         version: 19.2.14
 
-  themes/theme-docs:
-    dependencies:
-      '@marigold/components':
-        specifier: workspace:*
-        version: link:../../packages/components
-      '@marigold/system':
-        specifier: workspace:*
-        version: link:../../packages/system
-      '@tailwindcss/typography':
-        specifier: 0.5.19
-        version: 0.5.19(tailwindcss@4.2.1)
-      tailwind-scrollbar:
-        specifier: 4.0.2
-        version: 4.0.2(react@19.2.4)(tailwindcss@4.2.1)
-      tailwindcss-react-aria-components:
-        specifier: 2.0.1
-        version: 2.0.1(tailwindcss@4.2.1)
-    devDependencies:
-      '@marigold/tsconfig':
-        specifier: workspace:*
-        version: link:../../config/tsconfig
-      '@tailwindcss/postcss':
-        specifier: 4.2.1
-        version: 4.2.1
-      cross-env:
-        specifier: ^10.0.0
-        version: 10.1.0
-      cssnano:
-        specifier: 7.1.3
-        version: 7.1.3(postcss@8.5.6)
-      postcss-cli:
-        specifier: 11.0.1
-        version: 11.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)
-      postcss-prefix-selector:
-        specifier: 2.1.1
-        version: 2.1.1(postcss@8.5.6)
-      shx:
-        specifier: ^0.4.0
-        version: 0.4.0
-      tailwindcss:
-        specifier: 4.2.1
-        version: 4.2.1
-      tsdown:
-        specifier: 0.20.3
-        version: 0.20.3(synckit@0.11.12)(typescript@5.9.3)
-
   themes/theme-rui:
     dependencies:
       '@marigold/components':
@@ -644,6 +595,9 @@ importers:
       postcss-cli:
         specifier: 11.0.1
         version: 11.0.1(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)
+      postcss-prefix-selector:
+        specifier: 2.1.1
+        version: 2.1.1(postcss@8.5.6)
       shx:
         specifier: ^0.4.0
         version: 0.4.0
@@ -3643,11 +3597,6 @@ packages:
   '@tailwindcss/postcss@4.2.1':
     resolution: {integrity: sha512-OEwGIBnXnj7zJeonOh6ZG9woofIjGrd2BORfvE5p9USYKDCZoQmfqLcfNiRWoJlRWLdNPn2IgVZuWAOM4iTYMw==}
 
-  '@tailwindcss/typography@0.5.19':
-    resolution: {integrity: sha512-w31dd8HOx3k9vPtcQh5QHP9GwKcgbMp87j58qi6xgiBnFFtKEAgCWnDw4qUT8aHwkCp8bKvb/KGKWWHedP0AAg==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
-
   '@tailwindcss/vite@4.2.1':
     resolution: {integrity: sha512-TBf2sJjYeb28jD2U/OhwdW0bbOsxkWPwQ7SrqGf9sVcoYwZj7rkXljroBO9wKBut9XnmQLXanuDUeqQK0lGg/w==}
     peerDependencies:
@@ -3793,9 +3742,6 @@ packages:
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
-
-  '@types/prismjs@1.26.5':
-    resolution: {integrity: sha512-AUZTa7hQ2KY5L7AmtSiqxlhWxb4ina0yd8hNbl4TWuqnv/pFP0nDMb3YrfSBf4hJVGLh2YEIBfKaBW/9UEl6IQ==}
 
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
@@ -7105,10 +7051,6 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  postcss-selector-parser@6.0.10:
-    resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
-    engines: {node: '>=4'}
-
   postcss-selector-parser@7.1.1:
     resolution: {integrity: sha512-orRsuYpJVw8LdAwqqLykBj9ecS5/cRHlI5+nvTo8LcCKmzDmqVORXtOIYEEQuL9D4BxtA1lm5isAqzQZCoQ6Eg==}
     engines: {node: '>=4'}
@@ -7216,11 +7158,6 @@ packages:
   pretty-hrtime@1.0.3:
     resolution: {integrity: sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==}
     engines: {node: '>= 0.8'}
-
-  prism-react-renderer@2.4.1:
-    resolution: {integrity: sha512-ey8Ls/+Di31eqzUxC46h8MksNuGx/n0AAC8uKpwFau4RPDYLuE3EXTp8N8G2vX2N7UC/+IXeNUnlWBGGcAG+Ig==}
-    peerDependencies:
-      react: '>=16.0.0'
 
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
@@ -7901,12 +7838,6 @@ packages:
 
   tailwind-merge@3.5.0:
     resolution: {integrity: sha512-I8K9wewnVDkL1NTGoqWmVEIlUcB9gFriAEkXkfCjX5ib8ezGxtR3xD7iZIxrfArjEsH7F1CHD4RFUtxefdqV/A==}
-
-  tailwind-scrollbar@4.0.2:
-    resolution: {integrity: sha512-wAQiIxAPqk0MNTPptVe/xoyWi27y+NRGnTwvn4PQnbvB9kp8QUBiGl/wsfoVBHnQxTmhXJSNt9NHTmcz9EivFA==}
-    engines: {node: '>=12.13.0'}
-    peerDependencies:
-      tailwindcss: 4.x
 
   tailwindcss-react-aria-components@2.0.1:
     resolution: {integrity: sha512-yTAfYv9BE/gKczS+b8UiFMqxnrEYKKNE6Y4vAWzGadkHGb4Yuawp0SHbZKkZJQgFvK0KjO3JpCq/0kzR5jJ9tw==}
@@ -12157,11 +12088,6 @@ snapshots:
       postcss: 8.5.6
       tailwindcss: 4.2.1
 
-  '@tailwindcss/typography@0.5.19(tailwindcss@4.2.1)':
-    dependencies:
-      postcss-selector-parser: 6.0.10
-      tailwindcss: 4.2.1
-
   '@tailwindcss/vite@4.2.1(vite@7.3.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.7.1))':
     dependencies:
       '@tailwindcss/node': 4.2.1
@@ -12322,8 +12248,6 @@ snapshots:
       undici-types: 7.16.0
 
   '@types/parse-json@4.0.2': {}
-
-  '@types/prismjs@1.26.5': {}
 
   '@types/react-dom@19.2.3(@types/react@19.2.14)':
     dependencies:
@@ -12831,7 +12755,6 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.7.1)
-    optional: true
 
   '@vitest/pretty-format@3.2.4':
     dependencies:
@@ -12867,7 +12790,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.13)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@20.0.3)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.7.1)
+      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.2.3)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@20.0.3)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.7.1)
 
   '@vitest/utils@3.2.4':
     dependencies:
@@ -13892,8 +13815,8 @@ snapshots:
       '@next/eslint-plugin-next': 16.1.6
       eslint: 9.39.2(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0)(eslint@9.39.2(jiti@2.6.1))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))
+      eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-react-hooks: 7.0.1(eslint@9.39.2(jiti@2.6.1))
@@ -13946,7 +13869,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0)(eslint@9.39.2(jiti@2.6.1)):
+  eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.3
@@ -13957,7 +13880,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.2(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -13971,14 +13894,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.2(jiti@2.6.1)):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0)(eslint@9.39.2(jiti@2.6.1))
+      eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -14029,7 +13952,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -14040,7 +13963,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.2(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.2(jiti@2.6.1))
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -16427,11 +16350,6 @@ snapshots:
       postcss: 8.5.6
       thenby: 1.3.4
 
-  postcss-selector-parser@6.0.10:
-    dependencies:
-      cssesc: 3.0.0
-      util-deprecate: 1.0.2
-
   postcss-selector-parser@7.1.1:
     dependencies:
       cssesc: 3.0.0
@@ -16485,12 +16403,6 @@ snapshots:
       react-is: 17.0.2
 
   pretty-hrtime@1.0.3: {}
-
-  prism-react-renderer@2.4.1(react@19.2.4):
-    dependencies:
-      '@types/prismjs': 1.26.5
-      clsx: 2.1.1
-      react: 19.2.4
 
   prop-types@15.8.1:
     dependencies:
@@ -17456,13 +17368,6 @@ snapshots:
 
   tailwind-merge@3.5.0: {}
 
-  tailwind-scrollbar@4.0.2(react@19.2.4)(tailwindcss@4.2.1):
-    dependencies:
-      prism-react-renderer: 2.4.1(react@19.2.4)
-      tailwindcss: 4.2.1
-    transitivePeerDependencies:
-      - react
-
   tailwindcss-react-aria-components@2.0.1(tailwindcss@4.2.1):
     dependencies:
       tailwindcss: 4.2.1
@@ -17906,7 +17811,6 @@ snapshots:
       lightningcss: 1.31.1
       tsx: 4.21.0
       yaml: 2.7.1
-    optional: true
 
   vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.13)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@20.0.3)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.7.1):
     dependencies:
@@ -17989,7 +17893,6 @@ snapshots:
       - terser
       - tsx
       - yaml
-    optional: true
 
   w3c-xmlserializer@4.0.0:
     dependencies:
