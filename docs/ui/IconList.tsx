@@ -1,6 +1,6 @@
 'use-client';
 
-import { Button, Icons, Tiles, cn } from '@/ui';
+import { Icons, Tiles, cn } from '@/ui';
 import { Card } from 'fumadocs-ui/components/card';
 import { useRef, useState } from 'react';
 import { useCopyToClipboard, useDebounce } from 'react-use';
@@ -44,13 +44,13 @@ const IconListItem = ({ icon }: IconListItemProps) => {
 
   return (
     <div className="mt-2 [&>button]:h-auto [&>button]:w-full [&>button]:p-0">
-      <Button onPress={handleClick}>
+      <button onClick={handleClick}>
         <Card className="w-full p-3" title="">
           <div className="relative grid h-24 w-full place-items-center">
             <div
               className={cn(
                 isCopied ? 'opacity-100' : 'opacity-0',
-                'bg-bg-surface absolute flex size-full items-center justify-center font-medium tracking-wider whitespace-nowrap select-none'
+                'bg-fd-card absolute flex size-full items-center justify-center font-medium tracking-wider whitespace-nowrap select-none'
               )}
             >
               {isCopied ? 'COPIED!' : 'COPY SVG'}
@@ -58,7 +58,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
             <Component width={48} height={48} ref={svgRef as any} />
           </div>
         </Card>
-      </Button>
+      </button>
       <p className="text-center text-sm">{icon}</p>
     </div>
   );
