@@ -1,7 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { getAllMdxFiles, parseMdxToMarkdown } from './parser';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CONTENT_DIR = path.resolve(__dirname, '../../content');
 const OUTPUT_DIR = path.resolve(__dirname, './out');
 
