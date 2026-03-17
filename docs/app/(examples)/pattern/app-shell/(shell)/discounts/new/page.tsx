@@ -20,7 +20,7 @@ const NewDiscountPage = () => (
   <Inset space={4}>
     <div className="max-w-[896px]">
       <form>
-        <Stack space="section">
+        <Stack space="regular">
           <Card p={4} stretch>
             <Stack space="regular">
               <Stack space="tight">
@@ -50,8 +50,12 @@ const NewDiscountPage = () => (
                 <Select.Option id="percentage">Percentage</Select.Option>
                 <Select.Option id="fixed">Fixed amount</Select.Option>
               </Select>
-              <NumberField label="Value" />
-              <NumberField label="Minimum order amount" />
+              <NumberField label="Value" width={48} defaultValue={0} />
+              <NumberField
+                label="Minimum order amount"
+                width={48}
+                defaultValue={0}
+              />
             </Stack>
           </Card>
 
@@ -64,10 +68,10 @@ const NewDiscountPage = () => (
                 </Text>
               </Stack>
               <Inline space="related">
-                <DatePicker label="Start date" />
-                <DatePicker label="End date" />
+                <DatePicker label="Start date" width={48} />
+                <DatePicker label="End date" width={48} />
               </Inline>
-              <NumberField label="Usage limit" />
+              <NumberField label="Usage limit" width={48} defaultValue={0} />
             </Stack>
           </Card>
 

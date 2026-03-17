@@ -46,101 +46,107 @@ const ShellLayout = ({ children }: PropsWithChildren) => {
   return (
     <RouterProvider navigate={href => router.push(`${BASE}${href}`)}>
       <Sidebar.Provider defaultOpen>
-        <AppLayout>
-          <AppLayout.Sidebar>
-            <Sidebar>
-              <Sidebar.Header>
-                <Inline space={2} alignY="center" noWrap>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 36 36"
-                    fill="none"
-                    className="size-8 shrink-0"
+        <div className="[&_aside]:bg-stone-100! [&_header]:bg-stone-100!">
+          <AppLayout>
+            <AppLayout.Sidebar>
+              <Sidebar>
+                <Sidebar.Header>
+                  <Inline space={2} alignY="center" noWrap>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 36 36"
+                      fill="none"
+                      className="size-8 shrink-0"
+                    >
+                      <rect width="36" height="36" rx="8" fill="currentColor" />
+                      <path
+                        d="M18 8L26 26H10L18 8Z"
+                        fill="white"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <Text weight="bold" fontSize="lg">
+                      Acme Inc.
+                    </Text>
+                  </Inline>
+                </Sidebar.Header>
+                <Sidebar.Nav>
+                  <Sidebar.Item href="/" active={slug === ''}>
+                    Dashboard
+                  </Sidebar.Item>
+                  <Sidebar.Item href="/analytics" active={slug === 'analytics'}>
+                    Analytics
+                  </Sidebar.Item>
+                  <Sidebar.Item
+                    href="/discounts"
+                    active={
+                      slug === 'discounts' || slug.startsWith('discounts/')
+                    }
                   >
-                    <rect width="36" height="36" rx="8" fill="currentColor" />
-                    <path
-                      d="M18 8L26 26H10L18 8Z"
-                      fill="white"
-                      stroke="white"
-                      strokeWidth="1.5"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <Text weight="bold" fontSize="lg">
-                    Acme Inc.
-                  </Text>
-                </Inline>
-              </Sidebar.Header>
-              <Sidebar.Nav>
-                <Sidebar.Item href="/" active={slug === ''}>
-                  Dashboard
-                </Sidebar.Item>
-                <Sidebar.Item href="/analytics" active={slug === 'analytics'}>
-                  Analytics
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/discounts"
-                  active={slug === 'discounts' || slug.startsWith('discounts/')}
-                >
-                  Discounts
-                </Sidebar.Item>
-                <Sidebar.Separator />
-                <Sidebar.Item id="management" textValue="Management">
-                  Management
-                  <Sidebar.Item href="/users" active={slug === 'users'}>
-                    Users
+                    Discounts
                   </Sidebar.Item>
-                  <Sidebar.Item href="/teams" active={slug === 'teams'}>
-                    Teams
+                  <Sidebar.Separator />
+                  <Sidebar.Item id="management" textValue="Management">
+                    Management
+                    <Sidebar.Item href="/users" active={slug === 'users'}>
+                      Users
+                    </Sidebar.Item>
+                    <Sidebar.Item href="/teams" active={slug === 'teams'}>
+                      Teams
+                    </Sidebar.Item>
+                    <Sidebar.Item href="/billing" active={slug === 'billing'}>
+                      Billing
+                    </Sidebar.Item>
                   </Sidebar.Item>
-                  <Sidebar.Item href="/billing" active={slug === 'billing'}>
-                    Billing
+                  <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
+                  <Sidebar.Item href="/general" active={slug === 'general'}>
+                    General
                   </Sidebar.Item>
-                </Sidebar.Item>
-                <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-                <Sidebar.Item href="/general" active={slug === 'general'}>
-                  General
-                </Sidebar.Item>
-                <Sidebar.Item href="/security" active={slug === 'security'}>
-                  Security
-                </Sidebar.Item>
-              </Sidebar.Nav>
-              <Sidebar.Footer>
-                <Text fontSize="xs">v1.0.0</Text>
-              </Sidebar.Footer>
-            </Sidebar>
-          </AppLayout.Sidebar>
-          <AppLayout.Header>
-            <TopNavigation>
-              <TopNavigation.Start>
-                <Sidebar.Toggle />
-              </TopNavigation.Start>
-              <TopNavigation.Middle>
-                <Breadcrumbs maxVisibleItems={3}>
-                  <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
-                  {page?.parent &&
-                    (() => {
-                      const parentSlug = findSlugByLabel(page.parent);
-                      return (
-                        <Breadcrumbs.Item
-                          href={
-                            parentSlug !== undefined ? `/${parentSlug}` : '#'
-                          }
-                        >
-                          {page.parent}
-                        </Breadcrumbs.Item>
-                      );
-                    })()}
-                  <Breadcrumbs.Item href="#">{page?.label}</Breadcrumbs.Item>
-                </Breadcrumbs>
-              </TopNavigation.Middle>
-              <TopNavigation.End>
-                <UserSection />
-              </TopNavigation.End>
-            </TopNavigation>
-          </AppLayout.Header>
-          <AppLayout.Main>{children}</AppLayout.Main>
-        </AppLayout>
+                  <Sidebar.Item href="/security" active={slug === 'security'}>
+                    Security
+                  </Sidebar.Item>
+                </Sidebar.Nav>
+                <Sidebar.Footer>
+                  <Text fontSize="xs">v1.0.0</Text>
+                </Sidebar.Footer>
+              </Sidebar>
+            </AppLayout.Sidebar>
+            <AppLayout.Header>
+              <TopNavigation variant="muted">
+                <TopNavigation.Start>
+                  <Sidebar.Toggle />
+                </TopNavigation.Start>
+                <TopNavigation.Middle>
+                  <Breadcrumbs maxVisibleItems={3}>
+                    <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+                    {page?.parent &&
+                      (() => {
+                        const parentSlug = findSlugByLabel(page.parent);
+                        return (
+                          <Breadcrumbs.Item
+                            href={
+                              parentSlug !== undefined ? `/${parentSlug}` : '#'
+                            }
+                          >
+                            {page.parent}
+                          </Breadcrumbs.Item>
+                        );
+                      })()}
+                    <Breadcrumbs.Item href="#">{page?.label}</Breadcrumbs.Item>
+                  </Breadcrumbs>
+                </TopNavigation.Middle>
+                <TopNavigation.End>
+                  <UserSection />
+                </TopNavigation.End>
+              </TopNavigation>
+            </AppLayout.Header>
+            <AppLayout.Main>
+              <div className="min-h-full bg-stone-100">{children}</div>
+            </AppLayout.Main>
+          </AppLayout>
+        </div>
       </Sidebar.Provider>
     </RouterProvider>
   );
