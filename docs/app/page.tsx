@@ -28,20 +28,20 @@ const Page = () => {
             <h1 className="pt-0.5 text-6xl font-extrabold text-balance lg:text-8xl">
               Cultivate beautiful user interfaces
             </h1>
-            <p className="text-muted-foreground pt-4 pb-10 text-lg leading-relaxed font-light text-balance lg:pt-10 lg:pb-24 lg:text-xl">
+            <p className="pt-4 pb-10 text-lg leading-relaxed font-light text-balance text-stone-600 lg:pt-10 lg:pb-24 lg:text-xl">
               Marigold is a design system for Reservix, providing components and
               tools that let product teams focus on core challenges while
               creating unified, accessible applications.
             </p>
             <div className="flex justify-center gap-6">
               <Link
-                className="bg-text-primary rounded-xs px-8 py-3.5 leading-none text-white transition-all hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+                className="rounded-xs bg-stone-950 px-8 py-3.5 leading-none text-white transition-all hover:bg-stone-700 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
                 href="/getting-started/installation"
               >
                 <span className="inline-block translate-y-px">Get started</span>
               </Link>
               <Link
-                className="border-text-primary rounded-xs border-2 px-8 py-3.5 leading-none hover:bg-slate-100 dark:border-white dark:text-white dark:hover:bg-white/10"
+                className="rounded-xs border-2 border-stone-950 px-8 py-3.5 leading-none hover:bg-slate-100 dark:border-white dark:text-white dark:hover:bg-white/10"
                 href="/components/application/provider"
               >
                 Explore Components
