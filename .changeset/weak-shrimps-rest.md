@@ -1,7 +1,5 @@
 ---
-"@marigold/docs": patch
 "@marigold/components": patch
-"@marigold/theme-docs": patch
 "@marigold/theme-rui": patch
 ---
 
