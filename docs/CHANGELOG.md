@@ -1,5 +1,51 @@
 # @marigold/docs
 
+## 17.2.0
+
+### Minor Changes
+
+- d44ee55: feat([DST-1163]): Add raw markdown MCP endpoint for documentation pages
+
+  Implements `/mcp/[...slug]` route and `pnpm build:md-docs` that converts all MDX documentation pages to clean Markdown format, enabling programmatic access for AI/LLM integration and external tools.
+  The custom remark pipeline processes embedded JSX components (component demos, props tables, design tokens) into semantic Markdown with code blocks and tables.
+
+### Patch Changes
+
+- 9db39f0: fix(DST-1243): Replace DateFormat JSX in changelog build script with plain text dates to fix docs crash
+- 096fe67: Improve search result ranking by prioritizing pages whose title matches the query over pages that only mention the query in body text.
+- d963df2: chore: Update React Aria to newest version
+- Updated dependencies [91eb222]
+- Updated dependencies [ed928a0]
+- Updated dependencies [cf56729]
+- Updated dependencies [5d4c915]
+- Updated dependencies [b3c7085]
+- Updated dependencies [28eba72]
+- Updated dependencies [3019d28]
+- Updated dependencies [b61ba43]
+- Updated dependencies [e6091b6]
+- Updated dependencies [efbd292]
+- Updated dependencies [7ca2eb1]
+- Updated dependencies [f7870ce]
+- Updated dependencies [95c22b6]
+- Updated dependencies [a3e3e8e]
+- Updated dependencies [4a24ad6]
+- Updated dependencies [beebd7c]
+- Updated dependencies [9de007c]
+- Updated dependencies [ed2baef]
+- Updated dependencies [b115fda]
+- Updated dependencies [61bfc60]
+- Updated dependencies [a715f08]
+- Updated dependencies [470d81c]
+- Updated dependencies [600d09f]
+- Updated dependencies [1ec6788]
+- Updated dependencies [c3bf8e4]
+- Updated dependencies [f63e57f]
+- Updated dependencies [d963df2]
+  - @marigold/components@17.2.0
+  - @marigold/theme-rui@5.2.0
+  - @marigold/system@17.2.0
+  - @marigold/icons@1.3.34
+
 ## 0.0.3
 
 ### Patch Changes
