@@ -1,25 +1,29 @@
 # create-marigold-app
 
-Scaffold a new app with the [Marigold Design System](https://github.com/marigold-ui/marigold).
+A [Claude Code](https://claude.com/claude-code) skill that scaffolds a new app with the [Marigold Design System](https://github.com/marigold-ui/marigold).
+
+## Install
+
+```bash
+npx create-marigold-app
+```
+
+This installs the `/create-marigold-app` skill into your Claude Code environment (`~/.claude/skills/`).
 
 ## Usage
 
-```bash
-npx create-marigold-app my-app
+In any Claude Code session:
+
+```
+/create-marigold-app my-app
 ```
 
-Or with other package managers:
+Claude will scaffold a Vite + React project pre-configured with Marigold components and theming from the [marigold-ui/starter](https://github.com/marigold-ui/starter) template, install dependencies, and help you start prototyping.
+
+## Uninstall
 
 ```bash
-pnpm create marigold-app my-app
-yarn create marigold-app my-app
-```
-
-Then follow the prompts. Once done:
-
-```bash
-cd my-app
-npm run dev
+npx create-marigold-app --uninstall
 ```
 
 ## Options
@@ -28,11 +32,7 @@ npm run dev
 | ----------------- | ----------------- |
 | `-h`, `--help`    | Show help message |
 | `-v`, `--version` | Show version      |
-
-## What you get
-
-- A [Vite](https://vite.dev/) + React project pre-configured with Marigold components and theming
-- Cloned from the [marigold-ui/starter](https://github.com/marigold-ui/starter) template
+| `--uninstall`     | Remove the skill  |
 
 ## License
 

@@ -1,7 +1,7 @@
 {
   "name": "create-marigold-app",
   "version": "0.1.0",
-  "description": "Scaffold a Marigold Design System app ready for AI-assisted prototyping",
+  "description": "Claude Code skill to scaffold a Marigold Design System app",
   "type": "module",
   "license": "MIT",
   "bin": {
@@ -9,6 +9,7 @@
   },
   "files": [
     "index.js",
+    "SKILL.md",
     "README.md"
   ],
   "keywords": [
@@ -17,7 +18,9 @@
     "create",
     "scaffold",
     "react",
-    "prototyping"
+    "prototyping",
+    "claude-code",
+    "skill"
   ],
   "engines": {
     "node": ">=18"
@@ -26,10 +29,5 @@
     "type": "git",
     "url": "git+https://github.com/marigold-ui/marigold.git",
     "directory": "packages/create-marigold-app"
-  },
-  "dependencies": {
-    "prompts": "^2.4.2",
-    "picocolors": "^1.1.1",
-    "degit": "^2.8.4"
   }
 }
