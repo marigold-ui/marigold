@@ -51,7 +51,7 @@ const Preview = ({ name }: { name: RegistryKey }) => {
   return (
     <div
       data-theme="rui"
-      className="flex min-h-[150px] w-full flex-col justify-center [&>*:first-child]:flex [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
+      className="flex min-h-[150px] w-full flex-col justify-center overflow-hidden rounded-xl [&>*:first-child]:flex [&>*:first-child]:place-items-center"
     >
       <OverlayContainerProvider container="portalContainer">
         <MarigoldProvider theme={ruiTheme} className="bg-background w-full">
