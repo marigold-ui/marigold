@@ -24,14 +24,14 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
   content: cva({ base: 'sm:w-64' }),
-  header: cva({ base: 'ui-panel-header min-h-14' }),
+  header: cva({ base: 'border-border border-b px-4 min-h-14' }),
   nav: cva({
     base: [
-      'flex flex-col px-3 py-1 overflow-y-auto outline-none',
+      'flex flex-col px-3 py-4 overflow-y-auto outline-none',
       'ui-scrollbar',
     ],
   }),
-  footer: cva({ base: 'ui-panel-actions' }),
+  footer: cva({ base: 'border-border border-t p-3' }),
   toggle: cva({
     base: [
       'ui-button-base ui-press',
@@ -41,11 +41,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   separator: cva({ base: 'bg-border my-1 h-px border-0' }),
   groupLabel: cva({
-    base: 'px-2 h-7.5 pt-3 pb-0.5 mb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider',
+    base: 'px-3 pt-4 pb-1 mb-0 text-xs font-medium text-muted-foreground uppercase tracking-wider',
   }),
   navPanel: cva({
     base: [
-      'flex flex-col gap-0.5 p-1',
+      'flex flex-col gap-0.5 p-0',
       'transition-[opacity,translate,filter] duration-300 ease-out sm:duration-200',
 
       // Panel behind (already visited) — slides left
@@ -67,17 +67,17 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   navLink: cva({
     base: [
-      'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
-      'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
-      'data-active:bg-selected data-active:text-foreground data-active:font-medium',
+      'flex items-center gap-2 w-full px-3 h-8 text-sm rounded-md',
+      'text-foreground/80 hover:text-foreground hover:bg-stone-100 transition-colors',
+      'data-active:bg-stone-300 data-active:shadow-sm data-active:text-foreground data-active:font-medium',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
     ],
   }),
   backButton: cva({
     base: [
-      'flex items-center gap-2 w-full pl-0.5 pr-2 h-9 text-sm rounded-md',
-      'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
+      'flex items-center gap-2 w-full pl-0.5 pr-3 h-8 text-sm rounded-md',
+      'text-foreground/80 hover:text-foreground hover:bg-stone-100 transition-colors',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
       'cursor-pointer mb-1',
