@@ -19,7 +19,7 @@ Then follow the prompts. Once done:
 
 ```bash
 cd my-app
-npm dev
+npm run dev
 ```
 
 ## Options

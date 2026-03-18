@@ -16,8 +16,6 @@ const CLEANUP_FILES = [
   'pnpm-workspace.yaml',
 ];
 
-const ALLOWED_PM = ['npm', 'yarn', 'pnpm'];
-
 async function main() {
   const arg = process.argv[2];
 
@@ -65,20 +63,24 @@ Options:
     }
   }
 
-  // Validate project name
-  if (!/^[a-zA-Z0-9._-]+$/.test(projectName)) {
+  // Validate project name (supports scoped packages like @scope/my-app)
+  if (!/^(@[a-zA-Z0-9._-]+\/)?[a-zA-Z0-9._-]+$/.test(projectName)) {
     console.log(
       pc.red(
-        'Invalid project name. Use only letters, numbers, hyphens, dots, and underscores.'
+        'Invalid project name. Use only letters, numbers, hyphens, dots, and underscores (scoped names like @scope/name are also supported).'
       )
     );
     process.exit(1);
   }
 
-  const targetDir = path.resolve(process.cwd(), projectName);
+  // Use the unscoped part as directory name
+  const dirName = projectName.startsWith('@')
+    ? projectName.split('/')[1]
+    : projectName;
+  const targetDir = path.resolve(process.cwd(), dirName);
 
   if (fs.existsSync(targetDir)) {
-    console.log(pc.red(`Directory "${projectName}" already exists.`));
+    console.log(pc.red(`Directory "${dirName}" already exists.`));
     process.exit(1);
   }
 
@@ -88,7 +90,13 @@ Options:
 
   // Clone template
   const emitter = degit('marigold-ui/starter', { cache: false, force: true });
-  await emitter.clone(targetDir);
+  try {
+    await emitter.clone(targetDir);
+  } catch (err) {
+    // Remove partial directory on clone failure
+    fs.rmSync(targetDir, { recursive: true, force: true });
+    throw err;
+  }
 
   // Clean up files that shouldn't be in the scaffolded project
   for (const file of CLEANUP_FILES) {
@@ -127,10 +135,6 @@ Options:
     }
   }
 
-  if (!ALLOWED_PM.includes(pm)) {
-    pm = 'npm';
-  }
-
   console.log(pc.cyan(`Installing dependencies with ${pm}...\n`));
 
   try {
@@ -145,7 +149,7 @@ Options:
 
   console.log(pc.green('\n✔ Marigold app created successfully!\n'));
   console.log('Next steps:\n');
-  console.log(`  ${pc.cyan(`cd ${projectName}`)}`);
+  console.log(`  ${pc.cyan(`cd ${dirName}`)}`);
   console.log(`  ${pc.cyan(`${pm} dev`)}\n`);
 }
 
