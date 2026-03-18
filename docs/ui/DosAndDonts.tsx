@@ -35,7 +35,7 @@ export const DoFigure = ({ children }: PropsWithChildren) => (
 );
 
 export const DoDescription = ({ children }: PropsWithChildren) => (
-  <div className="px-4 pb-4 text-sm text-pretty text-neutral-900 [grid-area:description] *:m-0 *:leading-relaxed group-data-[type=do]:bg-green-50 group-data-[type=dont]:bg-red-50 dark:text-neutral-900">
+  <div className="not-prose px-4 pb-4 text-sm text-pretty text-neutral-900 [grid-area:description] *:m-0 *:leading-relaxed group-data-[type=do]:bg-green-50 group-data-[type=dont]:bg-red-50 dark:text-neutral-900 [&_a]:font-medium [&_a]:text-neutral-900 [&_a]:underline [&_a]:decoration-neutral-900/40 [&_a]:underline-offset-4 [&_a:hover]:text-neutral-900 [&_a:hover]:decoration-neutral-900/70 [&_a:visited]:text-neutral-900 [&_code]:rounded [&_code]:border [&_code]:border-neutral-300 [&_code]:bg-neutral-100 [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:font-normal [&_code]:text-neutral-900">
     {children}
   </div>
 );
