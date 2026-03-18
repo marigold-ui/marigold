@@ -8,7 +8,8 @@
     "create-marigold-app": "./index.js"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "README.md"
   ],
   "keywords": [
     "marigold",
