@@ -1,0 +1,31 @@
+{
+  "name": "create-marigold-app",
+  "version": "0.1.0",
+  "description": "Scaffold a Marigold Design System app ready for AI-assisted prototyping",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "create-marigold-app": "./index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "marigold",
+    "design-system",
+    "create",
+    "scaffold",
+    "react",
+    "prototyping"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marigold-ui/starter.git",
+    "directory": "create-marigold-app"
+  },
+  "dependencies": {
+    "prompts": "^2.4.2",
+    "picocolors": "^1.1.1",
+    "degit": "^2.8.4"
+  }
+}
