@@ -18,10 +18,13 @@
     "react",
     "prototyping"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marigold-ui/starter.git",
-    "directory": "create-marigold-app"
+    "url": "git+https://github.com/marigold-ui/marigold.git",
+    "directory": "packages/create-marigold-app"
   },
   "dependencies": {
     "prompts": "^2.4.2",

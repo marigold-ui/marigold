@@ -6,6 +6,7 @@ import prompts from 'prompts';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const CLEANUP_FILES = [
   'copy-vendor.js',
@@ -15,17 +16,46 @@ const CLEANUP_FILES = [
   'pnpm-workspace.yaml',
 ];
 
+const ALLOWED_PM = ['npm', 'yarn', 'pnpm'];
+
 async function main() {
-  let projectName = process.argv[2];
+  const arg = process.argv[2];
+
+  if (arg === '--version' || arg === '-v') {
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const pkg = JSON.parse(
+      fs.readFileSync(path.join(__dirname, 'package.json'), 'utf-8')
+    );
+    console.log(pkg.version);
+    return;
+  }
+
+  if (arg === '--help' || arg === '-h') {
+    console.log(`
+Usage: create-marigold-app [project-name]
+
+Scaffold a new app with the Marigold Design System.
+
+Options:
+  -h, --help      Show this help message
+  -v, --version   Show version number
+`);
+    return;
+  }
+
+  let projectName = arg;
 
   if (!projectName) {
-    const response = await prompts({
-      type: 'text',
-      name: 'projectName',
-      message: 'Project name:',
-      validate: value =>
-        value.length === 0 ? 'Project name is required' : true,
-    });
+    const response = await prompts(
+      {
+        type: 'text',
+        name: 'projectName',
+        message: 'Project name:',
+        validate: value =>
+          value.length === 0 ? 'Project name is required' : true,
+      },
+      { onCancel: () => process.exit(0) }
+    );
 
     projectName = response.projectName;
 
@@ -95,6 +125,10 @@ async function main() {
     } catch {
       pm = 'npm';
     }
+  }
+
+  if (!ALLOWED_PM.includes(pm)) {
+    pm = 'npm';
   }
 
   console.log(pc.cyan(`Installing dependencies with ${pm}...\n`));
