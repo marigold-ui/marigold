@@ -68,8 +68,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   navLink: cva({
     base: [
       'flex items-center gap-2 w-full px-3 h-8 text-sm rounded-md',
-      'text-foreground/80 hover:text-foreground hover:bg-stone-100 transition-colors',
-      'data-active:bg-stone-300 data-active:shadow-sm data-active:text-foreground data-active:font-medium',
+      'text-foreground/80 hover:text-foreground hover:bg-stone-200 transition-colors',
+      'data-active:bg-stone-300 data-active:text-foreground data-active:font-medium',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
     ],
@@ -77,7 +77,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   backButton: cva({
     base: [
       'flex items-center gap-2 w-full pl-0.5 pr-3 h-8 text-sm rounded-md',
-      'text-foreground/80 hover:text-foreground hover:bg-stone-100 transition-colors',
+      'text-foreground/80 hover:text-foreground hover:bg-stone-200 transition-colors',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
       'cursor-pointer mb-1',

@@ -3,7 +3,7 @@
 import {
   Button,
   Card,
-  DatePicker,
+  Columns,
   Headline,
   Inline,
   Inset,
@@ -11,8 +11,8 @@ import {
   NumberField,
   Select,
   Stack,
+  Switch,
   Text,
-  TextArea,
   TextField,
 } from '@marigold/components';
 
@@ -21,57 +21,84 @@ const NewDiscountPage = () => (
     <div className="max-w-[896px]">
       <form>
         <Stack space="regular">
+          <Stack space="tight">
+            <Headline level={2}>Add Discount</Headline>
+            <Text size="sm" variant="muted">
+              Create a new discount by setting the type, value, and usage
+              limits.
+            </Text>
+          </Stack>
+
           <Card p={4} stretch>
             <Stack space="regular">
-              <Stack space="tight">
-                <Headline level={2}>Basic Information</Headline>
-                <Text size="sm" variant="muted">
-                  Set up the discount code and its description.
-                </Text>
-              </Stack>
-              <TextField label="Code" placeholder="e.g. SUMMER25" />
-              <TextField label="Name" placeholder="e.g. Summer Sale" />
-              <TextArea
-                label="Description"
-                placeholder="Describe the discount..."
-              />
+              <Headline level={3}>Discount Details</Headline>
+              <Columns columns={[1, 1]} space={4}>
+                <TextField
+                  label="Discount Name"
+                  required
+                  placeholder="Summer Sale"
+                />
+                <TextField
+                  label="Discount Code"
+                  required
+                  placeholder="SUMMERSALE25"
+                />
+              </Columns>
             </Stack>
           </Card>
 
           <Card p={4} stretch>
             <Stack space="regular">
-              <Stack space="tight">
-                <Headline level={2}>Discount Configuration</Headline>
-                <Text size="sm" variant="muted">
-                  Define the discount type and value.
-                </Text>
-              </Stack>
-              <Select label="Type">
-                <Select.Option id="percentage">Percentage</Select.Option>
-                <Select.Option id="fixed">Fixed amount</Select.Option>
+              <Headline level={3}>Discount Value</Headline>
+              <Columns columns={[1, 1]} space={4}>
+                <Select label="Discount Type" required>
+                  <Select.Option id="percentage">
+                    Percentage off products/collections
+                  </Select.Option>
+                  <Select.Option id="fixed">Fixed amount off</Select.Option>
+                </Select>
+                <NumberField
+                  label="Discount Value"
+                  required
+                  formatOptions={{ style: 'unit', unit: 'percent' }}
+                />
+              </Columns>
+              <Select label="Applies to" required>
+                <Select.Option id="all">All products</Select.Option>
+                <Select.Option id="collections">
+                  Specific collections
+                </Select.Option>
               </Select>
-              <NumberField label="Value" width={48} defaultValue={0} />
-              <NumberField
-                label="Minimum order amount"
-                width={48}
-                defaultValue={0}
-              />
+              <div>
+                <Switch label="Exclude products" />
+                <Text size="xs" variant="muted">
+                  Exclude specific products from this discount.
+                </Text>
+              </div>
             </Stack>
           </Card>
 
           <Card p={4} stretch>
             <Stack space="regular">
-              <Stack space="tight">
-                <Headline level={2}>Validity</Headline>
-                <Text size="sm" variant="muted">
-                  Set the time range and usage limits for this discount.
+              <Headline level={3}>Discount Uses</Headline>
+              <div>
+                <Switch label="Limit the number of times this discount can be used" />
+                <Text size="xs" variant="muted">
+                  Set a maximum number of times this discount can be applied.
                 </Text>
-              </Stack>
-              <Inline space="related">
-                <DatePicker label="Start date" width={48} />
-                <DatePicker label="End date" width={48} />
-              </Inline>
-              <NumberField label="Usage limit" width={48} defaultValue={0} />
+              </div>
+              <NumberField
+                label="Max uses"
+                required
+                defaultValue={100}
+                width={48}
+              />
+              <div>
+                <Switch label="Limit to One Use Per Customer" />
+                <Text size="xs" variant="muted">
+                  Each customer can only use this discount once.
+                </Text>
+              </div>
             </Stack>
           </Card>
 
