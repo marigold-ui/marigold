@@ -51,8 +51,13 @@ if (arg === '--uninstall') {
 }
 
 // Install
-fs.mkdirSync(SKILL_DIR, { recursive: true });
-fs.copyFileSync(SOURCE, path.join(SKILL_DIR, 'SKILL.md'));
+try {
+  fs.mkdirSync(SKILL_DIR, { recursive: true });
+  fs.copyFileSync(SOURCE, path.join(SKILL_DIR, 'SKILL.md'));
+} catch (err) {
+  console.error(`\x1b[31mError installing skill: ${err.message}\x1b[0m`);
+  process.exit(1);
+}
 
 console.log(
   `\x1b[32m✔ Skill "${SKILL_NAME}" installed for Claude Code!\x1b[0m`
