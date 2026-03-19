@@ -239,15 +239,3 @@ export const Basic = meta.story({
     });
   },
 });
-
-export const ScrollableContent = meta.story({
-  render: () => (
-    <LShapeLayout>
-      <Stack space={4}>
-        {Array.from({ length: 50 }, (_, i) => (
-          <Block key={i}>Item {i + 1}</Block>
-        ))}
-      </Stack>
-    </LShapeLayout>
-  ),
-});
