@@ -15,7 +15,7 @@ export const SidebarHeader = forwardRef<HTMLDivElement, SidebarSlotProps>(
       <div
         ref={ref}
         className={cn(
-          'flex h-(--app-layout-header-height) items-center [grid-area:header]',
+          'flex h-14 items-center [grid-area:header]',
           classNames.header
         )}
       >

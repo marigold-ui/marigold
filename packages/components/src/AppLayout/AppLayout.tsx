@@ -16,21 +16,19 @@ export interface AppLayoutProps extends Omit<
 
 // Sub-components
 // ---------------
-const AppLayoutHeader = ({ children }: PropsWithChildren) => {
-  return (
-    <div className="z-1 flex h-(--app-layout-header-height) [grid-area:header] [&>*]:h-full [&>*]:w-full">
-      {children}
-    </div>
-  );
-};
+const AppLayoutHeader = ({ children }: PropsWithChildren) => (
+  <div className="z-1 flex h-14 [grid-area:header] [&>*]:h-full [&>*]:w-full">
+    {children}
+  </div>
+);
 
-const AppLayoutSidebar = ({ children }: PropsWithChildren) => {
-  return <div className="[grid-area:sidebar]">{children}</div>;
-};
+const AppLayoutSidebar = ({ children }: PropsWithChildren) => (
+  <div className="[grid-area:sidebar]">{children}</div>
+);
 
-const AppLayoutMain = ({ children }: PropsWithChildren) => {
-  return <main className="overflow-y-auto [grid-area:main]">{children}</main>;
-};
+const AppLayoutMain = ({ children }: PropsWithChildren) => (
+  <main className="overflow-y-auto [grid-area:main]">{children}</main>
+);
 
 // Component
 // ---------------
@@ -41,17 +39,15 @@ interface AppLayoutComponent {
   Main: typeof AppLayoutMain;
 }
 
-const _AppLayout = (({ children, ref, ...props }: AppLayoutProps) => {
-  return (
-    <div
-      ref={ref}
-      className="grid h-dvh grid-cols-[auto_1fr] grid-rows-[var(--app-layout-header-height,auto)_1fr] overflow-hidden [--app-layout-header-height:3.5rem] [grid-template-areas:'sidebar_header'_'sidebar_main']"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-}) as AppLayoutComponent;
+const _AppLayout = (({ children, ref, ...props }: AppLayoutProps) => (
+  <div
+    ref={ref}
+    className="grid h-dvh grid-cols-[auto_1fr] grid-rows-[3.5rem_1fr] overflow-hidden [grid-template-areas:'sidebar_header'_'sidebar_main']"
+    {...props}
+  >
+    {children}
+  </div>
+)) as AppLayoutComponent;
 
 _AppLayout.Header = AppLayoutHeader;
 _AppLayout.Sidebar = AppLayoutSidebar;
