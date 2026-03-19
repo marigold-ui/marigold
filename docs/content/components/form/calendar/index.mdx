@@ -42,6 +42,40 @@ The `<Calendar>` should be used for experiences where you need to visualize and 
   </Dont>
 </GuidelineTiles>
 
+When users need to select dates far in the past or future (such as a birth date or historical event), a calendar grid forces tedious month-by-month navigation. In those cases, a `<DateField>` or `<DatePicker>` is more efficient.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `<Calendar>` for dates close to the present, such as scheduling an
+      appointment within the next few weeks.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `<Calendar>` for distant dates like birth dates or historical
+      events. Use `<DateField>` or `<DatePicker>` instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+Always disable dates that cannot be selected, such as past dates for a future booking, or dates outside a valid business range. This prevents user errors and communicates constraints visually.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Disable dates outside the valid range using `minValue`/`maxValue` or mark
+      specific dates as unavailable with the `dateUnavailable` prop.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't show all dates as selectable when some are invalid. This leads to
+      errors and forces users to guess which dates are allowed.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ### Basic Usage (uncontrolled)
 
 This example shows a basic `<Calendar>` without any special props. The component manages its own state internally.
