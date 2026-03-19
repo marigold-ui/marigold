@@ -6,9 +6,9 @@ describe('AppLayout', () => {
   test('renders all sub-components', () => {
     render(<Basic.Component />);
 
-    const sidebar = screen.getByText('Sidebar Header');
-    const header = screen.getByText('Header');
-    const main = screen.getByText('Main');
+    const sidebar = screen.getByRole('complementary');
+    const header = screen.getByRole('banner');
+    const main = screen.getByRole('main');
 
     expect(sidebar).toBeInTheDocument();
     expect(header).toBeInTheDocument();
