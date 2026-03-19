@@ -64,7 +64,7 @@ Use a single bash command with `node -e` or `sed` to update `package.json` in-pl
 Example:
 
 ```bash
-node -e "
+node --input-type=commonjs -e "
 const pkg = JSON.parse(require('fs').readFileSync('package.json','utf8'));
 pkg.name = '<project-name>';
 delete pkg.repository; delete pkg.homepage; delete pkg.packageManager;
