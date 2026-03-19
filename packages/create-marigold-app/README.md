@@ -20,6 +20,8 @@ In any Claude Code session:
 
 Claude will scaffold a Vite + React project pre-configured with Marigold components and theming from the [marigold-ui/starter](https://github.com/marigold-ui/starter) template, install dependencies, and help you start prototyping.
 
+On first run, Claude Code may ask you to approve some commands (like cloning the template and installing dependencies). Select "Always allow" so future runs are seamless.
+
 ## Uninstall
 
 ```bash
