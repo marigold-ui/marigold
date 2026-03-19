@@ -1,7 +1,8 @@
+import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Logout, SettingDots, User } from '@marigold/icons';
+import { Logout, User } from '@marigold/icons';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
 import { Headline } from '../Headline/Headline';
@@ -14,7 +15,6 @@ import { Sidebar } from '../Sidebar/Sidebar';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
-import { Block } from '../__internal__/Block';
 import { AppLayout } from './AppLayout';
 
 const meta = preview.meta({
@@ -42,7 +42,7 @@ const UserMenu = () => (
         <User size={16} /> Profile
       </Menu.Item>
       <Menu.Item id="settings" textValue="Settings">
-        <SettingDots size={16} /> Settings
+        <Settings size={16} /> Settings
       </Menu.Item>
       <Menu.Item id="sign-out" textValue="Sign out">
         <Logout size={16} /> Sign out
@@ -53,14 +53,26 @@ const UserMenu = () => (
 
 interface LShapeLayoutProps {
   children?: React.ReactNode;
+  defaultOpen?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const LShapeLayout = ({ children }: LShapeLayoutProps) => {
+const LShapeLayout = ({
+  children,
+  defaultOpen = true,
+  open,
+  onOpenChange,
+}: LShapeLayoutProps) => {
   const [currentPath, setCurrentPath] = useState('/dashboard');
 
   return (
     <RouterProvider navigate={setCurrentPath}>
-      <Sidebar.Provider defaultOpen>
+      <Sidebar.Provider
+        defaultOpen={defaultOpen}
+        open={open}
+        onOpenChange={onOpenChange}
+      >
         <AppLayout>
           <AppLayout.Sidebar>
             <Sidebar.Header>
@@ -237,5 +249,12 @@ export const Basic = meta.story({
         canvas.getByRole('heading', { name: 'Users' })
       ).toBeInTheDocument();
     });
+  },
+});
+
+export const SidebarClosed = meta.story({
+  render: () => {
+    const [open, setOpen] = useState(false);
+    return <LShapeLayout open={open} onOpenChange={setOpen} />;
   },
 });
