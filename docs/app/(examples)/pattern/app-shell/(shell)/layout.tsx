@@ -45,80 +45,76 @@ const ShellLayout = ({ children }: PropsWithChildren) => {
       <Sidebar.Provider defaultOpen>
         <AppLayout>
           <AppLayout.Sidebar>
-            <Sidebar>
-              <Sidebar.Header>
-                <Inline space={2} alignY="center" noWrap>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 36 36"
-                    fill="none"
-                    className="size-8 shrink-0"
-                  >
-                    <rect width="36" height="36" rx="8" fill="currentColor" />
-                    <path
-                      d="M18 8L26 26H10L18 8Z"
-                      fill="white"
-                      stroke="white"
-                      strokeWidth="1.5"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <Text weight="bold" fontSize="lg">
-                    Acme Inc.
-                  </Text>
-                </Inline>
-              </Sidebar.Header>
-              <Sidebar.Nav>
-                <Sidebar.Item href="/" active={slug === ''}>
-                  Dashboard
+            <Sidebar.Header>
+              <Inline space={2} alignY="center" noWrap>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 36 36"
+                  fill="none"
+                  className="size-8 shrink-0"
+                >
+                  <rect width="36" height="36" rx="8" fill="currentColor" />
+                  <path
+                    d="M18 8L26 26H10L18 8Z"
+                    fill="white"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <Text weight="bold" fontSize="lg">
+                  Acme Inc.
+                </Text>
+              </Inline>
+            </Sidebar.Header>
+            <Sidebar.Nav>
+              <Sidebar.Item href="/" active={slug === ''}>
+                Dashboard
+              </Sidebar.Item>
+              <Sidebar.Item href="/analytics" active={slug === 'analytics'}>
+                Analytics
+              </Sidebar.Item>
+              <Sidebar.Separator />
+              <Sidebar.Item id="management" textValue="Management">
+                Management
+                <Sidebar.Item href="/users" active={slug === 'users'}>
+                  Users
                 </Sidebar.Item>
-                <Sidebar.Item href="/analytics" active={slug === 'analytics'}>
-                  Analytics
+                <Sidebar.Item href="/teams" active={slug === 'teams'}>
+                  Teams
                 </Sidebar.Item>
-                <Sidebar.Separator />
-                <Sidebar.Item id="management" textValue="Management">
-                  Management
-                  <Sidebar.Item href="/users" active={slug === 'users'}>
-                    Users
-                  </Sidebar.Item>
-                  <Sidebar.Item href="/teams" active={slug === 'teams'}>
-                    Teams
-                  </Sidebar.Item>
-                  <Sidebar.Item href="/billing" active={slug === 'billing'}>
-                    Billing
-                  </Sidebar.Item>
+                <Sidebar.Item href="/billing" active={slug === 'billing'}>
+                  Billing
                 </Sidebar.Item>
-                <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-                <Sidebar.Item href="/general" active={slug === 'general'}>
-                  General
-                </Sidebar.Item>
-                <Sidebar.Item href="/security" active={slug === 'security'}>
-                  Security
-                </Sidebar.Item>
-              </Sidebar.Nav>
-              <Sidebar.Footer>
-                <Text fontSize="xs">v1.0.0</Text>
-              </Sidebar.Footer>
-            </Sidebar>
+              </Sidebar.Item>
+              <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
+              <Sidebar.Item href="/general" active={slug === 'general'}>
+                General
+              </Sidebar.Item>
+              <Sidebar.Item href="/security" active={slug === 'security'}>
+                Security
+              </Sidebar.Item>
+            </Sidebar.Nav>
+            <Sidebar.Footer>
+              <Text fontSize="xs">v1.0.0</Text>
+            </Sidebar.Footer>
           </AppLayout.Sidebar>
           <AppLayout.Header>
-            <TopNavigation>
-              <TopNavigation.Start>
-                <Sidebar.Toggle />
-              </TopNavigation.Start>
-              <TopNavigation.Middle>
-                <Breadcrumbs>
-                  <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
-                  {page?.parent && (
-                    <Breadcrumbs.Item href="#">{page.parent}</Breadcrumbs.Item>
-                  )}
-                  <Breadcrumbs.Item href="#">{page?.label}</Breadcrumbs.Item>
-                </Breadcrumbs>
-              </TopNavigation.Middle>
-              <TopNavigation.End>
-                <UserSection />
-              </TopNavigation.End>
-            </TopNavigation>
+            <TopNavigation.Start>
+              <Sidebar.Toggle />
+            </TopNavigation.Start>
+            <TopNavigation.Middle>
+              <Breadcrumbs>
+                <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+                {page?.parent && (
+                  <Breadcrumbs.Item href="#">{page.parent}</Breadcrumbs.Item>
+                )}
+                <Breadcrumbs.Item href="#">{page?.label}</Breadcrumbs.Item>
+              </Breadcrumbs>
+            </TopNavigation.Middle>
+            <TopNavigation.End>
+              <UserSection />
+            </TopNavigation.End>
           </AppLayout.Header>
           <AppLayout.Main>{children}</AppLayout.Main>
         </AppLayout>

@@ -1,4 +1,11 @@
-import type { PropsWithChildren, Ref } from 'react';
+import type { Ref } from 'react';
+import { AppLayoutHeader } from './AppLayoutHeader';
+import { AppLayoutMain } from './AppLayoutMain';
+import { AppLayoutSidebar } from './AppLayoutSidebar';
+
+export type { AppLayoutHeaderProps } from './AppLayoutHeader';
+export type { AppLayoutMainProps } from './AppLayoutMain';
+export type { AppLayoutSidebarProps } from './AppLayoutSidebar';
 
 // Props
 // ---------------
@@ -13,22 +20,6 @@ export interface AppLayoutProps extends Omit<
   children?: React.ReactNode;
   ref?: Ref<HTMLDivElement>;
 }
-
-// Sub-components
-// ---------------
-const AppLayoutHeader = ({ children }: PropsWithChildren) => (
-  <div className="z-1 flex h-14 [grid-area:header] [&>*]:h-full [&>*]:w-full">
-    {children}
-  </div>
-);
-
-const AppLayoutSidebar = ({ children }: PropsWithChildren) => (
-  <div className="[grid-area:sidebar]">{children}</div>
-);
-
-const AppLayoutMain = ({ children }: PropsWithChildren) => (
-  <main className="overflow-y-auto [grid-area:main]">{children}</main>
-);
 
 // Component
 // ---------------

@@ -29,16 +29,16 @@ The App Shell divides the screen into three areas. The diagram below shows how t
   <Sidebar.Provider defaultOpen>
     <AppLayout>
       <AppLayout.Sidebar>
-        <Sidebar>...</Sidebar>
+        <Sidebar.Header>...</Sidebar.Header>
+        <Sidebar.Nav>...</Sidebar.Nav>
+        <Sidebar.Footer>...</Sidebar.Footer>
       </AppLayout.Sidebar>
       <AppLayout.Header>
-        <TopNavigation>
-          <TopNavigation.Start>
-            <Sidebar.Toggle />
-          </TopNavigation.Start>
-          <TopNavigation.Middle>...</TopNavigation.Middle>
-          <TopNavigation.End>...</TopNavigation.End>
-        </TopNavigation>
+        <TopNavigation.Start>
+          <Sidebar.Toggle />
+        </TopNavigation.Start>
+        <TopNavigation.Middle>...</TopNavigation.Middle>
+        <TopNavigation.End>...</TopNavigation.End>
       </AppLayout.Header>
       <AppLayout.Main>...</AppLayout.Main>
     </AppLayout>

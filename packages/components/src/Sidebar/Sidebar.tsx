@@ -22,10 +22,6 @@ import { SidebarToggle } from './SidebarToggle';
 export interface SidebarProps {
   /** The sidebar content, typically `Sidebar.Header`, `Sidebar.Nav`, and `Sidebar.Footer`. */
   children?: ReactNode;
-  /** The visual style variant of the sidebar. */
-  variant?: string;
-  /** The size of the sidebar. */
-  size?: string;
 }
 
 interface SidebarComponent extends ForwardRefExoticComponent<
