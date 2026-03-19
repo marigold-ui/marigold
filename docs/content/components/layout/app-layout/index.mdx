@@ -8,6 +8,8 @@ badge: beta
 
 `<AppLayout.Sidebar>` renders a [`<Sidebar>`](/components/navigation/sidebar) internally and `<AppLayout.Header>` renders a [`<TopNavigation>`](/components/navigation/topnavigation) internally, so you can place their sub-components directly without extra nesting.
 
+Wrap `<AppLayout>` with `Sidebar.Provider` so the sidebar toggle in the header and the sidebar itself share the same open/collapsed state.
+
 For a guide on composing `<AppLayout>` into a complete application frame, see the [App Shell pattern](/patterns/app-shell).
 
 ## Usage
@@ -17,18 +19,20 @@ For a guide on composing `<AppLayout>` into a complete application frame, see th
 `<AppLayout>` provides three slot components. They can be placed in any order since the CSS Grid template handles positioning.
 
 ```tsx
-<AppLayout>
-  <AppLayout.Sidebar>
-    <Sidebar.Header>{/* Logo */}</Sidebar.Header>
-    <Sidebar.Nav>{/* Navigation items */}</Sidebar.Nav>
-  </AppLayout.Sidebar>
-  <AppLayout.Header>
-    <TopNavigation.Start>{/* Toggle, logo */}</TopNavigation.Start>
-    <TopNavigation.Middle>{/* Breadcrumbs, search */}</TopNavigation.Middle>
-    <TopNavigation.End>{/* User menu */}</TopNavigation.End>
-  </AppLayout.Header>
-  <AppLayout.Main>{/* Scrollable page content */}</AppLayout.Main>
-</AppLayout>
+<Sidebar.Provider defaultOpen>
+  <AppLayout>
+    <AppLayout.Sidebar>
+      <Sidebar.Header>{/* Logo */}</Sidebar.Header>
+      <Sidebar.Nav>{/* Navigation items */}</Sidebar.Nav>
+    </AppLayout.Sidebar>
+    <AppLayout.Header>
+      <TopNavigation.Start>{/* Toggle */}</TopNavigation.Start>
+      <TopNavigation.Middle>{/* Breadcrumbs, search */}</TopNavigation.Middle>
+      <TopNavigation.End>{/* User menu */}</TopNavigation.End>
+    </AppLayout.Header>
+    <AppLayout.Main>{/* Scrollable page content */}</AppLayout.Main>
+  </AppLayout>
+</Sidebar.Provider>
 ```
 
 <ComponentDemo name="app-layout-basic" />
@@ -47,7 +51,7 @@ For a guide on composing `<AppLayout>` into a complete application frame, see th
 
 ### Scrolling
 
-The sidebar and header always stay visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable. Because the grid keeps everything else in place, components inside the header or sidebar don't need their own sticky behavior.
+The sidebar and header always stay visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable.
 
 ### Accessibility
 
