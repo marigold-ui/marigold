@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Logout, SettingDots, User } from '@marigold/icons';
 import { Badge } from '../Badge/Badge';
@@ -22,54 +23,6 @@ const meta = preview.meta({
   parameters: {
     padding: false,
   },
-});
-
-export const Basic = meta.story({
-  render: () => (
-    <Sidebar.Provider defaultOpen>
-      <AppLayout>
-        <AppLayout.Sidebar>
-          <Sidebar.Header>
-            <Block className="h-full w-full rounded-none">Sidebar Header</Block>
-          </Sidebar.Header>
-        </AppLayout.Sidebar>
-        <AppLayout.Header>
-          <TopNavigation.Start>
-            <Block className="rounded-none">Header</Block>
-          </TopNavigation.Start>
-        </AppLayout.Header>
-        <AppLayout.Main>
-          <Block className="h-full rounded-none">Main</Block>
-        </AppLayout.Main>
-      </AppLayout>
-    </Sidebar.Provider>
-  ),
-});
-
-export const ScrollableContent = meta.story({
-  render: () => (
-    <Sidebar.Provider defaultOpen>
-      <AppLayout>
-        <AppLayout.Sidebar>
-          <Sidebar.Header>
-            <Block className="h-full w-full rounded-none">Sidebar Header</Block>
-          </Sidebar.Header>
-        </AppLayout.Sidebar>
-        <AppLayout.Header>
-          <TopNavigation.Start>
-            <Block className="rounded-none">Header</Block>
-          </TopNavigation.Start>
-        </AppLayout.Header>
-        <AppLayout.Main>
-          <Stack space={4}>
-            {Array.from({ length: 50 }, (_, i) => (
-              <Block key={i}>Item {i + 1}</Block>
-            ))}
-          </Stack>
-        </AppLayout.Main>
-      </AppLayout>
-    </Sidebar.Provider>
-  ),
 });
 
 const pages: Record<string, { label: string }> = {
@@ -98,7 +51,11 @@ const UserMenu = () => (
   </ActionMenu>
 );
 
-const LShapeLayout = () => {
+interface LShapeLayoutProps {
+  children?: React.ReactNode;
+}
+
+const LShapeLayout = ({ children }: LShapeLayoutProps) => {
   const [currentPath, setCurrentPath] = useState('/dashboard');
 
   return (
@@ -207,18 +164,17 @@ const LShapeLayout = () => {
             </TopNavigation.End>
           </AppLayout.Header>
           <AppLayout.Main>
-            <Inset space={4}>
-              <Stack space={4}>
-                <Headline level={2}>{pages[currentPath]?.label}</Headline>
-                <Text>
-                  You are viewing the{' '}
-                  <strong>{pages[currentPath]?.label}</strong> page.
-                </Text>
-                {Array.from({ length: 20 }, (_, i) => (
-                  <Block key={i}>Content item {i + 1}</Block>
-                ))}
-              </Stack>
-            </Inset>
+            {children ?? (
+              <Inset space={4}>
+                <Stack space={4}>
+                  <Headline level={2}>{pages[currentPath]?.label}</Headline>
+                  <Text>
+                    You are viewing the{' '}
+                    <strong>{pages[currentPath]?.label}</strong> page.
+                  </Text>
+                </Stack>
+              </Inset>
+            )}
           </AppLayout.Main>
         </AppLayout>
       </Sidebar.Provider>
@@ -226,6 +182,72 @@ const LShapeLayout = () => {
   );
 };
 
-export const WithSidebarAndTopNavigation = meta.story({
+export const Basic = meta.story({
+  tags: ['component-test'],
   render: () => <LShapeLayout />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Renders all layout areas', async () => {
+      const sidebar = canvas.getByRole('complementary');
+      const header = canvas.getByRole('banner');
+      const main = canvas.getByRole('main');
+
+      await expect(sidebar).toBeInTheDocument();
+      await expect(header).toBeInTheDocument();
+      await expect(main).toBeInTheDocument();
+    });
+
+    await step('Toggle sidebar collapses and expands', async () => {
+      const toggle = canvas.getByRole('button', {
+        name: /toggle navigation/i,
+      });
+
+      await userEvent.click(toggle);
+
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+      await userEvent.click(toggle);
+
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await step('Navigate via sidebar', async () => {
+      const analytics = canvas.getByRole('link', { name: 'Analytics' });
+
+      await userEvent.click(analytics);
+
+      await expect(
+        canvas.getByRole('heading', { name: 'Analytics' })
+      ).toBeInTheDocument();
+    });
+
+    await step('Drill down into Management', async () => {
+      const sidebar = canvas.getByRole('complementary');
+      const management = within(sidebar).getByRole('link', {
+        name: /Management/,
+      });
+
+      await userEvent.click(management);
+      await userEvent.click(
+        within(sidebar).getByRole('link', { name: 'Users' })
+      );
+
+      await expect(
+        canvas.getByRole('heading', { name: 'Users' })
+      ).toBeInTheDocument();
+    });
+  },
+});
+
+export const ScrollableContent = meta.story({
+  render: () => (
+    <LShapeLayout>
+      <Stack space={4}>
+        {Array.from({ length: 50 }, (_, i) => (
+          <Block key={i}>Item {i + 1}</Block>
+        ))}
+      </Stack>
+    </LShapeLayout>
+  ),
 });
