@@ -287,6 +287,7 @@ export const LinksMenu: any = meta.story({
 });
 
 export const BasicActionMenu: any = meta.story({
+  tags: ['component-test'],
   render: args => {
     return (
       <ActionMenu
@@ -304,6 +305,26 @@ export const BasicActionMenu: any = meta.story({
     );
   },
 });
+
+BasicActionMenu.test(
+  'Menu item icons have correct opacity',
+  async ({ canvas, step }: any) => {
+    await step('Open the action menu', async () => {
+      const trigger = canvas.getByRole('button');
+      await userEvent.click(trigger);
+    });
+
+    await step('Verify SVG icons have opacity 0.6', async () => {
+      const settingsItem = canvas.getByText('Settings');
+      const svg = settingsItem
+        .closest('[role="menuitem"]')!
+        .querySelector('svg')!;
+      const styles = getComputedStyle(svg);
+
+      expect(styles.opacity).toBe('0.6');
+    });
+  }
+);
 
 export const OpenMenuRemotely: any = meta.story({
   render: () => {
