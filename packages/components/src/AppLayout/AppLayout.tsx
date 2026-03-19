@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from 'react';
+import type { PropsWithChildren, Ref } from 'react';
 
 // Props
 // ---------------
@@ -10,34 +10,13 @@ export interface AppLayoutProps extends Omit<
   /**
    * Children of the component.
    */
-  children?: ReactNode;
+  children?: React.ReactNode;
   ref?: Ref<HTMLDivElement>;
-}
-
-export interface AppLayoutHeaderProps {
-  /**
-   * Children of the component.
-   */
-  children?: ReactNode;
-}
-
-export interface AppLayoutSidebarProps {
-  /**
-   * Children of the component.
-   */
-  children?: ReactNode;
-}
-
-export interface AppLayoutMainProps {
-  /**
-   * Children of the component.
-   */
-  children?: ReactNode;
 }
 
 // Sub-components
 // ---------------
-const AppLayoutHeader = ({ children }: AppLayoutHeaderProps) => {
+const AppLayoutHeader = ({ children }: PropsWithChildren) => {
   return (
     <div className="z-1 flex h-(--app-layout-header-height) [grid-area:header] [&>*]:h-full [&>*]:w-full">
       {children}
@@ -45,11 +24,11 @@ const AppLayoutHeader = ({ children }: AppLayoutHeaderProps) => {
   );
 };
 
-const AppLayoutSidebar = ({ children }: AppLayoutSidebarProps) => {
+const AppLayoutSidebar = ({ children }: PropsWithChildren) => {
   return <div className="[grid-area:sidebar]">{children}</div>;
 };
 
-const AppLayoutMain = ({ children }: AppLayoutMainProps) => {
+const AppLayoutMain = ({ children }: PropsWithChildren) => {
   return <main className="overflow-y-auto [grid-area:main]">{children}</main>;
 };
 
