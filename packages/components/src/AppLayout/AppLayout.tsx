@@ -1,5 +1,4 @@
 import type { ReactNode, Ref } from 'react';
-import { forwardRef } from 'react';
 
 // Props
 // ---------------
@@ -12,6 +11,7 @@ export interface AppLayoutProps extends Omit<
    * Children of the component.
    */
   children?: ReactNode;
+  ref?: Ref<HTMLDivElement>;
 }
 
 export interface AppLayoutHeaderProps {
@@ -55,27 +55,24 @@ const AppLayoutMain = ({ children }: AppLayoutMainProps) => {
 
 // Component
 // ---------------
-interface AppLayoutComponent extends React.ForwardRefExoticComponent<
-  AppLayoutProps & React.RefAttributes<HTMLDivElement>
-> {
+interface AppLayoutComponent {
+  (props: AppLayoutProps): React.JSX.Element;
   Header: typeof AppLayoutHeader;
   Sidebar: typeof AppLayoutSidebar;
   Main: typeof AppLayoutMain;
 }
 
-const _AppLayout = forwardRef(
-  ({ children, ...props }: AppLayoutProps, ref: Ref<HTMLDivElement>) => {
-    return (
-      <div
-        ref={ref}
-        className="grid h-dvh grid-cols-[auto_1fr] grid-rows-[var(--app-layout-header-height,auto)_1fr] overflow-hidden [--app-layout-header-height:3.5rem] [grid-template-areas:'sidebar_header'_'sidebar_main']"
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-) as AppLayoutComponent;
+const _AppLayout = (({ children, ref, ...props }: AppLayoutProps) => {
+  return (
+    <div
+      ref={ref}
+      className="grid h-dvh grid-cols-[auto_1fr] grid-rows-[var(--app-layout-header-height,auto)_1fr] overflow-hidden [--app-layout-header-height:3.5rem] [grid-template-areas:'sidebar_header'_'sidebar_main']"
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}) as AppLayoutComponent;
 
 _AppLayout.Header = AppLayoutHeader;
 _AppLayout.Sidebar = AppLayoutSidebar;
