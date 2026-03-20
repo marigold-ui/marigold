@@ -1,5 +1,12 @@
 # @marigold/components
 
+## 17.2.2
+
+### Patch Changes
+
+- 548dcb4: Wrap `useToast` return values (`addToast`, `clearToasts`, `removeToast`) in `useCallback` so they are referentially stable across renders and safe to use in `useEffect` dependency arrays
+  - @marigold/system@17.2.2
+
 ## 17.2.1
 
 ### Patch Changes
