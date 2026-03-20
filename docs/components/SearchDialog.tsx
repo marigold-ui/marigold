@@ -1,6 +1,7 @@
 'use client';
 
 import { usePages } from '@/app/providers';
+import { track } from '@vercel/analytics';
 import { useDocsSearch } from 'fumadocs-core/search/client';
 import {
   SearchDialog,
@@ -62,6 +63,10 @@ export default function CustomSearchDialog(props: SharedProps) {
       onSearchChange={setSearch}
       isLoading={query.isLoading}
       {...props}
+      onOpenChange={open => {
+        if (open) track('Use cmkd');
+        props.onOpenChange(open);
+      }}
     >
       <SearchDialogOverlay />
       <SearchDialogContent>

@@ -1,4 +1,5 @@
 'use client';
+import { track } from '@vercel/analytics';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import {
   Check,
@@ -25,6 +26,7 @@ export function MarkdownCopyButton({
 }) {
   const [isLoading, setLoading] = useState(false);
   const [checked, onClick] = useCopyButton(async () => {
+    track('Copy Code');
     const cached = cache.get(markdownUrl);
     if (cached) return navigator.clipboard.writeText(await cached);
 
