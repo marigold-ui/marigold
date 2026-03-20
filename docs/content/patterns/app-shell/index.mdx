@@ -4,7 +4,12 @@ description: A composition pattern for building application frames with persiste
 badge: alpha
 ---
 
-The App Shell pattern describes how to compose an application frame using [AppLayout](/components/layout/app-layout). The layout slots `<AppLayout.Sidebar>` and `<AppLayout.Header>` render [Sidebar](/components/navigation/sidebar) and [TopNavigation](/components/navigation/topnavigation) internally, so you place their sub-components directly without extra nesting. This page focuses on provider setup, content placement, and responsive strategy.
+Most business applications share a common frame: a sidebar for navigation, a top bar for context and actions, and a scrollable content area. The App Shell pattern shows how to compose this frame using [`<AppLayout>`](/components/layout/app-layout), covering provider wiring, content placement decisions, and responsive strategy.
+
+<Callout title="Looking for the component API?">
+  For props, slot details, and accessibility, see the [AppLayout component
+  page](/components/layout/app-layout).
+</Callout>
 
 ## Structure
 

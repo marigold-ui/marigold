@@ -8,9 +8,11 @@ badge: beta
 
 `<AppLayout.Sidebar>` renders a [`<Sidebar>`](/components/navigation/sidebar) internally and `<AppLayout.Header>` renders a [`<TopNavigation>`](/components/navigation/topnavigation) internally, so you can place their sub-components directly without extra nesting.
 
-Wrap `<AppLayout>` with `Sidebar.Provider` so the sidebar toggle in the header and the sidebar itself share the same open/collapsed state.
-
-For a guide on composing `<AppLayout>` into a complete application frame, see the [App Shell pattern](/patterns/app-shell).
+<Callout title="Looking for composition guidance?">
+  This page covers the component API. For a step-by-step guide on where to place
+  content, how to wire up providers, and responsive strategy, see the [App Shell
+  pattern](/patterns/app-shell).
+</Callout>
 
 ## Usage
 
@@ -37,6 +39,16 @@ For a guide on composing `<AppLayout>` into a complete application frame, see th
 
 <ComponentDemo name="app-layout-basic" />
 
+### Sidebar.Provider
+
+`Sidebar.Provider` manages the sidebar's open and collapsed state. Place it _outside_ `<AppLayout>` so the sidebar toggle in the header and the sidebar itself share the same state.
+
+Pass `defaultOpen` to start with the sidebar expanded. Without it, the sidebar starts collapsed. See the [Sidebar](/components/navigation/sidebar) docs for details on collapsing behavior, drill-down navigation, and keyboard shortcuts.
+
+### Scrolling
+
+The sidebar and header always stay visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable.
+
 <GuidelineTiles>
   <Dont>
     <DontDescription>
@@ -49,10 +61,6 @@ For a guide on composing `<AppLayout>` into a complete application frame, see th
   </Dont>
 </GuidelineTiles>
 
-### Scrolling
-
-The sidebar and header always stay visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable.
-
 ### Accessibility
 
 - **Landmarks:** `<AppLayout.Main>` renders as `<main>`, providing a standard landmark region for screen readers. `<AppLayout.Sidebar>` renders an `<aside>` landmark automatically.
@@ -60,7 +68,7 @@ The sidebar and header always stay visible, no matter how far users scroll. Only
 - **Stacking order:** The header uses `z-index: 1` to ensure it stays above main content during scroll
 
 <Callout title="Note">
-  `<AppLayout>` is a structural layout component. Accessibility features like keyboard navigation, focus management, and ARIA attributes are provided by the components placed inside it. See [Sidebar](/components/navigation/sidebar) and [TopNavigation](/components/navigation/topnavigation) for their accessibility details.
+  `<AppLayout>` is a structural layout component. Accessibility features like keyboard navigation, focus management, and ARIA attributes are provided by the components placed inside it. See [Sidebar](/components/navigation/sidebar#accessibility) and [TopNavigation](/components/navigation/topnavigation#accessibility) for their accessibility details.
 </Callout>
 
 ## Props
