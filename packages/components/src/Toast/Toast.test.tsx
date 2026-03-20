@@ -2,6 +2,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Basic } from './Toast.stories';
+import { queue } from './ToastProvider';
 import { useToast } from './ToastQueue';
 
 // Manually adding container for ToastProvider to prevent log errors
@@ -12,9 +13,8 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  const { clearToasts } = useToast();
   act(() => {
-    clearToasts();
+    queue.clear();
   });
   const container = document.getElementById('storybook-root');
   if (container && container.parentNode) {
@@ -22,12 +22,36 @@ afterEach(() => {
   }
 });
 
+// Helper to call useToast inside a component context
+const ToastHelper = ({
+  onToast,
+}: {
+  onToast: (toast: ReturnType<typeof useToast>) => void;
+}) => {
+  onToast(useToast());
+  return null;
+};
+
 describe('Toast', () => {
-  const { addToast, clearToasts } = useToast();
+  let addToast: ReturnType<typeof useToast>['addToast'];
+  let clearToasts: ReturnType<typeof useToast>['clearToasts'];
+
+  // Render helper component to extract hook values
+  beforeEach(() => {
+    render(
+      <ToastHelper
+        onToast={toast => {
+          addToast = toast.addToast;
+          clearToasts = toast.clearToasts;
+        }}
+      />
+    );
+  });
+
   test('renders without crashing', async () => {
     render(<Basic.Component />);
     await act(async () => {
-      await addToast({ title: 'Dies ist eine Toast-Nachricht!' });
+      addToast({ title: 'Dies ist eine Toast-Nachricht!' });
     });
     const toast = await screen.findByText('Dies ist eine Toast-Nachricht!');
 
@@ -39,7 +63,7 @@ describe('Toast', () => {
     async variant => {
       render(<Basic.Component />);
       await act(async () => {
-        await addToast({
+        addToast({
           title: `${variant} Toast`,
           description: `This is a ${variant} toast.`,
           variant: `${variant}` as 'info' | 'success' | 'error' | 'warning',
@@ -59,7 +83,7 @@ describe('Toast', () => {
     await userEvent.click(button);
     const toast = await screen.findByText('Dies ist eine Toast-Nachricht!');
     await act(async () => {
-      await clearToasts();
+      clearToasts();
     });
 
     await waitFor(() => expect(toast).not.toBeInTheDocument());
@@ -70,7 +94,7 @@ describe('Toast', () => {
     const actionButton = <button>Undo</button>;
 
     await act(async () => {
-      await addToast({
+      addToast({
         title: 'Test Toast with Action',
         description: 'This toast has an action',
         action: actionButton,
@@ -80,5 +104,23 @@ describe('Toast', () => {
     const actionElement = screen.getByText('Undo');
 
     expect(actionElement).toBeInTheDocument();
+  });
+
+  test('useToast returns stable function references (safe for useEffect deps)', () => {
+    const results: ReturnType<typeof useToast>[] = [];
+
+    const TestComponent = () => {
+      const toast = useToast();
+      results.push(toast);
+      return null;
+    };
+
+    const { rerender } = render(<TestComponent />);
+    rerender(<TestComponent />);
+
+    expect(results).toHaveLength(2);
+    expect(results[0].addToast).toBe(results[1].addToast);
+    expect(results[0].clearToasts).toBe(results[1].clearToasts);
+    expect(results[0].removeToast).toBe(results[1].removeToast);
   });
 });
