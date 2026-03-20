@@ -1,0 +1,16 @@
+{
+  "name": "create-marigold-app",
+  "version": "0.1.0",
+  "description": "Claude Code plugin to scaffold a Marigold Design System app",
+  "license": "MIT",
+  "files": [
+    ".claude-plugin",
+    "skills",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marigold-ui/marigold.git",
+    "directory": "packages/create-marigold-app"
+  }
+}
