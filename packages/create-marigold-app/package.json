@@ -1,15 +1,12 @@
 {
   "name": "create-marigold-app",
   "version": "0.1.0",
-  "description": "Claude Code skill to scaffold a Marigold Design System app",
+  "description": "Claude Code plugin to scaffold a Marigold Design System app",
   "type": "module",
   "license": "MIT",
-  "bin": {
-    "create-marigold-app": "./index.js"
-  },
   "files": [
-    "index.js",
-    "SKILL.md",
+    ".claude-plugin",
+    "skills",
     "README.md"
   ],
   "keywords": [
@@ -20,6 +17,7 @@
     "react",
     "prototyping",
     "claude-code",
+    "claude-code-plugin",
     "skill"
   ],
   "engines": {

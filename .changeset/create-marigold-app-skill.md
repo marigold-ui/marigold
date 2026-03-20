@@ -2,4 +2,4 @@
 "create-marigold-app": minor
 ---
 
-New package: Claude Code skill installer for scaffolding Marigold apps
+New package: Claude Code plugin for scaffolding Marigold apps via `claude plugin add npm:create-marigold-app`
