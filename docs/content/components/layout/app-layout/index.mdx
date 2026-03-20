@@ -47,7 +47,7 @@ Pass `defaultOpen` to start with the sidebar expanded. Without it, the sidebar s
 
 ### Scrolling
 
-The sidebar and header always stay visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable.
+The header always stays visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable. The sidebar also stays in place, but its navigation area scrolls independently when it has too many items. This is handled by the [Sidebar](/components/navigation/sidebar) component internally.
 
 <GuidelineTiles>
   <Dont>
