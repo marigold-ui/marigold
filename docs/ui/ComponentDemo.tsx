@@ -1,6 +1,7 @@
 'use client';
 
 import { type RegistryKey, registry } from '@/.registry/demos';
+import { track } from '@vercel/analytics';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { type ComponentType, type ReactNode } from 'react';
@@ -100,13 +101,36 @@ export const ComponentDemo = ({
 
   // Full mode with Preview + Code tabs
   return (
-    <Tabs items={['Preview', 'Code']} defaultIndex={0}>
+    <DemoTabs demoKey={key}>
       <Tab value="Preview" className="p-0">
         <Preview name={key} />
       </Tab>
       <Tab value="Code">
         <DynamicCodeBlock lang="tsx" code={codeString} />
       </Tab>
-    </Tabs>
+    </DemoTabs>
   );
 };
+
+// Tracked Tabs wrapper
+// ---------------
+const DemoTabs = ({
+  demoKey,
+  children,
+}: {
+  demoKey: string;
+  children: ReactNode;
+}) => (
+  <Tabs
+    items={['Preview', 'Code']}
+    defaultIndex={0}
+    onClick={e => {
+      const tab = (e.target as HTMLElement).closest('[role="tab"]');
+      if (tab) {
+        track('Demo Tab', { tab: tab.textContent ?? '' });
+      }
+    }}
+  >
+    {children}
+  </Tabs>
+);
