@@ -1,5 +1,13 @@
 # @marigold/theme-rui
 
+## 5.2.1
+
+### Patch Changes
+
+- fd6f323: bugfix[DST-1250]: fix broken style in `<Menu>`
+  - @marigold/system@17.2.1
+  - @marigold/components@17.2.1
+
 ## 5.2.0
 
 ### Minor Changes
