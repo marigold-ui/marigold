@@ -18,7 +18,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     variants: {
       variant: {
         default:
-          'text-foreground focus:bg-focus [&_svg]:text-muted-foreground:opacity-60',
+          'text-foreground focus:bg-focus [&_svg]:text-muted-foreground [&_svg]:opacity-60',
         destructive: 'text-destructive focus:bg-destructive/10',
       },
     },
