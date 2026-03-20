@@ -253,8 +253,40 @@ export const Basic = meta.story({
 });
 
 export const SidebarClosed = meta.story({
+  tags: ['component-test'],
   render: () => {
     const [open, setOpen] = useState(false);
     return <LShapeLayout open={open} onOpenChange={setOpen} />;
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Sidebar starts closed', async () => {
+      const toggle = canvas.getByRole('button', {
+        name: /toggle navigation/i,
+      });
+
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    await step('Open sidebar via toggle', async () => {
+      const toggle = canvas.getByRole('button', {
+        name: /toggle navigation/i,
+      });
+
+      await userEvent.click(toggle);
+
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await step('Close sidebar via toggle', async () => {
+      const toggle = canvas.getByRole('button', {
+        name: /toggle navigation/i,
+      });
+
+      await userEvent.click(toggle);
+
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    });
   },
 });
