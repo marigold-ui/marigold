@@ -2,7 +2,7 @@
   "name": "marigold-plugins",
   "owner": {
     "name": "Marigold UI",
-    "email": "https://github.com/marigold-ui"
+    "url": "https://github.com/marigold-ui"
   },
   "plugins": [
     {

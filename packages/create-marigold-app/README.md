@@ -5,7 +5,8 @@ A [Claude Code](https://claude.com/claude-code) plugin that scaffolds a new app 
 ## Install
 
 ```bash
-claude plugin add npm:create-marigold-app
+claude plugin marketplace add github:marigold-ui/marigold --sparse packages/create-marigold-app
+claude plugin install create-marigold-app
 ```
 
 ## Usage
@@ -23,7 +24,7 @@ On first run, Claude Code may ask you to approve some commands (like cloning the
 ## Uninstall
 
 ```bash
-claude plugin remove create-marigold-app
+claude plugin uninstall create-marigold-app
 ```
 
 ## License
