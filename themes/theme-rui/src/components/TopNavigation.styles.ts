@@ -4,8 +4,8 @@ export const TopNavigation: ThemeComponent<'TopNavigation'> = {
   container: cva({
     base: [
       'w-full min-h-14',
-      'bg-background border-b border-border shadow-elevation-border',
-      'gap-4 px-3 pt-2 sm:gap-6 md:gap-8 lg:gap-12',
+      'bg-background border-b border-border',
+      'gap-4 px-3 sm:gap-6 md:gap-8 lg:gap-12',
     ],
   }),
   start: cva({ base: 'flex justify-start gap-4' }),
