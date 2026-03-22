@@ -59,6 +59,7 @@ export interface DateFieldProps
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default 'full'
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
 }
