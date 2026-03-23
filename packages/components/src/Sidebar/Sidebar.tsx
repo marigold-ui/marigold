@@ -57,7 +57,7 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
             ref={ref}
             aria-label={stringFormatter.format('sidebar')}
             data-state={state}
-            className={cn('h-full', classNames.root)}
+            className={cn('h-full [grid-area:sidebar]', classNames.root)}
           >
             <CloseButton
               aria-label={stringFormatter.format('closeNavigation')}
@@ -83,7 +83,7 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
       ref={ref}
       aria-label={stringFormatter.format('sidebar')}
       data-state={state}
-      className={classNames.root}
+      className={cn('[grid-area:sidebar]', classNames.root)}
     >
       <div
         className={cn(

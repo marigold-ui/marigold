@@ -28,9 +28,7 @@ export const AppLayoutHeader = ({
   sticky,
   children,
 }: AppLayoutHeaderProps) => (
-  <div className="flex [grid-area:header] [&>*]:h-full [&>*]:w-full">
-    <TopNavigation variant={variant} size={size} sticky={sticky}>
-      {children}
-    </TopNavigation>
-  </div>
+  <TopNavigation variant={variant} size={size} sticky={sticky}>
+    {children}
+  </TopNavigation>
 );
