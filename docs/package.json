@@ -13,6 +13,7 @@
     "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "3.1011.0",
     "@internationalized/date": "^3.12.0",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
@@ -20,8 +21,8 @@
     "@marigold/system": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@octokit/core": "7.0.6",
-    "@react-aria/i18n": "3.12.16",
     "@radix-ui/react-popover": "^1.1.15",
+    "@react-aria/i18n": "3.12.16",
     "@tanstack/react-query": "^5.62.0",
     "@vercel/analytics": "2.0.1",
     "class-variance-authority": "^0.7.1",
@@ -31,6 +32,7 @@
     "fumadocs-mdx": "14.2.8",
     "fumadocs-ui": "16.6.5",
     "lucide-react": "^1.7.0",
+    "mcp-handler": "1.0.7",
     "motion": "12.34.3",
     "next": "16.2.3",
     "nuqs": "2.8.8",
