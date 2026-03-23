@@ -1,4 +1,5 @@
 import { source } from '@/lib/source';
+import { Analytics } from '@vercel/analytics/next';
 import { flattenTree } from 'fumadocs-core/page-tree';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -46,6 +47,7 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
           </Providers>
           <div id="portalContainer" data-theme="rui" className="not-prose" />
         </Suspense>
+        <Analytics mode="production" />
       </body>
     </html>
   );

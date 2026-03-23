@@ -1,5 +1,11 @@
 # @marigold/components
 
+## 17.2.1
+
+### Patch Changes
+
+- @marigold/system@17.2.1
+
 ## 17.2.0
 
 ### Minor Changes
