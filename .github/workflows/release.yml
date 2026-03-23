@@ -53,6 +53,14 @@ jobs:
           webhook: ${{ secrets.SLACK_HOOK }}
           webhook-type: webhook-trigger
 
+      # Rebuild search embeddings when docs content changed
+      - name: Rebuild search embeddings
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          AWS_BEDROCK_ACCESS_KEY_ID: ${{ secrets.AWS_BEDROCK_ACCESS_KEY_ID }}
+          AWS_BEDROCK_SECRET_ACCESS_KEY: ${{ secrets.AWS_BEDROCK_SECRET_ACCESS_KEY }}
+        run: pnpm --filter @marigold/docs build:embeddings
+
       # We use the "docs" branch for the production build on vercel
       - name: Updating "docs" branch
         if: steps.changesets.outputs.published == 'true'
