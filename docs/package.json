@@ -35,6 +35,7 @@
     "motion": "12.34.3",
     "next": "16.2.3",
     "nuqs": "2.8.8",
+    "p-limit": "7.3.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "7.71.2",
