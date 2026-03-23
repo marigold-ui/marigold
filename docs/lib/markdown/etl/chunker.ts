@@ -1,8 +1,11 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const OUT_DIR = path.resolve(import.meta.dirname, '..', 'out');
-const OUTPUT_FILE = path.resolve(import.meta.dirname, 'chunks.json');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const OUT_DIR = path.resolve(__dirname, '..', 'out');
+const OUTPUT_FILE = path.resolve(__dirname, 'chunks.json');
 const MAX_CHARS = 10_000;
 const MIN_CHARS = 150;
 
