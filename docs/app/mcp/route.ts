@@ -5,23 +5,40 @@
  * (Cursor, Windsurf, Claude Code, etc.) can discover and use automatically.
  *
  * Transport: Streamable HTTP at /mcp
+ * Auth: Keycloak JWT via OAuth (optional, enabled when OIDC env vars are set)
  */
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from '@aws-sdk/client-bedrock-runtime';
-import { createMcpHandler } from 'mcp-handler';
+import type { AuthInfo } from '@modelcontextprotocol/sdk/server/auth/types.js';
+import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { createMcpHandler, withMcpAuth } from 'mcp-handler';
 import { z } from 'zod';
 import fs from 'node:fs';
 import path from 'node:path';
 
 export const runtime = 'nodejs';
 
+// process.cwd() is the docs/ root in Next.js
+const CHUNKS_SEARCH_FILE = path.join(
+  process.cwd(),
+  'app',
+  'mcp',
+  'chunks_search.json'
+);
+
 // ─── Config ──────────────────────────────────────────────────────────────────
 
 const TITAN_MODEL_ID = 'amazon.titan-embed-text-v2:0';
 const TITAN_DIMENSIONS = 512;
-const AWS_REGION = process.env.AWS_REGION ?? 'eu-central-1';
+const AWS_REGION = 'eu-central-1';
+
+const OIDC_AUTHORITY = process.env.NEXT_PUBLIC_OIDC_AUTHORITY;
+const OIDC_CLIENT_ID = process.env.NEXT_PUBLIC_OIDC_CLIENT_ID;
+const KEYCLOAK_JWKS_URI = OIDC_AUTHORITY
+  ? `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`
+  : undefined;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -35,7 +52,13 @@ interface StoredChunk {
 
 // ─── Bedrock client (singleton) ──────────────────────────────────────────────
 
-const bedrock = new BedrockRuntimeClient({ region: AWS_REGION });
+const bedrock = new BedrockRuntimeClient({
+  region: AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_BEDROCK_ACCESS_KEY_ID ?? '',
+    secretAccessKey: process.env.AWS_BEDROCK_SECRET_ACCESS_KEY ?? '',
+  },
+});
 
 async function embedQuery(text: string): Promise<Float32Array> {
   const res = await bedrock.send(
@@ -54,7 +77,7 @@ async function embedQuery(text: string): Promise<Float32Array> {
   return new Float32Array(body.embedding);
 }
 
-// ─── Vector store (lazy singleton, survives warm starts) ─────────────────────
+// ─── Vector store ─────────────────────
 
 interface VectorStore {
   chunks: StoredChunk[];
@@ -66,10 +89,7 @@ let store: VectorStore | null = null;
 function getStore(): VectorStore {
   if (store) return store;
 
-  const raw = fs.readFileSync(
-    path.join(import.meta.dirname, 'chunks_search.json'),
-    'utf-8'
-  );
+  const raw = fs.readFileSync(CHUNKS_SEARCH_FILE, 'utf-8');
   const data: StoredChunk[] = JSON.parse(raw);
 
   const vectors = data.map(chunk => {
@@ -111,22 +131,64 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
   }));
 }
 
+// ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
+
+const jwks = KEYCLOAK_JWKS_URI
+  ? createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI))
+  : null;
+
+const verifyToken = async (
+  _req: Request,
+  bearerToken?: string
+): Promise<AuthInfo | undefined> => {
+  if (!bearerToken || !jwks) return undefined;
+
+  try {
+    const { payload } = await jwtVerify(bearerToken, jwks, {
+      issuer: OIDC_AUTHORITY,
+      audience: OIDC_CLIENT_ID,
+    });
+
+    return {
+      token: bearerToken,
+      scopes: ['search:docs'],
+      clientId: payload.sub ?? 'unknown',
+    };
+  } catch {
+    return undefined;
+  }
+};
+
 // ─── MCP Handler ─────────────────────────────────────────────────────────────
 
 const handler = createMcpHandler(
   server => {
     server.tool(
       'search_docs',
-      'Search the Marigold Design System documentation by semantic similarity. Returns the most relevant documentation sections for a given query.',
+      [
+        'Search the Marigold Design System documentation using semantic similarity.',
+        'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
+        'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
+        'Returns the most relevant documentation sections ranked by similarity to the query.',
+        'Query must be a natural language question or keyword phrase (max 1000 characters).',
+      ].join(' '),
       {
-        query: z.string().min(1).max(1000).describe('The search query text'),
+        query: z
+          .string()
+          .min(1)
+          .max(1000)
+          .describe(
+            'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
+          ),
         limit: z
           .number()
           .int()
-          .min(1)
-          .max(20)
+          .min(3)
+          .max(10)
           .default(5)
-          .describe('Number of results to return (default: 5)'),
+          .describe(
+            'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
+          ),
       },
       async ({ query, limit }) => {
         try {
@@ -142,7 +204,8 @@ const handler = createMcpHandler(
               },
             ],
           };
-        } catch {
+        } catch (err) {
+          console.error('[MCP] search_docs error:', err);
           return {
             isError: true,
             content: [
@@ -164,4 +227,10 @@ const handler = createMcpHandler(
   }
 );
 
-export { handler as GET, handler as POST, handler as DELETE };
+const exported = withMcpAuth(handler, verifyToken, {
+  required: true,
+  requiredScopes: ['search:docs'],
+  resourceMetadataPath: '/.well-known/oauth-protected-resource',
+});
+
+export { exported as GET, exported as POST, exported as DELETE };
