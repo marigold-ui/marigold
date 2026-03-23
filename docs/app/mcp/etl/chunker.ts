@@ -1,278 +1,137 @@
-/**
- * Chunker for RAG / Vector Embeddings
- *
- * Splits Markdown docs into H2-level sections for semantic search.
- * Oversized sections are split further at H3 boundaries.
- * Code blocks are stripped from embedding text but kept in originalText.
- *
- * Usage:
- *   node --experimental-strip-types docs/app/mcp/etl/chunker.ts
- *   node --experimental-strip-types docs/app/mcp/etl/chunker.ts --file components-collection-table-index
- */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
 const OUT_DIR = path.resolve(import.meta.dirname, '..', 'out');
 const OUTPUT_FILE = path.resolve(import.meta.dirname, 'chunks.json');
-const MAX_EMBEDDING_CHARS = 24_000; // ~6000 tokens, safely under Titan's 8192
-const MIN_CHUNK_CHARS = 100;
+const MAX_CHARS = 10_000;
+const MIN_CHARS = 150;
 
-interface Chunk {
-  id: number;
-  textForEmbedding: string;
-  originalText: string;
-  metadata: { file: string; category: string; heading: string };
-}
+/** Split markdown at headings of a given level */
+function splitAt(
+  text: string,
+  level: number
+): { heading: string; body: string }[] {
+  const marker = '#'.repeat(level) + ' ';
+  const result: { heading: string; body: string }[] = [];
+  let h = '',
+    lines: string[] = [],
+    fence = false;
 
-interface Section {
-  heading: string;
-  lines: string[];
-}
+  const flush = () => {
+    const body = lines.join('\n').trim();
+    if (body || h) result.push({ heading: h, body });
+    lines = [];
+  };
 
-function parseHeading(line: string): { level: number; text: string } | null {
-  const m = line.match(/^(#{1,3}) +(.+)$/);
-  if (!m) return null;
-  return { level: m[1].length, text: m[2].trim() };
-}
-
-function extractCategory(basename: string): string {
-  const knownMultiWord = ['getting-started', 'hooks-and-utils'];
-  for (const prefix of knownMultiWord) {
-    if (basename.startsWith(prefix)) return prefix;
-  }
-  return basename.split('-')[0];
-}
-
-function stripCodeBlocks(text: string): string {
-  const out: string[] = [];
-  let inFence = false;
   for (const line of text.split('\n')) {
-    if (line.trimStart().startsWith('```')) {
-      inFence = !inFence;
-      continue;
-    }
-    if (!inFence) out.push(line);
-  }
-  return out
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
-
-/**
- * Single-pass parse: extracts H1, subtitle (first italic line after H1),
- * and all H2-level sections.
- */
-function parseFile(content: string): {
-  h1: string;
-  subtitle: string;
-  sections: Section[];
-} {
-  let h1 = '';
-  let subtitle = '';
-  const sections: Section[] = [];
-  let current: Section = { heading: '', lines: [] };
-  let inFence = false;
-
-  for (const line of content.split('\n')) {
-    if (line.trimStart().startsWith('```')) {
-      inFence = !inFence;
-      current.lines.push(line);
-      continue;
-    }
-    if (inFence) {
-      current.lines.push(line);
-      continue;
-    }
-
-    const heading = parseHeading(line);
-    if (heading?.level === 1) {
-      h1 = heading.text;
-      continue;
-    }
-
-    // Capture the first italic line (e.g. `*Buttons allow users to trigger actions.*`)
-    if (!subtitle && !heading && line.startsWith('*') && line.endsWith('*')) {
-      subtitle = line.slice(1, -1);
-      continue;
-    }
-
-    if (heading?.level === 2) {
-      sections.push(current);
-      current = { heading: heading.text, lines: [line] };
-      continue;
-    }
-    current.lines.push(line);
-  }
-  sections.push(current);
-  return { h1, subtitle, sections };
-}
-
-function splitAtH3(section: Section): Section[] {
-  const sub: Section[] = [];
-  let current: Section = { heading: section.heading, lines: [] };
-  let inFence = false;
-
-  for (const line of section.lines) {
-    if (line.trimStart().startsWith('```')) {
-      inFence = !inFence;
-      current.lines.push(line);
-      continue;
-    }
-    if (inFence) {
-      current.lines.push(line);
-      continue;
-    }
-
-    const heading = parseHeading(line);
-    if (heading?.level === 3) {
-      sub.push(current);
-      current = {
-        heading: `${section.heading} > ${heading.text}`,
-        lines: [line],
-      };
-      continue;
-    }
-    current.lines.push(line);
-  }
-  sub.push(current);
-  return sub;
-}
-
-function mergeSections(sections: Section[]): Section[] {
-  const merged: Section[] = [];
-  for (const section of sections) {
-    const text = section.lines.join('\n').trim();
-    if (!text) continue;
-    const prev = merged.at(-1);
-    if (prev && text.length < MIN_CHUNK_CHARS) {
-      prev.lines.push('', ...section.lines);
-      if (section.heading) {
-        prev.heading = prev.heading
-          ? `${prev.heading} / ${section.heading}`
-          : section.heading;
-      }
+    if (line.trimStart().startsWith('```')) fence = !fence;
+    if (!fence && line.startsWith(marker) && line[level] !== '#') {
+      flush();
+      h = line.slice(marker.length).trim();
     } else {
-      merged.push({ ...section, lines: [...section.lines] });
+      lines.push(line);
     }
   }
-  return merged;
+  flush();
+  return result;
 }
 
-function chunkFile(filePath: string): Chunk[] {
+/** Recursively split until each chunk fits MAX_CHARS */
+function fit(
+  heading: string,
+  text: string,
+  level = 3
+): { heading: string; text: string }[] {
+  if (text.length <= MAX_CHARS) return [{ heading, text }];
+
+  if (level <= 3) {
+    const parts = splitAt(text, level);
+    if (parts.length > 1)
+      return parts.flatMap(p =>
+        fit(
+          p.heading ? `${heading} > ${p.heading}` : heading,
+          p.body,
+          level + 1
+        )
+      );
+    return fit(heading, text, level + 1);
+  }
+
+  // Paragraph fallback
+  const out: { heading: string; text: string }[] = [];
+  let acc = '',
+    n = 1;
+  for (const p of text.split(/\n{2,}/)) {
+    if (acc && `${acc}\n\n${p}`.length > MAX_CHARS) {
+      out.push({
+        heading: n > 1 ? `${heading} [${n}]` : heading,
+        text: acc,
+      });
+      acc = p;
+      n++;
+    } else {
+      acc = acc ? `${acc}\n\n${p}` : p;
+    }
+  }
+  if (acc.trim())
+    out.push({
+      heading: n > 1 ? `${heading} [${n}]` : heading,
+      text: acc.trim(),
+    });
+  return out;
+}
+
+function chunkFile(filePath: string) {
   const basename = path.basename(filePath, '.md');
-  const category = extractCategory(basename);
-  const {
-    h1,
-    subtitle,
-    sections: h2Sections,
-  } = parseFile(fs.readFileSync(filePath, 'utf-8'));
+  const content = fs.readFileSync(filePath, 'utf-8');
+  const h1 = content.match(/^# +(.+)$/m)?.[1]?.trim() ?? '';
+  const subtitle = content.match(/^\*([^*\n]+)\*$/m)?.[1] ?? '';
+  const ctx = subtitle ? `${h1} — ${subtitle}` : h1;
 
-  const sections: Section[] = [];
-  for (const section of h2Sections) {
-    if (
-      stripCodeBlocks(section.lines.join('\n')).length > MAX_EMBEDDING_CHARS
-    ) {
-      sections.push(...splitAtH3(section));
-    } else {
-      sections.push(section);
-    }
-  }
-
-  // Minimal context prefix: "Table — Display and interact with structured data..."
-  const contextPrefix = subtitle ? `${h1} — ${subtitle}` : h1;
-
-  return mergeSections(sections)
-    .map(section => {
-      const fullText = section.lines.join('\n').trim();
-      if (!fullText) return null;
-
-      const headingPath = [h1, section.heading].filter(Boolean).join(' > ');
-      const isIntro = section.heading === '';
-
-      const textForEmbedding = [
-        `[${basename}] ${headingPath}`,
-        isIntro ? null : contextPrefix,
-        stripCodeBlocks(fullText),
-      ]
-        .filter(Boolean)
-        .join('\n\n');
-
-      return {
-        id: -1, // assigned in main()
-        textForEmbedding,
-        originalText: fullText,
-        metadata: { file: basename, category, heading: headingPath },
-      } satisfies Chunk;
-    })
-    .filter((c): c is Chunk => c !== null);
+  return splitAt(content, 2).flatMap(({ heading: h2, body }) => {
+    const headingPath = [h1, h2].filter(Boolean).join(' > ');
+    return fit(headingPath, body)
+      .filter(c => c.text.length >= MIN_CHARS)
+      .map(({ heading, text }) => ({
+        textForEmbedding: [`[${basename}] ${heading}`, h2 ? ctx : null, text]
+          .filter(Boolean)
+          .join('\n\n'),
+        originalText: text,
+        metadata: { file: basename, heading },
+      }));
+  });
 }
 
-function main() {
-  const fileArg =
-    process.argv.find(a => a.startsWith('--file='))?.slice(7) ??
-    (process.argv.includes('--file')
-      ? process.argv[process.argv.indexOf('--file') + 1]
-      : undefined);
+// ─── CLI ─────────────────────────────────────────────────────────────────────
 
-  let files: string[];
-  if (fileArg) {
-    const target = path.join(
-      OUT_DIR,
-      fileArg.endsWith('.md') ? fileArg : `${fileArg}.md`
-    );
-    if (!fs.existsSync(target)) {
-      console.error(`File not found: ${target}`);
-      process.exit(1);
-    }
-    files = [target];
-    console.log(`Processing single file: ${path.basename(target)}`);
-  } else {
-    files = fs
+const fileArg =
+  process.argv.find(a => a.startsWith('--file='))?.slice(7) ??
+  (process.argv.includes('--file')
+    ? process.argv[process.argv.indexOf('--file') + 1]
+    : undefined);
+
+const files = fileArg
+  ? [path.join(OUT_DIR, fileArg.endsWith('.md') ? fileArg : `${fileArg}.md`)]
+  : fs
       .readdirSync(OUT_DIR)
       .filter(f => f.endsWith('.md'))
       .sort()
       .map(f => path.join(OUT_DIR, f));
-  }
 
-  if (files.length === 0) {
-    console.error(`No .md files found in ${OUT_DIR}`);
-    process.exit(1);
-  }
-  console.log(`Processing ${files.length} file(s)…\n`);
-
-  const allChunks: Chunk[] = [];
-  let oversized = 0;
-
-  for (const file of files) {
-    for (const chunk of chunkFile(file)) {
-      if (chunk.textForEmbedding.length > MAX_EMBEDDING_CHARS) {
-        oversized++;
-        console.warn(
-          `  ⚠ Oversized (${chunk.textForEmbedding.length} chars): ${chunk.metadata.heading}`
-        );
-      }
-      allChunks.push(chunk);
-    }
-  }
-
-  allChunks.forEach((c, i) => {
-    c.id = i + 1;
-  });
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(allChunks, null, 2));
-
-  const avg = Math.round(
-    allChunks.reduce((s, c) => s + c.textForEmbedding.length, 0) /
-      allChunks.length
+if (!files.length || (fileArg && !fs.existsSync(files[0]))) {
+  console.error(
+    fileArg ? `Not found: ${files[0]}` : `No .md files in ${OUT_DIR}`
   );
-  const max = Math.max(...allChunks.map(c => c.textForEmbedding.length));
-  console.log(`Done.`);
-  console.log(`  Files: ${files.length}  Chunks: ${allChunks.length}`);
-  console.log(
-    `  Avg: ${avg} chars (~${Math.round(avg / 4)} tok)  Max: ${max} chars (~${Math.round(max / 4)} tok)`
-  );
-  if (oversized) console.log(`  ⚠ Oversized: ${oversized}`);
-  console.log(`  Output: ${OUTPUT_FILE}`);
+  process.exit(1);
 }
 
-main();
+const chunks = files.flatMap(chunkFile).map((c, i) => ({ id: i + 1, ...c }));
+fs.writeFileSync(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
+
+const avg = Math.round(
+  chunks.reduce((s, c) => s + c.textForEmbedding.length, 0) / chunks.length
+);
+const max = Math.max(...chunks.map(c => c.textForEmbedding.length));
+console.log(
+  `${files.length} files → ${chunks.length} chunks — avg ${avg}c max ${max}c → ${OUTPUT_FILE}`
+);
