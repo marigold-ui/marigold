@@ -10,12 +10,12 @@ export const Slider: ThemeComponent<'Slider'> = {
   }),
   selectedTrack: cva({
     base: [
-      'absolute bg-black orientation-horizontal:h-full orientation-vertical:w-full rounded-lg',
+      'absolute bg-brand orientation-horizontal:h-full orientation-vertical:w-full rounded-lg',
     ],
   }),
   thumb: cva({
     base: [
-      'block h-5 w-5 rounded-full border-2 border-primary bg-background transition-colors',
+      'block h-5 w-5 rounded-full border-2 border-brand bg-background transition-colors',
       'focus-visible:ui-state-focus outline-none',
       'disabled:cursor-not-allowed',
     ],
