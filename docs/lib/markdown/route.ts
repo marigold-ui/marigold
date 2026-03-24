@@ -159,7 +159,7 @@ const verifyToken = async (
   }
 };
 
-// ─── MCP Handler ─────────────────────────────────────────────────────────────
+// ─── MCP Handler ────────────────────────────────────────────────────────────
 
 const handler = createMcpHandler(
   server => {
