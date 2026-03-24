@@ -6,7 +6,8 @@
 > [cli-v2-codebase-intelligence.md](./cli-v2-codebase-intelligence.md) |
 > [cli-v3-theme-and-accessibility.md](./cli-v3-theme-and-accessibility.md) |
 > [mcp-server-beyond-search.md](./mcp-server-beyond-search.md) |
-> [mcp-killer-scenarios.md](./mcp-killer-scenarios.md)
+> [mcp-killer-scenarios.md](./mcp-killer-scenarios.md) |
+> [companion-chat.md](./companion-chat.md)
 
 ---
 
