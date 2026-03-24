@@ -3,7 +3,7 @@ import {
   protectedResourceHandler,
 } from 'mcp-handler';
 
-const OIDC_AUTHORITY = process.env.NEXT_PUBLIC_OIDC_AUTHORITY;
+const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY;
 
 const handler = protectedResourceHandler({
   authServerUrls: OIDC_AUTHORITY ? [OIDC_AUTHORITY] : [],
