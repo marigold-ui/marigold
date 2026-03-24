@@ -36,8 +36,8 @@ describe('Toast', () => {
   let addToast: ReturnType<typeof useToast>['addToast'];
   let clearToasts: ReturnType<typeof useToast>['clearToasts'];
 
-  // Render helper component to extract hook values
-  beforeEach(() => {
+  // Setup helper to extract hook values — called in each test instead of beforeEach
+  const setup = () => {
     render(
       <ToastHelper
         onToast={toast => {
@@ -46,9 +46,10 @@ describe('Toast', () => {
         }}
       />
     );
-  });
+  };
 
   test('renders without crashing', async () => {
+    setup();
     render(<Basic.Component />);
     await act(async () => {
       addToast({ title: 'Dies ist eine Toast-Nachricht!' });
@@ -61,6 +62,7 @@ describe('Toast', () => {
   it.each(['info', 'success', 'error', 'warning'])(
     'renders %s variant',
     async variant => {
+      setup();
       render(<Basic.Component />);
       await act(async () => {
         addToast({
@@ -77,6 +79,7 @@ describe('Toast', () => {
   );
 
   test('clearToasts function works', async () => {
+    setup();
     render(<Basic.Component />);
     const button = screen.getByRole('button', { name: 'Show Toast' });
 
@@ -90,6 +93,7 @@ describe('Toast', () => {
   });
 
   test('renders action when provided', async () => {
+    setup();
     render(<Basic.Component />);
     const actionButton = <button>Undo</button>;
 
