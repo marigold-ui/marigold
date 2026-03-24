@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { queue } from './ToastProvider';
 
 export function useToast() {
@@ -10,7 +10,7 @@ export function useToast() {
     action?: ReactNode;
   };
   const MINIMUM_TIMEOUT_MS = 5000;
-  const addToast = (options: ToastOptions) => {
+  const addToast = useCallback((options: ToastOptions) => {
     let { title, description, variant, timeout, action } = options;
     if (timeout && timeout < MINIMUM_TIMEOUT_MS) {
       timeout = MINIMUM_TIMEOUT_MS; // Ensure a minimum timeout of 5000ms
@@ -24,11 +24,11 @@ export function useToast() {
       },
       { timeout }
     );
-  };
+  }, []);
 
-  const clearToasts = () => queue.clear();
+  const clearToasts = useCallback(() => queue.clear(), []);
 
-  const removeToast = (key: string) => queue.close(key);
+  const removeToast = useCallback((key: string) => queue.close(key), []);
 
   return { addToast, clearToasts, removeToast };
 }

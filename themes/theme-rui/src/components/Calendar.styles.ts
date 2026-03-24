@@ -46,13 +46,13 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'focus-visible:ui-state-focus outline-none',
       'cursor-pointer',
       'hover:bg-hover',
-      'aria-selected:bg-brand aria-selected:text-brand-foreground aria-selected:shadow-xs aria-selected:hover:bg-brand/90',
+      'aria-selected:bg-brand aria-selected:text-brand-foreground aria-selected:shadow-elevation-border aria-selected:hover:bg-brand/90',
     ],
   }),
   select: cva({
     base: [
       '[&svg]:text-muted-foreground',
-      'flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow',
+      'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-input bg-background text-sm text-foreground transition-shadow',
       'focus-visible:ui-state-focus outline-none',
       'h-input',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',

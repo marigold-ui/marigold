@@ -1,17 +1,13 @@
 'use client';
 
+import { track } from '@vercel/analytics';
 import { Link } from 'fumadocs-core/framework';
 import { Card } from 'fumadocs-ui/components/card';
 import { ExternalLink } from './icons/ExternalLink';
 
 export const StorybookHintMessage = ({ component }: { component: string }) => {
   const onPress = () => {
-    // Track analytics if needed
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'storybook_visit', {
-        component,
-      });
-    }
+    track('Storybook Visit', { component });
   };
 
   return (

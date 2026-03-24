@@ -287,6 +287,7 @@ export const LinksMenu: any = meta.story({
 });
 
 export const BasicActionMenu: any = meta.story({
+  tags: ['component-test'],
   render: args => {
     return (
       <ActionMenu

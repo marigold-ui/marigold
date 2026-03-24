@@ -107,7 +107,7 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   dragPreview: cva({
     base: [
-      'px-4 py-3 bg-brand rounded-lg shadow-lg',
+      'px-4 py-3 bg-brand rounded-lg shadow-elevation-overlay',
       'text-sm text-brand-foreground',
     ],
   }),

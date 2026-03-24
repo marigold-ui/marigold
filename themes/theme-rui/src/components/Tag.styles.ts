@@ -14,7 +14,7 @@ export const Tag: ThemeComponent<'Tag'> = {
       'ui-surface shadow-elevation-border',
       'font-medium text-xs',
       'h-6 px-2 cursor-default',
-      'selected:text-white selected:[--ui-background-color:var(--color-brand)]',
+      'selected:text-brand-foreground selected:[--ui-background-color:var(--color-brand)]',
       'data-disabled:cursor-not-allowed data-disabled:text-disabled-foreground data-disabled:bg-disabled',
       'focus-visible:ui-state-focus outline-none',
     ],
