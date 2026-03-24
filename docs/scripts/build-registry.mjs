@@ -34,7 +34,7 @@ function findDemoFiles(dir, fileList = []) {
 /**
  * Build the registry file
  */
-async function buildRegistry() {
+export async function buildRegistry() {
   const contentDir = path.join(rootDir, 'content');
 
   if (!fs.existsSync(contentDir)) {
@@ -118,7 +118,21 @@ export type RegistryKey = keyof typeof registry;
   console.log(`📝 JSON file:     ${jsonFile}\n`);
 }
 
-buildRegistry().catch(err => {
-  console.error('❌ Error building registry:', err);
-  process.exit(1);
-});
+function isMainModule() {
+  const entry = process.argv[1];
+  if (!entry) {
+    return false;
+  }
+  try {
+    return path.resolve(fileURLToPath(import.meta.url)) === path.resolve(entry);
+  } catch {
+    return false;
+  }
+}
+
+if (isMainModule()) {
+  buildRegistry().catch(err => {
+    console.error('❌ Error building registry:', err);
+    process.exit(1);
+  });
+}
