@@ -12,7 +12,13 @@ export const SidebarHeader = forwardRef<HTMLDivElement, SidebarSlotProps>(
   ({ children }, ref) => {
     const { classNames } = useSidebar();
     return (
-      <div ref={ref} className={cn('[grid-area:header]', classNames.header)}>
+      <div
+        ref={ref}
+        className={cn(
+          'flex h-14 items-center [grid-area:header]',
+          classNames.header
+        )}
+      >
         {children}
       </div>
     );
