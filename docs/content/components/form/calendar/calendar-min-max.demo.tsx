@@ -3,7 +3,8 @@ import { Calendar } from '@marigold/components';
 
 export default () => (
   <Calendar
-    minValue={new CalendarDate(2019, 6, 5)}
-    maxValue={new CalendarDate(2019, 6, 20)}
+    aria-label="Event date"
+    minValue={new CalendarDate(2025, 6, 5)}
+    maxValue={new CalendarDate(2025, 6, 20)}
   />
 );
