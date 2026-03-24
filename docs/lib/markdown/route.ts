@@ -34,8 +34,8 @@ const TITAN_MODEL_ID = 'amazon.titan-embed-text-v2:0';
 const TITAN_DIMENSIONS = 512;
 const AWS_REGION = 'eu-central-1';
 
-const OIDC_AUTHORITY = process.env.NEXT_PUBLIC_OIDC_AUTHORITY;
-const OIDC_CLIENT_ID = process.env.NEXT_PUBLIC_OIDC_CLIENT_ID;
+const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY;
+const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
 const KEYCLOAK_JWKS_URI = OIDC_AUTHORITY
   ? `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`
   : undefined;
