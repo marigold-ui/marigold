@@ -12,7 +12,7 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     variants: {
       variant: {
         default: 'text-brand-foreground bg-brand border-brand',
-        white: 'text-secondary-foreground border-input bg-white',
+        white: 'text-secondary-foreground border-input bg-surface',
       },
     },
     defaultVariants: {
@@ -32,7 +32,7 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     variants: {
       variant: {
         default: 'fill-brand  stroke-brand',
-        white: 'fill-white  stroke-input ',
+        white: 'fill-surface  stroke-input ',
       },
     },
     defaultVariants: {

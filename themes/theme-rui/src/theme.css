@@ -140,18 +140,24 @@
   /*       ELEVATION      */
   /* ==================== */
   /* Based on https://www.joshwcomeau.com/shadow-palette/ */
+  /*
+    Three-tier shadow hierarchy:
+      - border:  small interactive controls (Input, Checkbox, Radio, Switch, Tag, Button)
+      - raised:  container surfaces (Card, Accordion)
+      - overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
+  */
 
-  /* Border elevation - subtle shadow for input elements and cards */
+  /* Border elevation - subtle shadow */
   --shadow-elevation-border:
     0px 0.3px 0.3px oklch(0 0 0 / 0.14), 0px 1px 1.2px -3px oklch(0 0 0 / 0.12);
 
-  /* Raised elevation - moderate shadow for cards, tiles, and containers */
+  /* Raised elevation - moderate shadow  */
   --shadow-elevation-raised:
     0px 0.3px 0.8px oklch(0 0 0 / 0.28),
     0px 1.4px 1.3px -2px oklch(0 0 0 / 0.21),
     0px 6.7px 6px -4px oklch(0 0 0 / 0.15);
 
-  /* Overlay elevation - prominent shadow for modals, dialogs, popovers */
+  /* Overlay elevation - prominent shadow */
   --shadow-elevation-overlay:
     0px 0.1px 0.1px oklch(0 0 0 / 0.32),
     0px 1px 0.9px -1.3px oklch(0 0 0 / 0.26),
