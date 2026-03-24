@@ -229,7 +229,6 @@ const handler = createMcpHandler(
 
 const exported = withMcpAuth(handler, verifyToken, {
   required: true,
-  requiredScopes: ['search:docs'],
   resourceMetadataPath: '/.well-known/oauth-protected-resource',
 });
 
