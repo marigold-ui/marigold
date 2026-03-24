@@ -4,12 +4,18 @@ export interface NestedStringObject {
   [key: string]: NestedStringObject | string;
 }
 
+export interface CvaMetadata {
+  readonly variants?: Record<string, Record<string, unknown>>;
+  readonly defaultVariants?: Record<string, string>;
+  readonly compoundVariants?: Array<Record<string, unknown>>;
+}
+
 export interface ComponentStyleFunction<
   Variants extends string = never,
   Sizes extends string = never,
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   Additional extends { [name: string]: any } = {},
-> {
+> extends CvaMetadata {
   (
     props?: {
       variant?: Variants | null;

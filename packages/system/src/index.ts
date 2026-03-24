@@ -29,6 +29,7 @@ export type { StylesProps } from './hooks/extendTheme';
 
 // Types
 export type {
+  CvaMetadata,
   NestedStringObject,
   ComponentStyleFunction,
   Theme,

@@ -1,4 +1,7 @@
 import { describe, expect, it, test } from 'vitest';
+import { Accordion } from '../../../../themes/theme-rui/src/components/Accordion.styles';
+import { Badge } from '../../../../themes/theme-rui/src/components/Badge.styles';
+import { Button } from '../../../../themes/theme-rui/src/components/Button.styles';
 import { cn, cva } from './className.utils';
 
 describe('cva', () => {
@@ -74,6 +77,133 @@ describe('cva', () => {
     const styles = cva({ base: ['text-sm'] });
 
     expect(styles({ class: 'text-lg' })).toMatchInlineSnapshot(`"text-lg"`);
+  });
+
+  test('exposes variants metadata on the returned function', () => {
+    const variants = {
+      variant: {
+        primary: 'bg-blue-500',
+        secondary: 'bg-gray-200',
+      },
+      size: {
+        sm: 'text-sm',
+        lg: 'text-lg',
+      },
+    };
+
+    const styles = cva({
+      base: ['px-4'],
+      variants,
+    }) as any;
+
+    expect(styles.variants).toEqual(variants);
+  });
+
+  test('exposes defaultVariants metadata on the returned function', () => {
+    const defaultVariants = { color: 'red' } as const;
+
+    const styles = cva({
+      base: ['base-class'],
+      variants: {
+        color: {
+          red: 'text-red-500',
+          blue: 'text-blue-500',
+        },
+      },
+      defaultVariants,
+    }) as any;
+
+    expect(styles.defaultVariants).toEqual(defaultVariants);
+  });
+
+  test('exposes compoundVariants metadata on the returned function', () => {
+    const compoundVariants = [
+      { variant: 'primary' as const, size: 'sm' as const, class: 'font-bold' },
+    ];
+
+    const styles = cva({
+      base: ['px-4'],
+      variants: {
+        variant: { primary: 'bg-blue-500' },
+        size: { sm: 'text-sm' },
+      },
+      compoundVariants,
+    }) as any;
+
+    expect(styles.compoundVariants).toEqual(compoundVariants);
+  });
+
+  test('does not expose metadata when config has no variants', () => {
+    const styles = cva({ base: ['text-sm'] }) as any;
+
+    expect(styles.variants).toBeUndefined();
+    expect(styles.defaultVariants).toBeUndefined();
+    expect(styles.compoundVariants).toBeUndefined();
+  });
+});
+
+describe('cva metadata on real theme styles', () => {
+  test('introspect variant keys from a single-slot component (Button)', () => {
+    expect(Object.keys(Button.variants!.variant)).toEqual([
+      'primary',
+      'secondary',
+      'ghost',
+      'destructive',
+      'destructive-ghost',
+      'link',
+    ]);
+    expect(Object.keys(Button.variants!.size)).toEqual([
+      'default',
+      'small',
+      'large',
+      'icon',
+    ]);
+  });
+
+  test('introspect defaultVariants from a single-slot component (Button)', () => {
+    expect(Button.defaultVariants).toEqual({
+      variant: 'secondary',
+      size: 'default',
+    });
+  });
+
+  test('introspect compoundVariants from a single-slot component (Button)', () => {
+    expect(Button.compoundVariants).toBeDefined();
+    expect(Button.compoundVariants!.length).toBeGreaterThan(0);
+  });
+
+  test('introspect variant keys from a component without sizes (Badge)', () => {
+    expect(Object.keys(Badge.variants!.variant)).toEqual([
+      'default',
+      'primary',
+      'success',
+      'warning',
+      'info',
+      'error',
+      'admin',
+      'master',
+    ]);
+    expect(Badge.defaultVariants).toEqual({ variant: 'default' });
+  });
+
+  test('introspect variants from a multi-slot component (Accordion)', () => {
+    expect(Object.keys(Accordion.container.variants!.variant)).toEqual([
+      'default',
+      'card',
+    ]);
+    expect(Accordion.container.defaultVariants).toEqual({
+      variant: 'default',
+    });
+
+    // Slot without variants has no metadata
+    expect(Accordion.icon.variants).toBeUndefined();
+  });
+
+  test('style function still works after metadata is attached (Button)', () => {
+    const classes = Button({ variant: 'primary', size: 'default' });
+
+    expect(classes).toContain('ui-surface-contrast');
+    expect(classes).toContain('text-sm');
   });
 });
 

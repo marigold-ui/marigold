@@ -2,7 +2,11 @@ import type { Theme } from '../types/theme';
 import { cn } from '../utils/className.utils';
 
 export type StylesProps = {
-  [K in keyof Theme['components']]: Partial<Theme['components'][K]>;
+  [K in keyof Theme['components']]: NonNullable<
+    Theme['components'][K]
+  > extends (...args: any[]) => any
+    ? NonNullable<Theme['components'][K]>
+    : Partial<NonNullable<Theme['components'][K]>>;
 };
 
 type StyleFn = (props?: Record<string, unknown>) => string;
