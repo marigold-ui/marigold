@@ -941,6 +941,258 @@ Marigold releases happen at most weekly. A 24-hour TTL means:
 
 ---
 
+## Telemetry
+
+The CLI collects anonymous usage data from day one. This is essential for making informed decisions about the design system: which components are most looked up, which commands are used, and where developers get stuck.
+
+### Why telemetry in v1
+
+Without usage data, we're guessing:
+
+- Which components need better documentation? (most `docs` lookups)
+- Is the CLI actually being used? (daily active sessions)
+- Are AI agents or humans the primary users? (`isAIAgent` flag)
+- Which `doctor` checks fail most often? (guides infrastructure improvements)
+- How many projects use Marigold? (anonymous project count)
+
+Telemetry from day one means we have data to inform v2 and v3 priorities.
+
+### What we collect
+
+Only anonymous booleans, enums, and counts. Never content, paths, or identifiers.
+
+| Field            | Example                                  | Why                             |
+| ---------------- | ---------------------------------------- | ------------------------------- |
+| `event`          | `"cli_command"`                          | Know which commands are used    |
+| `command`        | `"docs"`, `"list"`, `"doctor"`, `"init"` | Command popularity              |
+| `args.component` | `"Button"` (component name only)         | Which components looked up most |
+| `args.section`   | `"props"`, `"usage"`, `"examples"`       | Which sections are most useful  |
+| `args.category`  | `"form"`, `"layout"`                     | Which categories are browsed    |
+| `args.format`    | `"markdown"`, `"json"`                   | How output is consumed          |
+| `cliVersion`     | `"1.0.0"`                                | Version distribution            |
+| `nodeVersion`    | `"22"` (major only)                      | Runtime compatibility           |
+| `platform`       | `"darwin"`                               | OS distribution                 |
+| `isCI`           | `true` / `false`                         | Interactive vs automated usage  |
+| `isTTY`          | `true` / `false`                         | Terminal vs piped               |
+| `isAIAgent`      | `true` / `false`                         | Human vs AI agent (heuristic)   |
+| `durationMs`     | `"0-100"` (bucket, not exact)            | Performance monitoring          |
+| `cacheHit`       | `true` / `false`                         | Cache effectiveness             |
+| `exitCode`       | `0` / `1`                                | Success rate                    |
+| `doctorIssues`   | `["missing-theme", "version-mismatch"]`  | Common setup problems           |
+
+### What we NEVER collect
+
+- File paths, file contents, source code
+- Environment variable values
+- Git remote URLs or repo names
+- `package.json` `name` field (could contain company names)
+- IP addresses (stripped server-side)
+- User names, emails, or any PII
+- Exact durations (only bucketed ranges)
+- Error stack traces with file paths
+
+### AI agent detection
+
+Distinguishing human from AI usage is valuable for understanding adoption patterns. Heuristic:
+
+```typescript
+function detectAIAgent(): boolean {
+  if (process.env.CLAUDE_CODE) return true;
+  if (process.env.CURSOR_SESSION_ID) return true;
+  if (process.env.GITHUB_COPILOT) return true;
+  if (process.env.AI_AGENT) return true;
+  return false;
+}
+```
+
+### Anonymous identity
+
+Following the Next.js pattern:
+
+- **Anonymous ID**: Generated once via `crypto.randomBytes(32).toString('hex')`, stored in OS config dir (`~/.config/marigold/config.json`). Never contains PII.
+- **Project ID**: One-way SHA-256 hash of the project's `package.json` path, salted with a locally-stored salt that is never transmitted. Lets us count unique projects without knowing which projects.
+- **Session ID**: Random UUID per CLI invocation. Groups events within one command.
+
+```json
+// ~/.config/marigold/config.json
+{
+  "telemetry": {
+    "enabled": true,
+    "notifiedAt": "2026-03-24T12:00:00Z",
+    "anonymousId": "a1b2c3...",
+    "salt": "d4e5f6..."
+  }
+}
+```
+
+### Opt-out
+
+Three ways to disable, following ecosystem conventions:
+
+```bash
+# 1. Environment variable (works in CI)
+MARIGOLD_TELEMETRY_DISABLED=1 marigold docs Button
+
+# 2. Cross-tool convention (respected by Next.js, Homebrew, etc.)
+DO_NOT_TRACK=1 marigold docs Button
+
+# 3. CLI command (persists to config file)
+marigold telemetry disable
+
+# Check status
+marigold telemetry status
+
+# Debug mode (prints what would be sent, does not send)
+MARIGOLD_TELEMETRY_DEBUG=1 marigold docs Button
+```
+
+### First-run notice
+
+On the first CLI invocation, before any telemetry is sent:
+
+```
+  Marigold CLI collects anonymous usage data to help improve the
+  design system. No personal information is collected.
+
+  You can opt out at any time:
+    marigold telemetry disable
+    MARIGOLD_TELEMETRY_DISABLED=1
+
+  Learn more: https://www.marigold-ui.io/telemetry
+```
+
+Shown once, then `notifiedAt` is stored. In CI environments (`isCI = true`), the notice is suppressed.
+
+### Implementation: fire-and-forget
+
+Telemetry must never slow down the CLI. We use the **detached child process** pattern (same as Next.js) for zero-latency data submission:
+
+```
+CLI Process                          Detached Process
+===========                          ================
+
+1. Collect event data
+2. Write to temp file:
+   /tmp/marigold-events-{pid}.json
+3. spawn(node, [send.js, file], {      1. Read temp file
+     detached: true,                    2. POST to endpoint (5s timeout)
+     stdio: 'ignore'                    3. Delete temp file
+   }).unref()                           4. Exit
+4. CLI exits immediately
+```
+
+```typescript
+// packages/cli/src/lib/telemetry.ts
+import { spawn } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+
+export function flushTelemetry(events: TelemetryEvent[]): void {
+  const eventsPath = path.join(tmpdir(), `marigold-events-${process.pid}.json`);
+  writeFileSync(eventsPath, JSON.stringify(events));
+
+  const child = spawn(
+    process.execPath,
+    [path.join(__dirname, 'send-telemetry.js'), eventsPath],
+    { detached: true, stdio: 'ignore' }
+  );
+  child.unref();
+}
+```
+
+```typescript
+// packages/cli/src/lib/send-telemetry.ts (runs as detached process)
+import { readFileSync, unlinkSync } from 'node:fs';
+
+const eventsPath = process.argv[2];
+const events = JSON.parse(readFileSync(eventsPath, 'utf-8'));
+
+fetch('https://www.marigold-ui.io/api/telemetry', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(events),
+  signal: AbortSignal.timeout(5000),
+})
+  .catch(() => {})
+  .finally(() => {
+    try {
+      unlinkSync(eventsPath);
+    } catch {}
+    process.exit(0);
+  });
+```
+
+### Telemetry endpoint
+
+A Next.js API route on the docs site:
+
+```
+POST https://www.marigold-ui.io/api/telemetry
+Content-Type: application/json
+
+{
+  "anonymousId": "a1b2c3...",
+  "projectId": "hashed...",
+  "sessionId": "uuid",
+  "events": [
+    {
+      "event": "cli_command",
+      "command": "docs",
+      "args": { "component": "Button", "section": "props" },
+      "cliVersion": "1.0.0",
+      "nodeVersion": "22",
+      "platform": "darwin",
+      "isCI": false,
+      "isTTY": true,
+      "isAIAgent": true,
+      "durationMs": "0-100",
+      "cacheHit": true,
+      "exitCode": 0,
+      "timestamp": "2026-03-24T12:00:00Z"
+    }
+  ]
+}
+```
+
+**Storage options** (decide during implementation):
+
+- **PostHog** (recommended): Node SDK with batching, 1M free events/month, dashboards built in. EU hosting available.
+- **Custom endpoint** + database: Full control, no third-party dependency, requires building dashboards.
+- **Simple JSON log**: Lowest effort for v1. Write to file, analyze with scripts.
+
+### The `marigold telemetry` subcommand
+
+```bash
+marigold telemetry status
+# → Telemetry: enabled
+#   Anonymous ID: a1b2c3...
+#   Learn more: https://www.marigold-ui.io/telemetry
+
+marigold telemetry disable
+# → Telemetry disabled. No data will be collected.
+
+marigold telemetry enable
+# → Telemetry enabled. Thank you for helping improve Marigold.
+```
+
+### What the data enables
+
+| Question                               | How telemetry answers it                                                         |
+| -------------------------------------- | -------------------------------------------------------------------------------- |
+| Which components need better docs?     | Top `docs` lookups with `exitCode: 1` (not found) or repeated lookups            |
+| Is the CLI used by AI agents?          | `isAIAgent` ratio — informs whether to optimize for machine or human consumption |
+| Which `doctor` issues are most common? | `doctorIssues` array — guides setup tooling improvements                         |
+| Are people using `--format json`?      | `args.format` distribution — informs whether to invest in structured output      |
+| How effective is the cache?            | `cacheHit` ratio — tune TTL if hit rate is low                                   |
+| How fast is the CLI?                   | `durationMs` buckets — identify performance regressions                          |
+| How many projects use Marigold?        | Unique `projectId` count (without knowing which projects)                        |
+| Which categories are most browsed?     | `args.category` in `list` commands                                               |
+
+This data directly feeds into v2/v3 prioritization and MCP server scenario design.
+
+---
+
 ## Package Structure
 
 ```
@@ -954,6 +1206,7 @@ packages/cli/
       list.ts             # marigold list
       doctor.ts           # marigold doctor
       init.ts             # marigold init
+      telemetry.ts        # marigold telemetry enable/disable/status
     lib/
       manifest.ts         # Fetch and cache manifest.json
       fetch-docs.ts       # Fetch and cache markdown docs
@@ -961,6 +1214,8 @@ packages/cli/
       resolve.ts          # Fuzzy component name resolution
       format.ts           # Output formatting (markdown, json, plain)
       detect-project.ts   # Framework/package manager detection (for doctor/init)
+      telemetry.ts        # Event collection, config, opt-out, flush
+      send-telemetry.ts   # Detached process script (POST events, delete temp file)
     bin/
       marigold.ts         # CLI binary entry point
 ```
@@ -973,6 +1228,8 @@ The CLI should be lightweight. Proposed dependencies:
 - **Terminal formatting**: A single small library for colors/tables, or raw ANSI codes
 - **HTTP**: Node.js built-in `fetch` (Node 22+, no dependency needed)
 - **File system**: Node.js built-in `fs/promises`
+- **CI detection**: `ci-info` (~5KB, detects CI environment for telemetry suppression)
+- **Config storage**: `conf` (sindresorhus, OS-level config dir for telemetry preferences and anonymous ID)
 
 No heavy dependencies. No bundler. No build step beyond TypeScript compilation. The CLI should install in under 2 seconds.
 

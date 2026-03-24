@@ -185,17 +185,19 @@ Agent already knows all three APIs — zero commands needed.
 
 ## Key Design Decisions
 
-| Decision                                                  | Rationale                                                              |
-| --------------------------------------------------------- | ---------------------------------------------------------------------- |
-| CLI fetches from `/mcp/*.md`, not the MCP server          | No auth needed, CDN-fast, works offline                                |
-| MCP server wraps CLI, not the reverse                     | Single source of truth, no code duplication                            |
-| CLI is a library with a binary entry point                | MCP server imports the same functions                                  |
-| `migrate` is a CLI command, not an MCP tool               | Too destructive for autonomous AI invocation                           |
-| `search_docs` stays MCP-only                              | Needs vector embeddings; CLI uses manifest for exact lookups           |
-| 24h cache TTL                                             | Marigold releases at most weekly; `--fresh` flag for immediate updates |
-| Manifest endpoint (`/mcp/manifest.json`)                  | Powers `list`, fuzzy name resolution, tab completion                   |
-| `--format json` on all commands                           | Enables structured agent consumption and scripting                     |
-| Minimal dependencies (Node built-in `fetch`, `parseArgs`) | CLI installs in <2 seconds                                             |
+| Decision                                                  | Rationale                                                               |
+| --------------------------------------------------------- | ----------------------------------------------------------------------- |
+| CLI fetches from `/mcp/*.md`, not the MCP server          | No auth needed, CDN-fast, works offline                                 |
+| MCP server wraps CLI, not the reverse                     | Single source of truth, no code duplication                             |
+| CLI is a library with a binary entry point                | MCP server imports the same functions                                   |
+| `migrate` is a CLI command, not an MCP tool               | Too destructive for autonomous AI invocation                            |
+| `search_docs` stays MCP-only                              | Needs vector embeddings; CLI uses manifest for exact lookups            |
+| 24h cache TTL                                             | Marigold releases at most weekly; `--fresh` flag for immediate updates  |
+| Manifest endpoint (`/mcp/manifest.json`)                  | Powers `list`, fuzzy name resolution, tab completion                    |
+| `--format json` on all commands                           | Enables structured agent consumption and scripting                      |
+| Minimal dependencies (Node built-in `fetch`, `parseArgs`) | CLI installs in <2 seconds                                              |
+| Anonymous telemetry from day one                          | Data-driven v2/v3 priorities; detached process pattern for zero latency |
+| Opt-out via env var, CLI command, or `DO_NOT_TRACK`       | GDPR-friendly, follows Next.js/Storybook conventions                    |
 
 ---
 
@@ -205,11 +207,12 @@ Agent already knows all three APIs — zero commands needed.
 
 - `/mcp/manifest.json` route — component index with names, slugs, categories, descriptions
 - `/mcp/changelog.json` route — structured breaking changes per version (for `check`/`migrate`)
+- `/api/telemetry` route — receives anonymous CLI usage events
 - MCP Resources, Prompts, and CLI-delegated Tools (extending PR #5233)
 
 ### New (monorepo)
 
-- `packages/cli/` — CLI package with library exports and binary entry point
+- `packages/cli/` — CLI package with library exports, binary entry point, and telemetry
 
 ### Already exists (reused as-is)
 
