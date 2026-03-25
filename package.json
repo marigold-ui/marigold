@@ -67,6 +67,7 @@
     "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
     "build:docs": "turbo run --filter @marigold/docs... build",
     "build:md-docs": "pnpm --filter @marigold/docs build:md-docs",
+    "build:embeddings": "pnpm --filter @marigold/docs build:embeddings",
     "build:sb": "storybook build --disable-telemetry -c ./.storybook -o storybook-static --stats-json",
     "build:themes": "turbo run --filter \"@marigold/theme*...\" build",
     "registry": "pnpm --filter @marigold/docs build:registry",
