@@ -174,8 +174,7 @@ export const SemanticColors = meta.story({
           name="--color-foreground"
           badge="ok"
           current={{ bg: 'bg-stone-950' }}
-          proposed={{ style: C[950] }}
-          note="stone -> charcoal palette"
+          note="Same step (950), palette switch only."
         />
       </Section>
 
@@ -185,15 +184,14 @@ export const SemanticColors = meta.story({
           rename="--color-primary"
           badge="change"
           current={{ bg: 'bg-stone-950' }}
-          proposed={{ style: C[950] }}
-          note="Rename only. 'brand' -> 'primary'"
+          note="Rename only. Same step (950)."
         />
         <T
           name="--color-brand-foreground"
           rename="--color-primary-foreground"
           badge="change"
           current={{ bg: 'bg-stone-50' }}
-          proposed={{ style: C[50] }}
+          note="Rename only. Same step (50)."
         />
       </Section>
 
@@ -230,8 +228,7 @@ export const SemanticColors = meta.story({
           name="--color-ring"
           badge="ok"
           current={{ bg: 'bg-stone-400' }}
-          proposed={{ style: C[400] }}
-          note="Focus ring outline. Step 400."
+          note="Focus ring outline. Same step (400)."
         />
       </Section>
 
@@ -259,8 +256,7 @@ export const SemanticColors = meta.story({
           name="--color-muted-foreground"
           badge="ok"
           current={{ bg: 'bg-stone-600' }}
-          proposed={{ style: C[600] }}
-          note="32+ usages. Step 600."
+          note="32+ usages. Same step (600)."
         />
       </Section>
 
@@ -269,8 +265,7 @@ export const SemanticColors = meta.story({
           name="--color-disabled"
           badge="ok"
           current={{ bg: 'bg-stone-200' }}
-          proposed={{ style: C[200] }}
-          note="Step 200."
+          note="Same step (200)."
         />
         <T
           name="--color-disabled-foreground"
@@ -419,44 +414,48 @@ export const SemanticColors = meta.story({
         />
       </Section>
 
-      <Section title="Utility">
+      <Section title="Utility (no value changes, palette switch only)">
         <T
           name="--color-placeholder"
           badge="ok"
           current={{ bg: 'bg-stone-600' }}
-          proposed={{ style: C[600] }}
+          note="Same step (600)."
         />
-        <T name="--color-link" badge="ok" current={{ bg: 'bg-blue-600' }} />
+        <T
+          name="--color-link"
+          badge="ok"
+          current={{ bg: 'bg-blue-600' }}
+          note="No change."
+        />
         <T
           name="--color-input"
           badge="ok"
           current={{ bg: 'bg-stone-300' }}
-          proposed={{ style: C[300] }}
-          note="Form control borders."
+          note="Form control borders. Same step (300)."
         />
         <T
           name="--color-border"
           badge="ok"
           current={{ bg: 'bg-stone-200' }}
-          proposed={{ style: C[200] }}
-          note="Structural borders."
+          note="Structural borders. Same step (200)."
         />
         <T
           name="--color-scrollbar"
           badge="ok"
           current={{ bg: 'bg-stone-300' }}
-          proposed={{ style: C[300] }}
+          note="Same step (300)."
         />
         <T
           name="--color-scrollbar-hover"
           badge="ok"
           current={{ bg: 'bg-stone-950' }}
-          proposed={{ style: C[950] }}
+          note="Same step (950)."
         />
         <T
           name="--color-scrollbar-track"
           badge="ok"
           current={{ bg: 'bg-transparent' }}
+          note="No change."
         />
       </Section>
     </Stack>
@@ -470,143 +469,299 @@ export const SemanticColors = meta.story({
 export const SurfaceAndElevation = meta.story({
   render: () => (
     <Stack space="group">
-      <Headline level="2">Surface & Elevation</Headline>
+      <Headline level="2">Surface & Elevation (4d)</Headline>
+      <p className="text-xs text-stone-500">
+        Gray page, white component surfaces. 4 structural layers + state colors
+        on white surfaces.
+      </p>
 
-      {/* Side-by-side page 50 vs 100 */}
-      <Section title="Page background: step 50 vs step 100">
+      {/* ---- Layer hierarchy: page 50 vs 100 ---- */}
+      <Section title="Layer Hierarchy: page 50 vs page 100">
         <div className="flex gap-6">
           {/* Option A */}
           <div className="flex flex-1 flex-col gap-1">
             <span className="text-[10px] font-semibold">
-              A: page = 50 (subtle)
+              A: bg-page = step 50 (subtle)
             </span>
             <div
-              className="flex flex-col gap-2 rounded-xl p-4"
+              className="flex flex-col gap-3 rounded-xl p-5"
               style={{ backgroundColor: C[50] }}
             >
-              <div className="text-[9px]">page (50)</div>
               <div
-                className="rounded-lg p-2 text-[9px]"
-                style={{ backgroundColor: C[100] }}
+                className="text-[10px] font-semibold"
+                style={{ color: C[600] }}
               >
-                sunken (100)
+                bg-page (50)
               </div>
-              <div className="shadow-elevation-raised rounded-lg bg-white p-2">
-                <div className="text-[9px] font-medium">surface (white)</div>
-                <div className="mt-1.5 flex gap-1">
-                  {([50, 200, 300] as const).map(s => (
-                    <div
-                      key={s}
-                      className="flex-1 rounded p-1 text-center text-[8px]"
-                      style={{ backgroundColor: C[s] }}
-                    >
-                      {s === 50 ? 'muted' : s === 200 ? 'hover' : 'selected'} (
-                      {s})
-                    </div>
-                  ))}
+              <div className="flex items-start gap-2">
+                <span className="mt-1 text-[10px]" style={{ color: C[400] }}>
+                  |-
+                </span>
+                <div
+                  className="flex-1 rounded-lg p-3"
+                  style={{ backgroundColor: C[100] }}
+                >
+                  <div className="text-[10px] font-semibold">
+                    bg-sunken (100)
+                  </div>
+                  <div className="text-[9px]" style={{ color: C[500] }}>
+                    Sidebar wells, kanban columns, code blocks
+                  </div>
                 </div>
               </div>
-              <div className="shadow-elevation-overlay rounded-lg bg-white p-2 text-[9px]">
-                overlay (white)
+              <div className="flex items-start gap-2">
+                <span className="mt-1 text-[10px]" style={{ color: C[400] }}>
+                  |-
+                </span>
+                <div className="shadow-elevation-raised flex-1 rounded-lg bg-white p-3">
+                  <div className="text-[10px] font-semibold">
+                    bg-surface (white)
+                  </div>
+                  <div className="text-[9px] text-stone-400">
+                    Cards, panels, accordions
+                  </div>
+                  <div className="mt-2 flex gap-1">
+                    {[
+                      { l: 'muted', s: 50 as const },
+                      { l: 'hover', s: 200 as const },
+                      { l: 'selected', s: 300 as const },
+                    ].map(({ l, s }) => (
+                      <div
+                        key={l}
+                        className="flex-1 rounded px-2 py-1.5 text-center text-[9px] font-medium"
+                        style={{ backgroundColor: C[s] }}
+                      >
+                        {l} ({s})
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="mt-1 text-[10px]" style={{ color: C[400] }}>
+                  |-
+                </span>
+                <div className="shadow-elevation-overlay flex-1 rounded-lg bg-white p-3">
+                  <div className="text-[10px] font-semibold">
+                    bg-overlay (white)
+                  </div>
+                  <div className="text-[9px] text-stone-400">
+                    Modals, drawers, popovers, menus
+                  </div>
+                </div>
               </div>
             </div>
-            <span className="text-[9px] text-green-600">No conflicts</span>
+            <span className="text-[9px] text-green-600">
+              No step conflicts. Clean cascade.
+            </span>
           </div>
 
           {/* Option B */}
           <div className="flex flex-1 flex-col gap-1">
             <span className="text-[10px] font-semibold">
-              B: page = 100 (stronger)
+              B: bg-page = step 100 (stronger)
             </span>
             <div
-              className="flex flex-col gap-2 rounded-xl p-4"
+              className="flex flex-col gap-3 rounded-xl p-5"
               style={{ backgroundColor: C[100] }}
             >
-              <div className="text-[9px]">page (100)</div>
               <div
-                className="rounded-lg border-2 border-dashed border-red-300 p-2 text-[9px]"
-                style={{ backgroundColor: C[200] }}
+                className="text-[10px] font-semibold"
+                style={{ color: C[600] }}
               >
-                sunken (200)
-                <span className="ml-1 text-[8px] text-red-500">
-                  = hover = disabled
-                </span>
+                bg-page (100)
               </div>
-              <div className="shadow-elevation-raised rounded-lg bg-white p-2">
-                <div className="text-[9px] font-medium">surface (white)</div>
-                <div className="mt-1.5 flex gap-1">
-                  {([50, 200, 300] as const).map(s => (
-                    <div
-                      key={s}
-                      className="flex-1 rounded p-1 text-center text-[8px]"
-                      style={{ backgroundColor: C[s] }}
-                    >
-                      {s === 50 ? 'muted' : s === 200 ? 'hover' : 'selected'} (
-                      {s})
-                    </div>
-                  ))}
+              <div className="flex items-start gap-2">
+                <span className="mt-1 text-[10px]" style={{ color: C[400] }}>
+                  |-
+                </span>
+                <div
+                  className="flex-1 rounded-lg border-2 border-dashed border-red-300 p-3"
+                  style={{ backgroundColor: C[200] }}
+                >
+                  <div className="text-[10px] font-semibold">
+                    bg-sunken (200)
+                  </div>
+                  <div className="text-[9px] text-red-500">
+                    Collides with hover (200), disabled (200), border (200)
+                  </div>
                 </div>
               </div>
-              <div className="shadow-elevation-overlay rounded-lg bg-white p-2 text-[9px]">
-                overlay (white)
+              <div className="flex items-start gap-2">
+                <span className="mt-1 text-[10px]" style={{ color: C[400] }}>
+                  |-
+                </span>
+                <div className="shadow-elevation-raised flex-1 rounded-lg bg-white p-3">
+                  <div className="text-[10px] font-semibold">
+                    bg-surface (white)
+                  </div>
+                  <div className="mt-2 flex gap-1">
+                    {[
+                      { l: 'muted', s: 50 as const },
+                      { l: 'hover', s: 200 as const },
+                      { l: 'selected', s: 300 as const },
+                    ].map(({ l, s }) => (
+                      <div
+                        key={l}
+                        className="flex-1 rounded px-2 py-1.5 text-center text-[9px] font-medium"
+                        style={{ backgroundColor: C[s] }}
+                      >
+                        {l} ({s})
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="mt-1 text-[10px]" style={{ color: C[400] }}>
+                  |-
+                </span>
+                <div className="shadow-elevation-overlay flex-1 rounded-lg bg-white p-3">
+                  <div className="text-[10px] font-semibold">
+                    bg-overlay (white)
+                  </div>
+                </div>
               </div>
             </div>
             <span className="text-[9px] text-red-500">
-              Sunken/hover/disabled/border collide at 200
+              Sunken/hover/disabled/border all at step 200.
             </span>
           </div>
         </div>
       </Section>
 
-      {/* Surface tokens */}
-      <Section title="Surface Tokens">
-        <div className="grid grid-cols-[56px_56px_1fr] gap-x-3 border-b border-stone-200 pb-1 text-[9px] font-semibold text-stone-400">
-          <span>now</span>
-          <span>proposed</span>
-          <span>token</span>
+      {/* ---- Surface tokens table ---- */}
+      <Section title="Surface Tokens (structural layers)">
+        <div className="grid grid-cols-[32px_minmax(160px,1fr)_100px_1fr_1fr] items-center gap-x-3 gap-y-1.5 text-[10px]">
+          <div className="font-semibold text-stone-400" />
+          <div className="font-semibold text-stone-400">Token</div>
+          <div className="font-semibold text-stone-400">Value</div>
+          <div className="font-semibold text-stone-400">Use case</div>
+          <div className="font-semibold text-stone-400">Paired shadow</div>
+          {[
+            {
+              color: C[50],
+              token: '--color-bg-page',
+              value: 'charcoal-50',
+              use: '<body>, page canvas',
+              shadow: 'none',
+            },
+            {
+              color: C[100],
+              token: '--color-bg-sunken',
+              value: 'charcoal-100',
+              use: 'Sidebar wells, kanban columns',
+              shadow: 'none',
+            },
+            {
+              color: 'white',
+              token: '--color-bg-surface',
+              value: 'white',
+              use: 'Cards, panels, accordions',
+              shadow: 'elevation-raised',
+            },
+            {
+              color: 'white',
+              token: '--color-bg-overlay',
+              value: 'white',
+              use: 'Modals, drawers, popovers',
+              shadow: 'elevation-overlay',
+            },
+          ].map(({ color, token, value, use, shadow }) => (
+            <div
+              key={token}
+              className="col-span-5 grid grid-cols-subgrid items-center"
+            >
+              <div
+                className="h-5 w-5 rounded border border-stone-200"
+                style={{ backgroundColor: color }}
+              />
+              <code className="font-semibold">{token}</code>
+              <span>{value}</span>
+              <span className="text-stone-500">{use}</span>
+              <span className="text-stone-500">{shadow}</span>
+            </div>
+          ))}
         </div>
-        <T
-          name="--color-surface"
-          badge="ok"
-          current={{ bg: 'bg-white' }}
-          note="Stays white."
-        />
-        <T
-          name="--color-surface-border"
-          badge="ok"
-          current={{ bg: 'bg-stone-300' }}
-        />
-        <T
-          name="--color-bg-page"
-          badge="new"
-          current={{ bg: 'bg-transparent' }}
-          proposed={{ style: C[50] }}
-          note="New. Replaces --color-background."
-        />
-        <T
-          name="--color-bg-sunken"
-          badge="new"
-          current={{ bg: 'bg-transparent' }}
-          proposed={{ style: C[100] }}
-          note="New. Recessed areas."
-        />
-        <T
-          name="--color-bg-overlay"
-          badge="new"
-          current={{ bg: 'bg-transparent' }}
-          proposed={{ bg: 'bg-white' }}
-          note="New. Floating elements."
-        />
-        <T
-          name="--color-overlay-backdrop"
-          badge="investigate"
-          current={{ bg: 'bg-black/80' }}
-          note="Hardcoded bg-black/80 and bg-black/50. Needs decision."
-        />
       </Section>
 
-      {/* Elevation */}
-      <Section title="Elevation (no change)">
+      {/* ---- State colors on surfaces ---- */}
+      <Section title="State Colors on White Surfaces">
+        <p className="text-[10px] text-stone-400">
+          Progression: muted (50) &lt; hover (200) &lt; selected (300) -- each
+          visually distinct.
+        </p>
+        <div className="grid grid-cols-[32px_minmax(120px,1fr)_100px_1fr] items-center gap-x-3 gap-y-1.5 text-[10px]">
+          <div className="font-semibold text-stone-400" />
+          <div className="font-semibold text-stone-400">Token</div>
+          <div className="font-semibold text-stone-400">Value</div>
+          <div className="font-semibold text-stone-400">Use case</div>
+          {[
+            {
+              color: C[50],
+              token: '--color-muted',
+              value: 'charcoal-50',
+              use: 'Readonly inputs, badge bg, subtle highlights',
+            },
+            {
+              color: C[200],
+              token: '--color-hover',
+              value: 'charcoal-200',
+              use: 'Menu items, list options, sidebar links',
+            },
+            {
+              color: C[300],
+              token: '--color-selected',
+              value: 'charcoal-300',
+              use: 'Selected list items, active nav links',
+            },
+          ].map(({ color, token, value, use }) => (
+            <div
+              key={token}
+              className="col-span-4 grid grid-cols-subgrid items-center"
+            >
+              <div
+                className="h-5 w-5 rounded border border-stone-200"
+                style={{ backgroundColor: color }}
+              />
+              <code className="font-semibold">{token}</code>
+              <span>{value}</span>
+              <span className="text-stone-500">{use}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ---- Overlay backdrop ---- */}
+      <Section title="Overlay Backdrop (currently hardcoded)">
+        <div className="flex items-start gap-4">
+          <div className="flex gap-2">
+            <div className="flex flex-col items-center gap-0.5">
+              <div className="grid h-12 w-16 place-items-center rounded bg-black/80 text-[9px] text-white">
+                80%
+              </div>
+              <span className="text-[9px] text-stone-400">Underlay</span>
+            </div>
+            <div className="flex flex-col items-center gap-0.5">
+              <div className="grid h-12 w-16 place-items-center rounded bg-black/50 text-[9px] text-white">
+                50%
+              </div>
+              <span className="text-[9px] text-stone-400">Tray</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-1 text-[10px]">
+            <code className="font-semibold">--color-overlay-backdrop</code>
+            <span className="text-stone-400">
+              Both bypass tokens. Decisions: base color? Baked-in vs separate
+              opacity? One token or contextual variants?
+            </span>
+            <Badge variant="investigate" />
+          </div>
+        </div>
+      </Section>
+
+      {/* ---- Elevation ---- */}
+      <Section title="Elevation Shadows (no change)">
         <div
           className="flex gap-4 rounded-xl p-5"
           style={{ backgroundColor: C[50] }}
@@ -615,17 +770,17 @@ export const SurfaceAndElevation = meta.story({
             {
               label: 'border',
               shadow: 'shadow-elevation-border',
-              use: 'Inputs, buttons',
+              use: 'Inputs, checkboxes, radios, switches, tags, buttons',
             },
             {
               label: 'raised',
               shadow: 'shadow-elevation-raised',
-              use: 'Cards, panels',
+              use: 'Cards, accordions',
             },
             {
               label: 'overlay',
               shadow: 'shadow-elevation-overlay',
-              use: 'Dialogs, menus',
+              use: 'Dialogs, drawers, menus, toasts, popovers',
             },
           ].map(({ label, shadow, use }) => (
             <div key={label} className="flex flex-col items-center gap-1">
@@ -634,37 +789,133 @@ export const SurfaceAndElevation = meta.story({
               >
                 {label}
               </div>
-              <span className="text-[9px] text-stone-400">{use}</span>
+              <span className="max-w-28 text-center text-[9px] text-stone-400">
+                {use}
+              </span>
             </div>
           ))}
         </div>
       </Section>
 
-      {/* Deprecated */}
-      <Section title="Deprecated">
+      {/* ---- Component migration ---- */}
+      <Section title="Component Migration: bg-background -> bg-surface">
+        <p className="text-[10px] text-stone-400">
+          13 components use bg-background for white backgrounds. When page goes
+          gray, they need bg-surface to stay white.
+        </p>
+        <div className="grid grid-cols-[1fr_1fr_1fr] gap-x-4 gap-y-1 text-[10px]">
+          <div className="font-semibold text-stone-400">Component</div>
+          <div className="font-semibold text-stone-400">Current</div>
+          <div className="font-semibold text-stone-400">Migrate to</div>
+          {[
+            { comp: 'Switch', cur: 'bg-background', to: 'bg-surface' },
+            {
+              comp: 'Table',
+              cur: 'bg-background, bg-background/90',
+              to: 'bg-surface, bg-surface/90',
+            },
+            { comp: 'Tray', cur: 'bg-background', to: 'bg-surface' },
+            { comp: 'Badge', cur: 'bg-background', to: 'bg-surface' },
+            { comp: 'Slider', cur: 'bg-background', to: 'bg-surface' },
+            { comp: 'Accordion', cur: 'bg-background', to: 'bg-surface' },
+            { comp: 'TopNavigation', cur: 'bg-background', to: 'bg-surface' },
+            { comp: 'Multiselect', cur: 'bg-background', to: 'bg-surface' },
+            { comp: 'Calendar', cur: 'bg-background', to: 'bg-surface' },
+            { comp: 'Input', cur: 'bg-background', to: 'bg-surface' },
+            {
+              comp: 'LegacyTable',
+              cur: 'bg-background, bg-background/90',
+              to: 'bg-surface, bg-surface/90',
+            },
+            { comp: 'SectionMessage', cur: 'bg-background', to: 'bg-surface' },
+            { comp: 'Pagination', cur: 'bg-background', to: 'bg-surface' },
+          ].map(({ comp, cur, to }) => (
+            <div
+              key={comp}
+              className="col-span-3 grid grid-cols-subgrid items-center"
+            >
+              <span className="font-medium">{comp}</span>
+              <code className="text-stone-500">{cur}</code>
+              <code className="text-orange-600">{to}</code>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ---- Utility updates ---- */}
+      <Section title="Utility Updates (utils.css)">
+        <p className="text-[10px] text-stone-400">
+          Existing util-surface-* utilities stay as the public API. Internals
+          update to new tokens.
+        </p>
+        <div className="grid grid-cols-[1fr_1fr_1fr] gap-x-4 gap-y-1 text-[10px]">
+          <div className="font-semibold text-stone-400">Utility</div>
+          <div className="font-semibold text-stone-400">Current</div>
+          <div className="font-semibold text-stone-400">Update to</div>
+          {[
+            {
+              util: 'util-surface-body',
+              cur: '--surface-body',
+              to: '--color-bg-page, no shadow',
+            },
+            {
+              util: 'util-surface-sunken',
+              cur: '--surface-sunken',
+              to: '--color-bg-sunken, no shadow',
+            },
+            {
+              util: 'util-surface-raised',
+              cur: '--surface-raised + shadow + border',
+              to: '--color-bg-surface + elevation-raised',
+            },
+            {
+              util: 'util-surface-overlay',
+              cur: '--surface-overlay + shadow + border',
+              to: '--color-bg-overlay + elevation-overlay',
+            },
+          ].map(({ util, cur, to }) => (
+            <div
+              key={util}
+              className="col-span-3 grid grid-cols-subgrid items-center"
+            >
+              <code className="font-medium">{util}</code>
+              <code className="text-stone-500">{cur}</code>
+              <code className="text-orange-600">{to}</code>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ---- Deprecated ---- */}
+      <Section title="Deprecated Tokens">
+        <div className="grid grid-cols-[56px_56px_1fr] gap-x-3 border-b border-stone-200 pb-1 text-[9px] font-semibold text-stone-400">
+          <span>now</span>
+          <span />
+          <span>token</span>
+        </div>
         <T
           name="--surface-sunken"
           badge="deprecated"
           current={{ bg: 'bg-stone-100' }}
-          note="-> bg-muted + elevation"
+          note="Replaced by --color-bg-sunken"
         />
         <T
           name="--surface-body"
           badge="deprecated"
           current={{ bg: 'bg-white' }}
-          note="-> --color-page"
+          note="Replaced by --color-bg-page"
         />
         <T
           name="--surface-raised"
           badge="deprecated"
           current={{ bg: 'bg-white' }}
-          note="-> bg-surface + raised shadow"
+          note="Replaced by bg-surface + shadow-elevation-raised"
         />
         <T
           name="--surface-overlay"
           badge="deprecated"
           current={{ bg: 'bg-white' }}
-          note="-> bg-surface + overlay shadow"
+          note="Replaced by bg-surface + shadow-elevation-overlay"
         />
       </Section>
     </Stack>
