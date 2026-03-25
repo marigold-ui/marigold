@@ -1,5 +1,19 @@
 # @marigold/docs
 
+## 17.3.0
+
+### Patch Changes
+
+- 000ec3d: docs[DST-1193]: Refactor `<Calendar>` documentation.
+- Updated dependencies [a48059c]
+- Updated dependencies [6a29a6c]
+- Updated dependencies [f3068d7]
+- Updated dependencies [548dcb4]
+  - @marigold/components@17.3.0
+  - @marigold/theme-rui@5.2.2
+  - @marigold/system@17.3.0
+  - @marigold/icons@1.3.36
+
 ## 17.2.1
 
 ### Patch Changes
