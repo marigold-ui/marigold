@@ -1,8 +1,3 @@
-import { PostList } from '@/components/PostList';
-import {
-  MarkdownCopyButton,
-  ViewOptionsPopover,
-} from '@/components/ai/page-actions';
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
@@ -42,6 +37,8 @@ import {
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { MarkdownCopyButton, ViewOptionsPopover } from '@/ui/PageActions';
+import { PostList } from '@/ui/PostList';
 
 const Page = async (props: PageProps<'/[...slug]'>) => {
   const params = await props.params;
