@@ -69,9 +69,9 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
         {page.data.description}
       </DocsDescription>
       <div className="flex flex-row items-center gap-2 border-b pt-2 pb-6">
-        <MarkdownCopyButton markdownUrl={`/mcp${page.url}.md`} />
+        <MarkdownCopyButton markdownUrl={`${page.url}.md`} />
         <ViewOptionsPopover
-          markdownUrl={`/mcp${page.url}.md`}
+          markdownUrl={`${page.url}.md`}
           githubUrl={`https://github.com/marigold-ui/marigold/blob/main/docs/content/${page.path}`}
         />
       </div>

@@ -1,7 +1,7 @@
+import { parseMdxToMarkdown } from '@/lib/markdown/parser';
 import { source } from '@/lib/source';
 import path from 'node:path';
 import { NextResponse } from 'next/server';
-import { parseMdxToMarkdown } from '../parser';
 
 const CONTENT_DIR = path.resolve(process.cwd(), 'content');
 

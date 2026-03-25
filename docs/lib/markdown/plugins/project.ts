@@ -1,17 +1,11 @@
 import { Project } from 'ts-morph';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 let project: Project | null = null;
 
-// Stable root: docs/app/mcp/plugins/project.ts → 4 levels up = repo root
-const REPO_ROOT = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '../../../..'
-);
-
-// docs dir for UI file references
-export const DOCS_DIR = path.resolve(REPO_ROOT, 'docs');
+// process.cwd() is always the docs/ directory (Next.js or pnpm tsx)
+export const DOCS_DIR = process.cwd();
+const REPO_ROOT = path.resolve(DOCS_DIR, '..');
 
 /**
  * Returns a shared ts-morph Project instance.
