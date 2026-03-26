@@ -35,7 +35,7 @@ export const LegacyTable: ThemeComponent<'LegacyTable'> = {
   }),
   header: cva({
     base: [
-      'h-12 px-3 align-middle font-medium text-muted-foreground',
+      'h-12 px-3 align-middle font-medium text-secondary',
       'focus-visible:outline-2 outline-offset-2 outline-ring/70',
     ],
     variants: {

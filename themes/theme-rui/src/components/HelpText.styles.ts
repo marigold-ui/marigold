@@ -3,7 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const HelpText: ThemeComponent<'HelpText'> = {
   container: cva({
     base: [
-      'text-xs text-muted-foreground group-disabled/field:text-disabled-foreground',
+      'text-xs text-secondary group-disabled/field:text-disabled-foreground',
       'group-invalid/field:text-destructive',
       /**
        * Removes the spacing from the field when when there are hidden

@@ -23,6 +23,6 @@ export const FileField: ThemeComponent<'FileField'> = {
     ],
   }),
   itemLabel: cva({ base: ['truncate text-[13px] font-medium'] }),
-  itemDescription: cva({ base: ['text-muted-foreground text-xs'] }),
+  itemDescription: cva({ base: ['text-secondary text-xs'] }),
   itemRemove: cva({ base: ['flex items-center'] }),
 };

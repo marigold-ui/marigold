@@ -26,11 +26,11 @@ export const ListBox: ThemeComponent<'ListBox'> = {
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
       'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
       'cursor-default data-selection-mode:cursor-pointer',
-      '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-muted-foreground',
+      '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-secondary',
     ],
   }),
   section: cva({ base: '' }),
   header: cva({
-    base: '[&_header]:px-2 [&_header]:py-1.5 [&_header]:text-xs [&_header]:font-medium [&_header]:text-muted-foreground',
+    base: '[&_header]:px-2 [&_header]:py-1.5 [&_header]:text-xs [&_header]:font-medium [&_header]:text-secondary',
   }),
 };

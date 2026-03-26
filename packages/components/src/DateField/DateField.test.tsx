@@ -204,7 +204,7 @@ test('renders correctly', () => {
         />
       </div>
       <div
-        class="in-field:mt-1 text-xs text-muted-foreground group-disabled/field:text-disabled-foreground group-invalid/field:text-destructive has-[+_[aria-hidden=true]]:mb-0"
+        class="in-field:mt-1 text-xs text-secondary group-disabled/field:text-disabled-foreground group-invalid/field:text-destructive has-[+_[aria-hidden=true]]:mb-0"
       >
         <span
           class="react-aria-Text"

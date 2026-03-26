@@ -18,7 +18,7 @@ export const Toast: ThemeComponent<'Toast'> = {
     ],
   }),
   description: cva({
-    base: ['text-muted-foreground text-sm', '[grid-area:description] mt-0'],
+    base: ['text-secondary text-sm', '[grid-area:description] mt-0'],
   }),
   closeButton: cva({
     base: [
@@ -26,7 +26,7 @@ export const Toast: ThemeComponent<'Toast'> = {
       'ml-2',
       'flex items-center justify-center',
       'size-5 rounded transition-[color,box-shadow] outline-none',
-      'focus-visible:ui-state-focus outline-none text-muted-foreground hover:text-hover-foreground',
+      'focus-visible:ui-state-focus outline-none text-secondary hover:text-hover-foreground',
     ],
   }),
   icon: cva({

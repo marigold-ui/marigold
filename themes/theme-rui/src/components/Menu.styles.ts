@@ -18,7 +18,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     variants: {
       variant: {
         default:
-          'text-foreground focus:bg-focus [&_svg]:text-muted-foreground [&_svg]:opacity-60',
+          'text-foreground focus:bg-focus [&_svg]:text-secondary [&_svg]:opacity-60',
         destructive: 'text-destructive focus:bg-destructive/10',
       },
     },
@@ -27,7 +27,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     },
   }),
   section: cva({
-    base: 'text-muted-foreground p-2 text-xs font-medium border-t border-t-border in-first:border-t-0',
+    base: 'text-secondary p-2 text-xs font-medium border-t border-t-border in-first:border-t-0',
   }),
   button: cva({
     base: [

@@ -383,7 +383,7 @@ export const WidthsAndOverflow = meta.story({
             </Table.Body>
           </Table>
         </div>
-        <p className="text-muted-foreground block text-xs">
+        <p className="text-secondary block text-xs">
           Column widths: ID 40px, Name min 100px, Status 100px, Location min
           100px, Balance min 80px.
         </p>

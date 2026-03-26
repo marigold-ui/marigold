@@ -23,7 +23,7 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   }),
   title: cva({ base: 'text-sm font-medium' }),
   content: cva({
-    base: 'text-muted-foreground text-sm leading-5 font-normal',
+    base: 'text-secondary text-sm leading-5 font-normal',
     variants: {
       variant: {
         success: 'text-success-muted-foreground',

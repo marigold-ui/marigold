@@ -28,13 +28,13 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendarControllers: cva({
     base: [
       'size-9 rounded-lg',
-      'text-muted-foreground',
+      'text-secondary',
       'transition-colors',
       'focus-visible:ui-state-focus outline-none',
     ],
   }),
   calendarHeader: cva({
-    base: ['size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground'],
+    base: ['size-9 rounded-lg p-0 text-xs font-medium text-secondary'],
   }),
   calendarGrid: cva({
     base: '[&_td]:p-2 [&_td]:group-[[role=dialog]]/tray:p-0.75',
@@ -51,7 +51,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   }),
   select: cva({
     base: [
-      '[&svg]:text-muted-foreground',
+      '[&svg]:text-secondary',
       'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-input bg-background text-sm text-foreground transition-shadow',
       'focus-visible:ui-state-focus outline-none',
       'h-input',

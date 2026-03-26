@@ -36,7 +36,9 @@ test('inline uses "inverted" variant', () => {
 
   const loader = screen.getByRole('progressbar');
 
-  expect(loader).toHaveClass('grid place-items-center text-secondary size-20');
+  expect(loader).toHaveClass(
+    'grid place-items-center text-brand-foreground size-20'
+  );
 });
 
 test('translate loading message to English', () => {

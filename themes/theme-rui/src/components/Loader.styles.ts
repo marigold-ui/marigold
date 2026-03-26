@@ -6,7 +6,7 @@ export const Loader: ThemeComponent<'Loader'> = {
     variants: {
       variant: {
         default: '',
-        inverted: 'text-secondary',
+        inverted: 'text-brand-foreground',
       },
       size: {
         default: 'size-20',

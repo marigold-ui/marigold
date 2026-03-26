@@ -69,7 +69,7 @@ export const Table: ThemeComponent<'Table'> = {
   column: cva({
     base: [
       'h-(--header-height) px-(--cell-x-padding) py-0 align-middle',
-      'font-medium text-muted-foreground',
+      'font-medium text-secondary',
       'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
       'aria-[sort]:hover:bg-muted aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
@@ -100,7 +100,7 @@ export const Table: ThemeComponent<'Table'> = {
   // Drag and drop
   dragHandle: cva({
     base: [
-      'text-muted-foreground rounded size-4',
+      'text-secondary rounded size-4',
       '[&_svg]:size-4',
       'focus-visible:ui-state-focus outline-none',
     ],
@@ -136,7 +136,7 @@ export const Table: ThemeComponent<'Table'> = {
   editTrigger: cva({
     base: [
       'flex items-center justify-center',
-      'text-muted-foreground',
+      'text-secondary',
       'size-button aspect-square rounded-surface transition-[color,background,transform]',
       'ui-interactive',
       'ui-press',
@@ -147,7 +147,7 @@ export const Table: ThemeComponent<'Table'> = {
   editCancel: cva({
     base: [
       'inline-flex items-center justify-center',
-      'sm:text-muted-foreground font-medium',
+      'sm:text-secondary font-medium',
       'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'ml-1.5', // some extra spacing between buttons and field
@@ -160,7 +160,7 @@ export const Table: ThemeComponent<'Table'> = {
   editSave: cva({
     base: [
       'inline-flex items-center justify-center',
-      'sm:text-muted-foreground font-medium',
+      'sm:text-secondary font-medium',
       'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'focus-visible:ui-state-focus outline-none',
