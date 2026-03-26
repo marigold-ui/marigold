@@ -5,7 +5,7 @@ A [Claude Code](https://claude.com/claude-code) plugin that scaffolds a new app 
 ## Install
 
 ```bash
-claude plugin marketplace add github:marigold-ui/marigold --sparse packages/create-marigold-app
+claude plugin marketplace add marigold-ui/marigold --sparse .claude-plugin packages/create-marigold-app
 claude plugin install create-marigold-app
 ```
 
