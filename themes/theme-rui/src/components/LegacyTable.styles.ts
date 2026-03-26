@@ -12,7 +12,7 @@ export const LegacyTable: ThemeComponent<'LegacyTable'> = {
   }),
   thead: cva({
     // for sticky header
-    base: 'bg-background/90 top-0 z-1 backdrop-blur-xs ',
+    base: 'bg-surface/90 top-0 z-1 backdrop-blur-xs ',
     variants: {
       variant: {
         default: '',
@@ -49,7 +49,7 @@ export const LegacyTable: ThemeComponent<'LegacyTable'> = {
       variant: 'default',
     },
   }),
-  body: cva({ base: '[&_tr:last-child]:border-0 bg-background' }),
+  body: cva({ base: '[&_tr:last-child]:border-0 bg-surface' }),
   row: cva({
     base: [
       'border-b border-border transition-colors',

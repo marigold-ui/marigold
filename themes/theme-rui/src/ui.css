@@ -35,8 +35,8 @@
   background:
       linear-gradient(
         to bottom,
-        var(--ui-background-color, #fff),
-        var(--ui-background-color, #fff)
+        var(--ui-background-color, var(--color-surface)),
+        var(--ui-background-color, var(--color-surface))
       ),
       linear-gradient(
         to bottom,

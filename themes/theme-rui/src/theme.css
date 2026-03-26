@@ -100,6 +100,11 @@
   ); /* 6 components, 10 usages. Paired with text-foreground (not text-secondary) */
   --color-hover: var(--color-charcoal-200); /* 5 components */
 
+  /*
+    Two selection paradigms:
+      Strong/inverted (bg-primary + text-primary-foreground): binary controls (Checkbox, Radio, Switch, Tag, ToggleButton, Calendar)
+      Subtle highlight (bg-selected): list selection (ListBox, Sidebar)
+  */
   --color-selected: var(
     --color-charcoal-300
   ); /* 2 components (ListBox, Sidebar) */
@@ -163,6 +168,11 @@
 
   /* --- Links --- */
   --color-link: var(--color-blue-600); /* 4 components */
+
+  /* --- Overlay Backdrop --- */
+  --color-overlay-backdrop: var(
+    --color-charcoal-950
+  ); /* Components apply opacity: bg-overlay-backdrop/80, bg-overlay-backdrop/50 */
 
   /* --- Scrollbar --- */
   --color-scrollbar: var(--color-charcoal-300);

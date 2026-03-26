@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
   table: cva({
-    base: ['text-sm bg-background'],
+    base: ['text-sm bg-surface'],
     variants: {
       variant: {
         default: '',
@@ -39,7 +39,7 @@ export const Table: ThemeComponent<'Table'> = {
       'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
       'disabled:cursor-not-allowed',
-      'data-selection-mode:cursor-pointer data-selection-mode:hover:bg-muted',
+      'data-selection-mode:cursor-pointer data-selection-mode:hover:bg-hover',
       'dragging:opacity-50 dragging:transform-gpu',
     ],
     variants: {
@@ -62,7 +62,7 @@ export const Table: ThemeComponent<'Table'> = {
   head: cva({
     base: [
       // for sticky header
-      'bg-background/90',
+      'bg-surface/90',
       'border-border border-b',
     ],
   }),
@@ -72,7 +72,7 @@ export const Table: ThemeComponent<'Table'> = {
       'font-medium text-secondary',
       'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
-      'aria-[sort]:hover:bg-muted aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
+      'aria-[sort]:hover:bg-hover aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
     ],
     variants: {
       variant: {
@@ -87,7 +87,7 @@ export const Table: ThemeComponent<'Table'> = {
   }),
 
   // <tbody>
-  body: cva({ base: ['bg-background'] }),
+  body: cva({ base: ['bg-surface'] }),
   cell: cva({
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',

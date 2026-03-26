@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tray: ThemeComponent<'Tray'> = {
   overlay: cva({
-    base: 'bg-black/50 fixed inset-0 z-40 flex items-end justify-center',
+    base: 'bg-overlay-backdrop/50 fixed inset-0 z-40 flex items-end justify-center',
   }),
   container: cva({
     base: [
@@ -10,7 +10,7 @@ export const Tray: ThemeComponent<'Tray'> = {
       'relative grid-rows-[auto_auto_1fr_auto] max-h-[95vh] rounded-b-none',
       'ui-surface shadow-elevation-overlay',
       'outline-hidden grid',
-      "after:absolute after:inset-x-0 after:top-full after:h-screen after:bg-background after:content-['']",
+      "after:absolute after:inset-x-0 after:top-full after:h-screen after:bg-surface after:content-['']",
     ],
   }),
   dragHandle: cva({

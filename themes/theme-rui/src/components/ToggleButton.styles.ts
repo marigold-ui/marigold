@@ -22,7 +22,7 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'ui-surface shadow-elevation-border',
       'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
       'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
-      'selected:[--ui-background-color:var(--color-input)] selected:shadow-none',
+      'selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none',
 
       // Group-specific styles for ToggleButtonGroup
       'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0',

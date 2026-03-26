@@ -1,15 +1,10 @@
 /*
- * Custom Tailwind utilities
+ * DEPRECATED -- will be removed in a separate ticket.
+ * Use bg-surface + shadow-elevation-* tokens instead.
  *
- * This file contains reusable utility functions and class shortcuts that
- * encapsulate common design decisions across the theme.
+ * These util-surface-* utilities reference the old --surface-* tokens
+ * (defined in theme.css deprecated section).
  */
-
-/* ========================= */
-/*    Surface & Elevation    */
-/* ========================= */
-
-/* Go over these when doing DST-878 */
 
 @utility util-surface-sunken {
   background: var(--surface-sunken);

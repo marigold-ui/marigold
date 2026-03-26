@@ -16,7 +16,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   item: cva({
     variants: {
       variant: {
-        default: ['bg-background border-b last:border-b-0 border-border'],
+        default: ['bg-surface border-b last:border-b-0 border-border'],
         card: [
           'ui-surface shadow-elevation-raised py-1 outline-none',
           // Show focus border when the trigger is focused

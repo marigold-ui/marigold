@@ -52,7 +52,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   select: cva({
     base: [
       '[&svg]:text-secondary',
-      'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-input bg-background text-sm text-foreground transition-shadow',
+      'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-input bg-surface text-sm text-foreground transition-shadow',
       'focus-visible:ui-state-focus outline-none',
       'h-input',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',

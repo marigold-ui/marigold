@@ -30,7 +30,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   tag: cva({
     base: [
       'border border-solid border-input rounded-md',
-      'bg-background',
+      'bg-surface',
       'font-medium text-xs',
       'flex items-center gap-1 ',
       'h-7 px-2 cursor-default',
