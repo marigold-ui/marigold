@@ -463,6 +463,524 @@ export const SemanticColors = meta.story({
 });
 
 // ---------------------------------------------------------------------------
+//  1b. Foreground Pairing Problem: muted-foreground
+// ---------------------------------------------------------------------------
+
+export const ForegroundPairingProblem = meta.story({
+  render: () => (
+    <Stack space="group">
+      <Headline level="2">The muted-foreground naming problem</Headline>
+      <p className="text-xs text-stone-500">
+        The <code>-foreground</code> suffix convention creates a semantic
+        contract: "use this text color on the corresponding background." But{' '}
+        <code>muted-foreground</code> violates this contract.
+      </p>
+
+      {/* ---- The evidence ---- */}
+      <Section title="How -foreground tokens are actually used">
+        <div className="flex flex-col gap-0.5 text-[10px]">
+          {/* Header */}
+          <div className="grid grid-cols-[160px_120px_100px_1fr] gap-x-3 border-b border-stone-200 pb-1 font-semibold text-stone-400">
+            <span>Background token</span>
+            <span>Paired text</span>
+            <span>Actually paired?</span>
+            <span>Evidence</span>
+          </div>
+
+          {/* Correct pairings */}
+          {[
+            {
+              bg: 'bg-brand',
+              fg: 'text-brand-foreground',
+              paired: true,
+              example: 'Badge primary, Calendar selected day',
+            },
+            {
+              bg: 'bg-destructive',
+              fg: 'text-destructive-foreground',
+              paired: true,
+              example: 'Button destructive',
+            },
+            {
+              bg: 'bg-destructive-muted',
+              fg: 'text-destructive-muted-fg',
+              paired: true,
+              example: 'Badge error, SectionMessage',
+            },
+            {
+              bg: 'bg-success-muted',
+              fg: 'text-success-muted-fg',
+              paired: true,
+              example: 'Badge success, SectionMessage',
+            },
+            {
+              bg: 'bg-disabled',
+              fg: 'text-disabled-foreground',
+              paired: true,
+              example: 'Input disabled, Tag disabled',
+            },
+          ].map(({ bg, fg, paired, example }) => (
+            <div
+              key={bg}
+              className="grid grid-cols-[160px_120px_100px_1fr] items-center gap-x-3 py-0.5"
+            >
+              <code>{bg}</code>
+              <code>{fg}</code>
+              <span className="text-green-600">Yes, always paired</span>
+              <span className="text-stone-400">{example}</span>
+            </div>
+          ))}
+
+          {/* The problem */}
+          <div className="mt-1 grid grid-cols-[160px_120px_100px_1fr] items-center gap-x-3 rounded bg-red-50 px-1 py-1">
+            <code className="font-bold text-red-700">bg-muted</code>
+            <code className="text-red-700">text-muted-foreground</code>
+            <span className="font-bold text-red-600">Never paired!</span>
+            <span className="text-red-500">
+              bg-muted uses text-foreground (Badge, Table)
+            </span>
+          </div>
+          <div className="grid grid-cols-[160px_120px_100px_1fr] items-center gap-x-3 rounded bg-amber-50 px-1 py-1">
+            <code className="text-amber-700">(any surface)</code>
+            <code className="font-bold text-amber-700">
+              text-muted-foreground
+            </code>
+            <span className="font-bold text-amber-600">
+              32+ standalone uses
+            </span>
+            <span className="text-amber-500">
+              Help text, table headers, icons, labels, descriptions...
+            </span>
+          </div>
+        </div>
+      </Section>
+
+      {/* ---- The Badge example ---- */}
+      <Section title="Badge: the inconsistency in one component">
+        <div className="flex flex-col gap-1 text-[10px]">
+          {[
+            {
+              label: 'default',
+              bg: 'bg-stone-100',
+              text: 'text-stone-950',
+              code: 'bg-muted text-foreground',
+              problem: 'bg is "muted" but text is NOT muted-foreground',
+            },
+            {
+              label: 'success',
+              bg: 'bg-green-100',
+              text: 'text-green-950',
+              code: 'bg-success-muted text-success-muted-foreground',
+              problem: '',
+            },
+            {
+              label: 'warning',
+              bg: 'bg-yellow-100',
+              text: 'text-yellow-950',
+              code: 'bg-warning-muted text-warning-muted-foreground',
+              problem: '',
+            },
+            {
+              label: 'error',
+              bg: 'bg-red-100',
+              text: 'text-red-950',
+              code: 'bg-destructive-muted text-destructive-muted-foreground',
+              problem: '',
+            },
+          ].map(({ label, bg, text, code, problem }) => (
+            <div
+              key={label}
+              className={`flex items-center gap-3 rounded px-2 py-1.5 ${
+                problem ? 'bg-red-50 ring-1 ring-red-200' : ''
+              }`}
+            >
+              <div
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${bg} ${text}`}
+              >
+                {label}
+              </div>
+              <code className="text-stone-500">{code}</code>
+              {problem && <span className="text-red-500">{problem}</span>}
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ---- The two meanings ---- */}
+      <Section title="Two different meanings of -foreground">
+        <div className="flex gap-6">
+          <div className="flex flex-1 flex-col gap-2 rounded-lg border border-green-200 bg-green-50 p-3">
+            <span className="text-[11px] font-semibold text-green-800">
+              1. Paired foreground (bg contrast)
+            </span>
+            <p className="text-[10px] text-green-700">
+              "Text color that ensures readability ON this background."
+              <br />
+              The bg is colored/dark enough that you need a specific text color.
+            </p>
+            <div className="flex flex-col gap-1 text-[10px]">
+              <code>destructive (red-600) + destructive-fg (white)</code>
+              <code>brand (stone-950) + brand-fg (stone-50)</code>
+              <code>
+                success-muted (green-100) + success-muted-fg (green-950)
+              </code>
+            </div>
+          </div>
+
+          <div className="flex flex-1 flex-col gap-2 rounded-lg border border-blue-200 bg-blue-50 p-3">
+            <span className="text-[11px] font-semibold text-blue-800">
+              2. Text hierarchy role
+            </span>
+            <p className="text-[10px] text-blue-700">
+              "Text color that conveys a hierarchy level."
+              <br />
+              Used on any background. Describes importance, not pairing.
+            </p>
+            <div className="flex flex-col gap-1 text-[10px]">
+              <code>foreground (stone-950) = primary text</code>
+              <code>muted-foreground (stone-600) = secondary text</code>
+              <code>disabled-foreground (stone-500) = disabled text</code>
+              <code>placeholder (stone-600) = placeholder text</code>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ================================================================= */}
+      {/*  SOLUTIONS                                                        */}
+      {/* ================================================================= */}
+
+      <Headline level="2">Solutions</Headline>
+      <p className="text-xs text-stone-500">
+        The <code>-foreground</code> suffix means "text on that background." The
+        token that breaks the convention is <code>muted-foreground</code> -- it
+        should be renamed or lose the suffix, not the bg token.
+      </p>
+
+      {/* ---- Solution 1 (recommended) ---- */}
+      <Section title="Solution 1: Rename text token (muted-foreground -> secondary)">
+        <p className="text-[10px] text-stone-400">
+          Fix the token that breaks the convention. The old --color-secondary
+          (bg, 0 usages) is being removed, so the name is free.{' '}
+          <code>text-secondary</code> is universally understood (Carbon,
+          Material Design, Atlassian all use it for secondary text).
+        </p>
+        <div className="flex gap-6">
+          <div className="flex flex-1 flex-col gap-1">
+            <span className="text-[10px] font-semibold text-stone-500">
+              Before (broken convention)
+            </span>
+            <div className="flex flex-col gap-0.5 text-[10px]">
+              <div className="flex items-center gap-2 px-2 py-1">
+                <code>--color-muted</code>
+                <span className="text-stone-400">
+                  bg token (stone-100, 10 usages)
+                </span>
+              </div>
+              <div className="flex items-center gap-2 rounded bg-red-50 px-2 py-1">
+                <code className="text-red-700">--color-muted-foreground</code>
+                <span className="text-red-500">
+                  implies pairing with bg-muted, but never paired (32+
+                  standalone usages)
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-1 flex-col gap-1">
+            <span className="text-[10px] font-semibold text-green-700">
+              After (convention restored)
+            </span>
+            <div className="flex flex-col gap-0.5 text-[10px]">
+              <div className="flex items-center gap-2 px-2 py-1">
+                <code>--color-muted</code>
+                <span className="text-stone-400">
+                  bg token (unchanged, no paired -foreground needed)
+                </span>
+              </div>
+              <div className="flex items-center gap-2 rounded bg-green-50 px-2 py-1">
+                <code className="font-bold text-green-700">
+                  --color-secondary
+                </code>
+                <span className="text-green-600">
+                  text hierarchy token, no -foreground suffix, no false pairing
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-2 rounded border border-green-200 bg-green-50 p-2 text-[9px]">
+          <p className="font-semibold text-green-800">
+            Convention is now clean:
+          </p>
+          <div className="mt-1 flex flex-col gap-0.5 text-green-700">
+            <code>
+              bg-muted text-foreground (bg needs no paired foreground -- it is
+              light enough)
+            </code>
+            <code>
+              bg-brand text-brand-foreground (paired -- brand is dark)
+            </code>
+            <code>
+              bg-destructive text-destructive-foreground (paired -- red bg)
+            </code>
+            <code>
+              bg-success-muted text-success-muted-foreground (paired -- status
+              context)
+            </code>
+          </div>
+          <p className="mt-1.5 text-green-700">
+            And separately, text hierarchy tokens (no bg pairing):
+          </p>
+          <div className="mt-0.5 flex flex-col gap-0.5 text-green-700">
+            <code>text-foreground = primary text</code>
+            <code>text-secondary = secondary text (was muted-foreground)</code>
+            <code>text-placeholder = placeholder text</code>
+          </div>
+        </div>
+      </Section>
+
+      {/* ---- What about disabled-foreground? ---- */}
+      <Section title="Does disabled-foreground have the same problem?">
+        <div className="rounded border border-stone-200 bg-stone-50 p-2 text-[10px] leading-relaxed">
+          <p className="text-stone-600">
+            <code>disabled-foreground</code> is also used standalone (22 usages,
+            15 components), but here the dual use is correct:
+          </p>
+          <ul className="mt-1 list-inside list-disc text-stone-500">
+            <li>
+              "Disabled" is a <strong>state</strong>, not a visual quality. When
+              something is disabled, both bg and text change together.
+            </li>
+            <li>
+              <code>bg-disabled</code> + <code>text-disabled-foreground</code>{' '}
+              ARE used together (~10 paired usages): Input, Tag, Calendar,
+              Switch, DateField, NumberField, Checkbox, Multiselect
+            </li>
+            <li>
+              The standalone usages (Tabs, Accordion, Label, HelpText) are
+              elements where the bg stays unchanged but the text dims -- both
+              readings of "disabled foreground" are valid.
+            </li>
+          </ul>
+          <p className="mt-1 font-medium text-stone-700">
+            Verdict: no rename needed for disabled-foreground.
+          </p>
+        </div>
+      </Section>
+
+      {/* ---- Badge before/after ---- */}
+      <Section title="Badge: before and after">
+        <div className="flex gap-6">
+          <div className="flex flex-1 flex-col gap-1">
+            <span className="text-[10px] font-semibold text-stone-500">
+              Before
+            </span>
+            <div className="flex flex-col gap-1 text-[10px]">
+              {[
+                {
+                  label: 'default',
+                  bg: 'bg-stone-100',
+                  text: 'text-stone-950',
+                  code: 'bg-muted text-foreground',
+                  problem: true,
+                },
+                {
+                  label: 'success',
+                  bg: 'bg-green-100',
+                  text: 'text-green-950',
+                  code: 'bg-success-muted text-success-muted-foreground',
+                  problem: false,
+                },
+              ].map(({ label, bg, text, code, problem }) => (
+                <div
+                  key={label}
+                  className={`flex items-center gap-3 rounded px-2 py-1.5 ${
+                    problem ? 'bg-red-50 ring-1 ring-red-200' : ''
+                  }`}
+                >
+                  <div
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${bg} ${text}`}
+                  >
+                    {label}
+                  </div>
+                  <code className="text-stone-500">{code}</code>
+                  {problem && (
+                    <span className="text-red-500">
+                      where is text-muted-foreground?
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-1 flex-col gap-1">
+            <span className="text-[10px] font-semibold text-green-700">
+              After (with --color-secondary)
+            </span>
+            <div className="flex flex-col gap-1 text-[10px]">
+              {[
+                {
+                  label: 'default',
+                  bg: 'bg-stone-100',
+                  text: 'text-stone-950',
+                  code: 'bg-muted text-foreground',
+                },
+                {
+                  label: 'success',
+                  bg: 'bg-green-100',
+                  text: 'text-green-950',
+                  code: 'bg-success-muted text-success-muted-foreground',
+                },
+              ].map(({ label, bg, text, code }) => (
+                <div
+                  key={label}
+                  className="flex items-center gap-3 rounded px-2 py-1.5"
+                >
+                  <div
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${bg} ${text}`}
+                  >
+                    {label}
+                  </div>
+                  <code className="text-stone-500">{code}</code>
+                </div>
+              ))}
+              <p className="text-[9px] text-green-600">
+                No confusion. Every -foreground token pairs with its bg.
+                <code> text-secondary</code> is used elsewhere for help text,
+                captions, icons -- clearly a hierarchy role, not a pairing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ---- Alternative: rename bg instead ---- */}
+      <Section title="Alternative: Rename bg instead (bg-muted -> bg-subtle)">
+        <p className="text-[10px] text-stone-400">
+          Keeps muted-foreground, renames the bg to avoid collision. Smaller
+          migration (10 usages) but leaves the -foreground suffix on a token
+          that never pairs with a bg.
+        </p>
+        <div className="rounded border border-amber-200 bg-amber-50 p-2 text-[9px]">
+          <p className="font-semibold text-amber-800">Why this is weaker:</p>
+          <ul className="mt-0.5 list-inside list-disc text-amber-700">
+            <li>
+              <code>muted-foreground</code> still has the{' '}
+              <code>-foreground</code> suffix, which implies it pairs with some{' '}
+              <code>bg-*</code> token. It doesn't.
+            </li>
+            <li>
+              New developers would still ask: "where is the bg for
+              muted-foreground?"
+            </li>
+            <li>
+              "muted" then means text quality (neutral) but also bg quality in
+              status colors (success-muted) -- two different meanings for the
+              same word
+            </li>
+          </ul>
+        </div>
+      </Section>
+
+      {/* ---- Comparison ---- */}
+      <Section title="Comparison">
+        <div className="grid grid-cols-[140px_1fr_1fr] gap-x-3 gap-y-1 text-[10px]">
+          <div className="font-semibold text-stone-400" />
+          <div className="font-semibold text-green-700">
+            S1: Rename text (recommended)
+          </div>
+          <div className="font-semibold text-amber-700">S2: Rename bg</div>
+
+          {[
+            {
+              label: 'What gets renamed',
+              s1: 'muted-foreground -> secondary (32+)',
+              s2: 'muted -> subtle (10)',
+            },
+            {
+              label: 'Convention fix',
+              s1: 'Full: no -foreground without pairing',
+              s2: 'Partial: -foreground without a bg remains',
+            },
+            {
+              label: 'Name quality',
+              s1: '"secondary" is industry standard for this role',
+              s2: '"subtle" works for bg, but muted-foreground still confusing',
+            },
+            {
+              label: 'bg-muted pairing',
+              s1: 'bg-muted just uses text-foreground (no paired -fg needed)',
+              s2: 'Same -- bg renamed to bg-subtle',
+            },
+            {
+              label: 'shadcn compat',
+              s1: 'Breaks (shadcn uses muted-foreground)',
+              s2: 'Partial (shadcn uses bg-muted)',
+            },
+            {
+              label: '"muted" word usage',
+              s1: 'muted = bg only (neutral + status). Clear single meaning.',
+              s2: 'muted = text only (via -foreground) + bg in status colors. Two meanings.',
+            },
+            {
+              label: 'New dev clarity',
+              s1: 'High: text-secondary is self-explanatory',
+              s2: 'Medium: text-muted-foreground still raises questions',
+            },
+          ].map(({ label, s1, s2 }) => (
+            <div
+              key={label}
+              className="col-span-3 grid grid-cols-subgrid items-center border-b border-stone-50 py-0.5"
+            >
+              <span className="font-medium">{label}</span>
+              <span className="text-green-600">{s1}</span>
+              <span className="text-amber-600">{s2}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ---- Recommendation ---- */}
+      <Section title="Recommendation">
+        <div className="rounded-lg border border-green-200 bg-green-50 p-3 text-[10px] leading-relaxed">
+          <p className="font-semibold text-green-800">
+            Rename --color-muted-foreground to --color-secondary.
+          </p>
+          <ul className="mt-1 list-inside list-disc text-green-700">
+            <li>
+              Fixes the actual problem: removes -foreground from a token that
+              never pairs with a bg
+            </li>
+            <li>
+              <code>text-secondary</code> is the industry standard name for this
+              role (Carbon, Material Design, Atlassian)
+            </li>
+            <li>
+              <code>bg-muted</code> stays unchanged -- it doesn't need a paired
+              foreground (it's light enough for <code>text-foreground</code>)
+            </li>
+            <li>
+              "muted" keeps a single consistent meaning in the system: a
+              toned-down variant of something (bg-muted, success-muted,
+              destructive-muted, etc.)
+            </li>
+            <li>
+              Migration: 32+ usages, but a simple find-replace (
+              <code>text-muted-foreground</code> -&gt;{' '}
+              <code>text-secondary</code>)
+            </li>
+          </ul>
+          <p className="mt-2 text-green-600">
+            The -foreground convention becomes airtight: every -foreground token
+            pairs with its corresponding bg. No exceptions.
+          </p>
+        </div>
+      </Section>
+    </Stack>
+  ),
+});
+
+// ---------------------------------------------------------------------------
 //  2. Surface & Elevation
 // ---------------------------------------------------------------------------
 
