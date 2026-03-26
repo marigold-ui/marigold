@@ -107,22 +107,22 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   dragPreview: cva({
     base: [
-      'px-4 py-3 bg-brand rounded-lg shadow-elevation-overlay',
-      'text-sm text-brand-foreground',
+      'px-4 py-3 bg-primary rounded-lg shadow-elevation-overlay',
+      'text-sm text-primary-foreground',
     ],
   }),
   dragPreviewCounter: cva({
     base: [
       'flex items-center justify-center rounded-full',
-      'bg-brand-foreground px-2',
-      'text-xs font-medium leading-normal text-brand',
+      'bg-primary-foreground px-2',
+      'text-xs font-medium leading-normal text-primary',
     ],
   }),
   dropIndicator: cva({
     base: [
       'relative',
       'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-border',
-      'drop-target:before:z-10 drop-target:before:bg-brand',
+      'drop-target:before:z-10 drop-target:before:bg-primary',
     ],
   }),
 

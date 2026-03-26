@@ -14,7 +14,7 @@ export const Radio: ThemeComponent<'Radio'> = {
       'border border-input shadow-elevation-border',
       'group-focus-visible/radio:ui-state-focus outline-none',
       'group-disabled/radio:group-selected/radio:bg-disabled group-disabled/radio:border-disabled! group-disabled/radio:cursor-not-allowed',
-      'group-selected/radio:border-brand group-selected/radio:bg-brand group-selected/radio:text-brand-foreground',
+      'group-selected/radio:border-primary group-selected/radio:bg-primary group-selected/radio:text-primary-foreground',
     ],
   }),
   group: cva({}),

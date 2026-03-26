@@ -9,7 +9,7 @@ export const Switch: ThemeComponent<'Switch'> = {
       'flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors',
       'border-2 border-transparent', // this increases the hit area so it is 24px
       'group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground',
-      'group-selected/switch:bg-brand bg-input',
+      'group-selected/switch:bg-primary bg-input',
       'group-focus-visible/switch:ui-state-focus outline-none',
     ],
   }),

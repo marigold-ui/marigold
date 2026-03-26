@@ -164,7 +164,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>
@@ -689,7 +689,7 @@ export const WithActions = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>
@@ -827,7 +827,7 @@ export const Links = meta.story({
               </Table.Cell>
               <Table.Cell>{site.description}</Table.Cell>
               <Table.Cell>
-                <Text size="sm" color="muted-foreground">
+                <Text size="sm" color="secondary">
                   {site.url}
                 </Text>
               </Table.Cell>

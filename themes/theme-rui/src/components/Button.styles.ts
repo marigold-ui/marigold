@@ -11,7 +11,7 @@ export const Button: ThemeComponent<'Button'> = cva({
     variant: {
       primary: [
         'ui-surface-contrast',
-        'hover:[--ui-background-color:oklch(from_var(--color-brand)_calc(l-0.05)_c_h)]',
+        'hover:[--ui-background-color:oklch(from_var(--color-primary)_calc(l-0.05)_c_h)]',
       ],
       secondary: [
         'ui-surface shadow-elevation-border',
