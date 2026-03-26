@@ -10,8 +10,7 @@
     "postinstall": "fumadocs-mdx && pnpm run build:registry",
     "lint": "eslint",
     "build:registry": "node scripts/build-registry.mjs",
-    "build:changelog": "zx ./scripts/build-changelog.mjs",
-    "build:md-docs": "pnpm tsx app/mcp/build.ts"
+    "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
     "@internationalized/date": "^3.12.0",

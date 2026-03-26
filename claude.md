@@ -274,3 +274,85 @@ Run with `pnpm test:unit`.
 - **Strict TypeScript**: The project enforces strict type checking
 - Story tests run in a real browser (Firefox) via Playwright - use `pnpm test:sb`
 - Stories tagged with `component-test` are picked up by the test runner
+
+## Jira (DST Project)
+
+Jira Cloud ID: `reservix.atlassian.net` | Project key: `DST`
+
+### Issue Types
+
+| Type      | ID    | Use for                     |
+| --------- | ----- | --------------------------- |
+| Task      | 10697 | Standard work items         |
+| Bug       | 10698 | Defects and errors          |
+| Epic      | 10671 | Collection of related tasks |
+| Sub-task  | 10672 | Breakdown of a parent task  |
+| Unplanned | 10860 | Unplanned/ad-hoc work       |
+
+### Required Custom Fields (Task)
+
+When creating Task issues via the API, these fields are **required** in `additional_fields`:
+
+- **Appetite** (`customfield_11370`) — Free text time estimate. Examples: `"2 days"`, `"1 week"`, `"3 weeks"`
+- **Rollout Communication** (`customfield_12908`) — Select field. Defaults to `"no communication"` (id: `13833`). Options: `"internal communication"` (`13834`), `"internal & external communication"` (`13835`)
+- **Requires UI Kit Update** (`customfield_13205`) — Select field. Defaults to `"No"` (id: `14326`). Other option: `"Yes"` (`14325`)
+
+Always use `contentFormat: "markdown"` for descriptions.
+
+### Description Template
+
+```markdown
+#### **Problem:**
+
+[Motivation. Include bullet points: Why now? Why important? Impact? Stakeholders?]
+
+#### **Expected Outcome:**
+
+[What success looks like for the user/team]
+
+#### **Scope:**
+
+**Included:**
+
+- [requirement 1]
+- [requirement 2]
+
+**Not included:**
+
+- [explicit exclusion 1]
+
+#### **Suggested Solution:**
+
+[Rough sketch, code examples, architecture notes]
+
+#### **References:**
+
+- [Links to files, related tickets, Confluence pages, RFCs]
+```
+
+### Title Emoji Convention
+
+Every issue title **must** start with an emoji indicating its type of work (see [Confluence: Emojis](https://reservix.atlassian.net/wiki/spaces/DST/pages/3797942472/Emojis)):
+
+| Emoji | Category                  |
+| ----- | ------------------------- |
+| 🐛    | Bug                       |
+| 🩹    | Hotfix                    |
+| 🏗️    | Infrastructure            |
+| 🧹    | Refactor / Cleanup        |
+| 📝    | Documentation             |
+| 💄    | Style / Theme             |
+| ✨    | Feature                   |
+| 🧩    | New Component             |
+| ✍️    | Blog / Confluence article |
+
+**Modifier emojis** (combine with a type emoji above):
+
+| Emoji | Meaning                      |
+| ----- | ---------------------------- |
+| ⚡️    | Quick task / spare-time work |
+| 🏚️    | Core-only task               |
+
+Examples: `📝⚡️ Quick docs fix`, `🧹🏚️ Core-only refactor`, `✨ New feature title`
+
+**Exception**: Epics use text prefixes instead of emojis: `[CPB]`, `[RUI]`, `[Infra]`
