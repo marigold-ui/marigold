@@ -923,6 +923,864 @@ export const SurfaceAndElevation = meta.story({
 });
 
 // ---------------------------------------------------------------------------
+//  2b. Background 50 vs 100: Full Token Cascade
+// ---------------------------------------------------------------------------
+
+/**
+ * Extra palette steps for Proposal B1 (expanded palette).
+ * Interpolated between existing steps to create room.
+ */
+const CX = {
+  ...C,
+  75: 'oklch(0.975 0.0025 54)' as const,
+  150: 'oklch(0.94 0.0035 54)' as const,
+};
+
+export const Background50vs100 = meta.story({
+  render: () => {
+    type Step = keyof typeof C;
+    const tokensFor50: {
+      token: string;
+      step: Step;
+      role: string;
+      conflict?: string;
+    }[] = [
+      { token: '--color-bg-page', step: 50, role: 'Page canvas' },
+      {
+        token: '--color-bg-sunken',
+        step: 100,
+        role: 'Sidebar wells, code blocks',
+      },
+      { token: '--color-muted', step: 50, role: 'Readonly inputs, badge bg' },
+      {
+        token: '--color-focus-highlight',
+        step: 100,
+        role: 'Keyboard focus bg',
+      },
+      { token: '--color-hover', step: 200, role: 'Menu items, list options' },
+      { token: '--color-disabled', step: 200, role: 'Disabled element bg' },
+      { token: '--color-border', step: 200, role: 'Structural borders' },
+      { token: '--color-selected', step: 300, role: 'Selected list items' },
+      { token: '--color-input', step: 300, role: 'Form control borders' },
+      { token: '--color-ring', step: 400, role: 'Focus ring outline' },
+      { token: '--color-disabled-fg', step: 400, role: 'Disabled text' },
+      { token: '--color-muted-fg', step: 600, role: 'Secondary text' },
+      { token: '--color-foreground', step: 950, role: 'Primary text' },
+    ];
+
+    const tokensFor100naive: {
+      token: string;
+      step: Step;
+      role: string;
+      conflict?: string;
+    }[] = [
+      { token: '--color-bg-page', step: 100, role: 'Page canvas' },
+      {
+        token: '--color-bg-sunken',
+        step: 200,
+        role: 'Sidebar wells, code blocks',
+        conflict: 'Same as hover, disabled, border',
+      },
+      {
+        token: '--color-muted',
+        step: 100,
+        role: 'Readonly inputs, badge bg',
+        conflict: 'Same as page -- invisible on page',
+      },
+      {
+        token: '--color-focus-highlight',
+        step: 200,
+        role: 'Keyboard focus bg',
+        conflict: 'Same as sunken, hover, disabled',
+      },
+      {
+        token: '--color-hover',
+        step: 200,
+        role: 'Menu items, list options',
+        conflict: 'Same as sunken, disabled, border',
+      },
+      {
+        token: '--color-disabled',
+        step: 200,
+        role: 'Disabled element bg',
+        conflict: 'Same as sunken, hover, border',
+      },
+      {
+        token: '--color-border',
+        step: 200,
+        role: 'Structural borders',
+        conflict: 'Same as sunken, hover, disabled',
+      },
+      { token: '--color-selected', step: 300, role: 'Selected list items' },
+      { token: '--color-input', step: 300, role: 'Form control borders' },
+      { token: '--color-ring', step: 400, role: 'Focus ring outline' },
+      { token: '--color-disabled-fg', step: 400, role: 'Disabled text' },
+      { token: '--color-muted-fg', step: 600, role: 'Secondary text' },
+      { token: '--color-foreground', step: 950, role: 'Primary text' },
+    ];
+
+    const TokenTable = ({
+      title,
+      tokens,
+      accent,
+      palette = C,
+    }: {
+      title: string;
+      tokens: {
+        token: string;
+        step: number;
+        role: string;
+        conflict?: string;
+        newStep?: boolean;
+      }[];
+      accent: string;
+      palette?: Record<number, string>;
+    }) => (
+      <div className="flex flex-1 flex-col gap-2">
+        <span className={`text-[11px] font-semibold ${accent}`}>{title}</span>
+        <div className="flex flex-col gap-0.5">
+          {tokens.map(({ token, step, role, conflict, newStep }) => (
+            <div
+              key={token}
+              className={`grid grid-cols-[28px_1fr_40px_1fr] items-center gap-x-2 rounded px-1 py-1 text-[10px] ${
+                conflict ? 'bg-red-50' : ''
+              }`}
+            >
+              <div
+                className="h-5 w-5 rounded border border-stone-200"
+                style={{ backgroundColor: palette[step] }}
+              />
+              <code className="font-semibold">{token}</code>
+              <span
+                className={
+                  newStep ? 'font-semibold text-purple-600' : 'text-stone-400'
+                }
+              >
+                {step}
+                {newStep ? '*' : ''}
+              </span>
+              <span className={conflict ? 'text-red-500' : 'text-stone-400'}>
+                {conflict ?? role}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    return (
+      <Stack space="group">
+        <Headline level="2">Background 50 vs 100: Full Token Cascade</Headline>
+        <p className="text-xs text-stone-500">
+          What happens to every neutral token when the page background moves
+          from step 50 to step 100. Red rows = conflicts where tokens share the
+          same step and become visually indistinguishable.
+        </p>
+
+        {/* ---- Original comparison ---- */}
+        <Section title="Baseline comparison (naive mapping)">
+          <div className="flex gap-8">
+            <TokenTable
+              title="A: bg-page = step 50 (no conflicts)"
+              tokens={tokensFor50}
+              accent="text-green-700"
+            />
+            <TokenTable
+              title="B: bg-page = step 100 (5 conflicts)"
+              tokens={tokensFor100naive}
+              accent="text-red-700"
+            />
+          </div>
+        </Section>
+
+        {/* ---- Visual side-by-side ---- */}
+        <Section title="Visual: state colors on surface">
+          <div className="flex gap-6">
+            <div className="flex flex-1 flex-col gap-1">
+              <span className="text-[10px] font-semibold text-green-700">
+                page = 50
+              </span>
+              <div
+                className="rounded-xl p-4"
+                style={{ backgroundColor: C[50] }}
+              >
+                <div className="shadow-elevation-raised rounded-lg bg-white p-3">
+                  <div className="mb-1 text-[9px] font-semibold">
+                    Surface (white)
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    {[
+                      { l: 'muted', s: 50 as const },
+                      { l: 'focus', s: 100 as const },
+                      { l: 'hover', s: 200 as const },
+                      { l: 'selected', s: 300 as const },
+                    ].map(({ l, s }) => (
+                      <div
+                        key={l}
+                        className="rounded px-2 py-1.5 text-[9px] font-medium"
+                        style={{ backgroundColor: C[s] }}
+                      >
+                        {l} ({s})
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <span className="text-[9px] text-green-600">
+                4 distinct steps. Clean cascade.
+              </span>
+            </div>
+
+            <div className="flex flex-1 flex-col gap-1">
+              <span className="text-[10px] font-semibold text-red-700">
+                page = 100 (naive)
+              </span>
+              <div
+                className="rounded-xl p-4"
+                style={{ backgroundColor: C[100] }}
+              >
+                <div className="shadow-elevation-raised rounded-lg bg-white p-3">
+                  <div className="mb-1 text-[9px] font-semibold">
+                    Surface (white)
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    {[
+                      { l: 'muted', s: 100 as const, conflict: true },
+                      { l: 'focus', s: 200 as const, conflict: true },
+                      { l: 'hover', s: 200 as const, conflict: true },
+                      { l: 'selected', s: 300 as const, conflict: false },
+                    ].map(({ l, s, conflict }) => (
+                      <div
+                        key={l}
+                        className={`rounded px-2 py-1.5 text-[9px] font-medium ${
+                          conflict ? 'border border-dashed border-red-400' : ''
+                        }`}
+                        style={{ backgroundColor: C[s] }}
+                      >
+                        {l} ({s})
+                        {conflict && (
+                          <span className="ml-1 text-[8px] text-red-500">
+                            collision
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <span className="text-[9px] text-red-500">
+                focus = hover (both 200). Muted same as page bg.
+              </span>
+            </div>
+          </div>
+        </Section>
+
+        {/* ================================================================= */}
+        {/*  PROPOSALS                                                        */}
+        {/* ================================================================= */}
+
+        <Headline level="2">Proposals: Making page=100 work</Headline>
+
+        {/* ---- Proposal B1: Bump cascade ---- */}
+        <Section title="Proposal B1: Bump cascade (shift states up)">
+          <p className="text-[10px] text-stone-400">
+            Accept that page=100 pushes everything one step up. Sunken=200
+            sharing with border/disabled is OK (borders are strokes, disabled in
+            sunken areas is rare). Hover bumps to 300, selected to 400.
+          </p>
+          <div className="flex gap-8">
+            <TokenTable
+              title="B1: Bumped cascade"
+              accent="text-blue-700"
+              tokens={[
+                { token: '--color-bg-page', step: 100, role: 'Page canvas' },
+                {
+                  token: '--color-bg-sunken',
+                  step: 200,
+                  role: 'Wells, code blocks',
+                },
+                {
+                  token: '--color-muted',
+                  step: 50,
+                  role: 'Lighter than page (inset feel on page, subtle on surface)',
+                },
+                {
+                  token: '--color-focus-highlight',
+                  step: 200,
+                  role: 'Only used on white surfaces',
+                  conflict: 'Same as sunken (OK: focus is surface-only)',
+                },
+                {
+                  token: '--color-hover',
+                  step: 300,
+                  role: 'Bumped from 200 to 300',
+                },
+                {
+                  token: '--color-disabled',
+                  step: 200,
+                  role: 'Shares with sunken/border',
+                },
+                {
+                  token: '--color-border',
+                  step: 200,
+                  role: 'Stroke, not fill (no visual conflict)',
+                },
+                {
+                  token: '--color-selected',
+                  step: 400,
+                  role: 'Bumped from 300 to 400',
+                },
+                { token: '--color-input', step: 300, role: 'Form borders' },
+                {
+                  token: '--color-ring',
+                  step: 400,
+                  role: 'Focus ring outline',
+                },
+                {
+                  token: '--color-disabled-fg',
+                  step: 400,
+                  role: 'Disabled text',
+                },
+                {
+                  token: '--color-muted-fg',
+                  step: 600,
+                  role: 'Secondary text',
+                },
+                {
+                  token: '--color-foreground',
+                  step: 950,
+                  role: 'Primary text',
+                },
+              ]}
+            />
+            <div className="flex flex-1 flex-col gap-2">
+              <span className="text-[10px] font-semibold text-blue-700">
+                B1 visual
+              </span>
+              <div
+                className="rounded-xl p-4"
+                style={{ backgroundColor: C[100] }}
+              >
+                <div className="shadow-elevation-raised rounded-lg bg-white p-3">
+                  <div className="mb-1 text-[9px] font-semibold">
+                    Surface (white)
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    {[
+                      { l: 'muted', s: 50 as const },
+                      { l: 'focus', s: 200 as const },
+                      { l: 'hover', s: 300 as const },
+                      { l: 'selected', s: 400 as const },
+                    ].map(({ l, s }) => (
+                      <div
+                        key={l}
+                        className="rounded px-2 py-1.5 text-[9px] font-medium"
+                        style={{ backgroundColor: C[s] }}
+                      >
+                        {l} ({s})
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-2 flex gap-2">
+                  <div
+                    className="flex-1 rounded-lg p-2 text-[9px]"
+                    style={{ backgroundColor: C[200] }}
+                  >
+                    sunken (200)
+                  </div>
+                  <div
+                    className="flex-1 rounded-lg p-2 text-[9px]"
+                    style={{ backgroundColor: C[50] }}
+                  >
+                    muted on page (50)
+                  </div>
+                </div>
+              </div>
+              <div className="rounded border border-blue-200 bg-blue-50 p-2 text-[9px]">
+                <p className="font-semibold text-blue-800">Trade-offs:</p>
+                <ul className="mt-0.5 list-inside list-disc text-blue-700">
+                  <li>
+                    Hover (300) and selected (400) are darker than page=50
+                    version
+                  </li>
+                  <li>
+                    Selected (400) = ring (400) -- different role (fill vs
+                    outline), but same lightness
+                  </li>
+                  <li>
+                    Muted (50) is lighter than page (100) -- reads as subtle
+                    inset, not highlight
+                  </li>
+                  <li>No new palette steps needed</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* ---- Proposal B2: Expand palette ---- */}
+        <Section title="Proposal B2: Expand palette (add steps 75, 150)">
+          <p className="text-[10px] text-stone-400">
+            Add intermediate palette steps so every token gets a unique value
+            without bumping states into the mid-range. Purple* = new step.
+          </p>
+          <div className="flex gap-8">
+            <TokenTable
+              title="B2: Expanded palette"
+              accent="text-purple-700"
+              palette={CX}
+              tokens={[
+                { token: '--color-bg-page', step: 100, role: 'Page canvas' },
+                {
+                  token: '--color-bg-sunken',
+                  step: 150,
+                  role: 'Wells, code blocks',
+                  newStep: true,
+                },
+                {
+                  token: '--color-muted',
+                  step: 75,
+                  role: 'Between page and sunken',
+                  newStep: true,
+                },
+                {
+                  token: '--color-focus-highlight',
+                  step: 150,
+                  role: 'Keyboard focus bg',
+                  newStep: true,
+                  conflict: 'Same as sunken (OK: focus is surface-only)',
+                },
+                {
+                  token: '--color-hover',
+                  step: 200,
+                  role: 'No shift needed',
+                },
+                {
+                  token: '--color-disabled',
+                  step: 200,
+                  role: 'Disabled element bg',
+                },
+                {
+                  token: '--color-border',
+                  step: 200,
+                  role: 'Structural borders',
+                },
+                {
+                  token: '--color-selected',
+                  step: 300,
+                  role: 'No shift needed',
+                },
+                { token: '--color-input', step: 300, role: 'Form borders' },
+                {
+                  token: '--color-ring',
+                  step: 400,
+                  role: 'Focus ring outline',
+                },
+                {
+                  token: '--color-disabled-fg',
+                  step: 400,
+                  role: 'Disabled text',
+                },
+                {
+                  token: '--color-muted-fg',
+                  step: 600,
+                  role: 'Secondary text',
+                },
+                {
+                  token: '--color-foreground',
+                  step: 950,
+                  role: 'Primary text',
+                },
+              ]}
+            />
+            <div className="flex flex-1 flex-col gap-2">
+              <span className="text-[10px] font-semibold text-purple-700">
+                B2 visual
+              </span>
+              <div
+                className="rounded-xl p-4"
+                style={{ backgroundColor: C[100] }}
+              >
+                <div className="shadow-elevation-raised rounded-lg bg-white p-3">
+                  <div className="mb-1 text-[9px] font-semibold">
+                    Surface (white)
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    {[
+                      { l: 'muted', c: CX[75], s: '75*' },
+                      { l: 'focus', c: CX[150], s: '150*' },
+                      { l: 'hover', c: C[200], s: '200' },
+                      { l: 'selected', c: C[300], s: '300' },
+                    ].map(({ l, c, s }) => (
+                      <div
+                        key={l}
+                        className="rounded px-2 py-1.5 text-[9px] font-medium"
+                        style={{ backgroundColor: c }}
+                      >
+                        {l} ({s})
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-2 flex gap-2">
+                  <div
+                    className="flex-1 rounded-lg p-2 text-[9px]"
+                    style={{ backgroundColor: CX[150] }}
+                  >
+                    sunken (150*)
+                  </div>
+                  <div
+                    className="flex-1 rounded-lg p-2 text-[9px]"
+                    style={{ backgroundColor: CX[75] }}
+                  >
+                    muted on page (75*)
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <span className="text-[9px] text-purple-600">
+                  New palette steps:
+                </span>
+                {[
+                  { s: '75', c: CX[75] },
+                  { s: '150', c: CX[150] },
+                ].map(({ s, c }) => (
+                  <div key={s} className="flex items-center gap-1">
+                    <div
+                      className="h-4 w-4 rounded border border-purple-200"
+                      style={{ backgroundColor: c }}
+                    />
+                    <span className="text-[9px] font-semibold text-purple-700">
+                      {s}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded border border-purple-200 bg-purple-50 p-2 text-[9px]">
+                <p className="font-semibold text-purple-800">Trade-offs:</p>
+                <ul className="mt-0.5 list-inside list-disc text-purple-700">
+                  <li>
+                    Hover/selected stay at same steps as page=50 version (200,
+                    300)
+                  </li>
+                  <li>
+                    Steps 75 and 150 are very close to neighbors -- may feel
+                    redundant
+                  </li>
+                  <li>Palette grows from 11 to 13 steps (more to maintain)</li>
+                  <li>Non-standard step numbers (75, 150) break convention</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* ---- Proposal B3: Opacity-based states ---- */}
+        <Section title="Proposal B3: Opacity-based states (decouple from palette)">
+          <p className="text-[10px] text-stone-400">
+            Instead of fixed palette steps for interactive states, derive them
+            from foreground at low opacity. States automatically adapt to any
+            surface they sit on. Page step becomes irrelevant for state colors.
+          </p>
+          <div className="flex gap-8">
+            <div className="flex flex-1 flex-col gap-2">
+              <span className="text-[11px] font-semibold text-teal-700">
+                B3: Opacity-based states
+              </span>
+              <div className="flex flex-col gap-0.5">
+                {[
+                  {
+                    token: '--color-bg-page',
+                    value: 'charcoal-100',
+                    note: 'Fixed palette step',
+                  },
+                  {
+                    token: '--color-bg-sunken',
+                    value: 'charcoal-200',
+                    note: 'Fixed palette step',
+                  },
+                  {
+                    token: '--color-muted',
+                    value: 'foreground / 4%',
+                    note: 'Adapts to surface',
+                    opacity: true,
+                  },
+                  {
+                    token: '--color-focus-highlight',
+                    value: 'foreground / 5%',
+                    note: 'Adapts to surface',
+                    opacity: true,
+                  },
+                  {
+                    token: '--color-hover',
+                    value: 'foreground / 8%',
+                    note: 'Adapts to surface',
+                    opacity: true,
+                  },
+                  {
+                    token: '--color-selected',
+                    value: 'foreground / 12%',
+                    note: 'Adapts to surface',
+                    opacity: true,
+                  },
+                  {
+                    token: '--color-disabled',
+                    value: 'charcoal-200',
+                    note: 'Fixed (same as sunken)',
+                  },
+                  {
+                    token: '--color-border',
+                    value: 'charcoal-200',
+                    note: 'Fixed (stroke)',
+                  },
+                ].map(({ token, value, note, opacity }) => (
+                  <div
+                    key={token}
+                    className={`grid grid-cols-[1fr_120px_1fr] items-center gap-x-2 rounded px-1 py-1 text-[10px] ${
+                      opacity ? 'bg-teal-50' : ''
+                    }`}
+                  >
+                    <code className="font-semibold">{token}</code>
+                    <span
+                      className={
+                        opacity
+                          ? 'font-semibold text-teal-600'
+                          : 'text-stone-400'
+                      }
+                    >
+                      {value}
+                    </span>
+                    <span className="text-stone-400">{note}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-1 flex-col gap-2">
+              <span className="text-[10px] font-semibold text-teal-700">
+                B3 visual: adapts to any surface
+              </span>
+              <div className="flex gap-3">
+                {/* On white surface */}
+                <div className="flex flex-1 flex-col gap-1">
+                  <span className="text-[9px] text-stone-400">On white</span>
+                  <div className="shadow-elevation-raised rounded-lg bg-white p-2">
+                    {[
+                      { l: 'muted', o: '0.04' },
+                      { l: 'focus', o: '0.05' },
+                      { l: 'hover', o: '0.08' },
+                      { l: 'selected', o: '0.12' },
+                    ].map(({ l, o }) => (
+                      <div
+                        key={l}
+                        className="rounded px-2 py-1.5 text-[9px] font-medium"
+                        style={{
+                          backgroundColor: `oklch(0.15 0.008 54 / ${o})`,
+                        }}
+                      >
+                        {l}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* On page bg */}
+                <div className="flex flex-1 flex-col gap-1">
+                  <span className="text-[9px] text-stone-400">On page</span>
+                  <div
+                    className="rounded-lg p-2"
+                    style={{ backgroundColor: C[100] }}
+                  >
+                    {[
+                      { l: 'muted', o: '0.04' },
+                      { l: 'focus', o: '0.05' },
+                      { l: 'hover', o: '0.08' },
+                      { l: 'selected', o: '0.12' },
+                    ].map(({ l, o }) => (
+                      <div
+                        key={l}
+                        className="rounded px-2 py-1.5 text-[9px] font-medium"
+                        style={{
+                          backgroundColor: `oklch(0.15 0.008 54 / ${o})`,
+                        }}
+                      >
+                        {l}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* On sunken */}
+                <div className="flex flex-1 flex-col gap-1">
+                  <span className="text-[9px] text-stone-400">On sunken</span>
+                  <div
+                    className="rounded-lg p-2"
+                    style={{ backgroundColor: C[200] }}
+                  >
+                    {[
+                      { l: 'muted', o: '0.04' },
+                      { l: 'focus', o: '0.05' },
+                      { l: 'hover', o: '0.08' },
+                      { l: 'selected', o: '0.12' },
+                    ].map(({ l, o }) => (
+                      <div
+                        key={l}
+                        className="rounded px-2 py-1.5 text-[9px] font-medium"
+                        style={{
+                          backgroundColor: `oklch(0.15 0.008 54 / ${o})`,
+                        }}
+                      >
+                        {l}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="rounded border border-teal-200 bg-teal-50 p-2 text-[9px]">
+                <p className="font-semibold text-teal-800">Trade-offs:</p>
+                <ul className="mt-0.5 list-inside list-disc text-teal-700">
+                  <li>
+                    States work on any surface (white, page, sunken) without
+                    collisions
+                  </li>
+                  <li>Page step is completely decoupled from state colors</li>
+                  <li>
+                    Semi-transparent colors blend with parent bg -- looks
+                    slightly different per context (feature, not bug)
+                  </li>
+                  <li>
+                    Cannot use Tailwind fixed classes like{' '}
+                    <code>bg-charcoal-200</code> -- needs CSS variables with
+                    alpha
+                  </li>
+                  <li>
+                    Opacity stacking in nested elements (e.g. hover inside
+                    selected) produces additive darkening
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* ---- Comparison summary ---- */}
+        <Section title="Proposal comparison">
+          <div className="grid grid-cols-[100px_1fr_1fr_1fr_1fr] gap-x-3 gap-y-1 text-[10px]">
+            <div className="font-semibold text-stone-400" />
+            <div className="font-semibold text-stone-400">
+              page=50 (baseline)
+            </div>
+            <div className="font-semibold text-blue-700">B1: Bump</div>
+            <div className="font-semibold text-purple-700">B2: Expand</div>
+            <div className="font-semibold text-teal-700">B3: Opacity</div>
+
+            {[
+              {
+                label: 'Conflicts',
+                a: 'None',
+                b1: 'selected=ring (fill vs outline)',
+                b2: 'None',
+                b3: 'None',
+              },
+              {
+                label: 'Palette size',
+                a: '11 steps',
+                b1: '11 steps',
+                b2: '13 steps (+75, +150)',
+                b3: '11 steps',
+              },
+              {
+                label: 'Hover weight',
+                a: 'Light (200)',
+                b1: 'Medium (300)',
+                b2: 'Light (200)',
+                b3: 'Light (8% opacity)',
+              },
+              {
+                label: 'Selected weight',
+                a: 'Medium (300)',
+                b1: 'Heavy (400)',
+                b2: 'Medium (300)',
+                b3: 'Medium (12% opacity)',
+              },
+              {
+                label: 'Muted on page',
+                a: 'Same as page (50)',
+                b1: 'Lighter than page (50)',
+                b2: 'Lighter than page (75)',
+                b3: 'Subtle overlay (4%)',
+              },
+              {
+                label: 'Complexity',
+                a: 'Simple',
+                b1: 'Simple',
+                b2: 'More steps to maintain',
+                b3: 'CSS alpha channels',
+              },
+              {
+                label: 'Tailwind compat',
+                a: 'Full',
+                b1: 'Full',
+                b2: 'Custom step names',
+                b3: 'Needs CSS vars',
+              },
+              {
+                label: 'Works on all bgs',
+                a: 'Surface only',
+                b1: 'Surface only',
+                b2: 'Surface only',
+                b3: 'Yes (adaptive)',
+              },
+            ].map(({ label, a, b1, b2, b3 }) => (
+              <div
+                key={label}
+                className="col-span-5 grid grid-cols-subgrid items-center border-b border-stone-50 py-0.5"
+              >
+                <span className="font-medium">{label}</span>
+                <span className="text-stone-500">{a}</span>
+                <span className="text-blue-600">{b1}</span>
+                <span className="text-purple-600">{b2}</span>
+                <span className="text-teal-600">{b3}</span>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* ---- Recommendation ---- */}
+        <Section title="Recommendation">
+          <div className="rounded-lg border border-stone-200 bg-stone-50 p-3 text-[10px] leading-relaxed">
+            <p className="font-semibold">
+              If page=100 is desired for stronger contrast:
+            </p>
+            <ul className="mt-1 list-inside list-disc text-stone-600">
+              <li>
+                <strong>B1 (Bump)</strong> is the simplest path -- no new
+                infrastructure. The heavier hover/selected may actually be a
+                feature for page=100 (stronger page needs stronger states).
+                Trade-off: selected=ring sharing at 400.
+              </li>
+              <li>
+                <strong>B3 (Opacity)</strong> is the most future-proof -- states
+                work everywhere regardless of page step. But requires CSS alpha
+                support and changes how Tailwind classes are authored.
+              </li>
+              <li>
+                <strong>B2 (Expand)</strong> preserves exact same visual weight
+                as page=50 but at the cost of non-standard palette steps and
+                maintenance overhead. Least recommended.
+              </li>
+            </ul>
+            <p className="mt-2 text-stone-400">
+              Compare all three visually in Storybook before deciding. page=50
+              remains the path of least resistance.
+            </p>
+          </div>
+        </Section>
+      </Stack>
+    );
+  },
+});
+
+// ---------------------------------------------------------------------------
 //  3. Palette Comparison
 // ---------------------------------------------------------------------------
 
