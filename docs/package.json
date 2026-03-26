@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "17.2.1",
+  "version": "17.3.0",
   "private": true,
   "scripts": {
     "build": "pnpm run build:registry && pnpm run build:changelog && next build",
@@ -10,8 +10,7 @@
     "postinstall": "fumadocs-mdx && pnpm run build:registry",
     "lint": "eslint",
     "build:registry": "node scripts/build-registry.mjs",
-    "build:changelog": "zx ./scripts/build-changelog.mjs",
-    "build:md-docs": "pnpm tsx app/mcp/build.ts"
+    "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
     "@internationalized/date": "^3.12.0",

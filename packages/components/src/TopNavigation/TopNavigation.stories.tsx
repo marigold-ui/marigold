@@ -1,25 +1,16 @@
-import { PanelRightClose } from 'lucide-react';
 import preview from '.storybook/preview';
 import { Logout, SettingDots, User } from '@marigold/icons';
 import { useResponsiveValue } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
-import { Button } from '../Button/Button';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { SearchField } from '../SearchField/SearchField';
+import { Sidebar } from '../Sidebar/Sidebar';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TopNavigation } from './TopNavigation';
-
-const LogoSection = () => {
-  return (
-    <Button variant="icon">
-      <PanelRightClose />
-    </Button>
-  );
-};
 
 const UserMenu = () => (
   <ActionMenu aria-label="User menu" variant="ghost">
@@ -76,65 +67,71 @@ const meta = preview.meta({
 
 export const WithSearchField = meta.story({
   render: args => (
-    <TopNavigation {...args}>
-      <TopNavigation.Start>
-        <LogoSection />
-      </TopNavigation.Start>
-      <TopNavigation.Middle aria-label="SearchField" alignX="center">
-        <SearchField placeholder="Search..." />
-      </TopNavigation.Middle>
-      <TopNavigation.End>
-        <UserSection />
-      </TopNavigation.End>
-    </TopNavigation>
-  ),
-});
-
-export const WithBreadcrumbs = meta.story({
-  render: args => (
-    <div style={{ height: '200vh' }}>
+    <Sidebar.Provider>
       <TopNavigation {...args}>
         <TopNavigation.Start>
-          <LogoSection />
+          <Sidebar.Toggle />
         </TopNavigation.Start>
-        <TopNavigation.Middle>
-          <Breadcrumbs>
-            <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
-            <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
-            <Breadcrumbs.Item href="/events/summer">Summer</Breadcrumbs.Item>
-            <Breadcrumbs.Item href="/events/details">
-              Event Details
-            </Breadcrumbs.Item>
-          </Breadcrumbs>
+        <TopNavigation.Middle aria-label="SearchField" alignX="center">
+          <SearchField placeholder="Search..." />
         </TopNavigation.Middle>
         <TopNavigation.End>
           <UserSection />
         </TopNavigation.End>
       </TopNavigation>
-      <div style={{ padding: '2rem' }}>
-        <Stack space={4}>
-          <Text weight="bold" size="xl">
-            Summer Festival
-          </Text>
-          <Text>
-            Manage your event details, ticket sales, and attendee information
-            from this dashboard.
-          </Text>
-        </Stack>
+    </Sidebar.Provider>
+  ),
+});
+
+export const WithBreadcrumbs = meta.story({
+  render: args => (
+    <Sidebar.Provider>
+      <div style={{ height: '200vh' }}>
+        <TopNavigation {...args}>
+          <TopNavigation.Start>
+            <Sidebar.Toggle />
+          </TopNavigation.Start>
+          <TopNavigation.Middle>
+            <Breadcrumbs>
+              <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+              <Breadcrumbs.Item href="/events">Events</Breadcrumbs.Item>
+              <Breadcrumbs.Item href="/events/summer">Summer</Breadcrumbs.Item>
+              <Breadcrumbs.Item href="/events/details">
+                Event Details
+              </Breadcrumbs.Item>
+            </Breadcrumbs>
+          </TopNavigation.Middle>
+          <TopNavigation.End>
+            <UserSection />
+          </TopNavigation.End>
+        </TopNavigation>
+        <div style={{ padding: '2rem' }}>
+          <Stack space={4}>
+            <Text weight="bold" size="xl">
+              Summer Festival
+            </Text>
+            <Text>
+              Manage your event details, ticket sales, and attendee information
+              from this dashboard.
+            </Text>
+          </Stack>
+        </div>
       </div>
-    </div>
+    </Sidebar.Provider>
   ),
 });
 
 export const WithoutMiddle = meta.story({
   render: args => (
-    <TopNavigation {...args}>
-      <TopNavigation.Start>
-        <LogoSection />
-      </TopNavigation.Start>
-      <TopNavigation.End>
-        <UserSection />
-      </TopNavigation.End>
-    </TopNavigation>
+    <Sidebar.Provider>
+      <TopNavigation {...args}>
+        <TopNavigation.Start>
+          <Sidebar.Toggle />
+        </TopNavigation.Start>
+        <TopNavigation.End>
+          <UserSection />
+        </TopNavigation.End>
+      </TopNavigation>
+    </Sidebar.Provider>
   ),
 });

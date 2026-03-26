@@ -49,6 +49,7 @@ const _TopNavigation = forwardRef(
           ref={ref}
           className={cn(
             'grid grid-cols-[auto_1fr_auto] [grid-template-areas:"start_middle_end"]',
+            'w-full [grid-area:header]',
             sticky && 'sticky top-0 z-1',
             classNames.container
           )}
