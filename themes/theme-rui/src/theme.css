@@ -219,10 +219,9 @@
   /* ==================== */
 
   /* Component heights */
-  --spacing-input: 2.25rem;
-  --spacing-button: 2.25rem;
-  --spacing-button-small: 2rem;
-  --spacing-button-large: 2.5rem;
+  --spacing-control: 2.25rem;
+  --spacing-control-small: 2rem;
+  --spacing-control-large: 2.5rem;
   --spacing-container: 50rem;
 
   /* Relational spacing */
@@ -451,6 +450,12 @@
   /* --color-brand: renamed to --color-primary */
   --color-brand: var(--color-primary);
   --color-brand-foreground: var(--color-primary-foreground);
+
+  /* --spacing-input/button: consolidated to --spacing-control */
+  --spacing-input: var(--spacing-control);
+  --spacing-button: var(--spacing-control);
+  --spacing-button-small: var(--spacing-control-small);
+  --spacing-button-large: var(--spacing-control-large);
 
   /* Old surface system -- use bg-surface + shadow-elevation-* instead */
   --surface-sunken: var(--color-muted);

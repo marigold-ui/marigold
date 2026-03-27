@@ -11,7 +11,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
       'has-[input[data-invalid=true]]:border-destructive-accent has-[input[data-invalid=true][data-focused=true]]:!border-destructive-accent has-[input[data-invalid=true][data-focused=true]]:!ring-destructive-accent/20',
       'has-[input[data-focused=true]]:!border-ring has-[input[data-focused=true]]:!ring-ring/50 has-[input[data-focused=true]]:ring-[3px] has-[input[data-focused=true]]:!outline-none',
       'has-[input[aria-readonly=true]]:bg-muted',
-      'min-h-input',
+      'min-h-control',
     ],
   }),
 

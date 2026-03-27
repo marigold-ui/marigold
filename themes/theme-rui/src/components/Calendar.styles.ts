@@ -54,7 +54,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       '[&svg]:text-secondary',
       'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-input bg-surface text-sm text-foreground transition-shadow',
       'focus-visible:ui-state-focus outline-none',
-      'h-input',
+      'h-control',
       'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
       'cursor-pointer',
     ],

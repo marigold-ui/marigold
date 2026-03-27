@@ -137,7 +137,7 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'flex items-center justify-center',
       'text-secondary',
-      'size-button aspect-square rounded-surface transition-[color,background,transform]',
+      'size-control aspect-square rounded-surface transition-[color,background,transform]',
       'ui-interactive',
       'ui-press',
       'hover:bg-current/10',
@@ -148,7 +148,7 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'inline-flex items-center justify-center',
       'sm:text-secondary font-medium',
-      'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
+      'text-sm h-control-small sm:size-control sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'ml-1.5', // some extra spacing between buttons and field
       'focus-visible:ui-state-focus outline-none',
@@ -161,7 +161,7 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'inline-flex items-center justify-center',
       'sm:text-secondary font-medium',
-      'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
+      'text-sm h-control-small sm:size-control sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'focus-visible:ui-state-focus outline-none',
       'ui-press',

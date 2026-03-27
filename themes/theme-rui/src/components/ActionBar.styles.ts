@@ -41,7 +41,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
     base: [
       'ui-button-base',
       'hover:bg-current/10',
-      'text-sm h-button p-squish-relaxed [&_svg]:size-4',
+      'text-sm h-control p-squish-relaxed [&_svg]:size-4',
     ],
   }),
 };

@@ -42,15 +42,15 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
     compoundVariants: [
       {
         size: 'default',
-        class: 'h-button px-4 py-2 [&_svg]:size-4',
+        class: 'h-control px-4 py-2 [&_svg]:size-4',
       },
       {
         size: 'small',
-        class: 'h-button-small px-3 [&_svg]:size-3.5',
+        class: 'h-control-small px-3 [&_svg]:size-3.5',
       },
       {
         size: 'icon',
-        class: 'size-button [&_svg]:size-4',
+        class: 'size-control [&_svg]:size-4',
       },
     ],
   }),

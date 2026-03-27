@@ -36,7 +36,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       'ui-button-base ui-press',
       'hover:bg-current/10',
-      'size-button [&_svg]:size-6',
+      'size-control [&_svg]:size-6',
     ],
   }),
   separator: cva({ base: 'bg-border my-1 h-px border-0' }),

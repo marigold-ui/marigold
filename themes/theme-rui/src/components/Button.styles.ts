@@ -55,7 +55,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'default',
-      class: 'h-button p-squish-relaxed [&_svg]:size-4',
+      class: 'h-control p-squish-relaxed [&_svg]:size-4',
     },
     {
       variant: [
@@ -66,7 +66,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'small',
-      class: 'h-button-small px-3 [&_svg]:size-3.5',
+      class: 'h-control-small px-3 [&_svg]:size-3.5',
     },
     {
       variant: [
@@ -77,7 +77,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'large',
-      class: 'h-button-large px-8 [&_svg]:size-5',
+      class: 'h-control-large px-8 [&_svg]:size-5',
     },
     {
       variant: [
@@ -88,7 +88,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'icon',
-      class: 'size-button [&_svg]:size-4',
+      class: 'size-control [&_svg]:size-4',
     },
   ],
 });
