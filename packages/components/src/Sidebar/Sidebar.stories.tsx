@@ -14,6 +14,7 @@ const meta = preview.meta({
   args: {},
   parameters: {
     padding: false,
+    surface: false,
   },
 });
 
