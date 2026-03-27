@@ -78,70 +78,41 @@
 
   /* --- Page & Text --- */
   --color-page: var(--color-charcoal-100);
-  --color-foreground: var(--color-charcoal-900); /* 22 components, 33+ usages */
-
-  --color-secondary: var(
-    --color-charcoal-600
-  ); /* 23 components, 32+ usages. Secondary text, help text, icons inside inputs. */
-  --color-placeholder: var(--color-charcoal-600); /* 3 components */
+  --color-foreground: var(--color-charcoal-900);
+  --color-secondary: var(--color-charcoal-600);
+  --color-placeholder: var(--color-charcoal-600);
 
   /* --- Primary --- */
-  --color-primary: var(
-    --color-charcoal-950
-  ); /* 7 components. Primary interaction color (buttons, selections). */
-  --color-primary-foreground: var(
-    --color-charcoal-50
-  ); /* 7 components, always paired with bg-primary */
+  --color-primary: var(--color-charcoal-950);
+  --color-primary-foreground: var(--color-charcoal-50);
 
   /* --- Neutral Backgrounds & States --- */
-  --color-muted: var(
-    --color-charcoal-50
-  ); /* 6 components, 10 usages. Paired with text-foreground (not text-secondary) */
-  --color-hover: var(--color-charcoal-200); /* 5 components */
+  --color-muted: var(--color-charcoal-50);
+  --color-hover: var(--color-charcoal-200);
 
   /*
     Two selection paradigms:
-      Strong/inverted (bg-primary + text-primary-foreground): binary controls (Checkbox, Radio, Switch, Tag, ToggleButton, Calendar)
-      Subtle highlight (bg-selected): list selection (ListBox, Sidebar)
+      Strong/inverted (bg-primary + text-primary-foreground): binary controls
+      Subtle highlight (bg-selected): list selection
   */
-  --color-selected: var(
-    --color-charcoal-300
-  ); /* 2 components (ListBox, Sidebar) */
-
-  /* Same value as --color-page. Works because focus bg appears inside white-surface
-     components, not directly on the page. Only used by Menu and FileField. */
-  --color-focus-highlight: var(--color-charcoal-100); /* 2 components */
+  --color-selected: var(--color-charcoal-300);
+  --color-focus-highlight: var(--color-charcoal-100);
 
   /* --- Disabled --- */
-  --color-disabled: var(
-    --color-charcoal-400
-  ); /* Standalone disabled text (15 components). Also text on disabled-surface. */
-  --color-disabled-surface: var(
-    --color-charcoal-200
-  ); /* Disabled background for full controls (8 components). Paired with text-disabled. */
+  --color-disabled: var(--color-charcoal-400);
+  --color-disabled-surface: var(--color-charcoal-200);
 
   /* --- Form Controls --- */
-  --color-input: var(
-    --color-charcoal-300
-  ); /* 6 components + Switch (border for interactive controls) */
-  --color-border: var(
-    --color-charcoal-200
-  ); /* 9 components (structural/layout dividers) */
-  --color-ring: var(
-    --color-charcoal-400
-  ); /* ~25 components via ui-state-focus utility */
+  --color-input: var(--color-charcoal-300);
+  --color-border: var(--color-charcoal-200);
+  --color-ring: var(--color-charcoal-400);
 
   /*
-    Status color structure (same pattern for destructive, success, warning, info):
-
-      base           -- subtle bg (Badge, SectionMessage, Toast)
-      foreground     -- text on subtle bg
-      accent         -- the vibrant color: accent borders/icons in containers,
-                        standalone error/status text, strong button bg
-      accent-foreground -- text on accent bg (e.g. destructive button)
-
-    The "accent" IS the saturated/prominent color of the status family.
-    Whether it's used as a border, icon, text, or button bg is a component decision.
+    Status color structure:
+      base             -- subtle bg
+      foreground       -- text on subtle bg
+      accent           -- the vibrant/saturated color (borders, icons, standalone text, strong bg)
+      accent-foreground -- text on accent bg (only destructive, for the destructive button)
   */
 
   /* --- Status: Destructive --- */
@@ -165,19 +136,17 @@
   --color-info-foreground: var(--color-blue-950);
   --color-info-accent: var(--color-blue-600);
 
-  /* --- Access Control (domain-specific: Reservix) --- */
-  --color-access-master: var(--color-orange-100); /* 4 components */
+  /* --- Access Control --- */
+  --color-access-master: var(--color-orange-100);
   --color-access-master-foreground: var(--color-orange-500);
-  --color-access-admin: var(--color-purple-100); /* 4 components */
+  --color-access-admin: var(--color-purple-100);
   --color-access-admin-foreground: var(--color-purple-800);
 
   /* --- Links --- */
-  --color-link: var(--color-blue-600); /* 4 components */
+  --color-link: var(--color-blue-600);
 
   /* --- Overlay Backdrop --- */
-  --color-overlay-backdrop: var(
-    --color-charcoal-950
-  ); /* Components apply opacity: bg-overlay-backdrop/80, bg-overlay-backdrop/50 */
+  --color-overlay-backdrop: var(--color-charcoal-950);
 
   /* --- Scrollbar --- */
   --color-scrollbar: var(--color-charcoal-300);
@@ -427,48 +396,4 @@
       stroke-dashoffset: 75;
     }
   }
-
-  /* =============================== */
-  /*   DEPRECATED (backward compat)  */
-  /* =============================== */
-
-  /* --color-background: renamed to --color-page */
-  --color-background: var(--color-page);
-
-  /* --color-muted-foreground: renamed to --color-secondary */
-  --color-muted-foreground: var(--color-secondary);
-
-  /* --color-disabled-foreground: use --color-disabled instead */
-  --color-disabled-foreground: var(--color-disabled);
-
-  /* --color-focus: renamed to --color-focus-highlight */
-  --color-focus: var(--color-focus-highlight);
-
-  /* --color-hover-foreground: removed, use --color-foreground instead */
-  --color-hover-foreground: var(--color-foreground);
-
-  /* --color-brand: renamed to --color-primary */
-  --color-brand: var(--color-primary);
-  --color-brand-foreground: var(--color-primary-foreground);
-
-  /* --spacing-input/button: consolidated to --spacing-control */
-  --spacing-input: var(--spacing-control);
-  --spacing-button: var(--spacing-control);
-  --spacing-button-small: var(--spacing-control-small);
-  --spacing-button-large: var(--spacing-control-large);
-
-  /* Old surface system -- use bg-surface + shadow-elevation-* instead */
-  --surface-sunken: var(--color-muted);
-  --surface-sunken-shadow: 0 0 #0000;
-
-  --surface-body: var(--color-page);
-  --surface-body-shadow: 0 0 #0000;
-
-  --surface-raised: var(--color-surface);
-  --surface-raised-shadow: var(--shadow-xs);
-  --surface-raised-border: var(--color-input);
-
-  --surface-overlay: var(--color-surface);
-  --surface-overlay-shadow: var(--shadow-lg);
-  --surface-overlay-border: var(--color-input);
 }
