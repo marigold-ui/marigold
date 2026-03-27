@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 17.3.1
+
+### Patch Changes
+
+- 6b00a16: Move markdown parser and plugins from `app/mcp/` to `lib/markdown/`. Serve markdown at `/{page-path}.md` instead of `/mcp/{page-path}.md`. Remove `build:md-docs` script.
+- c8653f3: Unify docs UI component locations: move all components from `docs/components/` into `docs/ui/` and replace local Button/Popover with fumadocs imports.
+- Updated dependencies [d3374cd]
+  - @marigold/components@17.3.1
+  - @marigold/theme-rui@5.2.3
+  - @marigold/system@17.3.1
+  - @marigold/icons@1.3.37
+
 ## 17.3.0
 
 ### Patch Changes

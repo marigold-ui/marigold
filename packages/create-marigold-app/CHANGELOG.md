@@ -1,5 +1,11 @@
 # create-marigold-app
 
+## 0.2.1
+
+### Patch Changes
+
+- 9484727: fix: add root marketplace.json for Claude Code plugin discovery
+
 ## 0.2.0
 
 ### Minor Changes
