@@ -8,7 +8,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
       'px-3 text-sm text-foreground transition-shadow',
       'border border-input rounded-lg outline-hidden',
       'aria-disabled:bg-disabled aria-disabled:text-disabled-foreground aria-disabled:hover:border-input aria-disabled:border-input aria-disabled:cursor-not-allowed',
-      'has-[input[data-invalid=true]]:border-destructive has-[input[data-invalid=true][data-focused=true]]:!border-destructive has-[input[data-invalid=true][data-focused=true]]:!ring-destructive/20',
+      'has-[input[data-invalid=true]]:border-destructive-accent has-[input[data-invalid=true][data-focused=true]]:!border-destructive-accent has-[input[data-invalid=true][data-focused=true]]:!ring-destructive-accent/20',
       'has-[input[data-focused=true]]:!border-ring has-[input[data-focused=true]]:!ring-ring/50 has-[input[data-focused=true]]:ring-[3px] has-[input[data-focused=true]]:!outline-none',
       'has-[input[aria-readonly=true]]:bg-muted',
       'min-h-input',

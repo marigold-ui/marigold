@@ -9,7 +9,7 @@ export const DateField: ThemeComponent<'DateField'> = {
       'group-read-only/field:ui-state-readonly',
       'has-focus:ui-state-focus',
       // Need to set error ring manually to override focus ring
-      'has-invalid:ui-state-error has-focus:has-invalid:ring-destructive/20',
+      'has-invalid:ui-state-error has-focus:has-invalid:ring-destructive-accent/20',
     ],
   }),
   input: cva({ base: ['ui-input', 'cursor-text'] }),
@@ -21,10 +21,10 @@ export const DateField: ThemeComponent<'DateField'> = {
       'data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',
       'data-placeholder:disabled:text-disabled-foreground',
-      'invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground',
+      'invalid:text-destructive-accent invalid:data-focused:bg-destructive-accent invalid:data-focused:text-destructive-accent-foreground invalid:data-focused:data-placeholder:text-destructive-accent-foreground',
     ],
   }),
   action: cva({
-    base: 'fill-secondary disabled:text-disabled-foreground group-invalid/field:fill-destructive',
+    base: 'fill-secondary disabled:text-disabled-foreground group-invalid/field:fill-destructive-accent',
   }),
 };

@@ -38,10 +38,10 @@ export const Toast: ThemeComponent<'Toast'> = {
     variants: {
       variant: {
         default: '',
-        success: 'text-success-muted-accent',
-        warning: 'text-warning-muted-accent',
-        info: 'text-info-muted-accent',
-        error: 'text-destructive-muted-accent',
+        success: 'text-success-accent',
+        warning: 'text-warning-accent',
+        info: 'text-info-accent',
+        error: 'text-destructive-accent',
       },
     },
     defaultVariants: {

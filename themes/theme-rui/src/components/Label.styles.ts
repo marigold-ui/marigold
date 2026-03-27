@@ -9,6 +9,6 @@ export const Label: ThemeComponent<'Label'> = cva({
     // required indicator
     'group-required/field:after:content-["*"]',
     'group-required/field:after:-ml-1',
-    'group-required/field:after:text-destructive',
+    'group-required/field:after:text-destructive-accent',
   ],
 });

@@ -19,7 +19,7 @@ export const Menu: ThemeComponent<'Menu'> = {
       variant: {
         default:
           'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60',
-        destructive: 'text-destructive focus:bg-destructive/10',
+        destructive: 'text-destructive-accent focus:bg-destructive-accent/10',
       },
     },
     defaultVariants: {

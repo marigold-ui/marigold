@@ -96,8 +96,8 @@
 */
 @utility ui-state-error {
   /* Overrides the transparent border. Gradient would get too dark. */
-  @apply border-destructive shadow-destructive/20;
-  @apply focus:border-destructive focus:ring-destructive/20;
+  @apply border-destructive-accent shadow-destructive-accent/20;
+  @apply focus:border-destructive-accent focus:ring-destructive-accent/20;
 }
 
 /*

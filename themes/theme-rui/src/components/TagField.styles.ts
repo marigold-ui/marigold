@@ -9,7 +9,7 @@ export const TagField: ThemeComponent<'TagField'> = {
       '[&:has(>button[data-focus-visible])]:ui-state-focus',
       // Need to set error ring manually to override focus ring
       'group-invalid/field:ui-state-error',
-      '[&:has(>button[data-focus-visible])]:group-invalid/field:ring-destructive/20',
+      '[&:has(>button[data-focus-visible])]:group-invalid/field:ring-destructive-accent/20',
     ],
   }),
   tagGroup: cva({ base: 'flex flex-1 flex-wrap items-center gap-1' }),
