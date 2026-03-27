@@ -8,7 +8,7 @@ export const FileField: ThemeComponent<'FileField'> = {
       'rounded-xl border border-dashed border-surface-border',
       'p-4 transition-[color,background] not-data-files:justify-center',
       'data-[drop-target=true]:bg-muted',
-      'focus-visible:bg-focus/50',
+      'focus-visible:bg-focus-highlight/50',
     ],
   }),
   dropZoneContent: cva({

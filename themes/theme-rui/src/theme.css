@@ -67,7 +67,7 @@
     Palette step mapping (charcoal, page = step 100):
 
     50  -- muted bg (subtle tint on white surfaces), primary-foreground
-    100 -- page bg, focus bg
+    100 -- page bg, focus-highlight bg
     200 -- hover bg, disabled bg, structural borders
     300 -- selected bg, form control borders, scrollbar, surface-border
     400 -- focus ring, disabled text
@@ -111,7 +111,7 @@
 
   /* Same value as --color-page. Works because focus bg appears inside white-surface
      components, not directly on the page. Only used by Menu and FileField. */
-  --color-focus: var(--color-charcoal-100); /* 2 components */
+  --color-focus-highlight: var(--color-charcoal-100); /* 2 components */
 
   /* --- Disabled --- */
   --color-disabled: var(--color-charcoal-200); /* 8 components */
@@ -433,6 +433,9 @@
 
   /* --color-muted-foreground: renamed to --color-secondary */
   --color-muted-foreground: var(--color-secondary);
+
+  /* --color-focus: renamed to --color-focus-highlight */
+  --color-focus: var(--color-focus-highlight);
 
   /* --color-hover-foreground: removed, use --color-foreground instead */
   --color-hover-foreground: var(--color-foreground);
