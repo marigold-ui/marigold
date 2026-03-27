@@ -16,7 +16,7 @@ export const Switch: ThemeComponent<'Switch'> = {
   thumb: cva({
     base: [
       'pointer-events-none block size-5 rounded-full',
-      'bg-background shadow-xs',
+      'bg-background shadow-elevation-border',
       'ring-0 transition-transform duration-150 ease-out-quint',
       'group-selected/switch:translate-x-4 translate-x-0',
     ],

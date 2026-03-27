@@ -1,4 +1,12 @@
 'use client';
+import { cn } from '@/lib/cn';
+import { track } from '@vercel/analytics';
+import { buttonVariants } from 'fumadocs-ui/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from 'fumadocs-ui/components/ui/popover';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import {
   Check,
@@ -8,9 +16,6 @@ import {
   TextIcon,
 } from 'lucide-react';
 import { type ComponentProps, useState } from 'react';
-import { cn } from '../../lib/cn';
-import { buttonVariants } from '../ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 const cache = new Map<string, Promise<string>>();
 
@@ -25,6 +30,7 @@ export function MarkdownCopyButton({
 }) {
   const [isLoading, setLoading] = useState(false);
   const [checked, onClick] = useCopyButton(async () => {
+    track('Copy Code');
     const cached = cache.get(markdownUrl);
     if (cached) return navigator.clipboard.writeText(await cached);
 

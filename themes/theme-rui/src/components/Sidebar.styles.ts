@@ -14,7 +14,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   root: cva({
     base: [
       'relative h-full overflow-hidden',
-      'bg-surface border-surface-border ui-elevation-overlay util-scrollbar',
+      'bg-surface border-surface-border shadow-elevation-border util-scrollbar',
       'sm:data-[state=expanded]:w-64',
       'sm:data-[state=collapsed]:w-0',
       'sm:transition-[width] sm:duration-200 sm:ease-in-out',
@@ -24,7 +24,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
   content: cva({ base: 'sm:w-64' }),
-  header: cva({ base: 'ui-panel-header' }),
+  header: cva({ base: 'ui-panel-header h-14' }),
   nav: cva({
     base: [
       'flex flex-col px-3 py-1 overflow-y-auto outline-none',

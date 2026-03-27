@@ -22,10 +22,6 @@ import { SidebarToggle } from './SidebarToggle';
 export interface SidebarProps {
   /** The sidebar content, typically `Sidebar.Header`, `Sidebar.Nav`, and `Sidebar.Footer`. */
   children?: ReactNode;
-  /** The visual style variant of the sidebar. */
-  variant?: string;
-  /** The size of the sidebar. */
-  size?: string;
 }
 
 interface SidebarComponent extends ForwardRefExoticComponent<
@@ -61,7 +57,7 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
             ref={ref}
             aria-label={stringFormatter.format('sidebar')}
             data-state={state}
-            className={cn('h-full', classNames.root)}
+            className={cn('h-full [grid-area:sidebar]', classNames.root)}
           >
             <CloseButton
               aria-label={stringFormatter.format('closeNavigation')}
@@ -87,7 +83,7 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
       ref={ref}
       aria-label={stringFormatter.format('sidebar')}
       data-state={state}
-      className={classNames.root}
+      className={cn('[grid-area:sidebar]', classNames.root)}
     >
       <div
         className={cn(

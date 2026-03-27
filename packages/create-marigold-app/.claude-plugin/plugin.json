@@ -1,0 +1,11 @@
+{
+  "name": "create-marigold-app",
+  "version": "0.1.0",
+  "description": "Scaffold and prototype with the Marigold Design System",
+  "author": {
+    "name": "Marigold UI"
+  },
+  "repository": "https://github.com/marigold-ui/marigold",
+  "license": "MIT",
+  "skills": "./skills/"
+}

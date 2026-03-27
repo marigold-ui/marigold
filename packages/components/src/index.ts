@@ -5,6 +5,15 @@ export * from './hooks';
 // Component exports
 export { Accordion } from './Accordion/Accordion';
 export type { AccordionProps } from './Accordion/Accordion';
+
+export { AppLayout } from './AppLayout/AppLayout';
+export type {
+  AppLayoutProps,
+  AppLayoutHeaderProps,
+  AppLayoutSidebarProps,
+  AppLayoutMainProps,
+} from './AppLayout/AppLayout';
+
 export { AccordionItem } from './Accordion/AccordionItem';
 export type { DisclosureProps } from './Accordion/AccordionItem';
 

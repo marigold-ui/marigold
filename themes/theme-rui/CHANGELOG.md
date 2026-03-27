@@ -1,5 +1,25 @@
 # @marigold/theme-rui
 
+## 5.2.3
+
+### Patch Changes
+
+- Updated dependencies [d3374cd]
+  - @marigold/components@17.3.1
+  - @marigold/system@17.3.1
+
+## 5.2.2
+
+### Patch Changes
+
+- 6a29a6c: style([DST-1256]): Replace hardcoded values with semantic tokens
+- f3068d7: fix([DST-1255]): Use correct semantic tokens in Tag and Slider style files
+- Updated dependencies [a48059c]
+- Updated dependencies [6a29a6c]
+- Updated dependencies [548dcb4]
+  - @marigold/components@17.3.0
+  - @marigold/system@17.3.0
+
 ## 5.2.1
 
 ### Patch Changes

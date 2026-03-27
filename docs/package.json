@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "17.2.1",
+  "version": "17.3.1",
   "private": true,
   "scripts": {
     "build": "pnpm run build:registry && pnpm run build:changelog && next build",
@@ -10,8 +10,7 @@
     "postinstall": "fumadocs-mdx && pnpm run build:registry",
     "lint": "eslint",
     "build:registry": "node scripts/build-registry.mjs",
-    "build:changelog": "zx ./scripts/build-changelog.mjs",
-    "build:md-docs": "pnpm tsx app/mcp/build.ts"
+    "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
     "@internationalized/date": "^3.12.0",
@@ -24,6 +23,7 @@
     "@react-aria/i18n": "3.12.16",
     "@radix-ui/react-popover": "^1.1.15",
     "@tanstack/react-query": "^5.62.0",
+    "@vercel/analytics": "2.0.1",
     "class-variance-authority": "^0.7.1",
     "dayjs": "^1.11.13",
     "dotenv": "17.3.1",

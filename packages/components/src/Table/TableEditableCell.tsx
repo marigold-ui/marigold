@@ -232,7 +232,7 @@ export const TableEditableCell = ({
               {children}
             </TableCellContent>
             {!disabled && (
-              <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 [.group\/editable-cell:has(:focus-visible)_&]:opacity-100 [[role=row]:hover_&]:opacity-100">
+              <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 group-has-[:focus-visible]/editable-cell:opacity-100 [[role=row]:hover_&]:opacity-100">
                 <Button
                   className={classNames.editTrigger}
                   aria-label={stringFormatter.format('edit')}

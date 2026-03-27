@@ -1,5 +1,31 @@
 # @marigold/components
 
+## 17.3.1
+
+### Patch Changes
+
+- d3374cd: fix: Replace arbitrary Tailwind variant with built-in group variant in TableEditableCell to fix CSS parsing error in Next.js (LightningCSS)
+  - @marigold/system@17.3.1
+
+## 17.3.0
+
+### Minor Changes
+
+- a48059c: feat([DST-1208]): Introduce AppLayout Component
+  - CSS Grid layout with `Sidebar`, `Header`, and `Main` slot sub-components
+  - Full viewport height (`100dvh`) with scrollable main content area and fixed sidebar/header
+  - Compound component pattern with ref support
+  - Fixed header height of `3.5rem` (`h-14`)
+  - App Shell pattern documentation with full-page demo
+  - Updated TopNavigation demos to use `Sidebar.Toggle`
+  - Aligned Sidebar header height with AppLayout header
+
+### Patch Changes
+
+- 6a29a6c: style([DST-1256]): Replace hardcoded values with semantic tokens
+- 548dcb4: Wrap `useToast` return values (`addToast`, `clearToasts`, `removeToast`) in `useCallback` so they are referentially stable across renders and safe to use in `useEffect` dependency arrays
+  - @marigold/system@17.3.0
+
 ## 17.2.1
 
 ### Patch Changes
