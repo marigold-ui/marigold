@@ -5,7 +5,8 @@ export default () => (
   <MarigoldProvider theme={theme} className="rounded-lg">
     <Inset space={6}>
       <Card p={4}>
-        This card will always be on a sunken surface with rounded corners.
+        This card sits inside a MarigoldProvider whose root wrapper is styled
+        with rounded corners via the className prop.
       </Card>
     </Inset>
   </MarigoldProvider>
