@@ -5,7 +5,7 @@ export const Slider: ThemeComponent<'Slider'> = {
   track: cva({
     base: [
       'relative bg-muted rounded-lg flex w-full touch-none select-none items-center',
-      'orientation-vertical:h-full orientation-vertical:w-auto orientation-vertical:flex-col disabled:opacity-50',
+      'orientation-vertical:h-full orientation-vertical:w-auto orientation-vertical:flex-col disabled:bg-disabled-surface disabled:cursor-not-allowed',
     ],
   }),
   selectedTrack: cva({
@@ -17,7 +17,7 @@ export const Slider: ThemeComponent<'Slider'> = {
     base: [
       'block h-5 w-5 rounded-full border-2 border-primary bg-surface transition-colors',
       'focus-visible:ui-state-focus outline-none',
-      'disabled:cursor-not-allowed',
+      'disabled:cursor-not-allowed disabled:border-disabled-surface-foreground',
     ],
   }),
   output: cva({ base: 'text-foreground text-sm' }),

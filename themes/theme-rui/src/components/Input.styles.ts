@@ -28,7 +28,7 @@ export const Input: ThemeComponent<'Input'> = {
   icon: cva({
     base: [
       'pointer-events-none left-2.5',
-      'text-secondary disabled:text-disabled-foreground',
+      'text-secondary disabled:text-disabled',
     ],
   }),
   action: cva({ base: ['text-secondary pr-1 right-2'] }),

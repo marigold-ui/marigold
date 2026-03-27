@@ -2,13 +2,13 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Switch: ThemeComponent<'Switch'> = {
   container: cva({
-    base: 'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+    base: 'disabled:cursor-not-allowed disabled:text-disabled',
   }),
   track: cva({
     base: [
       'flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors',
       'border-2 border-transparent', // this increases the hit area so it is 24px
-      'group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground',
+      'group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled',
       'group-selected/switch:bg-primary bg-input',
       'group-focus-visible/switch:ui-state-focus outline-none',
     ],

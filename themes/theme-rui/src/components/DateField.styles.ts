@@ -19,12 +19,12 @@ export const DateField: ThemeComponent<'DateField'> = {
       'text-foreground',
       'data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0',
       'data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground',
-      'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',
-      'data-placeholder:disabled:text-disabled-foreground',
+      'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
+      'data-placeholder:disabled:text-disabled',
       'invalid:text-destructive-accent invalid:data-focused:bg-destructive-accent invalid:data-focused:text-destructive-accent-foreground invalid:data-focused:data-placeholder:text-destructive-accent-foreground',
     ],
   }),
   action: cva({
-    base: 'fill-secondary disabled:text-disabled-foreground group-invalid/field:fill-destructive-accent',
+    base: 'fill-secondary disabled:text-disabled group-invalid/field:fill-destructive-accent',
   }),
 };

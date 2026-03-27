@@ -21,7 +21,7 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       // ToggleButton-specific styles
       'ui-surface shadow-elevation-border',
       'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-      'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
+      'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
       'selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none',
 
       // Group-specific styles for ToggleButtonGroup

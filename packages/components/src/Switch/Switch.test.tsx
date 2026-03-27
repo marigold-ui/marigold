@@ -25,14 +25,14 @@ test('supports base styling', () => {
   const { label, container, track, thumb } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
   );
   expect(container.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center gap-[1ch] disabled:cursor-not-allowed disabled:text-disabled-foreground"`
+    `"w-full group/switch flex items-center gap-[1ch] disabled:cursor-not-allowed disabled:text-disabled"`
   );
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-primary bg-input group-focus-visible/switch:ui-state-focus outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled group-selected/switch:bg-primary bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 
@@ -42,7 +42,7 @@ test('supports a custom variant', () => {
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-primary bg-input group-focus-visible/switch:ui-state-focus outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled group-selected/switch:bg-primary bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 
@@ -58,7 +58,7 @@ test('takes full width by default', () => {
 
   const { container } = getSwitchParts();
   expect(container.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center gap-[1ch] disabled:cursor-not-allowed disabled:text-disabled-foreground"`
+    `"w-full group/switch flex items-center gap-[1ch] disabled:cursor-not-allowed disabled:text-disabled"`
   );
 });
 
@@ -67,7 +67,7 @@ test('allows to set width via prop', () => {
   const { label } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
   );
 });
 
@@ -78,7 +78,7 @@ test('supports disabled prop', () => {
   expect(input).toBeDisabled();
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-primary bg-input group-focus-visible/switch:ui-state-focus outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled group-selected/switch:bg-primary bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 

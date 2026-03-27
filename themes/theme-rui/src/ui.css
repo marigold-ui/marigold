@@ -104,8 +104,8 @@
  * Applies a consistent visual style for disabled elements.
  */
 @utility ui-state-disabled {
-  @apply text-disabled-foreground cursor-not-allowed;
-  background: var(--color-disabled);
+  @apply text-disabled cursor-not-allowed;
+  background: var(--color-disabled-surface);
   background-clip: border-box;
   box-shadow: none;
 }

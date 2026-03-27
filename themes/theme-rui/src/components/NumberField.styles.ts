@@ -14,7 +14,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     base: [
       'w-8 h-full text-center shrink-0 grid palce-items-center',
       'text-foreground',
-      'disabled:text-disabled-foreground disabled:bg-disabled',
+      'disabled:text-disabled disabled:bg-disabled-surface',
       'border-input!',
       'first-of-type:border-r! first-of-type:rounded-l-[calc(var(--radius-lg)-1px)]',
       'last-of-type:border-l! last-of-type:rounded-r-[calc(var(--radius-lg)-1px)]',
@@ -25,7 +25,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
       'ui-input',
       'flex-1',
       'group-data-stepper/field:text-center',
-      'disabled:text-disabled-foreground disabled:bg-disabled',
+      'disabled:text-disabled disabled:bg-disabled-surface',
     ],
   }),
 };

@@ -12,7 +12,7 @@ export const Menu: ThemeComponent<'Menu'> = {
   item: cva({
     base: [
       'relative flex cursor-pointer items-center gap-2 rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
-      'disabled:text-disabled-foreground',
+      'disabled:text-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
     ],
     variants: {
@@ -40,8 +40,8 @@ export const Menu: ThemeComponent<'Menu'> = {
         default: [
           'ui-surface shadow-elevation-border',
           'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
-          'pending:[--ui-background-color:var(--color-disabled)] pending:border-0 pending:shadow-none',
+          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
+          'pending:[--ui-background-color:var(--color-disabled-surface)] pending:border-0 pending:shadow-none',
           'expanded:[--ui-background-color:var(--color-hover)]',
         ],
         ghost: 'hover:bg-hover hover:text-foreground',

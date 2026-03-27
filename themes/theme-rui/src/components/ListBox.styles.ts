@@ -23,7 +23,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
       '[&_.selection-indicator>svg]:invisible [&_.selection-indicator>svg]:block',
       'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
       'hover:bg-hover',
-      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+      'disabled:cursor-not-allowed disabled:text-disabled',
       'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
       'cursor-default data-selection-mode:cursor-pointer',
       '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-secondary',
