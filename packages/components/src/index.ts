@@ -14,9 +14,6 @@ export type {
   AppLayoutMainProps,
 } from './AppLayout/AppLayout';
 
-export { AccordionItem } from './Accordion/AccordionItem';
-export type { DisclosureProps } from './Accordion/AccordionItem';
-
 export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
 export { ActionButton } from './ActionBar/ActionButton';
@@ -156,9 +153,6 @@ export type { ListProps } from './List/List';
 
 export { ListBox } from './ListBox/ListBox';
 export type { ListBoxProps } from './ListBox/ListBox';
-export { ListBoxItem } from './ListBox/ListBoxItem';
-export type { ListBoxItemProps } from './ListBox/ListBoxItem';
-
 export { ActionMenu } from './Menu/ActionMenu';
 export type { ActionMenuProps } from './Menu/ActionMenu';
 
@@ -185,10 +179,7 @@ export type { UnderlayProps } from './Overlay/Underlay';
 export { Pagination } from './Pagination/Pagination';
 export type { PaginationProps } from './Pagination/Pagination';
 
-export {
-  ProgressCircle,
-  ProgressCircleSvg,
-} from './ProgressCircle/ProgressCircle';
+export { ProgressCircle } from './ProgressCircle/ProgressCircle';
 export type { ProgressCircleProps } from './ProgressCircle/ProgressCircle';
 
 export { I18nProvider } from '@react-aria/i18n';
@@ -220,9 +211,6 @@ export type { SelectProps } from './Select/Select';
 
 export { SelectList } from './SelectList/SelectList';
 export type { SelectListProps } from './SelectList/SelectList';
-export { SelectListItem } from './SelectList/SelectListItem';
-export type { SelectListItemProps } from './SelectList/SelectListItem';
-
 export { Slider } from './Slider/Slider';
 export type { SliderProps } from './Slider/Slider';
 
