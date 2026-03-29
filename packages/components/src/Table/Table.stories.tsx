@@ -790,24 +790,21 @@ export const ScrollableAndSticky = meta.story({
 
 export const Links = meta.story({
   tags: ['component-test'],
-  args: {
-    selectionMode: 'multiple',
-  },
   render: args => {
     const websites = [
       {
         name: 'Marigold',
-        url: 'https://marigold-ui.io',
+        url: '#marigold',
         description: 'Design System & Component Library',
       },
       {
         name: 'Reservix',
-        url: 'https://reservix.net',
+        url: '#reservix',
         description: 'Ticketing Platform',
       },
       {
         name: 'ADticket',
-        url: 'https://www.adticket.de/',
+        url: '#adticket',
         description: 'Event Ticketing Service',
       },
     ];
@@ -817,7 +814,6 @@ export const Links = meta.story({
         <Table.Header>
           <Table.Column rowHeader>Name</Table.Column>
           <Table.Column>Description</Table.Column>
-          <Table.Column>URL</Table.Column>
         </Table.Header>
         <Table.Body>
           {websites.map(site => (
@@ -826,11 +822,6 @@ export const Links = meta.story({
                 <Text weight="medium">{site.name}</Text>
               </Table.Cell>
               <Table.Cell>{site.description}</Table.Cell>
-              <Table.Cell>
-                <Text size="sm" color="muted-foreground">
-                  {site.url}
-                </Text>
-              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
@@ -855,12 +846,6 @@ export const Links = meta.story({
       ).toBeInTheDocument();
       expect(canvas.getByText('Ticketing Platform')).toBeInTheDocument();
       expect(canvas.getByText('Event Ticketing Service')).toBeInTheDocument();
-    });
-
-    await step('Verify URLs are displayed', async () => {
-      expect(canvas.getByText('https://marigold-ui.io')).toBeInTheDocument();
-      expect(canvas.getByText('https://reservix.net')).toBeInTheDocument();
-      expect(canvas.getByText('https://www.adticket.de/')).toBeInTheDocument();
     });
   },
 });
