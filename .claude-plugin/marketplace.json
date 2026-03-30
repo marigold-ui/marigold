@@ -1,0 +1,27 @@
+{
+  "name": "marigold-plugins",
+  "owner": {
+    "name": "Marigold UI",
+    "url": "https://github.com/marigold-ui"
+  },
+  "plugins": [
+    {
+      "name": "create-marigold-app",
+      "description": "Scaffold and prototype with the Marigold Design System",
+      "version": "0.1.0",
+      "source": "./packages/create-marigold-app",
+      "author": {
+        "name": "Marigold UI"
+      },
+      "repository": "https://github.com/marigold-ui/marigold",
+      "license": "MIT",
+      "keywords": [
+        "marigold",
+        "design-system",
+        "scaffold",
+        "react",
+        "prototyping"
+      ]
+    }
+  ]
+}

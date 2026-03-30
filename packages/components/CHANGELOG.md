@@ -1,5 +1,12 @@
 # @marigold/components
 
+## 17.3.1
+
+### Patch Changes
+
+- d3374cd: fix: Replace arbitrary Tailwind variant with built-in group variant in TableEditableCell to fix CSS parsing error in Next.js (LightningCSS)
+  - @marigold/system@17.3.1
+
 ## 17.3.0
 
 ### Minor Changes
