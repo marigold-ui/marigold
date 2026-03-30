@@ -39,7 +39,7 @@ export const Table: ThemeComponent<'Table'> = {
       'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
       'disabled:cursor-not-allowed',
-      'data-selection-mode:cursor-pointer data-selection-mode:hover:bg-hover',
+      'data-selection-mode:cursor-pointer data-selection-mode:hover:ui-state-hover',
       'dragging:opacity-50 dragging:transform-gpu',
     ],
     variants: {
@@ -72,7 +72,7 @@ export const Table: ThemeComponent<'Table'> = {
       'font-medium text-secondary',
       'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
-      'aria-[sort]:hover:bg-hover aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
+      'aria-[sort]:hover:ui-state-hover aria-[sort]:hover:cursor-pointer',
     ],
     variants: {
       variant: {
@@ -140,7 +140,7 @@ export const Table: ThemeComponent<'Table'> = {
       'size-control aspect-square rounded-surface transition-[color,background,transform]',
       'ui-interactive',
       'ui-press',
-      'hover:bg-current/10',
+      'hover:ui-state-hover-ghost',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5',
     ],
   }),
@@ -153,7 +153,7 @@ export const Table: ThemeComponent<'Table'> = {
       'ml-1.5', // some extra spacing between buttons and field
       'focus-visible:ui-state-focus outline-none',
       'ui-press',
-      'hover:bg-current/10',
+      'hover:ui-state-hover-ghost',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5',
     ],
   }),
@@ -165,7 +165,7 @@ export const Table: ThemeComponent<'Table'> = {
       'cursor-pointer',
       'focus-visible:ui-state-focus outline-none',
       'ui-press',
-      'hover:bg-current/10',
+      'hover:ui-state-hover-ghost',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4.5',
     ],
   }),

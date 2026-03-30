@@ -35,7 +35,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   toggle: cva({
     base: [
       'ui-button-base ui-press',
-      'hover:bg-current/10',
+      'hover:ui-state-hover-ghost',
       'size-control [&_svg]:size-6',
     ],
   }),
@@ -68,7 +68,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   navLink: cva({
     base: [
       'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
-      'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
+      'text-foreground/80 hover:ui-state-hover transition-colors',
       'data-active:bg-selected data-active:text-foreground data-active:font-medium',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
@@ -77,7 +77,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   backButton: cva({
     base: [
       'flex items-center gap-2 w-full pl-0.5 pr-2 h-9 text-sm rounded-md',
-      'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
+      'text-foreground/80 hover:ui-state-hover transition-colors',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
       'cursor-pointer mb-1',

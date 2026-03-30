@@ -18,10 +18,10 @@ export const Button: ThemeComponent<'Button'> = cva({
         'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
         'expanded:[--ui-background-color:var(--color-hover)]',
       ],
-      ghost: 'hover:bg-current/10',
+      ghost: 'hover:ui-state-hover-ghost',
       destructive:
         'bg-destructive-accent text-destructive-accent-foreground hover:bg-destructive-accent/90',
-      'destructive-ghost': 'text-destructive-accent hover:bg-current/8',
+      'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',
       link: 'text-link ui-touch-hitbox',
     },
     size: {

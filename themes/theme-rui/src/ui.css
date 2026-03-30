@@ -111,6 +111,22 @@
 }
 
 /*
+ * Applies a consistent hover background for list items, table rows, menu items,
+ * and other elements on white surfaces.
+ */
+@utility ui-state-hover {
+  @apply bg-hover text-foreground;
+}
+
+/*
+ * Applies a translucent hover for ghost buttons, tabs, action bar buttons,
+ * and other minimal elements that need to blend into any context.
+ */
+@utility ui-state-hover-ghost {
+  @apply bg-current/10;
+}
+
+/*
  * Applies a consistent visual style for readonly elements.
  */
 @utility ui-state-readonly {

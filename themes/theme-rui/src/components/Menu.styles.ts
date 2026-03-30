@@ -44,7 +44,7 @@ export const Menu: ThemeComponent<'Menu'> = {
           'pending:[--ui-background-color:var(--color-disabled-surface)] pending:border-0 pending:shadow-none',
           'expanded:[--ui-background-color:var(--color-hover)]',
         ],
-        ghost: 'hover:bg-hover hover:text-foreground',
+        ghost: 'hover:ui-state-hover',
       },
       size: {
         default: 'text-sm',

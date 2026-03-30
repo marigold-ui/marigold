@@ -13,9 +13,9 @@ export const Tabs: ThemeComponent<'Tabs'> = {
       'relative inline-flex items-center justify-center gap-1 rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
       '[&_svg]:shrink-0',
       'focus-visible:ui-state-focus outline-none',
-      'hover:bg-current/10',
+      'hover:ui-state-hover-ghost',
       'disabled:cursor-not-allowed disabled:text-disabled',
-      'selected:text-foreground selected:hover:bg-current/10',
+      'selected:text-foreground selected:hover:ui-state-hover-ghost',
     ],
   }),
   tabIndicator: cva({

@@ -227,6 +227,24 @@ Background tints applied on white surfaces to communicate interaction and status
 
 </Callout>
 
+#### Hover utilities
+
+**Solid hover** for items on white surfaces (list items, table rows, menu items, sidebar links):
+
+```tsx
+<ListBox.Item className="hover:ui-state-hover" />
+```
+
+Uses `bg-hover` (charcoal-200) with `text-foreground`. The `ui-state-hover` utility bundles both.
+
+**Ghost hover** for minimal elements that blend into any context (ghost buttons, tabs, action bar):
+
+```tsx
+<Button variant="ghost" className="hover:ui-state-hover-ghost" />
+```
+
+Uses `bg-current/10` -- a 10% translucent overlay of the current text color. Adapts automatically to light and dark contexts.
+
 ### Disabled
 
 Two tokens handle disabled states depending on whether a background is needed.
