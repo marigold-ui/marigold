@@ -32,7 +32,6 @@ Many tokens come in pairs: a background token and a `-foreground` token for text
 | `bg-primary`            | `text-primary-foreground`            | Buttons, strong selections     |
 | `bg-destructive`        | `text-destructive-foreground`        | Error badges, section messages |
 | `bg-destructive-accent` | `text-destructive-accent-foreground` | Destructive button             |
-| `bg-disabled-surface`   | `text-disabled`                      | Disabled inputs                |
 | `bg-access-master`      | `text-access-master-foreground`      | Master access rows             |
 | `bg-access-admin`       | `text-access-admin-foreground`       | Admin access rows              |
 
@@ -43,7 +42,8 @@ Many tokens come in pairs: a background token and a `-foreground` token for text
 - `selected` -- no text change on selection
 - `focus-highlight` -- no text change on focus
 - `surface` -- uses `text-foreground` or `text-secondary`
-- `secondary`, `placeholder`, `disabled` (standalone) -- these ARE text tokens, not backgrounds
+- `secondary`, `placeholder` -- these ARE text tokens, not backgrounds
+- `disabled` -- primarily a text token. When a background is needed, pair with `bg-disabled-surface` (see [Disabled](#disabled) for details)
 
 <GuidelineTiles>
   <Do>
