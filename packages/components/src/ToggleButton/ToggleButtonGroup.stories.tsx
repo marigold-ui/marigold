@@ -9,6 +9,13 @@ import { ToggleButtonGroup } from './ToggleButtonGroup';
 const meta = preview.meta({
   title: 'Components/ToggleButtonGroup',
   component: ToggleButtonGroup,
+  decorators: [
+    Story => (
+      <div className="self-start">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     disabled: {
       control: {

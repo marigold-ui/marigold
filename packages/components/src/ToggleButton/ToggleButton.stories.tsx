@@ -7,6 +7,13 @@ import { ToggleButton } from './ToggleButton';
 const meta = preview.meta({
   title: 'Components/ToggleButton',
   component: ToggleButton,
+  decorators: [
+    Story => (
+      <div className="self-start">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     children: {
       control: 'text',
