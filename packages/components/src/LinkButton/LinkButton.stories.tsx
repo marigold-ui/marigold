@@ -4,6 +4,13 @@ import { LinkButton } from './LinkButton';
 const meta = preview.meta({
   title: 'Components/LinkButton',
   component: LinkButton,
+  decorators: [
+    Story => (
+      <div className="self-start">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     size: {
       control: {
