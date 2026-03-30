@@ -11,6 +11,9 @@ import { Inline } from './Inline';
 const meta = preview.meta({
   title: 'Components/Inline',
   component: Inline,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     space: {
       control: {
