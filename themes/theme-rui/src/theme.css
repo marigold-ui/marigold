@@ -107,14 +107,6 @@
   --color-border: var(--color-charcoal-200);
   --color-ring: var(--color-charcoal-400);
 
-  /*
-    Status color structure:
-      base             -- subtle bg
-      foreground       -- text on subtle bg
-      accent           -- the vibrant/saturated color (borders, icons, standalone text, strong bg)
-      accent-foreground -- text on accent bg (only destructive, for the destructive button)
-  */
-
   /* --- Status: Destructive --- */
   --color-destructive: var(--color-red-100);
   --color-destructive-foreground: var(--color-red-950);

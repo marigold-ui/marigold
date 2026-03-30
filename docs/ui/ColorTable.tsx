@@ -19,7 +19,10 @@ interface ColorPalettesProps {
   modifiers?: string[];
 }
 
-const ColorTable = ({ property, modifiers = [''] }: ColorPalettesProps) => (
+export const ColorTable = ({
+  property,
+  modifiers = [''],
+}: ColorPalettesProps) => (
   <table aria-labelledby={`${property} token table`} style={{ width: '100%' }}>
     <thead>
       <tr>

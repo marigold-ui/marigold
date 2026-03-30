@@ -8,6 +8,7 @@ import {
   BorderRadius,
   Center,
   ColorPalettes,
+  ColorTable,
   ColorTokenTable,
   Columns,
   ComponentDemo,
@@ -26,6 +27,7 @@ import {
   Stack,
   StorybookHintMessage,
   TeaserList,
+  TokenTable,
 } from '@/ui';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import {
@@ -83,8 +85,10 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
             Center,
 
             ImageZoom,
+            ColorTable,
             ColorTokenTable,
             ColorPalettes,
+            TokenTable,
 
             Spacing,
             BorderRadius,

@@ -1,7 +1,7 @@
 {
   "pages": [
     "accessibility",
-    "design-tokens",
+    "token-overview",
     "elevation",
     "layouts",
     "icons",
