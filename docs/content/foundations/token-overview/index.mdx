@@ -274,14 +274,10 @@ Two tokens handle disabled states depending on whether a background is needed.
 </Callout>
 
 ```tsx
-{
-  /* Text-only disabled (labels, help text, menu items) */
-}
-<span className="text-disabled cursor-not-allowed">Disabled label</span>;
+// Text-only disabled (labels, help text, menu items)
+<span className="text-disabled cursor-not-allowed">Disabled label</span>
 
-{
-  /* Full disabled control (inputs, buttons) */
-}
+// Full disabled control (inputs, buttons)
 <input className="bg-disabled-surface text-disabled cursor-not-allowed" />;
 ```
 
@@ -351,27 +347,19 @@ Status colors follow a consistent structure across all four statuses:
 - **accent-foreground** -- text on accent background (destructive only)
 
 ```tsx
-{
-  /* Subtle status container */
-}
-<Badge className="bg-destructive text-destructive-foreground">Error</Badge>;
+// Subtle status container
+<Badge className="bg-destructive text-destructive-foreground">Error</Badge>
 
-{
-  /* Accent border on subtle container */
-}
-<SectionMessage className="bg-warning border-warning-accent text-warning-foreground" />;
+// Accent border on subtle container
+<SectionMessage className="bg-warning border-warning-accent text-warning-foreground" />
 
-{
-  /* Error text (standalone) */
-}
-<span className="text-destructive-accent">This field is required</span>;
+// Error text (standalone)
+<span className="text-destructive-accent">This field is required</span>
 
-{
-  /* Destructive button */
-}
+// Destructive button
 <Button className="bg-destructive-accent text-destructive-accent-foreground">
   Delete
-</Button>;
+</Button>
 ```
 
 #### Destructive
@@ -523,15 +511,11 @@ Domain-specific tokens for Reservix access level indicators.
 The overlay backdrop token provides the base color. Components apply their own opacity:
 
 ```tsx
-{
-  /* Modal: darker backdrop */
-}
-<div className="bg-overlay-backdrop/80" />;
+// Modal: darker backdrop
+<div className="bg-overlay-backdrop/80" />
 
-{
-  /* Tray: lighter backdrop */
-}
-<div className="bg-overlay-backdrop/50" />;
+// Tray: lighter backdrop
+<div className="bg-overlay-backdrop/50" />
 ```
 
 ## Elevation
