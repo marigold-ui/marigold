@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
-    base: 'group inline-flex ui-surface shadow-elevation-border',
+    base: 'group inline-flex overflow-hidden ui-surface shadow-elevation-border',
     variants: {
       size: {
         default: 'text-sm',
@@ -25,9 +25,9 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none',
 
       // Group-specific styles for ToggleButtonGroup
+      // Group uses overflow-hidden to clip backgrounds to its border radius
       'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0',
-      'in-[.group]:first:rounded-l-surface',
-      'in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0',
+      'in-[.group]:last:border-r-0',
     ],
     variants: {
       size: {
