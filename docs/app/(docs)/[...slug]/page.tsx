@@ -1,15 +1,9 @@
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
-  AlignmentsX,
-  AlignmentsY,
   AppearanceDemo,
   AppearanceTable,
-  BorderRadius,
   Center,
-  ColorPalettes,
-  ColorTable,
-  ColorTokenTable,
   Columns,
   ComponentDemo,
   DateFormat,
@@ -23,7 +17,6 @@ import {
   GuidelineTiles,
   IconList,
   RelativeTime,
-  Spacing,
   Stack,
   StorybookHintMessage,
   TeaserList,
@@ -85,15 +78,7 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
             Center,
 
             ImageZoom,
-            ColorTable,
-            ColorTokenTable,
-            ColorPalettes,
             TokenTable,
-
-            Spacing,
-            BorderRadius,
-            AlignmentsX,
-            AlignmentsY,
 
             IconList,
             PostList,
