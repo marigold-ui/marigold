@@ -135,13 +135,10 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   editTrigger: cva({
     base: [
-      'flex items-center justify-center',
-      'text-muted-foreground',
-      'size-button aspect-square rounded-surface transition-[color,background,transform]',
-      'ui-interactive',
-      'ui-press',
-      'hover:bg-current/10',
-      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5',
+      'absolute inset-0 cursor-pointer',
+      'ring-1 ring-inset ring-border/40',
+      'hover:ring-border',
+      'outline-none',
     ],
   }),
   editCancel: cva({
