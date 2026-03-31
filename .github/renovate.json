@@ -11,27 +11,67 @@
       "minimumReleaseAge": "3 days"
     },
     {
-      "groupName": "react-aria",
-      "matchPackageNames": [
-        "/@react-aria/",
-        "/@react-stately/",
-        "/@react-types/",
-        "/@internationalized/",
-        "/react-aria-components/"
-      ]
+      "description": "Broad groups first (last matching groupName wins in Renovate)",
+      "groupName": "react",
+      "matchPackageNames": ["/^react$/", "/^react-dom$/"]
+    },
+    {
+      "groupName": "typescript",
+      "matchPackageNames": ["/^typescript$/", "/@types/", "type-fest"]
     },
     {
       "groupName": "eslint",
       "matchPackageNames": ["/eslint/"]
     },
     {
+      "groupName": "tailwind",
+      "matchPackageNames": [
+        "/tailwindcss/",
+        "tailwind-merge",
+        "/postcss/",
+        "autoprefixer"
+      ]
+    },
+    {
+      "groupName": "vite",
+      "matchPackageNames": ["/^vite$/", "/@vitejs/", "/^vite-/"]
+    },
+    {
+      "groupName": "mdx",
+      "matchPackageNames": [
+        "/rehype/",
+        "/remark/",
+        "/@mdx-js/",
+        "/mdast/",
+        "/vfile/",
+        "/unist/",
+        "unified"
+      ]
+    },
+    {
+      "description": "Specific overrides below (win over broader groups above)",
+      "groupName": "react-aria",
+      "matchPackageNames": [
+        "/@react-aria/",
+        "/@react-stately/",
+        "/@react-types/",
+        "/@internationalized/",
+        "react-aria-components",
+        "react-stately",
+        "tailwindcss-react-aria-components"
+      ]
+    },
+    {
+      "groupName": "fumadocs",
+      "matchPackageNames": ["/^fumadocs/"]
+    },
+    {
       "groupName": "testing",
       "matchPackageNames": [
         "/testing-library/",
-        "/swc/",
+        "/vitest/",
         "/playwright/",
-        "/axe-playwright/",
-        "/vitest/"
+        "/axe-playwright/"
       ]
     },
     {
@@ -39,27 +79,12 @@
       "matchPackageNames": ["/@storybook/", "/storybook/"]
     },
     {
-      "groupName": "mdx",
-      "matchPackageNames": [
-        "/rehype/",
-        "/remark/",
-        "/mdx/",
-        "/mdast/",
-        "/vfile/",
-        "/unist/"
-      ]
-    },
-    {
       "groupName": "docs",
-      "matchPackageNames": ["/next/", "/contentlayer/"]
+      "matchPackageNames": ["/^next$/", "/@next/", "eslint-config-next"]
     },
     {
       "groupName": "docs-demos",
-      "matchPackageNames": ["/react-hook-form/", "/zod/"]
-    },
-    {
-      "groupName": "tailwind",
-      "matchPackageNames": ["/postcss/", "/tailwind/"]
+      "matchPackageNames": ["react-hook-form", "/^zod/", "zod-form-data"]
     },
     {
       "groupName": "formatting",
@@ -70,18 +95,6 @@
       ]
     },
     {
-      "groupName": "vite",
-      "matchPackageNames": [
-        "/vite/",
-        "@vitejs/plugin-react",
-        "vite-tsconfig-paths"
-      ]
-    },
-    {
-      "groupName": "typescript",
-      "matchPackageNames": ["/typescript/", "/@types/", "type-fest"]
-    },
-    {
       "groupName": "git-cli",
       "matchPackageNames": ["simple-git", "zx", "concurrently"]
     },
@@ -90,12 +103,8 @@
       "matchPackageNames": ["/@tanstack/"]
     },
     {
-      "groupName": "zod",
-      "matchPackageNames": ["/zod/", "zod-form-data"]
-    },
-    {
-      "groupName": "react",
-      "matchPackageNames": ["/^react$/", "/^react-dom$/", "/^react-/"]
+      "groupName": "build-tools",
+      "matchPackageNames": ["turbo", "tsdown"]
     },
     {
       "description": "Automerge non-major updates",
