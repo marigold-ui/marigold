@@ -14,6 +14,9 @@ export default mergeConfig(
   configShared,
   defineConfig({
     plugins: [react(), tailwindcss()],
+    optimizeDeps: {
+      include: ['@vitest/coverage-istanbul'],
+    },
     resolve: {
       alias: {
         '.storybook': path.resolve(dirname, '.storybook'),
