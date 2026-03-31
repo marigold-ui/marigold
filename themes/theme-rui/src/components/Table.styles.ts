@@ -39,7 +39,7 @@ export const Table: ThemeComponent<'Table'> = {
       'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
       'disabled:cursor-not-allowed',
-      'data-selection-mode:cursor-pointer data-selection-mode:hover:ui-state-hover',
+      'data-hovered:cursor-pointer data-hovered:ui-state-hover',
       'dragging:opacity-50 dragging:transform-gpu',
     ],
     variants: {
