@@ -8,13 +8,9 @@ import { Button } from './Button';
 const meta = preview.meta({
   title: 'Components/Button',
   component: Button,
-  decorators: [
-    Story => (
-      <div className="self-start">
-        <Story />
-      </div>
-    ),
-  ],
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     disabled: {
       control: {
