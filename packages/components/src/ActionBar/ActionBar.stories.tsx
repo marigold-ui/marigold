@@ -13,6 +13,9 @@ import { ActionBar } from './ActionBar';
 const meta = preview.meta({
   title: 'Components/ActionBar',
   component: ActionBar,
+  parameters: {
+    surface: false,
+  },
   decorators: [
     Story => (
       <I18nProvider locale="en-US">
