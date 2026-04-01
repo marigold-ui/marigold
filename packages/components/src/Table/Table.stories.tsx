@@ -10,6 +10,7 @@ import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
+import { NumberField } from '../NumberField/NumberField';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
@@ -1042,6 +1043,9 @@ export const EditableCell = meta.story({
           name: (formData.get('name') as string) || next[index].name,
           email: (formData.get('email') as string) || next[index].email,
           status: (formData.get('status') as string) || next[index].status,
+          balance: formData.has('balance')
+            ? Number(formData.get('balance'))
+            : next[index].balance,
         };
         return next;
       });
@@ -1055,6 +1059,7 @@ export const EditableCell = meta.story({
             <Table.Column>Email</Table.Column>
             <Table.Column>Location</Table.Column>
             <Table.Column>Status</Table.Column>
+            <Table.Column alignX="right">Balance</Table.Column>
           </Table.Header>
           <Table.Body>
             {data.map((user, i) => (
@@ -1099,6 +1104,28 @@ export const EditableCell = meta.story({
                   onSubmit={e => handleSubmit(i, e)}
                 >
                   <Badge>{user.status}</Badge>
+                </Table.EditableCell>
+                <Table.EditableCell
+                  alignX="right"
+                  field={
+                    <NumberField
+                      aria-label="Balance"
+                      name="balance"
+                      defaultValue={user.balance}
+                      formatOptions={{
+                        style: 'currency',
+                        currency: 'EUR',
+                      }}
+                      hideStepper
+                    />
+                  }
+                  onSubmit={e => handleSubmit(i, e)}
+                >
+                  <NumericFormat
+                    value={user.balance}
+                    style="currency"
+                    currency="EUR"
+                  />
                 </Table.EditableCell>
               </Table.Row>
             ))}
