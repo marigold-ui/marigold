@@ -23,6 +23,17 @@ A link button consists of a pressable area, often containing a textual label or 
 
 <AppearanceTable component={'LinkButton'} />
 
+The LinkButton shares the same visual variants as the [Button](/components/actions/button) component, applied to a navigational element.
+
+| Variant             | Description                                                       | When to use                                                                          |
+| ------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `primary`           | High-contrast, filled button that draws attention.                | The most important navigational action, like "Get started" or "Sign up".             |
+| `secondary`         | Neutral button with a subtle border. This is the default variant. | Supporting navigational actions that complement the primary, like "Learn more".      |
+| `ghost`             | Transparent button with no border or background.                  | Low-emphasis navigation that should be available but not prominent.                  |
+| `destructive`       | Red filled button signaling a dangerous action.                   | Navigation related to destructive flows, like going to a deletion confirmation page. |
+| `destructive-ghost` | Red text with no background.                                      | Destructive navigation that is not the primary focus of the current view.            |
+| `link`              | Styled as an inline text link.                                    | Navigation that should visually blend with surrounding text.                         |
+
 ## Usage
 
 A link button should be used whenever the primary user action is navigation. It is the ideal choice when you need the visual prominence of a button for a call-to-action that directs the user to a different page or URL. For example, a "Sign Up Now" or "Learn More" element that takes the user to a new registration or features page is a perfect use case. Using a link button ensures that standard browser behaviors, such as opening a link in a new tab or copying the address, are preserved.
