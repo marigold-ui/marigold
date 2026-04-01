@@ -94,6 +94,7 @@ export const Table: ThemeComponent<'Table'> = {
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
       'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/50',
       '**:data-cell-content:outline-none',
+      'has-[[aria-label=Edit]:hover]:bg-muted',
     ],
   }),
 
@@ -135,10 +136,9 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   editTrigger: cva({
     base: [
-      'absolute inset-0 cursor-pointer',
-      'ring-1 ring-inset ring-border/40',
-      'hover:ring-border',
+      'absolute -inset-px cursor-pointer',
       'outline-none',
+      'hover:border hover:border-stone-950',
     ],
   }),
   editCancel: cva({
