@@ -12,10 +12,7 @@ const queryClient = new QueryClient();
 const withMarigoldProviders: Decorator[] = [
   (Story, context) => (
     <QueryClientProvider client={queryClient}>
-      <MarigoldProvider
-        theme={theme}
-        className={`min-h-screen ${context.parameters.padding === false ? '' : 'p-6'}`}
-      >
+      <MarigoldProvider theme={theme} className="min-h-screen">
         <OverlayContainerProvider container="storybook-root">
           <Story />
         </OverlayContainerProvider>

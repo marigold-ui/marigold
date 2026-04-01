@@ -27,7 +27,7 @@ const isVitest =
 export default definePreview({
   addons: [addonA11y(), addonDocs()],
   parameters: {
-    layout: 'fullscreen',
+    layout: 'padded',
     viewport: {
       options: {
         ...MINIMAL_VIEWPORTS,
