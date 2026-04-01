@@ -39,10 +39,10 @@ export const Menu: ThemeComponent<'Menu'> = {
       variant: {
         default: [
           'ui-surface shadow-elevation-border',
-          'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
+          'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
           'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
           'pending:[--ui-background-color:var(--color-disabled-surface)] pending:border-0 pending:shadow-none',
-          'expanded:[--ui-background-color:var(--color-hover)]',
+          'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
         ],
         ghost: 'hover:ui-state-hover',
       },

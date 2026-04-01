@@ -15,8 +15,8 @@ export const Button: ThemeComponent<'Button'> = cva({
       ],
       secondary: [
         'ui-surface shadow-elevation-border',
-        'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-        'expanded:[--ui-background-color:var(--color-hover)]',
+        'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
+        'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
       ],
       ghost: 'hover:ui-state-hover-ghost',
       destructive:
