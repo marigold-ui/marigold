@@ -9,6 +9,9 @@ import { ToggleButtonGroup } from './ToggleButtonGroup';
 const meta = preview.meta({
   title: 'Components/ToggleButtonGroup',
   component: ToggleButtonGroup,
+  parameters: {
+    surface: false,
+  },
   decorators: [
     Story => (
       <div className="self-start">
@@ -110,6 +113,22 @@ Basic.test('Clicking buttons updates selection', async ({ canvas, step }) => {
       );
     });
   });
+});
+
+export const BothSurfaces = meta.story({
+  parameters: {
+    surface: 'both',
+  },
+  args: {
+    selectionMode: 'single',
+  },
+  render: args => (
+    <ToggleButton.Group {...args}>
+      <ToggleButton id="sum">Sum</ToggleButton>
+      <ToggleButton id="median">Median</ToggleButton>
+      <ToggleButton id="average">Average</ToggleButton>
+    </ToggleButton.Group>
+  ),
 });
 
 export const MultipleSelection = meta.story({
