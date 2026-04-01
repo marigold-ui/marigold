@@ -1,49 +1,15 @@
-import type { PropsWithChildren, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  Provider,
-  Switch,
-  SwitchContext,
-  TextContext,
-} from 'react-aria-components';
-import { useId } from '@react-aria/utils';
+import { Switch, SwitchContext } from 'react-aria-components';
 import {
   WidthProp,
   cn,
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
-import { HelpText } from '../HelpText/HelpText';
+import { BooleanField } from '../FieldBase/BooleanField';
 import { Label } from '../Label/Label';
-
-// Field Wrapper
-// ---------------
-const Field = ({
-  description,
-  children,
-}: PropsWithChildren<{ description: ReactNode }>) => {
-  const className = useClassNames({
-    component: 'Field',
-  });
-  const descriptionId = useId();
-
-  if (!description) return children;
-
-  return (
-    <div className={className}>
-      <Provider
-        values={[
-          [SwitchContext, { 'aria-describedby': descriptionId }],
-          [TextContext, { id: descriptionId }],
-        ]}
-      >
-        {children}
-        <HelpText description={description} />
-      </Provider>
-    </div>
-  );
-};
 
 type RemovedProps =
   | 'children'
@@ -116,7 +82,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       ...rest,
     } satisfies RAC.SwitchProps;
     return (
-      <Field description={description}>
+      <BooleanField description={description} context={SwitchContext}>
         <Switch
           {...props}
           ref={ref}
@@ -134,7 +100,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
           </div>
           {label && <Label elementType="span">{label}</Label>}
         </Switch>
-      </Field>
+      </BooleanField>
     );
   }
 );

@@ -1,52 +1,17 @@
 import type {
   ForwardRefExoticComponent,
-  PropsWithChildren,
   ReactNode,
   RefAttributes,
 } from 'react';
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  Checkbox,
-  CheckboxContext,
-  Provider,
-  TextContext,
-} from 'react-aria-components';
-import { useId } from '@react-aria/utils';
+import { Checkbox, CheckboxContext } from 'react-aria-components';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
-import { HelpText } from '../HelpText/HelpText';
+import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
 import { Minus } from '../icons/Minus';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
-
-// Field Wrapper
-// ---------------
-const Field = ({
-  description,
-  children,
-}: PropsWithChildren<{ description: ReactNode }>) => {
-  const className = useClassNames({
-    component: 'Field',
-  });
-  const descriptionId = useId();
-
-  if (!description) return children;
-
-  return (
-    <div className={className}>
-      <Provider
-        values={[
-          [CheckboxContext, { 'aria-describedby': descriptionId }],
-          [TextContext, { id: descriptionId }],
-        ]}
-      >
-        {children}
-        <HelpText description={description} />
-      </Provider>
-    </div>
-  );
-};
 
 interface IconProps extends StateAttrProps {
   checked?: boolean;
@@ -188,7 +153,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     });
 
     return (
-      <Field description={description}>
+      <BooleanField description={description} context={CheckboxContext}>
         <Checkbox
           ref={ref}
           className={cn(
@@ -209,7 +174,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
             </>
           )}
         </Checkbox>
-      </Field>
+      </BooleanField>
     );
   }
 ) as CheckboxComponent;
