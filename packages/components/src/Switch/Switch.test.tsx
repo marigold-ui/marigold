@@ -29,22 +29,24 @@ test('connects description via aria-describedby', () => {
   );
 
   const input = screen.getByRole('switch');
-  expect(input).toHaveAttribute('aria-describedby');
 
-  const describedById = input.getAttribute('aria-describedby')!;
-  const description = document.getElementById(describedById);
-  expect(description).toHaveTextContent('Connect to nearby networks');
+  expect(input).toHaveAccessibleDescription('Connect to nearby networks');
 });
 
 test('takes full width by default', () => {
   render(<Basic.Component label="Label" />);
-  const container = screen.getByRole('switch').closest('label')!;
+  // The switch's label element is the container with width classes
+  const switchEl = screen.getByRole('switch');
+  // eslint-disable-next-line testing-library/no-node-access -- need to check class on the label wrapper
+  const container = switchEl.closest('label')!;
   expect(container).toHaveClass('w-full');
 });
 
 test('allows to set width via prop', () => {
   render(<Basic.Component width={10} label="Label" />);
-  const container = screen.getByRole('switch').closest('label')!;
+  const switchEl = screen.getByRole('switch');
+  // eslint-disable-next-line testing-library/no-node-access -- need to check class on the label wrapper
+  const container = switchEl.closest('label')!;
   expect(container).not.toHaveClass('w-full');
 });
 

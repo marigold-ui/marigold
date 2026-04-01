@@ -31,11 +31,9 @@ test('connects description to Checkbox via aria-describedby', () => {
   );
 
   const checkbox = screen.getByRole('checkbox');
-  const description = screen.getByText('You must accept the terms to continue');
 
-  expect(checkbox).toHaveAttribute('aria-describedby');
-  expect(checkbox.getAttribute('aria-describedby')).toBe(
-    description.closest('[id]')?.id
+  expect(checkbox).toHaveAccessibleDescription(
+    'You must accept the terms to continue'
   );
 });
 
@@ -59,10 +57,6 @@ test('connects description to Switch via aria-describedby', () => {
   );
 
   const switchEl = screen.getByRole('switch');
-  const description = screen.getByText('Connect to nearby networks');
 
-  expect(switchEl).toHaveAttribute('aria-describedby');
-  expect(switchEl.getAttribute('aria-describedby')).toBe(
-    description.closest('[id]')?.id
-  );
+  expect(switchEl).toHaveAccessibleDescription('Connect to nearby networks');
 });
