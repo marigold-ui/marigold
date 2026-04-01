@@ -6,7 +6,7 @@ const meta = preview.meta({
   title: 'Components/Link',
   component: Link,
   parameters: {
-    surface: false,
+    surface: 'both',
   },
   argTypes: {
     variant: {

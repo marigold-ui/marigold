@@ -98,6 +98,7 @@ export const Basic = meta.story({
 export const ButtonVariants = meta.story({
   tags: ['component-test'],
   parameters: {
+    surface: 'both',
     controls: { exclude: ['variant', 'children', 'loading'] },
   },
   args: {

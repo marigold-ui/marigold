@@ -5,6 +5,9 @@ import { Tabs } from './Tabs';
 const meta = preview.meta({
   title: 'Components/Tabs',
   component: Tabs,
+  parameters: {
+    surface: 'both',
+  },
   argTypes: {
     disabled: {
       control: { type: 'boolean' },

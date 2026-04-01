@@ -18,7 +18,24 @@ const withMarigoldProviders: Decorator[] = [
         className={`min-h-screen ${context.parameters.padding === false ? '' : 'p-6'}`}
       >
         <OverlayContainerProvider container="storybook-root">
-          {context.parameters.surface !== false ? (
+          {context.parameters.surface === 'both' ? (
+            <div className="flex flex-col gap-8">
+              <section>
+                <p className="text-secondary mb-2 text-xs font-medium tracking-wide uppercase">
+                  On surface
+                </p>
+                <Card stretch>
+                  <Story />
+                </Card>
+              </section>
+              <section>
+                <p className="text-secondary mb-2 text-xs font-medium tracking-wide uppercase">
+                  On page
+                </p>
+                <Story />
+              </section>
+            </div>
+          ) : context.parameters.surface !== false ? (
             <Card stretch>
               <Story />
             </Card>
