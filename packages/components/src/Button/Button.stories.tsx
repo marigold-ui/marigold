@@ -125,11 +125,12 @@ export const ButtonVariants = meta.story({
     </Stack>
   ),
   play: async ({ args, canvas }) => {
-    await userEvent.click(canvas.getByText('Primary'));
-    await userEvent.click(canvas.getByText('Secondary'));
-    await userEvent.click(canvas.getByText('Destructive'));
-    await userEvent.click(canvas.getByText('Destructive Ghost'));
-    await userEvent.click(canvas.getByText('Ghost'));
+    const buttons = canvas.getAllByRole('button');
+    await userEvent.click(buttons[0]);
+    await userEvent.click(buttons[1]);
+    await userEvent.click(buttons[2]);
+    await userEvent.click(buttons[3]);
+    await userEvent.click(buttons[4]);
 
     await expect(args.onPress).toHaveBeenCalledTimes(5);
   },
