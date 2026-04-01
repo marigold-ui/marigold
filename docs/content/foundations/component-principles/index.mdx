@@ -1,0 +1,284 @@
+---
+title: Component Principles
+description: The core ideas behind how Marigold components are designed, styled, and composed.
+badge: new
+---
+
+Marigold components share a consistent set of design principles that shape their API. Understanding these principles helps you use the system effectively and avoid common pitfalls. This page introduces the four pillars: accessibility, theming, composition, and layout.
+
+## Accessible by Default
+
+Every Marigold component is built on top of [React Aria](https://react-spectrum.adobe.com/react-aria/), a library of accessible UI primitives. This means keyboard navigation, focus management, and ARIA attributes are handled for you out of the box.
+
+We rename some React Aria props for a cleaner developer experience:
+
+| React Aria   | Marigold   |
+| ------------ | ---------- |
+| `isDisabled` | `disabled` |
+| `isPending`  | `loading`  |
+| `isReadOnly` | `readOnly` |
+| `isRequired` | `required` |
+
+This gives you a solid foundation, but accessibility is a shared responsibility. You still need to provide proper labels, manage ARIA live regions for dynamic content, and test with assistive technologies.
+
+For the full picture, see the [Accessibility](/foundations/accessibility) page.
+
+## Theming
+
+Marigold components are unstyled by default. They provide structure and behavior, but their visual appearance comes entirely from a theme. A theme is a collection of style definitions that covers colors, typography, spacing, and visual variations for each component. It is passed to the [`MarigoldProvider`](/components/application/provider) at the root of your application. Every component within it automatically picks up its styles from there.
+
+Because styling is owned by the theme, components don't accept `className` or `style` props. Instead, their appearance is controlled through two props: `variant` and `size`.
+
+- **`variant`** defines the visual intent of a component, such as `primary`, `secondary`, `ghost`, or `destructive`.
+- **`size`** controls the physical dimensions and density, such as `default`, `small`, or `large`.
+
+These props map to styles defined in the theme. When you write `variant="ghost"`, you're selecting a set of pre-defined styles that the theme author has designed to work together.
+
+<ComponentDemo name="menu-theming-composition" />
+
+#### How it Works
+
+The chain from prop to rendered style looks like this:
+
+1. You pass `variant` and `size` to a component.
+2. The component calls `useClassNames`, which looks up the current theme.
+3. The theme contains style definitions for each component, written with [`cva`](https://beta.cva.style) (class variance authority).
+4. Based on your `variant` and `size`, the matching Tailwind CSS classes are selected and applied to the component.
+
+For example, a simplified theme entry for a `Menu` trigger button looks like this:
+
+```ts
+// themes/theme-rui/src/components/Menu.styles.ts
+export const Menu = {
+  button: cva({
+    base: ['...base styles'],
+    variants: {
+      variant: {
+        default: '...surface styles with border',
+        ghost: '...transparent with hover background',
+      },
+      size: {
+        default: 'h-button p-squish-relaxed',
+        small: 'h-button-small px-3',
+      },
+    },
+  }),
+};
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `variant` and `size` props to control a component's appearance. If you
+      need a variant that doesn't exist yet, use `extendTheme` to add one.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't try to pass `className` or `style` props to override the look of a
+      component. These props are intentionally removed to keep styling
+      consistent across the application.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+If the available variants don't cover your use case, you can extend the theme using the [`extendTheme`](/components/hooks-and-utils/extendTheme) function. This lets you add new variants and sizes to any component without modifying the design system itself.
+
+## Composition
+
+Complex components in Marigold are assembled from smaller building blocks using dot notation. Instead of configuring everything through a single component's props, you compose the component from its parts.
+
+Take the `Menu` component: it's made up of `Menu.Item` for individual actions and `Menu.Section` for grouping related items with a heading.
+
+```tsx
+<Menu label="Actions">
+  <Menu.Section title="Event">
+    <Menu.Item id="view">View Details</Menu.Item>
+    <Menu.Item id="edit">Edit Event</Menu.Item>
+  </Menu.Section>
+  <Menu.Section title="Danger Zone">
+    <Menu.Item id="cancel" variant="destructive">
+      Cancel Event
+    </Menu.Item>
+  </Menu.Section>
+</Menu>
+```
+
+This pattern has several advantages:
+
+- **Readability**: the structure of the UI is visible in the JSX tree.
+- **Flexibility**: you control the order, nesting, and content of each part.
+- **Type safety**: each sub-component has its own typed props, so you get autocompletion and validation.
+
+You'll find this pattern across the design system. For example, `Dialog` uses `Dialog.Trigger`, `Dialog.Title`, `Dialog.Content`, and `Dialog.Actions`. `Table` uses `Table.Header`, `Table.Body`, `Table.Row`, and `Table.Cell`.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Assemble complex UI by composing sub-components. This makes the structure
+      explicit and each piece independently configurable.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't try to configure everything through a single component's props.
+      Prefer composing sub-components over passing data arrays or complex config
+      objects.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Layout
+
+Components in Marigold never set their own outer spacing. A `Button` doesn't know or care whether it has margin around it. Instead, layout is always the responsibility of a parent layout component.
+
+Marigold provides layout primitives like `Inline`, `Stack`, `Grid`, and `Columns` that accept props such as `space` and `alignX` to control how children are arranged.
+
+<ComponentDemo name="inline-buttons-layout" />
+
+In the example above, the `Inline` component handles the horizontal arrangement. The `space` prop controls the gap between the buttons using a semantic spacing token (`related`), and `alignX` centers them horizontally.
+
+This separation has an important benefit: components remain portable. The same `Button` works in a dialog footer, a toolbar, or a form without any layout adjustments.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use layout components like `Inline`, `Stack`, and `Grid` to control
+      spacing and alignment between components.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't add wrapper `div`s with custom margin or padding to create spacing
+      between components. If the layout components don't cover your use case,
+      that's a signal to reach out to the design system team.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<Callout title="Need something that doesn't exist?">
+  If you find yourself reaching for wrapper elements or custom CSS to achieve a
+  layout, it might indicate a missing feature in the design system. Reach out
+  via the [#design-system](https://reservix.slack.com/archives/C02727BNZ3J)
+  Slack channel or the [Service
+  Desk](https://reservix.atlassian.net/servicedesk/customer/portal/77) so we can
+  help.
+</Callout>
+
+For a deeper look at how spacing works, check out the [Spacing](/foundations/spacing) and [Layouts](/foundations/layouts) pages.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Spacing',
+      href: '../../foundations/spacing',
+      caption:
+        'How relational and inset spacing tokens create consistent rhythm.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Layouts',
+      href: '../../foundations/layouts',
+      caption: 'Atomic layout components and the philosophy behind them.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Accessibility',
+      href: '../../foundations/accessibility',
+      caption:
+        'How accessibility is built into the foundation of every component.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Design Tokens',
+      href: '../../foundations/design-tokens',
+      caption:
+        'The shared values that define colors, spacing, typography, and more.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'extendTheme',
+      href: '../../components/hooks-and-utils/extendTheme',
+      caption:
+        'Add custom variants and sizes to any component without modifying the design system.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
