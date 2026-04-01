@@ -95,7 +95,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
           classNames.container
         )}
       >
-        <div className="relative mt-0.5">
+        <div className="relative">
           <div className={classNames.track}>
             <div className={classNames.thumb} />
           </div>
