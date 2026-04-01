@@ -1,14 +1,15 @@
 import type { ReactNode } from 'react';
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Switch, SwitchContext } from 'react-aria-components';
+import { Switch } from 'react-aria-components';
+import { useId } from '@react-aria/utils';
 import {
   WidthProp,
   cn,
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
-import { BooleanField } from '../FieldBase/BooleanField';
+import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label/Label';
 
 type RemovedProps =
@@ -75,32 +76,41 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
     ref
   ) => {
     const classNames = useClassNames({ component: 'Switch', size, variant });
+    const descriptionId = useId();
     const props = {
       isDisabled: disabled,
       isReadOnly: readOnly,
       isSelected: selected,
+      ...(description ? { 'aria-describedby': descriptionId } : {}),
       ...rest,
     } satisfies RAC.SwitchProps;
     return (
-      <BooleanField description={description} context={SwitchContext}>
-        <Switch
-          {...props}
-          ref={ref}
-          className={cn(
-            twWidth[width],
-            'group/switch',
-            'flex items-center gap-2',
-            classNames.container
-          )}
-        >
-          <div className="relative">
-            <div className={classNames.track}>
-              <div className={classNames.thumb} />
-            </div>
+      <Switch
+        {...props}
+        ref={ref}
+        className={cn(
+          twWidth[width],
+          'group/switch',
+          'flex items-start gap-2',
+          classNames.container
+        )}
+      >
+        <div className="relative mt-0.5">
+          <div className={classNames.track}>
+            <div className={classNames.thumb} />
           </div>
-          {label && <Label elementType="span">{label}</Label>}
-        </Switch>
-      </BooleanField>
+        </div>
+        {(label || description) && (
+          <div>
+            {label && <Label elementType="span">{label}</Label>}
+            {description && (
+              <div id={descriptionId} className="mt-0.5">
+                <HelpText description={description} />
+              </div>
+            )}
+          </div>
+        )}
+      </Switch>
     );
   }
 );
