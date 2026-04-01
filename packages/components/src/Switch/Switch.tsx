@@ -82,7 +82,11 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       ...rest,
     } satisfies RAC.SwitchProps;
     return (
-      <BooleanField description={description} context={SwitchContext}>
+      <BooleanField
+        description={description}
+        context={SwitchContext}
+        descriptionClassName={size === 'large' ? 'pl-12' : 'pl-9'}
+      >
         <Switch
           {...props}
           ref={ref}
