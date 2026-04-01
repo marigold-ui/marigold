@@ -45,6 +45,16 @@ const meta = preview.meta({
         defaultValue: { summary: 'false' },
       },
     },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'A helpful text below the switch',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+    },
     selected: {
       control: {
         type: 'boolean',
@@ -58,6 +68,7 @@ const meta = preview.meta({
   },
   args: {
     label: 'Default Switch',
+    description: 'Enable or disable this feature',
     disabled: false,
     defaultSelected: false,
   },
