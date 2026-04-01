@@ -4,7 +4,7 @@ description: The core ideas behind how Marigold components are designed, styled,
 badge: new
 ---
 
-Marigold components share a consistent set of design principles that shape their API. Understanding these principles helps you use the system effectively and avoid common pitfalls. This page introduces the four pillars: accessibility, theming, composition, and layout.
+Marigold components share a consistent set of design principles that shape their API. Understanding these principles helps you use the system effectively and avoid common pitfalls. This page introduces the core pillars: accessibility, theming, composition, layout, and shared form field patterns.
 
 ## Accessible by Default
 
@@ -138,6 +138,8 @@ Marigold provides layout primitives like `Inline`, `Stack`, `Grid`, and `Columns
 
 In the example above, the `Inline` component handles the horizontal arrangement. The `space` prop controls the gap between the buttons using a semantic spacing token (`related`), and `alignX` centers them horizontally.
 
+All layout components share this same set of props. Beyond `space` and `alignX`, you will find `alignY` for cross-axis alignment. The `space` prop accepts semantic tokens that describe the relationship between elements rather than a fixed pixel value. For the full token vocabulary and how to choose the right one, see the [Spacing](/foundations/spacing) page.
+
 This separation has an important benefit: components remain portable. The same `Button` works in a dialog footer, a toolbar, or a form without any layout adjustments.
 
 <GuidelineTiles>
@@ -164,6 +166,27 @@ This separation has an important benefit: components remain portable. The same `
 </Callout>
 
 For a deeper look at how spacing works, check out the [Spacing](/foundations/spacing) and [Layouts](/foundations/layouts) pages.
+
+## Form Fields
+
+Marigold's form components share a uniform API. Once you learn how one form field works, the same knowledge transfers to all of them.
+
+Every form field supports the same anatomy through three props:
+
+- **`label`** provides a visible label associated with the input.
+- **`description`** adds help text below the field for additional context.
+- **`errorMessage`** replaces the description when the field is in an error state.
+
+They also share a consistent set of state props:
+
+- **`disabled`** prevents interaction with the field.
+- **`readOnly`** allows the value to be read but not changed.
+- **`required`** marks the field as mandatory.
+- **`error`** puts the field into an error state, triggering the error message.
+
+Additionally, all form fields accept a **`width`** prop to control their sizing, supporting both fixed values and fractional widths like `1/2` or `1/3`.
+
+For a complete guide to form field anatomy, width control, states, and validation, see the [Form Fields](/foundations/form-fields) page.
 
 ## Related
 
@@ -208,6 +231,28 @@ For a deeper look at how spacing works, check out the [Spacing](/foundations/spa
             strokeLinecap="round"
             strokeLinejoin="round"
             d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form Fields',
+      href: '../../foundations/form-fields',
+      caption:
+        'Shared anatomy, field states, width control, and validation for all form components.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
           />
         </svg>
       ),
