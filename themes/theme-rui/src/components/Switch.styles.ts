@@ -2,7 +2,11 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Switch: ThemeComponent<'Switch'> = {
   container: cva({
-    base: 'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+    base: [
+      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+      'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    ],
   }),
   track: cva({
     base: [

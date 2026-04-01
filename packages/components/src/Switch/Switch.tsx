@@ -82,20 +82,11 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       ...rest,
     } satisfies RAC.SwitchProps;
     return (
-      <BooleanField
-        description={description}
-        context={SwitchContext}
-        descriptionClassName={size === 'large' ? 'pl-12' : 'pl-9'}
-      >
+      <BooleanField description={description} context={SwitchContext}>
         <Switch
           {...props}
           ref={ref}
-          className={cn(
-            twWidth[width],
-            'group/switch',
-            'flex items-center gap-2',
-            classNames.container
-          )}
+          className={cn(twWidth[width], 'group/switch', classNames.container)}
         >
           <div className="relative">
             <div className={classNames.track}>

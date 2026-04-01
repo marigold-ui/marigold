@@ -153,16 +153,12 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     });
 
     return (
-      <BooleanField
-        description={description}
-        context={CheckboxContext}
-        descriptionClassName="pl-6"
-      >
+      <BooleanField description={description} context={CheckboxContext}>
         <Checkbox
           ref={ref}
           className={cn(
-            'group/checkbox flex items-center',
-            'cursor-pointer data-disabled:cursor-not-allowed',
+            'group/checkbox',
+            'data-disabled:cursor-not-allowed',
             classNames.container
           )}
           {...props}

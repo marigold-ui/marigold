@@ -2,7 +2,6 @@ import type { PropsWithChildren, ReactNode } from 'react';
 import type { ContextValue } from 'react-aria-components';
 import { Provider, TextContext } from 'react-aria-components';
 import { useId } from '@react-aria/utils';
-import { cn, useClassNames } from '@marigold/system';
 import { HelpText } from '../HelpText/HelpText';
 
 // Props
@@ -19,11 +18,6 @@ export interface BooleanFieldProps {
   context: React.Context<
     ContextValue<{ 'aria-describedby'?: string }, HTMLElement>
   >;
-
-  /**
-   * Class name applied to the description wrapper to align it with the label text.
-   */
-  descriptionClassName?: string;
 }
 
 // Component
@@ -31,18 +25,17 @@ export interface BooleanFieldProps {
 export const BooleanField = ({
   description,
   context,
-  descriptionClassName,
   children,
 }: PropsWithChildren<BooleanFieldProps>) => {
-  const className = useClassNames({
-    component: 'Field',
-  });
   const descriptionId = useId();
 
   if (!description) return children;
 
   return (
-    <div className={className}>
+    <div
+      className="group/booleanfield grid grid-cols-[auto_1fr] gap-x-2"
+      data-booleanfield
+    >
       <Provider
         values={[
           [context, { 'aria-describedby': descriptionId }],
@@ -50,7 +43,7 @@ export const BooleanField = ({
         ]}
       >
         {children}
-        <div className={cn('mt-0.5', descriptionClassName)}>
+        <div className="col-start-2 mt-0.5">
           <HelpText description={description} />
         </div>
       </Provider>

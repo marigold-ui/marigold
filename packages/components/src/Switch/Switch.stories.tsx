@@ -68,7 +68,6 @@ const meta = preview.meta({
   },
   args: {
     label: 'Default Switch',
-    description: 'Enable or disable this feature',
     disabled: false,
     defaultSelected: false,
   },
