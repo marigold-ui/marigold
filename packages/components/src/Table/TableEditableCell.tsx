@@ -217,22 +217,35 @@ export const TableEditableCell = ({
     </Button>
   );
 
+  const handleCellInteraction = () => {
+    if (!disabled) {
+      setOpen(true);
+    }
+  };
+
   return (
     <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
       {({ columnIndex }) => (
         <>
-          <div className="group/editable-cell flex items-center gap-1">
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- keyboard is handled by the edit button, touch needs click on cell */}
+          <div
+            className={cn(
+              'group/editable-cell flex items-center',
+              !disabled && 'cursor-pointer'
+            )}
+            onClick={handleCellInteraction}
+          >
             <TableCellContent
               columnIndex={columnIndex}
               alignX={alignX}
-              cellOverflow={cellOverflow}
+              cellOverflow={disabled ? cellOverflow : 'truncate'}
               className="min-w-0 flex-1"
               allowTextSelection={!hasSelection || tableAllowTextSelection}
             >
               {children}
             </TableCellContent>
             {!disabled && (
-              <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 group-has-[:focus-visible]/editable-cell:opacity-100 [[role=row]:hover_&]:opacity-100">
+              <div className="w-0 shrink-0 overflow-hidden group-has-[:focus-visible]/editable-cell:w-auto [[role=row]:hover_&]:w-auto">
                 <Button
                   className={classNames.editTrigger}
                   aria-label={stringFormatter.format('edit')}
