@@ -26,7 +26,7 @@ const meta = preview.meta({
       control: {
         type: 'radio',
       },
-      options: ['large', 'none'],
+      options: ['default', 'large'],
       description: 'The sizes for switch.',
     },
     width: {

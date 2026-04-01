@@ -80,16 +80,16 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
         className={cn(
           twWidth[width],
           'group/switch',
-          'flex items-center gap-[1ch]',
+          'flex items-center gap-2',
           classNames.container
         )}
       >
-        {label && <Label elementType="span">{label}</Label>}
         <div className="relative">
           <div className={classNames.track}>
             <div className={classNames.thumb} />
           </div>
         </div>
+        {label && <Label elementType="span">{label}</Label>}
       </Switch>
     );
   }
