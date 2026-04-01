@@ -101,6 +101,24 @@ export const KeyboardToggle = meta.story({
   },
 });
 
+export const WithDescription = meta.story({
+  args: {
+    description: 'This is a description',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const switchEl = await canvas.findByRole('switch');
+    const description = canvas.queryByText('This is a description');
+
+    const helpTextId = description?.closest('[id]')?.getAttribute('id');
+    const switchDescribedBy = switchEl.getAttribute('aria-describedby');
+
+    expect(description).toBeInTheDocument();
+    expect(switchDescribedBy).toBe(helpTextId);
+  },
+});
+
 export const DefaultSelected = meta.story({
   tags: ['component-test'],
   args: {
