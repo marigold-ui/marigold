@@ -1,13 +1,49 @@
-import { ReactNode, forwardRef } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Switch } from 'react-aria-components';
+import {
+  Provider,
+  Switch,
+  SwitchContext,
+  TextContext,
+} from 'react-aria-components';
+import { useId } from '@react-aria/utils';
 import {
   WidthProp,
   cn,
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
+import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label/Label';
+
+// Field Wrapper
+// ---------------
+const Field = ({
+  description,
+  children,
+}: PropsWithChildren<{ description: ReactNode }>) => {
+  const className = useClassNames({
+    component: 'Field',
+  });
+  const descriptionId = useId();
+
+  if (!description) return children;
+
+  return (
+    <div className={className}>
+      <Provider
+        values={[
+          [SwitchContext, { 'aria-describedby': descriptionId }],
+          [TextContext, { id: descriptionId }],
+        ]}
+      >
+        {children}
+        <HelpText description={description} />
+      </Provider>
+    </div>
+  );
+};
 
 type RemovedProps =
   | 'children'
@@ -26,6 +62,11 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
    * Set the label of the switch.
    */
   label?: ReactNode;
+
+  /**
+   * A helpful text.
+   */
+  description?: ReactNode;
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -59,6 +100,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       size,
       width = 'full',
       label,
+      description,
       selected,
       disabled,
       readOnly,
@@ -74,23 +116,25 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       ...rest,
     } satisfies RAC.SwitchProps;
     return (
-      <Switch
-        {...props}
-        ref={ref}
-        className={cn(
-          twWidth[width],
-          'group/switch',
-          'flex items-center gap-2',
-          classNames.container
-        )}
-      >
-        <div className="relative">
-          <div className={classNames.track}>
-            <div className={classNames.thumb} />
+      <Field description={description}>
+        <Switch
+          {...props}
+          ref={ref}
+          className={cn(
+            twWidth[width],
+            'group/switch',
+            'flex items-center gap-2',
+            classNames.container
+          )}
+        >
+          <div className="relative">
+            <div className={classNames.track}>
+              <div className={classNames.thumb} />
+            </div>
           </div>
-        </div>
-        {label && <Label elementType="span">{label}</Label>}
-      </Switch>
+          {label && <Label elementType="span">{label}</Label>}
+        </Switch>
+      </Field>
     );
   }
 );
