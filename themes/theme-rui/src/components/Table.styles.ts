@@ -91,10 +91,11 @@ export const Table: ThemeComponent<'Table'> = {
   cell: cva({
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',
-      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
-      'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/50',
+      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/75',
+      'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/75',
       '**:data-cell-content:outline-none',
-      'has-[[aria-label=Edit]:hover]:bg-muted',
+      'data-editable:hover:bg-muted',
+      'data-editable:has-[:focus-visible]:bg-muted',
     ],
   }),
 
@@ -138,7 +139,8 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'absolute -inset-px cursor-pointer',
       'outline-none',
-      'hover:border hover:border-stone-950',
+      'hover:border hover:border-stone-800',
+      'focus-visible:border focus-visible:border-stone-800',
     ],
   }),
   editCancel: cva({

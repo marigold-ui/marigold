@@ -214,6 +214,7 @@ export const TableEditableCell = ({
     <Cell
       ref={cellRef}
       className={cn(classNames.cell, verticalAlign[alignY], 'relative')}
+      {...(!disabled && { 'data-editable': true })}
     >
       {({ columnIndex }) => (
         <>
