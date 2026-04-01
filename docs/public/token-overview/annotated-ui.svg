@@ -87,13 +87,13 @@
   <circle cx="602" cy="50" r="2.5" fill="#333"/>
   <line x1="605" y1="50" x2="675" y2="50" stroke="#333" stroke-width="1"/>
   <text x="680" y="47" font-size="11" font-weight="600" fill="#333">bg-surface</text>
-  <text x="680" y="61" font-size="11" font-weight="600" fill="#333">border-surface-border</text>
+  <text x="680" y="61" font-size="11" font-weight="600" fill="#333">border-border</text>
   <text x="680" y="75" font-size="11" font-weight="600" fill="#333">shadow-elevation-raised</text>
 
-  <!-- border-input: dot on input border right edge -->
+  <!-- border-border: dot on input border right edge -->
   <circle cx="574" cy="180" r="2.5" fill="#333"/>
   <line x1="577" y1="180" x2="675" y2="180" stroke="#333" stroke-width="1"/>
-  <text x="680" y="177" font-size="11" font-weight="600" fill="#333">border-input</text>
+  <text x="680" y="177" font-size="11" font-weight="600" fill="#333">border-border</text>
   <text x="680" y="191" font-size="11" font-weight="600" fill="#333">shadow-elevation-border</text>
 
   <!-- text-placeholder: dot on placeholder text -->

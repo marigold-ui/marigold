@@ -68,8 +68,8 @@
 
     50  -- muted bg (subtle tint on white surfaces), primary-foreground
     100 -- page bg, focus-highlight bg
-    200 -- hover bg, disabled-surface bg, structural borders
-    300 -- selected bg, form control borders, scrollbar, surface-border
+    200 -- hover bg, disabled-surface bg
+    300 -- selected bg, borders, scrollbar
     400 -- disabled (text)
     600 -- focus ring, secondary (text), placeholder
     900 -- primary text
@@ -103,8 +103,7 @@
   --color-disabled-surface: var(--color-charcoal-200);
 
   /* --- Form Controls --- */
-  --color-input: var(--color-charcoal-300);
-  --color-border: var(--color-charcoal-200);
+  --color-border: var(--color-charcoal-300);
   --color-ring: var(--color-charcoal-600);
 
   /* --- Status: Destructive --- */
@@ -149,7 +148,6 @@
   /*        SURFACE       */
   /* ==================== */
   --color-surface: var(--color-white);
-  --color-surface-border: var(--color-charcoal-300);
   --radius-surface: var(--radius-lg);
 
   /* ==================== */

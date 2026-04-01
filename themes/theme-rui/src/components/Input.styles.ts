@@ -15,7 +15,7 @@ export const Input: ThemeComponent<'Input'> = {
 
       // [type=file] styles
       '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-surface [&[type=file]]:h-[calc(var(--spacing-control)-2px)] [&[type=file]]:pl-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-secondary',
-      'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
+      'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-border file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
 
       // [type-color] styles
       '[&[type=color]]:h-control',

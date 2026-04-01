@@ -170,15 +170,15 @@ The page is gray (`bg-page`), component panels are white (`bg-surface`). This co
       useFor: 'White component backgrounds (cards, panels, inputs, tables)',
     },
     {
-      name: 'surface-border',
+      name: 'border',
       value: 'charcoal-300',
-      useFor: 'Border color for surface containers',
+      useFor: 'Border color for surfaces, dividers, and form controls',
     },
   ]}
 />
 
 ```tsx
-<Card className="bg-surface border-surface-border rounded-surface shadow-elevation-raised">
+<Card className="bg-surface border-border rounded-surface shadow-elevation-raised">
   Content on a white surface
 </Card>
 ```
@@ -306,14 +306,10 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
 <TokenTable
   tokens={[
     {
-      name: 'input',
-      value: 'charcoal-300',
-      useFor: 'Borders for interactive controls (inputs, checkboxes, radios)',
-    },
-    {
       name: 'border',
-      value: 'charcoal-200',
-      useFor: 'Borders for structural dividers (tables, tabs, accordions)',
+      value: 'charcoal-300',
+      useFor:
+        'All borders: form controls, structural dividers, and surface containers',
     },
     {
       name: 'ring',
@@ -322,21 +318,6 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
     },
   ]}
 />
-
-<Callout title="input vs border">
-  `input` borders are for **interactive controls** the user clicks or types
-  into. `border` is for **structural dividers** that organize content. `input`
-  is slightly darker to signal interactivity.
-</Callout>
-
-<Callout title="input and surface-border share the same value">
-  Both `input` and `surface-border` resolve to charcoal-300 today. They are
-  intentionally separate tokens because they serve different roles: `input`
-  marks interactive affordances (inputs, checkboxes, radios), while
-  `surface-border` outlines structural containers (cards, sidebars). A future
-  theme could make interactive borders darker to increase affordance without
-  affecting layout borders.
-</Callout>
 
 ### Status colors
 
