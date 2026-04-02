@@ -30,6 +30,22 @@ There is also a companion component called `<ActionMenu>` which you can use if y
 
 <AppearanceTable component={'Menu'} />
 
+The Menu component supports variants for both the trigger button and individual menu items.
+
+**Trigger button variants:**
+
+| Variant   | Description                                                        | When to use                                                                          |
+| --------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `default` | Trigger button with a visible border. This is the default variant. | Most menu triggers where the button should be clearly identifiable.                  |
+| `ghost`   | Transparent trigger button without a border or background.         | Menus in toolbars, table rows, or compact layouts where the trigger should blend in. |
+
+**Menu item variants:**
+
+| Variant       | Description                                         | When to use                                                    |
+| ------------- | --------------------------------------------------- | -------------------------------------------------------------- |
+| `default`     | Standard menu item. This is the default variant.    | Regular menu actions like navigation, selection, or settings.  |
+| `destructive` | Red-colored menu item signaling a dangerous action. | Irreversible or high-impact actions like "Delete" or "Remove". |
+
 ## Usage
 
 In general, Menus are used to hide less frequently used or advanced options until users specifically need them. This keeps the interface clean and focused on essential elements.

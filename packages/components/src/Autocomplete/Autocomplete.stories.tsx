@@ -13,7 +13,7 @@ const meta = preview.meta({
   component: Autocomplete,
   decorators: [
     Story => (
-      <div id="storybook-root">
+      <div id="storybook-root" className="p-4">
         <Story />
       </div>
     ),
@@ -387,7 +387,10 @@ Mobile.test(
     await step('Filter options by typing', async () => {
       await userEvent.keyboard('matrix');
 
-      await waitFor(() => expect(canvas.getByText('The Matrix')).toBeVisible());
+      await waitFor(() => {
+        expect(canvas.getByText('The Matrix')).toBeVisible();
+        expect(canvas.queryByText('Inception')).not.toBeInTheDocument();
+      });
     });
 
     await step('Navigate to option with arrow keys and select', async () => {

@@ -1,4 +1,6 @@
 import { defineMain } from '@storybook/react-vite/node';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export default defineMain({
   stories: [
@@ -6,13 +8,14 @@ export default defineMain({
     '../packages/system/src/**/*.stories.tsx',
   ],
   addons: [
-    '@storybook/addon-a11y',
-    '@storybook/addon-docs',
-    'storybook-addon-test-codegen',
-    '@storybook/addon-vitest',
+    getAbsolutePath('@storybook/addon-a11y'),
+    getAbsolutePath('@storybook/addon-docs'),
+    getAbsolutePath('storybook-addon-test-codegen'),
+    getAbsolutePath('@storybook/addon-vitest'),
+    getAbsolutePath('@storybook/addon-mcp'),
   ],
   framework: {
-    name: '@storybook/react-vite',
+    name: getAbsolutePath('@storybook/react-vite'),
     options: {},
   },
   typescript: {
@@ -32,3 +35,7 @@ export default defineMain({
     return config;
   },
 });
+
+function getAbsolutePath(value: string): any {
+  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
+}
