@@ -26,7 +26,7 @@ const meta = preview.meta({
       control: {
         type: 'radio',
       },
-      options: ['large', 'none'],
+      options: ['default', 'large'],
       description: 'The sizes for switch.',
     },
     width: {
@@ -43,6 +43,16 @@ const meta = preview.meta({
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
+      },
+    },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'A helpful text below the switch',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
       },
     },
     selected: {
@@ -90,16 +100,20 @@ export const KeyboardToggle = meta.story({
   },
 });
 
-export const DefaultSelected = meta.story({
-  tags: ['component-test'],
+export const WithDescription = meta.story({
   args: {
-    defaultSelected: true,
+    description: 'This is a description',
   },
-  play: async ({ canvas, userEvent }) => {
-    const input: HTMLInputElement = canvas.getByRole('switch');
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
 
-    await userEvent.click(input);
+    const switchEl = await canvas.findByRole('switch');
+    const description = canvas.queryByText('This is a description');
 
-    await expect(input.checked).toBeFalsy();
+    const helpTextId = description?.closest('[id]')?.getAttribute('id');
+    const switchDescribedBy = switchEl.getAttribute('aria-describedby');
+
+    expect(description).toBeInTheDocument();
+    expect(switchDescribedBy).toBe(helpTextId);
   },
 });

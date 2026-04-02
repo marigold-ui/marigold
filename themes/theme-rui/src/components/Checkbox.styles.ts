@@ -11,7 +11,13 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-[indeterminate]/checkbox:border-brand group-[indeterminate]/checkbox:bg-brand group-[indeterminate]/checkbox:text-brand-foreground',
     ],
   }),
-  container: cva({ base: 'cursor-pointer read-only:cursor-default gap-2' }),
+  container: cva({
+    base: [
+      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'cursor-pointer read-only:cursor-default',
+      'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    ],
+  }),
   label: cva({
     base: [
       'flex items-center gap-1',

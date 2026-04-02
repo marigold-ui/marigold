@@ -6,107 +6,82 @@ import { Basic } from './Switch.stories';
 
 const user = userEvent.setup();
 
-const getSwitchParts = () => {
-  const label: HTMLLabelElement = screen.getByText('Label');
-  // eslint-disable-next-line testing-library/no-node-access
-  const container: HTMLElement = label.parentElement!;
-  // eslint-disable-next-line testing-library/no-node-access
-  const track = container.lastChild! as HTMLElement;
-  // eslint-disable-next-line testing-library/no-node-access
-  const thumb = track.lastChild! as HTMLElement;
-
-  const input: HTMLInputElement = screen.getByRole('switch');
-
-  return { label, input, container, track, thumb };
-};
-
-test('supports base styling', () => {
+test('renders as a switch role', () => {
   render(<Basic.Component label="Label" />);
-  const { label, container, track, thumb } = getSwitchParts();
-
-  expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive in-field:mb-1.5 inline-flex"`
-  );
-  expect(container.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center gap-[1ch] disabled:cursor-not-allowed disabled:text-disabled-foreground"`
-  );
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-  expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
-  );
+  expect(screen.getByRole('switch')).toBeInTheDocument();
 });
 
-test('supports a custom variant', () => {
-  render(<Basic.Component variant="custom" label="Label" />);
-  const { track, thumb } = getSwitchParts();
-
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-  expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
-  );
+test('renders label text', () => {
+  render(<Basic.Component label="Wi-Fi" />);
+  expect(screen.getByText('Wi-Fi')).toBeInTheDocument();
 });
 
-test('supports a size', () => {
-  render(<Basic.Component size="medium" label="Label" />);
-  const { track } = getSwitchParts();
+test('renders description text', () => {
+  render(
+    <Basic.Component label="Wi-Fi" description="Connect to nearby networks" />
+  );
+  expect(screen.getByText('Connect to nearby networks')).toBeInTheDocument();
+});
 
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
+test('connects description via aria-describedby', () => {
+  render(
+    <Basic.Component label="Wi-Fi" description="Connect to nearby networks" />
+  );
+
+  const input = screen.getByRole('switch');
+
+  expect(input).toHaveAccessibleDescription('Connect to nearby networks');
 });
 
 test('takes full width by default', () => {
   render(<Basic.Component label="Label" />);
-
-  const { container } = getSwitchParts();
-  expect(container.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center gap-[1ch] disabled:cursor-not-allowed disabled:text-disabled-foreground"`
-  );
+  // The switch's label element is the container with width classes
+  const switchEl = screen.getByRole('switch');
+  // eslint-disable-next-line testing-library/no-node-access -- need to check class on the label wrapper
+  const container = switchEl.closest('label')!;
+  expect(container).toHaveClass('w-full');
 });
 
 test('allows to set width via prop', () => {
   render(<Basic.Component width={10} label="Label" />);
-  const { label } = getSwitchParts();
-
-  expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive in-field:mb-1.5 inline-flex"`
-  );
+  const switchEl = screen.getByRole('switch');
+  // eslint-disable-next-line testing-library/no-node-access -- need to check class on the label wrapper
+  const container = switchEl.closest('label')!;
+  expect(container).not.toHaveClass('w-full');
 });
 
 test('supports disabled prop', () => {
   render(<Basic.Component disabled label="Label" />);
-  const { input, thumb, track } = getSwitchParts();
-
-  expect(input).toBeDisabled();
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-  expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
-  );
+  expect(screen.getByRole('switch')).toBeDisabled();
 });
 
-test('renders hidden <input> element', () => {
-  render(<Basic.Component label="Label" />);
-  const { input } = getSwitchParts();
-
-  expect(input instanceof HTMLInputElement).toBeTruthy();
-});
-
-test('supports controlled component usage', async () => {
+test('supports controlled selection', async () => {
   const onChange = vi.fn();
   render(<Basic.Component onChange={onChange} label="Label" />);
 
-  const { input } = getSwitchParts();
+  const input = screen.getByRole('switch');
 
   await user.click(input);
   expect(onChange).toHaveBeenCalledWith(true);
-  expect(input.checked).toBeTruthy();
+  expect(input).toBeChecked();
 
   await user.click(input);
   expect(onChange).toHaveBeenCalledWith(false);
-  expect(input.checked).toBeFalsy();
+  expect(input).not.toBeChecked();
+});
+
+test('supports defaultSelected', () => {
+  render(<Basic.Component defaultSelected label="Label" />);
+  expect(screen.getByRole('switch')).toBeChecked();
+});
+
+test('supports name attribute for form submission', () => {
+  render(<Basic.Component name="wifi" label="Wi-Fi" />);
+  expect(screen.getByRole('switch')).toHaveAttribute('name', 'wifi');
 });
 
 test('forwards ref', () => {
   const ref = createRef<HTMLLabelElement>();
   render(<Basic.Component ref={ref} label="Label" />);
-
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });

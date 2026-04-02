@@ -2,23 +2,45 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Switch: ThemeComponent<'Switch'> = {
   container: cva({
-    base: 'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+    base: [
+      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+      'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    ],
   }),
   track: cva({
     base: [
-      'flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors',
-      'border-2 border-transparent', // this increases the hit area so it is 24px
+      'flex shrink-0 cursor-pointer items-center rounded-full transition-colors',
+      'border-2 border-transparent',
       'group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground',
       'group-selected/switch:bg-brand bg-input',
       'group-focus-visible/switch:ui-state-focus outline-none',
     ],
+    variants: {
+      size: {
+        default: 'h-4 w-7',
+        large: 'h-6 w-10',
+      },
+    },
+    defaultVariants: {
+      size: 'default',
+    },
   }),
   thumb: cva({
     base: [
-      'pointer-events-none block size-5 rounded-full',
+      'pointer-events-none block rounded-full',
       'bg-background shadow-elevation-border',
       'ring-0 transition-transform duration-150 ease-out-quint',
-      'group-selected/switch:translate-x-4 translate-x-0',
+      'translate-x-0',
     ],
+    variants: {
+      size: {
+        default: 'size-3 group-selected/switch:translate-x-3',
+        large: 'size-5 group-selected/switch:translate-x-4',
+      },
+    },
+    defaultVariants: {
+      size: 'default',
+    },
   }),
 };

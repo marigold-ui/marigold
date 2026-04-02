@@ -1,12 +1,14 @@
-import { ReactNode, forwardRef } from 'react';
+import type { ReactNode } from 'react';
+import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Switch } from 'react-aria-components';
+import { Switch, SwitchContext } from 'react-aria-components';
 import {
   WidthProp,
   cn,
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
+import { BooleanField } from '../FieldBase/BooleanField';
 import { Label } from '../Label/Label';
 
 type RemovedProps =
@@ -26,6 +28,11 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
    * Set the label of the switch.
    */
   label?: ReactNode;
+
+  /**
+   * A helpful text.
+   */
+  description?: ReactNode;
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -59,6 +66,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       size,
       width = 'full',
       label,
+      description,
       selected,
       disabled,
       readOnly,
@@ -74,23 +82,20 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       ...rest,
     } satisfies RAC.SwitchProps;
     return (
-      <Switch
-        {...props}
-        ref={ref}
-        className={cn(
-          twWidth[width],
-          'group/switch',
-          'flex items-center gap-[1ch]',
-          classNames.container
-        )}
-      >
-        {label && <Label elementType="span">{label}</Label>}
-        <div className="relative">
-          <div className={classNames.track}>
-            <div className={classNames.thumb} />
+      <BooleanField description={description} context={SwitchContext}>
+        <Switch
+          {...props}
+          ref={ref}
+          className={cn(twWidth[width], 'group/switch', classNames.container)}
+        >
+          <div className="relative">
+            <div className={classNames.track}>
+              <div className={classNames.thumb} />
+            </div>
           </div>
-        </div>
-      </Switch>
+          {label && <Label elementType="span">{label}</Label>}
+        </Switch>
+      </BooleanField>
     );
   }
 );
