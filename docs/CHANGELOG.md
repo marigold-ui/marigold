@@ -1,5 +1,26 @@
 # @marigold/docs
 
+## 17.3.2
+
+### Patch Changes
+
+- bb8d67a: Add new "Component Principles" foundations page explaining the four pillars of Marigold's component design: accessibility, theming, composition, and layout.
+- 5969186: Replace "Governance Process" and "Governance Principles" pages with a new "How to Contribute" page. Simplify the "Get in touch" page to focus on getting help.
+- f02cd1b: docs(DST-975): document component variants under Appearance section
+  - Add structured variant description tables (`Variant | Description | When to use`) to 14 component documentation pages: Button, SectionMessage, Badge, Card, Text, Accordion, Toast, Tooltip, Link, LinkButton, Divider, Loader, Menu, and Table
+  - Retrofit Table's existing bullet list to the consistent table format
+  - Improve Card appearance demo with realistic venue data instead of placeholder content
+
+- d01eb55: Add `/api/manifest.json` route that returns a JSON index of all documentation pages for AI agent discovery.
+- Updated dependencies [3f77810]
+- Updated dependencies [50566a2]
+- Updated dependencies [49fc2e2]
+- Updated dependencies [969c8cc]
+  - @marigold/components@17.3.2
+  - @marigold/theme-rui@5.2.4
+  - @marigold/system@17.3.2
+  - @marigold/icons@1.3.38
+
 ## 17.3.1
 
 ### Patch Changes
