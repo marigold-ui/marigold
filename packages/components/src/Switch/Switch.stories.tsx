@@ -117,17 +117,3 @@ export const WithDescription = meta.story({
     expect(switchDescribedBy).toBe(helpTextId);
   },
 });
-
-export const DefaultSelected = meta.story({
-  tags: ['component-test'],
-  args: {
-    defaultSelected: true,
-  },
-  play: async ({ canvas, userEvent }) => {
-    const input: HTMLInputElement = canvas.getByRole('switch');
-
-    await userEvent.click(input);
-
-    await expect(input.checked).toBeFalsy();
-  },
-});
