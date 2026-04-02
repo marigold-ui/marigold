@@ -113,5 +113,12 @@
       "automerge": true
     }
   ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"],
+    "schedule": ["at any time"],
+    "minimumReleaseAge": "0 days"
+  },
+  "osvVulnerabilityAlerts": true,
   "timezone": "Europe/Berlin"
 }

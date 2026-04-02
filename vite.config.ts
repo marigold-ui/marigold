@@ -10,12 +10,27 @@ import configShared from './vitest.config.shared.js';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Pre-bundle deps to prevent race conditions during concurrent browser test
+// execution in CI. Each project spins up its own Vite browser server, so
+// optimizeDeps must be set per-project (top-level alone doesn't propagate).
+// See: https://github.com/storybookjs/storybook/issues/33067
+const sharedOptimizeDeps = [
+  '@vitest/coverage-istanbul',
+  '@storybook/addon-a11y',
+  '@storybook/addon-docs',
+  'storybook-addon-test-codegen/preview',
+  'storybook/viewport',
+  '@tanstack/react-query',
+  'react-select',
+  '@testing-library/jest-dom',
+];
+
 export default mergeConfig(
   configShared,
   defineConfig({
     plugins: [react(), tailwindcss()],
     optimizeDeps: {
-      include: ['@vitest/coverage-istanbul'],
+      include: sharedOptimizeDeps,
     },
     resolve: {
       alias: {
@@ -27,11 +42,17 @@ export default mergeConfig(
         {
           extends: true,
           plugins: [tsconfigPaths()],
+          optimizeDeps: {
+            include: sharedOptimizeDeps,
+          },
           test: {
             name: 'unit-tests',
             exclude: ['**/*.stories.tsx'],
             setupFiles: ['./vitest.setup.ts'],
             globals: true,
+            // Retry once to handle transient vitest browser-mode import errors in CI
+            // See: https://github.com/vitest-dev/vitest/issues/9509
+            retry: 1,
             browser: {
               enabled: true,
               provider: playwright(),
@@ -60,12 +81,16 @@ export default mergeConfig(
               },
             }),
           ],
+          optimizeDeps: {
+            include: sharedOptimizeDeps,
+          },
           test: {
             name: 'storybook-tests',
             // Exclude themes from storybook browser tests - they don't have
             // component-tests and cause node:module import errors in browser
             exclude: ['**/themes/**'],
-            // Retry flaky Storybook module imports (dev server race condition)
+            // Retry once to handle transient vitest browser-mode import errors in CI
+            // See: https://github.com/vitest-dev/vitest/issues/9509
             retry: 1,
             // Enable browser mode
             browser: {
