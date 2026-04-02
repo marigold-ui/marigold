@@ -5,6 +5,7 @@ import { definePreview } from '@storybook/react-vite';
 import * as storybookAddonTestCodegen from 'storybook-addon-test-codegen/preview';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import withMarigoldProviders from './decorators.js';
+// @ts-expect-error - CSS side-effect import handled by Vite bundler
 import './styles.css';
 
 const customViewports = {
