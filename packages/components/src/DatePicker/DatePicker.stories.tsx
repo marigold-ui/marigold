@@ -256,7 +256,9 @@ Mobile.test(
     });
 
     await step('Select a date from calendar', async () => {
-      const dateButton = await canvas.findByRole('button', { name: /15/i });
+      const dateButton = await canvas.findByRole('button', {
+        name: /15\. August/i,
+      });
 
       await userEvent.click(dateButton);
     });
@@ -292,10 +294,20 @@ Mobile.test(
       );
     });
 
-    await step('Verify calendar grid is visible', async () => {
+    await step('Verify calendar grid is visible and focused', async () => {
       const calendar = await canvas.findByRole('grid');
 
-      await waitFor(() => expect(calendar).toBeVisible());
+      await waitFor(() => {
+        expect(calendar).toBeVisible();
+        const focusedCell = calendar.querySelector('[tabindex="0"]');
+        expect(focusedCell).not.toBeNull();
+      });
+
+      // Ensure focus is on the calendar cell
+      const focusedCell = calendar.querySelector(
+        '[tabindex="0"]'
+      ) as HTMLElement;
+      focusedCell.focus();
     });
 
     await step('Navigate calendar with arrow keys', async () => {
