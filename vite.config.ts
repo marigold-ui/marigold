@@ -61,7 +61,14 @@ export default mergeConfig(
             }),
           ],
           optimizeDeps: {
-            include: ['@storybook/addon-a11y'],
+            include: [
+              '@storybook/addon-a11y',
+              '@storybook/addon-docs',
+              'storybook-addon-test-codegen/preview',
+              'storybook/viewport',
+              '@tanstack/react-query',
+              'react-select',
+            ],
           },
           test: {
             name: 'storybook-tests',
