@@ -45,6 +45,13 @@ jobs:
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install
+      - name: Cache Vite dep optimization
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.vite
+          key: vite-deps-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            vite-deps-${{ runner.os }}-
       - name: Run Test Coverage
         run: pnpm test:coverage
 
