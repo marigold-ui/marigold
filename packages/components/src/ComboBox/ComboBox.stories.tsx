@@ -12,7 +12,7 @@ const meta = preview.meta({
   component: ComboBox,
   decorators: [
     Story => (
-      <div id="storybook-root">
+      <div id="storybook-root" className="p-4">
         <Story />
       </div>
     ),
