@@ -7,23 +7,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Test & Coverage
+  # ---------------------------------------------------------------------------
+  # Unit tests (vitest browser-mode, Firefox)
+  # ---------------------------------------------------------------------------
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
     permissions:
-      # Required to checkout the code
       contents: read
-      # Required to put a comment into the pull-request
-      pull-requests: write
     env:
       CI: true
-      PR_NUMBER: ${{ github.event.number }}
-      GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
-      GIST_ID: ${{ secrets.GIST_ID }}
     steps:
-      # Setup
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4.2.0 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v4.2.0
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -32,7 +28,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # Action
       - name: Get Playwright version
         id: playwright-version
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
@@ -45,15 +40,76 @@ jobs:
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install
+
       - name: Cache Vite dep optimization
         uses: actions/cache@v4
         with:
           path: node_modules/.vite
-          key: vite-deps-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: vite-deps-unit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            vite-deps-${{ runner.os }}-
-      - name: Run Test Coverage
-        run: pnpm test:coverage
+            vite-deps-unit-${{ runner.os }}-
+
+      - name: Run Unit Tests
+        run: pnpm vitest run --project=unit-tests --coverage --coverage.thresholds.100=false --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-unit
+          path: coverage/coverage-final.json
+
+  # ---------------------------------------------------------------------------
+  # Storybook component tests (vitest browser-mode, Firefox)
+  # ---------------------------------------------------------------------------
+  storybook-tests:
+    name: Storybook Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      CI: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4.2.0
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install
+
+      - name: Cache Vite dep optimization
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.vite
+          key: vite-deps-sb-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            vite-deps-sb-${{ runner.os }}-
+
+      - name: Run Storybook Tests
+        run: pnpm vitest run --project=storybook-tests --coverage --coverage.thresholds.100=false --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-storybook
+          path: coverage/coverage-final.json
 
       - name: Upload Accessibility Report
         id: artifact-upload-step
@@ -63,6 +119,55 @@ jobs:
           name: accessibility-report
           path: ./storybook/artifacts/accessibilityReport.html
           overwrite: 'true'
+
+  # ---------------------------------------------------------------------------
+  # Merge coverage & report
+  # ---------------------------------------------------------------------------
+  coverage-report:
+    name: Coverage Report
+    needs: [unit-tests, storybook-tests]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      CI: true
+      PR_NUMBER: ${{ github.event.number }}
+      GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+      GIST_ID: ${{ secrets.GIST_ID }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+
+      # Download coverage artifacts into separate directories
+      - name: Download unit test coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-unit
+          path: coverage/unit
+      - name: Download storybook test coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-storybook
+          path: coverage/storybook
+
+      # Merge Istanbul coverage JSONs
+      - name: Merge coverage reports
+        run: |
+          mkdir -p .nyc_output
+          # Copy both coverage-final.json files with unique names
+          cp coverage/unit/coverage-final.json .nyc_output/unit.json
+          cp coverage/storybook/coverage-final.json .nyc_output/storybook.json
+          # Generate merged reports in all required formats
+          npx nyc report --temp-dir .nyc_output --report-dir coverage -r text -r json -r html -r json-summary
+          # Enforce coverage thresholds on the merged result
+          npx nyc check-coverage --temp-dir .nyc_output --statements 90 --branches 85 --functions 90 --lines 90
+
+      # Post accessibility report link
       - name: Get PR number
         uses: jwalton/gh-find-current-pr@master
         id: findPr
@@ -74,9 +179,10 @@ jobs:
         with:
           pr-number: ${{ steps.findPr.outputs.number }}
           message: |
-            Accessibility tests executed. Download the report [here](${{ steps.artifact-upload-step.outputs.artifact-url }}).
+            Accessibility tests executed. Download the report [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
-      - name: 'Report Coverage'
+      # Coverage report PR comment
+      - name: Report Coverage
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           name: 'Marigold Code Coverage'
@@ -84,6 +190,7 @@ jobs:
           json-summary-path: './coverage/coverage-summary.json'
           json-final-path: './coverage/coverage-final.json'
 
+      # Coverage badge
       - name: Read coverage and prepare badge JSON
         id: prepare_badge
         run: |

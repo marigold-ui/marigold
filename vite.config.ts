@@ -6,31 +6,16 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig, mergeConfig } from 'vitest/config';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import configShared from './vitest.config.shared.js';
+import configShared, { browserDeps } from './vitest.config.shared.js';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// Pre-bundle deps to prevent race conditions during concurrent browser test
-// execution in CI. Each project spins up its own Vite browser server, so
-// optimizeDeps must be set per-project (top-level alone doesn't propagate).
-// See: https://github.com/storybookjs/storybook/issues/33067
-const sharedOptimizeDeps = [
-  '@vitest/coverage-istanbul',
-  '@storybook/addon-a11y',
-  '@storybook/addon-docs',
-  'storybook-addon-test-codegen/preview',
-  'storybook/viewport',
-  '@tanstack/react-query',
-  'react-select',
-  '@testing-library/jest-dom',
-];
 
 export default mergeConfig(
   configShared,
   defineConfig({
     plugins: [react(), tailwindcss()],
     optimizeDeps: {
-      include: sharedOptimizeDeps,
+      include: browserDeps,
     },
     resolve: {
       alias: {
@@ -43,7 +28,7 @@ export default mergeConfig(
           extends: true,
           plugins: [tsconfigPaths()],
           optimizeDeps: {
-            include: sharedOptimizeDeps,
+            include: browserDeps,
           },
           test: {
             name: 'unit-tests',
@@ -82,7 +67,7 @@ export default mergeConfig(
             }),
           ],
           optimizeDeps: {
-            include: sharedOptimizeDeps,
+            include: browserDeps,
           },
           test: {
             name: 'storybook-tests',
