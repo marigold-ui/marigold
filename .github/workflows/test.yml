@@ -7,14 +7,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  unit-tests:
-    name: Unit Tests
+  test:
+    name: Test & Coverage
     runs-on: ubuntu-latest
+    permissions:
+      # Required to checkout the code
+      contents: read
+      # Required to put a comment into the pull-request
+      pull-requests: write
     env:
       CI: true
+      PR_NUMBER: ${{ github.event.number }}
+      GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+      GIST_ID: ${{ secrets.GIST_ID }}
     steps:
+      # Setup
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: pnpm/action-setup@v4.2.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -22,50 +31,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: Get Playwright version
-        id: playwright-version
-        run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
-      - name: Install Playwright browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpm exec playwright install
-      - name: Run Unit Tests
-        run: pnpm exec vitest run --project=unit-tests --reporter=blob
-      - name: Rename blob report
-        if: always()
-        run: |
-          if [ -f .vitest-reports/blob.json ]; then
-            mv .vitest-reports/blob.json .vitest-reports/unit.blob.json
-          fi
-      - name: Upload blob report
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: blob-report-unit
-          path: .vitest-reports
-          if-no-files-found: ignore
-          retention-days: 1
 
-  storybook-tests:
-    name: Storybook Tests
-    runs-on: ubuntu-latest
-    env:
-      CI: true
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4.2.0
-      - name: Setup Node (using .node-version)
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
+      # Action
       - name: Get Playwright version
         id: playwright-version
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
@@ -78,79 +45,29 @@ jobs:
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install
-      - name: Run Storybook Tests
-        run: pnpm exec vitest run --project=storybook-tests --reporter=blob
-      - name: Rename blob report
-        if: always()
-        run: |
-          if [ -f .vitest-reports/blob.json ]; then
-            mv .vitest-reports/blob.json .vitest-reports/storybook.blob.json
-          fi
-      - name: Upload blob report
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: blob-report-storybook
-          path: .vitest-reports
-          if-no-files-found: ignore
-          retention-days: 1
+      - name: Run Test Coverage
+        run: pnpm test:coverage
+
       - name: Upload Accessibility Report
+        id: artifact-upload-step
         if: always()
         uses: actions/upload-artifact@v6
         with:
           name: accessibility-report
           path: ./storybook/artifacts/accessibilityReport.html
           overwrite: 'true'
-
-  coverage-report:
-    name: Coverage Report
-    needs: [unit-tests, storybook-tests]
-    if: always()
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    env:
-      CI: true
-      GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
-      GIST_ID: ${{ secrets.GIST_ID }}
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4.2.0
-      - name: Setup Node (using .node-version)
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Download blob reports
-        uses: actions/download-artifact@v6
-        with:
-          pattern: blob-report-*
-          path: .vitest-reports
-          merge-multiple: true
-
-      - name: Verify blob reports
-        run: ls -la .vitest-reports/
-
-      - name: Merge reports and generate coverage
-        run: pnpm exec vitest --mergeReports --coverage
-
       - name: Get PR number
         uses: jwalton/gh-find-current-pr@master
         id: findPr
         with:
           state: open
-
       - name: Accessibility Report Preview
         if: success() && steps.findPr.outputs.number
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ steps.findPr.outputs.number }}
           message: |
-            Accessibility tests executed. Download the report [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts).
+            Accessibility tests executed. Download the report [here](${{ steps.artifact-upload-step.outputs.artifact-url }}).
 
       - name: 'Report Coverage'
         uses: davelosert/vitest-coverage-report-action@v2
