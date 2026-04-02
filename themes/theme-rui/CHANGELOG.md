@@ -1,5 +1,16 @@
 # @marigold/theme-rui
 
+## 5.2.4
+
+### Patch Changes
+
+- 49fc2e2: fix(DST-1278): unify Table row hover styles for href and selectionMode rows
+- Updated dependencies [3f77810]
+- Updated dependencies [50566a2]
+- Updated dependencies [969c8cc]
+  - @marigold/components@17.3.2
+  - @marigold/system@17.3.2
+
 ## 5.2.3
 
 ### Patch Changes
