@@ -36,6 +36,12 @@ jobs:
         run: pnpm exec playwright install
       - name: Run Unit Tests
         run: pnpm exec vitest run --project=unit-tests --reporter=blob
+      - name: Rename blob report
+        if: always()
+        run: |
+          if [ -f .vitest-reports/blob.json ]; then
+            mv .vitest-reports/blob.json .vitest-reports/unit.blob.json
+          fi
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v6
@@ -74,6 +80,12 @@ jobs:
         run: pnpm exec playwright install
       - name: Run Storybook Tests
         run: pnpm exec vitest run --project=storybook-tests --reporter=blob
+      - name: Rename blob report
+        if: always()
+        run: |
+          if [ -f .vitest-reports/blob.json ]; then
+            mv .vitest-reports/blob.json .vitest-reports/storybook.blob.json
+          fi
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v6
@@ -119,6 +131,9 @@ jobs:
           pattern: blob-report-*
           path: .vitest-reports
           merge-multiple: true
+
+      - name: Verify blob reports
+        run: ls -la .vitest-reports/
 
       - name: Merge reports and generate coverage
         run: pnpm exec vitest --mergeReports --coverage
