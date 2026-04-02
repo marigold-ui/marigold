@@ -6,8 +6,8 @@ export const Card: ThemeComponent<'Card'> = cva({
   variants: {
     variant: {
       default: 'ui-surface',
-      master: 'bg-access-master/30 border border-access-master',
-      admin: 'bg-access-admin/30 border border-access-admin',
+      master: 'bg-access-master/30 border border-access-master-foreground/50',
+      admin: 'bg-access-admin/30 border border-access-admin-foreground/50',
     },
   },
   defaultVariants: {
