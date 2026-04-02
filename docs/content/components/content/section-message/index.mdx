@@ -25,6 +25,15 @@ Optionally, you can add a button to dismiss the message.
 
 <AppearanceTable component={'SectionMessage'} />
 
+Each variant communicates a different level of severity, helping users quickly understand the nature of the message.
+
+| Variant   | Description                                                               | When to use                                                                                   |
+| --------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `info`    | Blue-tinted message for neutral information. This is the default variant. | General announcements, tips, or contextual information that doesn't require immediate action. |
+| `success` | Green-tinted message indicating a positive outcome.                       | Confirming a completed action or successful state, like a saved form or resolved issue.       |
+| `warning` | Yellow-tinted message signaling caution.                                  | Potential issues or conditions the user should be aware of before proceeding.                 |
+| `error`   | Red-tinted message for critical problems.                                 | Errors that need attention, like validation failures or system errors.                        |
+
 ## Usage
 
 Section messages are ideal for displaying important feedback related to a specific section of the page.

@@ -1174,8 +1174,8 @@ export const DynamicColumnsAndRows = meta.story({
     const [nextId, setNextId] = useState(4);
 
     const addRow = () => {
-      const randomUser = users[Math.floor(Math.random() * users.length)];
-      setRows(rows => [...rows, { ...randomUser, id: nextId }]);
+      const user = users[nextId % users.length];
+      setRows(rows => [...rows, { ...user, id: nextId }]);
       setNextId(id => id + 1);
     };
 
