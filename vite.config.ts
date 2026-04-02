@@ -6,7 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig, mergeConfig } from 'vitest/config';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import configShared from './vitest.config.shared.js';
+import configShared, { browserDeps } from './vitest.config.shared.js';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,7 +15,7 @@ export default mergeConfig(
   defineConfig({
     plugins: [react(), tailwindcss()],
     optimizeDeps: {
-      include: ['@vitest/coverage-istanbul'],
+      include: browserDeps,
     },
     resolve: {
       alias: {
@@ -61,7 +61,7 @@ export default mergeConfig(
             }),
           ],
           optimizeDeps: {
-            include: ['@storybook/addon-a11y'],
+            include: ['@storybook/addon-a11y', ...browserDeps],
           },
           test: {
             name: 'storybook-tests',

@@ -1,5 +1,12 @@
 import { defineConfig } from 'vitest/config';
 
+/**
+ * Deps that must be pre-bundled for browser-mode vitest projects.
+ * Keep this next to the coverage config so adding a provider
+ * doesn't silently break projects that override `optimizeDeps`.
+ */
+export const browserDeps = ['@vitest/coverage-istanbul'];
+
 const exclude = [
   '**/node_modules/**',
   '**/dist/**',
