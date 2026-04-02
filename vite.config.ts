@@ -27,11 +27,17 @@ export default mergeConfig(
         {
           extends: true,
           plugins: [tsconfigPaths()],
+          optimizeDeps: {
+            include: ['@testing-library/jest-dom'],
+          },
           test: {
             name: 'unit-tests',
             exclude: ['**/*.stories.tsx'],
             setupFiles: ['./vitest.setup.ts'],
             globals: true,
+            // Retry once to handle transient vitest browser-mode import errors in CI
+            // See: https://github.com/vitest-dev/vitest/issues/9509
+            retry: 1,
             browser: {
               enabled: true,
               provider: playwright(),
@@ -75,6 +81,9 @@ export default mergeConfig(
             // Exclude themes from storybook browser tests - they don't have
             // component-tests and cause node:module import errors in browser
             exclude: ['**/themes/**'],
+            // Retry once to handle transient vitest browser-mode import errors in CI
+            // See: https://github.com/vitest-dev/vitest/issues/9509
+            retry: 1,
             // Enable browser mode
             browser: {
               enabled: true,
