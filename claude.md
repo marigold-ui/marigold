@@ -262,6 +262,29 @@ Run with `pnpm test:unit`.
 - **component-scaffold**: Creates new components with all required files (component, tests, stories, theme styles)
 - **a11y-audit**: Audits components for WCAG 2.1 AA accessibility compliance
 
+## MCP Servers
+
+This project provides MCP servers for AI-assisted development:
+
+- **Storybook** (`http://localhost:6006/mcp`) — Requires running Storybook (`pnpm sb`). Provides component discovery, documentation, and testing tools.
+- **React Aria** — Reference documentation for react-aria-components
+
+When working with Marigold components, prefer Storybook MCP tools to discover existing components and their APIs before searching the codebase manually.
+
+## Storybook MCP Server instructions
+
+When working on UI components, always use the `sb-mcp-server` MCP tools to access Storybook's component and documentation knowledge before answering or taking any action.
+
+- **CRITICAL: Never hallucinate component properties!** Before using ANY property on a component from a design system (including common-sounding ones like `shadow`, etc.), you MUST use the MCP tools to check if the property is actually documented for that component.
+- Query `list-all-documentation` to get a list of all components
+- Query `get-documentation` for that component to see all available properties and examples
+- Only use properties that are explicitly documented or shown in example stories
+- If a property isn't documented, do not assume properties based on naming conventions or common patterns from other libraries. Check back with the user in these cases.
+- Use the `get-storybook-story-instructions` tool to fetch the latest instructions for creating or updating stories. This will ensure you follow current conventions and recommendations.
+- Check your work by running `run-story-tests`.
+
+Remember: A story name might not reflect the property name correctly, so always verify properties through documentation or example stories before using them.
+
 ## Common Gotchas
 
 - Components depend on `@marigold/system` - rebuild system package if making system changes

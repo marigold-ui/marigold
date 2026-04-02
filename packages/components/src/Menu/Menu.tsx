@@ -79,7 +79,6 @@ const _Menu = ({
       </RACButton>
       {isSmallScreen ? (
         <Tray>
-          <Tray.Title>{label}</Tray.Title>
           <Tray.Content>
             <Menu {...props} className={classNames.container}>
               {children}
