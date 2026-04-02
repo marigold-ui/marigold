@@ -1,5 +1,6 @@
 {
   "pages": [
+    "component-principles",
     "accessibility",
     "design-tokens",
     "elevation",
