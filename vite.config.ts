@@ -15,7 +15,20 @@ export default mergeConfig(
   defineConfig({
     plugins: [react(), tailwindcss()],
     optimizeDeps: {
-      include: ['@vitest/coverage-istanbul'],
+      include: [
+        '@vitest/coverage-istanbul',
+        // Pre-bundle storybook preview/decorator deps to prevent race conditions
+        // during concurrent browser test execution in CI (affects both unit-tests
+        // and storybook-tests since unit tests import stories).
+        // See: https://github.com/storybookjs/storybook/issues/33067
+        '@storybook/addon-a11y',
+        '@storybook/addon-docs',
+        'storybook-addon-test-codegen/preview',
+        'storybook/viewport',
+        '@tanstack/react-query',
+        'react-select',
+        '@testing-library/jest-dom',
+      ],
     },
     resolve: {
       alias: {
@@ -27,9 +40,6 @@ export default mergeConfig(
         {
           extends: true,
           plugins: [tsconfigPaths()],
-          optimizeDeps: {
-            include: ['@testing-library/jest-dom'],
-          },
           test: {
             name: 'unit-tests',
             exclude: ['**/*.stories.tsx'],
@@ -66,16 +76,6 @@ export default mergeConfig(
               },
             }),
           ],
-          optimizeDeps: {
-            include: [
-              '@storybook/addon-a11y',
-              '@storybook/addon-docs',
-              'storybook-addon-test-codegen/preview',
-              'storybook/viewport',
-              '@tanstack/react-query',
-              'react-select',
-            ],
-          },
           test: {
             name: 'storybook-tests',
             // Exclude themes from storybook browser tests - they don't have
