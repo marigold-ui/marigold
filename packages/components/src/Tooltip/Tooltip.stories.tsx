@@ -6,6 +6,7 @@ import { Tooltip } from './Tooltip';
 const meta = preview.meta({
   title: 'Components/Tooltip',
   component: Tooltip,
+  parameters: { surface: false },
   decorators: [
     Story => (
       <div id="storybook-root">

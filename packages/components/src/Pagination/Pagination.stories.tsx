@@ -12,6 +12,9 @@ import { Pagination, PaginationProps } from './Pagination';
 const meta = preview.meta({
   title: 'Components/Pagination',
   component: Pagination,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     totalItems: {
       control: {
@@ -48,6 +51,10 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { surface: 'both' },
+});
+
+export const InteractionTest = meta.story({
   tags: ['component-test'],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);

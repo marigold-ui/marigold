@@ -14,7 +14,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   root: cva({
     base: [
       'relative h-full overflow-hidden',
-      'bg-surface border-surface-border shadow-elevation-border util-scrollbar',
+      'bg-page border-border shadow-elevation-border util-scrollbar',
       'sm:data-[state=expanded]:w-64',
       'sm:data-[state=collapsed]:w-0',
       'sm:transition-[width] sm:duration-200 sm:ease-in-out',
@@ -35,13 +35,13 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   toggle: cva({
     base: [
       'ui-button-base ui-press',
-      'hover:bg-current/10',
-      'size-button [&_svg]:size-6',
+      'hover:ui-state-hover-ghost',
+      'size-control [&_svg]:size-6',
     ],
   }),
   separator: cva({ base: 'bg-border my-1 h-px border-0' }),
   groupLabel: cva({
-    base: 'px-2 h-7.5 pt-3 pb-0.5 mb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider',
+    base: 'px-2 h-7.5 pt-3 pb-0.5 mb-1 text-xs font-medium text-secondary uppercase tracking-wider',
   }),
   navPanel: cva({
     base: [
@@ -68,7 +68,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   navLink: cva({
     base: [
       'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
-      'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
+      'text-foreground/80 hover:ui-state-hover transition-colors',
       'data-active:bg-selected data-active:text-foreground data-active:font-medium',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
@@ -77,7 +77,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   backButton: cva({
     base: [
       'flex items-center gap-2 w-full pl-0.5 pr-2 h-9 text-sm rounded-md',
-      'text-foreground/80 hover:text-foreground hover:bg-hover transition-colors',
+      'text-foreground/80 hover:ui-state-hover transition-colors',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
       'cursor-pointer mb-1',

@@ -8,16 +8,16 @@ export const Badge: ThemeComponent<'Badge'> = cva({
   ],
   variants: {
     variant: {
-      default: 'bg-muted text-foreground border border-border',
-      primary: 'bg-brand text-brand-foreground ',
-      success: 'bg-success-muted text-success-muted-foreground',
-      warning: 'bg-warning-muted text-warning-muted-foreground',
-      info: 'bg-info-muted text-info-muted-foreground',
-      error: 'bg-destructive-muted text-destructive-muted-foreground',
+      default: 'bg text-foreground border border-border',
+      primary: 'bg-primary text-primary-foreground ',
+      success: 'bg-success text-success-foreground',
+      warning: 'bg-warning text-warning-foreground',
+      info: 'bg-info text-info-foreground',
+      error: 'bg-destructive text-destructive-foreground',
       admin:
-        'text-access-admin-foreground border border-access-admin-foreground bg-background',
+        'text-access-admin-foreground border border-access-admin-foreground bg-surface',
       master:
-        'text-access-master-foreground border border-access-master-foreground bg-background',
+        'text-access-master-foreground border border-access-master-foreground bg-surface',
     },
   },
   defaultVariants: {

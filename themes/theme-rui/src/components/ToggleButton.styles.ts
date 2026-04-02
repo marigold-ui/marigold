@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
-    base: 'group inline-flex ui-surface shadow-elevation-border',
+    base: 'group inline-flex overflow-hidden ui-surface shadow-elevation-border',
     variants: {
       size: {
         default: 'text-sm',
@@ -17,17 +17,16 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   button: cva({
     base: [
       'ui-button-base gap-2',
-
-      // ToggleButton-specific styles
       'ui-surface shadow-elevation-border',
-      'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-      'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
-      'selected:[--ui-background-color:var(--color-input)] selected:shadow-none',
 
-      // Group-specific styles for ToggleButtonGroup
-      'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0',
-      'in-[.group]:first:rounded-l-surface',
-      'in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0',
+      // States
+      'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
+      'selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none',
+      'disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
+
+      // Group: buttons share the group's outer surface and border
+      'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
+      'in-[.group]:disabled:border-r-border',
     ],
     variants: {
       size: {
@@ -42,15 +41,15 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
     compoundVariants: [
       {
         size: 'default',
-        class: 'h-button px-4 py-2 [&_svg]:size-4',
+        class: 'h-control px-4 py-2 [&_svg]:size-4',
       },
       {
         size: 'small',
-        class: 'h-button-small px-3 [&_svg]:size-3.5',
+        class: 'h-control-small px-3 [&_svg]:size-3.5',
       },
       {
         size: 'icon',
-        class: 'size-button [&_svg]:size-4',
+        class: 'size-control [&_svg]:size-4',
       },
     ],
   }),

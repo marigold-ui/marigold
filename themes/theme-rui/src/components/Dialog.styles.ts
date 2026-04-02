@@ -19,7 +19,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   }),
   header: cva({ base: 'flex flex-col gap-1 text-center sm:text-left' }),
   title: cva({ base: 'text-lg font-semibold mb-1' }),
-  content: cva({ base: 'text-muted-foreground text-sm' }),
+  content: cva({ base: 'text-secondary text-sm' }),
   actions: cva({
     base: 'flex flex-col-reverse gap-3 sm:flex-row sm:justify-end mt-4',
   }),

@@ -164,7 +164,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>
@@ -383,7 +383,7 @@ export const WidthsAndOverflow = meta.story({
             </Table.Body>
           </Table>
         </div>
-        <p className="text-muted-foreground block text-xs">
+        <p className="text-secondary block text-xs">
           Column widths: ID 40px, Name min 100px, Status 100px, Location min
           100px, Balance min 80px.
         </p>
@@ -689,7 +689,7 @@ export const WithActions = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>

@@ -178,7 +178,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>
