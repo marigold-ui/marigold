@@ -23,6 +23,19 @@ It consists of a container and the content can either be a text or an icon.
 
 <AppearanceTable component={'Badge'} />
 
+Badges use color to convey meaning at a glance. Choose the variant that matches the semantic intent of the status or label.
+
+| Variant   | Description                                                      | When to use                                                                                                    |
+| --------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `default` | Neutral badge with a subtle border. This is the default variant. | Labels or metadata without a specific status, like categories, counts, or version numbers.                     |
+| `primary` | Badge in the brand color with high visual weight.                | Drawing attention to important labels that don't represent a status, like "Recommended", "Pro", or "Featured". |
+| `success` | Green-tinted badge.                                              | Positive statuses like "Active", "Completed", or "Approved".                                                   |
+| `warning` | Yellow-tinted badge.                                             | Cautionary statuses like "Pending", "Expiring", or "Needs review".                                             |
+| `info`    | Blue-tinted badge.                                               | Informational statuses like "New", "Updated", or "In progress".                                                |
+| `error`   | Red-tinted badge.                                                | Negative statuses like "Failed", "Rejected", or "Expired".                                                     |
+| `admin`   | Outlined badge with admin-specific color.                        | Marking content visible only to admin users. [Learn more.](/patterns/admin-master-mark)                        |
+| `master`  | Outlined badge with master-specific color.                       | Marking content visible only to master users. [Learn more.](/patterns/admin-master-mark)                       |
+
 ## Usage
 
 A `<Badge>` is a component used to provide information on new updates and notifications. It is used with other components and cannot be used alone. The content of a badge can be arbitrary, but it is preferred to use a string and/or a icon.
