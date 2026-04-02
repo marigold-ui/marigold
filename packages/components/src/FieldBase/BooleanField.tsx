@@ -2,6 +2,7 @@ import type { PropsWithChildren, ReactNode } from 'react';
 import type { ContextValue } from 'react-aria-components';
 import { Provider, TextContext } from 'react-aria-components';
 import { useId } from '@react-aria/utils';
+import { cn, useClassNames } from '@marigold/system';
 import { HelpText } from '../HelpText/HelpText';
 
 // Props
@@ -27,13 +28,14 @@ export const BooleanField = ({
   context,
   children,
 }: PropsWithChildren<BooleanFieldProps>) => {
+  const classNames = useClassNames({ component: 'BooleanField' });
   const descriptionId = useId();
 
   if (!description) return children;
 
   return (
     <div
-      className="group/booleanfield grid grid-cols-[auto_1fr] gap-x-2"
+      className={cn('group/booleanfield', classNames.container)}
       data-booleanfield
     >
       <Provider
@@ -43,7 +45,7 @@ export const BooleanField = ({
         ]}
       >
         {children}
-        <div className="col-start-2 mt-0.5">
+        <div className={classNames.description}>
           <HelpText description={description} />
         </div>
       </Provider>
