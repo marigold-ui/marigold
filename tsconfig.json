@@ -2,7 +2,6 @@
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
     "jsx": "preserve",
-    "baseUrl": ".",
     "paths": {
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
       ".storybook/*": ["./.storybook/*"]

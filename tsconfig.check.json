@@ -5,10 +5,10 @@
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
     "jsx": "preserve",
-    "baseUrl": ".",
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "paths": {
+      ".storybook/*": ["./.storybook/*"],
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
       "@marigold/theme-rui/appearances": ["./themes/theme-rui/src/appearances"],
       "@/*": ["./docs/*"],
