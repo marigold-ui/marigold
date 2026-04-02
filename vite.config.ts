@@ -10,25 +10,27 @@ import configShared from './vitest.config.shared.js';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Pre-bundle deps to prevent race conditions during concurrent browser test
+// execution in CI. Each project spins up its own Vite browser server, so
+// optimizeDeps must be set per-project (top-level alone doesn't propagate).
+// See: https://github.com/storybookjs/storybook/issues/33067
+const sharedOptimizeDeps = [
+  '@vitest/coverage-istanbul',
+  '@storybook/addon-a11y',
+  '@storybook/addon-docs',
+  'storybook-addon-test-codegen/preview',
+  'storybook/viewport',
+  '@tanstack/react-query',
+  'react-select',
+  '@testing-library/jest-dom',
+];
+
 export default mergeConfig(
   configShared,
   defineConfig({
     plugins: [react(), tailwindcss()],
     optimizeDeps: {
-      include: [
-        '@vitest/coverage-istanbul',
-        // Pre-bundle storybook preview/decorator deps to prevent race conditions
-        // during concurrent browser test execution in CI (affects both unit-tests
-        // and storybook-tests since unit tests import stories).
-        // See: https://github.com/storybookjs/storybook/issues/33067
-        '@storybook/addon-a11y',
-        '@storybook/addon-docs',
-        'storybook-addon-test-codegen/preview',
-        'storybook/viewport',
-        '@tanstack/react-query',
-        'react-select',
-        '@testing-library/jest-dom',
-      ],
+      include: sharedOptimizeDeps,
     },
     resolve: {
       alias: {
@@ -40,6 +42,9 @@ export default mergeConfig(
         {
           extends: true,
           plugins: [tsconfigPaths()],
+          optimizeDeps: {
+            include: sharedOptimizeDeps,
+          },
           test: {
             name: 'unit-tests',
             exclude: ['**/*.stories.tsx'],
@@ -76,6 +81,9 @@ export default mergeConfig(
               },
             }),
           ],
+          optimizeDeps: {
+            include: sharedOptimizeDeps,
+          },
           test: {
             name: 'storybook-tests',
             // Exclude themes from storybook browser tests - they don't have
