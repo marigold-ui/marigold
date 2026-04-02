@@ -27,8 +27,12 @@ export default mergeConfig(
         {
           extends: true,
           plugins: [tsconfigPaths()],
+          optimizeDeps: {
+            include: browserDeps,
+          },
           test: {
             name: 'unit-tests',
+            retry: 1,
             exclude: ['**/*.stories.tsx'],
             setupFiles: ['./vitest.setup.ts'],
             globals: true,
@@ -65,6 +69,7 @@ export default mergeConfig(
           },
           test: {
             name: 'storybook-tests',
+            retry: 1,
             // Exclude themes from storybook browser tests - they don't have
             // component-tests and cause node:module import errors in browser
             exclude: ['**/themes/**'],

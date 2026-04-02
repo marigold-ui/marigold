@@ -2,10 +2,32 @@ import { defineConfig } from 'vitest/config';
 
 /**
  * Deps that must be pre-bundled for browser-mode vitest projects.
- * Keep this next to the coverage config so adding a provider
+ *
+ * Without pre-bundling, Vite discovers these deps at runtime and triggers
+ * on-demand optimization, which races with concurrent browser test execution
+ * in CI (cold cache, constrained resources) and produces:
+ *   `TypeError: error loading dynamically imported module`
+ *
+ * Keep this list next to the coverage config so adding a provider
  * doesn't silently break projects that override `optimizeDeps`.
+ *
+ * @see https://github.com/storybookjs/storybook/issues/33067
+ * @see https://github.com/vitest-dev/vitest/issues/9509
  */
-export const browserDeps = ['@vitest/coverage-istanbul'];
+export const browserDeps = [
+  // Coverage provider (loads dynamically after tests complete)
+  '@vitest/coverage-istanbul',
+  // Storybook addons (loaded via storybook preview/decorators)
+  '@storybook/addon-a11y',
+  '@storybook/addon-docs',
+  'storybook-addon-test-codegen/preview',
+  'storybook/viewport',
+  // App deps used in decorators/stories
+  '@tanstack/react-query',
+  'react-select',
+  // Test setup (extends expect at module load time)
+  '@testing-library/jest-dom',
+];
 
 const exclude = [
   '**/node_modules/**',
