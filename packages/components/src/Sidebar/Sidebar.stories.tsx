@@ -13,7 +13,7 @@ const meta = preview.meta({
   component: Sidebar,
   args: {},
   parameters: {
-    padding: false,
+    layout: 'fullscreen',
   },
 });
 

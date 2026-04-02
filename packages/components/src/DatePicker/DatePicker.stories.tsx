@@ -106,7 +106,7 @@ const meta = preview.meta({
         });
       }
       return (
-        <div id="storybook-root">
+        <div id="storybook-root" className="p-4">
           <Story />
         </div>
       );
