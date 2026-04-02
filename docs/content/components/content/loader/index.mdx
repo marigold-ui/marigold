@@ -11,6 +11,13 @@ The `<Loader>` component indicates a task in progress, serving as a placeholder 
 
 <AppearanceTable component={'Loader'} />
 
+The Loader component supports variants to ensure visibility across different backgrounds.
+
+| Variant    | Description                                             | When to use                                                                                |
+| ---------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `default`  | Loader in the brand color. This is the default variant. | Standard loading states on light backgrounds.                                              |
+| `inverted` | Loader in a secondary color.                            | Loading states on dark or branded backgrounds where the default color wouldn't be visible. |
+
 ## Usage
 
 The `<Loader>` should be used to inform users that a process is currently in progress, particularly when it takes more than a second. They are useful for situations like data fetching, form submissions, or page loads, where visual feedback reassures users that their action is being processed. However, avoid showing a loading indicator for very brief tasks, as it can feel disruptive.
