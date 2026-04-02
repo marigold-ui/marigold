@@ -15,12 +15,8 @@ export interface TeaserListProps {
 export const TeaserList = ({ items }: TeaserListProps) => (
   <Cards>
     {items.map(props => (
-      // eslint-disable-next-line react/prop-types
       <Card key={props.href} {...props}>
-        {
-          // eslint-disable-next-line react/prop-types
-          props.caption
-        }
+        {props.caption}
       </Card>
     ))}
   </Cards>
