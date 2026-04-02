@@ -25,6 +25,14 @@ The `<Card>` component consists of a container which is basically a `<div>`. You
 
 <AppearanceTable component={'Card'} />
 
+The Card component supports variants for general content grouping as well as access-level marking.
+
+| Variant   | Description                                                      | When to use                                                                               |
+| --------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `default` | Standard card with a raised shadow. This is the default variant. | General-purpose content grouping like articles, profiles, or summaries.                   |
+| `admin`   | Card with admin-specific border and background tint.             | Grouping content visible only to admin users. [Learn more.](/patterns/admin-master-mark)  |
+| `master`  | Card with master-specific border and background tint.            | Grouping content visible only to master users. [Learn more.](/patterns/admin-master-mark) |
+
 ## Usage
 
 The `<Card>` component enhances the visual hierarchy and organization of content, making it easier for users to engage with various pieces of information.
