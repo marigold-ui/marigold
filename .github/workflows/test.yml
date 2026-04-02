@@ -35,20 +35,14 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install
       - name: Run Unit Tests
-        run: pnpm exec vitest run --project=unit-tests --reporter=blob --coverage
+        run: pnpm exec vitest run --project=unit-tests --reporter=blob
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v6
         with:
           name: blob-report-unit
           path: .vitest-reports
-          retention-days: 1
-      - name: Upload coverage
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: coverage-unit
-          path: coverage
+          if-no-files-found: ignore
           retention-days: 1
 
   storybook-tests:
@@ -79,20 +73,14 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install
       - name: Run Storybook Tests
-        run: pnpm exec vitest run --project=storybook-tests --reporter=blob --coverage
+        run: pnpm exec vitest run --project=storybook-tests --reporter=blob
       - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v6
         with:
           name: blob-report-storybook
           path: .vitest-reports
-          retention-days: 1
-      - name: Upload coverage
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: coverage-storybook
-          path: coverage
+          if-no-files-found: ignore
           retention-days: 1
       - name: Upload Accessibility Report
         if: always()
