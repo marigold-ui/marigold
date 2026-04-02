@@ -2,9 +2,8 @@
   "pages": [
     "installation",
     "get-in-touch",
+    "how-to-contribute",
     "design-principles",
-    "governance-process",
-    "governance-principles",
     "release-phases"
   ]
 }

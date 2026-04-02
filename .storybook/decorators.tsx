@@ -11,12 +11,9 @@ const queryClient = new QueryClient();
 
 // Storybook decorator that provides Marigold theme and overlay container
 const withMarigoldProviders: Decorator[] = [
-  (Story, context) => (
+  Story => (
     <QueryClientProvider client={queryClient}>
-      <MarigoldProvider
-        theme={theme}
-        className={`min-h-screen ${context.parameters.padding === false ? '' : 'p-6'}`}
-      >
+      <MarigoldProvider theme={theme} className="min-h-screen">
         <OverlayContainerProvider container="storybook-root">
           {context.parameters.surface === 'both' ? (
             <div className="flex flex-col gap-8">

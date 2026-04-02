@@ -200,7 +200,7 @@ export const WithLinks = meta.story({
       <>
         A new version is available.{' '}
         <Link
-          href="https://www.marigold-ui.io/releases/blog-overview"
+          href="https://www.marigold-ui.io/releases/release-notes"
           target="_blank"
         >
           View changelog
