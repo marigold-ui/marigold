@@ -129,7 +129,7 @@ function wcagBadgeColor(score: number) {
 }
 
 export default () => (
-  <div data-theme="rui">
+  <>
     <div className="overflow-x-auto">
       <table
         style={{
@@ -146,7 +146,6 @@ export default () => (
                 padding: '6px 4px',
                 minWidth: 65,
                 textAlign: 'center',
-                backgroundColor: 'var(--color-charcoal-100)',
                 borderRight: '1px solid var(--color-charcoal-200)',
                 borderBottom: '1px solid var(--color-charcoal-200)',
                 position: 'sticky',
@@ -158,13 +157,11 @@ export default () => (
             {steps.map(s => (
               <th
                 key={s}
-                className="text-[11px] font-bold"
+                className="text-secondary text-[11px] font-bold"
                 style={{
                   padding: '6px 4px',
                   minWidth: 65,
                   textAlign: 'center',
-                  backgroundColor: 'var(--color-charcoal-100)',
-                  color: 'var(--color-charcoal-700)',
                   borderBottom: '1px solid var(--color-charcoal-200)',
                   position: 'sticky',
                   top: 0,
@@ -181,13 +178,11 @@ export default () => (
             return (
               <tr key={bgStep}>
                 <th
-                  className="text-[11px] font-bold"
+                  className="text-secondary text-[11px] font-bold"
                   style={{
                     padding: '6px 4px',
                     minWidth: 65,
                     textAlign: 'center',
-                    backgroundColor: 'var(--color-charcoal-100)',
-                    color: 'var(--color-charcoal-700)',
                     borderRight: '1px solid var(--color-charcoal-200)',
                     borderBottom: '1px solid var(--color-charcoal-200)',
                     position: 'sticky',
@@ -276,95 +271,66 @@ export default () => (
     </div>
 
     {/* Legend */}
-    <div
-      className="mt-4 rounded-xl p-4"
-      style={{
-        backgroundColor: 'var(--color-charcoal-100)',
-        border: '1px solid var(--color-charcoal-200)',
-      }}
-    >
-      <div
-        className="flex flex-wrap items-center justify-center gap-4 text-xs"
-        style={{ color: 'var(--color-charcoal-600)' }}
-      >
+    <div className="text-secondary mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
+      <span className="font-bold">APCA:</span>
+      <span>
         <span
-          className="w-full text-center text-[10px] font-bold tracking-wide uppercase"
-          style={{ color: 'var(--color-charcoal-400)' }}
-        >
-          APCA Criteria
-        </span>
-        <span className="flex items-center gap-1 font-medium">
-          <span
-            className="inline-block size-2.5 rounded-full"
-            style={{ background: '#10b981' }}
-          />{' '}
-          Lc 75+ (Body)
-        </span>
-        <span className="flex items-center gap-1 font-medium">
-          <span
-            className="inline-block size-2.5 rounded-full"
-            style={{ background: '#22c55e' }}
-          />{' '}
-          Lc 60+ (Sub)
-        </span>
-        <span className="flex items-center gap-1 font-medium">
-          <span
-            className="inline-block size-2.5 rounded-full"
-            style={{ background: '#f59e0b' }}
-          />{' '}
-          Lc 45+ (Large)
-        </span>
-        <span className="flex items-center gap-1 font-medium">
-          <span
-            className="inline-block size-2.5 rounded-full"
-            style={{ background: '#ef4444' }}
-          />{' '}
-          Fail
-        </span>
-      </div>
-      <div
-        className="my-2.5 h-px w-full"
-        style={{ background: 'var(--color-charcoal-200)' }}
-      />
-      <div
-        className="flex flex-wrap items-center justify-center gap-4 text-xs"
-        style={{ color: 'var(--color-charcoal-600)' }}
-      >
+          className="inline-block size-2 rounded-sm"
+          style={{ background: 'rgba(16,185,129,0.5)' }}
+        />{' '}
+        75+ Body
+      </span>
+      <span>
         <span
-          className="w-full text-center text-[10px] font-bold tracking-wide uppercase"
-          style={{ color: 'var(--color-charcoal-400)' }}
-        >
-          WCAG Criteria
-        </span>
-        <span className="flex items-center gap-1 font-medium">
-          <span
-            className="inline-block size-2.5 rounded-full"
-            style={{ background: '#10b981' }}
-          />{' '}
-          7.0+ (AAA)
-        </span>
-        <span className="flex items-center gap-1 font-medium">
-          <span
-            className="inline-block size-2.5 rounded-full"
-            style={{ background: '#22c55e' }}
-          />{' '}
-          4.5+ (AA)
-        </span>
-        <span className="flex items-center gap-1 font-medium">
-          <span
-            className="inline-block size-2.5 rounded-full"
-            style={{ background: '#f59e0b' }}
-          />{' '}
-          3.0+ (Large)
-        </span>
-        <span className="flex items-center gap-1 font-medium">
-          <span
-            className="inline-block size-2.5 rounded-full"
-            style={{ background: '#ef4444' }}
-          />{' '}
-          Fail
-        </span>
-      </div>
+          className="inline-block size-2 rounded-sm"
+          style={{ background: 'rgba(34,197,94,0.5)' }}
+        />{' '}
+        60+ Sub
+      </span>
+      <span>
+        <span
+          className="inline-block size-2 rounded-sm"
+          style={{ background: 'rgba(245,158,11,0.5)' }}
+        />{' '}
+        45+ Large
+      </span>
+      <span>
+        <span
+          className="inline-block size-2 rounded-sm"
+          style={{ background: 'rgba(239,68,68,0.5)' }}
+        />{' '}
+        Fail
+      </span>
+      <span className="mx-1">|</span>
+      <span className="font-bold">WCAG:</span>
+      <span>
+        <span
+          className="inline-block size-2 rounded-sm"
+          style={{ background: 'rgba(16,185,129,0.5)' }}
+        />{' '}
+        7+ AAA
+      </span>
+      <span>
+        <span
+          className="inline-block size-2 rounded-sm"
+          style={{ background: 'rgba(34,197,94,0.5)' }}
+        />{' '}
+        4.5+ AA
+      </span>
+      <span>
+        <span
+          className="inline-block size-2 rounded-sm"
+          style={{ background: 'rgba(245,158,11,0.5)' }}
+        />{' '}
+        3+ Large
+      </span>
+      <span>
+        <span
+          className="inline-block size-2 rounded-sm"
+          style={{ background: 'rgba(239,68,68,0.5)' }}
+        />{' '}
+        Fail
+      </span>
     </div>
-  </div>
+  </>
 );
