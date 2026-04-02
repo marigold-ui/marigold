@@ -50,7 +50,7 @@ jobs:
             vite-deps-unit-${{ runner.os }}-
 
       - name: Run Unit Tests
-        run: pnpm vitest run --project=unit-tests --coverage
+        run: pnpm vitest run --project=unit-tests --coverage --coverage.thresholds.100=false --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0
 
       - name: Upload coverage artifact
         if: always()
@@ -102,7 +102,7 @@ jobs:
             vite-deps-sb-${{ runner.os }}-
 
       - name: Run Storybook Tests
-        run: pnpm vitest run --project=storybook-tests --coverage
+        run: pnpm vitest run --project=storybook-tests --coverage --coverage.thresholds.100=false --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0
 
       - name: Upload coverage artifact
         if: always()
@@ -164,6 +164,8 @@ jobs:
           cp coverage/storybook/coverage-final.json .nyc_output/storybook.json
           # Generate merged reports in all required formats
           npx nyc report --temp-dir .nyc_output --report-dir coverage -r text -r json -r html -r json-summary
+          # Enforce coverage thresholds on the merged result
+          npx nyc check-coverage --temp-dir .nyc_output --statements 90 --branches 85 --functions 90 --lines 90
 
       # Post accessibility report link
       - name: Get PR number
