@@ -1,6 +1,8 @@
 import addonA11y from '@storybook/addon-a11y';
 import addonDocs from '@storybook/addon-docs';
 import { definePreview } from '@storybook/react-vite';
+// @ts-expect-error - no type declarations available for this module
+import * as storybookAddonTestCodegen from 'storybook-addon-test-codegen/preview';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import withMarigoldProviders from './decorators.js';
 import './styles.css';
@@ -16,16 +18,8 @@ const customViewports = {
   },
 };
 
-// Disable a11y checks during Vitest Storybook runs as the axe context
-// is not available in the sb-vitest browser environment, causing
-// "No elements found for include in frame Context" errors.
-const isVitest =
-  typeof import.meta !== 'undefined' &&
-  // @ts-expect-error - vite injects env during build/test
-  Boolean(import.meta.env && (import.meta.env as any).MODE === 'test');
-
 export default definePreview({
-  addons: [addonA11y(), addonDocs()],
+  addons: [addonA11y(), addonDocs(), storybookAddonTestCodegen],
   parameters: {
     layout: 'padded',
     viewport: {
@@ -34,11 +28,12 @@ export default definePreview({
         ...customViewports,
       },
     },
-    a11y: isVitest
-      ? { disable: true }
-      : {
-          context: '#storybook-root',
-        },
+    a11y: {
+      // 'todo' - show a11y violations in the test UI only
+      // 'error' - fail CI on a11y violations
+      // 'off' - skip a11y checks entirely
+      test: 'todo',
+    },
     options: {
       storySort: {
         method: 'alphabetical',

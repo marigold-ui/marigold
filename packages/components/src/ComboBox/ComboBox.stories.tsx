@@ -462,9 +462,8 @@ Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
 
     await waitFor(() => {
       expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
-
-    expect(trigger).toHaveAttribute('aria-expanded', 'false');
   });
 
   await step('Verify selection is displayed in trigger', async () => {
@@ -494,7 +493,10 @@ Mobile.test(
     await step('Filter options by typing', async () => {
       await userEvent.keyboard('cat');
 
-      await waitFor(() => expect(canvas.getByText('Cat')).toBeVisible());
+      await waitFor(() => {
+        expect(canvas.getByText('Cat')).toBeVisible();
+        expect(canvas.queryByText('Dog')).not.toBeInTheDocument();
+      });
     });
 
     await step('Navigate to option with arrow keys and select', async () => {
