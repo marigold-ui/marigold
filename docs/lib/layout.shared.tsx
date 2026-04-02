@@ -13,7 +13,11 @@ export const baseOptions = (): BaseLayoutProps => {
         url: '/getting-started/installation',
         on: 'all',
       },
-      { text: 'Foundations ', url: '/foundations/accessibility', on: 'all' },
+      {
+        text: 'Foundations ',
+        url: '/foundations/component-principles',
+        on: 'all',
+      },
       {
         text: 'Components',
         url: '/components/application/provider',
