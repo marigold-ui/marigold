@@ -17,7 +17,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   pageButton: cva({
     base: [
       'ui-button-base',
-      'text-sm bg-surface size-9',
+      'text-sm bg-transparent size-9',
       'data-[selected=true]:ui-surface data-[selected=true]:shadow-elevation-border',
     ],
   }),
