@@ -80,7 +80,15 @@ const _Menu = ({
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = open ?? internalOpen;
+
+  const setIsOpen = (val: boolean) => {
+    if (open === undefined) {
+      setInternalOpen(val);
+    }
+    props.onOpenChange?.(val);
+  };
 
   // react-aria's non-modal popover doesn't dismiss on outside click (by design,
   // for comboboxes). For menus this is unexpected, so we use react-aria's own
@@ -95,10 +103,7 @@ const _Menu = ({
     <MenuTrigger
       {...props}
       isOpen={nonModal ? isOpen : open}
-      onOpenChange={val => {
-        setIsOpen(val);
-        props.onOpenChange?.(val);
-      }}
+      onOpenChange={setIsOpen}
     >
       <RACButton
         className={classNames.button}

@@ -64,6 +64,7 @@ test('non-modal menu does not set overflow hidden on html', async () => {
 
   await user.click(button);
 
+  expect(screen.getByText('Edit')).toBeVisible();
   expect(document.documentElement.style.overflow).not.toBe('hidden');
 
   // Restore small screen mock for other tests
