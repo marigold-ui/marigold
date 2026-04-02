@@ -107,6 +107,11 @@
       "matchPackageNames": ["turbo", "tsdown"]
     },
     {
+      "description": "Ensure react-aria-components and react-stately are grouped with other react-aria packages, not the react monorepo group from config:recommended",
+      "groupName": "react-aria",
+      "matchPackageNames": ["react-aria-components", "react-stately"]
+    },
+    {
       "description": "Automerge non-major updates",
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
