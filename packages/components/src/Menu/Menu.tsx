@@ -1,7 +1,8 @@
-import { Key, ReactNode } from 'react';
+import { Key, ReactNode, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Menu, MenuTrigger, Button as RACButton } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useInteractOutside } from '@react-aria/interactions';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import type { PopoverProps } from '../Overlay/Popover';
@@ -51,6 +52,16 @@ export interface MenuProps
    * Whether the menu trigger is disabled.
    */
   disabled?: boolean;
+
+  /**
+   * Whether the menu should be non-modal. When `true`, the menu won't
+   * lock background scrolling or hide outside content from screen readers.
+   *
+   * Use this when the menu is inside a page with sticky or fixed headers
+   * that break when `overflow: hidden` is set on the root element.
+   * @default false
+   */
+  nonModal?: boolean;
 }
 
 const _Menu = ({
@@ -61,15 +72,39 @@ const _Menu = ({
   disabled,
   open,
   placement,
+  nonModal,
   'aria-label': ariaLabel,
   ...props
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = open ?? internalOpen;
+
+  const setIsOpen = (val: boolean) => {
+    if (open === undefined) {
+      setInternalOpen(val);
+    }
+    props.onOpenChange?.(val);
+  };
+
+  // react-aria's non-modal popover doesn't dismiss on outside click (by design,
+  // for comboboxes). For menus this is unexpected, so we use react-aria's own
+  // `useInteractOutside` hook to close the menu on outside interaction.
+  useInteractOutside({
+    ref: popoverRef,
+    isDisabled: !nonModal || !isOpen,
+    onInteractOutside: () => setIsOpen(false),
+  });
 
   return (
-    <MenuTrigger {...props}>
+    <MenuTrigger
+      {...props}
+      isOpen={nonModal ? isOpen : open}
+      onOpenChange={setIsOpen}
+    >
       <RACButton
         className={classNames.button}
         aria-label={ariaLabel}
@@ -89,7 +124,12 @@ const _Menu = ({
           </Tray.Actions>
         </Tray>
       ) : (
-        <Popover open={open} placement={placement}>
+        <Popover
+          ref={popoverRef}
+          open={nonModal ? isOpen : open}
+          placement={placement}
+          isNonModal={nonModal}
+        >
           <Menu {...props} className={classNames.container}>
             {children}
           </Menu>

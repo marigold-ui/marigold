@@ -111,6 +111,23 @@ Here you can see how the `selectionMode` from `<Menu>` works. In this example th
 
 <ComponentDemo name="menu-selection" />
 
+### Non-modal menu
+
+By default, opening a menu locks background scrolling and hides outside content from screen readers. This is the standard behavior for modal overlays and ensures focused interaction.
+
+However, in some layouts this can cause issues. For example, if your page has a sticky or fixed header, the scroll lock (`overflow: hidden` on the root element) can cause the header to visually disappear or shift.
+
+Setting `nonModal` disables background scroll locking. The menu still closes on outside click and Escape. The only difference is that the page remains scrollable and outside content is not hidden from screen readers while the menu is open.
+
+| Behavior                      | Default (modal) | `nonModal` |
+| ----------------------------- | --------------- | ---------- |
+| Background scroll locked      | Yes             | No         |
+| Outside content hidden (a11y) | Yes             | No         |
+| Closes on outside click       | Yes             | Yes        |
+| Closes on Escape              | Yes             | Yes        |
+
+<ComponentDemo name="menu-non-modal" />
+
 ### Destructive actions
 
 For actions that result in irreversible data loss, such as deleting an item or removing a user account, use the `"destructive"` variant on menu items to warn the user of the consequences. Always safeguard these actions with a confirmation dialog that clearly explains the outcome and requires an explicit second step to complete the process.

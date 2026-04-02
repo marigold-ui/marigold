@@ -306,6 +306,59 @@ export const BasicActionMenu: any = meta.story({
   },
 });
 
+export const NonModal: any = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <div style={{ height: '200vh', paddingTop: '100px' }}>
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          background: 'var(--color-bg-surface)',
+          padding: '16px',
+          zIndex: 1,
+        }}
+      >
+        Sticky Header
+      </div>
+      <Menu {...args} nonModal label="Non-Modal Menu">
+        <Menu.Item id="edit">Edit</Menu.Item>
+        <Menu.Item id="duplicate">Duplicate</Menu.Item>
+        <Menu.Item id="delete">Delete</Menu.Item>
+      </Menu>
+    </div>
+  ),
+  play: async ({ canvas, step }: any) => {
+    await step('Open non-modal menu', async () => {
+      const button = canvas.getByText('Non-Modal Menu');
+      await userEvent.click(button);
+
+      expect(canvas.getByText('Edit')).toBeVisible();
+      expect(canvas.getByText('Duplicate')).toBeVisible();
+      expect(canvas.getByText('Delete')).toBeVisible();
+    });
+
+    await step(
+      'Verify html element does not have overflow hidden',
+      async () => {
+        expect(document.documentElement.style.overflow).not.toBe('hidden');
+      }
+    );
+
+    await step('Close menu by clicking outside', async () => {
+      const stickyHeader = canvas.getByText('Sticky Header');
+      await userEvent.click(stickyHeader);
+
+      await waitFor(() => {
+        expect(canvas.getByText('Non-Modal Menu')).toHaveAttribute(
+          'aria-expanded',
+          'false'
+        );
+      });
+    });
+  },
+});
+
 export const OpenMenuRemotely: any = meta.story({
   render: () => {
     const [open, setOpen] = useState(false);

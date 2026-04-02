@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic, BasicActionMenu, MenuSection } from './Menu.stories';
+import { Basic, BasicActionMenu, MenuSection, NonModal } from './Menu.stories';
 
 window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
@@ -53,6 +53,22 @@ test('supports Menu with sections', async () => {
 
   expect(screen.getByText('Food')).toBeInTheDocument();
   expect(screen.getByText('Fruits')).toBeInTheDocument();
+});
+
+test('non-modal menu does not set overflow hidden on html', async () => {
+  // Override the small screen mock to simulate a large screen (Popover path)
+  window.matchMedia = mockMatchMedia([]);
+
+  renderWithOverlay(<NonModal.Component />);
+  const button = screen.getByRole('button');
+
+  await user.click(button);
+
+  expect(screen.getByText('Edit')).toBeVisible();
+  expect(document.documentElement.style.overflow).not.toBe('hidden');
+
+  // Restore small screen mock for other tests
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
 });
 
 test('pass "aria-label" to button (when you use a menu with only an icon)', () => {
