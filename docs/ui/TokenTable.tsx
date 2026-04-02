@@ -10,8 +10,8 @@ export const TokenTable = ({ tokens }: { tokens: TokenEntry[] }) => {
   const hasUseFor = tokens.some(t => t.useFor);
 
   return (
-    <div data-theme="rui">
-      <table style={{ width: '100%' }}>
+    <div data-theme="rui" className="rounded-xl">
+      <table className="text-fd-foreground" style={{ width: '100%' }}>
         <thead>
           <tr>
             <th></th>
@@ -44,7 +44,9 @@ export const TokenTable = ({ tokens }: { tokens: TokenEntry[] }) => {
                   {value}
                 </code>
               </td>
-              {hasUseFor && <td className="text-sm">{useFor}</td>}
+              {hasUseFor && (
+                <td className="text-fd-foreground text-sm">{useFor}</td>
+              )}
             </tr>
           ))}
         </tbody>
