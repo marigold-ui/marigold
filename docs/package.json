@@ -30,7 +30,7 @@
     "fumadocs-core": "^16.6.5",
     "fumadocs-mdx": "14.2.8",
     "fumadocs-ui": "16.6.5",
-    "lucide-react": "^0.575.0",
+    "lucide-react": "^1.7.0",
     "motion": "12.34.3",
     "next": "16.1.6",
     "nuqs": "2.8.8",

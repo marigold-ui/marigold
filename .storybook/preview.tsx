@@ -22,7 +22,7 @@ const customViewports = {
 export default definePreview({
   addons: [addonA11y(), addonDocs(), storybookAddonTestCodegen],
   parameters: {
-    layout: 'fullscreen',
+    layout: 'padded',
     viewport: {
       options: {
         ...MINIMAL_VIEWPORTS,
