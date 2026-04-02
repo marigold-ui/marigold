@@ -41,7 +41,7 @@ These props map to styles defined in the theme. When you write `variant="ghost"`
 The chain from prop to rendered style looks like this:
 
 1. You pass `variant` and `size` to a component.
-2. The component calls `useClassNames`, which looks up the current theme.
+2. The component looks up the matching styles from the current theme.
 3. The theme contains style definitions for each component, written with [`cva`](https://beta.cva.style) (class variance authority).
 4. Based on your `variant` and `size`, the matching Tailwind CSS classes are selected and applied to the component.
 
@@ -65,22 +65,6 @@ export const Menu = {
   }),
 };
 ```
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use `variant` and `size` props to control a component's appearance. If you
-      need a variant that doesn't exist yet, use `extendTheme` to add one.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't try to pass `className` or `style` props to override the look of a
-      component. These props are intentionally removed to keep styling
-      consistent across the application.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
 
 If the available variants don't cover your use case, you can extend the theme using the [`extendTheme`](/components/hooks-and-utils/extendTheme) function. This lets you add new variants and sizes to any component without modifying the design system itself.
 
@@ -112,22 +96,6 @@ This pattern has several advantages:
 
 You'll find this pattern across the design system. For example, `Dialog` uses `Dialog.Trigger`, `Dialog.Title`, `Dialog.Content`, and `Dialog.Actions`. `Table` uses `Table.Header`, `Table.Body`, `Table.Row`, and `Table.Cell`.
 
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Assemble complex UI by composing sub-components. This makes the structure
-      explicit and each piece independently configurable.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't try to configure everything through a single component's props.
-      Prefer composing sub-components over passing data arrays or complex config
-      objects.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
 ## Layout
 
 Components in Marigold never set their own outer spacing. A `Button` doesn't know or care whether it has margin around it. Instead, layout is always the responsibility of a parent layout component.
@@ -141,22 +109,6 @@ In the example above, the `Inline` component handles the horizontal arrangement.
 All layout components share this same set of props. Beyond `space` and `alignX`, you will find `alignY` for cross-axis alignment. The `space` prop accepts semantic tokens that describe the relationship between elements rather than a fixed pixel value. For the full token vocabulary and how to choose the right one, see the [Spacing](/foundations/spacing) page.
 
 This separation has an important benefit: components remain portable. The same `Button` works in a dialog footer, a toolbar, or a form without any layout adjustments.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use layout components like `Inline`, `Stack`, and `Grid` to control
-      spacing and alignment between components.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't add wrapper `div`s with custom margin or padding to create spacing
-      between components. If the layout components don't cover your use case,
-      that's a signal to reach out to the design system team.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
 
 <Callout title="Need something that doesn't exist?">
   If you find yourself reaching for wrapper elements or custom CSS to achieve a
