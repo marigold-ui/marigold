@@ -1,6 +1,6 @@
 {
   "pages": [
-    "blog-overview",
+    "release-notes",
     "---packages---",
     "packages/components/release",
     "packages/icons/release",

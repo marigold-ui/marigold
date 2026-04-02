@@ -20,7 +20,7 @@ export const baseOptions = (): BaseLayoutProps => {
         on: 'all',
       },
       { text: 'Patterns', url: '/patterns/admin-master-mark', on: 'all' },
-      { text: 'Releases', url: '/releases/blog-overview', on: 'all' },
+      { text: 'Releases', url: '/releases/release-notes', on: 'all' },
     ],
   };
 };
