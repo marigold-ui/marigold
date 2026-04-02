@@ -130,11 +130,7 @@ test('opens the suggestions on focus', async () => {
 });
 
 test('opens the suggestions on arrow down (manual)', async () => {
-  renderWithOverlay(
-    <div style={{ padding: '24px' }}>
-      <Basic.Component label="Label" menuTrigger="manual" />
-    </div>
-  );
+  renderWithOverlay(<Basic.Component label="Label" menuTrigger="manual" />);
 
   const input = screen.getByRole('combobox');
   await user.type(input, '{arrowdown}');
