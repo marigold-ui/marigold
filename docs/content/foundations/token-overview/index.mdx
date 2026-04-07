@@ -136,7 +136,7 @@ The primary interaction color for buttons, selected checkboxes, radios, switches
   tokens={[
     {
       name: 'primary',
-      value: 'charcoal-950',
+      value: 'charcoal-900',
       useFor: 'Button backgrounds, strong selection states',
     },
     {
@@ -203,11 +203,6 @@ Background tints applied on white surfaces to communicate interaction and status
       useFor: 'Subtle tint for readonly inputs, badges, secondary highlights',
     },
     {
-      name: 'hover',
-      value: 'charcoal-200',
-      useFor: 'Hover background for menu items, list options, sidebar links',
-    },
-    {
       name: 'selected',
       value: 'charcoal-300',
       useFor: 'Selection highlight for list items (ListBox, Sidebar)',
@@ -234,23 +229,53 @@ Background tints applied on white surfaces to communicate interaction and status
 <div className="selected:bg-selected" />
 ```
 
-#### Hover utilities
+### Hover
 
-**Solid hover** for items on white surfaces (list items, table rows, menu items, sidebar links):
+Hover feedback tells users that an element is interactive. Unlike disabled or selected states, hover is momentary and must feel lightweight. Two patterns handle different contexts depending on the surface the element sits on: a **solid** tint for elements on white surfaces, and a **translucent** overlay for elements that float over varying backgrounds.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'hover',
+      value: 'charcoal-200',
+      useFor: 'Hover background for menu items, list options, sidebar links',
+    },
+  ]}
+/>
+
+<Callout title="Why two hover patterns?">
+  Elements on white surfaces (list items, table rows, menu items) need a solid
+  background tint to stand out. But ghost buttons, tabs, and action bar buttons
+  sit on varying backgrounds, so a solid color would clash. Instead they use a
+  translucent overlay (`bg-current/10`) that adapts to any context. The two
+  utilities `ui-state-hover` and `ui-state-hover-ghost` bundle the correct
+  styles for each case.
+</Callout>
 
 ```tsx
+// Solid hover: list items, table rows, menu items, sidebar links
 <div className="hover:ui-state-hover" />
-```
 
-Uses `bg-hover` (charcoal-200) with `text-foreground`. The `ui-state-hover` utility bundles both.
-
-**Ghost hover** for minimal elements that blend into any context (ghost buttons, tabs, action bar):
-
-```tsx
+// Ghost hover: ghost buttons, tabs, action bar buttons
 <div className="hover:ui-state-hover-ghost" />
 ```
 
-Uses `bg-current/10`, a 10% translucent overlay of the current text color. Adapts automatically to light and dark contexts.
+The `ui-state-hover` utility applies `bg-hover` with `text-foreground`. The `ui-state-hover-ghost` utility applies `bg-current/10`, a 10% translucent overlay of the current text color.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `ui-state-hover` for items on white surfaces like list items, table
+      rows, and menu items.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `ui-state-hover` on ghost buttons or tabs. Use
+      `ui-state-hover-ghost` instead so the hover adapts to any background.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Disabled
 
