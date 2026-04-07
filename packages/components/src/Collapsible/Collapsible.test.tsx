@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components';
 import { describe, expect, it } from 'vitest';
 import { Basic, ShowMore } from './Collapsible.stories';
+import { useCollapsibleContext } from './Context';
 
 const user = userEvent.setup();
 
@@ -20,6 +21,14 @@ describe('Collapsible', () => {
     // eslint-disable-next-line testing-library/no-node-access
     expect(screen.getByText('Test Content').parentElement).toHaveClass(
       'expanded:contents expanded:[&_[role=group]]:contents'
+    );
+  });
+});
+
+describe('Context', () => {
+  it('throws when useCollapsibleContext is used outside provider', () => {
+    expect(() => renderHook(() => useCollapsibleContext())).toThrow(
+      'useCollapsibleContext must be used within a CollapsibleProvider'
     );
   });
 });
