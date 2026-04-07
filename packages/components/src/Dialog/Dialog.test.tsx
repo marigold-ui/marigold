@@ -112,6 +112,20 @@ test('renders nothing by default', () => {
   expect(dialog).not.toBeInTheDocument();
 });
 
+test('supports children as render function receiving close', async () => {
+  // WithFormValidation uses children={({ close }) => ...} pattern
+  renderWithOverlay(<WithFormValidation.Component />);
+
+  const button = screen.getByText('Open');
+  await user.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  await waitFor(() => expect(dialog).toBeVisible());
+
+  // The dialog rendered — meaning the children-as-function worked
+  expect(screen.getByText('Please enter validation code')).toBeInTheDocument();
+});
+
 test('form validation works within dialog', async () => {
   renderWithOverlay(<WithFormValidation.Component />);
 
