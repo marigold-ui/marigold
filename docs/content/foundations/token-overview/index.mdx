@@ -279,7 +279,7 @@ The `ui-state-hover` utility applies `bg-hover` with `text-foreground`. The `ui-
 
 ### Disabled
 
-Two tokens handle disabled states depending on whether a background is needed.
+Disabled elements must look visually inactive so users don't try to interact with them. Not every disabled element needs the same treatment though. A disabled label or help text only needs dimmed text, while a disabled input or button also needs a gray background to signal that the entire control is inactive. Two tokens handle these cases.
 
 <TokenTable
   tokens={[
@@ -599,7 +599,7 @@ All interactive controls share a consistent height scale.
 
 ### Relational spacing
 
-Semantic spacing tokens for gaps between elements.
+Semantic spacing tokens for gaps between elements. The scale increases with the visual distance between items: tightly coupled elements sit close together, independent sections get more breathing room.
 
 | Token     | Value | Use for                              |
 | --------- | ----- | ------------------------------------ |
@@ -609,6 +609,8 @@ Semantic spacing tokens for gaps between elements.
 | `group`   | 48px  | Groups of content                    |
 | `section` | 96px  | Major page sections                  |
 
+For visual examples and detailed guidance on when to use each level, see [Spacing](/foundations/spacing).
+
 ### Inset spacing
 
 Padding tokens for inside elements, available in three aspect ratios:
@@ -617,9 +619,7 @@ Padding tokens for inside elements, available in three aspect ratios:
 - **Squish**: more horizontal than vertical (buttons, action items)
 - **Stretch**: more vertical than horizontal (cards, stacked content)
 
-Each comes in five sizes: tight, snug, regular, relaxed, loose.
-
-See [Spacing](/foundations/spacing) for visual examples and all available values.
+Each comes in five sizes: tight, snug, regular, relaxed, loose. For the full list of values and visual examples, see [Spacing](/foundations/spacing).
 
 ## Animation
 
