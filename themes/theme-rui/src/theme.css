@@ -77,7 +77,7 @@
   */
 
   /* --- Page & Text --- */
-  --color-page: var(--color-charcoal-100);
+  --color-background: var(--color-charcoal-100);
   --color-foreground: var(--color-charcoal-900);
   --color-secondary: var(--color-charcoal-600);
   --color-placeholder: var(--color-charcoal-600);

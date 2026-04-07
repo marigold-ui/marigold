@@ -71,7 +71,7 @@ These tokens do not need a dedicated foreground color because they already meet 
 
 ## Tokens in context
 
-This diagram shows how tokens map to a typical form card. The gray page background (`bg-page`) contrasts with the white card surface (`bg-surface`), creating natural visual hierarchy.
+This diagram shows how tokens map to a typical form card. The gray page background (`bg-background`) contrasts with the white card surface (`bg-surface`), creating natural visual hierarchy.
 
 ![Annotated UI showing token usage on a form card](/token-overview/annotated-ui.svg)
 
@@ -115,7 +115,7 @@ The foundational layer: page background and text hierarchy.
 />
 
 ```tsx
-<body className="bg-page text-foreground">
+<body className="bg-background text-foreground">
   <p>Primary text</p>
   <p className="text-secondary">Secondary text</p>
 </body>
@@ -168,7 +168,7 @@ The primary interaction color for buttons, selected checkboxes, radios, switches
 
 ### Surfaces
 
-The page is gray (`bg-page`), component panels are lighter (`bg-surface`). This contrast creates natural visual hierarchy without relying solely on shadows and borders.
+The page is gray (`bg-background`), component panels are lighter (`bg-surface`). This contrast creates natural visual hierarchy without relying solely on shadows and borders.
 
 <TokenTable
   tokens={[

@@ -14,7 +14,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   root: cva({
     base: [
       'relative h-full overflow-hidden',
-      'bg-page border-border shadow-elevation-border util-scrollbar',
+      'bg-background border-border shadow-elevation-border util-scrollbar',
       'sm:data-[state=expanded]:w-64',
       'sm:data-[state=collapsed]:w-0',
       'sm:transition-[width] sm:duration-200 sm:ease-in-out',

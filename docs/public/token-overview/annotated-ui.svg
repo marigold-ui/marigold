@@ -62,10 +62,10 @@
   <!-- ====== LEFT-SIDE ANNOTATIONS ====== -->
   <!-- Lines go from dot leftward to x=155, text ends at x=150 (text-anchor=end) -->
 
-  <!-- bg-page: dot on page bg left edge -->
+  <!-- bg-background: dot on page bg left edge -->
   <circle cx="200" cy="20" r="2.5" class="label"/>
   <line x1="197" y1="20" x2="185" y2="20" class="label-line" stroke-width="1"/>
-  <text x="180" y="24" font-size="11" font-weight="600" class="label" text-anchor="end">bg-page</text>
+  <text x="180" y="24" font-size="11" font-weight="600" class="label" text-anchor="end">bg-background</text>
 
   <!-- text-foreground: dot on heading text -->
   <circle cx="288" cy="88" r="2.5" class="label"/>
