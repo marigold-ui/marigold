@@ -16,7 +16,7 @@ test('renders correctly with children', () => {
     >
       <button
         aria-checked="true"
-        class="ui-button-base gap-2 ui-surface shadow-elevation-border not-disabled:hover:[--ui-background-color:var(--color-hover)] not-disabled:hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] not-disabled:hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)] selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 text-sm h-control px-4 py-2 [&_svg]:size-4"
+        class="ui-button-base gap-2 ui-surface shadow-elevation-border hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)] in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial] in-[.group]:disabled:border-r-border text-sm h-control px-4 py-2 [&_svg]:size-4"
         data-rac=""
         data-react-aria-pressable="true"
         data-selected="true"
@@ -28,7 +28,7 @@ test('renders correctly with children', () => {
       </button>
       <button
         aria-checked="false"
-        class="ui-button-base gap-2 ui-surface shadow-elevation-border not-disabled:hover:[--ui-background-color:var(--color-hover)] not-disabled:hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] not-disabled:hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)] selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 text-sm h-control px-4 py-2 [&_svg]:size-4"
+        class="ui-button-base gap-2 ui-surface shadow-elevation-border hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)] in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial] in-[.group]:disabled:border-r-border text-sm h-control px-4 py-2 [&_svg]:size-4"
         data-rac=""
         data-react-aria-pressable="true"
         role="radio"
@@ -39,7 +39,7 @@ test('renders correctly with children', () => {
       </button>
       <button
         aria-checked="false"
-        class="ui-button-base gap-2 ui-surface shadow-elevation-border not-disabled:hover:[--ui-background-color:var(--color-hover)] not-disabled:hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] not-disabled:hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)] selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 text-sm h-control px-4 py-2 [&_svg]:size-4"
+        class="ui-button-base gap-2 ui-surface shadow-elevation-border hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)] in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial] in-[.group]:disabled:border-r-border text-sm h-control px-4 py-2 [&_svg]:size-4"
         data-rac=""
         data-react-aria-pressable="true"
         role="radio"
