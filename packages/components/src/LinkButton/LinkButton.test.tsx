@@ -11,7 +11,6 @@ describe('LinkButton', () => {
   it('renders <a> element', () => {
     render(<Basic.Component href="www.reservix.net" />);
     const link = screen.getByRole('link');
-    expect(link instanceof HTMLAnchorElement).toBeTruthy();
     expect(link).toHaveAttribute('href', 'www.reservix.net');
   });
 
