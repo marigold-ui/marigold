@@ -55,7 +55,7 @@
     "storybook-addon-test-codegen": "3.0.1",
     "tailwindcss": "4.2.1",
     "turbo": "2.8.10",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "vite": "8.0.3",
     "vite-tsconfig-paths": "6.1.1",
     "vitest": "4.1.2",
