@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { Basic, WithSingleSelection } from './SelectList.stories';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
@@ -21,7 +21,9 @@ describe('SelectList', () => {
   });
 
   test('support refs', () => {
-    const SelectListRef = createRef();
+    const SelectListRef = {
+      current: null,
+    } as unknown as RefObject<HTMLElement>;
     render(<Basic.Component aria-label="Test" ref={SelectListRef as any} />);
 
     expect(SelectListRef.current).toBeInstanceOf(HTMLElement);

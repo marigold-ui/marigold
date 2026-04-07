@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import {
   Basic,
   Controlled,
@@ -185,7 +185,7 @@ test('can be controlled', async () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLInputElement>();
+  const ref = { current: null } as unknown as RefObject<HTMLInputElement>;
   render(
     <Basic.Component data-testid="text-field" label="A Label" ref={ref} />
   );

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { isValidElement, useContext } from 'react';
+import { isValidElement, use } from 'react';
 import type RAC from 'react-aria-components';
 import { RadioGroup, RadioGroupStateContext } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -15,7 +15,7 @@ interface CollapsibleGroupProps {
 }
 
 const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
-  const state = useContext(RadioGroupStateContext)!;
+  const state = use(RadioGroupStateContext)!;
 
   if (!children || children.length === 0) {
     return null;

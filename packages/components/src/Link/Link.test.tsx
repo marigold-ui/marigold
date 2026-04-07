@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { MockInstance, vi } from 'vitest';
 import { Basic } from './Link.stories';
 
@@ -45,14 +45,14 @@ test('supports variant prop', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLAnchorElement>();
+  const ref = { current: null } as unknown as RefObject<HTMLAnchorElement>;
   render(<Basic.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
 });
 
 test('renders span element when no href', () => {
-  const ref = createRef<HTMLAnchorElement>();
+  const ref = { current: null } as unknown as RefObject<HTMLAnchorElement>;
   render(<Basic.Component href={undefined} ref={ref} />);
 
   // When no href, it renders a span, not a link

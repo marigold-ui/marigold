@@ -1,19 +1,11 @@
-import type {
-  ComponentPropsWithRef,
-  ElementType,
-  ForwardedRef,
-  ReactNode,
-} from 'react';
-import { forwardRef } from 'react';
+import type { ComponentPropsWithRef, ElementType, ReactNode } from 'react';
 import { createWidthVar, isFraction } from '@marigold/system';
 import { type WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';
-import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
+import type { DistributiveOmit } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
 import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label/Label';
-
-const fixedForwardRef = forwardRef as FixedForwardRef;
 
 // Props
 // ---------------
@@ -37,22 +29,20 @@ export interface FieldBaseProps<T extends ElementType>
 
 // Component
 // ---------------
-const _FieldBase = <T extends ElementType>(
-  props: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>,
-  ref: ForwardedRef<any>
-) => {
-  const {
-    as: Component = 'div',
-    children,
-    label,
-    size,
-    variant,
-    width,
-    description,
-    errorMessage,
-    className,
-    ...rest
-  } = props;
+const _FieldBase = <T extends ElementType>({
+  as: Component = 'div' as T,
+  children,
+  label,
+  size,
+  variant,
+  width,
+  description,
+  errorMessage,
+  className,
+  ref,
+  ...rest
+}: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
+  const props = rest;
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -61,8 +51,13 @@ const _FieldBase = <T extends ElementType>(
 
   const isFractionWidth = width ? isFraction(`${width}`) : false;
 
+  // TypeScript cannot verify ref type compatibility for generic `ElementType` in React 19;
+  // casting to `any` is safe here since `ref` always comes from `ComponentPropsWithRef<T>`.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const AnyComponent = Component as any;
+
   return (
-    <Component
+    <AnyComponent
       ref={ref}
       className={cn(
         'group/field flex min-w-0 flex-col',
@@ -88,7 +83,7 @@ const _FieldBase = <T extends ElementType>(
       }
       data-required={props.isRequired ? true : undefined}
       data-error={props.isInvalid ? true : undefined}
-      {...rest}
+      {...props}
     >
       {label ? (
         <Label variant={variant} size={size}>
@@ -102,8 +97,8 @@ const _FieldBase = <T extends ElementType>(
         description={description}
         errorMessage={errorMessage}
       />
-    </Component>
+    </AnyComponent>
   );
 };
 
-export const FieldBase = fixedForwardRef(_FieldBase);
+export const FieldBase = _FieldBase;

@@ -1,11 +1,5 @@
 import type { Key, ReactNode, Ref } from 'react';
-import {
-  forwardRef,
-  useContext,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, use, useLayoutEffect, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Autocomplete,
@@ -123,7 +117,7 @@ interface TagDisplayProps {
 }
 
 const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
-  const state = useContext(SelectStateContext);
+  const state = use(SelectStateContext);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   if (!state) {

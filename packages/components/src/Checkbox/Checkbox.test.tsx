@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { Basic } from './Checkbox.stories';
 
 // There is no real accesible way to get to the element that acts as checkbox
@@ -78,7 +78,7 @@ test('supports indeterminate state', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLLabelElement>();
+  const ref = { current: null } as unknown as RefObject<HTMLLabelElement>;
   render(<Basic.Component label="Check it" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
