@@ -319,7 +319,7 @@ export const Multiselect = ({
           components={{
             Input,
             MultiValueRemove,
-            // eslint-disable-next-line react/prop-types
+            // eslint-disable-next-line @eslint-react/no-nested-component-definitions
             DropdownIndicator: ({ innerProps, isDisabled }) => (
               <button
                 {...(innerProps as ButtonHTMLAttributes<HTMLButtonElement>)}
