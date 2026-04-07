@@ -148,7 +148,7 @@ The primary interaction color for buttons, selected checkboxes, radios, switches
 />
 
 ```tsx
-<Button className="bg-primary text-primary-foreground">Save</Button>
+<div className="bg-primary text-primary-foreground">Save</div>
 ```
 
 <GuidelineTiles>
@@ -186,9 +186,9 @@ The page is gray (`bg-background`), component panels are lighter (`bg-surface`).
 />
 
 ```tsx
-<Card className="bg-surface border-border rounded-surface shadow-elevation-raised">
+<div className="bg-surface border-border rounded-surface shadow-elevation-raised">
   Content on a white surface
-</Card>
+</div>
 ```
 
 ### Neutral states
@@ -225,13 +225,13 @@ Background tints applied on white surfaces to communicate interaction and status
 **Binary controls** (Checkbox, Radio, Switch, ToggleButton) use the strong/inverted pattern:
 
 ```tsx
-<Checkbox className="bg-primary text-primary-foreground" />
+<div className="bg-primary text-primary-foreground" />
 ```
 
 **List selection** (ListBox, Sidebar) uses the subtle highlight:
 
 ```tsx
-<ListBox.Item className="selected:bg-selected" />
+<div className="selected:bg-selected" />
 ```
 
 #### Hover utilities
@@ -239,7 +239,7 @@ Background tints applied on white surfaces to communicate interaction and status
 **Solid hover** for items on white surfaces (list items, table rows, menu items, sidebar links):
 
 ```tsx
-<ListBox.Item className="hover:ui-state-hover" />
+<div className="hover:ui-state-hover" />
 ```
 
 Uses `bg-hover` (charcoal-200) with `text-foreground`. The `ui-state-hover` utility bundles both.
@@ -247,7 +247,7 @@ Uses `bg-hover` (charcoal-200) with `text-foreground`. The `ui-state-hover` util
 **Ghost hover** for minimal elements that blend into any context (ghost buttons, tabs, action bar):
 
 ```tsx
-<Button variant="ghost" className="hover:ui-state-hover-ghost" />
+<div className="hover:ui-state-hover-ghost" />
 ```
 
 Uses `bg-current/10`, a 10% translucent overlay of the current text color. Adapts automatically to light and dark contexts.
@@ -338,18 +338,18 @@ Status colors follow a consistent structure across all four statuses:
 
 ```tsx
 // Subtle status container
-<Badge className="bg-destructive text-destructive-foreground">Error</Badge>
+<div className="bg-destructive text-destructive-foreground">Error</div>
 
 // Accent border on subtle container
-<SectionMessage className="bg-warning border-warning-accent text-warning-foreground" />
+<div className="bg-warning border-warning-accent text-warning-foreground" />
 
 // Error text (standalone)
 <span className="text-destructive-accent">This field is required</span>
 
 // Destructive button
-<Button className="bg-destructive-accent text-destructive-accent-foreground">
+<div className="bg-destructive-accent text-destructive-accent-foreground">
   Delete
-</Button>
+</div>
 ```
 
 #### Destructive
