@@ -1,4 +1,4 @@
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { useIsHidden } from '@react-aria/collections';
@@ -76,7 +76,7 @@ export const Tray = ({
   children,
   ...props
 }: TrayProps) => {
-  const state = useContext(OverlayTriggerStateContext);
+  const state = use(OverlayTriggerStateContext);
   const isHidden = useIsHidden();
   const classNames = useClassNames({
     component: 'Tray',

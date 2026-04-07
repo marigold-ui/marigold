@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Switch, SwitchContext } from 'react-aria-components';
 import {
@@ -57,56 +56,53 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
    * @default false
    */
   selected?: RAC.SwitchProps['isSelected'];
+  ref?: Ref<HTMLLabelElement>;
 }
 
-const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
-  (
-    {
-      variant,
-      size,
-      width = 'full',
-      label,
-      description,
-      selected,
-      disabled,
-      readOnly,
-      ...rest
-    },
-    ref
-  ) => {
-    const classNames = useClassNames({ component: 'Switch', size, variant });
-    const props = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isSelected: selected,
-      ...rest,
-    } satisfies RAC.SwitchProps;
-    return (
-      <BooleanField
-        description={description}
-        variant={variant}
-        context={SwitchContext}
+const _Switch = ({
+  variant,
+  size,
+  width = 'full',
+  label,
+  description,
+  selected,
+  disabled,
+  readOnly,
+  ref,
+  ...rest
+}: SwitchProps) => {
+  const classNames = useClassNames({ component: 'Switch', size, variant });
+  const props = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isSelected: selected,
+    ...rest,
+  } satisfies RAC.SwitchProps;
+  return (
+    <BooleanField
+      description={description}
+      variant={variant}
+      context={SwitchContext}
+    >
+      <Switch
+        {...props}
+        ref={ref}
+        className={cn(twWidth[width], 'group/switch', classNames.container)}
       >
-        <Switch
-          {...props}
-          ref={ref}
-          className={cn(twWidth[width], 'group/switch', classNames.container)}
-        >
-          {variant === 'settings' && label && (
-            <Label elementType="span">{label}</Label>
-          )}
-          <div className="relative">
-            <div className={classNames.track}>
-              <div className={classNames.thumb} />
-            </div>
+        {variant === 'settings' && label && (
+          <Label elementType="span">{label}</Label>
+        )}
+        <div className="relative">
+          <div className={classNames.track}>
+            <div className={classNames.thumb} />
           </div>
-          {variant !== 'settings' && label && (
-            <Label elementType="span">{label}</Label>
-          )}
-        </Switch>
-      </BooleanField>
-    );
-  }
-);
+        </div>
+        {variant !== 'settings' && label && (
+          <Label elementType="span">{label}</Label>
+        )}
+      </Switch>
+    </BooleanField>
+  );
+};
 
 export { _Switch as Switch };

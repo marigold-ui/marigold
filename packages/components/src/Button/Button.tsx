@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
@@ -42,44 +41,49 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
    * This disables press and hover events while retaining focusability, and announces the loading state to screen readers.
    */
   loading?: RAC.ButtonProps['isPending'];
+  ref?: Ref<HTMLButtonElement>;
 }
 
-const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { children, variant, size, disabled, loading, fullWidth, ...props },
-    ref
-  ) => {
-    const classNames = useClassNames({
-      component: 'Button',
-      variant,
-      size,
-    });
+const _Button = ({
+  children,
+  variant,
+  size,
+  disabled,
+  loading,
+  fullWidth,
+  ref,
+  ...props
+}: ButtonProps) => {
+  const classNames = useClassNames({
+    component: 'Button',
+    variant,
+    size,
+  });
 
-    return (
-      <Button
-        {...props}
-        ref={ref}
-        className={cn(
-          classNames,
-          fullWidth ? 'w-full' : undefined,
-          loading && 'cursor-progress!'
-        )}
-        isPending={loading}
-        isDisabled={disabled}
-      >
-        {loading ? (
-          <>
-            <span className="absolute">
-              <ProgressCircle />
-            </span>
-            <span className="invisible flex gap-[inherit]">{children}</span>
-          </>
-        ) : (
-          children
-        )}
-      </Button>
-    );
-  }
-);
+  return (
+    <Button
+      {...props}
+      ref={ref}
+      className={cn(
+        classNames,
+        fullWidth ? 'w-full' : undefined,
+        loading && 'cursor-progress!'
+      )}
+      isPending={loading}
+      isDisabled={disabled}
+    >
+      {loading ? (
+        <>
+          <span className="absolute">
+            <ProgressCircle />
+          </span>
+          <span className="invisible flex gap-[inherit]">{children}</span>
+        </>
+      ) : (
+        children
+      )}
+    </Button>
+  );
+};
 
 export { _Button as Button };

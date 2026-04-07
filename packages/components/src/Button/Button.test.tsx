@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { Basic, WithIcon } from './Button.stories';
 
 test('add icon in button works as expected', () => {
@@ -13,7 +13,7 @@ test('add icon in button works as expected', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLButtonElement>();
+  const ref = { current: null } as unknown as RefObject<HTMLButtonElement>;
   render(<Basic.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLButtonElement);
