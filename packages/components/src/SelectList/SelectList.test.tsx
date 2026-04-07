@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { Basic, WithSingleSelection } from './SelectList.stories';
+import { SelectListAction } from './SelectListAction';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
 
@@ -25,6 +26,17 @@ describe('SelectList', () => {
     render(<Basic.Component aria-label="Test" ref={SelectListRef as any} />);
 
     expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
+  });
+
+  test('action slot renders with order-last class', () => {
+    render(
+      <SelectListAction>
+        <button>Action</button>
+      </SelectListAction>
+    );
+
+    const action = screen.getByText('Action').parentElement;
+    expect(action).toHaveClass('order-last');
   });
 
   test('should support focus ring-3', async () => {
