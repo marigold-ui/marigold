@@ -89,14 +89,14 @@ This matrix shows the contrast ratio between every pair of charcoal steps. Use i
 
 ## Color tokens
 
-### Page & text
+### Page background & text
 
 The foundational layer: page background and text hierarchy.
 
 <TokenTable
   tokens={[
     {
-      name: 'page',
+      name: 'background',
       value: 'charcoal-100',
       useFor: 'Page-level background (<body>)',
     },
@@ -177,11 +177,6 @@ The page is gray (`bg-background`), component panels are lighter (`bg-surface`).
       value: 'white',
       useFor: 'White component backgrounds (cards, panels, inputs, tables)',
     },
-    {
-      name: 'border',
-      value: 'charcoal-300',
-      useFor: 'Border color for surfaces, dividers, and form controls',
-    },
   ]}
 />
 
@@ -193,7 +188,7 @@ The page is gray (`bg-background`), component panels are lighter (`bg-surface`).
 
 ### Neutral states
 
-Background tints applied on white surfaces to communicate interaction and status.
+Subtle background tints applied on white surfaces. These tokens cover a range of purposes: `muted` provides a quiet visual distinction for readonly or de-emphasized content, `selected` highlights the active item in a list, and `focus-highlight` marks the keyboard-focused element.
 
 <TokenTable
   tokens={[
@@ -358,12 +353,12 @@ Status colors communicate feedback to the user: errors, confirmations, warnings,
 
 Every status follows the same `bg-X` / `text-X-foreground` pairing as other tokens. On top of that, an accent level adds a higher-intensity variant for borders, icons, and standalone text. Here is how the pattern looks using `destructive` as an example:
 
-| Token                                | Role                                                               |
-| ------------------------------------ | ------------------------------------------------------------------ |
-| `bg-destructive`                     | Subtle background for containers (Badge, SectionMessage, Toast)    |
-| `text-destructive-foreground`        | Text on that background                                            |
-| `border-destructive-accent`          | Vibrant color for borders, icons, standalone text, or strong fills |
-| `text-destructive-accent-foreground` | Text on an accent background (destructive only)                    |
+| Token suffix         | Role                                              | Example usage                                                                                                                         |
+| -------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `destructive`        | Subtle background for containers                  | `bg-destructive` on Badge, SectionMessage, Toast                                                                                      |
+| `-foreground`        | Text on that background                           | `text-destructive-foreground`                                                                                                         |
+| `-accent`            | Vibrant, saturated variant for high-intensity use | `text-destructive-accent` for error text, `border-warning-accent` for accent borders, `bg-destructive-accent` for destructive buttons |
+| `-accent-foreground` | Text on an accent background (destructive only)   | `text-destructive-accent-foreground` on destructive button                                                                            |
 
 Replace `destructive` with `success`, `warning`, or `info` for the other statuses. Most statuses only need the first three. The `-accent-foreground` variant exists only for destructive, where a solid red button needs white text on top.
 

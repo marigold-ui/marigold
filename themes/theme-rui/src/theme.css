@@ -64,10 +64,10 @@
   /* To switch palette, change the charcoal references below. */
 
   /*
-    Palette step mapping (charcoal, page = step 100):
+    Palette step mapping (charcoal, background = step 100):
 
     50  -- muted bg (subtle tint on white surfaces), primary-foreground
-    100 -- page bg, focus-highlight bg
+    100 -- background bg, focus-highlight bg
     200 -- hover bg, disabled-surface bg
     300 -- selected bg, borders, scrollbar
     400 -- disabled (text)
@@ -76,7 +76,7 @@
     950 -- primary action, scrollbar hover
   */
 
-  /* --- Page & Text --- */
+  /* --- Page Background & Text --- */
   --color-background: var(--color-charcoal-100);
   --color-foreground: var(--color-charcoal-900);
   --color-secondary: var(--color-charcoal-600);
