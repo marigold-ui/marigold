@@ -354,28 +354,50 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
 
 ### Status colors
 
-Status colors follow a consistent structure across all four statuses:
+Status colors communicate feedback to the user: errors, confirmations, warnings, and informational messages. Components like Badge, SectionMessage, and Toast use these tokens to convey meaning through color.
 
-- **base**: subtle background (Badge, SectionMessage, Toast)
-- **foreground**: text on the subtle background
-- **accent**: the vibrant/saturated color (error text, accent borders, status icons, destructive button bg)
-- **accent-foreground**: text on accent background (destructive only)
+Every status follows the same `bg-X` / `text-X-foreground` pairing as other tokens. On top of that, an accent level adds a higher-intensity variant for borders, icons, and standalone text. Here is how the pattern looks using `destructive` as an example:
+
+| Token                                | Role                                                               |
+| ------------------------------------ | ------------------------------------------------------------------ |
+| `bg-destructive`                     | Subtle background for containers (Badge, SectionMessage, Toast)    |
+| `text-destructive-foreground`        | Text on that background                                            |
+| `border-destructive-accent`          | Vibrant color for borders, icons, standalone text, or strong fills |
+| `text-destructive-accent-foreground` | Text on an accent background (destructive only)                    |
+
+Replace `destructive` with `success`, `warning`, or `info` for the other statuses. Most statuses only need the first three. The `-accent-foreground` variant exists only for destructive, where a solid red button needs white text on top.
 
 ```tsx
-// Subtle status container
+// Subtle container: light background + dark text
 <div className="bg-destructive text-destructive-foreground">Error</div>
 
-// Accent border on subtle container
+// Accent border on a subtle container
 <div className="bg-warning border-warning-accent text-warning-foreground" />
 
-// Error text (standalone)
+// Standalone accent text (no background)
 <span className="text-destructive-accent">This field is required</span>
 
-// Destructive button
+// Strong fill: accent background + accent-foreground text
 <div className="bg-destructive-accent text-destructive-accent-foreground">
   Delete
 </div>
 ```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use the status token (`bg-destructive`, `bg-warning`) for containers like
+      badges and section messages. Reserve the accent variant for borders,
+      icons, and standalone text.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use the accent token as a container background (except for
+      destructive buttons). The saturated color is too strong for large areas.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 #### Destructive
 
