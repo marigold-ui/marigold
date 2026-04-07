@@ -51,10 +51,6 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  parameters: { surface: 'both' },
-});
-
-export const InteractionTest = meta.story({
   tags: ['component-test'],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -119,6 +115,10 @@ export const InteractionTest = meta.story({
       await expect(pageButton).toHaveAttribute('data-selected', 'true');
     });
   },
+});
+
+export const SurfaceVariants = meta.story({
+  parameters: { surface: 'both' },
 });
 
 export const Controlled = meta.story({
