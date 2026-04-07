@@ -1,4 +1,3 @@
-/* eslint react/style-prop-object: 0 */
 import { render, screen } from '@testing-library/react';
 import { I18nProvider } from '@react-aria/i18n';
 import { NumericFormat } from './NumericFormat';
