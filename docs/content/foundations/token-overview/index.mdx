@@ -517,16 +517,42 @@ Domain-specific tokens for Reservix access level indicators.
   ]}
 />
 
-### Links, overlay, scrollbar
+### Links
+
+Text links use a dedicated color token to distinguish them from regular body text.
+
+<TokenTable
+  tokens={[{ name: 'link', value: 'blue-600', useFor: 'Clickable text links' }]}
+/>
+
+### Overlay
+
+When a modal or tray opens, a backdrop covers the page to focus attention on the overlay content. The token provides the color, and components control the opacity to match the overlay type.
 
 <TokenTable
   tokens={[
-    { name: 'link', value: 'blue-600', useFor: 'Clickable text links' },
     {
       name: 'overlay-backdrop',
       value: 'charcoal-950',
       useFor: 'Semi-transparent backdrop behind modals and trays',
     },
+  ]}
+/>
+
+```tsx
+// Modal: darker backdrop for strong focus
+<div className="bg-overlay-backdrop/80" />
+
+// Tray: lighter backdrop, content behind stays partially visible
+<div className="bg-overlay-backdrop/50" />
+```
+
+### Scrollbar
+
+Custom scrollbar tokens keep scrollbars visually consistent with the rest of the UI. The thumb uses a subtle neutral color by default and darkens on hover for better visibility.
+
+<TokenTable
+  tokens={[
     {
       name: 'scrollbar',
       value: 'charcoal-300',
@@ -544,16 +570,6 @@ Domain-specific tokens for Reservix access level indicators.
     },
   ]}
 />
-
-The overlay backdrop token provides the base color. Components apply their own opacity:
-
-```tsx
-// Modal: darker backdrop
-<div className="bg-overlay-backdrop/80" />
-
-// Tray: lighter backdrop
-<div className="bg-overlay-backdrop/50" />
-```
 
 ## Elevation
 
