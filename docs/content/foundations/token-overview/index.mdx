@@ -520,24 +520,20 @@ Text links use a dedicated color token to distinguish them from regular body tex
 
 ### Overlay
 
-When a modal or tray opens, a backdrop covers the page to focus attention on the overlay content. The token provides the color, and components control the opacity to match the overlay type.
+When a modal or tray opens, a backdrop covers the page to focus attention on the overlay content. The token includes opacity so every overlay dims the page consistently.
 
 <TokenTable
   tokens={[
     {
       name: 'overlay-backdrop',
-      value: 'charcoal-950',
+      value: 'charcoal-950 / 70%',
       useFor: 'Semi-transparent backdrop behind modals and trays',
     },
   ]}
 />
 
 ```tsx
-// Modal: darker backdrop for strong focus
-<div className="bg-overlay-backdrop/80" />
-
-// Tray: lighter backdrop, content behind stays partially visible
-<div className="bg-overlay-backdrop/50" />
+<div className="bg-overlay-backdrop" />
 ```
 
 ### Scrollbar

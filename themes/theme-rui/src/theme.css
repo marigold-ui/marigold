@@ -138,7 +138,7 @@
   --color-link: var(--color-blue-600);
 
   /* --- Overlay Backdrop --- */
-  --color-overlay-backdrop: var(--color-charcoal-950);
+  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 70%);
 
   /* --- Scrollbar --- */
   --color-scrollbar: var(--color-charcoal-300);
