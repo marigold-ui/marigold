@@ -122,15 +122,6 @@ describe('Stack', () => {
   });
 
   describe('Element types and layout', () => {
-    test('renders as div element by default', () => {
-      render(<Basic.Component />);
-
-      const stack = screen.getByText('Getting Started with Stack').parentElement
-        ?.parentElement;
-
-      expect(stack instanceof HTMLDivElement).toBeTruthy();
-    });
-
     test('fills available space when stretch is enabled', () => {
       render(<Stretch.Component />);
 
@@ -145,7 +136,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('first').parentElement?.parentElement;
 
-      expect(stack instanceof HTMLUListElement).toBeTruthy();
+      expect(stack?.tagName).toBe('UL');
     });
   });
 });

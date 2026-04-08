@@ -4,9 +4,9 @@
     ":semanticCommitTypeAll(chore)",
     ":rebaseStalePrs"
   ],
-  "schedule": ["before 4am on Monday"],
   "timezone": "Europe/Berlin",
 
+  "requireConfig": "optional",
   "ignoreScripts": true,
   "branchConcurrentLimit": 5,
 

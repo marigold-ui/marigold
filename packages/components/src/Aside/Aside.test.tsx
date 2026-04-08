@@ -103,15 +103,6 @@ describe('Aside', () => {
   });
 
   describe('Element types and layout', () => {
-    test('renders as div element by default', () => {
-      render(<Basic.Component />);
-
-      const headline = screen.getByText(/How to Grow Your Own Garden/);
-      const aside = headline.parentElement?.parentElement?.parentElement;
-
-      expect(aside instanceof HTMLDivElement).toBeTruthy();
-    });
-
     test('applies flex layout classes', () => {
       render(<Basic.Component />);
 

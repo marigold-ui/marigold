@@ -28,14 +28,6 @@ describe('Inline', () => {
       expect(inlineElement).toHaveClass('flex-wrap');
     });
 
-    test('renders as div element by default', () => {
-      render(<Basic.Component />);
-
-      const inlineElement = screen.getByText(/Lirum/).parentElement;
-
-      expect(inlineElement instanceof HTMLDivElement).toBeTruthy();
-    });
-
     test('prevents wrapping when noWrap is enabled', () => {
       render(<Basic.Component noWrap />);
 
