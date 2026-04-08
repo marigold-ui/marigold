@@ -186,9 +186,9 @@ The page is gray (`bg-background`), component panels are lighter (`bg-surface`).
 </div>
 ```
 
-### Neutral states
+### Muted
 
-Subtle background tints applied on white surfaces. These tokens cover a range of purposes: `muted` provides a quiet visual distinction for readonly or de-emphasized content, `selected` highlights the active item in a list, and `focus-highlight` marks the keyboard-focused element.
+Some elements need a subtle visual distinction from the white surface they sit on without drawing too much attention. Readonly inputs, badges, and table headers all benefit from a light background tint that says "this content is secondary" without implying any interactive state.
 
 <TokenTable
   tokens={[
@@ -196,6 +196,43 @@ Subtle background tints applied on white surfaces. These tokens cover a range of
       name: 'muted',
       value: 'charcoal-50',
       useFor: 'Subtle tint for readonly inputs, badges, secondary highlights',
+    },
+  ]}
+/>
+
+```tsx
+// Readonly input with muted background
+<input className="bg-muted" readOnly />
+
+// Badge with subtle background
+<span className="bg-muted text-foreground">Draft</span>
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-muted` for content that is visually secondary but still readable,
+      like readonly inputs, badges, and table sub-headers.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-muted` for disabled states. Disabled elements need
+      `bg-disabled-surface` to clearly signal that interaction is blocked.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Selected
+
+Selection tells users which item is currently active or focused. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-primary` with `text-primary-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components like ListBox and Sidebar highlight one item among many, so they use a subtler `bg-selected` tint. A separate `focus-highlight` token handles keyboard navigation, marking the item the user is about to select.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'primary',
+      value: 'charcoal-900',
+      useFor: 'Binary selection (Checkbox, Radio, Switch, ToggleButton)',
     },
     {
       name: 'selected',
@@ -223,6 +260,28 @@ Subtle background tints applied on white surfaces. These tokens cover a range of
 ```tsx
 <div className="selected:bg-selected" />
 ```
+
+**Keyboard focus** marks the item the user is navigating to, before confirming a selection:
+
+```tsx
+<div className="data-focused:bg-focus-highlight" />
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-selected` for list-based selection (ListBox, Sidebar) and
+      `bg-primary` for binary controls (Checkbox, Switch, ToggleButton).
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-selected` for binary controls. A checkbox or switch should
+      use the strong `bg-primary` pattern to clearly communicate its on/off
+      state.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Hover
 
