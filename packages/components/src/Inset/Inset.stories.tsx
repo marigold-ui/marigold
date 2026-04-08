@@ -29,7 +29,7 @@ const meta = preview.meta({
     },
   },
   args: {
-    space: 4,
+    space: 'square-regular',
     children: undefined,
   } as const,
 });
