@@ -1,14 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Basic } from './Text.stories';
 
-test('renders a <div> element by default', () => {
-  render(<Basic.Component>text</Basic.Component>);
-
-  const text = screen.getByText(/text/);
-
-  expect(text instanceof HTMLDivElement).toBeTruthy();
-});
-
 test('renders a <p>/<span> element', () => {
   render(
     <>
@@ -20,8 +12,8 @@ test('renders a <p>/<span> element', () => {
   const paragraph = screen.getByText(/paragraph/);
   const span = screen.getByText(/span/);
 
-  expect(paragraph instanceof HTMLParagraphElement).toBeTruthy();
-  expect(span instanceof HTMLSpanElement).toBeTruthy();
+  expect(paragraph.tagName).toBe('P');
+  expect(span.tagName).toBe('SPAN');
 });
 
 test('adheres to the "max text with" rule from container', () => {

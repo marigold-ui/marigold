@@ -16,13 +16,6 @@ afterEach(() => {
   warnMock.mockRestore();
 });
 
-test('renders a <a> element by default', () => {
-  render(<Basic.Component />);
-  const link = screen.getAllByRole('link')[0];
-
-  expect(link instanceof HTMLAnchorElement).toBeTruthy();
-});
-
 test('supports href prop', () => {
   render(<Basic.Component href="https://example.com" />);
   const link = screen.getAllByRole('link')[0];

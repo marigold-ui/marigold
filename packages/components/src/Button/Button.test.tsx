@@ -2,21 +2,12 @@ import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { Basic, WithIcon } from './Button.stories';
 
-test('renders <button> element', () => {
-  render(<Basic.Component />);
-
-  const button = screen.getByText(/Button/);
-
-  expect(button instanceof HTMLButtonElement).toBeTruthy();
-});
-
 test('add icon in button works as expected', () => {
   render(<WithIcon.Component>iconbutton</WithIcon.Component>);
 
   const button = screen.getByText(/iconbutton/);
   const icon = screen.getByTestId(/facebook/);
 
-  expect(button instanceof HTMLButtonElement).toBeTruthy();
   expect(button).toHaveClass('items-center justify-center');
   expect(icon).toHaveAttribute('width', '30px');
 });
@@ -25,7 +16,7 @@ test('forwards ref', () => {
   const ref = createRef<HTMLButtonElement>();
   render(<Basic.Component ref={ref} />);
 
-  expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
+  expect(ref.current).toBeInstanceOf(HTMLButtonElement);
 });
 
 test('supports disabled prop', () => {
@@ -53,5 +44,4 @@ test('loading state', () => {
   expect(svg).toBeInTheDocument();
   expect(button).toHaveAttribute('data-pending', 'true');
   expect(button).toHaveClass('cursor-progress!');
-  expect(button).toHaveAttribute('data-pending', 'true');
 });

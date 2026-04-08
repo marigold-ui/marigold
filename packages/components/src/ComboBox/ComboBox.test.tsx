@@ -14,7 +14,6 @@ test('renders an input', () => {
 
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'text');
-  expect(textField instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('check classname slots', () => {

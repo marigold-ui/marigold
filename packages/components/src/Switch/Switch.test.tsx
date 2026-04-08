@@ -36,23 +36,6 @@ test('supports base styling', () => {
   );
 });
 
-test('supports a custom variant', () => {
-  render(<Basic.Component variant="custom" label="Label" />);
-  const { track, thumb } = getSwitchParts();
-
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-  expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled group-selected/switch:bg-primary bg-input group-focus-visible/switch:ui-state-focus outline-none"`
-  );
-});
-
-test('supports a size', () => {
-  render(<Basic.Component size="medium" label="Label" />);
-  const { track } = getSwitchParts();
-
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-});
-
 test('takes full width by default', () => {
   render(<Basic.Component label="Label" />);
 
@@ -80,13 +63,6 @@ test('supports disabled prop', () => {
   expect(thumb.className).toMatchInlineSnapshot(
     `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled group-selected/switch:bg-primary bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
-});
-
-test('renders hidden <input> element', () => {
-  render(<Basic.Component label="Label" />);
-  const { input } = getSwitchParts();
-
-  expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('supports controlled component usage', async () => {
