@@ -20,12 +20,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
     base: 'flex items-center text-sm font-medium whitespace-nowrap',
   }),
   toolbar: cva({
-    base: [
-      'flex items-center',
-      'flex-1 justify-center',
-      'overflow-x-auto',
-      'p-1 -m-1',
-    ],
+    base: ['flex items-center', 'flex-1 justify-center', 'overflow-x-auto'],
   }),
   clearButton: cva({
     base: [
