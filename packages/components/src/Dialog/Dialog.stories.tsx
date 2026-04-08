@@ -204,21 +204,6 @@ export const Confirmation = meta.story({
   ),
 });
 
-export const TextOnly = meta.story({
-  render: ({ size, ...args }) => (
-    <Dialog.Trigger {...args}>
-      <Button variant="primary">Open</Button>
-      <Dialog size={size} closeButton>
-        <Dialog.Title>Information</Dialog.Title>
-        <Dialog.Content>
-          Your session will expire in 30 minutes. Save your work to avoid losing
-          any unsaved changes.
-        </Dialog.Content>
-      </Dialog>
-    </Dialog.Trigger>
-  ),
-});
-
 export const VeryLongContent = meta.story({
   tags: ['component-test'],
   render: args => {
