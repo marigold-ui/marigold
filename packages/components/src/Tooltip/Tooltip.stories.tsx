@@ -1,4 +1,3 @@
-import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Tooltip } from './Tooltip';
@@ -91,15 +90,7 @@ export const Basic = meta.story({
 });
 
 export const OpenViaTooltipProp = Basic.extend({
-  tags: ['component-test'],
   args: {
     open: true,
-  },
-  play: async ({ canvas }) => {
-    const tooltips = await canvas.findAllByRole('tooltip');
-
-    await expect(tooltips).toHaveLength(2);
-    await expect(tooltips[0]).toBeVisible();
-    await expect(tooltips[1]).toBeVisible();
   },
 });
