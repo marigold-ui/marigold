@@ -21,7 +21,7 @@ export const DateField: ThemeComponent<'DateField'> = {
       'data-focused:bg-focus-highlight data-focused:text-foreground data-focused:data-placeholder:text-foreground',
       'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
       'data-placeholder:disabled:text-disabled',
-      'invalid:text-destructive-accent invalid:data-focused:bg-destructive-accent invalid:data-focused:text-destructive-accent-foreground invalid:data-focused:data-placeholder:text-destructive-accent-foreground',
+      'invalid:text-destructive-accent invalid:data-focused:bg-destructive-bold invalid:data-focused:text-destructive-bold-foreground invalid:data-focused:data-placeholder:text-destructive-bold-foreground',
     ],
   }),
   action: cva({

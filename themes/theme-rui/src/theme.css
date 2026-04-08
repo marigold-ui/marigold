@@ -110,7 +110,8 @@
   --color-destructive: var(--color-red-100);
   --color-destructive-foreground: var(--color-red-950);
   --color-destructive-accent: var(--color-red-600);
-  --color-destructive-accent-foreground: var(--color-white);
+  --color-destructive-bold: var(--color-red-600);
+  --color-destructive-bold-foreground: var(--color-white);
 
   /* --- Status: Success --- */
   --color-success: var(--color-green-100);

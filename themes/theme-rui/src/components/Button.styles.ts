@@ -20,7 +20,7 @@ export const Button: ThemeComponent<'Button'> = cva({
       ],
       ghost: 'hover:ui-state-hover-ghost',
       destructive:
-        'bg-destructive-accent text-destructive-accent-foreground hover:bg-destructive-accent/70',
+        'bg-destructive-bold text-destructive-bold-foreground hover:bg-destructive-bold/70',
       'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',
       link: 'text-link ui-touch-hitbox',
     },

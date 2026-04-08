@@ -27,13 +27,13 @@ For example, `border-destructive-accent` breaks down into the property `border-`
 
 Many tokens come in pairs: a background token and a `-foreground` token for text on that background. Always use the paired foreground when placing text on a colored background.
 
-| Background              | Foreground                           | Example                        |
-| ----------------------- | ------------------------------------ | ------------------------------ |
-| `bg-primary`            | `text-primary-foreground`            | Buttons, strong selections     |
-| `bg-destructive`        | `text-destructive-foreground`        | Error badges, section messages |
-| `bg-destructive-accent` | `text-destructive-accent-foreground` | Destructive button             |
-| `bg-access-master`      | `text-access-master-foreground`      | Master access rows             |
-| `bg-access-admin`       | `text-access-admin-foreground`       | Admin access rows              |
+| Background            | Foreground                         | Example                        |
+| --------------------- | ---------------------------------- | ------------------------------ |
+| `bg-primary`          | `text-primary-foreground`          | Buttons, strong selections     |
+| `bg-destructive`      | `text-destructive-foreground`      | Error badges, section messages |
+| `bg-destructive-bold` | `text-destructive-bold-foreground` | Destructive button             |
+| `bg-access-master`    | `text-access-master-foreground`    | Master access rows             |
+| `bg-access-admin`     | `text-access-admin-foreground`     | Admin access rows              |
 
 **Tokens without a foreground pair:**
 
@@ -353,14 +353,15 @@ Status colors communicate feedback to the user: errors, confirmations, warnings,
 
 Every status follows the same `bg-X` / `text-X-foreground` pairing as other tokens. On top of that, an accent level adds a higher-intensity variant for borders, icons, and standalone text. Here is how the pattern looks using `destructive` as an example:
 
-| Token suffix         | Role                                              | Example usage                                                                                                                         |
-| -------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `destructive`        | Subtle background for containers                  | `bg-destructive` on Badge, SectionMessage, Toast                                                                                      |
-| `-foreground`        | Text on that background                           | `text-destructive-foreground`                                                                                                         |
-| `-accent`            | Vibrant, saturated variant for high-intensity use | `text-destructive-accent` for error text, `border-warning-accent` for accent borders, `bg-destructive-accent` for destructive buttons |
-| `-accent-foreground` | Text on an accent background (destructive only)   | `text-destructive-accent-foreground` on destructive button                                                                            |
+| Token suffix       | Role                                                | Example usage                                                                        |
+| ------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `destructive`      | Subtle background for containers                    | `bg-destructive` on Badge, SectionMessage, Toast                                     |
+| `-foreground`      | Text on that background                             | `text-destructive-foreground`                                                        |
+| `-accent`          | Vibrant, saturated variant for text, borders, icons | `text-destructive-accent` for error text, `border-warning-accent` for accent borders |
+| `-bold`            | Strong fill background (destructive only)           | `bg-destructive-bold` for destructive button                                         |
+| `-bold-foreground` | Text on a bold background (destructive only)        | `text-destructive-bold-foreground` on destructive button                             |
 
-Replace `destructive` with `success`, `warning`, or `info` for the other statuses. Most statuses only need the first three. The `-accent-foreground` variant exists only for destructive, where a solid red button needs white text on top.
+Replace `destructive` with `success`, `warning`, or `info` for the other statuses. Most statuses only need the first three levels. The `-bold` / `-bold-foreground` pair exists only for destructive, where a solid red button needs a dedicated fill and contrast text.
 
 ```tsx
 // Subtle container: light background + dark text
@@ -372,8 +373,8 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
 // Standalone accent text (no background)
 <span className="text-destructive-accent">This field is required</span>
 
-// Strong fill: accent background + accent-foreground text
-<div className="bg-destructive-accent text-destructive-accent-foreground">
+// Strong fill: bold background + bold-foreground text
+<div className="bg-destructive-bold text-destructive-bold-foreground">
   Delete
 </div>
 ```
@@ -411,10 +412,15 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
     {
       name: 'destructive-accent',
       value: 'red-600',
-      useFor: 'Error text, destructive button bg, accent borders/icons',
+      useFor: 'Error text, accent borders, icons',
     },
     {
-      name: 'destructive-accent-foreground',
+      name: 'destructive-bold',
+      value: 'red-600',
+      useFor: 'Destructive button fill',
+    },
+    {
+      name: 'destructive-bold-foreground',
       value: 'white',
       useFor: 'Text on destructive button',
     },
