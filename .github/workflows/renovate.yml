@@ -19,9 +19,9 @@ jobs:
       - uses: actions/create-github-app-token@v3
         id: app-token
         with:
-          app-id: ${{ secrets.RENOVATE_APP_ID }}
+          app-id: ${{ vars.RENOVATE_APP_ID }}
           private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
-          owner: marigold-ui
+          owner: ${{ github.repository_owner }}
 
       - uses: renovatebot/github-action@v46.1.8
         with:
