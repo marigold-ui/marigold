@@ -55,7 +55,7 @@ test('supports disabled prop', () => {
   expect(screen.getByRole('switch')).toBeDisabled();
 });
 
-test('supports controlled selection', async () => {
+test('supports controlled component usage', async () => {
   const onChange = vi.fn();
   render(<Basic.Component onChange={onChange} label="Label" />);
 
