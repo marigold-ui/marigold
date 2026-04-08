@@ -59,9 +59,6 @@ export const getAllBlogPosts = (): BlogPost[] => {
   const allPages = blog.getPages();
 
   const posts = allPages.map(page => {
-    let introduction = '';
-
-    // Get the file path from the page
     // The page.url is like '/releases/blog/release-2024-10-25'
     // We need to construct the file path: content/releases/blog/release-2024-10-25.mdx
     const fileName = page.url.split('/').pop() || '';
@@ -71,7 +68,7 @@ export const getAllBlogPosts = (): BlogPost[] => {
       `${fileName}.mdx`
     );
 
-    introduction = extractIntroduction(filePath);
+    const introduction = extractIntroduction(filePath);
 
     return {
       title: page.data.title || '',

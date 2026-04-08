@@ -5,6 +5,11 @@
     ":rebaseStalePrs"
   ],
   "schedule": ["before 4am on Monday"],
+  "timezone": "Europe/Berlin",
+
+  "ignoreScripts": true,
+  "branchConcurrentLimit": 5,
+
   "packageRules": [
     {
       "matchDatasources": ["npm"],
@@ -119,6 +124,5 @@
     "schedule": ["at any time"],
     "minimumReleaseAge": "0 days"
   },
-  "osvVulnerabilityAlerts": true,
-  "timezone": "Europe/Berlin"
+  "osvVulnerabilityAlerts": true
 }
