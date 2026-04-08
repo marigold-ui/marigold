@@ -22,4 +22,4 @@ jobs:
           token: ${{ secrets.RENOVATE_TOKEN }}
         env:
           NODE_OPTIONS: '--max-old-space-size=6144'
-          LOG_LEVEL: debug
+          LOG_LEVEL: info
