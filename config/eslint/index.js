@@ -1,9 +1,9 @@
+import eslintReact from '@eslint-react/eslint-plugin';
 import js from '@eslint/js';
 import typescript from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import vitestPlugin from '@vitest/eslint-plugin';
 import prettier from 'eslint-config-prettier';
-import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import testingLibraryPlugin from 'eslint-plugin-testing-library';
 import globals from 'globals';
@@ -15,19 +15,22 @@ const __dirname = path.dirname(__filename);
 
 export default [
   js.configs.recommended,
-  // React support
+  // React support — uses @eslint-react/eslint-plugin (ESLint 10 compatible)
+  // eslint-plugin-react 7.x uses removed context.getFilename() API from ESLint 10
+  eslintReact.configs.recommended,
   {
     files: ['**/*.{jsx,js,tsx,ts}'],
-    plugins: { react: reactPlugin, 'react-hooks': reactHooksPlugin },
-    settings: {
-      react: { version: 'detect' },
-    },
+    plugins: { 'react-hooks': reactHooksPlugin },
     rules: {
-      ...reactPlugin.configs.flat.recommended.rules,
       ...reactHooksPlugin.configs['recommended-latest'].rules,
-      'react/react-in-jsx-scope': 'off', // Not required for React 17+
-      'react/no-unescaped-entities': ['warn'],
       'react-hooks/rules-of-hooks': ['warn'],
+      // rules-of-hooks is already enforced by eslint-plugin-react-hooks above;
+      // @eslint-react's version does not recognise _PrefixedComponent naming or Storybook render()
+      '@eslint-react/rules-of-hooks': 'off',
+      // component-hook-factories produces false positives for inline render() in Storybook stories
+      '@eslint-react/component-hook-factories': 'off',
+      // downgrade to warn: createRef is deprecated but not a hard error in this codebase
+      '@eslint-react/no-create-ref': 'warn',
     },
   },
   vitestPlugin.configs.recommended,

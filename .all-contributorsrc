@@ -225,6 +225,15 @@
         "example",
         "test"
       ]
+    },
+    {
+      "login": "PacoVK",
+      "name": "Pascal Euhus",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27785614?v=4",
+      "profile": "https://pascal.euhus.dev/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 5,
