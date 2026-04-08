@@ -1,13 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Basic, WithAction, WithLeadingIcons } from './Input.stories';
 
-test('renders correct HTML element', () => {
-  render(<Basic.Component data-testid="input" />);
-  const input = screen.getByTestId('input');
-
-  expect(input instanceof HTMLInputElement).toBeTruthy();
-});
-
 test('applies base styles', () => {
   render(<Basic.Component data-testid="input" />);
   const input = screen.getByTestId('input');

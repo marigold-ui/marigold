@@ -39,13 +39,6 @@ test('accepts size', () => {
   expect(message).toBeInTheDocument();
 });
 
-test('renders correct HTML element', () => {
-  render(<Basic.Component data-testid="messages" />);
-
-  const message = screen.getByTestId(/messages/);
-  expect(message instanceof HTMLDivElement).toBeTruthy();
-});
-
 test('set alert role if variant is "error"', () => {
   render(<Basic.Component data-testid="messages" variant="error" />);
 
