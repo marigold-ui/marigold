@@ -94,8 +94,8 @@ export const Table: ThemeComponent<'Table'> = {
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/75',
       'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/75',
       '**:data-cell-content:outline-none',
-      'data-editable:hover:bg-muted',
-      'data-editable:has-[:focus-visible]:bg-muted',
+      'data-editable:hover:ui-state-hover',
+      'data-editable:has-[:focus-visible]:ui-state-hover',
     ],
   }),
 
