@@ -292,15 +292,7 @@ Disabled elements must look visually inactive so users don't try to interact wit
   ]}
 />
 
-<Callout title="Why disabled-surface, not disabled-foreground?">
-  Most token pairs follow the pattern `bg-X` + `text-X-foreground`. Disabled is
-  different because `disabled` is primarily a **text** color, not a background.
-  Many disabled elements only need dimmed text on a white surface (labels, menu
-  items, help text). Only full controls like inputs and buttons need a gray
-  background on top of that. So `disabled-surface` is the optional background
-  add-on, while `disabled` itself is the text color. The pair is
-  `bg-disabled-surface` + `text-disabled`, reversed from the usual direction.
-</Callout>
+Most token pairs follow the pattern `bg-X` + `text-X-foreground`. Disabled is different because `disabled` is primarily a **text** color, not a background. Many disabled elements only need dimmed text on a white surface (labels, menu items, help text). Only full controls like inputs and buttons need a gray background on top of that. So `disabled-surface` is the optional background add-on, while `disabled` itself is the text color. The pair is `bg-disabled-surface` + `text-disabled`, reversed from the usual direction.
 
 ```tsx
 // Text-only disabled (labels, help text, menu items)
