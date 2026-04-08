@@ -4,7 +4,14 @@
     ":semanticCommitTypeAll(chore)",
     ":rebaseStalePrs"
   ],
-  "schedule": ["before 4am on Monday"],
+  "timezone": "Europe/Berlin",
+
+  "repositories": ["marigold-ui/marigold"],
+  "onboarding": false,
+  "requireConfig": "optional",
+  "ignoreScripts": true,
+  "branchConcurrentLimit": 5,
+
   "packageRules": [
     {
       "matchDatasources": ["npm"],
@@ -119,6 +126,5 @@
     "schedule": ["at any time"],
     "minimumReleaseAge": "0 days"
   },
-  "osvVulnerabilityAlerts": true,
-  "timezone": "Europe/Berlin"
+  "osvVulnerabilityAlerts": true
 }
