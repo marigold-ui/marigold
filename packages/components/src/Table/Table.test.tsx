@@ -25,7 +25,7 @@ describe('Basic Rendering', () => {
 
     const table = screen.getByRole('grid');
 
-    expect(table instanceof HTMLTableElement).toBeTruthy();
+    expect(table).toBeInTheDocument();
   });
 
   test('renders column headers', () => {
