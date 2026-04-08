@@ -13,6 +13,7 @@ export const queue = new ToastQueue<ToastContentProps>({
   wrapUpdate(fn) {
     if ('startViewTransition' in document) {
       const transition = document.startViewTransition(() => {
+        // eslint-disable-next-line @eslint-react/dom-no-flush-sync
         flushSync(fn);
       });
       // Catch and suppress ViewTransition errors (e.g., when another transition is already running)
