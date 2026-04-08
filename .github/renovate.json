@@ -6,8 +6,6 @@
   ],
   "timezone": "Europe/Berlin",
 
-  "repositories": ["marigold-ui/marigold"],
-  "onboarding": false,
   "requireConfig": "optional",
   "ignoreScripts": true,
   "branchConcurrentLimit": 5,
