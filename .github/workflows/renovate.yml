@@ -1,0 +1,21 @@
+name: Renovate
+
+on:
+  schedule:
+    # Monday at 2am Europe/Berlin (0am UTC)
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: renovatebot/github-action@v42
+        with:
+          configurationFile: .github/renovate.json
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          NODE_OPTIONS: '--max-old-space-size=6144'
+          LOG_LEVEL: debug
