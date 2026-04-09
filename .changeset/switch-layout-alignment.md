@@ -19,7 +19,20 @@ The Switch component previously rendered its label on the left and toggle on the
 
 **Shared BooleanField**: Extracted a reusable `BooleanField` wrapper used by both Checkbox and Switch for consistent description rendering and `aria-describedby` wiring. Uses CSS grid with subgrid to align description text with label text across both components.
 
-## Breaking changes: custom theme migration
+## Breaking changes
+
+### Restoring the old Switch behavior
+
+The default Switch layout has changed: the toggle is now on the **left** and the label on the **right** (previously reversed). If you need the old layout (label left, toggle right), use the new `variant="settings"`:
+
+```diff
+- <Switch label="Wi-Fi" />
++ <Switch label="Wi-Fi" variant="settings" />
+```
+
+The `size="large"` prop has been removed. The default size is now smaller (16x28px track). There is no built-in way to get the old large dimensions (24x40px track) — if needed, create a custom size variant in your theme's `Switch.styles.ts`.
+
+### Custom theme migration
 
 This release introduces a new required theme component `BooleanField` and changes the layout model of the `Checkbox` and `Switch` container slots from flexbox to CSS grid. **Custom themes must be updated or Checkbox/Switch will throw a runtime error.**
 
