@@ -49,8 +49,14 @@ export const Table: ThemeComponent<'Table'> = {
           '**:not-last:[[role=rowheader]]:border-r **:not-last:[[role=rowheader]]:border-border',
           '**:not-last:[[role=gridcell]]:border-r **:not-last:[[role=gridcell]]:border-border',
         ],
-        admin: ['bg-access-admin'],
-        master: ['bg-access-master'],
+        admin: [
+          'bg-access-admin border-access-admin-accent!',
+          '[&>*]:border-t [&>*]:border-access-admin-accent',
+        ],
+        master: [
+          'bg-access-master border-access-master-accent!',
+          '[&>*]:border-t [&>*]:border-access-master-accent',
+        ],
       },
     },
     defaultVariants: {
