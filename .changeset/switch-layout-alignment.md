@@ -9,7 +9,9 @@ The Switch component previously rendered its label on the left and toggle on the
 
 **Layout**: Toggle now renders before the label (control on the left, label on the right), matching Checkbox and Radio. This ensures consistent visual alignment when Switch is used alongside other boolean controls in form layouts.
 
-**Sizing**: Reduced the default track size from 24x40px to 16x28px and thumb from 20px to 12px. This brings the Switch closer in visual weight to Checkbox/Radio (16px), making it fit better in the flow of forms. A `large` size variant preserves the original dimensions for use cases that need a more prominent toggle.
+**Sizing**: Reduced the default track size from 24x40px to 16x28px and thumb from 20px to 12px. This brings the Switch closer in visual weight to Checkbox/Radio (16px), making it fit better in the flow of forms.
+
+**Settings variant**: A new `variant="settings"` mirrors the default layout — label and description on the left, toggle on the far right. This is the common pattern used on settings/preferences pages. The variant is propagated to `BooleanField` so that grid columns and description placement adjust accordingly.
 
 **Description support**: Switch now accepts a `description` prop (help text rendered below the control), matching Checkbox's existing support. The description text aligns with the label text using CSS grid + subgrid, automatically adapting to any control size without hardcoded padding. Properly wired with `aria-describedby` for accessibility.
 
@@ -35,13 +37,31 @@ Add the following to your theme's component styles:
 import { cva } from '@marigold/system';
 
 export const BooleanField = {
-  container: cva({ base: 'grid grid-cols-[auto_1fr] gap-x-2' }),
-  description: cva({ base: 'col-start-2 mt-0.5' }),
+  container: cva({
+    base: 'grid gap-x-2',
+    variants: {
+      variant: {
+        default: 'grid-cols-[auto_1fr]',
+        settings: 'grid-cols-[1fr_auto]',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  description: cva({
+    base: 'mt-0.5',
+    variants: {
+      variant: {
+        default: 'col-start-2',
+        settings: 'col-start-1',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
 };
 ```
 
-- `container`: Defines the 2-column grid layout wrapping the control and its description. `grid grid-cols-[auto_1fr]` creates the column structure, `gap-x-2` controls horizontal spacing between the control column and the label/description column.
-- `description`: Styles the description text wrapper. `col-start-2` places it in the label column (aligned with the label, not the control). `mt-0.5` adds vertical spacing between the label row and description.
+- `container`: Defines the 2-column grid layout wrapping the control and its description. The `default` variant uses `grid-cols-[auto_1fr]` (control left, label right). The `settings` variant uses `grid-cols-[1fr_auto]` (label left, control right).
+- `description`: Styles the description text wrapper. Placed under the label column via `col-start-2` (default) or `col-start-1` (settings). `mt-0.5` adds vertical spacing between the label row and description.
 
 Then export it from your theme's component index file:
 
@@ -89,13 +109,21 @@ container: cva({
 ```ts
 container: cva({
   base: [
-    'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+    'grid gap-x-2 items-center',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-    'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    'group-data-booleanfield/booleanfield:grid-cols-subgrid group-data-booleanfield/booleanfield:col-span-full',
   ],
+  variants: {
+    variant: {
+      default: 'grid-cols-[auto_1fr]',
+      settings: 'grid-cols-[1fr_auto]',
+    },
+  },
+  defaultVariants: { variant: 'default' },
 }),
 ```
 
 Key changes:
-- Added `grid grid-cols-[auto_1fr] gap-x-2 items-center` (replaces `flex items-center gap-2` that was previously hardcoded in the component)
-- Added `group-data-[booleanfield]/booleanfield:grid-cols-subgrid` and `group-data-[booleanfield]/booleanfield:col-span-full` for subgrid support
+- Added `grid gap-x-2 items-center` (replaces `flex items-center gap-2` that was previously hardcoded in the component)
+- Grid columns moved to `variant` to support both default and settings layouts
+- Added subgrid support for BooleanField integration
