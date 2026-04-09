@@ -8,8 +8,9 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
+      options: [undefined, 'settings'],
       description: 'Switch variant style',
     },
     label: {
@@ -24,10 +25,9 @@ const meta = preview.meta({
     },
     size: {
       control: {
-        type: 'radio',
+        type: 'text',
       },
-      options: ['default', 'large'],
-      description: 'The sizes for switch.',
+      description: 'The size of the switch.',
     },
     width: {
       control: {
@@ -115,5 +115,13 @@ export const WithDescription = meta.story({
 
     expect(description).toBeInTheDocument();
     expect(switchDescribedBy).toBe(helpTextId);
+  },
+});
+
+export const Settings = meta.story({
+  args: {
+    variant: 'settings',
+    label: 'Email notifications',
+    description: 'Receive email notifications when someone mentions you',
   },
 });

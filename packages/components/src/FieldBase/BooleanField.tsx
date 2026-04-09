@@ -14,6 +14,11 @@ export interface BooleanFieldProps {
   description?: ReactNode;
 
   /**
+   * The variant of the boolean field.
+   */
+  variant?: string;
+
+  /**
    * The RAC context to inject `aria-describedby` into.
    */
   context: React.Context<
@@ -25,10 +30,11 @@ export interface BooleanFieldProps {
 // ---------------
 export const BooleanField = ({
   description,
+  variant,
   context,
   children,
 }: PropsWithChildren<BooleanFieldProps>) => {
-  const classNames = useClassNames({ component: 'BooleanField' });
+  const classNames = useClassNames({ component: 'BooleanField', variant });
   const descriptionId = useId();
 
   if (!description) return children;

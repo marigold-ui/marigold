@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { vi } from 'vitest';
-import { Basic } from './Switch.stories';
+import { Basic, Settings } from './Switch.stories';
 
 const user = userEvent.setup();
 
@@ -84,4 +84,14 @@ test('forwards ref', () => {
   const ref = createRef<HTMLLabelElement>();
   render(<Basic.Component ref={ref} label="Label" />);
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
+});
+
+test('renders settings variant with description', () => {
+  render(<Settings.Component />);
+
+  expect(screen.getByRole('switch')).toBeInTheDocument();
+  expect(screen.getByText('Email notifications')).toBeInTheDocument();
+  expect(
+    screen.getByText('Receive email notifications when someone mentions you')
+  ).toBeInTheDocument();
 });
