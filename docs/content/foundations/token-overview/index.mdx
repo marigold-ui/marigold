@@ -132,14 +132,14 @@ The foundational layer: page background and text hierarchy.
 
 ### Primary
 
-The primary interaction color for buttons, selected checkboxes, radios, switches, and toggle buttons.
+The primary token represents the strongest visual weight in the interface. It is reserved for elements that trigger an action: buttons, links styled as buttons, and similar call-to-action surfaces. Primary draws the eye and signals "this is the main thing you can do here."
 
 <TokenTable
   tokens={[
     {
       name: 'primary',
       value: 'charcoal-900',
-      useFor: 'Button backgrounds, strong selection states',
+      useFor: 'Button backgrounds, call-to-action elements',
     },
     {
       name: 'primary-foreground',
@@ -156,14 +156,14 @@ The primary interaction color for buttons, selected checkboxes, radios, switches
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `bg-primary` for interactive elements like buttons, selected
-      checkboxes, and toggle states.
+      Use `bg-primary` for action elements like buttons. Use `bg-selected-bold`
+      for binary controls (Checkbox, Radio, Switch, ToggleButton).
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't use `bg-primary` for large decorative or layout backgrounds like
-      cards or sections.
+      Don't use `bg-primary` for selection states or large decorative
+      backgrounds like cards or sections.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -431,7 +431,7 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
     },
     {
       name: 'ring',
-      value: 'charcoal-400',
+      value: 'charcoal-600',
       useFor: 'Focus ring outline color for keyboard navigation',
     },
   ]}
