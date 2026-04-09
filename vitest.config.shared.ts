@@ -26,7 +26,7 @@ export const browserDeps = [
   '@tanstack/react-query',
   'react-select',
   // Test setup (extends expect at module load time)
-  '@testing-library/jest-dom',
+  '@testing-library/jest-dom/vitest',
 ];
 
 const exclude = [
