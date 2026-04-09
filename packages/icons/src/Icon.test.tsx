@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import type { RefObject } from 'react';
+import { createRef } from 'react';
 import { Facebook } from './social/Facebook';
 import { ArrowUp } from './ui/ArrowUp';
 
@@ -27,8 +27,8 @@ test('supports className', () => {
 });
 
 test('forwards ref', () => {
-  const ref = { current: null } as unknown as RefObject<SVGSVGElement>;
-  render(<ArrowUp />);
+  const ref = createRef<SVGSVGElement>();
+  render(<ArrowUp ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(SVGElement);
 });

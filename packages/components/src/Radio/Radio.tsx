@@ -1,6 +1,6 @@
 import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Radio } from 'react-aria-components';
+import { Radio as RACRadio } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
@@ -42,7 +42,7 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
   </div>
 );
 
-const _RadioImpl = ({
+const _Radio = ({
   value,
   disabled,
   width,
@@ -59,7 +59,7 @@ const _RadioImpl = ({
   });
 
   return (
-    <Radio
+    <RACRadio
       ref={ref}
       className={cn(
         'group/radio',
@@ -83,17 +83,12 @@ const _RadioImpl = ({
           <div className={classNames.label}>{children}</div>
         </>
       )}
-    </Radio>
+    </RACRadio>
   );
 };
 
-const _Radio = _RadioImpl as unknown as RadioComponent;
+const _MgRadio = Object.assign(_Radio, {
+  Group: RadioGroup,
+});
 
-export { _Radio as Radio };
-
-_Radio.Group = RadioGroup;
-
-export interface RadioComponent {
-  (props: RadioProps): React.ReactNode;
-  Group: typeof RadioGroup;
-}
+export { _MgRadio as Radio };

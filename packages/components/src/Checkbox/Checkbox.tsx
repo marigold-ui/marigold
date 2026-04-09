@@ -1,6 +1,9 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Checkbox, CheckboxContext } from 'react-aria-components';
+import {
+  CheckboxContext,
+  Checkbox as RACCheckbox,
+} from 'react-aria-components';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
@@ -100,17 +103,9 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
   ref?: Ref<HTMLLabelElement>;
 }
 
-export interface CheckboxComponent {
-  (props: CheckboxProps): React.ReactNode;
-  /**
-   * Group for checkboxes.
-   */
-  Group: typeof CheckboxGroup;
-}
-
 // Component
 // --------------
-const _CheckboxImpl = ({
+const _Checkbox = ({
   error,
   disabled,
   readOnly,
@@ -146,7 +141,7 @@ const _CheckboxImpl = ({
 
   return (
     <BooleanField description={description} context={CheckboxContext}>
-      <Checkbox
+      <RACCheckbox
         ref={ref}
         className={cn(
           'group/checkbox',
@@ -165,12 +160,13 @@ const _CheckboxImpl = ({
             {label && <div className={classNames.label}>{label}</div>}
           </>
         )}
-      </Checkbox>
+      </RACCheckbox>
     </BooleanField>
   );
 };
 
-const _Checkbox = _CheckboxImpl as unknown as CheckboxComponent;
-_Checkbox.Group = CheckboxGroup;
+const _MgCheckbox = Object.assign(_Checkbox, {
+  Group: CheckboxGroup,
+});
 
-export { _Checkbox as Checkbox };
+export { _MgCheckbox as Checkbox };
