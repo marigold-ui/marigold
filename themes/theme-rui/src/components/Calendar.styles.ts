@@ -33,7 +33,9 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     ],
   }),
   calendarHeader: cva({
-    base: ['size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground'],
+    base: [
+      'size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground text-center',
+    ],
   }),
   calendarGrid: cva({
     base: '[&_td]:p-2 [&_td]:group-[[role=dialog]]/tray:p-0.75',
