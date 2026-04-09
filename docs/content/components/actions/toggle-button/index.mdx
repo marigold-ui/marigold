@@ -1,12 +1,27 @@
 ---
 title: ToggleButton
-description: Logic button for toggling states
-badge: alpha
+description: A button that can be toggled on or off, or grouped for multi-selection.
+badge: beta
 ---
 
-The `<ToggleButton>` component...
+import {
+  ToggleButtonAnatomy,
+  ToggleButtonGroupAnatomy,
+} from './togglebutton-anatomy';
+
+The `<ToggleButton>` is used when the action itself is the state change, for example favoriting an item, applying bold formatting, or activating a filter. Unlike a regular button that triggers an action and is done, a toggle button visually reflects whether it is currently active or not.
+
+Multiple toggle buttons can be combined using `<ToggleButton.Group>` for scenarios where users need to toggle several options at once, such as text formatting toolbars or filter bars.
 
 ## Anatomy
+
+<ToggleButtonAnatomy />
+
+**ToggleButton:** A toggle button consists of a pressable area containing a label (text, icon, or both) that visually changes to reflect its selected or unselected state.
+
+<ToggleButtonGroupAnatomy />
+
+**ToggleButton.Group:** A toggle button group is a horizontal container that merges individual toggle buttons into a unified, pill-shaped control. The group removes inner borders and rounds only the outer edges, visually connecting the buttons as a single unit.
 
 ## Appearance
 
@@ -14,7 +29,97 @@ The `<ToggleButton>` component...
 
 <AppearanceTable component={'ToggleButton'} />
 
+The ToggleButton component comes in different sizes to fit various contexts.
+
+| Size      | Description                                                  | When to use                                                             |
+| --------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `default` | Standard button with text label and padding.                 | General purpose toggle actions with text labels.                        |
+| `small`   | Compact button with reduced padding and smaller text.        | Space-constrained areas like filter bars or secondary toolbars.         |
+| `icon`    | Square button sized for a single icon, without text padding. | Toolbars and compact controls where icons alone communicate the action. |
+
 ## Usage
+
+A toggle button is an action-first control that retains state as a consequence of the action. The user presses it to activate or deactivate a function, and the button's appearance reflects whether that function is currently on or off. This makes it different from other boolean controls:
+
+- A [Checkbox](/components/form/checkbox) is a form field. Its effect is deferred until the form is submitted. The user thinks "I am selecting an option."
+- A [Switch](/components/form/switch) is a settings control. It toggles a persistent system state immediately, like enabling notifications or dark mode. The user thinks "I am turning this on or off."
+- A toggle button lives in toolbars, editors, and interactive surfaces. Its label reads like a function or verb rather than a setting. The user thinks "I am activating this."
+
+Choose a toggle button when the control should look and behave like a button, the state change takes effect immediately, and the context is an interactive surface rather than a form or settings panel.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use ToggleButton for actions where the pressed state is the outcome, like
+      bold formatting or favoriting.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use ToggleButton for settings or preferences that take effect
+      immediately. Use a [Switch](/components/form/switch) instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Standalone toggle
+
+A single `<ToggleButton>` is suitable for binary actions where the pressed state is the outcome. The button's visual state reflects whether it is currently active or not. Common examples include favoriting an item, bookmarking a page, or pinning a message.
+
+Use the `selected` and `onChange` props to control the toggle state. In the example below, each card has a heart toggle that lets users mark venues as favorites.
+
+<ComponentDemo name="togglebutton-favorite" />
+
+### Combining multiple toggles
+
+When multiple related toggle actions belong together, wrap them in a `<ToggleButton.Group>`. The group merges the buttons into a single visual unit and manages selection state for you. Set `selectionMode="multiple"` so users can activate any combination of options independently.
+
+A toggle button group is particularly useful for toolbars where several options can be active at the same time, such as text formatting controls. The group visually communicates that the options are related, while each button can still be toggled on its own.
+
+Use the `icon` size when the action can be communicated through an icon alone. Add a [`<Tooltip>`](/components/overlay/tooltip) to help sighted users understand the action, and always provide an `aria-label` for screen readers.
+
+<ComponentDemo name="togglebutton-formatting-toolbar" />
+
+<Callout title="Keep it accessible">
+  Icon-only toggle buttons must have an `aria-label` to communicate their
+  purpose to screen readers. A tooltip alone is not sufficient since it is not
+  accessible on all devices or by some assistive technologies.
+</Callout>
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Always provide an `aria-label` for icon-only toggle buttons.
+    </DoDescription>
+  </Do>
+</GuidelineTiles>
+
+### Selection modes
+
+`<ToggleButton.Group>` supports different selection modes through the `selectionMode` prop. Use `"multiple"` when users should be able to activate any combination of options, and `"single"` when only one option can be active at a time.
+
+Multiple selection is a good fit when options are additive and non-exclusive, for example narrowing down a list by combining several criteria. Single selection works when options are mutually exclusive, such as choosing between different sort orders.
+
+This pattern works best with text-labeled buttons when the number of options is small (under 10) and labels are short enough to fit on a single row.
+
+<ComponentDemo name="togglebutton-filter" />
+
+<GuidelineTiles>
+  <Dont>
+    <DontDescription>
+      Don't use ToggleButton.Group for switching between views or pages. Use
+      [Tabs](/components/navigation/tabs) when navigation is involved.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Disabled state
+
+Toggle buttons support a `disabled` prop to prevent interaction. You can disable individual buttons or an entire group.
+
+Use disabled states when an option is temporarily unavailable due to the current context, for example when a certain capability is not supported for the selected content type, or when a feature requires a higher subscription plan. Avoid disabling buttons without providing a reason. Users should be able to understand why an option is not available.
+
+<ComponentDemo name="togglebutton-disabled" />
 
 ## Props
 
@@ -24,4 +129,16 @@ The `<ToggleButton>` component...
 
 <AutoTypeTable path="ToggleButton" name="ToggleButtonProps" />
 
-## Related
+### ToggleButton.Group
+
+<AutoTypeTable
+  path="ToggleButton/ToggleButtonGroup"
+  name="ToggleButtonGroupProps"
+/>
+
+## Alternative components
+
+- [Switch](/components/form/switch): Use when toggling a setting or preference on/off with immediate effect.
+- [Checkbox](/components/form/checkbox): Use when selecting options within a form that requires submission.
+- [Tabs](/components/navigation/tabs): Use when switching between views that involve navigation.
+- [Button](/components/actions/button): Use when the action is one-off and does not hold persistent state.
