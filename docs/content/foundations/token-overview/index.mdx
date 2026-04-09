@@ -441,15 +441,15 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
 
 Status colors communicate feedback to the user: errors, confirmations, warnings, and informational messages. Components like Badge, SectionMessage, and Toast use these tokens to convey meaning through color.
 
-Every status follows the same `bg-X` / `text-X-foreground` pairing as other tokens. On top of that, an accent level adds a higher-intensity variant for borders, icons, and standalone text. Here is how the pattern looks using `destructive` as an example:
+Every status follows the same `bg-X` / `text-X-foreground` pairing as other tokens. On top of that, an accent level adds a higher-intensity variant for borders and icons. Here is how the pattern looks using `destructive` as an example:
 
-| Token suffix       | Role                                                | Example usage                                                                        |
-| ------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `destructive`      | Subtle background for containers                    | `bg-destructive` on Badge, SectionMessage, Toast                                     |
-| `-foreground`      | Text on that background                             | `text-destructive-foreground`                                                        |
-| `-accent`          | Vibrant, saturated variant for text, borders, icons | `text-destructive-accent` for error text, `border-warning-accent` for accent borders |
-| `-bold`            | Strong fill background (destructive only)           | `bg-destructive-bold` for destructive button                                         |
-| `-bold-foreground` | Text on a bold background (destructive only)        | `text-destructive-bold-foreground` on destructive button                             |
+| Token suffix       | Role                                          | Example usage                                                                       |
+| ------------------ | --------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `destructive`      | Subtle background for containers              | `bg-destructive` on Badge, SectionMessage, Toast                                    |
+| `-foreground`      | Text on that background                       | `text-destructive-foreground`                                                       |
+| `-accent`          | Vibrant, saturated variant for borders, icons | `border-destructive-accent` for accent borders, icon colors in Toast/SectionMessage |
+| `-bold`            | Strong fill background (destructive only)     | `bg-destructive-bold` for destructive button                                        |
+| `-bold-foreground` | Text on a bold background (destructive only)  | `text-destructive-bold-foreground` on destructive button                            |
 
 Replace `destructive` with `success`, `warning`, or `info` for the other statuses. Most statuses only need the first three levels. The `-bold` / `-bold-foreground` pair exists only for destructive, where a solid red button needs a dedicated fill and contrast text.
 
@@ -460,8 +460,8 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
 // Accent border on a subtle container
 <div className="bg-warning border-warning-accent text-warning-foreground" />
 
-// Standalone accent text (no background)
-<span className="text-destructive-accent">This field is required</span>
+// Accent icon color
+<svg className="text-destructive-accent" />
 
 // Strong fill: bold background + bold-foreground text
 <div className="bg-destructive-bold text-destructive-bold-foreground">
@@ -473,8 +473,8 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
   <Do>
     <DoDescription>
       Use the status token (`bg-destructive`, `bg-warning`) for containers like
-      badges and section messages. Reserve the accent variant for borders,
-      icons, and standalone text.
+      badges and section messages. Reserve the accent variant for borders and
+      icons.
     </DoDescription>
   </Do>
   <Dont>
@@ -502,7 +502,7 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
     {
       name: 'destructive-accent',
       value: 'red-600',
-      useFor: 'Error text, accent borders, icons',
+      useFor: 'Accent borders, icons',
     },
     {
       name: 'destructive-bold',
@@ -534,7 +534,7 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
     {
       name: 'success-accent',
       value: 'green-600',
-      useFor: 'Success borders, icons, standalone text',
+      useFor: 'Success borders, icons',
     },
   ]}
 />
@@ -555,8 +555,8 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
     },
     {
       name: 'warning-accent',
-      value: 'yellow-600',
-      useFor: 'Warning borders, icons, standalone text',
+      value: 'yellow-700',
+      useFor: 'Warning borders, icons',
     },
   ]}
 />
@@ -574,7 +574,7 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
     {
       name: 'info-accent',
       value: 'blue-600',
-      useFor: 'Info borders, icons, standalone text',
+      useFor: 'Info borders, icons',
     },
   ]}
 />

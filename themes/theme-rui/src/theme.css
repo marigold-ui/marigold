@@ -119,7 +119,7 @@
   /* --- Status: Warning --- */
   --color-warning: var(--color-yellow-100);
   --color-warning-foreground: var(--color-yellow-950);
-  --color-warning-accent: var(--color-yellow-600);
+  --color-warning-accent: var(--color-yellow-700);
 
   /* --- Status: Info --- */
   --color-info: var(--color-blue-100);
