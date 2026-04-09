@@ -23,8 +23,10 @@ describe('Aside', () => {
   });
 
   describe('Spacing', () => {
-    test('applies default spacing value of 0', () => {
-      render(<Basic.Component space={0} />);
+    test('applies default values', () => {
+      render(
+        <Basic.Component space={undefined} side={undefined} wrap={undefined} />
+      );
 
       const aside = screen.getByText(/How to Grow Your Own Garden/)
         .parentElement?.parentElement?.parentElement;

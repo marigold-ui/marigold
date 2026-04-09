@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { expect } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
@@ -72,8 +72,30 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   args: { label: 'Label' },
   render: args => <Slider {...args} />,
+  play: async ({ canvas, step }) => {
+    const slider = canvas.getByRole('slider');
+
+    await step('Keyboard up/down moves slider value', async () => {
+      await userEvent.click(canvas.getByText(/Label/));
+
+      await userEvent.keyboard('{arrowup}');
+      expect(slider).toHaveValue('1');
+
+      await userEvent.keyboard('{arrowdown}');
+      expect(slider).toHaveValue('0');
+    });
+
+    await step('Keyboard left/right moves slider value', async () => {
+      await userEvent.keyboard('{arrowright}');
+      expect(slider).toHaveValue('1');
+
+      await userEvent.keyboard('{arrowleft}');
+      expect(slider).toHaveValue('0');
+    });
+  },
 });
 
 export const ValueFormatting = meta.story({
