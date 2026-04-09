@@ -4,22 +4,22 @@ description: Component that switches between two states.
 badge: updated
 ---
 
-The `<Switch>` component allows the users to select between two states, e.g. on and off.  
-It consists of a visual selection indicator and a label.
+`<Switch>` toggles between two states, like on and off. Unlike a checkbox, a switch takes effect right away, no form submission needed. If you've used a light switch, you get the idea.
 
-Users may click or touch a Switch to toggle the state, or use the tab key to navigate to it and the space key to toggle it.
+The component has a track (the pill), a thumb (the circle that slides), a label, and an optional description underneath.
+
+import { SwitchAnatomy } from './switch-anatomy';
 
 ## Anatomy
 
-<ImageZoom
-  src="/switch/switch-anatomy.jpg"
-  alt="Anatomy of table"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<SwitchAnatomy />
 
-The styles are separated into some parts (container, label, thumb, track) that you can style in a custom variant.
+The switch is composed of:
+
+- Track: the background pill representing the two states
+- Thumb: the circle that slides between on and off
+- Label: text describing what the switch controls
+- Description (optional): extra context below the label
 
 ## Appearance
 
@@ -29,74 +29,58 @@ The styles are separated into some parts (container, label, thumb, track) that y
 
 ## Usage
 
-Switches are best used to adjust settings and other standalone options. They make a binary selection, like on and off or true and false.
+Switches are for standalone settings where flipping the control applies the change right away. No save button, no form submission. The change is live the moment you toggle.
 
-The effects of a switch should start immediately, without needing to save.
+You'll find them on settings pages, notification preferences, feature toggles, and privacy panels. Each switch should control one independent setting. Toggling one should never affect another.
+
+By default, the toggle sits on the left and the label on the right. This compact layout works well when a switch is embedded inside another element, like a card or a list item, where space is tight and the toggle needs to sit inline with other content. For standalone settings pages where the label is the primary scanning element, use `variant="settings"` instead (see below).
+
+<ComponentDemo name="switch-card" />
+
+Default a switch to on when the setting reflects an active, recommended, or previously saved state. Default to off when the feature is opt-in or when turning it on has consequences the user should consciously choose. When in doubt, default to off.
+
+### Labeling
+
+Labels should name the setting, not the action of toggling it. Keep them to one to three words. The switch itself already says on/off, so verbs like "Enable" or "Allow" are redundant. Frame labels so that on means the active, expected behavior.
 
 <GuidelineTiles>
   <Do>
-    <DoFigure>
-      <ImageZoom
-        width={700}
-        height={700}
-        src="/switch/switch-do-settings.jpg"
-        alt="Immediately activate or deactivate something"
-      />
-    </DoFigure>
     <DoDescription>
-      <strong>Immediately</strong> activate or deactivate something.
+      **Notifications**, **Dark mode**: name the setting. The switch implies
+      enable/disable. On = the feature is active.
     </DoDescription>
   </Do>
   <Dont>
-    <DontFigure>
-      <ImageZoom
-        width={700}
-        height={700}
-        src="/switch/switch-dont-settings.jpg"
-        alt="Don't use save actions with switches."
-      />
-    </DontFigure>
     <DontDescription>
-      Avoid using a switch to select multiple options that require people to
-      save. Switches should be immediate.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-<GuidelineTiles>
-  <Dont>
-    <DontFigure>
-      <ImageZoom
-        className="w-full"
-        width={700}
-        height={700}
-        src="/switch/switch-dont-opposing-options.jpg"
-        alt="Avoid using switches to toggle between opposing options."
-      />
-    </DontFigure>
-    <DontDescription>
-      Avoid using switches to toggle between opposing options.
+      **Enable notifications**, **Disable light mode**: redundant verbs and
+      negative framing. What does "on" mean when the label says "disable"?
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
 ### Description
 
-A description can be added to a switch to provide additional context when the label alone isn't sufficient. This is useful for explaining the effect of toggling the switch, especially when the action has significant consequences or involves technical settings that may not be immediately clear from the label.
+Add a description when the label alone doesn't explain what toggling actually does. This is most useful for settings that have consequences ("deletes all data") or that use technical language the user might not recognize.
 
 <ComponentDemo name="switch-description" />
 
-### Settings variant
+### Settings and preference screens
 
-The `variant="settings"` flips the layout so that the label and description sit on the left while the toggle is pushed to the far right. This is the standard pattern for settings and preferences pages where users scan a list of options and toggle them on or off.
+On dedicated settings or preference pages, switches typically appear as a vertical list where the label is the primary scanning element. For this layout, use `variant="settings"` to place the label and description on the left and push the toggle to the far right. This is the layout people expect from system preferences and settings screens. Users read the label first to understand the setting, then look right to check or change its state. On mobile, it also places the toggle near the thumb for easier reach.
 
-Use the settings variant when:
-
-- Presenting a list of toggleable preferences or options
-- Building settings, notification, or privacy panels
-- The label should take up available space and the toggle should be a secondary visual element
+The default variant (toggle on the left) is better suited for compact, inline contexts like cards or list items where the switch is part of a larger element.
 
 <ComponentDemo name="switch-settings" />
+
+### Choosing the right control
+
+Switches, checkboxes, and toggle buttons can look similar but work differently. The main distinction is when the change takes effect.
+
+A switch always applies its change the moment you toggle it. There is no save step. This makes switches a poor fit inside forms where other fields require submission. If a page has a "Save" button, the switch creates ambiguity: did that toggle already apply, or does it wait for Save? Use a [checkbox](/components/form/checkbox) in those situations.
+
+A [toggle button](/components/actions/toggle-button) is for temporary states tied to the current view, like bold in a text editor or switching between grid and list layout. Unlike a switch, a toggle button doesn't persist a setting.
+
+Also watch out for opposing options. Two switches like "Light mode" and "Dark mode" side by side don't make sense because they aren't independent. Use a single switch or a [radio](/components/form/radio) group instead.
 
 ## Props
 
@@ -108,12 +92,34 @@ Use the settings variant when:
 
 ## Alternative components
 
-Alternative selection controls can be used to enter decisions or declare preferences such as settings or dialogs.
+- [Checkbox](/components/form/checkbox): one or more selections in a form, applied on submission.
+- [Radio](/components/form/radio): a single choice from a list of mutually exclusive options.
+- [ToggleButton](/components/actions/toggle-button): a temporary mode or view state in the current context.
 
-<ul>
-  <li>
-    [Checkbox](/components/form/checkbox): Select multiple related options in a
-    list.
-  </li>
-  <li>[Radio](/components/form/radio): Select a single option in a list.</li>
-</ul>
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form development guide',
+      href: '../../patterns/form-implementation',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>
