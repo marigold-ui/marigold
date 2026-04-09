@@ -8,7 +8,7 @@ export const Badge: ThemeComponent<'Badge'> = cva({
   ],
   variants: {
     variant: {
-      default: 'bg text-foreground border border-border',
+      default: 'bg-muted text-foreground border border-border',
       primary: 'bg-primary text-primary-foreground ',
       success: 'bg-success text-success-foreground',
       warning: 'bg-warning text-warning-foreground',
