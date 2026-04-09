@@ -417,24 +417,26 @@ export const Mobile: any = meta.story({
     viewport: { value: 'smallScreen' },
   },
   render: args => (
-    <ComboBox {...args}>
-      <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
-      <ComboBox.Option id="cat">Cat</ComboBox.Option>
-      <ComboBox.Option id="dog">Dog</ComboBox.Option>
-      <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
-      <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
-      <ComboBox.Option id="snake">Snake</ComboBox.Option>
-      <ComboBox.Option id="elephant">Elephant</ComboBox.Option>
-      <ComboBox.Option id="giraffe">Giraffe</ComboBox.Option>
-      <ComboBox.Option id="penguin">Penguin</ComboBox.Option>
-      <ComboBox.Option id="dolphin">Dolphin</ComboBox.Option>
-      <ComboBox.Option id="koala">Koala</ComboBox.Option>
-      <ComboBox.Option id="tiger">Tiger</ComboBox.Option>
-      <ComboBox.Option id="lion">Lion</ComboBox.Option>
-      <ComboBox.Option id="zebra">Zebra</ComboBox.Option>
-      <ComboBox.Option id="owl">Owl</ComboBox.Option>
-      <ComboBox.Option id="fox">Fox</ComboBox.Option>
-    </ComboBox>
+    <I18nProvider locale="en">
+      <ComboBox {...args} allowsEmptyCollection>
+        <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+        <ComboBox.Option id="cat">Cat</ComboBox.Option>
+        <ComboBox.Option id="dog">Dog</ComboBox.Option>
+        <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+        <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+        <ComboBox.Option id="snake">Snake</ComboBox.Option>
+        <ComboBox.Option id="elephant">Elephant</ComboBox.Option>
+        <ComboBox.Option id="giraffe">Giraffe</ComboBox.Option>
+        <ComboBox.Option id="penguin">Penguin</ComboBox.Option>
+        <ComboBox.Option id="dolphin">Dolphin</ComboBox.Option>
+        <ComboBox.Option id="koala">Koala</ComboBox.Option>
+        <ComboBox.Option id="tiger">Tiger</ComboBox.Option>
+        <ComboBox.Option id="lion">Lion</ComboBox.Option>
+        <ComboBox.Option id="zebra">Zebra</ComboBox.Option>
+        <ComboBox.Option id="owl">Owl</ComboBox.Option>
+        <ComboBox.Option id="fox">Fox</ComboBox.Option>
+      </ComboBox>
+    </I18nProvider>
   ),
 });
 
@@ -514,6 +516,30 @@ Mobile.test(
 
     await step('Verify selection is displayed in trigger', async () => {
       await waitFor(() => expect(trigger).toHaveTextContent('Cat'));
+    });
+  }
+);
+
+Mobile.test(
+  'Mobile ComboBox shows empty state',
+  async ({ canvas, step }: any) => {
+    const trigger = await canvas.findByRole('button');
+
+    await step('Open tray', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Type non-matching text to trigger empty state', async () => {
+      const input = await canvas.findByRole('combobox');
+      await userEvent.type(input, 'xyz');
+
+      await waitFor(() =>
+        expect(canvas.getByText('No result found')).toBeVisible()
+      );
     });
   }
 );

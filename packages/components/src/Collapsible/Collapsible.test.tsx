@@ -1,9 +1,10 @@
 import { render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ReactNode } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { describe, expect, it } from 'vitest';
 import { Basic, ShowMore } from './Collapsible.stories';
-import { useCollapsibleContext } from './Context';
+import { CollapsibleProvider, useCollapsibleContext } from './Context';
 
 const user = userEvent.setup();
 
@@ -30,6 +31,18 @@ describe('Context', () => {
     expect(() => renderHook(() => useCollapsibleContext())).toThrow(
       'useCollapsibleContext must be used within a CollapsibleProvider'
     );
+  });
+
+  it('returns context value when used within provider', () => {
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <CollapsibleProvider value={{ variant: 'test', size: 'small' }}>
+        {children}
+      </CollapsibleProvider>
+    );
+
+    const { result } = renderHook(() => useCollapsibleContext(), { wrapper });
+
+    expect(result.current).toEqual({ variant: 'test', size: 'small' });
   });
 });
 
