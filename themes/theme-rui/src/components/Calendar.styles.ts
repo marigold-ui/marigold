@@ -17,7 +17,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg justify-self-center',
       'border border-transparent p-0 text-sm font-normal text-foreground',
       'outline-offset-2 duration-150 transition-all',
-      'selected:bg-primary selected:text-primary-foreground',
+      'selected:bg-selected-bold selected:text-selected-bold-foreground',
       'data-hovered:ui-state-hover',
       'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
       'disabled:cursor-not-allowed disabled:text-disabled',
@@ -46,7 +46,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'focus-visible:ui-state-focus outline-none',
       'cursor-pointer',
       'hover:ui-state-hover',
-      'aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:shadow-elevation-border aria-selected:hover:bg-primary/90',
+      'aria-selected:bg-selected-bold aria-selected:text-selected-bold-foreground aria-selected:shadow-elevation-border aria-selected:hover:bg-selected-bold/90',
     ],
   }),
   select: cva({

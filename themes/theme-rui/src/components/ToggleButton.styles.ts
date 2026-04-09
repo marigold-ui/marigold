@@ -21,7 +21,7 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
 
       // States
       'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
-      'selected:[--ui-background-color:var(--color-primary)] selected:text-primary-foreground selected:shadow-none',
+      'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground selected:shadow-none',
       'disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
 
       // Group: buttons share the group's outer surface and border
