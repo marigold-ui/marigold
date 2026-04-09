@@ -27,13 +27,14 @@ For example, `border-destructive-accent` breaks down into the property `border-`
 
 Many tokens come in pairs: a background token and a `-foreground` token for text on that background. Always use the paired foreground when placing text on a colored background.
 
-| Background            | Foreground                         | Example                        |
-| --------------------- | ---------------------------------- | ------------------------------ |
-| `bg-primary`          | `text-primary-foreground`          | Buttons, strong selections     |
-| `bg-destructive`      | `text-destructive-foreground`      | Error badges, section messages |
-| `bg-destructive-bold` | `text-destructive-bold-foreground` | Destructive button             |
-| `bg-access-master`    | `text-access-master-foreground`    | Master access rows             |
-| `bg-access-admin`     | `text-access-admin-foreground`     | Admin access rows              |
+| Background            | Foreground                         | Example                            |
+| --------------------- | ---------------------------------- | ---------------------------------- |
+| `bg-primary`          | `text-primary-foreground`          | Buttons                            |
+| `bg-selected-bold`    | `text-selected-bold-foreground`    | Binary controls (Checkbox, Switch) |
+| `bg-destructive`      | `text-destructive-foreground`      | Error badges, section messages     |
+| `bg-destructive-bold` | `text-destructive-bold-foreground` | Destructive button                 |
+| `bg-access-master`    | `text-access-master-foreground`    | Master access rows                 |
+| `bg-access-admin`     | `text-access-admin-foreground`     | Admin access rows                  |
 
 **Tokens without a foreground pair:**
 
@@ -41,6 +42,7 @@ Many tokens come in pairs: a background token and a `-foreground` token for text
 - `hover`: uses `text-foreground`
 - `selected`: no explicit text color set on selection
 - `focus-highlight`: no explicit text color set on focus
+- `focus-highlight-bold`: uses `text-foreground` (the stronger tint still meets contrast with regular text)
 - `surface`: uses `text-foreground` or `text-secondary`
 - `secondary`, `placeholder`: these ARE text tokens, not backgrounds
 - `disabled`: primarily a text token. When a background is needed, pair with `bg-disabled-surface` (see [Disabled](#disabled) for details)
@@ -225,34 +227,32 @@ Some elements need a subtle visual distinction from the white surface they sit o
 
 ### Selected
 
-Selection tells users which item is currently active or focused. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-primary` with `text-primary-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components like ListBox and Sidebar highlight one item among many, so they use a subtler `bg-selected` tint. A separate `focus-highlight` token handles keyboard navigation, marking the item the user is about to select.
+Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components like ListBox and Sidebar highlight one item among many, so they use a subtler `bg-selected` tint.
 
 <TokenTable
   tokens={[
-    {
-      name: 'primary',
-      value: 'charcoal-900',
-      useFor: 'Binary selection (Checkbox, Radio, Switch, ToggleButton)',
-    },
     {
       name: 'selected',
       value: 'charcoal-300',
       useFor: 'Selection highlight for list items (ListBox, Sidebar)',
     },
     {
-      name: 'focus-highlight',
-      value: 'charcoal-100',
-      useFor: 'Focus background for keyboard navigation (Menu, FileField)',
+      name: 'selected-bold',
+      value: 'charcoal-900',
+      useFor: 'Binary selection (Checkbox, Radio, Switch, ToggleButton)',
+    },
+    {
+      name: 'selected-bold-foreground',
+      value: 'charcoal-50',
+      useFor: 'Text and icons on selected-bold backgrounds',
     },
   ]}
 />
 
-#### Selection patterns
-
 **Binary controls** (Checkbox, Radio, Switch, ToggleButton) use the strong/inverted pattern:
 
 ```tsx
-<div className="bg-primary text-primary-foreground" />
+<div className="bg-selected-bold text-selected-bold-foreground" />
 ```
 
 **List selection** (ListBox, Sidebar) uses the subtle highlight:
@@ -261,24 +261,63 @@ Selection tells users which item is currently active or focused. Not every selec
 <div className="selected:bg-selected" />
 ```
 
-**Keyboard focus** marks the item the user is navigating to, before confirming a selection:
-
-```tsx
-<div className="data-focused:bg-focus-highlight" />
-```
-
 <GuidelineTiles>
   <Do>
     <DoDescription>
       Use `bg-selected` for list-based selection (ListBox, Sidebar) and
-      `bg-primary` for binary controls (Checkbox, Switch, ToggleButton).
+      `bg-selected-bold` for binary controls (Checkbox, Switch, ToggleButton).
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
       Don't use `bg-selected` for binary controls. A checkbox or switch should
-      use the strong `bg-primary` pattern to clearly communicate its on/off
-      state.
+      use the strong `bg-selected-bold` pattern to clearly communicate its
+      on/off state.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Focus highlight
+
+Focus highlight marks the item the user is currently navigating to via keyboard. Unlike selection, which shows a confirmed choice, focus indicates where the user's cursor is right now. Two intensities handle different contexts: a subtle tint for menu items and drop zones, and a bolder fill for inline segments like date fields where the focused part needs to stand out clearly.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'focus-highlight',
+      value: 'charcoal-100',
+      useFor:
+        'Subtle focus background for keyboard navigation (Menu, FileField)',
+    },
+    {
+      name: 'focus-highlight-bold',
+      value: 'charcoal-300',
+      useFor: 'Strong focus background for inline segments (DateField)',
+    },
+  ]}
+/>
+
+```tsx
+// Subtle focus: menu items, file drop zones
+<div className="data-focused:bg-focus-highlight" />
+
+// Bold focus: inline segments like date fields
+<div className="data-focused:bg-focus-highlight-bold" />
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-focus-highlight` for list-like navigation (Menu, FileField) and
+      `bg-focus-highlight-bold` for inline segments (DateField) where the
+      focused part needs stronger contrast.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-selected` for focus states. Selection and focus are
+      different concepts: selection is a confirmed choice, focus is where the
+      keyboard cursor currently sits.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -542,7 +581,7 @@ Replace `destructive` with `success`, `warning`, or `info` for the other statuse
 
 ### Access control
 
-Domain-specific tokens for Reservix access level indicators.
+Domain-specific tokens for Reservix access level indicators. Follows the same structure as status colors: a subtle background, a foreground for text, and an accent for borders and icons.
 
 <TokenTable
   tokens={[
@@ -553,8 +592,13 @@ Domain-specific tokens for Reservix access level indicators.
     },
     {
       name: 'access-master-foreground',
-      value: 'orange-500',
-      useFor: 'Master-level icon/border color',
+      value: 'orange-800',
+      useFor: 'Text on master-level access background',
+    },
+    {
+      name: 'access-master-accent',
+      value: 'orange-700',
+      useFor: 'Master-level borders, icons, standalone text',
     },
     {
       name: 'access-admin',
@@ -563,8 +607,13 @@ Domain-specific tokens for Reservix access level indicators.
     },
     {
       name: 'access-admin-foreground',
+      value: 'purple-900',
+      useFor: 'Text on admin-level access background',
+    },
+    {
+      name: 'access-admin-accent',
       value: 'purple-800',
-      useFor: 'Admin-level icon/border color',
+      useFor: 'Admin-level borders, icons, standalone text',
     },
   ]}
 />

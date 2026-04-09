@@ -90,13 +90,11 @@
   --color-muted: var(--color-charcoal-50);
   --color-hover: var(--color-charcoal-200);
 
-  /*
-    Two selection paradigms:
-      Strong/inverted (bg-primary + text-primary-foreground): binary controls
-      Subtle highlight (bg-selected): list selection
-  */
   --color-selected: var(--color-charcoal-300);
+  --color-selected-bold: var(--color-charcoal-900);
+  --color-selected-bold-foreground: var(--color-charcoal-50);
   --color-focus-highlight: var(--color-charcoal-100);
+  --color-focus-highlight-bold: var(--color-charcoal-300);
 
   /* --- Disabled --- */
   --color-disabled: var(--color-charcoal-400);
@@ -130,9 +128,11 @@
 
   /* --- Access Control --- */
   --color-access-master: var(--color-orange-100);
-  --color-access-master-foreground: var(--color-orange-500);
+  --color-access-master-foreground: var(--color-orange-800);
+  --color-access-master-accent: var(--color-orange-700);
   --color-access-admin: var(--color-purple-100);
-  --color-access-admin-foreground: var(--color-purple-800);
+  --color-access-admin-foreground: var(--color-purple-900);
+  --color-access-admin-accent: var(--color-purple-800);
 
   /* --- Links --- */
   --color-link: var(--color-blue-600);
