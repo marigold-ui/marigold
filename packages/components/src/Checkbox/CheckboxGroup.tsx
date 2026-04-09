@@ -110,7 +110,7 @@ export interface CheckboxGroupProps
 
 // Component
 // ---------------
-const _CheckboxGroup = ({
+const CheckboxGroupComp = ({
   children,
   variant,
   size,
@@ -165,4 +165,4 @@ const _CheckboxGroup = ({
   );
 };
 
-export { _CheckboxGroup as CheckboxGroup };
+export { CheckboxGroupComp as CheckboxGroup };

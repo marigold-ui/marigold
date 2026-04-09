@@ -67,7 +67,7 @@ export const WithAutoFocus = meta.story({
 });
 
 export const UseConfirmation = meta.story({
-  render: () => {
+  render: function Render() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const confirm = useConfirmation();
 

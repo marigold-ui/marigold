@@ -139,7 +139,7 @@ export const WithForms = meta.story({
 });
 
 export const Controlled = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
       setOpen(open);

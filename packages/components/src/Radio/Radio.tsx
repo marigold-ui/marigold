@@ -42,7 +42,7 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
   </div>
 );
 
-const _Radio = ({
+const RadioComp = ({
   value,
   disabled,
   width,
@@ -87,8 +87,8 @@ const _Radio = ({
   );
 };
 
-const _MgRadio = Object.assign(_Radio, {
+const MgRadioComp = Object.assign(RadioComp, {
   Group: RadioGroup,
 });
 
-export { _MgRadio as Radio };
+export { MgRadioComp as Radio };

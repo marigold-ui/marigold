@@ -220,7 +220,7 @@ export const DynamicData = meta.story({
   args: {
     selectionMode: 'single',
   },
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', rowHeader: true },
       { name: 'Firstname', id: 'firstname', rowHeader: false },
@@ -321,7 +321,7 @@ export const DynamicData = meta.story({
 
 export const WidthsAndOverflow = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [overflow, setOverflow] = useState<'truncate' | 'wrap'>('wrap');
 
     return (
@@ -476,7 +476,7 @@ export const Empty = meta.story({
 
 export const Sorting = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', alignX: 'left', rowHeader: true },
       { name: 'Height', id: 'height', alignX: 'right', rowHeader: false },
@@ -752,7 +752,7 @@ export const WithActions = meta.story({
 });
 
 export const ScrollableAndSticky = meta.story({
-  render: args => {
+  render: function Render(args) {
     const todos = Array.from({ length: 30 }, (_, i) => ({
       id: i + 1,
       title: `Todo item ${i + 1}`,
@@ -791,7 +791,7 @@ export const ScrollableAndSticky = meta.story({
 
 export const Links = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const websites = [
       {
         name: 'Marigold',
@@ -856,7 +856,7 @@ export const DragAndDrop = meta.story({
   args: {
     selectionMode: 'multiple',
   },
-  render: args => {
+  render: function Render(args) {
     const list = useListData({
       initialItems: users.slice(0, 5).map((user, index) => ({
         id: index + 1,
@@ -944,7 +944,7 @@ export const AllowTextSelection = meta.story({
   args: {
     selectionMode: 'multiple',
   },
-  render: args => {
+  render: function Render(args) {
     const [allowTextSelection, setAllowTextSelection] = useState(false);
 
     return (
@@ -1028,7 +1028,7 @@ export const AllowTextSelection = meta.story({
 
 export const EditableCell = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [data, setData] = useState(users.slice(0, 5).map(u => ({ ...u })));
 
     const handleSubmit = (
@@ -1175,7 +1175,7 @@ export const EditableCell = meta.story({
 
 export const DynamicColumnsAndRows = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', rowHeader: true },
       { name: 'Email', id: 'email', rowHeader: false },
@@ -1420,7 +1420,7 @@ export const VerticalAlignment = meta.story({
 
 export const DragPreview = meta.story({
   tags: ['component-test'],
-  render: () => {
+  render: function Render() {
     const singleItem = [{ 'text/plain': 'Single Item' }];
     const multipleItems = [
       { 'text/plain': 'Item 1' },

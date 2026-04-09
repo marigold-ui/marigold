@@ -44,7 +44,7 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   ref?: Ref<HTMLButtonElement>;
 }
 
-const _Button = ({
+const ButtonComp = ({
   children,
   variant,
   size,
@@ -86,4 +86,4 @@ const _Button = ({
   );
 };
 
-export { _Button as Button };
+export { ButtonComp as Button };

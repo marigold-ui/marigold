@@ -78,7 +78,7 @@ const meta = preview.meta({
 });
 
 export const Trigger = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
         <Tooltip.Trigger {...args}>
@@ -98,7 +98,7 @@ export const Trigger = meta.story({
 });
 
 export const ControlledTooltipTrigger = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
     return (
       <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">

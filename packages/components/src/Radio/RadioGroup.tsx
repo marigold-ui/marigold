@@ -128,7 +128,7 @@ export interface RadioGroupProps extends Omit<
 
 // Component
 // ---------------
-const _RadioGroup = ({
+const RadioGroupComp = ({
   variant,
   size,
   label,
@@ -191,4 +191,4 @@ const _RadioGroup = ({
   );
 };
 
-export { _RadioGroup as RadioGroup };
+export { RadioGroupComp as RadioGroup };

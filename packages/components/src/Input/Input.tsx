@@ -16,7 +16,7 @@ export interface InputProps extends Omit<RAC.InputProps, RemovedProps> {
   ref?: Ref<HTMLInputElement>;
 }
 
-const _Input = ({
+const InputComp = ({
   type,
   icon,
   action,
@@ -82,4 +82,4 @@ const _Input = ({
   );
 };
 
-export { _Input as Input };
+export { InputComp as Input };

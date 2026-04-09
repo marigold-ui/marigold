@@ -173,7 +173,7 @@ export const Loading = meta.story({
   parameters: {
     controls: { exclude: ['loading'] },
   },
-  render: ({ children, ...args }) => {
+  render: function Render({ children, ...args }) {
     const [loading, setLoading] = useState<boolean | undefined>(false);
     const handleSubmit = async () => {
       //avoid multiple submits while loading
@@ -201,7 +201,7 @@ export const LoadingWithIcon = meta.story({
   parameters: {
     controls: { exclude: ['loading'] },
   },
-  render: ({ children, ...args }) => {
+  render: function Render({ children, ...args }) {
     const [loading, setLoading] = useState<boolean>(false);
     const handleSubmit = async () => {
       //avoid multiple submits while loading

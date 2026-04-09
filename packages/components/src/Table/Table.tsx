@@ -46,7 +46,7 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
   actionBar?: (selectedKeys: Selection) => ReactNode;
 }
 
-const _Table = ({
+const TableComp = ({
   variant,
   size,
   overflow = 'wrap',
@@ -111,7 +111,7 @@ const _Table = ({
   );
 };
 
-const Table = Object.assign(_Table, {
+const Table = Object.assign(TableComp, {
   Header: TableHeader,
   Column: TableColumn,
   Body: TableBody,

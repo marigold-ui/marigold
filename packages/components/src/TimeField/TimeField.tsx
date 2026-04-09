@@ -83,7 +83,7 @@ export interface TimeFieldProps
 
 // Component
 // ---------------
-const _TimeField = ({
+const TimeFieldComp = ({
   required,
   disabled,
   readOnly,
@@ -126,4 +126,4 @@ const _TimeField = ({
   );
 };
 
-export { _TimeField as TimeField };
+export { TimeFieldComp as TimeField };

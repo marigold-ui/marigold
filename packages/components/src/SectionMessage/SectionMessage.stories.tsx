@@ -74,7 +74,7 @@ export const LongMessage = meta.story({
 });
 
 export const ControlledSectionMessage = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [deleteSuccessful, setDeleteSuccessful] = useState<boolean>(false);
 
     return (

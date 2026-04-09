@@ -82,7 +82,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [selected, setSelected] = useState<any>('');
     return (
       <Stack space={6}>
@@ -152,7 +152,7 @@ export const Basic = meta.story({
 export const Multiple = meta.story({
   tags: ['component-test'],
   // No args here, it breaks the types
-  render: ({ label }) => {
+  render: function Render({ label }) {
     const [selected, setSelected] = useState<Key[]>([]);
     return (
       <Form
@@ -209,7 +209,7 @@ export const Multiple = meta.story({
 });
 
 export const LongItems = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Inset space={24}>
         <Select
@@ -258,7 +258,7 @@ export const LongItems = meta.story({
 });
 
 export const LotsOfOptions = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Inset space={24}>
         <Select
@@ -337,7 +337,7 @@ export const Sections = meta.story({
 });
 
 export const SelectedScroll = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Select disabledKeys={['Firefly']} open {...args}>
         <Select.Option id="Harry Potter">Harry Potter</Select.Option>
@@ -505,7 +505,7 @@ export const Mobile = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },
   },
-  render: args => {
+  render: function Render(args) {
     return (
       <Select
         {...args}

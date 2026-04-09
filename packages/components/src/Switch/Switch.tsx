@@ -53,7 +53,7 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   ref?: Ref<HTMLLabelElement>;
 }
 
-const _Switch = ({
+const SwitchComp = ({
   variant,
   size,
   width = 'full',
@@ -92,4 +92,4 @@ const _Switch = ({
   );
 };
 
-export { _Switch as Switch };
+export { SwitchComp as Switch };

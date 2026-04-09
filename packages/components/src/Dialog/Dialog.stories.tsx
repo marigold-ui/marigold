@@ -72,7 +72,7 @@ export const Basic = meta.story({
 });
 
 export const WithForm = meta.story({
-  render: ({ size, ...args }) => {
+  render: function Render({ size, ...args }) {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
@@ -101,7 +101,7 @@ export const WithForm = meta.story({
 });
 
 export const WithFormValidation = meta.story({
-  render: ({ size, ...args }) => {
+  render: function Render({ size, ...args }) {
     const [code, setCode] = useState('');
 
     return (
@@ -146,7 +146,7 @@ export const WithFormValidation = meta.story({
 });
 
 export const OpenFromMenu = meta.story({
-  render: () => {
+  render: function Render() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setDialogOpen] = useState(false);
     const handleAction = (action: 'save' | 'delete') => {
@@ -206,7 +206,7 @@ export const Confirmation = meta.story({
 
 export const VeryLongContent = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const { size, ...triggerArgs } = args;
     return (
       <Dialog.Trigger {...triggerArgs}>

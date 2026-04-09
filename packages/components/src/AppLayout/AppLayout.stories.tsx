@@ -254,7 +254,7 @@ export const Basic = meta.story({
 
 export const SidebarClosed = meta.story({
   tags: ['component-test'],
-  render: () => {
+  render: function Render() {
     const [open, setOpen] = useState(false);
     return <LShapeLayout open={open} onOpenChange={setOpen} />;
   },

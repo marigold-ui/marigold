@@ -53,7 +53,7 @@ export interface SliderProps<T>
   ref?: Ref<HTMLDivElement>;
 }
 
-const _Slider = <T extends number | number[]>({
+const SliderComp = <T extends number | number[]>({
   variant,
   size,
   width = 'full',
@@ -140,4 +140,4 @@ const _Slider = <T extends number | number[]>({
   );
 };
 
-export { _Slider as Slider };
+export { SliderComp as Slider };

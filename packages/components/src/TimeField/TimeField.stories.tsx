@@ -132,7 +132,7 @@ export const FocusEvents = meta.story({
 });
 
 export const ControlledTimeField = meta.story({
-  render: args => {
+  render: function (args) {
     const ControlledComponent = () => {
       const [value, setValue] = useState<TimeValue>(parseTime('13:45'));
 

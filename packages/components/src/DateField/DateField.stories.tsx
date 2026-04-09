@@ -107,7 +107,7 @@ export const Basic: any = meta.story({
 
 export const ControlledDateField: any = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
     return (
       <I18nProvider locale="de-DE">

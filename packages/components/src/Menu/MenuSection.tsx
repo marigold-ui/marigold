@@ -16,7 +16,7 @@ export interface MenuSectionProps extends Omit<
 
 // Component
 // ---------------
-const _MenuSection = ({ children, title, ...props }: MenuSectionProps) => {
+const MenuSectionComp = ({ children, title, ...props }: MenuSectionProps) => {
   const className = useClassNames({ component: 'Menu' });
   return (
     <MenuSection {...props}>
@@ -26,4 +26,4 @@ const _MenuSection = ({ children, title, ...props }: MenuSectionProps) => {
   );
 };
 
-export { _MenuSection as MenuSection };
+export { MenuSectionComp as MenuSection };

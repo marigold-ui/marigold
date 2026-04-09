@@ -74,7 +74,7 @@ type ViewMapKeys = 'month' | 'year';
 
 // Component
 // ---------------
-const _Calendar = ({
+const CalendarComp = ({
   disabled,
   readOnly,
   size,
@@ -223,4 +223,4 @@ const _Calendar = ({
   );
 };
 
-export { _Calendar as Calendar };
+export { CalendarComp as Calendar };

@@ -22,7 +22,7 @@ export interface TooltipTriggerProps extends Omit<
   open?: boolean;
 }
 
-const _TooltipTrigger = ({
+const TooltipTriggerComp = ({
   delay = 1000,
   children,
   disabled,
@@ -48,4 +48,4 @@ const _TooltipTrigger = ({
   );
 };
 
-export { _TooltipTrigger as TooltipTrigger };
+export { TooltipTriggerComp as TooltipTrigger };

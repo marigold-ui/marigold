@@ -83,7 +83,7 @@ export interface TextAreaProps
 
 // Component
 // ---------------
-const _TextArea = ({
+const TextAreaComp = ({
   variant,
   size,
   required,
@@ -115,4 +115,4 @@ const _TextArea = ({
   );
 };
 
-export { _TextArea as TextArea };
+export { TextAreaComp as TextArea };

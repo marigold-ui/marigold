@@ -117,7 +117,7 @@ export const DefaultSelected = meta.story({
 });
 
 export const Controlled = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState('2');
     return (
       <Stack space={4}>

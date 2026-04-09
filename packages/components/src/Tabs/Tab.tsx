@@ -15,7 +15,7 @@ const INDICATOR_TRANSITION = {
 
 // component
 // ----------------------
-const _Tab = (props: TabProps) => {
+const TabComp = (props: TabProps) => {
   const { classNames } = useTabContext();
   const { children: content, ...restProps } = props;
   return (
@@ -48,4 +48,4 @@ const _Tab = (props: TabProps) => {
   );
 };
 
-export { _Tab as Tab };
+export { TabComp as Tab };

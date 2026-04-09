@@ -105,7 +105,7 @@ export const ComponentDemo = ({
 
   // Full mode with Preview + Code tabs
   return (
-    <DemoTabs demoKey={key}>
+    <DemoTabs>
       <Tab value="Preview" className="p-0">
         <Preview name={key} />
       </Tab>
@@ -118,13 +118,7 @@ export const ComponentDemo = ({
 
 // Tracked Tabs wrapper
 // ---------------
-const DemoTabs = ({
-  demoKey,
-  children,
-}: {
-  demoKey: string;
-  children: ReactNode;
-}) => (
+const DemoTabs = ({ children }: { children: ReactNode }) => (
   <Tabs
     items={['Preview', 'Code']}
     defaultIndex={0}

@@ -16,7 +16,7 @@ export interface LinkProps extends Omit<RAC.LinkProps, RemovedProps> {
   ref?: Ref<HTMLAnchorElement>;
 }
 
-const _Link = ({
+const LinkComp = ({
   variant,
   size,
   disabled,
@@ -37,4 +37,4 @@ const _Link = ({
   );
 };
 
-export { _Link as Link };
+export { LinkComp as Link };

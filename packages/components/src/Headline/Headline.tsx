@@ -40,7 +40,7 @@ export interface HeadlineProps
   slot?: string;
 }
 
-const _Headline = ({
+const HeadlineComp = ({
   variant,
   size,
   children,
@@ -73,4 +73,4 @@ const _Headline = ({
   );
 };
 
-export { _Headline as Headline };
+export { HeadlineComp as Headline };

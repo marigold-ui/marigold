@@ -43,7 +43,7 @@ export interface TagGroupProps
 
 // Component
 // ---------------
-const _TagGroup = ({
+const TagGroupComp = ({
   items,
   children,
   emptyState,
@@ -77,4 +77,4 @@ const _TagGroup = ({
   );
 };
 
-export { _TagGroup as TagGroup };
+export { TagGroupComp as TagGroup };

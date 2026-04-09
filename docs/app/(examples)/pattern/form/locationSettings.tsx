@@ -7,7 +7,6 @@ import {
   Checkbox,
   Headline,
   Inline,
-  Inset,
   Link,
   NumberField,
   Select,

@@ -16,7 +16,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  render: () => {
+  render: function Render() {
     const ref = useRef<HTMLDivElement>(null);
     return (
       <>
@@ -31,7 +31,7 @@ export const Basic = meta.story({
 });
 
 export const OpenPopover = meta.story({
-  render: () => {
+  render: function Render() {
     const ref = useRef<HTMLDivElement>(null);
     return (
       <>

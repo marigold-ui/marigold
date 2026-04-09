@@ -101,7 +101,7 @@ Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
 });
 
 export const DismissControlsWithCallbacks = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
     const [log, setLog] = useState<string[]>([]);
 

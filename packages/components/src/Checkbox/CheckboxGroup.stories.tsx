@@ -105,7 +105,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
@@ -130,7 +130,7 @@ export const Basic = meta.story({
 });
 
 export const Error = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
@@ -160,7 +160,7 @@ export const Controlled = meta.story({
   args: {
     onChange: fn(),
   },
-  render: args => {
+  render: function Render(args) {
     return (
       <>
         <Checkbox.Group
@@ -202,7 +202,7 @@ export const CollapseAt = meta.story({
   args: {
     collapseAt: 5,
   },
-  render: args => {
+  render: function Render(args) {
     const [selected, setSelected] = useState<string[]>([]);
 
     return (

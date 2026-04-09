@@ -14,7 +14,7 @@ export type ListBoxItemProps = Omit<
   children?: ReactNode;
 };
 
-export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
+export const ListBoxItemComp = ({ ...props }: ListBoxItemProps) => {
   const { classNames } = useListBoxContext();
   return (
     <ListBoxItem
@@ -31,4 +31,4 @@ export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
   );
 };
 
-export { _ListBoxItem as ListBoxItem };
+export { ListBoxItemComp as ListBoxItem };

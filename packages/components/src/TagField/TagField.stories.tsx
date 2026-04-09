@@ -95,7 +95,7 @@ Basic.test(
 
 export const Controlled = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [selected, setSelected] = useState<Key[]>(['rock', 'pop']);
     return (
       <Stack space={6}>

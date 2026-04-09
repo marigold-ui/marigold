@@ -136,7 +136,7 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
 
 // Component
 // --------------
-const _Checkbox = ({
+const CheckboxComp = ({
   error,
   disabled,
   readOnly,
@@ -196,8 +196,8 @@ const _Checkbox = ({
   );
 };
 
-const _MgCheckbox = Object.assign(_Checkbox, {
+const MgCheckboxComp = Object.assign(CheckboxComp, {
   Group: CheckboxGroup,
 });
 
-export { _MgCheckbox as Checkbox };
+export { MgCheckboxComp as Checkbox };

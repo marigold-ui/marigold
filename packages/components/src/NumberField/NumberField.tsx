@@ -71,7 +71,7 @@ export interface NumberFieldProps
 
 // Component
 // ---------------
-const _NumberField = ({
+const NumberFieldComp = ({
   variant,
   size,
   disabled,
@@ -135,4 +135,4 @@ const _NumberField = ({
   );
 };
 
-export { _NumberField as NumberField };
+export { NumberFieldComp as NumberField };

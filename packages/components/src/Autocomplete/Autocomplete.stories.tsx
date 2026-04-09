@@ -149,7 +149,7 @@ export const WithSections: any = meta.story({
 
 export const Controlled: any = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [submitted, setSubmitted] = useState<string | number | null>('');
     const [current, setCurrent] = useState<string>('');
 
@@ -202,7 +202,7 @@ export const Controlled: any = meta.story({
 });
 
 export const Async: any = meta.story({
-  render: args => {
+  render: function Render(args) {
     const { items, filterText, setFilterText } = useAsyncList<{ name: string }>(
       {
         async load({ signal, filterText }) {

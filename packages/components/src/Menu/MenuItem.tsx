@@ -12,7 +12,7 @@ export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {
 
 // Component
 // ---------------
-const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
+const MenuItemComp = ({ children, variant, size, ...props }: MenuItemProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
   return (
     <MenuItem {...props} className={classNames.item}>
@@ -21,4 +21,4 @@ const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
   );
 };
 
-export { _MenuItem as MenuItem };
+export { MenuItemComp as MenuItem };

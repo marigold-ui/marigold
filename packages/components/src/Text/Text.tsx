@@ -84,7 +84,7 @@ export interface TextProps
 
 // Component
 // ---------------
-const _Text = ({
+const TextComp = ({
   variant,
   size,
   color,
@@ -136,4 +136,4 @@ const _Text = ({
   );
 };
 
-export { _Text as Text };
+export { TextComp as Text };

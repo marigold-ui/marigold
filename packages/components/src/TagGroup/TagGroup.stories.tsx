@@ -48,7 +48,7 @@ export const Basic = meta.story({
 
 export const RemovableTags = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const defaultItems = [
       { id: 1, name: 'News' },
       { id: 2, name: 'Travel' },
@@ -88,7 +88,7 @@ export const RemovableTags = meta.story({
 
 export const RemovableAllTags = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const defaultItems = [
       { id: 1, name: 'News' },
       { id: 2, name: 'Travel' },

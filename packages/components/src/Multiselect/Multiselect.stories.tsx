@@ -175,7 +175,7 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [current, setCurrent] = useState<string>('');
     const [selectedItems, setSelectedItems] = useState<Array<object>>([]);
 
@@ -221,7 +221,7 @@ const ticketTypes = [
 ];
 
 export const EmptyResult = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Multiselect
         {...args}

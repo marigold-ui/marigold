@@ -64,7 +64,7 @@ export const WithinAField = meta.story({
 });
 
 export const MultipleMessages = meta.story({
-  render: () => {
+  render: function Render() {
     const [password, setPassword] = useState('');
     const errors = [];
 

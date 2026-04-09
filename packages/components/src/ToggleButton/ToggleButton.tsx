@@ -23,7 +23,7 @@ export interface ToggleButtonProps extends Omit<
   size?: 'small' | 'default' | 'icon' | (string & {});
 }
 
-export const _ToggleButton = ({
+export const ToggleButtonComp = ({
   children,
   selected,
   disabled,
@@ -51,6 +51,6 @@ export const _ToggleButton = ({
   );
 };
 
-_ToggleButton.Group = ToggleButtonGroup;
+ToggleButtonComp.Group = ToggleButtonGroup;
 
-export { _ToggleButton as ToggleButton };
+export { ToggleButtonComp as ToggleButton };

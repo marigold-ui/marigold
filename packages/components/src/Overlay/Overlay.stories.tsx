@@ -43,7 +43,7 @@ const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
 );
 
 export const OverlayTray = meta.story({
-  render: () => {
+  render: function Render() {
     return <TestTray open />;
   },
 });
