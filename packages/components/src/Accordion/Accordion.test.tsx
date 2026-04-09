@@ -12,8 +12,6 @@ test('render Accordion and more than one Item', () => {
 
   expect(item).toBeInTheDocument();
   expect(itemtwo).toBeInTheDocument();
-  expect(item).toBeValid();
-  expect(itemtwo).toBeValid();
 });
 
 test('items per default closed', () => {

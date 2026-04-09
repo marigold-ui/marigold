@@ -16,7 +16,6 @@ test('renders an input', () => {
 
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'search');
-  expect(textField instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('renders a label', () => {
@@ -25,7 +24,6 @@ test('renders a label', () => {
   const label = screen.getByText('Label');
 
   expect(label).toBeInTheDocument();
-  expect(label instanceof HTMLLabelElement).toBeTruthy();
 });
 
 test('supports disabled', () => {

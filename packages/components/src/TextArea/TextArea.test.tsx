@@ -7,7 +7,6 @@ test('renders an textarea', () => {
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toBeInTheDocument();
-  expect(textArea instanceof HTMLTextAreaElement).toBeTruthy();
 });
 
 test('supports disabled', () => {

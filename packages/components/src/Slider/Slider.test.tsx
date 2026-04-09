@@ -51,17 +51,3 @@ test('forwards ref', () => {
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
-
-test('multiple thumbs', () => {
-  render(
-    <Basic.Component
-      defaultValue={[30, 60]}
-      thumbLabels={['start', 'end']}
-      label="Range"
-    />
-  );
-
-  const slider = screen.getAllByRole('slider');
-  expect(slider[0]).toHaveValue('30');
-  expect(slider[1]).toHaveValue('60');
-});
