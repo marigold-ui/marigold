@@ -26,10 +26,9 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
     base: [
       'outline-none',
       'ui-surface shadow-elevation-overlay ui-scrollbar',
-      'p-5',
       'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
     ],
   }),
-  title: cva({ base: 'text-lg font-semibold mb-1' }),
-  content: cva({ base: 'text-sm' }),
+  title: cva({ base: 'text-lg font-semibold px-5 pt-5 mb-1' }),
+  content: cva({ base: 'text-sm px-5 pb-5 pt-1' }),
 };

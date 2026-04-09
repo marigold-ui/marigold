@@ -46,10 +46,10 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     },
   }),
   panel: cva({
-    base: 'overflow-clip h-(--disclosure-panel-height) transition-[height,padding] duration-250',
+    base: 'overflow-clip h-(--disclosure-panel-height) transition-[height,padding] duration-250 px-1 -mx-1',
   }),
   content: cva({
-    base: 'pb-2',
+    base: 'pt-1 pb-2',
     variants: {
       variant: {
         default: '',
