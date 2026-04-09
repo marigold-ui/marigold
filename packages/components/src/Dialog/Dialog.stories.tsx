@@ -205,6 +205,7 @@ export const Confirmation = meta.story({
 });
 
 export const TextOnly = meta.story({
+  tags: ['component-test'],
   render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
@@ -217,6 +218,10 @@ export const TextOnly = meta.story({
       </Dialog>
     </Dialog.Trigger>
   ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  },
 });
 
 export const VeryLongContent = meta.story({
