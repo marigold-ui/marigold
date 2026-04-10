@@ -225,37 +225,46 @@ Some elements need a subtle visual distinction from the white surface they sit o
   </Dont>
 </GuidelineTiles>
 
-### Neutral
+### Control
 
-Some form controls need a filled resting state that is visually distinct from both the white surface they sit on and the stronger colors reserved for selection or interaction. The switch track is the primary example: in its OFF position the track must look like a tangible, inactive control rather than empty space, but it should not imply selection (`selected`) or error (`disabled-surface`).
+Most form controls sit on a white surface and use borders to define their shape: a text input, a select dropdown, a checkbox outline. But some controls communicate their state through a **filled background** instead of a border. The switch track is the clearest example: when OFF, the track needs to look like a solid, physical groove that the thumb can slide along. A white or transparent background would make the track disappear into the surface, while using `selected` or `disabled-surface` would send the wrong signal.
+
+`control` fills this gap. It provides a medium-weight neutral background that says: "I am an interactive control in my resting state." It pairs naturally with `selected-bold` for the ON state, creating a clear before/after contrast.
 
 <TokenTable
   tokens={[
     {
-      name: 'neutral',
+      name: 'control',
       value: 'charcoal-300',
-      useFor: 'Resting fill for form controls (e.g. switch track in OFF state)',
+      useFor:
+        'Resting fill for controls that need a visible inactive state (e.g. switch track)',
     },
   ]}
 />
 
 ```tsx
-// Switch track: neutral when off, selected-bold when on
-<div className="bg-neutral group-selected/switch:bg-selected-bold" />
+// Switch track: control when off, selected-bold when on
+<div className="bg-control group-selected/switch:bg-selected-bold" />
 ```
+
+<Callout title="Not a default for all controls">
+  Most form controls use `bg-surface` (white) with a `border-border` outline.
+  Only reach for `bg-control` when a control communicates its state through a
+  filled background rather than a border, like switch tracks, slider tracks, and
+  similar "trough" elements.
+</Callout>
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `bg-neutral` for the inactive/resting fill of controls that need a
-      visible background, like the switch track.
+      Use `bg-control` for controls that communicate state through a filled
+      background, like the switch track or slider track.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't use `bg-neutral` for disabled states or content backgrounds. Use
-      `bg-disabled-surface` for disabled controls and `bg-muted` for subtle
-      content tints.
+      Don't use `bg-control` for bordered form controls like text inputs,
+      selects, or textareas. Those should use `bg-surface` with `border-border`.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
