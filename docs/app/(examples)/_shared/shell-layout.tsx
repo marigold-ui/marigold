@@ -20,10 +20,25 @@ import { UserMenu } from './user-menu';
 
 // Helpers
 // ---------------
-const getActiveSection = (sections: NavSection[], slug: string) =>
-  sections.find(s => s.slugs.includes(slug)) ?? sections[0];
+const getSlugs = (nav: NavEntry[]): string[] =>
+  nav.flatMap(entry => {
+    switch (entry.type) {
+      case 'item':
+        return [entry.slug];
+      case 'group':
+      case 'label-group':
+        return entry.children.map(c => c.slug);
+      case 'separator':
+        return [];
+    }
+  });
 
-const getFirstSlug = (section: NavSection) => section.slugs[0] ?? '';
+const getActiveSection = (sections: NavSection[], slug: string) =>
+  sections.find(s => getSlugs(s.nav).includes(slug)) ?? sections[0];
+
+const getFirstSlug = (section: NavSection) => getSlugs(section.nav)[0] ?? '';
+
+const BACK_TO_DOCS = '__back_to_docs__';
 
 // Sidebar Nav
 // ---------------
@@ -112,36 +127,32 @@ const UserSection = () => (
 const SectionSwitcher = ({
   sections,
   activeSection,
-  docsHref,
+  showBackToDocs,
   onSwitch,
 }: {
   sections: NavSection[];
   activeSection: NavSection;
-  docsHref?: string;
+  showBackToDocs: boolean;
   onSwitch: (sectionLabel: string) => void;
 }) => {
   if (sections.length <= 1) return null;
 
   return (
-    <div className="px-2 pb-2">
-      <Select
-        aria-label="Switch section"
-        value={activeSection.label}
-        onChange={key => onSwitch(key as string)}
-        width="full"
-      >
-        {sections.map(section => (
-          <Select.Option key={section.label} id={section.label}>
-            {section.label}
-          </Select.Option>
-        ))}
-        {docsHref && (
-          <Select.Option id="__back_to_docs__">
-            &larr; Back to docs
-          </Select.Option>
-        )}
-      </Select>
-    </div>
+    <Select
+      aria-label="Switch section"
+      value={activeSection.label}
+      onChange={key => onSwitch(key as string)}
+      width="full"
+    >
+      {sections.map(section => (
+        <Select.Option key={section.label} id={section.label}>
+          {section.label}
+        </Select.Option>
+      ))}
+      {showBackToDocs && (
+        <Select.Option id={BACK_TO_DOCS}>&larr; Back to docs</Select.Option>
+      )}
+    </Select>
   );
 };
 
@@ -159,8 +170,8 @@ export const ShellLayout = ({
   const activeSection = getActiveSection(config.sections, slug);
 
   const handleSectionSwitch = (sectionLabel: string) => {
-    if (sectionLabel === BACK_TO_DOCS && page?.docsHref) {
-      window.location.href = page.docsHref;
+    if (sectionLabel === BACK_TO_DOCS && activeSection.docsHref) {
+      window.location.href = activeSection.docsHref;
       return;
     }
     const section = config.sections.find(s => s.label === sectionLabel);
@@ -183,14 +194,15 @@ export const ShellLayout = ({
                 </Text>
               </Inline>
             </Sidebar.Header>
-            <SectionSwitcher
-              sections={config.sections}
-              activeSection={activeSection}
-              docsHref={page?.docsHref}
-              onSwitch={handleSectionSwitch}
-            />
             <SidebarNav nav={activeSection.nav} activeSlug={slug} />
-            <Sidebar.Footer />
+            <Sidebar.Footer>
+              <SectionSwitcher
+                sections={config.sections}
+                activeSection={activeSection}
+                showBackToDocs={!!activeSection.docsHref}
+                onSwitch={handleSectionSwitch}
+              />
+            </Sidebar.Footer>
           </AppLayout.Sidebar>
           <AppLayout.Header>
             <TopNavigation.Start>

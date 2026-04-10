@@ -1,7 +1,6 @@
 export interface NavItem {
   type: 'item';
   label: string;
-  href: string;
   slug: string;
 }
 
@@ -25,12 +24,12 @@ export type NavEntry = NavItem | NavGroup | NavLabelGroup | NavSeparator;
 
 export interface NavSection {
   label: string;
-  slugs: string[];
   nav: NavEntry[];
+  docsHref?: string;
 }
 
 export interface ShellConfig {
   base: string;
-  pages: Record<string, { label: string; parent?: string; docsHref?: string }>;
+  pages: Record<string, { label: string; parent?: string }>;
   sections: NavSection[];
 }
