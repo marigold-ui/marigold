@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import type {
   InsetSpacingTokens,
-  RelationalSpacingTokens,
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
@@ -17,9 +16,9 @@ export type InsetProps =
       space?: never;
       /**
        * Horizontal padding for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-       * @remarks `Scale | RelationalSpacingTokens`
+       * @remarks `Scale | SpacingTokens`
        */
-      spaceX?: SpaceProp<RelationalSpacingTokens>['space'];
+      spaceX?: SpaceProp<SpacingTokens>['space'];
       /**
        * Vertical padding for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
        * @remarks `Scale | SpacingTokens`
