@@ -21,7 +21,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     base: 'flex flex-col gap-1 text-center sm:text-left px-6 pt-6',
   }),
   title: cva({ base: 'text-lg font-semibold mb-1' }),
-  content: cva({ base: 'text-muted-foreground text-sm px-6 py-1' }),
+  content: cva({ base: 'text-sm px-6 py-1' }),
   actions: cva({
     base: 'flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4',
   }),
