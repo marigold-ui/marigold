@@ -8,7 +8,7 @@ import { RegistrationSettings } from '../../pattern/form/registrationSettings';
 
 const FormPage = () => (
   <Inset space={4}>
-    <div className="mx-auto max-w-xl">
+    <div className="max-w-xl">
       <Form>
         <Stack space="group">
           <EventDetails />
