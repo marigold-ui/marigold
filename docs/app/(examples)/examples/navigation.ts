@@ -14,7 +14,7 @@ const patterns: NavSection = {
     { type: 'item', label: 'Form', slug: 'form' },
     { type: 'item', label: 'Inventory', slug: 'inventory' },
   ],
-  docsHref: '/patterns/filter',
+  docsHref: '/',
 };
 
 export const config: ShellConfig = {
