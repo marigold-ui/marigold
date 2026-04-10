@@ -109,8 +109,6 @@ const UserSection = () => (
 
 // Section Switcher
 // ---------------
-const BACK_TO_DOCS = '__back_to_docs__';
-
 const SectionSwitcher = ({
   sections,
   activeSection,
@@ -128,21 +126,19 @@ const SectionSwitcher = ({
     <div className="px-2 pb-2">
       <Select
         aria-label="Switch section"
-        selectedKey={activeSection.label}
-        onSelectionChange={key => onSwitch(key as string)}
+        value={activeSection.label}
+        onChange={key => onSwitch(key as string)}
         width="full"
       >
-        <Select.Section>
-          {sections.map(section => (
-            <Select.Option key={section.label} id={section.label}>
-              {section.label}
-            </Select.Option>
-          ))}
-        </Select.Section>
+        {sections.map(section => (
+          <Select.Option key={section.label} id={section.label}>
+            {section.label}
+          </Select.Option>
+        ))}
         {docsHref && (
-          <Select.Section>
-            <Select.Option id={BACK_TO_DOCS}>&larr; Back to docs</Select.Option>
-          </Select.Section>
+          <Select.Option id="__back_to_docs__">
+            &larr; Back to docs
+          </Select.Option>
         )}
       </Select>
     </div>
