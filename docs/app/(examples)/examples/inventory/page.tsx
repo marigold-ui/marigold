@@ -1,15 +1,15 @@
 'use client';
 
 import { Divider, Headline, Inset, Stack, Text } from '@marigold/components';
-import { Blog } from '../../inventory/Blog';
-import { ContactForm } from '../../inventory/ContactForm';
-import { ContactTiles } from '../../inventory/ContactTiles';
-import { FAQ } from '../../inventory/FAQ';
-import { Inventory } from '../../inventory/Inventory';
-import { Newsletter } from '../../inventory/Newsletter';
-import { OurMission } from '../../inventory/OurMission';
-import { Settings } from '../../inventory/Settings';
-import { UserTable } from '../../inventory/UserTable';
+import { Blog } from './Blog';
+import { ContactForm } from './ContactForm';
+import { ContactTiles } from './ContactTiles';
+import { FAQ } from './FAQ';
+import { Inventory } from './Inventory';
+import { Newsletter } from './Newsletter';
+import { OurMission } from './OurMission';
+import { Settings } from './Settings';
+import { UserTable } from './UserTable';
 
 const InventoryPage = () => (
   <Inset space={4}>

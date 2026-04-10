@@ -1,9 +1,9 @@
 'use client';
 
 import { Headline, Inset, Stack, Text } from '@marigold/components';
-import { AppliedFilter } from '../../pattern/filter/applied-filter';
-import { Toolbar } from '../../pattern/filter/toolbar';
-import { VenuesView } from '../../pattern/filter/venues-view';
+import { AppliedFilter } from './applied-filter';
+import { Toolbar } from './toolbar';
+import { VenuesView } from './venues-view';
 
 const FilterPage = () => (
   <Inset space={4}>

@@ -1,10 +1,10 @@
 'use client';
 
 import { Button, Form, Inline, Inset, Stack } from '@marigold/components';
-import { EventDetails } from '../../pattern/form/eventDetails';
-import { LocationSettings } from '../../pattern/form/locationSettings';
-import { OrganizerInfo } from '../../pattern/form/organizerInfo';
-import { RegistrationSettings } from '../../pattern/form/registrationSettings';
+import { EventDetails } from './eventDetails';
+import { LocationSettings } from './locationSettings';
+import { OrganizerInfo } from './organizerInfo';
+import { RegistrationSettings } from './registrationSettings';
 
 const FormPage = () => (
   <Inset space={4}>
