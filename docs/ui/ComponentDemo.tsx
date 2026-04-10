@@ -55,7 +55,10 @@ const Preview = ({ name }: { name: RegistryKey }) => {
       className="flex min-h-[150px] w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
     >
       <OverlayContainerProvider container="portalContainer">
-        <MarigoldProvider theme={ruiTheme} className="bg-background w-full">
+        <MarigoldProvider
+          theme={ruiTheme}
+          className="h-inherit w-full bg-white"
+        >
           <div className="not-prose w-full overflow-x-auto p-4">
             <Demo />
           </div>

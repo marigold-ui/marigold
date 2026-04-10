@@ -6,12 +6,12 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     base: [
       'ui-surface shadow-elevation-border',
       'px-3 text-sm text-foreground transition-shadow',
-      'border border-input rounded-lg outline-hidden',
-      'aria-disabled:bg-disabled aria-disabled:text-disabled-foreground aria-disabled:hover:border-input aria-disabled:border-input aria-disabled:cursor-not-allowed',
-      'has-[input[data-invalid=true]]:border-destructive has-[input[data-invalid=true][data-focused=true]]:!border-destructive has-[input[data-invalid=true][data-focused=true]]:!ring-destructive/20',
+      'border border-border rounded-lg outline-hidden',
+      'aria-disabled:bg-disabled-surface aria-disabled:text-disabled aria-disabled:hover:border-border aria-disabled:border-border aria-disabled:cursor-not-allowed',
+      'has-[input[data-invalid=true]]:border-destructive-accent has-[input[data-invalid=true][data-focused=true]]:!border-destructive-accent has-[input[data-invalid=true][data-focused=true]]:!ring-destructive-accent/20',
       'has-[input[data-focused=true]]:!border-ring has-[input[data-focused=true]]:!ring-ring/50 has-[input[data-focused=true]]:ring-[3px] has-[input[data-focused=true]]:!outline-none',
       'has-[input[aria-readonly=true]]:bg-muted',
-      'min-h-input',
+      'min-h-control',
     ],
   }),
 
@@ -29,8 +29,8 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
 
   tag: cva({
     base: [
-      'border border-solid border-input rounded-md',
-      'bg-background',
+      'border border-solid border-border rounded-md',
+      'bg-surface',
       'font-medium text-xs',
       'flex items-center gap-1 ',
       'h-7 px-2 cursor-default',
@@ -50,8 +50,8 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
       'flex flex-col',
       'cursor-pointer p-2 outline-hidden',
       '[&.isFocused:not([aria-disabled=true])]:text-foreground! [&.isFocused[aria-disabled=true]]:bg-transparent',
-      'aria-disabled:text-disabled-foreground aria-disabled:cursor-not-allowed',
-      '[&.isFocused:not([aria-disabled=true])]:bg-hover!',
+      'aria-disabled:text-disabled aria-disabled:cursor-not-allowed',
+      '[&.isFocused:not([aria-disabled=true])]:ui-state-hover!',
     ],
   }),
   valueContainer: cva({ base: 'gap-2' }),

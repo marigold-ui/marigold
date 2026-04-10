@@ -58,9 +58,7 @@ const MobileAutocompleteTrigger = ({
           inputClassNames.input
         )}
       >
-        {displayText || (
-          <span className="text-muted-foreground">{placeholder}</span>
-        )}
+        {displayText || <span className="text-secondary">{placeholder}</span>}
       </span>
     </div>
   );

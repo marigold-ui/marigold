@@ -11,6 +11,9 @@ import { Columns } from './Columns';
 const meta = preview.meta({
   title: 'Components/Columns',
   component: Columns,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     columns: {
       control: {

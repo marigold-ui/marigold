@@ -61,26 +61,22 @@ export interface CardProps {
   py?: PaddingSpacePropY['spaceY'];
 
   /**
-   * Set the right padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingRightProp`
+   * Set the right padding for the element.   * @remarks `PaddingRightProp`
    */
   pr?: PaddingRightProp['pr'];
 
   /**
-   * Set the left padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingLeftProp`
+   * Set the left padding for the element.   * @remarks `PaddingLeftProp`
    */
   pl?: PaddingLeftProp['pl'];
 
   /**
-   * Set the top padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingTopProp`
+   * Set the top padding for the element.   * @remarks `PaddingTopProp`
    */
   pt?: PaddingTopProp['pt'];
 
   /**
-   * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingBottomProp`
+   * Set the bottom padding for the element.   * @remarks `PaddingBottomProp`
    */
   pb?: PaddingBottomProp['pb'];
 }

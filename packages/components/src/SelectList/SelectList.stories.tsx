@@ -5,6 +5,7 @@ import { SelectList } from './SelectList';
 
 const meta = preview.meta({
   title: 'Components/SelectList',
+  parameters: { surface: false },
   component: SelectList,
   argTypes: {
     selectionMode: {

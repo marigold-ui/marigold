@@ -47,9 +47,7 @@ const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
           inputClassNames.input
         )}
       >
-        {displayText || (
-          <span className="text-muted-foreground">{placeholder}</span>
-        )}
+        {displayText || <span className="text-secondary">{placeholder}</span>}
       </span>
       <span
         className={cn(
