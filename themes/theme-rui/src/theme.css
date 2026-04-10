@@ -69,7 +69,7 @@
     50  -- muted bg (subtle tint on white surfaces), primary-foreground
     100 -- background bg, focus-highlight bg
     200 -- hover bg, disabled-surface bg
-    300 -- selected bg, borders, scrollbar
+    300 -- neutral (control fill), selected bg, borders, scrollbar
     400 -- disabled (text)
     600 -- focus ring, secondary (text), placeholder
     900 -- primary text
@@ -88,6 +88,7 @@
 
   /* --- Neutral Backgrounds & States --- */
   --color-muted: var(--color-charcoal-50);
+  --color-neutral: var(--color-charcoal-300);
   --color-hover: var(--color-charcoal-200);
 
   --color-selected: var(--color-charcoal-300);

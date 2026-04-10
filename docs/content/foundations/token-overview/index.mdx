@@ -225,6 +225,41 @@ Some elements need a subtle visual distinction from the white surface they sit o
   </Dont>
 </GuidelineTiles>
 
+### Neutral
+
+Some form controls need a filled resting state that is visually distinct from both the white surface they sit on and the stronger colors reserved for selection or interaction. The switch track is the primary example: in its OFF position the track must look like a tangible, inactive control rather than empty space, but it should not imply selection (`selected`) or error (`disabled-surface`).
+
+<TokenTable
+  tokens={[
+    {
+      name: 'neutral',
+      value: 'charcoal-300',
+      useFor: 'Resting fill for form controls (e.g. switch track in OFF state)',
+    },
+  ]}
+/>
+
+```tsx
+// Switch track: neutral when off, selected-bold when on
+<div className="bg-neutral group-selected/switch:bg-selected-bold" />
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-neutral` for the inactive/resting fill of controls that need a
+      visible background, like the switch track.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-neutral` for disabled states or content backgrounds. Use
+      `bg-disabled-surface` for disabled controls and `bg-muted` for subtle
+      content tints.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ### Selected
 
 Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components like ListBox and Sidebar highlight one item among many, so they use a subtler `bg-selected` tint.
