@@ -64,11 +64,11 @@ Add a description when the label alone doesn't explain what toggling actually do
 
 <ComponentDemo name="switch-description" />
 
-### Settings and preference screens
+### Settings and preference
 
-On dedicated settings or preference pages, switches typically appear as a vertical list where the label is the primary scanning element. For this layout, use `variant="settings"` to place the label and description on the left and push the toggle to the far right. This is the layout people expect from system preferences and settings screens. Users read the label first to understand the setting, then look right to check or change its state. On mobile, it also places the toggle near the thumb for easier reach.
+On dedicated settings or preference pages, switches typically appear as a vertical list where the label is the primary scanning element. Placing the label on the left and the toggle on the right works better here because users need to understand what a setting controls before they decide whether to change it. In a vertical list, this creates two stable columns: a readable label column on the left that users scan top to bottom, and a uniform action column on the right they glance at only to check or change state. On mobile, this also places the toggle near the right thumb for easier one-handed reach.
 
-The default variant (toggle on the left) is better suited for compact, inline contexts like cards or list items where the switch is part of a larger element.
+Use `variant="settings"` for this layout. The default variant (toggle on the left) is better suited for compact, inline contexts like cards or list items where the switch is part of a larger element.
 
 <ComponentDemo name="switch-settings" />
 
