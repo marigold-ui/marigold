@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva({
     base: [
-      'ui-surface shadow-elevation-border p-2',
+      'min-h-[350px] ui-surface shadow-elevation-border p-2',
       // In a Popover
       'group-data-trigger/popover:shadow-elevation-overlay',
       // In a Tray
@@ -27,6 +27,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   }),
   calendarControllers: cva({
     base: [
+      'inline-flex items-center justify-center gap-[0.5ch]',
       'size-9 rounded-lg',
       'text-muted-foreground',
       'transition-colors',
@@ -39,7 +40,10 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     ],
   }),
   calendarGrid: cva({
-    base: '[&_td]:p-2 [&_td]:group-[[role=dialog]]/tray:p-0.75',
+    base: '[&_td]:p-1 [&_td]:group-[[role=dialog]]/tray:p-0.75',
+  }),
+  calendarHeading: cva({
+    base: 'text-sm font-medium',
   }),
   calendarListboxButton: cva({
     base: [
