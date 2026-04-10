@@ -137,15 +137,15 @@ const _Calendar = ({
       >
         <Calendar
           className={cn(
-            'relative flex min-h-[350px] flex-col',
+            'relative flex flex-col',
             twWidth[width],
             classNames.calendar
           )}
           {...props}
         >
-          <div className={cn('flex gap-4', classNames.calendarContainer)}>
+          <div className={classNames.calendarContainer}>
             {[...Array(visibleMonths).keys()].map(i => (
-              <div key={i} className={cn('flex-1', classNames.calendarMonth)}>
+              <div key={i} className={classNames.calendarMonth}>
                 <CalendarHeader
                   monthOffset={i}
                   showPrevious={i === 0}
@@ -172,7 +172,7 @@ const _Calendar = ({
     >
       <Calendar
         className={cn(
-          'relative flex min-h-[350px] flex-col',
+          'relative flex flex-col',
           twWidth[width],
           classNames.calendar
         )}

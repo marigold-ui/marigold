@@ -204,6 +204,26 @@ export const Confirmation = meta.story({
   ),
 });
 
+export const TextOnly = meta.story({
+  tags: ['component-test'],
+  render: ({ size, ...args }) => (
+    <Dialog.Trigger {...args}>
+      <Button variant="primary">Open</Button>
+      <Dialog size={size} closeButton>
+        <Dialog.Title>Information</Dialog.Title>
+        <Dialog.Content>
+          Your session will expire in 30 minutes. Save your work to avoid losing
+          any unsaved changes.
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  },
+});
+
 export const VeryLongContent = meta.story({
   tags: ['component-test'],
   render: args => {

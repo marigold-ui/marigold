@@ -226,6 +226,7 @@ export type Theme = {
       | 'calendarControllers'
       | 'calendarHeader'
       | 'calendarGrid'
+      | 'calendarHeading'
       | 'select',
       ComponentStyleFunction<string, string>
     >;

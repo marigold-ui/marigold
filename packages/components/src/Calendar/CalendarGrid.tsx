@@ -4,7 +4,7 @@ import {
   CalendarGrid,
   CalendarGridBody,
 } from 'react-aria-components';
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { CalendarGridHeader } from './CalendarGridHeader';
 
 export interface CalendarGridProps {
@@ -23,13 +23,7 @@ const _CalendarGrid = ({ offset }: CalendarGridProps) => {
       <CalendarGridHeader />
       <CalendarGridBody>
         {date => (
-          <CalendarCell
-            date={date}
-            className={cn(
-              'flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal aria-disabled:cursor-default',
-              classNames.calendarCell
-            )}
-          />
+          <CalendarCell date={date} className={classNames.calendarCell} />
         )}
       </CalendarGridBody>
     </CalendarGrid>
