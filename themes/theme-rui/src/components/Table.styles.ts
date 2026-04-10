@@ -145,8 +145,8 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'absolute -inset-px cursor-pointer',
       'outline-none',
-      'hover:border hover:border-stone-800',
-      'focus-visible:border focus-visible:border-stone-800',
+      'hover:border hover:border-ring',
+      'focus-visible:border focus-visible:border-ring',
     ],
   }),
   editCancel: cva({
