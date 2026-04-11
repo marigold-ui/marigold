@@ -5,7 +5,8 @@
 
 feat(DST-1239): migrate Inset component to semantic spacing tokens
 
-- Refactor Inset to use `createSpacingVar` instead of static padding class maps
-- Add `InsetSpacingTokens` type for inset-specific tokens (`square-*`, `squish-*`, `stretch-*`)
-- `space` prop now accepts inset spacing tokens alongside numeric scale values
-- `spaceX`/`spaceY` props now accept relational spacing tokens (`tight`, `related`, `regular`, `group`, `section`)
+- `space` prop accepts padding recipe tokens (`square-*`, `squish-*`, `stretch-*`) and numeric scale values
+- `spaceX`/`spaceY` props accept single-value inset tokens (`inset-tight`, `inset-snug`, `inset-regular`, `inset-relaxed`, `inset-loose`) and numeric scale values
+- Add `PaddingSpacingTokens` type for multi-value padding recipes
+- Add `InsetSpacingTokens` type for single-value per-axis inset tokens
+- Add `--spacing-inset-*` CSS custom properties to theme

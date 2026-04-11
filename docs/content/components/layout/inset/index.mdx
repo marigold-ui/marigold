@@ -11,7 +11,7 @@ The component should be used whenever you need to add some whitespace around ele
 
 ### Equal spacing
 
-In order to add equal spacing to all sides use the `space` property with a supported [space value](../../foundations/design-tokens#spacing). The `space` prop accepts inset spacing tokens like `square-*`, `squish-*` (more horizontal than vertical padding) and `stretch-*` (more vertical than horizontal padding), as well as numeric scale values.
+In order to add equal spacing to all sides use the `space` property with a padding spacing token (`square-*`, `squish-*`, `stretch-*`) or a numeric scale value.
 
 <ComponentDemo name="inset-equal" />
 
@@ -19,7 +19,7 @@ In order to add equal spacing to all sides use the `space` property with a suppo
 
 A common use case is to give children of a content component some space, you can do this for example with wrapping an `<Inset>` around the card content like shown below.
 
-To set only horizontal or vertical spacing, or to define different values for each, use the `spaceX` property for horizontal spacing and the `spaceY` property for vertical spacing. These props accept relational [spacing tokens](../../foundations/design-tokens#spacing) like `tight`, `related`, `regular`, `group` and `section`, as well as numeric scale values.
+To set only horizontal or vertical spacing, or to define different values for each, use the `spaceX` property for horizontal spacing and the `spaceY` property for vertical spacing. These props accept inset spacing tokens (`inset-tight`, `inset-snug`, `inset-regular`, `inset-relaxed`, `inset-loose`), as well as numeric scale values.
 
 <ComponentDemo name="inset-hv" />
 

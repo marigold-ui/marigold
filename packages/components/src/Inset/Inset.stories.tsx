@@ -36,14 +36,26 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['tight', 'related', 'regular', 'group', 'section'],
+      options: [
+        'inset-tight',
+        'inset-snug',
+        'inset-regular',
+        'inset-relaxed',
+        'inset-loose',
+      ],
       description: 'set padding on left and right side',
     },
     spaceY: {
       control: {
         type: 'select',
       },
-      options: ['tight', 'related', 'regular', 'group', 'section'],
+      options: [
+        'inset-tight',
+        'inset-snug',
+        'inset-regular',
+        'inset-relaxed',
+        'inset-loose',
+      ],
       description: 'set padding on top and bottom side',
     },
   },

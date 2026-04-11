@@ -204,6 +204,12 @@
 
   /* INSET SPACING */
 
+  --spacing-inset-tight: --spacing(1);
+  --spacing-inset-snug: --spacing(2);
+  --spacing-inset-regular: --spacing(3);
+  --spacing-inset-relaxed: --spacing(4);
+  --spacing-inset-loose: --spacing(6);
+
   --spacing-square-tight: --spacing(1);
   --spacing-square-snug: --spacing(2);
   --spacing-square-regular: --spacing(3);

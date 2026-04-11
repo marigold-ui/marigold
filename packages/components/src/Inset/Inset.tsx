@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import type {
   InsetSpacingTokens,
+  PaddingSpacingTokens,
   SpaceProp,
-  SpacingTokens,
 } from '@marigold/system';
 import { cn, createSpacingVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
@@ -16,22 +16,22 @@ export type InsetProps =
       space?: never;
       /**
        * Horizontal padding for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-       * @remarks `Scale | SpacingTokens`
+       * @remarks `Scale | InsetSpacingTokens`
        */
-      spaceX?: SpaceProp<SpacingTokens>['space'];
+      spaceX?: SpaceProp<InsetSpacingTokens>['space'];
       /**
        * Vertical padding for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-       * @remarks `Scale | SpacingTokens`
+       * @remarks `Scale | InsetSpacingTokens`
        */
-      spaceY?: SpaceProp<SpacingTokens>['space'];
+      spaceY?: SpaceProp<InsetSpacingTokens>['space'];
     })
   | (AriaRegionProps & {
       children: ReactNode;
       /**
        * The padding of the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-       * @remarks `Scale | InsetSpacingTokens`
+       * @remarks `Scale | PaddingSpacingTokens`
        */
-      space?: SpaceProp<InsetSpacingTokens>['space'];
+      space?: SpaceProp<PaddingSpacingTokens>['space'];
       spaceX?: never;
       spaceY?: never;
     });
