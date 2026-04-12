@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowLeft } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -7,8 +8,8 @@ import {
   Badge,
   Breadcrumbs,
   Inline,
+  Menu,
   RouterProvider,
-  Select,
   Sidebar,
   Stack,
   Text,
@@ -127,32 +128,42 @@ const UserSection = () => (
 const SectionSwitcher = ({
   sections,
   activeSection,
-  showBackToDocs,
   onSwitch,
 }: {
   sections: NavSection[];
   activeSection: NavSection;
-  showBackToDocs: boolean;
   onSwitch: (sectionLabel: string) => void;
 }) => {
   if (sections.length <= 1) return null;
 
   return (
-    <Select
+    <Menu
+      label="Navigate to…"
+      variant="ghost"
+      placement="right bottom"
       aria-label="Switch section"
-      value={activeSection.label}
-      onChange={key => onSwitch(key as string)}
-      width="full"
+      onAction={key => onSwitch(key as string)}
     >
-      {sections.map(section => (
-        <Select.Option key={section.label} id={section.label}>
-          {section.label}
-        </Select.Option>
-      ))}
-      {showBackToDocs && (
-        <Select.Option id={BACK_TO_DOCS}>&larr; Back to docs</Select.Option>
+      {sections.map(section => {
+        const Icon = section.icon;
+        return (
+          <Menu.Item key={section.label} id={section.label}>
+            <Inline space={2} alignY="center">
+              {Icon && <Icon size={16} />}
+              {section.label}
+            </Inline>
+          </Menu.Item>
+        );
+      })}
+      {activeSection.docsHref && (
+        <Menu.Item id={BACK_TO_DOCS}>
+          <Inline space={2} alignY="center">
+            <ArrowLeft size={16} />
+            Go to {activeSection.label} Docs
+          </Inline>
+        </Menu.Item>
       )}
-    </Select>
+    </Menu>
   );
 };
 
@@ -199,7 +210,6 @@ export const ShellLayout = ({
               <SectionSwitcher
                 sections={config.sections}
                 activeSection={activeSection}
-                showBackToDocs={!!activeSection.docsHref}
                 onSwitch={handleSectionSwitch}
               />
             </Sidebar.Footer>

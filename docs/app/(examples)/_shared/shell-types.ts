@@ -1,3 +1,5 @@
+import type { LucideIcon } from 'lucide-react';
+
 export interface NavItem {
   type: 'item';
   label: string;
@@ -24,6 +26,7 @@ export type NavEntry = NavItem | NavGroup | NavLabelGroup | NavSeparator;
 
 export interface NavSection {
   label: string;
+  icon?: LucideIcon;
   nav: NavEntry[];
   docsHref?: string;
 }
