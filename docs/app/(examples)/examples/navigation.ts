@@ -6,7 +6,6 @@ const appShell: NavSection = {
   label: 'App Shell',
   icon: PanelsTopLeft,
   nav: appShellNav,
-  docsHref: '/patterns/app-shell',
 };
 
 const patterns: NavSection = {
@@ -17,15 +16,22 @@ const patterns: NavSection = {
     { type: 'item', label: 'Form', slug: 'form' },
     { type: 'item', label: 'Inventory', slug: 'inventory' },
   ],
-  docsHref: '/',
 };
 
 export const config: ShellConfig = {
   base: '/examples',
   pages: {
     ...appShellPages,
-    filter: { label: 'Filter' },
-    form: { label: 'Form' },
+    filter: {
+      label: 'Filter',
+      docsHref: '/patterns/filter',
+      docsLabel: 'Filter Guidelines',
+    },
+    form: {
+      label: 'Form',
+      docsHref: '/patterns/form-implementation',
+      docsLabel: 'Form Guidelines',
+    },
     inventory: { label: 'Inventory' },
   },
   sections: [appShell, patterns],

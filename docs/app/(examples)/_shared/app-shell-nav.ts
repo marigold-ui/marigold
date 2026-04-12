@@ -1,4 +1,4 @@
-import type { NavEntry } from './shell-types';
+import type { NavEntry, PageMeta } from './shell-types';
 
 export const appShellNav: NavEntry[] = [
   { type: 'item', label: 'Dashboard', slug: '' },
@@ -23,13 +23,17 @@ export const appShellNav: NavEntry[] = [
   },
 ];
 
-export const appShellPages: Record<string, { label: string; parent?: string }> =
-  {
-    '': { label: 'Dashboard' },
-    analytics: { label: 'Analytics' },
-    users: { label: 'Users', parent: 'Management' },
-    teams: { label: 'Teams', parent: 'Management' },
-    billing: { label: 'Billing', parent: 'Management' },
-    general: { label: 'General', parent: 'Settings' },
-    security: { label: 'Security', parent: 'Settings' },
-  };
+const appShellDocs = {
+  docsHref: '/patterns/app-shell',
+  docsLabel: 'App Shell Pattern',
+};
+
+export const appShellPages: Record<string, PageMeta> = {
+  '': { label: 'Dashboard', ...appShellDocs },
+  analytics: { label: 'Analytics', ...appShellDocs },
+  users: { label: 'Users', parent: 'Management', ...appShellDocs },
+  teams: { label: 'Teams', parent: 'Management', ...appShellDocs },
+  billing: { label: 'Billing', parent: 'Management', ...appShellDocs },
+  general: { label: 'General', parent: 'Settings', ...appShellDocs },
+  security: { label: 'Security', parent: 'Settings', ...appShellDocs },
+};

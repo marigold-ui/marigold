@@ -9,5 +9,6 @@ export type {
   NavLabelGroup,
   NavSection,
   NavSeparator,
+  PageMeta,
   ShellConfig,
 } from './shell-types';

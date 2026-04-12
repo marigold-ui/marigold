@@ -28,11 +28,17 @@ export interface NavSection {
   label: string;
   icon?: LucideIcon;
   nav: NavEntry[];
+}
+
+export interface PageMeta {
+  label: string;
+  parent?: string;
   docsHref?: string;
+  docsLabel?: string;
 }
 
 export interface ShellConfig {
   base: string;
-  pages: Record<string, { label: string; parent?: string }>;
+  pages: Record<string, PageMeta>;
   sections: NavSection[];
 }

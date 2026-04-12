@@ -16,7 +16,12 @@ import {
   TopNavigation,
 } from '@marigold/components';
 import { Logo } from '@/ui/Logo';
-import type { NavEntry, NavSection, ShellConfig } from './shell-types';
+import type {
+  NavEntry,
+  NavSection,
+  PageMeta,
+  ShellConfig,
+} from './shell-types';
 import { UserMenu } from './user-menu';
 
 // Helpers
@@ -39,14 +44,14 @@ const getActiveSection = (sections: NavSection[], slug: string) =>
 
 const getFirstSlug = (section: NavSection) => getSlugs(section.nav)[0] ?? '';
 
-const BACK_TO_DOCS = '__back_to_docs__';
-
 // Sidebar Nav
 // ---------------
 const SidebarNav = ({
+  base,
   nav,
   activeSlug,
 }: {
+  base: string;
   nav: NavEntry[];
   activeSlug: string;
 }) => (
@@ -57,7 +62,7 @@ const SidebarNav = ({
           return (
             <Sidebar.Item
               key={entry.slug}
-              href={`/${entry.slug}`}
+              href={`${base}/${entry.slug}`}
               active={activeSlug === entry.slug}
             >
               {entry.label}
@@ -74,7 +79,7 @@ const SidebarNav = ({
               {entry.children.map(child => (
                 <Sidebar.Item
                   key={child.slug}
-                  href={`/${child.slug}`}
+                  href={`${base}/${child.slug}`}
                   active={activeSlug === child.slug}
                 >
                   {child.label}
@@ -89,7 +94,7 @@ const SidebarNav = ({
               {entry.children.map(child => (
                 <Sidebar.Item
                   key={child.slug}
-                  href={`/${child.slug}`}
+                  href={`${base}/${child.slug}`}
                   active={activeSlug === child.slug}
                 >
                   {child.label}
@@ -127,14 +132,14 @@ const UserSection = () => (
 // ---------------
 const SectionSwitcher = ({
   sections,
-  activeSection,
+  page,
   onSwitch,
 }: {
   sections: NavSection[];
-  activeSection: NavSection;
+  page?: PageMeta;
   onSwitch: (sectionLabel: string) => void;
 }) => {
-  if (sections.length <= 1) return null;
+  if (sections.length <= 1 && !page?.docsHref) return null;
 
   return (
     <Menu
@@ -155,11 +160,11 @@ const SectionSwitcher = ({
           </Menu.Item>
         );
       })}
-      {activeSection.docsHref && (
-        <Menu.Item id={BACK_TO_DOCS}>
+      {page?.docsHref && (
+        <Menu.Item href={page.docsHref}>
           <Inline space={2} alignY="center">
             <ArrowLeft size={16} />
-            Go to {activeSection.label} Docs
+            {page.docsLabel ?? 'Back to docs'}
           </Inline>
         </Menu.Item>
       )}
@@ -180,12 +185,8 @@ export const ShellLayout = ({
   const page = config.pages[slug];
   const activeSection = getActiveSection(config.sections, slug);
 
-  const handleSectionSwitch = (sectionLabel: string) => {
-    if (sectionLabel === BACK_TO_DOCS && activeSection.docsHref) {
-      window.location.href = activeSection.docsHref;
-      return;
-    }
-    const section = config.sections.find(s => s.label === sectionLabel);
+  const handleSectionSwitch = (key: string) => {
+    const section = config.sections.find(s => s.label === key);
     if (section) {
       const firstSlug = getFirstSlug(section);
       router.push(`${config.base}/${firstSlug}`);
@@ -193,7 +194,7 @@ export const ShellLayout = ({
   };
 
   return (
-    <RouterProvider navigate={href => router.push(`${config.base}${href}`)}>
+    <RouterProvider navigate={href => router.push(href)}>
       <Sidebar.Provider defaultOpen>
         <AppLayout>
           <AppLayout.Sidebar>
@@ -205,11 +206,15 @@ export const ShellLayout = ({
                 </Text>
               </Inline>
             </Sidebar.Header>
-            <SidebarNav nav={activeSection.nav} activeSlug={slug} />
+            <SidebarNav
+              base={config.base}
+              nav={activeSection.nav}
+              activeSlug={slug}
+            />
             <Sidebar.Footer>
               <SectionSwitcher
                 sections={config.sections}
-                activeSection={activeSection}
+                page={page}
                 onSwitch={handleSectionSwitch}
               />
             </Sidebar.Footer>
