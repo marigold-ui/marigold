@@ -11,39 +11,39 @@ export const DemoLinks = ({ demo, code }: DemoLinksProps) => (
   <div className="not-prose grid grid-cols-1 gap-3 sm:grid-cols-2">
     <Link
       href={demo}
-      className="group bg-fd-card text-fd-card-foreground hover:bg-fd-accent/80 flex items-center gap-5 rounded-xl border px-5 py-4 shadow-md transition-colors"
+      className="group border-fd-info/40 from-fd-info/30 via-fd-info/15 to-fd-info/8 hover:border-fd-info/60 dark:border-fd-info/35 dark:from-fd-info/15 dark:via-fd-info/8 dark:to-fd-info/3 dark:hover:border-fd-info/50 relative flex items-center gap-5 overflow-hidden rounded-xl border bg-gradient-to-br px-5 py-4 shadow-sm transition-all hover:shadow-md"
     >
-      <span className="bg-fd-muted text-fd-muted-foreground flex size-10 shrink-0 items-center justify-center rounded-lg border shadow-md transition-transform group-hover:scale-110">
+      <span className="border-fd-info/35 bg-fd-info/15 text-fd-info dark:border-fd-info/25 dark:bg-fd-info/15 flex size-10 shrink-0 items-center justify-center rounded-lg border shadow-sm transition-transform group-hover:scale-110">
         <PlayIcon />
       </span>
       <span>
-        <span className="text-fd-card-foreground block text-sm font-medium">
+        <span className="text-fd-foreground block text-sm font-medium">
           View Demo
         </span>
         <span className="text-fd-muted-foreground block text-sm">
           Open the interactive example
         </span>
       </span>
-      <span className="text-fd-muted-foreground ml-auto opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
+      <span className="text-fd-info ml-auto opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
         <ArrowIcon />
       </span>
     </Link>
     <Link
       href={code}
-      className="group bg-fd-card text-fd-card-foreground hover:bg-fd-accent/80 flex items-center gap-5 rounded-xl border px-5 py-4 shadow-md transition-colors"
+      className="group border-fd-info/40 from-fd-info/30 via-fd-info/15 to-fd-info/8 hover:border-fd-info/60 dark:border-fd-info/35 dark:from-fd-info/15 dark:via-fd-info/8 dark:to-fd-info/3 dark:hover:border-fd-info/50 relative flex items-center gap-5 overflow-hidden rounded-xl border bg-gradient-to-br px-5 py-4 shadow-sm transition-all hover:shadow-md"
     >
-      <span className="bg-fd-muted text-fd-muted-foreground flex size-10 shrink-0 items-center justify-center rounded-lg border shadow-md transition-transform group-hover:scale-110">
+      <span className="border-fd-info/35 bg-fd-info/15 text-fd-info dark:border-fd-info/25 dark:bg-fd-info/15 flex size-10 shrink-0 items-center justify-center rounded-lg border shadow-sm transition-transform group-hover:scale-110">
         <CodeIcon />
       </span>
       <span>
-        <span className="text-fd-card-foreground block text-sm font-medium">
+        <span className="text-fd-foreground block text-sm font-medium">
           View Code
         </span>
         <span className="text-fd-muted-foreground block text-sm">
           Browse the source on GitHub
         </span>
       </span>
-      <span className="text-fd-muted-foreground ml-auto opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
+      <span className="text-fd-info ml-auto opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
         <ArrowIcon />
       </span>
     </Link>
