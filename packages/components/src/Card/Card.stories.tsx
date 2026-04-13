@@ -31,6 +31,14 @@ const relationalTokenOptions = [
   'section',
 ];
 
+const paddingTokenOptions = [
+  'padding-tight',
+  'padding-snug',
+  'padding-regular',
+  'padding-relaxed',
+  'padding-loose',
+];
+
 const meta = preview.meta({
   title: 'Components/Card',
   component: Card,
@@ -62,43 +70,45 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: relationalTokenOptions,
-      description: 'Horizontal padding (left and right) of the card.',
+      options: paddingTokenOptions,
+      description:
+        'Horizontal padding (left and right) of the card, using padding spacing tokens.',
     },
     py: {
       control: {
         type: 'select',
       },
-      options: relationalTokenOptions,
-      description: 'Vertical padding (top and bottom) of the card.',
+      options: paddingTokenOptions,
+      description:
+        'Vertical padding (top and bottom) of the card, using padding spacing tokens.',
     },
     pt: {
       control: {
         type: 'select',
       },
-      options: relationalTokenOptions,
-      description: 'Top padding of the card.',
+      options: paddingTokenOptions,
+      description: 'Top padding of the card, using padding spacing tokens.',
     },
     pb: {
       control: {
         type: 'select',
       },
-      options: relationalTokenOptions,
-      description: 'Bottom padding of the card.',
+      options: paddingTokenOptions,
+      description: 'Bottom padding of the card, using padding spacing tokens.',
     },
     pl: {
       control: {
         type: 'select',
       },
-      options: relationalTokenOptions,
-      description: 'Left padding of the card.',
+      options: paddingTokenOptions,
+      description: 'Left padding of the card, using padding spacing tokens.',
     },
     pr: {
       control: {
         type: 'select',
       },
-      options: relationalTokenOptions,
-      description: 'Right padding of the card.',
+      options: paddingTokenOptions,
+      description: 'Right padding of the card, using padding spacing tokens.',
     },
   },
 });

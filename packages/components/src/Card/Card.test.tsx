@@ -200,9 +200,13 @@ describe('Card', () => {
       );
     });
 
-    test('supports semantic relational tokens for px/py', () => {
+    test('supports semantic padding tokens for px/py', () => {
       render(
-        <Basic.Component px="related" py="group" data-testid="card-semantic-xy">
+        <Basic.Component
+          px="padding-snug"
+          py="padding-relaxed"
+          data-testid="card-semantic-xy"
+        >
           <div>Content</div>
         </Basic.Component>
       );
@@ -210,9 +214,11 @@ describe('Card', () => {
       const card = screen.getByTestId('card-semantic-xy');
 
       expect(card?.style.getPropertyValue('--px')).toBe(
-        'var(--spacing-related)'
+        'var(--spacing-padding-snug)'
       );
-      expect(card?.style.getPropertyValue('--py')).toBe('var(--spacing-group)');
+      expect(card?.style.getPropertyValue('--py')).toBe(
+        'var(--spacing-padding-relaxed)'
+      );
     });
   });
 

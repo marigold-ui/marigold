@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import type {
   InsetSpacingTokens,
+  PaddingSpacingTokens,
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
@@ -20,52 +21,52 @@ export interface CardProps {
   stretch?: boolean;
 
   /**
-   * Set the spacing between child elements. You can see allowed tokens [here](../../foundations/design-token#spacing).
+   * Set the spacing between child elements. You can see allowed tokens [here](../../foundations/spacing#relation-space).
    * @remarks `Scale | SpacingTokens`
    */
   space?: SpaceProp<SpacingTokens>['space'];
 
   /**
-   * Padding of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
+   * Padding of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
    * @remarks `Scale | InsetSpacingTokens`
    */
   p?: SpaceProp<InsetSpacingTokens>['space'];
 
   /**
-   * Padding horizontal (left and right) of the component.
-   * @remarks `Scale | SpacingTokens`
+   * Padding horizontal (left and right) of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  px?: SpaceProp<SpacingTokens>['space'];
+  px?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
-   * @remarks `Scale | SpacingTokens`
+   * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  py?: SpaceProp<SpacingTokens>['space'];
+  py?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Set the right padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `Scale | SpacingTokens`
+   * Set the right padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  pr?: SpaceProp<SpacingTokens>['space'];
+  pr?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Set the left padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `Scale | SpacingTokens`
+   * Set the left padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  pl?: SpaceProp<SpacingTokens>['space'];
+  pl?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Set the top padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `Scale | SpacingTokens`
+   * Set the top padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  pt?: SpaceProp<SpacingTokens>['space'];
+  pt?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `Scale | SpacingTokens`
+   * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  pb?: SpaceProp<SpacingTokens>['space'];
+  pb?: SpaceProp<PaddingSpacingTokens>['space'];
 }
 
 // Component
