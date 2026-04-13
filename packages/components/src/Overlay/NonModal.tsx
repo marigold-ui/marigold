@@ -1,4 +1,4 @@
-import { forwardRef, useContext } from 'react';
+import { forwardRef, use } from 'react';
 import {
   OverlayTriggerStateContext,
   Provider,
@@ -160,7 +160,7 @@ export const NonModal = forwardRef<HTMLElement, NonModalProps>(
     };
 
     ref = useObjectRef(ref);
-    const contextState = useContext(OverlayTriggerStateContext);
+    const contextState = use(OverlayTriggerStateContext);
     const localState = useOverlayTriggerState(props);
     const state =
       props.isOpen != null || props.defaultOpen != null || !contextState

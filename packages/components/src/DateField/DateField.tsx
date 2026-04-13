@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import { ReactElement, forwardRef, useContext } from 'react';
+import { ReactElement, forwardRef, use } from 'react';
 import type RAC from 'react-aria-components';
 import {
   DateField,
@@ -111,7 +111,7 @@ interface DateInputWithPasteWrapperProps {
 const DateInputWithPasteWrapper = ({
   ...props
 }: DateInputWithPasteWrapperProps) => {
-  const ctx = useContext(DateFieldStateContext);
+  const ctx = use(DateFieldStateContext);
 
   const onPaste = (date: CalendarDate) => {
     ctx?.setValue(date);

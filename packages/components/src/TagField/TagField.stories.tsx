@@ -160,6 +160,57 @@ Controlled.test('Remove a tag', async ({ canvas, step }) => {
   });
 });
 
+const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
+  id: `item-${i + 200}`,
+  label: `Tenant ${i + 200} (item-${i + 200})`,
+}));
+
+export const LargeDataset = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Tenants',
+    placeholder: 'Search tenants...',
+    width: 80,
+  },
+  render: args => (
+    <TagField {...args} items={LARGE_ITEMS}>
+      {(item: (typeof LARGE_ITEMS)[number]) => (
+        <TagField.Option id={item.id}>{item.label}</TagField.Option>
+      )}
+    </TagField>
+  ),
+});
+
+LargeDataset.test(
+  'Search and select from large dataset',
+  async ({ canvas, step, args }) => {
+    await step('Open the dropdown', async () => {
+      const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+      await userEvent.click(trigger);
+      await waitFor(() => canvas.getByRole('dialog'));
+    });
+
+    await step('Search for a specific item', async () => {
+      const searchInput = canvas.getByRole('searchbox');
+      await userEvent.type(searchInput, 'item-500');
+    });
+
+    await step('Verify filtered result and select it', async () => {
+      const dialog = canvas.getByRole('dialog');
+      const option = within(dialog).getByText('Tenant 500 (item-500)');
+      expect(option).toBeVisible();
+      await userEvent.click(option);
+    });
+
+    await step('Verify selected item appears as tag', async () => {
+      const tagGroup = canvas.getByRole('grid', {
+        name: /selected items|ausgewählte elemente/i,
+      });
+      expect(within(tagGroup).getByText('Tenant 500 (item-500)')).toBeVisible();
+    });
+  }
+);
+
 export const DisabledItems = Basic.extend({
   args: {
     disabledKeys: ['classical', 'electronic'],

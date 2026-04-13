@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { Basic, WithSingleSelection } from './SelectList.stories';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
@@ -21,10 +21,10 @@ describe('SelectList', () => {
   });
 
   test('support refs', () => {
-    const SelectListRef = createRef();
-    render(<Basic.Component aria-label="Test" ref={SelectListRef as any} />);
+    const selectListRef: RefObject<HTMLUListElement | null> = { current: null };
+    render(<Basic.Component aria-label="Test" ref={selectListRef} />);
 
-    expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
+    expect(selectListRef.current).toBeInstanceOf(HTMLElement);
   });
 
   test('should support focus ring-3', async () => {
