@@ -31,7 +31,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   header: cva({
     base: [
       'flex w-full items-center justify-between gap-4 py-2 rounded-md cursor-pointer text-foreground',
-      'text-left text-base font-semibold leading-6 transition-all',
+      'text-left text-base font-semibold leading-6',
       'hover:no-underline',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
     ],
@@ -46,10 +46,10 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     },
   }),
   panel: cva({
-    base: 'overflow-clip h-(--disclosure-panel-height) transition-[height,padding] duration-250',
+    base: 'overflow-clip h-(--disclosure-panel-height) transition-[height,padding] duration-250 px-1 -mx-1',
   }),
   content: cva({
-    base: 'pb-2',
+    base: 'pt-1 pb-2',
     variants: {
       variant: {
         default: '',
