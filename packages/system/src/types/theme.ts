@@ -119,19 +119,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
-    MultiSelect?: Record<
-      | 'container'
-      | 'closeButton'
-      | 'field'
-      | 'input'
-      | 'icon'
-      | 'listContainer'
-      | 'list'
-      | 'option'
-      | 'tag'
-      | 'valueContainer',
-      ComponentStyleFunction<string, string>
-    >;
     Pagination?: Record<
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>

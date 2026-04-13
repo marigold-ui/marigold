@@ -157,7 +157,7 @@ Z-index values are centralized and standardized across the design system to ensu
 --z-10: 10; /* Focus states (Calendar) */
 
 /* Floating Layer (20-49) */
---z-20: 20; /* Dropdowns (Multiselect, Select, ComboBox) */
+--z-20: 20; /* Dropdowns (Select, ComboBox) */
 --z-30: 30; /* Popovers, Menus, Tooltips, ActionBar */
 
 /* Overlay Layer (50-79) */
