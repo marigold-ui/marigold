@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useContext } from 'react';
+import { use } from 'react';
 import {
   ComboBoxStateContext,
   Button as RACButton,
@@ -33,7 +33,7 @@ interface MobileAutocompleteProps {
 const MobileAutocompleteTrigger = ({
   placeholder,
 }: MobileAutocompleteTriggerProps) => {
-  const state = useContext(ComboBoxStateContext);
+  const state = use(ComboBoxStateContext);
   const inputClassNames = useClassNames({ component: 'Input' });
   const autocompleteClassNames = useClassNames({ component: 'Autocomplete' });
   const displayText = state?.selectedItem?.textValue || '';

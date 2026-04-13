@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { use } from 'react';
 import { CalendarStateContext, Heading } from 'react-aria-components';
 import { useDateFormatter } from '@react-aria/i18n';
 import { IconButton } from '../IconButton/IconButton';
@@ -26,7 +26,7 @@ export const CalendarHeader = ({
   showPrevious = true,
   showNext = true,
 }: CalendarHeaderProps) => {
-  const state = useContext(CalendarStateContext)!;
+  const state = use(CalendarStateContext)!;
   const { classNames } = useCalendarContext();
 
   const monthFormatter = useDateFormatter({
