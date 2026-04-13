@@ -35,7 +35,7 @@
     <path id="chevron" d="M0,0 L4,4 L8,0" fill="none" stroke="oklch(0.52 0.008 54)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </defs>
 
-  <!-- Page background (charcoal-100) -->
+  <!-- Page background (charcoal-100, stays visible in dark mode) -->
   <rect x="160" y="0" width="540" height="420" rx="10" fill="oklch(0.965 0.003 54)"/>
 
   <!-- Card (raised elevation) containing a form -->
@@ -61,7 +61,7 @@
   <rect x="252" y="248" width="356" height="148" rx="10" fill="#fff" stroke="oklch(0.86 0.005 54)" stroke-width="1" filter="url(#overlay)"/>
 
   <!-- Menu items -->
-  <rect x="260" y="258" width="340" height="32" rx="6" fill="oklch(0.965 0.003 54)"/>
+  <rect x="260" y="258" width="340" height="32" rx="6" fill="#0000000a"/>
   <text x="276" y="279" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Concert</text>
   <text x="276" y="315" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Festival</text>
   <text x="276" y="349" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Exhibition</text>
@@ -77,8 +77,9 @@
   <!-- overlay on menu -->
   <circle cx="250" cy="320" r="2.5" class="label"/>
   <line x1="247" y1="320" x2="155" y2="320" class="label-line" stroke-width="1"/>
-  <text x="150" y="317" font-size="11" font-weight="600" class="label" text-anchor="end">shadow-elevation-</text>
-  <text x="150" y="331" font-size="11" font-weight="600" class="label" text-anchor="end">overlay</text>
+  <text x="150" y="310" font-size="11" font-weight="600" class="label" text-anchor="end">ui-surface</text>
+  <text x="150" y="324" font-size="11" font-weight="600" class="label" text-anchor="end">shadow-elevation-</text>
+  <text x="150" y="338" font-size="11" font-weight="600" class="label" text-anchor="end">overlay</text>
 
   <!-- ====== RIGHT-SIDE ANNOTATIONS ====== -->
 

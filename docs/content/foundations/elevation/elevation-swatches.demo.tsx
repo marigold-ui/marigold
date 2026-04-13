@@ -2,7 +2,7 @@ import { Inline, Text } from '@marigold/components';
 
 export default () => (
   <div className="bg-background rounded-xl p-8">
-    <Inline space="regular" alignY="stretch">
+    <Inline space="regular">
       {[
         { shadow: 'shadow-elevation-border', label: 'Border' },
         { shadow: 'shadow-elevation-raised', label: 'Raised' },

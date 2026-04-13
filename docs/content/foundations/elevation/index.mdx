@@ -1,6 +1,7 @@
 ---
 title: Elevation
 description: Shadow tokens that create visual depth and hierarchy in Marigold.
+badge: updated
 ---
 
 Elevation uses surfaces and shadows to communicate depth and visual hierarchy. Surfaces provide the background colors that establish layers, while shadows add visual lift that makes elements appear closer to the user.
@@ -45,19 +46,25 @@ The system defines three tiers of shadow elevation, each mapped to a specific ca
 
 Before shadows come into play, background colors establish the base layers of the interface. Three surface tokens define where content sits:
 
-| Token           | Role             | Example                                              |
-| --------------- | ---------------- | ---------------------------------------------------- |
-| `bg-background` | Page base layer  | The gray canvas behind everything                    |
-| `bg-surface`    | Content surface  | The white background of cards, inputs, and panels    |
-| `bg-muted`      | Subtle highlight | Secondary areas within a surface, like info sections |
+<ComponentDemo name="elevation-surfaces" mode="preview" />
+
+| Token           | Role             | Example                                           |
+| --------------- | ---------------- | ------------------------------------------------- |
+| `bg-background` | Page base layer  | The gray canvas behind everything                 |
+| `bg-surface`    | Content surface  | The white background of cards, inputs, and panels |
+| `bg-muted`      | Subtle highlight | A soft tint to set areas apart within a surface   |
 
 `bg-background` and `bg-surface` work as a pair: the page background provides contrast so that white surfaces stand out. `bg-muted` adds a gentle tint within a surface to distinguish secondary content without adding another elevation level.
 
-For interactive elements like inputs, cards, and dialogs, the `ui-surface` utility combines the white background with a subtle border gradient. Pair it with a `shadow-elevation-*` token to complete the elevation styling:
+For interactive elements like inputs, cards, and dialogs, the `ui-surface` utility builds on `bg-surface` by adding a subtle border gradient. Pair it with a `shadow-elevation-*` token to complete the elevation styling:
 
 ```html
 <div class="ui-surface shadow-elevation-raised">...</div>
 ```
+
+<Callout title="When do I need these classes?">
+  Most of the time you don't. Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct surface and shadow tokens internally. The code snippets on this page are for custom elements that aren't covered by an existing component.
+</Callout>
 
 ## Shadow tiers
 
@@ -165,9 +172,52 @@ The old `util-surface-*` utility classes combined background, border, and shadow
 
 `shadow-elevation-border` is new and has no legacy equivalent. It provides subtle depth for small interactive controls like inputs, checkboxes, and buttons. Previously these elements had no dedicated elevation tier.
 
-Most consumers should not need these classes directly. Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct elevation internally through their theme styles.
-
 ## Related
 
-- [Token Overview](/foundations/token-overview)
-- [Spacing](/foundations/spacing)
+<TeaserList
+  items={[
+    {
+      title: 'Token Overview',
+      href: '../foundations/token-overview',
+      caption: 'The complete reference for the Marigold design token system.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Spacing',
+      href: '../foundations/spacing',
+      caption:
+        'Spacing scale and visual examples for gaps, padding, and margins.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
