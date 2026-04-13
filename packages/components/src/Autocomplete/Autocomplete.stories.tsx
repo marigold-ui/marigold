@@ -331,11 +331,12 @@ export const LargeDataset: any = meta.story({
       await waitFor(() => canvas.getByRole('listbox'));
     });
 
-    await step('Verify filtered result is rendered and select it', async () => {
+    await step('Verify filter narrowed to a single option', async () => {
       const listbox = canvas.getByRole('listbox');
-      const option = within(listbox).getByText('Tenant 500 (item-500)');
-      expect(option).toBeVisible();
-      await userEvent.click(option);
+      const options = within(listbox).getAllByRole('option');
+      expect(options).toHaveLength(1);
+      expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
+      await userEvent.click(options[0]);
     });
 
     await step('Verify selected value appears in the input', async () => {

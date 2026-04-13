@@ -424,26 +424,29 @@ export const LargeDataset: any = meta.story({
     width: 80,
   },
   render: args => (
-    <ComboBox {...args} items={LARGE_ITEMS}>
-      {(item: (typeof LARGE_ITEMS)[number]) => (
-        <ComboBox.Option id={item.id}>{item.label}</ComboBox.Option>
-      )}
+    <ComboBox {...args}>
+      {LARGE_ITEMS.map(item => (
+        <ComboBox.Option key={item.id} id={item.id}>
+          {item.label}
+        </ComboBox.Option>
+      ))}
     </ComboBox>
   ),
   play: async ({ canvas, step }: any) => {
     const input = canvas.getByRole('combobox');
 
-    await step('Open the dropdown by typing', async () => {
+    await step('Filter the large dataset by typing', async () => {
       await userEvent.click(input);
       await userEvent.type(input, 'item-500');
       await waitFor(() => canvas.getByRole('listbox'));
     });
 
-    await step('Verify filtered result is rendered', async () => {
+    await step('Verify filter narrowed to a single option', async () => {
       const listbox = canvas.getByRole('listbox');
-      const option = within(listbox).getByText('Tenant 500 (item-500)');
-      expect(option).toBeVisible();
-      await userEvent.click(option);
+      const options = within(listbox).getAllByRole('option');
+      expect(options).toHaveLength(1);
+      expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
+      await userEvent.click(options[0]);
     });
 
     await step('Verify selected value appears in the input', async () => {
