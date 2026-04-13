@@ -1,5 +1,43 @@
 # @marigold/components
 
+## 17.4.0
+
+### Minor Changes
+
+- f560d95: feat(DST-1239): migrate Inset component to semantic spacing tokens
+  - `space` prop accepts inset recipe tokens (`square-*`, `squish-*`, `stretch-*`) and numeric scale values
+  - `spaceX`/`spaceY` props accept single-value padding tokens (`padding-tight`, `padding-snug`, `padding-regular`, `padding-relaxed`, `padding-loose`) and numeric scale values
+  - Add `InsetSpacingTokens` type for multi-value inset recipes
+  - Add `PaddingSpacingTokens` type for single-value per-axis padding
+  - Add `--spacing-padding-*` CSS custom properties to theme
+
+### Patch Changes
+
+- bbf0832: refactor([DSTSUP-245]): Clean up Calendar styles
+
+  Move hardcoded Tailwind classes from Calendar component files into theme slots, reduce cell padding from `p-2` to `p-1`, and add new `calendarHeading` theme slot.
+
+- 3f77810: Remove redundant subcomponent exports (`AccordionItem`, `ListBoxItem`, `SelectListItem`, `ProgressCircleSvg`) from the public index. These are already accessible via their parent compound components (e.g., `Accordion.Item`) or are internal implementation details.
+- 85b2eb0: fix(DST-1275): improve EditableCell hover/focus affordance with data-editable attribute
+- 50566a2: fix(DSTSUP-241): remove redundant label from mobile Menu tray
+
+  The Menu component's `label` prop serves as trigger button text. On mobile,
+  it was also rendered as `<Tray.Title>`, duplicating the label the user just
+  tapped. Unlike form components (Select, ComboBox, DatePicker) where the label
+  describes a field, the Menu label has no additional context value inside the
+  tray. Removing it keeps the mobile tray clean and avoids showing non-text
+  labels (e.g. icons from ActionMenu) as tray titles.
+
+- 969c8cc: chore([DST-1290]): Upgrade `lucide-react` from v0.575.0 to v1.x
+
+  Upgraded `lucide-react` to the stable v1 API, which brings ~32% bundle size reduction and default `aria-hidden` on icons.
+  No icon renames or removals affect the codebase since no brand icons from lucide are used.
+
+- Updated dependencies [bbf0832]
+- Updated dependencies [d341a9d]
+- Updated dependencies [f560d95]
+  - @marigold/system@17.4.0
+
 ## 17.3.1
 
 ### Patch Changes

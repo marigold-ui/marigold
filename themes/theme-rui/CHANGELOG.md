@@ -1,5 +1,29 @@
 # @marigold/theme-rui
 
+## 5.2.4
+
+### Patch Changes
+
+- 5dfb6da: Remove muted text color from Dialog content slot for better readability
+- bbf0832: refactor([DSTSUP-245]): Clean up Calendar styles
+
+  Move hardcoded Tailwind classes from Calendar component files into theme slots, reduce cell padding from `p-2` to `p-1`, and add new `calendarHeading` theme slot.
+
+- 85b2eb0: fix(DST-1275): improve EditableCell hover/focus affordance with data-editable attribute
+- d341a9d: Fix CJS export paths pointing to non-existent `.js` files. Since tsdown 0.16.0, output uses `.cjs` extensions but `main`, `types`, and `exports` fields were never updated to match.
+- d6507d5: Switch focus ring implementation from `box-shadow` (`ring-*`) to CSS `outline` to prevent clipping in scrollable containers and improve Windows High Contrast Mode accessibility. Replace `transition-all` and `transition-colors` with explicit `transition-[color,background-color]` to prevent outline-color from animating on focus. Redistribute padding from compound component containers to individual sub-components (Dialog, ContextualHelp, Accordion) so focus outlines have breathing room inside overflow boundaries.
+- 27d13b7: fix([DSTSUP-245]): Calendar Days alinged centered through class
+- 49fc2e2: fix(DST-1278): unify Table row hover styles for href and selectionMode rows
+- Updated dependencies [bbf0832]
+- Updated dependencies [3f77810]
+- Updated dependencies [85b2eb0]
+- Updated dependencies [d341a9d]
+- Updated dependencies [f560d95]
+- Updated dependencies [50566a2]
+- Updated dependencies [969c8cc]
+  - @marigold/components@17.4.0
+  - @marigold/system@17.4.0
+
 ## 5.2.3
 
 ### Patch Changes
