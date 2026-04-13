@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useContext } from 'react';
+import { use } from 'react';
 import {
   ComboBoxStateContext,
   Button as RACButton,
@@ -30,7 +30,7 @@ interface MobileComboBoxProps {
 // Trigger Display (for Mobile mode)
 // ---------------
 const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
-  const state = useContext(ComboBoxStateContext);
+  const state = use(ComboBoxStateContext);
   const inputClassNames = useClassNames({ component: 'Input' });
   const comboBoxClassNames = useClassNames({ component: 'ComboBox' });
   const displayText = state?.selectedItem?.textValue || '';

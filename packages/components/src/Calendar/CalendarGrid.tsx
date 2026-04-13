@@ -15,7 +15,7 @@ export interface CalendarGridProps {
   offset?: DateDuration;
 }
 
-const _CalendarGrid = ({ offset }: CalendarGridProps) => {
+const CalendarGridComp = ({ offset }: CalendarGridProps) => {
   const classNames = useClassNames({ component: 'Calendar' });
 
   return (
@@ -30,4 +30,4 @@ const _CalendarGrid = ({ offset }: CalendarGridProps) => {
   );
 };
 
-export { _CalendarGrid as CalendarGrid };
+export { CalendarGridComp as CalendarGrid };

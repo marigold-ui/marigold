@@ -80,7 +80,7 @@ export const InputButtonAlignment = meta.story({
     alignY: 'input',
     space: 6,
   },
-  render: args => {
+  render: function Render(args) {
     const [description, setDescription] = useState('');
 
     const toggleDescription = () => {

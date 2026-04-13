@@ -23,7 +23,12 @@ export interface TabsProps extends Omit<
 
 // component
 // ----------------------
-const _Tabs = ({ disabled, variant, size = 'medium', ...rest }: TabsProps) => {
+const TabsComp = ({
+  disabled,
+  variant,
+  size = 'medium',
+  ...rest
+}: TabsProps) => {
   const props: RAC.TabsProps = {
     isDisabled: disabled,
     ...rest,
@@ -42,8 +47,8 @@ const _Tabs = ({ disabled, variant, size = 'medium', ...rest }: TabsProps) => {
   );
 };
 
-_Tabs.List = TabList;
-_Tabs.TabPanel = TabPanel;
-_Tabs.Item = Tab;
+TabsComp.List = TabList;
+TabsComp.TabPanel = TabPanel;
+TabsComp.Item = Tab;
 
-export { _Tabs as Tabs };
+export { TabsComp as Tabs };

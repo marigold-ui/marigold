@@ -135,7 +135,7 @@ const meta = preview.meta({
 // Explicit type annotation prevents TS2742 by avoiding leaking inferred internal types
 export const Basic: any = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     return (
       <I18nProvider locale="de-DE">
         <ComboBox
@@ -166,7 +166,7 @@ export const Basic: any = meta.story({
 
 export const Controlled: any = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [id, setId] = useState<Key | null>(null);
     return (
       <Stack>
@@ -210,7 +210,7 @@ export const ManualMenuTrigger: any = meta.story({
 });
 
 export const AsyncLoading: any = meta.story({
-  render: args => {
+  render: function Render(args) {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
         const res = await fetch(
@@ -376,7 +376,7 @@ export const OnAction: any = meta.story({
   beforeEach: () => {
     onActionMock.mockClear();
   },
-  render: args => {
+  render: function Render(args) {
     return (
       <ComboBox {...args} label="Actions" menuTrigger="focus">
         <ComboBox.Option id="save" onAction={onActionMock}>

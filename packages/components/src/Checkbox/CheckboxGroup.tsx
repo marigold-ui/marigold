@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { isValidElement, useContext } from 'react';
+import { isValidElement, use } from 'react';
 import type RAC from 'react-aria-components';
 import {
   CheckboxGroup,
@@ -21,7 +21,7 @@ interface CollapsibleGroupProps {
 }
 
 const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
-  const state = useContext(CheckboxGroupStateContext)!;
+  const state = use(CheckboxGroupStateContext)!;
 
   if (!children || children.length === 0) {
     return null;
@@ -110,7 +110,7 @@ export interface CheckboxGroupProps
 
 // Component
 // ---------------
-const _CheckboxGroup = ({
+const CheckboxGroupComp = ({
   children,
   variant,
   size,
@@ -165,4 +165,4 @@ const _CheckboxGroup = ({
   );
 };
 
-export { _CheckboxGroup as CheckboxGroup };
+export { CheckboxGroupComp as CheckboxGroup };

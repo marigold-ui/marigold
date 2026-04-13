@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { use } from 'react';
 import { ToggleButton } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
@@ -23,7 +23,7 @@ export interface ToggleButtonProps extends Omit<
   size?: 'small' | 'default' | 'icon' | (string & {});
 }
 
-export const _ToggleButton = ({
+export const ToggleButtonComp = ({
   children,
   selected,
   disabled,
@@ -31,7 +31,7 @@ export const _ToggleButton = ({
   size,
   ...props
 }: ToggleButtonProps) => {
-  const context = useContext(ToggleButtonContext);
+  const context = use(ToggleButtonContext);
 
   const classNames = useClassNames({
     component: 'ToggleButton',
@@ -51,6 +51,6 @@ export const _ToggleButton = ({
   );
 };
 
-_ToggleButton.Group = ToggleButtonGroup;
+ToggleButtonComp.Group = ToggleButtonGroup;
 
-export { _ToggleButton as ToggleButton };
+export { ToggleButtonComp as ToggleButton };

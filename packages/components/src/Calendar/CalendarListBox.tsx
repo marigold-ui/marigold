@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { Dispatch, SetStateAction, use } from 'react';
 import { CalendarStateContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
@@ -16,7 +16,7 @@ export const CalendarListBox = ({
   isDisabled,
   setSelectedDropdown,
 }: CalendarButtonListBoxProps) => {
-  const state = useContext(CalendarStateContext)!;
+  const state = use(CalendarStateContext)!;
   const months = useFormattedMonths(state.timeZone, state.focusedDate);
 
   const buttonStyles =

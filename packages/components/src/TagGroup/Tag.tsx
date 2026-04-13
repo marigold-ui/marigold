@@ -16,7 +16,7 @@ export interface TagProps extends Omit<RAC.TagProps, RemovedProps> {
   disabled?: boolean;
 }
 
-const _Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
+const TagComp = ({ variant, size, children, disabled, ...rest }: TagProps) => {
   let textValue = typeof children === 'string' ? children : undefined;
 
   const classNames = useClassNames({ component: 'Tag', variant, size });
@@ -44,5 +44,5 @@ const _Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
   );
 };
 
-_Tag.Group = TagGroup;
-export { _Tag as Tag };
+TagComp.Group = TagGroup;
+export { TagComp as Tag };

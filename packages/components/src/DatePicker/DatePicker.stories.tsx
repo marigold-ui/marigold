@@ -115,7 +115,7 @@ const meta = preview.meta({
 });
 
 export const Basic: any = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <I18nProvider locale="de-DE">
         <DatePicker
@@ -130,7 +130,7 @@ export const Basic: any = meta.story({
 });
 
 export const Controlled: any = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState(
       new CalendarDate(2025, 8, 7) as DateValue
     );

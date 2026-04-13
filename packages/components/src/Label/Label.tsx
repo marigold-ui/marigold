@@ -8,7 +8,7 @@ export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
   variant?: string;
 }
 
-const _Label = ({ size, variant, children, ...props }: LabelProps) => {
+const LabelComp = ({ size, variant, children, ...props }: LabelProps) => {
   const className = useClassNames({ component: 'Label', size, variant });
 
   return (
@@ -18,4 +18,4 @@ const _Label = ({ size, variant, children, ...props }: LabelProps) => {
   );
 };
 
-export { _Label as Label };
+export { LabelComp as Label };

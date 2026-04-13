@@ -55,7 +55,7 @@ export const HolyGrail = meta.story({
 });
 
 export const Bento = meta.story({
-  render: () => {
+  render: function () {
     const Teaser = ({
       className,
       src,

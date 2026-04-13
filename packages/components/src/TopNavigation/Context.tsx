@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 
 export interface TopNavigationContextProps {
@@ -11,7 +11,7 @@ export const TopNavigationContext =
   createContext<TopNavigationContextProps | null>(null);
 
 export const useTopNavigationContext = () => {
-  const context = useContext(TopNavigationContext);
+  const context = use(TopNavigationContext);
   if (context === null) {
     throw new Error(
       'useTopNavigationContext must be used within a <TopNavigation> component'

@@ -1,19 +1,16 @@
 import type {
+  CSSProperties,
   ComponentPropsWithRef,
   ElementType,
-  ForwardedRef,
   ReactNode,
 } from 'react';
-import { forwardRef } from 'react';
 import { createWidthVar, isFraction } from '@marigold/system';
 import { type WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';
-import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
+import type { DistributiveOmit } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
 import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label/Label';
-
-const fixedForwardRef = forwardRef as FixedForwardRef;
 
 // Props
 // ---------------
@@ -37,22 +34,19 @@ export interface FieldBaseProps<T extends ElementType>
 
 // Component
 // ---------------
-const _FieldBase = <T extends ElementType>(
-  props: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>,
-  ref: ForwardedRef<any>
-) => {
-  const {
-    as: Component = 'div',
-    children,
-    label,
-    size,
-    variant,
-    width,
-    description,
-    errorMessage,
-    className,
-    ...rest
-  } = props;
+const FieldBaseComp = <T extends ElementType>({
+  as: Component = 'div' as T,
+  children,
+  label,
+  size,
+  variant,
+  width,
+  description,
+  errorMessage,
+  className,
+  ref,
+  ...rest
+}: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -60,36 +54,38 @@ const _FieldBase = <T extends ElementType>(
   });
 
   const isFractionWidth = width ? isFraction(`${width}`) : false;
+  const ComponentWithRef = Component as (
+    props: ComponentPropsWithRef<T>
+  ) => ReactNode;
+  const componentProps = {
+    ...rest,
+    ref: ref as ComponentPropsWithRef<T>['ref'],
+    className: cn(
+      'group/field flex min-w-0 flex-col',
+      /**
+       * Width handling strategy:
+       * - For fixed widths (numeric scale values) and keyword widths (fit, full): Use `w-auto` to prevent layout shifts
+       * - For fraction widths (e.g., "1/2", "2/3"): Use the corresponding Tailwind class
+       *   (e.g., `w-1/2`) which allows the field to properly respond to its container's width
+       */
+      width && !isFractionWidth ? 'w-auto' : `w-(--container-width)`,
+      classNames,
+      className
+    ),
+    style: {
+      /* Setting CSS variables for container-width, fallback when no width is provided */
+      ...createWidthVar('container-width', width ? `${width}` : 'full'),
+      ...createWidthVar(
+        'field-width',
+        width && !isFractionWidth ? `${width}` : 'full'
+      ),
+    } as CSSProperties,
+    'data-required': rest.isRequired ? true : undefined,
+    'data-error': rest.isInvalid ? true : undefined,
+  } as ComponentPropsWithRef<T>;
 
   return (
-    <Component
-      ref={ref}
-      className={cn(
-        'group/field flex min-w-0 flex-col',
-        /**
-         * Width handling strategy:
-         * - For fixed widths (numeric scale values) and keyword widths (fit, full): Use `w-auto` to prevent layout shifts
-         * - For fraction widths (e.g., "1/2", "2/3"): Use the corresponding Tailwind class
-         *   (e.g., `w-1/2`) which allows the field to properly respond to its container's width
-         */
-        width && !isFractionWidth ? 'w-auto' : `w-(--container-width)`,
-        classNames,
-        className
-      )}
-      style={
-        {
-          /* Setting CSS variables for container-width, fallback when no width is provided */
-          ...createWidthVar('container-width', width ? `${width}` : 'full'),
-          ...createWidthVar(
-            'field-width',
-            width && !isFractionWidth ? `${width}` : 'full'
-          ),
-        } as React.CSSProperties
-      }
-      data-required={props.isRequired ? true : undefined}
-      data-error={props.isInvalid ? true : undefined}
-      {...rest}
-    >
+    <ComponentWithRef {...componentProps}>
       {label ? (
         <Label variant={variant} size={size}>
           {label}
@@ -102,8 +98,8 @@ const _FieldBase = <T extends ElementType>(
         description={description}
         errorMessage={errorMessage}
       />
-    </Component>
+    </ComponentWithRef>
   );
 };
 
-export const FieldBase = fixedForwardRef(_FieldBase);
+export const FieldBase = FieldBaseComp;

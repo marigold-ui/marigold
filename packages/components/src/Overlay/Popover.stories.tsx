@@ -1,4 +1,4 @@
-import { createRef } from 'react';
+import { useRef } from 'react';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
@@ -16,8 +16,8 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  render: () => {
-    const ref = createRef<HTMLDivElement>();
+  render: function Render() {
+    const ref = useRef<HTMLDivElement>(null);
     return (
       <>
         <div ref={ref}>Trigger</div>
@@ -31,8 +31,8 @@ export const Basic = meta.story({
 });
 
 export const OpenPopover = meta.story({
-  render: () => {
-    const ref = createRef<HTMLDivElement>();
+  render: function Render() {
+    const ref = useRef<HTMLDivElement>(null);
     return (
       <>
         <div ref={ref}>Trigger</div>

@@ -115,7 +115,11 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
-  render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => {
+  render: function Render({
+    totalItems,
+    pageSize,
+    ...rest
+  }: Partial<PaginationProps>) {
     const [basicPage, setBasicPage] = useState(1);
 
     return (
@@ -193,7 +197,7 @@ export const WithTable = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: args => {
+  render: function Render(args) {
     interface User {
       id: number;
       name: string;

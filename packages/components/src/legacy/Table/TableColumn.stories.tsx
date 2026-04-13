@@ -42,7 +42,7 @@ const meta = preview.meta({
 });
 
 export const AlignedTableColumn = meta.story({
-  render: args => {
+  render: function Render(args) {
     const data = [
       {
         name: 'Luke Skywalker',

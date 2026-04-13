@@ -8,7 +8,7 @@ export type TabPanelProps = Omit<RAC.TabPanelProps, 'className' | 'style'>;
 
 // component
 // ----------------------
-const _TabPanel = (props: TabPanelProps) => {
+const TabPanelComp = (props: TabPanelProps) => {
   const { classNames } = useTabContext();
   return (
     <TabPanel {...props} className={classNames.tabpanel}>
@@ -17,4 +17,4 @@ const _TabPanel = (props: TabPanelProps) => {
   );
 };
 
-export { _TabPanel as TabPanel };
+export { TabPanelComp as TabPanel };

@@ -25,7 +25,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Form {...args}>
         <Stack space={5}>
@@ -58,7 +58,7 @@ export const Horizontal = meta.story({
 });
 
 export const Selected = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Form {...args}>
         <Columns space={10} columns={[1, 1, 1]}>

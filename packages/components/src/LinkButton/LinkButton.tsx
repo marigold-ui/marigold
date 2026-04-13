@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Link } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
@@ -31,27 +30,34 @@ export interface LinkButtonProps extends Omit<RAC.LinkProps, RemovedProps> {
    * @default false
    */
   disabled?: RAC.LinkProps['isDisabled'];
+  ref?: Ref<HTMLAnchorElement>;
 }
 
-const _LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(
-  ({ children, variant, size, disabled, fullWidth, ...props }, ref) => {
-    const classNames = useClassNames({
-      component: 'Button',
-      variant,
-      size,
-    });
+const LinkButtonComp = ({
+  children,
+  variant,
+  size,
+  disabled,
+  fullWidth,
+  ref,
+  ...props
+}: LinkButtonProps) => {
+  const classNames = useClassNames({
+    component: 'Button',
+    variant,
+    size,
+  });
 
-    return (
-      <Link
-        {...props}
-        ref={ref}
-        className={cn(classNames, fullWidth ? 'w-full' : undefined)}
-        isDisabled={disabled}
-      >
-        {children}
-      </Link>
-    );
-  }
-);
+  return (
+    <Link
+      {...props}
+      ref={ref}
+      className={cn(classNames, fullWidth ? 'w-full' : undefined)}
+      isDisabled={disabled}
+    >
+      {children}
+    </Link>
+  );
+};
 
-export { _LinkButton as LinkButton };
+export { LinkButtonComp as LinkButton };

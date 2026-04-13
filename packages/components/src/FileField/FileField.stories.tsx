@@ -56,7 +56,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     return (
       <I18nProvider locale="en-US">
         <FileField {...args} />
@@ -144,7 +144,7 @@ export const InForm = meta.story({
     name: 'attachment',
     multiple: true,
   },
-  render: args => {
+  render: function Render(args) {
     const [submitted, setSubmitted] = useState<string[]>([]);
     return (
       <I18nProvider locale="en-US">

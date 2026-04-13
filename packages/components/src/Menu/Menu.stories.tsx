@@ -154,7 +154,7 @@ export const Basic: any = meta.story({
 
 export const OnActionMenu: any = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     return (
       <Menu onAction={key => alert(key)} {...args} label="Choose">
         <Menu.Item id="burger">🍔 Burger</Menu.Item>
@@ -180,7 +180,7 @@ export const OnActionMenu: any = meta.story({
 });
 
 export const SingleSelection: any = meta.story({
-  render: () => {
+  render: function Render() {
     const [selected, setSelected] = useState<Set<'left' | 'center' | 'right'>>(
       new Set(['center'])
     );
@@ -204,7 +204,7 @@ export const SingleSelection: any = meta.story({
 });
 
 export const MultiSelection: any = meta.story({
-  render: () => {
+  render: function Render() {
     const [selectedKeys, setSelected] = useState(new Set());
     const selected = Array.from(selectedKeys);
 
@@ -288,7 +288,7 @@ export const LinksMenu: any = meta.story({
 
 export const BasicActionMenu: any = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     return (
       <ActionMenu
         onAction={action => alert(`Action: ${String(action)}`)}
@@ -307,7 +307,7 @@ export const BasicActionMenu: any = meta.story({
 });
 
 export const OpenMenuRemotely: any = meta.story({
-  render: () => {
+  render: function Render() {
     const [open, setOpen] = useState(false);
     const handleAction = () => {
       setOpen(!open);
@@ -336,7 +336,7 @@ export const Mobile: any = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },
   },
-  render: args => {
+  render: function Render(args) {
     return (
       <Menu {...args} label="Mobile Menu">
         <Menu.Item id="home">Home</Menu.Item>

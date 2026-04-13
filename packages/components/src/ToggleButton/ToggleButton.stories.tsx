@@ -71,7 +71,7 @@ Basic.test(
 );
 
 export const Controlled = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [isSelected, setIsSelected] = useState(false);
 
     return (

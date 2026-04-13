@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef } from 'react';
+import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Switch } from 'react-aria-components';
 import {
@@ -50,49 +50,46 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
    * @default false
    */
   selected?: RAC.SwitchProps['isSelected'];
+  ref?: Ref<HTMLLabelElement>;
 }
 
-const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
-  (
-    {
-      variant,
-      size,
-      width = 'full',
-      label,
-      selected,
-      disabled,
-      readOnly,
-      ...rest
-    },
-    ref
-  ) => {
-    const classNames = useClassNames({ component: 'Switch', size, variant });
-    const props = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isSelected: selected,
-      ...rest,
-    } satisfies RAC.SwitchProps;
-    return (
-      <Switch
-        {...props}
-        ref={ref}
-        className={cn(
-          twWidth[width],
-          'group/switch',
-          'flex items-center gap-[1ch]',
-          classNames.container
-        )}
-      >
-        {label && <Label elementType="span">{label}</Label>}
-        <div className="relative">
-          <div className={classNames.track}>
-            <div className={classNames.thumb} />
-          </div>
+const SwitchComp = ({
+  variant,
+  size,
+  width = 'full',
+  label,
+  selected,
+  disabled,
+  readOnly,
+  ref,
+  ...rest
+}: SwitchProps) => {
+  const classNames = useClassNames({ component: 'Switch', size, variant });
+  const props = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isSelected: selected,
+    ...rest,
+  } satisfies RAC.SwitchProps;
+  return (
+    <Switch
+      {...props}
+      ref={ref}
+      className={cn(
+        twWidth[width],
+        'group/switch',
+        'flex items-center gap-[1ch]',
+        classNames.container
+      )}
+    >
+      {label && <Label elementType="span">{label}</Label>}
+      <div className="relative">
+        <div className={classNames.track}>
+          <div className={classNames.thumb} />
         </div>
-      </Switch>
-    );
-  }
-);
+      </div>
+    </Switch>
+  );
+};
 
-export { _Switch as Switch };
+export { SwitchComp as Switch };

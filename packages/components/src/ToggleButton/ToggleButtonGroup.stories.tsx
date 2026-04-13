@@ -53,7 +53,7 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   args: {},
-  render: args => {
+  render: function Render(args) {
     const [selectedKeys, setSelectedKeys] = useState(new Set<Key>(['sum']));
 
     return (
@@ -155,7 +155,7 @@ MultipleSelection.test('Select multiple buttons', async ({ canvas, step }) => {
 
 export const DisabledButton = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [selectedKeys, setSelectedKeys] = useState(new Set<Key>());
 
     return (

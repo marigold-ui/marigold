@@ -1,7 +1,7 @@
-import type RAC from 'react-aria-components';
 import { LayoutGroup } from 'motion/react';
-import { TabList } from 'react-aria-components';
 import { useId } from 'react';
+import type RAC from 'react-aria-components';
+import { TabList } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { useTabContext } from './Context';
 
@@ -14,7 +14,7 @@ export type TabListProps = Omit<
 
 // component
 // ----------------------
-const _TabList = (props: TabListProps) => {
+const TabListComp = (props: TabListProps) => {
   const { classNames } = useTabContext();
   const layoutId = useId();
   return (
@@ -26,4 +26,4 @@ const _TabList = (props: TabListProps) => {
   );
 };
 
-export { _TabList as TabList };
+export { TabListComp as TabList };

@@ -17,7 +17,7 @@ export interface ToggleButtonGroupProps extends Omit<
   size?: 'small' | 'default' | 'icon' | (string & {});
 }
 
-export const _ToggleButtonGroup = ({
+export const ToggleButtonGroupComp = ({
   children,
   disabled,
   variant,
@@ -43,4 +43,4 @@ export const _ToggleButtonGroup = ({
   );
 };
 
-export { _ToggleButtonGroup as ToggleButtonGroup };
+export { ToggleButtonGroupComp as ToggleButtonGroup };

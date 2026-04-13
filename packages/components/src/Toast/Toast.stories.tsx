@@ -67,7 +67,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: (_args: unknown) => {
+  render: function Render(_args: unknown) {
     const args = toastArgs(_args);
     const { addToast } = useToast();
     return (
@@ -114,7 +114,7 @@ export const Basic = meta.story({
 });
 
 export const ToggleToast = meta.story({
-  render: (_args: unknown) => {
+  render: function Render(_args: unknown) {
     const args = toastArgs(_args);
     const [toastKey, setToastKey] = useState<string | null>(null);
     const { addToast, removeToast } = useToast();
@@ -167,7 +167,7 @@ export const ToggleToast = meta.story({
 });
 
 export const ToastContentTest = meta.story({
-  render: (_args: unknown) => {
+  render: function Render(_args: unknown) {
     const args = toastArgs(_args);
     return (
       <div style={{ position: 'fixed', bottom: 16, right: 16 }}>
@@ -190,7 +190,7 @@ export const WithLinks = meta.story({
   args: {
     title: 'Update Available',
   } as unknown as Record<string, never>,
-  render: (_args: unknown) => {
+  render: function Render(_args: unknown) {
     const args = toastArgs(_args);
     const { addToast } = useToast();
     const description = (
@@ -233,7 +233,7 @@ export const WithAction = meta.story({
     title: 'Update Available',
     description: 'A new version is available.',
   } as unknown as Record<string, never>,
-  render: (_args: unknown) => {
+  render: function Render(_args: unknown) {
     const args = toastArgs(_args);
     const { addToast } = useToast();
 

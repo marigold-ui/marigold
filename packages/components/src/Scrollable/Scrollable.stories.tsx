@@ -86,7 +86,7 @@ export const Horizontal = meta.story({
 });
 
 export const WithTable = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [todos, setTodos] = useState<
       { userId: string; id: string; title: string; completed: boolean }[]
     >([]);

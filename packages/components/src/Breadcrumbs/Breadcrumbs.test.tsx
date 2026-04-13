@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { vi } from 'vitest';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import {
@@ -110,7 +110,7 @@ test('does not collapse when maxVisibleItems is less than 2', () => {
 });
 
 test('forwards ref', () => {
-  const objectRef = createRef<HTMLOListElement>();
+  const objectRef = { current: null } as unknown as RefObject<HTMLOListElement>;
   const callbackRef = vi.fn();
 
   render(<Basic.Component ref={objectRef} />);

@@ -121,7 +121,7 @@ export const MultipleThumbs = meta.story({
 
 export const Controlled = meta.story({
   args: { label: 'Cookies to buy' },
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState<number | number[]>(25);
 
     return (
@@ -135,7 +135,7 @@ export const Controlled = meta.story({
 
 export const MultiThumbsControlled = meta.story({
   args: { label: 'Tickets for sale' },
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState<number | number[]>([25, 75]);
 
     return (
@@ -151,7 +151,7 @@ export const MultiThumbsControlled = meta.story({
 
 export const Forms = meta.story({
   args: { label: 'Opacity' },
-  render: args => {
+  render: function Render(args) {
     const handleSubmit = (e: FormEvent) => {
       e.preventDefault();
       let formData = new FormData(e.target as HTMLFormElement);
@@ -173,7 +173,7 @@ export const Forms = meta.story({
 
 export const MultiThumbsForm = meta.story({
   args: { label: 'Age' },
-  render: args => {
+  render: function Render(args) {
     const handleSubmit = (e: FormEvent) => {
       e.preventDefault();
       let formData = new FormData(e.target as HTMLFormElement);

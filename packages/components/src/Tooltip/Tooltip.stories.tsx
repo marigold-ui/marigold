@@ -70,7 +70,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] gap-2 pt-32">
         <Tooltip.Trigger>

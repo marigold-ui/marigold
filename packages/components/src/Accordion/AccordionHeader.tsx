@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from 'react';
+import { ReactNode, use } from 'react';
 import { Button, DisclosureStateContext, Heading } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { ChevronDown } from '../icons/ChevronDown';
@@ -14,7 +14,7 @@ export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
    * Use context to rotate the chevron.
    * "group-aria-expaned" is currently bugged with the RAC tailwind plugin.
    */
-  const { isExpanded } = useContext(DisclosureStateContext)!;
+  const { isExpanded } = use(DisclosureStateContext)!;
   const chevronStyles = cn(classNames.icon, isExpanded && 'rotate-180');
 
   return (

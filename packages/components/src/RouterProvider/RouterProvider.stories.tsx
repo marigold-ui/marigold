@@ -33,7 +33,7 @@ function CustomTab(props: any) {
 }
 
 export const Basic = meta.story({
-  render: () => {
+  render: function Render() {
     const [url, setUrl] = useState<string>('/FoR');
     return (
       <>

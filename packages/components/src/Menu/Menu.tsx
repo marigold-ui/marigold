@@ -53,7 +53,7 @@ export interface MenuProps
   disabled?: boolean;
 }
 
-const _Menu = ({
+const MenuComp = ({
   children,
   label,
   variant,
@@ -99,7 +99,7 @@ const _Menu = ({
   );
 };
 
-export { _Menu as Menu };
+export { MenuComp as Menu };
 
-_Menu.Item = MenuItem;
-_Menu.Section = MenuSection;
+MenuComp.Item = MenuItem;
+MenuComp.Section = MenuSection;

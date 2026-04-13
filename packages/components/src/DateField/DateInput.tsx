@@ -82,7 +82,7 @@ export interface DateInputProps extends Omit<RAC.DateInputProps, RemovedProps> {
   onPaste: (date: CalendarDate) => void;
 }
 
-const _DateInput = ({
+const DateInputComponent = ({
   variant,
   size,
   action,
@@ -126,4 +126,4 @@ const _DateInput = ({
   );
 };
 
-export { _DateInput as DateInput };
+export { DateInputComponent as DateInput };

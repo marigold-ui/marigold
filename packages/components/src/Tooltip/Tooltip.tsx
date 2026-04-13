@@ -21,7 +21,13 @@ export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
   open?: RAC.TooltipProps['isOpen'];
 }
 
-const _Tooltip = ({ children, variant, size, open, ...rest }: TooltipProps) => {
+const TooltipComp = ({
+  children,
+  variant,
+  size,
+  open,
+  ...rest
+}: TooltipProps) => {
   const { setOpen } = useTooltipContext();
 
   useLayoutEffect(() => {
@@ -44,6 +50,6 @@ const _Tooltip = ({ children, variant, size, open, ...rest }: TooltipProps) => {
   );
 };
 
-export { _Tooltip as Tooltip };
+export { TooltipComp as Tooltip };
 
-_Tooltip.Trigger = TooltipTrigger;
+TooltipComp.Trigger = TooltipTrigger;

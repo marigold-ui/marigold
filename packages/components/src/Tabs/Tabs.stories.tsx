@@ -26,7 +26,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     return (
       <Tabs aria-label="tabs" {...args}>
         <Tabs.List aria-label="Input settings">
@@ -74,7 +74,7 @@ export const Basic = meta.story({
 });
 
 export const WithDisabledKeys = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Tabs aria-label="tabs" disabledKeys={['private']} {...args}>
         <Tabs.List aria-label="User Preferences">
@@ -107,7 +107,7 @@ export const WithDisabledKeys = meta.story({
 });
 
 export const WithSelectedTab = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Tabs aria-label="tabs" selectedKey={'settings'} {...args}>
         <Tabs.List aria-label="Navigation">
@@ -140,7 +140,7 @@ export const WithSelectedTab = meta.story({
 
 export const WithRenderProps = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     return (
       <Tabs aria-label="tabs" {...args}>
         <Tabs.List aria-label="Account settings">

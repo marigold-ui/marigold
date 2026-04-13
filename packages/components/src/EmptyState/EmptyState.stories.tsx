@@ -70,7 +70,7 @@ export const WithAction = meta.story({
 
 export const WithAutocompleteAndData = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [inputValue, setInputValue] = useState('');
 
     const items = [

@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 
 export interface ListBoxContextProps {
@@ -8,4 +8,4 @@ export interface ListBoxContextProps {
 export const ListBoxContext = createContext<ListBoxContextProps>({
   classNames: {} as ComponentClassNames<'ListBox'>,
 });
-export const useListBoxContext = () => useContext(ListBoxContext);
+export const useListBoxContext = () => use(ListBoxContext);

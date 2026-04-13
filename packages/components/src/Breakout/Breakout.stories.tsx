@@ -9,7 +9,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  render: args => {
+  render: function Render(args) {
     return (
       <Container align="center">
         <Text>
