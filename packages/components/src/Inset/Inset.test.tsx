@@ -68,7 +68,7 @@ test('allows to add different vertical/horizontal spacing', () => {
   );
 });
 
-test('supports padding spacing tokens for space', () => {
+test('supports inset recipe tokens for space', () => {
   render(
     <Inset space="square-regular">
       <p>first</p>
@@ -81,18 +81,18 @@ test('supports padding spacing tokens for space', () => {
   );
 });
 
-test('supports semantic inset tokens for spaceX/spaceY', () => {
+test('supports semantic padding tokens for spaceX/spaceY', () => {
   render(
-    <Inset spaceX="inset-snug" spaceY="inset-relaxed">
+    <Inset spaceX="padding-snug" spaceY="padding-relaxed">
       <p>first</p>
       <p>second</p>
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
   expect(inset?.style.getPropertyValue('--spaceX')).toBe(
-    'var(--spacing-inset-snug)'
+    'var(--spacing-padding-snug)'
   );
   expect(inset?.style.getPropertyValue('--spaceY')).toBe(
-    'var(--spacing-inset-relaxed)'
+    'var(--spacing-padding-relaxed)'
   );
 });

@@ -202,13 +202,15 @@
   --spacing-group: --spacing(12);
   --spacing-section: --spacing(24);
 
-  /* INSET SPACING */
+  /* PADDING SPACING */
 
-  --spacing-inset-tight: --spacing(1);
-  --spacing-inset-snug: --spacing(2);
-  --spacing-inset-regular: --spacing(3);
-  --spacing-inset-relaxed: --spacing(4);
-  --spacing-inset-loose: --spacing(6);
+  --spacing-padding-tight: --spacing(1);
+  --spacing-padding-snug: --spacing(2);
+  --spacing-padding-regular: --spacing(3);
+  --spacing-padding-relaxed: --spacing(4);
+  --spacing-padding-loose: --spacing(6);
+
+  /* INSET SPACING */
 
   --spacing-square-tight: --spacing(1);
   --spacing-square-snug: --spacing(2);

@@ -14,22 +14,22 @@ export type SpacingTokens =
   | 'section';
 
 /**
- * Inset spacing tokens for single-axis padding (`spaceX`, `spaceY`).
+ * Padding spacing tokens for single-axis padding (e.g. `spaceX`, `spaceY`).
  *
  * Single-value tokens that can be composed to create symmetric or
- * asymmetric padding.
+ * asymmetric padding on any component.
  *
  * Five density levels: tight, snug, regular, relaxed, loose.
  */
-export type InsetSpacingTokens =
-  | 'inset-tight'
-  | 'inset-snug'
-  | 'inset-regular'
-  | 'inset-relaxed'
-  | 'inset-loose';
+export type PaddingSpacingTokens =
+  | 'padding-tight'
+  | 'padding-snug'
+  | 'padding-regular'
+  | 'padding-relaxed'
+  | 'padding-loose';
 
 /**
- * Padding recipe tokens for the `space` prop on Inset.
+ * Inset spacing recipe tokens for the `space` prop on Inset.
  *
  * Multi-value tokens that set padding on all sides at once:
  * - `square-*`: Equal padding on all sides
@@ -38,7 +38,7 @@ export type InsetSpacingTokens =
  *
  * Each category has five density levels: tight, snug, regular, relaxed, loose.
  */
-export type PaddingSpacingTokens =
+export type InsetSpacingTokens =
   | 'square-tight'
   | 'square-snug'
   | 'square-regular'
