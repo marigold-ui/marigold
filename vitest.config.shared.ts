@@ -47,6 +47,7 @@ const exclude = [
   '**/scripts/**',
   '**/storybook-static/**',
   '**/.storybook/**',
+  '**/test.utils.*',
 ];
 
 export default defineConfig({

@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from '@react-aria/i18n';
 import { makeFile } from './../test.utils';
@@ -87,6 +87,20 @@ test('remove button removes the corresponding file', async () => {
   expect(screen.getByText('b.txt')).toBeInTheDocument();
 });
 
+test('renders with default props', () => {
+  render(
+    <Basic.Component
+      label="Label"
+      disabled={undefined}
+      accept={undefined}
+      multiple={undefined}
+    />
+  );
+
+  expect(screen.getByText('Drop files here')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Upload/i })).toBeInTheDocument();
+});
+
 test('does not render hidden input when name is not set', () => {
   render(<Basic.Component label="Label" />);
 
@@ -158,4 +172,38 @@ test('hidden input persists after file removal', async () => {
 
   expect(screen.queryByText('a.pdf')).not.toBeInTheDocument();
   expect(screen.getByText('b.pdf')).toBeInTheDocument();
+});
+
+test('handles file drop on dropzone', async () => {
+  render(<Basic.Component label="Label" />);
+
+  const dropzone = screen.getByTestId('dropzone');
+  const file = makeFile('dropped.pdf', 'application/pdf');
+
+  const dataTransfer = new DataTransfer();
+  dataTransfer.items.add(file);
+
+  const dragEnter = new DragEvent('dragenter', {
+    bubbles: true,
+    cancelable: true,
+    dataTransfer,
+  });
+  const dragOver = new DragEvent('dragover', {
+    bubbles: true,
+    cancelable: true,
+    dataTransfer,
+  });
+  const drop = new DragEvent('drop', {
+    bubbles: true,
+    cancelable: true,
+    dataTransfer,
+  });
+
+  dropzone.dispatchEvent(dragEnter);
+  dropzone.dispatchEvent(dragOver);
+  dropzone.dispatchEvent(drop);
+
+  await waitFor(() => {
+    expect(screen.getByText('dropped.pdf')).toBeInTheDocument();
+  });
 });
