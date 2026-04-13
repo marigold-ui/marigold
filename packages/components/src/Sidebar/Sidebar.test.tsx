@@ -807,164 +807,211 @@ test('findActiveBranch returns null when active item is at root level', () => {
   expect(findActiveBranch(collection)).toBeNull();
 });
 
-// --- Keyboard Navigation Tests ---
+describe('Keyboard Navigation', () => {
+  test('ArrowDown moves focus to next item', async () => {
+    render(<Basic.Component />);
 
-test('ArrowDown moves focus to next item', async () => {
-  render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const analytics = screen.getByRole('link', { name: 'Analytics' });
 
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const analytics = screen.getByRole('link', { name: 'Analytics' });
+    // Tab into sidebar nav to focus the active item (Overview)
+    overview.focus();
+    expect(overview).toHaveFocus();
 
-  // Tab into sidebar nav to focus the active item (Overview)
-  overview.focus();
-  expect(overview).toHaveFocus();
+    await user.keyboard('{ArrowDown}');
 
-  await user.keyboard('{ArrowDown}');
+    expect(analytics).toHaveFocus();
+  });
 
-  expect(analytics).toHaveFocus();
-});
+  test('ArrowUp moves focus to previous item', async () => {
+    render(<Basic.Component />);
 
-test('ArrowUp moves focus to previous item', async () => {
-  render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const analytics = screen.getByRole('link', { name: 'Analytics' });
 
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const analytics = screen.getByRole('link', { name: 'Analytics' });
+    analytics.focus();
+    expect(analytics).toHaveFocus();
 
-  analytics.focus();
-  expect(analytics).toHaveFocus();
+    await user.keyboard('{ArrowUp}');
 
-  await user.keyboard('{ArrowUp}');
+    expect(overview).toHaveFocus();
+  });
 
-  expect(overview).toHaveFocus();
-});
+  test('ArrowDown wraps from last item to first', async () => {
+    render(<Basic.Component />);
 
-test('ArrowDown wraps from last item to first', async () => {
-  render(<Basic.Component />);
+    const security = screen.getByRole('link', { name: 'Security' });
+    const overview = screen.getByRole('link', { name: 'Overview' });
 
-  const security = screen.getByRole('link', { name: 'Security' });
-  const overview = screen.getByRole('link', { name: 'Overview' });
+    security.focus();
+    expect(security).toHaveFocus();
 
-  security.focus();
-  expect(security).toHaveFocus();
+    await user.keyboard('{ArrowDown}');
 
-  await user.keyboard('{ArrowDown}');
+    expect(overview).toHaveFocus();
+  });
 
-  expect(overview).toHaveFocus();
-});
+  test('ArrowUp wraps from first item to last', async () => {
+    render(<Basic.Component />);
 
-test('ArrowUp wraps from first item to last', async () => {
-  render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const security = screen.getByRole('link', { name: 'Security' });
 
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const security = screen.getByRole('link', { name: 'Security' });
+    overview.focus();
+    expect(overview).toHaveFocus();
 
-  overview.focus();
-  expect(overview).toHaveFocus();
+    await user.keyboard('{ArrowUp}');
 
-  await user.keyboard('{ArrowUp}');
+    expect(security).toHaveFocus();
+  });
 
-  expect(security).toHaveFocus();
-});
+  test('Home key jumps to first item', async () => {
+    render(<Basic.Component />);
 
-test('Home key jumps to first item', async () => {
-  render(<Basic.Component />);
+    const security = screen.getByRole('link', { name: 'Security' });
+    const overview = screen.getByRole('link', { name: 'Overview' });
 
-  const security = screen.getByRole('link', { name: 'Security' });
-  const overview = screen.getByRole('link', { name: 'Overview' });
+    security.focus();
+    expect(security).toHaveFocus();
 
-  security.focus();
-  expect(security).toHaveFocus();
+    await user.keyboard('{Home}');
 
-  await user.keyboard('{Home}');
+    expect(overview).toHaveFocus();
+  });
 
-  expect(overview).toHaveFocus();
-});
+  test('End key jumps to last item', async () => {
+    render(<Basic.Component />);
 
-test('End key jumps to last item', async () => {
-  render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const security = screen.getByRole('link', { name: 'Security' });
 
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const security = screen.getByRole('link', { name: 'Security' });
+    overview.focus();
+    expect(overview).toHaveFocus();
 
-  overview.focus();
-  expect(overview).toHaveFocus();
+    await user.keyboard('{End}');
 
-  await user.keyboard('{End}');
+    expect(security).toHaveFocus();
+  });
 
-  expect(security).toHaveFocus();
-});
+  test('separators and group labels are skipped during arrow navigation', async () => {
+    render(<Basic.Component />);
 
-test('separators and group labels are skipped during arrow navigation', async () => {
-  render(<Basic.Component />);
+    // Root panel: Overview, Analytics, [separator], Management, [group label "Settings"], General, Security
+    const analytics = screen.getByRole('link', { name: 'Analytics' });
+    const management = screen.getByRole('link', { name: /Management/ });
 
-  // Root panel: Overview, Analytics, [separator], Management, [group label "Settings"], General, Security
-  const analytics = screen.getByRole('link', { name: 'Analytics' });
-  const management = screen.getByRole('link', { name: /Management/ });
+    analytics.focus();
+    expect(analytics).toHaveFocus();
 
-  analytics.focus();
-  expect(analytics).toHaveFocus();
+    // ArrowDown should skip the separator and land on Management
+    await user.keyboard('{ArrowDown}');
 
-  // ArrowDown should skip the separator and land on Management
-  await user.keyboard('{ArrowDown}');
+    expect(management).toHaveFocus();
 
-  expect(management).toHaveFocus();
+    // ArrowDown should skip the group label and land on General
+    const general = screen.getByRole('link', { name: 'General' });
+    await user.keyboard('{ArrowDown}');
 
-  // ArrowDown should skip the group label and land on General
-  const general = screen.getByRole('link', { name: 'General' });
-  await user.keyboard('{ArrowDown}');
+    expect(general).toHaveFocus();
+  });
 
-  expect(general).toHaveFocus();
-});
+  test('arrow navigation in sub-panel includes back button', async () => {
+    render(<WithActiveBranch.Component />);
 
-test('arrow navigation in sub-panel includes back button', async () => {
-  render(<WithActiveBranch.Component />);
+    // WithActiveBranch starts with /users active, Management panel is active
+    const usersLink = screen.getByRole('link', { name: 'Users' });
+    const backButton = screen.getByRole('button', {
+      name: /Back to Management/,
+    });
 
-  // WithActiveBranch starts with /users active, Management panel is active
-  const usersLink = screen.getByRole('link', { name: 'Users' });
-  const backButton = screen.getByRole('button', { name: /Back to Management/ });
+    // Users is the active item, it should be the default focus target
+    usersLink.focus();
+    expect(usersLink).toHaveFocus();
 
-  // Users is the active item, it should be the default focus target
-  usersLink.focus();
-  expect(usersLink).toHaveFocus();
+    // ArrowUp should go to back button (wrapping from first item to last goes to Billing,
+    // but going up from Users: Users is after back button in DOM order)
+    // Actually, DOM order is: back button, Users, Teams, Billing
+    // ArrowUp from Users → back button
+    await user.keyboard('{ArrowUp}');
 
-  // ArrowUp should go to back button (wrapping from first item to last goes to Billing,
-  // but going up from Users: Users is after back button in DOM order)
-  // Actually, DOM order is: back button, Users, Teams, Billing
-  // ArrowUp from Users → back button
-  await user.keyboard('{ArrowUp}');
+    expect(backButton).toHaveFocus();
 
-  expect(backButton).toHaveFocus();
+    // ArrowDown from back button → Users
+    await user.keyboard('{ArrowDown}');
 
-  // ArrowDown from back button → Users
-  await user.keyboard('{ArrowDown}');
+    expect(usersLink).toHaveFocus();
+  });
 
-  expect(usersLink).toHaveFocus();
-});
+  test('panel transition focuses active item when one exists (not back button)', async () => {
+    const PanelFocusTest = () => {
+      const [activePath, setActivePath] = useState<string | null>(null);
 
-test('panel transition focuses active item when one exists (not back button)', async () => {
-  const PanelFocusTest = () => {
-    const [activePath, setActivePath] = useState<string | null>(null);
+      return (
+        <RouterProvider navigate={() => {}}>
+          <MarigoldProvider theme={theme}>
+            <button
+              data-testid="activate-child-a"
+              onClick={() => setActivePath('/child-a')}
+            >
+              Activate
+            </button>
+            <Sidebar.Provider>
+              <Sidebar>
+                <Sidebar.Nav>
+                  <Sidebar.Item id="branch" textValue="Branch">
+                    Branch
+                    <Sidebar.Item
+                      href="/child-a"
+                      active={activePath === '/child-a'}
+                    >
+                      Child A
+                    </Sidebar.Item>
+                    <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
+                  </Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar>
+            </Sidebar.Provider>
+          </MarigoldProvider>
+        </RouterProvider>
+      );
+    };
 
-    return (
+    render(<PanelFocusTest />);
+
+    // Branch trigger is in root panel (active)
+    const branchTrigger = screen.getByRole('link', { name: /Branch/ });
+    await user.click(branchTrigger);
+
+    // Sub-panel opens (no active child yet) — focus goes to back button
+    const backButton = await screen.findByRole('button', {
+      name: /Back to Branch/,
+    });
+    await vi.advanceTimersByTimeAsync(400);
+    expect(backButton).toHaveFocus();
+
+    // Go back to root, then activate child and re-enter
+    await user.click(backButton);
+    await vi.advanceTimersByTimeAsync(400);
+
+    // Activate Child A which will auto-open the branch panel
+    await user.click(screen.getByTestId('activate-child-a'));
+
+    // Branch panel opens with Child A active → focus should be on Child A
+    const childA = await screen.findByRole('link', { name: 'Child A' });
+    await vi.advanceTimersByTimeAsync(400);
+    expect(childA).toHaveFocus();
+  });
+
+  test('panel transition falls back to back button when no active item', async () => {
+    render(
       <RouterProvider navigate={() => {}}>
         <MarigoldProvider theme={theme}>
-          <button
-            data-testid="activate-child-a"
-            onClick={() => setActivePath('/child-a')}
-          >
-            Activate
-          </button>
           <Sidebar.Provider>
             <Sidebar>
               <Sidebar.Nav>
                 <Sidebar.Item id="branch" textValue="Branch">
                   Branch
-                  <Sidebar.Item
-                    href="/child-a"
-                    active={activePath === '/child-a'}
-                  >
-                    Child A
-                  </Sidebar.Item>
+                  <Sidebar.Item href="/child-a">Child A</Sidebar.Item>
                   <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
                 </Sidebar.Item>
               </Sidebar.Nav>
@@ -973,302 +1020,257 @@ test('panel transition focuses active item when one exists (not back button)', a
         </MarigoldProvider>
       </RouterProvider>
     );
-  };
 
-  render(<PanelFocusTest />);
+    // Click branch trigger — no children have active prop
+    const branchTrigger = screen.getByRole('link', { name: /Branch/ });
+    await user.click(branchTrigger);
 
-  // Branch trigger is in root panel (active)
-  const branchTrigger = screen.getByRole('link', { name: /Branch/ });
-  await user.click(branchTrigger);
-
-  // Sub-panel opens (no active child yet) — focus goes to back button
-  const backButton = await screen.findByRole('button', {
-    name: /Back to Branch/,
+    // Focus falls back to back button since no active item exists
+    const backButton = await screen.findByRole('button', {
+      name: /Back to Branch/,
+    });
+    await vi.advanceTimersByTimeAsync(400);
+    expect(backButton).toHaveFocus();
   });
-  await vi.advanceTimersByTimeAsync(400);
-  expect(backButton).toHaveFocus();
-
-  // Go back to root, then activate child and re-enter
-  await user.click(backButton);
-  await vi.advanceTimersByTimeAsync(400);
-
-  // Activate Child A which will auto-open the branch panel
-  await user.click(screen.getByTestId('activate-child-a'));
-
-  // Branch panel opens with Child A active → focus should be on Child A
-  const childA = await screen.findByRole('link', { name: 'Child A' });
-  await vi.advanceTimersByTimeAsync(400);
-  expect(childA).toHaveFocus();
 });
 
-test('panel transition falls back to back button when no active item', async () => {
-  render(
-    <RouterProvider navigate={() => {}}>
-      <MarigoldProvider theme={theme}>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav>
-              <Sidebar.Item id="branch" textValue="Branch">
-                Branch
-                <Sidebar.Item href="/child-a">Child A</Sidebar.Item>
-                <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
-              </Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </MarigoldProvider>
-    </RouterProvider>
-  );
+describe('Roving Tabindex', () => {
+  test('only one nav item has tabIndex=0 in the active panel', () => {
+    render(<Basic.Component />);
 
-  // Click branch trigger — no children have active prop
-  const branchTrigger = screen.getByRole('link', { name: /Branch/ });
-  await user.click(branchTrigger);
+    const links = screen.getAllByRole('link');
+    const tabbable = links.filter(l => l.tabIndex === 0);
+    const nonTabbable = links.filter(l => l.tabIndex === -1);
 
-  // Focus falls back to back button since no active item exists
-  const backButton = await screen.findByRole('button', {
-    name: /Back to Branch/,
+    expect(tabbable).toHaveLength(1);
+    expect(tabbable[0]).toHaveAttribute('aria-current', 'page');
+    expect(nonTabbable.length).toBeGreaterThan(0);
   });
-  await vi.advanceTimersByTimeAsync(400);
-  expect(backButton).toHaveFocus();
+
+  test('arrow key updates which item has tabIndex=0', async () => {
+    render(<Basic.Component />);
+
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const analytics = screen.getByRole('link', { name: 'Analytics' });
+
+    expect(overview).toHaveAttribute('tabindex', '0');
+    expect(analytics).toHaveAttribute('tabindex', '-1');
+
+    overview.focus();
+    await user.keyboard('{ArrowDown}');
+
+    expect(analytics).toHaveFocus();
+    expect(analytics).toHaveAttribute('tabindex', '0');
+    expect(overview).toHaveAttribute('tabindex', '-1');
+  });
+
+  test('back button participates in roving tabindex', async () => {
+    render(<WithActiveBranch.Component />);
+
+    const backButton = screen.getByRole('button', {
+      name: /Back to Management/,
+    });
+    const usersLink = screen.getByRole('link', { name: 'Users' });
+
+    // Users is active, so it should be the tab stop
+    expect(usersLink).toHaveAttribute('tabindex', '0');
+    expect(backButton).toHaveAttribute('tabindex', '-1');
+
+    // Arrow up to back button
+    usersLink.focus();
+    await user.keyboard('{ArrowUp}');
+
+    expect(backButton).toHaveFocus();
+    expect(backButton).toHaveAttribute('tabindex', '0');
+    expect(usersLink).toHaveAttribute('tabindex', '-1');
+  });
+
+  test('buildCollection handles group labels and separators in index', () => {
+    const jsx = [
+      <SidebarGroupLabel key="label">Section</SidebarGroupLabel>,
+      <SidebarItem key="item" id="item-1" href="/page">
+        Page
+      </SidebarItem>,
+      <SidebarSeparator key="sep" />,
+    ];
+
+    const collection = buildCollection(jsx);
+
+    expect(collection.rootNodes).toHaveLength(3);
+    expect(collection.rootNodes[0].type).toBe('groupLabel');
+    expect(collection.rootNodes[1].type).toBe('item');
+    expect(collection.rootNodes[2].type).toBe('separator');
+    expect(collection.getItem('item-1')).toBeDefined();
+  });
 });
 
-// --- Roving Tabindex Tests ---
+describe('collection.ts edge cases', () => {
+  test('buildCollection skips unrecognized children', () => {
+    const jsx = [
+      <SidebarItem key="a" id="a" href="/a">
+        A
+      </SidebarItem>,
+      <div key="unknown">I am not a sidebar element</div>,
+      <SidebarItem key="b" id="b" href="/b">
+        B
+      </SidebarItem>,
+    ];
 
-test('only one nav item has tabIndex=0 in the active panel', () => {
-  render(<Basic.Component />);
+    const collection = buildCollection(jsx);
 
-  const links = screen.getAllByRole('link');
-  const tabbable = links.filter(l => l.tabIndex === 0);
-  const nonTabbable = links.filter(l => l.tabIndex === -1);
+    expect(collection.rootNodes).toHaveLength(2);
+    expect(collection.rootNodes[0].key).toBe('a');
+    expect(collection.rootNodes[1].key).toBe('b');
+  });
 
-  expect(tabbable).toHaveLength(1);
-  expect(tabbable[0]).toHaveAttribute('aria-current', 'page');
-  expect(nonTabbable.length).toBeGreaterThan(0);
-});
-
-test('arrow key updates which item has tabIndex=0', async () => {
-  render(<Basic.Component />);
-
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const analytics = screen.getByRole('link', { name: 'Analytics' });
-
-  expect(overview).toHaveAttribute('tabindex', '0');
-  expect(analytics).toHaveAttribute('tabindex', '-1');
-
-  overview.focus();
-  await user.keyboard('{ArrowDown}');
-
-  expect(analytics).toHaveFocus();
-  expect(analytics).toHaveAttribute('tabindex', '0');
-  expect(overview).toHaveAttribute('tabindex', '-1');
-});
-
-test('back button participates in roving tabindex', async () => {
-  render(<WithActiveBranch.Component />);
-
-  const backButton = screen.getByRole('button', { name: /Back to Management/ });
-  const usersLink = screen.getByRole('link', { name: 'Users' });
-
-  // Users is active, so it should be the tab stop
-  expect(usersLink).toHaveAttribute('tabindex', '0');
-  expect(backButton).toHaveAttribute('tabindex', '-1');
-
-  // Arrow up to back button
-  usersLink.focus();
-  await user.keyboard('{ArrowUp}');
-
-  expect(backButton).toHaveFocus();
-  expect(backButton).toHaveAttribute('tabindex', '0');
-  expect(usersLink).toHaveAttribute('tabindex', '-1');
-});
-
-test('buildCollection handles group labels and separators in index', () => {
-  const jsx = [
-    <SidebarGroupLabel key="label">Section</SidebarGroupLabel>,
-    <SidebarItem key="item" id="item-1" href="/page">
-      Page
-    </SidebarItem>,
-    <SidebarSeparator key="sep" />,
-  ];
-
-  const collection = buildCollection(jsx);
-
-  expect(collection.rootNodes).toHaveLength(3);
-  expect(collection.rootNodes[0].type).toBe('groupLabel');
-  expect(collection.rootNodes[1].type).toBe('item');
-  expect(collection.rootNodes[2].type).toBe('separator');
-  expect(collection.getItem('item-1')).toBeDefined();
-});
-
-// --- collection.ts edge-case tests ---
-
-test('buildCollection skips unrecognized children', () => {
-  const jsx = [
-    <SidebarItem key="a" id="a" href="/a">
-      A
-    </SidebarItem>,
-    <div key="unknown">I am not a sidebar element</div>,
-    <SidebarItem key="b" id="b" href="/b">
-      B
-    </SidebarItem>,
-  ];
-
-  const collection = buildCollection(jsx);
-
-  expect(collection.rootNodes).toHaveLength(2);
-  expect(collection.rootNodes[0].key).toBe('a');
-  expect(collection.rootNodes[1].key).toBe('b');
-});
-
-test('buildCollection extracts textValue from non-string children as empty', () => {
-  const jsx = [
-    <SidebarItem key="icon-item" id="icon-item">
-      {/* Only non-string children: icon element + nested SidebarItem */}
-      <span>Icon</span>
-      <SidebarItem href="/child" active>
-        Child
-      </SidebarItem>
-    </SidebarItem>,
-  ];
-
-  const collection = buildCollection(jsx);
-  const node = collection.getItem('icon-item');
-
-  expect(node).toBeDefined();
-  // textValue should be empty since there are no direct string children
-  expect(node?.type === 'item' && node.textValue).toBe('');
-});
-
-test('findActiveBranch finds deeply nested active item', () => {
-  const jsx = [
-    <SidebarItem key="root-branch" id="root-branch" textValue="Root Branch">
-      Root Branch
-      <SidebarItem id="mid-branch" textValue="Mid Branch">
-        Mid Branch
-        <SidebarItem href="/deep" active>
-          Deep Leaf
+  test('buildCollection extracts textValue from non-string children as empty', () => {
+    const jsx = [
+      <SidebarItem key="icon-item" id="icon-item">
+        {/* Only non-string children: icon element + nested SidebarItem */}
+        <span>Icon</span>
+        <SidebarItem href="/child" active>
+          Child
         </SidebarItem>
-      </SidebarItem>
-    </SidebarItem>,
-  ];
+      </SidebarItem>,
+    ];
 
-  const collection = buildCollection(jsx);
+    const collection = buildCollection(jsx);
+    const node = collection.getItem('icon-item');
 
-  expect(findActiveBranch(collection)).toBe('root-branch');
+    expect(node).toBeDefined();
+    // textValue should be empty since there are no direct string children
+    expect(node?.type === 'item' && node.textValue).toBe('');
+  });
+
+  test('findActiveBranch finds deeply nested active item', () => {
+    const jsx = [
+      <SidebarItem key="root-branch" id="root-branch" textValue="Root Branch">
+        Root Branch
+        <SidebarItem id="mid-branch" textValue="Mid Branch">
+          Mid Branch
+          <SidebarItem href="/deep" active>
+            Deep Leaf
+          </SidebarItem>
+        </SidebarItem>
+      </SidebarItem>,
+    ];
+
+    const collection = buildCollection(jsx);
+
+    expect(findActiveBranch(collection)).toBe('root-branch');
+  });
+
+  test('firstLeafHref returns undefined when branch has no leaf hrefs', () => {
+    const jsx = [
+      <SidebarItem key="empty" id="empty" textValue="Empty">
+        Empty
+        <SidebarItem>No href</SidebarItem>
+      </SidebarItem>,
+    ];
+
+    const collection = buildCollection(jsx);
+    const node = collection.getItem('empty');
+
+    // Branch node should have undefined href since no leaf has an href
+    expect(node?.type === 'item' && node.href).toBeUndefined();
+  });
 });
 
-test('firstLeafHref returns undefined when branch has no leaf hrefs', () => {
-  const jsx = [
-    <SidebarItem key="empty" id="empty" textValue="Empty">
-      Empty
-      <SidebarItem>No href</SidebarItem>
-    </SidebarItem>,
-  ];
+describe('panelPosition utility', () => {
+  test('panelPosition returns active for root when stack is empty', () => {
+    expect(panelPosition('root', [])).toBe('active');
+  });
 
-  const collection = buildCollection(jsx);
-  const node = collection.getItem('empty');
+  test('panelPosition returns before for root when stack has entries', () => {
+    expect(panelPosition('root', ['branch-a'])).toBe('before');
+  });
 
-  // Branch node should have undefined href since no leaf has an href
-  expect(node?.type === 'item' && node.href).toBeUndefined();
+  test('panelPosition returns active for key at top of stack', () => {
+    expect(panelPosition('branch-a', ['branch-a'])).toBe('active');
+  });
+
+  test('panelPosition returns before for key earlier in stack', () => {
+    expect(panelPosition('branch-a', ['branch-a', 'branch-b'])).toBe('before');
+  });
+
+  test('panelPosition returns after for key not in stack', () => {
+    expect(panelPosition('branch-c', ['branch-a'])).toBe('after');
+  });
 });
 
-// --- panelPosition utility tests ---
+describe('useRovingItem error outside provider', () => {
+  test('useRovingItem throws outside RovingTabIndexProvider', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-test('panelPosition returns active for root when stack is empty', () => {
-  expect(panelPosition('root', [])).toBe('active');
+    expect(() => {
+      renderHook(() => useRovingItem('some-key'));
+    }).toThrow('useRovingItem must be used within a RovingTabIndexProvider');
+
+    spy.mockRestore();
+  });
 });
 
-test('panelPosition returns before for root when stack has entries', () => {
-  expect(panelPosition('root', ['branch-a'])).toBe('before');
+describe('useLastDistinctValue hook', () => {
+  test('useLastDistinctValue returns undefined on first render', () => {
+    const { result } = renderHook(() => useLastDistinctValue('a'));
+
+    expect(result.current).toBeUndefined();
+  });
+
+  test('useLastDistinctValue returns previous value after change', () => {
+    const { result, rerender } = renderHook(
+      ({ value }) => useLastDistinctValue(value),
+      { initialProps: { value: 'a' } }
+    );
+
+    expect(result.current).toBeUndefined();
+
+    rerender({ value: 'b' });
+
+    expect(result.current).toBe('a');
+  });
 });
 
-test('panelPosition returns active for key at top of stack', () => {
-  expect(panelPosition('branch-a', ['branch-a'])).toBe('active');
+describe('Ctrl+B keyboard shortcut (non-meta, ctrlKey)', () => {
+  test('keyboard shortcut Ctrl+B toggles sidebar', async () => {
+    render(<Basic.Component />);
+    const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
+
+    await user.keyboard('{Control>}b{/Control}');
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  });
 });
 
-test('panelPosition returns before for key earlier in stack', () => {
-  expect(panelPosition('branch-a', ['branch-a', 'branch-b'])).toBe('before');
+describe('normalizePath helper', () => {
+  test('normalizePath returns root unchanged', () => {
+    expect(normalizePath('/')).toBe('/');
+  });
+
+  test('normalizePath strips query string', () => {
+    expect(normalizePath('/users?page=2')).toBe('/users');
+  });
+
+  test('normalizePath strips hash fragment', () => {
+    expect(normalizePath('/users#top')).toBe('/users');
+  });
+
+  test('normalizePath strips both query and hash', () => {
+    expect(normalizePath('/users?page=2#top')).toBe('/users');
+  });
+
+  test('normalizePath strips trailing slash', () => {
+    expect(normalizePath('/users/')).toBe('/users');
+  });
+
+  test('normalizePath collapses multiple trailing slashes', () => {
+    expect(normalizePath('/users///')).toBe('/users');
+  });
+
+  test('normalizePath preserves root when input is empty after stripping', () => {
+    expect(normalizePath('?foo=bar')).toBe('/');
+  });
 });
-
-test('panelPosition returns after for key not in stack', () => {
-  expect(panelPosition('branch-c', ['branch-a'])).toBe('after');
-});
-
-// --- useRovingItem error outside provider ---
-
-test('useRovingItem throws outside RovingTabIndexProvider', () => {
-  const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-  expect(() => {
-    renderHook(() => useRovingItem('some-key'));
-  }).toThrow('useRovingItem must be used within a RovingTabIndexProvider');
-
-  spy.mockRestore();
-});
-
-// --- useLastDistinctValue hook ---
-
-test('useLastDistinctValue returns undefined on first render', () => {
-  const { result } = renderHook(() => useLastDistinctValue('a'));
-
-  expect(result.current).toBeUndefined();
-});
-
-test('useLastDistinctValue returns previous value after change', () => {
-  const { result, rerender } = renderHook(
-    ({ value }) => useLastDistinctValue(value),
-    { initialProps: { value: 'a' } }
-  );
-
-  expect(result.current).toBeUndefined();
-
-  rerender({ value: 'b' });
-
-  expect(result.current).toBe('a');
-});
-
-// --- Ctrl+B keyboard shortcut (non-meta, ctrlKey) ---
-
-test('keyboard shortcut Ctrl+B toggles sidebar', async () => {
-  render(<Basic.Component />);
-  const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
-
-  await user.keyboard('{Control>}b{/Control}');
-
-  expect(toggle).toHaveAttribute('aria-expanded', 'false');
-});
-
-// --- normalizePath helper ---
-
-test('normalizePath returns root unchanged', () => {
-  expect(normalizePath('/')).toBe('/');
-});
-
-test('normalizePath strips query string', () => {
-  expect(normalizePath('/users?page=2')).toBe('/users');
-});
-
-test('normalizePath strips hash fragment', () => {
-  expect(normalizePath('/users#top')).toBe('/users');
-});
-
-test('normalizePath strips both query and hash', () => {
-  expect(normalizePath('/users?page=2#top')).toBe('/users');
-});
-
-test('normalizePath strips trailing slash', () => {
-  expect(normalizePath('/users/')).toBe('/users');
-});
-
-test('normalizePath collapses multiple trailing slashes', () => {
-  expect(normalizePath('/users///')).toBe('/users');
-});
-
-test('normalizePath preserves root when input is empty after stripping', () => {
-  expect(normalizePath('?foo=bar')).toBe('/');
-});
-
-// --- resolveCurrent: string mode ---
 
 const navJsx = () => [
   <SidebarItem key="home" id="home" href="/">
@@ -1285,336 +1287,338 @@ const navJsx = () => [
   </SidebarItem>,
 ];
 
-test('resolveCurrent: exact match wins', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, '/overview');
+describe('resolveCurrent: string mode', () => {
+  test('resolveCurrent: exact match wins', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, '/overview');
 
-  expect(Array.from(active)).toEqual(['overview']);
-});
-
-test('resolveCurrent: longest segment-prefix match wins for dynamic routes', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, '/users/abc-123');
-
-  // /users is a segment prefix of /users/abc-123, /users/list is not
-  expect(Array.from(active)).toEqual(['users']);
-});
-
-test('resolveCurrent: prefers longer segment-prefix when multiple match', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, '/users/list/abc-123');
-
-  // Both /users and /users/list are prefixes — longer wins
-  expect(Array.from(active)).toEqual(['users-list']);
-});
-
-test('resolveCurrent: root "/" never acts as a prefix', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, '/anything-else');
-
-  // Home (href "/") would be a "prefix" of everything if not excluded
-  expect(active.size).toBe(0);
-});
-
-test('resolveCurrent: root "/" matches itself exactly', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, '/');
-
-  expect(Array.from(active)).toEqual(['home']);
-});
-
-test('resolveCurrent: segment boundary required (no partial-segment match)', () => {
-  const collection = buildCollection(navJsx());
-  // /user is NOT a segment prefix of /users (no `/` boundary)
-  const active = resolveCurrent(collection, '/user');
-
-  expect(active.size).toBe(0);
-});
-
-test('resolveCurrent: query string and hash are stripped from input', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, '/overview?tab=stats#top');
-
-  expect(Array.from(active)).toEqual(['overview']);
-});
-
-test('resolveCurrent: trailing slash on input is normalized', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, '/overview/');
-
-  expect(Array.from(active)).toEqual(['overview']);
-});
-
-test('resolveCurrent: branches are excluded from string matching', () => {
-  const jsx = [
-    <SidebarItem key="branch" id="branch" textValue="Branch">
-      Branch
-      <SidebarItem href="/users/list" id="leaf">
-        Users List
-      </SidebarItem>
-    </SidebarItem>,
-  ];
-  const collection = buildCollection(jsx);
-
-  // Branch derives href = "/users/list" via firstLeafHref, but only the leaf
-  // should appear in the active set. Branch highlighting is the job of
-  // findActiveBranch.
-  const active = resolveCurrent(collection, '/users/list');
-
-  expect(Array.from(active)).toEqual(['leaf']);
-});
-
-test('resolveCurrent: empty set when no leaf matches', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, '/nonexistent');
-
-  expect(active.size).toBe(0);
-});
-
-test('resolveCurrent: returns empty when current is undefined', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, undefined);
-
-  expect(active.size).toBe(0);
-});
-
-// --- resolveCurrent: function mode ---
-
-test('resolveCurrent: predicate is called per leaf with (href, key)', () => {
-  const collection = buildCollection(navJsx());
-  const calls: Array<[string | undefined, string]> = [];
-
-  resolveCurrent(collection, (href, key) => {
-    calls.push([href, key]);
-    return false;
+    expect(Array.from(active)).toEqual(['overview']);
   });
 
-  expect(calls).toEqual([
-    ['/', 'home'],
-    ['/overview', 'overview'],
-    ['/users', 'users'],
-    ['/users/list', 'users-list'],
-  ]);
+  test('resolveCurrent: longest segment-prefix match wins for dynamic routes', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, '/users/abc-123');
+
+    // /users is a segment prefix of /users/abc-123, /users/list is not
+    expect(Array.from(active)).toEqual(['users']);
+  });
+
+  test('resolveCurrent: prefers longer segment-prefix when multiple match', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, '/users/list/abc-123');
+
+    // Both /users and /users/list are prefixes — longer wins
+    expect(Array.from(active)).toEqual(['users-list']);
+  });
+
+  test('resolveCurrent: root "/" never acts as a prefix', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, '/anything-else');
+
+    // Home (href "/") would be a "prefix" of everything if not excluded
+    expect(active.size).toBe(0);
+  });
+
+  test('resolveCurrent: root "/" matches itself exactly', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, '/');
+
+    expect(Array.from(active)).toEqual(['home']);
+  });
+
+  test('resolveCurrent: segment boundary required (no partial-segment match)', () => {
+    const collection = buildCollection(navJsx());
+    // /user is NOT a segment prefix of /users (no `/` boundary)
+    const active = resolveCurrent(collection, '/user');
+
+    expect(active.size).toBe(0);
+  });
+
+  test('resolveCurrent: query string and hash are stripped from input', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, '/overview?tab=stats#top');
+
+    expect(Array.from(active)).toEqual(['overview']);
+  });
+
+  test('resolveCurrent: trailing slash on input is normalized', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, '/overview/');
+
+    expect(Array.from(active)).toEqual(['overview']);
+  });
+
+  test('resolveCurrent: branches are excluded from string matching', () => {
+    const jsx = [
+      <SidebarItem key="branch" id="branch" textValue="Branch">
+        Branch
+        <SidebarItem href="/users/list" id="leaf">
+          Users List
+        </SidebarItem>
+      </SidebarItem>,
+    ];
+    const collection = buildCollection(jsx);
+
+    // Branch derives href = "/users/list" via firstLeafHref, but only the leaf
+    // should appear in the active set. Branch highlighting is the job of
+    // findActiveBranch.
+    const active = resolveCurrent(collection, '/users/list');
+
+    expect(Array.from(active)).toEqual(['leaf']);
+  });
+
+  test('resolveCurrent: empty set when no leaf matches', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, '/nonexistent');
+
+    expect(active.size).toBe(0);
+  });
+
+  test('resolveCurrent: returns empty when current is undefined', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, undefined);
+
+    expect(active.size).toBe(0);
+  });
 });
 
-test('resolveCurrent: predicate can match multiple leaves', () => {
-  const collection = buildCollection(navJsx());
-  const active = resolveCurrent(collection, href =>
-    href ? href.startsWith('/users') : false
-  );
+describe('resolveCurrent: function mode', () => {
+  test('resolveCurrent: predicate is called per leaf with (href, key)', () => {
+    const collection = buildCollection(navJsx());
+    const calls: Array<[string | undefined, string]> = [];
 
-  expect(Array.from(active).sort()).toEqual(['users', 'users-list']);
+    resolveCurrent(collection, (href, key) => {
+      calls.push([href, key]);
+      return false;
+    });
+
+    expect(calls).toEqual([
+      ['/', 'home'],
+      ['/overview', 'overview'],
+      ['/users', 'users'],
+      ['/users/list', 'users-list'],
+    ]);
+  });
+
+  test('resolveCurrent: predicate can match multiple leaves', () => {
+    const collection = buildCollection(navJsx());
+    const active = resolveCurrent(collection, href =>
+      href ? href.startsWith('/users') : false
+    );
+
+    expect(Array.from(active).sort()).toEqual(['users', 'users-list']);
+  });
 });
 
-// --- resolveCurrent: dev-mode duplicate href warning ---
+describe('resolveCurrent: dev-mode duplicate href warning', () => {
+  test('resolveCurrent: warns in dev when two leaves share an href', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const jsx = [
+      <SidebarItem key="a" id="a" href="/dup">
+        A
+      </SidebarItem>,
+      <SidebarItem key="b" id="b" href="/dup">
+        B
+      </SidebarItem>,
+    ];
+    const collection = buildCollection(jsx);
 
-test('resolveCurrent: warns in dev when two leaves share an href', () => {
-  const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-  const jsx = [
-    <SidebarItem key="a" id="a" href="/dup">
-      A
-    </SidebarItem>,
-    <SidebarItem key="b" id="b" href="/dup">
-      B
-    </SidebarItem>,
-  ];
-  const collection = buildCollection(jsx);
+    resolveCurrent(collection, '/dup');
 
-  resolveCurrent(collection, '/dup');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy.mock.calls[0][0]).toMatch(/share the same href "\/dup"/);
 
-  expect(spy).toHaveBeenCalledTimes(1);
-  expect(spy.mock.calls[0][0]).toMatch(/share the same href "\/dup"/);
+    spy.mockRestore();
+  });
 
-  spy.mockRestore();
+  test('resolveCurrent: duplicate-href tiebreak picks first in document order', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const jsx = [
+      <SidebarItem key="first" id="first" href="/dup">
+        First
+      </SidebarItem>,
+      <SidebarItem key="second" id="second" href="/dup">
+        Second
+      </SidebarItem>,
+    ];
+    const collection = buildCollection(jsx);
+    const active = resolveCurrent(collection, '/dup');
+
+    expect(Array.from(active)).toEqual(['first']);
+
+    spy.mockRestore();
+  });
+
+  test('resolveCurrent: branch sharing href with first leaf does NOT warn', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const jsx = [
+      <SidebarItem key="branch" id="branch" textValue="Branch">
+        Branch
+        <SidebarItem id="leaf" href="/users">
+          Users
+        </SidebarItem>
+      </SidebarItem>,
+    ];
+    const collection = buildCollection(jsx);
+
+    // Branch.href === "/users" via firstLeafHref. Should not trigger duplicate
+    // warning because branches are excluded from leaf duplicate-detection.
+    resolveCurrent(collection, '/users');
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });
 
-test('resolveCurrent: duplicate-href tiebreak picks first in document order', () => {
-  const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-  const jsx = [
-    <SidebarItem key="first" id="first" href="/dup">
-      First
-    </SidebarItem>,
-    <SidebarItem key="second" id="second" href="/dup">
-      Second
-    </SidebarItem>,
-  ];
-  const collection = buildCollection(jsx);
-  const active = resolveCurrent(collection, '/dup');
+describe('applyCurrent', () => {
+  test('applyCurrent sets active=true on matched nodes', () => {
+    const collection = buildCollection(navJsx());
 
-  expect(Array.from(active)).toEqual(['first']);
+    applyCurrent(collection, new Set(['overview']));
 
-  spy.mockRestore();
+    const node = collection.getItem('overview');
+    expect(node?.type === 'item' && node.active).toBe(true);
+  });
+
+  test('applyCurrent does not unset active=true on items not in the set', () => {
+    const jsx = [
+      <SidebarItem key="explicit" id="explicit" href="/explicit" active>
+        Explicit
+      </SidebarItem>,
+      <SidebarItem key="other" id="other" href="/other">
+        Other
+      </SidebarItem>,
+    ];
+    const collection = buildCollection(jsx);
+
+    applyCurrent(collection, new Set(['other']));
+
+    // Explicit override is preserved, other becomes active
+    const explicit = collection.getItem('explicit');
+    const other = collection.getItem('other');
+    expect(explicit?.type === 'item' && explicit.active).toBe(true);
+    expect(other?.type === 'item' && other.active).toBe(true);
+  });
+
+  test('applyCurrent walks nested branches', () => {
+    const jsx = [
+      <SidebarItem key="branch" id="branch" textValue="Branch">
+        Branch
+        <SidebarItem id="nested" href="/nested">
+          Nested
+        </SidebarItem>
+      </SidebarItem>,
+    ];
+    const collection = buildCollection(jsx);
+
+    applyCurrent(collection, new Set(['nested']));
+
+    const nested = collection.getItem('nested');
+    expect(nested?.type === 'item' && nested.active).toBe(true);
+  });
 });
 
-test('resolveCurrent: branch sharing href with first leaf does NOT warn', () => {
-  const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-  const jsx = [
-    <SidebarItem key="branch" id="branch" textValue="Branch">
-      Branch
-      <SidebarItem id="leaf" href="/users">
-        Users
-      </SidebarItem>
-    </SidebarItem>,
-  ];
-  const collection = buildCollection(jsx);
+describe('Sidebar.Nav `current` integration', () => {
+  const renderSidebar = (
+    current?: string | ((href: string | undefined, key: string) => boolean)
+  ) =>
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav current={current}>
+                <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+                <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+                <Sidebar.Item id="management" textValue="Management">
+                  Management
+                  <Sidebar.Item href="/users">Users</Sidebar.Item>
+                  <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
 
-  // Branch.href === "/users" via firstLeafHref. Should not trigger duplicate
-  // warning because branches are excluded from leaf duplicate-detection.
-  resolveCurrent(collection, '/users');
+  test('Sidebar.Nav current prop marks matching leaf as active', () => {
+    renderSidebar('/analytics');
 
-  expect(spy).not.toHaveBeenCalled();
-  spy.mockRestore();
-});
+    const link = linkByText('Analytics');
+    expect(link).toHaveAttribute('aria-current', 'page');
+  });
 
-// --- applyCurrent ---
+  test('Sidebar.Nav current prop auto-opens branch when descendant matches', async () => {
+    renderSidebar('/users');
 
-test('applyCurrent sets active=true on matched nodes', () => {
-  const collection = buildCollection(navJsx());
+    // Users link is inside the Management branch panel
+    const usersLink = await screen.findByRole('link', { name: 'Users' });
+    expect(usersLink).toHaveAttribute('aria-current', 'page');
 
-  applyCurrent(collection, new Set(['overview']));
+    // Management panel should be the active panel
+    expect(closest(usersLink, '[data-position]')).toHaveAttribute(
+      'data-position',
+      'active'
+    );
+  });
 
-  const node = collection.getItem('overview');
-  expect(node?.type === 'item' && node.active).toBe(true);
-});
+  test('Sidebar.Nav current prop with predicate function', () => {
+    renderSidebar(href => href === '/analytics');
 
-test('applyCurrent does not unset active=true on items not in the set', () => {
-  const jsx = [
-    <SidebarItem key="explicit" id="explicit" href="/explicit" active>
-      Explicit
-    </SidebarItem>,
-    <SidebarItem key="other" id="other" href="/other">
-      Other
-    </SidebarItem>,
-  ];
-  const collection = buildCollection(jsx);
+    const link = linkByText('Analytics');
+    expect(link).toHaveAttribute('aria-current', 'page');
+  });
 
-  applyCurrent(collection, new Set(['other']));
+  test('Sidebar.Nav current prop matches dynamic routes via segment-prefix', async () => {
+    renderSidebar('/users/abc-123');
 
-  // Explicit override is preserved, other becomes active
-  const explicit = collection.getItem('explicit');
-  const other = collection.getItem('other');
-  expect(explicit?.type === 'item' && explicit.active).toBe(true);
-  expect(other?.type === 'item' && other.active).toBe(true);
-});
+    const usersLink = await screen.findByRole('link', { name: 'Users' });
+    expect(usersLink).toHaveAttribute('aria-current', 'page');
+  });
 
-test('applyCurrent walks nested branches', () => {
-  const jsx = [
-    <SidebarItem key="branch" id="branch" textValue="Branch">
-      Branch
-      <SidebarItem id="nested" href="/nested">
-        Nested
-      </SidebarItem>
-    </SidebarItem>,
-  ];
-  const collection = buildCollection(jsx);
+  test('Sidebar.Nav explicit `active` prop wins as local override', () => {
+    // Explicit active on Overview, current points elsewhere — both should be active.
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav current="/analytics">
+                <Sidebar.Item href="/overview" active>
+                  Overview
+                </Sidebar.Item>
+                <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
 
-  applyCurrent(collection, new Set(['nested']));
+    expect(linkByText('Overview')).toHaveAttribute('aria-current', 'page');
+    expect(linkByText('Analytics')).toHaveAttribute('aria-current', 'page');
+  });
 
-  const nested = collection.getItem('nested');
-  expect(nested?.type === 'item' && nested.active).toBe(true);
-});
+  test('Sidebar.Nav without current prop falls back to per-item active', () => {
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav>
+                <Sidebar.Item href="/overview" active>
+                  Overview
+                </Sidebar.Item>
+                <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
 
-// --- Sidebar.Nav `current` integration ---
-
-const renderSidebar = (
-  current?: string | ((href: string | undefined, key: string) => boolean)
-) =>
-  render(
-    <RouterProvider navigate={() => {}}>
-      <MarigoldProvider theme={theme}>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav current={current}>
-              <Sidebar.Item href="/overview">Overview</Sidebar.Item>
-              <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
-              <Sidebar.Item id="management" textValue="Management">
-                Management
-                <Sidebar.Item href="/users">Users</Sidebar.Item>
-                <Sidebar.Item href="/teams">Teams</Sidebar.Item>
-              </Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </MarigoldProvider>
-    </RouterProvider>
-  );
-
-test('Sidebar.Nav current prop marks matching leaf as active', () => {
-  renderSidebar('/analytics');
-
-  const link = linkByText('Analytics');
-  expect(link).toHaveAttribute('aria-current', 'page');
-});
-
-test('Sidebar.Nav current prop auto-opens branch when descendant matches', async () => {
-  renderSidebar('/users');
-
-  // Users link is inside the Management branch panel
-  const usersLink = await screen.findByRole('link', { name: 'Users' });
-  expect(usersLink).toHaveAttribute('aria-current', 'page');
-
-  // Management panel should be the active panel
-  expect(closest(usersLink, '[data-position]')).toHaveAttribute(
-    'data-position',
-    'active'
-  );
-});
-
-test('Sidebar.Nav current prop with predicate function', () => {
-  renderSidebar(href => href === '/analytics');
-
-  const link = linkByText('Analytics');
-  expect(link).toHaveAttribute('aria-current', 'page');
-});
-
-test('Sidebar.Nav current prop matches dynamic routes via segment-prefix', async () => {
-  renderSidebar('/users/abc-123');
-
-  const usersLink = await screen.findByRole('link', { name: 'Users' });
-  expect(usersLink).toHaveAttribute('aria-current', 'page');
-});
-
-test('Sidebar.Nav explicit `active` prop wins as local override', () => {
-  // Explicit active on Overview, current points elsewhere — both should be active.
-  render(
-    <RouterProvider navigate={() => {}}>
-      <MarigoldProvider theme={theme}>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav current="/analytics">
-              <Sidebar.Item href="/overview" active>
-                Overview
-              </Sidebar.Item>
-              <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </MarigoldProvider>
-    </RouterProvider>
-  );
-
-  expect(linkByText('Overview')).toHaveAttribute('aria-current', 'page');
-  expect(linkByText('Analytics')).toHaveAttribute('aria-current', 'page');
-});
-
-test('Sidebar.Nav without current prop falls back to per-item active', () => {
-  render(
-    <RouterProvider navigate={() => {}}>
-      <MarigoldProvider theme={theme}>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav>
-              <Sidebar.Item href="/overview" active>
-                Overview
-              </Sidebar.Item>
-              <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </MarigoldProvider>
-    </RouterProvider>
-  );
-
-  expect(linkByText('Overview')).toHaveAttribute('aria-current', 'page');
-  expect(linkByText('Analytics')).not.toHaveAttribute('aria-current');
+    expect(linkByText('Overview')).toHaveAttribute('aria-current', 'page');
+    expect(linkByText('Analytics')).not.toHaveAttribute('aria-current');
+  });
 });
