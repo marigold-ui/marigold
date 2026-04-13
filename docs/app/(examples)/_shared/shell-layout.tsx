@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowLeft } from 'lucide-react';
-import type { PropsWithChildren, ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   AppLayout,
@@ -103,15 +103,6 @@ export const ShellLayout = ({
   const activeSection = getActiveSection(config.sections, slug);
   const page = activeSection.pages[slug];
 
-  const item = (itemSlug: string, label: ReactNode) => (
-    <Sidebar.Item
-      href={`${config.base}/${itemSlug}`}
-      active={slug === itemSlug}
-    >
-      {label}
-    </Sidebar.Item>
-  );
-
   const handleSectionSwitch = (key: string) => {
     const section = config.sections.find(s => s.label === key);
     if (section) {
@@ -132,7 +123,9 @@ export const ShellLayout = ({
                 </Text>
               </Inline>
             </Sidebar.Header>
-            <Sidebar.Nav>{activeSection.nav({ item })}</Sidebar.Nav>
+            <Sidebar.Nav>
+              {activeSection.nav({ base: config.base, activeSlug: slug })}
+            </Sidebar.Nav>
             <Sidebar.Footer>
               <SectionSwitcher
                 sections={config.sections}

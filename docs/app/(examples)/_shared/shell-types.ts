@@ -8,15 +8,15 @@ export interface PageMeta {
   docsLabel?: string;
 }
 
-export interface NavHelpers {
-  /** Build a `Sidebar.Item` linked to `${base}/${slug}` with active state resolved. */
-  item: (slug: string, label: ReactNode) => ReactNode;
+export interface NavContext {
+  base: string;
+  activeSlug: string;
 }
 
 export interface NavSection {
   label: string;
   icon?: LucideIcon;
-  nav: (helpers: NavHelpers) => ReactNode;
+  nav: (ctx: NavContext) => ReactNode;
   pages: Record<string, PageMeta>;
 }
 
