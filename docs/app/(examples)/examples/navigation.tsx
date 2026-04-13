@@ -6,22 +6,20 @@ const appShell: NavSection = {
   label: 'App Shell',
   icon: PanelsTopLeft,
   nav: appShellNav,
+  pages: appShellPages,
 };
 
 const patterns: NavSection = {
   label: 'Patterns',
   icon: Puzzle,
-  nav: [
-    { type: 'item', label: 'Filter', slug: 'filter' },
-    { type: 'item', label: 'Form', slug: 'form' },
-    { type: 'item', label: 'Inventory', slug: 'inventory' },
-  ],
-};
-
-export const config: ShellConfig = {
-  base: '/examples',
+  nav: ({ item }) => (
+    <>
+      {item('filter', 'Filter')}
+      {item('form', 'Form')}
+      {item('inventory', 'Inventory')}
+    </>
+  ),
   pages: {
-    ...appShellPages,
     filter: {
       label: 'Filter',
       docsHref: '/patterns/filter',
@@ -34,5 +32,9 @@ export const config: ShellConfig = {
     },
     inventory: { label: 'Inventory' },
   },
+};
+
+export const config: ShellConfig = {
+  base: '/examples',
   sections: [appShell, patterns],
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowLeft } from 'lucide-react';
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   AppLayout,
@@ -16,98 +16,16 @@ import {
   TopNavigation,
 } from '@marigold/components';
 import { Logo } from '@/ui/Logo';
-import type {
-  NavEntry,
-  NavSection,
-  PageMeta,
-  ShellConfig,
-} from './shell-types';
+import type { NavSection, PageMeta, ShellConfig } from './shell-types';
 import { UserMenu } from './user-menu';
 
 // Helpers
 // ---------------
-const getSlugs = (nav: NavEntry[]): string[] =>
-  nav.flatMap(entry => {
-    switch (entry.type) {
-      case 'item':
-        return [entry.slug];
-      case 'group':
-      case 'label-group':
-        return entry.children.map(c => c.slug);
-      case 'separator':
-        return [];
-    }
-  });
-
 const getActiveSection = (sections: NavSection[], slug: string) =>
-  sections.find(s => getSlugs(s.nav).includes(slug)) ?? sections[0];
+  sections.find(s => slug in s.pages) ?? sections[0];
 
-const getFirstSlug = (section: NavSection) => getSlugs(section.nav)[0] ?? '';
-
-// Sidebar Nav
-// ---------------
-const SidebarNav = ({
-  base,
-  nav,
-  activeSlug,
-}: {
-  base: string;
-  nav: NavEntry[];
-  activeSlug: string;
-}) => (
-  <Sidebar.Nav>
-    {nav.map((entry, i) => {
-      switch (entry.type) {
-        case 'item':
-          return (
-            <Sidebar.Item
-              key={entry.slug}
-              href={`${base}/${entry.slug}`}
-              active={activeSlug === entry.slug}
-            >
-              {entry.label}
-            </Sidebar.Item>
-          );
-        case 'group':
-          return (
-            <Sidebar.Item
-              key={entry.label}
-              id={entry.label.toLowerCase()}
-              textValue={entry.label}
-            >
-              {entry.label}
-              {entry.children.map(child => (
-                <Sidebar.Item
-                  key={child.slug}
-                  href={`${base}/${child.slug}`}
-                  active={activeSlug === child.slug}
-                >
-                  {child.label}
-                </Sidebar.Item>
-              ))}
-            </Sidebar.Item>
-          );
-        case 'label-group':
-          return (
-            <div key={entry.label}>
-              <Sidebar.GroupLabel>{entry.label}</Sidebar.GroupLabel>
-              {entry.children.map(child => (
-                <Sidebar.Item
-                  key={child.slug}
-                  href={`${base}/${child.slug}`}
-                  active={activeSlug === child.slug}
-                >
-                  {child.label}
-                </Sidebar.Item>
-              ))}
-            </div>
-          );
-        case 'separator':
-          return <Sidebar.Separator key={`sep-${i}`} />;
-      }
-    })}
-  </Sidebar.Nav>
-);
+const getFirstSlug = (section: NavSection) =>
+  Object.keys(section.pages)[0] ?? '';
 
 // User Section
 // ---------------
@@ -182,14 +100,22 @@ export const ShellLayout = ({
   const router = useRouter();
 
   const slug = pathname.replace(config.base, '').replace(/^\//, '');
-  const page = config.pages[slug];
   const activeSection = getActiveSection(config.sections, slug);
+  const page = activeSection.pages[slug];
+
+  const item = (itemSlug: string, label: ReactNode) => (
+    <Sidebar.Item
+      href={`${config.base}/${itemSlug}`}
+      active={slug === itemSlug}
+    >
+      {label}
+    </Sidebar.Item>
+  );
 
   const handleSectionSwitch = (key: string) => {
     const section = config.sections.find(s => s.label === key);
     if (section) {
-      const firstSlug = getFirstSlug(section);
-      router.push(`${config.base}/${firstSlug}`);
+      router.push(`${config.base}/${getFirstSlug(section)}`);
     }
   };
 
@@ -206,11 +132,7 @@ export const ShellLayout = ({
                 </Text>
               </Inline>
             </Sidebar.Header>
-            <SidebarNav
-              base={config.base}
-              nav={activeSection.nav}
-              activeSlug={slug}
-            />
+            <Sidebar.Nav>{activeSection.nav({ item })}</Sidebar.Nav>
             <Sidebar.Footer>
               <SectionSwitcher
                 sections={config.sections}
