@@ -53,13 +53,6 @@ const meta = preview.meta({
       description:
         'The placement padding that should be applied between the element and its surrounding container.',
     },
-    open: {
-      control: {
-        type: 'boolean',
-        default: 'false',
-      },
-      description: 'If the tooltip is open (controlled)',
-    },
     size: {
       control: {
         type: 'text',
@@ -89,8 +82,13 @@ export const Basic = meta.story({
   },
 });
 
-export const OpenViaTooltipProp = Basic.extend({
-  args: {
-    open: true,
-  },
+export const OpenViaTooltipTriggerProp = meta.story({
+  render: args => (
+    <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] gap-2 pt-32">
+      <Tooltip.Trigger open>
+        <Button variant="primary">Always open</Button>
+        <Tooltip {...args}>Opened via Tooltip.Trigger open prop</Tooltip>
+      </Tooltip.Trigger>
+    </div>
+  ),
 });
