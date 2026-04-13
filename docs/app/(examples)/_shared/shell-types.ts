@@ -1,18 +1,29 @@
 import type { LucideIcon } from 'lucide-react';
-import type { ReactNode } from 'react';
 
-export interface PageMeta {
-  label: string;
-  parent?: string;
-  docsHref?: string;
-  docsLabel?: string;
-}
+export type NavNode =
+  | {
+      kind: 'Item';
+      slug: string;
+      label: string;
+      docsHref?: string;
+      docsLabel?: string;
+      children?: never;
+    }
+  | {
+      kind: 'Item';
+      label: string;
+      children: NavNode[];
+      slug?: never;
+      docsHref?: never;
+      docsLabel?: never;
+    }
+  | { kind: 'GroupLabel'; label: string }
+  | { kind: 'Separator' };
 
 export interface NavSection {
   label: string;
   icon?: LucideIcon;
-  nav: (props: { base: string }) => ReactNode;
-  pages: Record<string, PageMeta>;
+  items: NavNode[];
 }
 
 export interface ShellConfig {
