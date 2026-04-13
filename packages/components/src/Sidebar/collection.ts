@@ -130,7 +130,9 @@ export type SidebarCurrent = string | SidebarCurrentMatcher;
 export const normalizePath = (path: string): string => {
   const noQuery = path.split('?')[0].split('#')[0];
   if (noQuery === '' || noQuery === '/') return '/';
-  const trimmed = noQuery.replace(/\/+$/, '');
+  // Negative lookbehind anchors the match at the first `/` of a trailing run,
+  // preventing polynomial backtracking on inputs like `'/'.repeat(n) + 'x'`.
+  const trimmed = noQuery.replace(/(?<!\/)\/+$/, '');
   return trimmed === '' ? '/' : trimmed;
 };
 
