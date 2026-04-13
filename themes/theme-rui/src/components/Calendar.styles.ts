@@ -16,7 +16,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     base: [
       'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg justify-self-center',
       'border border-transparent p-0 text-sm font-normal text-foreground',
-      'outline-offset-2 duration-150 transition-all',
+      'outline-offset-2 duration-150 transition-[color,background-color]',
       'selected:bg-brand selected:text-brand-foreground',
       'data-hovered:bg-hover data-hovered:text-foreground',
       'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
@@ -30,7 +30,6 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'inline-flex items-center justify-center gap-[0.5ch]',
       'size-9 rounded-lg',
       'text-muted-foreground',
-      'transition-colors',
       'focus-visible:ui-state-focus outline-none',
     ],
   }),

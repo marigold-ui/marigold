@@ -30,7 +30,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
   clearButton: cva({
     base: [
       'inline-flex items-center justify-center',
-      'shrink-0 size-8 rounded-full cursor-pointer transition-colors',
+      'shrink-0 size-8 rounded-full cursor-pointer transition-[color,background-color]',
       'hover:bg-current/10',
       'focus-visible:ui-state-focus outline-none',
       'disabled:ui-state-disabled',

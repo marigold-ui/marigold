@@ -10,7 +10,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   }),
   tab: cva({
     base: [
-      'relative inline-flex items-center justify-center gap-1 rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
+      'relative inline-flex items-center justify-center gap-1 rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-[color,background-color]',
       '[&_svg]:shrink-0',
       'focus-visible:ui-state-focus outline-none',
       'hover:bg-current/10',

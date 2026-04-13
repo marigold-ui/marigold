@@ -4,7 +4,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   closeButton: cva({ base: ['absolute top-6 right-3', 'size-7 '] }),
   container: cva({
     base: [
-      'flex flex-col gap-0 rounded-xl p-6 overflow-y-auto',
+      'flex flex-col gap-0 rounded-xl overflow-y-auto',
       'ui-surface shadow-elevation-overlay ui-scrollbar',
     ],
     variants: {
@@ -17,10 +17,12 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       },
     },
   }),
-  header: cva({ base: 'flex flex-col gap-1 text-center sm:text-left' }),
+  header: cva({
+    base: 'flex flex-col gap-1 text-center sm:text-left px-6 pt-6',
+  }),
   title: cva({ base: 'text-lg font-semibold mb-1' }),
-  content: cva({ base: 'text-sm' }),
+  content: cva({ base: 'text-sm px-6 py-1' }),
   actions: cva({
-    base: 'flex flex-col-reverse gap-3 sm:flex-row sm:justify-end mt-4',
+    base: 'flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4',
   }),
 };

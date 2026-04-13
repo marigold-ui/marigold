@@ -28,6 +28,7 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0',
       'in-[.group]:first:rounded-l-surface',
       'in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0',
+      'in-[.group]:focus-visible:z-10',
     ],
     variants: {
       size: {
