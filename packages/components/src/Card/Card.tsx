@@ -1,27 +1,10 @@
 import { ReactNode } from 'react';
 import type {
-  PaddingBottomProp,
-  PaddingLeftProp,
-  PaddingRightProp,
-  PaddingSpaceProp,
-  PaddingSpacePropX,
-  PaddingSpacePropY,
-  PaddingTopProp,
+  InsetSpacingTokens,
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
-import {
-  cn,
-  createSpacingVar,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingSpace,
-  paddingSpaceX,
-  paddingSpaceY,
-  paddingTop,
-  useClassNames,
-} from '@marigold/system';
+import { cn, createSpacingVar, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
@@ -38,51 +21,51 @@ export interface CardProps {
 
   /**
    * Set the spacing between child elements. You can see allowed tokens [here](../../foundations/design-token#spacing).
-   * @remarks `SpaceProp<SpacingTokens>`
+   * @remarks `Scale | SpacingTokens`
    */
   space?: SpaceProp<SpacingTokens>['space'];
 
   /**
    * Padding of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
-   * @remarks `PaddingSpaceProp`
+   * @remarks `Scale | InsetSpacingTokens`
    */
-  p?: PaddingSpaceProp['space'];
+  p?: SpaceProp<InsetSpacingTokens>['space'];
 
   /**
    * Padding horizontal (left and right) of the component.
-   *  @remarks `PaddingSpacePropX`
+   * @remarks `Scale | SpacingTokens`
    */
-  px?: PaddingSpacePropX['spaceX'];
+  px?: SpaceProp<SpacingTokens>['space'];
 
   /**
    * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
-   * @remarks `PaddingSpacePropY`
+   * @remarks `Scale | SpacingTokens`
    */
-  py?: PaddingSpacePropY['spaceY'];
+  py?: SpaceProp<SpacingTokens>['space'];
 
   /**
    * Set the right padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingRightProp`
+   * @remarks `Scale | SpacingTokens`
    */
-  pr?: PaddingRightProp['pr'];
+  pr?: SpaceProp<SpacingTokens>['space'];
 
   /**
    * Set the left padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingLeftProp`
+   * @remarks `Scale | SpacingTokens`
    */
-  pl?: PaddingLeftProp['pl'];
+  pl?: SpaceProp<SpacingTokens>['space'];
 
   /**
    * Set the top padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingTopProp`
+   * @remarks `Scale | SpacingTokens`
    */
-  pt?: PaddingTopProp['pt'];
+  pt?: SpaceProp<SpacingTokens>['space'];
 
   /**
    * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingBottomProp`
+   * @remarks `Scale | SpacingTokens`
    */
-  pb?: PaddingBottomProp['pb'];
+  pb?: SpaceProp<SpacingTokens>['space'];
 }
 
 // Component
@@ -110,15 +93,24 @@ export const Card = ({
         'flex flex-col gap-y-(--space)',
         stretch ? '' : 'w-fit',
         classNames,
-        paddingSpace !== undefined && paddingSpace[p!],
-        paddingSpaceX !== undefined && paddingSpaceX[px!],
-        paddingSpaceY !== undefined && paddingSpaceY[py!],
-        paddingRight !== undefined && paddingRight[pr!],
-        paddingLeft !== undefined && paddingLeft[pl!],
-        paddingBottom !== undefined && paddingBottom[pb!],
-        paddingTop !== undefined && paddingTop[pt!]
+        p !== undefined && 'p-(--p)',
+        px !== undefined && 'px-(--px)',
+        py !== undefined && 'py-(--py)',
+        pr !== undefined && 'pr-(--pr)',
+        pl !== undefined && 'pl-(--pl)',
+        pb !== undefined && 'pb-(--pb)',
+        pt !== undefined && 'pt-(--pt)'
       )}
-      style={createSpacingVar('space', `${space}`)}
+      style={{
+        ...createSpacingVar('space', `${space}`),
+        ...(p !== undefined ? createSpacingVar('p', `${p}`) : {}),
+        ...(px !== undefined ? createSpacingVar('px', `${px}`) : {}),
+        ...(py !== undefined ? createSpacingVar('py', `${py}`) : {}),
+        ...(pr !== undefined ? createSpacingVar('pr', `${pr}`) : {}),
+        ...(pl !== undefined ? createSpacingVar('pl', `${pl}`) : {}),
+        ...(pb !== undefined ? createSpacingVar('pb', `${pb}`) : {}),
+        ...(pt !== undefined ? createSpacingVar('pt', `${pt}`) : {}),
+      }}
     >
       {children}
     </div>

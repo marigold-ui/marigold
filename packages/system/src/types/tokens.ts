@@ -12,3 +12,29 @@ export type SpacingTokens =
   | 'regular'
   | 'group'
   | 'section';
+
+/**
+ * Inset spacing tokens that describe padding recipes for contained elements.
+ *
+ * - `square-*`: Equal padding on all sides
+ * - `squish-*`: More horizontal than vertical padding
+ * - `stretch-*`: More vertical than horizontal padding
+ *
+ * Each category has five density levels: tight, snug, regular, relaxed, loose.
+ */
+export type InsetSpacingTokens =
+  | 'square-tight'
+  | 'square-snug'
+  | 'square-regular'
+  | 'square-relaxed'
+  | 'square-loose'
+  | 'squish-tight'
+  | 'squish-snug'
+  | 'squish-regular'
+  | 'squish-relaxed'
+  | 'squish-loose'
+  | 'stretch-tight'
+  | 'stretch-snug'
+  | 'stretch-regular'
+  | 'stretch-relaxed'
+  | 'stretch-loose';

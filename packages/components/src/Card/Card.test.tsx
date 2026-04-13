@@ -97,7 +97,7 @@ describe('Card', () => {
       const card = screen.getByTestId('card');
 
       expect(card?.style.getPropertyValue('--space')).toBe(
-        'calc(var(--spacing) * 4)'
+        'var(--spacing-regular)'
       );
     });
 
@@ -124,7 +124,9 @@ describe('Card', () => {
 
       const card = screen.getByTestId('card-p');
 
-      expect(card?.className).toContain('p-8');
+      expect(card?.style.getPropertyValue('--p')).toBe(
+        'var(--spacing-square-regular)'
+      );
     });
 
     test('supports horizontal padding prop (px)', () => {
@@ -136,7 +138,9 @@ describe('Card', () => {
 
       const card = screen.getByTestId('card-px');
 
-      expect(card?.className).toContain('px-4');
+      expect(card?.style.getPropertyValue('--px')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
     });
 
     test('supports vertical padding prop (py)', () => {
@@ -148,7 +152,9 @@ describe('Card', () => {
 
       const card = screen.getByTestId('card-py');
 
-      expect(card?.className).toContain('py-2');
+      expect(card?.style.getPropertyValue('--py')).toBe(
+        'calc(var(--spacing) * 2)'
+      );
     });
 
     test('supports individual padding props (pt, pb, pl, pr)', () => {
@@ -166,10 +172,47 @@ describe('Card', () => {
 
       const card = screen.getByTestId('card-individual');
 
-      expect(card?.className).toContain('pt-3');
-      expect(card?.className).toContain('pb-2');
-      expect(card?.className).toContain('pl-1');
-      expect(card?.className).toContain('pr-4');
+      expect(card?.style.getPropertyValue('--pt')).toBe(
+        'calc(var(--spacing) * 3)'
+      );
+      expect(card?.style.getPropertyValue('--pb')).toBe(
+        'calc(var(--spacing) * 2)'
+      );
+      expect(card?.style.getPropertyValue('--pl')).toBe(
+        'calc(var(--spacing) * 1)'
+      );
+      expect(card?.style.getPropertyValue('--pr')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+    });
+
+    test('supports semantic inset tokens for p', () => {
+      render(
+        <Basic.Component p="squish-regular" data-testid="card-p-semantic">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card-p-semantic');
+
+      expect(card?.style.getPropertyValue('--p')).toBe(
+        'var(--spacing-squish-regular)'
+      );
+    });
+
+    test('supports semantic relational tokens for px/py', () => {
+      render(
+        <Basic.Component px="related" py="group" data-testid="card-semantic-xy">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card-semantic-xy');
+
+      expect(card?.style.getPropertyValue('--px')).toBe(
+        'var(--spacing-related)'
+      );
+      expect(card?.style.getPropertyValue('--py')).toBe('var(--spacing-group)');
     });
   });
 
@@ -223,7 +266,9 @@ describe('Card', () => {
 
       const card = screen.getByTestId('card-space');
 
-      expect(card).toBeInTheDocument();
+      expect(card?.style.getPropertyValue('--space')).toBe(
+        'var(--spacing-section)'
+      );
     });
   });
 });
