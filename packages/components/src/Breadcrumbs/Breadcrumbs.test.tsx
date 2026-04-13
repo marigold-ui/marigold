@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { type RefObject, createRef } from 'react';
+import type { RefObject } from 'react';
 import { vi } from 'vitest';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import {
@@ -110,7 +110,7 @@ test('does not collapse when maxVisibleItems is less than 2', () => {
 });
 
 test('forwards ref', () => {
-  const objectRef = createRef<HTMLOListElement>();
+  const objectRef: RefObject<HTMLOListElement | null> = { current: null };
   const callbackRef = vi.fn();
 
   render(<Basic.Component ref={objectRef} />);
@@ -240,8 +240,8 @@ describe('useAutoCollapse', () => {
   });
 
   test('does nothing when refs are null', () => {
-    const containerRef = createRef<HTMLOListElement>();
-    const hiddenRef = createRef<HTMLDivElement>();
+    const containerRef: RefObject<HTMLOListElement | null> = { current: null };
+    const hiddenRef: RefObject<HTMLDivElement | null> = { current: null };
     const { result } = renderHook(() =>
       useAutoCollapse(containerRef, hiddenRef, 5)
     );
