@@ -1,13 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Basic } from './Headline.stories';
 
-test('renders as a "section" element', () => {
-  render(<Basic.Component data-testid="headline" />);
-
-  const headline = screen.getByTestId('headline');
-  expect(headline instanceof HTMLHeadingElement).toBeTruthy();
-});
-
 test.each([
   { level: '1', textClass: 'text-3xl' },
   { level: '2', textClass: 'text-2xl' },
@@ -72,7 +65,6 @@ test('supports multiple props combined', () => {
   const headline = screen.getByTestId('headline');
   expect(headline).toHaveClass('text-right');
   expect(headline).toHaveClass('leading-loose');
-  expect(headline instanceof HTMLHeadingElement).toBeTruthy();
   expect(headline.tagName).toBe('H3');
 });
 

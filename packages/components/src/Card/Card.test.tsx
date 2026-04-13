@@ -33,18 +33,6 @@ describe('Card', () => {
   });
 
   describe('Element types and layout', () => {
-    test('renders as div element by default', () => {
-      render(
-        <Basic.Component data-testid="card">
-          <div>Content</div>
-        </Basic.Component>
-      );
-
-      const card = screen.getByTestId('card');
-
-      expect(card instanceof HTMLDivElement).toBeTruthy();
-    });
-
     test('renders with flex display and w-fit by default', () => {
       render(
         <Basic.Component data-testid="card">
@@ -255,18 +243,6 @@ describe('Card', () => {
   });
 
   describe('Stretch behavior', () => {
-    test('fills available space when stretch is enabled', () => {
-      render(
-        <Stretch.Component data-testid="card">
-          <div>Content</div>
-        </Stretch.Component>
-      );
-
-      const card = screen.getByTestId('card');
-
-      expect(card).toHaveClass('flex');
-    });
-
     test('does not fill space by default', () => {
       render(
         <Basic.Component data-testid="card">

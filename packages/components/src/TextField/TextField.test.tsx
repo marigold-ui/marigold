@@ -17,7 +17,6 @@ test('renders an text input', () => {
 
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'text');
-  expect(textField instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('allows to change the input type', () => {

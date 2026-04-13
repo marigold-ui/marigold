@@ -27,6 +27,11 @@ export default mergeConfig(
         {
           extends: true,
           plugins: [tsconfigPaths()],
+          define: {
+            // @react-aria/virtualizer references process.env in source
+            'process.env.NODE_ENV': JSON.stringify('test'),
+            'process.env.VIRT_ON': 'undefined',
+          },
           optimizeDeps: {
             include: browserDeps,
           },
@@ -66,6 +71,11 @@ export default mergeConfig(
               },
             }),
           ],
+          define: {
+            // @react-aria/virtualizer references process.env in source
+            'process.env.NODE_ENV': JSON.stringify('test'),
+            'process.env.VIRT_ON': 'undefined',
+          },
           optimizeDeps: {
             include: browserDeps,
           },
