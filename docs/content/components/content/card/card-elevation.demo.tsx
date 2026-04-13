@@ -1,9 +1,9 @@
 import { Card, Inline, Stack, Text } from '@marigold/components';
 
 export default () => (
-  <>
+  <div className="flex flex-col gap-4">
     <div className="bg-background rounded-xl p-4">
-      <p>default layer</p>
+      <p>default layer 👍</p>
       <Card p={4}>
         <Stack>
           <Inline>
@@ -26,7 +26,7 @@ export default () => (
       </Card>
     </div>
     <div className="ui-surface shadow-elevation-raised rounded-xl p-4">
-      <p>Same layer as card</p>
+      <p>Same layer as card 👎</p>
       <Card p={4}>
         <Stack>
           <Inline>
@@ -48,5 +48,5 @@ export default () => (
         </Stack>
       </Card>
     </div>
-  </>
+  </div>
 );
