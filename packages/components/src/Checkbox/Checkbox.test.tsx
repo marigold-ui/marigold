@@ -41,7 +41,7 @@ test('check if all slot class names are applied correctly', () => {
   const label = screen.getByText('With Label');
 
   expect(label.parentElement?.className).toMatchInlineSnapshot(
-    `"group/checkbox flex items-center data-disabled:cursor-not-allowed cursor-pointer read-only:cursor-default gap-2"`
+    `"group/checkbox data-disabled:cursor-not-allowed grid grid-cols-[auto_1fr] gap-x-2 items-center cursor-pointer read-only:cursor-default group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full"`
   );
   expect(getVisibleCheckbox()?.className).toMatchInlineSnapshot(
     `"grow-0 basis-4 items-center justify-center p-px bg-white border-solid grid size-4 shrink-0 place-content-center rounded border border-border shadow-elevation-border group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none group-disabled/checkbox:group-selected/checkbox:bg-disabled-surface group-disabled/checkbox:border-disabled-surface! group-disabled/checkbox:text-disabled group-disabled/checkbox:cursor-not-allowed group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground group-[indeterminate]/checkbox:border-selected-bold group-[indeterminate]/checkbox:bg-selected-bold group-[indeterminate]/checkbox:text-selected-bold-foreground group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface"`
@@ -57,7 +57,7 @@ test('correct class name is set on size small', () => {
   const label = screen.getByText('With Label');
 
   expect(label.parentElement?.className).toMatchInlineSnapshot(
-    `"group/checkbox flex items-center data-disabled:cursor-not-allowed cursor-pointer read-only:cursor-default gap-2"`
+    `"group/checkbox data-disabled:cursor-not-allowed grid grid-cols-[auto_1fr] gap-x-2 items-center cursor-pointer read-only:cursor-default group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full"`
   );
 });
 

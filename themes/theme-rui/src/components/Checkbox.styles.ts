@@ -12,7 +12,13 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface',
     ],
   }),
-  container: cva({ base: 'cursor-pointer read-only:cursor-default gap-2' }),
+  container: cva({
+    base: [
+      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'cursor-pointer read-only:cursor-default',
+      'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    ],
+  }),
   label: cva({
     base: [
       'flex items-center gap-1',
