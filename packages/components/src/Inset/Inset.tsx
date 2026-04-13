@@ -20,21 +20,18 @@ export type InsetProps =
       children: ReactNode;
       space?: never;
       /**
-       * Horizontal alignment for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-       * @remarks `PaddingSpacePropX<Tokens>`
+       * Horizontal alignment for the children.       * @remarks `PaddingSpacePropX<Tokens>`
        */
       spaceX?: PaddingSpacePropX['spaceX'];
       /**
-       * Vertical alignment for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-       * @remarks `PaddingSpacePropY<Tokens>`
+       * Vertical alignment for the children.       * @remarks `PaddingSpacePropY<Tokens>`
        */
       spaceY?: PaddingSpacePropY['spaceY'];
     })
   | (AriaRegionProps & {
       children: ReactNode;
       /**
-       * The space between the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-       * @remarks `PaddingSpaceProp<Tokens>`
+       * The space between the children.       * @remarks `PaddingSpaceProp<Tokens>`
        */
       space?: PaddingSpaceProp['space'];
       spaceX?: never;
