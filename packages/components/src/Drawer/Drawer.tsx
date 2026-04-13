@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { useContext, useRef } from 'react';
+import { use, useRef } from 'react';
 import type { DialogProps } from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
@@ -73,7 +73,7 @@ export const Drawer = ({
     size,
   });
 
-  const ctx = useContext(OverlayTriggerStateContext);
+  const ctx = use(OverlayTriggerStateContext);
 
   /**
    * On smaller screens the we render a modal dialog instead of a non-modal drawer
