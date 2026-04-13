@@ -1,6 +1,6 @@
 import { Key, useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { expect, fn, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack/Stack';
@@ -408,6 +408,49 @@ export const OnAction: any = meta.story({
     await userEvent.keyboard('{Enter}');
 
     await waitFor(() => expect(onActionMock).toHaveBeenCalledTimes(3));
+  },
+});
+
+const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
+  id: `item-${i + 200}`,
+  label: `Tenant ${i + 200} (item-${i + 200})`,
+}));
+
+export const LargeDataset: any = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Tenants',
+    placeholder: 'Search tenants...',
+    width: 80,
+  },
+  render: args => (
+    <ComboBox {...args} items={LARGE_ITEMS}>
+      {(item: (typeof LARGE_ITEMS)[number]) => (
+        <ComboBox.Option id={item.id}>{item.label}</ComboBox.Option>
+      )}
+    </ComboBox>
+  ),
+  play: async ({ canvas, step }: any) => {
+    const input = canvas.getByRole('combobox');
+
+    await step('Open the dropdown by typing', async () => {
+      await userEvent.click(input);
+      await userEvent.type(input, 'item-500');
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Verify filtered result is rendered', async () => {
+      const listbox = canvas.getByRole('listbox');
+      const option = within(listbox).getByText('Tenant 500 (item-500)');
+      expect(option).toBeVisible();
+      await userEvent.click(option);
+    });
+
+    await step('Verify selected value appears in the input', async () => {
+      await waitFor(() => {
+        expect(input).toHaveValue('Tenant 500 (item-500)');
+      });
+    });
   },
 });
 

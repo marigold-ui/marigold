@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { Text } from 'react-aria-components';
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Center } from '../Center/Center';
@@ -299,6 +299,51 @@ export const DisabledSuggestions: any = meta.story({
       <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   ),
+});
+
+const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
+  id: `item-${i + 200}`,
+  label: `Tenant ${i + 200} (item-${i + 200})`,
+}));
+
+export const LargeDataset: any = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Tenants',
+    placeholder: 'Search tenants...',
+    width: 80,
+  },
+  render: args => (
+    <Autocomplete {...args}>
+      {LARGE_ITEMS.map(item => (
+        <Autocomplete.Option key={item.id} id={item.id}>
+          {item.label}
+        </Autocomplete.Option>
+      ))}
+    </Autocomplete>
+  ),
+  play: async ({ canvas, step }: any) => {
+    const input = canvas.getByRole('combobox');
+
+    await step('Type to filter the large dataset', async () => {
+      await userEvent.click(input);
+      await userEvent.type(input, 'item-500');
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Verify filtered result is rendered and select it', async () => {
+      const listbox = canvas.getByRole('listbox');
+      const option = within(listbox).getByText('Tenant 500 (item-500)');
+      expect(option).toBeVisible();
+      await userEvent.click(option);
+    });
+
+    await step('Verify selected value appears in the input', async () => {
+      await waitFor(() => {
+        expect(input).toHaveValue('Tenant 500 (item-500)');
+      });
+    });
+  },
 });
 
 export const Mobile: any = meta.story({
