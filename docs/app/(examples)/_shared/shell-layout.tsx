@@ -21,19 +21,20 @@ import { UserMenu } from './user-menu';
 
 type LeafItem = Extract<NavNode, { kind: 'Item'; slug: string }>;
 
-// Tree walkers
-// ---------------
 const findLeaf = (
   items: NavNode[],
-  slug: string,
+  predicate: (leaf: LeafItem) => boolean,
   ancestors: string[] = []
 ): { leaf: LeafItem; ancestors: string[] } | null => {
   for (const item of items) {
     if (item.kind !== 'Item') continue;
     if (item.children) {
-      const found = findLeaf(item.children, slug, [...ancestors, item.label]);
+      const found = findLeaf(item.children, predicate, [
+        ...ancestors,
+        item.label,
+      ]);
       if (found) return found;
-    } else if (item.slug === slug) {
+    } else if (predicate(item)) {
       return { leaf: item, ancestors };
     }
   }
@@ -42,27 +43,15 @@ const findLeaf = (
 
 const findActive = (sections: NavSection[], slug: string) => {
   for (const section of sections) {
-    const found = findLeaf(section.items, slug);
+    const found = findLeaf(section.items, leaf => leaf.slug === slug);
     if (found) return { section, ...found };
   }
   return { section: sections[0], leaf: undefined, ancestors: [] as string[] };
 };
 
-const findFirstSlug = (items: NavNode[]): string | undefined => {
-  for (const item of items) {
-    if (item.kind !== 'Item') continue;
-    if (item.children) {
-      const nested = findFirstSlug(item.children);
-      if (nested !== undefined) return nested;
-    } else {
-      return item.slug;
-    }
-  }
-  return undefined;
-};
+const findFirstSlug = (items: NavNode[]) =>
+  findLeaf(items, () => true)?.leaf.slug;
 
-// Nav renderer
-// ---------------
 const renderNav = (
   items: NavNode[],
   ctx: { base: string; pathname: string }
@@ -90,18 +79,12 @@ const renderNav = (
     }
     const href = item.slug ? `${ctx.base}/${item.slug}` : ctx.base;
     return (
-      <Sidebar.Item
-        key={`leaf-${item.slug}`}
-        href={href}
-        active={ctx.pathname === href}
-      >
+      <Sidebar.Item key={href} href={href} active={ctx.pathname === href}>
         {item.label}
       </Sidebar.Item>
     );
   });
 
-// User Section
-// ---------------
 const UserSection = () => (
   <Inline space={2} alignY="center" noWrap>
     <Stack>
@@ -119,8 +102,6 @@ const UserSection = () => (
   </Inline>
 );
 
-// Section Switcher
-// ---------------
 const SectionSwitcher = ({
   sections,
   leaf,
@@ -163,8 +144,6 @@ const SectionSwitcher = ({
   );
 };
 
-// Shell Layout
-// ---------------
 export const ShellLayout = ({
   config,
   children,
