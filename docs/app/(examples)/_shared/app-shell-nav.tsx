@@ -22,52 +22,53 @@ export const appShellPages: Record<string, PageMeta> = {
 export const AppShellNav = ({ base }: { base: string }) => {
   const pathname = usePathname();
 
-  return (
-    <>
-      <Sidebar.Item href={base} active={pathname === base}>
-        Dashboard
+  return [
+    <Sidebar.Item key="dashboard" href={base} active={pathname === base}>
+      Dashboard
+    </Sidebar.Item>,
+    <Sidebar.Item
+      key="analytics"
+      href={`${base}/analytics`}
+      active={pathname === `${base}/analytics`}
+    >
+      Analytics
+    </Sidebar.Item>,
+    <Sidebar.Separator key="sep" />,
+    <Sidebar.Item key="management" textValue="Management">
+      Management
+      <Sidebar.Item
+        href={`${base}/users`}
+        active={pathname === `${base}/users`}
+      >
+        Users
       </Sidebar.Item>
       <Sidebar.Item
-        href={`${base}/analytics`}
-        active={pathname === `${base}/analytics`}
+        href={`${base}/teams`}
+        active={pathname === `${base}/teams`}
       >
-        Analytics
-      </Sidebar.Item>
-      <Sidebar.Separator />
-      <Sidebar.Item textValue="Management">
-        Management
-        <Sidebar.Item
-          href={`${base}/users`}
-          active={pathname === `${base}/users`}
-        >
-          Users
-        </Sidebar.Item>
-        <Sidebar.Item
-          href={`${base}/teams`}
-          active={pathname === `${base}/teams`}
-        >
-          Teams
-        </Sidebar.Item>
-        <Sidebar.Item
-          href={`${base}/billing`}
-          active={pathname === `${base}/billing`}
-        >
-          Billing
-        </Sidebar.Item>
-      </Sidebar.Item>
-      <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-      <Sidebar.Item
-        href={`${base}/general`}
-        active={pathname === `${base}/general`}
-      >
-        General
+        Teams
       </Sidebar.Item>
       <Sidebar.Item
-        href={`${base}/security`}
-        active={pathname === `${base}/security`}
+        href={`${base}/billing`}
+        active={pathname === `${base}/billing`}
       >
-        Security
+        Billing
       </Sidebar.Item>
-    </>
-  );
+    </Sidebar.Item>,
+    <Sidebar.GroupLabel key="settings-label">Settings</Sidebar.GroupLabel>,
+    <Sidebar.Item
+      key="general"
+      href={`${base}/general`}
+      active={pathname === `${base}/general`}
+    >
+      General
+    </Sidebar.Item>,
+    <Sidebar.Item
+      key="security"
+      href={`${base}/security`}
+      active={pathname === `${base}/security`}
+    >
+      Security
+    </Sidebar.Item>,
+  ];
 };

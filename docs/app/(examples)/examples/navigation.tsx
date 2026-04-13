@@ -16,25 +16,29 @@ const appShell: NavSection = {
 const PatternsNav = ({ base }: { base: string }) => {
   const pathname = usePathname();
 
-  return (
-    <>
-      <Sidebar.Item
-        href={`${base}/filter`}
-        active={pathname === `${base}/filter`}
-      >
-        Filter
-      </Sidebar.Item>
-      <Sidebar.Item href={`${base}/form`} active={pathname === `${base}/form`}>
-        Form
-      </Sidebar.Item>
-      <Sidebar.Item
-        href={`${base}/inventory`}
-        active={pathname === `${base}/inventory`}
-      >
-        Inventory
-      </Sidebar.Item>
-    </>
-  );
+  return [
+    <Sidebar.Item
+      key="filter"
+      href={`${base}/filter`}
+      active={pathname === `${base}/filter`}
+    >
+      Filter
+    </Sidebar.Item>,
+    <Sidebar.Item
+      key="form"
+      href={`${base}/form`}
+      active={pathname === `${base}/form`}
+    >
+      Form
+    </Sidebar.Item>,
+    <Sidebar.Item
+      key="inventory"
+      href={`${base}/inventory`}
+      active={pathname === `${base}/inventory`}
+    >
+      Inventory
+    </Sidebar.Item>,
+  ];
 };
 
 const patterns: NavSection = {
