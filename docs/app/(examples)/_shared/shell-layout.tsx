@@ -24,9 +24,6 @@ import { UserMenu } from './user-menu';
 const getActiveSection = (sections: NavSection[], slug: string) =>
   sections.find(s => slug in s.pages) ?? sections[0];
 
-const getFirstSlug = (section: NavSection) =>
-  Object.keys(section.pages)[0] ?? '';
-
 // User Section
 // ---------------
 const UserSection = () => (
@@ -106,7 +103,8 @@ export const ShellLayout = ({
   const handleSectionSwitch = (key: string) => {
     const section = config.sections.find(s => s.label === key);
     if (section) {
-      router.push(`${config.base}/${getFirstSlug(section)}`);
+      const firstSlug = Object.keys(section.pages)[0] ?? '';
+      router.push(firstSlug ? `${config.base}/${firstSlug}` : config.base);
     }
   };
 

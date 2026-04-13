@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { Sidebar } from '@marigold/components';
-import type { NavProps, PageMeta } from './shell-types';
+import type { PageMeta } from './shell-types';
 
 const docs = {
   docsHref: '/patterns/app-shell',
@@ -19,33 +19,38 @@ export const appShellPages: Record<string, PageMeta> = {
   security: { label: 'Security', parent: 'Settings', ...docs },
 };
 
-export const AppShellNav = ({ base }: NavProps) => {
+export const AppShellNav = ({ base }: { base: string }) => {
   const pathname = usePathname();
-  const isActive = (href: string) => pathname === href;
 
   return (
     <>
-      <Sidebar.Item href={`${base}/`} active={isActive(`${base}/`)}>
+      <Sidebar.Item href={base} active={pathname === base}>
         Dashboard
       </Sidebar.Item>
       <Sidebar.Item
         href={`${base}/analytics`}
-        active={isActive(`${base}/analytics`)}
+        active={pathname === `${base}/analytics`}
       >
         Analytics
       </Sidebar.Item>
       <Sidebar.Separator />
       <Sidebar.Item textValue="Management">
         Management
-        <Sidebar.Item href={`${base}/users`} active={isActive(`${base}/users`)}>
+        <Sidebar.Item
+          href={`${base}/users`}
+          active={pathname === `${base}/users`}
+        >
           Users
         </Sidebar.Item>
-        <Sidebar.Item href={`${base}/teams`} active={isActive(`${base}/teams`)}>
+        <Sidebar.Item
+          href={`${base}/teams`}
+          active={pathname === `${base}/teams`}
+        >
           Teams
         </Sidebar.Item>
         <Sidebar.Item
           href={`${base}/billing`}
-          active={isActive(`${base}/billing`)}
+          active={pathname === `${base}/billing`}
         >
           Billing
         </Sidebar.Item>
@@ -53,13 +58,13 @@ export const AppShellNav = ({ base }: NavProps) => {
       <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
       <Sidebar.Item
         href={`${base}/general`}
-        active={isActive(`${base}/general`)}
+        active={pathname === `${base}/general`}
       >
         General
       </Sidebar.Item>
       <Sidebar.Item
         href={`${base}/security`}
-        active={isActive(`${base}/security`)}
+        active={pathname === `${base}/security`}
       >
         Security
       </Sidebar.Item>

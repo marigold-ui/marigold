@@ -8,14 +8,10 @@ export interface PageMeta {
   docsLabel?: string;
 }
 
-export interface NavProps {
-  base: string;
-}
-
 export interface NavSection {
   label: string;
   icon?: LucideIcon;
-  nav: ComponentType<NavProps>;
+  nav: ComponentType<{ base: string }>;
   pages: Record<string, PageMeta>;
 }
 
