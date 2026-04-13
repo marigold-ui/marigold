@@ -1,40 +1,12 @@
 ---
-title: Elevation
-description: Shadow tokens that create visual depth and hierarchy in Marigold.
+title: Surfaces & Elevation
+description: How surfaces and shadows work together to create visual depth and hierarchy.
 badge: updated
 ---
 
-Elevation uses surfaces and shadows to communicate depth and visual hierarchy. Surfaces provide the background colors that establish layers, while shadows add visual lift that makes elements appear closer to the user.
+Screens are flat, but interfaces need depth. Elevation is how we create the illusion of layers -- making a card feel like it sits above the page, or a dialog float above everything else.
 
-The system defines three tiers of shadow elevation, each mapped to a specific category of UI element. Using the correct tier ensures a consistent visual language across the interface.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      <ul>
-        <li>
-          Use the correct tier for each element: border for controls, raised for
-          containers, overlay for floating elements
-        </li>
-        <li>
-          Combine `ui-surface` with the matching `shadow-elevation-*` token
-        </li>
-        <li>Use elevation sparingly to maintain clear visual hierarchy</li>
-      </ul>
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      <ul>
-        <li>Don't apply elevation shadows to the page background</li>
-        <li>
-          Don't skip tiers. Each layer should be visually distinct from the one
-          below
-        </li>
-      </ul>
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+Two systems work together to produce this effect: **surfaces** set the background color of each layer, and **shadows** add lift to communicate how high something sits. For interactive elements like inputs and cards, a surface background is paired with a subtle border gradient and a matching shadow to complete the look.
 
 <Callout title="Migrating from util-surface-* utilities?">
   The legacy `util-surface-sunken`, `util-surface-body`, `util-surface-raised`,
