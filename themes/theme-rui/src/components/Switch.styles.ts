@@ -6,7 +6,7 @@ export const Switch: ThemeComponent<'Switch'> = {
   }),
   track: cva({
     base: [
-      'flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors',
+      'flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-[color,background-color]',
       'border-2 border-transparent', // this increases the hit area so it is 24px
       'group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled',
       'group-selected/switch:bg-selected-bold bg-control',

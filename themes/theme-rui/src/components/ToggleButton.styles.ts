@@ -27,6 +27,7 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       // Group: buttons share the group's outer surface and border
       'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
       'in-[.group]:disabled:border-r-border',
+      'in-[.group]:focus-visible:z-10',
     ],
     variants: {
       size: {
