@@ -1,5 +1,8 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import { Sidebar } from '@marigold/components';
-import type { NavContext, PageMeta } from './shell-types';
+import type { NavProps, PageMeta } from './shell-types';
 
 const docs = {
   docsHref: '/patterns/app-shell',
@@ -16,36 +19,50 @@ export const appShellPages: Record<string, PageMeta> = {
   security: { label: 'Security', parent: 'Settings', ...docs },
 };
 
-export const appShellNav = ({ base, activeSlug }: NavContext) => (
-  <>
-    <Sidebar.Item href={`${base}/`} active={activeSlug === ''}>
-      Dashboard
-    </Sidebar.Item>
-    <Sidebar.Item
-      href={`${base}/analytics`}
-      active={activeSlug === 'analytics'}
-    >
-      Analytics
-    </Sidebar.Item>
-    <Sidebar.Separator />
-    <Sidebar.Item textValue="Management">
-      Management
-      <Sidebar.Item href={`${base}/users`} active={activeSlug === 'users'}>
-        Users
+export const AppShellNav = ({ base }: NavProps) => {
+  const pathname = usePathname();
+  const isActive = (href: string) => pathname === href;
+
+  return (
+    <>
+      <Sidebar.Item href={`${base}/`} active={isActive(`${base}/`)}>
+        Dashboard
       </Sidebar.Item>
-      <Sidebar.Item href={`${base}/teams`} active={activeSlug === 'teams'}>
-        Teams
+      <Sidebar.Item
+        href={`${base}/analytics`}
+        active={isActive(`${base}/analytics`)}
+      >
+        Analytics
       </Sidebar.Item>
-      <Sidebar.Item href={`${base}/billing`} active={activeSlug === 'billing'}>
-        Billing
+      <Sidebar.Separator />
+      <Sidebar.Item textValue="Management">
+        Management
+        <Sidebar.Item href={`${base}/users`} active={isActive(`${base}/users`)}>
+          Users
+        </Sidebar.Item>
+        <Sidebar.Item href={`${base}/teams`} active={isActive(`${base}/teams`)}>
+          Teams
+        </Sidebar.Item>
+        <Sidebar.Item
+          href={`${base}/billing`}
+          active={isActive(`${base}/billing`)}
+        >
+          Billing
+        </Sidebar.Item>
       </Sidebar.Item>
-    </Sidebar.Item>
-    <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-    <Sidebar.Item href={`${base}/general`} active={activeSlug === 'general'}>
-      General
-    </Sidebar.Item>
-    <Sidebar.Item href={`${base}/security`} active={activeSlug === 'security'}>
-      Security
-    </Sidebar.Item>
-  </>
-);
+      <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
+      <Sidebar.Item
+        href={`${base}/general`}
+        active={isActive(`${base}/general`)}
+      >
+        General
+      </Sidebar.Item>
+      <Sidebar.Item
+        href={`${base}/security`}
+        active={isActive(`${base}/security`)}
+      >
+        Security
+      </Sidebar.Item>
+    </>
+  );
+};

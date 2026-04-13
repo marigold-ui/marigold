@@ -124,7 +124,7 @@ export const ShellLayout = ({
               </Inline>
             </Sidebar.Header>
             <Sidebar.Nav>
-              {activeSection.nav({ base: config.base, activeSlug: slug })}
+              <activeSection.nav base={config.base} />
             </Sidebar.Nav>
             <Sidebar.Footer>
               <SectionSwitcher

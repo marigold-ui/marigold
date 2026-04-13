@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import type { ReactNode } from 'react';
+import type { ComponentType } from 'react';
 
 export interface PageMeta {
   label: string;
@@ -8,15 +8,14 @@ export interface PageMeta {
   docsLabel?: string;
 }
 
-export interface NavContext {
+export interface NavProps {
   base: string;
-  activeSlug: string;
 }
 
 export interface NavSection {
   label: string;
   icon?: LucideIcon;
-  nav: (ctx: NavContext) => ReactNode;
+  nav: ComponentType<NavProps>;
   pages: Record<string, PageMeta>;
 }
 
