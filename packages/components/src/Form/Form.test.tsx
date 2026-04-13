@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import type { RefObject } from 'react';
+import { createRef } from 'react';
 import { Form } from './Form';
 
 test('renders form element', () => {
@@ -15,7 +15,7 @@ test('renders form element', () => {
 });
 
 test('forwards ref to form element', () => {
-  const ref = { current: null } as unknown as RefObject<HTMLFormElement>;
+  const ref = createRef<HTMLFormElement>();
 
   render(
     <Form ref={ref}>
@@ -28,7 +28,7 @@ test('forwards ref to form element', () => {
 });
 
 test('ref can access form methods', () => {
-  const ref = { current: null } as unknown as RefObject<HTMLFormElement>;
+  const ref = createRef<HTMLFormElement>();
 
   render(
     <Form ref={ref} data-testid="test-form">

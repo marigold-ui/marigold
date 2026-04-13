@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { RefObject } from 'react';
+import { createRef } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, Sections } from './Select.stories';
 
@@ -101,10 +101,8 @@ test('set width via props', () => {
 });
 
 test('forwards ref', () => {
-  const ref = { current: null } as unknown as RefObject<HTMLButtonElement>;
-  render(
-    <Basic.Component label="Label" data-testid="select" ref={ref as any} />
-  );
+  const ref = createRef<HTMLButtonElement>();
+  render(<Basic.Component label="Label" data-testid="select" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });

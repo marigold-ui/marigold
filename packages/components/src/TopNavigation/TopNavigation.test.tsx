@@ -1,5 +1,5 @@
 import { render, renderHook, screen } from '@testing-library/react';
-import type { RefObject } from 'react';
+import { createRef } from 'react';
 import { mockMatchMedia } from '../test.utils';
 import { useTopNavigationContext } from './Context';
 import { WithBreadcrumbs, WithSearchField } from './TopNavigation.stories';
@@ -52,7 +52,7 @@ test('does not apply sticky classes when sticky is false', () => {
 });
 
 test('forwards ref to header element', () => {
-  const ref = { current: null } as unknown as RefObject<HTMLElement>;
+  const ref = createRef<HTMLElement>();
 
   render(<WithBreadcrumbs.Component ref={ref} />);
 

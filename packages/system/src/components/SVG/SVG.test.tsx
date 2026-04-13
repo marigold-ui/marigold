@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import type { RefObject } from 'react';
+import { createRef } from 'react';
 import { ThemeProvider } from '../../hooks/useTheme';
 import { SVG } from './SVG';
 
@@ -138,7 +138,7 @@ test('accepts custom styles prop className', () => {
 });
 
 test('forwards ref', () => {
-  const ref = { current: null } as unknown as RefObject<SVGSVGElement>;
+  const ref = createRef<SVGSVGElement>();
   render(<SVG ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(SVGElement);

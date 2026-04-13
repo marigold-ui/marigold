@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { RefObject } from 'react';
+import { createRef } from 'react';
 import { vi } from 'vitest';
 import { Basic, Settings } from './Switch.stories';
 
@@ -81,7 +81,7 @@ test('supports name attribute for form submission', () => {
 });
 
 test('forwards ref', () => {
-  const ref = { current: null } as unknown as RefObject<HTMLLabelElement>;
+  const ref = createRef<HTMLLabelElement>();
   render(<Basic.Component ref={ref} label="Label" />);
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });

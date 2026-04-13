@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { RefObject } from 'react';
+import { createRef } from 'react';
 import { Basic } from './Slider.stories';
 
 const user = userEvent.setup();
@@ -46,8 +46,8 @@ test('supports defaultValue (uncontrolled)', () => {
 });
 
 test('forwards ref', () => {
-  const ref = { current: null } as unknown as RefObject<HTMLDivElement>;
-  render(<Basic.Component ref={ref as any} label="Percent" />);
+  const ref = createRef<HTMLDivElement>();
+  render(<Basic.Component ref={ref} label="Percent" />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
