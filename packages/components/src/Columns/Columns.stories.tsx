@@ -141,7 +141,7 @@ export const FullHeight = meta.story({
 
 export const WithTwoComponentsAndFixedItem = meta.story({
   render: () => (
-    <div className="bg-bg-surface-sunken flex flex-col gap-2 p-1">
+    <div className="bg-muted flex flex-col gap-2 p-1">
       <span>fit is on the switch element</span>
       <Divider />
       <Columns columns={[1, 'fit']} space={2} stretch>
