@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 
 export interface DrawerContextProps {
   variant?: string;
@@ -10,4 +10,4 @@ export const DrawerContext = createContext<DrawerContextProps>({
   size: undefined,
 });
 
-export const useDrawerContext = () => useContext(DrawerContext);
+export const useDrawerContext = () => use(DrawerContext);

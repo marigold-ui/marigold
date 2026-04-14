@@ -191,16 +191,14 @@
   --spacing-group: --spacing(12);
   --spacing-section: --spacing(24);
 
-  /* PADDING SPACING */
-
+  /* Padding spacing */
   --spacing-padding-tight: --spacing(1);
   --spacing-padding-snug: --spacing(2);
   --spacing-padding-regular: --spacing(3);
   --spacing-padding-relaxed: --spacing(4);
   --spacing-padding-loose: --spacing(6);
 
-  /* INSET SPACING */
-
+  /* Inset spacing: square (equal padding) */
   --spacing-square-tight: --spacing(1);
   --spacing-square-snug: --spacing(2);
   --spacing-square-regular: --spacing(3);
