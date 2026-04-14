@@ -1,27 +1,11 @@
 import { ReactNode } from 'react';
 import type {
-  PaddingBottomProp,
-  PaddingLeftProp,
-  PaddingRightProp,
-  PaddingSpaceProp,
-  PaddingSpacePropX,
-  PaddingSpacePropY,
-  PaddingTopProp,
+  InsetSpacingTokens,
+  PaddingSpacingTokens,
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
-import {
-  cn,
-  createSpacingVar,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingSpace,
-  paddingSpaceX,
-  paddingSpaceY,
-  paddingTop,
-  useClassNames,
-} from '@marigold/system';
+import { cn, createSpacingVar, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
@@ -37,52 +21,52 @@ export interface CardProps {
   stretch?: boolean;
 
   /**
-   * Set the spacing between child elements. You can see allowed tokens [here](../../foundations/design-token#spacing).
-   * @remarks `SpaceProp<SpacingTokens>`
+   * Set the spacing between child elements. You can see allowed tokens [here](../../foundations/spacing#relation-space).
+   * @remarks `Scale | SpacingTokens`
    */
   space?: SpaceProp<SpacingTokens>['space'];
 
   /**
-   * Padding of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
-   * @remarks `PaddingSpaceProp`
+   * Padding of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | InsetSpacingTokens`
    */
-  p?: PaddingSpaceProp['space'];
+  p?: SpaceProp<InsetSpacingTokens>['space'];
 
   /**
-   * Padding horizontal (left and right) of the component.
-   *  @remarks `PaddingSpacePropX`
+   * Padding horizontal (left and right) of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  px?: PaddingSpacePropX['spaceX'];
+  px?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
-   * @remarks `PaddingSpacePropY`
+   * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  py?: PaddingSpacePropY['spaceY'];
+  py?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Set the right padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingRightProp`
+   * Set the right padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  pr?: PaddingRightProp['pr'];
+  pr?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Set the left padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingLeftProp`
+   * Set the left padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  pl?: PaddingLeftProp['pl'];
+  pl?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Set the top padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingTopProp`
+   * Set the top padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  pt?: PaddingTopProp['pt'];
+  pt?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
-   * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
-   * @remarks `PaddingBottomProp`
+   * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
+   * @remarks `Scale | PaddingSpacingTokens`
    */
-  pb?: PaddingBottomProp['pb'];
+  pb?: SpaceProp<PaddingSpacingTokens>['space'];
 }
 
 // Component
@@ -110,15 +94,24 @@ export const Card = ({
         'flex flex-col gap-y-(--space)',
         stretch ? '' : 'w-fit',
         classNames,
-        paddingSpace !== undefined && paddingSpace[p!],
-        paddingSpaceX !== undefined && paddingSpaceX[px!],
-        paddingSpaceY !== undefined && paddingSpaceY[py!],
-        paddingRight !== undefined && paddingRight[pr!],
-        paddingLeft !== undefined && paddingLeft[pl!],
-        paddingBottom !== undefined && paddingBottom[pb!],
-        paddingTop !== undefined && paddingTop[pt!]
+        p !== undefined && 'p-(--p)',
+        px !== undefined && 'px-(--px)',
+        py !== undefined && 'py-(--py)',
+        pr !== undefined && 'pr-(--pr)',
+        pl !== undefined && 'pl-(--pl)',
+        pb !== undefined && 'pb-(--pb)',
+        pt !== undefined && 'pt-(--pt)'
       )}
-      style={createSpacingVar('space', `${space}`)}
+      style={{
+        ...createSpacingVar('space', `${space}`),
+        ...(p !== undefined ? createSpacingVar('p', `${p}`) : {}),
+        ...(px !== undefined ? createSpacingVar('px', `${px}`) : {}),
+        ...(py !== undefined ? createSpacingVar('py', `${py}`) : {}),
+        ...(pr !== undefined ? createSpacingVar('pr', `${pr}`) : {}),
+        ...(pl !== undefined ? createSpacingVar('pl', `${pl}`) : {}),
+        ...(pb !== undefined ? createSpacingVar('pb', `${pb}`) : {}),
+        ...(pt !== undefined ? createSpacingVar('pt', `${pt}`) : {}),
+      }}
     >
       {children}
     </div>

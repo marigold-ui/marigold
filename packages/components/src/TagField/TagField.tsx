@@ -196,6 +196,7 @@ const TagFieldDropdown = ({
       </SearchField>
       <ListBox
         items={items}
+        virtualized
         renderEmptyState={() =>
           emptyState ?? (
             <div className="flex items-center">

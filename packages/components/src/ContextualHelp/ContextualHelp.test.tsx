@@ -46,3 +46,25 @@ test('closes popover on Escape key', async () => {
 
   expect(screen.queryByText(/This feature explains/)).not.toBeInTheDocument();
 });
+
+test('renders with default props', async () => {
+  renderWithOverlay(
+    <Basic.Component
+      variant={undefined}
+      placement={undefined}
+      offset={undefined}
+      width={undefined}
+      defaultOpen
+    />
+  );
+
+  expect(screen.getByText(/This feature explains/)).toBeInTheDocument();
+});
+
+test('renders info variant with correct aria label', () => {
+  renderWithOverlay(<Basic.Component variant="info" />);
+
+  expect(
+    screen.getByRole('button', { name: 'More information' })
+  ).toBeInTheDocument();
+});

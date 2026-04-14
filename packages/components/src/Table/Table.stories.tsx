@@ -1134,42 +1134,119 @@ export const EditableCell = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, step }) => {
     const editButtons = canvas.getAllByLabelText('Edit');
 
-    // Click the first edit button to open the editor
-    await userEvent.click(editButtons[0]);
+    await step('Open editor, verify focus and text selection', async () => {
+      await userEvent.click(editButtons[0]);
 
-    // Wait for the name input to appear
-    await waitFor(() => {
-      expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const nameInput = canvas.getByLabelText('Name') as HTMLInputElement;
+      expect(nameInput).toHaveFocus();
+      expect(nameInput.selectionStart).toBe(0);
+      expect(nameInput.selectionEnd).toBe(nameInput.value.length);
     });
 
-    // Verify input is focused and text is selected
-    const nameInput = canvas.getByLabelText('Name') as HTMLInputElement;
-    expect(nameInput).toHaveFocus();
-    expect(nameInput.selectionStart).toBe(0);
-    expect(nameInput.selectionEnd).toBe(nameInput.value.length);
+    await step('Cancel closes editor without saving', async () => {
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
 
-    // Close the editor
-    const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
-    await userEvent.click(cancelButton);
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      });
 
-    await waitFor(() => {
-      expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
     });
 
-    // Test with email field
-    await userEvent.click(editButtons[1]);
+    await step('Edit and save cell value', async () => {
+      await userEvent.click(editButtons[0]);
 
-    await waitFor(() => {
-      expect(canvas.getByLabelText('Email')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const nameInput = canvas.getByLabelText('Name');
+      await userEvent.clear(nameInput);
+      await userEvent.type(nameInput, 'New Name');
+
+      const saveButton = canvas.getByRole('button', { name: 'Save' });
+      await userEvent.click(saveButton);
+
+      await waitFor(() => {
+        expect(canvas.getByText('New Name')).toBeInTheDocument();
+      });
     });
 
-    const emailInput = canvas.getByLabelText('Email') as HTMLInputElement;
-    expect(emailInput).toHaveFocus();
-    expect(emailInput.selectionStart).toBe(0);
-    expect(emailInput.selectionEnd).toBe(emailInput.value.length);
+    await step('Cancel after editing does not save changes', async () => {
+      await userEvent.click(editButtons[0]);
+
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const nameInput = canvas.getByLabelText('Name');
+      await userEvent.clear(nameInput);
+      await userEvent.type(nameInput, 'Should Not Save');
+
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      });
+
+      expect(canvas.queryByText('Should Not Save')).not.toBeInTheDocument();
+      expect(canvas.getByText('New Name')).toBeInTheDocument();
+    });
+
+    await step('Email field has focus and text selection', async () => {
+      await userEvent.click(editButtons[1]);
+
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Email')).toBeInTheDocument();
+      });
+
+      const emailInput = canvas.getByLabelText('Email') as HTMLInputElement;
+      expect(emailInput).toHaveFocus();
+      expect(emailInput.selectionStart).toBe(0);
+      expect(emailInput.selectionEnd).toBe(emailInput.value.length);
+
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Email')).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Save then cancel cycle resets correctly', async () => {
+      await userEvent.click(editButtons[0]);
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const saveButton = canvas.getByRole('button', { name: 'Save' });
+      await userEvent.click(saveButton);
+
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      });
+
+      await userEvent.click(editButtons[0]);
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      });
+    });
   },
 });
 

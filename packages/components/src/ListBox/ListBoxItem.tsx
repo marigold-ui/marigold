@@ -15,11 +15,12 @@ export type ListBoxItemProps = Omit<
 };
 
 export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
-  const { classNames } = useListBoxContext();
+  const { classNames, virtualized } = useListBoxContext();
   return (
     <ListBoxItem
       {...props}
       className={classNames.item}
+      style={virtualized ? { height: '100%', minHeight: 0 } : undefined}
       // textValue needed because ListBoxItem in this case has multiple children
       textValue={props.textValue ?? String(props.children)}
     >
