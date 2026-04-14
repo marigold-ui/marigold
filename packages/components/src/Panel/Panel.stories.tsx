@@ -1,0 +1,340 @@
+import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
+import { Card } from '../Card/Card';
+import { Headline } from '../Headline/Headline';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
+import { TextField } from '../TextField/TextField';
+import { Panel } from './Panel';
+
+const meta = preview.meta({
+  title: 'Components/Panel',
+  component: Panel,
+  parameters: {
+    surface: false,
+  },
+  argTypes: {
+    variant: {
+      control: { type: 'radio' },
+      options: ['default', 'master', 'admin', 'destructive'],
+      description: 'The visual variant of the panel.',
+    },
+    headingLevel: {
+      control: { type: 'radio' },
+      options: [2, 3, 4, 5, 6],
+      description: 'Base heading level for the panel section.',
+      table: { defaultValue: { summary: '2' } },
+    },
+  },
+});
+
+export const Basic = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>General Settings</Panel.Title>
+    </Panel.Header>
+    <Panel.Content>
+      <Stack space="regular">
+        <TextField label="Display Name" defaultValue="Marigold" />
+        <TextField label="Email" defaultValue="hello@marigold-ui.io" />
+      </Stack>
+    </Panel.Content>
+  </Panel>
+));
+
+export const WithDescription = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>Notification Preferences</Panel.Title>
+      <Panel.Description>
+        Choose how you want to receive notifications about updates and changes.
+      </Panel.Description>
+    </Panel.Header>
+    <Panel.Content>
+      <Stack space="regular">
+        <TextField label="Email for Notifications" />
+      </Stack>
+    </Panel.Content>
+  </Panel>
+));
+
+export const WithHeaderActions = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>Team Members</Panel.Title>
+      <Panel.HeaderActions>
+        <Button variant="primary" size="small">
+          Invite
+        </Button>
+      </Panel.HeaderActions>
+    </Panel.Header>
+    <Panel.Content>
+      <Text>List of team members would go here.</Text>
+    </Panel.Content>
+  </Panel>
+));
+
+export const WithDescriptionAndActions = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>API Keys</Panel.Title>
+      <Panel.Description>
+        Manage the API keys used to authenticate requests.
+      </Panel.Description>
+      <Panel.HeaderActions>
+        <Button variant="primary" size="small">
+          Create Key
+        </Button>
+      </Panel.HeaderActions>
+    </Panel.Header>
+    <Panel.Content>
+      <Text>API keys table would go here.</Text>
+    </Panel.Content>
+  </Panel>
+));
+
+export const WithCollapsible = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>Event Details</Panel.Title>
+    </Panel.Header>
+    <Panel.Content>
+      <Stack space="regular">
+        <TextField label="Event Name" defaultValue="Summer Festival" />
+        <TextField label="Location" defaultValue="Main Stage" />
+      </Stack>
+    </Panel.Content>
+    <Panel.Collapsible>
+      <Panel.CollapsibleTrigger>Advanced Options</Panel.CollapsibleTrigger>
+      <Panel.CollapsibleContent>
+        <Stack space="regular">
+          <TextField label="Custom URL Slug" />
+          <TextField label="Tracking Code" />
+        </Stack>
+      </Panel.CollapsibleContent>
+    </Panel.Collapsible>
+  </Panel>
+));
+
+export const WithMultipleCollapsibles = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>Location Settings</Panel.Title>
+    </Panel.Header>
+    <Panel.Content>
+      <Stack space="regular">
+        <TextField label="Venue Name" defaultValue="Concert Hall" />
+      </Stack>
+    </Panel.Content>
+    <Panel.Collapsible>
+      <Panel.CollapsibleTrigger>Address</Panel.CollapsibleTrigger>
+      <Panel.CollapsibleContent>
+        <Stack space="regular">
+          <TextField label="Street" />
+          <TextField label="City" />
+          <TextField label="Postal Code" />
+        </Stack>
+      </Panel.CollapsibleContent>
+    </Panel.Collapsible>
+    <Panel.Collapsible>
+      <Panel.CollapsibleTrigger>Accessibility</Panel.CollapsibleTrigger>
+      <Panel.CollapsibleContent>
+        <Stack space="regular">
+          <TextField label="Accessibility Notes" />
+        </Stack>
+      </Panel.CollapsibleContent>
+    </Panel.Collapsible>
+  </Panel>
+));
+
+export const WithFooter = meta.story(() => (
+  <Panel variant="destructive">
+    <Panel.Header>
+      <Panel.Title>Danger Zone</Panel.Title>
+      <Panel.Description>
+        Irreversible actions that permanently affect your account.
+      </Panel.Description>
+    </Panel.Header>
+    <Panel.Content>
+      <Text>
+        Once you delete your account, there is no going back. All your data will
+        be permanently removed.
+      </Text>
+    </Panel.Content>
+    <Panel.Footer>
+      <Button variant="destructive">Delete Account</Button>
+    </Panel.Footer>
+  </Panel>
+));
+
+export const Variants = meta.story(() => (
+  <Stack space="regular">
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Default Panel</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Standard panel with no variant.</Text>
+      </Panel.Content>
+    </Panel>
+    <Panel variant="master">
+      <Panel.Header>
+        <Panel.Title>Master Access</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Panel for master-level access content.</Text>
+      </Panel.Content>
+    </Panel>
+    <Panel variant="admin">
+      <Panel.Header>
+        <Panel.Title>Admin Access</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Panel for admin-level access content.</Text>
+      </Panel.Content>
+    </Panel>
+    <Panel variant="destructive">
+      <Panel.Header>
+        <Panel.Title>Destructive</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Panel for destructive/irreversible actions.</Text>
+      </Panel.Content>
+    </Panel>
+  </Stack>
+));
+
+export const VariantsVsCard = meta.story(() => (
+  <Stack space="regular">
+    <Headline level="3">Panel</Headline>
+    <Stack space="related">
+      <Panel variant="master">
+        <Panel.Header>
+          <Panel.Title>Master Panel</Panel.Title>
+        </Panel.Header>
+        <Panel.Content>
+          <Text>Panel with master variant.</Text>
+        </Panel.Content>
+      </Panel>
+      <Panel variant="admin">
+        <Panel.Header>
+          <Panel.Title>Admin Panel</Panel.Title>
+        </Panel.Header>
+        <Panel.Content>
+          <Text>Panel with admin variant.</Text>
+        </Panel.Content>
+      </Panel>
+    </Stack>
+
+    <Headline level="3">Card</Headline>
+    <Stack space="related">
+      <Card variant="master">
+        <Headline level="4">Master Card</Headline>
+        <Text>Card with master variant.</Text>
+      </Card>
+      <Card variant="admin">
+        <Headline level="4">Admin Card</Headline>
+        <Text>Card with admin variant.</Text>
+      </Card>
+    </Stack>
+  </Stack>
+));
+
+export const TableInside = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>Recent Orders</Panel.Title>
+      <Panel.Description>
+        Overview of the latest transactions.
+      </Panel.Description>
+    </Panel.Header>
+    <Panel.Content inset="none">
+      <table className="w-full text-left text-sm">
+        <thead className="bg-muted text-secondary">
+          <tr>
+            <th className="px-4 py-2">Order</th>
+            <th className="px-4 py-2">Customer</th>
+            <th className="px-4 py-2">Amount</th>
+            <th className="px-4 py-2">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-t">
+            <td className="px-4 py-2">#1001</td>
+            <td className="px-4 py-2">Alice</td>
+            <td className="px-4 py-2">€120.00</td>
+            <td className="px-4 py-2">Completed</td>
+          </tr>
+          <tr className="border-t">
+            <td className="px-4 py-2">#1002</td>
+            <td className="px-4 py-2">Bob</td>
+            <td className="px-4 py-2">€85.50</td>
+            <td className="px-4 py-2">Pending</td>
+          </tr>
+          <tr className="border-t">
+            <td className="px-4 py-2">#1003</td>
+            <td className="px-4 py-2">Charlie</td>
+            <td className="px-4 py-2">€200.00</td>
+            <td className="px-4 py-2">Shipped</td>
+          </tr>
+        </tbody>
+      </table>
+    </Panel.Content>
+  </Panel>
+));
+
+export const FullPage = meta.story(() => (
+  <Stack space="section">
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Profile</Panel.Title>
+        <Panel.Description>Your public profile information.</Panel.Description>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space="regular">
+          <TextField label="Display Name" defaultValue="Sebastian" />
+          <TextField label="Bio" defaultValue="Design Systems Engineer" />
+        </Stack>
+      </Panel.Content>
+    </Panel>
+
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Notification Preferences</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space="regular">
+          <TextField label="Email" defaultValue="sebastian@marigold-ui.io" />
+        </Stack>
+      </Panel.Content>
+      <Panel.Collapsible>
+        <Panel.CollapsibleTrigger>
+          Advanced Notification Settings
+        </Panel.CollapsibleTrigger>
+        <Panel.CollapsibleContent>
+          <Stack space="regular">
+            <TextField label="Webhook URL" />
+          </Stack>
+        </Panel.CollapsibleContent>
+      </Panel.Collapsible>
+    </Panel>
+
+    <Panel variant="destructive">
+      <Panel.Header>
+        <Panel.Title>Danger Zone</Panel.Title>
+        <Panel.Description>
+          These actions are permanent and cannot be undone.
+        </Panel.Description>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>
+          Deleting your account removes all data, including events and
+          transactions.
+        </Text>
+      </Panel.Content>
+      <Panel.Footer>
+        <Button variant="destructive">Delete Account</Button>
+      </Panel.Footer>
+    </Panel>
+  </Stack>
+));

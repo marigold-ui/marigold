@@ -31,6 +31,7 @@ export { Menu } from './Menu.styles';
 export { Modal } from './Modal.styles';
 export { MultiSelect } from './Multiselect.styles';
 export { NumberField } from './NumberField.styles';
+export { Panel } from './Panel.styles';
 export { Popover } from './Popover.styles';
 export { Radio } from './Radio.styles';
 export { Pagination } from './Pagination.styles';
