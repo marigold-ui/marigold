@@ -180,6 +180,7 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
             />
             <Popover>
               <ListBox
+                virtualized
                 renderEmptyState={() =>
                   emptyState ?? (
                     <Center>{stringFormatter.format('noResultsFound')}</Center>

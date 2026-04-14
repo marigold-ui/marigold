@@ -1,6 +1,6 @@
 import { Key, useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { expect, fn, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack/Stack';
@@ -408,6 +408,52 @@ export const OnAction: any = meta.story({
     await userEvent.keyboard('{Enter}');
 
     await waitFor(() => expect(onActionMock).toHaveBeenCalledTimes(3));
+  },
+});
+
+const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
+  id: `item-${i + 200}`,
+  label: `Tenant ${i + 200} (item-${i + 200})`,
+}));
+
+export const LargeDataset: any = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Tenants',
+    placeholder: 'Search tenants...',
+    width: 80,
+  },
+  render: args => (
+    <ComboBox {...args}>
+      {LARGE_ITEMS.map(item => (
+        <ComboBox.Option key={item.id} id={item.id}>
+          {item.label}
+        </ComboBox.Option>
+      ))}
+    </ComboBox>
+  ),
+  play: async ({ canvas, step }: any) => {
+    const input = canvas.getByRole('combobox');
+
+    await step('Filter the large dataset by typing', async () => {
+      await userEvent.click(input);
+      await userEvent.type(input, 'item-500');
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Verify filter narrowed to a single option', async () => {
+      const listbox = canvas.getByRole('listbox');
+      const options = within(listbox).getAllByRole('option');
+      expect(options).toHaveLength(1);
+      expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
+      await userEvent.click(options[0]);
+    });
+
+    await step('Verify selected value appears in the input', async () => {
+      await waitFor(() => {
+        expect(input).toHaveValue('Tenant 500 (item-500)');
+      });
+    });
   },
 });
 

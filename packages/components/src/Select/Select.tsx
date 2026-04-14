@@ -169,7 +169,9 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
             <ChevronsVertical size="16" className={classNames.icon} />
           </RACButton>
           <Popover>
-            <ListBox items={items}>{children}</ListBox>
+            <ListBox items={items} virtualized>
+              {children}
+            </ListBox>
           </Popover>
         </>
       )}
