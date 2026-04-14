@@ -16,7 +16,7 @@ test('supports defaultValue (uncontrolled)', () => {
 });
 
 test('forwards ref', () => {
-  const ref: RefObject<HTMLDivElement | null> = { current: null };
+  const ref: { current: HTMLDivElement | null } = { current: null };
   render(<Basic.Component ref={ref} label="Percent" />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
