@@ -100,7 +100,21 @@ The sidebar marks the user's current page so they always know where they are. Pa
 
 Matching is segment-aware, so dynamic routes like `/users/abc-123` correctly highlight the `/users` item. When a leaf inside a drill-down branch matches, the parent branch lights up too and its sub-panel opens.
 
-For custom matching logic, pass a predicate `(href, key) => boolean` instead of a string. For escape-hatch cases (pinned items, items without an `href`), the per-item `active` prop on `Sidebar.Item` still works as a local override and stacks with the resolved match.
+For custom matching logic, pass a predicate `(href, key) => boolean` instead of a string. This is useful when URLs contain segments that don't map directly to item hrefs, such as a locale prefix:
+
+```tsx
+<Sidebar.Nav
+  current={(href, key) => {
+    if (!href) return false;
+    // strip locale prefix so /en/orders matches /orders
+    return pathname.replace(/^\/(en|de)/, '') === href;
+  }}
+>
+  <Sidebar.Item href="/orders">Orders</Sidebar.Item>
+</Sidebar.Nav>
+```
+
+For escape-hatch cases (pinned items, items without an `href`), the per-item `active` prop on `Sidebar.Item` still works as a local override and stacks with the resolved match.
 
 ### Detail pages
 
