@@ -16,7 +16,7 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['tight', 'related', 'regular', 'group', 'section'],
+      options: ['none', 'tight', 'related', 'regular', 'group', 'section'],
       table: {
         type: { summary: 'text' },
         defaultValue: { summary: 'undefined' },
