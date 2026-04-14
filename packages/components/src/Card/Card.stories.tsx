@@ -1,43 +1,6 @@
 import preview from '.storybook/preview';
-import { Badge, Stack } from '@marigold/components';
-import { Container } from '../Container/Container';
-import { Headline } from '../Headline/Headline';
-import { Text } from '../Text/Text';
+import { Badge, Button, Stack, Text } from '@marigold/components';
 import { Card } from './Card';
-
-const insetTokenOptions = [
-  'square-tight',
-  'square-snug',
-  'square-regular',
-  'square-relaxed',
-  'square-loose',
-  'squish-tight',
-  'squish-snug',
-  'squish-regular',
-  'squish-relaxed',
-  'squish-loose',
-  'stretch-tight',
-  'stretch-snug',
-  'stretch-regular',
-  'stretch-relaxed',
-  'stretch-loose',
-];
-
-const relationalTokenOptions = [
-  'tight',
-  'related',
-  'regular',
-  'group',
-  'section',
-];
-
-const paddingTokenOptions = [
-  'padding-tight',
-  'padding-snug',
-  'padding-regular',
-  'padding-relaxed',
-  'padding-loose',
-];
 
 const meta = preview.meta({
   title: 'Components/Card',
@@ -50,65 +13,11 @@ const meta = preview.meta({
       description: 'The variant of the card',
       options: ['default', 'master', 'admin'],
     },
-    space: {
+    stretch: {
       control: {
-        type: 'select',
+        type: 'boolean',
       },
-      options: relationalTokenOptions,
-      description:
-        'The space between children elements inside the card, using spacing tokens.',
-    },
-    p: {
-      control: {
-        type: 'select',
-      },
-      options: insetTokenOptions,
-      description:
-        'Padding of the card, using inset spacing tokens. Applies to all sides.',
-    },
-    px: {
-      control: {
-        type: 'select',
-      },
-      options: paddingTokenOptions,
-      description:
-        'Horizontal padding (left and right) of the card, using padding spacing tokens.',
-    },
-    py: {
-      control: {
-        type: 'select',
-      },
-      options: paddingTokenOptions,
-      description:
-        'Vertical padding (top and bottom) of the card, using padding spacing tokens.',
-    },
-    pt: {
-      control: {
-        type: 'select',
-      },
-      options: paddingTokenOptions,
-      description: 'Top padding of the card, using padding spacing tokens.',
-    },
-    pb: {
-      control: {
-        type: 'select',
-      },
-      options: paddingTokenOptions,
-      description: 'Bottom padding of the card, using padding spacing tokens.',
-    },
-    pl: {
-      control: {
-        type: 'select',
-      },
-      options: paddingTokenOptions,
-      description: 'Left padding of the card, using padding spacing tokens.',
-    },
-    pr: {
-      control: {
-        type: 'select',
-      },
-      options: paddingTokenOptions,
-      description: 'Right padding of the card, using padding spacing tokens.',
+      description: 'Whether the card stretches to fill its container.',
     },
   },
 });
@@ -116,21 +25,57 @@ const meta = preview.meta({
 export const Basic = meta.story({
   render: args => (
     <Card {...args}>
-      <Container>
-        <Headline level="2">Professor Severus Snape</Headline>
-      </Container>
-      <Container contentLength="long">
+      <Card.Header>Professor Severus Snape</Card.Header>
+      <Card.Body>
         <Text>
-          <strong>Professor Severus Snape</strong> (9 January, 1960[1] - 2 May,
-          1998)[2] was an English half-blood[3] wizard serving as Potions Master
+          <strong>Professor Severus Snape</strong> (9 January, 1960 - 2 May,
+          1998) was an English half-blood wizard serving as Potions Master
           (1981-1996), Head of Slytherin House (1981-1997), Defence Against the
           Dark Arts professor (1996-1997), and Headmaster (1997-1998) of the
           Hogwarts School of Witchcraft and Wizardry as well as a member of the
-          Order of the Phoenix and a Death Eater. His double life played an
-          extremely important role in both of the Wizarding Wars against
-          Voldemort.
+          Order of the Phoenix and a Death Eater.
         </Text>
-      </Container>
+      </Card.Body>
+    </Card>
+  ),
+});
+
+export const WithFooter = meta.story({
+  render: args => (
+    <Card {...args}>
+      <Card.Header>Event Registration</Card.Header>
+      <Card.Body>
+        <Text>
+          Register for the upcoming Hogwarts Alumni Reunion. The event will take
+          place on the grounds of Hogwarts School of Witchcraft and Wizardry.
+          Space is limited.
+        </Text>
+      </Card.Body>
+      <Card.Footer>
+        <Button variant="secondary">Cancel</Button>
+        <Button variant="primary">Register</Button>
+      </Card.Footer>
+    </Card>
+  ),
+});
+
+export const WithPreview = meta.story({
+  render: args => (
+    <Card {...args}>
+      <Card.Preview>
+        <img
+          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=200&fit=crop"
+          alt="Landscape"
+          className="block h-48 w-full object-cover"
+        />
+      </Card.Preview>
+      <Card.Header>Mountain Landscape</Card.Header>
+      <Card.Body>
+        <Text>
+          A breathtaking view of the mountains at sunrise, captured during a
+          hiking trip in the Swiss Alps.
+        </Text>
+      </Card.Body>
     </Card>
   ),
 });
@@ -141,55 +86,13 @@ export const Stretch = meta.story({
   },
   render: args => (
     <Card {...args}>
-      <Container>
-        <Headline level="2">Professor Severus Snape</Headline>
-      </Container>
-      <Container contentLength="long">
+      <Card.Header>Full Width Card</Card.Header>
+      <Card.Body>
         <Text>
-          <strong>Professor Severus Snape</strong> (9 January, 1960[1] - 2 May,
-          1998)[2] was an English half-blood[3] wizard serving as Potions Master
-          (1981-1996), Head of Slytherin House (1981-1997), Defence Against the
-          Dark Arts professor (1996-1997), and Headmaster (1997-1998) of the
-          Hogwarts School of Witchcraft and Wizardry as well as a member of the
-          Order of the Phoenix and a Death Eater. His double life played an
-          extremely important role in both of the Wizarding Wars against
-          Voldemort.
+          This card stretches to fill the available horizontal space in its
+          parent container.
         </Text>
-      </Container>
-    </Card>
-  ),
-});
-
-export const PaddingAndSpace = meta.story({
-  args: {
-    p: 'square-regular',
-    space: 'regular',
-  },
-  render: args => (
-    <Card {...args}>
-      <Container>
-        <Headline level="2">Professor Severus Snape</Headline>
-      </Container>
-      <Text>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-        amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-        nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-        sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-        rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-        ipsum dolor sit amet.
-      </Text>
-      <Container>
-        <Text>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-          ipsum dolor sit amet.
-        </Text>
-      </Container>
+      </Card.Body>
     </Card>
   ),
 });
@@ -198,40 +101,28 @@ export const MasterAndAdmin = meta.story({
   render: args => (
     <Stack space={5}>
       <Card {...args} variant="master">
-        <Container>
-          <Headline level="2">
-            Master Access <Badge variant="master">Master</Badge>
-          </Headline>
-        </Container>
-        <Text>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-          ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet.
-        </Text>
+        <Card.Header>
+          Master Access <Badge variant="master">Master</Badge>
+        </Card.Header>
+        <Card.Body>
+          <Text>
+            This card uses the master variant to indicate master-level access
+            permissions. The border and background color change to reflect the
+            access level.
+          </Text>
+        </Card.Body>
       </Card>
       <Card {...args} variant="admin">
-        <Container>
-          <Headline level="2">
-            Admin Access <Badge variant="admin">Admin</Badge>
-          </Headline>
-        </Container>
-        <Text>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-          ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet.
-        </Text>
+        <Card.Header>
+          Admin Access <Badge variant="admin">Admin</Badge>
+        </Card.Header>
+        <Card.Body>
+          <Text>
+            This card uses the admin variant to indicate admin-level access
+            permissions. The border and background color change to reflect the
+            access level.
+          </Text>
+        </Card.Body>
       </Card>
     </Stack>
   ),

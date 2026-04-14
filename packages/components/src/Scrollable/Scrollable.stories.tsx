@@ -132,7 +132,7 @@ export const WithTable = meta.story({
 
 export const ListScrolling = meta.story({
   render: args => (
-    <Card p={3}>
+    <Card>
       <Scrollable height="200px" {...args}>
         <Headline level={3}>Burger Menu</Headline>
         <List>
