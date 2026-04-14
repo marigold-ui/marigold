@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useEffect, useId, useRef } from 'react';
+import { useId, useRef } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 import type { TitleInfo } from './Context';
 import { PanelProvider } from './Context';
@@ -40,16 +40,6 @@ export const Panel = ({
   const titleInfo = useRef<TitleInfo>(DEFAULT_TITLE_INFO);
 
   titleInfo.current = DEFAULT_TITLE_INFO;
-
-  useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
-      if (!ariaLabel && !titleInfo.current.hasTitle) {
-        console.warn(
-          'Panel requires either a <Panel.Title> within <Panel.Header> or an "aria-label" prop for accessible labeling.'
-        );
-      }
-    }
-  }, [ariaLabel]);
 
   return (
     <PanelProvider value={{ classNames, variant, titleId, titleInfo }}>
