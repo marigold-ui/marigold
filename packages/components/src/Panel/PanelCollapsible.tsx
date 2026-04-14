@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Disclosure } from 'react-aria-components';
-import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 type RemovedProps = 'isDisabled' | 'isExpanded' | 'className' | 'style';
@@ -30,7 +29,7 @@ export const PanelCollapsible = ({
       {...props}
       isExpanded={expanded}
       isDisabled={disabled}
-      className={cn(classNames.collapsible)}
+      className={classNames.collapsible}
     >
       {children}
     </Disclosure>

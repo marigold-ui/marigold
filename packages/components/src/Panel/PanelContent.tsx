@@ -22,7 +22,7 @@ export const PanelContent = ({
   return (
     <div
       className={cn('p-(--inset)', classNames.content)}
-      style={createSpacingVar('inset', `${inset}`)}
+      style={createSpacingVar('inset', inset)}
     >
       {children}
     </div>

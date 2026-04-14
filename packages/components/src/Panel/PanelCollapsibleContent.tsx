@@ -23,7 +23,7 @@ export const PanelCollapsibleContent = ({
   return (
     <DisclosurePanel
       className={cn('p-(--inset)', classNames.collapsibleContent)}
-      style={createSpacingVar('inset', `${inset}`)}
+      style={createSpacingVar('inset', inset)}
     >
       {children}
     </DisclosurePanel>
