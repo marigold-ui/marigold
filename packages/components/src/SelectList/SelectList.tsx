@@ -37,7 +37,7 @@ const SelectListBase = ({
   };
 
   return (
-    <SelectListContext.Provider value={{ classNames }}>
+    <SelectListContext value={{ classNames }}>
       <div className={classNames.container}>
         <RACSelectList
           {...props}
@@ -51,7 +51,7 @@ const SelectListBase = ({
           {props.children}
         </RACSelectList>
       </div>
-    </SelectListContext.Provider>
+    </SelectListContext>
   );
 };
 
