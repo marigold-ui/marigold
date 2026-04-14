@@ -8,11 +8,11 @@ export const Panel: ThemeComponent<'Panel'> = {
       variant: {
         default: '',
         master:
-          'border border-access-master-accent shadow-[inset_0_0_40px_-10px_var(--color-access-master-accent)]',
+          'border border-access-master-accent shadow-[var(--shadow-elevation-raised),inset_0_0_40px_-10px_var(--color-access-master-accent)]',
         admin:
-          'border border-access-admin-accent shadow-[inset_0_0_40px_-10px_var(--color-access-admin-accent)]',
+          'border border-access-admin-accent shadow-[var(--shadow-elevation-raised),inset_0_0_40px_-10px_var(--color-access-admin-accent)]',
         destructive:
-          'border border-destructive-accent shadow-[inset_0_0_40px_-10px_var(--color-destructive-accent)]',
+          'border border-destructive-accent shadow-[var(--shadow-elevation-raised),inset_0_0_40px_-10px_var(--color-destructive-accent)]',
       },
     },
     defaultVariants: {

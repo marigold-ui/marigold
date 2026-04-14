@@ -23,7 +23,7 @@ export const PanelCollapsibleTrigger = ({
 
   const level = hasTitle
     ? (Math.min(headingLevel + 1, 6) as 1 | 2 | 3 | 4 | 5 | 6)
-    : (headingLevel as 1 | 2 | 3 | 4 | 5 | 6);
+    : headingLevel;
 
   return (
     <Heading level={level}>
