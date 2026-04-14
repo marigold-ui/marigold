@@ -1,11 +1,5 @@
-import type { RefObject } from 'react';
 import { createContext, use } from 'react';
 import type { ThemeComponent } from '@marigold/system';
-
-export interface TitleInfo {
-  hasTitle: boolean;
-  level: number;
-}
 
 export interface PanelContext {
   classNames: {
@@ -13,7 +7,8 @@ export interface PanelContext {
   };
   variant?: string;
   titleId: string;
-  titleInfo: RefObject<TitleInfo>;
+  titleLevel: number;
+  hasTitle: boolean;
 }
 
 const Context = createContext<PanelContext | null>(null);

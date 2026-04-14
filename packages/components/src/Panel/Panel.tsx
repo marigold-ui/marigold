@@ -1,7 +1,5 @@
-import type { ReactNode } from 'react';
-import { useId, useRef } from 'react';
+import { Children, type ReactNode, isValidElement, useId } from 'react';
 import { cn, useClassNames } from '@marigold/system';
-import type { TitleInfo } from './Context';
 import { PanelProvider } from './Context';
 import { PanelActions } from './PanelActions';
 import { PanelCollapsible } from './PanelCollapsible';
@@ -25,7 +23,28 @@ export interface PanelProps {
 
 // Helpers
 // ---------------
-const DEFAULT_TITLE_INFO: TitleInfo = { hasTitle: false, level: 2 };
+
+/**
+ * Walk the element tree to find a PanelTitle inside a PanelHeader.
+ * Pure render-time computation — no refs or effects needed.
+ */
+const detectTitle = (children: ReactNode) => {
+  for (const child of Children.toArray(children)) {
+    if (isValidElement(child) && child.type === PanelHeader) {
+      for (const headerChild of Children.toArray(
+        (child.props as { children?: ReactNode }).children
+      )) {
+        if (isValidElement(headerChild) && headerChild.type === PanelTitle) {
+          return {
+            hasTitle: true as const,
+            titleLevel: (headerChild.props as { level?: number }).level ?? 2,
+          };
+        }
+      }
+    }
+  }
+  return { hasTitle: false as const, titleLevel: 2 };
+};
 
 // Component
 // ---------------
@@ -37,12 +56,12 @@ export const Panel = ({
 }: PanelProps) => {
   const titleId = useId();
   const classNames = useClassNames({ component: 'Panel', variant, size });
-  const titleInfo = useRef<TitleInfo>(DEFAULT_TITLE_INFO);
-
-  titleInfo.current = DEFAULT_TITLE_INFO;
+  const { hasTitle, titleLevel } = detectTitle(children);
 
   return (
-    <PanelProvider value={{ classNames, variant, titleId, titleInfo }}>
+    <PanelProvider
+      value={{ classNames, variant, titleId, titleLevel, hasTitle }}
+    >
       <section
         aria-labelledby={!ariaLabel ? titleId : undefined}
         aria-label={ariaLabel}

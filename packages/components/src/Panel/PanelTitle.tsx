@@ -14,10 +14,7 @@ export interface PanelTitleProps {
 }
 
 export const PanelTitle = ({ children, level = 2 }: PanelTitleProps) => {
-  const { classNames, titleId, titleInfo } = usePanelContext();
-
-  // Shared ref so CollapsibleTrigger can derive its heading level in the same render pass
-  titleInfo.current = { hasTitle: true, level };
+  const { classNames, titleId } = usePanelContext();
 
   return (
     <Heading
