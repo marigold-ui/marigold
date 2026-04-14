@@ -176,6 +176,9 @@ export type { NonModalProps } from './Overlay/NonModal';
 export { Underlay } from './Overlay/Underlay';
 export type { UnderlayProps } from './Overlay/Underlay';
 
+export { Panel } from './Panel/Panel';
+export type { PanelProps } from './Panel/Panel';
+
 export { Pagination } from './Pagination/Pagination';
 export type { PaginationProps } from './Pagination/Pagination';
 

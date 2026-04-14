@@ -136,6 +136,19 @@ export type Theme = {
       | 'valueContainer',
       ComponentStyleFunction<string, string>
     >;
+    Panel?: Record<
+      | 'root'
+      | 'header'
+      | 'title'
+      | 'description'
+      | 'actions'
+      | 'content'
+      | 'collapsible'
+      | 'collapsibleTrigger'
+      | 'collapsibleContent'
+      | 'footer',
+      ComponentStyleFunction<string, string>
+    >;
     Pagination?: Record<
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>

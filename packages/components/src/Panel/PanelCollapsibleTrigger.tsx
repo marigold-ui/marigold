@@ -1,0 +1,37 @@
+import type { ReactNode } from 'react';
+import { use } from 'react';
+import { Button, DisclosureStateContext, Heading } from 'react-aria-components';
+import { cn } from '@marigold/system';
+import { ChevronDown } from '../icons/ChevronDown';
+import { usePanelContext } from './Context';
+
+export interface PanelCollapsibleTriggerProps {
+  children: ReactNode;
+}
+
+export const PanelCollapsibleTrigger = ({
+  children,
+}: PanelCollapsibleTriggerProps) => {
+  const { classNames, titleLevel, hasTitle } = usePanelContext();
+  const { isExpanded } = use(DisclosureStateContext)!;
+
+  // Derive heading level: one below the title when present, else same as title level
+  const level = hasTitle
+    ? (Math.min(titleLevel + 1, 6) as 1 | 2 | 3 | 4 | 5 | 6)
+    : (titleLevel as 1 | 2 | 3 | 4 | 5 | 6);
+
+  return (
+    <Heading level={level}>
+      <Button slot="trigger" className={classNames.collapsibleTrigger}>
+        <span className="flex-1">{children}</span>
+        <ChevronDown
+          size="16"
+          className={cn(
+            'shrink-0 transition-transform',
+            isExpanded && 'rotate-180'
+          )}
+        />
+      </Button>
+    </Heading>
+  );
+};
