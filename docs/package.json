@@ -10,7 +10,8 @@
     "postinstall": "fumadocs-mdx && pnpm run build:registry",
     "lint": "eslint",
     "build:registry": "node scripts/build-registry.mjs",
-    "build:changelog": "zx ./scripts/build-changelog.mjs"
+    "build:changelog": "zx ./scripts/build-changelog.mjs",
+    "build:embeddings": "zx ./scripts/build-embeddings.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "3.1011.0",

@@ -1,10 +1,11 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { getAllMdxFiles, parseMdxToMarkdown } from '../parser';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const OUT_DIR = path.resolve(__dirname, '..', 'out');
+const CONTENT_DIR = path.resolve(__dirname, '..', '..', '..', 'content');
 const OUTPUT_FILE = path.resolve(__dirname, 'chunks.json');
 const MAX_CHARS = 10_000;
 const MIN_CHARS = 150;
@@ -84,14 +85,12 @@ function fit(
   return out;
 }
 
-function chunkFile(filePath: string) {
-  const basename = path.basename(filePath, '.md');
-  const content = fs.readFileSync(filePath, 'utf-8');
-  const h1 = content.match(/^# +(.+)$/m)?.[1]?.trim() ?? '';
-  const subtitle = content.match(/^\*([^*\n]+)\*$/m)?.[1] ?? '';
+function chunkMarkdown(markdown: string, basename: string) {
+  const h1 = markdown.match(/^# +(.+)$/m)?.[1]?.trim() ?? '';
+  const subtitle = markdown.match(/^\*([^*\n]+)\*$/m)?.[1] ?? '';
   const ctx = subtitle ? `${h1} — ${subtitle}` : h1;
 
-  return splitAt(content, 2).flatMap(({ heading: h2, body }) => {
+  return splitAt(markdown, 2).flatMap(({ heading: h2, body }) => {
     const headingPath = [h1, h2].filter(Boolean).join(' > ');
     return fit(headingPath, body)
       .filter(c => c.text.length >= MIN_CHARS)
@@ -105,30 +104,25 @@ function chunkFile(filePath: string) {
   });
 }
 
-// ─── CLI ─────────────────────────────────────────────────────────────────────
+const filteredFiles = await getAllMdxFiles(CONTENT_DIR);
 
-const fileArg =
-  process.argv.find(a => a.startsWith('--file='))?.slice(7) ??
-  (process.argv.includes('--file')
-    ? process.argv[process.argv.indexOf('--file') + 1]
-    : undefined);
-
-const files = fileArg
-  ? [path.join(OUT_DIR, fileArg.endsWith('.md') ? fileArg : `${fileArg}.md`)]
-  : fs
-      .readdirSync(OUT_DIR)
-      .filter(f => f.endsWith('.md'))
-      .sort()
-      .map(f => path.join(OUT_DIR, f));
-
-if (!files.length || (fileArg && !fs.existsSync(files[0]))) {
-  console.error(
-    fileArg ? `Not found: ${files[0]}` : `No .md files in ${OUT_DIR}`
-  );
+if (!filteredFiles.length) {
+  console.error(`No .mdx files in ${CONTENT_DIR}`);
   process.exit(1);
 }
 
-const chunks = files.flatMap(chunkFile).map((c, i) => ({ id: i + 1, ...c }));
+const allChunks = await Promise.all(
+  filteredFiles.map(async filePath => {
+    const { markdown, slug } = await parseMdxToMarkdown({
+      filePath,
+      contentDir: CONTENT_DIR,
+    });
+    const basename = slug.replace(/\//g, '-');
+    return chunkMarkdown(markdown, basename);
+  })
+);
+
+const chunks = allChunks.flat().map((c, i) => ({ id: i + 1, ...c }));
 fs.writeFileSync(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
 
 const avg = Math.round(
@@ -136,5 +130,5 @@ const avg = Math.round(
 );
 const max = Math.max(...chunks.map(c => c.textForEmbedding.length));
 console.log(
-  `${files.length} files → ${chunks.length} chunks — avg ${avg}c max ${max}c → ${OUTPUT_FILE}`
+  `${filteredFiles.length} files → ${chunks.length} chunks — avg ${avg}c max ${max}c → ${OUTPUT_FILE}`
 );
