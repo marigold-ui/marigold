@@ -23,8 +23,8 @@ export const runtime = 'nodejs';
 // process.cwd() is the docs/ root in Next.js
 const CHUNKS_SEARCH_FILE = path.join(
   process.cwd(),
-  'app',
-  'mcp',
+  'lib',
+  'markdown',
   'chunks_search.json'
 );
 
@@ -227,9 +227,10 @@ const handler = createMcpHandler(
   }
 );
 
-const exported = withMcpAuth(handler, verifyToken, {
+export const GET = withMcpAuth(handler, verifyToken, {
   required: true,
   resourceMetadataPath: '/.well-known/oauth-protected-resource',
 });
 
-export { exported as GET, exported as POST, exported as DELETE };
+export const POST = GET;
+export const DELETE = GET;
