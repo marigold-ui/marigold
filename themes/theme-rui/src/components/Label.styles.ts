@@ -3,7 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const Label: ThemeComponent<'Label'> = cva({
   base: [
     'flex items-center gap-1',
-    'text-sm font-medium leading-none text-foreground',
+    'text-sm font-medium text-foreground',
     'group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled',
 
     // required indicator
