@@ -18,4 +18,10 @@ describe('LinkButton', () => {
     render(<Basic.Component data-testid="custom-link" />);
     expect(screen.getByTestId('custom-link')).toBeInTheDocument();
   });
+
+  it('supports fullWidth', () => {
+    render(<Basic.Component fullWidth />);
+
+    expect(screen.getByRole('link')).toHaveClass('w-full');
+  });
 });

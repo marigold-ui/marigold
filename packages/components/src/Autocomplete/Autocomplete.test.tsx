@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, WithSections } from './Autocomplete.stories';
 
@@ -218,4 +219,44 @@ test('hides loading state when loading is false', () => {
   );
 
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+});
+
+test('calls onSubmit with custom value on Enter when no option is focused', async () => {
+  const onSubmit = vi.fn();
+  renderWithOverlay(<Basic.Component label="Label" onSubmit={onSubmit} />);
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'custom value{Enter}');
+
+  expect(onSubmit).toHaveBeenCalled();
+});
+
+describe('mobile view', () => {
+  beforeEach(() => {
+    window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  });
+
+  afterEach(() => {
+    window.matchMedia = mockMatchMedia([]);
+  });
+
+  test('renders mobile trigger with placeholder', () => {
+    renderWithOverlay(
+      <Basic.Component label="Label" placeholder="Search..." />
+    );
+
+    expect(screen.getByText('Search...')).toBeInTheDocument();
+  });
+
+  test('opens tray and shows empty state', async () => {
+    renderWithOverlay(<Basic.Component label="Label" allowsEmptyCollection />);
+
+    const trigger = screen.getByRole('button');
+    await user.click(trigger);
+
+    const input = await screen.findByRole('combobox');
+    await user.type(input, 'xyz');
+
+    expect(await screen.findByText('No result found')).toBeVisible();
+  });
 });
