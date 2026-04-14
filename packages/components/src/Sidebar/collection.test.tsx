@@ -118,8 +118,8 @@ describe('collection.ts edge cases', () => {
     ];
 
     const collection = buildCollection(jsx);
-    const node = collection.getItem('icon-item');
 
+    const node = collection.getItem('icon-item');
     expect(node).toBeDefined();
     // textValue should be empty since there are no direct string children
     expect(node?.type === 'item' && node.textValue).toBe('');
@@ -207,6 +207,7 @@ const navJsx = () => [
 describe('resolveCurrent: string mode', () => {
   test('resolveCurrent: exact match wins', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, '/overview');
 
     expect(Array.from(active)).toEqual(['overview']);
@@ -214,6 +215,7 @@ describe('resolveCurrent: string mode', () => {
 
   test('resolveCurrent: longest segment-prefix match wins for dynamic routes', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, '/users/abc-123');
 
     // /users is a segment prefix of /users/abc-123, /users/list is not
@@ -222,6 +224,7 @@ describe('resolveCurrent: string mode', () => {
 
   test('resolveCurrent: prefers longer segment-prefix when multiple match', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, '/users/list/abc-123');
 
     // Both /users and /users/list are prefixes — longer wins
@@ -230,6 +233,7 @@ describe('resolveCurrent: string mode', () => {
 
   test('resolveCurrent: root "/" never acts as a prefix', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, '/anything-else');
 
     // Home (href "/") would be a "prefix" of everything if not excluded
@@ -238,6 +242,7 @@ describe('resolveCurrent: string mode', () => {
 
   test('resolveCurrent: root "/" matches itself exactly', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, '/');
 
     expect(Array.from(active)).toEqual(['home']);
@@ -253,6 +258,7 @@ describe('resolveCurrent: string mode', () => {
 
   test('resolveCurrent: query string and hash are stripped from input', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, '/overview?tab=stats#top');
 
     expect(Array.from(active)).toEqual(['overview']);
@@ -260,6 +266,7 @@ describe('resolveCurrent: string mode', () => {
 
   test('resolveCurrent: trailing slash on input is normalized', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, '/overview/');
 
     expect(Array.from(active)).toEqual(['overview']);
@@ -286,6 +293,7 @@ describe('resolveCurrent: string mode', () => {
 
   test('resolveCurrent: empty set when no leaf matches', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, '/nonexistent');
 
     expect(active.size).toBe(0);
@@ -293,6 +301,7 @@ describe('resolveCurrent: string mode', () => {
 
   test('resolveCurrent: returns empty when current is undefined', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, undefined);
 
     expect(active.size).toBe(0);
@@ -319,6 +328,7 @@ describe('resolveCurrent: function mode', () => {
 
   test('resolveCurrent: predicate can match multiple leaves', () => {
     const collection = buildCollection(navJsx());
+
     const active = resolveCurrent(collection, href =>
       href ? href.startsWith('/users') : false
     );
@@ -344,7 +354,6 @@ describe('resolveCurrent: dev-mode duplicate href warning', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy.mock.calls[0][0]).toMatch(/share the same href "\/dup"/);
-
     spy.mockRestore();
   });
 
@@ -359,10 +368,10 @@ describe('resolveCurrent: dev-mode duplicate href warning', () => {
       </SidebarItem>,
     ];
     const collection = buildCollection(jsx);
+
     const active = resolveCurrent(collection, '/dup');
 
     expect(Array.from(active)).toEqual(['first']);
-
     spy.mockRestore();
   });
 
@@ -378,8 +387,6 @@ describe('resolveCurrent: dev-mode duplicate href warning', () => {
     ];
     const collection = buildCollection(jsx);
 
-    // Branch.href === "/users" via firstLeafHref. Should not trigger duplicate
-    // warning because branches are excluded from leaf duplicate-detection.
     resolveCurrent(collection, '/users');
 
     expect(spy).not.toHaveBeenCalled();

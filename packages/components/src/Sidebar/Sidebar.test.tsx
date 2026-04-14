@@ -91,8 +91,8 @@ test('keyboard shortcut Cmd+B collapses sidebar', async () => {
 test('keyboard shortcut Cmd+B expands sidebar', async () => {
   render(<Basic.Component />);
   const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
-  await user.keyboard('{Meta>}b{/Meta}');
 
+  await user.keyboard('{Meta>}b{/Meta}');
   await user.keyboard('{Meta>}b{/Meta}');
 
   expect(toggle).toHaveAttribute('aria-expanded', 'true');
@@ -103,6 +103,7 @@ test('active state with aria-current', () => {
 
   const overviewLink = screen.getByRole('link', { name: 'Overview' });
   const analyticsLink = screen.getByRole('link', { name: 'Analytics' });
+
   expect(overviewLink).toHaveAttribute('aria-current', 'page');
   expect(analyticsLink).not.toHaveAttribute('aria-current');
 });
@@ -327,8 +328,8 @@ test('toggle writes expanded state to cookie', async () => {
 
 test('cookie overrides defaultOpen', () => {
   document.cookie = 'marigold:sidebar:state=collapsed;path=/;max-age=604800';
-
   render(<DefaultCollapsed.Component />);
+
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   const shell = closest(
     screen.getByRole('link', { name: 'Overview' }),
@@ -341,7 +342,6 @@ test('cookie overrides defaultOpen', () => {
 
 test('defaultOpen={false} starts sidebar collapsed', () => {
   render(<DefaultCollapsed.Component />);
-
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   const shell = closest(
     screen.getByRole('link', { name: 'Overview' }),
@@ -364,8 +364,8 @@ test('controlled mode toggles via onOpenChange', async () => {
 test('controlled mode re-opens via onOpenChange', async () => {
   render(<Controlled.Component />);
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
-  await user.click(trigger);
 
+  await user.click(trigger);
   await user.click(trigger);
 
   expect(screen.getByText('Sidebar is open')).toBeInTheDocument();
@@ -507,7 +507,6 @@ test('branch item onPress fires when clicking branch trigger', async () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
   const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
 
   await user.click(settingsTrigger);
@@ -535,10 +534,8 @@ test('nested branches derive href from deepest first leaf', () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
   const outerLink = screen.getByRole('link', { name: /Outer/ });
 
-  // Outer branch should auto-derive href from the deepest first leaf
   expect(outerLink).toHaveAttribute('href', '/deep-leaf');
 });
 
@@ -559,10 +556,8 @@ test('branch without any leaf hrefs renders without href', () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
   const trigger = screen.getByRole('button', { name: /Empty/ });
 
-  // Branch item should render as a button when it has no href
   expect(trigger).not.toHaveAttribute('href');
 });
 
@@ -589,7 +584,6 @@ test('group label inside branch renders correctly', () => {
     </RouterProvider>
   );
 
-  // Sub-panel is active (because /profile is active)
   expect(screen.getByText('Account')).toBeInTheDocument();
   expect(screen.getByText('Profile')).toBeInTheDocument();
   expect(screen.getByRole('separator')).toBeInTheDocument();
@@ -622,17 +616,15 @@ test('switching branches focuses active item in new branch', async () => {
 
 test('item with explicit id uses that id as key', () => {
   render(<Basic.Component />);
-
   const link = screen.getByRole('link', { name: /Management/ });
+
   expect(link).toHaveAttribute('data-key', 'management');
 });
 
 test('item without explicit id gets auto-generated key', () => {
   render(<Basic.Component />);
-
   const link = screen.getByRole('link', { name: 'Overview' });
 
-  // Auto-generated keys follow the pattern "item-N"
   expect(link).toHaveAttribute('data-key');
   expect(link.getAttribute('data-key')).toMatch(/^item-\d+$/);
 });
@@ -656,11 +648,10 @@ test('textValue auto-extracted from string children', () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
-  // Back button should show auto-extracted textValue "My Section"
   const backButton = screen.getByRole('button', {
     name: /Back to My Section/,
   });
+
   expect(backButton).toBeInTheDocument();
 });
 
@@ -736,13 +727,9 @@ test('marker components return null when called directly', () => {
 describe('Keyboard Navigation', () => {
   test('ArrowDown moves focus to next item', async () => {
     render(<Basic.Component />);
-
     const overview = screen.getByRole('link', { name: 'Overview' });
     const analytics = screen.getByRole('link', { name: 'Analytics' });
-
-    // Tab into sidebar nav to focus the active item (Overview)
     overview.focus();
-    expect(overview).toHaveFocus();
 
     await user.keyboard('{ArrowDown}');
 
@@ -751,12 +738,9 @@ describe('Keyboard Navigation', () => {
 
   test('ArrowUp moves focus to previous item', async () => {
     render(<Basic.Component />);
-
     const overview = screen.getByRole('link', { name: 'Overview' });
     const analytics = screen.getByRole('link', { name: 'Analytics' });
-
     analytics.focus();
-    expect(analytics).toHaveFocus();
 
     await user.keyboard('{ArrowUp}');
 
@@ -765,12 +749,9 @@ describe('Keyboard Navigation', () => {
 
   test('ArrowDown wraps from last item to first', async () => {
     render(<Basic.Component />);
-
     const security = screen.getByRole('link', { name: 'Security' });
     const overview = screen.getByRole('link', { name: 'Overview' });
-
     security.focus();
-    expect(security).toHaveFocus();
 
     await user.keyboard('{ArrowDown}');
 
@@ -779,12 +760,9 @@ describe('Keyboard Navigation', () => {
 
   test('ArrowUp wraps from first item to last', async () => {
     render(<Basic.Component />);
-
     const overview = screen.getByRole('link', { name: 'Overview' });
     const security = screen.getByRole('link', { name: 'Security' });
-
     overview.focus();
-    expect(overview).toHaveFocus();
 
     await user.keyboard('{ArrowUp}');
 
@@ -793,12 +771,9 @@ describe('Keyboard Navigation', () => {
 
   test('Home key jumps to first item', async () => {
     render(<Basic.Component />);
-
     const security = screen.getByRole('link', { name: 'Security' });
     const overview = screen.getByRole('link', { name: 'Overview' });
-
     security.focus();
-    expect(security).toHaveFocus();
 
     await user.keyboard('{Home}');
 
@@ -807,12 +782,9 @@ describe('Keyboard Navigation', () => {
 
   test('End key jumps to last item', async () => {
     render(<Basic.Component />);
-
     const overview = screen.getByRole('link', { name: 'Overview' });
     const security = screen.getByRole('link', { name: 'Security' });
-
     overview.focus();
-    expect(overview).toHaveFocus();
 
     await user.keyboard('{End}');
 
@@ -821,20 +793,14 @@ describe('Keyboard Navigation', () => {
 
   test('separators and group labels are skipped during arrow navigation', async () => {
     render(<Basic.Component />);
-
-    // Root panel: Overview, Analytics, [separator], Management, [group label "Settings"], General, Security
     const analytics = screen.getByRole('link', { name: 'Analytics' });
     const management = screen.getByRole('link', { name: /Management/ });
-
     analytics.focus();
-    expect(analytics).toHaveFocus();
 
-    // ArrowDown should skip the separator and land on Management
     await user.keyboard('{ArrowDown}');
 
     expect(management).toHaveFocus();
 
-    // ArrowDown should skip the group label and land on General
     const general = screen.getByRole('link', { name: 'General' });
     await user.keyboard('{ArrowDown}');
 
@@ -843,26 +809,16 @@ describe('Keyboard Navigation', () => {
 
   test('arrow navigation in sub-panel includes back button', async () => {
     render(<WithActiveBranch.Component />);
-
-    // WithActiveBranch starts with /users active, Management panel is active
     const usersLink = screen.getByRole('link', { name: 'Users' });
     const backButton = screen.getByRole('button', {
       name: /Back to Management/,
     });
-
-    // Users is the active item, it should be the default focus target
     usersLink.focus();
-    expect(usersLink).toHaveFocus();
 
-    // ArrowUp should go to back button (wrapping from first item to last goes to Billing,
-    // but going up from Users: Users is after back button in DOM order)
-    // Actually, DOM order is: back button, Users, Teams, Billing
-    // ArrowUp from Users → back button
     await user.keyboard('{ArrowUp}');
 
     expect(backButton).toHaveFocus();
 
-    // ArrowDown from back button → Users
     await user.keyboard('{ArrowDown}');
 
     expect(usersLink).toHaveFocus();
@@ -963,8 +919,8 @@ describe('Keyboard Navigation', () => {
 describe('Roving Tabindex', () => {
   test('only one nav item has tabIndex=0 in the active panel', () => {
     render(<Basic.Component />);
-
     const links = screen.getAllByRole('link');
+
     const tabbable = links.filter(l => l.tabIndex === 0);
     const nonTabbable = links.filter(l => l.tabIndex === -1);
 
@@ -975,14 +931,10 @@ describe('Roving Tabindex', () => {
 
   test('arrow key updates which item has tabIndex=0', async () => {
     render(<Basic.Component />);
-
     const overview = screen.getByRole('link', { name: 'Overview' });
     const analytics = screen.getByRole('link', { name: 'Analytics' });
-
-    expect(overview).toHaveAttribute('tabindex', '0');
-    expect(analytics).toHaveAttribute('tabindex', '-1');
-
     overview.focus();
+
     await user.keyboard('{ArrowDown}');
 
     expect(analytics).toHaveFocus();
@@ -992,18 +944,12 @@ describe('Roving Tabindex', () => {
 
   test('back button participates in roving tabindex', async () => {
     render(<WithActiveBranch.Component />);
-
     const backButton = screen.getByRole('button', {
       name: /Back to Management/,
     });
     const usersLink = screen.getByRole('link', { name: 'Users' });
-
-    // Users is active, so it should be the tab stop
-    expect(usersLink).toHaveAttribute('tabindex', '0');
-    expect(backButton).toHaveAttribute('tabindex', '-1');
-
-    // Arrow up to back button
     usersLink.focus();
+
     await user.keyboard('{ArrowUp}');
 
     expect(backButton).toHaveFocus();

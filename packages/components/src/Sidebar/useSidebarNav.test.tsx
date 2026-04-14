@@ -35,7 +35,6 @@ describe('useRovingItem error outside provider', () => {
     expect(() => {
       renderHook(() => useRovingItem('some-key'));
     }).toThrow('useRovingItem must be used within a RovingTabIndexProvider');
-
     spy.mockRestore();
   });
 });
