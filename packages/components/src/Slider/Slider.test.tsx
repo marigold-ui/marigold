@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
+import { render, renderHook, screen } from '@testing-library/react';
+import { useRef } from 'react';
 import { Basic, MultipleThumbs } from './Slider.stories';
 
 test('supports disabled prop', () => {
@@ -17,10 +17,10 @@ test('supports defaultValue (uncontrolled)', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLDivElement>();
-  render(<Basic.Component ref={ref as any} label="Percent" />);
+  const { result } = renderHook(() => useRef<HTMLDivElement>(null));
+  render(<Basic.Component ref={result.current} label="Percent" />);
 
-  expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  expect(result.current.current).toBeInstanceOf(HTMLDivElement);
 });
 
 test('renders multiple thumbs for range slider', () => {
