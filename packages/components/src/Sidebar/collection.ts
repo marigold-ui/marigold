@@ -130,9 +130,10 @@ export type SidebarCurrent = string | SidebarCurrentMatcher;
 export const normalizePath = (path: string): string => {
   const noQuery = path.split('?')[0].split('#')[0];
   if (noQuery === '' || noQuery === '/') return '/';
-  // Negative lookbehind anchors the match at the first `/` of a trailing run,
-  // preventing polynomial backtracking on inputs like `'/'.repeat(n) + 'x'`.
-  const trimmed = noQuery.replace(/(?<!\/)\/+$/, '');
+  let trimmed = noQuery;
+  while (trimmed.length > 1 && trimmed.endsWith('/')) {
+    trimmed = trimmed.slice(0, -1);
+  }
   return trimmed === '' ? '/' : trimmed;
 };
 
@@ -200,25 +201,26 @@ export const resolveCurrent = (
     }
   }
 
-  // 1. Exact match (first in document order wins).
-  for (const leaf of leaves) {
-    if (!leaf.href) continue;
-    if (normalizePath(leaf.href) === target) return new Set([leaf.key]);
-  }
-
-  // 2. Longest segment-prefix match (root '/' excluded — exact-only).
+  let exact: string | null = null;
   let best: { key: string; len: number } | null = null;
+
   for (const leaf of leaves) {
     if (!leaf.href) continue;
     const href = normalizePath(leaf.href);
-    if (href === '/') continue;
-    if (target.startsWith(href + '/')) {
+
+    if (href === target) {
+      exact = leaf.key;
+      break;
+    }
+
+    if (href !== '/' && target.startsWith(href + '/')) {
       if (!best || href.length > best.len) {
         best = { key: leaf.key, len: href.length };
       }
     }
   }
-  return best ? new Set([best.key]) : new Set();
+
+  return new Set(exact ? [exact] : best ? [best.key] : []);
 };
 
 /**
