@@ -7,6 +7,9 @@ import { Grid } from './Grid';
 const meta = preview.meta({
   title: 'Components/Grid',
   component: Grid,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     alignX: {
       control: { type: 'select' },

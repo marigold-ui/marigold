@@ -62,6 +62,7 @@ const meta = preview.meta({
   },
   parameters: {
     layout: 'fullscreen',
+    surface: false,
   },
 });
 

@@ -1,4 +1,4 @@
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import { TableStateContext } from 'react-aria-components';
 import { cn, textAlign } from '@marigold/system';
 import { useTableContext } from './Context';
@@ -55,7 +55,7 @@ export const TableCellContent = ({
     overflow: tableOverflow,
     allowTextSelection: tableAllowTextSelection,
   } = useTableContext();
-  const state = useContext(TableStateContext);
+  const state = use(TableStateContext);
 
   // Cell-level overrides table-level
   const overflow = cellOverflow ?? tableOverflow;
