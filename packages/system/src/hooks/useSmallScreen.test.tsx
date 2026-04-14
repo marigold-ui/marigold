@@ -33,3 +33,27 @@ test('uses breakpoint derived from defaultTheme.screens.sm', () => {
   renderHook(() => useSmallScreen());
   expect(window.matchMedia).toHaveBeenCalledWith(expectedQuery);
 });
+
+test('updates when media query change event fires', async () => {
+  let changeHandler: ((e: Partial<MediaQueryListEvent>) => void) | undefined;
+
+  window.matchMedia = vi.fn().mockImplementation(query => ({
+    matches: false,
+    addEventListener: vi.fn(
+      (_event: string, handler: (e: Partial<MediaQueryListEvent>) => void) => {
+        changeHandler = handler;
+      }
+    ),
+    removeEventListener: vi.fn(),
+  }));
+
+  const { result } = renderHook(() => useSmallScreen());
+  expect(result.current).toBe(false);
+
+  const { act } = await import('@testing-library/react');
+  act(() => {
+    changeHandler!({ matches: true } as MediaQueryListEvent);
+  });
+
+  expect(result.current).toBe(true);
+});

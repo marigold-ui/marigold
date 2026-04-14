@@ -1,7 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { RefObject } from 'react';
-import { Basic, WithSingleSelection } from './SelectList.stories';
+import { createRef } from 'react';
+import {
+  Action,
+  Basic,
+  WithMultiSelection,
+  WithSingleSelection,
+} from './SelectList.stories';
+import { SelectListAction } from './SelectListAction';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
 
@@ -21,10 +27,23 @@ describe('SelectList', () => {
   });
 
   test('support refs', () => {
-    const selectListRef: RefObject<HTMLUListElement | null> = { current: null };
-    render(<Basic.Component aria-label="Test" ref={selectListRef} />);
+    const SelectListRef = createRef();
+    render(<Basic.Component aria-label="Test" ref={SelectListRef as any} />);
 
-    expect(selectListRef.current).toBeInstanceOf(HTMLElement);
+    expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
+  });
+
+  test('action slot renders with order-last class', () => {
+    render(
+      <SelectListAction>
+        <button>Action</button>
+      </SelectListAction>
+    );
+
+    /* eslint-disable testing-library/no-node-access */
+    const action = screen.getByText('Action').parentElement;
+    /* eslint-enable testing-library/no-node-access */
+    expect(action).toHaveClass('order-last');
   });
 
   test('should support focus ring-3', async () => {
@@ -42,5 +61,18 @@ describe('SelectList', () => {
 
     await user.tab();
     expect(row).not.toHaveAttribute('data-focus-visible');
+  });
+
+  test('renders items for multiple selection', () => {
+    render(<WithMultiSelection.Component />);
+
+    expect(screen.getByText('Charizard')).toBeInTheDocument();
+    expect(screen.getByText('Blastoise')).toBeInTheDocument();
+  });
+
+  test('supports non-string children with textValue', () => {
+    render(<Action.Component />);
+
+    expect(screen.getByText('Games')).toBeInTheDocument();
   });
 });

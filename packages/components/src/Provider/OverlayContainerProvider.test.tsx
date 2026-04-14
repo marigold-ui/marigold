@@ -81,3 +81,13 @@ test('renders into a given container', async () => {
   const portal = screen.getByTestId('portal');
   expect(portal?.contains(listbox)).toBe(true);
 });
+
+test('renders without container prop', () => {
+  render(
+    <OverlayContainerProvider>
+      <div data-testid="child">content</div>
+    </OverlayContainerProvider>
+  );
+
+  expect(screen.getByTestId('child')).toBeInTheDocument();
+});

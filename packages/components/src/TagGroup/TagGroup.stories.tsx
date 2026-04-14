@@ -143,3 +143,35 @@ RemovableAllTags.test('Remove all tags test', async ({ canvas, userEvent }) => {
     expect(canvas.queryByText('Shopping')).not.toBeInTheDocument()
   );
 });
+
+RemovableAllTags.test(
+  'Remove all button is hidden when fewer than 2 tags remain',
+  async ({ canvas, userEvent }) => {
+    // Start with 4 tags, "Remove all" should be visible
+    expect(canvas.getByText('Remove all')).toBeInTheDocument();
+
+    // Remove tags until only 1 remains
+    const news = canvas.getByText('News');
+    await userEvent.click(within(news).getByRole('button'));
+    await waitFor(() =>
+      expect(canvas.queryByText('News')).not.toBeInTheDocument()
+    );
+
+    const travel = canvas.getByText('Travel');
+    await userEvent.click(within(travel).getByRole('button'));
+    await waitFor(() =>
+      expect(canvas.queryByText('Travel')).not.toBeInTheDocument()
+    );
+
+    const gaming = canvas.getByText('Gaming');
+    await userEvent.click(within(gaming).getByRole('button'));
+    await waitFor(() =>
+      expect(canvas.queryByText('Gaming')).not.toBeInTheDocument()
+    );
+
+    // Only 1 tag left — "Remove all" should be hidden
+    await waitFor(() =>
+      expect(canvas.queryByText('Remove all')).not.toBeInTheDocument()
+    );
+  }
+);
