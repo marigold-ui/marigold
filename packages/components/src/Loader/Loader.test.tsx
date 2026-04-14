@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { I18nProvider } from 'react-aria-components';
+import { renderWithOverlay } from '../test.utils';
 import { Basic } from './Loader.stories';
 
 test('renders loader', () => {
@@ -63,6 +64,16 @@ test('translate loading message to German', () => {
   const loader = screen.getByRole('progressbar');
 
   expect(loader.getAttribute('aria-label')).toMatchInlineSnapshot(`"Lade..."`);
+});
+
+test('renders fullscreen loader with modal overlay', () => {
+  renderWithOverlay(<Basic.Component mode="fullscreen" aria-label="loading" />);
+
+  const loader = screen.getByRole('progressbar');
+  const dialog = screen.getByRole('dialog');
+
+  expect(loader).toBeInTheDocument();
+  expect(dialog).toBeInTheDocument();
 });
 
 test('renders loader with loaderType circle', () => {

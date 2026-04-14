@@ -437,6 +437,29 @@ test('mobile closes sheet when leaf nav item is clicked', async () => {
   });
 });
 
+test('mobile closes sheet when overlay backdrop is clicked', async () => {
+  const mobileUser = userEvent.setup();
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  ensureOverlayContainer();
+
+  render(<Basic.Component />);
+
+  // Open the mobile sheet
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  await mobileUser.click(trigger);
+  expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
+
+  // Dismiss via react-aria's hidden dismiss button (simulates backdrop click)
+  const dismissButton = screen.getByRole('button', { name: 'Dismiss' });
+  await mobileUser.click(dismissButton);
+
+  await waitFor(() => {
+    expect(
+      screen.queryByRole('link', { name: 'Overview' })
+    ).not.toBeInTheDocument();
+  });
+});
+
 test('mobile keeps sheet open when branch item is clicked', async () => {
   const mobileUser = userEvent.setup();
   window.matchMedia = mockMatchMedia(['(width < 640px)']);

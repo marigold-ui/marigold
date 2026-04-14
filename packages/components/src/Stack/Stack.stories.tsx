@@ -14,8 +14,9 @@ const meta = preview.meta({
   argTypes: {
     space: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: ['tight', 'related', 'regular', 'group', 'section'],
       description: 'Responsive Style Value',
     },
     alignX: {
@@ -44,7 +45,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   args: {
-    space: 4,
+    space: 'regular',
   },
   render: args => (
     <div className="rounded-xl bg-linear-to-b from-gray-50 to-white p-8">

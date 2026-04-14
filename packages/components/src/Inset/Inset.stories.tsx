@@ -11,25 +11,56 @@ const meta = preview.meta({
   argTypes: {
     space: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: [
+        'square-tight',
+        'square-snug',
+        'square-regular',
+        'square-relaxed',
+        'square-loose',
+        'squish-tight',
+        'squish-snug',
+        'squish-regular',
+        'squish-relaxed',
+        'squish-loose',
+        'stretch-tight',
+        'stretch-snug',
+        'stretch-regular',
+        'stretch-relaxed',
+        'stretch-loose',
+      ],
       description: 'set padding on all sides',
     },
     spaceX: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: [
+        'padding-tight',
+        'padding-snug',
+        'padding-regular',
+        'padding-relaxed',
+        'padding-loose',
+      ],
       description: 'set padding on left and right side',
     },
     spaceY: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: [
+        'padding-tight',
+        'padding-snug',
+        'padding-regular',
+        'padding-relaxed',
+        'padding-loose',
+      ],
       description: 'set padding on top and bottom side',
     },
   },
   args: {
-    space: 4,
+    space: 'square-regular',
     children: undefined,
   } as const,
 });
