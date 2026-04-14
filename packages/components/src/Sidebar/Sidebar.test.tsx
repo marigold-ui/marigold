@@ -1055,7 +1055,7 @@ describe('Sidebar.Nav `current` integration', () => {
   });
 
   test('Sidebar.Nav current prop auto-opens branch when descendant matches', async () => {
-    renderSidebar('/users');
+    render(<WithActiveBranch.Component />);
 
     // Users link is inside the Management branch panel
     const usersLink = await screen.findByRole('link', { name: 'Users' });
