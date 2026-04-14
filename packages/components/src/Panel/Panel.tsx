@@ -3,7 +3,6 @@ import { useId } from 'react';
 import { useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PanelProvider } from './Context';
-import { PanelActions } from './PanelActions';
 import { PanelCollapsible } from './PanelCollapsible';
 import { PanelCollapsibleContent } from './PanelCollapsibleContent';
 import { PanelCollapsibleTrigger } from './PanelCollapsibleTrigger';
@@ -11,6 +10,7 @@ import { PanelContent } from './PanelContent';
 import { PanelDescription } from './PanelDescription';
 import { PanelFooter } from './PanelFooter';
 import { PanelHeader } from './PanelHeader';
+import { PanelHeaderActions } from './PanelHeaderActions';
 import { PanelTitle } from './PanelTitle';
 
 // Props
@@ -67,7 +67,7 @@ export const Panel = ({
 Panel.Header = PanelHeader;
 Panel.Title = PanelTitle;
 Panel.Description = PanelDescription;
-Panel.Actions = PanelActions;
+Panel.HeaderActions = PanelHeaderActions;
 Panel.Content = PanelContent;
 Panel.Collapsible = PanelCollapsible;
 Panel.CollapsibleTrigger = PanelCollapsibleTrigger;

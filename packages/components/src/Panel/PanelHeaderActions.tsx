@@ -2,11 +2,11 @@ import type { ReactNode } from 'react';
 import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
-export interface PanelActionsProps {
+export interface PanelHeaderActionsProps {
   children: ReactNode;
 }
 
-export const PanelActions = ({ children }: PanelActionsProps) => {
+export const PanelHeaderActions = ({ children }: PanelHeaderActionsProps) => {
   const { classNames } = usePanelContext();
 
   return (
