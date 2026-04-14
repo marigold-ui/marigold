@@ -1,5 +1,7 @@
-import { Children, type ReactNode, isValidElement, useId } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { cn, useClassNames } from '@marigold/system';
+import type { TitleInfo } from './Context';
 import { PanelProvider } from './Context';
 import { PanelActions } from './PanelActions';
 import { PanelCollapsible } from './PanelCollapsible';
@@ -23,32 +25,7 @@ export interface PanelProps {
 
 // Helpers
 // ---------------
-
-/**
- * Inspect children to detect whether a `PanelTitle` is rendered inside a
- * `PanelHeader`, and if so, extract its heading level. This is a pure
- * render-time computation on the React element tree (not the DOM).
- */
-const detectTitle = (children: ReactNode) => {
-  let hasTitle = false;
-  let titleLevel = 2;
-
-  for (const child of Children.toArray(children)) {
-    if (isValidElement(child) && child.type === PanelHeader) {
-      const headerChildren = Children.toArray(
-        (child.props as { children?: ReactNode }).children
-      );
-      for (const headerChild of headerChildren) {
-        if (isValidElement(headerChild) && headerChild.type === PanelTitle) {
-          hasTitle = true;
-          titleLevel = (headerChild.props as { level?: number }).level ?? 2;
-        }
-      }
-    }
-  }
-
-  return { hasTitle, titleLevel };
-};
+const DEFAULT_TITLE_INFO: TitleInfo = { hasTitle: false, level: 2 };
 
 // Component
 // ---------------
@@ -60,22 +37,25 @@ export const Panel = ({
 }: PanelProps) => {
   const titleId = useId();
   const classNames = useClassNames({ component: 'Panel', variant, size });
+  const titleInfo = useRef<TitleInfo>(DEFAULT_TITLE_INFO);
 
-  const { hasTitle, titleLevel } = detectTitle(children);
+  titleInfo.current = DEFAULT_TITLE_INFO;
 
-  if (!hasTitle && !ariaLabel) {
-    throw new Error(
-      'Panel requires either a <Panel.Title> within <Panel.Header> or an "aria-label" prop for accessible labeling.'
-    );
-  }
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'production') {
+      if (!ariaLabel && !titleInfo.current.hasTitle) {
+        console.warn(
+          'Panel requires either a <Panel.Title> within <Panel.Header> or an "aria-label" prop for accessible labeling.'
+        );
+      }
+    }
+  }, [ariaLabel]);
 
   return (
-    <PanelProvider
-      value={{ classNames, variant, titleId, titleLevel, hasTitle }}
-    >
+    <PanelProvider value={{ classNames, variant, titleId, titleInfo }}>
       <section
-        aria-labelledby={hasTitle ? titleId : undefined}
-        aria-label={!hasTitle ? ariaLabel : undefined}
+        aria-labelledby={!ariaLabel ? titleId : undefined}
+        aria-label={ariaLabel}
         className={cn('[&>*:not(:first-child)]:border-t', classNames.root)}
       >
         {children}
