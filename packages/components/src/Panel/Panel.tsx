@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useId } from 'react';
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PanelProvider } from './Context';
 import { PanelActions } from './PanelActions';
@@ -56,7 +56,7 @@ export const Panel = ({
       <section
         aria-labelledby={!ariaLabel ? titleId : undefined}
         aria-label={ariaLabel}
-        className={cn('[&>*:not(:first-child)]:border-t', classNames.root)}
+        className={classNames.root}
       >
         {children}
       </section>

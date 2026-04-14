@@ -30,19 +30,22 @@ export const useSlot = (
   initialState = true
 ): [RefCallback<Element>, boolean] => {
   const [hasSlot, setHasSlot] = useState(initialState);
-  const hasRun = useRef(false);
+  const hasRunRef = useRef(false);
 
-  const ref = useCallback<RefCallback<Element>>(el => {
-    hasRun.current = true;
+  const slotRef = useCallback<RefCallback<Element>>(el => {
+    hasRunRef.current = true;
     setHasSlot(!!el);
   }, []);
 
-  // If the callback ref was never called after mount the slot child is absent
+  // Correct the initial assumption: if the callback ref was never called
+  // after mount, the slot child is absent. The setState is intentional —
+  // it must happen before paint (same pattern as react-aria's useSlot).
   useLayoutEffect(() => {
-    if (!hasRun.current) {
+    if (!hasRunRef.current) {
+      // eslint-disable-next-line
       setHasSlot(false);
     }
   }, []);
 
-  return [ref, hasSlot];
+  return [slotRef, hasSlot];
 };

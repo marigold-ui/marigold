@@ -1,4 +1,5 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { useSlot } from './useSlot';
 
@@ -74,29 +75,25 @@ describe('useSlot', () => {
   });
 
   test('updates when slot child is removed', async () => {
+    const user = userEvent.setup();
     render(<ToggleHarness />);
 
     expect(screen.getByTestId('has-slot').textContent).toBe('true');
 
-    await act(async () => {
-      screen.getByTestId('toggle').click();
-    });
+    await user.click(screen.getByTestId('toggle'));
 
     expect(screen.getByTestId('has-slot').textContent).toBe('false');
     expect(screen.queryByTestId('slot-child')).not.toBeInTheDocument();
   });
 
   test('updates when slot child is added back', async () => {
+    const user = userEvent.setup();
     render(<ToggleHarness />);
 
-    await act(async () => {
-      screen.getByTestId('toggle').click();
-    });
+    await user.click(screen.getByTestId('toggle'));
     expect(screen.getByTestId('has-slot').textContent).toBe('false');
 
-    await act(async () => {
-      screen.getByTestId('toggle').click();
-    });
+    await user.click(screen.getByTestId('toggle'));
     expect(screen.getByTestId('has-slot').textContent).toBe('true');
     expect(screen.getByTestId('slot-child')).toBeInTheDocument();
   });
