@@ -2,7 +2,6 @@ import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig, mergeConfig } from 'vitest/config';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,7 +25,14 @@ export default mergeConfig(
       projects: [
         {
           extends: true,
-          plugins: [tsconfigPaths()],
+          resolve: {
+            tsconfigPaths: true,
+          },
+          define: {
+            // @react-aria/virtualizer references process.env in source
+            'process.env.NODE_ENV': JSON.stringify('test'),
+            'process.env.VIRT_ON': 'undefined',
+          },
           optimizeDeps: {
             include: browserDeps,
           },
@@ -66,6 +72,11 @@ export default mergeConfig(
               },
             }),
           ],
+          define: {
+            // @react-aria/virtualizer references process.env in source
+            'process.env.NODE_ENV': JSON.stringify('test'),
+            'process.env.VIRT_ON': 'undefined',
+          },
           optimizeDeps: {
             include: browserDeps,
           },

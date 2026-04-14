@@ -38,13 +38,13 @@ describe('Inline', () => {
   });
 
   describe('Spacing', () => {
-    test('applies custom spacing from theme', () => {
+    test('applies semantic spacing from theme', () => {
       render(<Basic.Component />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
       expect(inlineElement?.style.getPropertyValue('--space')).toBe(
-        'calc(var(--spacing) * 2)'
+        'var(--spacing-related)'
       );
     });
 

@@ -1,15 +1,10 @@
 import { ReactNode } from 'react';
-import {
-  cn,
-  paddingSpace,
-  paddingSpaceX,
-  paddingSpaceY,
-} from '@marigold/system';
 import type {
-  PaddingSpaceProp,
-  PaddingSpacePropX,
-  PaddingSpacePropY,
+  InsetSpacingTokens,
+  PaddingSpacingTokens,
+  SpaceProp,
 } from '@marigold/system';
+import { cn, createSpacingVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 export type InsetProps =
@@ -20,20 +15,20 @@ export type InsetProps =
       children: ReactNode;
       space?: never;
       /**
-       * Horizontal alignment for the children.       * @remarks `PaddingSpacePropX<Tokens>`
+       * Horizontal padding for the children.       * @remarks `Scale | PaddingSpacingTokens`
        */
-      spaceX?: PaddingSpacePropX['spaceX'];
+      spaceX?: SpaceProp<PaddingSpacingTokens>['space'];
       /**
-       * Vertical alignment for the children.       * @remarks `PaddingSpacePropY<Tokens>`
+       * Vertical padding for the children.       * @remarks `Scale | PaddingSpacingTokens`
        */
-      spaceY?: PaddingSpacePropY['spaceY'];
+      spaceY?: SpaceProp<PaddingSpacingTokens>['space'];
     })
   | (AriaRegionProps & {
       children: ReactNode;
       /**
-       * The space between the children.       * @remarks `PaddingSpaceProp<Tokens>`
+       * The padding of the children.       * @remarks `Scale | InsetSpacingTokens`
        */
-      space?: PaddingSpaceProp['space'];
+      space?: SpaceProp<InsetSpacingTokens>['space'];
       spaceX?: never;
       spaceY?: never;
     });
@@ -41,10 +36,15 @@ export type InsetProps =
 export const Inset = ({ space, spaceX, spaceY, children }: InsetProps) => (
   <div
     className={cn(
-      space && paddingSpace[space],
-      !space && spaceX && paddingSpaceX[spaceX],
-      !space && spaceY && paddingSpaceY[spaceY]
+      space !== undefined && 'p-(--space)',
+      spaceX !== undefined && 'px-(--spaceX)',
+      spaceY !== undefined && 'py-(--spaceY)'
     )}
+    style={{
+      ...(space !== undefined ? createSpacingVar('space', `${space}`) : {}),
+      ...(spaceX !== undefined ? createSpacingVar('spaceX', `${spaceX}`) : {}),
+      ...(spaceY !== undefined ? createSpacingVar('spaceY', `${spaceY}`) : {}),
+    }}
   >
     {children}
   </div>

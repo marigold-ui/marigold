@@ -3,7 +3,7 @@ import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
   <div className="bg-muted">
-    <Inset space={8}>
+    <Inset space="square-regular">
       <Rectangle height="80px" />
     </Inset>
   </div>

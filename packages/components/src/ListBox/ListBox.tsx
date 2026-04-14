@@ -5,7 +5,8 @@ import {
   forwardRef,
 } from 'react';
 import type RAC from 'react-aria-components';
-import { ListBox } from 'react-aria-components';
+import { ListBox, ListLayout, Virtualizer } from 'react-aria-components';
+import type { ListLayoutOptions } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ListBoxContext } from './Context';
 import { ListBoxItem } from './ListBoxItem';
@@ -17,7 +18,15 @@ export interface ListBoxProps extends Omit<
 > {
   variant?: string;
   size?: string;
+  virtualized?: boolean;
+  layoutOptions?: ListLayoutOptions;
 }
+
+const defaultLayoutOptions: ListLayoutOptions = {
+  estimatedRowHeight: 32,
+  padding: 4,
+  gap: 1,
+};
 
 interface ListBoxComponent extends ForwardRefExoticComponent<
   ListBoxProps & RefAttributes<HTMLUListElement>
@@ -27,25 +36,39 @@ interface ListBoxComponent extends ForwardRefExoticComponent<
 }
 
 const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
-  ({ variant, size, ...props }, ref) => {
+  ({ variant, size, virtualized, layoutOptions, ...props }, ref) => {
     const classNames = useClassNames({ component: 'ListBox', variant, size });
 
     // RAC types are incorrect, this will be passed to the `useListBox` hook
     const listBoxProps: any = { shouldSelectOnPressUp: false };
 
+    const listBox = (
+      <ListBox
+        {...props}
+        className={cn('overflow-y-auto', classNames.list)}
+        ref={ref as Ref<HTMLDivElement>}
+        style={virtualized ? { display: 'block', padding: 0 } : undefined}
+        {...listBoxProps}
+      >
+        {props.children}
+      </ListBox>
+    );
+
     return (
-      <ListBoxContext.Provider value={{ classNames }}>
+      <ListBoxContext value={{ classNames, virtualized }}>
         <div className={classNames.container}>
-          <ListBox
-            {...props}
-            className={cn('overflow-y-auto', classNames.list)}
-            ref={ref as Ref<HTMLDivElement>}
-            {...listBoxProps}
-          >
-            {props.children}
-          </ListBox>
+          {virtualized ? (
+            <Virtualizer
+              layout={ListLayout}
+              layoutOptions={{ ...defaultLayoutOptions, ...layoutOptions }}
+            >
+              {listBox}
+            </Virtualizer>
+          ) : (
+            listBox
+          )}
         </div>
-      </ListBoxContext.Provider>
+      </ListBoxContext>
     );
   }
 ) as ListBoxComponent;

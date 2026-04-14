@@ -1,9 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
 import { render, screen, within } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Basic, ThreeMonths, TwoMonths } from './Calendar.stories';
+import { useCalendarContext } from './Context';
 
 describe('Calendar', () => {
   const user = userEvent.setup();
@@ -329,4 +331,10 @@ describe('Calendar - Multi-month', () => {
     expect(calendar).toHaveTextContent(/February 2025/i);
     expect(calendar).toHaveTextContent(/March 2025/i);
   });
+});
+
+test('useCalendarContext throws when used outside Calendar', () => {
+  expect(() => renderHook(() => useCalendarContext())).toThrow(
+    'Calendar components must be used within <Calendar>'
+  );
 });

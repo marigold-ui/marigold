@@ -25,6 +25,9 @@ export const browserDeps = [
   // App deps used in decorators/stories
   '@tanstack/react-query',
   'react-select',
+  // Virtualizer deps (reference process.env in source)
+  '@react-aria/virtualizer',
+  '@react-stately/layout',
   // Test setup (extends expect at module load time)
   '@testing-library/jest-dom/vitest',
 ];
@@ -44,6 +47,7 @@ const exclude = [
   '**/scripts/**',
   '**/storybook-static/**',
   '**/.storybook/**',
+  '**/test.utils.*',
 ];
 
 export default defineConfig({
