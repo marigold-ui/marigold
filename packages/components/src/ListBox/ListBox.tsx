@@ -47,7 +47,14 @@ const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
         {...props}
         className={cn('overflow-y-auto', classNames.list)}
         ref={ref as Ref<HTMLDivElement>}
-        style={virtualized ? { display: 'block', padding: 0 } : undefined}
+        // Bound the virtualized list so the Virtualizer has a viewport to
+        // clip against. Without this, the list grows to fit all items and
+        // virtualization has no effect.
+        style={
+          virtualized
+            ? { display: 'block', padding: 0, maxHeight: '24rem' }
+            : undefined
+        }
         {...listBoxProps}
       >
         {props.children}

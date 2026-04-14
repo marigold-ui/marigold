@@ -271,6 +271,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
             />
             <Popover>
               <ListBox
+                virtualized
                 renderEmptyState={() =>
                   emptyState ?? (
                     <Center>{stringFormatter.format('noResultsFound')}</Center>
