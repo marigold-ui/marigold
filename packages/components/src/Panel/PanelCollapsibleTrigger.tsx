@@ -30,7 +30,6 @@ export const PanelCollapsibleTrigger = ({
       <Button slot="trigger" className={classNames.collapsibleTrigger}>
         <span className="flex-1">{children}</span>
         <ChevronDown
-          size="16"
           className={cn(
             'shrink-0 transition-transform',
             isExpanded && 'rotate-180'
