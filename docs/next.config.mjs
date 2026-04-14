@@ -3,6 +3,10 @@ import componentsPkg from '../packages/components/package.json' with { type: 'js
 
 const withMDX = createMDX();
 
+if (process.env.VERCEL) {
+  await import('./scripts/download-embeddings.mjs');
+}
+
 /** @type {import('next').NextConfig} */
 const config = {
   env: {
@@ -13,7 +17,7 @@ const config = {
   serverExternalPackages: ['ts-morph', 'typescript'],
   // Ensure chunks_search.json is bundled with the /mcp serverless function on Vercel
   outputFileTracingIncludes: {
-    '/mcp': ['./app/mcp/chunks_search.json'],
+    '/mcp': ['./embeddings.json'],
   },
   async redirects() {
     return [

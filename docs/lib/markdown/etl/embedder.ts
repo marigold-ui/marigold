@@ -2,6 +2,7 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from '@aws-sdk/client-bedrock-runtime';
+import { put } from '@vercel/blob';
 import pLimit from 'p-limit';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -119,11 +120,26 @@ async function main() {
   ).filter((c): c is NonNullable<typeof c> => c !== null);
 
   process.stdout.write('\n');
-  fs.writeFileSync(SEARCH_FILE, JSON.stringify(results));
-  const kb = (fs.statSync(SEARCH_FILE).size / 1024).toFixed(0);
+  const json = JSON.stringify(results);
+  fs.writeFileSync(SEARCH_FILE, json);
+  const kb = (Buffer.byteLength(json) / 1024).toFixed(0);
   console.log(
     `Done in ${Math.round((Date.now() - t0) / 1000)}s — ${results.length} chunks, ${errors} errors — ${SEARCH_FILE} (${kb} KB)`
   );
+
+  // Upload to Vercel Blob (requires BLOB_READ_WRITE_TOKEN env var)
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    console.log('Uploading embeddings to Vercel Blob...');
+    const blob = await put('embeddings.json', json, {
+      access: 'private',
+      contentType: 'application/json',
+      addRandomSuffix: false,
+      allowOverwrite: true,
+    });
+    console.log(`Uploaded to Vercel Blob: ${blob.url}`);
+  } else {
+    console.log('Skipping Vercel Blob upload (BLOB_READ_WRITE_TOKEN not set).');
+  }
 
   if (errors > 0) process.exitCode = 1;
 }
