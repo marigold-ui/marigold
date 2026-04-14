@@ -248,7 +248,7 @@ export const TableInside = meta.story(() => (
         Overview of the latest transactions.
       </Panel.Description>
     </Panel.Header>
-    <Panel.Content inset="none">
+    <Panel.Content inset="zero">
       <table className="w-full text-left text-sm">
         <thead className="bg-muted text-secondary">
           <tr>

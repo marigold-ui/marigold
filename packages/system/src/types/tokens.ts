@@ -6,7 +6,7 @@
  * inset recipes (`Inset` `space`). Useful when a wrapper should render without
  * adding any space — e.g. a Panel containing an edge-to-edge Table.
  */
-export type NoSpacingToken = 'none';
+export type NoSpacingToken = 'zero';
 
 /**
  * Semantic spacing tokens that describe the strength of the relationship between elements.
@@ -16,7 +16,7 @@ export type NoSpacingToken = 'none';
  * arbitrary pixel values, allowing interfaces to adapt gracefully across different
  * contexts and density settings.
  *
- * Includes the universal `none` token for the no-spacing case.
+ * Includes the universal `zero` token for the no-spacing case.
  */
 export type SpacingTokens =
   | NoSpacingToken
@@ -33,7 +33,7 @@ export type SpacingTokens =
  * asymmetric padding on any component.
  *
  * Five density levels: tight, snug, regular, relaxed, loose, plus the universal
- * `none` token for the no-spacing case.
+ * `zero` token for the no-spacing case.
  */
 export type PaddingSpacingTokens =
   | NoSpacingToken
@@ -47,7 +47,7 @@ export type PaddingSpacingTokens =
  * Inset spacing recipe tokens for the `space` prop on Inset.
  *
  * Multi-value tokens that set padding on all sides at once:
- * - `none`: No padding (equivalent to 0)
+ * - `zero`: No padding (equivalent to 0)
  * - `square-*`: Equal padding on all sides
  * - `squish-*`: More horizontal than vertical padding
  * - `stretch-*`: More vertical than horizontal padding
