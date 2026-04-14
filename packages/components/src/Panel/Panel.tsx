@@ -1,5 +1,7 @@
-import { Children, type ReactNode, isValidElement, useId } from 'react';
+import type { ReactNode } from 'react';
+import { useId } from 'react';
 import { cn, useClassNames } from '@marigold/system';
+import { useSlot } from '../utils/useSlot';
 import { PanelProvider } from './Context';
 import { PanelActions } from './PanelActions';
 import { PanelCollapsible } from './PanelCollapsible';
@@ -19,32 +21,13 @@ export interface PanelProps {
   children: ReactNode;
   /** Accessible label. Required when no `Panel.Title` is present. */
   'aria-label'?: string;
+  /**
+   * Base heading level for the panel. `Panel.Title` renders at this level,
+   * `Panel.CollapsibleTrigger` at `headingLevel + 1`.
+   * @default 2
+   */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
 }
-
-// Helpers
-// ---------------
-
-/**
- * Walk the element tree to find a PanelTitle inside a PanelHeader.
- * Pure render-time computation — no refs or effects needed.
- */
-const detectTitle = (children: ReactNode) => {
-  for (const child of Children.toArray(children)) {
-    if (isValidElement(child) && child.type === PanelHeader) {
-      for (const headerChild of Children.toArray(
-        (child.props as { children?: ReactNode }).children
-      )) {
-        if (isValidElement(headerChild) && headerChild.type === PanelTitle) {
-          return {
-            hasTitle: true as const,
-            titleLevel: (headerChild.props as { level?: number }).level ?? 2,
-          };
-        }
-      }
-    }
-  }
-  return { hasTitle: false as const, titleLevel: 2 };
-};
 
 // Component
 // ---------------
@@ -53,14 +36,22 @@ export const Panel = ({
   size,
   children,
   'aria-label': ariaLabel,
+  headingLevel = 2,
 }: PanelProps) => {
   const titleId = useId();
   const classNames = useClassNames({ component: 'Panel', variant, size });
-  const { hasTitle, titleLevel } = detectTitle(children);
+  const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
   return (
     <PanelProvider
-      value={{ classNames, variant, titleId, titleLevel, hasTitle }}
+      value={{
+        classNames,
+        variant,
+        titleId,
+        headingLevel,
+        hasTitle,
+        titleSlotRef,
+      }}
     >
       <section
         aria-labelledby={!ariaLabel ? titleId : undefined}

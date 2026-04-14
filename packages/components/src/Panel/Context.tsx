@@ -1,3 +1,4 @@
+import type { RefCallback } from 'react';
 import { createContext, use } from 'react';
 import type { ThemeComponent } from '@marigold/system';
 
@@ -7,8 +8,9 @@ export interface PanelContext {
   };
   variant?: string;
   titleId: string;
-  titleLevel: number;
+  headingLevel: number;
   hasTitle: boolean;
+  titleSlotRef: RefCallback<Element>;
 }
 
 const Context = createContext<PanelContext | null>(null);

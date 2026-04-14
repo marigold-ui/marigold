@@ -12,7 +12,7 @@ export interface PanelCollapsibleTriggerProps {
 export const PanelCollapsibleTrigger = ({
   children,
 }: PanelCollapsibleTriggerProps) => {
-  const { classNames, titleLevel, hasTitle } = usePanelContext();
+  const { classNames, headingLevel, hasTitle } = usePanelContext();
   const disclosureState = use(DisclosureStateContext);
   if (!disclosureState) {
     throw new Error(
@@ -22,8 +22,8 @@ export const PanelCollapsibleTrigger = ({
   const { isExpanded } = disclosureState;
 
   const level = hasTitle
-    ? (Math.min(titleLevel + 1, 6) as 1 | 2 | 3 | 4 | 5 | 6)
-    : (titleLevel as 1 | 2 | 3 | 4 | 5 | 6);
+    ? (Math.min(headingLevel + 1, 6) as 1 | 2 | 3 | 4 | 5 | 6)
+    : (headingLevel as 1 | 2 | 3 | 4 | 5 | 6);
 
   return (
     <Heading level={level}>
