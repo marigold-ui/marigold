@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import { ReactElement, forwardRef, useContext } from 'react';
+import { ReactElement, forwardRef, use } from 'react';
 import type RAC from 'react-aria-components';
 import {
   DatePicker,
@@ -165,7 +165,7 @@ const DatePickerWithPasteWrapper = ({
   onChange,
   ...props
 }: DatePickerWithPasteWrapperProps) => {
-  const ctx = useContext(DatePickerStateContext);
+  const ctx = use(DatePickerStateContext);
 
   const onPaste = (date: CalendarDate) => {
     if (onChange) {

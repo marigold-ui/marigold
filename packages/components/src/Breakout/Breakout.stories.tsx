@@ -6,6 +6,9 @@ import { Breakout } from './Breakout';
 const meta = preview.meta({
   title: 'Components/Breakout',
   component: Breakout,
+  parameters: {
+    surface: false,
+  },
 });
 
 export const Basic = meta.story({

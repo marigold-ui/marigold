@@ -11,6 +11,9 @@ import { Stack } from './Stack';
 const meta = preview.meta({
   title: 'Components/Stack',
   component: Stack,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     space: {
       control: {

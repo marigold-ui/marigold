@@ -56,6 +56,9 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  parameters: {
+    surface: false,
+  },
   args: {
     space: 'related',
     alignX: 'left',
@@ -109,6 +112,9 @@ export const InputButtonAlignment = meta.story({
 });
 
 export const Nested = meta.story({
+  parameters: {
+    surface: false,
+  },
   args: {
     space: 4,
   },

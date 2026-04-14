@@ -3,6 +3,9 @@ import { ListBox } from './ListBox';
 
 const meta = preview.meta({
   title: 'Components/ListBox',
+  parameters: {
+    surface: false,
+  },
 });
 
 export const Basic = meta.story({
@@ -24,7 +27,7 @@ export const Basic = meta.story({
 
 export const WithSections = meta.story({
   render: args => (
-    <ListBox aria-labelledby="listbox" {...args}>
+    <ListBox aria-labelledby="listbox" selectionMode="single" {...args}>
       <ListBox.Section header="Veggies">
         <ListBox.Item id="lettuce">Lettuce</ListBox.Item>
         <ListBox.Item id="tomato">Tomato</ListBox.Item>
