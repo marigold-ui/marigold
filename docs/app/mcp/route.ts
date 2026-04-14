@@ -1,12 +1,3 @@
-/**
- * MCP Server — Marigold Design System
- *
- * Exposes design system documentation as MCP tools that coding agents
- * (Cursor, Windsurf, Claude Code, etc.) can discover and use automatically.
- *
- * Transport: Streamable HTTP at /mcp
- * Auth: Keycloak JWT via OAuth (optional, enabled when OIDC env vars are set)
- */
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
