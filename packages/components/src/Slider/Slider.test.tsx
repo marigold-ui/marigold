@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { createRef } from 'react';
 import { Basic, MultipleThumbs } from './Slider.stories';
 
 test('supports disabled prop', () => {
@@ -16,8 +17,8 @@ test('supports defaultValue (uncontrolled)', () => {
 });
 
 test('forwards ref', () => {
-  const ref: RefObject<HTMLDivElement | null> = { current: null };
-  render(<Basic.Component ref={ref} label="Percent" />);
+  const ref = createRef<HTMLDivElement>();
+  render(<Basic.Component ref={ref as any} label="Percent" />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
