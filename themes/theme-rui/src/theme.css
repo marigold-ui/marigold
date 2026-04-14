@@ -185,9 +185,6 @@
   --spacing-control-large: 2.5rem;
   --spacing-container: 50rem;
 
-  /* Universal: no spacing (works for gap, padding, and inset recipes) */
-  --spacing-none: --spacing(0);
-
   /* Relational spacing */
   --spacing-tight: --spacing(1.5);
   --spacing-related: --spacing(2);
@@ -398,4 +395,14 @@
       stroke-dashoffset: 75;
     }
   }
+}
+
+/*
+ * Universal "no spacing" token, kept outside @theme so it does not
+ * collide with Tailwind's built-in `none` keyword resolution
+ * (e.g. `leading-none` would resolve to 0 instead of 1).
+ * Referenced via `createSpacingVar('…', 'none')` → `var(--spacing-none)`.
+ */
+:root {
+  --spacing-none: 0px;
 }
