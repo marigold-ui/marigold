@@ -21,10 +21,12 @@ const CatchAllPage = () => {
           Manage your {page.label.toLowerCase()} settings and preferences.
         </Text>
         {Array.from({ length: 8 }, (_, i) => (
-          <Card key={i} p={4}>
-            <Text size="sm">
-              {page.label} content section {i + 1}
-            </Text>
+          <Card key={i}>
+            <Card.Body>
+              <Text size="sm">
+                {page.label} content section {i + 1}
+              </Text>
+            </Card.Body>
           </Card>
         ))}
       </Stack>

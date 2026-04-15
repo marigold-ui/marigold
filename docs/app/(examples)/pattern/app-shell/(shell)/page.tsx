@@ -21,25 +21,27 @@ const DashboardPage = () => (
           { title: 'Open Tickets', value: '12', change: '-3' },
           { title: 'Uptime', value: '99.9%', change: '' },
         ].map(stat => (
-          <Card key={stat.title} p={4}>
-            <Stack space={1}>
-              <Text size="xs" variant="muted">
-                {stat.title}
-              </Text>
-              <Inline space={2} alignY="bottom">
-                <Text size="xl" weight="bold">
-                  {stat.value}
+          <Card key={stat.title}>
+            <Card.Body>
+              <Stack space={1}>
+                <Text size="xs" variant="muted">
+                  {stat.title}
                 </Text>
-                {stat.change && (
-                  <Text
-                    size="xs"
-                    color={stat.change.startsWith('+') ? 'green' : 'red'}
-                  >
-                    {stat.change}
+                <Inline space={2} alignY="bottom">
+                  <Text size="xl" weight="bold">
+                    {stat.value}
                   </Text>
-                )}
-              </Inline>
-            </Stack>
+                  {stat.change && (
+                    <Text
+                      size="xs"
+                      color={stat.change.startsWith('+') ? 'green' : 'red'}
+                    >
+                      {stat.change}
+                    </Text>
+                  )}
+                </Inline>
+              </Stack>
+            </Card.Body>
           </Card>
         ))}
       </div>
