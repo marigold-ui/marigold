@@ -5,10 +5,12 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outputPath = resolve(__dirname, '..', 'embeddings.json');
 
-const url = process.env.EMBEDDINGS_BLOB_URL;
+const url = process.env.BLOB_READ_WRITE_TOKEN;
 
 if (!url) {
-  console.error('EMBEDDINGS_BLOB_URL is not set. Cannot download embeddings.');
+  console.error(
+    'BLOB_READ_WRITE_TOKEN is not set. Cannot download embeddings.'
+  );
   process.exit(1);
 }
 
