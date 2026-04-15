@@ -3,7 +3,9 @@ import {
   OverlayTriggerStateContext,
   Provider,
   SlotProps,
+  useRenderProps,
 } from 'react-aria-components';
+import type { RenderProps } from 'react-aria-components';
 import {
   OverlayTriggerProps,
   OverlayTriggerState,
@@ -21,8 +23,6 @@ import {
   useViewportSize,
 } from '@react-aria/utils';
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
-import type { RenderProps } from '../utils/useRenderProps';
-import { useRenderProps } from '../utils/useRenderProps';
 import type { AriaNonModalProps } from './useNonModal';
 import { useNonModal } from './useNonModal';
 
