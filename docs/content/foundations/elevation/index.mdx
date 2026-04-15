@@ -1,17 +1,17 @@
 ---
-title: Surfaces & Elevation
+title: Elevation
 description: How surfaces and shadows work together to create visual depth and hierarchy
 badge: updated
 ---
 
-Screens are flat, but interfaces need depth. Elevation is how we create the illusion of layers, making a card feel like it sits above the page, or a dialog float above everything else.
+Screens are flat, but interfaces need depth. Without visual cues, every element sits on the same plane and users have to rely on position alone to understand what belongs together, what is interactive, and what is temporary. Elevation solves this by creating the illusion of layers: a card feels like it sits above the page, a dialog floats above everything else, and an input has a clear boundary against the surface it lives on.
 
-Two systems work together to produce this effect: **surfaces** set the background color of each layer, and **shadows** add visual lift to communicate how high something sits. For interactive elements like inputs and cards, a surface background is paired with a subtle border gradient and a matching shadow to complete the look.
+This matters because it directly guides attention. A raised card groups related content and separates it from the surrounding page. A floating menu signals that it is temporary and will go away. A subtle border on an input tells users where they can type. Without these depth cues, interfaces feel flat and ambiguous.
 
-<Callout title="Migrating from util-surface-* utilities?">
-  The legacy `util-surface-sunken`, `util-surface-body`, `util-surface-raised`,
-  and `util-surface-overlay` utility classes have been removed. See the
-  [migration table](#migration-from-legacy-utilities) below for the new tokens.
+Two systems work together to produce this effect: **background layers** set the color of each level, and **shadows** add visual lift to communicate how high something sits. For interactive elements like inputs and cards, a background is paired with a subtle border gradient and a matching shadow to complete the look.
+
+<Callout title="Do I need to apply elevation manually?">
+  Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct background, border, and shadow tokens internally. You only need the utility classes described on this page (`ui-surface`, `shadow-elevation-*`, `bg-background`, etc.) when building custom elements that aren't covered by an existing component.
 </Callout>
 
 ## Background layers
@@ -55,10 +55,6 @@ styling:
 <div class="ui-surface shadow-elevation-raised">...</div>
 ```
 
-<Callout title="When do I need these classes?">
-  Most of the time you don't. Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct surface and shadow tokens internally. The code snippets on this page are for custom elements that aren't covered by an existing component.
-</Callout>
-
 ## Shadow tiers
 
 Elevation is split into three tiers, each serving a distinct role in the visual hierarchy. The shadow intensity increases with each tier: **border** provides a subtle edge for interactive controls, **raised** lifts containers off the page, and **overlay** creates a strong floating effect for temporary UI. Together they form a clear stacking order where every element sits at the right depth.
@@ -75,7 +71,7 @@ This diagram shows how the three shadow tiers layer in a typical form layout. Th
 
 ![Annotated UI showing elevation tiers on a form layout](/elevation/elevation-in-context.svg)
 
-## Border
+### Border
 
 The subtlest shadow tier. Border elevation gives small interactive controls a slight lift, defining their edges against the surface they sit on. These elements combine `ui-surface` with `shadow-elevation-border`.
 
@@ -102,7 +98,7 @@ Because border elevation produces only a subtle shadow, these controls need a ra
   </Dont>
 </GuidelineTiles>
 
-## Raised
+### Raised
 
 One step higher than border. Raised elevation creates visual lift for container surfaces that group related content. Cards and accordions use this tier to stand out from the page background while staying below floating elements. The flat page background behind them is what makes the shadow visible. Without that contrast, the lift disappears.
 
@@ -127,9 +123,9 @@ One step higher than border. Raised elevation creates visual lift for container 
   </Dont>
 </GuidelineTiles>
 
-## Overlay
+### Overlay
 
-The strongest shadow tier, reserved for elements that temporarily float above the page. Dialogs, drawers, menus, popovers, and toasts use overlay elevation. Overlays can stack on top of one another. Marigold components like `<Dialog>`, `<Menu>`, `<Popover>`, and `<Toast>` already apply this token internally, so you rarely need to use it directly.
+The strongest shadow tier, reserved for elements that temporarily float above the page. Dialogs, drawers, menus, popovers, and toasts use overlay elevation. Unlike the other tiers, overlays can stack on top of one another: a confirmation dialog over a menu, or a tooltip inside a drawer. They are always dismissible and often paired with a backdrop that dims the content underneath.
 
 <ComponentDemo name="elevation-overlay" />
 
@@ -151,19 +147,6 @@ The strongest shadow tier, reserved for elements that temporarily float above th
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-## Migration from legacy utilities
-
-The old `util-surface-*` utility classes combined background, border, and shadow into single classes. The new system separates concerns: `ui-surface` handles background and border, while `shadow-elevation-*` handles depth.
-
-| Old utility            | New replacement                       | Notes                                       |
-| ---------------------- | ------------------------------------- | ------------------------------------------- |
-| `util-surface-sunken`  | Removed                               | Use `bg-background` for the page base layer |
-| `util-surface-body`    | `bg-background`                       | No shadow needed                            |
-| `util-surface-raised`  | `ui-surface shadow-elevation-raised`  | For cards and container surfaces            |
-| `util-surface-overlay` | `ui-surface shadow-elevation-overlay` | For floating elements                       |
-
-`shadow-elevation-border` is new and has no legacy equivalent. It provides subtle depth for small interactive controls like inputs, checkboxes, and buttons. Previously these elements had no dedicated elevation tier.
 
 ## Related
 
