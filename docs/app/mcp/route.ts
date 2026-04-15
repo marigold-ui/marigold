@@ -12,11 +12,11 @@ import path from 'node:path';
 export const runtime = 'nodejs';
 
 // process.cwd() is the docs/ root in Next.js
-const CHUNKS_SEARCH_FILE = path.join(
+const EMBEDDINGS_FILE = path.join(
   process.cwd(),
   'lib',
   'markdown',
-  'chunks_search.json'
+  'embeddings.json'
 );
 
 // ─── Config ──────────────────────────────────────────────────────────────────
@@ -80,7 +80,7 @@ let store: VectorStore | null = null;
 function getStore(): VectorStore {
   if (store) return store;
 
-  const raw = fs.readFileSync(CHUNKS_SEARCH_FILE, 'utf-8');
+  const raw = fs.readFileSync(EMBEDDINGS_FILE, 'utf-8');
   const data: StoredChunk[] = JSON.parse(raw);
 
   const vectors = data.map(chunk => {

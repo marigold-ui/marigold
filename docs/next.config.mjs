@@ -15,9 +15,9 @@ const config = {
   reactStrictMode: true,
   // Needed for markdown parser plugins that use ts-morph on the server
   serverExternalPackages: ['ts-morph', 'typescript'],
-  // Ensure chunks_search.json is bundled with the /mcp serverless function on Vercel
+  // Ensure embeddings.json is bundled with the /mcp serverless function on Vercel
   outputFileTracingIncludes: {
-    '/mcp': ['./embeddings.json'],
+    '/mcp': ['./lib/markdown/embeddings.json'],
   },
   async redirects() {
     return [
