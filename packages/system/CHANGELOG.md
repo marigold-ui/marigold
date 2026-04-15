@@ -1,5 +1,24 @@
 # @marigold/system
 
+## 17.4.0
+
+### Minor Changes
+
+- f560d95: feat(DST-1239): migrate Inset component to semantic spacing tokens
+  - `space` prop accepts inset recipe tokens (`square-*`, `squish-*`, `stretch-*`) and numeric scale values
+  - `spaceX`/`spaceY` props accept single-value padding tokens (`padding-tight`, `padding-snug`, `padding-regular`, `padding-relaxed`, `padding-loose`) and numeric scale values
+  - Add `InsetSpacingTokens` type for multi-value inset recipes
+  - Add `PaddingSpacingTokens` type for single-value per-axis padding
+  - Add `--spacing-padding-*` CSS custom properties to theme
+
+### Patch Changes
+
+- bbf0832: refactor([DSTSUP-245]): Clean up Calendar styles
+
+  Move hardcoded Tailwind classes from Calendar component files into theme slots, reduce cell padding from `p-2` to `p-1`, and add new `calendarHeading` theme slot.
+
+- d341a9d: Fix CJS export paths pointing to non-existent `.js` files. Since tsdown 0.16.0, output uses `.cjs` extensions but `main`, `types`, and `exports` fields were never updated to match.
+
 ## 17.3.1
 
 ## 17.3.0

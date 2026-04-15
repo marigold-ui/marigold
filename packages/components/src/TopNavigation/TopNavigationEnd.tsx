@@ -1,5 +1,4 @@
 import type { ReactNode, Ref } from 'react';
-import { forwardRef } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { alignment, cn } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
@@ -22,34 +21,30 @@ export interface TopNavigationEndProps {
   children?: ReactNode;
 }
 
-export const TopNavigationEnd = forwardRef(
-  (
-    {
-      'aria-label': ariaLabel,
-      alignY = 'center',
-      children,
-      ...props
-    }: TopNavigationEndProps,
-    ref: Ref<HTMLElement>
-  ) => {
-    const { classNames } = useTopNavigationContext();
-    const stringFormatter = useLocalizedStringFormatter(intlMessages);
+export const TopNavigationEnd = ({
+  'aria-label': ariaLabel,
+  alignY = 'center',
+  children,
+  ref,
+  ...props
+}: TopNavigationEndProps & { ref?: Ref<HTMLElement> }) => {
+  const { classNames } = useTopNavigationContext();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    return (
-      <nav
-        ref={ref}
-        aria-label={
-          ariaLabel ?? stringFormatter.format('globalNavigationUtilities')
-        }
-        className={cn(
-          'min-w-0 [grid-area:end]',
-          classNames.end,
-          alignY && alignment.horizontal.alignmentY[alignY]
-        )}
-        {...props}
-      >
-        {children}
-      </nav>
-    );
-  }
-);
+  return (
+    <nav
+      ref={ref}
+      aria-label={
+        ariaLabel ?? stringFormatter.format('globalNavigationUtilities')
+      }
+      className={cn(
+        'min-w-0 [grid-area:end]',
+        classNames.end,
+        alignY && alignment.horizontal.alignmentY[alignY]
+      )}
+      {...props}
+    >
+      {children}
+    </nav>
+  );
+};
