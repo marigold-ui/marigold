@@ -1,12 +1,12 @@
 ---
 title: Surfaces & Elevation
-description: How surfaces and shadows work together to create visual depth and hierarchy.
+description: How surfaces and shadows work together to create visual depth and hierarchy
 badge: updated
 ---
 
-Screens are flat, but interfaces need depth. Elevation is how we create the illusion of layers -- making a card feel like it sits above the page, or a dialog float above everything else.
+Screens are flat, but interfaces need depth. Elevation is how we create the illusion of layers, making a card feel like it sits above the page, or a dialog float above everything else.
 
-Two systems work together to produce this effect: **surfaces** set the background color of each layer, and **shadows** add lift to communicate how high something sits. For interactive elements like inputs and cards, a surface background is paired with a subtle border gradient and a matching shadow to complete the look.
+Two systems work together to produce this effect: **surfaces** set the background color of each layer, and **shadows** add visual lift to communicate how high something sits. For interactive elements like inputs and cards, a surface background is paired with a subtle border gradient and a matching shadow to complete the look.
 
 <Callout title="Migrating from util-surface-* utilities?">
   The legacy `util-surface-sunken`, `util-surface-body`, `util-surface-raised`,
@@ -14,17 +14,29 @@ Two systems work together to produce this effect: **surfaces** set the backgroun
   [migration table](#migration-from-legacy-utilities) below for the new tokens.
 </Callout>
 
-## Surfaces
+## Background layers
 
-Before shadows come into play, background colors establish the base layers of the interface. Three surface tokens define where content sits:
+Before shadows come into play, background colors establish the base layers of the interface. Three tokens define where content sits:
 
-<ComponentDemo name="elevation-surfaces" mode="preview" />
-
-| Token           | Role             | Example                                           |
-| --------------- | ---------------- | ------------------------------------------------- |
-| `bg-background` | Page base layer  | The gray canvas behind everything                 |
-| `bg-surface`    | Content surface  | The white background of cards, inputs, and panels |
-| `bg-muted`      | Subtle highlight | A soft tint to set areas apart within a surface   |
+<TokenTable
+  tokens={[
+    {
+      name: 'background',
+      value: 'charcoal-100',
+      useFor: 'Page base layer, the gray canvas behind everything',
+    },
+    {
+      name: 'surface',
+      value: 'white',
+      useFor: 'Content surface for cards, inputs, and panels',
+    },
+    {
+      name: 'muted',
+      value: 'charcoal-50',
+      useFor: 'Subtle tint to set areas apart within a surface',
+    },
+  ]}
+/>
 
 `bg-background` and `bg-surface` work as a pair: the page background provides contrast so that white surfaces stand out. `bg-muted` adds a gentle tint within a surface to distinguish secondary content without adding another elevation level.
 
