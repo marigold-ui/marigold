@@ -1,3 +1,14 @@
+/**
+ * Chunker for RAG / Vector Embeddings
+ *
+ * Splits MDX docs into Markdown chunks by H2/H3 headings. Code blocks are
+ * never cut. Each chunk emits:
+ *   - textForEmbedding: context-enriched text (file + page title + heading + body)
+ *   - originalText:     raw chunk body
+ *   - metadata:         { file, heading }
+ *
+ * IDs are assigned sequentially after flattening (see bottom of file).
+ */
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -95,7 +106,7 @@ function chunkMarkdown(markdown: string, basename: string) {
     return fit(headingPath, body)
       .filter(c => c.text.length >= MIN_CHARS)
       .map(({ heading, text }) => ({
-        textForEmbedding: [`[${basename}] ${heading}`, h2 ? ctx : null, text]
+        textForEmbedding: [`[${basename}] ${heading}`, ctx || null, text]
           .filter(Boolean)
           .join('\n\n'),
         originalText: text,

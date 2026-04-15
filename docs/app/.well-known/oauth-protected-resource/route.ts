@@ -18,7 +18,12 @@ export function GET(req: Request) {
       scopes_supported: ['openid'],
     },
   });
-  return NextResponse.json(metadata);
+  return NextResponse.json(metadata, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    },
+  });
 }
 
 export const OPTIONS = metadataCorsOptionsRequestHandler();

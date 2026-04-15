@@ -31,23 +31,32 @@ const KEYCLOAK_JWKS_URI = OIDC_AUTHORITY
   ? `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`
   : undefined;
 
+const AWS_BEDROCK_ACCESS_KEY_ID = process.env.AWS_BEDROCK_ACCESS_KEY_ID;
+const AWS_BEDROCK_SECRET_ACCESS_KEY = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY;
+
+if (!AWS_BEDROCK_ACCESS_KEY_ID || !AWS_BEDROCK_SECRET_ACCESS_KEY) {
+  throw new Error(
+    'Missing AWS Bedrock credentials. Set AWS_BEDROCK_ACCESS_KEY_ID and AWS_BEDROCK_SECRET_ACCESS_KEY environment variables.'
+  );
+}
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-interface StoredChunk {
+type StoredChunk = {
   id: number;
   originalText: string;
   metadata: { file: string; heading: string };
   embedding: string;
   dims: number;
-}
+};
 
 // ─── Bedrock client (singleton) ──────────────────────────────────────────────
 
 const bedrock = new BedrockRuntimeClient({
   region: AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_BEDROCK_ACCESS_KEY_ID ?? '',
-    secretAccessKey: process.env.AWS_BEDROCK_SECRET_ACCESS_KEY ?? '',
+    accessKeyId: AWS_BEDROCK_ACCESS_KEY_ID,
+    secretAccessKey: AWS_BEDROCK_SECRET_ACCESS_KEY,
   },
 });
 
@@ -70,27 +79,31 @@ async function embedQuery(text: string): Promise<Float32Array> {
 
 // ─── Vector store ─────────────────────
 
-interface VectorStore {
+type VectorStore = {
   chunks: StoredChunk[];
   vectors: Float32Array[];
-}
+};
 
-let store: VectorStore | null = null;
-
-function getStore(): VectorStore {
-  if (store) return store;
-
+function loadStore(): VectorStore {
   const raw = fs.readFileSync(EMBEDDINGS_FILE, 'utf-8');
   const data: StoredChunk[] = JSON.parse(raw);
 
   const vectors = data.map(chunk => {
     const buf = Buffer.from(chunk.embedding, 'base64');
-    return new Float32Array(buf.buffer, buf.byteOffset, buf.byteLength / 4);
+    // Copy into a fresh ArrayBuffer to guarantee 4-byte alignment, since
+    // Buffer.from(base64) shares Node's pool and byteOffset may be unaligned.
+    const ab = buf.buffer.slice(
+      buf.byteOffset,
+      buf.byteOffset + buf.byteLength
+    );
+    return new Float32Array(ab);
   });
 
-  store = { chunks: data, vectors };
-  return store;
+  return { chunks: data, vectors };
 }
+
+// Eager load at module init so the first request doesn't pay the cold-read cost.
+const store: VectorStore = loadStore();
 
 // ─── Search ──────────────────────────────────────────────────────────────────
 
@@ -183,9 +196,8 @@ const handler = createMcpHandler(
       },
       async ({ query, limit }) => {
         try {
-          const vectorStore = getStore();
           const queryVec = await embedQuery(query.trim());
-          const results = search(queryVec, vectorStore, limit);
+          const results = search(queryVec, store, limit);
 
           return {
             content: [
