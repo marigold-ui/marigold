@@ -40,7 +40,16 @@ Before shadows come into play, background colors establish the base layers of th
 
 `bg-background` and `bg-surface` work as a pair: the page background provides contrast so that white surfaces stand out. `bg-muted` adds a gentle tint within a surface to distinguish secondary content without adding another elevation level.
 
-For interactive elements like inputs, cards, and dialogs, the `ui-surface` utility builds on `bg-surface` by adding a subtle border gradient. Pair it with a `shadow-elevation-*` token to complete the elevation styling:
+<ComponentDemo name="elevation-layers" mode="preview" />
+
+For interactive elements like inputs, cards, and dialogs, the `ui-surface`
+utility combines several properties into one class: a white background
+(`bg-surface`), a subtle top-to-bottom border gradient that darkens slightly
+toward the bottom edge, rounded corners, and smooth transitions for background,
+border, and shadow changes. This gradient border gives elements a refined,
+three-dimensional feel that a flat `1px solid` border cannot achieve. Pair
+`ui-surface` with a `shadow-elevation-*` token to complete the elevation
+styling:
 
 ```html
 <div class="ui-surface shadow-elevation-raised">...</div>
