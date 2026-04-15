@@ -38,7 +38,7 @@ const TopNavigationBase = ({
   });
 
   return (
-    <TopNavigationContext.Provider value={{ variant, size, classNames }}>
+    <TopNavigationContext value={{ variant, size, classNames }}>
       <header
         ref={ref}
         className={cn(
@@ -51,7 +51,7 @@ const TopNavigationBase = ({
       >
         {children}
       </header>
-    </TopNavigationContext.Provider>
+    </TopNavigationContext>
   );
 };
 
