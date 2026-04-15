@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
@@ -30,36 +30,39 @@ export interface PopoverProps extends Omit<
 
 // Component
 // ---------------
-const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  (
-    { keyboardDismissDisabled, placement, offset = 0, open, children, ...rest },
-    ref
-  ) => {
-    const props: RAC.PopoverProps = {
-      isKeyboardDismissDisabled: keyboardDismissDisabled,
-      isOpen: open,
-      placement,
-      ...rest,
-    };
-    const classNames = useClassNames({
-      component: 'Popover',
-      variant: placement,
-      // Make Popover as wide as trigger element
-      className: 'min-w-(--trigger-width)',
-    });
+const PopoverBase = ({
+  keyboardDismissDisabled,
+  placement,
+  offset = 0,
+  open,
+  children,
+  ref,
+  ...rest
+}: PopoverProps & { ref?: Ref<HTMLDivElement> }) => {
+  const props: RAC.PopoverProps = {
+    isKeyboardDismissDisabled: keyboardDismissDisabled,
+    isOpen: open,
+    placement,
+    ...rest,
+  };
+  const classNames = useClassNames({
+    component: 'Popover',
+    variant: placement,
+    // Make Popover as wide as trigger element
+    className: 'min-w-(--trigger-width)',
+  });
 
-    return (
-      <Popover
-        ref={ref}
-        {...props}
-        className={cn('z-30 flex', classNames)}
-        placement={placement}
-        offset={offset}
-      >
-        {children}
-      </Popover>
-    );
-  }
-);
+  return (
+    <Popover
+      ref={ref}
+      {...props}
+      className={cn('z-30 flex', classNames)}
+      placement={placement}
+      offset={offset}
+    >
+      {children}
+    </Popover>
+  );
+};
 
-export { _Popover as Popover };
+export { PopoverBase as Popover };

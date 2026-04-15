@@ -26,7 +26,9 @@ describe('SelectList', () => {
   });
 
   test('support refs', () => {
-    const SelectListRef: { current: HTMLElement | null } = { current: null };
+    const SelectListRef: { current: HTMLUListElement | null } = {
+      current: null,
+    };
     render(<Basic.Component aria-label="Test" ref={SelectListRef} />);
 
     expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
