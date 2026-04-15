@@ -160,17 +160,20 @@ Output a structured review report in this format:
 After displaying the review report, ask the user if they want to post the review as a comment on the PR.
 
 Use `AskUserQuestion` with options:
-- **Post issues only** - Post only the "Issues Found" section
+- **Post inline comments** - Post issues as inline comments directly on the code lines where they occur
 - **Post as comment** - Post the full review as a PR comment
+- **Post both** - Post the full review as a PR comment AND inline comments on the code
 - **Skip** - Don't post anything to GitHub
 
-If the user chooses to post, use:
+#### Option A: Post as PR comment
+
+Use `gh pr review` to post the full review:
 
 ```bash
 gh pr review <number> --comment --body "<review content>"
 ```
 
-For the comment, format it nicely for GitHub with a header indicating it's an automated review:
+Format with a header indicating it's an automated review:
 
 ```markdown
 ## Automated Code Review
@@ -181,6 +184,47 @@ For the comment, format it nicely for GitHub with a header indicating it's an au
 *Generated with Claude Code review-pr skill*
 ```
 
+#### Option B: Post inline comments on code
+
+Use the GitHub API to create a review with inline comments placed directly on the relevant lines in the diff. This is the most actionable format for the PR author.
+
+First, get the latest commit SHA:
+
+```bash
+gh pr view <number> --json headRefOid -q .headRefOid
+```
+
+Then post a review with inline comments using `gh api`. Each comment targets a specific file and line from the "Issues Found" section:
+
+```bash
+gh api repos/<owner>/<repo>/pulls/<number>/reviews --method POST \
+  --input - <<'EOF'
+{
+  "commit_id": "<commit_sha>",
+  "event": "COMMENT",
+  "body": "",
+  "comments": [
+    {
+      "path": "path/to/file.tsx",
+      "line": 33,
+      "side": "RIGHT",
+      "body": "<issue description with severity emoji prefix>"
+    }
+  ]
+}
+EOF
+```
+
+**Formatting rules for inline comments:**
+- Prefix critical issues with the red circle emoji, warnings with the warning emoji, suggestions with the bulb emoji
+- Include a GitHub suggestion block (` ```suggestion `) when a concrete fix is available
+- Keep each comment focused on a single issue
+- Reference related comments (e.g., "Same issue as in `OtherFile.tsx`") to avoid repeating full explanations
+
+#### Option C: Post both
+
+Combine both options: post the full review as a PR comment for the overview, and add inline comments for each specific issue found in the code.
+
 ## Tools Required
 
 The following tools are needed for this skill:
@@ -189,7 +233,8 @@ The following tools are needed for this skill:
 - `Bash(gh pr view *)` - Fetch PR details
 - `Bash(gh pr diff *)` - Get PR diff
 - `Bash(gh pr checks *)` - Check CI status
-- `Bash(gh pr comment *)` - Post review comment to PR
+- `Bash(gh pr review *)` - Post review comment to PR
+- `Bash(gh api repos/*/pulls/*/reviews *)` - Post inline comments on specific code lines
 - `Bash(pnpm typecheck:only)` - TypeScript checking (user opt-in)
 - `Bash(pnpm lint)` - Lint checking (user opt-in)
 - `Skill(vercel-react-best-practices)` - React performance best practices
@@ -204,4 +249,4 @@ The following tools are needed for this skill:
 - Integrates `vercel-react-best-practices` skill for React performance checks
 - Jira integration is optional and gracefully handles missing tickets
 - Automated checks (typecheck, lint) require user confirmation before running
-- GitHub posting is opt-in and supports posting full review or issues only
+- GitHub posting is opt-in and supports full review comments, inline code comments, or both
