@@ -84,20 +84,22 @@ Compare the most recent workflow run against the PR's current head SHA:
 
 Only record a visual regression inline comment when the status from 5c requires one (**stale**, **failed**, or **not started**). Target the comment at the **first changed file** that matched the UI patterns in 5a.
 
+Missing or outdated VRT is a **Critical (Must Fix)** issue — it must appear in the "Critical" section of the review report and factor into the recommendation (i.e., **Request Changes** rather than Approve).
+
 **Not started:**
 
 ```
-🔍 **Visual Regression Tests**
+🔴 **Visual Regression Tests — not run**
 
 This PR changes UI-affecting files but the `Visual-Regression-Tests` workflow has not run for this branch.
 
-You can trigger it by commenting `/run-chromatic` on this PR, or by manually dispatching the workflow.
+Please trigger it by commenting `/run-chromatic` on this PR, or by manually dispatching the workflow.
 ```
 
 **Stale** (new commits since last successful run):
 
 ```
-🔍 **Visual Regression Tests**
+🔴 **Visual Regression Tests — stale**
 
 The last successful `Visual-Regression-Tests` run was on commit `<short sha>`, but the branch has since moved to `<current short sha>`.
 
@@ -107,7 +109,7 @@ Please re-run visual regression tests to cover the latest changes by commenting 
 **Failed:**
 
 ```
-🔍 **Visual Regression Tests**
+🔴 **Visual Regression Tests — failed**
 
 The `Visual-Regression-Tests` workflow [failed](<run url>) on this branch. Please check the run and re-trigger if needed.
 
@@ -299,7 +301,7 @@ EOF
 
 **Visual regression test comment:**
 
-If step 5 recorded a visual regression suggestion (status is "not started" or "failed"), include it as an additional inline comment targeting the first UI-affecting file in the diff. This comment is **always** included when posting inline comments — it does not require a separate user opt-in.
+If step 5 recorded a visual regression issue (status is "not started", "stale", or "failed"), include it as an additional inline comment targeting the first UI-affecting file in the diff. This is a **critical** issue — use the red circle emoji prefix. This comment is **always** included when posting inline comments — it does not require a separate user opt-in.
 
 #### Option C: Post both
 
