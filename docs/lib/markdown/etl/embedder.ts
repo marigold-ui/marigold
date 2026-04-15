@@ -11,7 +11,6 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const CHUNKS_FILE = path.join(__dirname, 'chunks.json');
-const SEARCH_FILE = path.join(__dirname, '..', 'chunks_search.json');
 const DIMENSIONS = 512;
 const MAX_RETRIES = 3;
 const TPM_LIMIT = 280000; // buffer since Titan Text Embeddings V2 allows only 300k tokens per minute
@@ -43,6 +42,12 @@ const rateLimiter = new TokenRateLimiter();
 if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
   throw new Error(
     'Missing AWS credentials. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.'
+  );
+}
+
+if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  throw new Error(
+    'Missing BLOB_READ_WRITE_TOKEN. Embeddings can only be published to Vercel Blob.'
   );
 }
 
@@ -121,25 +126,19 @@ async function main() {
 
   process.stdout.write('\n');
   const json = JSON.stringify(results);
-  fs.writeFileSync(SEARCH_FILE, json);
   const kb = (Buffer.byteLength(json) / 1024).toFixed(0);
-  console.log(
-    `Done in ${Math.round((Date.now() - t0) / 1000)}s — ${results.length} chunks, ${errors} errors — ${SEARCH_FILE} (${kb} KB)`
-  );
 
-  // Upload to Vercel Blob (requires BLOB_READ_WRITE_TOKEN env var)
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
-    console.log('Uploading embeddings to Vercel Blob...');
-    const blob = await put('embeddings.json', json, {
-      access: 'private',
-      contentType: 'application/json',
-      addRandomSuffix: false,
-      allowOverwrite: true,
-    });
-    console.log(`Uploaded to Vercel Blob: ${blob.url}`);
-  } else {
-    console.log('Skipping Vercel Blob upload (BLOB_READ_WRITE_TOKEN not set).');
-  }
+  console.log('Uploading embeddings to Vercel Blob...');
+  const blob = await put('embeddings.json', json, {
+    access: 'public',
+    contentType: 'application/json',
+    addRandomSuffix: false,
+    allowOverwrite: true,
+  });
+
+  console.log(
+    `Done in ${Math.round((Date.now() - t0) / 1000)}s — ${results.length} chunks, ${errors} errors, ${kb} KB → ${blob.url}`
+  );
 
   if (errors > 0) process.exitCode = 1;
 }
