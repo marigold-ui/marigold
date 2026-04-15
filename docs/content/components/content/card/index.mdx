@@ -9,7 +9,12 @@ Cards are ideal for grouping related information and making it easily digestible
 
 ## Anatomy
 
-The `<Card>` component consists of a container which is basically a `<div>`. You can pass any content and components as `children` to the component.
+The `<Card>` component is a compound component made up of several sub-components that map to distinct visual areas of the card:
+
+- **Card.Preview**: Optional full-bleed area at the top, typically used for images or media.
+- **Card.Header**: Area for the card title and supporting labels or badges.
+- **Card.Body**: Main content area for descriptive text or form elements.
+- **Card.Footer**: Bottom area for actions such as buttons or metadata.
 
 <ImageZoom
   src="/card/card-anatomy.jpg"

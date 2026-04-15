@@ -21,7 +21,7 @@ export const Card: ThemeComponent<'Card'> = {
     base: 'px-4 py-2 text-sm',
   }),
   footer: cva({
-    base: 'flex items-center justify-end gap-2 px-4 pt-2 pb-4',
+    base: 'flex items-center  gap-2 px-4 pt-2 pb-4',
   }),
   preview: cva({
     base: '',
