@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { Text } from 'react-aria-components';
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Center } from '../Center/Center';
@@ -13,7 +13,7 @@ const meta = preview.meta({
   component: Autocomplete,
   decorators: [
     Story => (
-      <div id="storybook-root">
+      <div id="storybook-root" className="p-4">
         <Story />
       </div>
     ),
@@ -301,6 +301,52 @@ export const DisabledSuggestions: any = meta.story({
   ),
 });
 
+const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
+  id: `item-${i + 200}`,
+  label: `Tenant ${i + 200} (item-${i + 200})`,
+}));
+
+export const LargeDataset: any = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Tenants',
+    placeholder: 'Search tenants...',
+    width: 80,
+  },
+  render: args => (
+    <Autocomplete {...args}>
+      {LARGE_ITEMS.map(item => (
+        <Autocomplete.Option key={item.id} id={item.id}>
+          {item.label}
+        </Autocomplete.Option>
+      ))}
+    </Autocomplete>
+  ),
+  play: async ({ canvas, step }: any) => {
+    const input = canvas.getByRole('combobox');
+
+    await step('Type to filter the large dataset', async () => {
+      await userEvent.click(input);
+      await userEvent.type(input, 'item-500');
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Verify filter narrowed to a single option', async () => {
+      const listbox = canvas.getByRole('listbox');
+      const options = within(listbox).getAllByRole('option');
+      expect(options).toHaveLength(1);
+      expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
+      await userEvent.click(options[0]);
+    });
+
+    await step('Verify selected value appears in the input', async () => {
+      await waitFor(() => {
+        expect(input).toHaveValue('Tenant 500 (item-500)');
+      });
+    });
+  },
+});
+
 export const Mobile: any = meta.story({
   tags: ['component-test'],
   globals: {
@@ -387,7 +433,10 @@ Mobile.test(
     await step('Filter options by typing', async () => {
       await userEvent.keyboard('matrix');
 
-      await waitFor(() => expect(canvas.getByText('The Matrix')).toBeVisible());
+      await waitFor(() => {
+        expect(canvas.getByText('The Matrix')).toBeVisible();
+        expect(canvas.queryByText('Inception')).not.toBeInTheDocument();
+      });
     });
 
     await step('Navigate to option with arrow keys and select', async () => {

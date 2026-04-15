@@ -2,10 +2,9 @@
   "pages": [
     "installation",
     "get-in-touch",
+    "how-to-contribute",
     "design-token-guidelines",
     "design-principles",
-    "governance-process",
-    "governance-principles",
     "release-phases"
   ]
 }

@@ -10,7 +10,7 @@ export const TopNavigation: ThemeComponent<'TopNavigation'> = {
   }),
   start: cva({ base: 'flex justify-start gap-4' }),
   middle: cva({
-    base: ['flex items-end', 'p-1 -m-1'],
+    base: 'flex items-end',
   }),
   end: cva({ base: 'flex justify-end gap-4' }),
 };

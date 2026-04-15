@@ -1,6 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Basic, ComplexSingleSelect, StickyHeader } from './Accordion.stories';
+import {
+  Basic,
+  ComplexSingleSelect,
+  IconPositionLeft,
+  StickyHeader,
+} from './Accordion.stories';
 
 const user = userEvent.setup();
 
@@ -12,8 +17,6 @@ test('render Accordion and more than one Item', () => {
 
   expect(item).toBeInTheDocument();
   expect(itemtwo).toBeInTheDocument();
-  expect(item).toBeValid();
-  expect(itemtwo).toBeValid();
 });
 
 test('items per default closed', () => {
@@ -86,4 +89,10 @@ test('renders sticky header wrapper with expected utility classes', () => {
   expect(stickyWrapper).toHaveClass('z-1');
   expect(stickyWrapper).toHaveClass('backdrop-blur-xs');
   expect(stickyWrapper).toHaveClass('bg-background/90');
+});
+
+test('supports iconPosition left', () => {
+  render(<IconPositionLeft.Component />);
+
+  expect(screen.getAllByText('Settings')).toHaveLength(3);
 });

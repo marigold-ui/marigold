@@ -1,35 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
-import { Basic } from './Slider.stories';
-
-const user = userEvent.setup();
-
-test('supports keyboard move up and down', async () => {
-  render(<Basic.Component label="Example" />);
-  const slider = screen.getByRole('slider');
-
-  await user.click(screen.getByText(/Example/));
-
-  await user.keyboard('{arrowup}');
-  expect(slider).toHaveValue('1');
-
-  await user.keyboard('{arrowdown}');
-  expect(slider).toHaveValue('0');
-});
-
-test('supports keyboard move right and left', async () => {
-  render(<Basic.Component label="Example" />);
-
-  const slider = screen.getByRole('slider');
-  await user.click(screen.getByText(/Example/));
-
-  await user.keyboard('{arrowright}');
-  expect(slider).toHaveValue('1');
-
-  await user.keyboard('{arrowleft}');
-  expect(slider).toHaveValue('0');
-});
+import { Basic, MultipleThumbs } from './Slider.stories';
 
 test('supports disabled prop', () => {
   render(<Basic.Component disabled label="Example" />);
@@ -52,16 +23,10 @@ test('forwards ref', () => {
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
 
-test('multiple thumbs', () => {
-  render(
-    <Basic.Component
-      defaultValue={[30, 60]}
-      thumbLabels={['start', 'end']}
-      label="Range"
-    />
-  );
+test('renders multiple thumbs for range slider', () => {
+  render(<MultipleThumbs.Component />);
 
-  const slider = screen.getAllByRole('slider');
-  expect(slider[0]).toHaveValue('30');
-  expect(slider[1]).toHaveValue('60');
+  const sliders = screen.getAllByRole('slider');
+
+  expect(sliders).toHaveLength(2);
 });

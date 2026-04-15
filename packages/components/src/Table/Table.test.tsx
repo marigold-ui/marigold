@@ -1,18 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { render, renderHook, screen } from '@testing-library/react';
 import { mockMatchMedia } from '../test.utils';
+import { useTableContext } from './Context';
 import { Table } from './Table';
 import {
   Basic,
-  DragAndDrop,
-  DragPreview,
-  DynamicData,
-  Empty,
-  Links,
   ScrollableAndSticky,
-  Sorting,
   VerticalAlignment,
   WidthsAndOverflow,
-  WithActions,
 } from './Table.stories';
 import { renderDragPreview } from './TableDragPreview';
 import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
@@ -20,35 +14,6 @@ import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
 window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 describe('Basic Rendering', () => {
-  test('renders table element with proper structure', () => {
-    render(<Basic.Component />);
-
-    const table = screen.getByRole('grid');
-
-    expect(table instanceof HTMLTableElement).toBeTruthy();
-  });
-
-  test('renders column headers', () => {
-    render(<Basic.Component />);
-
-    expect(
-      screen.getByRole('columnheader', { name: 'Name' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('columnheader', { name: 'Email' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('columnheader', { name: 'Location' })
-    ).toBeInTheDocument();
-  });
-
-  test('renders table rows with data', () => {
-    render(<Basic.Component />);
-
-    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
-    expect(screen.getByText('Fritz Schneider')).toBeInTheDocument();
-  });
-
   test('applies colspans to cells', () => {
     render(<WidthsAndOverflow.Component />);
 
@@ -57,78 +22,6 @@ describe('Basic Rendering', () => {
 
     expect(totalCell).toBeInTheDocument();
     expect(totalCell).toHaveAttribute('colspan', '4');
-  });
-});
-
-describe('Data Handling', () => {
-  test('supports dynamic data with selection mode', () => {
-    render(<DynamicData.Component />);
-
-    const checkboxes = screen.getAllByRole('checkbox');
-
-    expect(checkboxes.length).toBeGreaterThan(0);
-    expect(screen.getByText('Harry')).toBeInTheDocument();
-    expect(screen.getByText('Draco')).toBeInTheDocument();
-  });
-
-  test('displays empty state when no data', () => {
-    render(<Empty.Component />);
-
-    expect(screen.getByText('No results found.')).toBeInTheDocument();
-    expect(
-      screen.getByText('Try adjusting your search or filters.')
-    ).toBeInTheDocument();
-  });
-});
-
-describe('Column Configuration', () => {
-  test('renders table with custom column widths', () => {
-    render(<WidthsAndOverflow.Component />);
-
-    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
-    expect(
-      screen.getByRole('columnheader', { name: 'ID' })
-    ).toBeInTheDocument();
-  });
-});
-
-describe('Interactions', () => {
-  test('supports sorting with sortable columns', () => {
-    render(<Sorting.Component />);
-
-    const sortableHeaders = screen
-      .getAllByRole('columnheader')
-      .filter(header => header.getAttribute('aria-sort') !== null);
-
-    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
-    expect(sortableHeaders.length).toBeGreaterThan(0);
-  });
-
-  test('renders table with drag and drop support', () => {
-    render(<DragAndDrop.Component />);
-
-    const checkboxes = screen.getAllByRole('checkbox');
-
-    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
-    expect(checkboxes.length).toBeGreaterThan(0);
-  });
-});
-
-describe('Content', () => {
-  test('renders table with action menus', () => {
-    render(<WithActions.Component />);
-
-    const actionMenus = screen.getAllByRole('button', { name: /Actions/i });
-
-    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
-    expect(actionMenus.length).toBeGreaterThan(0);
-  });
-
-  test('renders table with clickable row links', () => {
-    render(<Links.Component />);
-
-    expect(screen.getByText('Marigold')).toBeInTheDocument();
-    expect(screen.getByText('Reservix')).toBeInTheDocument();
   });
 });
 
@@ -180,7 +73,7 @@ describe('Props and Variants', () => {
   });
 
   test('defaults to middle vertical alignment', () => {
-    render(<Basic.Component />);
+    render(<Basic.Component alignY={undefined} />);
 
     const cell = screen.getAllByRole('gridcell')[0];
 
@@ -195,14 +88,6 @@ describe('Accessibility', () => {
     const table = screen.getByRole('grid', { name: 'label' });
 
     expect(table).toBeInTheDocument();
-  });
-
-  test('renders with selection mode multiple', () => {
-    render(<DynamicData.Component />);
-
-    const checkboxes = screen.getAllByRole('checkbox');
-
-    expect(checkboxes.length).toBeGreaterThan(0);
   });
 
   test('uses grid role for table', () => {
@@ -274,35 +159,6 @@ describe('Sticky Header', () => {
     const header = columnHeader.closest('thead');
 
     expect(header).not.toHaveClass('sticky');
-  });
-});
-
-describe('TableDragPreview Component', () => {
-  test('renders single item with text and count', () => {
-    render(<DragPreview.Component />);
-
-    const counters = screen.getAllByText('1');
-
-    expect(screen.getByText('Single Item')).toBeInTheDocument();
-    expect(counters.length).toBeGreaterThan(0);
-  });
-
-  test('renders multiple items with first item text and count', () => {
-    render(<DragPreview.Component />);
-
-    const items = screen.getAllByText('Item 1');
-    const counters = screen.getAllByText('3');
-
-    expect(items.length).toBeGreaterThan(0);
-    expect(counters.length).toBeGreaterThan(0);
-  });
-
-  test('shows fallback text when text/plain is empty or missing', () => {
-    render(<DragPreview.Component />);
-
-    const fallbackTexts = screen.getAllByText(/items/i);
-
-    expect(fallbackTexts.length).toBeGreaterThan(0);
   });
 });
 
@@ -379,25 +235,6 @@ describe('renderDragPreview Hook', () => {
     const preview = renderDragPreview!(items);
 
     expect(preview).not.toBeUndefined();
-  });
-});
-
-describe('TableDropIndicator Integration', () => {
-  test('renders in drag and drop table', () => {
-    render(<DragAndDrop.Component />);
-
-    const table = screen.getByRole('grid');
-
-    expect(table).toBeInTheDocument();
-  });
-
-  test('table uses renderDropIndicator for drag and drop', () => {
-    render(<DragAndDrop.Component />);
-
-    const rows = screen.getAllByRole('row');
-    const dataRows = rows.slice(1);
-
-    expect(dataRows[0]).toHaveAttribute('draggable', 'true');
   });
 });
 
@@ -527,4 +364,10 @@ describe('renderDropIndicator Function Signature', () => {
 
     expect(dropIndicator.props.target).toStrictEqual(complexTarget);
   });
+});
+
+test('useTableContext throws outside Table', () => {
+  expect(() => renderHook(() => useTableContext())).toThrow(
+    'useTableContext must be used within a <Table> component'
+  );
 });

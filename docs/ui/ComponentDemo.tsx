@@ -52,7 +52,7 @@ const Preview = ({ name }: { name: RegistryKey }) => {
   return (
     <div
       data-theme="rui"
-      className="flex min-h-[150px] w-full flex-col justify-center [&>*:first-child]:flex [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
+      className="flex min-h-[150px] w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
     >
       <OverlayContainerProvider container="portalContainer">
         <MarigoldProvider theme={ruiTheme} className="bg-background w-full">
@@ -91,7 +91,11 @@ export const ComponentDemo = ({
 
   // Preview only mode
   if (mode === 'preview') {
-    return <Preview name={key} />;
+    return (
+      <div className="overflow-hidden rounded-xl">
+        <Preview name={key} />
+      </div>
+    );
   }
 
   // Code only mode

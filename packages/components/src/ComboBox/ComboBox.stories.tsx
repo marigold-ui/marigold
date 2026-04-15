@@ -1,6 +1,6 @@
 import { Key, useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { expect, fn, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack/Stack';
@@ -12,7 +12,7 @@ const meta = preview.meta({
   component: ComboBox,
   decorators: [
     Story => (
-      <div id="storybook-root">
+      <div id="storybook-root" className="p-4">
         <Story />
       </div>
     ),
@@ -411,30 +411,78 @@ export const OnAction: any = meta.story({
   },
 });
 
+const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
+  id: `item-${i + 200}`,
+  label: `Tenant ${i + 200} (item-${i + 200})`,
+}));
+
+export const LargeDataset: any = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Tenants',
+    placeholder: 'Search tenants...',
+    width: 80,
+  },
+  render: args => (
+    <ComboBox {...args}>
+      {LARGE_ITEMS.map(item => (
+        <ComboBox.Option key={item.id} id={item.id}>
+          {item.label}
+        </ComboBox.Option>
+      ))}
+    </ComboBox>
+  ),
+  play: async ({ canvas, step }: any) => {
+    const input = canvas.getByRole('combobox');
+
+    await step('Filter the large dataset by typing', async () => {
+      await userEvent.click(input);
+      await userEvent.type(input, 'item-500');
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Verify filter narrowed to a single option', async () => {
+      const listbox = canvas.getByRole('listbox');
+      const options = within(listbox).getAllByRole('option');
+      expect(options).toHaveLength(1);
+      expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
+      await userEvent.click(options[0]);
+    });
+
+    await step('Verify selected value appears in the input', async () => {
+      await waitFor(() => {
+        expect(input).toHaveValue('Tenant 500 (item-500)');
+      });
+    });
+  },
+});
+
 export const Mobile: any = meta.story({
   tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },
   },
   render: args => (
-    <ComboBox {...args}>
-      <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
-      <ComboBox.Option id="cat">Cat</ComboBox.Option>
-      <ComboBox.Option id="dog">Dog</ComboBox.Option>
-      <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
-      <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
-      <ComboBox.Option id="snake">Snake</ComboBox.Option>
-      <ComboBox.Option id="elephant">Elephant</ComboBox.Option>
-      <ComboBox.Option id="giraffe">Giraffe</ComboBox.Option>
-      <ComboBox.Option id="penguin">Penguin</ComboBox.Option>
-      <ComboBox.Option id="dolphin">Dolphin</ComboBox.Option>
-      <ComboBox.Option id="koala">Koala</ComboBox.Option>
-      <ComboBox.Option id="tiger">Tiger</ComboBox.Option>
-      <ComboBox.Option id="lion">Lion</ComboBox.Option>
-      <ComboBox.Option id="zebra">Zebra</ComboBox.Option>
-      <ComboBox.Option id="owl">Owl</ComboBox.Option>
-      <ComboBox.Option id="fox">Fox</ComboBox.Option>
-    </ComboBox>
+    <I18nProvider locale="en">
+      <ComboBox {...args} allowsEmptyCollection>
+        <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+        <ComboBox.Option id="cat">Cat</ComboBox.Option>
+        <ComboBox.Option id="dog">Dog</ComboBox.Option>
+        <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+        <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+        <ComboBox.Option id="snake">Snake</ComboBox.Option>
+        <ComboBox.Option id="elephant">Elephant</ComboBox.Option>
+        <ComboBox.Option id="giraffe">Giraffe</ComboBox.Option>
+        <ComboBox.Option id="penguin">Penguin</ComboBox.Option>
+        <ComboBox.Option id="dolphin">Dolphin</ComboBox.Option>
+        <ComboBox.Option id="koala">Koala</ComboBox.Option>
+        <ComboBox.Option id="tiger">Tiger</ComboBox.Option>
+        <ComboBox.Option id="lion">Lion</ComboBox.Option>
+        <ComboBox.Option id="zebra">Zebra</ComboBox.Option>
+        <ComboBox.Option id="owl">Owl</ComboBox.Option>
+        <ComboBox.Option id="fox">Fox</ComboBox.Option>
+      </ComboBox>
+    </I18nProvider>
   ),
 });
 
@@ -462,9 +510,8 @@ Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
 
     await waitFor(() => {
       expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
-
-    expect(trigger).toHaveAttribute('aria-expanded', 'false');
   });
 
   await step('Verify selection is displayed in trigger', async () => {
@@ -494,7 +541,10 @@ Mobile.test(
     await step('Filter options by typing', async () => {
       await userEvent.keyboard('cat');
 
-      await waitFor(() => expect(canvas.getByText('Cat')).toBeVisible());
+      await waitFor(() => {
+        expect(canvas.getByText('Cat')).toBeVisible();
+        expect(canvas.queryByText('Dog')).not.toBeInTheDocument();
+      });
     });
 
     await step('Navigate to option with arrow keys and select', async () => {
@@ -512,6 +562,30 @@ Mobile.test(
 
     await step('Verify selection is displayed in trigger', async () => {
       await waitFor(() => expect(trigger).toHaveTextContent('Cat'));
+    });
+  }
+);
+
+Mobile.test(
+  'Mobile ComboBox shows empty state',
+  async ({ canvas, step }: any) => {
+    const trigger = await canvas.findByRole('button');
+
+    await step('Open tray', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Type non-matching text to trigger empty state', async () => {
+      const input = await canvas.findByRole('combobox');
+      await userEvent.type(input, 'xyz');
+
+      await waitFor(() =>
+        expect(canvas.getByText('No result found')).toBeVisible()
+      );
     });
   }
 );

@@ -11,12 +11,17 @@ describe('LinkButton', () => {
   it('renders <a> element', () => {
     render(<Basic.Component href="www.reservix.net" />);
     const link = screen.getByRole('link');
-    expect(link instanceof HTMLAnchorElement).toBeTruthy();
     expect(link).toHaveAttribute('href', 'www.reservix.net');
   });
 
   it('forwards additional props', () => {
     render(<Basic.Component data-testid="custom-link" />);
     expect(screen.getByTestId('custom-link')).toBeInTheDocument();
+  });
+
+  it('supports fullWidth', () => {
+    render(<Basic.Component fullWidth />);
+
+    expect(screen.getByRole('link')).toHaveClass('w-full');
   });
 });

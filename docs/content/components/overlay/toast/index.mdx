@@ -20,6 +20,17 @@ A Toast is a small, temporary notification that appears on the screen to inform 
 <AppearanceDemo component={'Toast'} />
 
 <AppearanceTable component={'Toast'} />
+
+Each variant uses a distinct icon color to signal the nature of the notification.
+
+| Variant   | Description                                                                 | When to use                                                               |
+| --------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `default` | Neutral toast with no specific semantic color. This is the default variant. | General notifications that don't fall into a specific status category.    |
+| `success` | Toast with a green success icon.                                            | Confirming a completed action, like saving data or sending a message.     |
+| `warning` | Toast with a yellow warning icon.                                           | Alerting users to potential issues that don't block their workflow.       |
+| `info`    | Toast with a blue info icon.                                                | Providing contextual information or updates, like sync status or tips.    |
+| `error`   | Toast with a red error icon.                                                | Notifying users of failed actions or critical errors that need attention. |
+
 ## Usage
 
 The `<ToastProvider>` Component should be in the root of your application, so it can be used anywhere in your app. You can use the `addToast` function to add a Toast to the Toaster. The Toast will appear at the bottom right of the screen by default. With the position prop you can change the position of all Toasts.

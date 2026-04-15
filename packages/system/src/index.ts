@@ -36,7 +36,11 @@ export type {
   ThemeComponent,
   ThemeComponentParts,
 } from './types/theme';
-export type { SpacingTokens } from './types/tokens';
+export type {
+  InsetSpacingTokens,
+  PaddingSpacingTokens,
+  SpacingTokens,
+} from './types/tokens';
 
 // Default Theme
 export { defaultTheme } from './defaultTheme';

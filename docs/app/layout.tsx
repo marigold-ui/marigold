@@ -47,7 +47,7 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
           </Providers>
           <div id="portalContainer" data-theme="rui" className="not-prose" />
         </Suspense>
-        <Analytics mode="production" />
+        <Analytics />
       </body>
     </html>
   );

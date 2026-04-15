@@ -24,29 +24,27 @@
     "@babel/eslint-parser": "^7.28.4",
     "@babel/plugin-syntax-flow": "^7.24.7",
     "@babel/plugin-transform-react-jsx": "^7.24.7",
-    "@eslint/js": "9.39.2",
-    "@typescript-eslint/eslint-plugin": "8.56.1",
-    "@typescript-eslint/parser": "8.56.1",
+    "@eslint-react/eslint-plugin": "4.2.1",
+    "@eslint/js": "10.0.1",
+    "@typescript-eslint/eslint-plugin": "8.58.0",
+    "@typescript-eslint/parser": "8.58.0",
     "@vitest/eslint-plugin": "1.6.9",
     "eslint-config-prettier": "^10.1.1",
-    "eslint-config-react-app": "7.0.1",
-    "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-prettier": "5.5.5",
-    "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-testing-library": "7.16.0",
     "globals": "17.3.0",
     "prettier": "3.8.1"
   },
   "peerDependencies": {
-    "eslint": "9.x.x",
-    "typescript": "5.3.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x || 5.9.x"
+    "eslint": "9.x.x || 10.x.x",
+    "typescript": "5.3.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x || 5.9.x || 6.x"
   },
   "devDependencies": {
-    "eslint": "9.39.2",
+    "eslint": "10.1.0",
     "eslint-plugin-tailwindcss": "3.18.2",
-    "typescript": "5.9.3"
+    "typescript": "6.0.2"
   }
 }

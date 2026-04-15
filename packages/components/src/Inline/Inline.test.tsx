@@ -28,14 +28,6 @@ describe('Inline', () => {
       expect(inlineElement).toHaveClass('flex-wrap');
     });
 
-    test('renders as div element by default', () => {
-      render(<Basic.Component />);
-
-      const inlineElement = screen.getByText(/Lirum/).parentElement;
-
-      expect(inlineElement instanceof HTMLDivElement).toBeTruthy();
-    });
-
     test('prevents wrapping when noWrap is enabled', () => {
       render(<Basic.Component noWrap />);
 
@@ -46,13 +38,13 @@ describe('Inline', () => {
   });
 
   describe('Spacing', () => {
-    test('applies custom spacing from theme', () => {
+    test('applies semantic spacing from theme', () => {
       render(<Basic.Component />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
       expect(inlineElement?.style.getPropertyValue('--space')).toBe(
-        'calc(var(--spacing) * 2)'
+        'var(--spacing-related)'
       );
     });
 

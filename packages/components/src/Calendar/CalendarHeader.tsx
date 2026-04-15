@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { CalendarStateContext, Heading } from 'react-aria-components';
 import { useDateFormatter } from '@react-aria/i18n';
-import { cn } from '@marigold/system';
 import { IconButton } from '../IconButton/IconButton';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
@@ -23,9 +22,9 @@ export interface CalendarHeaderProps {
 }
 
 export const CalendarHeader = ({
-  monthOffset = 0,
-  showPrevious = true,
-  showNext = true,
+  monthOffset,
+  showPrevious,
+  showNext,
 }: CalendarHeaderProps) => {
   const state = useContext(CalendarStateContext)!;
   const { classNames } = useCalendarContext();
@@ -46,10 +45,7 @@ export const CalendarHeader = ({
       <div className="flex-1">
         {showPrevious && (
           <IconButton
-            className={cn(
-              'inline-flex items-center justify-center gap-[0.5ch]',
-              classNames.calendarControllers
-            )}
+            className={classNames.calendarControllers}
             variant="navigation"
             slot="previous"
           >
@@ -57,14 +53,11 @@ export const CalendarHeader = ({
           </IconButton>
         )}
       </div>
-      <Heading className="text-sm font-medium">{formattedMonth}</Heading>
+      <Heading className={classNames.calendarHeading}>{formattedMonth}</Heading>
       <div className="flex flex-1 justify-end">
         {showNext && (
           <IconButton
-            className={cn(
-              'inline-flex items-center justify-center gap-[0.5ch]',
-              classNames.calendarControllers
-            )}
+            className={classNames.calendarControllers}
             variant="navigation"
             slot="next"
           >

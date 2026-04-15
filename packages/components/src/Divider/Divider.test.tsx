@@ -1,23 +1,28 @@
 import { render, screen } from '@testing-library/react';
 import { Basic, Bold } from './Divider.stories';
 
-test('renders correct HTML element', () => {
+test('renders as hr element', () => {
   render(<Basic.Component data-testid="divider" />);
   const divider = screen.getByTestId('divider');
 
-  expect(divider instanceof HTMLHRElement).toBeTruthy();
+  expect(divider).toBeInstanceOf(HTMLHRElement);
 });
 
-test('supports default variant', () => {
+test('applies border-none base class', () => {
   render(<Basic.Component data-testid="divider" />);
   const divider = screen.getByTestId('divider');
 
-  expect(divider).toBeInTheDocument();
+  expect(divider).toHaveClass('border-none');
 });
 
-test('supports bold variant', () => {
-  render(<Bold.Component data-testid="divider" />);
-  const divider = screen.getByTestId('divider');
+test('bold variant has different styling than default', () => {
+  const { unmount } = render(<Basic.Component data-testid="divider-default" />);
+  const defaultDivider = screen.getByTestId('divider-default');
+  const defaultClasses = defaultDivider.className;
+  unmount();
 
-  expect(divider).toBeInTheDocument();
+  render(<Bold.Component data-testid="divider-bold" />);
+  const boldDivider = screen.getByTestId('divider-bold');
+
+  expect(boldDivider.className).not.toBe(defaultClasses);
 });

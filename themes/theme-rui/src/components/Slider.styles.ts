@@ -15,7 +15,7 @@ export const Slider: ThemeComponent<'Slider'> = {
   }),
   thumb: cva({
     base: [
-      'block h-5 w-5 rounded-full border-2 border-brand bg-background transition-colors',
+      'block h-5 w-5 rounded-full border-2 border-brand bg-background',
       'focus-visible:ui-state-focus outline-none',
       'disabled:cursor-not-allowed',
     ],

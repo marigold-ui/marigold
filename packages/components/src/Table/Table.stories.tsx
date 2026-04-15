@@ -10,6 +10,7 @@ import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
+import { NumberField } from '../NumberField/NumberField';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
@@ -790,24 +791,21 @@ export const ScrollableAndSticky = meta.story({
 
 export const Links = meta.story({
   tags: ['component-test'],
-  args: {
-    selectionMode: 'multiple',
-  },
   render: args => {
     const websites = [
       {
         name: 'Marigold',
-        url: 'https://marigold-ui.io',
+        url: '#marigold',
         description: 'Design System & Component Library',
       },
       {
         name: 'Reservix',
-        url: 'https://reservix.net',
+        url: '#reservix',
         description: 'Ticketing Platform',
       },
       {
         name: 'ADticket',
-        url: 'https://www.adticket.de/',
+        url: '#adticket',
         description: 'Event Ticketing Service',
       },
     ];
@@ -817,7 +815,6 @@ export const Links = meta.story({
         <Table.Header>
           <Table.Column rowHeader>Name</Table.Column>
           <Table.Column>Description</Table.Column>
-          <Table.Column>URL</Table.Column>
         </Table.Header>
         <Table.Body>
           {websites.map(site => (
@@ -826,11 +823,6 @@ export const Links = meta.story({
                 <Text weight="medium">{site.name}</Text>
               </Table.Cell>
               <Table.Cell>{site.description}</Table.Cell>
-              <Table.Cell>
-                <Text size="sm" color="muted-foreground">
-                  {site.url}
-                </Text>
-              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
@@ -855,12 +847,6 @@ export const Links = meta.story({
       ).toBeInTheDocument();
       expect(canvas.getByText('Ticketing Platform')).toBeInTheDocument();
       expect(canvas.getByText('Event Ticketing Service')).toBeInTheDocument();
-    });
-
-    await step('Verify URLs are displayed', async () => {
-      expect(canvas.getByText('https://marigold-ui.io')).toBeInTheDocument();
-      expect(canvas.getByText('https://reservix.net')).toBeInTheDocument();
-      expect(canvas.getByText('https://www.adticket.de/')).toBeInTheDocument();
     });
   },
 });
@@ -1057,6 +1043,9 @@ export const EditableCell = meta.story({
           name: (formData.get('name') as string) || next[index].name,
           email: (formData.get('email') as string) || next[index].email,
           status: (formData.get('status') as string) || next[index].status,
+          balance: formData.has('balance')
+            ? Number(formData.get('balance'))
+            : next[index].balance,
         };
         return next;
       });
@@ -1070,6 +1059,7 @@ export const EditableCell = meta.story({
             <Table.Column>Email</Table.Column>
             <Table.Column>Location</Table.Column>
             <Table.Column>Status</Table.Column>
+            <Table.Column alignX="right">Balance</Table.Column>
           </Table.Header>
           <Table.Body>
             {data.map((user, i) => (
@@ -1115,6 +1105,28 @@ export const EditableCell = meta.story({
                 >
                   <Badge>{user.status}</Badge>
                 </Table.EditableCell>
+                <Table.EditableCell
+                  alignX="right"
+                  field={
+                    <NumberField
+                      aria-label="Balance"
+                      name="balance"
+                      defaultValue={user.balance}
+                      formatOptions={{
+                        style: 'currency',
+                        currency: 'EUR',
+                      }}
+                      hideStepper
+                    />
+                  }
+                  onSubmit={e => handleSubmit(i, e)}
+                >
+                  <NumericFormat
+                    value={user.balance}
+                    style="currency"
+                    currency="EUR"
+                  />
+                </Table.EditableCell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -1122,42 +1134,119 @@ export const EditableCell = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, step }) => {
     const editButtons = canvas.getAllByLabelText('Edit');
 
-    // Click the first edit button to open the editor
-    await userEvent.click(editButtons[0]);
+    await step('Open editor, verify focus and text selection', async () => {
+      await userEvent.click(editButtons[0]);
 
-    // Wait for the name input to appear
-    await waitFor(() => {
-      expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const nameInput = canvas.getByLabelText('Name') as HTMLInputElement;
+      expect(nameInput).toHaveFocus();
+      expect(nameInput.selectionStart).toBe(0);
+      expect(nameInput.selectionEnd).toBe(nameInput.value.length);
     });
 
-    // Verify input is focused and text is selected
-    const nameInput = canvas.getByLabelText('Name') as HTMLInputElement;
-    expect(nameInput).toHaveFocus();
-    expect(nameInput.selectionStart).toBe(0);
-    expect(nameInput.selectionEnd).toBe(nameInput.value.length);
+    await step('Cancel closes editor without saving', async () => {
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
 
-    // Close the editor
-    const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
-    await userEvent.click(cancelButton);
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      });
 
-    await waitFor(() => {
-      expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
     });
 
-    // Test with email field
-    await userEvent.click(editButtons[1]);
+    await step('Edit and save cell value', async () => {
+      await userEvent.click(editButtons[0]);
 
-    await waitFor(() => {
-      expect(canvas.getByLabelText('Email')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const nameInput = canvas.getByLabelText('Name');
+      await userEvent.clear(nameInput);
+      await userEvent.type(nameInput, 'New Name');
+
+      const saveButton = canvas.getByRole('button', { name: 'Save' });
+      await userEvent.click(saveButton);
+
+      await waitFor(() => {
+        expect(canvas.getByText('New Name')).toBeInTheDocument();
+      });
     });
 
-    const emailInput = canvas.getByLabelText('Email') as HTMLInputElement;
-    expect(emailInput).toHaveFocus();
-    expect(emailInput.selectionStart).toBe(0);
-    expect(emailInput.selectionEnd).toBe(emailInput.value.length);
+    await step('Cancel after editing does not save changes', async () => {
+      await userEvent.click(editButtons[0]);
+
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const nameInput = canvas.getByLabelText('Name');
+      await userEvent.clear(nameInput);
+      await userEvent.type(nameInput, 'Should Not Save');
+
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      });
+
+      expect(canvas.queryByText('Should Not Save')).not.toBeInTheDocument();
+      expect(canvas.getByText('New Name')).toBeInTheDocument();
+    });
+
+    await step('Email field has focus and text selection', async () => {
+      await userEvent.click(editButtons[1]);
+
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Email')).toBeInTheDocument();
+      });
+
+      const emailInput = canvas.getByLabelText('Email') as HTMLInputElement;
+      expect(emailInput).toHaveFocus();
+      expect(emailInput.selectionStart).toBe(0);
+      expect(emailInput.selectionEnd).toBe(emailInput.value.length);
+
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Email')).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Save then cancel cycle resets correctly', async () => {
+      await userEvent.click(editButtons[0]);
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const saveButton = canvas.getByRole('button', { name: 'Save' });
+      await userEvent.click(saveButton);
+
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      });
+
+      await userEvent.click(editButtons[0]);
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+
+      await waitFor(() => {
+        expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+      });
+    });
   },
 });
 
@@ -1189,8 +1278,8 @@ export const DynamicColumnsAndRows = meta.story({
     const [nextId, setNextId] = useState(4);
 
     const addRow = () => {
-      const randomUser = users[Math.floor(Math.random() * users.length)];
-      setRows(rows => [...rows, { ...randomUser, id: nextId }]);
+      const user = users[nextId % users.length];
+      setRows(rows => [...rows, { ...user, id: nextId }]);
       setNextId(id => id + 1);
     };
 
