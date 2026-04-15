@@ -41,7 +41,82 @@ gh pr diff <number>
 gh pr checks <number>
 ```
 
-### 5. Extract Jira Ticket
+### 5. Check Visual Regression Test Necessity
+
+Determine whether the PR changes files that could affect visual output and whether the `Visual-Regression-Tests` workflow has already run for this branch.
+
+#### 5a. Detect UI-affecting changes
+
+From the PR's changed files list (fetched in step 2), check if **any** file matches these patterns:
+
+- `packages/components/src/**` — component source
+- `packages/system/src/**` — design system utilities/hooks
+- `themes/**` — theme packages
+- `.storybook/**` — Storybook configuration
+- Any `*.stories.tsx` file
+- Any `*.styles.ts` file
+
+If **none** of the changed files match, skip the rest of this step — visual regression tests are not needed.
+
+#### 5b. Check if the workflow already ran
+
+Use the GitHub CLI to fetch recent runs of the `Visual-Regression-Tests` workflow on the PR's head branch, **including the head SHA each run was triggered on**:
+
+```bash
+gh run list --workflow=visual-regression-tests.yml --branch=<headRefName> --json status,conclusion,createdAt,headSha,url --limit 5
+```
+
+Also fetch the PR's current head commit SHA (from step 2's `headRefOid`, or via `gh pr view <number> --json headRefOid -q .headRefOid`).
+
+#### 5c. Classify the result
+
+Compare the most recent workflow run against the PR's current head SHA:
+
+| Condition | Status | Inline comment? |
+|-----------|--------|-----------------|
+| A run is `in_progress` or `queued` | **running** | No |
+| A run with `conclusion: "success"` exists **and** its `headSha` matches the current PR head | **passed (up to date)** | No |
+| A run with `conclusion: "success"` exists but its `headSha` does **not** match the current PR head (new commits since last run) | **stale** | Yes — suggest re-running |
+| Most recent run has `conclusion: "failure"` (no later success) | **failed** | Yes — mention failure |
+| No runs found at all | **not started** | Yes — suggest running |
+
+#### 5d. Record finding
+
+Only record a visual regression inline comment when the status from 5c requires one (**stale**, **failed**, or **not started**). Target the comment at the **first changed file** that matched the UI patterns in 5a.
+
+**Not started:**
+
+```
+🔍 **Visual Regression Tests**
+
+This PR changes UI-affecting files but the `Visual-Regression-Tests` workflow has not run for this branch.
+
+You can trigger it by commenting `/run-chromatic` on this PR, or by manually dispatching the workflow.
+```
+
+**Stale** (new commits since last successful run):
+
+```
+🔍 **Visual Regression Tests**
+
+The last successful `Visual-Regression-Tests` run was on commit `<short sha>`, but the branch has since moved to `<current short sha>`.
+
+Please re-run visual regression tests to cover the latest changes by commenting `/run-chromatic` on this PR.
+```
+
+**Failed:**
+
+```
+🔍 **Visual Regression Tests**
+
+The `Visual-Regression-Tests` workflow [failed](<run url>) on this branch. Please check the run and re-trigger if needed.
+
+You can re-trigger by commenting `/run-chromatic` on this PR.
+```
+
+If the workflow is **running** or **passed (up to date)**, no inline comment is needed — just report the status in the review report's overview table (e.g., "Visual Regression | Passed" or "Visual Regression | Running").
+
+### 6. Extract Jira Ticket
 
 Search for DST-XXXX pattern in:
 - PR title
@@ -51,7 +126,7 @@ If found, fetch Jira context using:
 - `mcp__plugin_atlassian_atlassian__getAccessibleAtlassianResources` to get cloud ID
 - `mcp__plugin_atlassian_atlassian__getJiraIssue` to fetch ticket details
 
-### 6. Review Code Against Checklist
+### 7. Review Code Against Checklist
 
 Load and apply the review checklist from [references/review-checklist.md](references/review-checklist.md).
 
@@ -60,7 +135,7 @@ For each changed file:
 - Analyze against relevant checklist items
 - Note issues by category and severity
 
-### 7. Apply Vercel React Best Practices
+### 8. Apply Vercel React Best Practices
 
 Invoke the `vercel-react-best-practices` skill to check for React/Next.js performance patterns:
 
@@ -77,13 +152,13 @@ This skill checks for:
 
 Include any findings in the "React Performance" section of the review checklist.
 
-### 8. Optional: Run Automated Checks
+### 9. Optional: Run Automated Checks
 
 Ask user before running:
 - `pnpm typecheck:only` - TypeScript type checking
 - `pnpm lint` - ESLint checks
 
-### 9. Generate Report
+### 10. Generate Report
 
 Output a structured review report in this format:
 
@@ -98,6 +173,7 @@ Output a structured review report in this format:
 | Files Changed | X |
 | Additions | +Y |
 | Deletions | -Z |
+| Visual Regression | Passed / Running / Failed / Not started / Not needed |
 
 ### Linked Ticket
 **DST-XXXX**: <ticket summary>
@@ -155,7 +231,7 @@ Output a structured review report in this format:
 <summary of recommendation>
 ```
 
-### 10. Ask to Post Review to GitHub
+### 11. Ask to Post Review to GitHub
 
 After displaying the review report, ask the user if they want to post the review as a comment on the PR.
 
@@ -221,6 +297,10 @@ EOF
 - Keep each comment focused on a single issue
 - Reference related comments (e.g., "Same issue as in `OtherFile.tsx`") to avoid repeating full explanations
 
+**Visual regression test comment:**
+
+If step 5 recorded a visual regression suggestion (status is "not started" or "failed"), include it as an additional inline comment targeting the first UI-affecting file in the diff. This comment is **always** included when posting inline comments — it does not require a separate user opt-in.
+
 #### Option C: Post both
 
 Combine both options: post the full review as a PR comment for the overview, and add inline comments for each specific issue found in the code.
@@ -233,6 +313,7 @@ The following tools are needed for this skill:
 - `Bash(gh pr view *)` - Fetch PR details
 - `Bash(gh pr diff *)` - Get PR diff
 - `Bash(gh pr checks *)` - Check CI status
+- `Bash(gh run list *)` - Check Visual-Regression-Tests workflow runs for the branch
 - `Bash(gh pr review *)` - Post review comment to PR
 - `Bash(gh api repos/*/pulls/*/reviews *)` - Post inline comments on specific code lines
 - `Bash(pnpm typecheck:only)` - TypeScript checking (user opt-in)
