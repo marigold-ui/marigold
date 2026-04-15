@@ -1,6 +1,11 @@
 import type { ReactNode } from 'react';
 import { useId } from 'react';
-import { useClassNames } from '@marigold/system';
+import type {
+  InsetSpacingTokens,
+  PaddingSpacingTokens,
+  SpaceProp,
+} from '@marigold/system';
+import { createSpacingVar, useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PanelProvider } from './Context';
 import { PanelCollapsible } from './PanelCollapsible';
@@ -15,7 +20,7 @@ import { PanelTitle } from './PanelTitle';
 
 // Props
 // ---------------
-export interface PanelProps {
+interface PanelBaseProps {
   variant?: 'default' | 'master' | 'admin' | 'destructive' | (string & {});
   size?: string;
   children: ReactNode;
@@ -29,6 +34,29 @@ export interface PanelProps {
   headingLevel?: 2 | 3 | 4 | 5 | 6;
 }
 
+/**
+ * Padding applied to every subcomponent (Header, Content, CollapsibleTrigger,
+ * CollapsibleContent, Footer). Either set `p` for uniform padding, or use
+ * `px`/`py` to control the axes separately — setting both forms is a TypeScript
+ * error, mirroring the `<Inset>` component's `space` / `spaceX`+`spaceY` split.
+ */
+type PanelPaddingProps =
+  | {
+      /** Padding on all sides. Cannot be combined with `px` or `py`. */
+      p?: SpaceProp<InsetSpacingTokens>['space'];
+      px?: never;
+      py?: never;
+    }
+  | {
+      p?: never;
+      /** Horizontal padding applied to every subcomponent. */
+      px?: SpaceProp<PaddingSpacingTokens>['space'];
+      /** Vertical padding applied to every subcomponent. */
+      py?: SpaceProp<PaddingSpacingTokens>['space'];
+    };
+
+export type PanelProps = PanelBaseProps & PanelPaddingProps;
+
 // Component
 // ---------------
 export const Panel = ({
@@ -37,10 +65,16 @@ export const Panel = ({
   children,
   'aria-label': ariaLabel,
   headingLevel = 2,
+  p,
+  px,
+  py,
 }: PanelProps) => {
   const titleId = useId();
   const classNames = useClassNames({ component: 'Panel', variant, size });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
+
+  const resolvedPx = px ?? p ?? 'square-regular';
+  const resolvedPy = py ?? p ?? 'square-regular';
 
   return (
     <PanelProvider
@@ -57,6 +91,10 @@ export const Panel = ({
         aria-labelledby={!ariaLabel ? titleId : undefined}
         aria-label={ariaLabel}
         className={classNames.root}
+        style={{
+          ...createSpacingVar('panel-px', `${resolvedPx}`),
+          ...createSpacingVar('panel-py', `${resolvedPy}`),
+        }}
       >
         {children}
       </section>

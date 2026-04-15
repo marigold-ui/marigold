@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelFooterProps {
@@ -8,5 +9,9 @@ export interface PanelFooterProps {
 export const PanelFooter = ({ children }: PanelFooterProps) => {
   const { classNames } = usePanelContext();
 
-  return <div className={classNames.footer}>{children}</div>;
+  return (
+    <div className={cn('px-(--panel-px) py-(--panel-py)', classNames.footer)}>
+      {children}
+    </div>
+  );
 };

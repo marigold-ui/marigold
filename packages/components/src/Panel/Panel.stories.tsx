@@ -1,7 +1,10 @@
+import { UserRoundPlus } from 'lucide-react';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
+import { Inline } from '../Inline/Inline';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
@@ -62,33 +65,46 @@ export const WithHeaderActions = meta.story(() => (
   <Panel>
     <Panel.Header>
       <Panel.Title>Team Members</Panel.Title>
-      <Panel.HeaderActions>
-        <Button variant="primary" size="small">
-          Invite
-        </Button>
-      </Panel.HeaderActions>
-    </Panel.Header>
-    <Panel.Content>
-      <Text>List of team members would go here.</Text>
-    </Panel.Content>
-  </Panel>
-));
-
-export const WithDescriptionAndActions = meta.story(() => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>API Keys</Panel.Title>
       <Panel.Description>
-        Manage the API keys used to authenticate requests.
+        People with access to this workspace and their roles.
       </Panel.Description>
       <Panel.HeaderActions>
-        <Button variant="primary" size="small">
-          Create Key
+        <Button>
+          <UserRoundPlus />
+          Invite member
         </Button>
       </Panel.HeaderActions>
     </Panel.Header>
     <Panel.Content>
-      <Text>API keys table would go here.</Text>
+      <Stack space="regular">
+        <Inline space="regular" alignY="center" alignX="between">
+          <Stack space="0.5">
+            <Text weight="medium">Alice Chen</Text>
+            <Text size="xs" color="secondary">
+              alice@marigold-ui.io
+            </Text>
+          </Stack>
+          <Badge variant="admin">Admin</Badge>
+        </Inline>
+        <Inline space="regular" alignY="center" alignX="between">
+          <Stack space="0.5">
+            <Text weight="medium">Bob Martinez</Text>
+            <Text size="xs" color="secondary">
+              bob@marigold-ui.io
+            </Text>
+          </Stack>
+          <Badge>Editor</Badge>
+        </Inline>
+        <Inline space="regular" alignY="center" alignX="between">
+          <Stack space="0.5">
+            <Text weight="medium">Charlie Park</Text>
+            <Text size="xs" color="secondary">
+              charlie@marigold-ui.io
+            </Text>
+          </Stack>
+          <Badge>Viewer</Badge>
+        </Inline>
+      </Stack>
     </Panel.Content>
   </Panel>
 ));
@@ -205,50 +221,60 @@ export const Variants = meta.story(() => (
 ));
 
 export const VariantsVsCard = meta.story(() => (
-  <Stack space="regular">
+  <div className="grid grid-cols-2 items-start gap-4">
     <Headline level="3">Panel</Headline>
-    <Stack space="related">
-      <Panel variant="master">
-        <Panel.Header>
-          <Panel.Title>Master Panel</Panel.Title>
-        </Panel.Header>
-        <Panel.Content>
-          <Text>Panel with master variant.</Text>
-        </Panel.Content>
-      </Panel>
-      <Panel variant="admin">
-        <Panel.Header>
-          <Panel.Title>Admin Panel</Panel.Title>
-        </Panel.Header>
-        <Panel.Content>
-          <Text>Panel with admin variant.</Text>
-        </Panel.Content>
-      </Panel>
-    </Stack>
-
     <Headline level="3">Card</Headline>
-    <Stack space="related">
-      <Card variant="master">
-        <Headline level="4">Master Card</Headline>
-        <Text>Card with master variant.</Text>
-      </Card>
-      <Card variant="admin">
-        <Headline level="4">Admin Card</Headline>
-        <Text>Card with admin variant.</Text>
-      </Card>
-    </Stack>
-  </Stack>
+
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Default Panel</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Panel with default variant.</Text>
+      </Panel.Content>
+    </Panel>
+    <Card>
+      <Headline level="4">Default Card</Headline>
+      <Text>Card with default variant.</Text>
+    </Card>
+
+    <Panel variant="master">
+      <Panel.Header>
+        <Panel.Title>Master Panel</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Panel with master variant.</Text>
+      </Panel.Content>
+    </Panel>
+    <Card variant="master">
+      <Headline level="4">Master Card</Headline>
+      <Text>Card with master variant.</Text>
+    </Card>
+
+    <Panel variant="admin">
+      <Panel.Header>
+        <Panel.Title>Admin Panel</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Panel with admin variant.</Text>
+      </Panel.Content>
+    </Panel>
+    <Card variant="admin">
+      <Headline level="4">Admin Card</Headline>
+      <Text>Card with admin variant.</Text>
+    </Card>
+  </div>
 ));
 
 export const TableInside = meta.story(() => (
-  <Panel>
+  <Panel p="collapsed">
     <Panel.Header>
       <Panel.Title>Recent Orders</Panel.Title>
       <Panel.Description>
         Overview of the latest transactions.
       </Panel.Description>
     </Panel.Header>
-    <Panel.Content inset="collapsed">
+    <Panel.Content>
       <table className="w-full text-left text-sm">
         <thead className="bg-muted text-secondary">
           <tr>
@@ -281,6 +307,42 @@ export const TableInside = meta.story(() => (
       </table>
     </Panel.Content>
   </Panel>
+));
+
+export const CustomPadding = meta.story(() => (
+  <Stack space="regular">
+    <Panel p="square-loose">
+      <Panel.Header>
+        <Panel.Title>Uniform padding</Panel.Title>
+        <Panel.Description>
+          Using <code>p="square-loose"</code> — same spacing on every side of
+          every section.
+        </Panel.Description>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>All subcomponents share the same inset.</Text>
+      </Panel.Content>
+      <Panel.Footer>
+        <Button>Action</Button>
+      </Panel.Footer>
+    </Panel>
+
+    <Panel px="padding-relaxed" py="padding-snug">
+      <Panel.Header>
+        <Panel.Title>Per-axis padding</Panel.Title>
+        <Panel.Description>
+          Using <code>px="padding-relaxed" py="padding-snug"</code> — wider
+          horizontally than vertically.
+        </Panel.Description>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Header, content, and footer all honour both axes.</Text>
+      </Panel.Content>
+      <Panel.Footer>
+        <Button>Action</Button>
+      </Panel.Footer>
+    </Panel>
+  </Stack>
 ));
 
 export const FullPage = meta.story(() => (

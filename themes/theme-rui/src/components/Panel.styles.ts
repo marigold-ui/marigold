@@ -3,7 +3,7 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const Panel: ThemeComponent<'Panel'> = {
   root: cva({
-    base: 'ui-surface shadow-elevation-raised [&>*:not(:first-child)]:border-t',
+    base: 'ui-surface shadow-elevation-raised',
     variants: {
       variant: {
         default: '',
@@ -19,9 +19,7 @@ export const Panel: ThemeComponent<'Panel'> = {
       variant: 'default',
     },
   }),
-  header: cva({
-    base: 'p-squish-regular',
-  }),
+  header: cva({}),
   title: cva({
     base: 'text-base font-semibold leading-6',
   }),
@@ -40,7 +38,5 @@ export const Panel: ThemeComponent<'Panel'> = {
     ],
   }),
   collapsibleContent: cva({}),
-  footer: cva({
-    base: 'p-squish-snug',
-  }),
+  footer: cva({}),
 };
