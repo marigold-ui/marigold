@@ -19,7 +19,7 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['zero', 'tight', 'related', 'regular', 'group', 'section'],
+      options: ['collapsed', 'tight', 'related', 'regular', 'group', 'section'],
       description: 'Responsive Style Value',
     },
     alignX: {

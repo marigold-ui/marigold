@@ -17,7 +17,7 @@ const meta = preview.meta({
         type: 'select',
       },
       options: [
-        'zero',
+        'collapsed',
         'square-tight',
         'square-snug',
         'square-regular',
@@ -41,7 +41,7 @@ const meta = preview.meta({
         type: 'select',
       },
       options: [
-        'zero',
+        'collapsed',
         'padding-tight',
         'padding-snug',
         'padding-regular',
@@ -55,7 +55,7 @@ const meta = preview.meta({
         type: 'select',
       },
       options: [
-        'zero',
+        'collapsed',
         'padding-tight',
         'padding-snug',
         'padding-regular',
