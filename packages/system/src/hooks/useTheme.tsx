@@ -31,8 +31,8 @@ export function ThemeProvider<T extends Theme>({
   className,
 }: ThemeProviderProps<T>) {
   return (
-    <InternalContext.Provider value={theme}>
+    <InternalContext value={theme}>
       <div className={className}>{children}</div>
-    </InternalContext.Provider>
+    </InternalContext>
   );
 }

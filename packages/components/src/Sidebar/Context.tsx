@@ -62,7 +62,5 @@ export const SidebarProvider = ({
     [state, toggleSidebar, isMobile, classNames]
   );
 
-  return (
-    <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
-  );
+  return <SidebarContext value={value}>{children}</SidebarContext>;
 };

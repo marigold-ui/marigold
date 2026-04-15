@@ -14,9 +14,7 @@ export const CollapsibleProvider = ({
   value,
   children,
 }: PropsWithChildren<{ value: CollapsibleContextProps }>) => (
-  <CollapsibleContext.Provider value={value}>
-    {children}
-  </CollapsibleContext.Provider>
+  <CollapsibleContext value={value}>{children}</CollapsibleContext>
 );
 
 export const useCollapsibleContext = () => {

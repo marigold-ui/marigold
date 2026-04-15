@@ -156,10 +156,10 @@ const _CheckboxGroup = ({
             : 'flex-row gap-[1.5ch]'
         )}
       >
-        <CheckboxGroupContext.Provider value={{ width, variant, size }}>
+        <CheckboxGroupContext value={{ width, variant, size }}>
           {visibleChildren}
           <CollapsibleGroup>{collapsedChildren}</CollapsibleGroup>
-        </CheckboxGroupContext.Provider>
+        </CheckboxGroupContext>
       </div>
     </FieldBase>
   );
