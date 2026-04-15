@@ -1,11 +1,13 @@
 import { UserRoundPlus } from 'lucide-react';
 import preview from '.storybook/preview';
+import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
 import { Inline } from '../Inline/Inline';
 import { Stack } from '../Stack/Stack';
+import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Panel } from './Panel';
@@ -267,44 +269,54 @@ export const VariantsVsCard = meta.story(() => (
 ));
 
 export const TableInside = meta.story(() => (
-  <Panel p="collapsed">
+  <Panel>
     <Panel.Header>
       <Panel.Title>Recent Orders</Panel.Title>
       <Panel.Description>
         Overview of the latest transactions.
       </Panel.Description>
     </Panel.Header>
-    <Panel.Content>
-      <table className="w-full text-left text-sm">
-        <thead className="bg-muted text-secondary">
-          <tr>
-            <th className="px-4 py-2">Order</th>
-            <th className="px-4 py-2">Customer</th>
-            <th className="px-4 py-2">Amount</th>
-            <th className="px-4 py-2">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="border-t">
-            <td className="px-4 py-2">#1001</td>
-            <td className="px-4 py-2">Alice</td>
-            <td className="px-4 py-2">€120.00</td>
-            <td className="px-4 py-2">Completed</td>
-          </tr>
-          <tr className="border-t">
-            <td className="px-4 py-2">#1002</td>
-            <td className="px-4 py-2">Bob</td>
-            <td className="px-4 py-2">€85.50</td>
-            <td className="px-4 py-2">Pending</td>
-          </tr>
-          <tr className="border-t">
-            <td className="px-4 py-2">#1003</td>
-            <td className="px-4 py-2">Charlie</td>
-            <td className="px-4 py-2">€200.00</td>
-            <td className="px-4 py-2">Shipped</td>
-          </tr>
-        </tbody>
-      </table>
+    <Panel.Content bleed>
+      <Table aria-label="Recent orders">
+        <Table.Header>
+          <Table.Column rowHeader>Order</Table.Column>
+          <Table.Column>Customer</Table.Column>
+          <Table.Column alignX="right">Amount</Table.Column>
+          <Table.Column>Status</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>#1001</Table.Cell>
+            <Table.Cell>Alice</Table.Cell>
+            <Table.Cell>
+              <NumericFormat style="currency" currency="EUR" value={120} />
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="success">Completed</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>#1002</Table.Cell>
+            <Table.Cell>Bob</Table.Cell>
+            <Table.Cell>
+              <NumericFormat style="currency" currency="EUR" value={85.5} />
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="warning">Pending</Badge>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>#1003</Table.Cell>
+            <Table.Cell>Charlie</Table.Cell>
+            <Table.Cell>
+              <NumericFormat style="currency" currency="EUR" value={200} />
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant="info">Shipped</Badge>
+            </Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
     </Panel.Content>
   </Panel>
 ));
