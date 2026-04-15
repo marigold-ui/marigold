@@ -22,6 +22,11 @@ class TokenRateLimiter {
   async acquire(text: string): Promise<void> {
     // Titan tokenizes ~1 token per 3.5 chars
     const tokens = Math.ceil(text.length / 3.5);
+    if (tokens > TPM_LIMIT) {
+      throw new Error(
+        `Single chunk requires ${tokens} tokens, exceeding TPM_LIMIT of ${TPM_LIMIT}.`
+      );
+    }
     for (;;) {
       const now = Date.now();
       this.window = this.window.filter(e => now - e.ts < 60_000);
@@ -39,9 +44,12 @@ class TokenRateLimiter {
 
 const rateLimiter = new TokenRateLimiter();
 
-if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+const AWS_BEDROCK_ACCESS_KEY_ID = process.env.AWS_BEDROCK_ACCESS_KEY_ID;
+const AWS_BEDROCK_SECRET_ACCESS_KEY = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY;
+
+if (!AWS_BEDROCK_ACCESS_KEY_ID || !AWS_BEDROCK_SECRET_ACCESS_KEY) {
   throw new Error(
-    'Missing AWS credentials. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.'
+    'Missing AWS credentials. Set AWS_BEDROCK_ACCESS_KEY_ID and AWS_BEDROCK_SECRET_ACCESS_KEY environment variables.'
   );
 }
 
@@ -51,7 +59,13 @@ if (!process.env.BLOB_READ_WRITE_TOKEN) {
   );
 }
 
-const client = new BedrockRuntimeClient({ region: 'eu-central-1' });
+const client = new BedrockRuntimeClient({
+  region: 'eu-central-1',
+  credentials: {
+    accessKeyId: AWS_BEDROCK_ACCESS_KEY_ID,
+    secretAccessKey: AWS_BEDROCK_SECRET_ACCESS_KEY,
+  },
+});
 
 async function getEmbedding(text: string, attempt = 0): Promise<string> {
   await rateLimiter.acquire(text);
@@ -76,12 +90,12 @@ async function getEmbedding(text: string, attempt = 0): Promise<string> {
   }
 }
 
-interface Chunk {
+type Chunk = {
   id: number;
   textForEmbedding: string;
   originalText: string;
   metadata: { file: string; heading: string };
-}
+};
 
 const chunks: Chunk[] = JSON.parse(fs.readFileSync(CHUNKS_FILE, 'utf-8'));
 
@@ -130,7 +144,7 @@ async function main() {
 
   console.log('Uploading embeddings to Vercel Blob...');
   const blob = await put('embeddings.json', json, {
-    access: 'public',
+    access: 'private',
     contentType: 'application/json',
     addRandomSuffix: false,
     allowOverwrite: true,
