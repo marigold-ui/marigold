@@ -11,7 +11,6 @@
     <filter id="raised" x="-4%" y="-4%" width="108%" height="116%">
       <feDropShadow dx="0" dy="0.3" stdDeviation="0.8" flood-color="#000" flood-opacity="0.28"/>
       <feDropShadow dx="0" dy="1.4" stdDeviation="1.3" flood-color="#000" flood-opacity="0.21"/>
-    <filter id="overlay" x="-8%" y="-8%" width="116%" height="124%">
     </filter>
     <filter id="border-shadow" x="-2%" y="-4%" width="104%" height="116%">
       <feDropShadow dx="0" dy="0.3" stdDeviation="0.3" flood-color="#000" flood-opacity="0.14"/>
@@ -23,14 +22,6 @@
       <feDropShadow dx="-0.1" dy="4" stdDeviation="3.6" flood-color="#000" flood-opacity="0.2"/>
       <feDropShadow dx="-0.2" dy="12" stdDeviation="10.8" flood-color="#000" flood-opacity="0.14"/>
     </filter>
-    <linearGradient id="btn-bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="oklch(0.22 0.008 54)"/>
-      <stop offset="100%" stop-color="oklch(0.15 0.008 54)"/>
-    </linearGradient>
-    <radialGradient id="btn-highlight" cx="50%" cy="-15%" r="80%" fx="50%" fy="-15%">
-      <stop offset="0%" stop-color="oklch(0.45 0.006 54)" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="oklch(0.15 0.008 54)" stop-opacity="0"/>
-    </radialGradient>
     <!-- Chevron down icon for select -->
     <path id="chevron" d="M0,0 L4,4 L8,0" fill="none" stroke="oklch(0.52 0.008 54)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </defs>
