@@ -7,8 +7,8 @@ export interface PanelCollapsibleContentProps {
   children: ReactNode;
   /**
    * Render the content edge-to-edge horizontally, skipping the Panel's
-   * horizontal padding. Vertical padding is preserved to maintain spacing
-   * between sections.
+   * horizontal padding. Useful for tables or media that should span the
+   * full width of the Panel.
    * @default false
    */
   bleed?: boolean;
@@ -22,11 +22,7 @@ export const PanelCollapsibleContent = ({
 
   return (
     <DisclosurePanel
-      className={cn(
-        'py-(--panel-py)',
-        !bleed && 'px-(--panel-px)',
-        classNames.collapsibleContent
-      )}
+      className={cn(!bleed && 'px-(--panel-px)', classNames.collapsibleContent)}
     >
       {children}
     </DisclosurePanel>

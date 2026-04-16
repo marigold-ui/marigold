@@ -29,10 +29,7 @@ export const PanelCollapsibleTrigger = ({
     <Heading level={level}>
       <Button
         slot="trigger"
-        className={cn(
-          'px-(--panel-px) py-(--panel-py)',
-          classNames.collapsibleTrigger
-        )}
+        className={cn('px-(--panel-px)', classNames.collapsibleTrigger)}
       >
         <span className="flex-1">{children}</span>
         <ChevronDown

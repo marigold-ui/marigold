@@ -4,8 +4,9 @@ import type {
   InsetSpacingTokens,
   PaddingSpacingTokens,
   SpaceProp,
+  SpacingTokens,
 } from '@marigold/system';
-import { createSpacingVar, useClassNames } from '@marigold/system';
+import { cn, createSpacingVar, useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PanelProvider } from './Context';
 import { PanelCollapsible } from './PanelCollapsible';
@@ -32,6 +33,11 @@ interface PanelBaseProps {
    * @default 2
    */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
+  /**
+   * Spacing between Panel sections (Header, Content, Footer, etc.).
+   * @default 'regular'
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
 }
 
 /**
@@ -65,6 +71,7 @@ export const Panel = ({
   children,
   'aria-label': ariaLabel,
   headingLevel = 2,
+  space = 'regular',
   p,
   px,
   py,
@@ -73,8 +80,9 @@ export const Panel = ({
   const classNames = useClassNames({ component: 'Panel', variant, size });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
-  const resolvedPx = px ?? p ?? 'square-regular';
-  const resolvedPy = py ?? p ?? 'square-regular';
+  const inset = p ?? 'square-regular';
+  const resolvedPx = px ?? `${inset}-x`;
+  const resolvedPy = py ?? `${inset}-y`;
 
   return (
     <PanelProvider
@@ -90,10 +98,14 @@ export const Panel = ({
       <section
         aria-labelledby={!ariaLabel ? titleId : undefined}
         aria-label={ariaLabel}
-        className={classNames.root}
+        className={cn(
+          'flex flex-col gap-y-(--panel-gap) pt-(--panel-py) pb-(--panel-py)',
+          classNames.root
+        )}
         style={{
           ...createSpacingVar('panel-px', `${resolvedPx}`),
           ...createSpacingVar('panel-py', `${resolvedPy}`),
+          ...createSpacingVar('panel-gap', `${space}`),
         }}
       >
         {children}

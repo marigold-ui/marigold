@@ -13,7 +13,7 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
     <div
       className={cn(
         "grid grid-cols-[1fr_auto] [grid-template-areas:'title_actions'_'description_actions']",
-        'px-(--panel-px) py-(--panel-py)',
+        'px-(--panel-px)',
         classNames.header
       )}
     >
