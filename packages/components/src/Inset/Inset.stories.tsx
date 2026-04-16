@@ -8,12 +8,16 @@ import { Text } from '../Text/Text';
 const meta = preview.meta({
   title: 'Components/Inset',
   component: Inset,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     space: {
       control: {
         type: 'select',
       },
       options: [
+        'none',
         'square-tight',
         'square-snug',
         'square-regular',
@@ -37,6 +41,7 @@ const meta = preview.meta({
         type: 'select',
       },
       options: [
+        'none',
         'padding-tight',
         'padding-snug',
         'padding-regular',
@@ -50,6 +55,7 @@ const meta = preview.meta({
         type: 'select',
       },
       options: [
+        'none',
         'padding-tight',
         'padding-snug',
         'padding-regular',

@@ -155,6 +155,19 @@ export const Selected = meta.story({
   },
 });
 
+export const BooleanFields = meta.story({
+  render: () => (
+    <Stack space={4}>
+      <Checkbox defaultChecked label="Accept Terms and Conditions" />
+      <Radio.Group defaultValue="email" label="Contact Preference">
+        <Radio value="email">Email</Radio>
+        <Radio value="phone">Phone</Radio>
+      </Radio.Group>
+      <Switch defaultSelected label="Enable Notifications" />
+    </Stack>
+  ),
+});
+
 const FormWithRef = () => {
   const formRef = useRef<HTMLFormElement>(null);
 

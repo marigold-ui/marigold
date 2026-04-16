@@ -18,6 +18,9 @@ const meta = preview.meta({
       </div>
     ),
   ],
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     disabled: {
       control: {

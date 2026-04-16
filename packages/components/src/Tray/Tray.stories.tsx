@@ -9,6 +9,7 @@ import { Tray } from './Tray';
 
 const meta = preview.meta({
   title: 'Components/Tray',
+  parameters: { surface: false },
   component: Tray,
   decorators: [
     Story => (

@@ -11,6 +11,9 @@ const meta = preview.meta({
 });
 
 export const BadgeVariants = meta.story({
+  parameters: {
+    surface: 'both',
+  },
   render: () => (
     <Stack space={2} alignX="left">
       <Badge variant="admin">Admin</Badge>

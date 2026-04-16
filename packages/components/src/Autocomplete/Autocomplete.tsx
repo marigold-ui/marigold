@@ -4,7 +4,7 @@ import {
   Ref,
   RefAttributes,
   forwardRef,
-  useContext,
+  use,
 } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
@@ -56,7 +56,7 @@ const AutocompleteInput = ({
   ref,
   autoFocus,
 }: AutocompleteInputProps) => {
-  const state = useContext(ComboBoxStateContext);
+  const state = use(ComboBoxStateContext);
   // needed to get the triggerwidth on the right button
   const classNames = useClassNames({ component: 'ComboBox' });
 

@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import type { PropsWithChildren } from 'react';
 
 export interface CollapsibleContextProps {
@@ -20,7 +20,7 @@ export const CollapsibleProvider = ({
 );
 
 export const useCollapsibleContext = () => {
-  const ctx = useContext(CollapsibleContext);
+  const ctx = use(CollapsibleContext);
   if (!ctx) {
     throw new Error(
       'useCollapsibleContext must be used within a CollapsibleProvider'

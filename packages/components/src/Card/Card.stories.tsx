@@ -5,6 +5,9 @@ import { Card } from './Card';
 const meta = preview.meta({
   title: 'Components/Card',
   component: Card,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     variant: {
       control: {

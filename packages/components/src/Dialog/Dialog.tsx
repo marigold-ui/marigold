@@ -3,7 +3,7 @@ import {
   Ref,
   RefAttributes,
   forwardRef,
-  useContext,
+  use,
 } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
@@ -32,7 +32,7 @@ const InnerDialog = forwardRef(
     { variant, size, closeButton, ...props }: InnerDialogProps,
     ref: Ref<HTMLElement> | undefined
   ) => {
-    const state = useContext(OverlayTriggerStateContext);
+    const state = use(OverlayTriggerStateContext);
     const classNames = useClassNames({
       component: 'Dialog',
       variant,
@@ -98,7 +98,7 @@ const _Dialog = forwardRef(
     { open, onOpenChange, children, ...props }: DialogProps,
     ref: Ref<HTMLElement> | undefined
   ) => {
-    const ctx = useContext(DialogContext);
+    const ctx = use(DialogContext);
 
     return (
       <Modal

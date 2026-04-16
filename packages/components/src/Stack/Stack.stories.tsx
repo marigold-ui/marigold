@@ -11,12 +11,15 @@ import { Stack } from './Stack';
 const meta = preview.meta({
   title: 'Components/Stack',
   component: Stack,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     space: {
       control: {
         type: 'select',
       },
-      options: ['tight', 'related', 'regular', 'group', 'section'],
+      options: ['none', 'tight', 'related', 'regular', 'group', 'section'],
       description: 'Responsive Style Value',
     },
     alignX: {

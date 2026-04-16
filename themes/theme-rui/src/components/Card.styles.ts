@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Card: ThemeComponent<'Card'> = {
   container: cva({
-    base: 'rounded-md shadow-elevation-raised overflow-hidden',
+    base: 'rounded-md shadow-elevation-raised',
     variants: {
       variant: {
         default: 'ui-surface',
