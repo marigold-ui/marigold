@@ -126,7 +126,7 @@ const _Calendar = ({
 
   if (isMultiMonth) {
     return (
-      <CalendarContext.Provider
+      <CalendarContext
         value={{
           classNames,
           visibleMonths,
@@ -156,12 +156,12 @@ const _Calendar = ({
             ))}
           </div>
         </Calendar>
-      </CalendarContext.Provider>
+      </CalendarContext>
     );
   }
 
   return (
-    <CalendarContext.Provider
+    <CalendarContext
       value={{
         classNames,
         visibleMonths,
@@ -219,7 +219,7 @@ const _Calendar = ({
           <CalendarGrid />
         </div>
       </Calendar>
-    </CalendarContext.Provider>
+    </CalendarContext>
   );
 };
 

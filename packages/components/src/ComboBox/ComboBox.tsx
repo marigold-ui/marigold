@@ -1,11 +1,6 @@
-import type {
-  ForwardRefExoticComponent,
-  ReactNode,
-  RefAttributes,
-} from 'react';
-import { forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { ComboBox } from 'react-aria-components';
+import { ComboBox as RACComboBox } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
@@ -105,99 +100,76 @@ export interface ComboBoxProps
   loading?: boolean;
 }
 
-interface ComboBoxComponent extends ForwardRefExoticComponent<
-  ComboBoxProps & RefAttributes<HTMLInputElement>
-> {
-  /**
-   * Options for the Combobox.
-   */
-  Option: typeof ListBox.Item;
-
-  /**
-   * Section for the Combobox, to put options in.
-   */
-  Section: typeof ListBox.Section;
-}
-
 // Component
 // ---------------
-const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
-  (
-    {
-      variant,
-      size,
-      required,
-      disabled,
-      readOnly,
-      error,
-      defaultValue,
-      value,
-      emptyState,
-      onChange,
-      children,
-      loading,
-      ...rest
-    },
-    ref
-  ) => {
-    const props: RAC.ComboBoxProps<any> = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isRequired: required,
-      isInvalid: error,
-      defaultInputValue: defaultValue,
-      inputValue: value,
-      onInputChange: onChange,
-      ...rest,
-    };
+const ComboBoxBase = ({
+  variant,
+  size,
+  required,
+  disabled,
+  readOnly,
+  error,
+  defaultValue,
+  value,
+  emptyState,
+  onChange,
+  children,
+  loading,
+  ref,
+  ...rest
+}: ComboBoxProps & { ref?: Ref<HTMLInputElement> }) => {
+  const props: RAC.ComboBoxProps<any> = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isRequired: required,
+    isInvalid: error,
+    defaultInputValue: defaultValue,
+    inputValue: value,
+    onInputChange: onChange,
+    ...rest,
+  };
 
-    const classNames = useClassNames({ component: 'ComboBox', variant, size });
-    const stringFormatter = useLocalizedStringFormatter(intlMessages);
-    const isSmallScreen = useSmallScreen();
+  const classNames = useClassNames({ component: 'ComboBox', variant, size });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const isSmallScreen = useSmallScreen();
 
-    return (
-      <FieldBase as={ComboBox} ref={ref} {...props}>
-        {isSmallScreen ? (
-          <MobileComboBox
-            placeholder={rest.placeholder}
-            label={rest.label}
-            emptyState={emptyState}
-          >
-            {children}
-          </MobileComboBox>
-        ) : (
-          <>
-            <Input
-              action={
-                <IconButton className={classNames.icon}>
-                  {loading ? (
-                    <ProgressCircle />
-                  ) : (
-                    <ChevronsVertical size="16" />
-                  )}
-                </IconButton>
+  return (
+    <FieldBase as={RACComboBox} ref={ref} {...props}>
+      {isSmallScreen ? (
+        <MobileComboBox
+          placeholder={rest.placeholder}
+          label={rest.label}
+          emptyState={emptyState}
+        >
+          {children}
+        </MobileComboBox>
+      ) : (
+        <>
+          <Input
+            action={
+              <IconButton className={classNames.icon}>
+                {loading ? <ProgressCircle /> : <ChevronsVertical size="16" />}
+              </IconButton>
+            }
+          />
+          <Popover>
+            <ListBox
+              virtualized
+              renderEmptyState={() =>
+                emptyState ?? (
+                  <Center>{stringFormatter.format('noResultsFound')}</Center>
+                )
               }
-            />
-            <Popover>
-              <ListBox
-                virtualized
-                renderEmptyState={() =>
-                  emptyState ?? (
-                    <Center>{stringFormatter.format('noResultsFound')}</Center>
-                  )
-                }
-              >
-                {children}
-              </ListBox>
-            </Popover>
-          </>
-        )}
-      </FieldBase>
-    );
-  }
-) as ComboBoxComponent;
-
-_ComboBox.Option = ListBox.Item;
-_ComboBox.Section = ListBox.Section;
-
-export { _ComboBox as ComboBox };
+            >
+              {children}
+            </ListBox>
+          </Popover>
+        </>
+      )}
+    </FieldBase>
+  );
+};
+export const ComboBox = Object.assign(ComboBoxBase, {
+  Option: ListBox.Item,
+  Section: ListBox.Section,
+});

@@ -182,10 +182,10 @@ const _RadioGroup = ({
             : 'flex-row gap-[1.5ch]'
         )}
       >
-        <RadioGroupContext.Provider value={{ width, variant, size }}>
+        <RadioGroupContext value={{ width, variant, size }}>
           {visibleChildren}
           <CollapsibleGroup>{collapsedChildren}</CollapsibleGroup>
-        </RadioGroupContext.Provider>
+        </RadioGroupContext>
       </div>
     </FieldBase>
   );

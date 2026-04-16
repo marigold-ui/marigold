@@ -87,15 +87,11 @@ export const Tray = ({
   // If we are in a hidden tree, we still need to preserve our children.
   // This is important for components like Select that need to maintain state context.
   if (isHidden) {
-    return (
-      <TrayContext.Provider value={{ classNames }}>
-        {children}
-      </TrayContext.Provider>
-    );
+    return <TrayContext value={{ classNames }}>{children}</TrayContext>;
   }
 
   return (
-    <TrayContext.Provider value={{ classNames }}>
+    <TrayContext value={{ classNames }}>
       <TrayModal
         open={openState}
         dismissable={dismissable}
@@ -113,7 +109,7 @@ export const Tray = ({
           {children}
         </Dialog>
       </TrayModal>
-    </TrayContext.Provider>
+    </TrayContext>
   );
 };
 
