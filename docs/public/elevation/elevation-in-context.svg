@@ -11,7 +11,7 @@
     <filter id="raised" x="-4%" y="-4%" width="108%" height="116%">
       <feDropShadow dx="0" dy="0.3" stdDeviation="0.8" flood-color="#000" flood-opacity="0.28"/>
       <feDropShadow dx="0" dy="1.4" stdDeviation="1.3" flood-color="#000" flood-opacity="0.21"/>
-      <feDropShadow dx="0" dy="6.7" stdDeviation="6" flood-color="#000" flood-opacity="0.15"/>
+    <filter id="overlay" x="-8%" y="-8%" width="116%" height="124%">
     </filter>
     <filter id="border-shadow" x="-2%" y="-4%" width="104%" height="116%">
       <feDropShadow dx="0" dy="0.3" stdDeviation="0.3" flood-color="#000" flood-opacity="0.14"/>
