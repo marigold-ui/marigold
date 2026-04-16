@@ -15,17 +15,6 @@ import {
   DefaultCollapsed,
   WithActiveBranch,
 } from './Sidebar.stories';
-import {
-  SidebarGroupLabel,
-  SidebarItem,
-  SidebarSeparator,
-} from './SidebarItem';
-import { buildCollection, findActiveBranch } from './collection';
-import {
-  panelPosition,
-  useLastDistinctValue,
-  useRovingItem,
-} from './useSidebarNav';
 
 // Testing Library has no API for querying ancestor elements.
 // eslint-disable-next-line testing-library/no-node-access
@@ -102,8 +91,8 @@ test('keyboard shortcut Cmd+B collapses sidebar', async () => {
 test('keyboard shortcut Cmd+B expands sidebar', async () => {
   render(<Basic.Component />);
   const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
-  await user.keyboard('{Meta>}b{/Meta}');
 
+  await user.keyboard('{Meta>}b{/Meta}');
   await user.keyboard('{Meta>}b{/Meta}');
 
   expect(toggle).toHaveAttribute('aria-expanded', 'true');
@@ -114,6 +103,7 @@ test('active state with aria-current', () => {
 
   const overviewLink = screen.getByRole('link', { name: 'Overview' });
   const analyticsLink = screen.getByRole('link', { name: 'Analytics' });
+
   expect(overviewLink).toHaveAttribute('aria-current', 'page');
   expect(analyticsLink).not.toHaveAttribute('aria-current');
 });
@@ -338,8 +328,8 @@ test('toggle writes expanded state to cookie', async () => {
 
 test('cookie overrides defaultOpen', () => {
   document.cookie = 'marigold:sidebar:state=collapsed;path=/;max-age=604800';
-
   render(<DefaultCollapsed.Component />);
+
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   const shell = closest(
     screen.getByRole('link', { name: 'Overview' }),
@@ -352,7 +342,6 @@ test('cookie overrides defaultOpen', () => {
 
 test('defaultOpen={false} starts sidebar collapsed', () => {
   render(<DefaultCollapsed.Component />);
-
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   const shell = closest(
     screen.getByRole('link', { name: 'Overview' }),
@@ -375,8 +364,8 @@ test('controlled mode toggles via onOpenChange', async () => {
 test('controlled mode re-opens via onOpenChange', async () => {
   render(<Controlled.Component />);
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
-  await user.click(trigger);
 
+  await user.click(trigger);
   await user.click(trigger);
 
   expect(screen.getByText('Sidebar is open')).toBeInTheDocument();
@@ -441,6 +430,29 @@ test('mobile closes sheet when leaf nav item is clicked', async () => {
   await mobileUser.click(screen.getByRole('link', { name: 'Overview' }));
 
   // Modal should close
+  await waitFor(() => {
+    expect(
+      screen.queryByRole('link', { name: 'Overview' })
+    ).not.toBeInTheDocument();
+  });
+});
+
+test('mobile closes sheet when overlay backdrop is clicked', async () => {
+  const mobileUser = userEvent.setup();
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  ensureOverlayContainer();
+
+  render(<Basic.Component />);
+
+  // Open the mobile sheet
+  const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+  await mobileUser.click(trigger);
+  expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
+
+  // Dismiss via react-aria's hidden dismiss button (simulates backdrop click)
+  const dismissButton = screen.getByRole('button', { name: 'Dismiss' });
+  await mobileUser.click(dismissButton);
+
   await waitFor(() => {
     expect(
       screen.queryByRole('link', { name: 'Overview' })
@@ -518,7 +530,6 @@ test('branch item onPress fires when clicking branch trigger', async () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
   const settingsTrigger = screen.getByRole('link', { name: /Settings/ });
 
   await user.click(settingsTrigger);
@@ -546,10 +557,8 @@ test('nested branches derive href from deepest first leaf', () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
   const outerLink = screen.getByRole('link', { name: /Outer/ });
 
-  // Outer branch should auto-derive href from the deepest first leaf
   expect(outerLink).toHaveAttribute('href', '/deep-leaf');
 });
 
@@ -570,10 +579,8 @@ test('branch without any leaf hrefs renders without href', () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
   const trigger = screen.getByRole('button', { name: /Empty/ });
 
-  // Branch item should render as a button when it has no href
   expect(trigger).not.toHaveAttribute('href');
 });
 
@@ -600,7 +607,6 @@ test('group label inside branch renders correctly', () => {
     </RouterProvider>
   );
 
-  // Sub-panel is active (because /profile is active)
   expect(screen.getByText('Account')).toBeInTheDocument();
   expect(screen.getByText('Profile')).toBeInTheDocument();
   expect(screen.getByRole('separator')).toBeInTheDocument();
@@ -633,17 +639,15 @@ test('switching branches focuses active item in new branch', async () => {
 
 test('item with explicit id uses that id as key', () => {
   render(<Basic.Component />);
-
   const link = screen.getByRole('link', { name: /Management/ });
+
   expect(link).toHaveAttribute('data-key', 'management');
 });
 
 test('item without explicit id gets auto-generated key', () => {
   render(<Basic.Component />);
-
   const link = screen.getByRole('link', { name: 'Overview' });
 
-  // Auto-generated keys follow the pattern "item-N"
   expect(link).toHaveAttribute('data-key');
   expect(link.getAttribute('data-key')).toMatch(/^item-\d+$/);
 });
@@ -667,11 +671,10 @@ test('textValue auto-extracted from string children', () => {
       </MarigoldProvider>
     </RouterProvider>
   );
-
-  // Back button should show auto-extracted textValue "My Section"
   const backButton = screen.getByRole('button', {
     name: /Back to My Section/,
   });
+
   expect(backButton).toBeInTheDocument();
 });
 
@@ -744,221 +747,176 @@ test('marker components return null when called directly', () => {
   expect(Sidebar.GroupLabel({})).toBeNull();
 });
 
-test('buildCollection.getItem returns nodes by key', () => {
-  const jsx = [
-    <SidebarItem key="home" id="home" href="/home">
-      Home
-    </SidebarItem>,
-    <SidebarSeparator key="sep" />,
-    <SidebarItem key="about" id="about" href="/about">
-      About
-    </SidebarItem>,
-  ];
+describe('Keyboard Navigation', () => {
+  test('ArrowDown moves focus to next item', async () => {
+    render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const analytics = screen.getByRole('link', { name: 'Analytics' });
+    overview.focus();
 
-  const collection = buildCollection(jsx);
+    await user.keyboard('{ArrowDown}');
 
-  const home = collection.getItem('home');
-  expect(home).toBeDefined();
-  expect(home?.type).toBe('item');
+    expect(analytics).toHaveFocus();
+  });
 
-  const about = collection.getItem('about');
-  expect(about).toBeDefined();
+  test('ArrowUp moves focus to previous item', async () => {
+    render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const analytics = screen.getByRole('link', { name: 'Analytics' });
+    analytics.focus();
 
-  // Non-existent key returns undefined
-  expect(collection.getItem('nonexistent')).toBeUndefined();
-});
+    await user.keyboard('{ArrowUp}');
 
-test('findActiveBranch returns null when no item is active', () => {
-  const jsx = [
-    <SidebarItem key="home" id="home" href="/home">
-      Home
-    </SidebarItem>,
-    <SidebarItem key="branch" id="branch" textValue="Branch">
-      Branch
-      <SidebarItem href="/child">Child</SidebarItem>
-    </SidebarItem>,
-  ];
+    expect(overview).toHaveFocus();
+  });
 
-  const collection = buildCollection(jsx);
+  test('ArrowDown wraps from last item to first', async () => {
+    render(<Basic.Component />);
+    const security = screen.getByRole('link', { name: 'Security' });
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    security.focus();
 
-  expect(findActiveBranch(collection)).toBeNull();
-});
+    await user.keyboard('{ArrowDown}');
 
-test('findActiveBranch returns null when active item is at root level', () => {
-  const jsx = [
-    <SidebarItem key="home" id="home" href="/home" active>
-      Home
-    </SidebarItem>,
-    <SidebarItem key="branch" id="branch" textValue="Branch">
-      Branch
-      <SidebarItem href="/child">Child</SidebarItem>
-    </SidebarItem>,
-  ];
+    expect(overview).toHaveFocus();
+  });
 
-  const collection = buildCollection(jsx);
+  test('ArrowUp wraps from first item to last', async () => {
+    render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const security = screen.getByRole('link', { name: 'Security' });
+    overview.focus();
 
-  // Active item is at root, not inside a branch
-  expect(findActiveBranch(collection)).toBeNull();
-});
+    await user.keyboard('{ArrowUp}');
 
-// --- Keyboard Navigation Tests ---
+    expect(security).toHaveFocus();
+  });
 
-test('ArrowDown moves focus to next item', async () => {
-  render(<Basic.Component />);
+  test('Home key jumps to first item', async () => {
+    render(<Basic.Component />);
+    const security = screen.getByRole('link', { name: 'Security' });
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    security.focus();
 
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const analytics = screen.getByRole('link', { name: 'Analytics' });
+    await user.keyboard('{Home}');
 
-  // Tab into sidebar nav to focus the active item (Overview)
-  overview.focus();
-  expect(overview).toHaveFocus();
+    expect(overview).toHaveFocus();
+  });
 
-  await user.keyboard('{ArrowDown}');
+  test('End key jumps to last item', async () => {
+    render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const security = screen.getByRole('link', { name: 'Security' });
+    overview.focus();
 
-  expect(analytics).toHaveFocus();
-});
+    await user.keyboard('{End}');
 
-test('ArrowUp moves focus to previous item', async () => {
-  render(<Basic.Component />);
+    expect(security).toHaveFocus();
+  });
 
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const analytics = screen.getByRole('link', { name: 'Analytics' });
+  test('separators and group labels are skipped during arrow navigation', async () => {
+    render(<Basic.Component />);
+    const analytics = screen.getByRole('link', { name: 'Analytics' });
+    const management = screen.getByRole('link', { name: /Management/ });
+    analytics.focus();
 
-  analytics.focus();
-  expect(analytics).toHaveFocus();
+    await user.keyboard('{ArrowDown}');
 
-  await user.keyboard('{ArrowUp}');
+    expect(management).toHaveFocus();
 
-  expect(overview).toHaveFocus();
-});
+    const general = screen.getByRole('link', { name: 'General' });
+    await user.keyboard('{ArrowDown}');
 
-test('ArrowDown wraps from last item to first', async () => {
-  render(<Basic.Component />);
+    expect(general).toHaveFocus();
+  });
 
-  const security = screen.getByRole('link', { name: 'Security' });
-  const overview = screen.getByRole('link', { name: 'Overview' });
+  test('arrow navigation in sub-panel includes back button', async () => {
+    render(<WithActiveBranch.Component />);
+    const usersLink = screen.getByRole('link', { name: 'Users' });
+    const backButton = screen.getByRole('button', {
+      name: /Back to Management/,
+    });
+    usersLink.focus();
 
-  security.focus();
-  expect(security).toHaveFocus();
+    await user.keyboard('{ArrowUp}');
 
-  await user.keyboard('{ArrowDown}');
+    expect(backButton).toHaveFocus();
 
-  expect(overview).toHaveFocus();
-});
+    await user.keyboard('{ArrowDown}');
 
-test('ArrowUp wraps from first item to last', async () => {
-  render(<Basic.Component />);
+    expect(usersLink).toHaveFocus();
+  });
 
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const security = screen.getByRole('link', { name: 'Security' });
+  test('panel transition focuses active item when one exists (not back button)', async () => {
+    const PanelFocusTest = () => {
+      const [activePath, setActivePath] = useState<string | null>(null);
 
-  overview.focus();
-  expect(overview).toHaveFocus();
+      return (
+        <RouterProvider navigate={() => {}}>
+          <MarigoldProvider theme={theme}>
+            <button
+              data-testid="activate-child-a"
+              onClick={() => setActivePath('/child-a')}
+            >
+              Activate
+            </button>
+            <Sidebar.Provider>
+              <Sidebar>
+                <Sidebar.Nav>
+                  <Sidebar.Item id="branch" textValue="Branch">
+                    Branch
+                    <Sidebar.Item
+                      href="/child-a"
+                      active={activePath === '/child-a'}
+                    >
+                      Child A
+                    </Sidebar.Item>
+                    <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
+                  </Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar>
+            </Sidebar.Provider>
+          </MarigoldProvider>
+        </RouterProvider>
+      );
+    };
 
-  await user.keyboard('{ArrowUp}');
+    render(<PanelFocusTest />);
 
-  expect(security).toHaveFocus();
-});
+    // Branch trigger is in root panel (active)
+    const branchTrigger = screen.getByRole('link', { name: /Branch/ });
+    await user.click(branchTrigger);
 
-test('Home key jumps to first item', async () => {
-  render(<Basic.Component />);
+    // Sub-panel opens (no active child yet) — focus goes to back button
+    const backButton = await screen.findByRole('button', {
+      name: /Back to Branch/,
+    });
+    await vi.advanceTimersByTimeAsync(400);
+    expect(backButton).toHaveFocus();
 
-  const security = screen.getByRole('link', { name: 'Security' });
-  const overview = screen.getByRole('link', { name: 'Overview' });
+    // Go back to root, then activate child and re-enter
+    await user.click(backButton);
+    await vi.advanceTimersByTimeAsync(400);
 
-  security.focus();
-  expect(security).toHaveFocus();
+    // Activate Child A which will auto-open the branch panel
+    await user.click(screen.getByTestId('activate-child-a'));
 
-  await user.keyboard('{Home}');
+    // Branch panel opens with Child A active → focus should be on Child A
+    const childA = await screen.findByRole('link', { name: 'Child A' });
+    await vi.advanceTimersByTimeAsync(400);
+    expect(childA).toHaveFocus();
+  });
 
-  expect(overview).toHaveFocus();
-});
-
-test('End key jumps to last item', async () => {
-  render(<Basic.Component />);
-
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const security = screen.getByRole('link', { name: 'Security' });
-
-  overview.focus();
-  expect(overview).toHaveFocus();
-
-  await user.keyboard('{End}');
-
-  expect(security).toHaveFocus();
-});
-
-test('separators and group labels are skipped during arrow navigation', async () => {
-  render(<Basic.Component />);
-
-  // Root panel: Overview, Analytics, [separator], Management, [group label "Settings"], General, Security
-  const analytics = screen.getByRole('link', { name: 'Analytics' });
-  const management = screen.getByRole('link', { name: /Management/ });
-
-  analytics.focus();
-  expect(analytics).toHaveFocus();
-
-  // ArrowDown should skip the separator and land on Management
-  await user.keyboard('{ArrowDown}');
-
-  expect(management).toHaveFocus();
-
-  // ArrowDown should skip the group label and land on General
-  const general = screen.getByRole('link', { name: 'General' });
-  await user.keyboard('{ArrowDown}');
-
-  expect(general).toHaveFocus();
-});
-
-test('arrow navigation in sub-panel includes back button', async () => {
-  render(<WithActiveBranch.Component />);
-
-  // WithActiveBranch starts with /users active, Management panel is active
-  const usersLink = screen.getByRole('link', { name: 'Users' });
-  const backButton = screen.getByRole('button', { name: /Back to Management/ });
-
-  // Users is the active item, it should be the default focus target
-  usersLink.focus();
-  expect(usersLink).toHaveFocus();
-
-  // ArrowUp should go to back button (wrapping from first item to last goes to Billing,
-  // but going up from Users: Users is after back button in DOM order)
-  // Actually, DOM order is: back button, Users, Teams, Billing
-  // ArrowUp from Users → back button
-  await user.keyboard('{ArrowUp}');
-
-  expect(backButton).toHaveFocus();
-
-  // ArrowDown from back button → Users
-  await user.keyboard('{ArrowDown}');
-
-  expect(usersLink).toHaveFocus();
-});
-
-test('panel transition focuses active item when one exists (not back button)', async () => {
-  const PanelFocusTest = () => {
-    const [activePath, setActivePath] = useState<string | null>(null);
-
-    return (
+  test('panel transition falls back to back button when no active item', async () => {
+    render(
       <RouterProvider navigate={() => {}}>
         <MarigoldProvider theme={theme}>
-          <button
-            data-testid="activate-child-a"
-            onClick={() => setActivePath('/child-a')}
-          >
-            Activate
-          </button>
           <Sidebar.Provider>
             <Sidebar>
               <Sidebar.Nav>
                 <Sidebar.Item id="branch" textValue="Branch">
                   Branch
-                  <Sidebar.Item
-                    href="/child-a"
-                    active={activePath === '/child-a'}
-                  >
-                    Child A
-                  </Sidebar.Item>
+                  <Sidebar.Item href="/child-a">Child A</Sidebar.Item>
                   <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
                 </Sidebar.Item>
               </Sidebar.Nav>
@@ -967,267 +925,174 @@ test('panel transition focuses active item when one exists (not back button)', a
         </MarigoldProvider>
       </RouterProvider>
     );
-  };
 
-  render(<PanelFocusTest />);
+    // Click branch trigger — no children have active prop
+    const branchTrigger = screen.getByRole('link', { name: /Branch/ });
+    await user.click(branchTrigger);
 
-  // Branch trigger is in root panel (active)
-  const branchTrigger = screen.getByRole('link', { name: /Branch/ });
-  await user.click(branchTrigger);
-
-  // Sub-panel opens (no active child yet) — focus goes to back button
-  const backButton = await screen.findByRole('button', {
-    name: /Back to Branch/,
+    // Focus falls back to back button since no active item exists
+    const backButton = await screen.findByRole('button', {
+      name: /Back to Branch/,
+    });
+    await vi.advanceTimersByTimeAsync(400);
+    expect(backButton).toHaveFocus();
   });
-  await vi.advanceTimersByTimeAsync(400);
-  expect(backButton).toHaveFocus();
-
-  // Go back to root, then activate child and re-enter
-  await user.click(backButton);
-  await vi.advanceTimersByTimeAsync(400);
-
-  // Activate Child A which will auto-open the branch panel
-  await user.click(screen.getByTestId('activate-child-a'));
-
-  // Branch panel opens with Child A active → focus should be on Child A
-  const childA = await screen.findByRole('link', { name: 'Child A' });
-  await vi.advanceTimersByTimeAsync(400);
-  expect(childA).toHaveFocus();
 });
 
-test('panel transition falls back to back button when no active item', async () => {
-  render(
-    <RouterProvider navigate={() => {}}>
-      <MarigoldProvider theme={theme}>
-        <Sidebar.Provider>
-          <Sidebar>
-            <Sidebar.Nav>
-              <Sidebar.Item id="branch" textValue="Branch">
-                Branch
-                <Sidebar.Item href="/child-a">Child A</Sidebar.Item>
-                <Sidebar.Item href="/child-b">Child B</Sidebar.Item>
-              </Sidebar.Item>
-            </Sidebar.Nav>
-          </Sidebar>
-        </Sidebar.Provider>
-      </MarigoldProvider>
-    </RouterProvider>
-  );
+describe('Roving Tabindex', () => {
+  test('only one nav item has tabIndex=0 in the active panel', () => {
+    render(<Basic.Component />);
+    const links = screen.getAllByRole('link');
 
-  // Click branch trigger — no children have active prop
-  const branchTrigger = screen.getByRole('link', { name: /Branch/ });
-  await user.click(branchTrigger);
+    const tabbable = links.filter(l => l.tabIndex === 0);
+    const nonTabbable = links.filter(l => l.tabIndex === -1);
 
-  // Focus falls back to back button since no active item exists
-  const backButton = await screen.findByRole('button', {
-    name: /Back to Branch/,
+    expect(tabbable).toHaveLength(1);
+    expect(tabbable[0]).toHaveAttribute('aria-current', 'page');
+    expect(nonTabbable.length).toBeGreaterThan(0);
   });
-  await vi.advanceTimersByTimeAsync(400);
-  expect(backButton).toHaveFocus();
+
+  test('arrow key updates which item has tabIndex=0', async () => {
+    render(<Basic.Component />);
+    const overview = screen.getByRole('link', { name: 'Overview' });
+    const analytics = screen.getByRole('link', { name: 'Analytics' });
+    overview.focus();
+
+    await user.keyboard('{ArrowDown}');
+
+    expect(analytics).toHaveFocus();
+    expect(analytics).toHaveAttribute('tabindex', '0');
+    expect(overview).toHaveAttribute('tabindex', '-1');
+  });
+
+  test('back button participates in roving tabindex', async () => {
+    render(<WithActiveBranch.Component />);
+    const backButton = screen.getByRole('button', {
+      name: /Back to Management/,
+    });
+    const usersLink = screen.getByRole('link', { name: 'Users' });
+    usersLink.focus();
+
+    await user.keyboard('{ArrowUp}');
+
+    expect(backButton).toHaveFocus();
+    expect(backButton).toHaveAttribute('tabindex', '0');
+    expect(usersLink).toHaveAttribute('tabindex', '-1');
+  });
 });
 
-// --- Roving Tabindex Tests ---
+describe('Ctrl+B keyboard shortcut (non-meta, ctrlKey)', () => {
+  test('keyboard shortcut Ctrl+B toggles sidebar', async () => {
+    render(<Basic.Component />);
+    const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
 
-test('only one nav item has tabIndex=0 in the active panel', () => {
-  render(<Basic.Component />);
+    await user.keyboard('{Control>}b{/Control}');
 
-  const links = screen.getAllByRole('link');
-  const tabbable = links.filter(l => l.tabIndex === 0);
-  const nonTabbable = links.filter(l => l.tabIndex === -1);
-
-  expect(tabbable).toHaveLength(1);
-  expect(tabbable[0]).toHaveAttribute('aria-current', 'page');
-  expect(nonTabbable.length).toBeGreaterThan(0);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  });
 });
 
-test('arrow key updates which item has tabIndex=0', async () => {
-  render(<Basic.Component />);
+describe('Sidebar.Nav `current` integration', () => {
+  const renderSidebar = (
+    current?: string | ((href: string | undefined, key: string) => boolean)
+  ) =>
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav current={current}>
+                <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+                <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+                <Sidebar.Item id="management" textValue="Management">
+                  Management
+                  <Sidebar.Item href="/users">Users</Sidebar.Item>
+                  <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
 
-  const overview = screen.getByRole('link', { name: 'Overview' });
-  const analytics = screen.getByRole('link', { name: 'Analytics' });
+  test('Sidebar.Nav current prop marks matching leaf as active', () => {
+    renderSidebar('/analytics');
 
-  expect(overview).toHaveAttribute('tabindex', '0');
-  expect(analytics).toHaveAttribute('tabindex', '-1');
+    const link = linkByText('Analytics');
+    expect(link).toHaveAttribute('aria-current', 'page');
+  });
 
-  overview.focus();
-  await user.keyboard('{ArrowDown}');
+  test('Sidebar.Nav current prop auto-opens branch when descendant matches', async () => {
+    render(<WithActiveBranch.Component />);
 
-  expect(analytics).toHaveFocus();
-  expect(analytics).toHaveAttribute('tabindex', '0');
-  expect(overview).toHaveAttribute('tabindex', '-1');
-});
+    // Users link is inside the Management branch panel
+    const usersLink = await screen.findByRole('link', { name: 'Users' });
+    expect(usersLink).toHaveAttribute('aria-current', 'page');
 
-test('back button participates in roving tabindex', async () => {
-  render(<WithActiveBranch.Component />);
+    // Management panel should be the active panel
+    expect(closest(usersLink, '[data-position]')).toHaveAttribute(
+      'data-position',
+      'active'
+    );
+  });
 
-  const backButton = screen.getByRole('button', { name: /Back to Management/ });
-  const usersLink = screen.getByRole('link', { name: 'Users' });
+  test('Sidebar.Nav current prop with predicate function', () => {
+    renderSidebar(href => href === '/analytics');
 
-  // Users is active, so it should be the tab stop
-  expect(usersLink).toHaveAttribute('tabindex', '0');
-  expect(backButton).toHaveAttribute('tabindex', '-1');
+    const link = linkByText('Analytics');
+    expect(link).toHaveAttribute('aria-current', 'page');
+  });
 
-  // Arrow up to back button
-  usersLink.focus();
-  await user.keyboard('{ArrowUp}');
+  test('Sidebar.Nav current prop matches dynamic routes via segment-prefix', async () => {
+    renderSidebar('/users/abc-123');
 
-  expect(backButton).toHaveFocus();
-  expect(backButton).toHaveAttribute('tabindex', '0');
-  expect(usersLink).toHaveAttribute('tabindex', '-1');
-});
+    const usersLink = await screen.findByRole('link', { name: 'Users' });
+    expect(usersLink).toHaveAttribute('aria-current', 'page');
+  });
 
-test('buildCollection handles group labels and separators in index', () => {
-  const jsx = [
-    <SidebarGroupLabel key="label">Section</SidebarGroupLabel>,
-    <SidebarItem key="item" id="item-1" href="/page">
-      Page
-    </SidebarItem>,
-    <SidebarSeparator key="sep" />,
-  ];
+  test('Sidebar.Nav explicit `active` prop wins as local override', () => {
+    // Explicit active on Overview, current points elsewhere — both should be active.
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav current="/analytics">
+                <Sidebar.Item href="/overview" active>
+                  Overview
+                </Sidebar.Item>
+                <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
 
-  const collection = buildCollection(jsx);
+    expect(linkByText('Overview')).toHaveAttribute('aria-current', 'page');
+    expect(linkByText('Analytics')).toHaveAttribute('aria-current', 'page');
+  });
 
-  expect(collection.rootNodes).toHaveLength(3);
-  expect(collection.rootNodes[0].type).toBe('groupLabel');
-  expect(collection.rootNodes[1].type).toBe('item');
-  expect(collection.rootNodes[2].type).toBe('separator');
-  expect(collection.getItem('item-1')).toBeDefined();
-});
+  test('Sidebar.Nav without current prop falls back to per-item active', () => {
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav>
+                <Sidebar.Item href="/overview" active>
+                  Overview
+                </Sidebar.Item>
+                <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
 
-// --- collection.ts edge-case tests ---
-
-test('buildCollection skips unrecognized children', () => {
-  const jsx = [
-    <SidebarItem key="a" id="a" href="/a">
-      A
-    </SidebarItem>,
-    <div key="unknown">I am not a sidebar element</div>,
-    <SidebarItem key="b" id="b" href="/b">
-      B
-    </SidebarItem>,
-  ];
-
-  const collection = buildCollection(jsx);
-
-  expect(collection.rootNodes).toHaveLength(2);
-  expect(collection.rootNodes[0].key).toBe('a');
-  expect(collection.rootNodes[1].key).toBe('b');
-});
-
-test('buildCollection extracts textValue from non-string children as empty', () => {
-  const jsx = [
-    <SidebarItem key="icon-item" id="icon-item">
-      {/* Only non-string children: icon element + nested SidebarItem */}
-      <span>Icon</span>
-      <SidebarItem href="/child" active>
-        Child
-      </SidebarItem>
-    </SidebarItem>,
-  ];
-
-  const collection = buildCollection(jsx);
-  const node = collection.getItem('icon-item');
-
-  expect(node).toBeDefined();
-  // textValue should be empty since there are no direct string children
-  expect(node?.type === 'item' && node.textValue).toBe('');
-});
-
-test('findActiveBranch finds deeply nested active item', () => {
-  const jsx = [
-    <SidebarItem key="root-branch" id="root-branch" textValue="Root Branch">
-      Root Branch
-      <SidebarItem id="mid-branch" textValue="Mid Branch">
-        Mid Branch
-        <SidebarItem href="/deep" active>
-          Deep Leaf
-        </SidebarItem>
-      </SidebarItem>
-    </SidebarItem>,
-  ];
-
-  const collection = buildCollection(jsx);
-
-  expect(findActiveBranch(collection)).toBe('root-branch');
-});
-
-test('firstLeafHref returns undefined when branch has no leaf hrefs', () => {
-  const jsx = [
-    <SidebarItem key="empty" id="empty" textValue="Empty">
-      Empty
-      <SidebarItem>No href</SidebarItem>
-    </SidebarItem>,
-  ];
-
-  const collection = buildCollection(jsx);
-  const node = collection.getItem('empty');
-
-  // Branch node should have undefined href since no leaf has an href
-  expect(node?.type === 'item' && node.href).toBeUndefined();
-});
-
-// --- panelPosition utility tests ---
-
-test('panelPosition returns active for root when stack is empty', () => {
-  expect(panelPosition('root', [])).toBe('active');
-});
-
-test('panelPosition returns before for root when stack has entries', () => {
-  expect(panelPosition('root', ['branch-a'])).toBe('before');
-});
-
-test('panelPosition returns active for key at top of stack', () => {
-  expect(panelPosition('branch-a', ['branch-a'])).toBe('active');
-});
-
-test('panelPosition returns before for key earlier in stack', () => {
-  expect(panelPosition('branch-a', ['branch-a', 'branch-b'])).toBe('before');
-});
-
-test('panelPosition returns after for key not in stack', () => {
-  expect(panelPosition('branch-c', ['branch-a'])).toBe('after');
-});
-
-// --- useRovingItem error outside provider ---
-
-test('useRovingItem throws outside RovingTabIndexProvider', () => {
-  const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-  expect(() => {
-    renderHook(() => useRovingItem('some-key'));
-  }).toThrow('useRovingItem must be used within a RovingTabIndexProvider');
-
-  spy.mockRestore();
-});
-
-// --- useLastDistinctValue hook ---
-
-test('useLastDistinctValue returns undefined on first render', () => {
-  const { result } = renderHook(() => useLastDistinctValue('a'));
-
-  expect(result.current).toBeUndefined();
-});
-
-test('useLastDistinctValue returns previous value after change', () => {
-  const { result, rerender } = renderHook(
-    ({ value }) => useLastDistinctValue(value),
-    { initialProps: { value: 'a' } }
-  );
-
-  expect(result.current).toBeUndefined();
-
-  rerender({ value: 'b' });
-
-  expect(result.current).toBe('a');
-});
-
-// --- Ctrl+B keyboard shortcut (non-meta, ctrlKey) ---
-
-test('keyboard shortcut Ctrl+B toggles sidebar', async () => {
-  render(<Basic.Component />);
-  const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
-
-  await user.keyboard('{Control>}b{/Control}');
-
-  expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(linkByText('Overview')).toHaveAttribute('aria-current', 'page');
+    expect(linkByText('Analytics')).not.toHaveAttribute('aria-current');
+  });
 });

@@ -4,7 +4,7 @@ import { Card, Headline, Inline, Inset, Text } from '@marigold/components';
 export default () => {
   return (
     <Card>
-      <Inset spaceX={4} spaceY={8}>
+      <Inset spaceX="padding-regular" spaceY="padding-snug">
         <Headline level={3}>{venues[0].name}</Headline>
         <Inline>
           <Text fontStyle="italic">

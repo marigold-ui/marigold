@@ -14,8 +14,9 @@ const meta = preview.meta({
   argTypes: {
     space: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: ['tight', 'related', 'regular', 'group', 'section'],
       table: {
         type: { summary: 'text' },
         defaultValue: { summary: 'undefined' },
@@ -56,7 +57,7 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   args: {
-    space: 2,
+    space: 'related',
     alignX: 'left',
   },
   render: args => (

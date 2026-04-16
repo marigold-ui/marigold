@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "17.3.1",
+  "version": "17.4.0",
   "private": true,
   "scripts": {
     "build": "pnpm run build:registry && pnpm run build:changelog && next build",
@@ -32,7 +32,7 @@
     "fumadocs-ui": "16.6.5",
     "lucide-react": "^1.7.0",
     "motion": "12.34.3",
-    "next": "16.1.7",
+    "next": "16.2.3",
     "nuqs": "2.8.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
