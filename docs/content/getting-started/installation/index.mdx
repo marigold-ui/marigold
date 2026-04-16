@@ -3,150 +3,126 @@ title: Installation
 description: How to setup and get started with Marigold.
 ---
 
-To integrate Marigold into your React app, follow the steps outlined below. Marigold provides a wide range of pre-designed UI components. However, Marigold's components come with no styling by default. To ensure a perfect fit with your product's appearance, you must also install one of the predefined themes.
+Marigold requires two packages: a core component library and a theme. Components ship unstyled — the theme provides all visual styling.
 
-Please bear in mind that certain steps may vary depending on your specific setup. You can find examples for the most common setups down below.
-
-<Callout title="Good to know!">
-  Experience Marigold right away by trying it out in our [interactive
-  playground](https://play.marigold-ui.io/)!
+<Callout title="Want to try it first?">
+  Use our [interactive playground](https://play.marigold-ui.io/) to explore
+  Marigold without any setup.
 </Callout>
 
-## Installation
+## Install packages
 
-Begin by instaling the core Marigold package (`@marigold/components`) into your app using your preferred package manager. This package is always required, regardless of the theme you choose to apply later.
+Install the component library, the system package, and the RUI theme:
 
-Execute the following command in your project's directory:
+<Tabs items={['npm', 'pnpm']}>
+  <Tab value="npm">
+    ```bash npm install @marigold/components @marigold/system
+    @marigold/theme-rui ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash pnpm add @marigold/components @marigold/system @marigold/theme-rui
+    ```
+  </Tab>
+</Tabs>
 
-```bash
-npm install @marigold/components --save
-```
+Marigold also provides an additional package you can install as needed:
 
-## Tooling
+- `@marigold/icons` — A set of ready-to-use icon components
 
-Marigold effortlessly integrates with popular bundlers such as [webpack](https://webpack.js.org/), [rollup](https://rollupjs.org/), [esbuild](https://esbuild.github.io/), and [vite](https://vitejs.dev/), as well as frameworks like [Next.js](https://nextjs.org/), without requiring any additional configurations.
+If you use TypeScript, set [`moduleResolution`](https://www.typescriptlang.org/tsconfig#moduleResolution) to `"nodenext"` in your `tsconfig.json` — the theme packages use ESM exports.
 
-That being said, we strongly recommend adhering to the guidance provided by the React Team. If you are creating a new app or a site entirely with React, it is advisable to use a framework. You can find more details about this recommendation in the [React
-docs](https://react.dev/learn/start-a-new-react-project).
+## Set up the provider
 
-Furthermore, if you are using TypeScript, ensure that you add `@types/react` and `@types/react-dom` to your project. Marigold's components are fully typed, enabling you to benefit from static type checking and IDE autocomplete features for enhanced development efficiency.
+Wrap your app with `MarigoldProvider` and pass it the theme. This is required for all components to render correctly.
 
-## Bootstrapping
+How you load the CSS depends on whether you use Tailwind CSS or not. Pick one of the two approaches below.
 
-To set up Marigold in your project, you have two options based on the scale and needs of your app. Regardless of the chosen setup, it is essential to add the `<MarigoldProvider>` to your application's root. This ensures that components can access the theme and apply their corresponding styles.
+### Quick start (pre-built CSS)
 
-### Using the provided CSS file
+Import the pre-built CSS file that ships with the theme. This is the fastest way to get started but does not allow customization beyond the provided design tokens.
 
-The easiest way to start is by using the provided CSS file that comes with each theme. While this method allows for a quick start, it does not offer customization options beyond using the provided design tokens. This setup is sufficient for smaller and simpler applications.
-
-{/* prettier-ignore-start */}
 ```jsx
-/**
- * 1. Import the CSS file and theme
- */
+import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
 import '@marigold/theme-rui/styles.css';
 
-/**
- * 2. Import the MarigoldProvider
- */
-import { MarigoldProvider } from '@marigold/components';
-
-/**
- * 3. Wrap your app into the MarigoldProvider
- *    and pass it the selected theme
- */
 export const App = () => (
-  <MarigoldProvider theme={theme}>{/* Your App */}}</MarigoldProvider>
+  <MarigoldProvider theme={theme}>{/* Your App */}</MarigoldProvider>
 );
 ```
-{/* prettier-ignore-end */}
 
-### Using Tailwind CSS
+You also need to add `data-theme="rui"` to your `<html>` element so the theme styles are applied correctly:
 
-However, if you want to maximize the benefits of Marigold, you should install Tailwind CSS alongside Marigold. This combination not only enables customization and extension of the selected theme but also allows you to take full advantage of Tailwind's features while staying true to our design system.
+```html
+<html data-theme="rui">
+  ...
+</html>
+```
 
-To set up Tailwind CSS, please refer to the official [installation guide](https://tailwindcss.com/docs/installation). Once you have completed the installation, you should create a CSS file with the following informations:
+### With Tailwind CSS (recommended)
 
-    {/* prettier-ignore */}
+Using Tailwind CSS alongside Marigold lets you customize and extend the theme and use Tailwind utilities throughout your app.
 
-    ```css
-    @import 'tailwindcss';
+First, install Tailwind CSS. Follow the official [installation guide](https://tailwindcss.com/docs/installation) for your setup. Then create a CSS file (e.g. `styles.css`) with the following content:
 
-    /* Import the theme from Marigold */
-    @import '../node_modules/@marigold/theme-rui/theme.css';
+```css
+@import 'tailwindcss';
+@import '@marigold/theme-rui/theme.css';
 
+/* You need to add the path to the marigold packages */
+@source '../node_modules/@marigold';
+```
 
-    /* You need to add the path to the marigold packages */
-    @source '../node_modules/@marigold/components';
-    /* If Tailwind does not automatically detect classnames, dont forget to add the glob for your app here */
-    @source '../path/to/your/app';
+<Callout title="Next.js">
+  In Next.js projects the CSS file typically lives in `app/`, which is one level
+  deeper. Use `../../node_modules/@marigold` instead.
+</Callout>
 
-    ```
+Make sure to import this CSS file in your app's entry point (e.g. your root layout or main file).
 
-If you are using `Vite` you also need to add the `tailwindcss` plugin to your `vite.config.ts`, you can find all installation steps in the [tailwind documentation](https://tailwindcss.com/docs/installation/using-vite).
+**Vite**: Add the `@tailwindcss/vite` plugin to your `vite.config.ts`. See the [Tailwind Vite guide](https://tailwindcss.com/docs/installation/using-vite).
 
-When you have a `Next.js` or other framework based application make sure that you have a `postcss.config.js` file with the following content in your project:
+**Next.js / PostCSS**: Install `@tailwindcss/postcss` and create a `postcss.config.mjs`:
 
 ```js
-module.exports = {
+export default {
   plugins: {
-    tailwindcss(),
+    '@tailwindcss/postcss': {},
   },
 };
 ```
 
-<Callout title="TypeScript Configuration">
-  If you are using TypeScript, make sure to set the [module
-  resolution](https://www.typescriptlang.org/tsconfig#moduleResolution) to
-  `'nodenext'` since the theme packages are using ESM.
-</Callout>
+Then wrap your app with the provider — no separate CSS import needed since Tailwind generates it for you:
 
-After configuring Tailwind CSS, wrap your app with the MarigoldProvider. Unlike before, you no longer have to import the CSS file of the selected theme separately you only need to import your own created CSS file in the project.
-
-Tailwind CSS will automatically generate the required CSS for you. However, remember to import the generated CSS file somewhere in your project. Depending on your setup, this is typically done in the root file where you bootstrap React or, in case of Next.js in our root [layout file](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts).
-
+{/* prettier-ignore-start */}
 ```jsx
-/**
- * 1. Import the CSS file and theme
- */
-/**
- * 2. Import the MarigoldProvider
- */
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
 
-/**
- * 3. Wrap your app into the MarigoldProvider
- *    and pass it the selected theme
- */
 export const App = () => (
-  <MarigoldProvider theme={theme}>{/* Your App */}}</MarigoldProvider>
+  <MarigoldProvider theme={theme}>{/* Your App */}</MarigoldProvider>
 );
 ```
+{/* prettier-ignore-end */}
 
-### Adding fonts
+## Adding fonts
 
-The RUI theme is designed to utilize custom web fonts. To incorporate these fonts, you have two options:
+The RUI theme uses the [Inter](https://rsms.me/inter/) font family. You have two options:
 
-1. Use [Font Source](https://fontsource.org/) to add them.
-2. If you are using Next.js, take advantage of `next/font`, which not only takes care of loading the font but also optimizes the used fonts. You can find more information on loading custom web fonts in Next.js [here](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts).
-
-To load the Inter font with Font Source when using with the RUI theme, you can follow the steps below:
-
-First, add the font as a dependency to your project:
+**Using [Font Source](https://fontsource.org/docs/getting-started/install):**
 
 ```bash
-npm install @fontsource-variable/inter --save
+npm install @fontsource-variable/inter
 ```
 
-Afterwards, import the package into your project.
+Then import it in your app's entry point:
 
 ```js
-// Supports weights 100-900
 import '@fontsource-variable/inter';
 ```
 
+**Using Next.js:** Take advantage of [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) for automatic font optimization.
+
 ## Next steps
 
-Now that you've bootstrapped your app, you can dive into the documentation to [explore the available components](/components/overview) in detail. Additionally, you can read about our principles to understand the driving factors behind our decisions and the constraints associated with our approach.
+Explore the [available components](/components/application/provider) or read about our [component principles](/foundations/component-principles) to understand the design decisions behind Marigold.
