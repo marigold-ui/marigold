@@ -1,8 +1,7 @@
-import { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
-export const Deal = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
-  <SVG {...props} viewBox="0 0 24 24" ref={ref}>
+export const Deal = (props: SVGProps) => (
+  <SVG {...props} viewBox="0 0 24 24">
     <mask
       id="mask0"
       maskUnits="userSpaceOnUse"
@@ -18,4 +17,4 @@ export const Deal = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
       <path d="M24 0H0V24H24V0Z" />
     </g>
   </SVG>
-));
+);

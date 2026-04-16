@@ -1,12 +1,10 @@
-import {
-  ForwardRefExoticComponent,
-  Ref,
-  RefAttributes,
-  forwardRef,
-  useContext,
-} from 'react';
+import type { Ref } from 'react';
+import { use } from 'react';
 import type RAC from 'react-aria-components';
-import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
+import {
+  OverlayTriggerStateContext,
+  Dialog as RACDialog,
+} from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Modal, ModalProps } from '../Overlay/Modal';
@@ -27,46 +25,47 @@ type InnerDialogProps = Pick<
  * Needed so that the close button and function can be used inside the dialog,
  * when the dialog is controlled and no <Dialog.Trigger> is used.
  */
-const InnerDialog = forwardRef(
-  (
-    { variant, size, closeButton, ...props }: InnerDialogProps,
-    ref: Ref<HTMLElement> | undefined
-  ) => {
-    const state = useContext(OverlayTriggerStateContext);
-    const classNames = useClassNames({
-      component: 'Dialog',
-      variant,
-      size,
-    });
+const InnerDialog = ({
+  variant,
+  size,
+  closeButton,
+  ref,
+  ...props
+}: InnerDialogProps & { ref?: Ref<HTMLElement> }) => {
+  const state = use(OverlayTriggerStateContext);
+  const classNames = useClassNames({
+    component: 'Dialog',
+    variant,
+    size,
+  });
 
-    const children =
-      typeof props.children === 'function'
-        ? props.children({
-            close: state?.close ?? (() => {}),
-          })
-        : props.children;
+  const children =
+    typeof props.children === 'function'
+      ? props.children({
+          close: state?.close ?? (() => {}),
+        })
+      : props.children;
 
-    return (
-      <Dialog
-        {...props}
-        ref={ref}
-        className={cn(
-          'relative mx-auto max-h-[80vh] max-w-[90vw] outline-hidden',
-          "grid [grid-template-areas:'title'_'content'_'actions']",
-          classNames.container
-        )}
-      >
-        {closeButton && (
-          <CloseButton
-            className={classNames.closeButton}
-            onPress={state?.close}
-          />
-        )}
-        {children}
-      </Dialog>
-    );
-  }
-);
+  return (
+    <RACDialog
+      {...props}
+      ref={ref}
+      className={cn(
+        'relative mx-auto max-h-[80vh] max-w-[90vw] outline-hidden',
+        "grid [grid-template-areas:'title'_'content'_'actions']",
+        classNames.container
+      )}
+    >
+      {closeButton && (
+        <CloseButton
+          className={classNames.closeButton}
+          onPress={state?.close}
+        />
+      )}
+      {children}
+    </RACDialog>
+  );
+};
 
 // Props
 // ---------------
@@ -82,43 +81,35 @@ export interface DialogProps
   closeButton?: boolean;
 }
 
-interface DialogComponent extends ForwardRefExoticComponent<
-  DialogProps & RefAttributes<HTMLInputElement>
-> {
-  Trigger: typeof DialogTrigger;
-  Title: typeof DialogTitle;
-  Content: typeof DialogContent;
-  Actions: typeof DialogActions;
-}
-
 // Component
 // ---------------
-const _Dialog = forwardRef(
-  (
-    { open, onOpenChange, children, ...props }: DialogProps,
-    ref: Ref<HTMLElement> | undefined
-  ) => {
-    const ctx = useContext(DialogContext);
+const DialogBase = ({
+  open,
+  onOpenChange,
+  children,
+  ref,
+  ...props
+}: DialogProps & { ref?: Ref<HTMLElement> }) => {
+  const ctx = use(DialogContext);
 
-    return (
-      <Modal
-        size={props.size}
-        dismissable={ctx.isDismissable}
-        keyboardDismissable={ctx.isKeyboardDismissDisabled}
-        open={typeof open === 'boolean' ? open : undefined}
-        onOpenChange={onOpenChange}
-      >
-        <InnerDialog ref={ref} {...props}>
-          {children}
-        </InnerDialog>
-      </Modal>
-    );
-  }
-) as DialogComponent;
+  return (
+    <Modal
+      size={props.size}
+      dismissable={ctx.isDismissable}
+      keyboardDismissable={ctx.isKeyboardDismissDisabled}
+      open={typeof open === 'boolean' ? open : undefined}
+      onOpenChange={onOpenChange}
+    >
+      <InnerDialog ref={ref} {...props}>
+        {children}
+      </InnerDialog>
+    </Modal>
+  );
+};
 
-_Dialog.Trigger = DialogTrigger;
-_Dialog.Title = DialogTitle;
-_Dialog.Content = DialogContent;
-_Dialog.Actions = DialogActions;
-
-export { _Dialog as Dialog };
+export const Dialog = Object.assign(DialogBase, {
+  Trigger: DialogTrigger,
+  Title: DialogTitle,
+  Content: DialogContent,
+  Actions: DialogActions,
+});

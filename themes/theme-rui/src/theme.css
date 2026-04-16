@@ -4,24 +4,22 @@
 /* custom variants */
 @import './variants.css';
 
-/*
-    - create tokens if we think:
-        - it is necessary for a component
-        - it can be used by other teams (if they build their own component)
-*/
-
-/*
- think about leaving `-background` for token values, because e.g. border-destructive, or 
- text-destructive like used in inputs
-*/
-
 @plugin 'tailwindcss-react-aria-components';
 
 @theme static {
+  /* ====================== */
+  /*       TYPOGRAPHY       */
+  /* ====================== */
+
   --font-sans: Inter, system-ui, sans-serif;
   --font-sans-variable: InterVariable, Inter, system-ui, sans-serif;
 
-  /* orange (use for accent) */
+  /* ====================== */
+  /*     COLOR PALETTES     */
+  /* ====================== */
+  /* Raw color scales. Semantic tokens below reference these. */
+
+  /* orange */
   --color-orange-50: #fff9ed;
   --color-orange-100: #fff1d5;
   --color-orange-200: #fedfaa;
@@ -34,196 +32,191 @@
   --color-orange-900: #7c3712;
   --color-orange-950: #431a07;
 
-  --color-background: var(--color-white);
-  --color-foreground: var(--color-stone-950);
+  /* warm charcoal (warm neutral, hue 54) */
+  --color-charcoal-50: oklch(0.985 0.002 54);
+  --color-charcoal-100: oklch(0.965 0.003 54);
+  --color-charcoal-200: oklch(0.92 0.004 54);
+  --color-charcoal-300: oklch(0.86 0.005 54);
+  --color-charcoal-400: oklch(0.74 0.006 54);
+  --color-charcoal-500: oklch(0.62 0.007 54);
+  --color-charcoal-600: oklch(0.52 0.008 54);
+  --color-charcoal-700: oklch(0.42 0.008 54);
+  --color-charcoal-800: oklch(0.32 0.008 54);
+  --color-charcoal-900: oklch(0.22 0.008 54);
+  --color-charcoal-950: oklch(0.15 0.008 54);
 
-  /* stone (use for brand) */
-  --color-brand: var(--color-stone-950);
-  --color-brand-foreground: var(--color-stone-50);
+  /* high-contrast obsidian (warm neutral, hue 54, wider contrast range) */
+  --color-obsidian-50: oklch(0.99 0.002 54);
+  --color-obsidian-100: oklch(0.97 0.003 54);
+  --color-obsidian-200: oklch(0.94 0.004 54);
+  --color-obsidian-300: oklch(0.88 0.005 54);
+  --color-obsidian-400: oklch(0.75 0.005 54);
+  --color-obsidian-500: oklch(0.6 0.006 54);
+  --color-obsidian-600: oklch(0.45 0.006 54);
+  --color-obsidian-700: oklch(0.32 0.006 54);
+  --color-obsidian-800: oklch(0.2 0.006 54);
+  --color-obsidian-900: oklch(0.12 0.006 54);
+  --color-obsidian-950: oklch(0.08 0.006 54);
 
-  /* used for hovering (e.g. calendar, button) */
-  --color-hover: var(--color-stone-100);
-  --color-hover-foreground: var(--color-stone-900);
+  /* ====================== */
+  /*    SEMANTIC COLORS     */
+  /* ====================== */
+  /* To switch palette, change the charcoal references below. */
 
-  /* stone (use for secondary) */
-  --color-secondary: var(--color-stone-50);
-  --color-secondary-foreground: var(--color-stone-950);
+  /*
+    Palette step mapping (charcoal, background = step 100):
 
-  /* accent colors used for highlighting certain parts of components */
-
-  /* used for errormessage, button */
-  --color-destructive: var(--color-red-600);
-  --color-destructive-foreground: var(--color-white);
-
-  /* muted variant of destructive for badge */
-  --color-destructive-muted-accent: var(--color-red-600);
-  --color-destructive-muted: var(--color-red-100);
-  --color-destructive-muted-foreground: var(--color-red-950);
-
-  /* used for success elements, like icons */
-  --color-success: var(--color-green-500);
-  --color-success-foreground: var(--color-white);
-
-  /* muted variant of success token, used in badge */
-  --color-success-muted-accent: var(--color-green-600);
-  --color-success-muted: var(--color-green-100);
-  --color-success-muted-foreground: var(--color-green-950);
-
-  /* used for warning elements, like icons */
-  --color-warning: var(--color-yellow-400);
-  --color-warning-foreground: var(--color-white);
-
-  /* muted variant of warning token, used in badge */
-  --color-warning-muted-accent: var(--color-yellow-600);
-  --color-warning-muted: var(--color-yellow-100);
-  --color-warning-muted-foreground: var(--color-yellow-950);
-
-  /* used for info elements, like icons */
-  --color-info: var(--color-blue-500);
-  --color-info-foreground: var(--color-white);
-
-  /* muted variant of info token, used in badge */
-  --color-info-muted-accent: var(--color-blue-600);
-  --color-info-muted: var(--color-blue-100);
-  --color-info-muted-foreground: var(--color-blue-950);
-
-  /* visible hints for access control (master- and admin-mark) */
-  --color-access-master: var(--color-orange-100);
-  --color-access-master-foreground: var(--color-orange-500);
-
-  --color-access-admin: var(--color-purple-100);
-  --color-access-admin-foreground: var(--color-purple-800);
-
-  /* 
-    muted colors are desaturated colors of the brand color,
-    they help create hierarchy for secondary text. 
-    Currently used for: helptext, icons inside inputs, readonly background inside inputs, variant for text 
+    50  -- muted bg (subtle tint on white surfaces), primary-foreground
+    100 -- background bg, focus-highlight bg
+    200 -- hover bg, disabled-surface bg
+    300 -- control fill, selected bg, borders, scrollbar
+    400 -- disabled (text)
+    600 -- focus ring, secondary (text), placeholder
+    900 -- primary text
+    950 -- primary action, scrollbar hover
   */
-  --color-muted: var(--color-stone-100);
-  --color-muted-foreground: var(--color-stone-600);
 
-  --color-disabled: var(--color-stone-200);
-  --color-disabled-foreground: var(--color-stone-500);
+  /* --- Page Background & Text --- */
+  --color-background: var(--color-charcoal-100);
+  --color-foreground: var(--color-charcoal-900);
+  --color-secondary: var(--color-charcoal-600);
+  --color-placeholder: var(--color-charcoal-600);
 
-  /* used for placeholder color */
-  --color-placeholder: var(--color-stone-600);
-  /* used for outline/border as ring*/
-  --color-ring: var(--color-stone-400);
+  /* --- Primary --- */
+  --color-primary: var(--color-charcoal-900);
+  --color-primary-foreground: var(--color-charcoal-50);
 
-  /* used for link */
+  /* --- Neutral Backgrounds & States --- */
+  --color-muted: var(--color-charcoal-50);
+  --color-control: var(--color-charcoal-300);
+  --color-hover: var(--color-charcoal-200);
+
+  --color-selected: var(--color-charcoal-300);
+  --color-selected-bold: var(--color-charcoal-900);
+  --color-selected-bold-foreground: var(--color-charcoal-50);
+  --color-focus-highlight: var(--color-charcoal-100);
+  --color-focus-highlight-bold: var(--color-charcoal-300);
+
+  /* --- Disabled --- */
+  --color-disabled: var(--color-charcoal-400);
+  --color-disabled-surface: var(--color-charcoal-200);
+
+  /* --- Form Controls --- */
+  --color-border: var(--color-charcoal-300);
+  --color-ring: var(--color-charcoal-600);
+
+  /* --- Status: Destructive --- */
+  --color-destructive: var(--color-red-100);
+  --color-destructive-foreground: var(--color-red-950);
+  --color-destructive-accent: var(--color-red-600);
+  --color-destructive-bold: var(--color-red-600);
+  --color-destructive-bold-foreground: var(--color-white);
+
+  /* --- Status: Success --- */
+  --color-success: var(--color-green-100);
+  --color-success-foreground: var(--color-green-950);
+  --color-success-accent: var(--color-green-600);
+
+  /* --- Status: Warning --- */
+  --color-warning: var(--color-yellow-100);
+  --color-warning-foreground: var(--color-yellow-950);
+  --color-warning-accent: var(--color-yellow-700);
+
+  /* --- Status: Info --- */
+  --color-info: var(--color-blue-100);
+  --color-info-foreground: var(--color-blue-950);
+  --color-info-accent: var(--color-blue-600);
+
+  /* --- Access Control --- */
+  --color-access-master: var(--color-orange-100);
+  --color-access-master-foreground: var(--color-orange-800);
+  --color-access-master-accent: var(--color-orange-700);
+  --color-access-admin: var(--color-purple-100);
+  --color-access-admin-foreground: var(--color-purple-900);
+  --color-access-admin-accent: var(--color-purple-800);
+
+  /* --- Links --- */
   --color-link: var(--color-blue-600);
 
-  /* Input tokens */
-  /* color input used for inputs as border or e.g. in switch as bg track color */
-  --color-input: var(--color-stone-300);
+  /* --- Overlay Backdrop --- */
+  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 70%);
 
-  --color-border: var(--color-stone-200);
-
-  /* Focus color is used for focusing an element (e.g. segment on Datefield)*/
-  --color-focus: var(--color-stone-100);
-
-  /* Selected color is used when there is an active selection in the component */
-  --color-selected: var(--color-stone-100);
-
-  --color-scrollbar: var(--color-stone-300);
-  --color-scrollbar-hover: var(--color-stone-950);
+  /* --- Scrollbar --- */
+  --color-scrollbar: var(--color-charcoal-300);
+  --color-scrollbar-hover: var(--color-charcoal-950);
   --color-scrollbar-track: transparent;
 
   /* ==================== */
   /*        SURFACE       */
   /* ==================== */
   --color-surface: var(--color-white);
-  --color-surface-border: var(--color-stone-300);
   --radius-surface: var(--radius-lg);
 
   /* ==================== */
   /*       ELEVATION      */
   /* ==================== */
-  /* Based on https://www.joshwcomeau.com/shadow-palette/ */
   /*
-    Three-tier shadow hierarchy:
-      - border:  small interactive controls (Input, Checkbox, Radio, Switch, Tag, Button)
-      - raised:  container surfaces (Card, Accordion)
-      - overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
+    Three-tier shadow hierarchy (https://www.joshwcomeau.com/shadow-palette/):
+      border:  small interactive controls (Input, Checkbox, Radio, Switch, Tag, Button)
+      raised:  container surfaces (Card, Accordion)
+      overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
   */
-
-  /* Border elevation - subtle shadow */
   --shadow-elevation-border:
     0px 0.3px 0.3px oklch(0 0 0 / 0.14), 0px 1px 1.2px -3px oklch(0 0 0 / 0.12);
 
-  /* Raised elevation - moderate shadow  */
   --shadow-elevation-raised:
     0px 0.3px 0.8px oklch(0 0 0 / 0.28),
     0px 1.4px 1.3px -2px oklch(0 0 0 / 0.21),
     0px 6.7px 6px -4px oklch(0 0 0 / 0.15);
 
-  /* Overlay elevation - prominent shadow */
   --shadow-elevation-overlay:
     0px 0.1px 0.1px oklch(0 0 0 / 0.32),
     0px 1px 0.9px -1.3px oklch(0 0 0 / 0.26),
     -0.1px 4px 3.6px -2.7px oklch(0 0 0 / 0.2),
     -0.2px 12px 10.8px -4px oklch(0 0 0 / 0.14);
 
-  /* ---- OLD (to be removed when updating docs) --- */
-
-  --surface-sunken: var(--color-muted);
-  --surface-sunken-shadow: 0 0 #0000;
-
-  --surface-body: var(--color-background);
-  --surface-body-shadow: 0 0 #0000;
-
-  --surface-raised: var(--color-background);
-  --surface-raised-shadow: var(--shadow-xs);
-  --surface-raised-border: var(--color-input);
-
-  --surface-overlay: var(--color-background);
-  --surface-overlay-shadow: var(--shadow-lg);
-  --surface-overlay-border: var(--color-input);
-
   /* ==================== */
   /*        SPACING       */
   /* ==================== */
 
-  /* TODO: Rename them to "component"? */
-  /* component height for input elements */
-  --spacing-input: 2.25rem;
-  /* component height for button elements */
-  --spacing-button: 2.25rem;
-  --spacing-button-small: 2rem;
-  --spacing-button-large: 2.5rem;
-
+  /* Component heights */
+  --spacing-control: 2.25rem;
+  --spacing-control-small: 2rem;
+  --spacing-control-large: 2.5rem;
   --spacing-container: 50rem;
 
-  /* RELATIONAL SPACING */
+  /* Universal: no spacing (works for gap, padding, and inset recipes) */
+  --spacing-none: --spacing(0);
 
+  /* Relational spacing */
   --spacing-tight: --spacing(1.5);
   --spacing-related: --spacing(2);
   --spacing-regular: --spacing(6);
   --spacing-group: --spacing(12);
   --spacing-section: --spacing(24);
 
-  /* PADDING SPACING */
-
+  /* Padding spacing */
   --spacing-padding-tight: --spacing(1);
   --spacing-padding-snug: --spacing(2);
   --spacing-padding-regular: --spacing(3);
   --spacing-padding-relaxed: --spacing(4);
   --spacing-padding-loose: --spacing(6);
 
-  /* INSET SPACING */
-
+  /* Inset spacing: square (equal padding) */
   --spacing-square-tight: --spacing(1);
   --spacing-square-snug: --spacing(2);
   --spacing-square-regular: --spacing(3);
   --spacing-square-relaxed: --spacing(4);
   --spacing-square-loose: --spacing(6);
 
+  /* Inset spacing: squish (more horizontal than vertical) */
   --spacing-squish-tight: --spacing(1) --spacing(2);
   --spacing-squish-snug: --spacing(1.5) --spacing(2);
   --spacing-squish-regular: --spacing(2) --spacing(3);
   --spacing-squish-relaxed: --spacing(2) --spacing(4);
   --spacing-squish-loose: --spacing(4) --spacing(6);
 
+  /* Inset spacing: stretch (more vertical than horizontal) */
   --spacing-stretch-tight: --spacing(2) --spacing(1);
   --spacing-stretch-snug: --spacing(2) --spacing(1.5);
   --spacing-stretch-regular: --spacing(3) --spacing(2);
@@ -233,7 +226,8 @@
   /* ==================== */
   /*       ANIMATION      */
   /* ==================== */
-  /* easing functions (https://gist.github.com/bendc/ac03faac0bf2aee25b49e5fd260a727d)*/
+
+  /* Easing (https://gist.github.com/bendc/ac03faac0bf2aee25b49e5fd260a727d) */
   --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
   --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -255,6 +249,7 @@
   --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
   --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
 
+  /* Fade */
   --fade-in-duration: 0.3s;
   --fade-out-duration: 0.2s;
 
@@ -285,7 +280,7 @@
     }
   }
 
-  /* ActionBar enter/exit */
+  /* Directional slides (Drawer, Sidebar, Tray) */
   --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
   --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
 
@@ -311,7 +306,6 @@
     }
   }
 
-  /* animation slide in right*/
   --slide-in-duration: 0.3s;
   --slide-out-duration: 0.15s;
 
@@ -330,7 +324,6 @@
     }
   }
 
-  /* animation slide in left*/
   --animate-slide-in-left: slide-in-left var(--slide-in-duration)
     var(--ease-out-expo);
   --animate-slide-out-left: slide-in-left var(--slide-out-duration) reverse
@@ -346,7 +339,6 @@
     }
   }
 
-  /* animation slide in top*/
   --animate-slide-in-top: slide-in-top var(--slide-in-duration)
     var(--ease-out-expo);
   --animate-slide-out-top: slide-in-top var(--slide-out-duration) reverse
@@ -362,7 +354,6 @@
     }
   }
 
-  /* animation slide in bottom*/
   --animate-slide-in-bottom: slide-in-bottom var(--slide-in-duration)
     var(--ease-out-expo);
   --animate-slide-out-bottom: slide-in-bottom var(--slide-out-duration) reverse
@@ -378,7 +369,7 @@
     }
   }
 
-  /* animation and keyframes */
+  /* Spinner & progress */
   --animate-rotate-spinner: rotate-spinner 2s linear infinite;
   --animate-progress-cycle: progress-cycle 1.5s linear infinite;
 

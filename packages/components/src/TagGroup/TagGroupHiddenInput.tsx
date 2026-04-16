@@ -1,11 +1,11 @@
-import { useContext } from 'react';
+import { use } from 'react';
 import { ListStateContext } from 'react-aria-components';
 
 export interface TagGroupHiddenInputProps {
   name: string;
 }
 export const TagGroupHiddenInput = ({ name }: TagGroupHiddenInputProps) => {
-  const state = useContext(ListStateContext);
+  const state = use(ListStateContext);
   const selectedKeys = Array.from(state?.selectionManager.selectedKeys ?? []);
 
   if (!selectedKeys.length) return null;
