@@ -67,33 +67,19 @@ const ShellLayout = ({ children }: PropsWithChildren) => {
                 </Text>
               </Inline>
             </Sidebar.Header>
-            <Sidebar.Nav>
-              <Sidebar.Item href="/" active={slug === ''}>
-                Dashboard
-              </Sidebar.Item>
-              <Sidebar.Item href="/analytics" active={slug === 'analytics'}>
-                Analytics
-              </Sidebar.Item>
+            <Sidebar.Nav current={pathname.replace(BASE, '') || '/'}>
+              <Sidebar.Item href="/">Dashboard</Sidebar.Item>
+              <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
               <Sidebar.Separator />
               <Sidebar.Item id="management" textValue="Management">
                 Management
-                <Sidebar.Item href="/users" active={slug === 'users'}>
-                  Users
-                </Sidebar.Item>
-                <Sidebar.Item href="/teams" active={slug === 'teams'}>
-                  Teams
-                </Sidebar.Item>
-                <Sidebar.Item href="/billing" active={slug === 'billing'}>
-                  Billing
-                </Sidebar.Item>
+                <Sidebar.Item href="/users">Users</Sidebar.Item>
+                <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+                <Sidebar.Item href="/billing">Billing</Sidebar.Item>
               </Sidebar.Item>
               <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-              <Sidebar.Item href="/general" active={slug === 'general'}>
-                General
-              </Sidebar.Item>
-              <Sidebar.Item href="/security" active={slug === 'security'}>
-                Security
-              </Sidebar.Item>
+              <Sidebar.Item href="/general">General</Sidebar.Item>
+              <Sidebar.Item href="/security">Security</Sidebar.Item>
             </Sidebar.Nav>
             <Sidebar.Footer>
               <Text fontSize="xs">v1.0.0</Text>

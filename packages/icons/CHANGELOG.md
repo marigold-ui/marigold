@@ -1,5 +1,15 @@
 # @marigold/icons
 
+## 1.3.38
+
+### Patch Changes
+
+- d341a9d: Fix CJS export paths pointing to non-existent `.js` files. Since tsdown 0.16.0, output uses `.cjs` extensions but `main`, `types`, and `exports` fields were never updated to match.
+- Updated dependencies [bbf0832]
+- Updated dependencies [d341a9d]
+- Updated dependencies [f560d95]
+  - @marigold/system@17.4.0
+
 ## 1.3.37
 
 ### Patch Changes
