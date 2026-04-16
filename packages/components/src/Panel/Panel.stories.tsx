@@ -55,19 +55,22 @@ const meta = preview.meta({
   },
 });
 
-export const Basic = meta.story(() => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>General Settings</Panel.Title>
-    </Panel.Header>
-    <Panel.Content>
-      <Stack space="regular">
-        <TextField label="Display Name" defaultValue="Marigold" />
-        <TextField label="Email" defaultValue="hello@marigold-ui.io" />
-      </Stack>
-    </Panel.Content>
-  </Panel>
-));
+export const Basic = meta.story({
+  args: { children: null as never },
+  render: args => (
+    <Panel {...args}>
+      <Panel.Header>
+        <Panel.Title>General Settings</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space="regular">
+          <TextField label="Display Name" defaultValue="Marigold" />
+          <TextField label="Email" defaultValue="hello@marigold-ui.io" />
+        </Stack>
+      </Panel.Content>
+    </Panel>
+  ),
+});
 
 export const WithDescription = meta.story(() => (
   <Panel>
