@@ -49,10 +49,7 @@ const findActive = (sections: NavSection[], slug: string) => {
   return { section: sections[0], leaf: undefined, ancestors: [] as string[] };
 };
 
-const renderNav = (
-  items: NavNode[],
-  ctx: { base: string; pathname: string }
-): ReactNode[] =>
+const renderNav = (items: NavNode[], base: string): ReactNode[] =>
   items.map((item, i) => {
     if (item.kind === 'Separator') {
       // Separators have no identity — index key is fine.
@@ -70,13 +67,13 @@ const renderNav = (
       return (
         <Sidebar.Item key={`branch-${item.label}`} textValue={item.label}>
           {item.label}
-          {renderNav(item.children, ctx)}
+          {renderNav(item.children, base)}
         </Sidebar.Item>
       );
     }
-    const href = item.slug ? `${ctx.base}/${item.slug}` : ctx.base;
+    const href = item.slug ? `${base}/${item.slug}` : base;
     return (
-      <Sidebar.Item key={href} href={href} active={ctx.pathname === href}>
+      <Sidebar.Item key={href} href={href}>
         {item.label}
       </Sidebar.Item>
     );
@@ -122,7 +119,7 @@ export const ShellLayout = ({
                 </Text>
               </Inline>
             </Sidebar.Header>
-            <Sidebar.Nav>
+            <Sidebar.Nav current={pathname}>
               {config.sections.map((section, i) => [
                 ...(i > 0
                   ? [<Sidebar.Separator key={`sep-${section.label}`} />]
@@ -130,7 +127,7 @@ export const ShellLayout = ({
                 <Sidebar.GroupLabel key={`label-${section.label}`}>
                   {section.label}
                 </Sidebar.GroupLabel>,
-                ...renderNav(section.items, { base: config.base, pathname }),
+                ...renderNav(section.items, config.base),
               ])}
             </Sidebar.Nav>
             <Sidebar.Footer>
