@@ -233,7 +233,7 @@ Output a structured review report in this format:
 <summary of recommendation>
 ```
 
-### 11. Ask to Post Review to GitHub
+### 11. Collect User Feedback on Findings
 
 After displaying the review report, ask the user if they want to post the review as a comment on the PR.
 
@@ -243,12 +243,32 @@ Use `AskUserQuestion` with options:
 - **Post both** - Post the full review as a PR comment AND inline comments on the code
 - **Skip** - Don't post anything to GitHub
 
+If the user requests changes to the findings (e.g., "remove finding #4", "drop the warning about X", "change the severity of Y"), apply those edits and proceed to step 11a.
+
+#### 11a. Show Final Review and Confirm Before Posting
+
+**Before posting anything to GitHub**, always:
+
+1. **Display the final review** exactly as it will be posted — with all user-requested edits applied. Show the full updated report (or the list of inline comments that will be posted).
+2. **Ask for confirmation** using `AskUserQuestion` with options:
+   - **Request Changes** - Post as a formal "Request Changes" review (blocks merge)
+   - **Comment** - Post as a regular comment (does not block merge)
+   - **Skip** - Cancel posting entirely
+
+This step ensures the user sees the exact content before it goes to GitHub and has a final say on the review event type. Use the selected event (`REQUEST_CHANGES` or `COMMENT`) as the `event` field in the GitHub API call.
+
+If the user requests further edits at this stage, apply them and repeat step 11a (show final version + confirm) until the user is satisfied.
+
 #### Option A: Post as PR comment
 
-Use `gh pr review` to post the full review:
+Use `gh pr review` to post the full review. Use the event type confirmed in step 11a:
 
 ```bash
+# If "Comment" was selected in step 11a:
 gh pr review <number> --comment --body "<review content>"
+
+# If "Request Changes" was selected in step 11a:
+gh pr review <number> --request-changes --body "<review content>"
 ```
 
 Format with a header indicating it's an automated review:
@@ -279,7 +299,7 @@ gh api repos/<owner>/<repo>/pulls/<number>/reviews --method POST \
   --input - <<'EOF'
 {
   "commit_id": "<commit_sha>",
-  "event": "COMMENT",
+  "event": "<COMMENT or REQUEST_CHANGES — from step 11a>",
   "body": "",
   "comments": [
     {
