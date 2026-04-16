@@ -4,10 +4,12 @@ import { useTheme } from './useTheme';
 
 export const useSmallScreen = (): boolean => {
   const theme = useTheme();
-  const screens = resolveScreens(theme.screens);
-  const sm = screens.sm;
+  const screens = useMemo(() => resolveScreens(theme.screens), [theme.screens]);
 
-  const query = useMemo(() => (sm ? `(width < ${sm})` : undefined), [sm]);
+  const query = useMemo(
+    () => (screens.sm ? `(width < ${screens.sm})` : undefined),
+    [screens.sm]
+  );
 
   const subscribe = useCallback(
     (onStoreChange: () => void) => {

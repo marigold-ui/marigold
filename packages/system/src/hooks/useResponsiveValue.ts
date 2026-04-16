@@ -1,7 +1,7 @@
 /**
  * Based on https://theme-ui.com/packages/match-media/
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { resolveScreens } from './resolveScreens';
 import { useTheme } from './useTheme';
 
@@ -15,7 +15,7 @@ export const useResponsiveValue = <T>(
   defaultIndex: number = 0
 ) => {
   const theme = useTheme();
-  const screens = resolveScreens(theme.screens);
+  const screens = useMemo(() => resolveScreens(theme.screens), [theme.screens]);
 
   if (defaultIndex < 0 || defaultIndex >= Object.keys(screens).length + 1) {
     throw new RangeError(
