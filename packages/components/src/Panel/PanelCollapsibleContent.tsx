@@ -21,10 +21,15 @@ export const PanelCollapsibleContent = ({
   const { classNames } = usePanelContext();
 
   return (
-    <DisclosurePanel
-      className={cn(!bleed && 'px-(--panel-px)', classNames.collapsibleContent)}
-    >
-      {children}
+    <DisclosurePanel className={classNames.collapsibleContent}>
+      <div
+        className={cn(
+          !bleed && 'px-(--panel-px)',
+          'pt-(--panel-py) pb-(--panel-py)'
+        )}
+      >
+        {children}
+      </div>
     </DisclosurePanel>
   );
 };

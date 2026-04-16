@@ -31,15 +31,19 @@ export const Panel: ThemeComponent<'Panel'> = {
   }),
   actions: cva({}),
   content: cva({}),
-  collapsible: cva({}),
+  collapsible: cva({ base: 'border-t border-border' }),
   collapsibleTrigger: cva({
     base: [
-      'flex w-full items-center justify-between gap-4 cursor-pointer',
-      'text-left text-base font-semibold leading-6',
+      'flex flex-1 items-center justify-between gap-4 cursor-pointer',
+      'm-1 rounded-[calc(var(--radius-surface)-var(--spacing))]',
+      'px-[calc(var(--panel-px)-var(--spacing))] py-[calc(var(--panel-py)-var(--spacing))]',
+      'text-left text-base font-medium leading-6',
       'hover:ui-state-hover',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
   }),
-  collapsibleContent: cva({}),
+  collapsibleContent: cva({
+    base: 'overflow-clip h-(--disclosure-panel-height) transition-[height] duration-250',
+  }),
   footer: cva({}),
 };
