@@ -64,9 +64,19 @@ const _Table = ({
     size,
   });
 
+  // When inside a container that sets --panel-px (e.g. Panel with bleed),
+  // align outer cell edges to the container's horizontal padding.
+  // Falls back to --cell-x-padding when standalone.
+  const containerEdgeInset =
+    'first:ps-[var(--panel-px,var(--cell-x-padding))] last:pe-[var(--panel-px,var(--cell-x-padding))]';
+
   const ctx = useMemo(
     () => ({
-      classNames,
+      classNames: {
+        ...classNames,
+        cell: cn(classNames.cell, containerEdgeInset),
+        column: cn(classNames.column, containerEdgeInset),
+      },
       variant,
       size,
       overflow,

@@ -51,11 +51,11 @@ export const Table: ThemeComponent<'Table'> = {
         ],
         admin: [
           'bg-access-admin border-access-admin-accent!',
-          '[&>*]:border-t [&>*]:border-access-admin-accent',
+          '*:border-t *:border-access-admin-accent',
         ],
         master: [
           'bg-access-master border-access-master-accent!',
-          '[&>*]:border-t [&>*]:border-access-master-accent',
+          '*:border-t *:border-access-master-accent',
         ],
       },
     },
@@ -93,7 +93,7 @@ export const Table: ThemeComponent<'Table'> = {
   }),
 
   // <tbody>
-  body: cva({ base: ['bg-surface'] }),
+  body: cva({}),
   cell: cva({
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',

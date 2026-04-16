@@ -6,8 +6,9 @@ import { usePanelContext } from './Context';
 export interface PanelCollapsibleContentProps {
   children: ReactNode;
   /**
-   * Render the content edge-to-edge, skipping the Panel's horizontal and
-   * vertical padding.
+   * Render the content edge-to-edge horizontally, skipping the Panel's
+   * horizontal padding. Vertical padding is preserved to maintain spacing
+   * between sections.
    * @default false
    */
   bleed?: boolean;
@@ -22,7 +23,8 @@ export const PanelCollapsibleContent = ({
   return (
     <DisclosurePanel
       className={cn(
-        !bleed && 'px-(--panel-px) py-(--panel-py)',
+        'py-(--panel-py)',
+        !bleed && 'px-(--panel-px)',
         classNames.collapsibleContent
       )}
     >

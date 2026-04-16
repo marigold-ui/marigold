@@ -5,9 +5,10 @@ import { usePanelContext } from './Context';
 export interface PanelContentProps {
   children: ReactNode;
   /**
-   * Render the content edge-to-edge, skipping the Panel's horizontal and
-   * vertical padding. Useful for tables or media that should touch the Panel's
-   * borders while the Header and Footer keep their gutters.
+   * Render the content edge-to-edge horizontally, skipping the Panel's
+   * horizontal padding. Vertical padding is preserved to maintain spacing
+   * between sections. Useful for tables or media that should span the
+   * full width of the Panel.
    * @default false
    */
   bleed?: boolean;
@@ -19,7 +20,8 @@ export const PanelContent = ({ children, bleed }: PanelContentProps) => {
   return (
     <div
       className={cn(
-        !bleed && 'px-(--panel-px) py-(--panel-py)',
+        'py-(--panel-py)',
+        !bleed && 'px-(--panel-px)',
         classNames.content
       )}
     >

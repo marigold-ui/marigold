@@ -268,57 +268,106 @@ export const VariantsVsCard = meta.story(() => (
   </div>
 ));
 
+const orders = [
+  {
+    id: '1001',
+    customer: 'Alice',
+    amount: 120,
+    status: 'Completed',
+    variant: 'success' as const,
+  },
+  {
+    id: '1002',
+    customer: 'Bob',
+    amount: 85.5,
+    status: 'Pending',
+    variant: 'warning' as const,
+  },
+  {
+    id: '1003',
+    customer: 'Charlie',
+    amount: 200,
+    status: 'Shipped',
+    variant: 'info' as const,
+  },
+];
+
 export const TableInside = meta.story(() => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>Recent Orders</Panel.Title>
-      <Panel.Description>
-        Overview of the latest transactions.
-      </Panel.Description>
-    </Panel.Header>
-    <Panel.Content bleed>
-      <Table aria-label="Recent orders">
-        <Table.Header>
-          <Table.Column rowHeader>Order</Table.Column>
-          <Table.Column>Customer</Table.Column>
-          <Table.Column alignX="right">Amount</Table.Column>
-          <Table.Column>Status</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>#1001</Table.Cell>
-            <Table.Cell>Alice</Table.Cell>
-            <Table.Cell>
-              <NumericFormat style="currency" currency="EUR" value={120} />
-            </Table.Cell>
-            <Table.Cell>
-              <Badge variant="success">Completed</Badge>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>#1002</Table.Cell>
-            <Table.Cell>Bob</Table.Cell>
-            <Table.Cell>
-              <NumericFormat style="currency" currency="EUR" value={85.5} />
-            </Table.Cell>
-            <Table.Cell>
-              <Badge variant="warning">Pending</Badge>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>#1003</Table.Cell>
-            <Table.Cell>Charlie</Table.Cell>
-            <Table.Cell>
-              <NumericFormat style="currency" currency="EUR" value={200} />
-            </Table.Cell>
-            <Table.Cell>
-              <Badge variant="info">Shipped</Badge>
-            </Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    </Panel.Content>
-  </Panel>
+  <Stack space="regular">
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Recent Orders</Panel.Title>
+        <Panel.Description>
+          Overview of the latest transactions.
+        </Panel.Description>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <Table aria-label="Recent orders">
+          <Table.Header>
+            <Table.Column rowHeader>Order</Table.Column>
+            <Table.Column>Customer</Table.Column>
+            <Table.Column alignX="right">Amount</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body items={orders}>
+            {item => (
+              <Table.Row id={item.id}>
+                <Table.Cell>#{item.id}</Table.Cell>
+                <Table.Cell>{item.customer}</Table.Cell>
+                <Table.Cell>
+                  <NumericFormat
+                    style="currency"
+                    currency="EUR"
+                    value={item.amount}
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <Badge variant={item.variant}>{item.status}</Badge>
+                </Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      </Panel.Content>
+    </Panel>
+
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Selectable Orders</Panel.Title>
+        <Panel.Description>
+          Table with multi-select enabled inside a Panel.
+        </Panel.Description>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <Table aria-label="Selectable orders" selectionMode="multiple">
+          <Table.Header>
+            <Table.Column rowHeader>Order</Table.Column>
+            <Table.Column>Customer</Table.Column>
+            <Table.Column alignX="right">Amount</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body items={orders}>
+            {item => (
+              <Table.Row id={item.id}>
+                <Table.Cell>#{item.id}</Table.Cell>
+                <Table.Cell>{item.customer}</Table.Cell>
+                <Table.Cell>
+                  <NumericFormat
+                    style="currency"
+                    currency="EUR"
+                    value={item.amount}
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <Badge variant={item.variant}>{item.status}</Badge>
+                </Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      </Panel.Content>
+    </Panel>
+  </Stack>
 ));
 
 export const CustomPadding = meta.story(() => (
