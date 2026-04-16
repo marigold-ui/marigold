@@ -1,5 +1,3 @@
-import type { LucideIcon } from 'lucide-react';
-
 export type NavNode =
   | {
       kind: 'Item';
@@ -22,7 +20,6 @@ export type NavNode =
 
 export interface NavSection {
   label: string;
-  icon?: LucideIcon;
   items: NavNode[];
 }
 

@@ -1,4 +1,3 @@
-import { PanelsTopLeft, Puzzle } from 'lucide-react';
 import type { NavSection, ShellConfig } from '../_shared';
 
 const appShellDocs = {
@@ -8,7 +7,6 @@ const appShellDocs = {
 
 const appShell: NavSection = {
   label: 'App Shell',
-  icon: PanelsTopLeft,
   items: [
     { kind: 'Item', slug: '', label: 'Dashboard', ...appShellDocs },
     { kind: 'Item', slug: 'analytics', label: 'Analytics', ...appShellDocs },
@@ -30,7 +28,6 @@ const appShell: NavSection = {
 
 const patterns: NavSection = {
   label: 'Patterns',
-  icon: Puzzle,
   items: [
     {
       kind: 'Item',

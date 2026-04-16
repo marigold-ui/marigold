@@ -1,6 +1,5 @@
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -8,7 +7,6 @@ import {
   Badge,
   Breadcrumbs,
   Inline,
-  Menu,
   RouterProvider,
   Sidebar,
   Stack,
@@ -48,9 +46,6 @@ const findActive = (sections: NavSection[], slug: string) => {
   }
   return { section: sections[0], leaf: undefined, ancestors: [] as string[] };
 };
-
-const findFirstSlug = (items: NavNode[]) =>
-  findLeaf(items, () => true)?.leaf.slug;
 
 const renderNav = (
   items: NavNode[],
@@ -102,48 +97,6 @@ const UserSection = () => (
   </Inline>
 );
 
-const SectionSwitcher = ({
-  sections,
-  leaf,
-  onSwitch,
-}: {
-  sections: NavSection[];
-  leaf?: LeafItem;
-  onSwitch: (sectionLabel: string) => void;
-}) => {
-  if (sections.length <= 1 && !leaf?.docsHref) return null;
-
-  return (
-    <Menu
-      label="Navigate to…"
-      variant="ghost"
-      placement="right bottom"
-      aria-label="Switch section"
-      onAction={key => onSwitch(key as string)}
-    >
-      {sections.map(section => {
-        const Icon = section.icon;
-        return (
-          <Menu.Item key={section.label} id={section.label}>
-            <Inline space={2} alignY="center">
-              {Icon && <Icon size={16} />}
-              {section.label}
-            </Inline>
-          </Menu.Item>
-        );
-      })}
-      {leaf?.docsHref && (
-        <Menu.Item href={leaf.docsHref}>
-          <Inline space={2} alignY="center">
-            <ArrowLeft size={16} />
-            {leaf.docsLabel ?? 'Back to docs'}
-          </Inline>
-        </Menu.Item>
-      )}
-    </Menu>
-  );
-};
-
 export const ShellLayout = ({
   config,
   children,
@@ -152,14 +105,7 @@ export const ShellLayout = ({
   const router = useRouter();
 
   const slug = pathname.replace(config.base, '').replace(/^\//, '');
-  const { section, leaf, ancestors } = findActive(config.sections, slug);
-
-  const handleSectionSwitch = (key: string) => {
-    const next = config.sections.find(s => s.label === key);
-    if (!next) return;
-    const firstSlug = findFirstSlug(next.items);
-    router.push(firstSlug ? `${config.base}/${firstSlug}` : config.base);
-  };
+  const { leaf, ancestors } = findActive(config.sections, slug);
 
   return (
     <RouterProvider navigate={href => router.push(href)}>
@@ -175,14 +121,18 @@ export const ShellLayout = ({
               </Inline>
             </Sidebar.Header>
             <Sidebar.Nav>
-              {renderNav(section.items, { base: config.base, pathname })}
+              {config.sections.map((section, i) => [
+                ...(i > 0
+                  ? [<Sidebar.Separator key={`sep-${section.label}`} />]
+                  : []),
+                <Sidebar.GroupLabel key={`label-${section.label}`}>
+                  {section.label}
+                </Sidebar.GroupLabel>,
+                ...renderNav(section.items, { base: config.base, pathname }),
+              ])}
             </Sidebar.Nav>
             <Sidebar.Footer>
-              <SectionSwitcher
-                sections={config.sections}
-                leaf={leaf}
-                onSwitch={handleSectionSwitch}
-              />
+              <UserSection />
             </Sidebar.Footer>
           </AppLayout.Sidebar>
           <AppLayout.Header>
