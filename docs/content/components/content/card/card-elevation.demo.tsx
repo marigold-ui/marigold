@@ -8,15 +8,11 @@ export default () => (
         <Stack>
           <Inline>
             <Text>Earliest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now()).toLocaleDateString()}
-            </Text>
+            <Text weight="bold">01.01.2026</Text>
           </Inline>
           <Inline>
             <Text>Latest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now() + 3600 * 1000 * 24).toLocaleDateString()}
-            </Text>
+            <Text weight="bold">02.01.2026</Text>
           </Inline>
           <Inline>
             <Text>Total events:</Text>
@@ -31,15 +27,11 @@ export default () => (
         <Stack>
           <Inline>
             <Text>Earliest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now()).toLocaleDateString()}
-            </Text>
+            <Text weight="bold">01.01.2026</Text>
           </Inline>
           <Inline>
             <Text>Latest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now() + 3600 * 1000 * 24).toLocaleDateString()}
-            </Text>
+            <Text weight="bold">02.01.2026</Text>
           </Inline>
           <Inline>
             <Text>Total events:</Text>
