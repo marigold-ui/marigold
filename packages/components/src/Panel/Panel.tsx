@@ -23,7 +23,7 @@ import { PanelTitle } from './PanelTitle';
 // ---------------
 interface PanelBaseProps {
   variant?: 'default' | 'master' | 'admin' | 'destructive' | (string & {});
-  size?: string;
+  size?: 'form' | (string & {});
   children: ReactNode;
   /** Accessible label. Required when no `Panel.Title` is present. */
   'aria-label'?: string;

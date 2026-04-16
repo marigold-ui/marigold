@@ -18,11 +18,33 @@ const meta = preview.meta({
   parameters: {
     surface: false,
   },
+  args: {
+    variant: 'default',
+    size: 'default',
+    space: 'regular',
+    headingLevel: 2,
+  },
   argTypes: {
+    children: {
+      table: { disable: true },
+    },
     variant: {
       control: { type: 'radio' },
       options: ['default', 'master', 'admin', 'destructive'],
       description: 'The visual variant of the panel.',
+      table: { defaultValue: { summary: 'default' } },
+    },
+    size: {
+      control: { type: 'radio' },
+      options: ['default', 'form'],
+      description: 'The size of the panel.',
+      table: { defaultValue: { summary: 'default' } },
+    },
+    space: {
+      control: { type: 'radio' },
+      options: ['none', 'tight', 'related', 'regular', 'group', 'section'],
+      description: 'Spacing between Panel sections.',
+      table: { defaultValue: { summary: 'regular' } },
     },
     headingLevel: {
       control: { type: 'radio' },

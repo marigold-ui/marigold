@@ -14,6 +14,9 @@ export const Panel: ThemeComponent<'Panel'> = {
         destructive:
           'border border-destructive-accent inset-shadow-[0_0_40px_-10px_var(--color-destructive-accent)]',
       },
+      size: {
+        form: 'max-w-xl',
+      },
     },
     defaultVariants: {
       variant: 'default',
