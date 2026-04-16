@@ -1,8 +1,12 @@
 import { act, renderHook } from '@testing-library/react';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { vi } from 'vitest';
 import { useResponsiveValue } from '@marigold/system';
+import type { Theme } from '../types/theme';
+import { testTheme, themeWrapper as wrapper } from './test.utils';
 import { ThemeProvider } from './useTheme';
+
+const { sm, md, lg } = testTheme.screens!;
 
 const originalMatchMedia = window.matchMedia;
 
@@ -19,8 +23,9 @@ afterEach(() => {
 test('return first value if no breakpoint matches', () => {
   window.matchMedia = mockMatchMedia([]);
 
-  const { result } = renderHook(() =>
-    useResponsiveValue(['one', 'two', 'three'])
+  const { result } = renderHook(
+    () => useResponsiveValue(['one', 'two', 'three']),
+    { wrapper }
   );
 
   expect(result.current).toEqual('one');
@@ -28,48 +33,25 @@ test('return first value if no breakpoint matches', () => {
 
 test('return last if all breakpoints match', () => {
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 640px)',
-    'screen and (min-width: 768px)',
-    'screen and (min-width: 1024px)',
+    `screen and (min-width: ${sm})`,
+    `screen and (min-width: ${md})`,
+    `screen and (min-width: ${lg})`,
   ]);
 
-  const { result } = renderHook(() =>
-    useResponsiveValue(['one', 'two', 'three', 'four'])
+  const { result } = renderHook(
+    () => useResponsiveValue(['one', 'two', 'three', 'four']),
+    { wrapper }
   );
 
   expect(result.current).toEqual('four');
 });
 
 test('return last provided value even if larger breakpoints match', () => {
-  // This would result in the third array value being returned
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 640px)',
-    'screen and (min-width: 768px)',
+    `screen and (min-width: ${sm})`,
+    `screen and (min-width: ${md})`,
   ]);
 
-  const { result } = renderHook(() => useResponsiveValue(['one', 'two']));
-
-  expect(result.current).toEqual('two');
-});
-
-test('uses breakpoints from theme', () => {
-  window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 640px)',
-    'screen and (min-width: 768px)',
-  ]);
-
-  const theme = {
-    name: 'test',
-    screens: {
-      sm: '640px',
-      md: '768px',
-      lg: '1024px',
-    },
-    components: {},
-  };
-  const wrapper = ({ children }: { children?: ReactNode }) => (
-    <ThemeProvider theme={theme}>{children}</ThemeProvider>
-  );
   const { result } = renderHook(() => useResponsiveValue(['one', 'two']), {
     wrapper,
   });
@@ -77,13 +59,33 @@ test('uses breakpoints from theme', () => {
   expect(result.current).toEqual('two');
 });
 
+test('uses breakpoints from theme', () => {
+  window.matchMedia = mockMatchMedia([
+    `screen and (min-width: ${sm})`,
+    `screen and (min-width: ${md})`,
+  ]);
+  const customTheme: Theme = {
+    name: 'custom',
+    screens: { sm, md, lg },
+    components: {},
+  };
+  const customWrapper = ({ children }: { children?: ReactNode }) => (
+    <ThemeProvider theme={customTheme}>{children}</ThemeProvider>
+  );
+
+  const { result } = renderHook(() => useResponsiveValue(['one', 'two']), {
+    wrapper: customWrapper,
+  });
+
+  expect(result.current).toEqual('two');
+});
+
 test('responds to resize event', () => {
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 640px)',
-    'screen and (min-width: 768px)',
-    'screen and (min-width: 1024px)',
+    `screen and (min-width: ${sm})`,
+    `screen and (min-width: ${md})`,
+    `screen and (min-width: ${lg})`,
   ]);
-
   let resize: () => void;
   vi.spyOn(window, 'addEventListener').mockImplementation(
     (event: string, cb: EventListenerOrEventListenerObject) => {
@@ -91,24 +93,29 @@ test('responds to resize event', () => {
     }
   );
 
-  const { result } = renderHook(() =>
-    useResponsiveValue(['one', 'two', 'three', 'four'])
+  const { result } = renderHook(
+    () => useResponsiveValue(['one', 'two', 'three', 'four']),
+    { wrapper }
   );
+
   expect(result.current).toEqual('four');
 
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 640px)',
-    'screen and (min-width: 768px)',
+    `screen and (min-width: ${sm})`,
+    `screen and (min-width: ${md})`,
   ]);
   act(() => resize());
+
   expect(result.current).toEqual('three');
 
-  window.matchMedia = mockMatchMedia(['screen and (min-width: 640px)']);
+  window.matchMedia = mockMatchMedia([`screen and (min-width: ${sm})`]);
   act(() => resize());
+
   expect(result.current).toEqual('two');
 
   window.matchMedia = mockMatchMedia([]);
   act(() => resize());
+
   expect(result.current).toEqual('one');
 });
 
@@ -118,13 +125,16 @@ test('throws if default index is below 0', () => {
     'screen and (min-width: 52em)',
   ]);
 
-  const { result } = renderHook(() => {
-    try {
-      return useResponsiveValue(['one', 'two', 'three'], -1);
-    } catch (error) {
-      return { error };
-    }
-  });
+  const { result } = renderHook(
+    () => {
+      try {
+        return useResponsiveValue(['one', 'two', 'three'], -1);
+      } catch (error) {
+        return { error };
+      }
+    },
+    { wrapper }
+  );
 
   expect((result.current as { error: unknown }).error).toMatchInlineSnapshot(
     `[RangeError: Default breakpoint index is out of bounds. Theme has 6 breakpoints, default is -1.]`
@@ -137,13 +147,16 @@ test('throws if default index is out of bounds', () => {
     'screen and (min-width: 52em)',
   ]);
 
-  const { result } = renderHook(() => {
-    try {
-      return useResponsiveValue(['one', 'two', 'three'], 100);
-    } catch (error) {
-      return { error };
-    }
-  });
+  const { result } = renderHook(
+    () => {
+      try {
+        return useResponsiveValue(['one', 'two', 'three'], 100);
+      } catch (error) {
+        return { error };
+      }
+    },
+    { wrapper }
+  );
 
   expect((result.current as { error: unknown }).error).toMatchInlineSnapshot(
     `[RangeError: Default breakpoint index is out of bounds. Theme has 6 breakpoints, default is 100.]`

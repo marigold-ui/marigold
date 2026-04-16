@@ -2,25 +2,20 @@
  * Based on https://theme-ui.com/packages/match-media/
  */
 import { useEffect, useState } from 'react';
-/**
- * Hardcode fallback breakpoints, not make sure `useEffect`
- * doesn't trigger on every render. Since it is part of the
- * dependency array.
- */
-import { defaultTheme } from '../defaultTheme';
+import { resolveScreens } from './resolveScreens';
 import { useTheme } from './useTheme';
 
 /**
  * Hook that can be used to return values based on the current screen size,
- * using breakpoints from the theme (`theme.breakpoints`). Note that this
- * hook is client.side only.
+ * using breakpoints from the theme (`theme.screens`). Note that this
+ * hook is client-side only.
  */
 export const useResponsiveValue = <T>(
   values: T[],
   defaultIndex: number = 0
 ) => {
   const theme = useTheme();
-  const screens = theme.screens || defaultTheme.screens;
+  const screens = resolveScreens(theme.screens);
 
   if (defaultIndex < 0 || defaultIndex >= Object.keys(screens).length + 1) {
     throw new RangeError(
