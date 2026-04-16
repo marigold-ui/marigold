@@ -2,7 +2,12 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
   table: cva({
-    base: ['text-sm bg-surface'],
+    base: [
+      'text-sm bg-surface',
+      // Edge padding for Panel integration — resolves to --panel-px
+      // when inside a Panel with bleed, otherwise falls back to --cell-x-padding
+      '[--cell-edge-padding:var(--panel-px,var(--cell-x-padding))]',
+    ],
     variants: {
       variant: {
         default: '',
@@ -75,6 +80,7 @@ export const Table: ThemeComponent<'Table'> = {
   column: cva({
     base: [
       'h-(--header-height) px-(--cell-x-padding) py-0 align-middle',
+      'first:ps-(--cell-edge-padding) last:pe-(--cell-edge-padding)',
       'font-medium text-secondary',
       'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
@@ -97,6 +103,7 @@ export const Table: ThemeComponent<'Table'> = {
   cell: cva({
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',
+      'first:ps-(--cell-edge-padding) last:pe-(--cell-edge-padding)',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/75',
       'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/75',
       '**:data-cell-content:outline-none',

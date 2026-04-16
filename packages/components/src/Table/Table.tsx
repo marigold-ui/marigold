@@ -64,19 +64,9 @@ const _Table = ({
     size,
   });
 
-  // When inside a container that sets --panel-px (e.g. Panel with bleed),
-  // align outer cell edges to the container's horizontal padding.
-  // Falls back to --cell-x-padding when standalone.
-  const containerEdgeInset =
-    'first:ps-[var(--panel-px,var(--cell-x-padding))] last:pe-[var(--panel-px,var(--cell-x-padding))]';
-
   const ctx = useMemo(
     () => ({
-      classNames: {
-        ...classNames,
-        cell: cn(classNames.cell, containerEdgeInset),
-        column: cn(classNames.column, containerEdgeInset),
-      },
+      classNames,
       variant,
       size,
       overflow,
@@ -95,7 +85,7 @@ const _Table = ({
     });
 
   return (
-    <TableContext.Provider value={ctx}>
+    <TableContext value={ctx}>
       <ResizableTableContainer
         className="w-full"
         style={{
@@ -117,7 +107,7 @@ const _Table = ({
         />
         {actionBarOverlay}
       </ResizableTableContainer>
-    </TableContext.Provider>
+    </TableContext>
   );
 };
 

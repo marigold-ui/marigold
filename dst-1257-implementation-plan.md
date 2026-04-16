@@ -119,7 +119,7 @@ Jira: [DST-1257](https://reservix.atlassian.net/browse/DST-1257). Work is split 
 - [ ] Usage section: Basic, with Description, with Actions, with Footer, with Collapsible.
 - [ ] Content-scenario guidance:
   - [ ] **Form content** → use default `inset="square-regular"`.
-  - [ ] **Table content** → use `inset="none"`.
+  - [ ] **Table content** → use `Panel.Content` with `bleed` prop. Document that edge alignment relies on the `--cell-edge-padding` CSS variable in the Table theme styles. Themes that want Panel-Table integration must set `[--cell-edge-padding:var(--panel-px,var(--cell-x-padding))]` on the `table` slot (theme-rui already does this).
   - [ ] **Settings content** → typically default; use `inset="square-relaxed"` for breathing room.
 - [ ] Do/don't section:
   - [ ] DON'T nest Panels (`Panel > Panel` is forbidden).
