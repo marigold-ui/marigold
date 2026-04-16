@@ -1,6 +1,5 @@
-import { render, renderHook, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useRef } from 'react';
 import {
   Action,
   Basic,
@@ -27,10 +26,12 @@ describe('SelectList', () => {
   });
 
   test('support refs', () => {
-    const { result } = renderHook(() => useRef<HTMLUListElement>(null));
-    render(<Basic.Component aria-label="Test" ref={result.current} />);
+    const SelectListRef: { current: HTMLUListElement | null } = {
+      current: null,
+    };
+    render(<Basic.Component aria-label="Test" ref={SelectListRef} />);
 
-    expect(result.current.current).toBeInstanceOf(HTMLUListElement);
+    expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
   });
 
   test('action slot renders with order-last class', () => {
