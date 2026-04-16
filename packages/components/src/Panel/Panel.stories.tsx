@@ -60,33 +60,27 @@ export const Basic = meta.story({
   render: args => (
     <Panel {...args}>
       <Panel.Header>
-        <Panel.Title>General Settings</Panel.Title>
+        <Panel.Title>Organizer Profile</Panel.Title>
+        <Panel.Description>
+          Public details shown to customers on ticket confirmations and event
+          pages.
+        </Panel.Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">
-          <TextField label="Display Name" defaultValue="Marigold" />
-          <TextField label="Email" defaultValue="hello@marigold-ui.io" />
+          <TextField label="Organizer Name" defaultValue="Marigold Events" />
+          <TextField
+            label="Support Email"
+            defaultValue="hello@marigold-ui.io"
+          />
         </Stack>
       </Panel.Content>
+      <Panel.Footer>
+        <Button>Save changes</Button>
+      </Panel.Footer>
     </Panel>
   ),
 });
-
-export const WithDescription = meta.story(() => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>Notification Preferences</Panel.Title>
-      <Panel.Description>
-        Choose how you want to receive notifications about updates and changes.
-      </Panel.Description>
-    </Panel.Header>
-    <Panel.Content>
-      <Stack space="regular">
-        <TextField label="Email for Notifications" />
-      </Stack>
-    </Panel.Content>
-  </Panel>
-));
 
 export const WithHeaderActions = meta.story(() => (
   <Panel>
@@ -187,26 +181,6 @@ export const WithMultipleCollapsibles = meta.story(() => (
         </Stack>
       </Panel.CollapsibleContent>
     </Panel.Collapsible>
-  </Panel>
-));
-
-export const WithFooter = meta.story(() => (
-  <Panel variant="destructive">
-    <Panel.Header>
-      <Panel.Title>Danger Zone</Panel.Title>
-      <Panel.Description>
-        Irreversible actions that permanently affect your account.
-      </Panel.Description>
-    </Panel.Header>
-    <Panel.Content>
-      <Text>
-        Once you delete your account, there is no going back. All your data will
-        be permanently removed.
-      </Text>
-    </Panel.Content>
-    <Panel.Footer>
-      <Button variant="destructive">Delete Account</Button>
-    </Panel.Footer>
   </Panel>
 ));
 
