@@ -1,6 +1,6 @@
 ---
-'@marigold/system': minor
-'@marigold/theme-rui': minor
+'@marigold/system': major
+'@marigold/theme-rui': major
 ---
 
 feat(DST-1237): theme-owned breakpoints with CSS fallback
