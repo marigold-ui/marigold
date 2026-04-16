@@ -82,14 +82,3 @@ export const Basic = meta.story({
     );
   },
 });
-
-export const OpenViaTooltipTriggerProp = meta.story({
-  render: args => (
-    <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] gap-2 pt-32">
-      <Tooltip.Trigger open>
-        <Button variant="primary">Always open</Button>
-        <Tooltip {...args}>Opened via Tooltip.Trigger open prop</Tooltip>
-      </Tooltip.Trigger>
-    </div>
-  ),
-});
