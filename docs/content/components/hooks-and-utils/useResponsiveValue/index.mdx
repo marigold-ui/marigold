@@ -8,7 +8,7 @@ The `useResponsiveValue` is a client side hook. It can be used to return values 
 
 The first parameter of the hook is an array of values, one for each breakpoint (starting from no breakpoint, then `sm`, `md`, `lg`, etc.). The second parameter is the `defaultIndex` which points to the default value used during server-side rendering.
 
-The breakpoints are defined as a `screens` object in your theme (e.g. `{ sm: '40rem', md: '48rem', ... }`), matching Tailwind v4's responsive modifiers (like `sm:text-sm`).
+The breakpoints are defined as a `screens` object in your theme (e.g. `{ sm: '40rem', md: '48rem', ... }`), matching Tailwind v4's responsive modifiers (like `sm:text-sm`). If no theme provides `screens`, the hook falls back to reading Tailwind v4's `--breakpoint-*` CSS custom properties.
 
 ## Import
 
