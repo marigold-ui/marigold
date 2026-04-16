@@ -6,7 +6,9 @@ describe('Card', () => {
     test('renders header content', () => {
       render(<Basic.Component />);
 
-      expect(screen.getByText(/Professor Severus Snape/)).toBeInTheDocument();
+      expect(
+        screen.getAllByText(/Professor Severus Snape/)[0]
+      ).toBeInTheDocument();
     });
 
     test('renders body content', () => {
