@@ -27,11 +27,11 @@ The `<Card>` component consists of a container which is basically a `<div>`. You
 
 The Card component supports variants for general content grouping as well as access-level marking.
 
-| Variant   | Description                                                      | When to use                                                                               |
-| --------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `default` | Standard card with a raised shadow. This is the default variant. | General-purpose content grouping like articles, profiles, or summaries.                   |
-| `admin`   | Card with admin-specific border and background tint.             | Grouping content visible only to admin users. [Learn more.](/patterns/admin-master-mark)  |
-| `master`  | Card with master-specific border and background tint.            | Grouping content visible only to master users. [Learn more.](/patterns/admin-master-mark) |
+| Variant   | Description                                                      | When to use                                                                                      |
+| --------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `default` | Standard card with a raised shadow. This is the default variant. | General-purpose content grouping like articles, profiles, or summaries.                          |
+| `admin`   | Card with admin-specific border and background tint.             | Grouping content visible only to admin users. [Learn more.](/patterns/layout/admin-master-mark)  |
+| `master`  | Card with master-specific border and background tint.            | Grouping content visible only to master users. [Learn more.](/patterns/layout/admin-master-mark) |
 
 ## Usage
 
@@ -85,7 +85,7 @@ According to our design guidelines, the card should be used on top of the [sunke
     },
     {
       title: 'Admin- & master mark',
-      href: '/patterns/admin-master-mark',
+      href: '/patterns/layout/admin-master-mark',
       caption: 'Used for marking internal-only features.',
       icon: (
         <svg

@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowLeft, LifeBuoy } from 'lucide-react';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -7,6 +8,7 @@ import {
   Badge,
   Breadcrumbs,
   Inline,
+  LinkButton,
   RouterProvider,
   Sidebar,
   Stack,
@@ -132,7 +134,19 @@ export const ShellLayout = ({
               ])}
             </Sidebar.Nav>
             <Sidebar.Footer>
-              <UserSection />
+              <Stack space={2} alignX="left">
+                <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
+                  <ArrowLeft />
+                  {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
+                </LinkButton>
+                <LinkButton
+                  href="/getting-started/get-in-touch"
+                  variant="ghost"
+                >
+                  <LifeBuoy />
+                  Get in touch
+                </LinkButton>
+              </Stack>
             </Sidebar.Footer>
           </AppLayout.Sidebar>
           <AppLayout.Header>
