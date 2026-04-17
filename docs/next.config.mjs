@@ -1,9 +1,13 @@
 import { createMDX } from 'fumadocs-mdx/next';
+import componentsPkg from '../packages/components/package.json' with { type: 'json' };
 
 const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const config = {
+  env: {
+    version: componentsPkg.version,
+  },
   reactStrictMode: true,
   // Needed for markdown parser plugins that use ts-morph on the server
   serverExternalPackages: ['ts-morph', 'typescript'],
