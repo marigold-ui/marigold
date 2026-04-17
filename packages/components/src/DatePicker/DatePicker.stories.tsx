@@ -4,14 +4,11 @@ import type { DateValue } from 'react-aria-components';
 import { expect, spyOn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
+import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
 import { DatePicker } from './DatePicker';
 
-/**
- * Must match the `sm` breakpoint provided by the theme.
- * Used only in the matchMedia fallback decorator below.
- */
-const smallScreenQuery = '(width < 40rem)';
+const smallScreenQuery = `(width < ${theme.screens?.sm})`;
 
 const meta = preview.meta({
   title: 'Components/DatePicker',
