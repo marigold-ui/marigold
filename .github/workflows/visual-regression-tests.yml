@@ -7,6 +7,10 @@ on:
       - '*-ui'
       - '**/ui-*'
 
+  # When a PR is merged (into any branch)
+  pull_request:
+    types: [closed]
+
   # Manual trigger
   workflow_dispatch:
 
@@ -16,10 +20,13 @@ on:
 
 jobs:
   chromatic:
-    # Run if it's a PR push, OR a dispatch button, OR a valid comment command
     if: >
       github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.merged == true
+      ) ||
       (
         github.event_name == 'issue_comment' &&
         github.event.issue.pull_request &&
@@ -29,18 +36,39 @@ jobs:
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve branch and owner
+        id: resolve-branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            BRANCH=$(gh pr view ${{ github.event.issue.number }} --repo ${{ github.repository }} --json headRefName -q .headRefName)
+            OWNER=$(gh pr view ${{ github.event.issue.number }} --repo ${{ github.repository }} --json author -q .author.login)
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            BRANCH="${{ github.event.pull_request.base.ref }}"
+            OWNER="${{ github.event.pull_request.user.login }}"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BRANCH="${{ github.ref_name }}"
+            OWNER="${{ github.actor }}"
+          else
+            BRANCH="${{ github.head_ref || github.ref_name }}"
+            OWNER="${{ github.actor }}"
+          fi
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "owner=$OWNER" >> "$GITHUB_OUTPUT"
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          # This requires a "ternary" logic to pick the right ref:
-          # 1. If PR push: Use the PR head SHA.
+          # Pick the right ref depending on the trigger:
+          # 1. If merged PR: Use the merge commit on the target branch.
           # 2. If Comment: Construct the specific pull request ref.
-          # 3. If Dispatch: Leave empty (defaults to the selected branch).
+          # 3. If push/dispatch: Leave empty (defaults to the pushed/selected branch).
           ref: >-
-            ${{ 
-              github.event_name == 'pull_request' && github.event.pull_request.head.sha || 
-              github.event_name == 'issue_comment' && format('refs/pull/{0}/head', github.event.issue.number) || 
-              '' 
+            ${{
+              github.event_name == 'pull_request' && github.event.pull_request.merge_commit_sha ||
+              github.event_name == 'issue_comment' && format('refs/pull/{0}/head', github.event.issue.number) ||
+              ''
             }}
           # Required by Chromatic
           fetch-depth: 0
@@ -55,12 +83,74 @@ jobs:
       - name: Build Storybook
         run: pnpm build:sb
       - name: Run visual regression tests on chromatic
+        id: chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          branchName: ${{ steps.resolve-branch.outputs.branch }}
           onlyChanged: true # set to true to enable TurboSnap https://www.chromatic.com/docs/turbosnap/setup/
           untraced: './.storybook/decorators.tsx'
           storybookConfigDir: './.storybook'
           storybookBuildDir: './storybook-static'
           storybookBaseDir: '.'
           debug: true
+
+      - name: Send Slack notification
+        if: always() && steps.chromatic.outputs.changeCount != '0'
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_HOOK_DST_REPO_STREAM }}
+          webhook-type: webhook-trigger
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "${{ steps.chromatic.outcome == 'success' && '✅' || '⚠️' }}  Visual Regression Tests — ${{ steps.resolve-branch.outputs.branch }}"
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch:* `${{ steps.resolve-branch.outputs.branch }}` | *Commit:* `${{ github.sha }}` | *Triggered by:* ${{ github.actor }} (${{ github.event_name }})"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🔍 *${{ steps.chromatic.outputs.changeCount }} visual changes* found that need review.\n\n👉 *@${{ steps.resolve-branch.outputs.owner }}*, please <${{ steps.chromatic.outputs.buildUrl }}|review the changes on Chromatic>."
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "Review on Chromatic"
+                      },
+                      "style": "primary",
+                      "url": "${{ steps.chromatic.outputs.buildUrl }}"
+                    },
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Storybook"
+                      },
+                      "url": "${{ steps.chromatic.outputs.storybookUrl }}"
+                    }
+                  ]
+                }
+              ]
+            }
