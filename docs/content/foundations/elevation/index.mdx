@@ -1,100 +1,201 @@
 ---
 title: Elevation
-description: Learn how to use elevation with Marigold.
+description: How surfaces and shadows work together to create visual depth and hierarchy
+badge: updated
 ---
 
-Elevations serve as the foundational layers of the UI, providing a clean slate upon which various UI elements can be placed. It is important for creating visual hierarchy, depth, and clarity within a user interface. It guides user attention, improves usability, and enhances the overall user experience by providing feedback, organizing elements, and maintaining consistency in branding.
+Screens are flat, but interfaces need depth. Without visual cues, every element sits on the same plane and users have to rely on position alone to understand what belongs together, what is interactive, and what is temporary. Elevation solves this by creating the illusion of layers: a card feels like it sits above the page, a dialog floats above everything else, and an input has a clear boundary against the surface it lives on.
 
-We create different surface levels, for each layer that a component can be placed.
-The elevation consists of background colors and shadows. Meaning a background surface should be used together with a shadow surface token to create more depth.
+This matters because it directly guides attention. A raised card groups related content and separates it from the surrounding page. A floating menu signals that it is temporary and will go away. A subtle border on an input tells users where they can type. Without these depth cues, interfaces feel flat and ambiguous.
 
-## Types of elevation
+Two systems work together to produce this effect: **background layers** set the color of each level, and **shadows** add visual lift to communicate how high something sits. For interactive elements like inputs and cards, a background is paired with a subtle border gradient and a matching shadow to complete the look.
 
-We support four levels of elevation.
+<Callout title="Do I need to apply elevation manually?">
+  Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct background, border, and shadow tokens internally. You only need the utility classes described on this page (`ui-surface`, `shadow-elevation-*`, `bg-background`, etc.) when building custom elements that aren't covered by an existing component.
+</Callout>
 
-<ImageZoom
-  width={700}
-  height={900}
-  src="/surface-levels.jpg"
-  alt="Types of elevation"
+## Background layers
+
+Before shadows come into play, background colors establish the base layers of the interface. Three tokens define where content sits:
+
+<TokenTable
+  tokens={[
+    {
+      name: 'background',
+      value: 'charcoal-100',
+      useFor: 'Page base layer, the gray canvas behind everything',
+    },
+    {
+      name: 'surface',
+      value: 'white',
+      useFor: 'Content surface for cards, inputs, and panels',
+    },
+    {
+      name: 'muted',
+      value: 'charcoal-50',
+      useFor: 'Subtle tint to set areas apart within a surface',
+    },
+  ]}
 />
 
-These elevation levels are important for creating visually appealing and user-friendly interfaces, as they help users understand the organization and hierarchy of content within an application or website. By using different elevation levels appropriately, designers can improve usability and enhance the overall user experience.
-Starting by the lowest elevation level, the types will be explained in the following.
+`bg-background` and `bg-surface` work as a pair: the page background provides contrast so that white surfaces stand out. `bg-muted` adds a gentle tint within a surface to distinguish secondary content without adding another elevation level.
 
-### Sunken
+<ComponentDemo name="elevation-layers" mode="preview" background="page" />
 
-The deepest surface level we support is sunken. Sunken surfaces should only be used on the default surface level. Avoid applying sunken elevations to raised or overlay elevations.
+For interactive elements like inputs, cards, and dialogs, the `ui-surface`
+utility combines several properties into one class: a white background
+(`bg-surface`), a subtle top-to-bottom border gradient that darkens slightly
+toward the bottom edge, rounded corners, and smooth transitions for background,
+border, and shadow changes. This gradient border gives elements a refined,
+three-dimensional feel that a flat `1px solid` border cannot achieve. Pair
+`ui-surface` with a `shadow-elevation-*` token to complete the elevation
+styling:
 
-Use the utility class:
+```html
+<div class="ui-surface shadow-elevation-raised">...</div>
+```
 
-- `util-surface-sunken`
+## Shadow tiers
 
-This utility combines `surface-sunken` and `surface-sunken-shadow` tokens.
+Elevation is split into three tiers, each serving a distinct role in the visual hierarchy. The shadow intensity increases with each tier: **border** provides a subtle edge for interactive controls, **raised** lifts containers off the page, and **overlay** creates a strong floating effect for temporary UI. Together they form a clear stacking order where every element sits at the right depth.
 
-<ComponentDemo name="surface-sunken" />
+<ComponentDemo name="elevation-swatches" mode="preview" background="page" />
 
-### Default (Body)
+| Token                      | Use for                    | Components                                  |
+| -------------------------- | -------------------------- | ------------------------------------------- |
+| `shadow-elevation-border`  | Small interactive controls | Input, Checkbox, Radio, Switch, Tag, Button |
+| `shadow-elevation-raised`  | Container surfaces         | Card, Accordion                             |
+| `shadow-elevation-overlay` | Overlay elements           | Dialog, Drawer, Menu, Popover, Toast        |
 
-The default surface acts as the ground-surface level. It has no visual lift and should be the starting point of each page. This can be for example the `<body>`.
+This diagram shows how the three shadow tiers layer in a typical form layout. The page background (`bg-background`) is the base. A card (`shadow-elevation-raised`) groups form controls (`shadow-elevation-border`), while a floating panel (`shadow-elevation-overlay`) sits above everything.
 
-Use the utility class:
+![Annotated UI showing elevation tiers on a form layout](/elevation/elevation-in-context.svg)
 
-- `util-surface-body`
+### Border
 
-This utility combines `surface-body` and `surface-body-shadow` tokens.
+The subtlest shadow tier. Border elevation gives small interactive controls a slight lift, defining their edges against the surface they sit on. These elements combine `ui-surface` with `shadow-elevation-border`.
 
-<ComponentDemo name="surface-default" />
+Because border elevation produces only a subtle shadow, these controls need a raised surface behind them to be clearly visible. Placing an input directly on the page background (`bg-background`) makes its edges nearly indistinguishable from the surrounding area. A Card or similar raised container provides the contrast that border-elevated controls rely on.
+
+<ComponentDemo name="elevation-border" />
+
+```html
+<div class="ui-surface shadow-elevation-border">...</div>
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Place form controls like inputs, checkboxes, and selects inside a raised
+      surface such as a Card.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't place form controls directly on the page background without a raised
+      container.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Raised
 
-Raised is one level higher than the default surface. It will be used for example on `<Card>`s. The intent of raised surface elevation is to make certain elements stand out more in the design, showing that they're more important or prominent.
+One step higher than border. Raised elevation creates visual lift for container surfaces that group related content. Cards and accordions use this tier to stand out from the page background while staying below floating elements. The flat page background behind them is what makes the shadow visible. Without that contrast, the lift disappears.
 
-Use the utility class:
+<ComponentDemo name="elevation-raised" background="page" />
 
-- `util-surface-raised`
+```html
+<div class="ui-surface shadow-elevation-raised">...</div>
+```
 
-This utility combines `surface-raised`, `surface-raised-shadow`, and `surface-raised-border` tokens.
-
-<ComponentDemo name="surface-raised" />
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Place raised surfaces on the page background (`bg-background`) so the
+      shadow creates clear visual lift.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't stack raised surfaces inside each other. The similar shadow levels
+      make them visually indistinguishable.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Overlay
 
-Overlay is the highest elevation used for elements that appear above others, like modals, dialogs, menus or popovers in general. Overlays can stack on top of other overlays.
+The strongest shadow tier, reserved for elements that temporarily float above the page. Dialogs, drawers, menus, popovers, and toasts use overlay elevation. Unlike the other tiers, overlays can stack on top of one another: a confirmation dialog over a menu, or a tooltip inside a drawer. They are always dismissible and often paired with a backdrop that dims the content underneath.
 
-Use the utility class:
+Click the button below to trigger a toast and see the overlay shadow in action.
 
-- `util-surface-overlay`
+<ComponentDemo name="elevation-overlay" />
 
-This utility combines `surface-overlay`, `surface-overlay-shadow`, and `surface-overlay-border` tokens.
+```html
+<div class="ui-surface shadow-elevation-overlay">...</div>
+```
 
-<ComponentDemo name="surface-overlay" />
-
-## Usage all together
-
-In a common layout the surface default is always the ground base for other elements. You should take use of it and avoid excessive use of raised and overlay elevations. Make sure to use the shadow tokens correctly with the background tokens.
-
-In this example all elevation levels are shown in a full page example layout. The surface default behaves as the ground-surface, with the sunken and raised surfaces for creating a visual hierarchy. Overlay surface will be on elements like `Popover`.
-
-<Tabs items={['B2B', 'CORE']} defaultIndex={0}>
-  <Tab value="B2B">
-    <ImageZoom
-      width={700}
-      height={450}
-      src="/Elevation_Mockup_B2B.png"
-      alt="B2b elevation"
-    />
-  </Tab>
-  <Tab value="CORE">
-    <ImageZoom
-      width={700}
-      height={450}
-      src="/Elevation_Mockup_CORE.png"
-      alt="Core elevation"
-    />
-  </Tab>
-</Tabs>
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use overlay elevation for temporary, dismissible elements that the user
+      can close or navigate away from.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use overlay elevation for persistent page content. If it's always
+      visible, use raised elevation instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ## Related
 
-- [Token Overview](/foundations/token-overview)
+<TeaserList
+  items={[
+    {
+      title: 'Token Overview',
+      href: '../foundations/token-overview',
+      caption: 'The complete reference for the Marigold design token system.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Spacing',
+      href: '../foundations/spacing',
+      caption:
+        'Spacing scale and visual examples for gaps, padding, and margins.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
