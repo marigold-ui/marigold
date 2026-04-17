@@ -44,7 +44,6 @@
     "eslint": "10.1.0",
     "eslint-plugin-storybook": "10.3.4",
     "husky": "9.1.7",
-    "motion": "12.34.3",
     "playwright": "1.58.2",
     "postcss-import": "16.1.1",
     "postcss-loader": "8.2.1",
