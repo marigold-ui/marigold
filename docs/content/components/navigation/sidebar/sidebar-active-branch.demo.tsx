@@ -13,41 +13,16 @@ export default () => {
             <Sidebar.Header>
               <Text weight="bold">Shop Admin</Text>
             </Sidebar.Header>
-            <Sidebar.Nav>
-              <Sidebar.Item
-                href="/dashboard"
-                active={currentPath === '/dashboard'}
-              >
-                Dashboard
-              </Sidebar.Item>
+            <Sidebar.Nav current={currentPath}>
+              <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
               <Sidebar.Item id="products" textValue="Products">
                 Products
-                <Sidebar.Item
-                  href="/all-products"
-                  active={currentPath === '/all-products'}
-                >
-                  All products
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/categories"
-                  active={currentPath === '/categories'}
-                >
-                  Categories
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/inventory"
-                  active={currentPath === '/inventory'}
-                >
-                  Inventory
-                </Sidebar.Item>
+                <Sidebar.Item href="/all-products">All products</Sidebar.Item>
+                <Sidebar.Item href="/categories">Categories</Sidebar.Item>
+                <Sidebar.Item href="/inventory">Inventory</Sidebar.Item>
               </Sidebar.Item>
               <Sidebar.Separator />
-              <Sidebar.Item
-                href="/settings"
-                active={currentPath === '/settings'}
-              >
-                Settings
-              </Sidebar.Item>
+              <Sidebar.Item href="/settings">Settings</Sidebar.Item>
             </Sidebar.Nav>
           </Sidebar>
           <main className="flex-1 p-4">

@@ -24,9 +24,28 @@
 /*          Surface          */
 /* ========================= */
 
-/* 
+/*
+ * Register surface custom properties as non-inheriting so that a themed
+ * surface (e.g. a destructive Panel setting --ui-border-color) does not
+ * cascade its colors into nested surfaces (Inputs, Buttons, Cards, …).
+ * Each surface resolves its own value via the `var(..., fallback)` pattern.
+ */
+@property --ui-background-color {
+  syntax: '*';
+  inherits: false;
+}
+@property --ui-border-color {
+  syntax: '*';
+  inherits: false;
+}
+@property --ui-highlight-color {
+  syntax: '*';
+  inherits: false;
+}
+
+/*
  * Use for interactive UI elements like inputs, selects, and cards. Anything that
- * sits on the page background and needs a clear visual boundary. 
+ * sits on the page background and needs a clear visual boundary.
  */
 @utility ui-surface {
   @apply rounded-surface relative transition-[background,border,box-shadow];
