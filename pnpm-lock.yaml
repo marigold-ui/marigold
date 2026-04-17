@@ -110,6 +110,9 @@ importers:
       husky:
         specifier: 9.1.7
         version: 9.1.7
+      motion:
+        specifier: 12.34.3
+        version: 12.34.3(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       playwright:
         specifier: 1.58.2
         version: 1.58.2
