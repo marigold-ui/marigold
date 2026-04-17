@@ -1,4 +1,6 @@
 import { UserRoundPlus } from 'lucide-react';
+import { useState } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
@@ -55,6 +57,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   args: { children: null as never },
+  tags: ['component-test'],
   render: args => (
     <Panel {...args}>
       <Panel.Header>
@@ -78,6 +81,16 @@ export const Basic = meta.story({
       </Panel.Footer>
     </Panel>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const title = canvas.getByRole('heading', { name: 'Organizer Profile' });
+    expect(title.tagName).toBe('H2');
+
+    const region = canvas.getByRole('region', { name: 'Organizer Profile' });
+    expect(region).toBeInTheDocument();
+    expect(region.getAttribute('aria-labelledby')).toBe(title.id);
+  },
 });
 
 export const WithHeaderActions = meta.story(() => (
@@ -128,59 +141,124 @@ export const WithHeaderActions = meta.story(() => (
   </Panel>
 ));
 
-export const WithCollapsible = meta.story(() => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>Event Details</Panel.Title>
-    </Panel.Header>
-    <Panel.Content>
-      <Stack space="regular">
-        <TextField label="Event Name" defaultValue="Summer Festival" />
-        <TextField label="Location" defaultValue="Main Stage" />
-      </Stack>
-    </Panel.Content>
-    <Panel.Collapsible>
-      <Panel.CollapsibleTrigger>Advanced Options</Panel.CollapsibleTrigger>
-      <Panel.CollapsibleContent>
+export const WithCollapsible = meta.story({
+  args: { children: null as never },
+  tags: ['component-test'],
+  render: args => (
+    <Panel {...args}>
+      <Panel.Header>
+        <Panel.Title>Event Details</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
         <Stack space="regular">
-          <TextField label="Custom URL Slug" />
-          <TextField label="Tracking Code" />
+          <TextField label="Event Name" defaultValue="Summer Festival" />
+          <TextField label="Location" defaultValue="Main Stage" />
         </Stack>
-      </Panel.CollapsibleContent>
-    </Panel.Collapsible>
-  </Panel>
-));
+      </Panel.Content>
+      <Panel.Collapsible>
+        <Panel.CollapsibleTrigger>Advanced Options</Panel.CollapsibleTrigger>
+        <Panel.CollapsibleContent>
+          <Stack space="regular">
+            <TextField label="Custom URL Slug" />
+            <TextField label="Tracking Code" />
+          </Stack>
+        </Panel.CollapsibleContent>
+      </Panel.Collapsible>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
 
-export const WithMultipleCollapsibles = meta.story(() => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>Location Settings</Panel.Title>
-    </Panel.Header>
-    <Panel.Content>
-      <Stack space="regular">
-        <TextField label="Venue Name" defaultValue="Concert Hall" />
-      </Stack>
-    </Panel.Content>
-    <Panel.Collapsible>
-      <Panel.CollapsibleTrigger>Address</Panel.CollapsibleTrigger>
-      <Panel.CollapsibleContent>
+    // Title is h2, Collapsible trigger sits one level below.
+    const trigger = canvas.getByRole('button', { name: /Advanced Options/ });
+    const triggerHeading = trigger.closest('h3');
+    expect(triggerHeading).not.toBeNull();
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    await userEvent.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    // Collapse again via keyboard (Enter).
+    trigger.focus();
+    await userEvent.keyboard('{Enter}');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    // Expand again via Space — validates keyboard semantics.
+    await userEvent.keyboard(' ');
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  },
+});
+
+export const WithMultipleCollapsibles = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Location Settings</Panel.Title>
+      </Panel.Header>
+      <Panel.Content>
         <Stack space="regular">
-          <TextField label="Street" />
-          <TextField label="City" />
-          <TextField label="Postal Code" />
+          <TextField label="Venue Name" defaultValue="Concert Hall" />
         </Stack>
-      </Panel.CollapsibleContent>
-    </Panel.Collapsible>
-    <Panel.Collapsible>
-      <Panel.CollapsibleTrigger>Accessibility</Panel.CollapsibleTrigger>
-      <Panel.CollapsibleContent>
-        <Stack space="regular">
-          <TextField label="Accessibility Notes" />
-        </Stack>
-      </Panel.CollapsibleContent>
-    </Panel.Collapsible>
-  </Panel>
-));
+      </Panel.Content>
+      <Panel.Collapsible>
+        <Panel.CollapsibleTrigger>Address</Panel.CollapsibleTrigger>
+        <Panel.CollapsibleContent>
+          <Stack space="regular">
+            <TextField label="Street" />
+            <TextField label="City" />
+            <TextField label="Postal Code" />
+          </Stack>
+        </Panel.CollapsibleContent>
+      </Panel.Collapsible>
+      <Panel.Collapsible>
+        <Panel.CollapsibleTrigger>Accessibility</Panel.CollapsibleTrigger>
+        <Panel.CollapsibleContent>
+          <Stack space="regular">
+            <TextField label="Accessibility Notes" />
+          </Stack>
+        </Panel.CollapsibleContent>
+      </Panel.Collapsible>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const addressTrigger = canvas.getByRole('button', { name: 'Address' });
+    const accessibilityTrigger = canvas.getByRole('button', {
+      name: 'Accessibility',
+    });
+
+    // Each Collapsible owns its own state.
+    await userEvent.click(addressTrigger);
+    expect(addressTrigger).toHaveAttribute('aria-expanded', 'true');
+    expect(accessibilityTrigger).toHaveAttribute('aria-expanded', 'false');
+
+    await userEvent.click(accessibilityTrigger);
+    expect(addressTrigger).toHaveAttribute('aria-expanded', 'true');
+    expect(accessibilityTrigger).toHaveAttribute('aria-expanded', 'true');
+
+    await userEvent.click(addressTrigger);
+    expect(addressTrigger).toHaveAttribute('aria-expanded', 'false');
+    expect(accessibilityTrigger).toHaveAttribute('aria-expanded', 'true');
+  },
+});
+
+export const ControlledCollapsible = meta.story({
+  render: function Render() {
+    const [expanded, setExpanded] = useState(false);
+    return (
+      <Panel aria-label="Advanced settings">
+        <Panel.Collapsible expanded={expanded} onExpandedChange={setExpanded}>
+          <Panel.CollapsibleTrigger>Advanced settings</Panel.CollapsibleTrigger>
+          <Panel.CollapsibleContent>
+            <Text>Controlled content.</Text>
+          </Panel.CollapsibleContent>
+        </Panel.Collapsible>
+      </Panel>
+    );
+  },
+});
 
 export const Variants = meta.story(() => (
   <Stack space="regular">

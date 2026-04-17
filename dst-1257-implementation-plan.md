@@ -100,16 +100,27 @@ Jira: [DST-1257](https://reservix.atlassian.net/browse/DST-1257). Work is split 
 
 ### Phase 5 — Tests &nbsp; ·&nbsp; [DST-1329](https://reservix.atlassian.net/browse/DST-1329)
 
+> **Plan reconciliation** — the implementation landed with a different spacing/heading shape than originally drafted:
+>
+> - Padding is a **single prop set on the root** (`p` / `px` / `py`) that fans out to every slot via `--panel-px` / `--panel-py` CSS variables. `Panel.Content` / `Panel.CollapsibleContent` expose a `bleed` boolean (not `inset`) to opt out of the horizontal padding for tables/media.
+> - Section spacing uses `space` on the root (default `regular`), exposed as `--panel-gap`.
+> - Heading level uses `headingLevel` on the root (default `2`). `Panel.Title` renders at `headingLevel`; `Panel.CollapsibleTrigger` renders at `min(headingLevel + 1, 6)` when a Title is present, else `headingLevel` (default h2). Presence of a Title is tracked via `useSlot` (ref-callback), not `React.Children` inspection.
+>
+> Tests below reflect the shipped API.
+
 - [ ] Create `Panel.test.tsx` importing stories (mirror `Card.test.tsx:1-3`).
-- [ ] `Rendering` — root is `<section>`, has `aria-labelledby` matching Title's `id`.
-- [ ] `Sub-components` — Header / Title / Description / Actions / Content / Footer render with correct slots.
-- [ ] `Title level prop` — h2 default; explicit levels 3–6 render correct element.
-- [ ] `Header layout` — Description stays under Title when Actions present.
-- [ ] `inset prop` — default `square-regular` applies padding via `createSpacingVar` + `p-(--inset)`; `'none'` resolves to `padding: 0` via `--spacing-none`; works on both `Panel.Content` and `Panel.CollapsibleContent`.
-- [ ] `Variants` — variant classes (`default`, `master`, `admin`, `destructive`) apply to root.
-- [ ] `Collapsible interaction` — uncontrolled (Space/Enter toggles), controlled (`expanded` + `onExpandedChange`). Verify heading level is `titleLevel + 1` when Title present, else `titleLevel`.
-- [ ] `Multiple Collapsibles` — each independent (no group state).
-- [ ] `Collapsible-only panel` — no Title, `aria-label` on root, Collapsible triggers render at `titleLevel` (default h2).
+- [ ] `Rendering` — root is `<section>`, has `aria-labelledby` matching Title's `id`; collapsible-only panel uses `aria-label` and omits `aria-labelledby`.
+- [ ] `Sub-components` — Header / Title / Description / HeaderActions / Content / Footer render in their grid-area slots.
+- [ ] `headingLevel prop` — default `2`; explicit `3`–`6` render the correct `<h3>`–`<h6>` element on `Panel.Title`.
+- [ ] `Header layout` — Description stays under Title when HeaderActions are present (`[grid-area:description]` on the left column).
+- [ ] `Spacing props` — `space` default `regular` resolves `--panel-gap` to `var(--spacing-regular)`; numeric scale resolves via `calc(var(--spacing) * N)`; `p="square-loose"` drives both `--panel-px` and `--panel-py` to `var(--spacing-square-loose-x/-y)`; `px` / `py` pairs override independently. Values flow to `Panel.Header`, `Panel.Content`, `Panel.Footer`, and `Panel.CollapsibleContent` via the inherited CSS vars (`px-(--panel-px)` on each slot).
+- [ ] `bleed prop` — `Panel.Content bleed` and `Panel.CollapsibleContent bleed` drop the `px-(--panel-px)` utility to render edge-to-edge.
+- [ ] `Variants` — variant classes applied by `useClassNames` (`default`, `master`, `admin`, `destructive`) land on root.
+- [ ] `Collapsible interaction` — uncontrolled (Space/Enter/click toggles `aria-expanded`, chevron rotates), controlled (`expanded` + `onExpandedChange`).
+- [ ] `Collapsible heading level` — renders at `headingLevel + 1` when Title present, else `headingLevel`; clamps to `h6`.
+- [ ] `Multiple Collapsibles` — each independent (no shared state).
+- [ ] `Collapsible-only panel` — no Title, `aria-label` on root, Collapsible trigger renders at `headingLevel` (default `h2`).
+- [ ] Story-level play tests tagged `['component-test']` cover toggle, keyboard, and controlled behaviour (`Basic`, `WithCollapsible`, `WithMultipleCollapsibles`, `ControlledCollapsible`).
 - [ ] `Coverage` meets 90% statements/functions/lines, 85% branches.
 
 ### Phase 6 — Documentation &nbsp; ·&nbsp; [DST-1330](https://reservix.atlassian.net/browse/DST-1330)
