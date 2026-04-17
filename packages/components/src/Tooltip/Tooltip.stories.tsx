@@ -54,13 +54,6 @@ const meta = preview.meta({
       description:
         'The placement padding that should be applied between the element and its surrounding container.',
     },
-    open: {
-      control: {
-        type: 'boolean',
-        default: 'false',
-      },
-      description: 'If the tooltip is open (controlled)',
-    },
     size: {
       control: {
         type: 'text',
@@ -87,11 +80,5 @@ export const Basic = meta.story({
         </Tooltip.Trigger>
       </div>
     );
-  },
-});
-
-export const OpenViaTooltipProp = Basic.extend({
-  args: {
-    open: true,
   },
 });

@@ -185,7 +185,7 @@
   --spacing-container: 50rem;
 
   /* Universal: no spacing (works for gap, padding, and inset recipes) */
-  --spacing-none: --spacing(0);
+  --spacing-collapsed: --spacing(0);
 
   /* Relational spacing */
   --spacing-tight: --spacing(1.5);
