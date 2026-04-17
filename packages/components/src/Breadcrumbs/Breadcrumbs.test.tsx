@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import {
   AutoCollapse,
@@ -13,9 +14,11 @@ import {
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 import { useAutoCollapse } from './useAutoCollapse';
 
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
+
 const user = userEvent.setup();
 
-window.matchMedia = mockMatchMedia(['(width < 640px)']);
+window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
 test('renders items as links with separators', () => {
   render(<Basic.Component />);
