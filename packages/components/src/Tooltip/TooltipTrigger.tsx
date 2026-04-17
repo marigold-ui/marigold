@@ -1,7 +1,6 @@
-import { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode } from 'react';
 import { TooltipTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-import { TooltipContext } from './Context';
 
 type RemovedProps = 'isDisabled' | 'isOpen' | 'children';
 export interface TooltipTriggerProps extends Omit<
@@ -26,14 +25,9 @@ const _TooltipTrigger = ({
   delay = 1000,
   children,
   disabled,
-  open: triggerOpen,
+  open,
   ...rest
 }: TooltipTriggerProps) => {
-  const [tooltipOpen, setTooltipOpen] = useState<boolean | undefined>();
-  const ctx = useMemo(() => ({ setOpen: setTooltipOpen }), []);
-
-  const open = triggerOpen ?? tooltipOpen;
-
   const props = {
     ...rest,
     isDisabled: disabled,
@@ -41,11 +35,7 @@ const _TooltipTrigger = ({
     delay,
   };
 
-  return (
-    <TooltipTrigger {...props}>
-      <TooltipContext value={ctx}>{children}</TooltipContext>
-    </TooltipTrigger>
-  );
+  return <TooltipTrigger {...props}>{children}</TooltipTrigger>;
 };
 
 export { _TooltipTrigger as TooltipTrigger };

@@ -1,5 +1,38 @@
 # @marigold/docs
 
+## 17.4.0
+
+### Patch Changes
+
+- bb8d67a: Add new "Component Principles" foundations page explaining the four pillars of Marigold's component design: accessibility, theming, composition, and layout.
+- 5969186: Replace "Governance Process" and "Governance Principles" pages with a new "How to Contribute" page. Simplify the "Get in touch" page to focus on getting help.
+- f02cd1b: docs(DST-975): document component variants under Appearance section
+  - Add structured variant description tables (`Variant | Description | When to use`) to 14 component documentation pages: Button, SectionMessage, Badge, Card, Text, Accordion, Toast, Tooltip, Link, LinkButton, Divider, Loader, Menu, and Table
+  - Retrofit Table's existing bullet list to the consistent table format
+  - Improve Card appearance demo with realistic venue data instead of placeholder content
+
+- 39502d3: bugfix[DST-1300]: Readd missing file field anatomy pic
+- d01eb55: Add `/api/manifest.json` route that returns a JSON index of all documentation pages for AI agent discovery.
+- fc7578c: Write complete ToggleButton documentation with anatomy diagrams, usage demos (standalone toggle, formatting toolbar, filter toggles, disabled state), Do/Don't guidelines, and alternative components section. Merge ToggleButtonGroup docs into the ToggleButton page.
+- Updated dependencies [5dfb6da]
+- Updated dependencies [f4f7a05]
+- Updated dependencies [bbf0832]
+- Updated dependencies [3f77810]
+- Updated dependencies [85b2eb0]
+- Updated dependencies [d341a9d]
+- Updated dependencies [d6507d5]
+- Updated dependencies [f560d95]
+- Updated dependencies [a4b467f]
+- Updated dependencies [50566a2]
+- Updated dependencies [203baca]
+- Updated dependencies [27d13b7]
+- Updated dependencies [49fc2e2]
+- Updated dependencies [969c8cc]
+  - @marigold/theme-rui@5.2.4
+  - @marigold/components@17.4.0
+  - @marigold/system@17.4.0
+  - @marigold/icons@1.3.38
+
 ## 17.3.1
 
 ### Patch Changes
