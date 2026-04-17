@@ -48,7 +48,7 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <ConfirmationContext.Provider value={confirm}>
+    <ConfirmationContext value={confirm}>
       {children}
       <ConfirmationDialog
         open={open}
@@ -67,7 +67,7 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
       >
         {confirmation?.content}
       </ConfirmationDialog>
-    </ConfirmationContext.Provider>
+    </ConfirmationContext>
   );
 };
 

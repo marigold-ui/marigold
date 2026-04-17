@@ -101,45 +101,19 @@ const LShapeLayout = ({
                 />
               </svg>
             </Sidebar.Header>
-            <Sidebar.Nav>
-              <Sidebar.Item
-                href="/dashboard"
-                active={currentPath === '/dashboard'}
-              >
-                Dashboard
-              </Sidebar.Item>
-              <Sidebar.Item
-                href="/analytics"
-                active={currentPath === '/analytics'}
-              >
-                Analytics
-              </Sidebar.Item>
+            <Sidebar.Nav current={currentPath}>
+              <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+              <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
               <Sidebar.Separator />
               <Sidebar.Item id="management" textValue="Management">
                 Management
-                <Sidebar.Item href="/users" active={currentPath === '/users'}>
-                  Users
-                </Sidebar.Item>
-                <Sidebar.Item href="/teams" active={currentPath === '/teams'}>
-                  Teams
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/billing"
-                  active={currentPath === '/billing'}
-                >
-                  Billing
-                </Sidebar.Item>
+                <Sidebar.Item href="/users">Users</Sidebar.Item>
+                <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+                <Sidebar.Item href="/billing">Billing</Sidebar.Item>
               </Sidebar.Item>
               <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-              <Sidebar.Item href="/general" active={currentPath === '/general'}>
-                General
-              </Sidebar.Item>
-              <Sidebar.Item
-                href="/security"
-                active={currentPath === '/security'}
-              >
-                Security
-              </Sidebar.Item>
+              <Sidebar.Item href="/general">General</Sidebar.Item>
+              <Sidebar.Item href="/security">Security</Sidebar.Item>
             </Sidebar.Nav>
             <Sidebar.Footer>
               <Text fontSize="xs">v1.0.0</Text>

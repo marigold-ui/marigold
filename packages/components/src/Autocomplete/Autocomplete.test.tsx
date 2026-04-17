@@ -1,8 +1,11 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, WithSections } from './Autocomplete.stories';
+
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 const user = userEvent.setup();
 
@@ -233,7 +236,7 @@ test('calls onSubmit with custom value on Enter when no option is focused', asyn
 
 describe('mobile view', () => {
   beforeEach(() => {
-    window.matchMedia = mockMatchMedia(['(width < 640px)']);
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
   });
 
   afterEach(() => {
