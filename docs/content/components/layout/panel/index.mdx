@@ -87,6 +87,26 @@ Some sections have controls that act on the whole section, like "Invite member" 
 
 <ComponentDemo name="panel-header-actions" />
 
+### Content
+
+The content area is the body of the Panel. It's deliberately open, and in practice most sections you'll build are one of three shapes:
+
+- **Form sections** group related fields under one topic, like "Store information" or "Notifications". Stack the fields so labels and inputs share a vertical rhythm.
+- **Data sections** put a single table, list, chart, diagram, or media surface at the centre of the region. These usually want [full-width content](#full-width-content).
+- **Prose sections** explain a concept or a consequence before the user acts, common above a Danger zone or at the top of a settings page.
+
+Panel doesn't impose a layout primitive. Reach for the same tools you'd use outside a Panel (Stack, Inline, a grid). The Panel owns the region; the content inside still owns its own rhythm.
+
+#### Full-width content
+
+By default, content sits inside the Panel's horizontal padding so its left and right edges line up with the header and footer. That shared edge is what makes the Panel read as one region.
+
+Tables, media, charts, and status bars are the exceptions. They look cramped when inset and read best edge-to-edge. Opt in with the `bleed` prop on the content area.
+
+<ComponentDemo name="panel-bleed" />
+
+Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it.
+
 ### Collapsible sections
 
 Use `Panel.Collapsible` to offer a sub-section that's hidden by default, typically for advanced or optional fields. The trigger is rendered as a real heading (see [Heading levels](#heading-levels)) and exposes `aria-expanded` state. Keyboard users activate it with <kbd>Enter</kbd> or <kbd>Space</kbd>.
@@ -116,14 +136,6 @@ const [expanded, setExpanded] = useState(false);
 #### Multiple collapsibles
 
 A Panel can hold more than one Collapsible, but this is rarely the right call. If a Panel needs two or more independent collapsible sub-sections, the content has usually outgrown a single Panel. Prefer splitting it into separate Panels with clearer titles.
-
-### Full-width content
-
-Some content (tables, media, status bars) reads best when it spans edge-to-edge inside the Panel, without the Panel's horizontal padding. Opt in with the `bleed` prop on `Panel.Content` (or `Panel.CollapsibleContent`).
-
-<ComponentDemo name="panel-bleed" />
-
-A table inside a Panel aligns its cell edges with the Panel's header and footer. This relies on the `--cell-edge-padding` CSS variable in the theme. `theme-rui` already wires this up, so `Panel.Content bleed` + `<Table>` works out of the box. Custom themes that want the same alignment should set `[--cell-edge-padding:var(--panel-px,var(--cell-x-padding))]` on the table slot.
 
 ### Variants
 
