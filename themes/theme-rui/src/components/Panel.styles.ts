@@ -15,11 +15,13 @@ export const Panel: ThemeComponent<'Panel'> = {
           'border border-destructive-accent bg-destructive/10 [--panel-accent:var(--color-destructive-foreground)]',
       },
       size: {
+        default: '',
         form: 'max-w-xl',
       },
     },
     defaultVariants: {
       variant: 'default',
+      size: 'default',
     },
   }),
   header: cva({}),
