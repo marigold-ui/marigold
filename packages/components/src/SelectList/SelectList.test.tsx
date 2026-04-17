@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
 import {
   Action,
   Basic,
@@ -27,8 +26,10 @@ describe('SelectList', () => {
   });
 
   test('support refs', () => {
-    const SelectListRef = createRef();
-    render(<Basic.Component aria-label="Test" ref={SelectListRef as any} />);
+    const SelectListRef: { current: HTMLUListElement | null } = {
+      current: null,
+    };
+    render(<Basic.Component aria-label="Test" ref={SelectListRef} />);
 
     expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
   });

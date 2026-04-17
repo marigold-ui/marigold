@@ -31,7 +31,7 @@ export const _ToggleButtonGroup = ({
   });
 
   return (
-    <ToggleButtonContext.Provider value={{ variant, size }}>
+    <ToggleButtonContext value={{ variant, size }}>
       <ToggleButtonGroup
         className={classNames.group}
         isDisabled={disabled}
@@ -39,7 +39,7 @@ export const _ToggleButtonGroup = ({
       >
         {children}
       </ToggleButtonGroup>
-    </ToggleButtonContext.Provider>
+    </ToggleButtonContext>
   );
 };
 

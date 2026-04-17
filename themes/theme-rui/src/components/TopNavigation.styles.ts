@@ -4,7 +4,7 @@ export const TopNavigation: ThemeComponent<'TopNavigation'> = {
   container: cva({
     base: [
       'w-full min-h-14',
-      'bg-background border-b border-border',
+      'border-b border-border',
       'gap-4 px-3 sm:gap-6 md:gap-8 lg:gap-12',
     ],
   }),

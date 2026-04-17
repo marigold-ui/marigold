@@ -1,4 +1,5 @@
 import { render, renderHook, screen } from '@testing-library/react';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
 import { Table } from './Table';
@@ -11,7 +12,9 @@ import {
 import { renderDragPreview } from './TableDragPreview';
 import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
 
-window.matchMedia = mockMatchMedia(['(width < 640px)']);
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
+
+window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
 describe('Basic Rendering', () => {
   test('applies colspans to cells', () => {

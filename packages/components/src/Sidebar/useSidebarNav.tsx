@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, use, useCallback, useMemo, useState } from 'react';
 import type { KeyboardEvent, ReactNode, RefObject } from 'react';
 import { createFocusManager } from '@react-aria/focus';
 import type { SidebarNode } from './collection';
@@ -114,7 +108,7 @@ export const useLastDistinctValue = <T,>(value: T): T | undefined => {
 };
 
 export const useRovingItem = (key: string) => {
-  const ctx = useContext(RovingTabIndexContext);
+  const ctx = use(RovingTabIndexContext);
   if (!ctx) {
     throw new Error(
       'useRovingItem must be used within a RovingTabIndexProvider'
