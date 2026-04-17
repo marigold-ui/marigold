@@ -3,16 +3,16 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const Panel: ThemeComponent<'Panel'> = {
   root: cva({
-    base: 'ui-surface shadow-elevation-raised [--panel-accent:currentColor]',
+    base: 'rounded-surface shadow-elevation-raised [--panel-accent:currentColor]',
     variants: {
       variant: {
-        default: '',
+        default: 'ui-surface',
         master:
-          'border border-access-master-accent [--panel-accent:var(--color-access-master-accent)] inset-shadow-[0_0_6px_0_var(--color-access-master-accent),0_0_14px_-4px_var(--color-access-master-accent)]',
+          'border border-access-master-accent bg-access-master/10 [--panel-accent:var(--color-access-master-foreground)]',
         admin:
-          'border border-access-admin-accent [--panel-accent:var(--color-access-admin-accent)] inset-shadow-[0_0_6px_0_var(--color-access-admin-accent),0_0_14px_-4px_var(--color-access-admin-accent)]',
+          'border border-access-admin-accent bg-access-admin/10 [--panel-accent:var(--color-access-admin-foreground)]',
         destructive:
-          'border border-destructive-accent [--panel-accent:var(--color-destructive-accent)] inset-shadow-[0_0_6px_0_var(--color-destructive-accent),0_0_14px_-4px_var(--color-destructive-accent)]',
+          'border border-destructive-accent bg-destructive/10 [--panel-accent:var(--color-destructive-foreground)]',
       },
       size: {
         form: 'max-w-xl',
