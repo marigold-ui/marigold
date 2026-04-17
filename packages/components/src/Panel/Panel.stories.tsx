@@ -1,10 +1,9 @@
 import { UserRoundPlus } from 'lucide-react';
+import type { CSSProperties } from 'react';
 import preview from '.storybook/preview';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
-import { Card } from '../Card/Card';
-import { Headline } from '../Headline/Headline';
 import { Inline } from '../Inline/Inline';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
@@ -221,52 +220,6 @@ export const Variants = meta.story(() => (
   </Stack>
 ));
 
-export const VariantsVsCard = meta.story(() => (
-  <div className="grid grid-cols-2 items-start gap-4">
-    <Headline level="3">Panel</Headline>
-    <Headline level="3">Card</Headline>
-
-    <Panel>
-      <Panel.Header>
-        <Panel.Title>Default Panel</Panel.Title>
-      </Panel.Header>
-      <Panel.Content>
-        <Text>Panel with default variant.</Text>
-      </Panel.Content>
-    </Panel>
-    <Card>
-      <Headline level="4">Default Card</Headline>
-      <Text>Card with default variant.</Text>
-    </Card>
-
-    <Panel variant="master">
-      <Panel.Header>
-        <Panel.Title>Master Panel</Panel.Title>
-      </Panel.Header>
-      <Panel.Content>
-        <Text>Panel with master variant.</Text>
-      </Panel.Content>
-    </Panel>
-    <Card variant="master">
-      <Headline level="4">Master Card</Headline>
-      <Text>Card with master variant.</Text>
-    </Card>
-
-    <Panel variant="admin">
-      <Panel.Header>
-        <Panel.Title>Admin Panel</Panel.Title>
-      </Panel.Header>
-      <Panel.Content>
-        <Text>Panel with admin variant.</Text>
-      </Panel.Content>
-    </Panel>
-    <Card variant="admin">
-      <Headline level="4">Admin Card</Headline>
-      <Text>Card with admin variant.</Text>
-    </Card>
-  </div>
-));
-
 const orders = [
   {
     id: '1001',
@@ -369,6 +322,150 @@ export const TableInside = meta.story(() => (
   </Stack>
 ));
 
+type AccentSpec = {
+  id: string;
+  title: string;
+  description: string;
+  accent: string;
+};
+
+const accentSpecs: AccentSpec[] = [
+  {
+    id: 'master',
+    title: 'Master Access',
+    description:
+      'Full workspace control — users with this role can modify anything.',
+    accent: 'var(--color-access-master-accent)',
+  },
+  {
+    id: 'admin',
+    title: 'Admin Access',
+    description: 'Manage members and billing. Cannot delete the workspace.',
+    accent: 'var(--color-access-admin-accent)',
+  },
+  {
+    id: 'destructive',
+    title: 'Danger Zone',
+    description: 'Irreversible actions that permanently affect this workspace.',
+    accent: 'var(--color-destructive-accent)',
+  },
+];
+
+const SampleForm = () => (
+  <Stack space="regular">
+    <TextField label="Organizer Name" defaultValue="Marigold Events" />
+    <TextField label="Support Email" defaultValue="hello@marigold-ui.io" />
+  </Stack>
+);
+
+const DesignHeading = ({
+  index,
+  title,
+  rationale,
+}: {
+  index: number;
+  title: string;
+  rationale: string;
+}) => (
+  <Stack space="0.5">
+    <Text weight="semibold" size="lg">
+      {index}. {title}
+    </Text>
+    <Text size="sm" color="secondary">
+      {rationale}
+    </Text>
+  </Stack>
+);
+
+const ELEVATION = 'var(--shadow-elevation-raised)';
+const BORDER_PANEL =
+  'ui-surface shadow-elevation-raised flex flex-col gap-3 rounded-md border p-4';
+
+type BorderVariantProps = AccentSpec & { extra: CSSProperties };
+
+const BorderVariantPanel = ({
+  title,
+  description,
+  accent,
+  extra,
+}: BorderVariantProps) => (
+  <section
+    className={BORDER_PANEL}
+    style={
+      {
+        '--accent': accent,
+        borderColor: accent,
+        ...extra,
+      } as CSSProperties
+    }
+  >
+    <div className="flex flex-col gap-0.5">
+      <h3 className="text-base leading-6 font-semibold text-(--accent)">
+        {title}
+      </h3>
+      <Text size="sm" color="secondary">
+        {description}
+      </Text>
+    </div>
+    <SampleForm />
+  </section>
+);
+
+const borderDesigns: Array<{
+  title: string;
+  rationale: string;
+  extra: CSSProperties;
+}> = [
+  {
+    title: 'Tight edge fade (4px)',
+    rationale:
+      'Border bleeds inward over 4px via a single inset shadow at full accent color. Crisp edge, minimal atmosphere.',
+    extra: {
+      boxShadow: `${ELEVATION}, inset 0 0 4px 0 var(--accent)`,
+    },
+  },
+  {
+    title: 'Soft fade (10px)',
+    rationale:
+      'Moderate 10px inner glow. The border reads as "diffused" — like the accent color leaks inward.',
+    extra: {
+      boxShadow: `${ELEVATION}, inset 0 0 10px 0 var(--accent)`,
+    },
+  },
+  {
+    title: 'Subtle surface tint (3%)',
+    rationale:
+      'No inset shadow; the body carries a 3% accent wash. Coloristic cue without edge effects.',
+    extra: {
+      background: `color-mix(in oklab, var(--accent) 3%, var(--color-surface))`,
+    },
+  },
+  {
+    title: 'Inner band + top gradient wash',
+    rationale:
+      'Concentric 4px inset band acts as a soft second outline inside the border, combined with a top-weighted gradient that fades 8% accent into neutral by 60% height. Framed and atmospheric at once.',
+    extra: {
+      boxShadow: `${ELEVATION}, inset 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent)`,
+      background: `linear-gradient(to bottom, color-mix(in oklab, var(--accent) 8%, var(--color-surface)), var(--color-surface) 60%)`,
+    },
+  },
+];
+
+export const VariantDesignExplorations = meta.story(() => (
+  <Stack space="section">
+    {borderDesigns.map(({ title, rationale, extra }, index) => (
+      <Stack key={title} space="regular">
+        <DesignHeading index={index + 1} title={title} rationale={rationale} />
+        <div className="grid grid-cols-3 gap-4">
+          {accentSpecs.map(spec => (
+            <BorderVariantPanel key={spec.id} {...spec} extra={extra} />
+          ))}
+        </div>
+      </Stack>
+    ))}
+  </Stack>
+));
+
 export const CustomPadding = meta.story(() => (
   <Stack space="regular">
     <Panel p="square-loose">
@@ -400,62 +497,6 @@ export const CustomPadding = meta.story(() => (
       </Panel.Content>
       <Panel.Footer>
         <Button>Action</Button>
-      </Panel.Footer>
-    </Panel>
-  </Stack>
-));
-
-export const FullPage = meta.story(() => (
-  <Stack space="section">
-    <Panel>
-      <Panel.Header>
-        <Panel.Title>Profile</Panel.Title>
-        <Panel.Description>Your public profile information.</Panel.Description>
-      </Panel.Header>
-      <Panel.Content>
-        <Stack space="regular">
-          <TextField label="Display Name" defaultValue="Sebastian" />
-          <TextField label="Bio" defaultValue="Design Systems Engineer" />
-        </Stack>
-      </Panel.Content>
-    </Panel>
-
-    <Panel>
-      <Panel.Header>
-        <Panel.Title>Notification Preferences</Panel.Title>
-      </Panel.Header>
-      <Panel.Content>
-        <Stack space="regular">
-          <TextField label="Email" defaultValue="sebastian@marigold-ui.io" />
-        </Stack>
-      </Panel.Content>
-      <Panel.Collapsible>
-        <Panel.CollapsibleTrigger>
-          Advanced Notification Settings
-        </Panel.CollapsibleTrigger>
-        <Panel.CollapsibleContent>
-          <Stack space="regular">
-            <TextField label="Webhook URL" />
-          </Stack>
-        </Panel.CollapsibleContent>
-      </Panel.Collapsible>
-    </Panel>
-
-    <Panel variant="destructive">
-      <Panel.Header>
-        <Panel.Title>Danger Zone</Panel.Title>
-        <Panel.Description>
-          These actions are permanent and cannot be undone.
-        </Panel.Description>
-      </Panel.Header>
-      <Panel.Content>
-        <Text>
-          Deleting your account removes all data, including events and
-          transactions.
-        </Text>
-      </Panel.Content>
-      <Panel.Footer>
-        <Button variant="destructive">Delete Account</Button>
       </Panel.Footer>
     </Panel>
   </Stack>
