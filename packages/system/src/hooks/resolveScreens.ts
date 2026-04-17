@@ -1,8 +1,8 @@
 const BREAKPOINT_NAMES = ['sm', 'md', 'lg', 'xl', '2xl'] as const;
 
-export function resolveScreens(
+export const resolveScreens = (
   themeScreens?: Record<string, string>
-): Record<string, string> {
+): Record<string, string> => {
   if (themeScreens && Object.keys(themeScreens).length > 0) return themeScreens;
   if (typeof document === 'undefined') return {};
 
@@ -13,4 +13,4 @@ export function resolveScreens(
     if (value) screens[name] = value;
   }
   return screens;
-}
+};

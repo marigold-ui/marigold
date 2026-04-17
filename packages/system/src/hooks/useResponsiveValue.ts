@@ -1,7 +1,4 @@
-/**
- * Based on https://theme-ui.com/packages/match-media/
- */
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { resolveScreens } from './resolveScreens';
 import { useTheme } from './useTheme';
 
@@ -25,27 +22,36 @@ export const useResponsiveValue = <T>(
     );
   }
 
-  const [index, setIndex] = useState(defaultIndex);
-  useEffect(() => {
-    if (typeof window == 'undefined') return;
-    const getIndex = () =>
-      Object.values(screens).filter(
-        breakpoint =>
-          window.matchMedia(`screen and (min-width: ${breakpoint})`).matches
-      ).length;
+  const queries = useMemo(
+    () =>
+      Object.values(screens).map(
+        breakpoint => `screen and (min-width: ${breakpoint})`
+      ),
+    [screens]
+  );
 
-    const handleResize = () => {
-      const newIndex = getIndex();
-      if (index !== newIndex) {
-        setIndex(newIndex);
-      }
-    };
+  const subscribe = useCallback(
+    (onStoreChange: () => void) => {
+      if (typeof window == 'undefined') return () => {};
 
-    // Trigger resize on mount
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [screens, index]);
+      const mediaQueries = queries.map(q => window.matchMedia(q));
+      mediaQueries.forEach(mq => mq.addEventListener('change', onStoreChange));
+      return () =>
+        mediaQueries.forEach(mq =>
+          mq.removeEventListener('change', onStoreChange)
+        );
+    },
+    [queries]
+  );
+
+  const getSnapshot = useCallback(() => {
+    if (typeof window == 'undefined') return defaultIndex;
+    return queries.filter(q => window.matchMedia(q).matches).length;
+  }, [queries, defaultIndex]);
+
+  const getServerSnapshot = useCallback(() => defaultIndex, [defaultIndex]);
+
+  const index = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   // Return the index or last existing index of given values
   return values[index >= values.length ? values.length - 1 : index];

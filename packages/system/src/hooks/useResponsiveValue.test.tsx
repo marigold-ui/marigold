@@ -13,6 +13,8 @@ const originalMatchMedia = window.matchMedia;
 const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
   }));
 
 afterEach(() => {
@@ -80,18 +82,17 @@ test('uses breakpoints from theme', () => {
   expect(result.current).toEqual('two');
 });
 
-test('responds to resize event', () => {
-  window.matchMedia = mockMatchMedia([
-    `screen and (min-width: ${sm})`,
-    `screen and (min-width: ${md})`,
-    `screen and (min-width: ${lg})`,
-  ]);
-  let resize: () => void;
-  vi.spyOn(window, 'addEventListener').mockImplementation(
-    (event: string, cb: EventListenerOrEventListenerObject) => {
-      if (event === 'resize') resize = cb as () => void;
-    }
-  );
+test('responds to matchMedia change', () => {
+  const listeners: Array<() => void> = [];
+  window.matchMedia = vi.fn().mockImplementation(query => ({
+    matches: [
+      `screen and (min-width: ${sm})`,
+      `screen and (min-width: ${md})`,
+      `screen and (min-width: ${lg})`,
+    ].includes(query),
+    addEventListener: (_: string, cb: () => void) => listeners.push(cb),
+    removeEventListener: vi.fn(),
+  }));
 
   const { result } = renderHook(
     () => useResponsiveValue(['one', 'two', 'three', 'four']),
@@ -100,21 +101,33 @@ test('responds to resize event', () => {
 
   expect(result.current).toEqual('four');
 
-  window.matchMedia = mockMatchMedia([
-    `screen and (min-width: ${sm})`,
-    `screen and (min-width: ${md})`,
-  ]);
-  act(() => resize());
+  window.matchMedia = vi.fn().mockImplementation(query => ({
+    matches: [
+      `screen and (min-width: ${sm})`,
+      `screen and (min-width: ${md})`,
+    ].includes(query),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  }));
+  act(() => listeners.forEach(cb => cb()));
 
   expect(result.current).toEqual('three');
 
-  window.matchMedia = mockMatchMedia([`screen and (min-width: ${sm})`]);
-  act(() => resize());
+  window.matchMedia = vi.fn().mockImplementation(query => ({
+    matches: [`screen and (min-width: ${sm})`].includes(query),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  }));
+  act(() => listeners.forEach(cb => cb()));
 
   expect(result.current).toEqual('two');
 
-  window.matchMedia = mockMatchMedia([]);
-  act(() => resize());
+  window.matchMedia = vi.fn().mockImplementation(() => ({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  }));
+  act(() => listeners.forEach(cb => cb()));
 
   expect(result.current).toEqual('one');
 });
