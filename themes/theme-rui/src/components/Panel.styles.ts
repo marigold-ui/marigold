@@ -3,16 +3,16 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const Panel: ThemeComponent<'Panel'> = {
   root: cva({
-    base: 'ui-surface shadow-elevation-raised',
+    base: 'ui-surface shadow-elevation-raised [--panel-accent:currentColor]',
     variants: {
       variant: {
         default: '',
         master:
-          'border border-access-master-accent inset-shadow-[0_0_40px_-10px_var(--color-access-master-accent)]',
+          'border border-access-master-accent [--panel-accent:var(--color-access-master-accent)] inset-shadow-[0_0_6px_0_var(--color-access-master-accent),0_0_14px_-4px_var(--color-access-master-accent)]',
         admin:
-          'border border-access-admin-accent inset-shadow-[0_0_40px_-10px_var(--color-access-admin-accent)]',
+          'border border-access-admin-accent [--panel-accent:var(--color-access-admin-accent)] inset-shadow-[0_0_6px_0_var(--color-access-admin-accent),0_0_14px_-4px_var(--color-access-admin-accent)]',
         destructive:
-          'border border-destructive-accent inset-shadow-[0_0_40px_-10px_var(--color-destructive-accent)]',
+          'border border-destructive-accent [--panel-accent:var(--color-destructive-accent)] inset-shadow-[0_0_6px_0_var(--color-destructive-accent),0_0_14px_-4px_var(--color-destructive-accent)]',
       },
       size: {
         form: 'max-w-xl',
@@ -24,7 +24,7 @@ export const Panel: ThemeComponent<'Panel'> = {
   }),
   header: cva({}),
   title: cva({
-    base: 'text-base font-semibold leading-6',
+    base: 'text-base font-semibold leading-6 text-(--panel-accent)',
   }),
   description: cva({
     base: 'text-sm text-secondary',
