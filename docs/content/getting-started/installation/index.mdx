@@ -3,41 +3,96 @@ title: Installation
 description: How to setup and get started with Marigold.
 ---
 
-Marigold requires two packages: a core component library and a theme. Components ship unstyled — the theme provides all visual styling.
+On this page, you'll find instructions to install Marigold and set up the provider. If you want to try it out first without any setup, check out our interactive playground.
 
 <Callout title="Want to try it first?">
   Use our [interactive playground](https://play.marigold-ui.io/) to explore
   Marigold without any setup.
 </Callout>
 
-## Install packages
+## Installation
 
 Install the component library, the system package, and the RUI theme:
 
+{/* prettier-ignore-start */}
 <Tabs items={['npm', 'pnpm']}>
   <Tab value="npm">
-    ```bash npm install @marigold/components @marigold/system
-    @marigold/theme-rui ```
+    ``` bash
+     npm install @marigold/components @marigold/system @marigold/theme-rui 
+    ```
   </Tab>
   <Tab value="pnpm">
-    ```bash pnpm add @marigold/components @marigold/system @marigold/theme-rui
+    ``` bash 
+    pnpm add @marigold/components @marigold/system @marigold/theme-rui
     ```
   </Tab>
 </Tabs>
+
+{/* prettier-ignore-end */}
 
 Marigold also provides an additional package you can install as needed:
 
 - `@marigold/icons` — A set of ready-to-use icon components
 
-If you use TypeScript, set [`moduleResolution`](https://www.typescriptlang.org/tsconfig#moduleResolution) to `"nodenext"` in your `tsconfig.json` — the theme packages use ESM exports.
+## Set up a Marigold project with Tailwind CSS (Recommended)
 
-## Set up the provider
+Pairing Marigold with Tailwind CSS gives you the full design system as it was intended, not a frozen, pre-compiled snapshot. You can override design tokens to match your brand, tree-shake unused styles for smaller bundles, and use the same utility scale (spacing, colors, breakpoints) in your own components that Marigold uses internally. Dev tooling like IntelliSense and JIT compilation work across both Marigold and your app code, making this the most flexible and ergonomic setup for real-world projects.
 
-Wrap your app with `MarigoldProvider` and pass it the theme. This is required for all components to render correctly.
+If you're starting a new project, we recommend using [Vite](https://vitejs.dev/), [Next.js](https://nextjs.org/) as your build tool or any other modern JavaScript framework. Marigold is designed to work seamlessly with these tools.
 
-How you load the CSS depends on whether you use Tailwind CSS or not. Pick one of the two approaches below.
+### Vite
 
-### Quick start (pre-built CSS)
+First set up a new Vite project, following the [official guide](https://vitejs.dev/guide/). Then install [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite) and follow the instructions below to add Marigold.
+
+Add the following content to your `index.css`:
+
+```css
+@import 'tailwindcss';
+@import '@marigold/theme-rui/theme.css';
+
+/* You need to add the path to the marigold packages */
+@source '../node_modules/@marigold';
+```
+
+Then wrap your app with `MarigoldProvider` and pass it the theme. This is required for all components to render correctly.
+
+```jsx
+import { MarigoldProvider } from '@marigold/components';
+import theme from '@marigold/theme-rui';
+
+export const App = () => (
+  <MarigoldProvider theme={theme}>{/* Your App */}</MarigoldProvider>
+);
+```
+
+### Next.js
+
+Set up a new Next.js project using the [official guide](https://nextjs.org/docs/getting-started). Then install Tailwind CSS by following the [Next.js installation guide](https://tailwindcss.com/docs/installation/using-postcss) and follow the instructions below to add Marigold. You can decide to automatically install Tailwind CSS, when installing Next.js.
+
+add the following content to your `globals.css`:
+
+```css
+@import 'tailwindcss';
+@import '@marigold/theme-rui/theme.css';
+
+/* You need to add the path to the marigold packages */
+@source '../../node_modules/@marigold';
+```
+
+Then wrap the `page.tsx` with `MarigoldProvider` and pass it the theme. This is required for all components to render correctly.
+
+```jsx
+'use client';
+import { MarigoldProvider } from '@marigold/components';
+import theme from '@marigold/theme-rui';
+
+export const App = () => {
+  return <MarigoldProvider theme={theme}>{/* Your App */}</MarigoldProvider>;
+};
+export default App;
+```
+
+## Quick start (pre-built CSS)
 
 Import the pre-built CSS file that ships with the theme. This is the fastest way to get started but does not allow customization beyond the provided design tokens.
 
@@ -58,52 +113,6 @@ You also need to add `data-theme="rui"` to your `<html>` element so the theme st
   ...
 </html>
 ```
-
-### With Tailwind CSS (recommended)
-
-Using Tailwind CSS alongside Marigold lets you customize and extend the theme and use Tailwind utilities throughout your app.
-
-First, install Tailwind CSS. Follow the official [installation guide](https://tailwindcss.com/docs/installation) for your setup. Then create a CSS file (e.g. `styles.css`) with the following content:
-
-```css
-@import 'tailwindcss';
-@import '@marigold/theme-rui/theme.css';
-
-/* You need to add the path to the marigold packages */
-@source '../node_modules/@marigold';
-```
-
-<Callout title="Next.js">
-  In Next.js projects the CSS file typically lives in `app/`, which is one level
-  deeper. Use `../../node_modules/@marigold` instead.
-</Callout>
-
-Make sure to import this CSS file in your app's entry point (e.g. your root layout or main file).
-
-**Vite**: Add the `@tailwindcss/vite` plugin to your `vite.config.ts`. See the [Tailwind Vite guide](https://tailwindcss.com/docs/installation/using-vite).
-
-**Next.js / PostCSS**: Install `@tailwindcss/postcss` and create a `postcss.config.mjs`:
-
-```js
-export default {
-  plugins: {
-    '@tailwindcss/postcss': {},
-  },
-};
-```
-
-Then wrap your app with the provider — no separate CSS import needed since Tailwind generates it for you:
-
-{/* prettier-ignore-start */}
-```jsx
-import { MarigoldProvider } from '@marigold/components';
-import theme from '@marigold/theme-rui';
-
-export const App = () => (
-  <MarigoldProvider theme={theme}>{/* Your App */}</MarigoldProvider>
-);
-```
-{/* prettier-ignore-end */}
 
 ## Adding fonts
 
