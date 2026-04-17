@@ -260,6 +260,45 @@ export const ControlledCollapsible = meta.story({
   },
 });
 
+export const AriaLabeled = meta.story(() => (
+  <Panel aria-label="Collapsible-only panel">
+    <Panel.Content>
+      <Text>
+        A Panel can be labelled with <code>aria-label</code> when there is no
+        visible title — useful for collapsible-only sections.
+      </Text>
+    </Panel.Content>
+  </Panel>
+));
+
+export const CollapsibleDefaultExpanded = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>Notification Preferences</Panel.Title>
+    </Panel.Header>
+    <Panel.Collapsible defaultExpanded>
+      <Panel.CollapsibleTrigger>Channels</Panel.CollapsibleTrigger>
+      <Panel.CollapsibleContent>
+        <Text>Email, SMS, and push notifications are enabled by default.</Text>
+      </Panel.CollapsibleContent>
+    </Panel.Collapsible>
+  </Panel>
+));
+
+export const CollapsibleDisabled = meta.story(() => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>Billing</Panel.Title>
+    </Panel.Header>
+    <Panel.Collapsible disabled>
+      <Panel.CollapsibleTrigger>Payment methods</Panel.CollapsibleTrigger>
+      <Panel.CollapsibleContent>
+        <Text>Hidden because the user cannot change this section.</Text>
+      </Panel.CollapsibleContent>
+    </Panel.Collapsible>
+  </Panel>
+));
+
 export const Variants = meta.story(() => (
   <Stack space="regular">
     <Panel>

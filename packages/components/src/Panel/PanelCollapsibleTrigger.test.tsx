@@ -1,19 +1,22 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { Panel } from './Panel';
 import { ControlledCollapsible, WithCollapsible } from './Panel.stories';
-import { renderPanel } from './test-utils';
 
 const user = userEvent.setup();
 
 describe('Panel.CollapsibleTrigger', () => {
   test('throws when rendered outside <Panel.Collapsible>', () => {
     const renderOrphan = () =>
-      renderPanel(
-        <Panel aria-label="Orphan trigger">
-          <Panel.CollapsibleTrigger>Orphan</Panel.CollapsibleTrigger>
-        </Panel>
+      render(
+        <MarigoldProvider theme={theme}>
+          <Panel aria-label="Orphan trigger">
+            <Panel.CollapsibleTrigger>Orphan</Panel.CollapsibleTrigger>
+          </Panel>
+        </MarigoldProvider>
       );
 
     expect(renderOrphan).toThrow(/must be used within a <Panel\.Collapsible>/);

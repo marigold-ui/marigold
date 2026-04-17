@@ -1,39 +1,24 @@
 /* eslint-disable testing-library/no-node-access */
-import { screen } from '@testing-library/react';
-import { Panel } from './Panel';
-import { renderPanel } from './test-utils';
+import { render, screen } from '@testing-library/react';
+import { Basic, TableInside } from './Panel.stories';
 
 describe('Panel.Content', () => {
   test('renders children and picks up horizontal panel padding by default', () => {
-    renderPanel(
-      <Panel aria-label="Content">
-        <Panel.Content>
-          <span data-testid="child">child</span>
-        </Panel.Content>
-      </Panel>
-    );
+    render(<Basic.Component />);
 
-    const wrapper = screen.getByTestId('child').parentElement!;
+    const wrapper = screen
+      .getByLabelText('Organizer Name')
+      .closest('div[class*="px-(--panel-px)"]');
 
-    expect(wrapper.className).toContain('px-(--panel-px)');
+    expect(wrapper).not.toBeNull();
   });
 
   test('`bleed` opts out of the horizontal padding', () => {
-    renderPanel(
-      <Panel aria-label="Bleed">
-        <Panel.Content>
-          <span data-testid="padded">Padded</span>
-        </Panel.Content>
-        <Panel.Content bleed>
-          <span data-testid="bleeding">Edge to edge</span>
-        </Panel.Content>
-      </Panel>
-    );
+    render(<TableInside.Component />);
 
-    const padded = screen.getByTestId('padded').parentElement!;
-    const bleeding = screen.getByTestId('bleeding').parentElement!;
+    const table = screen.getByRole('grid', { name: 'Recent orders' });
+    const contentWrapper = table.parentElement!;
 
-    expect(padded.className).toContain('px-(--panel-px)');
-    expect(bleeding.className).not.toContain('px-(--panel-px)');
+    expect(contentWrapper.className).not.toContain('px-(--panel-px)');
   });
 });

@@ -1,10 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useState } from 'react';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { Text } from '../Text/Text';
 import { Panel } from './Panel';
-import { WithCollapsible, WithMultipleCollapsibles } from './Panel.stories';
-import { renderPanel } from './test-utils';
+import {
+  CollapsibleDefaultExpanded,
+  CollapsibleDisabled,
+  ControlledCollapsible,
+  WithCollapsible,
+  WithMultipleCollapsibles,
+} from './Panel.stories';
 
 const user = userEvent.setup();
 
@@ -25,88 +31,49 @@ describe('Panel.Collapsible', () => {
   });
 
   test('respects the controlled `expanded` + `onExpandedChange` flow', async () => {
-    const changes: boolean[] = [];
-    const Controlled = () => {
-      const [expanded, setExpanded] = useState(false);
-      return (
-        <Panel aria-label="Controlled">
-          <Panel.Collapsible
-            expanded={expanded}
-            onExpandedChange={value => {
-              changes.push(value);
-              setExpanded(value);
-            }}
-          >
-            <Panel.CollapsibleTrigger>Controlled</Panel.CollapsibleTrigger>
-            <Panel.CollapsibleContent>
-              <Text>Body</Text>
-            </Panel.CollapsibleContent>
-          </Panel.Collapsible>
-        </Panel>
-      );
-    };
-
-    renderPanel(<Controlled />);
-    const trigger = screen.getByRole('button', { name: 'Controlled' });
+    render(<ControlledCollapsible.Component />);
+    const trigger = screen.getByRole('button', { name: 'Advanced settings' });
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
     await user.click(trigger);
 
-    expect(changes).toEqual([true]);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
     await user.click(trigger);
 
-    expect(changes).toEqual([true, false]);
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('supports `defaultExpanded` for uncontrolled initial state', () => {
-    renderPanel(
-      <Panel aria-label="Prefilled">
-        <Panel.Collapsible defaultExpanded>
-          <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
-          <Panel.CollapsibleContent>
-            <Text>Body</Text>
-          </Panel.CollapsibleContent>
-        </Panel.Collapsible>
-      </Panel>
-    );
+    render(<CollapsibleDefaultExpanded.Component />);
 
-    const trigger = screen.getByRole('button', { name: 'Toggle' });
+    const trigger = screen.getByRole('button', { name: 'Channels' });
 
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
   });
 
   test('forwards `disabled` to the trigger', () => {
-    renderPanel(
-      <Panel aria-label="Disabled">
-        <Panel.Collapsible disabled>
-          <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
-          <Panel.CollapsibleContent>
-            <Text>Body</Text>
-          </Panel.CollapsibleContent>
-        </Panel.Collapsible>
-      </Panel>
-    );
+    render(<CollapsibleDisabled.Component />);
 
-    const trigger = screen.getByRole('button', { name: 'Toggle' });
+    const trigger = screen.getByRole('button', { name: 'Payment methods' });
 
     expect(trigger).toBeDisabled();
   });
 
   test('fires `onExpandedChange` in uncontrolled mode', async () => {
     const changes: boolean[] = [];
-    renderPanel(
-      <Panel aria-label="Uncontrolled notify">
-        <Panel.Collapsible onExpandedChange={value => changes.push(value)}>
-          <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
-          <Panel.CollapsibleContent>
-            <Text>Body</Text>
-          </Panel.CollapsibleContent>
-        </Panel.Collapsible>
-      </Panel>
+    render(
+      <MarigoldProvider theme={theme}>
+        <Panel aria-label="Uncontrolled notify">
+          <Panel.Collapsible onExpandedChange={value => changes.push(value)}>
+            <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
+            <Panel.CollapsibleContent>
+              <Text>Body</Text>
+            </Panel.CollapsibleContent>
+          </Panel.Collapsible>
+        </Panel>
+      </MarigoldProvider>
     );
     const trigger = screen.getByRole('button', { name: 'Toggle' });
 

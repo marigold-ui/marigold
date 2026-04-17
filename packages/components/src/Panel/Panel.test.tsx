@@ -1,14 +1,13 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
-import { Text } from '../Text/Text';
 import { Panel } from './Panel';
 import {
+  AriaLabeled,
   Basic,
   CustomPadding,
   Variants,
   WithHeaderActions,
 } from './Panel.stories';
-import { renderPanel } from './test-utils';
 
 type PanelVariant = 'default' | 'master' | 'admin' | 'destructive';
 
@@ -42,13 +41,7 @@ describe('Panel', () => {
     });
 
     test('supports `aria-label` as the accessible name and omits `aria-labelledby`', () => {
-      renderPanel(
-        <Panel aria-label="Collapsible-only panel">
-          <Panel.Content>
-            <Text>No title here.</Text>
-          </Panel.Content>
-        </Panel>
-      );
+      render(<AriaLabeled.Component />);
 
       const region = screen.getByRole('region', {
         name: 'Collapsible-only panel',

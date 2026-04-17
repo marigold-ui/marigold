@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import type { PanelContext as PanelContextShape } from './Context';
 import { usePanelContext } from './Context';
 import { Panel } from './Panel';
-import { renderPanel } from './test-utils';
 
 const Probe = ({
   onContext,
@@ -23,17 +24,19 @@ describe('PanelContext', () => {
   test('provides classNames, titleId, headingLevel, hasTitle, titleSlotRef to descendants', () => {
     let received: PanelContextShape | null = null;
 
-    renderPanel(
-      <Panel headingLevel={3}>
-        <Panel.Header>
-          <Panel.Title>With title</Panel.Title>
-        </Panel.Header>
-        <Probe
-          onContext={ctx => {
-            received = ctx;
-          }}
-        />
-      </Panel>
+    render(
+      <MarigoldProvider theme={theme}>
+        <Panel headingLevel={3}>
+          <Panel.Header>
+            <Panel.Title>With title</Panel.Title>
+          </Panel.Header>
+          <Probe
+            onContext={ctx => {
+              received = ctx;
+            }}
+          />
+        </Panel>
+      </MarigoldProvider>
     );
 
     expect(received).not.toBeNull();
@@ -48,14 +51,16 @@ describe('PanelContext', () => {
   test('reports hasTitle=false when no Panel.Title is rendered', () => {
     let received: PanelContextShape | null = null;
 
-    renderPanel(
-      <Panel aria-label="No title">
-        <Probe
-          onContext={ctx => {
-            received = ctx;
-          }}
-        />
-      </Panel>
+    render(
+      <MarigoldProvider theme={theme}>
+        <Panel aria-label="No title">
+          <Probe
+            onContext={ctx => {
+              received = ctx;
+            }}
+          />
+        </Panel>
+      </MarigoldProvider>
     );
 
     expect(received).not.toBeNull();

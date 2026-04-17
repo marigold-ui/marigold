@@ -1,26 +1,18 @@
 /* eslint-disable testing-library/no-node-access */
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Text } from '../Text/Text';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { Panel } from './Panel';
-import { renderPanel } from './test-utils';
+import { CollapsibleDefaultExpanded, WithCollapsible } from './Panel.stories';
 
 const user = userEvent.setup();
 
 describe('Panel.CollapsibleContent', () => {
   test('hides its body from AT when collapsed and exposes it when expanded', async () => {
-    renderPanel(
-      <Panel aria-label="Collapsed">
-        <Panel.Collapsible>
-          <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
-          <Panel.CollapsibleContent>
-            <span data-testid="body">Body</span>
-          </Panel.CollapsibleContent>
-        </Panel.Collapsible>
-      </Panel>
-    );
-    const trigger = screen.getByRole('button', { name: 'Toggle' });
-    const body = screen.getByTestId('body');
+    render(<WithCollapsible.Component />);
+    const trigger = screen.getByRole('button', { name: /Advanced Options/ });
+    const body = screen.getByLabelText('Custom URL Slug');
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(body).not.toBeVisible();
@@ -32,15 +24,17 @@ describe('Panel.CollapsibleContent', () => {
   });
 
   test('`bleed` drops the horizontal panel padding while keeping the vertical padding', () => {
-    renderPanel(
-      <Panel aria-label="Bleed collapse">
-        <Panel.Collapsible defaultExpanded>
-          <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
-          <Panel.CollapsibleContent bleed>
-            <span data-testid="inner">Edge to edge</span>
-          </Panel.CollapsibleContent>
-        </Panel.Collapsible>
-      </Panel>
+    render(
+      <MarigoldProvider theme={theme}>
+        <Panel aria-label="Bleed collapse">
+          <Panel.Collapsible defaultExpanded>
+            <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
+            <Panel.CollapsibleContent bleed>
+              <span data-testid="inner">Edge to edge</span>
+            </Panel.CollapsibleContent>
+          </Panel.Collapsible>
+        </Panel>
+      </MarigoldProvider>
     );
 
     const inner = screen.getByTestId('inner').parentElement!;
@@ -51,18 +45,11 @@ describe('Panel.CollapsibleContent', () => {
   });
 
   test('applies the horizontal panel padding by default', () => {
-    renderPanel(
-      <Panel aria-label="Default collapse">
-        <Panel.Collapsible defaultExpanded>
-          <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
-          <Panel.CollapsibleContent>
-            <Text>Body</Text>
-          </Panel.CollapsibleContent>
-        </Panel.Collapsible>
-      </Panel>
-    );
+    render(<CollapsibleDefaultExpanded.Component />);
 
-    const body = screen.getByText('Body').parentElement!;
+    const body = screen.getByText(
+      /Email, SMS, and push notifications/
+    ).parentElement!;
 
     expect(body.className).toContain('px-(--panel-px)');
   });
