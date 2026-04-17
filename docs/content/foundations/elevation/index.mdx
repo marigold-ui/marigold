@@ -40,7 +40,7 @@ Before shadows come into play, background colors establish the base layers of th
 
 `bg-background` and `bg-surface` work as a pair: the page background provides contrast so that white surfaces stand out. `bg-muted` adds a gentle tint within a surface to distinguish secondary content without adding another elevation level.
 
-<ComponentDemo name="elevation-layers" mode="preview" />
+<ComponentDemo name="elevation-layers" mode="preview" background="page" />
 
 For interactive elements like inputs, cards, and dialogs, the `ui-surface`
 utility combines several properties into one class: a white background
@@ -59,7 +59,7 @@ styling:
 
 Elevation is split into three tiers, each serving a distinct role in the visual hierarchy. The shadow intensity increases with each tier: **border** provides a subtle edge for interactive controls, **raised** lifts containers off the page, and **overlay** creates a strong floating effect for temporary UI. Together they form a clear stacking order where every element sits at the right depth.
 
-<ComponentDemo name="elevation-swatches" mode="preview" />
+<ComponentDemo name="elevation-swatches" mode="preview" background="page" />
 
 | Token                      | Use for                    | Components                                  |
 | -------------------------- | -------------------------- | ------------------------------------------- |
@@ -102,7 +102,7 @@ Because border elevation produces only a subtle shadow, these controls need a ra
 
 One step higher than border. Raised elevation creates visual lift for container surfaces that group related content. Cards and accordions use this tier to stand out from the page background while staying below floating elements. The flat page background behind them is what makes the shadow visible. Without that contrast, the lift disappears.
 
-<ComponentDemo name="elevation-raised" />
+<ComponentDemo name="elevation-raised" background="page" />
 
 ```html
 <div class="ui-surface shadow-elevation-raised">...</div>
