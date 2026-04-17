@@ -46,7 +46,10 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
   const isReleaseBlogPost =
     params.slug?.[0] === 'releases' && params.slug?.[1] === 'blog';
   const isReleasesPage = params.slug?.[0] === 'releases';
-  const toc = isReleasesPage && !isReleaseBlogPost ? undefined : page.data.toc;
+  const toc =
+    isReleasesPage && !isReleaseBlogPost
+      ? undefined
+      : page.data.toc.filter(item => item.depth <= 3);
 
   return (
     <DocsPage

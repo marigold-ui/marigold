@@ -10,6 +10,7 @@
     "grid",
     "inline",
     "inset",
+    "panel",
     "scrollable",
     "split",
     "stack",

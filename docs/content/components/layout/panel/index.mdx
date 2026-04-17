@@ -1,0 +1,339 @@
+---
+title: Panel
+description: Organize page content into labeled regions.
+badge: new
+---
+
+A `<Panel>` organizes page content into labeled sections. Use it to split a settings, profile, or admin page into regions, each with its own title, content, and optional actions. What goes inside is flexible: form fields, tables, media, or plain text.
+
+A typical page has a handful of Panels, each owning one topic: "Organizer profile", "Team members", "Billing". Every Panel has a unique title and renders as a landmark region labelled by that title, so the page outline stays meaningful to assistive tech.
+
+<Callout title="Is a Panel a Card?">
+  They look similar, but they're not interchangeable. A Panel owns a region of a
+  page, with its own title, description, and optional actions. A Card just
+  stands in for one item in a list or grid. **Cards repeat; Panels don't.**
+</Callout>
+
+import { PanelAnatomy } from './panel-anatomy';
+import { PanelCollapsibleAnatomy } from './panel-collapsible-anatomy';
+import { PanelVsCard } from './panel-vs-card';
+
+## Anatomy
+
+<PanelAnatomy />
+
+A Panel has three areas, all optional, each backed by its own sub-component:
+
+- **Header** contains a title, an optional description, and optional actions slot for buttons or overflow menus.
+- **Content** is the main body. Form fields, text, tables, or any layout primitive lives here.
+- **Footer** is an optional action bar for panel-scoped actions. Often omitted.
+
+## Appearance
+
+<AppearanceDemo component={'Panel'} />
+
+<AppearanceTable component={'Panel'} />
+
+Panel has four variants. They match the ones in Card and Badge so master, admin, and destructive sections read consistently, whether they show up as a collection item or a page region.
+
+| Variant       | Description                       | When to use                                                                        |
+| ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
+| `default`     | Subtle surface tint.              | Most page sections: profile, notifications, billing.                               |
+| `master`      | Tint and accent for master users. | Sections only master users see. [Learn more.](../../../patterns/admin-master-mark) |
+| `admin`       | Tint and accent for admin users.  | Sections only admin users see. [Learn more.](../../../patterns/admin-master-mark)  |
+| `destructive` | Tint for danger zones.            | Irreversible actions, like deleting an account or revoking access.                 |
+
+## Usage
+
+Panel is the primary tool for giving a page structure. Dense screens, like settings, admin forms, or dashboards, hold more fields than a user can scan in one pass. Breaking that content into labeled regions turns a wall of inputs into scannable topics.
+
+A page typically has two to six Panels, each owning one topic. A settings page, for example, might split into "Store Information", "Regional Settings", and "Notifications". Each Panel groups related fields under a single heading, so a user can find the section they need without reading everything before it.
+
+Panel is content-agnostic: form fields, tables, media, or text blocks can all live inside. The one rule is topical cohesion. Everything in a Panel should share the topic its title names. Without that, the Panel stops being a region and turns into a box.
+
+### Panel vs Card
+
+<PanelVsCard />
+
+Panel and Card look similar, but they solve different problems. A Panel is a named region of a page, usually unique, with its own title and (sometimes) actions. A Card stands in for one item in a collection and is built to repeat.
+
+<Callout title="Rule of thumb">
+  If the element repeats as you scroll (events, products, team members), reach
+  for a [Card](../../content/card). If it owns a page region on its own, like
+  "Organizer profile", "Team members", or "Billing", reach for a Panel.
+</Callout>
+
+### Header
+
+The header names the section and tells the user what it's about before they read a single field. It has three slots: a title, an optional description, and an optional actions region on the right. Each slot has its own job.
+
+#### Title
+
+The title is how a user finds this section when they scan the page. Aim for a short noun phrase, two to five words, that names the topic. A good title is specific and unique on the page: if two sections could share the same heading, it's too generic. Use sentence case, and front-load the meaningful keyword so the user recognizes it at a glance.
+
+<Callout title="Every Panel needs a name">
+  A Panel is a landmark region, and assistive technologies need a name for it.
+  Include a title, or pass an `aria-label` on the Panel itself when the section
+  does not have a visible title.
+</Callout>
+
+#### Description
+
+A description is a single-sentence subtitle directly under the title. Include one when the title alone doesn't tell the user what's at stake, or when the section introduces a concept they may not have seen before. Skip it when the title already says it. A description that restates the heading adds reading weight without adding information.
+
+#### Actions
+
+Some sections have controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it.
+
+<ComponentDemo name="panel-header-actions" />
+
+### Collapsible sections
+
+Use `Panel.Collapsible` to offer a sub-section that's hidden by default, typically for advanced or optional fields. The trigger is rendered as a real heading (see [Heading levels](#heading-levels)) and exposes `aria-expanded` state. Keyboard users activate it with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+
+<PanelCollapsibleAnatomy />
+
+A Collapsible has two sub-components:
+
+- **`Panel.CollapsibleTrigger`** is the interactive header that toggles the section. It always renders as a heading so the page outline stays correct.
+- **`Panel.CollapsibleContent`** is the region revealed when the trigger is expanded.
+
+<ComponentDemo name="panel-collapsible" />
+
+#### Controlled expansion
+
+Pass `expanded` and `onExpandedChange` to `Panel.Collapsible` to control the open state from outside.
+
+```tsx
+const [expanded, setExpanded] = useState(false);
+
+<Panel.Collapsible expanded={expanded} onExpandedChange={setExpanded}>
+  <Panel.CollapsibleTrigger>Advanced settings</Panel.CollapsibleTrigger>
+  <Panel.CollapsibleContent>…</Panel.CollapsibleContent>
+</Panel.Collapsible>;
+```
+
+#### Multiple collapsibles
+
+A Panel can hold more than one Collapsible, but this is rarely the right call. If a Panel needs two or more independent collapsible sub-sections, the content has usually outgrown a single Panel. Prefer splitting it into separate Panels with clearer titles.
+
+### Full-width content
+
+Some content (tables, media, status bars) reads best when it spans edge-to-edge inside the Panel, without the Panel's horizontal padding. Opt in with the `bleed` prop on `Panel.Content` (or `Panel.CollapsibleContent`).
+
+<ComponentDemo name="panel-bleed" />
+
+A table inside a Panel aligns its cell edges with the Panel's header and footer. This relies on the `--cell-edge-padding` CSS variable in the theme. `theme-rui` already wires this up, so `Panel.Content bleed` + `<Table>` works out of the box. Custom themes that want the same alignment should set `[--cell-edge-padding:var(--panel-px,var(--cell-x-padding))]` on the table slot.
+
+### Variants
+
+Panel's variants match the semantic intent of the other variant-bearing components. The `master` and `admin` variants visually mark sections of the page that are only visible to privileged users. This is the same purpose as `Card variant="master|admin"` or `Badge variant="master|admin"`. See the [Admin &amp; master mark](../../../patterns/admin-master-mark) pattern for placement rules.
+
+The `destructive` variant marks a section whose actions have permanent consequences. See [Panel-scoped actions](#panel-scoped-actions) below for the canonical use.
+
+```tsx
+<Panel variant="master">
+  <Panel.Header>
+    <Panel.Title>Master access</Panel.Title>
+  </Panel.Header>
+  <Panel.Content>…</Panel.Content>
+</Panel>
+```
+
+### Panel-scoped actions
+
+A `Panel.Footer` holds actions that belong to the Panel itself, most commonly a single destructive button for a "Danger zone" section. Page-level actions like **Save changes** or **Cancel** belong outside the Panel, at the page level, where they can act on the whole form.
+
+<ComponentDemo name="panel-footer" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `Panel.Footer` for actions scoped to this Panel only, like "Delete
+      organizer" or "Reset section to defaults".
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't put page-level Save/Cancel buttons inside a Panel.Footer. They act
+      on the whole page, not on one section. Keep them at the page level.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Customization
+
+Panel exposes three customization props on the root for cases where the defaults don't fit.
+
+#### Heading level
+
+Use `headingLevel` when the Panel lives deeper in the page outline, for example inside a Tabs panel whose tab header is already an `<h2>`. The prop shifts both `Panel.Title` and `Panel.CollapsibleTrigger` down together.
+
+```tsx
+<Panel headingLevel={3}>…</Panel>
+```
+
+#### Padding
+
+By default every slot gets `p="square-regular"`. Override with a single `p` token for uniform padding, or use `px` and `py` to control the axes independently.
+
+```tsx
+<Panel p="square-loose">…</Panel>
+<Panel px="padding-relaxed" py="padding-snug">…</Panel>
+```
+
+#### Section spacing
+
+`space` controls the vertical gap between Panel's own sub-components (Header, Content, Footer). The default `regular` suits most cases; use `none` to remove the gaps entirely.
+
+```tsx
+<Panel space="group">…</Panel>
+```
+
+## Accessibility
+
+Panel renders a `<section>` landmark and auto-wires the heading outline. Most of the accessibility story is handled for you, and two choices are yours to make.
+
+### Labeling
+
+Every landmark region needs a name. A Panel accepts one in two ways:
+
+- **Preferred.** Include a `<Panel.Title>`. The Panel is automatically labelled by the title.
+- **Fallback.** If the Panel has no visible title (a Collapsible-only Panel, for example), pass an `aria-label` prop on the Panel itself.
+
+If both are set, `aria-label` takes precedence and the title is no longer used as the accessible name. Passing both is redundant, so pick one.
+
+### Heading levels
+
+`<Panel.Title>` renders an `<h2>` by default. `<Panel.CollapsibleTrigger>` renders one level deeper (`<h3>`). If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
+
+```tsx
+<Panel headingLevel={3}>
+  <Panel.Header>
+    <Panel.Title>…</Panel.Title> {/* renders as <h3> */}
+  </Panel.Header>
+  <Panel.Collapsible>
+    <Panel.CollapsibleTrigger>
+      … {/* renders as <h4> */}
+    </Panel.CollapsibleTrigger>
+  </Panel.Collapsible>
+</Panel>
+```
+
+Levels are clamped to `<h6>` so the outline never overflows the HTML spec.
+
+### Collapsible sections
+
+`<Panel.Collapsible>` wraps each trigger in a heading, with `aria-expanded` reflecting the open state. The chevron is decorative and hidden from assistive technology. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+
+## Props
+
+<StorybookHintMessage component={'Panel'} />
+
+### Panel
+
+<AutoTypeTable path="Panel" name="PanelProps" />
+
+### Panel.Header
+
+<AutoTypeTable path="Panel/PanelHeader" name="PanelHeaderProps" />
+
+### Panel.Title
+
+<AutoTypeTable path="Panel/PanelTitle" name="PanelTitleProps" />
+
+### Panel.Description
+
+<AutoTypeTable path="Panel/PanelDescription" name="PanelDescriptionProps" />
+
+### Panel.HeaderActions
+
+<AutoTypeTable path="Panel/PanelHeaderActions" name="PanelHeaderActionsProps" />
+
+### Panel.Content
+
+<AutoTypeTable path="Panel/PanelContent" name="PanelContentProps" />
+
+### Panel.Footer
+
+<AutoTypeTable path="Panel/PanelFooter" name="PanelFooterProps" />
+
+### Panel.Collapsible
+
+<AutoTypeTable path="Panel/PanelCollapsible" name="PanelCollapsibleProps" />
+
+### Panel.CollapsibleTrigger
+
+<AutoTypeTable
+  path="Panel/PanelCollapsibleTrigger"
+  name="PanelCollapsibleTriggerProps"
+/>
+
+### Panel.CollapsibleContent
+
+<AutoTypeTable
+  path="Panel/PanelCollapsibleContent"
+  name="PanelCollapsibleContentProps"
+/>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Card',
+      href: '../../content/card',
+      caption:
+        'The collection-item counterpart to Panel. Use Card for items that repeat in a list or grid.',
+      icon: (
+        <svg
+          viewBox="0 0 24 24"
+          className="size-6"
+          fill="none"
+          strokeWidth="1.5"
+          stroke="currentColor"
+        >
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <path d="M3 10h18" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Admin- & master mark',
+      href: '/patterns/admin-master-mark',
+      caption: 'Placement guidance for master- and admin-only content.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M9 11l-6 6v3h9l3-3" />
+          <path d="M22 12l-4.6 4.6a2 2 0 01-2.8 0l-5.2-5.2a2 2 0 010-2.8L14 4" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Elevation',
+      href: '../../../foundations/elevation',
+      caption: 'How raised, sunken, and flat surfaces work together on a page.',
+      icon: (
+        <svg
+          viewBox="0 0 24 24"
+          className="size-6"
+          strokeWidth="1.5"
+          stroke="currentColor"
+        >
+          <path d="M3.5625 6.375H20.4375V8.25H3.5625V6.375ZM3.5625 16.125H20.4375V18H3.5625V16.125ZM20.4375 11.25H3.5625V13.125H20.4375V11.25Z"></path>
+        </svg>
+      ),
+    },
+  ]}
+/>
