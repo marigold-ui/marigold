@@ -5,6 +5,40 @@ import { Headline } from '../Headline/Headline';
 import { Text } from '../Text/Text';
 import { Card } from './Card';
 
+const insetTokenOptions = [
+  'square-tight',
+  'square-snug',
+  'square-regular',
+  'square-relaxed',
+  'square-loose',
+  'squish-tight',
+  'squish-snug',
+  'squish-regular',
+  'squish-relaxed',
+  'squish-loose',
+  'stretch-tight',
+  'stretch-snug',
+  'stretch-regular',
+  'stretch-relaxed',
+  'stretch-loose',
+];
+
+const relationalTokenOptions = [
+  'tight',
+  'related',
+  'regular',
+  'group',
+  'section',
+];
+
+const paddingTokenOptions = [
+  'padding-tight',
+  'padding-snug',
+  'padding-regular',
+  'padding-relaxed',
+  'padding-loose',
+];
+
 const meta = preview.meta({
   title: 'Components/Card',
   component: Card,
@@ -21,55 +55,63 @@ const meta = preview.meta({
     },
     space: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: relationalTokenOptions,
       description:
-        'The space between children elements inside the card, using tailwind spacing tokens.',
+        'The space between children elements inside the card, using spacing tokens.',
     },
     p: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: insetTokenOptions,
       description:
-        'Padding of the card, using tailwind spacing tokens. Applies to all sides unless overridden by more specific props (px, py, pt, pb, pl, pr).',
+        'Padding of the card, using inset spacing tokens. Applies to all sides.',
     },
     px: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: paddingTokenOptions,
       description:
-        'Horizontal padding (left and right) of the card, using tailwind spacing tokens.',
+        'Horizontal padding (left and right) of the card, using padding spacing tokens.',
     },
     py: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: paddingTokenOptions,
       description:
-        'Vertical padding (top and bottom) of the card, using tailwind spacing tokens.',
+        'Vertical padding (top and bottom) of the card, using padding spacing tokens.',
     },
     pt: {
       control: {
-        type: 'text',
+        type: 'select',
       },
-      description: 'Top padding of the card, using tailwind spacing tokens.',
+      options: paddingTokenOptions,
+      description: 'Top padding of the card, using padding spacing tokens.',
     },
     pb: {
       control: {
-        type: 'text',
+        type: 'select',
       },
-      description: 'Bottom padding of the card, using tailwind spacing tokens.',
+      options: paddingTokenOptions,
+      description: 'Bottom padding of the card, using padding spacing tokens.',
     },
     pl: {
       control: {
-        type: 'text',
+        type: 'select',
       },
-      description: 'Left padding of the card, using tailwind spacing tokens.',
+      options: paddingTokenOptions,
+      description: 'Left padding of the card, using padding spacing tokens.',
     },
     pr: {
       control: {
-        type: 'text',
+        type: 'select',
       },
-      description: 'Right padding of the card, using tailwind spacing tokens.',
+      options: paddingTokenOptions,
+      description: 'Right padding of the card, using padding spacing tokens.',
     },
   },
 });
@@ -123,8 +165,8 @@ export const Stretch = meta.story({
 
 export const PaddingAndSpace = meta.story({
   args: {
-    p: 8,
-    space: 4,
+    p: 'square-regular',
+    space: 'regular',
   },
   render: args => (
     <Card {...args}>

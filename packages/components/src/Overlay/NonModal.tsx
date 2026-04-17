@@ -1,9 +1,11 @@
-import { forwardRef, use } from 'react';
+import { use } from 'react';
 import {
   OverlayTriggerStateContext,
   Provider,
   SlotProps,
+  useRenderProps,
 } from 'react-aria-components';
+import type { RenderProps } from 'react-aria-components';
 import {
   OverlayTriggerProps,
   OverlayTriggerState,
@@ -21,8 +23,6 @@ import {
   useViewportSize,
 } from '@react-aria/utils';
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
-import type { RenderProps } from '../utils/useRenderProps';
-import { useRenderProps } from '../utils/useRenderProps';
 import type { AriaNonModalProps } from './useNonModal';
 import { useNonModal } from './useNonModal';
 
@@ -152,37 +152,35 @@ export interface NonModalProps
 
 // Component
 // ---------------
-export const NonModal = forwardRef<HTMLElement, NonModalProps>(
-  ({ open, ...rest }, ref) => {
-    const props = {
-      isOpen: open,
-      ...rest,
-    };
+export const NonModal = ({ open, ref: refProp, ...rest }: NonModalProps) => {
+  const props = {
+    isOpen: open,
+    ...rest,
+  };
 
-    ref = useObjectRef(ref);
-    const contextState = use(OverlayTriggerStateContext);
-    const localState = useOverlayTriggerState(props);
-    const state =
-      props.isOpen != null || props.defaultOpen != null || !contextState
-        ? localState
-        : contextState;
+  const ref = useObjectRef(refProp);
+  const contextState = use(OverlayTriggerStateContext);
+  const localState = useOverlayTriggerState(props);
+  const state =
+    props.isOpen != null || props.defaultOpen != null || !contextState
+      ? localState
+      : contextState;
 
-    const isExiting =
-      useExitAnimation(ref, state.isOpen) || props.isExiting || false;
+  const isExiting =
+    useExitAnimation(ref, state.isOpen) || props.isExiting || false;
 
-    const isSSR = useIsSSR();
+  const isSSR = useIsSSR();
 
-    if ((state && !state.isOpen && !isExiting) || isSSR) {
-      return null;
-    }
-
-    return (
-      <NonModalInner
-        {...props}
-        nonModalRef={ref}
-        state={state}
-        isExiting={isExiting}
-      />
-    );
+  if ((state && !state.isOpen && !isExiting) || isSSR) {
+    return null;
   }
-);
+
+  return (
+    <NonModalInner
+      {...props}
+      nonModalRef={ref}
+      state={state}
+      isExiting={isExiting}
+    />
+  );
+};

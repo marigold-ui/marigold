@@ -20,14 +20,23 @@ describe('Tiles', () => {
   });
 
   describe('Spacing', () => {
-    test('applies default spacing value of 0', () => {
-      render(<Basic.Component space={0} data-testid="tiles" />);
+    test('applies default values', () => {
+      render(
+        <Basic.Component
+          space={undefined}
+          stretch={undefined}
+          equalHeight={undefined}
+          tilesWidth={undefined}
+          data-testid="tiles"
+        />
+      );
 
       const tiles = screen.getByTestId('tiles');
       expect(tiles).toHaveClass('gap-(--space)');
       expect(tiles.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 0)'
       );
+      expect(tiles.style.getPropertyValue('--tilesWidth')).toBe('250px');
     });
 
     test('applies custom spacing', () => {

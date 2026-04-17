@@ -501,6 +501,53 @@ export const WithImages = meta.story({
   },
 });
 
+const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
+  id: `item-${i + 200}`,
+  label: `Tenant ${i + 200} (item-${i + 200})`,
+}));
+
+export const LargeDataset = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Tenants',
+    placeholder: 'Select a tenant',
+    width: 80,
+  },
+  render: args => (
+    <Select {...args} items={LARGE_ITEMS}>
+      {(item: (typeof LARGE_ITEMS)[number]) => (
+        <Select.Option id={item.id}>{item.label}</Select.Option>
+      )}
+    </Select>
+  ),
+  play: async ({ args, canvas, step }) => {
+    await step('Open the select dropdown', async () => {
+      const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+      await userEvent.click(button);
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Verify listbox renders without freezing', async () => {
+      const listbox = canvas.getByRole('listbox');
+      expect(listbox).toBeVisible();
+    });
+
+    await step('Select a visible item from the top of the list', async () => {
+      const listbox = canvas.getByRole('listbox');
+      const option = within(listbox).getByText('Tenant 200 (item-200)');
+      await userEvent.click(option);
+    });
+
+    await step('Verify selected value appears in trigger', async () => {
+      await waitFor(() => {
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+      const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+      expect(within(button).getByText('Tenant 200 (item-200)')).toBeVisible();
+    });
+  },
+});
+
 export const Mobile = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },

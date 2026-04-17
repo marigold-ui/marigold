@@ -275,6 +275,55 @@ export const WithTable = meta.story({
   },
 });
 
+export const KeyboardSelection = meta.story({
+  tags: ['component-test'],
+  args: {
+    onChange: fn(),
+  },
+  play: async ({ canvasElement, args, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Select page with Enter key', async () => {
+      const page2 = canvas.getByLabelText('Page 2');
+      page2.focus();
+      await userEvent.keyboard('{Enter}');
+
+      await expect(args.onChange).toHaveBeenCalledWith(2);
+      await expect(page2).toHaveAttribute('data-selected', 'true');
+    });
+
+    await step('Select page with Space key', async () => {
+      const page3 = canvas.getByLabelText('Page 3');
+      page3.focus();
+      await userEvent.keyboard(' ');
+
+      await expect(args.onChange).toHaveBeenCalledWith(3);
+      await expect(page3).toHaveAttribute('data-selected', 'true');
+    });
+  },
+});
+
+export const EllipsisRendering = meta.story({
+  tags: ['component-test'],
+  args: {
+    totalItems: 100,
+    pageSize: 10,
+    defaultPage: 5,
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step(
+      'Ellipsis is rendered when pages exceed visible range',
+      async () => {
+        // With 10 pages and current page 5, ellipsis should appear
+        const ellipses = canvas.getAllByText('…');
+        await expect(ellipses.length).toBeGreaterThan(0);
+      }
+    );
+  },
+});
+
 export const WithButtonLabels = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },

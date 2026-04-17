@@ -1,5 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
-import { ReactElement, forwardRef, use } from 'react';
+import type { ReactElement, Ref } from 'react';
+import { use } from 'react';
 import type RAC from 'react-aria-components';
 import {
   DateField,
@@ -64,44 +65,40 @@ export interface DateFieldProps
   width?: WidthProp['width'];
 }
 
-const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
-  (
-    {
-      variant,
-      size,
-      action,
-      disabled,
-      required,
-      error,
-      readOnly,
-      onChange,
-      ...rest
-    }: DateFieldProps,
-    ref
-  ) => {
-    const props: RAC.DateFieldProps<DateValue> = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isInvalid: error,
-      isRequired: required,
-      onChange,
-      ...rest,
-    };
-    return (
-      <FieldBase
-        as={DateField}
-        variant={variant}
-        size={size}
-        ref={ref}
-        {...props}
-      >
-        <DateInputWithPasteWrapper action={action} />
-      </FieldBase>
-    );
-  }
-);
+const DateFieldBase = ({
+  variant,
+  size,
+  action,
+  disabled,
+  required,
+  error,
+  readOnly,
+  onChange,
+  ref,
+  ...rest
+}: DateFieldProps & { ref?: Ref<HTMLInputElement> }) => {
+  const props: RAC.DateFieldProps<DateValue> = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isInvalid: error,
+    isRequired: required,
+    onChange,
+    ...rest,
+  };
+  return (
+    <FieldBase
+      as={DateField}
+      variant={variant}
+      size={size}
+      ref={ref}
+      {...props}
+    >
+      <DateInputWithPasteWrapper action={action} />
+    </FieldBase>
+  );
+};
 
-export { _DateField as DateField };
+export { DateFieldBase as DateField };
 
 interface DateInputWithPasteWrapperProps {
   onChange?: (value: RAC.DateValue | null) => void;

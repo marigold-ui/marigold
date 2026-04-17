@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { useState } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { forwardRefType } from '@react-types/shared';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { FieldBase } from '../FieldBase/FieldBase';
@@ -86,26 +85,21 @@ export interface SelectProps<
   error?: boolean;
 }
 
-const SelectBase = (forwardRef as forwardRefType)(function Select<
-  T extends object,
-  M extends SelectionMode = 'single',
->(
-  {
-    disabled,
-    required,
-    items,
-    variant,
-    size,
-    error,
-    open,
-    label,
-    children,
-    selectionMode,
-    onChange,
-    ...rest
-  }: SelectProps<T, M>,
-  ref: Ref<HTMLButtonElement>
-) {
+function SelectBase<T extends object, M extends SelectionMode = 'single'>({
+  disabled,
+  required,
+  items,
+  variant,
+  size,
+  error,
+  open,
+  label,
+  children,
+  selectionMode,
+  onChange,
+  ref,
+  ...rest
+}: SelectProps<T, M> & { ref?: Ref<HTMLButtonElement> }) {
   const isSingleSelect = !selectionMode || selectionMode === 'single';
   const [trayOpen, setTrayOpen] = useState(false);
 
@@ -169,13 +163,15 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
             <ChevronsVertical size="16" className={classNames.icon} />
           </RACButton>
           <Popover>
-            <ListBox items={items}>{children}</ListBox>
+            <ListBox items={items} virtualized>
+              {children}
+            </ListBox>
           </Popover>
         </>
       )}
     </FieldBase>
   );
-});
+}
 
 export const Select = Object.assign(SelectBase, {
   Option: ListBox.Item,

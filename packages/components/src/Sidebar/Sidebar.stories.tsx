@@ -55,45 +55,19 @@ const Layout = ({
             <Sidebar.Header>
               <Text weight="bold">Acme Inc.</Text>
             </Sidebar.Header>
-            <Sidebar.Nav>
-              <Sidebar.Item
-                href="/overview"
-                active={currentPath === '/overview'}
-              >
-                Overview
-              </Sidebar.Item>
-              <Sidebar.Item
-                href="/analytics"
-                active={currentPath === '/analytics'}
-              >
-                Analytics
-              </Sidebar.Item>
+            <Sidebar.Nav current={currentPath}>
+              <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+              <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
               <Sidebar.Separator />
               <Sidebar.Item id="management" textValue="Management">
                 Management
-                <Sidebar.Item href="/users" active={currentPath === '/users'}>
-                  Users
-                </Sidebar.Item>
-                <Sidebar.Item href="/teams" active={currentPath === '/teams'}>
-                  Teams
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/billing"
-                  active={currentPath === '/billing'}
-                >
-                  Billing
-                </Sidebar.Item>
+                <Sidebar.Item href="/users">Users</Sidebar.Item>
+                <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+                <Sidebar.Item href="/billing">Billing</Sidebar.Item>
               </Sidebar.Item>
               <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-              <Sidebar.Item href="/general" active={currentPath === '/general'}>
-                General
-              </Sidebar.Item>
-              <Sidebar.Item
-                href="/security"
-                active={currentPath === '/security'}
-              >
-                Security
-              </Sidebar.Item>
+              <Sidebar.Item href="/general">General</Sidebar.Item>
+              <Sidebar.Item href="/security">Security</Sidebar.Item>
             </Sidebar.Nav>
             <Sidebar.Footer>
               <Text fontSize="xs">Footer content</Text>
@@ -166,124 +140,49 @@ const ComplexExample = () => {
             <Sidebar.Header>
               <Text weight="bold">TicketDesk</Text>
             </Sidebar.Header>
-            <Sidebar.Nav>
-              <Sidebar.Item
-                href="/dashboard"
-                active={currentPath === '/dashboard'}
-              >
-                Dashboard
-              </Sidebar.Item>
+            <Sidebar.Nav current={currentPath}>
+              <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
               <Sidebar.Item id="tickets" textValue="Tickets">
                 Tickets
-                <Sidebar.Item
-                  href="/my-tickets"
-                  active={currentPath === '/my-tickets'}
-                >
-                  My Tickets
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/all-tickets"
-                  active={currentPath === '/all-tickets'}
-                >
-                  All Tickets
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/unassigned"
-                  active={currentPath === '/unassigned'}
-                >
-                  Unassigned
-                </Sidebar.Item>
+                <Sidebar.Item href="/my-tickets">My Tickets</Sidebar.Item>
+                <Sidebar.Item href="/all-tickets">All Tickets</Sidebar.Item>
+                <Sidebar.Item href="/unassigned">Unassigned</Sidebar.Item>
                 <Sidebar.Separator />
-                <Sidebar.Item href="/urgent" active={currentPath === '/urgent'}>
-                  Urgent
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/pending-review"
-                  active={currentPath === '/pending-review'}
-                >
+                <Sidebar.Item href="/urgent">Urgent</Sidebar.Item>
+                <Sidebar.Item href="/pending-review">
                   Pending Review
                 </Sidebar.Item>
-                <Sidebar.Item
-                  href="/archived-tickets"
-                  active={currentPath === '/archived-tickets'}
-                >
-                  Archived
-                </Sidebar.Item>
+                <Sidebar.Item href="/archived-tickets">Archived</Sidebar.Item>
               </Sidebar.Item>
               <Sidebar.GroupLabel>Workspace</Sidebar.GroupLabel>
               <Sidebar.Item id="projects" textValue="Projects">
                 Projects
-                <Sidebar.Item
-                  href="/active-projects"
-                  active={currentPath === '/active-projects'}
-                >
-                  Active
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/completed-projects"
-                  active={currentPath === '/completed-projects'}
-                >
+                <Sidebar.Item href="/active-projects">Active</Sidebar.Item>
+                <Sidebar.Item href="/completed-projects">
                   Completed
                 </Sidebar.Item>
-                <Sidebar.Item
-                  href="/archived-projects"
-                  active={currentPath === '/archived-projects'}
-                >
-                  Archived
-                </Sidebar.Item>
+                <Sidebar.Item href="/archived-projects">Archived</Sidebar.Item>
               </Sidebar.Item>
-              <Sidebar.Item
-                href="/customers"
-                active={currentPath === '/customers'}
-              >
-                Customers
-              </Sidebar.Item>
-              <Sidebar.Item
-                href="/knowledge-base"
-                active={currentPath === '/knowledge-base'}
-              >
-                Knowledge Base
-              </Sidebar.Item>
+              <Sidebar.Item href="/customers">Customers</Sidebar.Item>
+              <Sidebar.Item href="/knowledge-base">Knowledge Base</Sidebar.Item>
               <Sidebar.Separator />
               <Sidebar.Item id="reports" textValue="Reports">
                 Reports
-                <Sidebar.Item
-                  href="/ticket-volume"
-                  active={currentPath === '/ticket-volume'}
-                >
-                  Ticket Volume
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/response-times"
-                  active={currentPath === '/response-times'}
-                >
+                <Sidebar.Item href="/ticket-volume">Ticket Volume</Sidebar.Item>
+                <Sidebar.Item href="/response-times">
                   Response Times
                 </Sidebar.Item>
-                <Sidebar.Item
-                  href="/sla-compliance"
-                  active={currentPath === '/sla-compliance'}
-                >
+                <Sidebar.Item href="/sla-compliance">
                   SLA Compliance
                 </Sidebar.Item>
                 <Sidebar.Separator />
-                <Sidebar.Item
-                  href="/agent-performance"
-                  active={currentPath === '/agent-performance'}
-                >
+                <Sidebar.Item href="/agent-performance">
                   Agent Performance
                 </Sidebar.Item>
-                <Sidebar.Item
-                  href="/customer-satisfaction"
-                  active={currentPath === '/customer-satisfaction'}
-                >
+                <Sidebar.Item href="/customer-satisfaction">
                   Customer Satisfaction
                 </Sidebar.Item>
-                <Sidebar.Item
-                  href="/team-overview"
-                  active={currentPath === '/team-overview'}
-                >
-                  Team Overview
-                </Sidebar.Item>
+                <Sidebar.Item href="/team-overview">Team Overview</Sidebar.Item>
               </Sidebar.Item>
             </Sidebar.Nav>
             <Sidebar.Footer>

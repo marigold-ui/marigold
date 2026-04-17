@@ -90,7 +90,7 @@ export const Drawer = ({
       keyboardDismissable={keyboardDismissable}
       data-testid="drawer-modal"
     >
-      <DrawerContext.Provider value={{ variant, size }}>
+      <DrawerContext value={{ variant, size }}>
         <Dialog
           {...props}
           // Override RAC here so we can set an appropriate role
@@ -112,7 +112,7 @@ export const Drawer = ({
           )}
           {children}
         </Dialog>
-      </DrawerContext.Provider>
+      </DrawerContext>
     </DrawerModal>
   );
 };

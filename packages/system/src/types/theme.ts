@@ -123,19 +123,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
-    MultiSelect?: Record<
-      | 'container'
-      | 'closeButton'
-      | 'field'
-      | 'input'
-      | 'icon'
-      | 'listContainer'
-      | 'list'
-      | 'option'
-      | 'tag'
-      | 'valueContainer',
-      ComponentStyleFunction<string, string>
-    >;
     Panel?: Record<
       | 'root'
       | 'header'
