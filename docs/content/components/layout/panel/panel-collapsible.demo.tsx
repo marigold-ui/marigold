@@ -8,7 +8,7 @@ import {
 } from '@marigold/components';
 
 export default () => (
-  <Panel>
+  <Panel size="form">
     <Panel.Header>
       <Panel.Title>Event details</Panel.Title>
       <Panel.Description>
@@ -42,14 +42,8 @@ export default () => (
             description="Used in the event page URL."
             defaultValue="summer-comedy-night"
           />
-          <TextField
-            label="Analytics tracking ID"
-            description="Optional. Used to track page views for this event."
-          />
-          <TextField
-            label="Social share image URL"
-            description="Shown when the event is shared on social media."
-          />
+          <TextField label="Analytics tracking ID" />
+          <TextField label="Social share image URL" />
         </Stack>
       </Panel.CollapsibleContent>
     </Panel.Collapsible>

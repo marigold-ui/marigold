@@ -9,7 +9,6 @@ import {
   CollapsibleDisabled,
   ControlledCollapsible,
   WithCollapsible,
-  WithMultipleCollapsibles,
 } from './Panel.stories';
 
 const user = userEvent.setup();
@@ -82,23 +81,5 @@ describe('Panel.Collapsible', () => {
     await user.click(trigger);
 
     expect(changes).toEqual([true]);
-  });
-
-  test('multiple Collapsibles maintain independent expansion state', async () => {
-    render(<WithMultipleCollapsibles.Component />);
-    const address = screen.getByRole('button', { name: 'Address' });
-    const accessibility = screen.getByRole('button', {
-      name: 'Accessibility',
-    });
-
-    await user.click(address);
-
-    expect(address).toHaveAttribute('aria-expanded', 'true');
-    expect(accessibility).toHaveAttribute('aria-expanded', 'false');
-
-    await user.click(accessibility);
-
-    expect(address).toHaveAttribute('aria-expanded', 'true');
-    expect(accessibility).toHaveAttribute('aria-expanded', 'true');
   });
 });

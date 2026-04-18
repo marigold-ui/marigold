@@ -1,34 +1,43 @@
 export const PanelCollapsibleAnatomy = () => (
   <svg
-    viewBox="-10 10 660 170"
+    viewBox="-10 10 660 210"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
-    {/* Trigger container */}
+    {/* Header container */}
     <rect
       x="200"
       y="30"
       width="260"
-      height="34"
+      height="54"
       rx="6"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
-    {/* Trigger label */}
+    {/* Title placeholder */}
     <rect
       x="220"
-      y="42"
-      width="140"
+      y="44"
+      width="120"
       height="10"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
-    {/* Chevron */}
+    {/* Description placeholder */}
+    <rect
+      x="220"
+      y="62"
+      width="170"
+      height="8"
+      rx="4"
+      className="fill-fd-muted-foreground/50 transition-colors duration-300"
+    />
+    {/* Caret */}
     <path
-      d="M 428 44 L 436 52 L 444 44"
-      className="stroke-fd-foreground transition-colors duration-300"
+      d="M 434 55 L 439 60 L 444 55"
+      className="stroke-fd-muted-foreground/60 transition-colors duration-300"
       fill="none"
-      strokeWidth="2"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
@@ -36,9 +45,9 @@ export const PanelCollapsibleAnatomy = () => (
     {/* Content container */}
     <rect
       x="200"
-      y="74"
+      y="96"
       width="260"
-      height="70"
+      height="80"
       rx="6"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
@@ -46,7 +55,7 @@ export const PanelCollapsibleAnatomy = () => (
     {/* Content placeholder lines */}
     <rect
       x="220"
-      y="88"
+      y="112"
       width="220"
       height="8"
       rx="2"
@@ -54,7 +63,7 @@ export const PanelCollapsibleAnatomy = () => (
     />
     <rect
       x="220"
-      y="106"
+      y="130"
       width="200"
       height="8"
       rx="2"
@@ -62,7 +71,7 @@ export const PanelCollapsibleAnatomy = () => (
     />
     <rect
       x="220"
-      y="124"
+      y="148"
       width="180"
       height="8"
       rx="2"
@@ -77,16 +86,22 @@ export const PanelCollapsibleAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Trigger -> left */}
-      <path d="M 200 47 L 150 47" />
+      {/* Title -> left */}
+      <path d="M 220 49 L 170 49" />
+      {/* Description -> left */}
+      <path d="M 220 66 L 170 66" />
+      {/* Header -> right */}
+      <path d="M 460 57 L 510 57" />
       {/* Content -> right */}
-      <path d="M 460 109 L 510 109" />
+      <path d="M 460 136 L 510 136" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="200" cy="47" r="4" />
-      <circle cx="460" cy="109" r="4" />
+      <circle cx="220" cy="49" r="4" />
+      <circle cx="220" cy="66" r="4" />
+      <circle cx="460" cy="57" r="4" />
+      <circle cx="460" cy="136" r="4" />
     </g>
 
     {/* Labels */}
@@ -94,26 +109,46 @@ export const PanelCollapsibleAnatomy = () => (
       fontFamily="ui-sans-serif, system-ui, sans-serif"
       className="transition-colors duration-300"
     >
-      <text
-        x="140"
-        y="51"
-        fontSize="14"
-        fontWeight="600"
-        textAnchor="end"
-        className="fill-fd-primary"
-      >
-        Trigger
-      </text>
-      <text
-        x="520"
-        y="113"
-        fontSize="14"
-        fontWeight="600"
-        textAnchor="start"
-        className="fill-fd-primary"
-      >
-        Content
-      </text>
+      <g textAnchor="end">
+        <text
+          x="160"
+          y="53"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Title
+        </text>
+        <text
+          x="160"
+          y="70"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Description
+        </text>
+      </g>
+      <g textAnchor="start">
+        <text
+          x="520"
+          y="61"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Header
+        </text>
+        <text
+          x="520"
+          y="140"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Content
+        </text>
+      </g>
     </g>
   </svg>
 );

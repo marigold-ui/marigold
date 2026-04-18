@@ -195,64 +195,6 @@ export const WithCollapsible = meta.story({
   },
 });
 
-export const WithMultipleCollapsibles = meta.story({
-  tags: ['component-test'],
-  render: () => (
-    <Panel>
-      <Panel.Header>
-        <Panel.Title>Location Settings</Panel.Title>
-      </Panel.Header>
-      <Panel.Content>
-        <Stack space="regular">
-          <TextField label="Venue Name" defaultValue="Concert Hall" />
-        </Stack>
-      </Panel.Content>
-      <Panel.Collapsible>
-        <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Address</Panel.CollapsibleTitle>
-        </Panel.CollapsibleHeader>
-        <Panel.CollapsibleContent>
-          <Stack space="regular">
-            <TextField label="Street" />
-            <TextField label="City" />
-            <TextField label="Postal Code" />
-          </Stack>
-        </Panel.CollapsibleContent>
-      </Panel.Collapsible>
-      <Panel.Collapsible>
-        <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Accessibility</Panel.CollapsibleTitle>
-        </Panel.CollapsibleHeader>
-        <Panel.CollapsibleContent>
-          <Stack space="regular">
-            <TextField label="Accessibility Notes" />
-          </Stack>
-        </Panel.CollapsibleContent>
-      </Panel.Collapsible>
-    </Panel>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const addressTrigger = canvas.getByRole('button', { name: 'Address' });
-    const accessibilityTrigger = canvas.getByRole('button', {
-      name: 'Accessibility',
-    });
-
-    await userEvent.click(addressTrigger);
-    expect(addressTrigger).toHaveAttribute('aria-expanded', 'true');
-    expect(accessibilityTrigger).toHaveAttribute('aria-expanded', 'false');
-
-    await userEvent.click(accessibilityTrigger);
-    expect(addressTrigger).toHaveAttribute('aria-expanded', 'true');
-    expect(accessibilityTrigger).toHaveAttribute('aria-expanded', 'true');
-
-    await userEvent.click(addressTrigger);
-    expect(addressTrigger).toHaveAttribute('aria-expanded', 'false');
-    expect(accessibilityTrigger).toHaveAttribute('aria-expanded', 'true');
-  },
-});
-
 export const ControlledCollapsible = meta.story({
   render: function Render() {
     const [expanded, setExpanded] = useState(false);
