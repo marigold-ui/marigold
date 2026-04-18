@@ -1,22 +1,17 @@
-import { Button, Panel, Stack, Text } from '@marigold/components';
+import { Button, Panel, Text } from '@marigold/components';
 
 export default () => (
   <Panel variant="destructive">
     <Panel.Header>
-      <Panel.Title>Danger zone</Panel.Title>
-      <Panel.Description>
-        Actions in this section are permanent and cannot be undone.
-      </Panel.Description>
+      <Panel.Title>Delete organizer</Panel.Title>
+      <Panel.Description>This is permanent. There's no undo.</Panel.Description>
     </Panel.Header>
     <Panel.Content>
-      <Stack space="regular">
-        <Text weight="medium">Delete organizer</Text>
-        <Text variant="muted">
-          Removes the organizer account along with all associated events, past
-          bookings, and customer records. Ticket holders will be notified of the
-          cancellation and refunded automatically.
-        </Text>
-      </Stack>
+      <Text>
+        Deleting the organizer removes the account along with every published
+        event, past booking, and customer record. Ticket holders are notified
+        and refunded automatically.
+      </Text>
     </Panel.Content>
     <Panel.Footer>
       <Button variant="destructive">Delete organizer</Button>

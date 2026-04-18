@@ -156,68 +156,45 @@ When a Panel seems to want a second Collapsible, the shape is usually off in one
 
 A Panel made entirely of Collapsibles runs into the same problem: the title labels an empty container, and the user has to click before anything reads. A single fold in an otherwise bare Panel can work when the Panel is purely a wrapper for one advanced section. Anything more should be an Accordion.
 
-### Variants
+### Danger zone
 
-Panel's variants match the semantic intent of the other variant-bearing components. The `master` and `admin` variants visually mark sections of the page that are only visible to privileged users. This is the same purpose as `Card variant="master|admin"` or `Badge variant="master|admin"`. See the [Admin &amp; master mark](/patterns/admin-master-mark) pattern for placement rules.
+A Danger zone is a clearly-marked section for actions that can't be undone: deleting an account, wiping data, transferring ownership, revoking access. Use the `destructive` variant so the surface itself warns the user, and put it last so it stays out of the way while they're editing safer settings.
 
-The `destructive` variant marks a section whose actions have permanent consequences. See [Panel-scoped actions](#panel-scoped-actions) below for the canonical use.
+Reach for a Danger zone when the action is one of these:
 
-```tsx
-<Panel variant="master">
-  <Panel.Header>
-    <Panel.Title>Master access</Panel.Title>
-  </Panel.Header>
-  <Panel.Content>…</Panel.Content>
-</Panel>
-```
+- **Not reversible.** Deleting records. Wiping logs. Cancelling a subscription with no grace period.
+- **Removes access or changes identity.** Transferring ownership, kicking someone off the workspace, rotating the primary API key.
+- **Affects people outside the current account.** Cancelling events that customers hold tickets for. Closing a workspace other people depend on.
 
-### Panel-scoped actions
+Anything reversible or low-stakes, like sign-out or reset-to-defaults, does not need a Danger zone. Keep it in the normal flow.
 
-A `Panel.Footer` holds actions that belong to the Panel itself, most commonly a single destructive button for a "Danger zone" section. Page-level actions like **Save changes** or **Cancel** belong outside the Panel, at the page level, where they can act on the whole form.
+Most Danger zones hold one action. Put it in the Footer, with a short paragraph in the Content explaining what disappears. Lead with the consequence, not the verb. The Footer is only for actions scoped to this Panel; page-level **Save changes** and **Cancel** stay outside.
 
 <ComponentDemo name="panel-footer" />
 
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use `Panel.Footer` for actions scoped to this Panel only, like "Delete
-      organizer" or "Reset section to defaults".
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't put page-level Save/Cancel buttons inside a Panel.Footer. They act
-      on the whole page, not on one section. Keep them at the page level.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+If a couple of destructive actions genuinely belong together (say "Archive" next to "Delete"), stack them as rows inside the Content, each with a one-line consequence and its own destructive button. The Footer stays empty in that shape.
 
-### Customization
+<ComponentDemo name="panel-danger-zone-rows" />
 
-Panel exposes three customization props on the root for cases where the defaults don't fit.
+### Spacing
 
-#### Heading level
-
-Use `headingLevel` when the Panel lives deeper in the page outline, for example inside a Tabs panel whose tab header is already an `<h2>`. The prop shifts both `Panel.Title` and `Panel.CollapsibleTitle` down together.
-
-```tsx
-<Panel headingLevel={3}>…</Panel>
-```
+Panel controls two kinds of spacing: the padding inside each slot, and the gap between slots. The defaults suit most settings pages. Reach for the overrides when a Panel is unusually dense or unusually roomy.
 
 #### Padding
 
-By default every slot gets `p="square-regular"`. Override with a single `p` token for uniform padding, or use `px` and `py` to control the axes independently.
+Every slot is inset with `p="square-regular"`. Stay with the default in most cases. Use `square-loose` when a Panel holds long prose or sits alone on the page, and `px`/`py` when content is wide but short and uniform padding feels cramped vertically.
 
 ```tsx
 <Panel p="square-loose">…</Panel>
 <Panel px="padding-relaxed" py="padding-snug">…</Panel>
 ```
 
-#### Section spacing
+#### Section gap
 
-`space` controls the vertical gap between Panel's own sub-components (Header, Content, Footer). The default `regular` suits most cases; use `none` to remove the gaps entirely.
+`space` controls the gap between Header, Content, and Footer. Default `regular` works almost everywhere. Drop to `none` when the slots should read as one dense surface, like a full-width table that reaches the Panel's edges. Step up to `group` when the Panel carries several distinct blocks that need more breathing room.
 
 ```tsx
+<Panel space="none">…</Panel>
 <Panel space="group">…</Panel>
 ```
 
