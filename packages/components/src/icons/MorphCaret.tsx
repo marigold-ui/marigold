@@ -28,6 +28,7 @@ export const MorphCaret = ({
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    aria-hidden="true"
     className={cn('shrink-0', className)}
     {...props}
   >

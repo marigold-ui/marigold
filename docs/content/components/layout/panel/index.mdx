@@ -200,20 +200,22 @@ Every slot is inset with `p="square-regular"`. Stay with the default in most cas
 
 ## Accessibility
 
-Panel renders a `<section>` landmark and auto-wires the heading outline. Most of the accessibility story is handled for you, and two choices are yours to make.
+Panel renders a `<section>` and wires up the heading outline. Most of the story is handled for you. Two parts need your attention: giving the Panel a name, and making sure its heading levels match the page it sits in.
 
 ### Labeling
 
-Every landmark region needs a name. A Panel accepts one in two ways:
+A `<section>` only becomes a region landmark once it has an accessible name; without one, it's just a grouping element. Give the Panel a name in one of two ways:
 
-- **Preferred.** Include a `<Panel.Title>`. The Panel is automatically labelled by the title.
-- **Fallback.** If the Panel has no visible title (a Collapsible-only Panel, for example), pass an `aria-label` prop on the Panel itself.
+- **Preferred.** Include a Panel.Title. The Panel is automatically labelled by the title.
+- **Fallback.** If the Panel has no visible title (a Collapsible-only Panel, for example), pass an `aria-label` on the Panel itself.
 
 If both are set, `aria-label` takes precedence and the title is no longer used as the accessible name. Passing both is redundant, so pick one.
 
 ### Heading levels
 
-`<Panel.Title>` renders an `<h2>` by default. `<Panel.CollapsibleTitle>` renders one level deeper (`<h3>`). If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
+Panel.Title renders an `<h2>` by default. Panel.CollapsibleTitle renders one level deeper (`<h3>`) when the Panel has a title to nest under. In a Collapsible-only Panel (no Panel.Title), the CollapsibleTitle renders at the base `headingLevel` instead, since there's no parent heading to defer to.
+
+If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
 
 ```tsx
 <Panel headingLevel={3}>
@@ -228,11 +230,9 @@ If both are set, `aria-label` takes precedence and the title is no longer used a
 </Panel>
 ```
 
-Levels are clamped to `<h6>` so the outline never overflows the HTML spec.
-
 ### Collapsible sections
 
-`<Panel.Collapsible>` wraps each header in a heading whose button carries `aria-expanded`. The title and description render as spans inside the trigger button so the entire header surface is a single click target; the button's accessible name comes from the title via `aria-labelledby`, and the description is linked via `aria-describedby` so screen readers announce the extra context after the name. The caret is decorative and hidden from assistive technology. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+Panel.Collapsible wraps each header in a heading whose button carries `aria-expanded`. The title and description render as spans inside the trigger button so the entire header surface is a single click target; the button's accessible name comes from the title via `aria-labelledby`, and the description is linked via `aria-describedby` so screen readers announce the extra context after the name. The caret is marked `aria-hidden`, so only the title and description are read. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
 
 ## Props
 
