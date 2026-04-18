@@ -11,7 +11,9 @@ import { useSlot } from '../utils/useSlot';
 import { PanelProvider } from './Context';
 import { PanelCollapsible } from './PanelCollapsible';
 import { PanelCollapsibleContent } from './PanelCollapsibleContent';
-import { PanelCollapsibleTrigger } from './PanelCollapsibleTrigger';
+import { PanelCollapsibleDescription } from './PanelCollapsibleDescription';
+import { PanelCollapsibleHeader } from './PanelCollapsibleHeader';
+import { PanelCollapsibleTitle } from './PanelCollapsibleTitle';
 import { PanelContent } from './PanelContent';
 import { PanelDescription } from './PanelDescription';
 import { PanelFooter } from './PanelFooter';
@@ -29,7 +31,7 @@ interface PanelBaseProps {
   'aria-label'?: string;
   /**
    * Base heading level for the panel. `Panel.Title` renders at this level,
-   * `Panel.CollapsibleTrigger` at `headingLevel + 1`.
+   * `Panel.CollapsibleTitle` at `headingLevel + 1`.
    * @default 2
    */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
@@ -41,7 +43,7 @@ interface PanelBaseProps {
 }
 
 /**
- * Padding applied to every subcomponent (Header, Content, CollapsibleTrigger,
+ * Padding applied to every subcomponent (Header, Content, CollapsibleHeader,
  * CollapsibleContent, Footer). Either set `p` for uniform padding, or use
  * `px`/`py` to control the axes separately — setting both forms is a TypeScript
  * error, mirroring the `<Inset>` component's `space` / `spaceX`+`spaceY` split.
@@ -120,6 +122,8 @@ Panel.Description = PanelDescription;
 Panel.HeaderActions = PanelHeaderActions;
 Panel.Content = PanelContent;
 Panel.Collapsible = PanelCollapsible;
-Panel.CollapsibleTrigger = PanelCollapsibleTrigger;
+Panel.CollapsibleHeader = PanelCollapsibleHeader;
+Panel.CollapsibleTitle = PanelCollapsibleTitle;
+Panel.CollapsibleDescription = PanelCollapsibleDescription;
 Panel.CollapsibleContent = PanelCollapsibleContent;
 Panel.Footer = PanelFooter;

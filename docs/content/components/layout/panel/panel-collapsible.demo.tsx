@@ -29,7 +29,12 @@ export default () => (
       </Stack>
     </Panel.Content>
     <Panel.Collapsible>
-      <Panel.CollapsibleTrigger>SEO &amp; tracking</Panel.CollapsibleTrigger>
+      <Panel.CollapsibleHeader>
+        <Panel.CollapsibleTitle>SEO &amp; tracking</Panel.CollapsibleTitle>
+        <Panel.CollapsibleDescription>
+          Optional metadata used on the event page and in social shares.
+        </Panel.CollapsibleDescription>
+      </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">
           <TextField

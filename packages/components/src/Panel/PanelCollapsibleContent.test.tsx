@@ -28,7 +28,9 @@ describe('Panel.CollapsibleContent', () => {
       <MarigoldProvider theme={theme}>
         <Panel aria-label="Bleed collapse">
           <Panel.Collapsible defaultExpanded>
-            <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
+            <Panel.CollapsibleHeader>
+              <Panel.CollapsibleTitle>Toggle</Panel.CollapsibleTitle>
+            </Panel.CollapsibleHeader>
             <Panel.CollapsibleContent bleed>
               <span data-testid="inner">Edge to edge</span>
             </Panel.CollapsibleContent>

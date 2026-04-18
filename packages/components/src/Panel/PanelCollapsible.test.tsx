@@ -67,7 +67,9 @@ describe('Panel.Collapsible', () => {
       <MarigoldProvider theme={theme}>
         <Panel aria-label="Uncontrolled notify">
           <Panel.Collapsible onExpandedChange={value => changes.push(value)}>
-            <Panel.CollapsibleTrigger>Toggle</Panel.CollapsibleTrigger>
+            <Panel.CollapsibleHeader>
+              <Panel.CollapsibleTitle>Toggle</Panel.CollapsibleTitle>
+            </Panel.CollapsibleHeader>
             <Panel.CollapsibleContent>
               <Text>Body</Text>
             </Panel.CollapsibleContent>

@@ -156,7 +156,12 @@ export const WithCollapsible = meta.story({
         </Stack>
       </Panel.Content>
       <Panel.Collapsible>
-        <Panel.CollapsibleTrigger>Advanced Options</Panel.CollapsibleTrigger>
+        <Panel.CollapsibleHeader>
+          <Panel.CollapsibleTitle>Advanced Options</Panel.CollapsibleTitle>
+          <Panel.CollapsibleDescription>
+            Fine-tune URL slugs, tracking, and other optional settings.
+          </Panel.CollapsibleDescription>
+        </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">
             <TextField label="Custom URL Slug" />
@@ -169,11 +174,17 @@ export const WithCollapsible = meta.story({
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Title is h2, Collapsible trigger sits one level below.
+    // Title is h2, Collapsible title sits one level below.
     const trigger = canvas.getByRole('button', { name: /Advanced Options/ });
     const triggerHeading = trigger.closest('h3');
     expect(triggerHeading).not.toBeNull();
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    // Description lives inside the button so the whole header surface is
+    // clickable, while aria-describedby still scopes it separately for SRs.
+    const description = canvas.getByText(/Fine-tune URL slugs/);
+    expect(trigger).toContainElement(description);
+    expect(trigger).toHaveAttribute('aria-describedby', description.id);
 
     await userEvent.click(trigger);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
@@ -202,7 +213,9 @@ export const WithMultipleCollapsibles = meta.story({
         </Stack>
       </Panel.Content>
       <Panel.Collapsible>
-        <Panel.CollapsibleTrigger>Address</Panel.CollapsibleTrigger>
+        <Panel.CollapsibleHeader>
+          <Panel.CollapsibleTitle>Address</Panel.CollapsibleTitle>
+        </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">
             <TextField label="Street" />
@@ -212,7 +225,9 @@ export const WithMultipleCollapsibles = meta.story({
         </Panel.CollapsibleContent>
       </Panel.Collapsible>
       <Panel.Collapsible>
-        <Panel.CollapsibleTrigger>Accessibility</Panel.CollapsibleTrigger>
+        <Panel.CollapsibleHeader>
+          <Panel.CollapsibleTitle>Accessibility</Panel.CollapsibleTitle>
+        </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">
             <TextField label="Accessibility Notes" />
@@ -250,7 +265,9 @@ export const ControlledCollapsible = meta.story({
     return (
       <Panel aria-label="Advanced settings">
         <Panel.Collapsible expanded={expanded} onExpandedChange={setExpanded}>
-          <Panel.CollapsibleTrigger>Advanced settings</Panel.CollapsibleTrigger>
+          <Panel.CollapsibleHeader>
+            <Panel.CollapsibleTitle>Advanced settings</Panel.CollapsibleTitle>
+          </Panel.CollapsibleHeader>
           <Panel.CollapsibleContent>
             <Text>Controlled content.</Text>
           </Panel.CollapsibleContent>
@@ -271,19 +288,38 @@ export const AriaLabeled = meta.story(() => (
   </Panel>
 ));
 
-export const CollapsibleDefaultExpanded = meta.story(() => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>Notification Preferences</Panel.Title>
-    </Panel.Header>
-    <Panel.Collapsible defaultExpanded>
-      <Panel.CollapsibleTrigger>Channels</Panel.CollapsibleTrigger>
-      <Panel.CollapsibleContent>
-        <Text>Email, SMS, and push notifications are enabled by default.</Text>
-      </Panel.CollapsibleContent>
-    </Panel.Collapsible>
-  </Panel>
-));
+export const CollapsibleDefaultExpanded = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Notification Preferences</Panel.Title>
+      </Panel.Header>
+      <Panel.Collapsible defaultExpanded>
+        <Panel.CollapsibleHeader>
+          <Panel.CollapsibleTitle>Channels</Panel.CollapsibleTitle>
+          <Panel.CollapsibleDescription>
+            Where and how reminders, confirmations, and alerts are delivered.
+          </Panel.CollapsibleDescription>
+        </Panel.CollapsibleHeader>
+        <Panel.CollapsibleContent>
+          <Text>
+            Email, SMS, and push notifications are enabled by default.
+          </Text>
+        </Panel.CollapsibleContent>
+      </Panel.Collapsible>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const trigger = canvas.getByRole('button', { name: 'Channels' });
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    const description = canvas.getByText(/Where and how reminders/);
+    expect(trigger).toHaveAttribute('aria-describedby', description.id);
+  },
+});
 
 export const CollapsibleDisabled = meta.story(() => (
   <Panel>
@@ -291,7 +327,9 @@ export const CollapsibleDisabled = meta.story(() => (
       <Panel.Title>Billing</Panel.Title>
     </Panel.Header>
     <Panel.Collapsible disabled>
-      <Panel.CollapsibleTrigger>Payment methods</Panel.CollapsibleTrigger>
+      <Panel.CollapsibleHeader>
+        <Panel.CollapsibleTitle>Payment methods</Panel.CollapsibleTitle>
+      </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Text>Hidden because the user cannot change this section.</Text>
       </Panel.CollapsibleContent>

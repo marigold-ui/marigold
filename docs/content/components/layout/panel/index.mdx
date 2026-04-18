@@ -117,7 +117,7 @@ Reach for a Collapsible when a handful of fields in a Panel are:
 - **Advanced**, meant for power users who already know what they're looking for.
 - **Uncommon**, edited rarely enough that showing them by default adds noise.
 
-A Collapsible has two parts: a trigger that names the hidden section, and the content area it reveals. The trigger sits inside the Panel's main content flow, so the layout reads as one topic with a fold-out.
+A Collapsible has three parts: a header (with a title and an optional description) that names the hidden section, and the content area it reveals. The header mirrors the shape of `Panel.Header` — a title plus an optional description — so the collapsed section reads as a mini-panel with a fold-out.
 
 <PanelCollapsibleAnatomy />
 
@@ -131,7 +131,9 @@ Pass `expanded` and `onExpandedChange` to `Panel.Collapsible` to control the ope
 const [expanded, setExpanded] = useState(false);
 
 <Panel.Collapsible expanded={expanded} onExpandedChange={setExpanded}>
-  <Panel.CollapsibleTrigger>Advanced settings</Panel.CollapsibleTrigger>
+  <Panel.CollapsibleHeader>
+    <Panel.CollapsibleTitle>Advanced settings</Panel.CollapsibleTitle>
+  </Panel.CollapsibleHeader>
   <Panel.CollapsibleContent>…</Panel.CollapsibleContent>
 </Panel.Collapsible>;
 ```
@@ -182,7 +184,7 @@ Panel exposes three customization props on the root for cases where the defaults
 
 #### Heading level
 
-Use `headingLevel` when the Panel lives deeper in the page outline, for example inside a Tabs panel whose tab header is already an `<h2>`. The prop shifts both `Panel.Title` and `Panel.CollapsibleTrigger` down together.
+Use `headingLevel` when the Panel lives deeper in the page outline, for example inside a Tabs panel whose tab header is already an `<h2>`. The prop shifts both `Panel.Title` and `Panel.CollapsibleTitle` down together.
 
 ```tsx
 <Panel headingLevel={3}>…</Panel>
@@ -220,7 +222,7 @@ If both are set, `aria-label` takes precedence and the title is no longer used a
 
 ### Heading levels
 
-`<Panel.Title>` renders an `<h2>` by default. `<Panel.CollapsibleTrigger>` renders one level deeper (`<h3>`). If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
+`<Panel.Title>` renders an `<h2>` by default. `<Panel.CollapsibleTitle>` renders one level deeper (`<h3>`). If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
 
 ```tsx
 <Panel headingLevel={3}>
@@ -228,9 +230,9 @@ If both are set, `aria-label` takes precedence and the title is no longer used a
     <Panel.Title>…</Panel.Title> {/* renders as <h3> */}
   </Panel.Header>
   <Panel.Collapsible>
-    <Panel.CollapsibleTrigger>
-      … {/* renders as <h4> */}
-    </Panel.CollapsibleTrigger>
+    <Panel.CollapsibleHeader>
+      <Panel.CollapsibleTitle>… {/* renders as <h4> */}</Panel.CollapsibleTitle>
+    </Panel.CollapsibleHeader>
   </Panel.Collapsible>
 </Panel>
 ```
@@ -239,7 +241,7 @@ Levels are clamped to `<h6>` so the outline never overflows the HTML spec.
 
 ### Collapsible sections
 
-`<Panel.Collapsible>` wraps each trigger in a heading, with `aria-expanded` reflecting the open state. The chevron is decorative and hidden from assistive technology. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+`<Panel.Collapsible>` wraps each header in a heading whose button carries `aria-expanded`. The title and description render as spans inside the trigger button so the entire header surface is a single click target; the button's accessible name comes from the title via `aria-labelledby`, and the description is linked via `aria-describedby` so screen readers announce the extra context after the name. The caret is decorative and hidden from assistive technology. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
 
 ## Props
 
@@ -277,11 +279,25 @@ Levels are clamped to `<h6>` so the outline never overflows the HTML spec.
 
 <AutoTypeTable path="Panel/PanelCollapsible" name="PanelCollapsibleProps" />
 
-### Panel.CollapsibleTrigger
+### Panel.CollapsibleHeader
 
 <AutoTypeTable
-  path="Panel/PanelCollapsibleTrigger"
-  name="PanelCollapsibleTriggerProps"
+  path="Panel/PanelCollapsibleHeader"
+  name="PanelCollapsibleHeaderProps"
+/>
+
+### Panel.CollapsibleTitle
+
+<AutoTypeTable
+  path="Panel/PanelCollapsibleTitle"
+  name="PanelCollapsibleTitleProps"
+/>
+
+### Panel.CollapsibleDescription
+
+<AutoTypeTable
+  path="Panel/PanelCollapsibleDescription"
+  name="PanelCollapsibleDescriptionProps"
 />
 
 ### Panel.CollapsibleContent

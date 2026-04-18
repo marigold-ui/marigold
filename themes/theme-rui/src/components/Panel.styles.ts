@@ -26,23 +26,29 @@ export const Panel: ThemeComponent<'Panel'> = {
   }),
   header: cva({}),
   title: cva({
-    base: 'text-base font-semibold leading-6 text-(--panel-accent)',
+    base: 'text-base font-semibold leading-none text-(--panel-accent)',
   }),
   description: cva({
-    base: 'text-sm text-secondary',
+    base: 'mt-0.5 text-sm text-secondary',
   }),
   actions: cva({}),
   content: cva({}),
   collapsible: cva({ base: 'border-t border-border' }),
-  collapsibleTrigger: cva({
+  collapsibleHeader: cva({
     base: [
-      'flex flex-1 items-center justify-between gap-4 cursor-pointer',
+      'flex items-center gap-4',
       'm-1 rounded-[calc(var(--radius-surface)-var(--spacing))]',
       'px-[calc(var(--panel-px)-var(--spacing))] py-[calc(var(--panel-py)-var(--spacing))]',
-      'text-left text-base font-medium leading-6',
+      'text-left cursor-pointer',
       'hover:ui-state-hover',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
+  }),
+  collapsibleTitle: cva({
+    base: 'block text-base font-medium leading-none',
+  }),
+  collapsibleDescription: cva({
+    base: 'mt-0.5 block text-sm text-secondary select-text',
   }),
   collapsibleContent: cva({
     base: 'overflow-clip h-(--disclosure-panel-height) transition-[height] duration-250',

@@ -191,7 +191,9 @@ describe('Panel', () => {
       expect(Panel.HeaderActions).toBeDefined();
       expect(Panel.Content).toBeDefined();
       expect(Panel.Collapsible).toBeDefined();
-      expect(Panel.CollapsibleTrigger).toBeDefined();
+      expect(Panel.CollapsibleHeader).toBeDefined();
+      expect(Panel.CollapsibleTitle).toBeDefined();
+      expect(Panel.CollapsibleDescription).toBeDefined();
       expect(Panel.CollapsibleContent).toBeDefined();
       expect(Panel.Footer).toBeDefined();
     });

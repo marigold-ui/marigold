@@ -8,27 +8,22 @@ import { ControlledCollapsible, WithCollapsible } from './Panel.stories';
 
 const user = userEvent.setup();
 
-describe('Panel.CollapsibleTrigger', () => {
-  test('throws when rendered outside <Panel.Collapsible>', () => {
+describe('Panel.CollapsibleTitle', () => {
+  test('throws when rendered outside <Panel.CollapsibleHeader>', () => {
     const renderOrphan = () =>
       render(
         <MarigoldProvider theme={theme}>
-          <Panel aria-label="Orphan trigger">
-            <Panel.CollapsibleTrigger>Orphan</Panel.CollapsibleTrigger>
+          <Panel aria-label="Orphan title">
+            <Panel.Collapsible>
+              <Panel.CollapsibleTitle>Orphan</Panel.CollapsibleTitle>
+            </Panel.Collapsible>
           </Panel>
         </MarigoldProvider>
       );
 
-    expect(renderOrphan).toThrow(/must be used within a <Panel\.Collapsible>/);
-  });
-
-  test('wraps a button with slot="trigger" inside a heading', () => {
-    render(<WithCollapsible.Component />);
-
-    const trigger = screen.getByRole('button', { name: /Advanced Options/ });
-
-    expect(trigger).toHaveAttribute('slot', 'trigger');
-    expect(trigger.closest('h3')).not.toBeNull();
+    expect(renderOrphan).toThrow(
+      /must be used within a <Panel\.CollapsibleHeader>/
+    );
   });
 
   test('renders one level below the Title by default (h2 ⇒ h3)', () => {
@@ -58,21 +53,20 @@ describe('Panel.CollapsibleTrigger', () => {
   test('renders at the root headingLevel when no Title is present', () => {
     render(<ControlledCollapsible.Component />);
 
-    // No Title ⇒ trigger is at the root headingLevel (default h2).
     const trigger = screen.getByRole('button', { name: 'Advanced settings' });
 
     expect(trigger.closest('h2')).not.toBeNull();
   });
 
-  test('rotates the chevron when expanded', async () => {
+  test('morph caret reflects the expanded state', async () => {
     render(<WithCollapsible.Component />);
     const trigger = screen.getByRole('button', { name: /Advanced Options/ });
-    const chevron = trigger.querySelector('svg')!;
-
-    expect(chevron.getAttribute('class') ?? '').not.toContain('rotate-180');
+    const caretPath = trigger.querySelector('svg path')!;
+    const initial = (caretPath as SVGPathElement).style.getPropertyValue('d');
 
     await user.click(trigger);
 
-    expect(chevron.getAttribute('class') ?? '').toContain('rotate-180');
+    const expanded = (caretPath as SVGPathElement).style.getPropertyValue('d');
+    expect(expanded).not.toBe(initial);
   });
 });

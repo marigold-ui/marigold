@@ -131,7 +131,9 @@ export type Theme = {
       | 'actions'
       | 'content'
       | 'collapsible'
-      | 'collapsibleTrigger'
+      | 'collapsibleHeader'
+      | 'collapsibleTitle'
+      | 'collapsibleDescription'
       | 'collapsibleContent'
       | 'footer',
       ComponentStyleFunction<string, string>
