@@ -1,7 +1,7 @@
 ---
 title: Panel
 description: Organize page content into labeled regions.
-badge: new
+badge: beta
 ---
 
 A `<Panel>` organizes page content into labeled sections. Use it to split a settings, profile, or admin page into regions, each with its own title, content, and optional actions. What goes inside is flexible: form fields, tables, media, or plain text.
@@ -107,16 +107,19 @@ Tables, media, charts, and status bars are the exceptions. They look cramped whe
 
 Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it.
 
-### Collapsible sections
+### Progressive disclosure
 
-Use `Panel.Collapsible` to offer a sub-section that's hidden by default, typically for advanced or optional fields. The trigger is rendered as a real heading (see [Heading levels](#heading-levels)) and exposes `aria-expanded` state. Keyboard users activate it with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+Some sections have fields most users won't touch, like legacy SEO settings, import defaults, or an optional webhook URL. Hiding them by default keeps the Panel scannable for the common case, while staying one click away for anyone who needs them.
+
+Reach for a Collapsible when a handful of fields in a Panel are:
+
+- **Optional**, and unrelated to the primary action of the section.
+- **Advanced**, meant for power users who already know what they're looking for.
+- **Uncommon**, edited rarely enough that showing them by default adds noise.
+
+A Collapsible has two parts: a trigger that names the hidden section, and the content area it reveals. The trigger sits inside the Panel's main content flow, so the layout reads as one topic with a fold-out.
 
 <PanelCollapsibleAnatomy />
-
-A Collapsible has two sub-components:
-
-- **`Panel.CollapsibleTrigger`** is the interactive header that toggles the section. It always renders as a heading so the page outline stays correct.
-- **`Panel.CollapsibleContent`** is the region revealed when the trigger is expanded.
 
 <ComponentDemo name="panel-collapsible" />
 
