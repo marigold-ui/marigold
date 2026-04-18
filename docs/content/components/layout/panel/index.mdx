@@ -48,6 +48,13 @@ Panel has four variants. They match the ones in Card and Badge so master, admin,
 | `admin`       | Tint and accent for admin users.  | Sections only admin users see. [Learn more.](../../../patterns/admin-master-mark)  |
 | `destructive` | Tint for danger zones.            | Irreversible actions, like deleting an account or revoking access.                 |
 
+Panel also offers two sizes. The default is unconstrained and grows with its container; the `form` size caps the Panel at a comfortable reading width so long label-input pairs don't stretch across the page.
+
+| Size      | Description                        | When to use                                                    |
+| --------- | ---------------------------------- | -------------------------------------------------------------- |
+| `default` | Full width of the parent.          | Data-heavy sections: tables, lists, dashboards, prose.         |
+| `form`    | Caps the Panel at a reading width. | Form-heavy sections so fields stay easy to scan top-to-bottom. |
+
 ## Usage
 
 Panel is the primary tool for giving a page structure. Dense screens, like settings, admin forms, or dashboards, hold more fields than a user can scan in one pass. Breaking that content into labeled regions turns a wall of inputs into scannable topics.
@@ -112,7 +119,7 @@ Tables, media, charts, and status bars are the exceptions. They look cramped whe
 
 Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it.
 
-### Progressive disclosure
+### Collapsible
 
 Some sections have fields most users won't touch, like legacy SEO settings, import defaults, or an optional webhook URL. Hiding them by default keeps the Panel scannable for the common case, while staying one click away for anyone who needs them.
 
@@ -134,7 +141,7 @@ A Collapsible is for fields that are safe to miss. Anything else belongs in the 
 - **An overloaded Panel.** If a Panel feels too long, split it into two Panels with clearer names. A Collapsible that folds away half the content is usually papering over the wrong problem.
 - **Fields with validation errors.** Even optional fields can have format errors: an invalid tracking ID, a malformed webhook URL. When a Collapsible is closed and one of its fields fails validation on submit, the error message has no visible target. Auto-expand the section so the error shows up where the user can see it. The demo below shows the pattern.
 
-The example wraps the Panel in a `<Form>` and validates on submit. The invalid tracking ID is pre-filled inside a closed Collapsible — click **Save** to run the submit handler: it reads the form data, checks the field, and forces the Collapsible open when validation fails. For richer validation strategies with Marigold (React Hook Form, Zod, async actions), see the [Form Implementation](../../../patterns/form-implementation) guide.
+The example wraps the Panel in a `<Form>` and validates on submit. The invalid tracking ID is pre-filled inside a closed Collapsible. Click **Save** to run the submit handler: it reads the form data, checks the field, and forces the Collapsible open when validation fails.
 
 <ComponentDemo name="panel-collapsible-error" />
 
@@ -145,13 +152,13 @@ A Panel owns one topic, named by its title. A single Collapsible folds away the 
 When a Panel seems to want a second Collapsible, the shape is usually off in one of two ways:
 
 - **The Panel is trying to own two topics.** Split it into two Panels with clearer titles. Each gets its own scannable content and, if they need it, their own single Collapsible.
-- **The content is a set of peer sub-sections that all live at the same level.** Reach for [Accordion](../../navigation/accordion) instead. Accordion is built for parallel collapsible items; Panel is not.
+- **The content is a set of peer sub-sections that all live at the same level.** Reach for [Accordion](/components/navigation/accordion) instead. Accordion is built for parallel collapsible items; Panel is not.
 
 A Panel made entirely of Collapsibles runs into the same problem: the title labels an empty container, and the user has to click before anything reads. A single fold in an otherwise bare Panel can work when the Panel is purely a wrapper for one advanced section. Anything more should be an Accordion.
 
 ### Variants
 
-Panel's variants match the semantic intent of the other variant-bearing components. The `master` and `admin` variants visually mark sections of the page that are only visible to privileged users. This is the same purpose as `Card variant="master|admin"` or `Badge variant="master|admin"`. See the [Admin &amp; master mark](../../../patterns/admin-master-mark) pattern for placement rules.
+Panel's variants match the semantic intent of the other variant-bearing components. The `master` and `admin` variants visually mark sections of the page that are only visible to privileged users. This is the same purpose as `Card variant="master|admin"` or `Badge variant="master|admin"`. See the [Admin &amp; master mark](/patterns/admin-master-mark) pattern for placement rules.
 
 The `destructive` variant marks a section whose actions have permanent consequences. See [Panel-scoped actions](#panel-scoped-actions) below for the canonical use.
 
