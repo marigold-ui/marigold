@@ -41,6 +41,7 @@ export const Panel: ThemeComponent<'Panel'> = {
       'px-[calc(var(--panel-px)-var(--spacing))] py-[calc(var(--panel-py)-var(--spacing))]',
       'text-left cursor-pointer',
       'hover:ui-state-hover',
+      'focus-visible:ui-state-focus outline-none',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
   }),
