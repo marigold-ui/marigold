@@ -60,8 +60,6 @@ describe('Panel.CollapsibleHeader', () => {
     const button = screen.getByRole('button');
     const description = screen.getByText(/Tune optional settings/);
 
-    // Both the title and the description render inside the button, so the
-    // entire visual surface is a single click target.
     expect(button).toContainElement(description);
   });
 

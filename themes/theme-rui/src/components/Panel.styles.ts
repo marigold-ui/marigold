@@ -48,7 +48,7 @@ export const Panel: ThemeComponent<'Panel'> = {
     base: 'block text-base font-medium leading-none',
   }),
   collapsibleDescription: cva({
-    base: 'mt-0.5 block text-sm text-secondary select-text',
+    base: 'mt-0.5 block text-sm text-secondary',
   }),
   collapsibleContent: cva({
     base: 'overflow-clip h-(--disclosure-panel-height) transition-[height] duration-250',

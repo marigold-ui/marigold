@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { use, useId } from 'react';
+import { use, useId, useMemo } from 'react';
 import { Button, DisclosureStateContext, Heading } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { MorphCaret } from '../icons/MorphCaret';
@@ -27,15 +27,18 @@ export const PanelCollapsibleHeader = ({
   const descriptionId = useId();
   const [descriptionSlotRef, hasDescription] = useSlot(false);
 
+  const contextValue = useMemo(
+    () => ({ titleId, descriptionId, descriptionSlotRef }),
+    [titleId, descriptionId, descriptionSlotRef]
+  );
+
   const { isExpanded } = disclosureState;
   const level = hasTitle
     ? (Math.min(headingLevel + 1, 6) as 1 | 2 | 3 | 4 | 5 | 6)
     : headingLevel;
 
   return (
-    <CollapsibleHeaderProvider
-      value={{ titleId, descriptionId, descriptionSlotRef }}
-    >
+    <CollapsibleHeaderProvider value={contextValue}>
       <Heading level={level} className="flex">
         <Button
           slot="trigger"

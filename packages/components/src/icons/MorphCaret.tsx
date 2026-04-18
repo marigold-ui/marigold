@@ -1,15 +1,11 @@
 import type { CSSProperties } from 'react';
 import { cn } from '@marigold/system';
+import { reducedMotion } from '../utils/reducedMotion';
 import type { IconProps } from './Icons.types';
 
 const CARET_OPEN = 'M 6 16 L 12 10 L 18 16';
 const CARET_CLOSED = 'M 6 10 L 12 16 L 18 10';
 const MORPH_BEZIER = 'cubic-bezier(0.4, 0, 0.2, 1)';
-
-const reducedMotion =
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export interface MorphCaretProps extends IconProps {
   /** Whether the caret should render in its open (up-pointing) state. */

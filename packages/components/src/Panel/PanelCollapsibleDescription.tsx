@@ -11,18 +11,12 @@ export const PanelCollapsibleDescription = ({
   children,
 }: PanelCollapsibleDescriptionProps) => {
   const { classNames } = usePanelContext();
-  const headerCtx = useCollapsibleHeaderContext();
-
-  if (!headerCtx) {
-    throw new Error(
-      'Panel.CollapsibleDescription must be used within a <Panel.CollapsibleHeader> component.'
-    );
-  }
+  const { descriptionId, descriptionSlotRef } = useCollapsibleHeaderContext();
 
   return (
     <span
-      ref={headerCtx.descriptionSlotRef}
-      id={headerCtx.descriptionId}
+      ref={descriptionSlotRef}
+      id={descriptionId}
       className={cn(classNames.collapsibleDescription)}
     >
       {children}

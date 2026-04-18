@@ -174,14 +174,11 @@ export const WithCollapsible = meta.story({
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Title is h2, Collapsible title sits one level below.
     const trigger = canvas.getByRole('button', { name: /Advanced Options/ });
     const triggerHeading = trigger.closest('h3');
     expect(triggerHeading).not.toBeNull();
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
-    // Description lives inside the button so the whole header surface is
-    // clickable, while aria-describedby still scopes it separately for SRs.
     const description = canvas.getByText(/Fine-tune URL slugs/);
     expect(trigger).toContainElement(description);
     expect(trigger).toHaveAttribute('aria-describedby', description.id);
@@ -189,12 +186,10 @@ export const WithCollapsible = meta.story({
     await userEvent.click(trigger);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
-    // Collapse again via keyboard (Enter).
     trigger.focus();
     await userEvent.keyboard('{Enter}');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
-    // Expand again via Space — validates keyboard semantics.
     await userEvent.keyboard(' ');
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
   },
@@ -244,7 +239,6 @@ export const WithMultipleCollapsibles = meta.story({
       name: 'Accessibility',
     });
 
-    // Each Collapsible owns its own state.
     await userEvent.click(addressTrigger);
     expect(addressTrigger).toHaveAttribute('aria-expanded', 'true');
     expect(accessibilityTrigger).toHaveAttribute('aria-expanded', 'false');

@@ -11,16 +11,10 @@ export const PanelCollapsibleTitle = ({
   children,
 }: PanelCollapsibleTitleProps) => {
   const { classNames } = usePanelContext();
-  const headerCtx = useCollapsibleHeaderContext();
-
-  if (!headerCtx) {
-    throw new Error(
-      'Panel.CollapsibleTitle must be used within a <Panel.CollapsibleHeader> component.'
-    );
-  }
+  const { titleId } = useCollapsibleHeaderContext();
 
   return (
-    <span id={headerCtx.titleId} className={cn(classNames.collapsibleTitle)}>
+    <span id={titleId} className={cn(classNames.collapsibleTitle)}>
       {children}
     </span>
   );
