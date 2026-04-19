@@ -1,50 +1,79 @@
 ---
 title: Layouts
-description: Learn about how layouting is handled in Marigold
+description: How layout and composition are handled.
 ---
 
-Having a comprehensive collection of reusable components for common tasks (like buttons, cards and form fields) is great but it's not enough to build a whole application. An essential part is missing: components to build layout for application pages.
+Most web layout is a combination of `<div>` elements with flex or grid utility classes. That works for a single container, but it scales badly. The moment a section needs a vertical stack containing a row of buttons, wrappers start nesting and each one carries its own class string:
 
-A typically solution is to provide a `<Flex>` or `<Grid>` component for creating arbitrary layouts. However, in order to use those components efficiently developers need to have an intimate knowledge of `flex-box` and `grid`, including all their related properties.
+```tsx
+<div className="flex flex-col gap-4">
+  <h3>Title</h3>
+  <p>Body text…</p>
+  <div className="flex justify-end gap-2">
+    <button>Cancel</button>
+    <button>Save</button>
+  </div>
+</div>
+```
 
-Although this gives app developers incredible freedom, it will also leave the burden on them to research and implement necessary layout patterns, while at the same time make them reusable and responsive.
+Nothing is broken here, but reading it means parsing every class string to reconstruct the intent. Repeat the pattern across a codebase and layout decisions end up scattered through utility classes, reinvented slightly differently on every page.
 
-## Atomic Layouts
+Marigold replaces this with named layout components. The same structure looks like:
 
-Because layout patterns are such an essential part of building great applications, Marigold comes with a set of _layout components_ that will cover almost, if not all, necessary patterns.
+```tsx
+<Stack space="regular">
+  <h3>Title</h3>
+  <p>Body text…</p>
+  <Inline space="small" alignX="right">
+    <button>Cancel</button>
+    <button>Save</button>
+  </Inline>
+</Stack>
+```
+
+Each wrapper states _what_ it is rather than _how_ it is configured. You can scan the tree and see the layout flow without reading a single class name. This approach has a few practical benefits:
+
+- **Named intent.** The JSX tells you the layout pattern (`Stack`, `Inline`, `Columns`) instead of encoding it in class strings the reader has to decode.
+- **One canonical pattern.** The same shape looks the same everywhere; teams don't reinvent a vertical stack in four slightly different ways.
+- **Composability.** A `Button` drops into any layout without carrying layout opinions of its own.
+
+Spacing between elements is expressed with semantic tokens like `regular` or `group`. See the [Spacing](/foundations/spacing) page for the full vocabulary.
+
+## Components own layout, not spacing
+
+For the benefits above to hold, components must never set their own outer margin. Adding `margin` to a component causes it to affect, or be affected by, elements outside its boundary, breaking the modularity and composition assumptions that make components reusable in the first place.
+
+Whitespace, positioning, and arrangement are always the responsibility of a parent layout component. A button does not know what sits next to it; a `<Stack>` decides the gap between the button and its neighbour. This keeps components portable (they can be dropped into any layout without carrying layout opinions with them) and keeps whitespace predictable across pages.
+
+<ComponentDemo name="concepts-spacing" />
+
+## Atomic layouts
+
+Atomic layouts are invisible positioning helpers. They do not render a surface; they exist to arrange whatever content is placed inside them. Most layouts on the web can be broken down into a handful of these patterns, combined to achieve more complex structures.
 
 <ComponentDemo name="concepts-layouts" />
 
-The majority of layouts used on the web are not that unique. They often can be broken down into just a handful of layout patterns, which then can be combined to achieve more complex layout structures.
+### Choosing the right layout
 
-Each of Marigold's layout components is build to do one layout pattern well. Like all Marigold's component, they are composable so that they can be combined until the desired layout is achieved. This makes it possible to build more complex layouts from just the given set of atomic layout components.
+| Use when                                          | Component                                        |
+| ------------------------------------------------- | ------------------------------------------------ |
+| Stacking elements vertically with consistent gaps | [Stack](../../components/layout/stack)           |
+| Laying out elements horizontally that should wrap | [Inline](../../components/layout/inline)         |
+| Arranging weighted horizontal columns (e.g. 2:1)  | [Columns](../../components/layout/columns)       |
+| Filling a container with equal-width tiles        | [Tiles](../../components/layout/tiles)           |
+| Constraining content to a readable max width      | [Container](../../components/layout/container)   |
+| Centering a child horizontally                    | [Center](../../components/layout/center)         |
+| Locking a container to a fixed aspect ratio       | [Aspect](../../components/layout/aspect)         |
+| Padding content inside a surface                  | [Inset](../../components/layout/inset)           |
+| Building a named two-dimensional grid             | [Grid](../../components/layout/grid)             |
+| Pairing a main region with a narrow sidebar       | [Aside](../../components/layout/aside)           |
+| Pushing siblings to opposite ends of a row        | [Split](../../components/layout/split)           |
+| Letting a region scroll independently             | [Scrollable](../../components/layout/scrollable) |
+| Breaking out of a constrained grid                | [Breakout](../../components/layout/breakout)     |
 
-## Isolating Layouts
+## Structural layouts
 
-The move to [component-based development](https://www.componentdriven.org/) has enabled a ton of incredible improvements when it comes to building digital user interfaces. It changed the way how we think about building applications entirely. In combination with the principles from [Atomic Design](https://atomicdesign.bradfrost.com/) we are no longer building applications page by page. Instead we are focusing on constructing applications by using reusable pieces of UI (a.k.a. components). This not only improves the overall user experience and quality, it also boosts the velocity and convenience of development with which digital products get build.
+Structural layouts are named, surface-bearing regions of a page. Where atomic layouts arrange arbitrary content invisibly, structural layouts define **where on the page** content lives: the frame of an application, or a labelled section within a page. They have their own visual treatment (surface, elevation, variants) and often their own slots like `Header`, `Content`, and `Footer`.
 
-A majority of the CSS layout patterns unfortunately predate this way of developing applications and as a result breaks the [modularity and composition assumptions of components](https://addyosmani.com/first/). CSS properties like `margin`, `flex-direction` or `align-self` that affect, or are affected by, elements outside of a component boundary will cause them to not appear as intended. Because of this, some people go as far as [considering margin as harmful](https://mxstbr.com/thoughts/margin/) and advice against its usage.
-
-> “Components shouldn't contain surrounding whitespace”
->
-> — Mark Dalgleish, Rethinking Design Practices
-
-To avoid unexpected behavior and layout shifts, Marigold follows this principle. Managing whitespace, as well as positioning and arranging components is reserved for Marigold's layout components. This approach ensures that components are as composable as possible while keeping white space predictable.
-
-## Layout Components
-
-The components listed below can be nested within each other any number of times to create a wide variety of common layouts. Being familiar with these components is an essential part of working effectively with Marigold.
-
-- [Aside](../components/layout/aside)
-- [Aspect](../components/layout/aspect)
-- [Breakout](../components/layout/breakout)
-- [Center](../components/layout/center)
-- [Columns](../components/layout/columns)
-- [Container](../components/layout/container)
-- [Grid](../components/layout/grid)
-- [Inline](../components/layout/inline)
-- [Inset](../components/layout/inset)
-- [Scrollable](../components/layout/scrollable)
-- [Split](../components/layout/split)
-- [Stack](../components/layout/stack)
-- [Tiles](../components/layout/tiles)
+- [Panel](../../components/layout/panel) divides a page into labelled sections with a title, content, and optional actions.
+- [AppLayout](../../components/layout/app-layout) is the whole-viewport frame: sidebar on the left, header on the top right, scrollable main area below.
