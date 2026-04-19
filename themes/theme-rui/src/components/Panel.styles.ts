@@ -8,11 +8,11 @@ export const Panel: ThemeComponent<'Panel'> = {
       variant: {
         default: 'ui-surface',
         master:
-          'border border-access-master-accent bg-access-master/10 [--panel-accent:var(--color-access-master-foreground)]',
+          'border border-access-master-accent bg-access-master/40 [--panel-accent:var(--color-access-master-foreground)]',
         admin:
-          'border border-access-admin-accent bg-access-admin/10 [--panel-accent:var(--color-access-admin-foreground)]',
+          'border border-access-admin-accent bg-access-admin/40 [--panel-accent:var(--color-access-admin-foreground)]',
         destructive:
-          'border border-destructive-accent bg-destructive/10 [--panel-accent:var(--color-destructive-foreground)]',
+          'border border-destructive-accent bg-destructive/40 [--panel-accent:var(--color-destructive-foreground)]',
       },
       size: {
         default: '',
