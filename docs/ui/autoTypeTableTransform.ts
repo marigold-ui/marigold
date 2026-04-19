@@ -102,14 +102,23 @@ export const autoTypeTableTransform: Transformer = function (
   const resolvedText = propertyType.getText();
   const aliases = collectDesignSystemAliasesFromText(resolvedText);
   if (aliases.length > 0) {
+    // `simplifiedType` currently holds fumadocs' literal-expanded form
+    // (`getSimpleForm` recurses through union members, which no longer carry
+    // alias symbols after TS flattens them). Move it into `type` so the
+    // collapsible row shows the concrete values, and put the alias names in
+    // the cell.
+    entry.type = entry.simplifiedType;
     entry.simplifiedType = aliases.join(' | ');
     return;
   }
 
   // Fallback: TS flattened an indexed access to literals so the alias was lost
-  // in the resolved type. Surface the wrapper name the author wrote.
+  // in the resolved type. Surface the wrapper name in the cell; the current
+  // `simplifiedType` already holds the literal expansion, so copy it into
+  // `type` to keep the collapsible view meaningful.
   const wrapperName = getIndexedAccessWrapperName(propertySymbol);
   if (wrapperName) {
+    entry.type = entry.simplifiedType;
     entry.simplifiedType = wrapperName;
   }
 };
