@@ -11,8 +11,6 @@ export interface FormProps extends Omit<RAC.FormProps, 'className' | 'style'> {
    */
   unstyled?: boolean;
 
-  /**
-   */
   maxWidth?: MaxWidthProp['maxWidth'];
 }
 

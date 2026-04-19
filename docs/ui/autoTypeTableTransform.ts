@@ -13,16 +13,12 @@ import type { GenerateOptions } from 'fumadocs-typescript';
 import { Node, type Symbol as TsMorphSymbol } from 'ts-morph';
 
 type Transformer = NonNullable<GenerateOptions['transform']>;
+type Entry = Parameters<Transformer>[0];
 
-const DESIGN_SYSTEM_PATH_PATTERNS = [
-  '/packages/system/',
-  '/packages/types/',
-  '/@marigold/system/',
-  '/@marigold/types/',
-];
+const DESIGN_SYSTEM_PATH_REGEX = /\/(?:@marigold|packages)\/(?:system|types)\//;
 
 const isFromDesignSystemPath = (filePath: string) =>
-  DESIGN_SYSTEM_PATH_PATTERNS.some(p => filePath.includes(p));
+  DESIGN_SYSTEM_PATH_REGEX.test(filePath);
 
 /**
  * Follows import-alias chains so `WidthProp` resolved from a local
@@ -49,26 +45,22 @@ const isFromDesignSystemPackage = (symbol: TsMorphSymbol | undefined) => {
  * looks like `import("/path/to/pkg").AliasName`. TS preserves alias provenance
  * in this text even when `getAliasSymbol()` returns undefined for a flattened
  * union — making this more reliable than walking `type.getUnionTypes()`.
- *
- * Preserves first-seen order of each alias and returns the deduped list.
  */
 const IMPORT_ALIAS_REGEX = /import\("([^"]+)"\)\.([A-Za-z_][A-Za-z0-9_]*)/g;
 
 const collectDesignSystemAliasesFromText = (text: string): string[] => {
-  const names: string[] = [];
-  for (const match of text.matchAll(IMPORT_ALIAS_REGEX)) {
-    const [, filePath, name] = match;
-    if (!isFromDesignSystemPath(filePath)) continue;
-    if (!names.includes(name)) names.push(name);
+  const seen = new Set<string>();
+  for (const [, filePath, name] of text.matchAll(IMPORT_ALIAS_REGEX)) {
+    if (isFromDesignSystemPath(filePath)) seen.add(name);
   }
-  return names;
+  return Array.from(seen);
 };
 
 /**
- * When the resolved type has been flattened to literals (e.g. `WidthProp['width']`
- * resolves to `'auto' | 'full' | ...` with no surviving alias reference), fall
- * back to the wrapper name written by the author. Only applies when the
- * wrapper's declaration lives in a design-system package.
+ * Fallback for when TS has flattened an indexed access to literals (e.g.
+ * `WidthProp['width']` resolves to `'auto' | 'full' | ...` with no surviving
+ * alias reference). Surfaces the wrapper name written by the author, but only
+ * when its declaration lives in a design-system package.
  */
 const getIndexedAccessWrapperName = (
   propertySymbol: TsMorphSymbol
@@ -89,36 +81,26 @@ const getIndexedAccessWrapperName = (
   return undefined;
 };
 
+// Moves the literal-expanded form into `type` (the collapsible row) and puts
+// a concise summary in `simplifiedType` (the main cell).
+const promoteExpanded = (entry: Entry, summary: string) => {
+  entry.type = entry.simplifiedType;
+  entry.simplifiedType = summary;
+};
+
 export const autoTypeTableTransform: Transformer = function (
   entry,
   propertyType,
   propertySymbol
 ) {
-  // Escape hatch — per-prop `@remarks` override wins.
   if (entry.tags.some(t => t.name === 'remarks')) return;
 
-  // Primary path: extract alias references that TS preserved in the default
-  // print form of the resolved type, filtered to our design-system packages.
-  const resolvedText = propertyType.getText();
-  const aliases = collectDesignSystemAliasesFromText(resolvedText);
+  const aliases = collectDesignSystemAliasesFromText(propertyType.getText());
   if (aliases.length > 0) {
-    // `simplifiedType` currently holds fumadocs' literal-expanded form
-    // (`getSimpleForm` recurses through union members, which no longer carry
-    // alias symbols after TS flattens them). Move it into `type` so the
-    // collapsible row shows the concrete values, and put the alias names in
-    // the cell.
-    entry.type = entry.simplifiedType;
-    entry.simplifiedType = aliases.join(' | ');
+    promoteExpanded(entry, aliases.join(' | '));
     return;
   }
 
-  // Fallback: TS flattened an indexed access to literals so the alias was lost
-  // in the resolved type. Surface the wrapper name in the cell; the current
-  // `simplifiedType` already holds the literal expansion, so copy it into
-  // `type` to keep the collapsible view meaningful.
   const wrapperName = getIndexedAccessWrapperName(propertySymbol);
-  if (wrapperName) {
-    entry.type = entry.simplifiedType;
-    entry.simplifiedType = wrapperName;
-  }
+  if (wrapperName) promoteExpanded(entry, wrapperName);
 };
