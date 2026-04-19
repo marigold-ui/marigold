@@ -37,7 +37,6 @@ export interface SelectProps<
   size?: string;
 
   /**
-   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
   /**

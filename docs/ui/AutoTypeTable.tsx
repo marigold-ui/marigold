@@ -3,6 +3,7 @@ import {
   createGenerator,
 } from 'fumadocs-typescript';
 import { AutoTypeTable as FumadocsAutoTypeTable } from 'fumadocs-typescript/ui';
+import { autoTypeTableTransform } from './autoTypeTableTransform';
 
 const generator = createGenerator({
   // set a cache, necessary for serverless platform like Vercel
@@ -51,7 +52,7 @@ export const AutoTypeTable = (props: {
       {...props}
       path={resolvedPath}
       generator={generator}
-      options={{ basePath }}
+      options={{ basePath, transform: autoTypeTableTransform }}
     />
   );
 };
