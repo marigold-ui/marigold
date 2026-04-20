@@ -43,3 +43,7 @@ next-env.d.ts
 
 # Playwright MCP
 .playwright-mcp
+
+# Vitest browser-mode failure artifacts
+**/__screenshots__
+.vitest-attachments

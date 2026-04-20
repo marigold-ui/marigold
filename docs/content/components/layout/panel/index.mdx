@@ -1,0 +1,332 @@
+---
+title: Panel
+description: Organize page content into labeled regions.
+badge: beta
+---
+
+A `<Panel>` organizes page content into labeled sections. Use it to split a settings, profile, or admin page into regions, each with its own title, content, and optional actions. What goes inside is flexible: form fields, tables, media, or plain text.
+
+A typical page has a handful of Panels, each owning one topic: "Organizer profile", "Team members", "Billing". Every Panel has a unique title and renders as a landmark region labelled by that title, so the page outline stays meaningful to assistive tech.
+
+<Callout title="Is a Panel a Card?">
+  They look similar, but they're not interchangeable. A Panel owns a region of a
+  page, with its own title, description, and optional actions. A Card just
+  stands in for one item in a list or grid. **Cards repeat; Panels don't.**
+</Callout>
+
+import { Layers, ListCollapse, ShieldCheck, SquareStack } from 'lucide-react';
+import { PanelAnatomy } from './panel-anatomy';
+import { PanelCollapsibleAnatomy } from './panel-collapsible-anatomy';
+import { PanelVsCard } from './panel-vs-card';
+
+## Anatomy
+
+<PanelAnatomy />
+
+A Panel has three areas, all optional, each backed by its own sub-component:
+
+- **Header** contains a title, an optional description, and optional actions slot for buttons or overflow menus.
+- **Content** is the main body. Form fields, text, tables, or any layout primitive lives here.
+- **Footer** is an optional action bar for panel-scoped actions. Often omitted.
+
+A Panel can also wrap part of its content in a **Collapsible** to hide fields until the user opens them. A Collapsible has two parts: a header that names the section, and the content it reveals. The header follows the same pattern as the Panel header above: a title, with an optional description underneath. The whole header is clickable, and a caret on the right marks whether the section is open.
+
+<PanelCollapsibleAnatomy />
+
+## Appearance
+
+<AppearanceDemo component={'Panel'} />
+
+<AppearanceTable component={'Panel'} />
+
+Panel has four variants. They match the ones in Card and Badge so master, admin, and destructive sections read consistently, whether they show up as a collection item or a page region.
+
+| Variant       | Description                       | When to use                                                                        |
+| ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
+| `default`     | Subtle surface tint.              | Most page sections: profile, notifications, billing.                               |
+| `master`      | Tint and accent for master users. | Sections only master users see. [Learn more.](../../../patterns/admin-master-mark) |
+| `admin`       | Tint and accent for admin users.  | Sections only admin users see. [Learn more.](../../../patterns/admin-master-mark)  |
+| `destructive` | Tint for danger zones.            | Irreversible actions, like deleting an account or revoking access.                 |
+
+Panel also offers two sizes. The default is unconstrained and grows with its container; the `form` size caps the Panel at a comfortable reading width so long label-input pairs don't stretch across the page.
+
+| Size      | Description                        | When to use                                                    |
+| --------- | ---------------------------------- | -------------------------------------------------------------- |
+| `default` | Full width of the parent.          | Data-heavy sections: tables, lists, dashboards, prose.         |
+| `form`    | Caps the Panel at a reading width. | Form-heavy sections so fields stay easy to scan top-to-bottom. |
+
+## Usage
+
+Panel is the primary tool for giving a page structure. Dense screens, like settings, admin forms, or dashboards, hold more fields than a user can scan in one pass. Breaking that content into labeled regions turns a wall of inputs into scannable topics.
+
+A page typically has two to six Panels, each owning one topic. A settings page, for example, might split into "Store Information", "Regional Settings", and "Notifications". Each Panel groups related fields under a single heading, so a user can find the section they need without reading everything before it.
+
+Panel is content-agnostic: form fields, tables, media, or text blocks can all live inside. The one rule is topical cohesion. Everything in a Panel should share the topic its title names. Without that, the Panel stops being a region and turns into a box.
+
+### Panel vs Card
+
+<PanelVsCard />
+
+Panel and Card look similar, but they solve different problems. A Panel is a named region of a page, usually unique, with its own title and (sometimes) actions. A Card stands in for one item in a collection and is built to repeat.
+
+<Callout title="Rule of thumb">
+  If the element repeats as you scroll (events, products, team members), reach
+  for a [Card](../../content/card). If it owns a page region on its own, like
+  "Organizer profile", "Team members", or "Billing", reach for a Panel.
+</Callout>
+
+### Header
+
+The header names the section and tells the user what it's about before they read a single field. It has three slots: a title, an optional description, and an optional actions region on the right. Each slot has its own job.
+
+#### Title
+
+The title is how a user finds this section when they scan the page. Aim for a short noun phrase, two to five words, that names the topic. A good title is specific and unique on the page: if two sections could share the same heading, it's too generic. Use sentence case, and front-load the meaningful keyword so the user recognizes it at a glance.
+
+<Callout title="Every Panel needs a name">
+  A Panel is a landmark region, and assistive technologies need a name for it.
+  Include a title, or pass an `aria-label` on the Panel itself when the section
+  does not have a visible title.
+</Callout>
+
+#### Description
+
+A description is a single-sentence subtitle directly under the title. Include one when the title alone doesn't tell the user what's at stake, or when the section introduces a concept they may not have seen before. Skip it when the title already says it. A description that restates the heading adds reading weight without adding information.
+
+#### Actions
+
+Some sections have controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it.
+
+<ComponentDemo name="panel-header-actions" />
+
+### Content
+
+The content area is the body of the Panel. It's deliberately open, and in practice most sections you'll build are one of three shapes:
+
+- **Form sections** group related fields under one topic, like "Store information" or "Notifications". Stack the fields so labels and inputs share a vertical rhythm.
+- **Data sections** put a single table, list, chart, diagram, or media surface at the centre of the region. These usually want [full-width content](#full-width-content).
+- **Prose sections** explain a concept or a consequence before the user acts, common above a Danger zone or at the top of a settings page.
+
+Panel doesn't impose a layout primitive. Reach for the same tools you'd use outside a Panel (Stack, Inline, a grid). The Panel owns the region; the content inside still owns its own rhythm.
+
+#### Full-width content
+
+By default, content sits inside the Panel's horizontal padding so its left and right edges line up with the header and footer. That shared edge is what makes the Panel read as one region.
+
+Tables, media, charts, and status bars are the exceptions. They look cramped when inset and read best edge-to-edge. Opt in with the `bleed` prop on the content area.
+
+<ComponentDemo name="panel-bleed" />
+
+Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it.
+
+### Collapsible
+
+Some sections have fields most users won't touch, like legacy SEO settings, import defaults, or an optional webhook URL. Hiding them by default keeps the Panel scannable for the common case, while staying one click away for anyone who needs them.
+
+Reach for a Collapsible when a handful of fields in a Panel are:
+
+- **Optional**, and unrelated to the primary action of the section.
+- **Advanced**, meant for power users who already know what they're looking for.
+- **Uncommon**, edited rarely enough that showing them by default adds noise.
+
+<ComponentDemo name="panel-collapsible" />
+
+#### What to keep visible
+
+A Collapsible is for fields that are safe to miss. Anything else belongs in the main content, where users can scan it without clicking. In particular, don't fold away:
+
+- **Required fields.** Hiding something a user must fill in to save the form is the classic trap. They submit, the form errors inside a collapsed section, and they're left hunting for an invisible field. If you find yourself wanting to fold one away, that's usually a sign something else is off: maybe the field isn't really required, or the section deserves its own Panel.
+- **Content central to the Panel's topic.** If a Panel is "Billing address", hiding the address fields themselves defeats the Panel. A Collapsible is for the periphery of the topic, not the topic itself.
+- **Non-obvious defaults.** Settings the user would want to notice, like a timezone pinned to "UTC" on a regional account, shouldn't sit behind a fold. Out of sight means out of audit.
+- **An overloaded Panel.** If a Panel feels too long, split it into two Panels with clearer names. A Collapsible that folds away half the content is usually papering over the wrong problem.
+- **Fields with validation errors.** Even optional fields can have format errors: an invalid tracking ID, a malformed webhook URL. When a Collapsible is closed and one of its fields fails validation on submit, the error message has no visible target. Auto-expand the section so the error shows up where the user can see it. The demo below shows the pattern.
+
+The example wraps the Panel in a `<Form>` and validates on submit. The invalid tracking ID is pre-filled inside a closed Collapsible. Click **Save** to run the submit handler: it reads the form data, checks the field, and forces the Collapsible open when validation fails.
+
+<ComponentDemo name="panel-collapsible-error" />
+
+#### One Collapsible per Panel
+
+A Panel owns one topic, named by its title. A single Collapsible folds away the topic's periphery while the visible content still carries the section. Two or more folds flip that relationship: users see the title, a stack of closed triggers, and nothing to orient them. The Panel stops being a section and starts being a navigator.
+
+When a Panel seems to want a second Collapsible, the shape is usually off in one of two ways:
+
+- **The Panel is trying to own two topics.** Split it into two Panels with clearer titles. Each gets its own scannable content and, if they need it, their own single Collapsible.
+- **The content is a set of peer sub-sections that all live at the same level.** Reach for [Accordion](/components/navigation/accordion) instead. Accordion is built for parallel collapsible items; Panel is not.
+
+A Panel made entirely of Collapsibles runs into the same problem: the title labels an empty container, and the user has to click before anything reads. A single fold in an otherwise bare Panel can work when the Panel is purely a wrapper for one advanced section. Anything more should be an Accordion.
+
+### Danger zone
+
+A Danger zone is a clearly-marked section for actions that can't be undone: deleting an account, wiping data, transferring ownership, revoking access. Use the `destructive` variant so the surface itself warns the user, and put it last so it stays out of the way while they're editing safer settings.
+
+Reach for a Danger zone when the action is one of these:
+
+- **Not reversible.** Deleting records. Wiping logs. Cancelling a subscription with no grace period.
+- **Removes access or changes identity.** Transferring ownership, kicking someone off the workspace, rotating the primary API key.
+- **Affects people outside the current account.** Cancelling events that customers hold tickets for. Closing a workspace other people depend on.
+
+Anything reversible or low-stakes, like sign-out or reset-to-defaults, does not need a Danger zone. Keep it in the normal flow.
+
+Most Danger zones hold one action. Put it in the Footer, with a short paragraph in the Content explaining what disappears. Lead with the consequence, not the verb. The Footer is only for actions scoped to this Panel; page-level **Save changes** and **Cancel** stay outside.
+
+<ComponentDemo name="panel-footer" />
+
+If a couple of destructive actions genuinely belong together (say "Archive" next to "Delete"), stack them as rows inside the Content, each with a one-line consequence and its own destructive button. The Footer stays empty in that shape.
+
+<ComponentDemo name="panel-danger-zone-rows" />
+
+### Spacing
+
+Panel controls two kinds of spacing: the padding inside each slot, and the gap between slots. The defaults suit most settings pages. Reach for the overrides when a Panel is unusually dense or unusually roomy.
+
+#### Padding
+
+Every slot is inset with `p="square-regular"`. Stay with the default in most cases. Use `square-loose` when a Panel holds long prose or sits alone on the page, and `px`/`py` when content is wide but short and uniform padding feels cramped vertically.
+
+```tsx
+<Panel p="square-loose">…</Panel>
+<Panel px="padding-relaxed" py="padding-snug">…</Panel>
+```
+
+#### Section gap
+
+`space` controls the gap between Header, Content, and Footer. Default `regular` works almost everywhere. Drop to `none` when the slots should read as one dense surface, like a full-width table that reaches the Panel's edges. Step up to `group` when the Panel carries several distinct blocks that need more breathing room.
+
+```tsx
+<Panel space="none">…</Panel>
+<Panel space="group">…</Panel>
+```
+
+## Accessibility
+
+Panel renders a `<section>` and wires up the heading outline. Most of the story is handled for you. Two parts need your attention: giving the Panel a name, and making sure its heading levels match the page it sits in.
+
+### Labeling
+
+A `<section>` only becomes a region landmark once it has an accessible name; without one, it's just a grouping element. Give the Panel a name in one of two ways:
+
+- **Preferred.** Include a Panel.Title. The Panel is automatically labelled by the title.
+- **Fallback.** If the Panel has no visible title (a Collapsible-only Panel, for example), pass an `aria-label` on the Panel itself.
+
+If both are set, `aria-label` takes precedence and the title is no longer used as the accessible name. Passing both is redundant, so pick one.
+
+### Heading levels
+
+Panel.Title renders an `<h2>` by default. Panel.CollapsibleTitle renders one level deeper (`<h3>`) when the Panel has a title to nest under. In a Collapsible-only Panel (no Panel.Title), the CollapsibleTitle renders at the base `headingLevel` instead, since there's no parent heading to defer to.
+
+If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
+
+```tsx
+<Panel headingLevel={3}>
+  <Panel.Header>
+    <Panel.Title>…</Panel.Title> {/* renders as <h3> */}
+  </Panel.Header>
+  <Panel.Collapsible>
+    <Panel.CollapsibleHeader>
+      <Panel.CollapsibleTitle>… {/* renders as <h4> */}</Panel.CollapsibleTitle>
+    </Panel.CollapsibleHeader>
+  </Panel.Collapsible>
+</Panel>
+```
+
+### Collapsible sections
+
+Panel.Collapsible wraps each header in a heading whose button carries `aria-expanded`. The title and description render as spans inside the trigger button so the entire header surface is a single click target; the button's accessible name comes from the title via `aria-labelledby`, and the description is linked via `aria-describedby` so screen readers announce the extra context after the name. The caret is marked `aria-hidden`, so only the title and description are read. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+
+## Props
+
+<StorybookHintMessage component={'Panel'} />
+
+### Panel
+
+<AutoTypeTable path="Panel" name="PanelProps" />
+
+### Panel.Header
+
+<AutoTypeTable path="Panel/PanelHeader" name="PanelHeaderProps" />
+
+### Panel.Title
+
+<AutoTypeTable path="Panel/PanelTitle" name="PanelTitleProps" />
+
+### Panel.Description
+
+<AutoTypeTable path="Panel/PanelDescription" name="PanelDescriptionProps" />
+
+### Panel.HeaderActions
+
+<AutoTypeTable path="Panel/PanelHeaderActions" name="PanelHeaderActionsProps" />
+
+### Panel.Content
+
+<AutoTypeTable path="Panel/PanelContent" name="PanelContentProps" />
+
+### Panel.Footer
+
+<AutoTypeTable path="Panel/PanelFooter" name="PanelFooterProps" />
+
+### Panel.Collapsible
+
+<AutoTypeTable path="Panel/PanelCollapsible" name="PanelCollapsibleProps" />
+
+### Panel.CollapsibleHeader
+
+<AutoTypeTable
+  path="Panel/PanelCollapsibleHeader"
+  name="PanelCollapsibleHeaderProps"
+/>
+
+### Panel.CollapsibleTitle
+
+<AutoTypeTable
+  path="Panel/PanelCollapsibleTitle"
+  name="PanelCollapsibleTitleProps"
+/>
+
+### Panel.CollapsibleDescription
+
+<AutoTypeTable
+  path="Panel/PanelCollapsibleDescription"
+  name="PanelCollapsibleDescriptionProps"
+/>
+
+### Panel.CollapsibleContent
+
+<AutoTypeTable
+  path="Panel/PanelCollapsibleContent"
+  name="PanelCollapsibleContentProps"
+/>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Card',
+      href: '../../content/card',
+      caption:
+        'The collection-item counterpart to Panel. Use Card for items that repeat in a list or grid.',
+      icon: <SquareStack className="size-6" />,
+    },
+    {
+      title: 'Accordion',
+      href: '../../navigation/accordion',
+      caption:
+        'Use Accordion for a set of peer collapsible sections. Panel is for one topic, Accordion is for parallel items.',
+      icon: <ListCollapse className="size-6" />,
+    },
+    {
+      title: 'Admin- & master mark',
+      href: '/patterns/admin-master-mark',
+      caption: 'Placement guidance for master- and admin-only content.',
+      icon: <ShieldCheck className="size-6" />,
+    },
+    {
+      title: 'Elevation',
+      href: '../../../foundations/elevation',
+      caption: 'How raised, sunken, and flat surfaces work together on a page.',
+      icon: <Layers className="size-6" />,
+    },
+  ]}
+/>
