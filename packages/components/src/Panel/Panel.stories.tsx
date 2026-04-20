@@ -1,6 +1,6 @@
 import { UserRoundPlus } from 'lucide-react';
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
@@ -81,17 +81,19 @@ export const Basic = meta.story({
       </Panel.Footer>
     </Panel>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
+Basic.test(
+  'renders a labelled region with the Title as accessible name',
+  async ({ canvas }) => {
     const title = canvas.getByRole('heading', { name: 'Organizer Profile' });
-    expect(title.tagName).toBe('H2');
-
     const region = canvas.getByRole('region', { name: 'Organizer Profile' });
+
+    expect(title.tagName).toBe('H2');
     expect(region).toBeInTheDocument();
     expect(region.getAttribute('aria-labelledby')).toBe(title.id);
-  },
-});
+  }
+);
 
 export const WithHeaderActions = meta.story(() => (
   <Panel>
@@ -171,20 +173,20 @@ export const WithCollapsible = meta.story({
       </Panel.Collapsible>
     </Panel>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
+WithCollapsible.test(
+  'toggles aria-expanded and body visibility via click, Enter, and Space',
+  async ({ canvas }) => {
     const trigger = canvas.getByRole('button', { name: /Advanced Options/ });
-    const triggerHeading = trigger.closest('h3');
-    expect(triggerHeading).not.toBeNull();
-    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    const body = canvas.getByLabelText('Custom URL Slug');
 
-    const description = canvas.getByText(/Fine-tune URL slugs/);
-    expect(trigger).toContainElement(description);
-    expect(trigger).toHaveAttribute('aria-describedby', description.id);
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(body).not.toBeVisible();
 
     await userEvent.click(trigger);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(body).toBeVisible();
 
     trigger.focus();
     await userEvent.keyboard('{Enter}');
@@ -192,10 +194,24 @@ export const WithCollapsible = meta.story({
 
     await userEvent.keyboard(' ');
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
-  },
-});
+  }
+);
+
+WithCollapsible.test(
+  'morph caret reflects the expanded state',
+  async ({ canvas }) => {
+    const trigger = canvas.getByRole('button', { name: /Advanced Options/ });
+    const caretPath = trigger.querySelector('svg path') as SVGPathElement;
+    const initial = caretPath.style.getPropertyValue('d');
+
+    await userEvent.click(trigger);
+
+    expect(caretPath.style.getPropertyValue('d')).not.toBe(initial);
+  }
+);
 
 export const ControlledCollapsible = meta.story({
+  tags: ['component-test'],
   render: function Render() {
     const [expanded, setExpanded] = useState(false);
     return (
@@ -212,6 +228,21 @@ export const ControlledCollapsible = meta.story({
     );
   },
 });
+
+ControlledCollapsible.test(
+  'flips aria-expanded via the controlled `expanded` prop',
+  async ({ canvas }) => {
+    const trigger = canvas.getByRole('button', { name: 'Advanced settings' });
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    await userEvent.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    await userEvent.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  }
+);
 
 export const AriaLabeled = meta.story(() => (
   <Panel aria-label="Collapsible-only panel">
@@ -246,16 +277,31 @@ export const CollapsibleDefaultExpanded = meta.story({
       </Panel.Collapsible>
     </Panel>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const trigger = canvas.getByRole('button', { name: 'Channels' });
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-
-    const description = canvas.getByText(/Where and how reminders/);
-    expect(trigger).toHaveAttribute('aria-describedby', description.id);
-  },
 });
+
+CollapsibleDefaultExpanded.test(
+  'starts expanded and wires aria-describedby to the description',
+  async ({ canvas }) => {
+    const trigger = canvas.getByRole('button', { name: 'Channels' });
+    const description = canvas.getByText(/Where and how reminders/);
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(trigger).toHaveAttribute('aria-describedby', description.id);
+  }
+);
+
+export const CollapsibleBleed = meta.story(() => (
+  <Panel aria-label="Bleed collapsible">
+    <Panel.Collapsible defaultExpanded>
+      <Panel.CollapsibleHeader>
+        <Panel.CollapsibleTitle>Bleed content</Panel.CollapsibleTitle>
+      </Panel.CollapsibleHeader>
+      <Panel.CollapsibleContent bleed>
+        <Text>Edge to edge</Text>
+      </Panel.CollapsibleContent>
+    </Panel.Collapsible>
+  </Panel>
+));
 
 export const CollapsibleDisabled = meta.story(() => (
   <Panel>

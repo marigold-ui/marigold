@@ -1,10 +1,15 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import type { PanelContext as PanelContextShape } from './Context';
+import { usePanelContext } from './Context';
 import { Panel } from './Panel';
 import {
   AriaLabeled,
   Basic,
   CustomPadding,
+  TableInside,
   Variants,
   WithHeaderActions,
 } from './Panel.stories';
@@ -49,20 +54,6 @@ describe('Panel', () => {
 
       expect(region).not.toHaveAttribute('aria-labelledby');
       expect(region).toHaveAttribute('aria-label', 'Collapsible-only panel');
-    });
-
-    test('places Description under the Title in the header grid', () => {
-      render(<WithHeaderActions.Component />);
-
-      const description = screen.getByText(
-        /People with access to this workspace/
-      );
-      const actionsSlot = screen
-        .getByRole('button', { name: /Invite member/ })
-        .closest('[class*="[grid-area:actions]"]');
-
-      expect(description.className).toContain('[grid-area:description]');
-      expect(actionsSlot).not.toBeNull();
     });
   });
 
@@ -197,5 +188,191 @@ describe('Panel', () => {
       expect(Panel.CollapsibleContent).toBeDefined();
       expect(Panel.Footer).toBeDefined();
     });
+  });
+});
+
+describe('Panel.Header', () => {
+  test('lays out children in a two-column grid with named areas', () => {
+    render(<WithHeaderActions.Component />);
+
+    const header = screen.getByRole('heading', {
+      name: 'Team Members',
+    }).parentElement!;
+
+    expect(header.className).toContain('grid');
+    expect(header.className).toContain('grid-cols-[1fr_auto]');
+    expect(header.className).toContain(
+      "[grid-template-areas:'title_actions'_'description_actions']"
+    );
+  });
+
+  test('places Description under the Title in the header grid', () => {
+    render(<WithHeaderActions.Component />);
+
+    const description = screen.getByText(
+      /People with access to this workspace/
+    );
+    const actionsSlot = screen
+      .getByRole('button', { name: /Invite member/ })
+      .closest('[class*="[grid-area:actions]"]');
+
+    expect(description.className).toContain('[grid-area:description]');
+    expect(actionsSlot).not.toBeNull();
+  });
+});
+
+describe('Panel.Title', () => {
+  test('throws when rendered outside <Panel>', () => {
+    const renderOrphan = () => render(<Panel.Title>Orphan</Panel.Title>);
+
+    expect(renderOrphan).toThrow(/must be used within a <Panel>/);
+  });
+
+  test('defaults to an <h2>', () => {
+    render(<Basic.Component />);
+
+    const title = screen.getByRole('heading', { name: 'Organizer Profile' });
+
+    expect(title.tagName).toBe('H2');
+  });
+
+  test.each([2, 3, 4, 5, 6] as const)(
+    'renders an <h%i> when Panel headingLevel=%i',
+    level => {
+      render(<Basic.Component headingLevel={level} />);
+
+      const title = screen.getByRole('heading', { name: 'Organizer Profile' });
+
+      expect(title.tagName).toBe(`H${level}`);
+    }
+  );
+
+  test('mirrors the titleId from context onto the heading id', () => {
+    render(<Basic.Component />);
+
+    const region = screen.getByRole('region', { name: 'Organizer Profile' });
+    const title = screen.getByRole('heading', { name: 'Organizer Profile' });
+
+    expect(title.id).toBe(region.getAttribute('aria-labelledby'));
+  });
+});
+
+describe('Panel.Description', () => {
+  test('renders a <p> inside the header grid description slot', () => {
+    render(<Basic.Component />);
+
+    const description = screen.getByText(/Public details shown to customers/);
+
+    expect(description.tagName).toBe('P');
+    expect(description.className).toContain('[grid-area:description]');
+  });
+});
+
+describe('Panel.HeaderActions', () => {
+  test('aligns to the actions grid area with vertical centering', () => {
+    render(<WithHeaderActions.Component />);
+
+    const actionsSlot = screen.getByRole('button', {
+      name: /Invite member/,
+    }).parentElement!;
+
+    expect(actionsSlot.className).toContain('[grid-area:actions]');
+    expect(actionsSlot.className).toContain('self-center');
+  });
+});
+
+describe('Panel.Content', () => {
+  test('renders children and picks up horizontal panel padding by default', () => {
+    render(<Basic.Component />);
+
+    const wrapper = screen
+      .getByLabelText('Organizer Name')
+      .closest('div[class*="px-(--panel-px)"]');
+
+    expect(wrapper).not.toBeNull();
+  });
+
+  test('`bleed` opts out of the horizontal padding', () => {
+    render(<TableInside.Component />);
+
+    const table = screen.getByRole('grid', { name: 'Recent orders' });
+    const contentWrapper = table.parentElement!;
+
+    expect(contentWrapper.className).not.toContain('px-(--panel-px)');
+  });
+});
+
+describe('Panel.Footer', () => {
+  test('renders children and picks up horizontal panel padding', () => {
+    render(<Basic.Component />);
+
+    const saveButton = screen.getByRole('button', { name: 'Save changes' });
+    const footer = saveButton.parentElement!;
+
+    expect(footer.className).toContain('px-(--panel-px)');
+    expect(footer).toContainElement(saveButton);
+  });
+});
+
+describe('PanelContext', () => {
+  const Probe = ({
+    onContext,
+  }: {
+    onContext: (ctx: PanelContextShape) => void;
+  }) => {
+    onContext(usePanelContext());
+    return null;
+  };
+
+  test('usePanelContext throws when consumed outside <Panel>', () => {
+    const renderOutside = () => render(<Probe onContext={() => undefined} />);
+
+    expect(renderOutside).toThrow(/must be used within a <Panel>/);
+  });
+
+  test('provides classNames, titleId, headingLevel, hasTitle, titleSlotRef to descendants', () => {
+    let received: PanelContextShape | null = null;
+
+    render(
+      <MarigoldProvider theme={theme}>
+        <Panel headingLevel={3}>
+          <Panel.Header>
+            <Panel.Title>With title</Panel.Title>
+          </Panel.Header>
+          <Probe
+            onContext={ctx => {
+              received = ctx;
+            }}
+          />
+        </Panel>
+      </MarigoldProvider>
+    );
+
+    expect(received).not.toBeNull();
+    expect(received!.headingLevel).toBe(3);
+    expect(received!.hasTitle).toBe(true);
+    expect(typeof received!.titleId).toBe('string');
+    expect(received!.titleId.length).toBeGreaterThan(0);
+    expect(typeof received!.titleSlotRef).toBe('function');
+    expect(received!.classNames).toEqual(expect.any(Object));
+  });
+
+  test('reports hasTitle=false when no Panel.Title is rendered', () => {
+    let received: PanelContextShape | null = null;
+
+    render(
+      <MarigoldProvider theme={theme}>
+        <Panel aria-label="No title">
+          <Probe
+            onContext={ctx => {
+              received = ctx;
+            }}
+          />
+        </Panel>
+      </MarigoldProvider>
+    );
+
+    expect(received).not.toBeNull();
+    expect(received!.hasTitle).toBe(false);
   });
 });
