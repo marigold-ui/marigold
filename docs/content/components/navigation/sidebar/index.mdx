@@ -29,7 +29,7 @@ A sidebar consists of a panel alongside the main content area. The panel is orga
 
 ## Appearance
 
-<AppearanceDemo component="Sidebar" />
+<AppearanceDemo component="Sidebar" background="page" />
 <AppearanceTable component="Sidebar" />
 
 ## Usage
@@ -85,7 +85,36 @@ Don't use drill-down just to shorten a long list. Every branch adds a click, so 
 
 The sidebar supports one level of nesting. More levels would force users to remember where they are in a deep hierarchy, and navigating back through multiple levels gets tedious fast. If your content needs more depth, reconsider how you organize your sections rather than adding more nesting.
 
-<ComponentDemo name="sidebar-drilldown" />
+<ComponentDemo name="sidebar-drilldown" background="page" />
+
+### Active item
+
+The sidebar marks the user's current page so they always know where they are. Pass the current pathname (typically from your router) to the `current` prop on `Sidebar.Nav`, and the matching item lights up automatically:
+
+```tsx
+<Sidebar.Nav current={pathname}>
+  <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+  <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+</Sidebar.Nav>
+```
+
+Matching is segment-aware, so dynamic routes like `/users/abc-123` correctly highlight the `/users` item. When a leaf inside a drill-down branch matches, the parent branch lights up too and its sub-panel opens.
+
+For custom matching logic, pass a predicate `(href, key) => boolean` instead of a string. This is useful when URLs contain segments that don't map directly to item hrefs, such as a locale prefix:
+
+```tsx
+<Sidebar.Nav
+  current={(href, key) => {
+    if (!href) return false;
+    // strip locale prefix so /en/orders matches /orders
+    return pathname.replace(/^\/(en|de)/, '') === href;
+  }}
+>
+  <Sidebar.Item href="/orders">Orders</Sidebar.Item>
+</Sidebar.Nav>
+```
+
+For escape-hatch cases (pinned items, items without an `href`), the per-item `active` prop on `Sidebar.Item` still works as a local override and stacks with the resolved match.
 
 ### Detail pages
 
@@ -95,7 +124,7 @@ Do not add individual records as sidebar items. A sidebar that lists every order
 
 For hierarchies deeper than two levels, pair the sidebar with [breadcrumbs](/components/navigation/breadcrumbs). The sidebar lets users move between sections, breadcrumbs show the path back (e.g. Orders > ORD-4712).
 
-<ComponentDemo name="sidebar-detail-page" />
+<ComponentDemo name="sidebar-detail-page" background="page" />
 
 <GuidelineTiles>
   <Dont>

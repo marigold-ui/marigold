@@ -22,9 +22,9 @@ export interface CalendarHeaderProps {
 }
 
 export const CalendarHeader = ({
-  monthOffset = 0,
-  showPrevious = true,
-  showNext = true,
+  monthOffset,
+  showPrevious,
+  showNext,
 }: CalendarHeaderProps) => {
   const state = use(CalendarStateContext)!;
   const { classNames } = useCalendarContext();

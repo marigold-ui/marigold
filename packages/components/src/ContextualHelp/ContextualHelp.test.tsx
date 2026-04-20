@@ -1,9 +1,12 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './ContextualHelp.stories';
 
-window.matchMedia = mockMatchMedia(['(width < 640px)']);
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
+
+window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();
@@ -45,4 +48,26 @@ test('closes popover on Escape key', async () => {
   await userEvent.keyboard('{Escape}');
 
   expect(screen.queryByText(/This feature explains/)).not.toBeInTheDocument();
+});
+
+test('renders with default props', async () => {
+  renderWithOverlay(
+    <Basic.Component
+      variant={undefined}
+      placement={undefined}
+      offset={undefined}
+      width={undefined}
+      defaultOpen
+    />
+  );
+
+  expect(screen.getByText(/This feature explains/)).toBeInTheDocument();
+});
+
+test('renders info variant with correct aria label', () => {
+  renderWithOverlay(<Basic.Component variant="info" />);
+
+  expect(
+    screen.getByRole('button', { name: 'More information' })
+  ).toBeInTheDocument();
 });
