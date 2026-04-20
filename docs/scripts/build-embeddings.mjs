@@ -1,10 +1,22 @@
 #!/usr/bin/env zx
 import { $, chalk } from 'zx';
 
-if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+if (
+  !process.env.AWS_BEDROCK_ACCESS_KEY_ID ||
+  !process.env.AWS_BEDROCK_SECRET_ACCESS_KEY
+) {
   console.error(
     chalk.red(
-      'Missing AWS credentials: AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set.'
+      'Missing AWS credentials: AWS_BEDROCK_ACCESS_KEY_ID and AWS_BEDROCK_SECRET_ACCESS_KEY must be set.'
+    )
+  );
+  process.exit(1);
+}
+
+if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  console.error(
+    chalk.red(
+      'Missing BLOB_READ_WRITE_TOKEN: embeddings must be uploadable to Vercel Blob.'
     )
   );
   process.exit(1);

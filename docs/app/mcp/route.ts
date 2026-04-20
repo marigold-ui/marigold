@@ -1,4 +1,9 @@
 import {
+  AWS_REGION,
+  TITAN_DIMENSIONS,
+  TITAN_MODEL_ID,
+} from '@/lib/markdown/etl/config';
+import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from '@aws-sdk/client-bedrock-runtime';
@@ -20,10 +25,6 @@ const EMBEDDINGS_FILE = path.join(
 );
 
 // ─── Config ──────────────────────────────────────────────────────────────────
-
-const TITAN_MODEL_ID = 'amazon.titan-embed-text-v2:0';
-const TITAN_DIMENSIONS = 512;
-const AWS_REGION = 'eu-central-1';
 
 const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY;
 const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
@@ -155,7 +156,7 @@ const verifyToken = async (
 
     return {
       token: bearerToken,
-      scopes: ['search:docs'],
+      scopes: [],
       clientId: payload.sub ?? 'unknown',
     };
   } catch (err) {
@@ -237,4 +238,5 @@ export const GET = withMcpAuth(handler, verifyToken, {
 });
 
 export const POST = GET;
+// DELETE is required by the MCP Streamable HTTP transport for session termination.
 export const DELETE = GET;

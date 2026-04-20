@@ -7,11 +7,11 @@ import pLimit from 'p-limit';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { AWS_REGION, TITAN_DIMENSIONS, TITAN_MODEL_ID } from './config';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const CHUNKS_FILE = path.join(__dirname, 'chunks.json');
-const DIMENSIONS = 512;
 const MAX_RETRIES = 3;
 const TPM_LIMIT = 280000; // buffer since Titan Text Embeddings V2 allows only 300k tokens per minute
 
@@ -60,7 +60,7 @@ if (!process.env.BLOB_READ_WRITE_TOKEN) {
 }
 
 const client = new BedrockRuntimeClient({
-  region: 'eu-central-1',
+  region: AWS_REGION,
   credentials: {
     accessKeyId: AWS_BEDROCK_ACCESS_KEY_ID,
     secretAccessKey: AWS_BEDROCK_SECRET_ACCESS_KEY,
@@ -72,10 +72,10 @@ async function getEmbedding(text: string, attempt = 0): Promise<string> {
   try {
     const res = await client.send(
       new InvokeModelCommand({
-        modelId: 'amazon.titan-embed-text-v2:0',
+        modelId: TITAN_MODEL_ID,
         contentType: 'application/json',
         accept: 'application/json',
-        body: JSON.stringify({ inputText: text, dimensions: DIMENSIONS }),
+        body: JSON.stringify({ inputText: text, dimensions: TITAN_DIMENSIONS }),
       })
     );
     // Titan v2 returns normalized unit vectors
@@ -124,7 +124,7 @@ async function main() {
               originalText: c.originalText,
               metadata: c.metadata,
               embedding,
-              dims: DIMENSIONS,
+              dims: TITAN_DIMENSIONS,
             };
           } catch (err) {
             errors++;
