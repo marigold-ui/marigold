@@ -4,7 +4,7 @@ export const ConceptsStructure = () => (
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
-    {/* AppShell container */}
+    {/* AppLayout container */}
     <rect
       x="150"
       y="30"
@@ -254,7 +254,7 @@ export const ConceptsStructure = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* AppShell -> left */}
+      {/* AppLayout -> left */}
       <path d="M 150 45 L 90 45" />
       {/* Sidebar -> left */}
       <path d="M 170 200 L 90 200" />
@@ -285,7 +285,7 @@ export const ConceptsStructure = () => (
           fontWeight="600"
           className="fill-fd-primary"
         >
-          AppShell
+          AppLayout
         </text>
         <text
           x="80"

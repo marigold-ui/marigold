@@ -3,7 +3,7 @@ title: Layouts
 description: How layout and composition are handled.
 ---
 
-When you build a page in Marigold, it lives inside the [AppShell](../../components/layout/app-layout), the fixed frame that every page shares. Inside that frame, you divide the page into Panels and arrange content with primitives. Rooms, then furniture.
+When you build a page in Marigold, it lives inside the [AppLayout](../../components/layout/app-layout), the fixed frame that every page shares. Inside that frame, you divide the page into Panels and arrange content with primitives. Rooms, then furniture.
 
 import { ConceptsStructure } from './concepts-structure';
 
@@ -15,7 +15,7 @@ Panel is a titled surface that renders a visible page section with a title, body
 
 Most pages are made of one or more Panels. A small view like a settings tab is often a single Panel. A denser view like a dashboard or a detail page is typically several Panels, each one naming a self-contained part of the page. Reaching for Panel is the default; reaching for something else should be deliberate.
 
-Panel also works outside the AppShell. A login form wrapped in a Panel gives the same titled surface you would use inside an app, so the opinion "use a Panel" holds on pre-auth screens too.
+Panel also works outside the AppLayout. A login form wrapped in a Panel gives the same titled surface you would use inside an app, so the opinion "use a Panel" holds on pre-auth screens too.
 
 Panel owns the surface, the title, and the body wrapper, not the arrangement inside it. Content layout is the primitives' job, and they work the same way wherever you use them. A common shape is a [Stack](../../components/layout/stack) of fields with an [Inline](../../components/layout/inline) of buttons at the bottom, but any primitive composition is valid.
 
