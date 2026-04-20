@@ -1,18 +1,14 @@
 ---
 title: useResponsiveValue
 description: Hook that returns values based on screen sizes.
+badge: updated
 ---
 
 The `useResponsiveValue` is a client side hook. It can be used to return values based on the current screen size, using breakpoints from the theme `theme.screens`.
 
-To add breakpoints to your theme you have to write them as an array.
-You can pass the following parameters to your useResponsiveValue hook:
+The first parameter of the hook is an array of values, one for each breakpoint (starting from no breakpoint, then `sm`, `md`, `lg`, etc.). The second parameter is the `defaultIndex` which points to the default value used during server-side rendering.
 
-The first parameter of the hook will be the values as array which defines the breakpoints. The second argument must be the `defaultIndex` which points to the default value.
-
-If you want to have a look on all possible breakpoints from the theme you can have a look [here](../foundations/token-overview).
-
-Also with Tailwind some new class names came along which you can use to add styles by using the responsive modifiers (like: sm:text-sm).
+The breakpoints are defined as a `screens` object in your theme (e.g. `{ sm: '40rem', md: '48rem', ... }`), matching Tailwind v4's responsive modifiers (like `sm:text-sm`). If no theme provides `screens`, the hook falls back to reading Tailwind v4's `--breakpoint-*` CSS custom properties.
 
 ## Import
 

@@ -13,15 +13,15 @@
     "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
-    "@internationalized/date": "^3.12.0",
+    "@internationalized/date": "^3.12.1",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@octokit/core": "7.0.6",
-    "@react-aria/i18n": "3.12.16",
     "@radix-ui/react-popover": "^1.1.15",
+    "@react-aria/i18n": "3.13.0",
     "@tanstack/react-query": "^5.62.0",
     "@vercel/analytics": "2.0.1",
     "class-variance-authority": "^0.7.1",

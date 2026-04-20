@@ -64,10 +64,11 @@ export const TableCellContent = ({
   const selectable = allowTextSelection ?? tableAllowTextSelection;
 
   // Get alignX prop from column
-  const columnAlign = columnIndex
-    ? (state?.collection.columns[columnIndex].props
-        .alignX as keyof typeof textAlign)
-    : undefined;
+  const columnAlign =
+    columnIndex != null
+      ? (state?.collection.columns[columnIndex].props
+          .alignX as keyof typeof textAlign)
+      : undefined;
 
   return (
     <div
