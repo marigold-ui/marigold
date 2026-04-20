@@ -9,15 +9,15 @@
  *
  * IDs are assigned sequentially after flattening (see bottom of file).
  */
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import { writeFile } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getAllMdxFiles, parseMdxToMarkdown } from '../parser';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const CONTENT_DIR = path.resolve(__dirname, '..', '..', '..', 'content');
-const OUTPUT_FILE = path.resolve(__dirname, 'chunks.json');
+const CONTENT_DIR = resolve(__dirname, '..', '..', '..', 'content');
+const OUTPUT_FILE = resolve(__dirname, 'chunks.json');
 const MAX_CHARS = 10_000;
 
 /** Split markdown at headings of a given level */
@@ -131,7 +131,7 @@ const allChunks = await Promise.all(
 );
 
 const chunks = allChunks.flat().map((c, i) => ({ id: i + 1, ...c }));
-fs.writeFileSync(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
+await writeFile(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
 
 const avg = Math.round(
   chunks.reduce((s, c) => s + c.textForEmbedding.length, 0) / chunks.length
