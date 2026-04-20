@@ -25,8 +25,10 @@ try {
     token: process.env.BLOB_READ_WRITE_TOKEN,
   });
 
-  if (result.statusCode !== 200) {
-    throw new Error(`Download failed. Status: ${result.statusCode}`);
+  if (result?.statusCode !== 200) {
+    throw new Error(
+      `Download failed. Status: ${result?.statusCode ?? 'not found'}`
+    );
   }
 
   const buffer = Buffer.from(await new Response(result.stream).arrayBuffer());
