@@ -15,8 +15,8 @@ export const ContactTiles = () => (
     <Headline level="2">Our Team</Headline>
     <Tiles stretch equalHeight tilesWidth="250px" space={4}>
       {people.map(person => (
-        <Card key={person.id} pt={8} pb={6} px={0} stretch>
-          <Stack space={12} alignY="between" stretch>
+        <Card key={person.id} stretch>
+          <Card.Body>
             <Stack space={8} alignX="center">
               <img
                 src={person.avatar}
@@ -37,6 +37,8 @@ export const ContactTiles = () => (
                 </Text>
               </Stack>
             </Stack>
+          </Card.Body>
+          <Card.Footer>
             <Inline alignX="center" space={1}>
               <LinkButton href="#">
                 <Mail /> Email
@@ -45,7 +47,7 @@ export const ContactTiles = () => (
                 <Phone /> Phone
               </LinkButton>
             </Inline>
-          </Stack>
+          </Card.Footer>
         </Card>
       ))}
     </Tiles>

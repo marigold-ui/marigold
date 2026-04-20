@@ -48,7 +48,10 @@ export type Theme = {
     >;
 
     Button?: ComponentStyleFunction<string, string>;
-    Card?: ComponentStyleFunction<string, string>;
+    Card?: Record<
+      'container' | 'header' | 'body' | 'footer' | 'preview',
+      ComponentStyleFunction<string, string>
+    >;
     CloseButton?: ComponentStyleFunction<string, string>;
     Collapsible?: Record<
       'container' | 'trigger' | 'content',
