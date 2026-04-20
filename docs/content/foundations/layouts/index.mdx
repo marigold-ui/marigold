@@ -1,50 +1,86 @@
 ---
 title: Layouts
-description: Learn about how layouting is handled in Marigold
+description: How layout and composition are handled.
 ---
 
-Having a comprehensive collection of reusable components for common tasks (like buttons, cards and form fields) is great but it's not enough to build a whole application. An essential part is missing: components to build layout for application pages.
+When you build a page in Marigold, it lives inside the [AppShell](../../components/layout/app-layout), the fixed frame that every page shares. Inside that frame, you divide the page into Panels and arrange content with primitives. Rooms, then furniture.
 
-A typically solution is to provide a `<Flex>` or `<Grid>` component for creating arbitrary layouts. However, in order to use those components efficiently developers need to have an intimate knowledge of `flex-box` and `grid`, including all their related properties.
+import { ConceptsStructure } from './concepts-structure';
 
-Although this gives app developers incredible freedom, it will also leave the burden on them to research and implement necessary layout patterns, while at the same time make them reusable and responsive.
+<ConceptsStructure />
 
-## Atomic Layouts
+## Panel
 
-Because layout patterns are such an essential part of building great applications, Marigold comes with a set of _layout components_ that will cover almost, if not all, necessary patterns.
+Panel is a titled surface that renders a visible page section with a title, body, and optional actions. It is the canonical way to divide a page in Marigold.
 
-<ComponentDemo name="concepts-layouts" />
+Most pages are made of one or more Panels. A small view like a settings tab is often a single Panel. A denser view like a dashboard or a detail page is typically several Panels, each one naming a self-contained part of the page. Reaching for Panel is the default; reaching for something else should be deliberate.
 
-The majority of layouts used on the web are not that unique. They often can be broken down into just a handful of layout patterns, which then can be combined to achieve more complex layout structures.
+Panel also works outside the AppShell. A login form wrapped in a Panel gives the same titled surface you would use inside an app, so the opinion "use a Panel" holds on pre-auth screens too.
 
-Each of Marigold's layout components is build to do one layout pattern well. Like all Marigold's component, they are composable so that they can be combined until the desired layout is achieved. This makes it possible to build more complex layouts from just the given set of atomic layout components.
+Panel owns the surface, the title, and the body wrapper, not the arrangement inside it. Content layout is the primitives' job, and they work the same way wherever you use them. A common shape is a [Stack](../../components/layout/stack) of fields with an [Inline](../../components/layout/inline) of buttons at the bottom, but any primitive composition is valid.
 
-## Isolating Layouts
+See the [Panel component docs](../../components/layout/panel) for props, variants, and sizing.
 
-The move to [component-based development](https://www.componentdriven.org/) has enabled a ton of incredible improvements when it comes to building digital user interfaces. It changed the way how we think about building applications entirely. In combination with the principles from [Atomic Design](https://atomicdesign.bradfrost.com/) we are no longer building applications page by page. Instead we are focusing on constructing applications by using reusable pieces of UI (a.k.a. components). This not only improves the overall user experience and quality, it also boosts the velocity and convenience of development with which digital products get build.
+## Layout primitives
 
-A majority of the CSS layout patterns unfortunately predate this way of developing applications and as a result breaks the [modularity and composition assumptions of components](https://addyosmani.com/first/). CSS properties like `margin`, `flex-direction` or `align-self` that affect, or are affected by, elements outside of a component boundary will cause them to not appear as intended. Because of this, some people go as far as [considering margin as harmful](https://mxstbr.com/thoughts/margin/) and advice against its usage.
+Layout primitives are invisible positioning components that arrange and space whatever content is placed inside them. Stack flows content vertically, Inline flows horizontally, Columns splits proportionally, and so on.
 
-> “Components shouldn't contain surrounding whitespace”
->
-> — Mark Dalgleish, Rethinking Design Practices
+Without them, web layout is a combination of `<div>` elements with flex or grid utility classes. That works for a single container, but it scales badly. The moment a section needs a vertical stack containing a row of buttons, wrappers start nesting and each one carries its own class string:
 
-To avoid unexpected behavior and layout shifts, Marigold follows this principle. Managing whitespace, as well as positioning and arranging components is reserved for Marigold's layout components. This approach ensures that components are as composable as possible while keeping white space predictable.
+```tsx
+<div className="flex flex-col gap-4">
+  <h3>Title</h3>
+  <p>Body text…</p>
+  <div className="flex justify-end gap-2">
+    <button>Cancel</button>
+    <button>Save</button>
+  </div>
+</div>
+```
 
-## Layout Components
+Nothing is broken here, but reading it means parsing every class string to reconstruct the intent. Repeat the pattern across a codebase and layout decisions end up scattered through utility classes, reinvented slightly differently on every page. Marigold replaces this with named layout components:
 
-The components listed below can be nested within each other any number of times to create a wide variety of common layouts. Being familiar with these components is an essential part of working effectively with Marigold.
+```tsx
+<Stack space="regular">
+  <h3>Title</h3>
+  <p>Body text…</p>
+  <Inline space="small" alignX="right">
+    <button>Cancel</button>
+    <button>Save</button>
+  </Inline>
+</Stack>
+```
 
-- [Aside](../components/layout/aside)
-- [Aspect](../components/layout/aspect)
-- [Breakout](../components/layout/breakout)
-- [Center](../components/layout/center)
-- [Columns](../components/layout/columns)
-- [Container](../components/layout/container)
-- [Grid](../components/layout/grid)
-- [Inline](../components/layout/inline)
-- [Inset](../components/layout/inset)
-- [Scrollable](../components/layout/scrollable)
-- [Split](../components/layout/split)
-- [Stack](../components/layout/stack)
-- [Tiles](../components/layout/tiles)
+Each wrapper states _what_ it is rather than _how_ it is configured. You can scan the tree and see the layout flow without reading a single class name. This gives you:
+
+- **Named intent.** The JSX tells you the layout pattern (`Stack`, `Inline`, `Columns`) instead of encoding it in class strings the reader has to decode.
+- **One canonical pattern.** The same shape looks the same everywhere. Teams don't reinvent a vertical stack in four slightly different ways.
+- **Composability.** A `Button` drops into any layout without carrying layout opinions of its own.
+
+For these benefits to hold, components must never set their own outer margin. Adding `margin` to a component causes it to affect, or be affected by, elements outside its boundary, breaking the modularity and composition assumptions that make components reusable in the first place.
+
+Whitespace, positioning, and arrangement are always the responsibility of a parent. A button does not know what sits next to it. A `Stack` decides the gap between the button and its siblings. This keeps components portable and whitespace predictable across pages.
+
+<ComponentDemo name="concepts-spacing" mode="preview" />
+
+Spacing between elements is expressed with semantic tokens like `regular` or `group`. See the [Spacing](/foundations/spacing) page for the full vocabulary.
+
+## Choosing the right primitive
+
+Most layouts can be built from more than one combination of primitives. Each primitive, though, is built around a specific situation, and reaching for the one that fits most directly keeps pages consistent across a codebase. The table names that situation for each primitive, with a typical example.
+
+| Component                                        | Reach for it when…                                                                                                | Example                                                          |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [Aside](../../components/layout/aside)           | two elements pair side-by-side where one is fixed-width and the other fills the rest                              | media-object: thumbnail + details Stack                          |
+| [Aspect](../../components/layout/aspect)         | a media element must keep a specific aspect ratio regardless of container width                                   | video or iframe embeds, image thumbnails inside Tiles            |
+| [Breakout](../../components/layout/breakout)     | a child inside a Container must span full-bleed, ignoring its max-width                                           | inside Container, wrapping full-bleed media                      |
+| [Center](../../components/layout/center)         | content needs horizontal centering, optionally capped at a max-width                                              | auth screens, empty-state wrappers                               |
+| [Columns](../../components/layout/columns)       | a fixed number of regions need explicit proportional widths and should collapse to one column below a breakpoint  | label + input rows, sidebar + main page splits                   |
+| [Container](../../components/layout/container)   | content needs a max-width optimized for reading, centered within its parent                                       | article bodies, docs pages, editorial prose                      |
+| [Grid](../../components/layout/grid)             | specific children must occupy or span named zones, making the layout structure itself the contract                | page frames (header / sidebar / main / footer), bento dashboards |
+| [Inline](../../components/layout/inline)         | multiple elements need to sit side-by-side and wrap to a new line when space runs out                             | action row of buttons, often with a Split between groups         |
+| [Inset](../../components/layout/inset)           | content inside a sealed surface needs explicit, controllable interior padding                                     | interior padding for Tray, Panel, and other surfaces             |
+| [Scrollable](../../components/layout/scrollable) | content may overflow its bounded height or width and needs controlled scrolling                                   | fixed-height table with a sticky header                          |
+| [Split](../../components/layout/split)           | siblings inside an existing Inline or Stack need to be pushed to opposite ends                                    | inside Inline, between a title and its actions                   |
+| [Stack](../../components/layout/stack)           | multiple elements need to flow top-to-bottom with a consistent gap                                                | skeleton of most forms and page sections                         |
+| [Tiles](../../components/layout/tiles)           | a homogeneous set of items of unknown count should fill the row at a minimum child width and reflow automatically | card grids, dashboard metric grids                               |
