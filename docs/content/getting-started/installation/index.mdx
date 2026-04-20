@@ -3,7 +3,7 @@ title: Installation
 description: How to setup and get started with Marigold.
 ---
 
-On this page, you'll find instructions to install Marigold and set up the provider. If you want to try it out first without any setup, check out our interactive playground.
+On this page, you'll find instructions to install Marigold and set up the provider.
 
 <Callout title="Want to try it first?">
   Use our [interactive playground](https://play.marigold-ui.io/) to explore
@@ -36,9 +36,11 @@ Marigold also provides an additional package you can install as needed:
 
 ## Set up a Marigold project with Tailwind CSS (Recommended)
 
-Pairing Marigold with Tailwind CSS gives you the full design system as it was intended, not a frozen, pre-compiled snapshot. You can override design tokens to match your brand, tree-shake unused styles for smaller bundles, and use the same utility scale (spacing, colors, breakpoints) in your own components that Marigold uses internally. Dev tooling like IntelliSense and JIT compilation work across both Marigold and your app code, making this the most flexible and ergonomic setup for real-world projects.
+Pairing Marigold with Tailwind CSS gives you the full design system as it was intended, not a frozen, pre-compiled snapshot. Tailwind tree-shakes unused styles for smaller bundles, and lets you use the same utility scale (spacing, colors, breakpoints) in your own components that Marigold uses internally. Dev tooling like IntelliSense and JIT compilation work across both Marigold and your app code, making this the most flexible and ergonomic setup for real-world projects.
 
-If you're starting a new project, we recommend using [Vite](https://vitejs.dev/), [Next.js](https://nextjs.org/) as your build tool or any other modern JavaScript framework. Marigold is designed to work seamlessly with these tools.
+If you're starting a new project, we recommend using [Vite](https://vitejs.dev/), [Next.js](https://nextjs.org/) or any other modern JavaScript framework as your build tool. Marigold is designed to work seamlessly with these tools.
+
+<Callout title="Language">All examples below use TypeScript.</Callout>
 
 ### Vite
 
@@ -56,7 +58,7 @@ Add the following content to your `index.css`:
 
 Then wrap your app with `MarigoldProvider` and pass it the theme. This is required for all components to render correctly.
 
-```jsx
+```tsx
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
 
@@ -67,9 +69,9 @@ export const App = () => (
 
 ### Next.js
 
-Set up a new Next.js project using the [official guide](https://nextjs.org/docs/getting-started). Then install Tailwind CSS by following the [Next.js installation guide](https://tailwindcss.com/docs/installation/using-postcss) and follow the instructions below to add Marigold. You can decide to automatically install Tailwind CSS, when installing Next.js.
+Set up a new Next.js project using the [official guide](https://nextjs.org/docs/getting-started). Then install Tailwind CSS by following the [Next.js installation guide](https://tailwindcss.com/docs/installation/using-postcss) and follow the instructions below to add Marigold. The Next.js installer can set up Tailwind CSS for you automatically.
 
-add the following content to your `globals.css`:
+Add the following content to your `globals.css`:
 
 ```css
 @import 'tailwindcss';
@@ -79,24 +81,25 @@ add the following content to your `globals.css`:
 @source '../../node_modules/@marigold';
 ```
 
-Then wrap the `page.tsx` with `MarigoldProvider` and pass it the theme. This is required for all components to render correctly.
+Then create a `providers.tsx` file.
 
-```jsx
+```tsx
 'use client';
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
 
-export const App = () => {
-  return <MarigoldProvider theme={theme}>{/* Your App */}</MarigoldProvider>;
-};
-export default App;
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;
+}
 ```
+
+Then wrap your app with the `Providers` component in `layout.tsx`.
 
 ## Quick start (pre-built CSS)
 
 Import the pre-built CSS file that ships with the theme. This is the fastest way to get started but does not allow customization beyond the provided design tokens.
 
-```jsx
+```tsx
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
 import '@marigold/theme-rui/styles.css';
@@ -126,11 +129,22 @@ npm install @fontsource-variable/inter
 
 Then import it in your app's entry point:
 
-```js
+```tsx
 import '@fontsource-variable/inter';
 ```
 
-**Using Next.js:** Take advantage of [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) for automatic font optimization.
+**Using Next.js:** Take advantage of [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) for automatic font optimization. Add Inter to your project in `layout.tsx`:
+
+```tsx
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
+
+[...]
+
+<html className={inter.className}>
+
+```
 
 ## Next steps
 
