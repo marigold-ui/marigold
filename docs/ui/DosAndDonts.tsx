@@ -1,81 +1,132 @@
 'use client';
 
-import type { PropsWithChildren } from 'react';
+import { CircleCheck, CircleX } from 'lucide-react';
+import {
+  type CSSProperties,
+  Children,
+  type PropsWithChildren,
+  type ReactNode,
+  isValidElement,
+} from 'react';
 import { Tiles } from '@marigold/components';
-import { cn } from '@marigold/system';
 
-// Shared Child Components
-// ---------------
-const Container = ({
-  variant,
-  children,
-}: PropsWithChildren<{ variant: 'do' | 'dont' }>) => (
-  <div
-    className="group grid grid-cols-[1fr] grid-rows-[minmax(0,min-content)_min-content_auto] [grid-template-areas:'figure''title''description']"
-    data-type={variant}
-  >
-    {children}
-  </div>
-);
+type Variant = 'do' | 'dont';
 
-const Title = ({ children }: PropsWithChildren) => (
-  <div
-    className={cn(
-      'text-neutral-900 [grid-area:title] dark:text-neutral-900',
-      'group-data-[type=do]:border-green-600 group-data-[type=do]:bg-green-50 group-data-[type=dont]:border-red-600 group-data-[type=dont]:bg-red-50',
-      'flex items-center gap-2 border-t-4 px-4 pt-4 pb-2 font-bold uppercase'
-    )}
-  >
-    {children}
-  </div>
-);
+const VARIANT_COLOR: Record<Variant, string> = {
+  do: 'var(--color-fd-success)',
+  dont: 'var(--color-fd-error)',
+};
 
-export const DoFigure = ({ children }: PropsWithChildren) => (
-  <div className="not-prose [grid-area:figure]">{children}</div>
-);
+const VARIANT_LABEL: Record<Variant, string> = {
+  do: 'Do',
+  dont: "Don't",
+};
 
-export const DoDescription = ({ children }: PropsWithChildren) => (
-  <div className="px-4 pb-4 text-sm text-pretty text-neutral-900 [grid-area:description] *:m-0 *:leading-relaxed group-data-[type=do]:bg-green-50 group-data-[type=dont]:bg-red-50 dark:text-neutral-900 [&_a]:font-medium [&_a]:text-neutral-900 [&_a]:underline [&_a]:decoration-neutral-900/40 [&_a]:underline-offset-4 [&_a:hover]:text-neutral-900 [&_a:hover]:decoration-neutral-900/70 [&_a:visited]:text-neutral-900 [&_code]:rounded [&_code]:border [&_code]:border-neutral-300 [&_code]:bg-neutral-100 [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:font-normal [&_code]:text-neutral-900">
-    {children}
-  </div>
-);
+const FIGURE_SLOT = Symbol('guideline-figure');
+const DESCRIPTION_SLOT = Symbol('guideline-description');
 
-// Alias for Dont (same components)
+type SlotTag = typeof FIGURE_SLOT | typeof DESCRIPTION_SLOT;
+type GuidelineComponent = React.FC<PropsWithChildren> & { __slot: SlotTag };
+
+const makeSlot = (slot: SlotTag, className?: string): GuidelineComponent => {
+  const Component: GuidelineComponent = (({ children }) => (
+    <div className={className}>{children}</div>
+  )) as GuidelineComponent;
+  Component.__slot = slot;
+  return Component;
+};
+
+export const DoFigure = makeSlot(FIGURE_SLOT, '[&_img]:block [&_img]:w-full');
+export const DoDescription = makeSlot(DESCRIPTION_SLOT);
 export const DontFigure = DoFigure;
 export const DontDescription = DoDescription;
 
-// Do
-// ---------------
-export const Do = ({ children }: PropsWithChildren) => (
-  <Container variant="do">
-    <Title>
-      <svg
-        viewBox="0 0 24 24"
-        className="size-4 flex-none rounded-full bg-green-600 fill-white p-1"
-      >
-        <path d="M8.17368 16.6154L3.19528 11.637L1.5 13.3204L8.17368 19.994L22.5 5.66772L20.8167 3.98437L8.17368 16.6154Z"></path>
-      </svg>
-      <div className="m-0 text-sm font-bold uppercase">Do</div>
-    </Title>
+const splitChildren = (children: ReactNode) => {
+  const figure: ReactNode[] = [];
+  const description: ReactNode[] = [];
+  Children.forEach(children, child => {
+    if (
+      isValidElement(child) &&
+      (child.type as Partial<GuidelineComponent>)?.__slot === FIGURE_SLOT
+    ) {
+      figure.push(child);
+    } else {
+      description.push(child);
+    }
+  });
+  return { figure, description };
+};
+
+const Icon = ({ variant }: { variant: Variant }) => {
+  const IconComponent = variant === 'do' ? CircleCheck : CircleX;
+  return (
+    <IconComponent className="text-fd-card -ms-0.5 size-6 shrink-0 fill-(--callout-color)" />
+  );
+};
+
+const Guideline = ({
+  variant,
+  title,
+  children,
+}: PropsWithChildren<{ variant: Variant; title?: ReactNode }>) => {
+  const { figure, description } = splitChildren(children);
+  const label = title ?? VARIANT_LABEL[variant];
+
+  return (
+    <div
+      data-type={variant}
+      style={
+        {
+          '--callout-color': VARIANT_COLOR[variant],
+          background:
+            'color-mix(in oklab, var(--callout-color) 6%, transparent)',
+          borderColor:
+            'color-mix(in oklab, var(--callout-color) 30%, transparent)',
+        } as CSSProperties
+      }
+      className="not-prose flex flex-col gap-3 overflow-hidden rounded-xl border p-3"
+    >
+      {figure.length > 0 && (
+        <div className="bg-fd-card overflow-hidden rounded-md border">
+          {figure}
+        </div>
+      )}
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center gap-2">
+          <Icon variant={variant} />
+          <p
+            className="my-0! text-sm leading-none font-semibold"
+            style={{ color: 'var(--callout-color)' }}
+          >
+            {label}
+          </p>
+        </div>
+        {description.length > 0 && (
+          <div className="text-fd-card-foreground text-sm text-pretty">
+            {description}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export const Do = ({
+  children,
+  title,
+}: PropsWithChildren<{ title?: ReactNode }>) => (
+  <Guideline variant="do" title={title}>
     {children}
-  </Container>
+  </Guideline>
 );
 
-// Dont
-// ---------------
-export const Dont = ({ children }: PropsWithChildren) => (
-  <Container variant="dont">
-    <Title>
-      <svg
-        viewBox="0 0 24 24"
-        className="size-4 flex-none rounded-full bg-red-600 fill-white p-1"
-      >
-        <path d="M19.8281 5.74868L18.2513 4.17188L12 10.4232L5.74868 4.17188L4.17188 5.74868L10.4232 12L4.17188 18.2513L5.74868 19.8281L12 13.5768L18.2513 19.8281L19.8281 18.2513L13.5768 12L19.8281 5.74868Z"></path>
-      </svg>
-      <div className="m-0 text-sm font-bold uppercase">Don't</div>
-    </Title>
+export const Dont = ({
+  children,
+  title,
+}: PropsWithChildren<{ title?: ReactNode }>) => (
+  <Guideline variant="dont" title={title}>
     {children}
-  </Container>
+  </Guideline>
 );
 
 export const GuidelineTiles = ({ children }: PropsWithChildren) => (
