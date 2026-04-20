@@ -24,7 +24,6 @@ export function getSharedProject(): Project {
  * Resolves the path to a component's source file.
  * e.g. getComponentPath('Button') → '<root>/packages/components/src/Button/Button.tsx'
  */
-
 export function getComponentPath(componentName: string): string {
   const relativePath = componentName.includes('/')
     ? `${componentName}.tsx`

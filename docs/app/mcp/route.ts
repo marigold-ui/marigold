@@ -158,7 +158,8 @@ const verifyToken = async (
       scopes: ['search:docs'],
       clientId: payload.sub ?? 'unknown',
     };
-  } catch {
+  } catch (err) {
+    console.error('[MCP] JWT verification failed:', err);
     return undefined;
   }
 };
