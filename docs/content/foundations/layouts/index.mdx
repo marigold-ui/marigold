@@ -1,9 +1,10 @@
 ---
 title: Layouts
 description: How layout and composition are handled.
+badge: updated
 ---
 
-When you build a page in Marigold, it lives inside the [AppLayout](../../components/layout/app-layout), the fixed frame that every page shares. Inside that frame, you divide the page into Panels and arrange content with primitives. Rooms, then furniture.
+When you build a page in Marigold, it lives inside the [AppLayout](../../components/layout/app-layout), the fixed frame that every page shares. Inside that frame, you divide the main content into Panels and arrange content with primitives. Rooms, then furniture.
 
 import { ConceptsStructure } from './concepts-structure';
 
@@ -69,18 +70,18 @@ Spacing between elements is expressed with semantic tokens like `regular` or `gr
 
 Most layouts can be built from more than one combination of primitives. Each primitive, though, is built around a specific situation, and reaching for the one that fits most directly keeps pages consistent across a codebase. The table names that situation for each primitive, with a typical example.
 
-| Component                                        | Reach for it when…                                                                                                | Example                                                          |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| [Aside](../../components/layout/aside)           | two elements pair side-by-side where one is fixed-width and the other fills the rest                              | media-object: thumbnail + details Stack                          |
-| [Aspect](../../components/layout/aspect)         | a media element must keep a specific aspect ratio regardless of container width                                   | video or iframe embeds, image thumbnails inside Tiles            |
-| [Breakout](../../components/layout/breakout)     | a child inside a Container must span full-bleed, ignoring its max-width                                           | inside Container, wrapping full-bleed media                      |
-| [Center](../../components/layout/center)         | content needs horizontal centering, optionally capped at a max-width                                              | auth screens, empty-state wrappers                               |
-| [Columns](../../components/layout/columns)       | a fixed number of regions need explicit proportional widths and should collapse to one column below a breakpoint  | label + input rows, sidebar + main page splits                   |
-| [Container](../../components/layout/container)   | content needs a max-width optimized for reading, centered within its parent                                       | article bodies, docs pages, editorial prose                      |
-| [Grid](../../components/layout/grid)             | specific children must occupy or span named zones, making the layout structure itself the contract                | page frames (header / sidebar / main / footer), bento dashboards |
-| [Inline](../../components/layout/inline)         | multiple elements need to sit side-by-side and wrap to a new line when space runs out                             | action row of buttons, often with a Split between groups         |
-| [Inset](../../components/layout/inset)           | content inside a sealed surface needs explicit, controllable interior padding                                     | interior padding for Tray, Panel, and other surfaces             |
-| [Scrollable](../../components/layout/scrollable) | content may overflow its bounded height or width and needs controlled scrolling                                   | fixed-height table with a sticky header                          |
-| [Split](../../components/layout/split)           | siblings inside an existing Inline or Stack need to be pushed to opposite ends                                    | inside Inline, between a title and its actions                   |
-| [Stack](../../components/layout/stack)           | multiple elements need to flow top-to-bottom with a consistent gap                                                | skeleton of most forms and page sections                         |
-| [Tiles](../../components/layout/tiles)           | a homogeneous set of items of unknown count should fill the row at a minimum child width and reflow automatically | card grids, dashboard metric grids                               |
+| Component                                        | Reach for it when…                                                                                                | Example                                                  |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| [Aside](../../components/layout/aside)           | two elements pair side-by-side where one is fixed-width and the other fills the rest                              | media-object: thumbnail + details Stack                  |
+| [Aspect](../../components/layout/aspect)         | a media element must keep a specific aspect ratio regardless of container width                                   | video or iframe embeds, image thumbnails inside Tiles    |
+| [Breakout](../../components/layout/breakout)     | a child inside a Container must span full-bleed, ignoring its max-width                                           | inside Container, wrapping full-bleed media              |
+| [Center](../../components/layout/center)         | content needs horizontal centering, optionally capped at a max-width                                              | auth screens, empty-state wrappers                       |
+| [Columns](../../components/layout/columns)       | a fixed number of regions need explicit proportional widths and should collapse to one column below a breakpoint  | label + input rows, sidebar + main page splits           |
+| [Container](../../components/layout/container)   | content needs a max-width optimized for reading, centered within its parent                                       | article bodies, docs pages, editorial prose              |
+| [Grid](../../components/layout/grid)             | specific children must occupy or span named zones, making the layout structure itself the contract                | bento dashboards, detail pages with named regions        |
+| [Inline](../../components/layout/inline)         | multiple elements need to sit side-by-side and wrap to a new line when space runs out                             | action row of buttons, often with a Split between groups |
+| [Inset](../../components/layout/inset)           | content inside a sealed surface needs explicit, controllable interior padding                                     | interior padding for Tray, Panel, and other surfaces     |
+| [Scrollable](../../components/layout/scrollable) | content may overflow its bounded height or width and needs controlled scrolling                                   | fixed-height table with a sticky header                  |
+| [Split](../../components/layout/split)           | siblings inside an existing Inline or Stack need to be pushed to opposite ends                                    | inside Inline, between a title and its actions           |
+| [Stack](../../components/layout/stack)           | multiple elements need to flow top-to-bottom with a consistent gap                                                | skeleton of most forms and page sections                 |
+| [Tiles](../../components/layout/tiles)           | a homogeneous set of items of unknown count should fill the row at a minimum child width and reflow automatically | card grids, dashboard metric grids                       |
