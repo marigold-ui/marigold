@@ -1,5 +1,20 @@
 # @marigold/components
 
+## 17.5.0
+
+### Minor Changes
+
+- e33a1e7: feat(DST-1322): add `current` prop to `Sidebar.Nav` for automatic active item detection
+
+  `Sidebar.Nav` now accepts a `current` prop that resolves the active leaf automatically — pass the current pathname (string) for smart segment-aware matching, or a predicate `(href, key) => boolean` for full control. Removes the per-item `active={pathname === '/...'}` boilerplate. The per-item `active` prop on `Sidebar.Item` still works as a local override.
+
+### Patch Changes
+
+- c2a1c72: fix: apply `alignX` from `Table.Column` to first column cells
+
+  `TableCellContent` used a truthy check on `columnIndex`, causing it to skip the `alignX` lookup when `columnIndex` was `0` (first column). Replaced with a nullish check so all columns correctly inherit their alignment.
+  - @marigold/system@17.5.0
+
 ## 17.4.0
 
 ### Minor Changes
