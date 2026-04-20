@@ -18,21 +18,16 @@ For the last years, Marigold's job was mostly to replace. Modernize an aging cod
 
 This is the biggest single release we've shipped. It is also the first step of a longer effort, not the last. The foundation you'll build on is here. The identity layered on top of it is what comes next.
 
-Because the scope is wide, most of this post is migration notes. If you maintain a custom theme, pour a coffee. There is some work for you.
-
 <Callout title="Before you upgrade" type="info">
-
-**Marigold v18 requires React 19.** Every component now uses the React 19 ref-as-prop pattern. `forwardRef` has been removed from 25+ component files and compound components no longer rely on `ForwardRefExoticComponent`. You don't need to change how you pass refs in your app, but the installed React version does need to be 19 or newer. Upgrades from React 18 will fail with confusing ref-forwarding errors otherwise.
-
-If you are still on React 18, upgrade React first, verify your app still builds, then bump Marigold.
-
+  Marigold v18 requires React 19. If you are still on React 18, upgrade React
+  first, verify your app still builds, then bump Marigold.
 </Callout>
 
 ## Breaking Changes
 
 ### Design tokens overhaul
 
-The biggest chunk of work in this release. The design token layer has been rebuilt around a new purpose-built neutral palette, a clearer semantic naming scheme, and a restructured status-token hierarchy. The goal is to move from "tokens that happen to describe the current UI" to "tokens that describe the role each color plays." More changes will follow in later releases. v18 is the step that sets up that direction.
+The design token layer has been rebuilt around a new purpose-built neutral palette, a clearer semantic naming scheme, and a restructured status-token hierarchy. The goal is to move from "tokens that happen to describe the current UI" to "tokens that describe the role each color plays." More changes will follow in later releases. v18 is the step that sets up that direction.
 
 #### New `charcoal` palette
 
@@ -67,7 +62,7 @@ export const Sw = ({ c }) => (
 | 900  | <Sw c="#1c1917" /> `#1c1917` | <Sw c="oklch(0.22 0.008 54)" /> `oklch(0.22 0.008 54)`   | Primary text                      |
 | 950  | <Sw c="#0c0a09" /> `#0c0a09` | <Sw c="oklch(0.15 0.008 54)" /> `oklch(0.15 0.008 54)`   | Primary action, scrollbar hover   |
 
-The new scale is more even across the light end (50 → 300), which gives more room for subtle UI layers on white surfaces, and it lands slightly cooler at the dark end so that body text reads with less warm cast. There is also a second high-contrast palette (`obsidian`) available for surfaces that need stronger separation. Full reference lives on the new [Token Overview](/foundations/token-overview) page.
+The new scale is more even across the light end (50 → 300), which gives more room for subtle UI layers on white surfaces, and it lands slightly cooler at the dark end so that body text reads with less warm cast. Full reference lives on the new [Token Overview](/foundations/token-overview) page.
 
 #### Semantic token renames
 
@@ -148,7 +143,7 @@ The refreshed [Elevation](/foundations/elevation) foundation page now walks thro
 
 ### Retired `<Multiselect>`, migrate to `<TagField>`
 
-`<Multiselect>` has been deprecated since v17.0.0 and is now gone. It was the last component still pulling in `react-select`, and keeping it around meant shipping two different multi-select mental models. `<TagField>` has covered every real use case since its promotion to beta, so v18 removes the original.
+`<Multiselect>` has been deprecated since v17.0.0 and is now gone. It was the only component pulling in `react-select`, and keeping it around meant shipping two different multi-select mental models. `<TagField>` has covered every real use case since its promotion to beta, so v18 removes the original.
 
 ```diff
 - <Multiselect label="Genres" options={options} onChange={setValues} />
@@ -185,11 +180,6 @@ Uncontrolled usage is unchanged.
 ### `<Switch>` layout and sizing rework
 
 `<Switch>` now sits on the **left** of its label, matching `<Checkbox>` and `<Radio>`. The default track is smaller (16×28px, down from 24×40px) so the control visually weighs the same as a checkbox when the three appear in the same form. The `size="large"` prop is gone.
-
-```diff
-- <Switch label="Wi-Fi" size="large" />
-+ <Switch label="Wi-Fi" />
-```
 
 For the classic settings-page layout (label and description on the left, toggle anchored to the far right), there is a new `variant="settings"`:
 
@@ -242,7 +232,7 @@ export const BooleanField = {
 
 Then export it from your theme's component index.
 
-The `Checkbox` and `Switch` container slots have also moved from flexbox to CSS grid with conditional subgrid (so the description column aligns under the label regardless of control size). If you customized either slot, copy the updated shapes from the changeset in the [monorepo](https://github.com/marigold-ui/marigold/blob/beta-release/.changeset/switch-layout-alignment.md). The diff is mechanical but non-obvious.
+The `Checkbox` and `Switch` container slots have also moved from flexbox to CSS grid with conditional subgrid (so the description column aligns under the label regardless of control size).
 
 ### Theme-owned breakpoints
 
