@@ -4,6 +4,8 @@
 {
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
     "jsx": "preserve",
     "module": "nodenext",
     "moduleResolution": "nodenext",

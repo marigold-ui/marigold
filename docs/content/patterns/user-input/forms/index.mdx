@@ -1,0 +1,195 @@
+---
+title: Forms
+description: Guidelines for building a consistent form structure
+badge: beta
+---
+
+How you design forms affects whether people can actually use them. This page covers layout, spacing, and content organization so your forms stay consistent and accessible.
+
+For implementation details, state management, and validation, see the [Form Implementation](/patterns/user-input/form-implementation) guide.
+
+## Layout & Structure
+
+Layout and structure determine whether a form feels easy or overwhelming. Good spacing and a clear visual hierarchy help people move through a form without getting lost.
+
+### Overall form layout
+
+Left-align your forms to match natural reading flow. Keep the width at 800px max (use the `container` spacing token) so nothing gets too wide to read comfortably.
+
+Whitespace matters more than most people think. Enough breathing room between sections and fields keeps the form scannable and prevents everything from blurring together. Use our spacing tokens to keep that whitespace consistent.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>
+          Align form content to the left for better scanning and organization.
+        </li>
+        <li>
+          Use a maximum width of 800px (spacing token `container`) for forms to
+          ensure readability across devices.
+        </li>
+        <li>
+          Ensure sufficient whitespace around and within the form for a clear
+          visual hierarchy.
+        </li>
+        <li>
+          Group related fields together to provide more context and make the UI
+          easier to scan.
+        </li>
+      </ul>
+    </DoDescription>
+  </Do>
+</GuidelineTiles>
+
+### Available components
+
+See the [Form Fields](../../foundations/form-fields) page for a full guide on input components.
+
+Beyond those, you'll likely need some of these to put a form together:
+
+- **Layout components**: [`<Stack>`](../../components/layout/stack/) and [`<Inset>`](../../components/layout/inset/) to organize fields and sections.
+- **Accordion**: Group fields with an [accordion](../../components/navigation/accordion/) for lengthy forms or optional fields. Use accordions for sections that can be collapsed to save space and reduce cognitive load.
+- **Buttons**: Use primary [buttons](../../components/actions/button/) for form submission, secondary for additional actions like "View PDF".
+- **Links**: Use [links](../../components/navigation/link/) for navigation to privacy policies or terms of service, not for form actions.
+- **Feedback components**: [`<SectionMessage>`](../../components/content/section-message/) and [`<Toast>`](../../components/overlay/toast/) for inline hints or notifications.
+
+## Content Organization
+
+Forms have three levels of hierarchy: **fields** are the individual inputs, **sections** divide the form into topics, and **groups** cluster related fields within a section. Spacing signals how closely things belong together. Tighter spacing means a stronger relationship, wider spacing separates them.
+
+<Callout title="Want to learn more about spacing?">
+  Visit the [Spacing](/foundations/spacing) page for a full overview of our
+  spacing tokens and how to use them.
+</Callout>
+
+### Field
+
+Fields are the most fundamental building block of any form. How you arrange and size them affects how easily people can work through it.
+
+- **Use a predictable order.** People expect forms to follow a logical sequence, like personal info before payment or name before email. A familiar order reduces cognitive load because users don't have to search for what comes next. When in doubt, follow the conventions people already know from similar forms.
+- **Place required fields before optional ones.** Within each section, lead with what the user _must_ fill in. This lets people complete the essentials first and decide later whether to provide optional details. It also prevents frustration: nobody wants to discover required fields buried at the bottom after filling in optional ones.
+- **Position dependent fields right after their parent.** If selecting a country changes the list of available states, those two fields should sit next to each other. Placing dependent fields immediately after the field they depend on makes the relationship obvious and prevents confusion when values change.
+- **Match field width to expected content.** A postal code field doesn't need the same width as a street address. Setting a maximum width based on the expected input length gives users a visual hint about what's expected and keeps the form looking tidy.
+
+Fields stack vertically by default, but some belong side by side. Two spacing tokens handle this:
+
+- **`regular`**: Vertical spacing between stacked fields. Wrap fields in `<Stack space="regular">` within any section or group.
+- **`related`**: Horizontal spacing for fields that belong together, like postcode + city or start/end dates. Place them side by side with `<Inline space="related">`.
+
+<ComponentDemo file="./form-spacing-field.demo.tsx" mode="preview" />
+
+### Section
+
+Sections split a form by topic so longer forms stay scannable. They pay off once a form collects different kinds of data or grows past 6-8 fields.
+
+Separate sections with `<Stack space="section">`. Inside each section, add a headline and wrap the fields in a `<Stack space="regular">`.
+
+Section headlines can have a short description underneath. Use `<Text>` with the `muted` variant for this, and wrap both in a `<Stack space="tight">` so they feel connected.
+
+<ComponentDemo file="./form-section.demo.tsx" mode="preview" />
+
+### Group
+
+Groups are sub-clusters of related fields within a section. Use them when a section contains many fields that benefit from additional visual separation, for example an address block within a personal information section.
+
+To create a group, wrap the fields with `<Stack space="group">` to add spacing that visually separates the group from surrounding fields. Inside the group, use `<Stack space="regular">` to space the fields as usual. The `group` token only controls the separation _around_ the group, not the spacing between fields within it.
+
+<ComponentDemo file="./form-spacing-fields.demo.tsx" mode="preview" />
+
+### Accordions
+
+Accordions can replace regular sections to create collapsible groups of fields. This is useful for optional information or advanced settings that don't need to be visible by default. Ensure required fields remain visible and are not hidden within collapsed sections.
+
+Accordions can also be used _within_ a section to group content. This lets users focus on what matters while still having access to additional options. The demo below shows both patterns.
+
+<ComponentDemo file="./form-accordion.demo.tsx" />
+
+## Actions
+
+Forms usually need more than just a submit button. Links, secondary buttons, and other controls handle everything from navigation to drafts. The key is making each action easy to find and hard to confuse with the primary submit.
+
+### Inline actions
+
+Some actions belong inside the form body, next to the fields they relate to.
+
+- **Links for navigation-like actions.** Opening a map, viewing a PDF, or linking to terms of service. These aren't form operations, so style them as links. Place them near the field they support.
+- **Secondary buttons for form operations.** "Create new", "Reset", or "Save as Draft" should be visually distinct from the primary submit so people don't hit the wrong one.
+- **Put each action close to what it affects.** An action buried at the bottom of the form is easy to miss when it only matters for one specific field.
+
+<ComponentDemo file="./form-inline-actions.demo.tsx" mode="preview" />
+
+### Submit placement
+
+Put the submit button at the bottom of the form, aligned left. The primary button stays put; other actions arrange themselves around it.
+
+Where you place secondary actions depends on what they do:
+
+- "Save as Draft" and similar alternative completions go **beside** the primary button, styled as secondary.
+- "Cancel" also sits beside the primary button, but always **after** it so the most important action comes first in reading and tab order.
+
+<ComponentDemo file="./form-action.demo.tsx" mode="preview" />
+
+## Admin- and Mastermark
+
+Some fields are only relevant for administrators or master users. Mark and separate these from regular fields so other users aren't confused by them.
+
+See the [Admin- and Mastermark](/patterns/layout/admin-master-mark) page for the full usage guide.
+
+## Full demo
+
+Below is a fictional event registration form that puts all of these guidelines together: sections, field types, and actions.
+
+<DemoLinks
+  demo="/examples/form"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/form"
+/>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form Fields',
+      href: '../../foundations/form-fields',
+      caption: 'A guide to all available form field components.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 8.25V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18V8.25m-18 0V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6ZM7.5 6h.008v.008H7.5V6Zm2.25 0h.008v.008H9.75V6Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form Implementation Guide',
+      href: '../form-implementation',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>

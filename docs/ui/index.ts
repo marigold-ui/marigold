@@ -10,6 +10,7 @@ export * from './IconList';
 export * from './DosAndDonts';
 export * from './RelativeTime';
 export * from './TeaserCard';
+export * from './DemoLinks';
 export * from './FeedbackComponentsTable';
 export * from './AppearanceDemo';
 export * from './AppearanceTable';
