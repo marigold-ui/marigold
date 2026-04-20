@@ -21,7 +21,7 @@ export const ContactTiles = () => (
               <img
                 src={person.avatar}
                 alt={person.name}
-                className="mt-4 block w-32 rounded-full"
+                className="block w-32 rounded-full"
               />
               <Stack alignX="center" space={1}>
                 <Text fontSize="xl" weight="semibold">

@@ -3,6 +3,7 @@ import { cn } from '@marigold/system';
 import { useCardContext } from './CardContext';
 
 export interface CardFooterProps {
+  /** Content rendered in the card footer, typically actions like buttons or metadata. */
   children?: ReactNode;
 }
 

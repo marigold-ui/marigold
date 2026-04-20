@@ -3,6 +3,7 @@ import { cn } from '@marigold/system';
 import { useCardContext } from './CardContext';
 
 export interface CardPreviewProps {
+  /** Full-bleed preview content, typically an image or media element shown at the top of the card. */
   children?: ReactNode;
 }
 

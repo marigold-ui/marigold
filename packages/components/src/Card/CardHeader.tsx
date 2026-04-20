@@ -3,6 +3,7 @@ import { cn } from '@marigold/system';
 import { useCardContext } from './CardContext';
 
 export interface CardHeaderProps {
+  /** Content rendered inside the card header, typically a title and supporting labels. */
   children?: ReactNode;
 }
 

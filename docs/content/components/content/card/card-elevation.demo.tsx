@@ -1,43 +1,44 @@
-import { Card, Inline, Stack, Text } from '@marigold/components';
-
-const now = Date.now();
-const earliestEventDate = new Date(now).toLocaleDateString();
-const latestEventDate = new Date(now + 3600 * 1000 * 24).toLocaleDateString();
-
-const EventDateCard = () => (
-  <Card>
-    <Card.Body>
-      <Stack>
-        <Inline>
-          <Text>Earliest event date:</Text>
-          <Text weight="bold">{earliestEventDate}</Text>
-        </Inline>
-        <Inline>
-          <Text>Latest event date:</Text>
-          <Text weight="bold">{latestEventDate}</Text>
-        </Inline>
-        <Inline>
-          <Text>Total events:</Text>
-          <Text weight="bold">10</Text>
-        </Inline>
-      </Stack>
-    </Card.Body>
-  </Card>
-);
+import {
+  Badge,
+  Button,
+  Card,
+  Headline,
+  Inline,
+  Stack,
+  Text,
+} from '@marigold/components';
 
 export default () => (
-  <>
-    <div className="bg-bg-surface-sunken shadow-surface-sunken rounded-xl p-4">
-      <p>sunken layer 👍</p>
-      <EventDateCard />
-    </div>
-    <div className="bg-bg-surface shadow-surface rounded-xl p-4">
-      <p>default layer 👍</p>
-      <EventDateCard />
-    </div>
-    <div className="bg-bg-surface-raised shadow-surface-raised rounded-xl p-4">
-      <p>Same layer like card 👎</p>
-      <EventDateCard />
-    </div>
-  </>
+  <div className="bg-bg-surface rounded-xl p-6">
+    <Card>
+      <Card.Preview>
+        <div className="bg-bg-surface-raised h-40 w-full" />
+      </Card.Preview>
+      <Card.Header>
+        <Stack space={1}>
+          <Headline level={3}>Annual Conference 2025</Headline>
+          <Inline space={2}>
+            <Badge variant="info">Music</Badge>
+            <Badge variant="success">Tickets available</Badge>
+          </Inline>
+        </Stack>
+      </Card.Header>
+      <Card.Body>
+        <Text variant="muted">
+          Join us for a day of inspiring talks, workshops, and networking at our
+          flagship annual event.
+        </Text>
+      </Card.Body>
+      <Card.Footer>
+        <Inline space={2}>
+          <Button variant="primary" size="small">
+            Get tickets
+          </Button>
+          <Button variant="ghost" size="small">
+            Learn more
+          </Button>
+        </Inline>
+      </Card.Footer>
+    </Card>
+  </div>
 );

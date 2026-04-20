@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import type { ThemeComponent } from '@marigold/system';
 
 export interface CardContext {
@@ -12,7 +12,7 @@ const Context = createContext<CardContext | null>(null);
 export const CardProvider = Context.Provider;
 
 export const useCardContext = () => {
-  const ctx = useContext(Context);
+  const ctx = use(Context);
 
   if (ctx === null) {
     throw Error(

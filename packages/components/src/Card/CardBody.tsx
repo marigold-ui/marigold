@@ -3,6 +3,7 @@ import { cn } from '@marigold/system';
 import { useCardContext } from './CardContext';
 
 export interface CardBodyProps {
+  /** Main content of the card, such as descriptive text or form elements. */
   children?: ReactNode;
 }
 

@@ -66,22 +66,34 @@ export const Horizontal = meta.story({
     <Scrollable {...args}>
       <div className="flex gap-2">
         <Card>
-          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          <Card.Body>
+            <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          </Card.Body>
         </Card>
         <Card>
-          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          <Card.Body>
+            <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          </Card.Body>
         </Card>
         <Card>
-          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          <Card.Body>
+            <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          </Card.Body>
         </Card>
         <Card>
-          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          <Card.Body>
+            <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          </Card.Body>
         </Card>
         <Card>
-          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          <Card.Body>
+            <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          </Card.Body>
         </Card>
         <Card>
-          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          <Card.Body>
+            <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+          </Card.Body>
         </Card>
       </div>
     </Scrollable>
@@ -136,33 +148,39 @@ export const WithTable = meta.story({
 export const ListScrolling = meta.story({
   render: args => (
     <Card>
-      <Scrollable height="200px" {...args}>
-        <Headline level={3}>Burger Menu</Headline>
-        <List>
-          <List.Item>
-            Crispy Chicken Burger
-            <List>
-              <List.Item>Hähnchen Filet im Crunchy Cornflakes Mantel</List.Item>
-            </List>
-          </List.Item>
-          <List.Item>
-            Cream Cheese Chicken Burger
-            <List>
-              <List.Item>Hähnchen Filet im Crunchy Cornflakes Mantel</List.Item>
-              <List.Item>Rucola</List.Item>
-              <List.Item>Frischkäse</List.Item>
-            </List>
-          </List.Item>
-          <List.Item>
-            Farmer
-            <List>
-              <List.Item>Rindfleisch</List.Item>
-              <List.Item>Bacon</List.Item>
-              <List.Item>Spiegelei</List.Item>
-            </List>
-          </List.Item>
-        </List>
-      </Scrollable>
+      <Card.Body>
+        <Scrollable height="200px" {...args}>
+          <Headline level={3}>Burger Menu</Headline>
+          <List>
+            <List.Item>
+              Crispy Chicken Burger
+              <List>
+                <List.Item>
+                  Hähnchen Filet im Crunchy Cornflakes Mantel
+                </List.Item>
+              </List>
+            </List.Item>
+            <List.Item>
+              Cream Cheese Chicken Burger
+              <List>
+                <List.Item>
+                  Hähnchen Filet im Crunchy Cornflakes Mantel
+                </List.Item>
+                <List.Item>Rucola</List.Item>
+                <List.Item>Frischkäse</List.Item>
+              </List>
+            </List.Item>
+            <List.Item>
+              Farmer
+              <List>
+                <List.Item>Rindfleisch</List.Item>
+                <List.Item>Bacon</List.Item>
+                <List.Item>Spiegelei</List.Item>
+              </List>
+            </List.Item>
+          </List>
+        </Scrollable>
+      </Card.Body>
     </Card>
   ),
 });
