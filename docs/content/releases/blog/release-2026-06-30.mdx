@@ -16,13 +16,13 @@ changed:
 
 Every design system reaches a point where the layers it has accumulated need to either be cleaned up or they start to drag everything down with them. v18.0.0 is where we stop layering and start reshaping. A new palette, a new set of semantic names, `<Multiselect>` finally retired, the last `util-surface-*` utilities removed, and React 19 as the baseline for every component.
 
-This is the biggest single release we've shipped, and it's the first step in a longer effort -- not the last. The design language is evolving to feel more mature, read more clearly, and fit the real complexity of the product surfaces we support. Expect more token work and more refinements across the next few minor releases. v18 is the foundation you'll build on; it is not the destination.
+This is the biggest single release we've shipped, and it is the first step in a longer effort, not the last. The design language is evolving to feel more mature, read more clearly, and fit the real complexity of the product surfaces we support. Expect more token work and more refinements across the next few minor releases. v18 is the foundation you'll build on. It is not the destination.
 
-Because the scope is wide, most of this post is migration notes. If you maintain a custom theme, pour a coffee -- there is some work for you.
+Because the scope is wide, most of this post is migration notes. If you maintain a custom theme, pour a coffee. There is some work for you.
 
 ## Before you upgrade
 
-**Marigold v18 requires React 19.** Every component now uses the React 19 ref-as-prop pattern; `forwardRef` has been removed from 25+ component files and compound components no longer rely on `ForwardRefExoticComponent`. You don't need to change how you pass refs in your app, but the installed React version does need to be 19 or newer. Upgrades from React 18 will fail with confusing ref-forwarding errors otherwise.
+**Marigold v18 requires React 19.** Every component now uses the React 19 ref-as-prop pattern. `forwardRef` has been removed from 25+ component files and compound components no longer rely on `ForwardRefExoticComponent`. You don't need to change how you pass refs in your app, but the installed React version does need to be 19 or newer. Upgrades from React 18 will fail with confusing ref-forwarding errors otherwise.
 
 If you are still on React 18, upgrade React first, verify your app still builds, then bump Marigold.
 
@@ -30,25 +30,40 @@ If you are still on React 18, upgrade React first, verify your app still builds,
 
 ### Design tokens overhaul
 
-The biggest chunk of work in this release. The design token layer has been rebuilt around a new purpose-built neutral palette, a clearer semantic naming scheme, and a restructured status-token hierarchy. The goal is to move from "tokens that happen to describe the current UI" to "tokens that describe the role each color plays." More changes will follow in later releases -- v18 is the step that sets up that direction.
+The biggest chunk of work in this release. The design token layer has been rebuilt around a new purpose-built neutral palette, a clearer semantic naming scheme, and a restructured status-token hierarchy. The goal is to move from "tokens that happen to describe the current UI" to "tokens that describe the role each color plays." More changes will follow in later releases. v18 is the step that sets up that direction.
 
 #### New `charcoal` palette
 
-The default neutral scale has been replaced. Previously the theme leaned on Tailwind's `stone` palette with a handful of scattered overrides. It now uses a purpose-built warm neutral called `charcoal` -- 11 steps calibrated in OKLCH at hue `54`, with each step mapped to a specific role (background, hover, control, text, and so on).
+The default neutral scale has been replaced. Previously the theme leaned on Tailwind's `stone` palette with a handful of scattered overrides. It now uses a purpose-built warm neutral called `charcoal`, with 11 steps calibrated in OKLCH at hue `54`. Each step maps to a specific role (background, hover, control, text, and so on).
 
-| Step | Old (`stone`) | New (`charcoal`)        | Typical role                      |
-| ---- | ------------- | ----------------------- | --------------------------------- |
-| 50   | `#fafaf9`     | `oklch(0.985 0.002 54)` | Subtle tint, `primary-foreground` |
-| 100  | `#f5f5f4`     | `oklch(0.965 0.003 54)` | Page background                   |
-| 200  | `#e7e5e4`     | `oklch(0.92 0.004 54)`  | Hover, `disabled-surface`         |
-| 300  | `#d6d3d1`     | `oklch(0.86 0.005 54)`  | Borders, control fill, selected   |
-| 400  | `#a8a29e`     | `oklch(0.74 0.006 54)`  | Disabled text                     |
-| 500  | `#78716c`     | `oklch(0.62 0.007 54)`  | -                                 |
-| 600  | `#57534e`     | `oklch(0.52 0.008 54)`  | Focus ring, `secondary` text      |
-| 700  | `#44403c`     | `oklch(0.42 0.008 54)`  | -                                 |
-| 800  | `#292524`     | `oklch(0.32 0.008 54)`  | -                                 |
-| 900  | `#1c1917`     | `oklch(0.22 0.008 54)`  | Primary text                      |
-| 950  | `#0c0a09`     | `oklch(0.15 0.008 54)`  | Primary action, scrollbar hover   |
+export const Sw = ({ c }) => (
+  <span
+    style={{
+      display: 'inline-block',
+      width: '0.9em',
+      height: '0.9em',
+      borderRadius: '0.2em',
+      background: c,
+      border: '1px solid rgba(0,0,0,0.1)',
+      verticalAlign: '-0.1em',
+      marginRight: '0.4em',
+    }}
+  />
+);
+
+| Step | Old (`stone`)                | New (`charcoal`)                                         | Typical role                      |
+| ---- | ---------------------------- | -------------------------------------------------------- | --------------------------------- |
+| 50   | <Sw c="#fafaf9" /> `#fafaf9` | <Sw c="oklch(0.985 0.002 54)" /> `oklch(0.985 0.002 54)` | Subtle tint, `primary-foreground` |
+| 100  | <Sw c="#f5f5f4" /> `#f5f5f4` | <Sw c="oklch(0.965 0.003 54)" /> `oklch(0.965 0.003 54)` | Page background                   |
+| 200  | <Sw c="#e7e5e4" /> `#e7e5e4` | <Sw c="oklch(0.92 0.004 54)" /> `oklch(0.92 0.004 54)`   | Hover, `disabled-surface`         |
+| 300  | <Sw c="#d6d3d1" /> `#d6d3d1` | <Sw c="oklch(0.86 0.005 54)" /> `oklch(0.86 0.005 54)`   | Borders, control fill, selected   |
+| 400  | <Sw c="#a8a29e" /> `#a8a29e` | <Sw c="oklch(0.74 0.006 54)" /> `oklch(0.74 0.006 54)`   | Disabled text                     |
+| 500  | <Sw c="#78716c" /> `#78716c` | <Sw c="oklch(0.62 0.007 54)" /> `oklch(0.62 0.007 54)`   | -                                 |
+| 600  | <Sw c="#57534e" /> `#57534e` | <Sw c="oklch(0.52 0.008 54)" /> `oklch(0.52 0.008 54)`   | Focus ring, `secondary` text      |
+| 700  | <Sw c="#44403c" /> `#44403c` | <Sw c="oklch(0.42 0.008 54)" /> `oklch(0.42 0.008 54)`   | -                                 |
+| 800  | <Sw c="#292524" /> `#292524` | <Sw c="oklch(0.32 0.008 54)" /> `oklch(0.32 0.008 54)`   | -                                 |
+| 900  | <Sw c="#1c1917" /> `#1c1917` | <Sw c="oklch(0.22 0.008 54)" /> `oklch(0.22 0.008 54)`   | Primary text                      |
+| 950  | <Sw c="#0c0a09" /> `#0c0a09` | <Sw c="oklch(0.15 0.008 54)" /> `oklch(0.15 0.008 54)`   | Primary action, scrollbar hover   |
 
 The new scale is more even across the light end (50 → 300), which gives more room for subtle UI layers on white surfaces, and it lands slightly cooler at the dark end so that body text reads with less warm cast. There is also a second high-contrast palette (`obsidian`) available for surfaces that need stronger separation. Full reference lives on the new [Token Overview](/foundations/token-overview) page.
 
@@ -75,11 +90,11 @@ In your application this is mostly a find-and-replace across Tailwind utility cl
 + <div className="bg-focus-highlight ring-ring" />
 ```
 
-If you read these values directly as CSS custom properties (`var(--color-brand)`), update those too -- the old variable names are gone, not aliased.
+If you read these values directly as CSS custom properties (`var(--color-brand)`), update those too. The old variable names are gone, not aliased.
 
 #### Status tokens restructured
 
-Previously the theme exposed **two** parallel sets of tokens for status colors -- a "solid" variant (`--color-warning`, `--color-warning-foreground`) meant for icons on accent fills, and a "muted" variant (`--color-warning-muted`, `--color-warning-muted-foreground`, `--color-warning-muted-accent`) used for almost everything else (badges, banners, section messages). In practice, the muted set was the one you reached for 95% of the time, and the solid set caused more confusion than value.
+Previously the theme exposed **two** parallel sets of tokens for status colors. A "solid" variant (`--color-warning`, `--color-warning-foreground`) was meant for icons on accent fills. A "muted" variant (`--color-warning-muted`, `--color-warning-muted-foreground`, `--color-warning-muted-accent`) was used for almost everything else (badges, banners, section messages). In practice, the muted set was the one you reached for 95% of the time, and the solid set caused more confusion than value.
 
 The muted variant is now the default, and the `-muted-` segment has been dropped. Where the original bold variant is still useful (currently only for `destructive`), it moves to a `-bold` suffix.
 
@@ -102,8 +117,8 @@ If you relied on the old solid tokens (`bg-warning`, `bg-info`) to render a fill
 
 Two new CSS utilities replace the handful of raw `hover:bg-*` patterns that accumulated across components over time:
 
-- **`ui-state-hover`** -- the standard hover for list items, table rows, and menu items on white surfaces. Resolves to `bg-hover text-foreground`.
-- **`ui-state-hover-ghost`** -- translucent hover for ghost buttons, tabs, and action bar buttons that need to adapt to whatever surface they sit on. Resolves to `bg-current/10`.
+- **`ui-state-hover`** applies the standard hover for list items, table rows, and menu items on white surfaces. Resolves to `bg-hover text-foreground`.
+- **`ui-state-hover-ghost`** applies a translucent hover for ghost buttons, tabs, and action bar buttons that need to adapt to whatever surface they sit on. Resolves to `bg-current/10`.
 
 All first-party components now use these, so hover behavior is consistent across the library. If you built custom components that imitated Marigold's hover styling by copying Tailwind classes, prefer these utilities so you pick up future tweaks automatically.
 
@@ -113,12 +128,12 @@ The legacy `util-surface-*` utilities were deprecated in v17.0.0 and announced f
 
 **Migration:**
 
-| Old utility            | New replacement                                        |
-| ---------------------- | ------------------------------------------------------ |
-| `util-surface-sunken`  | Removed -- use `bg-background` for the page base layer |
-| `util-surface-body`    | `bg-background` (no shadow needed)                     |
-| `util-surface-raised`  | `ui-surface shadow-elevation-raised`                   |
-| `util-surface-overlay` | `ui-surface shadow-elevation-overlay`                  |
+| Old utility            | New replacement                                      |
+| ---------------------- | ---------------------------------------------------- |
+| `util-surface-sunken`  | Removed. Use `bg-background` for the page base layer |
+| `util-surface-body`    | `bg-background` (no shadow needed)                   |
+| `util-surface-raised`  | `ui-surface shadow-elevation-raised`                 |
+| `util-surface-overlay` | `ui-surface shadow-elevation-overlay`                |
 
 ```diff
 - <div className="util-surface-raised">
@@ -129,7 +144,7 @@ The legacy `util-surface-*` utilities were deprecated in v17.0.0 and announced f
 
 The refreshed [Elevation](/foundations/elevation) foundation page now walks through the three-tier shadow model (`border`, `raised`, `overlay`) and when to reach for each.
 
-### `<Multiselect>` removed -- use `<TagField>`
+### Retired `<Multiselect>`, migrate to `<TagField>`
 
 `<Multiselect>` has been deprecated since v17.0.0 and is now gone. It was the last component still pulling in `react-select`, and keeping it around meant shipping two different multi-select mental models. `<TagField>` has covered every real use case since its promotion to beta, so v18 removes the original.
 
@@ -174,7 +189,7 @@ Uncontrolled usage is unchanged.
 + <Switch label="Wi-Fi" />
 ```
 
-For the classic settings-page layout -- label and description on the left, toggle anchored to the far right -- there is a new `variant="settings"`:
+For the classic settings-page layout (label and description on the left, toggle anchored to the far right), there is a new `variant="settings"`:
 
 ```tsx
 <Switch
@@ -225,13 +240,13 @@ export const BooleanField = {
 
 Then export it from your theme's component index.
 
-The `Checkbox` and `Switch` container slots have also moved from flexbox to CSS grid with conditional subgrid (so the description column aligns under the label regardless of control size). If you customized either slot, copy the updated shapes from the changeset in the [monorepo](https://github.com/marigold-ui/marigold/blob/beta-release/.changeset/switch-layout-alignment.md) -- the diff is mechanical but non-obvious.
+The `Checkbox` and `Switch` container slots have also moved from flexbox to CSS grid with conditional subgrid (so the description column aligns under the label regardless of control size). If you customized either slot, copy the updated shapes from the changeset in the [monorepo](https://github.com/marigold-ui/marigold/blob/beta-release/.changeset/switch-layout-alignment.md). The diff is mechanical but non-obvious.
 
 ### Theme-owned breakpoints
 
 Breakpoint resolution is now driven by the theme. `useSmallScreen` and `useResponsiveValue` read `theme.screens` from the `ThemeProvider` context instead of the hardcoded values that used to live inside `@marigold/system`'s `defaultTheme`. When the theme doesn't provide `screens`, the hooks fall back to Tailwind v4's `--breakpoint-*` custom properties.
 
-For apps on `@marigold/theme-rui`, this is a no-op -- the theme now exposes the same breakpoints (Tailwind v4 defaults) that the system used to ship. If you maintain a **custom theme** that doesn't extend `theme-rui`, add a `screens` map to it, or rely on the CSS fallback:
+For apps on `@marigold/theme-rui`, this is a no-op. The theme now exposes the same breakpoints (Tailwind v4 defaults) that the system used to ship. If you maintain a **custom theme** that doesn't extend `theme-rui`, add a `screens` map to it, or rely on the CSS fallback:
 
 ```ts
 import type { Theme } from '@marigold/system';
@@ -255,7 +270,7 @@ The motivation: breakpoints are a theming concern, not a system concern. Differe
 
 ### Universal `collapsed` spacing token
 
-A new `collapsed` token is available across **every** spacing-accepting prop in the system -- `<Stack>` / `<Inline>` `space`, `<Inset>` `space` / `spaceX` / `spaceY`, and anywhere else that takes a spacing token. It resolves to zero.
+A new `collapsed` token is available across **every** spacing-accepting prop in the system: `<Stack>` / `<Inline>` `space`, `<Inset>` `space` / `spaceX` / `spaceY`, and anywhere else that takes a spacing token. It resolves to zero.
 
 ```tsx
 <Stack space="collapsed">
@@ -270,7 +285,7 @@ A new `collapsed` token is available across **every** spacing-accepting prop in 
 
 The use case: wrappers that need to render without adding any spacing, for example an edge-to-edge `<Table>` inside a `<Panel>`. Before, you had to drop out of the semantic spacing system entirely and use numeric overrides whenever this came up. The token covers it directly.
 
-The name is deliberate -- `collapsed` reads naturally in both gap and padding contexts (cf. CSS margin collapse). An earlier iteration used `none`, but that collided with Tailwind v4's `leading-none`, which resolves `none` through the shared `--spacing-*` scale.
+The name is deliberate. `collapsed` reads naturally in both gap and padding contexts (cf. CSS margin collapse). An earlier iteration used `none`, but that collided with Tailwind v4's `leading-none`, which resolves `none` through the shared `--spacing-*` scale.
 
 ## Dependency updates
 
@@ -281,4 +296,4 @@ The name is deliberate -- `collapsed` reads naturally in both gap and padding co
 
 v18 is a clear break from the shape of v17, and that is on purpose. The charcoal palette, renamed tokens, retired `<Multiselect>`, and cleaned-up surface utilities all point toward the same goal: a design system that describes its intent clearly and doesn't carry duplicate mental models from earlier iterations.
 
-There is more coming. The token work in particular is ongoing -- expect further refinements in v18.x as we use the new palette and naming in real product surfaces and learn where the edges still need to move. As always, we welcome your feedback.
+There is more coming. The token work in particular is ongoing. Expect further refinements in v18.x as we use the new palette and naming in real product surfaces and learn where the edges still need to move. As always, we welcome your feedback.
