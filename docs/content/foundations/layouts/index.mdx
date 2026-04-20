@@ -3,7 +3,29 @@ title: Layouts
 description: How layout and composition are handled.
 ---
 
-Most web layout is a combination of `<div>` elements with flex or grid utility classes. That works for a single container, but it scales badly. The moment a section needs a vertical stack containing a row of buttons, wrappers start nesting and each one carries its own class string:
+When you build a page in Marigold, it lives inside the [AppShell](../../components/layout/app-layout), the fixed frame that every page shares. Inside that frame, you divide the page into Panels and arrange content with primitives. Rooms, then furniture.
+
+import { ConceptsStructure } from './concepts-structure';
+
+<ConceptsStructure />
+
+## Panel
+
+Panel is a titled surface that renders a visible page section with a title, body, and optional actions. It is the canonical way to divide a page in Marigold.
+
+Most pages are made of one or more Panels. A small view like a settings tab is often a single Panel. A denser view like a dashboard or a detail page is typically several Panels, each one naming a self-contained part of the page. Reaching for Panel is the default; reaching for something else should be deliberate.
+
+Panel also works outside the AppShell. A login form wrapped in a Panel gives the same titled surface you would use inside an app, so the opinion "use a Panel" holds on pre-auth screens too.
+
+Panel owns the surface, the title, and the body wrapper, not the arrangement inside it. Content layout is the primitives' job, and they work the same way wherever you use them. A common shape is a [Stack](../../components/layout/stack) of fields with an [Inline](../../components/layout/inline) of buttons at the bottom, but any primitive composition is valid.
+
+See the [Panel component docs](../../components/layout/panel) for props, variants, and sizing.
+
+## Layout primitives
+
+Layout primitives are invisible positioning components that arrange and space whatever content is placed inside them. Stack flows content vertically, Inline flows horizontally, Columns splits proportionally, and so on.
+
+Without them, web layout is a combination of `<div>` elements with flex or grid utility classes. That works for a single container, but it scales badly. The moment a section needs a vertical stack containing a row of buttons, wrappers start nesting and each one carries its own class string:
 
 ```tsx
 <div className="flex flex-col gap-4">
@@ -16,9 +38,7 @@ Most web layout is a combination of `<div>` elements with flex or grid utility c
 </div>
 ```
 
-Nothing is broken here, but reading it means parsing every class string to reconstruct the intent. Repeat the pattern across a codebase and layout decisions end up scattered through utility classes, reinvented slightly differently on every page.
-
-Marigold replaces this with named layout components. The same structure looks like:
+Nothing is broken here, but reading it means parsing every class string to reconstruct the intent. Repeat the pattern across a codebase and layout decisions end up scattered through utility classes, reinvented slightly differently on every page. Marigold replaces this with named layout components:
 
 ```tsx
 <Stack space="regular">
@@ -31,49 +51,36 @@ Marigold replaces this with named layout components. The same structure looks li
 </Stack>
 ```
 
-Each wrapper states _what_ it is rather than _how_ it is configured. You can scan the tree and see the layout flow without reading a single class name. This approach has a few practical benefits:
+Each wrapper states _what_ it is rather than _how_ it is configured. You can scan the tree and see the layout flow without reading a single class name. This gives you:
 
 - **Named intent.** The JSX tells you the layout pattern (`Stack`, `Inline`, `Columns`) instead of encoding it in class strings the reader has to decode.
-- **One canonical pattern.** The same shape looks the same everywhere; teams don't reinvent a vertical stack in four slightly different ways.
+- **One canonical pattern.** The same shape looks the same everywhere. Teams don't reinvent a vertical stack in four slightly different ways.
 - **Composability.** A `Button` drops into any layout without carrying layout opinions of its own.
+
+For these benefits to hold, components must never set their own outer margin. Adding `margin` to a component causes it to affect, or be affected by, elements outside its boundary, breaking the modularity and composition assumptions that make components reusable in the first place.
+
+Whitespace, positioning, and arrangement are always the responsibility of a parent. A button does not know what sits next to it. A `Stack` decides the gap between the button and its siblings. This keeps components portable and whitespace predictable across pages.
+
+<ComponentDemo name="concepts-spacing" mode="preview" />
 
 Spacing between elements is expressed with semantic tokens like `regular` or `group`. See the [Spacing](/foundations/spacing) page for the full vocabulary.
 
-## Components own layout, not spacing
+## Choosing the right primitive
 
-For the benefits above to hold, components must never set their own outer margin. Adding `margin` to a component causes it to affect, or be affected by, elements outside its boundary, breaking the modularity and composition assumptions that make components reusable in the first place.
+Most layouts can be built from more than one combination of primitives. Each primitive, though, is built around a specific situation, and reaching for the one that fits most directly keeps pages consistent across a codebase. The table names that situation for each primitive, with a typical example.
 
-Whitespace, positioning, and arrangement are always the responsibility of a parent layout component. A button does not know what sits next to it; a `<Stack>` decides the gap between the button and its neighbour. This keeps components portable (they can be dropped into any layout without carrying layout opinions with them) and keeps whitespace predictable across pages.
-
-<ComponentDemo name="concepts-spacing" />
-
-## Atomic layouts
-
-Atomic layouts are invisible positioning helpers. They do not render a surface; they exist to arrange whatever content is placed inside them. Most layouts on the web can be broken down into a handful of these patterns, combined to achieve more complex structures.
-
-<ComponentDemo name="concepts-layouts" />
-
-### Choosing the right layout
-
-| Use when                                          | Component                                        |
-| ------------------------------------------------- | ------------------------------------------------ |
-| Stacking elements vertically with consistent gaps | [Stack](../../components/layout/stack)           |
-| Laying out elements horizontally that should wrap | [Inline](../../components/layout/inline)         |
-| Arranging weighted horizontal columns (e.g. 2:1)  | [Columns](../../components/layout/columns)       |
-| Filling a container with equal-width tiles        | [Tiles](../../components/layout/tiles)           |
-| Constraining content to a readable max width      | [Container](../../components/layout/container)   |
-| Centering a child horizontally                    | [Center](../../components/layout/center)         |
-| Locking a container to a fixed aspect ratio       | [Aspect](../../components/layout/aspect)         |
-| Padding content inside a surface                  | [Inset](../../components/layout/inset)           |
-| Building a named two-dimensional grid             | [Grid](../../components/layout/grid)             |
-| Pairing a main region with a narrow sidebar       | [Aside](../../components/layout/aside)           |
-| Pushing siblings to opposite ends of a row        | [Split](../../components/layout/split)           |
-| Letting a region scroll independently             | [Scrollable](../../components/layout/scrollable) |
-| Breaking out of a constrained grid                | [Breakout](../../components/layout/breakout)     |
-
-## Structural layouts
-
-Structural layouts are named, surface-bearing regions of a page. Where atomic layouts arrange arbitrary content invisibly, structural layouts define **where on the page** content lives: the frame of an application, or a labelled section within a page. They have their own visual treatment (surface, elevation, variants) and often their own slots like `Header`, `Content`, and `Footer`.
-
-- [Panel](../../components/layout/panel) divides a page into labelled sections with a title, content, and optional actions.
-- [AppLayout](../../components/layout/app-layout) is the whole-viewport frame: sidebar on the left, header on the top right, scrollable main area below.
+| Component                                        | Reach for it when…                                                                                                | Example                                                          |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [Aside](../../components/layout/aside)           | two elements pair side-by-side where one is fixed-width and the other fills the rest                              | media-object: thumbnail + details Stack                          |
+| [Aspect](../../components/layout/aspect)         | a media element must keep a specific aspect ratio regardless of container width                                   | video or iframe embeds, image thumbnails inside Tiles            |
+| [Breakout](../../components/layout/breakout)     | a child inside a Container must span full-bleed, ignoring its max-width                                           | inside Container, wrapping full-bleed media                      |
+| [Center](../../components/layout/center)         | content needs horizontal centering, optionally capped at a max-width                                              | auth screens, empty-state wrappers                               |
+| [Columns](../../components/layout/columns)       | a fixed number of regions need explicit proportional widths and should collapse to one column below a breakpoint  | label + input rows, sidebar + main page splits                   |
+| [Container](../../components/layout/container)   | content needs a max-width optimized for reading, centered within its parent                                       | article bodies, docs pages, editorial prose                      |
+| [Grid](../../components/layout/grid)             | specific children must occupy or span named zones, making the layout structure itself the contract                | page frames (header / sidebar / main / footer), bento dashboards |
+| [Inline](../../components/layout/inline)         | multiple elements need to sit side-by-side and wrap to a new line when space runs out                             | action row of buttons, often with a Split between groups         |
+| [Inset](../../components/layout/inset)           | content inside a sealed surface needs explicit, controllable interior padding                                     | interior padding for Tray, Panel, and other surfaces             |
+| [Scrollable](../../components/layout/scrollable) | content may overflow its bounded height or width and needs controlled scrolling                                   | fixed-height table with a sticky header                          |
+| [Split](../../components/layout/split)           | siblings inside an existing Inline or Stack need to be pushed to opposite ends                                    | inside Inline, between a title and its actions                   |
+| [Stack](../../components/layout/stack)           | multiple elements need to flow top-to-bottom with a consistent gap                                                | skeleton of most forms and page sections                         |
+| [Tiles](../../components/layout/tiles)           | a homogeneous set of items of unknown count should fill the row at a minimum child width and reflow automatically | card grids, dashboard metric grids                               |
