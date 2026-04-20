@@ -25,10 +25,11 @@ try {
     token: process.env.BLOB_READ_WRITE_TOKEN,
   });
 
-  if (result?.statusCode !== 200) {
-    throw new Error(
-      `Download failed. Status: ${result?.statusCode ?? 'not found'}`
-    );
+  if (!result) {
+    throw new Error('embeddings.json not found in Vercel Blob.');
+  }
+  if (result.statusCode !== 200) {
+    throw new Error(`Download failed. Status: ${result.statusCode}`);
   }
 
   const buffer = Buffer.from(await new Response(result.stream).arrayBuffer());

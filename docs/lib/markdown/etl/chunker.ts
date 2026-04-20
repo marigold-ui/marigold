@@ -19,7 +19,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CONTENT_DIR = path.resolve(__dirname, '..', '..', '..', 'content');
 const OUTPUT_FILE = path.resolve(__dirname, 'chunks.json');
 const MAX_CHARS = 10_000;
-const MIN_CHARS = 150;
 
 /** Split markdown at headings of a given level */
 function splitAt(
@@ -103,15 +102,13 @@ function chunkMarkdown(markdown: string, basename: string) {
 
   return splitAt(markdown, 2).flatMap(({ heading: h2, body }) => {
     const headingPath = [h1, h2].filter(Boolean).join(' > ');
-    return fit(headingPath, body)
-      .filter(c => c.text.length >= MIN_CHARS)
-      .map(({ heading, text }) => ({
-        textForEmbedding: [`[${basename}] ${heading}`, ctx || null, text]
-          .filter(Boolean)
-          .join('\n\n'),
-        originalText: text,
-        metadata: { file: basename, heading },
-      }));
+    return fit(headingPath, body).map(({ heading, text }) => ({
+      textForEmbedding: [`[${basename}] ${heading}`, ctx || null, text]
+        .filter(Boolean)
+        .join('\n\n'),
+      originalText: text,
+      metadata: { file: basename, heading },
+    }));
   });
 }
 

@@ -82,7 +82,13 @@ async function getEmbedding(text: string, attempt = 0): Promise<string> {
     const embedding: number[] = JSON.parse(
       new TextDecoder().decode(res.body)
     ).embedding;
-    return Buffer.from(new Float32Array(embedding).buffer).toString('base64');
+    // Encode as explicit little-endian so decoding is portable across
+    // CPU architectures (amd64 / arm64).
+    const buf = Buffer.alloc(embedding.length * 4);
+    for (let i = 0; i < embedding.length; i++) {
+      buf.writeFloatLE(embedding[i], i * 4);
+    }
+    return buf.toString('base64');
   } catch (err) {
     if (attempt >= MAX_RETRIES) throw err;
     await new Promise(r => setTimeout(r, 1000 * 2 ** attempt));

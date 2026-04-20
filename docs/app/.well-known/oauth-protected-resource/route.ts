@@ -21,7 +21,6 @@ export function GET(req: Request) {
   return NextResponse.json(metadata, {
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
     },
   });
 }
