@@ -27,7 +27,7 @@ A Panel has three areas, all optional, each backed by its own sub-component:
 
 - **Header** contains a title, an optional description, and optional actions slot for buttons or overflow menus.
 - **Content** is the main body. Form fields, text, tables, or any layout primitive lives here.
-- **Footer** is an optional action bar for panel-scoped actions. Often omitted.
+- **Footer** is an optional action bar for panel-scoped actions. Often omitted, since header actions cover most section-scoped controls and page-level Save/Cancel sit outside the `<Panel>`.
 
 A Panel can also wrap part of its content in a **Collapsible** to hide fields until the user opens them. A Collapsible has two parts: a header that names the section, and the content it reveals. The header follows the same pattern as the Panel header above: a title, with an optional description underneath. The whole header is clickable, and a caret on the right marks whether the section is open.
 
@@ -107,7 +107,7 @@ The content area is the body of the Panel. It's deliberately open, and in practi
 - **Data sections** put a single table, list, chart, diagram, or media surface at the centre of the region. These usually want [full-width content](#full-width-content).
 - **Prose sections** explain a concept or a consequence before the user acts, common above a Danger zone or at the top of a settings page.
 
-Panel doesn't impose a layout primitive. Reach for the same tools you'd use outside a Panel (Stack, Inline, a grid). The Panel owns the region; the content inside still owns its own rhythm.
+Panel doesn't impose a layout primitive. Reach for the same tools you'd use outside a Panel (`<Stack>`, `<Inline>`, a grid). The Panel owns the region; the content inside still owns its own rhythm.
 
 #### Full-width content
 
@@ -191,7 +191,7 @@ Every slot is inset with `p="square-regular"`. Stay with the default in most cas
 
 #### Section gap
 
-`space` controls the gap between Header, Content, and Footer. Default `regular` works almost everywhere. Drop to `none` when the slots should read as one dense surface, like a full-width table that reaches the Panel's edges. Step up to `group` when the Panel carries several distinct blocks that need more breathing room.
+`space` controls the gap between header, content, and footer. Default `regular` works almost everywhere. Drop to `none` when the slots should read as one dense surface, like a full-width table that reaches the Panel's edges. Step up to `group` when the Panel carries several distinct blocks that need more breathing room.
 
 ```tsx
 <Panel space="none">…</Panel>

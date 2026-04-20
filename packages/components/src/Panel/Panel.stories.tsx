@@ -216,6 +216,9 @@ export const ControlledCollapsible = meta.story({
     const [expanded, setExpanded] = useState(false);
     return (
       <Panel aria-label="Advanced settings">
+        <Panel.Content>
+          <Text>Collapsible is {expanded ? 'expanded' : 'collapsed'}.</Text>
+        </Panel.Content>
         <Panel.Collapsible expanded={expanded} onExpandedChange={setExpanded}>
           <Panel.CollapsibleHeader>
             <Panel.CollapsibleTitle>Advanced settings</Panel.CollapsibleTitle>
