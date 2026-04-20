@@ -32,15 +32,6 @@ const KEYCLOAK_JWKS_URI = OIDC_AUTHORITY
   ? `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`
   : undefined;
 
-const AWS_BEDROCK_ACCESS_KEY_ID = process.env.AWS_BEDROCK_ACCESS_KEY_ID;
-const AWS_BEDROCK_SECRET_ACCESS_KEY = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY;
-
-if (!AWS_BEDROCK_ACCESS_KEY_ID || !AWS_BEDROCK_SECRET_ACCESS_KEY) {
-  throw new Error(
-    'Missing AWS Bedrock credentials. Set AWS_BEDROCK_ACCESS_KEY_ID and AWS_BEDROCK_SECRET_ACCESS_KEY environment variables.'
-  );
-}
-
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 type StoredChunk = {
@@ -51,18 +42,30 @@ type StoredChunk = {
   dims: number;
 };
 
-// ─── Bedrock client (singleton) ──────────────────────────────────────────────
+// ─── Bedrock client (lazy singleton) ─────────────────────────────────────────
 
-const bedrock = new BedrockRuntimeClient({
-  region: AWS_REGION,
-  credentials: {
-    accessKeyId: AWS_BEDROCK_ACCESS_KEY_ID,
-    secretAccessKey: AWS_BEDROCK_SECRET_ACCESS_KEY,
-  },
-});
+let bedrock: BedrockRuntimeClient | null = null;
+
+function getBedrock(): BedrockRuntimeClient {
+  if (bedrock) return bedrock;
+
+  const accessKeyId = process.env.AWS_BEDROCK_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY;
+  if (!accessKeyId || !secretAccessKey) {
+    throw new Error(
+      'Missing AWS Bedrock credentials. Set AWS_BEDROCK_ACCESS_KEY_ID and AWS_BEDROCK_SECRET_ACCESS_KEY.'
+    );
+  }
+
+  bedrock = new BedrockRuntimeClient({
+    region: AWS_REGION,
+    credentials: { accessKeyId, secretAccessKey },
+  });
+  return bedrock;
+}
 
 async function embedQuery(text: string): Promise<Float32Array> {
-  const res = await bedrock.send(
+  const res = await getBedrock().send(
     new InvokeModelCommand({
       modelId: TITAN_MODEL_ID,
       contentType: 'application/json',
@@ -91,19 +94,17 @@ function loadStore(): VectorStore {
 
   const vectors = data.map(chunk => {
     const buf = Buffer.from(chunk.embedding, 'base64');
-    // Copy into a fresh ArrayBuffer to guarantee 4-byte alignment, since
-    // Buffer.from(base64) shares Node's pool and byteOffset may be unaligned.
-    const ab = buf.buffer.slice(
-      buf.byteOffset,
-      buf.byteOffset + buf.byteLength
-    );
-    return new Float32Array(ab);
+    const floats = new Float32Array(buf.byteLength / 4);
+    for (let i = 0; i < floats.length; i++) {
+      floats[i] = buf.readFloatLE(i * 4);
+    }
+    return floats;
   });
 
   return { chunks: data, vectors };
 }
 
-// Eager load at module init so the first request doesn't pay the cold-read cost.
+// Load eagerly at module init; file is bundled via outputFileTracingIncludes.
 const store: VectorStore = loadStore();
 
 // ─── Search ──────────────────────────────────────────────────────────────────
