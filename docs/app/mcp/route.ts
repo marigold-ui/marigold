@@ -15,6 +15,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // process.cwd() is the docs/ root in Next.js
 const EMBEDDINGS_FILE = path.join(
@@ -233,12 +234,11 @@ const handler = createMcpHandler(
   }
 );
 
-const authOptions = {
+export const GET = withMcpAuth(handler, verifyToken, {
   required: true,
   resourceMetadataPath: '/.well-known/oauth-protected-resource',
-};
+});
 
-export const GET = withMcpAuth(handler, verifyToken, authOptions);
-export const POST = withMcpAuth(handler, verifyToken, authOptions);
+export const POST = GET;
 // DELETE is required by the MCP Streamable HTTP transport for session termination.
-export const DELETE = withMcpAuth(handler, verifyToken, authOptions);
+export const DELETE = GET;
