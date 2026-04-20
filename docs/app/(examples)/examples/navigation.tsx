@@ -61,7 +61,7 @@ const userInput: NavSection = {
       kind: 'Item',
       slug: 'form',
       label: 'Form',
-      docsHref: '/patterns/user-input/form-implementation',
+      docsHref: '/patterns/user-input/filter',
       docsLabel: 'Form Guidelines',
     },
   ],
