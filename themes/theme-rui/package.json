@@ -62,12 +62,12 @@
     "@marigold/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "4.2.1",
     "cross-env": "^10.0.0",
-    "cssnano": "7.1.4",
+    "cssnano": "7.1.5",
     "postcss-cli": "11.0.1",
     "postcss-prefix-selector": "2.1.1",
     "shx": "^0.4.0",
     "tailwindcss": "4.2.1",
-    "tsdown": "0.21.7",
+    "tsdown": "0.21.9",
     "typescript": "6.0.2"
   },
   "dependencies": {

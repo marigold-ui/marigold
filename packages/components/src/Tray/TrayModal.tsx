@@ -55,6 +55,14 @@ export const TrayModal = ({
   const state = use(OverlayTriggerStateContext);
   const h = typeof window !== 'undefined' ? window.innerHeight : 0;
   const y = useMotionValue(h);
+  // Skip the slide transition under `prefers-reduced-motion` (and in
+  // Chromatic, which emulates it) so visual-regression snapshots are
+  // deterministic instead of capturing a mid-animation frame.
+  const reducedMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const transition = reducedMotion ? { duration: 0 } : staticTransition;
+  const initialY = reducedMotion ? 0 : h;
 
   const handleOpenChange = (isOpen: boolean) => {
     onOpenChange?.(isOpen);
@@ -76,10 +84,10 @@ export const TrayModal = ({
         >
           <MotionModal
             className={classNames.container}
-            initial={{ y: h }}
+            initial={{ y: initialY }}
             animate={{ y: 0 }}
-            exit={{ y: h }}
-            transition={staticTransition}
+            exit={{ y: reducedMotion ? 0 : h }}
+            transition={transition}
             style={{ y }}
             drag="y"
             dragConstraints={{ top: 0 }}
