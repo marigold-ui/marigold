@@ -1,0 +1,76 @@
+---
+title: Marigold v17.3.0
+date: 2026-03-25
+type: Blog
+changed:
+  - components/layout/app-layout
+  - components/navigation/sidebar
+  - components/navigation/top-navigation
+  - components/overlay/toast
+  - components/overlay/menu
+  - components/collection/tag
+  - components/form/slider
+---
+
+Spring is in full swing, and so is Marigold. v17.3.0 continues the navigation story we started with `<Sidebar>` and `<TopNavigation>` in v17.2.0 -- this time by giving you a ready-made shell to compose them into.
+
+## Components
+
+### AppLayout (beta)
+
+A new [`<AppLayout>`](/components/layout/app-layout) component provides a standardized App Shell layout using CSS Grid. It exposes three slots -- `<AppLayout.Sidebar>`, `<AppLayout.Header>`, and `<AppLayout.Main>` -- that compose the navigation primitives from v17.2.0 into a complete page chrome.
+
+Before `<AppLayout>`, teams had to hand-roll grid templates, `100dvh` height containers, and sticky-header logic every time they wired `<Sidebar>` and `<TopNavigation>` together. Getting scroll behavior right (only `<Main>` should scroll, sidebar and header stay put) was fiddly and easy to get subtly wrong. `<AppLayout>` encapsulates that layout so you can focus on content.
+
+```tsx
+<Sidebar.Provider defaultOpen>
+  <AppLayout>
+    <AppLayout.Sidebar>
+      <Sidebar.Header>{/* Logo */}</Sidebar.Header>
+      <Sidebar.Nav>{/* Navigation items */}</Sidebar.Nav>
+    </AppLayout.Sidebar>
+    <AppLayout.Header>
+      <TopNavigation.Start>
+        <Sidebar.Toggle />
+      </TopNavigation.Start>
+      <TopNavigation.Middle>{/* Breadcrumbs, search */}</TopNavigation.Middle>
+      <TopNavigation.End>{/* User menu */}</TopNavigation.End>
+    </AppLayout.Header>
+    <AppLayout.Main>{/* Scrollable page content */}</AppLayout.Main>
+  </AppLayout>
+</Sidebar.Provider>
+```
+
+The grid fills `100dvh`, the header is a fixed `3.5rem` tall, and only `<AppLayout.Main>` scrolls. The sidebar header height was also aligned with the `<AppLayout>` header so logos and navigation items line up cleanly. See the new [App Shell pattern](/patterns/app-shell) for a step-by-step guide covering providers, responsive behavior, and where to place content.
+
+## System
+
+### Stable `useToast` callbacks
+
+`addToast`, `clearToasts`, and `removeToast` from [`useToast`](/components/overlay/toast) are now wrapped in `useCallback`. Previously, these functions got a new identity on every render, which meant including them in a `useEffect` dependency array would trigger the effect on every render. Now the references are stable across renders and safe to use as dependencies.
+
+```tsx
+const { addToast } = useToast();
+
+useEffect(() => {
+  if (saveSucceeded) {
+    addToast({ title: 'Saved!', variant: 'success' });
+  }
+}, [saveSucceeded, addToast]); // Safe now — addToast is stable
+```
+
+## Design
+
+- Replaced hardcoded values with semantic tokens across multiple theme files, including `<Tag>` and `<Slider>`. Hardcoded values drift from the token system over time and make custom themes harder to override -- moving them into tokens keeps the design language consistent.
+
+## Bug fixes
+
+- **v17.2.1**: Fixed a broken icon color inside `<Menu.Item>`. A malformed Tailwind selector (`[&_svg]:text-muted-foreground:opacity-60`) collapsed two modifiers into one, so nested `<svg>` icons lost their muted color. Split into `[&_svg]:text-muted-foreground [&_svg]:opacity-60`.
+
+## Documentation
+
+- Refactored the [`<Calendar>`](/components/form/calendar) documentation for clarity around the new `visibleDuration` and `pageBehavior` props introduced in v17.0.0.
+
+---
+
+A small release that makes a big difference if you're building app shells. As always, feedback is welcome!
