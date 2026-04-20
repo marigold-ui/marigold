@@ -20,11 +20,15 @@ This is the biggest single release we've shipped. It is also the first step of a
 
 Because the scope is wide, most of this post is migration notes. If you maintain a custom theme, pour a coffee. There is some work for you.
 
-## Before you upgrade
-
-**Marigold v18 requires React 19.** Every component now uses the React 19 ref-as-prop pattern. `forwardRef` has been removed from 25+ component files and compound components no longer rely on `ForwardRefExoticComponent`. You don't need to change how you pass refs in your app, but the installed React version does need to be 19 or newer. Upgrades from React 18 will fail with confusing ref-forwarding errors otherwise.
-
-If you are still on React 18, upgrade React first, verify your app still builds, then bump Marigold.
+<Callout title="Before you upgrade" type="info">
+  **Marigold v18 requires React 19.** Every component now uses the React 19
+  ref-as-prop pattern. `forwardRef` has been removed from 25+ component files
+  and compound components no longer rely on `ForwardRefExoticComponent`. You
+  don't need to change how you pass refs in your app, but the installed React
+  version does need to be 19 or newer. Upgrades from React 18 will fail with
+  confusing ref-forwarding errors otherwise. If you are still on React 18,
+  upgrade React first, verify your app still builds, then bump Marigold.
+</Callout>
 
 ## Breaking Changes
 
