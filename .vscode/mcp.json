@@ -7,6 +7,9 @@
     "sb-mcp-server": {
       "url": "http://localhost:6006/mcp",
       "type": "http"
+    },
+    "marigold-docs": {
+      "url": "https://marigold-docs-git-dst-1166-mcp-server-integration-marigold.vercel.app/mcp"
     }
   }
 }

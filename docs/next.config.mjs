@@ -3,6 +3,10 @@ import componentsPkg from '../packages/components/package.json' with { type: 'js
 
 const withMDX = createMDX();
 
+if (process.env.VERCEL) {
+  await import('./scripts/download-embeddings.mjs');
+}
+
 /** @type {import('next').NextConfig} */
 const config = {
   env: {
@@ -11,6 +15,19 @@ const config = {
   reactStrictMode: true,
   // Needed for markdown parser plugins that use ts-morph on the server
   serverExternalPackages: ['ts-morph', 'typescript'],
+  // Ensure embeddings.json is bundled with the /mcp serverless function on Vercel
+  outputFileTracingIncludes: {
+    '/mcp': ['./lib/markdown/embeddings.json'],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/mcp/:path((?!.*\\.md$).*)',
+        destination: '/mcp/:path.md',
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
