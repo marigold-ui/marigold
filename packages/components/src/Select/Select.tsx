@@ -36,9 +36,6 @@ export interface SelectProps<
   variant?: string;
   size?: string;
 
-  /**
-   * @remarks `WidthProp`
-   */
   width?: WidthProp['width'];
   /**
    * Children of the select.
