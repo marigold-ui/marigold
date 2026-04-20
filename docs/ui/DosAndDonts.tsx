@@ -36,8 +36,14 @@ const makeSlot = (slot: SlotTag, className?: string): GuidelineComponent => {
   return Component;
 };
 
-export const DoFigure = makeSlot(FIGURE_SLOT, '[&_img]:block [&_img]:w-full');
-export const DoDescription = makeSlot(DESCRIPTION_SLOT);
+export const DoFigure = makeSlot(
+  FIGURE_SLOT,
+  '[&_img]:mb-2 [&_img]:block [&_img]:w-full'
+);
+export const DoDescription = makeSlot(
+  DESCRIPTION_SLOT,
+  '[&_ul]:my-0 [&_ul]:list-disc [&_ul]:ps-5 [&_ol]:my-0 [&_ol]:list-decimal [&_ol]:ps-5 [&_li]:my-0.5'
+);
 export const DontFigure = DoFigure;
 export const DontDescription = DoDescription;
 
