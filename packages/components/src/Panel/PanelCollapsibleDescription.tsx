@@ -17,7 +17,7 @@ export const PanelCollapsibleDescription = ({
     <span
       ref={descriptionSlotRef}
       id={descriptionId}
-      className={cn(classNames.collapsibleDescription)}
+      className={classNames.collapsibleDescription}
     >
       {children}
     </span>
