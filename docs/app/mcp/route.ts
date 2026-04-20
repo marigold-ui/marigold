@@ -234,11 +234,21 @@ const handler = createMcpHandler(
   }
 );
 
-export const GET = withMcpAuth(handler, verifyToken, {
+const authOptions = {
   required: true,
   resourceMetadataPath: '/.well-known/oauth-protected-resource',
-});
+};
 
-export const POST = GET;
-// DELETE is required by the MCP Streamable HTTP transport for session termination.
-export const DELETE = GET;
+const mcpHandler = withMcpAuth(handler, verifyToken, authOptions);
+
+export async function GET(req: Request) {
+  return mcpHandler(req);
+}
+
+export async function POST(req: Request) {
+  return mcpHandler(req);
+}
+
+export async function DELETE(req: Request) {
+  return mcpHandler(req);
+}
