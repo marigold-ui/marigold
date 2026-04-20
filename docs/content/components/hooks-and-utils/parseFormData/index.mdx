@@ -17,7 +17,7 @@ When a user clicks the submit button, the `onSubmit` event captures the state of
 
 ### Handling Multiple Values
 
-HTML forms can produce multiple values for a single field name, most commonly with a group of checkboxes or a [multiselect element](/patterns/multiple-selection). For example, if a user checks three boxes all named "interests", the `FormData` object will contain three separate entries for "interests".
+HTML forms can produce multiple values for a single field name, most commonly with a group of checkboxes or a [multiselect element](/patterns/user-input/multiple-selection). For example, if a user checks three boxes all named "interests", the `FormData` object will contain three separate entries for "interests".
 
 `parseFormData` automatically handles this scenario. It checks if any field name has more than one value associated with it. If it does, the utility will create an array containing all of those values under a single key in the final object. If a field name has only one value, it will be stored as a single string or file object. This ensures the output is always predictable and easy to work with.
 
