@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
-import { cn } from '@marigold/system';
 import { useCollapsibleHeaderContext } from './CollapsibleContext';
 import { usePanelContext } from './Context';
 
 export interface PanelCollapsibleDescriptionProps {
+  /** Supporting copy shown inside the collapsible header. */
   children: ReactNode;
 }
 

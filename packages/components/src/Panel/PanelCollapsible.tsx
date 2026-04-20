@@ -14,6 +14,10 @@ export interface PanelCollapsibleProps extends Omit<
   expanded?: RAC.DisclosureProps['isExpanded'];
   /** Whether the collapsible section is disabled. */
   disabled?: RAC.DisclosureProps['isDisabled'];
+  /**
+   * Content of the collapsible section. Typically a
+   * `Panel.CollapsibleHeader` and `Panel.CollapsibleContent`.
+   */
   children: ReactNode;
 }
 

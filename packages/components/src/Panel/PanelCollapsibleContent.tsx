@@ -4,6 +4,7 @@ import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelCollapsibleContentProps {
+  /** Body revealed when the collapsible section is expanded. */
   children: ReactNode;
   /**
    * Render the content edge-to-edge horizontally, skipping the Panel's

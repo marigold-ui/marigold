@@ -3,6 +3,7 @@ import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelFooterProps {
+  /** Content of the footer. Typically one or more actions. */
   children: ReactNode;
 }
 

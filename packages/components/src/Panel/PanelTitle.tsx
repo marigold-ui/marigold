@@ -4,6 +4,7 @@ import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelTitleProps {
+  /** Title text for the panel. */
   children: ReactNode;
 }
 

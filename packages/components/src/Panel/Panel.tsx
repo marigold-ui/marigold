@@ -26,6 +26,10 @@ import { PanelTitle } from './PanelTitle';
 interface PanelBaseProps {
   variant?: 'default' | 'master' | 'admin' | 'destructive' | (string & {});
   size?: 'form' | (string & {});
+  /**
+   * Content of the panel. Typically a combination of `Panel.Header`,
+   * `Panel.Content`, `Panel.Collapsible`, and `Panel.Footer`.
+   */
   children: ReactNode;
   /** Accessible label. Required when no `Panel.Title` is present. */
   'aria-label'?: string;

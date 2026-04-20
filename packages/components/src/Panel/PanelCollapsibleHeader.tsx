@@ -8,6 +8,10 @@ import { CollapsibleHeaderProvider } from './CollapsibleContext';
 import { usePanelContext } from './Context';
 
 export interface PanelCollapsibleHeaderProps {
+  /**
+   * Content of the collapsible header. Typically a `Panel.CollapsibleTitle`
+   * and optional `Panel.CollapsibleDescription`.
+   */
   children: ReactNode;
 }
 

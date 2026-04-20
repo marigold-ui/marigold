@@ -3,6 +3,10 @@ import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelHeaderProps {
+  /**
+   * Content of the header. Typically a `Panel.Title`, optional
+   * `Panel.Description`, and optional `Panel.HeaderActions`.
+   */
   children: ReactNode;
 }
 
