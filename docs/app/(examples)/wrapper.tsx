@@ -17,7 +17,7 @@ export const Wrapper = ({
   children,
 }: PropsWithChildren<WrapperProps>) => {
   return (
-    <div data-theme="rui" data-example>
+    <div data-theme="rui">
       <OverlayContainerProvider container="portalContainer">
         <MarigoldProvider
           className={cn(

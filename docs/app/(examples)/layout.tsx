@@ -1,5 +1,6 @@
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { PropsWithChildren } from 'react';
+import './scrollbar.css';
 import { Wrapper } from './wrapper';
 
 // Layout
