@@ -45,3 +45,16 @@ export const Bold = meta.story({
     </>
   ),
 });
+
+export const Vertical = meta.story({
+  args: {
+    orientation: 'vertical',
+  },
+  render: args => (
+    <div className="flex h-8 items-center gap-4">
+      <p>Left</p>
+      <Divider {...args} />
+      <p>Right</p>
+    </div>
+  ),
+});
