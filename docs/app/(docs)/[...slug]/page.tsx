@@ -17,6 +17,7 @@ import {
   FeedbackComponentsTable,
   GuidelineTiles,
   IconList,
+  LinkCard,
   RelativeTime,
   Stack,
   StorybookHintMessage,
@@ -96,6 +97,7 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
 
             TeaserList,
             DemoLinks,
+            LinkCard,
 
             FeedbackComponentsTable,
 

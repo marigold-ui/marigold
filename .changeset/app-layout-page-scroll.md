@@ -31,8 +31,17 @@ feat(AppLayout): switch to page-level scroll
 
 ### Theme changes
 
-`@marigold/theme-rui` adds two rules on `<html>` / `<body>` to make
-page-level scroll behave under overlays:
+`@marigold/theme-rui` splits global `<html>` / `<body>` styles into two
+tiers: **required base rules** (peer-dependency correctness) and
+**opinionated defaults** (typography, themed page scrollbar).
+
+**Required base rules** live in a new `preflight.css` file, shipped as
+its own entry point at `@marigold/theme-rui/preflight.css`. Every
+consumer must import it once in their app's root stylesheet — it
+cannot ride along inside `theme.css` or `styles.css` because those
+bundles re-scope every selector to `[data-theme="rui"]` (so they can
+be adopted on a subtree), which would strip these rules from the real
+`<html>` / `<body>`. The rules are:
 
 - `html { scrollbar-gutter: stable }` — when `@react-aria/overlays`
   locks the page (sets `overflow: hidden` on `<html>` and
@@ -47,8 +56,34 @@ page-level scroll behave under overlays:
   would break `position: sticky` on descendants. `clip` is supported
   everywhere since 2022.
 
+**Opinionated defaults** remain opt-in:
+
+- `@marigold/theme-rui/global.css` — Marigold's brand typography on
+  `<body>` (fonts, `text-foreground`, `bg-background`). Unchanged
+  import path; previously also carried the base rules above, which
+  now live in `preflight.css`.
+- `@marigold/theme-rui/page-scrollbar.css` — new opt-in file that
+  applies the themed scrollbar (mirrors the `ui-scrollbar` utility)
+  directly to `<html>`. Import it in your root layout when you want
+  Marigold-styled scrollbars on the document. Replaces the hand-rolled
+  `docs/app/(examples)/scrollbar.css` duplication.
+
 `ui-scrollbar`'s track is now transparent so the themed scrollbar
 blends into any surface.
+
+### Migration
+
+Existing Marigold apps must add one import line to their root
+stylesheet:
+
+```css
+@import '@marigold/theme-rui/preflight.css';
+```
+
+Without it, `@react-aria/overlays` will shift the page by 1 px on
+open/close, and the `@react-aria/live-announcer` portal may expand
+the document. See the Installation docs for the full list of required
+rules and where to place the import.
 
 ### Breaking changes
 

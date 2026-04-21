@@ -1,13 +1,15 @@
+/*
+ * Opinionated body typography defaults.
+ *
+ * Opt-in — import this file when you want Marigold's brand typography
+ * applied to the whole page. Required peer-dependency rules that
+ * Marigold components need (scrollbar-gutter, body containment) live
+ * in `preflight.css` and must be imported separately.
+ */
 @layer base {
-  html {
-    scrollbar-gutter: stable;
-  }
-
   body {
     font-optical-sizing: auto;
     font-style: normal;
-    position: relative;
-    overflow-x: clip;
 
     @apply supports-[font-variation-settings:normal]:font-sans-variable text-foreground bg-background font-sans;
   }

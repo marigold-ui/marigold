@@ -3,19 +3,23 @@ title: Installation
 description: How to setup and get started with Marigold.
 ---
 
-On this page, you'll find instructions to install Marigold and set up the provider.
+import { Play } from 'lucide-react';
 
-<Callout title="Want to try it first?">
-  Use our [interactive playground](https://play.marigold-ui.io/) to explore
-  Marigold without any setup.
-</Callout>
+On this page, you'll find instructions to install Marigold and set up the provider. Marigold is a React library and requires **React 17 or newer**.
 
-## Installation
+<LinkCard
+  href="https://play.marigold-ui.io/"
+  title="Want to try it first?"
+  description="Explore Marigold in our interactive playground — no setup needed."
+  icon={<Play />}
+/>
+
+## Install packages
 
 Install the component library, the system package, and the RUI theme:
 
 {/* prettier-ignore-start */}
-<Tabs items={['npm', 'pnpm']}>
+<Tabs items={['pnpm', 'npm']}>
   <Tab value="npm">
     ``` bash
      npm install @marigold/components @marigold/system @marigold/theme-rui 
@@ -30,33 +34,55 @@ Install the component library, the system package, and the RUI theme:
 
 {/* prettier-ignore-end */}
 
-Marigold also provides an additional package you can install as needed:
+## Which setup?
 
-- `@marigold/icons` — A set of ready-to-use icon components
+Choose based on your goal:
 
-## Set up a Marigold project with Tailwind CSS (Recommended)
+- **[Tailwind CSS](#tailwind-css)** _(recommended for production)_ — full design system with tree-shaking, the same token scale (spacing, colors, breakpoints) in your own code, and integrated dev tooling (IntelliSense, JIT).
+- **[Pre-built CSS](#pre-built-css)** _(prototyping only)_ — single import, no build configuration. Use for quick prototypes, AI-generated experiments, or environments where you can't run a build.
 
-Pairing Marigold with Tailwind CSS gives you the full design system as it was intended, not a frozen, pre-compiled snapshot. Tailwind tree-shakes unused styles for smaller bundles, and lets you use the same utility scale (spacing, colors, breakpoints) in your own components that Marigold uses internally. Dev tooling like IntelliSense and JIT compilation work across both Marigold and your app code, making this the most flexible and ergonomic setup for real-world projects.
+## Tailwind CSS
 
-If you're starting a new project, we recommend using [Vite](https://vitejs.dev/), [Next.js](https://nextjs.org/) or any other modern JavaScript framework as your build tool. Marigold is designed to work seamlessly with these tools.
+Marigold requires **Tailwind CSS v4**. If you're starting a new project, follow the official guides first:
 
-<Callout title="Language">All examples below use TypeScript.</Callout>
+- [Tailwind + Vite](https://tailwindcss.com/docs/installation/using-vite)
+- [Tailwind + Next.js](https://tailwindcss.com/docs/installation/using-postcss) (the Next.js installer can do this for you)
 
-### Vite
+Once Tailwind is set up, follow the steps for your framework:
 
-First set up a new Vite project, following the [official guide](https://vitejs.dev/guide/). Then install [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite) and follow the instructions below to add Marigold.
+{/* prettier-ignore-start */}
 
-Add the following content to your `index.css`:
+<Tabs items={['Vite', 'Next.js']}>
+
+<Tab value="Vite">
+
+<Steps>
+
+<Step>
+
+**Configure your stylesheet**
+
+In `src/index.css`:
 
 ```css
 @import 'tailwindcss';
+@import '@marigold/theme-rui/preflight.css';
 @import '@marigold/theme-rui/theme.css';
 
-/* You need to add the path to the marigold packages */
 @source '../node_modules/@marigold';
 ```
 
-Then wrap your app with `MarigoldProvider` and pass it the theme. This is required for all components to render correctly.
+The `@source` path is relative to the CSS file's location — adjust it if your entry CSS lives elsewhere.
+
+**Why `preflight.css`?** It applies peer-dependency fixes on `<html>` and `<body>` that cannot ride along in `theme.css` — the theme bundle re-scopes every selector to `[data-theme="rui"]` so it can be adopted on a subtree, which would strip rules that must reach the real root elements.
+
+</Step>
+
+<Step>
+
+**Wrap your app with `MarigoldProvider`**
+
+This makes the theme available to every Marigold component.
 
 ```tsx
 import { MarigoldProvider } from '@marigold/components';
@@ -67,21 +93,59 @@ export const App = () => (
 );
 ```
 
-### Next.js
+</Step>
 
-Set up a new Next.js project using the [official guide](https://nextjs.org/docs/getting-started). Then install Tailwind CSS by following the [Next.js installation guide](https://tailwindcss.com/docs/installation/using-postcss) and follow the instructions below to add Marigold. The Next.js installer can set up Tailwind CSS for you automatically.
+<Step>
 
-Add the following content to your `globals.css`:
+**Add the Inter font**
+
+Install [Fontsource](https://fontsource.org/docs/getting-started/install):
+
+```bash
+npm install @fontsource-variable/inter
+```
+
+Then import it at your app's entry point:
+
+```tsx
+import '@fontsource-variable/inter';
+```
+
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab value="Next.js">
+
+<Steps>
+
+<Step>
+
+**Configure your stylesheet**
+
+In `src/app/globals.css`:
 
 ```css
 @import 'tailwindcss';
+@import '@marigold/theme-rui/preflight.css';
 @import '@marigold/theme-rui/theme.css';
 
-/* You need to add the path to the marigold packages */
 @source '../../node_modules/@marigold';
 ```
 
-Then create a `providers.tsx` file.
+The `@source` path is relative to the CSS file's location — adjust it if your entry CSS lives elsewhere.
+
+**Why `preflight.css`?** It applies peer-dependency fixes on `<html>` and `<body>` that cannot ride along in `theme.css` — the theme bundle re-scopes every selector to `[data-theme="rui"]` so it can be adopted on a subtree, which would strip rules that must reach the real root elements.
+
+</Step>
+
+<Step>
+
+**Wrap your app with `MarigoldProvider`**
+
+This makes the theme available to every Marigold component. Create a `providers.tsx` — the `'use client'` directive is required because `MarigoldProvider` uses React Context:
 
 ```tsx
 'use client';
@@ -93,15 +157,44 @@ export function Providers({ children }: { children: React.ReactNode }) {
 }
 ```
 
-Then wrap your app with the `Providers` component in `layout.tsx`.
+Then wrap your app with `<Providers>` in `layout.tsx`.
 
-## Quick start (pre-built CSS)
+</Step>
 
-Import the pre-built CSS file that ships with the theme. This is the fastest way to get started but does not allow customization beyond the provided design tokens.
+<Step>
+
+**Add the Inter font**
+
+Use [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) in `layout.tsx`:
+
+```tsx
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
+
+// ...
+
+<html className={inter.className}>
+```
+
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+{/* prettier-ignore-end */}
+
+## Pre-built CSS
+
+Import the pre-built CSS that ships with the theme:
 
 ```tsx
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
+import '@marigold/theme-rui/preflight.css';
 import '@marigold/theme-rui/styles.css';
 
 export const App = () => (
@@ -109,7 +202,7 @@ export const App = () => (
 );
 ```
 
-You also need to add `data-theme="rui"` to your `<html>` element so the theme styles are applied correctly:
+Add `data-theme="rui"` to your `<html>` element:
 
 ```html
 <html data-theme="rui">
@@ -117,35 +210,25 @@ You also need to add `data-theme="rui"` to your `<html>` element so the theme st
 </html>
 ```
 
-## Adding fonts
+The pre-built bundle re-scopes every selector to `[data-theme="rui"]` so Marigold can be adopted on a subtree of a non-Marigold app. Without the attribute, component styles won't apply. The separate `preflight.css` import handles document-level fixes that can't be scoped — see [step 1 above](#1-configure-your-stylesheet) for the rationale.
 
-The RUI theme uses the [Inter](https://rsms.me/inter/) font family. You have two options:
+## Opinionated defaults (opt-in)
 
-**Using [Font Source](https://fontsource.org/docs/getting-started/install):**
+Marigold ships two additional stylesheets that work with either setup above:
 
-```bash
-npm install @fontsource-variable/inter
+```css
+/* Brand typography on <body> */
+@import '@marigold/theme-rui/global.css';
+
+/* Themed scrollbar on <html> — matches the `ui-scrollbar` utility */
+@import '@marigold/theme-rui/page-scrollbar.css';
 ```
 
-Then import it in your app's entry point:
-
-```tsx
-import '@fontsource-variable/inter';
-```
-
-**Using Next.js:** Take advantage of [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) for automatic font optimization. Add Inter to your project in `layout.tsx`:
-
-```tsx
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
-
-[...]
-
-<html className={inter.className}>
-
-```
+Neither is required. Skip them if you prefer your own typography or scrollbar styling.
 
 ## Next steps
 
-Explore the [available components](/components/application/provider) or read about our [component principles](/foundations/component-principles) to understand the design decisions behind Marigold.
+- Browse the [components reference](/components/application/provider)
+- Read our [component principles](/foundations/component-principles)
+- Explore components in [Storybook](https://marigold-latest.vercel.app/)
+- Experiment without setup in the [playground](https://play.marigold-ui.io/)

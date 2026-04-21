@@ -3,6 +3,7 @@
 @import 'fumadocs-ui/css/preset.css';
 
 /* rui theme */
+@import '@marigold/theme-rui/preflight.css';
 @import '@marigold/theme-rui/styles.css';
 
 /* demos */

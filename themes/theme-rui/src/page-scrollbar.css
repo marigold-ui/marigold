@@ -1,0 +1,40 @@
+/*
+ * Opinionated themed scrollbar for the document (page-level scroll).
+ *
+ * Mirrors the `ui-scrollbar` Tailwind utility (see `ui.css`) but targets
+ * `html` directly so it can be imported into a consumer app or scoped
+ * Next.js layout without relying on a Tailwind class landing on the
+ * scroll container. Not scoped to `[data-theme="rui"]` on purpose —
+ * `<html>` is outside the React tree where the data attribute usually
+ * lives.
+ *
+ * Opt-in via `import '@marigold/theme-rui/page-scrollbar.css'`.
+ */
+@layer base {
+  html {
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-scrollbar) transparent;
+  }
+
+  html::-webkit-scrollbar {
+    display: block;
+    width: 12px;
+    height: 12px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: var(--radius-full);
+  }
+
+  html::-webkit-scrollbar-thumb {
+    transition: background-color 0.2s var(--ease-out-quad);
+    background-color: var(--color-scrollbar);
+    border-radius: var(--radius-full);
+    border: 0 solid transparent;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-scrollbar-hover);
+  }
+}

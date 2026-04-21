@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 
+@import '../themes/theme-rui/src/preflight.css';
 @import '../themes/theme-rui/src/theme.css';
 @import '../themes/theme-rui/src/global.css';
 
