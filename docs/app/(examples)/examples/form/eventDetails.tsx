@@ -32,7 +32,7 @@ export const EventDetails = () => {
       <Select
         label="Event Type"
         placeholder="Select event type"
-        width={'fit'}
+        width="1/2"
         required
       >
         <Select.Option id="conference">Conference</Select.Option>
@@ -51,7 +51,7 @@ export const EventDetails = () => {
               <Select
                 label="Event Visibility"
                 placeholder="Select visibility"
-                width={'fit'}
+                width="1/2"
               >
                 <Select.Option id="public">Public</Select.Option>
                 <Select.Option id="private">Private</Select.Option>
