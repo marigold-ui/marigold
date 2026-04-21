@@ -25,4 +25,36 @@
     --page-header-height: 56px;
     --breakpoint-lg: 1024px;
   }
+
+  /*
+   * Page scrollbar styling for example pages.
+   * The theme's `html` rules are scoped to `[data-theme="rui"]` by the theme
+   * build and never match the real `<html>`. Scope via `:has([data-example])`
+   * so the themed scrollbar only applies on routes under (examples).
+   */
+  html:has([data-example]) {
+    scrollbar-gutter: stable;
+    scrollbar-width: auto;
+    scrollbar-color: oklch(0.86 0.005 54) transparent;
+  }
+
+  html:has([data-example])::-webkit-scrollbar {
+    display: block;
+    width: 12px;
+    height: 12px;
+  }
+
+  html:has([data-example])::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  html:has([data-example])::-webkit-scrollbar-thumb {
+    background-color: oklch(0.86 0.005 54);
+    border-radius: 9999px;
+    transition: background-color 0.2s ease-out;
+  }
+
+  html:has([data-example])::-webkit-scrollbar-thumb:hover {
+    background-color: oklch(0.15 0.008 54);
+  }
 }

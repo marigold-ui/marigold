@@ -1,7 +1,13 @@
 @layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     font-optical-sizing: auto;
     font-style: normal;
+    position: relative;
+    overflow-x: clip;
 
     @apply supports-[font-variation-settings:normal]:font-sans-variable text-foreground bg-background font-sans;
   }
