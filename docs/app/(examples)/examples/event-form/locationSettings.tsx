@@ -48,7 +48,7 @@ export const LocationSettings = () => {
               <TextField label="Postcode" width={20} />
               <TextField label="City" width={44} />
             </Inline>
-            <Stack space={1}>
+            <Stack space="tight">
               <Select label="Country" placeholder="Select country" width={40}>
                 {uniqueCountries.map(country => (
                   <Select.Option key={country} id={country}>
@@ -93,7 +93,7 @@ export const LocationSettings = () => {
                   label="Room or Area"
                   description="Specific room, hall, or outdoor area within the venue."
                 />
-                <Stack space={1}>
+                <Stack space="tight">
                   <TextField
                     label="Online Meeting Link"
                     type="url"

@@ -62,7 +62,7 @@ export const RegistrationSettings = () => (
         </Stack>
         <Stack space="regular">
           <Headline level={4}>Documents</Headline>
-          <Stack space={1}>
+          <Stack space="tight">
             <TextField type="file" label="Registration Document" />
             <Link href="#" size="small">
               View uploaded PDF
