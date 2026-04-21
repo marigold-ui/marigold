@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
 } from '@marigold/components';
+import { CoOrganizers } from './coOrganizers';
 import { EventDetails } from './eventDetails';
 import { LocationSettings } from './locationSettings';
 import { OrganizerInfo } from './organizerInfo';
@@ -15,7 +16,7 @@ import { RegistrationSettings } from './registrationSettings';
 
 const FormPage = () => (
   <Inset space={4}>
-    <Stack space="section">
+    <Stack space="group">
       <Stack space="tight">
         <Headline level={2}>Create event</Headline>
         <Text>
@@ -28,6 +29,7 @@ const FormPage = () => (
           <EventDetails />
           <LocationSettings />
           <OrganizerInfo />
+          <CoOrganizers />
           <RegistrationSettings />
         </Stack>
       </div>

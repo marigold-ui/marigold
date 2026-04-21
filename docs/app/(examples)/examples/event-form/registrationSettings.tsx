@@ -51,16 +51,14 @@ export const RegistrationSettings = () => (
               <Select.Option id="gbp">GBP</Select.Option>
             </Select>
           </Inline>
-          <Card variant="master">
-            <Checkbox
-              label={
-                <Inline space={2} alignY="center">
-                  Enable early bird pricing
-                  <Badge variant="master">Master</Badge>
-                </Inline>
-              }
-            />
-          </Card>
+          <Checkbox
+            label={
+              <Inline space={2} alignY="center">
+                Enable early bird pricing
+                <Badge variant="master">Master</Badge>
+              </Inline>
+            }
+          />
         </Stack>
         <Stack space="regular">
           <Headline level={4}>Documents</Headline>
