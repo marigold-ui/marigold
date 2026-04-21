@@ -42,20 +42,13 @@ The Card component supports variants for general content grouping as well as acc
 
 The `<Card>` component enhances the visual hierarchy and organization of content, making it easier for users to engage with various pieces of information.
 
-Cards use a compound component pattern — you compose the card layout using the provided sub-components. Not all slots need to be used: combine only the ones relevant to your content.
+Cards use a compound component pattern, you compose the card layout using the provided sub-components. Not all slots need to be used: combine only the ones relevant to your content.
 
 ### Card.Preview
 
-Use `Card.Preview` for full-bleed media at the top of the card, such as images or thumbnails. The preview spans the full width of the card with no padding.
+Use `Card.Preview` to display an image or thumbnail that stretches edge-to-edge across the top of the card, without any padding. Typical use cases are venue photos, product images, or event covers.
 
-```tsx
-<Card>
-  <Card.Preview>
-    <img src="/venue.jpg" alt="Venue" />
-  </Card.Preview>
-  <Card.Body>Description</Card.Body>
-</Card>
-```
+<ComponentDemo name="card-elevation" />
 
 ### Card.Header
 
@@ -73,22 +66,7 @@ Use `Card.Header` for the card's title and supporting meta information like badg
 
 ### Card.Body
 
-Use `Card.Body` for the main content area of the card — descriptive text, form elements, or any primary content.
-
-### Card.Footer
-
-Use `Card.Footer` for actions or metadata displayed at the bottom of the card, such as buttons or secondary text.
-
-```tsx
-<Card>
-  <Card.Body>Card content</Card.Body>
-  <Card.Footer>
-    <Button>Primary Action</Button>
-  </Card.Footer>
-</Card>
-```
-
-### Dos and don'ts
+Use `Card.Body` for the main content area of the card, descriptive text, form elements, or any primary content.
 
 <GuidelineTiles>
   <Do>
@@ -105,16 +83,26 @@ Use `Card.Footer` for actions or metadata displayed at the bottom of the card, s
   </Dont>
 </GuidelineTiles>
 
+### Card.Footer
+
+Use `Card.Footer` for actions or metadata displayed at the bottom of the card, such as buttons or secondary text.
+
+```tsx
+<Card>
+  <Card.Body>Card content</Card.Body>
+  <Card.Footer>
+    <Button>Primary Action</Button>
+  </Card.Footer>
+</Card>
+```
+
 <GuidelineTiles>
   <Do>
-    <DoDescription>Combine only the sub-components you need — not every slot must be used.</DoDescription>
+    <DoDescription>
+      Combine only the sub-components you need, not every slot must be used.
+    </DoDescription>
   </Do>
-  <Dont>
-    <DontDescription>Don't place content directly inside `<Card>` without a sub-component — use `Card.Body` at minimum.</DontDescription>
-  </Dont>
 </GuidelineTiles>
-
-## Example
 
 The following example shows a typical card composition using all available slots.
 
@@ -141,6 +129,18 @@ The following example shows a typical card composition using all available slots
 ### Card
 
 <AutoTypeTable path="Card" name="CardProps" />
+
+### Card.Preview
+
+<AutoTypeTable path="Card/CardPreview" name="CardPreviewProps" />
+
+### Card.Title
+
+<AutoTypeTable path="Card/CardHeader" name="CardHeaderProps" />
+
+### Card.Preview
+
+<AutoTypeTable path="Card/CardFooter" name="CardFooterProps" />
 
 ## Related
 
