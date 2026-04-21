@@ -43,7 +43,7 @@ export interface ComboBoxProps
   /**
    * @remarks `WidthProp`
    */
-  width?: FieldBaseProps<'label'>['width'];
+  width?: Exclude<FieldBaseProps<'label'>['width'], 'fit'>;
   /**
    * If `true`, the input is disabled.
    * @default false

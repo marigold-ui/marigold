@@ -39,7 +39,7 @@ export interface SelectProps<
   /**
    * @remarks `WidthProp`
    */
-  width?: WidthProp['width'];
+  width?: Exclude<WidthProp['width'], 'fit'>;
   /**
    * Children of the select.
    */

@@ -120,7 +120,7 @@ export interface AutocompleteProps
    * @default 'full'
    * @remarks `WidthProp`
    */
-  width?: WidthProp['width'];
+  width?: Exclude<WidthProp['width'], 'fit'>;
 
   /**
    * The value of the input (controlled).
