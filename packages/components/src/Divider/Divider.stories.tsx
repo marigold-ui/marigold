@@ -1,4 +1,5 @@
 import preview from '.storybook/preview';
+import { Inline } from '../Inline/Inline';
 import { Divider } from './Divider';
 
 const meta = preview.meta({
@@ -51,10 +52,10 @@ export const Vertical = meta.story({
     orientation: 'vertical',
   },
   render: args => (
-    <div className="flex h-8 items-center gap-4">
+    <Inline space={2}>
       <p>Left</p>
       <Divider {...args} />
       <p>Right</p>
-    </div>
+    </Inline>
   ),
 });
