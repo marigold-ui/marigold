@@ -23,13 +23,29 @@ export const OrganizerInfo = () => (
       </Stack>
       <Stack space="regular">
         <Inline space="related" noWrap>
-          <TextField label="First Name" width="1/2" required />
-          <TextField label="Last Name" width="1/2" required />
+          <TextField
+            label="First Name"
+            width="1/2"
+            required
+            errorMessage="First name is required."
+          />
+          <TextField
+            label="Last Name"
+            width="1/2"
+            required
+            errorMessage="Last name is required."
+          />
         </Inline>
         <TextField label="Organization" />
         <TextField label="Job Title" />
         <Inline space="related" noWrap>
-          <TextField label="Email" type="email" width="1/2" required />
+          <TextField
+            label="Email"
+            type="email"
+            width="1/2"
+            required
+            errorMessage="A valid email address is required."
+          />
           <TextField label="Phone" type="tel" width="1/2" />
         </Inline>
         <TextArea
@@ -54,7 +70,7 @@ export const OrganizerInfo = () => (
                   </Inline>
                 }
                 placeholder="Select preference"
-                width="fit"
+                width={40}
               >
                 <Select.Option id="email">Email</Select.Option>
                 <Select.Option id="phone">Phone</Select.Option>

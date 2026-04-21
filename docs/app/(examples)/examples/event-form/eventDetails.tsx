@@ -24,21 +24,31 @@ export const EventDetails = () => (
         </Text>
       </Stack>
       <Stack space="regular">
-        <TextField label="Event Name" required />
+        <TextField
+          label="Event Name"
+          required
+          errorMessage="Please enter a name for your event."
+        />
         <TextArea
           label="Description"
           description="A short summary for listings and social shares."
           rows={4}
         />
         <Inline space="related">
-          <DatePicker label="Start Date" width="fit" required />
+          <DatePicker
+            label="Start Date"
+            width="fit"
+            required
+            errorMessage="A start date is required."
+          />
           <DatePicker label="End Date" width="fit" />
         </Inline>
         <Select
           label="Event Type"
           placeholder="Select event type"
-          width="fit"
+          width={40}
           required
+          errorMessage="Please select an event type."
         >
           <Select.Option id="conference">Conference</Select.Option>
           <Select.Option id="workshop">Workshop</Select.Option>

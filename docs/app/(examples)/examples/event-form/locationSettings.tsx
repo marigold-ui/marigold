@@ -1,6 +1,8 @@
 'use client';
 
 import { venues } from '@/lib/data/venues';
+import { useState } from 'react';
+import type { Key } from 'react-aria-components';
 import {
   Accordion,
   Button,
@@ -11,7 +13,6 @@ import {
   Link,
   NumberField,
   Select,
-  Split,
   Stack,
   Text,
   TextField,
@@ -21,6 +22,34 @@ export const LocationSettings = () => {
   const uniqueCountries = Array.from(
     new Set(venues.map(venue => venue.country))
   );
+
+  const [selectedVenue, setSelectedVenue] = useState<Key | null>(null);
+  const [venueName, setVenueName] = useState('');
+  const [street, setStreet] = useState('');
+  const [postcode, setPostcode] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState<Key | null>(null);
+
+  const handleVenueSelect = (key: Key | null) => {
+    setSelectedVenue(key);
+    const venue = venues.find(v => v.id === key);
+    if (venue) {
+      setVenueName(venue.name);
+      setStreet(venue.street);
+      setPostcode(venue.postcode);
+      setCity(venue.city);
+      setCountry(venue.country);
+    }
+  };
+
+  const handleCreateNewVenue = () => {
+    setSelectedVenue(null);
+    setVenueName('');
+    setStreet('');
+    setPostcode('');
+    setCity('');
+    setCountry(null);
+  };
 
   return (
     <Card p={4} stretch>
@@ -32,27 +61,55 @@ export const LocationSettings = () => {
         <Stack space="group">
           <Stack space="regular">
             <Inline alignY="input" space="related" noWrap>
-              <Select label="Venue" required>
+              <Select
+                label="Venue"
+                required
+                errorMessage="Please select or create a venue."
+                width={64}
+                selectedKey={selectedVenue}
+                onSelectionChange={handleVenueSelect}
+              >
                 {venues.map(venue => (
                   <Select.Option key={venue.id} id={venue.id}>
                     {venue.name}
                   </Select.Option>
                 ))}
               </Select>
-              <Split />
-              <Button variant="secondary">Create new venue</Button>
+              <Button variant="secondary" onPress={handleCreateNewVenue}>
+                Create new venue
+              </Button>
             </Inline>
-            <TextField label="Venue Name" />
-            <TextField label="Street" />
+            <TextField
+              label="Venue Name"
+              value={venueName}
+              onChange={setVenueName}
+            />
+            <TextField label="Street" value={street} onChange={setStreet} />
             <Inline space="related">
-              <TextField label="Postcode" width={20} />
-              <TextField label="City" width={44} />
+              <TextField
+                label="Postcode"
+                width={20}
+                value={postcode}
+                onChange={setPostcode}
+              />
+              <TextField
+                label="City"
+                width={44}
+                value={city}
+                onChange={setCity}
+              />
             </Inline>
             <Stack space="tight">
-              <Select label="Country" placeholder="Select country" width={40}>
-                {uniqueCountries.map(country => (
-                  <Select.Option key={country} id={country}>
-                    {country}
+              <Select
+                label="Country"
+                placeholder="Select country"
+                width={40}
+                value={country}
+                onChange={setCountry}
+              >
+                {uniqueCountries.map(c => (
+                  <Select.Option key={c} id={c}>
+                    {c}
                   </Select.Option>
                 ))}
               </Select>

@@ -4,6 +4,7 @@ import {
   Badge,
   Card,
   Checkbox,
+  FileField,
   Headline,
   Inline,
   Link,
@@ -33,6 +34,7 @@ export const RegistrationSettings = () => (
             label="Contact Email"
             type="email"
             description="Shown on the registration page for inquiries."
+            errorMessage="Please enter a valid email address."
           />
         </Stack>
         <Stack space="regular">
@@ -44,7 +46,7 @@ export const RegistrationSettings = () => (
               hideStepper
               width={32}
             />
-            <Select label="Currency" defaultValue="eur" width="fit">
+            <Select label="Currency" defaultValue="eur" width={24}>
               <Select.Option id="eur">EUR</Select.Option>
               <Select.Option id="usd">USD</Select.Option>
               <Select.Option id="chf">CHF</Select.Option>
@@ -63,7 +65,7 @@ export const RegistrationSettings = () => (
         <Stack space="regular">
           <Headline level={4}>Documents</Headline>
           <Stack space="tight">
-            <TextField type="file" label="Registration Document" />
+            <FileField label="Registration Document" accept={['.pdf']} />
             <Link href="#" size="small">
               View uploaded PDF
             </Link>
@@ -72,6 +74,7 @@ export const RegistrationSettings = () => (
             label="Terms & Conditions URL"
             type="url"
             description="Attendees must accept these before completing registration."
+            errorMessage="Please enter a valid URL (e.g. https://example.com/terms)."
           />
         </Stack>
       </Stack>
