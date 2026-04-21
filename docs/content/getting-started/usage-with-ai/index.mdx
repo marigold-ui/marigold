@@ -4,7 +4,7 @@ description: How to connect AI coding assistants to the Marigold documentation u
 badge: new
 ---
 
-Marigold offers an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that lets AI coding assistants search the design system documentation on their own. When you build something with Marigold and use an AI coding agent like [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview), or [Cursor](https://www.cursor.com/), the agent can automatically look up component APIs, usage guidelines, and code examples from the Marigold docs to give you accurate answers.
+Marigold offers an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that lets AI coding assistants search the design system documentation on their own. When you build something with Marigold and use an AI coding agent like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview), the agent can automatically look up component APIs, usage guidelines, and code examples from the Marigold docs to give you accurate answers.
 
 ## Setup
 
@@ -12,7 +12,7 @@ The **marigold-docs** MCP server provides semantic search over the full Marigold
 
 {/* prettier-ignore-start */}
 
-<Tabs items={['Claude Code', 'VS Code', 'Cursor']}>
+<Tabs items={['Claude Code', 'VS Code']}>
   <Tab value="Claude Code">
     Add a `.mcp.json` file in the root of your project. See the [Claude Code MCP guide](https://code.claude.com/docs/en/mcp) for more details.
 
@@ -49,26 +49,6 @@ The **marigold-docs** MCP server provides semantic search over the full Marigold
     ```
 
     If you have [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview) or another MCP-compatible extension installed, the server will be available in agent mode automatically. VS Code handles the OAuth authentication flow for you.
-
-  </Tab>
-  <Tab value="Cursor">
-    Add a `.cursor/mcp.json` file in the root of your project. See the [Cursor MCP guide](https://cursor.com/docs/mcp#installing-mcp-servers) for more details.
-
-    ```json
-    {
-      "mcpServers": {
-        "marigold-docs": {
-          "type": "http",
-          "url": "https://www.marigold-ui.io/mcp",
-          "auth": {
-            "CLIENT_ID": "dst-marigold-docs-mcp"
-          }
-        }
-      }
-    }
-    ```
-
-    You can also add the server through **Cursor Settings > MCP Servers**.
 
   </Tab>
 </Tabs>
