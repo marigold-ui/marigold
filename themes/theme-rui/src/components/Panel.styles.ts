@@ -26,7 +26,7 @@ export const Panel: ThemeComponent<'Panel'> = {
   }),
   header: cva({}),
   title: cva({
-    base: 'text-base font-semibold leading-none text-(--panel-accent)',
+    base: 'text-lg font-semibold leading-none text-(--panel-accent)',
   }),
   description: cva({
     base: 'mt-0.5 text-sm text-secondary',
