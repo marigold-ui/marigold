@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -16,7 +17,7 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['tight', 'related', 'regular', 'group', 'section'],
+      options: ['collapsed', 'tight', 'related', 'regular', 'group', 'section'],
       table: {
         type: { summary: 'text' },
         defaultValue: { summary: 'undefined' },
@@ -56,6 +57,9 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  parameters: {
+    surface: false,
+  },
   args: {
     space: 'related',
     alignX: 'left',
@@ -108,7 +112,31 @@ export const InputButtonAlignment = meta.story({
   },
 });
 
+export const Collapsed = meta.story({
+  tags: ['component-test'],
+  parameters: {
+    surface: false,
+  },
+  args: {
+    space: 'collapsed',
+  },
+  render: args => (
+    <Inline data-testid="inline" {...args}>
+      <Block>Lirum</Block>
+      <Block>Larum</Block>
+      <Block>Löffelstiel!</Block>
+    </Inline>
+  ),
+  play: async ({ canvas }) => {
+    const inline = canvas.getByTestId('inline');
+    expect(getComputedStyle(inline).gap).toBe('0px');
+  },
+});
+
 export const Nested = meta.story({
+  parameters: {
+    surface: false,
+  },
   args: {
     space: 4,
   },

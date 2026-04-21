@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { GridListItem as SelectListItem } from 'react-aria-components';
 import { cn } from '@marigold/system';
@@ -35,31 +35,34 @@ const SelectionIndicator = ({ selectionMode }: SelectionIndicatorProps) => {
   }
 };
 
-const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
-  ({ children, disabled, ...props }, ref) => {
-    let textValue = typeof children === 'string' ? children : undefined;
+const SelectListItemBase = ({
+  children,
+  disabled,
+  ref,
+  ...props
+}: SelectListItemProps & { ref?: Ref<HTMLDivElement> }) => {
+  let textValue = typeof children === 'string' ? children : undefined;
 
-    const { classNames } = useSelectListContext();
-    return (
-      <SelectListItem
-        isDisabled={disabled}
-        textValue={textValue}
-        {...props}
-        className={cn(
-          classNames?.item,
-          'grid grid-flow-col [grid-template-columns:min-content_1fr]'
-        )}
-        ref={ref}
-      >
-        {({ selectionMode }) => (
-          <div className="selection-indicator contents">
-            <SelectionIndicator selectionMode={selectionMode} />
-            {children}
-          </div>
-        )}
-      </SelectListItem>
-    );
-  }
-);
+  const { classNames } = useSelectListContext();
+  return (
+    <SelectListItem
+      isDisabled={disabled}
+      textValue={textValue}
+      {...props}
+      className={cn(
+        classNames?.item,
+        'grid grid-flow-col [grid-template-columns:min-content_1fr]'
+      )}
+      ref={ref}
+    >
+      {({ selectionMode }) => (
+        <div className="selection-indicator contents">
+          <SelectionIndicator selectionMode={selectionMode} />
+          {children}
+        </div>
+      )}
+    </SelectListItem>
+  );
+};
 
-export { _SelectListItem as SelectListItem };
+export { SelectListItemBase as SelectListItem };

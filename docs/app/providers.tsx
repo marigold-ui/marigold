@@ -1,7 +1,7 @@
 'use client';
 
 import { RootProvider } from 'fumadocs-ui/provider/next';
-import { type ReactNode, createContext, useContext } from 'react';
+import { type ReactNode, createContext, use } from 'react';
 import dynamic from 'next/dynamic';
 
 const SearchDialog = dynamic(() => import('@/ui/SearchDialog'));
@@ -12,7 +12,7 @@ export interface PageEntry {
 }
 
 const PagesContext = createContext<PageEntry[]>([]);
-export const usePages = () => useContext(PagesContext);
+export const usePages = () => use(PagesContext);
 
 export const Providers = ({
   pages,

@@ -5,16 +5,16 @@ export const Radio: ThemeComponent<'Radio'> = {
   label: cva({
     base: [
       'text-sm font-normal cursor-pointer w-full',
-      'group-disabled/radio:text-disabled-foreground group-disabled/radio:cursor-not-allowed',
+      'group-disabled/radio:text-disabled group-disabled/radio:cursor-not-allowed',
     ],
   }),
   radio: cva({
     base: [
       'aspect-square size-4 rounded-full',
-      'border border-input shadow-elevation-border',
+      'border border-border shadow-elevation-border bg-surface',
       'group-focus-visible/radio:ui-state-focus outline-none',
-      'group-disabled/radio:group-selected/radio:bg-disabled group-disabled/radio:border-disabled! group-disabled/radio:cursor-not-allowed',
-      'group-selected/radio:border-brand group-selected/radio:bg-brand group-selected/radio:text-brand-foreground',
+      'group-disabled/radio:group-selected/radio:bg-disabled-surface group-disabled/radio:border-disabled-surface! group-disabled/radio:cursor-not-allowed',
+      'group-selected/radio:border-selected-bold group-selected/radio:bg-selected-bold group-selected/radio:text-selected-bold-foreground',
     ],
   }),
   group: cva({}),

@@ -30,6 +30,9 @@ const defaults = {
 const meta = preview.meta({
   title: 'Components/Toast',
   component: Toast,
+  parameters: {
+    surface: false,
+  },
   // Custom argTypes/args for the queue API (not matching ToastProps directly)
   argTypes: {
     variant: {

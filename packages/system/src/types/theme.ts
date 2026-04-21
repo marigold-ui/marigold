@@ -88,6 +88,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
+    BooleanField?: Record<
+      'container' | 'description',
+      ComponentStyleFunction<string, string>
+    >;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
@@ -119,19 +123,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
-    MultiSelect?: Record<
-      | 'container'
-      | 'closeButton'
-      | 'field'
-      | 'input'
-      | 'icon'
-      | 'listContainer'
-      | 'list'
-      | 'option'
-      | 'tag'
-      | 'valueContainer',
-      ComponentStyleFunction<string, string>
-    >;
     Pagination?: Record<
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
