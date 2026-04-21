@@ -1,0 +1,154 @@
+---
+title: Usage with AI
+description: How to connect AI coding assistants to the Marigold documentation using MCP.
+badge: new
+---
+
+Marigold offers an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that lets AI coding assistants search the design system documentation on their own. When you build something with Marigold and use an AI coding agent like [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview), or [Cursor](https://www.cursor.com/), the agent can automatically look up component APIs, usage guidelines, and code examples from the Marigold docs to give you accurate answers.
+
+## Setup
+
+The **marigold-docs** MCP server provides semantic search over the full Marigold documentation. To connect it to your AI coding assistant, follow the instructions for your editor.
+
+{/* prettier-ignore-start */}
+
+<Tabs items={['Claude Code', 'VS Code', 'Cursor']}>
+  <Tab value="Claude Code">
+    Add a `.mcp.json` file in the root of your project. See the [Claude Code MCP guide](https://code.claude.com/docs/en/mcp) for more details.
+
+    ```json
+    {
+      "mcpServers": {
+        "marigold-docs": {
+          "type": "http",
+          "url": "https://www.marigold-ui.io/mcp",
+          "oauth": {
+            "clientId": "dst-marigold-docs-mcp",
+            "callbackPort": 6749
+          }
+        }
+      }
+    }
+    ```
+
+    Claude Code picks up this file automatically. On first use, the server will ask you to authenticate through your browser.
+
+  </Tab>
+  <Tab value="VS Code">
+    Add a `.vscode/mcp.json` file in the root of your project. See the [VS Code MCP guide](https://code.visualstudio.com/docs/copilot/customization/mcp-servers#_add-an-mcp-server) for more details.
+
+    ```json
+    {
+      "servers": {
+        "marigold-docs": {
+          "type": "http",
+          "url": "https://www.marigold-ui.io/mcp"
+        }
+      }
+    }
+    ```
+
+    If you have [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview) or another MCP-compatible extension installed, the server will be available in agent mode automatically. VS Code handles the OAuth authentication flow for you.
+
+  </Tab>
+  <Tab value="Cursor">
+    Add a `.cursor/mcp.json` file in the root of your project. See the [Cursor MCP guide](https://cursor.com/docs/mcp#installing-mcp-servers) for more details.
+
+    ```json
+    {
+      "mcpServers": {
+        "marigold-docs": {
+          "type": "http",
+          "url": "https://www.marigold-ui.io/mcp",
+          "auth": {
+            "CLIENT_ID": "dst-marigold-docs-mcp"
+          }
+        }
+      }
+    }
+    ```
+
+    You can also add the server through **Cursor Settings > MCP Servers**.
+
+  </Tab>
+</Tabs>
+{/* prettier-ignore-end */}
+
+### How to use it
+
+Once the server is connected, your AI agent can query the Marigold documentation automatically. When you ask a question, the agent searches the docs via the MCP server and uses the results to answer you. You can ask direct questions like "What props does Select accept?" or instruct the agent while coding, for example: "Use the marigold-docs MCP to check how I should implement this DatePicker."
+
+This is especially useful during development. Instead of switching to the docs, you can tell your agent to look up the right way to use a component, check which props are available, or find code examples.
+
+<Callout title="Best results">
+  Be specific in your questions. "How do I add validation to a TextField?" will
+  return better results than just "TextField".
+</Callout>
+
+## Related MCP servers
+
+These MCP servers pair well with Marigold in a design system workflow.
+
+**[React Aria](https://react-spectrum.adobe.com/react-aria/)** — The library that powers most Marigold components. Its MCP server provides access to hooks, component APIs, and accessibility patterns. Useful when you need to understand lower-level behavior or customize beyond what Marigold exposes.
+
+{/* prettier-ignore-start */}
+
+<Tabs items={['Claude Code', 'VS Code']}>
+  <Tab value="Claude Code">
+    ```json
+    {
+      "mcpServers": {
+        "React Aria": {
+          "command": "npx",
+          "args": ["@react-aria/mcp@latest"]
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab value="VS Code">
+    ```json
+    {
+      "servers": {
+        "React Aria": {
+          "command": "npx",
+          "args": ["@react-aria/mcp@latest"]
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+{/* prettier-ignore-end */}
+
+**[Storybook](https://storybook.js.org/docs/mcp)** — Connects your AI assistant to a running local Storybook instance for component discovery and interactive examples. Requires Storybook running on `http://localhost:6006` (start it with `pnpm storybook`).
+
+{/* prettier-ignore-start */}
+
+<Tabs items={['Claude Code', 'VS Code']}>
+  <Tab value="Claude Code">
+    ```json
+    {
+      "mcpServers": {
+        "sb-mcp-server": {
+          "url": "http://localhost:6006/mcp",
+          "type": "http"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab value="VS Code">
+    ```json
+    {
+      "servers": {
+        "sb-mcp-server": {
+          "url": "http://localhost:6006/mcp",
+          "type": "http"
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+{/* prettier-ignore-end */}
