@@ -38,11 +38,5 @@ test('vertical orientation applies vertical classes', () => {
   render(<Vertical.Component data-testid="divider" />);
   const divider = screen.getByTestId('divider');
 
-  expect(divider).toHaveClass(
-    'min-h-full',
-    'w-px',
-    'shrink-0',
-    'border-0',
-    'self-stretch'
-  );
+  expect(divider).toHaveClass('min-h-8', 'w-px');
 });

@@ -12,10 +12,10 @@ const _Divider = ({ variant, orientation, ...props }: DividerProps) => {
     component: 'Divider',
     variant,
   });
+
   const orientationStyles =
-    orientation === 'vertical'
-      ? 'min-h-full w-px shrink-0 border-0 self-stretch'
-      : 'h-px min-w-full';
+    orientation === 'vertical' ? 'min-h-8 w-px' : 'h-px min-w-full';
+
   return (
     <Separator
       className={cn('border-none', orientationStyles, classNames)}
