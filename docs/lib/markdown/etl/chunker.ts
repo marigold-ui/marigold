@@ -112,31 +112,35 @@ function chunkMarkdown(markdown: string, basename: string) {
   });
 }
 
-const filteredFiles = await getAllMdxFiles(CONTENT_DIR);
+async function main() {
+  const filteredFiles = await getAllMdxFiles(CONTENT_DIR);
 
-if (!filteredFiles.length) {
-  console.error(`No .mdx files in ${CONTENT_DIR}`);
-  process.exit(1);
+  if (!filteredFiles.length) {
+    console.error(`No .mdx files in ${CONTENT_DIR}`);
+    process.exit(1);
+  }
+
+  const allChunks = await Promise.all(
+    filteredFiles.map(async filePath => {
+      const { markdown, slug } = await parseMdxToMarkdown({
+        filePath,
+        contentDir: CONTENT_DIR,
+      });
+      const basename = slug.replace(/\//g, '-');
+      return chunkMarkdown(markdown, basename);
+    })
+  );
+
+  const chunks = allChunks.flat().map((c, i) => ({ id: i + 1, ...c }));
+  await writeFile(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
+
+  const avg = Math.round(
+    chunks.reduce((s, c) => s + c.textForEmbedding.length, 0) / chunks.length
+  );
+  const max = Math.max(...chunks.map(c => c.textForEmbedding.length));
+  console.log(
+    `${filteredFiles.length} files → ${chunks.length} chunks — avg ${avg}c max ${max}c → ${OUTPUT_FILE}`
+  );
 }
 
-const allChunks = await Promise.all(
-  filteredFiles.map(async filePath => {
-    const { markdown, slug } = await parseMdxToMarkdown({
-      filePath,
-      contentDir: CONTENT_DIR,
-    });
-    const basename = slug.replace(/\//g, '-');
-    return chunkMarkdown(markdown, basename);
-  })
-);
-
-const chunks = allChunks.flat().map((c, i) => ({ id: i + 1, ...c }));
-await writeFile(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
-
-const avg = Math.round(
-  chunks.reduce((s, c) => s + c.textForEmbedding.length, 0) / chunks.length
-);
-const max = Math.max(...chunks.map(c => c.textForEmbedding.length));
-console.log(
-  `${filteredFiles.length} files → ${chunks.length} chunks — avg ${avg}c max ${max}c → ${OUTPUT_FILE}`
-);
+main();
