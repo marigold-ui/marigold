@@ -31,7 +31,17 @@ The **marigold-docs** MCP server provides semantic search over the full Marigold
     }
     ```
 
-    Claude Code picks up this file automatically. On first use, the server will ask you to authenticate through your browser.
+    Claude Code picks up this file automatically. Alternatively, you can add the server via the CLI:
+
+    ```bash
+    claude mcp add marigold-docs \
+      --transport http \
+      --url https://www.marigold-ui.io/mcp \
+      --client-id dst-marigold-docs-mcp \
+      --callback-port 6749
+    ```
+
+    On first use, the server will ask you to authenticate through your browser.
 
   </Tab>
   <Tab value="VS Code">
