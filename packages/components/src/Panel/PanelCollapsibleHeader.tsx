@@ -38,7 +38,7 @@ export const PanelCollapsibleHeader = ({
 
   const { isExpanded } = disclosureState;
   const level = hasTitle
-    ? (Math.min(headingLevel + 1, 6) as 1 | 2 | 3 | 4 | 5 | 6)
+    ? (Math.min(headingLevel + 1, 6) as 2 | 3 | 4 | 5 | 6)
     : headingLevel;
 
   return (

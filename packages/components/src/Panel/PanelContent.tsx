@@ -3,7 +3,10 @@ import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelContentProps {
-  /** Main body of the panel. */
+  /**
+   * Main body of the Panel. Inherits the Panel's horizontal padding unless
+   * `bleed` is set.
+   */
   children: ReactNode;
   /**
    * Render the content edge-to-edge horizontally, skipping the Panel's
