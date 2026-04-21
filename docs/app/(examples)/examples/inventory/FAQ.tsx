@@ -1,4 +1,4 @@
-import { Accordion, Headline, Panel, Text } from '@marigold/components';
+import { Accordion, Headline, Stack, Text } from '@marigold/components';
 
 const faqs = [
   {
@@ -40,23 +40,19 @@ const faqs = [
 ];
 
 export const FAQ = () => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>Frequently asked questions</Panel.Title>
-    </Panel.Header>
-    <Panel.Content>
-      <Accordion iconPosition="left">
-        {faqs.map(faq => (
-          <Accordion.Item key={faq.id} id={faq.id}>
-            <Accordion.Header>
-              <Headline level="4">{faq.question}</Headline>
-            </Accordion.Header>
-            <Accordion.Content>
-              <Text variant="muted">{faq.answer}</Text>
-            </Accordion.Content>
-          </Accordion.Item>
-        ))}
-      </Accordion>
-    </Panel.Content>
-  </Panel>
+  <Stack space={8}>
+    <Headline level={2}>Frequently asked questions</Headline>
+    <Accordion variant="card" iconPosition="left">
+      {faqs.map(faq => (
+        <Accordion.Item key={faq.id} id={faq.id}>
+          <Accordion.Header>
+            <Headline level="4">{faq.question}</Headline>
+          </Accordion.Header>
+          <Accordion.Content>
+            <Text variant="muted">{faq.answer}</Text>
+          </Accordion.Content>
+        </Accordion.Item>
+      ))}
+    </Accordion>
+  </Stack>
 );
