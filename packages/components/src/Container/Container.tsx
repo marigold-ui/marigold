@@ -38,7 +38,6 @@ export const gridColumn = {
 export interface ContainerProps extends AriaRegionProps {
   /**
    * Set the spacing between child elements.
-   * @remarks `SpacingTokens<Tokens>`
    */
   space?: SpaceProp<SpacingTokens>['space'];
   children?: ReactNode;

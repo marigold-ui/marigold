@@ -22,49 +22,41 @@ export interface CardProps {
 
   /**
    * Set the spacing between child elements. You can see allowed tokens [here](../../foundations/spacing#relation-space).
-   * @remarks `Scale | SpacingTokens`
    */
   space?: SpaceProp<SpacingTokens>['space'];
 
   /**
    * Padding of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   * @remarks `Scale | InsetSpacingTokens`
    */
   p?: SpaceProp<InsetSpacingTokens>['space'];
 
   /**
    * Padding horizontal (left and right) of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   * @remarks `Scale | PaddingSpacingTokens`
    */
   px?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
    * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   * @remarks `Scale | PaddingSpacingTokens`
    */
   py?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
    * Set the right padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   * @remarks `Scale | PaddingSpacingTokens`
    */
   pr?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
    * Set the left padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   * @remarks `Scale | PaddingSpacingTokens`
    */
   pl?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
    * Set the top padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   * @remarks `Scale | PaddingSpacingTokens`
    */
   pt?: SpaceProp<PaddingSpacingTokens>['space'];
 
   /**
    * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   * @remarks `Scale | PaddingSpacingTokens`
    */
   pb?: SpaceProp<PaddingSpacingTokens>['space'];
 }

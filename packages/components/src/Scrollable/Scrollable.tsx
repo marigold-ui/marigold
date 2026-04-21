@@ -6,7 +6,6 @@ import type { AriaRegionProps } from '@marigold/types';
 export interface ScrollableProps extends AriaRegionProps {
   /**
    * Set the width of the container.
-   * @remarks `WidthProp<Tokens>`
    */
   width?: WidthProp['width'];
 
