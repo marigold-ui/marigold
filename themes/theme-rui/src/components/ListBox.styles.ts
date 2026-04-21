@@ -15,7 +15,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     ],
   }),
   list: cva({
-    base: ['p-1 text-sm outline-0 space-y-px overflow-y-auto w-full'],
+    base: ['p-1 text-sm outline-0 space-y-px overflow-y-auto min-w-full'],
   }),
   item: cva({
     base: [
