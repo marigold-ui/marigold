@@ -5,8 +5,6 @@
 .source
 .registry
 app/mcp/out
-lib/markdown/embeddings.json
-lib/markdown/etl/chunks.json
 
 # test & build
 /coverage
