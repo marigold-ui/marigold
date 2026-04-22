@@ -41,6 +41,10 @@ export interface ComboBoxProps
   variant?: string;
   size?: string;
 
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * Note: `"fit"` is not supported because the virtualizer controls item sizing.
+   */
   width?: Exclude<WidthProp['width'], 'fit'>;
   /**
    * If `true`, the input is disabled.
