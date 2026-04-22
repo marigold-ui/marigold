@@ -15,25 +15,26 @@ export const Notifications = () => {
   const { addToast } = useToast();
 
   return (
-    <Form
-      onSubmit={e => {
-        e.preventDefault();
-        addToast({
-          title: 'Settings saved',
-          description: 'Notification preferences updated.',
-          variant: 'success',
-          timeout: 5000,
-        });
-      }}
-    >
-      <Panel size="form" headingLevel={3}>
-        <Panel.Header>
-          <Panel.Title>Notifications</Panel.Title>
-          <Panel.Description>
-            Configure when and how you receive notifications.
-          </Panel.Description>
-        </Panel.Header>
-        <Panel.Content>
+    <Panel size="form" headingLevel={3}>
+      <Panel.Header>
+        <Panel.Title>Notifications</Panel.Title>
+        <Panel.Description>
+          Configure when and how you receive notifications.
+        </Panel.Description>
+      </Panel.Header>
+      <Panel.Content>
+        <Form
+          id="notifications"
+          onSubmit={e => {
+            e.preventDefault();
+            addToast({
+              title: 'Settings saved',
+              description: 'Notification preferences updated.',
+              variant: 'success',
+              timeout: 5000,
+            });
+          }}
+        >
           <Stack space="regular">
             <Select
               label="Email Digest Frequency"
@@ -55,13 +56,13 @@ export const Notifications = () => {
             </Checkbox.Group>
             <Switch label="Pause all notifications" />
           </Stack>
-        </Panel.Content>
-        <Panel.Footer>
-          <Button variant="primary" type="submit">
-            Save changes
-          </Button>
-        </Panel.Footer>
-      </Panel>
-    </Form>
+        </Form>
+      </Panel.Content>
+      <Panel.Footer>
+        <Button variant="primary" type="submit" form="notifications">
+          Save changes
+        </Button>
+      </Panel.Footer>
+    </Panel>
   );
 };

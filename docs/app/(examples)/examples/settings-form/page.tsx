@@ -4,6 +4,7 @@ import {
   Headline,
   Inset,
   Stack,
+  Tabs,
   Text,
   ToastProvider,
 } from '@marigold/components';
@@ -19,12 +20,23 @@ const SettingsFormPage = () => (
         <Headline level={2}>Event settings</Headline>
         <Text>Configure defaults and preferences for your events.</Text>
       </Stack>
-      <Stack space="group">
-        <GeneralSettings />
-        <RegistrationCapacity />
-        <Notifications />
-        <DangerZone />
-      </Stack>
+      <Tabs>
+        <Tabs.List>
+          <Tabs.Item id="general">General</Tabs.Item>
+          <Tabs.Item id="registration">Registration</Tabs.Item>
+          <Tabs.Item id="notifications">Notifications</Tabs.Item>
+        </Tabs.List>
+        <Tabs.TabPanel id="general">
+          <GeneralSettings />
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="registration">
+          <RegistrationCapacity />
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="notifications">
+          <Notifications />
+        </Tabs.TabPanel>
+      </Tabs>
+      <DangerZone />
     </Stack>
     <ToastProvider position="bottom-right" />
   </Inset>

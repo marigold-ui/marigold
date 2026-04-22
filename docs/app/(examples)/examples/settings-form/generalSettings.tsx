@@ -16,25 +16,26 @@ export const GeneralSettings = () => {
   const { addToast } = useToast();
 
   return (
-    <Form
-      onSubmit={e => {
-        e.preventDefault();
-        addToast({
-          title: 'Settings saved',
-          description: 'General information updated.',
-          variant: 'success',
-          timeout: 5000,
-        });
-      }}
-    >
-      <Panel size="form" headingLevel={3}>
-        <Panel.Header>
-          <Panel.Title>General information</Panel.Title>
-          <Panel.Description>
-            Basic details applied to all new events.
-          </Panel.Description>
-        </Panel.Header>
-        <Panel.Content>
+    <Panel size="form" headingLevel={3}>
+      <Panel.Header>
+        <Panel.Title>General information</Panel.Title>
+        <Panel.Description>
+          Basic details applied to all new events.
+        </Panel.Description>
+      </Panel.Header>
+      <Panel.Content>
+        <Form
+          id="general-settings"
+          onSubmit={e => {
+            e.preventDefault();
+            addToast({
+              title: 'Settings saved',
+              description: 'General information updated.',
+              variant: 'success',
+              timeout: 5000,
+            });
+          }}
+        >
           <Stack space="regular">
             <TextField
               label="Default Event Name Prefix"
@@ -72,35 +73,32 @@ export const GeneralSettings = () => {
               <Select.Option id="europe-london">Europe/London</Select.Option>
             </Select>
           </Stack>
-        </Panel.Content>
-        <Panel.Collapsible>
-          <Panel.CollapsibleHeader>
-            <Panel.CollapsibleTitle>Advanced defaults</Panel.CollapsibleTitle>
-          </Panel.CollapsibleHeader>
-          <Panel.CollapsibleContent>
-            <Stack space="regular">
-              <Select label="Date Format" defaultValue="dd-mm-yyyy" width={40}>
-                <Select.Option id="dd-mm-yyyy">DD.MM.YYYY</Select.Option>
-                <Select.Option id="mm-dd-yyyy">MM/DD/YYYY</Select.Option>
-                <Select.Option id="yyyy-mm-dd">YYYY-MM-DD</Select.Option>
-              </Select>
-              <Radio.Group
-                label="Default Event Visibility"
-                defaultValue="public"
-              >
-                <Radio value="public">Public</Radio>
-                <Radio value="private">Private</Radio>
-                <Radio value="unlisted">Unlisted</Radio>
-              </Radio.Group>
-            </Stack>
-          </Panel.CollapsibleContent>
-        </Panel.Collapsible>
-        <Panel.Footer>
-          <Button variant="primary" type="submit">
-            Save changes
-          </Button>
-        </Panel.Footer>
-      </Panel>
-    </Form>
+        </Form>
+      </Panel.Content>
+      <Panel.Collapsible>
+        <Panel.CollapsibleHeader>
+          <Panel.CollapsibleTitle>Advanced defaults</Panel.CollapsibleTitle>
+        </Panel.CollapsibleHeader>
+        <Panel.CollapsibleContent>
+          <Stack space="regular">
+            <Select label="Date Format" defaultValue="dd-mm-yyyy" width={40}>
+              <Select.Option id="dd-mm-yyyy">DD.MM.YYYY</Select.Option>
+              <Select.Option id="mm-dd-yyyy">MM/DD/YYYY</Select.Option>
+              <Select.Option id="yyyy-mm-dd">YYYY-MM-DD</Select.Option>
+            </Select>
+            <Radio.Group label="Default Event Visibility" defaultValue="public">
+              <Radio value="public">Public</Radio>
+              <Radio value="private">Private</Radio>
+              <Radio value="unlisted">Unlisted</Radio>
+            </Radio.Group>
+          </Stack>
+        </Panel.CollapsibleContent>
+      </Panel.Collapsible>
+      <Panel.Footer>
+        <Button variant="primary" type="submit" form="general-settings">
+          Save changes
+        </Button>
+      </Panel.Footer>
+    </Panel>
   );
 };
