@@ -1,17 +1,11 @@
 /*
  * Design tokens for the RUI theme.
  *
- * All colors, typography, spacing, elevation, and animation values are
- * declared here as a Tailwind v4 `@theme static` block. Tailwind emits
- * these to `:root` so utilities generated in either entry point
- * (`theme.css` or `styles.css`) can resolve them.
- *
- * Isolating tokens from the rest of the theme makes them easy to find,
- * easy to extend, and reusable by internal tooling that only needs the
- * variable surface.
+ * Every color, typography, spacing, elevation, and animation value is
+ * declared here as a Tailwind v4 `@theme static` block so the token
+ * surface lives in one place and can be consumed on its own — without
+ * pulling in plugin registrations or preflight rules.
  */
-
-@plugin 'tailwindcss-react-aria-components';
 
 @theme static {
   /* ====================== */

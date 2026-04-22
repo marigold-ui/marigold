@@ -12,6 +12,8 @@
  * `[data-theme="rui"]` so it does not clobber adjacent content.
  */
 
+@plugin 'tailwindcss-react-aria-components';
+
 @import './preflight.css';
 @import './tokens.css';
 @import './ui.css';

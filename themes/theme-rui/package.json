@@ -41,10 +41,6 @@
       "style": "./dist/theme.css",
       "default": "./dist/theme.css"
     },
-    "./mixins.css": {
-      "style": "./dist/mixins.css",
-      "default": "./dist/mixins.css"
-    },
     "./tokens.css": {
       "style": "./dist/tokens.css",
       "default": "./dist/tokens.css"

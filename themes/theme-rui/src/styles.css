@@ -16,6 +16,9 @@
  */
 
 @import 'tailwindcss';
+
+@plugin 'tailwindcss-react-aria-components';
+
 @import './preflight.css';
 @import './tokens.css' theme(inline);
 @import './ui.css';
