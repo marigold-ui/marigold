@@ -12,7 +12,13 @@ module.exports = {
       // that mount Marigold as an island. The regex guards against
       // double-prefixing for rules that target `[data-theme="rui"]`
       // directly (e.g. the themed base paint rule).
-      exclude: ['html', 'body', ':root', ':host', /^\[data-theme="rui"\]/],
+      exclude: [
+        'html',
+        'body',
+        ':root',
+        ':host',
+        /^\[data-theme=['"]rui['"]\]/,
+      ],
     },
     ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {}),
   },
