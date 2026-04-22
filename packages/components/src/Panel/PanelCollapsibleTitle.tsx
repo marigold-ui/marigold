@@ -3,7 +3,11 @@ import { useCollapsibleHeaderContext } from './CollapsibleContext';
 import { usePanelContext } from './Context';
 
 export interface PanelCollapsibleTitleProps {
-  /** Title text of the collapsible section. */
+  /**
+   * Title of the collapsible section. Rendered as a `<span>` inside the
+   * trigger button so the entire header is a single click target. Provides
+   * the button's accessible name via `aria-labelledby`.
+   */
   children: ReactNode;
 }
 

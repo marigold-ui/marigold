@@ -4,7 +4,11 @@ import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelTitleProps {
-  /** Title text for the panel. */
+  /**
+   * Title of the Panel. Rendered as a heading at the `headingLevel`
+   * configured on the root `Panel` (defaults to `h2`) and provides the
+   * Panel's accessible name via `aria-labelledby`.
+   */
   children: ReactNode;
 }
 

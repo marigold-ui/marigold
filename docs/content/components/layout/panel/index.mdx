@@ -11,7 +11,7 @@ A typical page has a handful of Panels, each owning one topic: "Organizer profil
 <Callout title="Is a Panel a Card?">
   They look similar, but they're not interchangeable. A Panel owns a region of a
   page, with its own title, description, and optional actions. A Card just
-  stands in for one item in a list or grid. **Cards repeat; Panels don't.**
+  stands in for one item in a list or grid. **Cards repeat. Panels don't.**
 </Callout>
 
 import { Layers, ListCollapse, ShieldCheck, SquareStack } from 'lucide-react';
@@ -48,7 +48,7 @@ Panel has four variants. They match the ones in Card and Badge so master, admin,
 | `admin`       | Tint and accent for admin users.  | Sections only admin users see. [Learn more.](../../../patterns/admin-master-mark)  |
 | `destructive` | Tint for danger zones.            | Irreversible actions, like deleting an account or revoking access.                 |
 
-Panel also offers two sizes. The default is unconstrained and grows with its container; the `form` size caps the Panel at a comfortable reading width so long label-input pairs don't stretch across the page.
+Panel also offers two sizes. The default is unconstrained and grows with its container. The `form` size caps the Panel at a comfortable reading width so long label-input pairs don't stretch across the page.
 
 | Size      | Description                        | When to use                                                    |
 | --------- | ---------------------------------- | -------------------------------------------------------------- |
@@ -77,11 +77,31 @@ Panel and Card look similar, but they solve different problems. A Panel is a nam
 
 ### Header
 
-The header names the section and tells the user what it's about before they read a single field. It has three slots: a title, an optional description, and an optional actions region on the right. Each slot has its own job.
+The header names the section and tells the user what it's about before they read a single field. It has three slots: a title, an optional description, and an optional actions region on the right (covered in [Actions](#actions) below). Each slot has its own job.
 
 #### Title
 
-The title is how a user finds this section when they scan the page. Aim for a short noun phrase, two to five words, that names the topic. A good title is specific and unique on the page: if two sections could share the same heading, it's too generic. Use sentence case, and front-load the meaningful keyword so the user recognizes it at a glance.
+The title is how a user finds this section when they scan the page. Aim for a short noun phrase, two to five words, that names the topic.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>Keep titles specific and unique on the page.</DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>Use sentence case.</DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>
+      Front-load the meaningful keyword so the user recognizes the section at a
+      glance.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use a generic heading that two sections could share.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 <Callout title="Every Panel needs a name">
   A Panel is a landmark region, and assistive technologies need a name for it.
@@ -93,12 +113,6 @@ The title is how a user finds this section when they scan the page. Aim for a sh
 
 A description is a single-sentence subtitle directly under the title. Include one when the title alone doesn't tell the user what's at stake, or when the section introduces a concept they may not have seen before. Skip it when the title already says it. A description that restates the heading adds reading weight without adding information.
 
-#### Actions
-
-Some sections have controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it.
-
-<ComponentDemo name="panel-header-actions" />
-
 ### Content
 
 The content area is the body of the Panel. It's deliberately open, and in practice most sections you'll build are one of three shapes:
@@ -107,7 +121,7 @@ The content area is the body of the Panel. It's deliberately open, and in practi
 - **Data sections** put a single table, list, chart, diagram, or media surface at the centre of the region. These usually want [full-width content](#full-width-content).
 - **Prose sections** explain a concept or a consequence before the user acts, common above a Danger zone or at the top of a settings page.
 
-Panel doesn't impose a layout primitive. Reach for the same tools you'd use outside a Panel (`<Stack>`, `<Inline>`, a grid). The Panel owns the region; the content inside still owns its own rhythm.
+Panel doesn't impose a layout primitive. Reach for the same tools you'd use outside a Panel (`<Stack>`, `<Inline>`, a grid). The Panel owns the region. The content inside still owns its own rhythm.
 
 #### Full-width content
 
@@ -152,9 +166,22 @@ A Panel owns one topic, named by its title. A single Collapsible folds away the 
 When a Panel seems to want a second Collapsible, the shape is usually off in one of two ways:
 
 - **The Panel is trying to own two topics.** Split it into two Panels with clearer titles. Each gets its own scannable content and, if they need it, their own single Collapsible.
-- **The content is a set of peer sub-sections that all live at the same level.** Reach for [Accordion](/components/navigation/accordion) instead. Accordion is built for parallel collapsible items; Panel is not.
+- **The content is a set of peer sub-sections that all live at the same level.** Reach for [Accordion](/components/navigation/accordion) instead. Accordion is built for parallel collapsible items. Panel is not.
 
 A Panel made entirely of Collapsibles runs into the same problem: the title labels an empty container, and the user has to click before anything reads. A single fold in an otherwise bare Panel can work when the Panel is purely a wrapper for one advanced section. Anything more should be an Accordion.
+
+### Actions
+
+A Panel has three places for actions, each carrying a different scope:
+
+- **Header.** For controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it. Keep the set small: one primary button, or an overflow menu when a handful of related controls belong together. More than that usually means the scope is too broad, and one of the actions probably belongs in its own Panel.
+
+<ComponentDemo name="panel-header-actions" />
+
+- **Footer.** For a single, weighty action scoped to the Panel, most often a destructive one. Rare, because header actions cover most section-scoped controls and page-level Save/Cancel sit outside the Panel. Reach for it when a Panel needs its own action space. See [Danger zone](#danger-zone) below for the canonical pattern.
+- **Outside the Panel.** For page-level controls like **Save changes** and **Cancel** at the bottom of a settings form. A Panel owns one region. A page-level action crosses every region on the page, and anchoring it to any single Panel misrepresents its scope.
+
+Actions that belong to a row or item inside the content stay with their row, not in the Panel's header or footer.
 
 ### Danger zone
 
@@ -168,7 +195,7 @@ Reach for a Danger zone when the action is one of these:
 
 Anything reversible or low-stakes, like sign-out or reset-to-defaults, does not need a Danger zone. Keep it in the normal flow.
 
-Most Danger zones hold one action. Put it in the Footer, with a short paragraph in the Content explaining what disappears. Lead with the consequence, not the verb. The Footer is only for actions scoped to this Panel; page-level **Save changes** and **Cancel** stay outside.
+Most Danger zones hold one action. Put it in the Footer (see [Actions](#actions) for why), with a short paragraph in the Content explaining what disappears. Lead with the consequence, not the verb.
 
 <ComponentDemo name="panel-footer" />
 
@@ -204,7 +231,7 @@ Panel renders a `<section>` and wires up the heading outline. Most of the story 
 
 ### Labeling
 
-A `<section>` only becomes a region landmark once it has an accessible name; without one, it's just a grouping element. Give the Panel a name in one of two ways:
+A `<section>` only becomes a region landmark once it has an accessible name. Without one, it's just a grouping element. Give the Panel a name in one of two ways:
 
 - **Preferred.** Include a Panel.Title. The Panel is automatically labelled by the title.
 - **Fallback.** If the Panel has no visible title (a Collapsible-only Panel, for example), pass an `aria-label` on the Panel itself.
@@ -213,7 +240,7 @@ If both are set, `aria-label` takes precedence and the title is no longer used a
 
 ### Heading levels
 
-Panel.Title renders an `<h2>` by default. Panel.CollapsibleTitle renders one level deeper (`<h3>`) when the Panel has a title to nest under. In a Collapsible-only Panel (no Panel.Title), the CollapsibleTitle renders at the base `headingLevel` instead, since there's no parent heading to defer to.
+`<Panel.Title>` renders an `<h2>` by default. `<Panel.CollapsibleTitle>` renders one level deeper (`<h3>`) when the Panel has a title to nest under. In a Collapsible-only Panel (no Panel.Title), the CollapsibleTitle renders at the base `headingLevel` instead, since there's no parent heading to defer to.
 
 If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
 
@@ -232,11 +259,11 @@ If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, fo
 
 ### Collapsible sections
 
-Panel.Collapsible wraps each header in a heading whose button carries `aria-expanded`. The title and description render as spans inside the trigger button so the entire header surface is a single click target; the button's accessible name comes from the title via `aria-labelledby`, and the description is linked via `aria-describedby` so screen readers announce the extra context after the name. The caret is marked `aria-hidden`, so only the title and description are read. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+`<Panel.Collapsible>` wraps each header in a heading whose button carries `aria-expanded`. The title and description render as spans inside the trigger button so the entire header surface is a single click target; the button's accessible name comes from the title via `aria-labelledby`, and the description is linked via `aria-describedby` so screen readers announce the extra context after the name. The caret is marked `aria-hidden`, so only the title and description are read. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
 
 ## Props
 
-<StorybookHintMessage component={'Panel'} />
+<StorybookHintMessage component="Panel" />
 
 ### Panel
 

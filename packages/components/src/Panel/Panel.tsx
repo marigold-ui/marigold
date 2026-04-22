@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useId } from 'react';
+import { useId, useMemo } from 'react';
 import type {
   InsetSpacingTokens,
   PaddingSpacingTokens,
@@ -90,17 +90,20 @@ export const Panel = ({
   const resolvedPx = px ?? `${inset}-x`;
   const resolvedPy = py ?? `${inset}-y`;
 
+  const contextValue = useMemo(
+    () => ({
+      classNames,
+      variant,
+      titleId,
+      headingLevel,
+      hasTitle,
+      titleSlotRef,
+    }),
+    [classNames, variant, titleId, headingLevel, hasTitle, titleSlotRef]
+  );
+
   return (
-    <PanelProvider
-      value={{
-        classNames,
-        variant,
-        titleId,
-        headingLevel,
-        hasTitle,
-        titleSlotRef,
-      }}
-    >
+    <PanelProvider value={contextValue}>
       <section
         aria-labelledby={!ariaLabel ? titleId : undefined}
         aria-label={ariaLabel}

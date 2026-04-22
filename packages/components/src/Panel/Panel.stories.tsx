@@ -1,4 +1,15 @@
-import { UserRoundPlus } from 'lucide-react';
+import {
+  Copy,
+  Download,
+  Link2,
+  Pause,
+  Pencil,
+  Power,
+  RefreshCw,
+  ScrollText,
+  Trash2,
+  UserRoundPlus,
+} from 'lucide-react';
 import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
@@ -6,6 +17,7 @@ import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Inline } from '../Inline/Inline';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
@@ -49,7 +61,8 @@ const meta = preview.meta({
     headingLevel: {
       control: { type: 'radio' },
       options: [2, 3, 4, 5, 6],
-      description: 'Base heading level for the panel section.',
+      description:
+        'Base heading level for the panel section. Only changes the underlying heading tag (`h2`–`h6`) for document outline and accessibility — the visual appearance stays the same.',
       table: { defaultValue: { summary: '2' } },
     },
   },
@@ -96,51 +109,167 @@ Basic.test(
 );
 
 export const WithHeaderActions = meta.story(() => (
-  <Panel>
-    <Panel.Header>
-      <Panel.Title>Team Members</Panel.Title>
-      <Panel.Description>
-        People with access to this workspace and their roles.
-      </Panel.Description>
-      <Panel.HeaderActions>
-        <Button>
-          <UserRoundPlus />
-          Invite member
-        </Button>
-      </Panel.HeaderActions>
-    </Panel.Header>
-    <Panel.Content>
-      <Stack space="regular">
-        <Inline space="regular" alignY="center" alignX="between">
-          <Stack space="0.5">
-            <Text weight="medium">Alice Chen</Text>
-            <Text size="xs" color="secondary">
-              alice@marigold-ui.io
-            </Text>
-          </Stack>
-          <Badge variant="admin">Admin</Badge>
-        </Inline>
-        <Inline space="regular" alignY="center" alignX="between">
-          <Stack space="0.5">
-            <Text weight="medium">Bob Martinez</Text>
-            <Text size="xs" color="secondary">
-              bob@marigold-ui.io
-            </Text>
-          </Stack>
-          <Badge>Editor</Badge>
-        </Inline>
-        <Inline space="regular" alignY="center" alignX="between">
-          <Stack space="0.5">
-            <Text weight="medium">Charlie Park</Text>
-            <Text size="xs" color="secondary">
-              charlie@marigold-ui.io
-            </Text>
-          </Stack>
-          <Badge>Viewer</Badge>
-        </Inline>
-      </Stack>
-    </Panel.Content>
-  </Panel>
+  <Stack space="section">
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Team Members</Panel.Title>
+        <Panel.Description>
+          People with access to this workspace and their roles.
+        </Panel.Description>
+        <Panel.HeaderActions>
+          <Button>
+            <UserRoundPlus />
+            Invite member
+          </Button>
+        </Panel.HeaderActions>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space="regular">
+          <Inline space="regular" alignY="center" alignX="between">
+            <Stack space="0.5">
+              <Text weight="medium">Alice Chen</Text>
+              <Text size="xs" color="secondary">
+                alice@marigold-ui.io
+              </Text>
+            </Stack>
+            <Badge variant="admin">Admin</Badge>
+          </Inline>
+          <Inline space="regular" alignY="center" alignX="between">
+            <Stack space="0.5">
+              <Text weight="medium">Bob Martinez</Text>
+              <Text size="xs" color="secondary">
+                bob@marigold-ui.io
+              </Text>
+            </Stack>
+            <Badge>Editor</Badge>
+          </Inline>
+          <Inline space="regular" alignY="center" alignX="between">
+            <Stack space="0.5">
+              <Text weight="medium">Charlie Park</Text>
+              <Text size="xs" color="secondary">
+                charlie@marigold-ui.io
+              </Text>
+            </Stack>
+            <Badge>Viewer</Badge>
+          </Inline>
+        </Stack>
+      </Panel.Content>
+    </Panel>
+
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Stripe Payments</Panel.Title>
+        <Panel.Description>
+          Connected on April 2, 2026 · Processing live payments in EUR.
+        </Panel.Description>
+        <Panel.HeaderActions>
+          <ActionMenu aria-label="Integration actions">
+            <ActionMenu.Item id="sync">
+              <RefreshCw />
+              Sync now
+            </ActionMenu.Item>
+            <ActionMenu.Item id="logs">
+              <ScrollText />
+              View webhook logs
+            </ActionMenu.Item>
+            <ActionMenu.Item id="reconnect">
+              <Link2 />
+              Reconnect
+            </ActionMenu.Item>
+            <ActionMenu.Item id="disconnect" variant="destructive">
+              <Power />
+              Disconnect
+            </ActionMenu.Item>
+          </ActionMenu>
+        </Panel.HeaderActions>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space="regular">
+          <Inline space="regular" alignY="center" alignX="between">
+            <Stack space="0.5">
+              <Text size="xs" color="secondary">
+                Webhook endpoint
+              </Text>
+              <Text>https://api.marigold-ui.io/webhooks/stripe</Text>
+            </Stack>
+            <Badge variant="success">Live</Badge>
+          </Inline>
+          <Inline space="regular" alignY="center" alignX="between">
+            <Stack space="0.5">
+              <Text size="xs" color="secondary">
+                Events received (24h)
+              </Text>
+              <Text weight="medium">1,284</Text>
+            </Stack>
+            <Badge variant="info">12 pending</Badge>
+          </Inline>
+        </Stack>
+      </Panel.Content>
+    </Panel>
+
+    <Panel>
+      <Panel.Header>
+        <Panel.Title>Sommernachts-Konzert 2026</Panel.Title>
+        <Panel.Description>
+          Elbphilharmonie Hamburg · Saturday, June 14, 2026 · 20:00 CEST
+        </Panel.Description>
+        <Panel.HeaderActions>
+          <Inline space="tight" alignY="center" noWrap>
+            <Button>
+              <Pencil />
+              Edit event
+            </Button>
+            <ActionMenu aria-label="More event actions">
+              <ActionMenu.Item id="duplicate">
+                <Copy />
+                Duplicate event
+              </ActionMenu.Item>
+              <ActionMenu.Item id="export">
+                <Download />
+                Export attendees
+              </ActionMenu.Item>
+              <ActionMenu.Item id="pause">
+                <Pause />
+                Pause sales
+              </ActionMenu.Item>
+              <ActionMenu.Item id="cancel" variant="destructive">
+                <Trash2 />
+                Cancel event
+              </ActionMenu.Item>
+            </ActionMenu>
+          </Inline>
+        </Panel.HeaderActions>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space="regular">
+          <Inline space="regular" alignY="center" alignX="between">
+            <Stack space="0.5">
+              <Text size="xs" color="secondary">
+                Tickets sold
+              </Text>
+              <Text weight="medium">1,847 / 2,100</Text>
+            </Stack>
+            <Badge variant="success">88% sold</Badge>
+          </Inline>
+          <Inline space="regular" alignY="center" alignX="between">
+            <Stack space="0.5">
+              <Text size="xs" color="secondary">
+                Gross revenue
+              </Text>
+              <Text weight="medium">
+                <NumericFormat
+                  style="currency"
+                  currency="EUR"
+                  value={94230.5}
+                />
+              </Text>
+            </Stack>
+            <Badge variant="info">Published</Badge>
+          </Inline>
+        </Stack>
+      </Panel.Content>
+    </Panel>
+  </Stack>
 ));
 
 export const WithCollapsible = meta.story({
@@ -265,6 +394,15 @@ export const CollapsibleDefaultExpanded = meta.story({
       <Panel.Header>
         <Panel.Title>Notification Preferences</Panel.Title>
       </Panel.Header>
+      <Panel.Content>
+        <Text>
+          Notifications are delivered to{' '}
+          <Text as="span" weight="medium">
+            admin@marigold-ui.io
+          </Text>
+          . Adjust the delivery channels below.
+        </Text>
+      </Panel.Content>
       <Panel.Collapsible defaultExpanded>
         <Panel.CollapsibleHeader>
           <Panel.CollapsibleTitle>Channels</Panel.CollapsibleTitle>
