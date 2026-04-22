@@ -4,17 +4,14 @@ import { venues } from '@/lib/data/venues';
 import { useState } from 'react';
 import type { Key } from 'react-aria-components';
 import {
-  Accordion,
   Button,
-  Card,
   Checkbox,
-  Headline,
   Inline,
   Link,
   NumberField,
+  Panel,
   Select,
   Stack,
-  Text,
   TextField,
 } from '@marigold/components';
 
@@ -52,12 +49,14 @@ export const LocationSettings = () => {
   };
 
   return (
-    <Card p={4} stretch>
-      <Stack space="regular">
-        <Stack space="tight">
-          <Headline level={3}>Location & capacity</Headline>
-          <Text>Venue, address, and accessibility information.</Text>
-        </Stack>
+    <Panel headingLevel={3} size="form">
+      <Panel.Header>
+        <Panel.Title>Location & capacity</Panel.Title>
+        <Panel.Description>
+          Venue, address, and accessibility information.
+        </Panel.Description>
+      </Panel.Header>
+      <Panel.Content>
         <Stack space="group">
           <Stack space="regular">
             <Inline alignY="input" space="related" noWrap>
@@ -141,36 +140,39 @@ export const LocationSettings = () => {
             />
           </Stack>
         </Stack>
-        <Accordion>
-          <Accordion.Item id="advanced-location-settings">
-            <Accordion.Header>Advanced location settings</Accordion.Header>
-            <Accordion.Content>
-              <Stack space="regular">
-                <TextField
-                  label="Room or Area"
-                  description="Specific room, hall, or outdoor area within the venue."
-                />
-                <Stack space="tight">
-                  <TextField
-                    label="Online Meeting Link"
-                    type="url"
-                    description="For hybrid or fully remote events."
-                  />
-                  <Link href="#" size="small">
-                    Test meeting link
-                  </Link>
-                </Stack>
-                <NumberField
-                  label="Maximum Attendees"
-                  description="Leave empty for unlimited."
-                  hideStepper
-                  width={32}
-                />
-              </Stack>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion>
-      </Stack>
-    </Card>
+      </Panel.Content>
+      <Panel.Collapsible>
+        <Panel.CollapsibleHeader>
+          <Panel.CollapsibleTitle>
+            Advanced location settings
+          </Panel.CollapsibleTitle>
+        </Panel.CollapsibleHeader>
+        <Panel.CollapsibleContent>
+          <Stack space="regular">
+            <TextField
+              label="Room or Area"
+              description="Specific room, hall, or outdoor area within the venue."
+              width={64}
+            />
+            <Stack space="tight">
+              <TextField
+                label="Online Meeting Link"
+                type="url"
+                description="For hybrid or fully remote events."
+              />
+              <Link href="#" size="small">
+                Test meeting link
+              </Link>
+            </Stack>
+            <NumberField
+              label="Maximum Attendees"
+              description="Leave empty for unlimited."
+              hideStepper
+              width={32}
+            />
+          </Stack>
+        </Panel.CollapsibleContent>
+      </Panel.Collapsible>
+    </Panel>
   );
 };

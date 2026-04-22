@@ -2,14 +2,12 @@
 
 import {
   Button,
-  Card,
   Checkbox,
   Form,
-  Headline,
+  Panel,
   Select,
   Stack,
   Switch,
-  Text,
   useToast,
 } from '@marigold/components';
 
@@ -17,25 +15,31 @@ export const Notifications = () => {
   const { addToast } = useToast();
 
   return (
-    <Card p={4}>
-      <Form
-        onSubmit={e => {
-          e.preventDefault();
-          addToast({
-            title: 'Settings saved',
-            description: 'Notification preferences updated.',
-            variant: 'success',
-            timeout: 5000,
-          });
-        }}
-      >
-        <Stack space="regular">
-          <Stack space="tight">
-            <Headline level={3}>Notifications</Headline>
-            <Text>Configure when and how you receive notifications.</Text>
-          </Stack>
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        addToast({
+          title: 'Settings saved',
+          description: 'Notification preferences updated.',
+          variant: 'success',
+          timeout: 5000,
+        });
+      }}
+    >
+      <Panel size="form" headingLevel={3}>
+        <Panel.Header>
+          <Panel.Title>Notifications</Panel.Title>
+          <Panel.Description>
+            Configure when and how you receive notifications.
+          </Panel.Description>
+        </Panel.Header>
+        <Panel.Content>
           <Stack space="regular">
-            <Select label="Email Digest Frequency" defaultValue="daily">
+            <Select
+              label="Email Digest Frequency"
+              defaultValue="daily"
+              width={40}
+            >
               <Select.Option id="immediately">Immediately</Select.Option>
               <Select.Option id="daily">Daily</Select.Option>
               <Select.Option id="weekly">Weekly</Select.Option>
@@ -51,11 +55,13 @@ export const Notifications = () => {
             </Checkbox.Group>
             <Switch label="Pause all notifications" />
           </Stack>
+        </Panel.Content>
+        <Panel.Footer>
           <Button variant="primary" type="submit">
             Save changes
           </Button>
-        </Stack>
-      </Form>
-    </Card>
+        </Panel.Footer>
+      </Panel>
+    </Form>
   );
 };

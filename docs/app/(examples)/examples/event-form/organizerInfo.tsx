@@ -1,26 +1,25 @@
 'use client';
 
 import {
-  Accordion,
   Badge,
-  Card,
-  Headline,
   Inline,
+  Panel,
   Select,
   Stack,
   Switch,
-  Text,
   TextArea,
   TextField,
 } from '@marigold/components';
 
 export const OrganizerInfo = () => (
-  <Card p={4} stretch>
-    <Stack space="regular">
-      <Stack space="tight">
-        <Headline level={3}>Organizer information</Headline>
-        <Text>Contact details for the person or team running this event.</Text>
-      </Stack>
+  <Panel headingLevel={3} size="form">
+    <Panel.Header>
+      <Panel.Title>Organizer information</Panel.Title>
+      <Panel.Description>
+        Contact details for the person or team running this event.
+      </Panel.Description>
+    </Panel.Header>
+    <Panel.Content>
       <Stack space="regular">
         <Inline space="related" noWrap>
           <TextField
@@ -37,7 +36,7 @@ export const OrganizerInfo = () => (
           />
         </Inline>
         <TextField label="Organization" />
-        <TextField label="Job Title" />
+        <TextField label="Job Title" width={64} />
         <Inline space="related" noWrap>
           <TextField
             label="Email"
@@ -55,35 +54,35 @@ export const OrganizerInfo = () => (
         />
         <Switch label="Display organizer profile on event page" />
       </Stack>
-      <Accordion>
-        <Accordion.Item id="contact-preferences">
-          <Accordion.Header>Contact preferences</Accordion.Header>
-          <Accordion.Content>
-            <Stack space="regular">
-              <Switch label="Allow attendees to contact organizer directly" />
-              <Switch label="Include organizer contact in confirmation emails" />
-              <Select
-                label={
-                  <Inline space={2} alignY="center">
-                    Preferred contact method
-                    <Badge variant="admin">Admin</Badge>
-                  </Inline>
-                }
-                placeholder="Select preference"
-                width={40}
-              >
-                <Select.Option id="email">Email</Select.Option>
-                <Select.Option id="phone">Phone</Select.Option>
-                <Select.Option id="both">Both Email and Phone</Select.Option>
-              </Select>
-              <TextField
-                label="Alternative Contact"
-                description="Backup person or method if the organizer is unavailable."
-              />
-            </Stack>
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion>
-    </Stack>
-  </Card>
+    </Panel.Content>
+    <Panel.Collapsible>
+      <Panel.CollapsibleHeader>
+        <Panel.CollapsibleTitle>Contact preferences</Panel.CollapsibleTitle>
+      </Panel.CollapsibleHeader>
+      <Panel.CollapsibleContent>
+        <Stack space="regular">
+          <Switch label="Allow attendees to contact organizer directly" />
+          <Switch label="Include organizer contact in confirmation emails" />
+          <Select
+            label={
+              <Inline space={2} alignY="center">
+                Preferred contact method
+                <Badge variant="admin">Admin</Badge>
+              </Inline>
+            }
+            placeholder="Select preference"
+            width={56}
+          >
+            <Select.Option id="email">Email</Select.Option>
+            <Select.Option id="phone">Phone</Select.Option>
+            <Select.Option id="both">Both Email and Phone</Select.Option>
+          </Select>
+          <TextField
+            label="Alternative Contact"
+            description="Backup person or method if the organizer is unavailable."
+          />
+        </Stack>
+      </Panel.CollapsibleContent>
+    </Panel.Collapsible>
+  </Panel>
 );

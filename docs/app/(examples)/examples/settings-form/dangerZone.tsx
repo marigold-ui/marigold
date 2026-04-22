@@ -1,21 +1,16 @@
 'use client';
 
-import {
-  Button,
-  Card,
-  Headline,
-  Inline,
-  Stack,
-  Text,
-} from '@marigold/components';
+import { Button, Inline, Panel, Stack, Text } from '@marigold/components';
 
 export const DangerZone = () => (
-  <Card p={4}>
-    <Stack space="regular">
-      <Stack space="tight">
-        <Headline level={3}>Danger zone</Headline>
-        <Text>Permanent actions that affect your event settings.</Text>
-      </Stack>
+  <Panel variant="destructive" size="form" headingLevel={3}>
+    <Panel.Header>
+      <Panel.Title>Danger zone</Panel.Title>
+      <Panel.Description>
+        Permanent actions that affect your event settings.
+      </Panel.Description>
+    </Panel.Header>
+    <Panel.Content>
       <Stack space="regular">
         <Inline alignY="center" alignX="between" space="group">
           <Stack space="tight">
@@ -38,6 +33,6 @@ export const DangerZone = () => (
           <Button variant="destructive">Delete</Button>
         </Inline>
       </Stack>
-    </Stack>
-  </Card>
+    </Panel.Content>
+  </Panel>
 );

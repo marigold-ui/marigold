@@ -2,29 +2,28 @@
 
 import {
   Badge,
-  Card,
   Checkbox,
   FileField,
   Headline,
   Inline,
   Link,
   NumberField,
+  Panel,
   Select,
   Stack,
   Switch,
-  Text,
   TextField,
 } from '@marigold/components';
 
 export const RegistrationSettings = () => (
-  <Card p={4}>
-    <Stack space="regular" stretch>
-      <Stack space="tight">
-        <Headline level={3}>Registration settings</Headline>
-        <Text>
-          Approval rules, confirmation emails, and pricing for this event.
-        </Text>
-      </Stack>
+  <Panel headingLevel={3} size="form">
+    <Panel.Header>
+      <Panel.Title>Registration settings</Panel.Title>
+      <Panel.Description>
+        Approval rules, confirmation emails, and pricing for this event.
+      </Panel.Description>
+    </Panel.Header>
+    <Panel.Content>
       <Stack space="group">
         <Stack space="regular">
           <Switch label="Require registration approval" />
@@ -35,6 +34,7 @@ export const RegistrationSettings = () => (
             type="email"
             description="Shown on the registration page for inquiries."
             errorMessage="Please enter a valid email address."
+            width={80}
           />
         </Stack>
         <Stack space="regular">
@@ -78,6 +78,6 @@ export const RegistrationSettings = () => (
           />
         </Stack>
       </Stack>
-    </Stack>
-  </Card>
+    </Panel.Content>
+  </Panel>
 );
