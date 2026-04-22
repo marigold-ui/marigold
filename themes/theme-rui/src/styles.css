@@ -1,7 +1,31 @@
-@import 'tailwindcss';
+/*
+ * Consumer entry point for the pre-compiled / standalone path.
+ *
+ * This file is processed by the package's own Tailwind + PostCSS
+ * pipeline at build time and shipped as `dist/styles.css`. Utilities
+ * are scoped to `[data-theme="rui"]` by `postcss-prefix-selector`
+ * (see `postcss.config.js`) so Marigold can be mounted as an island
+ * alongside other design systems without leaking styles.
+ *
+ * The body paint below targets `[data-theme="rui"]` directly so the
+ * consumer controls placement — on `<html>` for a Marigold-first
+ * app, or on a wrapper `<div>` for an island.
+ *
+ * For a full Tailwind-native integration with tree-shaking, use
+ * `theme.css` instead.
+ */
 
-@import './theme.css' theme(inline);
-@import './global.css' theme(inline);
+@import 'tailwindcss';
+@import './shared.css' theme(inline);
+
+@layer base {
+  [data-theme='rui'] {
+    font-optical-sizing: auto;
+    font-style: normal;
+
+    @apply supports-[font-variation-settings:normal]:font-sans-variable text-foreground bg-background font-sans;
+  }
+}
 
 /* prettier-ignore */
 @source inline('{bg}-{stone}-{50,{100..900..100},950}');

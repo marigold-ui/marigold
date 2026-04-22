@@ -1,0 +1,408 @@
+/*
+ * Design tokens for the RUI theme.
+ *
+ * All colors, typography, spacing, elevation, and animation values are
+ * declared here as a Tailwind v4 `@theme static` block. Tailwind emits
+ * these to `:root` so utilities generated in either entry point
+ * (`theme.css` or `styles.css`) can resolve them.
+ *
+ * Isolating tokens from the rest of the theme makes them easy to find,
+ * easy to extend, and reusable by internal tooling that only needs the
+ * variable surface.
+ */
+
+@plugin 'tailwindcss-react-aria-components';
+
+@theme static {
+  /* ====================== */
+  /*       TYPOGRAPHY       */
+  /* ====================== */
+
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-sans-variable: InterVariable, Inter, system-ui, sans-serif;
+
+  /* ====================== */
+  /*     COLOR PALETTES     */
+  /* ====================== */
+  /* Raw color scales. Semantic tokens below reference these. */
+
+  /* orange */
+  --color-orange-50: #fff9ed;
+  --color-orange-100: #fff1d5;
+  --color-orange-200: #fedfaa;
+  --color-orange-300: #fdc774;
+  --color-orange-400: #fba43c;
+  --color-orange-500: #f98e22;
+  --color-orange-600: #ea6d0c;
+  --color-orange-700: #c2520c;
+  --color-orange-800: #9a4112;
+  --color-orange-900: #7c3712;
+  --color-orange-950: #431a07;
+
+  /* warm charcoal (warm neutral, hue 54) */
+  --color-charcoal-50: oklch(0.985 0.002 54);
+  --color-charcoal-100: oklch(0.965 0.003 54);
+  --color-charcoal-200: oklch(0.92 0.004 54);
+  --color-charcoal-300: oklch(0.86 0.005 54);
+  --color-charcoal-400: oklch(0.74 0.006 54);
+  --color-charcoal-500: oklch(0.62 0.007 54);
+  --color-charcoal-600: oklch(0.52 0.008 54);
+  --color-charcoal-700: oklch(0.42 0.008 54);
+  --color-charcoal-800: oklch(0.32 0.008 54);
+  --color-charcoal-900: oklch(0.22 0.008 54);
+  --color-charcoal-950: oklch(0.15 0.008 54);
+
+  /* high-contrast obsidian (warm neutral, hue 54, wider contrast range) */
+  --color-obsidian-50: oklch(0.99 0.002 54);
+  --color-obsidian-100: oklch(0.97 0.003 54);
+  --color-obsidian-200: oklch(0.94 0.004 54);
+  --color-obsidian-300: oklch(0.88 0.005 54);
+  --color-obsidian-400: oklch(0.75 0.005 54);
+  --color-obsidian-500: oklch(0.6 0.006 54);
+  --color-obsidian-600: oklch(0.45 0.006 54);
+  --color-obsidian-700: oklch(0.32 0.006 54);
+  --color-obsidian-800: oklch(0.2 0.006 54);
+  --color-obsidian-900: oklch(0.12 0.006 54);
+  --color-obsidian-950: oklch(0.08 0.006 54);
+
+  /* ====================== */
+  /*    SEMANTIC COLORS     */
+  /* ====================== */
+  /* To switch palette, change the charcoal references below. */
+
+  /*
+    Palette step mapping (charcoal, background = step 100):
+
+    50  -- muted bg (subtle tint on white surfaces), primary-foreground
+    100 -- background bg, focus-highlight bg
+    200 -- hover bg, disabled-surface bg
+    300 -- control fill, selected bg, borders, scrollbar
+    400 -- disabled (text)
+    600 -- focus ring, secondary (text), placeholder
+    900 -- primary text
+    950 -- primary action, scrollbar hover
+  */
+
+  /* --- Page Background & Text --- */
+  --color-background: var(--color-charcoal-100);
+  --color-foreground: var(--color-charcoal-900);
+  --color-secondary: var(--color-charcoal-600);
+  --color-placeholder: var(--color-charcoal-600);
+
+  /* --- Primary --- */
+  --color-primary: var(--color-charcoal-900);
+  --color-primary-foreground: var(--color-charcoal-50);
+
+  /* --- Neutral Backgrounds & States --- */
+  --color-muted: var(--color-charcoal-50);
+  --color-control: var(--color-charcoal-300);
+  --color-hover: var(--color-charcoal-200);
+
+  --color-selected: var(--color-charcoal-300);
+  --color-selected-bold: var(--color-charcoal-900);
+  --color-selected-bold-foreground: var(--color-charcoal-50);
+  --color-focus-highlight: var(--color-charcoal-100);
+  --color-focus-highlight-bold: var(--color-charcoal-300);
+
+  /* --- Disabled --- */
+  --color-disabled: var(--color-charcoal-400);
+  --color-disabled-surface: var(--color-charcoal-200);
+
+  /* --- Form Controls --- */
+  --color-border: var(--color-charcoal-300);
+  --color-ring: var(--color-charcoal-600);
+
+  /* --- Status: Destructive --- */
+  --color-destructive: var(--color-red-100);
+  --color-destructive-foreground: var(--color-red-950);
+  --color-destructive-accent: var(--color-red-600);
+  --color-destructive-bold: var(--color-red-600);
+  --color-destructive-bold-foreground: var(--color-white);
+
+  /* --- Status: Success --- */
+  --color-success: var(--color-green-100);
+  --color-success-foreground: var(--color-green-950);
+  --color-success-accent: var(--color-green-600);
+
+  /* --- Status: Warning --- */
+  --color-warning: var(--color-yellow-100);
+  --color-warning-foreground: var(--color-yellow-950);
+  --color-warning-accent: var(--color-yellow-700);
+
+  /* --- Status: Info --- */
+  --color-info: var(--color-blue-100);
+  --color-info-foreground: var(--color-blue-950);
+  --color-info-accent: var(--color-blue-600);
+
+  /* --- Access Control --- */
+  --color-access-master: var(--color-orange-100);
+  --color-access-master-foreground: var(--color-orange-800);
+  --color-access-master-accent: var(--color-orange-700);
+  --color-access-admin: var(--color-purple-100);
+  --color-access-admin-foreground: var(--color-purple-900);
+  --color-access-admin-accent: var(--color-purple-800);
+
+  /* --- Links --- */
+  --color-link: var(--color-blue-600);
+
+  /* --- Overlay Backdrop --- */
+  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 70%);
+
+  /* --- Scrollbar --- */
+  --color-scrollbar: var(--color-charcoal-300);
+  --color-scrollbar-hover: var(--color-charcoal-950);
+  --color-scrollbar-track: transparent;
+
+  /* ==================== */
+  /*        SURFACE       */
+  /* ==================== */
+  --color-surface: var(--color-white);
+  --radius-surface: var(--radius-lg);
+
+  /* ==================== */
+  /*       ELEVATION      */
+  /* ==================== */
+  /*
+    Three-tier shadow hierarchy (https://www.joshwcomeau.com/shadow-palette/):
+      border:  small interactive controls (Input, Checkbox, Radio, Switch, Tag, Button)
+      raised:  container surfaces (Card, Accordion)
+      overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
+  */
+  --shadow-elevation-border:
+    0px 0.3px 0.3px oklch(0 0 0 / 0.14), 0px 1px 1.2px -3px oklch(0 0 0 / 0.12);
+
+  --shadow-elevation-raised:
+    0px 0.3px 0.8px oklch(0 0 0 / 0.28),
+    0px 1.4px 1.3px -2px oklch(0 0 0 / 0.21),
+    0px 6.7px 6px -4px oklch(0 0 0 / 0.15);
+
+  --shadow-elevation-overlay:
+    0px 0.1px 0.1px oklch(0 0 0 / 0.32),
+    0px 1px 0.9px -1.3px oklch(0 0 0 / 0.26),
+    -0.1px 4px 3.6px -2.7px oklch(0 0 0 / 0.2),
+    -0.2px 12px 10.8px -4px oklch(0 0 0 / 0.14);
+
+  /* ==================== */
+  /*        SPACING       */
+  /* ==================== */
+
+  /* Component heights */
+  --spacing-control: 2.25rem;
+  --spacing-control-small: 2rem;
+  --spacing-control-large: 2.5rem;
+  --spacing-container: 50rem;
+
+  /* Universal: no spacing (works for gap, padding, and inset recipes) */
+  --spacing-collapsed: --spacing(0);
+
+  /* Relational spacing */
+  --spacing-tight: --spacing(1.5);
+  --spacing-related: --spacing(2);
+  --spacing-regular: --spacing(6);
+  --spacing-group: --spacing(12);
+  --spacing-section: --spacing(24);
+
+  /* Padding spacing */
+  --spacing-padding-tight: --spacing(1);
+  --spacing-padding-snug: --spacing(2);
+  --spacing-padding-regular: --spacing(3);
+  --spacing-padding-relaxed: --spacing(4);
+  --spacing-padding-loose: --spacing(6);
+
+  /* Inset spacing: square (equal padding) */
+  --spacing-square-tight: --spacing(1);
+  --spacing-square-snug: --spacing(2);
+  --spacing-square-regular: --spacing(3);
+  --spacing-square-relaxed: --spacing(4);
+  --spacing-square-loose: --spacing(6);
+
+  /* Inset spacing: squish (more horizontal than vertical) */
+  --spacing-squish-tight: --spacing(1) --spacing(2);
+  --spacing-squish-snug: --spacing(1.5) --spacing(2);
+  --spacing-squish-regular: --spacing(2) --spacing(3);
+  --spacing-squish-relaxed: --spacing(2) --spacing(4);
+  --spacing-squish-loose: --spacing(4) --spacing(6);
+
+  /* Inset spacing: stretch (more vertical than horizontal) */
+  --spacing-stretch-tight: --spacing(2) --spacing(1);
+  --spacing-stretch-snug: --spacing(2) --spacing(1.5);
+  --spacing-stretch-regular: --spacing(3) --spacing(2);
+  --spacing-stretch-relaxed: --spacing(4) --spacing(2);
+  --spacing-stretch-loose: --spacing(6) --spacing(4);
+
+  /* ==================== */
+  /*       ANIMATION      */
+  /* ==================== */
+
+  /* Easing (https://gist.github.com/bendc/ac03faac0bf2aee25b49e5fd260a727d) */
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+  --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+  --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+
+  /* Fade */
+  --fade-in-duration: 0.3s;
+  --fade-out-duration: 0.2s;
+
+  --animate-fade-in: fade-in var(--fade-in-duration) ease-out;
+  --animate-fade-out: fade-in var(--fade-out-duration) ease-in reverse;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  --animate-fade-in-up: fade-in-up var(--fade-in-duration) var(--ease-out-cubic);
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  /* Directional slides (Drawer, Sidebar, Tray) */
+  --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
+  --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+
+  --slide-in-duration: 0.3s;
+  --slide-out-duration: 0.15s;
+
+  --animate-slide-in-right: slide-in-right var(--slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-right: slide-in-right var(--slide-out-duration) reverse
+    forwards;
+
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(calc(100% + var(--slide-offset, 0px)));
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  --animate-slide-in-left: slide-in-left var(--slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-left: slide-in-left var(--slide-out-duration) reverse
+    forwards;
+
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(calc(-100% - var(--slide-offset, 0px)));
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  --animate-slide-in-top: slide-in-top var(--slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-top: slide-in-top var(--slide-out-duration) reverse
+    forwards;
+
+  @keyframes slide-in-top {
+    from {
+      transform: translateY(calc(-100% - var(--slide-offset, 0px)));
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  --animate-slide-in-bottom: slide-in-bottom var(--slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-bottom: slide-in-bottom var(--slide-out-duration) reverse
+    forwards;
+
+  @keyframes slide-in-bottom {
+    from {
+      transform: translateY(calc(100% + var(--slide-offset, 0px)));
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Spinner & progress */
+  --animate-rotate-spinner: rotate-spinner 2s linear infinite;
+  --animate-progress-cycle: progress-cycle 1.5s linear infinite;
+
+  @keyframes rotate-spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes progress-cycle {
+    0% {
+      transform: rotate(0deg);
+      stroke-dashoffset: 75;
+    }
+
+    30% {
+      stroke-dashoffset: 20;
+    }
+
+    100% {
+      transform: rotate(360deg);
+      stroke-dashoffset: 75;
+    }
+  }
+}

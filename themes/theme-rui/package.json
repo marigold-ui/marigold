@@ -33,15 +33,30 @@
         "default": "./dist/appearances.cjs"
       }
     },
-    "./*": {
-      "require": "./dist/*.cjs",
-      "import": "./dist/*.mjs"
+    "./styles.css": {
+      "style": "./dist/styles.css",
+      "default": "./dist/styles.css"
     },
-    "./styles.css": "./dist/styles.css",
-    "./theme.css": "./dist/theme.css",
-    "./mixins.css": "./dist/mixins.css",
-    "./global.css": "./dist/global.css",
-    "./preflight.css": "./dist/preflight.css"
+    "./theme.css": {
+      "style": "./dist/theme.css",
+      "default": "./dist/theme.css"
+    },
+    "./mixins.css": {
+      "style": "./dist/mixins.css",
+      "default": "./dist/mixins.css"
+    },
+    "./tokens.css": {
+      "style": "./dist/tokens.css",
+      "default": "./dist/tokens.css"
+    },
+    "./shared.css": {
+      "style": "./dist/shared.css",
+      "default": "./dist/shared.css"
+    },
+    "./preflight.css": {
+      "style": "./dist/preflight.css",
+      "default": "./dist/preflight.css"
+    }
   },
   "typesVersions": {
     "*": {
@@ -77,6 +92,6 @@
     "tailwindcss-react-aria-components": "^2.0.1"
   },
   "scripts": {
-    "build": "node ./scripts/build-appearances.mjs && cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/global.css src/variants.css src/ui.css src/preflight.css dist/"
+    "build": "node ./scripts/build-appearances.mjs && cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/tokens.css src/shared.css src/variants.css src/ui.css src/preflight.css dist/"
   }
 }

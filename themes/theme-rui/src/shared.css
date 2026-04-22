@@ -1,0 +1,18 @@
+/*
+ * Common base for both consumer entry points (`theme.css` and
+ * `styles.css`). Bundles everything that is independent of how the
+ * theme is mounted:
+ *
+ * - `preflight.css`: required peer-dependency fixes on `html`/`body`.
+ * - `tokens.css`: design tokens via `@theme static`.
+ * - `ui.css`: shared `@utility` layer.
+ * - `variants.css`: custom Tailwind variants.
+ *
+ * The two consumer entry points add the single piece that differs
+ * between them — the selector that the body paint targets.
+ */
+
+@import './preflight.css';
+@import './tokens.css';
+@import './ui.css';
+@import './variants.css';
