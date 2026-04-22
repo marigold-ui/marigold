@@ -22,7 +22,9 @@ const withMarigoldProviders: Decorator[] = [
                   On surface
                 </p>
                 <Card stretch>
-                  <Story />
+                  <Card.Body>
+                    <Story />
+                  </Card.Body>
                 </Card>
               </section>
               <section>
@@ -34,7 +36,9 @@ const withMarigoldProviders: Decorator[] = [
             </div>
           ) : context.parameters.surface !== false ? (
             <Card stretch>
-              <Story />
+              <Card.Body>
+                <Story />
+              </Card.Body>
             </Card>
           ) : (
             <Story />
