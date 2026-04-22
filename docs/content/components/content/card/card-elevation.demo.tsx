@@ -1,46 +1,18 @@
 import { Card, Inline, Stack, Text } from '@marigold/components';
 
 export default () => (
-  <>
-    <div className="bg-bg-surface-sunken shadow-surface-sunken rounded-xl p-4">
-      <p>sunken layer 👍</p>
-      <Card p={4}>
-        <Stack>
-          <Inline>
-            <Text>Earliest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now()).toLocaleDateString()}
-            </Text>
-          </Inline>
-          <Inline>
-            <Text>Latest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now() + 3600 * 1000 * 24).toLocaleDateString()}
-            </Text>
-          </Inline>
-          <Inline>
-            <Text>Total events:</Text>
-            <Text weight="bold">10</Text>
-          </Inline>
-        </Stack>
-      </Card>
-    </div>
-    <div className="bg-bg-surface shadow-surface rounded-xl p-4">
+  <div className="flex flex-col gap-4">
+    <div className="bg-background rounded-xl p-4">
       <p>default layer 👍</p>
       <Card p={4}>
         <Stack>
           <Inline>
             <Text>Earliest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now()).toLocaleDateString()}
-            </Text>
+            <Text weight="bold">01.01.2026</Text>
           </Inline>
           <Inline>
             <Text>Latest event date:</Text>
-            <Text weight="bold">
-              {' '}
-              {new Date(Date.now() + 3600 * 1000 * 24).toLocaleDateString()}
-            </Text>
+            <Text weight="bold">02.01.2026</Text>
           </Inline>
           <Inline>
             <Text>Total events:</Text>
@@ -49,21 +21,17 @@ export default () => (
         </Stack>
       </Card>
     </div>
-    <div className="bg-bg-surface-raised shadow-surface-raised rounded-xl p-4">
-      <p>Same layer like card 👎</p>
+    <div className="ui-surface shadow-elevation-raised rounded-xl p-4">
+      <p>Same layer as card 👎</p>
       <Card p={4}>
         <Stack>
           <Inline>
             <Text>Earliest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now()).toLocaleDateString()}
-            </Text>
+            <Text weight="bold">01.01.2026</Text>
           </Inline>
           <Inline>
             <Text>Latest event date:</Text>
-            <Text weight="bold">
-              {new Date(Date.now() + 3600 * 1000 * 24).toLocaleDateString()}
-            </Text>
+            <Text weight="bold">02.01.2026</Text>
           </Inline>
           <Inline>
             <Text>Total events:</Text>
@@ -72,5 +40,5 @@ export default () => (
         </Stack>
       </Card>
     </div>
-  </>
+  </div>
 );
