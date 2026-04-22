@@ -7,6 +7,7 @@ import {
   Columns,
   ComponentDemo,
   DateFormat,
+  DemoLinks,
   Do,
   DoDescription,
   DoFigure,
@@ -94,6 +95,7 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
             GuidelineTiles,
 
             TeaserList,
+            DemoLinks,
 
             FeedbackComponentsTable,
 

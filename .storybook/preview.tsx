@@ -26,6 +26,10 @@ export default definePreview({
   addons: [addonA11y(), addonDocs(), storybookAddonTestCodegen],
   parameters: {
     layout: 'padded',
+    chromatic: {
+      pauseAnimationAtEnd: true,
+      prefersReducedMotion: 'reduce',
+    },
     viewport: {
       options: {
         ...MINIMAL_VIEWPORTS,
