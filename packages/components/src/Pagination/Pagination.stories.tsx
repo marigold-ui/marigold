@@ -260,7 +260,7 @@ export const WithTable = meta.story({
           <Inline alignY="center" space={4}>
             <Text fontSize="sm">Results per page</Text>
             <Select
-              width={'fit'}
+              width={20}
               value={pageSize.toString()}
               onChange={val => setPageSize(parseInt(`${val}`))}
             >

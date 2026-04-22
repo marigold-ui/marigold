@@ -83,7 +83,7 @@ export const OrganizerInfo = () => (
                   </Inline>
                 }
                 placeholder="Select preference"
-                width="fit"
+                width="1/2"
               >
                 <Select.Option id="email">Email</Select.Option>
                 <Select.Option id="phone">Phone</Select.Option>
