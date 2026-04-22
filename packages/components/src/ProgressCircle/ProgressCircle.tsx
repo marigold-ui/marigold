@@ -9,8 +9,8 @@ export interface ProgressCircleProps extends RAC.ProgressBarProps {
    * Defines the height and width of the component
    * @default 16
    */
-  size?: string | 'default' | 'large' | 'fit';
-  variant?: 'default' | 'inverted';
+  size?: 'default' | 'large' | 'fit' | (string & {});
+  variant?: 'default' | 'inverted' | (string & {});
 }
 
 export const ProgressCircleSvg = ({
