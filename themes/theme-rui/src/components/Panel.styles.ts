@@ -16,7 +16,7 @@ export const Panel: ThemeComponent<'Panel'> = {
       },
       size: {
         default: '',
-        form: 'max-w-xl',
+        form: 'max-w-4xl',
       },
     },
     defaultVariants: {
