@@ -2,6 +2,7 @@ import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox as RACComboBox } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import type { WidthProp } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -36,9 +37,10 @@ export interface ComboBoxProps
   size?: string;
 
   /**
-   * @remarks `WidthProp`
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * Note: `"fit"` is not supported because the virtualizer controls item sizing.
    */
-  width?: FieldBaseProps<'label'>['width'];
+  width?: Exclude<WidthProp['width'], 'fit'>;
   /**
    * If `true`, the input is disabled.
    * @default false

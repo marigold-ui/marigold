@@ -224,6 +224,59 @@
   --spacing-stretch-relaxed: --spacing(4) --spacing(2);
   --spacing-stretch-loose: --spacing(6) --spacing(4);
 
+  /*
+   * Axis-decomposed inset tokens (-x / -y)
+   *
+   * Inset tokens like `squish-regular` hold two values (vertical horizontal)
+   * in a single CSS custom property. This works when applied via the CSS
+   * `padding` shorthand (e.g. `padding: var(--spacing-squish-regular)`), but
+   * some components need to apply horizontal and vertical inset independently.
+   *
+   * For example, <Panel> applies horizontal inset per-child (so `bleed` can
+   * opt out), while vertical inset is set once on the container as top/bottom
+   * padding. A single two-value token can't be split by CSS alone, so these
+   * `-x` / `-y` variants expose each axis separately.
+   *
+   * Usage: `createSpacingVar('panel-px', 'squish-regular-x')` resolves to
+   * `var(--spacing-squish-regular-x)`, giving only the horizontal component.
+   */
+
+  /* square -x / -y */
+  --spacing-square-tight-x: --spacing(1);
+  --spacing-square-tight-y: --spacing(1);
+  --spacing-square-snug-x: --spacing(2);
+  --spacing-square-snug-y: --spacing(2);
+  --spacing-square-regular-x: --spacing(3);
+  --spacing-square-regular-y: --spacing(3);
+  --spacing-square-relaxed-x: --spacing(4);
+  --spacing-square-relaxed-y: --spacing(4);
+  --spacing-square-loose-x: --spacing(6);
+  --spacing-square-loose-y: --spacing(6);
+
+  /* squish -x / -y */
+  --spacing-squish-tight-x: --spacing(2);
+  --spacing-squish-tight-y: --spacing(1);
+  --spacing-squish-snug-x: --spacing(2);
+  --spacing-squish-snug-y: --spacing(1.5);
+  --spacing-squish-regular-x: --spacing(3);
+  --spacing-squish-regular-y: --spacing(2);
+  --spacing-squish-relaxed-x: --spacing(4);
+  --spacing-squish-relaxed-y: --spacing(2);
+  --spacing-squish-loose-x: --spacing(6);
+  --spacing-squish-loose-y: --spacing(4);
+
+  /* stretch -x / -y */
+  --spacing-stretch-tight-x: --spacing(1);
+  --spacing-stretch-tight-y: --spacing(2);
+  --spacing-stretch-snug-x: --spacing(1.5);
+  --spacing-stretch-snug-y: --spacing(2);
+  --spacing-stretch-regular-x: --spacing(2);
+  --spacing-stretch-regular-y: --spacing(3);
+  --spacing-stretch-relaxed-x: --spacing(2);
+  --spacing-stretch-relaxed-y: --spacing(4);
+  --spacing-stretch-loose-x: --spacing(4);
+  --spacing-stretch-loose-y: --spacing(6);
+
   /* ==================== */
   /*       ANIMATION      */
   /* ==================== */

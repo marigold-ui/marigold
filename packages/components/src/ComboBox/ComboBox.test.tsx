@@ -109,6 +109,15 @@ test('hides loading state when loading is false', () => {
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
 
+test('does not allow width="fit"', () => {
+  renderWithOverlay(<Basic.Component label="Label" width="fit" />);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+
+  expect(container).not.toHaveClass('w-fit');
+});
+
 test('supports specific empty state text', async () => {
   renderWithOverlay(
     <Basic.Component
