@@ -16,7 +16,10 @@
  */
 
 @import 'tailwindcss';
-@import './shared.css' theme(inline);
+@import './preflight.css';
+@import './tokens.css' theme(inline);
+@import './ui.css';
+@import './variants.css';
 
 @layer base {
   [data-theme='rui'] {

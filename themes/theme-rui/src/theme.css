@@ -12,7 +12,10 @@
  * `[data-theme="rui"]` so it does not clobber adjacent content.
  */
 
-@import './shared.css';
+@import './preflight.css';
+@import './tokens.css';
+@import './ui.css';
+@import './variants.css';
 
 @layer base {
   body {

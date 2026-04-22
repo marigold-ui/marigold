@@ -35,12 +35,11 @@ blends into any surface.
 
 - `tokens.css` (new) — `@plugin` declaration and every design token
   in one place. Easy to find, easy to extend.
-- `shared.css` (new) — the common base both entry points build on:
-  `preflight.css` + `tokens.css` + `ui.css` + `variants.css`.
-- `theme.css` (Tailwind-native entry) — imports `shared.css` and
-  paints `<body>` directly. A Marigold-first app needs zero extra
-  markup to get the theme's page background, text color, and font.
-- `styles.css` (pre-compiled entry) — imports `shared.css` and
+- `theme.css` (Tailwind-native entry) — imports `preflight.css` +
+  `tokens.css` + `ui.css` + `variants.css` and paints `<body>`
+  directly. A Marigold-first app needs zero extra markup to get the
+  theme's page background, text color, and font.
+- `styles.css` (pre-compiled entry) — imports the same base and
   paints `[data-theme="rui"]`. The consumer places the attribute on
   `<html>`, `<body>`, or a wrapper `<div>` to control where Marigold
   paints — whole-app or island.
@@ -76,7 +75,7 @@ Tailwind v4's CSS resolver uses `conditionNames: ["style"]`.
 Bare-string export entries without a matching condition fail under
 strict resolvers, so every `.css` subpath now declares both `style`
 and `default` targets. The unused `./*` JS catchall is removed. New
-subpath exports: `./tokens.css`, `./shared.css`, `./preflight.css`.
+subpath exports: `./tokens.css`, `./preflight.css`.
 
 Existing documented imports (`theme.css`, `styles.css`) continue to
 work.

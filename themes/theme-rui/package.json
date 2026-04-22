@@ -49,10 +49,6 @@
       "style": "./dist/tokens.css",
       "default": "./dist/tokens.css"
     },
-    "./shared.css": {
-      "style": "./dist/shared.css",
-      "default": "./dist/shared.css"
-    },
     "./preflight.css": {
       "style": "./dist/preflight.css",
       "default": "./dist/preflight.css"
@@ -92,6 +88,6 @@
     "tailwindcss-react-aria-components": "^2.0.1"
   },
   "scripts": {
-    "build": "node ./scripts/build-appearances.mjs && cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/tokens.css src/shared.css src/variants.css src/ui.css src/preflight.css dist/"
+    "build": "node ./scripts/build-appearances.mjs && cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/tokens.css src/variants.css src/ui.css src/preflight.css dist/"
   }
 }
