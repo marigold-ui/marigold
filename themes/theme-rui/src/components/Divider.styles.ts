@@ -5,7 +5,7 @@ export const Divider: ThemeComponent<'Divider'> = cva({
   variants: {
     variant: {
       default: '',
-      bold: 'h-0.5 w-0.5',
+      bold: 'h-0.5',
     },
   },
   defaultVariants: {

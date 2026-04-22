@@ -4,13 +4,15 @@ import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'style';
 export interface DividerProps extends Omit<RAC.SeparatorProps, RemovedProps> {
-  variant?: 'default' | 'bold' | (string & {});
+  variant?: 'default' | 'bold' | string;
+  size?: string;
 }
 
-const _Divider = ({ variant, orientation, ...props }: DividerProps) => {
+const _Divider = ({ variant, size, orientation, ...props }: DividerProps) => {
   const classNames = useClassNames({
     component: 'Divider',
     variant,
+    size,
   });
 
   const orientationStyles =
@@ -18,6 +20,7 @@ const _Divider = ({ variant, orientation, ...props }: DividerProps) => {
 
   return (
     <Separator
+      orientation={orientation}
       className={cn('border-none', orientationStyles, classNames)}
       {...props}
     />

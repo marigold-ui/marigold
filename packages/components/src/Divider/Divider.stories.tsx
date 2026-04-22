@@ -10,17 +10,35 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['section', 'bold'],
+      options: ['default', 'bold'],
       description: 'Thick or thin line',
       table: {
         defaultValue: {
-          summary: 'section',
+          summary: 'default',
+        },
+      },
+    },
+    size: {
+      control: {
+        type: 'text',
+      },
+      description: 'size',
+    },
+    orientation: {
+      control: {
+        type: 'select',
+      },
+      options: ['horizontal', 'vertical'],
+      description: 'Orientation of the divider',
+      table: {
+        defaultValue: {
+          summary: 'horizontal',
         },
       },
     },
   },
   args: {
-    variant: 'section',
+    variant: 'default',
   },
 });
 

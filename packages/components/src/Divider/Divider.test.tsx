@@ -40,3 +40,10 @@ test('vertical orientation applies vertical classes', () => {
 
   expect(divider).toHaveClass('min-h-8', 'w-px');
 });
+
+test('does not leak size prop to the DOM', () => {
+  render(<Basic.Component data-testid="divider" size="custom" />);
+  const divider = screen.getByTestId('divider');
+
+  expect(divider).not.toHaveAttribute('size');
+});
