@@ -1,7 +1,24 @@
+/*
+ * Source for the pre-built standalone bundle (`dist/styles.css`).
+ *
+ * Compiled by Tailwind (PostCSS) and then prefixed with
+ * `[data-theme="rui"]`. `html`/`body` selectors from `preflight.css` are
+ * excluded from prefixing so the peer-dependency rules still reach the
+ * real document root. See `postcss.config.js`.
+ *
+ * Typography (`global.css`) is intentionally omitted from the standalone
+ * bundle — when Marigold is adopted on a subtree, touching `<body>`
+ * typography from an embedded widget would be hostile. Opt in by
+ * importing `@marigold/theme-rui/global.css` separately.
+ */
 @import 'tailwindcss';
 
-@import './theme.css' theme(inline);
-@import './global.css' theme(inline);
+@import './preflight.css' theme(inline);
+@import './tokens.css' theme(inline);
+@import './utilities.css' theme(inline);
+@import './variants.css' theme(inline);
+
+@plugin 'tailwindcss-react-aria-components';
 
 /* prettier-ignore */
 @source inline('{bg}-{stone}-{50,{100..900..100},950}');

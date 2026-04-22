@@ -39,10 +39,11 @@
     },
     "./styles.css": "./dist/styles.css",
     "./theme.css": "./dist/theme.css",
-    "./mixins.css": "./dist/mixins.css",
-    "./global.css": "./dist/global.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./utilities.css": "./dist/utilities.css",
+    "./variants.css": "./dist/variants.css",
     "./preflight.css": "./dist/preflight.css",
-    "./page-scrollbar.css": "./dist/page-scrollbar.css"
+    "./global.css": "./dist/global.css"
   },
   "typesVersions": {
     "*": {
@@ -78,6 +79,6 @@
     "tailwindcss-react-aria-components": "^2.0.1"
   },
   "scripts": {
-    "build": "node ./scripts/build-appearances.mjs && cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/global.css src/variants.css src/ui.css src/preflight.css src/page-scrollbar.css dist/"
+    "build": "node ./scripts/build-appearances.mjs && cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/tokens.css src/utilities.css src/variants.css src/preflight.css src/global.css dist/"
   }
 }

@@ -1,20 +1,19 @@
 /*
  * Required base rules for Marigold peer dependencies.
  *
- * - `html { scrollbar-gutter: stable }` prevents a 1 px reflow when
- *   `@react-aria/overlays` locks the page (it sets `overflow: hidden`
- *   on `<html>` and compensates scrollbar width).
- * - `body { position: relative; overflow-x: clip }` contains the
- *   `@react-aria/live-announcer` portal, which mounts at
- *   `top: -10000px; left: -10000px` and would otherwise expand the
- *   document's scrollable area. `clip` (not `hidden`) keeps
- *   `position: sticky` on descendants working.
+ * - `html { scrollbar-gutter: stable }` reserves the scrollbar gutter
+ *   so content does not reflow when the document grows past one viewport
+ *   (or when `@react-aria/overlays` locks the page by setting
+ *   `overflow: hidden` on `<html>`).
+ * - `body { position: relative; overflow-x: clip }` contains absolutely
+ *   positioned portals (e.g. `@react-aria/live-announcer`) so they
+ *   cannot expand the document's scrollable area. `clip` (not `hidden`)
+ *   keeps `position: sticky` on descendants working.
  *
- * Import this file in your app's root stylesheet. The rules must reach
- * the actual `<html>` / `<body>` elements, which is why the theme's
- * other bundles cannot deliver them — the pre-built `styles.css`
- * re-scopes every selector to `[data-theme="rui"]` so it can be adopted
- * on a subtree without styling the whole page.
+ * Shipped as its own file so the rules can ride inside the composed
+ * `theme.css` (for Tailwind setups) and the pre-built `styles.css` (for
+ * standalone setups) without getting rewritten by the `[data-theme="rui"]`
+ * prefixer — `html`/`body` selectors are excluded from prefixing.
  */
 @layer base {
   html {

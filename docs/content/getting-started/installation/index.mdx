@@ -36,10 +36,10 @@ Install the component library, the system package, and the RUI theme:
 
 ## Which setup?
 
-Choose based on your goal:
+Choose based on how Marigold fits into your app:
 
-- **[Tailwind CSS](#tailwind-css)** _(recommended for production)_ — full design system with tree-shaking, the same token scale (spacing, colors, breakpoints) in your own code, and integrated dev tooling (IntelliSense, JIT).
-- **[Pre-built CSS](#pre-built-css)** _(prototyping only)_ — single import, no build configuration. Use for quick prototypes, AI-generated experiments, or environments where you can't run a build.
+- **[Tailwind CSS](#tailwind-css)** _(recommended for new apps)_ — Marigold owns the page. Full design system with tree-shaking, the same token scale (spacing, colors, breakpoints) in your own code, integrated dev tooling (IntelliSense, JIT), and brand typography applied automatically.
+- **[Pre-built CSS](#pre-built-css)** — Marigold is adopted on a subtree of an existing app, or you want a single CSS import with no build configuration (prototyping, AI-generated experiments, environments without a build step). Styles are scoped to `[data-theme="rui"]` so they never touch the host app's chrome.
 
 ## Tailwind CSS
 
@@ -66,7 +66,6 @@ In `src/index.css`:
 
 ```css
 @import 'tailwindcss';
-@import '@marigold/theme-rui/preflight.css';
 @import '@marigold/theme-rui/theme.css';
 
 @source '../node_modules/@marigold';
@@ -74,7 +73,7 @@ In `src/index.css`:
 
 The `@source` path is relative to the CSS file's location — adjust it if your entry CSS lives elsewhere.
 
-**Why `preflight.css`?** It applies peer-dependency fixes on `<html>` and `<body>` that cannot ride along in `theme.css` — the theme bundle re-scopes every selector to `[data-theme="rui"]` so it can be adopted on a subtree, which would strip rules that must reach the real root elements.
+`theme.css` is the single entry point. It composes design tokens, `ui-*` utilities, custom variants, peer-dependency fixes on `<html>`/`<body>`, and brand typography. See [composing your own bundle](#advanced-composing-your-own-bundle) if you need a subset.
 
 </Step>
 
@@ -129,7 +128,6 @@ In `src/app/globals.css`:
 
 ```css
 @import 'tailwindcss';
-@import '@marigold/theme-rui/preflight.css';
 @import '@marigold/theme-rui/theme.css';
 
 @source '../../node_modules/@marigold';
@@ -137,7 +135,7 @@ In `src/app/globals.css`:
 
 The `@source` path is relative to the CSS file's location — adjust it if your entry CSS lives elsewhere.
 
-**Why `preflight.css`?** It applies peer-dependency fixes on `<html>` and `<body>` that cannot ride along in `theme.css` — the theme bundle re-scopes every selector to `[data-theme="rui"]` so it can be adopted on a subtree, which would strip rules that must reach the real root elements.
+`theme.css` is the single entry point. It composes design tokens, `ui-*` utilities, custom variants, peer-dependency fixes on `<html>`/`<body>`, and brand typography. See [composing your own bundle](#advanced-composing-your-own-bundle) if you need a subset.
 
 </Step>
 
@@ -189,12 +187,11 @@ const inter = Inter({ subsets: ['latin'] });
 
 ## Pre-built CSS
 
-Import the pre-built CSS that ships with the theme:
+One import, no build configuration. The bundle carries component styles scoped to `[data-theme="rui"]` and the peer-dependency fixes on `<html>`/`<body>` un-scoped so they reach the real document root:
 
 ```tsx
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
-import '@marigold/theme-rui/preflight.css';
 import '@marigold/theme-rui/styles.css';
 
 export const App = () => (
@@ -202,7 +199,7 @@ export const App = () => (
 );
 ```
 
-Add `data-theme="rui"` to your `<html>` element:
+Mark the scoping element with `data-theme="rui"` — usually `<html>`, but any ancestor of the Marigold subtree works:
 
 ```html
 <html data-theme="rui">
@@ -210,21 +207,27 @@ Add `data-theme="rui"` to your `<html>` element:
 </html>
 ```
 
-The pre-built bundle re-scopes every selector to `[data-theme="rui"]` so Marigold can be adopted on a subtree of a non-Marigold app. Without the attribute, component styles won't apply. The separate `preflight.css` import handles document-level fixes that can't be scoped — see [step 1 above](#1-configure-your-stylesheet) for the rationale.
+Without the attribute, component styles won't apply.
 
-## Opinionated defaults (opt-in)
+**Brand typography is opt-in here.** The Tailwind setup applies it by default; the pre-built bundle omits it on purpose — touching `<body>` typography from an embedded widget would be hostile to the host app. Add one import if you want it:
 
-Marigold ships two additional stylesheets that work with either setup above:
-
-```css
-/* Brand typography on <body> */
-@import '@marigold/theme-rui/global.css';
-
-/* Themed scrollbar on <html> — matches the `ui-scrollbar` utility */
-@import '@marigold/theme-rui/page-scrollbar.css';
+```tsx
+import '@marigold/theme-rui/global.css';
 ```
 
-Neither is required. Skip them if you prefer your own typography or scrollbar styling.
+## Advanced: composing your own bundle
+
+The two import paths above are composition files. Pull individual pieces when you need a subset (for example, tokens in a non-Marigold context, or your own arrangement of the base rules):
+
+| Path                                | Contents                                                                                                    |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `@marigold/theme-rui/theme.css`     | Composed Tailwind entry — tokens + utilities + variants + preflight + typography + RAC plugin               |
+| `@marigold/theme-rui/styles.css`    | Pre-built scoped bundle — compiled Tailwind output, prefixed with `[data-theme="rui"]`, preflight un-scoped |
+| `@marigold/theme-rui/tokens.css`    | Design tokens only (`@theme static` block)                                                                  |
+| `@marigold/theme-rui/utilities.css` | `ui-*` utility classes                                                                                      |
+| `@marigold/theme-rui/variants.css`  | Custom Tailwind variants                                                                                    |
+| `@marigold/theme-rui/preflight.css` | Peer-dependency fixes on `<html>`/`<body>`                                                                  |
+| `@marigold/theme-rui/global.css`    | Brand typography on `<body>`                                                                                |
 
 ## Next steps
 

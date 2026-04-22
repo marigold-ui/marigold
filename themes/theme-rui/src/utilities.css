@@ -1,8 +1,8 @@
 /*
  * UI Component Utilities
  *
- * This file contains utilities to style UI components consistently,
- * including input and surface styling, state variations, and elevation levels.
+ * Shared `@utility` classes used by Marigold components — input/surface
+ * primitives, interactive state, elevation, touch, and scroll helpers.
  */
 
 /* ========================= */
@@ -68,7 +68,7 @@
   border: 1px solid transparent;
 }
 
-/* 
+/*
  * Use when the surface must stand out against the page. Toolbars, action bars,
  * or anything that uses the primary color to signal prominence.
  */
