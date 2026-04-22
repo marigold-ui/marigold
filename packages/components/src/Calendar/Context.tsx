@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import type { DateValue } from 'react-aria-components';
 import type { ComponentClassNames } from '@marigold/system';
 
@@ -13,7 +13,7 @@ export interface CalendarContextValue {
 export const CalendarContext = createContext<CalendarContextValue | null>(null);
 
 export const useCalendarContext = () => {
-  const ctx = useContext(CalendarContext);
+  const ctx = use(CalendarContext);
   if (!ctx) {
     throw new Error('Calendar components must be used within <Calendar>');
   }

@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Group, Input, NumberField } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -65,76 +65,73 @@ export interface NumberFieldProps
    * @default none
    */
   placeholder?: string;
+  ref?: Ref<HTMLInputElement>;
 }
 
 // Component
 // ---------------
-const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
-  (
-    {
-      variant,
-      size,
-      disabled,
-      required,
-      readOnly,
-      error,
-      hideStepper,
-      ...rest
-    }: NumberFieldProps,
-    ref
-  ) => {
-    const classNames = useClassNames({
-      component: 'NumberField',
-      size,
-      variant,
-    });
+const _NumberField = ({
+  variant,
+  size,
+  disabled,
+  required,
+  readOnly,
+  error,
+  hideStepper,
+  ref,
+  ...rest
+}: NumberFieldProps) => {
+  const classNames = useClassNames({
+    component: 'NumberField',
+    size,
+    variant,
+  });
 
-    const props: RAC.NumberFieldProps = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isInvalid: error,
-      isRequired: required,
-      ...rest,
-    };
+  const props: RAC.NumberFieldProps = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isInvalid: error,
+    isRequired: required,
+    ...rest,
+  };
 
-    const showStepper = !hideStepper && !readOnly;
+  const showStepper = !hideStepper && !readOnly;
 
-    return (
-      <FieldBase
-        as={NumberField}
-        {...props}
-        data-readonly={readOnly ? 'true' : undefined}
-        data-stepper={showStepper ? 'true' : undefined}
+  return (
+    <FieldBase
+      as={NumberField}
+      {...props}
+      data-readonly={readOnly ? 'true' : undefined}
+      data-stepper={showStepper ? 'true' : undefined}
+    >
+      <Group
+        className={cn(
+          'flex w-(--field-width) max-w-full min-w-0 items-stretch',
+          classNames.group
+        )}
       >
-        <Group
-          className={cn(
-            'flex w-(--field-width) max-w-full min-w-0 items-stretch',
-            classNames.group
-          )}
-        >
-          {showStepper && (
-            <StepButton
-              className={classNames.stepper}
-              direction="down"
-              slot="decrement"
-            />
-          )}
-          <Input
-            ref={ref}
-            className={cn('h-full flex-1 outline-none', classNames.input)}
-            onFocus={e => e.currentTarget.select()}
+        {showStepper && (
+          <StepButton
+            className={classNames.stepper}
+            direction="down"
+            slot="decrement"
           />
-          {showStepper && (
-            <StepButton
-              className={classNames.stepper}
-              direction="up"
-              slot="increment"
-            />
-          )}
-        </Group>
-      </FieldBase>
-    );
-  }
-);
+        )}
+        <Input
+          ref={ref}
+          className={cn('h-full flex-1 outline-none', classNames.input)}
+          onFocus={e => e.currentTarget.select()}
+        />
+        {showStepper && (
+          <StepButton
+            className={classNames.stepper}
+            direction="up"
+            slot="increment"
+          />
+        )}
+      </Group>
+    </FieldBase>
+  );
+};
 
 export { _NumberField as NumberField };

@@ -12,14 +12,14 @@ export const Menu: ThemeComponent<'Menu'> = {
   item: cva({
     base: [
       'relative flex cursor-pointer items-center gap-2 rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
-      'disabled:text-disabled-foreground',
+      'disabled:text-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
     ],
     variants: {
       variant: {
         default:
-          'text-foreground focus:bg-focus [&_svg]:text-muted-foreground [&_svg]:opacity-60',
-        destructive: 'text-destructive focus:bg-destructive/10',
+          'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60',
+        destructive: 'text-destructive-accent focus:bg-destructive-accent/10',
       },
     },
     defaultVariants: {
@@ -27,7 +27,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     },
   }),
   section: cva({
-    base: 'text-muted-foreground p-2 text-xs font-medium border-t border-t-border in-first:border-t-0',
+    base: 'text-secondary p-2 text-xs font-medium border-t border-t-border in-first:border-t-0',
   }),
   button: cva({
     base: [
@@ -39,12 +39,12 @@ export const Menu: ThemeComponent<'Menu'> = {
       variant: {
         default: [
           'ui-surface shadow-elevation-border',
-          'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
-          'pending:[--ui-background-color:var(--color-disabled)] pending:border-0 pending:shadow-none',
-          'expanded:[--ui-background-color:var(--color-hover)]',
+          'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
+          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
+          'pending:[--ui-background-color:var(--color-disabled-surface)] pending:border-0 pending:shadow-none',
+          'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
         ],
-        ghost: 'hover:bg-hover hover:text-foreground',
+        ghost: 'hover:ui-state-hover',
       },
       size: {
         default: 'text-sm',
@@ -65,22 +65,22 @@ export const Menu: ThemeComponent<'Menu'> = {
       {
         variant: ['default', 'ghost'],
         size: 'default',
-        class: 'h-button p-squish-relaxed [&_svg]:size-4',
+        class: 'h-control p-squish-relaxed [&_svg]:size-4',
       },
       {
         variant: ['default', 'ghost'],
         size: 'small',
-        class: 'h-button-small px-3 [&_svg]:size-3.5',
+        class: 'h-control-small px-3 [&_svg]:size-3.5',
       },
       {
         variant: ['default', 'ghost'],
         size: 'large',
-        class: 'h-button-large px-8 [&_svg]:size-5',
+        class: 'h-control-large px-8 [&_svg]:size-5',
       },
       {
         variant: ['default', 'ghost'],
         size: 'icon',
-        class: 'size-button [&_svg]:size-4',
+        class: 'size-control [&_svg]:size-4',
       },
     ],
   }),

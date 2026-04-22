@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { Dispatch, SetStateAction, use } from 'react';
 import { CalendarStateContext, DateValue } from 'react-aria-components';
 import { ListBox } from './ListBox';
 import { useFormattedMonths } from './useFormattedMonths';
@@ -14,7 +14,7 @@ const MonthListBox = ({
   minValue,
   maxValue,
 }: MonthDropdownProps) => {
-  const state = useContext(CalendarStateContext)!;
+  const state = use(CalendarStateContext)!;
   const months = useFormattedMonths(state.timeZone, state.focusedDate);
   const currentYear = state.focusedDate.year;
 

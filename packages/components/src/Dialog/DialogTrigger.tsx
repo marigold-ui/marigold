@@ -41,11 +41,11 @@ const _DialogTrigger = ({
   };
 
   return (
-    <DialogContext.Provider value={ctx}>
+    <DialogContext value={ctx}>
       <DialogTrigger {...props}>
         <PressResponder isPressed={false}>{props.children}</PressResponder>
       </DialogTrigger>
-    </DialogContext.Provider>
+    </DialogContext>
   );
 };
 

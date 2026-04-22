@@ -3,13 +3,12 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const TagField: ThemeComponent<'TagField'> = {
   trigger: cva({
     base: [
-      'ui-surface shadow-elevation-border ui-input h-fit min-h-input',
+      'ui-surface shadow-elevation-border ui-input h-fit min-h-control',
       'cursor-pointer py-1',
       'group-disabled/field:ui-state-disabled',
       '[&:has(>button[data-focus-visible])]:ui-state-focus',
       'group-invalid/field:ui-state-error',
-      '[&:has(>button[data-focus-visible])]:group-invalid/field:outline-destructive/20',
-      '[&:has(>button[data-focus-visible])]:group-invalid/field:[--ui-border-color:var(--color-destructive)]',
+      '[&:has(>button[data-focus-visible])]:group-invalid/field:ring-destructive-accent/20',
     ],
   }),
   tagGroup: cva({ base: 'flex flex-1 flex-wrap items-center gap-1' }),

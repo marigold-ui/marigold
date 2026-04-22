@@ -22,6 +22,7 @@ const meta = preview.meta({
   component: AppLayout,
   parameters: {
     layout: 'fullscreen',
+    surface: false,
   },
 });
 

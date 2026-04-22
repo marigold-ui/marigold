@@ -15,7 +15,7 @@ export default () => (
             <Text weight="medium">{venue.name}</Text>
           </Table.Cell>
           <Table.Cell>
-            <Text size="sm" color="muted-foreground">
+            <Text size="sm" color="secondary">
               {venueTypes[venue.type]}
             </Text>
           </Table.Cell>
