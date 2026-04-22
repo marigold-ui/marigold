@@ -123,6 +123,21 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
+    Panel?: Record<
+      | 'root'
+      | 'header'
+      | 'title'
+      | 'description'
+      | 'actions'
+      | 'content'
+      | 'collapsible'
+      | 'collapsibleHeader'
+      | 'collapsibleTitle'
+      | 'collapsibleDescription'
+      | 'collapsibleContent'
+      | 'footer',
+      ComponentStyleFunction<string, string>
+    >;
     Pagination?: Record<
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
