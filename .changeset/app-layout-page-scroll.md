@@ -1,6 +1,5 @@
 ---
 '@marigold/components': major
-'@marigold/theme-rui': minor
 ---
 
 feat(AppLayout): switch to page-level scroll
@@ -38,29 +37,6 @@ feat(AppLayout): switch to page-level scroll
   direct children of `<AppLayout.Main>`, for example) will no
   longer be bounded by the viewport. Use `min-h-dvh` or remove the
   constraint.
-
-**Theme**
-
-`@marigold/theme-rui` ships a new `preflight.css` with two peer-dependency
-fixes that page-level scroll needs on the real `<html>` / `<body>`:
-
-- `html { scrollbar-gutter: stable }` — prevents a 1 px reflow when
-  `@react-aria/overlays` locks the page (it sets `overflow: hidden`
-  on `<html>` and compensates scrollbar width).
-- `body { position: relative; overflow-x: clip }` — contains the
-  `@react-aria/live-announcer` portal (mounted at `top: -10000px;
-  left: -10000px`) so it cannot expand the document's scrollable
-  area. `clip` (not `hidden`) keeps `position: sticky` on descendants
-  working.
-
-These rules ride inside both `theme.css` and the pre-built `styles.css`
-— the prefixer excludes `html` / `body` selectors so the rules reach
-the document root while the rest of the bundle stays scoped to
-`[data-theme="rui"]`. Existing consumers do not need to change their
-imports.
-
-`ui-scrollbar`'s track is now transparent so the themed scrollbar
-blends into any surface.
 
 **Known trade-offs**
 
