@@ -8,8 +8,7 @@ export const DateField: ThemeComponent<'DateField'> = {
       'disabled:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',
       'has-focus:ui-state-focus',
-      // Need to set error ring manually to override focus ring
-      'has-invalid:ui-state-error has-focus:has-invalid:ring-destructive-accent/20',
+      'has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive)]',
     ],
   }),
   input: cva({ base: ['ui-input', 'cursor-text'] }),
