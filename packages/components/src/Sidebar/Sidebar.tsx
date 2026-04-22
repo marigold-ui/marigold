@@ -68,7 +68,10 @@ const SidebarBase = ({
       ref={ref}
       aria-label={stringFormatter.format('sidebar')}
       data-state={state}
-      className={cn('[grid-area:sidebar]', classNames.root)}
+      className={cn(
+        classNames.root,
+        'sticky top-0 h-dvh self-start [grid-area:sidebar]'
+      )}
     >
       <div
         className={cn(

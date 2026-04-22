@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Playwright MCP
 .playwright-mcp
+
+# Vitest debugging
+.vitest-attachments
