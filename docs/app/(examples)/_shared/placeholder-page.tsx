@@ -14,7 +14,7 @@ export const PlaceholderPage = ({
       <Headline level={2}>{title}</Headline>
       <Text>{description}</Text>
       {Array.from({ length: 8 }, (_, i) => (
-        <Card key={i} p={4}>
+        <Card key={i}>
           <Text size="sm">
             {title} content section {i + 1}
           </Text>
