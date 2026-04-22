@@ -57,6 +57,15 @@ test('supports showing an error', () => {
   expect(screen.getByText('Error!')).toBeInTheDocument();
 });
 
+test('does not allow width="fit"', () => {
+  renderWithOverlay(<Basic.Component label="Label" width="fit" />);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+
+  expect(container).not.toHaveClass('w-fit');
+});
+
 test('supports default value', () => {
   renderWithOverlay(<Basic.Component defaultValue="garlic" />);
 
