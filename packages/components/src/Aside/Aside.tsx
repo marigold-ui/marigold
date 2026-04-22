@@ -12,7 +12,6 @@ export interface AsideProps extends AriaRegionProps {
 
   /**
    * Set the spacing between child elements.
-   * @remarks `SpacingTokens<Tokens>`
    */
   space?: SpaceProp<SpacingTokens>['space'];
 
@@ -28,7 +27,6 @@ export interface AsideProps extends AriaRegionProps {
   /**
    * At what percentage of the content's width should the other content wrap beneath it
    * @default 50%
-   * @remarks `NonZeroPercentage`
    */
   wrap?: NonZeroPercentage;
 }
