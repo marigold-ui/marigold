@@ -73,6 +73,7 @@ export const Notifications = () => {
               width={80}
             />
             <Switch
+              variant="settings"
               label="Pause all notifications"
               description="Temporarily stops all email notifications. Useful during setup or maintenance. Notifications generated while paused are silently discarded and will not be sent retroactively."
             />
@@ -88,7 +89,11 @@ export const Notifications = () => {
         </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">
-            <Switch label="Enable quiet hours" defaultSelected />
+            <Switch
+              variant="settings"
+              label="Enable quiet hours"
+              defaultSelected
+            />
             <Inline space="related">
               <Select label="From" defaultValue="22" width={24}>
                 <Select.Option id="20">20:00</Select.Option>

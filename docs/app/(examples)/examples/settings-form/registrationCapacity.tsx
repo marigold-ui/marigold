@@ -5,7 +5,6 @@ import {
   Form,
   NumberField,
   Panel,
-  Select,
   Stack,
   Switch,
   TextField,
@@ -20,8 +19,7 @@ export const RegistrationCapacity = () => {
       <Panel.Header>
         <Panel.Title>Registration & capacity</Panel.Title>
         <Panel.Description>
-          Default registration behavior, pricing, and attendee limits for new
-          events.
+          Default registration behavior and attendee limits for new events.
         </Panel.Description>
       </Panel.Header>
       <Panel.Content>
@@ -42,50 +40,37 @@ export const RegistrationCapacity = () => {
               label="Default Maximum Attendees"
               defaultValue={500}
               minValue={1}
+              description="When this limit is reached, new registrations are blocked unless a waitlist is enabled."
               width={32}
             />
-            <Select label="Default Currency" defaultValue="eur" width={24}>
-              <Select.Option id="eur">EUR</Select.Option>
-              <Select.Option id="usd">USD</Select.Option>
-              <Select.Option id="chf">CHF</Select.Option>
-              <Select.Option id="gbp">GBP</Select.Option>
-            </Select>
             <Switch
+              variant="settings"
               label="Enable waitlist by default"
               description="Automatically adds a waitlist when an event reaches capacity. Attendees who join the waitlist are notified in order as spots become available."
             />
             <Switch
+              variant="settings"
               label="Require registration approval"
               description="Each registration must be manually approved by an organizer before the attendee receives a confirmation. Use this for invite-only events or when you need to verify attendee eligibility."
             />
             <Switch
+              variant="settings"
               defaultSelected
               label="Send confirmation emails automatically"
               description="Sends a booking confirmation to attendees immediately after registration. When disabled, confirmations must be triggered manually from the attendee list."
-            />
-            <TextField
-              label="Confirmation Reply-To"
-              type="email"
-              defaultValue="tickets@riverside-events.de"
-              description="Attendees can reply to confirmation emails at this address."
-              width={80}
             />
           </Stack>
         </Form>
       </Panel.Content>
       <Panel.Collapsible>
         <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Advanced registration</Panel.CollapsibleTitle>
+          <Panel.CollapsibleTitle>Booking policies</Panel.CollapsibleTitle>
           <Panel.CollapsibleDescription>
-            Booking windows, terms of service, and custom messages.
+            Registration windows, cancellation rules, and legal requirements.
           </Panel.CollapsibleDescription>
         </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">
-            <TextField
-              label="Custom Confirmation Message"
-              description="Shown on the confirmation page after a successful registration."
-            />
             <NumberField
               label="Registration Close (hours before start)"
               defaultValue={2}
@@ -105,6 +90,10 @@ export const RegistrationCapacity = () => {
               type="url"
               defaultValue="https://riverside-events.de/agb"
               description="Attendees must accept these before completing registration."
+            />
+            <TextField
+              label="Custom Confirmation Message"
+              description="Shown on the confirmation page after a successful registration."
             />
           </Stack>
         </Panel.CollapsibleContent>

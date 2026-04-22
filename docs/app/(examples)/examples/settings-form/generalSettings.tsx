@@ -119,6 +119,7 @@ export const GeneralSettings = () => {
               width={56}
             />
             <Switch
+              variant="settings"
               label="Enable search engine indexing"
               defaultSelected
               description="Allows search engines to index and display your public event pages in search results. Disable this for internal company events or if attendees should only register through direct links."
