@@ -67,6 +67,19 @@ const userInput: NavSection = {
   ],
 };
 
+const dataPatterns: NavSection = {
+  label: 'Data',
+  items: [
+    {
+      kind: 'Item',
+      slug: 'data-management',
+      label: 'Data Management',
+      docsHref: '/patterns/data-management',
+      docsLabel: 'Data Management Guidelines',
+    },
+  ],
+};
+
 const other: NavSection = {
   label: 'Other',
   items: [{ kind: 'Item', slug: 'inventory', label: 'Inventory' }],
@@ -74,5 +87,5 @@ const other: NavSection = {
 
 export const config: ShellConfig = {
   base: '/examples',
-  sections: [layout, userInput, other],
+  sections: [layout, userInput, dataPatterns, other],
 };

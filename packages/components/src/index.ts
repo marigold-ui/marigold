@@ -159,8 +159,6 @@ export type { ActionMenuProps } from './Menu/ActionMenu';
 export { Menu } from './Menu/Menu';
 export type { MenuProps } from './Menu/Menu';
 
-export { Multiselect } from './Multiselect/Multiselect';
-
 export { NumberField } from './NumberField/NumberField';
 export type { NumberFieldProps } from './NumberField/NumberField';
 

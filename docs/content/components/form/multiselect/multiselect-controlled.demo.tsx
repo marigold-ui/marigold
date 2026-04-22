@@ -1,38 +1,41 @@
+'use client';
+
 import { useState } from 'react';
-import { Multiselect } from '@marigold/components';
+import { Tag, Text } from '@marigold/components';
 
 const ticketPriorities = [
-  { value: 'low', label: 'Low Priority' },
-  { value: 'medium', label: 'Medium Priority' },
-  { value: 'high', label: 'High Priority' },
-  { value: 'critical', label: 'Critical Issue' },
+  { id: 'low', label: 'Low Priority' },
+  { id: 'medium', label: 'Medium Priority' },
+  { id: 'high', label: 'High Priority' },
+  { id: 'critical', label: 'Critical Issue' },
 ];
 
 export default () => {
-  const [current, setCurrent] = useState<string>('');
-  const [selectedValues, setSelectedValues] = useState<Array<object>>([]);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
 
   return (
-    <div className="flex h-[300px] flex-col">
-      <Multiselect
+    <div className="flex flex-col gap-4">
+      <Tag.Group
         label="Ticket Priorities"
-        placeholder="Set priorities..."
-        items={ticketPriorities}
-        isOptionDisabled={(item: { value: string }) =>
-          item.value === 'critical'
+        selectionMode="multiple"
+        selectedKeys={selected}
+        onSelectionChange={keys =>
+          setSelected(
+            keys === 'all'
+              ? new Set(ticketPriorities.map(p => p.id))
+              : new Set(keys as Set<string>)
+          )
         }
-        onChange={value => setCurrent(value)}
-        onSelectionChange={(selectedValues: object[]) =>
-          setSelectedValues(selectedValues)
-        }
-      />
-      <hr />
-      <pre>
-        Current Input: {current}
-        <br />
-        Selected Priorities:{' '}
-        {selectedValues.map(({ value }: { value: string }) => value).join(', ')}
-      </pre>
+      >
+        {ticketPriorities.map(p => (
+          <Tag key={p.id} id={p.id} isDisabled={p.id === 'critical'}>
+            {p.label}
+          </Tag>
+        ))}
+      </Tag.Group>
+      <Text>
+        Selected: {selected.size > 0 ? [...selected].join(', ') : 'none'}
+      </Text>
     </div>
   );
 };

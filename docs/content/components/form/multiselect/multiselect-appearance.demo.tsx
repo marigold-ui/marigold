@@ -1,19 +1,16 @@
-import { Multiselect } from '@marigold/components';
-
-const ticketCategories = [
-  { value: 'general', label: 'General Admission' },
-  { value: 'vip', label: 'VIP Experience' },
-  { value: 'backstage', label: 'Backstage Pass' },
-  { value: 'early', label: 'Early Bird Special' },
-];
+import { Tag } from '@marigold/components';
 
 export default () => (
-  <div className="h-[200px] w-full">
-    <Multiselect
-      label="Ticket Categories"
-      items={ticketCategories}
-      placeholder="Select categories..."
-      isOptionDisabled={(item: { value: string }) => item.value === 'backstage'}
-    />
-  </div>
+  <Tag.Group
+    label="Ticket Categories"
+    selectionMode="multiple"
+    defaultSelectedKeys={['general', 'vip']}
+  >
+    <Tag id="general">General Admission</Tag>
+    <Tag id="vip">VIP Experience</Tag>
+    <Tag id="backstage" isDisabled>
+      Backstage Pass
+    </Tag>
+    <Tag id="early">Early Bird Special</Tag>
+  </Tag.Group>
 );
