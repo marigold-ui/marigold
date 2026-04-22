@@ -105,6 +105,16 @@ Accordions can also be used _within_ a section to group content. This lets users
 
 <ComponentDemo file="./form-accordion.demo.tsx" />
 
+### Panels
+
+For settings pages and forms with independent sections, use [`<Panel>`](/components/layout/panel/) instead of plain sections. Panels provide a structured container with a header, description, content area, optional collapsible section, and a footer for actions.
+
+This pattern works well when each section can be saved independently. Place a `<Form>` inside `<Panel.Content>` and connect the submit button in `<Panel.Footer>` using the HTML `form` attribute.
+
+Use `<Panel.Collapsible>` for advanced or rarely-used fields that should be accessible but not visible by default. Unlike accordions, collapsible panel sections are tied to a specific panel and don't compete with other sections for attention.
+
+For destructive actions, use `<Panel variant="destructive">` to visually separate irreversible operations from regular settings.
+
 ## Actions
 
 Forms usually need more than just a submit button. Links, secondary buttons, and other controls handle everything from navigation to drafts. The key is making each action easy to find and hard to confuse with the primary submit.
@@ -136,13 +146,24 @@ Some fields are only relevant for administrators or master users. Mark and separ
 
 See the [Admin- and Mastermark](/patterns/layout/admin-master-mark) page for the full usage guide.
 
-## Full demo
+## Full demos
 
-Below is a fictional event registration form that puts all of these guidelines together: sections, field types, and actions.
+### Event form
+
+A fictional event registration form that puts all of these guidelines together: sections, field types, and actions. Uses a single submit button for the entire form.
 
 <DemoLinks
   demo="/examples/event-form"
   code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/event-form"
+/>
+
+### Settings form
+
+A full-page settings form with multiple independent sections, each with its own save action. Uses Panels to structure sections, tabs for navigation, and a danger zone for destructive actions.
+
+<DemoLinks
+  demo="/examples/settings-form"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/settings-form"
 />
 
 ## Related
