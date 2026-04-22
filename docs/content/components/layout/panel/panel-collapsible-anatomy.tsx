@@ -1,40 +1,106 @@
 export const PanelCollapsibleAnatomy = () => (
   <svg
-    viewBox="-10 10 660 210"
+    viewBox="-10 10 820 360"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
-    {/* Header container */}
+    {/* Panel container */}
     <rect
-      x="200"
+      x="280"
       y="30"
-      width="260"
-      height="54"
-      rx="6"
+      width="280"
+      height="320"
+      rx="8"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
-    {/* Title placeholder */}
+
+    {/* Panel title placeholder */}
     <rect
-      x="220"
-      y="44"
+      x="300"
+      y="50"
       width="120"
+      height="14"
+      rx="4"
+      className="fill-fd-foreground transition-colors duration-300"
+    />
+    {/* Panel description placeholder */}
+    <rect
+      x="300"
+      y="70"
+      width="180"
+      height="10"
+      rx="4"
+      className="fill-fd-muted-foreground/50 transition-colors duration-300"
+    />
+
+    {/* Panel header/content divider */}
+    <line
+      x1="280"
+      y1="98"
+      x2="560"
+      y2="98"
+      className="stroke-fd-border transition-colors duration-300"
+      strokeWidth="1"
+    />
+
+    {/* Panel content placeholder lines */}
+    <rect
+      x="300"
+      y="118"
+      width="240"
+      height="8"
+      rx="2"
+      className="fill-fd-muted-foreground/30 transition-colors duration-300"
+    />
+    <rect
+      x="300"
+      y="136"
+      width="220"
+      height="8"
+      rx="2"
+      className="fill-fd-muted-foreground/30 transition-colors duration-300"
+    />
+    <rect
+      x="300"
+      y="154"
+      width="180"
+      height="8"
+      rx="2"
+      className="fill-fd-muted-foreground/30 transition-colors duration-300"
+    />
+
+    {/* Collapsible Header container */}
+    <rect
+      x="300"
+      y="182"
+      width="240"
+      height="50"
+      rx="6"
+      className="fill-fd-card stroke-fd-border transition-colors duration-300"
+      strokeWidth="1.5"
+    />
+    {/* Collapsible title placeholder */}
+    <rect
+      x="315"
+      y="195"
+      width="110"
       height="10"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
-    {/* Description placeholder */}
+    {/* Collapsible description placeholder */}
     <rect
-      x="220"
-      y="62"
-      width="170"
+      x="315"
+      y="212"
+      width="150"
       height="8"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
     {/* Caret */}
     <path
-      d="M 434 55 L 439 60 L 444 55"
+      d="M 510 203 L 515 208 L 520 203"
       className="stroke-fd-muted-foreground/60 transition-colors duration-300"
       fill="none"
       strokeWidth="1.5"
@@ -42,37 +108,37 @@ export const PanelCollapsibleAnatomy = () => (
       strokeLinejoin="round"
     />
 
-    {/* Content container */}
+    {/* Collapsible Content container */}
     <rect
-      x="200"
-      y="96"
-      width="260"
+      x="300"
+      y="244"
+      width="240"
       height="80"
       rx="6"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
-      strokeWidth="2"
+      strokeWidth="1.5"
     />
-    {/* Content placeholder lines */}
+    {/* Collapsible content placeholder lines */}
     <rect
-      x="220"
-      y="112"
-      width="220"
-      height="8"
-      rx="2"
-      className="fill-fd-muted-foreground/30 transition-colors duration-300"
-    />
-    <rect
-      x="220"
-      y="130"
+      x="315"
+      y="260"
       width="200"
       height="8"
       rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="220"
-      y="148"
+      x="315"
+      y="278"
       width="180"
+      height="8"
+      rx="2"
+      className="fill-fd-muted-foreground/30 transition-colors duration-300"
+    />
+    <rect
+      x="315"
+      y="296"
+      width="160"
       height="8"
       rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
@@ -87,21 +153,21 @@ export const PanelCollapsibleAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Title -> left */}
-      <path d="M 220 49 L 170 49" />
+      <path d="M 315 200 L 250 200" />
       {/* Description -> left */}
-      <path d="M 220 66 L 170 66" />
+      <path d="M 315 216 L 250 216" />
       {/* Header -> right */}
-      <path d="M 460 57 L 510 57" />
+      <path d="M 540 207 L 600 207" />
       {/* Content -> right */}
-      <path d="M 460 136 L 510 136" />
+      <path d="M 540 284 L 600 284" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="220" cy="49" r="4" />
-      <circle cx="220" cy="66" r="4" />
-      <circle cx="460" cy="57" r="4" />
-      <circle cx="460" cy="136" r="4" />
+      <circle cx="315" cy="200" r="4" />
+      <circle cx="315" cy="216" r="4" />
+      <circle cx="540" cy="207" r="4" />
+      <circle cx="540" cy="284" r="4" />
     </g>
 
     {/* Labels */}
@@ -111,8 +177,8 @@ export const PanelCollapsibleAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="160"
-          y="53"
+          x="240"
+          y="204"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -120,8 +186,8 @@ export const PanelCollapsibleAnatomy = () => (
           Title
         </text>
         <text
-          x="160"
-          y="70"
+          x="240"
+          y="220"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -131,8 +197,8 @@ export const PanelCollapsibleAnatomy = () => (
       </g>
       <g textAnchor="start">
         <text
-          x="520"
-          y="61"
+          x="610"
+          y="211"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -140,8 +206,8 @@ export const PanelCollapsibleAnatomy = () => (
           Header
         </text>
         <text
-          x="520"
-          y="140"
+          x="610"
+          y="288"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
