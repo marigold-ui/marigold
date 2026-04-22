@@ -71,7 +71,7 @@ export default () => {
             <Select
               label="Country"
               placeholder="Select your country"
-              width={'fit'}
+              width={'1/2'}
             >
               <Select.Option id="us">United States</Select.Option>
               <Select.Option id="ca">Canada</Select.Option>
