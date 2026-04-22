@@ -18,7 +18,10 @@ const SettingsFormPage = () => (
     <Stack space="group">
       <Stack space="tight">
         <Headline level={2}>Event settings</Headline>
-        <Text>Configure defaults and preferences for your events.</Text>
+        <Text>
+          Manage your organization defaults. Changes here apply to all new
+          events unless overridden on the individual event page.
+        </Text>
       </Stack>
       <Tabs>
         <Tabs.List>
