@@ -3,8 +3,7 @@ title: Divider
 description: Component to separate content.
 ---
 
-A `<Divider>` is a visual separator between two groups of content,
-e.g. groups of menu items or sections of a page.
+A `<Divider>` is a visual separator between two groups of content, either horizontally between page sections or vertically within an inline group such as a toolbar.
 
 ## Anatomy
 
@@ -26,26 +25,26 @@ The `<Divider>` component contains a single element that can be used to create a
 
 The Divider component supports variants to control the visual weight of the separator.
 
-| Variant   | Description                                               | When to use                                                      |
-| --------- | --------------------------------------------------------- | ---------------------------------------------------------------- |
-| `default` | Thin, subtle separator line. This is the default variant. | Separating content sections with minimal visual weight.          |
-| `bold`    | Thicker separator line with more visual emphasis.         | When a stronger visual break is needed between content sections. |
+| Variant   | Description                                               | When to use                                                          |
+| --------- | --------------------------------------------------------- | -------------------------------------------------------------------- |
+| `default` | Thin, subtle separator line. This is the default variant. | Separating content sections with minimal visual weight.              |
+| `bold`    | Thicker separator line with more visual emphasis.         | Separating top-level page sections where a stronger break is needed. |
 
 ## Usage
 
-You should use `<Divider>` to visually separate related content, such as sections in a settings page, items in a list, or actions in a toolbar. They help improve clarity and organization without adding semantic meaning. However, dividers should be used sparingly—only when spacing alone doesn't provide enough separation. Avoid them if they create visual clutter or when semantic elements like headings or sections are more appropriate.
+You should use `<Divider>` to visually separate related content, such as sections in a settings page, items in a list, or actions in a toolbar. They help improve clarity and organization without adding semantic meaning. However, dividers should be used sparingly, only when spacing alone doesn't provide enough separation. Avoid them if they create visual clutter or when semantic elements like headings or sections are more appropriate.
 
 <ComponentDemo name="divider-text" />
 
-### Vertical orientation
+## Orientation
 
-Set `orientation="vertical"` to render a vertical divider. This is useful for separating items in a horizontal layout, such as toolbars or inline groups.
+Set `orientation="vertical"` to render a vertical divider. This is useful for separating items in a horizontal layout such as toolbars or inline groups. A vertical `<Divider>` expects a parent that establishes a height (e.g. `<Inline>`); it falls back to a minimum height so it remains visible when the parent has none.
 
 <ComponentDemo name="divider-vertical" />
 
-### Accessibility
+## Accessibility
 
-The `<Divider>` uses the ARIA role separator to indicate that it visually separates and distinguishes sections of content or groups of menu items.
+The `<Divider>` uses the ARIA role `separator` to indicate that it visually separates and distinguishes sections of content or groups of menu items.
 
 ## Props
 
@@ -58,3 +57,4 @@ The `<Divider>` uses the ARIA role separator to indicate that it visually separa
 ## Alternative components
 
 - **Stack**: If you need to create space between elements, consider using the `<Stack>` component instead of a divider. It provides spacing without the visual line.
+- **Inline** / **Split**: Pair with a vertical `<Divider>` to group related actions in a toolbar-style horizontal layout.
