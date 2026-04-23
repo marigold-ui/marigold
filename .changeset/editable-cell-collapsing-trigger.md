@@ -3,6 +3,8 @@
 '@marigold/theme-rui': patch
 ---
 
-fix(DST-1354): collapse `Table.EditableCell` edit trigger at rest and force content truncation
+fix(DST-1354): restore collapsing `Table.EditableCell` edit trigger
 
-Replaces the previous overlay/ring affordance with a collapsing edit button: the pencil trigger takes zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or button focus. The cell itself is clickable for touch targets. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like regular `Table.Cell`.
+The overlay/ring affordance introduced in #5250 (DST-1275) did not read as editable in user testing: sighted users did not associate the hover ring with inline editing, and there was no discoverable trigger for keyboard or touch. This change reverts that approach and restores the explicit pencil edit button.
+
+The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or keyboard focus, so static layout remains clean while the affordance is discoverable the moment the user interacts with the row. The cell itself stays clickable as a touch target. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like a regular `Table.Cell`.

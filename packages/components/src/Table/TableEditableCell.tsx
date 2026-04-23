@@ -138,11 +138,7 @@ export const TableEditableCell = ({
   alignX,
   overflow: cellOverflow,
 }: TableEditableCellProps) => {
-  const {
-    classNames,
-    allowTextSelection: tableAllowTextSelection,
-    alignY = 'middle',
-  } = useTableContext();
+  const { classNames, alignY = 'middle' } = useTableContext();
   const { selectionMode } = useTableOptions();
   const hasSelection = selectionMode !== 'none';
   const isSmallScreen = useSmallScreen();
@@ -239,7 +235,7 @@ export const TableEditableCell = ({
               alignX={alignX}
               cellOverflow={disabled ? cellOverflow : 'truncate'}
               className="min-w-0 flex-1"
-              allowTextSelection={!hasSelection || tableAllowTextSelection}
+              allowTextSelection={!hasSelection || undefined}
             >
               {children}
             </TableCellContent>
