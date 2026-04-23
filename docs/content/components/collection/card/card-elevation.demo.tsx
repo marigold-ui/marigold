@@ -12,7 +12,11 @@ export default () => (
   <div className="bg-bg-surface rounded-xl p-6">
     <Card>
       <Card.Preview>
-        <div className="bg-bg-surface-raised h-40 w-full" />
+        <img
+          src="https://images.pexels.com/photos/8761738/pexels-photo-8761738.jpeg"
+          alt="Annual Conference 2025"
+          className="h-80 w-full"
+        />
       </Card.Preview>
       <Card.Header>
         <Stack space={1}>
