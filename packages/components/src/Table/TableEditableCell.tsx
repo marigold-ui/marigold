@@ -5,7 +5,7 @@ import type {
   RefObject,
 } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { Button, Cell, Popover } from 'react-aria-components';
+import { Button, Cell, Popover, useTableOptions } from 'react-aria-components';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import {
@@ -17,6 +17,7 @@ import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
 import { Check } from '../icons/Check';
+import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 import { useTableContext } from './Context';
@@ -137,7 +138,13 @@ export const TableEditableCell = ({
   alignX,
   overflow: cellOverflow,
 }: TableEditableCellProps) => {
-  const { classNames, alignY = 'middle' } = useTableContext();
+  const {
+    classNames,
+    allowTextSelection: tableAllowTextSelection,
+    alignY = 'middle',
+  } = useTableContext();
+  const { selectionMode } = useTableOptions();
+  const hasSelection = selectionMode !== 'none';
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -211,27 +218,31 @@ export const TableEditableCell = ({
   );
 
   return (
-    <Cell
-      ref={cellRef}
-      className={cn(classNames.cell, verticalAlign[alignY], 'relative')}
-      {...(!disabled && { 'data-editable': true })}
-    >
+    <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
       {({ columnIndex }) => (
         <>
-          <TableCellContent
-            columnIndex={columnIndex}
-            alignX={alignX}
-            cellOverflow={cellOverflow}
-          >
-            {children}
-          </TableCellContent>
-          {!disabled && (
-            <Button
-              className={classNames.editTrigger}
-              aria-label={stringFormatter.format('edit')}
-              onPress={() => setOpen(true)}
-            />
-          )}
+          <div className="group/editable-cell flex items-center gap-1">
+            <TableCellContent
+              columnIndex={columnIndex}
+              alignX={alignX}
+              cellOverflow={cellOverflow}
+              className="min-w-0 flex-1"
+              allowTextSelection={!hasSelection || tableAllowTextSelection}
+            >
+              {children}
+            </TableCellContent>
+            {!disabled && (
+              <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 group-has-[:focus-visible]/editable-cell:opacity-100 [[role=row]:hover_&]:opacity-100">
+                <Button
+                  className={classNames.editTrigger}
+                  aria-label={stringFormatter.format('edit')}
+                  onPress={() => setOpen(true)}
+                >
+                  <Pencil />
+                </Button>
+              </div>
+            )}
+          </div>
           {isSmallScreen ? (
             <Dialog open={open} onOpenChange={handleOpenChange}>
               <Form
