@@ -32,17 +32,22 @@ export const EventDetails = () => (
         />
         <TextArea
           label="Description"
-          description="A short summary for listings and social shares."
+          description="Shown on the event listing, social share previews, and search results. Keep it under 300 characters for best display."
           rows={4}
         />
         <Inline space="related">
           <DatePicker
             label="Start Date"
+            description="When the event begins. Displayed on tickets and the event page."
             width="fit"
             required
             errorMessage="A start date is required."
           />
-          <DatePicker label="End Date" width="fit" />
+          <DatePicker
+            label="End Date"
+            description="Optional. Leave empty for single-day events."
+            width="fit"
+          />
         </Inline>
         <Select
           label="Event Type"
@@ -87,26 +92,30 @@ export const EventDetails = () => (
     </Panel.Content>
     <Panel.Collapsible>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>Advanced event settings</Panel.CollapsibleTitle>
+        <Panel.CollapsibleTitle>Additional details</Panel.CollapsibleTitle>
         <Panel.CollapsibleDescription>
-          Visibility and internal references. Defaults come from your
-          organization settings.
+          Optional fields for visibility, internal tracking, and organizer
+          notes.
         </Panel.CollapsibleDescription>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">
           <TextField
             label="Event Code"
-            description="Internal reference, not shown to attendees."
+            description="Used for internal tracking, e.g. in reports and exports. Not shown to attendees."
           />
-          <Radio.Group label="Event Visibility" defaultValue="public">
+          <Radio.Group
+            label="Event Visibility"
+            defaultValue="public"
+            description="Inherited from your organization default. Public events appear in search and on your organizer page, private events require a direct link, unlisted events are accessible via link but hidden from listings."
+          >
             <Radio value="public">Public</Radio>
             <Radio value="private">Private</Radio>
             <Radio value="unlisted">Unlisted</Radio>
           </Radio.Group>
           <TextArea
             label="Internal Notes"
-            description="Only visible to organizers."
+            description="Only visible to your team. Use this for logistics, reminders, or coordination notes."
             rows={3}
           />
         </Stack>
