@@ -5,13 +5,19 @@ type: Blog
 changed:
   - foundations/token-overview
   - foundations/elevation
+  - foundations/layouts
   - foundations/spacing
-  - components/form/switch
-  - components/form/tagfield
-  - components/overlay/tooltip
+  - components/layout/panel
   - components/layout/inset
   - components/layout/stack
   - components/layout/inline
+  - components/navigation/sidebar
+  - components/form/switch
+  - components/form/tagfield
+  - components/form/select
+  - components/form/combobox
+  - components/form/autocomplete
+  - components/overlay/tooltip
 ---
 
 For the last years, Marigold's job was mostly to replace. Modernize an aging codebase, swap out legacy patterns, refresh a design that had started to show its years. v18.0.0 is where that chapter quietly ends and a new one begins. We are done catching up. From here, the work is about craft. Shaping a design language that does not just look current, but is unmistakably its own.
@@ -88,6 +94,13 @@ In your application this is mostly a find-and-replace across Tailwind utility cl
 ```
 
 If you read these values directly as CSS custom properties (`var(--color-brand)`), update those too. The old variable names are gone, not aliased.
+
+#### New surface and overlay tokens
+
+Two additional tokens join the semantic set to cover roles that were previously expressed with raw utility classes:
+
+- **`disabled-surface`** — background for disabled control surfaces (switch tracks, selected-but-disabled states, inert chips). Resolves to `charcoal-200` in the default theme.
+- **`overlay-backdrop`** — the scrim behind modals, drawers, and trays. Previously the backdrop was styled with a raw `bg-black/50`; routing it through a token lets themes tune both the color and the opacity.
 
 #### Status tokens restructured
 
@@ -258,6 +271,62 @@ export const myTheme: Theme = {
 
 The motivation: breakpoints are a theming concern, not a system concern. Different products have different layout rhythms, and forcing every app through the same default made theme portability harder than it needed to be.
 
+### `<Select>`, `<ComboBox>`, `<Autocomplete>` no longer accept `width="fit"`
+
+The `fit` value is gone on these three components. Their listbox renders through a popover with virtualized content, and the react-aria `Virtualizer` controls item sizing independently of CSS layout — `width="fit"` never made it into the popover, which ended up clipping the dropdown contents.
+
+```diff
+- <Select label="Role" width="fit">
++ <Select label="Role" width="1/2">
+```
+
+Every other `width` value (fractions, fixed sizes, `full`) continues to work. The same change applies to `<ComboBox>` and `<Autocomplete>`.
+
+## New components
+
+### `<Panel>`
+
+`<Panel>` is a new compound component for **page-level content sectioning** — the unit between `<AppLayout>` and the content inside it. Where `<Card>` is meant for repeating collection items (a stat tile, a session row, a team card), `<Panel>` frames a full page section with a header, optional description, actions, body, and footer.
+
+```tsx
+<Panel>
+  <Panel.Header>
+    <Panel.Title>Organizer info</Panel.Title>
+    <Panel.Description>
+      Shown on the event page and in confirmation emails.
+    </Panel.Description>
+    <Panel.HeaderActions>
+      <Button variant="secondary">Edit</Button>
+    </Panel.HeaderActions>
+  </Panel.Header>
+  <Panel.Content>…</Panel.Content>
+  <Panel.Footer>…</Panel.Footer>
+</Panel>
+```
+
+**Collapsible sections.** `<Panel.Collapsible>` mirrors the header layout for sections that fold. The entire surface is a single click target — title and description render as spans inside the trigger `<button>`, and `aria-labelledby` / `aria-describedby` are wired up automatically. A reusable `MorphCaret` chevron animates via SVG path morphing and respects `prefers-reduced-motion`.
+
+```tsx
+<Panel>
+  <Panel.Header>
+    <Panel.Title>Advanced settings</Panel.Title>
+  </Panel.Header>
+  <Panel.Collapsible>
+    <Panel.CollapsibleHeader>
+      <Panel.CollapsibleTitle>Webhooks</Panel.CollapsibleTitle>
+      <Panel.CollapsibleDescription>
+        Outbound HTTP callbacks
+      </Panel.CollapsibleDescription>
+    </Panel.CollapsibleHeader>
+    <Panel.CollapsibleContent>…</Panel.CollapsibleContent>
+  </Panel.Collapsible>
+</Panel>
+```
+
+**Edge-to-edge content.** `<Panel.Content>` and `<Panel.CollapsibleContent>` both accept an `inset` prop using the shared semantic spacing tokens. Combined with the new `collapsed` token (below), you can render a `<Table>` or media block that bleeds out to the panel edges without hand-rolling negative margins.
+
+The full API — header actions, footer layouts, bleed content, danger-zone rows, controlled collapsible state, error states, and a direct `Panel` vs `Card` comparison — lives on the new [Panel documentation page](/components/layout/panel).
+
 ## Components
 
 ### Universal `collapsed` spacing token
@@ -279,10 +348,56 @@ The use case: wrappers that need to render without adding any spacing, for examp
 
 The name is deliberate. `collapsed` reads naturally in both gap and padding contexts (cf. CSS margin collapse). An earlier iteration used `none`, but that collided with Tailwind v4's `leading-none`, which resolves `none` through the shared `--spacing-*` scale.
 
+### `Sidebar.Nav` `current` prop
+
+`<Sidebar.Nav>` now accepts a `current` prop that resolves the active item for you. Pass the current pathname for smart segment-aware matching, or a predicate `(href, key) => boolean` for full control.
+
+```diff
+- <Sidebar.Nav>
+-   <Sidebar.Item href="/orders" active={pathname === '/orders'}>Orders</Sidebar.Item>
+-   <Sidebar.Item href="/events" active={pathname === '/events'}>Events</Sidebar.Item>
+- </Sidebar.Nav>
++ <Sidebar.Nav current={pathname}>
++   <Sidebar.Item href="/orders">Orders</Sidebar.Item>
++   <Sidebar.Item href="/events">Events</Sidebar.Item>
++ </Sidebar.Nav>
+```
+
+With the string form, nested routes like `/orders/1234` automatically highlight the `/orders` item — no regex fallback needed. `<Sidebar.Item>`'s own `active` prop still works as a local override.
+
+### `<Table>` column alignment fix
+
+`Table.Column`'s `alignX` prop now applies to the first column. Previously a truthy check on `columnIndex` skipped the alignment lookup when `columnIndex === 0`, so the first column quietly fell back to its default. If your tables rely on `alignX` for a numeric or icon column in the first position, they will render correctly for the first time.
+
+### Compound field focus and error outline
+
+Fields that compose an input with an adornment (addon slots, combined inputs) now render a **single continuous outline** across the composite for both focus and error states, instead of the outline breaking at the slot boundary. Affects any `<TextField>` / `<NumberField>` / etc. used with start or end addons.
+
+### `ui-surface` custom properties no longer cascade
+
+`--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` are now registered with `@property { inherits: false }`. Previously, overriding one of them on a themed surface (for example a destructive `<Panel>` setting a red border) would cascade the value into every nested element that also reads `ui-surface`, tinting the borders of the Inputs, Buttons, and Cards inside it.
+
+Each surface now resolves its own fallback through the existing `var(..., var(--color-…))` chain, so nested surfaces keep their own defaults. No code change is required; the visual bleeding simply stops.
+
 ## Dependency updates
 
-- React 19 is now the required baseline (see _Before you upgrade_).
-- `react-select` is no longer a dependency.
+- **React 19** is now the required baseline (see _Before you upgrade_).
+- **`react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*`** are bumped to their latest versions. Most consumers do not need to do anything; if you import directly from `react-aria-components`, re-read the [react-aria changelog](https://github.com/adobe/react-spectrum/releases) for the version range.
+- **`react-select`** is no longer a dependency. `<Multiselect>` was the only component pulling it in, and removing it shrinks the `@marigold/components` bundle for every app that had already migrated to `<TagField>`.
+
+## Docs and examples
+
+v18 ships alongside a substantial pass over the documentation site. None of these affect published packages, but if you follow the docs they are worth knowing about.
+
+- **Layouts foundation restructured** around `<Panel>` and the atomic primitives (`<Stack>`, `<Inline>`, `<Inset>`, `<Split>`, `<Center>`, `<Tiles>`, `<Columns>`). A new _Choosing the right layout_ decision table replaces the previous two-tier "structural vs atomic" framing, and the wireframe hero is now an annotated SVG anatomy diagram that matches the Panel and Sidebar anatomies. See [Layouts](/foundations/layouts).
+- **Elevation foundation rewritten** around the three-tier shadow system (`border`, `raised`, `overlay`). Adds a surfaces section that explains `bg-background`, `bg-surface`, `bg-muted`, and `ui-surface`, interactive demos, per-tier Do/Don't guidance, and a migration table for the retired `util-surface-*` utilities. See [Elevation](/foundations/elevation).
+- **New Panel documentation page** — MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
+- **Unified demo app at `/examples`** consolidates all pattern demos (filter, form, inventory) alongside a full app-shell example. A shared shell layout drives the sidebar, breadcrumbs, and section switcher from a single navigation tree; each example page links back to its corresponding pattern guideline.
+- **App-shell example pages fleshed out** — Analytics, Billing, General, Security, Teams, and Users are now real screens built from Marigold components. `Panel` is used for page-level sections and `Card` is reserved for repeating collection items (payment methods, active sessions, team cards, stat tiles).
+- **Do/Don't cards redesigned** to match fumadocs — tinted cards, `--color-fd-success` / `--color-fd-error` tokens, `lucide-react` icons, and (importantly) working dark mode, which the previous design quietly got wrong.
+- **Installation guide rewritten** end to end. Clearer steps, up-to-date examples, and enough detail that a human or an AI agent can stand up a Marigold project without fishing through the source.
+- **`AutoTypeTable` prop rendering improved.** Props that reference design-system aliases (`SpacingTokens`, `Scale`, `WidthProp`, `NonZeroPercentage`) now show a meaningful alias summary in the cell and the full list of concrete literals on row expand, replacing the previous wall-of-literals-in-the-cell + redundant-alias-name-on-expand layout. Driven by a fumadocs-typescript transform, so new components pick this up automatically.
+- **`ComponentDemo` / `AppearanceDemo` `background="page"` prop** — demos can now opt into the theme's page background (`bg-background`) instead of the default white, giving full-bleed previews of things like AppLayout and Sidebar without wrapper `div` hacks.
 
 ---
 
