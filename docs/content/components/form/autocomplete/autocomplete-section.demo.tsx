@@ -1,7 +1,7 @@
 import { Autocomplete } from '@marigold/components';
 
 export default () => (
-  <Autocomplete label="Genres" width="fit">
+  <Autocomplete label="Genres">
     {options.map(item => (
       <Autocomplete.Section key={item.category} header={item.category}>
         {item.genres.map(genre => (

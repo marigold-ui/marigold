@@ -7,7 +7,6 @@ export default (props: SelectProps<object>) => (
     label="Genre"
     placeholder="Select genre"
     description="Select the genre you want."
-    width="fit"
   >
     <Select.Option id="pop">Pop</Select.Option>
     <Select.Option id="hiphop">Hip Hop</Select.Option>

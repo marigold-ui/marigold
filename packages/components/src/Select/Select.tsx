@@ -35,7 +35,12 @@ export interface SelectProps<
   variant?: string;
   size?: string;
 
-  width?: WidthProp['width'];
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * Note: `"fit"` is not supported because the virtualizer controls item sizing.
+   * @remarks `WidthProp`
+   */
+  width?: Exclude<WidthProp['width'], 'fit'>;
   /**
    * Children of the select.
    */

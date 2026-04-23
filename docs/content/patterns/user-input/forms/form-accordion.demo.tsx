@@ -67,7 +67,7 @@ export default () => {
                     <Select
                       label="Event Category"
                       placeholder="Select category"
-                      width="fit"
+                      width="1/2"
                     >
                       <Select.Option id="conference">Conference</Select.Option>
                       <Select.Option id="workshop">Workshop</Select.Option>

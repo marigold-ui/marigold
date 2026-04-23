@@ -41,8 +41,8 @@ const faqs = [
 
 export const FAQ = () => (
   <Stack space={8}>
-    <Headline level="1">Frequently asked questions</Headline>
-    <Accordion iconPosition="left">
+    <Headline level={2}>Frequently asked questions</Headline>
+    <Accordion variant="card" iconPosition="left">
       {faqs.map(faq => (
         <Accordion.Item key={faq.id} id={faq.id}>
           <Accordion.Header>
