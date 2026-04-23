@@ -227,7 +227,6 @@ export const TableEditableCell = ({
     <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
       {({ columnIndex }) => (
         <>
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- keyboard is handled by the edit button, touch needs click on cell */}
           <div
             className={cn(
               'group/editable-cell flex items-center',
