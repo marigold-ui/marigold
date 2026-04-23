@@ -27,7 +27,7 @@ export const EventDetails = () => {
         <Stack space="regular">
           <TextField
             label="Event Name"
-            defaultValue="Riverside "
+            defaultValue="Riverside"
             description="Pre-filled with your event name prefix from organization settings."
             required
             errorMessage="Please enter a name for your event."
