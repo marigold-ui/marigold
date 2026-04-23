@@ -12,7 +12,7 @@ import {
 
 export const ContactTiles = () => (
   <Stack space={6}>
-    <Headline level="2">Our Team</Headline>
+    <Headline level={2}>Our Team</Headline>
     <Tiles stretch equalHeight tilesWidth="250px" space={4}>
       {people.map(person => (
         <Card key={person.id} pt={8} pb={6} px={0} stretch>
