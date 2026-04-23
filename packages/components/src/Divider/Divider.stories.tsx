@@ -77,3 +77,16 @@ export const Vertical = meta.story({
     </Inline>
   ),
 });
+export const VerticalAndBold = meta.story({
+  args: {
+    orientation: 'vertical',
+    variant: 'bold',
+  },
+  render: args => (
+    <Inline space={2}>
+      <p>Left</p>
+      <Divider {...args} />
+      <p>Right</p>
+    </Inline>
+  ),
+});

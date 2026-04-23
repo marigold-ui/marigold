@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Basic, Bold, Vertical } from './Divider.stories';
+import { Basic, Bold, Vertical, VerticalAndBold } from './Divider.stories';
 
 test('renders as hr element', () => {
   render(<Basic.Component data-testid="divider" />);
@@ -39,6 +39,13 @@ test('vertical orientation applies vertical classes', () => {
   const divider = screen.getByTestId('divider');
 
   expect(divider).toHaveClass('min-h-8', 'w-px');
+});
+
+test('bold variant styles apply with vertical orientation', () => {
+  render(<VerticalAndBold.Component data-testid="divider" />);
+  const divider = screen.getByTestId('divider');
+
+  expect(divider).toHaveClass('min-h-8', 'w-0.5');
 });
 
 test('does not leak size prop to the DOM', () => {
