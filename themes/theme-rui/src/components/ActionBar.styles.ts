@@ -39,7 +39,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
   }),
   actionButton: cva({
     base: [
-      'ui-button-base',
+      'ui-button-base gap-2 items-center justify-center',
       'hover:bg-current/10',
       'text-sm h-button p-squish-relaxed [&_svg]:size-4',
     ],
