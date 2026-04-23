@@ -48,6 +48,14 @@
     "./preflight.css": {
       "style": "./dist/preflight.css",
       "default": "./dist/preflight.css"
+    },
+    "./ui.css": {
+      "style": "./dist/ui.css",
+      "default": "./dist/ui.css"
+    },
+    "./variants.css": {
+      "style": "./dist/variants.css",
+      "default": "./dist/variants.css"
     }
   },
   "typesVersions": {

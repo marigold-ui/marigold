@@ -242,7 +242,7 @@
  */
 @utility ui-scrollbar {
   scrollbar-width: auto;
-  scrollbar-color: var(--color-scrollbar) transparent;
+  scrollbar-color: var(--color-scrollbar) var(--color-scrollbar-track);
 
   &::-webkit-scrollbar {
     display: block;
@@ -251,7 +251,7 @@
   }
 
   &::-webkit-scrollbar-track {
-    background-color: transparent;
+    background-color: var(--color-scrollbar-track);
     border-radius: var(--radius-full);
   }
 
