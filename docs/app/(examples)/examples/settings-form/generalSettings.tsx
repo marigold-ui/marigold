@@ -1,5 +1,6 @@
 'use client';
 
+import { eventTypes } from '@/lib/data/eventTypes';
 import {
   Button,
   Form,
@@ -19,27 +20,26 @@ export const GeneralSettings = () => {
   const { addToast } = useToast();
 
   return (
-    <Panel size="form" headingLevel={3}>
-      <Panel.Header>
-        <Panel.Title>General information</Panel.Title>
-        <Panel.Description>
-          Defaults applied when creating new events. Existing events keep their
-          current values.
-        </Panel.Description>
-      </Panel.Header>
-      <Panel.Content>
-        <Form
-          id="general-settings"
-          onSubmit={e => {
-            e.preventDefault();
-            addToast({
-              title: 'Settings saved',
-              description: 'General information updated.',
-              variant: 'success',
-              timeout: 5000,
-            });
-          }}
-        >
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        addToast({
+          title: 'Settings saved',
+          description: 'General information updated.',
+          variant: 'success',
+          timeout: 5000,
+        });
+      }}
+    >
+      <Panel size="form" headingLevel={3}>
+        <Panel.Header>
+          <Panel.Title>General information</Panel.Title>
+          <Panel.Description>
+            Defaults applied when creating new events. Existing events keep
+            their current values.
+          </Panel.Description>
+        </Panel.Header>
+        <Panel.Content>
           <Stack space="regular">
             <TextField
               label="Organization Name"
@@ -59,36 +59,18 @@ export const GeneralSettings = () => {
                 defaultValue="conference"
                 width={64}
               >
-                <Select.Option id="conference" textValue="Conference">
-                  <Text slot="label">Conference</Text>
-                  <Text slot="description" fontSize="xs">
-                    Multi-track sessions with speakers and schedules
-                  </Text>
-                </Select.Option>
-                <Select.Option id="workshop" textValue="Workshop">
-                  <Text slot="label">Workshop</Text>
-                  <Text slot="description" fontSize="xs">
-                    Hands-on, limited capacity with registration
-                  </Text>
-                </Select.Option>
-                <Select.Option id="meetup" textValue="Meetup">
-                  <Text slot="label">Meetup</Text>
-                  <Text slot="description" fontSize="xs">
-                    Casual gathering, free or low-cost entry
-                  </Text>
-                </Select.Option>
-                <Select.Option id="festival" textValue="Festival">
-                  <Text slot="label">Festival</Text>
-                  <Text slot="description" fontSize="xs">
-                    Multi-day event with multiple stages and vendors
-                  </Text>
-                </Select.Option>
-                <Select.Option id="concert" textValue="Concert">
-                  <Text slot="label">Concert</Text>
-                  <Text slot="description" fontSize="xs">
-                    Single performance with seated or standing tickets
-                  </Text>
-                </Select.Option>
+                {eventTypes.map(type => (
+                  <Select.Option
+                    key={type.id}
+                    id={type.id}
+                    textValue={type.label}
+                  >
+                    <Text slot="label">{type.label}</Text>
+                    <Text slot="description" fontSize="xs">
+                      {type.description}
+                    </Text>
+                  </Select.Option>
+                ))}
               </Select>
               <Select label="Default Language" defaultValue="de" width={32}>
                 <Select.Option id="de">German</Select.Option>
@@ -113,51 +95,51 @@ export const GeneralSettings = () => {
               rows={2}
             />
           </Stack>
-        </Form>
-      </Panel.Content>
-      <Panel.Collapsible>
-        <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Advanced defaults</Panel.CollapsibleTitle>
-          <Panel.CollapsibleDescription>
-            Date formatting, visibility, and SEO settings.
-          </Panel.CollapsibleDescription>
-        </Panel.CollapsibleHeader>
-        <Panel.CollapsibleContent>
-          <Stack space="regular">
-            <Select label="Date Format" defaultValue="dd-mm-yyyy" width={40}>
-              <Select.Option id="dd-mm-yyyy">DD.MM.YYYY</Select.Option>
-              <Select.Option id="mm-dd-yyyy">MM/DD/YYYY</Select.Option>
-              <Select.Option id="yyyy-mm-dd">YYYY-MM-DD</Select.Option>
-            </Select>
-            <Radio.Group
-              label="Default Event Visibility"
-              defaultValue="public"
-              description="Controls who can discover newly created events. Public events appear in search and on your organization page, private events require a direct link, and unlisted events are accessible via link but hidden from listings."
-            >
-              <Radio value="public">Public</Radio>
-              <Radio value="private">Private</Radio>
-              <Radio value="unlisted">Unlisted</Radio>
-            </Radio.Group>
-            <TextField
-              label="URL Slug Prefix"
-              defaultValue="riverside"
-              description="Used in event URLs, e.g. riverside-events.de/riverside-summer-fest."
-              width={56}
-            />
-            <Switch
-              variant="settings"
-              label="Enable search engine indexing"
-              defaultSelected
-              description="Allows search engines to index and display your public event pages in search results. Disable this for internal company events or if attendees should only register through direct links."
-            />
-          </Stack>
-        </Panel.CollapsibleContent>
-      </Panel.Collapsible>
-      <Panel.Footer>
-        <Button variant="primary" type="submit" form="general-settings">
-          Save changes
-        </Button>
-      </Panel.Footer>
-    </Panel>
+        </Panel.Content>
+        <Panel.Collapsible>
+          <Panel.CollapsibleHeader>
+            <Panel.CollapsibleTitle>Advanced defaults</Panel.CollapsibleTitle>
+            <Panel.CollapsibleDescription>
+              Date formatting, visibility, and SEO settings.
+            </Panel.CollapsibleDescription>
+          </Panel.CollapsibleHeader>
+          <Panel.CollapsibleContent>
+            <Stack space="regular">
+              <Select label="Date Format" defaultValue="dd-mm-yyyy" width={40}>
+                <Select.Option id="dd-mm-yyyy">DD.MM.YYYY</Select.Option>
+                <Select.Option id="mm-dd-yyyy">MM/DD/YYYY</Select.Option>
+                <Select.Option id="yyyy-mm-dd">YYYY-MM-DD</Select.Option>
+              </Select>
+              <Radio.Group
+                label="Default Event Visibility"
+                defaultValue="public"
+                description="Controls who can discover newly created events. Public events appear in search and on your organization page, private events require a direct link, and unlisted events are accessible via link but hidden from listings."
+              >
+                <Radio value="public">Public</Radio>
+                <Radio value="private">Private</Radio>
+                <Radio value="unlisted">Unlisted</Radio>
+              </Radio.Group>
+              <TextField
+                label="URL Slug Prefix"
+                defaultValue="riverside"
+                description="Used in event URLs, e.g. riverside-events.de/riverside-summer-fest."
+                width={56}
+              />
+              <Switch
+                variant="settings"
+                label="Enable search engine indexing"
+                defaultSelected
+                description="Allows search engines to index and display your public event pages in search results. Disable this for internal company events or if attendees should only register through direct links."
+              />
+            </Stack>
+          </Panel.CollapsibleContent>
+        </Panel.Collapsible>
+        <Panel.Footer>
+          <Button variant="primary" type="submit">
+            Save changes
+          </Button>
+        </Panel.Footer>
+      </Panel>
+    </Form>
   );
 };

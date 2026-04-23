@@ -19,28 +19,27 @@ export const Notifications = () => {
   const { addToast } = useToast();
 
   return (
-    <Panel size="form" headingLevel={3}>
-      <Panel.Header>
-        <Panel.Title>Notifications</Panel.Title>
-        <Panel.Description>
-          Choose which event activity triggers an email and how often updates
-          are delivered. These defaults apply to all events unless overridden on
-          an individual event.
-        </Panel.Description>
-      </Panel.Header>
-      <Panel.Content>
-        <Form
-          id="notifications"
-          onSubmit={e => {
-            e.preventDefault();
-            addToast({
-              title: 'Settings saved',
-              description: 'Notification preferences updated.',
-              variant: 'success',
-              timeout: 5000,
-            });
-          }}
-        >
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        addToast({
+          title: 'Settings saved',
+          description: 'Notification preferences updated.',
+          variant: 'success',
+          timeout: 5000,
+        });
+      }}
+    >
+      <Panel size="form" headingLevel={3}>
+        <Panel.Header>
+          <Panel.Title>Notifications</Panel.Title>
+          <Panel.Description>
+            Choose which event activity triggers an email and how often updates
+            are delivered. These defaults apply to all events unless overridden
+            on an individual event.
+          </Panel.Description>
+        </Panel.Header>
+        <Panel.Content>
           <Stack space="regular">
             <Select
               label="Delivery frequency"
@@ -114,63 +113,63 @@ export const Notifications = () => {
               description="Temporarily stops all event notification emails. Useful during initial setup or bulk imports. Activity that occurs while paused is not queued and will not be sent retroactively."
             />
           </Stack>
-        </Form>
-      </Panel.Content>
-      <Panel.Collapsible>
-        <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Quiet hours</Panel.CollapsibleTitle>
-          <Panel.CollapsibleDescription>
-            Hold non-urgent digests during off-hours. Capacity warnings and
-            payment failures are still delivered immediately.
-          </Panel.CollapsibleDescription>
-        </Panel.CollapsibleHeader>
-        <Panel.CollapsibleContent>
-          <Stack space="regular">
-            <Switch
-              variant="settings"
-              label="Enable quiet hours"
-              defaultSelected
-              description="When active, digest emails are held until the quiet window ends and delivered as a single summary."
-            />
-            <Inline space="related">
-              <Select
-                label="From"
-                defaultValue="22"
-                width={24}
-                description="Quiet window start."
-              >
-                <Select.Option id="20">20:00</Select.Option>
-                <Select.Option id="21">21:00</Select.Option>
-                <Select.Option id="22">22:00</Select.Option>
-                <Select.Option id="23">23:00</Select.Option>
-              </Select>
-              <Select
-                label="To"
-                defaultValue="8"
-                width={24}
-                description="Quiet window end."
-              >
-                <Select.Option id="6">06:00</Select.Option>
-                <Select.Option id="7">07:00</Select.Option>
-                <Select.Option id="8">08:00</Select.Option>
-                <Select.Option id="9">09:00</Select.Option>
-              </Select>
-            </Inline>
-            <NumberField
-              label="Urgent event threshold"
-              defaultValue={50}
-              minValue={1}
-              description="Events with more registrations than this are considered high-traffic. Their capacity warnings and payment alerts bypass quiet hours."
-              width={32}
-            />
-          </Stack>
-        </Panel.CollapsibleContent>
-      </Panel.Collapsible>
-      <Panel.Footer>
-        <Button variant="primary" type="submit" form="notifications">
-          Save changes
-        </Button>
-      </Panel.Footer>
-    </Panel>
+        </Panel.Content>
+        <Panel.Collapsible>
+          <Panel.CollapsibleHeader>
+            <Panel.CollapsibleTitle>Quiet hours</Panel.CollapsibleTitle>
+            <Panel.CollapsibleDescription>
+              Hold non-urgent digests during off-hours. Capacity warnings and
+              payment failures are still delivered immediately.
+            </Panel.CollapsibleDescription>
+          </Panel.CollapsibleHeader>
+          <Panel.CollapsibleContent>
+            <Stack space="regular">
+              <Switch
+                variant="settings"
+                label="Enable quiet hours"
+                defaultSelected
+                description="When active, digest emails are held until the quiet window ends and delivered as a single summary."
+              />
+              <Inline space="related">
+                <Select
+                  label="From"
+                  defaultValue="22"
+                  width={24}
+                  description="Quiet window start."
+                >
+                  <Select.Option id="20">20:00</Select.Option>
+                  <Select.Option id="21">21:00</Select.Option>
+                  <Select.Option id="22">22:00</Select.Option>
+                  <Select.Option id="23">23:00</Select.Option>
+                </Select>
+                <Select
+                  label="To"
+                  defaultValue="8"
+                  width={24}
+                  description="Quiet window end."
+                >
+                  <Select.Option id="6">06:00</Select.Option>
+                  <Select.Option id="7">07:00</Select.Option>
+                  <Select.Option id="8">08:00</Select.Option>
+                  <Select.Option id="9">09:00</Select.Option>
+                </Select>
+              </Inline>
+              <NumberField
+                label="Urgent event threshold"
+                defaultValue={50}
+                minValue={1}
+                description="Events with more registrations than this are considered high-traffic. Their capacity warnings and payment alerts bypass quiet hours."
+                width={32}
+              />
+            </Stack>
+          </Panel.CollapsibleContent>
+        </Panel.Collapsible>
+        <Panel.Footer>
+          <Button variant="primary" type="submit">
+            Save changes
+          </Button>
+        </Panel.Footer>
+      </Panel>
+    </Form>
   );
 };

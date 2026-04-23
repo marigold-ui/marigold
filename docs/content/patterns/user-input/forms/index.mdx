@@ -109,7 +109,7 @@ Accordions can also be used _within_ a section to group content. This lets users
 
 For settings pages and forms with independent sections, use [`<Panel>`](/components/layout/panel/) instead of plain sections. Panels provide a structured container with a header, description, content area, optional collapsible section, and a footer for actions.
 
-This pattern works well when each section can be saved independently. Place a `<Form>` inside `<Panel.Content>` and connect the submit button in `<Panel.Footer>` using the HTML `form` attribute.
+This pattern works well when each section can be saved independently. Wrap the `<Form>` around the entire `<Panel>` so that all fields, including those inside `<Panel.Collapsible>`, are part of the submission.
 
 Use `<Panel.Collapsible>` for advanced or rarely-used fields that should be accessible but not visible by default. Unlike accordions, collapsible panel sections are tied to a specific panel and don't compete with other sections for attention.
 

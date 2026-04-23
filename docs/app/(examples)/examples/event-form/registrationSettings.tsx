@@ -41,7 +41,7 @@ export const RegistrationSettings = () => (
         </Inline>
         <Checkbox
           label={
-            <Inline space={2} alignY="center">
+            <Inline space="related" alignY="center">
               Enable early bird pricing
               <Badge variant="master">Master</Badge>
             </Inline>

@@ -27,7 +27,7 @@ export const CoOrganizers = () => {
     <Panel variant="master" headingLevel={3} size="form">
       <Panel.Header>
         <Panel.Title>
-          <Inline space={2} alignY="center">
+          <Inline space="related" alignY="center">
             Co-organizers
             <Badge variant="master">Master</Badge>
           </Inline>

@@ -88,16 +88,18 @@ export const OrganizerInfo = () => (
       <Panel.CollapsibleContent>
         <Stack space="regular">
           <Switch
+            variant="settings"
             label="Allow attendees to contact organizer directly"
             description="Adds a 'Contact organizer' button to the event page. Messages are sent to the organizer email above."
           />
           <Switch
+            variant="settings"
             label="Include organizer contact in confirmation emails"
             description="Adds the organizer name, email, and phone to every booking confirmation."
           />
           <Select
             label={
-              <Inline space={2} alignY="center">
+              <Inline space="related" alignY="center">
                 Preferred contact method
                 <Badge variant="admin">Admin</Badge>
               </Inline>

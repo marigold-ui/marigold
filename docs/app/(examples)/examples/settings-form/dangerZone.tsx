@@ -58,7 +58,7 @@ export const DangerZone = () => {
               alignX="between"
               space="group"
             >
-              <Stack space="0.5">
+              <Stack space="tight">
                 <Text weight="medium">{item.label}</Text>
                 <Text size="xs" color="secondary">
                   {item.description}
