@@ -39,7 +39,7 @@ export const Card = ({
       <div
         {...props}
         className={cn(
-          'grid',
+          'grid overflow-hidden',
           "[grid-template-areas:'preview'_'header'_'body'_'footer']",
           'grid-rows-[auto_auto_1fr_auto]',
           stretch ? '' : 'w-fit',
