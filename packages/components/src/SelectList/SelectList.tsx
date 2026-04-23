@@ -24,6 +24,13 @@ export interface SelectListProps extends Omit<
   RemoveProps
 > {
   /**
+   * Visual variant of the list.
+   * - `default`: full-width rows separated by dividers.
+   * - `bordered`: each item is its own bordered, rounded container with a gap between items.
+   * @default 'default'
+   */
+  variant?: 'default' | 'bordered' | (string & {});
+  /**
    * Handler that is called when the selection change.
    */
   onChange?:
@@ -42,8 +49,8 @@ interface SelectListComponent extends ForwardRefExoticComponent<
 }
 
 const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
-  ({ onChange, ...rest }, ref) => {
-    const classNames = useClassNames({ component: 'ListBox' });
+  ({ onChange, variant, ...rest }, ref) => {
+    const classNames = useClassNames({ component: 'SelectList', variant });
 
     const props: RAC.GridListProps<object> = {
       onSelectionChange: onChange as any,

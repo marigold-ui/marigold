@@ -3,11 +3,11 @@ title: SelectList
 description: A component for displaying a list of interactive items, with support for keyboard navigation, single or multiple selection, and row actions.
 ---
 
-The `SelectList` can be used to select multiple items from a list simultaneously. It provides a familiar interface where users can select multiple items.
+The `SelectList` lets users pick one or more items from a list of rich, two-line options. Unlike `ListBox` — which is optimised for dense dropdown menus — each `SelectList.Item` is a standardised row with a selection indicator, an optional leading image, a label, a description, and an optional trailing action.
 
 ## Anatomy
 
-A `SelectList` consists of a container element, with rows of data inside. The rows within a list may contain focusable elements or plain text content. If the list supports row selection, each row includes a selection indicator.
+A `SelectList` consists of a container with a stack of `SelectList.Item` rows. Each row follows a fixed skeleton: a selection indicator (radio or checkbox) at the start, an optional image, a label stacked over a description, and an optional trailing action.
 
 <ImageZoom
   src="/selectlist/selectlist-anatomy.jpg"
@@ -25,15 +25,27 @@ A `SelectList` consists of a container element, with rows of data inside. The ro
 
 ## Usage
 
-The `SelectList` component is used to display a list of items that can be selected by the user. It supports both single and multiple selection modes, allowing users to choose one or more items from the list.
+Build each row with `<Text slot="label">` and `<Text slot="description">` — the same slot convention used by `Select`, `ComboBox`, and `Autocomplete`. The theme handles placement, typography, and wiring the description to the row's `aria-describedby`.
 
-Built with accessibility in mind, it supports full keyboard navigation, making it easy to interact with using only the keyboard.
+When `selectionMode="single"`, rows render a radio circle. When `selectionMode="multiple"`, rows render a checkbox.
 
-### SelectList with multiple selection mode
+### Bordered variant
 
-If you want to allow users to select multiple items, you can set the `selectionMode` prop to `multiple`. This enables checkboxes for each item, allowing users to select or deselect multiple items at once.
+Use `variant="bordered"` when each option represents a commit-level choice (plans, shipping methods, payment modes). Each row becomes its own outlined container, and the selected row's border strengthens instead of filling the row.
 
-You can also provide interactive actions for each item by using `<SelectList.Action>`, such as buttons or links, to perform specific actions on the selected items.
+<ComponentDemo name="selectlist-bordered" />
+
+### With a leading image
+
+Drop any `<img>` (or icon component) as a child to render it as a leading visual. Use `alt=""` when the image is decorative — the label already names the row.
+
+<ComponentDemo name="selectlist-image" />
+
+### Multiple selection
+
+Set `selectionMode="multiple"` to let users pick more than one row. Rows then render a checkbox indicator instead of a radio circle.
+
+You can also provide interactive actions for each item by using `<SelectList.Action>`, such as buttons or menus, to perform specific actions on the row.
 
 <ComponentDemo name="selectlist-multiple-selection" />
 
@@ -57,7 +69,6 @@ The `<SelectList>` lets you disable certain items, which is helpful if you don't
 
 ## Alternative components
 
-The `SelectList` is a versatile component that can be used in various scenarios where users need to select multiple items from a list. But there are alternative components that might be more suitable depending on your specific use case:
-
-- **Table**: If you need to display tabular data with multiple selection capabilities, consider using the `<Table>` component. It provides a structured layout for displaying data in rows and columns, along with selection features.
-- **Stack**: If you need to display a list of items with a more compact layout, consider using the `<Stack>` component. It allows you to create a vertical stack of items, which can be useful for displaying lists with less emphasis on selection.
+- **RadioGroup / CheckboxGroup** — when options are short, text-only, and always visible. Use a radio group for a small, fixed set of mutually exclusive choices, and a checkbox group for independent multi-select boolean options.
+- **ListBox** — when the user is picking an option from a compact, dropdown-like list inside a `Select`, `ComboBox`, or `Autocomplete`. `ListBox` rows are single-line and dense; they don't have a standardised label / description / image skeleton.
+- **Table** — when each row has several columns of structured data and headers matter. Use `Table` for selectable data grids.

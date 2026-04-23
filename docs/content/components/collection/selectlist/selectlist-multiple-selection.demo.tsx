@@ -23,13 +23,9 @@ export default () => {
       onChange={setSelectedTickets}
     >
       {(item: { id: string; name: string; price: number }) => (
-        <SelectList.Item id={item.id}>
-          <div>
-            <Text weight="bold">{item.name}</Text>
-            <Text fontSize="sm" color="foreground-muted">
-              €{item.price}
-            </Text>
-          </div>
+        <SelectList.Item id={item.id} textValue={item.name}>
+          <Text slot="label">{item.name}</Text>
+          <Text slot="description">€{item.price}</Text>
           <SelectList.Action>
             <ActionMenu variant="ghost">
               <Menu.Item

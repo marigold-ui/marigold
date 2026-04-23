@@ -36,6 +36,7 @@ export { Pagination } from './Pagination.styles';
 export { ProgressCircle } from './ProgressCircle.styles';
 export { SectionMessage } from './SectionMessage.styles';
 export { Select } from './Select.styles';
+export { SelectList } from './SelectList.styles';
 export { Sidebar } from './Sidebar.styles';
 export { Slider } from './Slider.styles';
 export { Switch } from './Switch.styles';

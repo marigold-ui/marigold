@@ -4,6 +4,9 @@ import { createRef } from 'react';
 import {
   Action,
   Basic,
+  Bordered,
+  WithDescription,
+  WithImage,
   WithMultiSelection,
   WithSingleSelection,
 } from './SelectList.stories';
@@ -33,7 +36,7 @@ describe('SelectList', () => {
     expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
   });
 
-  test('action slot renders with order-last class', () => {
+  test('action slot wraps children with order-last', () => {
     render(
       <SelectListAction>
         <button>Action</button>
@@ -46,13 +49,12 @@ describe('SelectList', () => {
     expect(action).toHaveClass('order-last');
   });
 
-  test('should support focus ring-3', async () => {
+  test('should support focus ring', async () => {
     render(<WithSingleSelection.Component />);
 
     let row = screen.getAllByRole('row')[0];
 
     expect(row).not.toHaveAttribute('data-focus-visible');
-    expect(row).not.toHaveClass('focus');
 
     await user.tab();
     /* eslint-disable testing-library/no-node-access */
@@ -70,9 +72,42 @@ describe('SelectList', () => {
     expect(screen.getByText('Blastoise')).toBeInTheDocument();
   });
 
+  test('renders a visible selection checkbox in multi mode', () => {
+    render(<WithMultiSelection.Component />);
+
+    // RAC injects a checkbox in slot="selection" for each row when
+    // selectionMode="multiple".
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes.length).toBeGreaterThan(0);
+  });
+
+  test('renders label and description slots', () => {
+    render(<WithDescription.Component />);
+
+    expect(screen.getByText('Pro')).toBeInTheDocument();
+    expect(
+      screen.getByText('For teams up to 50 members with priority support.')
+    ).toBeInTheDocument();
+  });
+
+  test('renders image slot when present', () => {
+    render(<WithImage.Component />);
+
+    /* eslint-disable testing-library/no-node-access */
+    const images = document.querySelectorAll('img');
+    /* eslint-enable testing-library/no-node-access */
+    expect(images.length).toBeGreaterThan(0);
+  });
+
   test('supports non-string children with textValue', () => {
     render(<Action.Component />);
 
     expect(screen.getByText('Games')).toBeInTheDocument();
+  });
+
+  test('renders bordered variant', () => {
+    render(<Bordered.Component />);
+
+    expect(screen.getByText('Free')).toBeInTheDocument();
   });
 });

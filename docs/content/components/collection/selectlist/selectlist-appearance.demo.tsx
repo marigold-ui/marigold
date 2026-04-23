@@ -7,29 +7,21 @@ export default (props: SelectListProps) => (
     selectionMode="single"
     defaultSelectedKeys={['standard']}
   >
-    <SelectList.Item id="standard">
-      <Text weight="bold">Standard Ticket</Text>
-      <Text fontSize="sm" color="foreground-muted">
-        Access to all main events • €49
-      </Text>
+    <SelectList.Item id="standard" textValue="Standard Ticket">
+      <Text slot="label">Standard Ticket</Text>
+      <Text slot="description">Access to all main events • €49</Text>
     </SelectList.Item>
-    <SelectList.Item id="vip">
-      <Text weight="bold">VIP Ticket</Text>
-      <Text size="sm" color="foreground-muted">
-        Includes VIP lounge, free drinks • €129
-      </Text>
+    <SelectList.Item id="vip" textValue="VIP Ticket">
+      <Text slot="label">VIP Ticket</Text>
+      <Text slot="description">Includes VIP lounge, free drinks • €129</Text>
     </SelectList.Item>
-    <SelectList.Item id="student">
-      <Text weight="bold">Student Ticket</Text>
-      <Text size="sm" color="foreground-muted">
-        Valid student ID required • €29
-      </Text>
+    <SelectList.Item id="student" textValue="Student Ticket">
+      <Text slot="label">Student Ticket</Text>
+      <Text slot="description">Valid student ID required • €29</Text>
     </SelectList.Item>
-    <SelectList.Item id="child">
-      <Text weight="bold">Child Ticket</Text>
-      <Text size="sm" color="foreground-muted">
-        For children under 12 • €15
-      </Text>
+    <SelectList.Item id="child" textValue="Child Ticket">
+      <Text slot="label">Child Ticket</Text>
+      <Text slot="description">For children under 12 • €15</Text>
     </SelectList.Item>
   </SelectList>
 );
