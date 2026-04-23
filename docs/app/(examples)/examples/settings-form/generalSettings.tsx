@@ -9,6 +9,7 @@ import {
   Select,
   Stack,
   Switch,
+  Text,
   TextArea,
   TextField,
   useToast,
@@ -56,13 +57,38 @@ export const GeneralSettings = () => {
               <Select
                 label="Default Event Type"
                 defaultValue="conference"
-                width={40}
+                width={64}
               >
-                <Select.Option id="conference">Conference</Select.Option>
-                <Select.Option id="workshop">Workshop</Select.Option>
-                <Select.Option id="meetup">Meetup</Select.Option>
-                <Select.Option id="festival">Festival</Select.Option>
-                <Select.Option id="concert">Concert</Select.Option>
+                <Select.Option id="conference" textValue="Conference">
+                  <Text slot="label">Conference</Text>
+                  <Text slot="description" fontSize="xs">
+                    Multi-track sessions with speakers and schedules
+                  </Text>
+                </Select.Option>
+                <Select.Option id="workshop" textValue="Workshop">
+                  <Text slot="label">Workshop</Text>
+                  <Text slot="description" fontSize="xs">
+                    Hands-on, limited capacity with registration
+                  </Text>
+                </Select.Option>
+                <Select.Option id="meetup" textValue="Meetup">
+                  <Text slot="label">Meetup</Text>
+                  <Text slot="description" fontSize="xs">
+                    Casual gathering, free or low-cost entry
+                  </Text>
+                </Select.Option>
+                <Select.Option id="festival" textValue="Festival">
+                  <Text slot="label">Festival</Text>
+                  <Text slot="description" fontSize="xs">
+                    Multi-day event with multiple stages and vendors
+                  </Text>
+                </Select.Option>
+                <Select.Option id="concert" textValue="Concert">
+                  <Text slot="label">Concert</Text>
+                  <Text slot="description" fontSize="xs">
+                    Single performance with seated or standing tickets
+                  </Text>
+                </Select.Option>
               </Select>
               <Select label="Default Language" defaultValue="de" width={32}>
                 <Select.Option id="de">German</Select.Option>

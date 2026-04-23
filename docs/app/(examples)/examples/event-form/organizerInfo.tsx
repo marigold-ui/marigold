@@ -16,7 +16,8 @@ export const OrganizerInfo = () => (
     <Panel.Header>
       <Panel.Title>Organizer information</Panel.Title>
       <Panel.Description>
-        Contact details for the person or team running this event.
+        Contact details for the person or team running this event. Pre-filled
+        from your organization profile.
       </Panel.Description>
     </Panel.Header>
     <Panel.Content>
@@ -35,20 +36,27 @@ export const OrganizerInfo = () => (
             errorMessage="Last name is required."
           />
         </Inline>
-        <TextField label="Organization" />
+        <TextField label="Organization" defaultValue="Riverside Events GmbH" />
         <TextField label="Job Title" width={64} />
         <Inline space="related" noWrap>
           <TextField
             label="Email"
             type="email"
+            defaultValue="info@riverside-events.de"
             width="1/2"
             required
             errorMessage="A valid email address is required."
           />
-          <TextField label="Phone" type="tel" width="1/2" />
+          <TextField
+            label="Phone"
+            type="tel"
+            defaultValue="+49 761 555 0800"
+            width="1/2"
+          />
         </Inline>
         <TextArea
           label="Bio"
+          defaultValue="Riverside Events produces conferences, workshops, and festivals across the DACH region since 2011."
           description="Shown on the event page if the profile is public."
           rows={3}
         />

@@ -29,7 +29,7 @@ export const LocationSettings = () => (
             <TextField label="City" width={44} />
           </Inline>
           <Stack space="tight">
-            <Select label="Country" placeholder="Select country" width={40}>
+            <Select label="Country" defaultValue="de" width={40}>
               <Select.Option id="de">Germany</Select.Option>
               <Select.Option id="at">Austria</Select.Option>
               <Select.Option id="ch">Switzerland</Select.Option>
