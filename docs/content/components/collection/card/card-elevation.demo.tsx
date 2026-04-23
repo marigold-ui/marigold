@@ -13,9 +13,9 @@ export default () => (
     <Card>
       <Card.Preview>
         <img
-          src="https://images.pexels.com/photos/8761738/pexels-photo-8761738.jpeg"
+          src="https://images.pexels.com/photos/8761744/pexels-photo-8761744.jpeg"
           alt="Annual Conference 2025"
-          className="h-80 w-full"
+          className="h-60 w-full"
         />
       </Card.Preview>
       <Card.Header>
