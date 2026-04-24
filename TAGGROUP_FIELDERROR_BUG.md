@@ -140,6 +140,24 @@ Recommendation: go with Option B so `TagGroup` behaves like the other form field
 
 This bug was discovered while researching how to convert `SelectList` into a form field. `SelectList` uses `GridList` under the hood; `GridList` has the same property as `TagGroup` (provides `ListStateContext`, does not provide `FieldErrorContext`). The fix on `SelectList` will therefore look almost identical to the fix proposed here for `TagGroup`. Aligning both under the same pattern at the same time would prevent drift.
 
+### Follow-up: extract shared hidden-input primitive
+
+Once both `TagGroup` and `SelectList` are bridged to `FieldErrorContext` via `useFormValidationState` + `useFormValidation`, the two implementations of the hidden form input become near-duplicates:
+
+- `packages/components/src/TagGroup/TagGroupHiddenInput.tsx` — currently renders `<input type="checkbox" checked readOnly>` per selected key, no validation wiring.
+- `packages/components/src/SelectList/SelectListHiddenSelect.tsx` — renders a hidden `<select>` (single or multiple) and is fully wired to `useFormValidation`.
+
+Both serve the same purpose: project a RAC selection state into a real form control so the browser submits it (and, with native validation, focuses something useful when invalid). After Option B above, both will need:
+
+- a `name` / `form` association,
+- a hidden focusable element bound to `useFormValidation`,
+- selection-mode-aware value projection (single key vs key set),
+- a `required` attribute when `validationBehavior === 'native'`.
+
+Opportunity: extract a shared `useHiddenSelectionInput` hook (or a `<HiddenSelection>` component) under `packages/components/src/SelectList/` or a new shared location, parameterized by selection mode and value projection. Both `TagGroup` and `SelectList` would consume it, removing the duplication and ensuring future fixes (e.g. native-validation focus behavior) only happen once.
+
+Scope note: this is a follow-up refactor, not part of the immediate `TagGroup` bug fix. Land Option B for both components first, then unify.
+
 ## Evidence / references
 
 - `packages/components/src/TagGroup/TagGroup.tsx` — no `FieldErrorContext` provider
