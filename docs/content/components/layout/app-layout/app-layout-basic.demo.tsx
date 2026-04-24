@@ -1,7 +1,15 @@
 import { AppLayout, Sidebar, TopNavigation } from '@marigold/components';
 
+// The preview cage (`h-[400px]`) stands in for the browser viewport so the
+// page-scroll semantics play out inside the docs page:
+// - `overflow-y-auto overscroll-contain` makes the cage its own scroll root
+//   (and stops scroll chaining into the docs page).
+// - `[&>div]:!min-h-0` neutralises `AppLayout`'s `min-h-dvh` so the grid is
+//   sized by its content, not the real viewport.
+// - `[&_aside]:!h-[400px]` clamps the sidebar's `h-dvh` to the cage height
+//   so it behaves like a viewport-tall sidebar in a 400 px "page".
 export default () => (
-  <div className="-m-4 h-[300px] [&>div]:!h-full [&>div]:!min-h-0">
+  <div className="-m-4 h-[400px] overflow-y-auto overscroll-contain [&_aside]:!h-[400px] [&>div]:!min-h-0">
     <Sidebar.Provider defaultOpen>
       <AppLayout>
         <AppLayout.Sidebar>
@@ -27,7 +35,7 @@ export default () => (
         </AppLayout.Header>
         <AppLayout.Main>
           <div className="space-y-2 p-4">
-            {Array.from({ length: 5 }, (_, i) => (
+            {Array.from({ length: 20 }, (_, i) => (
               <div key={i} className="rounded-sm bg-stone-50 p-3 text-sm">
                 Content item {i + 1}
               </div>
