@@ -66,7 +66,8 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           // from the surface's inner border to the option content.
           'rounded-md px-1 py-2 min-h-14',
           'selected:bg-selected',
-          'hover:bg-hover hover:text-hover-foreground',
+          // Hover only shifts the background to the theme's hover color.
+          'hover:bg-hover',
           // Dividers are rendered as a ::after pseudo-element so they can
           // extend past the item's rounded corners into the list's `p-1`
           // padding — the line goes edge to edge of the surface and uses the
@@ -85,7 +86,10 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           // thicker without shifting the layout.
           'ui-surface shadow-elevation-border p-4 min-h-14',
           'selected:[--ui-border-color:var(--color-foreground)] selected:inset-shadow-[0_0_0_0.5px_var(--ui-border-color)]',
-          'hover:[--ui-border-color:var(--color-foreground)]',
+          // Hover only shifts the surface background so the border stays
+          // calm; uses the surface's `--ui-background-color` hook so the
+          // gradient keeps rendering correctly.
+          'hover:[--ui-background-color:var(--color-hover)]',
         ],
       },
     },
