@@ -1,8 +1,7 @@
-import { Settings } from 'lucide-react';
+import { LogOut as Logout, Settings, User } from 'lucide-react';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Logout, User } from '@marigold/icons';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
 import { Headline } from '../Headline/Headline';

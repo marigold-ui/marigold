@@ -1,34 +1,32 @@
 import { render, screen } from '@testing-library/react';
 import type { RefObject } from 'react';
-import { Facebook } from './social/Facebook';
-import { ArrowUp } from './ui/ArrowUp';
+import { DesignTicket } from './custom/DesignTicket';
+import { Search } from './index';
 
-test('supports default size', () => {
-  render(<Facebook data-testid="svg" />);
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg).toHaveAttribute('width', '24px');
-  expect(svg).toHaveAttribute('height', '24px');
+test('custom icon renders default size', () => {
+  render(<DesignTicket data-testid="svg" />);
+  const svg = screen.getByTestId('svg');
+  expect(svg).toHaveAttribute('width', '24');
+  expect(svg).toHaveAttribute('height', '24');
 });
 
-test('supports size prop', () => {
-  render(<Facebook data-testid="svg" size={30} />);
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg).toHaveAttribute('width', '30px');
-  expect(svg).toHaveAttribute('height', '30px');
+test('custom icon supports size prop', () => {
+  render(<DesignTicket data-testid="svg" size={30} />);
+  expect(screen.getByTestId('svg')).toHaveAttribute('width', '30');
 });
 
-test('supports className', () => {
-  render(<Facebook data-testid="svg" className="fill-primary-500" />);
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg).toHaveClass('fill-primary-500');
+test('custom icon supports className', () => {
+  render(<DesignTicket data-testid="svg" className="text-primary-500" />);
+  expect(screen.getByTestId('svg')).toHaveClass('text-primary-500');
 });
 
-test('forwards ref', () => {
+test('custom icon forwards ref', () => {
   const ref: RefObject<SVGSVGElement | null> = { current: null };
-  render(<ArrowUp ref={ref} />);
-
+  render(<DesignTicket ref={ref} />);
   expect(ref.current).toBeInstanceOf(SVGElement);
+});
+
+test('re-exported lucide icon renders', () => {
+  render(<Search data-testid="svg" />);
+  expect(screen.getByTestId('svg')).toBeInTheDocument();
 });

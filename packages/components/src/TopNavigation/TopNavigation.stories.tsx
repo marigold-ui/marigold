@@ -1,5 +1,9 @@
+import {
+  LogOut as Logout,
+  EllipsisVertical as SettingDots,
+  User,
+} from 'lucide-react';
 import preview from '.storybook/preview';
-import { Logout, SettingDots, User } from '@marigold/icons';
 import { useResponsiveValue } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
