@@ -29,10 +29,30 @@ const meta = preview.meta({
       },
       description: 'Visual variant of the list.',
     },
+    orientation: {
+      control: { type: 'inline-radio' },
+      options: ['vertical', 'horizontal'],
+      table: {
+        type: { summary: 'vertical | horizontal' },
+        defaultValue: { summary: 'vertical' },
+      },
+      description: 'Direction items flow and arrow keys navigate.',
+    },
+    selectionBehavior: {
+      control: { type: 'inline-radio' },
+      options: ['toggle', 'replace'],
+      table: {
+        type: { summary: 'toggle | replace' },
+        defaultValue: { summary: 'toggle' },
+      },
+      description:
+        'How multi-selection responds to clicks. `toggle` flips each item; `replace` selects only the clicked item (Cmd/Shift to add).',
+    },
   },
   args: {
     selectionMode: 'single',
     variant: 'default',
+    orientation: 'vertical',
   },
 });
 
@@ -66,6 +86,21 @@ export const WithSingleSelection = meta.story({
 export const WithMultiSelection = meta.story({
   render: args => (
     <SelectList aria-labelledby="SelectList" {...args} selectionMode="multiple">
+      <SelectList.Item id="charizard">Charizard</SelectList.Item>
+      <SelectList.Item id="blastoise">Blastoise</SelectList.Item>
+      <SelectList.Item id="venusaur">Venusaur</SelectList.Item>
+      <SelectList.Item id="pikachu">Pikachu</SelectList.Item>
+    </SelectList>
+  ),
+});
+
+export const WithReplaceBehavior = meta.story({
+  args: {
+    selectionMode: 'multiple',
+    selectionBehavior: 'replace',
+  },
+  render: args => (
+    <SelectList aria-labelledby="SelectList" {...args}>
       <SelectList.Item id="charizard">Charizard</SelectList.Item>
       <SelectList.Item id="blastoise">Blastoise</SelectList.Item>
       <SelectList.Item id="venusaur">Venusaur</SelectList.Item>
@@ -120,6 +155,41 @@ export const WithImage = meta.story({
           You can use this card with a label and a description.
         </Text>
       </SelectList.Item>
+    </SelectList>
+  ),
+});
+
+export const EmptyState = meta.story({
+  args: {
+    items: [],
+  },
+  render: args => (
+    <SelectList
+      {...args}
+      aria-labelledby="SelectList"
+      emptyState={
+        <div className="text-muted-foreground p-6 text-center text-sm">
+          No items to display.
+        </div>
+      }
+    >
+      {(item: { id: number; name: string }) => (
+        <SelectList.Item>{item.name}</SelectList.Item>
+      )}
+    </SelectList>
+  ),
+});
+
+export const Horizontal = meta.story({
+  args: {
+    orientation: 'horizontal',
+  },
+  render: args => (
+    <SelectList aria-labelledby="SelectList" {...args}>
+      <SelectList.Item id="s">S</SelectList.Item>
+      <SelectList.Item id="m">M</SelectList.Item>
+      <SelectList.Item id="l">L</SelectList.Item>
+      <SelectList.Item id="xl">XL</SelectList.Item>
     </SelectList>
   ),
 });

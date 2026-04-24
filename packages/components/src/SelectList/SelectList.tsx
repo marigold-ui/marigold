@@ -18,7 +18,12 @@ import {
 import { useObjectRef } from '@react-aria/utils';
 import { useFormValidationState } from '@react-stately/form';
 import { useControlledState } from '@react-stately/utils';
-import type { Key, Selection, ValidationError } from '@react-types/shared';
+import type {
+  Key,
+  Orientation,
+  Selection,
+  ValidationError,
+} from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { SelectListContext } from './Context';
@@ -33,6 +38,7 @@ type RemoveProps =
   | 'className'
   | 'onSelectionChange'
   | 'dragAndDropHooks'
+  | 'renderEmptyState'
   | 'isDisabled'
   | 'isInvalid'
   | 'isRequired';
@@ -89,6 +95,23 @@ export interface SelectListProps extends Omit<
    * Width of the field.
    */
   width?: WidthProp['width'];
+  /**
+   * The primary orientation of the items. Controls the direction items flow
+   * and the arrow keys used to navigate between them.
+   * @default 'vertical'
+   */
+  orientation?: Orientation;
+  /**
+   * Content to render when the list has no items.
+   */
+  emptyState?: ReactNode;
+  /**
+   * How multi-selection should respond to clicks.
+   * - `toggle`: clicking flips each item.
+   * - `replace`: clicking selects only the clicked item; hold Cmd/Ctrl/Shift to extend.
+   * @default 'toggle'
+   */
+  selectionBehavior?: RAC.GridListProps<object>['selectionBehavior'];
   /**
    * Custom client-side validation.
    * - `selectionMode="single"`: receives `Key | null`.
@@ -156,6 +179,8 @@ const _SelectList = forwardRef<HTMLDivElement, SelectListProps>(
       defaultSelectedKeys,
       selectionMode,
       onChange,
+      orientation = 'vertical',
+      emptyState,
       children,
       ...rest
     },
@@ -235,17 +260,18 @@ const _SelectList = forwardRef<HTMLDivElement, SelectListProps>(
             <div className={classNames.container}>
               <RACGridList
                 {...(rest as RAC.GridListProps<object>)}
+                {...(emptyState !== undefined && {
+                  renderEmptyState: () => emptyState,
+                })}
                 ref={gridListRef}
                 aria-labelledby={label ? labelId : rest['aria-labelledby']}
                 aria-disabled={disabled || undefined}
                 layout="grid"
+                orientation={orientation}
                 selectionMode={selectionMode}
                 selectedKeys={selection}
                 onSelectionChange={handleSelectionChange}
-                className={cn(
-                  'group/list overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
-                  classNames.list
-                )}
+                className={cn('group/list', classNames.list)}
               >
                 {children}
               </RACGridList>

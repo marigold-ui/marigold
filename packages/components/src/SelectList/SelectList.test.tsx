@@ -6,6 +6,8 @@ import {
   Basic,
   Bordered,
   Disabled,
+  EmptyState,
+  Horizontal,
   Required,
   WithDescription,
   WithDescriptionMessage,
@@ -172,5 +174,38 @@ describe('SelectList', () => {
     screen
       .getAllByRole('row')
       .forEach(row => expect(row).toHaveAttribute('data-disabled', 'true'));
+  });
+
+  test('applies data-disabled on the field wrapper when disabled', () => {
+    const { container } = render(<Disabled.Component />);
+
+    /* eslint-disable testing-library/no-node-access, testing-library/no-container */
+    const field = container.querySelector('.group\\/field');
+    /* eslint-enable testing-library/no-node-access, testing-library/no-container */
+    expect(field).toHaveAttribute('data-disabled', 'true');
+  });
+
+  test('defaults to vertical orientation', () => {
+    render(<Basic.Component aria-label="Test" />);
+
+    expect(screen.getByRole('grid')).toHaveAttribute(
+      'data-orientation',
+      'vertical'
+    );
+  });
+
+  test('reflects horizontal orientation via data-orientation', () => {
+    render(<Horizontal.Component aria-label="Test" />);
+
+    expect(screen.getByRole('grid')).toHaveAttribute(
+      'data-orientation',
+      'horizontal'
+    );
+  });
+
+  test('renders emptyState when there are no items', () => {
+    render(<EmptyState.Component aria-label="Test" />);
+
+    expect(screen.getByText('No items to display.')).toBeInTheDocument();
   });
 });
