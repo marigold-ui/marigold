@@ -259,7 +259,7 @@ export const VenuesTable = () => {
           <Table.Column id="traits">Traits</Table.Column>
           <Table.Column id="amenities">Amenities</Table.Column>
           <Table.Column id="parking">Parking</Table.Column>
-          <Table.Column id="rating" alignX="right" allowsSorting>
+          <Table.Column id="rating" alignX="right">
             Rating
           </Table.Column>
         </Table.Header>
@@ -311,7 +311,7 @@ export const VenuesTable = () => {
                 </Inline>
               </Table.Cell>
               <Table.Cell>
-                <Inline space="0.5" alignY="center">
+                <Inline space="0.5" alignX="right">
                   <NumericFormat
                     value={venue.rating}
                     minimumFractionDigits={1}
