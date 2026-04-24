@@ -64,6 +64,11 @@ const userInput: NavSection = {
       docsHref: '/patterns/user-input/filter',
       docsLabel: 'Form Guidelines',
     },
+    {
+      kind: 'Item',
+      slug: 'data-management',
+      label: 'Data Management',
+    },
   ],
 };
 
