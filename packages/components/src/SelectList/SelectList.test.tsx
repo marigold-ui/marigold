@@ -5,8 +5,14 @@ import {
   Action,
   Basic,
   Bordered,
+  Disabled,
+  Required,
   WithDescription,
+  WithDescriptionMessage,
+  WithError,
+  WithFormSingle,
   WithImage,
+  WithLabel,
   WithMultiSelection,
   WithSingleSelection,
 } from './SelectList.stories';
@@ -109,5 +115,64 @@ describe('SelectList', () => {
     render(<Bordered.Component />);
 
     expect(screen.getByText('Free')).toBeInTheDocument();
+  });
+
+  test('renders label and associates it with the grid via aria-labelledby', () => {
+    render(<WithLabel.Component />);
+
+    const labelId = screen.getByText('Favorite fruit').getAttribute('id');
+    expect(labelId).toBeTruthy();
+    expect(screen.getByRole('grid')).toHaveAttribute(
+      'aria-labelledby',
+      labelId!
+    );
+  });
+
+  test('renders description', () => {
+    render(<WithDescriptionMessage.Component />);
+
+    expect(screen.getByText('Pick the one you like most.')).toBeInTheDocument();
+  });
+
+  test('renders errorMessage when error is true', () => {
+    render(<WithError.Component />);
+
+    expect(screen.getByText('Please choose a fruit.')).toBeInTheDocument();
+  });
+
+  test('applies RAC-compatible data attributes when error is true', () => {
+    const { container } = render(<WithError.Component />);
+
+    /* eslint-disable testing-library/no-node-access */
+    const field = container.querySelector('.group\\/field');
+    /* eslint-enable testing-library/no-node-access */
+    expect(field).toHaveAttribute('data-rac');
+    expect(field).toHaveAttribute('data-invalid', 'true');
+    expect(field).toHaveAttribute('data-error', 'true');
+  });
+
+  test('applies data-required when required is true', () => {
+    const { container } = render(<Required.Component />);
+
+    /* eslint-disable testing-library/no-node-access */
+    const field = container.querySelector('.group\\/field');
+    /* eslint-enable testing-library/no-node-access */
+    expect(field).toHaveAttribute('data-required', 'true');
+  });
+
+  test('name prop submits single selected key in single mode', () => {
+    render(<WithFormSingle.Component />);
+
+    const form = screen.getByTestId('form') as HTMLFormElement;
+    const formData = new FormData(form);
+    expect(formData.get('fruit')).toBe('banana');
+  });
+
+  test('list-level disabled disables all items via context', () => {
+    render(<Disabled.Component />);
+
+    screen
+      .getAllByRole('row')
+      .forEach(row => expect(row).toHaveAttribute('data-disabled', 'true'));
   });
 });

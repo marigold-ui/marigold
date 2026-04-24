@@ -8,7 +8,8 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     base: ['outline-0 w-full'],
     variants: {
       variant: {
-        default: 'flex flex-col',
+        default:
+          'flex flex-col ui-surface shadow-elevation-border overflow-hidden',
         bordered: 'flex flex-col gap-2',
       },
     },
@@ -24,8 +25,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'cursor-default data-selection-mode:cursor-pointer',
       'focus-visible:ui-state-focus focus-visible:z-1 transition-[border,color,background]',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-      // image slot (first <img> in the item)
+      // image slot (first <img> in the item) — spans both rows so label + description sit beside it
       '[&>img]:size-10 [&>img]:rounded-md [&>img]:object-cover [&>img]:shrink-0',
+      '[&>img]:col-start-2 [&>img]:row-start-1 [&>img]:row-span-2 [&>img]:self-center',
       // label + description layout: label row 1, description row 2, both in col 3
       '[&_[slot=label]]:col-start-3 [&_[slot=label]]:row-start-1 [&_[slot=label]]:font-medium',
       '[&_[slot=description]]:col-start-3 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-muted-foreground',
@@ -53,7 +55,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   description: cva({ base: '' }),
   indicator: cva({
     base: [
-      'flex shrink-0 items-center justify-center row-span-2 row-start-1 col-start-1',
+      'flex shrink-0 items-center justify-center row-start-1 col-start-1 self-center',
     ],
   }),
   action: cva({

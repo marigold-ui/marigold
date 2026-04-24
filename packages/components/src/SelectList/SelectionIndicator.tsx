@@ -14,17 +14,15 @@ const RadioIndicator = ({
 }: Pick<SelectionIndicatorProps, 'isSelected' | 'isDisabled'>) => (
   <div
     aria-hidden="true"
-    data-selected={isSelected || undefined}
     className={cn(
-      'flex size-4 shrink-0 items-center justify-center rounded-full border p-0.5',
-      'border-input shadow-elevation-border',
-      'data-selected:border-brand data-selected:bg-brand',
-      isDisabled && 'opacity-50'
+      'flex aspect-square size-4 shrink-0 items-center justify-center rounded-full p-1',
+      'border-input shadow-elevation-border border',
+      isSelected && 'border-brand bg-brand text-brand-foreground',
+      isDisabled && isSelected && 'border-disabled! bg-disabled',
+      isDisabled && 'cursor-not-allowed'
     )}
   >
-    {isSelected ? (
-      <div className="bg-brand-foreground size-full rounded-full" />
-    ) : null}
+    {isSelected ? <div className="size-full rounded-full bg-current" /> : null}
   </div>
 );
 

@@ -1,5 +1,8 @@
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { Form } from '../Form/Form';
+import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Info } from '../icons/Info';
 import { SelectList } from './SelectList';
@@ -177,4 +180,141 @@ export const Action = meta.story({
       )}
     </SelectList>
   ),
+});
+
+export const WithLabel = meta.story({
+  render: args => (
+    <SelectList
+      {...args}
+      label="Favorite fruit"
+      defaultSelectedKeys={['apple']}
+    >
+      <SelectList.Item id="apple">Apple</SelectList.Item>
+      <SelectList.Item id="banana">Banana</SelectList.Item>
+      <SelectList.Item id="cherry">Cherry</SelectList.Item>
+    </SelectList>
+  ),
+});
+
+export const WithDescriptionMessage = meta.story({
+  render: args => (
+    <SelectList
+      {...args}
+      label="Favorite fruit"
+      description="Pick the one you like most."
+    >
+      <SelectList.Item id="apple">Apple</SelectList.Item>
+      <SelectList.Item id="banana">Banana</SelectList.Item>
+      <SelectList.Item id="cherry">Cherry</SelectList.Item>
+    </SelectList>
+  ),
+});
+
+export const WithError = meta.story({
+  render: args => (
+    <SelectList
+      {...args}
+      label="Favorite fruit"
+      error
+      errorMessage="Please choose a fruit."
+    >
+      <SelectList.Item id="apple">Apple</SelectList.Item>
+      <SelectList.Item id="banana">Banana</SelectList.Item>
+      <SelectList.Item id="cherry">Cherry</SelectList.Item>
+    </SelectList>
+  ),
+});
+
+export const Required = meta.story({
+  args: {
+    selectionMode: 'single',
+  },
+  render: args => (
+    <Form>
+      <Stack space={4} alignX="left">
+        <SelectList {...args} label="Favorite fruit" name="fruit" required>
+          <SelectList.Item id="apple">Apple</SelectList.Item>
+          <SelectList.Item id="banana">Banana</SelectList.Item>
+          <SelectList.Item id="cherry">Cherry</SelectList.Item>
+        </SelectList>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+      </Stack>
+    </Form>
+  ),
+});
+
+export const WithFormSingle = meta.story({
+  args: {
+    selectionMode: 'single',
+  },
+  render: args => (
+    <form data-testid="form">
+      <SelectList
+        {...args}
+        label="Favorite fruit"
+        name="fruit"
+        defaultSelectedKeys={['banana']}
+      >
+        <SelectList.Item id="apple">Apple</SelectList.Item>
+        <SelectList.Item id="banana">Banana</SelectList.Item>
+        <SelectList.Item id="cherry">Cherry</SelectList.Item>
+      </SelectList>
+    </form>
+  ),
+});
+
+export const Disabled = meta.story({
+  args: {
+    selectionMode: 'single',
+    disabled: true,
+  },
+  render: args => (
+    <SelectList {...args} label="Favorite fruit">
+      <SelectList.Item id="apple">Apple</SelectList.Item>
+      <SelectList.Item id="banana">Banana</SelectList.Item>
+    </SelectList>
+  ),
+});
+
+export const WithForm = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+  },
+  render: args => (
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const submitted = formData.getAll('fruit').join(',');
+        (e.currentTarget.querySelector(
+          '[data-testid=submitted]'
+        ) as HTMLElement)!.textContent = `submitted: ${submitted}`;
+      }}
+    >
+      <Stack space={4} alignX="left">
+        <SelectList {...args} label="Favorite fruits" name="fruit">
+          <SelectList.Item id="apple">Apple</SelectList.Item>
+          <SelectList.Item id="banana">Banana</SelectList.Item>
+          <SelectList.Item id="cherry">Cherry</SelectList.Item>
+        </SelectList>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+        <pre data-testid="submitted">submitted:</pre>
+      </Stack>
+    </Form>
+  ),
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('row', { name: /apple/i }));
+    await userEvent.click(canvas.getByRole('row', { name: /cherry/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+    await waitFor(() => {
+      expect(canvas.getByTestId('submitted')).toHaveTextContent(
+        'submitted: apple,cherry'
+      );
+    });
+  },
 });

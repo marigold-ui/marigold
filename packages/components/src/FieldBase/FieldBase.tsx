@@ -33,6 +33,7 @@ export interface FieldBaseProps<T extends ElementType>
    */
   isInvalid?: boolean;
   isRequired?: boolean;
+  isDisabled?: boolean;
 }
 
 // Component
@@ -51,8 +52,17 @@ const _FieldBase = <T extends ElementType>(
     description,
     errorMessage,
     className,
+    isInvalid,
+    isRequired,
+    isDisabled,
     ...rest
   } = props;
+  // Only forward RAC validation props when the rendered element is not a plain DOM node.
+  if (typeof Component !== 'string') {
+    (rest as any).isInvalid = isInvalid;
+    (rest as any).isRequired = isRequired;
+    (rest as any).isDisabled = isDisabled;
+  }
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -86,8 +96,11 @@ const _FieldBase = <T extends ElementType>(
           ),
         } as React.CSSProperties
       }
-      data-required={props.isRequired ? true : undefined}
-      data-error={props.isInvalid ? true : undefined}
+      data-rac=""
+      data-required={isRequired ? true : undefined}
+      data-invalid={isInvalid ? true : undefined}
+      data-disabled={isDisabled ? true : undefined}
+      data-error={isInvalid ? true : undefined}
       {...rest}
     >
       {label ? (

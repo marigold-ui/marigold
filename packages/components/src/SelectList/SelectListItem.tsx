@@ -54,11 +54,11 @@ const ItemChildren = ({ children }: { children: ReactNode }) => {
 const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
   ({ children, disabled, ...props }, ref) => {
     const textValue = typeof children === 'string' ? children : undefined;
-    const { classNames } = useSelectListContext();
+    const { classNames, disabled: listDisabled } = useSelectListContext();
 
     return (
       <SelectListItem
-        isDisabled={disabled}
+        isDisabled={disabled ?? listDisabled}
         textValue={textValue}
         {...props}
         className={cn(classNames?.item)}

@@ -3,6 +3,7 @@ import type { ComponentClassNames } from '@marigold/system';
 
 export interface SelectListContextProps {
   classNames: ComponentClassNames<'SelectList'>;
+  disabled?: boolean;
 }
 
 export const SelectListContext = createContext<SelectListContextProps>({
