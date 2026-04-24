@@ -77,9 +77,15 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'group-orientation-horizontal/list:not-last:after:-inset-y-1 group-orientation-horizontal/list:not-last:after:-right-0.5 group-orientation-horizontal/list:not-last:after:w-px',
         ],
         bordered: [
-          'rounded-xl border border-border p-4 min-h-14',
-          'selected:border-foreground',
-          'hover:border-border-hover',
+          // Each option is its own surface with the system's elevation
+          // border; hover and selected states re-use the surface's border
+          // hook (`--ui-border-color`) so the visuals follow the design
+          // system instead of custom border tokens. Selected gets an extra
+          // 0.5px inset shadow in the same color so the border reads as
+          // thicker without shifting the layout.
+          'ui-surface shadow-elevation-border p-4 min-h-14',
+          'selected:[--ui-border-color:var(--color-foreground)] selected:inset-shadow-[0_0_0_0.5px_var(--ui-border-color)]',
+          'hover:[--ui-border-color:var(--color-foreground)]',
         ],
       },
     },
