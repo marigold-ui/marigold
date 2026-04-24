@@ -18,7 +18,7 @@ import {
   Text,
   ToggleButton,
 } from '@marigold/components';
-import { Filter } from '@marigold/icons';
+import { Add, Filter } from '@marigold/icons';
 import { VENUES_QUERY_KEY, fetchVenues } from './api';
 import {
   MAX_CAPACITY,
@@ -201,6 +201,16 @@ export const Toolbar = () => {
           </Form>
         </Drawer>
       </Drawer.Trigger>
+      <div className="ml-auto">
+        <Button
+          variant="primary"
+          onPress={() => {
+            /* TODO: open Add Venue dialog (DST-1288) */
+          }}
+        >
+          <Add /> Add Venue
+        </Button>
+      </div>
     </Inline>
   );
 };
