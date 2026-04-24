@@ -1,7 +1,7 @@
 import { AppLayout, Sidebar, TopNavigation } from '@marigold/components';
 
 export default () => (
-  <div className="h-[300px] [&>div]:!h-full">
+  <div className="-m-4 h-[300px] [&>div]:!h-full [&>div]:!min-h-0">
     <Sidebar.Provider defaultOpen>
       <AppLayout>
         <AppLayout.Sidebar>
