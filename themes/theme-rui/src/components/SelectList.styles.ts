@@ -6,9 +6,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   list: cva({
     base: [
-      'outline-0 w-full flex',
-      'orientation-vertical:flex-col orientation-vertical:overflow-x-hidden orientation-vertical:overflow-y-auto',
-      'orientation-horizontal:flex-row orientation-horizontal:overflow-x-auto orientation-horizontal:overflow-y-hidden',
+      'outline-0 flex',
+      'orientation-vertical:w-full orientation-vertical:flex-col orientation-vertical:overflow-x-hidden orientation-vertical:overflow-y-auto',
+      'orientation-horizontal:w-fit orientation-horizontal:flex-row orientation-horizontal:overflow-x-auto orientation-horizontal:overflow-y-hidden',
     ],
     variants: {
       variant: {
