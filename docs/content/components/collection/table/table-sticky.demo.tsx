@@ -8,7 +8,7 @@ export default () => {
         <Table.Header sticky>
           <Table.Column rowHeader>Venue</Table.Column>
           <Table.Column>City</Table.Column>
-          <Table.Column>Capacity</Table.Column>
+          <Table.Column alignX="right">Capacity</Table.Column>
         </Table.Header>
         <Table.Body>
           {venues.map(venue => (
