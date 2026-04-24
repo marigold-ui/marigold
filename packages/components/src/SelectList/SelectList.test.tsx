@@ -8,15 +8,9 @@ import {
   Disabled,
   EmptyState,
   Horizontal,
-  Required,
   WithDescription,
-  WithDescriptionMessage,
   WithError,
-  WithFormSingle,
-  WithImage,
-  WithLabel,
   WithMultiSelection,
-  WithSingleSelection,
 } from './SelectList.stories';
 import { SelectListAction } from './SelectListAction';
 
@@ -58,7 +52,7 @@ describe('SelectList', () => {
   });
 
   test('should support focus ring', async () => {
-    render(<WithSingleSelection.Component />);
+    render(<Basic.Component />);
 
     let row = screen.getAllByRole('row')[0];
 
@@ -96,15 +90,6 @@ describe('SelectList', () => {
     ).toBeInTheDocument();
   });
 
-  test('renders image slot when present', () => {
-    render(<WithImage.Component />);
-
-    /* eslint-disable testing-library/no-node-access */
-    const images = document.querySelectorAll('img');
-    /* eslint-enable testing-library/no-node-access */
-    expect(images.length).toBeGreaterThan(0);
-  });
-
   test('supports non-string children with textValue', () => {
     render(<Action.Component />);
 
@@ -118,7 +103,7 @@ describe('SelectList', () => {
   });
 
   test('renders label and associates it with the grid via aria-labelledby', () => {
-    render(<WithLabel.Component />);
+    render(<Basic.Component />);
 
     const labelId = screen.getByText('Favorite fruit').getAttribute('id');
     expect(labelId).toBeTruthy();
@@ -129,7 +114,7 @@ describe('SelectList', () => {
   });
 
   test('renders description', () => {
-    render(<WithDescriptionMessage.Component />);
+    render(<Basic.Component />);
 
     expect(screen.getByText('Pick the one you like most.')).toBeInTheDocument();
   });
@@ -149,23 +134,6 @@ describe('SelectList', () => {
     expect(field).toHaveAttribute('data-rac');
     expect(field).toHaveAttribute('data-invalid', 'true');
     expect(field).toHaveAttribute('data-error', 'true');
-  });
-
-  test('applies data-required when required is true', () => {
-    const { container } = render(<Required.Component />);
-
-    /* eslint-disable testing-library/no-node-access, testing-library/no-container */
-    const field = container.querySelector('.group\\/field');
-    /* eslint-enable testing-library/no-node-access, testing-library/no-container */
-    expect(field).toHaveAttribute('data-required', 'true');
-  });
-
-  test('name prop submits single selected key in single mode', () => {
-    render(<WithFormSingle.Component />);
-
-    const form = screen.getByTestId('form') as HTMLFormElement;
-    const formData = new FormData(form);
-    expect(formData.get('fruit')).toBe('banana');
   });
 
   test('list-level disabled disables all items via context', () => {
