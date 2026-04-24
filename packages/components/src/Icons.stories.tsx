@@ -50,12 +50,24 @@ const meta = preview.meta({
       control: { type: 'color' },
       table: { defaultValue: { summary: 'currentColor' } },
     },
+    strokeWidth: {
+      control: { type: 'range', min: 0.5, max: 4, step: 0.25 },
+      table: { defaultValue: { summary: '2' } },
+    },
+    fill: {
+      control: { type: 'color' },
+      description:
+        'Fill color; set to make stroke-based icons filled. Defaults to none.',
+      table: { defaultValue: { summary: 'none' } },
+    },
     className: { control: false, table: { disable: true } },
     style: { control: false, table: { disable: true } },
   },
   args: {
     size: 32,
     color: undefined,
+    strokeWidth: 2,
+    fill: undefined,
   },
 });
 
@@ -78,15 +90,15 @@ export const CustomIcons = meta.story({
 
 export const ButtonWithIcon = meta.story({
   name: 'Button with leading icon',
-  parameters: { controls: { disable: true } },
-  render: () => (
+  args: { size: 16 },
+  render: (args: LucideProps) => (
     <Inline space={2}>
       <Button variant="primary">
-        <Save size={16} />
+        <Save {...args} />
         Save
       </Button>
       <Button variant="secondary">
-        <Download size={16} />
+        <Download {...args} />
         Download
       </Button>
     </Inline>
@@ -95,8 +107,8 @@ export const ButtonWithIcon = meta.story({
 
 export const Rating = meta.story({
   name: '5-Star Rating',
-  parameters: { controls: { disable: true } },
-  render: () => {
+  args: { size: 24 },
+  render: ({ fill, ...args }: LucideProps) => {
     const rating = 3;
     const total = 5;
     return (
@@ -108,8 +120,8 @@ export const Rating = meta.story({
         {Array.from({ length: total }, (_, i) => (
           <Star
             key={i}
-            size={24}
-            fill={i < rating ? 'currentColor' : 'none'}
+            {...args}
+            fill={i < rating ? (fill ?? 'currentColor') : 'none'}
             className="text-yellow-500"
           />
         ))}
@@ -119,17 +131,17 @@ export const Rating = meta.story({
 });
 
 export const SocialLinks = meta.story({
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <Inline space={3} aria-label="Social media">
+  args: { size: 24 },
+  render: (args: LucideProps) => (
+    <Inline space={3}>
       <a href="#" aria-label="Facebook">
-        <Facebook size={24} />
+        <Facebook {...args} />
       </a>
       <a href="#" aria-label="Instagram">
-        <Instagram size={24} />
+        <Instagram {...args} />
       </a>
       <a href="#" aria-label="Twitter">
-        <Twitter size={24} />
+        <Twitter {...args} />
       </a>
     </Inline>
   ),
