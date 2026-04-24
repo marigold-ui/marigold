@@ -1,16 +1,12 @@
 import type { CSSProperties } from 'react';
 import { cn } from '@marigold/system';
 import type { IconProps } from '../icons/Icons.types';
+import { reducedMotion } from '../utils/reducedMotion';
 
 const CHEVRON_LEFT = 'M 16 15 L 13 12 L 16 9';
 const CHEVRON_RIGHT = 'M 13 15 L 16 12 L 13 9';
 const SPRING_BEZIER = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
 const HOVER_BEZIER = 'cubic-bezier(0.33, 1, 0.68, 1)';
-
-const reducedMotion =
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export interface SidebarToggleIconProps extends IconProps {
   /** Whether the sidebar is currently expanded. Controls the chevron direction. */
