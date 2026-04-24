@@ -1,16 +1,42 @@
 ---
-'@marigold/components': minor
+'@marigold/components': major
 '@marigold/theme-rui': minor
 ---
 
-feat(SelectList): standardized item layout and visual distinction from ListBox (DST-1076)
+feat(SelectList)!: standardized API, item layout, and visual distinction from ListBox (DST-1076)
 
-`<SelectList>` now ships a first-class item skeleton:
+`<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. This release contains breaking renames and a tightened type surface.
 
-- **Selection indicator** — single-select rows now render a visible radio circle; multi-select keeps the existing checkbox. No more invisible placeholder indicator in single mode.
-- **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Item>` (mirroring the Select/ComboBox/Autocomplete convention). Row anatomy is now `selection · image (optional) · label + description · action (optional)`.
-- **Image slot** — drop a plain `<img alt="…">` (or any element) inside `<SelectList.Item>`; the theme places and sizes it as a leading visual.
-- **`variant` prop** — `"default"` (bigger two-line rows separated by dividers, selection fills the row) or `"bordered"` (each item is its own rounded, outlined container with a gap between items; selection strengthens the border).
-- **Own theme entry** — SelectList no longer borrows ListBox styles; a new `SelectList` theme component is registered in `@marigold/theme-rui`. Consumers with custom themes need to add a `SelectList` entry (the `ListBox`-based fallback is removed).
+**Breaking changes**
 
-No breaking changes to the public API: `<SelectList>`, `<SelectList.Item>`, and `<SelectList.Action>` keep their signatures. Stories and tests are updated to cover the new slots and variant.
+- `SelectList.Item` → **`SelectList.Option`**. The option semantic matches `Select.Option` and the HTML `<option>` mental model. Update any `<SelectList.Item>` usage to `<SelectList.Option>`.
+- `SelectList.Action` has been **removed**. Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` — the component positions, sizes, and styles the nested control automatically via `ButtonContext`. Limit: one action per option (multi-button groups will arrive with a future `ActionButtonGroup`).
+- Leading-image slot has been **removed**. Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+- `selectionMode="none"` is no longer accepted. `SelectList` is a form field; the default is now `"single"`.
+- `onChange` is strictly typed per `selectionMode`: `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. The shape matches `Select<T, M>`. Passing `setState` directly may require adapting the callback.
+
+**Other changes**
+
+- **Selection indicator** — single-select rows render a visible radio circle; multi-select renders a checkbox.
+- **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
+- **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
+- **Own theme entry** — `SelectList` ships a dedicated theme component. The theme exposes first-class `label`, `description`, and `action` entries; slot styling no longer uses descendant selectors. Consumers with custom themes must add or update a `SelectList` entry.
+
+**Migration**
+
+```diff
+- <SelectList selectionMode="none">
+-   <SelectList.Item id="free">
+-     <SelectList.Action>
+-       <IconButton aria-label="Info"><Info /></IconButton>
+-     </SelectList.Action>
+-     Free
+-   </SelectList.Item>
+- </SelectList>
++ <SelectList selectionMode="single">
++   <SelectList.Option id="free">
++     Free
++     <IconButton aria-label="Info"><Info /></IconButton>
++   </SelectList.Option>
++ </SelectList>
+```

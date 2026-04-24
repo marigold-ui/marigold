@@ -13,35 +13,33 @@ let tickets = [
 ];
 
 export default () => {
-  const [selectedTickets, setSelectedTickets] = useState(['standard']);
+  const [selectedTickets, setSelectedTickets] = useState<string[]>([
+    'standard',
+  ]);
   return (
     <SelectList
       aria-label="Select ticket types"
       selectionMode="multiple"
       items={tickets}
       selectedKeys={selectedTickets}
-      onChange={setSelectedTickets}
+      onChange={keys => setSelectedTickets(keys as string[])}
     >
       {(item: { id: string; name: string; price: number }) => (
-        <SelectList.Item id={item.id} textValue={item.name}>
+        <SelectList.Option id={item.id} textValue={item.name}>
           <Text slot="label">{item.name}</Text>
           <Text slot="description">€{item.price}</Text>
-          <SelectList.Action>
-            <ActionMenu variant="ghost">
-              <Menu.Item
-                onAction={() => alert(`Show details for ${item.name}`)}
-              >
-                Details
-              </Menu.Item>
-              <Menu.Item onAction={() => alert(`Refund ${item.name}`)}>
-                Refund
-              </Menu.Item>
-              <Menu.Item onAction={() => alert(`Transfer ${item.name}`)}>
-                Transfer
-              </Menu.Item>
-            </ActionMenu>
-          </SelectList.Action>
-        </SelectList.Item>
+          <ActionMenu variant="ghost">
+            <Menu.Item onAction={() => alert(`Show details for ${item.name}`)}>
+              Details
+            </Menu.Item>
+            <Menu.Item onAction={() => alert(`Refund ${item.name}`)}>
+              Refund
+            </Menu.Item>
+            <Menu.Item onAction={() => alert(`Transfer ${item.name}`)}>
+              Transfer
+            </Menu.Item>
+          </ActionMenu>
+        </SelectList.Option>
       )}
     </SelectList>
   );
