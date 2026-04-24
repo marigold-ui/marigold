@@ -1,8 +1,12 @@
 import { AppLayout, Sidebar, TopNavigation } from '@marigold/components';
 import { DemoViewport } from '@/ui/DemoViewport';
 
+// @hide
+
 export default () => (
   <DemoViewport>
+    {' '}
+    {/* @hide */}
     <Sidebar.Provider defaultOpen>
       <AppLayout>
         <AppLayout.Sidebar>
@@ -37,5 +41,5 @@ export default () => (
         </AppLayout.Main>
       </AppLayout>
     </Sidebar.Provider>
-  </DemoViewport>
+  </DemoViewport> // @hide
 );

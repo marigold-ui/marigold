@@ -31,6 +31,83 @@ function findDemoFiles(dir, fileList = []) {
   return fileList;
 }
 
+// Strip twoslash-style `@hide` markers from a demo source so the code tab
+// only shows the bits that matter for the reader.
+//
+// - A `@hide` marker in a `//` or `{/* ... */}` comment removes that line.
+// - `@hide-start` ... `@hide-end` markers (in either comment form) remove
+//   the marker lines and everything between them.
+// - Runs of blank lines introduced by the strip are collapsed.
+function stripHiddenLines(source) {
+  const hideMarker = /(?:\/\/|\{\/\*)\s*@hide(?!-)/;
+  const hideStart = /(?:\/\/|\{\/\*)\s*@hide-start/;
+  const hideEnd = /(?:\/\/|\{\/\*)\s*@hide-end/;
+  const indentOf = line => line.match(/^\s*/)[0].length;
+  const lines = source.split('\n');
+
+  // Classify markers and pair up single-line `@hide` markers that look like a
+  // wrapper (same indent, no line at a shallower indent between them). Paired
+  // markers dedent the lines between them by 2 so wrapper children don't look
+  // over-indented after the wrapper is stripped; solo markers just hide a line.
+  const markers = lines.map(line => {
+    if (hideStart.test(line)) return { type: 'start' };
+    if (hideEnd.test(line)) return { type: 'end' };
+    if (hideMarker.test(line)) return { type: 'hide', indent: indentOf(line) };
+    return null;
+  });
+  const pairOf = new Map();
+  for (let i = 0; i < markers.length; i++) {
+    if (markers[i]?.type !== 'hide' || pairOf.has(i)) continue;
+    const { indent } = markers[i];
+    for (let j = i + 1; j < markers.length; j++) {
+      const m = markers[j];
+      if (!m || m.type !== 'hide') continue;
+      if (m.indent < indent) break;
+      if (m.indent === indent) {
+        pairOf.set(i, j);
+        pairOf.set(j, i);
+        break;
+      }
+    }
+  }
+
+  const result = [];
+  let inBlock = false;
+  let dedent = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const marker = markers[i];
+    if (inBlock) {
+      if (marker?.type === 'end') inBlock = false;
+      continue;
+    }
+    if (marker?.type === 'start') {
+      inBlock = true;
+      continue;
+    }
+    if (marker?.type === 'hide') {
+      const pair = pairOf.get(i);
+      if (pair !== undefined) dedent += pair > i ? 2 : -2;
+      continue;
+    }
+    const line =
+      dedent > 0
+        ? lines[i].replace(new RegExp(`^ {0,${dedent}}`), '')
+        : lines[i];
+    result.push(line);
+  }
+
+  return result.join('\n').replace(/\n{3,}/g, '\n\n');
+}
+
+function readDemoSource(fullPath) {
+  try {
+    return stripHiddenLines(fs.readFileSync(fullPath, 'utf8'));
+  } catch (err) {
+    console.warn(`⚠️ Could not read file content for ${fullPath}: ${err}`);
+    return '';
+  }
+}
+
 /**
  * Build the registry file
  */
@@ -57,14 +134,9 @@ export const registry = {`;
     const name = path.basename(item, '.demo.tsx');
     const importPath = item.replace(/\\/g, '/').replace('.tsx', '');
 
-    // Read file contents and inline as source string (useful for code tabs)
+    // Read file contents (with @hide markers stripped) for the code tab.
     const fullPath = path.join(rootDir, item);
-    let fileContent = '';
-    try {
-      fileContent = fs.readFileSync(fullPath, 'utf8');
-    } catch (err) {
-      console.warn(`⚠️ Could not read file content for ${fullPath}: ${err}`);
-    }
+    const fileContent = readDemoSource(fullPath);
 
     index += `
   '${name}': {
@@ -97,17 +169,11 @@ export type RegistryKey = keyof typeof registry;
   for (const item of demoFiles) {
     const name = path.basename(item, '.demo.tsx');
     const fullPath = path.join(rootDir, item);
-    let fileContent = '';
-    try {
-      fileContent = fs.readFileSync(fullPath, 'utf8');
-    } catch (err) {
-      console.warn(`Could not read file content for ${fullPath}: ${err}`);
-    }
 
     jsonData[name] = {
       name,
       file: item.replace(/\\/g, '/'),
-      source: fileContent,
+      source: readDemoSource(fullPath),
     };
   }
 
