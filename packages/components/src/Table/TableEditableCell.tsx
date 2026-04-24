@@ -240,7 +240,7 @@ export const TableEditableCell = ({
               {children}
             </TableCellContent>
             {!disabled && (
-              <div className="w-0 shrink-0 overflow-hidden group-has-[:focus-visible]/editable-cell:w-auto [[role=row]:hover_&]:w-auto">
+              <div className="w-0 shrink-0 overflow-hidden group-has-[:focus-visible]/editable-cell:w-auto group-has-[:focus-visible]/editable-cell:overflow-visible [[role=row]:hover_&]:w-auto [[role=row]:hover_&]:overflow-visible">
                 <Button
                   className={classNames.editTrigger}
                   aria-label={stringFormatter.format('edit')}
