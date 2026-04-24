@@ -2,22 +2,45 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const SelectList: ThemeComponent<'SelectList'> = {
   container: cva({
-    base: ['flex w-full'],
+    base: [
+      'flex',
+      // Container width follows the list's orientation so the surface wraps
+      // a horizontal list without stretching to the full field width.
+      'has-orientation-vertical:w-full',
+      'has-orientation-horizontal:w-fit',
+    ],
+    variants: {
+      variant: {
+        // Surface lives on the outer container (Menu / ListBox pattern) so
+        // the inner scrolling list can carry padding for the `ui-state-focus`
+        // outline without offsetting the surface from the field's label and
+        // help text.
+        default: 'ui-surface shadow-elevation-border',
+        bordered: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
   }),
   list: cva({
     base: [
-      'outline-0 flex',
+      // `p-1` gives the 3px `ui-state-focus` outline on each item room to
+      // render without being clipped by the list's overflow boundary.
+      'outline-0 flex p-1',
       'orientation-vertical:w-full orientation-vertical:flex-col orientation-vertical:overflow-x-hidden orientation-vertical:overflow-y-auto',
       'orientation-horizontal:w-fit orientation-horizontal:flex-row orientation-horizontal:overflow-x-auto orientation-horizontal:overflow-y-hidden',
     ],
     variants: {
       variant: {
-        default: 'ui-surface shadow-elevation-border',
-        // Padding gives the 3px `ui-state-focus` outline room to render
-        // without being clipped by the list's overflow boundary; the matching
-        // negative margin pulls the list back so bordered items stay aligned
-        // with the field's label and help text.
-        bordered: 'gap-2 p-1 -m-1',
+        // `gap-1` matches the list's `p-1`: every option has 4px of room for
+        // its focus outline on all sides, so the ring does not overlap the
+        // neighbouring option and the first/last items read as centred.
+        default: 'gap-1',
+        // Bordered has no surface on the container, so the matching negative
+        // margin pulls the list back to keep items aligned with the field's
+        // label and help text.
+        bordered: 'gap-2 -m-1',
       },
     },
     defaultVariants: {
@@ -39,12 +62,19 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         default: [
-          'px-4 py-3 min-h-14',
-          'border-border/60',
-          'group-orientation-vertical/list:not-last:border-b',
-          'group-orientation-horizontal/list:not-last:border-r',
+          // `px-1` (4px) + the list's `p-1` padding gives an 8px visual gap
+          // from the surface's inner border to the option content.
+          'rounded-md px-1 py-2 min-h-14',
           'selected:bg-selected',
           'hover:bg-hover hover:text-hover-foreground',
+          // Dividers are rendered as a ::after pseudo-element so they can
+          // extend past the item's rounded corners into the list's `p-1`
+          // padding — the line goes edge to edge of the surface and uses the
+          // same color token as `ui-surface`'s outer border. The pseudo sits
+          // in the middle of the list's `gap-1` between options.
+          'not-last:after:content-[""] not-last:after:absolute not-last:after:bg-surface-border',
+          'group-orientation-vertical/list:not-last:after:-inset-x-1 group-orientation-vertical/list:not-last:after:-bottom-0.5 group-orientation-vertical/list:not-last:after:h-px',
+          'group-orientation-horizontal/list:not-last:after:-inset-y-1 group-orientation-horizontal/list:not-last:after:-right-0.5 group-orientation-horizontal/list:not-last:after:w-px',
         ],
         bordered: [
           'rounded-xl border border-border p-4 min-h-14',
