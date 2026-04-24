@@ -13,7 +13,11 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         default: 'ui-surface shadow-elevation-border',
-        bordered: 'gap-2',
+        // Padding gives the 3px `ui-state-focus` outline room to render
+        // without being clipped by the list's overflow boundary; the matching
+        // negative margin pulls the list back so bordered items stay aligned
+        // with the field's label and help text.
+        bordered: 'gap-2 p-1 -m-1',
       },
     },
     defaultVariants: {
@@ -24,14 +28,13 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     base: [
       'relative grid items-center gap-x-3',
       'grid-cols-[auto_1fr_auto]',
-      'text-sm text-foreground outline-none',
+      // Item default typography == label typography; plain-string children
+      // inherit the label look without needing a <Text slot="label"> wrapper.
+      'text-sm font-medium text-foreground outline-none',
       'cursor-default data-selection-mode:cursor-pointer',
       'focus-visible:ui-state-focus focus-visible:z-1 transition-[border,color,background]',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
       'group-orientation-horizontal/list:min-w-40',
-      // label + description layout: label row 1, description row 2, both in col 2
-      '[&_[slot=label]]:col-start-2 [&_[slot=label]]:row-start-1 [&_[slot=label]]:font-medium',
-      '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-muted-foreground',
     ],
     variants: {
       variant: {
@@ -54,8 +57,15 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       variant: 'default',
     },
   }),
-  label: cva({ base: '' }),
-  description: cva({ base: '' }),
+  label: cva({
+    base: ['col-start-2 row-start-1'],
+  }),
+  description: cva({
+    base: [
+      'col-start-2 row-start-2',
+      'text-xs font-normal text-muted-foreground',
+    ],
+  }),
   indicator: cva({
     base: [
       'flex shrink-0 items-center justify-center row-start-1 col-start-1 self-center',

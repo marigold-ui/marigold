@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import {
-  Action,
   Basic,
   Bordered,
   Disabled,
@@ -10,9 +9,9 @@ import {
   Horizontal,
   WithDescription,
   WithError,
+  WithIconAction,
   WithMultiSelection,
 } from './SelectList.stories';
-import { SelectListAction } from './SelectListAction';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
 
@@ -38,19 +37,6 @@ describe('SelectList', () => {
     expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
   });
 
-  test('action slot wraps children with order-last', () => {
-    render(
-      <SelectListAction>
-        <button>Action</button>
-      </SelectListAction>
-    );
-
-    /* eslint-disable testing-library/no-node-access */
-    const action = screen.getByText('Action').parentElement;
-    /* eslint-enable testing-library/no-node-access */
-    expect(action).toHaveClass('order-last');
-  });
-
   test('should support focus ring', async () => {
     render(<Basic.Component />);
 
@@ -67,11 +53,11 @@ describe('SelectList', () => {
     expect(row).not.toHaveAttribute('data-focus-visible');
   });
 
-  test('renders items for multiple selection', () => {
+  test('renders options for multiple selection', () => {
     render(<WithMultiSelection.Component />);
 
-    expect(screen.getByText('Charizard')).toBeInTheDocument();
-    expect(screen.getByText('Blastoise')).toBeInTheDocument();
+    expect(screen.getByText('Parcel insurance')).toBeInTheDocument();
+    expect(screen.getByText('Gift wrap')).toBeInTheDocument();
   });
 
   test('renders a visible selection checkbox in multi mode', () => {
@@ -91,21 +77,39 @@ describe('SelectList', () => {
   });
 
   test('supports non-string children with textValue', () => {
-    render(<Action.Component />);
+    render(<WithIconAction.Component />);
 
-    expect(screen.getByText('Games')).toBeInTheDocument();
+    expect(screen.getByText('Credit card')).toBeInTheDocument();
+  });
+
+  test('nested IconButton click does not toggle row selection', async () => {
+    render(<WithIconAction.Component />);
+
+    const button = screen.getAllByRole('button', {
+      name: /learn more about/i,
+    })[0];
+    const row = button.closest('[role="row"]')!;
+
+    expect(row).toHaveAttribute('aria-selected', 'false');
+
+    // Intercept the alert that the story triggers
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    await user.click(button);
+    alertSpy.mockRestore();
+
+    expect(row).toHaveAttribute('aria-selected', 'false');
   });
 
   test('renders bordered variant', () => {
     render(<Bordered.Component />);
 
-    expect(screen.getByText('Free')).toBeInTheDocument();
+    expect(screen.getByText('Visa ending in 4242')).toBeInTheDocument();
   });
 
   test('renders label and associates it with the grid via aria-labelledby', () => {
     render(<Basic.Component />);
 
-    const labelId = screen.getByText('Favorite fruit').getAttribute('id');
+    const labelId = screen.getByText('Payment method').getAttribute('id');
     expect(labelId).toBeTruthy();
     expect(screen.getByRole('grid')).toHaveAttribute(
       'aria-labelledby',
@@ -116,13 +120,17 @@ describe('SelectList', () => {
   test('renders description', () => {
     render(<Basic.Component />);
 
-    expect(screen.getByText('Pick the one you like most.')).toBeInTheDocument();
+    expect(
+      screen.getByText("Choose how you'd like to pay.")
+    ).toBeInTheDocument();
   });
 
   test('renders errorMessage when error is true', () => {
     render(<WithError.Component />);
 
-    expect(screen.getByText('Please choose a fruit.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Please choose a payment method to continue.')
+    ).toBeInTheDocument();
   });
 
   test('applies RAC-compatible data attributes when error is true', () => {
@@ -136,7 +144,7 @@ describe('SelectList', () => {
     expect(field).toHaveAttribute('data-error', 'true');
   });
 
-  test('list-level disabled disables all items via context', () => {
+  test('list-level disabled disables all options via context', () => {
     render(<Disabled.Component />);
 
     screen
@@ -171,9 +179,11 @@ describe('SelectList', () => {
     );
   });
 
-  test('renders emptyState when there are no items', () => {
+  test('renders emptyState when there are no options', () => {
     render(<EmptyState.Component aria-label="Test" />);
 
-    expect(screen.getByText('No items to display.')).toBeInTheDocument();
+    expect(
+      screen.getByText('No saved payment methods yet.')
+    ).toBeInTheDocument();
   });
 });
