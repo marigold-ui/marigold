@@ -213,12 +213,6 @@ export const TableEditableCell = ({
     </Button>
   );
 
-  const handleCellInteraction = () => {
-    if (!disabled) {
-      setOpen(true);
-    }
-  };
-
   return (
     <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
       {({ columnIndex }) => (
@@ -228,7 +222,7 @@ export const TableEditableCell = ({
               'group/editable-cell flex items-center',
               !disabled && 'cursor-pointer'
             )}
-            onClick={handleCellInteraction}
+            onClick={disabled ? undefined : () => setOpen(true)}
           >
             <TableCellContent
               columnIndex={columnIndex}
