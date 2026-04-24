@@ -81,8 +81,6 @@ describe('SelectList', () => {
   test('renders a visible selection checkbox in multi mode', () => {
     render(<WithMultiSelection.Component />);
 
-    // RAC injects a checkbox in slot="selection" for each row when
-    // selectionMode="multiple".
     const checkboxes = screen.getAllByRole('checkbox');
     expect(checkboxes.length).toBeGreaterThan(0);
   });
@@ -143,9 +141,9 @@ describe('SelectList', () => {
   test('applies RAC-compatible data attributes when error is true', () => {
     const { container } = render(<WithError.Component />);
 
-    /* eslint-disable testing-library/no-node-access */
+    /* eslint-disable testing-library/no-node-access, testing-library/no-container */
     const field = container.querySelector('.group\\/field');
-    /* eslint-enable testing-library/no-node-access */
+    /* eslint-enable testing-library/no-node-access, testing-library/no-container */
     expect(field).toHaveAttribute('data-rac');
     expect(field).toHaveAttribute('data-invalid', 'true');
     expect(field).toHaveAttribute('data-error', 'true');
@@ -154,9 +152,9 @@ describe('SelectList', () => {
   test('applies data-required when required is true', () => {
     const { container } = render(<Required.Component />);
 
-    /* eslint-disable testing-library/no-node-access */
+    /* eslint-disable testing-library/no-node-access, testing-library/no-container */
     const field = container.querySelector('.group\\/field');
-    /* eslint-enable testing-library/no-node-access */
+    /* eslint-enable testing-library/no-node-access, testing-library/no-container */
     expect(field).toHaveAttribute('data-required', 'true');
   });
 

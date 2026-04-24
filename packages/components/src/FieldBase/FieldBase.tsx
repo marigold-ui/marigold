@@ -57,12 +57,12 @@ const _FieldBase = <T extends ElementType>(
     isDisabled,
     ...rest
   } = props;
-  // Only forward RAC validation props when the rendered element is not a plain DOM node.
-  if (typeof Component !== 'string') {
-    (rest as any).isInvalid = isInvalid;
-    (rest as any).isRequired = isRequired;
-    (rest as any).isDisabled = isDisabled;
-  }
+  // Forward RAC validation props only when rendering through a RAC component;
+  // they would emit unknown DOM attribute warnings on a plain element.
+  const racValidationProps =
+    typeof Component === 'string'
+      ? null
+      : { isInvalid, isRequired, isDisabled };
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -102,6 +102,7 @@ const _FieldBase = <T extends ElementType>(
       data-disabled={isDisabled ? true : undefined}
       data-error={isInvalid ? true : undefined}
       {...rest}
+      {...racValidationProps}
     >
       {label ? (
         <Label variant={variant} size={size}>

@@ -157,6 +157,14 @@ let rows = [
   { id: 4, name: 'log.txt' },
 ];
 
+const FruitItems = () => (
+  <>
+    <SelectList.Item id="apple">Apple</SelectList.Item>
+    <SelectList.Item id="banana">Banana</SelectList.Item>
+    <SelectList.Item id="cherry">Cherry</SelectList.Item>
+  </>
+);
+
 export const Action = meta.story({
   render: args => (
     <SelectList
@@ -189,9 +197,7 @@ export const WithLabel = meta.story({
       label="Favorite fruit"
       defaultSelectedKeys={['apple']}
     >
-      <SelectList.Item id="apple">Apple</SelectList.Item>
-      <SelectList.Item id="banana">Banana</SelectList.Item>
-      <SelectList.Item id="cherry">Cherry</SelectList.Item>
+      <FruitItems />
     </SelectList>
   ),
 });
@@ -203,9 +209,7 @@ export const WithDescriptionMessage = meta.story({
       label="Favorite fruit"
       description="Pick the one you like most."
     >
-      <SelectList.Item id="apple">Apple</SelectList.Item>
-      <SelectList.Item id="banana">Banana</SelectList.Item>
-      <SelectList.Item id="cherry">Cherry</SelectList.Item>
+      <FruitItems />
     </SelectList>
   ),
 });
@@ -218,9 +222,7 @@ export const WithError = meta.story({
       error
       errorMessage="Please choose a fruit."
     >
-      <SelectList.Item id="apple">Apple</SelectList.Item>
-      <SelectList.Item id="banana">Banana</SelectList.Item>
-      <SelectList.Item id="cherry">Cherry</SelectList.Item>
+      <FruitItems />
     </SelectList>
   ),
 });
@@ -233,9 +235,7 @@ export const Required = meta.story({
     <Form>
       <Stack space={4} alignX="left">
         <SelectList {...args} label="Favorite fruit" name="fruit" required>
-          <SelectList.Item id="apple">Apple</SelectList.Item>
-          <SelectList.Item id="banana">Banana</SelectList.Item>
-          <SelectList.Item id="cherry">Cherry</SelectList.Item>
+          <FruitItems />
         </SelectList>
         <Button type="submit" variant="primary">
           Submit
@@ -257,9 +257,7 @@ export const WithFormSingle = meta.story({
         name="fruit"
         defaultSelectedKeys={['banana']}
       >
-        <SelectList.Item id="apple">Apple</SelectList.Item>
-        <SelectList.Item id="banana">Banana</SelectList.Item>
-        <SelectList.Item id="cherry">Cherry</SelectList.Item>
+        <FruitItems />
       </SelectList>
     </form>
   ),
@@ -296,9 +294,7 @@ export const WithForm = meta.story({
     >
       <Stack space={4} alignX="left">
         <SelectList {...args} label="Favorite fruits" name="fruit">
-          <SelectList.Item id="apple">Apple</SelectList.Item>
-          <SelectList.Item id="banana">Banana</SelectList.Item>
-          <SelectList.Item id="cherry">Cherry</SelectList.Item>
+          <FruitItems />
         </SelectList>
         <Button type="submit" variant="primary">
           Submit

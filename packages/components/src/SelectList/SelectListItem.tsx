@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef, useContext } from 'react';
+import { ReactNode, forwardRef, useContext, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Provider,
@@ -23,32 +23,23 @@ export interface SelectListItemProps extends Omit<
   disabled?: RAC.GridListItemProps<object>['isDisabled'];
 }
 
+// RAC GridListItem registers a TextContext that only allows the `description`
+// slot. We merge a `label` slot so consumers can mirror the Select/ComboBox
+// convention of <Text slot="label"> / <Text slot="description">.
+const LABEL_SLOT = {};
+
 const ItemChildren = ({ children }: { children: ReactNode }) => {
-  // RAC GridListItem registers a TextContext that only allows the
-  // `description` slot. Merge it with a `label` slot so consumers can mirror
-  // the Select/ComboBox convention of <Text slot="label"> / <Text slot="description">.
   const parentContext = useContext(TextContext) as
     | { slots?: Record<string, unknown> }
     | undefined;
-  const parentSlots = parentContext?.slots ?? {};
+  const parentSlots = parentContext?.slots;
 
-  return (
-    <Provider
-      values={[
-        [
-          TextContext,
-          {
-            slots: {
-              ...parentSlots,
-              label: {},
-            },
-          },
-        ],
-      ]}
-    >
-      {children}
-    </Provider>
+  const value = useMemo(
+    () => ({ slots: { ...parentSlots, label: LABEL_SLOT } }),
+    [parentSlots]
   );
+
+  return <Provider values={[[TextContext, value]]}>{children}</Provider>;
 };
 
 const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(

@@ -5,7 +5,7 @@ import type {
   RefAttributes,
   SetStateAction,
 } from 'react';
-import { forwardRef, useId, useMemo, useRef } from 'react';
+import { forwardRef, useCallback, useId, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import {
   FieldErrorContext,
@@ -15,6 +15,7 @@ import {
   GridList as RACGridList,
   useSlottedContext,
 } from 'react-aria-components';
+import { useObjectRef } from '@react-aria/utils';
 import { useFormValidationState } from '@react-stately/form';
 import { useControlledState } from '@react-stately/utils';
 import type { Key, Selection, ValidationError } from '@react-types/shared';
@@ -162,20 +163,31 @@ const _SelectList = forwardRef<HTMLDivElement, SelectListProps>(
   ) => {
     const classNames = useClassNames({ component: 'SelectList', variant });
     const labelId = useId();
-    const gridListRef = useRef<HTMLDivElement>(null);
+    const gridListRef = useObjectRef(ref);
 
     const formCtx = useSlottedContext(FormContext);
     const validationBehavior =
       validationBehaviorProp ?? formCtx?.validationBehavior ?? 'native';
 
+    const controlledSelection = useMemo(
+      () =>
+        selectedKeys !== undefined ? toSelection(selectedKeys) : undefined,
+      [selectedKeys]
+    );
+    const initialSelection = useMemo(
+      () =>
+        defaultSelectedKeys !== undefined
+          ? toSelection(defaultSelectedKeys)
+          : (new Set() as Selection),
+      // Initial value only — intentionally not reactive to defaultSelectedKeys.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    );
+
     const [selection, setSelection] = useControlledState<Selection>(
-      selectedKeys !== undefined
-        ? toSelection(selectedKeys)
-        : (undefined as any),
-      defaultSelectedKeys !== undefined
-        ? toSelection(defaultSelectedKeys)
-        : (new Set() as Selection),
-      onChange as any
+      controlledSelection,
+      initialSelection,
+      onChange as (value: Selection) => void
     );
 
     const validationValue = useMemo(
@@ -183,24 +195,21 @@ const _SelectList = forwardRef<HTMLDivElement, SelectListProps>(
       [selection, selectionMode]
     );
 
-    const validationState = useFormValidationState({
+    const validationState = useFormValidationState<Key | null | Key[]>({
       name,
-      value: validationValue as any,
+      value: validationValue,
       isInvalid: error,
-      validate: validate as any,
+      validate,
       validationBehavior,
     });
 
-    const handleSelectionChange = (keys: Selection) => {
-      setSelection(keys);
-      validationState.commitValidation();
-    };
-
-    const setGridListRef = (node: HTMLDivElement | null) => {
-      gridListRef.current = node;
-      if (typeof ref === 'function') ref(node);
-      else if (ref) (ref as any).current = node;
-    };
+    const handleSelectionChange = useCallback(
+      (keys: Selection) => {
+        setSelection(keys);
+        validationState.commitValidation();
+      },
+      [setSelection, validationState]
+    );
 
     return (
       <Provider
@@ -226,7 +235,7 @@ const _SelectList = forwardRef<HTMLDivElement, SelectListProps>(
             <div className={classNames.container}>
               <RACGridList
                 {...(rest as RAC.GridListProps<object>)}
-                ref={setGridListRef}
+                ref={gridListRef}
                 aria-labelledby={label ? labelId : rest['aria-labelledby']}
                 aria-disabled={disabled || undefined}
                 layout="grid"
