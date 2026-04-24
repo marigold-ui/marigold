@@ -8,11 +8,10 @@ type FilterKeys = keyof typeof defaultFilter;
 export const AppliedFilter = () => {
   const { filter, removeFilter } = useFilter();
 
-  const appliedFilters = Object.entries(filter).filter(([name, value]) =>
-    Array.isArray(value)
-      ? value.length !== defaultFilter[name as 'traits'].length
-      : `${value}` !== `${defaultFilter[name as FilterKeys]}`
-  );
+  const appliedFilters = Object.entries(filter).filter(([name, value]) => {
+    if (name === 'traits') return Array.isArray(value) && value.length > 0;
+    return `${value}` !== `${defaultFilter[name as FilterKeys]}`;
+  });
 
   return (
     <Tag.Group
@@ -27,7 +26,7 @@ export const AppliedFilter = () => {
     >
       {appliedFilters.map(([name, value]) => (
         <Tag id={name} key={name}>
-          {toDisplayValue[name as FilterKeys](value as any)}
+          {toDisplayValue[name as FilterKeys](value as never)}
         </Tag>
       ))}
     </Tag.Group>
