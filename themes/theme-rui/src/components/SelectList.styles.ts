@@ -12,9 +12,8 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         // Surface lives on the outer container (Menu / ListBox pattern) so
-        // the inner scrolling list can carry padding for the `ui-state-focus`
-        // outline without offsetting the surface from the field's label and
-        // help text.
+        // the scrolling list inside can fill the surface edge-to-edge with
+        // hover/selected backgrounds.
         default: 'ui-surface shadow-elevation-border',
         bordered: '',
       },
@@ -25,22 +24,15 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   list: cva({
     base: [
-      // `p-1` gives the 3px `ui-state-focus` outline on each item room to
-      // render without being clipped by the list's overflow boundary.
-      'outline-0 flex p-1',
+      'outline-0 flex',
       'orientation-vertical:w-full orientation-vertical:flex-col orientation-vertical:overflow-x-hidden orientation-vertical:overflow-y-auto',
       'orientation-horizontal:w-fit orientation-horizontal:flex-row orientation-horizontal:overflow-x-auto orientation-horizontal:overflow-y-hidden',
     ],
     variants: {
       variant: {
-        // `gap-1` matches the list's `p-1`: every option has 4px of room for
-        // its focus outline on all sides, so the ring does not overlap the
-        // neighbouring option and the first/last items read as centred.
-        default: 'gap-1',
-        // Bordered has no surface on the container, so the matching negative
-        // margin pulls the list back to keep items aligned with the field's
-        // label and help text.
-        bordered: 'gap-2 -m-1',
+        // No gap so hover/selected backgrounds fill the row edge-to-edge.
+        default: '',
+        bordered: 'gap-2',
       },
     },
     defaultVariants: {
@@ -55,27 +47,32 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       // inherit the label look without needing a <Text slot="label"> wrapper.
       'text-sm font-medium text-foreground outline-none',
       'cursor-default data-selection-mode:cursor-pointer',
-      'focus-visible:ui-state-focus focus-visible:z-1 transition-[border,color,background]',
+      // Focus ring is rendered as an inset box-shadow so it lives inside the
+      // item's box and cannot be clipped by the list's `overflow` boundary.
+      'focus-visible:inset-shadow-[0_0_0_2px_var(--color-ring)] transition-[border,color,background]',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
       'group-orientation-horizontal/list:min-w-40',
     ],
     variants: {
       variant: {
         default: [
-          // `px-1` (4px) + the list's `p-1` padding gives an 8px visual gap
-          // from the surface's inner border to the option content.
-          'rounded-md px-1 py-2 min-h-14',
+          // No outer rounding on items — hover/selected fills the row edge to
+          // edge of the surface. Only the first/last items round their outer
+          // corners so the fill follows the surface's `rounded-surface` curve.
+          'px-3 py-2 min-h-14',
+          // First/last item rounding follows the surface's inner curve:
+          // `rounded-surface - 1px` (the surface's border width) so the fill
+          // hugs the surface without a visible gap at the corners.
+          'group-orientation-vertical/list:first:rounded-t-[calc(var(--radius-surface)-1px)] group-orientation-vertical/list:last:rounded-b-[calc(var(--radius-surface)-1px)]',
+          'group-orientation-horizontal/list:first:rounded-l-[calc(var(--radius-surface)-1px)] group-orientation-horizontal/list:last:rounded-r-[calc(var(--radius-surface)-1px)]',
           'selected:bg-selected',
-          // Hover only shifts the background to the theme's hover color.
           'hover:bg-hover',
-          // Dividers are rendered as a ::after pseudo-element so they can
-          // extend past the item's rounded corners into the list's `p-1`
-          // padding — the line goes edge to edge of the surface and uses the
-          // same color token as `ui-surface`'s outer border. The pseudo sits
-          // in the middle of the list's `gap-1` between options.
-          'not-last:after:content-[""] not-last:after:absolute not-last:after:bg-surface-border',
-          'group-orientation-vertical/list:not-last:after:-inset-x-1 group-orientation-vertical/list:not-last:after:-bottom-0.5 group-orientation-vertical/list:not-last:after:h-px',
-          'group-orientation-horizontal/list:not-last:after:-inset-y-1 group-orientation-horizontal/list:not-last:after:-right-0.5 group-orientation-horizontal/list:not-last:after:w-px',
+          // Dividers live on the item's trailing edge as a real border so
+          // they paint with the element (not above it as a pseudo would) and
+          // never sit on top of the focus ring. A transparent border on the
+          // last item keeps the layout uniform.
+          'group-orientation-vertical/list:border-b group-orientation-vertical/list:border-transparent group-orientation-vertical/list:not-last:border-surface-border',
+          'group-orientation-horizontal/list:border-r group-orientation-horizontal/list:border-transparent group-orientation-horizontal/list:not-last:border-surface-border',
         ],
         bordered: [
           // Each option is its own surface with the system's elevation

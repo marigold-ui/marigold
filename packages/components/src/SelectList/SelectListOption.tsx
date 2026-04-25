@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef, useContext, useMemo } from 'react';
+import { ReactNode, forwardRef, use, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import {
   ButtonContext,
@@ -46,7 +46,7 @@ const OptionChildren = ({
   descriptionClassName,
   actionClassName,
 }: OptionChildrenProps) => {
-  const parentText = useContext(TextContext) as TextContextValue | undefined;
+  const parentText = use(TextContext) as TextContextValue | undefined;
   const parentSlots = parentText?.slots;
 
   const textContextValue = useMemo(
@@ -85,7 +85,6 @@ const _SelectListOption = forwardRef<HTMLDivElement, SelectListOptionProps>(
       process.env.NODE_ENV !== 'production' &&
       resolvedTextValue === undefined
     ) {
-      // eslint-disable-next-line no-console
       console.warn(
         '[SelectList.Option] `textValue` is required when children is not a plain string. ' +
           'Screen readers announce the `textValue` as the option name.'

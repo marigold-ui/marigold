@@ -1,6 +1,8 @@
 {
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
     "jsx": "preserve",
     "paths": {
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
