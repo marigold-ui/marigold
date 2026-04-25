@@ -107,6 +107,16 @@ export interface SelectListProps<
    */
   selectionMode?: M;
   /**
+   * Whether the user may deselect the currently selected row by clicking it.
+   * Defaults to `true` in `single` mode (radio-group semantics: clicking the
+   * selected row keeps it selected) and `false` in `multiple` mode (checkbox
+   * semantics: every row toggles independently).
+   *
+   * Set to `false` in `single` mode for clearable selection — for example a
+   * filter picker where "no selection" is a valid state.
+   */
+  disallowEmptySelection?: boolean;
+  /**
    * Custom client-side validation.
    * - `selectionMode="single"`: receives `Key | null`.
    * - `selectionMode="multiple"`: receives `Key[]`.
@@ -170,6 +180,7 @@ const SelectList = <M extends SelectionMode = 'single'>({
   selectedKeys,
   defaultSelectedKeys,
   selectionMode,
+  disallowEmptySelection,
   onChange,
   orientation = 'vertical',
   emptyState,
@@ -177,6 +188,8 @@ const SelectList = <M extends SelectionMode = 'single'>({
   ...rest
 }: SelectListProps<M>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
+  const resolvedDisallowEmptySelection =
+    disallowEmptySelection ?? resolvedSelectionMode === 'single';
   const classNames = useClassNames({ component: 'SelectList', variant });
   const labelId = useId();
   const gridListRef = useObjectRef(ref);
@@ -263,6 +276,7 @@ const SelectList = <M extends SelectionMode = 'single'>({
               orientation={orientation}
               selectionBehavior="toggle"
               selectionMode={resolvedSelectionMode}
+              disallowEmptySelection={resolvedDisallowEmptySelection}
               selectedKeys={selection}
               onSelectionChange={handleSelectionChange}
               className={cn('group/list', classNames.list)}

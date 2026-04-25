@@ -181,12 +181,13 @@ export const Basic = meta.story({
     );
 
     await step(
-      'clicking the selected row clears the selection and notifies with null',
+      'clicking the selected row keeps it selected (radio semantics)',
       async () => {
+        (args.onChange as ReturnType<typeof fn>).mockClear();
         await userEvent.click(paypalRow);
 
-        expect(paypalRow).toHaveAttribute('aria-selected', 'false');
-        expect(args.onChange).toHaveBeenLastCalledWith(null);
+        expect(paypalRow).toHaveAttribute('aria-selected', 'true');
+        expect(args.onChange).not.toHaveBeenCalled();
       }
     );
   },
