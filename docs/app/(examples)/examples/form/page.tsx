@@ -8,22 +8,18 @@ import { RegistrationSettings } from './registrationSettings';
 
 const FormPage = () => (
   <Inset space={4}>
-    <div className="max-w-xl">
-      <Form>
-        <Stack space="group">
-          <EventDetails />
-          <LocationSettings />
-          <Stack space={4}>
-            <OrganizerInfo />
-            <RegistrationSettings />
-          </Stack>
-          <Inline space="regular">
-            <Button variant="primary">Save</Button>
-            <Button variant="secondary">Cancel</Button>
-          </Inline>
-        </Stack>
-      </Form>
-    </div>
+    <Form>
+      <Stack space="section">
+        <EventDetails />
+        <LocationSettings />
+        <OrganizerInfo />
+        <RegistrationSettings />
+        <Inline space="regular">
+          <Button variant="primary">Save</Button>
+          <Button variant="secondary">Cancel</Button>
+        </Inline>
+      </Stack>
+    </Form>
   </Inset>
 );
 
