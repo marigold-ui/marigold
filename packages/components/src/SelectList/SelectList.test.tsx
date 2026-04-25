@@ -7,7 +7,6 @@ import {
   Disabled,
   EmptyState,
   Horizontal,
-  WithDescription,
   WithError,
   WithIconAction,
   WithMultiSelection,
@@ -16,174 +15,388 @@ import {
 const user = userEvent.setup({ pointerEventsCheck: 0 });
 
 describe('SelectList', () => {
-  test('support DOM props', () => {
-    render(<Basic.Component aria-label="Test" data-foo="bar" />);
+  describe('rendering', () => {
+    test('renders a grid with the expected number of rows', () => {
+      render(<Basic.Component aria-label="Test" />);
 
-    let grid = screen.getByRole('grid');
-    expect(grid).toHaveAttribute('data-foo', 'bar');
+      const grid = screen.getByRole('grid');
+      const rows = screen.getAllByRole('row');
+
+      expect(grid).toBeInTheDocument();
+      expect(rows).toHaveLength(3);
+    });
+
+    test('forwards arbitrary DOM props to the grid', () => {
+      render(<Basic.Component aria-label="Test" data-foo="bar" />);
+
+      const grid = screen.getByRole('grid');
+
+      expect(grid).toHaveAttribute('data-foo', 'bar');
+    });
+
+    test('forwards the "slot" prop to the grid', () => {
+      render(<Basic.Component aria-label="Test" slot="test" />);
+
+      const grid = screen.getByRole('grid');
+
+      expect(grid).toHaveAttribute('slot', 'test');
+    });
+
+    test('forwards refs to the underlying HTMLElement', () => {
+      const ref = createRef<HTMLDivElement>();
+
+      render(<Basic.Component aria-label="Test" ref={ref as any} />);
+
+      expect(ref.current).toBeInstanceOf(HTMLElement);
+    });
   });
 
-  test('support slot', () => {
-    render(<Basic.Component aria-label="Test" slot="test" />);
+  describe('label, description, and error message', () => {
+    test('renders the label and connects it via aria-labelledby', () => {
+      render(<Basic.Component />);
 
-    let grid = screen.getByRole('grid');
-    expect(grid).toHaveAttribute('slot', 'test');
+      const labelId = screen.getByText('Payment method').getAttribute('id');
+      const grid = screen.getByRole('grid');
+
+      expect(labelId).toBeTruthy();
+      expect(grid).toHaveAttribute('aria-labelledby', labelId!);
+    });
+
+    test('renders the visible label as a span (for accessibility)', () => {
+      render(<Basic.Component />);
+
+      const label = screen.getByText('Payment method');
+
+      expect(label.tagName).toBe('SPAN');
+    });
+
+    test('renders the description below the list', () => {
+      render(<Basic.Component />);
+
+      const description = screen.getByText("Choose how you'd like to pay.");
+
+      expect(description).toBeInTheDocument();
+    });
+
+    test('renders nested label/description slots inside options', () => {
+      render(<Basic.Component />);
+
+      const label = screen.getByText('Credit card');
+      const description = screen.getByText(
+        'Visa, Mastercard, and Amex accepted.'
+      );
+
+      expect(label).toBeInTheDocument();
+      expect(description).toBeInTheDocument();
+    });
+
+    test('shows the errorMessage when error is true', () => {
+      render(<WithError.Component />);
+
+      const message = screen.getByText(
+        'Please choose a payment method to continue.'
+      );
+
+      expect(message).toBeInTheDocument();
+    });
+
+    test('does not render an errorMessage when error is not set', () => {
+      render(<Basic.Component />);
+
+      const message = screen.queryByText(
+        'Please choose a payment method to continue.'
+      );
+
+      expect(message).not.toBeInTheDocument();
+    });
+
+    test('marks the field with RAC-compatible invalid attributes when error is true', () => {
+      const { container } = render(<WithError.Component />);
+
+      /* eslint-disable testing-library/no-node-access, testing-library/no-container */
+      const field = container.querySelector('.group\\/field');
+      /* eslint-enable testing-library/no-node-access, testing-library/no-container */
+
+      expect(field).toHaveAttribute('data-rac');
+      expect(field).toHaveAttribute('data-invalid', 'true');
+      expect(field).toHaveAttribute('data-error', 'true');
+    });
+
+    test('supports aria-label as a label substitute', () => {
+      render(<EmptyState.Component aria-label="Saved methods" />);
+
+      const grid = screen.getByRole('grid');
+
+      expect(grid).toHaveAttribute('aria-label', 'Saved methods');
+    });
   });
 
-  test('support refs', () => {
-    const SelectListRef = createRef();
-    render(<Basic.Component aria-label="Test" ref={SelectListRef as any} />);
+  describe('variants and orientation', () => {
+    test('renders the bordered variant content', () => {
+      render(<Bordered.Component />);
 
-    expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
+      const item = screen.getByText('Visa ending in 4242');
+
+      expect(item).toBeInTheDocument();
+    });
+
+    test('defaults to vertical orientation', () => {
+      render(<Basic.Component aria-label="Test" />);
+
+      const grid = screen.getByRole('grid');
+
+      expect(grid).toHaveAttribute('data-orientation', 'vertical');
+    });
+
+    test('reflects horizontal orientation via data-orientation', () => {
+      render(<Horizontal.Component aria-label="Test" />);
+
+      const grid = screen.getByRole('grid');
+
+      expect(grid).toHaveAttribute('data-orientation', 'horizontal');
+    });
   });
 
-  test('should support focus ring', async () => {
-    render(<Basic.Component />);
+  describe('width', () => {
+    test('applies the container-width class via the width prop', () => {
+      render(<Basic.Component width="1/2" />);
 
-    let row = screen.getAllByRole('row')[0];
+      // eslint-disable-next-line testing-library/no-node-access
+      const wrapper = screen.getByText('Payment method').parentElement;
 
-    expect(row).not.toHaveAttribute('data-focus-visible');
-
-    await user.tab();
-    /* eslint-disable testing-library/no-node-access */
-    expect(document.activeElement).toBe(row);
-    expect(row).toHaveAttribute('data-focus-visible', 'true');
-
-    await user.tab();
-    expect(row).not.toHaveAttribute('data-focus-visible');
+      expect(wrapper).toHaveClass('w-(--container-width)');
+    });
   });
 
-  test('renders options for multiple selection', () => {
-    render(<WithMultiSelection.Component />);
+  describe('single selection', () => {
+    test('respects defaultSelectedKeys (uncontrolled)', () => {
+      render(<Basic.Component />);
 
-    expect(screen.getByText('Parcel insurance')).toBeInTheDocument();
-    expect(screen.getByText('Gift wrap')).toBeInTheDocument();
+      const selectedRow = screen.getByRole('row', { name: /credit card/i });
+
+      expect(selectedRow).toHaveAttribute('aria-selected', 'true');
+    });
+
+    test('respects selectedKeys (controlled)', () => {
+      render(<Basic.Component selectedKeys={['paypal']} />);
+
+      const paypalRow = screen.getByRole('row', { name: /paypal/i });
+      const creditRow = screen.getByRole('row', { name: /credit card/i });
+
+      expect(paypalRow).toHaveAttribute('aria-selected', 'true');
+      expect(creditRow).toHaveAttribute('aria-selected', 'false');
+    });
   });
 
-  test('renders a visible selection checkbox in multi mode', () => {
-    render(<WithMultiSelection.Component />);
+  describe('multiple selection', () => {
+    test('renders a visible checkbox indicator on every row', () => {
+      render(<WithMultiSelection.Component />);
 
-    const checkboxes = screen.getAllByRole('checkbox');
-    expect(checkboxes.length).toBeGreaterThan(0);
+      const checkboxes = screen.getAllByRole('checkbox');
+
+      expect(checkboxes.length).toBeGreaterThan(0);
+    });
+
+    test('renders all multi-selection options', () => {
+      render(<WithMultiSelection.Component />);
+
+      const insurance = screen.getByText('Parcel insurance');
+      const giftWrap = screen.getByText('Gift wrap');
+
+      expect(insurance).toBeInTheDocument();
+      expect(giftWrap).toBeInTheDocument();
+    });
   });
 
-  test('renders label and description slots', () => {
-    render(<WithDescription.Component />);
+  describe('keyboard navigation', () => {
+    test('moves focus to the selected row on Tab and shows focus ring', async () => {
+      render(<Basic.Component />);
+      const creditRow = screen.getByRole('row', { name: /credit card/i });
 
-    expect(screen.getByText('Pro')).toBeInTheDocument();
-    expect(
-      screen.getByText('For teams up to 50 members with priority support.')
-    ).toBeInTheDocument();
+      await user.tab();
+
+      /* eslint-disable testing-library/no-node-access */
+      expect(document.activeElement).toBe(creditRow);
+      /* eslint-enable testing-library/no-node-access */
+      expect(creditRow).toHaveAttribute('data-focus-visible', 'true');
+    });
+
+    test('removes focus ring when focus leaves the grid', async () => {
+      render(<Basic.Component />);
+      const creditRow = screen.getByRole('row', { name: /credit card/i });
+      await user.tab();
+
+      await user.tab();
+
+      expect(creditRow).not.toHaveAttribute('data-focus-visible');
+    });
+
+    test('moves focus to the next row on ArrowDown', async () => {
+      render(<Basic.Component />);
+      await user.tab();
+
+      await user.keyboard('{ArrowDown}');
+
+      const paypalRow = screen.getByRole('row', { name: /paypal/i });
+      /* eslint-disable testing-library/no-node-access */
+      expect(document.activeElement).toBe(paypalRow);
+      /* eslint-enable testing-library/no-node-access */
+    });
+
+    test('moves focus to the previous row on ArrowUp', async () => {
+      render(<Basic.Component />);
+      await user.tab();
+      await user.keyboard('{ArrowDown}');
+      await user.keyboard('{ArrowDown}');
+
+      await user.keyboard('{ArrowUp}');
+
+      const paypalRow = screen.getByRole('row', { name: /paypal/i });
+      /* eslint-disable testing-library/no-node-access */
+      expect(document.activeElement).toBe(paypalRow);
+      /* eslint-enable testing-library/no-node-access */
+    });
   });
 
-  test('supports non-string children with textValue', () => {
-    render(<WithIconAction.Component />);
+  describe('disabled state', () => {
+    test('marks every row as data-disabled when the list is disabled', () => {
+      render(<Disabled.Component />);
 
-    expect(screen.getByText('Credit card')).toBeInTheDocument();
+      const rows = screen.getAllByRole('row');
+
+      rows.forEach(row => expect(row).toHaveAttribute('data-disabled', 'true'));
+    });
+
+    test('marks the field wrapper data-disabled when the list is disabled', () => {
+      const { container } = render(<Disabled.Component />);
+
+      /* eslint-disable testing-library/no-node-access, testing-library/no-container */
+      const field = container.querySelector('.group\\/field');
+      /* eslint-enable testing-library/no-node-access, testing-library/no-container */
+
+      expect(field).toHaveAttribute('data-disabled', 'true');
+    });
   });
 
-  test('nested IconButton click does not toggle row selection', async () => {
-    render(<WithIconAction.Component />);
+  describe('empty state', () => {
+    test('renders the emptyState content when there are no items', () => {
+      render(<EmptyState.Component aria-label="Test" />);
 
-    const button = screen.getAllByRole('button', {
-      name: /learn more about/i,
-    })[0];
-    const row = button.closest('[role="row"]')!;
+      const empty = screen.getByText('No saved payment methods yet.');
 
-    expect(row).toHaveAttribute('aria-selected', 'false');
+      expect(empty).toBeInTheDocument();
+    });
 
-    // Intercept the alert that the story triggers
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-    await user.click(button);
-    alertSpy.mockRestore();
+    test('does not render the emptyState content when there are items', () => {
+      render(<Basic.Component />);
 
-    expect(row).toHaveAttribute('aria-selected', 'false');
+      const empty = screen.queryByText('No saved payment methods yet.');
+
+      expect(empty).not.toBeInTheDocument();
+    });
   });
 
-  test('renders bordered variant', () => {
-    render(<Bordered.Component />);
+  describe('SelectList.Option', () => {
+    test('renders non-string children with their textValue', () => {
+      render(<WithIconAction.Component />);
 
-    expect(screen.getByText('Visa ending in 4242')).toBeInTheDocument();
+      const label = screen.getByText('Credit card');
+      const row = screen.getByRole('row', { name: /credit card/i });
+
+      expect(label).toBeInTheDocument();
+      expect(row).toBeInTheDocument();
+    });
   });
 
-  test('renders label and associates it with the grid via aria-labelledby', () => {
-    render(<Basic.Component />);
+  describe('forms', () => {
+    test('renders a hidden native select inside the field', () => {
+      const { container } = render(<Basic.Component name="payment" />);
 
-    const labelId = screen.getByText('Payment method').getAttribute('id');
-    expect(labelId).toBeTruthy();
-    expect(screen.getByRole('grid')).toHaveAttribute(
-      'aria-labelledby',
-      labelId!
-    );
-  });
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector('select[name="payment"]');
 
-  test('renders description', () => {
-    render(<Basic.Component />);
+      expect(select).toBeInTheDocument();
+    });
 
-    expect(
-      screen.getByText("Choose how you'd like to pay.")
-    ).toBeInTheDocument();
-  });
+    test('reflects single selection in the hidden select value', () => {
+      const { container } = render(
+        <Basic.Component name="payment" selectedKeys={['paypal']} />
+      );
 
-  test('renders errorMessage when error is true', () => {
-    render(<WithError.Component />);
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="payment"]'
+      ) as HTMLSelectElement;
 
-    expect(
-      screen.getByText('Please choose a payment method to continue.')
-    ).toBeInTheDocument();
-  });
+      expect(select.multiple).toBe(false);
+      expect(select.value).toBe('paypal');
+    });
 
-  test('applies RAC-compatible data attributes when error is true', () => {
-    const { container } = render(<WithError.Component />);
+    test('reflects multiple selections in the hidden select', () => {
+      const { container } = render(
+        <WithMultiSelection.Component
+          name="addons"
+          selectedKeys={['insurance', 'gift-wrap']}
+        />
+      );
 
-    /* eslint-disable testing-library/no-node-access, testing-library/no-container */
-    const field = container.querySelector('.group\\/field');
-    /* eslint-enable testing-library/no-node-access, testing-library/no-container */
-    expect(field).toHaveAttribute('data-rac');
-    expect(field).toHaveAttribute('data-invalid', 'true');
-    expect(field).toHaveAttribute('data-error', 'true');
-  });
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="addons"]'
+      ) as HTMLSelectElement;
+      const values = Array.from(select.selectedOptions, o => o.value);
 
-  test('list-level disabled disables all options via context', () => {
-    render(<Disabled.Component />);
+      expect(select.multiple).toBe(true);
+      expect(values).toEqual(
+        expect.arrayContaining(['insurance', 'gift-wrap'])
+      );
+    });
 
-    screen
-      .getAllByRole('row')
-      .forEach(row => expect(row).toHaveAttribute('data-disabled', 'true'));
-  });
+    test('marks the hidden select required for native validation', () => {
+      const { container } = render(
+        <Basic.Component
+          name="payment"
+          required
+          validationBehavior="native"
+          defaultSelectedKeys={[]}
+        />
+      );
 
-  test('applies data-disabled on the field wrapper when disabled', () => {
-    const { container } = render(<Disabled.Component />);
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="payment"]'
+      ) as HTMLSelectElement;
 
-    /* eslint-disable testing-library/no-node-access, testing-library/no-container */
-    const field = container.querySelector('.group\\/field');
-    /* eslint-enable testing-library/no-node-access, testing-library/no-container */
-    expect(field).toHaveAttribute('data-disabled', 'true');
-  });
+      expect(select.required).toBe(true);
+    });
 
-  test('defaults to vertical orientation', () => {
-    render(<Basic.Component aria-label="Test" />);
+    test('does not mark the hidden select required when validationBehavior is aria', () => {
+      const { container } = render(
+        <Basic.Component
+          name="payment"
+          required
+          validationBehavior="aria"
+          defaultSelectedKeys={[]}
+        />
+      );
 
-    expect(screen.getByRole('grid')).toHaveAttribute(
-      'data-orientation',
-      'vertical'
-    );
-  });
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="payment"]'
+      ) as HTMLSelectElement;
 
-  test('reflects horizontal orientation via data-orientation', () => {
-    render(<Horizontal.Component aria-label="Test" />);
+      expect(select.required).toBe(false);
+    });
 
-    expect(screen.getByRole('grid')).toHaveAttribute(
-      'data-orientation',
-      'horizontal'
-    );
-  });
+    test('disables the hidden select when the list is disabled', () => {
+      const { container } = render(<Disabled.Component name="shipping" />);
 
-  test('renders emptyState when there are no options', () => {
-    render(<EmptyState.Component aria-label="Test" />);
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="shipping"]'
+      ) as HTMLSelectElement;
 
-    expect(
-      screen.getByText('No saved payment methods yet.')
-    ).toBeInTheDocument();
+      expect(select.disabled).toBe(true);
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
@@ -131,6 +131,10 @@ const BankLogo = () => (
 );
 
 export const Basic = meta.story({
+  tags: ['component-test'],
+  args: {
+    onChange: fn(),
+  },
   render: args => (
     <SelectList
       {...args}
@@ -156,11 +160,43 @@ export const Basic = meta.story({
       </SelectList.Option>
     </SelectList>
   ),
+  play: async ({ args, canvas, step }) => {
+    const creditRow = canvas.getByRole('row', { name: /credit card/i });
+    const paypalRow = canvas.getByRole('row', { name: /paypal/i });
+
+    await step('default selection comes from defaultSelectedKeys', () => {
+      expect(creditRow).toHaveAttribute('aria-selected', 'true');
+      expect(paypalRow).toHaveAttribute('aria-selected', 'false');
+    });
+
+    await step(
+      'clicking another row replaces the selection and notifies onChange',
+      async () => {
+        await userEvent.click(paypalRow);
+
+        expect(paypalRow).toHaveAttribute('aria-selected', 'true');
+        expect(creditRow).toHaveAttribute('aria-selected', 'false');
+        expect(args.onChange).toHaveBeenLastCalledWith('paypal');
+      }
+    );
+
+    await step(
+      'clicking the selected row clears the selection and notifies with null',
+      async () => {
+        await userEvent.click(paypalRow);
+
+        expect(paypalRow).toHaveAttribute('aria-selected', 'false');
+        expect(args.onChange).toHaveBeenLastCalledWith(null);
+      }
+    );
+  },
 });
 
 export const WithMultiSelection = meta.story({
+  tags: ['component-test'],
   args: {
     selectionMode: 'multiple',
+    onChange: fn(),
   },
   render: args => (
     <SelectList
@@ -186,33 +222,31 @@ export const WithMultiSelection = meta.story({
       </SelectList.Option>
     </SelectList>
   ),
-});
+  play: async ({ args, canvas, step }) => {
+    const insuranceRow = canvas.getByRole('row', {
+      name: /parcel insurance/i,
+    });
+    const giftWrapRow = canvas.getByRole('row', { name: /gift wrap/i });
 
-export const WithDescription = meta.story({
-  render: args => (
-    <SelectList
-      {...args}
-      label="Subscription plan"
-      description="Pick the plan that fits your team."
-    >
-      <SelectList.Option id="free" textValue="Free">
-        <Text slot="label">Free</Text>
-        <Text slot="description">For small teams trying things out.</Text>
-      </SelectList.Option>
-      <SelectList.Option id="pro" textValue="Pro">
-        <Text slot="label">Pro</Text>
-        <Text slot="description">
-          For teams up to 50 members with priority support.
-        </Text>
-      </SelectList.Option>
-      <SelectList.Option id="enterprise" textValue="Enterprise">
-        <Text slot="label">Enterprise</Text>
-        <Text slot="description">
-          For organizations that need advanced controls and SLAs.
-        </Text>
-      </SelectList.Option>
-    </SelectList>
-  ),
+    await step('clicking selects multiple rows independently', async () => {
+      await userEvent.click(insuranceRow);
+      await userEvent.click(giftWrapRow);
+
+      expect(insuranceRow).toHaveAttribute('aria-selected', 'true');
+      expect(giftWrapRow).toHaveAttribute('aria-selected', 'true');
+      expect(args.onChange).toHaveBeenLastCalledWith(
+        expect.arrayContaining(['insurance', 'gift-wrap'])
+      );
+    });
+
+    await step('clicking again removes a row from the selection', async () => {
+      await userEvent.click(insuranceRow);
+
+      expect(insuranceRow).toHaveAttribute('aria-selected', 'false');
+      expect(giftWrapRow).toHaveAttribute('aria-selected', 'true');
+      expect(args.onChange).toHaveBeenLastCalledWith(['gift-wrap']);
+    });
+  },
 });
 
 const paymentMethods = [
@@ -239,6 +273,7 @@ const paymentMethods = [
 ];
 
 export const WithIconAction = meta.story({
+  tags: ['component-test'],
   args: {
     selectionMode: 'multiple',
   },
@@ -263,6 +298,25 @@ export const WithIconAction = meta.story({
       )}
     </SelectList>
   ),
+  play: async ({ canvas, step }) => {
+    const button = canvas.getByRole('button', {
+      name: 'Learn more about Credit card',
+    });
+    const row = button.closest('[role="row"]')!;
+    const alertSpy = spyOn(window, 'alert').mockImplementation(() => {});
+
+    await step('clicking the IconButton fires its action', async () => {
+      await userEvent.click(button);
+
+      expect(alertSpy).toHaveBeenCalledWith('Info about Credit card');
+    });
+
+    await step('clicking the IconButton does not toggle the row', () => {
+      expect(row).toHaveAttribute('aria-selected', 'false');
+    });
+
+    alertSpy.mockRestore();
+  },
 });
 
 const savedPayments = [
@@ -289,6 +343,7 @@ const savedPayments = [
 ];
 
 export const WithActionMenu = meta.story({
+  tags: ['component-test'],
   args: {
     selectionMode: 'multiple',
   },
@@ -303,7 +358,7 @@ export const WithActionMenu = meta.story({
         <SelectList.Option textValue={item.name}>
           <Text slot="label">{item.name}</Text>
           <Text slot="description">{item.description}</Text>
-          <ActionMenu variant="ghost">
+          <ActionMenu variant="ghost" aria-label={`Manage ${item.name}`}>
             <Menu.Item onAction={() => alert(`Edit ${item.name}`)}>
               Edit
             </Menu.Item>
@@ -318,6 +373,29 @@ export const WithActionMenu = meta.story({
       )}
     </SelectList>
   ),
+  play: async ({ canvas, step }) => {
+    const trigger = canvas.getByRole('button', {
+      name: 'Manage Visa ending in 4242',
+    });
+    const row = trigger.closest('[role="row"]')!;
+
+    await step('the menu trigger is collapsed by default', () => {
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      expect(row).toHaveAttribute('aria-selected', 'false');
+    });
+
+    await step('clicking the trigger expands the menu', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(trigger).toHaveAttribute('aria-expanded', 'true')
+      );
+    });
+
+    await step('opening the menu does not toggle the row', () => {
+      expect(row).toHaveAttribute('aria-selected', 'false');
+    });
+  },
 });
 
 export const Horizontal = meta.story({
@@ -430,8 +508,10 @@ export const EmptyState = meta.story({
 });
 
 export const Disabled = meta.story({
+  tags: ['component-test'],
   args: {
     disabled: true,
+    onChange: fn(),
   },
   render: args => (
     <SelectList
@@ -454,6 +534,13 @@ export const Disabled = meta.story({
       </SelectList.Option>
     </SelectList>
   ),
+  play: async ({ args, canvas }) => {
+    const expressRow = canvas.getByRole('row', { name: /express/i });
+
+    await userEvent.click(expressRow);
+
+    expect(args.onChange).not.toHaveBeenCalled();
+  },
 });
 
 export const WithError = meta.story({
