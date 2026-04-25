@@ -1,10 +1,5 @@
-import type {
-  ForwardRefExoticComponent,
-  ReactNode,
-  Ref,
-  RefAttributes,
-} from 'react';
-import { forwardRef, useCallback, useId, useMemo } from 'react';
+import type { ReactNode, Ref } from 'react';
+import { useCallback, useId, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   FieldErrorContext,
@@ -22,7 +17,6 @@ import type {
   Orientation,
   Selection,
   ValidationError,
-  forwardRefType,
 } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
@@ -30,8 +24,6 @@ import { SelectListContext } from './Context';
 import { SelectListHiddenSelect } from './SelectListHiddenSelect';
 import { SelectListOption } from './SelectListOption';
 
-// Props
-// ---------------
 export type SelectionMode = 'single' | 'multiple';
 
 type RemoveProps =
@@ -135,19 +127,15 @@ export interface SelectListProps<
   onChange?: M extends 'multiple'
     ? (keys: Key[]) => void
     : (key: Key | null) => void;
+  ref?: Ref<HTMLDivElement>;
 }
 
-interface SelectListComponent extends ForwardRefExoticComponent<
-  SelectListProps<SelectionMode> & RefAttributes<HTMLDivElement>
-> {
-  <M extends SelectionMode = 'single'>(
-    props: SelectListProps<M> & RefAttributes<HTMLDivElement>
-  ): ReactNode;
+interface SelectListComponent {
+  (props: SelectListProps): ReactNode;
+  <M extends SelectionMode = 'single'>(props: SelectListProps<M>): ReactNode;
   Option: typeof SelectListOption;
 }
 
-// Helpers
-// ---------------
 const toSelection = (
   value: Selection | Iterable<Key> | undefined
 ): Selection => (value === 'all' ? 'all' : new Set(value ?? []));
@@ -164,36 +152,30 @@ const toValidationValue = (
   return selection === 'all' ? [] : Array.from(selection);
 };
 
-// Component
-// ---------------
-const _SelectList = (forwardRef as forwardRefType)(function SelectList<
-  M extends SelectionMode = 'single',
->(
-  {
-    variant,
-    size,
-    label,
-    description,
-    errorMessage,
-    error,
-    required,
-    disabled,
-    name,
-    form,
-    width,
-    validate,
-    validationBehavior: validationBehaviorProp,
-    selectedKeys,
-    defaultSelectedKeys,
-    selectionMode,
-    onChange,
-    orientation = 'vertical',
-    emptyState,
-    children,
-    ...rest
-  }: SelectListProps<M>,
-  ref: Ref<HTMLDivElement>
-) {
+const SelectList = <M extends SelectionMode = 'single'>({
+  ref,
+  variant,
+  size,
+  label,
+  description,
+  errorMessage,
+  error,
+  required,
+  disabled,
+  name,
+  form,
+  width,
+  validate,
+  validationBehavior: validationBehaviorProp,
+  selectedKeys,
+  defaultSelectedKeys,
+  selectionMode,
+  onChange,
+  orientation = 'vertical',
+  emptyState,
+  children,
+  ...rest
+}: SelectListProps<M>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
   const classNames = useClassNames({ component: 'SelectList', variant });
   const labelId = useId();
@@ -203,18 +185,12 @@ const _SelectList = (forwardRef as forwardRefType)(function SelectList<
   const validationBehavior =
     validationBehaviorProp ?? formCtx?.validationBehavior ?? 'native';
 
-  const controlledSelection = useMemo(
-    () => (selectedKeys !== undefined ? toSelection(selectedKeys) : undefined),
-    [selectedKeys]
-  );
-  const initialSelection = useMemo(
-    () =>
-      defaultSelectedKeys !== undefined
-        ? toSelection(defaultSelectedKeys)
-        : (new Set() as Selection),
-    // Initial value only — intentionally not reactive to defaultSelectedKeys.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+  const controlledSelection =
+    selectedKeys !== undefined ? toSelection(selectedKeys) : undefined;
+  const [initialSelection] = useState<Selection>(() =>
+    defaultSelectedKeys !== undefined
+      ? toSelection(defaultSelectedKeys)
+      : new Set()
   );
 
   const [selection, setSelection] = useControlledState<Selection>(
@@ -222,20 +198,8 @@ const _SelectList = (forwardRef as forwardRefType)(function SelectList<
     initialSelection,
     (value: Selection) => {
       if (!onChange) return;
-      if (resolvedSelectionMode === 'multiple') {
-        (onChange as (keys: Key[]) => void)(
-          value === 'all' ? [] : Array.from(value)
-        );
-      } else {
-        if (value === 'all') {
-          (onChange as (key: Key | null) => void)(null);
-          return;
-        }
-        const first = value.values().next();
-        (onChange as (key: Key | null) => void)(
-          first.done ? null : first.value
-        );
-      }
+      const next = toValidationValue(value, resolvedSelectionMode);
+      (onChange as (v: Key | null | Key[]) => void)(next);
     }
   );
 
@@ -260,6 +224,11 @@ const _SelectList = (forwardRef as forwardRefType)(function SelectList<
     [setSelection, validationState]
   );
 
+  const contextValue = useMemo(
+    () => ({ classNames, disabled }),
+    [classNames, disabled]
+  );
+
   return (
     <Provider
       values={[
@@ -280,7 +249,7 @@ const _SelectList = (forwardRef as forwardRefType)(function SelectList<
         isRequired={required}
         isDisabled={disabled}
       >
-        <SelectListContext.Provider value={{ classNames, disabled }}>
+        <SelectListContext value={contextValue}>
           <div className={classNames.container}>
             <RACGridList
               {...(rest as RAC.GridListProps<object>)}
@@ -313,12 +282,13 @@ const _SelectList = (forwardRef as forwardRefType)(function SelectList<
               focusRef={gridListRef}
             />
           </div>
-        </SelectListContext.Provider>
+        </SelectListContext>
       </FieldBase>
     </Provider>
   );
-}) as SelectListComponent;
+};
 
-_SelectList.Option = SelectListOption;
+const SelectListExported = SelectList as SelectListComponent;
+SelectListExported.Option = SelectListOption;
 
-export { _SelectList as SelectList };
+export { SelectListExported as SelectList };

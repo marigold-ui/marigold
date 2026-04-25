@@ -4,13 +4,14 @@ import { VisuallyHidden } from 'react-aria-components';
 import { useFormValidation } from '@react-aria/form';
 import type { FormValidationState } from '@react-stately/form';
 import type { Key, Selection } from '@react-types/shared';
+import type { SelectionMode } from './SelectList';
 
 export interface SelectListHiddenSelectProps {
   name?: string;
   form?: string;
   disabled?: boolean;
   required?: boolean;
-  selectionMode: 'none' | 'single' | 'multiple';
+  selectionMode: SelectionMode;
   selection: Selection;
   onSelectionChange: (selection: Selection) => void;
   validationBehavior: 'aria' | 'native';
@@ -53,8 +54,6 @@ export const SelectListHiddenSelect = ({
     },
     [onSelectionChange]
   );
-
-  if (selectionMode === 'none') return null;
 
   const selectedKeys =
     selection === 'all' ? [] : Array.from(selection).map(String);

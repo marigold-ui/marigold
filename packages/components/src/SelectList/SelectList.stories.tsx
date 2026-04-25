@@ -351,6 +351,33 @@ export const Horizontal = meta.story({
   ),
 });
 
+const borderedMethods = [
+  {
+    id: 'visa',
+    label: 'Visa ending in 4242',
+    description: 'Expires 08/2027 · Default card',
+    Logo: VisaLogo,
+  },
+  {
+    id: 'mastercard',
+    label: 'Mastercard ending in 1881',
+    description: 'Expires 03/2026',
+    Logo: MastercardLogo,
+  },
+  {
+    id: 'paypal',
+    label: 'PayPal',
+    description: 'alex@example.com',
+    Logo: PayPalLogo,
+  },
+  {
+    id: 'sepa',
+    label: 'SEPA bank transfer',
+    description: 'Takes 2–3 business days to clear',
+    Logo: BankLogo,
+  },
+];
+
 export const Bordered = meta.story({
   args: {
     variant: 'bordered',
@@ -362,42 +389,17 @@ export const Bordered = meta.story({
       description="Each option is its own committed choice."
       defaultSelectedKeys={['visa']}
     >
-      <SelectList.Option id="visa" textValue="Visa ending in 4242">
-        <div className="col-start-2 row-span-2 flex items-start gap-3">
-          <VisaLogo />
-          <div>
-            <Text slot="label">Visa ending in 4242</Text>
-            <Text slot="description">Expires 08/2027 · Default card</Text>
+      {borderedMethods.map(({ id, label, description, Logo }) => (
+        <SelectList.Option key={id} id={id} textValue={label}>
+          <div className="col-start-2 row-span-2 flex items-start gap-3">
+            <Logo />
+            <div>
+              <Text slot="label">{label}</Text>
+              <Text slot="description">{description}</Text>
+            </div>
           </div>
-        </div>
-      </SelectList.Option>
-      <SelectList.Option id="mastercard" textValue="Mastercard ending in 1881">
-        <div className="col-start-2 row-span-2 flex items-start gap-3">
-          <MastercardLogo />
-          <div>
-            <Text slot="label">Mastercard ending in 1881</Text>
-            <Text slot="description">Expires 03/2026</Text>
-          </div>
-        </div>
-      </SelectList.Option>
-      <SelectList.Option id="paypal" textValue="PayPal">
-        <div className="col-start-2 row-span-2 flex items-start gap-3">
-          <PayPalLogo />
-          <div>
-            <Text slot="label">PayPal</Text>
-            <Text slot="description">alex@example.com</Text>
-          </div>
-        </div>
-      </SelectList.Option>
-      <SelectList.Option id="sepa" textValue="SEPA bank transfer">
-        <div className="col-start-2 row-span-2 flex items-start gap-3">
-          <BankLogo />
-          <div>
-            <Text slot="label">SEPA bank transfer</Text>
-            <Text slot="description">Takes 2–3 business days to clear</Text>
-          </div>
-        </div>
-      </SelectList.Option>
+        </SelectList.Option>
+      ))}
     </SelectList>
   ),
 });
