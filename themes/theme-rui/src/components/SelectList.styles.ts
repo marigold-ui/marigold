@@ -69,10 +69,12 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'hover:bg-hover',
           // Dividers live on the item's trailing edge as a real border so
           // they paint with the element (not above it as a pseudo would) and
-          // never sit on top of the focus ring. A transparent border on the
-          // last item keeps the layout uniform.
-          'group-orientation-vertical/list:border-b group-orientation-vertical/list:border-transparent group-orientation-vertical/list:not-last:border-surface-border',
-          'group-orientation-horizontal/list:border-r group-orientation-horizontal/list:border-transparent group-orientation-horizontal/list:not-last:border-surface-border',
+          // never sit on top of the focus ring. Only non-last items carry
+          // the border — `min-h-14` is on the border-box so item heights
+          // stay aligned without a transparent reservation, and the focus
+          // ring on the last item reaches all the way to the surface edge.
+          'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-surface-border',
+          'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-surface-border',
         ],
         bordered: [
           // Each option is its own surface with the system's elevation
