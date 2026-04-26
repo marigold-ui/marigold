@@ -222,6 +222,8 @@ export default (props: SelectListProps) => (
     label="Ticket category"
     selectionMode="single"
     defaultSelectedKeys={['standard']}
+    p="square-relaxed"
+    width="3/4"
   >
     {tickets.map(({ id, name, price, badge, description, Art, palette }) => (
       <SelectList.Option key={id} id={id} textValue={name}>
