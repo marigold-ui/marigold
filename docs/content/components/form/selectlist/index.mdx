@@ -39,27 +39,29 @@ A `<SelectList>` is a labeled container holding a stack of `<SelectList.Option>`
 
 ## Usage
 
-`<SelectList>` sits between a `<Radio.Group>` and a `<Table>`: more context per option than a radio, less structural weight than a table. Use the option count and the kind of choice to decide which control fits.
+Hidden lists make users do invisible work. Comparing two options in a dropdown means opening it, scanning, closing it, opening it again, scanning, then deciding, all while keeping the rest of the form alive in their head. `<SelectList>` moves that work out of memory and into the layout: every option is on screen, so the comparison happens once and stays put. Each row also has space for one inline action, like a "View details" button or a "Configure" menu, that does not trigger selection. `<Radio.Group>` and `<Select>` can't host that.
 
-- **2–4 plain text choices:** prefer `<Radio.Group>` (single) or `<Checkbox.Group>` (multiple). Lighter and faster to scan.
-- **5–10 choices where each option needs context** (a description, a logo, or a trailing action): `<SelectList>` earns its space.
-- **More than ~15 options, or users need to search:** prefer [`<Select>`](/components/form/select) (single), [`<Multiselect>`](/components/form/multiselect), or [`<TagField>`](/components/form/tag-field).
-- **Records with multiple structured columns:** use a [`<Table>`](/components/collection/table). `<SelectList>` is for picking, not for displaying data.
+Use `<SelectList>` when comparison is the point of the field, not when it is one step among many. That usually means a peer-level choice where each option is its own commitment, and getting it right matters more than moving through the form quickly.
 
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use SelectList when each option needs context (a description, a logo, or
-      a trailing action) to help the user decide.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't use SelectList for plain text-only choices. A `<Radio.Group>` or
-      `<Checkbox.Group>` is lighter and faster to scan.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+### Number of options
+
+The right control depends on list length and how much vertical space the field can take. `<SelectList>` earns its space when comparing options side by side or hosting per-row actions matters; `<Select>` keeps the field compact by hiding the same kind of rich row (label, description, icon, avatar) behind a trigger.
+
+| When                                                         | Use                                                                                     |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| Short list of plain text choices (3–5 items)                 | `<Radio.Group>` (single) or `<Checkbox.Group>` (multiple)                               |
+| Each option needs decision-relevant context (up to 10 items) | `<SelectList>`                                                                          |
+| Space is limited, with or without rich rows (5–15 items)     | [`<Select>`](/components/form/select) (single or multiple)                              |
+| More than ~15 options, or users need to search               | [`<Combobox>`](/components/form/combobox) or [`<TagField>`](/components/form/tag-field) |
+
+### Per-row actions
+
+A per-row action is the small button or menu on the trailing edge of an option, separate from the row's selection target. It earns its space when it helps the user finish the form, not when it invites a side quest. Two patterns hold up:
+
+- **Decision-help.** The action gives the user the context they need to commit, without leaving the form. A "View details" button on a saved card shows the billing address and expiry. A "Preview" button on an email template opens a side panel with the rendered output. A "Show on map" pin disambiguates pickup locations with similar names. The action removes the need to navigate away to make an informed choice.
+- **Settings-form configuration.** When the picker doubles as a settings form, the row is the natural home for per-item configuration. Examples: choosing which payment methods accept checkout traffic, with a "Configure" menu per method to set fees and currencies; choosing which channels deliver a given notification, with a "Customize" menu per channel to set frequency and quiet hours. The form submits which items are active, the row menu configures how each behaves.
+
+Be careful with mutations on the underlying record. "Edit" and "Remove" on a saved payment method might feel useful at checkout, but they break form flow when they require a confirmation dialog or a network call mid-submission. When management is its own job, give it its own surface: a separate page or panel where users come to manage saved records, not to pick one for the current form.
 
 ### Single vs multiple selection
 

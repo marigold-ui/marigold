@@ -208,7 +208,7 @@ const tickets = [
   {
     id: 'press',
     name: 'Press ticket',
-    badge: { variant: 'warning', label: 'Invitation only' },
+    badge: { variant: 'error', label: 'Invitation only' },
     description:
       'Reserved for accredited press. Pick up your badge at the press desk on arrival; photo ID is required.',
     Art: PressArt,
