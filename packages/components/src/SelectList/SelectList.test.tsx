@@ -308,6 +308,55 @@ describe('SelectList', () => {
     });
   });
 
+  describe('item padding', () => {
+    test('does not set inline padding vars when no prop is passed (theme provides defaults)', () => {
+      render(<Basic.Component aria-label="Test" />);
+
+      const grid = screen.getByRole('grid') as HTMLElement;
+
+      expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe('');
+      expect(grid.style.getPropertyValue('--selectlist-item-py')).toBe('');
+    });
+
+    test('uniform `p` writes both axis vars inline, deriving from the inset token', () => {
+      render(<Basic.Component p="square-loose" />);
+
+      const grid = screen.getByRole('grid') as HTMLElement;
+
+      expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
+        'var(--spacing-square-loose-x)'
+      );
+      expect(grid.style.getPropertyValue('--selectlist-item-py')).toBe(
+        'var(--spacing-square-loose-y)'
+      );
+    });
+
+    test('axis-specific `px` / `py` write only the matching axis var inline', () => {
+      render(<Basic.Component px="padding-relaxed" py="padding-tight" />);
+
+      const grid = screen.getByRole('grid') as HTMLElement;
+
+      expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
+        'var(--spacing-padding-relaxed)'
+      );
+      expect(grid.style.getPropertyValue('--selectlist-item-py')).toBe(
+        'var(--spacing-padding-tight)'
+      );
+    });
+
+    test('options consume the cascading CSS vars via Tailwind classes', () => {
+      render(<Basic.Component />);
+
+      const rows = screen.getAllByRole('row');
+      rows.forEach(row =>
+        expect(row).toHaveClass(
+          'px-(--selectlist-item-px)',
+          'py-(--selectlist-item-py)'
+        )
+      );
+    });
+  });
+
   describe('forms', () => {
     test('renders a hidden native select inside the field', () => {
       const { container } = render(<Basic.Component name="payment" />);

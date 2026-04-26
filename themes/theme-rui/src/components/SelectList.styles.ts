@@ -30,9 +30,22 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        // No gap so hover/selected backgrounds fill the row edge-to-edge.
-        default: '',
-        bordered: 'gap-2',
+        // Fallback option padding — declared as CSS custom properties so each
+        // <SelectList.Option> picks them up via cascade through
+        // `px-(--selectlist-item-px) py-(--selectlist-item-py)`. The component
+        // overrides these via inline `style` when the consumer sets `p` / `px`
+        // / `py`, so inline style wins and the cascade carries the override
+        // down to every option.
+        default: [
+          // No gap so hover/selected backgrounds fill the row edge-to-edge.
+          '[--selectlist-item-px:var(--spacing-stretch-regular-x)]',
+          '[--selectlist-item-py:var(--spacing-stretch-regular-y)]',
+        ],
+        bordered: [
+          'gap-2',
+          '[--selectlist-item-px:var(--spacing-square-relaxed-x)]',
+          '[--selectlist-item-py:var(--spacing-square-relaxed-y)]',
+        ],
       },
     },
     defaultVariants: {
@@ -65,7 +78,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           // No outer rounding on items — hover/selected fills the row edge to
           // edge of the surface. Only the first/last items round their outer
           // corners so the fill follows the surface's `rounded-surface` curve.
-          'px-3 py-2 min-h-14',
+          'min-h-14',
           // First/last item rounding follows the surface's inner curve:
           // `rounded-surface - 1px` (the surface's border width) so the fill
           // hugs the surface without a visible gap at the corners.
@@ -89,7 +102,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           // system instead of custom border tokens. Selected gets an extra
           // 0.5px inset shadow in the same color so the border reads as
           // thicker without shifting the layout.
-          'ui-surface shadow-elevation-border p-4 min-h-14',
+          'ui-surface shadow-elevation-border min-h-14',
           'selected:[--ui-border-color:var(--color-foreground)] selected:inset-shadow-[0_0_0_0.5px_var(--ui-border-color)]',
           // Hover only shifts the surface background so the border stays
           // calm; uses the surface's `--ui-background-color` hook so the

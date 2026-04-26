@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import { useCallback, useId, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -18,7 +18,13 @@ import type {
   Selection,
   ValidationError,
 } from '@react-types/shared';
-import { WidthProp, cn, useClassNames } from '@marigold/system';
+import type {
+  InsetSpacingTokens,
+  PaddingSpacingTokens,
+  SpaceProp,
+  WidthProp,
+} from '@marigold/system';
+import { cn, createSpacingVar, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { SelectListContext } from './Context';
 import { SelectListHiddenSelect } from './SelectListHiddenSelect';
@@ -38,9 +44,10 @@ type RemoveProps =
   | 'isInvalid'
   | 'isRequired';
 
-export interface SelectListProps<
-  M extends SelectionMode = 'single',
-> extends Omit<RAC.GridListProps<object>, RemoveProps> {
+type SelectListBaseProps<M extends SelectionMode = 'single'> = Omit<
+  RAC.GridListProps<object>,
+  RemoveProps
+> & {
   /**
    * Visual variant of the list.
    * - `default`: full-width rows separated by dividers.
@@ -138,13 +145,40 @@ export interface SelectListProps<
     ? (keys: Key[]) => void
     : (key: Key | null) => void;
   ref?: Ref<HTMLDivElement>;
-}
+};
+
+/**
+ * Padding applied to every `SelectList.Option`. Either set `p` for uniform
+ * padding, or use `px` / `py` to control the axes separately — setting both
+ * forms is a TypeScript error, mirroring the `<Inset>` and `<Panel>` API.
+ */
+type SelectListPaddingProps =
+  | {
+      /** Padding on all sides. Cannot be combined with `px` or `py`. */
+      p?: SpaceProp<InsetSpacingTokens>['space'];
+      px?: never;
+      py?: never;
+    }
+  | {
+      p?: never;
+      /** Horizontal padding applied to every option. */
+      px?: SpaceProp<PaddingSpacingTokens>['space'];
+      /** Vertical padding applied to every option. */
+      py?: SpaceProp<PaddingSpacingTokens>['space'];
+    };
+
+export type SelectListProps<M extends SelectionMode = 'single'> =
+  SelectListBaseProps<M> & SelectListPaddingProps;
 
 interface SelectListComponent {
   (props: SelectListProps): ReactNode;
   <M extends SelectionMode = 'single'>(props: SelectListProps<M>): ReactNode;
   Option: typeof SelectListOption;
 }
+
+// Module-level sentinel so unset padding props don't allocate a fresh object
+// each render — RAC's GridList compares `style` by identity in some places.
+const EMPTY_STYLE: CSSProperties = {};
 
 const toSelection = (
   value: Selection | Iterable<Key> | undefined
@@ -184,6 +218,9 @@ const SelectList = <M extends SelectionMode = 'single'>({
   onChange,
   orientation = 'vertical',
   emptyState,
+  p,
+  px,
+  py,
   children,
   ...rest
 }: SelectListProps<M>) => {
@@ -193,6 +230,24 @@ const SelectList = <M extends SelectionMode = 'single'>({
   const classNames = useClassNames({ component: 'SelectList', variant });
   const labelId = useId();
   const gridListRef = useObjectRef(ref);
+
+  // Resolve the optional `p` / `px` / `py` props to per-axis CSS custom
+  // properties on the list root. Each option reads `--selectlist-item-px` /
+  // `--selectlist-item-py` via cascade, so any value set here flows down. When
+  // the consumer leaves these props unset the theme provides the variant
+  // fallback (see `SelectList.styles.ts` `list` slot) — the component itself
+  // doesn't know any variant names.
+  const itemPaddingStyle = useMemo<CSSProperties>(() => {
+    if (p === undefined && px === undefined && py === undefined) {
+      return EMPTY_STYLE;
+    }
+    return {
+      ...(p !== undefined && createSpacingVar('selectlist-item-px', `${p}-x`)),
+      ...(p !== undefined && createSpacingVar('selectlist-item-py', `${p}-y`)),
+      ...(px !== undefined && createSpacingVar('selectlist-item-px', `${px}`)),
+      ...(py !== undefined && createSpacingVar('selectlist-item-py', `${py}`)),
+    };
+  }, [p, px, py]);
 
   const formCtx = useSlottedContext(FormContext);
   const validationBehavior =
@@ -280,6 +335,7 @@ const SelectList = <M extends SelectionMode = 'single'>({
               selectedKeys={selection}
               onSelectionChange={handleSelectionChange}
               className={cn('group/list', classNames.list)}
+              style={itemPaddingStyle}
             >
               {children}
             </RACGridList>

@@ -112,7 +112,10 @@ export const SelectListOption = ({
       isDisabled={disabled ?? listDisabled}
       textValue={resolvedTextValue}
       {...props}
-      className={cn(classNames?.item)}
+      className={cn(
+        classNames?.item,
+        'px-(--selectlist-item-px) py-(--selectlist-item-py)'
+      )}
       ref={ref}
     >
       {({ selectionMode, isSelected, isDisabled }) => (

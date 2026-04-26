@@ -10,6 +10,49 @@ import { Text } from '../Text/Text';
 import { Info } from '../icons/Info';
 import { SelectList } from './SelectList';
 
+// `select` controls render `undefined` as a normal option only when an
+// explicit label is mapped to it — Storybook treats the literal `undefined`
+// as "no value set". `(default)` is the user-facing label; `mapping` resolves
+// it back to `undefined` so the component falls through to the theme's
+// variant-based fallback.
+const insetTokens = [
+  'square-tight',
+  'square-snug',
+  'square-regular',
+  'square-relaxed',
+  'square-loose',
+  'squish-tight',
+  'squish-snug',
+  'squish-regular',
+  'squish-relaxed',
+  'squish-loose',
+  'stretch-tight',
+  'stretch-snug',
+  'stretch-regular',
+  'stretch-relaxed',
+  'stretch-loose',
+];
+
+const paddingTokens = [
+  'padding-tight',
+  'padding-snug',
+  'padding-regular',
+  'padding-relaxed',
+  'padding-loose',
+];
+
+const paddingArgType = (
+  tokens: string[],
+  description: string,
+  typeSummary: string
+) => ({
+  control: { type: 'select' as const },
+  options: ['(default)', ...tokens],
+  mapping: { '(default)': undefined },
+  table: { type: { summary: typeSummary } },
+  description,
+});
+
 const meta = preview.meta({
   title: 'Components/SelectList',
   component: SelectList,
@@ -41,6 +84,21 @@ const meta = preview.meta({
       },
       description: 'Direction options flow and arrow keys navigate.',
     },
+    p: paddingArgType(
+      insetTokens,
+      'Uniform padding for every option. Falls back to the variant default when unset.',
+      'InsetSpacingTokens'
+    ),
+    px: paddingArgType(
+      paddingTokens,
+      'Horizontal padding. Cannot be combined with `p`. Falls back to the variant default when unset.',
+      'PaddingSpacingTokens'
+    ),
+    py: paddingArgType(
+      paddingTokens,
+      'Vertical padding. Cannot be combined with `p`. Falls back to the variant default when unset.',
+      'PaddingSpacingTokens'
+    ),
   },
   args: {
     selectionMode: 'single',
@@ -481,6 +539,48 @@ export const Bordered = meta.story({
       ))}
     </SelectList>
   ),
+});
+
+export const WithCustomPadding = meta.story({
+  tags: ['component-test'],
+  args: {
+    p: 'square-loose',
+  },
+  render: args => (
+    <SelectList
+      {...args}
+      label="Shipping speed"
+      description="Padding follows the `p` / `px` / `py` props (Inset-style)."
+      defaultSelectedKeys={['standard']}
+    >
+      <SelectList.Option id="standard" textValue="Standard">
+        <Text slot="label">Standard</Text>
+        <Text slot="description">3–5 business days</Text>
+      </SelectList.Option>
+      <SelectList.Option id="express" textValue="Express">
+        <Text slot="label">Express</Text>
+        <Text slot="description">1–2 business days</Text>
+      </SelectList.Option>
+      <SelectList.Option id="overnight" textValue="Overnight">
+        <Text slot="label">Overnight</Text>
+        <Text slot="description">Next business day</Text>
+      </SelectList.Option>
+    </SelectList>
+  ),
+  play: async ({ canvas }) => {
+    const standardRow = canvas.getByRole('row', { name: /standard/i });
+    expect(standardRow).toHaveClass(
+      'px-(--selectlist-item-px)',
+      'py-(--selectlist-item-py)'
+    );
+    const list = standardRow.closest('[role="grid"]') as HTMLElement;
+    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+      'var(--spacing-square-loose-x)'
+    );
+    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+      'var(--spacing-square-loose-y)'
+    );
+  },
 });
 
 export const EmptyState = meta.story({
