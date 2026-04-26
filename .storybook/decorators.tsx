@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 
 const deriveLabel = (context: Parameters<Decorator>[1]) =>
   (context.parameters.panelLabel as string | undefined) ??
-  context.title?.split('/').pop() ??
+  context.title ??
   context.name ??
   'Story';
 
@@ -35,18 +35,18 @@ const withMarigoldProviders: Decorator[] = [
           <OverlayContainerProvider container="storybook-root">
             {context.parameters.surface === 'both' ? (
               <div className="flex flex-col gap-8">
-                <section>
+                <div>
                   <p className="text-secondary mb-2 text-xs font-medium tracking-wide uppercase">
                     On surface
                   </p>
                   {wrapped}
-                </section>
-                <section>
+                </div>
+                <div>
                   <p className="text-secondary mb-2 text-xs font-medium tracking-wide uppercase">
                     On page
                   </p>
                   <Story />
-                </section>
+                </div>
               </div>
             ) : context.parameters.surface !== false ? (
               wrapped
