@@ -1,14 +1,15 @@
-import { Button, SelectList, Text } from '@marigold/components';
+import { Button, EmptyState, SelectList } from '@marigold/components';
 
 export default () => (
   <SelectList
     label="Saved payment methods"
-    description="Pick a saved method or add a new one."
+    description="Pick a saved method or add a new one to charge this invoice."
     emptyState={
-      <div className="flex flex-col items-center gap-2 p-6 text-center">
-        <Text>No payment methods saved yet.</Text>
-        <Button variant="primary">Add payment method</Button>
-      </div>
+      <EmptyState
+        title="No saved payment methods yet"
+        description="Add a card or bank account to charge invoices automatically. Saved methods show up here the next time you check out."
+        action={<Button variant="primary">Add payment method</Button>}
+      />
     }
   >
     {[]}

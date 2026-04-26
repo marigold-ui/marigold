@@ -43,6 +43,12 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     base: [
       'relative grid items-center gap-x-3',
       'grid-cols-[auto_1fr_auto]',
+      // Row 1 minimum matches the label's line-height (1.25rem == text-sm),
+      // so the indicator stays visually aligned with the label's first line
+      // even when the option content uses a row-spanning wrapper (e.g. a
+      // leading illustration) that would otherwise collapse row 1 to the
+      // indicator's intrinsic height.
+      'grid-rows-[minmax(1.25rem,auto)_auto]',
       // Item default typography == label typography; plain-string children
       // inherit the label look without needing a <Text slot="label"> wrapper.
       'text-sm font-medium text-foreground outline-none',
