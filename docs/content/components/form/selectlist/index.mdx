@@ -39,10 +39,6 @@ A `<SelectList>` is a labeled container holding a stack of `<SelectList.Option>`
 
 ## Usage
 
-Build each row with `<Text slot="label">` and `<Text slot="description">`. The same convention works in `<Select>`, `<ComboBox>`, and `<Autocomplete>`, so the muscle memory carries across selection components.
-
-### When to reach for SelectList
-
 `<SelectList>` sits between a `<Radio.Group>` and a `<Table>`: more context per option than a radio, less structural weight than a table. Use the option count and the kind of choice to decide which control fits.
 
 - **2–4 plain text choices:** prefer `<Radio.Group>` (single) or `<Checkbox.Group>` (multiple). Lighter and faster to scan.
@@ -71,11 +67,13 @@ A `<SelectList>` defaults to single selection. Each row renders a radio circle, 
 
 When several options can be active at once, set `selectionMode="multiple"`. Rows render checkboxes and toggle independently. This is also the natural moment for per-row actions: drop an `<IconButton>` or `<ActionMenu>` into a `<SelectList.Option>` and it sits on the trailing edge of the row. Keep it to one action per row so the row's tap target stays predictable. Clicking the action does not toggle the row.
 
+If a row needs more than one action, group them inside a single `<ActionMenu>` instead of placing two icons side by side.
+
 <ComponentDemo name="selectlist-multiple-selection" />
 
 ### Bordered variant
 
-When each option represents a commit-level choice, like a plan, a payment method, or a shipping mode, use `variant="bordered"`. Each row becomes its own outlined card with a small gap between cards. The selected card strengthens its border instead of filling, which suits options that should feel like peer choices rather than entries in a continuous list.
+A flat list with dividers reads as "pick one of these entries"; bordered cards read as "commit to one of these". When each option represents a commit-level choice, like a plan, a payment method, or a shipping mode, use `variant="bordered"`. Each row becomes its own outlined card with a small gap between cards. The selected card strengthens its border instead of filling, which suits options that should feel like peer choices rather than entries in a continuous list.
 
 <ComponentDemo name="selectlist-bordered" />
 
@@ -112,6 +110,8 @@ Horizontal works best for compact choices like shipping speed or sort order. Avo
 
 When the collection is empty, for example because the user hasn't saved any payment methods yet, render a placeholder via the `emptyState` prop. A good empty state explains why the list is empty and offers a single next step.
 
+When the list is empty because of an active filter or search, surface a "Clear filters" action so users can recover without leaving the field.
+
 <ComponentDemo name="selectlist-empty-state" />
 
 <GuidelineTiles>
@@ -147,7 +147,7 @@ By default, a disabled row is also unfocusable. Set `disabledBehavior="selection
 
 ### Writing good options
 
-Keep option labels short and concrete so users can scan the list quickly. Lead with the most distinctive word, since that's where the eye lands first. The description line is for context that genuinely changes the user's decision, not for marketing copy or a restatement of the label. If every row's description says roughly the same thing, drop the description entirely.
+Keep option labels short and concrete so users can scan the list quickly. Lead with the most distinctive word, since that's where the eye lands first. The description line earns its space when it differentiates options that look similar at the title level. Skip it for marketing copy, restated labels, or boilerplate that repeats on every row ("All major cards accepted").
 
 Be consistent. All rows should follow the same shape: either every row has a description or none of them do. Mixed-height rows break the visual rhythm and slow scanning.
 
@@ -171,6 +171,10 @@ Be consistent. All rows should follow the same shape: either every row has a des
     </DontDescription>
   </Dont>
 </GuidelineTiles>
+
+### Ordering options
+
+Put the option users pick most often first, since they scan top to bottom (or left to right). Avoid alphabetical or system-driven order: a "Bank transfer" sorted to the top alphabetically is unhelpful when most users pay by card. If options have a natural progression (free → pro → enterprise, or fastest → cheapest), follow that order instead.
 
 ## Accessibility
 
