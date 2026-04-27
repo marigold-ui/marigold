@@ -148,11 +148,17 @@ When the list is empty because of an active filter or search, surface a "Clear f
 
 ## Accessibility
 
-`<SelectList>` is fully keyboard accessible. Arrow keys move focus between options, <kbd>Space</kbd> toggles the focused option, and <kbd>Tab</kbd> reaches any action inside it. Arrow direction follows the layout. Use <kbd>Up</kbd>/<kbd>Down</kbd> when vertical, <kbd>Left</kbd>/<kbd>Right</kbd> when `orientation="horizontal"`. This two-tier model is what lets a per-row button or menu coexist with row selection without breaking keyboard navigation.
+`<SelectList>` is fully keyboard accessible:
 
-Selection state is announced semantically, never through color alone. When `selectionMode="multiple"`, the list is announced as multi-selectable, and disabled rows and disabled fields are announced as disabled.
+- Arrow keys move focus between options. Direction follows the layout: up/down when vertical, left/right when horizontal.
+- Space toggles the focused option.
+- Tab reaches any action inside the focused row.
 
-For rows with rich content, pass `textValue` on the option so screen readers announce the right name. Without it, the announcement collapses to whatever text fragment is reachable, which is rarely correct.
+This two-tier model is what lets a per-row button or menu coexist with row selection without breaking keyboard navigation.
+
+Always give the list a `label`, or pass `aria-labelledby` when a heading nearby already names it. Without one, screen readers announce a list with no idea what it's for.
+
+For rows with rich content like a wrapped label, a logo, or a trailing action, set `textValue` on the option. Screen readers use it as the option's accessible name. Without it, the announcement collapses to whatever text fragment is reachable, which is rarely the right one.
 
 ## Props
 
