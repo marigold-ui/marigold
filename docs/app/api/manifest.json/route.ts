@@ -1,9 +1,7 @@
 import { source } from '@/lib/source';
+import { NextResponse } from 'next/server';
 
-// `force-static` triggers a Node 22+ undici bug during Next.js prerender:
-// `TypeError: Cannot read private member #state` (undici#4290, node#58814).
-// Skip build-time prerender; the response is cached by the CDN via headers.
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 const EXCLUDED_PREFIXES = ['releases'];
 const EXCLUDED_SEGMENTS = ['__internal__'];
@@ -32,15 +30,8 @@ export async function GET() {
     })
     .sort((a, b) => a.slug.localeCompare(b.slug));
 
-  const body = JSON.stringify({
+  return NextResponse.json({
     baseUrl: 'https://www.marigold-ui.io',
     pages: entries,
-  });
-
-  return new Response(body, {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600, s-maxage=86400',
-    },
   });
 }
