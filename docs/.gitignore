@@ -5,6 +5,7 @@
 .source
 .registry
 app/mcp/out
+public/api
 
 # test & build
 /coverage
