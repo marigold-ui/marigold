@@ -1,6 +1,5 @@
 export * from 'lucide-react';
 
-export { Auswertung } from './custom/Auswertung';
 export { DesignTicket } from './custom/DesignTicket';
 export { Facebook } from './custom/Facebook';
 export { GiftCard } from './custom/GiftCard';

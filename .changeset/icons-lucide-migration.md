@@ -21,10 +21,10 @@ import {
 } from '@marigold/icons';
 ```
 
-The 13 retained custom icons (no Lucide equivalent) live under `src/custom/`:
+The 12 retained custom icons (no Lucide equivalent) live under `src/custom/`:
 
 - **Ticketing**: DesignTicket, GiftCard, Resale, Scanner, Stadium, TicketInsurance, Turnstile
-- **Info**: Auswertung, PDF
+- **Info**: PDF
 - **Social**: Facebook, Google, Instagram, Twitter
 
 They now accept `LucideProps` (`size`, `color`, `strokeWidth`, `className`, `ref`) instead of the previous `SVGProps`. The `size` prop now renders as `width="24"` (numeric) instead of `"24px"`.

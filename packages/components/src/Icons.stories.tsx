@@ -2,7 +2,6 @@ import type { LucideProps } from 'lucide-react';
 import { Download, Save, Star } from 'lucide-react';
 import preview from '.storybook/preview';
 import {
-  Auswertung,
   DesignTicket,
   Facebook,
   GiftCard,
@@ -20,7 +19,6 @@ import { Button } from './Button/Button';
 import { Inline } from './Inline/Inline';
 
 const customIcons = [
-  { name: 'Auswertung', Icon: Auswertung },
   { name: 'DesignTicket', Icon: DesignTicket },
   { name: 'Facebook', Icon: Facebook },
   { name: 'GiftCard', Icon: GiftCard },
@@ -65,9 +63,7 @@ const meta = preview.meta({
   },
   args: {
     size: 32,
-    color: undefined,
     strokeWidth: 2,
-    fill: undefined,
   },
 });
 
