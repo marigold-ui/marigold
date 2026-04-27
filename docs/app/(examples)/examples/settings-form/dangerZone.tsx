@@ -72,7 +72,7 @@ export const DangerZone = () => {
                   confirmationLabel={item.confirmLabel}
                   onConfirm={() => {
                     addToast({
-                      title: item.action + ' complete',
+                      title: `${item.action} complete`,
                       description: item.toastMessage,
                       variant: 'success',
                       timeout: 5000,
