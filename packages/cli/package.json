@@ -1,0 +1,61 @@
+{
+  "name": "@marigold/cli",
+  "version": "0.1.0",
+  "description": "Marigold Design System CLI — component docs, discovery, and project setup.",
+  "license": "MIT",
+  "keywords": [
+    "marigold",
+    "cli",
+    "design-system",
+    "docs"
+  ],
+  "type": "module",
+  "bin": {
+    "marigold": "./dist/bin/marigold.mjs"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marigold-ui/marigold",
+    "directory": "packages/cli"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@clack/prompts": "1.2.0",
+    "ci-info": "4.4.0",
+    "picocolors": "1.1.1"
+  },
+  "devDependencies": {
+    "@marigold/tsconfig": "workspace:*",
+    "@types/node": "24.10.13",
+    "tsdown": "0.21.9",
+    "vitest": "4.1.2"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "watch": "tsdown --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf node_modules && rm -rf dist"
+  }
+}
