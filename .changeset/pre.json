@@ -1,0 +1,16 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@marigold/eslint-config": "1.0.2",
+    "@marigold/prettier-config": "0.3.2",
+    "@marigold/tsconfig": "0.4.2",
+    "@marigold/docs": "17.4.0",
+    "@marigold/components": "17.4.0",
+    "@marigold/icons": "1.3.38",
+    "@marigold/system": "17.4.0",
+    "@marigold/types": "1.4.0",
+    "@marigold/theme-rui": "5.2.4"
+  },
+  "changesets": []
+}
