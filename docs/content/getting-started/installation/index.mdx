@@ -36,6 +36,8 @@ Marigold also provides an additional package you can install as needed:
 
 ## Set up a Marigold project with Tailwind CSS (Recommended)
 
+Use this path when Marigold is the whole app. `theme.css` paints the document body automatically and emits design tokens at `:root`, so you get the intended look with zero extra markup.
+
 Pairing Marigold with Tailwind CSS gives you the full design system as it was intended, not a frozen, pre-compiled snapshot. Tailwind tree-shakes unused styles for smaller bundles, and lets you use the same utility scale (spacing, colors, breakpoints) in your own components that Marigold uses internally. Dev tooling like IntelliSense and JIT compilation work across both Marigold and your app code, making this the most flexible and ergonomic setup for real-world projects.
 
 If you're starting a new project, we recommend using [Vite](https://vitejs.dev/), [Next.js](https://nextjs.org/) or any other modern JavaScript framework as your build tool. Marigold is designed to work seamlessly with these tools.
@@ -97,7 +99,7 @@ Then wrap your app with the `Providers` component in `layout.tsx`.
 
 ## Quick start (pre-built CSS)
 
-Import the pre-built CSS file that ships with the theme. This is the fastest way to get started but does not allow customization beyond the provided design tokens.
+Use this path for a drop-in stylesheet, or when Marigold lives alongside another design system. `styles.css` scopes all its rules to `[data-theme="rui"]`, so you control exactly where Marigold paints. This is the fastest way to get started but does not allow customization beyond the provided design tokens.
 
 ```tsx
 import { MarigoldProvider } from '@marigold/components';
@@ -109,12 +111,20 @@ export const App = () => (
 );
 ```
 
-You also need to add `data-theme="rui"` to your `<html>` element so the theme styles are applied correctly:
+Place `data-theme="rui"` on the element you want Marigold to paint. For a Marigold-first app, add it to `<html>`:
 
 ```html
 <html data-theme="rui">
   ...
 </html>
+```
+
+To mount Marigold as an island inside another app, wrap the Marigold subtree in a `<div>` carrying the attribute. Everything outside the wrapper keeps its own styling:
+
+```tsx
+<div data-theme="rui">
+  <MarigoldProvider theme={theme}>{/* Marigold UI */}</MarigoldProvider>
+</div>
 ```
 
 ## Adding fonts

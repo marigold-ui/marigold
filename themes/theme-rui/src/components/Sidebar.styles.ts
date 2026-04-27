@@ -13,7 +13,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   root: cva({
     base: [
-      'relative h-full overflow-hidden',
+      'overflow-hidden',
       'bg-background border-border shadow-elevation-border util-scrollbar',
       'sm:data-[state=expanded]:w-64',
       'sm:data-[state=collapsed]:w-0',
