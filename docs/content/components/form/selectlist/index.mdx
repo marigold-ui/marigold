@@ -54,6 +54,37 @@ The right control depends on list length and how much space the field can take. 
 | Space is limited, with or without rich rows (5–15 items)     | [`<Select>`](/components/form/select) (single or multiple)                                                       |
 | More than ~15 options, or users need to search               | [`<Combobox>`](/components/form/combobox) or [`<TagField>`](/components/form/tag-field)                          |
 
+### Writing options
+
+The label, description, and order of each row decide whether the list reads at a glance or makes users work for it.
+
+**Keep labels short and concrete.** Lead with the most distinctive word, since that's where the eye lands first. The description line earns its space when it differentiates options that look similar at the title level. Skip it for marketing copy, restated labels, or boilerplate that repeats on every row (like "All major cards accepted").
+
+**Be consistent.** All rows should follow the same shape: either every row has a description or none of them do. Mixed-height rows break the visual rhythm and slow scanning.
+
+**Order by what users pick most often.** Readers scan top to bottom (or left to right), so the most common choice belongs first. Avoid alphabetical or system-driven order: a "Bank transfer" sorted to the top alphabetically is unhelpful when most users pay by card. If options have a natural progression (free → pro → enterprise, or fastest → cheapest), follow that order instead.
+
+<Callout title="Keep it accessible">
+  When a row contains more than plain text (a wrapped label, a logo, a trailing
+  action), pass `textValue` on the option. Screen readers use it as the option's
+  accessible name.
+</Callout>
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep labels short, lead with the most distinctive word, and order options
+      by how often users pick them.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't mix one-line and two-line rows in the same list, and don't truncate
+      labels with an ellipsis.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ### Multiselection
 
 Sometimes users need to pick several options and see what they picked at a glance. A [multi-select `<Select>`](/components/form/select#multiselection) truncates as picks pile up. `<SelectList>` keeps every option and every checkmark on screen. That's the right trade when the selection itself matters as much as the choosing: which payment methods accept checkout traffic, which channels deliver a given notification, which features ship in a plan.
@@ -84,27 +115,13 @@ When the picker doubles as a settings form, the row is the natural home for per-
 
 Be careful with mutations on the underlying record. "Edit" and "Remove" on a saved payment method might feel useful at checkout, but they break form flow when they require a confirmation dialog or a network call mid-submission. When management is its own job, give it its own surface: a separate page or panel where users come to manage saved records, not to pick one for the current form.
 
-### Clearable single selection
-
-By default, `selectionMode="single"` does not let users clear the selection by clicking the active row, matching radio-group behavior. Some scenarios benefit from the opposite: filter pickers where "no filter" is a valid state, or optional pickers where the user must be able to back out of a choice. In those cases, set `disallowEmptySelection={false}` so clicking the active row clears it.
-
-<ComponentDemo name="selectlist-clearable" />
-
 ### Horizontal orientation
 
-For short lists where comparing options side by side makes sense, set `orientation="horizontal"`. The list flows left to right and the surface shrinks to fit the content. Arrow key navigation follows the orientation: <kbd>Left</kbd> and <kbd>Right</kbd> move between options instead of <kbd>Up</kbd> and <kbd>Down</kbd>.
+A vertical stack of three or four short options claims a column the form doesn't need. Flowing those options left to right keeps the whole comparison in one row, and the surface only takes the width it needs. Reach for it on peer-level choices that fit on one line, like a shipping speed at checkout, a date range on an analytics view, or a sort order on a list.
 
-Horizontal works best for compact choices like shipping speed or sort order. Avoid it on small viewports, where horizontal scrolling is hard to discover.
+Set `orientation="horizontal"` to switch the layout. Skip it for long lists, rich rows, or narrow viewports: a side-by-side layout with options scrolled out of view is the worst of both shapes.
 
 <ComponentDemo name="selectlist-horizontal" />
-
-### Working in forms
-
-`<SelectList>` is a form field. Set the `name` prop and the component participates in standard form submission. Single selection submits one value. Multiple selection submits all selected keys under the same name, so `FormData.getAll(name)` returns the full array.
-
-Use `required` to mark the field as required, and `validate` for custom validation logic. When the form is submitted with native validation, errors focus the list automatically.
-
-<ComponentDemo name="selectlist-form" />
 
 ### Empty state
 
@@ -129,40 +146,9 @@ When the list is empty because of an active filter or search, surface a "Clear f
   </Dont>
 </GuidelineTiles>
 
-### Writing good options
-
-Keep option labels short and concrete so users can scan the list quickly. Lead with the most distinctive word, since that's where the eye lands first. The description line earns its space when it differentiates options that look similar at the title level. Skip it for marketing copy, restated labels, or boilerplate that repeats on every row ("All major cards accepted").
-
-Be consistent. All rows should follow the same shape: either every row has a description or none of them do. Mixed-height rows break the visual rhythm and slow scanning.
-
-<Callout title="Keep it accessible">
-  When a row contains more than plain text (a wrapped label, a logo, a trailing
-  action), pass `textValue` on the option. Screen readers use it as the option's
-  accessible name.
-</Callout>
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Keep labels short and lead with the most distinctive word. Use the
-      description line for information that helps the user decide.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't mix one-line and two-line rows in the same list, and don't truncate
-      labels with an ellipsis.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-### Ordering options
-
-Put the option users pick most often first, since they scan top to bottom (or left to right). Avoid alphabetical or system-driven order: a "Bank transfer" sorted to the top alphabetically is unhelpful when most users pay by card. If options have a natural progression (free → pro → enterprise, or fastest → cheapest), follow that order instead.
-
 ## Accessibility
 
-`<SelectList>` is fully keyboard accessible. Arrow keys move focus between rows, <kbd>Space</kbd> toggles the focused row, and <kbd>Tab</kbd> reaches any action inside it. This two-tier model is what lets a per-row button or menu coexist with row selection without breaking keyboard navigation.
+`<SelectList>` is fully keyboard accessible. Arrow keys move focus between options, <kbd>Space</kbd> toggles the focused option, and <kbd>Tab</kbd> reaches any action inside it. Arrow direction follows the layout. Use <kbd>Up</kbd>/<kbd>Down</kbd> when vertical, <kbd>Left</kbd>/<kbd>Right</kbd> when `orientation="horizontal"`. This two-tier model is what lets a per-row button or menu coexist with row selection without breaking keyboard navigation.
 
 Selection state is announced semantically, never through color alone. When `selectionMode="multiple"`, the list is announced as multi-selectable, and disabled rows and disabled fields are announced as disabled.
 

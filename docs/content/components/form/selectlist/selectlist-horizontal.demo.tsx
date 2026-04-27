@@ -1,38 +1,27 @@
+import { Plane, Rocket, Truck } from 'lucide-react';
 import { Inline, SelectList, Stack, Text } from '@marigold/components';
-import { Pickup, Truck } from '@marigold/icons';
 
-const options = [
-  {
-    id: 'pickup',
-    name: 'Store pickup',
-    price: 'Free',
-    eta: 'Ready in 2 hours',
-    note: 'Pick up at any of our 12 stores. We hold orders for 5 days.',
-    Icon: Pickup,
-  },
+const speeds = [
   {
     id: 'standard',
     name: 'Standard',
+    eta: '3–5 business days',
     price: '€4.99',
-    eta: '3 to 5 business days',
-    note: 'Tracked delivery via local carrier. No signature required.',
     Icon: Truck,
   },
   {
     id: 'express',
     name: 'Express',
+    eta: '1–2 business days',
     price: '€12.99',
-    eta: '1 to 2 business days',
-    note: 'Live tracking and SMS updates as your parcel moves.',
-    Icon: Truck,
+    Icon: Plane,
   },
   {
     id: 'overnight',
     name: 'Overnight',
-    price: '€24.99',
     eta: 'Next business day',
-    note: 'Signature on delivery. Order before 5 pm to ship today.',
-    Icon: Truck,
+    price: '€24.99',
+    Icon: Rocket,
   },
 ];
 
@@ -40,24 +29,29 @@ export default () => (
   <SelectList
     label="Shipping speed"
     description="Faster options include live tracking and a signature on delivery."
+    variant="bordered"
     orientation="horizontal"
     selectionMode="single"
-    defaultSelectedKeys={['standard']}
+    defaultSelectedKeys={['express']}
   >
-    {options.map(({ id, name, price, eta, note, Icon }) => (
-      <SelectList.Option key={id} id={id} textValue={name}>
+    {speeds.map(({ id, name, eta, price, Icon }) => (
+      <SelectList.Option
+        key={id}
+        id={id}
+        textValue={`${name}, ${price}, ${eta}`}
+      >
         <div className="col-start-2 row-span-2">
           <Stack space={1}>
+            <Icon
+              size={20}
+              aria-hidden
+              className="text-muted-foreground shrink-0"
+            />
             <Inline space={2} alignY="center">
-              <Icon size={16} />
               <Text slot="label">{name}</Text>
+              <Text weight="semibold">{price}</Text>
             </Inline>
-            <Text fontSize="sm" weight="bold">
-              {price}
-            </Text>
-            <Text slot="description">
-              {eta}. {note}
-            </Text>
+            <Text slot="description">{eta}</Text>
           </Stack>
         </div>
       </SelectList.Option>
