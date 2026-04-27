@@ -241,14 +241,6 @@ const authOptions = {
 
 const mcpHandler = withMcpAuth(handler, verifyToken, authOptions);
 
-export async function GET(req: Request) {
-  return mcpHandler(req);
-}
-
-export async function POST(req: Request) {
-  return mcpHandler(req);
-}
-
-export async function DELETE(req: Request) {
-  return mcpHandler(req);
-}
+export const GET = mcpHandler;
+export const POST = mcpHandler;
+export const DELETE = mcpHandler;

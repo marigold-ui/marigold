@@ -4,6 +4,10 @@ description: How to connect AI coding assistants to the Marigold documentation u
 badge: new
 ---
 
+<Callout title="Internal use only">
+  This MCP server is intended for internal Reservix usage only.
+</Callout>
+
 Marigold offers an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that lets AI coding assistants search the design system documentation on their own. When you build something with Marigold and use an AI coding agent like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview), the agent can automatically look up component APIs, usage guidelines, and code examples from the Marigold docs to give you accurate answers.
 
 ## Setup
@@ -74,71 +78,3 @@ This is especially useful during development. Instead of switching to the docs, 
   Be specific in your questions. "How do I add validation to a TextField?" will
   return better results than just "TextField".
 </Callout>
-
-## Related MCP servers
-
-These MCP servers pair well with Marigold in a design system workflow.
-
-**[React Aria](https://react-spectrum.adobe.com/react-aria/)** — The library that powers most Marigold components. Its MCP server provides access to hooks, component APIs, and accessibility patterns. Useful when you need to understand lower-level behavior or customize beyond what Marigold exposes.
-
-{/* prettier-ignore-start */}
-
-<Tabs items={['Claude Code', 'VS Code']}>
-  <Tab value="Claude Code">
-    ```json
-    {
-      "mcpServers": {
-        "React Aria": {
-          "command": "npx",
-          "args": ["@react-aria/mcp@latest"]
-        }
-      }
-    }
-    ```
-  </Tab>
-  <Tab value="VS Code">
-    ```json
-    {
-      "servers": {
-        "React Aria": {
-          "command": "npx",
-          "args": ["@react-aria/mcp@latest"]
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-{/* prettier-ignore-end */}
-
-**[Storybook](https://storybook.js.org/docs/mcp)** — Connects your AI assistant to a running local Storybook instance for component discovery and interactive examples. Requires Storybook running on `http://localhost:6006` (start it with `pnpm storybook`).
-
-{/* prettier-ignore-start */}
-
-<Tabs items={['Claude Code', 'VS Code']}>
-  <Tab value="Claude Code">
-    ```json
-    {
-      "mcpServers": {
-        "sb-mcp-server": {
-          "url": "http://localhost:6006/mcp",
-          "type": "http"
-        }
-      }
-    }
-    ```
-  </Tab>
-  <Tab value="VS Code">
-    ```json
-    {
-      "servers": {
-        "sb-mcp-server": {
-          "url": "http://localhost:6006/mcp",
-          "type": "http"
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-{/* prettier-ignore-end */}
