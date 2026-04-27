@@ -1,0 +1,86 @@
+---
+title: Usage with AI
+description: How to connect AI coding assistants to the Marigold documentation using MCP.
+badge: new
+---
+
+<Callout title="Internal use only">
+  This MCP server is intended for internal Reservix usage only.
+</Callout>
+
+Marigold offers an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server that lets AI coding assistants search the design system documentation on their own. When you build something with Marigold and use an AI coding agent like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview), the agent can automatically look up component APIs, usage guidelines, and code examples from the Marigold docs to give you accurate answers.
+
+## Setup
+
+The **marigold-docs** MCP server provides semantic search over the full Marigold documentation. To connect it to your AI coding assistant, follow the instructions for your editor.
+
+<Callout variant="warning" title="Reservix only">
+  The marigold-docs MCP server is intended for internal Reservix usage only and
+  requires authentication. On first use, you'll be asked to sign in with your
+  Reservix account through OAuth.
+</Callout>
+
+{/* prettier-ignore-start */}
+
+<Tabs items={['Claude Code', 'VS Code']}>
+  <Tab value="Claude Code">
+    Add a `.mcp.json` file in the root of your project. See the [Claude Code MCP guide](https://code.claude.com/docs/en/mcp) for more details.
+
+    ```json
+    {
+      "mcpServers": {
+        "marigold-docs": {
+          "type": "http",
+          "url": "https://www.marigold-ui.io/mcp",
+          "oauth": {
+            "clientId": "dst-marigold-docs-mcp",
+            "callbackPort": 6749
+          }
+        }
+      }
+    }
+    ```
+
+    Claude Code picks up this file automatically. Alternatively, you can add the server via the CLI:
+
+    ```bash
+    claude mcp add marigold-docs \
+      --transport http \
+      --url https://www.marigold-ui.io/mcp \
+      --client-id dst-marigold-docs-mcp \
+      --callback-port 6749
+    ```
+
+    On first use, the server will ask you to authenticate through your browser.
+
+  </Tab>
+  <Tab value="VS Code">
+    Add a `.vscode/mcp.json` file in the root of your project. See the [VS Code MCP guide](https://code.visualstudio.com/docs/copilot/customization/mcp-servers#_add-an-mcp-server) for more details.
+
+    ```json
+    {
+      "servers": {
+        "marigold-docs": {
+          "type": "http",
+          "url": "https://www.marigold-ui.io/mcp"
+        }
+      }
+    }
+    ```
+
+    If you have [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview) or another MCP-compatible extension installed, the server will be available in agent mode automatically. VS Code handles the OAuth authentication flow for you.
+
+  </Tab>
+</Tabs>
+{/* prettier-ignore-end */}
+
+## How to use it
+
+Once the server is connected, your AI agent can query the Marigold documentation automatically. When you ask a question, the agent searches the docs via the MCP server and uses the results to answer you. You can ask direct questions like "What props does Select accept?" or instruct the agent while coding, for example: "Use the marigold-docs MCP to check how I should implement this DatePicker."
+
+This is especially useful during development. Instead of switching to the docs, you can tell your agent to look up the right way to use a component, check which props are available, or find code examples.
+
+<Callout title="Best results">
+  Be specific in your questions. "How do I add validation to a TextField?" will
+  return better results than just "TextField".
+</Callout>
