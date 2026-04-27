@@ -1,5 +1,4 @@
 import { source } from '@/lib/source';
-import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-static';
 
@@ -30,7 +29,7 @@ export async function GET() {
     })
     .sort((a, b) => a.slug.localeCompare(b.slug));
 
-  return NextResponse.json({
+  return Response.json({
     baseUrl: 'https://www.marigold-ui.io',
     pages: entries,
   });
