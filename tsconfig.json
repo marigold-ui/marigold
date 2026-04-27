@@ -10,6 +10,7 @@
     },
     "types": ["vitest/globals"]
   },
+  "include": ["**/*", "docs/app/.well-known/**/*"],
   "exclude": [
     "coverage/*",
     "**/node_modules/*",
