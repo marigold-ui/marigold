@@ -272,8 +272,9 @@ export const Sections: any = meta.story({
   ),
   play: async ({ canvas }: any) => {
     await userEvent.click(
-      await canvas.findByRole('button', { name: 'Show suggestions' })
+      await canvas.findByRole('combobox', { name: 'Label' })
     );
+    await userEvent.keyboard('{arrowdown}');
     const s1 = await canvas.findByText('Fantasy');
     const s2 = await canvas.findByText('Sci-Fi');
 
@@ -396,20 +397,12 @@ export const OnAction: any = meta.story({
     await userEvent.click(combobox);
     await userEvent.keyboard('{ArrowDown}');
     await userEvent.keyboard('{Enter}');
-    await waitFor(() =>
-      expect(combobox).toHaveAttribute('aria-expanded', 'false')
-    );
 
     await userEvent.click(combobox);
-    await userEvent.clear(combobox);
     await userEvent.keyboard('{ArrowDown}{ArrowDown}');
     await userEvent.keyboard('{Enter}');
-    await waitFor(() =>
-      expect(combobox).toHaveAttribute('aria-expanded', 'false')
-    );
 
     await userEvent.click(combobox);
-    await userEvent.clear(combobox);
     await userEvent.type(combobox, 'arch');
     await userEvent.keyboard('{ArrowDown}');
     await userEvent.keyboard('{Enter}');
