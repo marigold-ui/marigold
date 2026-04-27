@@ -89,7 +89,7 @@ The label, description, and order of each row decide whether the list reads at a
 
 Sometimes users need to pick several options and see what they picked at a glance. A [multi-select `<Select>`](/components/form/select#multiselection) truncates as picks pile up. `<SelectList>` keeps every option and every checkmark on screen. That's the right trade when the selection itself matters as much as the choosing: which payment methods accept checkout traffic, which channels deliver a given notification, which features ship in a plan.
 
-Set `selectionMode="multiple"` to switch the list to checkboxes. This is also the moment per-row actions earn their space, since the row is no longer the only thing competing for the tap.
+Set `selectionMode="multiple"` to switch the list to checkboxes.
 
 <ComponentDemo name="selectlist-multiple-selection" />
 
@@ -113,15 +113,46 @@ When the picker doubles as a settings form, the row is the natural home for per-
 
 <ComponentDemo name="selectlist-configuration" />
 
-Be careful with mutations on the underlying record. "Edit" and "Remove" on a saved payment method might feel useful at checkout, but they break form flow when they require a confirmation dialog or a network call mid-submission. When management is its own job, give it its own surface: a separate page or panel where users come to manage saved records, not to pick one for the current form.
+When management is its own job, give it its own surface: a separate page or panel where users come to manage saved records, not to pick one for the current form.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep it to one action per row, and group multiples inside a single action
+      menu rather than placing icons side by side.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't pair management actions like Edit or Remove with form selection.
+      Mutating the underlying record mid-form breaks the flow with confirmation
+      dialogs or network calls.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Horizontal orientation
 
 A vertical stack of three or four short options claims a column the form doesn't need. Flowing those options left to right keeps the whole comparison in one row, and the surface only takes the width it needs. Reach for it on peer-level choices that fit on one line, like a shipping speed at checkout, a date range on an analytics view, or a sort order on a list.
 
-Set `orientation="horizontal"` to switch the layout. Skip it for long lists, rich rows, or narrow viewports: a side-by-side layout with options scrolled out of view is the worst of both shapes.
+Set `orientation="horizontal"` to switch the layout.
 
 <ComponentDemo name="selectlist-horizontal" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use horizontal for short, peer-level choices that fit on one line, like a
+      shipping speed or a sort order.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use horizontal for long lists, rich rows, or narrow viewports.
+      Options scrolled out of view is the worst of both shapes.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Empty state
 
@@ -180,6 +211,7 @@ For rows with rich content like a wrapped label, a logo, or a trailing action, s
 - [Radio](/components/form/radio): Use for a small set of mutually exclusive, text-only choices where a description per option is not needed.
 - [Checkbox](/components/form/checkbox): Use for a small set of independent boolean options where each option is a short label.
 - [Select](/components/form/select): Use when the list is long, options are single-line, and saving vertical space matters more than seeing every option at once.
+- [Combobox](/components/form/combobox): Use for long lists where typing narrows results faster than scanning.
 - [TagField](/components/form/tag-field): Use for multi-select with search, where users add and remove choices as tags.
 - [Table](/components/collection/table): Use when each row is a record with multiple columns of structured data, not a selectable choice.
 
