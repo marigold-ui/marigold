@@ -29,4 +29,6 @@ The 12 retained custom icons (no Lucide equivalent) live under `src/custom/`:
 
 They now accept `LucideProps` (`size`, `color`, `strokeWidth`, `className`, `ref`) instead of the previous `SVGProps`. The `size` prop now renders as `width="24"` (numeric) instead of `"24px"`.
 
+Style icons via Tailwind utilities on `className` (e.g. `<TriangleAlert className="text-warning" />`) rather than the `color` prop. Lucide reads `color` as a literal CSS color value, so theme tokens like `"warning"` won't resolve there; icons inherit `currentColor` and pick up any `text-*` utility you apply.
+
 The peer dependency range has been narrowed to `react: >=19.0.0` (custom icons rely on React 19's ref-as-prop).
