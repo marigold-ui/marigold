@@ -1,6 +1,7 @@
 ---
 '@marigold/components': major
 '@marigold/theme-rui': minor
+'@marigold/docs': patch
 ---
 
 feat(SelectList)!: standardized API, item layout, and visual distinction from ListBox (DST-1076)
@@ -21,6 +22,10 @@ feat(SelectList)!: standardized API, item layout, and visual distinction from Li
 - **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
 - **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
 - **Own theme entry** — `SelectList` ships a dedicated theme component. The theme exposes first-class `label`, `description`, and `action` entries; slot styling no longer uses descendant selectors. Consumers with custom themes must add or update a `SelectList` entry.
+
+**Documentation**
+
+The SelectList docs page is rewritten around the new API. Adds an anatomy diagram, a decision table for choosing between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions (decision-help and configuration patterns), horizontal orientation, and empty state. Replaces selected prose with Do/Don't tiles. Tightens the accessibility section to what's specific to SelectList (keyboard model, label requirement, `textValue` for rich rows).
 
 **Migration**
 
