@@ -108,6 +108,33 @@ Basic.test(
   }
 );
 
+export const TitleOnlyWithoutHeader = meta.story({
+  args: { children: null as never },
+  tags: ['component-test'],
+  render: args => (
+    <Panel {...args}>
+      <Panel.Title>Quick Settings</Panel.Title>
+      <Panel.Content>
+        <Stack space="regular">
+          <TextField label="Display name" defaultValue="Marigold Events" />
+        </Stack>
+      </Panel.Content>
+    </Panel>
+  ),
+});
+
+TitleOnlyWithoutHeader.test(
+  'renders a labelled region without a Panel.Header wrapper',
+  async ({ canvas }) => {
+    const title = canvas.getByRole('heading', { name: 'Quick Settings' });
+    const region = canvas.getByRole('region', { name: 'Quick Settings' });
+
+    expect(title.tagName).toBe('H2');
+    expect(region.getAttribute('aria-labelledby')).toBe(title.id);
+    expect(title.closest('[data-panel-header]')).toBeNull();
+  }
+);
+
 export const WithHeaderActions = meta.story(() => (
   <Stack space="section">
     <Panel>

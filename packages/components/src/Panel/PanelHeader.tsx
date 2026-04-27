@@ -15,6 +15,7 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
 
   return (
     <div
+      data-panel-header
       className={cn(
         "grid grid-cols-[1fr_auto] [grid-template-areas:'title_actions'_'description_actions']",
         'px-(--panel-px)',
