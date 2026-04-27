@@ -32,10 +32,10 @@ A `<SelectList>` is a labeled container holding a stack of `<SelectList.Option>`
 
 `<SelectList>` has two variants. They handle two different framings of the same choice: rows in a continuous list, or peer cards to commit to.
 
-| Variant    | Description                                         | When to use                                                                        |
-| ---------- | --------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `default`  | A single surface with dividers between rows.        | Picking from a defined set inside a form. Reads as one continuous list.            |
-| `bordered` | Each row is its own outlined card with a small gap. | Commit-level, peer-to-peer choices like plans, payment methods, or shipping modes. |
+| Variant    | Description                                         | When to use                                                                                              |
+| ---------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `default`  | A single surface with dividers between rows.        | Reads as one continuous list of entries. Default choice. Scans faster on longer lists.                   |
+| `bordered` | Each row is its own outlined card with a small gap. | Commit-level, peer-to-peer choices like plans, payment methods, or shipping modes. Avoid for long lists. |
 
 ## Usage
 
@@ -45,54 +45,44 @@ Use `<SelectList>` when comparison is the point of the field, not when it is one
 
 ### Number of options
 
-The right control depends on list length and how much vertical space the field can take. `<SelectList>` earns its space when comparing options side by side or hosting per-row actions matters; `<Select>` keeps the field compact by hiding the same kind of rich row (label, description, icon, avatar) behind a trigger.
+The right control depends on list length and how much space the field can take. `<SelectList>` earns its space when comparing options side by side or hosting per-row actions matters. For shorter lists of plain choices, longer lists, or when space is tight, a lighter control fits better. The table below maps common situations to the control that fits.
 
-| When                                                         | Use                                                                                     |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| Short list of plain text choices (3–5 items)                 | `<Radio.Group>` (single) or `<Checkbox.Group>` (multiple)                               |
-| Each option needs decision-relevant context (up to 10 items) | `<SelectList>`                                                                          |
-| Space is limited, with or without rich rows (5–15 items)     | [`<Select>`](/components/form/select) (single or multiple)                              |
-| More than ~15 options, or users need to search               | [`<Combobox>`](/components/form/combobox) or [`<TagField>`](/components/form/tag-field) |
+| When                                                         | Use                                                                                                              |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Short list of plain text choices (3–5 items)                 | [`<Radio.Group>`](/components/form/radio) (single) or [`<Checkbox.Group>`](/components/form/checkbox) (multiple) |
+| Each option needs decision-relevant context (up to 10 items) | `<SelectList>`                                                                                                   |
+| Space is limited, with or without rich rows (5–15 items)     | [`<Select>`](/components/form/select) (single or multiple)                                                       |
+| More than ~15 options, or users need to search               | [`<Combobox>`](/components/form/combobox) or [`<TagField>`](/components/form/tag-field)                          |
 
-### Per-row actions
+### Multiselection
 
-A per-row action is the small button or menu on the trailing edge of an option, separate from the row's selection target. It earns its space when it helps the user finish the form, not when it invites a side quest. Two patterns hold up:
+Sometimes users need to pick several options and see what they picked at a glance. A [multi-select `<Select>`](/components/form/select#multiselection) truncates as picks pile up. `<SelectList>` keeps every option and every checkmark on screen. That's the right trade when the selection itself matters as much as the choosing: which payment methods accept checkout traffic, which channels deliver a given notification, which features ship in a plan.
 
-- **Decision-help.** The action gives the user the context they need to commit, without leaving the form. A "View details" button on a saved card shows the billing address and expiry. A "Preview" button on an email template opens a side panel with the rendered output. A "Show on map" pin disambiguates pickup locations with similar names. The action removes the need to navigate away to make an informed choice.
-- **Settings-form configuration.** When the picker doubles as a settings form, the row is the natural home for per-item configuration. Examples: choosing which payment methods accept checkout traffic, with a "Configure" menu per method to set fees and currencies; choosing which channels deliver a given notification, with a "Customize" menu per channel to set frequency and quiet hours. The form submits which items are active, the row menu configures how each behaves.
-
-Be careful with mutations on the underlying record. "Edit" and "Remove" on a saved payment method might feel useful at checkout, but they break form flow when they require a confirmation dialog or a network call mid-submission. When management is its own job, give it its own surface: a separate page or panel where users come to manage saved records, not to pick one for the current form.
-
-### Single vs multiple selection
-
-A `<SelectList>` defaults to single selection. Each row renders a radio circle, and selecting one row replaces the previous selection. Like a `<Radio.Group>`, the user cannot clear the selection by clicking the active row again.
-
-When several options can be active at once, set `selectionMode="multiple"`. Rows render checkboxes and toggle independently. This is also the natural moment for per-row actions: drop an `<IconButton>` or `<ActionMenu>` into a `<SelectList.Option>` and it sits on the trailing edge of the row. Keep it to one action per row so the row's tap target stays predictable. Clicking the action does not toggle the row.
-
-If a row needs more than one action, group them inside a single `<ActionMenu>` instead of placing two icons side by side.
+Set `selectionMode="multiple"` to switch the list to checkboxes. This is also the moment per-row actions earn their space, since the row is no longer the only thing competing for the tap.
 
 <ComponentDemo name="selectlist-multiple-selection" />
 
-### Bordered variant
+### Per-row actions
 
-A flat list with dividers reads as "pick one of these entries"; bordered cards read as "commit to one of these". When each option represents a commit-level choice, like a plan, a payment method, or a shipping mode, use `variant="bordered"`. Each row becomes its own outlined card with a small gap between cards. The selected card strengthens its border instead of filling, which suits options that should feel like peer choices rather than entries in a continuous list.
+Reach for a per-row action when a row needs context it can't carry on its own, or when the picker doubles as configuration for each item. Without it, users either commit to a choice they don't fully understand or leave the form to look something up, losing their place. Two patterns hold up: actions that help the user **decide** which row to pick, and actions that **configure** the row they're already keeping.
 
-<ComponentDemo name="selectlist-bordered" />
+A per-row action sits on the trailing edge of an option, separate from the selection target. Keep it to one action per row so the row's tap target stays predictable, and group multiples inside a single `<ActionMenu>` rather than placing two icons side by side. Clicking the action does not toggle the row.
 
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use the bordered variant when each option is a self-contained, comparable
-      choice, such as a pricing plan or a payment method.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't use the bordered variant for long lists of entries. The default
-      variant with dividers reads as a continuous list and scans faster.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+#### Decision-help
+
+The action gives the user the context they need to commit, without leaving the form. A "View details" button on a saved card shows the billing address and expiry. A "Preview" button on an email template opens a side panel with the rendered output. A "Show on map" pin disambiguates pickup locations with similar names. The action removes the need to navigate away to make an informed choice.
+
+In the example below, each plan pairs with a `<ContextualHelp>` icon. The summary on the row is enough to scan and pick. The popover covers the long tail of features, limits, and SLA without sending the user to a separate page.
+
+<ComponentDemo name="selectlist-decision-help" />
+
+#### Configuration
+
+When the picker doubles as a settings form, the row is the natural home for per-item configuration. Two examples: a payment-methods picker with a "Configure" menu per row to set fees and currencies, or a notification-channels picker with a "Customize" menu per row to set frequency and quiet hours. The form submits which items are active, the row menu configures how each behaves.
+
+<ComponentDemo name="selectlist-configuration" />
+
+Be careful with mutations on the underlying record. "Edit" and "Remove" on a saved payment method might feel useful at checkout, but they break form flow when they require a confirmation dialog or a network call mid-submission. When management is its own job, give it its own surface: a separate page or panel where users come to manage saved records, not to pick one for the current form.
 
 ### Clearable single selection
 
@@ -107,6 +97,14 @@ For short lists where comparing options side by side makes sense, set `orientati
 Horizontal works best for compact choices like shipping speed or sort order. Avoid it on small viewports, where horizontal scrolling is hard to discover.
 
 <ComponentDemo name="selectlist-horizontal" />
+
+### Working in forms
+
+`<SelectList>` is a form field. Set the `name` prop and the component participates in standard form submission. Single selection submits one value. Multiple selection submits all selected keys under the same name, so `FormData.getAll(name)` returns the full array.
+
+Use `required` to mark the field as required, and `validate` for custom validation logic. When the form is submitted with native validation, errors focus the list automatically.
+
+<ComponentDemo name="selectlist-form" />
 
 ### Empty state
 
@@ -130,22 +128,6 @@ When the list is empty because of an active filter or search, surface a "Clear f
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-### Working in forms
-
-`<SelectList>` is a form field. Set the `name` prop and the component participates in standard form submission. Single selection submits one value; multiple selection submits all selected keys under the same name, so `FormData.getAll(name)` returns the full array.
-
-Use `required` to mark the field as required, and `validate` for custom validation logic. When the form is submitted with native validation, errors focus the list automatically.
-
-<ComponentDemo name="selectlist-form" />
-
-### Disabling options
-
-Two layers of disabling work together. Pass `disabled` on the `<SelectList>` to lock the entire field, for example while another step is still loading. Pass `disabled` on a single `<SelectList.Option>` to remove that one row from selection.
-
-By default, a disabled row is also unfocusable. Set `disabledBehavior="selection"` when you still want users to focus the row to reach its trailing action, for example to open an `<ActionMenu>` and remove a card that cannot currently be selected.
-
-<ComponentDemo name="selectlist-disabledbehavior" />
 
 ### Writing good options
 

@@ -201,7 +201,7 @@ const tickets = [
     name: 'Student ticket',
     price: '€29',
     description:
-      'Discounted entry for full-time students. Bring a valid student ID for entry; tickets cannot be exchanged at the door.',
+      'Discounted entry for full-time students. Bring a valid student ID for entry. tickets cannot be exchanged at the door.',
     Art: StudentArt,
     palette: 'success' as const,
   },
@@ -210,15 +210,16 @@ const tickets = [
     name: 'Press ticket',
     badge: { variant: 'error', label: 'Invitation only' },
     description:
-      'Reserved for accredited press. Pick up your badge at the press desk on arrival; photo ID is required.',
+      'Reserved for accredited press. Pick up your badge at the press desk on arrival. photo ID is required.',
     Art: PressArt,
     palette: 'destructive' as const,
   },
 ];
 
-export default (props: SelectListProps) => (
+export default ({ variant, size }: SelectListProps) => (
   <SelectList
-    {...props}
+    variant={variant}
+    size={size}
     label="Ticket category"
     selectionMode="single"
     defaultSelectedKeys={['standard']}
