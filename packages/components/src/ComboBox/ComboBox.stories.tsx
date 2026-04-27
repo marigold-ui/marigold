@@ -274,7 +274,7 @@ export const Sections: any = meta.story({
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
-    await userEvent.keyboard('{arrowdown}');
+    await userEvent.keyboard('{ArrowDown}');
     const s1 = await canvas.findByText('Fantasy');
     const s2 = await canvas.findByText('Sci-Fi');
 
