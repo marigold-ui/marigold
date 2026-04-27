@@ -1,25 +1,12 @@
 import { parseMdxToMarkdown } from '@/lib/markdown/parser';
-import { source } from '@/lib/source';
 import path from 'node:path';
-import { NextResponse } from 'next/server';
 
 const CONTENT_DIR = path.resolve(process.cwd(), 'content');
 
-/**
- * Parse MDX to markdown at build time (SSG).
- * ComponentDemo sources come from .registry/demos.json (pure data, no Client imports).
- */
-export const dynamic = 'force-static';
-
-export const generateStaticParams = async () => {
-  const params = await source.generateParams();
-
-  return params
-    .filter(param => Array.isArray(param.slug) && param.slug.length > 0)
-    .map(param => ({
-      slug: [...param.slug.slice(0, -1), `${param.slug.at(-1)}.md`],
-    }));
-};
+// `force-static` triggers a Node 22+ undici bug during Next.js prerender:
+// `TypeError: Cannot read private member #state` (undici#4290, node#58814).
+// Skip build-time prerender; the response is cached by the CDN via headers.
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   _request: Request,
@@ -53,5 +40,8 @@ export async function GET(
     }
   }
 
-  return NextResponse.json({ error: 'Page not found' }, { status: 404 });
+  return new Response(JSON.stringify({ error: 'Page not found' }), {
+    status: 404,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+  });
 }
