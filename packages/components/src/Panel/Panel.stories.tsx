@@ -121,27 +121,15 @@ export const TitleOnlyWithoutHeader = meta.story({
       </Panel.Content>
     </Panel>
   ),
-});
-
-TitleOnlyWithoutHeader.test(
-  'renders a labelled region without a Panel.Header wrapper',
-  async ({ canvas }) => {
+  play: async ({ canvas }) => {
     const title = canvas.getByRole('heading', { name: 'Quick Settings' });
     const region = canvas.getByRole('region', { name: 'Quick Settings' });
 
     expect(title.tagName).toBe('H2');
     expect(region.getAttribute('aria-labelledby')).toBe(title.id);
-  }
-);
-
-TitleOnlyWithoutHeader.test(
-  'headerless title is not inside a Panel.Header wrapper',
-  async ({ canvas }) => {
-    const title = canvas.getByRole('heading', { name: 'Quick Settings' });
-
     expect(title.closest('[data-panel-header]')).toBeNull();
-  }
-);
+  },
+});
 
 export const WithHeaderActions = meta.story(() => (
   <Stack space="section">
