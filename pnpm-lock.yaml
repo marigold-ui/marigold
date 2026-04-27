@@ -11772,7 +11772,7 @@ snapshots:
 
   '@react-aria/form@3.2.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@swc/helpers': 0.5.21
+      '@swc/helpers': 0.5.19
       react: 19.2.4
       react-aria: 3.48.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react-dom: 19.2.4(react@19.2.4)
