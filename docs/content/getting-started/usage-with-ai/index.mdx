@@ -14,6 +14,12 @@ Marigold offers an [MCP (Model Context Protocol)](https://modelcontextprotocol.i
 
 The **marigold-docs** MCP server provides semantic search over the full Marigold documentation. To connect it to your AI coding assistant, follow the instructions for your editor.
 
+<Callout variant="warning" title="Reservix only">
+  The marigold-docs MCP server is intended for internal Reservix usage only and
+  requires authentication. On first use, you'll be asked to sign in with your
+  Reservix account through OAuth.
+</Callout>
+
 {/* prettier-ignore-start */}
 
 <Tabs items={['Claude Code', 'VS Code']}>
@@ -68,7 +74,7 @@ The **marigold-docs** MCP server provides semantic search over the full Marigold
 </Tabs>
 {/* prettier-ignore-end */}
 
-### How to use it
+## How to use it
 
 Once the server is connected, your AI agent can query the Marigold documentation automatically. When you ask a question, the agent searches the docs via the MCP server and uses the results to answer you. You can ask direct questions like "What props does Select accept?" or instruct the agent while coding, for example: "Use the marigold-docs MCP to check how I should implement this DatePicker."
 
