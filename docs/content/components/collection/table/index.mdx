@@ -216,6 +216,8 @@ Enable sorting to let users click column headers and dynamically reorder rows by
 
 When users need to make quick edits to individual values without navigating to a separate form, use editable cells. This is particularly effective for small, atomic changes where users need to update a single field across multiple records—like updating product prices, changing task statuses, correcting typos, or adjusting quantities. By allowing edits directly within the table, you keep users in context and reduce friction.
 
+Editable cells always truncate their content, regardless of the table-level `overflow` setting. This ensures consistent alignment with column headers and matches the single-line nature of the editing controls (TextField, Select, NumberField, etc.).
+
 <ComponentDemo name="table-editable" />
 
 <GuidelineTiles>
