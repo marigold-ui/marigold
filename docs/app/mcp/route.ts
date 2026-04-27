@@ -27,15 +27,14 @@ const EMBEDDINGS_FILE = path.join(
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY;
-const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
-
-if (!OIDC_AUTHORITY || !OIDC_CLIENT_ID) {
+if (!process.env.OIDC_AUTHORITY || !process.env.OIDC_CLIENT_ID) {
   throw new Error(
     'Missing OIDC configuration. Set OIDC_AUTHORITY and OIDC_CLIENT_ID.'
   );
 }
 
+const OIDC_AUTHORITY: string = process.env.OIDC_AUTHORITY;
+const OIDC_CLIENT_ID: string = process.env.OIDC_CLIENT_ID;
 const KEYCLOAK_JWKS_URI = `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`;
 
 // ─── Types ───────────────────────────────────────────────────────────────────

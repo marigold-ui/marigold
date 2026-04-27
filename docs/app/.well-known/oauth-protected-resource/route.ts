@@ -11,10 +11,12 @@ if (!OIDC_AUTHORITY) {
   throw new Error('Missing OIDC configuration. Set OIDC_AUTHORITY.');
 }
 
+const authority: string = OIDC_AUTHORITY;
+
 export function GET(req: Request) {
   const resourceUrl = getPublicUrl(req).origin;
   const metadata = generateProtectedResourceMetadata({
-    authServerUrls: [OIDC_AUTHORITY],
+    authServerUrls: [authority],
     resourceUrl,
     additionalMetadata: {
       // Restrict scopes to prevent VS Code from requesting all Keycloak scopes,
