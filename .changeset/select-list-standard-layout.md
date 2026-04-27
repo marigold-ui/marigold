@@ -1,10 +1,10 @@
 ---
-'@marigold/components': major
+'@marigold/components': minor
 '@marigold/theme-rui': minor
 '@marigold/docs': patch
 ---
 
-feat(SelectList)!: standardized API, item layout, and visual distinction from ListBox (DST-1076)
+feat(SelectList): standardized API, item layout, and visual distinction from ListBox (DST-1076)
 
 `<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. This release contains breaking renames and a tightened type surface.
 
