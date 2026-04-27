@@ -1,25 +1,13 @@
 import { parseMdxToMarkdown } from '@/lib/markdown/parser';
-import { source } from '@/lib/source';
 import path from 'node:path';
-import { NextResponse } from 'next/server';
 
 const CONTENT_DIR = path.resolve(process.cwd(), 'content');
 
-/**
- * Parse MDX to markdown at build time (SSG).
- * ComponentDemo sources come from .registry/demos.json (pure data, no Client imports).
- */
-export const dynamic = 'force-static';
-
-export const generateStaticParams = async () => {
-  const params = await source.generateParams();
-
-  return params
-    .filter(param => Array.isArray(param.slug) && param.slug.length > 0)
-    .map(param => ({
-      slug: [...param.slug.slice(0, -1), `${param.slug.at(-1)}.md`],
-    }));
-};
+// `force-static` trips a Node 22+ undici/Next proxy bug
+// ("Cannot read private member #state", undici#4290) during prerender.
+// Run on demand and let the CDN cache via the long-lived Cache-Control
+// header below — same effective behavior as static export.
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   _request: Request,
@@ -53,5 +41,8 @@ export async function GET(
     }
   }
 
-  return NextResponse.json({ error: 'Page not found' }, { status: 404 });
+  return new Response(JSON.stringify({ error: 'Page not found' }), {
+    status: 404,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+  });
 }

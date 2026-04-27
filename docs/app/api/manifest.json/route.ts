@@ -1,7 +1,10 @@
 import { source } from '@/lib/source';
-import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-static';
+// `force-static` trips a Node 22+ undici/Next proxy bug
+// ("Cannot read private member #state", undici#4290) during prerender.
+// Run on demand and let the CDN cache via the long-lived Cache-Control
+// header below — same effective behavior as static export.
+export const dynamic = 'force-dynamic';
 
 const EXCLUDED_PREFIXES = ['releases'];
 const EXCLUDED_SEGMENTS = ['__internal__'];
@@ -30,8 +33,15 @@ export async function GET() {
     })
     .sort((a, b) => a.slug.localeCompare(b.slug));
 
-  return NextResponse.json({
+  const body = JSON.stringify({
     baseUrl: 'https://www.marigold-ui.io',
     pages: entries,
+  });
+
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'public, max-age=31536000, immutable',
+    },
   });
 }
