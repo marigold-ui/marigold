@@ -43,8 +43,7 @@
     "lucide-react": "^1.9.0"
   },
   "peerDependencies": {
-    "react": ">=17.0.0",
-    "react-dom": ">=17.0.0"
+    "react": ">=19.0.0"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
