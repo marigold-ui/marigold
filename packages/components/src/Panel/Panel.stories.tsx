@@ -131,6 +131,14 @@ TitleOnlyWithoutHeader.test(
 
     expect(title.tagName).toBe('H2');
     expect(region.getAttribute('aria-labelledby')).toBe(title.id);
+  }
+);
+
+TitleOnlyWithoutHeader.test(
+  'headerless title is not inside a Panel.Header wrapper',
+  async ({ canvas }) => {
+    const title = canvas.getByRole('heading', { name: 'Quick Settings' });
+
     expect(title.closest('[data-panel-header]')).toBeNull();
   }
 );

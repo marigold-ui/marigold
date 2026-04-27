@@ -6,7 +6,6 @@ import {
   Basic,
   CustomPadding,
   TableInside,
-  TitleOnlyWithoutHeader,
   Variants,
   WithHeaderActions,
 } from './Panel.stories';
@@ -304,26 +303,6 @@ describe('Panel.Content', () => {
     const contentWrapper = table.parentElement!;
 
     expect(contentWrapper.className).not.toContain('px-(--panel-px)');
-  });
-});
-
-describe('Title-only Panel (Panel.Header omitted)', () => {
-  test('renders a labelled region without a Panel.Header wrapper', () => {
-    render(<TitleOnlyWithoutHeader.Component />);
-
-    const title = screen.getByRole('heading', { name: 'Quick Settings' });
-    const region = screen.getByRole('region', { name: 'Quick Settings' });
-
-    expect(title.tagName).toBe('H2');
-    expect(region).toHaveAttribute('aria-labelledby', title.id);
-  });
-
-  test('headerless title is not inside a Panel.Header wrapper', () => {
-    render(<TitleOnlyWithoutHeader.Component />);
-
-    const title = screen.getByRole('heading', { name: 'Quick Settings' });
-
-    expect(title.closest('[data-panel-header]')).toBeNull();
   });
 });
 
