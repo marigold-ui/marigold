@@ -50,11 +50,15 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   item: cva({
     base: [
-      'relative grid items-center gap-x-3',
+      // `items-start` keeps the label/description anchored to the top of their
+      // grid cells, while `content-center` centers the row tracks vertically
+      // when `min-h-*` makes the option taller than its content. The indicator
+      // then sits on the label's first line even when the option content uses
+      // a row-spanning wrapper (e.g. a leading illustration).
+      'relative grid items-start content-center gap-x-3',
       'grid-cols-[auto_1fr_auto]',
       // Row 1 minimum matches the label's line-height (text-sm == 1.25rem) so
-      // the indicator stays aligned with the label's first line even when the
-      // option content uses a row-spanning wrapper (e.g. a leading illustration).
+      // the indicator stays aligned with the label's first line.
       'grid-rows-[minmax(1.25rem,auto)_auto]',
       // Plain-string children inherit the label look without a <Text slot="label">.
       'text-sm font-medium text-foreground outline-none',
@@ -99,6 +103,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     base: 'flex shrink-0 items-center justify-center row-start-1 col-start-1 self-center',
   }),
   action: cva({
-    base: 'row-span-2 row-start-1 col-start-3 flex items-center justify-end',
+    base: 'row-span-2 row-start-1 col-start-3 self-center flex items-center justify-end',
   }),
 };
