@@ -19,15 +19,6 @@ const config = {
   outputFileTracingIncludes: {
     '/mcp': ['./lib/markdown/embeddings.json'],
   },
-  async redirects() {
-    return [
-      {
-        source: '/mcp/:path((?!.*\\.md$).*)',
-        destination: '/mcp/:path.md',
-        permanent: false,
-      },
-    ];
-  },
   async rewrites() {
     return [
       {

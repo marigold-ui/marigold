@@ -29,9 +29,14 @@ const EMBEDDINGS_FILE = path.join(
 
 const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY;
 const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID;
-const KEYCLOAK_JWKS_URI = OIDC_AUTHORITY
-  ? `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`
-  : undefined;
+
+if (!OIDC_AUTHORITY || !OIDC_CLIENT_ID) {
+  throw new Error(
+    'Missing OIDC configuration. Set OIDC_AUTHORITY and OIDC_CLIENT_ID.'
+  );
+}
+
+const KEYCLOAK_JWKS_URI = `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -140,15 +145,13 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 // ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
 
-const jwks = KEYCLOAK_JWKS_URI
-  ? createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI))
-  : null;
+const jwks = createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI));
 
 const verifyToken = async (
   _req: Request,
   bearerToken?: string
 ): Promise<AuthInfo | undefined> => {
-  if (!bearerToken || !jwks) return undefined;
+  if (!bearerToken) return undefined;
 
   try {
     const { payload } = await jwtVerify(bearerToken, jwks, {
@@ -156,10 +159,12 @@ const verifyToken = async (
       audience: OIDC_CLIENT_ID,
     });
 
+    if (!payload.sub) return undefined;
+
     return {
       token: bearerToken,
       scopes: [],
-      clientId: payload.sub ?? 'unknown',
+      clientId: payload.sub,
     };
   } catch (err) {
     console.error('[MCP] JWT verification failed:', err);

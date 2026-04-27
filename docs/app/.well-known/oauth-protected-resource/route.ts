@@ -7,10 +7,14 @@ import { NextResponse } from 'next/server';
 
 const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY;
 
+if (!OIDC_AUTHORITY) {
+  throw new Error('Missing OIDC configuration. Set OIDC_AUTHORITY.');
+}
+
 export function GET(req: Request) {
   const resourceUrl = getPublicUrl(req).origin;
   const metadata = generateProtectedResourceMetadata({
-    authServerUrls: OIDC_AUTHORITY ? [OIDC_AUTHORITY] : [],
+    authServerUrls: [OIDC_AUTHORITY],
     resourceUrl,
     additionalMetadata: {
       // Restrict scopes to prevent VS Code from requesting all Keycloak scopes,
