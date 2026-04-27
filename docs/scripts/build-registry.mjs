@@ -31,6 +31,15 @@ function findDemoFiles(dir, fileList = []) {
   return fileList;
 }
 
+function readDemoSource(fullPath) {
+  try {
+    return fs.readFileSync(fullPath, 'utf8');
+  } catch (err) {
+    console.warn(`⚠️ Could not read file content for ${fullPath}: ${err}`);
+    return '';
+  }
+}
+
 /**
  * Build the registry file
  */
@@ -53,26 +62,21 @@ import dynamic from 'next/dynamic';
 
 export const registry = {`;
 
+  const jsonData = {};
   for (const item of demoFiles) {
     const name = path.basename(item, '.demo.tsx');
     const importPath = item.replace(/\\/g, '/').replace('.tsx', '');
-
-    // Read file contents and inline as source string (useful for code tabs)
-    const fullPath = path.join(rootDir, item);
-    let fileContent = '';
-    try {
-      fileContent = fs.readFileSync(fullPath, 'utf8');
-    } catch (err) {
-      console.warn(`⚠️ Could not read file content for ${fullPath}: ${err}`);
-    }
+    const file = item.replace(/\\/g, '/');
+    const source = readDemoSource(path.join(rootDir, item));
 
     index += `
   '${name}': {
     name: '${name}',
     demo: dynamic(() => import('@/${importPath}')),
-    file: '${item.replace(/\\/g, '/')}',
-    source: ${JSON.stringify(fileContent)},
+    file: '${file}',
+    source: ${JSON.stringify(source)},
   },`;
+    jsonData[name] = { name, file, source };
   }
 
   index += `
@@ -85,32 +89,8 @@ export type RegistryKey = keyof typeof registry;
   const registryFile = path.join(registryDir, 'demos.tsx');
   const jsonFile = path.join(registryDir, 'demos.json');
 
-  // Ensure directory exists
-  if (!fs.existsSync(registryDir)) {
-    fs.mkdirSync(registryDir, { recursive: true });
-  }
-
+  fs.mkdirSync(registryDir, { recursive: true });
   fs.writeFileSync(registryFile, index);
-
-  // Also write JSON with only source data (no dynamic imports)
-  const jsonData = {};
-  for (const item of demoFiles) {
-    const name = path.basename(item, '.demo.tsx');
-    const fullPath = path.join(rootDir, item);
-    let fileContent = '';
-    try {
-      fileContent = fs.readFileSync(fullPath, 'utf8');
-    } catch (err) {
-      console.warn(`Could not read file content for ${fullPath}: ${err}`);
-    }
-
-    jsonData[name] = {
-      name,
-      file: item.replace(/\\/g, '/'),
-      source: fileContent,
-    };
-  }
-
   fs.writeFileSync(jsonFile, JSON.stringify(jsonData, null, 2));
 
   console.log(`✅ Successfully built ${demoFiles.length} registry items!`);
