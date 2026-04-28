@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { expect, userEvent } from 'storybook/test';
+import preview from '.storybook/preview';
 import {
   Copy,
   Download,
@@ -9,10 +12,7 @@ import {
   ScrollText,
   Trash2,
   UserRoundPlus,
-} from 'lucide-react';
-import { useState } from 'react';
-import { expect, userEvent } from 'storybook/test';
-import preview from '.storybook/preview';
+} from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';

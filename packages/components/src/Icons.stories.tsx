@@ -1,16 +1,18 @@
 import type { LucideProps } from 'lucide-react';
-import { Download, Save, Star } from 'lucide-react';
 import preview from '.storybook/preview';
 import {
   DesignTicket,
+  Download,
   Facebook,
   GiftCard,
   Google,
   Instagram,
   PDF,
   Resale,
+  Save,
   Scanner,
   Stadium,
+  Star,
   TicketInsurance,
   Turnstile,
   Twitter,
@@ -57,8 +59,8 @@ const meta = preview.meta({
     fill: {
       control: { type: 'color' },
       description:
-        'Fill color; set to make stroke-based icons filled. Defaults to none.',
-      table: { defaultValue: { summary: 'none' } },
+        'Fill color. Filled custom icons default to `currentColor`; stroke-based icons (Lucide built-ins, Instagram, Twitter) default to `none` and need an explicit value to render filled.',
+      table: { defaultValue: { summary: 'currentColor' } },
     },
     className: { control: false, table: { disable: true } },
     style: { control: false, table: { disable: true } },
