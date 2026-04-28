@@ -54,10 +54,18 @@ Interactive wizard to set up Marigold in an existing project.
 
 ```sh
 marigold init
-marigold init --yes             # skip prompts; auto-detect framework
+marigold init --yes             # skip prompts; accept Tailwind + package install
+marigold init --skip-install    # apply config edits without running the install
 ```
 
-Installs `@marigold/components`, `@marigold/system`, `@marigold/theme-rui`, patches Tailwind config, and wraps the root layout with `MarigoldProvider`.
+Detects Next.js or Vite, then:
+
+1. Installs `@marigold/components`, `@marigold/system`, `@marigold/theme-rui` — and Tailwind v4 + the framework adapter (`@tailwindcss/postcss` for Next.js, `@tailwindcss/vite` for Vite) if Tailwind isn't already present. The Tailwind install is gated behind a confirmation prompt unless `--yes` is passed.
+2. Patches your global CSS (`app/globals.css`, `src/app/globals.css`, `src/index.css`, or `styles/globals.css`) with the required `@import` and `@source` lines — preserving existing rules.
+3. Patches `vite.config.ts` (Vite) or writes `postcss.config.mjs` (Next.js) if missing.
+4. Wraps the root: creates `app/providers.tsx` and wraps `{children}` in `app/layout.tsx` (Next.js), or wraps `<App />` in `src/main.tsx` (Vite).
+
+Edits are idempotent — re-running leaves files untouched. If a file shape can't be recognized, the CLI prints a manual fallback for that step instead of guessing.
 
 ### `marigold telemetry`
 

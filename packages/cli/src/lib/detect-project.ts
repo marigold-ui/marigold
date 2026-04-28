@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export type Framework = 'nextjs' | 'vite' | 'remix' | 'unknown';
+export type Framework = 'nextjs' | 'vite' | 'unknown';
 export type PackageManager = 'pnpm' | 'yarn' | 'npm' | 'bun';
 
 export interface ProjectInfo {
@@ -46,8 +46,6 @@ const detectFramework = (cwd: string): Framework => {
   ) {
     return 'vite';
   }
-  if (firstExisting(cwd, ['remix.config.js', 'remix.config.mjs']))
-    return 'remix';
   return 'unknown';
 };
 
