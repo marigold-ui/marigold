@@ -1,0 +1,194 @@
+---
+title: Iconography
+description: How icons work in Marigold and the catalog of available icons.
+---
+
+Icons in Marigold are built on [Lucide](https://lucide.dev/), with a small set
+of brand-specific icons added on top. For installation and import details see
+the [Icons](/components/content/icons) component page.
+
+## Principles
+
+### Visual language and sizing
+
+Icons follow Lucide's grid: 24×24, 2px stroke, rounded corners. Brand icons
+match the same grid so they sit alongside Lucide icons without standing out.
+Recommended sizes are 16, 20, 24, and 32 pixels — set the size with the `size`
+prop, which accepts a number of pixels.
+
+### Touch targets
+
+Icons by themselves are not large enough to act as tap targets. Wrap an
+interactive icon in `IconButton` or another container with a hit area of at
+least 44×44 px (WCAG 2.5.5). Don't enlarge the icon to meet the target — keep
+the icon at its content size and pad the surrounding control.
+
+### Color and pairing with text
+
+Use foreground and text design tokens for icon color rather than raw hex
+values, so icons inherit the surface they're placed on. Maintain at least 3:1
+contrast against the background for non-text icons (WCAG 1.4.11). When an icon
+is paired with text, align it to the cap-height baseline and use the system
+spacing scale for the gap between icon and label.
+
+### Decorative versus meaningful
+
+Icons paired with a visible label are decorative — mark them `aria-hidden` so
+assistive technology doesn't repeat the label. Icon-only interactive elements
+need an `aria-label` (or a visually hidden text label) that describes the
+action, not the icon.
+
+## Catalog
+
+Click an icon to copy its `<svg>` to the clipboard. To use it from code, see
+the [Icons](/components/content/icons) component page.
+
+### UI
+
+<IconList
+  icons={[
+    'ArrowUp',
+    'ArrowRight',
+    'ArrowDown',
+    'ArrowLeft',
+    'ChevronUp',
+    'ChevronRight',
+    'ChevronDown',
+    'ChevronLeft',
+    'EllipsisVertical',
+    'Check',
+    'Plus',
+    'Minus',
+    'Ellipsis',
+    'Search',
+    'Square',
+    'SquareCheck',
+    'ExternalLink',
+    'Eye',
+    'ListFilter',
+    'Menu',
+    'Trash2',
+    'Circle',
+    'CircleDot',
+  ]}
+/>
+
+### Info
+
+<IconList
+  icons={[
+    'Accessibility',
+    'RefreshCcw',
+    'Ban',
+    'BatteryCharging',
+    'BatteryFull',
+    'BatteryMedium',
+    'BatteryLow',
+    'BusFront',
+    'Calendar',
+    'Camera',
+    'Clock',
+    'SquareArrowUpRight',
+    'Mail',
+    'Calendar1',
+    'TriangleAlert',
+    'MessageSquareMore',
+    'Utensils',
+    'Globe',
+    'House',
+    'Info',
+    'MapPin',
+    'Smartphone',
+    'SignalHigh',
+    'MessageSquareWarning',
+    'CircleParking',
+    'PDF',
+    'Asterisk',
+    'BookOpenText',
+    'Loader',
+    'ThumbsUp',
+    'Truck',
+    'Wifi',
+  ]}
+/>
+
+### Action
+
+<IconList
+  icons={[
+    'CircleX',
+    'Crop',
+    'Download',
+    'Pencil',
+    'SquareArrowOutUpRight',
+    'Bold',
+    'Italic',
+    'ALargeSmall',
+    'Power',
+    'Image',
+    'LocateFixed',
+    'Lock',
+    'LockOpen',
+    'LogOut',
+    'Pause',
+    'Play',
+    'RotateCcw',
+    'Cog',
+    'RotateCw',
+    'Save',
+    'ChevronsUpDown',
+    'ChevronDown',
+    'ChevronUp',
+    'Star',
+    'CircleStop',
+    'Underline',
+    'ZoomIn',
+  ]}
+/>
+
+### Ticketing
+
+<IconList
+  icons={[
+    'BadgePercent',
+    'DesignTicket',
+    'GiftCard',
+    'IdCardLanyard',
+    'Store',
+    'Euro',
+    'Resale',
+    'Scanner',
+    'Armchair',
+    'Tag',
+    'Stadium',
+    'Ticket',
+    'TicketInsurance',
+    'Turnstile',
+  ]}
+/>
+
+### User
+
+<IconList
+  icons={[
+    'UserRound',
+    'UsersRound',
+    'ShoppingCart',
+    'CreditCard',
+    'Laugh',
+    'Smile',
+    'Meh',
+    'Frown',
+    'Angry',
+    'IdCard',
+  ]}
+/>
+
+### Social
+
+<IconList icons={['Facebook', 'Google', 'Instagram', 'Share2', 'Twitter']} />
+
+## More icons
+
+`@marigold/icons` re-exports every icon from `lucide-react`, so any icon listed
+on [lucide.dev](https://lucide.dev/) is available with the same name.

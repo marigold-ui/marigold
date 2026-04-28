@@ -31,6 +31,20 @@ const config = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/foundations/icons',
+        destination: '/foundations/iconography',
+        permanent: true,
+      },
+      {
+        source: '/components/content/icon',
+        destination: '/components/content/icons',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withMDX(config);
