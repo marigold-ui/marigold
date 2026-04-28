@@ -1,10 +1,7 @@
 #!/usr/bin/env tsx
-// Pre-compute the prop-table data consumed by both the React `<AutoTypeTable>`
-// component and the markdown `remarkResolvePropsTable` plugin. One ts-morph
-// pass at build time, output: .registry/props.json.
-//
-// Both consumers read this JSON synchronously at runtime — no ts-morph in the
-// Next.js bundle, no async generator calls per render.
+// Pre-compute prop-table data from all MDX <AutoTypeTable> references and
+// write to .registry/props.json — one ts-morph pass at build time so ts-morph
+// stays out of the Next.js bundle.
 import type { DocEntry } from 'fumadocs-typescript';
 import fs from 'node:fs/promises';
 import path from 'node:path';

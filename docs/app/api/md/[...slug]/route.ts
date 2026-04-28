@@ -1,10 +1,5 @@
-// Route handler for /api/md/<slug>.md — the per-page raw markdown surface
-// for AI agents and tooling. The public URL is /<slug>.md, mapped here by the
-// rewrite in next.config.mjs.
-//
-// Reads files pre-built by scripts/build-md.ts into .registry/md/<slug>.md.
 // `await connection()` opts out of Next.js's static prerender pass to avoid
-// the Node 22+ undici × prerender Proxy bug.
+// the Node 22+ undici × prerender Proxy bug (nodejs/undici#4290).
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
