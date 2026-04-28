@@ -14,6 +14,7 @@ import {
   TicketInsurance,
   Turnstile,
   Twitter,
+  TwitterX,
 } from '@marigold/icons';
 import { Button } from './Button/Button';
 import { Inline } from './Inline/Inline';
@@ -31,6 +32,7 @@ const customIcons = [
   { name: 'TicketInsurance', Icon: TicketInsurance },
   { name: 'Turnstile', Icon: Turnstile },
   { name: 'Twitter', Icon: Twitter },
+  { name: 'TwitterX', Icon: TwitterX },
 ] as const;
 
 const meta = preview.meta({
@@ -76,7 +78,7 @@ export const CustomIcons = meta.story({
           key={name}
           className="flex flex-col items-center gap-2 rounded-md border p-4"
         >
-          <Icon fill="current" {...args} />
+          <Icon fill="currentColor" {...args} />
           <span className="font-mono text-xs">{name}</span>
         </div>
       ))}
@@ -126,6 +128,17 @@ export const Rating = meta.story({
   },
 });
 
+export const DesignTicketWithStar = meta.story({
+  name: 'DesignTicket with Star',
+  args: { size: 32 },
+  render: (args: LucideProps) => (
+    <Inline space={2}>
+      <DesignTicket fill="red" />
+      <Star fill="red" />
+    </Inline>
+  ),
+});
+
 export const SocialLinks = meta.story({
   args: { size: 24 },
   render: (args: LucideProps) => (
@@ -138,6 +151,9 @@ export const SocialLinks = meta.story({
       </a>
       <a href="#" aria-label="Twitter">
         <Twitter {...args} />
+      </a>
+      <a href="#" aria-label="X">
+        <TwitterX {...args} />
       </a>
     </Inline>
   ),
