@@ -1,8 +1,7 @@
 import type { DocEntry } from 'fumadocs-typescript';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import { autoTypeTableTransform } from '../../auto-type-table-transform';
-import { getGenerator, resolveComponentPath } from '../../typescript';
+import { getPropTable } from '../../props-data';
 import { MdxJsxElement, getJsxAttr } from './shared';
 
 const FILTERED_PROPS = new Set(['variant', 'size']);
@@ -49,63 +48,49 @@ const buildTable = (entries: DocEntry[]): Node =>
   }) as unknown as Node;
 
 export function remarkResolvePropsTable() {
-  return async (tree: Node) => {
-    const targets: Array<{
-      node: MdxJsxElement;
-      index: number;
-      parent: Parent;
-    }> = [];
+  return (tree: Node) => {
     visit(
       tree,
       'mdxJsxFlowElement',
-      (node: MdxJsxElement, i, p: Parent | undefined) => {
-        if (node.name === 'AutoTypeTable' && p && i !== undefined) {
-          targets.push({ node, index: i, parent: p });
+      (
+        node: MdxJsxElement,
+        index: number | undefined,
+        parent: Parent | undefined
+      ) => {
+        if (node.name !== 'AutoTypeTable' || !parent || index === undefined)
+          return;
+
+        const pathAttr = getJsxAttr(node, 'path');
+        const nameAttr = getJsxAttr(node, 'name');
+        const pkgAttr = getJsxAttr(node, 'package') as
+          | 'components'
+          | 'system'
+          | undefined;
+
+        const children = parent.children as Node[];
+
+        if (!pathAttr || !nameAttr) {
+          children.splice(index, 1);
+          return;
         }
-      }
-    );
 
-    if (targets.length === 0) return;
-
-    const generator = await getGenerator();
-
-    // Reverse so splice indices stay valid as we mutate parent.children.
-    for (const { node, index, parent } of targets.reverse()) {
-      const pathAttr = getJsxAttr(node, 'path');
-      const nameAttr = getJsxAttr(node, 'name');
-      const pkgAttr = getJsxAttr(node, 'package') as
-        | 'components'
-        | 'system'
-        | undefined;
-
-      if (!pathAttr || !nameAttr) {
-        (parent.children as Node[]).splice(index, 1);
-        continue;
-      }
-
-      try {
-        const filePath = resolveComponentPath({
+        const data = getPropTable({
           path: pathAttr,
-          package: pkgAttr,
+          name: nameAttr,
+          package: pkgAttr ?? 'components',
         });
-        const docs = await generator.generateTypeTable(
-          { path: filePath, name: nameAttr },
-          { transform: autoTypeTableTransform }
-        );
-        const entries = docs
-          .flatMap(d => d.entries)
+
+        const entries = (data?.entries ?? [])
           .filter(entry => !FILTERED_PROPS.has(entry.name))
           .sort((a, b) => a.name.localeCompare(b.name));
 
         if (entries.length === 0) {
-          (parent.children as Node[]).splice(index, 1);
-          continue;
+          children.splice(index, 1);
+          return;
         }
 
-        (parent.children as Node[])[index] = buildTable(entries);
-      } catch {
-        (parent.children as Node[]).splice(index, 1);
+        children[index] = buildTable(entries);
       }
-    }
+    );
   };
 }

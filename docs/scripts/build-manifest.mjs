@@ -1,9 +1,7 @@
 #!/usr/bin/env node
-// Generate the docs page manifest as a static file at public/md/manifest.json.
-// Replaces an app/api/manifest.json/route.ts handler that hit a Node 22+
-// undici proxy bug ("Cannot read private member #state") during Next.js
-// `force-static` prerender. Serving the manifest as a plain static asset
-// sidesteps the prerender path entirely.
+// Build the docs page manifest into .registry/manifest.json. Served at request
+// time by app/manifest.json/route.ts (which uses `await connection()` to opt
+// out of Next.js's prerender Proxy and the Node 22+ undici #state bug).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const contentDir = path.join(rootDir, 'content');
-const outFile = path.join(rootDir, 'public', 'md', 'manifest.json');
+const outFile = path.join(rootDir, '.registry', 'manifest.json');
 
 const BASE_URL = 'https://www.marigold-ui.io';
 const EXCLUDED_PREFIXES = ['releases'];

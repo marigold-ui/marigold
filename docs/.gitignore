@@ -5,12 +5,6 @@
 .source
 .registry
 app/mcp/out
-public/components
-public/foundations
-public/getting-started
-public/patterns
-public/releases
-public/md
 
 # test & build
 /coverage
