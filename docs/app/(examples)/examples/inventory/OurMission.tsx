@@ -2,9 +2,7 @@ import { Columns, Panel, Stack, Text } from '@marigold/components';
 
 export const OurMission = () => (
   <Panel>
-    <Panel.Header>
-      <Panel.Title>Our Mission</Panel.Title>
-    </Panel.Header>
+    <Panel.Title>Our Mission</Panel.Title>
     <Panel.Content>
       <Columns columns={[2, 1]} space={20} collapseAt="1000px">
         <Stack space={4}>
