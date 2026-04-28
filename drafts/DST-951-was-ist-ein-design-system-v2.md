@@ -68,36 +68,36 @@ Konsistenz nach außen, Beweglichkeit nach innen. Beides aus derselben Quelle.
 
 ### 2. Schneller von der Idee zum Feature
 
-Wenn jedes Produktteam seine eigenen Tabellen, Tabs und Toast-Meldungen entwerfen müsste, hätten wir am Ende ein halbes Dutzend leicht unterschiedlicher Versionen davon, von denen mindestens die Hälfte mit der Tastatur nicht bedienbar wäre. Mit einem Design System steht die Komponente einmal bereit, wird einmal sauber gemacht, einmal getestet, einmal barrierefrei gebaut, und alle Produkte greifen darauf zurück.
+Wenn jedes Produktteam seine eigenen Tabellen, Tabs und Toast-Meldungen entwerfen müsste, hätten wir am Ende ein halbes Dutzend leicht unterschiedlicher Versionen davon, von denen mindestens die Hälfte mit der Tastatur nicht bedienbar wäre. Mit einem Design System steht die Komponente einmal bereit, wird einmal sauber umgesetzt, einmal getestet, einmal barrierefrei gebaut, und alle Produkte greifen darauf zurück.
 
-Das verkürzt nicht nur die Zeit, die Design und Entwicklung für eine Funktion brauchen. Es verkürzt auch die Zeit, die zwischen einer ersten Idee und einem zeigbaren Prototyp liegt. Aus „Wir bräuchten bis Donnerstag mal etwas, das wir dem Kunden zeigen können" wird ein konkretes Vorgehen, weil die Komponenten schon da sind.
+Das verkürzt nicht nur die Zeit, die Design und Entwicklung für eine Funktion brauchen. Es verkürzt auch die Zeit, die zwischen einer ersten Idee und einem zeigbaren Prototyp liegt. Aus „Lass uns mal sehen, wie das aussehen könnte" wird ein konkretes Vorgehen, weil die Komponenten schon da sind.
 
 ### 3. Qualität und Vertrauen, eingebaut
 
-Das ist der unterschätzte Vorteil. Ein Design System ist nicht nur ein hübsches Set an Bausteinen. Es ist auch der Ort, an dem wir einmal richtig gut nachdenken über Dinge, die wir sonst dreißigmal halb gut machen würden. Über Barrierefreiheit. Über Tastaturbedienung. Über die Frage, was passiert, wenn das Internet langsam ist oder eine Eingabe scheitert. Über Detailfragen, an die am Ende eines hektischen Sprints niemand mehr denkt.
+Das ist der unterschätzte Vorteil. Ein Design System ist nicht nur ein hübsches Set an Bausteinen. Es ist auch der Ort, an dem wir bestimmte Fragen einmal gründlich angehen, statt sie in jedem Produkt aufs Neue nur halb beantworten zu können. Über Barrierefreiheit. Über Tastaturbedienung. Über die Frage, was passiert, wenn das Internet langsam ist oder eine Eingabe scheitert. Über Detailfragen, an die am Ende eines hektischen Sprints niemand mehr denkt.
 
-Diese Arbeit machen wir sauber, gründlich, getestet, und alle Produkte profitieren davon. Das Ergebnis: weniger peinliche Bugs in Demos, weniger Tickets im Support, weniger Sonderlocken, die irgendwann jemand pflegen muss. Und ein Produkt, das auch dann gut aussieht, wenn ein Kunde es im hellen Sonnenlicht auf dem Bahnsteig benutzt.
+Diese Arbeit machen wir sauber, gründlich, getestet, und alle Produkte profitieren davon. Das Ergebnis: weniger sichtbare Bugs in Demos, weniger Tickets im Support, weniger Sonderlocken, die irgendwann jemand pflegen muss. Und ein Produkt, das auch dann gut aussieht, wenn ein Kunde es im hellen Sonnenlicht auf dem Bahnsteig benutzt.
 
 ### 4. Einmal verbessern, überall wirken
 
 Wir sind nicht (mehr) nur ein einziges Produkt. B2B, demnächst auch verstärkt B2C, mehrere Marken, mehrere Oberflächen. Jedes davon eigenständig zu pflegen wäre teuer und dazu verurteilt, im Lauf der Jahre auseinanderzudriften.
 
-Ein gemeinsames Design System dreht diese Mathematik um. Eine Verbesserung an einer Komponente wirkt sich automatisch in allen Produkten aus. Eine neue Markenanforderung wird einmal eingebaut, nicht in jedem Produkt einzeln nachgepflegt. Eine Lücke in der Tastaturbedienung wird einmal geschlossen. Überall.
+Ein gemeinsames Design System dreht diese Rechnung um. Eine Verbesserung an einer Komponente wirkt sich automatisch in allen Produkten aus. Eine neue Markenanforderung wird einmal eingebaut, nicht in jedem Produkt einzeln nachgepflegt. Eine Lücke in der Tastaturbedienung wird einmal geschlossen. Überall.
 
 Deshalb lohnt sich die Investition. Sie zahlt sich nicht im ersten Quartal aus, aber jedes Mal, wenn wir etwas Neues bauen, fangen wir nicht bei null an.
 
-## Und natürlich: Design Systems sind perfekt für KI
+## Und natürlich: Design Systeme sind perfekt für KI
 
-Es lohnt sich, dem Ganzen einen kurzen Blick durch die KI-Brille zu gönnen, weil das Thema ohnehin gerade alle bei uns beschäftigt, vom Sales-Pitch bis zur Produkt-Roadmap.
+Es lohnt sich, dem Ganzen einen kurzen Blick durch die KI-Brille zu gönnen, weil das Thema ohnehin gerade alle bei uns beschäftigt.
 
-**KI erfindet keinen Stil. Sie kopiert, was sie findet.** Wenn ihr ein KI-Tool bittet, „mal eben eine Event-Anlage" zu skizzieren, dann generiert es etwas, das aussieht wie _jeder andere KI-Vorschlag im Internet_. Generisch, beliebig, technisch korrekt und nicht nach Reservix. Mit einem Design System ändert sich das. Die KI bekommt etwas, an dem sie sich orientieren kann, und das Ergebnis sieht und verhält sich nach uns. Klingt selbstverständlich, ist es aber nicht. Ohne Design System fällt KI-generierte Arbeit fast immer auf einen Default zurück, den niemand bei uns ausgewählt hat.
+**KI erfindet keinen Stil. Sie kopiert, was sie findet.** Wenn ihr ein KI-Tool bittet, „mal eben eine Event-Anlage" zu skizzieren, dann generiert es etwas, das aussieht wie _jeder andere KI-Vorschlag im Internet_. Generisch, beliebig, technisch korrekt und nicht nach Reservix. Mit einem Design System ändert sich das. Die KI bekommt etwas, an dem sie sich orientieren kann, und das Ergebnis sieht nach uns aus und fühlt sich auch so an. Klingt selbstverständlich, ist es aber nicht. Ohne Design System fällt KI-generierte Arbeit fast immer auf eine Voreinstellung zurück, die niemand bei uns ausgewählt hat.
 
-**Schnellere Prototypen, weniger Überraschungen.** Der häufigste KI-Anwendungsfall, mit dem die meisten von euch schon Kontakt hatten, ist „in fünf Minuten etwas zusammenklicken, das aussieht wie ein erster Entwurf". Das funktioniert mit Design System spürbar besser. Prototypen, die aus solchen Tools herauskommen, sehen vom ersten Versuch an glaubwürdig und auf Marke aus, statt erst nach drei Korrekturrunden. Das heißt konkret: Eine Sales-Demo lässt sich realistisch aus dem Ärmel schütteln. Eine Idee in der Produktrunde wird sichtbar, ohne dafür ein ganzes Designteam zu binden. Schneller von „könnten wir mal probieren" zu „so wirkt es bei uns".
+**Schnellere Prototypen, weniger Überraschungen.** Der häufigste KI-Anwendungsfall, mit dem einige von euch schon Kontakt hatten, ist „in fünf Minuten etwas zusammenklicken, das aussieht wie ein erster Entwurf". Das funktioniert mit Design System spürbar besser. Prototypen, die aus solchen Tools herauskommen, sehen vom ersten Versuch an glaubwürdig aus und passen zur Marke, statt erst nach drei Korrekturrunden. Das heißt konkret: Eine Sales-Demo lässt sich einfacher aus dem Ärmel schütteln. Eine Idee in der Produktrunde wird sichtbar, ohne dafür ein ganzes Designteam zu binden. Schneller von „könnten wir mal probieren" zu „so wirkt es bei uns".
 
-**Auch unsere KI-Assistenten brauchen die gemeinsame Sprache.** Was für Menschen gilt, gilt eins zu eins für sie. Je besser unser Design System dokumentiert ist, desto besser ist die Hilfe, die wir aus ihnen herausbekommen. Eine KI, die mitliest, was bei uns Standard ist, schreibt von sich aus passende Vorschläge. Und wir verbringen weniger Zeit damit, generische Defaults wegzuräumen. Im besten Fall hilft Marigold den Modellen genauso, wie es euch hilft.
+**Auch unsere KI-Assistenten brauchen die gemeinsame Sprache.** Was für Menschen gilt, gilt eins zu eins für sie. Je besser unser Design System dokumentiert ist, desto besser ist die Hilfe, die wir aus ihnen herausbekommen. Eine KI, die mitliest, was bei uns Standard ist, schreibt von sich aus passende Vorschläge. Und wir verbringen weniger Zeit damit, generische Voreinstellungen wegzuräumen. Im besten Fall hilft Marigold den Modellen genauso, wie es euch hilft.
 
 ## Zum Schluss
 
-Ein Design System ist also nicht unser Logo, nicht ausschließlich Sache der Entwickler:innen, und nie wirklich fertig. Es ist die gemeinsame Grundlage, mit der unsere Produkte aussehen, sich anfühlen und sich weiterentwickeln. Für die Kunden, für die Teams dahinter, für unsere Effizienz und mittlerweile auch für die KI-Assistenten, mit denen wir täglich arbeiten.
+Ein Design System ist also nicht unser Logo, nicht ausschließlich Sache der Entwickler:innen, und nie wirklich fertig. Es ist die gemeinsame Grundlage, die definiert, wie unsere Produkte aussehen, sich anfühlen und sich weiterentwickeln. Für die Kunden, für die Teams dahinter, für unsere Effizienz und mittlerweile auch für die KI-Assistenten, mit denen wir täglich arbeiten.
 
 Wenn ihr neugierig geworden seid: Schaut gerne in unserer [Marigold-Doku](https://www.marigold-ui.io) vorbei oder kommt einfach im Slack-Channel **#design-system** vorbei. Wir freuen uns über Fragen, über Beispiele aus eurem Arbeitsalltag und über fünf neue Antworten darauf, was ein Design System eigentlich ist.
