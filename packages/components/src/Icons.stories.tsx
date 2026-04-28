@@ -78,7 +78,7 @@ export const CustomIcons = meta.story({
           key={name}
           className="flex flex-col items-center gap-2 rounded-md border p-4"
         >
-          <Icon fill="currentColor" {...args} />
+          <Icon {...args} />
           <span className="font-mono text-xs">{name}</span>
         </div>
       ))}
@@ -126,17 +126,6 @@ export const Rating = meta.story({
       </Inline>
     );
   },
-});
-
-export const DesignTicketWithStar = meta.story({
-  name: 'DesignTicket with Star',
-  args: { size: 32 },
-  render: (args: LucideProps) => (
-    <Inline space={2}>
-      <DesignTicket fill="red" />
-      <Star fill="red" />
-    </Inline>
-  ),
 });
 
 export const SocialLinks = meta.story({
