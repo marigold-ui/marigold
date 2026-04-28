@@ -21,16 +21,50 @@ import {
 } from '@marigold/icons';
 ```
 
-The 13 retained custom icons (no Lucide equivalent) live under `src/custom/`:
+## Using icons
 
-- **Ticketing**: DesignTicket, GiftCard, Resale, Scanner, Stadium, TicketInsurance, Turnstile
-- **Info**: PDF
-- **Social**: Facebook, Google, Instagram, Twitter, TwitterX
+Always import from `@marigold/icons` (not directly from `lucide-react`). The package re-exports the entire Lucide catalogue plus the 13 retained custom icons:
 
-Custom icons are built on top of Lucide's `createLucideIcon`, so they share the same API and runtime behavior as the re-exported Lucide icons: same `LucideProps` shape (`size`, `color`, `strokeWidth`, `className`, `ref`), support for `<LucideProvider>` context, and an auto `aria-hidden="true"` when no children or a11y props are supplied. The `size` prop now renders as `width="24"` (numeric) instead of `"24px"`.
+```tsx
+import { Search, DesignTicket, Stadium } from '@marigold/icons';
+```
 
-Filled custom icons (everything except Instagram and Twitter, which are stroke-based outlines) are wrapped with a small `createFilledIcon` helper that defaults `fill` and `stroke` to `currentColor` and couples the `color`, `fill`, and `stroke` props so they move together. This is a slight deviation from Lucide's stock `color` → `stroke` mapping: passing `color="red"` or `fill="red"` to a filled custom icon updates both fill and stroke; pass `stroke` explicitly to differentiate them. Stroke-based outline icons (Instagram, Twitter) keep Lucide's standard `color` → `stroke` behavior.
+Pass `size` and `strokeWidth` as props. `size` is now serialized as a numeric attribute (`width="24"`) instead of `"24px"`:
 
-Style icons via Tailwind utilities on `className` (e.g. `<TriangleAlert className="text-warning" />`) rather than the `color` prop. Lucide reads `color` as a literal CSS color value, so theme tokens like `"warning"` won't resolve there; icons inherit `currentColor` and pick up any `text-*` utility you apply.
+```tsx
+<Search size={20} strokeWidth={1.5} />
+```
 
-The peer dependency range has been narrowed to `react: >=19.0.0` (custom icons rely on React 19's ref-as-prop).
+### Coloring
+
+Style with Tailwind text utilities — icons inherit `currentColor`, so any `text-*` color (including theme tokens) flows through:
+
+```tsx
+<TriangleAlert className="text-warning-accent" />
+<DesignTicket className="text-primary-700" />
+```
+
+Avoid the `color` prop for theme tokens (Lucide reads it as a literal CSS color value, so `"warning"` won't resolve). Reserve `color`/`fill`/`stroke` for literal values like `var(--color-...)` or hex codes.
+
+### Custom icons (filled vs. outline)
+
+11 of the 13 customs are filled silhouettes wrapped with a small helper that defaults `fill` and `stroke` to `currentColor` and couples the `color`, `fill`, and `stroke` props so they move together. Pass `stroke` explicitly to differentiate:
+
+```tsx
+<DesignTicket fill="var(--color-destructive-accent)" />
+<DesignTicket
+  fill="var(--color-destructive-accent)"
+  stroke="var(--color-info-accent)"
+/>
+```
+
+`Instagram` and `Twitter` are stroke-based outlines and follow Lucide's standard `color` → `stroke` behavior.
+
+### Accessibility
+
+Icons get `aria-hidden="true"` automatically when rendered without children or an `aria-*` attribute. Provide `aria-label` for standalone meaningful icons.
+
+## Other changes
+
+- Custom icons share `LucideProps`, `<LucideProvider>` context, and ref forwarding with the re-exports.
+- Peer dependency narrowed to `react: >=19.0.0` (custom icons rely on React 19's ref-as-prop).
