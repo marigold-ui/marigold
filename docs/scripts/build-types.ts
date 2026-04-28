@@ -12,12 +12,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const REPO_ROOT = path.resolve(rootDir, '..');
 const TSCONFIG_PATH = path.join(REPO_ROOT, 'tsconfig.json');
-const CACHE_DIR = path.join(
-  rootDir,
-  '.registry',
-  '.cache',
-  'fumadocs-typescript'
-);
+// Cache lives under .next/cache/ so Vercel preserves it across deploys.
+// `.registry/` is gitignored and wiped on each build → would always be cold.
+const CACHE_DIR = path.join(rootDir, '.next', 'cache', 'fumadocs-typescript');
 const OUT_FILE = path.join(rootDir, '.registry', 'props.json');
 const CONTENT_DIR = path.join(rootDir, 'content');
 
