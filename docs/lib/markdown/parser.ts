@@ -11,7 +11,6 @@ import {
   remarkResolveAppearanceDemo,
   remarkResolveAppearanceTable,
   remarkResolveComponentDemo,
-  remarkResolveDesignTokens,
   remarkResolvePropsTable,
   remarkSimplifyJsx,
 } from './plugins';
@@ -59,7 +58,6 @@ export async function parseMdxToMarkdown(
     .use(remarkResolveAppearanceTable, {
       frontmatterTitle: frontmatter.title,
     })
-    .use(remarkResolveDesignTokens)
     .use(remarkSimplifyJsx)
     .use(remarkInjectTitle, frontmatter)
     .use(remarkStringify, {

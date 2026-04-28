@@ -25,10 +25,6 @@ const config = {
         source: '/docs/:path*.mdx',
         destination: '/llms.mdx/docs/:path*',
       },
-      {
-        source: '/:path(.*)\\.md',
-        destination: '/api/md/:path.md',
-      },
     ];
   },
 };

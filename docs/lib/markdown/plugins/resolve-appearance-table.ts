@@ -1,7 +1,7 @@
-import { type Symbol as MorphSymbol, SyntaxKind } from 'ts-morph';
+import { type Symbol as MorphSymbol, type Project, SyntaxKind } from 'ts-morph';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import { getComponentPath, getSharedProject } from './project';
+import { getProject, resolveComponentPath } from '../../typescript';
 import { MdxJsxElement, getJsxAttr } from './shared';
 
 interface AppearanceData {
@@ -10,29 +10,16 @@ interface AppearanceData {
 }
 
 function extractStringLiterals(typeString: string): string[] {
-  const literals: string[] = [];
-  const regex = /['"]([^'"]+)['"]/g;
-  let match;
-  while ((match = regex.exec(typeString)) !== null) {
-    literals.push(match[1]);
-  }
-  return literals;
+  return [...typeString.matchAll(/['"]([^'"]+)['"]/g)].map(m => m[1]);
 }
 
-function getAppearance(name: string): AppearanceData {
+function getAppearance(name: string, proj: Project): AppearanceData {
   try {
-    const componentPath = getComponentPath(name);
-    const proj = getSharedProject();
+    const componentPath = resolveComponentPath({ path: name });
 
-    // Use addSourceFileAtPath to ensure the file is loaded into the project
-    let sourceFile;
-    try {
-      sourceFile =
-        proj.getSourceFile(componentPath) ??
-        proj.addSourceFileAtPath(componentPath);
-    } catch {
-      return { variant: [], size: [] };
-    }
+    const sourceFile =
+      proj.getSourceFile(componentPath) ??
+      proj.addSourceFileAtPath(componentPath);
 
     if (!sourceFile) return { variant: [], size: [] };
 
@@ -40,39 +27,34 @@ function getAppearance(name: string): AppearanceData {
       .getExportedDeclarations()
       .get(`${name}Props`)?.[0];
 
-    if (
-      !exportedDecl ||
-      !exportedDecl.isKind(SyntaxKind.InterfaceDeclaration)
-    ) {
+    if (!exportedDecl?.isKind(SyntaxKind.InterfaceDeclaration)) {
       return { variant: [], size: [] };
     }
 
-    const type = exportedDecl.getType();
-    const props = type.getProperties();
-
     const appearanceData: AppearanceData = { variant: [], size: [] };
 
-    props.forEach((prop: MorphSymbol) => {
-      const propName = prop.getName();
-      if (propName === 'variant' || propName === 'size') {
+    exportedDecl
+      .getType()
+      .getProperties()
+      .forEach((prop: MorphSymbol) => {
+        const propName = prop.getName();
+        if (propName !== 'variant' && propName !== 'size') return;
+
         const typeStr = prop
           .getTypeAtLocation(sourceFile)
           .getText()
           .replace(/\s+/g, ' ');
-        const values = extractStringLiterals(typeStr);
-        if (propName === 'variant') {
-          appearanceData.variant = values;
-        } else {
-          appearanceData.size = values;
-        }
-      }
-    });
+        appearanceData[propName] = extractStringLiterals(typeStr);
+      });
 
     return appearanceData;
   } catch {
     return { variant: [], size: [] };
   }
 }
+
+const toTypeString = (values: string[]) =>
+  values.length > 0 ? values.join(' | ') : '-';
 
 function createTableRow(
   cells: string[],
@@ -102,7 +84,9 @@ export function remarkResolveAppearanceTable(
 ) {
   const { frontmatterTitle } = options;
 
-  return (tree: Node) => {
+  return async (tree: Node) => {
+    const proj = await getProject();
+
     visit(
       tree,
       'mdxJsxFlowElement',
@@ -121,18 +105,10 @@ export function remarkResolveAppearanceTable(
         if (!componentName) return;
 
         const cleanedName = componentName.replace(/^['"]|['"]$/g, '');
+        const componentAppearances = getAppearance(cleanedName, proj);
 
-        const componentAppearances = getAppearance(cleanedName);
-
-        const variantType =
-          componentAppearances.variant.length > 0
-            ? componentAppearances.variant.join(' | ')
-            : '-';
-
-        const sizeType =
-          componentAppearances.size.length > 0
-            ? componentAppearances.size.join(' | ')
-            : '-';
+        const variantType = toTypeString(componentAppearances.variant);
+        const sizeType = toTypeString(componentAppearances.size);
 
         const table: Node = {
           type: 'table',

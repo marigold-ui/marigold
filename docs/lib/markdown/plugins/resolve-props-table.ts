@@ -1,139 +1,111 @@
-import type { Symbol as MorphSymbol, Node as TsMorphNode } from 'ts-morph';
+import type { DocEntry } from 'fumadocs-typescript';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import { getComponentPath, getSharedProject } from './project';
+import { autoTypeTableTransform } from '../../auto-type-table-transform';
+import { getGenerator, resolveComponentPath } from '../../typescript';
 import { MdxJsxElement, getJsxAttr } from './shared';
 
-function simplifyType(typeText: string): string {
-  typeText = typeText.replace(/import\([^)]+\)\./g, '');
+const FILTERED_PROPS = new Set(['variant', 'size']);
 
-  typeText = typeText.replace(/React\./g, '');
-
-  typeText = typeText.replace(/\s*\|\s*undefined$/g, '');
-
-  typeText = typeText.replace(/\s+/g, ' ').trim();
-
-  return typeText;
-}
-
-function decodeHtmlEntities(text: string): string {
-  const entities: Record<string, string> = {
-    amp: '&',
-    lt: '<',
-    gt: '>',
-    quot: '"',
-    apos: "'",
-    '#x27': "'",
-    '#xA': ' ',
-    '#39': "'",
-  };
-
-  // Iteratively decode until stable to avoid double-encoding issues
-  let prev = '';
-  let current = text;
-  while (prev !== current) {
-    prev = current;
-    current = current.replace(
-      /&([a-z#0-9]+);/gi,
-      (match, entity) => entities[entity] || match
-    );
-  }
-  return current;
-}
-
-function cleanDescription(desc: string): string {
-  return decodeHtmlEntities(desc).replace(/\s+/g, ' ').trim();
-}
+const buildTable = (entries: DocEntry[]): Node =>
+  ({
+    type: 'table',
+    align: ['left', 'left', 'left', 'left'],
+    children: [
+      {
+        type: 'tableRow',
+        children: ['Prop', 'Type', 'Default', 'Description'].map(c => ({
+          type: 'tableCell',
+          children: [{ type: 'text', value: c }],
+        })),
+      },
+      ...entries.map(entry => ({
+        type: 'tableRow',
+        children: [
+          {
+            type: 'tableCell',
+            children: [{ type: 'text', value: entry.name }],
+          },
+          {
+            type: 'tableCell',
+            children: [{ type: 'inlineCode', value: entry.simplifiedType }],
+          },
+          {
+            type: 'tableCell',
+            children: [{ type: 'text', value: '-' }],
+          },
+          {
+            type: 'tableCell',
+            children: [
+              {
+                type: 'text',
+                value: entry.description.replace(/\s+/g, ' ').trim(),
+              },
+            ],
+          },
+        ],
+      })),
+    ],
+  }) as unknown as Node;
 
 export function remarkResolvePropsTable() {
-  const proj = getSharedProject();
-
-  return (tree: Node) => {
+  return async (tree: Node) => {
+    const targets: Array<{
+      node: MdxJsxElement;
+      index: number;
+      parent: Parent;
+    }> = [];
     visit(
       tree,
       'mdxJsxFlowElement',
       (node: MdxJsxElement, i, p: Parent | undefined) => {
-        if (node.name !== 'AutoTypeTable' || !p || i === undefined) return;
-
-        const path = getJsxAttr(node, 'path');
-        const name = getJsxAttr(node, 'name');
-        if (!path || !name) return;
-
-        try {
-          const file = getComponentPath(path);
-
-          const sf = proj.getSourceFile(file) ?? proj.addSourceFileAtPath(file);
-          const exports = sf.getExportedDeclarations();
-          const decl = exports.get(name)?.[0];
-
-          let props: MorphSymbol[] = [];
-          if (decl) {
-            const type = decl.getType();
-            props = type.getProperties();
-          }
-
-          if (!props.length) {
-            p.children.splice(i, 1);
-            return;
-          }
-
-          props = props.filter(
-            prop => !['variant', 'size'].includes(prop.getName())
-          );
-
-          props.sort((a, b) => a.getName().localeCompare(b.getName()));
-
-          // remark AST table node has `align` but the base unist Node type doesn't
-          (p.children as Node[])[i] = {
-            type: 'table',
-            align: ['left', 'left', 'left', 'left'],
-            children: [
-              {
-                type: 'tableRow',
-                children: ['Prop', 'Type', 'Default', 'Description'].map(c => ({
-                  type: 'tableCell',
-                  children: [{ type: 'text', value: c }],
-                })),
-              },
-              ...props.map(prop => {
-                const propDecl = prop.getDeclarations()[0] as TsMorphNode & {
-                  getJsDocs?: () => { getDescription(): string }[];
-                };
-                const rawDescription =
-                  propDecl?.getJsDocs?.()[0]?.getDescription() || '';
-                const description = cleanDescription(rawDescription);
-
-                const rawType = prop.getTypeAtLocation(propDecl).getText();
-                const type = simplifyType(rawType);
-
-                return {
-                  type: 'tableRow',
-                  children: [
-                    {
-                      type: 'tableCell',
-                      children: [{ type: 'text', value: prop.getName() }],
-                    },
-                    {
-                      type: 'tableCell',
-                      children: [{ type: 'inlineCode', value: type }],
-                    },
-                    {
-                      type: 'tableCell',
-                      children: [{ type: 'text', value: '-' }],
-                    },
-                    {
-                      type: 'tableCell',
-                      children: [{ type: 'text', value: description }],
-                    },
-                  ],
-                };
-              }),
-            ],
-          } as unknown as Node;
-        } catch {
-          p.children.splice(i, 1);
+        if (node.name === 'AutoTypeTable' && p && i !== undefined) {
+          targets.push({ node, index: i, parent: p });
         }
       }
     );
+
+    if (targets.length === 0) return;
+
+    const generator = await getGenerator();
+
+    // Reverse so splice indices stay valid as we mutate parent.children.
+    for (const { node, index, parent } of targets.reverse()) {
+      const pathAttr = getJsxAttr(node, 'path');
+      const nameAttr = getJsxAttr(node, 'name');
+      const pkgAttr = getJsxAttr(node, 'package') as
+        | 'components'
+        | 'system'
+        | undefined;
+
+      if (!pathAttr || !nameAttr) {
+        (parent.children as Node[]).splice(index, 1);
+        continue;
+      }
+
+      try {
+        const filePath = resolveComponentPath({
+          path: pathAttr,
+          package: pkgAttr,
+        });
+        const docs = await generator.generateTypeTable(
+          { path: filePath, name: nameAttr },
+          { transform: autoTypeTableTransform }
+        );
+        const entries = docs
+          .flatMap(d => d.entries)
+          .filter(entry => !FILTERED_PROPS.has(entry.name))
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        if (entries.length === 0) {
+          (parent.children as Node[]).splice(index, 1);
+          continue;
+        }
+
+        (parent.children as Node[])[index] = buildTable(entries);
+      } catch {
+        (parent.children as Node[]).splice(index, 1);
+      }
+    }
   };
 }
