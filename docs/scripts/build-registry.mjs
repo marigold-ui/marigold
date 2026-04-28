@@ -5,29 +5,18 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 
-/**
- * Recursively find all *.demo.tsx files in a directory
- */
 function findDemoFiles(dir, fileList = []) {
-  const files = fs.readdirSync(dir);
-
-  files.forEach(file => {
-    const filePath = path.join(dir, file);
-    const stat = fs.statSync(filePath);
-
-    if (stat.isDirectory()) {
-      findDemoFiles(filePath, fileList);
-    } else if (file.endsWith('.demo.tsx')) {
-      // Get relative path from rootDir
-      const relativePath = path.relative(rootDir, filePath);
-      fileList.push(relativePath);
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      findDemoFiles(full, fileList);
+    } else if (entry.isFile() && entry.name.endsWith('.demo.tsx')) {
+      fileList.push(path.relative(rootDir, full));
     }
-  });
-
+  }
   return fileList;
 }
 
@@ -40,9 +29,6 @@ function readDemoSource(fullPath) {
   }
 }
 
-/**
- * Build the registry file
- */
 async function buildRegistry() {
   const contentDir = path.join(rootDir, 'content');
 
@@ -92,6 +78,14 @@ export type RegistryKey = keyof typeof registry;
   fs.mkdirSync(registryDir, { recursive: true });
   fs.writeFileSync(registryFile, index);
   fs.writeFileSync(jsonFile, JSON.stringify(jsonData, null, 2));
+
+  // Ensure props.json exists so static JSON imports compile even before the
+  // (heavier) build:types step has run. build:types overwrites this with
+  // real data when it runs.
+  const propsJsonFile = path.join(registryDir, 'props.json');
+  if (!fs.existsSync(propsJsonFile)) {
+    fs.writeFileSync(propsJsonFile, '{}');
+  }
 
   console.log(`✅ Successfully built ${demoFiles.length} registry items!`);
   console.log(`📝 Registry file: ${registryFile}\n`);
