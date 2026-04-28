@@ -5,13 +5,17 @@ export default () => {
   const currentTheme = useTheme();
   const theme = extendTheme(
     {
-      Card: cva({ base: 'text-text-base bg-slate-200' }),
+      Card: {
+        container: cva({ base: 'bg-slate-200' }),
+      },
     },
     currentTheme
   );
   return (
     <MarigoldProvider theme={theme}>
-      <Card>Some content</Card>
+      <Card>
+        <Card.Body>Some content</Card.Body>
+      </Card>
     </MarigoldProvider>
   );
 };
