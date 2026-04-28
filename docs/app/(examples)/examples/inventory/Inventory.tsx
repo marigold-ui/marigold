@@ -117,49 +117,53 @@ export const Inventory = () => (
             </Inline>
           </Stack>
           <Stack space={6}>
-            <Card space={6} stretch>
-              <Inline noWrap space={5}>
-                <img
-                  src={venue.image}
-                  alt=""
-                  className="aspect-square size-16 rounded-xl object-cover"
-                />
-                <Stack>
-                  <Headline level="4">{venue.name}</Headline>
-                  <Text variant="muted" fontSize="sm" weight="light">
-                    {venue.city}, {venue.country}
-                  </Text>
-                </Stack>
-              </Inline>
-              <Columns columns={['fit', 1]} space={4}>
-                <Stack alignX="right" space={1}>
-                  <Text fontSize="sm" weight="semibold">
-                    Capacity:
-                  </Text>
-                  <Text fontSize="sm" weight="semibold">
-                    Price:
-                  </Text>
-                  <Text fontSize="sm" weight="semibold">
-                    Amenities:
-                  </Text>
-                </Stack>
-                <Stack space={1}>
-                  <Text fontSize="sm">{venue.capacity}</Text>
-                  <Text fontSize="sm">
-                    <NumericFormat
-                      value={[venue.price.from, venue.price.to]}
-                      style="currency"
-                      currency="EUR"
-                      minimumFractionDigits={0}
-                    />
-                  </Text>
-                  <Text fontSize="sm">
-                    {venue.amenities
-                      .map(amenity => amenitiesOptions[amenity])
-                      .join(', ')}
-                  </Text>
-                </Stack>
-              </Columns>
+            <Card stretch>
+              <Card.Header>
+                <Inline noWrap space={5}>
+                  <img
+                    src={venue.image}
+                    alt=""
+                    className="aspect-square size-16 rounded-xl object-cover"
+                  />
+                  <Stack>
+                    <Headline level="4">{venue.name}</Headline>
+                    <Text variant="muted" fontSize="sm" weight="light">
+                      {venue.city}, {venue.country}
+                    </Text>
+                  </Stack>
+                </Inline>
+              </Card.Header>
+              <Card.Body>
+                <Columns columns={['fit', 1]} space={4}>
+                  <Stack alignX="right" space={1}>
+                    <Text fontSize="sm" weight="semibold">
+                      Capacity:
+                    </Text>
+                    <Text fontSize="sm" weight="semibold">
+                      Price:
+                    </Text>
+                    <Text fontSize="sm" weight="semibold">
+                      Amenities:
+                    </Text>
+                  </Stack>
+                  <Stack space={1}>
+                    <Text fontSize="sm">{venue.capacity}</Text>
+                    <Text fontSize="sm">
+                      <NumericFormat
+                        value={[venue.price.from, venue.price.to]}
+                        style="currency"
+                        currency="EUR"
+                        minimumFractionDigits={0}
+                      />
+                    </Text>
+                    <Text fontSize="sm">
+                      {venue.amenities
+                        .map(amenity => amenitiesOptions[amenity])
+                        .join(', ')}
+                    </Text>
+                  </Stack>
+                </Columns>
+              </Card.Body>
             </Card>
             <Inline space={2}>
               <Badge>basic</Badge>
