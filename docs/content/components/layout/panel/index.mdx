@@ -113,6 +113,14 @@ The title is how a user finds this section when they scan the page. Aim for a sh
 
 A description is a single-sentence subtitle directly under the title. Include one when the title alone doesn't tell the user what's at stake, or when the section introduces a concept they may not have seen before. Skip it when the title already says it. A description that restates the heading adds reading weight without adding information.
 
+#### Title-only Panels can drop the header
+
+`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. When a Panel has only a title (no description, no actions) you can place `Panel.Title` as a direct child of `Panel` and skip the wrapper. Accessibility wires up the same way, and the title still aligns with the panel's horizontal padding.
+
+<ComponentDemo name="panel-without-header" />
+
+`Panel.Description` and `Panel.HeaderActions` always sit inside `Panel.Header`. As soon as a Panel needs supporting copy or actions next to its title, reach for the full header.
+
 ### Content
 
 The content area is the body of the Panel. It's deliberately open, and in practice most sections you'll build are one of three shapes:
@@ -246,9 +254,7 @@ If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, fo
 
 ```tsx
 <Panel headingLevel={3}>
-  <Panel.Header>
-    <Panel.Title>…</Panel.Title> {/* renders as <h3> */}
-  </Panel.Header>
+  <Panel.Title>…</Panel.Title> {/* renders as <h3> */}
   <Panel.Collapsible>
     <Panel.CollapsibleHeader>
       <Panel.CollapsibleTitle>… {/* renders as <h4> */}</Panel.CollapsibleTitle>
