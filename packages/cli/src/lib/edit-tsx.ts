@@ -119,7 +119,7 @@ const findRenderArgument = (
   file: AnyNode
 ): { node: AnyNode; parent: AnyNode | null } | null => {
   let found: { node: AnyNode; parent: AnyNode | null } | null = null;
-  walk(file, (n, parent) => {
+  walk(file, n => {
     if (found) return;
     if (n.type !== 'CallExpression') return;
     const callee = n.callee as AnyNode | undefined;

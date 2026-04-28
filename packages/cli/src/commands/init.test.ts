@@ -134,7 +134,7 @@ describe('runInit (integration, skipInstall)', () => {
   it('preserves unrelated content in the layout file', async () => {
     fs.writeFileSync(path.join(dir, 'next.config.mjs'), '');
     fs.mkdirSync(path.join(dir, 'app'), { recursive: true });
-    const original = `// custom banner — keep me\nimport './styles.css';\nimport { Inter } from 'next/font/google';\n\nconst inter = Inter({ subsets: ['latin'] });\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang=\"en\" className={inter.className}>\n      <body>{children}</body>\n    </html>\n  );\n}\n`;
+    const original = `// custom banner — keep me\nimport './styles.css';\nimport { Inter } from 'next/font/google';\n\nconst inter = Inter({ subsets: ['latin'] });\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang="en" className={inter.className}>\n      <body>{children}</body>\n    </html>\n  );\n}\n`;
     fs.writeFileSync(path.join(dir, 'app/layout.tsx'), original);
 
     await runInit({ cwd: dir, yes: true, skipInstall: true });
