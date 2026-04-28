@@ -76,7 +76,7 @@ export const CustomIcons = meta.story({
           key={name}
           className="flex flex-col items-center gap-2 rounded-md border p-4"
         >
-          <Icon {...args} />
+          <Icon fill="current" {...args} />
           <span className="font-mono text-xs">{name}</span>
         </div>
       ))}
