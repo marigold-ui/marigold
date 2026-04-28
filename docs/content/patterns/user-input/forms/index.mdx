@@ -97,14 +97,6 @@ To create a group, wrap the fields with `<Stack space="group">` to add spacing t
 
 <ComponentDemo file="./form-spacing-fields.demo.tsx" mode="preview" />
 
-### Accordions
-
-Accordions can replace regular sections to create collapsible groups of fields. This is useful for optional information or advanced settings that don't need to be visible by default. Ensure required fields remain visible and are not hidden within collapsed sections.
-
-Accordions can also be used _within_ a section to group content. This lets users focus on what matters while still having access to additional options. The demo below shows both patterns.
-
-<ComponentDemo file="./form-accordion.demo.tsx" />
-
 ### Panels
 
 For settings pages and forms with independent sections, use [`<Panel>`](/components/layout/panel/) instead of plain sections. Panels provide a structured container with a header, description, content area, optional collapsible section, and a footer for actions.
@@ -114,6 +106,14 @@ This pattern works well when each section can be saved independently. Wrap the `
 Use `<Panel.Collapsible>` for advanced or rarely-used fields that should be accessible but not visible by default. Unlike accordions, collapsible panel sections are tied to a specific panel and don't compete with other sections for attention.
 
 For destructive actions, use `<Panel variant="destructive">` to visually separate irreversible operations from regular settings.
+
+### Accordions
+
+Accordions can replace regular sections to create collapsible groups of fields. This is useful for optional information or advanced settings that don't need to be visible by default. Ensure required fields remain visible and are not hidden within collapsed sections.
+
+Accordions can also be used _within_ a section to group content. This lets users focus on what matters while still having access to additional options. The demo below shows both patterns.
+
+<ComponentDemo file="./form-accordion.demo.tsx" />
 
 ## Actions
 
@@ -148,18 +148,34 @@ See the [Admin- and Mastermark](/patterns/layout/admin-master-mark) page for the
 
 ## Full demos
 
-### Event form
+Most forms fall into one of two patterns. The demos below show each end-to-end so you can see how the pieces fit together.
 
-A fictional event registration form that puts all of these guidelines together: sections, field types, and actions. Uses a single submit button for the entire form.
+### Data-entry forms
+
+Use when the user is completing a task: creating a thing, signing up, registering, checking out, or editing a single record. Everything submits together, and the user is "done" once they submit.
+
+- One `<Form>` wraps the whole page, or sits inside a `<Panel>` if you want a structured container with a header, description, and footer.
+- Sections are plain headings separated with `<Stack space="group">`.
+- A single primary submit at the bottom (see [Submit placement](#submit-placement)).
+- Optional fields can hide behind an [accordion](#accordions) or a `<Panel.Collapsible>`.
+
+The event registration demo puts these together: sections, field types, and a single submit.
 
 <DemoLinks
   demo="/examples/event-form"
   code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/event-form"
 />
 
-### Settings form
+### Settings forms
 
-A full-page settings form with multiple independent sections, each with its own save action. Uses Panels to structure sections, tabs for navigation, and a danger zone for destructive actions.
+Use for configuration that's edited over time: account preferences, organization defaults, notification rules. Sections are independent, so users can change one thing and save just that.
+
+- Each section is its own `<Panel>` with its own `<Form>` and a save button in `<Panel.Footer>` (see [Panels](#panels)).
+- `<Tabs>` group related panels when settings span multiple topics.
+- `<Panel.Collapsible>` keeps advanced options accessible without cluttering the default view.
+- Destructive actions live in a separate `<Panel variant="destructive">` (a "danger zone") and use `ConfirmationDialog`.
+
+The settings demo shows the full pattern with tabs, panels, and a danger zone.
 
 <DemoLinks
   demo="/examples/settings-form"
