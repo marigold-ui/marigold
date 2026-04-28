@@ -29,6 +29,13 @@ interface PanelBaseProps {
   /**
    * Content of the panel. Typically a combination of `Panel.Header`,
    * `Panel.Content`, `Panel.Collapsible`, and `Panel.Footer`.
+   *
+   * `Panel.Header` is the layout wrapper that arranges `Panel.Title`,
+   * `Panel.Description`, and `Panel.HeaderActions` in a grid. When a
+   * Panel has only a title (no description, no actions), `Panel.Title`
+   * may be used as a direct child of `Panel` and the wrapper can be
+   * omitted. `Panel.Description` and `Panel.HeaderActions` always
+   * require a `Panel.Header` wrapper.
    */
   children: ReactNode;
   /** Accessible label. Required when no `Panel.Title` is present. */
