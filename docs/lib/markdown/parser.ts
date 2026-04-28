@@ -11,7 +11,6 @@ import {
   remarkResolveAppearanceDemo,
   remarkResolveAppearanceTable,
   remarkResolveComponentDemo,
-  remarkResolveDesignTokens,
   remarkResolvePropsTable,
   remarkSimplifyJsx,
 } from './plugins';
@@ -44,10 +43,10 @@ export async function parseMdxToMarkdown(
   const { filePath, contentDir } = options;
 
   const absolutePath = path.join(contentDir, filePath);
-  let content = await fs.readFile(absolutePath, 'utf-8');
+  const raw = await fs.readFile(absolutePath, 'utf-8');
 
-  const frontmatter = parseFrontmatter(content);
-  content = content.replace(/^---\n[\s\S]*?\n---\n/, '').trim();
+  const frontmatter = parseFrontmatter(raw);
+  const content = raw.replace(/^---\n[\s\S]*?\n---\n/, '').trim();
 
   const processor = unified()
     .use(remarkParse)
@@ -59,7 +58,6 @@ export async function parseMdxToMarkdown(
     .use(remarkResolveAppearanceTable, {
       frontmatterTitle: frontmatter.title,
     })
-    .use(remarkResolveDesignTokens)
     .use(remarkSimplifyJsx)
     .use(remarkInjectTitle, frontmatter)
     .use(remarkStringify, {
