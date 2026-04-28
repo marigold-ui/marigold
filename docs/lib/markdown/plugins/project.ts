@@ -25,8 +25,8 @@ export function getSharedProject(): Project {
  * e.g. getComponentPath('Button') → '<root>/packages/components/src/Button/Button.tsx'
  */
 export function getComponentPath(componentName: string): string {
-  return path.join(
-    REPO_ROOT,
-    `packages/components/src/${componentName}/${componentName}.tsx`
-  );
+  const relativePath = componentName.includes('/')
+    ? `${componentName}.tsx`
+    : `${componentName}/${componentName}.tsx`;
+  return path.join(REPO_ROOT, `packages/components/src/${relativePath}`);
 }
