@@ -12,9 +12,7 @@ import {
 
 export const EventDetails = () => (
   <Panel size="form">
-    <Panel.Header>
-      <Panel.Title>Event Details</Panel.Title>
-    </Panel.Header>
+    <Panel.Title>Event Details</Panel.Title>
     <Panel.Content>
       <Stack space="regular">
         <TextField

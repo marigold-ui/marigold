@@ -108,6 +108,20 @@ Basic.test(
   }
 );
 
+export const TitleOnlyWithoutHeader = meta.story({
+  args: { children: null as never },
+  render: args => (
+    <Panel {...args}>
+      <Panel.Title>Quick Settings</Panel.Title>
+      <Panel.Content>
+        <Stack space="regular">
+          <TextField label="Display name" defaultValue="Marigold Events" />
+        </Stack>
+      </Panel.Content>
+    </Panel>
+  ),
+});
+
 export const WithHeaderActions = meta.story(() => (
   <Stack space="section">
     <Panel>
