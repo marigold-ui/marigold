@@ -27,15 +27,8 @@ const EMBEDDINGS_FILE = path.join(
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-if (!process.env.OIDC_AUTHORITY || !process.env.OIDC_CLIENT_ID) {
-  throw new Error(
-    'Missing OIDC configuration. Set OIDC_AUTHORITY and OIDC_CLIENT_ID.'
-  );
-}
-
-const OIDC_AUTHORITY: string = process.env.OIDC_AUTHORITY;
-const OIDC_CLIENT_ID: string = process.env.OIDC_CLIENT_ID;
-const KEYCLOAK_JWKS_URI = `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`;
+const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY || '';
+const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID || '';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -54,13 +47,8 @@ let bedrock: BedrockRuntimeClient | null = null;
 function getBedrock(): BedrockRuntimeClient {
   if (bedrock) return bedrock;
 
-  const accessKeyId = process.env.AWS_BEDROCK_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY;
-  if (!accessKeyId || !secretAccessKey) {
-    throw new Error(
-      'Missing AWS Bedrock credentials. Set AWS_BEDROCK_ACCESS_KEY_ID and AWS_BEDROCK_SECRET_ACCESS_KEY.'
-    );
-  }
+  const accessKeyId = process.env.AWS_BEDROCK_ACCESS_KEY_ID || '';
+  const secretAccessKey = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY || '';
 
   bedrock = new BedrockRuntimeClient({
     region: AWS_REGION,
@@ -109,8 +97,12 @@ function loadStore(): VectorStore {
   return { chunks: data, vectors };
 }
 
-// Load eagerly at module init; file is bundled via outputFileTracingIncludes.
-const store: VectorStore = loadStore();
+// Lazy so module init does not require embeddings.json (local builds skip it; production bundles it via outputFileTracingIncludes).
+let store: VectorStore | null = null;
+function getStore(): VectorStore {
+  if (!store) store = loadStore();
+  return store;
+}
 
 // ─── Search ──────────────────────────────────────────────────────────────────
 
@@ -144,7 +136,17 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 // ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
 
-const jwks = createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI));
+let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
+
+function getJwks() {
+  if (jwks) return jwks;
+  jwks = createRemoteJWKSet(
+    new URL(
+      `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`
+    )
+  );
+  return jwks;
+}
 
 const verifyToken = async (
   _req: Request,
@@ -153,7 +155,7 @@ const verifyToken = async (
   if (!bearerToken) return undefined;
 
   try {
-    const { payload } = await jwtVerify(bearerToken, jwks, {
+    const { payload } = await jwtVerify(bearerToken, getJwks(), {
       issuer: OIDC_AUTHORITY,
       audience: OIDC_CLIENT_ID,
     });
@@ -205,7 +207,7 @@ const handler = createMcpHandler(
       async ({ query, limit }) => {
         try {
           const queryVec = await embedQuery(query.trim());
-          const results = search(queryVec, store, limit);
+          const results = search(queryVec, getStore(), limit);
 
           return {
             content: [
