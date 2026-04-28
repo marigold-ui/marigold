@@ -2,7 +2,7 @@
 '@marigold/docs': patch
 ---
 
-fix(docs): pre-compute prop-table data at build time, eliminate ts-morph from the runtime, restore Next.js route handlers using `connection()`.
+fix(docs): pre-compute prop-table data at build time, eliminate ts-morph from the runtime, ship per-page markdown and the page manifest as static assets.
 
 The Vercel preview build for the docs failed on `pnpm build` with:
 
@@ -24,12 +24,12 @@ So when Next.js's static exporter touches the proxied `Response` during prerende
 
 **Fix and surrounding cleanup**
 
-The route handlers are restored using `await connection()` from `next/server`, which is the idiomatic Next.js 16 escape hatch from the prerender pass — it survives a future `cacheComponents: true` upgrade and works alongside Vercel's CDN cache. The data they serve (per-page markdown, page-index manifest) is pre-computed at build time and read by the handlers at request time. While re-architecting, ts-morph was eliminated from the runtime entirely; type extraction now happens in a single build-script pass.
+The data both endpoints serve (per-page markdown, page-index manifest) is fully static at build time. Rather than re-introduce route handlers and dance around the prerender Proxy with `await connection()` / cache headers / `outputFileTracingIncludes`, they're now plain files in `public/` served directly by Next.js. No route handler runs, no Proxy ever wraps the response — the bug surface is removed entirely. While re-architecting, ts-morph was eliminated from the runtime entirely; type extraction now happens in a single build-script pass.
 
 **User-visible changes**
 
-- Per-page raw markdown is served at `<page-url>.md` (e.g. `/components/actions/button.md`). The internal route handler lives at `app/api/md/[...slug]/route.ts`; a Next.js rewrite maps the public slug-mirror URL to it.
-- The docs page-index manifest is served at `/manifest.json` (route handler at `app/manifest.json/route.ts`, no rewrite). Each entry's `url` field now points at the slug-mirror `<page-url>.md` path.
+- Per-page raw markdown is served at `<page-url>.md` (e.g. `/components/actions/button.md`) — written to `public/<slug>.md` at build time, served by Next.js as a static asset (`Content-Type: text/markdown; charset=UTF-8`). No rewrite, no route handler.
+- The docs page-index manifest is served at `/manifest.json` — written to `public/manifest.json`, served as a static asset (`Content-Type: application/json; charset=UTF-8`). Each entry's `url` field points at the slug-mirror `<page-url>.md` path.
 - `<AutoTypeTable package="system" />` (used by `svg/index.mdx` and `icon/index.mdx`) now produces a populated props table in the markdown output. The previous custom ts-morph plugin only handled `packages/components/src/`, so system-package types silently rendered as empty.
 - `<AppearanceTable>` rendering in markdown now matches the HTML output exactly — they read from the same `@marigold/theme-rui/appearances` map. Four components shift in `<page-url>.md` output as a result: `Menu` gains `destructive` (it lives on the `MenuItem` slot in cva, was missed by the old ts-morph regex), `LinkButton` gains `destructive-ghost` (its `Props` interface omits it but the theme defines it), `Panel.size` gains `default`, `Link.size` gains `default | small`. AppearanceTable description cells render as plain text instead of `inlineCode` — descriptions aren't code.
 - HTML and Markdown prop tables show identical type strings — both go through `autoTypeTableTransform`, so design-system aliases (`Scale | SpacingTokens` etc.) appear consistently. Function types collapse to `function` in markdown the same way they already do in HTML.
@@ -39,31 +39,32 @@ The route handlers are restored using `await connection()` from `next/server`, w
 
 ```
 pnpm build (or dev)
-  ├─ build:registry      → .registry/demos.{tsx,json}            (unchanged)
-  ├─ build:types  NEW    → .registry/props.json                  (one ts-morph pass)
-  ├─ build:changelog                                              (unchanged)
-  ├─ build:manifest      → .registry/manifest.json               (was public/md/manifest.json)
-  ├─ build:md            → .registry/md/<slug>.md                (was public/<slug>.md)
+  ├─ build:registry      → .registry/demos.{tsx,json}     (unchanged)
+  ├─ build:types  NEW    → .registry/props.json           (one ts-morph pass)
+  ├─ build:changelog                                       (unchanged)
+  ├─ build:manifest      → public/manifest.json           (static asset)
+  ├─ build:md            → public/<slug>.md               (static assets)
   └─ next build
 ```
 
 At request time:
 - `<AutoTypeTable>` (RSC) reads `.registry/props.json` synchronously and renders via fumadocs-ui's `<TypeTable>`. No ts-morph, no async generator, no FS cache lookup per render.
 - `<AppearanceTable>` (RSC) reads `@marigold/theme-rui/appearances` directly (already the existing pattern).
-- `app/manifest.json/route.ts` reads `.registry/manifest.json`.
-- `app/api/md/[...slug]/route.ts` reads `.registry/md/<slug>.md`.
-
-Both routes call `await connection()` and set `Cache-Control: public, max-age=0, s-maxage=31536000, stale-while-revalidate=86400` so Vercel's CDN serves cached responses. `outputFileTracingIncludes` ensures `.registry/manifest.json` and `.registry/md/**/*.md` ship with the function bundles.
+- `/manifest.json` and `/<slug>.md` are served as static assets from `public/` by Next.js.
 
 **Internals**
 
 - `docs/lib/props-data.ts` (NEW) — typed `getPropTable({ path, name, package })` reading from `.registry/props.json`. Single source of truth for both consumers.
 - `docs/scripts/build-types.ts` (NEW) — scans MDX files for `<AutoTypeTable>` references, deduplicates, calls fumadocs-typescript's generator with `autoTypeTableTransform` once per unique tuple, writes `.registry/props.json`. fumadocs FS cache lives at `.registry/.cache/fumadocs-typescript` so subsequent runs are fast when component sources are unchanged: cold ~17s, warm ~0.3s.
+- `docs/scripts/build-md.ts` — writes per-page markdown to `public/<slug>.md`; cleans only `.md` files in slug-root subtrees so existing image / asset directories under `public/` are untouched.
+- `docs/scripts/build-manifest.mjs` — writes the page manifest to `public/manifest.json`.
 - `docs/ui/AutoTypeTable.tsx` — thin wrapper around `fumadocs-typescript/ui`'s `<AutoTypeTable>` with a mock `Generator` that just looks up `.registry/props.json`. The fumadocs `/ui` entry doesn't import ts-morph, so this keeps ts-morph entirely out of the runtime bundle while still using the same `<TypeTable>` shell (collapsibles, hash deep-linking, Shiki).
 - `docs/lib/markdown/plugins/resolve-props-table.ts` — synchronous remark plugin; reads from `.registry/props.json` via `getPropTable`. No more async, no more generator call, no more `pLimit(4)` ts-morph contention in `build-md.ts`.
 - `docs/lib/markdown/plugins/resolve-appearance-table.ts` — drops ts-morph entirely; imports `appearances` from `@marigold/theme-rui/appearances`.
+- `docs/app/manifest.json/route.ts` — deleted (replaced by static asset).
+- `docs/app/api/md/[...slug]/route.ts` — deleted (replaced by static assets).
 - `docs/lib/typescript.ts` — deleted (no longer used at runtime; build-time helpers folded into `scripts/build-types.ts`).
-- `next.config.mjs` — `serverExternalPackages: ['ts-morph', 'typescript']` removed (no runtime ts-morph). Rewrite for `/<slug>.md → /api/md/<slug>.md` restored. `outputFileTracingIncludes` added for `/manifest.json` and `/api/md/**`.
+- `next.config.mjs` — `serverExternalPackages: ['ts-morph', 'typescript']`, the `/<slug>.md → /api/md/<slug>.md` rewrite, and the route-handler `outputFileTracingIncludes` entries are all removed.
 - `ts-morph` moved from runtime dependencies to devDependencies.
 
 **Performance** (`pnpm build:md` 128 files):
@@ -74,4 +75,4 @@ Both routes call `await connection()` and set `Cache-Control: public, max-age=0,
 | `build:types` warm |             —  | ~0.3s |
 | `build:md`         |          ~10s  | ~8s   |
 
-`build:types` only reruns ts-morph for source files whose content changed. Vercel preserves `.next/cache/`; the registry cache is local-only at `.registry/.cache/fumadocs-typescript/`.
+`build:types` only reruns ts-morph for source files whose content changed. The registry cache is local-only at `.registry/.cache/fumadocs-typescript/`.

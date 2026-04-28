@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-// Build the docs page manifest into .registry/manifest.json. Served at request
-// time by app/manifest.json/route.ts (which uses `await connection()` to opt
-// out of Next.js's prerender Proxy and the Node 22+ undici #state bug).
+// Build the docs page manifest as a static asset at public/manifest.json,
+// served directly by Next.js (no route handler, no prerender Proxy).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const contentDir = path.join(rootDir, 'content');
-const outFile = path.join(rootDir, '.registry', 'manifest.json');
+const outFile = path.join(rootDir, 'public', 'manifest.json');
 
 const BASE_URL = 'https://www.marigold-ui.io';
 const EXCLUDED_PREFIXES = ['releases'];
