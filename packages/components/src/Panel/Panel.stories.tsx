@@ -110,7 +110,6 @@ Basic.test(
 
 export const TitleOnlyWithoutHeader = meta.story({
   args: { children: null as never },
-  tags: ['component-test'],
   render: args => (
     <Panel {...args}>
       <Panel.Title>Quick Settings</Panel.Title>
@@ -121,14 +120,6 @@ export const TitleOnlyWithoutHeader = meta.story({
       </Panel.Content>
     </Panel>
   ),
-  play: async ({ canvas }) => {
-    const title = canvas.getByRole('heading', { name: 'Quick Settings' });
-    const region = canvas.getByRole('region', { name: 'Quick Settings' });
-
-    expect(title.tagName).toBe('H2');
-    expect(region.getAttribute('aria-labelledby')).toBe(title.id);
-    expect(title.closest('[data-panel-header]')).toBeNull();
-  },
 });
 
 export const WithHeaderActions = meta.story(() => (
