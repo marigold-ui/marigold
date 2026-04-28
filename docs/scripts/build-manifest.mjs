@@ -30,11 +30,8 @@ const parseFrontmatter = source => {
   for (const line of match[1].split(/\r?\n/)) {
     const kv = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
     if (!kv) continue;
-    let value = kv[2].trim();
-    if (/^['"].*['"]$/.test(value)) {
-      value = value.slice(1, -1);
-    }
-    data[kv[1]] = value;
+    const raw = kv[2].trim();
+    data[kv[1]] = /^['"].*['"]$/.test(raw) ? raw.slice(1, -1) : raw;
   }
   return data;
 };

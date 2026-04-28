@@ -12,9 +12,11 @@ const generator: Generator = {
   },
   generateTypeTable: async ({ path, name }) => {
     if (!path || !name) return [];
-    const [pkg, rawPath] = path.includes(PATH_PREFIX_SEPARATOR)
-      ? (path.split(/:(.*)/s) as [string, string])
-      : ['components', path];
+    const sep = path.indexOf(PATH_PREFIX_SEPARATOR);
+    const [pkg, rawPath] =
+      sep !== -1
+        ? [path.slice(0, sep), path.slice(sep + 1)]
+        : ['components', path];
     const data = getPropTable({
       path: rawPath,
       name,

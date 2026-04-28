@@ -1,7 +1,7 @@
 import type { DocEntry } from 'fumadocs-typescript';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import { getPropTable } from '../../props-data';
+import { type Pkg, getPropTable } from '../../props-data';
 import { MdxJsxElement, getJsxAttr } from './shared';
 
 const FILTERED_PROPS = new Set(['variant', 'size']);
@@ -62,10 +62,7 @@ export function remarkResolvePropsTable() {
 
         const pathAttr = getJsxAttr(node, 'path');
         const nameAttr = getJsxAttr(node, 'name');
-        const pkgAttr = getJsxAttr(node, 'package') as
-          | 'components'
-          | 'system'
-          | undefined;
+        const pkgAttr = getJsxAttr(node, 'package') as Pkg | undefined;
 
         const children = parent.children as Node[];
 
