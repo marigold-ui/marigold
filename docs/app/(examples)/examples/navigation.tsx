@@ -75,6 +75,13 @@ const userInput: NavSection = {
           docsHref: '/patterns/user-input/forms',
           docsLabel: 'Form Guidelines',
         },
+        {
+          kind: 'Item',
+          slug: 'auto-save-settings',
+          label: 'Auto-Save Settings',
+          docsHref: '/components/form/switch#settings-and-preference',
+          docsLabel: 'Switch · Settings variant',
+        },
       ],
     },
   ],
