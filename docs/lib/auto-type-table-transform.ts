@@ -20,11 +20,6 @@ const DESIGN_SYSTEM_PATH_REGEX = /\/(?:@marigold|packages)\/(?:system|types)\//;
 const isFromDesignSystemPath = (filePath: string) =>
   DESIGN_SYSTEM_PATH_REGEX.test(filePath);
 
-/**
- * Follows import-alias chains so `WidthProp` resolved from a local
- * `import type { WidthProp } from '@marigold/system'` statement yields the
- * original declaration in `@marigold/system`, not the local ImportSpecifier.
- */
 const resolveAliasedSymbol = (
   symbol: TsMorphSymbol | undefined
 ): TsMorphSymbol | undefined => {
@@ -40,12 +35,8 @@ const isFromDesignSystemPackage = (symbol: TsMorphSymbol | undefined) => {
     .some(d => isFromDesignSystemPath(d.getSourceFile().getFilePath()));
 };
 
-/**
- * Extracts design-system alias names from a type's default printed form, which
- * looks like `import("/path/to/pkg").AliasName`. TS preserves alias provenance
- * in this text even when `getAliasSymbol()` returns undefined for a flattened
- * union — making this more reliable than walking `type.getUnionTypes()`.
- */
+// TS preserves alias provenance in the printed form as `import("/path").AliasName`
+// even when `getAliasSymbol()` returns undefined for a flattened union.
 const IMPORT_ALIAS_REGEX = /import\("([^"]+)"\)\.([A-Za-z_][A-Za-z0-9_]*)/g;
 
 const collectDesignSystemAliasesFromText = (text: string): string[] => {
@@ -56,12 +47,9 @@ const collectDesignSystemAliasesFromText = (text: string): string[] => {
   return Array.from(seen);
 };
 
-/**
- * Fallback for when TS has flattened an indexed access to literals (e.g.
- * `WidthProp['width']` resolves to `'auto' | 'full' | ...` with no surviving
- * alias reference). Surfaces the wrapper name written by the author, but only
- * when its declaration lives in a design-system package.
- */
+// Fallback for when TS has flattened an indexed access to literals
+// (e.g. `WidthProp['width']` → `'auto' | 'full' | ...`). Surfaces the
+// wrapper type name when its declaration lives in a design-system package.
 const getIndexedAccessWrapperName = (
   propertySymbol: TsMorphSymbol
 ): string | undefined => {
@@ -81,8 +69,6 @@ const getIndexedAccessWrapperName = (
   return undefined;
 };
 
-// Moves the literal-expanded form into `type` (the collapsible row) and puts
-// a concise summary in `simplifiedType` (the main cell).
 const promoteExpanded = (entry: Entry, summary: string) => {
   entry.type = entry.simplifiedType;
   entry.simplifiedType = summary;

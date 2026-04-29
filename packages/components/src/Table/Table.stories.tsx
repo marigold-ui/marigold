@@ -23,6 +23,7 @@ import { TableDragPreview } from './TableDragPreview';
 
 const meta = preview.meta({
   title: 'Components/Table',
+  parameters: { bleed: true },
   decorators: [
     Story => (
       <div id="storybook-root">

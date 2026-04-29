@@ -157,9 +157,7 @@ const GeneralPage = () => (
           </Panel>
 
           <Panel size="form" variant="destructive">
-            <Panel.Header>
-              <Panel.Title>Danger zone</Panel.Title>
-            </Panel.Header>
+            <Panel.Title>Danger zone</Panel.Title>
             <Panel.Content>
               <Stack space={1}>
                 <Text weight="semibold">Delete this workspace</Text>

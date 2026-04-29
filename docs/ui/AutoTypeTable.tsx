@@ -1,58 +1,52 @@
-import {
-  createFileSystemGeneratorCache,
-  createGenerator,
-} from 'fumadocs-typescript';
+import type { Generator } from 'fumadocs-typescript';
 import { AutoTypeTable as FumadocsAutoTypeTable } from 'fumadocs-typescript/ui';
-import { autoTypeTableTransform } from './autoTypeTableTransform';
+import { type Pkg, getPropTable } from '../lib/props-data';
 
-const generator = createGenerator({
-  // set a cache, necessary for serverless platform like Vercel
-  cache: createFileSystemGeneratorCache('.next/fumadocs-typescript'),
-});
+// FumadocsAutoTypeTable forwards only `path`/`name`/`type` to its generator,
+// so we encode `package` into `path` as `pkg:rawPath` to carry it through.
+const PATH_PREFIX_SEPARATOR = ':';
 
-export const AutoTypeTable = (props: {
-  path?: string;
-  name?: string;
-  package?: 'system' | 'components';
-  [key: string]: unknown;
-}) => {
-  // Determine package type from explicit prop
-  const isSystemPackage = props.package === 'system';
-
-  const basePath = isSystemPackage
-    ? '../packages/system/src/'
-    : '../packages/components/src/';
-
-  // For system package, prepend "components/" if not already present
-  let cleanPath = props.path;
-  const wasSimpleName = cleanPath && !cleanPath.includes('/');
-
-  if (isSystemPackage && cleanPath && !cleanPath.startsWith('components/')) {
-    cleanPath = `components/${cleanPath}`;
-  }
-
-  // Auto resolve component names to their file paths
-  // If path already ends with .tsx, use it as-is
-  // If path contains / and was originally a simple name (after prepending "components/"),
-  //   resolve to ComponentName/ComponentName.tsx (e.g., "components/SVG" → "components/SVG/SVG.tsx")
-  // If path contains / and was originally a path (e.g., "Formatters/DateFormat"), append .tsx
-  // If path is just a component name (e.g., "Button"), resolve to "Button/Button.tsx"
-  const resolvedPath = cleanPath?.endsWith('.tsx')
-    ? cleanPath
-    : cleanPath?.includes('/')
-      ? wasSimpleName && isSystemPackage
-        ? `${cleanPath}/${props.path}.tsx`
-        : `${cleanPath}.tsx`
-      : cleanPath
-        ? `${cleanPath}/${cleanPath}.tsx`
-        : undefined;
-
-  return (
-    <FumadocsAutoTypeTable
-      {...props}
-      path={resolvedPath}
-      generator={generator}
-      options={{ basePath, transform: autoTypeTableTransform }}
-    />
-  );
+const generator: Generator = {
+  generateDocumentation: async () => {
+    throw new Error('AutoTypeTable: generateDocumentation is not used');
+  },
+  generateTypeTable: async ({ path, name }) => {
+    if (!path || !name) return [];
+    const sep = path.indexOf(PATH_PREFIX_SEPARATOR);
+    const [pkg, rawPath] =
+      sep !== -1
+        ? [path.slice(0, sep), path.slice(sep + 1)]
+        : ['components', path];
+    const data = getPropTable({
+      path: rawPath,
+      name,
+      package: pkg as Pkg,
+    });
+    if (!data) return [];
+    return [
+      {
+        id: encodeURI(`${rawPath}-${name}`),
+        name,
+        entries: data.entries,
+      },
+    ];
+  },
 };
+
+export interface AutoTypeTableProps {
+  path: string;
+  name: string;
+  package?: Pkg;
+}
+
+export const AutoTypeTable = ({
+  path,
+  name,
+  package: pkg = 'components',
+}: AutoTypeTableProps) => (
+  <FumadocsAutoTypeTable
+    path={`${pkg}${PATH_PREFIX_SEPARATOR}${path}`}
+    name={name}
+    generator={generator}
+  />
+);

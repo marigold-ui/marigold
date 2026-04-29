@@ -14,9 +14,7 @@ import {
 
 export const RegistrationSettings = () => (
   <Panel size="form">
-    <Panel.Header>
-      <Panel.Title>Registration Settings</Panel.Title>
-    </Panel.Header>
+    <Panel.Title>Registration Settings</Panel.Title>
     <Panel.Content>
       <Stack space="regular">
         <Checkbox label="Require registration approval" />
