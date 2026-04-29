@@ -1,7 +1,7 @@
-import { Copy, Pencil, Trash2 } from 'lucide-react';
 import { I18nProvider } from 'react-aria-components';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Copy, Pencil, Trash2 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Scrollable } from '../Scrollable/Scrollable';

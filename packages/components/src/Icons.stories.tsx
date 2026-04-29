@@ -1,19 +1,22 @@
 import type { LucideProps } from 'lucide-react';
-import { Download, Save, Star } from 'lucide-react';
 import preview from '.storybook/preview';
 import {
   DesignTicket,
+  Download,
   Facebook,
   GiftCard,
   Google,
   Instagram,
   PDF,
   Resale,
+  Save,
   Scanner,
   Stadium,
+  Star,
   TicketInsurance,
   Turnstile,
   Twitter,
+  TwitterX,
 } from '@marigold/icons';
 import { Button } from './Button/Button';
 import { Inline } from './Inline/Inline';
@@ -31,6 +34,7 @@ const customIcons = [
   { name: 'TicketInsurance', Icon: TicketInsurance },
   { name: 'Turnstile', Icon: Turnstile },
   { name: 'Twitter', Icon: Twitter },
+  { name: 'TwitterX', Icon: TwitterX },
 ] as const;
 
 const meta = preview.meta({
@@ -55,8 +59,8 @@ const meta = preview.meta({
     fill: {
       control: { type: 'color' },
       description:
-        'Fill color; set to make stroke-based icons filled. Defaults to none.',
-      table: { defaultValue: { summary: 'none' } },
+        'Fill color. Filled custom icons default to `currentColor`; stroke-based icons (Lucide built-ins, Instagram, Twitter) default to `none` and need an explicit value to render filled.',
+      table: { defaultValue: { summary: 'currentColor' } },
     },
     className: { control: false, table: { disable: true } },
     style: { control: false, table: { disable: true } },
@@ -76,7 +80,7 @@ export const CustomIcons = meta.story({
           key={name}
           className="flex flex-col items-center gap-2 rounded-md border p-4"
         >
-          <Icon fill="current" {...args} />
+          <Icon {...args} />
           <span className="font-mono text-xs">{name}</span>
         </div>
       ))}
@@ -138,6 +142,9 @@ export const SocialLinks = meta.story({
       </a>
       <a href="#" aria-label="Twitter">
         <Twitter {...args} />
+      </a>
+      <a href="#" aria-label="X">
+        <TwitterX {...args} />
       </a>
     </Inline>
   ),

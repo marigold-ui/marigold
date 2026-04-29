@@ -1,6 +1,6 @@
-import { type LucideIcon, createLucideIcon } from 'lucide-react';
+import { createFilledIcon } from './createFilledIcon';
 
-export const PDF: LucideIcon = createLucideIcon('PDF', [
+export const PDF = createFilledIcon('PDF', [
   [
     'path',
     {

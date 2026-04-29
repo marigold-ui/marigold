@@ -25,9 +25,12 @@ describe.each([
   });
 
   test('maps color prop to stroke', () => {
-    render(<Icon data-testid="svg" color="red" />);
+    render(<Icon data-testid="svg" color="var(--color-destructive-accent)" />);
 
-    expect(screen.getByTestId('svg')).toHaveAttribute('stroke', 'red');
+    expect(screen.getByTestId('svg')).toHaveAttribute(
+      'stroke',
+      'var(--color-destructive-accent)'
+    );
   });
 
   test('supports strokeWidth prop', () => {
@@ -60,5 +63,64 @@ describe.each([
     render(<Icon data-testid="svg" aria-label="thing" />);
 
     expect(screen.getByTestId('svg')).not.toHaveAttribute('aria-hidden');
+  });
+});
+
+describe('createFilledIcon', () => {
+  test('defaults fill and stroke to currentColor', () => {
+    render(<DesignTicket data-testid="svg" />);
+
+    const svg = screen.getByTestId('svg');
+
+    expect(svg).toHaveAttribute('fill', 'currentColor');
+    expect(svg).toHaveAttribute('stroke', 'currentColor');
+  });
+
+  test('fill prop overrides the default fill', () => {
+    render(
+      <DesignTicket data-testid="svg" fill="var(--color-destructive-accent)" />
+    );
+
+    expect(screen.getByTestId('svg')).toHaveAttribute(
+      'fill',
+      'var(--color-destructive-accent)'
+    );
+  });
+
+  test('fill prop drives stroke when color is not provided', () => {
+    render(
+      <DesignTicket data-testid="svg" fill="var(--color-destructive-accent)" />
+    );
+
+    expect(screen.getByTestId('svg')).toHaveAttribute(
+      'stroke',
+      'var(--color-destructive-accent)'
+    );
+  });
+
+  test('color prop sets both fill and stroke', () => {
+    render(
+      <DesignTicket data-testid="svg" color="var(--color-destructive-accent)" />
+    );
+
+    const svg = screen.getByTestId('svg');
+
+    expect(svg).toHaveAttribute('fill', 'var(--color-destructive-accent)');
+    expect(svg).toHaveAttribute('stroke', 'var(--color-destructive-accent)');
+  });
+
+  test('fill takes precedence over color', () => {
+    render(
+      <DesignTicket
+        data-testid="svg"
+        color="var(--color-info-accent)"
+        fill="var(--color-destructive-accent)"
+      />
+    );
+
+    expect(screen.getByTestId('svg')).toHaveAttribute(
+      'fill',
+      'var(--color-destructive-accent)'
+    );
   });
 });

@@ -12,3 +12,4 @@ export { Stadium } from './custom/Stadium';
 export { TicketInsurance } from './custom/TicketInsurance';
 export { Turnstile } from './custom/Turnstile';
 export { Twitter } from './custom/Twitter';
+export { TwitterX } from './custom/TwitterX';

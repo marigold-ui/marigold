@@ -1,6 +1,6 @@
-import { type LucideIcon, createLucideIcon } from 'lucide-react';
+import { createFilledIcon } from './createFilledIcon';
 
-export const DesignTicket: LucideIcon = createLucideIcon('DesignTicket', [
+export const DesignTicket = createFilledIcon('DesignTicket', [
   [
     'path',
     {

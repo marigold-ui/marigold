@@ -1,7 +1,7 @@
-import { Star } from 'lucide-react';
 import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Star } from '@marigold/icons';
 import { ToggleButton } from './ToggleButton';
 
 const meta = preview.meta({

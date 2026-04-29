@@ -1,5 +1,5 @@
-import { Accessibility } from 'lucide-react';
 import preview from '.storybook/preview';
+import { Accessibility } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
 import { Badge } from './Badge';
 

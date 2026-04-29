@@ -1,6 +1,6 @@
-import { type LucideIcon, createLucideIcon } from 'lucide-react';
+import { createFilledIcon } from './createFilledIcon';
 
-export const GiftCard: LucideIcon = createLucideIcon('GiftCard', [
+export const GiftCard = createFilledIcon('GiftCard', [
   [
     'path',
     {

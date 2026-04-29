@@ -1,6 +1,6 @@
-import { type LucideIcon, createLucideIcon } from 'lucide-react';
+import { createFilledIcon } from './createFilledIcon';
 
-export const Turnstile: LucideIcon = createLucideIcon('Turnstile', [
+export const Turnstile = createFilledIcon('Turnstile', [
   [
     'path',
     {
