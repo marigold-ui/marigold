@@ -1,96 +1,97 @@
 'use client';
 
 import { useState } from 'react';
+import { Key } from '@react-types/shared';
 import {
   Badge,
-  Button,
   Inline,
+  Link,
   Panel,
   Stack,
   Switch,
-  TextField,
+  Tag,
+  TagField,
+  Text,
 } from '@marigold/components';
 
+interface Partner {
+  id: string;
+  name: string;
+}
+
+const ORG_DEFAULT_PARTNERS: Partner[] = [
+  { id: 'goethe', name: 'Goethe-Institut Freiburg' },
+  { id: 'stadt-freiburg', name: 'Stadt Freiburg' },
+];
+
+const PARTNER_POOL: Partner[] = [
+  { id: 'theater-fr', name: 'Theater Freiburg' },
+  { id: 'uni-fr', name: 'Universität Freiburg' },
+  { id: 'stadtwerke', name: 'Stadtwerke Freiburg' },
+  { id: 'kulturboerse', name: 'Freiburger Kulturbörse' },
+  { id: 'oberrhein', name: 'Zentrum Oberrhein' },
+];
+
 export const CoOrganizers = () => {
-  const [enabled, setEnabled] = useState(false);
-  const [entries, setEntries] = useState([{ id: 1 }]);
-
-  const addEntry = () => {
-    setEntries(prev => [...prev, { id: Date.now() }]);
-  };
-
-  const removeEntry = (id: number) => {
-    setEntries(prev => prev.filter(e => e.id !== id));
-  };
+  const [selected, setSelected] = useState<Key[]>([]);
 
   return (
     <Panel variant="master" headingLevel={3} size="form">
       <Panel.Header>
         <Panel.Title>
           <Inline space="related" alignY="center">
-            Co-organizers
+            Co-presenters
             <Badge variant="master">Master</Badge>
           </Inline>
         </Panel.Title>
         <Panel.Description>
-          Invite team members to help manage this event. Co-organizers can edit
-          event details, view registrations, and send attendee communications.
+          Partner organizations credited on the event page and tickets.
         </Panel.Description>
-        {enabled && (
-          <Panel.HeaderActions>
-            <Button variant="secondary" size="small" onPress={addEntry}>
-              Add co-organizer
-            </Button>
-          </Panel.HeaderActions>
-        )}
       </Panel.Header>
       <Panel.Content>
-        <Stack space="regular">
-          <Switch
-            label="This event has co-organizers"
-            description="Enable to add one or more co-organizers. They receive the same event notifications as the primary organizer."
-            selected={enabled}
-            onChange={setEnabled}
-          />
-          {enabled && (
-            <Stack space="group">
-              {entries.map(entry => (
-                <Stack key={entry.id} space="regular">
-                  <Inline space="related" noWrap>
-                    <TextField
-                      label="Name"
-                      description="Full name as it should appear on the event page."
-                      width="1/2"
-                      errorMessage="Please enter the co-organizer's name."
-                    />
-                    <TextField
-                      label="Email"
-                      type="email"
-                      description="Used to send an invitation and event notifications."
-                      width="1/2"
-                      errorMessage="A valid email address is required."
-                    />
-                  </Inline>
-                  <TextField
-                    label="Role"
-                    description="Their responsibility for this event, e.g. 'Stage Manager' or 'Ticket Support'."
-                  />
-                  {entries.length > 1 && (
-                    <Inline alignX="right">
-                      <Button
-                        variant="destructive-ghost"
-                        onPress={() => removeEntry(entry.id)}
-                      >
-                        Remove
-                      </Button>
-                    </Inline>
-                  )}
-                </Stack>
-              ))}
-            </Stack>
-          )}
+        <Stack space="tight">
+          <Text weight="medium">Default partners</Text>
+          <Text>Inherited from your organization settings.</Text>
+          <Tag.Group aria-label="Default partners" items={ORG_DEFAULT_PARTNERS}>
+            {(partner: Partner) => <Tag id={partner.id}>{partner.name}</Tag>}
+          </Tag.Group>
+          <Link href="#" size="small">
+            Manage in organization settings
+          </Link>
         </Stack>
       </Panel.Content>
+      <Panel.Collapsible>
+        <Panel.CollapsibleHeader>
+          <Panel.CollapsibleTitle>Add to this event</Panel.CollapsibleTitle>
+          <Panel.CollapsibleDescription>
+            Pick partners that co-present just this event.
+          </Panel.CollapsibleDescription>
+        </Panel.CollapsibleHeader>
+        <Panel.CollapsibleContent>
+          <Stack space="regular">
+            <TagField
+              label="Partner organizations"
+              description="Shown on the event page after the primary organizer."
+              placeholder="Search partners..."
+              items={PARTNER_POOL}
+              value={selected}
+              onChange={setSelected}
+              width="full"
+            >
+              {(partner: Partner) => (
+                <TagField.Option id={partner.id} textValue={partner.name}>
+                  {partner.name}
+                </TagField.Option>
+              )}
+            </TagField>
+            <Switch
+              variant="settings"
+              label="Show co-presenters on event page"
+              description="Adds the 'in cooperation with' line to the event page and tickets."
+            />
+          </Stack>
+        </Panel.CollapsibleContent>
+      </Panel.Collapsible>
     </Panel>
   );
 };
