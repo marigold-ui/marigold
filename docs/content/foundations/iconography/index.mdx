@@ -1,11 +1,13 @@
 ---
 title: Iconography
 description: How icons work in Marigold and the catalog of available icons.
+badge: new
 ---
 
 Icons in Marigold are built on [Lucide](https://lucide.dev/), with a small set
-of brand-specific icons added on top. For installation and import details see
-the [Icons](/components/content/icons) component page.
+of brand-specific icons added on top. The [Principles](#principles) and
+[Catalog](#catalog) sections cover the design language; jump to [Using icons
+in code](#using-icons-in-code) for installation and the API.
 
 ## Principles
 
@@ -25,11 +27,21 @@ the icon at its content size and pad the surrounding control.
 
 ### Color and pairing with text
 
-Use foreground and text design tokens for icon color rather than raw hex
-values, so icons inherit the surface they're placed on. Maintain at least 3:1
-contrast against the background for non-text icons (WCAG 1.4.11). When an icon
-is paired with text, align it to the cap-height baseline and use the system
-spacing scale for the gap between icon and label.
+Icons inherit their color from the surrounding text, so set a `text-*` token
+on the parent rather than passing a raw hex value or the Lucide `color` prop.
+Three contexts cover almost every placement:
+
+- **Alongside body text.** The icon picks up `text-foreground` (or
+  `text-secondary` for help text) automatically.
+- **Inside a colored container** like a primary or destructive button. Apply
+  the paired `-foreground` token to the container; the icon follows.
+- **Status icons** in Toast, SectionMessage, or a badge. Use the `-accent`
+  variant of the status token (`text-destructive-accent`,
+  `text-warning-accent`, `text-success-accent`, `text-info-accent`).
+
+When an icon sits next to a label, align it to the cap-height baseline and use
+the `tight` (6px) or `related` (8px) spacing token for the gap. See
+[Token Overview](/foundations/token-overview) for the full list of pairings.
 
 ### Decorative versus meaningful
 
@@ -41,7 +53,7 @@ action, not the icon.
 ## Catalog
 
 Click an icon to copy its `<svg>` to the clipboard. To use it from code, see
-the [Icons](/components/content/icons) component page.
+[Using icons in code](#using-icons-in-code) below.
 
 ### UI
 
@@ -105,6 +117,7 @@ the [Icons](/components/content/icons) component page.
     'PDF',
     'Asterisk',
     'BookOpenText',
+    'FileText',
     'Loader',
     'ThumbsUp',
     'Truck',
@@ -186,9 +199,145 @@ the [Icons](/components/content/icons) component page.
 
 ### Social
 
-<IconList icons={['Facebook', 'Google', 'Instagram', 'Share2', 'Twitter']} />
+<IconList
+  icons={['Facebook', 'Google', 'Instagram', 'Share2', 'Twitter', 'TwitterX']}
+/>
 
-## More icons
+## Using icons in code
 
-`@marigold/icons` re-exports every icon from `lucide-react`, so any icon listed
-on [lucide.dev](https://lucide.dev/) is available under the same name.
+This section is the engineering reference. For the design rationale behind
+sizing, color, and accessibility, see [Principles](#principles) above.
+
+### Installation
+
+Marigold icons are distributed as `@marigold/icons`:
+
+```bash
+# with npm
+npm install @marigold/icons --save
+
+# with pnpm
+pnpm add @marigold/icons
+```
+
+The package is tree-shakeable (`sideEffects: false`), so named imports do not
+pull the full Lucide bundle. Peer dependency: `react: >=19.0.0`.
+
+### Importing
+
+Import icons by name from `@marigold/icons`:
+
+```tsx
+import { DesignTicket, Search } from '@marigold/icons';
+
+export default function MyComponent() {
+  return (
+    <>
+      <Search />
+      <DesignTicket />
+    </>
+  );
+}
+```
+
+`@marigold/icons` re-exports every icon from `lucide-react`, so any name listed
+on [lucide.dev](https://lucide.dev/) resolves under `@marigold/icons`. Always
+import from `@marigold/icons` — never directly from `lucide-react`.
+
+#### Brand icons
+
+A handful of brand-specific icons (`DesignTicket`, `GiftCard`, `PDF`, `Resale`,
+`Scanner`, `Stadium`, `TicketInsurance`, `Turnstile`, `Facebook`, `Google`,
+`Instagram`, `Twitter`, `TwitterX`) only exist in `@marigold/icons`. They show
+up across the [Catalog](#catalog) above.
+
+### Sizing
+
+`size` is a number of pixels (default 24). Use the recommended sizes from
+[Visual language and sizing](#visual-language-and-sizing) above.
+
+<ComponentDemo file="./icon-sizes.demo.tsx" mode="preview" />
+
+### Color
+
+#### currentColor and className (recommended)
+
+Icons inherit `currentColor`, so apply theme tokens via `className="text-*"`
+on the icon or its parent. Both forms below render identically, but
+`className` is the token-aware pattern.
+
+<ComponentDemo file="./icon-className-vs-color.demo.tsx" mode="preview" />
+
+#### The color prop
+
+The `color` prop is a literal CSS color string and maps to the `stroke` SVG
+attribute. Theme token names like `"warning"` will not resolve.
+
+```tsx
+// Won't work — "destructive-accent" is not a CSS color
+<TriangleAlert color="destructive-accent" />
+
+// Works — literal CSS variable reference
+<TriangleAlert color="var(--color-destructive-accent)" />
+
+// Recommended — className with a theme token
+<TriangleAlert className="text-destructive-accent" />
+```
+
+See [Token Overview](/foundations/token-overview) for token names.
+
+### Filled brand icons
+
+Twelve of the thirteen brand icons are filled silhouettes wrapped with
+`createFilledIcon`, which couples `fill` and `color` to a single value (`fill`
+wins if both are passed). Pass `stroke` explicitly to decouple stroke from
+fill.
+
+<ComponentDemo file="./icon-filled.demo.tsx" mode="preview" />
+
+```tsx
+// Default — fill and stroke both follow currentColor
+<DesignTicket />
+
+// fill only — fill and stroke collapse to the same value
+<DesignTicket fill="var(--color-destructive-accent)" />
+
+// fill + explicit stroke — decoupled
+<DesignTicket
+  fill="var(--color-destructive-accent)"
+  stroke="var(--color-info-accent)"
+/>
+```
+
+### Accessibility
+
+Icons get `aria-hidden="true"` automatically when no `aria-*` prop is passed.
+Pass `aria-label` for icon-only interactive elements to opt out.
+
+```tsx
+// Decorative (paired with visible text) — nothing extra needed
+<span><Trash2 /> Delete</span>
+
+// Meaningful (icon-only) — provide aria-label
+<button aria-label="Delete"><Trash2 /></button>
+```
+
+For tap-target rules, see [Touch targets](#touch-targets) above.
+
+### Refs
+
+Both Lucide re-exports and custom filled icons forward refs to
+`SVGSVGElement`. Useful for measurement, focus management, and animation
+libraries.
+
+```tsx
+const ref = useRef<SVGSVGElement>(null);
+<Search ref={ref} />;
+```
+
+### Migrating from the legacy icon set
+
+Most legacy names map to a Lucide equivalent (`Add → Plus`, `Delete → Trash2`,
+and so on). The `size` prop now accepts a number of pixels rather than a CSS
+unit — switch `"24px"` to `24`. See the full mapping in the [migration
+table](https://github.com/marigold-ui/marigold/blob/main/.changeset/icons-lucide-migration.md).
