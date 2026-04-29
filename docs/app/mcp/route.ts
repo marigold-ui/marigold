@@ -29,6 +29,7 @@ const EMBEDDINGS_FILE = path.join(
 
 const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY || '';
 const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID || '';
+const KEYCLOAK_JWKS_URI = `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -99,10 +100,10 @@ function loadStore(): VectorStore {
 
 // Lazy so module init does not require embeddings.json (local builds skip it; production bundles it via outputFileTracingIncludes).
 let store: VectorStore | null = null;
-function getStore(): VectorStore {
+const getStore = (): VectorStore => {
   if (!store) store = loadStore();
   return store;
-}
+};
 
 // ─── Search ──────────────────────────────────────────────────────────────────
 
@@ -138,15 +139,10 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
 
-function getJwks() {
-  if (jwks) return jwks;
-  jwks = createRemoteJWKSet(
-    new URL(
-      `${OIDC_AUTHORITY.replace(/\/$/, '')}/protocol/openid-connect/certs`
-    )
-  );
+const getJwks = () => {
+  if (!jwks) jwks = createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI));
   return jwks;
-}
+};
 
 const verifyToken = async (
   _req: Request,
