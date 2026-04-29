@@ -44,20 +44,9 @@ class TokenRateLimiter {
 
 const rateLimiter = new TokenRateLimiter();
 
-const AWS_BEDROCK_ACCESS_KEY_ID = process.env.AWS_BEDROCK_ACCESS_KEY_ID;
-const AWS_BEDROCK_SECRET_ACCESS_KEY = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY;
-
-if (!AWS_BEDROCK_ACCESS_KEY_ID || !AWS_BEDROCK_SECRET_ACCESS_KEY) {
-  throw new Error(
-    'Missing AWS credentials. Set AWS_BEDROCK_ACCESS_KEY_ID and AWS_BEDROCK_SECRET_ACCESS_KEY environment variables.'
-  );
-}
-
-if (!process.env.BLOB_READ_WRITE_TOKEN) {
-  throw new Error(
-    'Missing BLOB_READ_WRITE_TOKEN. Embeddings can only be published to Vercel Blob.'
-  );
-}
+const AWS_BEDROCK_ACCESS_KEY_ID = process.env.AWS_BEDROCK_ACCESS_KEY_ID || '';
+const AWS_BEDROCK_SECRET_ACCESS_KEY =
+  process.env.AWS_BEDROCK_SECRET_ACCESS_KEY || '';
 
 const client = new BedrockRuntimeClient({
   region: AWS_REGION,
