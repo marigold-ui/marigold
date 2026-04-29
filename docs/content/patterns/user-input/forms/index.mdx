@@ -189,6 +189,8 @@ Use for low-stakes preferences where a saved/unsaved state would feel like frict
 - No `<Form>` wrapper, no submit button, no `<Panel.Footer>`. Each `<Panel>` is just a structured container around the controls.
 - Each control handles its own persistence via `onChange`.
 - Set the user's expectation up front with a description like "Changes save automatically" near the page heading.
+- Stay silent on success. The control's selected state is the confirmation, so a "Saved" toast on every change is noise. Surface only failures, persistently (toast or inline near the control), so the user can retry.
+- Stick to discrete controls (Switch, Checkbox, Radio, Select). For text fields, sliders, or anything continuous, the visual state alone doesn't confirm the save. Use save on submit, or extend the pattern with a debounced "Saving…/Saved" indicator near the field.
 - Avoid for fields that need cross-field validation, a confirmation step, or any change that's costly to reverse. Use [save on submit](#save-on-submit) instead.
 
 <DemoLinks
