@@ -148,9 +148,15 @@ See the [Admin- and Mastermark](/patterns/layout/admin-master-mark) page for the
 
 ## Full demos
 
-Most forms fall into one of two patterns. The demos below show each end-to-end so you can see how the pieces fit together.
+Most forms fall into one of three patterns. Pick the one that matches your use case:
 
-### Data-entry forms
+- **Task forms**: user is completing a task and submits once.
+- **Settings forms with save on submit**: config edited over time, batched per section, explicit commit.
+- **Settings forms with auto-save**: toggles and preferences that persist instantly without a save action.
+
+The demos below show each end-to-end so you can see how the pieces fit together.
+
+### Task forms
 
 Use when the user is completing a task: creating a thing, signing up, registering, checking out, or editing a single record. Everything submits together, and the user is "done" once they submit.
 
@@ -166,9 +172,9 @@ The event registration demo puts these together: sections, field types, and a si
   code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/event-form"
 />
 
-### Settings forms
+### Settings forms with save on submit
 
-Use for configuration that's edited over time: account preferences, organization defaults, notification rules. Sections are independent, so users can change one thing and save just that.
+Use for configuration that's edited over time when changes should be batched and explicitly committed: organization defaults, billing details, anything with cross-field validation or destructive consequences. Users can review their edits before saving and back out by not submitting.
 
 - Each section is its own `<Panel>` with its own `<Form>` and a save button in `<Panel.Footer>` (see [Panels](#panels)).
 - `<Tabs>` group related panels when settings span multiple topics.
@@ -180,6 +186,20 @@ The settings demo shows the full pattern with tabs, panels, and a danger zone.
 <DemoLinks
   demo="/examples/settings-form"
   code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/settings-form"
+/>
+
+### Settings forms with auto-save
+
+Use for low-stakes preferences where a saved/unsaved state would feel like friction: notification toggles, privacy switches, single-select preferences. Each control persists the moment the user changes it.
+
+- No `<Form>` wrapper, no submit button, no `<Panel.Footer>`. Each `<Panel>` is just a structured container around the controls.
+- Each control handles its own persistence via `onChange`.
+- Set the user's expectation up front with a description like "Changes save automatically" near the page heading.
+- Avoid for fields that need cross-field validation, a confirmation step, or any change that's costly to reverse. Use [save on submit](#settings-forms-with-save-on-submit) instead.
+
+<DemoLinks
+  demo="/examples/auto-save-settings"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/auto-save-settings"
 />
 
 ## Related
