@@ -2,7 +2,7 @@ import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 
 interface SelectionIndicatorProps {
-  selectionMode: 'single' | 'multiple' | 'none';
+  selectionMode: 'single' | 'multiple';
   isSelected: boolean;
   isDisabled?: boolean;
   className?: string;
@@ -32,8 +32,6 @@ export const SelectionIndicator = ({
   isDisabled,
   className,
 }: SelectionIndicatorProps) => {
-  if (selectionMode === 'none') return null;
-
   return (
     <div className={className}>
       {selectionMode === 'multiple' ? (

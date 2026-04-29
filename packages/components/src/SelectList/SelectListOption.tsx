@@ -121,7 +121,7 @@ export const SelectListOption = ({
       {({ selectionMode, isSelected, isDisabled }) => (
         <>
           <SelectionIndicator
-            selectionMode={selectionMode}
+            selectionMode={selectionMode as 'single' | 'multiple'}
             isSelected={isSelected}
             isDisabled={isDisabled}
             className={classNames?.indicator}
