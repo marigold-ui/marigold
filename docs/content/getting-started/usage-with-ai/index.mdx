@@ -46,9 +46,9 @@ The **marigold-docs** MCP server provides semantic search over the full Marigold
     ```bash
     claude mcp add marigold-docs \
       --transport http \
-      --url https://www.marigold-ui.io/mcp \
       --client-id dst-marigold-docs-mcp \
-      --callback-port 6749
+      --callback-port 6749 \
+      https://www.marigold-ui.io/mcp
     ```
 
     On first use, the server will ask you to authenticate through your browser.
