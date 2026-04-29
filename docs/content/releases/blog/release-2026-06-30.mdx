@@ -11,7 +11,12 @@ changed:
   - components/layout/inset
   - components/layout/stack
   - components/layout/inline
+  - components/layout/app-layout
   - components/navigation/sidebar
+  - components/actions/actionbar
+  - components/collection/table
+  - components/content/divider
+  - components/content/loader
   - components/form/switch
   - components/form/tagfield
   - components/form/select
@@ -271,6 +276,39 @@ export const myTheme: Theme = {
 
 The motivation: breakpoints are a theming concern, not a system concern. Different products have different layout rhythms, and forcing every app through the same default made theme portability harder than it needed to be.
 
+### `<AppLayout>` now scrolls at the page level
+
+`<AppLayout>` no longer owns an interior scroll container. The document (`<html>` / `<body>`) scrolls the whole page, the sidebar holds its position via `position: sticky`, and the top header stays pinned through `<TopNavigation>`'s own sticky positioning. Visually, app shells look the same. Behaviorally, almost everything that depends on "what is scrolling" gets simpler.
+
+The reason this matters in real apps:
+
+- **Mobile URL bar.** Safari and Chrome on mobile only collapse the URL bar when the document scrolls. With an interior scroll container, you permanently lose ~8% of the screen. Page-level scroll gets it back.
+- **Pull-to-refresh** works again on mobile (interior scroll disables it).
+- **Browser scroll restoration** on back/forward only works reliably for the document, not interior containers — interior scroll causes subtle "lost scroll position" bugs.
+- **`Cmd+F` find-in-page** scrolls the document, so matches outside the viewport now scroll into view correctly.
+- **Anchor links (`#section`), iOS status-bar tap (scroll-to-top), and native keyboard navigation** (`PgUp`, `PgDn`, `Space`, `Home`, `End`) all behave predictably.
+- **`IntersectionObserver` with the default root, `scroll-snap`, `position: sticky`, and `scroll-margin-top`** are all simpler when there is exactly one scroll container.
+
+**Migration.** Two patterns break:
+
+```diff
+- const top = mainRef.current?.scrollTop;
++ const top = window.scrollY; // or document.documentElement.scrollTop
+```
+
+```diff
+- <AppLayout.Main>
+-   <div className="h-full">…</div>
+- </AppLayout.Main>
++ <AppLayout.Main>
++   <div className="min-h-dvh">…</div>
++ </AppLayout.Main>
+```
+
+Anything that read `mainRef.current.scrollTop` (or attached a scroll listener to the main container) needs to read from `window` / `document.documentElement` instead. Styles that assumed a viewport-bounded main region (`height: 100%` on direct `<AppLayout.Main>` children, for example) are no longer constrained — switch to `min-h-dvh` or drop the constraint altogether.
+
+A small known trade-off: a pure app-shell look using `position: sticky` can flicker briefly during iOS Safari momentum scroll, and sticky elements may show a one-frame repaint when overlays close. Both are cosmetic, neither affects correctness, and the behavioral wins above are worth it.
+
 ### `<Select>`, `<ComboBox>`, `<Autocomplete>` no longer accept `width="fit"`
 
 The `fit` value is gone on these three components. Their listbox renders through a popover with virtualized content, and the react-aria `Virtualizer` controls item sizing independently of CSS layout — `width="fit"` never made it into the popover, which ended up clipping the dropdown contents.
@@ -373,11 +411,65 @@ With the string form, nested routes like `/orders/1234` automatically highlight 
 
 Fields that compose an input with an adornment (addon slots, combined inputs) now render a **single continuous outline** across the composite for both focus and error states, instead of the outline breaking at the slot boundary. Affects any `<TextField>` / `<NumberField>` / etc. used with start or end addons.
 
+### `<Divider>` API and styling refresh
+
+`<Divider>` got a small API and styling pass. The most important change is that `orientation="vertical"` now actually works — previously the vertical variant rendered as a zero-height line you could not see. Alongside the fix, the docs page has been rewritten with new stories for the typical use cases (between groups in a stack, between toolbar items, inside menus). See the updated [Divider documentation](/components/content/divider).
+
+### `<Table.EditableCell>` collapsing edit trigger
+
+The hover-only ring affordance introduced in v17 (`#5250`) didn't read as editable in user testing — sighted users didn't associate it with inline editing, and there was no discoverable trigger for keyboard or touch users at all. v18 reverts that approach and brings back the explicit pencil edit button.
+
+The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands the moment a row is hovered or any cell in the row receives keyboard focus. When expanded, the wrapper switches to `overflow-visible` so the focus outline isn't clipped. The cell itself remains a tap target on touch devices, and enabled editable cells truncate their content to stay aligned with column headers and the editing controls. Disabled editable cells render like a regular `Table.Cell`.
+
+### `<Loader>` and `<ProgressCircle>` accept custom variant + size strings
+
+`<Loader>` and `<ProgressCircle>`'s `variant` and `size` prop types now use the `| (string & {})` pattern already adopted by `<Button>`, `<Panel>`, and most other themed components. Custom themes can register their own variant or size tokens without TypeScript errors, and IDE autocomplete still surfaces the built-in RUI values first.
+
+### `<ActionBar>` button spacing
+
+`<ActionBar>` action buttons now space their icon and label the same way a regular `<Button>` does. The theme's `actionButton` style was missing `gap-2 items-center justify-center`, which produced a subtle but visible misalignment whenever an `ActionBar` button mixed an icon with text. Theme-only fix — no consumer migration.
+
 ### `ui-surface` custom properties no longer cascade
 
 `--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` are now registered with `@property { inherits: false }`. Previously, overriding one of them on a themed surface (for example a destructive `<Panel>` setting a red border) would cascade the value into every nested element that also reads `ui-surface`, tinting the borders of the Inputs, Buttons, and Cards inside it.
 
 Each surface now resolves its own fallback through the existing `var(..., var(--color-…))` chain, so nested surfaces keep their own defaults. No code change is required; the visual bleeding simply stops.
+
+## Theme package (`@marigold/theme-rui`)
+
+Most v18 changes happen inside `@marigold/components`. A handful of changes also land in `@marigold/theme-rui` that are worth calling out separately, because they affect what you import and how the CSS is structured. None of them break existing imports — `theme.css` and `styles.css` continue to work exactly as documented.
+
+### New `preflight.css`
+
+`preflight.css` adds two peer-dependency rules on the real `<html>` / `<body>`. They support the new page-level scroll model (see _`<AppLayout>` now scrolls at the page level_):
+
+- `html { scrollbar-gutter: stable }` — prevents a 1px reflow when `@react-aria/overlays` locks the page.
+- `body { position: relative; overflow-x: clip }` — contains the `@react-aria/live-announcer` portal (mounted at `top: -10000px; left: -10000px`) so it can't expand the document's scrollable area. `clip` instead of `hidden` so `position: sticky` on descendants keeps working.
+
+Both entry points (`theme.css` and `styles.css`) ship these rules, with the prefixer excluding `html` / `body` so they reach the document root while the rest of the bundle stays scoped to `[data-theme="rui"]`.
+
+### File layout split
+
+The theme's CSS now ships as four files with unambiguous roles:
+
+- `tokens.css` — `@plugin` declaration plus every design token in one place.
+- `preflight.css` — the two peer-dependency rules above.
+- `theme.css` — Tailwind-native entry. Imports `preflight.css` + `tokens.css` + `ui.css` + `variants.css` and paints `<body>` directly. Use this when Marigold is your whole app.
+- `styles.css` — pre-compiled drop-in. Same base, but paints `[data-theme="rui"]` instead. Use this when Marigold lives on an island, or when you're not running Tailwind. Place `data-theme="rui"` on the wrapper that should be themed.
+
+`global.css` (which had ambiguous semantics and was never released to consumers) is gone. Both `tokens.css` and `preflight.css` are now subpath exports if you want to import them directly.
+
+### Tokens at `:root`
+
+`postcss-prefix-selector` previously rewrote `@theme`'s output from `:root, :host` to `[data-theme="rui"], [data-theme="rui"] :host`, which meant any rule outside the scoped wrapper couldn't resolve `var(--color-background)` because the variables only existed inside `[data-theme="rui"]`. The prefixer now excludes `:root`, `:host`, and `[data-theme="rui"]` (with a quote-agnostic regex that survives Prettier round-trips) in addition to `html` / `body`. Design tokens are emitted globally; utility classes remain scoped.
+
+### CSS exports declare a `style` condition
+
+Tailwind v4's CSS resolver uses `conditionNames: ["style"]`. Bare `.css` export entries without a matching condition fail under strict resolvers, so every `.css` subpath now declares both `style` and `default` targets. The unused `./*` JS catchall is removed.
+
+### Transparent `ui-scrollbar` track
+
+`ui-scrollbar`'s track is now transparent so the themed scrollbar blends into whatever surface it's painted on instead of showing a visible groove on dark or tinted backgrounds.
 
 ## Dependency updates
 
@@ -398,9 +490,12 @@ v18 ships alongside a substantial pass over the documentation site. None of thes
 - **Installation guide rewritten** end to end. Clearer steps, up-to-date examples, and enough detail that a human or an AI agent can stand up a Marigold project without fishing through the source.
 - **`AutoTypeTable` prop rendering improved.** Props that reference design-system aliases (`SpacingTokens`, `Scale`, `WidthProp`, `NonZeroPercentage`) now show a meaningful alias summary in the cell and the full list of concrete literals on row expand, replacing the previous wall-of-literals-in-the-cell + redundant-alias-name-on-expand layout. Driven by a fumadocs-typescript transform, so new components pick this up automatically.
 - **`ComponentDemo` / `AppearanceDemo` `background="page"` prop** — demos can now opt into the theme's page background (`bg-background`) instead of the default white, giving full-bleed previews of things like AppLayout and Sidebar without wrapper `div` hacks.
+- **MCP server for the docs.** The docs site now exposes an MCP (Model Context Protocol) server at `/mcp` so AI coding assistants (Claude Code, VS Code Copilot, Cursor, etc.) can run semantic searches across the Marigold documentation. An ETL pipeline (`pnpm build:embeddings`) chunks the MDX content and generates vector embeddings via AWS Bedrock Titan v2, served over Streamable HTTP behind Keycloak authentication.
+- **Table demo column alignment fixed.** Several Table demos contradicted the alignment rules described in the docs — numeric columns rendered left-aligned, action menus centered under left-aligned headers. The `action-menu`, `table-editable`, `table-links`, and `table-sticky` demos now follow the documented "numeric right, text left, center only for icons or status" rules.
+- **Storybook decorators migrated from `<Card>` to `<Panel>`** — internal cleanup so component stories that need a framing surface render through `<Panel>`, matching how page-level sections are now built. Behavior of the components themselves doesn't change; just what you see in Storybook.
 
 ---
 
-v18 is a clear break from the shape of v17, and that is on purpose. The charcoal palette, renamed tokens, retired `<Multiselect>`, and cleaned-up surface utilities all point toward the same goal: a design system that describes its intent clearly and doesn't carry duplicate mental models from earlier iterations.
+v18 is a clear break from the shape of v17, and that is on purpose. The charcoal palette, renamed tokens, retired `<Multiselect>`, cleaned-up surface utilities, and the move to page-level scroll in `<AppLayout>` all point toward the same goal: a design system that describes its intent clearly and doesn't carry duplicate mental models from earlier iterations.
 
 There is more coming. The token work in particular is ongoing. Expect further refinements in v18.x as we use the new palette and naming in real product surfaces and learn where the edges still need to move. As always, we welcome your feedback.
