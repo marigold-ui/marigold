@@ -63,7 +63,7 @@ const _Radio = ({
       ref={ref}
       className={cn(
         'group/radio',
-        'relative flex items-center gap-[1ch]',
+        'relative flex items-start gap-[1ch]',
         width || groupWidth || 'w-full',
         classNames.container
       )}

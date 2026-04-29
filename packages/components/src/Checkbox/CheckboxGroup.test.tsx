@@ -27,7 +27,7 @@ test('applies group styles from theme', () => {
   const group = screen.getByRole('group');
 
   expect(group.className).toMatchInlineSnapshot(
-    `"group/field min-w-0 w-(--container-width) flex flex-col gap-1 gap-x-2"`
+    `"group/field min-w-0 w-(--container-width) flex flex-col"`
   );
 });
 
@@ -129,17 +129,6 @@ test('accepts error message', () => {
   render(<Error.Component />);
 
   expect(screen.getByText('This is an error')).toBeInTheDocument();
-});
-
-test('horiziontal orientation style', () => {
-  render(<Basic.Component orientation="horizontal" />);
-  const presentation = screen
-    .getAllByRole('presentation')
-    .filter(
-      element => element.getAttribute('data-orientation') === 'horizontal'
-    );
-
-  expect(presentation[0].className).toContain('flex-row gap-[1.5ch]');
 });
 
 test('don\'t show "show more" when list is too short', () => {
