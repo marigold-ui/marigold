@@ -3,13 +3,13 @@
 import { eventTypes } from '@/lib/data/eventTypes';
 import {
   Button,
+  Checkbox,
   Form,
   Inline,
   Panel,
   Radio,
   Select,
   Stack,
-  Switch,
   Text,
   TextArea,
   TextField,
@@ -125,10 +125,9 @@ export const GeneralSettings = () => {
                 description="Used in event URLs, e.g. riverside-events.de/riverside-summer-fest."
                 width={56}
               />
-              <Switch
-                variant="settings"
+              <Checkbox
                 label="Enable search engine indexing"
-                defaultSelected
+                defaultChecked
                 description="Allows search engines to index and display your public event pages in search results. Disable this for internal company events or if attendees should only register through direct links."
               />
             </Stack>

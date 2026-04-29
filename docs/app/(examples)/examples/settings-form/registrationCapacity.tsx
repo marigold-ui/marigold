@@ -2,11 +2,11 @@
 
 import {
   Button,
+  Checkbox,
   Form,
   NumberField,
   Panel,
   Stack,
-  Switch,
   TextField,
   useToast,
 } from '@marigold/components';
@@ -42,19 +42,16 @@ export const RegistrationCapacity = () => {
               description="When this limit is reached, new registrations are blocked unless a waitlist is enabled."
               width={32}
             />
-            <Switch
-              variant="settings"
+            <Checkbox
               label="Enable waitlist by default"
               description="Automatically adds a waitlist when an event reaches capacity. Attendees who join the waitlist are notified in order as spots become available."
             />
-            <Switch
-              variant="settings"
+            <Checkbox
               label="Require registration approval"
               description="Each registration must be manually approved by an organizer before the attendee receives a confirmation. Use this for invite-only events or when you need to verify attendee eligibility."
             />
-            <Switch
-              variant="settings"
-              defaultSelected
+            <Checkbox
+              defaultChecked
               label="Send confirmation emails automatically"
               description="Sends a booking confirmation to attendees immediately after registration. When disabled, confirmations must be triggered manually from the attendee list."
             />

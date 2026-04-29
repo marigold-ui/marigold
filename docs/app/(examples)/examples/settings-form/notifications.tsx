@@ -9,7 +9,6 @@ import {
   Panel,
   Select,
   Stack,
-  Switch,
   Text,
   TextField,
   useToast,
@@ -107,8 +106,7 @@ export const Notifications = () => {
               description="Send a copy of every notification to this address, e.g. a shared team inbox like events@riverside-events.de."
               width={80}
             />
-            <Switch
-              variant="settings"
+            <Checkbox
               label="Pause all notifications"
               description="Temporarily stops all event notification emails. Useful during initial setup or bulk imports. Activity that occurs while paused is not queued and will not be sent retroactively."
             />
@@ -124,10 +122,9 @@ export const Notifications = () => {
           </Panel.CollapsibleHeader>
           <Panel.CollapsibleContent>
             <Stack space="regular">
-              <Switch
-                variant="settings"
+              <Checkbox
                 label="Enable quiet hours"
-                defaultSelected
+                defaultChecked
                 description="When active, digest emails are held until the quiet window ends and delivered as a single summary."
               />
               <Inline space="related">
