@@ -187,9 +187,7 @@ const SecurityPage = () => (
         </Panel>
 
         <Panel variant="destructive">
-          <Panel.Header>
-            <Panel.Title>Danger zone</Panel.Title>
-          </Panel.Header>
+          <Panel.Title>Danger zone</Panel.Title>
           <Panel.Content>
             <Stack space={1}>
               <Text weight="semibold">Revoke all API keys</Text>

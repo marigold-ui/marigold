@@ -13,9 +13,6 @@ const config = {
     version: componentsPkg.version,
   },
   reactStrictMode: true,
-  // Needed for markdown parser plugins that use ts-morph on the server
-  serverExternalPackages: ['ts-morph', 'typescript'],
-  // Ensure embeddings.json is bundled with the /mcp serverless function on Vercel
   outputFileTracingIncludes: {
     '/mcp': ['./lib/markdown/embeddings.json'],
   },
@@ -24,10 +21,6 @@ const config = {
       {
         source: '/docs/:path*.mdx',
         destination: '/llms.mdx/docs/:path*',
-      },
-      {
-        source: '/:path(.*)\\.md',
-        destination: '/api/md/:path.md',
       },
     ];
   },

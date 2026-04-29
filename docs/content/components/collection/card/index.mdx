@@ -3,21 +3,22 @@ title: Card
 description: Component to support the structuring of information.
 ---
 
+import { CardAnatomy } from './card-anatomy';
+
 A `<Card>` component is a versatile UI element used to display content in a concise, visually organized format.
 It's typically presented as a rectangular box with various content elements such as images, text, buttons, and icons.
 Cards are ideal for grouping related information and making it easily digestible, often used to display previews of articles, products, user profiles, and other content types.
 
 ## Anatomy
 
-The `<Card>` component consists of a container which is basically a `<div>`. You can pass any content and components as `children` to the component.
+The `<Card>` component is a compound component made up of several sub-components that map to distinct visual areas of the card.
 
-<ImageZoom
-  src="/card/card-anatomy.jpg"
-  alt="Anatomy of card component"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<CardAnatomy />
+
+- **Card.Preview**: Optional full-bleed area at the top, typically used for images or media.
+- **Card.Header**: Area for the card title and supporting labels or badges.
+- **Card.Body**: Main content area for descriptive text or form elements.
+- **Card.Footer**: Bottom area for actions such as buttons or metadata.
 
 ## Appearance
 
@@ -37,22 +38,82 @@ The Card component supports variants for general content grouping as well as acc
 
 The `<Card>` component enhances the visual hierarchy and organization of content, making it easier for users to engage with various pieces of information.
 
-## Elevation layer
+Cards use a compound component pattern, you compose the card layout using the provided sub-components. Not all slots need to be used: combine only the ones relevant to your content.
 
-`<Card>` uses the raised elevation layer to create a visual distinction between the card and the background.
-According to our [elevation guidelines](/foundations/elevation#raised), the card should be placed on the default page background (`bg-background`).
+### Card.Preview
+
+Use `Card.Preview` to display an image or thumbnail that stretches edge-to-edge across the top of the card, without any padding. Typical use cases are venue photos, product images, or event covers.
+
+<ComponentDemo name="card-elevation" />
+
+### Card.Header
+
+Use `Card.Header` for the card's title and supporting meta information like badges or labels.
+
+```tsx
+<Card>
+  <Card.Header>
+    <Headline level={3}>Event Title</Headline>
+    <Badge variant="info">New</Badge>
+  </Card.Header>
+  <Card.Body>Details about the event.</Card.Body>
+</Card>
+```
+
+### Card.Body
+
+Use `Card.Body` for the main content area of the card, descriptive text, form elements, or any primary content.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `Card.Preview` for images so they appear full-bleed at the top of the
+      card.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't nest images inside `Card.Body` when they're meant to be the card's
+      main visual.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Card.Footer
+
+Use `Card.Footer` for actions or metadata displayed at the bottom of the card, such as buttons or secondary text.
+
+```tsx
+<Card>
+  <Card.Body>Card content</Card.Body>
+  <Card.Footer>
+    <Button>Primary Action</Button>
+  </Card.Footer>
+</Card>
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Combine only the sub-components you need, not every slot must be used.
+    </DoDescription>
+  </Do>
+</GuidelineTiles>
+
+The following example shows a typical card composition using all available slots.
 
 <ComponentDemo name="card-elevation" />
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use Card on top of the default page background.
+      Use Card on top of the default surface layer so the raised shadow is
+      visible.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't use card in cards or same elevation layers.
+      Don't use card in cards or on same-elevation layers.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -64,6 +125,22 @@ According to our [elevation guidelines](/foundations/elevation#raised), the card
 ### Card
 
 <AutoTypeTable path="Card" name="CardProps" />
+
+### Card.Preview
+
+<AutoTypeTable path="Card/CardPreview" name="CardPreviewProps" />
+
+### Card.Title
+
+<AutoTypeTable path="Card/CardHeader" name="CardHeaderProps" />
+
+### Card.Body
+
+<AutoTypeTable path="Card/CardBody" name="CardBodyProps" />
+
+### Card.Footer
+
+<AutoTypeTable path="Card/CardFooter" name="CardFooterProps" />
 
 ## Related
 

@@ -20,9 +20,7 @@ export const LocationSettings = () => {
   );
   return (
     <Panel size="form">
-      <Panel.Header>
-        <Panel.Title>Location & Capacity</Panel.Title>
-      </Panel.Header>
+      <Panel.Title>Location & Capacity</Panel.Title>
       <Panel.Content>
         <Stack space="group">
           <TextField
