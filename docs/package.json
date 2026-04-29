@@ -40,7 +40,7 @@
     "fumadocs-ui": "16.6.5",
     "jose": "6.2.2",
     "lucide-react": "^1.7.0",
-    "mcp-handler": "1.0.7",
+    "mcp-handler": "1.1.0",
     "motion": "12.34.3",
     "next": "16.2.3",
     "nuqs": "2.8.8",
