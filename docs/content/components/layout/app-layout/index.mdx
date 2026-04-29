@@ -4,7 +4,7 @@ description: A CSS Grid container with three named areas sidebar, header, and ma
 badge: beta
 ---
 
-`<AppLayout>` is a CSS Grid container that divides the viewport into three areas: a full-height sidebar on the left, a fixed header on the top right, and a scrollable main area below the header. The grid fills `100dvh` and only `<AppLayout.Main>` scrolls. The sidebar and header stay in place.
+`<AppLayout>` is a CSS Grid container that divides the viewport into three areas: a sidebar on the left, a header on the top right, and the main content below the header. The document itself scrolls; the sidebar sticks to the viewport with `position: sticky` and the header stays pinned at the top via `<TopNavigation>`'s own sticky positioning.
 
 `<AppLayout.Sidebar>` renders a [`<Sidebar>`](/components/navigation/sidebar) internally and `<AppLayout.Header>` renders a [`<TopNavigation>`](/components/navigation/topnavigation) internally, so you can place their sub-components directly without extra nesting.
 
@@ -37,7 +37,7 @@ badge: beta
 </Sidebar.Provider>
 ```
 
-<ComponentDemo name="app-layout-basic" />
+<ComponentDemo name="app-layout-basic" background="page" />
 
 ### Sidebar.Provider
 
@@ -47,7 +47,9 @@ Pass `defaultOpen` to start with the sidebar expanded. Without it, the sidebar s
 
 ### Scrolling
 
-The header always stays visible, no matter how far users scroll. Only the content inside `<AppLayout.Main>` is scrollable. The sidebar also stays in place, but its navigation area scrolls independently when it has too many items. This is handled by the [Sidebar](/components/navigation/sidebar) component internally.
+The page itself scrolls — `<AppLayout>` does not create an interior scroll container. The sidebar and header stick to the viewport via `position: sticky`, so they stay visible as the user scrolls the page. The sidebar's navigation area scrolls independently when it has too many items to fit in the viewport; this is handled by the [Sidebar](/components/navigation/sidebar) component internally.
+
+Page-level scroll keeps native browser behaviour (mobile URL-bar collapse, pull-to-refresh, scroll restoration on back/forward, `Cmd+F` find-in-page, and anchor links) working without extra wiring.
 
 <GuidelineTiles>
   <Dont>

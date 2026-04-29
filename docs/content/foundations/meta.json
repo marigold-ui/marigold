@@ -2,7 +2,7 @@
   "pages": [
     "component-principles",
     "accessibility",
-    "design-tokens",
+    "token-overview",
     "elevation",
     "layouts",
     "icons",

@@ -159,8 +159,6 @@ export type { ActionMenuProps } from './Menu/ActionMenu';
 export { Menu } from './Menu/Menu';
 export type { MenuProps } from './Menu/Menu';
 
-export { Multiselect } from './Multiselect/Multiselect';
-
 export { NumberField } from './NumberField/NumberField';
 export type { NumberFieldProps } from './NumberField/NumberField';
 
@@ -175,6 +173,9 @@ export type { NonModalProps } from './Overlay/NonModal';
 
 export { Underlay } from './Overlay/Underlay';
 export type { UnderlayProps } from './Overlay/Underlay';
+
+export { Panel } from './Panel/Panel';
+export type { PanelProps } from './Panel/Panel';
 
 export { Pagination } from './Pagination/Pagination';
 export type { PaginationProps } from './Pagination/Pagination';

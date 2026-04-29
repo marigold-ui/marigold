@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
@@ -8,12 +9,16 @@ import { Text } from '../Text/Text';
 const meta = preview.meta({
   title: 'Components/Inset',
   component: Inset,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     space: {
       control: {
         type: 'select',
       },
       options: [
+        'collapsed',
         'square-tight',
         'square-snug',
         'square-regular',
@@ -37,6 +42,7 @@ const meta = preview.meta({
         type: 'select',
       },
       options: [
+        'collapsed',
         'padding-tight',
         'padding-snug',
         'padding-regular',
@@ -50,6 +56,7 @@ const meta = preview.meta({
         type: 'select',
       },
       options: [
+        'collapsed',
         'padding-tight',
         'padding-snug',
         'padding-regular',
@@ -80,4 +87,20 @@ export const Basic = meta.story({
       </Inset>
     </Card>
   ),
+});
+
+export const Collapsed = meta.story({
+  tags: ['component-test'],
+  args: {
+    space: 'collapsed',
+  },
+  render: args => (
+    <Inset {...args}>
+      <Text>Flush content</Text>
+    </Inset>
+  ),
+  play: async ({ canvas }) => {
+    const inset = canvas.getByText('Flush content').parentElement!;
+    expect(getComputedStyle(inset).padding).toBe('0px');
+  },
 });

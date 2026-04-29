@@ -2,7 +2,12 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
   table: cva({
-    base: ['text-sm bg-background'],
+    base: [
+      'text-sm bg-surface',
+      // Edge padding for Panel integration — resolves to --panel-px
+      // when inside a Panel with bleed, otherwise falls back to --cell-x-padding
+      '[--cell-edge-padding:var(--panel-px,var(--cell-x-padding))]',
+    ],
     variants: {
       variant: {
         default: '',
@@ -39,7 +44,7 @@ export const Table: ThemeComponent<'Table'> = {
       'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
       'disabled:cursor-not-allowed',
-      'data-hovered:cursor-pointer data-hovered:bg-muted',
+      'data-hovered:cursor-pointer data-hovered:ui-state-hover',
       'dragging:opacity-50 dragging:transform-gpu',
     ],
     variants: {
@@ -49,8 +54,14 @@ export const Table: ThemeComponent<'Table'> = {
           '**:not-last:[[role=rowheader]]:border-r **:not-last:[[role=rowheader]]:border-border',
           '**:not-last:[[role=gridcell]]:border-r **:not-last:[[role=gridcell]]:border-border',
         ],
-        admin: ['bg-access-admin'],
-        master: ['bg-access-master'],
+        admin: [
+          'bg-access-admin border-access-admin-accent!',
+          '*:border-t *:border-access-admin-accent',
+        ],
+        master: [
+          'bg-access-master border-access-master-accent!',
+          '*:border-t *:border-access-master-accent',
+        ],
       },
     },
     defaultVariants: {
@@ -62,17 +73,18 @@ export const Table: ThemeComponent<'Table'> = {
   head: cva({
     base: [
       // for sticky header
-      'bg-background/90',
+      'bg-surface/90',
       'border-border border-b',
     ],
   }),
   column: cva({
     base: [
       'h-(--header-height) px-(--cell-x-padding) py-0 align-middle',
-      'font-medium text-muted-foreground',
+      'first:ps-(--cell-edge-padding) last:pe-(--cell-edge-padding)',
+      'font-medium text-secondary',
       'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
-      'aria-[sort]:hover:bg-muted aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
+      'aria-[sort]:hover:ui-state-hover aria-[sort]:hover:cursor-pointer',
     ],
     variants: {
       variant: {
@@ -87,42 +99,45 @@ export const Table: ThemeComponent<'Table'> = {
   }),
 
   // <tbody>
-  body: cva({ base: ['bg-background'] }),
+  body: cva({}),
   cell: cva({
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',
+      'first:ps-(--cell-edge-padding) last:pe-(--cell-edge-padding)',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
       'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/50',
       '**:data-cell-content:outline-none',
+      'data-editable:hover:ui-state-hover',
+      'data-editable:has-[:focus-visible]:ui-state-hover',
     ],
   }),
 
   // Drag and drop
   dragHandle: cva({
     base: [
-      'text-muted-foreground rounded size-4',
+      'text-secondary rounded size-4',
       '[&_svg]:size-4',
       'focus-visible:ui-state-focus outline-none',
     ],
   }),
   dragPreview: cva({
     base: [
-      'px-4 py-3 bg-brand rounded-lg shadow-elevation-overlay',
-      'text-sm text-brand-foreground',
+      'px-4 py-3 bg-primary rounded-lg shadow-elevation-overlay',
+      'text-sm text-primary-foreground',
     ],
   }),
   dragPreviewCounter: cva({
     base: [
       'flex items-center justify-center rounded-full',
-      'bg-brand-foreground px-2',
-      'text-xs font-medium leading-normal text-brand',
+      'bg-primary-foreground px-2',
+      'text-xs font-medium leading-normal text-primary',
     ],
   }),
   dropIndicator: cva({
     base: [
       'relative',
       'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-border',
-      'drop-target:before:z-10 drop-target:before:bg-brand',
+      'drop-target:before:z-10 drop-target:before:bg-primary',
     ],
   }),
 
@@ -136,36 +151,36 @@ export const Table: ThemeComponent<'Table'> = {
   editTrigger: cva({
     base: [
       'flex items-center justify-center',
-      'text-muted-foreground',
-      'size-button aspect-square rounded-surface transition-[color,background,transform]',
+      'text-secondary',
+      'size-control aspect-square rounded-surface transition-[color,background,transform]',
       'ui-interactive',
       'ui-press',
-      'hover:bg-current/10',
+      'hover:ui-state-hover-ghost',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5',
     ],
   }),
   editCancel: cva({
     base: [
       'inline-flex items-center justify-center',
-      'sm:text-muted-foreground font-medium',
-      'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
+      'sm:text-secondary font-medium',
+      'text-sm h-control-small sm:size-control sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'ml-1.5', // some extra spacing between buttons and field
       'focus-visible:ui-state-focus outline-none',
       'ui-press',
-      'hover:bg-current/10',
+      'hover:ui-state-hover-ghost',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5',
     ],
   }),
   editSave: cva({
     base: [
       'inline-flex items-center justify-center',
-      'sm:text-muted-foreground font-medium',
-      'text-sm h-button-small sm:size-button sm:aspect-square rounded-surface transition-[color,background,transform]',
+      'sm:text-secondary font-medium',
+      'text-sm h-control-small sm:size-control sm:aspect-square rounded-surface transition-[color,background,transform]',
       'cursor-pointer',
       'focus-visible:ui-state-focus outline-none',
       'ui-press',
-      'hover:bg-current/10',
+      'hover:ui-state-hover-ghost',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4.5',
     ],
   }),

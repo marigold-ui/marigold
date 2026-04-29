@@ -1,11 +1,5 @@
-import {
-  ForwardRefExoticComponent,
-  ReactNode,
-  Ref,
-  RefAttributes,
-  forwardRef,
-  useContext,
-} from 'react';
+import type { ReactNode, Ref } from 'react';
+import { use } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
@@ -56,7 +50,7 @@ const AutocompleteInput = ({
   ref,
   autoFocus,
 }: AutocompleteInputProps) => {
-  const state = useContext(ComboBoxStateContext);
+  const state = use(ComboBoxStateContext);
   // needed to get the triggerwidth on the right button
   const classNames = useClassNames({ component: 'ComboBox' });
 
@@ -117,9 +111,10 @@ export interface AutocompleteProps
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * Note: `"fit"` is not supported because the virtualizer controls item sizing.
    * @default 'full'
    */
-  width?: WidthProp['width'];
+  width?: Exclude<WidthProp['width'], 'fit'>;
 
   /**
    * The value of the input (controlled).
@@ -190,104 +185,85 @@ export interface AutocompleteProps
   onSubmit?: (value: string | number | null, key: Key | null) => void;
 }
 
-interface AutocompleteComponent extends ForwardRefExoticComponent<
-  AutocompleteProps & RefAttributes<HTMLInputElement>
-> {
-  /**
-   * Options for the Combobox.
-   */
-  Option: typeof ListBox.Item;
-
-  /**
-   * Section for the Combobox, to put options in.
-   */
-  Section: typeof ListBox.Section;
-}
-
 // Component
 // ---------------
-const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
-  (
-    {
-      children,
-      defaultValue,
-      value,
-      disabled,
-      error,
-      readOnly,
-      required,
-      emptyState,
-      loading,
-      onChange,
-      onClear,
-      onSubmit,
-      ...rest
-    }: AutocompleteProps,
-    ref
-  ) => {
-    const props: RAC.ComboBoxProps<object> = {
-      onSelectionChange: key => key !== null && onSubmit?.(key, null),
-      defaultInputValue: defaultValue,
-      inputValue: value,
-      onInputChange: onChange,
-      allowsCustomValue: true,
-      isDisabled: disabled,
-      isInvalid: error,
-      isReadOnly: readOnly,
-      isRequired: required,
-      ...rest,
-    };
+const AutocompleteBase = ({
+  children,
+  defaultValue,
+  value,
+  disabled,
+  error,
+  readOnly,
+  required,
+  emptyState,
+  loading,
+  onChange,
+  onClear,
+  onSubmit,
+  ref,
+  ...rest
+}: AutocompleteProps & { ref?: Ref<HTMLInputElement> }) => {
+  const props: RAC.ComboBoxProps<object> = {
+    onSelectionChange: key => key !== null && onSubmit?.(key, null),
+    defaultInputValue: defaultValue,
+    inputValue: value,
+    onInputChange: onChange,
+    allowsCustomValue: true,
+    isDisabled: disabled,
+    isInvalid: error,
+    isReadOnly: readOnly,
+    isRequired: required,
+    ...rest,
+  };
 
-    const stringFormatter = useLocalizedStringFormatter(intlMessages);
-    const isSmallScreen = useSmallScreen();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const isSmallScreen = useSmallScreen();
 
-    return (
-      <FieldBase as={ComboBox} ref={ref} {...props}>
-        {isSmallScreen ? (
-          <MobileAutocomplete
-            placeholder={rest.placeholder}
-            label={rest.label}
-            emptyState={emptyState}
-            input={
-              <AutocompleteInput
-                loading={loading}
-                onSubmit={onSubmit}
-                onClear={onClear}
-                ref={ref}
-                autoFocus
-              />
-            }
-          >
-            {children}
-          </MobileAutocomplete>
-        ) : (
-          <>
+  return (
+    <FieldBase as={ComboBox} ref={ref} {...props}>
+      {isSmallScreen ? (
+        <MobileAutocomplete
+          placeholder={rest.placeholder}
+          label={rest.label}
+          emptyState={emptyState}
+          input={
             <AutocompleteInput
               loading={loading}
               onSubmit={onSubmit}
               onClear={onClear}
               ref={ref}
+              autoFocus
             />
-            <Popover>
-              <ListBox
-                virtualized
-                renderEmptyState={() =>
-                  emptyState ?? (
-                    <Center>{stringFormatter.format('noResultsFound')}</Center>
-                  )
-                }
-              >
-                {children}
-              </ListBox>
-            </Popover>
-          </>
-        )}
-      </FieldBase>
-    );
-  }
-) as AutocompleteComponent;
-
-_Autocomplete.Option = ListBox.Item;
-_Autocomplete.Section = ListBox.Section;
-
-export { _Autocomplete as Autocomplete };
+          }
+        >
+          {children}
+        </MobileAutocomplete>
+      ) : (
+        <>
+          <AutocompleteInput
+            loading={loading}
+            onSubmit={onSubmit}
+            onClear={onClear}
+            ref={ref}
+          />
+          <Popover>
+            <ListBox
+              virtualized
+              renderEmptyState={() =>
+                emptyState ?? (
+                  <Center>{stringFormatter.format('noResultsFound')}</Center>
+                )
+              }
+            >
+              {children}
+            </ListBox>
+          </Popover>
+        </>
+      )}
+    </FieldBase>
+  );
+};
+export const Autocomplete = Object.assign(AutocompleteBase, {
+  Option: ListBox.Item,
+  Section: ListBox.Section,
+});

@@ -3,9 +3,9 @@
 import {
   Badge,
   Card,
-  Headline,
   Inline,
   Inset,
+  Panel,
   Stack,
   Table,
   Text,
@@ -56,7 +56,7 @@ export const DashboardContent = () => (
     <Stack space={4}>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map(stat => (
-          <Card key={stat.title} p={4}>
+          <Card key={stat.title}>
             <Stack space={1}>
               <Text size="xs" variant="muted">
                 {stat.title}
@@ -78,39 +78,48 @@ export const DashboardContent = () => (
           </Card>
         ))}
       </div>
-      <Headline level={3}>Recent orders</Headline>
-      <Table aria-label="Recent orders" selectionMode="none">
-        <Table.Header>
-          <Table.Column>Order</Table.Column>
-          <Table.Column>Customer</Table.Column>
-          <Table.Column>Status</Table.Column>
-          <Table.Column>Amount</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          {orders.map(order => (
-            <Table.Row key={order.id}>
-              <Table.Cell>
-                <Text weight="bold">{order.id}</Text>
-              </Table.Cell>
-              <Table.Cell>{order.customer}</Table.Cell>
-              <Table.Cell>
-                <Badge
-                  variant={
-                    order.status === 'Completed'
-                      ? 'success'
-                      : order.status === 'Processing'
-                        ? 'info'
-                        : 'warning'
-                  }
-                >
-                  {order.status}
-                </Badge>
-              </Table.Cell>
-              <Table.Cell>${order.amount}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      <Panel>
+        <Panel.Header>
+          <Panel.Title>Recent orders</Panel.Title>
+          <Panel.Description>
+            The five most recent transactions across all products.
+          </Panel.Description>
+        </Panel.Header>
+        <Panel.Content bleed>
+          <Table aria-label="Recent orders" selectionMode="none">
+            <Table.Header>
+              <Table.Column>Order</Table.Column>
+              <Table.Column>Customer</Table.Column>
+              <Table.Column>Status</Table.Column>
+              <Table.Column>Amount</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {orders.map(order => (
+                <Table.Row key={order.id}>
+                  <Table.Cell>
+                    <Text weight="bold">{order.id}</Text>
+                  </Table.Cell>
+                  <Table.Cell>{order.customer}</Table.Cell>
+                  <Table.Cell>
+                    <Badge
+                      variant={
+                        order.status === 'Completed'
+                          ? 'success'
+                          : order.status === 'Processing'
+                            ? 'info'
+                            : 'warning'
+                      }
+                    >
+                      {order.status}
+                    </Badge>
+                  </Table.Cell>
+                  <Table.Cell>${order.amount}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </Panel.Content>
+      </Panel>
     </Stack>
   </Inset>
 );

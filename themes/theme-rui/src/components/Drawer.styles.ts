@@ -13,7 +13,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
       'w-full relative grid-rows-[auto_1fr_auto]',
       'rounded-xl ui-surface util-scrollbar',
       'shadow-[var(--shadow-elevation-overlay),0_0_3px_1px_oklch(0_0_0/0.06)]',
-      '[--ui-border-color:oklch(from_var(--color-surface-border)_calc(l-0.1)_c_h)]',
+      '[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
       'h-full',
     ],
     variants: {

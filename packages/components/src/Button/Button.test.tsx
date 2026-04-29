@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
 import { Basic, WithIcon } from './Button.stories';
 
 test('add icon in button works as expected', () => {
@@ -13,10 +12,16 @@ test('add icon in button works as expected', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLButtonElement>();
-  render(<Basic.Component ref={ref} />);
+  let refValue: HTMLButtonElement | null = null;
+  render(
+    <Basic.Component
+      ref={node => {
+        refValue = node;
+      }}
+    />
+  );
 
-  expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+  expect(refValue).toBeInstanceOf(HTMLButtonElement);
 });
 
 test('supports disabled prop', () => {

@@ -1,11 +1,6 @@
-import {
-  ForwardRefExoticComponent,
-  ReactNode,
-  RefAttributes,
-  forwardRef,
-} from 'react';
+import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Radio } from 'react-aria-components';
+import { Radio as RACRadio } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
@@ -26,6 +21,7 @@ export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
    * @default false
    */
   disabled?: RAC.RadioProps['isDisabled'];
+  ref?: Ref<HTMLLabelElement>;
 }
 
 interface IconProps {
@@ -46,56 +42,53 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
   </div>
 );
 
-const _Radio = forwardRef<HTMLLabelElement, RadioProps>(
-  ({ value, disabled, width, children, ...props }, ref) => {
-    const { variant, size, width: groupWidth } = useRadioGroupContext();
+const _Radio = ({
+  value,
+  disabled,
+  width,
+  children,
+  ref,
+  ...props
+}: RadioProps) => {
+  const { variant, size, width: groupWidth } = useRadioGroupContext();
 
-    const classNames = useClassNames({
-      component: 'Radio',
-      variant: variant || props.variant,
-      size: size || props.size,
-    });
+  const classNames = useClassNames({
+    component: 'Radio',
+    variant: variant || props.variant,
+    size: size || props.size,
+  });
 
-    return (
-      <Radio
-        ref={ref}
-        className={cn(
-          'group/radio',
-          'relative flex items-center gap-[1ch]',
-          width || groupWidth || 'w-full',
-          classNames.container
-        )}
-        value={value}
-        isDisabled={disabled}
-        {...props}
-      >
-        {({ isSelected }) => (
-          <>
-            <Icon
-              checked={isSelected}
-              className={cn(
-                disabled ? 'cursor-not-allowed' : 'cursor-pointer',
-                classNames.radio
-              )}
-            />
-            <div className={classNames.label}>{children}</div>
-          </>
-        )}
-      </Radio>
-    );
-  }
-) as RadioComponent;
+  return (
+    <RACRadio
+      ref={ref}
+      className={cn(
+        'group/radio',
+        'relative flex items-center gap-[1ch]',
+        width || groupWidth || 'w-full',
+        classNames.container
+      )}
+      value={value}
+      isDisabled={disabled}
+      {...props}
+    >
+      {({ isSelected }) => (
+        <>
+          <Icon
+            checked={isSelected}
+            className={cn(
+              disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+              classNames.radio
+            )}
+          />
+          <div className={classNames.label}>{children}</div>
+        </>
+      )}
+    </RACRadio>
+  );
+};
 
-export { _Radio as Radio };
+const _MgRadio = Object.assign(_Radio, {
+  Group: RadioGroup,
+});
 
-_Radio.Group = RadioGroup;
-
-/**
- * We need this so that TypeScripts allows us to add
- * additional properties to the component (function).
- */
-export interface RadioComponent extends ForwardRefExoticComponent<
-  RadioProps & RefAttributes<HTMLLabelElement>
-> {
-  Group: typeof RadioGroup;
-}
+export { _MgRadio as Radio };

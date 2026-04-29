@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, Sections } from './Select.stories';
 
@@ -101,12 +101,22 @@ test('set width via props', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLButtonElement>();
-  render(
-    <Basic.Component label="Label" data-testid="select" ref={ref as any} />
-  );
+  const ref: RefObject<HTMLButtonElement | null> = { current: null };
+  render(<Basic.Component label="Label" data-testid="select" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
+});
+
+test('does not allow width="fit"', () => {
+  render(
+    // @ts-expect-error "fit" is not allowed because virtualizer controls item sizing
+    <Basic.Component label="Label" width="fit" />
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getAllByText('Label')[0].parentElement;
+
+  expect(container).not.toHaveClass('w-fit');
 });
 
 test('error is there', () => {
