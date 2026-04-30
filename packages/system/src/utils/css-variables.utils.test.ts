@@ -193,7 +193,7 @@ describe('createWidthVar', () => {
     'should throw an error for unsupported value "%s"',
     value => {
       expect(() => createWidthVar('width', value)).toThrowError(
-        `Unsupported width value: "${value}". Expected a keyword (fit, min, max, full, screen, auto, svh, lvh, dvh, px, container), a scale number, or a fraction (e.g., "1/2").`
+        `Unsupported width value: "${value}". Expected a keyword (fit, min, max, full, auto, svh, lvh, dvh, px, screen, container), a scale number, or a fraction (e.g., "1/2").`
       );
     }
   );
@@ -228,7 +228,7 @@ describe('createHeightVar', () => {
     'should throw an error for unsupported value "%s"',
     value => {
       expect(() => createHeightVar('height', value)).toThrowError(
-        `Unsupported height value: "${value}". Expected a keyword (fit, min, max, full, screen, auto, svh, lvh, dvh, px), a scale number, or a fraction (e.g., "1/2").`
+        `Unsupported height value: "${value}". Expected a keyword (fit, min, max, full, auto, svh, lvh, dvh, px, screen), a scale number, or a fraction (e.g., "1/2").`
       );
     }
   );

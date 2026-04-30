@@ -1,10 +1,50 @@
 'use client';
 
-import { Inline, Stack, alignment, cn, paddingSpace } from '@/ui';
+import { Inline, Stack, alignment, cn } from '@/ui';
 import { Card } from 'fumadocs-ui/components/card';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
+
+// Mirrors the spacing scale exposed by @marigold/system's `Scale` / `ScaleValue`
+// types. Kept as a runtime list here because the docs render a class string
+// per key (`pl-${key}`), which Tailwind needs as static literals.
+const SPACING_SCALE: readonly string[] = [
+  '0',
+  '0.5',
+  '1',
+  '1.5',
+  '2',
+  '2.5',
+  '3',
+  '3.5',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '14',
+  '16',
+  '20',
+  '24',
+  '28',
+  '32',
+  '36',
+  '40',
+  '44',
+  '48',
+  '52',
+  '56',
+  '60',
+  '64',
+  '72',
+  '80',
+  '96',
+];
 
 export const AlignmentsX = () => {
   return (
@@ -153,23 +193,21 @@ export const Spacing = () => {
         </tr>
       </thead>
       <tbody>
-        {Object.keys(paddingSpace)
-          .sort((a, b) => parseFloat(a) - parseFloat(b))
-          .map(key => (
-            <tr key={key}>
-              <td>
-                <code className="before:content-none after:content-none">
-                  {key}
-                </code>
-              </td>
-              <td>{Number(key) * 4}px</td>
-              <td>
-                <div className={cn(`pl-${key}`, 'bg-slate-300')}>
-                  <div className="h-3 bg-white"></div>
-                </div>
-              </td>
-            </tr>
-          ))}
+        {SPACING_SCALE.map(key => (
+          <tr key={key}>
+            <td>
+              <code className="before:content-none after:content-none">
+                {key}
+              </code>
+            </td>
+            <td>{Number(key) * 4}px</td>
+            <td>
+              <div className={cn(`pl-${key}`, 'bg-slate-300')}>
+                <div className="h-3 bg-white"></div>
+              </div>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

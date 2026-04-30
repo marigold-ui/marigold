@@ -1,8 +1,5 @@
 import type { Scale } from './utils/css-variables.utils';
 
-/**
- * Fraction-based dimension values supported by `width`, `maxWidth`, and `height`.
- */
 type Fraction =
   | '1/2'
   | '1/3'
@@ -30,9 +27,6 @@ type Fraction =
   | '10/12'
   | '11/12';
 
-/**
- * Keywords shared by `width`, `maxWidth`, and `height`.
- */
 type DimensionKeyword =
   | 'auto'
   | 'full'
@@ -46,27 +40,22 @@ type DimensionKeyword =
   | 'px';
 
 type WidthKeyword = DimensionKeyword | 'container';
-type MaxWidthKeyword = DimensionKeyword | 'container';
-type HeightKeyword = DimensionKeyword;
 
 /**
- * Allowed values for the `width` style prop.
- *
- * Accepts the spacing scale (both numeric `4` and string `"4"`), fractional
- * widths (`"1/2"`, `"3/4"`, ...), and keyword sizes (`"full"`, `"fit"`, ...).
+ * Allowed values for the `width` style prop. Accepts the spacing scale (as
+ * either `4` or `"4"`), fractions (`"1/2"`), and keywords (`"full"`, `"fit"`,
+ * ...).
  */
 export type WidthValue = Scale | Fraction | WidthKeyword;
 
-/**
- * Allowed values for the `maxWidth` style prop. See {@link WidthValue}.
- */
-export type MaxWidthValue = Scale | Fraction | MaxWidthKeyword;
+/** Allowed values for the `maxWidth` style prop. See {@link WidthValue}. */
+export type MaxWidthValue = Scale | Fraction | WidthKeyword;
 
 /**
  * Allowed values for the `height` style prop. Like {@link WidthValue} but
  * without the `"container"` keyword.
  */
-export type HeightValue = Scale | Fraction | HeightKeyword;
+export type HeightValue = Scale | Fraction | DimensionKeyword;
 
 export const fontWeight = {
   thin: 'font-thin',

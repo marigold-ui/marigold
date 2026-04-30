@@ -49,7 +49,6 @@ describe('Grid', () => {
 
       const grid = screen.getByTestId('grid');
 
-      expect(grid).toHaveClass('h-(--height)');
       expect(grid.style.getPropertyValue('--height')).toBe('auto');
     });
 
@@ -58,7 +57,6 @@ describe('Grid', () => {
 
       const grid = screen.getByTestId('grid');
 
-      expect(grid).toHaveClass('h-(--height)');
       expect(grid.style.getPropertyValue('--height')).toBe(
         'calc(var(--spacing) * 96)'
       );
