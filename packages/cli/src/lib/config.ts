@@ -2,8 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-const DEFAULT_DOCS_URL =
-  'https://marigold-docs-git-marigold-cli-v1-marigold.vercel.app/';
+const DEFAULT_DOCS_URL = 'https://www.marigold-ui.io';
 const DEFAULT_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 export const docsUrl = (): string =>
