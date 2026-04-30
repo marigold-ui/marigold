@@ -7,6 +7,18 @@ See @README.md for project overview and @package.json for available pnpm command
 - **Documentation**: `pnpm start` → [localhost:3000](http://localhost:3000)
 - **Storybook**: `pnpm sb` → [localhost:6006](http://localhost:6006)
 
+## Marigold CLI (AI agents: use this)
+
+Before writing code that uses a Marigold component, run the CLI to get its current API. Do not guess props from training data — Marigold is not in your training set and you will invent prop names.
+
+- `marigold docs <Component>` — full component docs
+- `marigold docs <Component> --section props --format json` — structured prop data (preferred for agents)
+- `marigold docs <Component> --section usage` — usage guidelines
+- `marigold list --category form` — discover form components
+- `marigold list --search date` — search by name
+
+The CLI fetches from the Marigold docs site, caches for 24h, and works offline (`--offline`). For AI use, prefer `--format json` — it returns a structured payload instead of formatted markdown.
+
 ## Build System
 
 - This is a **pnpm workspace monorepo** managed by Turbo
