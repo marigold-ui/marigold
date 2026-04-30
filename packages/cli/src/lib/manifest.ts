@@ -21,20 +21,95 @@ export interface ManifestPage {
 }
 
 export interface Manifest {
-  version: string;
-  generatedAt: string;
+  version?: string;
+  generatedAt?: string;
   baseUrl: string;
   categories: ManifestCategory[];
   pages: ManifestPage[];
 }
 
+// Shape of the static manifest emitted by docs/scripts/build-manifest.mjs.
+// PR #5373 replaced the dynamic /api/manifest.json route handler with a
+// flat list of pages served from public/manifest.json.
+interface RawManifestPage {
+  name: string | null;
+  slug: string;
+  category: string;
+  description: string | null;
+  badge: string | null;
+  url: string;
+}
+
+interface RawManifest {
+  baseUrl: string;
+  pages: RawManifestPage[];
+}
+
+const CATEGORY_LABELS: Record<string, string> = {
+  application: 'Application',
+  layout: 'Layout',
+  actions: 'Actions',
+  form: 'Form',
+  collection: 'Collection',
+  navigation: 'Navigation',
+  overlay: 'Overlay',
+  content: 'Content',
+  formatters: 'Formatters',
+  'hooks-and-utils': 'Hooks and Utils',
+};
+
+const optional = <T>(value: T | null | undefined): T | undefined =>
+  value ?? undefined;
+
+const transformManifest = (raw: RawManifest): Manifest => {
+  const categoryMap = new Map<string, ManifestComponent[]>();
+  const standalonePages: ManifestPage[] = [];
+
+  for (const page of raw.pages) {
+    const slugParts = page.slug.split('/');
+    if (slugParts[0] === 'components' && slugParts.length >= 3) {
+      const categoryName = slugParts[1];
+      const components = categoryMap.get(categoryName) ?? [];
+      components.push({
+        name: page.name ?? slugParts.at(-1) ?? page.slug,
+        slug: page.slug,
+        description: optional(page.description),
+        badge: optional(page.badge),
+      });
+      categoryMap.set(categoryName, components);
+    } else {
+      standalonePages.push({
+        title: page.name ?? page.slug,
+        slug: page.slug,
+        description: optional(page.description),
+      });
+    }
+  }
+
+  const categories: ManifestCategory[] = [...categoryMap.entries()]
+    .map(([name, components]) => ({
+      name,
+      label: CATEGORY_LABELS[name] ?? name,
+      components: components.sort((a, b) => a.name.localeCompare(b.name)),
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+
+  standalonePages.sort((a, b) => a.slug.localeCompare(b.slug));
+
+  return {
+    baseUrl: raw.baseUrl,
+    categories,
+    pages: standalonePages,
+  };
+};
+
 export const loadManifest = async (
   options: CacheOptions = {}
 ): Promise<Manifest> => {
-  const url = `${docsUrl()}/api/manifest.json`;
+  const url = `${docsUrl()}/manifest.json`;
   const { value } = await fetchWithCache<Manifest>(
     url,
-    text => JSON.parse(text) as Manifest,
+    text => transformManifest(JSON.parse(text) as RawManifest),
     options
   );
   return value;
