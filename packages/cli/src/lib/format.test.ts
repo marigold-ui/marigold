@@ -35,6 +35,18 @@ describe('formatDocs', () => {
     const out = formatDocs(docs, 'markdown');
     expect(out).toContain('Button');
   });
+
+  it('strips terminal escape sequences from injected markdown', () => {
+    // Defense-in-depth: even if remote sanitization were bypassed, the
+    // formatter must not emit dangerous escapes in `plain` output.
+    const injected: ComponentDocs = {
+      ...docs,
+      markdown: '# Title\n\n\x1b]52;c;ZXZpbA==\x07\x1b[2J\x1b[Hgone',
+    };
+    const plain = formatDocs(injected, 'plain');
+    // eslint-disable-next-line no-control-regex
+    expect(plain).not.toMatch(/[\x1b\x07]/);
+  });
 });
 
 const manifest: Manifest = {

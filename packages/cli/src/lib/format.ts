@@ -5,12 +5,9 @@ import type {
   ManifestCategory,
   ManifestComponent,
 } from './manifest.js';
+import { stripAnsi } from './strip-ansi.js';
 
 export type OutputFormat = 'markdown' | 'json' | 'plain';
-
-const stripAnsi = (s: string): string =>
-  // eslint-disable-next-line no-control-regex
-  s.replace(/\x1b\[[0-9;]*m/g, '');
 
 const renderMarkdownToTerminal = (md: string): string => {
   const lines = md.split('\n');

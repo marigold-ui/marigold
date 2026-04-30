@@ -1,5 +1,6 @@
 import { type CacheOptions, fetchWithCache } from './cache.js';
 import { docsUrl } from './config.js';
+import { sanitizeRemote } from './strip-ansi.js';
 
 export interface ManifestComponent {
   name: string;
@@ -58,30 +59,31 @@ const CATEGORY_LABELS: Record<string, string> = {
   'hooks-and-utils': 'Hooks and Utils',
 };
 
-const optional = <T>(value: T | null | undefined): T | undefined =>
-  value ?? undefined;
+const clean = (value: string | null | undefined): string | undefined =>
+  value == null ? undefined : sanitizeRemote(value);
 
 const transformManifest = (raw: RawManifest): Manifest => {
   const categoryMap = new Map<string, ManifestComponent[]>();
   const standalonePages: ManifestPage[] = [];
 
   for (const page of raw.pages) {
-    const slugParts = page.slug.split('/');
+    const slug = sanitizeRemote(page.slug);
+    const slugParts = slug.split('/');
     if (slugParts[0] === 'components' && slugParts.length >= 3) {
       const categoryName = slugParts[1];
       const components = categoryMap.get(categoryName) ?? [];
       components.push({
-        name: page.name ?? slugParts.at(-1) ?? page.slug,
-        slug: page.slug,
-        description: optional(page.description),
-        badge: optional(page.badge),
+        name: clean(page.name) ?? slugParts.at(-1) ?? slug,
+        slug,
+        description: clean(page.description),
+        badge: clean(page.badge),
       });
       categoryMap.set(categoryName, components);
     } else {
       standalonePages.push({
-        title: page.name ?? page.slug,
-        slug: page.slug,
-        description: optional(page.description),
+        title: clean(page.name) ?? slug,
+        slug,
+        description: clean(page.description),
       });
     }
   }

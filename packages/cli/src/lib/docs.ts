@@ -7,6 +7,7 @@ import {
   resolveComponent,
   suggestComponents,
 } from './manifest.js';
+import { sanitizeRemote } from './strip-ansi.js';
 
 export type Section = 'props' | 'usage' | 'examples' | 'all';
 
@@ -67,9 +68,12 @@ export const getComponentDocs = async (
   // Use the pretty URL form (rewritten by Next to /api/md/...). The /api/md
   // route behaves differently when hit directly vs through the rewrite in dev.
   const url = `${docsUrl()}/${component.slug}.md`;
+  // Sanitize at the boundary: remote markdown can contain terminal escape
+  // sequences (OSC 52 clipboard, cursor moves, DCS) that would otherwise hit
+  // the user's terminal via the markdown / plain output paths.
   const { value: markdown, hit } = await fetchWithCache<string>(
     url,
-    text => text,
+    text => sanitizeRemote(text),
     options
   );
 
