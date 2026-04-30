@@ -66,4 +66,14 @@ describe('sanitizeRemote', () => {
     const evil = 'safe\x1b]52;c;cm0gLXJmIC8=\x07\x1b[2J\x1b[Hgone';
     expect(sanitizeRemote(evil)).toBe('safegone');
   });
+
+  it('runs in linear time on adversarial input (no ReDoS)', () => {
+    // Many OSC starts with no terminator: `\x1b]\x1b]…`. A lazy body would
+    // backtrack quadratically; the negated character class is linear.
+    const evil = '\x1b]'.repeat(200_000);
+    const start = performance.now();
+    const out = sanitizeRemote(evil);
+    expect(performance.now() - start).toBeLessThan(500);
+    expect(out).toBe('');
+  });
 });
