@@ -131,6 +131,31 @@ test('accepts error message', () => {
   expect(screen.getByText('This is an error')).toBeInTheDocument();
 });
 
+test('horizontal orientation applies flex-row', () => {
+  render(<Basic.Component orientation="horizontal" />);
+  const presentation = screen
+    .getAllByRole('presentation')
+    .filter(el => el.getAttribute('data-orientation') === 'horizontal');
+
+  expect(presentation[0].className).toContain('flex-row');
+});
+
+test('vertical orientation: items keep the py-1 modifier class', () => {
+  render(<Basic.Component />);
+
+  expect(screen.getByTestId('one').className).toContain(
+    'group-data-[orientation=vertical]/checkboxgroup:py-1'
+  );
+});
+
+test('horizontal orientation: items keep the px-1.5 modifier class', () => {
+  render(<Basic.Component orientation="horizontal" />);
+
+  expect(screen.getByTestId('one').className).toContain(
+    'group-data-[orientation=horizontal]/checkboxgroup:px-1.5'
+  );
+});
+
 test('don\'t show "show more" when list is too short', () => {
   render(<CollapseAt.Component collapseAt={100} />);
 
