@@ -1,8 +1,7 @@
 'use client';
 
-import { venueTypes } from '@/lib/data/venues';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { venueTraits, venueTypes } from '@/lib/data/venues';
+import { useRef } from 'react';
 import type { FormEvent } from 'react';
 import {
   Button,
@@ -18,8 +17,7 @@ import {
   Text,
   ToggleButton,
 } from '@marigold/components';
-import { Add, Filter } from '@marigold/icons';
-import { VENUES_QUERY_KEY, fetchVenues } from './api';
+import { Filter } from '@marigold/icons';
 import {
   MAX_CAPACITY,
   MAX_PRICE,
@@ -31,17 +29,17 @@ import {
   useSearch,
 } from './utils';
 
-// Filter form (inside Drawer — venue type is handled in the main toolbar)
+// Filter form (inside Drawer, venue type is handled in the main toolbar)
 // ---------------
 interface FilterFormProps {
   state: ReturnType<typeof toFormSchema>;
-  traitOptions: string[];
 }
 
-const FilterForm = ({ state, traitOptions }: FilterFormProps) => {
-  const [rating, setRating] = useState<Set<string>>(
-    state.rating ? new Set([state.rating]) : new Set()
-  );
+const FilterForm = ({ state }: FilterFormProps) => {
+  // ToggleButton.Group does not integrate with native FormData (it is not a
+  // form component), so the rating value rides along in a hidden <input>
+  // updated on every selection change via a ref, no React state needed.
+  const ratingInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <Stack space={12}>
@@ -68,33 +66,35 @@ const FilterForm = ({ state, traitOptions }: FilterFormProps) => {
         }}
       />
 
-      {traitOptions.length > 0 && (
-        <Tag.Group
-          label="Traits"
-          name="traits"
-          selectionMode="multiple"
-          defaultSelectedKeys={state.traits}
-        >
-          {traitOptions.map(trait => (
-            <Tag key={trait} id={trait}>
-              {trait}
-            </Tag>
-          ))}
-        </Tag.Group>
-      )}
+      <Tag.Group
+        label="Traits"
+        name="traits"
+        selectionMode="multiple"
+        defaultSelectedKeys={state.traits}
+      >
+        {venueTraits.map(trait => (
+          <Tag key={trait} id={trait}>
+            {trait}
+          </Tag>
+        ))}
+      </Tag.Group>
 
-      {/* Hidden input so ToggleButton.Group value lands in FormData */}
       <input
+        ref={ratingInputRef}
         type="hidden"
         name="rating"
-        value={[...rating][0]?.toString() ?? ''}
+        defaultValue={state.rating}
       />
       <Stack space={2}>
         <Text weight="semibold">Min. Rating</Text>
         <ToggleButton.Group
           selectionMode="single"
-          selectedKeys={rating}
-          onSelectionChange={keys => setRating(new Set([...keys].map(String)))}
+          defaultSelectedKeys={state.rating ? new Set([state.rating]) : []}
+          onSelectionChange={keys => {
+            if (ratingInputRef.current) {
+              ratingInputRef.current.value = [...keys][0]?.toString() ?? '';
+            }
+          }}
         >
           {['1', '2', '3', '4', '5'].map(val => (
             <ToggleButton key={val} id={val}>
@@ -113,15 +113,6 @@ export const Toolbar = () => {
   const [search, setSearch] = useSearch();
   const { filter, setFilter } = useFilter();
   const [, setPage] = usePage();
-
-  // Derive trait options from live data — shared cache, no extra request
-  const { data: venues = [] } = useQuery({
-    queryKey: VENUES_QUERY_KEY,
-    queryFn: () => fetchVenues(),
-  });
-  const traitOptions = Array.from(
-    new Set(venues.flatMap(v => v.traits))
-  ).sort();
 
   const onSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -189,7 +180,6 @@ export const Toolbar = () => {
               <FilterForm
                 key={JSON.stringify(filter)}
                 state={toFormSchema(filter)}
-                traitOptions={traitOptions}
               />
             </Drawer.Content>
             <Drawer.Actions>
@@ -201,16 +191,6 @@ export const Toolbar = () => {
           </Form>
         </Drawer>
       </Drawer.Trigger>
-      <div className="ml-auto">
-        <Button
-          variant="primary"
-          onPress={() => {
-            /* TODO: open Add Venue dialog (DST-1288) */
-          }}
-        >
-          <Add /> Add Venue
-        </Button>
-      </div>
     </Inline>
   );
 };

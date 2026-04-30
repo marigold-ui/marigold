@@ -4,8 +4,10 @@ import {
   amenitiesOptions,
   parkingOptions,
   venueTypes,
+  venues,
 } from '@/lib/data/venues';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { Venue } from '@/lib/data/venues';
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import {
   ActionBar,
@@ -21,8 +23,6 @@ import {
 } from '@marigold/components';
 import { Delete, Download, Star } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
-import { VENUES_QUERY_KEY, deleteVenue, fetchVenues } from './api';
-import type { Venue } from './types';
 import type { VenueFilter, VenueSortDescriptor } from './utils';
 import {
   PAGE_SIZE,
@@ -33,29 +33,49 @@ import {
   useSort,
 } from './utils';
 
-// Client-side filter — search and sort are handled server-side
+// Search
 // ---------------
-const filterVenues = (venues: Venue[], filter: VenueFilter) =>
-  venues.filter(venue => {
+const matchesSearch = (venue: Venue, search: string) =>
+  venue.name.toLowerCase().includes(search.toLowerCase().trim());
+
+// Filter
+// ---------------
+const filterVenues = (list: readonly Venue[], filter: VenueFilter) =>
+  list.filter(venue => {
     if (filter.type !== undefined && filter.type !== venue.type) return false;
     if (filter.capacity && venue.capacity < filter.capacity) return false;
     if (filter.price && venue.price.to > filter.price) return false;
     if (filter.rating && venue.rating < filter.rating) return false;
     if (filter.traits && filter.traits.length > 0) {
-      if (!filter.traits.some(t => venue.traits.includes(t))) return false;
+      if (
+        !filter.traits.some(t =>
+          (venue.traits as readonly string[]).includes(t)
+        )
+      ) {
+        return false;
+      }
     }
     return true;
   });
 
-// Price sort stays client-side — MockAPI cannot sort nested fields (price.to)
+// Sort
 // ---------------
-const sortByPrice = (venues: Venue[], sort: VenueSortDescriptor) => {
+const sortVenues = (list: Venue[], sort: VenueSortDescriptor) => {
   const dir = sort.direction === 'ascending' ? 1 : -1;
-  return [...venues].sort((a, b) => dir * (a.price.to - b.price.to));
+  return [...list].sort((a, b) => {
+    if (sort.column === 'price') return dir * (a.price.to - b.price.to);
+    if (sort.column === 'capacity') return dir * (a.capacity - b.capacity);
+    return dir * a.name.localeCompare(b.name);
+  });
 };
 
 // CSV export
 // ---------------
+const escapeCsv = (value: unknown) => {
+  const str = String(value ?? '');
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+};
+
 const exportToCsv = (selected: Venue[]) => {
   const headers = [
     'Name',
@@ -67,7 +87,7 @@ const exportToCsv = (selected: Venue[]) => {
     'Rating',
   ];
   const rows = selected.map(v => [
-    `"${v.name.replace(/"/g, '""')}"`,
+    v.name,
     venueTypes[v.type] ?? 'Unknown',
     v.city,
     v.country,
@@ -75,7 +95,10 @@ const exportToCsv = (selected: Venue[]) => {
     v.price.to,
     v.rating,
   ]);
-  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const csv = [
+    headers.join(','),
+    ...rows.map(r => r.map(escapeCsv).join(',')),
+  ].join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
@@ -129,49 +152,27 @@ export const VenuesTable = () => {
   const [sort, setSort] = useSort();
   const [page, setPage] = usePage();
 
-  const queryClient = useQueryClient();
-
   const currentSort = sort ?? {
     column: 'name',
     direction: 'ascending' as const,
   };
-  const serverOrder = currentSort.direction === 'ascending' ? 'asc' : 'desc';
 
-  const {
-    data: venues = [],
-    isLoading,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: [
-      ...VENUES_QUERY_KEY,
-      { search, sortBy: currentSort.column, order: serverOrder },
-    ],
-    queryFn: () =>
-      fetchVenues({
-        search: search || undefined,
-        sortBy: currentSort.column,
-        order: serverOrder,
-      }),
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (ids: string[]) => Promise.all(ids.map(id => deleteVenue(id))),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: VENUES_QUERY_KEY }),
-  });
-
-  // Apply client-side filters, then price sort if needed (server already sorted other columns)
-  const filtered = filterVenues(venues, filter);
-  const display =
-    currentSort.column === 'price'
-      ? sortByPrice(filtered, currentSort)
-      : filtered;
+  const searched = search
+    ? venues.filter(v => matchesSearch(v, search))
+    : venues;
+  const filtered = filterVenues(searched, filter);
+  const display = sortVenues([...filtered], currentSort);
 
   const totalItems = display.length;
   const totalPages = Math.ceil(totalItems / PAGE_SIZE);
   const safePage = Math.min(page, Math.max(1, totalPages));
   const paged = display.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  // Keep the URL in sync when the requested page is out of range so a stale
+  // ?page=99 query string doesn't survive after filtering shrinks the result.
+  useEffect(() => {
+    if (page !== safePage) setPage(safePage === 1 ? null : safePage);
+  }, [page, safePage, setPage]);
 
   const clearFilters = () => {
     setSearch('');
@@ -189,32 +190,8 @@ export const VenuesTable = () => {
       ? display
       : display.filter(v => (selectedKeys as Set<string>).has(v.id));
 
-  if (isLoading) {
-    return (
-      <div className="py-10 text-center">
-        <Text variant="muted">Loading venues…</Text>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="py-10">
-        <Center>
-          <Text weight="semibold">Failed to load venues</Text>
-          <Text variant="muted">{(error as Error).message}</Text>
-          <Button onPress={() => refetch()}>Try again</Button>
-        </Center>
-      </div>
-    );
-  }
-
   return (
     <Stack space={4}>
-      <Text variant="muted" fontSize="sm">
-        {totalItems} venue{totalItems !== 1 ? 's' : ''} found
-      </Text>
-
       <Table
         aria-label="Venue list"
         selectionMode="multiple"
@@ -227,13 +204,7 @@ export const VenuesTable = () => {
         }
         actionBar={selectedKeys => (
           <ActionBar>
-            <ActionBar.Button
-              onPress={() =>
-                deleteMutation.mutate(
-                  getSelectedVenues(selectedKeys).map(v => v.id)
-                )
-              }
-            >
+            <ActionBar.Button>
               <Delete /> Delete
             </ActionBar.Button>
             <ActionBar.Button

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr *)",
+      "PowerShell(gh pr list --head ref-card --json number,title,url,state,headRefName)",
+      "PowerShell($sha = \"07e0c62406e6cdb38e85d32b7a16320a980240b5\"; $checks = Invoke-RestMethod -Uri \"https://api.github.com/repos/marigold-ui/marigold/commits/$sha/check-runs?per_page=100\" -Headers @{ \"Accept\" = \"application/vnd.github+json\" }; $checks.check_runs | Where-Object { $_.conclusion -ne \"success\" -and $_.conclusion -ne \"skipped\" -and $_.conclusion -ne \"neutral\" } | Select-Object name, status, conclusion, html_url | Format-Table -AutoSize)",
+      "PowerShell($jobs = Invoke-RestMethod -Uri \"https://api.github.com/repos/marigold-ui/marigold/actions/runs/24984375547/jobs?per_page=50\" -Headers @{ \"Accept\" = \"application/vnd.github+json\" }; $jobs.jobs | Select-Object name, conclusion, status, run_attempt | Format-Table -AutoSize)",
+      "PowerShell($logUrl = \"https://api.github.com/repos/marigold-ui/marigold/actions/jobs/73183774491/logs\"; try { $logs = Invoke-WebRequest -Uri $logUrl -Headers @{ \"Accept\" = \"application/vnd.github+json\" } -ErrorAction Stop; $logs.Content | Out-File -FilePath \"C:\\\\Users\\\\osama\\\\Desktop\\\\marigold\\\\.claude\\\\worktrees\\\\test-log.txt\" -Encoding utf8; Write-Output \"Saved log, size: $\\($logs.Content.Length\\)\" } catch { Write-Output \"Error: $_\" })",
+      "Bash(pnpm vitest *)",
+      "Bash(git fetch *)",
+      "Bash(pnpm prettier *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'fix\\(ComboBox\\): make Sections story test deterministic *)",
+      "Bash(git push *)"
+    ]
+  }
+}

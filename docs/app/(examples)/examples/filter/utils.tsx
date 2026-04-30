@@ -1,6 +1,6 @@
 import { venueTypes } from '@/lib/data/venues';
 import { parseAsInteger, parseAsJson, useQueryState } from 'nuqs';
-import type { FormEvent } from 'react';
+import type { FormEvent, ReactNode } from 'react';
 import { z } from 'zod';
 import { NumericFormat } from '@marigold/system';
 
@@ -38,13 +38,13 @@ const urlSchema = z.object({
 
 export type VenueFilter = z.infer<typeof urlSchema>;
 
-export const defaultFilter = {
+export const defaultFilter: VenueFilter = {
   type: undefined,
   capacity: undefined,
   price: undefined,
   traits: undefined,
   rating: undefined,
-} satisfies VenueFilter;
+};
 
 // Form schema (type is handled separately in the toolbar, not in the filter drawer)
 // ---------------
@@ -77,62 +77,79 @@ export const toUrlSchema = formSchema.transform(data => ({
   rating: data.rating ? Number(data.rating) : undefined,
 })).safeParse;
 
-// Display formatters
+// Display formatters — per-key dispatch keeps each value's type intact
 // ---------------
-export const toDisplayValue = {
-  type: (value: number) => `Type: ${venueTypes[value] ?? 'Unknown'}`,
-  capacity: (value: number) => (
-    <>
-      Min Capacity: <NumericFormat value={value} />
-    </>
-  ),
-  price: (value: number) => (
-    <>
-      Max. Price:{' '}
-      <NumericFormat
-        style="currency"
-        value={value}
-        currency="EUR"
-        maximumFractionDigits={0}
-      />
-    </>
-  ),
-  traits: (value: string[]) => (
-    <>
-      Traits:{' '}
-      {value.length <= 3
-        ? value.join(', ')
-        : `${value.slice(0, 2).join(', ')} (+${value.length - 2} more)`}
-    </>
-  ),
-  rating: (value: number) => <>Min. Rating: {value} ★</>,
+type FilterKeys = keyof VenueFilter;
+
+const renderType = (value: number) => `Type: ${venueTypes[value] ?? 'Unknown'}`;
+const renderCapacity = (value: number) => (
+  <>
+    Min Capacity: <NumericFormat value={value} />
+  </>
+);
+const renderPrice = (value: number) => (
+  <>
+    Max. Price:{' '}
+    <NumericFormat
+      style="currency"
+      value={value}
+      currency="EUR"
+      maximumFractionDigits={0}
+    />
+  </>
+);
+const renderTraits = (value: string[]) => (
+  <>
+    Traits:{' '}
+    {value.length <= 3
+      ? value.join(', ')
+      : `${value.slice(0, 2).join(', ')} (+${value.length - 2} more)`}
+  </>
+);
+const renderRating = (value: number) => <>Min. Rating: {value} ★</>;
+
+export const renderFilterValue = (
+  key: FilterKeys,
+  filter: VenueFilter
+): ReactNode => {
+  switch (key) {
+    case 'type':
+      return filter.type !== undefined ? renderType(filter.type) : null;
+    case 'capacity':
+      return filter.capacity !== undefined
+        ? renderCapacity(filter.capacity)
+        : null;
+    case 'price':
+      return filter.price !== undefined ? renderPrice(filter.price) : null;
+    case 'traits':
+      return filter.traits ? renderTraits(filter.traits) : null;
+    case 'rating':
+      return filter.rating !== undefined ? renderRating(filter.rating) : null;
+  }
 };
 
 // Filter hook
 // ---------------
-type FilterKeys = keyof typeof defaultFilter;
-
 export const useFilter = () => {
   const [filter, setFilter] = useQueryState(
-    'dm-filter',
+    'filter',
     parseAsJson(urlSchema.parse)
       .withDefault(defaultFilter)
       .withOptions({ history: 'push' })
   );
 
   const removeFilter = (keys: Set<FilterKeys>) => {
-    const next = { ...filter };
-    keys.forEach(key => {
-      next[key] = defaultFilter[key] as never;
-    });
-    setFilter(next);
+    const cleared = Object.fromEntries(
+      [...keys].map(key => [key, defaultFilter[key]])
+    );
+    setFilter({ ...filter, ...cleared });
   };
 
   return { filter, setFilter, removeFilter } as const;
 };
 
 export const useSearch = () =>
-  useQueryState('dm-q', { defaultValue: '', history: 'push' });
+  useQueryState('q', { defaultValue: '', history: 'push' });
 
 // Sort hook
 // ---------------
@@ -150,7 +167,7 @@ export const defaultSort: VenueSortDescriptor = {
 
 export const useSort = () =>
   useQueryState(
-    'dm-sort',
+    'sort',
     parseAsJson(sortSchema.parse)
       .withDefault(defaultSort)
       .withOptions({ history: 'push' })
@@ -162,6 +179,6 @@ export const PAGE_SIZE = 5;
 
 export const usePage = () =>
   useQueryState(
-    'dm-page',
+    'page',
     parseAsInteger.withDefault(1).withOptions({ history: 'push' })
   );
