@@ -4,8 +4,8 @@ import {
   CalendarGrid,
   CalendarGridBody,
 } from 'react-aria-components';
-import { useClassNames } from '@marigold/system';
 import { CalendarGridHeader } from './CalendarGridHeader';
+import { useCalendarContext } from './Context';
 
 export interface CalendarGridProps {
   /**
@@ -16,7 +16,7 @@ export interface CalendarGridProps {
 }
 
 const _CalendarGrid = ({ offset }: CalendarGridProps) => {
-  const classNames = useClassNames({ component: 'Calendar' });
+  const { classNames } = useCalendarContext();
 
   return (
     <CalendarGrid offset={offset} className={classNames.calendarGrid}>

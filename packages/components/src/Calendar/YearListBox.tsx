@@ -1,7 +1,8 @@
 import { CalendarDate } from '@internationalized/date';
-import { Dispatch, SetStateAction, useContext } from 'react';
-import { CalendarStateContext, DateValue } from 'react-aria-components';
+import { Dispatch, SetStateAction } from 'react';
+import { DateValue } from 'react-aria-components';
 import { useDateFormatter } from '@react-aria/i18n';
+import { useCalendarOrRangeState } from './Context';
 import { ListBox } from './ListBox';
 
 interface YearDropdownProps {
@@ -15,7 +16,7 @@ const YearListBox = ({
   minValue,
   maxValue,
 }: YearDropdownProps) => {
-  const state = useContext(CalendarStateContext)!;
+  const state = useCalendarOrRangeState();
   const years: CalendarDate[] = [];
   for (let i = -20; i <= 20; i++) {
     years.push(state.focusedDate.add({ years: i }));
