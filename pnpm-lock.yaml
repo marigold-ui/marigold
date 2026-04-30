@@ -431,6 +431,9 @@ importers:
       '@react-aria/focus':
         specifier: ^3.22.0
         version: 3.22.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@react-aria/form':
+        specifier: ^3.1.5
+        version: 3.2.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@react-aria/i18n':
         specifier: ^3.13.0
         version: 3.13.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -467,12 +470,18 @@ importers:
       '@react-stately/data':
         specifier: ^3.16.0
         version: 3.16.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@react-stately/form':
+        specifier: ^3.2.4
+        version: 3.2.4(react@19.2.4)
       '@react-stately/table':
         specifier: ^3.16.0
         version: 3.16.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@react-stately/tree':
         specifier: ^3.10.0
         version: 3.10.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@react-stately/utils':
+        specifier: ^3.11.0
+        version: 3.11.0(react@19.2.4)
       '@react-types/button':
         specifier: ^3.15.0
         version: 3.15.1(react@19.2.4)
@@ -2841,6 +2850,12 @@ packages:
 
   '@react-aria/focus@3.22.0':
     resolution: {integrity: sha512-ZfDOVuVhqDsM9mkNji3QUZ/d40JhlVgXrDkrfXylM1035QCrcTHN7m2DpbE95sU2A8EQb4wikvt5jM6K/73BPg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-aria/form@3.2.0':
+    resolution: {integrity: sha512-ShS+a9Wanur2H3Cuxc5hZ29VqRO97Vws1GM5Al3q+E+E0Ou+XVlLZznFNWGUTxfsueWxv6d4YthckxOWZlNMIg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -12051,6 +12066,13 @@ snapshots:
       react-dom: 19.2.4(react@19.2.4)
 
   '@react-aria/focus@3.22.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      '@swc/helpers': 0.5.19
+      react: 19.2.4
+      react-aria: 3.48.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react-dom: 19.2.4(react@19.2.4)
+
+  '@react-aria/form@3.2.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@swc/helpers': 0.5.19
       react: 19.2.4

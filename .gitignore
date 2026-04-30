@@ -43,3 +43,5 @@ next-env.d.ts
 
 # Playwright MCP
 .playwright-mcp
+
+.vitest-attachments
