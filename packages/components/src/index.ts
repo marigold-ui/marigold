@@ -195,6 +195,9 @@ export type { RadioGroupProps } from './Radio/RadioGroup';
 export { Radio } from './Radio/Radio';
 export type { RadioProps } from './Radio/Radio';
 
+export { RangeCalendar } from './RangeCalendar/RangeCalendar';
+export type { RangeCalendarProps } from './RangeCalendar/RangeCalendar';
+
 export { RouterProvider } from './RouterProvider/RouterProvider';
 
 export { Scrollable } from './Scrollable/Scrollable';

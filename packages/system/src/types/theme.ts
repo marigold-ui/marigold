@@ -236,6 +236,20 @@ export type Theme = {
       | 'select',
       ComponentStyleFunction<string, string>
     >;
+    RangeCalendar?: Record<
+      | 'calendar'
+      | 'calendarContainer'
+      | 'calendarMonth'
+      | 'calendarListboxButton'
+      | 'calendarCell'
+      | 'calendarControllers'
+      | 'calendarHeader'
+      | 'calendarGrid'
+      | 'calendarHeading'
+      | 'select'
+      | 'errorMessage',
+      ComponentStyleFunction<string, string>
+    >;
     DatePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: Record<
       'icon' | 'mobileTrigger',
