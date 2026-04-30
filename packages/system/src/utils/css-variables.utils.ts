@@ -99,38 +99,81 @@ export const createSpacingVar = (name: string, value: string) => {
   } as CSSProperties;
 };
 
+const widthKeywords: Record<string, string> = {
+  fit: 'fit-content',
+  min: 'min-content',
+  max: 'max-content',
+  full: '100%',
+  screen: '100vw',
+  auto: 'auto',
+  svh: '100svh',
+  lvh: '100lvh',
+  dvh: '100dvh',
+  px: '1px',
+  container: 'var(--spacing-container)',
+};
+
+const heightKeywords: Record<string, string> = {
+  fit: 'fit-content',
+  min: 'min-content',
+  max: 'max-content',
+  full: '100%',
+  screen: '100vh',
+  auto: 'auto',
+  svh: '100svh',
+  lvh: '100lvh',
+  dvh: '100dvh',
+  px: '1px',
+};
+
+const resolveDimensionValue = (
+  value: string,
+  keywords: Record<string, string>
+) =>
+  keywords[value] ||
+  (isScale(value) && `calc(var(--spacing) * ${value})`) ||
+  (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
+
 /**
  * Generates a CSS custom property for width that uses either a calc expression or a
  * fraction percentage.
  *
  * Supports:
- * - Numeric scale (e.g., "4", "2.5"): Uses `--spacing` scale with calc() → `w-4`, `w-2.5`
- * - Fractions (e.g., "1/2", "2/3"): Converts to percentage → `w-1/2`, `w-2/3`
- * - CSS keywords (e.g., "fit", "min", "max"): Uses corresponding CSS values → `w-fit`, `w-min`, `w-max`
+ * - Numeric scale (e.g., "4", "2.5"): Uses `--spacing` scale with calc()
+ * - Fractions (e.g., "1/2", "2/3"): Converts to percentage
+ * - CSS keywords (e.g., "fit", "min", "max", "screen", "svh", "container", ...)
  *
  * @param name - The custom property name for width.
  * @param value - Width value as a string (number, fraction, or keyword).
  * @returns Object with the CSS custom property for width.
- *
  */
 export const createWidthVar = (name: string, value: string) => {
-  const widthKeywords: Record<string, string> = {
-    fit: 'fit-content',
-    min: 'min-content',
-    max: 'max-content',
-    full: '100%',
-    screen: '100vw',
-    auto: 'auto',
-  };
-
-  const resolvedValue =
-    widthKeywords[value] ||
-    (isScale(value) && `calc(var(--spacing) * ${value})`) ||
-    (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
+  const resolvedValue = resolveDimensionValue(value, widthKeywords);
 
   if (!resolvedValue) {
     throw new Error(
       `Unsupported width value: "${value}". Expected a keyword (${Object.keys(widthKeywords).join(', ')}), a scale number, or a fraction (e.g., "1/2").`
+    );
+  }
+
+  return { [`--${name}`]: resolvedValue } as CSSProperties;
+};
+
+/**
+ * Generates a CSS custom property for height. Mirrors {@link createWidthVar}
+ * but resolves the `screen` keyword to `100vh` and does not support
+ * `container` (no equivalent height token in the design system).
+ *
+ * @param name - The custom property name for height.
+ * @param value - Height value as a string (number, fraction, or keyword).
+ * @returns Object with the CSS custom property for height.
+ */
+export const createHeightVar = (name: string, value: string) => {
+  const resolvedValue = resolveDimensionValue(value, heightKeywords);
+
+  if (!resolvedValue) {
+    throw new Error(
+      `Unsupported height value: "${value}". Expected a keyword (${Object.keys(heightKeywords).join(', ')}), a scale number, or a fraction (e.g., "1/2").`
     );
   }
 

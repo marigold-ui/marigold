@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { Form } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-import { cn, maxWidth as twMaxWidth } from '@marigold/system';
+import { cn, createWidthVar } from '@marigold/system';
 import type { MaxWidthProp } from '@marigold/system';
 
 export interface FormProps extends Omit<RAC.FormProps, 'className' | 'style'> {
@@ -19,7 +19,8 @@ const _Form = forwardRef<HTMLFormElement, FormProps>(
     <Form
       {...props}
       ref={ref}
-      className={cn(twMaxWidth[maxWidth], unstyled && 'contents')}
+      className={cn('max-w-(--max-width)', unstyled && 'contents')}
+      style={createWidthVar('max-width', `${maxWidth}`)}
     />
   )
 );

@@ -1,12 +1,7 @@
 import { ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Switch } from 'react-aria-components';
-import {
-  WidthProp,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { Label } from '../Label/Label';
 
 type RemovedProps =
@@ -78,11 +73,10 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
         {...props}
         ref={ref}
         className={cn(
-          twWidth[width],
-          'group/switch',
-          'flex items-center gap-[1ch]',
+          'group/switch flex w-(--width) items-center gap-[1ch]',
           classNames.container
         )}
+        style={createWidthVar('width', `${width}`)}
       >
         {label && <Label elementType="span">{label}</Label>}
         <div className="relative">

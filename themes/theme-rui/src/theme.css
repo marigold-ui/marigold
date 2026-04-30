@@ -461,3 +461,26 @@
     }
   }
 }
+
+/* ============================ */
+/*    Layout Custom Properties  */
+/* ============================ */
+
+/*
+ * Register dimension custom properties as non-inheriting so that a parent
+ * setting `--width`, `--max-width`, or `--height` (via `createWidthVar` /
+ * `createHeightVar`) does not leak into descendant components that consume
+ * the same variable name. Each component resolves its own value locally.
+ */
+@property --width {
+  syntax: '*';
+  inherits: false;
+}
+@property --max-width {
+  syntax: '*';
+  inherits: false;
+}
+@property --height {
+  syntax: '*';
+  inherits: false;
+}

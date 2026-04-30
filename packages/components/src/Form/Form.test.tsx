@@ -50,7 +50,10 @@ test('applies maxWidth styling', () => {
   );
 
   const form = screen.getByTestId('form');
-  expect(form).toHaveClass('max-w-48');
+  expect(form).toHaveClass('max-w-(--max-width)');
+  expect(form.style.getPropertyValue('--max-width')).toBe(
+    'calc(var(--spacing) * 48)'
+  );
 });
 
 test('applies unstyled prop', () => {

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import type { WidthProp } from '@marigold/system';
-import { cn, createVar, width as twWidth } from '@marigold/system';
+import { cn, createVar, createWidthVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 export interface ScrollableProps extends AriaRegionProps {
@@ -26,11 +26,13 @@ export const Scrollable = ({
 }: ScrollableProps) => (
   <div
     {...props}
-    className={cn([
-      'sticky h-(--height) overflow-auto overscroll-auto',
-      twWidth[width],
-    ])}
-    style={createVar({ height })}
+    className={cn(
+      'sticky h-(--height) w-(--width) overflow-auto overscroll-auto'
+    )}
+    style={{
+      ...createVar({ height }),
+      ...createWidthVar('width', `${width}`),
+    }}
   >
     {children}
   </div>
