@@ -15,9 +15,9 @@ import { cn, useClassNames } from '@marigold/system';
 import { IconButton } from '../IconButton/IconButton';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
+import { ActionBarButton } from './ActionBarButton';
+import type { ActionBarButtonProps } from './ActionBarButton';
 import { useActionBarContext } from './ActionBarContext';
-import { ActionButton } from './ActionButton';
-import type { ActionButtonProps } from './ActionButton';
 
 export interface ActionBarProps {
   /**
@@ -221,8 +221,8 @@ const ActionBarBase = ({
 };
 
 const ActionBar = Object.assign(ActionBarBase, {
-  Button: ActionButton,
+  Button: ActionBarButton,
 });
 
 export { ActionBar };
-export type { ActionButtonProps };
+export type { ActionBarButtonProps };

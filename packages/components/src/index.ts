@@ -16,9 +16,16 @@ export type {
 
 export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
-export { ActionButton } from './ActionBar/ActionButton';
-export type { ActionButtonProps } from './ActionBar/ActionButton';
 export { useActionBar } from './ActionBar/useActionBar';
+
+export { ActionButton } from './ActionButton/ActionButton';
+export type { ActionButtonProps } from './ActionButton/ActionButton';
+export { ActionButtonGroup } from './ActionButton/ActionButtonGroup';
+export type { ActionButtonGroupProps } from './ActionButton/ActionButtonGroup';
+export {
+  ActionButtonContext,
+  ActionButtonGroupContext,
+} from './ActionButton/Context';
 export type {
   UseActionBarProps,
   UseActionBarReturn,
@@ -82,6 +89,9 @@ export type { DateFieldProps } from './DateField/DateField';
 
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
+
+export { Description } from './Description/Description';
+export type { DescriptionProps } from './Description/Description';
 
 export { Dialog } from './Dialog/Dialog';
 export type { DialogProps } from './Dialog/Dialog';
@@ -155,6 +165,7 @@ export { ListBox } from './ListBox/ListBox';
 export type { ListBoxProps } from './ListBox/ListBox';
 export { ActionMenu } from './Menu/ActionMenu';
 export type { ActionMenuProps } from './Menu/ActionMenu';
+export { ActionMenuContext } from './Menu/ActionMenuContext';
 
 export { Menu } from './Menu/Menu';
 export type { MenuProps } from './Menu/Menu';
@@ -257,6 +268,9 @@ export type { TagGroupProps } from './TagGroup/TagGroup';
 export { Text } from './Text/Text';
 export type { TextProps } from './Text/Text';
 
+export { TextValue } from './TextValue/TextValue';
+export type { TextValueProps } from './TextValue/TextValue';
+
 export { TextArea } from './TextArea/TextArea';
 export type { TextAreaProps } from './TextArea/TextArea';
 
@@ -268,6 +282,9 @@ export type { TilesProps } from './Tiles/Tiles';
 
 export { TimeField } from './TimeField/TimeField';
 export type { TimeFieldProps } from './TimeField/TimeField';
+
+export { Title } from './Title/Title';
+export type { TitleProps } from './Title/Title';
 
 export type { ToastContentProps } from './Toast/Toast';
 

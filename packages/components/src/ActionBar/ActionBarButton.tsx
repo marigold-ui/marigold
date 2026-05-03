@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import RAC, { Button } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 
-export interface ActionButtonProps {
+export interface ActionBarButtonProps {
   /**
    * Children of the component (icon and/or text)
    */
@@ -13,7 +13,10 @@ export interface ActionButtonProps {
   onPress?: RAC.ButtonProps['onPress'];
 }
 
-export const ActionButton = ({ onPress, children }: ActionButtonProps) => {
+export const ActionBarButton = ({
+  onPress,
+  children,
+}: ActionBarButtonProps) => {
   const classNames = useClassNames({ component: 'ActionBar' });
 
   return (
