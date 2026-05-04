@@ -175,10 +175,8 @@ const _RadioGroup = ({
         data-orientation={orientation}
         className={cn(
           classNames.group,
-          'flex items-start',
-          orientation === 'vertical'
-            ? 'flex-col gap-[0.5ch]'
-            : 'flex-row gap-[1.5ch]'
+          'group/radiogroup flex items-start',
+          orientation === 'vertical' ? 'flex-col' : 'flex-row'
         )}
       >
         <RadioGroupContext value={{ width, variant, size }}>
