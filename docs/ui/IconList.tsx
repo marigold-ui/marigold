@@ -54,7 +54,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
             <div
               className={cn(
                 isCopied ? 'opacity-100' : 'opacity-0',
-                'bg-fd-card absolute flex size-full items-center justify-center font-medium tracking-wider whitespace-nowrap select-none'
+                'bg-fd-card absolute flex size-full cursor-pointer items-center justify-center font-medium tracking-wider whitespace-nowrap select-none'
               )}
             >
               {isCopied ? 'COPIED!' : 'COPY SVG'}
