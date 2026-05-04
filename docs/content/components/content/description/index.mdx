@@ -1,0 +1,107 @@
+---
+title: Description
+description: Help text or supporting content paired with a Title or label.
+badge: alpha
+---
+
+The `<Description>` component is a short piece of text designed to sit alongside a partner element. In container surfaces (`<Panel>`, `<Dialog>`, `<EmptyState>`) it pairs with a Title. In selection items (`<Select.Option>`, `<Menu.Item>`, `<ListBox.Item>`) it pairs with a TextValue. The surrounding component decides the typography so the description always fits the surface it sits on.
+
+For paragraph text, body copy, or any text that isn't paired with a heading or label, use [`<Text>`](/components/content/text) instead.
+
+import { DescriptionAnatomy } from './description-anatomy';
+
+## Anatomy
+
+<DescriptionAnatomy />
+
+A `<Description>` consists of:
+
+- **Text content**, the children passed in.
+- **Variant**, either `default` (secondary color) or `muted` (tertiary color).
+- **Element**. Renders as `<p>` by default. Switch to `<div>` or `<span>` via the `as` prop when the surrounding markup needs it.
+
+## Appearance
+
+<AppearanceDemo component={'Description'} />
+
+<AppearanceTable component={'Description'} />
+
+| Variant   | Description                                | When to use                                                                                                   |
+| --------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `default` | Secondary text color. The default variant. | Most pairings, like Description sitting below a Title in a Panel header or alongside a TextValue in a Select. |
+| `muted`   | Tertiary text color.                       | When the description should recede further, like metadata or helper lines.                                    |
+
+| Size      | Description                         | When to use                                                                      |
+| --------- | ----------------------------------- | -------------------------------------------------------------------------------- |
+| `default` | Inherits the surrounding font size. | The default. Let the surrounding component pick.                                 |
+| `xs`      | Extra small.                        | Inside dense surfaces such as selection items where the description is one line. |
+| `sm`      | Small.                              | Inside Panel/Dialog/Drawer headers where the title is the visual anchor.         |
+| `base`    | Base body size.                     | Standalone use where the description is the main piece of text.                  |
+| `lg`      | Large.                              | EmptyState-style surfaces where the description carries the message.             |
+
+## Usage
+
+`<Description>` is a paired piece of text. It expects a partner element nearby (a Title, a TextValue, or a label) and reads as the supporting line for that partner. Keep it short.
+
+### Paired with a Title
+
+The most common pairing. Inside container surfaces, `<Description>` sits directly below `<Title>`. The container chooses the right typography for the description so you don't have to.
+
+<ComponentDemo name="description-with-title" />
+
+### Paired with a TextValue
+
+In selection items, `<Description>` adds a help line below the item label. Screen readers announce the label as the option's accessible name and the description as supporting content.
+
+<ComponentDemo name="description-in-menu-item" />
+
+### Variants
+
+<ComponentDemo name="description-variants" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Pair `<Description>` with a `<Title>` or a `<TextValue>` so it has a clear
+      partner in the visual hierarchy.
+    </DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>
+      Keep it short. One or two sentences is the right length. A description is
+      supporting content, not body copy.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `<Description>` for arbitrary paragraph text. Use [`<Text>`](/components/content/text)
+      instead.
+    </DontDescription>
+  </Dont>
+  <Dont>
+    <DontDescription>
+      Don't render multiple Descriptions in the same region. They get merged
+      into one accessible description string and the result is hard to scan.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Use inside a container
+
+When `<Description>` is placed inside a container or selection item, the container picks the right typography (size, color, spacing) for the description region. Consumers just write the text.
+
+For the full picture of how containers and primitives work together, see [Slot Configuration](/patterns/composition/slot-configuration).
+
+## Props
+
+<StorybookHintMessage component={'Description'} />
+
+### Description
+
+<AutoTypeTable path="Description" name="DescriptionProps" />
+
+## Alternative components
+
+- [Text](/components/content/text): Use for paragraph text, body copy, and inline text that isn't paired with a Title or label.
+- [Title](/components/content/title): The heading partner for Description in container surfaces.
+- [TextValue](/components/content/text-value): The label partner for Description in selection items.

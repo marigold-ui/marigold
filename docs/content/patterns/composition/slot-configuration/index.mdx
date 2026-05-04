@@ -1,0 +1,268 @@
+---
+title: Slot Configuration
+description: How shared primitives adapt to whichever container they sit inside.
+badge: alpha
+---
+
+Marigold has a growing family of containers like `<Panel>`, `<Dialog>`, `<Drawer>`, `<Tray>`, `<ContextualHelp>`, `<SectionMessage>`, and `<EmptyState>`. It also has a growing family of selection containers, including `<Menu>`, `<Select>`, `<ListBox>`, and `<ComboBox>`. They all share the same mental model: a **title** plus a **description**, often with optional **actions** alongside.
+
+Without a shared vocabulary every container reinvents the wrappers, the props, and the styling that go with that structure. Slot configuration lets containers declare _roles_ (title, description, label, action) and lets consumers drop in shared primitives that fill those roles. The container picks the heading level, layout, and defaults. The primitives pick up the right typography automatically.
+
+<Callout title="Looking for the component APIs?">
+  This page is the deep dive into the pattern itself. For props and
+  per-component guidance see the individual pages:
+  [Title](/components/content/title),
+  [Description](/components/content/description),
+  [TextValue](/components/content/text-value),
+  [ActionButton](/components/actions/action-button),
+  [ActionMenu](/components/overlay/action-menu).
+</Callout>
+
+## The two patterns
+
+Slot configuration shows up in two places. They share the same mechanism but pair different primitives.
+
+| Surface                                                                    | Title primitive | Description primitive | Actions                           |
+| -------------------------------------------------------------------------- | --------------- | --------------------- | --------------------------------- |
+| **Container surfaces** (Panel, Dialog, Drawer, EmptyState, SectionMessage) | `<Title>`       | `<Description>`       | `<ActionButton>` / `<ActionMenu>` |
+| **Selection items** (Menu, Select, ListBox, ComboBox)                      | `<TextValue>`   | `<Description>`       |                                   |
+
+`<Description>` shows up in both columns on purpose. A description is the same thing whether it sits next to a Title in a Dialog or next to a TextValue in a Select option.
+
+### Pattern 1. Container surfaces
+
+Containers define the title region (heading level, layout) and the description region (typography), then publish their own action defaults. Consumers drop the primitives in without thinking about it:
+
+```tsx
+<Dialog>
+  <Title>Delete project?</Title>
+  <Description>This action cannot be undone.</Description>
+  <ActionButton>Cancel</ActionButton>
+  <ActionButton variant="destructive">Delete</ActionButton>
+</Dialog>
+```
+
+### Pattern 2. Selection items
+
+Selection items define the label (used to derive an item's accessible name and keyboard typeahead text) and the description (the help line below the label):
+
+```tsx
+<Select label="Plan">
+  <Select.Option id="free">
+    <TextValue>Free</TextValue>
+    <Description>Up to 3 projects</Description>
+  </Select.Option>
+  <Select.Option id="pro">
+    <TextValue>Pro</TextValue>
+    <Description>Unlimited projects, priority support</Description>
+  </Select.Option>
+</Select>
+```
+
+## The rule
+
+Use the contexts React Aria already publishes wherever they apply. Introduce Marigold-owned contexts only where React Aria has no equivalent, which today means action slots.
+
+| Primitive              | Slot context                        | Default `slot`  |
+| ---------------------- | ----------------------------------- | --------------- |
+| `<Title>`              | RAC `HeadingContext`                | `'title'`       |
+| `<Description>`        | RAC `TextContext`                   | `'description'` |
+| `<TextValue>`          | RAC `TextContext`                   | `'label'`       |
+| `<ActionButton>`       | Marigold `ActionButtonContext`      |                 |
+| `<ActionButton.Group>` | Marigold `ActionButtonGroupContext` |                 |
+| `<ActionMenu>`         | Marigold `ActionMenuContext`        |                 |
+
+Container-injected styling and explicit theme styling compose cleanly. When both apply, the props get merged (rather than one overwriting the other), and Tailwind class merging keeps the output predictable.
+
+## Anatomy: a hand-built container
+
+Below is the canonical container example. A `<Provider>` wraps the slotted primitives. The container author chooses the heading level, the description size, and the action defaults. The consumer just writes JSX.
+
+<ComponentDemo name="slot-configuration-container" />
+
+The same Provider can carry as many contexts as you need. Configure each role independently. Each primitive only picks up the values that target its own slot.
+
+## Anatomy: rich selection items
+
+For selection items the work is even smaller. `<Select.Option>` already exposes the label and description regions. Consumers compose `<TextValue>` and `<Description>` directly.
+
+<ComponentDemo name="slot-configuration-items" />
+
+`<TextValue>` marks itself as the option's label, which is exactly the text the option uses for its accessible name and keyboard typeahead. Screen readers announce the label as the option's name. The description is announced as supporting content.
+
+## Building a new slot-configurable primitive
+
+When wrapping a React Aria primitive that already has its own context (Heading, Text, Button), reuse that context. When introducing a new Marigold-owned primitive (ActionButton, ActionMenu), declare your own context.
+
+```tsx
+// 1. Declare the context (Marigold-owned only)
+export const ActionButtonContext =
+  createContext<ContextValue<ActionButtonProps, HTMLButtonElement>>(null);
+
+// 2. Inside the component, consume via useContextProps
+const _ActionButton = ({ ref: refProp, ...inputProps }: ActionButtonProps) => {
+  const [merged, ref] = useContextProps(
+    inputProps,
+    refProp,
+    ActionButtonContext
+  );
+  // Compose theme classNames with the merged context className via cn()
+  // and forward the merged props + ref to the inner RAC primitive.
+};
+
+// 3. Container providers cascade defaults
+<Provider values={[[ActionButtonContext, { variant: 'ghost', size: 'small' }]]}>
+  {children}
+</Provider>;
+```
+
+A few rules of thumb when building one:
+
+- **Default the `slot` prop** so consumers don't have to write `slot="title"` everywhere.
+- Use `useSlottedContext` (instead of `useContext`) when the context value is keyed by slot name and you want to scope the lookup to a specific slot.
+- Compose `className` carefully. The merged props from `useContextProps` may carry an injected `className` from the container. Calling `cn(contextClassName, themeClassNames)` keeps both working.
+- Document the precedence rules where ambiguity matters. `<ActionButton.Group>` does this explicitly. `size` cascades from the group, `variant` is overridden by the local prop (so a destructive button stays destructive inside a ghost group), and `disabled` is overridden by the local prop with the group as the fallback default.
+
+## What's next
+
+Phase 0 ships the primitives. Phase 1 onwards migrates the containers to consume them:
+
+- **Phase 1.** `<Panel>` becomes the canonical real-world example.
+- **Phase 2.** `<Dialog>`, `<Drawer>`, and `<Tray>` migrate.
+- **Phase 3.** `<ContextualHelp>`, `<SectionMessage>`, and `<EmptyState>` migrate.
+
+Each migration removes a layer of duplicated wrappers. The public API of those containers stays compatible while the internals collapse onto the shared primitives.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Component principles',
+      href: '/foundations/component-principles',
+      caption:
+        'Where slot configuration sits in the wider Marigold philosophy.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Title',
+      href: '/components/content/title',
+      caption: 'Slot-aware heading paired with Description.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Description',
+      href: '/components/content/description',
+      caption: 'Help text in containers and rich selection items.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'TextValue',
+      href: '/components/content/text-value',
+      caption: 'Accessible label primitive for selection items.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'ActionButton',
+      href: '/components/actions/action-button',
+      caption: 'Low-emphasis button with toolbar grouping.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'ActionMenu',
+      href: '/components/overlay/action-menu',
+      caption: 'Kebab menu for contextual quick actions.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

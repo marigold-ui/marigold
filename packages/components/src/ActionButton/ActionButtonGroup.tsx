@@ -55,13 +55,13 @@ export const ActionButtonGroup = ({
     ...rest
   } = merged;
 
-  const cascadedContext = useMemo(
+  const ctx = useMemo(
     () => ({ variant, size, disabled }),
     [variant, size, disabled]
   );
 
   return (
-    <Provider values={[[ActionButtonGroupContext, cascadedContext]]}>
+    <Provider values={[[ActionButtonGroupContext, ctx]]}>
       <Toolbar
         {...rest}
         ref={ref}

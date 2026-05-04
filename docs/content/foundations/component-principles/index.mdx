@@ -96,6 +96,48 @@ This pattern has several advantages:
 
 You'll find this pattern across the design system. For example, `Dialog` uses `Dialog.Trigger`, `Dialog.Title`, `Dialog.Content`, and `Dialog.Actions`. `Table` uses `Table.Header`, `Table.Body`, `Table.Row`, and `Table.Cell`.
 
+## Slot-Driven Composition
+
+Some components don't compose by listing their parts. They compose by carrying _roles_. A `<Panel>` has a title, a description, and optional actions. A `<Select.Option>` has a label and an optional description. A `<Dialog>` has a title, a description, and actions. Different containers, the same shape.
+
+To avoid each container reinventing wrappers for that shape, Marigold publishes a small set of **slot-aware primitives** that adapt to whichever container they sit inside:
+
+- **[`<Title>`](/components/content/title)**, the heading paired with `<Description>` in container surfaces.
+- **[`<Description>`](/components/content/description)**, the help text paired with `<Title>` in containers, or with `<TextValue>` in selection items.
+- **[`<TextValue>`](/components/content/text-value)**, the accessible label inside selection items.
+- **[`<ActionButton>`](/components/actions/action-button)** and **[`<ActionMenu>`](/components/overlay/action-menu)**, actions that pick up defaults from the surrounding container.
+
+The container declares which roles it supports and what defaults each role carries (heading level, layout, default ActionButton variant). Consumers drop the primitives in without thinking about it:
+
+```tsx
+<Dialog>
+  <Title>Delete project?</Title>
+  <Description>This action cannot be undone.</Description>
+  <ActionButton>Cancel</ActionButton>
+  <ActionButton variant="destructive">Delete</ActionButton>
+</Dialog>
+```
+
+The same primitives also appear in selection items. `<Description>` is the same component whether it sits next to a Title in a Dialog or next to a TextValue in a Select option:
+
+```tsx
+<Select label="Plan">
+  <Select.Option id="pro">
+    <TextValue>Pro</TextValue>
+    <Description>Unlimited projects, priority support</Description>
+  </Select.Option>
+</Select>
+```
+
+Explicit local props win over container-injected defaults where it matters most. `<ActionButton.Group>` documents this with three precedence rules. `size` cascades from the group, `variant` is overridden by the local prop (so a destructive button stays destructive inside a ghost group), and `disabled` is overridden by the local prop with the group as the fallback default.
+
+<Callout title="Where to learn more">
+  For the deep dive into the rule about which contexts to reuse, the recipe for
+  building a new slot-configurable primitive, and a hand-built example
+  container, see the [Slot
+  Configuration](/patterns/composition/slot-configuration) pattern page.
+</Callout>
+
 ## Layout
 
 Layout in Marigold is handled by a set of named components (`Stack`, `Inline`, `Columns`, and their siblings). The [Layouts](/foundations/layouts) page covers the philosophy and the full catalogue.

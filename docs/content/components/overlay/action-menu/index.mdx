@@ -1,0 +1,100 @@
+---
+title: ActionMenu
+description: Quick contextual actions for an item, row, or surface.
+badge: alpha
+---
+
+The `<ActionMenu>` component is the kebab-menu pattern: a trigger button with no visible label that opens a small menu of contextual quick actions. Reach for it when an item, row, or surface has a handful of actions that don't all need to be visible at once.
+
+The trigger renders as an [`<ActionButton>`](/components/actions/action-button) with an ellipsis icon. On small screens the popover is replaced by a `<Tray>` so the menu remains usable on touch devices.
+
+For text-labelled menus that anchor primary navigation use [`<Menu>`](/components/overlay/menu) instead. For a flat group of always-visible buttons use [`<ActionButton.Group>`](/components/actions/action-button#actionbuttongroup).
+
+import { ActionMenuAnatomy } from './action-menu-anatomy';
+
+## Anatomy
+
+<ActionMenuAnatomy />
+
+- **Trigger**, an `<ActionButton>` with the ellipsis icon by default.
+- **Popover** on desktop, **Tray** on mobile. The floating surface that holds the menu.
+- **Menu items**, written as `<ActionMenu.Item>`. Mark an item with `variant="destructive"` for high-impact actions.
+
+## Appearance
+
+<AppearanceDemo component={'ActionMenu'} />
+
+<AppearanceTable component={'ActionMenu'} />
+
+ActionMenu shares its trigger variants and sizes with [`<Menu>`](/components/overlay/menu). The default trigger is a small ghost button with the ellipsis icon so the menu blends into the row or toolbar it sits on.
+
+## Usage
+
+ActionMenu shines wherever a row or item has more actions than fit comfortably in a toolbar. Tables, list rows, file-browser items, and notification cards all benefit from the kebab pattern: the row stays clean, and the actions are one click away.
+
+<ComponentDemo name="action-menu-basic" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use ActionMenu for contextual quick actions on an item or row. Keep the
+      list short. Three to seven items is a comfortable range.
+    </DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>
+      Always provide an `aria-label` describing the menu's context (for example
+      "Item actions" or "User actions") so the trigger is announced correctly.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use ActionMenu as a primary navigation element. A labelled
+      [`<Menu>`](/components/overlay/menu) or a `<Button>` is the right choice
+      there.
+    </DontDescription>
+  </Dont>
+  <Dont>
+    <DontDescription>
+      Don't pile every action into one ActionMenu. If you need more than a
+      handful of items, consider grouping them into sections or surfacing the
+      most-used actions inline.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Mobile behaviour
+
+On small screens the popover is replaced with a `<Tray>` automatically. No extra wiring is needed. The trigger position and accessibility behaviour stay the same. The items just open in a bottom sheet instead of an anchored popover.
+
+### Destructive actions
+
+Actions with significant or irreversible consequences should use `variant="destructive"` on the relevant `<ActionMenu.Item>`. Pair destructive actions with a confirmation dialog when the action can't be undone. See [Button: Destructive buttons](/components/actions/button#destructive-buttons) for the underlying guidance.
+
+## Use inside a container
+
+A container can publish shared defaults for every ActionMenu inside. A row that reveals actions on hover, for example, can pin the trigger size, default placement, or `aria-label` so each individual ActionMenu stays free of repetitive props.
+
+For the full picture of how containers and primitives work together, see [Slot Configuration](/patterns/composition/slot-configuration).
+
+## Props
+
+<StorybookHintMessage component={'ActionMenu'} />
+
+### ActionMenu
+
+<AutoTypeTable path="Menu/ActionMenu" name="ActionMenuProps" />
+
+### ActionMenu.Item
+
+<AutoTypeTable path="Menu/MenuItem" name="MenuItemProps" />
+
+### ActionMenu.Section
+
+<AutoTypeTable path="Menu/MenuSection" name="MenuSectionProps" />
+
+## Alternative components
+
+- [Menu](/components/overlay/menu): Use for text-labelled menus where the trigger reads like a primary control.
+- [ActionButton](/components/actions/action-button): Use for always-visible contextual actions. Group several with `ActionButton.Group`.
+- [Dialog](/components/overlay/dialog): Use when an action requires confirmation or additional input.

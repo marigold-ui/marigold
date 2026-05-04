@@ -1,0 +1,76 @@
+---
+title: TextValue
+description: Inline label primitive for selection items.
+badge: alpha
+---
+
+The `<TextValue>` component is a small inline label designed for selection items such as `<Select.Option>`, `<Menu.Item>`, `<ListBox.Item>`, and `<ComboBox.Item>`. By marking the label explicitly, screen readers announce the right text and keyboard typeahead lands on the right item without any extra wiring.
+
+It has no visual props of its own. Its appearance comes from the surrounding selection item, which keeps the look consistent across menus, selects, and lists. Pair it with [`<Description>`](/components/content/description) when the item also needs a help line.
+
+import { TextValueAnatomy } from './text-value-anatomy';
+
+## Anatomy
+
+<TextValueAnatomy />
+
+A `<TextValue>` renders an inline `<span>` by default. Inside a selection item it acts as the accessible label, and an optional sibling `<Description>` adds the help line.
+
+## Appearance
+
+<AppearanceDemo component={'TextValue'} />
+
+<AppearanceTable component={'TextValue'} />
+
+`<TextValue>` carries no visual props of its own. Its appearance comes from the surrounding selection item, which is why the picker above is empty. Pair it with a `<Description>` when the item benefits from a help line below the label.
+
+## Usage
+
+### Inside selection items
+
+The primary use case. Drop `<TextValue>` into a `<Menu.Item>`, `<Select.Option>`, `<ListBox.Item>`, or `<ComboBox.Item>`. The selection item picks it up as its accessible name, so screen reader announcements and keyboard typeahead all line up with the visible label.
+
+<ComponentDemo name="text-value-in-menu" />
+
+Pair with `<Description>` when each item benefits from a one-line explanation:
+
+<ComponentDemo name="text-value-with-description" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `<TextValue>` inside selection items so screen readers and keyboard
+      typeahead get the right accessible name.
+    </DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>
+      Pair with `<Description>` for items that benefit from a help line.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `<TextValue>` for paragraph text or arbitrary inline strings.
+      Use [`<Text>`](/components/content/text) instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Use inside a selection item
+
+The selection item declares the label region and the right styling for it. Consumers just write the label text inside `<TextValue>` and add a `<Description>` next to it when needed.
+
+For the full picture of how containers and primitives work together, see [Slot Configuration](/patterns/composition/slot-configuration).
+
+## Props
+
+<StorybookHintMessage component={'TextValue'} />
+
+### TextValue
+
+<AutoTypeTable path="TextValue" name="TextValueProps" />
+
+## Alternative components
+
+- [Text](/components/content/text): Use for paragraph text and body copy.
+- [Description](/components/content/description): The help-line partner inside selection items.

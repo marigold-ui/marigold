@@ -1,3 +1,10 @@
 {
-  "pages": ["actionbar", "button", "link", "link-button", "toggle-button"]
+  "pages": [
+    "action-button",
+    "actionbar",
+    "button",
+    "link",
+    "link-button",
+    "toggle-button"
+  ]
 }

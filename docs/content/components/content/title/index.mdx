@@ -1,0 +1,74 @@
+---
+title: Title
+description: A heading primitive that participates in container slot context.
+badge: alpha
+---
+
+The `<Title>` component is a heading designed to live inside a container such as `<Panel>`, `<Dialog>`, `<Drawer>`, `<EmptyState>`, or `<SectionMessage>`. The surrounding container decides the right heading level and how the title fits into the layout, so you can drop a `<Title>` in without thinking about it.
+
+Standalone usage is supported but rare. For top-level page headings reach for [`<Headline>`](/components/content/headline) instead.
+
+import { TitleAnatomy } from './title-anatomy';
+
+## Anatomy
+
+<TitleAnatomy />
+
+A `<Title>` renders an `<h1>` to `<h6>` heading element. Two ideas work in parallel:
+
+- **Heading text** is the children you pass in.
+- **Visual size** is the `size` prop. Title reuses the `<Headline>` typography scale (`level-1` to `level-6`) so headings stay visually consistent across the system.
+- **Semantic level** is the `level` prop, which controls the HTML element that renders. The container usually supplies this for you. Set it explicitly only when using `<Title>` outside a container.
+
+## Appearance
+
+<AppearanceDemo component={'Title'} />
+
+<AppearanceTable component={'Title'} />
+
+## Sizes
+
+`<Title>` shares the design system's heading vocabulary with `<Headline>`. Containers usually pin a size when they wire up the `title` slot, but you can also pass `size` directly.
+
+<ComponentDemo name="title-sizes" />
+
+## Heading level
+
+The `level` prop controls the rendered HTML element (`<h1>` to `<h6>`). Visual size and semantic level are independent. You can render a level-2 sized title as `<h3>` if the document outline calls for it.
+
+When `<Title>` is used inside a container, the container supplies the level for you so the document outline stays correct without consumers having to think about it. Set `level` explicitly only when using `<Title>` outside a container.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `<Title>` inside containers (Panel, Dialog, Drawer, EmptyState, SectionMessage)
+      to label a region. Let the container choose the heading level.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `<Title>` for the top-level page heading. That's the role of `<Headline>`.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Use inside a container
+
+A container can define the heading level, spacing, and other defaults for the title region. The consumer just writes the title text and the container takes care of the rest.
+
+<ComponentDemo name="title-in-container" />
+
+For the full picture of how containers and primitives work together, see [Slot Configuration](/patterns/composition/slot-configuration).
+
+## Props
+
+<StorybookHintMessage component={'Title'} />
+
+### Title
+
+<AutoTypeTable path="Title" name="TitleProps" />
+
+## Alternative components
+
+- [Headline](/components/content/headline): Use for top-level page headings or any heading that should not adapt to a surrounding container.
+- [Text](/components/content/text): Use for paragraph text and body copy.

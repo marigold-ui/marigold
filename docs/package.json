@@ -45,6 +45,7 @@
     "next": "16.2.3",
     "nuqs": "2.8.8",
     "react": "^19.2.3",
+    "react-aria-components": "^1.17.0",
     "react-dom": "^19.2.3",
     "react-hook-form": "7.71.2",
     "react-use": "^17.6.0",

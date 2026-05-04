@@ -70,7 +70,7 @@ const AppearancePicker = ({
 // Props
 // ---------------
 export interface AppearanceDemoProps {
-  component: keyof Theme['components'];
+  component: keyof Theme['components'] | (string & {});
   exclude?: {
     variant?: string[];
     size?: string[];

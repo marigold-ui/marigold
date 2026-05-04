@@ -46,7 +46,10 @@ export interface ActionButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   ref?: Ref<HTMLButtonElement>;
 }
 
-const _ActionButton = ({ ref: refProp, ...inputProps }: ActionButtonProps) => {
+export const ActionButton = ({
+  ref: refProp,
+  ...inputProps
+}: ActionButtonProps) => {
   const [merged, ref] = useContextProps(
     inputProps as ActionButtonProps & { className?: string },
     refProp,
@@ -106,6 +109,4 @@ const _ActionButton = ({ ref: refProp, ...inputProps }: ActionButtonProps) => {
   );
 };
 
-_ActionButton.Group = ActionButtonGroup;
-
-export { _ActionButton as ActionButton };
+ActionButton.Group = ActionButtonGroup;

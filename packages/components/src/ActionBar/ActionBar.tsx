@@ -16,7 +16,6 @@ import { IconButton } from '../IconButton/IconButton';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 import { ActionBarButton } from './ActionBarButton';
-import type { ActionBarButtonProps } from './ActionBarButton';
 import { useActionBarContext } from './ActionBarContext';
 
 export interface ActionBarProps {
@@ -225,4 +224,3 @@ const ActionBar = Object.assign(ActionBarBase, {
 });
 
 export { ActionBar };
-export type { ActionBarButtonProps };
