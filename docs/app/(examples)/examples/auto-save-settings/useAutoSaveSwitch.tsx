@@ -14,16 +14,16 @@ const simulateSave = (): Promise<void> =>
 export const useAutoSaveSwitch = (initial: boolean, label: string) => {
   const [selected, setSelected] = useState(initial);
   const { addToast } = useToast();
-  const latestSaveId = useRef(0);
+  const latestSaveIdRef = useRef(0);
 
   const save = useCallback(
-    async (next: boolean) => {
-      const id = ++latestSaveId.current;
+    async function save(next: boolean) {
+      const id = ++latestSaveIdRef.current;
       setSelected(next);
       try {
         await simulateSave();
       } catch {
-        if (latestSaveId.current !== id) return;
+        if (latestSaveIdRef.current !== id) return;
         setSelected(current => (current === next ? !next : current));
         addToast({
           title: "Couldn't save your change",
