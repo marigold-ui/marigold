@@ -105,7 +105,7 @@ const _RangeCalendar = <T extends DateValue>({
   pageBehavior = 'visible',
   ...rest
 }: RangeCalendarProps<T>) => {
-  const visibleMonths = visibleDuration?.months ?? 1;
+  const visibleMonths = visibleDuration.months;
   const isMultiMonth = visibleMonths > 1;
 
   const props: RAC.RangeCalendarProps<T> = {
