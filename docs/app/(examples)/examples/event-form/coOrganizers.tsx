@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Key } from '@react-types/shared';
+import type { Key } from '@react-types/shared';
 import {
   Badge,
   Inline,

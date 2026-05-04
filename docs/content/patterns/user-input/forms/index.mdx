@@ -146,9 +146,11 @@ Some fields are only relevant for administrators or master users. Mark and separ
 
 See the [Admin- and Mastermark](/patterns/layout/admin-master-mark) page for the full usage guide.
 
-## Task forms
+## Workflow forms
 
-Use when the user is completing a task: creating a thing, signing up, registering, checking out, or editing a single record. Everything submits together, and the user is "done" once they submit.
+Workflow forms guide the user through a single goal from start to finish. Everything submits together, and once submitted, the user is done.
+
+Use them when the user has come to accomplish something: creating a thing, signing up, registering, checking out, or editing a single record.
 
 - One `<Form>` wraps the whole page, or sits inside a `<Panel>` if you want a structured container with a header, description, and footer.
 - Sections are plain headings separated with `<Stack space="group">`.
