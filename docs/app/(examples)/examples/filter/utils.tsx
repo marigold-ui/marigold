@@ -73,7 +73,6 @@ export const toFormSchema = urlSchema.transform(data => ({
   rating: String(data.rating ?? ''),
 })).parse;
 
-// Form -> URL (excludes type — preserved separately from toolbar state)
 export const toUrlSchema = formSchema.transform(data => ({
   capacity: data.capacity ? Number(data.capacity) : undefined,
   price: Number(data.price) < MAX_PRICE ? Number(data.price) : undefined,
@@ -81,7 +80,6 @@ export const toUrlSchema = formSchema.transform(data => ({
   rating: data.rating ? Number(data.rating) : undefined,
 })).safeParse;
 
-// Display formatters — per-key dispatch keeps each value's type intact
 // ---------------
 type FilterKeys = keyof VenueFilter;
 

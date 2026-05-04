@@ -36,8 +36,10 @@ interface FilterFormProps {
 
 const FilterForm = ({ state }: FilterFormProps) => {
   // ToggleButton.Group does not integrate with native FormData (it is not a
-  // form component), so the rating value rides along in a hidden <input>
-  // updated on every selection change via a ref, no React state needed.
+  // form component, see DST-1392 for the planned fix), so the rating value
+  // rides along in a hidden <input> synced via onSelectionChange and a ref.
+  // Do not copy this pattern blindly, once DST-1392 lands the hidden input
+  // can be removed and a plain `name` prop used instead.
   const ratingInputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -133,54 +135,54 @@ export const Toolbar = () => {
   };
 
   return (
-    <Inline space={2} alignY="input">
-      <Form onSubmit={onSearch} unstyled>
-        <Inline space={2} noWrap alignY="top">
-          <SearchField
-            aria-label="Search venues"
-            description="Search by name"
-            name="q"
-            width={64}
-            autoComplete="off"
-            defaultValue={search}
-            onClear={() => {
-              setSearch('');
-              setPage(null);
-            }}
-          />
-          <Button variant="primary" type="submit">
-            Search
+    <Inline space={2} alignX={'between'}>
+      <Inline alignY="input" space={2}>
+        <Form onSubmit={onSearch} unstyled>
+          <Inline space={2} noWrap alignY="top">
+            <SearchField
+              aria-label="Search venues"
+              description="Search by name"
+              name="q"
+              width={64}
+              autoComplete="off"
+              defaultValue={search}
+              onClear={() => {
+                setSearch('');
+                setPage(null);
+              }}
+            />
+            <Button variant="primary" type="submit">
+              Search
+            </Button>
+          </Inline>
+        </Form>
+        <Drawer.Trigger>
+          <Button>
+            <Filter /> Filter
           </Button>
-        </Inline>
-      </Form>
-      <Drawer.Trigger>
-        <Button>
-          <Filter /> Filter
-        </Button>
-        <Drawer closeButton>
-          <Form onSubmit={onFilterSubmit} unstyled>
-            <Drawer.Title>Filter Venues</Drawer.Title>
-            <Drawer.Content>
-              <FilterForm
-                key={JSON.stringify(filter)}
-                state={toFormSchema(filter)}
-              />
-            </Drawer.Content>
-            <Drawer.Actions>
-              <Button slot="close">Close</Button>
-              <Button variant="primary" type="submit">
-                Apply
-              </Button>
-            </Drawer.Actions>
-          </Form>
-        </Drawer>
-      </Drawer.Trigger>
-      <div className="ml-auto">
-        {/* Will be wired up in DST-1288 */}
-        <Button disabled>
-          <Add /> Add Venue
-        </Button>
-      </div>
+          <Drawer closeButton>
+            <Form onSubmit={onFilterSubmit} unstyled>
+              <Drawer.Title>Filter Venues</Drawer.Title>
+              <Drawer.Content>
+                <FilterForm
+                  key={JSON.stringify(filter)}
+                  state={toFormSchema(filter)}
+                />
+              </Drawer.Content>
+              <Drawer.Actions>
+                <Button slot="close">Close</Button>
+                <Button variant="primary" type="submit">
+                  Apply
+                </Button>
+              </Drawer.Actions>
+            </Form>
+          </Drawer>
+        </Drawer.Trigger>
+      </Inline>
+      {/* Will be wired up in DST-1288 */}
+      <Button disabled>
+        <Add /> Add Venue
+      </Button>
     </Inline>
   );
 };
