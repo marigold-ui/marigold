@@ -1,0 +1,501 @@
+---
+title: Marigold v18.0.0
+date: 2026-06-30
+type: Blog
+changed:
+  - foundations/token-overview
+  - foundations/elevation
+  - foundations/layouts
+  - foundations/spacing
+  - components/layout/panel
+  - components/layout/inset
+  - components/layout/stack
+  - components/layout/inline
+  - components/layout/app-layout
+  - components/navigation/sidebar
+  - components/actions/actionbar
+  - components/collection/table
+  - components/content/divider
+  - components/content/loader
+  - components/form/switch
+  - components/form/tagfield
+  - components/form/select
+  - components/form/combobox
+  - components/form/autocomplete
+  - components/overlay/tooltip
+---
+
+For the last years, Marigold's job was mostly to replace. Modernize an aging codebase, swap out legacy patterns, refresh a design that had started to show its years. v18.0.0 is where that chapter quietly ends and a new one begins. We are done catching up. From here, the work is about craft. Shaping a design language that does not just look current, but is unmistakably its own.
+
+This is the biggest single release we've shipped. It is also the first step of a longer effort, not the last. The foundation you'll build on is here. The identity layered on top of it is what comes next.
+
+<Callout title="Before you upgrade" type="info">
+  Marigold v18 requires React 19. If you are still on React 18, upgrade React
+  first, verify your app still builds, then bump Marigold.
+</Callout>
+
+## Breaking Changes
+
+### Design tokens overhaul
+
+The design token layer has been rebuilt around a new purpose-built neutral palette, a clearer semantic naming scheme, and a restructured status-token hierarchy. The goal is to move from "tokens that happen to describe the current UI" to "tokens that describe the role each color plays." More changes will follow in later releases. v18 is the step that sets up that direction.
+
+#### New `charcoal` palette
+
+The default neutral scale has been replaced. Previously the theme leaned on Tailwind's `stone` palette with a handful of scattered overrides. It now uses a purpose-built warm neutral called `charcoal`, with 11 steps calibrated in OKLCH at hue `54`. Each step maps to a specific role (background, hover, control, text, and so on).
+
+export const Sw = ({ c }) => (
+  <span
+    style={{
+      display: 'inline-block',
+      width: '0.9em',
+      height: '0.9em',
+      borderRadius: '0.2em',
+      background: c,
+      border: '1px solid rgba(0,0,0,0.1)',
+      verticalAlign: '-0.1em',
+      marginRight: '0.4em',
+    }}
+  />
+);
+
+| Step | Old (`stone`)                | New (`charcoal`)                                         | Typical role                      |
+| ---- | ---------------------------- | -------------------------------------------------------- | --------------------------------- |
+| 50   | <Sw c="#fafaf9" /> `#fafaf9` | <Sw c="oklch(0.985 0.002 54)" /> `oklch(0.985 0.002 54)` | Subtle tint, `primary-foreground` |
+| 100  | <Sw c="#f5f5f4" /> `#f5f5f4` | <Sw c="oklch(0.965 0.003 54)" /> `oklch(0.965 0.003 54)` | Page background                   |
+| 200  | <Sw c="#e7e5e4" /> `#e7e5e4` | <Sw c="oklch(0.92 0.004 54)" /> `oklch(0.92 0.004 54)`   | Hover, `disabled-surface`         |
+| 300  | <Sw c="#d6d3d1" /> `#d6d3d1` | <Sw c="oklch(0.86 0.005 54)" /> `oklch(0.86 0.005 54)`   | Borders, control fill, selected   |
+| 400  | <Sw c="#a8a29e" /> `#a8a29e` | <Sw c="oklch(0.74 0.006 54)" /> `oklch(0.74 0.006 54)`   | Disabled text                     |
+| 500  | <Sw c="#78716c" /> `#78716c` | <Sw c="oklch(0.62 0.007 54)" /> `oklch(0.62 0.007 54)`   | -                                 |
+| 600  | <Sw c="#57534e" /> `#57534e` | <Sw c="oklch(0.52 0.008 54)" /> `oklch(0.52 0.008 54)`   | Focus ring, `secondary` text      |
+| 700  | <Sw c="#44403c" /> `#44403c` | <Sw c="oklch(0.42 0.008 54)" /> `oklch(0.42 0.008 54)`   | -                                 |
+| 800  | <Sw c="#292524" /> `#292524` | <Sw c="oklch(0.32 0.008 54)" /> `oklch(0.32 0.008 54)`   | -                                 |
+| 900  | <Sw c="#1c1917" /> `#1c1917` | <Sw c="oklch(0.22 0.008 54)" /> `oklch(0.22 0.008 54)`   | Primary text                      |
+| 950  | <Sw c="#0c0a09" /> `#0c0a09` | <Sw c="oklch(0.15 0.008 54)" /> `oklch(0.15 0.008 54)`   | Primary action, scrollbar hover   |
+
+The new scale is more even across the light end (50 → 300), which gives more room for subtle UI layers on white surfaces, and it lands slightly cooler at the dark end so that body text reads with less warm cast. Full reference lives on the new [Token Overview](/foundations/token-overview) page.
+
+#### Semantic token renames
+
+A few long-standing token names were ambiguous enough that we kept tripping over them in review. Renaming them up front is less painful than maintaining the confusion across another year of components.
+
+| Old                | New               | Notes                                                                |
+| ------------------ | ----------------- | -------------------------------------------------------------------- |
+| `brand`            | `primary`         | Matches the broader industry convention.                             |
+| `muted-foreground` | `secondary`       | Describes the role (secondary text), not the styling.                |
+| `focus`            | `focus-highlight` | Distinguishes the background highlight from the focus ring (`ring`). |
+
+In your application this is mostly a find-and-replace across Tailwind utility classes:
+
+```diff
+- <div className="bg-brand text-brand-foreground" />
++ <div className="bg-primary text-primary-foreground" />
+
+- <Text className="text-muted-foreground">Help text</Text>
++ <Text className="text-secondary">Help text</Text>
+
+- <div className="bg-focus ring-ring" />
++ <div className="bg-focus-highlight ring-ring" />
+```
+
+If you read these values directly as CSS custom properties (`var(--color-brand)`), update those too. The old variable names are gone, not aliased.
+
+#### New surface and overlay tokens
+
+Two additional tokens join the semantic set to cover roles that were previously expressed with raw utility classes:
+
+- **`disabled-surface`** — background for disabled control surfaces (switch tracks, selected-but-disabled states, inert chips). Resolves to `charcoal-200` in the default theme.
+- **`overlay-backdrop`** — the scrim behind modals, drawers, and trays. Previously the backdrop was styled with a raw `bg-black/50`; routing it through a token lets themes tune both the color and the opacity.
+
+#### Status tokens restructured
+
+Previously the theme exposed **two** parallel sets of tokens for status colors. A "solid" variant (`--color-warning`, `--color-warning-foreground`) was meant for icons on accent fills. A "muted" variant (`--color-warning-muted`, `--color-warning-muted-foreground`, `--color-warning-muted-accent`) was used for almost everything else (badges, banners, section messages). In practice, the muted set was the one you reached for 95% of the time, and the solid set caused more confusion than value.
+
+The muted variant is now the default, and the `-muted-` segment has been dropped. Where the original bold variant is still useful (currently only for `destructive`), it moves to a `-bold` suffix.
+
+```diff
+- <div className="bg-warning-muted text-warning-muted-foreground">
+-   <AlertTriangle className="text-warning-muted-accent" />
+-   Heads up
+- </div>
++ <div className="bg-warning text-warning-foreground">
++   <AlertTriangle className="text-warning-accent" />
++   Heads up
++ </div>
+```
+
+The same pattern applies across `success`, `warning`, `info`, and `destructive`. For destructive specifically, the strong solid variant is still available as `bg-destructive-bold` / `text-destructive-bold-foreground` for primary destructive actions.
+
+If you relied on the old solid tokens (`bg-warning`, `bg-info`) to render a filled accent shape, you will need to rebuild those with the appropriate scale color (e.g. `bg-yellow-400`) or promote the accent to a `*-bold` variant in your theme.
+
+#### New hover utilities
+
+Two new CSS utilities replace the handful of raw `hover:bg-*` patterns that accumulated across components over time:
+
+- **`ui-state-hover`** applies the standard hover for list items, table rows, and menu items on white surfaces. Resolves to `bg-hover text-foreground`.
+- **`ui-state-hover-ghost`** applies a translucent hover for ghost buttons, tabs, and action bar buttons that need to adapt to whatever surface they sit on. Resolves to `bg-current/10`.
+
+All first-party components now use these, so hover behavior is consistent across the library. If you built custom components that imitated Marigold's hover styling by copying Tailwind classes, prefer these utilities so you pick up future tweaks automatically.
+
+### Elevation utilities removed
+
+The legacy `util-surface-*` utilities were deprecated in v17.0.0 and announced for removal. v18 finishes that migration. The separate elevation-layer utilities are gone in favor of the `ui-surface` utility combined with standard Tailwind `shadow-elevation-*` classes.
+
+**Migration:**
+
+| Old utility            | New replacement                                      |
+| ---------------------- | ---------------------------------------------------- |
+| `util-surface-sunken`  | Removed. Use `bg-background` for the page base layer |
+| `util-surface-body`    | `bg-background` (no shadow needed)                   |
+| `util-surface-raised`  | `ui-surface shadow-elevation-raised`                 |
+| `util-surface-overlay` | `ui-surface shadow-elevation-overlay`                |
+
+```diff
+- <div className="util-surface-raised">
++ <div className="ui-surface shadow-elevation-raised">
+    …
+  </div>
+```
+
+The refreshed [Elevation](/foundations/elevation) foundation page now walks through the three-tier shadow model (`border`, `raised`, `overlay`) and when to reach for each.
+
+### Retired `<Multiselect>`, migrate to `<TagField>`
+
+`<Multiselect>` has been deprecated since v17.0.0 and is now gone. It was the only component pulling in `react-select`, and keeping it around meant shipping two different multi-select mental models. `<TagField>` has covered every real use case since its promotion to beta, so v18 removes the original.
+
+```diff
+- <Multiselect label="Genres" options={options} onChange={setValues} />
++ <TagField label="Genres">
++   <TagField.Option id="rock">Rock</TagField.Option>
++   <TagField.Option id="jazz">Jazz</TagField.Option>
++   <TagField.Option id="pop">Pop</TagField.Option>
++ </TagField>
+```
+
+The `react-select` dependency has been removed from `@marigold/components`, so bundle size drops for any app that wasn't already on `<TagField>`. See the [TagField documentation](/components/form/tagfield) for the full API, including controlled/uncontrolled selection, disabled keys, sections, and custom empty states.
+
+### `<Tooltip>` no longer accepts `open`
+
+The `open` prop has been removed from `<Tooltip>`. Controlled visibility now lives on `<Tooltip.Trigger>` only, which is where the rest of the trigger state already was. The previous setup duplicated the prop across two components and bridged them through a React context, which made it easy to end up with a trigger that ignored the tooltip's `open` prop (or vice versa).
+
+```diff
+- <Tooltip open={isOpen} onOpenChange={setIsOpen}>
+-   <Tooltip.Trigger>
+-     <Button>Info</Button>
+-   </Tooltip.Trigger>
+-   <Tooltip.Content>Hello</Tooltip.Content>
+- </Tooltip>
++ <Tooltip>
++   <Tooltip.Trigger open={isOpen} onOpenChange={setIsOpen}>
++     <Button>Info</Button>
++   </Tooltip.Trigger>
++   <Tooltip.Content>Hello</Tooltip.Content>
++ </Tooltip>
+```
+
+Uncontrolled usage is unchanged.
+
+### `<Switch>` layout and sizing rework
+
+`<Switch>` now sits on the **left** of its label, matching `<Checkbox>` and `<Radio>`. The default track is smaller (16×28px, down from 24×40px) so the control visually weighs the same as a checkbox when the three appear in the same form. The `size="large"` prop is gone.
+
+For the classic settings-page layout (label and description on the left, toggle anchored to the far right), there is a new `variant="settings"`:
+
+```tsx
+<Switch
+  label="Email notifications"
+  description="Receive a summary every Monday"
+  variant="settings"
+/>
+```
+
+`<Switch>` also now accepts a `description` prop (matching `<Checkbox>`) and passes `name` through to the underlying input so it works in plain HTML form submissions. The description is wired up with `aria-describedby` and aligns with the label via CSS subgrid, so it stays correct at any control size without hardcoded padding.
+
+#### Custom theme migration (required)
+
+`<Switch>` and `<Checkbox>` share a new internal `BooleanField` wrapper that renders descriptions and handles `aria-describedby`. **If you maintain a custom theme, you must add a `BooleanField` component, or `<Checkbox>` / `<Switch>` with a `description` prop will throw at runtime:**
+
+```
+Error: Component "BooleanField" is missing styles in the current theme.
+```
+
+Add the following to your theme:
+
+```ts
+import { cva } from '@marigold/system';
+
+export const BooleanField = {
+  container: cva({
+    base: 'grid gap-x-2',
+    variants: {
+      variant: {
+        default: 'grid-cols-[auto_1fr]',
+        settings: 'grid-cols-[1fr_auto]',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  description: cva({
+    base: 'mt-0.5',
+    variants: {
+      variant: {
+        default: 'col-start-2',
+        settings: 'col-start-1',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+};
+```
+
+Then export it from your theme's component index.
+
+The `Checkbox` and `Switch` container slots have also moved from flexbox to CSS grid with conditional subgrid (so the description column aligns under the label regardless of control size).
+
+### Theme-owned breakpoints
+
+Breakpoint resolution is now driven by the theme. `useSmallScreen` and `useResponsiveValue` read `theme.screens` from the `ThemeProvider` context instead of the hardcoded values that used to live inside `@marigold/system`'s `defaultTheme`. When the theme doesn't provide `screens`, the hooks fall back to Tailwind v4's `--breakpoint-*` custom properties.
+
+For apps on `@marigold/theme-rui`, this is a no-op. The theme now exposes the same breakpoints (Tailwind v4 defaults) that the system used to ship. If you maintain a **custom theme** that doesn't extend `theme-rui`, add a `screens` map to it, or rely on the CSS fallback:
+
+```ts
+import type { Theme } from '@marigold/system';
+
+export const myTheme: Theme = {
+  name: 'my-theme',
+  screens: {
+    sm: '40rem',
+    md: '48rem',
+    lg: '64rem',
+    xl: '80rem',
+    '2xl': '96rem',
+  },
+  // ...
+};
+```
+
+The motivation: breakpoints are a theming concern, not a system concern. Different products have different layout rhythms, and forcing every app through the same default made theme portability harder than it needed to be.
+
+### `<AppLayout>` now scrolls at the page level
+
+`<AppLayout>` no longer owns an interior scroll container. The document (`<html>` / `<body>`) scrolls the whole page, the sidebar holds its position via `position: sticky`, and the top header stays pinned through `<TopNavigation>`'s own sticky positioning. Visually, app shells look the same. Behaviorally, almost everything that depends on "what is scrolling" gets simpler.
+
+The reason this matters in real apps:
+
+- **Mobile URL bar.** Safari and Chrome on mobile only collapse the URL bar when the document scrolls. With an interior scroll container, you permanently lose ~8% of the screen. Page-level scroll gets it back.
+- **Pull-to-refresh** works again on mobile (interior scroll disables it).
+- **Browser scroll restoration** on back/forward only works reliably for the document, not interior containers — interior scroll causes subtle "lost scroll position" bugs.
+- **`Cmd+F` find-in-page** scrolls the document, so matches outside the viewport now scroll into view correctly.
+- **Anchor links (`#section`), iOS status-bar tap (scroll-to-top), and native keyboard navigation** (`PgUp`, `PgDn`, `Space`, `Home`, `End`) all behave predictably.
+- **`IntersectionObserver` with the default root, `scroll-snap`, `position: sticky`, and `scroll-margin-top`** are all simpler when there is exactly one scroll container.
+
+**Migration.** Two patterns break:
+
+```diff
+- const top = mainRef.current?.scrollTop;
++ const top = window.scrollY; // or document.documentElement.scrollTop
+```
+
+```diff
+- <AppLayout.Main>
+-   <div className="h-full">…</div>
+- </AppLayout.Main>
++ <AppLayout.Main>
++   <div className="min-h-dvh">…</div>
++ </AppLayout.Main>
+```
+
+Anything that read `mainRef.current.scrollTop` (or attached a scroll listener to the main container) needs to read from `window` / `document.documentElement` instead. Styles that assumed a viewport-bounded main region (`height: 100%` on direct `<AppLayout.Main>` children, for example) are no longer constrained — switch to `min-h-dvh` or drop the constraint altogether.
+
+A small known trade-off: a pure app-shell look using `position: sticky` can flicker briefly during iOS Safari momentum scroll, and sticky elements may show a one-frame repaint when overlays close. Both are cosmetic, neither affects correctness, and the behavioral wins above are worth it.
+
+### `<Select>`, `<ComboBox>`, `<Autocomplete>` no longer accept `width="fit"`
+
+The `fit` value is gone on these three components. Their listbox renders through a popover with virtualized content, and the react-aria `Virtualizer` controls item sizing independently of CSS layout — `width="fit"` never made it into the popover, which ended up clipping the dropdown contents.
+
+```diff
+- <Select label="Role" width="fit">
++ <Select label="Role" width="1/2">
+```
+
+Every other `width` value (fractions, fixed sizes, `full`) continues to work. The same change applies to `<ComboBox>` and `<Autocomplete>`.
+
+## New components
+
+### `<Panel>`
+
+`<Panel>` is a new compound component for **page-level content sectioning** — the unit between `<AppLayout>` and the content inside it. Where `<Card>` is meant for repeating collection items (a stat tile, a session row, a team card), `<Panel>` frames a full page section with a header, optional description, actions, body, and footer.
+
+```tsx
+<Panel>
+  <Panel.Header>
+    <Panel.Title>Organizer info</Panel.Title>
+    <Panel.Description>
+      Shown on the event page and in confirmation emails.
+    </Panel.Description>
+    <Panel.HeaderActions>
+      <Button variant="secondary">Edit</Button>
+    </Panel.HeaderActions>
+  </Panel.Header>
+  <Panel.Content>…</Panel.Content>
+  <Panel.Footer>…</Panel.Footer>
+</Panel>
+```
+
+**Collapsible sections.** `<Panel.Collapsible>` mirrors the header layout for sections that fold. The entire surface is a single click target — title and description render as spans inside the trigger `<button>`, and `aria-labelledby` / `aria-describedby` are wired up automatically. A reusable `MorphCaret` chevron animates via SVG path morphing and respects `prefers-reduced-motion`.
+
+```tsx
+<Panel>
+  <Panel.Header>
+    <Panel.Title>Advanced settings</Panel.Title>
+  </Panel.Header>
+  <Panel.Collapsible>
+    <Panel.CollapsibleHeader>
+      <Panel.CollapsibleTitle>Webhooks</Panel.CollapsibleTitle>
+      <Panel.CollapsibleDescription>
+        Outbound HTTP callbacks
+      </Panel.CollapsibleDescription>
+    </Panel.CollapsibleHeader>
+    <Panel.CollapsibleContent>…</Panel.CollapsibleContent>
+  </Panel.Collapsible>
+</Panel>
+```
+
+**Edge-to-edge content.** `<Panel.Content>` and `<Panel.CollapsibleContent>` both accept an `inset` prop using the shared semantic spacing tokens. Combined with the new `collapsed` token (below), you can render a `<Table>` or media block that bleeds out to the panel edges without hand-rolling negative margins.
+
+The full API — header actions, footer layouts, bleed content, danger-zone rows, controlled collapsible state, error states, and a direct `Panel` vs `Card` comparison — lives on the new [Panel documentation page](/components/layout/panel).
+
+## Components
+
+### Universal `collapsed` spacing token
+
+A new `collapsed` token is available across **every** spacing-accepting prop in the system: `<Stack>` / `<Inline>` `space`, `<Inset>` `space` / `spaceX` / `spaceY`, and anywhere else that takes a spacing token. It resolves to zero.
+
+```tsx
+<Stack space="collapsed">
+  <Header />
+  <Table />
+</Stack>
+
+<Inset space="collapsed">
+  <EdgeToEdgeContent />
+</Inset>
+```
+
+The use case: wrappers that need to render without adding any spacing, for example an edge-to-edge `<Table>` inside a `<Panel>`. Before, you had to drop out of the semantic spacing system entirely and use numeric overrides whenever this came up. The token covers it directly.
+
+The name is deliberate. `collapsed` reads naturally in both gap and padding contexts (cf. CSS margin collapse). An earlier iteration used `none`, but that collided with Tailwind v4's `leading-none`, which resolves `none` through the shared `--spacing-*` scale.
+
+### `Sidebar.Nav` `current` prop
+
+`<Sidebar.Nav>` now accepts a `current` prop that resolves the active item for you. Pass the current pathname for smart segment-aware matching, or a predicate `(href, key) => boolean` for full control.
+
+```diff
+- <Sidebar.Nav>
+-   <Sidebar.Item href="/orders" active={pathname === '/orders'}>Orders</Sidebar.Item>
+-   <Sidebar.Item href="/events" active={pathname === '/events'}>Events</Sidebar.Item>
+- </Sidebar.Nav>
++ <Sidebar.Nav current={pathname}>
++   <Sidebar.Item href="/orders">Orders</Sidebar.Item>
++   <Sidebar.Item href="/events">Events</Sidebar.Item>
++ </Sidebar.Nav>
+```
+
+With the string form, nested routes like `/orders/1234` automatically highlight the `/orders` item — no regex fallback needed. `<Sidebar.Item>`'s own `active` prop still works as a local override.
+
+### `<Table>` column alignment fix
+
+`Table.Column`'s `alignX` prop now applies to the first column. Previously a truthy check on `columnIndex` skipped the alignment lookup when `columnIndex === 0`, so the first column quietly fell back to its default. If your tables rely on `alignX` for a numeric or icon column in the first position, they will render correctly for the first time.
+
+### Compound field focus and error outline
+
+Fields that compose an input with an adornment (addon slots, combined inputs) now render a **single continuous outline** across the composite for both focus and error states, instead of the outline breaking at the slot boundary. Affects any `<TextField>` / `<NumberField>` / etc. used with start or end addons.
+
+### `<Divider>` API and styling refresh
+
+`<Divider>` got a small API and styling pass. The most important change is that `orientation="vertical"` now actually works — previously the vertical variant rendered as a zero-height line you could not see. Alongside the fix, the docs page has been rewritten with new stories for the typical use cases (between groups in a stack, between toolbar items, inside menus). See the updated [Divider documentation](/components/content/divider).
+
+### `<Table.EditableCell>` collapsing edit trigger
+
+The hover-only ring affordance introduced in v17 (`#5250`) didn't read as editable in user testing — sighted users didn't associate it with inline editing, and there was no discoverable trigger for keyboard or touch users at all. v18 reverts that approach and brings back the explicit pencil edit button.
+
+The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands the moment a row is hovered or any cell in the row receives keyboard focus. When expanded, the wrapper switches to `overflow-visible` so the focus outline isn't clipped. The cell itself remains a tap target on touch devices, and enabled editable cells truncate their content to stay aligned with column headers and the editing controls. Disabled editable cells render like a regular `Table.Cell`.
+
+### `<Loader>` and `<ProgressCircle>` accept custom variant + size strings
+
+`<Loader>` and `<ProgressCircle>`'s `variant` and `size` prop types now use the `| (string & {})` pattern already adopted by `<Button>`, `<Panel>`, and most other themed components. Custom themes can register their own variant or size tokens without TypeScript errors, and IDE autocomplete still surfaces the built-in RUI values first.
+
+### `<ActionBar>` button spacing
+
+`<ActionBar>` action buttons now space their icon and label the same way a regular `<Button>` does. The theme's `actionButton` style was missing `gap-2 items-center justify-center`, which produced a subtle but visible misalignment whenever an `ActionBar` button mixed an icon with text. Theme-only fix — no consumer migration.
+
+### `ui-surface` custom properties no longer cascade
+
+`--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` are now registered with `@property { inherits: false }`. Previously, overriding one of them on a themed surface (for example a destructive `<Panel>` setting a red border) would cascade the value into every nested element that also reads `ui-surface`, tinting the borders of the Inputs, Buttons, and Cards inside it.
+
+Each surface now resolves its own fallback through the existing `var(..., var(--color-…))` chain, so nested surfaces keep their own defaults. No code change is required; the visual bleeding simply stops.
+
+## Theme package (`@marigold/theme-rui`)
+
+Most v18 changes happen inside `@marigold/components`. A handful of changes also land in `@marigold/theme-rui` that are worth calling out separately, because they affect what you import and how the CSS is structured. None of them break existing imports — `theme.css` and `styles.css` continue to work exactly as documented.
+
+### New `preflight.css`
+
+`preflight.css` adds two peer-dependency rules on the real `<html>` / `<body>`. They support the new page-level scroll model (see _`<AppLayout>` now scrolls at the page level_):
+
+- `html { scrollbar-gutter: stable }` — prevents a 1px reflow when `@react-aria/overlays` locks the page.
+- `body { position: relative; overflow-x: clip }` — contains the `@react-aria/live-announcer` portal (mounted at `top: -10000px; left: -10000px`) so it can't expand the document's scrollable area. `clip` instead of `hidden` so `position: sticky` on descendants keeps working.
+
+Both entry points (`theme.css` and `styles.css`) ship these rules, with the prefixer excluding `html` / `body` so they reach the document root while the rest of the bundle stays scoped to `[data-theme="rui"]`.
+
+### File layout split
+
+The theme's CSS now ships as four files with unambiguous roles:
+
+- `tokens.css` — `@plugin` declaration plus every design token in one place.
+- `preflight.css` — the two peer-dependency rules above.
+- `theme.css` — Tailwind-native entry. Imports `preflight.css` + `tokens.css` + `ui.css` + `variants.css` and paints `<body>` directly. Use this when Marigold is your whole app.
+- `styles.css` — pre-compiled drop-in. Same base, but paints `[data-theme="rui"]` instead. Use this when Marigold lives on an island, or when you're not running Tailwind. Place `data-theme="rui"` on the wrapper that should be themed.
+
+`global.css` (which had ambiguous semantics and was never released to consumers) is gone. Both `tokens.css` and `preflight.css` are now subpath exports if you want to import them directly.
+
+### Tokens at `:root`
+
+`postcss-prefix-selector` previously rewrote `@theme`'s output from `:root, :host` to `[data-theme="rui"], [data-theme="rui"] :host`, which meant any rule outside the scoped wrapper couldn't resolve `var(--color-background)` because the variables only existed inside `[data-theme="rui"]`. The prefixer now excludes `:root`, `:host`, and `[data-theme="rui"]` (with a quote-agnostic regex that survives Prettier round-trips) in addition to `html` / `body`. Design tokens are emitted globally; utility classes remain scoped.
+
+### CSS exports declare a `style` condition
+
+Tailwind v4's CSS resolver uses `conditionNames: ["style"]`. Bare `.css` export entries without a matching condition fail under strict resolvers, so every `.css` subpath now declares both `style` and `default` targets. The unused `./*` JS catchall is removed.
+
+### Transparent `ui-scrollbar` track
+
+`ui-scrollbar`'s track is now transparent so the themed scrollbar blends into whatever surface it's painted on instead of showing a visible groove on dark or tinted backgrounds.
+
+## Dependency updates
+
+- **React 19** is now the required baseline (see _Before you upgrade_).
+- **`react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*`** are bumped to their latest versions. Most consumers do not need to do anything; if you import directly from `react-aria-components`, re-read the [react-aria changelog](https://github.com/adobe/react-spectrum/releases) for the version range.
+- **`react-select`** is no longer a dependency. `<Multiselect>` was the only component pulling it in, and removing it shrinks the `@marigold/components` bundle for every app that had already migrated to `<TagField>`.
+
+## Docs and examples
+
+v18 ships alongside a substantial pass over the documentation site. None of these affect published packages, but if you follow the docs they are worth knowing about.
+
+- **Layouts foundation restructured** around `<Panel>` and the atomic primitives (`<Stack>`, `<Inline>`, `<Inset>`, `<Split>`, `<Center>`, `<Tiles>`, `<Columns>`). A new _Choosing the right layout_ decision table replaces the previous two-tier "structural vs atomic" framing, and the wireframe hero is now an annotated SVG anatomy diagram that matches the Panel and Sidebar anatomies. See [Layouts](/foundations/layouts).
+- **Elevation foundation rewritten** around the three-tier shadow system (`border`, `raised`, `overlay`). Adds a surfaces section that explains `bg-background`, `bg-surface`, `bg-muted`, and `ui-surface`, interactive demos, per-tier Do/Don't guidance, and a migration table for the retired `util-surface-*` utilities. See [Elevation](/foundations/elevation).
+- **New Panel documentation page** — MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
+- **Unified demo app at `/examples`** consolidates all pattern demos (filter, form, inventory) alongside a full app-shell example. A shared shell layout drives the sidebar, breadcrumbs, and section switcher from a single navigation tree; each example page links back to its corresponding pattern guideline.
+- **App-shell example pages fleshed out** — Analytics, Billing, General, Security, Teams, and Users are now real screens built from Marigold components. `Panel` is used for page-level sections and `Card` is reserved for repeating collection items (payment methods, active sessions, team cards, stat tiles).
+- **Do/Don't cards redesigned** to match fumadocs — tinted cards, `--color-fd-success` / `--color-fd-error` tokens, `lucide-react` icons, and (importantly) working dark mode, which the previous design quietly got wrong.
+- **Installation guide rewritten** end to end. Clearer steps, up-to-date examples, and enough detail that a human or an AI agent can stand up a Marigold project without fishing through the source.
+- **`AutoTypeTable` prop rendering improved.** Props that reference design-system aliases (`SpacingTokens`, `Scale`, `WidthProp`, `NonZeroPercentage`) now show a meaningful alias summary in the cell and the full list of concrete literals on row expand, replacing the previous wall-of-literals-in-the-cell + redundant-alias-name-on-expand layout. Driven by a fumadocs-typescript transform, so new components pick this up automatically.
+- **`ComponentDemo` / `AppearanceDemo` `background="page"` prop** — demos can now opt into the theme's page background (`bg-background`) instead of the default white, giving full-bleed previews of things like AppLayout and Sidebar without wrapper `div` hacks.
+- **MCP server for the docs.** The docs site now exposes an MCP (Model Context Protocol) server at `/mcp` so AI coding assistants (Claude Code, VS Code Copilot, Cursor, etc.) can run semantic searches across the Marigold documentation. An ETL pipeline (`pnpm build:embeddings`) chunks the MDX content and generates vector embeddings via AWS Bedrock Titan v2, served over Streamable HTTP behind Keycloak authentication.
+- **Table demo column alignment fixed.** Several Table demos contradicted the alignment rules described in the docs — numeric columns rendered left-aligned, action menus centered under left-aligned headers. The `action-menu`, `table-editable`, `table-links`, and `table-sticky` demos now follow the documented "numeric right, text left, center only for icons or status" rules.
+- **Storybook decorators migrated from `<Card>` to `<Panel>`** — internal cleanup so component stories that need a framing surface render through `<Panel>`, matching how page-level sections are now built. Behavior of the components themselves doesn't change; just what you see in Storybook.
+
+---
+
+v18 is a clear break from the shape of v17, and that is on purpose. The charcoal palette, renamed tokens, retired `<Multiselect>`, cleaned-up surface utilities, and the move to page-level scroll in `<AppLayout>` all point toward the same goal: a design system that describes its intent clearly and doesn't carry duplicate mental models from earlier iterations.
+
+There is more coming. The token work in particular is ongoing. Expect further refinements in v18.x as we use the new palette and naming in real product surfaces and learn where the edges still need to move. As always, we welcome your feedback.
