@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components';
-import {
-  WidthProp,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarListBox } from './CalendarListBox';
@@ -136,10 +131,10 @@ const _Calendar = ({
       >
         <Calendar
           className={cn(
-            'relative flex flex-col',
-            twWidth[width],
+            'relative flex w-(--width) flex-col',
             classNames.calendar
           )}
+          style={createWidthVar('width', `${width}`)}
           {...props}
         >
           <div className={classNames.calendarContainer}>
@@ -171,10 +166,10 @@ const _Calendar = ({
     >
       <Calendar
         className={cn(
-          'relative flex flex-col',
-          twWidth[width],
+          'relative flex w-(--width) flex-col',
           classNames.calendar
         )}
+        style={createWidthVar('width', `${width}`)}
         {...props}
       >
         <div

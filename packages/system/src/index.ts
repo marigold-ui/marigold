@@ -47,23 +47,12 @@ export { defaultTheme } from './defaultTheme';
 
 // Style Props - only export what exists
 export {
-  width,
-  maxWidth,
-  height,
   fontWeight,
   textSize,
   textStyle,
   textWrap,
   whiteSpace,
   lineHeight,
-  gapSpace,
-  paddingSpace,
-  paddingSpaceX,
-  paddingSpaceY,
-  paddingRight,
-  paddingLeft,
-  paddingTop,
-  paddingBottom,
   alignment,
   placeItems,
   textAlign,
@@ -94,8 +83,11 @@ export type {
   VerticalAlignProp,
   SpaceProp,
   WidthProp,
+  WidthValue,
   MaxWidthProp,
+  MaxWidthValue,
   HeightProp,
+  HeightValue,
 } from './style-props';
 
 // Utils
@@ -106,6 +98,7 @@ export {
   createVar,
   createSpacingVar,
   createWidthVar,
+  createHeightVar,
   ensureCssVar,
   isFraction,
   isScale,

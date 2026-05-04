@@ -4,7 +4,7 @@ import { useHover } from '@react-aria/interactions';
 import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
-import { cn, width as twWidth, useStateProps } from '@marigold/system';
+import { cn, createWidthVar, useStateProps } from '@marigold/system';
 import { SortDown } from '../../icons/SortDown';
 import { SortUp } from '../../icons/SortUp';
 import { useTableContext } from './Context';
@@ -44,10 +44,10 @@ export const TableColumnHeader = ({
       colSpan={column.colspan}
       ref={ref}
       className={cn(
-        'whitespace-nowrap data-[react-aria-pressable="true"]:cursor-pointer',
-        twWidth[width],
+        'w-(--width) whitespace-nowrap data-[react-aria-pressable="true"]:cursor-pointer',
         classNames?.header
       )}
+      style={createWidthVar('width', `${width}`)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}

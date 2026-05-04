@@ -99,40 +99,57 @@ export const createSpacingVar = (name: string, value: string) => {
   } as CSSProperties;
 };
 
-/**
- * Generates a CSS custom property for width that uses either a calc expression or a
- * fraction percentage.
- *
- * Supports:
- * - Numeric scale (e.g., "4", "2.5"): Uses `--spacing` scale with calc() → `w-4`, `w-2.5`
- * - Fractions (e.g., "1/2", "2/3"): Converts to percentage → `w-1/2`, `w-2/3`
- * - CSS keywords (e.g., "fit", "min", "max"): Uses corresponding CSS values → `w-fit`, `w-min`, `w-max`
- *
- * @param name - The custom property name for width.
- * @param value - Width value as a string (number, fraction, or keyword).
- * @returns Object with the CSS custom property for width.
- *
- */
-export const createWidthVar = (name: string, value: string) => {
-  const widthKeywords: Record<string, string> = {
-    fit: 'fit-content',
-    min: 'min-content',
-    max: 'max-content',
-    full: '100%',
-    screen: '100vw',
-    auto: 'auto',
+const baseDimensionKeywords = {
+  fit: 'fit-content',
+  min: 'min-content',
+  max: 'max-content',
+  full: '100%',
+  auto: 'auto',
+  svh: '100svh',
+  lvh: '100lvh',
+  dvh: '100dvh',
+  px: '1px',
+} as const;
+
+const widthKeywords: Record<string, string> = {
+  ...baseDimensionKeywords,
+  screen: '100vw',
+  container: 'var(--spacing-container)',
+};
+
+const heightKeywords: Record<string, string> = {
+  ...baseDimensionKeywords,
+  screen: '100vh',
+};
+
+const makeDimensionVar =
+  (axis: 'width' | 'height', keywords: Record<string, string>) =>
+  (name: string, value: string) => {
+    const resolved =
+      keywords[value] ||
+      (isScale(value) && `calc(var(--spacing) * ${value})`) ||
+      (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
+
+    if (!resolved) {
+      throw new Error(
+        `Unsupported ${axis} value: "${value}". Expected a keyword (${Object.keys(keywords).join(', ')}), a scale number, or a fraction (e.g., "1/2").`
+      );
+    }
+
+    return { [`--${name}`]: resolved } as CSSProperties;
   };
 
-  const resolvedValue =
-    widthKeywords[value] ||
-    (isScale(value) && `calc(var(--spacing) * ${value})`) ||
-    (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
+/**
+ * Generates a CSS custom property for width.
+ *
+ * Supports the spacing scale (e.g. `"4"`, `"2.5"`), fractions (e.g. `"1/2"`),
+ * and keywords (`fit`, `min`, `max`, `full`, `screen`, `auto`, `svh`, `lvh`,
+ * `dvh`, `px`, `container`).
+ */
+export const createWidthVar = makeDimensionVar('width', widthKeywords);
 
-  if (!resolvedValue) {
-    throw new Error(
-      `Unsupported width value: "${value}". Expected a keyword (${Object.keys(widthKeywords).join(', ')}), a scale number, or a fraction (e.g., "1/2").`
-    );
-  }
-
-  return { [`--${name}`]: resolvedValue } as CSSProperties;
-};
+/**
+ * Generates a CSS custom property for height. Like {@link createWidthVar} but
+ * resolves `screen` to `100vh` and does not support the `container` keyword.
+ */
+export const createHeightVar = makeDimensionVar('height', heightKeywords);

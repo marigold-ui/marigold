@@ -7,12 +7,7 @@ import {
 } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
-import {
-  WidthProp,
-  cn,
-  width as twWidth,
-  useStateProps,
-} from '@marigold/system';
+import { WidthProp, cn, createWidthVar, useStateProps } from '@marigold/system';
 import { Checkbox } from '../../Checkbox/Checkbox';
 import { useTableContext } from './Context';
 import { mapCheckboxProps } from './utils';
@@ -53,7 +48,8 @@ export const TableSelectAllCell = ({
   return (
     <th
       ref={ref}
-      className={cn(twWidth[width], ['leading-none'], classNames?.header)}
+      className={cn('w-(--width) leading-none', classNames?.header)}
+      style={createWidthVar('width', `${width}`)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}
