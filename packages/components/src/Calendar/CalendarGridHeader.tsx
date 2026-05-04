@@ -1,12 +1,12 @@
 import { startOfWeek, today } from '@internationalized/date';
-import { useContext, useMemo } from 'react';
-import { CalendarGridProps, CalendarStateContext } from 'react-aria-components';
+import { useMemo } from 'react';
+import { CalendarGridProps } from 'react-aria-components';
 import { useCalendarGrid } from '@react-aria/calendar';
 import { useDateFormatter, useLocale } from '@react-aria/i18n';
-import { useClassNames } from '@marigold/system';
+import { useCalendarContext, useCalendarOrRangeState } from './Context';
 
 export function CalendarGridHeader(props: CalendarGridProps) {
-  const state = useContext(CalendarStateContext)!;
+  const state = useCalendarOrRangeState();
   const { headerProps } = useCalendarGrid(props, state);
 
   const { locale } = useLocale();
@@ -24,7 +24,7 @@ export function CalendarGridHeader(props: CalendarGridProps) {
     });
   }, [locale, state.timeZone, dayFormatter]);
 
-  const classNames = useClassNames({ component: 'Calendar' });
+  const { classNames } = useCalendarContext();
 
   return (
     <thead {...headerProps}>
