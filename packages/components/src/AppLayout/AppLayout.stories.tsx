@@ -1,8 +1,7 @@
-import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Logout, User } from '@marigold/icons';
+import { LogOut, Settings, User } from '@marigold/icons';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
 import { Headline } from '../Headline/Headline';
@@ -46,7 +45,7 @@ const UserMenu = () => (
         <Settings size={16} /> Settings
       </Menu.Item>
       <Menu.Item id="sign-out" textValue="Sign out">
-        <Logout size={16} /> Sign out
+        <LogOut size={16} /> Sign out
       </Menu.Item>
     </Menu.Section>
   </ActionMenu>

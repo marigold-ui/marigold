@@ -1,5 +1,5 @@
 import { Button, Dialog, Headline, Inline } from '@marigold/components';
-import { Exclamation } from '@marigold/icons';
+import { TriangleAlert } from '@marigold/icons';
 
 export default () => (
   <Dialog.Trigger>
@@ -7,7 +7,7 @@ export default () => (
     <Dialog>
       <Dialog.Title>
         <Inline alignY="center" space={2}>
-          <Exclamation color="text-warning" />
+          <TriangleAlert className="text-warning-accent" />
           <Headline level={3}>This page has unsaved changes</Headline>
         </Inline>
       </Dialog.Title>

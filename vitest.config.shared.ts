@@ -39,7 +39,6 @@ const exclude = [
   '**/*.config.*',
   '**/config/**',
   '**/docs*/**',
-  '**/icons/**',
   '**/themes/**',
   '**/packages/types/**',
   '**/theme-plugins/**',
