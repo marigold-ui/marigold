@@ -133,19 +133,47 @@ export const Unavailable = meta.story({
 
 export const NonContiguous = meta.story({
   args: {
-    defaultValue: {
-      start: new CalendarDate(2025, 8, 4),
-      end: new CalendarDate(2025, 8, 8),
-    },
     allowsNonContiguousRanges: true,
   },
   render: args => {
     const { locale } = useLocale();
+    const [value, setValue] = useState<RangeValue<DateValue> | null>({
+      start: new CalendarDate(2025, 8, 4),
+      end: new CalendarDate(2025, 8, 8),
+    });
+
+    const isUnavailable = (date: DateValue) => isWeekend(date, locale);
+
+    const selectedDates: DateValue[] = [];
+    if (value) {
+      let cursor = value.start;
+      while (cursor.compare(value.end) <= 0) {
+        if (!isUnavailable(cursor)) selectedDates.push(cursor);
+        cursor = cursor.add({ days: 1 });
+      }
+    }
+
     return (
-      <RangeCalendar
-        {...args}
-        dateUnavailable={date => isWeekend(date, locale)}
-      />
+      <>
+        <RangeCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          dateUnavailable={isUnavailable}
+        />
+        <pre style={{ marginTop: '1rem' }} data-testid="selectedRange">
+          <strong>RangeCalendar Value:</strong>
+          {value
+            ? ` ${value.start.toString()} → ${value.end.toString()}`
+            : ' (none)'}
+        </pre>
+        <pre style={{ marginTop: '0.5rem' }} data-testid="selectedDates">
+          <strong>Selected dates (excluding unavailable):</strong>
+          {selectedDates.length
+            ? ` ${selectedDates.map(d => d.toString()).join(', ')}`
+            : ' (none)'}
+        </pre>
+      </>
     );
   },
 });
@@ -183,19 +211,27 @@ export const MultiMonthNavigation = meta.story({
     onChange: fn(),
   },
   render: args => <RangeCalendar {...args} />,
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement, userEvent, step }) => {
     const canvas = within(canvasElement);
 
-    const nextButtons = canvas.getAllByRole('button', { name: /next/i });
-    await userEvent.click(nextButtons[0]);
+    await step('navigates forward two months', async () => {
+      const nextButtons = canvas.getAllByRole('button', { name: /next/i });
+      await userEvent.click(nextButtons[0]);
+    });
 
-    await expect(canvas.getByText('March 2025')).toBeInTheDocument();
-    await expect(canvas.getByText('April 2025')).toBeInTheDocument();
+    await step('shows March and April after navigating forward', async () => {
+      await expect(canvas.getByText('March 2025')).toBeInTheDocument();
+      await expect(canvas.getByText('April 2025')).toBeInTheDocument();
+    });
 
-    const prevButtons = canvas.getAllByRole('button', { name: /previous/i });
-    await userEvent.click(prevButtons[0]);
+    await step('navigates back two months', async () => {
+      const prevButtons = canvas.getAllByRole('button', { name: /previous/i });
+      await userEvent.click(prevButtons[0]);
+    });
 
-    await expect(canvas.getByText('January 2025')).toBeInTheDocument();
-    await expect(canvas.getByText('February 2025')).toBeInTheDocument();
+    await step('shows January and February after navigating back', async () => {
+      await expect(canvas.getByText('January 2025')).toBeInTheDocument();
+      await expect(canvas.getByText('February 2025')).toBeInTheDocument();
+    });
   },
 });
