@@ -200,6 +200,34 @@ export const ThreeMonths = meta.story({
   render: args => <RangeCalendar {...args} />,
 });
 
+export const TwoMonthsMobile: any = meta.story({
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    visibleDuration: { months: 2 },
+    defaultValue: {
+      start: new CalendarDate(2025, 2, 15),
+      end: new CalendarDate(2025, 3, 5),
+    },
+  },
+  render: args => <RangeCalendar {...args} />,
+});
+
+export const ThreeMonthsMobile: any = meta.story({
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    visibleDuration: { months: 3 },
+    defaultValue: {
+      start: new CalendarDate(2025, 5, 20),
+      end: new CalendarDate(2025, 7, 10),
+    },
+  },
+  render: args => <RangeCalendar {...args} />,
+});
+
 export const MultiMonthNavigation = meta.story({
   tags: ['component-test'],
   args: {
