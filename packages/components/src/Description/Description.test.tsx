@@ -18,15 +18,6 @@ test('respects the "as" prop', () => {
   expect(screen.getByTestId('description').tagName).toBe('SPAN');
 });
 
-test('applies theme classes for the muted variant', () => {
-  render(
-    <Basic.Component variant="muted" data-testid="description">
-      Hi
-    </Basic.Component>
-  );
-  expect(screen.getByTestId('description')).toHaveClass('text-tertiary');
-});
-
 test('applies theme classes for the size prop', () => {
   render(
     <Basic.Component size="sm" data-testid="description">

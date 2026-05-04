@@ -1,5 +1,4 @@
 import preview from '.storybook/preview';
-import { Stack } from '../Stack/Stack';
 import { Description } from './Description';
 
 const meta = preview.meta({
@@ -10,13 +9,9 @@ const meta = preview.meta({
       control: { type: 'select' },
       options: ['p', 'span', 'div'],
     },
-    variant: {
-      control: { type: 'radio' },
-      options: ['default', 'muted'],
-    },
     size: {
       control: { type: 'select' },
-      options: ['default', 'xs', 'sm', 'base', 'lg'],
+      options: ['xs', 'sm', 'base'],
     },
     slot: {
       control: { type: 'text' },
@@ -33,18 +28,5 @@ export const Basic: any = meta.story({
   },
   render: ({ children, ...args }: any) => (
     <Description {...args}>{children}</Description>
-  ),
-});
-
-export const Variants: any = meta.story({
-  render: () => (
-    <Stack space={2}>
-      <Description variant="default">
-        Default variant — secondary foreground color.
-      </Description>
-      <Description variant="muted">
-        Muted variant — tertiary foreground color.
-      </Description>
-    </Stack>
   ),
 });

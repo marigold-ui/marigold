@@ -1,21 +1,22 @@
-import type { ReactNode, Ref } from 'react';
+import type { JSX, ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Text } from 'react-aria-components';
 import { ensureCssVar, useClassNames } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
-import type { TextSize, TextVariant } from '../Text/Text';
+import type { TextSize } from '../Text/Text';
 
-type RemovedProps = 'className' | 'style' | 'elementType';
+type RemovedProps =
+  | 'elementType'
+  | keyof JSX.IntrinsicElements['div']
+  | keyof JSX.IntrinsicElements['span']
+  | keyof JSX.IntrinsicElements['p'];
 
 /**
  * The deliberate subset of `TextSize` that Description ships today.
  * Derived from `TextSize` so a future rename or removal in Text breaks
  * here at the type level instead of silently drifting.
  */
-export type DescriptionSize = Extract<
-  TextSize,
-  'default' | 'xs' | 'sm' | 'base' | 'lg'
->;
+export type DescriptionSize = Extract<TextSize, 'xs' | 'sm' | 'base'>;
 
 export interface DescriptionProps
   extends Omit<RAC.TextProps, RemovedProps>, AriaLabelingProps {
@@ -30,10 +31,6 @@ export interface DescriptionProps
    */
   slot?: string;
   /**
-   * The variant of the description.
-   */
-  variant?: TextVariant | (string & {});
-  /**
    * The size of the description.
    */
   size?: DescriptionSize | (string & {});
@@ -41,10 +38,6 @@ export interface DescriptionProps
    * Set the text color.
    */
   color?: string;
-  /**
-   * The element id.
-   */
-  id?: string;
   children?: ReactNode;
   ref?: Ref<HTMLElement>;
 }
@@ -52,7 +45,6 @@ export interface DescriptionProps
 const _Description = ({
   as = 'p',
   slot = 'description',
-  variant,
   size,
   color,
   children,
@@ -61,7 +53,6 @@ const _Description = ({
 }: DescriptionProps) => {
   const classNames = useClassNames({
     component: 'Description',
-    variant,
     size,
   });
 
