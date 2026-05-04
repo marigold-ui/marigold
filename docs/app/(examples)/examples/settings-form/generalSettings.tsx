@@ -13,22 +13,17 @@ import {
   Text,
   TextArea,
   TextField,
-  useToast,
 } from '@marigold/components';
+import { useSavedToast } from './useSavedToast';
 
 export const GeneralSettings = () => {
-  const { addToast } = useToast();
+  const showSavedToast = useSavedToast();
 
   return (
     <Form
       onSubmit={e => {
         e.preventDefault();
-        addToast({
-          title: 'Settings saved',
-          description: 'General information updated.',
-          variant: 'success',
-          timeout: 5000,
-        });
+        showSavedToast('General information updated.');
       }}
     >
       <Panel size="form" headingLevel={3}>

@@ -75,7 +75,6 @@ export const DangerZone = () => {
                       title: `${item.action} complete`,
                       description: item.toastMessage,
                       variant: 'success',
-                      timeout: 5000,
                     });
                   }}
                 >

@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Headline,
-  Inset,
-  Stack,
-  Tabs,
-  Text,
-  ToastProvider,
-} from '@marigold/components';
+import { Headline, Inset, Stack, Tabs, Text } from '@marigold/components';
 import { DangerZone } from './dangerZone';
 import { GeneralSettings } from './generalSettings';
 import { Notifications } from './notifications';
@@ -41,7 +34,6 @@ const SettingsFormPage = () => (
       </Tabs>
       <DangerZone />
     </Stack>
-    <ToastProvider position="bottom-right" />
   </Inset>
 );
 

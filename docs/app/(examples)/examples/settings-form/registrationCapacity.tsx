@@ -8,22 +8,17 @@ import {
   Panel,
   Stack,
   TextField,
-  useToast,
 } from '@marigold/components';
+import { useSavedToast } from './useSavedToast';
 
 export const RegistrationCapacity = () => {
-  const { addToast } = useToast();
+  const showSavedToast = useSavedToast();
 
   return (
     <Form
       onSubmit={e => {
         e.preventDefault();
-        addToast({
-          title: 'Settings saved',
-          description: 'Registration & capacity updated.',
-          variant: 'success',
-          timeout: 5000,
-        });
+        showSavedToast('Registration & capacity updated.');
       }}
     >
       <Panel size="form" headingLevel={3}>

@@ -8,7 +8,6 @@ import {
   Inset,
   Stack,
   Text,
-  ToastProvider,
   useToast,
 } from '@marigold/components';
 import { CoOrganizers } from './coOrganizers';
@@ -28,7 +27,6 @@ const EventForm = () => {
           title: 'Event saved',
           description: 'Your event has been created successfully.',
           variant: 'success',
-          timeout: 5000,
         });
       }}
     >
@@ -60,7 +58,6 @@ const EventForm = () => {
 const FormPage = () => (
   <Inset space={4}>
     <EventForm />
-    <ToastProvider position="bottom-right" />
   </Inset>
 );
 

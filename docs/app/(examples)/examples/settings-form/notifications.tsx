@@ -11,22 +11,17 @@ import {
   Stack,
   Text,
   TextField,
-  useToast,
 } from '@marigold/components';
+import { useSavedToast } from './useSavedToast';
 
 export const Notifications = () => {
-  const { addToast } = useToast();
+  const showSavedToast = useSavedToast();
 
   return (
     <Form
       onSubmit={e => {
         e.preventDefault();
-        addToast({
-          title: 'Settings saved',
-          description: 'Notification preferences updated.',
-          variant: 'success',
-          timeout: 5000,
-        });
+        showSavedToast('Notification preferences updated.');
       }}
     >
       <Panel size="form" headingLevel={3}>
@@ -130,25 +125,25 @@ export const Notifications = () => {
               <Inline space="related">
                 <Select
                   label="From"
-                  defaultValue="22"
+                  defaultValue="22:00"
                   width={24}
                   description="Quiet window start."
                 >
-                  <Select.Option id="20">20:00</Select.Option>
-                  <Select.Option id="21">21:00</Select.Option>
-                  <Select.Option id="22">22:00</Select.Option>
-                  <Select.Option id="23">23:00</Select.Option>
+                  <Select.Option id="20:00">20:00</Select.Option>
+                  <Select.Option id="21:00">21:00</Select.Option>
+                  <Select.Option id="22:00">22:00</Select.Option>
+                  <Select.Option id="23:00">23:00</Select.Option>
                 </Select>
                 <Select
                   label="To"
-                  defaultValue="8"
+                  defaultValue="08:00"
                   width={24}
                   description="Quiet window end."
                 >
-                  <Select.Option id="6">06:00</Select.Option>
-                  <Select.Option id="7">07:00</Select.Option>
-                  <Select.Option id="8">08:00</Select.Option>
-                  <Select.Option id="9">09:00</Select.Option>
+                  <Select.Option id="06:00">06:00</Select.Option>
+                  <Select.Option id="07:00">07:00</Select.Option>
+                  <Select.Option id="08:00">08:00</Select.Option>
+                  <Select.Option id="09:00">09:00</Select.Option>
                 </Select>
               </Inline>
               <NumberField

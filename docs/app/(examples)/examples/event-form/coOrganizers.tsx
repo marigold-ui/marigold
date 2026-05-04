@@ -4,7 +4,6 @@ import { useState } from 'react';
 import type { Key } from '@react-types/shared';
 import {
   Badge,
-  Inline,
   Link,
   Panel,
   Stack,
@@ -38,15 +37,13 @@ export const CoOrganizers = () => {
   return (
     <Panel variant="master" headingLevel={3} size="form">
       <Panel.Header>
-        <Panel.Title>
-          <Inline space="related" alignY="center">
-            Co-presenters
-            <Badge variant="master">Master</Badge>
-          </Inline>
-        </Panel.Title>
+        <Panel.Title>Co-presenters</Panel.Title>
         <Panel.Description>
           Partner organizations credited on the event page and tickets.
         </Panel.Description>
+        <Panel.HeaderActions>
+          <Badge variant="master">Master</Badge>
+        </Panel.HeaderActions>
       </Panel.Header>
       <Panel.Content>
         <Stack space="tight">
