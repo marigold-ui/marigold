@@ -129,7 +129,7 @@ The same primitives also appear in selection items. `<Description>` is the same 
 </Select>
 ```
 
-Explicit local props win over container-injected defaults where it matters most. `<ActionButton.Group>` documents this with three precedence rules. `size` cascades from the group, `variant` is overridden by the local prop (so a destructive button stays destructive inside a ghost group), and `disabled` is overridden by the local prop with the group as the fallback default.
+Container defaults are overridable: explicit local props win where the consumer specifies them.
 
 <Callout title="Where to learn more">
   For the deep dive into the rule about which contexts to reuse, the recipe for
