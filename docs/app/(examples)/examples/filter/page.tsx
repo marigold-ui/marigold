@@ -3,7 +3,7 @@
 import { Headline, Inset, Panel, Stack, Text } from '@marigold/components';
 import { AppliedFilter } from './applied-filter';
 import { Toolbar } from './toolbar';
-import { VenuesView } from './venues-view';
+import { VenuesTable } from './venues-table';
 
 const FilterPage = () => (
   <Inset space={4}>
@@ -20,7 +20,7 @@ const FilterPage = () => (
           </Stack>
         </Panel.Content>
         <Panel.Content bleed>
-          <VenuesView />
+          <VenuesTable />
         </Panel.Content>
       </Panel>
     </Stack>

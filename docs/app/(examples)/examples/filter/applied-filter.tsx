@@ -1,18 +1,18 @@
 'use client';
 
 import { Tag, Text } from '@marigold/components';
-import { defaultFilter, toDisplayValue, useFilter } from './utils';
+import { type VenueFilter, renderFilterValue, useFilter } from './utils';
 
-type FilterKeys = keyof typeof defaultFilter;
+type FilterKeys = keyof VenueFilter;
 
 export const AppliedFilter = () => {
   const { filter, removeFilter } = useFilter();
 
-  const appliedFilters = Object.entries(filter).filter(([name, value]) =>
-    Array.isArray(value)
-      ? value.length !== defaultFilter[name as 'traits'].length
-      : `${value}` !== `${defaultFilter[name as FilterKeys]}`
-  );
+  const appliedFilters = (Object.keys(filter) as FilterKeys[]).filter(name => {
+    const value = filter[name];
+    if (Array.isArray(value)) return value.length > 0;
+    return value !== undefined;
+  });
 
   return (
     <Tag.Group
@@ -25,9 +25,9 @@ export const AppliedFilter = () => {
         </Text>
       )}
     >
-      {appliedFilters.map(([name, value]) => (
+      {appliedFilters.map(name => (
         <Tag id={name} key={name}>
-          {toDisplayValue[name as FilterKeys](value as any)}
+          {renderFilterValue(name, filter)}
         </Tag>
       ))}
     </Tag.Group>

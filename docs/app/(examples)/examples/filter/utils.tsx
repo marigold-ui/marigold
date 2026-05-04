@@ -1,10 +1,17 @@
-import { venueTraits, venueTypes, venues } from '@/lib/data/venues';
-import { parseAsJson, useQueryState } from 'nuqs';
-import type { FormEvent } from 'react';
+import { venueTypes } from '@/lib/data/venues';
+import { parseAsInteger, parseAsJson, useQueryState } from 'nuqs';
+import type { FormEvent, ReactNode } from 'react';
 import { z } from 'zod';
 import { NumericFormat } from '@marigold/system';
 
-// Handling form data
+// These bounds are intentionally hardcoded for the static demo dataset
+// (packages/lib/data/venues.ts). They match the actual data range and serve
+// as the slider/number-field upper limits. If the dataset ever grows or gets
+// replaced by a live API, derive these from the fetched data instead.
+export const MAX_CAPACITY = 50_000;
+export const MAX_PRICE = 5_000;
+
+// Form data
 // ---------------
 export const getFormData = (e: FormEvent<HTMLFormElement>) => {
   const data = new FormData(e.currentTarget);
@@ -23,7 +30,7 @@ export const getFormData = (e: FormEvent<HTMLFormElement>) => {
   return result;
 };
 
-// URL
+// URL schema
 // ---------------
 const urlSchema = z.object({
   type: z.number().optional(),
@@ -35,100 +42,114 @@ const urlSchema = z.object({
 
 export type VenueFilter = z.infer<typeof urlSchema>;
 
-export const defaultFilter = {
+export const defaultFilter: VenueFilter = {
   type: undefined,
-  capacity: Math.max(...venues.map(venue => venue.capacity)),
-  price: Math.max(...venues.map(venue => venue.price.to)),
-  traits: venueTraits,
+  capacity: undefined,
+  price: undefined,
+  traits: undefined,
   rating: undefined,
-} satisfies VenueFilter;
+};
 
-// Form
+// Form schema (type is handled separately in the toolbar, not in the filter drawer)
 // ---------------
-// TODO: is this correct? are there no numbers???
 const formSchema = z.object({
-  type: z.string(),
   capacity: z.string(),
   price: z.string(),
   traits: z
     .union([z.string(), z.array(z.string())])
-    .transform(value => (Array.isArray(value) ? value : [value])),
-  rating: z.string(),
+    .optional()
+    .transform(value => {
+      if (!value) return [] as string[];
+      return Array.isArray(value) ? value : [value];
+    }),
+  rating: z.string().optional().default(''),
 });
-
-// Transform
-// ---------------
 
 // URL -> Form
 export const toFormSchema = urlSchema.transform(data => ({
-  type: String(data.type ?? ''),
-  capacity: data.capacity ?? defaultFilter.capacity,
-  price: data.price ?? defaultFilter.price,
-  traits: data.traits ?? defaultFilter.traits,
+  capacity: data.capacity ?? 0,
+  price: data.price ?? MAX_PRICE,
+  traits: data.traits ?? [],
   rating: String(data.rating ?? ''),
 })).parse;
 
-// Form -> URL
-export const toUrlSchema = formSchema.transform(data => ({
-  type: data.type ? Number(data.type) : undefined,
-  capacity: data.capacity ? Number(data.capacity) : undefined,
-  price: data.price ? Number(data.price) : undefined,
-  traits: data.traits.length > 0 ? data.traits : undefined,
-  rating: data.rating ? Number(data.rating) : undefined,
-})).safeParse;
+export const toUrlSchema = formSchema.transform(data => {
+  const capacity = data.capacity ? Number(data.capacity) : undefined;
+  const price = data.price ? Number(data.price) : undefined;
 
-// Value -> Display Format
-export const toDisplayValue = {
-  type: (value: number) => `Type: ${venueTypes[value] ?? 'Unknown'}`,
-  capacity: (value: number) => (
-    <>
-      Min Capacity: <NumericFormat value={value} />
-    </>
-  ),
-  price: (value: number) => (
-    <>
-      Max. Price:{' '}
-      <NumericFormat
-        style="currency"
-        value={value}
-        currency="EUR"
-        maximumFractionDigits={0}
-      />
-    </>
-  ),
-  traits: (value: string[]) => (
-    <>
-      Traits:{' '}
-      {value.length <= 3
-        ? value.join(', ')
-        : `${value.slice(0, 2).join(', ')} (+${value.length - 2} more)`}
-    </>
-  ),
-  rating: (value: number) => (
-    <>
-      Min. Rating: <NumericFormat value={value} minimumFractionDigits={1} />
-    </>
-  ),
+  return {
+    capacity,
+    price: price !== undefined && price < MAX_PRICE ? price : undefined,
+    traits: data.traits.length > 0 ? data.traits : undefined,
+    rating: data.rating ? Number(data.rating) : undefined,
+  };
+}).safeParse;
+
+// ---------------
+type FilterKeys = keyof VenueFilter;
+
+const renderType = (value: number) => `Type: ${venueTypes[value] ?? 'Unknown'}`;
+const renderCapacity = (value: number) => (
+  <>
+    Min Capacity: <NumericFormat value={value} />
+  </>
+);
+const renderPrice = (value: number) => (
+  <>
+    Max. Price:{' '}
+    <NumericFormat
+      style="currency"
+      value={value}
+      currency="EUR"
+      maximumFractionDigits={0}
+    />
+  </>
+);
+const renderTraits = (value: string[]) => (
+  <>
+    Traits:{' '}
+    {value.length <= 3
+      ? value.join(', ')
+      : `${value.slice(0, 2).join(', ')} (+${value.length - 2} more)`}
+  </>
+);
+const renderRating = (value: number) => <>Min. Rating: {value} ★</>;
+
+export const renderFilterValue = (
+  key: FilterKeys,
+  filter: VenueFilter
+): ReactNode => {
+  switch (key) {
+    case 'type':
+      return filter.type !== undefined ? renderType(filter.type) : null;
+    case 'capacity':
+      return filter.capacity !== undefined
+        ? renderCapacity(filter.capacity)
+        : null;
+    case 'price':
+      return filter.price !== undefined ? renderPrice(filter.price) : null;
+    case 'traits':
+      return filter.traits ? renderTraits(filter.traits) : null;
+    case 'rating':
+      return filter.rating !== undefined ? renderRating(filter.rating) : null;
+  }
 };
 
-// Hooks
+// Filter hook
 // ---------------
-type FilterKeys = keyof typeof defaultFilter;
-
 export const useFilter = () => {
   const [filter, setFilter] = useQueryState(
     'filter',
-    parseAsJson(urlSchema.parse).withDefault(defaultFilter).withOptions({
-      history: 'push',
-    })
+    parseAsJson(urlSchema.parse)
+      .withDefault(defaultFilter)
+      .withOptions({ history: 'push' })
   );
 
   const removeFilter = (keys: Set<FilterKeys>) => {
-    const next = { ...filter };
-    keys.forEach(key => {
-      next[key] = defaultFilter[key] as any;
-    });
-    setFilter(next);
+    const cleared = Object.fromEntries(
+      [...keys].map(key => [key, defaultFilter[key]])
+    );
+    setFilter({ ...filter, ...cleared });
   };
 
   return { filter, setFilter, removeFilter } as const;
@@ -136,3 +157,35 @@ export const useFilter = () => {
 
 export const useSearch = () =>
   useQueryState('q', { defaultValue: '', history: 'push' });
+
+// Sort hook
+// ---------------
+const sortSchema = z.object({
+  column: z.string(),
+  direction: z.enum(['ascending', 'descending']),
+});
+
+export type VenueSortDescriptor = z.infer<typeof sortSchema>;
+
+export const defaultSort: VenueSortDescriptor = {
+  column: 'name',
+  direction: 'ascending',
+};
+
+export const useSort = () =>
+  useQueryState(
+    'sort',
+    parseAsJson(sortSchema.parse)
+      .withDefault(defaultSort)
+      .withOptions({ history: 'push' })
+  );
+
+// Pagination hook
+// ---------------
+export const PAGE_SIZE = 5;
+
+export const usePage = () =>
+  useQueryState(
+    'page',
+    parseAsInteger.withDefault(1).withOptions({ history: 'push' })
+  );
