@@ -10,8 +10,8 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
     ],
   }),
-  calendarContainer: cva({ base: 'flex gap-4' }),
-  calendarMonth: cva({ base: 'min-w-[250px] flex-1' }),
+  calendarContainer: cva({ base: 'flex flex-col gap-4 sm:flex-row' }),
+  calendarMonth: cva({ base: 'min-w-[250px] sm:flex-1' }),
   calendarCell: cva({
     base: [
       'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg justify-self-center',
