@@ -12,7 +12,7 @@ export const RangeCalendar: ThemeComponent<'RangeCalendar'> = {
   calendarMonth: cva({ base: 'min-w-[250px] flex-1' }),
   calendarCell: cva({
     base: [
-      'relative flex size-9 items-center justify-center whitespace-nowrap rounded-none justify-self-center',
+      'relative flex h-9 w-full items-center justify-center whitespace-nowrap rounded-none justify-self-center',
       'my-0.5',
       'border border-transparent p-0 text-sm font-normal text-foreground',
       'outline-offset-2 duration-150 transition-[color,background-color]',
@@ -40,7 +40,7 @@ export const RangeCalendar: ThemeComponent<'RangeCalendar'> = {
     ],
   }),
   calendarGrid: cva({
-    base: '[&_td]:p-0 [&_td]:group-[[role=dialog]]/tray:p-0',
+    base: 'border-collapse border-spacing-0 [&_td]:p-0 [&_td]:group-[[role=dialog]]/tray:p-0',
   }),
   calendarHeading: cva({
     base: 'text-sm font-medium',

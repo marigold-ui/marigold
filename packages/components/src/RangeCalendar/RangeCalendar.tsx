@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   RangeCalendar as AriaRangeCalendar,
@@ -132,6 +132,22 @@ const _RangeCalendar = <T extends DateValue>({
     ViewMapKeys | undefined
   >();
 
+  // react-aria's `useRangeCalendar` registers a window-level `pointerup`
+  // listener that commits the in-progress range when the click target is not
+  // a button. RAC's <ListBoxItem> renders with role="option", so picking a
+  // month or year would otherwise trip that commit and drop the user's first
+  // click. Stopping native pointerup propagation on the dropdown overlay
+  // keeps the event from reaching `window` while still letting the option's
+  // own press handler run at the target phase.
+  const dropdownOverlayRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const node = dropdownOverlayRef.current;
+    if (!node) return;
+    const stop = (event: PointerEvent) => event.stopPropagation();
+    node.addEventListener('pointerup', stop);
+    return () => node.removeEventListener('pointerup', stop);
+  }, []);
+
   const ViewMap = {
     month: (
       <MonthListBox
@@ -209,6 +225,7 @@ const _RangeCalendar = <T extends DateValue>({
         {...props}
       >
         <div
+          ref={dropdownOverlayRef}
           className={cn(
             'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
             selectedDropdown && 'pointer-events-auto opacity-100'
