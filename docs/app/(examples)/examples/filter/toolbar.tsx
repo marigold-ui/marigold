@@ -90,7 +90,9 @@ const FilterForm = ({ state }: FilterFormProps) => {
         <Text weight="semibold">Min. Rating</Text>
         <ToggleButton.Group
           selectionMode="single"
-          defaultSelectedKeys={state.rating ? new Set([state.rating]) : []}
+          defaultSelectedKeys={
+            state.rating ? new Set([state.rating]) : new Set()
+          }
           onSelectionChange={keys => {
             if (ratingInputRef.current) {
               ratingInputRef.current.value = [...keys][0]?.toString() ?? '';

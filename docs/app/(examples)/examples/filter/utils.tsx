@@ -73,12 +73,17 @@ export const toFormSchema = urlSchema.transform(data => ({
   rating: String(data.rating ?? ''),
 })).parse;
 
-export const toUrlSchema = formSchema.transform(data => ({
-  capacity: data.capacity ? Number(data.capacity) : undefined,
-  price: Number(data.price) < MAX_PRICE ? Number(data.price) : undefined,
-  traits: data.traits.length > 0 ? data.traits : undefined,
-  rating: data.rating ? Number(data.rating) : undefined,
-})).safeParse;
+export const toUrlSchema = formSchema.transform(data => {
+  const capacity = data.capacity ? Number(data.capacity) : undefined;
+  const price = data.price ? Number(data.price) : undefined;
+
+  return {
+    capacity,
+    price: price !== undefined && price < MAX_PRICE ? price : undefined,
+    traits: data.traits.length > 0 ? data.traits : undefined,
+    rating: data.rating ? Number(data.rating) : undefined,
+  };
+}).safeParse;
 
 // ---------------
 type FilterKeys = keyof VenueFilter;

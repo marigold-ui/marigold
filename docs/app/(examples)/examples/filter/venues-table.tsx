@@ -138,10 +138,9 @@ const NoDataEmptyState = () => (
 // ---------------
 const hasActiveFilters = (search: string, filter: VenueFilter) => {
   if (search.length > 0) return true;
-  return Object.entries(filter).some(([name, value]) => {
-    if (name === 'traits') return Array.isArray(value) && value.length > 0;
-    return `${value}` !== `${defaultFilter[name as keyof VenueFilter]}`;
-  });
+  return Object.values(filter).some(value =>
+    Array.isArray(value) ? value.length > 0 : value !== undefined
+  );
 };
 
 // Component
@@ -180,8 +179,12 @@ export const VenuesTable = () => {
 
   // Keep the URL in sync when the requested page is out of range so a stale
   // ?page=99 query string doesn't survive after filtering shrinks the result.
+  // Use `history: 'replace'` for this correction so we don't trap the user's
+  // Back button on the same view.
   useEffect(() => {
-    if (page !== safePage) setPage(safePage === 1 ? null : safePage);
+    if (page !== safePage) {
+      setPage(safePage === 1 ? null : safePage, { history: 'replace' });
+    }
   }, [page, safePage, setPage]);
 
   const clearFilters = () => {
@@ -217,7 +220,8 @@ export const VenuesTable = () => {
         }
         actionBar={selectedKeys => (
           <ActionBar>
-            <ActionBar.Button>
+            {/* Will be wired up in DST-1288 */}
+            <ActionBar.Button onPress={() => alert('Delete element')}>
               <Delete /> Delete
             </ActionBar.Button>
             <ActionBar.Button
@@ -311,7 +315,7 @@ export const VenuesTable = () => {
       {totalPages > 1 && (
         <Inline alignX="center">
           <Pagination
-            key={`${PAGE_SIZE}-${totalPages}`}
+            key={totalPages}
             page={safePage}
             totalItems={totalItems}
             pageSize={PAGE_SIZE}
