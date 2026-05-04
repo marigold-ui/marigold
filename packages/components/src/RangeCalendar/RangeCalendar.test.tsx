@@ -108,6 +108,38 @@ describe('RangeCalendar', () => {
 
     expect(unavailable).toBeDefined();
   });
+
+  test('opens the month dropdown when the month button is clicked', async () => {
+    render(<Basic.Component />);
+
+    expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
+
+    await user.click(screen.getByTestId('month'));
+
+    expect(screen.getByTestId('monthOptions')).toBeInTheDocument();
+  });
+
+  test('opens the year dropdown when the year button is clicked', async () => {
+    render(<Basic.Component />);
+
+    expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
+
+    await user.click(screen.getByTestId('year'));
+
+    expect(screen.getByTestId('yearOptions')).toBeInTheDocument();
+  });
+
+  test('selecting an option from the month dropdown closes it', async () => {
+    render(<Basic.Component />);
+
+    await user.click(screen.getByTestId('month'));
+    const monthOptions = screen.getByTestId('monthOptions');
+    const options = within(monthOptions).getAllByRole('option');
+
+    await user.click(options[2]);
+
+    expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
+  });
 });
 
 describe('RangeCalendar - Multi-month', () => {
