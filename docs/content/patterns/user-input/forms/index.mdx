@@ -97,6 +97,16 @@ To create a group, wrap the fields with `<Stack space="group">` to add spacing t
 
 <ComponentDemo file="./form-spacing-fields.demo.tsx" mode="preview" />
 
+### Panels
+
+For settings pages and forms with independent sections, use [`<Panel>`](/components/layout/panel/) instead of plain sections. Panels provide a structured container with a header, description, content area, optional collapsible section, and a footer for actions.
+
+This pattern works well when each section can be saved independently. Wrap the `<Form>` around the entire `<Panel>` so that all fields, including those inside `<Panel.Collapsible>`, are part of the submission.
+
+Use `<Panel.Collapsible>` for advanced or rarely-used fields that should be accessible but not visible by default. Unlike accordions, collapsible panel sections are tied to a specific panel and don't compete with other sections for attention.
+
+For destructive actions, use `<Panel variant="destructive">` to visually separate irreversible operations from regular settings.
+
 ### Accordions
 
 Accordions can replace regular sections to create collapsible groups of fields. This is useful for optional information or advanced settings that don't need to be visible by default. Ensure required fields remain visible and are not hidden within collapsed sections.
@@ -136,13 +146,58 @@ Some fields are only relevant for administrators or master users. Mark and separ
 
 See the [Admin- and Mastermark](/patterns/layout/admin-master-mark) page for the full usage guide.
 
-## Full demo
+## Workflow forms
 
-Below is a fictional event registration form that puts all of these guidelines together: sections, field types, and actions.
+Workflow forms guide the user through a single goal from start to finish. Everything submits together, and once submitted, the user is done.
+
+Use them when the user has come to accomplish something: creating a thing, signing up, registering, checking out, or editing a single record.
+
+- One `<Form>` wraps the whole page, or sits inside a `<Panel>` if you want a structured container with a header, description, and footer.
+- Sections are plain headings separated with `<Stack space="group">`.
+- A single primary submit at the bottom (see [Submit placement](#submit-placement)).
+- Optional fields can hide behind an [accordion](#accordions) or a `<Panel.Collapsible>`.
+
+The event registration demo puts these together: sections, field types, and a single submit.
 
 <DemoLinks
-  demo="/examples/form"
-  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/form"
+  demo="/examples/event-form"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/event-form"
+/>
+
+## Settings forms
+
+Use for configuration that's edited over time, not completed in one go: account preferences, organization defaults, notification rules. Both variants below share the same idea: the save boundary should match the smallest unit the user thinks of as one thing. For batched, reviewable settings that's a panel. For low-stakes toggles it's the individual control.
+
+### Save on submit
+
+Use when changes should be batched and explicitly committed: organization defaults, billing details, anything with cross-field validation or destructive consequences. Users can review their edits before saving and back out by not submitting.
+
+- Each section is its own `<Panel>` with its own `<Form>` and a save button in `<Panel.Footer>` (see [Panels](#panels)). Never share one submit across panels. Saving notifications should never risk committing an unrelated change to billing.
+- `<Tabs>` group related panels when settings span multiple topics. A single tab can hold one panel or several stacked panels. Each still saves on its own.
+- `<Panel.Collapsible>` keeps advanced options accessible without cluttering the default view.
+- Destructive actions live in a separate `<Panel variant="destructive">` (a "danger zone") and use `ConfirmationDialog`.
+
+The settings demo shows the full pattern with tabs, panels, and a danger zone.
+
+<DemoLinks
+  demo="/examples/settings-form"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/settings-form"
+/>
+
+### Auto-save
+
+Use for low-stakes preferences where a saved/unsaved state would feel like friction: notification toggles, privacy switches, single-select preferences. Each control persists the moment the user changes it.
+
+- No `<Form>` wrapper, no submit button, no `<Panel.Footer>`. Each `<Panel>` is just a structured container around the controls.
+- Each control handles its own persistence via `onChange`.
+- Set the user's expectation up front with a description like "Changes save automatically" near the page heading.
+- Stay silent on success. The control's selected state is the confirmation, so a "Saved" toast on every change is noise. Surface only failures, persistently (toast or inline near the control), so the user can retry.
+- Stick to discrete controls (Switch, Checkbox, Radio, Select). For text fields, sliders, or anything continuous, the visual state alone doesn't confirm the save. Use save on submit, or extend the pattern with a debounced "Saving…/Saved" indicator near the field.
+- Avoid for fields that need cross-field validation, a confirmation step, or any change that's costly to reverse. Use [save on submit](#save-on-submit) instead.
+
+<DemoLinks
+  demo="/examples/auto-save-settings"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/auto-save-settings"
 />
 
 ## Related

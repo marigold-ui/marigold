@@ -59,10 +59,30 @@ const userInput: NavSection = {
     },
     {
       kind: 'Item',
-      slug: 'form',
       label: 'Form',
-      docsHref: '/patterns/user-input/filter',
-      docsLabel: 'Form Guidelines',
+      children: [
+        {
+          kind: 'Item',
+          slug: 'event-form',
+          label: 'Event Form',
+          docsHref: '/patterns/user-input/forms',
+          docsLabel: 'Form Guidelines',
+        },
+        {
+          kind: 'Item',
+          slug: 'settings-form',
+          label: 'Settings Form',
+          docsHref: '/patterns/user-input/forms',
+          docsLabel: 'Form Guidelines',
+        },
+        {
+          kind: 'Item',
+          slug: 'auto-save-settings',
+          label: 'Auto-Save Settings',
+          docsHref: '/patterns/user-input/forms',
+          docsLabel: 'Form Guidelines',
+        },
+      ],
     },
   ],
 };
