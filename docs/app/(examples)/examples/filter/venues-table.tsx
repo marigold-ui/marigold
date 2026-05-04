@@ -7,7 +7,7 @@ import {
   venues,
 } from '@/lib/data/venues';
 import type { Venue } from '@/lib/data/venues';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import {
   ActionBar,
@@ -157,16 +157,26 @@ export const VenuesTable = () => {
     direction: 'ascending' as const,
   };
 
-  const searched = search
-    ? venues.filter(v => matchesSearch(v, search))
-    : venues;
-  const filtered = filterVenues(searched, filter);
-  const display = sortVenues([...filtered], currentSort);
+  const searched = useMemo(
+    () => (search ? venues.filter(v => matchesSearch(v, search)) : venues),
+    [search]
+  );
+  const filtered = useMemo(
+    () => filterVenues(searched, filter),
+    [searched, filter]
+  );
+  const display = useMemo(
+    () => sortVenues([...filtered], currentSort),
+    [filtered, currentSort]
+  );
 
   const totalItems = display.length;
   const totalPages = Math.ceil(totalItems / PAGE_SIZE);
   const safePage = Math.min(page, Math.max(1, totalPages));
-  const paged = display.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  const paged = useMemo(
+    () => display.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [display, safePage]
+  );
 
   // Keep the URL in sync when the requested page is out of range so a stale
   // ?page=99 query string doesn't survive after filtering shrinks the result.
@@ -185,10 +195,13 @@ export const VenuesTable = () => {
     ? () => <FilterEmptyState onClear={clearFilters} />
     : () => <NoDataEmptyState />;
 
-  const getSelectedVenues = (selectedKeys: Selection) =>
-    selectedKeys === 'all'
-      ? display
-      : display.filter(v => (selectedKeys as Set<string>).has(v.id));
+  const getSelectedVenues = useCallback(
+    (selectedKeys: Selection) =>
+      selectedKeys === 'all'
+        ? display
+        : display.filter(v => (selectedKeys as Set<string>).has(v.id)),
+    [display]
+  );
 
   return (
     <Stack space={4}>

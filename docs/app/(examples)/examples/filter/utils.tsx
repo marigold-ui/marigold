@@ -4,6 +4,10 @@ import type { FormEvent, ReactNode } from 'react';
 import { z } from 'zod';
 import { NumericFormat } from '@marigold/system';
 
+// These bounds are intentionally hardcoded for the static demo dataset
+// (packages/lib/data/venues.ts). They match the actual data range and serve
+// as the slider/number-field upper limits. If the dataset ever grows or gets
+// replaced by a live API, derive these from the fetched data instead.
 export const MAX_CAPACITY = 50_000;
 export const MAX_PRICE = 5_000;
 
