@@ -1,6 +1,6 @@
 'use client';
 
-import { venueTraits, venueTypes } from '@/lib/data/venues';
+import { venueTraits } from '@/lib/data/venues';
 import { useRef } from 'react';
 import type { FormEvent } from 'react';
 import {
@@ -10,14 +10,13 @@ import {
   Inline,
   NumberField,
   SearchField,
-  Select,
   Slider,
   Stack,
   Tag,
   Text,
   ToggleButton,
 } from '@marigold/components';
-import { Filter } from '@marigold/icons';
+import { Add, Filter } from '@marigold/icons';
 import {
   MAX_CAPACITY,
   MAX_PRICE,
@@ -29,7 +28,7 @@ import {
   useSearch,
 } from './utils';
 
-// Filter form (inside Drawer, venue type is handled in the main toolbar)
+// Filter form (inside Drawer)
 // ---------------
 interface FilterFormProps {
   state: ReturnType<typeof toFormSchema>;
@@ -118,9 +117,7 @@ export const Toolbar = () => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const q = data.get('q') as string;
-    const typeVal = data.get('type') as string;
     setSearch(q);
-    setFilter({ ...filter, type: typeVal ? Number(typeVal) : undefined });
     setPage(null);
   };
 
@@ -131,8 +128,7 @@ export const Toolbar = () => {
       console.error('Invalid filter data', error);
       return;
     }
-    // Preserve venue type from toolbar — it's not part of the drawer form
-    setFilter({ ...data, type: filter.type });
+    setFilter(data);
     setPage(null);
   };
 
@@ -152,18 +148,6 @@ export const Toolbar = () => {
               setPage(null);
             }}
           />
-          <Select
-            aria-label="Venue type"
-            name="type"
-            defaultSelectedKey={String(filter.type ?? '')}
-          >
-            <Select.Option id="">All types</Select.Option>
-            {venueTypes.map((type, idx) => (
-              <Select.Option key={type} id={String(idx)}>
-                {type}
-              </Select.Option>
-            ))}
-          </Select>
           <Button variant="primary" type="submit">
             Search
           </Button>
@@ -191,6 +175,12 @@ export const Toolbar = () => {
           </Form>
         </Drawer>
       </Drawer.Trigger>
+      <div className="ml-auto">
+        {/* Will be wired up in DST-1288 */}
+        <Button disabled>
+          <Add /> Add Venue
+        </Button>
+      </div>
     </Inline>
   );
 };
