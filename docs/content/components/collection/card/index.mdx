@@ -4,6 +4,11 @@ description: Component to support the structuring of information.
 ---
 
 import { CardAnatomy } from './card-anatomy';
+import {
+  CardVsListMockup,
+  CardVsTableMockup,
+  CardVsTextMockup,
+} from './card-usage-guidelines';
 
 A `<Card>` component is a versatile UI element used to display content in a concise, visually organized format.
 It's typically presented as a rectangular box with various content elements such as images, text, buttons, and icons.
@@ -33,6 +38,129 @@ The Card component supports variants for general content grouping as well as acc
 | `default` | Standard card with a raised shadow. This is the default variant. | General-purpose content grouping like articles, profiles, or summaries.                          |
 | `admin`   | Card with admin-specific border and background tint.             | Grouping content visible only to admin users. [Learn more.](/patterns/layout/admin-master-mark)  |
 | `master`  | Card with master-specific border and background tint.            | Grouping content visible only to master users. [Learn more.](/patterns/layout/admin-master-mark) |
+
+## Usage guidelines
+
+A Card is a strong visual container: it raises content above the page, draws a hard border around it, and tells the user "this belongs together as one unit." That weight is the point when content really is a self-contained item, but it becomes noise everywhere else. Reach for a Card when the elevation earns its keep, and choose a lighter layout when it doesn't.
+
+### When to use a card
+
+Use a `<Card>` when the content is:
+
+- **Heterogeneous.** A mix of media, headings, body text, badges, or actions that belong together as one unit (e.g. an event preview, a product summary, a venue tile).
+- **Self-contained.** It can be lifted out of context and still make sense typically a summary that links to a detail view.
+- **Repeating.** Several similar items live next to each other in a grid or list, each one acting as the entry point to its own thing.
+
+If the element repeats as the user scrolls (events, products, team members), a Card is the right tool. If it owns a named region of a page, like "Organizer profile" or "Billing", reach for a [`<Panel>`](../../layout/panel) instead.
+
+### When not to use a card
+
+Cards are easy to over-reach for. The four scenarios below cover the most common misuses, with cleaner alternatives.
+
+#### Don't wrap tabular data in cards
+
+When records share the same shape and users want to scan, sort, or compare across them, a [`<Table>`](../table) reads faster and handles selection, sorting, and bulk actions out of the box. A column of cards forces the eye to jump between visual blocks instead of running down a column of values.
+
+<CardVsTableMockup />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a [`<Table>`](../table) when records share the same shape and users
+      want to scan, sort, or compare them.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't render homogeneous, row-shaped data as a column of cards. Users lose
+      the ability to scan and compare values at a glance.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+#### Don't wrap simple content in cards
+
+A Card groups several pieces of related content. If you only have a single paragraph, a short message, or one field, the card adds visual weight without grouping anything. Use a [`<Headline>`](../../content/headline), [`<Text>`](../../content/text), or [`<SectionMessage>`](../../content/section-message) instead.
+
+<CardVsTextMockup />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Render simple, single-purpose content as plain text. Use a
+      [`<SectionMessage>`](../../content/section-message) when the content is a
+      status or callout.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't wrap a single short paragraph or one field in a card. The frame
+      adds visual noise without grouping anything.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+#### Don't stack many cards on a page
+
+Cards rely on contrast against the page to feel grouped. When you stack a long column of full-width cards, every row competes with every other row, the shadows pile up, and the page becomes visually noisy. Use a list separated by [`<Divider>`](../../content/divider) for similar rows, or a [`<Panel>`](../../layout/panel) when the list owns a named region of the page.
+
+<CardVsListMockup />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a list with [`<Divider>`](../../content/divider) between rows for
+      long, homogeneous content. Wrap it in a
+      [`<Panel>`](../../layout/panel) when the list owns a named region of the
+      page.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't stack a long column of full-width cards. The repeated shadows and
+      borders fragment the page and harm scannability.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+#### Don't nest cards inside cards
+
+Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth, it's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](../../layout/stack), a [`<Divider>`](../../content/divider), or split the content into sibling sections.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Place a Card on top of the default surface so the raised shadow is
+      visible.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't nest a card inside another card or place it on a same-elevation
+      surface. The shadow has nothing to push against.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Decision checklist
+
+Before reaching for a Card, work through these questions. If most answers are "no," the content probably belongs in a lighter layout.
+
+- **Is the content a complete, standalone unit?** Could you take it out of context and still understand it?
+- **Does it mix several types of content?** Image, title, body, actions at least two or three.
+- **Will it appear next to similar siblings in a grid or list?** Cards are designed to repeat.
+- **Does the elevation help the user group related content?** If the content already groups itself with a heading or list, the card adds noise.
+- **Does the card sit on a non-card surface?** Cards need contrast against the page or a sunken layer to read as raised.
+
+If most of your answers are "no," try one of these instead:
+
+| Need                                            | Reach for                                                                 |
+| ----------------------------------------------- | ------------------------------------------------------------------------- |
+| Tabular records with shared shape               | [`<Table>`](../table)                                                     |
+| Named region of a settings or admin page        | [`<Panel>`](../../layout/panel)                                           |
+| A short paragraph or a single field             | [`<Headline>`](../../content/headline) + [`<Text>`](../../content/text)   |
+| A status, callout, or feedback message          | [`<SectionMessage>`](../../content/section-message)                       |
+| A list of similar rows with no media or actions | [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) |
 
 ## Usage
 
