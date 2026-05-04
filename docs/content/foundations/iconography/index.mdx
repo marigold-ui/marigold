@@ -15,15 +15,17 @@ in code](#using-icons-in-code) for installation and the API.
 
 Icons follow Lucide's grid: 24×24, 2px stroke, rounded corners. Brand icons
 match the same grid so they sit alongside Lucide icons without standing out.
-Recommended sizes are 16, 20, 24, and 32 pixels. Set the size with the `size`
-prop, which accepts a number of pixels.
+Recommended sizes are 16, 20, 24, and 48 pixels. Use 20 for dense desktop
+layouts, 24 as the default body size, and 48 for display headings. Set the
+size with the `size` prop, which accepts a number of pixels.
 
 ### Touch targets
 
 Icons by themselves are not large enough to act as tap targets. Wrap an
 interactive icon in a `Button` with `variant="icon"`, or another container
-with a hit area of at least 44×44 px (WCAG 2.5.5). Don't enlarge the icon to meet the target. Keep
-the icon at its content size and pad the surrounding control.
+with a hit area of at least 48×48 px (Marigold target; WCAG 2.5.5 requires a
+44×44 minimum). Don't enlarge the icon to meet the target. Keep the icon at
+its content size and pad the surrounding control.
 
 ### Color and pairing with text
 
@@ -230,26 +232,17 @@ Import icons by name from `@marigold/icons`:
 ```tsx
 import { DesignTicket, Search } from '@marigold/icons';
 
-export default function MyComponent() {
-  return (
-    <>
-      <Search />
-      <DesignTicket />
-    </>
-  );
-}
+export const MyComponent = () => (
+  <>
+    <Search />
+    <DesignTicket />
+  </>
+);
 ```
 
 `@marigold/icons` re-exports every icon from `lucide-react`, so any name listed
 on [lucide.dev](https://lucide.dev/) resolves under `@marigold/icons`. Always
 import from `@marigold/icons` — never directly from `lucide-react`.
-
-#### Brand icons
-
-A handful of brand-specific icons (`DesignTicket`, `GiftCard`, `PDF`, `Resale`,
-`Scanner`, `Stadium`, `TicketInsurance`, `Turnstile`, `Facebook`, `Google`,
-`Instagram`, `Twitter`, `TwitterX`) only exist in `@marigold/icons`. They show
-up across the [Catalog](#catalog) above.
 
 ### Sizing
 
@@ -266,7 +259,7 @@ Icons inherit `currentColor`, so apply theme tokens via `className="text-*"`
 on the icon or its parent. Both forms below render identically, but
 `className` is the token-aware pattern.
 
-<ComponentDemo file="./icon-className-vs-color.demo.tsx" mode="preview" />
+<ComponentDemo file="./icon-className-vs-color.demo.tsx" />
 
 #### The color prop
 
@@ -288,26 +281,10 @@ See [Token Overview](/foundations/token-overview) for token names.
 
 ### Filled brand icons
 
-Twelve of the thirteen brand icons are filled silhouettes wrapped with
-`createFilledIcon`, which couples `fill` and `color` to a single value (`fill`
-wins if both are passed). Pass `stroke` explicitly to decouple stroke from
-fill.
+Some brand icons are solid shapes instead of outlines. For these, setting
+`fill` (or `color`) colors the entire icon at once.
 
-<ComponentDemo file="./icon-filled.demo.tsx" mode="preview" />
-
-```tsx
-// Default — fill and stroke both follow currentColor
-<DesignTicket />
-
-// fill only — fill and stroke collapse to the same value
-<DesignTicket fill="var(--color-destructive-accent)" />
-
-// fill + explicit stroke — decoupled
-<DesignTicket
-  fill="var(--color-destructive-accent)"
-  stroke="var(--color-info-accent)"
-/>
-```
+<ComponentDemo file="./icon-filled.demo.tsx" />
 
 ### Accessibility
 
@@ -324,20 +301,35 @@ Pass `aria-label` for icon-only interactive elements to opt out.
 
 For tap-target rules, see [Touch targets](#touch-targets) above.
 
-### Refs
-
-Both Lucide re-exports and custom filled icons forward refs to
-`SVGSVGElement`. Useful for measurement, focus management, and animation
-libraries.
-
-```tsx
-const ref = useRef<SVGSVGElement>(null);
-<Search ref={ref} />;
-```
-
 ### Migrating from the legacy icon set
 
-Most legacy names map to a Lucide equivalent (`Add → Plus`, `Delete → Trash2`,
-and so on). The `size` prop now accepts a number of pixels rather than a CSS
-unit — switch `"24px"` to `24`. See the full mapping in the [migration
-table](https://github.com/marigold-ui/marigold/blob/main/.changeset/icons-lucide-migration.md).
+The package name stays the same (`@marigold/icons`), so the import path does
+not change. What changes is the icon names and a small API tweak.
+
+**Names.** Most legacy names map to a Lucide equivalent. Lucide uses
+PascalCase consistently, so a few common renames look like this:
+
+```tsx
+// Before
+import { Add, Delete, Exclamation, search } from '@marigold/icons';
+// After
+import { Plus, Search, Trash2, TriangleAlert } from '@marigold/icons';
+```
+
+The full name mapping is included in the Marigold 18 release notes /
+changelog.
+
+**Size prop.** `size` now accepts a number of pixels rather than a CSS unit
+string. Switch `"24px"` to `24`.
+
+```tsx
+// Before
+<Search size="24px" />
+
+// After
+<Search size={24} />
+```
+
+**Brand icons.** Brand-specific icons such as `DesignTicket`, `GiftCard`,
+`Facebook`, and `Stadium` keep their existing names and stay in
+`@marigold/icons`. No change required.

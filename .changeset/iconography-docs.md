@@ -4,7 +4,7 @@
 
 docs(DST-1308): consolidate icon documentation onto the Iconography page
 
-Merge the former `/components/content/icons` page into `/foundations/iconography` so principles, catalog, and engineering API live in one place. The new `Using icons in code` section covers installation, importing, sizing, color (`currentColor` + `className` recommended; `color` prop is literal CSS), filled brand icons (`createFilledIcon` couples `fill` and `color`; pass `stroke` to decouple), accessibility (auto `aria-hidden`), and refs. Old URLs redirect.
+Merge the former `/foundations/icons` and `/components/content/icon` pages into `/foundations/iconography` so principles, catalog, and engineering API live in one place. The new `Using icons in code` section covers installation, importing, sizing, color (`currentColor` + `className` recommended; `color` prop is literal CSS), filled brand icons, and accessibility (auto `aria-hidden`).
 
 ## Migration table
 
