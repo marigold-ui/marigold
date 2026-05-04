@@ -207,7 +207,7 @@ export const ThreeMonths = meta.story({
   render: args => <RangeCalendar {...args} />,
 });
 
-export const TwoMonthsMobile: any = meta.story({
+export const TwoMonthsMobile = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -221,7 +221,7 @@ export const TwoMonthsMobile: any = meta.story({
   render: args => <RangeCalendar {...args} />,
 });
 
-export const ThreeMonthsMobile: any = meta.story({
+export const ThreeMonthsMobile = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },
   },

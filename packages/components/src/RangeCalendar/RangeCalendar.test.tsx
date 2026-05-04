@@ -1,7 +1,8 @@
-/* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ReactNode } from 'react';
+import { I18nProvider } from 'react-aria-components';
 import { vi } from 'vitest';
 import {
   Basic,
@@ -11,11 +12,14 @@ import {
   WithError,
 } from './RangeCalendar.stories';
 
+const renderWithLocale = (ui: ReactNode) =>
+  render(<I18nProvider locale="en-US">{ui}</I18nProvider>);
+
 describe('RangeCalendar', () => {
   const user = userEvent.setup();
 
   test('renders with default range value', () => {
-    render(
+    renderWithLocale(
       <Basic.Component
         defaultValue={{
           start: new CalendarDate(2019, 6, 5),
@@ -33,7 +37,7 @@ describe('RangeCalendar', () => {
 
   test('selects a range with two clicks (uncontrolled)', async () => {
     const onChange = vi.fn();
-    render(
+    renderWithLocale(
       <Basic.Component
         defaultValue={{
           start: new CalendarDate(2019, 6, 5),
@@ -43,11 +47,8 @@ describe('RangeCalendar', () => {
       />
     );
 
-    const startCell = screen.getByText('10');
-    await user.click(startCell);
-
-    const endCell = screen.getByText('15');
-    await user.click(endCell);
+    await user.click(screen.getByLabelText(/Monday, June 10, 2019/i));
+    await user.click(screen.getByLabelText(/Saturday, June 15, 2019/i));
 
     expect(onChange).toHaveBeenCalled();
     const lastCall = onChange.mock.calls.at(-1)?.[0];
@@ -56,7 +57,7 @@ describe('RangeCalendar', () => {
   });
 
   test('marks all cells aria-disabled when disabled', () => {
-    render(
+    renderWithLocale(
       <Basic.Component
         defaultValue={{
           start: new CalendarDate(2019, 6, 5),
@@ -74,7 +75,7 @@ describe('RangeCalendar', () => {
 
   test('does not call onChange when readOnly', async () => {
     const onChange = vi.fn();
-    render(
+    renderWithLocale(
       <Basic.Component
         defaultValue={{
           start: new CalendarDate(2019, 6, 5),
@@ -85,21 +86,20 @@ describe('RangeCalendar', () => {
       />
     );
 
-    const cell = screen.getByText('15');
-    await user.click(cell);
+    await user.click(screen.getByLabelText(/Saturday, June 15, 2019/i));
 
     expect(onChange).not.toHaveBeenCalled();
   });
 
   test('renders error message when provided', () => {
-    render(<WithError.Component />);
+    renderWithLocale(<WithError.Component />);
 
     expect(screen.getByText(/please select/i)).toBeInTheDocument();
   });
 
   test('blocks dates marked unavailable', async () => {
     const onChange = vi.fn();
-    render(<Unavailable.Component onChange={onChange} />);
+    renderWithLocale(<Unavailable.Component onChange={onChange} />);
 
     const cells = screen.getAllByRole('gridcell');
     const unavailable = cells.find(
@@ -110,35 +110,45 @@ describe('RangeCalendar', () => {
   });
 
   test('opens the month dropdown when the month button is clicked', async () => {
-    render(<Basic.Component />);
+    renderWithLocale(<Basic.Component />);
 
-    expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('listbox', { name: 'monthOptions' })
+    ).not.toBeInTheDocument();
 
-    await user.click(screen.getByTestId('month'));
+    await user.click(screen.getByRole('button', { name: 'Aug' }));
 
-    expect(screen.getByTestId('monthOptions')).toBeInTheDocument();
+    expect(
+      screen.getByRole('listbox', { name: 'monthOptions' })
+    ).toBeInTheDocument();
   });
 
   test('opens the year dropdown when the year button is clicked', async () => {
-    render(<Basic.Component />);
+    renderWithLocale(<Basic.Component />);
 
-    expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('listbox', { name: 'yearOptions' })
+    ).not.toBeInTheDocument();
 
-    await user.click(screen.getByTestId('year'));
+    await user.click(screen.getByRole('button', { name: '2025' }));
 
-    expect(screen.getByTestId('yearOptions')).toBeInTheDocument();
+    expect(
+      screen.getByRole('listbox', { name: 'yearOptions' })
+    ).toBeInTheDocument();
   });
 
   test('selecting an option from the month dropdown closes it', async () => {
-    render(<Basic.Component />);
+    renderWithLocale(<Basic.Component />);
 
-    await user.click(screen.getByTestId('month'));
-    const monthOptions = screen.getByTestId('monthOptions');
+    await user.click(screen.getByRole('button', { name: 'Aug' }));
+    const monthOptions = screen.getByRole('listbox', { name: 'monthOptions' });
     const options = within(monthOptions).getAllByRole('option');
 
     await user.click(options[2]);
 
-    expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('listbox', { name: 'monthOptions' })
+    ).not.toBeInTheDocument();
   });
 });
 
@@ -146,7 +156,7 @@ describe('RangeCalendar - Multi-month', () => {
   const user = userEvent.setup();
 
   test('renders two months with visibleDuration', () => {
-    render(<TwoMonths.Component />);
+    renderWithLocale(<TwoMonths.Component />);
 
     const grids = screen.getAllByRole('grid');
     expect(grids).toHaveLength(2);
@@ -157,7 +167,7 @@ describe('RangeCalendar - Multi-month', () => {
   });
 
   test('renders three months with visibleDuration', () => {
-    render(<ThreeMonths.Component />);
+    renderWithLocale(<ThreeMonths.Component />);
 
     const grids = screen.getAllByRole('grid');
     expect(grids).toHaveLength(3);
@@ -169,7 +179,7 @@ describe('RangeCalendar - Multi-month', () => {
   });
 
   test('navigates forward with next button', async () => {
-    render(
+    renderWithLocale(
       <TwoMonths.Component
         defaultValue={{
           start: new CalendarDate(2025, 1, 15),
@@ -182,17 +192,14 @@ describe('RangeCalendar - Multi-month', () => {
     expect(calendar).toHaveTextContent(/January 2025/i);
     expect(calendar).toHaveTextContent(/February 2025/i);
 
-    const buttons = screen.getAllByRole('button');
-    const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
-    expect(nextButton).toBeDefined();
-    await user.click(nextButton!);
+    await user.click(screen.getAllByRole('button', { name: /next/i })[0]);
 
     expect(calendar).toHaveTextContent(/March 2025/i);
     expect(calendar).toHaveTextContent(/April 2025/i);
   });
 
   test('navigates backward with previous button', async () => {
-    render(
+    renderWithLocale(
       <TwoMonths.Component
         defaultValue={{
           start: new CalendarDate(2025, 3, 15),
@@ -205,10 +212,7 @@ describe('RangeCalendar - Multi-month', () => {
     expect(calendar).toHaveTextContent(/March 2025/i);
     expect(calendar).toHaveTextContent(/April 2025/i);
 
-    const buttons = screen.getAllByRole('button');
-    const prevButton = buttons.find(b => b.getAttribute('slot') === 'previous');
-    expect(prevButton).toBeDefined();
-    await user.click(prevButton!);
+    await user.click(screen.getAllByRole('button', { name: /previous/i })[0]);
 
     expect(calendar).toHaveTextContent(/January 2025/i);
     expect(calendar).toHaveTextContent(/February 2025/i);
@@ -216,7 +220,7 @@ describe('RangeCalendar - Multi-month', () => {
 
   test('selects a range across the second month with two clicks', async () => {
     const onChange = vi.fn();
-    render(
+    renderWithLocale(
       <TwoMonths.Component
         defaultValue={{
           start: new CalendarDate(2025, 2, 15),
@@ -227,26 +231,13 @@ describe('RangeCalendar - Multi-month', () => {
     );
 
     const grids = screen.getAllByRole('grid');
-    const firstGrid = grids[0];
-    const secondGrid = grids[1];
+    const startCell = within(grids[0]).getByLabelText(
+      /Thursday, February 20, 2025/i
+    );
+    const endCell = within(grids[1]).getByLabelText(/Monday, March 10, 2025/i);
 
-    const startCell = within(firstGrid)
-      .getAllByRole('gridcell')
-      .find(
-        cell =>
-          cell.textContent === '20' &&
-          cell.getAttribute('aria-disabled') !== 'true'
-      )!;
-    const endCell = within(secondGrid)
-      .getAllByRole('gridcell')
-      .find(
-        cell =>
-          cell.textContent === '10' &&
-          cell.getAttribute('aria-disabled') !== 'true'
-      )!;
-
-    await user.click(startCell.firstChild as Element);
-    await user.click(endCell.firstChild as Element);
+    await user.click(startCell);
+    await user.click(endCell);
 
     expect(onChange).toHaveBeenCalled();
     const lastCall = onChange.mock.calls.at(-1)?.[0];
