@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 17.5.0
+
+### Patch Changes
+
+- de34b15: chore(deps): update `react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` packages to their latest versions.
+
 ## 17.4.0
 
 ### Minor Changes

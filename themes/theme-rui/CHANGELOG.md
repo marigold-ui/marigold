@@ -1,5 +1,82 @@
 # @marigold/theme-rui
 
+## 5.3.0
+
+### Minor Changes
+
+- 6587493: refa([DST-1298]): Refactor Divider component: API, styling, and docs
+
+  We fixed the vertical orientation of the divider, which previously didn't work.
+  Added new Divider stories and updated the Divider docs.
+
+- fd786af: feat(SelectList): standardized API, item layout, and visual distinction from ListBox (DST-1076)
+
+  `<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. This release contains breaking renames and a tightened type surface.
+
+  **Breaking changes**
+  - `SelectList.Item` → **`SelectList.Option`**. The option semantic matches `Select.Option` and the HTML `<option>` mental model. Update any `<SelectList.Item>` usage to `<SelectList.Option>`.
+  - `SelectList.Action` has been **removed**. Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` — the component positions, sizes, and styles the nested control automatically via `ButtonContext`. Limit: one action per option (multi-button groups will arrive with a future `ActionButtonGroup`).
+  - Leading-image slot has been **removed**. Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+  - `selectionMode="none"` is no longer accepted. `SelectList` is a form field; the default is now `"single"`.
+  - `onChange` is strictly typed per `selectionMode`: `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. The shape matches `Select<T, M>`. Passing `setState` directly may require adapting the callback.
+
+  **Other changes**
+  - **Selection indicator** — single-select rows render a visible radio circle; multi-select renders a checkbox.
+  - **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
+  - **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
+  - **Own theme entry** — `SelectList` ships a dedicated theme component. The theme exposes first-class `label`, `description`, and `action` entries; slot styling no longer uses descendant selectors. Consumers with custom themes must add or update a `SelectList` entry.
+
+  **Documentation**
+
+  The SelectList docs page is rewritten around the new API. Adds an anatomy diagram, a decision table for choosing between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions (decision-help and configuration patterns), horizontal orientation, and empty state. Replaces selected prose with Do/Don't tiles. Tightens the accessibility section to what's specific to SelectList (keyboard model, label requirement, `textValue` for rich rows).
+
+  **Migration**
+
+  ```diff
+  - <SelectList selectionMode="none">
+  -   <SelectList.Item id="free">
+  -     <SelectList.Action>
+  -       <IconButton aria-label="Info"><Info /></IconButton>
+  -     </SelectList.Action>
+  -     Free
+  -   </SelectList.Item>
+  - </SelectList>
+  + <SelectList selectionMode="single">
+  +   <SelectList.Option id="free">
+  +     Free
+  +     <IconButton aria-label="Info"><Info /></IconButton>
+  +   </SelectList.Option>
+  + </SelectList>
+  ```
+
+### Patch Changes
+
+- 5cd5290: fix(DST-1359): align `ActionBar` action button spacing with the regular `Button`. The `actionButton` style in `theme-rui` was missing `gap-2 items-center justify-center`, which caused icons and labels inside ActionBar buttons to render without the proper spacing/alignment used by the ghost/default `Button`. Adding these utilities restores visual parity across the design system.
+- b7c132d: fix(DST-1354): restore collapsing `Table.EditableCell` edit trigger
+
+  The overlay/ring affordance introduced in #5250 (DST-1275) did not read as editable in user testing: sighted users did not associate the hover ring with inline editing, and there was no discoverable trigger for keyboard or touch. This change reverts that approach and restores the explicit pencil edit button.
+
+  The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or keyboard focus, so static layout remains clean while the affordance is discoverable the moment the user interacts with the row. When expanded, the wrapper switches to `overflow-visible` so the button's focus outline is not clipped. The cell itself stays clickable as a touch target. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like a regular `Table.Cell`.
+
+- f16b887: fix(DST-1352): use correct outline for focus + error state in compound fields
+- 8902b10: fix: register `--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` as non-inheriting custom properties
+
+  Previously, setting one of these variables on a themed surface (e.g. a destructive Panel overriding `--ui-border-color`) would cascade the value into every nested element that also reads `ui-surface`, tinting Inputs, Buttons, Cards, etc. with the parent's color.
+
+  These three custom properties are now registered via `@property { inherits: false }`, so each surface resolves its own fallback via the existing `var(..., var(--color-…))` pattern and nested surfaces keep their defaults.
+
+- Updated dependencies [b7c132d]
+- Updated dependencies [6587493]
+- Updated dependencies [f16b887]
+- Updated dependencies [1cac70d]
+- Updated dependencies [fd786af]
+- Updated dependencies [e33a1e7]
+- Updated dependencies [c2a1c72]
+- Updated dependencies [de34b15]
+- Updated dependencies [04111ca]
+  - @marigold/components@17.5.0
+  - @marigold/system@17.5.0
+
 ## 5.2.4
 
 ### Patch Changes

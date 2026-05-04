@@ -1,5 +1,102 @@
 # @marigold/components
 
+## 17.5.0
+
+### Minor Changes
+
+- 6587493: refa([DST-1298]): Refactor Divider component: API, styling, and docs
+
+  We fixed the vertical orientation of the divider, which previously didn't work.
+  Added new Divider stories and updated the Divider docs.
+
+- fd786af: feat(SelectList): standardized API, item layout, and visual distinction from ListBox (DST-1076)
+
+  `<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. This release contains breaking renames and a tightened type surface.
+
+  **Breaking changes**
+  - `SelectList.Item` → **`SelectList.Option`**. The option semantic matches `Select.Option` and the HTML `<option>` mental model. Update any `<SelectList.Item>` usage to `<SelectList.Option>`.
+  - `SelectList.Action` has been **removed**. Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` — the component positions, sizes, and styles the nested control automatically via `ButtonContext`. Limit: one action per option (multi-button groups will arrive with a future `ActionButtonGroup`).
+  - Leading-image slot has been **removed**. Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+  - `selectionMode="none"` is no longer accepted. `SelectList` is a form field; the default is now `"single"`.
+  - `onChange` is strictly typed per `selectionMode`: `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. The shape matches `Select<T, M>`. Passing `setState` directly may require adapting the callback.
+
+  **Other changes**
+  - **Selection indicator** — single-select rows render a visible radio circle; multi-select renders a checkbox.
+  - **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
+  - **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
+  - **Own theme entry** — `SelectList` ships a dedicated theme component. The theme exposes first-class `label`, `description`, and `action` entries; slot styling no longer uses descendant selectors. Consumers with custom themes must add or update a `SelectList` entry.
+
+  **Documentation**
+
+  The SelectList docs page is rewritten around the new API. Adds an anatomy diagram, a decision table for choosing between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions (decision-help and configuration patterns), horizontal orientation, and empty state. Replaces selected prose with Do/Don't tiles. Tightens the accessibility section to what's specific to SelectList (keyboard model, label requirement, `textValue` for rich rows).
+
+  **Migration**
+
+  ```diff
+  - <SelectList selectionMode="none">
+  -   <SelectList.Item id="free">
+  -     <SelectList.Action>
+  -       <IconButton aria-label="Info"><Info /></IconButton>
+  -     </SelectList.Action>
+  -     Free
+  -   </SelectList.Item>
+  - </SelectList>
+  + <SelectList selectionMode="single">
+  +   <SelectList.Option id="free">
+  +     Free
+  +     <IconButton aria-label="Info"><Info /></IconButton>
+  +   </SelectList.Option>
+  + </SelectList>
+  ```
+
+- e33a1e7: feat(DST-1322): add `current` prop to `Sidebar.Nav` for automatic active item detection
+
+  `Sidebar.Nav` now accepts a `current` prop that resolves the active leaf automatically — pass the current pathname (string) for smart segment-aware matching, or a predicate `(href, key) => boolean` for full control. Removes the per-item `active={pathname === '/...'}` boilerplate. The per-item `active` prop on `Sidebar.Item` still works as a local override.
+
+### Patch Changes
+
+- b7c132d: fix(DST-1354): restore collapsing `Table.EditableCell` edit trigger
+
+  The overlay/ring affordance introduced in #5250 (DST-1275) did not read as editable in user testing: sighted users did not associate the hover ring with inline editing, and there was no discoverable trigger for keyboard or touch. This change reverts that approach and restores the explicit pencil edit button.
+
+  The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or keyboard focus, so static layout remains clean while the affordance is discoverable the moment the user interacts with the row. When expanded, the wrapper switches to `overflow-visible` so the button's focus outline is not clipped. The cell itself stays clickable as a touch target. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like a regular `Table.Cell`.
+
+- f16b887: fix(DST-1352): use correct outline for focus + error state in compound fields
+- 1cac70d: docs: improve `AutoTypeTable` prop rendering
+
+  Centralizes the display of design-system aliases in the component docs'
+  prop tables. Props whose types reference aliases from `@marigold/system`
+  or `@marigold/types` (e.g. `SpacingTokens`, `Scale`, `WidthProp`,
+  `NonZeroPercentage`) now render with a meaningful summary in the main
+  cell **and** the full list of resolvable literal values on row expand —
+  instead of a wall of literals in the cell and a redundant alias name on
+  expand.
+
+  Before:
+  - Cell: `SpacingTokens<Tokens>` (a fabricated generic, inconsistent across components)
+  - Expand: `SpacingTokens | Scale | undefined` (same alias names, no new info)
+
+  After:
+  - Cell: `SpacingTokens | Scale` (accurate, derived from the real type)
+  - Expand: `"96" | "80" | ... | "tight" | "related" | 0` (every concrete value)
+
+  Under the hood this replaces 27 per-prop `@remarks \`TypeName\``JSDoc
+overrides with a single fumadocs-typescript transform in the docs site,
+so future components pick up the same behavior automatically. A`@remarks` tag on a prop still wins as an escape hatch.
+
+  `Multiselect.width` and `ComboBox.width` now use `WidthProp['width']`
+  directly instead of `FieldBaseProps<'label'>['width']` — structurally
+  identical, no runtime change.
+
+- c2a1c72: fix: apply `alignX` from `Table.Column` to first column cells
+
+  `TableCellContent` used a truthy check on `columnIndex`, causing it to skip the `alignX` lookup when `columnIndex` was `0` (first column). Replaced with a nullish check so all columns correctly inherit their alignment.
+
+- de34b15: chore(deps): update `react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` packages to their latest versions.
+- 04111ca: fix(DST-1355): widen `variant` and `size` prop types on `Loader` and `ProgressCircle` to accept arbitrary strings via `| (string & {})`. Matches the pattern already used by `Button`, `Panel`, and other components, and lets consumer themes register their own variant/size tokens without TypeScript errors while preserving IDE autocomplete for the built-in RUI values.
+- Updated dependencies [de34b15]
+  - @marigold/system@17.5.0
+
 ## 17.4.0
 
 ### Minor Changes
