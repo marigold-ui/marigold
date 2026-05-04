@@ -1,0 +1,94 @@
+---
+title: Description
+description: Help text or supporting content paired with a Title or label.
+badge: alpha
+---
+
+The `<Description>` component is a short piece of supporting text that pairs with a partner element. It sits below a `<Title>` in container surfaces (`<Panel>`, `<Dialog>`, `<EmptyState>`) and alongside a `<TextValue>` in selection items (`<Select.Option>`, `<Menu.Item>`, `<ListBox.Item>`). The surrounding component picks the typography so the description fits its surface.
+
+For paragraph text, body copy, or any text that isn't paired with a heading or label, use [`<Text>`](/components/content/text) instead.
+
+import { DescriptionAnatomy } from './description-anatomy';
+
+## Anatomy
+
+<DescriptionAnatomy />
+
+A description is a single text element with no parts of its own.
+
+## Appearance
+
+<AppearanceDemo component="Description" />
+
+<AppearanceTable component="Description" />
+
+By default, `<Description>` renders at the `sm` size. Use the `size` prop for standalone use; inside a container, the size comes from [slot configuration](/foundations/component-principles#slot-driven-composition).
+
+## Usage
+
+A description is a short supporting text that sits next to a title or label. Use it whenever the partner element needs a brief explanation. Styling is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Pair `<Description>` with a `<Title>` or a `<TextValue>` so it has a clear
+      partner in the visual hierarchy.
+    </DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>
+      Keep it short. One or two sentences is the right length. A description is
+      supporting content, not body copy.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `<Description>` for arbitrary paragraph text. Use [`<Text>`](/components/content/text) instead.
+    </DontDescription>
+  </Dont>
+  <Dont>
+    <DontDescription>
+      Don't render multiple Descriptions in the same region. They get merged
+      into one accessible description string and the result is hard to scan.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Paired with a Title
+
+Use this inside container surfaces (`<Panel>`, `<Dialog>`, `<EmptyState>`) to explain a heading. The Description sits directly below the Title.
+
+<ComponentDemo name="description-with-title" />
+
+### Paired with a TextValue
+
+Use this inside selection items (`<Select.Option>`, `<Menu.Item>`, `<ListBox.Item>`) to add a help line below the item label. Screen readers announce the label as the option's accessible name and the Description as supporting content.
+
+<ComponentDemo name="description-in-menu-item" />
+
+## Accessibility
+
+`<Description>` becomes the **accessible description** of the element it pairs with. Screen readers announce the accessible name first (the heading or label), then the description after a short pause as supporting context.
+
+The wiring is automatic. The partner element generates an `id` for the description and points its `aria-describedby` at that id, so you never need to set the attribute manually.
+
+Two practical consequences follow from this:
+
+- **One description per region.** When multiple `aria-describedby` targets exist, browsers concatenate them into a single announced string. Splitting supporting content across two descriptions removes the natural pause and produces one long, hard-to-scan announcement.
+- **Keep it concise.** The description is read every time the partner receives focus or hover, so verbose copy quickly becomes noise.
+
+A description used without a partner that registers a description slot renders as plain text without an `aria-describedby` link. It contributes to the visible content but has no programmatic relationship to anything else.
+
+## Props
+
+<StorybookHintMessage component="Description" />
+
+### Description
+
+<AutoTypeTable path="Description" name="DescriptionProps" />
+
+## Alternative components
+
+- [Text](/components/content/text): Use for paragraph text, body copy, and inline text that isn't paired with a Title or label.
+- [Title](/components/content/title): The heading partner for Description in container surfaces.
+- [TextValue](/components/content/text-value): The label partner for Description in selection items.

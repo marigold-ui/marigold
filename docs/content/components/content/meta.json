@@ -1,6 +1,7 @@
 {
   "pages": [
     "badge",
+    "description",
     "divider",
     "empty-state",
     "headline",
@@ -9,6 +10,8 @@
     "loader",
     "section-message",
     "svg",
-    "text"
+    "text",
+    "text-value",
+    "title"
   ]
 }

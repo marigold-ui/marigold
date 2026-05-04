@@ -11,6 +11,18 @@ import {
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 
+/**
+ * The shared heading size scale. Reused by `Title` so heading primitives
+ * share one vocabulary. Will become a typography token in a future PR.
+ */
+export type HeadlineSize =
+  | 'level-1'
+  | 'level-2'
+  | 'level-3'
+  | 'level-4'
+  | 'level-5'
+  | 'level-6';
+
 export interface HeadlineProps
   extends AriaLabelingProps, TextAlignProp, LineHeightProp {
   /**
@@ -18,14 +30,7 @@ export interface HeadlineProps
    */
   color?: string;
   variant?: string;
-  size?:
-    | 'level-1'
-    | 'level-2'
-    | 'level-3'
-    | 'level-4'
-    | 'level-5'
-    | 'level-6'
-    | (string & {});
+  size?: HeadlineSize | (string & {});
   /**
    * Set a different level.
    */

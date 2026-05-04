@@ -18,7 +18,17 @@ console.log('🎨 Generating appearances data...');
 const sharedAppearances = {
   LinkButton: 'Button',
   ToggleButtonGroup: 'ToggleButton',
+  Title: 'Headline',
+  ActionButton: 'Button',
+  ActionMenu: 'Menu',
 };
+
+/**
+ * Components without their own theme entry that should still appear in the
+ * appearances map with empty variant/size arrays. Used for primitives whose
+ * appearance is fully controlled by the surrounding container.
+ */
+const emptyAppearances = ['TextValue'];
 
 /**
  * Extract property name keys from a `variants` object literal in a cva() call.
@@ -146,6 +156,13 @@ async function main() {
   for (const [alias, target] of Object.entries(sharedAppearances)) {
     if (appearances[target]) {
       appearances[alias] = appearances[target];
+    }
+  }
+
+  // Add empty entries for primitives without their own theme entry
+  for (const name of emptyAppearances) {
+    if (!appearances[name]) {
+      appearances[name] = { variant: [], size: [] };
     }
   }
 
