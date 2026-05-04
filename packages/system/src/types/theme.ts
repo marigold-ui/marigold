@@ -246,8 +246,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
-      | 'select'
-      | 'errorMessage',
+      | 'select',
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;

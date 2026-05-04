@@ -1,9 +1,9 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   RangeCalendar as AriaRangeCalendar,
   DateValue,
-  Text,
+  FieldErrorContext,
 } from 'react-aria-components';
 import {
   WidthProp,
@@ -22,6 +22,7 @@ import {
   hasOnlyOneSelectableMonth,
   hasOnlyOneSelectableYear,
 } from '../Calendar/calendarListBoxSelectableCheck';
+import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 
 // Props
 // ---------------
@@ -34,9 +35,10 @@ type RemovedProps =
   | 'className'
   | 'style';
 
-export interface RangeCalendarProps<
-  T extends DateValue = DateValue,
-> extends Omit<RAC.RangeCalendarProps<T>, RemovedProps> {
+export interface RangeCalendarProps<T extends DateValue = DateValue>
+  extends
+    Omit<RAC.RangeCalendarProps<T>, RemovedProps>,
+    Pick<FieldBaseProps<'div'>, 'description' | 'errorMessage'> {
   /**
    * Disables the RangeCalendar.
    * @default false
@@ -51,16 +53,12 @@ export interface RangeCalendarProps<
    * Whether the value is invalid.
    * @default false
    */
-  invalid?: boolean;
+  error?: boolean;
   /**
    * Whether non-contiguous ranges are allowed.
    * @default false
    */
   allowsNonContiguousRanges?: boolean;
-  /**
-   * Error message rendered below the calendar.
-   */
-  errorMessage?: ReactNode;
   variant?: string;
   size?: string;
   /**
@@ -93,9 +91,10 @@ type ViewMapKeys = 'month' | 'year';
 const _RangeCalendar = <T extends DateValue>({
   disabled,
   readOnly,
-  invalid,
+  error,
   allowsNonContiguousRanges,
   errorMessage,
+  description,
   size,
   variant,
   width = 'fit',
@@ -112,7 +111,7 @@ const _RangeCalendar = <T extends DateValue>({
   const props: RAC.RangeCalendarProps<T> = {
     isDisabled: disabled,
     isReadOnly: readOnly,
-    isInvalid: invalid,
+    isInvalid: error,
     isDateUnavailable: dateUnavailable,
     allowsNonContiguousRanges,
     minValue,
@@ -165,46 +164,17 @@ const _RangeCalendar = <T extends DateValue>({
     ),
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
-  if (isMultiMonth) {
-    return (
-      <CalendarContext.Provider
-        value={{
-          classNames,
-          visibleMonths,
-          minValue,
-          maxValue,
-          disabled,
-        }}
-      >
-        <AriaRangeCalendar
-          className={cn(
-            'relative flex flex-col',
-            twWidth[width],
-            classNames.calendar
-          )}
-          {...props}
-        >
-          <div className={classNames.calendarContainer}>
-            {[...Array(visibleMonths).keys()].map(i => (
-              <div key={i} className={classNames.calendarMonth}>
-                <CalendarHeader
-                  monthOffset={i}
-                  showPrevious={i === 0}
-                  showNext={i === visibleMonths - 1}
-                />
-                <CalendarGrid offset={{ months: i }} />
-              </div>
-            ))}
-          </div>
-          {errorMessage ? (
-            <Text slot="errorMessage" className={classNames.errorMessage}>
-              {errorMessage}
-            </Text>
-          ) : null}
-        </AriaRangeCalendar>
-      </CalendarContext.Provider>
-    );
-  }
+  const fieldErrorValue = useMemo(
+    () =>
+      error
+        ? {
+            isInvalid: true,
+            validationErrors: [],
+            validationDetails: {} as ValidityState,
+          }
+        : null,
+    [error]
+  );
 
   return (
     <CalendarContext.Provider
@@ -216,61 +186,78 @@ const _RangeCalendar = <T extends DateValue>({
         disabled,
       }}
     >
-      <AriaRangeCalendar
-        className={cn(
-          'relative flex flex-col',
-          twWidth[width],
-          classNames.calendar
-        )}
-        {...props}
-      >
-        <div
-          ref={dropdownOverlayRef}
-          className={cn(
-            'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
-            selectedDropdown && 'pointer-events-auto opacity-100'
-          )}
+      <FieldErrorContext.Provider value={fieldErrorValue}>
+        <FieldBase
+          as={AriaRangeCalendar}
+          variant={variant}
+          size={size}
+          description={description}
+          errorMessage={errorMessage}
+          isInvalid={error}
+          isDisabled={disabled}
+          className={cn(twWidth[width], classNames.calendar)}
+          {...props}
         >
-          {ViewMap[selectedDropdown as ViewMapKeys]}
-        </div>
-
-        <div
-          className={cn(
-            'flex flex-col',
-            selectedDropdown && 'pointer-events-none opacity-0'
-          )}
-        >
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex w-fit gap-4">
-              <CalendarListBox
-                key="month"
-                type="month"
-                isDisabled={
-                  hasOnlyOneSelectableMonth(minValue, maxValue) ||
-                  props.isDisabled
-                }
-                setSelectedDropdown={setSelectedDropdown}
-              />
-              <CalendarListBox
-                key="year"
-                type="year"
-                isDisabled={
-                  hasOnlyOneSelectableYear(minValue, maxValue) ||
-                  props.isDisabled
-                }
-                setSelectedDropdown={setSelectedDropdown}
-              />
+          {isMultiMonth ? (
+            <div className={classNames.calendarContainer}>
+              {[...Array(visibleMonths).keys()].map(i => (
+                <div key={i} className={classNames.calendarMonth}>
+                  <CalendarHeader
+                    monthOffset={i}
+                    showPrevious={i === 0}
+                    showNext={i === visibleMonths - 1}
+                  />
+                  <CalendarGrid offset={{ months: i }} />
+                </div>
+              ))}
             </div>
-            <MonthControls />
-          </div>
-          <CalendarGrid />
-        </div>
-        {errorMessage ? (
-          <Text slot="errorMessage" className={classNames.errorMessage}>
-            {errorMessage}
-          </Text>
-        ) : null}
-      </AriaRangeCalendar>
+          ) : (
+            <div className="relative">
+              <div
+                ref={dropdownOverlayRef}
+                className={cn(
+                  'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
+                  selectedDropdown && 'pointer-events-auto opacity-100'
+                )}
+              >
+                {ViewMap[selectedDropdown as ViewMapKeys]}
+              </div>
+
+              <div
+                className={cn(
+                  'flex flex-col',
+                  selectedDropdown && 'pointer-events-none opacity-0'
+                )}
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="flex w-fit gap-4">
+                    <CalendarListBox
+                      key="month"
+                      type="month"
+                      isDisabled={
+                        hasOnlyOneSelectableMonth(minValue, maxValue) ||
+                        props.isDisabled
+                      }
+                      setSelectedDropdown={setSelectedDropdown}
+                    />
+                    <CalendarListBox
+                      key="year"
+                      type="year"
+                      isDisabled={
+                        hasOnlyOneSelectableYear(minValue, maxValue) ||
+                        props.isDisabled
+                      }
+                      setSelectedDropdown={setSelectedDropdown}
+                    />
+                  </div>
+                  <MonthControls />
+                </div>
+                <CalendarGrid />
+              </div>
+            </div>
+          )}
+        </FieldBase>
+      </FieldErrorContext.Provider>
     </CalendarContext.Provider>
   );
 };

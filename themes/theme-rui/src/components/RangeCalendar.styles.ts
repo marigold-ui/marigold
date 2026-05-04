@@ -22,7 +22,4 @@ export const RangeCalendar: ThemeComponent<'RangeCalendar'> = {
   calendarGrid: cva({
     base: 'border-collapse border-spacing-0 [&_td]:p-0 [&_td]:group-[[role=dialog]]/tray:p-0',
   }),
-  errorMessage: cva({
-    base: 'text-error text-xs mt-2',
-  }),
 };

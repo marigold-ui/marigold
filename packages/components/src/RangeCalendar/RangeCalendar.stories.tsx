@@ -33,7 +33,7 @@ const meta = preview.meta({
         defaultValue: { summary: 'false' },
       },
     },
-    invalid: {
+    error: {
       control: { type: 'boolean' },
       description: 'Mark the value as invalid',
       table: {
@@ -108,8 +108,15 @@ export const ReadOnly = meta.story({
 export const WithError = meta.story({
   ...Basic.input,
   args: {
-    invalid: true,
+    error: true,
     errorMessage: 'Please select a valid date range.',
+  },
+});
+
+export const WithDescription = meta.story({
+  ...Basic.input,
+  args: {
+    description: 'Pick a start and end date for your reservation.',
   },
 });
 
