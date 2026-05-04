@@ -6,6 +6,7 @@ import {
 } from 'react-aria-components';
 import { cn, ensureCssVar, useClassNames } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
+import type { HeadlineSize } from '../Headline/Headline';
 
 export interface TitleProps extends AriaLabelingProps {
   /**
@@ -25,14 +26,7 @@ export interface TitleProps extends AriaLabelingProps {
    * shares the design system's heading vocabulary.
    * @default 'level-3'
    */
-  size?:
-    | 'level-1'
-    | 'level-2'
-    | 'level-3'
-    | 'level-4'
-    | 'level-5'
-    | 'level-6'
-    | (string & {});
+  size?: HeadlineSize | (string & {});
   /**
    * The variant. Forwarded to the Headline theme entry.
    */

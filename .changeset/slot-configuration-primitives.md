@@ -22,3 +22,5 @@ The architectural rule: use RAC's `HeadingContext` and `TextContext` for text/he
 `ActionMenu` now composes its own `MenuTrigger` + `<ActionButton>` + `Popover` / `Tray` + RAC `Menu` rather than delegating to Marigold's `Menu`. The trigger uses `<ActionButton>` so an outer `ActionButtonContext` cascades to it.
 
 The previous public top-level `ActionButton` export from `ActionBar/` is internalized as `ActionBar.Button` (no consumer-visible change — `ActionBar.Button` continues to work). Consumer container migrations follow in Phase 1+ (Panel — DST-1367; Dialog/Drawer/Tray — DST-1369; ContextualHelp/SectionMessage/EmptyState — DST-1370; ListBox item — DST-1364).
+
+Typography prep: extracts shared type aliases so the heading and body scales have explicit, code-level dependencies rather than convention-only ones. `Headline` exports `HeadlineSize`, which `Title.size` consumes directly. `Text` exports `TextSize` and `TextVariant`. `Description.size` derives from `TextSize` via `Extract<TextSize, ...>`, and `Description.variant` reuses `TextVariant`. A future typography token PR can replace the runtime classes without touching consumer-facing prop types.

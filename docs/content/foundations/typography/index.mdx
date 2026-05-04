@@ -1,0 +1,78 @@
+---
+title: Typography
+description: How heading and body primitives share one typographic vocabulary.
+badge: alpha
+---
+
+Typography in Marigold lives in a small set of primitives that share one vocabulary. A `<Headline>` is the page heading. A `<Title>` is the heading of a container. `<Text>` is body copy. `<Description>` is the help line that pairs with a Title or label. `<TextValue>` is the inline label inside selection items. Each primitive plays a role, the surrounding component picks the right typography for that role, and consumers reach for the primitive that matches the meaning of their text.
+
+## Heading primitives
+
+Two heading primitives, one shared scale.
+
+| Primitive                                  | Role                                                              | Typography source                                               |
+| ------------------------------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------- |
+| [`Headline`](/components/content/headline) | Top-level page heading.                                           | Owns the heading scale (`level-1` to `level-6`).                |
+| [`Title`](/components/content/title)       | Heading inside containers like `<Panel>`, `<Dialog>`, `<Drawer>`. | Reuses Headline's scale through both runtime classes and types. |
+
+The shared `HeadlineSize` type is exported from `Headline.tsx` and consumed by `Title.tsx`. A future change to the heading scale flows to both primitives in one step.
+
+## Body primitives
+
+Three body primitives, one shared variant vocabulary.
+
+| Primitive                                        | Role                                                | Typography source                                                                                             |
+| ------------------------------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [`Text`](/components/content/text)               | Paragraph text and body copy.                       | Owns the body scale and the `default` / `muted` variants.                                                     |
+| [`Description`](/components/content/description) | Help text paired with a Title, TextValue, or label. | Reuses Text's variants. Ships a deliberate subset of Text's size scale (`default`, `xs`, `sm`, `base`, `lg`). |
+| [`TextValue`](/components/content/text-value)    | Inline label inside selection items.                | No typography props. The selection item owns the styling.                                                     |
+
+Description's size union is derived from `TextSize` via `Extract<TextSize, 'default' \| 'xs' \| 'sm' \| 'base' \| 'lg'>`. A rename or removal in Text's scale shows up at the type level instead of silently drifting.
+
+## Picking the right primitive
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Reach for `<Title>` and `<Description>` inside containers. Reach for
+      `<TextValue>` and `<Description>` inside selection items. Let the
+      surrounding component choose typography.
+    </DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>
+      Use `<Headline>` for top-level page headings and `<Text>` for paragraph
+      copy that doesn't pair with a heading or label.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't reach for raw `<h1>`...`<h6>` or `<p>` elements when one of the
+      primitives fits. Going through the primitive keeps the document outline
+      and the visual scale consistent across the system.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Future direction
+
+The runtime scales (`level-1`...`level-6` for headings, `default`...`9xl` for body) live inside their respective `*.styles.ts` files today. A follow-up will lift them into theme tokens (CSS variables) so a single source of truth backs every primitive and consumer. Type aliases on the primitive level (`HeadlineSize`, `TextSize`, `TextVariant`, `DescriptionSize`) are the seed of that consolidation. They make the relationships explicit so the future PR can replace the runtime without rewriting consumer-facing types.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Component principles',
+      href: '../foundations/component-principles',
+      caption:
+        'How Marigold components are designed, including the slot-driven composition pattern that powers Title, Description, and TextValue.',
+    },
+    {
+      title: 'Slot Configuration',
+      href: '../patterns/composition/slot-configuration',
+      caption:
+        'The deep dive on how containers publish defaults to the primitives they host.',
+    },
+  ]}
+/>

@@ -25,6 +25,34 @@ import {
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 
+/**
+ * The shared body-text variant scale. Reused by `Description` so body
+ * primitives share one variant vocabulary. Will become a typography
+ * token in a future PR.
+ */
+export type TextVariant = 'default' | 'muted';
+
+/**
+ * The shared body-text size scale. Other body primitives derive their
+ * size unions from this via `Extract<TextSize, ...>`. Will become a
+ * typography token in a future PR.
+ */
+export type TextSize =
+  | 'default'
+  | 'xs'
+  | 'sm'
+  | 'base'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | '3xl'
+  | '4xl'
+  | '5xl'
+  | '6xl'
+  | '7xl'
+  | '8xl'
+  | '9xl';
+
 // Props
 // --------------
 type RemovedProps =
@@ -63,23 +91,8 @@ export interface TextProps
    *  A slot name for the component. Slots allow the component to receive props from a parent component.
    */
   slot?: string;
-  variant?: 'default' | 'muted' | (string & {});
-  size?:
-    | 'default'
-    | 'xs'
-    | 'sm'
-    | 'base'
-    | 'lg'
-    | 'xl'
-    | '2xl'
-    | '3xl'
-    | '4xl'
-    | '5xl'
-    | '6xl'
-    | '7xl'
-    | '8xl'
-    | '9xl'
-    | (string & {});
+  variant?: TextVariant | (string & {});
+  size?: TextSize | (string & {});
 }
 
 // Component

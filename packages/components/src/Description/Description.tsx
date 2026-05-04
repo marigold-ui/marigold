@@ -3,8 +3,19 @@ import type RAC from 'react-aria-components';
 import { Text } from 'react-aria-components';
 import { ensureCssVar, useClassNames } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
+import type { TextSize, TextVariant } from '../Text/Text';
 
 type RemovedProps = 'className' | 'style' | 'elementType';
+
+/**
+ * The deliberate subset of `TextSize` that Description ships today.
+ * Derived from `TextSize` so a future rename or removal in Text breaks
+ * here at the type level instead of silently drifting.
+ */
+export type DescriptionSize = Extract<
+  TextSize,
+  'default' | 'xs' | 'sm' | 'base' | 'lg'
+>;
 
 export interface DescriptionProps
   extends Omit<RAC.TextProps, RemovedProps>, AriaLabelingProps {
@@ -21,11 +32,11 @@ export interface DescriptionProps
   /**
    * The variant of the description.
    */
-  variant?: 'default' | 'muted' | (string & {});
+  variant?: TextVariant | (string & {});
   /**
    * The size of the description.
    */
-  size?: 'default' | 'xs' | 'sm' | 'base' | 'lg' | (string & {});
+  size?: DescriptionSize | (string & {});
   /**
    * Set the text color.
    */
