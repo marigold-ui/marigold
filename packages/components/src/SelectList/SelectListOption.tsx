@@ -37,6 +37,10 @@ interface OptionChildrenProps {
   actionClassName?: string;
 }
 
+// Stable identity for the `parentButton` fallback so `buttonContextValue`'s
+// `useMemo` isn't invalidated every render when no parent context is set.
+const EMPTY_BUTTON_CTX: SlottedContextValue = {};
+
 // Merge (rather than replace) RAC-provided slot configs on TextContext and
 // ButtonContext so nested `<Text slot="label">`, `<Text slot="description">`
 // and nested `<IconButton>` / `<Button>` / `<ActionMenu>` pick up our theme
@@ -50,7 +54,7 @@ const OptionChildren = ({
   const parentText = use(TextContext) as SlottedContextValue | undefined;
   const parentButton = use(ButtonContext) as SlottedContextValue | undefined;
   const parentTextSlots = parentText?.slots;
-  const parentButtonValue = parentButton ?? {};
+  const parentButtonValue = parentButton ?? EMPTY_BUTTON_CTX;
 
   const textContextValue = useMemo(
     () => ({
@@ -102,7 +106,8 @@ export const SelectListOption = ({
     resolvedTextValue === undefined
   ) {
     console.warn(
-      '[SelectList.Option] `textValue` is required when children is not a plain string. ' +
+      `[SelectList.Option${props.id !== undefined ? ` id="${props.id}"` : ''}] ` +
+        '`textValue` is required when children is not a plain string. ' +
         'Screen readers announce the `textValue` as the option name.'
     );
   }

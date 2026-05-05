@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Badge, Inline, SelectList, Text } from '@marigold/components';
+import { Badge, Inline, SelectList, Stack, Text } from '@marigold/components';
 
 const VisaLogo = () => (
   <svg
@@ -281,23 +281,27 @@ export default () => {
           id={method.id}
           textValue={method.name}
         >
-          <div className="col-start-2 row-span-2 flex min-w-0 items-start gap-3">
-            <method.Logo />
-            <div className="min-w-0 flex-1">
-              <Inline space={2} alignY="center">
-                <Text slot="label">{method.name}</Text>
-                {method.badge ? (
-                  <Badge variant={method.badge.variant}>
-                    {method.badge.label}
-                  </Badge>
-                ) : null}
-              </Inline>
-              <Text slot="description">{method.description}</Text>
-            </div>
+          <div className="col-start-2 row-span-2 min-w-0">
+            <Inline space={3} alignY="top" noWrap>
+              <method.Logo />
+              <Stack>
+                <Inline space={2} alignY="center">
+                  <Text slot="label">{method.name}</Text>
+                  {method.badge ? (
+                    <Badge variant={method.badge.variant}>
+                      {method.badge.label}
+                    </Badge>
+                  ) : null}
+                </Inline>
+                <Text slot="description">{method.description}</Text>
+              </Stack>
+            </Inline>
           </div>
-          <div className="col-start-3 row-span-2 flex shrink-0 flex-col items-end justify-center self-center">
-            <Text weight="semibold">{method.fee}</Text>
-            <Text slot="description">per transaction</Text>
+          <div className="col-start-3 row-span-2 self-center">
+            <Stack alignX="right" alignY="center">
+              <Text weight="semibold">{method.fee}</Text>
+              <Text slot="description">per transaction</Text>
+            </Stack>
           </div>
         </SelectList.Option>
       ))}

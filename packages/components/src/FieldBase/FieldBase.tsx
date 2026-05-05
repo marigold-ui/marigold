@@ -51,8 +51,9 @@ const _FieldBase = <T extends ElementType>({
   ref,
   ...rest
 }: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
-  // Forward RAC validation props only when rendering through a RAC component;
-  // they would emit unknown DOM attribute warnings on a plain element.
+  // Forward `isInvalid` / `isRequired` / `isDisabled` to any non-string `as`
+  // (RAC components or wrappers using RAC's prop names) and skip them on plain
+  // DOM elements where they'd emit unknown-attribute warnings.
   const racValidationProps =
     typeof Component === 'string'
       ? null

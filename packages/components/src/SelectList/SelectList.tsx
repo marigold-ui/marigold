@@ -44,7 +44,7 @@ type RemoveProps =
   | 'isInvalid'
   | 'isRequired';
 
-type SelectListBaseProps<M extends SelectionMode = 'single'> = Omit<
+type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
   RAC.GridListProps<object>,
   RemoveProps
 > & {
@@ -112,7 +112,7 @@ type SelectListBaseProps<M extends SelectionMode = 'single'> = Omit<
    * - `multiple`: any number of options may be selected.
    * @default 'single'
    */
-  selectionMode?: M;
+  selectionMode?: Mode;
   /**
    * Whether the user may deselect the currently selected row by clicking it.
    * Defaults to `true` in `single` mode (radio-group semantics: clicking the
@@ -141,7 +141,7 @@ type SelectListBaseProps<M extends SelectionMode = 'single'> = Omit<
    * - `single`: `Key | null` (the selected key, or `null` when cleared).
    * - `multiple`: `Key[]` (the array of selected keys).
    */
-  onChange?: M extends 'multiple'
+  onChange?: Mode extends 'multiple'
     ? (keys: Key[]) => void
     : (key: Key | null) => void;
   ref?: Ref<HTMLDivElement>;
@@ -167,17 +167,19 @@ type SelectListPaddingProps =
       py?: SpaceProp<PaddingSpacingTokens>['space'];
     };
 
-export type SelectListProps<M extends SelectionMode = 'single'> =
-  SelectListBaseProps<M> & SelectListPaddingProps;
+export type SelectListProps<Mode extends SelectionMode = 'single'> =
+  SelectListBaseProps<Mode> & SelectListPaddingProps;
 
 interface SelectListComponent {
   (props: SelectListProps): ReactNode;
-  <M extends SelectionMode = 'single'>(props: SelectListProps<M>): ReactNode;
+  <Mode extends SelectionMode = 'single'>(
+    props: SelectListProps<Mode>
+  ): ReactNode;
   Option: typeof SelectListOption;
 }
 
-// Module-level sentinel so unset padding props don't allocate a fresh object
-// each render — RAC's GridList compares `style` by identity in some places.
+// Stable empty style so unset padding props don't churn `style`'s identity on
+// every render (avoids unnecessary work for any consumer that compares it).
 const EMPTY_STYLE: CSSProperties = {};
 
 const toSelection = (
@@ -196,7 +198,7 @@ const toValidationValue = (
   return selection === 'all' ? [] : Array.from(selection);
 };
 
-const SelectList = <M extends SelectionMode = 'single'>({
+const SelectList = <Mode extends SelectionMode = 'single'>({
   ref,
   variant,
   size,
@@ -223,7 +225,7 @@ const SelectList = <M extends SelectionMode = 'single'>({
   py,
   children,
   ...rest
-}: SelectListProps<M>) => {
+}: SelectListProps<Mode>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
   const resolvedDisallowEmptySelection =
     disallowEmptySelection ?? resolvedSelectionMode === 'single';

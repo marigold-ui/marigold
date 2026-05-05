@@ -58,7 +58,8 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'relative grid items-start content-center gap-x-3',
       'grid-cols-[auto_1fr_auto]',
       // Row 1 minimum matches the label's line-height (text-sm == 1.25rem) so
-      // the indicator stays aligned with the label's first line.
+      // the indicator stays aligned with the label's first line. Update if
+      // `text-sm`'s line-height changes.
       'grid-rows-[minmax(1.25rem,auto)_auto]',
       // Plain-string children inherit the label look without a <Text slot="label">.
       'text-sm font-medium text-foreground outline-none',
@@ -72,7 +73,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       variant: {
         default: [
           'min-h-14',
-          'selected:bg-selected hover:bg-hover',
+          'selected:bg-selected hover:ui-state-hover',
           // First/last items hug the surface's inner curve.
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
