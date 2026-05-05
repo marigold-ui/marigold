@@ -100,7 +100,7 @@ You'll find this pattern across the design system. For example, `Dialog` uses `D
 
 Some components don't compose by listing their parts. They compose by carrying _roles_. A `<Panel>` has a title, a description, and optional actions. A `<Select.Option>` has a label and an optional description. A `<Dialog>` has a title, a description, and actions. Different containers, the same shape.
 
-To avoid each container reinventing wrappers for that shape, Marigold publishes a small set of **slot-aware primitives** that adapt to whichever container they sit inside:
+To avoid each container reinventing wrappers for that shape, Marigold publishes a small set of **role primitives** that adapt to whichever container they sit inside:
 
 - **[`<Title>`](/components/content/title)**, the heading paired with `<Description>` in container surfaces.
 - **[`<Description>`](/components/content/description)**, the help text paired with `<Title>` in containers, or with `<TextValue>` in selection items.
