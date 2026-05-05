@@ -62,7 +62,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         bordered: [
           'ui-surface shadow-elevation-border min-h-14',
           'selected:[--ui-border-color:var(--color-foreground)] selected:inset-shadow-[0_0_0_0.5px_var(--ui-border-color)]',
-          'disabled:selected:inset-shadow-none',
+          'disabled:selected:[--ui-border-color:var(--color-border)] disabled:selected:inset-shadow-none',
           'hover:[--ui-background-color:var(--color-hover)]',
         ],
       },
