@@ -23,6 +23,26 @@ test('support horizontal orientation', () => {
   expect(group).toHaveAttribute('data-orientation', 'horizontal');
 });
 
+test('vertical orientation: items keep the py-1 modifier class', () => {
+  render(<Basic.Component />);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const item = screen.getByRole('radio', { name: 'Option 1' }).closest('label');
+  expect(item?.className).toContain(
+    'group-data-[orientation=vertical]/radiogroup:py-1'
+  );
+});
+
+test('horizontal orientation: items keep the px-1.5 modifier class', () => {
+  render(<Basic.Component orientation="horizontal" />);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const item = screen.getByRole('radio', { name: 'Option 1' }).closest('label');
+  expect(item?.className).toContain(
+    'group-data-[orientation=horizontal]/radiogroup:px-1.5'
+  );
+});
+
 test('don\'t show "show more" when list is too short', () => {
   render(<CollapseAt.Component collapseAt={100} />);
 

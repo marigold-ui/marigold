@@ -25,7 +25,7 @@
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
-    "@modelcontextprotocol/sdk": "1.25.2",
+    "@modelcontextprotocol/sdk": "1.26.0",
     "@octokit/core": "7.0.6",
     "@radix-ui/react-popover": "^1.1.15",
     "@react-aria/i18n": "3.13.0",

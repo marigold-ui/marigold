@@ -627,6 +627,11 @@ export const Sorting = meta.story({
       expect(canvas.getByText(/Sort:.*\/ ascending/)).toBeInTheDocument();
     });
 
+    await step('Verify idle sort icon is visible', async () => {
+      const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
+      expect(nameHeader.querySelector('svg')).toBeInTheDocument();
+    });
+
     await step('Click Name column header to sort', async () => {
       const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
       await userEvent.click(nameHeader);
