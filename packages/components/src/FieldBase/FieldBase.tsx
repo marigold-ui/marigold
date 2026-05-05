@@ -30,6 +30,7 @@ export interface FieldBaseProps<T extends ElementType>
    */
   isInvalid?: boolean;
   isRequired?: boolean;
+  isDisabled?: boolean;
 }
 
 // Component
@@ -44,9 +45,20 @@ const _FieldBase = <T extends ElementType>({
   description,
   errorMessage,
   className,
+  isInvalid,
+  isRequired,
+  isDisabled,
   ref,
   ...rest
 }: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
+  // Forward `isInvalid` / `isRequired` / `isDisabled` to any non-string `as`
+  // (RAC components or wrappers using RAC's prop names) and skip them on plain
+  // DOM elements where they'd emit unknown-attribute warnings.
+  const racValidationProps =
+    typeof Component === 'string'
+      ? null
+      : { isInvalid, isRequired, isDisabled };
+
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -59,6 +71,7 @@ const _FieldBase = <T extends ElementType>({
   ) => ReactNode;
   const componentProps = {
     ...rest,
+    ...racValidationProps,
     ref: ref as ComponentPropsWithRef<T>['ref'],
     className: cn(
       'group/field flex min-w-0 flex-col',
@@ -80,8 +93,11 @@ const _FieldBase = <T extends ElementType>({
         width && !isFractionWidth ? `${width}` : 'full'
       ),
     } as CSSProperties,
-    'data-required': rest.isRequired ? true : undefined,
-    'data-error': rest.isInvalid ? true : undefined,
+    'data-rac': '',
+    'data-required': isRequired ? true : undefined,
+    'data-invalid': isInvalid ? true : undefined,
+    'data-disabled': isDisabled ? true : undefined,
+    'data-error': isInvalid ? true : undefined,
   } as ComponentPropsWithRef<T>;
 
   return (
