@@ -126,7 +126,6 @@ const _CheckboxGroup = ({
     component: 'Checkbox',
     variant,
     size,
-    className: { group: 'gap-x-2' },
   });
   const props: RAC.CheckboxGroupProps = {
     className: classNames.group,
@@ -150,9 +149,7 @@ const _CheckboxGroup = ({
         className={cn(
           classNames.group,
           'group/checkboxgroup flex items-start',
-          orientation === 'vertical'
-            ? 'flex-col gap-[0.5ch]'
-            : 'flex-row gap-[1.5ch]'
+          orientation === 'vertical' ? 'flex-col' : 'flex-row'
         )}
       >
         <CheckboxGroupContext value={{ width, variant, size }}>

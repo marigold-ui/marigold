@@ -14,9 +14,11 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   }),
   container: cva({
     base: [
-      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'grid grid-cols-[auto_1fr] gap-x-2 items-start',
       'cursor-pointer read-only:cursor-default',
       'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+      'group-data-[orientation=vertical]/checkboxgroup:py-1',
+      'group-data-[orientation=horizontal]/checkboxgroup:px-1.5',
     ],
   }),
   label: cva({
@@ -26,5 +28,5 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-disabled/checkbox:text-disabled',
     ],
   }),
-  group: cva({ base: 'flex flex-col gap-1' }),
+  group: cva({ base: 'flex flex-col' }),
 };
