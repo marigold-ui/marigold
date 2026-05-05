@@ -62,10 +62,12 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       // `text-sm`'s line-height changes.
       'grid-rows-[minmax(1.25rem,auto)_auto]',
       // Plain-string children inherit the label look without a <Text slot="label">.
-      'text-sm font-medium text-foreground outline-none',
+      'text-sm font-medium text-foreground',
       'cursor-default data-selection-mode:cursor-pointer',
-      // Inset focus ring so it can't be clipped by the list's `overflow`.
-      'focus-visible:inset-shadow-[0_0_0_2px_var(--color-ring)] transition-[border,color,background]',
+      // Inset focus ring (matches Table) so it can't be clipped by the list's
+      // `overflow`. `/50` softens the ring like other list-style components.
+      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
+      'transition-[border,color,background]',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'group-orientation-horizontal/list:min-w-40',
     ],
