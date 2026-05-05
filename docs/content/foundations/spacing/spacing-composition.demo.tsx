@@ -23,7 +23,7 @@ const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
           <div className="relative col-start-1 row-start-1 mx-2 mb-2 self-end rounded-lg bg-white/40 shadow-lg inset-shadow-xs inset-shadow-white/75 backdrop-blur-sm">
             <div className="pointer-events-none absolute inset-0 rounded-lg bg-linear-to-br from-white/90 to-transparent"></div>
             <div className="relative z-10">
-              <Inset space={2}>
+              <Inset p={2}>
                 <Stack space="related">
                   <Headline level="3" lineHeight="none">
                     {venue.name}

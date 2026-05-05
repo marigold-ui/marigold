@@ -152,7 +152,7 @@ const LShapeLayout = ({
           </AppLayout.Header>
           <AppLayout.Main>
             {children ?? (
-              <Inset space={4}>
+              <Inset p={4}>
                 <Stack space={4}>
                   <Headline level={2}>{pages[currentPath]?.label}</Headline>
                   <Text>
