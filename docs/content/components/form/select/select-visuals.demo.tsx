@@ -1,5 +1,5 @@
 import { people } from '@/lib/data/people';
-import { Inline, Select, Text } from '@marigold/components';
+import { Description, Inline, Select, TextValue } from '@marigold/components';
 
 export default () => (
   <Select label="Assign to User" placeholder="Select a user" width={80}>
@@ -11,9 +11,9 @@ export default () => (
             alt={person.name}
             className="size-6 rounded-full object-cover"
           />
-          <Text slot="label">{person.name}</Text>
+          <TextValue>{person.name}</TextValue>
         </Inline>
-        <Text slot="description">{person.position}</Text>
+        <Description>{person.position}</Description>
       </Select.Option>
     ))}
   </Select>

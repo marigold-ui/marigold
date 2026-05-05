@@ -3,8 +3,9 @@ import { I18nProvider } from 'react-aria-components';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
+import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
-import { Text } from '../Text/Text';
+import { TextValue } from '../TextValue/TextValue';
 import { ComboBox } from './ComboBox';
 
 const meta = preview.meta({
@@ -251,24 +252,22 @@ export const Sections: any = meta.story({
     <ComboBox {...args}>
       <ComboBox.Section header="Fantasy">
         <ComboBox.Option id="harry-potter" textValue="Harry Potter">
-          <Text slot="label">Harry Potter</Text>
-          <Text slot="description">About the boy who lived</Text>
+          <TextValue>Harry Potter</TextValue>
+          <Description>About the boy who lived</Description>
         </ComboBox.Option>
         <ComboBox.Option id="lord-of-the-rings" textValue="Lord of the Rings">
-          <Text slot="label">Lord of the Rings</Text>
-          <Text slot="description">In the lands of Middle earth</Text>
+          <TextValue>Lord of the Rings</TextValue>
+          <Description>In the lands of Middle earth</Description>
         </ComboBox.Option>
       </ComboBox.Section>
       <ComboBox.Section header="Sci-Fi">
         <ComboBox.Option id="star-wars" textValue="Start Wars">
-          <Text slot="label">Start Wars</Text>
-          <Text slot="description">
-            A long time ago, in a galaxy far, far away
-          </Text>
+          <TextValue>Start Wars</TextValue>
+          <Description>A long time ago, in a galaxy far, far away</Description>
         </ComboBox.Option>
         <ComboBox.Option id="star-trek" textValue="Star Trek">
-          <Text slot="label">Star Trek</Text>
-          <Text slot="description">What is this</Text>
+          <TextValue>Star Trek</TextValue>
+          <Description>What is this</Description>
         </ComboBox.Option>
       </ComboBox.Section>
     </ComboBox>

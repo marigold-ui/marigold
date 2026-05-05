@@ -4,10 +4,11 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
-import { Text } from '../Text/Text';
+import { TextValue } from '../TextValue/TextValue';
 import { Select } from './Select';
 
 const meta = preview.meta({
@@ -317,24 +318,22 @@ export const Sections = meta.story({
     <Select {...args}>
       <Select.Section header="Fantasy">
         <Select.Option id="harry-potter">
-          <Text slot="label">Harry Potter</Text>
-          <Text slot="description">About the boy who lived</Text>
+          <TextValue>Harry Potter</TextValue>
+          <Description>About the boy who lived</Description>
         </Select.Option>
         <Select.Option id="lord-of-the-rings">
-          <Text slot="label">Lord of the Rings</Text>
-          <Text slot="description">In the lands of Middle earth</Text>
+          <TextValue>Lord of the Rings</TextValue>
+          <Description>In the lands of Middle earth</Description>
         </Select.Option>
       </Select.Section>
       <Select.Section header="Sci-Fi">
         <Select.Option id="star-wars">
-          <Text slot="label">Start Wars</Text>
-          <Text slot="description">
-            A long time ago, in a galaxy far, far away
-          </Text>
+          <TextValue>Start Wars</TextValue>
+          <Description>A long time ago, in a galaxy far, far away</Description>
         </Select.Option>
         <Select.Option id="star-trek">
-          <Text slot="label">Star Trek</Text>
-          <Text slot="description">What is this</Text>
+          <TextValue>Star Trek</TextValue>
+          <Description>What is this</Description>
         </Select.Option>
       </Select.Section>
     </Select>
@@ -404,38 +403,38 @@ export const WithBadges = meta.story({
     >
       <Select.Option id="draft">
         <Inline space={3} alignY="center">
-          <Text slot="label">Draft</Text>
+          <TextValue>Draft</TextValue>
           <Badge variant="info">In Progress</Badge>
         </Inline>
-        <Text slot="description">Work in progress</Text>
+        <Description>Work in progress</Description>
       </Select.Option>
       <Select.Option id="review">
         <Inline space={3} alignY="center">
-          <Text>In Review</Text>
+          <TextValue>In Review</TextValue>
           <Badge variant="warning">Pending</Badge>
         </Inline>
-        <Text slot="description">Awaiting review</Text>
+        <Description>Awaiting review</Description>
       </Select.Option>
       <Select.Option id="approved">
         <Inline space={3} alignY="center">
-          <Text>Approved</Text>
+          <TextValue>Approved</TextValue>
           <Badge variant="success">Ready</Badge>
         </Inline>
-        <Text slot="description">Approved for release</Text>
+        <Description>Approved for release</Description>
       </Select.Option>
       <Select.Option id="published">
         <Inline space={3} alignY="center">
-          <Text>Published</Text>
+          <TextValue>Published</TextValue>
           <Badge variant="success">Live</Badge>
         </Inline>
-        <Text slot="description">Released to public</Text>
+        <Description>Released to public</Description>
       </Select.Option>
       <Select.Option id="archived">
         <Inline space={3} alignY="center">
-          <Text slot="label">Archived</Text>
+          <TextValue>Archived</TextValue>
           <Badge>Inactive</Badge>
         </Inline>
-        <Text slot="description">No longer active</Text>
+        <Description>No longer active</Description>
       </Select.Option>
     </Select>
   ),
@@ -478,9 +477,9 @@ export const WithImages = meta.story({
               alt={person.name}
               className="size-6 rounded-full object-cover"
             />
-            <Text slot="label">{person.name}</Text>
+            <TextValue>{person.name}</TextValue>
           </Inline>
-          <Text slot="description">{person.position}</Text>
+          <Description>{person.position}</Description>
         </Select.Option>
       ))}
     </Select>

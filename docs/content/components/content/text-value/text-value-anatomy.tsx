@@ -1,6 +1,6 @@
 export const TextValueAnatomy = () => (
   <svg
-    viewBox="-10 10 660 130"
+    viewBox="-10 10 660 110"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -9,7 +9,7 @@ export const TextValueAnatomy = () => (
       x="200"
       y="30"
       width="280"
-      height="80"
+      height="60"
       rx="8"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
@@ -17,20 +17,11 @@ export const TextValueAnatomy = () => (
     {/* Label bar */}
     <rect
       x="218"
-      y="48"
-      width="120"
+      y="54"
+      width="160"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
-    />
-    {/* Description bar */}
-    <rect
-      x="218"
-      y="76"
-      width="200"
-      height="9"
-      rx="3"
-      className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
 
     {/* Connector Lines */}
@@ -42,18 +33,15 @@ export const TextValueAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Item container -> right */}
-      <path d="M 480 50 L 540 50" />
+      <path d="M 480 60 L 540 60" />
       {/* TextValue -> left */}
-      <path d="M 218 54 L 100 54" />
-      {/* Description sibling -> bottom */}
-      <path d="M 218 80 L 100 80" />
+      <path d="M 218 60 L 100 60" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="480" cy="50" r="4" />
-      <circle cx="218" cy="54" r="4" />
-      <circle cx="218" cy="80" r="4" />
+      <circle cx="480" cy="60" r="4" />
+      <circle cx="218" cy="60" r="4" />
     </g>
 
     {/* Labels */}
@@ -63,7 +51,7 @@ export const TextValueAnatomy = () => (
     >
       <text
         x="90"
-        y="58"
+        y="64"
         textAnchor="end"
         fontSize="14"
         fontWeight="600"
@@ -72,18 +60,8 @@ export const TextValueAnatomy = () => (
         TextValue
       </text>
       <text
-        x="90"
-        y="84"
-        textAnchor="end"
-        fontSize="14"
-        fontWeight="600"
-        className="fill-fd-primary"
-      >
-        Description
-      </text>
-      <text
         x="550"
-        y="54"
+        y="64"
         textAnchor="start"
         fontSize="14"
         fontWeight="600"

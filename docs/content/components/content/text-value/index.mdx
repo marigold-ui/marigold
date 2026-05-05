@@ -6,7 +6,7 @@ badge: alpha
 
 The `<TextValue>` component is a small inline label designed for selection items such as `<Select.Option>`, `<Menu.Item>`, `<ListBox.Item>`, and `<ComboBox.Item>`. By marking the label explicitly, screen readers announce the right text and keyboard typeahead lands on the right item without any extra wiring.
 
-It has no visual props of its own. Its appearance comes from the surrounding selection item, which keeps the look consistent across menus, selects, and lists. Pair it with [`<Description>`](/components/content/description) when the item also needs a help line.
+It carries no styling of its own. Its appearance comes entirely from the surrounding selection item, which keeps the look consistent across menus, selects, and lists. Pair it with [`<Description>`](/components/content/description) when the item also needs a help line.
 
 import { TextValueAnatomy } from './text-value-anatomy';
 
@@ -14,25 +14,27 @@ import { TextValueAnatomy } from './text-value-anatomy';
 
 <TextValueAnatomy />
 
-A `<TextValue>` renders an inline `<span>` by default. Inside a selection item it acts as the accessible label, and an optional sibling `<Description>` adds the help line.
-
-## Appearance
-
-<AppearanceDemo component={'TextValue'} />
-
-<AppearanceTable component={'TextValue'} />
-
-`<TextValue>` carries no visual props of its own. Its appearance comes from the surrounding selection item, which is why the picker above is empty. Pair it with a `<Description>` when the item benefits from a help line below the label.
+A `<TextValue>` is a single inline label with no parts of its own. It sits inside a selection item and marks the text that names the option.
 
 ## Usage
 
+`<TextValue>` exists to mark the **label** inside a selection item when the item's content is more than a plain string. As soon as an option contains an avatar, an icon, a Badge, or any non-text node, react-aria can no longer infer which part of the children is the accessible name. `<TextValue>` makes that explicit, so screen readers announce the right text and keyboard typeahead matches the visible label.
+
+Reach for `<TextValue>` when:
+
+- the option's children include images, icons, or layout components like `<Inline>` or `<Stack>`,
+- the option pairs a label with a `<Description>` help line, or
+- you want the label to drive typeahead independently from supporting copy.
+
+If the item is a single string (e.g. `<Select.Option>Berlin</Select.Option>`), `<TextValue>` is not needed. The selection item already treats its plain text children as the accessible name.
+
 ### Inside selection items
 
-The primary use case. Drop `<TextValue>` into a `<Menu.Item>`, `<Select.Option>`, `<ListBox.Item>`, or `<ComboBox.Item>`. The selection item picks it up as its accessible name, so screen reader announcements and keyboard typeahead all line up with the visible label.
+A common case: a `<Select>` with rich options that combine an avatar, a name, and supporting metadata. `<TextValue>` marks the name as the label, and `<Description>` adds the help line below it.
 
 <ComponentDemo name="text-value-in-menu" />
 
-Pair with `<Description>` when each item benefits from a one-line explanation:
+Pair with `<Description>` whenever an item benefits from a one-line explanation:
 
 <ComponentDemo name="text-value-with-description" />
 
@@ -50,15 +52,17 @@ Pair with `<Description>` when each item benefits from a one-line explanation:
   </Do>
   <Dont>
     <DontDescription>
+      Don't reach for `<TextValue>` when an option's children are a single
+      string. The selection item already uses that text as the accessible name.
+    </DontDescription>
+  </Dont>
+  <Dont>
+    <DontDescription>
       Don't use `<TextValue>` for paragraph text or arbitrary inline strings.
       Use [`<Text>`](/components/content/text) instead.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-## Use inside a selection item
-
-The selection item declares the label region and the right styling for it. Consumers just write the label text inside `<TextValue>` and add a `<Description>` next to it when needed.
 
 ## Props
 
