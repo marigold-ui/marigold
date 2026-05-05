@@ -192,7 +192,7 @@ const _Calendar = ({
             selectedDropdown && 'pointer-events-none opacity-0'
           )}
         >
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-6 flex items-center justify-between gap-4">
             <div className="flex w-fit gap-4">
               <CalendarListBox
                 key="month"

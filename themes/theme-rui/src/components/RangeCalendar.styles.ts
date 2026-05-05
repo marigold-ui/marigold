@@ -9,7 +9,7 @@ export const RangeCalendar: ThemeComponent<'RangeCalendar'> = {
       'my-0.5',
       'border border-transparent p-0 text-sm font-normal text-foreground',
       'outline-offset-2 duration-150 transition-[color,background-color]',
-      'selected:bg-brand/15 selected:text-foreground',
+      'data-[in-range]:bg-brand/15 data-[in-range]:text-foreground',
       'selection-start:bg-brand selection-start:text-brand-foreground selection-start:rounded-l-lg',
       'selection-end:bg-brand selection-end:text-brand-foreground selection-end:rounded-r-lg',
       'data-hovered:bg-hover data-hovered:text-foreground',

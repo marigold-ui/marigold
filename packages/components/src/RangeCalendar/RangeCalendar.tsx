@@ -205,7 +205,11 @@ const _RangeCalendar = <T extends DateValue>({
            */}
           <AriaRangeCalendar
             {...props}
-            className={cn(twWidth[width], classNames.calendar)}
+            className={cn(
+              'relative flex flex-col',
+              twWidth[width],
+              classNames.calendar
+            )}
           >
             {isMultiMonth ? (
               <div className={classNames.calendarContainer}>
@@ -221,7 +225,7 @@ const _RangeCalendar = <T extends DateValue>({
                 ))}
               </div>
             ) : (
-              <div className="relative">
+              <>
                 <div
                   ref={dropdownOverlayRef}
                   className={cn(
@@ -238,7 +242,7 @@ const _RangeCalendar = <T extends DateValue>({
                     selectedDropdown && 'pointer-events-none opacity-0'
                   )}
                 >
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="mb-6 flex items-center justify-between gap-4">
                     <div className="flex w-fit gap-4">
                       <CalendarListBox
                         key="month"
@@ -263,7 +267,7 @@ const _RangeCalendar = <T extends DateValue>({
                   </div>
                   <CalendarGrid />
                 </div>
-              </div>
+              </>
             )}
           </AriaRangeCalendar>
         </FieldBase>
