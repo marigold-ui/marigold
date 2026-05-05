@@ -86,13 +86,9 @@ const TableColumn = ({
         >
           {allowsSorting && (
             <span aria-hidden="true">
-              {sortDirection === 'ascending' ? (
-                <SortAscending size={14} />
-              ) : sortDirection === 'descending' ? (
-                <SortDescending size={14} />
-              ) : (
-                <Sortable size={14} />
-              )}
+              {sortDirection === 'ascending' && <SortAscending size={14} />}
+              {sortDirection === 'descending' && <SortDescending size={14} />}
+              {!sortDirection && <Sortable size={14} />}
             </span>
           )}
           <Group
