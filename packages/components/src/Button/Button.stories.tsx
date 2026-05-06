@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Facebook } from '@marigold/icons';
+import { Download, Facebook } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
 
@@ -156,7 +156,7 @@ export const GhostOnBackground = meta.story({
 export const WithIcon = meta.story({
   render: ({ children, ...args }) => (
     <Button {...args}>
-      <Facebook size={30} data-testid="facebook" />
+      <Download data-testid="download" />
       {children}
     </Button>
   ),
