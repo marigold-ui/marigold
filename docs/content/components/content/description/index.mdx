@@ -1,12 +1,10 @@
 ---
 title: Description
-description: Help text or supporting content paired with a Title or label.
+description: Help text or supporting content paired with a title or label.
 badge: alpha
 ---
 
-The `<Description>` component is a short piece of supporting text that pairs with a partner element. It sits below a `<Title>` in container surfaces (`<Panel>`, `<Dialog>`, `<EmptyState>`) and alongside a `<TextValue>` in selection items (`<Select.Option>`, `<Menu.Item>`, `<ListBox.Item>`). The surrounding component picks the typography so the description fits its surface.
-
-For paragraph text, body copy, or any text that isn't paired with a heading or label, use [`<Text>`](/components/content/text) instead.
+The `<Description>` component is a short piece of supporting text that pairs with a `<Title>` in container surfaces or with a `<TextValue>` in selection items.
 
 import { DescriptionAnatomy } from './description-anatomy';
 
@@ -24,7 +22,7 @@ Styling is inferred automatically from the surrounding context. See [Slot-Driven
 
 ## Usage
 
-A description is a short supporting text that sits next to a title or label. Use it whenever the partner element needs a brief explanation.
+Reach for `<Description>` whenever a `<Title>` or `<TextValue>` partner benefits from a one-line explanation. For paragraph text or body copy that isn't paired with a heading or label, use [`<Text>`](/components/content/text) instead.
 
 <GuidelineTiles>
   <Do>
