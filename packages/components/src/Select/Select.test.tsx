@@ -133,9 +133,8 @@ test('renderValue replaces the trigger content for non-empty selections', () => 
   renderWithOverlay(<WithRenderValue.Component defaultValue="alice" />);
 
   const button = screen.getByRole('button');
+
   expect(within(button).getByText('Alice Johnson')).toBeVisible();
-  // Description from the option is not in the trigger because renderValue
-  // produces a fully custom layout.
   expect(within(button).queryByText('Product Manager')).not.toBeInTheDocument();
 });
 
@@ -143,6 +142,7 @@ test('renderValue is not used when nothing is selected (placeholder shows)', () 
   render(<WithRenderValue.Component />);
 
   const button = screen.getByRole('button');
+
   expect(button).toHaveTextContent(/Select a user/);
 });
 
@@ -151,7 +151,9 @@ test('default trigger render hides description slot', () => {
     <Sections.Component label="Label" defaultValue="harry-potter" />
   );
 
-  const button = screen.getByRole('button');
-  const description = within(button).getByText('About the boy who lived');
+  const description = within(screen.getByRole('button')).getByText(
+    'About the boy who lived'
+  );
+
   expect(description).not.toBeVisible();
 });

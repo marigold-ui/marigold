@@ -599,12 +599,15 @@ export const WithRenderValue = meta.story({
 
     await step('Open the dropdown', async () => {
       await userEvent.click(trigger);
+
       await waitFor(() => canvas.getByRole('listbox'));
     });
 
     await step('Select Bob', async () => {
       const listbox = canvas.getByRole('listbox');
+
       await userEvent.click(within(listbox).getByText('Bob Smith'));
+
       await waitFor(() =>
         expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
       );
@@ -612,8 +615,6 @@ export const WithRenderValue = meta.story({
 
     await step('Trigger uses custom renderValue', async () => {
       expect(within(trigger).getByText('Bob Smith')).toBeVisible();
-      // Description from the option is not in the trigger because renderValue
-      // produces a fully custom layout.
       expect(
         within(trigger).queryByText('Senior Developer')
       ).not.toBeInTheDocument();
