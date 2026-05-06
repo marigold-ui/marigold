@@ -87,9 +87,9 @@ export interface SelectProps<
   error?: boolean;
   /**
    * Render the trigger value when one or more options are selected. Replaces
-   * the default trigger render; the placeholder still shows when nothing is
-   * selected. Must not contain focusable or interactive elements — the trigger
-   * is itself a button.
+   * the default trigger render. The placeholder still shows when nothing is
+   * selected. Must not contain focusable or interactive elements, since the
+   * trigger is itself a button.
    */
   renderValue?: (selectedItems: T[]) => ReactNode;
 }
