@@ -6,7 +6,7 @@ export default () => (
   <Select
     label="Assign to user"
     placeholder="Select a user"
-    width={80}
+    width="1/2"
     items={people}
     renderValue={([person]: Person[]) => (
       <Inline space={2} alignY="center">
