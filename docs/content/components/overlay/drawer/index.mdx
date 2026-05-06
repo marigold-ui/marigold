@@ -25,9 +25,13 @@ A `<Drawer>` consists of an optional title, content, and actions. The title prov
 
 ## Usage
 
-A drawer hosts a supplementary, in-context task that benefits from staying alongside the main view. Three constraints define it: it stays non-modal on desktop so the page behind remains interactive, its content is _about_ what is already on screen, and it caps task complexity at roughly five fields and a single step.
+A drawer hosts a supplementary, in-context task that benefits from staying alongside the main view. Three constraints define it:
 
-When in doubt, ask: is this content _about_ the visible main view, or _for_ it? _About_ means a drawer fits. _For_ means it is a [dialog](/components/overlay/dialog) moment, or it belongs inline. The most common drawer mistake is parent-form quick-create — pulling up a drawer to create a referenced object (a category, a tag, a contact) during a larger form. The new object is _for_ the parent form, not _about_ the page; that is a dialog.
+- It stays non-modal on desktop, so the page behind remains interactive.
+- Its content is _about_ what is already on screen.
+- It caps task complexity at roughly five fields and a single step.
+
+When in doubt, ask: is this content _about_ the visible main view, or _for_ it? _About_ means a drawer fits. _For_ means it is a [dialog](/components/overlay/dialog) moment, or it belongs inline.
 
 <GuidelineTiles>
 <Do>
@@ -50,9 +54,9 @@ When in doubt, ask: is this content _about_ the visible main view, or _for_ it? 
       <li>critical confirmations or destructive actions are required,</li>
       <li>the flow has deep navigation or several commit moments,</li>
       <li>the task requires full attention or a shareable URL,</li>
-      <li>the user is filling another form on the page and needs to create a referenced object — that is a [dialog](/components/overlay/dialog),</li>
-      <li>the action is a single bulk verb (delete, archive, assign N) — that is an [ActionBar](/components/actions/actionbar),</li>
-      <li>the configuration is narrow (e.g. column settings for a table) — that is a popover or a menu, unless the form genuinely has many fields.</li>
+      <li>the user is filling another form on the page and needs to create a referenced object, which is a [dialog](/components/overlay/dialog),</li>
+      <li>the action is a single bulk verb (delete, archive, assign N), which is an [ActionBar](/components/actions/actionbar),</li>
+      <li>the configuration is narrow (e.g. column settings for a table), which is a popover or a menu, unless the form genuinely has many fields.</li>
     </ul>
   </DontDescription>
 </Dont>
@@ -60,15 +64,24 @@ When in doubt, ask: is this content _about_ the visible main view, or _for_ it? 
 
 ### Drawer vs Dialog
 
-A dialog is modal — it blocks the page and asks the user to commit, acknowledge, or decide before continuing. A drawer is non-modal — the page behind stays interactive while the user inspects, refines, or augments. Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions and parent-form quick-create flows. Choose a drawer when the work is supplementary to whatever is already on screen.
+A dialog is modal: it blocks the page and asks the user to commit, acknowledge, or decide before continuing. A drawer is non-modal, so the page behind stays interactive while the user inspects, refines, or augments.
 
-### Drawer vs Popover
+Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions. Choose a drawer when the work is supplementary to whatever is already on screen.
 
-A popover anchors to a trigger and holds a small, focused snippet — peek-and-leave. A drawer anchors to the viewport edge and holds a panel of content the user spends time in: multi-section, scannable, sometimes scrollable. If a popover would scroll, it should probably be a drawer.
+The most common mistake here: a user is filling out a form (say, creating an event) and needs a value that doesn't exist yet, like a new category. It's tempting to open a drawer for "Create category". Don't. The new category is _for_ the form they're filling out, not _about_ the page. That's a dialog.
 
-### Drawer vs detail page
+### Routing to a page instead
 
-A drawer slides over the current view; a detail page replaces or routes to a new one. Reach for a page over a drawer when the user needs a URL to share or bookmark, when the form has nested editable records (line items, sub-tasks with their own forms), when the flow has multiple steps with their own commit moments, or when the user could reasonably get lost inside it. If you find yourself wanting tabs inside a drawer, that is the signal — it is a page.
+A drawer slides over the current view; a page replaces it or routes somewhere new. Drawers are ephemeral: opened, used, dismissed. Pages are durable: they have a URL, browser history, and a place in the app's information architecture. When the work needs any of that durability, it belongs on a page.
+
+Reach for a page over a drawer when:
+
+- the user needs a URL to share, bookmark, or return to later,
+- the form has nested editable records (line items, sub-tasks with their own forms),
+- the flow has multiple steps with their own commit moments (save here, then save again there),
+- the user could reasonably get lost inside it without a back button or breadcrumbs to orient them.
+
+If you find yourself wanting tabs inside a drawer, or wanting browser back/forward to work as navigation, that is the signal: it is a page.
 
 ### Detail-row inspection
 
@@ -78,19 +91,23 @@ The user's task here is "scan rows, drill into one." Keeping the list visible pr
 
 <ComponentDemo name="drawer-secondary-details" />
 
-### Light edit-in-context
+### Quick edit or create from a list
 
-The visible record gets a quick-edit drawer with up to about five fields. The user updates, saves, the drawer closes, and the list updates. Notion, Linear, Polaris, and Salesforce all do this for inline record edits.
+Users often need to make a small change to a list, like editing one row or adding a new one, without losing their place. A drawer alongside the list handles both: a small form slides in, the user saves, the drawer closes, and the list reflects the change.
 
-The surrounding context — other records, filters, sort order — tells the user _why_ they are editing this one. If the edit involves nested records, multi-step validation, or a fundamental identity change (re-categorizing across schema boundaries), route to a page.
+The form should be small: a handful of fields, a single save, no multi-step flow. The list stays visible behind the drawer, so the surrounding rows, filters, and sort order tell the user _why_ they are working on this one.
+
+The two flows share the same shape but differ in trigger and result:
+
+|                              | Quick edit                                             | Quick create                                   |
+| ---------------------------- | ------------------------------------------------------ | ---------------------------------------------- |
+| **Trigger**                  | "Edit" on a row                                        | "Add" above the list                           |
+| **Result**                   | The row updates in place                               | A new row is added to the list                 |
+| **Outgrows the drawer when** | The edit needs nested records or multi-step validation | Setup is multi-step or has its own sub-records |
+
+For the related case of creating an object that belongs to a _different_ form on the page (e.g. a category needed inside an "Edit event" form), see [Drawer vs Dialog](#drawer-vs-dialog).
 
 <ComponentDemo name="drawer-edit-flow" />
-
-### Light create-in-context
-
-Create something that _belongs to_ the visible main view: a comment on the open record, a sub-task of the visible task, a tag on the highlighted item, a row added to the visible list. Linear, Notion, GitHub, and Asana use drawers for this kind of in-context creation.
-
-The hard line is parent-form quick-create. If the user is filling a _different_ form on the page and needs to create a referenced object — a category, a contact, a tag — the new object is _for_ the parent form. That is a [dialog](/components/overlay/dialog) or a combobox-with-create, not a drawer. The visible main view must contain the new object, not consume it.
 
 ### Filter panel
 
@@ -100,23 +117,29 @@ See the [filter pattern](/patterns/user-input/filter) for end-to-end guidance, i
 
 ### Comments, activity, and history
 
-A scrollable feed alongside a main item: comments, audit log, change history, activity stream. Slack thread panels, GitHub PR/Issue activity sidebars, Linear issue activity, and Jira history panels all share this shape.
+The user's task here is "what's happened to this, and what should I add to it?" Long-lived records like tickets, pull requests, and issues accumulate context: comments, status changes, assignments, audit entries. A drawer slides in alongside the record and holds the whole feed, so users can scan the history, catch up on a thread, or post a reply without leaving the main view.
 
-The feed is _about_ the main item but is a separate concern from the task. Users glance at it occasionally without losing their place. If the activity _is_ the primary task — a chat-first product, for example — it belongs in the main column, not in a drawer.
+The pattern fits a drawer because:
+
+- the feed grows long and needs its own scroll,
+- users want the main record visible while reading or replying,
+- activity is something to glance at occasionally, not the focus of the page.
+
+If activity _is_ the primary task (a chat-first product, for example), it belongs in the main column, not in a drawer.
 
 <ComponentDemo name="drawer-comments-activity" />
 
 ### Contextual utility
 
-Persistent or summon-able utilities that support the main task without being part of it: in-app help, support chat, AI assistant, scratchpad. Notion AI, GitHub Copilot Chat, Cursor, and Slack's saved-items panel all use this pattern. AI assistants in particular have made this the most-grown drawer pattern of the last few years.
+Persistent or summon-able utilities that support the main task without being part of it: in-app help, support chat, AI assistant, scratchpad. These utilities live alongside the main work, available when needed but never the focus.
 
-The right shape is a drawer the user can pin or summon — not a modal, not a popover. It opens when needed and never takes focus from the main task.
+The right shape is a drawer the user can pin or summon, not a modal or a popover. It opens when needed and never takes focus from the main task.
 
 <ComponentDemo name="drawer-contextual-utility" />
 
 ### Multi-field bulk edit
 
-Users select rows in a table, an [ActionBar](/components/actions/actionbar) appears, and one of its actions opens a drawer with a small form for editing several fields across the selection — for example, changing the date and venue across many events at once. Stripe, Polaris, Airtable, and Notion all use this combination.
+Users select rows in a table, an [ActionBar](/components/actions/actionbar) appears, and one of its actions opens a drawer with a small form for editing several fields across the selection (for example, changing the date and venue across many events at once). Stripe, Polaris, Airtable, and Notion all use this combination.
 
 The drawer keeps the selected rows visible behind it (non-modal) so users can confirm the selection while editing. The boundary is clean: single-verb bulk actions (delete, archive, assign) belong in the action bar; multi-field bulk edit belongs in a drawer triggered from it. Destructive bulk actions still need a confirm dialog after the verb.
 
@@ -129,7 +152,7 @@ A drawer renders with the ARIA role `complementary` by default, which fits almos
 - For a filter panel, consider `role="search"` to give screen-reader users a more precise landmark.
 - For long-lived activity panels, consider `role="region"` with an `aria-label` if the panel is part of the persistent layout.
 
-On small screens the drawer falls back to a modal sheet, with focus trapping and dismissal on <kbd>Escape</kbd> handled automatically. No extra work is required from consumers.
+On small screens, the drawer falls back to a modal sheet. Focus trapping and dismissal on <kbd>Escape</kbd> are handled automatically. No extra work is required from consumers.
 
 ## Props
 
@@ -145,7 +168,35 @@ On small screens the drawer falls back to a modal sheet, with focus trapping and
 
 ## Alternative components
 
-- [Dialog](/components/overlay/dialog): Use for modal, attention-required moments — confirmations, destructive actions, and parent-form quick-create.
+- [Dialog](/components/overlay/dialog): Use for modal, attention-required moments like confirmations, destructive actions, and parent-form quick-create.
 - [ActionBar](/components/actions/actionbar): Use for single-verb bulk actions on a selection (delete, archive, assign). Pair with a drawer when bulk-editing several fields.
 - [Sidebar](/components/navigation/sidebar): Use for app-level navigation, not for in-context content alongside a record.
-- [Filter pattern](/patterns/user-input/filter): End-to-end guidance for filter UIs, including drawer-based filter panels.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Filter pattern',
+      href: '/patterns/user-input/filter',
+      caption:
+        'End-to-end guidance for filter UIs, including drawer-based filter panels.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
