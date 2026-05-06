@@ -1,10 +1,9 @@
-import { useContext } from 'react';
-import { CalendarStateContext, Heading } from 'react-aria-components';
+import { Heading } from 'react-aria-components';
 import { useDateFormatter } from '@react-aria/i18n';
 import { IconButton } from '../IconButton/IconButton';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
-import { useCalendarContext } from './Context';
+import { useCalendarContext, useCalendarOrRangeState } from './Context';
 
 export interface CalendarHeaderProps {
   /**
@@ -26,7 +25,7 @@ export const CalendarHeader = ({
   showPrevious,
   showNext,
 }: CalendarHeaderProps) => {
-  const state = useContext(CalendarStateContext)!;
+  const state = useCalendarOrRangeState();
   const { classNames } = useCalendarContext();
 
   const monthFormatter = useDateFormatter({
