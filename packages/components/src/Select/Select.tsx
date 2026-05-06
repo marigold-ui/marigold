@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -88,42 +88,19 @@ export interface SelectProps<
    */
   error?: boolean;
   /**
-   * Render the trigger value when one or more options are selected.
-   * Replaces the default trigger render for non-empty selections; the placeholder
-   * still renders when nothing is selected.
-   *
-   * Useful when the trigger should look different from the option (e.g. show
-   * an avatar + name in the trigger but avatar + name + role in the dropdown).
-   *
-   * For accessibility, the returned content must not include focusable or
-   * interactive elements — the trigger is itself a button.
+   * Render the trigger value when one or more options are selected. Replaces
+   * the default trigger render; the placeholder still shows when nothing is
+   * selected. Must not contain focusable or interactive elements — the trigger
+   * is itself a button.
    */
   renderValue?: (selectedItems: T[]) => ReactNode;
 }
-
-const INTERACTIVE_SELECTOR =
-  'a, button, input, select, textarea, [tabindex], [role=button], [role=checkbox], [role=link], [role=menuitem], [role=menuitemcheckbox], [role=menuitemradio], [role=option], [role=radio], [role=switch], [role=tab], [role=textbox]';
 
 const TriggerValue = <T extends object>({
   renderValue,
 }: {
   renderValue?: (selectedItems: T[]) => ReactNode;
 }) => {
-  const a11yRef = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    if (
-      process.env.NODE_ENV === 'production' ||
-      !renderValue ||
-      !a11yRef.current
-    )
-      return;
-    if (a11yRef.current.querySelector(INTERACTIVE_SELECTOR)) {
-      console.warn(
-        'Select: renderValue should not contain interactive children for accessibility. The trigger is itself a button — nested interactives break keyboard and screen-reader behavior.'
-      );
-    }
-  });
-
   if (!renderValue) {
     return (
       <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
@@ -139,9 +116,7 @@ const TriggerValue = <T extends object>({
         }
         return (
           <Provider values={[[TextContext, { className: 'truncate' }]]}>
-            <span ref={a11yRef} className="contents">
-              {renderValue(items)}
-            </span>
+            {renderValue(items)}
           </Provider>
         );
       }}
