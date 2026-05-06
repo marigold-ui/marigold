@@ -13,7 +13,10 @@ import { Label } from '../Label/Label';
 
 export interface SliderProps<T>
   extends
-    Omit<RAC.SliderProps<T>, 'children' | 'isDisabled' | 'orientation'>,
+    Omit<
+      RAC.SliderProps<T>,
+      'children' | 'isDisabled' | 'orientation' | 'style'
+    >,
     Pick<FieldBaseProps<'label'>, 'description'> {
   variant?: string;
   size?: string;

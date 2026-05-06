@@ -7,10 +7,10 @@ import { Label } from '../Label/Label';
 type RemovedProps =
   | 'children'
   | 'className'
+  | 'style'
   | 'isDisabled'
   | 'isReadOnly'
   | 'isSelected'
-  | 'children'
   | 'slot';
 
 export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
