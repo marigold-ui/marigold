@@ -31,7 +31,7 @@ export function ListBox<T>({
   return (
     <RACAriaListBox
       className={cn(
-        'grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-auto p-2'
+        'grid h-full max-h-[300px] w-full grid-cols-3 gap-y-10 overflow-y-auto p-2'
       )}
       data-testid={dataTestid}
       selectionMode="single"

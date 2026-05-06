@@ -10,6 +10,7 @@
     "form",
     "number-field",
     "radio",
+    "rangecalendar",
     "search-field",
     "select",
     "selectlist",
