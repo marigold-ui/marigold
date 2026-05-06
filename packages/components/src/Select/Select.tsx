@@ -124,8 +124,6 @@ const TriggerValue = <T extends object>({
     }
   });
 
-  // Default trigger render hides the description slot so secondary text doesn't
-  // leak into the truncated trigger. For richer custom triggers, use renderValue.
   if (!renderValue) {
     return (
       <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
