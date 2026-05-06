@@ -101,49 +101,41 @@ export interface SelectProps<
   renderValue?: (selectedItems: T[]) => ReactNode;
 }
 
-// Default trigger render hides the description slot so secondary text doesn't
-// leak into the truncated trigger. For richer custom triggers (avatar + name,
-// badges, icons), use the `renderValue` prop.
-const defaultRenderClass = '**:[[slot=description]]:hidden';
-
 const INTERACTIVE_SELECTOR =
   'a, button, input, select, textarea, [tabindex], [role=button], [role=checkbox], [role=link], [role=menuitem], [role=menuitemcheckbox], [role=menuitemradio], [role=option], [role=radio], [role=switch], [role=tab], [role=textbox]';
 
-const useRenderValueA11yWarning = (enabled: boolean) => {
-  const ref = useRef<HTMLSpanElement>(null);
+const TriggerValue = <T extends object>({
+  renderValue,
+}: {
+  renderValue?: (selectedItems: T[]) => ReactNode;
+}) => {
+  const a11yRef = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production' || !enabled || !ref.current)
+    if (
+      process.env.NODE_ENV === 'production' ||
+      !renderValue ||
+      !a11yRef.current
+    )
       return;
-    if (ref.current.querySelector(INTERACTIVE_SELECTOR)) {
+    if (a11yRef.current.querySelector(INTERACTIVE_SELECTOR)) {
       console.warn(
         'Select: renderValue should not contain interactive children for accessibility. The trigger is itself a button — nested interactives break keyboard and screen-reader behavior.'
       );
     }
   });
-  return ref;
-};
 
-interface TriggerValueProps<T extends object> {
-  renderValue?: (selectedItems: T[]) => ReactNode;
-}
-
-const TriggerValue = <T extends object>({
-  renderValue,
-}: TriggerValueProps<T>) => {
-  const a11yRef = useRenderValueA11yWarning(Boolean(renderValue));
-
+  // Default trigger render hides the description slot so secondary text doesn't
+  // leak into the truncated trigger. For richer custom triggers, use renderValue.
   if (!renderValue) {
     return (
-      <SelectValue className={cn('truncate text-nowrap', defaultRenderClass)} />
+      <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
     );
   }
 
   return (
     <SelectValue<T> className="truncate text-nowrap">
       {({ selectedItems, defaultChildren, isPlaceholder }) => {
-        const items = (selectedItems ?? []).filter(
-          (item): item is T => item != null
-        );
+        const items = selectedItems.filter((item): item is T => item != null);
         if (isPlaceholder || items.length === 0) {
           return defaultChildren;
         }
