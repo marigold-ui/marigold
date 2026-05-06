@@ -20,12 +20,16 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-const mockFetch = (body: string, ok = true) => {
+const mockFetch = (body: string, ok = true, contentType = 'text/plain') => {
   return vi.spyOn(globalThis, 'fetch').mockResolvedValue({
     ok,
     status: ok ? 200 : 500,
     statusText: ok ? 'OK' : 'Server Error',
     text: async () => body,
+    headers: {
+      get: (name: string) =>
+        name.toLowerCase() === 'content-type' ? contentType : null,
+    },
   } as unknown as Response);
 };
 
@@ -79,6 +83,44 @@ describe('fetchWithCache', () => {
     await expect(fetchWithCache<string>('https://x/e', t => t)).rejects.toThrow(
       /Failed to fetch/
     );
+  });
+
+  it('reports content-type and original error when parse fails', async () => {
+    mockFetch('<!DOCTYPE html><html></html>', true, 'text/html; charset=utf-8');
+    await expect(
+      fetchWithCache('https://x/manifest.json', t => JSON.parse(t))
+    ).rejects.toThrow(/content-type: text\/html/);
+  });
+
+  it('does not write the cache when parse fails', async () => {
+    mockFetch('<!DOCTYPE html>', true, 'text/html');
+    await expect(
+      fetchWithCache('https://x/bad.json', t => JSON.parse(t))
+    ).rejects.toThrow();
+    const files = fs.readdirSync(tmpDir);
+    expect(files).toEqual([]);
+  });
+
+  it('recovers when an existing cache entry is unparseable', async () => {
+    // Seed cache with a value that satisfies one parser…
+    const spy = mockFetch('<!DOCTYPE html>');
+    await fetchWithCache<string>('https://x/seed', t => t);
+    spy.mockClear();
+    // …then call again with a parser that rejects it; it should refetch.
+    spy.mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      text: async () => '{"ok":true}',
+      headers: { get: () => 'application/json' },
+    } as unknown as Response);
+    const result = await fetchWithCache(
+      'https://x/seed',
+      t => JSON.parse(t) as { ok: boolean }
+    );
+    expect(result.value).toEqual({ ok: true });
+    expect(result.hit).toBe(false);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('expires entries older than TTL', async () => {

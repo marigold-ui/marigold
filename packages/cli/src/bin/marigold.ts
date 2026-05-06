@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
+import { runCompleteSuggest, runCompletion } from '../commands/completion.js';
 import { runDocs } from '../commands/docs.js';
 import { runInit } from '../commands/init.js';
 import { runList } from '../commands/list.js';
@@ -44,6 +45,7 @@ ${pc.bold('Commands:')}
   list                List available components
   init                Set up Marigold in a project
   telemetry <action>  Manage telemetry (status|enable|disable)
+  completion <shell>  Print shell completion script (bash|zsh|fish)
 
 ${pc.bold('Docs options:')}
   --section <name>    props | usage | examples | all (default: all)
@@ -129,6 +131,22 @@ const main = async (): Promise<number> => {
   if (argv[0] === '-v' || argv[0] === '--version') {
     process.stdout.write(CLI_VERSION + '\n');
     return 0;
+  }
+
+  // Completion paths are handled before telemetry/dispatch wiring so they stay
+  // fast and side-effect-free. `__complete` runs on every TAB press.
+  if (argv[0] === '__complete') {
+    const sepIdx = argv.indexOf('--');
+    const words = sepIdx >= 0 ? argv.slice(sepIdx + 1) : argv.slice(1);
+    process.stdout.write(runCompleteSuggest(words));
+    return 0;
+  }
+
+  if (argv[0] === 'completion') {
+    const result = runCompletion(argv[1]);
+    const stream = result.exitCode === 0 ? process.stdout : process.stderr;
+    stream.write(result.output);
+    return result.exitCode;
   }
 
   const [command, ...rest] = argv;

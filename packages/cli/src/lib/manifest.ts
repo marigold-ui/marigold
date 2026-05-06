@@ -1,4 +1,4 @@
-import { type CacheOptions, fetchWithCache } from './cache.js';
+import { type CacheOptions, fetchWithCache, readCacheSync } from './cache.js';
 import { docsUrl } from './config.js';
 import { sanitizeRemote } from './strip-ansi.js';
 
@@ -115,6 +115,19 @@ export const loadManifest = async (
     options
   );
   return value;
+};
+
+// Synchronous, never-throws cache-only loader. Used by tab completion where
+// network I/O is unacceptable and any exception would land in the user's shell.
+// Returns null on missing or malformed cache.
+export const loadManifestSync = (): Manifest | null => {
+  try {
+    const text = readCacheSync(`${docsUrl()}/manifest.json`);
+    if (text === null) return null;
+    return transformManifest(JSON.parse(text) as RawManifest);
+  } catch {
+    return null;
+  }
 };
 
 const normalize = (s: string): string =>

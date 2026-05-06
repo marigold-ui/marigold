@@ -67,6 +67,27 @@ Detects Next.js or Vite, then:
 
 Edits are idempotent — re-running leaves files untouched. If a file shape can't be recognized, the CLI prints a manual fallback for that step instead of guessing.
 
+### `marigold completion <shell>`
+
+Print a tab-completion script for `bash`, `zsh`, or `fish`. Source it once per
+shell, or write it to your shell's completion directory for persistence.
+
+```sh
+# bash — current shell
+source <(marigold completion bash)
+
+# bash — persistent (with bash-completion installed)
+marigold completion bash > ~/.local/share/bash-completion/completions/marigold
+
+# zsh — persistent (ensure $fpath includes the dir, then run compinit)
+marigold completion zsh > "${fpath[1]}/_marigold"
+
+# fish
+marigold completion fish > ~/.config/fish/completions/marigold.fish
+```
+
+Tab-completes subcommands, flag names, enum values (e.g. `--format markdown|json|plain`), categories (`marigold list --category <TAB>`), and component names (`marigold docs <TAB>`). Component and category suggestions are sourced from the local manifest cache — run `marigold list` once to warm it. PowerShell is not yet supported. For instant component completion, install the CLI globally rather than relying on `npx`/`pnpm dlx`.
+
 ### `marigold telemetry`
 
 Opt in or out of anonymous usage telemetry.
