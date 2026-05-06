@@ -6,8 +6,6 @@ badge: alpha
 
 The `<TextValue>` component is a small inline label designed for selection items such as `<Select.Option>`, `<Menu.Item>`, `<ListBox.Item>`, and `<ComboBox.Item>`. By marking the label explicitly, screen readers announce the right text and keyboard typeahead lands on the right item without any extra wiring.
 
-It carries no styling of its own. Its appearance comes entirely from the surrounding selection item, which keeps the look consistent across menus, selects, and lists. Pair it with [`<Description>`](/components/content/description) when the item also needs a help line.
-
 import { TextValueAnatomy } from './text-value-anatomy';
 
 ## Anatomy
@@ -16,9 +14,15 @@ import { TextValueAnatomy } from './text-value-anatomy';
 
 A `<TextValue>` is a single inline label with no parts of its own. It sits inside a selection item and marks the text that names the option.
 
+## Appearance
+
+`<TextValue>` carries no styling of its own. Its appearance comes entirely from the surrounding selection item, which keeps the look consistent across menus, selects, and lists. Pair it with [`<Description>`](/components/content/description) when the item also needs a help line.
+
+Styling is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
+
 ## Usage
 
-`<TextValue>` exists to mark the **label** inside a selection item when the item's content is more than a plain string. As soon as an option contains an avatar, an icon, a Badge, or any non-text node, react-aria can no longer infer which part of the children is the accessible name. `<TextValue>` makes that explicit, so screen readers announce the right text and keyboard typeahead matches the visible label.
+`<TextValue>` exists to mark the label inside a selection item when the item's content is more than a plain string. As soon as an option contains an avatar, an icon, a badge, or any non-text node, there is no longer a single unambiguous text node the option can use as its accessible name. `<TextValue>` marks that text explicitly, so screen readers announce the right name and keyboard typeahead matches the visible label.
 
 Reach for `<TextValue>` when:
 
@@ -37,6 +41,12 @@ A common case: a `<Select>` with rich options that combine an avatar, a name, an
 Pair with `<Description>` whenever an item benefits from a one-line explanation:
 
 <ComponentDemo name="text-value-with-description" />
+
+### Driving typeahead
+
+Filtering inside a `<ComboBox>` follows the option's label, not its supporting copy. `<TextValue>` marks that label, so typing a fragment of a description won't match — only the label is searched.
+
+<ComponentDemo name="text-value-typeahead" />
 
 <GuidelineTiles>
   <Do>

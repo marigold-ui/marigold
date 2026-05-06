@@ -1,28 +1,15 @@
-import type { JSX, ReactNode, Ref } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Text } from 'react-aria-components';
-import { ensureCssVar, useClassNames } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
-import type { TextSize } from '../Text/Text';
 
-type RemovedProps =
-  | 'elementType'
-  | keyof JSX.IntrinsicElements['div']
-  | keyof JSX.IntrinsicElements['span']
-  | keyof JSX.IntrinsicElements['p'];
-
-/**
- * The deliberate subset of `TextSize` that Description ships today.
- * Derived from `TextSize` so a future rename or removal in Text breaks
- * here at the type level instead of silently drifting.
- */
-export type DescriptionSize = Extract<TextSize, 'xs' | 'sm' | 'base'>;
+type RemovedProps = 'className' | 'style' | 'elementType';
 
 export interface DescriptionProps
   extends Omit<RAC.TextProps, RemovedProps>, AriaLabelingProps {
   /**
    * The element type to render.
-   * @default 'p'
+   * @default 'span'
    */
   as?: 'div' | 'p' | 'span';
   /**
@@ -31,43 +18,23 @@ export interface DescriptionProps
    */
   slot?: string;
   /**
-   * The size of the description.
+   * The element id.
    */
-  size?: DescriptionSize | (string & {});
-  /**
-   * Set the text color.
-   */
-  color?: string;
+  id?: string;
   children?: ReactNode;
   ref?: Ref<HTMLElement>;
 }
 
 const _Description = ({
-  as = 'p',
+  as = 'span',
   slot = 'description',
-  size,
-  color,
   children,
   ref,
   ...rest
-}: DescriptionProps) => {
-  const classNames = useClassNames({
-    component: 'Description',
-    size,
-  });
-
-  return (
-    <Text
-      elementType={as}
-      slot={slot}
-      ref={ref}
-      className={classNames}
-      style={{ color: color && ensureCssVar(color, 'color') }}
-      {...rest}
-    >
-      {children}
-    </Text>
-  );
-};
+}: DescriptionProps) => (
+  <Text elementType={as} slot={slot} ref={ref} {...rest}>
+    {children}
+  </Text>
+);
 
 export { _Description as Description };

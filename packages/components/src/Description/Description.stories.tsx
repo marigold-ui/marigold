@@ -9,14 +9,7 @@ const meta = preview.meta({
       control: { type: 'select' },
       options: ['p', 'span', 'div'],
     },
-    size: {
-      control: { type: 'select' },
-      options: ['xs', 'sm', 'base'],
-    },
     slot: {
-      control: { type: 'text' },
-    },
-    color: {
       control: { type: 'text' },
     },
   },

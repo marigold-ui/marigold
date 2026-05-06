@@ -18,15 +18,13 @@ A description is a single text element with no parts of its own.
 
 ## Appearance
 
-<AppearanceDemo component="Description" />
+`<Description>` carries no styling of its own. Its appearance comes entirely from the surrounding container or selection item, which keeps the look consistent across panels, dialogs, menus, and selects. Pair it with [`<Title>`](/components/content/title) in containers, or with [`<TextValue>`](/components/content/text-value) in selection items.
 
-<AppearanceTable component="Description" />
-
-By default, `<Description>` renders at the `sm` size. Use the `size` prop for standalone use; inside a container, the size comes from [slot configuration](/foundations/component-principles#slot-driven-composition).
+Styling is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
 
 ## Usage
 
-A description is a short supporting text that sits next to a title or label. Use it whenever the partner element needs a brief explanation. Styling is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
+A description is a short supporting text that sits next to a title or label. Use it whenever the partner element needs a brief explanation.
 
 <GuidelineTiles>
   <Do>
