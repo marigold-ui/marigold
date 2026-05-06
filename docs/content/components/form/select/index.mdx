@@ -98,21 +98,15 @@ However, be mindful of the user experience when offering multiple selections. As
 
 <ComponentDemo name="select-multiple" />
 
-### Additional visuals
-
-Icons or images can be added to options to provide immediate visual context and help users differentiate between items at a glance. Use these visual elements when they add meaningful value, such as representing different categories, user profiles, or status indicators.
-
-Visual elements are processed faster than text, reducing cognitive load and helping users make selections more quickly. However, ensure that options remain understandable even without the visuals for accessibility purposes.
-
-<ComponentDemo name="select-visuals" />
-
 ### Custom selected value
 
-Sometimes the trigger should look different from the option. For example, you might want to show an avatar plus a name in the trigger but include the role in the dropdown. Pass a `renderValue` callback to customize what the trigger displays. It receives the selected items and replaces the default trigger render whenever something is selected. The placeholder still shows when nothing is selected.
+Add visual context to options by combining an avatar or icon with text. Pair the visual on the left with a name and short description on the right so users can scan the list quickly. Make sure options stay understandable without the visuals for accessibility purposes.
+
+To keep the trigger compact while showing the full layout in the dropdown, pass a `renderValue` callback. It receives the selected items and replaces the default trigger render whenever something is selected. The placeholder still shows when nothing is selected.
 
 The returned content must not include focusable or interactive elements. The trigger is itself a button.
 
-<ComponentDemo name="select-render-value" />
+<ComponentDemo name="select-visuals" />
 
 ## Props
 
