@@ -2,11 +2,9 @@ import { useState } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
-  Provider,
   Button as RACButton,
   Select as ReactAriaSelect,
   SelectValue,
-  TextContext,
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
@@ -114,11 +112,7 @@ const TriggerValue = <T extends object>({
         if (isPlaceholder || items.length === 0) {
           return defaultChildren;
         }
-        return (
-          <Provider values={[[TextContext, { className: 'truncate' }]]}>
-            {renderValue(items)}
-          </Provider>
-        );
+        return renderValue(items);
       }}
     </SelectValue>
   );
