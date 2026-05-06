@@ -17,7 +17,7 @@ export default function (props: DrawerProps) {
       <Stack space={4}>
         <Stack space={3}>
           <Inline space={2} alignY="center">
-            <Headline level={3}>Ticket #4521 — Login issue</Headline>
+            <Headline level={3}>Ticket #4521 – Login issue</Headline>
             <Badge variant="warning">High priority</Badge>
           </Inline>
           <Text>
