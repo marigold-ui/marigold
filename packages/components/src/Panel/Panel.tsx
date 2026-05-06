@@ -57,7 +57,7 @@ interface PanelBaseProps {
  * Padding applied to every subcomponent (Header, Content, CollapsibleHeader,
  * CollapsibleContent, Footer). Either set `p` for uniform padding, or use
  * `px`/`py` to control the axes separately — setting both forms is a TypeScript
- * error, mirroring the `<Inset>` component's `space` / `spaceX`+`spaceY` split.
+ * error, mirroring the `<Inset>` component's `p` / `px`+`py` split.
  */
 type PanelPaddingProps =
   | {

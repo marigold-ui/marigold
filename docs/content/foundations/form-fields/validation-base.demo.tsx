@@ -10,7 +10,7 @@ import {
 export default () => {
   return (
     <Form>
-      <Inset space={8}>
+      <Inset p={8}>
         <Stack space={7} alignX="left">
           <Stack>
             <Text fontSize="4xl" weight="extrabold">
