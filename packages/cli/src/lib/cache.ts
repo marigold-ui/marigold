@@ -94,7 +94,8 @@ export const fetchWithCache = async <T = string>(
     const detail = err instanceof Error ? err.message : String(err);
     throw new Error(
       `Could not parse response from ${url} (content-type: ${contentType}). ` +
-        `The endpoint may be returning an HTML page instead of the expected payload. ${detail}`
+        `The endpoint may be returning an HTML page instead of the expected payload. ${detail}`,
+      { cause: err }
     );
   }
   writeEntry(file, text);
