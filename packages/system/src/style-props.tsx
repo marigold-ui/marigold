@@ -42,14 +42,14 @@ type DimensionKeyword =
 type WidthKeyword = DimensionKeyword | 'container';
 
 /**
- * Allowed values for the `width` style prop. Accepts the spacing scale (as
- * either `4` or `"4"`), fractions (`"1/2"`), and keywords (`"full"`, `"fit"`,
- * ...).
+ * Allowed values for the `width` and `maxWidth` style props. Accepts the
+ * spacing scale (as either `4` or `"4"`), fractions (`"1/2"`), and keywords
+ * (`"full"`, `"fit"`, ...).
  */
 export type WidthValue = Scale | Fraction | WidthKeyword;
 
-/** Allowed values for the `maxWidth` style prop. See {@link WidthValue}. */
-export type MaxWidthValue = Scale | Fraction | WidthKeyword;
+/** Alias of {@link WidthValue}. */
+export type MaxWidthValue = WidthValue;
 
 /**
  * Allowed values for the `height` style prop. Like {@link WidthValue} but

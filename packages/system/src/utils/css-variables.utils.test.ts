@@ -197,6 +197,15 @@ describe('createWidthVar', () => {
       );
     }
   );
+
+  it.each(['__proto__', 'constructor', 'toString'])(
+    'should not resolve inherited Object property "%s" as a keyword',
+    value => {
+      expect(() => createWidthVar('width', value)).toThrowError(
+        /Unsupported width value/
+      );
+    }
+  );
 });
 
 describe('createHeightVar', () => {
@@ -229,6 +238,15 @@ describe('createHeightVar', () => {
     value => {
       expect(() => createHeightVar('height', value)).toThrowError(
         `Unsupported height value: "${value}". Expected a keyword (fit, min, max, full, auto, svh, lvh, dvh, px, screen), a scale number, or a fraction (e.g., "1/2").`
+      );
+    }
+  );
+
+  it.each(['__proto__', 'constructor', 'toString'])(
+    'should not resolve inherited Object property "%s" as a keyword',
+    value => {
+      expect(() => createHeightVar('height', value)).toThrowError(
+        /Unsupported height value/
       );
     }
   );

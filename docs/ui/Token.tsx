@@ -1,15 +1,20 @@
 'use client';
 
 import { Inline, Stack, alignment, cn } from '@/ui';
+import type { ScaleValue } from '@/ui';
 import { Card } from 'fumadocs-ui/components/card';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
 
-// Mirrors the spacing scale exposed by @marigold/system's `Scale` / `ScaleValue`
-// types. Kept as a runtime list here because the docs render a class string
-// per key (`pl-${key}`), which Tailwind needs as static literals.
-const SPACING_SCALE: readonly string[] = [
+type ScaleString = `${ScaleValue}`;
+
+// Mirrors the spacing scale exposed by @marigold/system's `ScaleValue` type.
+// Kept as a runtime list because the docs render `pl-${key}` per row, which
+// Tailwind needs as a static literal. The `satisfies` clause makes any
+// invalid or mistyped entry a type error; unhandled entries surface as a
+// missing row in the rendered table.
+const SPACING_SCALE = [
   '0',
   '0.5',
   '1',
@@ -44,7 +49,7 @@ const SPACING_SCALE: readonly string[] = [
   '72',
   '80',
   '96',
-];
+] as const satisfies readonly ScaleString[];
 
 export const AlignmentsX = () => {
   return (

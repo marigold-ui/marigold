@@ -125,10 +125,10 @@ const heightKeywords: Record<string, string> = {
 const makeDimensionVar =
   (axis: 'width' | 'height', keywords: Record<string, string>) =>
   (name: string, value: string) => {
-    const resolved =
-      keywords[value] ||
-      (isScale(value) && `calc(var(--spacing) * ${value})`) ||
-      (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
+    const resolved = Object.hasOwn(keywords, value)
+      ? keywords[value]
+      : (isScale(value) && `calc(var(--spacing) * ${value})`) ||
+        (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
 
     if (!resolved) {
       throw new Error(
