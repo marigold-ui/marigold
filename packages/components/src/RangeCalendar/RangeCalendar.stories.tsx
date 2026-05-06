@@ -270,3 +270,175 @@ export const MultiMonthNavigation = meta.story({
     });
   },
 });
+
+export const RangeSelection = meta.story({
+  tags: ['component-test'],
+  args: {
+    defaultValue: {
+      start: new CalendarDate(2019, 6, 5),
+      end: new CalendarDate(2019, 6, 5),
+    },
+    onChange: fn(),
+  },
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ args, canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByLabelText(/Monday, June 10, 2019/i));
+    await userEvent.click(canvas.getByLabelText(/Saturday, June 15, 2019/i));
+
+    await expect(args.onChange).toHaveBeenCalled();
+    const lastCall = (args.onChange as ReturnType<typeof fn>).mock.calls.at(
+      -1
+    )?.[0];
+    await expect(lastCall.start).toEqual(new CalendarDate(2019, 6, 10));
+    await expect(lastCall.end).toEqual(new CalendarDate(2019, 6, 15));
+  },
+});
+
+export const ReadOnlyDoesNotCommit = meta.story({
+  tags: ['component-test'],
+  args: {
+    readOnly: true,
+    defaultValue: {
+      start: new CalendarDate(2019, 6, 5),
+      end: new CalendarDate(2019, 6, 10),
+    },
+    onChange: fn(),
+  },
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ args, canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByLabelText(/Saturday, June 15, 2019/i));
+
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+});
+
+export const UnavailableBlocks = meta.story({
+  tags: ['component-test'],
+  args: {
+    defaultValue: {
+      start: new CalendarDate(2025, 8, 4),
+      end: new CalendarDate(2025, 8, 6),
+    },
+  },
+  render: args => {
+    const { locale } = useLocale();
+    return (
+      <RangeCalendar
+        {...args}
+        dateUnavailable={date => isWeekend(date, locale)}
+      />
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const cells = canvas.getAllByRole('gridcell');
+    const unavailable = cells.find(
+      cell => cell.getAttribute('aria-disabled') === 'true'
+    );
+
+    await expect(unavailable).toBeDefined();
+  },
+});
+
+export const MonthDropdown = meta.story({
+  tags: ['component-test'],
+  args: {
+    defaultValue: {
+      start: new CalendarDate(2025, 8, 7),
+      end: new CalendarDate(2025, 8, 14),
+    },
+  },
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ canvasElement, userEvent, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('month dropdown is closed initially', async () => {
+      await expect(
+        canvas.queryByRole('listbox', { name: 'monthOptions' })
+      ).not.toBeInTheDocument();
+    });
+
+    await step('opens when the month button is clicked', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Aug' }));
+      await expect(
+        canvas.getByRole('listbox', { name: 'monthOptions' })
+      ).toBeInTheDocument();
+    });
+
+    await step('closes after selecting an option', async () => {
+      const monthOptions = canvas.getByRole('listbox', {
+        name: 'monthOptions',
+      });
+      const options = within(monthOptions).getAllByRole('option');
+      await userEvent.click(options[2]);
+
+      await expect(
+        canvas.queryByRole('listbox', { name: 'monthOptions' })
+      ).not.toBeInTheDocument();
+    });
+  },
+});
+
+export const YearDropdown = meta.story({
+  tags: ['component-test'],
+  args: {
+    defaultValue: {
+      start: new CalendarDate(2025, 8, 7),
+      end: new CalendarDate(2025, 8, 14),
+    },
+  },
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ canvasElement, userEvent, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('year dropdown is closed initially', async () => {
+      await expect(
+        canvas.queryByRole('listbox', { name: 'yearOptions' })
+      ).not.toBeInTheDocument();
+    });
+
+    await step('opens when the year button is clicked', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: '2025' }));
+      await expect(
+        canvas.getByRole('listbox', { name: 'yearOptions' })
+      ).toBeInTheDocument();
+    });
+  },
+});
+
+export const TwoMonthsRangeSelection = meta.story({
+  tags: ['component-test'],
+  args: {
+    visibleDuration: { months: 2 },
+    defaultValue: {
+      start: new CalendarDate(2025, 2, 15),
+      end: new CalendarDate(2025, 2, 15),
+    },
+    onChange: fn(),
+  },
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ args, canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+
+    const grids = canvas.getAllByRole('grid');
+    const startCell = within(grids[0]).getByLabelText(
+      /Thursday, February 20, 2025/i
+    );
+    const endCell = within(grids[1]).getByLabelText(/Monday, March 10, 2025/i);
+
+    await userEvent.click(startCell);
+    await userEvent.click(endCell);
+
+    await expect(args.onChange).toHaveBeenCalled();
+    const lastCall = (args.onChange as ReturnType<typeof fn>).mock.calls.at(
+      -1
+    )?.[0];
+    await expect(lastCall.start).toEqual(new CalendarDate(2025, 2, 20));
+    await expect(lastCall.end).toEqual(new CalendarDate(2025, 3, 10));
+  },
+});
