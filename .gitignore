@@ -41,6 +41,9 @@ next-env.d.ts
 # Jetbrains IDE
 .idea
 
+# local scratch / research notes
+/notes/
+
 # Playwright MCP
 .playwright-mcp
 
