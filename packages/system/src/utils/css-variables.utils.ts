@@ -124,15 +124,16 @@ const heightKeywords: Record<string, string> = {
 
 const makeDimensionVar =
   (axis: 'width' | 'height', keywords: Record<string, string>) =>
-  (name: string, value: string) => {
-    const resolved = Object.hasOwn(keywords, value)
-      ? keywords[value]
-      : (isScale(value) && `calc(var(--spacing) * ${value})`) ||
-        (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
+  (name: string, value: string | number) => {
+    const v = `${value}`;
+    const resolved = Object.hasOwn(keywords, v)
+      ? keywords[v]
+      : (isScale(v) && `calc(var(--spacing) * ${v})`) ||
+        (isFraction(v) && `calc((${v.split('/').join(' / ')}) * 100%)`);
 
     if (!resolved) {
       throw new Error(
-        `Unsupported ${axis} value: "${value}". Expected a keyword (${Object.keys(keywords).join(', ')}), a scale number, or a fraction (e.g., "1/2").`
+        `Unsupported ${axis} value: "${v}". Expected a keyword (${Object.keys(keywords).join(', ')}), a scale number, or a fraction (e.g., "1/2").`
       );
     }
 

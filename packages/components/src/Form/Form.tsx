@@ -20,7 +20,7 @@ const _Form = forwardRef<HTMLFormElement, FormProps>(
       {...props}
       ref={ref}
       className={cn('max-w-(--max-width)', unstyled && 'contents')}
-      style={createWidthVar('max-width', `${maxWidth}`)}
+      style={createWidthVar('max-width', maxWidth)}
     />
   )
 );

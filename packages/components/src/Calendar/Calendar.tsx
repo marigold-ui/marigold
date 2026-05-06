@@ -134,7 +134,7 @@ const _Calendar = ({
             'relative flex w-(--width) flex-col',
             classNames.calendar
           )}
-          style={createWidthVar('width', `${width}`)}
+          style={createWidthVar('width', width)}
           {...props}
         >
           <div className={classNames.calendarContainer}>
@@ -169,7 +169,7 @@ const _Calendar = ({
           'relative flex w-(--width) flex-col',
           classNames.calendar
         )}
-        style={createWidthVar('width', `${width}`)}
+        style={createWidthVar('width', width)}
         {...props}
       >
         <div

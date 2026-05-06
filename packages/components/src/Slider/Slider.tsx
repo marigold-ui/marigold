@@ -84,7 +84,7 @@ const _Slider = forwardRef(
           'grid w-(--width) grid-cols-[auto_1fr] gap-y-1',
           classNames.container
         )}
-        style={createWidthVar('width', `${width}`)}
+        style={createWidthVar('width', width)}
         ref={ref}
         {...props}
       >

@@ -31,7 +31,7 @@ export const Scrollable = ({
     )}
     style={{
       ...createVar({ height }),
-      ...createWidthVar('width', `${width}`),
+      ...createWidthVar('width', width),
     }}
   >
     {children}

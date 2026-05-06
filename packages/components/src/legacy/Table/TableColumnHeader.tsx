@@ -47,7 +47,7 @@ export const TableColumnHeader = ({
         'w-(--width) whitespace-nowrap data-[react-aria-pressable="true"]:cursor-pointer',
         classNames?.header
       )}
-      style={createWidthVar('width', `${width}`)}
+      style={createWidthVar('width', width)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}

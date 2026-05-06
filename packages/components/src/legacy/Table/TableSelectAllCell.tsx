@@ -49,7 +49,7 @@ export const TableSelectAllCell = ({
     <th
       ref={ref}
       className={cn('w-(--width) leading-none', classNames?.header)}
-      style={createWidthVar('width', `${width}`)}
+      style={createWidthVar('width', width)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}

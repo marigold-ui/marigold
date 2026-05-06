@@ -76,7 +76,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
           'group/switch flex w-(--width) items-center gap-[1ch]',
           classNames.container
         )}
-        style={createWidthVar('width', `${width}`)}
+        style={createWidthVar('width', width)}
       >
         {label && <Label elementType="span">{label}</Label>}
         <div className="relative">

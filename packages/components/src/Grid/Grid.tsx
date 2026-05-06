@@ -89,7 +89,7 @@ export const Grid = ({
         gridTemplateColumns: parseTemplateValue(columns),
         gridTemplateRows: parseTemplateValue(rows),
         ...createSpacingVar('space', `${space}`),
-        ...createHeightVar('height', `${height}`),
+        ...createHeightVar('height', height),
       }}
       {...props}
     >
