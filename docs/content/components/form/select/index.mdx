@@ -106,6 +106,14 @@ Visual elements are processed faster than text, reducing cognitive load and help
 
 <ComponentDemo name="select-visuals" />
 
+### Custom trigger render
+
+When the trigger should look different from the option (for example, an avatar plus a name in the trigger but avatar, name, and role in the dropdown), pass a `renderValue` callback. It receives the selected items and replaces the default trigger render whenever something is selected; the placeholder still shows when nothing is selected.
+
+The returned content must not include focusable or interactive elements — the trigger is itself a button.
+
+<ComponentDemo name="select-render-value" />
+
 ## Props
 
 <StorybookHintMessage component={'Select'} />

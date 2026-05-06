@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
+  Provider,
   Button as RACButton,
   Select as ReactAriaSelect,
   SelectValue,
+  TextContext,
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
@@ -85,7 +87,77 @@ export interface SelectProps<
    * @default false
    */
   error?: boolean;
+  /**
+   * Render the trigger value when one or more options are selected.
+   * Replaces the default trigger render for non-empty selections; the placeholder
+   * still renders when nothing is selected.
+   *
+   * Useful when the trigger should look different from the option (e.g. show
+   * an avatar + name in the trigger but avatar + name + role in the dropdown).
+   *
+   * For accessibility, the returned content must not include focusable or
+   * interactive elements — the trigger is itself a button.
+   */
+  renderValue?: (selectedItems: T[]) => ReactNode;
 }
+
+// Default trigger render hides the description slot so secondary text doesn't
+// leak into the truncated trigger. For richer custom triggers (avatar + name,
+// badges, icons), use the `renderValue` prop.
+const defaultRenderClass = '**:[[slot=description]]:hidden';
+
+const INTERACTIVE_SELECTOR =
+  'a, button, input, select, textarea, [tabindex], [role=button], [role=checkbox], [role=link], [role=menuitem], [role=menuitemcheckbox], [role=menuitemradio], [role=option], [role=radio], [role=switch], [role=tab], [role=textbox]';
+
+const useRenderValueA11yWarning = (enabled: boolean) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production' || !enabled || !ref.current)
+      return;
+    if (ref.current.querySelector(INTERACTIVE_SELECTOR)) {
+      console.warn(
+        'Select: renderValue should not contain interactive children for accessibility. The trigger is itself a button — nested interactives break keyboard and screen-reader behavior.'
+      );
+    }
+  });
+  return ref;
+};
+
+interface TriggerValueProps<T extends object> {
+  renderValue?: (selectedItems: T[]) => ReactNode;
+}
+
+const TriggerValue = <T extends object>({
+  renderValue,
+}: TriggerValueProps<T>) => {
+  const a11yRef = useRenderValueA11yWarning(Boolean(renderValue));
+
+  if (!renderValue) {
+    return (
+      <SelectValue className={cn('truncate text-nowrap', defaultRenderClass)} />
+    );
+  }
+
+  return (
+    <SelectValue<T> className="truncate text-nowrap">
+      {({ selectedItems, defaultChildren, isPlaceholder }) => {
+        const items = (selectedItems ?? []).filter(
+          (item): item is T => item != null
+        );
+        if (isPlaceholder || items.length === 0) {
+          return defaultChildren;
+        }
+        return (
+          <Provider values={[[TextContext, { className: 'truncate' }]]}>
+            <span ref={a11yRef} className="contents">
+              {renderValue(items)}
+            </span>
+          </Provider>
+        );
+      }}
+    </SelectValue>
+  );
+};
 
 function SelectBase<T extends object, M extends SelectionMode = 'single'>({
   disabled,
@@ -99,6 +171,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
   children,
   selectionMode,
   onChange,
+  renderValue,
   ref,
   ...rest
 }: SelectProps<T, M> & { ref?: Ref<HTMLButtonElement> }) {
@@ -140,7 +213,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+            <TriggerValue<T> renderValue={renderValue} />
             <ChevronsVertical size="16" className={classNames.icon} />
           </IconButton>
           <Tray>
@@ -161,7 +234,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+            <TriggerValue<T> renderValue={renderValue} />
             <ChevronsVertical size="16" className={classNames.icon} />
           </RACButton>
           <Popover>
