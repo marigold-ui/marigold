@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ContextType, useCallback, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   RangeCalendar as AriaRangeCalendar,
@@ -74,17 +74,31 @@ export interface RangeCalendarProps<T extends DateValue = DateValue>
    * The number of months to display at once. Up to 3 months are supported.
    * @default { months: 1 }
    */
-  visibleDuration?: { months: number };
+  visibleDuration?: { months: 1 | 2 | 3 };
   /**
    * Controls how the calendar pages when navigating.
    * - 'single': Page by one month at a time
    * - 'visible': Page by the number of visible months
    * @default 'visible'
    */
-  pageBehavior?: 'single' | 'visible';
+  pageBehavior?: RAC.RangeCalendarProps<T>['pageBehavior'];
 }
 
 type ViewMapKeys = 'month' | 'year';
+
+const EMPTY_VALIDITY_STATE: ValidityState = {
+  badInput: false,
+  customError: false,
+  patternMismatch: false,
+  rangeOverflow: false,
+  rangeUnderflow: false,
+  stepMismatch: false,
+  tooLong: false,
+  tooShort: false,
+  typeMismatch: false,
+  valid: false,
+  valueMissing: false,
+};
 
 // Component
 // ---------------
@@ -135,12 +149,12 @@ const _RangeCalendar = <T extends DateValue>({
   // listener that commits the in-progress range when the click target is not
   // a button. RAC's <ListBoxItem> renders with role="option", so picking a
   // month or year would otherwise trip that commit and drop the user's first
-  // click. Stopping native pointerup propagation on the dropdown overlay
-  // keeps the event from reaching `window` while still letting the option's
-  // own press handler run at the target phase.
-  const dropdownOverlayRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const node = dropdownOverlayRef.current;
+  // click. A native listener is required (not React's `onPointerUpCapture`)
+  // because react-aria's listener also runs on the native event, before any
+  // synthetic event would reach a React capture handler. Using a callback
+  // ref ensures the listener (re)attaches whenever the overlay node mounts,
+  // including when `visibleDuration` toggles single↔multi at runtime.
+  const dropdownOverlayRef = useCallback((node: HTMLDivElement | null) => {
     if (!node) return;
     const stop = (event: PointerEvent) => event.stopPropagation();
     node.addEventListener('pointerup', stop);
@@ -164,13 +178,13 @@ const _RangeCalendar = <T extends DateValue>({
     ),
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
-  const fieldErrorValue = useMemo(
+  const fieldErrorValue = useMemo<ContextType<typeof FieldErrorContext>>(
     () =>
       error
         ? {
             isInvalid: true,
             validationErrors: [],
-            validationDetails: {} as ValidityState,
+            validationDetails: EMPTY_VALIDITY_STATE,
           }
         : null,
     [error]
