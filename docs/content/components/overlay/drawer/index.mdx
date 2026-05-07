@@ -68,25 +68,22 @@ When in doubt, ask: is this content _about_ the visible main view, or _for_ it? 
 </Dont>
 </GuidelineTiles>
 
-### Drawer or page?
+### Drawer or page
 
 The call teams most often get wrong is choosing a drawer for content that really belongs on a page. It comes down to how many information layers the content has.
 
 - **Single layer → drawer.** One coherent set of fields or content the user works through linearly, without needing to navigate inside it. A record's details, a small edit form, a filter panel, a comments feed.
 - **Multiple layers → page.** Content that splits into separately navigable areas: tabs across different aspects, nested editable records, drill-down sub-views, or multi-step flows where each step has its own content.
 
-The clearest tell: would the content need tabs or internal navigation inside the panel? If so, it is a page.
-
 A drawer slides over the current view and is temporary (opened, used, dismissed). A page replaces it or routes somewhere new and is lasting, with its own URL, browser history, and place in the app's information architecture. Multi-layer content needs that durability to keep users oriented.
 
 **Reach for a page over a drawer when:**
 
 - the **user needs a URL** to share, bookmark, or return to later,
+- the **content needs tabs or internal navigation** inside the panel,
 - the **form has nested editable records** (line items, sub-tasks with their own forms),
 - the **flow has multiple steps** with their own commit moments (save here, then save again there),
 - the **user could reasonably get lost** inside it without a back button or breadcrumbs to orient them.
-
-If you find yourself wanting tabs inside a drawer, wanting browser back/forward to work as navigation, or wanting users to deep-link to it, that is the signal: it is a page.
 
 ### Drawer vs Dialog
 
