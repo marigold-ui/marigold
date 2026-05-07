@@ -8,8 +8,10 @@ feat(DST-1264): add `@marigold/cli` — terminal access to Marigold docs, compon
 - New package `@marigold/cli` with commands:
   - `marigold docs <Component>` — fetch component documentation (supports `--section`, `--format`, `--fresh`, `--offline`)
   - `marigold list` — list available components (supports `--category`, `--search`)
-  - `marigold init` — interactive wizard to install Marigold packages and print setup instructions
+  - `marigold init` — interactive wizard that installs Marigold packages, edits CSS, wraps the app in `Providers`, and patches the Vite config for Next.js and Vite projects
   - `marigold telemetry <status|enable|disable>` — manage anonymous telemetry
+  - `marigold completion <bash|zsh|fish>` — print a shell completion script for tab-completing commands, options, and component names
+- Security: sanitize remote content at the fetch boundary to strip the full ECMA-48 escape set (OSC, DCS, APC/PM/SOS, cursor) so a compromised docs origin can't write to the clipboard via OSC 52 or hijack the terminal; the OSC/DCS matchers are linear-time to avoid ReDoS on adversarial input.
 - Docs site: extended `/api/manifest.json` with categorized components and package version; added `/api/telemetry` ingest route (Upstash Redis).
 - CLAUDE.md: documented CLI usage for AI agents.
 

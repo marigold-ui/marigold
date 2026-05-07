@@ -30,7 +30,7 @@ const RAW_MANIFEST = JSON.stringify({
       category: 'actions',
       description: null,
       badge: null,
-      url: '/components/actions/button-group',
+      url: '/components/actions/buttongroup',
     },
     {
       name: 'TextField',
@@ -38,7 +38,7 @@ const RAW_MANIFEST = JSON.stringify({
       category: 'form',
       description: null,
       badge: null,
-      url: '/components/form/text-field',
+      url: '/components/form/textfield',
     },
   ],
 });
