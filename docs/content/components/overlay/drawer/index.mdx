@@ -61,11 +61,8 @@ When in doubt, ask: is this content _about_ the visible main view, or _for_ it? 
     {/* prettier-ignore */}
     <ul>
       <li>critical confirmations or destructive actions are required,</li>
-      <li>the flow has deep navigation or several commit moments,</li>
-      <li>the task requires full attention or a shareable URL,</li>
-      <li>the user is filling another form on the page and needs to create a referenced object, which is a [dialog](/components/overlay/dialog),</li>
-      <li>the action is a single bulk verb (delete, archive, assign N), which is an [ActionBar](/components/actions/actionbar),</li>
-      <li>the configuration is narrow (e.g. column settings for a table), which is a popover or a menu, unless the form genuinely has many fields.</li>
+      <li>the flow has multiple steps, multiple save points, or its own internal navigation, which is a [page](#routing-to-a-page-instead),</li>
+      <li>the task requires full attention or a shareable URL.</li>
     </ul>
   </DontDescription>
 </Dont>
@@ -73,11 +70,11 @@ When in doubt, ask: is this content _about_ the visible main view, or _for_ it? 
 
 ### Drawer vs Dialog
 
-A dialog is modal: it blocks the page and asks the user to commit, acknowledge, or decide before continuing. A drawer is non-modal, so the page behind stays interactive while the user inspects, refines, or augments.
+A user is filling out a "Create event" form and needs to pick a category that doesn't exist yet. The temptation is to slide in a drawer for "Create category" so the half-filled form stays visible behind it. This is exactly where a dialog fits better than a drawer: the new category is _for_ that form, not _about_ the page.
 
-Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions. Choose a drawer when the work is supplementary to whatever is already on screen.
+This is the canonical drawer-vs-dialog confusion. The underlying difference: a dialog is modal, blocking the page and asking the user to commit, acknowledge, or decide before continuing. A drawer is non-modal, so the page behind stays interactive while the user inspects, refines, or augments.
 
-The most common mistake here: a user is filling out a form (say, creating an event) and needs a value that doesn't exist yet, like a new category. It's tempting to open a drawer for "Create category". Don't. The new category is _for_ the form they're filling out, not _about_ the page. That's a dialog.
+Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions. The same applies when the task simply demands full attention and interacting with the page behind would be a distraction. Choose a drawer when the work is supplementary to whatever is already on screen.
 
 ### Routing to a page instead
 
@@ -191,6 +188,7 @@ On small screens, the drawer falls back to a modal sheet. Focus trapping and dis
 
 - [Dialog](/components/overlay/dialog): Use for modal, attention-required moments like confirmations, destructive actions, and parent-form quick-create.
 - [ActionBar](/components/actions/actionbar): Use for single-verb bulk actions on a selection (delete, archive, assign). Pair with a drawer when bulk-editing several fields.
+- [Menu](/components/overlay/menu): Use for a small set of toggles or quick choices, like table column settings, sort order, or density. A drawer is overkill when the controls are a handful of options that fit inline next to their trigger.
 - [Sidebar](/components/navigation/sidebar): Use for app-level navigation, not for in-context content alongside a record.
 
 ## Related
