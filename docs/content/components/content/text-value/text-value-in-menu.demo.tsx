@@ -8,6 +8,7 @@ export default () => (
     placeholder="Select a person"
     defaultValue="crash"
     width={80}
+    items={people}
     renderValue={([person]: Person[]) => (
       <Inline space={2} alignY="center">
         <img
@@ -19,8 +20,8 @@ export default () => (
       </Inline>
     )}
   >
-    {people.map(person => (
-      <Select.Option key={person.id} id={person.id} textValue={person.name}>
+    {(person: Person) => (
+      <Select.Option id={person.id}>
         <Inline space={3} alignY="center">
           <img
             src={person.avatar}
@@ -36,6 +37,6 @@ export default () => (
           </Stack>
         </Inline>
       </Select.Option>
-    ))}
+    )}
   </Select>
 );
