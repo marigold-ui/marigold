@@ -14,6 +14,7 @@ changed:
   - components/layout/app-layout
   - components/layout/card
   - components/navigation/sidebar
+  - components/navigation/pagination
   - components/actions/actionbar
   - components/collection/table
   - components/content/divider
@@ -569,6 +570,10 @@ The inner row layout also switches from `items-center` to `items-start`, so the 
 
 `<Checkbox>` and `<Radio>` controls now paint their inner area with `bg-surface`, so the controls stay visually distinct over containers that paint a non-default background — for example a hovered or selected `<SelectList>` row. `<Radio>` already used `bg-surface` (added during the design-token polish); this brings `<Checkbox>` into parity.
 
+### `<Pagination>` mobile layout
+
+`<Pagination>` now hides the numbered page buttons below the `sm` breakpoint and spreads the previous / next buttons across the full width via `justify-between`. The full layout is preserved on larger screens. The result is a cleaner, touch-friendly pagination on mobile without giving up the desktop affordance.
+
 ### `<FieldBase>` forwards validation props through `as`
 
 When `<FieldBase>` renders through a React Aria Components element via `as={RACComponent}`, the validation props (`isInvalid`, `isRequired`, `isDisabled`) are now forwarded so the underlying RAC element receives them. Plain DOM elements continue to skip these props to avoid unknown attribute warnings.
@@ -640,6 +645,8 @@ v18 ships alongside a substantial pass over the documentation site. None of thes
 - **Switch `variant="settings"` documented end to end** — a Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
 - **Per-page markdown and the page manifest are now static assets.** `/<page-url>.md` (e.g. `/components/actions/button.md`) and `/manifest.json` are now plain files in `public/`, written once at build time and served directly by Next.js — no route handlers, no `force-static` Proxy crash on Vercel under Node ≥22 + Next.js 16. Same URLs as before, no consumer-facing change. While re-architecting this, `ts-morph` was eliminated from the runtime: type extraction now happens once at `pnpm build:types` and writes `.registry/props.json`, which both the `<AutoTypeTable>` server component and the markdown-build remark plugin read synchronously. As a side-effect, prop tables and AppearanceTables in the markdown output now match the HTML output exactly — `Menu` gains `destructive`, `LinkButton` gains `destructive-ghost`, `Panel.size` gains `default`, `Link.size` gains `default | small`, and `<AutoTypeTable package="system">` finally produces a populated table for `svg/index.mdx` and `icon/index.mdx`.
 - **MCP and embedding env vars are optional in local builds.** `pnpm build:docs` no longer requires `AWS_BEDROCK_*`, `OIDC_*`, or `BLOB_READ_WRITE_TOKEN` to be set, and the `claude mcp add marigold-docs` snippet uses the positional URL argument instead of `--url`.
+- **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
+- **Prop tables split into main / aria / handler groups.** The interactive `<AutoTypeTable>` on each component page now shows only the meaningful API props by default and tucks `aria-*` / `role` attributes and React DOM event handlers into separate collapsible sections (Button drops from 112 visible props to 39 main + 10 aria + 63 handlers). The static markdown pipeline that feeds the LLM / MCP `search_docs` index is intentionally untouched, so machine-readable docs continue to expose the full prop list.
 
 ---
 
