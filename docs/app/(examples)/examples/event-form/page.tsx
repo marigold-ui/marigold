@@ -56,7 +56,7 @@ const EventForm = () => {
 };
 
 const FormPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <EventForm />
   </Inset>
 );

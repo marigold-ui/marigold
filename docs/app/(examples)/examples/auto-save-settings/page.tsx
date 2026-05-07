@@ -5,7 +5,7 @@ import { Notifications } from './notifications';
 import { Privacy } from './privacy';
 
 const AutoSaveSettingsPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Stack space="group">
       <Stack space="tight">
         <Headline level={2}>Account preferences</Headline>

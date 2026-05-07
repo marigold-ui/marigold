@@ -9,7 +9,7 @@ export const PlaceholderPage = ({
   title: string;
   description: string;
 }) => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Stack space={2}>
       <Headline level={2}>{title}</Headline>
       <Text>{description}</Text>

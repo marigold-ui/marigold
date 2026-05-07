@@ -7,7 +7,7 @@ import { Notifications } from './notifications';
 import { RegistrationCapacity } from './registrationCapacity';
 
 const SettingsFormPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Stack space="group">
       <Stack space="tight">
         <Headline level={2}>Event settings</Headline>
