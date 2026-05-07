@@ -30,24 +30,6 @@ Reach for `<TextValue>` when:
 - the option pairs a label with a `<Description>` help line, or
 - you want the label to drive typeahead independently from supporting copy.
 
-If the item is a single string (e.g. `<Select.Option>Berlin</Select.Option>`), `<TextValue>` is not needed. The selection item already treats its plain text children as the accessible name.
-
-### Inside selection items
-
-A common case: a `<Select>` with rich options that combine an avatar, a name, and supporting metadata. `<TextValue>` marks the name as the label, and `<Description>` adds the help line below it.
-
-<ComponentDemo name="text-value-in-menu" />
-
-Pair with `<Description>` whenever an item benefits from a one-line explanation:
-
-<ComponentDemo name="text-value-with-description" />
-
-### Driving typeahead
-
-Filtering inside a `<ComboBox>` follows the option's label, not its supporting copy. `<TextValue>` marks that label, so typing a fragment of a description won't match — only the label is searched.
-
-<ComponentDemo name="text-value-typeahead" />
-
 <GuidelineTiles>
   <Do>
     <DoDescription>
@@ -57,13 +39,14 @@ Filtering inside a `<ComboBox>` follows the option's label, not its supporting c
   </Do>
   <Do>
     <DoDescription>
-      Pair with `<Description>` for items that benefit from a help line.
+      Wrap only the visible label text in `<TextValue>`. Icons, badges, and
+      layout components go around it, not inside.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
       Don't reach for `<TextValue>` when an option's children are a single
-      string. The selection item already uses that text as the accessible name.
+      string. The selection item already uses that as the accessible name.
     </DontDescription>
   </Dont>
   <Dont>
@@ -73,6 +56,24 @@ Filtering inside a `<ComboBox>` follows the option's label, not its supporting c
     </DontDescription>
   </Dont>
 </GuidelineTiles>
+
+### With a description
+
+Place a `<Description>` next to the `<TextValue>` inside a selection item to add a one-line help line below the label. The label drives the option's accessible name and typeahead. The description sits below it.
+
+<ComponentDemo name="text-value-with-description" />
+
+### With a complex layout
+
+When option content includes images, icons, or layout components like `<Inline>`, keep `<TextValue>` around the label text only and let the layout wrap around it. Set the option's `textValue` prop so typeahead has a plain string to match even when the label sits behind layout.
+
+<ComponentDemo name="text-value-in-menu" />
+
+### Driving typeahead
+
+Filtering inside a `<ComboBox>` follows the option's label, not its supporting copy. `<TextValue>` marks that label, so typing a fragment of a description won't match. Only the label is searched.
+
+<ComponentDemo name="text-value-typeahead" />
 
 ## Props
 
