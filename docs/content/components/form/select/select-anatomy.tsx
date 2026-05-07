@@ -1,20 +1,20 @@
 export const SelectAnatomy = () => (
   <svg
-    viewBox="-20 50 740 470"
-    className="mx-auto h-auto w-full max-w-[90%]"
+    viewBox="-20 50 960 330"
+    className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>
       <clipPath id="select-anatomy-popover-clip">
-        <rect x="200" y="220" width="320" height="280" rx="12" />
+        <rect x="520" y="70" width="240" height="280" rx="12" />
       </clipPath>
     </defs>
 
     {/* Field label */}
     <rect
-      x="200"
+      x="160"
       y="70"
-      width="100"
+      width="80"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
@@ -22,9 +22,9 @@ export const SelectAnatomy = () => (
 
     {/* Trigger (closed select field) */}
     <rect
-      x="200"
+      x="160"
       y="100"
-      width="320"
+      width="200"
       height="44"
       rx="8"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
@@ -32,9 +32,9 @@ export const SelectAnatomy = () => (
     />
     {/* Selected value */}
     <rect
-      x="220"
+      x="180"
       y="116"
-      width="140"
+      width="120"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
@@ -47,15 +47,15 @@ export const SelectAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 488 120 L 496 113 L 504 120" />
-      <path d="M 488 124 L 496 131 L 504 124" />
+      <path d="M 328 120 L 336 113 L 344 120" />
+      <path d="M 328 124 L 336 131 L 344 124" />
     </g>
 
     {/* Helper text (description below the field) */}
     <rect
-      x="200"
+      x="160"
       y="160"
-      width="200"
+      width="160"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
@@ -63,9 +63,9 @@ export const SelectAnatomy = () => (
 
     {/* Popover / listbox */}
     <rect
-      x="200"
-      y="220"
-      width="320"
+      x="520"
+      y="70"
+      width="240"
       height="280"
       rx="12"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
@@ -74,8 +74,8 @@ export const SelectAnatomy = () => (
 
     {/* Section header */}
     <rect
-      x="220"
-      y="240"
+      x="540"
+      y="90"
       width="80"
       height="10"
       rx="4"
@@ -85,9 +85,9 @@ export const SelectAnatomy = () => (
     {/* Option 1 (selected) accent fill */}
     <g clipPath="url(#select-anatomy-popover-clip)">
       <rect
-        x="208"
-        y="266"
-        width="304"
+        x="528"
+        y="116"
+        width="224"
         height="60"
         rx="6"
         className="fill-fd-accent transition-colors duration-300"
@@ -95,8 +95,8 @@ export const SelectAnatomy = () => (
     </g>
     {/* Option 1 label */}
     <rect
-      x="222"
-      y="282"
+      x="540"
+      y="132"
       width="130"
       height="12"
       rx="4"
@@ -104,9 +104,9 @@ export const SelectAnatomy = () => (
     />
     {/* Option 1 description */}
     <rect
-      x="222"
-      y="302"
-      width="180"
+      x="540"
+      y="152"
+      width="160"
       height="10"
       rx="4"
       className="fill-fd-accent-foreground/70 transition-colors duration-300"
@@ -114,25 +114,25 @@ export const SelectAnatomy = () => (
 
     {/* Divider between option 1 and 2 */}
     <rect
-      x="220"
-      y="342"
-      width="280"
+      x="540"
+      y="192"
+      width="200"
       height="2"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Option 2 */}
     <rect
-      x="222"
-      y="362"
+      x="540"
+      y="212"
       width="120"
       height="12"
       rx="4"
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="222"
-      y="382"
+      x="540"
+      y="232"
       width="160"
       height="10"
       rx="4"
@@ -141,26 +141,26 @@ export const SelectAnatomy = () => (
 
     {/* Divider between option 2 and 3 */}
     <rect
-      x="220"
-      y="412"
-      width="280"
+      x="540"
+      y="272"
+      width="200"
       height="2"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Option 3 */}
     <rect
-      x="222"
-      y="432"
+      x="540"
+      y="292"
       width="100"
       height="12"
       rx="4"
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="222"
-      y="452"
-      width="150"
+      x="540"
+      y="312"
+      width="130"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
@@ -175,34 +175,38 @@ export const SelectAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Label (left) */}
-      <path d="M 200 76 L 130 76" />
+      <path d="M 160 76 L 130 76" />
       {/* Field — trigger left edge */}
-      <path d="M 200 122 L 130 122" />
+      <path d="M 160 122 L 130 122" />
       {/* Helper text */}
-      <path d="M 200 165 L 130 165" />
-      {/* Section header */}
-      <path d="M 220 245 L 130 245" />
+      <path d="M 160 165 L 130 165" />
 
-      {/* Selected value (right) */}
-      <path d="M 360 122 L 590 122" />
+      {/* Selected value — into the gap between trigger and popover */}
+      <path d="M 300 122 L 390 122" />
+
       {/* Popover top-right */}
-      <path d="M 520 222 L 590 222" />
+      <path d="M 760 72 L 790 72" />
+      {/* Section header */}
+      <path d="M 620 95 L 790 95" />
       {/* Option (right edge of selected option) */}
-      <path d="M 512 296 L 590 296" />
+      <path d="M 752 146 L 790 146" />
+      {/* Item label */}
+      <path d="M 660 218 L 790 218" />
       {/* Item description */}
-      <path d="M 402 387 L 590 387" />
+      <path d="M 700 237 L 790 237" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="200" cy="76" r="4" />
-      <circle cx="200" cy="122" r="4" />
-      <circle cx="200" cy="165" r="4" />
-      <circle cx="220" cy="245" r="4" />
-      <circle cx="360" cy="122" r="4" />
-      <circle cx="520" cy="222" r="4" />
-      <circle cx="512" cy="296" r="4" />
-      <circle cx="402" cy="387" r="4" />
+      <circle cx="160" cy="76" r="4" />
+      <circle cx="160" cy="122" r="4" />
+      <circle cx="160" cy="165" r="4" />
+      <circle cx="300" cy="122" r="4" />
+      <circle cx="760" cy="72" r="4" />
+      <circle cx="620" cy="95" r="4" />
+      <circle cx="752" cy="146" r="4" />
+      <circle cx="660" cy="218" r="4" />
+      <circle cx="700" cy="237" r="4" />
     </g>
 
     {/* Labels */}
@@ -238,19 +242,10 @@ export const SelectAnatomy = () => (
         >
           Description
         </text>
-        <text
-          x="120"
-          y="249"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
-          Section
-        </text>
       </g>
       <g textAnchor="start">
         <text
-          x="600"
+          x="395"
           y="126"
           fontSize="14"
           fontWeight="600"
@@ -259,8 +254,8 @@ export const SelectAnatomy = () => (
           Selected value
         </text>
         <text
-          x="600"
-          y="226"
+          x="800"
+          y="76"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -268,8 +263,17 @@ export const SelectAnatomy = () => (
           Popover
         </text>
         <text
-          x="600"
-          y="300"
+          x="800"
+          y="99"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Section
+        </text>
+        <text
+          x="800"
+          y="150"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -277,8 +281,17 @@ export const SelectAnatomy = () => (
           Option
         </text>
         <text
-          x="600"
-          y="391"
+          x="800"
+          y="222"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Item label
+        </text>
+        <text
+          x="800"
+          y="241"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
