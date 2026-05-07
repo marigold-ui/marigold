@@ -86,7 +86,7 @@ const FilterForm = ({ state }: FilterFormProps) => {
         name="rating"
         defaultValue={state.rating}
       />
-      <Stack space={2}>
+      <Stack space={2} alignX="left">
         <Text weight="semibold">Min. Rating</Text>
         <ToggleButton.Group
           selectionMode="single"
