@@ -12,6 +12,7 @@ changed:
   - components/layout/stack
   - components/layout/inline
   - components/layout/app-layout
+  - components/layout/card
   - components/navigation/sidebar
   - components/actions/actionbar
   - components/collection/table
@@ -22,7 +23,12 @@ changed:
   - components/form/select
   - components/form/combobox
   - components/form/autocomplete
+  - components/form/checkbox
+  - components/form/radio
+  - components/form/select-list
+  - components/form/range-calendar
   - components/overlay/tooltip
+  - icons
 ---
 
 For the last years, Marigold's job was mostly to replace. Modernize an aging codebase, swap out legacy patterns, refresh a design that had started to show its years. v18.0.0 is where that chapter quietly ends and a new one begins. We are done catching up. From here, the work is about craft. Shaping a design language that does not just look current, but is unmistakably its own.
@@ -309,6 +315,101 @@ Anything that read `mainRef.current.scrollTop` (or attached a scroll listener to
 
 A small known trade-off: a pure app-shell look using `position: sticky` can flicker briefly during iOS Safari momentum scroll, and sticky elements may show a one-frame repaint when overlays close. Both are cosmetic, neither affects correctness, and the behavioral wins above are worth it.
 
+### `<Inset>` padding props renamed
+
+`<Inset>`'s padding props are renamed to align with `<Panel>`'s API. Across the design system, `space` always means **gap between children** and `p` / `px` / `py` always mean **inner padding**. Previously `space` carried two different meanings depending on the component, which was a source of confusion in code review.
+
+```diff
+- <Inset space="related"><Content /></Inset>
++ <Inset p="related"><Content /></Inset>
+
+- <Inset spaceX="loose" spaceY="related"><Content /></Inset>
++ <Inset px="loose" py="related"><Content /></Inset>
+```
+
+The discriminated union shape is unchanged: `p` is mutually exclusive with `px` / `py`. Token vocabularies are unchanged (`InsetSpacingTokens` for `p`, `PaddingSpacingTokens` for `px` / `py`).
+
+### `<Card>` refactored to compound component pattern
+
+`<Card>`'s prop-based API (`padding`, `space`, etc.) is gone. Content is now composed through explicit sub-components, which makes the framing and the body responsibilities visible in the markup. A `CardContext` is set up by `<Card>`, so sub-components throw a clear error if they're rendered outside one.
+
+```diff
+- <Card>
+-   <SomeContent />
+- </Card>
++ <Card>
++   <Card.Header>Title</Card.Header>
++   <Card.Body>
++     <SomeContent />
++   </Card.Body>
++   <Card.Footer>Actions</Card.Footer>
++ </Card>
+```
+
+`<Card.Preview>` is also available for media at the top of the card. With `<Panel>` now covering page-level sections, `<Card>` is the right unit for repeating collection items (a stat tile, a session row, a payment method, a team card) — the [Panel docs page](/components/layout/panel) includes a side-by-side comparison.
+
+### `<SelectList>` API standardization
+
+`<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. Renames and a tightened type surface ship together.
+
+```diff
+- <SelectList selectionMode="none">
+-   <SelectList.Item id="free">
+-     <SelectList.Action>
+-       <IconButton aria-label="Info"><Info /></IconButton>
+-     </SelectList.Action>
+-     Free
+-   </SelectList.Item>
+- </SelectList>
++ <SelectList selectionMode="single">
++   <SelectList.Option id="free">
++     Free
++     <IconButton aria-label="Info"><Info /></IconButton>
++   </SelectList.Option>
++ </SelectList>
+```
+
+The full set of changes:
+
+- **`SelectList.Item` → `SelectList.Option`.** Aligns with `Select.Option` and the HTML `<option>` mental model.
+- **`SelectList.Action` removed.** Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>`. The component positions, sizes, and styles the nested control automatically via `ButtonContext`. One action per option for now (multi-button groups will arrive with a future `ActionButtonGroup`).
+- **Leading-image slot removed.** Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+- **`selectionMode="none"` is gone.** `<SelectList>` is a form field; the default is `"single"`.
+- **`onChange` is strictly typed per `selectionMode`** — `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. Passing `setState` directly may need adapting.
+- **Selection indicator** — single-select rows render a visible radio circle, multi-select renders a checkbox.
+- **Label & description slots** — `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
+- **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
+- **Theme entry** — `SelectList` ships its own theme component with first-class `label`, `description`, and `action` slots; descendant selectors are gone. Custom themes need to add or update a `SelectList` entry.
+
+The [SelectList docs page](/components/form/select-list) is rewritten around the new API: anatomy, a decision table for picking between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions, horizontal orientation, and empty state.
+
+### `@marigold/icons` migrated to a `lucide-react` proxy
+
+`@marigold/icons` is now a thin proxy over `lucide-react` plus 13 retained custom icons (event-domain shapes that don't have a Lucide equivalent — `DesignTicket`, `Stadium`, etc.). Icons that **did** have a Lucide equivalent (`Add`, `Seat`, `Deal`, …) were dropped in favour of the Lucide name.
+
+Imports stay through `@marigold/icons` so consumers pick up future re-exports automatically — only the icon names change:
+
+```diff
+- import { Search, Check, Add, Ticket, Seat, Deal } from '@marigold/icons';
++ import {
++   Search,
++   Check,
++   Plus as Add,
++   Ticket,
++   Armchair as Seat,
++   BadgePercent as Deal,
++ } from '@marigold/icons';
+```
+
+A few practical notes on the new package:
+
+- Always import from `@marigold/icons`, not from `lucide-react` directly. The package re-exports the entire Lucide catalogue along with the custom icons, so a single import path covers both.
+- `size` is now serialized as a numeric attribute (`width="24"`) rather than `"24px"`. Pass `size={20}` exactly as before.
+- For coloring, prefer Tailwind text utilities (`<TriangleAlert className="text-warning-accent" />`). Lucide reads the `color` prop as a literal CSS value, so `color="warning"` won't resolve a theme token — reserve `color` / `fill` / `stroke` for literal values like `var(--color-…)` or hex codes.
+- 11 of the 13 custom icons are filled silhouettes wrapped with a small helper that defaults `fill` and `stroke` to `currentColor` and couples the `color`, `fill`, and `stroke` props so they move together. Pass `stroke` explicitly to differentiate. `Instagram` and `Twitter` are stroke-based outlines and follow Lucide's standard `color` → `stroke` behaviour.
+- Icons get `aria-hidden="true"` automatically when rendered without children or an `aria-*` attribute. Provide `aria-label` for standalone meaningful icons.
+- The peer dependency narrows to `react: >=19.0.0` (the custom icon wrappers rely on React 19's ref-as-prop).
+
 ### `<Select>`, `<ComboBox>`, `<Autocomplete>` no longer accept `width="fit"`
 
 The `fit` value is gone on these three components. Their listbox renders through a popover with virtualized content, and the react-aria `Virtualizer` controls item sizing independently of CSS layout — `width="fit"` never made it into the popover, which ended up clipping the dropdown contents.
@@ -365,11 +466,23 @@ Every other `width` value (fractions, fixed sizes, `full`) continues to work. Th
 
 The full API — header actions, footer layouts, bleed content, danger-zone rows, controlled collapsible state, error states, and a direct `Panel` vs `Card` comparison — lives on the new [Panel documentation page](/components/layout/panel).
 
+### `<RangeCalendar>` (alpha)
+
+A new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`).
+
+```tsx
+<RangeCalendar label="Travel dates" visibleDuration={{ months: 2 }} />
+```
+
+Up to three side-by-side months are supported via `visibleDuration`, stacking vertically below the `sm` breakpoint. The same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>`, so the help / error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container).
+
+Ships as an alpha component with a stub docs page under the form section.
+
 ## Components
 
 ### Universal `collapsed` spacing token
 
-A new `collapsed` token is available across **every** spacing-accepting prop in the system: `<Stack>` / `<Inline>` `space`, `<Inset>` `space` / `spaceX` / `spaceY`, and anywhere else that takes a spacing token. It resolves to zero.
+A new `collapsed` token is available across **every** spacing-accepting prop in the system: `<Stack>` / `<Inline>` `space`, `<Inset>` `p` / `px` / `py`, and anywhere else that takes a spacing token. It resolves to zero.
 
 ```tsx
 <Stack space="collapsed">
@@ -377,7 +490,7 @@ A new `collapsed` token is available across **every** spacing-accepting prop in 
   <Table />
 </Stack>
 
-<Inset space="collapsed">
+<Inset p="collapsed">
   <EdgeToEdgeContent />
 </Inset>
 ```
@@ -428,6 +541,37 @@ The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and e
 ### `<ActionBar>` button spacing
 
 `<ActionBar>` action buttons now space their icon and label the same way a regular `<Button>` does. The theme's `actionButton` style was missing `gap-2 items-center justify-center`, which produced a subtle but visible misalignment whenever an `ActionBar` button mixed an icon with text. Theme-only fix — no consumer migration.
+
+### `<Panel.Title>` may be used without `<Panel.Header>`
+
+`<Panel.Title>` can now sit as a direct child of `<Panel>` when the panel has only a title (no description, no header actions). `<Panel.Header>` remains the layout wrapper for title + description + actions, but a title-only panel doesn't need it. Accessibility (`aria-labelledby`) and horizontal panel padding still resolve correctly.
+
+```tsx
+<Panel>
+  <Panel.Title>General settings</Panel.Title>
+  <Panel.Content>…</Panel.Content>
+</Panel>
+```
+
+`<Panel.Description>` and `<Panel.HeaderActions>` continue to require a `<Panel.Header>` wrapper. Existing `<Panel.Header><Panel.Title>…</Panel.Title></Panel.Header>` usages keep working.
+
+### Persistent idle sort indicator on `<Table>`
+
+`<Table.Column>` with `allowsSorting` now renders a Lucide `arrow-down-up` icon when the column is sortable but not currently the active sort column. The active ascending / descending icons (`SortAscending` / `SortDescending`) are unchanged. Sortable columns are now discoverable at rest, instead of relying on hover or the active-column state to surface the affordance.
+
+### `<CheckboxGroup>` and `<RadioGroup>` continuous click area
+
+Spacing between items in `<CheckboxGroup>` and `<RadioGroup>` moves from a `gap` to per-item padding, so the whole space between items is clickable. Vertical items now meet the 24 px target-size minimum; horizontal spacing keeps visual parity. Standalone `<Checkbox>` is unaffected.
+
+The inner row layout also switches from `items-center` to `items-start`, so the icon stays on the first line when the label wraps. `<Radio>` labels now use `leading-4` to match `<Checkbox>`, and the icon-to-label gap moves from an inline `gap-[1ch]` to the theme-driven `gap-x-2` for parity with `<Checkbox>`.
+
+### `<Checkbox>` and `<Radio>` painted with `bg-surface`
+
+`<Checkbox>` and `<Radio>` controls now paint their inner area with `bg-surface`, so the controls stay visually distinct over containers that paint a non-default background — for example a hovered or selected `<SelectList>` row. `<Radio>` already used `bg-surface` (added during the design-token polish); this brings `<Checkbox>` into parity.
+
+### `<FieldBase>` forwards validation props through `as`
+
+When `<FieldBase>` renders through a React Aria Components element via `as={RACComponent}`, the validation props (`isInvalid`, `isRequired`, `isDisabled`) are now forwarded so the underlying RAC element receives them. Plain DOM elements continue to skip these props to avoid unknown attribute warnings.
 
 ### `ui-surface` custom properties no longer cascade
 
@@ -493,6 +637,9 @@ v18 ships alongside a substantial pass over the documentation site. None of thes
 - **MCP server for the docs.** The docs site now exposes an MCP (Model Context Protocol) server at `/mcp` so AI coding assistants (Claude Code, VS Code Copilot, Cursor, etc.) can run semantic searches across the Marigold documentation. An ETL pipeline (`pnpm build:embeddings`) chunks the MDX content and generates vector embeddings via AWS Bedrock Titan v2, served over Streamable HTTP behind Keycloak authentication.
 - **Table demo column alignment fixed.** Several Table demos contradicted the alignment rules described in the docs — numeric columns rendered left-aligned, action menus centered under left-aligned headers. The `action-menu`, `table-editable`, `table-links`, and `table-sticky` demos now follow the documented "numeric right, text left, center only for icons or status" rules.
 - **Storybook decorators migrated from `<Card>` to `<Panel>`** — internal cleanup so component stories that need a framing surface render through `<Panel>`, matching how page-level sections are now built. Behavior of the components themselves doesn't change; just what you see in Storybook.
+- **Switch `variant="settings"` documented end to end** — a Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
+- **Per-page markdown and the page manifest are now static assets.** `/<page-url>.md` (e.g. `/components/actions/button.md`) and `/manifest.json` are now plain files in `public/`, written once at build time and served directly by Next.js — no route handlers, no `force-static` Proxy crash on Vercel under Node ≥22 + Next.js 16. Same URLs as before, no consumer-facing change. While re-architecting this, `ts-morph` was eliminated from the runtime: type extraction now happens once at `pnpm build:types` and writes `.registry/props.json`, which both the `<AutoTypeTable>` server component and the markdown-build remark plugin read synchronously. As a side-effect, prop tables and AppearanceTables in the markdown output now match the HTML output exactly — `Menu` gains `destructive`, `LinkButton` gains `destructive-ghost`, `Panel.size` gains `default`, `Link.size` gains `default | small`, and `<AutoTypeTable package="system">` finally produces a populated table for `svg/index.mdx` and `icon/index.mdx`.
+- **MCP and embedding env vars are optional in local builds.** `pnpm build:docs` no longer requires `AWS_BEDROCK_*`, `OIDC_*`, or `BLOB_READ_WRITE_TOKEN` to be set, and the `claude mcp add marigold-docs` snippet uses the positional URL argument instead of `--url`.
 
 ---
 
