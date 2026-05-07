@@ -39,9 +39,9 @@ The Card component supports variants for general content grouping as well as acc
 | `admin`   | Card with admin-specific border and background tint.             | Grouping content visible only to admin users. [Learn more.](/patterns/layout/admin-master-mark)  |
 | `master`  | Card with master-specific border and background tint.            | Grouping content visible only to master users. [Learn more.](/patterns/layout/admin-master-mark) |
 
-## Usage guidelines
+## Usage
 
-A Card is a strong visual container: it raises content above the page, draws a hard border around it, and tells the user "this belongs together as one unit." That weight is the point when content really is a self-contained item, but it becomes noise everywhere else. Reach for a Card when the elevation earns its keep, and choose a lighter layout when it doesn't.
+A Card visually groups related content like an event preview, a product tile, or a user profile and sets it apart from the rest of the page with a raised shadow and border. Use a Card when the same type of item repeats in a grid or list, and each item stands on its own. If you need to mark off a named section of a page (like "Billing" or "Organizer profile"), use a [`<Panel>`](../../layout/panel) instead.
 
 ### When to use a card
 
@@ -144,7 +144,7 @@ Cards already sit on a raised surface. Nesting a card inside another card create
 
 ### Decision checklist
 
-Before reaching for a Card, work through these questions. If most answers are "no," the content probably belongs in a lighter layout.
+Before reaching for a Card, work through these questions. If most answers are "no," consider using a simpler structure instead plain text, a list, or a section with a heading rather than a Card.
 
 - **Is the content a complete, standalone unit?** Could you take it out of context and still understand it?
 - **Does it mix several types of content?** Image, title, body, actions at least two or three.
@@ -162,11 +162,9 @@ If most of your answers are "no," try one of these instead:
 | A status, callout, or feedback message          | [`<SectionMessage>`](../../content/section-message)                       |
 | A list of similar rows with no media or actions | [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) |
 
-## Usage
+### Composition
 
-The `<Card>` component enhances the visual hierarchy and organization of content, making it easier for users to engage with various pieces of information.
-
-Cards use a compound component pattern, you compose the card layout using the provided sub-components. Not all slots need to be used: combine only the ones relevant to your content.
+Cards use a compound component pattern compose the layout using the provided sub-components. Not all slots need to be used: combine only the ones relevant to your content.
 
 ### Card.Preview
 
