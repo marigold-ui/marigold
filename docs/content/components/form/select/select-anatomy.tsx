@@ -93,19 +93,9 @@ export const SelectAnatomy = () => (
         className="fill-fd-accent transition-colors duration-300"
       />
     </g>
-    {/* Selection indicator (check) */}
-    <g
-      className="stroke-fd-accent-foreground transition-colors duration-300"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    >
-      <path d="M 222 297 L 230 305 L 244 289" />
-    </g>
     {/* Option 1 label */}
     <rect
-      x="260"
+      x="222"
       y="282"
       width="130"
       height="12"
@@ -114,7 +104,7 @@ export const SelectAnatomy = () => (
     />
     {/* Option 1 description */}
     <rect
-      x="260"
+      x="222"
       y="302"
       width="180"
       height="10"
@@ -133,7 +123,7 @@ export const SelectAnatomy = () => (
 
     {/* Option 2 */}
     <rect
-      x="260"
+      x="222"
       y="362"
       width="120"
       height="12"
@@ -141,7 +131,7 @@ export const SelectAnatomy = () => (
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="260"
+      x="222"
       y="382"
       width="160"
       height="10"
@@ -160,7 +150,7 @@ export const SelectAnatomy = () => (
 
     {/* Option 3 */}
     <rect
-      x="260"
+      x="222"
       y="432"
       width="100"
       height="12"
@@ -168,7 +158,7 @@ export const SelectAnatomy = () => (
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="260"
+      x="222"
       y="452"
       width="150"
       height="10"
@@ -192,19 +182,15 @@ export const SelectAnatomy = () => (
       <path d="M 200 165 L 130 165" />
       {/* Section header */}
       <path d="M 220 245 L 130 245" />
-      {/* Selection indicator (check) */}
-      <path d="M 222 297 L 130 297" />
 
       {/* Selected value (right) */}
       <path d="M 360 122 L 590 122" />
-      {/* Chevron up to corner */}
-      <path d="M 504 117 L 590 90" />
       {/* Popover top-right */}
       <path d="M 520 222 L 590 222" />
       {/* Option (right edge of selected option) */}
       <path d="M 512 296 L 590 296" />
       {/* Item description */}
-      <path d="M 440 387 L 590 387" />
+      <path d="M 402 387 L 590 387" />
     </g>
 
     {/* Connector dots */}
@@ -213,12 +199,10 @@ export const SelectAnatomy = () => (
       <circle cx="200" cy="122" r="4" />
       <circle cx="200" cy="165" r="4" />
       <circle cx="220" cy="245" r="4" />
-      <circle cx="222" cy="297" r="4" />
       <circle cx="360" cy="122" r="4" />
-      <circle cx="504" cy="117" r="4" />
       <circle cx="520" cy="222" r="4" />
       <circle cx="512" cy="296" r="4" />
-      <circle cx="440" cy="387" r="4" />
+      <circle cx="402" cy="387" r="4" />
     </g>
 
     {/* Labels */}
@@ -263,15 +247,6 @@ export const SelectAnatomy = () => (
         >
           Section
         </text>
-        <text
-          x="120"
-          y="301"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
-          Selection indicator
-        </text>
       </g>
       <g textAnchor="start">
         <text
@@ -282,15 +257,6 @@ export const SelectAnatomy = () => (
           className="fill-fd-primary"
         >
           Selected value
-        </text>
-        <text
-          x="600"
-          y="94"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
-          Chevron
         </text>
         <text
           x="600"
