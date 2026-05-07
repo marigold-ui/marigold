@@ -73,7 +73,7 @@ export const DrawerAnatomy = () => (
     {/* Close button */}
     <circle
       cx="652"
-      cy="62"
+      cy="46"
       r="14"
       className="fill-fd-muted/60 stroke-fd-border transition-colors duration-300"
       strokeWidth="1.5"
@@ -83,8 +83,8 @@ export const DrawerAnatomy = () => (
       strokeWidth="1.75"
       strokeLinecap="round"
     >
-      <path d="M 646 56 L 658 68" />
-      <path d="M 658 56 L 646 68" />
+      <path d="M 646 40 L 658 52" />
+      <path d="M 658 40 L 646 52" />
     </g>
 
     {/* Content placeholder lines */}
@@ -177,8 +177,8 @@ export const DrawerAnatomy = () => (
     >
       <path d="M 290 96 L 170 96" />
       <path d="M 440 220 L 170 220" />
-      <path d="M 540 70 L 690 40" />
-      <path d="M 666 62 L 690 84" />
+      <path d="M 580 70 L 690 70" />
+      <path d="M 666 46 L 690 46" />
       <path d="M 660 150 L 690 150" />
       <path d="M 660 374 L 690 374" />
     </g>
@@ -187,8 +187,8 @@ export const DrawerAnatomy = () => (
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="290" cy="96" r="4" />
       <circle cx="440" cy="220" r="4" />
-      <circle cx="540" cy="70" r="4" />
-      <circle cx="666" cy="62" r="4" />
+      <circle cx="580" cy="70" r="4" />
+      <circle cx="666" cy="46" r="4" />
       <circle cx="660" cy="150" r="4" />
       <circle cx="660" cy="374" r="4" />
     </g>
@@ -221,21 +221,21 @@ export const DrawerAnatomy = () => (
       <g textAnchor="start">
         <text
           x="700"
-          y="44"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
-          Title
-        </text>
-        <text
-          x="700"
-          y="88"
+          y="50"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
         >
           Close button
+        </text>
+        <text
+          x="700"
+          y="74"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Title
         </text>
         <text
           x="700"
