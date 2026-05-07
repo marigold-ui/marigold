@@ -85,7 +85,38 @@ export interface SelectProps<
    * @default false
    */
   error?: boolean;
+  /**
+   * Render the trigger value when one or more options are selected. Replaces
+   * the default trigger render. The placeholder still shows when nothing is
+   * selected. Must not contain focusable or interactive elements, since the
+   * trigger is itself a button.
+   */
+  renderValue?: (selectedItems: T[]) => ReactNode;
 }
+
+const TriggerValue = <T extends object>({
+  renderValue,
+}: {
+  renderValue?: (selectedItems: T[]) => ReactNode;
+}) => {
+  if (!renderValue) {
+    return (
+      <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+    );
+  }
+
+  return (
+    <SelectValue<T> className="truncate text-nowrap">
+      {({ selectedItems, defaultChildren, isPlaceholder }) => {
+        const items = selectedItems.filter((item): item is T => item != null);
+        if (isPlaceholder || items.length === 0) {
+          return defaultChildren;
+        }
+        return renderValue(items);
+      }}
+    </SelectValue>
+  );
+};
 
 function SelectBase<T extends object, M extends SelectionMode = 'single'>({
   disabled,
@@ -99,6 +130,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
   children,
   selectionMode,
   onChange,
+  renderValue,
   ref,
   ...rest
 }: SelectProps<T, M> & { ref?: Ref<HTMLButtonElement> }) {
@@ -140,7 +172,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+            <TriggerValue<T> renderValue={renderValue} />
             <ChevronsVertical size="16" className={classNames.icon} />
           </IconButton>
           <Tray>
@@ -161,7 +193,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+            <TriggerValue<T> renderValue={renderValue} />
             <ChevronsVertical size="16" className={classNames.icon} />
           </RACButton>
           <Popover>

@@ -7,7 +7,7 @@ import { OrganizerInfo } from './organizerInfo';
 import { RegistrationSettings } from './registrationSettings';
 
 const FormPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Form>
       <Stack space="section">
         <EventDetails />

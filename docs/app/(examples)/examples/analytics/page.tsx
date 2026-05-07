@@ -128,7 +128,7 @@ const TrendIcon = ({ trend }: { trend: Trend }) =>
   ) : null;
 
 const AnalyticsPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Stack space={8}>
       <Inline space={4} alignY="center" alignX="between">
         <Stack space={2}>

@@ -1,5 +1,20 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
+// Shared cell classes used by both Calendar and RangeCalendar. Only the
+// cell shape (size/rounding) and the selected-state styling differ between
+// them, so each consumer composes those on top.
+export const calendarCellBase = [
+  'relative flex items-center justify-center whitespace-nowrap justify-self-center',
+  'my-0.5',
+  'border border-transparent p-0 text-sm font-normal text-foreground',
+  'outline-offset-2 duration-150 transition-[color,background-color]',
+  'data-hovered:ui-state-hover',
+  'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
+  'disabled:cursor-not-allowed disabled:text-disabled',
+  'unavailable:cursor-not-allowed unavailable:text-disabled unavailable:line-through',
+  'outside-month:hidden',
+];
+
 export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva({
     base: [
@@ -10,19 +25,13 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
     ],
   }),
-  calendarContainer: cva({ base: 'flex gap-4' }),
-  calendarMonth: cva({ base: 'min-w-[250px] flex-1' }),
+  calendarContainer: cva({ base: 'flex flex-col gap-4 sm:flex-row' }),
+  calendarMonth: cva({ base: 'min-w-[250px] sm:flex-1' }),
   calendarCell: cva({
     base: [
-      'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg justify-self-center',
-      'border border-transparent p-0 text-sm font-normal text-foreground',
-      'outline-offset-2 duration-150 transition-[color,background-color]',
+      'size-9 rounded-lg',
       'selected:bg-selected-bold selected:text-selected-bold-foreground',
-      'data-hovered:ui-state-hover',
-      'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
-      'disabled:cursor-not-allowed disabled:text-disabled',
-      'unavailable:cursor-not-allowed unavailable:text-disabled unavailable:line-through',
-      'outside-month:hidden',
+      ...calendarCellBase,
     ],
   }),
   calendarControllers: cva({
@@ -39,7 +48,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     ],
   }),
   calendarGrid: cva({
-    base: '[&_td]:p-1 [&_td]:group-[[role=dialog]]/tray:p-0.75',
+    base: 'border-collapse border-spacing-0 [&_td]:p-0 [&_td]:group-[[role=dialog]]/tray:p-0',
   }),
   calendarHeading: cva({
     base: 'text-sm font-medium',

@@ -106,7 +106,7 @@ const statusVariant = {
 } as const;
 
 const BillingPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Stack space={8}>
       <Stack space={2}>
         <Headline level={2}>Billing</Headline>

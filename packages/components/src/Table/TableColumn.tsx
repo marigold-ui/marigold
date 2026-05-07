@@ -4,6 +4,7 @@ import { Column, Group } from 'react-aria-components';
 import { alignment, cn, textAlign } from '@marigold/system';
 import { SortAscending } from '../icons/SortAscending';
 import { SortDescending } from '../icons/SortDescending';
+import { Sortable } from '../icons/Sortable';
 import { useTableContext } from './Context';
 
 // Helper
@@ -83,13 +84,11 @@ const TableColumn = ({
             alignment.horizontal.alignmentX[alignX]
           )}
         >
-          {allowsSorting && sortDirection != null && (
+          {allowsSorting && (
             <span aria-hidden="true">
-              {sortDirection === 'ascending' ? (
-                <SortAscending size={14} />
-              ) : (
-                <SortDescending size={14} />
-              )}
+              {sortDirection === 'ascending' && <SortAscending size={14} />}
+              {sortDirection === 'descending' && <SortDescending size={14} />}
+              {!sortDirection && <Sortable size={14} />}
             </span>
           )}
           <Group
