@@ -1,39 +1,66 @@
-import type { Person } from '@/lib/data/people';
-import { people } from '@/lib/data/people';
-import { Inline, Select, Stack, Text, TextValue } from '@marigold/components';
+import type { Venue } from '@/lib/data/venues';
+import { venues } from '@/lib/data/venues';
+import {
+  Inline,
+  NumericFormat,
+  Select,
+  Stack,
+  Text,
+  TextValue,
+} from '@marigold/components';
 
 export default () => (
   <Select
-    label="Assign to"
-    placeholder="Select a person"
-    defaultValue="crash"
-    width={80}
-    items={people}
-    renderValue={([person]: Person[]) => (
+    label="Choose a venue"
+    placeholder="Select a venue"
+    defaultValue="6"
+    width={96}
+    items={venues}
+    renderValue={([venue]: Venue[]) => (
       <Inline space={2} alignY="center">
         <img
-          src={person.avatar}
+          src={venue.image}
           alt=""
-          className="size-5 rounded-full object-cover"
+          className="size-5 rounded-sm object-cover"
         />
-        <Text>{person.name}</Text>
+        <Text>{venue.name}</Text>
       </Inline>
     )}
   >
-    {(person: Person) => (
-      <Select.Option id={person.id}>
-        <Inline space={3} alignY="center">
+    {(venue: Venue) => (
+      <Select.Option id={venue.id}>
+        <Inline space={4} alignY="center" noWrap>
           <img
-            src={person.avatar}
+            src={venue.image}
             alt=""
-            className="size-10 rounded-full object-cover"
+            className="size-16 rounded-md object-cover"
           />
-          <Stack space={0}>
-            <TextValue>{person.name}</TextValue>
-            <Text size="xs">{person.position}</Text>
+          <Stack space={1}>
+            <TextValue>{venue.name}</TextValue>
             <Text size="xs" variant="muted">
-              {person.email}
+              {venue.city}, {venue.country} · Capacity {venue.capacity} ·{' '}
+              {venue.indoor ? 'Indoor' : 'Outdoor'}
             </Text>
+            <Inline space={2} alignY="center">
+              <Text size="xs" weight="medium">
+                <NumericFormat
+                  style="currency"
+                  currency="USD"
+                  value={venue.price.from}
+                  maximumFractionDigits={0}
+                />
+                {' – '}
+                <NumericFormat
+                  style="currency"
+                  currency="USD"
+                  value={venue.price.to}
+                  maximumFractionDigits={0}
+                />
+              </Text>
+              <Text size="xs" variant="muted">
+                ★ {venue.rating.toFixed(1)}
+              </Text>
+            </Inline>
           </Stack>
         </Inline>
       </Select.Option>

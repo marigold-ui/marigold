@@ -77,6 +77,18 @@ Filtering inside a `<ComboBox>` follows the option's label, not its supporting c
 
 <ComponentDemo name="text-value-typeahead" />
 
+<Callout title="Set `textValue` on each ComboBox option" type="warn">
+  A `<ComboBox>` shows the selected value inside a text input, which can only display a string. When the option's children are more than plain text, set the `textValue` prop on the option to the label string. Without it, the input falls back to stringifying the children and renders `[object Object]`. The `textValue` prop also drives keyboard typeahead.
+</Callout>
+
+### Custom styling
+
+`<TextValue>` carries no styling of its own. It picks up its look from the surrounding selection item, which keeps menus, selects, and lists feeling consistent. That works for most cases, but it also means the label can't be made larger, bolder, or visually distinct from the rest of the option content.
+
+When an option grows into a richer layout where the title should be the loudest element, set the `textValue` prop on the option instead. It accepts a plain string that becomes the option's accessible name and the source for keyboard typeahead, while leaving the children free to render any layout and typography. Pair it with `renderValue` on the parent to bring the name back into the trigger once selected.
+
+<ComponentDemo name="text-value-prop" />
+
 ## Props
 
 <StorybookHintMessage component={'TextValue'} />
