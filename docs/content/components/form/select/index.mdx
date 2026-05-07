@@ -3,22 +3,26 @@ title: Select
 description: Dropdown for selecting an option among different options.
 ---
 
+import { SelectAnatomy } from './select-anatomy';
+
 The `<Select>` is a form component that allows you to select one or more elements from a list of predefined options. It should be used with other form components in a [`<Form>`](../form/form/).
 
 ## Anatomy
 
-A select contains a pressable button element with a down arrow. The lists of options opens per default below the button, if there is no space for it, it will open above. An option represent a possible choice the user can select.
+A `<Select>` is a labeled trigger that opens a popover with a list of options. The trigger shows the current selection and a chevron indicating the field is interactive. The popover opens below by default and flips above when there is no space.
 
-Optional you have the choice to add a section to the options which helps divide the content of options in categories. You can have the possibility to add a supporting text as short description and/ or error message to the select itself. The description will be relplaced with the error message when an error throws.
-Also you can have a description for the options in the list.
+<SelectAnatomy />
 
-<ImageZoom
-  src="/select/select-anatomy.jpg"
-  alt="Anatomy of select"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+- **Label:** Names the field above the trigger.
+- **Field:** The pressable trigger that opens the popover.
+- **Selected value:** The text rendered inside the trigger for the current selection. Falls back to a placeholder when nothing is selected.
+- **Chevron:** Visual cue that the field opens a list.
+- **Description:** Optional helper text below the field. Replaced by the error message when the field is invalid.
+- **Popover:** The floating container that holds the list of options.
+- **Section:** Optional grouping with a header that helps users scan related options.
+- **Option:** A single choice in the list.
+- **Selection indicator:** Marks the option that is currently selected.
+- **Item description:** Optional secondary text within an option that helps the user decide.
 
 ## Appearance
 
