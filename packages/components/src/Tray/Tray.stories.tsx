@@ -45,7 +45,7 @@ export const Basic = meta.story({
       <Tray {...args}>
         <Tray.Title>Tray Title</Tray.Title>
         <Tray.Content>
-          <Inset space={4}>
+          <Inset p={4}>
             <Text>
               This is a tray component that slides in from the bottom of the
               screen. It's useful for mobile-friendly interactions and quick
@@ -118,7 +118,7 @@ export const DismissControlsWithCallbacks = meta.story({
           <Tray {...args} dismissable keyboardDismissable>
             <Tray.Title>Dismiss Controls</Tray.Title>
             <Tray.Content>
-              <Inset space={4}>
+              <Inset p={4}>
                 <Text>
                   This tray demonstrates all dismiss methods with callback
                   hooks. Try closing it via the close button, pressing Escape,

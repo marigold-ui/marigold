@@ -1,10 +1,10 @@
-import { useClassNames } from '@marigold/system';
 import { IconButton } from '../IconButton/IconButton';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
+import { useCalendarContext } from './Context';
 
 function MonthControls() {
-  const classNames = useClassNames({ component: 'Calendar' });
+  const { classNames } = useCalendarContext();
 
   return (
     <div className="flex w-full flex-nowrap justify-end gap-2.5">

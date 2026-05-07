@@ -6,7 +6,7 @@ import { Toolbar } from './toolbar';
 import { VenuesView } from './venues-view';
 
 const FilterPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Stack space={8}>
       <Stack space={2}>
         <Headline level={2}>Venues</Headline>
