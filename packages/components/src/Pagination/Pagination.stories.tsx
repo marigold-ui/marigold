@@ -360,6 +360,55 @@ export const DisabledNextButton = meta.story({
   },
 });
 
+export const Mobile = meta.story({
+  globals: {
+    viewport: { value: 'mobile1' },
+  },
+  parameters: {
+    controls: { exclude: ['totalItems', 'pageSize'] },
+  },
+  args: {
+    pageSize: 3,
+  },
+  render: ({ pageSize, ...rest }) => {
+    const data = Array.from({ length: 12 }, (_, i) => ({
+      id: i + 1,
+      name: `User ${i + 1}`,
+    }));
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, data.length);
+    const currentData = data.slice(startIndex, endIndex);
+
+    return (
+      <Stack space={4}>
+        <Table aria-label="Users">
+          <Table.Header>
+            <Table.Column>ID</Table.Column>
+            <Table.Column rowHeader>Name</Table.Column>
+          </Table.Header>
+          <Table.Body items={currentData}>
+            {item => (
+              <Table.Row key={item.id}>
+                <Table.Cell>{item.id}</Table.Cell>
+                <Table.Cell>{item.name}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+        <Pagination
+          {...rest}
+          totalItems={data.length}
+          pageSize={3}
+          page={currentPage}
+          onChange={setCurrentPage}
+        />
+      </Stack>
+    );
+  },
+});
+
 export const UseOnChange = meta.story({
   tags: ['component-test'],
   args: {
