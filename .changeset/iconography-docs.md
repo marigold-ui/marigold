@@ -15,16 +15,16 @@ Old names from the legacy `@marigold/icons` set and their Lucide replacement. Na
 | Old             | New                |
 | --------------- | ------------------ |
 | Add             | `Plus`             |
-| arrow-down      | `ArrowDown`        |
-| arrow-left      | `ArrowLeft`        |
-| arrow-right     | `ArrowRight`       |
-| arrow-up        | `ArrowUp`          |
+| ArrowDown       | `ArrowDown`        |
+| ArrowLeft       | `ArrowLeft`        |
+| ArrowRight      | `ArrowRight`       |
+| ArrowUp         | `ArrowUp`          |
 | BurgerMenu      | `Menu`             |
-| check           | `Check`            |
-| chevron-down    | `ChevronDown`      |
-| chevron-left    | `ChevronLeft`      |
-| chevron-right   | `ChevronRight`     |
-| chevron-up      | `ChevronUp`        |
+| Check           | `Check`            |
+| ChevronDown     | `ChevronDown`      |
+| ChevronLeft     | `ChevronLeft`      |
+| ChevronRight    | `ChevronRight`     |
+| ChevronUp       | `ChevronUp`        |
 | CircleChecked   | `CircleDot`        |
 | CircleUnchecked | `Circle`           |
 | Delete          | `Trash2`           |
@@ -33,7 +33,7 @@ Old names from the legacy `@marigold/icons` set and their Lucide replacement. Na
 | Filter          | `ListFilter`       |
 | IconMore        | `Ellipsis`         |
 | Remove          | `Minus`            |
-| search          | `Search`           |
+| Search          | `Search`           |
 | SettingDots     | `EllipsisVertical` |
 | SquareChecked   | `SquareCheck`      |
 | SquareUnchecked | `Square`           |
@@ -42,7 +42,7 @@ Old names from the legacy `@marigold/icons` set and their Lucide replacement. Na
 
 | Old             | New                    |
 | --------------- | ---------------------- |
-| accessibility   | `Accessibility`        |
+| Accessible      | `Accessibility`        |
 | AutoRenew       | `RefreshCcw`           |
 | Banned          | `Ban`                  |
 | BatteryCharging | `BatteryCharging`      |
@@ -135,7 +135,7 @@ Old names from the legacy `@marigold/icons` set and their Lucide replacement. Na
 | Cart                   | `ShoppingCart` |
 | CreditCard             | `CreditCard`   |
 | Group                  | `UsersRound`   |
-| id                     | `IdCard`       |
+| Id                     | `IdCard`       |
 | SmilieDissatisfied     | `Frown`        |
 | SmilieNeutral          | `Meh`          |
 | SmilieSatisfied        | `Smile`        |
@@ -149,5 +149,7 @@ Old names from the legacy `@marigold/icons` set and their Lucide replacement. Na
 | --------- | ---------------------- |
 | Google    | `Google` _(custom)_    |
 | Instagram | `Instagram` _(custom)_ |
-| share     | `Share2`               |
-| twitter   | `Twitter` _(custom)_   |
+| Share     | `Share2`               |
+| Twitter   | `Twitter` _(custom)_   |
+
+`TwitterX` is also available for the post-rebrand X mark; `Twitter` _(custom)_ remains for the bird mark.
