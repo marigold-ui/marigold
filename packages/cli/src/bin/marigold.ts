@@ -16,15 +16,27 @@ import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
 import { emit } from '../lib/telemetry.js';
 
+// Package root: dist/bin/marigold.mjs → ../.. = packages/cli/
+const packageRoot = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  '..'
+);
+
+// In local dev only, pick up packages/cli/.env.local. The file is excluded
+// from the published `files` array, so this is a no-op for installed copies.
+// loadEnvFile preserves existing process.env values, so explicit shell
+// exports still win.
+try {
+  process.loadEnvFile(path.join(packageRoot, '.env.local'));
+} catch {
+  // file absent or unreadable — ignore
+}
+
 const readCliVersion = (): string => {
   try {
-    const here = fileURLToPath(import.meta.url);
-    // dist/bin/marigold.mjs → package.json is two directories up
     const pkg = JSON.parse(
-      readFileSync(
-        path.join(path.dirname(here), '..', '..', 'package.json'),
-        'utf8'
-      )
+      readFileSync(path.join(packageRoot, 'package.json'), 'utf8')
     ) as { version?: string };
     return pkg.version ?? '0.0.0';
   } catch {
