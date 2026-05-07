@@ -5,9 +5,12 @@ description: Represents one item in a collection.
 
 import { CardAnatomy } from './card-anatomy';
 import {
-  CardVsListMockup,
-  CardVsTableMockup,
-  CardVsTextMockup,
+  DoListMockup,
+  DoTableMockup,
+  DoTextMockup,
+  DontListMockup,
+  DontTableMockup,
+  DontTextMockup,
 } from './card-usage-guidelines';
 
 A `<Card>` represents one item in a collection an event preview, a venue tile, a product summary that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, body, actions) into a single, self-contained unit and sets it apart from the page with a raised shadow.
@@ -41,9 +44,11 @@ The Card component supports variants for general content grouping as well as acc
 
 ## Usage
 
-**A Card represents one item in a set.** Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry is the user's gateway to its own detail view. Repetition is the core case; if the element doesn't repeat, a Card is probably the wrong tool. A Card is not a standalone container if you only need to mark off a single named section of a page (like "Billing" or "Organizer profile"), use a [`<Panel>`](../../layout/panel) instead.
+**A Card represents one item in a set.** Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry is the user's gateway to its own detail view. Repetition is the core case; if the element doesn't repeat, a Card is probably the wrong tool. A Card is not a standalone container to label a single region of a page with its own heading and content (for example a "Billing" or "Organizer profile" section), use a [`<Panel>`](../../layout/panel) instead.
 
-Each card in the set should be heterogeneous mixing media, headings, body text, badges, and actions and self-contained, meaning it can be lifted out of context and still make sense as a summary that links to its detail view. Combine Card with [`<Tiles>`](../../layout/tiles) so the grid wraps responsively as the viewport changes.
+A Card and a [`<Table>`](../table) both display a set of records; what differs is the shape of each item. Reach for a **Table** when rows share the same fields and the user wants to scan, sort, or compare values down a column. Reach for a **Card** when each item has its own visual identity media, varied content, distinct actions and the user chooses between items by recognition, not by comparing column values.
+
+Combine Card with [`<Tiles>`](../../layout/tiles) so the grid wraps responsively as the viewport changes.
 
 <ComponentDemo name="card-grid" />
 
@@ -63,16 +68,20 @@ The sections below cover the four common misuses to avoid.
 
 When records share the same shape and users want to scan, sort, or compare across them, a [`<Table>`](../table) reads faster and handles selection, sorting, and bulk actions out of the box. A column of cards forces the eye to jump between visual blocks instead of running down a column of values.
 
-<CardVsTableMockup />
-
 <GuidelineTiles>
   <Do>
+    <DoFigure>
+      <DoTableMockup />
+    </DoFigure>
     <DoDescription>
       Use a [`<Table>`](../table) when records share the same shape and users
       want to scan, sort, or compare them.
     </DoDescription>
   </Do>
   <Dont>
+    <DontFigure>
+      <DontTableMockup />
+    </DontFigure>
     <DontDescription>
       Don't render homogeneous, row-shaped data as a column of cards. Users lose
       the ability to scan and compare values at a glance.
@@ -84,10 +93,11 @@ When records share the same shape and users want to scan, sort, or compare acros
 
 A Card groups several pieces of related content. If you only have a single paragraph, a short message, or one field, the card adds visual weight without grouping anything. Use a [`<Headline>`](../../content/headline), [`<Text>`](../../content/text), or [`<SectionMessage>`](../../content/section-message) instead.
 
-<CardVsTextMockup />
-
 <GuidelineTiles>
   <Do>
+    <DoFigure>
+      <DoTextMockup />
+    </DoFigure>
     <DoDescription>
       Render simple, single-purpose content as plain text. Use a
       [`<SectionMessage>`](../../content/section-message) when the content is a
@@ -95,6 +105,9 @@ A Card groups several pieces of related content. If you only have a single parag
     </DoDescription>
   </Do>
   <Dont>
+    <DontFigure>
+      <DontTextMockup />
+    </DontFigure>
     <DontDescription>
       Don't wrap a single short paragraph or one field in a card. The frame
       adds visual noise without grouping anything.
@@ -106,16 +119,20 @@ A Card groups several pieces of related content. If you only have a single parag
 
 Cards rely on contrast against the page to feel grouped. When you stack a long column of full-width cards, every row competes with every other row, the shadows pile up, and the page becomes visually noisy. Use a list separated by [`<Divider>`](../../content/divider) for similar, row-shaped content instead.
 
-<CardVsListMockup />
-
 <GuidelineTiles>
   <Do>
+    <DoFigure>
+      <DoListMockup />
+    </DoFigure>
     <DoDescription>
       Use a list with [`<Divider>`](../../content/divider) between rows for
       long, homogeneous content.
     </DoDescription>
   </Do>
   <Dont>
+    <DontFigure>
+      <DontListMockup />
+    </DontFigure>
     <DontDescription>
       Don't stack a long column of full-width cards. The repeated shadows and
       borders fragment the page and harm scannability.

@@ -1,17 +1,14 @@
 /**
- * "Don't wrap tabular data in cards"
- * Left: the same data laid out as a Table.
- * Right: a cluttered column of cards holding key/value rows.
+ * "Don't wrap tabular data in cards" — Do half: a compact Table.
  */
-export const CardVsTableMockup = () => (
+export const DoTableMockup = () => (
   <svg
-    viewBox="0 30 760 220"
-    className="mx-auto -mb-2 h-auto w-full max-w-[95%]"
+    viewBox="0 30 360 220"
+    className="mx-auto h-auto w-full"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="Comparison: a table versus stacked cards for tabular data"
+    aria-label="A compact table with rows of values"
   >
-    {/* DO: a compact Table */}
     <rect
       x="20"
       y="40"
@@ -21,7 +18,6 @@ export const CardVsTableMockup = () => (
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
-    {/* Header row */}
     <rect
       x="20"
       y="40"
@@ -53,7 +49,6 @@ export const CardVsTableMockup = () => (
       rx="2"
       className="fill-fd-foreground transition-colors duration-300"
     />
-    {/* Header divider */}
     <line
       x1="20"
       y1="76"
@@ -62,7 +57,6 @@ export const CardVsTableMockup = () => (
       strokeWidth="1"
       className="stroke-fd-border transition-colors duration-300"
     />
-    {/* Body rows */}
     {[0, 1, 2, 3].map(i => {
       const y = 96 + i * 36;
       return (
@@ -104,8 +98,20 @@ export const CardVsTableMockup = () => (
         </g>
       );
     })}
+  </svg>
+);
 
-    {/* DON'T: 3 stacked cards with label/value rows */}
+/**
+ * "Don't wrap tabular data in cards" — Don't half: stacked cards holding key/value rows.
+ */
+export const DontTableMockup = () => (
+  <svg
+    viewBox="400 30 340 220"
+    className="mx-auto h-auto w-full"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="A column of cards each holding key/value rows"
+  >
     {[0, 1, 2].map(i => {
       const y = 40 + i * 70;
       return (
@@ -119,7 +125,6 @@ export const CardVsTableMockup = () => (
             className="fill-fd-card stroke-fd-border transition-colors duration-300"
             strokeWidth="2"
           />
-          {/* Title */}
           <rect
             x="416"
             y={y + 12}
@@ -128,7 +133,6 @@ export const CardVsTableMockup = () => (
             rx="2"
             className="fill-fd-foreground transition-colors duration-300"
           />
-          {/* Label/value pair */}
           <rect
             x="416"
             y={y + 32}
@@ -168,19 +172,16 @@ export const CardVsTableMockup = () => (
 );
 
 /**
- * "Don't wrap simple content in cards"
- * Left: the paragraph rendered as plain text.
- * Right: the same paragraph trapped inside an unnecessary card.
+ * "Don't wrap simple content in cards" — Do half: a paragraph rendered as plain text.
  */
-export const CardVsTextMockup = () => (
+export const DoTextMockup = () => (
   <svg
-    viewBox="0 40 760 140"
-    className="mx-auto -mb-2 h-auto w-full max-w-[95%]"
+    viewBox="0 40 360 140"
+    className="mx-auto h-auto w-full"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="Comparison: plain text versus a card around a single paragraph"
+    aria-label="A short paragraph rendered as plain text"
   >
-    {/* DO: content without a surrounding card */}
     <rect
       x="40"
       y="78"
@@ -205,8 +206,20 @@ export const CardVsTextMockup = () => (
       rx="2"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
+  </svg>
+);
 
-    {/* DON'T: empty wrapper card around one short paragraph */}
+/**
+ * "Don't wrap simple content in cards" — Don't half: the same paragraph trapped inside a card.
+ */
+export const DontTextMockup = () => (
+  <svg
+    viewBox="400 40 340 140"
+    className="mx-auto h-auto w-full"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="A short paragraph wrapped in an unnecessary card"
+  >
     <rect
       x="400"
       y="50"
@@ -244,19 +257,16 @@ export const CardVsTextMockup = () => (
 );
 
 /**
- * "Don't stack many cards on a page"
- * Left: the items as a list, separated by dividers.
- * Right: a long column of full-width cards, each with their own border and shadow.
+ * "Don't stack many cards on a page" — Do half: rows separated by dividers on a single surface.
  */
-export const CardVsListMockup = () => (
+export const DoListMockup = () => (
   <svg
-    viewBox="0 30 760 280"
-    className="mx-auto -mb-2 h-auto w-full max-w-[95%]"
+    viewBox="0 30 360 280"
+    className="mx-auto h-auto w-full"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="Comparison: a list with dividers versus many stacked cards"
+    aria-label="A list of rows separated by dividers"
   >
-    {/* DO: rows separated by dividers (single surface) */}
     {[0, 1, 2, 3, 4].map(i => {
       const y = 40 + i * 50;
       return (
@@ -296,8 +306,20 @@ export const CardVsListMockup = () => (
         </g>
       );
     })}
+  </svg>
+);
 
-    {/* DON'T: stacked full-width cards */}
+/**
+ * "Don't stack many cards on a page" — Don't half: a long column of full-width cards.
+ */
+export const DontListMockup = () => (
+  <svg
+    viewBox="400 30 340 280"
+    className="mx-auto h-auto w-full"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="A long column of stacked full-width cards"
+  >
     {[0, 1, 2, 3, 4].map(i => {
       const y = 40 + i * 50;
       return (
