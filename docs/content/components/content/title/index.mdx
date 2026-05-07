@@ -1,12 +1,12 @@
 ---
 title: Title
-description: A heading primitive that participates in container slot context.
+description: Heading primitive that participates in container slot context.
 badge: alpha
 ---
 
-The `<Title>` component is a heading designed to live inside a container such as `<Panel>`, `<Dialog>`, `<Drawer>`, `<EmptyState>`, or `<SectionMessage>`. The surrounding container decides the right heading level and how the title fits into the layout, so you can drop a `<Title>` in without thinking about it.
+The `<Title>` component is a heading designed to live inside a container surface such as `<Panel>`, `<Dialog>`, `<Drawer>`, `<EmptyState>`, or `<SectionMessage>`. The container decides the heading level and how the title fits into the surrounding layout, so consumers can drop a `<Title>` in without thinking about it.
 
-Standalone usage is supported but rare. For top-level page headings reach for [`<Headline>`](/components/content/headline) instead.
+For top-level page headings reach for [`<Headline>`](/components/content/headline) instead.
 
 import { TitleAnatomy } from './title-anatomy';
 
@@ -14,29 +14,17 @@ import { TitleAnatomy } from './title-anatomy';
 
 <TitleAnatomy />
 
-A `<Title>` renders an `<h1>` to `<h6>` heading element. Two ideas work in parallel:
-
-- **Heading text** is the children you pass in.
-- **Visual size** is the `size` prop. Title reuses the `<Headline>` typography scale (`level-1` to `level-6`) so headings stay visually consistent across the system.
-- **Semantic level** is the `level` prop, which controls the HTML element that renders. The container usually supplies this for you. Set it explicitly only when using `<Title>` outside a container.
+A title is a single heading element with no parts of its own.
 
 ## Appearance
 
-<AppearanceDemo component={'Title'} />
+`<Title>` carries no styling of its own. Its appearance comes entirely from the surrounding container, which keeps the look consistent across panels, dialogs, drawers, and other surfaces. Pair it with [`<Description>`](/components/content/description) when the region also needs a help line.
 
-<AppearanceTable component={'Title'} />
+Styling is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
 
-## Sizes
+## Usage
 
-`<Title>` shares the design system's heading vocabulary with `<Headline>`. Containers usually pin a size when they wire up the `title` slot, but you can also pass `size` directly.
-
-<ComponentDemo name="title-sizes" />
-
-## Heading level
-
-The `level` prop controls the rendered HTML element (`<h1>` to `<h6>`). Visual size and semantic level are independent. You can render a level-2 sized title as `<h3>` if the document outline calls for it.
-
-When `<Title>` is used inside a container, the container supplies the level for you so the document outline stays correct without consumers having to think about it. Set `level` explicitly only when using `<Title>` outside a container.
+Reach for `<Title>` whenever a container surface labels its content with a heading. For top-level page headings or any heading that should not adapt to a surrounding container, use [`<Headline>`](/components/content/headline) instead.
 
 <GuidelineTiles>
   <Do>
@@ -45,18 +33,40 @@ When `<Title>` is used inside a container, the container supplies the level for 
       to label a region. Let the container choose the heading level.
     </DoDescription>
   </Do>
+  <Do>
+    <DoDescription>
+      Pair `<Title>` with a `<Description>` when the region benefits from a one-line
+      explanation below the heading.
+    </DoDescription>
+  </Do>
   <Dont>
     <DontDescription>
       Don't use `<Title>` for the top-level page heading. That's the role of `<Headline>`.
     </DontDescription>
   </Dont>
+  <Dont>
+    <DontDescription>
+      Don't override the `level` prop unless the document outline calls for it.
+      The container picks a level that fits the surrounding context.
+    </DontDescription>
+  </Dont>
 </GuidelineTiles>
 
-## Use inside a container
+### Inside a container
 
-A container can define the heading level, spacing, and other defaults for the title region. The consumer just writes the title text and the container takes care of the rest.
+A container can define the heading level, spacing, and visual style for the title region through its slot context. The consumer just writes the title text and the container takes care of the rest.
 
 <ComponentDemo name="title-in-container" />
+
+### Heading level
+
+The `level` prop controls the rendered HTML element (`<h1>` to `<h6>`). When `<Title>` is used inside a container, the container supplies the level for you so the document outline stays correct without consumers having to think about it. Set `level` explicitly only when using `<Title>` outside a container, or when the document outline calls for a different level than the container's default.
+
+## Accessibility
+
+`<Title>` renders a real heading element, so screen readers announce it as a heading at the level it renders. The `level` prop maps directly to the underlying `<h1>` to `<h6>` element, which means assistive technologies can navigate the page by headings just like they would with handwritten markup.
+
+A Title used without a container still renders as a plain heading. It contributes to the document outline but has no programmatic relationship to anything else. Containers that pair a Title with a [`<Description>`](/components/content/description) wire the relationship through their slot context, so consumers don't need to set `aria-describedby` manually.
 
 ## Props
 
@@ -69,4 +79,5 @@ A container can define the heading level, spacing, and other defaults for the ti
 ## Alternative components
 
 - [Headline](/components/content/headline): Use for top-level page headings or any heading that should not adapt to a surrounding container.
+- [Description](/components/content/description): The help-line partner for Title in container surfaces.
 - [Text](/components/content/text): Use for paragraph text and body copy.

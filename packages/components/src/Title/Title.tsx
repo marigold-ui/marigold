@@ -4,37 +4,19 @@ import {
   HeadingContext,
   useContextProps,
 } from 'react-aria-components';
-import { cn, ensureCssVar, useClassNames } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
-import type { HeadlineSize } from '../Headline/Headline';
 
 export interface TitleProps extends AriaLabelingProps {
   /**
-   * The heading level (h1-h6). The hosting container typically supplies
-   * this via slot context.
+   * The heading level (h1–h6). Can also be supplied via slot context.
    * @default 2
    */
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   /**
-   * A slot name. Defaults to `'title'` so the component participates in a
-   * container's slot context out of the box. Pass `null` to opt out.
+   * A slot name. Slots allow the component to receive props from a parent.
    * @default 'title'
    */
-  slot?: string | null;
-  /**
-   * The visual style. Reuses Headline's typography scale so a Title
-   * shares the design system's heading vocabulary.
-   * @default 'level-3'
-   */
-  size?: HeadlineSize | (string & {});
-  /**
-   * The variant. Forwarded to the Headline theme entry.
-   */
-  variant?: string;
-  /**
-   * Set the text color.
-   */
-  color?: string;
+  slot?: string;
   /**
    * The element id.
    */
@@ -44,34 +26,14 @@ export interface TitleProps extends AriaLabelingProps {
 }
 
 const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
-  const [merged, ref] = useContextProps(
-    { slot: 'title', ...inputProps } as TitleProps & { className?: string },
+  const [props, ref] = useContextProps(
+    { slot: 'title', ...inputProps } as TitleProps,
     refProp,
     HeadingContext
   );
-
-  const {
-    level = 2,
-    slot,
-    size = 'level-3',
-    variant,
-    color,
-    children,
-    className: contextClassName,
-    ...rest
-  } = merged;
-
-  const classNames = useClassNames({ component: 'Headline', variant, size });
-
+  const { level = 2, slot, children, ...rest } = props;
   return (
-    <Heading
-      level={level}
-      ref={ref}
-      slot={slot ?? undefined}
-      {...rest}
-      className={cn(contextClassName, classNames)}
-      style={{ color: color && ensureCssVar(color, 'color') }}
-    >
+    <Heading level={level} slot={slot} ref={ref} {...rest}>
       {children}
     </Heading>
   );
