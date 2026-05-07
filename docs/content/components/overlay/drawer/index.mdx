@@ -38,7 +38,7 @@ A drawer hosts a supplementary, in-context task that benefits from staying along
 
 - It stays non-modal on desktop, so the page behind remains interactive.
 - Its content is _about_ what is already on screen.
-- It caps task complexity at roughly five fields and a single step.
+- It caps task complexity at roughly five fields and a single information layer.
 
 When in doubt, ask: is this content _about_ the visible main view, or _for_ it? _About_ means a drawer fits. _For_ means a [dialog](/components/overlay/dialog) or an inline UI is the better fit.
 
@@ -50,7 +50,7 @@ When in doubt, ask: is this content _about_ the visible main view, or _for_ it? 
     <ul>
       <li>users inspect or adjust something already on screen,</li>
       <li>the main workflow should stay uninterrupted,</li>
-      <li>the task is light: roughly five fields, a single step.</li>
+      <li>the task is light: roughly five fields, a single information layer.</li>
     </ul>
   </DoDescription>
 </Do>
@@ -61,24 +61,23 @@ When in doubt, ask: is this content _about_ the visible main view, or _for_ it? 
     {/* prettier-ignore */}
     <ul>
       <li>critical confirmations or destructive actions are required,</li>
-      <li>the flow has multiple steps, multiple save points, or its own internal navigation, which is a [page](#when-to-use-a-full-page-instead),</li>
+      <li>the flow has multiple steps, multiple save points, or its own internal navigation, which is a [page](#drawer-or-page),</li>
       <li>the task requires full attention or a shareable URL.</li>
     </ul>
   </DontDescription>
 </Dont>
 </GuidelineTiles>
 
-### Drawer vs Dialog
+### Drawer or page?
 
-A user is filling out a "Create event" form and needs to pick a category that doesn't exist yet. The temptation is to slide in a drawer for "Create category" so the half-filled form stays visible behind it. This is exactly where a dialog fits better than a drawer: the new category is _for_ that form, not _about_ the page.
+The most common drawer call teams get wrong is drawer vs page. The decisive question is how many information layers the content has.
 
-This is the canonical drawer-vs-dialog confusion. The underlying difference: a dialog is modal, blocking the page and asking the user to commit, acknowledge, or decide before continuing. A drawer is non-modal, so the page behind stays interactive while the user inspects, refines, or augments.
+- **Single layer → drawer.** One coherent set of fields or content the user works through linearly, without needing to navigate inside it. A record's details, a small edit form, a filter panel, a comments feed.
+- **Multiple layers → page.** Content that splits into separately navigable areas: tabs across different aspects, nested editable records, drill-down sub-views, or multi-step flows where each step has its own content.
 
-Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions. The same applies when the task simply demands full attention and interacting with the page behind would be a distraction. Choose a drawer when the work is supplementary to whatever is already on screen.
+The clearest tell is whether the content would need tabs or internal navigation inside the panel. If it would, it is a page.
 
-### When to use a full page instead
-
-A drawer slides over the current view; a page replaces it or routes somewhere new. Drawers are temporary: opened, used, dismissed. Pages are lasting: they have a URL, browser history, and a place in the app's information architecture. When the work needs any of that, it belongs on a page.
+The deeper reason: a drawer slides over the current view and is temporary (opened, used, dismissed). A page replaces it or routes somewhere new and is lasting: it has a URL, browser history, and a place in the app's information architecture. Multi-layer content needs that durability to keep users oriented.
 
 **Reach for a page over a drawer when:**
 
@@ -88,6 +87,14 @@ A drawer slides over the current view; a page replaces it or routes somewhere ne
 - the **user could reasonably get lost** inside it without a back button or breadcrumbs to orient them.
 
 If you find yourself wanting tabs inside a drawer, wanting browser back/forward to work as navigation, or wanting users to deep-link to it, that is the signal: it is a page.
+
+### Drawer vs Dialog
+
+A user is filling out a "Create event" form and needs to pick a category that doesn't exist yet. The temptation is to slide in a drawer for "Create category" so the half-filled form stays visible behind it. This is exactly where a dialog fits better than a drawer: the new category is _for_ that form, not _about_ the page.
+
+This is the canonical drawer-vs-dialog confusion. The underlying difference: a dialog is modal, blocking the page and asking the user to commit, acknowledge, or decide before continuing. A drawer is non-modal, so the page behind stays interactive while the user inspects, refines, or augments.
+
+Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions. The same applies when the task simply demands full attention and interacting with the page behind would be a distraction. Choose a drawer when the work is supplementary to whatever is already on screen.
 
 ### Detail-row inspection
 
@@ -101,7 +108,7 @@ The user's task here is "scan rows, drill into one." Keeping the list visible pr
 
 Users often need to make a small change to a list, like editing one row or adding a new one, without losing their place. A drawer alongside the list handles both: a small form slides in, the user saves, the drawer closes, and the list reflects the change.
 
-The form should be small: a handful of fields, a single save, no multi-step flow. The list stays visible behind the drawer, so the surrounding rows, filters, and sort order tell the user _why_ they are working on this one.
+The form should be small: a handful of fields, a single save, no multi-step flow. The list stays visible behind the drawer, so the surrounding rows, filters, and sort order tell the user _why_ they are working on this one. The "roughly five fields" rule of thumb is a proxy for the underlying constraint: a single information layer. The moment the form needs nested records or tabs to organize its fields, it has crossed into page territory.
 
 The two flows share the same shape but differ in trigger and result:
 
@@ -147,7 +154,7 @@ The right shape is a drawer the user can pin or summon, not a modal or a popover
 
 Users select rows in a table, an [ActionBar](/components/actions/actionbar) appears, and one of its actions opens a drawer with a small form for editing several fields across the selection (for example, changing the date and venue across many events at once). Stripe, Polaris, Airtable, and Notion all use this combination.
 
-The drawer keeps the selected rows visible behind it (non-modal) so users can confirm the selection while editing. The boundary is clean: single-verb bulk actions (delete, archive, assign) belong in the action bar; multi-field bulk edit belongs in a drawer triggered from it. Destructive bulk actions still need a confirm dialog after the verb.
+The drawer keeps the selected rows visible behind it (non-modal) so users can confirm the selection while editing. Bulk edit stays within the single-layer rule because the fields are flat and identical across all selected records: one form applied to N rows, not N forms or nested edits. The boundary is clean: single-verb bulk actions (delete, archive, assign) belong in the action bar; multi-field bulk edit belongs in a drawer triggered from it. Destructive bulk actions still need a confirm dialog after the verb.
 
 <ComponentDemo name="drawer-bulk-edit" />
 
