@@ -98,9 +98,9 @@ Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or 
 
 ### Detail-row inspection
 
-Click a row in a table or list and a drawer slides in showing the record's full details. Fields are read-only or lightly editable, and the user can move on to the next row without losing the table view. Linear, Stripe Dashboard, GitHub Issues, and Salesforce Lightning record peeks all use this pattern in their list views.
+The user's task here is "scan rows, drill into one." Keeping the list visible preserves orientation; routing away breaks the rhythm.
 
-The user's task here is "scan rows, drill into one." Keeping the list visible preserves orientation; routing away breaks the rhythm. If the detail view is multi-tabbed, has its own sub-records, or is something users link to directly, route to a page instead.
+Click a row in a table or list and a drawer slides in showing the record's full details. Fields are read-only or support small inline edits (a status toggle, a quick rename, picking a value from a list), and the user can move on to the next row without losing the table view.
 
 <ComponentDemo name="drawer-secondary-details" />
 
