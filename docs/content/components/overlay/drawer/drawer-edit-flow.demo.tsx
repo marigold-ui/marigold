@@ -1,4 +1,10 @@
-import { Button, Drawer, Stack, Switch, TextField } from '@marigold/components';
+import {
+  Button,
+  Checkbox,
+  Drawer,
+  Stack,
+  TextField,
+} from '@marigold/components';
 
 export default function () {
   return (
@@ -7,10 +13,10 @@ export default function () {
       <Drawer>
         <Drawer.Title>Settings</Drawer.Title>
         <Drawer.Content>
-          <Stack space={3}>
+          <Stack space="regular">
             <TextField label="Display Name" placeholder="Enter your name" />
             <TextField label="Email" placeholder="user@example.com" />
-            <Switch label="Enable Notifications" />
+            <Checkbox label="Enable Notifications" />
           </Stack>
         </Drawer.Content>
         <Drawer.Actions>

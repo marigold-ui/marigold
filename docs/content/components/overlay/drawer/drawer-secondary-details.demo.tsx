@@ -64,7 +64,7 @@ const TicketDrawer = ({
   ...props
 }: { ticket: Ticket } & DrawerProps) => (
   <Drawer.Trigger>
-    <Button variant="ghost" size="small">
+    <Button variant="secondary" size="small">
       View
     </Button>
     <Drawer {...props} size="medium">
@@ -72,12 +72,12 @@ const TicketDrawer = ({
         Ticket #{ticket.id} – {ticket.subject}
       </Drawer.Title>
       <Drawer.Content>
-        <Stack space={6}>
+        <Stack space="group">
           <Text>
             <strong>Description:</strong> {ticket.description}
           </Text>
 
-          <Stack space={2}>
+          <Stack space="related">
             <Text>
               <strong>Status:</strong> {ticket.status}
             </Text>
@@ -101,7 +101,7 @@ const TicketDrawer = ({
         </Stack>
       </Drawer.Content>
       <Drawer.Actions>
-        <Inline space={3}>
+        <Inline space="regular">
           <Button slot="close">Close</Button>
           <Button slot="close" variant="primary">
             Resolve Ticket

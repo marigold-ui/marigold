@@ -3,12 +3,12 @@ import {
   ActionBar,
   Badge,
   Button,
+  Checkbox,
   DatePicker,
   Drawer,
   DrawerProps,
   Select,
   Stack,
-  Switch,
   Table,
   Text,
 } from '@marigold/components';
@@ -60,7 +60,7 @@ export default function (props: DrawerProps) {
             <Drawer {...props} size="medium">
               <Drawer.Title>Edit selected events</Drawer.Title>
               <Drawer.Content>
-                <Stack space={6}>
+                <Stack space="regular">
                   <Text>
                     Changes will apply to all selected events. Empty fields stay
                     unchanged.
@@ -72,7 +72,7 @@ export default function (props: DrawerProps) {
                     <Select.Option id="hamburg">Hamburg</Select.Option>
                     <Select.Option id="online">Online</Select.Option>
                   </Select>
-                  <Switch label="Notify attendees of changes" />
+                  <Checkbox label="Notify attendees of changes" />
                 </Stack>
               </Drawer.Content>
               <Drawer.Actions>

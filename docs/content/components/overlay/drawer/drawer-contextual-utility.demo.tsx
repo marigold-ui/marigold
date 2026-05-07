@@ -7,23 +7,15 @@ export default function () {
       <Drawer>
         <Drawer.Title>Quick Help</Drawer.Title>
         <Drawer.Content>
-          <Stack space={4}>
+          <Stack space="regular">
             <Text>
               Need assistance while handling tickets? Here are some quick links:
             </Text>
-            <ul className="flex flex-col gap-3">
-              <li>
-                <Link href="#">How to reset a user password</Link>
-              </li>
-              <li>
-                <Link href="#">
-                  Escalation policy for high-priority tickets
-                </Link>
-              </li>
-              <li>
-                <Link href="#">Troubleshooting login issues</Link>
-              </li>
-            </ul>
+            <Stack asList space="related">
+              <Link href="#">How to reset a user password</Link>
+              <Link href="#">Escalation policy for high-priority tickets</Link>
+              <Link href="#">Troubleshooting login issues</Link>
+            </Stack>
           </Stack>
         </Drawer.Content>
         <Drawer.Actions>

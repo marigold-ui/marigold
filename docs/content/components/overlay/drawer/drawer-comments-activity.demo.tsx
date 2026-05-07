@@ -14,9 +14,9 @@ import {
 export default function (props: DrawerProps) {
   return (
     <Card>
-      <Stack space={4}>
-        <Stack space={3}>
-          <Inline space={2} alignY="center">
+      <Stack space="regular">
+        <Stack space="regular">
+          <Inline space="related" alignY="center">
             <Headline level={3}>Ticket #4521 – Login issue</Headline>
             <Badge variant="warning">High priority</Badge>
           </Inline>
@@ -35,17 +35,17 @@ export default function (props: DrawerProps) {
             <Drawer {...props} size="medium">
               <Drawer.Title>Activity · Ticket #4521</Drawer.Title>
               <Drawer.Content>
-                <Stack space={6}>
-                  <Stack space={1}>
-                    <Inline space={2} alignY="center">
+                <Stack space="group">
+                  <Stack space="tight">
+                    <Inline space="related" alignY="center">
                       <Text weight="bold">Jane Doe</Text>
                       <Text>changed status to Open</Text>
                     </Inline>
                     <Text>2 hours ago</Text>
                   </Stack>
 
-                  <Stack space={1}>
-                    <Inline space={2} alignY="center">
+                  <Stack space="tight">
+                    <Inline space="related" alignY="center">
                       <Text weight="bold">Sam Müller</Text>
                       <Text>commented</Text>
                     </Inline>
@@ -56,8 +56,8 @@ export default function (props: DrawerProps) {
                     <Text>4 hours ago</Text>
                   </Stack>
 
-                  <Stack space={1}>
-                    <Inline space={2} alignY="center">
+                  <Stack space="tight">
+                    <Inline space="related" alignY="center">
                       <Text weight="bold">Jane Doe</Text>
                       <Text>assigned to Sam Müller</Text>
                     </Inline>
