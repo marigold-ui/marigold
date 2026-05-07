@@ -1,5 +1,362 @@
 # @marigold/theme-rui
 
+## 6.0.0-beta.0
+
+### Major Changes
+
+- adb8a18: feat(DST-1237): theme-owned breakpoints with CSS fallback
+
+  Breakpoint resolution is now theme-driven: `useSmallScreen` and `useResponsiveValue` read `theme.screens` from the ThemeProvider context instead of relying on hardcoded values in `defaultTheme`. If no theme provides screens, the hooks fall back to reading Tailwind v4's `--breakpoint-*` CSS custom properties.
+  - Added `screens` to `@marigold/theme-rui` (matches Tailwind v4 defaults)
+  - Removed `screens` from `defaultTheme` in `@marigold/system`
+  - Added `resolveScreens` utility for theme-first, CSS-fallback resolution
+
+- f629319: refactor([DST-1283]): **Breaking Change** — Remove `<Multiselect>` (and the `react-select` dependency) from `@marigold/components`.
+
+  Use `<TagField>` instead.
+
+- d35022b: DST-878: Polish design tokens and add token documentation.
+
+  **New color palette:**
+  - Replace default gray scale with warm neutral "charcoal" palette (oklch, hue 54, 11 steps from 50-950)
+
+  **Token renames and restructuring:**
+  - Rename `brand` to `primary`, `muted-foreground` to `secondary`, `focus` to `focus-highlight`
+  - Rename status token structure from `*-muted`/`*-muted-foreground`/`*-muted-accent` to `*`/`*-foreground`/`*-accent`
+  - Add `disabled-surface` token for disabled control backgrounds
+  - Add `overlay-backdrop` token for modal/tray backdrops
+  - Update page background colors
+
+  **New hover utilities:**
+  - Add `ui-state-hover` utility (solid hover for list items, table rows, menu items)
+  - Add `ui-state-hover-ghost` utility (translucent hover for ghost buttons, tabs, action bar)
+  - Migrate all components from raw `hover:bg-hover`/`hover:bg-current/10` to the new utilities
+
+  **Documentation:**
+  - Add new Token Overview page with complete token reference
+  - Add annotated UI diagram, color palette demo, Do/Don't guidance, hover and selection pattern docs
+  - Remove outdated `design-tokens.mdx` and `design-token-guidelines.mdx` pages
+
+- 968bc0b: DST-1209: Refactor elevation documentation and remove deprecated utilities.
+
+  **Breaking: Remove `util-surface-*` utilities**
+  - Delete `util-surface-sunken`, `util-surface-body`, `util-surface-raised`, `util-surface-overlay`
+  - Remove `utils.css` from theme-rui build
+
+  **Migration from legacy utilities:**
+  | Old utility | New replacement |
+  |---|---|
+  | `util-surface-sunken` | Removed, use `bg-background` for the page base layer |
+  | `util-surface-body` | `bg-background` (no shadow needed) |
+  | `util-surface-raised` | `ui-surface shadow-elevation-raised` |
+  | `util-surface-overlay` | `ui-surface shadow-elevation-overlay` |
+
+  **Documentation:**
+  - Rewrite elevation page around the 3-tier shadow system (border, raised, overlay)
+  - Add surfaces section explaining `bg-background`, `bg-surface`, `bg-muted`, and `ui-surface`
+  - Add interactive demos, annotated SVG diagram, and per-tier Do/Don't guidelines
+  - Add migration table from legacy `util-surface-*` to new tokens
+
+  **Fixes:**
+  - Fix broken `bg-bg-surface-*` tokens in card-elevation demo, inset-equal demo, and Columns story
+  - Update Card docs elevation section to match new page structure
+
+- 00d93c8: feat(DST-1246): update Switch component layout and sizing to align with Checkbox and Radio
+
+  The Switch component previously rendered its label on the left and toggle on the right, which was inconsistent with Checkbox and Radio where the control sits on the left. When used together in forms, this created a visually misaligned layout.
+
+  **Layout**: Toggle now renders before the label (control on the left, label on the right), matching Checkbox and Radio. This ensures consistent visual alignment when Switch is used alongside other boolean controls in form layouts.
+
+  **Sizing**: Reduced the default track size from 24x40px to 16x28px and thumb from 20px to 12px. This brings the Switch closer in visual weight to Checkbox/Radio (16px), making it fit better in the flow of forms.
+
+  **Settings variant**: A new `variant="settings"` mirrors the default layout — label and description on the left, toggle on the far right. This is the common pattern used on settings/preferences pages. The variant is propagated to `BooleanField` so that grid columns and description placement adjust accordingly.
+
+  **Description support**: Switch now accepts a `description` prop (help text rendered below the control), matching Checkbox's existing support. The description text aligns with the label text using CSS grid + subgrid, automatically adapting to any control size without hardcoded padding. Properly wired with `aria-describedby` for accessibility.
+
+  **Form support**: The `name` prop passes through to the underlying input for HTML form submission.
+
+  **Shared BooleanField**: Extracted a reusable `BooleanField` wrapper used by both Checkbox and Switch for consistent description rendering and `aria-describedby` wiring. Uses CSS grid with subgrid to align description text with label text across both components.
+
+  ## Breaking changes
+
+  ### Restoring the old Switch behavior
+
+  The default Switch layout has changed: the toggle is now on the **left** and the label on the **right** (previously reversed). If you need the old layout (label left, toggle right), use the new `variant="settings"`:
+
+  ```diff
+  - <Switch label="Wi-Fi" />
+  + <Switch label="Wi-Fi" variant="settings" />
+  ```
+
+  The `size="large"` prop has been removed. The default size is now smaller (16x28px track). There is no built-in way to get the old large dimensions (24x40px track) — if needed, create a custom size variant in your theme's `Switch.styles.ts`.
+
+  ### Custom theme migration
+
+  This release introduces a new required theme component `BooleanField` and changes the layout model of the `Checkbox` and `Switch` container slots from flexbox to CSS grid. **Custom themes must be updated or Checkbox/Switch will throw a runtime error.**
+
+  ### 1. Add `BooleanField` to your theme (required)
+
+  `BooleanField` is a new multi-slot theme component used internally by both `Checkbox` and `Switch` to render descriptions. If your theme does not include it, any `Checkbox` or `Switch` with a `description` prop will throw:
+
+  ```
+  Error: Component "BooleanField" is missing styles in the current theme.
+  ```
+
+  Add the following to your theme's component styles:
+
+  ```ts
+  import { cva } from '@marigold/system';
+
+  export const BooleanField = {
+    container: cva({
+      base: 'grid gap-x-2',
+      variants: {
+        variant: {
+          default: 'grid-cols-[auto_1fr]',
+          settings: 'grid-cols-[1fr_auto]',
+        },
+      },
+      defaultVariants: { variant: 'default' },
+    }),
+    description: cva({
+      base: 'mt-0.5',
+      variants: {
+        variant: {
+          default: 'col-start-2',
+          settings: 'col-start-1',
+        },
+      },
+      defaultVariants: { variant: 'default' },
+    }),
+  };
+  ```
+
+  - `container`: Defines the 2-column grid layout wrapping the control and its description. The `default` variant uses `grid-cols-[auto_1fr]` (control left, label right). The `settings` variant uses `grid-cols-[1fr_auto]` (label left, control right).
+  - `description`: Styles the description text wrapper. Placed under the label column via `col-start-2` (default) or `col-start-1` (settings). `mt-0.5` adds vertical spacing between the label row and description.
+
+  Then export it from your theme's component index file:
+
+  ```ts
+  export { BooleanField } from './BooleanField.styles';
+  ```
+
+  ### 2. Update `Checkbox` container slot (required if customized)
+
+  The `Checkbox` container slot changed from flexbox to CSS grid with conditional subgrid support:
+
+  **Before:**
+
+  ```ts
+  container: cva({ base: 'cursor-pointer read-only:cursor-default gap-2' }),
+  ```
+
+  **After:**
+
+  ```ts
+  container: cva({
+    base: [
+      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'cursor-pointer read-only:cursor-default',
+      'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    ],
+  }),
+  ```
+
+  Key changes:
+  - `gap-2` changed to `gap-x-2` (column gap only, since row gap is now handled by `BooleanField.description`)
+  - `grid grid-cols-[auto_1fr] items-center` replaces the `flex items-center` that was previously hardcoded in the component
+  - `group-data-[booleanfield]/booleanfield:grid-cols-subgrid` and `group-data-[booleanfield]/booleanfield:col-span-full` enable subgrid when inside a `BooleanField` wrapper, so the description aligns with the label
+
+  ### 3. Update `Switch` container slot (required if customized)
+
+  The `Switch` container slot also changed from minimal styles to CSS grid with subgrid:
+
+  **Before:**
+
+  ```ts
+  container: cva({
+    base: 'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+  }),
+  ```
+
+  **After:**
+
+  ```ts
+  container: cva({
+    base: [
+      'grid gap-x-2 items-center',
+      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+      'group-data-booleanfield/booleanfield:grid-cols-subgrid group-data-booleanfield/booleanfield:col-span-full',
+    ],
+    variants: {
+      variant: {
+        default: 'grid-cols-[auto_1fr]',
+        settings: 'grid-cols-[1fr_auto]',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  ```
+
+  Key changes:
+  - Added `grid gap-x-2 items-center` (replaces `flex items-center gap-2` that was previously hardcoded in the component)
+  - Grid columns moved to `variant` to support both default and settings layouts
+  - Added subgrid support for BooleanField integration
+
+- 724f0ce: refa([DST-1162]): **Breaking changes**: The `Card` component has been refactored into a compound component pattern.
+
+  **What changed:**
+  - The previous prop-based API (`padding`, `space`, etc.) has been removed.
+  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Body`, `Card.Footer`, and `Card.Preview`.
+  - A `CardContext` is now required — sub-components will throw an error if used outside of a `<Card>`.
+
+  **Migration:**
+
+  ```tsx
+  // Before
+  <Card>
+    <SomeContent />
+  </Card>
+
+  // After
+  <Card>
+    <Card.Header>Title</Card.Header>
+    <Card.Body><SomeContent /></Card.Body>
+    <Card.Footer>Actions</Card.Footer>
+  </Card>
+  ```
+
+### Minor Changes
+
+- 6587493: refa([DST-1298]): Refactor Divider component: API, styling, and docs
+
+  We fixed the vertical orientation of the divider, which previously didn't work.
+  Added new Divider stories and updated the Divider docs.
+
+- 93f9ef1: feat(DST-1257): add universal `none` spacing token
+  - Introduce `NoSpacingToken = 'none'` shared across all spacing token families
+  - Add `'none'` to `SpacingTokens`, `PaddingSpacingTokens`, and `InsetSpacingTokens`
+  - Add `--spacing-none: --spacing(0)` CSS custom property to the theme
+
+  `'none'` now works wherever a spacing token is accepted: `Stack`/`Inline` gap (`space="none"`), `Inset` axis padding (`spaceX="none"` / `spaceY="none"`), and `Inset` recipes (`space="none"`) — useful for wrappers that should render without adding any spacing (e.g. an edge-to-edge `Table` inside a containing component).
+
+- 8326bf7: feat(DST-1326): introduce `Panel.CollapsibleHeader`, `Panel.CollapsibleTitle`, and `Panel.CollapsibleDescription`. The collapsible mirrors `Panel.Header` — a header wrapper with a title plus an optional description — and the whole visual surface is a single click target: title and description render as spans inside the trigger `<button>`, with the accessible name wired via `aria-labelledby` and the description via `aria-describedby`. The chevron icon uses a reusable `MorphCaret` that animates via SVG path morphing (honours `prefers-reduced-motion`).
+- 326f707: feat(theme-rui): preflight fixes, file layout refactor, token and export corrections
+
+  A cohesive set of changes that (1) adds peer-dependency fixes needed
+  for page-level scroll, (2) splits the theme's CSS into files with
+  unambiguous roles, and (3) fixes a prefixer bug that stranded design
+  tokens inside the scoped bundle.
+
+  **New: `preflight.css`**
+
+  Two peer-dependency fixes on the real `<html>` / `<body>`:
+  - `html { scrollbar-gutter: stable }` — prevents a 1 px reflow when
+    `@react-aria/overlays` locks the page (it sets `overflow: hidden`
+    on `<html>` and compensates scrollbar width).
+  - `body { position: relative; overflow-x: clip }` — contains the
+    `@react-aria/live-announcer` portal (mounted at `top: -10000px;
+left: -10000px`) so it cannot expand the document's scrollable
+    area. `clip` (not `hidden`) keeps `position: sticky` on
+    descendants working.
+
+  These rules ship inside both entry points; the prefixer excludes
+  `html`/`body` so the rules reach the document root while the rest
+  of the bundle stays scoped to `[data-theme="rui"]`.
+
+  **Scrollbar track**
+
+  `ui-scrollbar`'s track is now transparent so the themed scrollbar
+  blends into any surface.
+
+  **File layout refactor**
+  - `tokens.css` (new) — `@plugin` declaration and every design token
+    in one place. Easy to find, easy to extend.
+  - `theme.css` (Tailwind-native entry) — imports `preflight.css` +
+    `tokens.css` + `ui.css` + `variants.css` and paints `<body>`
+    directly. A Marigold-first app needs zero extra markup to get the
+    theme's page background, text color, and font.
+  - `styles.css` (pre-compiled entry) — imports the same base and
+    paints `[data-theme="rui"]`. The consumer places the attribute on
+    `<html>`, `<body>`, or a wrapper `<div>` to control where Marigold
+    paints — whole-app or island.
+  - `global.css` (removed, never released) — the body paint now lives
+    inline in the two entry points that actually need it, so a shared
+    file with ambiguous semantics is no longer necessary.
+
+  **Two clean mental models**
+  - Use `theme.css` with your own Tailwind build when Marigold is the
+    whole app. Body paints automatically, tokens live at `:root`,
+    utilities tree-shake against your content.
+  - Use `styles.css` as a pre-compiled drop-in when Marigold is an
+    island or you are not running Tailwind. Place `data-theme="rui"`
+    wherever Marigold should paint.
+
+  **Tokens at `:root`**
+
+  `postcss-prefix-selector` previously rewrote `@theme`'s output from
+  `:root, :host` to `[data-theme="rui"], [data-theme="rui"] :host`,
+  which meant any unscoped rule could not resolve
+  `var(--color-background)` because the variables were only declared
+  inside the `[data-theme="rui"]` scope. The prefixer now excludes
+  `:root`, `:host`, and `[data-theme="rui"]` in addition to
+  `html`/`body`, so design tokens are emitted globally while utility
+  classes remain scoped. The `[data-theme="rui"]` exclude uses a
+  quote-agnostic regex so prettier round-trips don't reintroduce
+  double-prefixing.
+
+  **CSS exports carry a `style` condition**
+
+  Tailwind v4's CSS resolver uses `conditionNames: ["style"]`.
+  Bare-string export entries without a matching condition fail under
+  strict resolvers, so every `.css` subpath now declares both `style`
+  and `default` targets. The unused `./*` JS catchall is removed. New
+  subpath exports: `./tokens.css`, `./preflight.css`.
+
+  Existing documented imports (`theme.css`, `styles.css`) continue to
+  work.
+
+### Patch Changes
+
+- 5cd5290: fix(DST-1359): align `ActionBar` action button spacing with the regular `Button`. The `actionButton` style in `theme-rui` was missing `gap-2 items-center justify-center`, which caused icons and labels inside ActionBar buttons to render without the proper spacing/alignment used by the ghost/default `Button`. Adding these utilities restores visual parity across the design system.
+- 84d3213: Paint `Checkbox` and `Radio` controls with `bg-surface` so the inner area follows the theme surface token. Keeps the controls visually distinct over containers that paint a non-default background — e.g. a hovered or selected `SelectList` row. `Radio` already used `bg-surface` (added in DST-878 token polish); this brings `Checkbox` in parity.
+- b7c132d: fix(DST-1354): restore collapsing `Table.EditableCell` edit trigger
+
+  The overlay/ring affordance introduced in #5250 (DST-1275) did not read as editable in user testing: sighted users did not associate the hover ring with inline editing, and there was no discoverable trigger for keyboard or touch. This change reverts that approach and restores the explicit pencil edit button.
+
+  The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or keyboard focus, so static layout remains clean while the affordance is discoverable the moment the user interacts with the row. When expanded, the wrapper switches to `overflow-visible` so the button's focus outline is not clipped. The cell itself stays clickable as a touch target. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like a regular `Table.Cell`.
+
+- f16b887: fix(DST-1352): use correct outline for focus + error state in compound fields
+- 20a42b0: Rename universal spacing token from `none` to `collapsed` to avoid a Tailwind v4 collision. `--spacing-none` inside `@theme static` caused `leading-none` to resolve to `0` instead of `line-height: 1`. The new name `collapsed` is a semantic design term (cf. CSS margin collapse) that reads naturally in both gap (`space="collapsed"`) and padding (`inset="collapsed"`) contexts.
+- 8902b10: fix: register `--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` as non-inheriting custom properties
+
+  Previously, setting one of these variables on a themed surface (e.g. a destructive Panel overriding `--ui-border-color`) would cascade the value into every nested element that also reads `ui-surface`, tinting Inputs, Buttons, Cards, etc. with the parent's color.
+
+  These three custom properties are now registered via `@property { inherits: false }`, so each surface resolves its own fallback via the existing `var(..., var(--color-…))` pattern and nested surfaces keep their defaults.
+
+- Updated dependencies [adb8a18]
+- Updated dependencies [326f707]
+- Updated dependencies [b7c132d]
+- Updated dependencies [6587493]
+- Updated dependencies [f16b887]
+- Updated dependencies [f629319]
+- Updated dependencies [93f9ef1]
+- Updated dependencies [8326bf7]
+- Updated dependencies [bfea9df]
+- Updated dependencies [8326bf7]
+- Updated dependencies [1cac70d]
+- Updated dependencies [cddcfd3]
+- Updated dependencies [e33a1e7]
+- Updated dependencies [20a42b0]
+- Updated dependencies [00d93c8]
+- Updated dependencies [c2a1c72]
+- Updated dependencies [724f0ce]
+- Updated dependencies [62cca29]
+- Updated dependencies [de34b15]
+- Updated dependencies [04111ca]
+  - @marigold/system@18.0.0-beta.0
+  - @marigold/components@18.0.0-beta.0
+
 ## 5.2.4
 
 ### Patch Changes

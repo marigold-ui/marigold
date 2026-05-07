@@ -216,7 +216,7 @@ export const LongItems = meta.story({
   },
   render: args => {
     return (
-      <Inset space={24}>
+      <Inset p={24}>
         <Select
           {...args}
           label="Favorite character"
@@ -265,7 +265,7 @@ export const LongItems = meta.story({
 export const LotsOfOptions = meta.story({
   render: args => {
     return (
-      <Inset space={24}>
+      <Inset p={24}>
         <Select
           {...args}
           label="Favorite character"

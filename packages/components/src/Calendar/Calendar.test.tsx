@@ -5,7 +5,7 @@ import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Basic, ThreeMonths, TwoMonths } from './Calendar.stories';
-import { useCalendarContext } from './Context';
+import { useCalendarContext, useCalendarOrRangeState } from './Context';
 
 describe('Calendar', () => {
   const user = userEvent.setup();
@@ -336,5 +336,11 @@ describe('Calendar - Multi-month', () => {
 test('useCalendarContext throws when used outside Calendar', () => {
   expect(() => renderHook(() => useCalendarContext())).toThrow(
     'Calendar components must be used within <Calendar>'
+  );
+});
+
+test('useCalendarOrRangeState throws when used outside Calendar or RangeCalendar', () => {
+  expect(() => renderHook(() => useCalendarOrRangeState())).toThrow(
+    'Calendar subcomponents must be rendered inside <Calendar> or <RangeCalendar>'
   );
 });

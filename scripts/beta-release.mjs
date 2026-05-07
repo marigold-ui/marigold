@@ -73,7 +73,10 @@ await $`git add -A`;
 await $`git commit -m ${'release: version packages (beta)'}`;
 
 console.log(chalk.cyan('\n▸ Publishing to npm (tag: beta)…'));
-await $`pnpm changeset publish`;
+// `stdio: 'inherit'` so changesets' interactive 2FA OTP prompt
+// (`Enter one-time password:`) reaches the terminal — without it, zx pipes
+// stdin and the prompt never appears, making the script look hung.
+await $({ stdio: 'inherit' })`pnpm changeset publish`;
 
 console.log(chalk.cyan('\n▸ Pushing commit + tags to origin…'));
 await $`git push --follow-tags`;

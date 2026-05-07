@@ -5,10 +5,10 @@ test('add icon in button works as expected', () => {
   render(<WithIcon.Component>iconbutton</WithIcon.Component>);
 
   const button = screen.getByText(/iconbutton/);
-  const icon = screen.getByTestId(/facebook/);
+  const icon = screen.getByTestId(/download/);
 
   expect(button).toHaveClass('items-center justify-center');
-  expect(icon).toHaveAttribute('width', '30px');
+  expect(getComputedStyle(icon).width).toBe('16px');
 });
 
 test('forwards ref', () => {

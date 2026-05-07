@@ -1,7 +1,7 @@
-import { Bold, Italic, Underline } from 'lucide-react';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
 import { expect, userEvent, waitFor } from 'storybook/test';
+import { Bold, Italic, Underline } from '@marigold/icons';
 import preview from '../../../../.storybook/preview';
 import { ToggleButton } from './ToggleButton';
 import { ToggleButtonGroup } from './ToggleButtonGroup';

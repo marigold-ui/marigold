@@ -1,5 +1,59 @@
 # @marigold/system
 
+## 18.0.0-beta.0
+
+### Major Changes
+
+- adb8a18: feat(DST-1237): theme-owned breakpoints with CSS fallback
+
+  Breakpoint resolution is now theme-driven: `useSmallScreen` and `useResponsiveValue` read `theme.screens` from the ThemeProvider context instead of relying on hardcoded values in `defaultTheme`. If no theme provides screens, the hooks fall back to reading Tailwind v4's `--breakpoint-*` CSS custom properties.
+  - Added `screens` to `@marigold/theme-rui` (matches Tailwind v4 defaults)
+  - Removed `screens` from `defaultTheme` in `@marigold/system`
+  - Added `resolveScreens` utility for theme-first, CSS-fallback resolution
+
+- f629319: refactor([DST-1283]): **Breaking Change** — Remove `<Multiselect>` (and the `react-select` dependency) from `@marigold/components`.
+
+  Use `<TagField>` instead.
+
+- 724f0ce: refa([DST-1162]): **Breaking changes**: The `Card` component has been refactored into a compound component pattern.
+
+  **What changed:**
+  - The previous prop-based API (`padding`, `space`, etc.) has been removed.
+  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Body`, `Card.Footer`, and `Card.Preview`.
+  - A `CardContext` is now required — sub-components will throw an error if used outside of a `<Card>`.
+
+  **Migration:**
+
+  ```tsx
+  // Before
+  <Card>
+    <SomeContent />
+  </Card>
+
+  // After
+  <Card>
+    <Card.Header>Title</Card.Header>
+    <Card.Body><SomeContent /></Card.Body>
+    <Card.Footer>Actions</Card.Footer>
+  </Card>
+  ```
+
+### Minor Changes
+
+- 93f9ef1: feat(DST-1257): add universal `none` spacing token
+  - Introduce `NoSpacingToken = 'none'` shared across all spacing token families
+  - Add `'none'` to `SpacingTokens`, `PaddingSpacingTokens`, and `InsetSpacingTokens`
+  - Add `--spacing-none: --spacing(0)` CSS custom property to the theme
+
+  `'none'` now works wherever a spacing token is accepted: `Stack`/`Inline` gap (`space="none"`), `Inset` axis padding (`spaceX="none"` / `spaceY="none"`), and `Inset` recipes (`space="none"`) — useful for wrappers that should render without adding any spacing (e.g. an edge-to-edge `Table` inside a containing component).
+
+- 8326bf7: feat(DST-1326): introduce `Panel.CollapsibleHeader`, `Panel.CollapsibleTitle`, and `Panel.CollapsibleDescription`. The collapsible mirrors `Panel.Header` — a header wrapper with a title plus an optional description — and the whole visual surface is a single click target: title and description render as spans inside the trigger `<button>`, with the accessible name wired via `aria-labelledby` and the description via `aria-describedby`. The chevron icon uses a reusable `MorphCaret` that animates via SVG path morphing (honours `prefers-reduced-motion`).
+
+### Patch Changes
+
+- 20a42b0: Rename universal spacing token from `none` to `collapsed` to avoid a Tailwind v4 collision. `--spacing-none` inside `@theme static` caused `leading-none` to resolve to `0` instead of `line-height: 1`. The new name `collapsed` is a semantic design term (cf. CSS margin collapse) that reads naturally in both gap (`space="collapsed"`) and padding (`inset="collapsed"`) contexts.
+- de34b15: chore(deps): update `react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` packages to their latest versions.
+
 ## 17.4.0
 
 ### Minor Changes

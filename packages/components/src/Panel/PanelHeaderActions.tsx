@@ -3,7 +3,7 @@ import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelHeaderActionsProps {
-  /** Actions rendered at the end of the header (e.g. buttons or menus). */
+  /** Actions rendered at the end of the header (e.g. buttons or menus). Must be used inside `Panel.Header`. */
   children: ReactNode;
 }
 

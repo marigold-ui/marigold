@@ -1,6 +1,5 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
@@ -13,7 +12,7 @@ const meta = preview.meta({
     surface: false,
   },
   argTypes: {
-    space: {
+    p: {
       control: {
         type: 'select',
       },
@@ -37,7 +36,7 @@ const meta = preview.meta({
       ],
       description: 'set padding on all sides',
     },
-    spaceX: {
+    px: {
       control: {
         type: 'select',
       },
@@ -51,7 +50,7 @@ const meta = preview.meta({
       ],
       description: 'set padding on left and right side',
     },
-    spaceY: {
+    py: {
       control: {
         type: 'select',
       },
@@ -67,14 +66,14 @@ const meta = preview.meta({
     },
   },
   args: {
-    space: 'square-regular',
+    p: 'square-regular',
     children: undefined,
   } as const,
 });
 
 export const Basic = meta.story({
   render: args => (
-    <Card size="small">
+    <div className="bg-muted rounded-md">
       <Inset {...args}>
         <Headline level={3}>The Giggle Grounds</Headline>
         <Inline>
@@ -85,14 +84,14 @@ export const Basic = meta.story({
           bringing laughter to every corner of Laughville.
         </Text>
       </Inset>
-    </Card>
+    </div>
   ),
 });
 
 export const Collapsed = meta.story({
   tags: ['component-test'],
   args: {
-    space: 'collapsed',
+    p: 'collapsed',
   },
   render: args => (
     <Inset {...args}>

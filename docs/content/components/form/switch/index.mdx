@@ -27,13 +27,20 @@ The switch is composed of:
 
 <AppearanceTable component={'Switch'} />
 
+The Switch component provides two layout variants for different placement contexts.
+
+| Variant    | Description                             | When to use                                                                                                                                                                 |
+| ---------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `default`  | Toggle on the left, label on the right. | Inline contexts where the switch sits inside a larger element, such as a card row, list item, or menu. Compact placements where the switch is one of several visual pieces. |
+| `settings` | Label on the left, toggle on the right. | Dedicated settings or preference pages laid out as a vertical list, where users scan labels top-to-bottom and glance right to check or change state.                        |
+
 ## Usage
 
 Switches are for standalone settings where flipping the control applies the change right away. No save button, no form submission. The change is live the moment you toggle.
 
 You'll find them on settings pages, notification preferences, feature toggles, and privacy panels. Each switch should control one independent setting. Toggling one should never affect another.
 
-By default, the toggle sits on the left and the label on the right. This compact layout works well when a switch is embedded inside another element, like a card or a list item, where space is tight and the toggle needs to sit inline with other content. For standalone settings pages where the label is the primary scanning element, use `variant="settings"` instead (see below).
+Use the default variant when the switch is embedded inside another element, such as a card or list item. For standalone settings pages, use `variant="settings"`. See [Settings and preference](#settings-and-preference) below.
 
 <ComponentDemo name="switch-card" />
 
@@ -66,11 +73,23 @@ Add a description when the label alone doesn't explain what toggling actually do
 
 ### Settings and preference
 
-On dedicated settings or preference pages, switches typically appear as a vertical list where the label is the primary scanning element. Placing the label on the left and the toggle on the right works better here because users need to understand what a setting controls before they decide whether to change it. In a vertical list, this creates two stable columns: a readable label column on the left that users scan top to bottom, and a uniform action column on the right they glance at only to check or change state. On mobile, this also places the toggle near the right thumb for easier one-handed reach.
-
-Use `variant="settings"` for this layout. The default variant (toggle on the left) is better suited for compact, inline contexts like cards or list items where the switch is part of a larger element.
+On dedicated settings or preference pages, switches appear as a vertical list where the label is the primary scanning element. Use `variant="settings"` for this layout: the label sits on the left and the toggle on the right.
 
 <ComponentDemo name="switch-settings" />
+
+The label-left layout works because users need to understand what a setting controls before deciding whether to change it. The two-column rhythm gives a readable label column scanned top-to-bottom and a uniform action column glanced at only to check or change state. On mobile, the toggle also lands near the right thumb for easier one-handed reach.
+
+Group switches by topic with a section heading. Each row should control one independent setting; toggling one should never silently affect another.
+
+A switch is built around the light-switch metaphor: flipping it _is_ the change, not a request to make the change. The component renders with `role="switch"`, which screen readers announce as "on" or "off" the moment the user activates it. Both the visual and accessibility contract say the new state is true now.
+
+Putting a switch inside a `<Form>` with a Save button breaks both contracts. The toggle visually flips and the screen reader announces "on", but the underlying state is not actually saved until the user submits. This is why production auto-save settings (iOS Settings, GitHub repo Features, Linear, Vercel, Notion) use switches, while save-bound admin forms (WordPress, Jira, Salesforce) use checkboxes.
+
+<Callout title="Use only on auto-save surfaces" type="warning">
+  Reserve `variant="settings"` for pages that save changes the moment a user
+  toggles. If your settings page batches changes behind a Save button, use
+  [Checkbox](/components/form/checkbox) instead.
+</Callout>
 
 ### Choosing the right control
 

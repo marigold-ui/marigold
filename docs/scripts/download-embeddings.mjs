@@ -12,17 +12,10 @@ const outputPath = resolve(
   'embeddings.json'
 );
 
-if (!process.env.BLOB_READ_WRITE_TOKEN) {
-  console.error(
-    'BLOB_READ_WRITE_TOKEN is not set. Cannot download embeddings.'
-  );
-  process.exit(1);
-}
-
 try {
   const result = await get('embeddings.json', {
     access: 'private',
-    token: process.env.BLOB_READ_WRITE_TOKEN,
+    token: process.env.BLOB_READ_WRITE_TOKEN || '',
   });
 
   if (!result) {

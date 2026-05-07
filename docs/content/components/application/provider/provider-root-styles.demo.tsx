@@ -3,7 +3,7 @@ import theme from '@marigold/theme-rui';
 
 export default () => (
   <MarigoldProvider theme={theme} className="rounded-lg">
-    <Inset space={6}>
+    <Inset p={4}>
       <Card>
         <Card.Body>
           This card sits inside a MarigoldProvider whose root wrapper is styled

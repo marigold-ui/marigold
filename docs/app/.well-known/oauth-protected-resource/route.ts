@@ -5,13 +5,7 @@ import {
 } from 'mcp-handler';
 import { NextResponse } from 'next/server';
 
-const OIDC_AUTHORITY = process.env.OIDC_AUTHORITY;
-
-if (!OIDC_AUTHORITY) {
-  throw new Error('Missing OIDC configuration. Set OIDC_AUTHORITY.');
-}
-
-const authority: string = OIDC_AUTHORITY;
+const authority = process.env.OIDC_AUTHORITY || '';
 
 export function GET(req: Request) {
   const resourceUrl = getPublicUrl(req).origin;
