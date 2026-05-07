@@ -1,3 +1,4 @@
+import type { Person } from '@/lib/data/people';
 import { people } from '@/lib/data/people';
 import { Inline, Select, Stack, Text, TextValue } from '@marigold/components';
 
@@ -7,6 +8,16 @@ export default () => (
     placeholder="Select a person"
     defaultValue="crash"
     width={80}
+    renderValue={([person]: Person[]) => (
+      <Inline space={2} alignY="center">
+        <img
+          src={person.avatar}
+          alt=""
+          className="size-5 rounded-full object-cover"
+        />
+        <Text>{person.name}</Text>
+      </Inline>
+    )}
   >
     {people.map(person => (
       <Select.Option key={person.id} id={person.id} textValue={person.name}>

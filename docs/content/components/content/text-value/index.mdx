@@ -67,6 +67,8 @@ Place a `<Description>` next to the `<TextValue>` inside a selection item to add
 
 When option content includes images, icons, or layout components like `<Inline>`, keep `<TextValue>` around the label text only and let the layout wrap around it. Set the option's `textValue` prop so typeahead has a plain string to match even when the label sits behind layout.
 
+Pass `renderValue` to `<Select>` to control what the trigger shows once an option is selected. Without it the trigger renders the option's full layout, which rarely looks right inside a single-line button.
+
 <ComponentDemo name="text-value-in-menu" />
 
 ### Driving typeahead
