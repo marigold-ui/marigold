@@ -564,14 +564,18 @@ export const WithRenderValue = meta.story({
     <Select
       {...args}
       items={people}
-      renderValue={([person]: (typeof people)[number][]) => (
+      renderValue={(selected: (typeof people)[number][]) => (
         <Inline space={2} alignY="center">
-          <img
-            src={person.avatar}
-            alt=""
-            className="size-5 rounded-full object-cover"
-          />
-          <Text>{person.name}</Text>
+          {selected.map(person => (
+            <Inline key={person.id} space={1} alignY="center">
+              <img
+                src={person.avatar}
+                alt=""
+                className="size-5 rounded-full object-cover"
+              />
+              <Text>{person.name}</Text>
+            </Inline>
+          ))}
         </Inline>
       )}
     >

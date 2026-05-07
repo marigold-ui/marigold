@@ -146,6 +146,20 @@ test('renderValue is not used when nothing is selected (placeholder shows)', () 
   expect(button).toHaveTextContent(/Select a user/);
 });
 
+test('renderValue receives all selected items in multi-select mode', () => {
+  renderWithOverlay(
+    <WithRenderValue.Component
+      selectionMode="multiple"
+      defaultValue={['alice', 'bob']}
+    />
+  );
+
+  const button = screen.getByRole('button');
+
+  expect(within(button).getByText('Alice Johnson')).toBeVisible();
+  expect(within(button).getByText('Bob Smith')).toBeVisible();
+});
+
 test('default trigger render hides description slot', () => {
   renderWithOverlay(
     <Sections.Component label="Label" defaultValue="harry-potter" />
