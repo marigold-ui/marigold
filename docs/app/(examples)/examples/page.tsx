@@ -1,7 +1,12 @@
 'use client';
 
-import { DashboardContent } from '../_shared/dashboard-content';
+import { PlaceholderPage } from '../_shared';
 
-const DashboardPage = () => <DashboardContent />;
+const DashboardPage = () => (
+  <PlaceholderPage
+    title="Dashboard"
+    description="Workspace overview at a glance."
+  />
+);
 
 export default DashboardPage;
