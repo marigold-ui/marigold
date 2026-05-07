@@ -269,7 +269,7 @@ export const SelectAnatomy = () => (
           fontWeight="600"
           className="fill-fd-primary"
         >
-          Section
+          Section header
         </text>
         <text
           x="800"
