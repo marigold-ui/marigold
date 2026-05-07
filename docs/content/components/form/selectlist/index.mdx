@@ -1,0 +1,284 @@
+---
+title: SelectList
+description: Pick one or many items from a fully visible list of rich options.
+badge: updated
+---
+
+import { SelectListAnatomy } from './selectlist-anatomy';
+
+A `<SelectList>` lets users pick from a list where each option carries additional information beyond a label, like a description, a logo, or a per-row action. Every option stays visible so users can scan and compare without opening anything.
+
+The trade-off is space. A `<SelectList>` takes more vertical room than a `<Radio.Group>` or a `<Select>`, so reach for it when the decision earns the weight: picking a payment method, comparing plans, choosing a shipping speed. For simple text choices, a lighter control reads faster.
+
+## Anatomy
+
+A `<SelectList>` is a labeled container holding a stack of `<SelectList.Option>` rows. Each row pairs a selection indicator with a label over an optional description, and an optional trailing action.
+
+<SelectListAnatomy />
+
+- **Label:** Names the field above the list.
+- **List:** The container that holds all options.
+- **Option:** A single row representing one choice.
+- **Selection indicator:** A radio circle for single selection, or a checkbox for multiple selection.
+- **Text value:** The primary text of an option.
+- **Description:** Optional secondary text within an option that helps the user decide.
+- **Action:** An optional trailing button or menu for a per-row action that does not toggle the row.
+
+## Appearance
+
+<AppearanceDemo component="SelectList" />
+
+<AppearanceTable component="SelectList" />
+
+`<SelectList>` has two variants. They handle two different framings of the same choice: rows in a continuous list, or peer cards to commit to.
+
+| Variant    | Description                                         | When to use                                                                                              |
+| ---------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `default`  | A single surface with dividers between rows.        | Reads as one continuous list of entries. Default choice. Scans faster on longer lists.                   |
+| `bordered` | Each row is its own outlined card with a small gap. | Commit-level, peer-to-peer choices like plans, payment methods, or shipping modes. Avoid for long lists. |
+
+## Usage
+
+Hidden lists make users do invisible work. Comparing two options in a dropdown means opening it, scanning, closing it, opening it again, scanning, then deciding, all while keeping the rest of the form alive in their head. `<SelectList>` moves that work out of memory and into the layout: every option is on screen, so the comparison happens once and stays put. Each row also has space for one inline action, like a "View details" button or a "Configure" menu, that does not trigger selection. `<Radio.Group>` and `<Select>` can't host that.
+
+Use `<SelectList>` when comparison is the point of the field, not when it is one step among many. That usually means a peer-level choice where each option is its own commitment, and getting it right matters more than moving through the form quickly.
+
+### Number of options
+
+The right control depends on list length and how much space the field can take. `<SelectList>` earns its space when comparing options side by side or hosting per-row actions matters. For shorter lists of plain choices, longer lists, or when space is tight, a lighter control fits better. The table below maps common situations to the control that fits.
+
+| When                                                         | Use                                                                                                              |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Short list of plain text choices (3–5 items)                 | [`<Radio.Group>`](/components/form/radio) (single) or [`<Checkbox.Group>`](/components/form/checkbox) (multiple) |
+| Each option needs decision-relevant context (up to 10 items) | `<SelectList>`                                                                                                   |
+| Space is limited, with or without rich rows (5–15 items)     | [`<Select>`](/components/form/select) (single or multiple)                                                       |
+| More than ~15 options, or users need to search               | [`<Combobox>`](/components/form/combobox) or [`<TagField>`](/components/form/tag-field)                          |
+
+### Writing options
+
+The label, description, and order of each row decide whether the list reads at a glance or makes users work for it.
+
+**Keep labels short and concrete.** Lead with the most distinctive word, since that's where the eye lands first. The description line earns its space when it differentiates options that look similar at the title level. Skip it for marketing copy, restated labels, or boilerplate that repeats on every row (like "All major cards accepted").
+
+**Be consistent.** All rows should follow the same shape: either every row has a description or none of them do. Mixed-height rows break the visual rhythm and slow scanning.
+
+**Order by what users pick most often.** Readers scan top to bottom (or left to right), so the most common choice belongs first. Avoid alphabetical or system-driven order: a "Bank transfer" sorted to the top alphabetically is unhelpful when most users pay by card. If options have a natural progression (free → pro → enterprise, or fastest → cheapest), follow that order instead.
+
+<Callout title="Keep it accessible">
+  When a row contains more than plain text (a wrapped label, a logo, a trailing
+  action), pass `textValue` on the option. Screen readers use it as the option's
+  accessible name.
+</Callout>
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep labels short, lead with the most distinctive word, and order options
+      by how often users pick them.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't mix one-line and two-line rows in the same list, and don't truncate
+      labels with an ellipsis.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Multiselection
+
+Sometimes users need to pick several options and see what they picked at a glance. A [multi-select `<Select>`](/components/form/select#multiselection) truncates as picks pile up. `<SelectList>` keeps every option and every checkmark on screen. That's the right trade when the selection itself matters as much as the choosing: which payment methods accept checkout traffic, which channels deliver a given notification, which features ship in a plan.
+
+Set `selectionMode="multiple"` to switch the list to checkboxes.
+
+<ComponentDemo name="selectlist-multiple-selection" />
+
+### Per-row actions
+
+Reach for a per-row action when a row needs context it can't carry on its own, or when the picker doubles as configuration for each item. Without it, users either commit to a choice they don't fully understand or leave the form to look something up, losing their place. Two patterns hold up: actions that help the user **decide** which row to pick, and actions that **configure** the row they're already keeping.
+
+A per-row action sits on the trailing edge of an option, separate from the selection target. Keep it to one action per row so the row's tap target stays predictable, and group multiples inside a single `<ActionMenu>` rather than placing two icons side by side. Clicking the action does not toggle the row.
+
+#### Decision-help
+
+The action gives the user the context they need to commit, without leaving the form. A "View details" button on a saved card shows the billing address and expiry. A "Preview" button on an email template opens a side panel with the rendered output. A "Show on map" pin disambiguates pickup locations with similar names. The action removes the need to navigate away to make an informed choice.
+
+In the example below, each plan pairs with a `<ContextualHelp>` icon. The summary on the row is enough to scan and pick. The popover covers the long tail of features, limits, and SLA without sending the user to a separate page.
+
+<ComponentDemo name="selectlist-decision-help" />
+
+#### Configuration
+
+When the picker doubles as a settings form, the row is the natural home for per-item configuration. Two examples: a payment-methods picker with a "Configure" menu per row to set fees and currencies, or a notification-channels picker with a "Customize" menu per row to set frequency and quiet hours. The form submits which items are active, the row menu configures how each behaves.
+
+<ComponentDemo name="selectlist-configuration" />
+
+When management is its own job, give it its own surface: a separate page or panel where users come to manage saved records, not to pick one for the current form.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep it to one action per row, and group multiples inside a single action
+      menu rather than placing icons side by side.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't pair management actions like Edit or Remove with form selection.
+      Mutating the underlying record mid-form breaks the flow with confirmation
+      dialogs or network calls.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Horizontal orientation
+
+A vertical stack of three or four short options claims a column the form doesn't need. Flowing those options left to right keeps the whole comparison in one row, and the surface only takes the width it needs. Reach for it on peer-level choices that fit on one line, like a shipping speed at checkout, a date range on an analytics view, or a sort order on a list.
+
+Set `orientation="horizontal"` to switch the layout.
+
+<ComponentDemo name="selectlist-horizontal" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use horizontal for short, peer-level choices that fit on one line, like a
+      shipping speed or a sort order.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use horizontal for long lists, rich rows, or narrow viewports.
+      Options scrolled out of view is the worst of both shapes.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Empty state
+
+When the collection is empty, for example because the user hasn't saved any payment methods yet, render a placeholder via the `emptyState` prop. A good empty state explains why the list is empty and offers a single next step.
+
+When the list is empty because of an active filter or search, surface a "Clear filters" action so users can recover without leaving the field.
+
+<ComponentDemo name="selectlist-empty-state" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Explain why the list is empty and provide a clear next action when one
+      exists.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't leave the list area blank. An empty surface gives users no signal
+      whether the system is loading, broken, or simply empty.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Accessibility
+
+`<SelectList>` is fully keyboard accessible:
+
+- Arrow keys move focus between options. Direction follows the layout: up/down when vertical, left/right when horizontal.
+- Space toggles the focused option.
+- Tab reaches any action inside the focused row.
+
+This two-tier model is what lets a per-row button or menu coexist with row selection without breaking keyboard navigation.
+
+Always give the list a `label`, or pass `aria-labelledby` when a heading nearby already names it. Without one, screen readers announce a list with no idea what it's for.
+
+For rows with rich content like a wrapped label, a logo, or a trailing action, set `textValue` on the option. Screen readers use it as the option's accessible name. Without it, the announcement collapses to whatever text fragment is reachable, which is rarely the right one.
+
+## Props
+
+<StorybookHintMessage component={'SelectList'} />
+
+### SelectList
+
+<AutoTypeTable path="SelectList" name="SelectListProps" />
+
+### SelectList.Option
+
+<AutoTypeTable
+  path="SelectList/SelectListOption"
+  name="SelectListOptionProps"
+/>
+
+## Alternative components
+
+- [Radio](/components/form/radio): Use for a small set of mutually exclusive, text-only choices where a description per option is not needed.
+- [Checkbox](/components/form/checkbox): Use for a small set of independent boolean options where each option is a short label.
+- [Select](/components/form/select): Use when the list is long, options are single-line, and saving vertical space matters more than seeing every option at once.
+- [Combobox](/components/form/combobox): Use for long lists where typing narrows results faster than scanning.
+- [TagField](/components/form/tag-field): Use for multi-select with search, where users add and remove choices as tags.
+- [Table](/components/collection/table): Use when each row is a record with multiple columns of structured data, not a selectable choice.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form implementation guide',
+      href: '../../patterns/user-input/form-implementation',
+      caption: 'Learn how to build forms with Marigold form fields.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Multiple selection',
+      href: '/patterns/user-input/multiple-selection',
+      caption: 'Patterns and guidelines for multiple selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M2.625 6.75a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0A.75.75 0 0 1 8.25 6h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75ZM2.625 12a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0ZM7.5 12a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12A.75.75 0 0 1 7.5 12Zm-4.875 5.25a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form fields',
+      href: '../../foundations/form-fields',
+      caption: 'How form fields work in Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>

@@ -2,7 +2,7 @@ import { Badge, Card, Inline, Stack, Switch, Text } from '@marigold/components';
 
 export default () => (
   <Stack space={4}>
-    <Card p={4} space={2} stretch>
+    <Card stretch>
       <Inline alignY="center" space={4}>
         <Stack space={1} stretch>
           <Inline space={2} alignY="center">
@@ -16,7 +16,7 @@ export default () => (
         <Switch label="Active" defaultSelected />
       </Inline>
     </Card>
-    <Card p={4} space={2} stretch>
+    <Card stretch>
       <Inline alignY="center" space={4}>
         <Stack space={1} stretch>
           <Text weight="bold">Slack integration</Text>

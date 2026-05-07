@@ -33,7 +33,7 @@ interface AppLayoutComponent {
 const _AppLayout = (({ children, ref, ...props }: AppLayoutProps) => (
   <div
     ref={ref}
-    className="grid h-dvh grid-cols-[auto_1fr] grid-rows-[3.5rem_1fr] overflow-hidden [grid-template-areas:'sidebar_header'_'sidebar_main']"
+    className="grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[3.5rem_1fr] [grid-template-areas:'sidebar_header'_'sidebar_main']"
     {...props}
   >
     {children}

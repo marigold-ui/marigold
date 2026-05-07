@@ -42,7 +42,9 @@ export default () => {
       <Table.Header>
         <Table.Column rowHeader>Venue</Table.Column>
         <Table.Column>Amenities</Table.Column>
-        <Table.Column width={100}>Rating</Table.Column>
+        <Table.Column width={100} alignX="right">
+          Rating
+        </Table.Column>
       </Table.Header>
       <Table.Body>
         {data.map(venue => (

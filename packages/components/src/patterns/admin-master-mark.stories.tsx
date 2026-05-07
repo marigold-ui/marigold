@@ -23,6 +23,7 @@ export const BadgeVariants = meta.story({
 });
 
 export const TableRows = meta.story({
+  parameters: { bleed: true },
   render: () => (
     <Table aria-label="Settings Table">
       <Table.Header>

@@ -16,9 +16,7 @@ import {
 
 export const OrganizerInfo = () => (
   <Panel size="form">
-    <Panel.Header>
-      <Panel.Title>Organizer Information</Panel.Title>
-    </Panel.Header>
+    <Panel.Title>Organizer Information</Panel.Title>
     <Panel.Content>
       <Stack space="regular">
         <Inline space="related" noWrap>

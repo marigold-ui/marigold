@@ -23,6 +23,7 @@ import { TableDragPreview } from './TableDragPreview';
 
 const meta = preview.meta({
   title: 'Components/Table',
+  parameters: { bleed: true },
   decorators: [
     Story => (
       <div id="storybook-root">
@@ -624,6 +625,11 @@ export const Sorting = meta.story({
   play: async ({ canvas, step }) => {
     await step('Verify initial state (no sorting)', async () => {
       expect(canvas.getByText(/Sort:.*\/ ascending/)).toBeInTheDocument();
+    });
+
+    await step('Verify idle sort icon is visible', async () => {
+      const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
+      expect(nameHeader.querySelector('svg')).toBeInTheDocument();
     });
 
     await step('Click Name column header to sort', async () => {

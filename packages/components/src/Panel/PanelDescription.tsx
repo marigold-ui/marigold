@@ -3,7 +3,7 @@ import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 
 export interface PanelDescriptionProps {
-  /** Supporting copy shown beneath the `Panel.Title`. */
+  /** Supporting copy shown beneath the `Panel.Title`. Must be used inside `Panel.Header`. */
   children: ReactNode;
 }
 

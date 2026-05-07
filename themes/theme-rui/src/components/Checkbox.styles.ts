@@ -4,7 +4,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   checkbox: cva({
     base: [
       'grid size-4 shrink-0 place-content-center rounded',
-      'border border-border shadow-elevation-border',
+      'border border-border shadow-elevation-border bg-surface',
       'group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none',
       'group-disabled/checkbox:group-selected/checkbox:bg-disabled-surface group-disabled/checkbox:border-disabled-surface! group-disabled/checkbox:text-disabled group-disabled/checkbox:cursor-not-allowed',
       'group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground',
@@ -14,9 +14,11 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   }),
   container: cva({
     base: [
-      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'grid grid-cols-[auto_1fr] gap-x-2 items-start',
       'cursor-pointer read-only:cursor-default',
       'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+      'group-data-[orientation=vertical]/checkboxgroup:py-1',
+      'group-data-[orientation=horizontal]/checkboxgroup:px-1.5',
     ],
   }),
   label: cva({
@@ -26,5 +28,5 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-disabled/checkbox:text-disabled',
     ],
   }),
-  group: cva({ base: 'flex flex-col gap-1' }),
+  group: cva({ base: 'flex flex-col' }),
 };

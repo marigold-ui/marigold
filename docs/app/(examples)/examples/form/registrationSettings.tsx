@@ -14,9 +14,7 @@ import {
 
 export const RegistrationSettings = () => (
   <Panel size="form">
-    <Panel.Header>
-      <Panel.Title>Registration Settings</Panel.Title>
-    </Panel.Header>
+    <Panel.Title>Registration Settings</Panel.Title>
     <Panel.Content>
       <Stack space="regular">
         <Checkbox label="Require registration approval" />
@@ -27,7 +25,7 @@ export const RegistrationSettings = () => (
           type="email"
         />
 
-        <Inset spaceY={12}>
+        <Inset py={12}>
           <Stack space="regular">
             <Checkbox label="Enable waitlist" />
             <Checkbox label="Limit registrations to specific domains" />

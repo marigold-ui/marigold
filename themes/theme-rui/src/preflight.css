@@ -1,0 +1,27 @@
+/*
+ * Required base rules for Marigold peer dependencies.
+ *
+ * - `html { scrollbar-gutter: stable }` reserves the scrollbar gutter
+ *   so content does not reflow when the document grows past one viewport
+ *   (or when `@react-aria/overlays` locks the page by setting
+ *   `overflow: hidden` on `<html>`).
+ * - `body { position: relative; overflow-x: clip }` contains absolutely
+ *   positioned portals (e.g. `@react-aria/live-announcer`) so they
+ *   cannot expand the document's scrollable area. `clip` (not `hidden`)
+ *   keeps `position: sticky` on descendants working.
+ *
+ * Shipped as its own file so the rules can ride inside the composed
+ * `theme.css` (for Tailwind setups) and the pre-built `styles.css` (for
+ * standalone setups) without getting rewritten by the `[data-theme="rui"]`
+ * prefixer — `html`/`body` selectors are excluded from prefixing.
+ */
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    position: relative;
+    overflow-x: clip;
+  }
+}

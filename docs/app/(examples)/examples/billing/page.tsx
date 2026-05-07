@@ -106,7 +106,7 @@ const statusVariant = {
 } as const;
 
 const BillingPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Stack space={8}>
       <Stack space={2}>
         <Headline level={2}>Billing</Headline>
@@ -278,9 +278,7 @@ const BillingPage = () => (
         </Panel>
 
         <Panel variant="destructive">
-          <Panel.Header>
-            <Panel.Title>Danger zone</Panel.Title>
-          </Panel.Header>
+          <Panel.Title>Danger zone</Panel.Title>
           <Panel.Content>
             <Stack space={1}>
               <Text weight="semibold">Cancel subscription</Text>

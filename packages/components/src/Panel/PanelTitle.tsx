@@ -20,7 +20,11 @@ export const PanelTitle = ({ children }: PanelTitleProps) => {
       ref={titleSlotRef}
       level={headingLevel}
       id={titleId}
-      className={cn('[grid-area:title]', classNames.title)}
+      className={cn(
+        '[grid-area:title]',
+        'not-in-data-panel-header:px-(--panel-px)',
+        classNames.title
+      )}
     >
       {children}
     </Heading>

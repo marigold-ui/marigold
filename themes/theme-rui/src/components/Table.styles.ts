@@ -104,8 +104,8 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',
       'first:ps-(--cell-edge-padding) last:pe-(--cell-edge-padding)',
-      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/75',
-      'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/75',
+      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
+      'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/50',
       '**:data-cell-content:outline-none',
       'data-editable:hover:ui-state-hover',
       'data-editable:has-[:focus-visible]:ui-state-hover',
@@ -150,10 +150,13 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   editTrigger: cva({
     base: [
-      'absolute -inset-px cursor-pointer',
-      'outline-none',
-      'hover:border hover:border-ring',
-      'focus-visible:border focus-visible:border-ring',
+      'flex items-center justify-center',
+      'text-secondary',
+      'size-control aspect-square rounded-surface transition-[color,background,transform]',
+      'ui-interactive',
+      'ui-press',
+      'hover:ui-state-hover-ghost',
+      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5',
     ],
   }),
   editCancel: cva({

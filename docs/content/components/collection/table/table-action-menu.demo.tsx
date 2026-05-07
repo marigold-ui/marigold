@@ -26,7 +26,7 @@ export default () => (
           </Table.Cell>
           <Table.Cell>{item.rating}</Table.Cell>
           <Table.Cell>
-            <Inline space={1} alignX="center" noWrap>
+            <Inline space={1} noWrap>
               <Tooltip.Trigger>
                 <Button size="small">
                   <Edit />

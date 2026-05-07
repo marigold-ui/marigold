@@ -58,7 +58,7 @@ const sessions = [
 ];
 
 const SecurityPage = () => (
-  <Inset space={4}>
+  <Inset p={4}>
     <Stack space={8}>
       <Stack space={2}>
         <Headline level={2}>Security</Headline>
@@ -187,9 +187,7 @@ const SecurityPage = () => (
         </Panel>
 
         <Panel variant="destructive">
-          <Panel.Header>
-            <Panel.Title>Danger zone</Panel.Title>
-          </Panel.Header>
+          <Panel.Title>Danger zone</Panel.Title>
           <Panel.Content>
             <Stack space={1}>
               <Text weight="semibold">Revoke all API keys</Text>

@@ -48,7 +48,10 @@ export type Theme = {
     >;
 
     Button?: ComponentStyleFunction<string, string>;
-    Card?: ComponentStyleFunction<string, string>;
+    Card?: Record<
+      'container' | 'header' | 'body' | 'footer' | 'preview',
+      ComponentStyleFunction<string, string>
+    >;
     CloseButton?: ComponentStyleFunction<string, string>;
     Collapsible?: Record<
       'container' | 'trigger' | 'content',
@@ -155,6 +158,16 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    SelectList?: Record<
+      | 'container'
+      | 'list'
+      | 'item'
+      | 'label'
+      | 'description'
+      | 'indicator'
+      | 'action',
+      ComponentStyleFunction<string, string>
+    >;
     NumberField?: Record<
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>
@@ -220,6 +233,19 @@ export type Theme = {
     >;
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
+      | 'calendar'
+      | 'calendarContainer'
+      | 'calendarMonth'
+      | 'calendarListboxButton'
+      | 'calendarCell'
+      | 'calendarControllers'
+      | 'calendarHeader'
+      | 'calendarGrid'
+      | 'calendarHeading'
+      | 'select',
+      ComponentStyleFunction<string, string>
+    >;
+    RangeCalendar?: Record<
       | 'calendar'
       | 'calendarContainer'
       | 'calendarMonth'

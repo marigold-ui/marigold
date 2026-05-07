@@ -17,8 +17,8 @@ export interface BaseLoaderProps extends Pick<
    * Children of the component that will make up the label.
    */
   children?: ReactNode;
-  variant?: 'default' | 'inverted';
-  size?: 'default' | 'large' | 'fit';
+  variant?: 'default' | 'inverted' | (string & {});
+  size?: 'default' | 'large' | 'fit' | (string & {});
   loaderType?: LoaderVisualType;
 }
 
