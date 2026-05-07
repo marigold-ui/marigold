@@ -25,7 +25,7 @@ export default () => (
           <img
             src={person.avatar}
             alt={person.name}
-            className="size-12 rounded-full object-cover"
+            className="size-8 rounded-full object-cover"
           />
           <Stack space={0}>
             <Text slot="label">{person.name}</Text>
