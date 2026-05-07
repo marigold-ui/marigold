@@ -4,19 +4,27 @@ description: Component for showing additional content alongside the main page.
 badge: updated
 ---
 
+import { DrawerAnatomy } from './drawer-anatomy';
+
 The `<Drawer>` is a slide-in panel that hosts a supplementary, in-context task alongside the main view, without blocking it. It is non-modal on desktop, falls back to a modal sheet on small screens, and is intended for light, single-step work.
 
 ## Anatomy
 
-A `<Drawer>` consists of an optional title, content, and actions. The title provides context for the user, while the content holds the main message or interactive elements like forms. The actions section contains controls such as buttons for confirming or cancelling.
+A `<Drawer>` slides in alongside the main page content. It is composed of an optional title, an optional close button, the main content area, and a row of actions.
 
-<ImageZoom
-  src="/drawer/drawer-anatomy.jpg"
-  alt="Anatomy of a drawer"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<DrawerAnatomy />
+
+- **Page content:** The main view that stays visible and interactive while the
+  drawer is open (non-modal on desktop).
+- **Drawer:** The slide-in panel itself, anchored to the side of the screen and
+  hosting the supplementary task.
+- **Title:** Optional heading at the top of the panel that gives context for
+  the task inside.
+- **Close button:** Optional dismiss control in the top corner, opt in via the
+  `closeButton` prop.
+- **Content:** The body of the drawer, holding the main message or
+  interactive elements like a form.
+- **Actions:** Bottom row of buttons for confirming or cancelling the task.
 
 ## Appearance
 
