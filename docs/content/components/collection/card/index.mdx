@@ -14,6 +14,8 @@ A `<Card>` component is a versatile UI element used to display content in a conc
 It's typically presented as a rectangular box with various content elements such as images, text, buttons, and icons.
 Cards are ideal for grouping related information and making it easily digestible, often used to display previews of articles, products, user profiles, and other content types.
 
+Cards are built from four optional slots, `Card.Preview`, `Card.Header`, `Card.Body`, and `Card.Footer`, but you rarely think about them in isolation. The patterns below cover the shapes a Card actually takes in product surfaces.
+
 ## Anatomy
 
 The `<Card>` component is a compound component made up of several sub-components that map to distinct visual areas of the card.
@@ -136,7 +138,8 @@ Cards already sit on a raised surface. Nesting a card inside another card create
   </Do>
   <Dont>
     <DontDescription>
-      Don't nest a card inside another card or place it on a same-elevation
+      Don't nest a card inside another card, place it inside a
+      [`<Panel>`](../../layout/panel), or sit it on any other same-elevation
       surface. The shadow has nothing to push against.
     </DontDescription>
   </Dont>
@@ -162,86 +165,62 @@ If most of your answers are "no," try one of these instead:
 | A status, callout, or feedback message          | [`<SectionMessage>`](../../content/section-message)                       |
 | A list of similar rows with no media or actions | [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) |
 
-### Composition
+### Card with image
 
-Cards use a compound component pattern compose the layout using the provided sub-components. Not all slots need to be used: combine only the ones relevant to your content.
-
-### Card.Preview
-
-Use `Card.Preview` to display an image or thumbnail that stretches edge-to-edge across the top of the card, without any padding. Typical use cases are venue photos, product images, or event covers.
+The fullest shape: a full-bleed image at the top, a title with supporting badges, descriptive body copy, and actions in the footer. Reach for it when each item carries strong visual identity, like an event preview, a venue tile, or a product summary.
 
 <ComponentDemo name="card-elevation" />
-
-### Card.Header
-
-Use `Card.Header` for the card's title and supporting meta information like badges or labels.
-
-```tsx
-<Card>
-  <Card.Header>
-    <Headline level={3}>Event Title</Headline>
-    <Badge variant="info">New</Badge>
-  </Card.Header>
-  <Card.Body>Details about the event.</Card.Body>
-</Card>
-```
-
-### Card.Body
-
-Use `Card.Body` for the main content area of the card, descriptive text, form elements, or any primary content.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `Card.Preview` for images so they appear full-bleed at the top of the
+      Put images in `Card.Preview` so they sit full-bleed at the top of the
       card.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't nest images inside `Card.Body` when they're meant to be the card's
-      main visual.
+      Don't nest the card's main visual inside `Card.Body`. The padding cuts the
+      image off from the card's edges and the framing falls apart.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
-### Card.Footer
+### Cards in a grid
 
-Use `Card.Footer` for actions or metadata displayed at the bottom of the card, such as buttons or secondary text.
+The canonical Card use case: a collection of similar items, each acting as the entry point to its own detail view. Combine Card with [`<Tiles>`](../../layout/tiles) so the grid wraps responsively as the viewport changes.
 
-```tsx
-<Card>
-  <Card.Body>Card content</Card.Body>
-  <Card.Footer>
-    <Button>Primary Action</Button>
-  </Card.Footer>
-</Card>
-```
+<ComponentDemo name="card-grid" />
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Combine only the sub-components you need, not every slot must be used.
-    </DoDescription>
-  </Do>
-</GuidelineTiles>
-
-The following example shows a typical card composition using all available slots.
-
-<ComponentDemo name="card-elevation" />
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use Card on top of the default surface layer so the raised shadow is
+      Place a Card on top of the default surface so the raised shadow is
       visible.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't use card in cards or on same-elevation layers.
+      Don't nest a card inside another card, place it inside a
+      [`<Panel>`](../../layout/panel), or sit it on any other same-elevation
+      surface. The shadow has nothing to push against.
     </DontDescription>
   </Dont>
+</GuidelineTiles>
+
+### Card without media
+
+Not every card needs a preview. When the content is text-driven, like a plan summary, a status block, or a quick stat with actions, drop `Card.Preview` and let a title and short body do the work.
+
+<ComponentDemo name="card-minimal" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Combine only the slots you need. Every Card slot is optional, omit the
+      ones that don't carry content.
+    </DoDescription>
+  </Do>
 </GuidelineTiles>
 
 ## Props
