@@ -102,7 +102,7 @@ const Guideline = ({
           </p>
         </div>
         {description.length > 0 && (
-          <div className="text-fd-card-foreground text-sm text-pretty">
+          <div className="text-fd-card-foreground text-sm text-pretty [&_li]:mt-0.5 [&_ol]:list-decimal [&_ol]:ps-5 [&_ul]:list-disc [&_ul]:ps-5">
             {description}
           </div>
         )}
