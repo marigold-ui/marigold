@@ -168,6 +168,14 @@ const main = async (): Promise<number> => {
         fail(`Invalid --format: ${values.format}`);
       }
 
+      telemetryArgs = {
+        component: componentInput,
+        section: values.section ?? 'all',
+        format: values.format ?? 'markdown',
+        ...(values.fresh ? { fresh: 'true' } : {}),
+        ...(values.offline ? { offline: 'true' } : {}),
+      };
+
       const result = await runDocs({
         component: componentInput,
         section: (values.section as Section | undefined) ?? 'all',
@@ -179,16 +187,20 @@ const main = async (): Promise<number> => {
       process.stdout.write(result.output);
       if (!result.output.endsWith('\n')) process.stdout.write('\n');
       cacheHit = result.cacheHit;
-      telemetryArgs = {
-        ...(values.section ? { section: values.section } : {}),
-        ...(values.format ? { format: values.format } : {}),
-      };
     } else if (command === 'list') {
       const { values } = parseListCommand(rest);
 
       if (values.format && !isOutputFormat(values.format)) {
         fail(`Invalid --format: ${values.format}`);
       }
+
+      telemetryArgs = {
+        format: values.format ?? 'markdown',
+        ...(values.category ? { category: values.category } : {}),
+        ...(values.search ? { search: 'used' } : {}),
+        ...(values.fresh ? { fresh: 'true' } : {}),
+        ...(values.offline ? { offline: 'true' } : {}),
+      };
 
       const result = await runList({
         category: values.category,
@@ -199,13 +211,12 @@ const main = async (): Promise<number> => {
       });
 
       process.stdout.write(result.output);
-      telemetryArgs = {
-        ...(values.category ? { category: values.category } : {}),
-        ...(values.search ? { search: 'used' } : {}),
-        ...(values.format ? { format: values.format } : {}),
-      };
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);
+      telemetryArgs = {
+        ...(values.yes ? { yes: 'true' } : {}),
+        ...(values['skip-install'] ? { skipInstall: 'true' } : {}),
+      };
       await runInit({
         yes: values.yes,
         skipInstall: values['skip-install'],
@@ -215,9 +226,9 @@ const main = async (): Promise<number> => {
       if (!sub || !isTelemetrySub(sub)) {
         fail('Usage: marigold telemetry <status|enable|disable>');
       }
+      telemetryArgs = { sub };
       const output = runTelemetry({ subcommand: sub });
       process.stdout.write(output);
-      telemetryArgs = { sub };
     } else {
       fail(`Unknown command: ${command}\n\nRun "marigold --help" for usage.`);
     }
