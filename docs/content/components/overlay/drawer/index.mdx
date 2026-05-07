@@ -61,7 +61,7 @@ When in doubt, ask: is this content _about_ the visible main view, or _for_ it? 
     {/* prettier-ignore */}
     <ul>
       <li>critical confirmations or destructive actions are required,</li>
-      <li>the flow has multiple steps, multiple save points, or its own internal navigation, which is a [page](#routing-to-a-page-instead),</li>
+      <li>the flow has multiple steps, multiple save points, or its own internal navigation, which is a [page](#when-to-use-a-full-page-instead),</li>
       <li>the task requires full attention or a shareable URL.</li>
     </ul>
   </DontDescription>
@@ -76,16 +76,16 @@ This is the canonical drawer-vs-dialog confusion. The underlying difference: a d
 
 Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions. The same applies when the task simply demands full attention and interacting with the page behind would be a distraction. Choose a drawer when the work is supplementary to whatever is already on screen.
 
-### Routing to a page instead
+### When to use a full page instead
 
-A drawer slides over the current view; a page replaces it or routes somewhere new. Drawers are ephemeral: opened, used, dismissed. Pages are durable: they have a URL, browser history, and a place in the app's information architecture. When the work needs any of that durability, it belongs on a page.
+A drawer slides over the current view; a page replaces it or routes somewhere new. Drawers are temporary: opened, used, dismissed. Pages are lasting: they have a URL, browser history, and a place in the app's information architecture. When the work needs any of that, it belongs on a page.
 
-Reach for a page over a drawer when:
+**Reach for a page over a drawer when:**
 
-- the user needs a URL to share, bookmark, or return to later,
-- the form has nested editable records (line items, sub-tasks with their own forms),
-- the flow has multiple steps with their own commit moments (save here, then save again there),
-- the user could reasonably get lost inside it without a back button or breadcrumbs to orient them.
+- the **user needs a URL** to share, bookmark, or return to later,
+- the **form has nested editable records** (line items, sub-tasks with their own forms),
+- the **flow has multiple steps** with their own commit moments (save here, then save again there),
+- the **user could reasonably get lost** inside it without a back button or breadcrumbs to orient them.
 
 If you find yourself wanting tabs inside a drawer, or wanting browser back/forward to work as navigation, that is the signal: it is a page.
 
