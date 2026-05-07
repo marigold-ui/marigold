@@ -16,7 +16,7 @@ import {
   Text,
   ToggleButton,
 } from '@marigold/components';
-import { Add, Filter } from '@marigold/icons';
+import { Filter } from '@marigold/icons';
 import {
   MAX_CAPACITY,
   MAX_PRICE,
@@ -181,10 +181,6 @@ export const Toolbar = () => {
           </Drawer>
         </Drawer.Trigger>
       </Inline>
-      {/* Will be wired up in DST-1288 */}
-      <Button disabled>
-        <Add /> Add Venue
-      </Button>
     </Inline>
   );
 };
