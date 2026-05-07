@@ -461,3 +461,25 @@
     }
   }
 }
+
+/* Prevent layout custom properties from inheriting into descendants. */
+@property --width {
+  syntax: '*';
+  inherits: false;
+}
+@property --max-width {
+  syntax: '*';
+  inherits: false;
+}
+@property --height {
+  syntax: '*';
+  inherits: false;
+}
+@property --container-width {
+  syntax: '*';
+  inherits: false;
+}
+@property --field-width {
+  syntax: '*';
+  inherits: false;
+}
