@@ -155,7 +155,7 @@ const _Calendar = ({
   }
 
   return (
-    <CalendarContext.Provider
+    <CalendarContext
       value={{
         classNames,
         visibleMonths,
@@ -213,7 +213,7 @@ const _Calendar = ({
           <CalendarGrid />
         </div>
       </Calendar>
-    </CalendarContext.Provider>
+    </CalendarContext>
   );
 };
 

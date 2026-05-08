@@ -209,7 +209,7 @@ export const ThreeMonths = meta.story({
 
 export const TwoMonthsMobile = meta.story({
   globals: {
-    viewport: { value: '320px' },
+    viewport: { value: 'mobile1' },
   },
   args: {
     visibleDuration: { months: 2 },
@@ -223,7 +223,7 @@ export const TwoMonthsMobile = meta.story({
 
 export const ThreeMonthsMobile = meta.story({
   globals: {
-    viewport: { value: '320px' },
+    viewport: { value: 'mobile1' },
   },
   args: {
     visibleDuration: { months: 3 },
