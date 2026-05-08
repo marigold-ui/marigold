@@ -272,6 +272,10 @@ To visually imitate a button element that navigates (e.g., a "Cancel" action tha
   </Dont>
 </GuidelineTiles>
 
+### Button or ActionButton
+
+For low-emphasis actions that belong to a row, a toolbar, or a container's chrome, reach for [`<ActionButton>`](/components/actions/action-button) instead. `<ActionButton>` picks up its size and visual weight from the surrounding component, so the action stays in the background of its surface rather than competing with `<Button>` for attention. See [`<Button>` vs. `<ActionButton>`](/components/actions/action-button#button-vs-actionbutton) for the full decision table.
+
 ### Press Event
 
 The `<Button>` component supports user interactions via mouse, keyboard, and touch, handled through the `onPress ` prop. This prop is similar to the standard `onClick` event but is normalized for all interaction methods. Additionally, `onPressStart`, `onPressEnd`, and `onPressChange` events are fired during user interaction.
@@ -288,5 +292,8 @@ Each handler receives a `PressEvent`, providing details about the target and the
 
 ## Alternative components
 
+- [ActionButton](/components/actions/action-button): A low-emphasis button for surface chrome and per-row actions.
+- [ActionGroup](/components/actions/action-group): A toolbar wrapper around a related cluster of `<ActionButton>`s.
+- [ActionBar](/components/actions/actionbar): The bar around bulk-selection actions; uses `<ActionBar.Button>` internally.
 - [Link](/components/actions/link): A component to navigate to another page.
 - [LinkButton](/components/actions/link-button): A component to navigate to another page but looks like a button.

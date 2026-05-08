@@ -1,0 +1,84 @@
+import { people } from '@/lib/data/people';
+import { Pencil, Trash2, UserRoundPlus } from 'lucide-react';
+import {
+  ActionButton,
+  ActionGroup,
+  Badge,
+  Button,
+  Inline,
+  Panel,
+  Stack,
+  Text,
+  Tooltip,
+} from '@marigold/components';
+
+const members = [
+  { ...people[0], role: 'Admin', variant: 'admin' },
+  { ...people[1], role: 'Editor', variant: 'default' },
+  { ...people[2], role: 'Viewer', variant: 'default' },
+];
+
+export default () => (
+  <Panel>
+    <Panel.Header>
+      <Panel.Title>Team members</Panel.Title>
+      <Panel.Description>
+        People with access to this workspace and their roles.
+      </Panel.Description>
+      {/* Primary commitment for this surface — a real "ask" of the user. */}
+      <Panel.HeaderActions>
+        <Button>
+          <UserRoundPlus />
+          Invite member
+        </Button>
+      </Panel.HeaderActions>
+    </Panel.Header>
+    <Panel.Content>
+      <Stack space="regular">
+        {members.map(member => (
+          <Inline
+            key={member.id}
+            space="regular"
+            alignY="center"
+            alignX="between"
+          >
+            <Inline space="related" alignY="center">
+              <img
+                src={member.avatar}
+                alt=""
+                className="size-9 shrink-0 rounded-full object-cover"
+              />
+              <Stack space="0.5">
+                <Text weight="medium">{member.name}</Text>
+                <Text size="xs" color="secondary">
+                  {member.position}
+                </Text>
+              </Stack>
+            </Inline>
+            <Inline space="regular" alignY="center">
+              <Badge variant={member.variant}>{member.role}</Badge>
+              {/* Per-row chrome — recedes until scanned for. */}
+              <ActionGroup
+                aria-label={`Actions for ${member.name}`}
+                size="small"
+              >
+                <Tooltip.Trigger>
+                  <ActionButton aria-label="Edit role">
+                    <Pencil />
+                  </ActionButton>
+                  <Tooltip>Edit role</Tooltip>
+                </Tooltip.Trigger>
+                <Tooltip.Trigger>
+                  <ActionButton variant="destructive-ghost" aria-label="Remove">
+                    <Trash2 />
+                  </ActionButton>
+                  <Tooltip>Remove</Tooltip>
+                </Tooltip.Trigger>
+              </ActionGroup>
+            </Inline>
+          </Inline>
+        ))}
+      </Stack>
+    </Panel.Content>
+  </Panel>
+);

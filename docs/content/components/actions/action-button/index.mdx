@@ -55,6 +55,51 @@ ActionButton is the action that belongs to a surface, not to the page. It lives 
 
 For a cluster of related actions in a row or toolbar, wrap them in an [`<ActionGroup>`](/components/actions/action-group). The group exposes a `role="toolbar"`, enables arrow-key navigation, and cascades shared `size`, `variant`, and `disabled` defaults to its children.
 
+### Button vs. ActionButton
+
+`<ActionButton>` and [`<Button>`](/components/actions/button) look superficially similar, but they play different roles. `<Button>` is the **page-level commitment** — submit a form, save a draft, go to checkout. `<ActionButton>` is the **chrome of a surface** — bookmark a panel, remove a row, edit a list item. The default variant reinforces the role: `<Button>` defaults to `secondary` so it reads as a real ask; `<ActionButton>` defaults to `ghost` so it recedes into its container.
+
+Pick the component by the role of the action, not by the variant you have in mind:
+
+| Situation                                                     | Component                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Submit a form, confirm a dialog, finish a wizard step         | [`<Button>`](/components/actions/button)                                                  |
+| The single most important call-to-action on a page or section | [`<Button variant="primary">`](/components/actions/button)                                |
+| Per-row action in a list, table, or `<SelectList>` option     | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group)            |
+| Chrome on a `<Panel>`, `<Dialog>`, or `<Drawer>` header       | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group)            |
+| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/actions/actionbar)                                     |
+| Overflow when there are more actions than fit comfortably     | [`<ActionMenu>`](/components/overlay/action-menu)                                         |
+| Navigation to another page                                    | [`<LinkButton>`](/components/actions/link-button) or [`<Link>`](/components/actions/link) |
+
+The example below shows both inhabiting the same surface. The header carries one `<Button>` for the page-level commitment ("Invite member"), and each row carries an `<ActionGroup>` of `<ActionButton>`s that recede into the row until the user scans for them.
+
+<ComponentDemo name="button-vs-action-button" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Anchor each surface with one `<Button>` for the primary commitment, and
+      use `<ActionButton>` for repeated, low-emphasis actions that belong to
+      individual items or container chrome.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't repeat `<Button>` across rows of items. Multiple "primary asks"
+      compete for attention and the row turns into noise. Use an
+      `<ActionGroup>` of `<ActionButton>`s instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### In context
+
+ActionButton is at its best when it lives inside another component. Drop it into a `<SelectList.Option>`, a `<Panel.Header>`, an `<ActionBar>`, or anywhere a container publishes its own `ActionButtonContext`, and the container takes care of size, weight, and placement. The call site stays free of repetitive `variant` and `size` props.
+
+<ComponentDemo name="action-button-in-context" />
+
+For container authors: publish defaults to nested `<ActionButton>`s through `ActionButtonContext` and consumers won't need to know which `variant` or `size` your container expects. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for the pattern.
+
 ## Props
 
 <StorybookHintMessage component={'ActionButton'} />
