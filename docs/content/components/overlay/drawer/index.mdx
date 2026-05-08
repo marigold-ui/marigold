@@ -162,7 +162,7 @@ A drawer renders with the ARIA role `complementary` by default, which fits almos
 - For a filter panel, consider `role="search"` to give screen-reader users a more precise landmark.
 - For long-lived activity panels, consider `role="region"` with an `aria-label` if the panel is part of the persistent layout.
 
-On small screens, the drawer falls back to a modal sheet. Focus trapping and dismissal on <kbd>Escape</kbd> are handled automatically. No extra work is required from consumers.
+On small screens, the drawer falls back to a modal sheet that traps focus inside the panel. On desktop the drawer is non-modal, so focus only returns to the trigger when the drawer closes. Dismissal on <kbd>Escape</kbd> is handled automatically.
 
 ## Props
 

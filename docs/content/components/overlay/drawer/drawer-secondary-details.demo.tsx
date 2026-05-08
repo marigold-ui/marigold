@@ -1,12 +1,12 @@
 import {
   Button,
   Drawer,
-  DrawerProps,
   Inline,
   Stack,
   Table,
   Text,
 } from '@marigold/components';
+import type { DrawerProps } from '@marigold/components';
 
 type Ticket = {
   id: string;
@@ -124,7 +124,7 @@ export default function (props: DrawerProps) {
       </Table.Header>
       <Table.Body>
         {tickets.map(ticket => (
-          <Table.Row key={ticket.id}>
+          <Table.Row key={ticket.id} id={ticket.id}>
             <Table.Cell>
               #{ticket.id} – {ticket.subject}
             </Table.Cell>

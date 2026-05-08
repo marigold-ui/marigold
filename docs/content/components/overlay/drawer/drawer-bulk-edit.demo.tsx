@@ -6,12 +6,12 @@ import {
   Checkbox,
   DatePicker,
   Drawer,
-  DrawerProps,
   Select,
   Stack,
   Table,
   Text,
 } from '@marigold/components';
+import type { DrawerProps } from '@marigold/components';
 
 const events = [
   {

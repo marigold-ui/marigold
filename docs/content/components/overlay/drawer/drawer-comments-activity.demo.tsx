@@ -3,13 +3,13 @@ import {
   Button,
   Card,
   Drawer,
-  DrawerProps,
   Headline,
   Inline,
   Stack,
   Text,
   TextField,
 } from '@marigold/components';
+import type { DrawerProps } from '@marigold/components';
 
 export default function (props: DrawerProps) {
   return (

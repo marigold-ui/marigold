@@ -1,10 +1,11 @@
 import { Accordion, Button, Drawer, Stack, Text } from '@marigold/components';
+import type { DrawerProps } from '@marigold/components';
 
-export default function () {
+export default function (props: DrawerProps) {
   return (
     <Drawer.Trigger>
       <Button>Open Help</Button>
-      <Drawer>
+      <Drawer {...props}>
         <Drawer.Title>Quick Help</Drawer.Title>
         <Drawer.Content>
           <Stack space="regular">
