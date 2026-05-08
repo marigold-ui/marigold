@@ -6,7 +6,7 @@ import {
   SliderThumb,
   SliderTrack,
 } from 'react-aria-components';
-import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { Label } from '../Label/Label';
 
@@ -77,11 +77,11 @@ const _Slider = <T extends number | number[]>({
   return (
     <FieldBase
       as={Slider}
+      width={width}
       className={cn(
-        'grid w-(--width) grid-cols-[auto_1fr] gap-y-1',
+        'grid w-(--container-width) grid-cols-[auto_1fr] gap-y-1',
         classNames.container
       )}
-      style={createWidthVar('width', width)}
       ref={ref}
       {...props}
     >

@@ -29,3 +29,12 @@ test('renders multiple thumbs for range slider', () => {
 
   expect(sliders).toHaveLength(2);
 });
+
+test('applies width prop via --container-width CSS variable', () => {
+  render(<Basic.Component label="x" width="1/2" />);
+  const group = screen.getByRole('group');
+  expect(group).toHaveClass('w-(--container-width)');
+  expect(group.style.getPropertyValue('--container-width')).toBe(
+    'calc((1 / 2) * 100%)'
+  );
+});
