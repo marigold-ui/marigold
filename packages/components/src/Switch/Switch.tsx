@@ -1,22 +1,17 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Switch, SwitchContext } from 'react-aria-components';
-import {
-  WidthProp,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Label } from '../Label/Label';
 
 type RemovedProps =
   | 'children'
   | 'className'
+  | 'style'
   | 'isDisabled'
   | 'isReadOnly'
   | 'isSelected'
-  | 'children'
   | 'slot';
 
 export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
@@ -87,7 +82,8 @@ const _Switch = ({
       <Switch
         {...props}
         ref={ref}
-        className={cn(twWidth[width], 'group/switch', classNames.container)}
+        className={cn('group/switch w-(--width)', classNames.container)}
+        style={createWidthVar('width', width)}
       >
         {variant === 'settings' && label && (
           <Label elementType="span">{label}</Label>
