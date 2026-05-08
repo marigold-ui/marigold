@@ -46,6 +46,7 @@ const readCliVersion = (): string => {
 
 const CLI_VERSION = readCliVersion();
 
+// Update the URL, once the CLI docs are published.
 const help = `
 ${pc.bold('marigold')} — Marigold Design System CLI
 

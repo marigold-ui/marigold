@@ -1,30 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Framework } from './detect-project.js';
+import { CSS_ENTRY_CANDIDATES, exists } from './fs-utils.js';
 
 export type CssEditOutcome =
   | { kind: 'edited'; path: string; created: boolean; added: string[] }
   | { kind: 'unchanged'; path: string }
   | { kind: 'skipped'; reason: string };
 
-const CSS_CANDIDATES = [
-  'app/globals.css',
-  'src/app/globals.css',
-  'src/index.css',
-  'styles/globals.css',
-];
-
-const exists = (p: string): boolean => {
-  try {
-    fs.accessSync(p);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
 const findExistingCssFile = (cwd: string): string | null => {
-  for (const c of CSS_CANDIDATES) {
+  for (const c of CSS_ENTRY_CANDIDATES) {
     const full = path.join(cwd, c);
     if (exists(full)) return full;
   }
@@ -49,15 +34,15 @@ const computeSourcePath = (cssAbs: string, cwd: string): string => {
   return rel.startsWith('.') ? rel : `./${rel}`;
 };
 
-const hasImport = (contents: string, target: string): boolean => {
-  const escaped = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`@import\\s+["']${escaped}["'];?`, 'm').test(contents);
-};
+const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-const hasSource = (contents: string, sourcePath: string): boolean => {
-  const escaped = sourcePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`@source\\s+["']${escaped}["'];?`, 'm').test(contents);
-};
+const hasImport = (contents: string, target: string): boolean =>
+  new RegExp(`@import\\s+["']${escapeRegex(target)}["'];?`, 'm').test(contents);
+
+const hasSource = (contents: string, sourcePath: string): boolean =>
+  new RegExp(`@source\\s+["']${escapeRegex(sourcePath)}["'];?`, 'm').test(
+    contents
+  );
 
 export interface CssEditOptions {
   cwd: string;

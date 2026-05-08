@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { CSS_ENTRY_CANDIDATES, exists, firstExisting } from './fs-utils.js';
 
 export type Framework = 'nextjs' | 'vite' | 'unknown';
 export type PackageManager = 'pnpm' | 'yarn' | 'npm' | 'bun';
@@ -12,23 +13,6 @@ export interface ProjectInfo {
   tailwindVersion: 3 | 4 | null;
   rootLayout: string | null;
 }
-
-const exists = (p: string): boolean => {
-  try {
-    fs.accessSync(p);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-const firstExisting = (cwd: string, candidates: string[]): string | null => {
-  for (const c of candidates) {
-    const full = path.join(cwd, c);
-    if (exists(full)) return full;
-  }
-  return null;
-};
 
 const detectFramework = (cwd: string): Framework => {
   if (
@@ -69,13 +53,7 @@ const detectTailwind = (
   if (configPath) return { hasConfig: true, version: 3 };
 
   // v4 uses CSS imports instead of JS config
-  const candidates = [
-    'app/globals.css',
-    'src/app/globals.css',
-    'src/index.css',
-    'styles/globals.css',
-  ];
-  for (const c of candidates) {
+  for (const c of CSS_ENTRY_CANDIDATES) {
     const full = path.join(cwd, c);
     if (!exists(full)) continue;
     try {

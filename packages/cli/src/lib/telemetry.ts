@@ -6,6 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { docsUrl, readConfig, writeConfig } from './config.js';
+import { firstExisting } from './fs-utils.js';
 
 export type CommandName = 'docs' | 'list' | 'init' | 'telemetry';
 
@@ -85,22 +86,10 @@ export interface EmitOptions {
 }
 
 const findSenderScript = (): string | null => {
-  const here = fileURLToPath(import.meta.url);
-  const candidates = [
-    // ESM build: dist/lib/telemetry.mjs → dist/lib/send-telemetry.mjs
-    path.join(path.dirname(here), 'send-telemetry.mjs'),
-    // CJS build: dist/lib/telemetry.cjs → dist/lib/send-telemetry.cjs
-    path.join(path.dirname(here), 'send-telemetry.cjs'),
-  ];
-  for (const file of candidates) {
-    try {
-      fs.accessSync(file);
-      return file;
-    } catch {
-      // try next
-    }
-  }
-  return null;
+  const dir = path.dirname(fileURLToPath(import.meta.url));
+  // ESM build: dist/lib/telemetry.mjs → dist/lib/send-telemetry.mjs
+  // CJS build: dist/lib/telemetry.cjs → dist/lib/send-telemetry.cjs
+  return firstExisting(dir, ['send-telemetry.mjs', 'send-telemetry.cjs']);
 };
 
 export const emit = (options: EmitOptions): void => {

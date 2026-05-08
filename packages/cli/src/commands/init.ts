@@ -21,6 +21,7 @@ import {
   type ViteConfigEditOutcome,
   editViteConfig,
 } from '../lib/edit-vite-config.js';
+import { exists, firstExisting } from '../lib/fs-utils.js';
 
 const MARIGOLD_PACKAGES = [
   '@marigold/components',
@@ -47,23 +48,6 @@ export interface RunInitResult {
   project: ProjectInfo;
   nextSteps: string;
 }
-
-const exists = (p: string): boolean => {
-  try {
-    fs.accessSync(p);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-const firstExisting = (cwd: string, candidates: string[]): string | null => {
-  for (const c of candidates) {
-    const full = path.join(cwd, c);
-    if (exists(full)) return full;
-  }
-  return null;
-};
 
 const tailwindPackagesFor = (framework: Framework): string[] => {
   if (framework === 'nextjs') {
