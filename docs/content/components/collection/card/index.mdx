@@ -52,17 +52,7 @@ Combine Card with [`<Tiles>`](../../layout/tiles) so the grid wraps responsively
 
 <ComponentDemo name="card-grid" />
 
-The same shape works for any repeating content. A team directory swaps the hero image for an avatar but keeps the identity-per-card pattern:
-
-<ComponentDemo name="card-team" />
-
-Article and content previews lean on the hero image with a longer excerpt and author metadata, while keeping the same grid scaffold:
-
-<ComponentDemo name="card-article" />
-
-When the items carry no media at all, the grid still works a category picker uses an icon, label, and short description per card:
-
-<ComponentDemo name="card-categories" />
+The same shape works for any repeating content team directories with avatars, article previews with author metadata, or category pickers with no media at all. The identity-per-card pattern stays the same; only the contents of each slot change.
 
 Cards are easy to over-reach for. When repetition isn't the shape of the content, reach for one of these alternatives instead:
 
@@ -101,10 +91,6 @@ When records share the same shape and users want to scan, sort, or compare acros
   </Dont>
 </GuidelineTiles>
 
-The same venue data as a Table the rows line up, the columns stay scannable, and sorting comes for free:
-
-<ComponentDemo name="card-do-table" />
-
 ### Don't wrap simple content in cards
 
 A Card groups several pieces of related content. If you only have a single paragraph, a short message, or one field, the card adds visual weight without grouping anything. Use a [`<Headline>`](../../content/headline), [`<Text>`](../../content/text), or [`<SectionMessage>`](../../content/section-message) instead.
@@ -130,10 +116,6 @@ A Card groups several pieces of related content. If you only have a single parag
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-A simple plan summary plus an inline status reads cleanly without any card frame around it:
-
-<ComponentDemo name="card-do-text" />
 
 ### Don't stack many cards on a page
 
