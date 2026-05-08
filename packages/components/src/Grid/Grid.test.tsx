@@ -49,7 +49,7 @@ describe('Grid', () => {
 
       const grid = screen.getByTestId('grid');
 
-      expect(grid).toHaveClass('h-auto');
+      expect(grid.style.getPropertyValue('--height')).toBe('auto');
     });
 
     test('applies custom height', () => {
@@ -57,7 +57,9 @@ describe('Grid', () => {
 
       const grid = screen.getByTestId('grid');
 
-      expect(grid).toHaveClass('h-96');
+      expect(grid.style.getPropertyValue('--height')).toBe(
+        'calc(var(--spacing) * 96)'
+      );
     });
   });
 
