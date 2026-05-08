@@ -2,7 +2,7 @@
 '@marigold/theme-rui': patch
 ---
 
-fix(theme-rui): drop `position: relative` from body in preflight
+fix([DST-1408]): drop `position: relative` from body in theme-rui preflight
 
 `themes/theme-rui/src/preflight.css` previously set
 `body { position: relative; overflow-x: clip }` to contain
