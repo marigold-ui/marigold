@@ -10,6 +10,7 @@ export type {
   HtmlPropsWithRef,
   PropsOf,
   DistributiveOmit,
+  FixedForwardRef,
   OwnProps,
   IntrinsicElement,
   PolymorphicComponent,

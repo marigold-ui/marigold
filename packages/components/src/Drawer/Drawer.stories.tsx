@@ -93,7 +93,6 @@ export const Basic = meta.story({
 });
 
 export const WithForms = meta.story({
-  parameters: { surface: false },
   render: args => (
     <Drawer.Trigger>
       <Button>Configure Filter</Button>
@@ -140,7 +139,6 @@ export const WithForms = meta.story({
 });
 
 export const Controlled = meta.story({
-  parameters: { surface: false },
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {

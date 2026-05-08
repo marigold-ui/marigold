@@ -7,9 +7,6 @@ import { Tiles } from './Tiles';
 const meta = preview.meta({
   title: 'Components/Tiles',
   component: Tiles,
-  parameters: {
-    surface: false,
-  },
   argTypes: {
     space: {
       control: {
@@ -49,7 +46,7 @@ const meta = preview.meta({
 export const Basic = meta.story({
   render: args => (
     <Tiles {...args}>
-      <div className="border-border-primary border bg-orange-100 p-1">
+      <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <img
             src="https://www.pokewiki.de/images/0/09/Hauptartwork_004.png"
@@ -65,7 +62,7 @@ export const Basic = meta.story({
           </Text>
         </Stack>
       </div>
-      <div className="border-border-primary border bg-orange-100 p-1">
+      <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <img
             src="https://www.pokewiki.de/images/0/08/Hauptartwork_005.png"
@@ -82,7 +79,7 @@ export const Basic = meta.story({
           </Text>
         </Stack>
       </div>
-      <div className="border-border-primary border bg-orange-100 p-1">
+      <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <img
             src="https://www.pokewiki.de/images/d/de/Hauptartwork_006.png"

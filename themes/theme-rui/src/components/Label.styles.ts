@@ -4,11 +4,11 @@ export const Label: ThemeComponent<'Label'> = cva({
   base: [
     'flex items-center gap-1',
     'text-sm font-medium leading-none text-foreground',
-    'group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled',
+    'group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground',
 
     // required indicator
     'group-required/field:after:content-["*"]',
     'group-required/field:after:-ml-1',
-    'group-required/field:after:text-destructive-accent',
+    'group-required/field:after:text-destructive',
   ],
 });

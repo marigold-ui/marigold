@@ -1,7 +1,7 @@
 import { ComboBox } from '@marigold/components';
 
 export default () => (
-  <ComboBox defaultSelectedKey={'dog'} label="Animals">
+  <ComboBox defaultSelectedKey={'dog'} label="Animals" width="fit">
     <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
     <ComboBox.Option id="cat">Cat</ComboBox.Option>
     <ComboBox.Option id="dog">Dog</ComboBox.Option>

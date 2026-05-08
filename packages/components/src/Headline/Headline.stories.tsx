@@ -4,7 +4,6 @@ import { Headline } from './Headline';
 
 const meta = preview.meta({
   title: 'Components/Headline',
-  parameters: { surface: false },
   component: Headline,
   argTypes: {
     level: {

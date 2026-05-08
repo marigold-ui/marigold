@@ -4,9 +4,6 @@ import { Aspect } from './Aspect';
 const meta = preview.meta({
   title: 'Components/Aspect',
   component: Aspect,
-  parameters: {
-    surface: false,
-  },
   argTypes: {
     ratio: {
       control: {

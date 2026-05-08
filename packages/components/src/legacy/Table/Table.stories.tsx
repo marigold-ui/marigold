@@ -17,7 +17,6 @@ import { Table } from './Table';
 
 const meta = preview.meta({
   title: 'Legacy/Table',
-  parameters: { bleed: true },
   component: Table,
   argTypes: {
     selectionMode: {
@@ -179,7 +178,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="secondary">
+                <Text size="xs" color="muted-foreground">
                   {user.handle}
                 </Text>
               </Stack>

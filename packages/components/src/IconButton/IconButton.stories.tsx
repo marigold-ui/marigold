@@ -4,7 +4,6 @@ import { IconButton } from './IconButton';
 
 const meta = preview.meta({
   title: 'Components/IconButton',
-  parameters: { surface: false },
   component: IconButton,
   argTypes: {
     variant: {

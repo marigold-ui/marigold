@@ -1,14 +1,13 @@
 {
   "name": "@marigold/icons",
-  "version": "1.3.39-beta.0",
-  "description": "Marigold Icons (Lucide proxy + custom icons)",
+  "description": "Marigold Icons",
+  "version": "1.3.38",
   "license": "MIT",
   "keywords": [
     "marigold",
     "icons",
     "react",
-    "svg",
-    "lucide"
+    "svg"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -39,11 +38,10 @@
     "directory": "packages/icons"
   },
   "dependencies": {
-    "@marigold/system": "workspace:*",
-    "lucide-react": "^1.9.0"
+    "@marigold/system": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=19.0.0"
+    "react": ">=17.0.0"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",

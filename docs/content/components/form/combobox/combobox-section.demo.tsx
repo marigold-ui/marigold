@@ -1,7 +1,7 @@
 import { ComboBox, Text } from '@marigold/components';
 
 export default () => (
-  <ComboBox label="Genres">
+  <ComboBox label="Genres" width="fit">
     {options.map(item => (
       <ComboBox.Section key={item.category} header={item.category}>
         {item.genres.map(genre => (

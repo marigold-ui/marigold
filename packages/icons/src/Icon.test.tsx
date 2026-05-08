@@ -1,126 +1,34 @@
 import { render, screen } from '@testing-library/react';
-import type { RefObject } from 'react';
-import { describe, expect, test } from 'vitest';
-import { DesignTicket } from './custom/DesignTicket';
-import { Search } from './index';
+import { createRef } from 'react';
+import { Facebook } from './social/Facebook';
+import { ArrowUp } from './ui/ArrowUp';
 
-describe.each([
-  ['custom icon', DesignTicket],
-  ['lucide icon', Search],
-] as const)('%s', (_, Icon) => {
-  test('renders default size 24x24', () => {
-    render(<Icon data-testid="svg" />);
+test('supports default size', () => {
+  render(<Facebook data-testid="svg" />);
+  const svg = screen.getByTestId(/svg/);
 
-    const svg = screen.getByTestId('svg');
-
-    expect(svg).toHaveAttribute('width', '24');
-    expect(svg).toHaveAttribute('height', '24');
-  });
-
-  test('supports size prop', () => {
-    render(<Icon data-testid="svg" size={30} />);
-
-    expect(screen.getByTestId('svg')).toHaveAttribute('width', '30');
-    expect(screen.getByTestId('svg')).toHaveAttribute('height', '30');
-  });
-
-  test('maps color prop to stroke', () => {
-    render(<Icon data-testid="svg" color="var(--color-destructive-accent)" />);
-
-    expect(screen.getByTestId('svg')).toHaveAttribute(
-      'stroke',
-      'var(--color-destructive-accent)'
-    );
-  });
-
-  test('supports strokeWidth prop', () => {
-    render(<Icon data-testid="svg" strokeWidth={3} />);
-
-    expect(screen.getByTestId('svg')).toHaveAttribute('stroke-width', '3');
-  });
-
-  test('preserves consumer className', () => {
-    render(<Icon data-testid="svg" className="text-primary-500" />);
-
-    expect(screen.getByTestId('svg')).toHaveClass('text-primary-500');
-  });
-
-  test('forwards ref', () => {
-    const ref: RefObject<SVGSVGElement | null> = { current: null };
-
-    render(<Icon ref={ref} />);
-
-    expect(ref.current).toBeInstanceOf(SVGElement);
-  });
-
-  test('sets aria-hidden when no a11y props are provided', () => {
-    render(<Icon data-testid="svg" />);
-
-    expect(screen.getByTestId('svg')).toHaveAttribute('aria-hidden', 'true');
-  });
-
-  test('omits aria-hidden when aria-label is provided', () => {
-    render(<Icon data-testid="svg" aria-label="thing" />);
-
-    expect(screen.getByTestId('svg')).not.toHaveAttribute('aria-hidden');
-  });
+  expect(svg).toHaveAttribute('width', '24px');
+  expect(svg).toHaveAttribute('height', '24px');
 });
 
-describe('createFilledIcon', () => {
-  test('defaults fill and stroke to currentColor', () => {
-    render(<DesignTicket data-testid="svg" />);
+test('supports size prop', () => {
+  render(<Facebook data-testid="svg" size={30} />);
+  const svg = screen.getByTestId(/svg/);
 
-    const svg = screen.getByTestId('svg');
+  expect(svg).toHaveAttribute('width', '30px');
+  expect(svg).toHaveAttribute('height', '30px');
+});
 
-    expect(svg).toHaveAttribute('fill', 'currentColor');
-    expect(svg).toHaveAttribute('stroke', 'currentColor');
-  });
+test('supports className', () => {
+  render(<Facebook data-testid="svg" className="fill-primary-500" />);
+  const svg = screen.getByTestId(/svg/);
 
-  test('fill prop overrides the default fill', () => {
-    render(
-      <DesignTicket data-testid="svg" fill="var(--color-destructive-accent)" />
-    );
+  expect(svg).toHaveClass('fill-primary-500');
+});
 
-    expect(screen.getByTestId('svg')).toHaveAttribute(
-      'fill',
-      'var(--color-destructive-accent)'
-    );
-  });
+test('forwards ref', () => {
+  const ref = createRef<SVGSVGElement>();
+  render(<ArrowUp ref={ref} />);
 
-  test('fill prop drives stroke when color is not provided', () => {
-    render(
-      <DesignTicket data-testid="svg" fill="var(--color-destructive-accent)" />
-    );
-
-    expect(screen.getByTestId('svg')).toHaveAttribute(
-      'stroke',
-      'var(--color-destructive-accent)'
-    );
-  });
-
-  test('color prop sets both fill and stroke', () => {
-    render(
-      <DesignTicket data-testid="svg" color="var(--color-destructive-accent)" />
-    );
-
-    const svg = screen.getByTestId('svg');
-
-    expect(svg).toHaveAttribute('fill', 'var(--color-destructive-accent)');
-    expect(svg).toHaveAttribute('stroke', 'var(--color-destructive-accent)');
-  });
-
-  test('fill takes precedence over color', () => {
-    render(
-      <DesignTicket
-        data-testid="svg"
-        color="var(--color-info-accent)"
-        fill="var(--color-destructive-accent)"
-      />
-    );
-
-    expect(screen.getByTestId('svg')).toHaveAttribute(
-      'fill',
-      'var(--color-destructive-accent)'
-    );
-  });
+  expect(ref.current).toBeInstanceOf(SVGElement);
 });

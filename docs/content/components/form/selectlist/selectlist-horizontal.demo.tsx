@@ -42,7 +42,11 @@ export default () => (
       >
         <div className="col-start-2 row-span-2">
           <Stack space={1}>
-            <Icon size={20} aria-hidden className="text-secondary shrink-0" />
+            <Icon
+              size={20}
+              aria-hidden
+              className="text-muted-foreground shrink-0"
+            />
             <Inline space={2} alignY="center">
               <Text slot="label">{name}</Text>
               <Text weight="semibold">{price}</Text>

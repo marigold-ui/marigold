@@ -22,7 +22,7 @@ export default () => {
         selected={showSpacing}
         onChange={setShowSpacing}
       />
-      <Inset px={20}>
+      <Inset spaceX={20}>
         <Stack space="section">
           <Stack space="regular">
             <Stack space="tight">

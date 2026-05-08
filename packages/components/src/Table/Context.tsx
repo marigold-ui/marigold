@@ -1,4 +1,4 @@
-import { createContext, use } from 'react';
+import { createContext, useContext } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 
 export interface TableContextProps {
@@ -12,7 +12,7 @@ export interface TableContextProps {
 
 export const TableContext = createContext<TableContextProps | null>(null);
 export const useTableContext = () => {
-  const context = use(TableContext);
+  const context = useContext(TableContext);
   if (context === null) {
     throw new Error('useTableContext must be used within a <Table> component');
   }

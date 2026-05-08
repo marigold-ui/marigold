@@ -5,7 +5,7 @@ import { PlaceholderPage } from '../../_shared';
 const UsersPage = () => (
   <PlaceholderPage
     title="Users"
-    description="Manage members of your workspace."
+    description="Manage your users settings and preferences."
   />
 );
 

@@ -9,15 +9,15 @@ export const Badge: ThemeComponent<'Badge'> = cva({
   variants: {
     variant: {
       default: 'bg-muted text-foreground border border-border',
-      primary: 'bg-primary text-primary-foreground ',
-      success: 'bg-success text-success-foreground',
-      warning: 'bg-warning text-warning-foreground',
-      info: 'bg-info text-info-foreground',
-      error: 'bg-destructive text-destructive-foreground',
+      primary: 'bg-brand text-brand-foreground ',
+      success: 'bg-success-muted text-success-muted-foreground',
+      warning: 'bg-warning-muted text-warning-muted-foreground',
+      info: 'bg-info-muted text-info-muted-foreground',
+      error: 'bg-destructive-muted text-destructive-muted-foreground',
       admin:
-        'text-access-admin-foreground border border-access-admin-accent bg-access-admin',
+        'text-access-admin-foreground border border-access-admin-foreground bg-background',
       master:
-        'text-access-master-foreground bg-access-master border border-access-master-accent ',
+        'text-access-master-foreground border border-access-master-foreground bg-background',
     },
   },
   defaultVariants: {

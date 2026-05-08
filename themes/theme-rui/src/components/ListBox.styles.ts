@@ -15,26 +15,22 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     ],
   }),
   list: cva({
-    base: [
-      'p-1 text-sm outline-0 space-y-px overflow-y-auto w-full',
-      // `!` overrides the inline `z-index: 0` set by RAC's virtualizer wrapper
-      '[&_:has(>:focus-visible)]:z-1!',
-    ],
+    base: ['p-1 text-sm outline-0 space-y-px overflow-y-auto w-full'],
   }),
   item: cva({
     base: [
       'relative grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-foreground max-sm:min-h-11',
       '[&_.selection-indicator>svg]:invisible [&_.selection-indicator>svg]:block',
       'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
-      'hover:ui-state-hover',
-      'disabled:cursor-not-allowed disabled:text-disabled',
+      'hover:bg-hover hover:text-hover-foreground',
+      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
       'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
       'cursor-default data-selection-mode:cursor-pointer',
-      '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-secondary',
+      '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-muted-foreground',
     ],
   }),
   section: cva({ base: '' }),
   header: cva({
-    base: '[&_header]:px-2 [&_header]:py-1.5 [&_header]:text-xs [&_header]:font-medium [&_header]:text-secondary',
+    base: '[&_header]:px-2 [&_header]:py-1.5 [&_header]:text-xs [&_header]:font-medium [&_header]:text-muted-foreground',
   }),
 };

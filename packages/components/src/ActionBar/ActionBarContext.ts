@@ -1,4 +1,4 @@
-import { createContext, use } from 'react';
+import { createContext, useContext } from 'react';
 
 export interface ActionBarContextValue {
   selectedItemCount: number | 'all';
@@ -10,4 +10,4 @@ export const ActionBarContext = createContext<ActionBarContextValue | null>(
   null
 );
 
-export const useActionBarContext = () => use(ActionBarContext);
+export const useActionBarContext = () => useContext(ActionBarContext);

@@ -1,8 +1,7 @@
 import { AppLayout, Sidebar, TopNavigation } from '@marigold/components';
-import { DemoViewport } from '@/ui/DemoViewport';
 
 export default () => (
-  <DemoViewport>
+  <div className="h-[300px] [&>div]:!h-full">
     <Sidebar.Provider defaultOpen>
       <AppLayout>
         <AppLayout.Sidebar>
@@ -28,7 +27,7 @@ export default () => (
         </AppLayout.Header>
         <AppLayout.Main>
           <div className="space-y-2 p-4">
-            {Array.from({ length: 20 }, (_, i) => (
+            {Array.from({ length: 5 }, (_, i) => (
               <div key={i} className="rounded-sm bg-stone-50 p-3 text-sm">
                 Content item {i + 1}
               </div>
@@ -37,5 +36,5 @@ export default () => (
         </AppLayout.Main>
       </AppLayout>
     </Sidebar.Provider>
-  </DemoViewport>
+  </div>
 );

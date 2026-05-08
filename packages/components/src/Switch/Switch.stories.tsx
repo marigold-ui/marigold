@@ -8,9 +8,8 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: {
-        type: 'radio',
+        type: 'text',
       },
-      options: [undefined, 'settings'],
       description: 'Switch variant style',
     },
     label: {
@@ -25,9 +24,10 @@ const meta = preview.meta({
     },
     size: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
-      description: 'The size of the switch.',
+      options: ['large', 'none'],
+      description: 'The sizes for switch.',
     },
     width: {
       control: {
@@ -43,16 +43,6 @@ const meta = preview.meta({
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
-      },
-    },
-    description: {
-      control: {
-        type: 'text',
-      },
-      description: 'A helpful text below the switch',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'undefined' },
       },
     },
     selected: {
@@ -100,28 +90,16 @@ export const KeyboardToggle = meta.story({
   },
 });
 
-export const WithDescription = meta.story({
+export const DefaultSelected = meta.story({
+  tags: ['component-test'],
   args: {
-    description: 'This is a description',
+    defaultSelected: true,
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas, userEvent }) => {
+    const input: HTMLInputElement = canvas.getByRole('switch');
 
-    const switchEl = await canvas.findByRole('switch');
-    const description = canvas.queryByText('This is a description');
+    await userEvent.click(input);
 
-    const helpTextId = description?.closest('[id]')?.getAttribute('id');
-    const switchDescribedBy = switchEl.getAttribute('aria-describedby');
-
-    expect(description).toBeInTheDocument();
-    expect(switchDescribedBy).toBe(helpTextId);
-  },
-});
-
-export const Settings = meta.story({
-  args: {
-    variant: 'settings',
-    label: 'Email notifications',
-    description: 'Receive email notifications when someone mentions you',
+    await expect(input.checked).toBeFalsy();
   },
 });

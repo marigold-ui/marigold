@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { isValidElement, use } from 'react';
+import { isValidElement, useContext } from 'react';
 import type RAC from 'react-aria-components';
 import {
   CheckboxGroup,
@@ -21,7 +21,7 @@ interface CollapsibleGroupProps {
 }
 
 const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
-  const state = use(CheckboxGroupStateContext)!;
+  const state = useContext(CheckboxGroupStateContext)!;
 
   if (!children || children.length === 0) {
     return null;
@@ -126,6 +126,7 @@ const _CheckboxGroup = ({
     component: 'Checkbox',
     variant,
     size,
+    className: { group: 'gap-x-2' },
   });
   const props: RAC.CheckboxGroupProps = {
     className: classNames.group,
@@ -149,13 +150,15 @@ const _CheckboxGroup = ({
         className={cn(
           classNames.group,
           'group/checkboxgroup flex items-start',
-          orientation === 'vertical' ? 'flex-col' : 'flex-row'
+          orientation === 'vertical'
+            ? 'flex-col gap-[0.5ch]'
+            : 'flex-row gap-[1.5ch]'
         )}
       >
-        <CheckboxGroupContext value={{ width, variant, size }}>
+        <CheckboxGroupContext.Provider value={{ width, variant, size }}>
           {visibleChildren}
           <CollapsibleGroup>{collapsedChildren}</CollapsibleGroup>
-        </CheckboxGroupContext>
+        </CheckboxGroupContext.Provider>
       </div>
     </FieldBase>
   );

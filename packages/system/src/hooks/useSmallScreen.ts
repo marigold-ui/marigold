@@ -1,33 +1,30 @@
-import { useCallback, useMemo, useSyncExternalStore } from 'react';
-import { resolveScreens } from './resolveScreens';
-import { useTheme } from './useTheme';
+import { useEffect, useState } from 'react';
+import { defaultTheme } from '../defaultTheme';
+
+/**
+ * Uses CSS Media Queries Level 4 range syntax, matching Tailwind v4's
+ * `max-sm:` variant. This ensures the hook returns `true` for exactly
+ * the screen widths where `max-sm:` styles apply.
+ */
+const smallScreenQuery = `(width < ${defaultTheme.screens.sm})`;
 
 export const useSmallScreen = (): boolean => {
-  const theme = useTheme();
-  const screens = useMemo(() => resolveScreens(theme.screens), [theme.screens]);
+  const [matches, setMatches] = useState<boolean>(() => {
+    if (typeof window == 'undefined') {
+      return false;
+    }
+    return window.matchMedia(smallScreenQuery).matches;
+  });
 
-  const query = useMemo(
-    () => (screens.sm ? `(width < ${screens.sm})` : undefined),
-    [screens.sm]
-  );
+  useEffect(() => {
+    if (typeof window == 'undefined') return;
 
-  const subscribe = useCallback(
-    (onStoreChange: () => void) => {
-      if (!query || typeof window == 'undefined') return () => {};
+    const mediaQuery = window.matchMedia(smallScreenQuery);
+    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
 
-      const mediaQuery = window.matchMedia(query);
-      mediaQuery.addEventListener('change', onStoreChange);
-      return () => mediaQuery.removeEventListener('change', onStoreChange);
-    },
-    [query]
-  );
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
-  const getSnapshot = useCallback(() => {
-    if (!query || typeof window == 'undefined') return false;
-    return window.matchMedia(query).matches;
-  }, [query]);
-
-  const getServerSnapshot = useCallback(() => false, []);
-
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  return matches;
 };

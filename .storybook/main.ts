@@ -28,7 +28,10 @@ export default defineMain({
   viteFinal: config => {
     config.optimizeDeps ??= {};
     config.optimizeDeps.include ??= [];
-    config.optimizeDeps.include.push('@storybook/react-dom-shim');
+    config.optimizeDeps.include.push(
+      'react-select',
+      '@storybook/react-dom-shim'
+    );
     return config;
   },
 });

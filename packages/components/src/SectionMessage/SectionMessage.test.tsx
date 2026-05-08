@@ -8,15 +8,15 @@ const user = userEvent.setup();
 test('message container supports base styling and themeSection', () => {
   render(<Basic.Component data-testid="messages" />);
 
-  const message = screen.getAllByTestId('messages')[0];
+  const message = screen.getByTestId('messages');
   expect(message).toBeInTheDocument();
 });
 
 test('accepts a variant with parts and an icon and support grid areas', () => {
   render(<Basic.Component data-testid="messages" variant="warning" />);
 
-  const container = screen.getAllByTestId('messages')[0];
-  const title = screen.getAllByText('Danger Zone!')[0];
+  const container = screen.getByTestId('messages');
+  const title = screen.getByText('Danger Zone!');
   // eslint-disable-next-line testing-library/no-node-access
   const icon = container.firstChild;
 
@@ -28,21 +28,21 @@ test('accepts a variant with parts and an icon and support grid areas', () => {
 test('accepts error variant', () => {
   render(<Basic.Component data-testid="messages" variant="error" />);
 
-  const content = screen.getAllByText('Hello, I am a simple message.')[0];
+  const content = screen.getByText('Hello, I am a simple message.');
   expect(content).toBeInTheDocument();
 });
 
 test('accepts size', () => {
   render(<Basic.Component data-testid="messages" size="small" />);
 
-  const message = screen.getAllByTestId(/messages/)[0];
+  const message = screen.getByTestId(/messages/);
   expect(message).toBeInTheDocument();
 });
 
 test('set alert role if variant is "error"', () => {
   render(<Basic.Component data-testid="messages" variant="error" />);
 
-  const message = screen.getAllByTestId(/messages/)[0];
+  const message = screen.getByTestId(/messages/);
   expect(message).toHaveAttribute('role', 'alert');
 });
 
@@ -52,7 +52,7 @@ test('allow to close message with button in message', async () => {
   );
 
   const message = screen.getAllByTestId(/messages/);
-  const button = screen.getAllByRole('button')[0];
+  const button = screen.getByRole('button');
 
   expect(message[0]).toBeInTheDocument();
   expect(button).toBeInTheDocument();
@@ -78,7 +78,7 @@ test('support controlled dismiss message', async () => {
   };
   render(<Controlled />);
   const message = screen.getAllByTestId(/messages/);
-  const button = screen.getAllByRole('button')[0];
+  const button = screen.getByRole('button');
 
   expect(message[0]).toBeInTheDocument();
   expect(button).toBeInTheDocument();

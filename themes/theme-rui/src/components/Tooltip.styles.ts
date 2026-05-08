@@ -11,8 +11,8 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     ],
     variants: {
       variant: {
-        default: 'text-primary-foreground bg-primary border-primary',
-        white: 'text-foreground border-border bg-surface',
+        default: 'text-brand-foreground bg-brand border-brand',
+        white: 'text-secondary-foreground border-input bg-surface',
       },
     },
     defaultVariants: {
@@ -31,8 +31,8 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     ],
     variants: {
       variant: {
-        default: 'fill-primary  stroke-primary',
-        white: 'fill-surface  stroke-border ',
+        default: 'fill-brand  stroke-brand',
+        white: 'fill-surface  stroke-input ',
       },
     },
     defaultVariants: {

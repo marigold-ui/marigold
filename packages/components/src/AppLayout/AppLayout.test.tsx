@@ -47,19 +47,11 @@ describe('AppLayout', () => {
     expect(container).toHaveClass('grid');
   });
 
-  test('layout grows with content instead of locking to viewport height', () => {
+  test('main area has overflow-y-auto for scrolling', () => {
     render(<Basic.Component />);
 
-    const container = screen.getByRole('main').parentElement;
+    const main = screen.getByRole('main');
 
-    expect(container).toHaveClass('min-h-dvh');
-  });
-
-  test('sidebar sticks to the viewport', () => {
-    render(<Basic.Component />);
-
-    const sidebar = screen.getByRole('complementary');
-
-    expect(sidebar).toHaveClass('sticky', 'top-0', 'h-dvh');
+    expect(main).toHaveClass('overflow-y-auto');
   });
 });

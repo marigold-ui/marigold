@@ -2,11 +2,11 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Loader: ThemeComponent<'Loader'> = {
   container: cva({
-    base: 'grid place-items-center text-primary',
+    base: 'grid place-items-center text-brand',
     variants: {
       variant: {
         default: '',
-        inverted: 'text-primary-foreground',
+        inverted: 'text-secondary',
       },
       size: {
         default: 'size-20',

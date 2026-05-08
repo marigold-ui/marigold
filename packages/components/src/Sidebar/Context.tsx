@@ -1,4 +1,4 @@
-import { createContext, use, useMemo } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';
@@ -17,7 +17,7 @@ export interface SidebarContextValue {
 export const SidebarContext = createContext<SidebarContextValue | null>(null);
 
 export const useSidebar = (): SidebarContextValue => {
-  const ctx = use(SidebarContext);
+  const ctx = useContext(SidebarContext);
   if (!ctx) {
     throw new Error('useSidebar must be used within a <Sidebar.Provider>.');
   }
@@ -62,5 +62,7 @@ export const SidebarProvider = ({
     [state, toggleSidebar, isMobile, classNames]
   );
 
-  return <SidebarContext value={value}>{children}</SidebarContext>;
+  return (
+    <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
+  );
 };

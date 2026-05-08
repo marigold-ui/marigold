@@ -75,20 +75,11 @@ export interface AppearanceDemoProps {
     variant?: string[];
     size?: string[];
   };
-  /**
-   * Background color of the preview area.
-   * 'surface' uses white, 'page' uses the theme's background color.
-   */
-  background?: 'surface' | 'page';
 }
 
 // Component
 // ---------------
-export const AppearanceDemo = ({
-  component,
-  exclude,
-  background = 'surface',
-}: AppearanceDemoProps) => {
+export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
   const name = `${component.toLowerCase()}-appearance` as RegistryKey;
 
   if (!registry[name]) {
@@ -179,14 +170,8 @@ export const AppearanceDemo = ({
         </div>
         <div data-theme="rui">
           <OverlayContainerProvider container="portalContainer">
-            <MarigoldProvider
-              theme={ruiTheme}
-              className={cn(
-                'min-h-56',
-                background === 'page' ? 'bg-background' : 'bg-white'
-              )}
-            >
-              <div className="not-prose flex size-full items-center justify-center overflow-x-auto px-4 pt-24 pb-10">
+            <MarigoldProvider theme={ruiTheme}>
+              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pt-24 pb-10">
                 <Demo {...selected} />
               </div>
             </MarigoldProvider>

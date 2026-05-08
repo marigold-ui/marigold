@@ -2,7 +2,7 @@ import { expect, fn, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
-import { Inline } from '../Inline/Inline';
+import { IconButton } from '../IconButton/IconButton';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { Stack } from '../Stack/Stack';
@@ -347,14 +347,12 @@ export const WithIconAction = meta.story({
         <SelectList.Option textValue={item.name}>
           <Text slot="label">{item.name}</Text>
           <Text slot="description">{item.description}</Text>
-          <Button
-            variant="ghost"
-            size="icon"
+          <IconButton
             aria-label={`Learn more about ${item.name}`}
             onPress={() => alert(`Info about ${item.name}`)}
           >
             <Info size={20} />
-          </Button>
+          </IconButton>
         </SelectList.Option>
       )}
     </SelectList>
@@ -366,13 +364,13 @@ export const WithIconAction = meta.story({
     const row = button.closest('[role="row"]')!;
     const alertSpy = spyOn(window, 'alert').mockImplementation(() => {});
 
-    await step('clicking the icon button fires its action', async () => {
+    await step('clicking the IconButton fires its action', async () => {
       await userEvent.click(button);
 
       expect(alertSpy).toHaveBeenCalledWith('Info about Credit card');
     });
 
-    await step('clicking the icon button does not toggle the row', () => {
+    await step('clicking the IconButton does not toggle the row', () => {
       expect(row).toHaveAttribute('aria-selected', 'false');
     });
 
@@ -530,14 +528,12 @@ export const Bordered = meta.story({
     >
       {borderedMethods.map(({ id, label, description, Logo }) => (
         <SelectList.Option key={id} id={id} textValue={label}>
-          <div className="col-start-2 row-span-2">
-            <Inline space={3} alignY="top" noWrap>
-              <Logo />
-              <Stack>
-                <Text slot="label">{label}</Text>
-                <Text slot="description">{description}</Text>
-              </Stack>
-            </Inline>
+          <div className="col-start-2 row-span-2 flex items-start gap-3">
+            <Logo />
+            <div>
+              <Text slot="label">{label}</Text>
+              <Text slot="description">{description}</Text>
+            </div>
           </div>
         </SelectList.Option>
       ))}
@@ -597,7 +593,7 @@ export const EmptyState = meta.story({
       label="Saved payment methods"
       description="Pick one from your wallet or add a new method."
       emptyState={
-        <div className="text-secondary p-6 text-center text-sm">
+        <div className="text-muted-foreground p-6 text-center text-sm">
           No saved payment methods yet.
         </div>
       }

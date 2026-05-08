@@ -1,16 +1,16 @@
 import { Divider, IconButton, Inline } from '@marigold/components';
-import { Bold, Delete, Italic, Underline } from '@marigold/icons';
+import { Delete, FormatBold, FormatItalic, Underlined } from '@marigold/icons';
 
 export default () => (
   <Inline space={2} alignY="center">
     <IconButton aria-label="Bold">
-      <Bold />
+      <FormatBold />
     </IconButton>
     <IconButton aria-label="Italic">
-      <Italic />
+      <FormatItalic />
     </IconButton>
     <IconButton aria-label="Underline">
-      <Underline />
+      <Underlined />
     </IconButton>
     <Divider orientation="vertical" />
     <IconButton aria-label="Delete">

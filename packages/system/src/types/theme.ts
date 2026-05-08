@@ -48,10 +48,7 @@ export type Theme = {
     >;
 
     Button?: ComponentStyleFunction<string, string>;
-    Card?: Record<
-      'container' | 'header' | 'body' | 'footer' | 'preview',
-      ComponentStyleFunction<string, string>
-    >;
+    Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
     Collapsible?: Record<
       'container' | 'trigger' | 'content',
@@ -91,10 +88,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
-    BooleanField?: Record<
-      'container' | 'description',
-      ComponentStyleFunction<string, string>
-    >;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
@@ -126,19 +119,17 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
-    Panel?: Record<
-      | 'root'
-      | 'header'
-      | 'title'
-      | 'description'
-      | 'actions'
-      | 'content'
-      | 'collapsible'
-      | 'collapsibleHeader'
-      | 'collapsibleTitle'
-      | 'collapsibleDescription'
-      | 'collapsibleContent'
-      | 'footer',
+    MultiSelect?: Record<
+      | 'container'
+      | 'closeButton'
+      | 'field'
+      | 'input'
+      | 'icon'
+      | 'listContainer'
+      | 'list'
+      | 'option'
+      | 'tag'
+      | 'valueContainer',
       ComponentStyleFunction<string, string>
     >;
     Pagination?: Record<

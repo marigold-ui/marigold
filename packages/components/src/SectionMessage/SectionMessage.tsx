@@ -80,7 +80,7 @@ export const SectionMessage = ({
   if (!isCurrentlyVisible) return null;
 
   return (
-    <SectionMessageContext value={{ classNames }}>
+    <SectionMessageContext.Provider value={{ classNames }}>
       <div
         role={variant === 'error' ? 'alert' : undefined}
         {...props}
@@ -100,7 +100,7 @@ export const SectionMessage = ({
         )}
         {children}
       </div>
-    </SectionMessageContext>
+    </SectionMessageContext.Provider>
   );
 };
 

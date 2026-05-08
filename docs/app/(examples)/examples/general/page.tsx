@@ -5,7 +5,7 @@ import { PlaceholderPage } from '../../_shared';
 const GeneralPage = () => (
   <PlaceholderPage
     title="General"
-    description="Workspace details, regional defaults, and notifications."
+    description="Manage your general settings and preferences."
   />
 );
 

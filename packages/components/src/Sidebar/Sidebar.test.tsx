@@ -16,8 +16,6 @@ import {
   WithActiveBranch,
 } from './Sidebar.stories';
 
-const smallScreenQuery = `(width < ${theme.screens!.sm})`;
-
 // Testing Library has no API for querying ancestor elements.
 // eslint-disable-next-line testing-library/no-node-access
 const closest = (el: HTMLElement, sel: string) => el.closest(sel);
@@ -374,7 +372,7 @@ test('controlled mode re-opens via onOpenChange', async () => {
 });
 
 test('mobile renders sheet overlay', () => {
-  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -387,7 +385,7 @@ test('mobile renders sheet overlay', () => {
 
 test('mobile toggle opens sheet, close button closes it', async () => {
   const mobileUser = userEvent.setup();
-  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -418,7 +416,7 @@ test('mobile toggle opens sheet, close button closes it', async () => {
 
 test('mobile closes sheet when leaf nav item is clicked', async () => {
   const mobileUser = userEvent.setup();
-  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -441,7 +439,7 @@ test('mobile closes sheet when leaf nav item is clicked', async () => {
 
 test('mobile closes sheet when overlay backdrop is clicked', async () => {
   const mobileUser = userEvent.setup();
-  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -464,7 +462,7 @@ test('mobile closes sheet when overlay backdrop is clicked', async () => {
 
 test('mobile keeps sheet open when branch item is clicked', async () => {
   const mobileUser = userEvent.setup();
-  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
   ensureOverlayContainer();
 
   render(<Basic.Component />);

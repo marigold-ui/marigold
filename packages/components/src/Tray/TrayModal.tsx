@@ -5,7 +5,7 @@ import {
   motion,
   useMotionValue,
 } from 'motion/react';
-import { use } from 'react';
+import { useContext } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -52,7 +52,7 @@ export const TrayModal = ({
   children,
 }: TrayModalProps) => {
   const classNames = useClassNames({ component: 'Tray' });
-  const state = use(OverlayTriggerStateContext);
+  const state = useContext(OverlayTriggerStateContext);
   const h = typeof window !== 'undefined' ? window.innerHeight : 0;
   const y = useMotionValue(h);
   // Skip the slide transition under `prefers-reduced-motion` (and in

@@ -1,5 +1,5 @@
 import preview from '.storybook/preview';
-import { EllipsisVertical, LogOut, User } from '@marigold/icons';
+import { Logout, SettingDots, User } from '@marigold/icons';
 import { useResponsiveValue } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
@@ -19,10 +19,10 @@ const UserMenu = () => (
         <User size={16} /> Profile
       </Menu.Item>
       <Menu.Item id="settings" textValue="Settings">
-        <EllipsisVertical size={16} /> Settings
+        <SettingDots size={16} /> Settings
       </Menu.Item>
       <Menu.Item id="sign-out" textValue="Sign out">
-        <LogOut size={16} /> Sign out
+        <Logout size={16} /> Sign out
       </Menu.Item>
     </Menu.Section>
   </ActionMenu>
@@ -62,7 +62,6 @@ const meta = preview.meta({
   },
   parameters: {
     layout: 'fullscreen',
-    surface: false,
   },
 });
 

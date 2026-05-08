@@ -23,7 +23,6 @@ import { TableDragPreview } from './TableDragPreview';
 
 const meta = preview.meta({
   title: 'Components/Table',
-  parameters: { bleed: true },
   decorators: [
     Story => (
       <div id="storybook-root">
@@ -166,7 +165,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="secondary">
+                <Text size="xs" color="muted-foreground">
                   {user.handle}
                 </Text>
               </Stack>
@@ -385,7 +384,7 @@ export const WidthsAndOverflow = meta.story({
             </Table.Body>
           </Table>
         </div>
-        <p className="text-secondary block text-xs">
+        <p className="text-muted-foreground block text-xs">
           Column widths: ID 40px, Name min 100px, Status 100px, Location min
           100px, Balance min 80px.
         </p>
@@ -696,7 +695,7 @@ export const WithActions = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="secondary">
+                <Text size="xs" color="muted-foreground">
                   {user.handle}
                 </Text>
               </Stack>

@@ -1,6 +1,7 @@
 {
   "pages": [
     "badge",
+    "card",
     "divider",
     "empty-state",
     "headline",

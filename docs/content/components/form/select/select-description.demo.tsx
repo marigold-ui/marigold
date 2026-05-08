@@ -1,7 +1,7 @@
 import { Select, Text } from '@marigold/components';
 
 export default () => (
-  <Select label="Permissions">
+  <Select label="Permissions" width="fit">
     <Select.Option id="read" textValue="Read">
       <Text slot="label">Read</Text>
       <Text slot="description" fontSize="xs">

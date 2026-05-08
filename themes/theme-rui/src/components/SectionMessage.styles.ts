@@ -4,15 +4,17 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva({
     base: [
       "grid-cols-[min-content_auto_min-content] gap-x-4 gap-y-1 [grid-template-areas:'icon_title_close''icon_content_content']",
-      'bg-surface rounded-md border px-3 py-4',
+      'bg-background rounded-md border px-3 py-4',
     ],
     variants: {
       variant: {
-        success: 'border-success-accent bg-success text-success-foreground',
-        warning: 'border-warning-accent bg-warning text-warning-foreground',
-        info: 'border-info-accent bg-info text-info-foreground',
+        success:
+          'border-success-muted-accent bg-success-muted text-success-muted-foreground',
+        warning:
+          'border-warning-muted-accent bg-warning-muted text-warning-muted-foreground',
+        info: 'border-info-muted-accent bg-info-muted text-info-muted-foreground',
         error:
-          'border-destructive-accent bg-destructive text-destructive-foreground',
+          'border-destructive-muted-accent bg-destructive-muted text-destructive-muted-foreground',
       },
     },
     defaultVariants: {
@@ -21,13 +23,13 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   }),
   title: cva({ base: 'text-sm font-medium' }),
   content: cva({
-    base: 'text-secondary text-sm leading-5 font-normal',
+    base: 'text-muted-foreground text-sm leading-5 font-normal',
     variants: {
       variant: {
-        success: 'text-success-foreground',
-        warning: 'text-warning-foreground',
-        info: 'text-info-foreground',
-        error: 'text-destructive-foreground',
+        success: 'text-success-muted-foreground',
+        warning: 'text-warning-muted-foreground',
+        info: 'text-info-muted-foreground',
+        error: 'text-destructive-muted-foreground',
       },
     },
     defaultVariants: {
@@ -38,10 +40,10 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     base: 'h-6 w-6 align-baseline leading-none -mt-0.5',
     variants: {
       variant: {
-        success: 'text-success-accent',
-        warning: 'text-warning-accent',
-        info: 'text-info-accent',
-        error: 'text-destructive-accent',
+        success: 'text-success-muted-accent',
+        warning: 'text-warning-muted-accent',
+        info: 'text-info-muted-accent',
+        error: 'text-destructive-muted-accent',
       },
     },
     defaultVariants: {

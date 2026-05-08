@@ -1,4 +1,4 @@
-import { createContext, use } from 'react';
+import { createContext, useContext } from 'react';
 
 export const SectionMessageContext = createContext<{
   classNames: {
@@ -9,4 +9,4 @@ export const SectionMessageContext = createContext<{
   };
 }>({} as any);
 
-export const useSectionMessageContext = () => use(SectionMessageContext);
+export const useSectionMessageContext = () => useContext(SectionMessageContext);

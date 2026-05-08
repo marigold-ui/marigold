@@ -6,6 +6,7 @@ import {
   MarigoldProvider,
   OverlayContainerProvider,
 } from '@marigold/components';
+import { cn } from '@marigold/system';
 
 export interface WrapperProps {
   className?: string;
@@ -16,9 +17,17 @@ export const Wrapper = ({
   children,
 }: PropsWithChildren<WrapperProps>) => {
   return (
-    <div data-theme="rui" className={className}>
+    <div data-theme="rui">
       <OverlayContainerProvider container="portalContainer">
-        <MarigoldProvider theme={ruiTheme}>{children}</MarigoldProvider>
+        <MarigoldProvider
+          className={cn(
+            'p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)',
+            className
+          )}
+          theme={ruiTheme}
+        >
+          {children}
+        </MarigoldProvider>
       </OverlayContainerProvider>
     </div>
   );

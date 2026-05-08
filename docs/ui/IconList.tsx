@@ -2,23 +2,19 @@
 
 import { Icons, Tiles, cn } from '@/ui';
 import { Card } from 'fumadocs-ui/components/card';
-import type { LucideProps } from 'lucide-react';
-import type { ComponentType } from 'react';
 import { useRef, useState } from 'react';
 import { useCopyToClipboard, useDebounce } from 'react-use';
 
 export interface IconListProps {
-  icons: string[];
+  icons: (keyof typeof Icons)[];
 }
 
 export interface IconListItemProps {
-  icon: string;
+  icon: keyof typeof Icons;
 }
 
 const IconListItem = ({ icon }: IconListItemProps) => {
-  const Component = (
-    Icons as unknown as Record<string, ComponentType<LucideProps>>
-  )[icon];
+  const Component = Icons[icon];
 
   const svgRef = useRef<SVGElement>(undefined);
   const [isCopied, setCopied] = useState(false);

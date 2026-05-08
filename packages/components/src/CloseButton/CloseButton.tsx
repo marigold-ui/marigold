@@ -1,5 +1,4 @@
-import type { CSSProperties } from 'react';
-import React from 'react';
+import { CSSProperties, Ref, forwardRef } from 'react';
 import { Button } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { ButtonProps } from '../Button/Button';
@@ -11,25 +10,23 @@ interface CloseButtonProps extends Pick<
 > {
   className?: string;
   style?: CSSProperties;
-  ref?: React.Ref<HTMLButtonElement>;
 }
 
-export const CloseButton = ({
-  className,
-  size,
-  variant,
-  ref,
-  ...props
-}: CloseButtonProps) => {
-  const classNames = useClassNames({
-    component: 'CloseButton',
-    className,
-    size,
-    variant,
-  });
-  return (
-    <Button ref={ref} className={classNames} {...props}>
-      <X />
-    </Button>
-  );
-};
+export const CloseButton = forwardRef(
+  (
+    { className, size, variant, ...props }: CloseButtonProps,
+    ref: Ref<HTMLButtonElement> | undefined
+  ) => {
+    const classNames = useClassNames({
+      component: 'CloseButton',
+      className,
+      size,
+      variant,
+    });
+    return (
+      <Button ref={ref} className={classNames} {...props}>
+        <X />
+      </Button>
+    );
+  }
+);

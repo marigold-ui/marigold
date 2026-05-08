@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createRef } from 'react';
 import {
   Basic,
   Bordered,
@@ -42,7 +43,7 @@ describe('SelectList', () => {
     });
 
     test('forwards refs to the underlying HTMLElement', () => {
-      const ref: { current: HTMLDivElement | null } = { current: null };
+      const ref = createRef<HTMLDivElement>();
 
       render(<Basic.Component aria-label="Test" ref={ref as any} />);
 

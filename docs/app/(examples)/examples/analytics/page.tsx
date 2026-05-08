@@ -5,7 +5,7 @@ import { PlaceholderPage } from '../../_shared';
 const AnalyticsPage = () => (
   <PlaceholderPage
     title="Analytics"
-    description="Trends, breakdowns, and reports."
+    description="View your analytics data and insights."
   />
 );
 

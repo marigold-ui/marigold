@@ -4,7 +4,7 @@ export const Text: ThemeComponent<'Text'> = cva({
   variants: {
     variant: {
       default: '',
-      muted: 'text-secondary',
+      muted: 'text-muted-foreground',
     },
     size: {
       // Adding a default here, which beasically acts as an inherit

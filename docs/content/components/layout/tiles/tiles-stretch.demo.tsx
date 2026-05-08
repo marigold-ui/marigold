@@ -8,25 +8,17 @@ export default () => {
     <Stack space={2}>
       <Switch label="Toggle stretch" onChange={() => setStretch(!stretch)} />
       <Tiles space={2} stretch={stretch} tilesWidth="100px">
-        <Card>
-          <Card.Body>
-            <Rectangle height="100px" />
-          </Card.Body>
+        <Card p={2}>
+          <Rectangle height="100px" />
         </Card>
-        <Card>
-          <Card.Body>
-            <Rectangle height="100px" />
-          </Card.Body>
+        <Card p={2}>
+          <Rectangle height="100px" />
         </Card>
-        <Card>
-          <Card.Body>
-            <Rectangle height="100px" />
-          </Card.Body>
+        <Card p={2}>
+          <Rectangle height="100px" />
         </Card>
-        <Card>
-          <Card.Body>
-            <Rectangle height="100px" />
-          </Card.Body>
+        <Card p={2}>
+          <Rectangle height="100px" />
         </Card>
       </Tiles>
     </Stack>

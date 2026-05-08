@@ -1,7 +1,6 @@
 'use client';
 
 import { type RegistryKey, registry } from '@/.registry/demos';
-import { cn } from '@/lib/cn';
 import { track } from '@vercel/analytics';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
@@ -30,11 +29,6 @@ export interface ComponentDemoProps {
    * 'full' shows both in tabs (default)
    */
   mode?: 'preview' | 'code' | 'full';
-  /**
-   * Background color of the preview area.
-   * 'surface' uses white, 'page' uses the theme's background color.
-   */
-  background?: 'surface' | 'page';
   children?: ReactNode;
 }
 
@@ -52,28 +46,16 @@ function fileToRegistryKey(file: string): string {
 
 // Preview wrapper component
 // ---------------
-const Preview = ({
-  name,
-  background = 'surface',
-}: {
-  name: RegistryKey;
-  background?: 'surface' | 'page';
-}) => {
+const Preview = ({ name }: { name: RegistryKey }) => {
   const Demo: ComponentType<any> = registry[name].demo;
 
   return (
     <div
       data-theme="rui"
-      className="flex w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
+      className="flex min-h-[150px] w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
     >
       <OverlayContainerProvider container="portalContainer">
-        <MarigoldProvider
-          theme={ruiTheme}
-          className={cn(
-            'min-h-37.5 w-full',
-            background === 'page' ? 'bg-background' : 'bg-white'
-          )}
-        >
+        <MarigoldProvider theme={ruiTheme} className="bg-background w-full">
           <div className="not-prose w-full overflow-x-auto p-4">
             <Demo />
           </div>
@@ -89,7 +71,6 @@ export const ComponentDemo = ({
   name,
   file,
   mode = 'full',
-  background,
 }: ComponentDemoProps) => {
   // Resolve the registry key from either name or file prop
   const registryKey = name ?? (file ? fileToRegistryKey(file) : undefined);
@@ -111,8 +92,8 @@ export const ComponentDemo = ({
   // Preview only mode
   if (mode === 'preview') {
     return (
-      <div className="overflow-hidden rounded-xl border">
-        <Preview name={key} background={background} />
+      <div className="overflow-hidden rounded-xl">
+        <Preview name={key} />
       </div>
     );
   }
@@ -126,7 +107,7 @@ export const ComponentDemo = ({
   return (
     <DemoTabs demoKey={key}>
       <Tab value="Preview" className="p-0">
-        <Preview name={key} background={background} />
+        <Preview name={key} />
       </Tab>
       <Tab value="Code">
         <DynamicCodeBlock lang="tsx" code={codeString} />

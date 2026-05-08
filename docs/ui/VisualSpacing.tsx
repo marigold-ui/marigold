@@ -75,27 +75,28 @@ export interface VisualInsetProps {
    * since for the demo we need to have a separated x/y value.
    */
   name: string;
-  px: Scale;
-  py: Scale;
+  spaceX: Scale;
+  spaceY: Scale;
 }
 
 export const VisualInset = ({
   children,
   className,
   name,
-  px,
-  py,
+  spaceX,
+  spaceY,
 }: PropsWithChildren<VisualInsetProps>) => (
   <div
     className="size-full"
+    data-hello
     style={createVar({
-      'inset-py': `calc(var(--spacing)*${py})`,
-      'inset-px': `calc(var(--spacing)*${px})`,
+      'space-y': `calc(var(--spacing)*${spaceY})`,
+      'space-x': `calc(var(--spacing)*${spaceX})`,
     })}
   >
     <div
       className={cn(
-        'size-full overflow-hidden bg-pink-100 px-(--inset-px) py-(--inset-py)',
+        'size-full overflow-hidden bg-pink-100 px-(--space-x) py-(--space-y)',
         className
       )}
     >
@@ -117,7 +118,7 @@ export const VisualInset = ({
       <div
         className={classNames.icon({
           orientation: 'vertical',
-          className: 'h-(--inset-py) before:h-[calc(var(--inset-py)-2px)]',
+          className: 'h-(--space-y) before:h-[calc(var(--space-y)-2px)]',
         })}
       />
       {name}
@@ -132,7 +133,7 @@ export const VisualInset = ({
       <div
         className={classNames.icon({
           orientation: 'horizontal',
-          className: 'w-(--inset-px) before:w-[calc(var(--inset-px)-2px)]',
+          className: 'w-(--space-x) before:w-[calc(var(--space-x)-2px)]',
         })}
       />
       {name}

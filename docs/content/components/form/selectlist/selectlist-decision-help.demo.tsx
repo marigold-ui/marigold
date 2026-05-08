@@ -133,16 +133,16 @@ export default () => (
   >
     {plans.map(plan => (
       <SelectList.Option key={plan.id} id={plan.id} textValue={plan.name}>
-        <div className="col-start-2 row-start-1">
-          <Inline space={2} alignY="center">
-            <Text slot="label" weight="bold" lineHeight="loose">
-              {plan.name}
-            </Text>
-            {plan.badge ? <Badge variant="primary">{plan.badge}</Badge> : null}
-          </Inline>
-        </div>
-        <div className="col-start-2 row-start-2 mt-3">
+        <div className="col-start-2 row-span-2">
           <Stack space={3}>
+            <Inline space={2} alignY="center">
+              <Text slot="label" weight="bold" lineHeight="none">
+                {plan.name}
+              </Text>
+              {plan.badge ? (
+                <Badge variant="primary">{plan.badge}</Badge>
+              ) : null}
+            </Inline>
             <Stack alignX="left">
               <Text fontSize="3xl" weight="bold">
                 {plan.price}
@@ -157,7 +157,7 @@ export default () => (
                 <Inline key={feature} space={2} alignY="center">
                   <Check
                     size={14}
-                    className="text-success-foreground shrink-0"
+                    className="text-success-muted-foreground shrink-0"
                   />
                   <Text fontSize="xs">{feature}</Text>
                 </Inline>
@@ -181,7 +181,7 @@ export default () => (
                       <Inline key={item} space={2} alignY="top">
                         <Check
                           size={14}
-                          className="text-success-foreground mt-1 shrink-0"
+                          className="text-success-muted-foreground mt-1 shrink-0"
                         />
                         <Text fontSize="xs">{item}</Text>
                       </Inline>

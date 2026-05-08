@@ -15,95 +15,84 @@ test('does not have spacing by default', () => {
 
 test('allows to add spacing equally on all sides', () => {
   render(
-    <Inset p={3}>
+    <Inset space={3}>
       <p>first</p>
       <p>second</p>
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset?.style.getPropertyValue('--inset-p')).toBe(
+  expect(inset?.style.getPropertyValue('--space')).toBe(
     'calc(var(--spacing) * 3)'
   );
 });
 
 test('allows to add horizontal spacing', () => {
   render(
-    <Inset px={5}>
+    <Inset spaceX={5}>
       <p>first</p>
       <p>second</p>
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset?.style.getPropertyValue('--inset-px')).toBe(
+  expect(inset?.style.getPropertyValue('--spaceX')).toBe(
     'calc(var(--spacing) * 5)'
   );
 });
 
 test('allows to add vertical spacing', () => {
   render(
-    <Inset py={8}>
+    <Inset spaceY={8}>
       <p>first</p>
       <p>second</p>
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset?.style.getPropertyValue('--inset-py')).toBe(
+  expect(inset?.style.getPropertyValue('--spaceY')).toBe(
     'calc(var(--spacing) * 8)'
   );
 });
 
 test('allows to add different vertical/horizontal spacing', () => {
   render(
-    <Inset px={2} py={4}>
+    <Inset spaceX={2} spaceY={4}>
       <p>first</p>
       <p>second</p>
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset?.style.getPropertyValue('--inset-px')).toBe(
+  expect(inset?.style.getPropertyValue('--spaceX')).toBe(
     'calc(var(--spacing) * 2)'
   );
-  expect(inset?.style.getPropertyValue('--inset-py')).toBe(
+  expect(inset?.style.getPropertyValue('--spaceY')).toBe(
     'calc(var(--spacing) * 4)'
   );
 });
 
-test('supports inset recipe tokens for p', () => {
+test('supports inset recipe tokens for space', () => {
   render(
-    <Inset p="square-regular">
+    <Inset space="square-regular">
       <p>first</p>
       <p>second</p>
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset?.style.getPropertyValue('--inset-p')).toBe(
+  expect(inset?.style.getPropertyValue('--space')).toBe(
     'var(--spacing-square-regular)'
   );
 });
 
-test('forwards aria attributes to the rendered element', () => {
+test('supports semantic padding tokens for spaceX/spaceY', () => {
   render(
-    <Inset p={2} aria-label="content region" role="region">
-      <p>first</p>
-    </Inset>
-  );
-  const inset = screen.getByText('first').parentElement;
-  expect(inset).toHaveAttribute('aria-label', 'content region');
-  expect(inset).toHaveAttribute('role', 'region');
-});
-
-test('supports semantic padding tokens for px/py', () => {
-  render(
-    <Inset px="padding-snug" py="padding-relaxed">
+    <Inset spaceX="padding-snug" spaceY="padding-relaxed">
       <p>first</p>
       <p>second</p>
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset?.style.getPropertyValue('--inset-px')).toBe(
+  expect(inset?.style.getPropertyValue('--spaceX')).toBe(
     'var(--spacing-padding-snug)'
   );
-  expect(inset?.style.getPropertyValue('--inset-py')).toBe(
+  expect(inset?.style.getPropertyValue('--spaceY')).toBe(
     'var(--spacing-padding-relaxed)'
   );
 });

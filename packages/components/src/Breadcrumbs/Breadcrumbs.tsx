@@ -1,5 +1,12 @@
-import type { ReactNode, Ref } from 'react';
-import { Children, isValidElement, useRef } from 'react';
+import {
+  Children,
+  ForwardRefExoticComponent,
+  ReactNode,
+  RefAttributes,
+  forwardRef,
+  isValidElement,
+  useRef,
+} from 'react';
 import {
   Link,
   Breadcrumb as RACBreadcrumb,
@@ -42,133 +49,136 @@ export interface BreadcrumbsProps extends Omit<
   children: ReactNode | ReactNode[];
 }
 
-const BreadcrumbsBase = ({
-  children,
-  variant,
-  size,
-  disabled,
-  maxVisibleItems = 'auto',
-  ref,
-  ...props
-}: BreadcrumbsProps & { ref?: Ref<HTMLOListElement> }) => {
-  const {
-    container,
-    item: breadcrumbsItem,
-    link,
-    current,
-  } = useClassNames({
-    component: 'Breadcrumbs',
-    variant,
-    size,
-  });
+export interface BreadcrumbsComponent extends ForwardRefExoticComponent<
+  BreadcrumbsProps & RefAttributes<HTMLOListElement>
+> {
+  Item: typeof BreadcrumbsItem;
+}
 
-  const items = Children.toArray(children);
-  const total = items.length;
+const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
+  (
+    { children, variant, size, disabled, maxVisibleItems = 'auto', ...props },
+    ref
+  ) => {
+    const {
+      container,
+      item: breadcrumbsItem,
+      link,
+      current,
+    } = useClassNames({
+      component: 'Breadcrumbs',
+      variant,
+      size,
+    });
 
-  const objRef = useObjectRef(ref);
-  const hiddenRef = useRef<HTMLDivElement>(null);
+    const items = Children.toArray(children);
+    const total = items.length;
 
-  const autoMax = useAutoCollapse(objRef, hiddenRef, total);
+    const objRef = useObjectRef(ref);
+    const hiddenRef = useRef<HTMLDivElement>(null);
 
-  const effectiveMax = maxVisibleItems === 'auto' ? autoMax : maxVisibleItems;
+    const autoMax = useAutoCollapse(objRef, hiddenRef, total);
 
-  const shouldCollapse =
-    typeof effectiveMax === 'number' &&
-    effectiveMax >= 2 &&
-    total > effectiveMax;
+    const effectiveMax = maxVisibleItems === 'auto' ? autoMax : maxVisibleItems;
 
-  // When collapsed, show: [first, ellipsis, ...trailing, current]
-  // effectiveMax=2: [ellipsis, current] (no first item)
-  // effectiveMax=3: [first, ellipsis, current]
-  // effectiveMax=4: [first, ellipsis, item(n-1), current]
-  const sliceIndex = shouldCollapse
-    ? effectiveMax === 2
-      ? total - 1
-      : total - (effectiveMax - 2)
-    : 0;
+    const shouldCollapse =
+      typeof effectiveMax === 'number' &&
+      effectiveMax >= 2 &&
+      total > effectiveMax;
 
-  const hiddenItems = shouldCollapse
-    ? effectiveMax === 2
-      ? items.slice(0, -1)
-      : items.slice(1, sliceIndex)
-    : [];
+    // When collapsed, show: [first, ellipsis, ...trailing, current]
+    // effectiveMax=2: [ellipsis, current] (no first item)
+    // effectiveMax=3: [first, ellipsis, current]
+    // effectiveMax=4: [first, ellipsis, item(n-1), current]
+    const sliceIndex = shouldCollapse
+      ? effectiveMax === 2
+        ? total - 1
+        : total - (effectiveMax - 2)
+      : 0;
 
-  const displayedItems = shouldCollapse
-    ? effectiveMax === 2
-      ? [null, ...items.slice(sliceIndex)]
-      : [items[0], null, ...items.slice(sliceIndex)]
-    : items;
+    const hiddenItems = shouldCollapse
+      ? effectiveMax === 2
+        ? items.slice(0, -1)
+        : items.slice(1, sliceIndex)
+      : [];
 
-  const breadcrumbs = (
-    <RACBreadcrumbs
-      {...props}
-      ref={objRef}
-      isDisabled={disabled}
-      className={cn(
-        container,
-        maxVisibleItems === 'auto' &&
-          'flex-nowrap overflow-hidden whitespace-nowrap'
-      )}
-    >
-      {displayedItems.map((item, index) => {
-        if (item === null) {
+    const displayedItems = shouldCollapse
+      ? effectiveMax === 2
+        ? [null, ...items.slice(sliceIndex)]
+        : [items[0], null, ...items.slice(sliceIndex)]
+      : items;
+
+    const breadcrumbs = (
+      <RACBreadcrumbs
+        {...props}
+        ref={objRef}
+        isDisabled={disabled}
+        className={cn(
+          container,
+          maxVisibleItems === 'auto' &&
+            'flex-nowrap overflow-hidden whitespace-nowrap'
+        )}
+      >
+        {displayedItems.map((item, index) => {
+          if (item === null) {
+            return (
+              <RACBreadcrumb key="ellipsis" className={breadcrumbsItem}>
+                <BreadcrumbEllipsis hiddenItems={hiddenItems} />
+                <ChevronRight
+                  aria-hidden="true"
+                  size={16}
+                  data-testid="breadcrumb-chevronright"
+                />
+              </RACBreadcrumb>
+            );
+          }
+
+          if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
+
+          const { href, children: itemChildren, ...ariaProps } = item.props;
+
           return (
-            <RACBreadcrumb key="ellipsis" className={breadcrumbsItem}>
-              <BreadcrumbEllipsis hiddenItems={hiddenItems} />
-              <ChevronRight
-                aria-hidden="true"
-                size={16}
-                data-testid="breadcrumb-chevronright"
-              />
+            <RACBreadcrumb
+              key={`${href}-${index}`}
+              {...ariaProps}
+              className={breadcrumbsItem}
+            >
+              {({ isCurrent }) => (
+                <>
+                  <Link href={href} className={cn(link, isCurrent && current)}>
+                    {itemChildren}
+                  </Link>
+                  {!isCurrent && (
+                    <ChevronRight
+                      aria-hidden="true"
+                      size={16}
+                      data-testid="breadcrumb-chevronright"
+                    />
+                  )}
+                </>
+              )}
             </RACBreadcrumb>
           );
-        }
+        })}
+      </RACBreadcrumbs>
+    );
 
-        if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
+    if (maxVisibleItems !== 'auto') {
+      return breadcrumbs;
+    }
 
-        const { href, children: itemChildren, ...ariaProps } = item.props;
-
-        return (
-          <RACBreadcrumb
-            key={`${href}-${index}`}
-            {...ariaProps}
-            className={breadcrumbsItem}
-          >
-            {({ isCurrent }) => (
-              <>
-                <Link href={href} className={cn(link, isCurrent && current)}>
-                  {itemChildren}
-                </Link>
-                {!isCurrent && (
-                  <ChevronRight
-                    aria-hidden="true"
-                    size={16}
-                    data-testid="breadcrumb-chevronright"
-                  />
-                )}
-              </>
-            )}
-          </RACBreadcrumb>
-        );
-      })}
-    </RACBreadcrumbs>
-  );
-
-  if (maxVisibleItems !== 'auto') {
-    return breadcrumbs;
+    return (
+      <HiddenBreadcrumbs
+        items={items}
+        itemClassName={breadcrumbsItem}
+        hiddenRef={hiddenRef}
+      >
+        {breadcrumbs}
+      </HiddenBreadcrumbs>
+    );
   }
+) as BreadcrumbsComponent;
 
-  return (
-    <HiddenBreadcrumbs
-      items={items}
-      itemClassName={breadcrumbsItem}
-      hiddenRef={hiddenRef}
-    >
-      {breadcrumbs}
-    </HiddenBreadcrumbs>
-  );
-};
+_Breadcrumbs.Item = BreadcrumbsItem;
 
-export const Breadcrumbs = Object.assign(BreadcrumbsBase, {
-  Item: BreadcrumbsItem,
-});
+export { _Breadcrumbs as Breadcrumbs };

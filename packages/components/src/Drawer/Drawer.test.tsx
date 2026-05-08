@@ -1,10 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './Drawer.stories';
-
-const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 window.matchMedia = mockMatchMedia([]);
 
@@ -100,7 +97,7 @@ test('able to close via close button', async () => {
 });
 
 test('uses modal on small screens', async () => {
-  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  window.matchMedia = mockMatchMedia(['(width < 640px)']);
   renderWithOverlay(<Basic.Component closeButton />);
 
   const button = screen.getByRole('button', { name: 'Open Drawer' });

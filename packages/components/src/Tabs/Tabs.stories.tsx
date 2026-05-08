@@ -5,9 +5,6 @@ import { Tabs } from './Tabs';
 const meta = preview.meta({
   title: 'Components/Tabs',
   component: Tabs,
-  parameters: {
-    surface: 'both',
-  },
   argTypes: {
     disabled: {
       control: { type: 'boolean' },
@@ -52,11 +49,11 @@ export const Basic = meta.story({
     );
   },
   play: async ({ canvas, step }) => {
-    let keyboardTab: HTMLElement;
+    let keyboardTab: ReturnType<typeof canvas.getByRole>;
 
     await step('Arrange', async () => {
-      keyboardTab = await waitFor(
-        () => canvas.getAllByRole('tab', { name: 'Keyboard Settings' })[0]
+      keyboardTab = await waitFor(() =>
+        canvas.getByRole('tab', { name: 'Keyboard Settings' })
       );
     });
 
@@ -66,10 +63,10 @@ export const Basic = meta.story({
 
     await step('Assert', async () => {
       await expect(
-        canvas.getAllByText(/Customize the key bindings and input behavior/)[0]
+        canvas.getByText(/Customize the key bindings and input behavior/)
       ).toBeVisible();
-      const indicator = await waitFor(
-        () => canvas.getAllByTestId('tab-indicator')[0]
+      const indicator = await waitFor(() =>
+        canvas.getByTestId('tab-indicator')
       );
       await expect(indicator).toBeVisible();
     });

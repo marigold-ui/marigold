@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { use } from 'react';
+import { useContext } from 'react';
 import type { ValidationResult } from 'react-aria-components';
 import { FieldError, FieldErrorContext, Text } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
@@ -34,7 +34,7 @@ export const HelpText = ({
     variant,
     size,
   });
-  const ctx = use(FieldErrorContext);
+  const ctx = useContext(FieldErrorContext);
 
   // Prevent rendering anything if no error/description should be shown.
   if (!description && !ctx?.isInvalid) {

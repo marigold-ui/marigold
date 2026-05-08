@@ -5,7 +5,6 @@ import { Table } from './Table';
 
 const meta = preview.meta({
   title: 'Legacy/Table',
-  parameters: { bleed: true },
   component: Table.Column,
   argTypes: {
     align: {

@@ -39,7 +39,7 @@ export default () => {
               <Text weight="medium">{item.name}</Text>
             </Table.Cell>
             <Table.Cell>
-              <Text size="sm" color="secondary">
+              <Text size="sm" color="muted-foreground">
                 {item.city}, {item.country}
               </Text>
             </Table.Cell>

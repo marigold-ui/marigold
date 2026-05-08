@@ -713,61 +713,71 @@ export type LineHeightProp = {
 
 export type FontWeightProp = {
   /**
-   * Set the font weight for the text element.   */
+   * Set the font weight for the text element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#typography).
+   */
   weight?: keyof typeof fontWeight;
 };
 
 export type FontSizeProp = {
   /**
-   * Set the font size for the text element.   */
+   * Set the font size for the text element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#typography).
+   */
   fontSize?: keyof typeof textSize;
 };
 
 export type GapSpaceProp = {
   /**
-   * The space between the children.   */
+   * The space between the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   */
   space?: keyof typeof gapSpace;
 };
 
 export type PaddingSpaceProp = {
   /**
-   * Set the padding space for the element.   */
+   * Set the padding space for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   */
   space?: keyof typeof paddingSpace;
 };
 
 export type PaddingSpacePropX = {
   /**
-   * Set the horizontal padding space for the element.   */
+   * Set the horizontal padding space for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   */
   spaceX?: keyof typeof paddingSpaceX;
 };
 
 export type PaddingSpacePropY = {
   /**
-   * Set the vertical padding space for the element.   */
+   * Set the vertical padding space for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   */
   spaceY?: keyof typeof paddingSpaceY;
 };
 
 export type PaddingRightProp = {
   /**
-   * Set the right padding for the element.   */
+   * Set the right padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   */
   pr?: keyof typeof paddingRight;
 };
 
 export type PaddingLeftProp = {
   /**
-   * Set the left padding for the element.   */
+   * Set the left padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   */
   pl?: keyof typeof paddingLeft;
 };
 
 export type PaddingTopProp = {
   /**
-   * Set the top padding for the element.   */
+   * Set the top padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   */
   pt?: keyof typeof paddingTop;
 };
 
 export type PaddingBottomProp = {
   /**
-   * Set the bottom padding for the element.   */
+   * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   */
   pb?: keyof typeof paddingBottom;
 };
 

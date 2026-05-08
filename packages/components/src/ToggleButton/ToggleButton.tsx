@@ -1,4 +1,4 @@
-import { use } from 'react';
+import { useContext } from 'react';
 import { ToggleButton } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
@@ -31,7 +31,7 @@ export const _ToggleButton = ({
   size,
   ...props
 }: ToggleButtonProps) => {
-  const context = use(ToggleButtonContext);
+  const context = useContext(ToggleButtonContext);
 
   const classNames = useClassNames({
     component: 'ToggleButton',

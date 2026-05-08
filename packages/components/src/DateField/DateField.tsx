@@ -1,6 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import type { ReactElement, Ref } from 'react';
-import { use } from 'react';
+import { ReactElement, forwardRef, useContext } from 'react';
 import type RAC from 'react-aria-components';
 import {
   DateField,
@@ -64,40 +63,44 @@ export interface DateFieldProps
   width?: WidthProp['width'];
 }
 
-const DateFieldBase = ({
-  variant,
-  size,
-  action,
-  disabled,
-  required,
-  error,
-  readOnly,
-  onChange,
-  ref,
-  ...rest
-}: DateFieldProps & { ref?: Ref<HTMLInputElement> }) => {
-  const props: RAC.DateFieldProps<DateValue> = {
-    isDisabled: disabled,
-    isReadOnly: readOnly,
-    isInvalid: error,
-    isRequired: required,
-    onChange,
-    ...rest,
-  };
-  return (
-    <FieldBase
-      as={DateField}
-      variant={variant}
-      size={size}
-      ref={ref}
-      {...props}
-    >
-      <DateInputWithPasteWrapper action={action} />
-    </FieldBase>
-  );
-};
+const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
+  (
+    {
+      variant,
+      size,
+      action,
+      disabled,
+      required,
+      error,
+      readOnly,
+      onChange,
+      ...rest
+    }: DateFieldProps,
+    ref
+  ) => {
+    const props: RAC.DateFieldProps<DateValue> = {
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isInvalid: error,
+      isRequired: required,
+      onChange,
+      ...rest,
+    };
+    return (
+      <FieldBase
+        as={DateField}
+        variant={variant}
+        size={size}
+        ref={ref}
+        {...props}
+      >
+        <DateInputWithPasteWrapper action={action} />
+      </FieldBase>
+    );
+  }
+);
 
-export { DateFieldBase as DateField };
+export { _DateField as DateField };
 
 interface DateInputWithPasteWrapperProps {
   onChange?: (value: RAC.DateValue | null) => void;
@@ -107,7 +110,7 @@ interface DateInputWithPasteWrapperProps {
 const DateInputWithPasteWrapper = ({
   ...props
 }: DateInputWithPasteWrapperProps) => {
-  const ctx = use(DateFieldStateContext);
+  const ctx = useContext(DateFieldStateContext);
 
   const onPaste = (date: CalendarDate) => {
     ctx?.setValue(date);

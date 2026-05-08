@@ -1,7 +1,7 @@
+import { Bold, Italic, Underline } from 'lucide-react';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
 import { expect, userEvent, waitFor } from 'storybook/test';
-import { Bold, Italic, Underline } from '@marigold/icons';
 import preview from '../../../../.storybook/preview';
 import { ToggleButton } from './ToggleButton';
 import { ToggleButtonGroup } from './ToggleButtonGroup';
@@ -9,16 +9,6 @@ import { ToggleButtonGroup } from './ToggleButtonGroup';
 const meta = preview.meta({
   title: 'Components/ToggleButtonGroup',
   component: ToggleButtonGroup,
-  parameters: {
-    surface: false,
-  },
-  decorators: [
-    Story => (
-      <div className="self-start">
-        <Story />
-      </div>
-    ),
-  ],
   argTypes: {
     disabled: {
       control: {
@@ -113,22 +103,6 @@ Basic.test('Clicking buttons updates selection', async ({ canvas, step }) => {
       );
     });
   });
-});
-
-export const BothSurfaces = meta.story({
-  parameters: {
-    surface: 'both',
-  },
-  args: {
-    selectionMode: 'single',
-  },
-  render: args => (
-    <ToggleButton.Group {...args}>
-      <ToggleButton id="sum">Sum</ToggleButton>
-      <ToggleButton id="median">Median</ToggleButton>
-      <ToggleButton id="average">Average</ToggleButton>
-    </ToggleButton.Group>
-  ),
 });
 
 export const MultipleSelection = meta.story({

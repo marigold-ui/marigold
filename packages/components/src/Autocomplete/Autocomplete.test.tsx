@@ -1,11 +1,8 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, WithSections } from './Autocomplete.stories';
-
-const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 const user = userEvent.setup();
 
@@ -58,15 +55,6 @@ test('supports showing an error', () => {
   renderWithOverlay(<Basic.Component error errorMessage="Error!" />);
 
   expect(screen.getByText('Error!')).toBeInTheDocument();
-});
-
-test('does not allow width="fit"', () => {
-  renderWithOverlay(<Basic.Component label="Label" width="fit" />);
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-
-  expect(container).not.toHaveClass('w-fit');
 });
 
 test('supports default value', () => {
@@ -245,7 +233,7 @@ test('calls onSubmit with custom value on Enter when no option is focused', asyn
 
 describe('mobile view', () => {
   beforeEach(() => {
-    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    window.matchMedia = mockMatchMedia(['(width < 640px)']);
   });
 
   afterEach(() => {

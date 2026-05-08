@@ -85,7 +85,7 @@ const _Table = ({
     });
 
   return (
-    <TableContext value={ctx}>
+    <TableContext.Provider value={ctx}>
       <ResizableTableContainer
         className="w-full"
         style={{
@@ -107,7 +107,7 @@ const _Table = ({
         />
         {actionBarOverlay}
       </ResizableTableContainer>
-    </TableContext>
+    </TableContext.Provider>
   );
 };
 

@@ -244,9 +244,6 @@ export const AsyncLoading: any = meta.story({
 
 export const Sections: any = meta.story({
   tags: ['component-test'],
-  args: {
-    menuTrigger: 'focus',
-  },
   render: args => (
     <ComboBox {...args}>
       <ComboBox.Section header="Fantasy">
@@ -274,12 +271,10 @@ export const Sections: any = meta.story({
     </ComboBox>
   ),
   play: async ({ canvas }: any) => {
-    const combobox = await canvas.findByRole('combobox', { name: 'Label' });
-    await userEvent.click(combobox);
-    await waitFor(() =>
-      expect(combobox).toHaveAttribute('aria-expanded', 'true')
+    await userEvent.click(
+      await canvas.findByRole('combobox', { name: 'Label' })
     );
-
+    await userEvent.keyboard('{arrowdown}');
     const s1 = await canvas.findByText('Fantasy');
     const s2 = await canvas.findByText('Sci-Fi');
 

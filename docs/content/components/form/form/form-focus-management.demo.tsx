@@ -23,7 +23,7 @@ export default () => {
       }}
       onReset={() => setInvalid(false)}
     >
-      <Inset p={8}>
+      <Inset space={8}>
         <Stack space={4}>
           {invalid ? (
             <SectionMessage variant="error">

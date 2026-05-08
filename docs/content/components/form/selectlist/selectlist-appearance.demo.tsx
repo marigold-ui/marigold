@@ -8,20 +8,20 @@ import {
 
 const palettes = {
   info: {
-    bg: 'var(--color-info)',
-    fg: 'var(--color-info-foreground)',
+    bg: 'var(--color-info-muted)',
+    fg: 'var(--color-info-muted-foreground)',
   },
   warning: {
-    bg: 'var(--color-warning)',
-    fg: 'var(--color-warning-foreground)',
+    bg: 'var(--color-warning-muted)',
+    fg: 'var(--color-warning-muted-foreground)',
   },
   success: {
-    bg: 'var(--color-success)',
-    fg: 'var(--color-success-foreground)',
+    bg: 'var(--color-success-muted)',
+    fg: 'var(--color-success-muted-foreground)',
   },
   destructive: {
-    bg: 'var(--color-destructive)',
-    fg: 'var(--color-destructive-foreground)',
+    bg: 'var(--color-destructive-muted)',
+    fg: 'var(--color-destructive-muted-foreground)',
   },
 } as const;
 

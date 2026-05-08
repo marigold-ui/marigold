@@ -322,9 +322,9 @@ test('uses context size when size not provided', () => {
     () => useClassNames({ component: 'Button', context: ComponentContext }),
     {
       wrapper: ({ children }) => (
-        <ComponentContext value={{ size: 'large' }}>
+        <ComponentContext.Provider value={{ size: 'large' }}>
           <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </ComponentContext>
+        </ComponentContext.Provider>
       ),
     }
   );
@@ -341,9 +341,9 @@ test('uses context variant when not provided', () => {
     () => useClassNames({ component: 'HelpText', context: ComponentContext }),
     {
       wrapper: ({ children }) => (
-        <ComponentContext value={{ variant: 'primary' }}>
+        <ComponentContext.Provider value={{ variant: 'primary' }}>
           <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </ComponentContext>
+        </ComponentContext.Provider>
       ),
     }
   );

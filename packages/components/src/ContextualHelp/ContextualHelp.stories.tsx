@@ -81,7 +81,6 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  parameters: { surface: false },
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
@@ -119,7 +118,6 @@ export const Basic = meta.story({
 });
 
 export const LongContent = meta.story({
-  parameters: { surface: false },
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>

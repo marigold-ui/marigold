@@ -2,13 +2,10 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
-import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, BasicActionMenu, MenuSection } from './Menu.stories';
 
-const smallScreenQuery = `(width < ${theme.screens!.sm})`;
-
-window.matchMedia = mockMatchMedia([smallScreenQuery]);
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 const user = userEvent.setup();
 

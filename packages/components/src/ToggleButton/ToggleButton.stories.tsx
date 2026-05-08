@@ -1,22 +1,12 @@
+import { Star } from 'lucide-react';
 import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Star } from '@marigold/icons';
 import { ToggleButton } from './ToggleButton';
 
 const meta = preview.meta({
   title: 'Components/ToggleButton',
   component: ToggleButton,
-  parameters: {
-    surface: false,
-  },
-  decorators: [
-    Story => (
-      <div className="self-start">
-        <Story />
-      </div>
-    ),
-  ],
   argTypes: {
     children: {
       control: 'text',
@@ -79,13 +69,6 @@ Basic.test(
     });
   }
 );
-
-export const BothSurfaces = meta.story({
-  parameters: {
-    surface: 'both',
-  },
-  render: args => <ToggleButton {...args}>Toggle</ToggleButton>,
-});
 
 export const Controlled = meta.story({
   render: args => {

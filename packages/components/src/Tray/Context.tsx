@@ -1,4 +1,4 @@
-import { createContext, use } from 'react';
+import { createContext, useContext } from 'react';
 
 export interface TrayContextProps {
   classNames: {
@@ -16,4 +16,4 @@ export const TrayContext = createContext<TrayContextProps>(
   null as unknown as TrayContextProps
 );
 
-export const useTrayContext = () => use(TrayContext);
+export const useTrayContext = () => useContext(TrayContext);

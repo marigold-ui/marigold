@@ -34,11 +34,11 @@ const _Tabs = ({ disabled, variant, size = 'medium', ...rest }: TabsProps) => {
     variant,
   });
   return (
-    <TabContext value={{ classNames }}>
+    <TabContext.Provider value={{ classNames }}>
       <Tabs {...props} className={classNames.container}>
         {props.children}
       </Tabs>
-    </TabContext>
+    </TabContext.Provider>
   );
 };
 

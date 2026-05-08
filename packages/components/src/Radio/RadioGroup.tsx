@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { isValidElement, use } from 'react';
+import { isValidElement, useContext } from 'react';
 import type RAC from 'react-aria-components';
 import { RadioGroup, RadioGroupStateContext } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -15,7 +15,7 @@ interface CollapsibleGroupProps {
 }
 
 const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
-  const state = use(RadioGroupStateContext)!;
+  const state = useContext(RadioGroupStateContext)!;
 
   if (!children || children.length === 0) {
     return null;
@@ -175,14 +175,16 @@ const _RadioGroup = ({
         data-orientation={orientation}
         className={cn(
           classNames.group,
-          'group/radiogroup flex items-start',
-          orientation === 'vertical' ? 'flex-col' : 'flex-row'
+          'flex items-start',
+          orientation === 'vertical'
+            ? 'flex-col gap-[0.5ch]'
+            : 'flex-row gap-[1.5ch]'
         )}
       >
-        <RadioGroupContext value={{ width, variant, size }}>
+        <RadioGroupContext.Provider value={{ width, variant, size }}>
           {visibleChildren}
           <CollapsibleGroup>{collapsedChildren}</CollapsibleGroup>
-        </RadioGroupContext>
+        </RadioGroupContext.Provider>
       </div>
     </FieldBase>
   );

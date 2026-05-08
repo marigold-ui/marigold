@@ -29,7 +29,8 @@ export default [
       '@eslint-react/rules-of-hooks': 'off',
       // component-hook-factories produces false positives for inline render() in Storybook stories
       '@eslint-react/component-hook-factories': 'off',
-      '@eslint-react/no-create-ref': 'error',
+      // downgrade to warn: createRef is deprecated but not a hard error in this codebase
+      '@eslint-react/no-create-ref': 'warn',
     },
   },
   vitestPlugin.configs.recommended,

@@ -1,16 +1,13 @@
 import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Download, Facebook } from '@marigold/icons';
+import { Facebook } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
 
 const meta = preview.meta({
   title: 'Components/Button',
   component: Button,
-  parameters: {
-    surface: false,
-  },
   argTypes: {
     disabled: {
       control: {
@@ -98,7 +95,6 @@ export const Basic = meta.story({
 export const ButtonVariants = meta.story({
   tags: ['component-test'],
   parameters: {
-    surface: 'both',
     controls: { exclude: ['variant', 'children', 'loading'] },
   },
   args: {
@@ -125,12 +121,11 @@ export const ButtonVariants = meta.story({
     </Stack>
   ),
   play: async ({ args, canvas }) => {
-    const buttons = canvas.getAllByRole('button');
-    await userEvent.click(buttons[0]);
-    await userEvent.click(buttons[1]);
-    await userEvent.click(buttons[2]);
-    await userEvent.click(buttons[3]);
-    await userEvent.click(buttons[4]);
+    await userEvent.click(canvas.getByText('Primary'));
+    await userEvent.click(canvas.getByText('Secondary'));
+    await userEvent.click(canvas.getByText('Destructive'));
+    await userEvent.click(canvas.getByText('Destructive Ghost'));
+    await userEvent.click(canvas.getByText('Ghost'));
 
     await expect(args.onPress).toHaveBeenCalledTimes(5);
   },
@@ -139,7 +134,7 @@ export const ButtonVariants = meta.story({
 export const GhostOnBackground = meta.story({
   render: args => (
     <Stack space={4}>
-      <div className="bg-primary text-primary-foreground flex items-center justify-center rounded p-8">
+      <div className="bg-brand text-brand-foreground flex items-center justify-center rounded p-8">
         <Button {...args} variant="ghost">
           Ghost on Dark
         </Button>
@@ -156,7 +151,7 @@ export const GhostOnBackground = meta.story({
 export const WithIcon = meta.story({
   render: ({ children, ...args }) => (
     <Button {...args}>
-      <Download data-testid="download" />
+      <Facebook size={30} data-testid="facebook" />
       {children}
     </Button>
   ),

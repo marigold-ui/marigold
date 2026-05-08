@@ -6,11 +6,7 @@ import {
   Text,
   TextField,
 } from '@marigold/components';
-import {
-  Accessibility,
-  EllipsisVertical,
-  ParkingCircle,
-} from '@marigold/icons';
+import { Accessible, Parking, SettingDots } from '@marigold/icons';
 
 export default () => {
   const items = [
@@ -20,7 +16,7 @@ export default () => {
       textValue: 'Parking passes',
       title: (
         <Inline space={2} alignY="center">
-          <ParkingCircle />
+          <Parking />
           <Text fontStyle="normal">Parking passes</Text>
         </Inline>
       ),
@@ -48,7 +44,7 @@ export default () => {
       textValue: 'Handicapped parking spaces',
       title: (
         <Inline space={2} alignY="center">
-          <Accessibility />
+          <Accessible />
           <Text fontStyle="normal">Handicapped parking spaces</Text>
         </Inline>
       ),
@@ -76,7 +72,7 @@ export default () => {
       textValue: 'Settings',
       title: (
         <Inline space={2} alignY="center">
-          <EllipsisVertical />
+          <SettingDots />
           <Text fontStyle="normal">Settings</Text>
         </Inline>
       ),

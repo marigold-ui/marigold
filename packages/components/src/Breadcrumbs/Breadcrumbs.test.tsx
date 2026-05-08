@@ -1,9 +1,8 @@
 import { act, render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { RefObject } from 'react';
+import { createRef } from 'react';
 import { vi } from 'vitest';
-import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import {
   AutoCollapse,
@@ -14,11 +13,9 @@ import {
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 import { useAutoCollapse } from './useAutoCollapse';
 
-const smallScreenQuery = `(width < ${theme.screens!.sm})`;
-
 const user = userEvent.setup();
 
-window.matchMedia = mockMatchMedia([smallScreenQuery]);
+window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
 test('renders items as links with separators', () => {
   render(<Basic.Component />);
@@ -113,7 +110,7 @@ test('does not collapse when maxVisibleItems is less than 2', () => {
 });
 
 test('forwards ref', () => {
-  const objectRef: RefObject<HTMLOListElement | null> = { current: null };
+  const objectRef = createRef<HTMLOListElement>();
   const callbackRef = vi.fn();
 
   render(<Basic.Component ref={objectRef} />);
@@ -189,10 +186,8 @@ describe('useAutoCollapse', () => {
 
   test('shows all items when they fit', () => {
     // 5 items: 50+50+50+50+50 = 250, plus 4 gaps of 8 = 282. Container=300 → fits
-    const containerRef: RefObject<HTMLOListElement | null> = {
-      current: createMockContainer(300),
-    };
-    const hiddenRef: RefObject<HTMLDivElement | null> = {
+    const containerRef = { current: createMockContainer(300) };
+    const hiddenRef = {
       current: createMockHiddenDiv([50, 50, 50, 50, 50], 30),
     };
     const { result } = renderHook(() =>
@@ -207,10 +202,8 @@ describe('useAutoCollapse', () => {
   test('collapses to minimum when nothing fits', () => {
     // 5 items each 80px: total = 400 + 4*8 = 432. Container = 200.
     // first(80) + gap(8) + ellipsis(30) + gap(8) + last(80) = 206 > 200 → stays at 2
-    const containerRef: RefObject<HTMLOListElement | null> = {
-      current: createMockContainer(200),
-    };
-    const hiddenRef: RefObject<HTMLDivElement | null> = {
+    const containerRef = { current: createMockContainer(200) };
+    const hiddenRef = {
       current: createMockHiddenDiv([80, 80, 80, 80, 80], 30),
     };
     const { result } = renderHook(() =>
@@ -228,10 +221,8 @@ describe('useAutoCollapse', () => {
     // + item[3](40) + gap(8) = 214 → fits (count=3)
     // + item[2](40) + gap(8) = 262 > 250 → stop
     // returns count(3) + 1 = 4 (displayed: [first, ellipsis, item[3], last])
-    const containerRef: RefObject<HTMLOListElement | null> = {
-      current: createMockContainer(250),
-    };
-    const hiddenRef: RefObject<HTMLDivElement | null> = {
+    const containerRef = { current: createMockContainer(250) };
+    const hiddenRef = {
       current: createMockHiddenDiv([60, 40, 40, 40, 60], 30),
     };
     const { result } = renderHook(() =>
@@ -243,8 +234,8 @@ describe('useAutoCollapse', () => {
   });
 
   test('does nothing when refs are null', () => {
-    const containerRef: RefObject<HTMLOListElement | null> = { current: null };
-    const hiddenRef: RefObject<HTMLDivElement | null> = { current: null };
+    const containerRef = { current: null };
+    const hiddenRef = { current: null };
     const { result } = renderHook(() =>
       useAutoCollapse(containerRef, hiddenRef, 5)
     );
@@ -255,10 +246,8 @@ describe('useAutoCollapse', () => {
   });
 
   test('resets when item count changes', async () => {
-    const containerRef: RefObject<HTMLOListElement | null> = {
-      current: createMockContainer(200),
-    };
-    const hiddenRef: RefObject<HTMLDivElement | null> = {
+    const containerRef = { current: createMockContainer(200) };
+    const hiddenRef = {
       current: createMockHiddenDiv([80, 80, 80, 80, 80], 30),
     };
     const { result, rerender } = renderHook(

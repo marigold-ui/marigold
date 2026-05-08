@@ -1,15 +1,13 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { ToastProvider } from '@marigold/components';
 import { ShellLayout } from '../_shared';
 import { config } from './navigation';
 
 const Layout = ({ children }: PropsWithChildren) => (
-  <ShellLayout config={config}>
-    {children}
-    <ToastProvider position="bottom-right" />
-  </ShellLayout>
+  <div className="-m-(--page-padding) md:-m-(--page-padding-md) xl:-m-(--page-padding-xl)">
+    <ShellLayout config={config}>{children}</ShellLayout>
+  </div>
 );
 
 export default Layout;

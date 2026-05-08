@@ -13,7 +13,6 @@ import { Dialog } from './Dialog';
 const meta = preview.meta({
   title: 'Components/Dialog',
   component: Dialog,
-  parameters: { surface: false },
   decorators: [
     Story => (
       <div id="storybook-root">

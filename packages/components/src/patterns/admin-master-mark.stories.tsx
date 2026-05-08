@@ -11,9 +11,6 @@ const meta = preview.meta({
 });
 
 export const BadgeVariants = meta.story({
-  parameters: {
-    surface: 'both',
-  },
   render: () => (
     <Stack space={2} alignX="left">
       <Badge variant="admin">Admin</Badge>
@@ -23,7 +20,6 @@ export const BadgeVariants = meta.story({
 });
 
 export const TableRows = meta.story({
-  parameters: { bleed: true },
   render: () => (
     <Table aria-label="Settings Table">
       <Table.Header>

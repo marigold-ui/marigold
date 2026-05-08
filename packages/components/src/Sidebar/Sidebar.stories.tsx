@@ -14,7 +14,6 @@ const meta = preview.meta({
   args: {},
   parameters: {
     layout: 'fullscreen',
-    surface: false,
   },
 });
 
