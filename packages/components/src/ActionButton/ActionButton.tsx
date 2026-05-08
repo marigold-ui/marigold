@@ -18,11 +18,9 @@ export interface ActionButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
    * @default 'ghost'
    */
   variant?:
-    | 'primary'
-    | 'secondary'
-    | 'destructive'
-    | 'destructive-ghost'
     | 'ghost'
+    | 'secondary'
+    | 'destructive-ghost'
     | 'link'
     | (string & {});
   /**

@@ -13,13 +13,24 @@ console.log('🎨 Generating appearances data...');
 
 /**
  * Components that share styles with another component.
- * Key = component name in docs, Value = component name in theme.
+ * Value is either:
+ *   - A string: copy the target component's appearance verbatim.
+ *   - An object `{ from, variant?, size? }`: copy from the target, but
+ *     override `variant` and/or `size` with a curated subset (and ordering).
+ *     Use this when a component reuses another's theme classes but exposes a
+ *     narrower public vocabulary or a different default. The picker treats
+ *     the first entry in `variant` as the default.
+ *
+ * @type {Record<string, string | { from: string, variant?: string[], size?: string[] }>}
  */
 const sharedAppearances = {
   LinkButton: 'Button',
   ToggleButtonGroup: 'ToggleButton',
   Title: 'Headline',
-  ActionButton: 'Button',
+  ActionButton: {
+    from: 'Button',
+    variant: ['ghost', 'secondary', 'destructive-ghost', 'link'],
+  },
   ActionMenu: 'Menu',
 };
 
@@ -154,8 +165,16 @@ async function main() {
 
   // Add shared appearances (components that reuse another component's styles)
   for (const [alias, target] of Object.entries(sharedAppearances)) {
-    if (appearances[target]) {
-      appearances[alias] = appearances[target];
+    const targetName = typeof target === 'string' ? target : target.from;
+    if (!appearances[targetName]) continue;
+
+    if (typeof target === 'string') {
+      appearances[alias] = appearances[targetName];
+    } else {
+      appearances[alias] = {
+        variant: target.variant ?? appearances[targetName].variant,
+        size: target.size ?? appearances[targetName].size,
+      };
     }
   }
 

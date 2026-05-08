@@ -9,14 +9,7 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: [
-        'primary',
-        'secondary',
-        'destructive',
-        'destructive-ghost',
-        'ghost',
-        'link',
-      ],
+      options: ['ghost', 'secondary', 'destructive-ghost', 'link'],
     },
     size: {
       control: { type: 'select' },
@@ -114,7 +107,7 @@ export const GroupCascadePrecedence: any = meta.story({
       <ActionButton aria-label="Outsized" size="large">
         Outsized
       </ActionButton>
-      <ActionButton aria-label="Delete" variant="destructive">
+      <ActionButton aria-label="Delete" variant="destructive-ghost">
         Delete
       </ActionButton>
       <ActionButton aria-label="Save" disabled={false}>

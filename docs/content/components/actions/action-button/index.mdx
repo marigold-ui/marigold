@@ -1,14 +1,12 @@
 ---
 title: ActionButton
-description: Low-emphasis button optimized for toolbars, item rows, and slot-configured containers.
+description: Low-emphasis button for toolbars, item rows, and slot-configured container chrome.
 badge: alpha
 ---
 
-The `<ActionButton>` component is a low-emphasis button used in toolbars, list rows, and the headers and footers of containers like `<Panel>`, `<EmptyState>`, and `<Dialog>`. It defaults to the `ghost` variant so the button recedes into the surrounding UI rather than competing with the content.
+The `<ActionButton>` component is a low-emphasis button intended to live inside another surface like a toolbar, a list row, the header of a `<Panel>` or `<EmptyState>`, or the chrome of a `<Dialog>`. It defaults to the `ghost` variant so the button recedes into its surroundings rather than competing with the page's primary action.
 
-Group related actions with `<ActionButton.Group>`. The group renders an accessible toolbar with arrow-key navigation, and it can publish defaults like size and variant that cascade to every button inside.
-
-For the primary action of a page or form, reach for [`<Button>`](/components/actions/button) instead. For the bulk-action chrome inside `<ActionBar>`, use [`<ActionBar.Button>`](/components/actions/actionbar).
+For the primary action of a page or form, reach for [`<Button>`](/components/actions/button). For the bulk-action chrome inside `<ActionBar>`, use [`<ActionBar.Button>`](/components/actions/actionbar). For more actions than fit comfortably in a row, use [`<ActionMenu>`](/components/overlay/action-menu).
 
 import {
   ActionButtonAnatomy,
@@ -17,13 +15,17 @@ import {
 
 ## Anatomy
 
+An ActionButton is a single pressable area that fires an action. Cluster related actions together inside `<ActionButton.Group>` to share one surface and one set of defaults.
+
 <ActionButtonAnatomy />
 
-A single ActionButton is a pressable area with a label and/or icon.
+- **Button:** The pressable area that triggers the action.
+- **Label:** The text, icon, or both that names the action.
 
 <ActionButtonGroupAnatomy />
 
-`<ActionButton.Group>` wraps a related cluster of buttons in a toolbar with arrow-key navigation. The group can publish shared defaults like `size`, `variant`, and `disabled` that cascade to every button inside.
+- **Group:** A toolbar wrapper around a related cluster of actions.
+- **ActionButton:** Each pressable action inside the group.
 
 ## Appearance
 
@@ -31,54 +33,24 @@ A single ActionButton is a pressable area with a label and/or icon.
 
 <AppearanceTable component={'ActionButton'} />
 
-ActionButton shares its variants and sizes with [`<Button>`](/components/actions/button), so the two stay visually consistent. The default variant is `ghost`.
+ActionButton reuses [`<Button>`](/components/actions/button)'s theme classes, so the two stay visually aligned. The variant set is narrower because ActionButton is meant to recede. For the bold variants (`primary`, `destructive`) reach for `<Button>` instead.
 
-| Variant             | Description                                                    | When to use                                                                                                                            |
-| ------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `ghost`             | Transparent, no border or background. **The default variant.** | Toolbar actions, list-row actions, container headers, anywhere the button should recede into the surrounding UI.                       |
-| `secondary`         | Neutral button with a subtle border.                           | When the action needs slightly more visual weight than ghost without competing with a primary button.                                  |
-| `primary`           | High-contrast filled button.                                   | Rare for ActionButton. Reserve for cases where the action is the most important on a low-chrome surface.                               |
-| `destructive`       | Red filled button signalling a dangerous action.               | A destructive action inside a toolbar or row. See [the precedence example below](#actionbuttongroup) for mixing it into a ghost group. |
-| `destructive-ghost` | Red text with no background.                                   | Low-emphasis destructive actions, like a "Remove" button on individual list items.                                                     |
-| `link`              | Styled as an inline text link.                                 | Actions that should blend into surrounding text while remaining interactive.                                                           |
+| Variant             | Description                                                    | When to use                                                                                                                                |
+| ------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ghost`             | Transparent, no border or background. **The default variant.** | Toolbar actions, list-row actions, container headers, or anywhere the button should recede into the surrounding UI.                        |
+| `secondary`         | Neutral button with a subtle border.                           | When the action needs slightly more visual weight than `ghost` without competing with a primary button on the same surface.                |
+| `destructive-ghost` | Red text with no background.                                   | Low-emphasis destructive actions, like a "Remove" button on a list item. See [the precedence example below](#actionbuttongroup) for usage. |
+| `link`              | Styled as an inline text link.                                 | Actions that should blend into surrounding text while remaining interactive.                                                               |
 
 ## Usage
 
-ActionButton sits between `<Button>` (the primary action on a page or form) and `<ActionBar.Button>` (the buttons inside a bulk-action bar). Reach for it whenever an action belongs to a specific surface, like a Panel header, an EmptyState, a row in a list, or an item in a toolbar.
-
-<ComponentDemo name="action-button-basic" />
-
-### ActionButton.Group
-
-Group related actions with `<ActionButton.Group>`. It renders an accessible toolbar with arrow-key navigation and lets you cascade defaults to its children.
-
-<ComponentDemo name="action-button-group" />
-
-#### Cascade rules
-
-The group publishes `size`, `variant`, and `disabled` to its children. Each prop has its own precedence rule, picked to match the most common case:
-
-| Prop       | Winner | Why                                                                                                                         |
-| ---------- | ------ | --------------------------------------------------------------------------------------------------------------------------- |
-| `size`     | Group  | A toolbar should look uniform. Every button stays the same size unless you opt out by setting `size` directly on the child. |
-| `variant`  | Local  | Lets you mix a `destructive` button into a `ghost` group without forcing every other button to opt out.                     |
-| `disabled` | Local  | The group can disable the whole cluster, but a child can opt back in with `disabled={false}`.                               |
-
-The example below demonstrates all three rules in one group:
-
-<ComponentDemo name="action-button-group-precedence" />
+ActionButton is the action that belongs to a surface, not to the page. It lives inside a row, a toolbar, or a container header and recedes into that surface. The three scenarios below cover the cases we expect to see most often.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `<ActionButton.Group>` for related actions on a single item, surface,
-      or row. Three to five actions is a comfortable upper bound.
-    </DoDescription>
-  </Do>
-  <Do>
-    <DoDescription>
-      Default to `ghost` for low-emphasis surfaces. The button should recede
-      into the row, toolbar, or panel header.
+      Pair icon-only ActionButtons with a `<Tooltip>` and an `aria-label` so the
+      action is discoverable for sighted and assistive users alike.
     </DoDescription>
   </Do>
   <Dont>
@@ -87,17 +59,58 @@ The example below demonstrates all three rules in one group:
       [`<Button>`](/components/actions/button) instead.
     </DontDescription>
   </Dont>
+</GuidelineTiles>
+
+### Inline row actions
+
+Lists and rows of equal-weight items often need a per-row cluster of quick actions like view, edit, and delete. Render them as an `<ActionButton.Group>` so the cluster is exposed as a toolbar, arrow-key navigable, and the buttons recede into the row until the user scans for them.
+
+<ComponentDemo name="action-button-row-actions" />
+
+For destructive row actions, reach for `destructive-ghost` so the danger reads without overpowering the row. When the action count grows beyond three, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
+
+### Container chrome
+
+Surfaces like `<Panel>`, `<Dialog>`, and `<Drawer>` carry their own chrome of secondary actions: bookmark, share, settings, dismiss. These actions belong to the container, not to the page, so they should stay subordinate to the container's title and to any primary `<Button>` it might host.
+
+<ComponentDemo name="action-button-panel-chrome" />
+
+The container can publish shared defaults to every ActionButton inside via `ActionButtonContext`. A Panel header, for example, can declare "every ActionButton in here is `ghost` and `small`" once, and individual call sites stay free of repetitive props. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how container providers wire this up.
+
+### Standalone toolbar
+
+Above an editor, a comment box, or any content area that benefits from a cluster of related one-shot actions, reach for `<ActionButton.Group>` as a standalone toolbar. The group renders a real `role="toolbar"` with arrow-key navigation between buttons.
+
+<ComponentDemo name="action-button-toolbar" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Group related actions with `<ActionButton.Group>`. Three to five actions
+      is a comfortable upper bound. Reach for `<ActionMenu>` beyond that.
+    </DoDescription>
+  </Do>
   <Dont>
     <DontDescription>
-      Don't mix unrelated actions in a single Group. A toolbar communicates that
-      the actions belong together.
+      Don't mix unrelated actions inside a single `<ActionButton.Group>`. A
+      toolbar communicates that the actions belong together.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
-## Use inside a container
+### Cascade rules
 
-A container can publish shared defaults for the ActionButtons inside. A Panel header, for example, might say "every ActionButton in here is `ghost` and `small`" so each individual button stays free of repetitive props.
+The group publishes `size`, `variant`, and `disabled` to its children. Each prop has its own precedence rule, picked to match the most common case:
+
+| Prop       | Winner | Why                                                                                                                                |
+| ---------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `size`     | Group  | A toolbar should look uniform. Every button stays the same size unless you opt out by setting `size` directly on the child.        |
+| `variant`  | Local  | Lets you mix a `destructive-ghost` button into a `ghost` group without forcing every other button to opt out.                      |
+| `disabled` | Local  | The group can disable the whole cluster, but a child can opt back in with `disabled={false}` (e.g. a "Save" action that stays on). |
+
+The example below demonstrates all three rules in one group:
+
+<ComponentDemo name="action-button-group-precedence" />
 
 ## Props
 
@@ -116,7 +129,7 @@ A container can publish shared defaults for the ActionButtons inside. A Panel he
 
 ## Alternative components
 
-- [Button](/components/actions/button): Use for primary actions on a page or form.
+- [Button](/components/actions/button): Use for the primary action of a page or form.
 - [ActionBar](/components/actions/actionbar): Use for the bar around bulk-selection actions. The inner buttons are written as `<ActionBar.Button>`.
 - [ToggleButton](/components/actions/toggle-button): Use when the button has an on/off state.
 - [ActionMenu](/components/overlay/action-menu): Use the kebab-menu pattern when there are too many actions to fit in a Group.

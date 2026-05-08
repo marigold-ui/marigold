@@ -9,8 +9,8 @@ export default () => (
   >
     {/* Group 'small' wins over the local 'large' */}
     <ActionButton size="large">Outsized</ActionButton>
-    {/* Local 'destructive' wins over the group 'ghost' */}
-    <ActionButton variant="destructive">Delete</ActionButton>
+    {/* Local 'destructive-ghost' wins over the group 'ghost' */}
+    <ActionButton variant="destructive-ghost">Delete</ActionButton>
     {/* Local disabled={false} re-enables this button inside a disabled group */}
     <ActionButton disabled={false}>Save</ActionButton>
   </ActionButton.Group>

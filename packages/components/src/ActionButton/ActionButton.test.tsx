@@ -43,7 +43,7 @@ test('disabled prop maps to RAC isDisabled', async () => {
 test('inherits variant and size from ActionButtonContext provider', () => {
   render(
     <Provider
-      values={[[ActionButtonContext, { variant: 'primary', size: 'large' }]]}
+      values={[[ActionButtonContext, { variant: 'secondary', size: 'large' }]]}
     >
       <Basic.Component data-testid="action">Click</Basic.Component>
     </Provider>
@@ -55,7 +55,7 @@ test('inherits variant and size from ActionButtonContext provider', () => {
 test('explicit size overrides ActionButtonContext size', () => {
   render(
     <Provider
-      values={[[ActionButtonContext, { variant: 'primary', size: 'large' }]]}
+      values={[[ActionButtonContext, { variant: 'secondary', size: 'large' }]]}
     >
       <Basic.Component size="small" data-testid="action">
         Click
@@ -91,10 +91,10 @@ test('group "size" wins over a child\'s explicit size prop', () => {
 test('local "variant" wins over the group\'s variant', () => {
   render(<GroupCascadePrecedence.Component />);
   expect(screen.getByRole('button', { name: 'Delete' })).toHaveClass(
-    'bg-destructive-bold'
+    'text-destructive-accent'
   );
   expect(screen.getByRole('button', { name: 'Outsized' })).not.toHaveClass(
-    'bg-destructive-bold'
+    'text-destructive-accent'
   );
 });
 

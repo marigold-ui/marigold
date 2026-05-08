@@ -33,13 +33,13 @@ export const ActionButtonAnatomy = () => (
       strokeLinejoin="round"
     >
       <path d="M 260 62 L 110 62" />
-      <path d="M 380 62 L 530 62" />
+      <path d="M 358 62 L 530 62" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="260" cy="62" r="4" />
-      <circle cx="380" cy="62" r="4" />
+      <circle cx="358" cy="62" r="4" />
     </g>
 
     {/* Labels */}
@@ -73,7 +73,7 @@ export const ActionButtonAnatomy = () => (
 
 export const ActionButtonGroupAnatomy = () => (
   <svg
-    viewBox="-10 10 660 130"
+    viewBox="-10 25 660 80"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -117,18 +117,6 @@ export const ActionButtonGroupAnatomy = () => (
       className="fill-fd-foreground/10 transition-colors duration-300"
     />
 
-    {/* Arrow indicator between buttons (← →) */}
-    <g
-      className="stroke-fd-muted-foreground/70 transition-colors duration-300"
-      fill="none"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M 282 64 L 290 64 M 286 60 L 290 64 L 286 68" />
-      <path d="M 290 102 L 380 102" strokeDasharray="2 2" />
-    </g>
-
     {/* Connector Lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
@@ -141,15 +129,12 @@ export const ActionButtonGroupAnatomy = () => (
       <path d="M 200 60 L 100 60" />
       {/* Button -> right */}
       <path d="M 464 60 L 540 60" />
-      {/* Arrow-key nav -> bottom-right */}
-      <path d="M 380 102 L 540 102" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="200" cy="60" r="4" />
       <circle cx="464" cy="60" r="4" />
-      <circle cx="380" cy="102" r="4" />
     </g>
 
     {/* Labels */}
@@ -176,16 +161,6 @@ export const ActionButtonGroupAnatomy = () => (
         className="fill-fd-primary"
       >
         ActionButton
-      </text>
-      <text
-        x="550"
-        y="106"
-        textAnchor="start"
-        fontSize="14"
-        fontWeight="600"
-        className="fill-fd-primary"
-      >
-        Arrow keys
       </text>
     </g>
   </svg>
