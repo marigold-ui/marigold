@@ -4,12 +4,10 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
-import { Description } from '../Description/Description';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
-import { TextValue } from '../TextValue/TextValue';
 import { Select } from './Select';
 
 const meta = preview.meta({
@@ -319,22 +317,24 @@ export const Sections = meta.story({
     <Select {...args}>
       <Select.Section header="Fantasy">
         <Select.Option id="harry-potter">
-          <TextValue>Harry Potter</TextValue>
-          <Description>About the boy who lived</Description>
+          <Text slot="label">Harry Potter</Text>
+          <Text slot="description">About the boy who lived</Text>
         </Select.Option>
         <Select.Option id="lord-of-the-rings">
-          <TextValue>Lord of the Rings</TextValue>
-          <Description>In the lands of Middle earth</Description>
+          <Text slot="label">Lord of the Rings</Text>
+          <Text slot="description">In the lands of Middle earth</Text>
         </Select.Option>
       </Select.Section>
       <Select.Section header="Sci-Fi">
         <Select.Option id="star-wars">
-          <TextValue>Start Wars</TextValue>
-          <Description>A long time ago, in a galaxy far, far away</Description>
+          <Text slot="label">Start Wars</Text>
+          <Text slot="description">
+            A long time ago, in a galaxy far, far away
+          </Text>
         </Select.Option>
         <Select.Option id="star-trek">
-          <TextValue>Star Trek</TextValue>
-          <Description>What is this</Description>
+          <Text slot="label">Star Trek</Text>
+          <Text slot="description">What is this</Text>
         </Select.Option>
       </Select.Section>
     </Select>
@@ -404,38 +404,38 @@ export const WithBadges = meta.story({
     >
       <Select.Option id="draft">
         <Inline space={3} alignY="center">
-          <TextValue>Draft</TextValue>
+          <Text slot="label">Draft</Text>
           <Badge variant="info">In Progress</Badge>
         </Inline>
-        <Description>Work in progress</Description>
+        <Text slot="description">Work in progress</Text>
       </Select.Option>
       <Select.Option id="review">
         <Inline space={3} alignY="center">
-          <TextValue>In Review</TextValue>
+          <Text>In Review</Text>
           <Badge variant="warning">Pending</Badge>
         </Inline>
-        <Description>Awaiting review</Description>
+        <Text slot="description">Awaiting review</Text>
       </Select.Option>
       <Select.Option id="approved">
         <Inline space={3} alignY="center">
-          <TextValue>Approved</TextValue>
+          <Text>Approved</Text>
           <Badge variant="success">Ready</Badge>
         </Inline>
-        <Description>Approved for release</Description>
+        <Text slot="description">Approved for release</Text>
       </Select.Option>
       <Select.Option id="published">
         <Inline space={3} alignY="center">
-          <TextValue>Published</TextValue>
+          <Text>Published</Text>
           <Badge variant="success">Live</Badge>
         </Inline>
-        <Description>Released to public</Description>
+        <Text slot="description">Released to public</Text>
       </Select.Option>
       <Select.Option id="archived">
         <Inline space={3} alignY="center">
-          <TextValue>Archived</TextValue>
+          <Text slot="label">Archived</Text>
           <Badge>Inactive</Badge>
         </Inline>
-        <Description>No longer active</Description>
+        <Text slot="description">No longer active</Text>
       </Select.Option>
     </Select>
   ),
@@ -478,9 +478,9 @@ export const WithImages = meta.story({
               alt={person.name}
               className="size-6 rounded-full object-cover"
             />
-            <TextValue>{person.name}</TextValue>
+            <Text slot="label">{person.name}</Text>
           </Inline>
-          <Description>{person.position}</Description>
+          <Text slot="description">{person.position}</Text>
         </Select.Option>
       ))}
     </Select>
@@ -587,9 +587,9 @@ export const WithRenderValue = meta.story({
               alt={person.name}
               className="size-6 rounded-full object-cover"
             />
-            <TextValue>{person.name}</TextValue>
+            <Text slot="label">{person.name}</Text>
           </Inline>
-          <Description>{person.position}</Description>
+          <Text slot="description">{person.position}</Text>
         </Select.Option>
       )}
     </Select>

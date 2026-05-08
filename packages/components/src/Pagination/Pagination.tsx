@@ -1,7 +1,7 @@
 import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
@@ -117,7 +117,7 @@ const InnerPagination = ({
         <ChevronLeft className={icon} />
       </NavigationButton>
 
-      <div className={container}>
+      <div className={cn(container, 'max-sm:hidden')}>
         {totalPages > 0 ? (
           pageRange.map((pageNumber, index) =>
             pageNumber === 'ellipsis' ? (
@@ -166,7 +166,7 @@ const _Pagination = ({
 
   return (
     <nav
-      className={container}
+      className={cn(container, 'max-sm:justify-between')}
       aria-label={stringFormatter.format('pageOfTotal', {
         current: currentPage,
         total: totalPages,

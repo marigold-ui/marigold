@@ -1,13 +1,6 @@
 import type { Person } from '@/lib/data/people';
 import { people } from '@/lib/data/people';
-import {
-  Description,
-  Inline,
-  Select,
-  Stack,
-  Text,
-  TextValue,
-} from '@marigold/components';
+import { Inline, Select, Stack, Text } from '@marigold/components';
 
 export default () => (
   <Select
@@ -32,11 +25,11 @@ export default () => (
           <img
             src={person.avatar}
             alt={person.name}
-            className="size-12 rounded-full object-cover"
+            className="size-8 rounded-full object-cover"
           />
           <Stack space={0}>
-            <TextValue>{person.name}</TextValue>
-            <Description>{person.position}</Description>
+            <Text slot="label">{person.name}</Text>
+            <Text slot="description">{person.position}</Text>
           </Stack>
         </Inline>
       </Select.Option>
