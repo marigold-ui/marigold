@@ -11,7 +11,6 @@ const EventSchema = z.object({
   cliVersion: z.string().max(32),
   nodeVersion: z.string().max(32),
   platform: z.string().max(32),
-  isCI: z.boolean(),
   isTTY: z.boolean(),
   isAIAgent: z.boolean(),
   durationBucket: z.enum(['0-100', '100-500', '500-2000', '2000+']),

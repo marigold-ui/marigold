@@ -15,7 +15,6 @@ export interface TelemetryEvent {
   cliVersion: string;
   nodeVersion: string;
   platform: string;
-  isCI: boolean;
   isTTY: boolean;
   isAIAgent: boolean;
   durationBucket: '0-100' | '100-500' | '500-2000' | '2000+';
@@ -113,7 +112,6 @@ export const emit = (options: EmitOptions): void => {
     cliVersion: options.cliVersion,
     nodeVersion: process.version,
     platform: process.platform,
-    isCI: ci.isCI,
     isTTY: Boolean(process.stdout.isTTY),
     isAIAgent: detectAIAgent(),
     durationBucket: bucketDuration(Date.now() - options.startedAt),
