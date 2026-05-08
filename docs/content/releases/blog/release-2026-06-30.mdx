@@ -388,7 +388,18 @@ The [SelectList docs page](/components/form/select-list) is rewritten around the
 
 `@marigold/icons` is now a thin proxy over `lucide-react` plus 13 retained custom icons (event-domain shapes that don't have a Lucide equivalent — `DesignTicket`, `Stadium`, etc.). Icons that **did** have a Lucide equivalent (`Add`, `Seat`, `Deal`, …) were dropped in favour of the Lucide name.
 
-Imports stay through `@marigold/icons` so consumers pick up future re-exports automatically — only the icon names change:
+#### Migrating from the legacy icon set
+
+The package name stays the same (`@marigold/icons`), so the import path does not change. What changes is the icon names and a small API tweak.
+
+**Names.** Most legacy names map to a Lucide equivalent. Lucide uses PascalCase consistently, so a few common renames look like this:
+
+```diff
+- import { Add, Delete, Exclamation, Search } from '@marigold/icons';
++ import { Plus, Search, Trash2, TriangleAlert } from '@marigold/icons';
+```
+
+If you'd rather not touch call sites, alias on import:
 
 ```diff
 - import { Search, Check, Add, Ticket, Seat, Deal } from '@marigold/icons';
@@ -402,10 +413,15 @@ Imports stay through `@marigold/icons` so consumers pick up future re-exports au
 + } from '@marigold/icons';
 ```
 
-A few practical notes on the new package:
+The full name mapping is included in the changelog.
+
+**Size prop.** `size` is now serialized as a numeric attribute (`width="24"`) rather than `"24px"`. Pass `size={20}` exactly as before, or, if you were passing a string with a unit suffix, drop the suffix to match the documented form (`size="24px"` → `size={24}`).
+
+**Brand icons.** Brand-specific icons such as `DesignTicket`, `GiftCard`, `Facebook`, and `Stadium` keep their existing names and stay in `@marigold/icons`. No change required.
+
+#### Practical notes on the new package
 
 - Always import from `@marigold/icons`, not from `lucide-react` directly. The package re-exports the entire Lucide catalogue along with the custom icons, so a single import path covers both.
-- `size` is now serialized as a numeric attribute (`width="24"`) rather than `"24px"`. Pass `size={20}` exactly as before.
 - For coloring, prefer Tailwind text utilities (`<TriangleAlert className="text-warning-accent" />`). Lucide reads the `color` prop as a literal CSS value, so `color="warning"` won't resolve a theme token — reserve `color` / `fill` / `stroke` for literal values like `var(--color-…)` or hex codes.
 - 11 of the 13 custom icons are filled silhouettes wrapped with a small helper that defaults `fill` and `stroke` to `currentColor` and couples the `color`, `fill`, and `stroke` props so they move together. Pass `stroke` explicitly to differentiate. `Instagram` and `Twitter` are stroke-based outlines and follow Lucide's standard `color` → `stroke` behaviour.
 - Icons get `aria-hidden="true"` automatically when rendered without children or an `aria-*` attribute. Provide `aria-label` for standalone meaningful icons.
