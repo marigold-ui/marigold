@@ -1,12 +1,5 @@
 name: Visual-Regression-Tests
 on:
-  # When branches has "ui" in their name
-  push:
-    branches:
-      - 'ui-*'
-      - '*-ui'
-      - '**/ui-*'
-
   # When a PR is merged (into any branch)
   pull_request:
     types: [closed]
