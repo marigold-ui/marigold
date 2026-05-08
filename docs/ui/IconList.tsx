@@ -48,7 +48,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
 
   return (
     <div className="mt-2 [&>button]:h-auto [&>button]:w-full [&>button]:p-0">
-      <button onClick={handleClick}>
+      <button onClick={handleClick} className="cursor-pointer">
         <Card className="w-full p-3" title="">
           <div className="relative grid h-24 w-full place-items-center">
             <div
