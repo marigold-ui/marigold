@@ -1,6 +1,7 @@
 import { Bookmark, Settings, Share2 } from 'lucide-react';
 import {
   ActionButton,
+  ActionGroup,
   Panel,
   Stack,
   Text,
@@ -15,7 +16,7 @@ export default () => (
         Public information visible to ticket buyers.
       </Panel.Description>
       <Panel.HeaderActions>
-        <ActionButton.Group aria-label="Event actions" size="small">
+        <ActionGroup aria-label="Event actions" size="small">
           <Tooltip.Trigger>
             <ActionButton aria-label="Bookmark">
               <Bookmark />
@@ -34,7 +35,7 @@ export default () => (
             </ActionButton>
             <Tooltip>Settings</Tooltip>
           </Tooltip.Trigger>
-        </ActionButton.Group>
+        </ActionGroup>
       </Panel.HeaderActions>
     </Panel.Header>
     <Panel.Content>

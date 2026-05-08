@@ -1,6 +1,7 @@
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 import {
   ActionButton,
+  ActionGroup,
   Inline,
   Stack,
   Text,
@@ -35,10 +36,7 @@ export default () => (
             {event.subtitle}
           </Text>
         </Stack>
-        <ActionButton.Group
-          aria-label={`Actions for ${event.title}`}
-          size="small"
-        >
+        <ActionGroup aria-label={`Actions for ${event.title}`} size="small">
           <Tooltip.Trigger>
             <ActionButton aria-label="View">
               <Eye />
@@ -57,7 +55,7 @@ export default () => (
             </ActionButton>
             <Tooltip>Delete</Tooltip>
           </Tooltip.Trigger>
-        </ActionButton.Group>
+        </ActionGroup>
       </Inline>
     ))}
   </Stack>

@@ -1,7 +1,7 @@
-import { ActionButton } from '@marigold/components';
+import { ActionButton, ActionGroup } from '@marigold/components';
 
 export default () => (
-  <ActionButton.Group
+  <ActionGroup
     aria-label="Cascade precedence"
     size="small"
     variant="ghost"
@@ -13,5 +13,5 @@ export default () => (
     <ActionButton variant="destructive-ghost">Delete</ActionButton>
     {/* Local disabled={false} re-enables this button inside a disabled group */}
     <ActionButton disabled={false}>Save</ActionButton>
-  </ActionButton.Group>
+  </ActionGroup>
 );

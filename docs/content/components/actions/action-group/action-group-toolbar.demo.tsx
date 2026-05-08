@@ -1,9 +1,15 @@
 import { AtSign, Image, Link, Paperclip, SmilePlus } from 'lucide-react';
-import { ActionButton, Stack, TextArea, Tooltip } from '@marigold/components';
+import {
+  ActionButton,
+  ActionGroup,
+  Stack,
+  TextArea,
+  Tooltip,
+} from '@marigold/components';
 
 export default () => (
   <Stack space={1}>
-    <ActionButton.Group aria-label="Compose actions" size="small">
+    <ActionGroup aria-label="Compose actions" size="small">
       <Tooltip.Trigger>
         <ActionButton aria-label="Insert link">
           <Link />
@@ -34,7 +40,7 @@ export default () => (
         </ActionButton>
         <Tooltip>Emoji</Tooltip>
       </Tooltip.Trigger>
-    </ActionButton.Group>
+    </ActionGroup>
     <TextArea aria-label="Comment" placeholder="Write a comment..." />
   </Stack>
 );

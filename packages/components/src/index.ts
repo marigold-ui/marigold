@@ -20,12 +20,11 @@ export { useActionBar } from './ActionBar/useActionBar';
 
 export { ActionButton } from './ActionButton/ActionButton';
 export type { ActionButtonProps } from './ActionButton/ActionButton';
-export { ActionButtonGroup } from './ActionButton/ActionButtonGroup';
-export type { ActionButtonGroupProps } from './ActionButton/ActionButtonGroup';
-export {
-  ActionButtonContext,
-  ActionButtonGroupContext,
-} from './ActionButton/Context';
+export { ActionButtonContext } from './ActionButton/Context';
+
+export { ActionGroup } from './ActionGroup/ActionGroup';
+export type { ActionGroupProps } from './ActionGroup/ActionGroup';
+export { ActionGroupContext } from './ActionGroup/Context';
 export type {
   UseActionBarProps,
   UseActionBarReturn,

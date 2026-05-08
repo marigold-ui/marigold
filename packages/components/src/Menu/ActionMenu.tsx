@@ -36,6 +36,10 @@ export interface ActionMenuProps
    */
   placement?: PopoverProps['placement'];
 
+  // `variant` / `size` / `disabled` participate in `<ActionGroup>` cascade
+  // with the same per-prop precedence as `<ActionButton>`: size — group wins,
+  // variant — local wins, disabled — local wins (group is the default).
+
   /**
    * Visual variant of the trigger button.
    */
@@ -71,11 +75,12 @@ export interface ActionMenuProps
 
 const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
   const [merged, ref] = useContextProps(
-    inputProps as Omit<ActionMenuProps, 'ref'> & { className?: string },
+    inputProps as ActionMenuProps & { className?: string },
     refProp,
     ActionMenuContext
   );
 
+  // className/slot/ref are consumed or inapplicable here; drop before spread.
   const {
     children,
     variant,
@@ -87,8 +92,9 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
     defaultOpen,
     onOpenChange,
     'aria-label': ariaLabel,
-    className: _contextClassName,
-    slot: _slot,
+    className: _ignoredClassName, // ActionMenu has no DOM; style via ActionButtonContext
+    slot: _ignoredSlot, // consumed by useContextProps
+    ref: _ignoredRef, // forwarded via the second tuple element; wrong type for RAC Menu
     ...menuProps
   } = merged;
 

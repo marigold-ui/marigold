@@ -6,9 +6,9 @@ import {
   useSlottedContext,
 } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { ActionGroupContext } from '../ActionGroup/Context';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
-import { ActionButtonGroup } from './ActionButtonGroup';
-import { ActionButtonContext, ActionButtonGroupContext } from './Context';
+import { ActionButtonContext } from './Context';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
@@ -40,7 +40,7 @@ export interface ActionButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   /**
    * A slot to place the element in.
    */
-  slot?: string | null;
+  slot?: string;
   ref?: Ref<HTMLButtonElement>;
 }
 
@@ -54,7 +54,7 @@ export const ActionButton = ({
     ActionButtonContext
   );
 
-  const groupCtx = useSlottedContext(ActionButtonGroupContext);
+  const groupCtx = useSlottedContext(ActionGroupContext);
 
   const {
     children,
@@ -66,8 +66,7 @@ export const ActionButton = ({
     ...rest
   } = merged;
 
-  // Per-prop precedence between local props and the enclosing
-  // ActionButton.Group:
+  // Per-prop precedence between local props and the enclosing ActionGroup:
   //   - variant: local wins (allows e.g. a destructive button in a ghost group)
   //   - size: group wins (visual uniformity within a group)
   //   - disabled: local wins, group is the fallback default
@@ -106,5 +105,3 @@ export const ActionButton = ({
     </Button>
   );
 };
-
-ActionButton.Group = ActionButtonGroup;

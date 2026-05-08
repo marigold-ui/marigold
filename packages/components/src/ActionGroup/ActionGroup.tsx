@@ -3,22 +3,25 @@ import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Provider, Toolbar, useContextProps } from 'react-aria-components';
 import type { AriaLabelingProps } from '@marigold/types';
-import { ActionButtonGroupContext } from './Context';
+import { ActionGroupContext } from './Context';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
 
-export interface ActionButtonGroupProps
+export interface ActionGroupProps
   extends Omit<RAC.ToolbarProps, RemovedProps>, AriaLabelingProps {
   /**
-   * Cascades the variant to nested ActionButtons.
+   * Cascades the variant to nested actions. Local `variant` on a child
+   * (`ActionButton`, `ActionMenu`) wins over the group default.
    */
   variant?: string;
   /**
-   * Cascades the size to nested ActionButtons.
+   * Cascades the size to nested actions. The group's size wins over a
+   * child's local `size` so the cluster stays visually uniform.
    */
   size?: string;
   /**
-   * Disables all nested ActionButtons.
+   * Disables every nested action by default. A child can re-enable itself
+   * with `disabled={false}`.
    * @default false
    */
   disabled?: boolean;
@@ -30,19 +33,19 @@ export interface ActionButtonGroupProps
   /**
    * A slot to place the element in.
    */
-  slot?: string | null;
+  slot?: string;
   children?: ReactNode;
   ref?: Ref<HTMLDivElement>;
 }
 
-export const ActionButtonGroup = ({
+export const ActionGroup = ({
   ref: refProp,
   ...inputProps
-}: ActionButtonGroupProps) => {
+}: ActionGroupProps) => {
   const [merged, ref] = useContextProps(
-    inputProps as ActionButtonGroupProps & { className?: string },
+    inputProps as ActionGroupProps & { className?: string },
     refProp,
-    ActionButtonGroupContext
+    ActionGroupContext
   );
 
   const {
@@ -61,7 +64,7 @@ export const ActionButtonGroup = ({
   );
 
   return (
-    <Provider values={[[ActionButtonGroupContext, ctx]]}>
+    <Provider values={[[ActionGroupContext, ctx]]}>
       <Toolbar
         {...rest}
         ref={ref}
