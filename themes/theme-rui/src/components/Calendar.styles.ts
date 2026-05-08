@@ -18,7 +18,7 @@ export const calendarCellBase = [
 export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva({
     base: [
-      'min-h-[350px] min-w-[250px] ui-surface shadow-elevation-border p-2',
+      'min-h-[350px] min-w-fit ui-surface shadow-elevation-border p-2',
       // In a Popover
       'group-data-trigger/popover:shadow-elevation-overlay',
       // In a Tray
@@ -48,7 +48,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     ],
   }),
   calendarGrid: cva({
-    base: 'border-collapse border-spacing-0 [&_td]:p-0 [&_td]:group-[[role=dialog]]/tray:p-0',
+    base: 'w-full border-collapse border-spacing-0 [&_td]:p-0 [&_td]:group-[[role=dialog]]/tray:p-0',
   }),
   calendarHeading: cva({
     base: 'text-sm font-medium',
