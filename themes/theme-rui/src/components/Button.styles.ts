@@ -11,17 +11,17 @@ export const Button: ThemeComponent<'Button'> = cva({
     variant: {
       primary: [
         'ui-surface-contrast',
-        'hover:[--ui-background-color:oklch(from_var(--color-brand)_calc(l-0.05)_c_h)]',
+        'hover:[--ui-background-color:oklch(from_var(--color-primary)_calc(l-0.15)_c_h)]',
       ],
       secondary: [
         'ui-surface shadow-elevation-border',
-        'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-        'expanded:[--ui-background-color:var(--color-hover)]',
+        'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
+        'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
       ],
-      ghost: 'hover:bg-current/10',
+      ghost: 'hover:ui-state-hover-ghost',
       destructive:
-        'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-      'destructive-ghost': 'text-destructive hover:bg-current/8',
+        'bg-destructive-bold text-destructive-bold-foreground hover:bg-destructive-bold/70',
+      'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',
       link: 'text-link ui-touch-hitbox',
     },
     size: {
@@ -55,7 +55,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'default',
-      class: 'h-button p-squish-relaxed [&_svg]:size-4',
+      class: 'h-control p-squish-relaxed [&_svg]:size-4',
     },
     {
       variant: [
@@ -66,7 +66,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'small',
-      class: 'h-button-small px-3 [&_svg]:size-3.5',
+      class: 'h-control-small px-3 [&_svg]:size-3.5',
     },
     {
       variant: [
@@ -77,7 +77,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'large',
-      class: 'h-button-large px-8 [&_svg]:size-5',
+      class: 'h-control-large px-8 [&_svg]:size-5',
     },
     {
       variant: [
@@ -88,7 +88,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'icon',
-      class: 'size-button [&_svg]:size-4',
+      class: 'size-control [&_svg]:size-4',
     },
   ],
 });

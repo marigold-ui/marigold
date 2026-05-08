@@ -16,9 +16,12 @@ const RadioIndicator = ({
     aria-hidden="true"
     className={cn(
       'flex aspect-square size-4 shrink-0 items-center justify-center rounded-full p-1',
-      'border-input shadow-elevation-border bg-background border',
-      isSelected && 'border-brand bg-brand text-brand-foreground',
-      isDisabled && isSelected && 'border-disabled! bg-disabled',
+      'border-border shadow-elevation-border bg-surface border',
+      isSelected &&
+        'border-selected-bold bg-selected-bold text-selected-bold-foreground',
+      isDisabled &&
+        isSelected &&
+        'border-disabled-surface! bg-disabled-surface',
       isDisabled && 'cursor-not-allowed'
     )}
   >

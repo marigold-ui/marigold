@@ -1,22 +1,27 @@
 import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
 import { Basic, WithIcon } from './Button.stories';
 
 test('add icon in button works as expected', () => {
   render(<WithIcon.Component>iconbutton</WithIcon.Component>);
 
   const button = screen.getByText(/iconbutton/);
-  const icon = screen.getByTestId(/facebook/);
+  const icon = screen.getByTestId(/download/);
 
   expect(button).toHaveClass('items-center justify-center');
-  expect(icon).toHaveAttribute('width', '30px');
+  expect(getComputedStyle(icon).width).toBe('16px');
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLButtonElement>();
-  render(<Basic.Component ref={ref} />);
+  let refValue: HTMLButtonElement | null = null;
+  render(
+    <Basic.Component
+      ref={node => {
+        refValue = node;
+      }}
+    />
+  );
 
-  expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+  expect(refValue).toBeInstanceOf(HTMLButtonElement);
 });
 
 test('supports disabled prop', () => {

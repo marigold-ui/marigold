@@ -111,9 +111,7 @@ export const Table: Table = ({
   const { collection } = state;
 
   return (
-    <TableContext.Provider
-      value={{ state, interactive, classNames, variant, size }}
-    >
+    <TableContext value={{ state, interactive, classNames, variant, size }}>
       <table
         ref={tableRef}
         data-rac
@@ -183,7 +181,7 @@ export const Table: Table = ({
           )}
         </TableBody>
       </table>
-    </TableContext.Provider>
+    </TableContext>
   );
 };
 

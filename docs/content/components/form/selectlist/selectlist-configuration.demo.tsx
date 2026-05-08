@@ -45,7 +45,7 @@ export default () => (
           <channel.Icon
             size={16}
             aria-hidden
-            className="text-muted-foreground shrink-0"
+            className="text-secondary shrink-0"
           />
           <Text slot="label">{channel.name}</Text>
         </div>

@@ -2,43 +2,44 @@ import {
   Button,
   Checkbox,
   Form,
-  Headline,
   Inline,
   Link,
+  Panel,
   Stack,
-  Text,
   TextArea,
   TextField,
 } from '@marigold/components';
 
 export const ContactForm = () => (
-  <Stack space={12}>
-    <Stack space={2}>
-      <Headline level="2">Contact sales</Headline>
-      <Text variant="muted" weight="light">
+  <Panel size="form">
+    <Panel.Header>
+      <Panel.Title>Contact sales</Panel.Title>
+      <Panel.Description>
         Interested in our product? Fill out the form below and our sales team
         will get in touch with you soon.
-      </Text>
-    </Stack>
-    <Form maxWidth="container">
-      <Stack space="regular">
-        <Inline space="related" noWrap>
-          <TextField label="First name" />
-          <TextField label="Last name" />
-        </Inline>
-        <TextField label="Company" />
-        <TextField label="Email" type="email" />
-        <TextField label="Phone number" type="tel" />
-        <TextArea label="Message" rows={4} />
-        <Checkbox
-          label={
-            <span>
-              I agree to the <Link href="#">privacy policy</Link>.
-            </span>
-          }
-        />
-        <Button variant="primary">Let&apos;s talk</Button>
-      </Stack>
-    </Form>
-  </Stack>
+      </Panel.Description>
+    </Panel.Header>
+    <Panel.Content>
+      <Form>
+        <Stack space="regular">
+          <Inline space="related" noWrap>
+            <TextField label="First name" />
+            <TextField label="Last name" />
+          </Inline>
+          <TextField label="Company" />
+          <TextField label="Email" type="email" />
+          <TextField label="Phone number" type="tel" />
+          <TextArea label="Message" rows={4} />
+          <Checkbox
+            label={
+              <span>
+                I agree to the <Link href="#">privacy policy</Link>.
+              </span>
+            }
+          />
+          <Button variant="primary">Let&apos;s talk</Button>
+        </Stack>
+      </Form>
+    </Panel.Content>
+  </Panel>
 );

@@ -12,7 +12,7 @@ export const LegacyTable: ThemeComponent<'LegacyTable'> = {
   }),
   thead: cva({
     // for sticky header
-    base: 'bg-background/90 top-0 z-1 backdrop-blur-xs ',
+    base: 'bg-surface/90 top-0 z-1 backdrop-blur-xs ',
     variants: {
       variant: {
         default: '',
@@ -35,7 +35,7 @@ export const LegacyTable: ThemeComponent<'LegacyTable'> = {
   }),
   header: cva({
     base: [
-      'h-12 px-3 align-middle font-medium text-muted-foreground',
+      'h-12 px-3 align-middle font-medium text-secondary',
       'focus-visible:outline-2 outline-offset-2 outline-ring/70',
     ],
     variants: {
@@ -49,7 +49,7 @@ export const LegacyTable: ThemeComponent<'LegacyTable'> = {
       variant: 'default',
     },
   }),
-  body: cva({ base: '[&_tr:last-child]:border-0 bg-background' }),
+  body: cva({ base: '[&_tr:last-child]:border-0 bg-surface' }),
   row: cva({
     base: [
       'border-b border-border transition-colors',
@@ -64,13 +64,13 @@ export const LegacyTable: ThemeComponent<'LegacyTable'> = {
           'bg-access-admin',
           '[&_td:first-child]:relative [&_td:first-child]:pl-4',
           '[&_td:first-child:before]:content-[""] [&_td:first-child:before]:absolute [&_td:first-child:before]:top-0 [&_td:first-child:before]:bottom-0 [&_td:first-child:before]:left-0 [&_td:first-child:before]:w-1',
-          '[&_td:first-child:before]:bg-access-admin-foreground',
+          '[&_td:first-child:before]:bg-access-admin-accent',
         ],
         master: [
           'bg-access-master',
           '[&_td:first-child]:relative [&_td:first-child]:pl-4',
           '[&_td:first-child:before]:content-[""] [&_td:first-child:before]:absolute [&_td:first-child:before]:top-0 [&_td:first-child:before]:bottom-0 [&_td:first-child:before]:left-0 [&_td:first-child:before]:w-1',
-          '[&_td:first-child:before]:bg-access-master-foreground',
+          '[&_td:first-child:before]:bg-access-master-accent',
         ],
       },
     },

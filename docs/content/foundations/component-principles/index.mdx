@@ -98,17 +98,13 @@ You'll find this pattern across the design system. For example, `Dialog` uses `D
 
 ## Layout
 
-Components in Marigold never set their own outer spacing. A `Button` doesn't know or care whether it has margin around it. Instead, layout is always the responsibility of a parent layout component.
+Layout in Marigold is handled by a set of named components (`Stack`, `Inline`, `Columns`, and their siblings). The [Layouts](/foundations/layouts) page covers the philosophy and the full catalogue.
 
-Marigold provides layout primitives like `Inline`, `Stack`, `Grid`, and `Columns` that accept props such as `space` and `alignX` to control how children are arranged.
+One principle worth calling out here: every layout component shares the same API. Spacing is controlled with `space`, alignment with `alignX` and `alignY`.
 
 <ComponentDemo name="inline-buttons-layout" />
 
-In the example above, the `Inline` component handles the horizontal arrangement. The `space` prop controls the gap between the buttons using a semantic spacing token (`related`), and `alignX` centers them horizontally.
-
-All layout components share this same set of props. Beyond `space` and `alignX`, you will find `alignY` for cross-axis alignment. The `space` prop accepts semantic tokens that describe the relationship between elements rather than a fixed pixel value. For the full token vocabulary and how to choose the right one, see the [Spacing](/foundations/spacing) page.
-
-This separation has an important benefit: components remain portable. The same `Button` works in a dialog footer, a toolbar, or a form without any layout adjustments.
+In the example above, `Inline` handles the horizontal arrangement. `space` sets the gap using a semantic token (`related`); `alignX` centers the buttons horizontally. The `space` prop accepts tokens that describe the relationship between elements rather than pixel values. See [Spacing](/foundations/spacing) for the vocabulary.
 
 <Callout title="Need something that doesn't exist?">
   If you find yourself reaching for wrapper elements or custom CSS to achieve a
@@ -116,8 +112,6 @@ This separation has an important benefit: components remain portable. The same `
   touch](/getting-started/get-in-touch) with the design system team so we can
   help.
 </Callout>
-
-For a deeper look at how spacing works, check out the [Spacing](/foundations/spacing) and [Layouts](/foundations/layouts) pages.
 
 ## Form Fields
 

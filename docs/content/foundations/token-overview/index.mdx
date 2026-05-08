@@ -1,0 +1,836 @@
+---
+title: Token Overview
+description: The complete reference for the Marigold design token system
+badge: new
+---
+
+Design tokens are the bridge between design decisions and code. They capture color, spacing, elevation, and motion as named variables so that every component speaks the same visual language. Names describe **purpose**, not appearance, so a token stays correct even when its value changes.
+
+## How token names work
+
+Tokens are used as Tailwind CSS utility classes. A class name has up to three parts:
+
+```
+border-destructive-accent
+|       |          |
+|       role       emphasis
+property
+```
+
+- **Property**: the Tailwind prefix that determines the CSS property: `bg-`, `text-`, `border-`, `shadow-`
+- **Role**: the semantic purpose: `primary`, `disabled`, `surface`, `hover`
+- **Emphasis**: an optional intensity modifier: `-foreground`, `-accent`, `-surface`
+
+For example, `border-destructive-accent` breaks down into the property `border-`, the role `destructive`, and the emphasis `-accent`, giving you the vivid red border used on error messages.
+
+## Background and foreground pairing
+
+Many tokens come in pairs: a background token and a `-foreground` token for text on that background. Always use the paired foreground when placing text on a colored background.
+
+| Background            | Foreground                         | Example                            |
+| --------------------- | ---------------------------------- | ---------------------------------- |
+| `bg-primary`          | `text-primary-foreground`          | Buttons                            |
+| `bg-selected-bold`    | `text-selected-bold-foreground`    | Binary controls (Checkbox, Switch) |
+| `bg-destructive`      | `text-destructive-foreground`      | Error badges, section messages     |
+| `bg-destructive-bold` | `text-destructive-bold-foreground` | Destructive button                 |
+| `bg-access-master`    | `text-access-master-foreground`    | Master access rows                 |
+| `bg-access-admin`     | `text-access-admin-foreground`     | Admin access rows                  |
+
+**Tokens without a foreground pair:**
+
+- `muted`: uses `text-foreground` (the tint is light enough for regular text)
+- `hover`: uses `text-foreground`
+- `selected`: no explicit text color set on selection
+- `focus-highlight`: no explicit text color set on focus
+- `focus-highlight-bold`: uses `text-foreground` (the stronger tint still meets contrast with regular text)
+- `surface`: uses `text-foreground` or `text-secondary`
+- `secondary`, `placeholder`: these ARE text tokens, not backgrounds
+- `disabled`: primarily a text token. When a background is needed, pair with `bg-disabled-surface` (see [Disabled](#disabled) for details)
+
+These tokens do not need a dedicated foreground color because they already meet WCAG/APCA contrast requirements with `text-foreground` or their respective text tokens.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Always use the paired `-foreground` token when placing text on a colored
+      background: `bg-primary` + `text-primary-foreground`.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `text-foreground` on colored backgrounds. It may not have
+      sufficient contrast.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<Callout title="foreground vs primary">
+  `foreground` and `primary` share the same charcoal value but serve different
+  roles. `foreground` is the default body text color. `primary` is the
+  action/interaction color (buttons, selections). A theme could change `primary`
+  to blue while `foreground` stays dark.
+</Callout>
+
+## Tokens in context
+
+This diagram shows how tokens map to a typical form card. The gray page background (`bg-background`) contrasts with the white card surface (`bg-surface`), creating natural visual hierarchy.
+
+![Annotated UI showing token usage on a form card](/token-overview/annotated-ui.svg)
+
+## Color palette
+
+The RUI theme is built on a warm neutral palette called **charcoal**, an oklch gray with a subtle warm hue (hue 54). The 11-step scale runs from near-white (50) to near-black (950). All semantic color tokens below reference values from this palette.
+
+<ComponentDemo file="./color-palette.demo.tsx" mode="preview" />
+
+### Contrast matrix
+
+This matrix shows the contrast ratio between every pair of charcoal steps. Use it to verify that your text and background combinations meet accessibility requirements.
+
+<ComponentDemo file="./contrast-matrix.demo.tsx" mode="preview" />
+
+## Color tokens
+
+### Page background & text
+
+The foundational layer: page background and text hierarchy.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'background',
+      value: 'charcoal-100',
+      useFor: 'Page-level background (<body>)',
+    },
+    { name: 'foreground', value: 'charcoal-900', useFor: 'Primary body text' },
+    {
+      name: 'secondary',
+      value: 'charcoal-600',
+      useFor: 'Help text, descriptions, input icons',
+    },
+    {
+      name: 'placeholder',
+      value: 'charcoal-600',
+      useFor: 'Placeholder text in empty inputs',
+    },
+  ]}
+/>
+
+```tsx
+<body className="bg-background text-foreground">
+  <p>Primary text</p>
+  <p className="text-secondary">Secondary text</p>
+</body>
+```
+
+<Callout title="No pairing needed">
+  `secondary` and `placeholder` are standalone text colors. They do not have a
+  paired background token. `secondary` is the industry standard name for this
+  role (Carbon, Material Design, Atlassian all use "secondary" for secondary
+  text).
+</Callout>
+
+### Primary
+
+The primary token represents the strongest visual weight in the interface. It is reserved for elements that trigger an action: buttons, links styled as buttons, and similar call-to-action surfaces. Primary draws the eye and signals "this is the main thing you can do here."
+
+<TokenTable
+  tokens={[
+    {
+      name: 'primary',
+      value: 'charcoal-900',
+      useFor: 'Button backgrounds, call-to-action elements',
+    },
+    {
+      name: 'primary-foreground',
+      value: 'charcoal-50',
+      useFor: 'Text and icons on primary backgrounds',
+    },
+  ]}
+/>
+
+```tsx
+<div className="bg-primary text-primary-foreground">Save</div>
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-primary` for action elements like buttons. Use `bg-selected-bold`
+      for binary controls (Checkbox, Radio, Switch, ToggleButton).
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-primary` for selection states or large decorative
+      backgrounds like cards or sections.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Surfaces
+
+The page is gray (`bg-background`), component panels are lighter (`bg-surface`). This contrast creates natural visual hierarchy without relying solely on shadows and borders.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'surface',
+      value: 'white',
+      useFor: 'White component backgrounds (cards, panels, inputs, tables)',
+    },
+  ]}
+/>
+
+```tsx
+<div className="bg-surface border-border rounded-surface shadow-elevation-raised">
+  Content on a white surface
+</div>
+```
+
+### Muted
+
+Some elements need a subtle visual distinction from the white surface they sit on without drawing too much attention. Readonly inputs, badges, and table headers all benefit from a light background tint that says "this content is secondary" without implying any interactive state.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'muted',
+      value: 'charcoal-50',
+      useFor: 'Subtle tint for readonly inputs, badges, secondary highlights',
+    },
+  ]}
+/>
+
+```tsx
+// Readonly input with muted background
+<input className="bg-muted" readOnly />
+
+// Badge with subtle background
+<span className="bg-muted text-foreground">Draft</span>
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-muted` for content that is visually secondary but still readable,
+      like readonly inputs, badges, and table sub-headers.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-muted` for disabled states. Disabled elements need
+      `bg-disabled-surface` to clearly signal that interaction is blocked.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Control
+
+Most form controls sit on a white surface and use borders to define their shape: a text input, a select dropdown, a checkbox outline. But some controls communicate their state through a **filled background** instead of a border. The switch track is the clearest example: when OFF, the track needs to look like a solid, physical groove that the thumb can slide along. A white or transparent background would make the track disappear into the surface, while using `selected` or `disabled-surface` would send the wrong signal.
+
+`control` fills this gap. It provides a medium-weight neutral background that says: "I am an interactive control in my resting state." It pairs naturally with `selected-bold` for the ON state, creating a clear before/after contrast.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'control',
+      value: 'charcoal-300',
+      useFor:
+        'Resting fill for controls that need a visible inactive state (e.g. switch track)',
+    },
+  ]}
+/>
+
+```tsx
+// Switch track: control when off, selected-bold when on
+<div className="bg-control group-selected/switch:bg-selected-bold" />
+```
+
+<Callout title="Not a default for all controls">
+  Most form controls use `bg-surface` (white) with a `border-border` outline.
+  Only reach for `bg-control` when a control communicates its state through a
+  filled background rather than a border, like switch tracks, slider tracks, and
+  similar "trough" elements.
+</Callout>
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-control` for controls that communicate state through a filled
+      background, like the switch track or slider track.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-control` for bordered form controls like text inputs,
+      selects, or textareas. Those should use `bg-surface` with `border-border`.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Selected
+
+Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components like ListBox and Sidebar highlight one item among many, so they use a subtler `bg-selected` tint.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'selected',
+      value: 'charcoal-300',
+      useFor: 'Selection highlight for list items (ListBox, Sidebar)',
+    },
+    {
+      name: 'selected-bold',
+      value: 'charcoal-900',
+      useFor: 'Binary selection (Checkbox, Radio, Switch, ToggleButton)',
+    },
+    {
+      name: 'selected-bold-foreground',
+      value: 'charcoal-50',
+      useFor: 'Text and icons on selected-bold backgrounds',
+    },
+  ]}
+/>
+
+**Binary controls** (Checkbox, Radio, Switch, ToggleButton) use the strong/inverted pattern:
+
+```tsx
+<div className="bg-selected-bold text-selected-bold-foreground" />
+```
+
+**List selection** (ListBox, Sidebar) uses the subtle highlight:
+
+```tsx
+<div className="selected:bg-selected" />
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-selected` for list-based selection (ListBox, Sidebar) and
+      `bg-selected-bold` for binary controls (Checkbox, Switch, ToggleButton).
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-selected` for binary controls. A checkbox or switch should
+      use the strong `bg-selected-bold` pattern to clearly communicate its
+      on/off state.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Focus highlight
+
+Focus highlight marks the item the user is currently navigating to via keyboard. Unlike selection, which shows a confirmed choice, focus indicates where the user's cursor is right now. Two intensities handle different contexts: a subtle tint for menu items and drop zones, and a bolder fill for inline segments like date fields where the focused part needs to stand out clearly.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'focus-highlight',
+      value: 'charcoal-100',
+      useFor:
+        'Subtle focus background for keyboard navigation (Menu, FileField)',
+    },
+    {
+      name: 'focus-highlight-bold',
+      value: 'charcoal-300',
+      useFor: 'Strong focus background for inline segments (DateField)',
+    },
+  ]}
+/>
+
+```tsx
+// Subtle focus: menu items, file drop zones
+<div className="data-focused:bg-focus-highlight" />
+
+// Bold focus: inline segments like date fields
+<div className="data-focused:bg-focus-highlight-bold" />
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-focus-highlight` for list-like navigation (Menu, FileField) and
+      `bg-focus-highlight-bold` for inline segments (DateField) where the
+      focused part needs stronger contrast.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-selected` for focus states. Selection and focus are
+      different concepts: selection is a confirmed choice, focus is where the
+      keyboard cursor currently sits.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Hover
+
+Hover feedback tells users that an element is interactive. Unlike disabled or selected states, hover is momentary and must feel lightweight. Two patterns handle different contexts depending on the surface the element sits on: a **solid** tint for elements on white surfaces, and a **translucent** overlay for elements that float over varying backgrounds.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'hover',
+      value: 'charcoal-200',
+      useFor: 'Hover background for menu items, list options, sidebar links',
+    },
+  ]}
+/>
+
+<Callout title="Why two hover patterns?">
+  Elements on white surfaces (list items, table rows, menu items) need a solid
+  background tint to stand out. But ghost buttons, tabs, and action bar buttons
+  sit on varying backgrounds, so a solid color would clash. Instead they use a
+  translucent overlay (`bg-current/10`) that adapts to any context. The two
+  utilities `ui-state-hover` and `ui-state-hover-ghost` bundle the correct
+  styles for each case.
+</Callout>
+
+```tsx
+// Solid hover: list items, table rows, menu items, sidebar links
+<div className="hover:ui-state-hover" />
+
+// Ghost hover: ghost buttons, tabs, action bar buttons
+<div className="hover:ui-state-hover-ghost" />
+```
+
+The `ui-state-hover` utility applies `bg-hover` with `text-foreground`. The `ui-state-hover-ghost` utility applies `bg-current/10`, a 10% translucent overlay of the current text color.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `ui-state-hover` for items on white surfaces like list items, table
+      rows, and menu items.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `ui-state-hover` on ghost buttons or tabs. Use
+      `ui-state-hover-ghost` instead so the hover adapts to any background.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Disabled
+
+Disabled elements must look visually inactive so users don't try to interact with them. Not every disabled element needs the same treatment though. A disabled label or help text only needs dimmed text, while a disabled input or button also needs a gray background to signal that the entire control is inactive. Two tokens handle these cases.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'disabled',
+      value: 'charcoal-400',
+      useFor: 'Disabled text color, works standalone on white backgrounds',
+    },
+    {
+      name: 'disabled-surface',
+      value: 'charcoal-200',
+      useFor:
+        'Disabled background for full controls (paired with text-disabled)',
+    },
+  ]}
+/>
+
+Most token pairs follow the pattern `bg-X` + `text-X-foreground`. Disabled is different because `disabled` is primarily a **text** color, not a background. Many disabled elements only need dimmed text on a white surface (labels, menu items, help text). Only full controls like inputs and buttons need a gray background on top of that. So `disabled-surface` is the optional background add-on, while `disabled` itself is the text color. The pair is `bg-disabled-surface` + `text-disabled`, reversed from the usual direction.
+
+```tsx
+// Text-only disabled (labels, help text, menu items)
+<span className="text-disabled cursor-not-allowed">Disabled label</span>
+
+// Full disabled control (inputs, buttons)
+<input className="bg-disabled-surface text-disabled cursor-not-allowed" />;
+```
+
+The `ui-state-disabled` utility bundles background, text, and cursor into one class.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-disabled-surface` with `text-disabled` for disabled controls like
+      inputs and buttons.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `bg-muted` for disabled states. `muted` is for subtle content
+      highlights (badges, readonly), not disabled controls.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Form controls
+
+Border and outline tokens for interactive and structural elements. See [Form Fields](/foundations/form-fields) for component-level guidelines.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'border',
+      value: 'charcoal-300',
+      useFor:
+        'All borders: form controls, structural dividers, and surface containers',
+    },
+    {
+      name: 'ring',
+      value: 'charcoal-600',
+      useFor: 'Focus ring outline color for keyboard navigation',
+    },
+  ]}
+/>
+
+### Status colors
+
+Status colors communicate feedback to the user: errors, confirmations, warnings, and informational messages. Components like Badge, SectionMessage, and Toast use these tokens to convey meaning through color.
+
+Every status follows the same `bg-X` / `text-X-foreground` pairing as other tokens. On top of that, an accent level adds a higher-intensity variant for borders and icons. Here is how the pattern looks using `destructive` as an example:
+
+| Token suffix       | Role                                          | Example usage                                                                       |
+| ------------------ | --------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `destructive`      | Subtle background for containers              | `bg-destructive` on Badge, SectionMessage, Toast                                    |
+| `-foreground`      | Text on that background                       | `text-destructive-foreground`                                                       |
+| `-accent`          | Vibrant, saturated variant for borders, icons | `border-destructive-accent` for accent borders, icon colors in Toast/SectionMessage |
+| `-bold`            | Strong fill background (destructive only)     | `bg-destructive-bold` for destructive button                                        |
+| `-bold-foreground` | Text on a bold background (destructive only)  | `text-destructive-bold-foreground` on destructive button                            |
+
+Replace `destructive` with `success`, `warning`, or `info` for the other statuses. Most statuses only need the first three levels. The `-bold` / `-bold-foreground` pair exists only for destructive, where a solid red button needs a dedicated fill and contrast text.
+
+```tsx
+// Subtle container: light background + dark text
+<div className="bg-destructive text-destructive-foreground">Error</div>
+
+// Accent border on a subtle container
+<div className="bg-warning border-warning-accent text-warning-foreground" />
+
+// Accent icon color
+<svg className="text-destructive-accent" />
+
+// Strong fill: bold background + bold-foreground text
+<div className="bg-destructive-bold text-destructive-bold-foreground">
+  Delete
+</div>
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use the status token (`bg-destructive`, `bg-warning`) for containers like
+      badges and section messages. Reserve the accent variant for borders and
+      icons.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use the accent token as a container background (except for
+      destructive buttons). The saturated color is too strong for large areas.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+#### Destructive
+
+<TokenTable
+  tokens={[
+    {
+      name: 'destructive',
+      value: 'red-100',
+      useFor: 'Subtle error/destructive background',
+    },
+    {
+      name: 'destructive-foreground',
+      value: 'red-950',
+      useFor: 'Text on destructive background',
+    },
+    {
+      name: 'destructive-accent',
+      value: 'red-600',
+      useFor: 'Accent borders, icons',
+    },
+    {
+      name: 'destructive-bold',
+      value: 'red-600',
+      useFor: 'Destructive button fill',
+    },
+    {
+      name: 'destructive-bold-foreground',
+      value: 'white',
+      useFor: 'Text on destructive button',
+    },
+  ]}
+/>
+
+#### Success
+
+<TokenTable
+  tokens={[
+    {
+      name: 'success',
+      value: 'green-100',
+      useFor: 'Subtle success background',
+    },
+    {
+      name: 'success-foreground',
+      value: 'green-950',
+      useFor: 'Text on success background',
+    },
+    {
+      name: 'success-accent',
+      value: 'green-600',
+      useFor: 'Success borders, icons',
+    },
+  ]}
+/>
+
+#### Warning
+
+<TokenTable
+  tokens={[
+    {
+      name: 'warning',
+      value: 'yellow-100',
+      useFor: 'Subtle warning background',
+    },
+    {
+      name: 'warning-foreground',
+      value: 'yellow-950',
+      useFor: 'Text on warning background',
+    },
+    {
+      name: 'warning-accent',
+      value: 'yellow-700',
+      useFor: 'Warning borders, icons',
+    },
+  ]}
+/>
+
+#### Info
+
+<TokenTable
+  tokens={[
+    { name: 'info', value: 'blue-100', useFor: 'Subtle info background' },
+    {
+      name: 'info-foreground',
+      value: 'blue-950',
+      useFor: 'Text on info background',
+    },
+    {
+      name: 'info-accent',
+      value: 'blue-600',
+      useFor: 'Info borders, icons',
+    },
+  ]}
+/>
+
+### Access control
+
+Domain-specific tokens for Reservix access level indicators. Follows the same structure as status colors: a subtle background, a foreground for text, and an accent for borders and icons.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'access-master',
+      value: 'orange-100',
+      useFor: 'Master-level access background',
+    },
+    {
+      name: 'access-master-foreground',
+      value: 'orange-800',
+      useFor: 'Text on master-level access background',
+    },
+    {
+      name: 'access-master-accent',
+      value: 'orange-700',
+      useFor: 'Master-level borders, icons, standalone text',
+    },
+    {
+      name: 'access-admin',
+      value: 'purple-100',
+      useFor: 'Admin-level access background',
+    },
+    {
+      name: 'access-admin-foreground',
+      value: 'purple-900',
+      useFor: 'Text on admin-level access background',
+    },
+    {
+      name: 'access-admin-accent',
+      value: 'purple-800',
+      useFor: 'Admin-level borders, icons, standalone text',
+    },
+  ]}
+/>
+
+### Links
+
+Text links use a dedicated color token to distinguish them from regular body text.
+
+<TokenTable
+  tokens={[{ name: 'link', value: 'blue-600', useFor: 'Clickable text links' }]}
+/>
+
+### Overlay
+
+When a modal or tray opens, a backdrop covers the page to focus attention on the overlay content. The token includes opacity so every overlay dims the page consistently.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'overlay-backdrop',
+      value: 'charcoal-950 / 70%',
+      useFor: 'Semi-transparent backdrop behind modals and trays',
+    },
+  ]}
+/>
+
+```tsx
+<div className="bg-overlay-backdrop" />
+```
+
+### Scrollbar
+
+Custom scrollbar tokens keep scrollbars visually consistent with the rest of the UI. The thumb uses a subtle neutral color by default and darkens on hover for better visibility.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'scrollbar',
+      value: 'charcoal-300',
+      useFor: 'Scrollbar thumb color',
+    },
+    {
+      name: 'scrollbar-hover',
+      value: 'charcoal-950',
+      useFor: 'Scrollbar thumb on hover',
+    },
+    {
+      name: 'scrollbar-track',
+      value: 'transparent',
+      useFor: 'Scrollbar track background',
+    },
+  ]}
+/>
+
+## Elevation
+
+A three-tier shadow system creates depth without relying on borders alone.
+
+| Token                      | Use for                    | Components                                  |
+| -------------------------- | -------------------------- | ------------------------------------------- |
+| `shadow-elevation-border`  | Small interactive controls | Input, Checkbox, Radio, Switch, Tag, Button |
+| `shadow-elevation-raised`  | Container surfaces         | Card, Accordion                             |
+| `shadow-elevation-overlay` | Floating elements          | Dialog, Drawer, Menu, Popover, Toast        |
+
+Shadows are generated using the [Josh Comeau shadow palette technique](https://www.joshwcomeau.com/shadow-palette/) with multiple layers for natural-looking depth.
+
+See [Elevation](/foundations/elevation) for visual examples and usage guidelines.
+
+## Spacing
+
+### Control heights
+
+All interactive controls share a consistent height scale.
+
+| Token             | Value          | Use for                               |
+| ----------------- | -------------- | ------------------------------------- |
+| `h-control`       | 2.25rem (36px) | Default height for buttons and inputs |
+| `h-control-small` | 2rem (32px)    | Compact buttons and controls          |
+| `h-control-large` | 2.5rem (40px)  | Large buttons                         |
+
+### Relational spacing
+
+Semantic spacing tokens for gaps between elements. The scale increases with the visual distance between items: tightly coupled elements sit close together, independent sections get more breathing room.
+
+| Token     | Value | Use for                              |
+| --------- | ----- | ------------------------------------ |
+| `tight`   | 6px   | Closely related items (icon + label) |
+| `related` | 8px   | Items in a group                     |
+| `regular` | 24px  | Independent items                    |
+| `group`   | 48px  | Groups of content                    |
+| `section` | 96px  | Major page sections                  |
+
+For visual examples and detailed guidance on when to use each level, see [Spacing](/foundations/spacing).
+
+### Inset spacing
+
+Padding tokens for inside elements, available in three aspect ratios:
+
+- **Square**: equal padding on all sides
+- **Squish**: more horizontal than vertical (buttons, action items)
+- **Stretch**: more vertical than horizontal (cards, stacked content)
+
+Each comes in five sizes: tight, snug, regular, relaxed, loose. For the full list of values and visual examples, see [Spacing](/foundations/spacing).
+
+## Animation
+
+### Easing
+
+Six easing curves in three families: `ease-out-*` (enter), `ease-in-*` (exit), `ease-in-out-*` (looping). Each family includes quad, cubic, quart, quint, expo, and circ variants.
+
+### Animations
+
+| Token                                                | Use for                                   |
+| ---------------------------------------------------- | ----------------------------------------- |
+| `animate-fade-in` / `animate-fade-out`               | Modal overlay transitions                 |
+| `animate-fade-in-up`                                 | Content reveal with upward slide and blur |
+| `animate-slide-in` / `animate-slide-out`             | ActionBar enter/exit                      |
+| `animate-slide-in-right` / `animate-slide-out-right` | Drawer enter/exit                         |
+| `animate-slide-in-left` / `animate-slide-out-left`   | Sidebar enter/exit                        |
+| `animate-slide-in-top/bottom`                        | Dropdown/bottom sheet enter/exit          |
+| `animate-rotate-spinner`                             | Loading spinner rotation                  |
+| `animate-progress-cycle`                             | Indeterminate progress animation          |
+
+## Proposing changes
+
+If you want to change existing tokens or add new ones, please write a Support Ticket in the DST project so the design system team can review and discuss your request.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Spacing',
+      href: '../foundations/spacing',
+      caption:
+        'Spacing scale and visual examples for gaps, padding, and margins.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Elevation',
+      href: '../foundations/elevation',
+      caption: 'Shadow system and surface hierarchy for visual depth.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0L21.75 16.5 12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

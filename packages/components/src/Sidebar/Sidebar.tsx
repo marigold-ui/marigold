@@ -1,9 +1,4 @@
-import { forwardRef } from 'react';
-import type {
-  ForwardRefExoticComponent,
-  ReactNode,
-  RefAttributes,
-} from 'react';
+import type { ReactNode, Ref } from 'react';
 import { Modal, ModalOverlay } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
@@ -24,20 +19,10 @@ export interface SidebarProps {
   children?: ReactNode;
 }
 
-interface SidebarComponent extends ForwardRefExoticComponent<
-  SidebarProps & RefAttributes<HTMLElement>
-> {
-  Provider: typeof SidebarProvider;
-  Header: typeof SidebarHeader;
-  Footer: typeof SidebarFooter;
-  GroupLabel: typeof SidebarGroupLabel;
-  Nav: typeof SidebarNav;
-  Item: typeof SidebarItem;
-  Separator: typeof SidebarSeparator;
-  Toggle: typeof SidebarToggle;
-}
-
-const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
+const SidebarBase = ({
+  children,
+  ref,
+}: SidebarProps & { ref?: Ref<HTMLElement> }) => {
   const { isMobile, state, toggleSidebar, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -83,7 +68,10 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
       ref={ref}
       aria-label={stringFormatter.format('sidebar')}
       data-state={state}
-      className={cn('[grid-area:sidebar]', classNames.root)}
+      className={cn(
+        'sticky top-0 h-dvh self-start [grid-area:sidebar]',
+        classNames.root
+      )}
     >
       <div
         className={cn(
@@ -95,15 +83,15 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
       </div>
     </aside>
   );
-}) as SidebarComponent;
+};
 
-_Sidebar.Provider = SidebarProvider;
-_Sidebar.Header = SidebarHeader;
-_Sidebar.Footer = SidebarFooter;
-_Sidebar.GroupLabel = SidebarGroupLabel;
-_Sidebar.Nav = SidebarNav;
-_Sidebar.Item = SidebarItem;
-_Sidebar.Separator = SidebarSeparator;
-_Sidebar.Toggle = SidebarToggle;
-
-export { _Sidebar as Sidebar };
+export const Sidebar = Object.assign(SidebarBase, {
+  Provider: SidebarProvider,
+  Header: SidebarHeader,
+  Footer: SidebarFooter,
+  GroupLabel: SidebarGroupLabel,
+  Nav: SidebarNav,
+  Item: SidebarItem,
+  Separator: SidebarSeparator,
+  Toggle: SidebarToggle,
+});

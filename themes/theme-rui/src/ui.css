@@ -15,7 +15,7 @@
  * Combine both utilities for complete input styling.
  */
 @utility ui-input {
-  @apply h-button w-full min-w-0;
+  @apply h-control w-full min-w-0;
   @apply px-3 py-2;
   @apply text-foreground placeholder:text-placeholder text-sm;
 }
@@ -54,13 +54,13 @@
   background:
       linear-gradient(
         to bottom,
-        var(--ui-background-color, #fff),
-        var(--ui-background-color, #fff)
+        var(--ui-background-color, var(--color-surface)),
+        var(--ui-background-color, var(--color-surface))
       ),
       linear-gradient(
         to bottom,
-        var(--ui-border-color, var(--color-surface-border)),
-        oklch(from var(--ui-border-color, var(--color-surface-border)) calc(l - 0.1) c h)
+        var(--ui-border-color, var(--color-border)),
+        oklch(from var(--ui-border-color, var(--color-border)) calc(l - 0.1) c h)
       );
 
   background-clip: padding-box, border-box;
@@ -70,26 +70,26 @@
 
 /* 
  * Use when the surface must stand out against the page. Toolbars, action bars,
- * or anything that uses the brand color to signal prominence.
+ * or anything that uses the primary color to signal prominence.
  */
 @utility ui-surface-contrast {
   @apply rounded-surface relative transition-[background,border,box-shadow];
-  @apply text-brand-foreground;
+  @apply text-primary-foreground;
 
-  @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-brand)_calc(l+0.4)_c_h))];
+  @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-primary)_calc(l+0.4)_c_h))];
 
   /* prettier-ignore */
   background:
-      radial-gradient(ellipse 120% 60% at 50% -25%, var(--ui-highlight-color, oklch(from var(--color-brand) calc(l + 0.4) c h)), transparent 90%),
+      radial-gradient(ellipse 120% 60% at 50% -25%, var(--ui-highlight-color, oklch(from var(--color-primary) calc(l + 0.4) c h)), transparent 90%),
       linear-gradient(
         to bottom,
-        var(--ui-background-color, var(--color-brand)),
-        var(--ui-background-color, var(--color-brand))
+        var(--ui-background-color, var(--color-primary)),
+        var(--ui-background-color, var(--color-primary))
       ),
       linear-gradient(
         to bottom,
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.2) c h),
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.15) c h)
+        oklch(from var(--ui-border-color, var(--color-primary)) calc(l + 0.2) c h),
+        oklch(from var(--ui-border-color, var(--color-primary)) calc(l + 0.15) c h)
       );
 
   background-clip: padding-box, padding-box, border-box;
@@ -115,18 +115,34 @@
 */
 @utility ui-state-error {
   /* Overrides the transparent border. Gradient would get too dark. */
-  @apply border-destructive shadow-destructive/20;
-  @apply focus:border-destructive focus:outline-destructive/20;
+  @apply border-destructive-accent shadow-destructive-accent/20;
+  @apply focus:border-destructive-accent focus:outline-destructive-accent/20;
 }
 
 /*
  * Applies a consistent visual style for disabled elements.
  */
 @utility ui-state-disabled {
-  @apply text-disabled-foreground cursor-not-allowed;
-  background: var(--color-disabled);
+  @apply text-disabled cursor-not-allowed;
+  background: var(--color-disabled-surface);
   background-clip: border-box;
   box-shadow: none;
+}
+
+/*
+ * Applies a consistent hover background for list items, table rows, menu items,
+ * and other elements on white surfaces.
+ */
+@utility ui-state-hover {
+  @apply bg-hover text-foreground;
+}
+
+/*
+ * Applies a translucent hover for ghost buttons, tabs, action bar buttons,
+ * and other minimal elements that need to blend into any context.
+ */
+@utility ui-state-hover-ghost {
+  @apply bg-current/10;
 }
 
 /*

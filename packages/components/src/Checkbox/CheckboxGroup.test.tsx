@@ -27,7 +27,7 @@ test('applies group styles from theme', () => {
   const group = screen.getByRole('group');
 
   expect(group.className).toMatchInlineSnapshot(
-    `"group/field min-w-0 w-(--container-width) flex flex-col gap-1 gap-x-2"`
+    `"group/field min-w-0 w-(--container-width) flex flex-col"`
   );
 });
 
@@ -131,15 +131,29 @@ test('accepts error message', () => {
   expect(screen.getByText('This is an error')).toBeInTheDocument();
 });
 
-test('horiziontal orientation style', () => {
+test('horizontal orientation applies flex-row', () => {
   render(<Basic.Component orientation="horizontal" />);
   const presentation = screen
     .getAllByRole('presentation')
-    .filter(
-      element => element.getAttribute('data-orientation') === 'horizontal'
-    );
+    .filter(el => el.getAttribute('data-orientation') === 'horizontal');
 
-  expect(presentation[0].className).toContain('flex-row gap-[1.5ch]');
+  expect(presentation[0].className).toContain('flex-row');
+});
+
+test('vertical orientation: items keep the py-1 modifier class', () => {
+  render(<Basic.Component />);
+
+  expect(screen.getByTestId('one').className).toContain(
+    'group-data-[orientation=vertical]/checkboxgroup:py-1'
+  );
+});
+
+test('horizontal orientation: items keep the px-1.5 modifier class', () => {
+  render(<Basic.Component orientation="horizontal" />);
+
+  expect(screen.getByTestId('one').className).toContain(
+    'group-data-[orientation=horizontal]/checkboxgroup:px-1.5'
+  );
 });
 
 test('don\'t show "show more" when list is too short', () => {

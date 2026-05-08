@@ -1,5 +1,295 @@
 # @marigold/components
 
+## 18.0.0-beta.0
+
+### Major Changes
+
+- 326f707: feat(AppLayout): switch to page-level scroll
+
+  `AppLayout` no longer owns an interior scroll container. The document
+  (`<html>`/`<body>`) scrolls the whole page; the sidebar sticks via
+  `position: sticky` and the top header stays pinned through
+  `TopNavigation`'s own sticky positioning.
+
+  **Why page-level scroll**
+  - **Mobile URL bar collapses on scroll.** With interior scroll, Safari
+    and Chrome mobile keep the URL bar expanded forever, wasting ~8% of
+    the screen. Only document scroll lets the browser hide it.
+  - **Pull-to-refresh works.** Interior scroll disables it.
+  - **Browser scroll restoration** on back/forward only works reliably
+    for the document, not interior containers. Interior scroll produces
+    subtle "lost scroll position" bugs.
+  - **`Cmd+F` find-in-page** scrolls the document, not an interior
+    container, so matches outside the viewport scroll into view
+    correctly.
+  - **Anchor links (`#section`), iOS status-bar tap (scroll-to-top) and
+    native keyboard nav** (`PgUp`/`PgDn`/`Space`/`Home`/`End`) all
+    behave predictably.
+  - **`IntersectionObserver` with default root, scroll-snap, sticky
+    elements, `scroll-margin-top`** — all simpler when there is one
+    scroll container.
+
+  **Breaking changes**
+  - Code reading `mainRef.current.scrollTop` (or similar) will no
+    longer see user scroll. Read `window.scrollY` /
+    `document.documentElement.scrollTop` instead.
+  - Styles assuming a fixed-height main region (`height: 100%` on
+    direct children of `<AppLayout.Main>`, for example) will no
+    longer be bounded by the viewport. Use `min-h-dvh` or remove the
+    constraint.
+
+  **Known trade-offs**
+  - Pure app-shell look via `position: sticky` can flicker on iOS
+    Safari momentum scroll. Cosmetic, usually acceptable.
+  - Sticky elements may show a brief re-paint when overlays close.
+    Not a correctness bug.
+
+- f629319: refactor([DST-1283]): **Breaking Change** — Remove `<Multiselect>` (and the `react-select` dependency) from `@marigold/components`.
+
+  Use `<TagField>` instead.
+
+- cddcfd3: fix(DST-1353): remove `width="fit"` from Select, ComboBox, and Autocomplete
+
+  **BREAKING CHANGE:** The `fit` value for the `width` prop is no longer accepted on `Select`, `ComboBox`, and `Autocomplete`. These components use a popover with virtualized rendering, where the react-aria Virtualizer controls item sizing and ignores CSS layout. This caused dropdown content to be clipped when `width="fit"` was used. Affected usages should switch to an explicit width value instead.
+
+- 00d93c8: feat(DST-1246): update Switch component layout and sizing to align with Checkbox and Radio
+
+  The Switch component previously rendered its label on the left and toggle on the right, which was inconsistent with Checkbox and Radio where the control sits on the left. When used together in forms, this created a visually misaligned layout.
+
+  **Layout**: Toggle now renders before the label (control on the left, label on the right), matching Checkbox and Radio. This ensures consistent visual alignment when Switch is used alongside other boolean controls in form layouts.
+
+  **Sizing**: Reduced the default track size from 24x40px to 16x28px and thumb from 20px to 12px. This brings the Switch closer in visual weight to Checkbox/Radio (16px), making it fit better in the flow of forms.
+
+  **Settings variant**: A new `variant="settings"` mirrors the default layout — label and description on the left, toggle on the far right. This is the common pattern used on settings/preferences pages. The variant is propagated to `BooleanField` so that grid columns and description placement adjust accordingly.
+
+  **Description support**: Switch now accepts a `description` prop (help text rendered below the control), matching Checkbox's existing support. The description text aligns with the label text using CSS grid + subgrid, automatically adapting to any control size without hardcoded padding. Properly wired with `aria-describedby` for accessibility.
+
+  **Form support**: The `name` prop passes through to the underlying input for HTML form submission.
+
+  **Shared BooleanField**: Extracted a reusable `BooleanField` wrapper used by both Checkbox and Switch for consistent description rendering and `aria-describedby` wiring. Uses CSS grid with subgrid to align description text with label text across both components.
+
+  ## Breaking changes
+
+  ### Restoring the old Switch behavior
+
+  The default Switch layout has changed: the toggle is now on the **left** and the label on the **right** (previously reversed). If you need the old layout (label left, toggle right), use the new `variant="settings"`:
+
+  ```diff
+  - <Switch label="Wi-Fi" />
+  + <Switch label="Wi-Fi" variant="settings" />
+  ```
+
+  The `size="large"` prop has been removed. The default size is now smaller (16x28px track). There is no built-in way to get the old large dimensions (24x40px track) — if needed, create a custom size variant in your theme's `Switch.styles.ts`.
+
+  ### Custom theme migration
+
+  This release introduces a new required theme component `BooleanField` and changes the layout model of the `Checkbox` and `Switch` container slots from flexbox to CSS grid. **Custom themes must be updated or Checkbox/Switch will throw a runtime error.**
+
+  ### 1. Add `BooleanField` to your theme (required)
+
+  `BooleanField` is a new multi-slot theme component used internally by both `Checkbox` and `Switch` to render descriptions. If your theme does not include it, any `Checkbox` or `Switch` with a `description` prop will throw:
+
+  ```
+  Error: Component "BooleanField" is missing styles in the current theme.
+  ```
+
+  Add the following to your theme's component styles:
+
+  ```ts
+  import { cva } from '@marigold/system';
+
+  export const BooleanField = {
+    container: cva({
+      base: 'grid gap-x-2',
+      variants: {
+        variant: {
+          default: 'grid-cols-[auto_1fr]',
+          settings: 'grid-cols-[1fr_auto]',
+        },
+      },
+      defaultVariants: { variant: 'default' },
+    }),
+    description: cva({
+      base: 'mt-0.5',
+      variants: {
+        variant: {
+          default: 'col-start-2',
+          settings: 'col-start-1',
+        },
+      },
+      defaultVariants: { variant: 'default' },
+    }),
+  };
+  ```
+
+  - `container`: Defines the 2-column grid layout wrapping the control and its description. The `default` variant uses `grid-cols-[auto_1fr]` (control left, label right). The `settings` variant uses `grid-cols-[1fr_auto]` (label left, control right).
+  - `description`: Styles the description text wrapper. Placed under the label column via `col-start-2` (default) or `col-start-1` (settings). `mt-0.5` adds vertical spacing between the label row and description.
+
+  Then export it from your theme's component index file:
+
+  ```ts
+  export { BooleanField } from './BooleanField.styles';
+  ```
+
+  ### 2. Update `Checkbox` container slot (required if customized)
+
+  The `Checkbox` container slot changed from flexbox to CSS grid with conditional subgrid support:
+
+  **Before:**
+
+  ```ts
+  container: cva({ base: 'cursor-pointer read-only:cursor-default gap-2' }),
+  ```
+
+  **After:**
+
+  ```ts
+  container: cva({
+    base: [
+      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'cursor-pointer read-only:cursor-default',
+      'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    ],
+  }),
+  ```
+
+  Key changes:
+  - `gap-2` changed to `gap-x-2` (column gap only, since row gap is now handled by `BooleanField.description`)
+  - `grid grid-cols-[auto_1fr] items-center` replaces the `flex items-center` that was previously hardcoded in the component
+  - `group-data-[booleanfield]/booleanfield:grid-cols-subgrid` and `group-data-[booleanfield]/booleanfield:col-span-full` enable subgrid when inside a `BooleanField` wrapper, so the description aligns with the label
+
+  ### 3. Update `Switch` container slot (required if customized)
+
+  The `Switch` container slot also changed from minimal styles to CSS grid with subgrid:
+
+  **Before:**
+
+  ```ts
+  container: cva({
+    base: 'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+  }),
+  ```
+
+  **After:**
+
+  ```ts
+  container: cva({
+    base: [
+      'grid gap-x-2 items-center',
+      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+      'group-data-booleanfield/booleanfield:grid-cols-subgrid group-data-booleanfield/booleanfield:col-span-full',
+    ],
+    variants: {
+      variant: {
+        default: 'grid-cols-[auto_1fr]',
+        settings: 'grid-cols-[1fr_auto]',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  ```
+
+  Key changes:
+  - Added `grid gap-x-2 items-center` (replaces `flex items-center gap-2` that was previously hardcoded in the component)
+  - Grid columns moved to `variant` to support both default and settings layouts
+  - Added subgrid support for BooleanField integration
+
+- 724f0ce: refa([DST-1162]): **Breaking changes**: The `Card` component has been refactored into a compound component pattern.
+
+  **What changed:**
+  - The previous prop-based API (`padding`, `space`, etc.) has been removed.
+  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Body`, `Card.Footer`, and `Card.Preview`.
+  - A `CardContext` is now required — sub-components will throw an error if used outside of a `<Card>`.
+
+  **Migration:**
+
+  ```tsx
+  // Before
+  <Card>
+    <SomeContent />
+  </Card>
+
+  // After
+  <Card>
+    <Card.Header>Title</Card.Header>
+    <Card.Body><SomeContent /></Card.Body>
+    <Card.Footer>Actions</Card.Footer>
+  </Card>
+  ```
+
+- 62cca29: refa([DST-1281]): **Breaking change**: `<Tooltip>` no longer accepts `open`. Controlled visibility is only supported on `<Tooltip.Trigger>` (`open` / `onOpenChange`). Removes the internal React context that previously forwarded `open` from `<Tooltip>` to the trigger.
+
+### Minor Changes
+
+- 6587493: refa([DST-1298]): Refactor Divider component: API, styling, and docs
+
+  We fixed the vertical orientation of the divider, which previously didn't work.
+  Added new Divider stories and updated the Divider docs.
+
+- 93f9ef1: feat(DST-1257): add universal `none` spacing token
+  - Introduce `NoSpacingToken = 'none'` shared across all spacing token families
+  - Add `'none'` to `SpacingTokens`, `PaddingSpacingTokens`, and `InsetSpacingTokens`
+  - Add `--spacing-none: --spacing(0)` CSS custom property to the theme
+
+  `'none'` now works wherever a spacing token is accepted: `Stack`/`Inline` gap (`space="none"`), `Inset` axis padding (`spaceX="none"` / `spaceY="none"`), and `Inset` recipes (`space="none"`) — useful for wrappers that should render without adding any spacing (e.g. an edge-to-edge `Table` inside a containing component).
+
+- 8326bf7: feat(DST-1326): introduce `Panel.CollapsibleHeader`, `Panel.CollapsibleTitle`, and `Panel.CollapsibleDescription`. The collapsible mirrors `Panel.Header` — a header wrapper with a title plus an optional description — and the whole visual surface is a single click target: title and description render as spans inside the trigger `<button>`, with the accessible name wired via `aria-labelledby` and the description via `aria-describedby`. The chevron icon uses a reusable `MorphCaret` that animates via SVG path morphing (honours `prefers-reduced-motion`).
+- e33a1e7: feat(DST-1322): add `current` prop to `Sidebar.Nav` for automatic active item detection
+
+  `Sidebar.Nav` now accepts a `current` prop that resolves the active leaf automatically — pass the current pathname (string) for smart segment-aware matching, or a predicate `(href, key) => boolean` for full control. Removes the per-item `active={pathname === '/...'}` boilerplate. The per-item `active` prop on `Sidebar.Item` still works as a local override.
+
+### Patch Changes
+
+- b7c132d: fix(DST-1354): restore collapsing `Table.EditableCell` edit trigger
+
+  The overlay/ring affordance introduced in #5250 (DST-1275) did not read as editable in user testing: sighted users did not associate the hover ring with inline editing, and there was no discoverable trigger for keyboard or touch. This change reverts that approach and restores the explicit pencil edit button.
+
+  The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or keyboard focus, so static layout remains clean while the affordance is discoverable the moment the user interacts with the row. When expanded, the wrapper switches to `overflow-visible` so the button's focus outline is not clipped. The cell itself stays clickable as a touch target. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like a regular `Table.Cell`.
+
+- f16b887: fix(DST-1352): use correct outline for focus + error state in compound fields
+- bfea9df: `Panel.Title` may now be used as a direct child of `Panel` when the Panel has only a title (no description, no actions) — `Panel.Header` is the layout wrapper for title + description + actions, but a title-only Panel doesn't need it. Accessibility (`aria-labelledby`) and horizontal panel padding still resolve correctly. `Panel.Description` and `Panel.HeaderActions` continue to require a `Panel.Header` wrapper. No change to existing usages.
+- 8326bf7: test(DST-1329): add comprehensive unit and play-test coverage for `Panel` and its sub-components (Header, Title, Description, HeaderActions, Content, Footer, Collapsible, CollapsibleHeader, CollapsibleTitle, CollapsibleDescription, CollapsibleContent, Context). No runtime changes.
+- 1cac70d: docs: improve `AutoTypeTable` prop rendering
+
+  Centralizes the display of design-system aliases in the component docs'
+  prop tables. Props whose types reference aliases from `@marigold/system`
+  or `@marigold/types` (e.g. `SpacingTokens`, `Scale`, `WidthProp`,
+  `NonZeroPercentage`) now render with a meaningful summary in the main
+  cell **and** the full list of resolvable literal values on row expand —
+  instead of a wall of literals in the cell and a redundant alias name on
+  expand.
+
+  Before:
+  - Cell: `SpacingTokens<Tokens>` (a fabricated generic, inconsistent across components)
+  - Expand: `SpacingTokens | Scale | undefined` (same alias names, no new info)
+
+  After:
+  - Cell: `SpacingTokens | Scale` (accurate, derived from the real type)
+  - Expand: `"96" | "80" | ... | "tight" | "related" | 0` (every concrete value)
+
+  Under the hood this replaces 27 per-prop `@remarks \`TypeName\``JSDoc
+overrides with a single fumadocs-typescript transform in the docs site,
+so future components pick up the same behavior automatically. A`@remarks` tag on a prop still wins as an escape hatch.
+
+  `Multiselect.width` and `ComboBox.width` now use `WidthProp['width']`
+  directly instead of `FieldBaseProps<'label'>['width']` — structurally
+  identical, no runtime change.
+
+- c2a1c72: fix: apply `alignX` from `Table.Column` to first column cells
+
+  `TableCellContent` used a truthy check on `columnIndex`, causing it to skip the `alignX` lookup when `columnIndex` was `0` (first column). Replaced with a nullish check so all columns correctly inherit their alignment.
+
+- de34b15: chore(deps): update `react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` packages to their latest versions.
+- 04111ca: fix(DST-1355): widen `variant` and `size` prop types on `Loader` and `ProgressCircle` to accept arbitrary strings via `| (string & {})`. Matches the pattern already used by `Button`, `Panel`, and other components, and lets consumer themes register their own variant/size tokens without TypeScript errors while preserving IDE autocomplete for the built-in RUI values.
+- Updated dependencies [adb8a18]
+- Updated dependencies [f629319]
+- Updated dependencies [93f9ef1]
+- Updated dependencies [8326bf7]
+- Updated dependencies [20a42b0]
+- Updated dependencies [724f0ce]
+- Updated dependencies [de34b15]
+  - @marigold/system@18.0.0-beta.0
+
 ## 17.4.0
 
 ### Minor Changes

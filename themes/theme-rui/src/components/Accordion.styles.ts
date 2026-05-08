@@ -16,7 +16,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   item: cva({
     variants: {
       variant: {
-        default: ['bg-background border-b last:border-b-0 border-border'],
+        default: ['bg-surface border-b last:border-b-0 border-border'],
         card: [
           'ui-surface shadow-elevation-raised py-1 outline-none',
           // Show focus border when the trigger is focused
@@ -33,7 +33,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       'flex w-full items-center justify-between gap-4 py-2 rounded-md cursor-pointer text-foreground',
       'text-left text-base font-semibold leading-6',
       'hover:no-underline',
-      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+      'disabled:cursor-not-allowed disabled:text-disabled',
     ],
     variants: {
       variant: {
@@ -58,6 +58,6 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     },
   }),
   icon: cva({
-    base: 'pointer-events-none shrink-0 text-muted-foreground transition-transform duration-250',
+    base: 'pointer-events-none shrink-0 text-secondary transition-transform duration-250',
   }),
 };

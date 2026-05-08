@@ -39,6 +39,9 @@ export const SelectListHiddenSelect = ({
     selectRef
   );
 
+  // Reachable only via form reset and browser autofill — the <select> is
+  // tabIndex={-1}, aria-hidden, and inside VisuallyHidden, so users can't
+  // interact with it directly.
   const onChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
       const target = e.currentTarget;
@@ -55,6 +58,9 @@ export const SelectListHiddenSelect = ({
     [onSelectionChange]
   );
 
+  // The hidden <select> can't enumerate the full key set, so when SelectList's
+  // selection is 'all' we submit no values. Visually the user sees every row
+  // selected; consumers needing to submit "all" should resolve that themselves.
   const selectedKeys =
     selection === 'all' ? [] : Array.from(selection).map(String);
   const value =
@@ -75,10 +81,10 @@ export const SelectListHiddenSelect = ({
         onChange={onChange}
       >
         <option value="" />
+        {/* No text content: keys may be opaque ids that shouldn't surface in
+            `validationMessage` / `selectedOptions[i].text` / DOM tooling. */}
         {selectedKeys.map(key => (
-          <option key={key} value={key}>
-            {key}
-          </option>
+          <option key={key} value={key} />
         ))}
       </select>
     </VisuallyHidden>

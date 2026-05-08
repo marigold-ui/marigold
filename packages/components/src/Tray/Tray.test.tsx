@@ -65,11 +65,11 @@ vi.mock('motion/react', async () => {
       React.createElement(React.Fragment, null, children),
     motion: {
       create: (Component: React.ComponentType<any>) =>
-        React.forwardRef(function MotionWrapper(props: any, ref: any) {
+        function MotionWrapper({ ref, ...props }: any) {
           const { onDragEnd, ...rest } = props;
           if (onDragEnd) dragState.onDragEnd = onDragEnd;
           return React.createElement(Component, { ...rest, ref });
-        }),
+        },
     },
     useMotionValue: () => ({ get: () => 0, set: () => {} }),
     animate: mockAnimate,

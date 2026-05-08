@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { useState } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -7,7 +7,6 @@ import {
   SelectValue,
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { forwardRefType } from '@react-types/shared';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { FieldBase } from '../FieldBase/FieldBase';
@@ -36,7 +35,12 @@ export interface SelectProps<
   variant?: string;
   size?: string;
 
-  width?: WidthProp['width'];
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * Note: `"fit"` is not supported because the virtualizer controls item sizing.
+   * @remarks `WidthProp`
+   */
+  width?: Exclude<WidthProp['width'], 'fit'>;
   /**
    * Children of the select.
    */
@@ -81,28 +85,55 @@ export interface SelectProps<
    * @default false
    */
   error?: boolean;
+  /**
+   * Render the trigger value when one or more options are selected. Replaces
+   * the default trigger render. The placeholder still shows when nothing is
+   * selected. Must not contain focusable or interactive elements, since the
+   * trigger is itself a button.
+   */
+  renderValue?: (selectedItems: T[]) => ReactNode;
 }
 
-const SelectBase = (forwardRef as forwardRefType)(function Select<
-  T extends object,
-  M extends SelectionMode = 'single',
->(
-  {
-    disabled,
-    required,
-    items,
-    variant,
-    size,
-    error,
-    open,
-    label,
-    children,
-    selectionMode,
-    onChange,
-    ...rest
-  }: SelectProps<T, M>,
-  ref: Ref<HTMLButtonElement>
-) {
+const TriggerValue = <T extends object>({
+  renderValue,
+}: {
+  renderValue?: (selectedItems: T[]) => ReactNode;
+}) => {
+  if (!renderValue) {
+    return (
+      <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+    );
+  }
+
+  return (
+    <SelectValue<T> className="truncate text-nowrap">
+      {({ selectedItems, defaultChildren, isPlaceholder }) => {
+        const items = selectedItems.filter((item): item is T => item != null);
+        if (isPlaceholder || items.length === 0) {
+          return defaultChildren;
+        }
+        return renderValue(items);
+      }}
+    </SelectValue>
+  );
+};
+
+function SelectBase<T extends object, M extends SelectionMode = 'single'>({
+  disabled,
+  required,
+  items,
+  variant,
+  size,
+  error,
+  open,
+  label,
+  children,
+  selectionMode,
+  onChange,
+  renderValue,
+  ref,
+  ...rest
+}: SelectProps<T, M> & { ref?: Ref<HTMLButtonElement> }) {
   const isSingleSelect = !selectionMode || selectionMode === 'single';
   const [trayOpen, setTrayOpen] = useState(false);
 
@@ -141,7 +172,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+            <TriggerValue<T> renderValue={renderValue} />
             <ChevronsVertical size="16" className={classNames.icon} />
           </IconButton>
           <Tray>
@@ -162,7 +193,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+            <TriggerValue<T> renderValue={renderValue} />
             <ChevronsVertical size="16" className={classNames.icon} />
           </RACButton>
           <Popover>
@@ -174,7 +205,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
       )}
     </FieldBase>
   );
-});
+}
 
 export const Select = Object.assign(SelectBase, {
   Option: ListBox.Item,

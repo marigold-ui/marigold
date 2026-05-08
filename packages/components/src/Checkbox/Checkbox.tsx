@@ -1,52 +1,15 @@
-import type {
-  ForwardRefExoticComponent,
-  PropsWithChildren,
-  ReactNode,
-  RefAttributes,
-} from 'react';
-import { forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
-  Checkbox,
   CheckboxContext,
-  Provider,
-  TextContext,
+  Checkbox as RACCheckbox,
 } from 'react-aria-components';
-import { useId } from '@react-aria/utils';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
-import { HelpText } from '../HelpText/HelpText';
+import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
 import { Minus } from '../icons/Minus';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
-
-// Field Wrapper
-// ---------------
-const Field = ({
-  description,
-  children,
-}: PropsWithChildren<{ description: ReactNode }>) => {
-  const className = useClassNames({
-    component: 'Field',
-  });
-  const descriptionId = useId();
-
-  if (!description) return children;
-
-  return (
-    <div className={className}>
-      <Provider
-        values={[
-          [CheckboxContext, { 'aria-describedby': descriptionId }],
-          [TextContext, { id: descriptionId }],
-        ]}
-      >
-        {children}
-        <HelpText description={description} />
-      </Provider>
-    </div>
-  );
-};
 
 interface IconProps extends StateAttrProps {
   checked?: boolean;
@@ -137,83 +100,73 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
    * A helpful text.
    */
   description?: ReactNode;
-}
-
-export interface CheckboxComponent extends ForwardRefExoticComponent<
-  CheckboxProps & RefAttributes<HTMLLabelElement>
-> {
-  /**
-   * Group for checkboxes.
-   */
-  Group: typeof CheckboxGroup;
+  ref?: Ref<HTMLLabelElement>;
 }
 
 // Component
 // --------------
-const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
-  (
-    {
-      error,
-      disabled,
-      readOnly,
-      required,
-      checked,
-      defaultChecked,
-      indeterminate,
-      variant,
-      size,
-      label,
-      description,
-      ...rest
-    },
-    ref
-  ) => {
-    const props: RAC.CheckboxProps = {
-      isIndeterminate: indeterminate,
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isRequired: required,
-      isInvalid: error,
-      isSelected: checked,
-      defaultSelected: defaultChecked,
-      ...rest,
-    } as const;
+const _Checkbox = ({
+  error,
+  disabled,
+  readOnly,
+  required,
+  checked,
+  defaultChecked,
+  indeterminate,
+  variant,
+  size,
+  label,
+  description,
+  ref,
+  ...rest
+}: CheckboxProps) => {
+  const props: RAC.CheckboxProps = {
+    isIndeterminate: indeterminate,
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isRequired: required,
+    isInvalid: error,
+    isSelected: checked,
+    defaultSelected: defaultChecked,
+    ...rest,
+  } as const;
 
-    const group = useCheckboxGroupContext();
+  const group = useCheckboxGroupContext();
 
-    const classNames = useClassNames({
-      component: 'Checkbox',
-      variant: variant || group?.variant,
-      size: size || group?.size,
-    });
+  const classNames = useClassNames({
+    component: 'Checkbox',
+    variant: variant || group?.variant,
+    size: size || group?.size,
+  });
 
-    return (
-      <Field description={description}>
-        <Checkbox
-          ref={ref}
-          className={cn(
-            'group/checkbox flex items-center',
-            'cursor-pointer data-disabled:cursor-not-allowed',
-            classNames.container
-          )}
-          {...props}
-        >
-          {({ isSelected, isIndeterminate }) => (
-            <>
-              <Icon
-                checked={isSelected}
-                indeterminate={isIndeterminate}
-                className={classNames.checkbox}
-              />
-              {label && <div className={classNames.label}>{label}</div>}
-            </>
-          )}
-        </Checkbox>
-      </Field>
-    );
-  }
-) as CheckboxComponent;
+  return (
+    <BooleanField description={description} context={CheckboxContext}>
+      <RACCheckbox
+        ref={ref}
+        className={cn(
+          'group/checkbox',
+          'data-disabled:cursor-not-allowed',
+          classNames.container
+        )}
+        {...props}
+      >
+        {({ isSelected, isIndeterminate }) => (
+          <>
+            <Icon
+              checked={isSelected}
+              indeterminate={isIndeterminate}
+              className={classNames.checkbox}
+            />
+            {label && <div className={classNames.label}>{label}</div>}
+          </>
+        )}
+      </RACCheckbox>
+    </BooleanField>
+  );
+};
 
-_Checkbox.Group = CheckboxGroup;
+const _MgCheckbox = Object.assign(_Checkbox, {
+  Group: CheckboxGroup,
+});
 
-export { _Checkbox as Checkbox };
+export { _MgCheckbox as Checkbox };

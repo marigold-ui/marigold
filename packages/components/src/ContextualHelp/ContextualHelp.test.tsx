@@ -1,9 +1,12 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './ContextualHelp.stories';
 
-window.matchMedia = mockMatchMedia(['(width < 640px)']);
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
+
+window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();

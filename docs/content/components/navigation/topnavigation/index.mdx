@@ -27,7 +27,7 @@ The `<TopNavigation>` component uses a compound component pattern with three slo
 
 ## Appearance
 
-<AppearanceDemo component={'TopNavigation'} />
+<AppearanceDemo component={'TopNavigation'} background="page" />
 
 <AppearanceTable component={'TopNavigation'} />
 
@@ -39,7 +39,7 @@ The `<TopNavigation>` component organizes the top-level navigation of an applica
 
 Some layouts call for centered content in the navigation bar, such as a search field. Use the `alignX` prop on `<TopNavigation.Middle>` to horizontally center its content within the available space. Note that `alignX` only applies to the Middle slot — Start and End are always aligned to their respective edges.
 
-<ComponentDemo name="topnavigation-search" />
+<ComponentDemo name="topnavigation-search" background="page" />
 
 ### Sticky navigation
 
@@ -47,7 +47,7 @@ By default, `<TopNavigation>` sticks to the top of the viewport when users scrol
 
 If the navigation bar is not needed while scrolling (e.g., on compact pages where content fits within the viewport), you can disable sticky behavior by setting `sticky={false}`.
 
-<ComponentDemo name="topnavigation-sticky" />
+<ComponentDemo name="topnavigation-sticky" background="page" />
 
 ### Combining with Sidebar
 

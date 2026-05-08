@@ -157,7 +157,7 @@ Z-index values are centralized and standardized across the design system to ensu
 --z-10: 10; /* Focus states (Calendar) */
 
 /* Floating Layer (20-49) */
---z-20: 20; /* Dropdowns (Multiselect, Select, ComboBox) */
+--z-20: 20; /* Dropdowns (Select, ComboBox) */
 --z-30: 30; /* Popovers, Menus, Tooltips, ActionBar */
 
 /* Overlay Layer (50-79) */
@@ -198,7 +198,7 @@ export const Toast: ThemeComponent = {
 - Always apply z-index classes in component implementations using Tailwind utilities (`z-1`, `z-30`, etc.)
 - Never add z-index classes to theme style files (`*.styles.ts`)
 - Use `cn()` utility to combine z-index with other classNames
-- Exception: Third-party libraries (like react-select) may require inline `zIndex` prop
+- Exception: Some third-party libraries may require an inline `zIndex` prop
 
 **Stacking Hierarchy**:
 

@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { Ref, forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Slider,
@@ -51,97 +50,94 @@ export interface SliderProps<T>
    * Set the label of the slider.
    */
   label?: ReactNode;
+  ref?: Ref<HTMLDivElement>;
 }
 
-const _Slider = forwardRef(
-  <T extends number | number[]>(
-    {
-      variant,
-      size,
-      width = 'full',
-      disabled,
-      label,
-      name,
-      thumbLabels,
-      ...rest
-    }: SliderProps<T>,
-    ref: Ref<HTMLDivElement>
-  ) => {
-    const classNames = useClassNames({
-      component: 'Slider',
-      variant,
-      size,
-    });
+const _Slider = <T extends number | number[]>({
+  variant,
+  size,
+  width = 'full',
+  disabled,
+  label,
+  name,
+  thumbLabels,
+  ref,
+  ...rest
+}: SliderProps<T>) => {
+  const classNames = useClassNames({
+    component: 'Slider',
+    variant,
+    size,
+  });
 
-    const names = Array.isArray(name) ? name : [name];
-    const props = {
-      isDisabled: disabled,
-      ...rest,
-    } satisfies RAC.SliderProps<T>;
+  const names = Array.isArray(name) ? name : [name];
+  const props = {
+    isDisabled: disabled,
+    ...rest,
+  } satisfies RAC.SliderProps<T>;
 
-    return (
-      <FieldBase
-        as={Slider}
-        className={cn(
-          'grid grid-cols-[auto_1fr] gap-y-1',
-          classNames.container,
-          twWidth[width]
-        )}
-        ref={ref}
-        {...props}
+  return (
+    <FieldBase
+      as={Slider}
+      className={cn(
+        'grid grid-cols-[auto_1fr] gap-y-1',
+        classNames.container,
+        twWidth[width]
+      )}
+      ref={ref}
+      {...props}
+    >
+      {label && <Label>{label}</Label>}
+      <SliderOutput className={cn('flex justify-end', classNames.output)}>
+        {({ state }) =>
+          state.values.map((_, i) => state.getThumbValueLabel(i)).join(' - ')
+        }
+      </SliderOutput>
+
+      <SliderTrack
+        className={cn('relative col-span-2 h-2 w-full', classNames.track)}
       >
-        {label && <Label>{label}</Label>}
-        <SliderOutput className={cn('flex justify-end', classNames.output)}>
-          {({ state }) =>
-            state.values.map((_, i) => state.getThumbValueLabel(i)).join(' - ')
-          }
-        </SliderOutput>
-
-        <SliderTrack
-          className={cn('relative col-span-2 h-2 w-full', classNames.track)}
-        >
-          {({ state }) => (
-            <>
-              {/* track */}
-              <div
-                className={cn(
-                  'absolute top-[50%] h-2 w-full translate-y-[-50%]',
-                  classNames.track
-                )}
+        {({ state }) => (
+          <>
+            {/* track */}
+            <div
+              className={cn(
+                'absolute top-[50%] h-2 w-full translate-y-[-50%]',
+                classNames.track
+              )}
+            />
+            {/* fill */}
+            <div
+              className={cn(
+                'absolute top-[50%] h-2 translate-y-[-50%]',
+                classNames.selectedTrack
+              )}
+              style={
+                state.values.length === 1
+                  ? { width: state.getThumbPercent(0) * 100 + '%' }
+                  : {
+                      width:
+                        state.getThumbPercent(1) * 100 -
+                        state.getThumbPercent(0) * 100 +
+                        '%',
+                      left: state.getThumbPercent(0) * 100 + '%',
+                    }
+              }
+            />
+            {state.values.map((_, i) => (
+              <SliderThumb
+                className={cn('top-1/2 cursor-pointer', classNames.thumb)}
+                key={i}
+                index={i}
+                aria-label={thumbLabels?.[i]}
+                name={names?.[i]}
               />
-              {/* fill */}
-              <div
-                className={cn(
-                  'absolute top-[50%] h-2 translate-y-[-50%]',
-                  classNames.selectedTrack
-                )}
-                style={
-                  state.values.length === 1
-                    ? { width: state.getThumbPercent(0) * 100 + '%' }
-                    : {
-                        width:
-                          state.getThumbPercent(1) * 100 -
-                          state.getThumbPercent(0) * 100 +
-                          '%',
-                        left: state.getThumbPercent(0) * 100 + '%',
-                      }
-                }
-              />
-              {state.values.map((_, i) => (
-                <SliderThumb
-                  className={cn('top-1/2 cursor-pointer', classNames.thumb)}
-                  key={i}
-                  index={i}
-                  aria-label={thumbLabels?.[i]}
-                  name={names?.[i]}
-                />
-              ))}
-            </>
-          )}
-        </SliderTrack>
-      </FieldBase>
-    );
-  }
-);
+            ))}
+          </>
+        )}
+      </SliderTrack>
+    </FieldBase>
+  );
+};
 
 export { _Slider as Slider };

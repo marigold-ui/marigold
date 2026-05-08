@@ -8,6 +8,9 @@ import { SectionMessage } from './SectionMessage';
 const meta = preview.meta({
   title: 'Components/SectionMessage',
   component: SectionMessage,
+  parameters: {
+    surface: 'both',
+  },
   argTypes: {
     variant: {
       control: {

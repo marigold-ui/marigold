@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
 import { Card } from '../Card/Card';
@@ -11,12 +12,15 @@ import { Stack } from './Stack';
 const meta = preview.meta({
   title: 'Components/Stack',
   component: Stack,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     space: {
       control: {
         type: 'select',
       },
-      options: ['tight', 'related', 'regular', 'group', 'section'],
+      options: ['collapsed', 'tight', 'related', 'regular', 'group', 'section'],
       description: 'Responsive Style Value',
     },
     alignX: {
@@ -66,6 +70,24 @@ export const Basic = meta.story({
       </Stack>
     </div>
   ),
+});
+
+export const Collapsed = meta.story({
+  tags: ['component-test'],
+  args: {
+    space: 'collapsed',
+  },
+  render: args => (
+    <Stack data-testid="stack" {...args}>
+      <Block>Lirum</Block>
+      <Block>Larum</Block>
+      <Block>Löffelstiel!</Block>
+    </Stack>
+  ),
+  play: async ({ canvas }) => {
+    const stack = canvas.getByTestId('stack');
+    expect(getComputedStyle(stack).rowGap).toBe('0px');
+  },
 });
 
 export const Nested = meta.story({

@@ -1,4 +1,4 @@
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { useIsHidden } from '@react-aria/collections';
@@ -76,7 +76,7 @@ export const Tray = ({
   children,
   ...props
 }: TrayProps) => {
-  const state = useContext(OverlayTriggerStateContext);
+  const state = use(OverlayTriggerStateContext);
   const isHidden = useIsHidden();
   const classNames = useClassNames({
     component: 'Tray',
@@ -87,15 +87,11 @@ export const Tray = ({
   // If we are in a hidden tree, we still need to preserve our children.
   // This is important for components like Select that need to maintain state context.
   if (isHidden) {
-    return (
-      <TrayContext.Provider value={{ classNames }}>
-        {children}
-      </TrayContext.Provider>
-    );
+    return <TrayContext value={{ classNames }}>{children}</TrayContext>;
   }
 
   return (
-    <TrayContext.Provider value={{ classNames }}>
+    <TrayContext value={{ classNames }}>
       <TrayModal
         open={openState}
         dismissable={dismissable}
@@ -113,7 +109,7 @@ export const Tray = ({
           {children}
         </Dialog>
       </TrayModal>
-    </TrayContext.Provider>
+    </TrayContext>
   );
 };
 

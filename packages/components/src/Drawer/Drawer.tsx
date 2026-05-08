@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { useContext, useRef } from 'react';
+import { use, useRef } from 'react';
 import type { DialogProps } from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
@@ -73,7 +73,7 @@ export const Drawer = ({
     size,
   });
 
-  const ctx = useContext(OverlayTriggerStateContext);
+  const ctx = use(OverlayTriggerStateContext);
 
   /**
    * On smaller screens the we render a modal dialog instead of a non-modal drawer
@@ -90,7 +90,7 @@ export const Drawer = ({
       keyboardDismissable={keyboardDismissable}
       data-testid="drawer-modal"
     >
-      <DrawerContext.Provider value={{ variant, size }}>
+      <DrawerContext value={{ variant, size }}>
         <Dialog
           {...props}
           // Override RAC here so we can set an appropriate role
@@ -112,7 +112,7 @@ export const Drawer = ({
           )}
           {children}
         </Dialog>
-      </DrawerContext.Provider>
+      </DrawerContext>
     </DrawerModal>
   );
 };

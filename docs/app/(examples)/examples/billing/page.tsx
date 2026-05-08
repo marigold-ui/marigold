@@ -5,7 +5,7 @@ import { PlaceholderPage } from '../../_shared';
 const BillingPage = () => (
   <PlaceholderPage
     title="Billing"
-    description="Manage your billing settings and preferences."
+    description="Plans, invoices, and payment methods."
   />
 );
 

@@ -1,4 +1,4 @@
-import { ReactElement, forwardRef } from 'react';
+import { ReactElement, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { SearchField } from 'react-aria-components';
 import { WidthProp } from '@marigold/system';
@@ -77,29 +77,35 @@ export interface SearchFieldProps
    * @default none
    */
   placeholder?: string;
+  ref?: Ref<HTMLInputElement>;
 }
 
-const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
-  ({ disabled, required, readOnly, error, ...rest }: SearchFieldProps, ref) => {
-    const props: RAC.SearchFieldProps = {
-      ...rest,
-      isDisabled: disabled,
-      isRequired: required,
-      isReadOnly: readOnly,
-      isInvalid: error,
-    };
+const _SearchField = ({
+  disabled,
+  required,
+  readOnly,
+  error,
+  ref,
+  ...rest
+}: SearchFieldProps) => {
+  const props: RAC.SearchFieldProps = {
+    ...rest,
+    isDisabled: disabled,
+    isRequired: required,
+    isReadOnly: readOnly,
+    isInvalid: error,
+  };
 
-    return (
-      <FieldBase as={SearchField} {...props}>
-        <SearchInput
-          ref={ref}
-          className={{
-            action: 'ui-touch-hitbox pr-2 group-data-[empty=true]/field:hidden',
-          }}
-        />
-      </FieldBase>
-    );
-  }
-);
+  return (
+    <FieldBase as={SearchField} {...props}>
+      <SearchInput
+        ref={ref}
+        className={{
+          action: 'ui-touch-hitbox pr-2 group-data-[empty=true]/field:hidden',
+        }}
+      />
+    </FieldBase>
+  );
+};
 
 export { _SearchField as SearchField };

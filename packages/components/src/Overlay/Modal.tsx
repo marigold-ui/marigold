@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Modal } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
@@ -24,39 +24,32 @@ export interface ModalProps extends Omit<RAC.ModalOverlayProps, 'render'> {
 
 // Component
 // ---------------
-const _Modal = forwardRef<
-  HTMLDivElement,
-  Omit<
-    ModalProps,
-    'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
-  >
->(
-  (
-    {
-      size,
-      open,
-      dismissable,
-      keyboardDismissable,
-      onOpenChange,
-      children,
-      ...props
-    },
-    ref
-  ) => {
-    const className = useClassNames({ component: 'Modal', size });
-    return (
-      <Underlay
-        dismissable={dismissable}
-        keyboardDismissable={keyboardDismissable}
-        open={open}
-        onOpenChange={onOpenChange}
-      >
-        <Modal {...props} className={className} ref={ref}>
-          {children}
-        </Modal>
-      </Underlay>
-    );
-  }
-);
+const ModalBase = ({
+  size,
+  open,
+  dismissable,
+  keyboardDismissable,
+  onOpenChange,
+  children,
+  ref,
+  ...props
+}: Omit<
+  ModalProps,
+  'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
+> & { ref?: Ref<HTMLDivElement> }) => {
+  const className = useClassNames({ component: 'Modal', size });
+  return (
+    <Underlay
+      dismissable={dismissable}
+      keyboardDismissable={keyboardDismissable}
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <Modal {...props} className={className} ref={ref}>
+        {children}
+      </Modal>
+    </Underlay>
+  );
+};
 
-export { _Modal as Modal };
+export { ModalBase as Modal };

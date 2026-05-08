@@ -8,6 +8,7 @@ import { useConfirmation } from './useConfirmation';
 const meta = preview.meta({
   title: 'Components/ConfirmationDialog',
   component: ConfirmationDialog,
+  parameters: { surface: false },
 });
 
 export const Confirmation = meta.story({
