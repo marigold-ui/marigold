@@ -12,12 +12,14 @@ import { ActionButtonAnatomy } from './action-button-anatomy';
 
 ## Anatomy
 
-An ActionButton is a single pressable area that fires an action.
+An ActionButton is a single pressable area that fires an action. It can carry a label, an optional leading icon, or render as an icon-only square for compact spaces like row toolbars.
 
 <ActionButtonAnatomy />
 
 - **Button:** The pressable area that triggers the action.
-- **Label:** The text, icon, or both that names the action.
+- **Label:** The text that names the action.
+- **Icon (optional):** A leading icon paired with the label, or — in the icon-only form — the sole visual.
+- **Icon-only:** A condensed square form for compact spaces. Always pair it with a `<Tooltip>` and an `aria-label` so the action stays discoverable for sighted and assistive users alike.
 
 ## Appearance
 
@@ -53,7 +55,12 @@ ActionButton is the action that belongs to a surface, not to the page. It lives 
   </Dont>
 </GuidelineTiles>
 
-For a cluster of related actions in a row or toolbar, wrap them in an [`<ActionGroup>`](/components/actions/action-group). The group exposes a `role="toolbar"`, enables arrow-key navigation, and cascades shared `size`, `variant`, and `disabled` defaults to its children.
+<Callout title="More than one action?">
+  Wrap a cluster of related actions in an
+  [`<ActionGroup>`](/components/actions/action-group). It keeps the buttons
+  visually consistent and signals to users that the actions belong together
+  as a single set.
+</Callout>
 
 ### Button vs. ActionButton
 
