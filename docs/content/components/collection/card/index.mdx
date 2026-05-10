@@ -6,9 +6,11 @@ description: Represents one item in a collection.
 import { CardAnatomy } from './card-anatomy';
 import {
   DoListMockup,
+  DoNestedMockup,
   DoTableMockup,
   DoTextMockup,
   DontListMockup,
+  DontNestedMockup,
   DontTableMockup,
   DontTextMockup,
 } from './card-usage-guidelines';
@@ -44,15 +46,54 @@ The Card component supports variants for general content grouping as well as acc
 
 ## Usage
 
-**A Card represents one item in a set.** Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry is the user's gateway to its own detail view. Repetition is the core case; if the element doesn't repeat, a Card is probably the wrong tool. A Card is not a standalone container to label a single region of a page with its own heading and content (for example a "Billing" or "Organizer profile" section), use a [`<Panel>`](../../layout/panel) instead.
+A Card represents one item in a set. Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry is the user's gateway to its own detail view. Repetition is the core case; if the element doesn't repeat, a Card is probably the wrong tool.
 
-A Card and a [`<Table>`](../table) both display a set of records; what differs is the shape of each item. Reach for a **Table** when rows share the same fields and the user wants to scan, sort, or compare values down a column. Reach for a **Card** when each item has its own visual identity media, varied content, distinct actions and the user chooses between items by recognition, not by comparing column values.
+### Card grids
 
-Combine Card with [`<Tiles>`](../../layout/tiles) so the grid wraps responsively as the viewport changes.
+The canonical Card layout is a grid of items, each with its own visual identity, that wraps responsively as the viewport changes. Combine Card with [`<Tiles>`](../../layout/tiles) so the grid reflows automatically.
 
 <ComponentDemo name="card-grid" />
 
 The same shape works for any repeating content team directories with avatars, article previews with author metadata, or category pickers with no media at all. The identity-per-card pattern stays the same; only the contents of each slot change.
+
+### Media
+
+`Card.Preview` is optional. Whether to include an image depends on whether the visual carries information.
+
+Use an image preview when each item has its own visual identity an event poster, a venue photo, a product hero. The image is part of how users recognize and choose between cards in a grid.
+
+<ComponentDemo name="card-elevation" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Put images in `Card.Preview` so they sit full-bleed at the top of the
+      card.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't nest the card's main visual inside `Card.Body`. The padding cuts the
+      image off from the card's edges and the framing falls apart.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+Drop `Card.Preview` when the content is text-driven a plan summary, a status block, or a quick stat with actions. A title and short body carry the meaning, and a generic stock image only adds noise without helping users decide.
+
+<ComponentDemo name="card-minimal" />
+
+### Footer actions
+
+Use small buttons (`<Button size="small" />`) for actions in `Card.Footer`. Cards usually appear in a grid or list, so the footer is a tight space small buttons match the scale of the surrounding content and keep multiple cards visually balanced. Reserve default-size buttons for primary page actions outside of cards.
+
+### Admin and master variants
+
+When a card represents access-restricted content, set `variant="admin"` or `variant="master"` so the surface visibly marks who can see it. The variants share their look with the matching [`<Panel>`](../../layout/panel) and [`<Badge>`](../../content/badge) variants, so a card sits consistently next to other admin/master surfaces on the same page. [Learn more about admin and master marking.](/patterns/layout/admin-master-mark)
+
+<ComponentDemo name="card-variants" />
+
+### When not to use a Card
 
 Cards are easy to over-reach for. When repetition isn't the shape of the content, reach for one of these alternatives instead:
 
@@ -64,9 +105,9 @@ Cards are easy to over-reach for. When repetition isn't the shape of the content
 | A status, callout, or feedback message          | [`<SectionMessage>`](../../content/section-message)                       |
 | A list of similar rows with no media or actions | [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) |
 
-The sections below cover the four common misuses to avoid.
+The four common misuses below cover the shapes that get mistaken for Card most often.
 
-### Don't wrap tabular data in cards
+#### Tabular data
 
 When records share the same shape and users want to scan, sort, or compare across them, a [`<Table>`](../table) reads faster and handles selection, sorting, and bulk actions out of the box. A column of cards forces the eye to jump between visual blocks instead of running down a column of values.
 
@@ -91,7 +132,7 @@ When records share the same shape and users want to scan, sort, or compare acros
   </Dont>
 </GuidelineTiles>
 
-### Don't wrap simple content in cards
+#### Simple content
 
 A Card groups several pieces of related content. If you only have a single paragraph, a short message, or one field, the card adds visual weight without grouping anything. Use a [`<Headline>`](../../content/headline), [`<Text>`](../../content/text), or [`<SectionMessage>`](../../content/section-message) instead.
 
@@ -117,7 +158,7 @@ A Card groups several pieces of related content. If you only have a single parag
   </Dont>
 </GuidelineTiles>
 
-### Don't stack many cards on a page
+#### Long lists of cards
 
 Cards rely on contrast against the page to feel grouped. When you stack a long column of full-width cards, every row competes with every other row, the shadows pile up, and the page becomes visually noisy. Use a list separated by [`<Divider>`](../../content/divider) for similar, row-shaped content instead.
 
@@ -146,18 +187,24 @@ A team list separated by `<Divider>` reads as one continuous group, and the rows
 
 <ComponentDemo name="card-do-list" />
 
-### Don't nest cards inside cards
+#### Nested cards
 
 Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth, it's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](../../layout/stack), a [`<Divider>`](../../content/divider), or split the content into sibling sections.
 
 <GuidelineTiles>
   <Do>
+    <DoFigure>
+      <DoNestedMockup />
+    </DoFigure>
     <DoDescription>
-      Place a Card on top of the default surface so the raised shadow is
-      visible.
+      Restructure the inner content with [`<Stack>`](../../layout/stack) and
+      [`<Divider>`](../../content/divider) so a single card holds the sections.
     </DoDescription>
   </Do>
   <Dont>
+    <DontFigure>
+      <DontNestedMockup />
+    </DontFigure>
     <DontDescription>
       Don't nest a card inside another card, place it inside a
       [`<Panel>`](../../layout/panel), or sit it on any other same-elevation
@@ -165,43 +212,6 @@ Cards already sit on a raised surface. Nesting a card inside another card create
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-### With or without media
-
-`Card.Preview` is optional. Whether to include an image depends on whether the visual carries information.
-
-**Use an image preview** when each item has its own visual identity an event poster, a venue photo, a product hero. The image is part of how users recognize and choose between cards in a grid.
-
-<ComponentDemo name="card-elevation" />
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Put images in `Card.Preview` so they sit full-bleed at the top of the
-      card.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't nest the card's main visual inside `Card.Body`. The padding cuts the
-      image off from the card's edges and the framing falls apart.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-**Drop `Card.Preview`** when the content is text-driven a plan summary, a status block, or a quick stat with actions. A title and short body carry the meaning, and a generic stock image only adds noise without helping users decide.
-
-<ComponentDemo name="card-minimal" />
-
-### Buttons in card footers
-
-Use small buttons (`<Button size="small" />`) for actions in `Card.Footer`. Cards usually appear in a grid or list, so the footer is a tight space small buttons match the scale of the surrounding content and keep multiple cards visually balanced. Reserve default-size buttons for primary page actions outside of cards.
-
-### Admin and master cards
-
-When a card represents access-restricted content, set `variant="admin"` or `variant="master"` so the surface visibly marks who can see it. The variants share their look with the matching [`<Panel>`](../../layout/panel) and [`<Badge>`](../../content/badge) variants, so a card sits consistently next to other admin/master surfaces on the same page. [Learn more about admin and master marking.](/patterns/layout/admin-master-mark)
-
-<ComponentDemo name="card-variants" />
 
 ## Props
 
@@ -231,6 +241,27 @@ When a card represents access-restricted content, set `variant="admin"` or `vari
 
 <TeaserList
   items={[
+    {
+      title: 'Panel',
+      href: '../../layout/panel',
+      caption:
+        'The page-region counterpart to Card. Use Panel for named, non-repeating sections like "Billing" or "Team members".',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 9h18" />
+        </svg>
+      ),
+    },
     {
       title: 'Elevation',
       href: '../../../foundations/elevation',

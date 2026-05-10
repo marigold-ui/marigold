@@ -9,7 +9,7 @@ import {
 } from '@marigold/components';
 
 export default () => (
-  <div className="bg-bg-surface rounded-xl p-6">
+  <div className="bg-background rounded-xl p-6">
     <Card>
       <Card.Preview>
         <img
