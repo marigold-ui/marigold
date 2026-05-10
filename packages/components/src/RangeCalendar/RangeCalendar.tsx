@@ -5,12 +5,7 @@ import {
   DateValue,
   FieldErrorContext,
 } from 'react-aria-components';
-import {
-  WidthProp,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from '../Calendar/CalendarGrid';
 import { CalendarHeader } from '../Calendar/CalendarHeader';
 import { CalendarListBox } from '../Calendar/CalendarListBox';
@@ -220,10 +215,10 @@ const _RangeCalendar = <T extends DateValue>({
           <AriaRangeCalendar
             {...props}
             className={cn(
-              'relative flex flex-col',
-              twWidth[width],
+              'relative flex w-(--width) flex-col',
               classNames.calendar
             )}
+            style={createWidthVar('width', width)}
           >
             {isMultiMonth ? (
               <div className={classNames.calendarContainer}>

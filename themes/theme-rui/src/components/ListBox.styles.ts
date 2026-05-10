@@ -15,7 +15,11 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     ],
   }),
   list: cva({
-    base: ['p-1 text-sm outline-0 space-y-px overflow-y-auto w-full'],
+    base: [
+      'p-1 text-sm outline-0 space-y-px overflow-y-auto w-full',
+      // `!` overrides the inline `z-index: 0` set by RAC's virtualizer wrapper
+      '[&_:has(>:focus-visible)]:z-1!',
+    ],
   }),
   item: cva({
     base: [
