@@ -1,7 +1,6 @@
 'use client';
 
 import { venueTraits } from '@/lib/data/venues';
-import { useRef } from 'react';
 import type { FormEvent } from 'react';
 import {
   Button,
@@ -9,155 +8,126 @@ import {
   Form,
   Inline,
   NumberField,
+  Radio,
   SearchField,
   Slider,
   Stack,
   Tag,
-  Text,
-  ToggleButton,
+  parseFormData,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
 import {
   MAX_CAPACITY,
   MAX_PRICE,
-  getFormData,
-  toFormSchema,
-  toUrlSchema,
+  type VenueFilter,
   useFilter,
-  usePage,
   useSearch,
 } from './utils';
 
 // Filter form (inside Drawer)
 // ---------------
 interface FilterFormProps {
-  state: ReturnType<typeof toFormSchema>;
+  filter: VenueFilter;
 }
 
-const FilterForm = ({ state }: FilterFormProps) => {
-  // ToggleButton.Group does not integrate with native FormData (it is not a
-  // form component, see DST-1392 for the planned fix), so the rating value
-  // rides along in a hidden <input> synced via onSelectionChange and a ref.
-  // Do not copy this pattern blindly, once DST-1392 lands the hidden input
-  // can be removed and a plain `name` prop used instead.
-  const ratingInputRef = useRef<HTMLInputElement>(null);
+const FilterForm = ({ filter }: FilterFormProps) => (
+  <Stack space={12}>
+    <NumberField
+      label="Min. Capacity"
+      name="capacity"
+      defaultValue={filter.capacity ?? 0}
+      minValue={0}
+      maxValue={MAX_CAPACITY}
+      step={100}
+    />
 
-  return (
-    <Stack space={12}>
-      <NumberField
-        label="Min. Capacity"
-        name="capacity"
-        defaultValue={state.capacity}
-        minValue={0}
-        maxValue={MAX_CAPACITY}
-        step={100}
-      />
+    <Slider
+      label="Max. Price"
+      thumbLabels="price"
+      name="price"
+      defaultValue={filter.price ?? MAX_PRICE}
+      step={100}
+      maxValue={MAX_PRICE}
+      formatOptions={{
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+      }}
+    />
 
-      <Slider
-        label="Max. Price"
-        thumbLabels="price"
-        name="price"
-        defaultValue={state.price}
-        step={100}
-        maxValue={MAX_PRICE}
-        formatOptions={{
-          style: 'currency',
-          currency: 'EUR',
-          minimumFractionDigits: 0,
-        }}
-      />
+    <Tag.Group
+      label="Traits"
+      name="traits"
+      selectionMode="multiple"
+      defaultSelectedKeys={filter.traits}
+    >
+      {venueTraits.map(trait => (
+        <Tag key={trait} id={trait}>
+          {trait}
+        </Tag>
+      ))}
+    </Tag.Group>
 
-      <Tag.Group
-        label="Traits"
-        name="traits"
-        selectionMode="multiple"
-        defaultSelectedKeys={state.traits}
-      >
-        {venueTraits.map(trait => (
-          <Tag key={trait} id={trait}>
-            {trait}
-          </Tag>
-        ))}
-      </Tag.Group>
-
-      <input
-        ref={ratingInputRef}
-        type="hidden"
-        name="rating"
-        defaultValue={state.rating}
-      />
-      <Stack space={2} alignX="left">
-        <Text weight="semibold">Min. Rating</Text>
-        <ToggleButton.Group
-          selectionMode="single"
-          defaultSelectedKeys={
-            state.rating ? new Set([state.rating]) : new Set()
-          }
-          onSelectionChange={keys => {
-            if (ratingInputRef.current) {
-              ratingInputRef.current.value = [...keys][0]?.toString() ?? '';
-            }
-          }}
-        >
-          {['1', '2', '3', '4', '5'].map(val => (
-            <ToggleButton key={val} id={val}>
-              {val} ★
-            </ToggleButton>
-          ))}
-        </ToggleButton.Group>
-      </Stack>
-    </Stack>
-  );
-};
+    <Radio.Group
+      label="Min. Rating"
+      name="rating"
+      orientation="horizontal"
+      defaultValue={filter.rating ? String(filter.rating) : undefined}
+    >
+      {['1', '2', '3', '4', '5'].map(value => (
+        <Radio key={value} value={value}>
+          {value} ★
+        </Radio>
+      ))}
+    </Radio.Group>
+  </Stack>
+);
 
 // Toolbar
 // ---------------
+type FilterFormData = {
+  capacity?: string;
+  price?: string;
+  traits?: string | string[];
+  rating?: string;
+};
+
 export const Toolbar = () => {
   const [search, setSearch] = useSearch();
   const { filter, setFilter } = useFilter();
-  const [, setPage] = usePage();
-
-  const onSearch = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const q = data.get('q') as string;
-    setSearch(q);
-    setPage(null);
-  };
 
   const onFilterSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { success, error, data } = toUrlSchema(getFormData(e));
-    if (!success) {
-      console.error('Invalid filter data', error);
-      return;
-    }
-    setFilter(data);
-    setPage(null);
+    const data = parseFormData<FilterFormData>(e);
+
+    const capacity = data.capacity ? Number(data.capacity) : null;
+    const price = data.price ? Number(data.price) : null;
+    const traits = Array.isArray(data.traits)
+      ? data.traits.map(String)
+      : data.traits
+        ? [String(data.traits)]
+        : [];
+
+    setFilter({
+      capacity,
+      price: price !== null && price < MAX_PRICE ? price : null,
+      traits,
+      rating: data.rating ? Number(data.rating) : null,
+    });
   };
 
   return (
-    <Inline space={2} alignX={'between'}>
+    <Inline space={2} alignX="between">
       <Inline alignY="input" space={2}>
-        <Form onSubmit={onSearch} unstyled>
-          <Inline space={2} noWrap alignY="top">
-            <SearchField
-              aria-label="Search venues"
-              description="Search by name"
-              name="q"
-              width={64}
-              autoComplete="off"
-              defaultValue={search}
-              onClear={() => {
-                setSearch('');
-                setPage(null);
-              }}
-            />
-            <Button variant="primary" type="submit">
-              Search
-            </Button>
-          </Inline>
-        </Form>
+        <SearchField
+          aria-label="Search venues"
+          description="Search by name"
+          width={64}
+          autoComplete="off"
+          defaultValue={search}
+          onSubmit={value => setSearch(value || null)}
+          onClear={() => setSearch(null)}
+        />
         <Drawer.Trigger>
           <Button>
             <Filter /> Filter
@@ -166,10 +136,7 @@ export const Toolbar = () => {
             <Form onSubmit={onFilterSubmit} unstyled>
               <Drawer.Title>Filter Venues</Drawer.Title>
               <Drawer.Content>
-                <FilterForm
-                  key={JSON.stringify(filter)}
-                  state={toFormSchema(filter)}
-                />
+                <FilterForm key={JSON.stringify(filter)} filter={filter} />
               </Drawer.Content>
               <Drawer.Actions>
                 <Button slot="close">Close</Button>

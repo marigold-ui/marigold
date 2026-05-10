@@ -1,9 +1,7 @@
 'use client';
 
 import { Tag, Text } from '@marigold/components';
-import { type VenueFilter, renderFilterValue, useFilter } from './utils';
-
-type FilterKeys = keyof VenueFilter;
+import { type FilterKeys, renderFilterValue, useFilter } from './utils';
 
 export const AppliedFilter = () => {
   const { filter, removeFilter } = useFilter();
@@ -11,13 +9,13 @@ export const AppliedFilter = () => {
   const appliedFilters = (Object.keys(filter) as FilterKeys[]).filter(name => {
     const value = filter[name];
     if (Array.isArray(value)) return value.length > 0;
-    return value !== undefined;
+    return value !== null;
   });
 
   return (
     <Tag.Group
       label="Applied Filters"
-      onRemove={removeFilter}
+      onRemove={keys => removeFilter(keys as Set<FilterKeys>)}
       removeAll
       emptyState={() => (
         <Text variant="muted" fontSize="sm" fontStyle="italic">

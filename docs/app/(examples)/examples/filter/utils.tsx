@@ -1,7 +1,12 @@
-import { venueTypes } from '@/lib/data/venues';
-import { parseAsInteger, parseAsJson, useQueryState } from 'nuqs';
-import type { FormEvent, ReactNode } from 'react';
-import { z } from 'zod';
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringLiteral,
+  useQueryState,
+  useQueryStates,
+} from 'nuqs';
+import type { ReactNode } from 'react';
 import { NumericFormat } from '@marigold/system';
 
 // These bounds are intentionally hardcoded for the static demo dataset
@@ -11,84 +16,95 @@ import { NumericFormat } from '@marigold/system';
 export const MAX_CAPACITY = 50_000;
 export const MAX_PRICE = 5_000;
 
-// Form data
+const history = { history: 'push' } as const;
+
+// Page hook
 // ---------------
-export const getFormData = (e: FormEvent<HTMLFormElement>) => {
-  const data = new FormData(e.currentTarget);
-  const result: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {};
+export const usePage = () =>
+  useQueryState('page', parseAsInteger.withDefault(1).withOptions(history));
 
-  for (const [key, value] of data.entries()) {
-    if (result[key]) {
-      result[key] = Array.isArray(result[key])
-        ? [...(result[key] as FormDataEntryValue[]), value]
-        : [result[key] as FormDataEntryValue, value];
-    } else {
-      result[key] = value;
-    }
-  }
-
-  return result;
-};
-
-// URL schema
+// Search hook
 // ---------------
-const urlSchema = z.object({
-  type: z.number().optional(),
-  capacity: z.number().optional(),
-  price: z.number().optional(),
-  traits: z.array(z.string()).optional(),
-  rating: z.number().optional(),
-});
+export const useSearch = () => {
+  const [search, setSearchRaw] = useQueryState(
+    'q',
+    parseAsString.withDefault('').withOptions(history)
+  );
+  const [, setPage] = usePage();
 
-export type VenueFilter = z.infer<typeof urlSchema>;
-
-export const defaultFilter: VenueFilter = {
-  type: undefined,
-  capacity: undefined,
-  price: undefined,
-  traits: undefined,
-  rating: undefined,
-};
-
-// Form schema (type is handled separately in the toolbar, not in the filter drawer)
-// ---------------
-const formSchema = z.object({
-  capacity: z.string(),
-  price: z.string(),
-  traits: z
-    .union([z.string(), z.array(z.string())])
-    .optional()
-    .transform(value => {
-      if (!value) return [] as string[];
-      return Array.isArray(value) ? value : [value];
-    }),
-  rating: z.string().optional().default(''),
-});
-
-// URL -> Form
-export const toFormSchema = urlSchema.transform(data => ({
-  capacity: data.capacity ?? 0,
-  price: data.price ?? MAX_PRICE,
-  traits: data.traits ?? [],
-  rating: String(data.rating ?? ''),
-})).parse;
-
-export const toUrlSchema = formSchema.transform(data => {
-  const capacity = data.capacity ? Number(data.capacity) : undefined;
-  const price = data.price ? Number(data.price) : undefined;
-
-  return {
-    capacity,
-    price: price !== undefined && price < MAX_PRICE ? price : undefined,
-    traits: data.traits.length > 0 ? data.traits : undefined,
-    rating: data.rating ? Number(data.rating) : undefined,
+  const setSearch: typeof setSearchRaw = (...args) => {
+    setPage(null);
+    return setSearchRaw(...args);
   };
-}).safeParse;
 
+  return [search, setSearch] as const;
+};
+
+// Filter hook
 // ---------------
-type FilterKeys = keyof VenueFilter;
+const filterParsers = {
+  capacity: parseAsInteger,
+  price: parseAsInteger,
+  traits: parseAsArrayOf(parseAsString).withDefault([]),
+  rating: parseAsInteger,
+};
 
-const renderType = (value: number) => `Type: ${venueTypes[value] ?? 'Unknown'}`;
+export type FilterKeys = keyof typeof filterParsers;
+export type VenueFilter = {
+  capacity: number | null;
+  price: number | null;
+  traits: string[];
+  rating: number | null;
+};
+
+export const useFilter = () => {
+  const [filter, setFilterRaw] = useQueryStates(filterParsers, history);
+  const [, setPage] = usePage();
+
+  const setFilter: typeof setFilterRaw = (...args) => {
+    setPage(null);
+    return setFilterRaw(...args);
+  };
+
+  const removeFilter = (keys: Set<FilterKeys>) =>
+    setFilter(
+      Object.fromEntries([...keys].map(k => [k, null])) as {
+        [K in FilterKeys]?: null;
+      }
+    );
+
+  const hasFilter = () =>
+    filter.capacity !== null ||
+    filter.price !== null ||
+    filter.rating !== null ||
+    filter.traits.length > 0;
+
+  return { filter, setFilter, removeFilter, hasFilter } as const;
+};
+
+// Sort hook
+// ---------------
+const sortColumns = ['name', 'capacity', 'price'] as const;
+const sortDirections = ['ascending', 'descending'] as const;
+
+const sortParsers = {
+  column: parseAsStringLiteral(sortColumns).withDefault('name'),
+  direction: parseAsStringLiteral(sortDirections).withDefault('ascending'),
+};
+
+export type VenueSortDescriptor = {
+  column: (typeof sortColumns)[number];
+  direction: (typeof sortDirections)[number];
+};
+
+export const useSort = () => useQueryStates(sortParsers, history);
+
+// Pagination
+// ---------------
+export const PAGE_SIZE = 5;
+
+// Applied-filter rendering
+// ---------------
 const renderCapacity = (value: number) => (
   <>
     Min Capacity: <NumericFormat value={value} />
@@ -120,72 +136,13 @@ export const renderFilterValue = (
   filter: VenueFilter
 ): ReactNode => {
   switch (key) {
-    case 'type':
-      return filter.type !== undefined ? renderType(filter.type) : null;
     case 'capacity':
-      return filter.capacity !== undefined
-        ? renderCapacity(filter.capacity)
-        : null;
+      return filter.capacity !== null ? renderCapacity(filter.capacity) : null;
     case 'price':
-      return filter.price !== undefined ? renderPrice(filter.price) : null;
+      return filter.price !== null ? renderPrice(filter.price) : null;
     case 'traits':
-      return filter.traits ? renderTraits(filter.traits) : null;
+      return filter.traits.length > 0 ? renderTraits(filter.traits) : null;
     case 'rating':
-      return filter.rating !== undefined ? renderRating(filter.rating) : null;
+      return filter.rating !== null ? renderRating(filter.rating) : null;
   }
 };
-
-// Filter hook
-// ---------------
-export const useFilter = () => {
-  const [filter, setFilter] = useQueryState(
-    'filter',
-    parseAsJson(urlSchema.parse)
-      .withDefault(defaultFilter)
-      .withOptions({ history: 'push' })
-  );
-
-  const removeFilter = (keys: Set<FilterKeys>) => {
-    const cleared = Object.fromEntries(
-      [...keys].map(key => [key, defaultFilter[key]])
-    );
-    setFilter({ ...filter, ...cleared });
-  };
-
-  return { filter, setFilter, removeFilter } as const;
-};
-
-export const useSearch = () =>
-  useQueryState('q', { defaultValue: '', history: 'push' });
-
-// Sort hook
-// ---------------
-const sortSchema = z.object({
-  column: z.string(),
-  direction: z.enum(['ascending', 'descending']),
-});
-
-export type VenueSortDescriptor = z.infer<typeof sortSchema>;
-
-export const defaultSort: VenueSortDescriptor = {
-  column: 'name',
-  direction: 'ascending',
-};
-
-export const useSort = () =>
-  useQueryState(
-    'sort',
-    parseAsJson(sortSchema.parse)
-      .withDefault(defaultSort)
-      .withOptions({ history: 'push' })
-  );
-
-// Pagination hook
-// ---------------
-export const PAGE_SIZE = 5;
-
-export const usePage = () =>
-  useQueryState(
-    'page',
-    parseAsInteger.withDefault(1).withOptions({ history: 'push' })
-  );
