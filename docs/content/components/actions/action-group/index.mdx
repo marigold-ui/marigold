@@ -43,7 +43,7 @@ Lists and rows of equal-weight items often need a per-row cluster of quick actio
 
 <ComponentDemo name="action-group-row-actions" />
 
-For destructive row actions, reach for `destructive-ghost` so the danger reads without overpowering the row. When the action count grows beyond three, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
+For destructive row actions, reach for `destructive-ghost` so the danger reads without overpowering the row. A `variant` set on the child always wins over one set on the group, so a single destructive button can sit inside an otherwise uniform cluster. When the action count grows beyond three, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
 
 ### Container chrome
 
@@ -51,27 +51,13 @@ Surfaces like `<Panel>`, `<Dialog>`, and `<Drawer>` carry their own chrome of se
 
 <ComponentDemo name="action-group-panel-chrome" />
 
-The container can publish shared defaults to every ActionButton inside via `ActionButtonContext`. A Panel header, for example, can declare "every ActionButton in here is `ghost` and `small`" once, and individual call sites stay free of repetitive props. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how container providers wire this up.
+The container can publish shared defaults to every ActionButton inside via `ActionButtonContext`. A Panel header, for example, can publish the variant and size for every ActionButton it contains, and individual call sites stay free of repetitive props. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how container providers wire this up.
 
 ### Standalone toolbar
 
 Above an editor, a comment box, or any content area that benefits from a cluster of related one-shot actions, reach for `<ActionGroup>` as a standalone toolbar.
 
 <ComponentDemo name="action-group-toolbar" />
-
-## Cascade rules
-
-The group publishes `size`, `variant`, and `disabled` to its children. Each prop has its own precedence rule, picked to match the most common case:
-
-| Prop       | Winner | Why                                                                                                                                |
-| ---------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `size`     | Group  | A toolbar should look uniform. Every button stays the same size unless you opt out by setting `size` directly on the child.        |
-| `variant`  | Local  | Lets you mix a `destructive-ghost` button into a `ghost` group without forcing every other button to opt out.                      |
-| `disabled` | Local  | The group can disable the whole cluster, but a child can opt back in with `disabled={false}` (e.g. a "Save" action that stays on). |
-
-The example below demonstrates all three rules in one group:
-
-<ComponentDemo name="action-group-precedence" />
 
 ## Props
 
