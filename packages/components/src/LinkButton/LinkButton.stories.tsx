@@ -1,4 +1,9 @@
+import { Pencil, Trash2 } from 'lucide-react';
+import { Provider } from 'react-aria-components';
 import preview from '.storybook/preview';
+import { ActionButton } from '../ActionButton/ActionButton';
+import { ActionButtonContext } from '../ActionButton/Context';
+import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { LinkButton } from './LinkButton';
 
 const meta = preview.meta({
@@ -37,3 +42,34 @@ const meta = preview.meta({
 });
 
 export const Basic: any = meta.story();
+
+export const InActionGroup = meta.story({
+  args: {
+    children: undefined,
+    href: undefined,
+  },
+  render: () => (
+    <ActionGroup aria-label="Row actions" size="small">
+      <LinkButton href="/events/1/edit" aria-label="Edit">
+        <Pencil />
+      </LinkButton>
+      <ActionButton variant="destructive-ghost" aria-label="Delete">
+        <Trash2 />
+      </ActionButton>
+    </ActionGroup>
+  ),
+});
+
+export const InActionButtonContext = meta.story({
+  args: {
+    children: undefined,
+    href: undefined,
+  },
+  render: () => (
+    <Provider
+      values={[[ActionButtonContext, { variant: 'secondary', size: 'large' }]]}
+    >
+      <LinkButton href="/profile">Open profile</LinkButton>
+    </Provider>
+  ),
+});

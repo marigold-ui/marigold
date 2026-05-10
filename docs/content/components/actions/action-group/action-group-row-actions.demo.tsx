@@ -3,6 +3,7 @@ import {
   ActionButton,
   ActionGroup,
   Inline,
+  LinkButton,
   Stack,
   Text,
   Tooltip,
@@ -44,9 +45,9 @@ export default () => (
             <Tooltip>View</Tooltip>
           </Tooltip.Trigger>
           <Tooltip.Trigger>
-            <ActionButton aria-label="Edit">
+            <LinkButton href={`/events/${event.id}/edit`} aria-label="Edit">
               <Pencil />
-            </ActionButton>
+            </LinkButton>
             <Tooltip>Edit</Tooltip>
           </Tooltip.Trigger>
           <Tooltip.Trigger>

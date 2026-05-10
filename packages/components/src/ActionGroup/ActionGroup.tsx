@@ -58,8 +58,10 @@ export const ActionGroup = ({
     ...rest
   } = merged;
 
+  // Publish a `ghost` baseline so any action consumer renders low-emphasis
+  // without each one repeating the fallback.
   const ctx = useMemo(
-    () => ({ variant, size, disabled }),
+    () => ({ variant: variant ?? 'ghost', size, disabled }),
     [variant, size, disabled]
   );
 
