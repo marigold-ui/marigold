@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Description } from './Description';
 
@@ -22,4 +23,18 @@ export const Basic: any = meta.story({
   render: ({ children, ...args }: any) => (
     <Description {...args}>{children}</Description>
   ),
+});
+
+export const Renders: any = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Description>
+      Helps a user understand what the parent region is for.
+    </Description>
+  ),
+  play: async ({ canvas }: any) => {
+    await expect(
+      canvas.getByText('Helps a user understand what the parent region is for.')
+    ).toBeInTheDocument();
+  },
 });

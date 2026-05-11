@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Title } from './Title';
@@ -31,4 +32,14 @@ export const Levels: any = meta.story({
       <Title level={3}>Title rendered as h3</Title>
     </Stack>
   ),
+});
+
+export const Renders: any = meta.story({
+  tags: ['component-test'],
+  render: () => <Title>Panel title</Title>,
+  play: async ({ canvas }: any) => {
+    await expect(
+      canvas.getByRole('heading', { level: 2, name: 'Panel title' })
+    ).toBeInTheDocument();
+  },
 });
