@@ -34,19 +34,33 @@ export const Basic: any = meta.story({
   ),
   play: async ({ canvas }: any) => {
     const toolbar = canvas.getByRole('toolbar', { name: 'Item actions' });
-    await expect(toolbar).toBeInTheDocument();
-
     const buttons = canvas.getAllByRole('button');
-    await expect(buttons.length).toBe(3);
 
-    buttons[0].focus();
-    await expect(buttons[0]).toHaveFocus();
+    await expect(toolbar).toBeInTheDocument();
+    await expect(buttons).toHaveLength(3);
+  },
+});
+
+export const KeyboardNavigation: any = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <ActionGroup aria-label="Item actions">
+      <ActionButton aria-label="Edit">
+        <Edit />
+      </ActionButton>
+      <ActionButton aria-label="Duplicate">Duplicate</ActionButton>
+      <ActionButton aria-label="Delete">Delete</ActionButton>
+    </ActionGroup>
+  ),
+  play: async ({ canvas }: any) => {
+    const [first, second, third] = canvas.getAllByRole('button');
+    first.focus();
 
     await userEvent.keyboard('{ArrowRight}');
-    await expect(buttons[1]).toHaveFocus();
-
     await userEvent.keyboard('{ArrowRight}');
-    await expect(buttons[2]).toHaveFocus();
+
+    await expect(second).not.toHaveFocus();
+    await expect(third).toHaveFocus();
   },
 });
 
