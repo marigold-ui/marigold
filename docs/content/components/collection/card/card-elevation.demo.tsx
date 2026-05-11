@@ -19,9 +19,9 @@ export default () => (
         />
       </Card.Preview>
       <Card.Header>
-        <Stack space={1}>
+        <Stack space="tight">
           <Headline level={3}>Annual Conference 2025</Headline>
-          <Inline space={2}>
+          <Inline space="related">
             <Badge variant="info">Music</Badge>
             <Badge variant="success">Tickets available</Badge>
           </Inline>
@@ -34,7 +34,7 @@ export default () => (
         </Text>
       </Card.Body>
       <Card.Footer>
-        <Inline space={2}>
+        <Inline space="related">
           <Button variant="primary" size="small">
             Get tickets
           </Button>

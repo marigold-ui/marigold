@@ -10,7 +10,7 @@ import {
 export default () => (
   <Card>
     <Card.Header>
-      <Inline space={2}>
+      <Inline space="related">
         <Headline level={3}>Pro plan</Headline>
         <Badge variant="success">Current</Badge>
       </Inline>
@@ -22,7 +22,7 @@ export default () => (
       </Text>
     </Card.Body>
     <Card.Footer>
-      <Inline space={2}>
+      <Inline space="related">
         <Button variant="primary" size="small">
           Manage plan
         </Button>

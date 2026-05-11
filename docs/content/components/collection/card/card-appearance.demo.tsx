@@ -14,9 +14,9 @@ const venue = venues[5];
 export default (props: CardProps) => (
   <Card {...props}>
     <Card.Header>
-      <Stack space={1}>
+      <Stack space="tight">
         <Headline level={3}>{venue.name}</Headline>
-        <Inline space={2}>
+        <Inline space="related">
           <Badge variant="info">{venueTypes[venue.type]}</Badge>
           <Badge variant="success">Capacity: {venue.capacity}</Badge>
         </Inline>
@@ -26,7 +26,7 @@ export default (props: CardProps) => (
       <Text variant="muted">{venue.description}</Text>
     </Card.Body>
     <Card.Footer>
-      <Inline space={4}>
+      <Inline space="regular">
         <Text size="sm" weight="bold">
           {venue.city}, {venue.country}
         </Text>

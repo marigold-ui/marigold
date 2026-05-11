@@ -14,7 +14,7 @@ const featured = [venues[0], venues[3], venues[5]];
 
 export default () => (
   <div className="bg-bg-surface rounded-xl p-6">
-    <Tiles space={4} tilesWidth="240px" stretch>
+    <Tiles space="regular" tilesWidth="240px" stretch>
       {featured.map(venue => (
         <Card key={venue.id}>
           <Card.Preview>
@@ -25,9 +25,9 @@ export default () => (
             />
           </Card.Preview>
           <Card.Header>
-            <Stack space={1}>
+            <Stack space="tight">
               <Headline level={3}>{venue.name}</Headline>
-              <Inline space={2}>
+              <Inline space="related">
                 <Badge variant="info">{venueTypes[venue.type]}</Badge>
               </Inline>
             </Stack>
@@ -39,7 +39,7 @@ export default () => (
             </Text>
           </Card.Body>
           <Card.Footer>
-            <Inline space={2} alignY="center">
+            <Inline space="related" alignY="center">
               <Text size="sm" weight="bold">
                 ${venue.price.from.toLocaleString()}
               </Text>
