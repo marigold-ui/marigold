@@ -245,6 +245,26 @@ export const ThreeMonths = meta.story({
   render: args => <Calendar {...args} />,
 });
 
+// Regression (DST-1412): the third month previously overflowed when the wrapper was constrained to 50% of its parent.
+export const ThreeMonthsHalfWidth = meta.story({
+  args: {
+    visibleDuration: { months: 3 },
+    width: '1/2',
+    defaultValue: new CalendarDate(2025, 6, 1),
+  },
+  render: args => <Calendar {...args} />,
+});
+
+// Regression (DST-1412): header text previously floated over empty space because the date table didn't fill its flex-1 column.
+export const ThreeMonthsFullWidth = meta.story({
+  args: {
+    visibleDuration: { months: 3 },
+    width: 'full',
+    defaultValue: new CalendarDate(2025, 6, 1),
+  },
+  render: args => <Calendar {...args} />,
+});
+
 export const MultiMonthNavigation = meta.story({
   tags: ['component-test'],
   args: {

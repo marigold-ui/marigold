@@ -1,5 +1,5 @@
 ---
-'@marigold/system': major
+'@marigold/system': minor
 '@marigold/components': minor
 '@marigold/theme-rui': patch
 ---
@@ -10,4 +10,4 @@ Components that previously resolved `width`, `maxWidth`, and `height` via class-
 
 `createWidthVar` gained support for the previously missing keywords (`svh`, `lvh`, `dvh`, `px`, `container`), and a new `createHeightVar` helper was added. Both share a common factory and a base keyword set, so they remain trivially in sync.
 
-**Breaking** (`@marigold/system`): The runtime class-name maps `width`, `maxWidth`, `height`, `gapSpace`, `paddingSpace`, `paddingSpaceX`, `paddingSpaceY`, `paddingRight`, `paddingLeft`, `paddingTop`, `paddingBottom` are no longer exported. Use the prop types (`WidthProp`, `HeightProp`, …) and the CSS-var helpers (`createWidthVar`, `createHeightVar`, `createSpacingVar`) instead. The corresponding TypeScript prop types are unchanged.
+The runtime class-name maps `width`, `maxWidth`, `height`, `gapSpace`, `paddingSpace`, `paddingSpaceX`, `paddingSpaceY`, `paddingRight`, `paddingLeft`, `paddingTop`, `paddingBottom` are no longer exported from `@marigold/system`. These were internal utilities consumed only by `@marigold/components`. Use the prop types (`WidthProp`, `HeightProp`, …) and the CSS-var helpers (`createWidthVar`, `createHeightVar`, `createSpacingVar`) instead. The corresponding TypeScript prop types are unchanged.
