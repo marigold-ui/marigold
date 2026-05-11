@@ -15,7 +15,7 @@ import {
   Tag,
   parseFormData,
 } from '@marigold/components';
-import { Filter } from '@marigold/icons';
+import { ListFilter } from '@marigold/icons';
 import {
   MAX_CAPACITY,
   MAX_PRICE,
@@ -130,7 +130,7 @@ export const Toolbar = () => {
         />
         <Drawer.Trigger>
           <Button>
-            <Filter /> Filter
+            <ListFilter /> Filter
           </Button>
           <Drawer closeButton>
             <Form onSubmit={onFilterSubmit} unstyled>
