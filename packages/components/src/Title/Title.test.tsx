@@ -4,7 +4,9 @@ import { Basic } from './Title.stories';
 
 test('renders as h2 by default', () => {
   render(<Basic.Component data-testid="title">Panel title</Basic.Component>);
+
   const el = screen.getByTestId('title');
+
   expect(el.tagName).toBe('H2');
   expect(el).toHaveTextContent('Panel title');
 });
@@ -15,6 +17,7 @@ test('respects an explicit "level" prop', () => {
       Hi
     </Basic.Component>
   );
+
   expect(screen.getByTestId('title').tagName).toBe('H3');
 });
 
@@ -24,6 +27,7 @@ test('receives "level" from a HeadingContext slot', () => {
       <Basic.Component data-testid="title">Hi</Basic.Component>
     </Provider>
   );
+
   expect(screen.getByTestId('title').tagName).toBe('H4');
 });
 
@@ -40,16 +44,19 @@ test('receives className from a HeadingContext slot', () => {
       <Basic.Component data-testid="title">Hi</Basic.Component>
     </Provider>
   );
+
   expect(screen.getByTestId('title')).toHaveClass('[grid-area:title]');
 });
 
 test('forwards a ref to the underlying heading element', () => {
   const ref = { current: null as HTMLHeadingElement | null };
+
   render(
     <Basic.Component ref={ref} data-testid="title">
       Hi
     </Basic.Component>
   );
+
   expect(ref.current).not.toBeNull();
   expect(ref.current?.tagName).toBe('H2');
 });

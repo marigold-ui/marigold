@@ -8,18 +8,22 @@ const user = userEvent.setup();
 
 test('renders an action button by default with the ghost variant', () => {
   render(<Basic.Component data-testid="action">Click</Basic.Component>);
+
   const btn = screen.getByTestId('action');
+
   expect(btn.tagName).toBe('BUTTON');
   expect(btn).toHaveTextContent('Click');
 });
 
 test('forwards a ref to the underlying button', () => {
   const ref = { current: null as HTMLButtonElement | null };
+
   render(
     <Basic.Component ref={ref} data-testid="action">
       Click
     </Basic.Component>
   );
+
   expect(ref.current).not.toBeNull();
   expect(ref.current?.tagName).toBe('BUTTON');
 });
@@ -31,7 +35,9 @@ test('disabled prop maps to RAC isDisabled', async () => {
       Click
     </Basic.Component>
   );
+
   await user.click(screen.getByTestId('action'));
+
   expect(onPress).not.toHaveBeenCalled();
 });
 
@@ -43,6 +49,7 @@ test('inherits variant and size from ActionButtonContext provider', () => {
       <Basic.Component data-testid="action">Click</Basic.Component>
     </Provider>
   );
+
   // 'large' size compound variant adds 'h-control-large'
   expect(screen.getByTestId('action')).toHaveClass('h-control-large');
 });
@@ -57,6 +64,9 @@ test('explicit size overrides ActionButtonContext size', () => {
       </Basic.Component>
     </Provider>
   );
-  expect(screen.getByTestId('action')).toHaveClass('h-control-small');
-  expect(screen.getByTestId('action')).not.toHaveClass('h-control-large');
+
+  const btn = screen.getByTestId('action');
+
+  expect(btn).toHaveClass('h-control-small');
+  expect(btn).not.toHaveClass('h-control-large');
 });

@@ -6,22 +6,25 @@ import { Basic } from './LinkButton.stories';
 
 test('renders children', () => {
   render(<Basic.Component />);
+
   expect(screen.getByRole('link')).toHaveTextContent('Link Button');
 });
 
 test('renders <a> element', () => {
   render(<Basic.Component href="www.reservix.net" />);
-  const link = screen.getByRole('link');
-  expect(link).toHaveAttribute('href', 'www.reservix.net');
+
+  expect(screen.getByRole('link')).toHaveAttribute('href', 'www.reservix.net');
 });
 
 test('forwards additional props', () => {
   render(<Basic.Component data-testid="custom-link" />);
+
   expect(screen.getByTestId('custom-link')).toBeInTheDocument();
 });
 
 test('supports fullWidth', () => {
   render(<Basic.Component fullWidth />);
+
   expect(screen.getByRole('link')).toHaveClass('w-full');
 });
 
@@ -33,6 +36,7 @@ test('inherits variant and size from ActionButtonContext provider', () => {
       <Basic.Component data-testid="link">Edit</Basic.Component>
     </Provider>
   );
+
   expect(screen.getByTestId('link')).toHaveClass('h-control-large');
 });
 
@@ -46,8 +50,11 @@ test('explicit size overrides ActionButtonContext size', () => {
       </Basic.Component>
     </Provider>
   );
-  expect(screen.getByTestId('link')).toHaveClass('h-control-small');
-  expect(screen.getByTestId('link')).not.toHaveClass('h-control-large');
+
+  const link = screen.getByTestId('link');
+
+  expect(link).toHaveClass('h-control-small');
+  expect(link).not.toHaveClass('h-control-large');
 });
 
 test('inherits size from enclosing ActionGroup (group wins over local)', () => {
@@ -58,6 +65,7 @@ test('inherits size from enclosing ActionGroup (group wins over local)', () => {
       </Basic.Component>
     </ActionGroup>
   );
+
   expect(screen.getByTestId('link')).toHaveClass('h-control-small');
 });
 
@@ -69,6 +77,7 @@ test('local variant wins over ActionGroup variant', () => {
       </Basic.Component>
     </ActionGroup>
   );
+
   expect(screen.getByTestId('link')).toHaveClass('text-destructive-accent');
 });
 
@@ -78,5 +87,6 @@ test('inherits ghost baseline from ActionGroup with no explicit variant', () => 
       <Basic.Component data-testid="link">Edit</Basic.Component>
     </ActionGroup>
   );
+
   expect(screen.getByTestId('link')).toHaveClass('hover:ui-state-hover-ghost');
 });
