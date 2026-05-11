@@ -46,11 +46,13 @@ const _LinkButton = ({
   slot,
   ...props
 }: LinkButtonProps) => {
-  // Read-only consumption (vs `<ActionButton>`'s `useContextProps`) sidesteps
-  // the button/anchor ref-type mismatch.
+  // `useSlottedContext` (vs `<ActionButton>`'s `useContextProps`) sidesteps
+  // the button/anchor ref-type mismatch; policy below mirrors `<ActionButton>`.
   const ctxValue = useSlottedContext(ActionButtonContext, slot);
   const groupCtx = useSlottedContext(ActionGroupContext);
 
+  // Cascade with the enclosing ActionGroup. Reads left-to-right; `size` is
+  // the outlier (group wins) so the cluster stays visually uniform.
   const variant = propVariant ?? ctxValue?.variant ?? groupCtx?.variant;
   const size = groupCtx?.size ?? propSize ?? ctxValue?.size;
   const disabled = propDisabled ?? ctxValue?.disabled ?? groupCtx?.disabled;

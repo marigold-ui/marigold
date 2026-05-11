@@ -58,21 +58,19 @@ export const ActionButton = ({
 
   const {
     children,
-    variant: localVariant,
-    size: localSize,
-    disabled: localDisabled,
+    variant: ownVariant,
+    size: ownSize,
+    disabled: ownDisabled,
     loading,
     className: contextClassName,
     ...rest
   } = merged;
 
-  // Per-prop precedence between local props and the enclosing ActionGroup:
-  //   - variant: local wins (allows e.g. a destructive button in a ghost group)
-  //   - size: group wins (visual uniformity within a group)
-  //   - disabled: local wins, group is the fallback default
-  const variant = localVariant ?? groupCtx?.variant ?? 'ghost';
-  const size = groupCtx?.size ?? localSize;
-  const disabled = localDisabled ?? groupCtx?.disabled;
+  // Cascade with the enclosing ActionGroup. Reads left-to-right; `size` is
+  // the outlier (group wins) so the cluster stays visually uniform.
+  const variant = ownVariant ?? groupCtx?.variant ?? 'ghost';
+  const size = groupCtx?.size ?? ownSize;
+  const disabled = ownDisabled ?? groupCtx?.disabled;
 
   const classNames = useClassNames({
     component: 'Button',
