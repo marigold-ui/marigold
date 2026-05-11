@@ -22,15 +22,15 @@ test('cascades disabled to children inside ActionGroup', () => {
 });
 
 describe('cascade precedence', () => {
-  beforeEach(() => render(<CascadePrecedence.Component />));
-
   test('group "size" wins over a child\'s explicit size prop', () => {
+    render(<CascadePrecedence.Component />);
     const btn = screen.getByRole('button', { name: 'Outsized' });
     expect(btn).toHaveClass('h-control-small');
     expect(btn).not.toHaveClass('h-control-large');
   });
 
   test('local "variant" wins over the group\'s variant', () => {
+    render(<CascadePrecedence.Component />);
     expect(screen.getByRole('button', { name: 'Delete' })).toHaveClass(
       'text-destructive-accent'
     );
@@ -40,6 +40,7 @@ describe('cascade precedence', () => {
   });
 
   test('local "disabled={false}" re-enables a button inside a disabled group', () => {
+    render(<CascadePrecedence.Component />);
     expect(screen.getByRole('button', { name: 'Outsized' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Delete' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Save' })).not.toBeDisabled();
