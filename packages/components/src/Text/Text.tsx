@@ -34,25 +34,12 @@ import type { SlotProps } from '../types';
 export type TextVariant = 'default' | 'muted';
 
 /**
- * The shared body-text size scale. Other body primitives derive their
- * size unions from this via `Extract<TextSize, ...>`. Will become a
- * typography token in a future PR.
+ * The shared body-text size scale. Derived from the `textSize` style-prop
+ * record in `@marigold/system` so the two stay in lockstep. Other body
+ * primitives derive their size unions from this via `Extract<TextSize, ...>`.
+ * Will become a typography token in a future PR.
  */
-export type TextSize =
-  | 'default'
-  | 'xs'
-  | 'sm'
-  | 'base'
-  | 'lg'
-  | 'xl'
-  | '2xl'
-  | '3xl'
-  | '4xl'
-  | '5xl'
-  | '6xl'
-  | '7xl'
-  | '8xl'
-  | '9xl';
+export type TextSize = 'default' | keyof typeof textSize;
 
 // Props
 // --------------
