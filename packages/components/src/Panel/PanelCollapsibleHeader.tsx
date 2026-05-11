@@ -1,6 +1,12 @@
 import type { ReactNode } from 'react';
 import { use, useId, useMemo } from 'react';
-import { Button, DisclosureStateContext, Heading } from 'react-aria-components';
+import {
+  Button,
+  DisclosureStateContext,
+  Heading,
+  HeadingContext,
+  Provider,
+} from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { MorphCaret } from '../icons/MorphCaret';
 import { useSlot } from '../utils/useSlot';
@@ -43,17 +49,24 @@ export const PanelCollapsibleHeader = ({
 
   return (
     <CollapsibleHeaderProvider value={contextValue}>
-      <Heading level={level} className="flex">
-        <Button
-          slot="trigger"
-          aria-labelledby={titleId}
-          aria-describedby={hasDescription ? descriptionId : undefined}
-          className={cn('flex-1', classNames.collapsibleHeader)}
-        >
-          <span className="min-w-0 flex-1">{children}</span>
-          <MorphCaret expanded={isExpanded} />
-        </Button>
-      </Heading>
+      {/*
+        Reset HeadingContext for the trigger Heading. Panel's root publishes
+        a slot-keyed value for the panel title, which would otherwise force
+        this Heading to declare a matching slot or throw.
+      */}
+      <Provider values={[[HeadingContext, null]]}>
+        <Heading level={level} className="flex">
+          <Button
+            slot="trigger"
+            aria-labelledby={titleId}
+            aria-describedby={hasDescription ? descriptionId : undefined}
+            className={cn('flex-1', classNames.collapsibleHeader)}
+          >
+            <span className="min-w-0 flex-1">{children}</span>
+            <MorphCaret expanded={isExpanded} />
+          </Button>
+        </Heading>
+      </Provider>
     </CollapsibleHeaderProvider>
   );
 };

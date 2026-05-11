@@ -6,6 +6,7 @@ import {
   Basic,
   CustomPadding,
   TableInside,
+  TitleOnlyWithoutHeader,
   Variants,
   WithHeaderActions,
 } from './Panel.stories';
@@ -225,6 +226,17 @@ describe('Title in Panel.Header', () => {
     const title = screen.getByRole('heading', { name: 'Organizer Profile' });
 
     expect(title.closest('[data-panel-header]')).not.toBeNull();
+  });
+
+  test('labels the panel region when used without a Panel.Header', () => {
+    render(<TitleOnlyWithoutHeader.Component />);
+
+    const title = screen.getByRole('heading', { name: 'Quick Settings' });
+    const region = screen.getByRole('region', { name: 'Quick Settings' });
+
+    expect(title.tagName).toBe('H2');
+    expect(region).toHaveAttribute('aria-labelledby', title.id);
+    expect(title.closest('[data-panel-header]')).toBeNull();
   });
 
   test('defaults to an <h2>', () => {

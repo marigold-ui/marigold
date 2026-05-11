@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useId, useMemo } from 'react';
+import { HeadingContext, Provider } from 'react-aria-components';
 import type {
   InsetSpacingTokens,
   PaddingSpacingTokens,
@@ -103,23 +104,44 @@ export const Panel = ({
     [classNames, variant, titleId, headingLevel, hasTitle, titleSlotRef]
   );
 
+  // Minimal `HeadingContext` at the Panel root so a bare `<Title>` used
+  // without a `<Panel.Header>` wrapper still picks up the panel's heading
+  // level, id, and slot ref (`aria-labelledby` resolves correctly).
+  // `<Panel.Header>` publishes a richer value that wins for descendants
+  // inside the header (adds the grid-area className).
+  const headingCtx = useMemo(
+    () => ({
+      slots: {
+        title: {
+          level: headingLevel,
+          id: titleId,
+          ref: titleSlotRef,
+          className: cn('px-(--panel-px)', classNames.title),
+        },
+      },
+    }),
+    [classNames.title, headingLevel, titleId, titleSlotRef]
+  );
+
   return (
     <PanelProvider value={contextValue}>
-      <section
-        aria-labelledby={!ariaLabel ? titleId : undefined}
-        aria-label={ariaLabel}
-        className={cn(
-          'flex flex-col gap-y-(--panel-gap) pt-(--panel-py) pb-(--panel-py) has-[[data-collapsible]:last-child]:pb-0',
-          classNames.root
-        )}
-        style={{
-          ...createSpacingVar('panel-px', `${resolvedPx}`),
-          ...createSpacingVar('panel-py', `${resolvedPy}`),
-          ...createSpacingVar('panel-gap', `${space}`),
-        }}
-      >
-        {children}
-      </section>
+      <Provider values={[[HeadingContext, headingCtx]]}>
+        <section
+          aria-labelledby={!ariaLabel ? titleId : undefined}
+          aria-label={ariaLabel}
+          className={cn(
+            'flex flex-col gap-y-(--panel-gap) pt-(--panel-py) pb-(--panel-py) has-[[data-collapsible]:last-child]:pb-0',
+            classNames.root
+          )}
+          style={{
+            ...createSpacingVar('panel-px', `${resolvedPx}`),
+            ...createSpacingVar('panel-py', `${resolvedPy}`),
+            ...createSpacingVar('panel-gap', `${space}`),
+          }}
+        >
+          {children}
+        </section>
+      </Provider>
     </PanelProvider>
   );
 };
