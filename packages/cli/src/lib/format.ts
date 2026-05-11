@@ -1,9 +1,10 @@
 import pc from 'picocolors';
 import type { ComponentDocs } from './docs.js';
-import type {
-  Manifest,
-  ManifestCategory,
-  ManifestComponent,
+import {
+  type Manifest,
+  type ManifestCategory,
+  type ManifestComponent,
+  normalize,
 } from './manifest.js';
 import { stripAnsi } from './strip-ansi.js';
 
@@ -97,7 +98,10 @@ const matchesFilter = (
   component: ManifestComponent,
   filter: ListFilter
 ): boolean => {
-  if (filter.category && category.name !== filter.category.toLowerCase())
+  if (
+    filter.category &&
+    normalize(category.name) !== normalize(filter.category)
+  )
     return false;
   if (filter.search) {
     const needle = filter.search.toLowerCase();

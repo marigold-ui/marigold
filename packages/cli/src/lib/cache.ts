@@ -79,7 +79,18 @@ export const fetchWithCache = async <T = string>(
     );
   }
 
-  const response = await fetch(url);
+  let response: Response;
+  try {
+    response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+  } catch (err) {
+    if (err instanceof Error && err.name === 'TimeoutError') {
+      throw new Error(
+        `Timed out fetching ${url} after 10s. Check your network or use --offline.`,
+        { cause: err }
+      );
+    }
+    throw err;
+  }
   if (!response.ok) {
     throw new Error(
       `Failed to fetch ${url}: ${response.status} ${response.statusText}`

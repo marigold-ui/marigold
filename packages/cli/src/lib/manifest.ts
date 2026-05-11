@@ -130,7 +130,7 @@ export const loadManifestSync = (): Manifest | null => {
   }
 };
 
-const normalize = (s: string): string =>
+export const normalize = (s: string): string =>
   s.toLowerCase().replace(/[\s_-]+/g, '');
 
 export interface ResolveResult {

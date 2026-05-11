@@ -76,6 +76,17 @@ const manifest: Manifest = {
         },
       ],
     },
+    {
+      name: 'hooks-and-utils',
+      label: 'Hooks and Utils',
+      components: [
+        {
+          name: 'useNonModal',
+          slug: 'components/hooks-and-utils/use-non-modal',
+          description: 'Non-modal hook',
+        },
+      ],
+    },
   ],
   pages: [],
 };
@@ -87,6 +98,18 @@ describe('formatList', () => {
     expect(out).not.toContain('Button');
   });
 
+  it('filters by category case-insensitively', () => {
+    const out = formatList(manifest, { category: 'Form' }, 'plain');
+    expect(out).toContain('TextField');
+    expect(out).not.toContain('Button');
+  });
+
+  it('filters by category with spaces matching kebab-case key', () => {
+    const out = formatList(manifest, { category: 'Hooks and Utils' }, 'plain');
+    expect(out).toContain('useNonModal');
+    expect(out).not.toContain('TextField');
+  });
+
   it('filters by search term', () => {
     const out = formatList(manifest, { search: 'click' }, 'plain');
     expect(out).toContain('Button');
@@ -96,7 +119,7 @@ describe('formatList', () => {
   it('json output returns full structure', () => {
     const out = formatList(manifest, {}, 'json');
     const parsed = JSON.parse(out);
-    expect(parsed.categories).toHaveLength(2);
+    expect(parsed.categories).toHaveLength(3);
     expect(parsed.version).toBe('17.4.0');
   });
 

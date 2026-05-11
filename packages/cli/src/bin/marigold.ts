@@ -93,9 +93,12 @@ const isSection = (v: string): v is Section =>
 const isTelemetrySub = (v: string): v is TelemetrySubcommand =>
   v === 'status' || v === 'enable' || v === 'disable';
 
+// Thrown by `fail()` so the existing try/catch in `main()` can handle
+// validation failures without bypassing the telemetry emit block.
+class CliError extends Error {}
+
 function fail(message: string): never {
-  process.stderr.write(pc.red(message) + '\n');
-  process.exit(1);
+  throw new CliError(message);
 }
 
 const parseDocsCommand = (argv: string[]) =>
@@ -133,9 +136,9 @@ const parseInitCommand = (argv: string[]) =>
     },
   });
 
-const main = async (): Promise<number> => {
-  const argv = process.argv.slice(2);
-
+export const main = async (
+  argv: string[] = process.argv.slice(2)
+): Promise<number> => {
   if (argv.length === 0 || argv[0] === '-h' || argv[0] === '--help') {
     process.stdout.write(help);
     return 0;
@@ -172,22 +175,24 @@ const main = async (): Promise<number> => {
     if (command === 'docs') {
       const { positionals, values } = parseDocsCommand(rest);
       const [componentInput] = positionals;
-      if (!componentInput) fail('Usage: marigold docs <ComponentName>');
 
+      // Record telemetry args before validation so failed runs still report
+      // which flags were supplied.
+      telemetryArgs = {
+        component: componentInput ?? '',
+        section: values.section ?? 'all',
+        format: values.format ?? 'markdown',
+        ...(values.fresh ? { fresh: 'true' } : {}),
+        ...(values.offline ? { offline: 'true' } : {}),
+      };
+
+      if (!componentInput) fail('Usage: marigold docs <ComponentName>');
       if (values.section && !isSection(values.section)) {
         fail(`Invalid --section: ${values.section}`);
       }
       if (values.format && !isOutputFormat(values.format)) {
         fail(`Invalid --format: ${values.format}`);
       }
-
-      telemetryArgs = {
-        component: componentInput,
-        section: values.section ?? 'all',
-        format: values.format ?? 'markdown',
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
-      };
 
       const result = await runDocs({
         component: componentInput,
@@ -203,10 +208,6 @@ const main = async (): Promise<number> => {
     } else if (command === 'list') {
       const { values } = parseListCommand(rest);
 
-      if (values.format && !isOutputFormat(values.format)) {
-        fail(`Invalid --format: ${values.format}`);
-      }
-
       telemetryArgs = {
         format: values.format ?? 'markdown',
         ...(values.category ? { category: values.category } : {}),
@@ -214,6 +215,10 @@ const main = async (): Promise<number> => {
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
       };
+
+      if (values.format && !isOutputFormat(values.format)) {
+        fail(`Invalid --format: ${values.format}`);
+      }
 
       const result = await runList({
         category: values.category,
@@ -236,10 +241,10 @@ const main = async (): Promise<number> => {
       });
     } else if (command === 'telemetry') {
       const [sub] = rest;
+      telemetryArgs = sub ? { sub } : {};
       if (!sub || !isTelemetrySub(sub)) {
         fail('Usage: marigold telemetry <status|enable|disable>');
       }
-      telemetryArgs = { sub };
       const output = runTelemetry({ subcommand: sub });
       process.stdout.write(output);
     } else {
@@ -272,10 +277,17 @@ const main = async (): Promise<number> => {
   return exitCode;
 };
 
-main().then(
-  code => process.exit(code),
-  err => {
-    process.stderr.write(String(err) + '\n');
-    process.exit(1);
-  }
-);
+// Only auto-invoke when this module is the entry point (i.e. the user ran
+// `marigold ...`). When imported from tests, `main()` is awaited explicitly.
+const isEntryPoint = process.argv[1]
+  ? fileURLToPath(import.meta.url) === path.resolve(process.argv[1])
+  : false;
+if (isEntryPoint) {
+  main().then(
+    code => process.exit(code),
+    err => {
+      process.stderr.write(String(err) + '\n');
+      process.exit(1);
+    }
+  );
+}

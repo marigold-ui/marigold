@@ -123,6 +123,16 @@ describe('fetchWithCache', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
+  it('rewraps TimeoutError with a user-friendly message', async () => {
+    const timeoutError = Object.assign(new Error('aborted'), {
+      name: 'TimeoutError',
+    });
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(timeoutError);
+    await expect(
+      fetchWithCache<string>('https://x/slow', t => t)
+    ).rejects.toThrow(/Timed out fetching https:\/\/x\/slow after 10s/);
+  });
+
   it('expires entries older than TTL', async () => {
     const spy = mockFetch('fresh');
     await fetchWithCache<string>('https://x/ttl', t => t, { ttlMs: 1 });
