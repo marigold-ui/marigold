@@ -34,7 +34,7 @@ The `<Card>` component is a compound component made up of several sub-components
 
 <AppearanceTable component={'Card'} />
 
-The Card component supports variants for general content grouping as well as access-level marking.
+The card component supports variants for general content grouping as well as access-level marking.
 
 | Variant   | Description                                                      | When to use                                                                                      |
 | --------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -44,11 +44,11 @@ The Card component supports variants for general content grouping as well as acc
 
 ## Usage
 
-A Card represents one item in a set. Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry is the user's gateway to its own detail view. Repetition is the core case if the element doesn't repeat, a Card is probably the wrong tool.
+A card represents one item in a set. Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry is the user's gateway to its own detail view. Repetition is the core case if the element doesn't repeat, a card is probably the wrong tool.
 
 ### Card grids
 
-The canonical Card layout is a grid of items, each with its own visual identity, that wraps responsively as the viewport changes. Combine Card with [`<Tiles>`](../../layout/tiles) so the grid reflows automatically.
+The canonical card layout is a grid of items, each with its own visual identity, that wraps responsively as the viewport changes. Combine card with [`<Tiles>`](../../layout/tiles) so the grid reflows automatically.
 
 <ComponentDemo name="card-grid" />
 
@@ -91,7 +91,7 @@ When a card represents access-restricted content, set `variant="admin"` or `vari
 
 <ComponentDemo name="card-variants" />
 
-### When not to use a Card
+### When not to use a card
 
 Cards are easy to over-reach for. When repetition isn't the shape of the content, reach for one of these alternatives instead:
 
@@ -103,7 +103,7 @@ Cards are easy to over-reach for. When repetition isn't the shape of the content
 | A status, callout, or feedback message          | [`<SectionMessage>`](../../content/section-message)                       |
 | A list of similar rows with no media or actions | [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) |
 
-The four common misuses below cover the shapes that get mistaken for Card most often.
+The four common misuses below cover the shapes that get mistaken for card most often.
 
 #### Tabular data
 
@@ -132,7 +132,7 @@ When records share the same shape and users want to scan, sort, or compare acros
 
 #### Simple content
 
-A Card groups several pieces of related content. If you only have a single paragraph, a short message, or one field, the card adds visual weight without grouping anything. Use a [`<Headline>`](../../content/headline), [`<Text>`](../../content/text), or [`<SectionMessage>`](../../content/section-message) instead.
+A card groups several pieces of related content. If you only have a single paragraph, a short message, or one field, the card adds visual weight without grouping anything. Use a [`<Headline>`](../../content/headline), [`<Text>`](../../content/text), or [`<SectionMessage>`](../../content/section-message) instead.
 
 <GuidelineTiles>
   <Do>
@@ -243,7 +243,7 @@ Cards already sit on a raised surface. Nesting a card inside another card create
       title: 'Panel',
       href: '../../layout/panel',
       caption:
-        'The page-region counterpart to Card. Use Panel for named, non-repeating sections like "Billing" or "Team members".',
+        'The page-region counterpart to card. Use Panel for named, non-repeating sections like "Billing" or "Team members".',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
