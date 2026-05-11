@@ -62,8 +62,8 @@ export const ActionButton = ({
     size: ownSize,
     disabled: ownDisabled,
     loading,
-    className: contextClassName,
-    ...rest
+    className,
+    ...props
   } = merged;
 
   // Cascade with the enclosing ActionGroup. Reads left-to-right; `size` is
@@ -80,13 +80,9 @@ export const ActionButton = ({
 
   return (
     <Button
-      {...rest}
+      {...props}
       ref={ref}
-      className={cn(
-        contextClassName,
-        classNames,
-        loading && 'cursor-progress!'
-      )}
+      className={cn(className, classNames, loading && 'cursor-progress!')}
       isPending={loading}
       isDisabled={disabled}
     >

@@ -26,12 +26,12 @@ const _Description = ({
   slot = 'description',
   children,
   ref,
-  ...rest
+  ...props
 }: DescriptionProps) => (
   // `slot` may be `null` (opt out of inherited slot context). RAC's
   // `TextProps` narrows slot to `string`, but `useContextProps` (used
   // internally by `<Text>`) accepts `null` at runtime.
-  <Text elementType={as} slot={slot as string | undefined} ref={ref} {...rest}>
+  <Text elementType={as} slot={slot as string | undefined} ref={ref} {...props}>
     {children}
   </Text>
 );

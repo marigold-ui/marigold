@@ -97,6 +97,7 @@ const _Text = ({
   whiteSpace,
   children,
   as = 'div',
+  slot,
   ...props
 }: TextProps) => {
   const classNames = useClassNames({
@@ -109,17 +110,16 @@ const _Text = ({
    * Use `<Text>` when a `slot` is used. Make sure `elementType`
    * prop is only used in combination the `<Text>`.
    */
-  const Component = props.slot ? Text : as;
-  const elementType = props.slot ? { elementType: as } : {};
+  const Component = slot ? Text : as;
+  const elementType = slot ? { elementType: as } : {};
 
-  // `slot` may be `null` (opt out of inherited slot context). RAC's
-  // `TextProps` narrows slot to `string`; `useContextProps` accepts `null`
-  // at runtime. For the non-RAC branch (`as`), null also collapses to no
-  // slot at the DOM level.
-  const { slot, ...rest } = props;
   return (
+    // `slot` may be `null` (opt out of inherited slot context). RAC's
+    // `TextProps` narrows slot to `string`; `useContextProps` accepts `null`
+    // at runtime. For the non-RAC branch (`as`), null also collapses to no
+    // slot at the DOM level.
     <Component
-      {...rest}
+      {...props}
       slot={slot as string | undefined}
       {...elementType}
       className={cn(

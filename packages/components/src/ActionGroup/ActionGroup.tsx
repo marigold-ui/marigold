@@ -56,8 +56,7 @@ export const ActionGroup = ({
     disabled,
     orientation = 'horizontal',
     children,
-    className: contextClassName,
-    ...rest
+    ...props
   } = merged;
 
   const ctx = useMemo(
@@ -72,12 +71,7 @@ export const ActionGroup = ({
         [ActionButtonContext, RESET_BUTTON_CTX],
       ]}
     >
-      <Toolbar
-        {...rest}
-        ref={ref}
-        orientation={orientation}
-        className={contextClassName}
-      >
+      <Toolbar {...props} ref={ref} orientation={orientation}>
         {children}
       </Toolbar>
     </Provider>
