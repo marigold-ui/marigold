@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@marigold/components';
-import { Add } from '@marigold/icons';
+import { Plus } from '@marigold/icons';
 import { AppliedFilter } from './applied-filter';
 import { Toolbar } from './toolbar';
 import { VenuesTable } from './venues-table';
@@ -24,7 +24,7 @@ const FilterPage = () => (
         </Stack>
         {/* Will be wired up in DST-1288 */}
         <Button disabled>
-          <Add /> Add Venue
+          <Plus /> Add Venue
         </Button>
       </Inline>
       <Panel aria-label="Venues">

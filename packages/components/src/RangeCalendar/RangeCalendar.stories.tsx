@@ -209,7 +209,7 @@ export const ThreeMonths = meta.story({
 
 export const TwoMonthsMobile = meta.story({
   globals: {
-    viewport: { value: 'smallScreen' },
+    viewport: { value: 'mobile1' },
   },
   args: {
     visibleDuration: { months: 2 },
@@ -223,10 +223,36 @@ export const TwoMonthsMobile = meta.story({
 
 export const ThreeMonthsMobile = meta.story({
   globals: {
-    viewport: { value: 'smallScreen' },
+    viewport: { value: 'mobile1' },
   },
   args: {
     visibleDuration: { months: 3 },
+    defaultValue: {
+      start: new CalendarDate(2025, 5, 20),
+      end: new CalendarDate(2025, 7, 10),
+    },
+  },
+  render: args => <RangeCalendar {...args} />,
+});
+
+// Regression (DST-1412): the third month previously overflowed when the wrapper was constrained to 50% of its parent.
+export const ThreeMonthsHalfWidth = meta.story({
+  args: {
+    visibleDuration: { months: 3 },
+    width: '1/2',
+    defaultValue: {
+      start: new CalendarDate(2025, 5, 20),
+      end: new CalendarDate(2025, 7, 10),
+    },
+  },
+  render: args => <RangeCalendar {...args} />,
+});
+
+// Regression (DST-1412): header text previously floated over empty space because the date table didn't fill its flex-1 column.
+export const ThreeMonthsFullWidth = meta.story({
+  args: {
+    visibleDuration: { months: 3 },
+    width: 'full',
     defaultValue: {
       start: new CalendarDate(2025, 5, 20),
       end: new CalendarDate(2025, 7, 10),
