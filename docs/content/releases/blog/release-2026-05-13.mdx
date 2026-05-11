@@ -12,6 +12,7 @@ changed:
   - components/content/divider
   - components/content/loader
   - components/actions/actionbar
+  - components/overlay/drawer
 ---
 
 May is in full bloom, and so is Marigold. v17.5.0 brings two stories at once. A fresh batch of form components (a brand new `<RangeCalendar>`, a long overdue refresh of `<SelectList>`, and a properly working vertical `<Divider>`), and a docs experience built for the AI tools you're probably already using. There's also a nice DX bump for style props and a handful of smaller polish items across the board.
@@ -133,6 +134,19 @@ All standalone pattern demos (filter, form, inventory) now live in a single demo
 ### Static `.md` and `manifest.json`
 
 `/manifest.json` and per-page `/<page-url>.md` endpoints are now plain static assets. Same URLs, faster builds, and no more runtime crashes on the manifest route.
+
+### Drawer docs rewrite
+
+The [`<Drawer>`](/components/overlay/drawer) page has been rewritten around a single defining principle: a drawer is for supplementary, in-context, light tasks, and stays non-modal on desktop. The new page leads with a decision framework (Drawer vs Dialog, Drawer vs page) and walks through six canonical use cases, each with a runnable demo:
+
+- detail-row inspection,
+- quick edit or create from a list,
+- filter panel,
+- comments and activity,
+- contextual utility,
+- multi-field bulk edit.
+
+If you've ever debated whether a flow belongs in a drawer, a dialog, or a page, the rewritten guidance is the answer.
 
 ### Other docs polish
 
