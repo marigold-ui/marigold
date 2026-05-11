@@ -31,6 +31,18 @@ test('receives "level" from a HeadingContext slot', () => {
   expect(screen.getByTestId('title').tagName).toBe('H4');
 });
 
+test('local "level" prop wins over a HeadingContext slot', () => {
+  render(
+    <Provider values={[[HeadingContext, { slots: { title: { level: 4 } } }]]}>
+      <Basic.Component level={3} data-testid="title">
+        Hi
+      </Basic.Component>
+    </Provider>
+  );
+
+  expect(screen.getByTestId('title').tagName).toBe('H3');
+});
+
 test('receives className from a HeadingContext slot', () => {
   render(
     <Provider
