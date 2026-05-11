@@ -1,5 +1,10 @@
-import { HeadingContext, Provider } from 'react-aria-components';
-import { Description, Stack, Title } from '@marigold/components';
+import {
+  Description,
+  HeadingContext,
+  Provider,
+  Stack,
+  Title,
+} from '@marigold/components';
 
 export default () => (
   <Provider values={[[HeadingContext, { slots: { title: { level: 3 } } }]]}>
