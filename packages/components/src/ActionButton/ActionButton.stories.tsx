@@ -19,7 +19,7 @@ const meta = preview.meta({
   },
 });
 
-export const Basic = meta.story({
+export const Basic: any = meta.story({
   tags: ['component-test'],
   args: {
     children: 'Action',
@@ -28,12 +28,14 @@ export const Basic = meta.story({
   render: args => <ActionButton {...args} />,
   play: async ({ canvas, args }) => {
     const button = canvas.getByRole('button', { name: 'Action' });
+
     await userEvent.click(button);
+
     await expect(args.onPress).toHaveBeenCalled();
   },
 });
 
-export const Loading = meta.story({
+export const Loading: any = meta.story({
   args: {
     children: 'Working',
     loading: true,
@@ -41,10 +43,19 @@ export const Loading = meta.story({
   render: args => <ActionButton {...args} />,
 });
 
-export const Disabled = meta.story({
+export const Disabled: any = meta.story({
+  tags: ['component-test'],
   args: {
     children: 'Disabled',
     disabled: true,
+    onPress: fn(),
   },
   render: args => <ActionButton {...args} />,
+  play: async ({ canvas, args }) => {
+    const button = canvas.getByRole('button', { name: 'Disabled' });
+
+    await userEvent.click(button);
+
+    await expect(args.onPress).not.toHaveBeenCalled();
+  },
 });
