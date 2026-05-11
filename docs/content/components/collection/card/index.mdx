@@ -46,14 +46,6 @@ The card component supports variants for general content grouping as well as acc
 
 A card represents one item in a set. Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry links to its own detail view. Repetition is the core case if the element doesn't repeat, a card is probably the wrong tool.
 
-When the content doesn't fit that shape, reach for one of these instead:
-
-- [`<Table>`](../table) for records that share the same shape and need sorting, scanning, or bulk actions.
-- [`<Panel>`](../../layout/panel) for a named, non-repeating page region like "Billing" or "Team members".
-- [`<Headline>`](../../content/headline) + [`<Text>`](../../content/text) for a short paragraph or single field that doesn't need framing.
-- [`<SectionMessage>`](../../content/section-message) for a status, callout, or feedback message.
-- [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) for a long list of similar rows without media or actions.
-
 ### Card grids
 
 The canonical card layout is a grid of items, each with its own visual identity, that wraps responsively as the viewport changes. Combine card with [`<Tiles>`](../../layout/tiles) so the grid reflows automatically.
@@ -96,6 +88,14 @@ Put actions in `Card.Footer` when users should be able to act on the item direct
 Use small buttons (`<Button size="small" />`). Cards sit in tight grid cells, and small buttons match the scale of the surrounding content. Reserve default-size buttons for page-level actions outside of cards.
 
 ### When not to use a card
+
+When the content doesn't fit that shape, reach for one of these instead:
+
+- [`<Table>`](../table) for records that share the same shape and need sorting, scanning, or bulk actions.
+- [`<Panel>`](../../layout/panel) for a named, non-repeating page region like "Billing" or "Team members".
+- [`<Headline>`](../../content/headline) + [`<Text>`](../../content/text) for a short paragraph or single field that doesn't need framing.
+- [`<SectionMessage>`](../../content/section-message) for a status, callout, or feedback message.
+- [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) for a long list of similar rows without media or actions.
 
 The four common misuses below cover the shapes that get mistaken for card most often.
 
