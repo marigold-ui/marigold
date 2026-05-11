@@ -5,6 +5,7 @@ import { Title } from './Title';
 
 const meta = preview.meta({
   title: 'Components/Title',
+  parameters: { surface: false },
   component: Title,
   argTypes: {
     level: {

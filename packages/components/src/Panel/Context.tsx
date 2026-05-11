@@ -2,7 +2,32 @@ import type { RefCallback } from 'react';
 import { createContext, use } from 'react';
 import type { ThemeComponent } from '@marigold/system';
 
-export interface PanelContext {
+type PanelTitleSlotCtx = {
+  slots: {
+    title: {
+      className: string;
+      level: number;
+      id: string;
+      ref: RefCallback<Element>;
+    };
+  };
+};
+
+type PanelDescriptionSlotCtx = {
+  slots: {
+    description: {
+      className: string;
+      elementType: 'p';
+    };
+  };
+};
+
+type PanelActionCtx = {
+  className: string;
+  size: 'icon';
+};
+
+export interface PanelContextValue {
   classNames: {
     [Key in keyof ThemeComponent<'Panel'>]: string;
   };
@@ -11,14 +36,16 @@ export interface PanelContext {
   headingLevel: number;
   hasTitle: boolean;
   titleSlotRef: RefCallback<Element>;
+  rootHeadingProps: PanelTitleSlotCtx;
+  headerHeadingProps: PanelTitleSlotCtx;
+  headerTextProps: PanelDescriptionSlotCtx;
+  headerActionProps: PanelActionCtx;
 }
 
-const Context = createContext<PanelContext | null>(null);
-
-export const PanelProvider = Context.Provider;
+export const PanelContext = createContext<PanelContextValue | null>(null);
 
 export const usePanelContext = () => {
-  const ctx = use(Context);
+  const ctx = use(PanelContext);
 
   if (ctx === null) {
     throw new Error(
