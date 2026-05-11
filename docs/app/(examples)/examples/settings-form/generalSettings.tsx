@@ -4,6 +4,7 @@ import { eventTypes } from '@/lib/data/eventTypes';
 import {
   Button,
   Checkbox,
+  Description,
   Form,
   Inline,
   Panel,
@@ -13,6 +14,7 @@ import {
   Text,
   TextArea,
   TextField,
+  Title,
 } from '@marigold/components';
 import { useSavedToast } from './useSavedToast';
 
@@ -28,11 +30,11 @@ export const GeneralSettings = () => {
     >
       <Panel size="form" headingLevel={3}>
         <Panel.Header>
-          <Panel.Title>General information</Panel.Title>
-          <Panel.Description>
+          <Title>General information</Title>
+          <Description>
             Defaults applied when creating new events. Existing events keep
             their current values.
-          </Panel.Description>
+          </Description>
         </Panel.Header>
         <Panel.Content>
           <Stack space="regular">

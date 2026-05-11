@@ -113,13 +113,11 @@ The title is how a user finds this section when they scan the page. Aim for a sh
 
 A description is a single-sentence subtitle directly under the title. Include one when the title alone doesn't tell the user what's at stake, or when the section introduces a concept they may not have seen before. Skip it when the title already says it. A description that restates the heading adds reading weight without adding information.
 
-#### Title-only Panels can drop the header
+#### The header configures its children
 
-`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. When a Panel has only a title (no description, no actions) you can place `Panel.Title` as a direct child of `Panel` and skip the wrapper. Accessibility wires up the same way, and the title still aligns with the panel's horizontal padding.
+`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any action primitives (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. The header configures slot context so each piece picks up its level, id wiring, grid position, size, and variant from the Panel — consumers don't need to set any of that themselves.
 
-<ComponentDemo name="panel-without-header" />
-
-`Panel.Description` and `Panel.HeaderActions` always sit inside `Panel.Header`. As soon as a Panel needs supporting copy or actions next to its title, reach for the full header.
+Multiple actions belong in an `<ActionGroup>` so the cluster claims one grid cell and renders as a toolbar.
 
 ### Content
 
@@ -241,20 +239,20 @@ Panel renders a `<section>` and wires up the heading outline. Most of the story 
 
 A `<section>` only becomes a region landmark once it has an accessible name. Without one, it's just a grouping element. Give the Panel a name in one of two ways:
 
-- **Preferred.** Include a Panel.Title. The Panel is automatically labelled by the title.
+- **Preferred.** Include a `<Title>` inside `<Panel.Header>`. The Panel is automatically labelled by the title.
 - **Fallback.** If the Panel has no visible title (a Collapsible-only Panel, for example), pass an `aria-label` on the Panel itself.
 
 If both are set, `aria-label` takes precedence and the title is no longer used as the accessible name. Passing both is redundant, so pick one.
 
 ### Heading levels
 
-`<Panel.Title>` renders an `<h2>` by default. `<Panel.CollapsibleTitle>` renders one level deeper (`<h3>`) when the Panel has a title to nest under. In a Collapsible-only Panel (no Panel.Title), the CollapsibleTitle renders at the base `headingLevel` instead, since there's no parent heading to defer to.
+`<Title>` renders an `<h2>` by default. `<Panel.CollapsibleTitle>` renders one level deeper (`<h3>`) when the Panel has a title to nest under. In a Collapsible-only Panel (no `<Title>`), the CollapsibleTitle renders at the base `headingLevel` instead, since there's no parent heading to defer to.
 
 If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
 
 ```tsx
 <Panel headingLevel={3}>
-  <Panel.Title>…</Panel.Title> {/* renders as <h3> */}
+  <Title>…</Title> {/* renders as <h3> */}
   <Panel.Collapsible>
     <Panel.CollapsibleHeader>
       <Panel.CollapsibleTitle>… {/* renders as <h4> */}</Panel.CollapsibleTitle>
@@ -278,18 +276,6 @@ If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, fo
 ### Panel.Header
 
 <AutoTypeTable path="Panel/PanelHeader" name="PanelHeaderProps" />
-
-### Panel.Title
-
-<AutoTypeTable path="Panel/PanelTitle" name="PanelTitleProps" />
-
-### Panel.Description
-
-<AutoTypeTable path="Panel/PanelDescription" name="PanelDescriptionProps" />
-
-### Panel.HeaderActions
-
-<AutoTypeTable path="Panel/PanelHeaderActions" name="PanelHeaderActionsProps" />
 
 ### Panel.Content
 

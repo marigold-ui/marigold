@@ -3,6 +3,7 @@
 import {
   Badge,
   Checkbox,
+  Description,
   FileField,
   Inline,
   Link,
@@ -12,16 +13,17 @@ import {
   Stack,
   Switch,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export const RegistrationSettings = () => (
   <Panel headingLevel={3} size="form">
     <Panel.Header>
-      <Panel.Title>Pricing & tickets</Panel.Title>
-      <Panel.Description>
+      <Title>Pricing & tickets</Title>
+      <Description>
         Set the ticket price, upload documents, and attach legal terms for this
         event.
-      </Panel.Description>
+      </Description>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">

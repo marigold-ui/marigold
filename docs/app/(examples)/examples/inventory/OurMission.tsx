@@ -1,8 +1,8 @@
-import { Columns, Panel, Stack, Text } from '@marigold/components';
+import { Columns, Panel, Stack, Text, Title } from '@marigold/components';
 
 export const OurMission = () => (
   <Panel>
-    <Panel.Title>Our Mission</Panel.Title>
+    <Title>Our Mission</Title>
     <Panel.Content>
       <Columns columns={[2, 1]} space={20} collapseAt="1000px">
         <Stack space={4}>

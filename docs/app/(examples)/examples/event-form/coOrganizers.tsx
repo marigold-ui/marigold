@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { Key } from '@react-types/shared';
 import {
-  Badge,
+  Description,
   Link,
   Panel,
   Stack,
@@ -11,6 +11,7 @@ import {
   Tag,
   TagField,
   Text,
+  Title,
 } from '@marigold/components';
 
 interface Partner {
@@ -37,13 +38,10 @@ export const CoOrganizers = () => {
   return (
     <Panel variant="master" headingLevel={3} size="form">
       <Panel.Header>
-        <Panel.Title>Co-presenters</Panel.Title>
-        <Panel.Description>
+        <Title>Co-presenters</Title>
+        <Description>
           Partner organizations credited on the event page and tickets.
-        </Panel.Description>
-        <Panel.HeaderActions>
-          <Badge variant="master">Master</Badge>
-        </Panel.HeaderActions>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="tight">

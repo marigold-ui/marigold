@@ -3,6 +3,7 @@
 import {
   Button,
   Checkbox,
+  Description,
   Form,
   Inline,
   NumberField,
@@ -11,6 +12,7 @@ import {
   Stack,
   Text,
   TextField,
+  Title,
 } from '@marigold/components';
 import { useSavedToast } from './useSavedToast';
 
@@ -26,12 +28,12 @@ export const Notifications = () => {
     >
       <Panel size="form" headingLevel={3}>
         <Panel.Header>
-          <Panel.Title>Notifications</Panel.Title>
-          <Panel.Description>
+          <Title>Notifications</Title>
+          <Description>
             Choose which event activity triggers an email and how often updates
             are delivered. These defaults apply to all events unless overridden
             on an individual event.
-          </Panel.Description>
+          </Description>
         </Panel.Header>
         <Panel.Content>
           <Stack space="regular">

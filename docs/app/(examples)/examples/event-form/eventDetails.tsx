@@ -3,6 +3,7 @@
 import { eventTypes } from '@/lib/data/eventTypes';
 import {
   DatePicker,
+  Description,
   Inline,
   Panel,
   Radio,
@@ -11,17 +12,18 @@ import {
   Text,
   TextArea,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export const EventDetails = () => {
   return (
     <Panel headingLevel={3} size="form">
       <Panel.Header>
-        <Panel.Title>Event details</Panel.Title>
-        <Panel.Description>
+        <Title>Event details</Title>
+        <Description>
           Information shown on the event page, confirmations, and tickets. Some
           fields are pre-filled from your organization settings.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">

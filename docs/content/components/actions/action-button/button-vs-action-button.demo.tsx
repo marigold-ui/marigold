@@ -4,11 +4,12 @@ import {
   ActionButton,
   ActionGroup,
   Badge,
-  Button,
+  Description,
   Inline,
   Panel,
   Stack,
   Text,
+  Title,
   Tooltip,
 } from '@marigold/components';
 
@@ -21,17 +22,15 @@ const members = [
 export default () => (
   <Panel>
     <Panel.Header>
-      <Panel.Title>Team members</Panel.Title>
-      <Panel.Description>
+      <Title>Team members</Title>
+      <Description>
         People with access to this workspace and their roles.
-      </Panel.Description>
+      </Description>
       {/* Primary commitment for this surface — a real "ask" of the user. */}
-      <Panel.HeaderActions>
-        <Button>
-          <UserRoundPlus />
-          Invite member
-        </Button>
-      </Panel.HeaderActions>
+      <ActionButton variant="primary" size="default" aria-label="Invite member">
+        <UserRoundPlus />
+        Invite member
+      </ActionButton>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">

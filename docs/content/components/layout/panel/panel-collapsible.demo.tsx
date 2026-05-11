@@ -1,19 +1,21 @@
 import { venues } from '@/lib/data/venues';
 import {
   DatePicker,
+  Description,
   Panel,
   Select,
   Stack,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export default () => (
   <Panel size="form">
     <Panel.Header>
-      <Panel.Title>Event details</Panel.Title>
-      <Panel.Description>
+      <Title>Event details</Title>
+      <Description>
         Information shown on the event page, confirmations, and tickets.
-      </Panel.Description>
+      </Description>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">

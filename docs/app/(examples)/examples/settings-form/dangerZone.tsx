@@ -3,11 +3,13 @@
 import {
   Button,
   ConfirmationDialog,
+  Description,
   Dialog,
   Inline,
   Panel,
   Stack,
   Text,
+  Title,
   useToast,
 } from '@marigold/components';
 
@@ -44,10 +46,10 @@ export const DangerZone = () => {
   return (
     <Panel variant="destructive" size="form" headingLevel={3}>
       <Panel.Header>
-        <Panel.Title>Danger zone</Panel.Title>
-        <Panel.Description>
+        <Title>Danger zone</Title>
+        <Description>
           Permanent actions that affect your event settings. There's no undo.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">

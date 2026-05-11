@@ -3,11 +3,13 @@
 import {
   Button,
   Checkbox,
+  Description,
   Form,
   NumberField,
   Panel,
   Stack,
   TextField,
+  Title,
 } from '@marigold/components';
 import { useSavedToast } from './useSavedToast';
 
@@ -23,10 +25,10 @@ export const RegistrationCapacity = () => {
     >
       <Panel size="form" headingLevel={3}>
         <Panel.Header>
-          <Panel.Title>Registration & capacity</Panel.Title>
-          <Panel.Description>
+          <Title>Registration & capacity</Title>
+          <Description>
             Default registration behavior and attendee limits for new events.
-          </Panel.Description>
+          </Description>
         </Panel.Header>
         <Panel.Content>
           <Stack space="regular">

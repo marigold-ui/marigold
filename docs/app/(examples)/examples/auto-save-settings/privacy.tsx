@@ -1,6 +1,6 @@
 'use client';
 
-import { Panel, Stack, Switch } from '@marigold/components';
+import { Description, Panel, Stack, Switch, Title } from '@marigold/components';
 import { useAutoSaveSwitch } from './useAutoSaveSwitch';
 
 export const Privacy = () => {
@@ -11,10 +11,10 @@ export const Privacy = () => {
   return (
     <Panel size="form" headingLevel={3}>
       <Panel.Header>
-        <Panel.Title>Privacy</Panel.Title>
-        <Panel.Description>
+        <Title>Privacy</Title>
+        <Description>
           Control what's visible on your public organizer page.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">

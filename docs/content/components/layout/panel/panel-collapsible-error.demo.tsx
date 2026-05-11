@@ -7,6 +7,7 @@ import {
   Panel,
   Stack,
   TextField,
+  Title,
   parseFormData,
 } from '@marigold/components';
 
@@ -31,7 +32,7 @@ export default () => {
       <Stack space="regular">
         <Panel size="form">
           <Panel.Header>
-            <Panel.Title>Event details</Panel.Title>
+            <Title>Event details</Title>
           </Panel.Header>
           <Panel.Content>
             <TextField
