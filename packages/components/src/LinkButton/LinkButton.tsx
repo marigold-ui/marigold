@@ -68,7 +68,6 @@ const _LinkButton = ({
       slot={slot}
       className={cn(
         ctxValue?.className,
-        groupCtx?.className,
         classNames,
         fullWidth ? 'w-full' : undefined
       )}
