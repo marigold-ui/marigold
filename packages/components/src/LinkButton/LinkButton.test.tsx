@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-aria-components';
 import { ActionButtonContext } from '../ActionButton/Context';
 import { ActionGroup } from '../ActionGroup/ActionGroup';
+import { ActionGroupContext } from '../ActionGroup/Context';
 import { Basic } from './LinkButton.stories';
 
 test('renders children', () => {
@@ -89,4 +90,28 @@ test('inherits ghost baseline from ActionGroup with no explicit variant', () => 
   );
 
   expect(screen.getByTestId('link')).toHaveClass('hover:ui-state-hover-ghost');
+});
+
+test('absorbs className from ActionButtonContext', () => {
+  render(
+    <Provider
+      values={[[ActionButtonContext, { className: 'positional-class' }]]}
+    >
+      <Basic.Component data-testid="link">Edit</Basic.Component>
+    </Provider>
+  );
+
+  expect(screen.getByTestId('link')).toHaveClass('positional-class');
+});
+
+test('absorbs className from ActionGroupContext', () => {
+  render(
+    <Provider
+      values={[[ActionGroupContext, { className: 'group-context-class' }]]}
+    >
+      <Basic.Component data-testid="link">Edit</Basic.Component>
+    </Provider>
+  );
+
+  expect(screen.getByTestId('link')).toHaveClass('group-context-class');
 });

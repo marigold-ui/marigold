@@ -66,7 +66,12 @@ const _LinkButton = ({
       {...props}
       ref={ref}
       slot={slot}
-      className={cn(classNames, fullWidth ? 'w-full' : undefined)}
+      className={cn(
+        ctxValue?.className,
+        groupCtx?.className,
+        classNames,
+        fullWidth ? 'w-full' : undefined
+      )}
       isDisabled={disabled}
     >
       {children}
