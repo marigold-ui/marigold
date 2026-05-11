@@ -4,7 +4,7 @@
 
 refactor(DST-1367): Panel adopts the slot-configuration pattern
 
-`Panel.Header` is now a single `<Provider>` that configures `HeadingContext`, `TextContext`, `ActionButtonContext`, and `ActionGroupContext` for everything nested inside it. Consumers drop slot-aware primitives directly into the header — `<Title>`, `<Description>`, and any of `<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>` — and the Panel injects level, ids, ref wiring, grid-area positioning, and the action cascade via context. The header is the canonical real-component example of the layout-boundary slot pattern established in Phase 0 (DST-1366).
+`Panel.Header` is now a single `<Provider>` that configures `HeadingContext`, `TextContext`, `ActionButtonContext`, and `ActionGroupContext` for everything nested inside it. Consumers drop slot-aware primitives directly into the header — `<Title>`, `<Description>`, and any of `<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>` — and the Panel injects level, ids, ref wiring, grid-area positioning, and the action cascade via context.
 
 The three compound sub-components that paired with `Panel.Header` are removed because slot-aware role primitives subsume their responsibilities:
 
