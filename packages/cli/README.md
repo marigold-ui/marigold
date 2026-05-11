@@ -32,10 +32,12 @@ marigold docs select --format plain
 
 Flags:
 
-- `--section <name>` — `props`, `usage`, or `examples` (default: all)
+- `--section <name>` — `props`, `usage`, `examples`, or `all` (default: `all`)
 - `--format <name>` — `markdown` (default), `json`, or `plain`
 - `--fresh` — bypass the local cache
 - `--offline` — use only the local cache; fail if missing
+
+Component name input is case-insensitive (`Button`, `button`, `BUTTON` all resolve to the same component).
 
 ### `marigold list`
 
@@ -46,7 +48,16 @@ marigold list
 marigold list --category form
 marigold list --search date
 marigold list --format json
+marigold list --fresh
 ```
+
+Flags:
+
+- `--category <name>` — filter by category (e.g. `actions`, `form`, `layout`)
+- `--search <term>` — substring filter on component names
+- `--format <name>` — `markdown` (default), `json`, or `plain`
+- `--fresh` — bypass the local cache
+- `--offline` — use only the local cache; fail if missing
 
 ### `marigold init`
 
@@ -98,15 +109,36 @@ marigold telemetry disable
 marigold telemetry enable
 ```
 
-Also honored: `MARIGOLD_TELEMETRY_DISABLED=1`, `DO_NOT_TRACK=1`, `CI=1` (auto-suppressed in CI).
+Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`init`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
+
+Telemetry is automatically suppressed when:
+
+- `MARIGOLD_TELEMETRY_DISABLED=1` is set
+- `DO_NOT_TRACK=1` is set ([consoledonottrack.com](https://consoledonottrack.com) standard)
+- CI is detected (via [`ci-info`](https://github.com/watson/ci-info) — covers GitHub Actions, GitLab CI, CircleCI, etc.)
+
+### Global flags
+
+- `-h`, `--help` — print usage
+- `-v`, `--version` — print the installed CLI version
 
 ## For AI agents
 
 When invoked by an AI coding agent, prefer `--format json` and `--section props` for structured, precise component data. See the `## Marigold CLI` section in [CLAUDE.md](https://github.com/marigold-ui/marigold/blob/main/CLAUDE.md) for recommended patterns.
 
+The CLI detects common agent runtimes (Claude Code, Cursor, VS Code agent mode, Codex, generic `AI_AGENT=1`) via environment variables and tags telemetry accordingly, so we can prioritize the agent surface based on real usage.
+
 ## Environment
 
 - `MARIGOLD_DOCS_URL` — override the docs site base URL (default: `https://www.marigold-ui.io`)
-- `MARIGOLD_CACHE_TTL_MS` — override the default 24h cache TTL
+- `MARIGOLD_CACHE_TTL_MS` — override the default 24h cache TTL (in milliseconds)
+- `MARIGOLD_CACHE_DIR` — override the cache directory location
+- `MARIGOLD_CONFIG_DIR` — override the config directory (where telemetry preference + anonymous ID are stored)
+- `MARIGOLD_TELEMETRY_DISABLED=1` — opt out of telemetry
+- `DO_NOT_TRACK=1` — opt out of telemetry (standard)
+- `CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, `AI_AGENT` — when set, the run is tagged as agent-driven in telemetry
 
-Cache lives in `$XDG_CACHE_HOME/marigold` on Linux/macOS, `%LOCALAPPDATA%\marigold\Cache` on Windows.
+Default locations:
+
+- Cache: `$XDG_CACHE_HOME/marigold` (Linux/macOS), `%LOCALAPPDATA%\marigold` (Windows)
+- Config: `$XDG_CONFIG_HOME/marigold` (Linux/macOS), `%APPDATA%\marigold` (Windows)
