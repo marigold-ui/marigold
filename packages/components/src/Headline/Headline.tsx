@@ -50,6 +50,7 @@ const _Headline = ({
   color,
   level = '1',
   lineHeight,
+  slot,
   ...props
 }: HeadlineProps) => {
   const classNames = useClassNames({
@@ -58,15 +59,14 @@ const _Headline = ({
     size: size ?? `level-${level}`,
   });
 
-  // `slot` may be `null` (opt out of inherited slot context). RAC's
-  // `HeadingProps` narrows slot to `string`, but `useContextProps` (used
-  // internally by `<Heading>`) accepts `null` at runtime.
-  const { slot, ...rest } = props;
   return (
+    // `slot` may be `null` (opt out of inherited slot context). RAC's
+    // `HeadingProps` narrows slot to `string`, but `useContextProps` (used
+    // internally by `<Heading>`) accepts `null` at runtime.
     <Heading
       level={Number(level)}
       slot={slot as string | undefined}
-      {...rest}
+      {...props}
       className={cn(
         classNames,
         'max-w-(--maxHeadlineWidth)', // possibly set by a <Container>

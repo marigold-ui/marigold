@@ -79,7 +79,10 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
     ActionMenuContext
   );
 
-  // className/slot/ref are consumed or inapplicable here; drop before spread.
+  // `className`, `slot`, and `ref` must not flow into `<RACMenu>` via spread:
+  //   className: ActionMenu has no DOM of its own; would clobber `classNames.container`
+  //   slot:      consumed by `useContextProps` for ActionMenuContext registration
+  //   ref:       button-typed via ActionMenuContext, wrong type for RAC Menu
   const {
     children,
     variant,
@@ -91,10 +94,10 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
     defaultOpen,
     onOpenChange,
     'aria-label': ariaLabel,
-    className: _ignoredClassName, // ActionMenu has no DOM; style via ActionButtonContext
-    slot: _ignoredSlot, // consumed by useContextProps
-    ref: _ignoredRef, // forwarded via the second tuple element; wrong type for RAC Menu
-    ...menuProps
+    className: _className,
+    slot: _slot,
+    ref: _ref,
+    ...props
   } = merged;
 
   const classNames = useClassNames({ component: 'Menu', variant, size });
@@ -120,7 +123,7 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
       {isSmallScreen ? (
         <Tray>
           <Tray.Content>
-            <RACMenu {...menuProps} className={classNames.container}>
+            <RACMenu {...props} className={classNames.container}>
               {children}
             </RACMenu>
           </Tray.Content>
@@ -130,7 +133,7 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
         </Tray>
       ) : (
         <Popover placement={placement}>
-          <RACMenu {...menuProps} className={classNames.container}>
+          <RACMenu {...props} className={classNames.container}>
             {children}
           </RACMenu>
         </Popover>

@@ -22,12 +22,12 @@ export interface TitleProps extends AriaLabelingProps, SlotProps {
 }
 
 const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
-  const [props, ref] = useContextProps(
+  const [merged, ref] = useContextProps(
     { slot: 'title', ...inputProps } as TitleProps,
     refProp,
     HeadingContext
   );
-  const { level = 2, slot, children, ...rest } = props;
+  const { level = 2, slot, children, ...props } = merged;
   return (
     // `slot` may be `null` (opt out of inherited slot context). RAC's
     // `HeadingProps` extends `HTMLAttributes` which narrows slot to `string`,
@@ -36,7 +36,7 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
       level={level}
       slot={slot as string | undefined}
       ref={ref}
-      {...rest}
+      {...props}
     >
       {children}
     </Heading>

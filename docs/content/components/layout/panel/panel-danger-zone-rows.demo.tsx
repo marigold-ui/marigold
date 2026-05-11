@@ -44,7 +44,7 @@ export default () => (
       <Stack space="regular">
         {actions.map(item => (
           <Inline key={item.id} alignY="center" alignX="between" space="group">
-            <Stack space="0.5">
+            <Stack space="tight">
               <Text weight="medium">{item.label}</Text>
               <Text size="xs" color="secondary">
                 {item.description}

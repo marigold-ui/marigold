@@ -61,7 +61,7 @@ export default ({ size, ...props }: PanelProps) => {
                   alt=""
                   className="size-10 shrink-0 rounded-md object-cover"
                 />
-                <Stack space="0.5">
+                <Stack space="tight">
                   <Text weight="medium">{venue.name}</Text>
                   <Text size="xs" color="secondary">
                     {venue.city}, {venue.country} · {venue.capacity} guests

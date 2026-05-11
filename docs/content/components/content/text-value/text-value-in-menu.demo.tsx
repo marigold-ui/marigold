@@ -35,7 +35,7 @@ export default () => (
             alt=""
             className="size-16 rounded-md object-cover"
           />
-          <Stack space={1}>
+          <Stack space="tight">
             <TextValue>{venue.name}</TextValue>
             <Text size="xs" variant="muted">
               {venue.city}, {venue.country} · Capacity {venue.capacity} ·{' '}

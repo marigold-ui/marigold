@@ -19,7 +19,7 @@ export default () => (
         />
       </Card.Preview>
       <Card.Header>
-        <Stack space={1}>
+        <Stack space="tight">
           <Headline level={3}>Annual Conference 2025</Headline>
           <Inline space={2}>
             <Badge variant="info">Music</Badge>

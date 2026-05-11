@@ -1,4 +1,3 @@
-import { Eye, Pencil, Trash2 } from 'lucide-react';
 import {
   ActionButton,
   ActionGroup,
@@ -8,6 +7,7 @@ import {
   Text,
   Tooltip,
 } from '@marigold/components';
+import { Eye, Pencil, Trash2 } from '@marigold/icons';
 
 const events = [
   {
@@ -28,10 +28,10 @@ const events = [
 ];
 
 export default () => (
-  <Stack space={1}>
+  <Stack space="related">
     {events.map(event => (
       <Inline key={event.id} alignY="center" alignX="between" space="group">
-        <Stack space="0.5">
+        <Stack space="tight">
           <Text weight="medium">{event.title}</Text>
           <Text size="xs" color="secondary">
             {event.subtitle}
