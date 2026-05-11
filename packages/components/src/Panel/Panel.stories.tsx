@@ -14,14 +14,18 @@ import {
   UserRoundPlus,
 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
+import { ActionButton } from '../ActionButton/ActionButton';
+import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import { Title } from '../Title/Title';
 import { Panel } from './Panel';
 
 const meta = preview.meta({
@@ -74,11 +78,11 @@ export const Basic = meta.story({
   render: args => (
     <Panel {...args}>
       <Panel.Header>
-        <Panel.Title>Organizer Profile</Panel.Title>
-        <Panel.Description>
+        <Title>Organizer Profile</Title>
+        <Description>
           Public details shown to customers on ticket confirmations and event
           pages.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">
@@ -108,34 +112,17 @@ Basic.test(
   }
 );
 
-export const TitleOnlyWithoutHeader = meta.story({
-  args: { children: null as never },
-  render: args => (
-    <Panel {...args}>
-      <Panel.Title>Quick Settings</Panel.Title>
-      <Panel.Content>
-        <Stack space="regular">
-          <TextField label="Display name" defaultValue="Marigold Events" />
-        </Stack>
-      </Panel.Content>
-    </Panel>
-  ),
-});
-
 export const WithHeaderActions = meta.story(() => (
   <Stack space="section">
     <Panel>
       <Panel.Header>
-        <Panel.Title>Team Members</Panel.Title>
-        <Panel.Description>
+        <Title>Team Members</Title>
+        <Description>
           People with access to this workspace and their roles.
-        </Panel.Description>
-        <Panel.HeaderActions>
-          <Button>
-            <UserRoundPlus />
-            Invite member
-          </Button>
-        </Panel.HeaderActions>
+        </Description>
+        <ActionButton aria-label="Invite member">
+          <UserRoundPlus />
+        </ActionButton>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">
@@ -172,30 +159,28 @@ export const WithHeaderActions = meta.story(() => (
 
     <Panel>
       <Panel.Header>
-        <Panel.Title>Stripe Payments</Panel.Title>
-        <Panel.Description>
+        <Title>Stripe Payments</Title>
+        <Description>
           Connected on April 2, 2026 · Processing live payments in EUR.
-        </Panel.Description>
-        <Panel.HeaderActions>
-          <ActionMenu aria-label="Integration actions">
-            <ActionMenu.Item id="sync">
-              <RefreshCw />
-              Sync now
-            </ActionMenu.Item>
-            <ActionMenu.Item id="logs">
-              <ScrollText />
-              View webhook logs
-            </ActionMenu.Item>
-            <ActionMenu.Item id="reconnect">
-              <Link2 />
-              Reconnect
-            </ActionMenu.Item>
-            <ActionMenu.Item id="disconnect" variant="destructive">
-              <Power />
-              Disconnect
-            </ActionMenu.Item>
-          </ActionMenu>
-        </Panel.HeaderActions>
+        </Description>
+        <ActionMenu aria-label="Integration actions">
+          <ActionMenu.Item id="sync">
+            <RefreshCw />
+            Sync now
+          </ActionMenu.Item>
+          <ActionMenu.Item id="logs">
+            <ScrollText />
+            View webhook logs
+          </ActionMenu.Item>
+          <ActionMenu.Item id="reconnect">
+            <Link2 />
+            Reconnect
+          </ActionMenu.Item>
+          <ActionMenu.Item id="disconnect" variant="destructive">
+            <Power />
+            Disconnect
+          </ActionMenu.Item>
+        </ActionMenu>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">
@@ -223,36 +208,33 @@ export const WithHeaderActions = meta.story(() => (
 
     <Panel>
       <Panel.Header>
-        <Panel.Title>Sommernachts-Konzert 2026</Panel.Title>
-        <Panel.Description>
+        <Title>Sommernachts-Konzert 2026</Title>
+        <Description>
           Elbphilharmonie Hamburg · Saturday, June 14, 2026 · 20:00 CEST
-        </Panel.Description>
-        <Panel.HeaderActions>
-          <Inline space="tight" alignY="center" noWrap>
-            <Button>
-              <Pencil />
-              Edit event
-            </Button>
-            <ActionMenu aria-label="More event actions">
-              <ActionMenu.Item id="duplicate">
-                <Copy />
-                Duplicate event
-              </ActionMenu.Item>
-              <ActionMenu.Item id="export">
-                <Download />
-                Export attendees
-              </ActionMenu.Item>
-              <ActionMenu.Item id="pause">
-                <Pause />
-                Pause sales
-              </ActionMenu.Item>
-              <ActionMenu.Item id="cancel" variant="destructive">
-                <Trash2 />
-                Cancel event
-              </ActionMenu.Item>
-            </ActionMenu>
-          </Inline>
-        </Panel.HeaderActions>
+        </Description>
+        <ActionGroup aria-label="Event actions">
+          <ActionButton aria-label="Edit event">
+            <Pencil />
+          </ActionButton>
+          <ActionMenu aria-label="More event actions">
+            <ActionMenu.Item id="duplicate">
+              <Copy />
+              Duplicate event
+            </ActionMenu.Item>
+            <ActionMenu.Item id="export">
+              <Download />
+              Export attendees
+            </ActionMenu.Item>
+            <ActionMenu.Item id="pause">
+              <Pause />
+              Pause sales
+            </ActionMenu.Item>
+            <ActionMenu.Item id="cancel" variant="destructive">
+              <Trash2 />
+              Cancel event
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ActionGroup>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">
@@ -286,13 +268,82 @@ export const WithHeaderActions = meta.story(() => (
   </Stack>
 ));
 
+export const SlotsActionGroup = meta.story({
+  args: { children: null as never },
+  tags: ['component-test'],
+  render: args => (
+    <Panel {...args}>
+      <Panel.Header>
+        <Title>Stripe Payments</Title>
+        <Description>Integration health and quick actions.</Description>
+        <ActionGroup aria-label="Integration actions">
+          <ActionButton aria-label="Reconnect">
+            <Link2 />
+          </ActionButton>
+          <ActionButton aria-label="Refresh">
+            <RefreshCw />
+          </ActionButton>
+          <ActionMenu aria-label="More">
+            <ActionMenu.Item id="logs">View logs</ActionMenu.Item>
+            <ActionMenu.Item id="disconnect" variant="destructive">
+              Disconnect
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ActionGroup>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Webhook endpoint is live.</Text>
+      </Panel.Content>
+    </Panel>
+  ),
+});
+
+SlotsActionGroup.test(
+  'renders as a toolbar inside the actions grid cell',
+  async ({ canvas }) => {
+    const toolbar = canvas.getByRole('toolbar', {
+      name: 'Integration actions',
+    });
+    expect(toolbar).toBeInTheDocument();
+    expect(toolbar.className).toContain('[grid-area:actions]');
+  }
+);
+
+SlotsActionGroup.test(
+  'cycles focus between actions with arrow keys',
+  async ({ canvas }) => {
+    const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
+    const refresh = canvas.getByRole('button', { name: 'Refresh' });
+    const more = canvas.getByRole('button', { name: 'More' });
+
+    reconnect.focus();
+    expect(reconnect).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowRight}');
+    expect(refresh).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowRight}');
+    expect(more).toHaveFocus();
+  }
+);
+
+SlotsActionGroup.test(
+  'individual ActionButtons inside the group do NOT carry the actions grid-area',
+  async ({ canvas }) => {
+    const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
+
+    // The group claims the cell; the children sit inside the toolbar.
+    expect(reconnect.className).not.toContain('[grid-area:actions]');
+  }
+);
+
 export const WithCollapsible = meta.story({
   args: { children: null as never },
   tags: ['component-test'],
   render: args => (
     <Panel {...args}>
       <Panel.Header>
-        <Panel.Title>Event Details</Panel.Title>
+        <Title>Event Details</Title>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">
@@ -406,7 +457,7 @@ export const CollapsibleDefaultExpanded = meta.story({
   render: () => (
     <Panel>
       <Panel.Header>
-        <Panel.Title>Notification Preferences</Panel.Title>
+        <Title>Notification Preferences</Title>
       </Panel.Header>
       <Panel.Content>
         <Text>
@@ -461,7 +512,7 @@ export const CollapsibleBleed = meta.story(() => (
 export const CollapsibleDisabled = meta.story(() => (
   <Panel>
     <Panel.Header>
-      <Panel.Title>Billing</Panel.Title>
+      <Title>Billing</Title>
     </Panel.Header>
     <Panel.Collapsible disabled>
       <Panel.CollapsibleHeader>
@@ -478,7 +529,7 @@ export const Variants = meta.story(() => (
   <Stack space="regular">
     <Panel>
       <Panel.Header>
-        <Panel.Title>Default Panel</Panel.Title>
+        <Title>Default Panel</Title>
       </Panel.Header>
       <Panel.Content>
         <Text>Standard panel with no variant.</Text>
@@ -486,7 +537,7 @@ export const Variants = meta.story(() => (
     </Panel>
     <Panel variant="master">
       <Panel.Header>
-        <Panel.Title>Master Access</Panel.Title>
+        <Title>Master Access</Title>
       </Panel.Header>
       <Panel.Content>
         <Text>Panel for master-level access content.</Text>
@@ -494,7 +545,7 @@ export const Variants = meta.story(() => (
     </Panel>
     <Panel variant="admin">
       <Panel.Header>
-        <Panel.Title>Admin Access</Panel.Title>
+        <Title>Admin Access</Title>
       </Panel.Header>
       <Panel.Content>
         <Text>Panel for admin-level access content.</Text>
@@ -502,7 +553,7 @@ export const Variants = meta.story(() => (
     </Panel>
     <Panel variant="destructive">
       <Panel.Header>
-        <Panel.Title>Destructive</Panel.Title>
+        <Title>Destructive</Title>
       </Panel.Header>
       <Panel.Content>
         <Text>Panel for destructive/irreversible actions.</Text>
@@ -539,10 +590,8 @@ export const TableInside = meta.story(() => (
   <Stack space="regular">
     <Panel>
       <Panel.Header>
-        <Panel.Title>Recent Orders</Panel.Title>
-        <Panel.Description>
-          Overview of the latest transactions.
-        </Panel.Description>
+        <Title>Recent Orders</Title>
+        <Description>Overview of the latest transactions.</Description>
       </Panel.Header>
       <Panel.Content bleed>
         <Table aria-label="Recent orders">
@@ -576,10 +625,10 @@ export const TableInside = meta.story(() => (
 
     <Panel>
       <Panel.Header>
-        <Panel.Title>Selectable Orders</Panel.Title>
-        <Panel.Description>
+        <Title>Selectable Orders</Title>
+        <Description>
           Table with multi-select enabled inside a Panel.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content bleed>
         <Table aria-label="Selectable orders" selectionMode="multiple">
@@ -617,11 +666,11 @@ export const CustomPadding = meta.story(() => (
   <Stack space="regular">
     <Panel p="square-loose">
       <Panel.Header>
-        <Panel.Title>Uniform padding</Panel.Title>
-        <Panel.Description>
+        <Title>Uniform padding</Title>
+        <Description>
           Using <code>p="square-loose"</code> — same spacing on every side of
           every section.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Text>All subcomponents share the same inset.</Text>
@@ -633,11 +682,11 @@ export const CustomPadding = meta.story(() => (
 
     <Panel px="padding-relaxed" py="padding-snug">
       <Panel.Header>
-        <Panel.Title>Per-axis padding</Panel.Title>
-        <Panel.Description>
+        <Title>Per-axis padding</Title>
+        <Description>
           Using <code>px="padding-relaxed" py="padding-snug"</code> — wider
           horizontally than vertically.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Text>Header, content, and footer all honour both axes.</Text>

@@ -15,11 +15,8 @@ import { PanelCollapsibleDescription } from './PanelCollapsibleDescription';
 import { PanelCollapsibleHeader } from './PanelCollapsibleHeader';
 import { PanelCollapsibleTitle } from './PanelCollapsibleTitle';
 import { PanelContent } from './PanelContent';
-import { PanelDescription } from './PanelDescription';
 import { PanelFooter } from './PanelFooter';
 import { PanelHeader } from './PanelHeader';
-import { PanelHeaderActions } from './PanelHeaderActions';
-import { PanelTitle } from './PanelTitle';
 
 // Props
 // ---------------
@@ -30,19 +27,16 @@ interface PanelBaseProps {
    * Content of the panel. Typically a combination of `Panel.Header`,
    * `Panel.Content`, `Panel.Collapsible`, and `Panel.Footer`.
    *
-   * `Panel.Header` is the layout wrapper that arranges `Panel.Title`,
-   * `Panel.Description`, and `Panel.HeaderActions` in a grid. When a
-   * Panel has only a title (no description, no actions), `Panel.Title`
-   * may be used as a direct child of `Panel` and the wrapper can be
-   * omitted. `Panel.Description` and `Panel.HeaderActions` always
-   * require a `Panel.Header` wrapper.
+   * `Panel.Header` configures the slot-aware text and action primitives
+   * (`<Title>`, `<Description>`, `<ActionButton>`, `<ActionGroup>`,
+   * `<ActionMenu>`, `<LinkButton>`) and lays them out in a grid.
    */
   children: ReactNode;
-  /** Accessible label. Required when no `Panel.Title` is present. */
+  /** Accessible label. Required when no `<Title>` is present. */
   'aria-label'?: string;
   /**
-   * Base heading level for the panel. `Panel.Title` renders at this level,
-   * `Panel.CollapsibleTitle` at `headingLevel + 1`.
+   * Base heading level for the panel. A `<Title>` inside `Panel.Header`
+   * renders at this level; `Panel.CollapsibleTitle` at `headingLevel + 1`.
    * @default 2
    */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
@@ -131,9 +125,6 @@ export const Panel = ({
 };
 
 Panel.Header = PanelHeader;
-Panel.Title = PanelTitle;
-Panel.Description = PanelDescription;
-Panel.HeaderActions = PanelHeaderActions;
 Panel.Content = PanelContent;
 Panel.Collapsible = PanelCollapsible;
 Panel.CollapsibleHeader = PanelCollapsibleHeader;

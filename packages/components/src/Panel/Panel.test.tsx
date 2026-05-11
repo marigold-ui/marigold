@@ -6,7 +6,6 @@ import {
   Basic,
   CustomPadding,
   TableInside,
-  TitleOnlyWithoutHeader,
   Variants,
   WithHeaderActions,
 } from './Panel.stories';
@@ -63,7 +62,6 @@ describe('Panel', () => {
       expect(region.style.getPropertyValue('--panel-gap')).toBe(
         'var(--spacing-regular)'
       );
-      // Default `p="square-regular"` resolves to per-axis recipe vars.
       expect(region.style.getPropertyValue('--panel-px')).toBe(
         'var(--spacing-square-regular-x)'
       );
@@ -172,11 +170,8 @@ describe('Panel', () => {
   });
 
   describe('Compound exports', () => {
-    test('Panel exposes all sub-components on the compound component', () => {
+    test('Panel exposes the remaining compound sub-components', () => {
       expect(Panel.Header).toBeDefined();
-      expect(Panel.Title).toBeDefined();
-      expect(Panel.Description).toBeDefined();
-      expect(Panel.HeaderActions).toBeDefined();
       expect(Panel.Content).toBeDefined();
       expect(Panel.Collapsible).toBeDefined();
       expect(Panel.CollapsibleHeader).toBeDefined();
@@ -203,45 +198,33 @@ describe('Panel.Header', () => {
     );
   });
 
-  test('places Description under the Title in the header grid', () => {
+  test('places the Description in the description grid area', () => {
     render(<WithHeaderActions.Component />);
 
     const description = screen.getByText(
       /People with access to this workspace/
     );
-    const actionsSlot = screen
-      .getByRole('button', { name: /Invite member/ })
-      .closest('[class*="[grid-area:actions]"]');
 
     expect(description.className).toContain('[grid-area:description]');
-    expect(actionsSlot).not.toBeNull();
+  });
+
+  test('places a bare ActionButton in the actions grid area', () => {
+    render(<WithHeaderActions.Component />);
+
+    const action = screen.getByRole('button', { name: 'Invite member' });
+
+    expect(action.className).toContain('[grid-area:actions]');
+    expect(action.className).toContain('self-center');
   });
 });
 
-describe('Panel.Title', () => {
-  test('throws when rendered outside <Panel>', () => {
-    const renderOrphan = () => render(<Panel.Title>Orphan</Panel.Title>);
-
-    expect(renderOrphan).toThrow(/must be used within a <Panel>/);
-  });
-
-  test('sits inside the Panel.Header wrapper so its own padding is suppressed', () => {
+describe('Title in Panel.Header', () => {
+  test('sits inside the Panel.Header wrapper', () => {
     render(<Basic.Component />);
 
     const title = screen.getByRole('heading', { name: 'Organizer Profile' });
 
     expect(title.closest('[data-panel-header]')).not.toBeNull();
-  });
-
-  test('labels the panel region when used without a Panel.Header', () => {
-    render(<TitleOnlyWithoutHeader.Component />);
-
-    const title = screen.getByRole('heading', { name: 'Quick Settings' });
-    const region = screen.getByRole('region', { name: 'Quick Settings' });
-
-    expect(title.tagName).toBe('H2');
-    expect(region).toHaveAttribute('aria-labelledby', title.id);
-    expect(title.closest('[data-panel-header]')).toBeNull();
   });
 
   test('defaults to an <h2>', () => {
@@ -263,7 +246,7 @@ describe('Panel.Title', () => {
     }
   );
 
-  test('mirrors the titleId from context onto the heading id', () => {
+  test('mirrors the titleId from the Panel onto the heading id', () => {
     render(<Basic.Component />);
 
     const region = screen.getByRole('region', { name: 'Organizer Profile' });
@@ -273,27 +256,13 @@ describe('Panel.Title', () => {
   });
 });
 
-describe('Panel.Description', () => {
-  test('renders a <p> inside the header grid description slot', () => {
+describe('Description in Panel.Header', () => {
+  test('lands in the description grid area', () => {
     render(<Basic.Component />);
 
     const description = screen.getByText(/Public details shown to customers/);
 
-    expect(description.tagName).toBe('P');
     expect(description.className).toContain('[grid-area:description]');
-  });
-});
-
-describe('Panel.HeaderActions', () => {
-  test('aligns to the actions grid area with vertical centering', () => {
-    render(<WithHeaderActions.Component />);
-
-    const actionsSlot = screen.getByRole('button', {
-      name: /Invite member/,
-    }).parentElement!;
-
-    expect(actionsSlot.className).toContain('[grid-area:actions]');
-    expect(actionsSlot.className).toContain('self-center');
   });
 });
 
