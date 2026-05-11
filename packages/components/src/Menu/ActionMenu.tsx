@@ -14,16 +14,18 @@ import { Popover } from '../Overlay/Popover';
 import { Tray } from '../Tray/Tray';
 import { EllipsisVertical } from '../icons/EllipsisVertical';
 import { intlMessages } from '../intl/messages';
+import type { SlotProps } from '../types';
 import { ActionMenuContext } from './ActionMenuContext';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
 
-type RemovedProps = 'isOpen' | 'className' | 'style' | 'children';
+type RemovedProps = 'isOpen' | 'className' | 'style' | 'children' | 'slot';
 
 export interface ActionMenuProps
   extends
     Omit<RAC.MenuTriggerProps, RemovedProps>,
-    Omit<RAC.MenuProps<object>, RemovedProps> {
+    Omit<RAC.MenuProps<object>, RemovedProps>,
+    SlotProps {
   /**
    * Whether the menu is open.
    * @default false
@@ -64,11 +66,6 @@ export interface ActionMenuProps
    * Whether the menu trigger is disabled.
    */
   disabled?: boolean;
-
-  /**
-   * A slot to place the element in.
-   */
-  slot?: string | null;
 
   ref?: Ref<HTMLButtonElement>;
 }

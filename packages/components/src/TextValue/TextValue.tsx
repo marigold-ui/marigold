@@ -2,21 +2,17 @@ import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Text } from 'react-aria-components';
 import type { AriaLabelingProps } from '@marigold/types';
+import type { SlotProps } from '../types';
 
-type RemovedProps = 'className' | 'style' | 'elementType';
+type RemovedProps = 'className' | 'style' | 'elementType' | 'slot';
 
 export interface TextValueProps
-  extends Omit<RAC.TextProps, RemovedProps>, AriaLabelingProps {
+  extends Omit<RAC.TextProps, RemovedProps>, AriaLabelingProps, SlotProps {
   /**
    * The element type to render.
    * @default 'span'
    */
   as?: 'div' | 'p' | 'span';
-  /**
-   * A slot name. Slots allow the component to receive props from a parent.
-   * @default 'label'
-   */
-  slot?: string;
   /**
    * The element id.
    */
@@ -32,7 +28,10 @@ const _TextValue = ({
   ref,
   ...rest
 }: TextValueProps) => (
-  <Text elementType={as} slot={slot} ref={ref} {...rest}>
+  // `slot` may be `null` (opt out of inherited slot context). RAC's
+  // `TextProps` narrows slot to `string`, but `useContextProps` (used
+  // internally by `<Text>`) accepts `null` at runtime.
+  <Text elementType={as} slot={slot as string | undefined} ref={ref} {...rest}>
     {children}
   </Text>
 );

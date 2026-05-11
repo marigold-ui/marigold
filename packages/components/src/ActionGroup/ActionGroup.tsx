@@ -4,16 +4,17 @@ import type RAC from 'react-aria-components';
 import { Provider, Toolbar, useContextProps } from 'react-aria-components';
 import type { AriaLabelingProps } from '@marigold/types';
 import { ActionButtonContext } from '../ActionButton/Context';
+import type { SlotProps } from '../types';
 import { ActionGroupContext } from './Context';
 
 // Reset ActionButtonContext so children don't inherit a positional className
 // that was published for the group itself to claim.
 const RESET_BUTTON_CTX = {};
 
-type RemovedProps = 'className' | 'style' | 'isDisabled';
+type RemovedProps = 'className' | 'style' | 'isDisabled' | 'slot';
 
 export interface ActionGroupProps
-  extends Omit<RAC.ToolbarProps, RemovedProps>, AriaLabelingProps {
+  extends Omit<RAC.ToolbarProps, RemovedProps>, AriaLabelingProps, SlotProps {
   /**
    * Cascades the variant to nested actions. Local `variant` on a child
    * (`ActionButton`, `ActionMenu`) wins over the group default.
@@ -35,10 +36,6 @@ export interface ActionGroupProps
    * @default 'horizontal'
    */
   orientation?: RAC.ToolbarProps['orientation'];
-  /**
-   * A slot to place the element in.
-   */
-  slot?: string;
   children?: ReactNode;
   ref?: Ref<HTMLDivElement>;
 }

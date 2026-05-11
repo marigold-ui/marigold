@@ -10,6 +10,7 @@ import {
   useClassNames,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
+import type { SlotProps } from '../types';
 
 /**
  * The shared heading size scale. Reused by `Title` so heading primitives
@@ -24,7 +25,7 @@ export type HeadlineSize =
   | 'level-6';
 
 export interface HeadlineProps
-  extends AriaLabelingProps, TextAlignProp, LineHeightProp {
+  extends AriaLabelingProps, TextAlignProp, LineHeightProp, SlotProps {
   /**
    * Set the color of the headline.
    */
@@ -39,10 +40,6 @@ export interface HeadlineProps
    * Children of the component.
    */
   children?: ReactNode;
-  /**
-   * A slot to place the element in.
-   */
-  slot?: string;
 }
 
 const _Headline = ({
@@ -61,10 +58,15 @@ const _Headline = ({
     size: size ?? `level-${level}`,
   });
 
+  // `slot` may be `null` (opt out of inherited slot context). RAC's
+  // `HeadingProps` narrows slot to `string`, but `useContextProps` (used
+  // internally by `<Heading>`) accepts `null` at runtime.
+  const { slot, ...rest } = props;
   return (
     <Heading
       level={Number(level)}
-      {...props}
+      slot={slot as string | undefined}
+      {...rest}
       className={cn(
         classNames,
         'max-w-(--maxHeadlineWidth)', // possibly set by a <Container>

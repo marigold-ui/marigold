@@ -24,6 +24,7 @@ import {
   useClassNames,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
+import type { SlotProps } from '../types';
 
 /**
  * The shared body-text variant scale. Reused by `Description` so body
@@ -57,6 +58,7 @@ export type TextSize =
 // --------------
 type RemovedProps =
   | 'elementType'
+  | 'slot'
   | keyof JSX.IntrinsicElements['div']
   | keyof JSX.IntrinsicElements['span']
   | keyof JSX.IntrinsicElements['p'];
@@ -65,6 +67,7 @@ export interface TextProps
   extends
     AriaLabelingProps,
     Omit<RAC.TextProps, RemovedProps>,
+    SlotProps,
     TextAlignProp,
     FontSizeProp,
     FontWeightProp,
@@ -87,10 +90,6 @@ export interface TextProps
    * @default "div"
    */
   as?: 'div' | 'p' | 'span';
-  /**
-   *  A slot name for the component. Slots allow the component to receive props from a parent component.
-   */
-  slot?: string;
   variant?: TextVariant | (string & {});
   size?: TextSize | (string & {});
 }
@@ -126,9 +125,15 @@ const _Text = ({
   const Component = props.slot ? Text : as;
   const elementType = props.slot ? { elementType: as } : {};
 
+  // `slot` may be `null` (opt out of inherited slot context). RAC's
+  // `TextProps` narrows slot to `string`; `useContextProps` accepts `null`
+  // at runtime. For the non-RAC branch (`as`), null also collapses to no
+  // slot at the DOM level.
+  const { slot, ...rest } = props;
   return (
     <Component
-      {...props}
+      {...rest}
+      slot={slot as string | undefined}
       {...elementType}
       className={cn(
         'max-w-(--maxTextWidth)', // possibly set by a <Container>

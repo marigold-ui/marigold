@@ -8,11 +8,13 @@ import {
 import { cn, useClassNames } from '@marigold/system';
 import { ActionGroupContext } from '../ActionGroup/Context';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
+import type { SlotProps } from '../types';
 import { ActionButtonContext } from './Context';
 
-type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
+type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style' | 'slot';
 
-export interface ActionButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
+export interface ActionButtonProps
+  extends Omit<RAC.ButtonProps, RemovedProps>, SlotProps {
   /**
    * Visual variant of the action button. Reuses Button styles for v1.
    * @default 'ghost'
@@ -37,10 +39,6 @@ export interface ActionButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
    * Whether the button is in a loading state.
    */
   loading?: RAC.ButtonProps['isPending'];
-  /**
-   * A slot to place the element in.
-   */
-  slot?: string;
   ref?: Ref<HTMLButtonElement>;
 }
 
