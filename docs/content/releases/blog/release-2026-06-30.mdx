@@ -488,10 +488,6 @@ Spacing between items in `<CheckboxGroup>` and `<RadioGroup>` moves from a `gap`
 
 The inner row layout also switches from `items-center` to `items-start`, so the icon stays on the first line when the label wraps. `<Radio>` labels now use `leading-4` to match `<Checkbox>`, and the icon-to-label gap moves from an inline `gap-[1ch]` to the theme-driven `gap-x-2` for parity with `<Checkbox>`.
 
-### `<Checkbox>` and `<Radio>` painted with `bg-surface`
-
-`<Checkbox>` and `<Radio>` controls now paint their inner area with `bg-surface`, so the controls stay visually distinct over containers that paint a non-default background — for example a hovered or selected `<SelectList>` row. `<Radio>` already used `bg-surface` (added during the design-token polish); this brings `<Checkbox>` into parity.
-
 ### `<FieldBase>` forwards validation props through `as`
 
 When `<FieldBase>` renders through a React Aria Components element via `as={RACComponent}`, the validation props (`isInvalid`, `isRequired`, `isDisabled`) are now forwarded so the underlying RAC element receives them. Plain DOM elements continue to skip these props to avoid unknown attribute warnings.
@@ -500,9 +496,33 @@ When `<FieldBase>` renders through a React Aria Components element via `as={RACC
 
 The virtualizer wrapper inside `<Select>`, `<ComboBox>`, and `<Autocomplete>` sets an inline `z-index: 0` per item, which created a stacking context the focused option's outline could not escape. Adjacent wrappers painted on top in DOM order and clipped the outline, most visible when the next item was selected. Each virtualized listbox now lifts the wrapper containing the focused option above its siblings so the outline renders fully.
 
-## Theme package (`@marigold/theme-rui`)
+## Docs and examples
 
-Most v18 changes happen inside `@marigold/components`. A handful of changes also land in `@marigold/theme-rui` that are worth calling out separately, because they affect what you import and how the CSS is structured. None of them break existing imports — `theme.css` and `styles.css` continue to work exactly as documented.
+v18 ships alongside a substantial pass over the documentation site. None of these affect published packages, but if you follow the docs they are worth knowing about.
+
+- **Layouts foundation restructured** around `<Panel>` and the atomic primitives (`<Stack>`, `<Inline>`, `<Inset>`, `<Split>`, `<Center>`, `<Tiles>`, `<Columns>`). A new _Choosing the right layout_ decision table replaces the previous two-tier "structural vs atomic" framing, and the wireframe hero is now an annotated SVG anatomy diagram that matches the Panel and Sidebar anatomies. See [Layouts](/foundations/layouts).
+- **Elevation foundation rewritten** around the three-tier shadow system (`border`, `raised`, `overlay`). Adds a surfaces section that explains `bg-background`, `bg-surface`, `bg-muted`, and `ui-surface`, interactive demos, per-tier Do/Don't guidance, and a migration table for the retired `util-surface-*` utilities. See [Elevation](/foundations/elevation).
+- **New Panel documentation page** — MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
+- **App-shell example pages fleshed out** — Analytics, Billing, General, Security, Teams, and Users are now real screens built from Marigold components. `Panel` is used for page-level sections and `Card` is reserved for repeating collection items (payment methods, active sessions, team cards, stat tiles).
+- **`ComponentDemo` / `AppearanceDemo` `background="page"` prop** — demos can now opt into the theme's page background (`bg-background`) instead of the default white, giving full-bleed previews of things like AppLayout and Sidebar without wrapper `div` hacks.
+- **Storybook decorators migrated from `<Card>` to `<Panel>`** — internal cleanup so component stories that need a framing surface render through `<Panel>`, matching how page-level sections are now built. Behavior of the components themselves doesn't change; just what you see in Storybook.
+- **Switch `variant="settings"` documented end to end** — a Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
+- **MCP and embedding env vars are optional in local builds.** `pnpm build:docs` no longer requires `AWS_BEDROCK_*`, `OIDC_*`, or `BLOB_READ_WRITE_TOKEN` to be set, and the `claude mcp add marigold-docs` snippet uses the positional URL argument instead of `--url`.
+- **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
+- **Full data management pattern at `/examples/filter`.** A new venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`. Includes a toolbar with search and filter controls, applied filter chips for active filter display, and a paginated data table all driven by the same URL state.
+- **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, and the engineering API in one place. A new _Using icons in code_ section covers installation, importing, sizing, color (`currentColor` plus `className` is the recommended path, `color` is a literal CSS value), filled brand icons, and accessibility (auto `aria-hidden`).
+
+## Design
+
+The default theme `@marigold/theme-rui` gets a small visual pass and a CSS architecture cleanup. Existing imports of `theme.css` and `styles.css` continue to work as documented.
+
+### `<Checkbox>` and `<Radio>` painted with `bg-surface`
+
+`<Checkbox>` and `<Radio>` controls now paint their inner area with `bg-surface`, so the controls stay visually distinct over containers that paint a non-default background, for example a hovered or selected `<SelectList>` row. `<Radio>` already used `bg-surface` (added during the design-token polish). This brings `<Checkbox>` into parity.
+
+### Transparent `ui-scrollbar` track
+
+`ui-scrollbar`'s track is now transparent so the themed scrollbar blends into whatever surface it sits on instead of showing a visible groove on dark or tinted backgrounds.
 
 ### New `preflight.css`
 
@@ -534,31 +554,11 @@ The theme's CSS now ships as four files with unambiguous roles:
 
 Tailwind v4's CSS resolver uses `conditionNames: ["style"]`. Bare `.css` export entries without a matching condition fail under strict resolvers, so every `.css` subpath now declares both `style` and `default` targets. The unused `./*` JS catchall is removed.
 
-### Transparent `ui-scrollbar` track
-
-`ui-scrollbar`'s track is now transparent so the themed scrollbar blends into whatever surface it's painted on instead of showing a visible groove on dark or tinted backgrounds.
-
 ## Dependency updates
 
 - **React 19** is now the required baseline (see _Before you upgrade_).
 - **`react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*`** are bumped to their latest versions. Most consumers do not need to do anything; if you import directly from `react-aria-components`, re-read the [react-aria changelog](https://github.com/adobe/react-spectrum/releases) for the version range.
 - **`react-select`** is no longer a dependency. `<Multiselect>` was the only component pulling it in, and removing it shrinks the `@marigold/components` bundle for every app that had already migrated to `<TagField>`.
-
-## Docs and examples
-
-v18 ships alongside a substantial pass over the documentation site. None of these affect published packages, but if you follow the docs they are worth knowing about.
-
-- **Layouts foundation restructured** around `<Panel>` and the atomic primitives (`<Stack>`, `<Inline>`, `<Inset>`, `<Split>`, `<Center>`, `<Tiles>`, `<Columns>`). A new _Choosing the right layout_ decision table replaces the previous two-tier "structural vs atomic" framing, and the wireframe hero is now an annotated SVG anatomy diagram that matches the Panel and Sidebar anatomies. See [Layouts](/foundations/layouts).
-- **Elevation foundation rewritten** around the three-tier shadow system (`border`, `raised`, `overlay`). Adds a surfaces section that explains `bg-background`, `bg-surface`, `bg-muted`, and `ui-surface`, interactive demos, per-tier Do/Don't guidance, and a migration table for the retired `util-surface-*` utilities. See [Elevation](/foundations/elevation).
-- **New Panel documentation page** — MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
-- **App-shell example pages fleshed out** — Analytics, Billing, General, Security, Teams, and Users are now real screens built from Marigold components. `Panel` is used for page-level sections and `Card` is reserved for repeating collection items (payment methods, active sessions, team cards, stat tiles).
-- **`ComponentDemo` / `AppearanceDemo` `background="page"` prop** — demos can now opt into the theme's page background (`bg-background`) instead of the default white, giving full-bleed previews of things like AppLayout and Sidebar without wrapper `div` hacks.
-- **Storybook decorators migrated from `<Card>` to `<Panel>`** — internal cleanup so component stories that need a framing surface render through `<Panel>`, matching how page-level sections are now built. Behavior of the components themselves doesn't change; just what you see in Storybook.
-- **Switch `variant="settings"` documented end to end** — a Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
-- **MCP and embedding env vars are optional in local builds.** `pnpm build:docs` no longer requires `AWS_BEDROCK_*`, `OIDC_*`, or `BLOB_READ_WRITE_TOKEN` to be set, and the `claude mcp add marigold-docs` snippet uses the positional URL argument instead of `--url`.
-- **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
-- **Full data management pattern at `/examples/filter`.** A new venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`. Includes a toolbar with search and filter controls, applied filter chips for active filter display, and a paginated data table all driven by the same URL state.
-- **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, and the engineering API in one place. A new _Using icons in code_ section covers installation, importing, sizing, color (`currentColor` plus `className` is the recommended path, `color` is a literal CSS value), filled brand icons, and accessibility (auto `aria-hidden`).
 
 ---
 
