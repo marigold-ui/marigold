@@ -83,13 +83,11 @@ Drop `Card.Preview` when the content is text-driven a plan summary, a status blo
 
 ### Footer actions
 
-Use small buttons (`<Button size="small" />`) for actions in `Card.Footer`. Cards usually appear in a grid or list, so the footer is a tight space small buttons match the scale of the surrounding content and keep multiple cards visually balanced. Reserve default-size buttons for primary page actions outside of cards.
+Put actions in `Card.Footer` when users should be able to act on the item directly from the grid, without opening a detail page.
 
-### Admin and master variants
+Use small buttons (`<Button size="small" />`). Cards sit in tight grid cells, and small buttons match the scale of the surrounding content. Reserve default-size buttons for page-level actions outside of cards.
 
-When a card represents access-restricted content, set `variant="admin"` or `variant="master"` so the surface visibly marks who can see it. The variants share their look with the matching [`<Panel>`](../../layout/panel) and [`<Badge>`](../../content/badge) variants, so a card sits consistently next to other admin/master surfaces on the same page. [Learn more about admin and master marking.](/patterns/layout/admin-master-mark)
-
-<ComponentDemo name="card-variants" />
+Use at most one `primary` button per card, and prefer `ghost` when many similar cards sit side by side.
 
 ### When not to use a card
 
