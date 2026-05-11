@@ -3,7 +3,12 @@ import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Provider, Toolbar, useContextProps } from 'react-aria-components';
 import type { AriaLabelingProps } from '@marigold/types';
+import { ActionButtonContext } from '../ActionButton/Context';
 import { ActionGroupContext } from './Context';
+
+// Reset ActionButtonContext so children don't inherit a positional className
+// that was published for the group itself to claim.
+const RESET_BUTTON_CTX = {};
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
 
@@ -58,15 +63,18 @@ export const ActionGroup = ({
     ...rest
   } = merged;
 
-  // Publish a `ghost` baseline so any action consumer renders low-emphasis
-  // without each one repeating the fallback.
   const ctx = useMemo(
     () => ({ variant: variant ?? 'ghost', size, disabled }),
     [variant, size, disabled]
   );
 
   return (
-    <Provider values={[[ActionGroupContext, ctx]]}>
+    <Provider
+      values={[
+        [ActionGroupContext, ctx],
+        [ActionButtonContext, RESET_BUTTON_CTX],
+      ]}
+    >
       <Toolbar
         {...rest}
         ref={ref}

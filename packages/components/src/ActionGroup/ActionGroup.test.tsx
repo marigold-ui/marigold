@@ -1,4 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-aria-components';
+import { Basic as ActionButtonBasic } from '../ActionButton/ActionButton.stories';
+import { ActionButtonContext } from '../ActionButton/Context';
 import {
   Basic,
   CascadePrecedence,
@@ -59,7 +62,35 @@ test('ActionMenu trigger inside ActionGroup follows group "size" precedence', ()
 
   const menuTrigger = screen.getByRole('button', { name: 'More actions' });
 
-  // Group size="small" wins over the ActionMenu's local size="large"
   expect(menuTrigger).toHaveClass('h-control-small');
   expect(menuTrigger).not.toHaveClass('h-control-large');
+});
+
+describe('layout boundary scrub', () => {
+  test('a bare ActionButton picks up the positional className from ActionButtonContext', () => {
+    render(
+      <Provider values={[[ActionButtonContext, { className: 'positional' }]]}>
+        <ActionButtonBasic.Component aria-label="Bare">
+          Bare
+        </ActionButtonBasic.Component>
+      </Provider>
+    );
+
+    expect(screen.getByRole('button', { name: 'Bare' })).toHaveClass(
+      'positional'
+    );
+  });
+
+  test('ActionButtons inside an ActionGroup do NOT pick up the positional className', () => {
+    render(
+      <Provider values={[[ActionButtonContext, { className: 'positional' }]]}>
+        <Basic.Component />
+      </Provider>
+    );
+
+    const buttons = screen.getAllByRole('button');
+    for (const button of buttons) {
+      expect(button).not.toHaveClass('positional');
+    }
+  });
 });
