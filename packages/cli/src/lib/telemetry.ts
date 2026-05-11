@@ -37,6 +37,7 @@ const detectAIAgent = (): boolean =>
     process.env.CLAUDECODE ||
     process.env.CURSOR_AGENT ||
     process.env.VSCODE_AGENT ||
+    process.env.CODEX_SANDBOX ||
     process.env.AI_AGENT
   );
 
