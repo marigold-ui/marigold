@@ -22,7 +22,7 @@ import {
   Text,
   VisuallyHidden,
 } from '@marigold/components';
-import { Delete, Download, Star } from '@marigold/icons';
+import { Download, Star, Trash2 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import type { VenueFilter, VenueSortDescriptor } from './utils';
 import { PAGE_SIZE, useFilter, usePage, useSearch, useSort } from './utils';
@@ -208,7 +208,7 @@ export const VenuesTable = () => {
             <ActionBar>
               {/* Will be wired up in DST-1288 */}
               <ActionBar.Button onPress={() => alert('Delete element')}>
-                <Delete /> Delete
+                <Trash2 /> Delete
               </ActionBar.Button>
               <ActionBar.Button
                 onPress={() => exportToCsv(getSelectedVenues(selectedKeys))}
