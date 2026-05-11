@@ -26,7 +26,6 @@ export default () => (
       <Description>
         People with access to this workspace and their roles.
       </Description>
-      {/* Primary commitment for this surface — a real "ask" of the user. */}
       <ActionButton variant="primary" size="default" aria-label="Invite member">
         <UserRoundPlus />
         Invite member

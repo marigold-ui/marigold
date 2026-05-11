@@ -359,7 +359,6 @@ SlotsActionGroup.test(
   async ({ canvas }) => {
     const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
 
-    // The group claims the cell; the children sit inside the toolbar.
     expect(reconnect.className).not.toContain('[grid-area:actions]');
   }
 );

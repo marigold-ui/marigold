@@ -92,6 +92,20 @@ export const Panel = ({
   const resolvedPx = px ?? `${inset}-x`;
   const resolvedPy = py ?? `${inset}-y`;
 
+  const rootHeadingProps = useMemo(
+    () => ({
+      slots: {
+        title: {
+          className: cn('px-(--panel-px)', classNames.title),
+          level: headingLevel,
+          id: titleId,
+          ref: titleSlotRef,
+        },
+      },
+    }),
+    [classNames.title, headingLevel, titleId, titleSlotRef]
+  );
+
   const contextValue = useMemo(
     () => ({
       classNames,
@@ -100,38 +114,6 @@ export const Panel = ({
       headingLevel,
       hasTitle,
       titleSlotRef,
-      rootHeadingProps: {
-        slots: {
-          title: {
-            className: cn('px-(--panel-px)', classNames.title),
-            level: headingLevel,
-            id: titleId,
-            ref: titleSlotRef,
-          },
-        },
-      },
-      headerHeadingProps: {
-        slots: {
-          title: {
-            className: cn('[grid-area:title]', classNames.title),
-            level: headingLevel,
-            id: titleId,
-            ref: titleSlotRef,
-          },
-        },
-      },
-      headerTextProps: {
-        slots: {
-          description: {
-            className: cn('[grid-area:description]', classNames.description),
-            elementType: 'p' as const,
-          },
-        },
-      },
-      headerActionProps: {
-        className: cn('self-center [grid-area:actions]', classNames.actions),
-        size: 'icon' as const,
-      },
     }),
     [classNames, variant, titleId, headingLevel, hasTitle, titleSlotRef]
   );
@@ -140,7 +122,7 @@ export const Panel = ({
     <Provider
       values={[
         [PanelContext, contextValue],
-        [HeadingContext, contextValue.rootHeadingProps],
+        [HeadingContext, rootHeadingProps],
       ]}
     >
       <section
