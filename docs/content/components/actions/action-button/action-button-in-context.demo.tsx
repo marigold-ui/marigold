@@ -1,5 +1,5 @@
-import { Info } from 'lucide-react';
 import { ActionButton, SelectList, Text, Tooltip } from '@marigold/components';
+import { Info } from '@marigold/icons';
 
 const venues = [
   {

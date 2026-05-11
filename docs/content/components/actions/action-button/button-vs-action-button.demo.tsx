@@ -1,5 +1,4 @@
 import { people } from '@/lib/data/people';
-import { Pencil, Trash2, UserRoundPlus } from 'lucide-react';
 import {
   ActionButton,
   ActionGroup,
@@ -11,6 +10,7 @@ import {
   Text,
   Tooltip,
 } from '@marigold/components';
+import { Pencil, Trash2, UserRoundPlus } from '@marigold/icons';
 
 const members = [
   { ...people[0], role: 'Admin', variant: 'admin' },
@@ -48,7 +48,7 @@ export default () => (
                 alt=""
                 className="size-9 shrink-0 rounded-full object-cover"
               />
-              <Stack space="0.5">
+              <Stack space="tight">
                 <Text weight="medium">{member.name}</Text>
                 <Text size="xs" color="secondary">
                   {member.position}

@@ -1,4 +1,3 @@
-import { Bookmark, Settings, Share2 } from 'lucide-react';
 import {
   ActionButton,
   ActionGroup,
@@ -7,6 +6,7 @@ import {
   Text,
   Tooltip,
 } from '@marigold/components';
+import { Bookmark, Settings, Share2 } from '@marigold/icons';
 
 export default () => (
   <Panel>
@@ -39,7 +39,7 @@ export default () => (
       </Panel.HeaderActions>
     </Panel.Header>
     <Panel.Content>
-      <Stack space={1}>
+      <Stack space="tight">
         <Text weight="medium">Harborfront Jazz Festival</Text>
         <Text size="xs" color="secondary">
           Sunday, 22 June · 18:00 · Harborfront Promenade
