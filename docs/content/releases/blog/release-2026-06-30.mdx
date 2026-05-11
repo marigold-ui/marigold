@@ -395,11 +395,11 @@ The `fit` value is gone on these three components. Their listbox renders through
 
 Every other `width` value (fractions, fixed sizes, `full`) continues to work. The same change applies to `<ComboBox>` and `<Autocomplete>`.
 
-## New components
+## Components
 
 ### `<Panel>`
 
-`<Panel>` is a new compound component for **page-level content sectioning** — the unit between `<AppLayout>` and the content inside it. Where `<Card>` is meant for repeating collection items (a stat tile, a session row, a team card), `<Panel>` frames a full page section with a header, optional description, actions, body, and footer.
+`<Panel>` is a new compound component for page-level content sectioning. It sits between `<AppLayout>` and the content inside it. Where `<Card>` is meant for repeating collection items (a stat tile, a session row, a team card), `<Panel>` frames a full page section with a header, optional description, actions, body, and footer.
 
 ```tsx
 <Panel>
@@ -417,7 +417,16 @@ Every other `width` value (fractions, fixed sizes, `full`) continues to work. Th
 </Panel>
 ```
 
-**Collapsible sections.** `<Panel.Collapsible>` mirrors the header layout for sections that fold. The entire surface is a single click target — title and description render as spans inside the trigger `<button>`, and `aria-labelledby` / `aria-describedby` are wired up automatically. A reusable `MorphCaret` chevron animates via SVG path morphing and respects `prefers-reduced-motion`.
+**Title-only Panels.** `<Panel.Title>` can sit as a direct child of `<Panel>` when the panel has only a title (no description, no header actions). `<Panel.Header>` remains the wrapper for title plus description plus actions, but a title-only panel does not need it. Accessibility (`aria-labelledby`) and horizontal padding still resolve correctly. `<Panel.Description>` and `<Panel.HeaderActions>` continue to require a `<Panel.Header>` wrapper.
+
+```tsx
+<Panel>
+  <Panel.Title>General settings</Panel.Title>
+  <Panel.Content>…</Panel.Content>
+</Panel>
+```
+
+**Collapsible sections.** `<Panel.Collapsible>` mirrors the header layout for sections that fold. The entire surface is a single click target. Title and description render as spans inside the trigger `<button>`, and `aria-labelledby` and `aria-describedby` are wired up automatically. A reusable `MorphCaret` chevron animates via SVG path morphing and respects `prefers-reduced-motion`.
 
 ```tsx
 <Panel>
@@ -438,9 +447,7 @@ Every other `width` value (fractions, fixed sizes, `full`) continues to work. Th
 
 **Edge-to-edge content.** `<Panel.Content>` and `<Panel.CollapsibleContent>` both accept an `inset` prop using the shared semantic spacing tokens. Combined with the new `collapsed` token (below), you can render a `<Table>` or media block that bleeds out to the panel edges without hand-rolling negative margins.
 
-The full API — header actions, footer layouts, bleed content, danger-zone rows, controlled collapsible state, error states, and a direct `Panel` vs `Card` comparison — lives on the new [Panel documentation page](/components/layout/panel).
-
-## Components
+The full API covering header actions, footer layouts, bleed content, danger-zone rows, controlled collapsible state, error states, and a direct `Panel` vs `Card` comparison lives on the new [Panel documentation page](/components/layout/panel).
 
 ### Universal `collapsed` spacing token
 
@@ -460,19 +467,6 @@ A new `collapsed` token is available across **every** spacing-accepting prop in 
 The use case: wrappers that need to render without adding any spacing, for example an edge-to-edge `<Table>` inside a `<Panel>`. Before, you had to drop out of the semantic spacing system entirely and use numeric overrides whenever this came up. The token covers it directly.
 
 The name is deliberate. `collapsed` reads naturally in both gap and padding contexts (cf. CSS margin collapse). An earlier iteration used `none`, but that collided with Tailwind v4's `leading-none`, which resolves `none` through the shared `--spacing-*` scale.
-
-### `<Panel.Title>` may be used without `<Panel.Header>`
-
-`<Panel.Title>` can now sit as a direct child of `<Panel>` when the panel has only a title (no description, no header actions). `<Panel.Header>` remains the layout wrapper for title + description + actions, but a title-only panel doesn't need it. Accessibility (`aria-labelledby`) and horizontal panel padding still resolve correctly.
-
-```tsx
-<Panel>
-  <Panel.Title>General settings</Panel.Title>
-  <Panel.Content>…</Panel.Content>
-</Panel>
-```
-
-`<Panel.Description>` and `<Panel.HeaderActions>` continue to require a `<Panel.Header>` wrapper. Existing `<Panel.Header><Panel.Title>…</Panel.Title></Panel.Header>` usages keep working.
 
 ### `<CheckboxGroup>` and `<RadioGroup>` continuous click area
 
