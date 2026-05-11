@@ -468,6 +468,20 @@ The use case: wrappers that need to render without adding any spacing, for examp
 
 The name is deliberate. `collapsed` reads naturally in both gap and padding contexts (cf. CSS margin collapse). An earlier iteration used `none`, but that collided with Tailwind v4's `leading-none`, which resolves `none` through the shared `--spacing-*` scale.
 
+### `<Select>` `renderValue` prop
+
+`<Select>` accepts a new `renderValue` prop for customizing the trigger contents. When provided, the callback receives the selected items and replaces the default trigger render. Useful when the trigger should look different from the option, for example an avatar plus name in the trigger and an avatar plus name plus role in the dropdown. The placeholder still renders when nothing is selected.
+
+```tsx
+<Select label="Assignee" renderValue={items => <UserAvatar user={items[0]} />}>
+  <Select.Option id="anna">
+    <UserAvatar user={anna} />
+    <Text slot="label">Anna</Text>
+    <Text slot="description">Designer</Text>
+  </Select.Option>
+</Select>
+```
+
 ### `<CheckboxGroup>` and `<RadioGroup>` continuous click area
 
 Spacing between items in `<CheckboxGroup>` and `<RadioGroup>` moves from a `gap` to per-item padding, so the whole space between items is clickable. Vertical items now meet the 24 px target-size minimum; horizontal spacing keeps visual parity. Standalone `<Checkbox>` is unaffected.
@@ -482,6 +496,10 @@ The inner row layout also switches from `items-center` to `items-start`, so the 
 
 When `<FieldBase>` renders through a React Aria Components element via `as={RACComponent}`, the validation props (`isInvalid`, `isRequired`, `isDisabled`) are now forwarded so the underlying RAC element receives them. Plain DOM elements continue to skip these props to avoid unknown attribute warnings.
 
+### Focus outline on virtualized listbox items
+
+The virtualizer wrapper inside `<Select>`, `<ComboBox>`, and `<Autocomplete>` sets an inline `z-index: 0` per item, which created a stacking context the focused option's outline could not escape. Adjacent wrappers painted on top in DOM order and clipped the outline, most visible when the next item was selected. Each virtualized listbox now lifts the wrapper containing the focused option above its siblings so the outline renders fully.
+
 ## Theme package (`@marigold/theme-rui`)
 
 Most v18 changes happen inside `@marigold/components`. A handful of changes also land in `@marigold/theme-rui` that are worth calling out separately, because they affect what you import and how the CSS is structured. None of them break existing imports — `theme.css` and `styles.css` continue to work exactly as documented.
@@ -490,8 +508,10 @@ Most v18 changes happen inside `@marigold/components`. A handful of changes also
 
 `preflight.css` adds two peer-dependency rules on the real `<html>` / `<body>`. They support the new page-level scroll model (see _`<AppLayout>` now scrolls at the page level_):
 
-- `html { scrollbar-gutter: stable }` — prevents a 1px reflow when `@react-aria/overlays` locks the page.
-- `body { position: relative; overflow-x: clip }` — contains the `@react-aria/live-announcer` portal (mounted at `top: -10000px; left: -10000px`) so it can't expand the document's scrollable area. `clip` instead of `hidden` so `position: sticky` on descendants keeps working.
+- `html { scrollbar-gutter: stable }` prevents a 1px reflow when `@react-aria/overlays` locks the page.
+- `body { overflow-x: clip }` keeps any off-screen react-aria portal (such as the live-announcer node mounted at `top: -10000px; left: -10000px`) from expanding the document's scrollable area. `clip` instead of `hidden` so `position: sticky` on descendants keeps working.
+
+Body is intentionally not given `position: relative`. Doing so would make it the containing block for absolute overlays (Tooltip, Popover, Menu, Select dropdown), and react-aria's overlay positioning then double counts the page scroll offset when computing available space above the trigger. The result is overlays with a `top` placement flipping to `bottom` even when the viewport has plenty of headroom. The file's comment now warns that `position`, `transform`, `contain`, `filter`, `backdrop-filter`, or `will-change: transform` on `<body>` would reintroduce the bug.
 
 Both entry points (`theme.css` and `styles.css`) ship these rules, with the prefixer excluding `html` / `body` so they reach the document root while the rest of the bundle stays scoped to `[data-theme="rui"]`.
 
@@ -537,6 +557,8 @@ v18 ships alongside a substantial pass over the documentation site. None of thes
 - **Switch `variant="settings"` documented end to end** — a Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
 - **MCP and embedding env vars are optional in local builds.** `pnpm build:docs` no longer requires `AWS_BEDROCK_*`, `OIDC_*`, or `BLOB_READ_WRITE_TOKEN` to be set, and the `claude mcp add marigold-docs` snippet uses the positional URL argument instead of `--url`.
 - **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
+- **Full data management pattern at `/examples/filter`.** A new venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`. Includes a toolbar with search and filter controls, applied filter chips for active filter display, and a paginated data table all driven by the same URL state.
+- **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, and the engineering API in one place. A new _Using icons in code_ section covers installation, importing, sizing, color (`currentColor` plus `className` is the recommended path, `color` is a literal CSS value), filled brand icons, and accessibility (auto `aria-hidden`).
 
 ---
 
