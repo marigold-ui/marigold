@@ -1,10 +1,55 @@
 'use client';
 
-import { Inline, Stack, alignment, cn, paddingSpace } from '@/ui';
+import { Inline, Stack, alignment, cn } from '@/ui';
+import type { ScaleValue } from '@/ui';
 import { Card } from 'fumadocs-ui/components/card';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
+
+type ScaleString = `${ScaleValue}`;
+
+// Mirrors the spacing scale exposed by @marigold/system's `ScaleValue` type.
+// Kept as a runtime list because the docs render `pl-${key}` per row, which
+// Tailwind needs as a static literal. The `satisfies` clause makes any
+// invalid or mistyped entry a type error; unhandled entries surface as a
+// missing row in the rendered table.
+const SPACING_SCALE = [
+  '0',
+  '0.5',
+  '1',
+  '1.5',
+  '2',
+  '2.5',
+  '3',
+  '3.5',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '14',
+  '16',
+  '20',
+  '24',
+  '28',
+  '32',
+  '36',
+  '40',
+  '44',
+  '48',
+  '52',
+  '56',
+  '60',
+  '64',
+  '72',
+  '80',
+  '96',
+] as const satisfies readonly ScaleString[];
 
 export const AlignmentsX = () => {
   return (
@@ -153,23 +198,21 @@ export const Spacing = () => {
         </tr>
       </thead>
       <tbody>
-        {Object.keys(paddingSpace)
-          .sort((a, b) => parseFloat(a) - parseFloat(b))
-          .map(key => (
-            <tr key={key}>
-              <td>
-                <code className="before:content-none after:content-none">
-                  {key}
-                </code>
-              </td>
-              <td>{Number(key) * 4}px</td>
-              <td>
-                <div className={cn(`pl-${key}`, 'bg-slate-300')}>
-                  <div className="h-3 bg-white"></div>
-                </div>
-              </td>
-            </tr>
-          ))}
+        {SPACING_SCALE.map(key => (
+          <tr key={key}>
+            <td>
+              <code className="before:content-none after:content-none">
+                {key}
+              </code>
+            </td>
+            <td>{Number(key) * 4}px</td>
+            <td>
+              <div className={cn(`pl-${key}`, 'bg-slate-300')}>
+                <div className="h-3 bg-white"></div>
+              </div>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

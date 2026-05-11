@@ -34,6 +34,7 @@ export { Popover } from './Popover.styles';
 export { Radio } from './Radio.styles';
 export { Pagination } from './Pagination.styles';
 export { ProgressCircle } from './ProgressCircle.styles';
+export { RangeCalendar } from './RangeCalendar.styles';
 export { SectionMessage } from './SectionMessage.styles';
 export { Select } from './Select.styles';
 export { SelectList } from './SelectList.styles';
