@@ -6,7 +6,7 @@
 
 feat(DST-1366): introduce slot-configurable primitives
 
-Phase 0 of the slot-configuration pattern. Adds three text-bearing role primitives — `Title`, `Description`, `TextValue` — and three action primitives — `ActionButton`, `ActionGroup`, `ActionMenu` — that participate in slot-keyed context. Text/heading slots use React Aria's `HeadingContext` / `TextContext` directly; action slots use Marigold-owned contexts (`ActionButtonContext`, `ActionGroupContext`, `ActionMenuContext`) consumed via `useContextProps`.
+Adds three text-bearing role primitives — `Title`, `Description`, `TextValue` — and three action primitives — `ActionButton`, `ActionGroup`, `ActionMenu` — that participate in slot-keyed context. Text/heading slots use React Aria's `HeadingContext` / `TextContext` directly; action slots use Marigold-owned contexts (`ActionButtonContext`, `ActionGroupContext`, `ActionMenuContext`) consumed via `useContextProps`.
 
 `Title` is a thin role wrapper around RAC's `<Heading>` with `slot="title"` and `level={2}` as defaults. `Description` defaults to `slot="description"`; `TextValue` defaults to `slot="label"`. All three carry no typography props of their own and render through RAC's primitives directly — styling cascades from the surrounding container (or selection item) via `HeadingContext` / `TextContext`. Consumers drop these into containers without any `slot` wiring; the container provides level, layout (e.g. a grid area), size, variant, color, and any other styling via a single `Provider`.
 
@@ -25,5 +25,3 @@ The container-driven layout pattern this enables comes with a corresponding conv
 `<ActionBar>`'s legacy top-level `ActionButton` slot is internalized and re-exposed as `ActionBar.Button`. Existing consumers that already use `<ActionBar.Button>` are unaffected.
 
 Typography prep: `Headline` exports `HeadlineSize`, `Text` exports `TextSize` and `TextVariant`. The aliases aren't yet consumed by other primitives, but exposing them now lets a future typography-token PR replace runtime classes without rewriting consumer-facing prop types.
-
-Consumer container migrations follow in Phase 1+ (Panel — DST-1367; Dialog/Drawer/Tray — DST-1369; ContextualHelp/SectionMessage/EmptyState — DST-1370; ListBox item — DST-1364; bespoke ActionButton visual — DST-1368).
