@@ -48,7 +48,9 @@ export interface ActionMenuProps
   variant?: 'default' | 'ghost' | (string & {});
 
   /**
-   * Size of the trigger button.
+   * Size of the trigger button. Applied when `<ActionMenu>` is used on
+   * its own. Inside an `<ActionGroup>` the group's `size` wins so the
+   * cluster stays visually uniform.
    */
   size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 

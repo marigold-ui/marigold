@@ -26,7 +26,9 @@ export interface ActionButtonProps
     | 'link'
     | (string & {});
   /**
-   * Size of the action button.
+   * Size of the action button. Applied when `<ActionButton>` is used on
+   * its own. Inside an `<ActionGroup>` the group's `size` wins so the
+   * cluster stays visually uniform.
    */
   size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
   children?: ReactNode;
