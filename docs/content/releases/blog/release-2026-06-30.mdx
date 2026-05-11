@@ -13,12 +13,6 @@ changed:
   - components/layout/inline
   - components/layout/app-layout
   - components/layout/card
-  - components/navigation/sidebar
-  - components/navigation/pagination
-  - components/actions/actionbar
-  - components/collection/table
-  - components/content/divider
-  - components/content/loader
   - components/form/switch
   - components/form/tagfield
   - components/form/select
@@ -26,8 +20,6 @@ changed:
   - components/form/autocomplete
   - components/form/checkbox
   - components/form/radio
-  - components/form/select-list
-  - components/form/range-calendar
   - components/overlay/tooltip
   - icons
 ---
@@ -349,41 +341,6 @@ The discriminated union shape is unchanged: `p` is mutually exclusive with `px` 
 
 `<Card.Preview>` is also available for media at the top of the card. With `<Panel>` now covering page-level sections, `<Card>` is the right unit for repeating collection items (a stat tile, a session row, a payment method, a team card) — the [Panel docs page](/components/layout/panel) includes a side-by-side comparison.
 
-### `<SelectList>` API standardization
-
-`<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. Renames and a tightened type surface ship together.
-
-```diff
-- <SelectList selectionMode="none">
--   <SelectList.Item id="free">
--     <SelectList.Action>
--       <IconButton aria-label="Info"><Info /></IconButton>
--     </SelectList.Action>
--     Free
--   </SelectList.Item>
-- </SelectList>
-+ <SelectList selectionMode="single">
-+   <SelectList.Option id="free">
-+     Free
-+     <IconButton aria-label="Info"><Info /></IconButton>
-+   </SelectList.Option>
-+ </SelectList>
-```
-
-The full set of changes:
-
-- **`SelectList.Item` → `SelectList.Option`.** Aligns with `Select.Option` and the HTML `<option>` mental model.
-- **`SelectList.Action` removed.** Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>`. The component positions, sizes, and styles the nested control automatically via `ButtonContext`. One action per option for now (multi-button groups will arrive with a future `ActionButtonGroup`).
-- **Leading-image slot removed.** Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
-- **`selectionMode="none"` is gone.** `<SelectList>` is a form field; the default is `"single"`.
-- **`onChange` is strictly typed per `selectionMode`** — `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. Passing `setState` directly may need adapting.
-- **Selection indicator** — single-select rows render a visible radio circle, multi-select renders a checkbox.
-- **Label & description slots** — `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
-- **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
-- **Theme entry** — `SelectList` ships its own theme component with first-class `label`, `description`, and `action` slots; descendant selectors are gone. Custom themes need to add or update a `SelectList` entry.
-
-The [SelectList docs page](/components/form/select-list) is rewritten around the new API: anatomy, a decision table for picking between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions, horizontal orientation, and empty state.
-
 ### `@marigold/icons` migrated to a `lucide-react` proxy
 
 `@marigold/icons` is now a thin proxy over `lucide-react` plus 13 retained custom icons (event-domain shapes that don't have a Lucide equivalent — `DesignTicket`, `Stadium`, etc.). Icons that **did** have a Lucide equivalent (`Add`, `Seat`, `Deal`, …) were dropped in favour of the Lucide name.
@@ -483,18 +440,6 @@ Every other `width` value (fractions, fixed sizes, `full`) continues to work. Th
 
 The full API — header actions, footer layouts, bleed content, danger-zone rows, controlled collapsible state, error states, and a direct `Panel` vs `Card` comparison — lives on the new [Panel documentation page](/components/layout/panel).
 
-### `<RangeCalendar>` (alpha)
-
-A new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`).
-
-```tsx
-<RangeCalendar label="Travel dates" visibleDuration={{ months: 2 }} />
-```
-
-Up to three side-by-side months are supported via `visibleDuration`, stacking vertically below the `sm` breakpoint. The same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>`, so the help / error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container).
-
-Ships as an alpha component with a stub docs page under the form section.
-
 ## Components
 
 ### Universal `collapsed` spacing token
@@ -516,49 +461,6 @@ The use case: wrappers that need to render without adding any spacing, for examp
 
 The name is deliberate. `collapsed` reads naturally in both gap and padding contexts (cf. CSS margin collapse). An earlier iteration used `none`, but that collided with Tailwind v4's `leading-none`, which resolves `none` through the shared `--spacing-*` scale.
 
-### `Sidebar.Nav` `current` prop
-
-`<Sidebar.Nav>` now accepts a `current` prop that resolves the active item for you. Pass the current pathname for smart segment-aware matching, or a predicate `(href, key) => boolean` for full control.
-
-```diff
-- <Sidebar.Nav>
--   <Sidebar.Item href="/orders" active={pathname === '/orders'}>Orders</Sidebar.Item>
--   <Sidebar.Item href="/events" active={pathname === '/events'}>Events</Sidebar.Item>
-- </Sidebar.Nav>
-+ <Sidebar.Nav current={pathname}>
-+   <Sidebar.Item href="/orders">Orders</Sidebar.Item>
-+   <Sidebar.Item href="/events">Events</Sidebar.Item>
-+ </Sidebar.Nav>
-```
-
-With the string form, nested routes like `/orders/1234` automatically highlight the `/orders` item — no regex fallback needed. `<Sidebar.Item>`'s own `active` prop still works as a local override.
-
-### `<Table>` column alignment fix
-
-`Table.Column`'s `alignX` prop now applies to the first column. Previously a truthy check on `columnIndex` skipped the alignment lookup when `columnIndex === 0`, so the first column quietly fell back to its default. If your tables rely on `alignX` for a numeric or icon column in the first position, they will render correctly for the first time.
-
-### Compound field focus and error outline
-
-Fields that compose an input with an adornment (addon slots, combined inputs) now render a **single continuous outline** across the composite for both focus and error states, instead of the outline breaking at the slot boundary. Affects any `<TextField>` / `<NumberField>` / etc. used with start or end addons.
-
-### `<Divider>` API and styling refresh
-
-`<Divider>` got a small API and styling pass. The most important change is that `orientation="vertical"` now actually works — previously the vertical variant rendered as a zero-height line you could not see. Alongside the fix, the docs page has been rewritten with new stories for the typical use cases (between groups in a stack, between toolbar items, inside menus). See the updated [Divider documentation](/components/content/divider).
-
-### `<Table.EditableCell>` collapsing edit trigger
-
-The hover-only ring affordance introduced in v17 (`#5250`) didn't read as editable in user testing — sighted users didn't associate it with inline editing, and there was no discoverable trigger for keyboard or touch users at all. v18 reverts that approach and brings back the explicit pencil edit button.
-
-The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands the moment a row is hovered or any cell in the row receives keyboard focus. When expanded, the wrapper switches to `overflow-visible` so the focus outline isn't clipped. The cell itself remains a tap target on touch devices, and enabled editable cells truncate their content to stay aligned with column headers and the editing controls. Disabled editable cells render like a regular `Table.Cell`.
-
-### `<Loader>` and `<ProgressCircle>` accept custom variant + size strings
-
-`<Loader>` and `<ProgressCircle>`'s `variant` and `size` prop types now use the `| (string & {})` pattern already adopted by `<Button>`, `<Panel>`, and most other themed components. Custom themes can register their own variant or size tokens without TypeScript errors, and IDE autocomplete still surfaces the built-in RUI values first.
-
-### `<ActionBar>` button spacing
-
-`<ActionBar>` action buttons now space their icon and label the same way a regular `<Button>` does. The theme's `actionButton` style was missing `gap-2 items-center justify-center`, which produced a subtle but visible misalignment whenever an `ActionBar` button mixed an icon with text. Theme-only fix — no consumer migration.
-
 ### `<Panel.Title>` may be used without `<Panel.Header>`
 
 `<Panel.Title>` can now sit as a direct child of `<Panel>` when the panel has only a title (no description, no header actions). `<Panel.Header>` remains the layout wrapper for title + description + actions, but a title-only panel doesn't need it. Accessibility (`aria-labelledby`) and horizontal panel padding still resolve correctly.
@@ -572,10 +474,6 @@ The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and e
 
 `<Panel.Description>` and `<Panel.HeaderActions>` continue to require a `<Panel.Header>` wrapper. Existing `<Panel.Header><Panel.Title>…</Panel.Title></Panel.Header>` usages keep working.
 
-### Persistent idle sort indicator on `<Table>`
-
-`<Table.Column>` with `allowsSorting` now renders a Lucide `arrow-down-up` icon when the column is sortable but not currently the active sort column. The active ascending / descending icons (`SortAscending` / `SortDescending`) are unchanged. Sortable columns are now discoverable at rest, instead of relying on hover or the active-column state to surface the affordance.
-
 ### `<CheckboxGroup>` and `<RadioGroup>` continuous click area
 
 Spacing between items in `<CheckboxGroup>` and `<RadioGroup>` moves from a `gap` to per-item padding, so the whole space between items is clickable. Vertical items now meet the 24 px target-size minimum; horizontal spacing keeps visual parity. Standalone `<Checkbox>` is unaffected.
@@ -586,19 +484,9 @@ The inner row layout also switches from `items-center` to `items-start`, so the 
 
 `<Checkbox>` and `<Radio>` controls now paint their inner area with `bg-surface`, so the controls stay visually distinct over containers that paint a non-default background — for example a hovered or selected `<SelectList>` row. `<Radio>` already used `bg-surface` (added during the design-token polish); this brings `<Checkbox>` into parity.
 
-### `<Pagination>` mobile layout
-
-`<Pagination>` now hides the numbered page buttons below the `sm` breakpoint and spreads the previous / next buttons across the full width via `justify-between`. The full layout is preserved on larger screens. The result is a cleaner, touch-friendly pagination on mobile without giving up the desktop affordance.
-
 ### `<FieldBase>` forwards validation props through `as`
 
 When `<FieldBase>` renders through a React Aria Components element via `as={RACComponent}`, the validation props (`isInvalid`, `isRequired`, `isDisabled`) are now forwarded so the underlying RAC element receives them. Plain DOM elements continue to skip these props to avoid unknown attribute warnings.
-
-### `ui-surface` custom properties no longer cascade
-
-`--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` are now registered with `@property { inherits: false }`. Previously, overriding one of them on a themed surface (for example a destructive `<Panel>` setting a red border) would cascade the value into every nested element that also reads `ui-surface`, tinting the borders of the Inputs, Buttons, and Cards inside it.
-
-Each surface now resolves its own fallback through the existing `var(..., var(--color-…))` chain, so nested surfaces keep their own defaults. No code change is required; the visual bleeding simply stops.
 
 ## Theme package (`@marigold/theme-rui`)
 
@@ -649,20 +537,12 @@ v18 ships alongside a substantial pass over the documentation site. None of thes
 - **Layouts foundation restructured** around `<Panel>` and the atomic primitives (`<Stack>`, `<Inline>`, `<Inset>`, `<Split>`, `<Center>`, `<Tiles>`, `<Columns>`). A new _Choosing the right layout_ decision table replaces the previous two-tier "structural vs atomic" framing, and the wireframe hero is now an annotated SVG anatomy diagram that matches the Panel and Sidebar anatomies. See [Layouts](/foundations/layouts).
 - **Elevation foundation rewritten** around the three-tier shadow system (`border`, `raised`, `overlay`). Adds a surfaces section that explains `bg-background`, `bg-surface`, `bg-muted`, and `ui-surface`, interactive demos, per-tier Do/Don't guidance, and a migration table for the retired `util-surface-*` utilities. See [Elevation](/foundations/elevation).
 - **New Panel documentation page** — MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
-- **Unified demo app at `/examples`** consolidates all pattern demos (filter, form, inventory) alongside a full app-shell example. A shared shell layout drives the sidebar, breadcrumbs, and section switcher from a single navigation tree; each example page links back to its corresponding pattern guideline.
 - **App-shell example pages fleshed out** — Analytics, Billing, General, Security, Teams, and Users are now real screens built from Marigold components. `Panel` is used for page-level sections and `Card` is reserved for repeating collection items (payment methods, active sessions, team cards, stat tiles).
-- **Do/Don't cards redesigned** to match fumadocs — tinted cards, `--color-fd-success` / `--color-fd-error` tokens, `lucide-react` icons, and (importantly) working dark mode, which the previous design quietly got wrong.
-- **Installation guide rewritten** end to end. Clearer steps, up-to-date examples, and enough detail that a human or an AI agent can stand up a Marigold project without fishing through the source.
-- **`AutoTypeTable` prop rendering improved.** Props that reference design-system aliases (`SpacingTokens`, `Scale`, `WidthProp`, `NonZeroPercentage`) now show a meaningful alias summary in the cell and the full list of concrete literals on row expand, replacing the previous wall-of-literals-in-the-cell + redundant-alias-name-on-expand layout. Driven by a fumadocs-typescript transform, so new components pick this up automatically.
 - **`ComponentDemo` / `AppearanceDemo` `background="page"` prop** — demos can now opt into the theme's page background (`bg-background`) instead of the default white, giving full-bleed previews of things like AppLayout and Sidebar without wrapper `div` hacks.
-- **MCP server for the docs.** The docs site now exposes an MCP (Model Context Protocol) server at `/mcp` so AI coding assistants (Claude Code, VS Code Copilot, Cursor, etc.) can run semantic searches across the Marigold documentation. An ETL pipeline (`pnpm build:embeddings`) chunks the MDX content and generates vector embeddings via AWS Bedrock Titan v2, served over Streamable HTTP behind Keycloak authentication.
-- **Table demo column alignment fixed.** Several Table demos contradicted the alignment rules described in the docs — numeric columns rendered left-aligned, action menus centered under left-aligned headers. The `action-menu`, `table-editable`, `table-links`, and `table-sticky` demos now follow the documented "numeric right, text left, center only for icons or status" rules.
 - **Storybook decorators migrated from `<Card>` to `<Panel>`** — internal cleanup so component stories that need a framing surface render through `<Panel>`, matching how page-level sections are now built. Behavior of the components themselves doesn't change; just what you see in Storybook.
 - **Switch `variant="settings"` documented end to end** — a Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
-- **Per-page markdown and the page manifest are now static assets.** `/<page-url>.md` (e.g. `/components/actions/button.md`) and `/manifest.json` are now plain files in `public/`, written once at build time and served directly by Next.js — no route handlers, no `force-static` Proxy crash on Vercel under Node ≥22 + Next.js 16. Same URLs as before, no consumer-facing change. While re-architecting this, `ts-morph` was eliminated from the runtime: type extraction now happens once at `pnpm build:types` and writes `.registry/props.json`, which both the `<AutoTypeTable>` server component and the markdown-build remark plugin read synchronously. As a side-effect, prop tables and AppearanceTables in the markdown output now match the HTML output exactly — `Menu` gains `destructive`, `LinkButton` gains `destructive-ghost`, `Panel.size` gains `default`, `Link.size` gains `default | small`, and `<AutoTypeTable package="system">` finally produces a populated table for `svg/index.mdx` and `icon/index.mdx`.
 - **MCP and embedding env vars are optional in local builds.** `pnpm build:docs` no longer requires `AWS_BEDROCK_*`, `OIDC_*`, or `BLOB_READ_WRITE_TOKEN` to be set, and the `claude mcp add marigold-docs` snippet uses the positional URL argument instead of `--url`.
 - **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
-- **Prop tables split into main / aria / handler groups.** The interactive `<AutoTypeTable>` on each component page now shows only the meaningful API props by default and tucks `aria-*` / `role` attributes and React DOM event handlers into separate collapsible sections (Button drops from 112 visible props to 39 main + 10 aria + 63 handlers). The static markdown pipeline that feeds the LLM / MCP `search_docs` index is intentionally untouched, so machine-readable docs continue to expose the full prop list.
 
 ---
 
