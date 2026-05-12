@@ -1,0 +1,157 @@
+---
+title: Marigold v17.5.0
+date: 2026-05-13
+type: Blog
+changed:
+  - components/form/rangecalendar
+  - components/form/calendar
+  - components/navigation/sidebar
+  - components/navigation/pagination
+  - components/collection/table
+  - components/content/divider
+  - components/content/loader
+  - components/actions/actionbar
+  - components/overlay/drawer
+---
+
+May is in full bloom, and so is Marigold. v17.5.0 brings two stories at once. A fresh batch of form components (a brand new `<RangeCalendar>` and a properly working vertical `<Divider>`), and a docs experience built for the AI tools you're probably already using. There's also a nice DX bump for style props and a handful of smaller polish items across the board.
+
+## Components
+
+### RangeCalendar (alpha)
+
+A new [`<RangeCalendar>`](/components/form/rangecalendar) component lets users pick a date range. It supports the familiar Marigold form props (`disabled`, `readOnly`, `error`, `dateUnavailable`), allows non-adjacent selections via `allowsNonContiguousRanges`, and renders up to three side-by-side months via `visibleDuration`.
+
+```tsx
+<RangeCalendar
+  label="Stay"
+  visibleDuration={{ months: 2 }}
+  allowsNonContiguousRanges
+/>
+```
+
+`description` and `errorMessage` slots match the rest of Marigold's form components, so help and error UI is consistent across the form family. Below the `sm` breakpoint, multi-month calendars now stack vertically. The same responsive stacking is also applied to multi-month `<Calendar>` so the two stay in lockstep.
+
+Shipping as alpha. Try it, file feedback.
+
+### Divider
+
+[`<Divider>`](/components/content/divider) got an overdue refresh. Vertical orientation, which previously did not render correctly, now works as expected. The API and styling have been cleaned up, and the docs page has new stories covering both orientations and the supported variants.
+
+```tsx
+<Inline space="related">
+  <Text>Left</Text>
+  <Divider orientation="vertical" />
+  <Text>Right</Text>
+</Inline>
+```
+
+### Sidebar.Nav `current` prop
+
+[`<Sidebar.Nav>`](/components/navigation/sidebar) now accepts a `current` prop that resolves the active leaf automatically. Pass the current pathname for smart segment-aware matching, or a predicate `(href, key) => boolean` for full control. This removes the per-item `active={pathname === '/...'}` boilerplate that every app shell ended up writing.
+
+```tsx
+<Sidebar.Nav current={pathname}>
+  <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+  <Sidebar.Item href="/orders">Orders</Sidebar.Item>
+</Sidebar.Nav>
+```
+
+Prefix matching is segment-aware, so a `/orders/:id` route automatically highlights the `/orders` nav item without a regex fallback. The per-item `active` prop still works as a local override.
+
+### Table
+
+Three improvements landed for [`<Table>`](/components/collection/table):
+
+- **Persistent idle sort indicator.** Sortable columns now show a Lucide `arrow-down-up` icon when the column is sortable but not the active sort. Active ascending and descending indicators are unchanged. This makes "which columns can I sort?" answerable at a glance instead of requiring a hover.
+- **`Table.EditableCell` collapsing trigger restored.** Earlier work tried a hover ring as the editable affordance, but user testing showed sighted users didn't read it as "this is editable" and keyboard and touch users had no entry point. The explicit pencil button is back. It collapses to zero layout space at rest and expands on row hover or keyboard focus, keeping static rows clean while staying discoverable the moment the user reaches the row.
+- **`alignX` first column fix.** `alignX` set on `Table.Column` is now applied to the first column too.
+
+### Mobile pagination
+
+[`<Pagination>`](/components/navigation/pagination) now hides the numbered page buttons on small viewports and spreads the previous and next navigation buttons across the full width. The result is a cleaner, touch-friendly pagination on phones while the full layout is preserved on larger screens.
+
+## Documentation
+
+### MCP server for semantic doc search
+
+This is the big one. Marigold's documentation is now served as an [MCP](https://modelcontextprotocol.io) server at [`/mcp`](https://www.marigold-ui.io/mcp), so AI coding assistants (Claude Code, VS Code Copilot, Cursor, and anything else that speaks MCP) can semantically search the docs instead of grepping a folder of MDX files.
+
+The server is gated by Keycloak, so access stays scoped to authenticated users. Add it to your editor and the agent gains accurate, citation-backed knowledge of every component, prop, and pattern.
+
+```bash
+claude mcp add marigold-docs https://www.marigold-ui.io/mcp
+```
+
+We've been building toward this for months, and it changes the day to day. Instead of pasting links into a chat and hoping the model has the right page in its context, the model fetches the right page on demand.
+
+### Prop tables, reorganized
+
+The interactive props table on each component page now groups props into three buckets:
+
+- **Main API props** by default (the meaningful surface)
+- **`aria-*` and `role` attributes** in a collapsible section
+- **React DOM event handlers** in a separate collapsible section
+
+`<Button>` drops from 112 visible props to 39 main + 10 aria + 63 handlers, which means the API you actually care about is no longer buried under a wall of `onPointerMoveCapture`. The MCP `search_docs` index continues to expose the full prop list for machine-readable use cases.
+
+### Better alias rendering in prop tables
+
+Design-system aliases (`SpacingTokens`, `Scale`, `WidthProp`, `NonZeroPercentage`, …) used to either inline the wall of literal values into the table cell or render as a meaningless alias name. Now you get the alias summary in the cell and the full list of resolvable literals on row expand, both for HTML and markdown output. Markdown and HTML outputs now stay in sync, including for `<AutoTypeTable>` and `<AppearanceTable>` content.
+
+### Unified `/examples` demo app
+
+All standalone pattern demos (filter, form, inventory) now live in a single demo app under [`/examples`](https://www.marigold-ui.io/examples), with a shared shell rendering the sidebar, breadcrumbs, and section switcher from one navigation tree. Each example page links back to its pattern guidelines so you can move between the "how to think about it" and "what it looks like wired up" views without losing your place.
+
+### Static `.md` and `manifest.json`
+
+`/manifest.json` and per-page `/<page-url>.md` endpoints are now plain static assets. Same URLs, faster builds, and no more runtime crashes on the manifest route.
+
+### Drawer docs rewrite
+
+The [`<Drawer>`](/components/overlay/drawer) page has been rewritten around a single defining principle: a drawer is for supplementary, in-context, light tasks, and stays non-modal on desktop. The new page leads with a decision framework (Drawer vs Dialog, Drawer vs page) and walks through six canonical use cases, each with a runnable demo:
+
+- detail-row inspection,
+- quick edit or create from a list,
+- filter panel,
+- comments and activity,
+- contextual utility,
+- multi-field bulk edit.
+
+If you've ever debated whether a flow belongs in a drawer, a dialog, or a page, the rewritten guidance is the answer.
+
+### Other docs polish
+
+- Redesigned **Do/Don't guideline cards** with a tinted card layout using fumadocs design tokens and `lucide-react` icons. Dark mode now works properly (it didn't before, due to hardcoded light-mode colors).
+- A revised **installation guideline** that walks you through a working setup end to end, with up-to-date examples for both humans and AI coding agents.
+- Several **table docs demos** had their column alignment corrected so they actually follow the alignment guidelines the page describes (numeric right, text left, center only for icons and status).
+
+## System
+
+### Style props accept numeric and string scale values
+
+Width, height, and spacing-related style props now accept **both** the numeric scale value (`4`) and its string equivalent (`"4"`). This applies to `width`, `maxWidth`, `height`, `space`, `spaceX`, `spaceY`, `pr`, `pl`, `pt`, and `pb`.
+
+```tsx
+<Stack space={4}>...</Stack>
+<Stack space="4">...</Stack>  // also valid now
+```
+
+The change is small but the day to day impact is real. Spreading a string value from a CMS, a URL param, or a JSON config no longer requires a `parseInt` adapter. The public types are now declarative (`Scale | Fraction | WidthKeyword`, etc.), which also makes IDE autocomplete and `AutoTypeTable` happier.
+
+A related theming fix: overrides to `--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` no longer cascade into nested surfaces. A destructive `<Panel>` overriding `--ui-border-color` no longer tints every nested `<Input>` and `<Button>`.
+
+As part of this work, a few internal exports were removed from `@marigold/system`. **This is not a breaking change for consumers.** These were never part of the public API surface that apps build against. They were used only inside the Marigold packages themselves, so application code is unaffected. The supported style-prop types and CSS-var helpers (`createWidthVar`, `createHeightVar`, `createSpacingVar`) are unchanged.
+
+### Wider `variant` and `size` types on Loader and ProgressCircle
+
+[`<Loader>`](/components/content/loader) and `<ProgressCircle>` now accept arbitrary strings for `variant` and `size`, matching the pattern already used by `<Button>` and `<Panel>`. Consumer themes can register their own variant and size tokens without TypeScript errors, while IDE autocomplete still surfaces the built-in RUI values.
+
+## Design
+
+- **ActionBar action button spacing.** Icons and labels inside `<ActionBar>` buttons now have the proper spacing and alignment, restoring visual parity with the regular `<Button>`.
+- **Compound field focus + error outline.** When a field with addons (for example `<NumberField>` with stepper buttons) was both focused and in an error state, the outline used the wrong color. The correct error-focus outline is now applied across compound form fields.
+
+---
+
+That's v17.5.0. The MCP server is the change we're most excited to put in your hands. Pair it with the prop-table refresh and the docs start to feel like real reference material for both humans and the AI tools sitting next to them. Let us know how it lands.
