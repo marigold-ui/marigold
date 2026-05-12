@@ -6,7 +6,7 @@ import type { ActionMenuProps } from './ActionMenu';
 // className-merge plumbing without a cast at the consumption site.
 // ActionMenu itself discards the merged className — see the destructure
 // in ActionMenu.tsx for why.
-type ActionMenuContextValue = ActionMenuProps & { className?: string };
+export type ActionMenuContextValue = ActionMenuProps & { className?: string };
 
 export const ActionMenuContext =
   createContext<ContextValue<ActionMenuContextValue, HTMLButtonElement>>(null);

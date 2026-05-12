@@ -9,7 +9,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { ActionGroupContext } from '../ActionGroup/Context';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import type { SlotProps } from '../types';
-import { ActionButtonContext } from './Context';
+import { ActionButtonContext, type ActionButtonContextValue } from './Context';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style' | 'slot';
 
@@ -49,7 +49,7 @@ export const ActionButton = ({
   ...inputProps
 }: ActionButtonProps) => {
   const [merged, ref] = useContextProps(
-    inputProps as ActionButtonProps & { className?: string },
+    inputProps as ActionButtonContextValue,
     refProp,
     ActionButtonContext
   );
