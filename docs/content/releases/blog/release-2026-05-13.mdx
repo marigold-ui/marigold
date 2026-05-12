@@ -4,7 +4,6 @@ date: 2026-05-13
 type: Blog
 changed:
   - components/form/rangecalendar
-  - components/form/selectlist
   - components/form/calendar
   - components/navigation/sidebar
   - components/navigation/pagination
@@ -15,7 +14,7 @@ changed:
   - components/overlay/drawer
 ---
 
-May is in full bloom, and so is Marigold. v17.5.0 brings two stories at once. A fresh batch of form components (a brand new `<RangeCalendar>`, a long overdue refresh of `<SelectList>`, and a properly working vertical `<Divider>`), and a docs experience built for the AI tools you're probably already using. There's also a nice DX bump for style props and a handful of smaller polish items across the board.
+May is in full bloom, and so is Marigold. v17.5.0 brings two stories at once. A fresh batch of form components (a brand new `<RangeCalendar>` and a properly working vertical `<Divider>`), and a docs experience built for the AI tools you're probably already using. There's also a nice DX bump for style props and a handful of smaller polish items across the board.
 
 ## Components
 
@@ -34,33 +33,6 @@ A new [`<RangeCalendar>`](/components/form/rangecalendar) component lets users p
 `description` and `errorMessage` slots match the rest of Marigold's form components, so help and error UI is consistent across the form family. Below the `sm` breakpoint, multi-month calendars now stack vertically. The same responsive stacking is also applied to multi-month `<Calendar>` so the two stay in lockstep.
 
 Shipping as alpha. Try it, file feedback.
-
-### SelectList
-
-`<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. The component was never reached for in practice. The API was ambiguous, the visual treatment didn't distinguish it from `<ListBox>`, and it sat awkwardly between Radio and Checkbox groups and `<Select>`. With this release we've tightened the API, given it a dedicated theme entry, and rewritten the docs around clear decision guidance. We hope the refresh helps `<SelectList>` find the home in your forms it always deserved.
-
-The new shape:
-
-- `SelectList.Option` is the row primitive (matching `Select.Option` and the HTML `<option>` mental model).
-- Single-select rows render a visible radio circle, multi-select rows render a checkbox, so the selection mode is communicated at a glance.
-- Drop an `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` for per-row actions. The component handles positioning, sizing, and styling automatically.
-- `onChange` is strictly typed per `selectionMode`, matching the shape of `<Select>`.
-- `<SelectList>` ships its own theme entry with dedicated `label`, `description`, and `action` slots for cleaner theming.
-
-```tsx
-<SelectList selectionMode="single" label="Plan">
-  <SelectList.Option id="free">
-    <Text slot="label">Free</Text>
-    <Text slot="description">For personal use</Text>
-  </SelectList.Option>
-  <SelectList.Option id="pro">
-    <Text slot="label">Pro</Text>
-    <Text slot="description">For teams and small companies</Text>
-  </SelectList.Option>
-</SelectList>
-```
-
-See the rewritten [SelectList documentation](/components/form/selectlist) for the full new API, the decision table for picking between `<SelectList>` and lighter controls, and patterns for per-row actions and empty states.
 
 ### Divider
 
