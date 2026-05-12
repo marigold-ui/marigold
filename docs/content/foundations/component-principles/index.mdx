@@ -107,7 +107,7 @@ To avoid each container reinventing wrappers for that shape, Marigold publishes 
 - **[`<TextValue>`](/components/content/text-value)**, the accessible label inside selection items.
 - **[`<ActionButton>`](/components/actions/action-button)**, **[`<LinkButton>`](/components/actions/link-button)**, and **[`<ActionMenu>`](/components/overlay/action-menu)**, actions that pick up defaults from the surrounding container.
 
-The container declares which roles it supports and what defaults each role carries (heading level, layout, default ActionButton variant). Consumers drop the primitives in without thinking about it:
+The container declares which roles it supports and what defaults each role carries (heading level, layout, default `<ActionButton>` variant). Consumers drop the primitives in without thinking about it:
 
 ```tsx
 <Dialog>
@@ -118,7 +118,7 @@ The container declares which roles it supports and what defaults each role carri
 </Dialog>
 ```
 
-The same primitives also appear in selection items. `<Description>` is the same component whether it sits next to a Title in a Dialog or next to a TextValue in a Select option:
+The same primitives also appear in selection items. `<Description>` is the same component whether it sits next to a `<Title>` in a `<Dialog>` or next to a `<TextValue>` in a `<Select>` option:
 
 ```tsx
 <Select label="Plan">
