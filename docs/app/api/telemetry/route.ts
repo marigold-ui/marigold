@@ -21,6 +21,12 @@ const EventSchema = z.object({
 });
 
 const MAX_BODY_BYTES = 4 * 1024;
+// Per-anonymousId daily quota. Telemetry is fire-and-forget from the CLI, so
+// the legit upper bound is "one event per command invocation"; 1000/day leaves
+// ample headroom for power users (CI is auto-suppressed) while still bounding
+// abuse on the public POST endpoint to a knowable share of the Upstash quota.
+const RATE_LIMIT_PER_DAY = 1000;
+const SECONDS_PER_DAY = 24 * 60 * 60;
 
 const dateKey = (): string => {
   const now = new Date();
@@ -29,6 +35,9 @@ const dateKey = (): string => {
   const d = String(now.getUTCDate()).padStart(2, '0');
   return `telemetry:${y}-${m}-${d}`;
 };
+
+const rateLimitKey = (anonymousId: string): string =>
+  `telemetry:rl:${anonymousId}:${dateKey().slice('telemetry:'.length)}`;
 
 let redis: Redis | null = null;
 const getRedis = (): Redis | null => {
@@ -65,6 +74,15 @@ export async function POST(request: Request) {
   }
 
   try {
+    // Per-anonymousId daily quota. INCR returns the new count atomically;
+    // EXPIRE only on first hit so the TTL doesn't get pushed out forever.
+    const rlKey = rateLimitKey(parsed.data.anonymousId);
+    const count = await client.incr(rlKey);
+    if (count === 1) await client.expire(rlKey, SECONDS_PER_DAY);
+    if (count > RATE_LIMIT_PER_DAY) {
+      return new NextResponse(null, { status: 429 });
+    }
+
     const payload = {
       ...parsed.data,
       receivedAt: new Date().toISOString(),
