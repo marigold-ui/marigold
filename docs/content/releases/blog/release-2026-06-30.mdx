@@ -16,6 +16,7 @@ changed:
   - components/form/switch
   - components/form/tagfield
   - components/form/select
+  - components/form/selectlist
   - components/form/combobox
   - components/form/autocomplete
   - components/form/checkbox
@@ -340,6 +341,45 @@ The discriminated union shape is unchanged: `p` is mutually exclusive with `px` 
 ```
 
 `<Card.Preview>` is also available for media at the top of the card. With `<Panel>` now covering page-level sections, `<Card>` is the right unit for repeating collection items (a stat tile, a session row, a payment method, a team card). The [Panel docs page](/components/layout/panel) includes a side-by-side comparison.
+
+### `<SelectList>` API standardized
+
+`<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. The component was never reached for in practice. The API was ambiguous, the visual treatment didn't distinguish it from `<ListBox>`, and it sat awkwardly between Radio and Checkbox groups and `<Select>`. v18 tightens the API, gives it a dedicated theme entry, and rewrites the docs around clear decision guidance.
+
+The new shape:
+
+- Single-select rows render a visible radio circle, multi-select rows render a checkbox, so the selection mode is communicated at a glance.
+- Drop an `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` for per-row actions. The component handles positioning, sizing, and styling automatically (one action per option).
+- `onChange` is strictly typed per `selectionMode`, matching the shape of `<Select>`.
+- `<SelectList>` ships its own theme entry with dedicated `label`, `description`, and `action` slots.
+
+**Breaking changes:**
+
+- **`SelectList.Item` → `SelectList.Option`.** Matches `Select.Option` and the HTML `<option>` mental model.
+- **`SelectList.Action` removed.** Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>`.
+- **Leading-image slot removed.** Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+- **`selectionMode="none"` removed.** `<SelectList>` is a form field; the default is now `"single"`.
+- **Custom theme migration required.** If you maintain a custom theme, add a `SelectList` entry.
+
+```diff
+- <SelectList selectionMode="none">
+-   <SelectList.Item id="free">
+-     <SelectList.Action>
+-       <IconButton aria-label="Info"><Info /></IconButton>
+-     </SelectList.Action>
+-     Free
+-   </SelectList.Item>
+- </SelectList>
++ <SelectList selectionMode="single">
++   <SelectList.Option id="free">
++     <Text slot="label">Free</Text>
++     <Text slot="description">For personal use</Text>
++     <IconButton aria-label="Info"><Info /></IconButton>
++   </SelectList.Option>
++ </SelectList>
+```
+
+See the rewritten [SelectList documentation](/components/form/selectlist) for the full new API, the decision table for picking between `<SelectList>` and lighter controls, and patterns for per-row actions and empty states.
 
 ### `@marigold/icons` migrated to a `lucide-react` proxy
 
