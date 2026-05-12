@@ -103,8 +103,8 @@ If you read these values directly as CSS custom properties (`var(--color-brand)`
 
 Two additional tokens join the semantic set to cover roles that were previously expressed with raw utility classes:
 
-- **`disabled-surface`** — background for disabled control surfaces (switch tracks, selected-but-disabled states, inert chips). Resolves to `charcoal-200` in the default theme.
-- **`overlay-backdrop`** — the scrim behind modals, drawers, and trays. Previously the backdrop was styled with a raw `bg-black/50`; routing it through a token lets themes tune both the color and the opacity.
+- **`disabled-surface`**: background for disabled control surfaces (switch tracks, selected-but-disabled states, inert chips). Resolves to `charcoal-200` in the default theme.
+- **`overlay-backdrop`**: the scrim behind modals, drawers, and trays. Previously the backdrop was styled with a raw `bg-black/50`. Routing it through a token lets themes tune both the color and the opacity.
 
 #### Status tokens restructured
 
@@ -283,7 +283,7 @@ The reason this matters in real apps:
 
 - **Mobile URL bar.** Safari and Chrome on mobile only collapse the URL bar when the document scrolls. With an interior scroll container, you permanently lose ~8% of the screen. Page-level scroll gets it back.
 - **Pull-to-refresh** works again on mobile (interior scroll disables it).
-- **Browser scroll restoration** on back/forward only works reliably for the document, not interior containers — interior scroll causes subtle "lost scroll position" bugs.
+- **Browser scroll restoration** on back/forward only works reliably for the document, not interior containers. Interior scroll causes subtle "lost scroll position" bugs.
 - **`Cmd+F` find-in-page** scrolls the document, so matches outside the viewport now scroll into view correctly.
 - **Anchor links (`#section`), iOS status-bar tap (scroll-to-top), and native keyboard navigation** (`PgUp`, `PgDn`, `Space`, `Home`, `End`) all behave predictably.
 - **`IntersectionObserver` with the default root, `scroll-snap`, `position: sticky`, and `scroll-margin-top`** are all simpler when there is exactly one scroll container.
@@ -304,7 +304,7 @@ The reason this matters in real apps:
 + </AppLayout.Main>
 ```
 
-Anything that read `mainRef.current.scrollTop` (or attached a scroll listener to the main container) needs to read from `window` / `document.documentElement` instead. Styles that assumed a viewport-bounded main region (`height: 100%` on direct `<AppLayout.Main>` children, for example) are no longer constrained — switch to `min-h-dvh` or drop the constraint altogether.
+Anything that read `mainRef.current.scrollTop` (or attached a scroll listener to the main container) needs to read from `window` / `document.documentElement` instead. Styles that assumed a viewport-bounded main region (`height: 100%` on direct `<AppLayout.Main>` children, for example) are no longer constrained. Switch to `min-h-dvh` or drop the constraint altogether.
 
 A small known trade-off: a pure app-shell look using `position: sticky` can flicker briefly during iOS Safari momentum scroll, and sticky elements may show a one-frame repaint when overlays close. Both are cosmetic, neither affects correctness, and the behavioral wins above are worth it.
 
@@ -339,11 +339,11 @@ The discriminated union shape is unchanged: `p` is mutually exclusive with `px` 
 + </Card>
 ```
 
-`<Card.Preview>` is also available for media at the top of the card. With `<Panel>` now covering page-level sections, `<Card>` is the right unit for repeating collection items (a stat tile, a session row, a payment method, a team card) — the [Panel docs page](/components/layout/panel) includes a side-by-side comparison.
+`<Card.Preview>` is also available for media at the top of the card. With `<Panel>` now covering page-level sections, `<Card>` is the right unit for repeating collection items (a stat tile, a session row, a payment method, a team card). The [Panel docs page](/components/layout/panel) includes a side-by-side comparison.
 
 ### `@marigold/icons` migrated to a `lucide-react` proxy
 
-`@marigold/icons` is now a thin proxy over `lucide-react` plus 13 retained custom icons (event-domain shapes that don't have a Lucide equivalent — `DesignTicket`, `Stadium`, etc.). Icons that **did** have a Lucide equivalent (`Add`, `Seat`, `Deal`, …) were dropped in favour of the Lucide name.
+`@marigold/icons` is now a thin proxy over `lucide-react` plus 13 retained custom icons (event-domain shapes that don't have a Lucide equivalent, like `DesignTicket` and `Stadium`). Icons that **did** have a Lucide equivalent (`Add`, `Seat`, `Deal`, …) were dropped in favour of the Lucide name.
 
 #### Migrating from the legacy icon set
 
@@ -379,14 +379,14 @@ The full name mapping is included in the changelog.
 #### Practical notes on the new package
 
 - Always import from `@marigold/icons`, not from `lucide-react` directly. The package re-exports the entire Lucide catalogue along with the custom icons, so a single import path covers both.
-- For coloring, prefer Tailwind text utilities (`<TriangleAlert className="text-warning-accent" />`). Lucide reads the `color` prop as a literal CSS value, so `color="warning"` won't resolve a theme token — reserve `color` / `fill` / `stroke` for literal values like `var(--color-…)` or hex codes.
+- For coloring, prefer Tailwind text utilities (`<TriangleAlert className="text-warning-accent" />`). Lucide reads the `color` prop as a literal CSS value, so `color="warning"` won't resolve a theme token. Reserve `color` / `fill` / `stroke` for literal values like `var(--color-…)` or hex codes.
 - 11 of the 13 custom icons are filled silhouettes wrapped with a small helper that defaults `fill` and `stroke` to `currentColor` and couples the `color`, `fill`, and `stroke` props so they move together. Pass `stroke` explicitly to differentiate. `Instagram` and `Twitter` are stroke-based outlines and follow Lucide's standard `color` → `stroke` behaviour.
 - Icons get `aria-hidden="true"` automatically when rendered without children or an `aria-*` attribute. Provide `aria-label` for standalone meaningful icons.
 - The peer dependency narrows to `react: >=19.0.0` (the custom icon wrappers rely on React 19's ref-as-prop).
 
 ### `<Select>`, `<ComboBox>`, `<Autocomplete>` no longer accept `width="fit"`
 
-The `fit` value is gone on these three components. Their listbox renders through a popover with virtualized content, and the react-aria `Virtualizer` controls item sizing independently of CSS layout — `width="fit"` never made it into the popover, which ended up clipping the dropdown contents.
+The `fit` value is gone on these three components. Their listbox renders through a popover with virtualized content, and the react-aria `Virtualizer` controls item sizing independently of CSS layout. As a result, `width="fit"` never made it into the popover, which ended up clipping the dropdown contents.
 
 ```diff
 - <Select label="Role" width="fit">
@@ -484,7 +484,7 @@ The name is deliberate. `collapsed` reads naturally in both gap and padding cont
 
 ### `<CheckboxGroup>` and `<RadioGroup>` continuous click area
 
-Spacing between items in `<CheckboxGroup>` and `<RadioGroup>` moves from a `gap` to per-item padding, so the whole space between items is clickable. Vertical items now meet the 24 px target-size minimum; horizontal spacing keeps visual parity. Standalone `<Checkbox>` is unaffected.
+Spacing between items in `<CheckboxGroup>` and `<RadioGroup>` moves from a `gap` to per-item padding, so the whole space between items is clickable. Vertical items now meet the 24 px target-size minimum. Horizontal spacing keeps visual parity. Standalone `<Checkbox>` is unaffected.
 
 The inner row layout also switches from `items-center` to `items-start`, so the icon stays on the first line when the label wraps. `<Radio>` labels now use `leading-4` to match `<Checkbox>`, and the icon-to-label gap moves from an inline `gap-[1ch]` to the theme-driven `gap-x-2` for parity with `<Checkbox>`.
 
@@ -502,12 +502,9 @@ v18 ships alongside a substantial pass over the documentation site. None of thes
 
 - **Layouts foundation restructured** around `<Panel>` and the atomic primitives (`<Stack>`, `<Inline>`, `<Inset>`, `<Split>`, `<Center>`, `<Tiles>`, `<Columns>`). A new _Choosing the right layout_ decision table replaces the previous two-tier "structural vs atomic" framing, and the wireframe hero is now an annotated SVG anatomy diagram that matches the Panel and Sidebar anatomies. See [Layouts](/foundations/layouts).
 - **Elevation foundation rewritten** around the three-tier shadow system (`border`, `raised`, `overlay`). Adds a surfaces section that explains `bg-background`, `bg-surface`, `bg-muted`, and `ui-surface`, interactive demos, per-tier Do/Don't guidance, and a migration table for the retired `util-surface-*` utilities. See [Elevation](/foundations/elevation).
-- **New Panel documentation page** — MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
-- **App-shell example pages fleshed out** — Analytics, Billing, General, Security, Teams, and Users are now real screens built from Marigold components. `Panel` is used for page-level sections and `Card` is reserved for repeating collection items (payment methods, active sessions, team cards, stat tiles).
-- **`ComponentDemo` / `AppearanceDemo` `background="page"` prop** — demos can now opt into the theme's page background (`bg-background`) instead of the default white, giving full-bleed previews of things like AppLayout and Sidebar without wrapper `div` hacks.
-- **Storybook decorators migrated from `<Card>` to `<Panel>`** — internal cleanup so component stories that need a framing surface render through `<Panel>`, matching how page-level sections are now built. Behavior of the components themselves doesn't change; just what you see in Storybook.
-- **Switch `variant="settings"` documented end to end** — a Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
-- **MCP and embedding env vars are optional in local builds.** `pnpm build:docs` no longer requires `AWS_BEDROCK_*`, `OIDC_*`, or `BLOB_READ_WRITE_TOKEN` to be set, and the `claude mcp add marigold-docs` snippet uses the positional URL argument instead of `--url`.
+- **New Panel documentation page**: MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
+- **App-shell example pages fleshed out**. Analytics, Billing, General, Security, Teams, and Users are now real screens built from Marigold components. `Panel` is used for page-level sections and `Card` is reserved for repeating collection items (payment methods, active sessions, team cards, stat tiles).
+- **Switch `variant="settings"` documented end to end**. A Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
 - **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
 - **Full data management pattern at `/examples/filter`.** A new venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`. Includes a toolbar with search and filter controls, applied filter chips for active filter display, and a paginated data table all driven by the same URL state.
 - **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, and the engineering API in one place. A new _Using icons in code_ section covers installation, importing, sizing, color (`currentColor` plus `className` is the recommended path, `color` is a literal CSS value), filled brand icons, and accessibility (auto `aria-hidden`).
@@ -539,16 +536,16 @@ Both entry points (`theme.css` and `styles.css`) ship these rules, with the pref
 
 The theme's CSS now ships as four files with unambiguous roles:
 
-- `tokens.css` — `@plugin` declaration plus every design token in one place.
-- `preflight.css` — the two peer-dependency rules above.
-- `theme.css` — Tailwind-native entry. Imports `preflight.css` + `tokens.css` + `ui.css` + `variants.css` and paints `<body>` directly. Use this when Marigold is your whole app.
-- `styles.css` — pre-compiled drop-in. Same base, but paints `[data-theme="rui"]` instead. Use this when Marigold lives on an island, or when you're not running Tailwind. Place `data-theme="rui"` on the wrapper that should be themed.
+- `tokens.css`: `@plugin` declaration plus every design token in one place.
+- `preflight.css`: the two peer-dependency rules above.
+- `theme.css`: Tailwind-native entry. Imports `preflight.css` + `tokens.css` + `ui.css` + `variants.css` and paints `<body>` directly. Use this when Marigold is your whole app.
+- `styles.css`: pre-compiled drop-in. Same base, but paints `[data-theme="rui"]` instead. Use this when Marigold lives on an island, or when you're not running Tailwind. Place `data-theme="rui"` on the wrapper that should be themed.
 
 `global.css` (which had ambiguous semantics and was never released to consumers) is gone. Both `tokens.css` and `preflight.css` are now subpath exports if you want to import them directly.
 
 ### Tokens at `:root`
 
-`postcss-prefix-selector` previously rewrote `@theme`'s output from `:root, :host` to `[data-theme="rui"], [data-theme="rui"] :host`, which meant any rule outside the scoped wrapper couldn't resolve `var(--color-background)` because the variables only existed inside `[data-theme="rui"]`. The prefixer now excludes `:root`, `:host`, and `[data-theme="rui"]` (with a quote-agnostic regex that survives Prettier round-trips) in addition to `html` / `body`. Design tokens are emitted globally; utility classes remain scoped.
+`postcss-prefix-selector` previously rewrote `@theme`'s output from `:root, :host` to `[data-theme="rui"], [data-theme="rui"] :host`, which meant any rule outside the scoped wrapper couldn't resolve `var(--color-background)` because the variables only existed inside `[data-theme="rui"]`. The prefixer now excludes `:root`, `:host`, and `[data-theme="rui"]` (with a quote-agnostic regex that survives Prettier round-trips) in addition to `html` / `body`. Design tokens are emitted globally. Utility classes remain scoped.
 
 ### CSS exports declare a `style` condition
 
@@ -557,7 +554,7 @@ Tailwind v4's CSS resolver uses `conditionNames: ["style"]`. Bare `.css` export 
 ## Dependency updates
 
 - **React 19** is now the required baseline (see _Before you upgrade_).
-- **`react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*`** are bumped to their latest versions. Most consumers do not need to do anything; if you import directly from `react-aria-components`, re-read the [react-aria changelog](https://github.com/adobe/react-spectrum/releases) for the version range.
+- **`react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*`** are bumped to their latest versions. Most consumers do not need to do anything. If you import directly from `react-aria-components`, re-read the [react-aria changelog](https://github.com/adobe/react-spectrum/releases) for the version range.
 - **`react-select`** is no longer a dependency. `<Multiselect>` was the only component pulling it in, and removing it shrinks the `@marigold/components` bundle for every app that had already migrated to `<TagField>`.
 
 ---
