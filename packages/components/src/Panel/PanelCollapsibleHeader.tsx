@@ -68,27 +68,29 @@ export const PanelCollapsibleHeader = ({
     : headingLevel;
 
   return (
-    // Reset HeadingContext so the panel root's slot config doesn't bleed
-    // into this structural <Heading>.
-    <Provider values={[[HeadingContext, null]]}>
-      <Heading level={level} className="flex">
-        <Button
-          slot="trigger"
-          aria-labelledby={titleId}
-          aria-describedby={hasDescription ? descriptionId : undefined}
-          className={cn('flex-1', classNames.collapsibleHeader)}
+    // Panel root publishes a slot-keyed HeadingContext (for the title-only
+    // shortcut); `slot={null}` opts this structural Heading out of it.
+    <Heading
+      level={level}
+      slot={null as unknown as string | undefined}
+      className="flex"
+    >
+      <Button
+        slot="trigger"
+        aria-labelledby={titleId}
+        aria-describedby={hasDescription ? descriptionId : undefined}
+        className={cn('flex-1', classNames.collapsibleHeader)}
+      >
+        <Provider
+          values={[
+            [HeadingContext, headingProps],
+            [TextContext, textProps],
+          ]}
         >
-          <Provider
-            values={[
-              [HeadingContext, headingProps],
-              [TextContext, textProps],
-            ]}
-          >
-            <span className="min-w-0 flex-1">{children}</span>
-          </Provider>
-          <MorphCaret expanded={isExpanded} />
-        </Button>
-      </Heading>
-    </Provider>
+          <span className="min-w-0 flex-1">{children}</span>
+        </Provider>
+        <MorphCaret expanded={isExpanded} />
+      </Button>
+    </Heading>
   );
 };
