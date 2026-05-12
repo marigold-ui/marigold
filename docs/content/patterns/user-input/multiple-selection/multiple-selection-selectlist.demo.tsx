@@ -15,7 +15,7 @@ export default () => (
     items={paymentMethods}
   >
     {(item: { id: string; name: string }) => (
-      <SelectList.Option id={item.id}>{item.name}</SelectList.Option>
+      <SelectList.Item id={item.id}>{item.name}</SelectList.Item>
     )}
   </SelectList>
 );

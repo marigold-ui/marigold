@@ -1,12 +1,11 @@
-import { createContext, use } from 'react';
+import { createContext, useContext } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 
 export interface SelectListContextProps {
-  classNames: ComponentClassNames<'SelectList'>;
-  disabled?: boolean;
+  classNames: ComponentClassNames<'ListBox'>;
 }
 
 export const SelectListContext = createContext<SelectListContextProps>({
-  classNames: {} as ComponentClassNames<'SelectList'>,
+  classNames: {} as ComponentClassNames<'ListBox'>,
 });
-export const useSelectListContext = () => use(SelectListContext);
+export const useSelectListContext = () => useContext(SelectListContext);
