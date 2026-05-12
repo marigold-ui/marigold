@@ -6,7 +6,7 @@ badge: alpha
 
 The `<ActionGroup>` component is a toolbar wrapper around a related cluster of actions. It exposes a real `role="toolbar"` with arrow-key navigation between children, and cascades shared `size`, `variant`, and `disabled` defaults so the cluster stays visually uniform.
 
-Use ActionGroup whenever a row, item, or surface has more than one related action. For a single action, use [`<ActionButton>`](/components/actions/action-button) directly. For more actions than fit comfortably in a toolbar, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
+Use `<ActionGroup>`whenever a row, item, or surface has more than one related action. For a single action, use [`<ActionButton>`](/components/actions/action-button) directly. For more actions than fit comfortably in a toolbar, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
 
 import { ActionGroupAnatomy } from './action-group-anatomy';
 
@@ -18,9 +18,17 @@ import { ActionGroupAnatomy } from './action-group-anatomy';
 - **ActionButton:** Each pressable action inside the group.
 - **LinkButton (optional):** [`<LinkButton>`](/components/actions/link-button) can sit alongside `<ActionButton>` for actions that navigate.
 
+## Appearance
+
+<AppearanceDemo component={'ActionGroup'} />
+
+<AppearanceTable component={'ActionGroup'} />
+
+`<ActionGroup>` has no visual styling of its own. The `variant` and `size` props cascade to every nested [`<ActionButton>`](/components/actions/action-button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. A local `variant` on a child wins over the group default; the group's `size` wins over a child's local size so the cluster stays uniform in height.
+
 ## Usage
 
-ActionGroup shines wherever an item, row, or surface needs a small cluster of actions. The three scenarios below cover the cases we expect to see most often.
+`<ActionGroup>`shines wherever an item, row, or surface needs a small cluster of actions. The three scenarios below cover the cases we expect to see most often.
 
 <GuidelineTiles>
   <Do>

@@ -31,6 +31,10 @@ const sharedAppearances = {
     from: 'Button',
     variant: ['ghost', 'secondary', 'destructive-ghost', 'link'],
   },
+  ActionGroup: {
+    from: 'Button',
+    variant: ['ghost', 'secondary', 'destructive-ghost', 'link'],
+  },
   ActionMenu: 'Menu',
 };
 

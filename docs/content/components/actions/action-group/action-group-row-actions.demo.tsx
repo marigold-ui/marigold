@@ -45,7 +45,7 @@ export default () => (
             <Tooltip>View</Tooltip>
           </Tooltip.Trigger>
           <Tooltip.Trigger>
-            <LinkButton href={`/events/${event.id}/edit`} aria-label="Edit">
+            <LinkButton href="#" aria-label="Edit">
               <Pencil />
             </LinkButton>
             <Tooltip>Edit</Tooltip>
