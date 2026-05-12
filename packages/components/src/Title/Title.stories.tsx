@@ -47,14 +47,9 @@ export const Renders: any = meta.story({
 
 export const RendersAsSpan: any = meta.story({
   tags: ['component-test'],
-  render: () => (
-    <Title as="span" data-testid="title">
-      Inline title
-    </Title>
-  ),
+  render: () => <Title as="span">Inline title</Title>,
   play: async ({ canvas }: any) => {
-    const el = canvas.getByTestId('title');
+    const el = canvas.getByText('Inline title');
     await expect(el.tagName).toBe('SPAN');
-    await expect(el).toHaveTextContent('Inline title');
   },
 });

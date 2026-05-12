@@ -14,12 +14,7 @@ import { useSlot } from '../utils/useSlot';
 import { usePanelContext } from './Context';
 
 export interface PanelCollapsibleHeaderProps {
-  /**
-   * Content of the collapsible header. Typically a `<Title>` and an optional
-   * `<Description>`. The whole header is rendered inside the disclosure
-   * trigger button, so `<Title>` is configured to render as a `<span>`
-   * (the outer heading semantics come from `Panel.CollapsibleHeader` itself).
-   */
+  /** Typically a `<Title>` and an optional `<Description>`. */
   children: ReactNode;
 }
 
@@ -73,9 +68,8 @@ export const PanelCollapsibleHeader = ({
     : headingLevel;
 
   return (
-    // Scope out the panel root's slot-keyed HeadingContext so the structural
-    // <Heading> below renders cleanly. The inner Provider re-publishes
-    // slot-keyed contexts for <Title> and <Description> living inside the button.
+    // Reset HeadingContext so the panel root's slot config doesn't bleed
+    // into this structural <Heading>.
     <Provider values={[[HeadingContext, null]]}>
       <Heading level={level} className="flex">
         <Button
