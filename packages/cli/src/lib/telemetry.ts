@@ -53,7 +53,10 @@ export const isTelemetryDisabled = (): boolean => {
 export const setTelemetryEnabled = (enabled: boolean): void => {
   const config = readConfig();
   config.telemetryEnabled = enabled;
-  if (!config.anonymousId) config.anonymousId = crypto.randomUUID();
+  // Only mint an anonymous ID when opting in. `anonymousId()` lazy-mints on
+  // `emit()` for the on-by-default path; opting out should never leave an
+  // identifier on disk.
+  if (enabled && !config.anonymousId) config.anonymousId = crypto.randomUUID();
   writeConfig(config);
 };
 
@@ -93,8 +96,37 @@ const findSenderScript = (): string | null => {
   return firstExisting(dir, ['send-telemetry.mjs', 'send-telemetry.cjs']);
 };
 
+const TMP_SWEEP_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+// Best-effort cleanup of stale telemetry tmp files in os.tmpdir(). The
+// detached sender unlinks on success, but if the child dies before reaching
+// unlink the file leaks; this sweep keeps the tmpdir bounded for a frequently
+// invoked CLI. Wrapped in try/catch and uses sync I/O so it stays cheap and
+// never throws.
+const sweepStaleTelemetryTmpFiles = (): void => {
+  try {
+    const dir = os.tmpdir();
+    const now = Date.now();
+    for (const entry of fs.readdirSync(dir)) {
+      if (!entry.startsWith('marigold-telemetry-') || !entry.endsWith('.json'))
+        continue;
+      const full = path.join(dir, entry);
+      try {
+        const stat = fs.statSync(full);
+        if (now - stat.mtimeMs > TMP_SWEEP_MAX_AGE_MS) fs.unlinkSync(full);
+      } catch {
+        // ignore — file may have been removed by another process
+      }
+    }
+  } catch {
+    // tmpdir unreadable or missing — telemetry must never throw
+  }
+};
+
 export const emit = (options: EmitOptions): void => {
   if (isTelemetryDisabled()) return;
+
+  sweepStaleTelemetryTmpFiles();
 
   const event: TelemetryEvent = {
     event: 'cli_command',

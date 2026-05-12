@@ -53,7 +53,7 @@ export const getComponentDocs = async (
   input: string,
   options: GetComponentDocsOptions = {}
 ): Promise<ComponentDocs> => {
-  const manifest = await loadManifest(options);
+  const { manifest } = await loadManifest(options);
   const resolved = resolveComponent(manifest, input);
 
   if (!resolved) {

@@ -6,12 +6,12 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { runCompleteSuggest, runCompletion } from '../commands/completion.js';
 import { runDocs } from '../commands/docs.js';
-import { runInit } from '../commands/init.js';
 import { runList } from '../commands/list.js';
 import {
   type TelemetrySubcommand,
   runTelemetry,
 } from '../commands/telemetry.js';
+import { type SubcommandName, TOP_LEVEL_NAMES } from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
 import { emit } from '../lib/telemetry.js';
@@ -229,12 +229,17 @@ export const main = async (
       });
 
       process.stdout.write(result.output);
+      cacheHit = result.cacheHit;
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);
       telemetryArgs = {
         ...(values.yes ? { yes: 'true' } : {}),
         ...(values['skip-install'] ? { skipInstall: 'true' } : {}),
       };
+      // Lazy-load so @babel/parser, magic-string and @clack/prompts stay off
+      // the docs/list hot path — those are the commands AI agents call
+      // dozens of times per session.
+      const { runInit } = await import('../commands/init.js');
       await runInit({
         yes: values.yes,
         skipInstall: values['skip-install'],
@@ -251,17 +256,23 @@ export const main = async (
       fail(`Unknown command: ${command}\n\nRun "marigold --help" for usage.`);
     }
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    process.stderr.write(pc.red(message) + '\n');
-    exitCode = 1;
+    if (err instanceof Error && err.name === 'InitCancelError') {
+      // User aborted `marigold init`. Surface SIGINT-style 130 so wrapping
+      // scripts can distinguish abort from completion. The init flow already
+      // printed "Aborted."; don't double-print.
+      exitCode = 130;
+    } else {
+      const message = err instanceof Error ? err.message : String(err);
+      process.stderr.write(pc.red(message) + '\n');
+      exitCode = 1;
+    }
   }
 
+  // `completion` and `__complete` are filtered out — they return early above
+  // and aren't included in telemetry by design.
   const commandForTelemetry =
-    command === 'docs' ||
-    command === 'list' ||
-    command === 'init' ||
-    command === 'telemetry'
-      ? command
+    command !== 'completion' && (TOP_LEVEL_NAMES as string[]).includes(command)
+      ? (command as Exclude<SubcommandName, 'completion'>)
       : null;
   if (commandForTelemetry) {
     emit({

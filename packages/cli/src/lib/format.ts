@@ -24,8 +24,7 @@ const renderMarkdownToTerminal = (md: string): string => {
     codeBuffer.length = 0;
   };
 
-  for (const rawLine of lines) {
-    const line = rawLine;
+  for (const line of lines) {
     if (line.startsWith('```')) {
       if (inCodeBlock) flushCode();
       inCodeBlock = !inCodeBlock;

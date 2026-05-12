@@ -17,6 +17,39 @@ npx @marigold/cli docs Button
 
 Requires Node 22 or newer.
 
+## Local development
+
+To run the CLI from a clone of this repo against a preview (or local) docs
+deployment:
+
+```sh
+# 1. Build the CLI
+pnpm --filter @marigold/cli build
+
+# 2. Link it globally so `marigold ...` resolves to the local build
+cd packages/cli
+pnpm link --global
+
+# 3. Point at a docs origin (preview or local). Create
+#    packages/cli/.env.local with:
+#      MARIGOLD_DOCS_URL="https://marigold-docs-git-<branch>-marigold.vercel.app"
+#    or for a local docs dev server:
+#      MARIGOLD_DOCS_URL="http://localhost:3000"
+
+# Now invoke as usual:
+marigold docs Button
+marigold list --category form
+
+# To remove the link:
+pnpm uninstall -g @marigold/cli
+```
+
+Without the global link, you can also run the built entry point directly:
+
+```sh
+node packages/cli/dist/bin/marigold.mjs docs Button
+```
+
 ## Commands
 
 ### `marigold docs <Component>`
@@ -38,6 +71,11 @@ Flags:
 - `--offline` — use only the local cache; fail if missing
 
 Component name input is case-insensitive (`Button`, `button`, `BUTTON` all resolve to the same component).
+
+The default `markdown` output is a best-effort terminal render (headings, code
+fences, inline code, bold). For non-trivial docs prefer `--format json` (the
+recommended path for AI agents, returns a structured payload) or `--format
+plain` (ANSI-stripped, ideal for piping into other tools).
 
 ### `marigold list`
 

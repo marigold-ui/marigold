@@ -17,7 +17,7 @@ export interface RunListResult {
 export const runList = async (
   options: RunListOptions = {}
 ): Promise<RunListResult> => {
-  const manifest = await loadManifest({
+  const { manifest, cacheHit } = await loadManifest({
     fresh: options.fresh,
     offline: options.offline,
   });
@@ -28,7 +28,5 @@ export const runList = async (
     options.format ?? 'markdown'
   );
 
-  // Cache-hit info isn't surfaced by loadManifest today; manifest is small
-  // enough that we don't bother to thread it through.
-  return { output, cacheHit: false };
+  return { output, cacheHit };
 };

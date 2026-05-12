@@ -42,7 +42,21 @@ const readEntry = (file: string, ttl: number): string | null => {
 
 const writeEntry = (file: string, data: string): void => {
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, data);
+  // Write-then-rename so concurrent CLI invocations can't observe a
+  // half-written file. rename(2) is atomic on POSIX. The .pid suffix avoids
+  // races between sibling processes writing the same cache key.
+  const tmp = `${file}.${process.pid}.tmp`;
+  try {
+    fs.writeFileSync(tmp, data);
+    fs.renameSync(tmp, file);
+  } catch (err) {
+    try {
+      fs.unlinkSync(tmp);
+    } catch {
+      // ignore — best-effort cleanup
+    }
+    throw err;
+  }
 };
 
 export const fetchWithCache = async <T = string>(
@@ -51,9 +65,13 @@ export const fetchWithCache = async <T = string>(
   options: CacheOptions = {}
 ): Promise<CachedResult<T>> => {
   const ttl = options.ttlMs ?? cacheTtlMs();
+  // `MARIGOLD_CACHE_TTL_MS=0` means caching disabled: skip read+write
+  // entirely rather than writing an entry that the next call will treat
+  // as immediately stale.
+  const cachingDisabled = ttl === 0;
   const file = entryPath(url, 'cache');
 
-  if (!options.fresh) {
+  if (!options.fresh && !cachingDisabled) {
     const cached = readEntry(file, ttl);
     if (cached !== null) {
       try {
@@ -109,6 +127,6 @@ export const fetchWithCache = async <T = string>(
       { cause: err }
     );
   }
-  writeEntry(file, text);
+  if (!cachingDisabled) writeEntry(file, text);
   return { value, hit: false };
 };

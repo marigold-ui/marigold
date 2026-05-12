@@ -2,6 +2,10 @@ import { type CacheOptions, fetchWithCache, readCacheSync } from './cache.js';
 import { docsUrl } from './config.js';
 import { sanitizeRemote } from './strip-ansi.js';
 
+/**
+ * @internal Re-exported from `@marigold/cli` for the in-tree MCP server only.
+ * Not part of the public API surface — shape may change without a major bump.
+ */
 export interface ManifestComponent {
   name: string;
   slug: string;
@@ -9,18 +13,21 @@ export interface ManifestComponent {
   badge?: string;
 }
 
+/** @internal See {@link ManifestComponent}. */
 export interface ManifestCategory {
   name: string;
   label: string;
   components: ManifestComponent[];
 }
 
+/** @internal See {@link ManifestComponent}. */
 export interface ManifestPage {
   title: string;
   slug: string;
   description?: string;
 }
 
+/** @internal See {@link ManifestComponent}. */
 export interface Manifest {
   version?: string;
   generatedAt?: string;
@@ -42,6 +49,8 @@ interface RawManifestPage {
 }
 
 interface RawManifest {
+  version?: string | null;
+  generatedAt?: string | null;
   baseUrl: string;
   pages: RawManifestPage[];
 }
@@ -99,22 +108,29 @@ const transformManifest = (raw: RawManifest): Manifest => {
   standalonePages.sort((a, b) => a.slug.localeCompare(b.slug));
 
   return {
+    version: clean(raw.version),
+    generatedAt: clean(raw.generatedAt),
     baseUrl: raw.baseUrl,
     categories,
     pages: standalonePages,
   };
 };
 
+export interface LoadManifestResult {
+  manifest: Manifest;
+  cacheHit: boolean;
+}
+
 export const loadManifest = async (
   options: CacheOptions = {}
-): Promise<Manifest> => {
+): Promise<LoadManifestResult> => {
   const url = `${docsUrl()}/manifest.json`;
-  const { value } = await fetchWithCache<Manifest>(
+  const { value, hit } = await fetchWithCache<Manifest>(
     url,
     text => transformManifest(JSON.parse(text) as RawManifest),
     options
   );
-  return value;
+  return { manifest: value, cacheHit: hit };
 };
 
 // Synchronous, never-throws cache-only loader. Used by tab completion where

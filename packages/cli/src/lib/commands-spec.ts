@@ -26,6 +26,13 @@ const completionShellValues = ['bash', 'zsh', 'fish'] as const;
 export const TELEMETRY_SUBCOMMANDS = telemetrySubValues;
 export const COMPLETION_SHELLS = completionShellValues;
 
+export type SubcommandName =
+  | 'docs'
+  | 'list'
+  | 'init'
+  | 'telemetry'
+  | 'completion';
+
 export const SUBCOMMANDS: readonly SubcommandSpec[] = [
   {
     name: 'docs',
@@ -65,7 +72,7 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
   },
 ];
 
-export const TOP_LEVEL_NAMES = SUBCOMMANDS.map(s => s.name);
+export const TOP_LEVEL_NAMES = SUBCOMMANDS.map(s => s.name) as SubcommandName[];
 
 export const findSubcommand = (name: string): SubcommandSpec | undefined =>
   SUBCOMMANDS.find(s => s.name === name);

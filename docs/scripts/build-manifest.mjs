@@ -9,10 +9,26 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const contentDir = path.join(rootDir, 'content');
 const outFile = path.join(rootDir, 'public', 'manifest.json');
+const componentsPkgPath = path.join(
+  rootDir,
+  '..',
+  'packages',
+  'components',
+  'package.json'
+);
 
 const BASE_URL = 'https://www.marigold-ui.io';
 const EXCLUDED_PREFIXES = ['releases'];
 const EXCLUDED_SEGMENTS = ['__internal__'];
+
+const readComponentsVersion = () => {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(componentsPkgPath, 'utf-8'));
+    return typeof pkg.version === 'string' ? pkg.version : null;
+  } catch {
+    return null;
+  }
+};
 
 const findMdxFiles = (dir, files = []) => {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -81,7 +97,12 @@ const buildManifest = () => {
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
   fs.writeFileSync(
     outFile,
-    JSON.stringify({ baseUrl: BASE_URL, pages: entries })
+    JSON.stringify({
+      version: readComponentsVersion(),
+      generatedAt: new Date().toISOString(),
+      baseUrl: BASE_URL,
+      pages: entries,
+    })
   );
 
   console.log(

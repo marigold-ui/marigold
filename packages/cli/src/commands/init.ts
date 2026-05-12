@@ -23,6 +23,16 @@ import {
 } from '../lib/edit-vite-config.js';
 import { exists, firstExisting } from '../lib/fs-utils.js';
 
+// Thrown when the user aborts the interactive wizard. `bin/marigold.ts`
+// catches by `.name` so the exit code becomes 130 (SIGINT convention) and
+// wrapping scripts can distinguish abort from completion.
+export class InitCancelError extends Error {
+  constructor() {
+    super('Aborted.');
+    this.name = 'InitCancelError';
+  }
+}
+
 const MARIGOLD_PACKAGES = [
   '@marigold/components',
   '@marigold/system',
@@ -277,7 +287,7 @@ export const runInit = async (
       });
       if (prompts.isCancel(ans)) {
         prompts.cancel('Aborted.');
-        return { installed: false, project, nextSteps: '' };
+        throw new InitCancelError();
       }
       setupTailwind = ans === true;
     } else {
@@ -295,7 +305,7 @@ export const runInit = async (
     });
     if (prompts.isCancel(proceed) || proceed === false) {
       prompts.cancel('Aborted.');
-      return { installed: false, project, nextSteps: '' };
+      throw new InitCancelError();
     }
   }
 
