@@ -19,16 +19,16 @@ const meta = preview.meta({
   },
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   args: {
     children: 'Apple',
   },
-  render: ({ children, ...args }: any) => (
+  render: ({ children, ...args }) => (
     <TextValue {...args}>{children}</TextValue>
   ),
 });
 
-export const InsideListBoxItem: any = meta.story({
+export const InsideListBoxItem = meta.story({
   tags: ['component-test'],
   render: () => (
     <ListBox aria-label="Fruits">
@@ -40,7 +40,7 @@ export const InsideListBoxItem: any = meta.story({
       </ListBoxItem>
     </ListBox>
   ),
-  play: async ({ canvas }: any) => {
+  play: async ({ canvas }) => {
     await expect(
       canvas.getByRole('option', { name: 'Apple' })
     ).toBeInTheDocument();

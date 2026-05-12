@@ -17,14 +17,14 @@ const meta = preview.meta({
   },
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   args: {
     children: 'Panel title',
   },
-  render: ({ children, ...args }: any) => <Title {...args}>{children}</Title>,
+  render: ({ children, ...args }) => <Title {...args}>{children}</Title>,
 });
 
-export const Levels: any = meta.story({
+export const Levels = meta.story({
   render: () => (
     <Stack space={2}>
       <Title level={1}>Title rendered as h1</Title>
@@ -34,10 +34,10 @@ export const Levels: any = meta.story({
   ),
 });
 
-export const Renders: any = meta.story({
+export const Renders = meta.story({
   tags: ['component-test'],
   render: () => <Title>Panel title</Title>,
-  play: async ({ canvas }: any) => {
+  play: async ({ canvas }) => {
     await expect(
       canvas.getByRole('heading', { level: 2, name: 'Panel title' })
     ).toBeInTheDocument();
