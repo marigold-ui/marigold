@@ -23,11 +23,8 @@ export default () => (
     </Card.Body>
     <Card.Footer>
       <Inline space="related">
-        <Button variant="primary" size="small">
-          Manage plan
-        </Button>
         <Button variant="ghost" size="small">
-          View invoice
+          Manage plan
         </Button>
       </Inline>
     </Card.Footer>

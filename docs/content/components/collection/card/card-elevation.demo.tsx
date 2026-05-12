@@ -35,11 +35,8 @@ export default () => (
       </Card.Body>
       <Card.Footer>
         <Inline space="related">
-          <Button variant="primary" size="small">
-            Get tickets
-          </Button>
           <Button variant="ghost" size="small">
-            Learn more
+            Get tickets
           </Button>
         </Inline>
       </Card.Footer>
