@@ -60,6 +60,28 @@ test('receives className from a HeadingContext slot', () => {
   expect(screen.getByTestId('title')).toHaveClass('[grid-area:title]');
 });
 
+test('renders as the element passed via `as`', () => {
+  render(
+    <Basic.Component as="span" data-testid="title">
+      Hi
+    </Basic.Component>
+  );
+
+  expect(screen.getByTestId('title').tagName).toBe('SPAN');
+});
+
+test('receives `as` from a HeadingContext slot', () => {
+  const ctx = { slots: { title: { as: 'span' } } } as never;
+
+  render(
+    <Provider values={[[HeadingContext, ctx]]}>
+      <Basic.Component data-testid="title">Hi</Basic.Component>
+    </Provider>
+  );
+
+  expect(screen.getByTestId('title').tagName).toBe('SPAN');
+});
+
 test('forwards a ref to the underlying heading element', () => {
   const ref = { current: null as HTMLHeadingElement | null };
 

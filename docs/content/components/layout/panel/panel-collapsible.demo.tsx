@@ -32,10 +32,10 @@ export default () => (
     </Panel.Content>
     <Panel.Collapsible>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>SEO &amp; tracking</Panel.CollapsibleTitle>
-        <Panel.CollapsibleDescription>
+        <Title>SEO &amp; tracking</Title>
+        <Description>
           Optional metadata used on the event page and in social shares.
-        </Panel.CollapsibleDescription>
+        </Description>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">

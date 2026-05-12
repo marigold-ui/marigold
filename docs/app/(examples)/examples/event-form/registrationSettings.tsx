@@ -66,13 +66,11 @@ export const RegistrationSettings = () => (
     </Panel.Content>
     <Panel.Collapsible>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>
-          Override registration defaults
-        </Panel.CollapsibleTitle>
-        <Panel.CollapsibleDescription>
+        <Title>Override registration defaults</Title>
+        <Description>
           These are inherited from your event settings. Only change them if this
           event needs different behavior.
-        </Panel.CollapsibleDescription>
+        </Description>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">

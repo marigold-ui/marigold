@@ -57,10 +57,10 @@ export const CoOrganizers = () => {
       </Panel.Content>
       <Panel.Collapsible>
         <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Add to this event</Panel.CollapsibleTitle>
-          <Panel.CollapsibleDescription>
+          <Title>Add to this event</Title>
+          <Description>
             Pick partners that co-present just this event.
-          </Panel.CollapsibleDescription>
+          </Description>
         </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">

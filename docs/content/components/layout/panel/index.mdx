@@ -252,7 +252,7 @@ If both are set, `aria-label` takes precedence and the title is no longer used a
 
 ### Heading levels
 
-`<Title>` renders an `<h2>` by default. `<Panel.CollapsibleTitle>` renders one level deeper (`<h3>`) when the Panel has a title to nest under. In a Collapsible-only Panel (no `<Title>`), the CollapsibleTitle renders at the base `headingLevel` instead, since there's no parent heading to defer to.
+`<Title>` renders an `<h2>` by default. Inside `<Panel.CollapsibleHeader>` it renders one level deeper (`<h3>`) when the Panel has a title to nest under, with the structural heading provided by the collapsible header itself. In a Collapsible-only Panel (no `<Title>`), the collapsible heading renders at the base `headingLevel` instead, since there's no parent heading to defer to.
 
 If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, for example), shift both down together with `headingLevel`:
 
@@ -261,7 +261,7 @@ If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, fo
   <Title>…</Title> {/* renders as <h3> */}
   <Panel.Collapsible>
     <Panel.CollapsibleHeader>
-      <Panel.CollapsibleTitle>… {/* renders as <h4> */}</Panel.CollapsibleTitle>
+      <Title>…</Title> {/* renders inside an <h4> */}
     </Panel.CollapsibleHeader>
   </Panel.Collapsible>
 </Panel>
@@ -300,20 +300,6 @@ If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, fo
 <AutoTypeTable
   path="Panel/PanelCollapsibleHeader"
   name="PanelCollapsibleHeaderProps"
-/>
-
-### Panel.CollapsibleTitle
-
-<AutoTypeTable
-  path="Panel/PanelCollapsibleTitle"
-  name="PanelCollapsibleTitleProps"
-/>
-
-### Panel.CollapsibleDescription
-
-<AutoTypeTable
-  path="Panel/PanelCollapsibleDescription"
-  name="PanelCollapsibleDescriptionProps"
 />
 
 ### Panel.CollapsibleContent

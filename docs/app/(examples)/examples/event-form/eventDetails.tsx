@@ -74,11 +74,11 @@ export const EventDetails = () => {
       </Panel.Content>
       <Panel.Collapsible>
         <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Additional details</Panel.CollapsibleTitle>
-          <Panel.CollapsibleDescription>
+          <Title>Additional details</Title>
+          <Description>
             Optional fields for visibility, internal tracking, and organizer
             notes.
-          </Panel.CollapsibleDescription>
+          </Description>
         </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">

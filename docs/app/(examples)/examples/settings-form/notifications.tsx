@@ -111,11 +111,11 @@ export const Notifications = () => {
         </Panel.Content>
         <Panel.Collapsible>
           <Panel.CollapsibleHeader>
-            <Panel.CollapsibleTitle>Quiet hours</Panel.CollapsibleTitle>
-            <Panel.CollapsibleDescription>
+            <Title>Quiet hours</Title>
+            <Description>
               Hold non-urgent digests during off-hours. Capacity warnings and
               payment failures are still delivered immediately.
-            </Panel.CollapsibleDescription>
+            </Description>
           </Panel.CollapsibleHeader>
           <Panel.CollapsibleContent>
             <Stack space="regular">

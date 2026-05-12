@@ -56,10 +56,10 @@ export const RegistrationCapacity = () => {
         </Panel.Content>
         <Panel.Collapsible>
           <Panel.CollapsibleHeader>
-            <Panel.CollapsibleTitle>Booking policies</Panel.CollapsibleTitle>
-            <Panel.CollapsibleDescription>
+            <Title>Booking policies</Title>
+            <Description>
               Registration windows, cancellation rules, and legal requirements.
-            </Panel.CollapsibleDescription>
+            </Description>
           </Panel.CollapsibleHeader>
           <Panel.CollapsibleContent>
             <Stack space="regular">

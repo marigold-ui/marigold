@@ -379,10 +379,10 @@ export const WithCollapsible = meta.story({
       </Panel.Content>
       <Panel.Collapsible>
         <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Advanced Options</Panel.CollapsibleTitle>
-          <Panel.CollapsibleDescription>
+          <Title>Advanced Options</Title>
+          <Description>
             Fine-tune URL slugs, tracking, and other optional settings.
-          </Panel.CollapsibleDescription>
+          </Description>
         </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">
@@ -441,7 +441,7 @@ export const ControlledCollapsible = meta.story({
         </Panel.Content>
         <Panel.Collapsible expanded={expanded} onExpandedChange={setExpanded}>
           <Panel.CollapsibleHeader>
-            <Panel.CollapsibleTitle>Advanced settings</Panel.CollapsibleTitle>
+            <Title>Advanced settings</Title>
           </Panel.CollapsibleHeader>
           <Panel.CollapsibleContent>
             <Text>Controlled content.</Text>
@@ -496,10 +496,10 @@ export const CollapsibleDefaultExpanded = meta.story({
       </Panel.Content>
       <Panel.Collapsible defaultExpanded>
         <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Channels</Panel.CollapsibleTitle>
-          <Panel.CollapsibleDescription>
+          <Title>Channels</Title>
+          <Description>
             Where and how reminders, confirmations, and alerts are delivered.
-          </Panel.CollapsibleDescription>
+          </Description>
         </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Text>
@@ -526,7 +526,7 @@ export const CollapsibleBleed = meta.story(() => (
   <Panel aria-label="Bleed collapsible">
     <Panel.Collapsible defaultExpanded>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>Bleed content</Panel.CollapsibleTitle>
+        <Title>Bleed content</Title>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent bleed>
         <Text>Edge to edge</Text>
@@ -542,7 +542,7 @@ export const CollapsibleDisabled = meta.story(() => (
     </Panel.Header>
     <Panel.Collapsible disabled>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>Payment methods</Panel.CollapsibleTitle>
+        <Title>Payment methods</Title>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Text>Hidden because the user cannot change this section.</Text>

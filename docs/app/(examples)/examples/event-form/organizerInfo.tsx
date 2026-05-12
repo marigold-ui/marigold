@@ -81,11 +81,11 @@ export const OrganizerInfo = () => (
     </Panel.Content>
     <Panel.Collapsible>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>Contact preferences</Panel.CollapsibleTitle>
-        <Panel.CollapsibleDescription>
+        <Title>Contact preferences</Title>
+        <Description>
           Control how attendees can reach the organizer and what contact details
           appear in emails.
-        </Panel.CollapsibleDescription>
+        </Description>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">

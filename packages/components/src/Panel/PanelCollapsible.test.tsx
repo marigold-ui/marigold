@@ -2,6 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { Title } from '../Title/Title';
 import { Panel } from './Panel';
 import {
   CollapsibleBleed,
@@ -36,7 +37,7 @@ describe('Panel.CollapsibleHeader', () => {
         <MarigoldProvider theme={theme}>
           <Panel aria-label="Orphan header">
             <Panel.CollapsibleHeader>
-              <Panel.CollapsibleTitle>Orphan</Panel.CollapsibleTitle>
+              <Title>Orphan</Title>
             </Panel.CollapsibleHeader>
           </Panel>
         </MarigoldProvider>
@@ -83,24 +84,7 @@ describe('Panel.CollapsibleHeader', () => {
   });
 });
 
-describe('Panel.CollapsibleTitle', () => {
-  test('throws when rendered outside <Panel.CollapsibleHeader>', () => {
-    const renderOrphan = () =>
-      render(
-        <MarigoldProvider theme={theme}>
-          <Panel aria-label="Orphan title">
-            <Panel.Collapsible>
-              <Panel.CollapsibleTitle>Orphan</Panel.CollapsibleTitle>
-            </Panel.Collapsible>
-          </Panel>
-        </MarigoldProvider>
-      );
-
-    expect(renderOrphan).toThrow(
-      /must be used within a <Panel\.CollapsibleHeader>/
-    );
-  });
-
+describe('Panel.CollapsibleHeader heading level', () => {
   test('renders one level below the Title by default (h2 ⇒ h3)', () => {
     render(<WithCollapsible.Component />);
 

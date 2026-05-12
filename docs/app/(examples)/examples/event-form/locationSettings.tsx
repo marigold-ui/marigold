@@ -95,10 +95,10 @@ export const LocationSettings = () => (
     </Panel.Content>
     <Panel.Collapsible>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>Additional details</Panel.CollapsibleTitle>
-        <Panel.CollapsibleDescription>
+        <Title>Additional details</Title>
+        <Description>
           Room assignments, hybrid event links, and venue capacity.
-        </Panel.CollapsibleDescription>
+        </Description>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">

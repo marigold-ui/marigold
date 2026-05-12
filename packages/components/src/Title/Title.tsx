@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from 'react';
+import type { ElementType, ReactNode, Ref } from 'react';
 import {
   Heading,
   HeadingContext,
@@ -10,6 +10,7 @@ import type { SlotProps } from '../types';
 export interface TitleProps extends AriaLabelingProps, SlotProps {
   /**
    * The heading level (h1–h6). Can also be supplied via slot context.
+   * Ignored when `as` is set.
    * @default 2
    */
   level?: 1 | 2 | 3 | 4 | 5 | 6;
@@ -17,8 +18,15 @@ export interface TitleProps extends AriaLabelingProps, SlotProps {
    * The element id.
    */
   id?: string;
+  /**
+   * Render as an alternate element instead of `<Heading>`. Useful when the
+   * title text lives inside a container that already provides heading
+   * semantics (e.g. a Disclosure trigger button). Can also be supplied via
+   * slot context.
+   */
+  as?: 'span' | (string & {});
   children?: ReactNode;
-  ref?: Ref<HTMLHeadingElement>;
+  ref?: Ref<HTMLElement>;
 }
 
 const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
@@ -27,7 +35,17 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
     refProp,
     HeadingContext
   );
-  const { level = 2, slot, children, ...props } = merged;
+  const { level = 2, slot, children, as, ...props } = merged;
+
+  if (as) {
+    const Element = as as ElementType;
+    return (
+      <Element slot={slot as string | undefined} ref={ref} {...props}>
+        {children}
+      </Element>
+    );
+  }
+
   return (
     // `slot` may be `null` (opt out of inherited slot context). RAC's
     // `HeadingProps` extends `HTMLAttributes` which narrows slot to `string`,
@@ -35,8 +53,8 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
     <Heading
       level={level}
       slot={slot as string | undefined}
-      ref={ref}
       {...props}
+      ref={ref as unknown as Ref<HTMLHeadingElement>}
     >
       {children}
     </Heading>

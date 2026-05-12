@@ -95,10 +95,10 @@ export const GeneralSettings = () => {
         </Panel.Content>
         <Panel.Collapsible>
           <Panel.CollapsibleHeader>
-            <Panel.CollapsibleTitle>Advanced defaults</Panel.CollapsibleTitle>
-            <Panel.CollapsibleDescription>
+            <Title>Advanced defaults</Title>
+            <Description>
               Date formatting, visibility, and SEO settings.
-            </Panel.CollapsibleDescription>
+            </Description>
           </Panel.CollapsibleHeader>
           <Panel.CollapsibleContent>
             <Stack space="regular">

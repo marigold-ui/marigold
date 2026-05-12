@@ -6,17 +6,19 @@ import {
   Heading,
   HeadingContext,
   Provider,
+  TextContext,
 } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { MorphCaret } from '../icons/MorphCaret';
 import { useSlot } from '../utils/useSlot';
-import { CollapsibleHeaderProvider } from './CollapsibleContext';
 import { usePanelContext } from './Context';
 
 export interface PanelCollapsibleHeaderProps {
   /**
-   * Content of the collapsible header. Typically a `Panel.CollapsibleTitle`
-   * and optional `Panel.CollapsibleDescription`.
+   * Content of the collapsible header. Typically a `<Title>` and an optional
+   * `<Description>`. The whole header is rendered inside the disclosure
+   * trigger button, so `<Title>` is configured to render as a `<span>`
+   * (the outer heading semantics come from `Panel.CollapsibleHeader` itself).
    */
   children: ReactNode;
 }
@@ -37,9 +39,32 @@ export const PanelCollapsibleHeader = ({
   const descriptionId = useId();
   const [descriptionSlotRef, hasDescription] = useSlot(false);
 
-  const contextValue = useMemo(
-    () => ({ titleId, descriptionId, descriptionSlotRef }),
-    [titleId, descriptionId, descriptionSlotRef]
+  const headingProps = useMemo(
+    () =>
+      ({
+        slots: {
+          title: {
+            className: classNames.collapsibleTitle,
+            id: titleId,
+            as: 'span',
+          },
+        },
+      }) as never,
+    [classNames.collapsibleTitle, titleId]
+  );
+
+  const textProps = useMemo(
+    () => ({
+      slots: {
+        description: {
+          className: classNames.collapsibleDescription,
+          id: descriptionId,
+          ref: descriptionSlotRef,
+          elementType: 'span' as const,
+        },
+      },
+    }),
+    [classNames.collapsibleDescription, descriptionId, descriptionSlotRef]
   );
 
   const { isExpanded } = disclosureState;
@@ -48,25 +73,28 @@ export const PanelCollapsibleHeader = ({
     : headingLevel;
 
   return (
-    <CollapsibleHeaderProvider value={contextValue}>
-      {/*
-        Reset HeadingContext for the trigger Heading. Panel's root publishes
-        a slot-keyed value for the panel title, which would otherwise force
-        this Heading to declare a matching slot or throw.
-      */}
-      <Provider values={[[HeadingContext, null]]}>
-        <Heading level={level} className="flex">
-          <Button
-            slot="trigger"
-            aria-labelledby={titleId}
-            aria-describedby={hasDescription ? descriptionId : undefined}
-            className={cn('flex-1', classNames.collapsibleHeader)}
+    // Scope out the panel root's slot-keyed HeadingContext so the structural
+    // <Heading> below renders cleanly. The inner Provider re-publishes
+    // slot-keyed contexts for <Title> and <Description> living inside the button.
+    <Provider values={[[HeadingContext, null]]}>
+      <Heading level={level} className="flex">
+        <Button
+          slot="trigger"
+          aria-labelledby={titleId}
+          aria-describedby={hasDescription ? descriptionId : undefined}
+          className={cn('flex-1', classNames.collapsibleHeader)}
+        >
+          <Provider
+            values={[
+              [HeadingContext, headingProps],
+              [TextContext, textProps],
+            ]}
           >
             <span className="min-w-0 flex-1">{children}</span>
-            <MorphCaret expanded={isExpanded} />
-          </Button>
-        </Heading>
-      </Provider>
-    </CollapsibleHeaderProvider>
+          </Provider>
+          <MorphCaret expanded={isExpanded} />
+        </Button>
+      </Heading>
+    </Provider>
   );
 };
