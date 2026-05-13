@@ -4,12 +4,7 @@ description: Represents one item in a collection.
 ---
 
 import { CardAnatomy } from './card-anatomy';
-import {
-  DoNestedMockup,
-  DoTextMockup,
-  DontNestedMockup,
-  DontTextMockup,
-} from './card-usage-guidelines';
+import { DoNestedMockup, DontNestedMockup } from './card-usage-guidelines';
 
 A `<Card>` represents one item in a collection an event preview, a venue tile, a product summary that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, body, actions) into a single, self-contained unit and sets it apart from the page with a raised shadow.
 
@@ -96,28 +91,6 @@ When the content doesn't fit that shape, reach for one of these instead:
 #### Simple content
 
 A card groups several pieces of related content. If you only have a single paragraph, a short message, or one field, the card adds visual weight without grouping anything. Use a [`<Headline>`](../../content/headline), [`<Text>`](../../content/text), or [`<SectionMessage>`](../../content/section-message) instead.
-
-<GuidelineTiles>
-  <Do>
-    <DoFigure>
-      <DoTextMockup />
-    </DoFigure>
-    <DoDescription>
-      Render simple, single-purpose content as plain text. Use a
-      [`<SectionMessage>`](../../content/section-message) when the content is a
-      status or callout.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontFigure>
-      <DontTextMockup />
-    </DontFigure>
-    <DontDescription>
-      Don't wrap a single short paragraph or one field in a card. The frame
-      adds visual noise without grouping anything.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
 
 #### Nested cards
 
