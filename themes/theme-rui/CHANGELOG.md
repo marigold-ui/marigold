@@ -1,5 +1,64 @@
 # @marigold/theme-rui
 
+## 5.3.0
+
+### Minor Changes
+
+- 727163c: feat([DST-1134]): add `<RangeCalendar>` component (alpha)
+
+  Adds a new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`). Supports up to three side-by-side months via `visibleDuration`, stacking vertically below the `sm` breakpoint; the same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>` so the help/error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container). Ships as an alpha component with a stub docs page under the form section.
+
+  [DST-1134](https://reservix.atlassian.net/browse/DST-1134)
+
+- 6587493: refa([DST-1298]): Refactor Divider component: API, styling, and docs
+
+  We fixed the vertical orientation of the divider, which previously didn't work.
+  Added new Divider stories and updated the Divider docs.
+
+### Patch Changes
+
+- 5cd5290: fix(DST-1359): align `ActionBar` action button spacing with the regular `Button`. The `actionButton` style in `theme-rui` was missing `gap-2 items-center justify-center`, which caused icons and labels inside ActionBar buttons to render without the proper spacing/alignment used by the ghost/default `Button`. Adding these utilities restores visual parity across the design system.
+- f8fbef9: fix([DST-1412]): fix multi-month Calendar/RangeCalendar layout at non-default widths. With three months at `width="1/2"` the third month overflowed the calendar wrapper because `min-w-[250px]` only sized for a single month; with `width="full"` the date grids stayed at content size while their columns expanded, leaving header text floating over empty space. Switch the calendar minimum to `min-w-fit` so multi-month grows to fit its natural content, and add `w-full` to `calendarGrid` so the date table fills its column.
+
+  [DST-1412](https://reservix.atlassian.net/browse/DST-1412)
+
+- 4742e8e: feat([DST-901]): styleProps for `width`, `maxWidth`, `height`, `space`, `spaceX`, `spaceY`, `pr`, `pl`, `pt`, `pb` now accept both numeric scale values (`4`) and their string equivalents (`"4"`). The public types are now declarative (`Scale | Fraction | WidthKeyword`, etc.) instead of being derived from the internal class-name maps.
+
+  Components that previously resolved `width`, `maxWidth`, and `height` via class-name lookup (Form, Calendar, legacy Table column header / select-all cell, Slider, Scrollable, Switch, Grid) now resolve them through CSS custom properties (`createWidthVar` / `createHeightVar`) targeting `--width`, `--max-width`, `--height`. Those variables — along with `--container-width` and `--field-width` already used by `FieldBase` — are registered as non-inheriting (`@property … inherits: false`) in the RUI theme so they cannot leak into descendants.
+
+  `createWidthVar` gained support for the previously missing keywords (`svh`, `lvh`, `dvh`, `px`, `container`), and a new `createHeightVar` helper was added. Both share a common factory and a base keyword set, so they remain trivially in sync.
+
+  The runtime class-name maps `width`, `maxWidth`, `height`, `gapSpace`, `paddingSpace`, `paddingSpaceX`, `paddingSpaceY`, `paddingRight`, `paddingLeft`, `paddingTop`, `paddingBottom` are no longer exported from `@marigold/system`. These were internal utilities consumed only by `@marigold/components`. Use the prop types (`WidthProp`, `HeightProp`, …) and the CSS-var helpers (`createWidthVar`, `createHeightVar`, `createSpacingVar`) instead. The corresponding TypeScript prop types are unchanged.
+
+- b7c132d: fix(DST-1354): restore collapsing `Table.EditableCell` edit trigger
+
+  The overlay/ring affordance introduced in #5250 (DST-1275) did not read as editable in user testing: sighted users did not associate the hover ring with inline editing, and there was no discoverable trigger for keyboard or touch. This change reverts that approach and restores the explicit pencil edit button.
+
+  The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or keyboard focus, so static layout remains clean while the affordance is discoverable the moment the user interacts with the row. When expanded, the wrapper switches to `overflow-visible` so the button's focus outline is not clipped. The cell itself stays clickable as a touch target. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like a regular `Table.Cell`.
+
+- f16b887: fix(DST-1352): use correct outline for focus + error state in compound fields
+- 8902b10: fix: register `--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` as non-inheriting custom properties
+
+  Previously, setting one of these variables on a themed surface (e.g. a destructive Panel overriding `--ui-border-color`) would cascade the value into every nested element that also reads `ui-surface`, tinting Inputs, Buttons, Cards, etc. with the parent's color.
+
+  These three custom properties are now registered via `@property { inherits: false }`, so each surface resolves its own fallback via the existing `var(..., var(--color-…))` pattern and nested surfaces keep their defaults.
+
+- Updated dependencies [727163c]
+- Updated dependencies [3c6a943]
+- Updated dependencies [4742e8e]
+- Updated dependencies [b7c132d]
+- Updated dependencies [6587493]
+- Updated dependencies [f16b887]
+- Updated dependencies [1cac70d]
+- Updated dependencies [5744bbf]
+- Updated dependencies [e33a1e7]
+- Updated dependencies [c2a1c72]
+- Updated dependencies [2ff7bda]
+- Updated dependencies [de34b15]
+- Updated dependencies [04111ca]
+  - @marigold/components@17.5.0
+  - @marigold/system@17.5.0
+
 ## 5.2.4
 
 ### Patch Changes
