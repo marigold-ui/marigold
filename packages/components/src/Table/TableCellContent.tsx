@@ -1,4 +1,4 @@
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode, use } from 'react';
 import { TableStateContext } from 'react-aria-components';
 import { cn, textAlign } from '@marigold/system';
 import { useTableContext } from './Context';
@@ -55,7 +55,7 @@ export const TableCellContent = ({
     overflow: tableOverflow,
     allowTextSelection: tableAllowTextSelection,
   } = useTableContext();
-  const state = useContext(TableStateContext);
+  const state = use(TableStateContext);
 
   // Cell-level overrides table-level
   const overflow = cellOverflow ?? tableOverflow;
@@ -64,10 +64,11 @@ export const TableCellContent = ({
   const selectable = allowTextSelection ?? tableAllowTextSelection;
 
   // Get alignX prop from column
-  const columnAlign = columnIndex
-    ? (state?.collection.columns[columnIndex].props
-        .alignX as keyof typeof textAlign)
-    : undefined;
+  const columnAlign =
+    columnIndex != null
+      ? (state?.collection.columns[columnIndex].props
+          .alignX as keyof typeof textAlign)
+      : undefined;
 
   return (
     <div

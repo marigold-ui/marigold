@@ -1,7 +1,7 @@
-import type RAC from 'react-aria-components';
 import { LayoutGroup } from 'motion/react';
-import { TabList } from 'react-aria-components';
 import { useId } from 'react';
+import type RAC from 'react-aria-components';
+import { TabList } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { useTabContext } from './Context';
 

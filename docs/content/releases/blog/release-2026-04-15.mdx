@@ -1,0 +1,119 @@
+---
+title: Marigold v17.4.0
+date: 2026-04-15
+type: Blog
+changed:
+  - components/form/select
+  - components/form/combobox
+  - components/form/autocomplete
+  - components/content/card
+  - components/layout/inset
+  - components/form/calendar
+  - components/collection/table
+  - components/overlay/menu
+  - components/overlay/dialog
+  - components/navigation/accordion
+  - components/overlay/contextual-help
+---
+
+April showers bring… faster dropdowns and smaller bundles. v17.4.0 is a performance-and-polish release: long option lists no longer freeze the browser, icon payload drops by roughly a third, and the semantic spacing migration rolls onward to `<Card>` and `<Inset>`.
+
+## Performance
+
+### Always-on virtualization for `<Select>`, `<ComboBox>`, and `<Autocomplete>`
+
+Following up on the `<TagField>` virtualization in v17.3, [`<Select>`](/components/form/select), [`<ComboBox>`](/components/form/combobox), and [`<Autocomplete>`](/components/form/autocomplete) now virtualize their internal `<ListBox>` on desktop.
+
+Hundreds to thousands of options used to lock up the browser when opening or filtering these components because every option rendered into the DOM. The virtualizer (built on react-aria's `Virtualizer` + `ListLayout` -- the same pattern powering `<TagField>`) only renders the items currently in view, so performance stays constant no matter how large the dataset. There's no public API change: virtualization is on by default on desktop and transparent to your code.
+
+To give the virtualizer a viewport to clip against inside a `<Popover>`, `<ListBox>` now has a bounded height of `max-h: 24rem`.
+
+### Smaller icon bundle with `lucide-react` v1.x
+
+We upgraded [`lucide-react`](https://lucide.dev) from v0.575.0 to v1.x, the stable v1 API. This cuts icon bundle size by **roughly 32%** and applies `aria-hidden` to icons by default, which is the right behavior for decorative usage and prevents redundant announcements in screen readers. No brand icons from Lucide are used in Marigold, so no rename or removal affects your code.
+
+## Semantic Spacing (continued)
+
+The spacing migration introduced in v17.0.0 and refined in v17.2.0 now reaches two more components. This keeps the rhythm consistent across your UI -- container spacing now speaks the same semantic language as the gaps between elements.
+
+### Card
+
+[`<Card>`](/components/content/card) padding props now accept semantic inset tokens instead of numeric-only values:
+
+- `p` (all sides) accepts `InsetSpacingTokens` (`square-*`, `squish-*`, `stretch-*`) plus numeric scale values
+- `px`/`py`/`pt`/`pb`/`pl`/`pr` accept single-axis `PaddingSpacingTokens` (`padding-tight`, `padding-snug`, `padding-regular`, `padding-relaxed`, `padding-loose`) plus numeric scale values
+- `space` (gap between children) continues to accept relational `SpacingTokens` (`tight`, `related`, `regular`, `group`, `section`)
+
+```tsx
+<Card p="square-regular" space="related">
+  <Headline level="3">Weekly report</Headline>
+  <Text>Last 7 days at a glance.</Text>
+</Card>
+```
+
+### Inset
+
+The [`<Inset>`](/components/layout/inset) component got the same treatment:
+
+- `space` accepts inset recipe tokens (`square-*`, `squish-*`, `stretch-*`)
+- `spaceX`/`spaceY` accept single-axis padding tokens (`padding-tight`, `padding-snug`, `padding-regular`, `padding-relaxed`, `padding-loose`)
+
+New `--spacing-padding-*` CSS custom properties were added to the theme, and two matching types -- `InsetSpacingTokens` and `PaddingSpacingTokens` -- are now exported for use in your own components.
+
+## Design
+
+### Focus rings now use CSS `outline`
+
+Focus indicators have been switched from `box-shadow` (Tailwind's `ring-*`) to CSS `outline`. Two reasons:
+
+1. **No more clipping inside scrollable containers.** `box-shadow` rings were cut off by `overflow: hidden` or `overflow: auto` parents, leading to focus indicators that vanished inside cards, dialogs, or scrollable lists. `outline` paints outside the element's box and is never clipped.
+2. **Better Windows High Contrast Mode support.** `outline` is honored by forced-colors modes, while `box-shadow` is ignored -- so keyboard users on Windows High Contrast now see focus clearly.
+
+As a follow-up, padding was redistributed from compound-component containers to individual sub-components in `<Dialog>`, `<ContextualHelp>`, and `<Accordion>` so the outline has breathing room inside overflow boundaries. `transition-all` and `transition-colors` were also replaced with explicit `transition-[color,background-color]` to prevent the outline color from animating during focus.
+
+### Calendar cleanup
+
+[`<Calendar>`](/components/form/calendar) styles were consolidated: hardcoded Tailwind classes have moved from the component files into theme slots, cell padding was reduced from `p-2` to `p-1` for a tighter grid, and a new `calendarHeading` theme slot was added. Calendar day cells are now centered via a dedicated class instead of utility-level alignment.
+
+### Other design polish
+
+- Unified `<Table>` row hover styles so rows with `href` and rows inside `selectionMode` look identical on hover -- previously they used slightly different treatments.
+- Improved `<Table.EditableCell>` hover/focus affordance via a new `data-editable` attribute so the editable state is visually distinct from read-only cells.
+- Removed the muted text color from the `<Dialog>` content slot for better readability. Dialog body text now reads at the default foreground color.
+
+## Components
+
+### Cleaner mobile Menu tray
+
+On small screens, `<Menu>` opens in a bottom-sheet `<Tray>`. Previously, the menu's `label` prop was rendered twice -- once on the trigger button and once as the tray title -- which duplicated the label the user just tapped. For `<ActionMenu>` with an icon-only trigger, this sometimes rendered an `aria-label` text like "more actions" as a tray title, which wasn't useful either. The label has been removed from the tray title. Form components (`<Select>`, `<ComboBox>`, `<DatePicker>`) keep their label because it describes the field's purpose beyond the trigger.
+
+## Infrastructure
+
+### Public API cleanup
+
+A few subcomponent exports have been removed from the public `@marigold/components` entry point: `AccordionItem`, `ListBoxItem`, `SelectListItem`, and `ProgressCircleSvg`. Each is already accessible via its compound parent (`<Accordion.Item>`, `<ListBox.Item>`, `<SelectList.Item>`) or was an internal implementation detail. Keeping the compound-component form as the single canonical entry point makes the API easier to learn and removes the risk of inconsistent imports across teams.
+
+### Internal refactor
+
+Removed a local `useRenderProps` hook and replaced it with the export from `react-aria-components`, eliminating duplicate code now that RAC ships the same utility upstream.
+
+### Fixed CJS export paths
+
+The `main`, `types`, and `exports` fields in `@marigold/system`, `@marigold/icons`, `@marigold/theme-rui`, and `@marigold/components` pointed to non-existent `.js` files. Since `tsdown` 0.16.0, CommonJS output uses the `.cjs` extension, but our `package.json` exports never caught up. CJS consumers now resolve correctly.
+
+## Bug fixes
+
+- **v17.3.1**: Fixed a CSS parsing error in Next.js with LightningCSS caused by an arbitrary Tailwind variant in `<Table.EditableCell>`. Replaced with the built-in `group` variant.
+
+## Documentation
+
+- New [Component Principles](/foundations/component-principles) foundations page explaining the four pillars of Marigold's component design: accessibility, theming, composition, and layout.
+- Replaced the "Governance Process" and "Governance Principles" pages with a single [How to Contribute](/getting-started/how-to-contribute) page, and simplified the "Get in touch" page so it focuses solely on getting help. The old split was confusing -- most people just wanted to know how to file feedback.
+- Added structured **Appearance** variant tables (`Variant | Description | When to use`) to 14 component pages -- Button, SectionMessage, Badge, Card, Text, Accordion, Toast, Tooltip, Link, LinkButton, Divider, Loader, Menu, and Table. Prop tables tell you what values are allowed, but not when to pick one over another. The new tables close that gap.
+- Complete [ToggleButton](/components/actions/toggle-button) documentation with anatomy diagrams, usage demos (standalone toggle, formatting toolbar, filter toggles, disabled state), Do/Don't guidelines, and an alternative-components section. `<ToggleButtonGroup>` is now documented on the same page.
+- New `/api/manifest.json` route returning a JSON index of all documentation pages, designed for AI agent discovery.
+- The Markdown endpoint for documentation pages moved from `/mcp/{page-path}.md` to `/{page-path}.md`. If you've been using the AI-facing Markdown output introduced in v17.2.0, update your URLs accordingly.
+
+---
+
+That's a wrap on v17.4.0. The combination of virtualized dropdowns and a slimmer icon bundle should be immediately noticeable in real apps. As always, let us know how it feels!

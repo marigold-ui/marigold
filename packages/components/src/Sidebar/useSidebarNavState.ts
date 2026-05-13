@@ -1,8 +1,14 @@
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { buildCollection, findActiveBranch } from './collection';
+import {
+  applyCurrent,
+  buildCollection,
+  findActiveBranch,
+  resolveCurrent,
+} from './collection';
 import type {
   SidebarCollection,
+  SidebarCurrent,
   SidebarItemNode,
   SidebarNode,
 } from './collection';
@@ -27,19 +33,24 @@ export interface SidebarNavStateResult {
 
 export interface UseSidebarNavStateProps {
   children: ReactNode;
+  current?: SidebarCurrent;
 }
 
 export const useSidebarNavState = ({
   children,
+  current,
 }: UseSidebarNavStateProps): SidebarNavStateResult => {
   const { collection, activeBranch, branchNodes } = useMemo(() => {
     const col = buildCollection(children);
+    if (current !== undefined) {
+      applyCurrent(col, resolveCurrent(col, current));
+    }
     return {
       collection: col,
       activeBranch: findActiveBranch(col),
       branchNodes: collectBranches(col.rootNodes),
     };
-  }, [children]);
+  }, [children, current]);
 
   // Explicit panel state — which branch panel is shown (null = root).
   // Syncs when the URL-derived activeBranch changes.

@@ -13,30 +13,14 @@ export default () => {
             <Sidebar.Header>
               <Text weight="bold">Acme Inc.</Text>
             </Sidebar.Header>
-            <Sidebar.Nav>
-              <Sidebar.Item
-                href="/dashboard"
-                active={currentPath === '/dashboard'}
-              >
-                Dashboard
-              </Sidebar.Item>
-              <Sidebar.Item href="/orders" active={currentPath === '/orders'}>
-                Orders
-              </Sidebar.Item>
-              <Sidebar.Item
-                href="/products"
-                active={currentPath === '/products'}
-              >
-                Products
-              </Sidebar.Item>
+            <Sidebar.Nav current={currentPath}>
+              <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+              <Sidebar.Item href="/orders">Orders</Sidebar.Item>
+              <Sidebar.Item href="/products">Products</Sidebar.Item>
               <Sidebar.Separator />
               <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-              <Sidebar.Item href="/account" active={currentPath === '/account'}>
-                Account
-              </Sidebar.Item>
-              <Sidebar.Item href="/billing" active={currentPath === '/billing'}>
-                Billing
-              </Sidebar.Item>
+              <Sidebar.Item href="/account">Account</Sidebar.Item>
+              <Sidebar.Item href="/billing">Billing</Sidebar.Item>
             </Sidebar.Nav>
             <Sidebar.Footer>
               <Text fontSize="xs">jane@acme.com</Text>

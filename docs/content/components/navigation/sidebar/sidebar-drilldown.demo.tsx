@@ -13,43 +13,18 @@ export default () => {
             <Sidebar.Header>
               <Text weight="bold">My App</Text>
             </Sidebar.Header>
-            <Sidebar.Nav>
-              <Sidebar.Item
-                href="/dashboard"
-                active={currentPath === '/dashboard'}
-              >
-                Dashboard
-              </Sidebar.Item>
-              <Sidebar.Item href="/orders" active={currentPath === '/orders'}>
-                Orders
-              </Sidebar.Item>
-              <Sidebar.Item
-                href="/customers"
-                active={currentPath === '/customers'}
-              >
-                Customers
-              </Sidebar.Item>
+            <Sidebar.Nav current={currentPath}>
+              <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+              <Sidebar.Item href="/orders">Orders</Sidebar.Item>
+              <Sidebar.Item href="/customers">Customers</Sidebar.Item>
               <Sidebar.Separator />
               <Sidebar.Item id="settings" textValue="Settings">
                 Settings
-                <Sidebar.Item
-                  href="/settings/profile"
-                  active={currentPath === '/settings/profile'}
-                >
-                  Profile
-                </Sidebar.Item>
-                <Sidebar.Item
-                  href="/settings/notifications"
-                  active={currentPath === '/settings/notifications'}
-                >
+                <Sidebar.Item href="/settings/profile">Profile</Sidebar.Item>
+                <Sidebar.Item href="/settings/notifications">
                   Notifications
                 </Sidebar.Item>
-                <Sidebar.Item
-                  href="/settings/security"
-                  active={currentPath === '/settings/security'}
-                >
-                  Security
-                </Sidebar.Item>
+                <Sidebar.Item href="/settings/security">Security</Sidebar.Item>
               </Sidebar.Item>
             </Sidebar.Nav>
           </Sidebar>

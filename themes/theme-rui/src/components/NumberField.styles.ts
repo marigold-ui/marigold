@@ -8,6 +8,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
       'group-data-disabled/field:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',
       'has-focus:ui-state-focus outline-none',
+      'has-focus:has-invalid:outline-destructive/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive)]',
     ],
   }),
   stepper: cva({

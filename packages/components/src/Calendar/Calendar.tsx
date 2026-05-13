@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components';
-import {
-  WidthProp,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarListBox } from './CalendarListBox';
@@ -49,7 +44,6 @@ export interface CalendarProps extends Omit<
   /**
    * Sets the width of the calendar. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default fit
-   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
   /**
@@ -60,14 +54,14 @@ export interface CalendarProps extends Omit<
    * The number of months to display at once. Up to 3 months are supported.
    * @default { months: 1 }
    */
-  visibleDuration?: { months: number };
+  visibleDuration?: { months: 1 | 2 | 3 };
   /**
    * Controls how the calendar pages when navigating.
    * - 'single': Page by one month at a time
    * - 'visible': Page by the number of visible months
    * @default 'visible'
    */
-  pageBehavior?: 'single' | 'visible';
+  pageBehavior?: RAC.CalendarProps<DateValue>['pageBehavior'];
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -126,7 +120,7 @@ const _Calendar = ({
 
   if (isMultiMonth) {
     return (
-      <CalendarContext.Provider
+      <CalendarContext
         value={{
           classNames,
           visibleMonths,
@@ -137,10 +131,10 @@ const _Calendar = ({
       >
         <Calendar
           className={cn(
-            'relative flex flex-col',
-            twWidth[width],
+            'relative flex w-(--width) flex-col',
             classNames.calendar
           )}
+          style={createWidthVar('width', width)}
           {...props}
         >
           <div className={classNames.calendarContainer}>
@@ -156,12 +150,12 @@ const _Calendar = ({
             ))}
           </div>
         </Calendar>
-      </CalendarContext.Provider>
+      </CalendarContext>
     );
   }
 
   return (
-    <CalendarContext.Provider
+    <CalendarContext
       value={{
         classNames,
         visibleMonths,
@@ -172,10 +166,10 @@ const _Calendar = ({
     >
       <Calendar
         className={cn(
-          'relative flex flex-col',
-          twWidth[width],
+          'relative flex w-(--width) flex-col',
           classNames.calendar
         )}
+        style={createWidthVar('width', width)}
         {...props}
       >
         <div
@@ -193,7 +187,7 @@ const _Calendar = ({
             selectedDropdown && 'pointer-events-none opacity-0'
           )}
         >
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-6 flex items-center justify-between gap-4">
             <div className="flex w-fit gap-4">
               <CalendarListBox
                 key="month"
@@ -219,7 +213,7 @@ const _Calendar = ({
           <CalendarGrid />
         </div>
       </Calendar>
-    </CalendarContext.Provider>
+    </CalendarContext>
   );
 };
 

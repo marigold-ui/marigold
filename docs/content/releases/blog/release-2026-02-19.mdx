@@ -1,0 +1,31 @@
+---
+title: Marigold v17.1.0
+date: 2026-02-19
+type: Blog
+changed:
+  - components/form/tagfield
+  - components/actions/button
+  - components/content/badge
+  - components/actions/actionbar
+  - components/overlay/contextual-help
+  - components/overlay/tray
+  - components/collection/table
+---
+
+Just two days after v17.0.0, we're shipping a small follow-up to smooth out a couple of rough edges from the surface refactor. Nothing sweeping, but a nicer click target for `<TagField>` and a cleaner theme under the hood.
+
+## Components
+
+### TagField
+
+Clicking anywhere on a [`<TagField>`](/components/form/tag-field) -- not just the chevron button -- now opens the dropdown. The field previously only responded to clicks on the chevron or directly on the input, which made the component feel unresponsive compared to `<Select>` and `<ComboBox>`. The full field now acts as a single, generous click target.
+
+## Design
+
+### Finishing the `util-*` → `ui-*` migration
+
+v17.0.0 introduced a new state utility system (`ui-state-focus`, `ui-state-disabled`, `ui-state-error`, `ui-state-readonly`) and deprecated the old `util-focus-*` / `util-disabled` helpers. A few theme files -- `<ActionBar>`, `<Badge>`, `<Button>`, `<ContextualHelp>`, `<Multiselect>`, `<Table>`, `<Toast>`, and `<Tray>` -- were still reaching for the old utilities. They've all been migrated so the deprecated classes can be fully retired in a future release without surprise regressions.
+
+---
+
+Short and sweet. Back to our regularly scheduled programming!

@@ -1,5 +1,119 @@
 # @marigold/docs
 
+## 17.5.0
+
+### Minor Changes
+
+- 6587493: refa([DST-1298]): Refactor Divider component: API, styling, and docs
+
+  We fixed the vertical orientation of the divider, which previously didn't work.
+  Added new Divider stories and updated the Divider docs.
+
+- 91f4312: feat: add MCP server for semantic search over Marigold docs
+
+  Adds an MCP (Model Context Protocol) server at `/mcp` that lets AI coding assistants (Claude Code, VS Code Copilot, etc.) semantically search the Marigold documentation. An ETL pipeline (`pnpm build:embeddings`) chunks the MDX docs and generates vector embeddings via AWS Bedrock Titan v2, served via Streamable HTTP transport with Keycloak-authenticated access.
+
+  [DST-1166](https://reservix.atlassian.net/browse/DST-1166)
+
+### Patch Changes
+
+- 727163c: feat([DST-1134]): add `<RangeCalendar>` component (alpha)
+
+  Adds a new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`). Supports up to three side-by-side months via `visibleDuration`, stacking vertically below the `sm` breakpoint; the same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>` so the help/error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container). Ships as an alpha component with a stub docs page under the form section.
+
+  [DST-1134](https://reservix.atlassian.net/browse/DST-1134)
+
+- a69e719: refactor: adopt `Sidebar.Nav` `current` prop in demos and stories
+
+  Replaces the hand-rolled `active={currentPath === '/...'}` pattern across Sidebar and AppLayout demos (documentation) and the `AppLayout` Storybook story with the new `current` prop on `Sidebar.Nav` (shipped in DST-1322 / #5306). The order-detail demo additionally leverages the new prefix-match semantics, so `/orders/:id` routes automatically highlight the `/orders` nav item without a regex fallback.
+
+  No consumer-facing package behavior changes — only demos and an internal story.
+
+- 7aa5128: Add unified demo app at `/examples` that consolidates all pattern demos (filter, form, inventory) alongside a full app-shell example. A shared shell layout renders the sidebar, breadcrumbs, and section switcher from a single navigation tree; each example page links back to its corresponding pattern guidelines. Removes all standalone pattern pages in favor of colocated demo routes.
+- 1dbb3e2: fix(docs): make MCP and embedding env vars optional so `pnpm build:docs` works locally without `AWS_BEDROCK_*`, `OIDC_*`, or `BLOB_READ_WRITE_TOKEN` set. Also corrects the `claude mcp add marigold-docs` snippet to use the positional URL argument instead of `--url`.
+- 0bf3239: fix: redesign Do/Don't guideline cards to match fumadocs
+
+  Replaces the legacy Do/Don't design with a tinted card layout that uses fumadocs design tokens (`--color-fd-success`/`--color-fd-error`) and `lucide-react` icons. Adds proper dark mode support, which was previously broken due to hardcoded light-mode colors.
+
+  [DST-1348](https://reservix.atlassian.net/browse/DST-1348)
+
+- 8c8e2da: docs(DST-1382): expand Drawer documentation with use cases and decision framework
+
+  Rewrites the Drawer docs to lead with a defining principle (supplementary, in-context, light task; non-modal on desktop), adds a decision framework (Drawer vs Dialog, routing to a page instead), and documents six canonical use cases: detail-row inspection, quick edit/create from a list, filter panel, comments and activity, contextual utility, and multi-field bulk edit. New demos illustrate the table-row inspection, comments/activity, and Table+ActionBar bulk-edit patterns. Filter pattern moved to a `## Related` section.
+
+- c821902: docs([DST-1032]): Revise installation guideline
+
+  Revised the whole installation Guideline, to make it up to date and fix stuff that wasn't working.
+  It now contains a more detailed description and has better examples.
+  Users and AI should now be able to create a new project with Marigold, without a problem.
+
+- 4b02dfe: feat([DST-1388]): split prop tables into main, aria and handler groups
+
+  The interactive Props table (`<AutoTypeTable>`) on each component page now shows the meaningful API props by default and tucks `aria-*` / `role` attributes and React DOM event handlers into separate collapsible sections (e.g. Button drops from 112 visible props to 39 main + 10 aria + 63 handlers). The static markdown pipeline that feeds the LLM/MCP `search_docs` index is intentionally untouched, so machine-readable docs continue to expose the full prop list.
+
+  [DST-1388](https://reservix.atlassian.net/browse/DST-1388)
+
+- 774a11a: fix(docs): serve per-page markdown and the page manifest as static assets, eliminate ts-morph from the runtime.
+
+  Backport of the static-files architecture from `beta-release` (PR #5372). On `main`, `app/api/md/[...slug]/route.ts` still uses `force-static` with `generateStaticParams` returning `NextResponse.json(...)`, which is the same pattern that crashes on Vercel under Node ≥22 + Next.js 16:
+
+  ```
+  TypeError: Cannot read private member #state from an object whose class did not declare it
+      at Reflect.get (<anonymous>)
+  ```
+
+  Three things compose into the bug: Node 22+ undici's `Response` uses private class fields (`#state`); Next.js 16's prerender wraps the returned `Response` in a `Proxy`; the Proxy uses `Reflect.get` to forward access, which can't reach private fields declared on a class the receiver isn't an instance of (per the JavaScript spec). See [undici#4290](https://github.com/nodejs/undici/issues/4290), [node#58814](https://github.com/nodejs/node/issues/58814).
+
+  Production has been masked by 10-day-old CDN caches; the next non-trivial redeploy of `main` would have hit the same crash that surfaced on `beta-release`.
+
+  **Fix.** Both endpoints serve fully static data — write it to `public/` at build time and let Next.js serve it directly. No route handler runs, no Proxy ever wraps a `Response`, so the bug surface is removed. While re-architecting, ts-morph was eliminated from the runtime: type extraction now happens once at `pnpm build:types`, writing `.registry/props.json` for both the `<AutoTypeTable>` server component and the markdown-build remark plugin to read.
+
+  **User-visible changes**
+  - `/manifest.json` and `/<page-url>.md` (e.g. `/components/actions/button.md`) are now plain static assets in `public/`. No rewrite, no route handler. Same URLs as before.
+  - `<AutoTypeTable package="system">` (used by `svg/index.mdx` and `icon/index.mdx`) now produces a populated props table in markdown output. The previous custom ts-morph plugin only handled `packages/components/src/`, so system-package types silently rendered as empty.
+  - `<AppearanceTable>` markdown output now matches the HTML output exactly — both read the same `@marigold/theme-rui/appearances` map. Four components shift in their `.md` output: `Menu` gains `destructive`, `LinkButton` gains `destructive-ghost`, `Panel.size` gains `default`, `Link.size` gains `default | small`. AppearanceTable description cells render as plain text instead of `inlineCode`.
+  - HTML and markdown prop tables show identical type strings — both go through `autoTypeTableTransform`, so design-system aliases (`Scale | SpacingTokens` etc.) appear consistently.
+  - Dead `resolve-design-tokens` markdown plugin removed: it referenced deleted `ui/ColorTable.tsx` / `ui/ColorTokens.tsx` and crashed every markdown build with ENOENT.
+
+  **Architecture**
+
+  ```
+  pnpm build (or dev) → pnpm build:assets && next ...
+
+  build:assets (parallel):
+  ├─ build:registry   →  .registry/demos.{tsx,json}
+  ├─ build:changelog  →  content/.../release.mdx
+  ├─ build:manifest   →  public/manifest.json
+  └─ build:types  NEW →  .registry/props.json   (one ts-morph pass)
+          │
+          ▼
+      build:md        →  public/<slug>.md
+  ```
+
+  ts-morph runs once at build time and is now a `devDependency` only. `<AutoTypeTable>` reads the pre-computed JSON synchronously and renders via fumadocs-ui's `<TypeTable>` shell. See `docs/README.md` for the full script catalog.
+
+- b5e6e0d: docs(DST-1361): fix column alignment in Table documentation demos. Several demos contradicted the alignment guidelines described in the Table docs (numeric right, text left, center only for icons/status). The action-menu demo centered its row actions with `<Inline alignX="center">` while the column header was left-aligned, and the `table-editable`, `table-links`, and `table-sticky` demos had numeric Rating / Capacity columns rendered left-aligned. The demos now match the documented alignment rules.
+- Updated dependencies [5cd5290]
+- Updated dependencies [727163c]
+- Updated dependencies [3c6a943]
+- Updated dependencies [f8fbef9]
+- Updated dependencies [4742e8e]
+- Updated dependencies [b7c132d]
+- Updated dependencies [6587493]
+- Updated dependencies [f16b887]
+- Updated dependencies [1cac70d]
+- Updated dependencies [5744bbf]
+- Updated dependencies [e33a1e7]
+- Updated dependencies [c2a1c72]
+- Updated dependencies [2ff7bda]
+- Updated dependencies [8902b10]
+- Updated dependencies [de34b15]
+- Updated dependencies [04111ca]
+  - @marigold/theme-rui@5.3.0
+  - @marigold/components@17.5.0
+  - @marigold/system@17.5.0
+  - @marigold/icons@1.3.39
+
 ## 17.4.0
 
 ### Patch Changes

@@ -1,13 +1,10 @@
 {
   "pages": [
-    "app-shell",
-    "admin-master-mark",
-    "async-data-loading",
-    "feedback-messages",
-    "filter",
-    "form-implementation",
-    "forms",
-    "loading-states",
-    "multiple-selection"
+    "---Layout---",
+    "...layout",
+    "---User Input---",
+    "...user-input",
+    "---Feedback---",
+    "...feedback"
   ]
 }

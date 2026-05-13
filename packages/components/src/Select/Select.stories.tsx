@@ -209,6 +209,11 @@ export const Multiple = meta.story({
 });
 
 export const LongItems = meta.story({
+  parameters: {
+    // Give the dismiss transition time to settle before Chromatic captures
+    // to avoid flaky snapshots on the trigger's focus-ring transition.
+    chromatic: { delay: 300 },
+  },
   render: args => {
     return (
       <Inset space={24}>

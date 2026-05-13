@@ -7,6 +7,7 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import type { WidthProp } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -40,10 +41,7 @@ export interface ComboBoxProps
   variant?: string;
   size?: string;
 
-  /**
-   * @remarks `WidthProp`
-   */
-  width?: FieldBaseProps<'label'>['width'];
+  width?: WidthProp['width'];
   /**
    * If `true`, the input is disabled.
    * @default false

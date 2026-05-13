@@ -86,22 +86,10 @@ export default () => {
             <Sidebar.Header>
               <Text weight="bold">My App</Text>
             </Sidebar.Header>
-            <Sidebar.Nav>
-              <Sidebar.Item
-                href="/dashboard"
-                active={activePath === '/dashboard'}
-              >
-                Dashboard
-              </Sidebar.Item>
-              <Sidebar.Item href="/orders" active={activePath === '/orders'}>
-                Orders
-              </Sidebar.Item>
-              <Sidebar.Item
-                href="/customers"
-                active={activePath === '/customers'}
-              >
-                Customers
-              </Sidebar.Item>
+            <Sidebar.Nav current={currentPath}>
+              <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+              <Sidebar.Item href="/orders">Orders</Sidebar.Item>
+              <Sidebar.Item href="/customers">Customers</Sidebar.Item>
             </Sidebar.Nav>
           </Sidebar>
           <main className="grid flex-1 grid-rows-[auto_1fr] gap-8 overflow-auto pl-4">

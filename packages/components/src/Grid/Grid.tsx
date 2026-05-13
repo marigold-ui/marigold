@@ -3,8 +3,8 @@ import type { HeightProp, SpaceProp, SpacingTokens } from '@marigold/system';
 import {
   alignment,
   cn,
+  createHeightVar,
   createSpacingVar,
-  height as twHeight,
 } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 import { GridArea } from './GridArea';
@@ -31,12 +31,10 @@ const parseTemplateValue = (values: TemplateValue[]) =>
 export interface GridProps extends AriaRegionProps {
   /**
    * Set the spacing between child elements.
-   * @remarks `SpacingTokens<Tokens>`
    */
   space?: SpaceProp<SpacingTokens>['space'];
   /**
    * The height of the grid container.
-   * @remarks `HeightProp<Tokens>`
    */
   height?: HeightProp['height'];
   /**
@@ -82,16 +80,16 @@ export const Grid = ({
   return (
     <div
       className={cn(
-        'grid gap-(--space)',
+        'grid h-(--height) gap-(--space)',
         alignX && alignment?.horizontal?.alignmentX[alignX],
-        alignY && alignment?.horizontal?.alignmentY[alignY],
-        twHeight[height]
+        alignY && alignment?.horizontal?.alignmentY[alignY]
       )}
       style={{
         gridTemplateAreas: parseGridAreas(areas),
         gridTemplateColumns: parseTemplateValue(columns),
         gridTemplateRows: parseTemplateValue(rows),
         ...createSpacingVar('space', `${space}`),
+        ...createHeightVar('height', height),
       }}
       {...props}
     >

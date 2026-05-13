@@ -1,23 +1,30 @@
 ---
 title: Drawer
 description: Component for showing additional content alongside the main page.
+badge: updated
 ---
 
-The `<Drawer>` component is a flexible UI element used to present additional content in a slide-in panel, typically from the edge of the screen. Unlike dialogs, it doesn't block interaction with the rest of the page, making it ideal for non-modal interactions.
+import { DrawerAnatomy } from './drawer-anatomy';
 
-Key features of the `<Drawer>` component include adjustable sizes and the ability to remain non-modal for uninterrupted page interaction.
+The `<Drawer>` is a slide-in panel that hosts a supplementary, in-context task alongside the main view, without blocking it. It is non-modal on desktop, falls back to a modal sheet on small screens, and is intended for light, single-step work.
 
 ## Anatomy
 
-A `<Drawer>` consists of an optional title, content, actions. The title provides context for the user, while the content holds the main message or interactive elements like forms. The actions section contains controls such as buttons for confirming or cancelling.
+A `<Drawer>` slides in alongside the main page content. It is composed of an optional title, an optional close button, the main content area, and a row of actions.
 
-<ImageZoom
-  src="/drawer/drawer-anatomy.jpg"
-  alt="Anatomy of a drawer"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<DrawerAnatomy />
+
+- **Page content:** The main view that stays visible and interactive while the
+  drawer is open (non-modal on desktop).
+- **Drawer:** The slide-in panel itself, anchored to the side of the screen and
+  hosting the supplementary task.
+- **Title:** Optional heading at the top of the panel that gives context for
+  the task inside.
+- **Close button:** Optional dismiss control in the top corner, opt in via the
+  `closeButton` prop.
+- **Content:** The body of the drawer, holding the main message or
+  interactive elements like a form.
+- **Actions:** Bottom row of buttons for confirming or cancelling the task.
 
 ## Appearance
 
@@ -27,7 +34,13 @@ A `<Drawer>` consists of an optional title, content, actions. The title provides
 
 ## Usage
 
-A drawer displays supplemental content without blocking the main page. It should feel lightweight, letting users access extra information or controls while continuing their workflow. Keep content clear and focused so the drawer enhances the task without becoming a distraction.
+A drawer hosts a supplementary, in-context task that benefits from staying alongside the main view. Three constraints define it:
+
+- It stays non-modal on desktop, so the page behind remains interactive.
+- Its content is _about_ what is already on screen.
+- It caps task complexity at roughly five fields and a single information layer.
+
+When in doubt, ask: is this content _about_ the visible main view, or _for_ it? _About_ means a drawer fits. _For_ means a [dialog](/components/overlay/dialog) or an inline UI is the better fit.
 
 <GuidelineTiles>
 <Do>
@@ -35,48 +48,121 @@ A drawer displays supplemental content without blocking the main page. It should
     Use a drawer when
     {/* prettier-ignore */}
     <ul>
-      <li>allowing users to adjust settings or view details without leaving the page,</li>
-      <li>keeping the main workflow uninterrupted,</li>
-      <li>presenting secondary or supporting content.</li>
+      <li>users inspect or adjust something already on screen,</li>
+      <li>the main workflow should stay uninterrupted,</li>
+      <li>the task is light: roughly five fields, a single information layer.</li>
     </ul>
   </DoDescription>
 </Do>
 
 <Dont>
   <DontDescription>
-    Avoid using a drawer when
+    Avoid a drawer when
     {/* prettier-ignore */}
     <ul>
-      <li>needing critical confirmations or desctructive actions,</li>
-      <li>having deep navigation or complex multi-step flows,</li>
-      <li>the task requires full user attention or focus,</li>
-      <li>critical information must be acknowledged before continuing,</li>
+      <li>critical confirmations or destructive actions are required,</li>
+      <li>the flow has multiple steps, multiple save points, or its own internal navigation, which is a [page](#drawer-or-page),</li>
+      <li>the task requires full attention or a shareable URL.</li>
     </ul>
   </DontDescription>
 </Dont>
 </GuidelineTiles>
 
-### Secondary information
+### Drawer vs page
 
-When users want more detail about an item without leaving the current view, a drawer is ideal. For instance, clicking on a ticket, order, or user could open a drawer with extended information and actions.
+The call teams most often get wrong is choosing a drawer for content that really belongs on a page. It comes down to how many information layers the content has.
+
+- **Single layer → drawer.** One coherent set of fields or content the user works through linearly, without needing to navigate inside it. A record's details, a small edit form, a filter panel, a comments feed.
+- **Multiple layers → page.** Content that splits into separately navigable areas: tabs across different aspects, nested editable records, drill-down sub-views, or multi-step flows where each step has its own content.
+
+A drawer slides over the current view and is temporary (opened, used, dismissed). A page replaces it or routes somewhere new and is lasting, with its own URL, browser history, and place in the app's information architecture. Multi-layer content needs that durability to keep users oriented.
+
+**Reach for a page over a drawer when:**
+
+- the **user needs a URL** to share, bookmark, or return to later,
+- the **content needs tabs or internal navigation** inside the panel,
+- the **form has nested editable records** (line items, sub-tasks with their own forms),
+- the **flow has multiple steps** with their own commit moments (save here, then save again there),
+- the **user could reasonably get lost** inside it without a back button or breadcrumbs to orient them.
+
+### Drawer vs Dialog
+
+A user is filling out a "Create event" form and needs to pick a category that doesn't exist yet. The temptation is to slide in a drawer for "Create category" so the half-filled form stays visible behind it. This is exactly where a dialog fits better than a drawer: the new category is _for_ that form, not _about_ the page.
+
+This is the canonical drawer-vs-dialog confusion. The underlying difference: a dialog is modal, blocking the page and asking the user to commit, acknowledge, or decide before continuing. A drawer is non-modal, so the page behind stays interactive while the user inspects, refines, or augments.
+
+Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions. The same applies when the task simply demands full attention and interacting with the page behind would be a distraction. Choose a drawer when the work is supplementary to whatever is already on screen.
+
+### Detail-row inspection
+
+The user's task here is "scan rows, drill into one." Keeping the list visible preserves orientation, while routing away breaks the rhythm.
+
+Click a row in a table or list and a drawer slides in showing the record's full details. Fields are read-only or support small inline edits (a status toggle, a quick rename, picking a value from a list), and the user can move on to the next row without losing the table view.
 
 <ComponentDemo name="drawer-secondary-details" />
 
-### Creation or editing flows
+### Quick edit or create from a list
 
-Drawers can host lightweight forms, like adding a new event, editing a profle, or adjusting settings, they let users complete taksks without losing context or navigating away.
+Users often need to make a small change to a list, like editing one row or adding a new one, without losing their place. A drawer alongside the list handles both: a small form slides in, the user saves, the drawer closes, and the list reflects the change.
+
+The form should be small: a handful of fields, a single save, no multi-step flow. The list stays visible behind the drawer, so the surrounding rows, filters, and sort order tell the user _why_ they are working on this one. The "roughly five fields" rule of thumb is a proxy for the underlying constraint: a single information layer. The moment the form needs nested records or tabs to organize its fields, it has crossed into page territory.
+
+The two flows share the same shape but differ in trigger and result:
+
+|                              | Quick edit                                             | Quick create                                   |
+| ---------------------------- | ------------------------------------------------------ | ---------------------------------------------- |
+| **Trigger**                  | "Edit" on a row                                        | "Add" above the list                           |
+| **Result**                   | The row updates in place                               | A new row is added to the list                 |
+| **Outgrows the drawer when** | The edit needs nested records or multi-step validation | Setup is multi-step or has its own sub-records |
+
+For the related case of creating an object that belongs to a _different_ form on the page (e.g. a category needed inside an "Edit event" form), see [Drawer vs Dialog](#drawer-vs-dialog).
 
 <ComponentDemo name="drawer-edit-flow" />
 
-### Contextual utilities
+### Filter panel
 
-Drawers can provide utilities like quick help, a chat panel, or notes. These stay "on the side" and don't interfere with the main content area.
+A collection of filter controls displayed as a side panel. The user adjusts, applies, and results update behind the panel. Non-modality is the whole point: users iterate filters and want to see the table change.
+
+See the [filter pattern](/patterns/user-input/filter) for end-to-end guidance, including applied-filter display.
+
+### Comments, activity, and history
+
+The user's task here is "what's happened to this, and what should I add to it?" Long-lived records like tickets, pull requests, and issues accumulate context: comments, status changes, assignments, audit entries. A drawer slides in alongside the record and holds the whole feed, so users can scan the history, catch up on a thread, or post a reply without leaving the main view.
+
+The pattern fits a drawer because:
+
+- the feed grows long and needs its own scroll,
+- users want the main record visible while reading or replying,
+- activity is something to glance at occasionally, not the focus of the page.
+
+If activity _is_ the primary task (a chat-first product, for example), it belongs in the main column, not in a drawer.
+
+<ComponentDemo name="drawer-comments-activity" />
+
+### Contextual utility
+
+Persistent or summon-able utilities that support the main task without being part of it: in-app help, support chat, AI assistant, scratchpad. These utilities live alongside the main work, available when needed but never the focus.
+
+The right shape is a drawer the user can pin or summon, not a modal or a popover. It opens when needed and never takes focus from the main task.
 
 <ComponentDemo name="drawer-contextual-utility" />
 
-### Filter
+### Multi-field bulk edit
 
-A common use case for drawers is displaying filter panels. Drawers provide a non-intrusive way to expose filtering options while keeping the main content visible and interactive. This allows users to adjust filters, apply changes, and immediately see updated results without leaving the page, for more information about the filter you can visit [Filter pattern](/patterns/filter).
+Users select rows in a table, an [ActionBar](/components/actions/actionbar) appears, and one of its actions opens a drawer with a small form for editing several fields across the selection (for example, changing the date and venue across many events at once).
+
+The drawer keeps the selected rows visible so users can confirm the selection while editing. Bulk edit stays within the single-layer rule because the fields are flat and identical across all selected records: one form applied to N rows, not N forms or nested edits. The boundary is clean: single-verb bulk actions (delete, archive, assign) belong in the action bar, while multi-field bulk edit belongs in a drawer triggered from it. Destructive bulk actions still need a confirm dialog after the verb.
+
+<ComponentDemo name="drawer-bulk-edit" />
+
+### Accessibility
+
+A drawer renders with the ARIA role `complementary` by default, which fits almost every use case in this guide. Two exceptions are worth knowing:
+
+- For a filter panel, consider `role="search"` to give screen-reader users a more precise landmark.
+- For long-lived activity panels, consider `role="region"` with an `aria-label` if the panel is part of the persistent layout.
+
+On small screens, the drawer falls back to a modal sheet that traps focus inside the panel. On desktop the drawer is non-modal, so focus only returns to the trigger when the drawer closes. Dismissal on <kbd>Escape</kbd> is handled automatically.
 
 ## Props
 
@@ -90,49 +176,48 @@ A common use case for drawers is displaying filter panels. Drawers provide a non
 
 <AutoTypeTable path="Drawer/DrawerTrigger" name="DrawerTriggerProps" />
 
+### Drawer.Title
+
+<AutoTypeTable path="Drawer/DrawerTitle" name="DrawerTitleProps" />
+
+### Drawer.Content
+
+<AutoTypeTable path="Drawer/DrawerContent" name="DrawerContentProps" />
+
+### Drawer.Actions
+
+<AutoTypeTable path="Drawer/DrawerActions" name="DrawerActions" />
+
+## Alternative components
+
+- [Dialog](/components/overlay/dialog): Use for modal, attention-required moments like confirmations, destructive actions, and parent-form quick-create.
+- [ActionBar](/components/actions/actionbar): Use for single-verb bulk actions on a selection (delete, archive, assign). Pair with a drawer when bulk-editing several fields.
+- [Menu](/components/overlay/menu): Use for a small set of toggles or quick choices, like table column settings, sort order, or density. A drawer is overkill when the controls are a handful of options that fit inline next to their trigger.
+- [Sidebar](/components/navigation/sidebar): Use for app-level navigation, not for in-context content alongside a record.
+
 ## Related
 
 <TeaserList
   items={[
     {
-      title: 'Dialog',
-      href: '../../components/overlay/dialog',
-      caption: 'Learn more about Dialog component.',
+      title: 'Filter pattern',
+      href: '/patterns/user-input/filter',
+      caption:
+        'End-to-end guidance for filter UIs, including drawer-based filter panels.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          viewBox="0 0 24 24"
           fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Filter Pattern',
-      href: '../../../patterns/filter',
-      caption: 'Represents the usage of filter pattern.',
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
           viewBox="0 0 24 24"
-          fill="none"
+          strokeWidth={1.5}
           stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          className="size-6"
         >
-          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+          />
         </svg>
       ),
     },

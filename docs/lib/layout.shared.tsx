@@ -23,7 +23,11 @@ export const baseOptions = (): BaseLayoutProps => {
         url: '/components/application/provider',
         on: 'all',
       },
-      { text: 'Patterns', url: '/patterns/admin-master-mark', on: 'all' },
+      {
+        text: 'Patterns',
+        url: '/patterns/layout/admin-master-mark',
+        on: 'all',
+      },
       { text: 'Releases', url: '/releases/release-notes', on: 'all' },
     ],
   };

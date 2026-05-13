@@ -48,6 +48,26 @@ export const Surface = meta.story({
           contrast / overlay
         </Base>
       </Inline>
+      <Headline level="3">Nested Surfaces</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        <code>--ui-border-color</code>, <code>--ui-background-color</code> and{' '}
+        <code>--ui-highlight-color</code> are registered as non-inheriting, so a
+        themed parent surface does not bleed its colors into nested surfaces.
+      </p>
+      <Inline space="regular">
+        <div className="ui-surface shadow-elevation-raised flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-border-color:var(--color-destructive-accent)]">
+          <span className="text-xs">parent: --ui-border-color</span>
+          <div className="ui-surface shadow-elevation-border px-3 py-1 text-xs">
+            nested child
+          </div>
+        </div>
+        <div className="ui-surface-contrast flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-background-color:var(--color-access-master-accent)] [--ui-border-color:var(--color-access-master-accent)]">
+          <span className="text-xs">parent: --ui-background-color</span>
+          <div className="ui-surface shadow-elevation-border text-foreground px-3 py-1 text-xs">
+            nested child
+          </div>
+        </div>
+      </Inline>
       <Headline level="3">UI State</Headline>
       <Inline space="regular">
         <Base className="ui-surface shadow-elevation-border ui-state-error">

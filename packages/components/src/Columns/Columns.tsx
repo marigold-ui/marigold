@@ -6,7 +6,6 @@ import type { AriaRegionProps } from '@marigold/types';
 export interface ColumnsProps extends AriaRegionProps {
   /**
    * Set the spacing between child elements.
-   * @remarks `SpacingTokens<Tokens>`
    */
   space?: SpaceProp<SpacingTokens>['space'];
   /**

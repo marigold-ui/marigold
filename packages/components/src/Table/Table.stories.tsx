@@ -626,6 +626,11 @@ export const Sorting = meta.story({
       expect(canvas.getByText(/Sort:.*\/ ascending/)).toBeInTheDocument();
     });
 
+    await step('Verify idle sort icon is visible', async () => {
+      const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
+      expect(nameHeader.querySelector('svg')).toBeInTheDocument();
+    });
+
     await step('Click Name column header to sort', async () => {
       const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
       await userEvent.click(nameHeader);
@@ -1573,5 +1578,59 @@ export const DragPreview = meta.story({
       expect(within(section).getByText('Item 1')).toBeInTheDocument();
       expect(within(section).getByText('3')).toBeInTheDocument();
     });
+  },
+});
+
+export const ColumnAlignment = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Table aria-label="Column alignment" {...args}>
+      <Table.Header>
+        <Table.Column alignX="right">ID</Table.Column>
+        <Table.Column alignX="center">Name</Table.Column>
+        <Table.Column alignX="right">Balance</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="1">
+          <Table.Cell>001</Table.Cell>
+          <Table.Cell>Hans</Table.Cell>
+          <Table.Cell>
+            <NumericFormat style="currency" currency="EUR" value={1250.75} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="2">
+          <Table.Cell>002</Table.Cell>
+          <Table.Cell>Fritz</Table.Cell>
+          <Table.Cell>
+            <NumericFormat style="currency" currency="EUR" value={980.5} />
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+  play: async ({ canvas, step }) => {
+    await step(
+      'First column (index 0) inherits alignX from Column',
+      async () => {
+        const cells = canvas.getAllByRole('gridcell');
+        const firstCellContent = cells[0].querySelector(
+          '[data-cell-content]'
+        ) as HTMLElement;
+
+        expect(firstCellContent).toHaveClass('text-right');
+      }
+    );
+
+    await step(
+      'Second column (index 1) inherits alignX from Column',
+      async () => {
+        const cells = canvas.getAllByRole('gridcell');
+        const secondCellContent = cells[1].querySelector(
+          '[data-cell-content]'
+        ) as HTMLElement;
+
+        expect(secondCellContent).toHaveClass('text-center');
+      }
+    );
   },
 });

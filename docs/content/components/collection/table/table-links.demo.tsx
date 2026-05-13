@@ -6,7 +6,7 @@ export default () => (
     <Table.Header>
       <Table.Column rowHeader>Venue</Table.Column>
       <Table.Column>Address</Table.Column>
-      <Table.Column>Rating</Table.Column>
+      <Table.Column alignX="right">Rating</Table.Column>
     </Table.Header>
     <Table.Body>
       {venues.slice(0, 4).map(venue => (

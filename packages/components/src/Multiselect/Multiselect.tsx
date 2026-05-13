@@ -18,6 +18,7 @@ import Select, {
 } from 'react-select';
 import { useField } from '@react-aria/label';
 import { useId } from '@react-aria/utils';
+import type { WidthProp } from '@marigold/system';
 import { ComponentClassNames, cn, useClassNames } from '@marigold/system';
 import { FieldBaseProps } from '../FieldBase/FieldBase';
 import { HelpText } from '../HelpText/HelpText';
@@ -31,9 +32,8 @@ export interface MultipleSelectProps extends Pick<
 > {
   /**
    * Sets the width of the field.
-   * @remarks `WidthProp`
    */
-  width?: FieldBaseProps<'label'>['width'];
+  width?: WidthProp['width'];
   /**
    * If the select should be disabled.
    *
