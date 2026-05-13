@@ -8,7 +8,7 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['ghost', 'secondary', 'destructive-ghost', 'link'],
+      options: ['default', 'secondary', 'destructive-ghost', 'link'],
     },
     size: {
       control: { type: 'select' },

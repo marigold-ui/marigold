@@ -28,12 +28,12 @@ const sharedAppearances = {
   ToggleButtonGroup: 'ToggleButton',
   Title: 'Headline',
   ActionButton: {
-    from: 'Button',
-    variant: ['ghost', 'secondary', 'destructive-ghost', 'link'],
+    from: 'ActionButton',
+    variant: ['default', 'secondary', 'destructive-ghost', 'link'],
   },
   ActionGroup: {
-    from: 'Button',
-    variant: ['ghost', 'secondary', 'destructive-ghost', 'link'],
+    from: 'ActionButton',
+    variant: ['default', 'secondary', 'destructive-ghost', 'link'],
   },
   ActionMenu: 'Menu',
 };

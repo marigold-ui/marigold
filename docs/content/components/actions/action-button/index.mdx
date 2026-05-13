@@ -27,14 +27,14 @@ An ActionButton is a single pressable area that fires an action. It can carry a 
 
 <AppearanceTable component={'ActionButton'} />
 
-`<ActionButton>` reuses [`<Button>`](/components/actions/button)'s theme classes, so the two stay visually aligned. The variant set is narrower because ActionButton is meant to recede. For the bold variants (`primary`, `destructive`) reach for `<Button>` instead.
+`<ActionButton>` ships its own narrowed variant set so it stays visually aligned with [`<Button>`](/components/actions/button) but reads as low-emphasis chrome. For the bold variants (`primary`, `destructive`) reach for `<Button>` instead.
 
-| Variant             | Description                                                    | When to use                                                                                                                 |
-| ------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `ghost`             | Transparent, no border or background. **The default variant.** | Toolbar actions, list-row actions, container headers, or anywhere the button should recede into the surrounding UI.         |
-| `secondary`         | Neutral button with a subtle border.                           | When the action needs slightly more visual weight than `ghost` without competing with a primary button on the same surface. |
-| `destructive-ghost` | Red text with no background.                                   | Low-emphasis destructive actions, like a "Remove" button on a list item.                                                    |
-| `link`              | Styled as an inline text link.                                 | Actions that should blend into surrounding text while remaining interactive.                                                |
+| Variant             | Description                                                    | When to use                                                                                                                   |
+| ------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `default`           | Transparent, no border or background. **The default variant.** | Toolbar actions, list-row actions, container headers, or anywhere the button should recede into the surrounding UI.           |
+| `secondary`         | Neutral button with a subtle border.                           | When the action needs slightly more visual weight than `default` without competing with a primary button on the same surface. |
+| `destructive-ghost` | Red text with no background.                                   | Low-emphasis destructive actions, like a "Remove" button on a list item.                                                      |
+| `link`              | Styled as an inline text link.                                 | Actions that should blend into surrounding text while remaining interactive.                                                  |
 
 ## Usage
 

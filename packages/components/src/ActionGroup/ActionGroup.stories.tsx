@@ -11,7 +11,7 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['ghost', 'secondary', 'destructive-ghost', 'link'],
+      options: ['default', 'secondary', 'destructive-ghost', 'link'],
     },
     size: {
       control: { type: 'select' },
@@ -86,7 +86,7 @@ export const CascadePrecedence = meta.story({
     <ActionGroup
       aria-label="Cascade precedence"
       size="small"
-      variant="ghost"
+      variant="default"
       disabled
     >
       <ActionButton aria-label="Outsized" size="large">
@@ -105,7 +105,7 @@ export const CascadePrecedence = meta.story({
 export const WithActionMenu = meta.story({
   tags: ['component-test'],
   render: () => (
-    <ActionGroup aria-label="With ActionMenu" size="small" variant="ghost">
+    <ActionGroup aria-label="With ActionMenu" size="small" variant="default">
       <ActionButton aria-label="Edit">Edit</ActionButton>
       <ActionButton aria-label="Duplicate">Duplicate</ActionButton>
       <ActionMenu aria-label="More actions" size="large">
