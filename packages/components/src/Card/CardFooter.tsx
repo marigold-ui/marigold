@@ -5,12 +5,21 @@ import { useCardContext } from './CardContext';
 export interface CardFooterProps {
   /** Content rendered in the card footer, typically actions like buttons or metadata. */
   children?: ReactNode;
+  /**
+   * Render the footer edge-to-edge horizontally, skipping the Card's horizontal
+   * padding.
+   * @default false
+   */
+  bleed?: boolean;
 }
 
-export const CardFooter = ({ children }: CardFooterProps) => {
+export const CardFooter = ({ children, bleed }: CardFooterProps) => {
   const { classNames } = useCardContext();
   return (
-    <div className={cn('[grid-area:footer]', classNames.footer)}>
+    <div
+      data-card-footer
+      className={cn(!bleed && 'px-(--card-px)', classNames.footer)}
+    >
       {children}
     </div>
   );

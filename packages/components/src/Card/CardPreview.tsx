@@ -10,7 +10,13 @@ export interface CardPreviewProps {
 export const CardPreview = ({ children }: CardPreviewProps) => {
   const { classNames } = useCardContext();
   return (
-    <div className={cn('[grid-area:preview]', classNames.preview)}>
+    <div
+      data-card-preview
+      className={cn(
+        'first:-mt-(--card-py) last:-mb-(--card-py)',
+        classNames.preview
+      )}
+    >
       {children}
     </div>
   );
