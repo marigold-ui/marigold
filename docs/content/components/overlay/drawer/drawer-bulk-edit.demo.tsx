@@ -1,4 +1,3 @@
-import { Pencil } from 'lucide-react';
 import {
   ActionBar,
   Badge,
@@ -12,6 +11,7 @@ import {
   Text,
 } from '@marigold/components';
 import type { DrawerProps } from '@marigold/components';
+import { Pencil } from '@marigold/icons';
 
 const events = [
   {

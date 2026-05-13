@@ -14,7 +14,7 @@ const venue = venues[5];
 export default (props: CardProps) => (
   <Card {...props}>
     <Card.Header>
-      <Stack space={1}>
+      <Stack space="tight">
         <Headline level={3}>{venue.name}</Headline>
         <Inline space={2}>
           <Badge variant="info">{venueTypes[venue.type]}</Badge>

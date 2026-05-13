@@ -87,13 +87,11 @@ In this example the `<Menu>` has set its prop `disabeldKeys`. So you can't inter
 
 <ComponentDemo name="menu-disabled" />
 
-### ActionMenu
+### Looking for the kebab-menu pattern?
 
-The `<ActionMenu>` is typically used to provide quick, context-specific actions related to an item or interface element. It is particularly useful in scenarios where speed and efficiency in selecting an action are crucial.
+For quick, context-specific actions on an item or row, see [`<ActionMenu>`](/components/overlay/action-menu). It uses an `<ActionButton>` as its trigger, switches to a `<Tray>` on small screens, and follows the same `<Menu.Item>` API.
 
-In this example, the `<ActionMenu>` is used within a table to allow users to perform actions like viewing details of a ticket or deleting a ticket. When "View Details" is selected, a dialog displays key information about the selected ticket, including its ID, event name, and status. The "Delete" option removes the ticket from the list.
-
-The example shows that the `<ActionMenu>` is very similar to the standard `<Menu>` component, offering flexibility and ease of use in various contexts.
+The example below shows `<ActionMenu>` inside a table for per-row actions:
 
 <ComponentDemo name="menu-action-table" />
 

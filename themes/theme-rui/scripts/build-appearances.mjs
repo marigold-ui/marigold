@@ -13,12 +13,37 @@ console.log('🎨 Generating appearances data...');
 
 /**
  * Components that share styles with another component.
- * Key = component name in docs, Value = component name in theme.
+ * Value is either:
+ *   - A string: copy the target component's appearance verbatim.
+ *   - An object `{ from, variant?, size? }`: copy from the target, but
+ *     override `variant` and/or `size` with a curated subset (and ordering).
+ *     Use this when a component reuses another's theme classes but exposes a
+ *     narrower public vocabulary or a different default. The picker treats
+ *     the first entry in `variant` as the default.
+ *
+ * @type {Record<string, string | { from: string, variant?: string[], size?: string[] }>}
  */
 const sharedAppearances = {
   LinkButton: 'Button',
   ToggleButtonGroup: 'ToggleButton',
+  Title: 'Headline',
+  ActionButton: {
+    from: 'ActionButton',
+    variant: ['default', 'secondary', 'destructive-ghost', 'link'],
+  },
+  ActionGroup: {
+    from: 'ActionButton',
+    variant: ['default', 'secondary', 'destructive-ghost', 'link'],
+  },
+  ActionMenu: 'Menu',
 };
+
+/**
+ * Components without their own theme entry that should still appear in the
+ * appearances map with empty variant/size arrays. Used for primitives whose
+ * appearance is fully controlled by the surrounding container.
+ */
+const emptyAppearances = ['TextValue'];
 
 /**
  * Extract property name keys from a `variants` object literal in a cva() call.
@@ -144,8 +169,23 @@ async function main() {
 
   // Add shared appearances (components that reuse another component's styles)
   for (const [alias, target] of Object.entries(sharedAppearances)) {
-    if (appearances[target]) {
-      appearances[alias] = appearances[target];
+    const targetName = typeof target === 'string' ? target : target.from;
+    if (!appearances[targetName]) continue;
+
+    if (typeof target === 'string') {
+      appearances[alias] = appearances[targetName];
+    } else {
+      appearances[alias] = {
+        variant: target.variant ?? appearances[targetName].variant,
+        size: target.size ?? appearances[targetName].size,
+      };
+    }
+  }
+
+  // Add empty entries for primitives without their own theme entry
+  for (const name of emptyAppearances) {
+    if (!appearances[name]) {
+      appearances[name] = { variant: [], size: [] };
     }
   }
 

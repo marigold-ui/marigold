@@ -272,6 +272,19 @@ To visually imitate a button element that navigates (e.g., a "Cancel" action tha
   </Dont>
 </GuidelineTiles>
 
+### Page or surface action
+
+`<Button>` is the right call for the page-level commitment: submit, save, confirm, continue. Marigold ships a small family of related components for the cases where `<Button>` is the wrong fit, like low-emphasis actions inside rows and surfaces, bulk-selection bars, overflow menus, and navigation. Pick the component by the role of the action, not by the variant you have in mind.
+
+| Situation                                                     | Component                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Submit a form, confirm a dialog, finish a wizard step         | [`<Button>`](/components/actions/button)                                                                                                                                                                                                  |
+| The single most important call-to-action on a page or section | [`<Button variant="primary">`](/components/actions/button)                                                                                                                                                                                |
+| Per-row action in a list, table, or `<SelectList>` option     | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group). For actions that navigate (e.g. an "Edit" link to a detail page), use [`<LinkButton>`](/components/actions/link-button), which picks up the same cascade. |
+| Chrome on a `<Panel>`, `<Dialog>`, or `<Drawer>` header       | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group)                                                                                                                                                            |
+| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/actions/actionbar)                                                                                                                                                                                     |
+| Overflow when there are more actions than fit comfortably     | [`<ActionMenu>`](/components/overlay/action-menu)                                                                                                                                                                                         |
+
 ### Press Event
 
 The `<Button>` component supports user interactions via mouse, keyboard, and touch, handled through the `onPress ` prop. This prop is similar to the standard `onClick` event but is normalized for all interaction methods. Additionally, `onPressStart`, `onPressEnd`, and `onPressChange` events are fired during user interaction.
@@ -288,5 +301,8 @@ Each handler receives a `PressEvent`, providing details about the target and the
 
 ## Alternative components
 
+- [ActionButton](/components/actions/action-button): A low-emphasis button for surface chrome and per-row actions.
+- [ActionGroup](/components/actions/action-group): A toolbar wrapper around a related cluster of `<ActionButton>`s.
+- [ActionBar](/components/actions/actionbar): The bar around bulk-selection actions; uses `<ActionBar.Button>` internally.
 - [Link](/components/actions/link): A component to navigate to another page.
 - [LinkButton](/components/actions/link-button): A component to navigate to another page but looks like a button.

@@ -16,9 +16,15 @@ export type {
 
 export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
-export { ActionButton } from './ActionBar/ActionButton';
-export type { ActionButtonProps } from './ActionBar/ActionButton';
 export { useActionBar } from './ActionBar/useActionBar';
+
+export { ActionButton } from './ActionButton/ActionButton';
+export type { ActionButtonProps } from './ActionButton/ActionButton';
+export { ActionButtonContext } from './ActionButton/Context';
+
+export { ActionGroup } from './ActionGroup/ActionGroup';
+export type { ActionGroupProps } from './ActionGroup/ActionGroup';
+export { ActionGroupContext } from './ActionGroup/Context';
 export type {
   UseActionBarProps,
   UseActionBarReturn,
@@ -82,6 +88,9 @@ export type { DateFieldProps } from './DateField/DateField';
 
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
+
+export { Description } from './Description/Description';
+export type { DescriptionProps } from './Description/Description';
 
 export { Dialog } from './Dialog/Dialog';
 export type { DialogProps } from './Dialog/Dialog';
@@ -155,6 +164,7 @@ export { ListBox } from './ListBox/ListBox';
 export type { ListBoxProps } from './ListBox/ListBox';
 export { ActionMenu } from './Menu/ActionMenu';
 export type { ActionMenuProps } from './Menu/ActionMenu';
+export { ActionMenuContext } from './Menu/ActionMenuContext';
 
 export { Menu } from './Menu/Menu';
 export type { MenuProps } from './Menu/Menu';
@@ -184,6 +194,7 @@ export { ProgressCircle } from './ProgressCircle/ProgressCircle';
 export type { ProgressCircleProps } from './ProgressCircle/ProgressCircle';
 
 export { I18nProvider } from '@react-aria/i18n';
+export { HeadingContext, Provider, TextContext } from 'react-aria-components';
 export { useTheme, ThemeProvider } from '@marigold/system';
 export { MarigoldProvider } from './Provider/MarigoldProvider';
 export type { MarigoldProviderProps } from './Provider/MarigoldProvider';
@@ -260,6 +271,9 @@ export type { TagGroupProps } from './TagGroup/TagGroup';
 export { Text } from './Text/Text';
 export type { TextProps } from './Text/Text';
 
+export { TextValue } from './TextValue/TextValue';
+export type { TextValueProps } from './TextValue/TextValue';
+
 export { TextArea } from './TextArea/TextArea';
 export type { TextAreaProps } from './TextArea/TextArea';
 
@@ -271,6 +285,9 @@ export type { TilesProps } from './Tiles/Tiles';
 
 export { TimeField } from './TimeField/TimeField';
 export type { TimeFieldProps } from './TimeField/TimeField';
+
+export { Title } from './Title/Title';
+export type { TitleProps } from './Title/Title';
 
 export type { ToastContentProps } from './Toast/Toast';
 

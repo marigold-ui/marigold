@@ -18,6 +18,7 @@ import {
   Columns,
   ComboBox,
   DatePicker,
+  Description,
   Divider,
   FileField,
   Form,
@@ -38,6 +39,7 @@ import {
   Text,
   TextArea,
   TextField,
+  TextValue,
 } from '@marigold/components';
 
 const venue = venues.find(v => v.id === '9')!;
@@ -197,8 +199,8 @@ export const Inventory = () => (
                       className="size-6 rounded-full object-cover"
                     />
                     <Stack>
-                      <Text slot="label">{person.name}</Text>
-                      <Text slot="description">{person.position}</Text>
+                      <TextValue>{person.name}</TextValue>
+                      <Description>{person.position}</Description>
                     </Stack>
                   </Inline>
                 </Select.Option>

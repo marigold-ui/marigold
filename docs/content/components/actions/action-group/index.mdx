@@ -1,0 +1,82 @@
+---
+title: ActionGroup
+description: Toolbar wrapper around a related cluster of action buttons.
+badge: alpha
+---
+
+The `<ActionGroup>` component is a toolbar wrapper around a related cluster of actions. It exposes a real `role="toolbar"` with arrow-key navigation between children, and cascades shared `size`, `variant`, and `disabled` defaults so the cluster stays visually uniform.
+
+Use `<ActionGroup>`whenever a row, item, or surface has more than one related action. For a single action, use [`<ActionButton>`](/components/actions/action-button) directly. For more actions than fit comfortably in a toolbar, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
+
+import { ActionGroupAnatomy } from './action-group-anatomy';
+
+## Anatomy
+
+<ActionGroupAnatomy />
+
+- **Group:** A toolbar wrapper around a related cluster of actions.
+- **ActionButton:** Each pressable action inside the group.
+- **LinkButton (optional):** [`<LinkButton>`](/components/actions/link-button) can sit alongside `<ActionButton>` for actions that navigate.
+
+## Appearance
+
+<AppearanceDemo component={'ActionGroup'} />
+
+<AppearanceTable component={'ActionGroup'} />
+
+`<ActionGroup>` has no visual styling of its own. The `variant` and `size` props cascade to every nested [`<ActionButton>`](/components/actions/action-button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. A local `variant` on a child wins over the group default; the group's `size` wins over a child's local size so the cluster stays uniform in height.
+
+## Usage
+
+`<ActionGroup>`shines wherever an item, row, or surface needs a small cluster of actions. The three scenarios below cover the cases we expect to see most often.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Group related actions with `<ActionGroup>`. Three to five actions is a
+      comfortable upper bound. Reach for `<ActionMenu>` beyond that.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't mix unrelated actions inside a single `<ActionGroup>`. A toolbar
+      communicates that the actions belong together.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Inline row actions
+
+Lists and rows of equal-weight items often need a per-row cluster of quick actions like view, edit, and delete. Render them as an `<ActionGroup>` so the cluster is exposed as a toolbar, arrow-key navigable, and the buttons recede into the row until the user scans for them.
+
+<ComponentDemo name="action-group-row-actions" />
+
+For destructive row actions, reach for `destructive-ghost` so the danger reads without overpowering the row. A `variant` set on the child always wins over one set on the group, so a single destructive button can sit inside an otherwise uniform cluster. When the action count grows beyond three, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
+
+### Container chrome
+
+Surfaces like `<Panel>`, `<Dialog>`, and `<Drawer>` carry their own chrome of secondary actions: bookmark, share, settings, dismiss. These actions belong to the container, not to the page, so they should stay subordinate to the container's title and to any primary `<Button>` it might host.
+
+<ComponentDemo name="action-group-panel-chrome" />
+
+The container can publish shared defaults to every ActionButton inside via `ActionButtonContext`. A Panel header, for example, can publish the variant and size for every ActionButton it contains, and individual call sites stay free of repetitive props. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how container providers wire this up.
+
+### Standalone toolbar
+
+Above an editor, a comment box, or any content area that benefits from a cluster of related one-shot actions, reach for `<ActionGroup>` as a standalone toolbar.
+
+<ComponentDemo name="action-group-toolbar" />
+
+## Props
+
+<StorybookHintMessage component={'ActionGroup'} />
+
+### ActionGroup
+
+<AutoTypeTable path="ActionGroup/ActionGroup" name="ActionGroupProps" />
+
+## Alternative components
+
+- [ActionButton](/components/actions/action-button): The standalone primitive that lives inside a group.
+- [ActionMenu](/components/overlay/action-menu): Use the kebab-menu pattern when there are too many actions to fit in a Group.
+- [ActionBar](/components/actions/actionbar): Use for the bar around bulk-selection actions.

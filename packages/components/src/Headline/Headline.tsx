@@ -10,22 +10,28 @@ import {
   useClassNames,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
+import type { SlotProps } from '../types';
+
+/**
+ * The shared heading size scale. Reused by `Title` so heading primitives
+ * share one vocabulary. Will become a typography token in a future PR.
+ */
+export type HeadlineSize =
+  | 'level-1'
+  | 'level-2'
+  | 'level-3'
+  | 'level-4'
+  | 'level-5'
+  | 'level-6';
 
 export interface HeadlineProps
-  extends AriaLabelingProps, TextAlignProp, LineHeightProp {
+  extends AriaLabelingProps, TextAlignProp, LineHeightProp, SlotProps {
   /**
    * Set the color of the headline.
    */
   color?: string;
   variant?: string;
-  size?:
-    | 'level-1'
-    | 'level-2'
-    | 'level-3'
-    | 'level-4'
-    | 'level-5'
-    | 'level-6'
-    | (string & {});
+  size?: HeadlineSize | (string & {});
   /**
    * Set a different level.
    */
@@ -34,10 +40,6 @@ export interface HeadlineProps
    * Children of the component.
    */
   children?: ReactNode;
-  /**
-   * A slot to place the element in.
-   */
-  slot?: string;
 }
 
 const _Headline = ({
@@ -48,6 +50,7 @@ const _Headline = ({
   color,
   level = '1',
   lineHeight,
+  slot,
   ...props
 }: HeadlineProps) => {
   const classNames = useClassNames({
@@ -57,8 +60,12 @@ const _Headline = ({
   });
 
   return (
+    // `slot` may be `null` (opt out of inherited slot context). RAC's
+    // `HeadingProps` narrows slot to `string`, but `useContextProps` (used
+    // internally by `<Heading>`) accepts `null` at runtime.
     <Heading
       level={Number(level)}
+      slot={slot as string | undefined}
       {...props}
       className={cn(
         classNames,

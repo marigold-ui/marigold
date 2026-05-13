@@ -4,7 +4,7 @@ export default () => (
   <Stack space={4}>
     <Card stretch>
       <Inline alignY="center" space={4}>
-        <Stack space={1} stretch>
+        <Stack space="tight" stretch>
           <Inline space={2} alignY="center">
             <Text weight="bold">Weekly digest</Text>
             <Badge variant="success">Active</Badge>
@@ -18,7 +18,7 @@ export default () => (
     </Card>
     <Card stretch>
       <Inline alignY="center" space={4}>
-        <Stack space={1} stretch>
+        <Stack space="tight" stretch>
           <Text weight="bold">Slack integration</Text>
           <Text variant="muted" size="sm">
             Post updates to your team's Slack channel automatically.
