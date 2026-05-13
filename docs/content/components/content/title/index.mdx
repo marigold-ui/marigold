@@ -26,24 +26,18 @@ Styling is inferred automatically from the surrounding context. See [Slot-Driven
 
 Reach for `<Title>` whenever a container surface labels its content with a heading. For top-level page headings or any heading that should not adapt to a surrounding container, use [`<Headline>`](/components/content/headline) instead.
 
+A container can define the heading level, spacing, and visual style for the title region through its slot context. The consumer just writes the title text and the container takes care of the rest.
+
+<ComponentDemo name="title-in-container" />
+
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `<Title>` inside containers (Panel, Dialog, Drawer, EmptyState, SectionMessage)
-      to label a region. Let the container choose the heading level.
+      Keep `<Title>` content to a short, descriptive label. A noun phrase like
+      'Members', 'Delete project', or 'Recent activity' names what the region
+      contains, while a `<Description>` below carries any extra detail.
     </DoDescription>
   </Do>
-  <Do>
-    <DoDescription>
-      Pair `<Title>` with a `<Description>` when the region benefits from a one-line
-      explanation below the heading.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't use `<Title>` for the top-level page heading. That's the role of `<Headline>`.
-    </DontDescription>
-  </Dont>
   <Dont>
     <DontDescription>
       Don't override the `level` prop unless the document outline calls for it.
@@ -51,12 +45,6 @@ Reach for `<Title>` whenever a container surface labels its content with a headi
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-### Inside a container
-
-A container can define the heading level, spacing, and visual style for the title region through its slot context. The consumer just writes the title text and the container takes care of the rest.
-
-<ComponentDemo name="title-in-container" />
 
 ### Heading level
 

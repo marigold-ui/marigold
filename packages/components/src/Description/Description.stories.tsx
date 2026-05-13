@@ -16,23 +16,23 @@ const meta = preview.meta({
   },
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   args: {
     children: 'Helps a user understand what the parent region is for.',
   },
-  render: ({ children, ...args }: any) => (
+  render: ({ children, ...args }) => (
     <Description {...args}>{children}</Description>
   ),
 });
 
-export const Renders: any = meta.story({
+export const Renders = meta.story({
   tags: ['component-test'],
   render: () => (
     <Description>
       Helps a user understand what the parent region is for.
     </Description>
   ),
-  play: async ({ canvas }: any) => {
+  play: async ({ canvas }) => {
     await expect(
       canvas.getByText('Helps a user understand what the parent region is for.')
     ).toBeInTheDocument();

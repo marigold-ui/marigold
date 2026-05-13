@@ -11,7 +11,7 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['ghost', 'secondary', 'destructive-ghost', 'link'],
+      options: ['default', 'secondary', 'destructive-ghost', 'link'],
     },
     size: {
       control: { type: 'select' },
@@ -21,7 +21,7 @@ const meta = preview.meta({
   },
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   tags: ['component-test'],
   render: () => (
     <ActionGroup aria-label="Item actions">
@@ -32,7 +32,7 @@ export const Basic: any = meta.story({
       <ActionButton aria-label="Delete">Delete</ActionButton>
     </ActionGroup>
   ),
-  play: async ({ canvas }: any) => {
+  play: async ({ canvas }) => {
     const toolbar = canvas.getByRole('toolbar', { name: 'Item actions' });
     const buttons = canvas.getAllByRole('button');
 
@@ -41,7 +41,7 @@ export const Basic: any = meta.story({
   },
 });
 
-export const KeyboardNavigation: any = meta.story({
+export const KeyboardNavigation = meta.story({
   tags: ['component-test'],
   render: () => (
     <ActionGroup aria-label="Item actions">
@@ -52,7 +52,7 @@ export const KeyboardNavigation: any = meta.story({
       <ActionButton aria-label="Delete">Delete</ActionButton>
     </ActionGroup>
   ),
-  play: async ({ canvas }: any) => {
+  play: async ({ canvas }) => {
     const [first, second, third] = canvas.getAllByRole('button');
     first.focus();
 
@@ -64,7 +64,7 @@ export const KeyboardNavigation: any = meta.story({
   },
 });
 
-export const DisabledCascade: any = meta.story({
+export const DisabledCascade = meta.story({
   tags: ['component-test'],
   render: () => (
     <ActionGroup aria-label="Disabled actions" disabled>
@@ -72,7 +72,7 @@ export const DisabledCascade: any = meta.story({
       <ActionButton aria-label="Delete">Delete</ActionButton>
     </ActionGroup>
   ),
-  play: async ({ canvas }: any) => {
+  play: async ({ canvas }) => {
     const buttons = canvas.getAllByRole('button');
     for (const button of buttons) {
       await expect(button).toBeDisabled();
@@ -80,13 +80,13 @@ export const DisabledCascade: any = meta.story({
   },
 });
 
-export const CascadePrecedence: any = meta.story({
+export const CascadePrecedence = meta.story({
   tags: ['component-test'],
   render: () => (
     <ActionGroup
       aria-label="Cascade precedence"
       size="small"
-      variant="ghost"
+      variant="default"
       disabled
     >
       <ActionButton aria-label="Outsized" size="large">
@@ -102,10 +102,10 @@ export const CascadePrecedence: any = meta.story({
   ),
 });
 
-export const WithActionMenu: any = meta.story({
+export const WithActionMenu = meta.story({
   tags: ['component-test'],
   render: () => (
-    <ActionGroup aria-label="With ActionMenu" size="small" variant="ghost">
+    <ActionGroup aria-label="With ActionMenu" size="small" variant="default">
       <ActionButton aria-label="Edit">Edit</ActionButton>
       <ActionButton aria-label="Duplicate">Duplicate</ActionButton>
       <ActionMenu aria-label="More actions" size="large">

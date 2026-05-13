@@ -18,6 +18,10 @@ export interface ActionGroupProps
   /**
    * Cascades the variant to nested actions. Local `variant` on a child
    * (`ActionButton`, `ActionMenu`) wins over the group default.
+   *
+   * When unset, the group cascades `'default'` to nested actions so an
+   * unconfigured cluster still renders uniformly.
+   * @default 'default'
    */
   variant?: string;
   /**
@@ -28,7 +32,6 @@ export interface ActionGroupProps
   /**
    * Disables every nested action by default. A child can re-enable itself
    * with `disabled={false}`.
-   * @default false
    */
   disabled?: boolean;
   /**
@@ -60,7 +63,7 @@ export const ActionGroup = ({
   } = merged;
 
   const ctx = useMemo(
-    () => ({ variant: variant ?? 'ghost', size, disabled }),
+    () => ({ variant: variant ?? 'default', size, disabled }),
     [variant, size, disabled]
   );
 

@@ -3,7 +3,7 @@ import { Provider } from 'react-aria-components';
 import { Basic } from './ActionButton.stories';
 import { ActionButtonContext } from './Context';
 
-test('renders an action button by default with the ghost variant', () => {
+test('renders an action button by default with the default variant', () => {
   render(<Basic.Component data-testid="action">Click</Basic.Component>);
 
   const btn = screen.getByTestId('action');

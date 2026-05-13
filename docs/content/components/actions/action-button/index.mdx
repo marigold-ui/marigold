@@ -27,14 +27,14 @@ An ActionButton is a single pressable area that fires an action. It can carry a 
 
 <AppearanceTable component={'ActionButton'} />
 
-ActionButton reuses [`<Button>`](/components/actions/button)'s theme classes, so the two stay visually aligned. The variant set is narrower because ActionButton is meant to recede. For the bold variants (`primary`, `destructive`) reach for `<Button>` instead.
+`<ActionButton>` ships its own narrowed variant set so it stays visually aligned with [`<Button>`](/components/actions/button) but reads as low-emphasis chrome. For the bold variants (`primary`, `destructive`) reach for `<Button>` instead.
 
-| Variant             | Description                                                    | When to use                                                                                                                 |
-| ------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `ghost`             | Transparent, no border or background. **The default variant.** | Toolbar actions, list-row actions, container headers, or anywhere the button should recede into the surrounding UI.         |
-| `secondary`         | Neutral button with a subtle border.                           | When the action needs slightly more visual weight than `ghost` without competing with a primary button on the same surface. |
-| `destructive-ghost` | Red text with no background.                                   | Low-emphasis destructive actions, like a "Remove" button on a list item.                                                    |
-| `link`              | Styled as an inline text link.                                 | Actions that should blend into surrounding text while remaining interactive.                                                |
+| Variant             | Description                                                    | When to use                                                                                                                   |
+| ------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `default`           | Transparent, no border or background. **The default variant.** | Toolbar actions, list-row actions, container headers, or anywhere the button should recede into the surrounding UI.           |
+| `secondary`         | Neutral button with a subtle border.                           | When the action needs slightly more visual weight than `default` without competing with a primary button on the same surface. |
+| `destructive-ghost` | Red text with no background.                                   | Low-emphasis destructive actions, like a "Remove" button on a list item.                                                      |
+| `link`              | Styled as an inline text link.                                 | Actions that should blend into surrounding text while remaining interactive.                                                  |
 
 ## Usage
 
@@ -64,19 +64,9 @@ ActionButton is the action that belongs to a surface, not to the page. It lives 
 
 ### Button vs. ActionButton
 
-`<ActionButton>` and [`<Button>`](/components/actions/button) look superficially similar, but they play different roles. `<Button>` is the **page-level commitment**, like submitting a form, saving a draft, or going to checkout. `<ActionButton>` is the **chrome of a surface**, like bookmarking a panel, removing a row, or editing a list item. The default variant reinforces the role. `<Button>` defaults to `secondary` so it reads as a real ask, while `<ActionButton>` defaults to `ghost` so it recedes into its container.
+`<ActionButton>` and [`<Button>`](/components/actions/button) look superficially similar, but they play different roles. `<Button>` is the **page-level commitment**, like submitting a form, saving a draft, or going to checkout. `<ActionButton>` is the **chrome of a surface**, like bookmarking a panel, removing a row, or editing a list item. The default variant reinforces the role: `<Button>` defaults to `secondary` so it reads as a real ask, while `<ActionButton>` defaults to `ghost` so it recedes into its container.
 
-Pick the component by the role of the action, not by the variant you have in mind:
-
-| Situation                                                     | Component                                                                                                                                                                                                                                 |
-| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Submit a form, confirm a dialog, finish a wizard step         | [`<Button>`](/components/actions/button)                                                                                                                                                                                                  |
-| The single most important call-to-action on a page or section | [`<Button variant="primary">`](/components/actions/button)                                                                                                                                                                                |
-| Per-row action in a list, table, or `<SelectList>` option     | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group). For actions that navigate (e.g. an "Edit" link to a detail page), use [`<LinkButton>`](/components/actions/link-button), which picks up the same cascade. |
-| Chrome on a `<Panel>`, `<Dialog>`, or `<Drawer>` header       | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group)                                                                                                                                                            |
-| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/actions/actionbar)                                                                                                                                                                                     |
-| Overflow when there are more actions than fit comfortably     | [`<ActionMenu>`](/components/overlay/action-menu)                                                                                                                                                                                         |
-| Navigation to another page                                    | [`<LinkButton>`](/components/actions/link-button) or [`<Link>`](/components/actions/link)                                                                                                                                                 |
+The rule of thumb: if removing the action would break the page's main task, it's a `<Button>`. If the action belongs to a row, a surface, or a cluster of repeated actions, it's an `<ActionButton>`. For the full decision table across the whole action family, see [Page or surface action](/components/actions/button#page-or-surface-action) on the `<Button>` page.
 
 The example below shows both inhabiting the same surface. The header carries one `<Button>` for the page-level commitment ("Invite member"), and each row carries an `<ActionGroup>` of `<ActionButton>`s that recede into the row until the user scans for them.
 
@@ -101,11 +91,9 @@ The example below shows both inhabiting the same surface. The header carries one
 
 ### In context
 
-ActionButton is at its best when it lives inside another component. Drop it into a `<SelectList.Option>`, a `<Panel.Header>`, an `<ActionBar>`, or anywhere a container publishes its own `ActionButtonContext`, and the container takes care of size, weight, and placement. The call site stays free of repetitive `variant` and `size` props.
+`<ActionButton>` is at its best when it lives inside another component. Drop it into a `<SelectList.Option>`, a `<Panel.Header>`, an `<ActionBar>`, or anywhere a container publishes its own `ActionButtonContext`, and the container takes care of size, weight, and placement. The call site stays free of repetitive `variant` and `size` props.
 
 <ComponentDemo name="action-button-in-context" />
-
-For container authors: publish defaults to nested `<ActionButton>`s through `ActionButtonContext` and consumers won't need to know which `variant` or `size` your container expects. The same cascade also flows into [`<LinkButton>`](/components/actions/link-button), so a navigating "Edit" action sits next to a press-handling "Delete" without losing visual consistency. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for the pattern.
 
 ## Props
 

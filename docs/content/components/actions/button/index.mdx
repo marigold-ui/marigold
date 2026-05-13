@@ -272,9 +272,18 @@ To visually imitate a button element that navigates (e.g., a "Cancel" action tha
   </Dont>
 </GuidelineTiles>
 
-### Button or ActionButton
+### Page or surface action
 
-For low-emphasis actions that belong to a row, a toolbar, or a container's chrome, reach for [`<ActionButton>`](/components/actions/action-button) instead. `<ActionButton>` picks up its size and visual weight from the surrounding component, so the action stays in the background of its surface rather than competing with `<Button>` for attention. See [`<Button>` vs. `<ActionButton>`](/components/actions/action-button#button-vs-actionbutton) for the full decision table.
+`<Button>` is the right call for the page-level commitment: submit, save, confirm, continue. Marigold ships a small family of related components for the cases where `<Button>` is the wrong fit, like low-emphasis actions inside rows and surfaces, bulk-selection bars, overflow menus, and navigation. Pick the component by the role of the action, not by the variant you have in mind.
+
+| Situation                                                     | Component                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Submit a form, confirm a dialog, finish a wizard step         | [`<Button>`](/components/actions/button)                                                                                                                                                                                                  |
+| The single most important call-to-action on a page or section | [`<Button variant="primary">`](/components/actions/button)                                                                                                                                                                                |
+| Per-row action in a list, table, or `<SelectList>` option     | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group). For actions that navigate (e.g. an "Edit" link to a detail page), use [`<LinkButton>`](/components/actions/link-button), which picks up the same cascade. |
+| Chrome on a `<Panel>`, `<Dialog>`, or `<Drawer>` header       | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group)                                                                                                                                                            |
+| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/actions/actionbar)                                                                                                                                                                                     |
+| Overflow when there are more actions than fit comfortably     | [`<ActionMenu>`](/components/overlay/action-menu)                                                                                                                                                                                         |
 
 ### Press Event
 

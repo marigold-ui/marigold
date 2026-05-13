@@ -9,18 +9,18 @@ import { cn, useClassNames } from '@marigold/system';
 import { ActionGroupContext } from '../ActionGroup/Context';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import type { SlotProps } from '../types';
-import { ActionButtonContext } from './Context';
+import { ActionButtonContext, type ActionButtonContextValue } from './Context';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style' | 'slot';
 
 export interface ActionButtonProps
   extends Omit<RAC.ButtonProps, RemovedProps>, SlotProps {
   /**
-   * Visual variant of the action button. Reuses Button styles for v1.
-   * @default 'ghost'
+   * Visual variant of the action button.
+   * @default 'default'
    */
   variant?:
-    | 'ghost'
+    | 'default'
     | 'secondary'
     | 'destructive-ghost'
     | 'link'
@@ -49,7 +49,7 @@ export const ActionButton = ({
   ...inputProps
 }: ActionButtonProps) => {
   const [merged, ref] = useContextProps(
-    inputProps as ActionButtonProps & { className?: string },
+    inputProps as ActionButtonContextValue,
     refProp,
     ActionButtonContext
   );
@@ -68,12 +68,12 @@ export const ActionButton = ({
 
   // Cascade with the enclosing ActionGroup. Reads left-to-right; `size` is
   // the outlier (group wins) so the cluster stays visually uniform.
-  const variant = ownVariant ?? groupCtx?.variant ?? 'ghost';
+  const variant = ownVariant ?? groupCtx?.variant ?? 'default';
   const size = groupCtx?.size ?? ownSize;
   const disabled = ownDisabled ?? groupCtx?.disabled;
 
   const classNames = useClassNames({
-    component: 'Button',
+    component: 'ActionButton',
     variant,
     size,
   });

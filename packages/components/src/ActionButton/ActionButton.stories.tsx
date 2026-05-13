@@ -8,7 +8,7 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['ghost', 'secondary', 'destructive-ghost', 'link'],
+      options: ['default', 'secondary', 'destructive-ghost', 'link'],
     },
     size: {
       control: { type: 'select' },
@@ -19,7 +19,7 @@ const meta = preview.meta({
   },
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   tags: ['component-test'],
   args: {
     children: 'Action',
@@ -35,7 +35,7 @@ export const Basic: any = meta.story({
   },
 });
 
-export const Loading: any = meta.story({
+export const Loading = meta.story({
   args: {
     children: 'Working',
     loading: true,
@@ -43,7 +43,7 @@ export const Loading: any = meta.story({
   render: args => <ActionButton {...args} />,
 });
 
-export const Disabled: any = meta.story({
+export const Disabled = meta.story({
   tags: ['component-test'],
   args: {
     children: 'Disabled',

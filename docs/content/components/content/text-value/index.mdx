@@ -33,27 +33,21 @@ Reach for `<TextValue>` when:
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `<TextValue>` inside selection items so screen readers and keyboard
-      typeahead get the right accessible name.
-    </DoDescription>
-  </Do>
-  <Do>
-    <DoDescription>
-      Wrap only the visible label text in `<TextValue>`. Icons, badges, and
-      layout components go around it, not inside.
+      Keep `<TextValue>` content to a short label that names the option, like
+      'Admin', 'Archived', or 'Newest first'. Screen readers announce it and
+      keyboard typeahead matches against it.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't reach for `<TextValue>` when an option's children are a single
-      string. The selection item already uses that as the accessible name.
+      Don't reach for `<TextValue>` when:
+
+      - an option's children are a single string — the selection item already
+        uses that as the accessible name, or
+      - you need paragraph text or arbitrary inline strings — use
+        [`<Text>`](/components/content/text) instead.
     </DontDescription>
-  </Dont>
-  <Dont>
-    <DontDescription>
-      Don't use `<TextValue>` for paragraph text or arbitrary inline strings.
-      Use [`<Text>`](/components/content/text) instead.
-    </DontDescription>
+
   </Dont>
 </GuidelineTiles>
 

@@ -57,8 +57,9 @@ const _LinkButton = ({
   const size = groupCtx?.size ?? propSize ?? ctxValue?.size;
   const disabled = propDisabled ?? ctxValue?.disabled ?? groupCtx?.disabled;
 
+  // Standalone LinkButton uses Button styles; inside ActionGroup it picks up ActionButton's narrowed set.
   const classNames = useClassNames({
-    component: 'Button',
+    component: groupCtx ? 'ActionButton' : 'Button',
     variant,
     size,
   });

@@ -15,7 +15,10 @@ import { Tray } from '../Tray/Tray';
 import { EllipsisVertical } from '../icons/EllipsisVertical';
 import { intlMessages } from '../intl/messages';
 import type { SlotProps } from '../types';
-import { ActionMenuContext } from './ActionMenuContext';
+import {
+  ActionMenuContext,
+  type ActionMenuContextValue,
+} from './ActionMenuContext';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
 
@@ -74,7 +77,7 @@ export interface ActionMenuProps
 
 const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
   const [merged, ref] = useContextProps(
-    inputProps as ActionMenuProps & { className?: string },
+    inputProps as ActionMenuContextValue,
     refProp,
     ActionMenuContext
   );
@@ -94,6 +97,8 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
     defaultOpen,
     onOpenChange,
     'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
     className: _className,
     slot: _slot,
     ref: _ref,
@@ -114,6 +119,8 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
       <ActionButton
         ref={ref}
         aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
         disabled={disabled}
         variant={variant}
         size={size}

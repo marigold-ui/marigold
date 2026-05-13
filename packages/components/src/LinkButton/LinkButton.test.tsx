@@ -71,7 +71,7 @@ test('inherits size from enclosing ActionGroup (group wins over local)', () => {
 
 test('local variant wins over ActionGroup variant', () => {
   render(
-    <ActionGroup aria-label="Row actions" variant="ghost">
+    <ActionGroup aria-label="Row actions" variant="default">
       <Basic.Component variant="destructive-ghost" data-testid="link">
         Delete
       </Basic.Component>
@@ -81,7 +81,7 @@ test('local variant wins over ActionGroup variant', () => {
   expect(screen.getByTestId('link')).toHaveClass('text-destructive-accent');
 });
 
-test('inherits ghost baseline from ActionGroup with no explicit variant', () => {
+test('inherits default baseline from ActionGroup with no explicit variant', () => {
   render(
     <ActionGroup aria-label="Row actions">
       <Basic.Component data-testid="link">Edit</Basic.Component>
