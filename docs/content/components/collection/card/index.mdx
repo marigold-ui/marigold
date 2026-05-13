@@ -56,7 +56,7 @@ The same shape works for any repeating content team directories with avatars, ar
 
 Use an image preview when each item has its own visual identity an event poster, a venue photo, a product hero. The image is part of how users recognize and choose between cards in a grid.
 
-<ComponentDemo name="card-elevation" />
+<ComponentDemo name="card-elevation" background="page" />
 
 <GuidelineTiles>
   <Do>
@@ -92,18 +92,6 @@ When the content doesn't fit that shape, reach for one of these instead:
 - [`<Headline>`](../../content/headline) + [`<Text>`](../../content/text) for a short paragraph or single field that doesn't need framing.
 - [`<SectionMessage>`](../../content/section-message) for a status, callout, or feedback message.
 - [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) for a long list of similar rows without media or actions.
-
-The three common misuses below cover the shapes that get mistaken for card most often.
-
-#### Long lists of similar items
-
-For a long run of similar rows, whitespace and an optional [`<Divider>`](../../content/divider) already do the grouping. The rows read top-to-bottom, the eye runs down a single column, and nothing competes for attention.
-
-<ComponentDemo name="card-whitespace" mode="preview" />
-
-Wrapping each row in its own card adds a frame around content that didn't need framing. The repeated shadows fragment the page, every row competes with every other row, and scannability gets worse instead of better.
-
-<ComponentDemo name="card-stacked" mode="preview" />
 
 #### Simple content
 
