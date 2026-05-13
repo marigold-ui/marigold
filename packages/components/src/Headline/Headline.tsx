@@ -11,6 +11,7 @@ import {
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 import type { SlotProps } from '../types';
+import { noSlot } from '../utils/noSlot';
 
 /**
  * The shared heading size scale. Reused by `Title` so heading primitives
@@ -50,7 +51,7 @@ const _Headline = ({
   color,
   level = '1',
   lineHeight,
-  slot,
+  slot = noSlot,
   ...props
 }: HeadlineProps) => {
   const classNames = useClassNames({

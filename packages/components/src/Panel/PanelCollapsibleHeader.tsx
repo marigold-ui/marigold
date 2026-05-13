@@ -10,6 +10,7 @@ import {
 } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { MorphCaret } from '../icons/MorphCaret';
+import { noSlot } from '../utils/noSlot';
 import { useSlot } from '../utils/useSlot';
 import { usePanelContext } from './Context';
 
@@ -69,12 +70,8 @@ export const PanelCollapsibleHeader = ({
 
   return (
     // Panel root publishes a slot-keyed HeadingContext (for the title-only
-    // shortcut); `slot={null}` opts this structural Heading out of it.
-    <Heading
-      level={level}
-      slot={null as unknown as string | undefined}
-      className="flex"
-    >
+    // shortcut); `slot={noSlot}` opts this structural Heading out of it.
+    <Heading level={level} slot={noSlot} className="flex">
       <Button
         slot="trigger"
         aria-labelledby={titleId}
