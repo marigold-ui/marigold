@@ -1,5 +1,159 @@
 # @marigold/theme-rui
 
+## 6.0.0-beta.1
+
+### Minor Changes
+
+- 727163c: feat([DST-1134]): add `<RangeCalendar>` component (alpha)
+
+  Adds a new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`). Supports up to three side-by-side months via `visibleDuration`, stacking vertically below the `sm` breakpoint; the same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>` so the help/error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container). Ships as an alpha component with a stub docs page under the form section.
+
+  [DST-1134](https://reservix.atlassian.net/browse/DST-1134)
+
+- cc568e3: feat([DST-1429]): `Card` now exposes a `Panel`-aligned padding API.
+
+  **What changed:**
+  - `Card` accepts `p` / `px` / `py` props (mutually exclusive `p` vs `px+py`), resolving to CSS custom properties `--card-px` and `--card-py` on the container. Defaults to `square-regular`.
+  - A new `space` prop controls the gap between slots, resolving to `--card-gap`. Defaults to `regular`.
+  - `Card.Body` and `Card.Footer` accept an opt-in `bleed` prop to skip horizontal padding for tables, media, or full-width action bars.
+  - Internally, `Card` switched from CSS grid with `grid-template-areas` to a flex column with `gap-y`. JSX order now determines visual order — place `Card.Preview` first when used.
+  - Slot theme styles (`header`, `body`, `footer`) no longer hardcode `px-4` / `py-*`; padding lives in the component layer and is driven by the CSS variables above.
+  - `Card.Preview` automatically escapes the container's vertical padding when used as the first or last child via negative margins.
+
+  **Why:**
+
+  Cards previously had no consumer-controllable padding API and no default padding on the container — content rendered as direct children of `<Card>` was visually broken. The new API mirrors `Panel`'s padding model so the two surfaces behave consistently.
+
+  **Migration:**
+  - Wrap bare children in `<Card.Body>`. Bare children inside `<Card>` are no longer rendered with horizontal padding; this matches `Panel`'s composition contract.
+  - If you used `Card.Preview` for media at the top, keep doing so — it stays edge-to-edge.
+  - No changes needed for the canonical composition (`Preview` + `Header` + `Body` + `Footer`).
+
+- 496a9f2: feat(SelectList): standardized API, item layout, and visual distinction from ListBox (DST-1076)
+
+  `<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. This release contains breaking renames and a tightened type surface.
+
+  **Breaking changes**
+  - `SelectList.Item` → **`SelectList.Option`**. The option semantic matches `Select.Option` and the HTML `<option>` mental model. Update any `<SelectList.Item>` usage to `<SelectList.Option>`.
+  - `SelectList.Action` has been **removed**. Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` — the component positions, sizes, and styles the nested control automatically via `ButtonContext`. Limit: one action per option (multi-button groups will arrive with a future `ActionGroup`).
+  - Leading-image slot has been **removed**. Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+  - `selectionMode="none"` is no longer accepted. `SelectList` is a form field; the default is now `"single"`.
+  - `onChange` is strictly typed per `selectionMode`: `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. The shape matches `Select<T, M>`. Passing `setState` directly may require adapting the callback.
+
+  **Other changes**
+  - **Selection indicator** — single-select rows render a visible radio circle; multi-select renders a checkbox.
+  - **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
+  - **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
+  - **Own theme entry** — `SelectList` ships a dedicated theme component. The theme exposes first-class `label`, `description`, and `action` entries; slot styling no longer uses descendant selectors. Consumers with custom themes must add or update a `SelectList` entry.
+
+  **Documentation**
+
+  The SelectList docs page is rewritten around the new API. Adds an anatomy diagram, a decision table for choosing between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions (decision-help and configuration patterns), horizontal orientation, and empty state. Replaces selected prose with Do/Don't tiles. Tightens the accessibility section to what's specific to SelectList (keyboard model, label requirement, `textValue` for rich rows).
+
+  **Migration**
+
+  ```diff
+  - <SelectList selectionMode="none">
+  -   <SelectList.Item id="free">
+  -     <SelectList.Action>
+  -       <IconButton aria-label="Info"><Info /></IconButton>
+  -     </SelectList.Action>
+  -     Free
+  -   </SelectList.Item>
+  - </SelectList>
+  + <SelectList selectionMode="single">
+  +   <SelectList.Option id="free">
+  +     Free
+  +     <IconButton aria-label="Info"><Info /></IconButton>
+  +   </SelectList.Option>
+  + </SelectList>
+  ```
+
+### Patch Changes
+
+- 566c468: fix([DST-1295]): replace `gap` between `CheckboxGroup` and `RadioGroup` items with per-item padding so the full space between items is clickable. Vertical items now meet the 24px target-size minimum; horizontal spacing keeps visual parity. Standalone `Checkbox` is unaffected.
+
+  Also align the label and icon: switched the inner row layout from `items-center` to `items-start` so the icon stays on the first line when the label wraps. `Radio` labels now use `leading-4` to match `Checkbox`, and `Radio`'s icon-to-label gap moves from an inline `gap-[1ch]` to the theme-driven `gap-x-2` for parity with `Checkbox`.
+
+- 2014edf: fix(DST-1406): restore focus outline on virtualized ListBox items. RAC's virtualizer wrapper sets an inline `z-index: 0` per item, creating a stacking context the option's `focus-visible:z-1` cannot escape — adjacent wrappers paint on top in DOM order and clip the focused outline (most visible when the next item is `selected`). Lift the wrapper containing the focused option above its siblings so the outline is fully visible. Affects all virtualized listboxes (`Select`, `ComboBox`, `Autocomplete`).
+- f8fbef9: fix([DST-1412]): fix multi-month Calendar/RangeCalendar layout at non-default widths. With three months at `width="1/2"` the third month overflowed the calendar wrapper because `min-w-[250px]` only sized for a single month; with `width="full"` the date grids stayed at content size while their columns expanded, leaving header text floating over empty space. Switch the calendar minimum to `min-w-fit` so multi-month grows to fit its natural content, and add `w-full` to `calendarGrid` so the date table fills its column.
+
+  [DST-1412](https://reservix.atlassian.net/browse/DST-1412)
+
+- 4742e8e: feat([DST-901]): styleProps for `width`, `maxWidth`, `height`, `space`, `spaceX`, `spaceY`, `pr`, `pl`, `pt`, `pb` now accept both numeric scale values (`4`) and their string equivalents (`"4"`). The public types are now declarative (`Scale | Fraction | WidthKeyword`, etc.) instead of being derived from the internal class-name maps.
+
+  Components that previously resolved `width`, `maxWidth`, and `height` via class-name lookup (Form, Calendar, legacy Table column header / select-all cell, Slider, Scrollable, Switch, Grid) now resolve them through CSS custom properties (`createWidthVar` / `createHeightVar`) targeting `--width`, `--max-width`, `--height`. Those variables — along with `--container-width` and `--field-width` already used by `FieldBase` — are registered as non-inheriting (`@property … inherits: false`) in the RUI theme so they cannot leak into descendants.
+
+  `createWidthVar` gained support for the previously missing keywords (`svh`, `lvh`, `dvh`, `px`, `container`), and a new `createHeightVar` helper was added. Both share a common factory and a base keyword set, so they remain trivially in sync.
+
+  The runtime class-name maps `width`, `maxWidth`, `height`, `gapSpace`, `paddingSpace`, `paddingSpaceX`, `paddingSpaceY`, `paddingRight`, `paddingLeft`, `paddingTop`, `paddingBottom` are no longer exported from `@marigold/system`. These were internal utilities consumed only by `@marigold/components`. Use the prop types (`WidthProp`, `HeightProp`, …) and the CSS-var helpers (`createWidthVar`, `createHeightVar`, `createSpacingVar`) instead. The corresponding TypeScript prop types are unchanged.
+
+- 5f2e9a0: fix([DST-1408]): drop `position: relative` from body in theme-rui preflight
+
+  `themes/theme-rui/src/preflight.css` previously set
+  `body { position: relative; overflow-x: clip }` to contain
+  `@react-aria/live-announcer`'s portal. Empirically that containment
+  isn't needed: the live-announcer node is a 1×1 px element with
+  `overflow: hidden` and `clip-path: inset(50%)`, so its content cannot
+  expand the document's scrollable area in any state — a synthetic
+  test toggling `body.position` between `relative` and `static` with
+  the announcer mounted produces identical `body.scrollWidth/scrollHeight`.
+
+  Meanwhile, `position: relative` on `<body>` makes it the containing
+  block for absolute portals (Tooltip, Popover, Menu, Select dropdown).
+  React-aria's `useOverlayPosition` then takes a special-case branch
+  that adds the page's scroll offset on top of itself when computing
+  "available space above the trigger", producing a near-zero number
+  even when the viewport has hundreds of pixels of headroom. Every
+  overlay with a `top` placement (notably `<Tooltip>`) flips to
+  `bottom`, and forcing `placement="top"` positions the overlay far
+  off-screen because the same math is broken in both directions.
+
+  Removing `position: relative` while keeping `overflow-x: clip`
+  restores correct overlay placement without losing the defensive
+  horizontal-scroll guard. `clip` does not establish a containing
+  block for absolute descendants (per CSS Overflow Module Level 3), so
+  the bug cannot reappear from this rule alone — but the file's
+  comment now warns that `position`, `transform`, `contain`,
+  `filter`, `backdrop-filter`, or `will-change: transform` on `<body>`
+  would re-introduce it.
+
+- 2d9d6fd: feat(DST-1366): introduce slot-configurable primitives
+
+  Adds three text-bearing role primitives — `Title`, `Description`, `TextValue` — and three action primitives — `ActionButton`, `ActionGroup`, `ActionMenu` — that participate in slot-keyed context. Text/heading slots use React Aria's `HeadingContext` / `TextContext` directly; action slots use Marigold-owned contexts (`ActionButtonContext`, `ActionGroupContext`, `ActionMenuContext`) consumed via `useContextProps`.
+
+  `Title` wraps RAC's `<Heading>` with `slot="title"` and `level={2}` as defaults, both overridable by `HeadingContext`. The `level` precedence is default ← context ← local, so a container can publish `{ level: 4 }` and drive a stretch of nested `<Title>`s to `<h4>` without each call site setting it. `Description` and `TextValue` forward straight to RAC's `<Text>` with `slot="description"` and `slot="label"` defaults respectively, letting `<Text>` consume `TextContext` on its own. None of the three carry typography props. Styling cascades from the surrounding container (or selection item) via `HeadingContext` / `TextContext`. Consumers drop these into containers without any `slot` wiring. The container provides level, layout (e.g. a grid area), size, variant, color, and any other styling through a single `Provider`.
+
+  `ActionGroup` is its own top-level component (own folder, own docs page, own Storybook entry) — there is no `ActionButton.Group` compound. It cascades `size`, `variant`, and `disabled` to nested `<ActionButton>`, `<LinkButton>`, and `<ActionMenu>` triggers via `ActionGroupContext`, with explicit per-prop precedence:
+  - `size`: group wins (visual uniformity within a cluster).
+  - `variant`: local wins (so a single destructive action can sit inside an otherwise uniform group).
+  - `disabled`: local wins; the group provides the default. Writing `disabled={false}` on a child re-enables it inside an otherwise-disabled group.
+
+  `ActionMenu` is rebuilt to compose its own `MenuTrigger` + `<ActionButton>` + `Popover` / `Tray` + RAC `Menu` rather than delegating to Marigold's `Menu`. The trigger uses `<ActionButton>` so an outer `ActionButtonContext` cascades to it. Marigold's `Menu` is untouched.
+
+  `LinkButton` is now slot-aware: it picks up `ActionButtonContext` and `ActionGroupContext` so a navigating action can sit alongside `<ActionButton>` inside an `<ActionGroup>` and inherit the same cascade. A `destructive-ghost` variant is added to match `<ActionButton>`. Context is consumed read-only (via `useSlottedContext`) to sidestep the anchor/button ref-type mismatch that `useContextProps` would have created. The read-only consumption now also absorbs `className` from `ActionButtonContext` (mirroring `<ActionButton>`'s `useContextProps`-driven className merge) so positional classes published by a parent container — e.g. a grid-area class injected via `ActionButtonContext` — reach the rendered anchor. This lets `<LinkButton>` participate in container-driven layouts the same way `<ActionButton>` does.
+
+  The container-driven layout pattern this enables comes with a corresponding convention: **positional `className` flows through slot contexts and is absorbed at the first layout boundary**. `<ActionGroup>` enforces the convention at its own boundary by scrubbing `ActionButtonContext` for its descendants — it republishes an empty value so nested `<ActionButton>`s and `<LinkButton>`s do not individually re-claim a positional class that was meant for the group as a whole. Cascading props (`size`, `variant`, `disabled`) still reach the children via `ActionGroupContext`, which they read independently. This convention scales to every future container that adopts the slot-configuration pattern.
+
+  `<ActionBar>`'s legacy top-level `ActionButton` slot is internalized and re-exposed as `ActionBar.Button`. Existing consumers that already use `<ActionBar.Button>` are unaffected.
+
+  Typography prep: `Headline` exports `HeadlineSize`, `Text` exports `TextSize` and `TextVariant`. The aliases aren't yet consumed by other primitives, but exposing them now lets a future typography-token PR replace runtime classes without rewriting consumer-facing prop types.
+
+- Updated dependencies [727163c]
+- Updated dependencies [cc568e3]
+- Updated dependencies [566c468]
+- Updated dependencies [9f4dc97]
+- Updated dependencies [3c6a943]
+- Updated dependencies [4742e8e]
+- Updated dependencies [496a9f2]
+- Updated dependencies [496a9f2]
+- Updated dependencies [8b754f0]
+- Updated dependencies [5744bbf]
+- Updated dependencies [2d9d6fd]
+- Updated dependencies [2ff7bda]
+  - @marigold/components@18.0.0-beta.1
+  - @marigold/system@18.0.0-beta.1
+
 ## 6.0.0-beta.0
 
 ### Major Changes
