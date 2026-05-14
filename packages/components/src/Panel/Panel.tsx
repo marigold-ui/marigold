@@ -35,7 +35,8 @@ interface PanelBaseProps {
   'aria-label'?: string;
   /**
    * Base heading level for the panel. A `<Title>` inside `Panel.Header`
-   * renders at this level; `Panel.CollapsibleTitle` at `headingLevel + 1`.
+   * renders at this level; a `<Title>` inside `Panel.CollapsibleHeader`
+   * renders at `headingLevel + 1`.
    * @default 2
    */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
