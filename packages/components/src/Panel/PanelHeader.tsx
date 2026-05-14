@@ -18,6 +18,12 @@ export interface PanelHeaderProps {
 export const PanelHeader = ({ children }: PanelHeaderProps) => {
   const { classNames, headingLevel, titleId, titleSlotRef } = usePanelContext();
 
+  // This Provider value fully replaces the `HeadingContext` published at
+  // the Panel root for descendants of the header. `level`, `id`, and `ref`
+  // are re-published (rather than inherited) because Provider values do
+  // not merge — anything we omit here would be lost for `<Title>` inside
+  // `<Panel.Header>`. The added contribution is `[grid-area:title]`, which
+  // lays the title out in the header's two-column grid.
   const headingProps = useMemo(
     () => ({
       slots: {

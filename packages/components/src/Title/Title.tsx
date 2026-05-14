@@ -61,6 +61,9 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
       level={level}
       slot={noSlot}
       {...props}
+      // Safe: this branch only runs when `as` is unset, so the element
+      // under the ref is always an `<hN>`. Title's public ref is the wider
+      // `Ref<HTMLElement>` because the `as` slot config can render a span.
       ref={ref as unknown as Ref<HTMLHeadingElement>}
     >
       {children}
