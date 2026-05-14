@@ -11,7 +11,6 @@ import { noSlot } from '../utils/noSlot';
 export interface TitleProps extends AriaLabelingProps, SlotProps {
   /**
    * The heading level (h1–h6). Can also be supplied via slot context.
-   * Ignored when `as` is set.
    * @default 2
    */
   level?: 1 | 2 | 3 | 4 | 5 | 6;
@@ -19,26 +18,31 @@ export interface TitleProps extends AriaLabelingProps, SlotProps {
    * The element id.
    */
   id?: string;
-  /**
-   * Render as an alternate element instead of `<Heading>`. Useful when the
-   * title text lives inside a container that already provides heading
-   * semantics (e.g. a Disclosure trigger button). Can also be supplied via
-   * slot context.
-   */
-  as?: 'span' | (string & {});
   children?: ReactNode;
   ref?: Ref<HTMLElement>;
 }
 
+// Slot config may deliver an `as` override so the title text can render
+// inside a container that already provides heading semantics (e.g. the
+// disclosure `<button>` inside `Panel.CollapsibleHeader`, where nesting a
+// real heading element would be invalid HTML).
+type TitleSlotProps = TitleProps & { as?: 'span' | (string & {}) };
+
 const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
   const [merged, ref] = useContextProps(
-    { slot: 'title', ...inputProps } as TitleProps,
+    { slot: 'title', ...inputProps } as TitleSlotProps,
     refProp,
     HeadingContext
   );
   // `slot` is consumed by `useContextProps` above; we drop it so the spread
   // below cannot reintroduce it on the rendered element.
-  const { level = 2, slot: _slot, children, as, ...props } = merged;
+  const {
+    level = 2,
+    slot: _slot,
+    children,
+    as,
+    ...props
+  } = merged as TitleSlotProps;
 
   if (as) {
     const Element = as as ElementType;
