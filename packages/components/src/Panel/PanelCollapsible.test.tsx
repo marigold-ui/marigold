@@ -82,6 +82,16 @@ describe('Panel.CollapsibleHeader', () => {
 
     expect(button).not.toHaveAttribute('aria-describedby');
   });
+
+  test('renders Title and Description as <span> so they nest inside the trigger button', () => {
+    render(<WithCollapsible.Component />);
+
+    const title = screen.getByText('Advanced Options');
+    const description = screen.getByText(/Fine-tune URL slugs/);
+
+    expect(title.tagName).toBe('SPAN');
+    expect(description.tagName).toBe('SPAN');
+  });
 });
 
 describe('Panel.CollapsibleHeader heading level', () => {

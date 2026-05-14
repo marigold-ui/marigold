@@ -1,5 +1,10 @@
 import type { ReactNode } from 'react';
 import { use, useId, useMemo } from 'react';
+import type {
+  ContextValue,
+  HeadingProps,
+  TextProps,
+} from 'react-aria-components';
 import {
   Button,
   DisclosureStateContext,
@@ -19,6 +24,11 @@ export interface PanelCollapsibleHeaderProps {
   children: ReactNode;
 }
 
+// `<Title>` reads an optional `as` from its slot config to render as a
+// non-heading element. The key is a Marigold extension to RAC's
+// `HeadingProps`, so we describe the slot value shape locally.
+type TitleSlotValue = HeadingProps & { as?: 'span' | (string & {}) };
+
 export const PanelCollapsibleHeader = ({
   children,
 }: PanelCollapsibleHeaderProps) => {
@@ -36,16 +46,15 @@ export const PanelCollapsibleHeader = ({
   const [descriptionSlotRef, hasDescription] = useSlot(false);
 
   const headingProps = useMemo(
-    () =>
-      ({
-        slots: {
-          title: {
-            className: classNames.collapsibleTitle,
-            id: titleId,
-            as: 'span',
-          },
+    (): { slots: { title: TitleSlotValue } } => ({
+      slots: {
+        title: {
+          className: classNames.collapsibleTitle,
+          id: titleId,
+          as: 'span',
         },
-      }) as never,
+      },
+    }),
     [classNames.collapsibleTitle, titleId]
   );
 
@@ -80,8 +89,13 @@ export const PanelCollapsibleHeader = ({
       >
         <Provider
           values={[
-            [HeadingContext, headingProps],
-            [TextContext, textProps],
+            // `HeadingContext` is typed against RAC's `HeadingProps`; Title
+            // reads an additional `as` slot key that lives outside that shape.
+            [
+              HeadingContext,
+              headingProps as ContextValue<HeadingProps, HTMLHeadingElement>,
+            ],
+            [TextContext, textProps as ContextValue<TextProps, HTMLElement>],
           ]}
         >
           <span className="min-w-0 flex-1">{children}</span>

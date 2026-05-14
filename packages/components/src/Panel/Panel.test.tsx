@@ -274,6 +274,14 @@ describe('Description in Panel.Header', () => {
 
     expect(description.className).toContain('[grid-area:description]');
   });
+
+  test('renders as a <p> via the TextContext slot config', () => {
+    render(<Basic.Component />);
+
+    const description = screen.getByText(/Public details shown to customers/);
+
+    expect(description.tagName).toBe('P');
+  });
 });
 
 describe('Panel.Content', () => {
