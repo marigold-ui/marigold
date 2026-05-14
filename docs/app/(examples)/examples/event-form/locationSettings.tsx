@@ -14,7 +14,7 @@ import {
 } from '@marigold/components';
 
 export const LocationSettings = () => (
-  <Panel headingLevel={3} size="form">
+  <Panel size="form">
     <Panel.Header>
       <Title>Location & capacity</Title>
       <Description>

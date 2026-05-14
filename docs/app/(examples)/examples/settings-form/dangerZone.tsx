@@ -44,7 +44,7 @@ export const DangerZone = () => {
   const { addToast } = useToast();
 
   return (
-    <Panel variant="destructive" size="form" headingLevel={3}>
+    <Panel variant="destructive" size="form">
       <Panel.Header>
         <Title>Danger zone</Title>
         <Description>

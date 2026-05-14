@@ -9,7 +9,7 @@ export const Privacy = () => {
   const analytics = useAutoSaveSwitch(false, 'Share aggregated analytics');
 
   return (
-    <Panel size="form" headingLevel={3}>
+    <Panel size="form">
       <Panel.Header>
         <Title>Privacy</Title>
         <Description>

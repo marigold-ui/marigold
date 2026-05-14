@@ -9,7 +9,7 @@ export const Notifications = () => {
   const weekly = useAutoSaveSwitch(true, 'Weekly report');
 
   return (
-    <Panel size="form" headingLevel={3}>
+    <Panel size="form">
       <Panel.Header>
         <Title>Notifications</Title>
         <Description>

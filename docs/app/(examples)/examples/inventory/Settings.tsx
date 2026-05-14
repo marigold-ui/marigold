@@ -39,7 +39,7 @@ export const Settings = () => (
         </Tabs.Item>
       </Tabs.List>
       <Tabs.TabPanel id="profile">
-        <Panel headingLevel={3} size="form">
+        <Panel size="form">
           <Panel.Header>
             <Title>Profile</Title>
             <Description>
@@ -75,7 +75,7 @@ export const Settings = () => (
         </Panel>
       </Tabs.TabPanel>
       <Tabs.TabPanel id="security">
-        <Panel headingLevel={3} size="form">
+        <Panel size="form">
           <Panel.Header>
             <Title>Security</Title>
             <Description>
@@ -97,7 +97,7 @@ export const Settings = () => (
         </Panel>
       </Tabs.TabPanel>
       <Tabs.TabPanel id="notifications">
-        <Panel headingLevel={3} size="form">
+        <Panel size="form">
           <Panel.Header>
             <Title>Notifications</Title>
             <Description>

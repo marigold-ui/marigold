@@ -17,7 +17,7 @@ import {
 
 export const EventDetails = () => {
   return (
-    <Panel headingLevel={3} size="form">
+    <Panel size="form">
       <Panel.Header>
         <Title>Event details</Title>
         <Description>

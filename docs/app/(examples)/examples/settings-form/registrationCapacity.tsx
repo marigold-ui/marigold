@@ -23,7 +23,7 @@ export const RegistrationCapacity = () => {
         showSavedToast('Registration & capacity updated.');
       }}
     >
-      <Panel size="form" headingLevel={3}>
+      <Panel size="form">
         <Panel.Header>
           <Title>Registration & capacity</Title>
           <Description>

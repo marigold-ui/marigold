@@ -26,7 +26,7 @@ export const Notifications = () => {
         showSavedToast('Notification preferences updated.');
       }}
     >
-      <Panel size="form" headingLevel={3}>
+      <Panel size="form">
         <Panel.Header>
           <Title>Notifications</Title>
           <Description>

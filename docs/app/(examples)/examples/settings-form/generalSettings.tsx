@@ -28,7 +28,7 @@ export const GeneralSettings = () => {
         showSavedToast('General information updated.');
       }}
     >
-      <Panel size="form" headingLevel={3}>
+      <Panel size="form">
         <Panel.Header>
           <Title>General information</Title>
           <Description>

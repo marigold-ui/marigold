@@ -36,7 +36,7 @@ export const CoOrganizers = () => {
   const [selected, setSelected] = useState<Key[]>([]);
 
   return (
-    <Panel variant="master" headingLevel={3} size="form">
+    <Panel variant="master" size="form">
       <Panel.Header>
         <Title>Co-presenters</Title>
         <Description>

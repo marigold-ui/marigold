@@ -17,7 +17,7 @@ import {
 } from '@marigold/components';
 
 export const RegistrationSettings = () => (
-  <Panel headingLevel={3} size="form">
+  <Panel size="form">
     <Panel.Header>
       <Title>Pricing & tickets</Title>
       <Description>
