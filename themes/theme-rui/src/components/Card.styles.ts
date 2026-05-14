@@ -15,15 +15,13 @@ export const Card: ThemeComponent<'Card'> = {
     },
   }),
   header: cva({
-    base: 'px-4 pt-4 pb-2 text-lg font-semibold',
+    base: 'text-lg font-semibold',
   }),
   body: cva({
-    base: 'px-4 py-2 text-sm',
+    base: 'text-sm',
   }),
   footer: cva({
-    base: 'flex items-center gap-2 px-4 pt-2 pb-4',
+    base: 'flex items-center gap-2',
   }),
-  preview: cva({
-    base: '',
-  }),
+  preview: cva({}),
 };

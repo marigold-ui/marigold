@@ -10,7 +10,7 @@ export interface CardHeaderProps {
 export const CardHeader = ({ children }: CardHeaderProps) => {
   const { classNames } = useCardContext();
   return (
-    <div className={cn('[grid-area:header]', classNames.header)}>
+    <div data-card-header className={cn('px-(--card-px)', classNames.header)}>
       {children}
     </div>
   );
