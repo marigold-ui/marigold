@@ -6,6 +6,7 @@ import {
 } from 'react-aria-components';
 import type { AriaLabelingProps } from '@marigold/types';
 import type { SlotProps } from '../types';
+import { noSlot } from '../utils/noSlot';
 
 export interface TitleProps extends AriaLabelingProps, SlotProps {
   /**
@@ -35,24 +36,26 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
     refProp,
     HeadingContext
   );
-  const { level = 2, slot, children, as, ...props } = merged;
+  // `slot` is consumed by `useContextProps` above; we drop it so the spread
+  // below cannot reintroduce it on the rendered element.
+  const { level = 2, slot: _slot, children, as, ...props } = merged;
 
   if (as) {
     const Element = as as ElementType;
     return (
-      <Element slot={slot as string | undefined} ref={ref} {...props}>
+      <Element ref={ref} {...props}>
         {children}
       </Element>
     );
   }
 
   return (
-    // `slot` may be `null` (opt out of inherited slot context). RAC's
-    // `HeadingProps` extends `HTMLAttributes` which narrows slot to `string`,
-    // but `useContextProps` accepts `null` at runtime — see SlotProps.
+    // Pass `slot={noSlot}` so the underlying `<Heading>` does not re-consume
+    // the same slot config we already merged via `useContextProps`, which
+    // would otherwise duplicate the slot's `className` on the rendered DOM.
     <Heading
       level={level}
-      slot={slot as string | undefined}
+      slot={noSlot}
       {...props}
       ref={ref as unknown as Ref<HTMLHeadingElement>}
     >

@@ -6,10 +6,6 @@ const meta = preview.meta({
   title: 'Components/Description',
   component: Description,
   argTypes: {
-    as: {
-      control: { type: 'select' },
-      options: ['p', 'span', 'div'],
-    },
     slot: {
       control: { type: 'text' },
     },

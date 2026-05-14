@@ -1,7 +1,7 @@
 import { Description, Panel, Title } from '@marigold/components';
 
 export default () => (
-  <Panel headingLevel={3}>
+  <Panel>
     <Panel.Header>
       <Title>Storage usage</Title>
       <Description>42% of your storage quota is currently in use.</Description>
