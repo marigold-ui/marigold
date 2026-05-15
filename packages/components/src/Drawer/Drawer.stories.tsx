@@ -139,7 +139,8 @@ export const WithForms = meta.story({
 });
 
 export const LongContent = meta.story({
-  parameters: {
+  tags: ['component-test'],
+  globals: {
     viewport: { value: 'smallScreen' },
   },
   render: args => (
@@ -171,6 +172,11 @@ export const LongContent = meta.story({
     </Drawer.Trigger>
   ),
   play: async ({ canvas }) => {
+    // Sanity check: the small-screen viewport must actually apply, otherwise
+    // this story is silently exercising the desktop NonModal path instead of
+    // the mobile Modal/Dialog path that the fix targets.
+    expect(window.innerWidth).toBeLessThan(640);
+
     await waitFor(() =>
       expect(canvas.getByText('Long Content')).toBeInTheDocument()
     );
