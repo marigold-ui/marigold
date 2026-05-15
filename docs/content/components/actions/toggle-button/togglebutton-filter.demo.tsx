@@ -45,29 +45,33 @@ export default () => {
       <Tiles tilesWidth="200px" space={3} stretch>
         {filtered.map(venue => (
           <Card key={venue.id} stretch>
-            <Stack space={2}>
+            <Card.Preview>
               <img
                 src={venue.image}
                 alt={venue.name}
-                className="h-28 w-full rounded-lg object-cover"
+                className="h-28 w-full object-cover"
               />
-              <Stack space={1}>
-                <Headline level={4}>{venue.name}</Headline>
-                <Inline space={1} alignY="center">
-                  <MapPin className="text-secondary-500 size-3.5 shrink-0" />
-                  <Text size="xs">{venue.city}</Text>
+            </Card.Preview>
+            <Card.Body>
+              <Stack space={2}>
+                <Stack space={1}>
+                  <Headline level={4}>{venue.name}</Headline>
+                  <Inline space={1} alignY="center">
+                    <MapPin className="text-secondary-500 size-3.5 shrink-0" />
+                    <Text size="xs">{venue.city}</Text>
+                  </Inline>
+                </Stack>
+                <Inline space={2}>
+                  <Badge>{venueTypes[venue.type]}</Badge>
+                  <Badge>
+                    <Inline space={1} alignY="center">
+                      <Users className="size-3" />
+                      {venue.capacity}
+                    </Inline>
+                  </Badge>
                 </Inline>
               </Stack>
-              <Inline space={2}>
-                <Badge>{venueTypes[venue.type]}</Badge>
-                <Badge>
-                  <Inline space={1} alignY="center">
-                    <Users className="size-3" />
-                    {venue.capacity}
-                  </Inline>
-                </Badge>
-              </Inline>
-            </Stack>
+            </Card.Body>
           </Card>
         ))}
       </Tiles>

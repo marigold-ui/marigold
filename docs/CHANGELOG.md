@@ -1,5 +1,263 @@
 # @marigold/docs
 
+## 18.0.0-beta.1
+
+### Major Changes
+
+- 9f4dc97: refa([DST-1324]): **Breaking change**: Rename Inset's `space`/`spaceX`/`spaceY` props to `p`/`px`/`py`
+
+  The padding props on `Inset` are renamed to align with `Panel`'s existing API, so that across the design system `space` always means **gap between children** and `p`/`px`/`py` always mean **inner padding**. Previously, `space` carried two different meanings depending on the component, which was a source of confusion.
+
+  **Migration:**
+
+  | Before                            | After                     |
+  | --------------------------------- | ------------------------- |
+  | `<Inset space="…" />`             | `<Inset p="…" />`         |
+  | `<Inset spaceX="…" spaceY="…" />` | `<Inset px="…" py="…" />` |
+
+  The discriminated union shape is unchanged: `p` is mutually exclusive with `px`/`py`. Token vocabularies are unchanged (`InsetSpacingTokens` for `p`, `PaddingSpacingTokens` for `px`/`py`).
+
+### Patch Changes
+
+- 727163c: feat([DST-1134]): add `<RangeCalendar>` component (alpha)
+
+  Adds a new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`). Supports up to three side-by-side months via `visibleDuration`, stacking vertically below the `sm` breakpoint; the same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>` so the help/error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container). Ships as an alpha component with a stub docs page under the form section.
+
+  [DST-1134](https://reservix.atlassian.net/browse/DST-1134)
+
+- 8c8e2da: docs(DST-1382): expand Drawer documentation with use cases and decision framework
+
+  Rewrites the Drawer docs to lead with a defining principle (supplementary, in-context, light task; non-modal on desktop), adds a decision framework (Drawer vs Dialog, routing to a page instead), and documents six canonical use cases: detail-row inspection, quick edit/create from a list, filter panel, comments and activity, contextual utility, and multi-field bulk edit. New demos illustrate the table-row inspection, comments/activity, and Table+ActionBar bulk-edit patterns. Filter pattern moved to a `## Related` section.
+
+- a244486: docs(DST-1308): consolidate icon documentation onto the Iconography page
+
+  Merge the former `/foundations/icons` and `/components/content/icon` pages into `/foundations/iconography` so principles, catalog, and engineering API live in one place. The new `Using icons in code` section covers installation, importing, sizing, color (`currentColor` + `className` recommended; `color` prop is literal CSS), filled brand icons, and accessibility (auto `aria-hidden`).
+
+  ## Migration table
+
+  Old names from the legacy `@marigold/icons` set and their Lucide replacement. Names marked _custom_ are retained brand icons that still ship from `@marigold/icons` directly.
+
+  ### UI
+
+  | Old             | New                |
+  | --------------- | ------------------ |
+  | Add             | `Plus`             |
+  | ArrowDown       | `ArrowDown`        |
+  | ArrowLeft       | `ArrowLeft`        |
+  | ArrowRight      | `ArrowRight`       |
+  | ArrowUp         | `ArrowUp`          |
+  | BurgerMenu      | `Menu`             |
+  | Check           | `Check`            |
+  | ChevronDown     | `ChevronDown`      |
+  | ChevronLeft     | `ChevronLeft`      |
+  | ChevronRight    | `ChevronRight`     |
+  | ChevronUp       | `ChevronUp`        |
+  | CircleChecked   | `CircleDot`        |
+  | CircleUnchecked | `Circle`           |
+  | Delete          | `Trash2`           |
+  | ExternalLink    | `ExternalLink`     |
+  | Eye             | `Eye`              |
+  | Filter          | `ListFilter`       |
+  | IconMore        | `Ellipsis`         |
+  | Remove          | `Minus`            |
+  | Search          | `Search`           |
+  | SettingDots     | `EllipsisVertical` |
+  | SquareChecked   | `SquareCheck`      |
+  | SquareUnchecked | `Square`           |
+
+  ### Info
+
+  | Old             | New                    |
+  | --------------- | ---------------------- |
+  | Accessible      | `Accessibility`        |
+  | AutoRenew       | `RefreshCcw`           |
+  | Banned          | `Ban`                  |
+  | BatteryCharging | `BatteryCharging`      |
+  | BatteryEmpty    | `BatteryLow`           |
+  | BatteryFull     | `BatteryFull`          |
+  | BatteryHalf     | `BatteryMedium`        |
+  | Bus             | `BusFront`             |
+  | Calendar        | `Calendar`             |
+  | Camera          | `Camera`               |
+  | Clock           | `Clock`                |
+  | Direction       | `SquareArrowUpRight`   |
+  | Email           | `Mail`                 |
+  | EventDate       | `Calendar1`            |
+  | Exclamation     | `TriangleAlert`        |
+  | Feedback        | `MessageSquareMore`    |
+  | Food            | `Utensils`             |
+  | Globe           | `Globe`                |
+  | Home            | `House`                |
+  | Info            | `Info`                 |
+  | Marker          | `MapPin`               |
+  | MobilePhone     | `Smartphone`           |
+  | MobileSignal    | `SignalHigh`           |
+  | Notification    | `MessageSquareWarning` |
+  | Parking         | `CircleParking`        |
+  | PDF             | `PDF` _(custom)_       |
+  | Reports         | `FileText`             |
+  | Required        | `Asterisk`             |
+  | ResaleLogbook   | `BookOpenText`         |
+  | Spinner         | `Loader`               |
+  | Thumb           | `ThumbsUp`             |
+  | Truck           | `Truck`                |
+  | Wifi            | `Wifi`                 |
+
+  ### Action
+
+  | Old          | New                     |
+  | ------------ | ----------------------- |
+  | Cancel       | `CircleX`               |
+  | Crop         | `Crop`                  |
+  | Download     | `Download`              |
+  | Edit         | `Pencil`                |
+  | ExportFile   | `SquareArrowOutUpRight` |
+  | FormatBold   | `Bold`                  |
+  | FormatItalic | `Italic`                |
+  | FormatSize   | `ALargeSmall`           |
+  | HighlightOff | `Power`                 |
+  | Location     | `LocateFixed`           |
+  | Lock         | `Lock`                  |
+  | LockOpen     | `LockOpen`              |
+  | Logout       | `LogOut`                |
+  | Pause        | `Pause`                 |
+  | Picture      | `Image`                 |
+  | Play         | `Play`                  |
+  | ResaleEdit   | `Cog`                   |
+  | Restart      | `RotateCcw`             |
+  | RotateLeft   | `RotateCcw`             |
+  | RotateRight  | `RotateCw`              |
+  | Save         | `Save`                  |
+  | Sort         | `ChevronsUpDown`        |
+  | SortDown     | `ChevronDown`           |
+  | SortUp       | `ChevronUp`             |
+  | Star         | `Star`                  |
+  | Stop         | `CircleStop`            |
+  | Underlined   | `Underline`             |
+  | Zoom         | `ZoomIn`                |
+
+  ### Ticketing
+
+  | Old             | New                          |
+  | --------------- | ---------------------------- |
+  | Deal            | `BadgePercent`               |
+  | DesignTicket    | `DesignTicket` _(custom)_    |
+  | GiftCard        | `GiftCard` _(custom)_        |
+  | Membership      | `IdCardLanyard`              |
+  | Pickup          | `Store`                      |
+  | Price           | `Euro`                       |
+  | Resale          | `Resale` _(custom)_          |
+  | Scanner         | `Scanner` _(custom)_         |
+  | Seat            | `Armchair`                   |
+  | Selling         | `Tag`                        |
+  | Stadium         | `Stadium` _(custom)_         |
+  | Ticket          | `Ticket`                     |
+  | TicketInsurance | `TicketInsurance` _(custom)_ |
+  | Turnstile       | `Turnstile` _(custom)_       |
+
+  ### User
+
+  | Old                    | New            |
+  | ---------------------- | -------------- |
+  | Cart                   | `ShoppingCart` |
+  | CreditCard             | `CreditCard`   |
+  | Group                  | `UsersRound`   |
+  | Id                     | `IdCard`       |
+  | SmilieDissatisfied     | `Frown`        |
+  | SmilieNeutral          | `Meh`          |
+  | SmilieSatisfied        | `Smile`        |
+  | SmilieVeryDissatisfied | `Angry`        |
+  | SmilieVerySatisfied    | `Laugh`        |
+  | User                   | `UserRound`    |
+
+  ### Social
+
+  | Old       | New                    |
+  | --------- | ---------------------- |
+  | Google    | `Google` _(custom)_    |
+  | Instagram | `Instagram` _(custom)_ |
+  | Share     | `Share2`               |
+  | Twitter   | `Twitter` _(custom)_   |
+
+  `TwitterX` is also available for the post-rebrand X mark; `Twitter` _(custom)_ remains for the bird mark.
+
+- 496a9f2: feat(SelectList): standardized API, item layout, and visual distinction from ListBox (DST-1076)
+
+  `<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. This release contains breaking renames and a tightened type surface.
+
+  **Breaking changes**
+  - `SelectList.Item` → **`SelectList.Option`**. The option semantic matches `Select.Option` and the HTML `<option>` mental model. Update any `<SelectList.Item>` usage to `<SelectList.Option>`.
+  - `SelectList.Action` has been **removed**. Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` — the component positions, sizes, and styles the nested control automatically via `ButtonContext`. Limit: one action per option (multi-button groups will arrive with a future `ActionGroup`).
+  - Leading-image slot has been **removed**. Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+  - `selectionMode="none"` is no longer accepted. `SelectList` is a form field; the default is now `"single"`.
+  - `onChange` is strictly typed per `selectionMode`: `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. The shape matches `Select<T, M>`. Passing `setState` directly may require adapting the callback.
+
+  **Other changes**
+  - **Selection indicator** — single-select rows render a visible radio circle; multi-select renders a checkbox.
+  - **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
+  - **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
+  - **Own theme entry** — `SelectList` ships a dedicated theme component. The theme exposes first-class `label`, `description`, and `action` entries; slot styling no longer uses descendant selectors. Consumers with custom themes must add or update a `SelectList` entry.
+
+  **Documentation**
+
+  The SelectList docs page is rewritten around the new API. Adds an anatomy diagram, a decision table for choosing between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions (decision-help and configuration patterns), horizontal orientation, and empty state. Replaces selected prose with Do/Don't tiles. Tightens the accessibility section to what's specific to SelectList (keyboard model, label requirement, `textValue` for rich rows).
+
+  **Migration**
+
+  ```diff
+  - <SelectList selectionMode="none">
+  -   <SelectList.Item id="free">
+  -     <SelectList.Action>
+  -       <IconButton aria-label="Info"><Info /></IconButton>
+  -     </SelectList.Action>
+  -     Free
+  -   </SelectList.Item>
+  - </SelectList>
+  + <SelectList selectionMode="single">
+  +   <SelectList.Option id="free">
+  +     Free
+  +     <IconButton aria-label="Info"><Info /></IconButton>
+  +   </SelectList.Option>
+  + </SelectList>
+  ```
+
+- 63af0c1: docs(DST-1313): add settings form pattern and documentation:
+
+  Add settings form and event form pattern examples at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with Panel, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple Panel sections. Updates the forms pattern documentation with a Panels subsection and links to both demos.
+
+  [DST-1313](https://reservix.atlassian.net/browse/DST-1313)
+
+- 4b02dfe: feat([DST-1388]): split prop tables into main, aria and handler groups
+
+  The interactive Props table (`<AutoTypeTable>`) on each component page now shows the meaningful API props by default and tucks `aria-*` / `role` attributes and React DOM event handlers into separate collapsible sections (e.g. Button drops from 112 visible props to 39 main + 10 aria + 63 handlers). The static markdown pipeline that feeds the LLM/MCP `search_docs` index is intentionally untouched, so machine-readable docs continue to expose the full prop list.
+
+  [DST-1388](https://reservix.atlassian.net/browse/DST-1388)
+
+- 20bf9c1: docs([DST-1314]): add full data management pattern with filtering
+
+  Add a full-page data management pattern example at `/examples/filter` demonstrating venue browsing with multi-criteria filtering. The example includes a toolbar with search and filter controls, applied filter chips for active filter display, and a paginated data table all coordinated through URL state via `nuqs`.
+
+- Updated dependencies [727163c]
+- Updated dependencies [cc568e3]
+- Updated dependencies [566c468]
+- Updated dependencies [9f4dc97]
+- Updated dependencies [2014edf]
+- Updated dependencies [3c6a943]
+- Updated dependencies [f8fbef9]
+- Updated dependencies [4742e8e]
+- Updated dependencies [496a9f2]
+- Updated dependencies [a5678ed]
+- Updated dependencies [5f2e9a0]
+- Updated dependencies [496a9f2]
+- Updated dependencies [8b754f0]
+- Updated dependencies [5744bbf]
+- Updated dependencies [2d9d6fd]
+- Updated dependencies [2ff7bda]
+  - @marigold/components@18.0.0-beta.1
+  - @marigold/theme-rui@6.0.0-beta.1
+  - @marigold/system@18.0.0-beta.1
+  - @marigold/icons@2.0.0-beta.1
+
 ## 18.0.0-beta.0
 
 ### Major Changes
