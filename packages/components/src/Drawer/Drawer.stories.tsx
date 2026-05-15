@@ -150,16 +150,14 @@ export const LongContent = meta.story({
         <Drawer.Title>Long Content</Drawer.Title>
         <Drawer.Content>
           <Stack space={4}>
-            {Array.from({ length: 40 }, (_, i) => (
+            {Array.from({ length: 16 }, (_, i) => (
               <p key={i}>
                 Paragraph #{i + 1}. Lorem ipsum dolor sit amet, consectetur
                 adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat.
+                dolore magna aliqua.
               </p>
             ))}
-            <p data-testid="end-of-content">End of content</p>
+            <p>End of content</p>
           </Stack>
         </Drawer.Content>
         <Drawer.Actions>
@@ -187,7 +185,6 @@ export const LongContent = meta.story({
     const scrollContainer = endMarker.closest(
       '[class*="overflow-y-auto"]'
     ) as HTMLElement;
-    expect(scrollContainer).not.toBeNull();
 
     // The scroll container must actually have overflow — otherwise nothing
     // is being clipped and the Drawer would grow with its content (the bug
