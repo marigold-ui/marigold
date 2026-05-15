@@ -10,13 +10,13 @@ import {
 
 export default () => (
   <Card>
-    <Card.Preview>
+    <Card.Media>
       <img
         src="https://images.pexels.com/photos/8761744/pexels-photo-8761744.jpeg"
         alt="Annual Conference 2025"
         className="h-60 w-full"
       />
-    </Card.Preview>
+    </Card.Media>
     <Card.Header>
       <Stack space="tight">
         <Headline level={3}>Annual Conference 2025</Headline>

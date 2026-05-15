@@ -17,13 +17,13 @@ export default () => (
     <Tiles space="regular" tilesWidth="240px" stretch>
       {featured.map(venue => (
         <Card key={venue.id}>
-          <Card.Preview>
+          <Card.Media>
             <img
               src={venue.image}
               alt={venue.name}
               className="h-40 w-full object-cover"
             />
-          </Card.Preview>
+          </Card.Media>
           <Card.Header>
             <Stack space="tight">
               <Headline level={3}>{venue.name}</Headline>

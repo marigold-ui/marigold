@@ -4,7 +4,7 @@ import { CardBody } from './CardBody';
 import { CardProvider } from './CardContext';
 import { CardFooter } from './CardFooter';
 import { CardHeader } from './CardHeader';
-import { CardPreview } from './CardPreview';
+import { CardMedia } from './CardMedia';
 
 // Props
 // ---------------
@@ -55,4 +55,4 @@ export const Card = ({
 Card.Header = CardHeader;
 Card.Body = CardBody;
 Card.Footer = CardFooter;
-Card.Preview = CardPreview;
+Card.Media = CardMedia;

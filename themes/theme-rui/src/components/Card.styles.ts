@@ -23,7 +23,7 @@ export const Card: ThemeComponent<'Card'> = {
   footer: cva({
     base: 'flex items-center gap-2 px-4 pt-2 pb-4',
   }),
-  preview: cva({
+  media: cva({
     base: '',
   }),
 };

@@ -5,9 +5,9 @@ export default () => (
   <Tiles tilesWidth="200px" space={2}>
     {venues.slice(5).map(venue => (
       <Card key={crypto.randomUUID()}>
-        <Card.Preview>
+        <Card.Media>
           <img src={venue.image} alt={venue.name} width={200} height={200} />
-        </Card.Preview>
+        </Card.Media>
         <Card.Body>
           <Stack space={2} alignX="center">
             <Headline level={3}>{venue.name}</Headline>

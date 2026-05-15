@@ -176,7 +176,7 @@ export const CardAnatomy = () => (
           fontWeight="600"
           className="fill-fd-primary"
         >
-          Card.Preview
+          Card.Media
         </text>
         <text
           x="150"

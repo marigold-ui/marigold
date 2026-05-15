@@ -14,7 +14,7 @@ The `<Card>` component is a compound component made up of several sub-components
 
 <CardAnatomy />
 
-- **Card.Preview**: Optional full-bleed area at the top, typically used for images or media.
+- **Card.Media**: Optional full-bleed area at the top, typically used for images or media.
 - **Card.Header**: Area for the card title and supporting labels or badges.
 - **Card.Body**: Main content area for descriptive text or form elements.
 - **Card.Footer**: Bottom area for actions such as buttons or metadata.
@@ -35,11 +35,11 @@ The card component supports variants for general content grouping as well as acc
 
 ## Usage
 
-A card represents one item in a set. Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry links to its own detail view. Repetition is the core case if the element doesn't repeat, a card is probably the wrong tool.
+A card represents one item in a set. Reach for it when the same type of item repeats in a grid or list events, products, venues, team members and each entry links to its own detail view. Repetition is the core case if the element doesn't repeat, a card is probably the wrong tool. If the items need sorting, filtering, or bulk actions, [`<Table>`](../table) is a better fit. For a named, non-repeating page region like "Billing" or "Team members", use [`<Panel>`](../../layout/panel) instead.
 
 ### Card grids
 
-The canonical card layout is a grid of items, each with its own visual identity, that wraps responsively as the viewport changes. Combine card with [`<Tiles>`](../../layout/tiles) so the grid reflows automatically.
+The canonical card layout is a responsive grid of items, each with its own visual identity. Use [`<Tiles>`](../../layout/tiles) for a grid that reflows automatically, [`<Stack>`](../../layout/stack) for a vertical list, or [`<Inline>`](../../layout/inline) for a horizontal row.
 
 <ComponentDemo name="card-grid" />
 
@@ -47,7 +47,7 @@ The same shape works for any repeating content team directories with avatars, ar
 
 ### Media
 
-`Card.Preview` is optional. Whether to include an image depends on whether the visual carries information.
+`Card.Media` is optional. Whether to include an image depends on whether the visual carries information.
 
 Use an image preview when each item has its own visual identity an event poster, a venue photo, a product hero. The image is part of how users recognize and choose between cards in a grid.
 
@@ -56,8 +56,7 @@ Use an image preview when each item has its own visual identity an event poster,
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Put images in `Card.Preview` so they sit full-bleed at the top of the
-      card.
+      Put images in `Card.Media` so they sit full-bleed at the top of the card.
     </DoDescription>
   </Do>
   <Dont>
@@ -68,7 +67,7 @@ Use an image preview when each item has its own visual identity an event poster,
   </Dont>
 </GuidelineTiles>
 
-Drop `Card.Preview` when the content is text-driven a plan summary, a status block, or a quick stat with actions. A title and short body carry the meaning, and a generic stock image only adds noise without helping users decide.
+Drop `Card.Media` when the content is text-driven a plan summary, a status block, or a quick stat with actions. A title and short body carry the meaning, and a generic stock image only adds noise without helping users decide.
 
 <ComponentDemo name="card-minimal" />
 
@@ -111,9 +110,7 @@ Cards already sit on a raised surface. Nesting a card inside another card create
       <DontNestedMockup />
     </DontFigure>
     <DontDescription>
-      Don't nest a card inside another card, place it inside a
-      [`<Panel>`](../../layout/panel), or sit it on any other same-elevation
-      surface. The shadow has nothing to push against.
+      Don't nest a card inside another card or sit it on any other raised surface.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -126,9 +123,9 @@ Cards already sit on a raised surface. Nesting a card inside another card create
 
 <AutoTypeTable path="Card" name="CardProps" />
 
-### Card.Preview
+### Card.Media
 
-<AutoTypeTable path="Card/CardPreview" name="CardPreviewProps" />
+<AutoTypeTable path="Card/CardMedia" name="CardMediaProps" />
 
 ### Card.Header
 
