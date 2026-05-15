@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Form, TextField } from 'react-aria-components';
+import { Form } from 'react-aria-components/Form';
+import { TextField } from 'react-aria-components/TextField';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';

@@ -1,9 +1,6 @@
 import type { ReactNode, Ref } from 'react';
-import {
-  Heading,
-  HeadingContext,
-  useContextProps,
-} from 'react-aria-components';
+import { Heading, HeadingContext } from 'react-aria-components/Heading';
+import { useContextProps } from 'react-aria-components/slots';
 import type { AriaLabelingProps } from '@marigold/types';
 import type { SlotProps } from '../types';
 

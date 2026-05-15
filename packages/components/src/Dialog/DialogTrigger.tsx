@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { DialogTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { DialogTrigger } from 'react-aria-components/Dialog';
 import { PressResponder } from '@react-aria/interactions';
 import type { DialogContextProps } from './Context';
 import { DialogContext } from './Context';

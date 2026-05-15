@@ -1,11 +1,8 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  ListLayout,
-  ListBox as RACListBox,
-  Virtualizer,
-} from 'react-aria-components';
-import type { ListLayoutOptions } from 'react-aria-components';
+import { ListBox as RACListBox } from 'react-aria-components/ListBox';
+import { ListLayout, Virtualizer } from 'react-aria-components/Virtualizer';
+import type { ListLayoutOptions } from 'react-aria-components/Virtualizer';
 import { cn, useClassNames } from '@marigold/system';
 import { ListBoxContext } from './Context';
 import { ListBoxItem } from './ListBoxItem';

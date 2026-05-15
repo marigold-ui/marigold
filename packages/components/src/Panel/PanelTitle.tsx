@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Heading } from 'react-aria-components';
+import { Heading } from 'react-aria-components/Heading';
 import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 

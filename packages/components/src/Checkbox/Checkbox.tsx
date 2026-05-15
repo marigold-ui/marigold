@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import {
   CheckboxContext,
   Checkbox as RACCheckbox,
-} from 'react-aria-components';
+} from 'react-aria-components/Checkbox';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';

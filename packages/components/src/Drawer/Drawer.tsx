@@ -1,7 +1,10 @@
 import type { CSSProperties } from 'react';
 import { use, useRef } from 'react';
-import type { DialogProps } from 'react-aria-components';
-import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
+import type { DialogProps } from 'react-aria-components/Dialog';
+import {
+  Dialog,
+  OverlayTriggerStateContext,
+} from 'react-aria-components/Dialog';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';

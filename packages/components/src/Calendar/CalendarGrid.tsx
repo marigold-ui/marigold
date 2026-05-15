@@ -4,8 +4,8 @@ import {
   CalendarCell,
   CalendarGrid,
   CalendarGridBody,
-  RangeCalendarStateContext,
-} from 'react-aria-components';
+} from 'react-aria-components/Calendar';
+import { RangeCalendarStateContext } from 'react-aria-components/RangeCalendar';
 import { CalendarGridHeader } from './CalendarGridHeader';
 import { useCalendarContext } from './Context';
 

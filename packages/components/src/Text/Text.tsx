@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { JSX } from 'react';
 import type RAC from 'react-aria-components';
-import { Text } from 'react-aria-components';
+import { Text } from 'react-aria-components/Text';
 import {
   CursorProp,
   FontSizeProp,

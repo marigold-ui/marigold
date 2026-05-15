@@ -1,5 +1,5 @@
 import { use } from 'react';
-import { ListStateContext } from 'react-aria-components';
+import { ListStateContext } from 'react-aria-components/ListBox';
 
 export interface TagGroupHiddenInputProps {
   name: string;

@@ -1,5 +1,5 @@
 import type { Ref } from 'react';
-import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
+import { Menu, MenuItem, MenuTrigger } from 'react-aria-components/Menu';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';

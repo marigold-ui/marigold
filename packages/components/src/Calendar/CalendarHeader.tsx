@@ -1,4 +1,4 @@
-import { Heading } from 'react-aria-components';
+import { Heading } from 'react-aria-components/Heading';
 import { useDateFormatter } from '@react-aria/i18n';
 import { IconButton } from '../IconButton/IconButton';
 import { ChevronLeft } from '../icons/ChevronLeft';

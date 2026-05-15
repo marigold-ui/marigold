@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Link } from 'react-aria-components';
+import { Link } from 'react-aria-components/Link';
 import { useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'isDisabled' | 'slot';

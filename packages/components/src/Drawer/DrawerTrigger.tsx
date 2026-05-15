@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { DialogTrigger } from 'react-aria-components';
+import { DialogTrigger } from 'react-aria-components/Dialog';
 
 // Props
 // ---------------

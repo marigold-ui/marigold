@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Modal } from 'react-aria-components';
+import { Modal } from 'react-aria-components/Modal';
 import { useClassNames } from '@marigold/system';
 import { Underlay } from './Underlay';
 

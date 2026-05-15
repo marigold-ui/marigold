@@ -1,4 +1,4 @@
-import { ListBox, ListBoxItem } from 'react-aria-components';
+import { ListBox, ListBoxItem } from 'react-aria-components/ListBox';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { TextValue } from './TextValue';

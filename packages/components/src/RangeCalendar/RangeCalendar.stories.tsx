@@ -1,6 +1,7 @@
 import { CalendarDate, isWeekend } from '@internationalized/date';
 import { useState } from 'react';
-import { DateValue, RangeValue } from 'react-aria-components';
+import { DateValue } from 'react-aria-components/Calendar';
+import { RangeValue } from 'react-aria-components/DateRangePicker';
 import { expect, fn, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useLocale } from '@react-aria/i18n';

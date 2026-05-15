@@ -1,5 +1,5 @@
-import type { DisclosurePanelProps } from 'react-aria-components';
-import { DisclosurePanel } from 'react-aria-components';
+import type { DisclosurePanelProps } from 'react-aria-components/Disclosure';
+import { DisclosurePanel } from 'react-aria-components/Disclosure';
 import { useClassNames } from '@marigold/system';
 import { CollapsibleContext } from './Context';
 

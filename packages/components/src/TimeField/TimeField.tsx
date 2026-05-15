@@ -1,12 +1,12 @@
 import type { Ref } from 'react';
-import type { TimeValue } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Group } from 'react-aria-components/Group';
+import type { TimeValue } from 'react-aria-components/TimeField';
 import {
   DateInput,
   DateSegment,
-  Group,
   TimeField,
-} from 'react-aria-components';
+} from 'react-aria-components/TimeField';
 import { WidthProp, cn } from '@marigold/system';
 import { useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
