@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, waitFor } from 'storybook/test';
+import { expect, screen, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -171,17 +171,19 @@ export const LongContent = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async ({ canvas }) => {
+  play: async () => {
     // Sanity check: the small-screen viewport must actually apply, otherwise
     // this story is silently exercising the desktop NonModal path instead of
     // the mobile Modal/Dialog path that the fix targets.
     expect(window.innerWidth).toBeLessThan(640);
 
+    // The Drawer renders into a portal on `document.body`, so canvas-scoped
+    // queries don't see it. Use `screen` to query the whole document.
     await waitFor(() =>
-      expect(canvas.getByText('Long Content')).toBeInTheDocument()
+      expect(screen.getByText('Long Content')).toBeInTheDocument()
     );
 
-    const endMarker = canvas.getByText('End of content');
+    const endMarker = screen.getByText('End of content');
     const scrollContainer = endMarker.closest(
       '[class*="overflow-y-auto"]'
     ) as HTMLElement;
