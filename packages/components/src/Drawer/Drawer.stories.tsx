@@ -175,38 +175,42 @@ export const LongContent = meta.story({
     // the mobile Modal/Dialog path that the fix targets.
     expect(window.innerWidth).toBeLessThan(640);
 
+    // Arrange
     // The Drawer renders into a portal on `document.body`, so canvas-scoped
     // queries don't see it. Use `screen` to query the whole document.
     await waitFor(() =>
       expect(screen.getByText('Long Content')).toBeInTheDocument()
     );
-
     const endMarker = screen.getByText('End of content');
     const scrollContainer = endMarker.closest(
       '[class*="overflow-y-auto"]'
     ) as HTMLElement;
-
-    // The scroll container must actually have overflow — otherwise nothing
-    // is being clipped and the Drawer would grow with its content (the bug
-    // this story protects against).
-    expect(scrollContainer.scrollHeight).toBeGreaterThan(
-      scrollContainer.clientHeight
-    );
-
     const isWithin = (child: Element, parent: Element) => {
       const c = child.getBoundingClientRect();
       const p = parent.getBoundingClientRect();
       return c.top >= p.top && c.bottom <= p.bottom + 1;
     };
 
+    // Act
     // Reset to top so the assertion is independent of any initial focus
     // scroll that react-aria may have triggered on open.
     scrollContainer.scrollTop = 0;
+
+    // Assert
+    // The scroll container must overflow — otherwise nothing is being
+    // clipped and the Drawer would grow with its content (the bug this
+    // story protects against).
+    expect(scrollContainer.scrollHeight).toBeGreaterThan(
+      scrollContainer.clientHeight
+    );
     await waitFor(() => {
       expect(isWithin(endMarker, scrollContainer)).toBe(false);
     });
 
+    // Act
     scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+    // Assert
     await waitFor(() => {
       expect(isWithin(endMarker, scrollContainer)).toBe(true);
     });
