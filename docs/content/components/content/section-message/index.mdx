@@ -3,6 +3,8 @@ title: SectionMessage
 description: Display important information in a section of a screen.
 ---
 
+import { SectionMessageAnatomy } from './section-message-anatomy';
+
 The `<SectionMessage>` component is a block-level element designed to alert users about specific content in a designated section on the page. It is positioned close to the relevant content to clearly indicate its connection. Section messages provide contextual feedback within a section of the page and are persistent, non-modal elements.
 
 ## Anatomy
@@ -11,13 +13,13 @@ The section message consists of a container which includes an optional icon to s
 
 Optionally, you can add a button to dismiss the message.
 
-<ImageZoom
-  src="/sectionmessage/sectionmessage-anatomy.jpg"
-  alt="Anatomy of a SectionMessage"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<SectionMessageAnatomy />
+
+- **Container**: Wraps the message and applies the variant styling.
+- **Icon**: Variant icon that reinforces the severity of the message.
+- **Title**: Short headline that summarizes the message.
+- **Content**: Descriptive body text below the title.
+- **Close button**: Optional dismiss control when `closeButton` is set.
 
 ## Appearance
 
@@ -60,27 +62,11 @@ They should be positioned close to the relevant content, typically directly abov
 
 <GuidelineTiles>
   <Do>
-    <DoFigure>
-      <ImageZoom
-        width={700}
-        height={700}
-        src="/sectionmessage/sectionmessage-do-placement.png"
-        alt="Place section messages near the affected content."
-      />
-    </DoFigure>
     <DoDescription>
       Place section message near the affected content.
     </DoDescription>
   </Do>
   <Dont>
-    <DontFigure>
-      <ImageZoom
-        width={700}
-        height={700}
-        src="/sectionmessage/sectionmessage-dont-placement.png"
-        alt="Don't place section messages in unaffected sections."
-      />
-    </DontFigure>
     <DontDescription>
       Don't place section messages in unaffected sections.
     </DontDescription>
