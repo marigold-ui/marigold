@@ -77,21 +77,7 @@ Put actions in `Card.Footer` when users should be able to act on the item direct
 
 Use small buttons (`<Button size="small" />`). Cards sit in tight grid cells, and small buttons match the scale of the surrounding content. Reserve default-size buttons for page-level actions outside of cards.
 
-### When not to use a card
-
-When the content doesn't fit that shape, reach for one of these instead:
-
-- [`<Table>`](../table) for records that share the same shape and need sorting, scanning, or bulk actions.
-- [`<Panel>`](../../layout/panel) for a named, non-repeating page region like "Billing" or "Team members".
-- [`<Headline>`](../../content/headline) + [`<Text>`](../../content/text) for a short paragraph or single field that doesn't need framing.
-- [`<SectionMessage>`](../../content/section-message) for a status, callout, or feedback message.
-- [`<Stack>`](../../layout/stack) with [`<Divider>`](../../content/divider) for a long list of similar rows without media or actions.
-
-#### Simple content
-
-A card groups several pieces of related content. If you only have a single paragraph, a short message, or one field, the card adds visual weight without grouping anything. Use a [`<Headline>`](../../content/headline), [`<Text>`](../../content/text), or [`<SectionMessage>`](../../content/section-message) instead.
-
-#### Nested cards
+### Nested cards
 
 Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth, it's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](../../layout/stack), a [`<Divider>`](../../content/divider), or split the content into sibling sections.
 
