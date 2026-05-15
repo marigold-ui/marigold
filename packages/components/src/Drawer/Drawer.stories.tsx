@@ -138,6 +138,76 @@ export const WithForms = meta.story({
   ),
 });
 
+export const LongContent = meta.story({
+  parameters: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => (
+    <Drawer.Trigger defaultOpen>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Title>Long Content</Drawer.Title>
+        <Drawer.Content>
+          <Stack space={4}>
+            {Array.from({ length: 40 }, (_, i) => (
+              <p key={i}>
+                Paragraph #{i + 1}. Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat.
+              </p>
+            ))}
+            <p data-testid="end-of-content">End of content</p>
+          </Stack>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close</Button>
+          <Button slot="close" variant="primary">
+            Save
+          </Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+  play: async ({ canvas }) => {
+    await waitFor(() =>
+      expect(canvas.getByText('Long Content')).toBeInTheDocument()
+    );
+
+    const endMarker = canvas.getByText('End of content');
+    const scrollContainer = endMarker.closest(
+      '[class*="overflow-y-auto"]'
+    ) as HTMLElement;
+    expect(scrollContainer).not.toBeNull();
+
+    // The scroll container must actually have overflow — otherwise nothing
+    // is being clipped and the Drawer would grow with its content (the bug
+    // this story protects against).
+    expect(scrollContainer.scrollHeight).toBeGreaterThan(
+      scrollContainer.clientHeight
+    );
+
+    const isWithin = (child: Element, parent: Element) => {
+      const c = child.getBoundingClientRect();
+      const p = parent.getBoundingClientRect();
+      return c.top >= p.top && c.bottom <= p.bottom + 1;
+    };
+
+    // Reset to top so the assertion is independent of any initial focus
+    // scroll that react-aria may have triggered on open.
+    scrollContainer.scrollTop = 0;
+    await waitFor(() => {
+      expect(isWithin(endMarker, scrollContainer)).toBe(false);
+    });
+
+    scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    await waitFor(() => {
+      expect(isWithin(endMarker, scrollContainer)).toBe(true);
+    });
+  },
+});
+
 export const Controlled = meta.story({
   render: args => {
     const [open, setOpen] = useState(false);
