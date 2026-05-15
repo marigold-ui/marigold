@@ -70,7 +70,7 @@ const FilterEmptyState = () => {
   const { clearFilter } = useFilter();
 
   const clearAll = () => {
-    setSearch(null);
+    setSearch('');
     clearFilter();
   };
 
@@ -225,10 +225,10 @@ export const VenuesTable = () => {
   const summary =
     totalItems === 0 ? 'No venues' : `Showing ${from}–${to} of ${totalItems}`;
 
+  // The single live region lives on the VisuallyHidden status node below.
+  // The surrounding Panel (page.tsx) already names this as a "Venues"
+  // landmark, so the wrapper stays a plain div.
   return (
-    // The single live region lives on the VisuallyHidden status node below.
-    // The surrounding Panel (page.tsx) already names this as a "Venues"
-    // landmark, so this wrapper stays a plain div.
     <div ref={regionRef}>
       <VisuallyHidden role="status">{summary}</VisuallyHidden>
       <Stack space={4}>

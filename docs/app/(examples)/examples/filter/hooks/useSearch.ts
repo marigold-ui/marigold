@@ -8,9 +8,11 @@ export const useSearch = () => {
     parseAsString.withDefault('').withOptions({ history: 'push' })
   );
 
-  const setSearch = (next: string | null) => {
+  // Trim and treat empty as "no search" so the URL never carries q="" or
+  // whitespace-only values.
+  const setSearch = (next: string) => {
     setPage(null);
-    return _setSearch(next);
+    return _setSearch(next.trim() || null);
   };
 
   return [search, setSearch] as const;

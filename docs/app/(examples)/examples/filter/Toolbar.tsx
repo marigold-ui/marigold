@@ -104,8 +104,8 @@ export const Toolbar = () => {
           width={64}
           autoComplete="off"
           defaultValue={search}
-          onSubmit={value => setSearch(value || null)}
-          onClear={() => setSearch(null)}
+          onSubmit={setSearch}
+          onClear={() => setSearch('')}
         />
         <Drawer.Trigger>
           <Button>
