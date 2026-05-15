@@ -84,8 +84,6 @@ const getLog = (priority: 'polite' | 'assertive') =>
     `[data-live-announcer] [role="log"][aria-live="${priority}"]`
   );
 
-// Match either "Polite Announcement" (the prefix react-aria adds on first call)
-// or the plain text we passed.
 const logIncludes = (priority: 'polite' | 'assertive', text: string) =>
   Boolean(getLog(priority)?.textContent?.includes(text));
 

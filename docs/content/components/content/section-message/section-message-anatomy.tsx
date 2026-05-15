@@ -22,20 +22,6 @@ export const SectionMessageAnatomy = () => (
       r="14"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
-    <rect
-      x="194.5"
-      y="158"
-      width="3"
-      height="9"
-      rx="1.5"
-      className="fill-fd-muted-foreground transition-colors duration-300"
-    />
-    <circle
-      cx="196"
-      cy="172"
-      r="1.6"
-      className="fill-fd-muted-foreground transition-colors duration-300"
-    />
 
     {/* Title */}
     <rect

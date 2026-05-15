@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Button, SectionMessage, Stack, TextArea } from '@marigold/components';
 
 export default () => {
-  const [bio, setBio] = useState(
-    'We help local creators run unforgettable events.'
-  );
   const [attempt, setAttempt] = useState(0);
 
   return (
     <Stack space={4} alignX="left">
-      <TextArea label="Team bio" value={bio} onChange={setBio} />
+      <TextArea
+        label="Team bio"
+        defaultValue="We help local creators run unforgettable events."
+      />
       <Button variant="primary" onPress={() => setAttempt(n => n + 1)}>
         Save changes
       </Button>
