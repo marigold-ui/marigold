@@ -93,6 +93,19 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
   </Dont>
 </GuidelineTiles>
 
+### Landmarks
+
+The App Shell exposes the page structure to assistive technologies through ARIA landmarks. Screen reader users can jump between regions with `F6` / `Shift + F6` without tabbing through every interactive element.
+
+| Slot                                     | Landmark        |
+| ---------------------------------------- | --------------- |
+| `<AppLayout.Header>` / `<TopNavigation>` | `banner`        |
+| `<AppLayout.Sidebar>`                    | `complementary` |
+| `<Sidebar.Nav>`                          | `navigation`    |
+| `<AppLayout.Main>`                       | `main`          |
+
+When you compose multiple navigation regions inside the header (e.g. `<TopNavigation.Middle>` plus `<TopNavigation.End>`), give each a distinct `aria-label` so they can be told apart. Each [`<Panel>`](/components/layout/panel) inside `<AppLayout.Main>` adds its own `region` landmark, labelled by its title. For other custom regions (search shells, AI assistants, activity feeds), use the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook and the [Landmarks foundation](/foundations/accessibility#landmarks) for guidance.
+
 ### Responsive behavior
 
 `<AppLayout>` always renders the L-shape grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
