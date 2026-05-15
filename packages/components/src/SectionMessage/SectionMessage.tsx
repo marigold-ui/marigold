@@ -1,6 +1,7 @@
-import { type ReactNode, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { useButton } from '@react-aria/button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { announce } from '@react-aria/live-announcer';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { CircleAlert } from '../icons/CircleAlert';
@@ -42,6 +43,15 @@ export interface SectionMessageProps {
    * If the message should be closed/dismissed (controlled).
    */
   close?: boolean;
+  /**
+   * Announce the message to assistive technology when it mounts.
+   * Priority is `assertive` for `variant="error"` and `polite` for all other
+   * variants. Set this for messages that appear dynamically in response to a
+   * user action. To re-announce the same message, remount the component with
+   * a changing `key`.
+   * @default true for `variant="error"`, false otherwise.
+   */
+  announce?: boolean;
 }
 
 // Component
@@ -53,8 +63,10 @@ export const SectionMessage = ({
   closeButton,
   close,
   onCloseChange,
+  announce: announceProp,
   ...props
 }: SectionMessageProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
@@ -69,6 +81,15 @@ export const SectionMessage = ({
 
   const { buttonProps } = useButton(props, buttonRef);
 
+  // Announce on mount. Remount with a changing `key` to re-announce.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const shouldAnnounce = announceProp ?? variant === 'error';
+    if (!shouldAnnounce || !isCurrentlyVisible) return;
+    const text = containerRef.current?.textContent?.trim();
+    if (text) announce(text, variant === 'error' ? 'assertive' : 'polite');
+  }, []);
+
   const handleClose = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onCloseChange && close && onCloseChange(close);
@@ -82,8 +103,8 @@ export const SectionMessage = ({
   return (
     <SectionMessageContext value={{ classNames }}>
       <div
-        role={variant === 'error' ? 'alert' : undefined}
         {...props}
+        ref={containerRef}
         className={cn('grid auto-rows-min', classNames.container)}
       >
         <div className={cn('[grid-area:icon]', classNames.icon)}>

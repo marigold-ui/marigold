@@ -118,6 +118,47 @@ Actions, such as buttons or links, should be placed near the message content to 
   </Dont>
 </GuidelineTiles>
 
+### Dynamic messages
+
+A section message often appears in response to a user action, such as a saved setting, a submitted form, or a failed payment. Screen reader users won't notice the new content unless the message is also announced through an [ARIA live region](/foundations/accessibility#dynamic-content).
+
+Set the `announce` prop and `<SectionMessage>` will fire the announcement for you. You don't need to wrap the message in your own live region.
+
+For confirmations and informational updates (`info`, `success`, `warning`), use `announce` to opt in. Screen readers will announce the content politely, during the next break in speech, without interrupting the user.
+
+<ComponentDemo name="section-message-aria-live" />
+
+The `error` variant announces automatically. `<SectionMessage variant="error">` defaults to `announce={true}` with assertive priority, so urgent issues are read out the moment they appear without any extra setup.
+
+<ComponentDemo name="section-message-aria-live-error" />
+
+To re-announce the same message (for example, the user clicks "Retry" a second time), give the `<SectionMessage>` a changing `key`. The component remounts and the announcement fires again. Without it, screen readers only hear the announcement the first time.
+
+Reserve assertive announcements for messages that genuinely need to interrupt. Most updates should be polite.
+
+| Use case                                                             | Recommended setup                             |
+| -------------------------------------------------------------------- | --------------------------------------------- |
+| Confirmation (saved, sent, copied)                                   | `variant="success"` with `announce` (polite)  |
+| Informational update (loaded results, new items)                     | `variant="info"` with `announce` (polite)     |
+| Validation failure or blocking error                                 | `variant="error"` (assertive, built in)       |
+| Already visible on initial render (static banner, persistent notice) | No `announce` prop. Leave the message static. |
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `announce` for messages that appear in response to a user action, so
+      assistive technology users hear about the change.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't set `announce` on a message rendered on initial page load. It will
+      fire on hydration and interrupt the user during their first scan of the
+      page.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ## Props
 
 <StorybookHintMessage component={'SectionMessage'} />

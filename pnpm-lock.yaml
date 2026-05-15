@@ -443,6 +443,9 @@ importers:
       '@react-aria/landmark':
         specifier: ^3.1.0
         version: 3.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@react-aria/live-announcer':
+        specifier: ^3.5.0
+        version: 3.5.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@react-aria/overlays':
         specifier: ^3.32.0
         version: 3.32.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -2836,6 +2839,12 @@ packages:
 
   '@react-aria/landmark@3.1.0':
     resolution: {integrity: sha512-0218hm9M2IzMpWjW/Sq0+KVmYmH5H4jmfKraLBeeaKsgEHKr9V18EBFT+6DG5P77bB9gjab5AQvZQYwWmoLCeg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-aria/live-announcer@3.5.0':
+    resolution: {integrity: sha512-1b+Txq00WQ/PJPCsZT+CI5qP86DrfFGPuJL5ifKtdMVXrxNGJWrfu7jTj6q9AbAOOXLG11BJ6blILu7sZeRPxg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -9226,18 +9235,6 @@ packages:
       utf-8-validate:
         optional: true
 
-  ws@8.20.1:
-    resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
   wsl-utils@0.1.0:
     resolution: {integrity: sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==}
     engines: {node: '>=18'}
@@ -11966,6 +11963,13 @@ snapshots:
       react-aria: 3.48.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react-dom: 19.2.4(react@19.2.4)
 
+  '@react-aria/live-announcer@3.5.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      '@swc/helpers': 0.5.21
+      react: 19.2.4
+      react-aria: 3.48.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react-dom: 19.2.4(react@19.2.4)
+
   '@react-aria/overlays@3.32.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@swc/helpers': 0.5.19
@@ -13917,6 +13921,7 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       vite: 8.0.5(@types/node@25.2.3)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.7.1)
+    optional: true
 
   '@vitest/pretty-format@3.2.4':
     dependencies:
@@ -13953,7 +13958,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.1.0
-      vitest: 4.1.2(@opentelemetry/api@1.9.0)(@types/node@25.2.3)(@vitest/browser-playwright@4.1.2)(@vitest/ui@4.1.2)(jsdom@20.0.3)(vite@8.0.5(@types/node@25.2.3)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.7.1))
+      vitest: 4.1.2(@opentelemetry/api@1.9.0)(@types/node@24.10.13)(@vitest/browser-playwright@4.1.2)(@vitest/ui@4.1.2)(jsdom@20.0.3)(vite@8.0.5(@types/node@24.10.13)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.7.1))
 
   '@vitest/utils@3.2.4':
     dependencies:
@@ -16462,7 +16467,7 @@ snapshots:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
-      ws: 8.20.1
+      ws: 8.19.0
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -19316,6 +19321,7 @@ snapshots:
       jiti: 2.6.1
       tsx: 4.21.0
       yaml: 2.7.1
+    optional: true
 
   vitest@4.1.2(@opentelemetry/api@1.9.0)(@types/node@24.10.13)(@vitest/browser-playwright@4.1.2)(@vitest/ui@4.1.2)(jsdom@20.0.3)(vite@8.0.5(@types/node@24.10.13)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.7.1)):
     dependencies:
@@ -19378,6 +19384,7 @@ snapshots:
       jsdom: 20.0.3
     transitivePeerDependencies:
       - msw
+    optional: true
 
   w3c-xmlserializer@4.0.0:
     dependencies:
@@ -19491,9 +19498,6 @@ snapshots:
       signal-exit: 3.0.7
 
   ws@8.19.0: {}
-
-  ws@8.20.1:
-    optional: true
 
   wsl-utils@0.1.0:
     dependencies:
