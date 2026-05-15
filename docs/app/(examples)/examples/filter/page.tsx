@@ -3,6 +3,7 @@
 import { Headline, Inset, Panel, Stack, Text } from '@marigold/components';
 import { AppliedFilter } from './AppliedFilter';
 import { Toolbar } from './Toolbar';
+import { VenuesPagination } from './VenuesPagination';
 import { VenuesTable } from './VenuesTable';
 
 const FilterPage = () => (
@@ -21,6 +22,9 @@ const FilterPage = () => (
         </Panel.Content>
         <Panel.Content bleed>
           <VenuesTable />
+        </Panel.Content>
+        <Panel.Content>
+          <VenuesPagination />
         </Panel.Content>
       </Panel>
     </Stack>

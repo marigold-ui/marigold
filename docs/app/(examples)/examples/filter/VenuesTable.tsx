@@ -4,18 +4,14 @@ import {
   amenitiesOptions,
   parkingOptions,
   venueTypes,
-  venues,
 } from '@/lib/data/venues';
 import type { Venue } from '@/lib/data/venues';
-import { useRef } from 'react';
 import {
   ActionBar,
   Badge,
   Button,
   Center,
   Inline,
-  Pagination,
-  Select,
   Stack,
   Table,
   Text,
@@ -23,51 +19,15 @@ import {
 } from '@marigold/components';
 import { Download, Star } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
+import { VENUES_REGION_ID } from './VenuesPagination';
 import { exportVenuesToCsv } from './csv';
-import { MAX_PRICE, type VenueFilter, useFilter } from './hooks/useFilter';
-import { usePagination } from './hooks/usePagination';
+import { useFilter } from './hooks/useFilter';
 import { useSearch } from './hooks/useSearch';
 import { type VenueSortDescriptor, useSort } from './hooks/useSort';
-
-const PAGE_SIZE_OPTIONS = [5, 10, 25] as const;
+import { useVenues } from './hooks/useVenues';
 
 // Helpers
 // ---------------
-const matchesSearch = (venue: Venue, search: string) =>
-  venue.name.toLowerCase().includes(search.toLowerCase().trim());
-
-const filterVenues = (list: readonly Venue[], filter: VenueFilter) =>
-  list.filter(venue => {
-    // Each line short-circuits on the field's "no filter" sentinel.
-    if (filter.capacity > 0 && venue.capacity < filter.capacity) return false;
-    if (filter.price < MAX_PRICE && venue.price.to > filter.price) return false;
-    if (filter.rating > 0 && venue.rating < filter.rating) return false;
-    if (
-      filter.traits.length > 0 &&
-      !venue.traits.some(vt => filter.traits.includes(vt))
-    ) {
-      return false;
-    }
-    return true;
-  });
-
-// `sortVenues` copies its input so callers can pass readonly arrays safely;
-// don't spread again at the call site.
-const sortVenues = (list: readonly Venue[], sort: VenueSortDescriptor) => {
-  const dir = sort.direction === 'ascending' ? 1 : -1;
-  return [...list].sort((a, b) => {
-    if (sort.column === 'price') return dir * (a.price.to - b.price.to);
-    if (sort.column === 'capacity') return dir * (a.capacity - b.capacity);
-    return dir * a.name.localeCompare(b.name);
-  });
-};
-
-const getFromTo = (page: number, pageSize: number, total: number) => {
-  const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
-  const to = Math.min(page * pageSize, total);
-  return { from, to };
-};
-
 const FilterEmptyState = () => {
   const [, setSearch] = useSearch();
   const { clearFilter } = useFilter();
@@ -158,173 +118,78 @@ const VenueRow = ({ venue }: { venue: Venue }) => (
   </Table.Row>
 );
 
-interface VenuesPaginationFooterProps {
-  page: number;
-  pageSize: number;
-  totalItems: number;
-  totalPages: number;
-  summary: string;
-  onPageChange: (next: number) => void;
-  onPageSizeChange: (next: number) => void;
-}
-
-const VenuesPaginationFooter = ({
-  page,
-  pageSize,
-  totalItems,
-  totalPages,
-  summary,
-  onPageChange,
-  onPageSizeChange,
-}: VenuesPaginationFooterProps) => {
-  if (totalItems === 0) return null;
-  return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
-      <Text variant="muted" fontSize="sm">
-        {summary}
-      </Text>
-      <Pagination
-        key={totalPages}
-        page={page}
-        totalItems={totalItems}
-        pageSize={pageSize}
-        onChange={onPageChange}
-      />
-      <Inline space={2} alignY="center" alignX="right">
-        <Text id="page-size" fontSize="sm">
-          Results per page
-        </Text>
-        <Select
-          aria-labelledby="page-size"
-          width={20}
-          selectedKey={pageSize}
-          onChange={key => onPageSizeChange(Number(key))}
-        >
-          {PAGE_SIZE_OPTIONS.map(size => (
-            <Select.Option key={size} id={size}>
-              {size}
-            </Select.Option>
-          ))}
-        </Select>
-      </Inline>
-    </div>
-  );
-};
-
 // Component
 // ---------------
+// The Panel (page.tsx) is the "Venues" landmark; this wrapper carries the
+// region id so VenuesPagination can scroll back to it on page change, plus
+// the single live region (role="status" implies aria-live="polite").
 export const VenuesTable = () => {
-  const [search] = useSearch();
-  const { filter, hasFilter } = useFilter();
+  const { paged, display, totalItems, isFiltered } = useVenues();
   const [sort, setSort] = useSort();
-  const [{ page, pageSize }, setPagination] = usePagination();
-  const regionRef = useRef<HTMLDivElement>(null);
 
-  // Dataset is static and small; memoising the three filter/sort passes
-  // costs more than re-running them every render.
-  const searched = search
-    ? venues.filter(v => matchesSearch(v, search))
-    : venues;
-  const filtered = filterVenues(searched, filter);
-  const display = sortVenues(filtered, sort);
-
-  const totalItems = display.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-  const safePage = Math.min(page, totalPages);
-  const paged = display.slice((safePage - 1) * pageSize, safePage * pageSize);
-
-  const onPageChange = (next: number) => {
-    setPagination({ page: next });
-    const reducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-    regionRef.current?.scrollIntoView({
-      behavior: reducedMotion ? 'auto' : 'smooth',
-      block: 'start',
-    });
-  };
-
-  const onPageSizeChange = (next: number) =>
-    setPagination({ pageSize: next, page: null });
-
-  const isFiltered = search.length > 0 || hasFilter();
-  const { from, to } = getFromTo(safePage, pageSize, totalItems);
   const summary =
-    totalItems === 0 ? 'No venues' : `Showing ${from}–${to} of ${totalItems}`;
+    totalItems === 0
+      ? 'No venues'
+      : `${totalItems} venue${totalItems === 1 ? '' : 's'}`;
 
-  // The single live region lives on the VisuallyHidden status node below.
-  // The surrounding Panel (page.tsx) already names this as a "Venues"
-  // landmark, so the wrapper stays a plain div.
   return (
-    <div ref={regionRef}>
+    <div id={VENUES_REGION_ID} className="scroll-mt-4">
       <VisuallyHidden role="status">{summary}</VisuallyHidden>
-      <Stack space={4}>
-        <Table
-          aria-label="Venue list"
-          selectionMode="multiple"
-          sortDescriptor={sort}
-          onSortChange={d =>
-            setSort({
-              // RAC types `column` as `Key` (string | number); the cast is
-              // safe because the value can only be one of our Table.Column ids.
-              column: d.column as VenueSortDescriptor['column'],
-              direction: d.direction,
-            })
+      <Table
+        aria-label="Venue list"
+        selectionMode="multiple"
+        sortDescriptor={sort}
+        onSortChange={d =>
+          setSort({
+            // RAC types `column` as `Key` (string | number); the cast is
+            // safe because the value can only be one of our Table.Column ids.
+            column: d.column as VenueSortDescriptor['column'],
+            direction: d.direction,
+          })
+        }
+        actionBar={selectedKeys => {
+          const selected =
+            selectedKeys === 'all'
+              ? display
+              : display.filter(v => selectedKeys.has(v.id));
+          return (
+            <ActionBar>
+              <ActionBar.Button onPress={() => exportVenuesToCsv(selected)}>
+                <Download /> Export CSV
+              </ActionBar.Button>
+            </ActionBar>
+          );
+        }}
+      >
+        <Table.Header>
+          <Table.Column id="name" rowHeader allowsSorting>
+            Name
+          </Table.Column>
+          <Table.Column id="type">Type</Table.Column>
+          <Table.Column id="address">Address</Table.Column>
+          <Table.Column id="capacity" alignX="right" allowsSorting>
+            Capacity
+          </Table.Column>
+          <Table.Column id="price" alignX="right" allowsSorting>
+            Max. Price
+          </Table.Column>
+          <Table.Column id="traits">Traits</Table.Column>
+          <Table.Column id="amenities">Amenities</Table.Column>
+          <Table.Column id="parking">Parking</Table.Column>
+          <Table.Column id="rating" alignX="right">
+            Rating
+          </Table.Column>
+        </Table.Header>
+        <Table.Body
+          emptyState={() =>
+            isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
           }
-          actionBar={selectedKeys => {
-            const selected =
-              selectedKeys === 'all'
-                ? display
-                : display.filter(v => selectedKeys.has(v.id));
-            return (
-              <ActionBar>
-                <ActionBar.Button onPress={() => exportVenuesToCsv(selected)}>
-                  <Download /> Export CSV
-                </ActionBar.Button>
-              </ActionBar>
-            );
-          }}
         >
-          <Table.Header>
-            <Table.Column id="name" rowHeader allowsSorting>
-              Name
-            </Table.Column>
-            <Table.Column id="type">Type</Table.Column>
-            <Table.Column id="address">Address</Table.Column>
-            <Table.Column id="capacity" alignX="right" allowsSorting>
-              Capacity
-            </Table.Column>
-            <Table.Column id="price" alignX="right" allowsSorting>
-              Max. Price
-            </Table.Column>
-            <Table.Column id="traits">Traits</Table.Column>
-            <Table.Column id="amenities">Amenities</Table.Column>
-            <Table.Column id="parking">Parking</Table.Column>
-            <Table.Column id="rating" alignX="right">
-              Rating
-            </Table.Column>
-          </Table.Header>
-          <Table.Body
-            emptyState={() =>
-              isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
-            }
-          >
-            {paged.map(venue => (
-              <VenueRow key={venue.id} venue={venue} />
-            ))}
-          </Table.Body>
-        </Table>
-
-        <VenuesPaginationFooter
-          page={safePage}
-          pageSize={pageSize}
-          totalItems={totalItems}
-          totalPages={totalPages}
-          summary={summary}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-        />
-      </Stack>
+          {paged.map(venue => (
+            <VenueRow key={venue.id} venue={venue} />
+          ))}
+        </Table.Body>
+      </Table>
     </div>
   );
 };
