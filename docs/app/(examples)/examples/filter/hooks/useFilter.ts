@@ -61,7 +61,7 @@ const toArray = (value: string | string[] | undefined): string[] => {
 // Hook
 // ---------------
 export const useFilter = () => {
-  const [, setPage] = usePagination();
+  const [, setPagination] = usePagination();
   const [filter, _setFilter] = useQueryStates(
     {
       capacity: parseAsInteger.withDefault(defaultFilter.capacity),
@@ -73,7 +73,7 @@ export const useFilter = () => {
   );
 
   const setFilter = (next: Partial<VenueFilter>) => {
-    setPage(null);
+    setPagination({ page: null });
     return _setFilter(next);
   };
 

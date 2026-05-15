@@ -2,7 +2,7 @@ import { parseAsString, useQueryState } from 'nuqs';
 import { usePagination } from './usePagination';
 
 export const useSearch = () => {
-  const [, setPage] = usePagination();
+  const [, setPagination] = usePagination();
   const [search, _setSearch] = useQueryState(
     'q',
     parseAsString.withDefault('').withOptions({ history: 'push' })
@@ -11,7 +11,7 @@ export const useSearch = () => {
   // Trim and treat empty as "no search" so the URL never carries q="" or
   // whitespace-only values.
   const setSearch = (next: string) => {
-    setPage(null);
+    setPagination({ page: null });
     return _setSearch(next.trim() || null);
   };
 

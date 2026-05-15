@@ -15,6 +15,7 @@ import {
   Center,
   Inline,
   Pagination,
+  Select,
   Stack,
   Table,
   Text,
@@ -24,9 +25,11 @@ import { Download, Star } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { exportVenuesToCsv } from './csv';
 import { MAX_PRICE, type VenueFilter, useFilter } from './hooks/useFilter';
-import { PAGE_SIZE, usePagination } from './hooks/usePagination';
+import { usePagination } from './hooks/usePagination';
 import { useSearch } from './hooks/useSearch';
 import { type VenueSortDescriptor, useSort } from './hooks/useSort';
+
+const PAGE_SIZE_OPTIONS = [5, 10, 25] as const;
 
 // Helpers
 // ---------------
@@ -59,9 +62,9 @@ const sortVenues = (list: readonly Venue[], sort: VenueSortDescriptor) => {
   });
 };
 
-const getFromTo = (page: number, total: number) => {
-  const from = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
-  const to = Math.min(page * PAGE_SIZE, total);
+const getFromTo = (page: number, pageSize: number, total: number) => {
+  const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
+  const to = Math.min(page * pageSize, total);
   return { from, to };
 };
 
@@ -157,22 +160,26 @@ const VenueRow = ({ venue }: { venue: Venue }) => (
 
 interface VenuesPaginationFooterProps {
   page: number;
+  pageSize: number;
   totalItems: number;
   totalPages: number;
   summary: string;
-  onChange: (next: number) => void;
+  onPageChange: (next: number) => void;
+  onPageSizeChange: (next: number) => void;
 }
 
 const VenuesPaginationFooter = ({
   page,
+  pageSize,
   totalItems,
   totalPages,
   summary,
-  onChange,
+  onPageChange,
+  onPageSizeChange,
 }: VenuesPaginationFooterProps) => {
-  if (totalPages <= 1) return null;
+  if (totalItems === 0) return null;
   return (
-    <Inline alignX="between" alignY="center">
+    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
       <Text variant="muted" fontSize="sm">
         {summary}
       </Text>
@@ -180,10 +187,27 @@ const VenuesPaginationFooter = ({
         key={totalPages}
         page={page}
         totalItems={totalItems}
-        pageSize={PAGE_SIZE}
-        onChange={onChange}
+        pageSize={pageSize}
+        onChange={onPageChange}
       />
-    </Inline>
+      <Inline space={2} alignY="center" alignX="right">
+        <Text id="page-size" fontSize="sm">
+          Results per page
+        </Text>
+        <Select
+          aria-labelledby="page-size"
+          width={20}
+          selectedKey={pageSize}
+          onChange={key => onPageSizeChange(Number(key))}
+        >
+          {PAGE_SIZE_OPTIONS.map(size => (
+            <Select.Option key={size} id={size}>
+              {size}
+            </Select.Option>
+          ))}
+        </Select>
+      </Inline>
+    </div>
   );
 };
 
@@ -193,7 +217,7 @@ export const VenuesTable = () => {
   const [search] = useSearch();
   const { filter, hasFilter } = useFilter();
   const [sort, setSort] = useSort();
-  const [page, setPage] = usePagination();
+  const [{ page, pageSize }, setPagination] = usePagination();
   const regionRef = useRef<HTMLDivElement>(null);
 
   // Dataset is static and small; memoising the three filter/sort passes
@@ -205,12 +229,12 @@ export const VenuesTable = () => {
   const display = sortVenues(filtered, sort);
 
   const totalItems = display.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const safePage = Math.min(page, totalPages);
-  const paged = display.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  const paged = display.slice((safePage - 1) * pageSize, safePage * pageSize);
 
   const onPageChange = (next: number) => {
-    setPage(next);
+    setPagination({ page: next });
     const reducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
@@ -220,8 +244,11 @@ export const VenuesTable = () => {
     });
   };
 
+  const onPageSizeChange = (next: number) =>
+    setPagination({ pageSize: next, page: null });
+
   const isFiltered = search.length > 0 || hasFilter();
-  const { from, to } = getFromTo(safePage, totalItems);
+  const { from, to } = getFromTo(safePage, pageSize, totalItems);
   const summary =
     totalItems === 0 ? 'No venues' : `Showing ${from}–${to} of ${totalItems}`;
 
@@ -290,10 +317,12 @@ export const VenuesTable = () => {
 
         <VenuesPaginationFooter
           page={safePage}
+          pageSize={pageSize}
           totalItems={totalItems}
           totalPages={totalPages}
           summary={summary}
-          onChange={onPageChange}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
         />
       </Stack>
     </div>

@@ -1,11 +1,12 @@
-import { parseAsInteger, useQueryState } from 'nuqs';
+import { parseAsInteger, useQueryStates } from 'nuqs';
 
-// Small page size keeps pagination engaged on the static 10-row demo dataset.
-// Real apps typically use 25 or 50.
-export const PAGE_SIZE = 5;
-
+// Small default page size keeps pagination engaged on the static 10-row demo
+// dataset. Real apps typically default to 25 or 50.
 export const usePagination = () =>
-  useQueryState(
-    'page',
-    parseAsInteger.withDefault(1).withOptions({ history: 'push' })
+  useQueryStates(
+    {
+      page: parseAsInteger.withDefault(1),
+      pageSize: parseAsInteger.withDefault(5),
+    },
+    { history: 'push' }
   );
