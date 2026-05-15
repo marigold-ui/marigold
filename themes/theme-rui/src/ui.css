@@ -48,7 +48,7 @@
  * sits on the page background and needs a clear visual boundary.
  */
 @utility ui-surface {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
+  @apply rounded-surface relative transition-[border,box-shadow];
 
   /* prettier-ignore */
   background:
@@ -73,7 +73,7 @@
  * or anything that uses the primary color to signal prominence.
  */
 @utility ui-surface-contrast {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
+  @apply rounded-surface relative transition-[border,box-shadow];
   @apply text-primary-foreground;
 
   @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-primary)_calc(l+0.4)_c_h))];
