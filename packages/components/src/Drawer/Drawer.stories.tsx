@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, screen, waitFor } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -144,7 +144,7 @@ export const LongContent = meta.story({
     viewport: { value: 'smallScreen' },
   },
   render: args => (
-    <Drawer.Trigger defaultOpen>
+    <Drawer.Trigger>
       <Button>Open Drawer</Button>
       <Drawer {...args}>
         <Drawer.Title>Long Content</Drawer.Title>
@@ -157,7 +157,7 @@ export const LongContent = meta.story({
                 dolore magna aliqua.
               </p>
             ))}
-            <p>End of content</p>
+            <p data-testid="end-of-content">End of content</p>
           </Stack>
         </Drawer.Content>
         <Drawer.Actions>
@@ -169,21 +169,24 @@ export const LongContent = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async () => {
+  play: async ({ canvas }) => {
     // Sanity check: the small-screen viewport must actually apply, otherwise
     // this story is silently exercising the desktop NonModal path instead of
     // the mobile Modal/Dialog path that the fix targets.
     expect(window.innerWidth).toBeLessThan(640);
 
     // Arrange
-    // The Drawer renders into a portal on `document.body`, so canvas-scoped
-    // queries don't see it. Use `screen` to query the whole document.
-    await waitFor(() =>
-      expect(screen.getByText('Long Content')).toBeInTheDocument()
-    );
-    const endMarker = screen.getByText('End of content');
-    const scrollContainer = endMarker.closest(
+    await userEvent.click(canvas.getByText('Open Drawer'));
+    await waitFor(() => {
+      const dialog = document.querySelector('[role="dialog"]');
+      expect(dialog).toBeVisible();
+    });
+    const dialog = document.querySelector('[role="dialog"]')!;
+    const scrollContainer = dialog.querySelector(
       '[class*="overflow-y-auto"]'
+    ) as HTMLElement;
+    const endMarker = dialog.querySelector(
+      '[data-testid="end-of-content"]'
     ) as HTMLElement;
     const isWithin = (child: Element, parent: Element) => {
       const c = child.getBoundingClientRect();
