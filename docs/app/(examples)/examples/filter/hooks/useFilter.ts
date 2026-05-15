@@ -13,12 +13,9 @@ import { usePagination } from './usePagination';
 export const MAX_CAPACITY = 50_000;
 export const MAX_PRICE = 5_000;
 
-// Defaults
-// ---------------
 // Concrete values double as "no filter" sentinels: 0 for capacity/rating,
-// MAX_PRICE for price, [] for traits. The form's `defaultValue` reads from
-// these so the uncontrolled form round-trips back to a cleared filter, and
-// removeFilter just resets keys to their default.
+// MAX_PRICE for price, [] for traits. The uncontrolled form's `defaultValue`
+// reads from these, and removeFilter just resets keys back to them.
 export const defaultFilter = {
   capacity: 0,
   price: MAX_PRICE,
@@ -26,8 +23,6 @@ export const defaultFilter = {
   rating: 0,
 };
 
-// Types
-// ---------------
 export type FilterKeys = keyof typeof defaultFilter;
 export type VenueFilter = typeof defaultFilter;
 
@@ -39,11 +34,9 @@ export type FilterFormData = {
   rating?: string;
 };
 
-// Helpers
-// ---------------
 const filterKeys = Object.keys(defaultFilter) as FilterKeys[];
 
-// Stringify comparison works for primitives and joined arrays alike.
+// Stringify comparison handles primitives and arrays alike.
 const isActive = (filter: VenueFilter, key: FilterKeys) =>
   `${filter[key]}` !== `${defaultFilter[key]}`;
 
@@ -58,8 +51,6 @@ const toArray = (value: string | string[] | undefined): string[] => {
   return value ? [value] : [];
 };
 
-// Hook
-// ---------------
 export const useFilter = () => {
   const [, setPagination] = usePagination();
   const [filter, _setFilter] = useQueryStates(

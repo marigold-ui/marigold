@@ -1,5 +1,3 @@
-'use client';
-
 import { Headline, Inset, Panel, Stack, Text } from '@marigold/components';
 import { AppliedFilter } from './AppliedFilter';
 import { Toolbar } from './Toolbar';

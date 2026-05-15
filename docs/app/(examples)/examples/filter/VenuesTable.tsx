@@ -19,15 +19,16 @@ import {
 } from '@marigold/components';
 import { Download, Star } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
-import { VENUES_REGION_ID } from './VenuesPagination';
 import { exportVenuesToCsv } from './csv';
 import { useFilter } from './hooks/useFilter';
 import { useSearch } from './hooks/useSearch';
 import { type VenueSortDescriptor, useSort } from './hooks/useSort';
 import { useVenues } from './hooks/useVenues';
 
-// Helpers
-// ---------------
+// Anchor that VenuesPagination scrolls back to so users land on the first
+// row of the new page.
+export const VENUES_REGION_ID = 'venues-region';
+
 const FilterEmptyState = () => {
   const [, setSearch] = useSearch();
   const { clearFilter } = useFilter();
@@ -118,8 +119,6 @@ const VenueRow = ({ venue }: { venue: Venue }) => (
   </Table.Row>
 );
 
-// Component
-// ---------------
 // The Panel (page.tsx) is the "Venues" landmark; this wrapper carries the
 // region id so VenuesPagination can scroll back to it on page change, plus
 // the single live region (role="status" implies aria-live="polite").
@@ -127,10 +126,7 @@ export const VenuesTable = () => {
   const { paged, display, totalItems, isFiltered } = useVenues();
   const [sort, setSort] = useSort();
 
-  const summary =
-    totalItems === 0
-      ? 'No venues'
-      : `${totalItems} venue${totalItems === 1 ? '' : 's'}`;
+  const summary = `${totalItems} venue${totalItems === 1 ? '' : 's'}`;
 
   return (
     <div id={VENUES_REGION_ID} className="scroll-mt-4">

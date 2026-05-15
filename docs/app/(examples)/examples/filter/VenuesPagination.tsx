@@ -1,20 +1,11 @@
 'use client';
 
 import { Inline, Pagination, Select, Text } from '@marigold/components';
+import { VENUES_REGION_ID } from './VenuesTable';
 import { usePagination } from './hooks/usePagination';
 import { useVenues } from './hooks/useVenues';
 
 const PAGE_SIZE_OPTIONS = [5, 10, 25] as const;
-
-// Anchor that onPageChange scrolls back to so users land on the first row
-// of the new page. VenuesTable sets the matching id on its wrapper.
-export const VENUES_REGION_ID = 'venues-region';
-
-const getFromTo = (page: number, pageSize: number, total: number) => {
-  const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
-  const to = Math.min(page * pageSize, total);
-  return { from, to };
-};
 
 export const VenuesPagination = () => {
   const { safePage, pageSize, totalItems, totalPages } = useVenues();
@@ -33,10 +24,8 @@ export const VenuesPagination = () => {
     });
   };
 
-  const onPageSizeChange = (next: number) =>
-    setPagination({ pageSize: next, page: null });
-
-  const { from, to } = getFromTo(safePage, pageSize, totalItems);
+  const from = (safePage - 1) * pageSize + 1;
+  const to = Math.min(safePage * pageSize, totalItems);
   const summary = `Showing ${from}–${to} of ${totalItems}`;
 
   return (
@@ -59,7 +48,7 @@ export const VenuesPagination = () => {
           aria-labelledby="page-size"
           width={20}
           selectedKey={pageSize}
-          onChange={key => onPageSizeChange(Number(key))}
+          onChange={key => setPagination({ pageSize: Number(key), page: null })}
         >
           {PAGE_SIZE_OPTIONS.map(size => (
             <Select.Option key={size} id={size}>

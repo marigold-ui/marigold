@@ -25,13 +25,7 @@ import {
 } from './hooks/useFilter';
 import { useSearch } from './hooks/useSearch';
 
-// Helpers
-// ---------------
-interface FilterFormProps {
-  filter: VenueFilter;
-}
-
-const FilterForm = ({ filter }: FilterFormProps) => (
+const FilterForm = ({ filter }: { filter: VenueFilter }) => (
   <Stack space={12}>
     <NumberField
       label="Min. Capacity"
@@ -84,8 +78,6 @@ const FilterForm = ({ filter }: FilterFormProps) => (
   </Stack>
 );
 
-// Component
-// ---------------
 export const Toolbar = () => {
   const [search, setSearch] = useSearch();
   const { filter, setFilterFromForm } = useFilter();

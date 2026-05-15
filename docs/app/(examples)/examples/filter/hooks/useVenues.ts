@@ -5,8 +5,6 @@ import { usePagination } from './usePagination';
 import { useSearch } from './useSearch';
 import { type VenueSortDescriptor, useSort } from './useSort';
 
-// Helpers
-// ---------------
 const matchesSearch = (venue: Venue, search: string) =>
   venue.name.toLowerCase().includes(search.toLowerCase().trim());
 
@@ -36,8 +34,6 @@ const sortVenues = (list: readonly Venue[], sort: VenueSortDescriptor) => {
   });
 };
 
-// Hook
-// ---------------
 // Reads URL state and produces the search/filter/sort/paginate pipeline.
 // Safe to call from multiple components — nuqs deduplicates URL subscriptions,
 // and the static dataset makes recomputation negligible.

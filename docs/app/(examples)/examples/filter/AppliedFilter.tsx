@@ -9,10 +9,8 @@ import {
   useFilter,
 } from './hooks/useFilter';
 
-// Helpers
-// ---------------
-// `getLabel` is called only for keys returned by activeFilterKeys(), so the
-// value is guaranteed not to match its default sentinel.
+// Called only for keys returned by activeFilterKeys(), so the value is
+// guaranteed not to match its default sentinel.
 const getLabel = (filter: VenueFilter, key: FilterKeys): ReactNode => {
   switch (key) {
     case 'capacity':
@@ -47,8 +45,6 @@ const getLabel = (filter: VenueFilter, key: FilterKeys): ReactNode => {
   }
 };
 
-// Component
-// ---------------
 export const AppliedFilter = () => {
   const { filter, removeFilter, activeFilterKeys } = useFilter();
 
