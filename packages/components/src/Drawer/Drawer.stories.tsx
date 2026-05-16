@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -169,30 +169,30 @@ export const LongContent = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvas, userEvent }) => {
     // Sanity check: the small-screen viewport must actually apply, otherwise
     // this story is silently exercising the desktop NonModal path instead of
     // the mobile Modal/Dialog path that the fix targets.
     expect(window.innerWidth).toBeLessThan(640);
 
     // Arrange
-    await userEvent.click(canvas.getByText('Open Drawer'));
-    await waitFor(() => {
-      const dialog = document.querySelector('[role="dialog"]');
-      expect(dialog).toBeVisible();
-    });
-    const dialog = document.querySelector('[role="dialog"]')!;
-    const scrollContainer = dialog.querySelector(
+    const trigger = canvas.getByRole('button', { name: 'Open Drawer' });
+    await userEvent.click(trigger);
+    const endMarker = await canvas.findByTestId('end-of-content');
+    const scrollContainer = endMarker.closest(
       '[class*="overflow-y-auto"]'
-    ) as HTMLElement;
-    const endMarker = dialog.querySelector(
-      '[data-testid="end-of-content"]'
     ) as HTMLElement;
     const isWithin = (child: Element, parent: Element) => {
       const c = child.getBoundingClientRect();
       const p = parent.getBoundingClientRect();
       return c.top >= p.top && c.bottom <= p.bottom + 1;
     };
+
+    // The Drawer renders the mobile Modal/Dialog with role="dialog" and the
+    // desktop NonModal with role="complementary". Assert the former so a
+    // useSmallScreen mishap surfaces as a clear failure instead of a passing
+    // test that doesn't exercise the fix.
+    expect(endMarker.closest('section')?.getAttribute('role')).toBe('dialog');
 
     // Act
     // Reset to top so the assertion is independent of any initial focus
