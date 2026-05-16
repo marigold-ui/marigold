@@ -177,12 +177,8 @@ export const LongContent = meta.story({
     </Drawer.Trigger>
   ),
   play: async ({ canvas, userEvent }) => {
-    // Sanity check: the small-screen viewport must actually apply, otherwise
-    // this story is silently exercising the desktop NonModal path instead of
-    // the mobile Modal/Dialog path that the fix targets.
     expect(window.innerWidth).toBeLessThan(640);
 
-    // Arrange
     const trigger = canvas.getByRole('button', { name: 'Open Drawer' });
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
@@ -195,21 +191,16 @@ export const LongContent = meta.story({
       return c.top >= p.top && c.bottom <= p.bottom + 1;
     };
 
-    // The Drawer renders the mobile Modal/Dialog with role="dialog" and the
-    // desktop NonModal with role="complementary". Assert the former so a
-    // useSmallScreen mishap surfaces as a clear failure instead of a passing
-    // test that doesn't exercise the fix.
+    // Mobile path renders role="dialog"; desktop NonModal renders
+    // role="complementary". If useSmallScreen flakes, fail loudly here
+    // rather than pass a test that didn't exercise the fix.
     expect(endMarker.closest('section')?.getAttribute('role')).toBe('dialog');
 
-    // Act
-    // Reset to top so the assertion is independent of any initial focus
-    // scroll that react-aria may have triggered on open.
+    // react-aria's focus-on-open may auto-scroll the content; reset first.
     scrollContainer.scrollTop = 0;
 
-    // Assert
-    // The scroll container must overflow — otherwise nothing is being
-    // clipped and the Drawer would grow with its content (the bug this
-    // story protects against).
+    // The bug let content grow the Drawer instead of clipping it, so
+    // `scrollHeight` collapsed to `clientHeight`.
     expect(scrollContainer.scrollHeight).toBeGreaterThan(
       scrollContainer.clientHeight
     );
@@ -217,10 +208,8 @@ export const LongContent = meta.story({
       expect(isWithin(endMarker, scrollContainer)).toBe(false);
     });
 
-    // Act
     scrollContainer.scrollTop = scrollContainer.scrollHeight;
 
-    // Assert
     await waitFor(() => {
       expect(isWithin(endMarker, scrollContainer)).toBe(true);
     });
