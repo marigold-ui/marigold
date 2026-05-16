@@ -8,9 +8,9 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     ],
     variants: {
       variant: {
+        info: 'border-info-accent bg-info text-info-foreground',
         success: 'border-success-accent bg-success text-success-foreground',
         warning: 'border-warning-accent bg-warning text-warning-foreground',
-        info: 'border-info-accent bg-info text-info-foreground',
         error:
           'border-destructive-accent bg-destructive text-destructive-foreground',
       },
@@ -24,9 +24,9 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     base: 'text-secondary text-sm leading-5 font-normal',
     variants: {
       variant: {
+        info: 'text-info-foreground',
         success: 'text-success-foreground',
         warning: 'text-warning-foreground',
-        info: 'text-info-foreground',
         error: 'text-destructive-foreground',
       },
     },
@@ -38,9 +38,9 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     base: 'h-6 w-6 align-baseline leading-none -mt-0.5',
     variants: {
       variant: {
+        info: 'text-info-accent',
         success: 'text-success-accent',
         warning: 'text-warning-accent',
-        info: 'text-info-accent',
         error: 'text-destructive-accent',
       },
     },

@@ -9,15 +9,15 @@ The `<SectionMessage>` component is a block-level element designed to alert user
 
 ## Anatomy
 
-A `<SectionMessage>` is a container with a severity icon, a title, the message content, and an optional dismiss button.
+A `<SectionMessage>` is a container with a severity icon, an optional title, the message content, and an optional dismiss button.
 
 <SectionMessageAnatomy />
 
 - **Container**: Wraps the message and applies the variant styling.
-- **Icon**: Variant icon that reinforces the severity of the message.
-- **Title**: Short headline that summarizes the message.
-- **Content**: Descriptive body text below the title.
-- **Close button**: Optional dismiss control when `closeButton` is set.
+- **Icon**: Variant icon that reinforces the severity.
+- **Title** _(optional)_: Short headline summarizing the message. Don't end the title with a period, and don't repeat it in the content.
+- **Content**: Descriptive body text. This is the required core of the message.
+- **Close button** _(optional)_: Dismiss control when `closeButton` is set.
 
 ## Appearance
 
@@ -36,9 +36,11 @@ Each variant communicates a different level of severity, helping users quickly u
 
 ## Usage
 
-Section messages are ideal for displaying important feedback related to a specific section of the page.
+Section messages are ideal for displaying important feedback related to a specific section of the page. Unlike modal dialogs, which interrupt the user's workflow, section messages remain visible without blocking interaction with other parts of the interface.
 
-Unlike modal dialogs, which interrupt the user's workflow, section messages remain visible without blocking interaction with other parts of the interface.
+Place a section message close to the content it relates to, typically directly above, so the relationship between the message and the affected area is obvious. When the message summarizes form errors, place it at the top of the form and pair it with field-level validation on the inputs themselves, so users can locate both the overall problem and the specific fields that need attention.
+
+Keep the message short - the body should fit within roughly two lines. For longer explanations, link out to a dedicated page or open a dialog from an action, rather than growing the message itself.
 
 <GuidelineTiles>
   <Do>
@@ -54,24 +56,7 @@ Unlike modal dialogs, which interrupt the user's workflow, section messages rema
   </Do>
 </GuidelineTiles>
 
-### Position
-
-They should be positioned close to the relevant content, typically directly above, to ensure users can easily identify the relationship between the message and the affected area.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Place section message near the affected content.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't place section messages in unaffected sections.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-### Dismissable message
+### Dismissal
 
 Dismissable messages are used to provide temporary feedback or notifications that the user can manually close or dismiss when they no longer need the information. They are generally used when feedback is helpful but doesn't need to stay on screen permanently.
 
@@ -81,9 +66,18 @@ To provide this, you have to use the `closeButton` property on the `<SectionMess
 
 You can also control the dismissable message by using the `close` and `onClose` property.
 
+When the user dismisses the message, make sure keyboard focus moves somewhere useful - typically the control that triggered the message, the preceding heading, or the next interactive element. Losing focus leaves keyboard and screen reader users disoriented.
+
 ### Actions
 
 Actions, such as buttons or links, should be placed near the message content to make the next steps intuitive for users. Clear, accessible options help users easily respond to the feedback provided, allowing them to address the issue without disrupting their workflow.
+
+Keep the action set focused:
+
+- Use at most one primary action per message.
+- Add secondary buttons or links for additional choices.
+- Label actions with a verb plus a noun, like "Retry payment" or "Open settings", so the outcome is clear before the user clicks.
+- For text links, make the link text describe the destination - avoid "Click here" or "Learn more".
 
 <ComponentDemo name="section-message-action" />
 
@@ -102,11 +96,11 @@ Actions, such as buttons or links, should be placed near the message content to 
   </Dont>
 </GuidelineTiles>
 
-### Dynamic messages
+### Announcements
 
 A section message often appears in response to a user action, such as a saved setting, a submitted form, or a failed payment. Screen reader users won't notice the new content unless the message is also announced through an [ARIA live region](/foundations/accessibility#dynamic-content).
 
-Set the `announce` prop and `<SectionMessage>` will fire the announcement for you. You don't need to wrap the message in your own live region. Only apply it to messages that appear in response to a user action — a message rendered on initial page load will fire during hydration and interrupt the user's first scan of the page.
+Set the `announce` prop and `<SectionMessage>` will fire the announcement for you. You don't need to wrap the message in your own live region. Only apply it to messages that appear in response to a user action - a message rendered on initial page load will fire during hydration and interrupt the user's first scan of the page.
 
 For confirmations and informational updates (`info`, `success`, `warning`), use `announce` to opt in. Screen readers will announce the content politely, during the next break in speech, without interrupting the user.
 
@@ -117,6 +111,8 @@ The `error` variant announces automatically. `<SectionMessage variant="error">` 
 <ComponentDemo name="section-message-aria-live-error" />
 
 To re-announce the same message (for example, the user clicks "Retry" a second time), give the `<SectionMessage>` a changing `key`. The component remounts and the announcement fires again. Without it, screen readers only hear the announcement the first time.
+
+Don't move keyboard focus to a section message that appears in response to a background change - the live-region announcement is enough, and pulling focus is disorienting. The exception is a blocking form-level error after submit, where moving focus to the message helps the user locate what went wrong.
 
 Reserve assertive announcements for messages that genuinely need to interrupt. Most updates should be polite.
 
