@@ -106,7 +106,7 @@ Actions, such as buttons or links, should be placed near the message content to 
 
 A section message often appears in response to a user action, such as a saved setting, a submitted form, or a failed payment. Screen reader users won't notice the new content unless the message is also announced through an [ARIA live region](/foundations/accessibility#dynamic-content).
 
-Set the `announce` prop and `<SectionMessage>` will fire the announcement for you. You don't need to wrap the message in your own live region.
+Set the `announce` prop and `<SectionMessage>` will fire the announcement for you. You don't need to wrap the message in your own live region. Only apply it to messages that appear in response to a user action — a message rendered on initial page load will fire during hydration and interrupt the user's first scan of the page.
 
 For confirmations and informational updates (`info`, `success`, `warning`), use `announce` to opt in. Screen readers will announce the content politely, during the next break in speech, without interrupting the user.
 
@@ -126,22 +126,6 @@ Reserve assertive announcements for messages that genuinely need to interrupt. M
 | Informational update (loaded results, new items)                     | `variant="info"` with `announce` (polite)     |
 | Validation failure or blocking error                                 | `variant="error"` (assertive, built in)       |
 | Already visible on initial render (static banner, persistent notice) | No `announce` prop. Leave the message static. |
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use `announce` for messages that appear in response to a user action, so
-      assistive technology users hear about the change.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't set `announce` on a message rendered on initial page load. It will
-      fire on hydration and interrupt the user during their first scan of the
-      page.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
 
 ## Props
 
