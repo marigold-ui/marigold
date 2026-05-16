@@ -13,6 +13,13 @@ import { Drawer } from './Drawer';
 const meta = preview.meta({
   title: 'Components/Drawer',
   component: Drawer,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     size: {
       control: {
