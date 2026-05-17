@@ -174,7 +174,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     SectionMessage?: Record<
-      'container' | 'icon' | 'title' | 'content' | 'close',
+      'container' | 'icon' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<

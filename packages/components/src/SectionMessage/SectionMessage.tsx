@@ -1,5 +1,4 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react';
-import { useButton } from '@react-aria/button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
 import { cn, useClassNames } from '@marigold/system';
@@ -67,7 +66,6 @@ export const SectionMessage = ({
   ...props
 }: SectionMessageProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'SectionMessage',
@@ -78,8 +76,6 @@ export const SectionMessage = ({
 
   const [internalVisible, setInternalVisible] = useState(true);
   const isCurrentlyVisible = close ?? internalVisible;
-
-  const { buttonProps } = useButton(props, buttonRef);
 
   // Announce on mount. Remount with a changing `key` to re-announce.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,10 +108,8 @@ export const SectionMessage = ({
         </div>
         {closeButton && (
           <CloseButton
-            {...buttonProps}
-            ref={buttonRef}
             aria-label={stringFormatter.format('close')}
-            className={cn('[grid-area:close]', classNames.close)}
+            className="[grid-area:close]"
             onPress={handleClose}
           />
         )}

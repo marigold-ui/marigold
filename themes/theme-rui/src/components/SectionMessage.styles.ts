@@ -48,11 +48,4 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       variant: 'info',
     },
   }),
-  close: cva({
-    base: [
-      'size-8 text-foreground',
-      '[&_svg]:size-6',
-      '-my-1.5 -me-2', // align button with title
-    ],
-  }),
 };
