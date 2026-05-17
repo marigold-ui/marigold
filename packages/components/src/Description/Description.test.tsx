@@ -1,0 +1,39 @@
+import { render, screen } from '@testing-library/react';
+import { Provider, TextContext } from 'react-aria-components';
+import { Basic } from './Description.stories';
+
+test('renders as a span by default', () => {
+  render(<Basic.Component data-testid="description">Hi there</Basic.Component>);
+
+  const el = screen.getByTestId('description');
+
+  expect(el.tagName).toBe('SPAN');
+  expect(el).toHaveTextContent('Hi there');
+});
+
+test('respects the "as" prop', () => {
+  render(
+    <Basic.Component as="p" data-testid="description">
+      Hi
+    </Basic.Component>
+  );
+
+  expect(screen.getByTestId('description').tagName).toBe('P');
+});
+
+test('participates in TextContext via the default "description" slot', () => {
+  render(
+    <Provider
+      values={[
+        [
+          TextContext,
+          { slots: { description: { className: 'context-class' } } },
+        ],
+      ]}
+    >
+      <Basic.Component data-testid="description">Hi</Basic.Component>
+    </Provider>
+  );
+
+  expect(screen.getByTestId('description')).toHaveClass('context-class');
+});

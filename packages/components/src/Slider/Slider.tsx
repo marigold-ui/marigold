@@ -6,18 +6,16 @@ import {
   SliderThumb,
   SliderTrack,
 } from 'react-aria-components';
-import {
-  WidthProp,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { Label } from '../Label/Label';
 
 export interface SliderProps<T>
   extends
-    Omit<RAC.SliderProps<T>, 'children' | 'isDisabled' | 'orientation'>,
+    Omit<
+      RAC.SliderProps<T>,
+      'children' | 'isDisabled' | 'orientation' | 'style'
+    >,
     Pick<FieldBaseProps<'label'>, 'description'> {
   variant?: string;
   size?: string;
@@ -79,10 +77,10 @@ const _Slider = <T extends number | number[]>({
   return (
     <FieldBase
       as={Slider}
+      width={width}
       className={cn(
-        'grid grid-cols-[auto_1fr] gap-y-1',
-        classNames.container,
-        twWidth[width]
+        'grid w-(--container-width) grid-cols-[auto_1fr] gap-y-1',
+        classNames.container
       )}
       ref={ref}
       {...props}

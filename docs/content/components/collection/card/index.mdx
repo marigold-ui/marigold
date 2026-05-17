@@ -101,6 +101,41 @@ Cards already sit on a raised surface. Nesting a card inside another card create
   </Dont>
 </GuidelineTiles>
 
+### Spacing and padding
+
+Card controls two kinds of spacing — the padding applied to its slots, and the gap between slots. The defaults suit most card layouts. Reach for the overrides when a card is unusually dense or unusually roomy.
+
+#### Padding
+
+Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-loose` for cards that hold long prose or stand alone on the page, and `px`/`py` to control the axes separately when uniform padding feels off.
+
+```tsx
+<Card p="square-loose">…</Card>
+<Card px="padding-relaxed" py="padding-snug">…</Card>
+```
+
+#### Slot gap
+
+`space` controls the vertical gap between `Preview`, `Header`, `Body`, and `Footer`. Default `regular` works almost everywhere. Drop to `tight` when the slots should read as one dense surface, or step up to `group` when the card carries several distinct blocks that need more breathing room.
+
+```tsx
+<Card space="tight">…</Card>
+<Card space="group">…</Card>
+```
+
+#### Bleed
+
+`Card.Body` and `Card.Footer` accept a `bleed` prop that skips the card's horizontal padding for that slot. Use it for tables, media, or full-width action bars that should reach the card's edges.
+
+```tsx
+<Card>
+  <Card.Header>Pricing</Card.Header>
+  <Card.Body bleed>
+    <Table>…</Table>
+  </Card.Body>
+</Card>
+```
+
 ## Props
 
 <StorybookHintMessage component={'Card'} />

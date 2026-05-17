@@ -37,32 +37,36 @@ export default () => (
           <Select.Option id="freelancer">Freelancer</Select.Option>
         </Select>
         <Card variant="master">
-          <Select
-            label={
-              <>
-                Associated Team <Badge variant="master">Master</Badge>
-              </>
-            }
-            width={56}
-            description="Select the team responsible for this organizer."
-            defaultSelectedKey={'regional'}
-          >
-            <Select.Option id="inbound">Inbound Sales</Select.Option>
-            <Select.Option id="outbound">Outbound Sales</Select.Option>
-            <Select.Option id="keyaccounts">Key Accounts</Select.Option>
-            <Select.Option id="regional">Regional Sales</Select.Option>
-          </Select>
+          <Card.Body>
+            <Select
+              label={
+                <>
+                  Associated Team <Badge variant="master">Master</Badge>
+                </>
+              }
+              width={56}
+              description="Select the team responsible for this organizer."
+              defaultSelectedKey={'regional'}
+            >
+              <Select.Option id="inbound">Inbound Sales</Select.Option>
+              <Select.Option id="outbound">Outbound Sales</Select.Option>
+              <Select.Option id="keyaccounts">Key Accounts</Select.Option>
+              <Select.Option id="regional">Regional Sales</Select.Option>
+            </Select>
+          </Card.Body>
         </Card>
         <Card variant="admin">
-          <Checkbox
-            label={
-              <>
-                Enable Diagnostics <Badge variant="admin">Admin</Badge>
-              </>
-            }
-            description="Allow system diagnostics and data collection for this organizer to improve service quality."
-            defaultChecked
-          />
+          <Card.Body>
+            <Checkbox
+              label={
+                <>
+                  Enable Diagnostics <Badge variant="admin">Admin</Badge>
+                </>
+              }
+              description="Allow system diagnostics and data collection for this organizer to improve service quality."
+              defaultChecked
+            />
+          </Card.Body>
         </Card>
       </Stack>
     </Tabs.TabPanel>

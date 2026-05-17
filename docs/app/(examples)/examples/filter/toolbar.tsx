@@ -1,6 +1,6 @@
 'use client';
 
-import { venueTraits, venueTypes } from '@/lib/data/venues';
+import { venueTraits } from '@/lib/data/venues';
 import type { FormEvent } from 'react';
 import {
   Button,
@@ -13,92 +13,53 @@ import {
   Slider,
   Stack,
   Tag,
+  parseFormData,
 } from '@marigold/components';
-import { Filter } from '@marigold/icons';
+import { ListFilter } from '@marigold/icons';
 import {
-  defaultFilter,
-  getFormData,
-  toFormSchema,
-  toUrlSchema,
+  MAX_CAPACITY,
+  MAX_PRICE,
+  type VenueFilter,
   useFilter,
   useSearch,
 } from './utils';
 
-// Helper
+// Filter form (inside Drawer)
 // ---------------
-const Search = () => {
-  const [search, setSearch] = useSearch();
-
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    setSearch(data.get('q') as string);
-  };
-
-  return (
-    <Form onSubmit={submit} unstyled>
-      <SearchField
-        aria-label="Search"
-        description="Search by venue name"
-        name="q"
-        width={64}
-        autoComplete="off"
-        defaultValue={search}
-        onSubmit={setSearch}
-        onClear={() => setSearch('')}
-      />
-      <Button variant="primary" type="submit">
-        Search
-      </Button>
-    </Form>
-  );
-};
-
 interface FilterFormProps {
-  state: {
-    type: string;
-    capacity: number;
-    price: number;
-    traits: string[];
-    rating: string;
-  };
+  filter: VenueFilter;
 }
 
-const FilterForm = ({ state }: FilterFormProps) => (
+const FilterForm = ({ filter }: FilterFormProps) => (
   <Stack space={12}>
-    <Radio.Group label="Venue Type" name="type" defaultValue={state.type}>
-      <Radio value="">All</Radio>
-      {venueTypes.map((type, idx) => (
-        <Radio key={type} value={`${idx}`}>
-          {type}
-        </Radio>
-      ))}
-    </Radio.Group>
     <NumberField
       label="Min. Capacity"
       name="capacity"
-      defaultValue={state.capacity}
+      defaultValue={filter.capacity ?? 0}
       minValue={0}
-      step={10}
+      maxValue={MAX_CAPACITY}
+      step={100}
     />
+
     <Slider
       label="Max. Price"
       thumbLabels="price"
       name="price"
-      defaultValue={state.price}
+      defaultValue={filter.price ?? MAX_PRICE}
       step={100}
-      maxValue={defaultFilter.price}
+      maxValue={MAX_PRICE}
       formatOptions={{
         style: 'currency',
         currency: 'EUR',
         minimumFractionDigits: 0,
       }}
     />
+
     <Tag.Group
       label="Traits"
       name="traits"
       selectionMode="multiple"
-      defaultSelectedKeys={state.traits}
+      defaultSelectedKeys={filter.traits}
     >
       {venueTraits.map(trait => (
         <Tag key={trait} id={trait}>
@@ -106,58 +67,87 @@ const FilterForm = ({ state }: FilterFormProps) => (
         </Tag>
       ))}
     </Tag.Group>
-    <Radio.Group label="Min. Rating" name="rating" defaultValue={state.rating}>
-      <Radio value="">none</Radio>
-      <Radio value="1">1</Radio>
-      <Radio value="2">2</Radio>
-      <Radio value="3">3</Radio>
-      <Radio value="4">4</Radio>
-      <Radio value="5">5</Radio>
+
+    <Radio.Group
+      label="Min. Rating"
+      name="rating"
+      orientation="horizontal"
+      defaultValue={filter.rating ? String(filter.rating) : undefined}
+    >
+      {['1', '2', '3', '4', '5'].map(value => (
+        <Radio key={value} value={value}>
+          {value} ★
+        </Radio>
+      ))}
     </Radio.Group>
   </Stack>
 );
 
-// Component
+// Toolbar
 // ---------------
+type FilterFormData = {
+  capacity?: string;
+  price?: string;
+  traits?: string | string[];
+  rating?: string;
+};
+
 export const Toolbar = () => {
+  const [search, setSearch] = useSearch();
   const { filter, setFilter } = useFilter();
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onFilterSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { success, error, data } = toUrlSchema(getFormData(e));
-    if (!success) {
-      console.error('Invalid form data', error);
-      return;
-    }
+    const data = parseFormData<FilterFormData>(e);
 
-    setFilter(data);
+    const capacity = data.capacity ? Number(data.capacity) : null;
+    const price = data.price ? Number(data.price) : null;
+    const traits = Array.isArray(data.traits)
+      ? data.traits.map(String)
+      : data.traits
+        ? [String(data.traits)]
+        : [];
+
+    setFilter({
+      capacity,
+      price: price !== null && price < MAX_PRICE ? price : null,
+      traits,
+      rating: data.rating ? Number(data.rating) : null,
+    });
   };
 
   return (
-    <Inline space={2}>
-      <Search />
-      <Drawer.Trigger>
-        <Button>
-          <Filter /> Filter
-        </Button>
-        <Drawer closeButton>
-          <Form onSubmit={onSubmit} unstyled>
-            <Drawer.Title>Filter</Drawer.Title>
-            <Drawer.Content>
-              <FilterForm
-                key={JSON.stringify(filter)}
-                state={toFormSchema(filter)}
-              />
-            </Drawer.Content>
-            <Drawer.Actions>
-              <Button slot="close">Close</Button>
-              <Button variant="primary" type="submit">
-                Apply
-              </Button>
-            </Drawer.Actions>
-          </Form>
-        </Drawer>
-      </Drawer.Trigger>
+    <Inline space={2} alignX="between">
+      <Inline alignY="input" space={2}>
+        <SearchField
+          aria-label="Search venues"
+          description="Search by name"
+          width={64}
+          autoComplete="off"
+          defaultValue={search}
+          onSubmit={value => setSearch(value || null)}
+          onClear={() => setSearch(null)}
+        />
+        <Drawer.Trigger>
+          <Button>
+            <ListFilter /> Filter
+          </Button>
+          <Drawer closeButton>
+            <Form onSubmit={onFilterSubmit} unstyled>
+              <Drawer.Title>Filter Venues</Drawer.Title>
+              <Drawer.Content>
+                <FilterForm key={JSON.stringify(filter)} filter={filter} />
+              </Drawer.Content>
+              <Drawer.Actions>
+                <Button slot="close">Close</Button>
+                <Button variant="primary" type="submit">
+                  Apply
+                </Button>
+              </Drawer.Actions>
+            </Form>
+          </Drawer>
+        </Drawer.Trigger>
+      </Inline>
     </Inline>
   );
 };

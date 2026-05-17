@@ -553,6 +553,79 @@ export const LargeDataset = meta.story({
   },
 });
 
+export const WithRenderValue = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Assign to',
+    placeholder: 'Select a user',
+    width: 80,
+  },
+  render: args => (
+    <Select
+      {...args}
+      items={people}
+      renderValue={(selected: (typeof people)[number][]) => (
+        <Inline space={2} alignY="center">
+          {selected.map(person => (
+            <Inline key={person.id} space={1} alignY="center">
+              <img
+                src={person.avatar}
+                alt=""
+                className="size-5 rounded-full object-cover"
+              />
+              <Text>{person.name}</Text>
+            </Inline>
+          ))}
+        </Inline>
+      )}
+    >
+      {(person: (typeof people)[number]) => (
+        <Select.Option id={person.id} textValue={person.name}>
+          <Inline space={2} alignY="center">
+            <img
+              src={person.avatar}
+              alt={person.name}
+              className="size-6 rounded-full object-cover"
+            />
+            <Text slot="label">{person.name}</Text>
+          </Inline>
+          <Text slot="description">{person.position}</Text>
+        </Select.Option>
+      )}
+    </Select>
+  ),
+  play: async ({ args, canvas, step }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step('Trigger shows placeholder when nothing selected', async () => {
+      expect(within(trigger).getByText(args.placeholder!)).toBeVisible();
+    });
+
+    await step('Open the dropdown', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Select Bob', async () => {
+      const listbox = canvas.getByRole('listbox');
+
+      await userEvent.click(within(listbox).getByText('Bob Smith'));
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Trigger uses custom renderValue', async () => {
+      expect(within(trigger).getByText('Bob Smith')).toBeVisible();
+      expect(
+        within(trigger).queryByText('Senior Developer')
+      ).not.toBeInTheDocument();
+    });
+  },
+});
+
 export const Mobile = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },

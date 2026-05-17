@@ -13,14 +13,14 @@ export default (props: DrawerProps) => (
     <Drawer {...props}>
       <Drawer.Title>Ticket #4521 - Login Issue</Drawer.Title>
       <Drawer.Content>
-        <Stack space={6}>
+        <Stack space="group">
           <Text>
             <strong>Description:</strong> User reports being unable to log in
             after the latest update. Error message:{' '}
             <em>"Invalid session token."</em>
           </Text>
 
-          <Stack space={2}>
+          <Stack space="related">
             <Text>
               <strong>Status:</strong> Open
             </Text>
@@ -45,7 +45,7 @@ export default (props: DrawerProps) => (
         </Stack>
       </Drawer.Content>
       <Drawer.Actions>
-        <Inline space={3}>
+        <Inline space="regular">
           <Button slot="close">Close</Button>
           <Button
             slot="close"

@@ -193,23 +193,27 @@ export const WithCards = meta.story({
   render: args => (
     <Stack {...args}>
       <Card>
-        <Container>
-          <Headline level={2}>Card Title</Headline>
-          <Text>
-            This is an example of a card component used within a Stack layout.
-            Cards are useful for grouping related information together in a
-            visually distinct container.
-          </Text>
-        </Container>
+        <Card.Body>
+          <Container>
+            <Headline level={2}>Card Title</Headline>
+            <Text>
+              This is an example of a card component used within a Stack layout.
+              Cards are useful for grouping related information together in a
+              visually distinct container.
+            </Text>
+          </Container>
+        </Card.Body>
       </Card>
       <Card>
-        <Container>
-          <Headline level={2}>Another Card</Headline>
-          <Text>
-            Stacks make it easy to maintain consistent spacing between cards and
-            other components, ensuring a clean and organized layout.
-          </Text>
-        </Container>
+        <Card.Body>
+          <Container>
+            <Headline level={2}>Another Card</Headline>
+            <Text>
+              Stacks make it easy to maintain consistent spacing between cards
+              and other components, ensuring a clean and organized layout.
+            </Text>
+          </Container>
+        </Card.Body>
       </Card>
     </Stack>
   ),

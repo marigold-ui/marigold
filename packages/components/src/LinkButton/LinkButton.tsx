@@ -1,7 +1,9 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Link } from 'react-aria-components';
+import { Link, useSlottedContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { ActionButtonContext } from '../ActionButton/Context';
+import { ActionGroupContext } from '../ActionGroup/Context';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
@@ -10,6 +12,7 @@ export interface LinkButtonProps extends Omit<RAC.LinkProps, RemovedProps> {
     | 'primary'
     | 'secondary'
     | 'destructive'
+    | 'destructive-ghost'
     | 'ghost'
     | 'link'
     | (string & {});
@@ -35,15 +38,28 @@ export interface LinkButtonProps extends Omit<RAC.LinkProps, RemovedProps> {
 
 const _LinkButton = ({
   children,
-  variant,
-  size,
-  disabled,
+  variant: propVariant,
+  size: propSize,
+  disabled: propDisabled,
   fullWidth,
   ref,
+  slot,
   ...props
 }: LinkButtonProps) => {
+  // `useSlottedContext` (vs `<ActionButton>`'s `useContextProps`) sidesteps
+  // the button/anchor ref-type mismatch; policy below mirrors `<ActionButton>`.
+  const ctxValue = useSlottedContext(ActionButtonContext, slot);
+  const groupCtx = useSlottedContext(ActionGroupContext);
+
+  // Cascade with the enclosing ActionGroup. Reads left-to-right; `size` is
+  // the outlier (group wins) so the cluster stays visually uniform.
+  const variant = propVariant ?? ctxValue?.variant ?? groupCtx?.variant;
+  const size = groupCtx?.size ?? propSize ?? ctxValue?.size;
+  const disabled = propDisabled ?? ctxValue?.disabled ?? groupCtx?.disabled;
+
+  // Standalone LinkButton uses Button styles; inside ActionGroup it picks up ActionButton's narrowed set.
   const classNames = useClassNames({
-    component: 'Button',
+    component: groupCtx ? 'ActionButton' : 'Button',
     variant,
     size,
   });
@@ -52,7 +68,12 @@ const _LinkButton = ({
     <Link
       {...props}
       ref={ref}
-      className={cn(classNames, fullWidth ? 'w-full' : undefined)}
+      slot={slot}
+      className={cn(
+        ctxValue?.className,
+        classNames,
+        fullWidth ? 'w-full' : undefined
+      )}
       isDisabled={disabled}
     >
       {children}

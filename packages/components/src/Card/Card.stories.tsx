@@ -100,6 +100,94 @@ export const Stretch = meta.story({
   ),
 });
 
+export const WithPaddingProp = meta.story({
+  args: {
+    p: 'square-loose',
+  },
+  argTypes: {
+    p: {
+      control: { type: 'select' },
+      options: [
+        'square-tight',
+        'square-snug',
+        'square-regular',
+        'square-relaxed',
+        'square-loose',
+      ],
+      description:
+        'Inset recipe applied uniformly. Resolves --card-px and --card-py.',
+    },
+  },
+  render: args => (
+    <Card {...args}>
+      <Card.Header>Custom Padding</Card.Header>
+      <Card.Body>
+        <Text>
+          This card uses the `p` prop to set inset padding. Use Storybook
+          controls to try different values.
+        </Text>
+      </Card.Body>
+    </Card>
+  ),
+});
+
+export const WithBleedBody = meta.story({
+  render: args => (
+    <Card {...args}>
+      <Card.Header>Bleed Body</Card.Header>
+      <Card.Body bleed>
+        <div className="bg-info/10 border-info-accent border-y px-4 py-3">
+          Edge-to-edge banner — spans the full card width.
+        </div>
+      </Card.Body>
+      <Card.Footer>
+        <Button variant="primary">Action</Button>
+      </Card.Footer>
+    </Card>
+  ),
+});
+
+export const WithBleedFooter = meta.story({
+  render: args => (
+    <Card {...args}>
+      <Card.Header>Bleed Footer</Card.Header>
+      <Card.Body>
+        <Text>The footer below uses `bleed` to span the full card width.</Text>
+      </Card.Body>
+      <Card.Footer bleed>
+        <div className="flex w-full justify-center border-t py-3">
+          <Button variant="primary">Full-width action</Button>
+        </div>
+      </Card.Footer>
+    </Card>
+  ),
+});
+
+/**
+ * Anti-pattern: rendering bare children inside `<Card>` is unsupported.
+ * Content will have no horizontal padding. Wrap content in `Card.Body` instead.
+ */
+export const BareChildrenAntiPattern = meta.story({
+  render: args => (
+    <Stack space={4}>
+      <Card {...args}>
+        <Text>
+          <strong>Don&apos;t do this:</strong> bare text inside `&lt;Card&gt;`
+          has no horizontal padding.
+        </Text>
+      </Card>
+      <Card {...args}>
+        <Card.Body>
+          <Text>
+            <strong>Do this:</strong> wrap content in `Card.Body` to get proper
+            padding.
+          </Text>
+        </Card.Body>
+      </Card>
+    </Stack>
+  ),
+});
+
 export const MasterAndAdmin = meta.story({
   render: args => (
     <Stack space={5}>

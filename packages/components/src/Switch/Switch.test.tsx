@@ -35,19 +35,18 @@ test('connects description via aria-describedby', () => {
 
 test('takes full width by default', () => {
   render(<Basic.Component label="Label" />);
-  // The switch's label element is the container with width classes
   const switchEl = screen.getByRole('switch');
-  // eslint-disable-next-line testing-library/no-node-access -- need to check class on the label wrapper
+  // eslint-disable-next-line testing-library/no-node-access -- need to check style on the label wrapper
   const container = switchEl.closest('label')!;
-  expect(container).toHaveClass('w-full');
+  expect(container.style.getPropertyValue('--width')).toBe('100%');
 });
 
 test('allows to set width via prop', () => {
   render(<Basic.Component width={10} label="Label" />);
   const switchEl = screen.getByRole('switch');
-  // eslint-disable-next-line testing-library/no-node-access -- need to check class on the label wrapper
+  // eslint-disable-next-line testing-library/no-node-access -- need to check style on the label wrapper
   const container = switchEl.closest('label')!;
-  expect(container).not.toHaveClass('w-full');
+  expect(container.style.getPropertyValue('--width')).not.toBe('100%');
 });
 
 test('supports disabled prop', () => {
