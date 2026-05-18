@@ -87,8 +87,7 @@
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
-    "prepare": "husky install",
-    "postinstall": "pnpm build"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@storybook/addon-mcp": "^0.4.2",

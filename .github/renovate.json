@@ -6,7 +6,6 @@
   ],
   "timezone": "Europe/Berlin",
 
-  "requireConfig": "optional",
   "ignoreScripts": true,
   "branchConcurrentLimit": 5,
 
