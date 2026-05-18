@@ -67,6 +67,7 @@
     "@react-stately/table": "^3.16.0",
     "@react-stately/tree": "^3.10.0",
     "@react-types/button": "^3.15.0",
+    "@react-types/checkbox": "^3.10.0",
     "@react-types/grid": "^3.3.0",
     "@react-types/shared": "^3.34.0",
     "@react-types/table": "^3.14.0",
@@ -83,8 +84,8 @@
     "@marigold/tsconfig": "workspace:*",
     "@types/react": "19.2.14",
     "lucide-react": "^1.7.0",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
     "tsdown": "0.21.10"
   },
   "scripts": {

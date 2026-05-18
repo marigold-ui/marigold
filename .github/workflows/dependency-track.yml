@@ -21,13 +21,9 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install cdxgen
-        run: |
-          pnpm install -g @cyclonedx/cdxgen
-
       - name: Generate SBOM
         run: |
-          cdxgen -r -o sbom.json
+          pnpm dlx @cyclonedx/cdxgen -r -o sbom.json
 
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v6
