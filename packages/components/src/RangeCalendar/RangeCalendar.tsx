@@ -186,7 +186,7 @@ const _RangeCalendar = <T extends DateValue>({
   );
 
   return (
-    <CalendarContext.Provider
+    <CalendarContext
       value={{
         classNames,
         visibleMonths,
@@ -195,11 +195,10 @@ const _RangeCalendar = <T extends DateValue>({
         disabled,
       }}
     >
-      <FieldErrorContext.Provider value={fieldErrorValue}>
+      <FieldErrorContext value={fieldErrorValue}>
         <FieldBase
           variant={variant}
           size={size}
-          width={width}
           description={description}
           errorMessage={errorMessage}
           isInvalid={error}
@@ -280,8 +279,8 @@ const _RangeCalendar = <T extends DateValue>({
             )}
           </AriaRangeCalendar>
         </FieldBase>
-      </FieldErrorContext.Provider>
-    </CalendarContext.Provider>
+      </FieldErrorContext>
+    </CalendarContext>
   );
 };
 
