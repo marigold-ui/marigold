@@ -45,13 +45,13 @@ export default () => {
       <Tiles tilesWidth="200px" space={3} stretch>
         {filtered.map(venue => (
           <Card key={venue.id} stretch>
-            <Card.Preview>
+            <Card.Media>
               <img
                 src={venue.image}
                 alt={venue.name}
                 className="h-28 w-full object-cover"
               />
-            </Card.Preview>
+            </Card.Media>
             <Card.Body>
               <Stack space={2}>
                 <Stack space={1}>
