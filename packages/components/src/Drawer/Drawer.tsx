@@ -11,6 +11,7 @@ import { intlMessages } from '../intl/messages';
 import { DrawerContext } from './Context';
 import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
+import { DrawerCoordinator } from './DrawerCoordinator';
 import { DrawerModal } from './DrawerModal';
 import { DrawerTitle } from './DrawerTitle';
 import { DrawerTrigger } from './DrawerTrigger';
@@ -102,6 +103,7 @@ export const Drawer = ({
             classNames.container
           )}
         >
+          <DrawerCoordinator />
           {closeButton && (
             <CloseButton
               aria-label={stringFormatter.format('dismissDrawer')}

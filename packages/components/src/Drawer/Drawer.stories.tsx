@@ -242,3 +242,44 @@ export const Controlled = meta.story({
     );
   },
 });
+
+/** Opening a second Drawer while one is open dismisses the first. */
+export const OneAtATime = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: () => (
+    <Stack space={8} alignX="left">
+      <Drawer.Trigger>
+        <Button>Open A</Button>
+        <Drawer>
+          <Drawer.Title>Title A</Drawer.Title>
+          <Drawer.Content>Content A</Drawer.Content>
+        </Drawer>
+      </Drawer.Trigger>
+      <Drawer.Trigger>
+        <Button>Open B</Button>
+        <Drawer>
+          <Drawer.Title>Title B</Drawer.Title>
+          <Drawer.Content>Content B</Drawer.Content>
+        </Drawer>
+      </Drawer.Trigger>
+    </Stack>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open A' }));
+    expect(await canvas.findByText('Title A')).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Open B' }));
+    expect(await canvas.findByText('Title B')).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(canvas.queryByText('Title A')).not.toBeInTheDocument()
+    );
+
+    // ESC closes only the visible drawer.
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(canvas.queryByText('Title B')).not.toBeInTheDocument()
+    );
+  },
+});

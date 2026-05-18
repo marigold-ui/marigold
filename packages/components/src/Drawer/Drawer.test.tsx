@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic } from './Drawer.stories';
+import { Basic, OneAtATime } from './Drawer.stories';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
@@ -111,4 +111,33 @@ test('uses modal on small screens', async () => {
 
   expect(screen.getByRole('dialog')).toBeInTheDocument();
   expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+});
+
+test('opening a second drawer closes the first one', async () => {
+  renderWithOverlay(<OneAtATime.Component />);
+
+  await user.click(screen.getByRole('button', { name: 'Open A' }));
+  expect(await screen.findByText('Title A')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'Open B' }));
+  expect(await screen.findByText('Title B')).toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.queryByText('Title A')).not.toBeInTheDocument()
+  );
+});
+
+test('escape closes only the visible drawer', async () => {
+  renderWithOverlay(<OneAtATime.Component />);
+
+  await user.click(screen.getByRole('button', { name: 'Open A' }));
+  expect(await screen.findByText('Title A')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'Open B' }));
+  expect(await screen.findByText('Title B')).toBeInTheDocument();
+
+  await user.keyboard('{Escape}');
+  await waitFor(() =>
+    expect(screen.queryByText('Title B')).not.toBeInTheDocument()
+  );
+  expect(screen.queryByText('Title A')).not.toBeInTheDocument();
 });
