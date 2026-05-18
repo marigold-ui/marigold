@@ -32,6 +32,7 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
       slots: {
         title: {
           className: cn('[grid-area:title]', classNames.title),
+          'data-grid-area': 'title',
           level: headingLevel,
           id: titleId,
           ref: titleSlotRef,
@@ -46,6 +47,7 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
       slots: {
         description: {
           className: cn('[grid-area:description]', classNames.description),
+          'data-grid-area': 'description',
           elementType: 'p' as const,
         },
       },
@@ -62,6 +64,7 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
   const actionProps = useMemo(
     () => ({
       className: cn('self-center [grid-area:actions]', classNames.actions),
+      'data-grid-area': 'actions',
       size: 'icon' as const,
     }),
     [classNames.actions]

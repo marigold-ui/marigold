@@ -332,7 +332,7 @@ SlotsActionGroup.test(
       name: 'Integration actions',
     });
     expect(toolbar).toBeInTheDocument();
-    expect(toolbar.className).toContain('[grid-area:actions]');
+    expect(toolbar).toHaveAttribute('data-grid-area', 'actions');
   }
 );
 
@@ -359,7 +359,7 @@ SlotsActionGroup.test(
   async ({ canvas }) => {
     const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
 
-    expect(reconnect.className).not.toContain('[grid-area:actions]');
+    expect(reconnect).not.toHaveAttribute('data-grid-area', 'actions');
   }
 );
 

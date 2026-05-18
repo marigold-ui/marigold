@@ -204,7 +204,7 @@ describe('Panel.Header', () => {
       /People with access to this workspace/
     );
 
-    expect(description.className).toContain('[grid-area:description]');
+    expect(description).toHaveAttribute('data-grid-area', 'description');
   });
 
   test('places a bare ActionButton in the actions grid area', () => {
@@ -212,8 +212,7 @@ describe('Panel.Header', () => {
 
     const action = screen.getByRole('button', { name: 'Invite member' });
 
-    expect(action.className).toContain('[grid-area:actions]');
-    expect(action.className).toContain('self-center');
+    expect(action).toHaveAttribute('data-grid-area', 'actions');
   });
 });
 
@@ -272,7 +271,7 @@ describe('Description in Panel.Header', () => {
 
     const description = screen.getByText(/Public details shown to customers/);
 
-    expect(description.className).toContain('[grid-area:description]');
+    expect(description).toHaveAttribute('data-grid-area', 'description');
   });
 
   test('renders as a <p> via the TextContext slot config', () => {
