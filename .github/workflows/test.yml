@@ -39,7 +39,7 @@ jobs:
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
@@ -48,7 +48,7 @@ jobs:
         run: pnpm exec playwright install
 
       - name: Cache Vite dep optimization
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules/.vite
           key: vite-deps-unit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -97,7 +97,7 @@ jobs:
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
@@ -106,7 +106,7 @@ jobs:
         run: pnpm exec playwright install
 
       - name: Cache Vite dep optimization
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules/.vite
           key: vite-deps-sb-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
