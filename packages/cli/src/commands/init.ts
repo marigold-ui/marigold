@@ -73,11 +73,35 @@ const runInstall = (pm: PackageManager, pkgs: string[], cwd: string) =>
   new Promise<void>((resolve, reject) => {
     const [cmd, ...args] = installCommand(pm, pkgs);
     const child = spawn(cmd, args, { cwd, stdio: 'inherit', shell: false });
-    child.on('exit', code => {
+
+    // Terminal-managed SIGINT propagation isn't guaranteed on Windows, CI, or
+    // non-TTY contexts, so forward signals to the child explicitly to avoid
+    // leaving an orphaned package-manager process holding a node_modules lock.
+    const forward = (signal: NodeJS.Signals) => {
+      if (!child.killed) child.kill(signal);
+    };
+    const onSigint = () => forward('SIGINT');
+    const onSigterm = () => forward('SIGTERM');
+    process.on('SIGINT', onSigint);
+    process.on('SIGTERM', onSigterm);
+    const cleanup = () => {
+      process.off('SIGINT', onSigint);
+      process.off('SIGTERM', onSigterm);
+    };
+
+    child.on('exit', (code, signal) => {
+      cleanup();
+      if (signal === 'SIGINT' || signal === 'SIGTERM') {
+        reject(new InitCancelError());
+        return;
+      }
       if (code === 0) resolve();
       else reject(new Error(`${cmd} exited with code ${code}`));
     });
-    child.on('error', reject);
+    child.on('error', err => {
+      cleanup();
+      reject(err);
+    });
   });
 
 const writeIfMissing = (
