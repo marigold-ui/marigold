@@ -3,8 +3,8 @@
   "version": "17.5.0",
   "private": true,
   "scripts": {
-    "build": "pnpm build:assets && next build",
-    "dev": "pnpm build:assets && next dev",
+    "build": "pnpm -w build:themes && pnpm build:assets && next build",
+    "dev": "pnpm -w build:themes && pnpm build:assets && next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
     "postinstall": "fumadocs-mdx && pnpm build:registry",
