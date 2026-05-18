@@ -52,7 +52,7 @@ export const LegacyTable: ThemeComponent<'LegacyTable'> = {
   body: cva({ base: '[&_tr:last-child]:border-0 bg-surface' }),
   row: cva({
     base: [
-      'border-b border-border transition-[color,border-color]',
+      'border-b border-border transition-[background-color]',
       'focus-visible:outline-2 outline-offset-2 outline-ring/70',
       'data-disabled:cursor-not-allowed',
     ],

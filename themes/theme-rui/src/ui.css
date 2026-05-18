@@ -46,6 +46,9 @@
 /*
  * Use for interactive UI elements like inputs, selects, and cards. Anything that
  * sits on the page background and needs a clear visual boundary.
+ *
+ * `background` is intentionally excluded from the transition list: hover/state
+ * bg flips should feel instant on high-frequency interactions (see DST-1436).
  */
 @utility ui-surface {
   @apply rounded-surface relative transition-[border,box-shadow];
@@ -68,9 +71,12 @@
   border: 1px solid transparent;
 }
 
-/* 
+/*
  * Use when the surface must stand out against the page. Toolbars, action bars,
  * or anything that uses the primary color to signal prominence.
+ *
+ * `background` is intentionally excluded from the transition list: hover/state
+ * bg flips should feel instant on high-frequency interactions (see DST-1436).
  */
 @utility ui-surface-contrast {
   @apply rounded-surface relative transition-[border,box-shadow];
