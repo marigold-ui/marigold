@@ -11,6 +11,9 @@ export interface PanelHeaderProps {
    * Content of the header. Typically a `<Title>`, optional `<Description>`,
    * and optional action primitives (`<ActionButton>`, `<ActionGroup>`,
    * `<ActionMenu>`, `<LinkButton>`).
+   *
+   * Use the action primitives above for header chrome — a bare `<Button>`
+   * is intentionally not slot-aware and won't pick up the size/grid cascade.
    */
   children: ReactNode;
 }
@@ -50,6 +53,12 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
     [classNames.description]
   );
 
+  // Published as the same value on `ActionButtonContext` and
+  // `ActionGroupContext` so a single `<ActionButton>` and an `<ActionGroup>`
+  // of clustered actions both claim the `actions` grid cell with the same
+  // styling. `size: 'icon'` is the correct cascade for both: a bare
+  // `<ActionButton>` renders as an icon button, and an `<ActionGroup>`
+  // propagates the size to its inner `<ActionButton>` children.
   const actionProps = useMemo(
     () => ({
       className: cn('self-center [grid-area:actions]', classNames.actions),

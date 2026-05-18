@@ -1,10 +1,6 @@
 import type { ReactNode } from 'react';
 import { use, useId, useMemo } from 'react';
-import type {
-  ContextValue,
-  HeadingProps,
-  TextProps,
-} from 'react-aria-components';
+import type { ContextValue, TextProps } from 'react-aria-components';
 import {
   Button,
   DisclosureStateContext,
@@ -20,14 +16,14 @@ import { useSlot } from '../utils/useSlot';
 import { usePanelContext } from './Context';
 
 export interface PanelCollapsibleHeaderProps {
-  /** Typically a `<Title>` and an optional `<Description>`. */
+  /**
+   * A `<Title>` and an optional `<Description>`. A `<Title>` is required:
+   * the disclosure trigger references it via `aria-labelledby` to expose
+   * the header's accessible name, so omitting it leaves the trigger
+   * without a label.
+   */
   children: ReactNode;
 }
-
-// `<Title>` reads an optional `as` from its slot config to render as a
-// non-heading element. The key is a Marigold extension to RAC's
-// `HeadingProps`, so we describe the slot value shape locally.
-type TitleSlotValue = HeadingProps & { as?: 'span' | (string & {}) };
 
 export const PanelCollapsibleHeader = ({
   children,
@@ -45,13 +41,15 @@ export const PanelCollapsibleHeader = ({
   const descriptionId = useId();
   const [descriptionSlotRef, hasDescription] = useSlot(false);
 
+  // The `as: 'span'` slot key is part of `HeadingProps` via the declaration
+  // merge in `Title/Title.tsx`, so no local widening type is needed here.
   const headingProps = useMemo(
-    (): { slots: { title: TitleSlotValue } } => ({
+    () => ({
       slots: {
         title: {
           className: classNames.collapsibleTitle,
           id: titleId,
-          as: 'span',
+          as: 'span' as const,
         },
       },
     }),
@@ -89,12 +87,7 @@ export const PanelCollapsibleHeader = ({
       >
         <Provider
           values={[
-            // `HeadingContext` is typed against RAC's `HeadingProps`; Title
-            // reads an additional `as` slot key that lives outside that shape.
-            [
-              HeadingContext,
-              headingProps as ContextValue<HeadingProps, HTMLHeadingElement>,
-            ],
+            [HeadingContext, headingProps],
             [TextContext, textProps as ContextValue<TextProps, HTMLElement>],
           ]}
         >

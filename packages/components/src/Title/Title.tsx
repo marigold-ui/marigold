@@ -1,4 +1,5 @@
 import type { ElementType, ReactNode, Ref } from 'react';
+import type { HeadingProps } from 'react-aria-components';
 import {
   Heading,
   HeadingContext,
@@ -7,6 +8,19 @@ import {
 import type { AriaLabelingProps } from '@marigold/types';
 import type { SlotProps } from '../types';
 import { noSlot } from '../utils/noSlot';
+
+// Marigold's `<Title>` reads `as` from its `HeadingContext` slot config so
+// the title text can render as a non-heading element when nested in a
+// container that already provides heading semantics (e.g. inside the
+// disclosure `<button>` of `Panel.CollapsibleHeader`, where nesting a real
+// heading element would be invalid HTML). Declaration-merging `HeadingProps`
+// keeps the extension typed once at the slot layer; Provider/consumer sites
+// don't redefine or re-cast it. Has no runtime effect on RAC's `<Heading>`.
+declare module 'react-aria-components' {
+  interface HeadingProps {
+    as?: 'span' | (string & {});
+  }
+}
 
 export interface TitleProps extends AriaLabelingProps, SlotProps {
   /**
@@ -22,27 +36,19 @@ export interface TitleProps extends AriaLabelingProps, SlotProps {
   ref?: Ref<HTMLElement>;
 }
 
-// Slot config may deliver an `as` override so the title text can render
-// inside a container that already provides heading semantics (e.g. the
-// disclosure `<button>` inside `Panel.CollapsibleHeader`, where nesting a
-// real heading element would be invalid HTML).
-type TitleSlotProps = TitleProps & { as?: 'span' | (string & {}) };
-
 const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
   const [merged, ref] = useContextProps(
-    { slot: 'title', ...inputProps } as TitleSlotProps,
+    // Title's local props are a subset of `HeadingProps`; the cast bridges
+    // the narrower `ref` (`HTMLHeadingElement`) that `HeadingContext`
+    // expects. The `as` slot key is part of `HeadingProps` via the
+    // declaration merge above, so no extra widening is needed here.
+    { slot: 'title', ...inputProps } as HeadingProps,
     refProp,
     HeadingContext
   );
   // `slot` is consumed by `useContextProps` above; we drop it so the spread
   // below cannot reintroduce it on the rendered element.
-  const {
-    level = 2,
-    slot: _slot,
-    children,
-    as,
-    ...props
-  } = merged as TitleSlotProps;
+  const { level = 2, slot: _slot, children, as, ...props } = merged;
 
   if (as) {
     const Element = as as ElementType;

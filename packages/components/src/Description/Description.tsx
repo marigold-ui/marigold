@@ -24,7 +24,9 @@ const _Description = ({
 }: DescriptionProps) => (
   // The element type is decided by the surrounding `TextContext` slot config
   // (`<p>` inside `<Panel.Header>`, `<span>` by RAC's default elsewhere).
-  // `slot` may be `null` to opt out of inherited slot context.
+  // The cast bridges `SlotProps['slot']` (`string | null`, where `null`
+  // opts out of inherited slot context) to RAC's narrower `string |
+  // undefined`; `useContextProps` inside `Text` accepts `null` at runtime.
   <Text slot={slot as string | undefined} ref={ref} {...props}>
     {children}
   </Text>
