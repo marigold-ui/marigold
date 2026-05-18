@@ -8,7 +8,7 @@
   "engines": {
     "node": "24.x"
   },
-  "packageManager": "pnpm@10.29.3",
+  "packageManager": "pnpm@11.1.2",
   "dependencies": {
     "@babel/core": "7.29.0",
     "@changesets/changelog-git": "0.2.1",
@@ -89,8 +89,7 @@
     "release:beta:exit": "zx scripts/beta-exit.mjs",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
-    "prepare": "husky install",
-    "postinstall": "pnpm build"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@storybook/addon-mcp": "^0.4.2",
