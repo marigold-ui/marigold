@@ -11,7 +11,9 @@ const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
     {...props}
     className="fixed inset-0 z-50 h-(--visual-viewport-height)"
   >
-    <Modal className="flex *:flex-1">{children}</Modal>
+    <Modal className="flex h-(--visual-viewport-height) *:flex-1">
+      {children}
+    </Modal>
   </ModalOverlay>
 );
 
