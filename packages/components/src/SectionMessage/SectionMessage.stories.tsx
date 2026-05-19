@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, waitFor } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -161,6 +161,37 @@ export const DoesNotAnnounceErrorWhenOptedOut = meta.story({
   play: async () => {
     await new Promise(r => setTimeout(r, 250));
     await expect(logIncludes('assertive', 'Silent error')).toBe(false);
+  },
+});
+
+export const AnnouncesWhenControlledShown = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  args: { variant: 'success' },
+  render: args => {
+    const [shown, setShown] = useState(false);
+    return (
+      <Stack space={4} alignX="left">
+        <Button onPress={() => setShown(true)}>Show message</Button>
+        <SectionMessage {...args} announce close={shown}>
+          <SectionMessage.Title>Folder synced</SectionMessage.Title>
+          <SectionMessage.Content>
+            All files are up to date.
+          </SectionMessage.Content>
+        </SectionMessage>
+      </Stack>
+    );
+  },
+  play: async ({ canvas }) => {
+    // Hidden on mount: the polite log should not yet contain the message.
+    await new Promise(r => setTimeout(r, 250));
+    expect(logIncludes('polite', 'Folder synced')).toBe(false);
+
+    // Flip controlled visibility to shown: announcement fires.
+    await userEvent.click(canvas.getByRole('button', { name: 'Show message' }));
+    await waitFor(() =>
+      expect(logIncludes('polite', 'Folder synced')).toBe(true)
+    );
   },
 });
 

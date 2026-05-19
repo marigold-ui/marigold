@@ -43,11 +43,11 @@ export interface SectionMessageProps {
    */
   close?: boolean;
   /**
-   * Announce the message to assistive technology when it mounts.
-   * Priority is `assertive` for `variant="error"` and `polite` for all other
-   * variants. Set this for messages that appear dynamically in response to a
-   * user action. To re-announce the same message, remount the component with
-   * a changing `key`.
+   * Announce the message to assistive technology when it appears.
+   * Fires on mount and whenever controlled visibility (`close`) transitions
+   * from hidden to visible. Priority is `assertive` for `variant="error"` and
+   * `polite` for all other variants. To re-announce the same message without a
+   * visibility change, remount the component with a changing `key`.
    * @default true for `variant="error"`, false otherwise.
    */
   announce?: boolean;
@@ -77,14 +77,18 @@ export const SectionMessage = ({
   const [internalVisible, setInternalVisible] = useState(true);
   const isCurrentlyVisible = close ?? internalVisible;
 
-  // Announce on mount. Remount with a changing `key` to re-announce.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Re-announce on each hidden -> visible transition. Same-content re-announce
+  // without a visibility change still needs a `key` remount.
   useEffect(() => {
+    if (!isCurrentlyVisible) return;
     const shouldAnnounce = announceProp ?? variant === 'error';
-    if (!shouldAnnounce || !isCurrentlyVisible) return;
+    if (!shouldAnnounce) return;
     const text = containerRef.current?.textContent?.trim();
-    if (text) announce(text, variant === 'error' ? 'assertive' : 'polite');
-  }, []);
+    if (!text) return;
+    const priority = variant === 'error' ? 'assertive' : 'polite';
+    announce(text, priority);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCurrentlyVisible]);
 
   const handleClose = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
