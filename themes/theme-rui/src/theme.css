@@ -5,6 +5,25 @@
 @import './variants.css';
 
 /*
+ * Honor the user's reduced-motion preference globally: disable every CSS
+ * transition. CSS @keyframes animations are left alone so intentional motion
+ * (entering:animate-*, exiting:animate-*, spinners) keeps working; components
+ * that want to disable specific animations can still opt in with
+ * motion-reduce:animate-none.
+ *
+ * This also stabilizes Chromatic VRT snapshots, since Chromatic enables
+ * prefers-reduced-motion: reduce globally during capture.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/*
     - create tokens if we think:
         - it is necessary for a component
         - it can be used by other teams (if they build their own component)

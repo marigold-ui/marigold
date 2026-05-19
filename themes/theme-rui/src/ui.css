@@ -50,10 +50,6 @@
 @utility ui-surface {
   @apply rounded-surface relative transition-[background,border,box-shadow];
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-
   /* prettier-ignore */
   background:
       linear-gradient(
@@ -79,10 +75,6 @@
 @utility ui-surface-contrast {
   @apply rounded-surface relative transition-[background,border,box-shadow];
   @apply text-brand-foreground;
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
 
   @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-brand)_calc(l+0.4)_c_h))];
 
@@ -164,10 +156,6 @@
   @apply ui-interactive;
   @apply border border-transparent;
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-
   & svg {
     pointer-events: none;
     flex-shrink: 0;
@@ -186,14 +174,6 @@
   }
   &[data-pressed] {
     scale: 0.97;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    &:active,
-    &[data-pressed] {
-      scale: 1;
-    }
   }
 }
 
