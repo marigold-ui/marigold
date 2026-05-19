@@ -243,7 +243,7 @@ Panel renders a `<section>` and wires up the heading outline. Most of the story 
 
 ### Labeling
 
-A `<section>` only becomes a region landmark once it has an accessible name. Without one, it's just a grouping element. Give the Panel a name in one of two ways:
+A `<section>` only becomes a [region landmark](/foundations/accessibility#landmarks) once it has an accessible name. Without one, it's just a grouping element. Give the Panel a name in one of two ways:
 
 - **Preferred.** Include a `<Title>` inside `<Panel.Header>`. The Panel is automatically labelled by the title.
 - **Fallback.** If the Panel has no visible title (a Collapsible-only Panel, for example), pass an `aria-label` on the Panel itself.
