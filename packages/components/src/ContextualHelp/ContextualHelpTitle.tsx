@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Heading } from 'react-aria-components/Heading';
 import { cn, useClassNames } from '@marigold/system';
+import { noSlot } from '../utils/noSlot';
 
 export interface ContextualHelpTitleProps {
   children: ReactNode;
@@ -20,7 +21,10 @@ export const ContextualHelpTitle = ({
   });
 
   return (
-    <Heading className={cn('[grid-area:title]', classNames.title)}>
+    <Heading
+      slot={noSlot}
+      className={cn('[grid-area:title]', classNames.title)}
+    >
       {children}
     </Heading>
   );

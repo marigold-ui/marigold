@@ -1,12 +1,14 @@
 import { people } from '@/lib/data/people';
 import {
+  ActionButton,
   ActionMenu,
   Badge,
-  Button,
+  Description,
   Inline,
   Panel,
   Stack,
   Text,
+  Title,
 } from '@marigold/components';
 import { UserRoundPlus } from '@marigold/icons';
 
@@ -20,16 +22,13 @@ const members = [
 export default () => (
   <Panel>
     <Panel.Header>
-      <Panel.Title>Team members</Panel.Title>
-      <Panel.Description>
+      <Title>Team members</Title>
+      <Description>
         People with access to this workspace and their roles.
-      </Panel.Description>
-      <Panel.HeaderActions>
-        <Button>
-          <UserRoundPlus />
-          Invite member
-        </Button>
-      </Panel.HeaderActions>
+      </Description>
+      <ActionButton aria-label="Invite member">
+        <UserRoundPlus />
+      </ActionButton>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">
@@ -55,11 +54,7 @@ export default () => (
             </Inline>
             <Inline space="regular" alignY="center">
               <Badge variant={member.variant}>{member.role}</Badge>
-              <ActionMenu
-                variant="ghost"
-                size="icon"
-                aria-label={`Manage ${member.name}`}
-              >
+              <ActionMenu size="icon" aria-label={`Manage ${member.name}`}>
                 <ActionMenu.Item id="change-role">Change role</ActionMenu.Item>
                 <ActionMenu.Item id="resend-invite">
                   Resend invite

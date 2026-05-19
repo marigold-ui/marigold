@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useId, useMemo } from 'react';
+import { HeadingContext, Provider } from 'react-aria-components';
 import type {
   InsetSpacingTokens,
   PaddingSpacingTokens,
@@ -8,18 +9,13 @@ import type {
 } from '@marigold/system';
 import { cn, createSpacingVar, useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
-import { PanelProvider } from './Context';
+import { PanelContext } from './Context';
 import { PanelCollapsible } from './PanelCollapsible';
 import { PanelCollapsibleContent } from './PanelCollapsibleContent';
-import { PanelCollapsibleDescription } from './PanelCollapsibleDescription';
 import { PanelCollapsibleHeader } from './PanelCollapsibleHeader';
-import { PanelCollapsibleTitle } from './PanelCollapsibleTitle';
 import { PanelContent } from './PanelContent';
-import { PanelDescription } from './PanelDescription';
 import { PanelFooter } from './PanelFooter';
 import { PanelHeader } from './PanelHeader';
-import { PanelHeaderActions } from './PanelHeaderActions';
-import { PanelTitle } from './PanelTitle';
 
 // Props
 // ---------------
@@ -30,19 +26,17 @@ interface PanelBaseProps {
    * Content of the panel. Typically a combination of `Panel.Header`,
    * `Panel.Content`, `Panel.Collapsible`, and `Panel.Footer`.
    *
-   * `Panel.Header` is the layout wrapper that arranges `Panel.Title`,
-   * `Panel.Description`, and `Panel.HeaderActions` in a grid. When a
-   * Panel has only a title (no description, no actions), `Panel.Title`
-   * may be used as a direct child of `Panel` and the wrapper can be
-   * omitted. `Panel.Description` and `Panel.HeaderActions` always
-   * require a `Panel.Header` wrapper.
+   * `Panel.Header` configures the slot-aware text and action primitives
+   * (`<Title>`, `<Description>`, `<ActionButton>`, `<ActionGroup>`,
+   * `<ActionMenu>`, `<LinkButton>`) and lays them out in a grid.
    */
   children: ReactNode;
-  /** Accessible label. Required when no `Panel.Title` is present. */
+  /** Accessible label. Required when no `<Title>` is present. */
   'aria-label'?: string;
   /**
-   * Base heading level for the panel. `Panel.Title` renders at this level,
-   * `Panel.CollapsibleTitle` at `headingLevel + 1`.
+   * Base heading level for the panel. A `<Title>` inside `Panel.Header`
+   * renders at this level; a `<Title>` inside `Panel.CollapsibleHeader`
+   * renders at `headingLevel + 1`.
    * @default 2
    */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
@@ -97,6 +91,20 @@ export const Panel = ({
   const resolvedPx = px ?? `${inset}-x`;
   const resolvedPy = py ?? `${inset}-y`;
 
+  const rootHeadingProps = useMemo(
+    () => ({
+      slots: {
+        title: {
+          className: cn('px-(--panel-px)', classNames.title),
+          level: headingLevel,
+          id: titleId,
+          ref: titleSlotRef,
+        },
+      },
+    }),
+    [classNames.title, headingLevel, titleId, titleSlotRef]
+  );
+
   const contextValue = useMemo(
     () => ({
       classNames,
@@ -110,7 +118,12 @@ export const Panel = ({
   );
 
   return (
-    <PanelProvider value={contextValue}>
+    <Provider
+      values={[
+        [PanelContext, contextValue],
+        [HeadingContext, rootHeadingProps],
+      ]}
+    >
       <section
         aria-labelledby={!ariaLabel ? titleId : undefined}
         aria-label={ariaLabel}
@@ -126,18 +139,13 @@ export const Panel = ({
       >
         {children}
       </section>
-    </PanelProvider>
+    </Provider>
   );
 };
 
 Panel.Header = PanelHeader;
-Panel.Title = PanelTitle;
-Panel.Description = PanelDescription;
-Panel.HeaderActions = PanelHeaderActions;
 Panel.Content = PanelContent;
 Panel.Collapsible = PanelCollapsible;
 Panel.CollapsibleHeader = PanelCollapsibleHeader;
-Panel.CollapsibleTitle = PanelCollapsibleTitle;
-Panel.CollapsibleDescription = PanelCollapsibleDescription;
 Panel.CollapsibleContent = PanelCollapsibleContent;
 Panel.Footer = PanelFooter;

@@ -1,13 +1,13 @@
-import { Description, Stack, Title } from '@marigold/components';
+import { Description, Panel, Title } from '@marigold/components';
 
 export default () => (
-  <div className="rounded border p-4">
-    <Stack space="tight">
+  <Panel>
+    <Panel.Header>
       <Title>Storage usage</Title>
       <Description>
         42% of your storage quota is currently in use. Upgrade your plan to
         unlock more space.
       </Description>
-    </Stack>
-  </div>
+    </Panel.Header>
+  </Panel>
 );
