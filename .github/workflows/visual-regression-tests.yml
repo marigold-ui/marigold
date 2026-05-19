@@ -4,6 +4,14 @@ on:
   pull_request:
     types: [closed]
     branches: [main]
+    # Skip when only visual-irrelevant files change.
+    # Lockfile/package.json are intentionally NOT here — they're handled via
+    # `untraced` below so TurboSnap can still detect runtime-dep changes.
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - '**/*.mdx'
+      - '.changeset/**'
 
   # Manual trigger
   workflow_dispatch:
@@ -87,12 +95,33 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           branchName: ${{ steps.resolve-branch.outputs.branch }}
-          onlyChanged: true # set to true to enable TurboSnap https://www.chromatic.com/docs/turbosnap/setup/
-          untraced: './.storybook/decorators.tsx'
+          onlyChanged: true # TurboSnap: https://www.chromatic.com/docs/turbosnap/setup/
+          # Files whose changes should NOT trigger story re-snapshots via
+          # dependency tracing. Keep this list focused on files that change
+          # often but cannot affect rendered output.
+          untraced: |
+            ./.storybook/decorators.tsx
+            **/*.md
+            **/*.mdx
+            .changeset/**
           storybookConfigDir: './.storybook'
           storybookBuildDir: './storybook-static'
           storybookBaseDir: '.'
           debug: true
+          # One-shot diagnostics so we can see WHY TurboSnap chose to
+          # snapshot what it did. Inspect via the uploaded artifact below.
+          diagnosticsFile: true
+          traceChanged: expanded
+
+      - name: Upload Chromatic diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chromatic-diagnostics-${{ github.run_id }}
+          path: |
+            chromatic-diagnostics.json
+            chromatic.log
+          if-no-files-found: ignore
 
       - name: Send Slack notification
         if: always() && steps.chromatic.outputs.changeCount != '0'
