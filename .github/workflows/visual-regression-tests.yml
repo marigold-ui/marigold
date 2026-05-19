@@ -1,8 +1,9 @@
 name: Visual-Regression-Tests
 on:
-  # When a PR is merged (into any branch)
+  # When a PR is merged into main
   pull_request:
     types: [closed]
+    branches: [main]
 
   # Manual trigger
   workflow_dispatch:
