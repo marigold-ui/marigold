@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react';
 import { use } from 'react';
-import {
-  ComboBoxStateContext,
-  Button as RACButton,
-} from 'react-aria-components';
+import { Button as RACButton } from 'react-aria-components/Button';
+import { ComboBoxStateContext } from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button/Button';

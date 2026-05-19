@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { HeadingContext, Provider } from 'react-aria-components';
+import { HeadingContext } from 'react-aria-components/Heading';
+import { Provider } from 'react-aria-components/slots';
 import { Basic } from './Title.stories';
 
 test('renders as h2 by default', () => {

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { ListBoxItem } from 'react-aria-components';
+import { ListBoxItem } from 'react-aria-components/ListBox';
 import { Check } from '../icons/Check';
 import { useListBoxContext } from './Context';
 

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-aria-components';
+import { Provider } from 'react-aria-components/slots';
 import { Basic } from './ActionButton.stories';
 import { ActionButtonContext } from './Context';
 

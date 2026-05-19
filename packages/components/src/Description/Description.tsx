@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Text } from 'react-aria-components';
+import { Text } from 'react-aria-components/Text';
 import type { AriaLabelingProps } from '@marigold/types';
 import type { SlotProps } from '../types';
 

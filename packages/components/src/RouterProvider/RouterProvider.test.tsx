@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
-import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
+import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components/Tabs';
 import { RouterProvider } from './RouterProvider';
 
 const user = userEvent.setup();

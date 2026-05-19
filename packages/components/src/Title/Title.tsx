@@ -1,10 +1,10 @@
 import type { ElementType, ReactNode, Ref } from 'react';
-import type { HeadingProps } from 'react-aria-components';
 import {
   Heading,
   HeadingContext,
-  useContextProps,
-} from 'react-aria-components';
+  type HeadingProps,
+} from 'react-aria-components/Heading';
+import { useContextProps } from 'react-aria-components/slots';
 import type { AriaLabelingProps } from '@marigold/types';
 import type { SlotProps } from '../types';
 import { noSlot } from '../utils/noSlot';

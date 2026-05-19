@@ -1,5 +1,5 @@
 import { Pencil, Trash2 } from 'lucide-react';
-import { Provider } from 'react-aria-components';
+import { Provider } from 'react-aria-components/slots';
 import preview from '.storybook/preview';
 import { ActionButton } from '../ActionButton/ActionButton';
 import { ActionButtonContext } from '../ActionButton/Context';

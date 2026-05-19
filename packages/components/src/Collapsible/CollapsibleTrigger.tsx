@@ -1,5 +1,5 @@
-import type { ButtonProps, HeadingProps } from 'react-aria-components';
-import { Button, Heading } from 'react-aria-components';
+import { Button, type ButtonProps } from 'react-aria-components/Button';
+import { Heading, type HeadingProps } from 'react-aria-components/Heading';
 import { useClassNames } from '@marigold/system';
 import { noSlot } from '../utils/noSlot';
 import { CollapsibleContext } from './Context';

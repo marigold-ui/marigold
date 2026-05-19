@@ -1,5 +1,7 @@
 import { ReactNode, use } from 'react';
-import { Button, DisclosureStateContext, Heading } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { DisclosureStateContext } from 'react-aria-components/Disclosure';
+import { Heading } from 'react-aria-components/Heading';
 import { cn } from '@marigold/system';
 import { ChevronDown } from '../icons/ChevronDown';
 import { noSlot } from '../utils/noSlot';

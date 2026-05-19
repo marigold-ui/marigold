@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { Provider, TextContext } from 'react-aria-components';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { Basic } from './Description.stories';
 
 test('renders as a span by default', () => {

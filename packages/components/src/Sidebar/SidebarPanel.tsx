@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
-import { Button, Separator } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { Separator } from 'react-aria-components/Separator';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
 import { cn } from '@marigold/system';

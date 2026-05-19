@@ -1,7 +1,7 @@
 import { CalendarDate } from '@internationalized/date';
 import { render, screen } from '@testing-library/react';
 import { ReactNode } from 'react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import {
   Basic,
   ThreeMonths,

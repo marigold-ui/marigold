@@ -4,7 +4,7 @@ import type RAC from 'react-aria-components';
 import {
   OverlayTriggerStateContext,
   Dialog as RACDialog,
-} from 'react-aria-components';
+} from 'react-aria-components/Dialog';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Modal, ModalProps } from '../Overlay/Modal';

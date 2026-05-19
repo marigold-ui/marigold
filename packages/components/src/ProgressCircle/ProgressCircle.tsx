@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { ProgressBar } from 'react-aria-components';
+import { ProgressBar } from 'react-aria-components/ProgressBar';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { SVG, cn, useClassNames } from '@marigold/system';
 import { intlMessages } from '../intl/messages';

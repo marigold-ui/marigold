@@ -1,14 +1,10 @@
 import type { ReactNode } from 'react';
 import { use, useId, useMemo } from 'react';
-import type { ContextValue, TextProps } from 'react-aria-components';
-import {
-  Button,
-  DisclosureStateContext,
-  Heading,
-  HeadingContext,
-  Provider,
-  TextContext,
-} from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { DisclosureStateContext } from 'react-aria-components/Disclosure';
+import { Heading, HeadingContext } from 'react-aria-components/Heading';
+import { TextContext, type TextProps } from 'react-aria-components/Text';
+import { type ContextValue, Provider } from 'react-aria-components/slots';
 import { cn } from '@marigold/system';
 import { MorphCaret } from '../icons/MorphCaret';
 import { noSlot } from '../utils/noSlot';

@@ -6,7 +6,7 @@ import {
   DateField,
   DateFieldStateContext,
   DateValue,
-} from 'react-aria-components';
+} from 'react-aria-components/DateField';
 import { WidthProp } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { DateInput } from './DateInput';
