@@ -26,7 +26,7 @@ jobs:
           pnpm dlx @cyclonedx/cdxgen -r -o sbom.json
 
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         id: upload-artifact
         with:
           name: sbom
