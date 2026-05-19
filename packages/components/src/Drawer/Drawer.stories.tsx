@@ -247,18 +247,18 @@ export const Controlled = meta.story({
 export const OneAtATime = meta.story({
   tags: ['component-test'],
   parameters: { surface: false },
-  render: () => (
+  render: args => (
     <Stack space={8} alignX="left">
       <Drawer.Trigger>
         <Button>Open A</Button>
-        <Drawer>
+        <Drawer {...args}>
           <Drawer.Title>Title A</Drawer.Title>
           <Drawer.Content>Content A</Drawer.Content>
         </Drawer>
       </Drawer.Trigger>
       <Drawer.Trigger>
         <Button>Open B</Button>
-        <Drawer>
+        <Drawer {...args}>
           <Drawer.Title>Title B</Drawer.Title>
           <Drawer.Content>Content B</Drawer.Content>
         </Drawer>
@@ -291,15 +291,15 @@ export const OneAtATime = meta.story({
 export const OneAtATimeNested = meta.story({
   tags: ['component-test'],
   parameters: { surface: false },
-  render: () => (
+  render: args => (
     <Drawer.Trigger>
       <Button>Open A</Button>
-      <Drawer>
+      <Drawer {...args}>
         <Drawer.Title>Title A</Drawer.Title>
         <Drawer.Content>
           <Drawer.Trigger>
             <Button>Open B</Button>
-            <Drawer>
+            <Drawer {...args}>
               <Drawer.Title>Title B</Drawer.Title>
               <Drawer.Content>Content B</Drawer.Content>
             </Drawer>
