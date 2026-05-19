@@ -1,3 +1,8 @@
+// Each file in this example carries its own 'use client' so individual
+// components can be copy-pasted into a project without tracing back to
+// where the client boundary starts. Once page.tsx is a client component,
+// Next.js inherits client status down the tree, so the directive on the
+// children is intentional documentation, not a requirement.
 'use client';
 
 import { Headline, Inset, Panel, Stack, Text } from '@marigold/components';

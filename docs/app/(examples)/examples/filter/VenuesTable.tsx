@@ -98,15 +98,15 @@ const VenueRow = ({ venue }: { venue: Venue }) => (
     </Table.Cell>
     <Table.Cell>
       <Inline space="0.5">
-        {venue.amenities.map((a, i) => (
-          <Badge key={`${a}-${i}`}>{amenitiesOptions[a]}</Badge>
+        {venue.amenities.map(a => (
+          <Badge key={a}>{amenitiesOptions[a]}</Badge>
         ))}
       </Inline>
     </Table.Cell>
     <Table.Cell>
       <Inline space="0.5">
-        {venue.parking.map((p, i) => (
-          <Badge key={`${p}-${i}`}>{parkingOptions[p]}</Badge>
+        {venue.parking.map(p => (
+          <Badge key={p}>{parkingOptions[p]}</Badge>
         ))}
       </Inline>
     </Table.Cell>

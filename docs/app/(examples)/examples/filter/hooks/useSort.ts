@@ -14,4 +14,6 @@ const sortParsers = {
 
 export type VenueSortDescriptor = inferParserType<typeof sortParsers>;
 
+// Unlike useSearch/useFilter, sorting doesn't reset page — changing order
+// preserves item count, so the current page stays meaningful.
 export const useSort = () => useQueryStates(sortParsers, { history: 'push' });
