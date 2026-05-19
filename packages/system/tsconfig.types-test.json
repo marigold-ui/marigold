@@ -1,0 +1,21 @@
+/*
+ * Strict-mode typecheck for DSTSUP-253 regression tests.
+ *
+ * The base Marigold tsconfig keeps `strictFunctionTypes: false` for historical
+ * reasons, which hides function-parameter contravariance issues such as the
+ * `cva` ↔ `ComponentStyleFunction` mismatch reported in DSTSUP-253. This
+ * config flips that flag back on and compiles only the dedicated
+ * `__type-tests__` files, so we exercise the consumer's default `strict: true`
+ * settings without breaking the wider monorepo typecheck.
+ */
+{
+  "extends": "@marigold/tsconfig/react",
+  "compilerOptions": {
+    "strictFunctionTypes": true,
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": ["src/__type-tests__/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

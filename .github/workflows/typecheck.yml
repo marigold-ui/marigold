@@ -30,3 +30,9 @@ jobs:
       # Action
       - name: Typecheck
         run: pnpm typecheck
+
+      # Strict-mode regression check for the consumer-facing theming contract
+      # (default `strict: true`). Catches issues like DSTSUP-253 that the
+      # monorepo's loose base config otherwise hides.
+      - name: Typecheck (strict)
+        run: pnpm typecheck:strict

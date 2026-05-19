@@ -4,20 +4,24 @@ export interface NestedStringObject {
   [key: string]: NestedStringObject | string;
 }
 
-export interface ComponentStyleFunction<
+// Method shorthand is checked bivariantly, which lets narrower-input style
+// functions (e.g. `cva` results with literal variant unions) be assigned to
+// `ComponentStyleFunction<string, string>` even under `strictFunctionTypes`.
+// See DSTSUP-253.
+export type ComponentStyleFunction<
   Variants extends string = never,
   Sizes extends string = never,
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   Additional extends { [name: string]: any } = {},
-> {
-  (
+> = {
+  bivariantHack(
     props?: {
-      variant?: Variants | null;
-      size?: Sizes | null;
+      variant?: Variants;
+      size?: Sizes;
       className?: ClassValue;
     } & Partial<Additional>
   ): string;
-}
+}['bivariantHack'];
 
 export type Theme = {
   name: string;
