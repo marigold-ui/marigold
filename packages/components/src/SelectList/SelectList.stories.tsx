@@ -219,7 +219,7 @@ export const Basic = meta.story({
     </SelectList>
   ),
   play: async ({ args, canvas, step }) => {
-    const creditRow = canvas.getByRole('row', { name: /credit card/i });
+    const creditRow = await canvas.findByRole('row', { name: /credit card/i });
     const paypalRow = canvas.getByRole('row', { name: /paypal/i });
 
     await step('default selection comes from defaultSelectedKeys', () => {
@@ -282,7 +282,7 @@ export const WithMultiSelection = meta.story({
     </SelectList>
   ),
   play: async ({ args, canvas, step }) => {
-    const insuranceRow = canvas.getByRole('row', {
+    const insuranceRow = await canvas.findByRole('row', {
       name: /parcel insurance/i,
     });
     const giftWrapRow = canvas.getByRole('row', { name: /gift wrap/i });
@@ -360,7 +360,7 @@ export const WithIconAction = meta.story({
     </SelectList>
   ),
   play: async ({ canvas, step }) => {
-    const button = canvas.getByRole('button', {
+    const button = await canvas.findByRole('button', {
       name: 'Learn more about Credit card',
     });
     const row = button.closest('[role="row"]')!;
@@ -435,7 +435,7 @@ export const WithActionMenu = meta.story({
     </SelectList>
   ),
   play: async ({ canvas, step }) => {
-    const trigger = canvas.getByRole('button', {
+    const trigger = await canvas.findByRole('button', {
       name: 'Manage Visa ending in 4242',
     });
     const row = trigger.closest('[role="row"]')!;
@@ -572,7 +572,7 @@ export const WithCustomPadding = meta.story({
     </SelectList>
   ),
   play: async ({ canvas }) => {
-    const standardRow = canvas.getByRole('row', { name: /standard/i });
+    const standardRow = await canvas.findByRole('row', { name: /standard/i });
     expect(standardRow).toHaveClass(
       'px-(--selectlist-item-px)',
       'py-(--selectlist-item-py)'
@@ -640,7 +640,7 @@ export const Disabled = meta.story({
     </SelectList>
   ),
   play: async ({ args, canvas }) => {
-    const expressRow = canvas.getByRole('row', { name: /express/i });
+    const expressRow = await canvas.findByRole('row', { name: /express/i });
 
     await userEvent.click(expressRow);
 
@@ -725,7 +725,7 @@ export const WithForm = meta.story({
   ),
   play: async ({ canvas }) => {
     await userEvent.click(
-      canvas.getByRole('row', { name: /parcel insurance/i })
+      await canvas.findByRole('row', { name: /parcel insurance/i })
     );
     await userEvent.click(canvas.getByRole('row', { name: /gift wrap/i }));
     await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
