@@ -47,7 +47,7 @@
     "nuqs": "2.8.9",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-hook-form": "7.71.2",
+    "react-hook-form": "7.75.0",
     "react-use": "^17.6.0",
     "remark-gfm": "^4.0.1",
     "remark-mdx": "^3.1.0",
@@ -56,7 +56,7 @@
     "tailwind-merge": "^3.5.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
-    "zod": "4.3.6",
+    "zod": "4.4.3",
     "zod-form-data": "3.0.1"
   },
   "devDependencies": {
@@ -65,7 +65,7 @@
     "@types/node": "^25.0.5",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
-    "eslint": "10.1.0",
+    "eslint": "10.3.0",
     "eslint-config-next": "16.2.6",
     "fumadocs-typescript": "^5.1.4",
     "p-limit": "7.3.0",
