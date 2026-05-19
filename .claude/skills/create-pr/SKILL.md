@@ -11,9 +11,11 @@ Help the user open a pull request that matches Marigold's PR template (`.github/
 
 ```
 /create-pr
+/create-pr for DST-1234
+/create-pr https://reservix.atlassian.net/browse/DST-1234
 ```
 
-No arguments — the skill works from the current branch.
+By default the skill works from the current branch and infers the Jira ticket from the branch name or commit history. If the ticket isn't on the branch (or you don't want to switch), pass it in the invocation — accepts `DST-1234` or a full Jira URL. An explicit ticket overrides inference.
 
 ## Title format
 
@@ -91,7 +93,7 @@ When ambiguous, pick the most user-facing type (`feat` > `fix` > `refactor` > `c
 
 ### 3. Extract the Jira ticket
 
-Search these sources in order — stop at the first hit:
+If the user passed a DST ticket or Jira URL in the invocation (e.g. `/create-pr for DST-1234`), use that and skip inference. Otherwise search these sources in order — stop at the first hit:
 
 1. **Branch name** — match `DST-\d+` case-insensitively (e.g. `feature/DST-1234-add-loading-state`)
 2. **Commit messages on this branch** — `git log origin/main..HEAD --format=%B` and grep for `DST-\d+`
@@ -141,7 +143,7 @@ Default to `No`. Flag as `Yes` only if you see:
 - Major version bumps in a changeset
 - Removed/renamed CSS custom properties in `themes/`
 
-If `Yes`, add a short migration note.
+If `Yes`, add a short migration note and apply the `🚨 Breaking Change` label to the PR (pass `--label "🚨 Breaking Change"` to `gh pr create` in step 7).
 
 #### Checklist
 Start with all items unchecked, then auto-tick the ones you can verify:
@@ -229,6 +231,8 @@ EOF
 ```
 
 Add `--draft` if the user chose "Create as draft" in step 6.
+
+If Breaking Changes was flagged as `Yes` in step 4, also pass `--label "🚨 Breaking Change"`.
 
 After creation, print the PR URL `gh pr create` returns.
 
