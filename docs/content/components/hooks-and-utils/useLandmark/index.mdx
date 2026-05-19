@@ -3,9 +3,9 @@ title: useLandmark
 description: Register a region as an ARIA landmark and enable F6 navigation between landmarks.
 ---
 
-We re-export the `useLandmark` hook from [`react-aria`](https://react-spectrum.adobe.com/react-aria/useLandmark.html). It registers an element as an [ARIA landmark](/foundations/accessibility#landmarks) and wires it into React Aria's keyboard navigation. Once at least two landmarks are registered, users can move between them with `F6` (forward) and `Shift + F6` (backward), independent of the regular `Tab` order.
+We re-export the `useLandmark` hook from [`react-aria`](https://react-spectrum.adobe.com/react-aria/useLandmark.html). It registers an element with React Aria's landmark controller so users can move between regions with `F6` (forward) and `Shift + F6` (backward), independent of the regular `Tab` order.
 
-Marigold's structural components (`<AppLayout>`, `<Sidebar>`, `<TopNavigation>`, `<Drawer>`) already use this hook internally. Reach for it directly when you build a custom region that should be exposed to assistive technologies as a landmark, for example a search shell, a feed of cards, or a co-pilot panel.
+Marigold's structural components (`<AppLayout>`, `<Sidebar>`, `<TopNavigation>`, `<Panel>`) expose [ARIA landmarks](/foundations/accessibility#landmarks) through semantic HTML, so screen readers list them automatically. Today only `<Drawer>` registers with the `F6` controller — use this hook to add any other region to the cycle (search shells, feeds, co-pilot panels).
 
 More information can be found in the [react-aria documentation](https://react-spectrum.adobe.com/react-aria/useLandmark.html).
 
@@ -52,7 +52,7 @@ const SearchRegion = ({ children }: { children: React.ReactNode }) => {
 - `banner`, site-wide content such as the masthead or top navigation.
 - `contentinfo`, site-wide footer information.
 - `search`, a search facility.
-- `form`, a form, when it is a major region of the page.
+- `form`, a form, when it is a major region of the page. It **must** have an `aria-label` or `aria-labelledby`.
 - `region`, a generic landmark when none of the others fit. It **must** have an `aria-label` or `aria-labelledby`.
 
 ### Labelling multiple landmarks of the same role

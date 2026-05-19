@@ -92,9 +92,11 @@ To test this, try the demo below using only your keyboard. Tab through all the e
 
 Landmarks are regions of the page that screen reader users can jump to directly without tabbing through every interactive element. They make large applications navigable in the same way that a sighted user might scan for the sidebar, header, or main content area.
 
-Landmarks are defined either by semantic HTML elements (`<main>`, `<nav>`, `<aside>`, `<header>`, `<footer>`, `<form>`) or by an explicit [ARIA landmark role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles#3._landmark_roles). Most assistive technologies expose a list of all landmarks on the page so users can move between them. Once two or more landmarks are on the page, screen reader users press `F6` to move focus to the next landmark and `Shift + F6` to move to the previous one, independent of the regular `Tab` order.
+Landmarks are defined either by semantic HTML elements (`<main>`, `<nav>`, `<aside>`, `<header>`, `<footer>`, `<form>`) or by an explicit [ARIA landmark role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles#3._landmark_roles). Most assistive technologies expose a list of all landmarks on the page so users can move between them, regardless of how the landmark was authored.
 
-The [App Shell pattern](/patterns/layout/app-shell) wires up the major landmarks of a typical Marigold page for you, so most applications get this structure by default. When you build a custom region that should appear in the landmark outline outside that pattern, reach for the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook. It registers the element with React Aria's landmark navigation and applies the correct ARIA role and labelling.
+`F6` / `Shift + F6` keyboard cycling is a separate feature — it only works for regions registered with the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook, which wires the element into React Aria's landmark controller.
+
+The [App Shell pattern](/patterns/layout/app-shell) wires up the major landmarks via semantic HTML, so they appear in the screen reader's landmark list automatically. To make a custom region (search shell, AI assistant, activity feed) discoverable in the same list and reachable with `F6`, register it with `useLandmark`.
 
 Try the demo below. Click anywhere inside it, then use `F6` to move forward through the landmarks. Each region announces its role and accessible name to the screen reader.
 

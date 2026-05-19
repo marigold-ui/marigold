@@ -16,7 +16,7 @@ const Region = ({ role, label, description }: RegionProps) => {
     <section
       ref={ref}
       {...landmarkProps}
-      className="rounded-sm border border-dashed border-stone-300 p-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+      className="border-border focus-visible:outline-ring rounded-sm border border-dashed p-4 focus-visible:outline-2 focus-visible:outline-offset-2"
     >
       <Stack space={1}>
         <Headline level={6}>{label}</Headline>
