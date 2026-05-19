@@ -5,6 +5,20 @@
 @import './variants.css';
 
 /*
+ * Keep @keyframes animations intact so entering:/exiting:/spinner motion still
+ * works; components can opt out per-animation via motion-reduce:animate-none.
+ * Also stabilizes Chromatic VRT, which forces prefers-reduced-motion: reduce.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/*
     - create tokens if we think:
         - it is necessary for a component
         - it can be used by other teams (if they build their own component)
