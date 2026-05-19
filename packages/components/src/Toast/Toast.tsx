@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
 import { Text } from 'react-aria-components/Text';
-import { UNSTABLE_ToastContent as RAC_ToastContent } from 'react-aria-components/Toast';
-import { UNSTABLE_Toast as RAC_Toast } from 'react-aria-components/Toast';
+import {
+  UNSTABLE_Toast as RAC_Toast,
+  UNSTABLE_ToastContent as RAC_ToastContent,
+} from 'react-aria-components/Toast';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';

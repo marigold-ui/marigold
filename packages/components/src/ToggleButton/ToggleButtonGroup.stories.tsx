@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Key } from 'react-aria-components/Breadcrumbs';
+import { Key } from 'react-aria-components/ToggleButtonGroup';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import { Bold, Italic, Underline } from '@marigold/icons';
 import preview from '../../../../.storybook/preview';

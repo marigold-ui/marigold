@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 import { use } from 'react';
-import type { ValidationResult } from 'react-aria-components/CheckboxGroup';
 import {
   FieldError,
   FieldErrorContext,
 } from 'react-aria-components/FieldError';
 import { Text } from 'react-aria-components/Text';
+import type { ValidationResult } from '@react-types/shared';
 import { cn, useClassNames } from '@marigold/system';
 import { TriangleAlert } from '../icons/TriangleAlert';
 

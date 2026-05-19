@@ -1,8 +1,8 @@
 import type { CSSProperties } from 'react';
 import { use, useRef } from 'react';
-import type { DialogProps } from 'react-aria-components/Dialog';
 import {
   Dialog,
+  type DialogProps,
   OverlayTriggerStateContext,
 } from 'react-aria-components/Dialog';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';

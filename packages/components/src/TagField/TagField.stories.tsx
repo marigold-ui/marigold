@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Key } from 'react-aria-components/Breadcrumbs';
+import { Key } from 'react-aria-components/TagGroup';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Stack } from '../Stack/Stack';
