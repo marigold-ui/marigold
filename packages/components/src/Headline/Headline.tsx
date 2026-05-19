@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Heading } from 'react-aria-components';
+import { Heading } from 'react-aria-components/Heading';
 import {
   LineHeightProp,
   TextAlignProp,
@@ -11,6 +11,7 @@ import {
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 import type { SlotProps } from '../types';
+import { noSlot } from '../utils/noSlot';
 
 /**
  * The shared heading size scale. Reused by `Title` so heading primitives
@@ -50,7 +51,13 @@ const _Headline = ({
   color,
   level = '1',
   lineHeight,
-  slot,
+  // Headline is a page-level structural primitive; it does not participate
+  // in `HeadingContext` slot configuration by default. The opt-out matters
+  // because `<Panel>` publishes a slot-keyed `HeadingContext` at its root
+  // and any bare `<Heading>` rendered inside it (e.g. `<Headline>` inside
+  // `Panel.Content`) would otherwise throw `"A slot prop is required when
+  // using slots"`. For slot-aware container titles use `<Title>` instead.
+  slot = noSlot,
   ...props
 }: HeadlineProps) => {
   const classNames = useClassNames({

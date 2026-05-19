@@ -1,11 +1,11 @@
 import type { ReactNode, Ref } from 'react';
 import { Children, isValidElement, useRef } from 'react';
 import {
-  Link,
   Breadcrumb as RACBreadcrumb,
   Breadcrumbs as RACBreadcrumbs,
   BreadcrumbsProps as RACBreadcrumbsProps,
-} from 'react-aria-components';
+} from 'react-aria-components/Breadcrumbs';
+import { Link } from 'react-aria-components/Link';
 import { useObjectRef } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons/ChevronRight';

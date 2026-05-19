@@ -157,7 +157,7 @@ The drawer keeps the selected rows visible so users can confirm the selection wh
 
 ### Accessibility
 
-A drawer renders with the ARIA role `complementary` by default, which fits almost every use case in this guide. Two exceptions are worth knowing:
+A drawer renders with the ARIA role `complementary` by default, which fits almost every use case in this guide. The `role` prop accepts any [ARIA landmark role](/foundations/accessibility#landmarks), and two exceptions are worth knowing:
 
 - For a filter panel, consider `role="search"` to give screen-reader users a more precise landmark.
 - For long-lived activity panels, consider `role="region"` with an `aria-label` if the panel is part of the persistent layout.

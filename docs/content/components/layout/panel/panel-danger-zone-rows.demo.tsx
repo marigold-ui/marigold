@@ -1,4 +1,12 @@
-import { Button, Inline, Panel, Stack, Text } from '@marigold/components';
+import {
+  Button,
+  Description,
+  Inline,
+  Panel,
+  Stack,
+  Text,
+  Title,
+} from '@marigold/components';
 
 const actions = [
   {
@@ -27,10 +35,10 @@ const actions = [
 export default () => (
   <Panel variant="destructive">
     <Panel.Header>
-      <Panel.Title>Danger zone</Panel.Title>
-      <Panel.Description>
+      <Title>Danger zone</Title>
+      <Description>
         Permanent actions that affect this organizer. There's no undo.
-      </Panel.Description>
+      </Description>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">

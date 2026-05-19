@@ -1,17 +1,15 @@
 import type { Key, ReactNode, Ref } from 'react';
 import { use, useLayoutEffect, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
+import { Autocomplete, useFilter } from 'react-aria-components/Autocomplete';
+import { Button as RACButton } from 'react-aria-components/Button';
+import { Group } from 'react-aria-components/Group';
+import { SearchField } from 'react-aria-components/SearchField';
 import {
-  Autocomplete,
-  Group,
-  Button as RACButton,
   Select as ReactAriaSelect,
-  SearchField,
   SelectStateContext,
-  TagGroup,
-  TagList,
-  useFilter,
-} from 'react-aria-components';
+} from 'react-aria-components/Select';
+import { TagGroup, TagList } from 'react-aria-components/TagGroup';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import {
   type WidthProp,

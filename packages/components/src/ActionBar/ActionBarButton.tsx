@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import RAC, { Button } from 'react-aria-components';
+import type RAC from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
 import { useClassNames } from '@marigold/system';
 
 export interface ActionBarButtonProps {

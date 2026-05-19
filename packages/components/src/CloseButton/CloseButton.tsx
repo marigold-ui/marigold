@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import React from 'react';
-import { Button } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
 import { useClassNames } from '@marigold/system';
 import { ButtonProps } from '../Button/Button';
 import { X } from '../icons/X';

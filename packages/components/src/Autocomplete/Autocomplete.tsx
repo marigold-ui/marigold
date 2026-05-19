@@ -1,7 +1,11 @@
 import type { ReactNode, Ref } from 'react';
 import { use } from 'react';
 import type RAC from 'react-aria-components';
-import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
+import {
+  ComboBox,
+  ComboBoxStateContext,
+  Key,
+} from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { I18nProvider, useDragAndDrop } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
+import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
 import { useListData } from 'react-stately';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';

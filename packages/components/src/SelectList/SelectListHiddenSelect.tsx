@@ -1,6 +1,6 @@
 import type { ChangeEvent, RefObject } from 'react';
 import { useCallback, useRef } from 'react';
-import { VisuallyHidden } from 'react-aria-components';
+import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
 import { useFormValidation } from '@react-aria/form';
 import type { FormValidationState } from '@react-stately/form';
 import type { Key, Selection } from '@react-types/shared';

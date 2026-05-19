@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import { Dispatch, SetStateAction } from 'react';
-import { DateValue } from 'react-aria-components';
+import { DateValue } from 'react-aria-components/Calendar';
 import { useDateFormatter } from '@react-aria/i18n';
 import { useCalendarOrRangeState } from './Context';
 import { ListBox } from './ListBox';

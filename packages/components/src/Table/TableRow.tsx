@@ -1,11 +1,7 @@
 import type RAC from 'react-aria-components';
-import {
-  Button,
-  Cell,
-  Collection,
-  Row,
-  useTableOptions,
-} from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { Collection } from 'react-aria-components/Collection';
+import { Cell, Row, useTableOptions } from 'react-aria-components/Table';
 import { cn, useClassNames } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { GripVertical } from '../icons/GripVertical';

@@ -2,6 +2,7 @@
 
 import {
   Checkbox,
+  Description,
   Inline,
   Link,
   NumberField,
@@ -9,16 +10,17 @@ import {
   Select,
   Stack,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export const LocationSettings = () => (
-  <Panel headingLevel={3} size="form">
+  <Panel size="form">
     <Panel.Header>
-      <Panel.Title>Location & capacity</Panel.Title>
-      <Panel.Description>
+      <Title>Location & capacity</Title>
+      <Description>
         Where the event takes place. The address is shown on the event page,
         tickets, and confirmation emails.
-      </Panel.Description>
+      </Description>
     </Panel.Header>
     <Panel.Content>
       <Stack space="group">
@@ -93,10 +95,10 @@ export const LocationSettings = () => (
     </Panel.Content>
     <Panel.Collapsible>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>Additional details</Panel.CollapsibleTitle>
-        <Panel.CollapsibleDescription>
+        <Title>Additional details</Title>
+        <Description>
           Room assignments, hybrid event links, and venue capacity.
-        </Panel.CollapsibleDescription>
+        </Description>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">

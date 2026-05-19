@@ -3,22 +3,24 @@ import {
   Button,
   Columns,
   Container,
+  Description,
   Headline,
   Inline,
   Panel,
   Stack,
   Text,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export const Newsletter = () => (
   <Panel>
     <Panel.Header>
-      <Panel.Title>Subscribe to our Newsletter</Panel.Title>
-      <Panel.Description>
+      <Title>Subscribe to our Newsletter</Title>
+      <Description>
         Get updates, exclusive offers, and expert insights delivered to your
         inbox. Subscribe to our newsletter for the latest news and promotions!
-      </Panel.Description>
+      </Description>
     </Panel.Header>
     <Panel.Content>
       <Columns columns={[1, 1]} space={32} collapseAt="1000px">

@@ -194,7 +194,9 @@ export { ProgressCircle } from './ProgressCircle/ProgressCircle';
 export type { ProgressCircleProps } from './ProgressCircle/ProgressCircle';
 
 export { I18nProvider } from '@react-aria/i18n';
-export { HeadingContext, Provider, TextContext } from 'react-aria-components';
+export { HeadingContext } from 'react-aria-components/Heading';
+export { TextContext } from 'react-aria-components/Text';
+export { Provider } from 'react-aria-components/slots';
 export { useTheme, ThemeProvider } from '@marigold/system';
 export { MarigoldProvider } from './Provider/MarigoldProvider';
 export type { MarigoldProviderProps } from './Provider/MarigoldProvider';
