@@ -1,6 +1,8 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Group, Input, NumberField } from 'react-aria-components';
+import { Group } from 'react-aria-components/Group';
+import { Input } from 'react-aria-components/Input';
+import { NumberField } from 'react-aria-components/NumberField';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { StepButton } from './StepButton';

@@ -1,6 +1,7 @@
 import type { PropsWithChildren, ReactNode } from 'react';
-import type { ContextValue } from 'react-aria-components';
-import { Provider, TextContext } from 'react-aria-components';
+import { TextContext } from 'react-aria-components/Text';
+import type { ContextValue } from 'react-aria-components/slots';
+import { Provider } from 'react-aria-components/slots';
 import { useId } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { HelpText } from '../HelpText/HelpText';

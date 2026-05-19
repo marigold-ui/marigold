@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { TabPanel } from 'react-aria-components';
+import { TabPanel } from 'react-aria-components/Tabs';
 import { useTabContext } from './Context';
 
 // props

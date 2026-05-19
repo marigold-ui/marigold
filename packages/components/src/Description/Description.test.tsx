@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { Provider, TextContext } from 'react-aria-components';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { Basic } from './Description.stories';
 
 test('renders as a span by default', () => {
@@ -11,11 +12,13 @@ test('renders as a span by default', () => {
   expect(el).toHaveTextContent('Hi there');
 });
 
-test('respects the "as" prop', () => {
+test('honors `elementType` from a TextContext slot', () => {
   render(
-    <Basic.Component as="p" data-testid="description">
-      Hi
-    </Basic.Component>
+    <Provider
+      values={[[TextContext, { slots: { description: { elementType: 'p' } } }]]}
+    >
+      <Basic.Component data-testid="description">Hi</Basic.Component>
+    </Provider>
   );
 
   expect(screen.getByTestId('description').tagName).toBe('P');

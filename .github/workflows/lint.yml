@@ -15,7 +15,7 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4.2.0 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v6.0.8 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -23,6 +23,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Build packages
+        run: pnpm build
 
       # Action
       - name: Lint

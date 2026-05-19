@@ -1,6 +1,6 @@
 import { parseTime } from '@internationalized/date';
 import { useState } from 'react';
-import { TimeValue } from 'react-aria-components';
+import { TimeValue } from 'react-aria-components/TimeField';
 import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { TimeField } from './TimeField';

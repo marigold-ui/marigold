@@ -1,6 +1,9 @@
 import { type ReactNode, use } from 'react';
 import type RAC from 'react-aria-components';
-import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
+import {
+  Dialog,
+  OverlayTriggerStateContext,
+} from 'react-aria-components/Dialog';
 import { useIsHidden } from '@react-aria/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { TrayContext } from './Context';

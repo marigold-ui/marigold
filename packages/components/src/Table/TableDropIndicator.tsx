@@ -1,8 +1,8 @@
-import { DropIndicator } from 'react-aria-components';
+import { DropIndicator } from 'react-aria-components/useDragAndDrop';
 import type {
   DragAndDropOptions,
   DropIndicatorProps,
-} from 'react-aria-components';
+} from 'react-aria-components/useDragAndDrop';
 import { cn, useClassNames } from '@marigold/system';
 
 // Props

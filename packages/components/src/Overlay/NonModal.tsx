@@ -1,11 +1,8 @@
 import { use } from 'react';
-import {
-  OverlayTriggerStateContext,
-  Provider,
-  SlotProps,
-  useRenderProps,
-} from 'react-aria-components';
-import type { RenderProps } from 'react-aria-components';
+import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
+import { Provider, SlotProps } from 'react-aria-components/slots';
+import { useRenderProps } from 'react-aria-components/useRenderProps';
+import type { RenderProps } from 'react-aria-components/useRenderProps';
 import {
   OverlayTriggerProps,
   OverlayTriggerState,

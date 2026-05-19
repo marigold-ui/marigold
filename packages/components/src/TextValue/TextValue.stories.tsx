@@ -1,4 +1,4 @@
-import { ListBox, ListBoxItem } from 'react-aria-components';
+import { ListBox, ListBoxItem } from 'react-aria-components/ListBox';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { TextValue } from './TextValue';
@@ -42,7 +42,7 @@ export const InsideListBoxItem = meta.story({
   ),
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole('option', { name: 'Apple' })
+      await canvas.findByRole('option', { name: 'Apple' })
     ).toBeInTheDocument();
     await expect(
       canvas.getByRole('option', { name: 'Banana' })

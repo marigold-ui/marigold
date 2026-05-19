@@ -5,9 +5,9 @@ import type RAC from 'react-aria-components';
 import {
   DatePicker,
   DatePickerStateContext,
-  type DateValue,
-  Dialog,
-} from 'react-aria-components';
+} from 'react-aria-components/DatePicker';
+import type { DateValue } from 'react-aria-components/DatePicker';
+import { Dialog } from 'react-aria-components/Dialog';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';

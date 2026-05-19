@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { TextField } from 'react-aria-components';
+import { TextField } from 'react-aria-components/TextField';
 import { Basic } from './FieldBase.stories';
 
 // Tests

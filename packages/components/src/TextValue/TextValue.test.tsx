@@ -1,10 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import {
-  ListBox,
-  ListBoxItem,
-  Provider,
-  TextContext,
-} from 'react-aria-components';
+import { ListBox, ListBoxItem } from 'react-aria-components/ListBox';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { Basic } from './TextValue.stories';
 
 test('renders as a span by default', () => {

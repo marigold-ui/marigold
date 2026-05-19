@@ -5,7 +5,7 @@ import {
   SliderOutput,
   SliderThumb,
   SliderTrack,
-} from 'react-aria-components';
+} from 'react-aria-components/Slider';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { Label } from '../Label/Label';

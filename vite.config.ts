@@ -59,6 +59,9 @@ export default mergeConfig(
         },
         {
           extends: true,
+          resolve: {
+            tsconfigPaths: true,
+          },
           plugins: [
             storybookTest({
               // The location of your Storybook config, main.js|ts

@@ -1,7 +1,7 @@
 import { render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { describe, expect, it } from 'vitest';
 import { Basic, ShowMore } from './Collapsible.stories';
 import { CollapsibleProvider, useCollapsibleContext } from './Context';

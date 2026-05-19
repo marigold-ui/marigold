@@ -4,7 +4,7 @@ import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
   ResizableTableContainer,
-} from 'react-aria-components';
+} from 'react-aria-components/Table';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import type { Selection } from '../types';

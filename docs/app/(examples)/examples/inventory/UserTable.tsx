@@ -1,20 +1,27 @@
 import { people } from '@/lib/data/people';
 import { UserRoundPlus } from 'lucide-react';
-import { Badge, Button, Panel, Table, Text } from '@marigold/components';
+import {
+  ActionButton,
+  Badge,
+  Button,
+  Description,
+  Panel,
+  Table,
+  Text,
+  Title,
+} from '@marigold/components';
 
 export const UserTable = () => (
   <Panel>
     <Panel.Header>
-      <Panel.Title>Users</Panel.Title>
-      <Panel.Description>
+      <Title>Users</Title>
+      <Description>
         A list of all the users in your account including their name, title,
         email and role.
-      </Panel.Description>
-      <Panel.HeaderActions>
-        <Button variant="primary">
-          <UserRoundPlus /> Add user
-        </Button>
-      </Panel.HeaderActions>
+      </Description>
+      <ActionButton aria-label="Add user">
+        <UserRoundPlus />
+      </ActionButton>
     </Panel.Header>
     <Panel.Content bleed>
       <Table

@@ -13,6 +13,13 @@ import { Drawer } from './Drawer';
 const meta = preview.meta({
   title: 'Components/Drawer',
   component: Drawer,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     size: {
       control: {
@@ -137,6 +144,77 @@ export const WithForms = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
+});
+
+export const LongContent = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Title>Long Content</Drawer.Title>
+        <Drawer.Content>
+          <Stack space={4}>
+            {Array.from({ length: 16 }, (_, i) => (
+              <p key={i}>
+                Paragraph #{i + 1}. Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua.
+              </p>
+            ))}
+            <p data-testid="end-of-content">End of content</p>
+          </Stack>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close</Button>
+          <Button slot="close" variant="primary">
+            Save
+          </Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    expect(window.innerWidth).toBeLessThan(640);
+
+    const trigger = canvas.getByRole('button', { name: 'Open Drawer' });
+    await userEvent.click(trigger);
+    const endMarker = await canvas.findByTestId('end-of-content');
+    const scrollContainer = endMarker.closest(
+      '[class*="overflow-y-auto"]'
+    ) as HTMLElement;
+    const isWithin = (child: Element, parent: Element) => {
+      const c = child.getBoundingClientRect();
+      const p = parent.getBoundingClientRect();
+      return c.top >= p.top && c.bottom <= p.bottom + 1;
+    };
+
+    // Mobile path renders role="dialog"; desktop NonModal renders
+    // role="complementary". If useSmallScreen flakes, fail loudly here
+    // rather than pass a test that didn't exercise the fix.
+    expect(endMarker.closest('section')?.getAttribute('role')).toBe('dialog');
+
+    // react-aria's focus-on-open may auto-scroll the content; reset first.
+    scrollContainer.scrollTop = 0;
+
+    // The bug let content grow the Drawer instead of clipping it, so
+    // `scrollHeight` collapsed to `clientHeight`.
+    expect(scrollContainer.scrollHeight).toBeGreaterThan(
+      scrollContainer.clientHeight
+    );
+    await waitFor(() => {
+      expect(isWithin(endMarker, scrollContainer)).toBe(false);
+    });
+
+    scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+    await waitFor(() => {
+      expect(isWithin(endMarker, scrollContainer)).toBe(true);
+    });
+  },
 });
 
 export const Controlled = meta.story({

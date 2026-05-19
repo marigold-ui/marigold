@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { renderWithOverlay } from '../test.utils';
 import { Basic } from './Loader.stories';
 

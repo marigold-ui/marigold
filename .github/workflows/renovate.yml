@@ -5,6 +5,8 @@ on:
     # Monday at 2am Europe/Berlin (0am UTC)
     - cron: '0 0 * * 1'
   workflow_dispatch:
+  issues:
+    types: [edited]
 
 concurrency:
   group: renovate
@@ -12,9 +14,13 @@ concurrency:
 
 jobs:
   renovate:
+    # On issue edits, only react to the Renovate Dependency Dashboard.
+    if: >-
+      github.event_name != 'issues' ||
+      github.event.issue.title == 'Dependency Dashboard'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/create-github-app-token@v3
         id: app-token
@@ -23,7 +29,7 @@ jobs:
           private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
-      - uses: renovatebot/github-action@v46.1.8
+      - uses: renovatebot/github-action@v46.1.14
         with:
           configurationFile: .github/renovate.json
           token: ${{ steps.app-token.outputs.token }}
