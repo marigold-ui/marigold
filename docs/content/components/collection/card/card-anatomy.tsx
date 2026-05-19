@@ -4,7 +4,7 @@ export const CardAnatomy = () => (
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="Anatomy of a Card: Preview, Header, Body, and Footer regions"
+    aria-label="Anatomy of a Card: Media, Header, Body, and Footer regions"
   >
     {/* Card Container */}
     <rect
