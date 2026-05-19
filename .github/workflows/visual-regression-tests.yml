@@ -96,6 +96,7 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           branchName: ${{ steps.resolve-branch.outputs.branch }}
           onlyChanged: true # TurboSnap: https://www.chromatic.com/docs/turbosnap/setup/
+          zip: true # Zip the Storybook build for faster uploads
           # Files whose changes should NOT trigger story re-snapshots via
           # dependency tracing. Keep this list focused on files that change
           # often but cannot affect rendered output.
@@ -104,6 +105,11 @@ jobs:
             **/*.md
             **/*.mdx
             .changeset/**
+            **/*.test.{ts,tsx}
+            **/vitest.*.{ts,mjs,js}
+            **/vitest.setup.{ts,mjs,js}
+            eslint.config.*
+            **/tsconfig*.json
           storybookConfigDir: './.storybook'
           storybookBuildDir: './storybook-static'
           storybookBaseDir: '.'
