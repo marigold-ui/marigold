@@ -42,7 +42,7 @@ export const InsideListBoxItem = meta.story({
   ),
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole('option', { name: 'Apple' })
+      await canvas.findByRole('option', { name: 'Apple' })
     ).toBeInTheDocument();
     await expect(
       canvas.getByRole('option', { name: 'Banana' })
