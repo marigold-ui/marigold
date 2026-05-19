@@ -4,7 +4,7 @@ import type RAC from 'react-aria-components';
 import {
   CheckboxGroup,
   CheckboxGroupStateContext,
-} from 'react-aria-components';
+} from 'react-aria-components/CheckboxGroup';
 import { Orientation } from '@react-types/shared';
 import type { WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';

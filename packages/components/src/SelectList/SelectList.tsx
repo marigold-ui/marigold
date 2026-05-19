@@ -1,14 +1,11 @@
 import type { CSSProperties, ReactNode, Ref } from 'react';
 import { useCallback, useId, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  FieldErrorContext,
-  FormContext,
-  LabelContext,
-  Provider,
-  GridList as RACGridList,
-  useSlottedContext,
-} from 'react-aria-components';
+import { FieldErrorContext } from 'react-aria-components/FieldError';
+import { FormContext } from 'react-aria-components/Form';
+import { GridList as RACGridList } from 'react-aria-components/GridList';
+import { LabelContext } from 'react-aria-components/Label';
+import { Provider, useSlottedContext } from 'react-aria-components/slots';
 import { useObjectRef } from '@react-aria/utils';
 import { useFormValidationState } from '@react-stately/form';
 import { useControlledState } from '@react-stately/utils';

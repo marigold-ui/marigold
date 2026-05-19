@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import type { ReactNode, Ref } from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Toolbar } from 'react-aria-components';
+import { Toolbar } from 'react-aria-components/Toolbar';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useKeyboard } from '@react-aria/interactions';

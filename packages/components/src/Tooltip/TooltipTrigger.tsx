@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
-import { TooltipTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { TooltipTrigger } from 'react-aria-components/Tooltip';
 
 type RemovedProps = 'isDisabled' | 'isOpen' | 'children';
 export interface TooltipTriggerProps extends Omit<

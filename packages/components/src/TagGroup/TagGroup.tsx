@@ -1,16 +1,15 @@
 import type { ReactNode, Ref } from 'react';
 import { useId, useMemo } from 'react';
 import type RAC from 'react-aria-components';
+import { FieldErrorContext } from 'react-aria-components/FieldError';
+import { FormContext } from 'react-aria-components/Form';
+import { LabelContext } from 'react-aria-components/Label';
 import {
-  FieldErrorContext,
-  FormContext,
-  LabelContext,
-  Provider,
   TagGroup as RACTagGroup,
   TagList,
-  TagListProps,
-  useSlottedContext,
-} from 'react-aria-components';
+  type TagListProps,
+} from 'react-aria-components/TagGroup';
+import { Provider, useSlottedContext } from 'react-aria-components/slots';
 import { useObjectRef } from '@react-aria/utils';
 import { useFormValidationState } from '@react-stately/form';
 import { useControlledState } from '@react-stately/utils';

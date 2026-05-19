@@ -1,7 +1,10 @@
 import type { ReactNode } from 'react';
 import { isValidElement, use } from 'react';
 import type RAC from 'react-aria-components';
-import { RadioGroup, RadioGroupStateContext } from 'react-aria-components';
+import {
+  RadioGroup,
+  RadioGroupStateContext,
+} from 'react-aria-components/RadioGroup';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { More } from '../Collapsible/More';
 import { FieldBase } from '../FieldBase/FieldBase';

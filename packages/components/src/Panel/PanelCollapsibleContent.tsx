@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { DisclosurePanel } from 'react-aria-components';
+import { DisclosurePanel } from 'react-aria-components/Disclosure';
 import { cn } from '@marigold/system';
 import { usePanelContext } from './Context';
 

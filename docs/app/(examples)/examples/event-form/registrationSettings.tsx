@@ -3,6 +3,7 @@
 import {
   Badge,
   Checkbox,
+  Description,
   FileField,
   Inline,
   Link,
@@ -12,16 +13,17 @@ import {
   Stack,
   Switch,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export const RegistrationSettings = () => (
-  <Panel headingLevel={3} size="form">
+  <Panel size="form">
     <Panel.Header>
-      <Panel.Title>Pricing & tickets</Panel.Title>
-      <Panel.Description>
+      <Title>Pricing & tickets</Title>
+      <Description>
         Set the ticket price, upload documents, and attach legal terms for this
         event.
-      </Panel.Description>
+      </Description>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">
@@ -64,13 +66,11 @@ export const RegistrationSettings = () => (
     </Panel.Content>
     <Panel.Collapsible>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>
-          Override registration defaults
-        </Panel.CollapsibleTitle>
-        <Panel.CollapsibleDescription>
+        <Title>Override registration defaults</Title>
+        <Description>
           These are inherited from your event settings. Only change them if this
           event needs different behavior.
-        </Panel.CollapsibleDescription>
+        </Description>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">

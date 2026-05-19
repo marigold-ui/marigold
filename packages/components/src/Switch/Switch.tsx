@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Switch, SwitchContext } from 'react-aria-components';
+import { Switch, SwitchContext } from 'react-aria-components/Switch';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Label } from '../Label/Label';

@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { ComboBox as RACComboBox } from 'react-aria-components';
+import { ComboBox as RACComboBox } from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { WidthProp } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';

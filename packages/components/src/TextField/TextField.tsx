@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { TextField } from 'react-aria-components';
+import { TextField } from 'react-aria-components/TextField';
 import { WidthProp } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { Input } from '../Input/Input';

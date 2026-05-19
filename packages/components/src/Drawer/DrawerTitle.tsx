@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { Header, Heading } from 'react-aria-components';
+import { Header } from 'react-aria-components/Header';
+import { Heading } from 'react-aria-components/Heading';
 import { cn, useClassNames } from '@marigold/system';
 import { DrawerContext } from './Context';
 

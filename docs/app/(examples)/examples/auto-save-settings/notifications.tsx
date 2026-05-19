@@ -1,6 +1,6 @@
 'use client';
 
-import { Panel, Stack, Switch } from '@marigold/components';
+import { Description, Panel, Stack, Switch, Title } from '@marigold/components';
 import { useAutoSaveSwitch } from './useAutoSaveSwitch';
 
 export const Notifications = () => {
@@ -9,13 +9,13 @@ export const Notifications = () => {
   const weekly = useAutoSaveSwitch(true, 'Weekly report');
 
   return (
-    <Panel size="form" headingLevel={3}>
+    <Panel size="form">
       <Panel.Header>
-        <Panel.Title>Notifications</Panel.Title>
-        <Panel.Description>
+        <Title>Notifications</Title>
+        <Description>
           Choose what triggers an email. Each setting applies the moment you
           toggle it.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">

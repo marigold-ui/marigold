@@ -17,25 +17,20 @@ import {
 } from '@marigold/components';
 import { ListFilter } from '@marigold/icons';
 import {
+  type FilterFormData,
   MAX_CAPACITY,
   MAX_PRICE,
   type VenueFilter,
   useFilter,
-  useSearch,
-} from './utils';
+} from './hooks/useFilter';
+import { useSearch } from './hooks/useSearch';
 
-// Filter form (inside Drawer)
-// ---------------
-interface FilterFormProps {
-  filter: VenueFilter;
-}
-
-const FilterForm = ({ filter }: FilterFormProps) => (
+const FilterForm = ({ filter }: { filter: VenueFilter }) => (
   <Stack space={12}>
     <NumberField
       label="Min. Capacity"
       name="capacity"
-      defaultValue={filter.capacity ?? 0}
+      defaultValue={filter.capacity}
       minValue={0}
       maxValue={MAX_CAPACITY}
       step={100}
@@ -45,7 +40,7 @@ const FilterForm = ({ filter }: FilterFormProps) => (
       label="Max. Price"
       thumbLabels="price"
       name="price"
-      defaultValue={filter.price ?? MAX_PRICE}
+      defaultValue={filter.price}
       step={100}
       maxValue={MAX_PRICE}
       formatOptions={{
@@ -72,7 +67,7 @@ const FilterForm = ({ filter }: FilterFormProps) => (
       label="Min. Rating"
       name="rating"
       orientation="horizontal"
-      defaultValue={filter.rating ? String(filter.rating) : undefined}
+      defaultValue={filter.rating === 0 ? undefined : String(filter.rating)}
     >
       {['1', '2', '3', '4', '5'].map(value => (
         <Radio key={value} value={value}>
@@ -83,37 +78,13 @@ const FilterForm = ({ filter }: FilterFormProps) => (
   </Stack>
 );
 
-// Toolbar
-// ---------------
-type FilterFormData = {
-  capacity?: string;
-  price?: string;
-  traits?: string | string[];
-  rating?: string;
-};
-
 export const Toolbar = () => {
   const [search, setSearch] = useSearch();
-  const { filter, setFilter } = useFilter();
+  const { filter, setFilterFromForm } = useFilter();
 
   const onFilterSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = parseFormData<FilterFormData>(e);
-
-    const capacity = data.capacity ? Number(data.capacity) : null;
-    const price = data.price ? Number(data.price) : null;
-    const traits = Array.isArray(data.traits)
-      ? data.traits.map(String)
-      : data.traits
-        ? [String(data.traits)]
-        : [];
-
-    setFilter({
-      capacity,
-      price: price !== null && price < MAX_PRICE ? price : null,
-      traits,
-      rating: data.rating ? Number(data.rating) : null,
-    });
+    setFilterFromForm(parseFormData<FilterFormData>(e));
   };
 
   return (
@@ -125,8 +96,8 @@ export const Toolbar = () => {
           width={64}
           autoComplete="off"
           defaultValue={search}
-          onSubmit={value => setSearch(value || null)}
-          onClear={() => setSearch(null)}
+          onSubmit={setSearch}
+          onClear={() => setSearch('')}
         />
         <Drawer.Trigger>
           <Button>
@@ -136,6 +107,8 @@ export const Toolbar = () => {
             <Form onSubmit={onFilterSubmit} unstyled>
               <Drawer.Title>Filter Venues</Drawer.Title>
               <Drawer.Content>
+                {/* FilterForm is uncontrolled. Remount on URL state changes
+                    so defaultValue picks up the latest filter values. */}
                 <FilterForm key={JSON.stringify(filter)} filter={filter} />
               </Drawer.Content>
               <Drawer.Actions>

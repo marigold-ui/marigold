@@ -1,32 +1,23 @@
+// Each file in this example carries its own 'use client' so individual
+// components can be copy-pasted into a project without tracing back to
+// where the client boundary starts. Once page.tsx is a client component,
+// Next.js inherits client status down the tree, so the directive on the
+// children is intentional documentation, not a requirement.
 'use client';
 
-import {
-  Button,
-  Headline,
-  Inline,
-  Inset,
-  Panel,
-  Stack,
-  Text,
-} from '@marigold/components';
-import { Plus } from '@marigold/icons';
-import { AppliedFilter } from './applied-filter';
-import { Toolbar } from './toolbar';
-import { VenuesTable } from './venues-table';
+import { Headline, Inset, Panel, Stack, Text } from '@marigold/components';
+import { AppliedFilter } from './AppliedFilter';
+import { Toolbar } from './Toolbar';
+import { VenuesPagination } from './VenuesPagination';
+import { VenuesTable } from './VenuesTable';
 
 const FilterPage = () => (
   <Inset p={4}>
     <Stack space={8}>
-      <Inline alignX="between" alignY="top">
-        <Stack space={2}>
-          <Headline level={2}>Venues</Headline>
-          <Text>Browse and filter available venues for your events.</Text>
-        </Stack>
-        {/* Will be wired up in DST-1288 */}
-        <Button disabled>
-          <Plus /> Add Venue
-        </Button>
-      </Inline>
+      <Stack space={2}>
+        <Headline level={2}>Venues</Headline>
+        <Text>Browse and filter available venues for your events.</Text>
+      </Stack>
       <Panel aria-label="Venues">
         <Panel.Content>
           <Stack space="regular">
@@ -36,6 +27,9 @@ const FilterPage = () => (
         </Panel.Content>
         <Panel.Content bleed>
           <VenuesTable />
+        </Panel.Content>
+        <Panel.Content>
+          <VenuesPagination />
         </Panel.Content>
       </Panel>
     </Stack>

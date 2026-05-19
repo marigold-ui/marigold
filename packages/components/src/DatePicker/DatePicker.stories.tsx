@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import { useState } from 'react';
-import type { DateValue } from 'react-aria-components';
+import type { DateValue } from 'react-aria-components/Calendar';
 import { expect, spyOn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';

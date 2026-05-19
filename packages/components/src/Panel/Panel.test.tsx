@@ -63,7 +63,6 @@ describe('Panel', () => {
       expect(region.style.getPropertyValue('--panel-gap')).toBe(
         'var(--spacing-regular)'
       );
-      // Default `p="square-regular"` resolves to per-axis recipe vars.
       expect(region.style.getPropertyValue('--panel-px')).toBe(
         'var(--spacing-square-regular-x)'
       );
@@ -172,16 +171,11 @@ describe('Panel', () => {
   });
 
   describe('Compound exports', () => {
-    test('Panel exposes all sub-components on the compound component', () => {
+    test('Panel exposes the remaining compound sub-components', () => {
       expect(Panel.Header).toBeDefined();
-      expect(Panel.Title).toBeDefined();
-      expect(Panel.Description).toBeDefined();
-      expect(Panel.HeaderActions).toBeDefined();
       expect(Panel.Content).toBeDefined();
       expect(Panel.Collapsible).toBeDefined();
       expect(Panel.CollapsibleHeader).toBeDefined();
-      expect(Panel.CollapsibleTitle).toBeDefined();
-      expect(Panel.CollapsibleDescription).toBeDefined();
       expect(Panel.CollapsibleContent).toBeDefined();
       expect(Panel.Footer).toBeDefined();
     });
@@ -203,29 +197,27 @@ describe('Panel.Header', () => {
     );
   });
 
-  test('places Description under the Title in the header grid', () => {
+  test('places the Description in the description grid area', () => {
     render(<WithHeaderActions.Component />);
 
     const description = screen.getByText(
       /People with access to this workspace/
     );
-    const actionsSlot = screen
-      .getByRole('button', { name: /Invite member/ })
-      .closest('[class*="[grid-area:actions]"]');
 
-    expect(description.className).toContain('[grid-area:description]');
-    expect(actionsSlot).not.toBeNull();
+    expect(description).toHaveAttribute('data-grid-area', 'description');
+  });
+
+  test('places a bare ActionButton in the actions grid area', () => {
+    render(<WithHeaderActions.Component />);
+
+    const action = screen.getByRole('button', { name: 'Invite member' });
+
+    expect(action).toHaveAttribute('data-grid-area', 'actions');
   });
 });
 
-describe('Panel.Title', () => {
-  test('throws when rendered outside <Panel>', () => {
-    const renderOrphan = () => render(<Panel.Title>Orphan</Panel.Title>);
-
-    expect(renderOrphan).toThrow(/must be used within a <Panel>/);
-  });
-
-  test('sits inside the Panel.Header wrapper so its own padding is suppressed', () => {
+describe('Title in Panel.Header', () => {
+  test('sits inside the Panel.Header wrapper', () => {
     render(<Basic.Component />);
 
     const title = screen.getByRole('heading', { name: 'Organizer Profile' });
@@ -263,7 +255,7 @@ describe('Panel.Title', () => {
     }
   );
 
-  test('mirrors the titleId from context onto the heading id', () => {
+  test('mirrors the titleId from the Panel onto the heading id', () => {
     render(<Basic.Component />);
 
     const region = screen.getByRole('region', { name: 'Organizer Profile' });
@@ -273,27 +265,21 @@ describe('Panel.Title', () => {
   });
 });
 
-describe('Panel.Description', () => {
-  test('renders a <p> inside the header grid description slot', () => {
+describe('Description in Panel.Header', () => {
+  test('lands in the description grid area', () => {
+    render(<Basic.Component />);
+
+    const description = screen.getByText(/Public details shown to customers/);
+
+    expect(description).toHaveAttribute('data-grid-area', 'description');
+  });
+
+  test('renders as a <p> via the TextContext slot config', () => {
     render(<Basic.Component />);
 
     const description = screen.getByText(/Public details shown to customers/);
 
     expect(description.tagName).toBe('P');
-    expect(description.className).toContain('[grid-area:description]');
-  });
-});
-
-describe('Panel.HeaderActions', () => {
-  test('aligns to the actions grid area with vertical centering', () => {
-    render(<WithHeaderActions.Component />);
-
-    const actionsSlot = screen.getByRole('button', {
-      name: /Invite member/,
-    }).parentElement!;
-
-    expect(actionsSlot.className).toContain('[grid-area:actions]');
-    expect(actionsSlot.className).toContain('self-center');
   });
 });
 

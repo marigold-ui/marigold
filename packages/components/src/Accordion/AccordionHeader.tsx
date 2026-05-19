@@ -1,7 +1,10 @@
 import { ReactNode, use } from 'react';
-import { Button, DisclosureStateContext, Heading } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { DisclosureStateContext } from 'react-aria-components/Disclosure';
+import { Heading } from 'react-aria-components/Heading';
 import { cn } from '@marigold/system';
 import { ChevronDown } from '../icons/ChevronDown';
+import { noSlot } from '../utils/noSlot';
 import { useAccordionContext } from './AccordionContext';
 
 export interface AccordionHeaderProps {
@@ -25,7 +28,7 @@ export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
           : undefined
       }
     >
-      <Heading>
+      <Heading slot={noSlot}>
         <Button slot="trigger" className={classNames.header}>
           {iconPosition === 'left' && (
             <ChevronDown size="16" className={chevronStyles} />
