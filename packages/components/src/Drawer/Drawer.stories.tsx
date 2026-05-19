@@ -283,3 +283,40 @@ export const OneAtATime = meta.story({
     );
   },
 });
+
+/**
+ * DST-1407 motivating case: a trigger nested inside an open Drawer opens a
+ * second Drawer. The first dismisses as the second enters.
+ */
+export const OneAtATimeNested = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: () => (
+    <Drawer.Trigger>
+      <Button>Open A</Button>
+      <Drawer>
+        <Drawer.Title>Title A</Drawer.Title>
+        <Drawer.Content>
+          <Drawer.Trigger>
+            <Button>Open B</Button>
+            <Drawer>
+              <Drawer.Title>Title B</Drawer.Title>
+              <Drawer.Content>Content B</Drawer.Content>
+            </Drawer>
+          </Drawer.Trigger>
+        </Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open A' }));
+    expect(await canvas.findByText('Title A')).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Open B' }));
+    expect(await canvas.findByText('Title B')).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(canvas.queryByText('Title A')).not.toBeInTheDocument()
+    );
+  },
+});

@@ -1,25 +1,14 @@
 /**
- * Single-slot registry that enforces "one Drawer open at a time".
- *
- * When a Drawer opens, it registers its close handler. If another Drawer was
- * already active, that one is closed first. This applies across the desktop
- * (NonModal) and mobile (ModalOverlay) paths.
- *
- * Module-level state is fine here because Drawer is client-only (no SSR
- * concern) and there is conceptually one drawer scope per app instance —
- * mirroring the pattern used by `ToastQueue` and `LandmarkManager` in
- * react-aria.
+ * Single-slot registry enforcing "one Drawer open at a time" across the
+ * desktop (NonModal) and mobile (ModalOverlay) paths.
  *
  * Concurrent React safety:
  * - `activeClose` is never read during render — only mutated inside effect
- *   callbacks. There is no tearing risk and `useSyncExternalStore` is not
- *   needed.
+ *   callbacks. No tearing risk; `useSyncExternalStore` is not needed.
  * - Under `startTransition`, a deferred drawer-open won't register until the
- *   transition commits; if interrupted, the prior drawer stays open, which is
- *   the desired outcome.
- * - Strict Mode double-invoke is safe: registering the same `close` twice is
- *   a no-op, and the matching cleanup only clears the slot if it still holds
- *   that handler.
+ *   transition commits; if interrupted, the prior drawer stays open.
+ * - Strict Mode double-invoke is safe: re-registering the same `close` is a
+ *   no-op, and cleanup only clears the slot if it still holds that handler.
  */
 
 let activeClose: (() => void) | null = null;
