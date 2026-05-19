@@ -2,6 +2,7 @@
 
 import {
   Badge,
+  Description,
   Inline,
   Panel,
   Select,
@@ -9,16 +10,17 @@ import {
   Switch,
   TextArea,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export const OrganizerInfo = () => (
-  <Panel headingLevel={3} size="form">
+  <Panel size="form">
     <Panel.Header>
-      <Panel.Title>Organizer information</Panel.Title>
-      <Panel.Description>
+      <Title>Organizer information</Title>
+      <Description>
         Contact details for the person or team running this event. Pre-filled
         from your organization profile. Changes here only apply to this event.
-      </Panel.Description>
+      </Description>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">
@@ -79,11 +81,11 @@ export const OrganizerInfo = () => (
     </Panel.Content>
     <Panel.Collapsible>
       <Panel.CollapsibleHeader>
-        <Panel.CollapsibleTitle>Contact preferences</Panel.CollapsibleTitle>
-        <Panel.CollapsibleDescription>
+        <Title>Contact preferences</Title>
+        <Description>
           Control how attendees can reach the organizer and what contact details
           appear in emails.
-        </Panel.CollapsibleDescription>
+        </Description>
       </Panel.CollapsibleHeader>
       <Panel.CollapsibleContent>
         <Stack space="regular">

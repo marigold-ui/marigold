@@ -11,11 +11,13 @@ test('renders as a span by default', () => {
   expect(el).toHaveTextContent('Hi there');
 });
 
-test('respects the "as" prop', () => {
+test('honors `elementType` from a TextContext slot', () => {
   render(
-    <Basic.Component as="p" data-testid="description">
-      Hi
-    </Basic.Component>
+    <Provider
+      values={[[TextContext, { slots: { description: { elementType: 'p' } } }]]}
+    >
+      <Basic.Component data-testid="description">Hi</Basic.Component>
+    </Provider>
   );
 
   expect(screen.getByTestId('description').tagName).toBe('P');
