@@ -63,7 +63,6 @@
   "scripts": {
     "build": "tsdown src/index.ts",
     "watch": "tsdown src/index.ts --watch",
-    "typecheck:strict": "tsc --noEmit --project tsconfig.types-test.json",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
 }

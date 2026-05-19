@@ -83,7 +83,6 @@
     "typecheck": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "typecheck:only": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "typecheck:docs": "pnpm --filter @marigold/docs types:check",
-    "typecheck:strict": "pnpm --filter @marigold/system typecheck:strict",
     "contributor": "all-contributors",
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
