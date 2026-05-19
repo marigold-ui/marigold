@@ -510,12 +510,11 @@ export const WithImages = meta.story({
       const imgs = await canvas.findAllByRole('img');
       await Promise.all(
         imgs.map(img => {
-          const image = img as HTMLImageElement;
-          if (image.complete && image.naturalWidth > 0)
-            return Promise.resolve();
+          if (!(img instanceof HTMLImageElement)) return Promise.resolve();
+          if (img.complete && img.naturalWidth > 0) return Promise.resolve();
           return new Promise<void>(resolve => {
-            image.addEventListener('load', () => resolve(), { once: true });
-            image.addEventListener('error', () => resolve(), { once: true });
+            img.addEventListener('load', () => resolve(), { once: true });
+            img.addEventListener('error', () => resolve(), { once: true });
           });
         })
       );

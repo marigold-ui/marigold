@@ -5,14 +5,9 @@
 @import './variants.css';
 
 /*
- * Honor the user's reduced-motion preference globally: disable every CSS
- * transition. CSS @keyframes animations are left alone so intentional motion
- * (entering:animate-*, exiting:animate-*, spinners) keeps working; components
- * that want to disable specific animations can still opt in with
- * motion-reduce:animate-none.
- *
- * This also stabilizes Chromatic VRT snapshots, since Chromatic enables
- * prefers-reduced-motion: reduce globally during capture.
+ * Keep @keyframes animations intact so entering:/exiting:/spinner motion still
+ * works; components can opt out per-animation via motion-reduce:animate-none.
+ * Also stabilizes Chromatic VRT, which forces prefers-reduced-motion: reduce.
  */
 @media (prefers-reduced-motion: reduce) {
   *,
