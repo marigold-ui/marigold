@@ -164,6 +164,10 @@
   @apply ui-interactive;
   @apply border border-transparent;
 
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
   & svg {
     pointer-events: none;
     flex-shrink: 0;
@@ -182,6 +186,14 @@
   }
   &[data-pressed] {
     scale: 0.97;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:active,
+    &[data-pressed] {
+      scale: 1;
+    }
   }
 }
 
