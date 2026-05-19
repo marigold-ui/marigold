@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Form } from '../Form/Form';
-import { Basic } from './TagGroup.stories';
+import { Basic, WithError } from './TagGroup.stories';
 
 test('render tag group', () => {
   render(<Basic.Component aria-label="static tag group items" />);
@@ -57,6 +57,14 @@ test('renders label', () => {
 
   const label = screen.queryByLabelText(/Categories/i);
   expect(label).toBeInTheDocument();
+});
+
+test('renders error message when `error` is true', () => {
+  render(<WithError.Component />);
+
+  expect(
+    screen.getByText('Please pick at least one category.')
+  ).toBeInTheDocument();
 });
 
 test('can be used like a native form element', async () => {

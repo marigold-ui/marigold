@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { expect, fn, waitFor, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
+import { Form } from '../Form/Form';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tag } from './Tag';
@@ -26,7 +27,7 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   args: {
-    onSelectionChange: fn(),
+    onChange: fn(),
   },
   render: args => (
     <Tag.Group {...args} selectionMode="multiple" label="Categories">
@@ -40,7 +41,7 @@ export const Basic = meta.story({
     await userEvent.click(canvas.getByText('News'));
     await userEvent.click(canvas.getByText('Gaming'));
 
-    expect(args.onSelectionChange).toHaveBeenCalledWith(
+    expect(args.onChange).toHaveBeenCalledWith(
       expect.objectContaining(new Set(['news', 'gaming']))
     );
   },
@@ -175,3 +176,98 @@ RemovableAllTags.test(
     );
   }
 );
+
+export const WithError = meta.story({
+  render: args => (
+    <Tag.Group
+      {...args}
+      selectionMode="multiple"
+      label="Categories"
+      error
+      errorMessage="Please pick at least one category."
+    >
+      <Tag id="news">News</Tag>
+      <Tag id="travel">Travel</Tag>
+      <Tag id="gaming">Gaming</Tag>
+      <Tag id="shopping">Shopping</Tag>
+    </Tag.Group>
+  ),
+});
+
+export const WithForm = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const submitted = formData.getAll('categories').join(',');
+        (e.currentTarget.querySelector(
+          '[data-testid=submitted]'
+        ) as HTMLElement)!.textContent = `submitted: ${submitted}`;
+      }}
+    >
+      <Stack space={4} alignX="left">
+        <Tag.Group
+          {...args}
+          selectionMode="multiple"
+          label="Categories"
+          name="categories"
+        >
+          <Tag id="news">News</Tag>
+          <Tag id="travel">Travel</Tag>
+          <Tag id="gaming">Gaming</Tag>
+          <Tag id="shopping">Shopping</Tag>
+        </Tag.Group>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+        <pre data-testid="submitted">submitted:</pre>
+      </Stack>
+    </Form>
+  ),
+  play: async ({ canvas }) => {
+    await userEvent.click(await canvas.findByText('Travel'));
+    await userEvent.click(canvas.getByText('Gaming'));
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+    await waitFor(() => {
+      expect(canvas.getByTestId('submitted')).toHaveTextContent(
+        'submitted: travel,gaming'
+      );
+    });
+  },
+});
+
+export const Required = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Form>
+      <Stack space={4} alignX="left">
+        <Tag.Group
+          {...args}
+          selectionMode="multiple"
+          label="Categories"
+          name="categories"
+          required
+          errorMessage="Pick at least one category."
+        >
+          <Tag id="news">News</Tag>
+          <Tag id="travel">Travel</Tag>
+          <Tag id="gaming">Gaming</Tag>
+          <Tag id="shopping">Shopping</Tag>
+        </Tag.Group>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+      </Stack>
+    </Form>
+  ),
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+    await waitFor(() =>
+      expect(
+        canvas.getByText('Pick at least one category.')
+      ).toBeInTheDocument()
+    );
+  },
+});
