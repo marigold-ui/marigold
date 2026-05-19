@@ -14,8 +14,8 @@
  * is picked up by the regular `pnpm typecheck` — no separate tsconfig or CI
  * step required.
  */
-import type { ThemeComponent } from '../types/theme';
 import { cva } from '../utils/className.utils';
+import type { ThemeComponent } from './theme';
 
 // Strict-mode function assignability: `Source` ↦ `Target` requires
 // `Target`'s parameters to be assignable to `Source`'s (contravariance) and
