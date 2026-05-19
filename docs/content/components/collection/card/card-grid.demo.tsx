@@ -33,7 +33,7 @@ export default () => (
         </Card.Header>
         <Card.Body>
           <Text variant="muted">
-            {venue.city}, {venue.country} &middot; up to{' '}
+            {venue.city}, {venue.country} · up to{' '}
             {venue.capacity.toLocaleString()} guests
           </Text>
         </Card.Body>
