@@ -1,5 +1,5 @@
 import type { ReactNode, Ref } from 'react';
-import { Modal, ModalOverlay } from 'react-aria-components';
+import { Modal, ModalOverlay } from 'react-aria-components/Modal';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';

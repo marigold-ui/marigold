@@ -1,12 +1,14 @@
 import { venues } from '@/lib/data/venues';
 import {
   Button,
+  Description,
   Inline,
   Panel,
   PanelProps,
   Stack,
   Text,
   TextField,
+  Title,
 } from '@marigold/components';
 
 const featured = [venues[5], venues[0], venues[6]];
@@ -16,11 +18,11 @@ export default ({ size, ...props }: PanelProps) => {
     return (
       <Panel size={size} {...props}>
         <Panel.Header>
-          <Panel.Title>Organizer profile</Panel.Title>
-          <Panel.Description>
+          <Title>Organizer profile</Title>
+          <Description>
             Public details shown to customers on ticket confirmations and event
             pages.
-          </Panel.Description>
+          </Description>
         </Panel.Header>
         <Panel.Content>
           <Stack space="regular">
@@ -38,11 +40,11 @@ export default ({ size, ...props }: PanelProps) => {
   return (
     <Panel size={size} {...props}>
       <Panel.Header>
-        <Panel.Title>Featured venues</Panel.Title>
-        <Panel.Description>
+        <Title>Featured venues</Title>
+        <Description>
           A hand-picked selection of spaces across three countries, ready for
           your next booking.
-        </Panel.Description>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">

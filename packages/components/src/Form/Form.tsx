@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
-import { Form } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Form } from 'react-aria-components/Form';
 import { cn, createWidthVar } from '@marigold/system';
 import type { MaxWidthProp } from '@marigold/system';
 

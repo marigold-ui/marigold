@@ -1,6 +1,6 @@
 import { ReactElement, Ref, cloneElement } from 'react';
 import type RAC from 'react-aria-components';
-import { Input } from 'react-aria-components';
+import { Input } from 'react-aria-components/Input';
 import { cn, useClassNames } from '@marigold/system';
 
 // Props

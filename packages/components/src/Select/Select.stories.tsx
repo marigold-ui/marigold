@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Form, Key } from 'react-aria-components';
+import { Form } from 'react-aria-components/Form';
+import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';

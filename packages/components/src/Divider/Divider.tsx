@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { Separator } from 'react-aria-components';
+import { Separator } from 'react-aria-components/Separator';
 import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'style';

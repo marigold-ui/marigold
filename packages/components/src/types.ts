@@ -3,7 +3,7 @@
  */
 
 export type { Selection } from '@react-types/shared';
-export type { TimeValue } from 'react-aria-components';
+export type { TimeValue } from 'react-aria-components/TimeField';
 
 /**
  * Standard slot prop for components that participate in slot-keyed context.

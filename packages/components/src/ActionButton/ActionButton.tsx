@@ -1,10 +1,10 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
 import {
-  Button,
   useContextProps,
   useSlottedContext,
-} from 'react-aria-components';
+} from 'react-aria-components/slots';
 import { cn, useClassNames } from '@marigold/system';
 import { ActionGroupContext } from '../ActionGroup/Context';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';

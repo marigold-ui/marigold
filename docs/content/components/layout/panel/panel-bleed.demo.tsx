@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import {
   Badge,
+  Description,
   Inline,
   Pagination,
   Panel,
   Table,
   Text,
+  Title,
 } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';
 
@@ -68,8 +70,8 @@ export default () => {
   return (
     <Panel>
       <Panel.Header>
-        <Panel.Title>Recent bookings</Panel.Title>
-        <Panel.Description>Last 7 days, across all events.</Panel.Description>
+        <Title>Recent bookings</Title>
+        <Description>Last 7 days, across all events.</Description>
       </Panel.Header>
       <Panel.Content bleed>
         <Table aria-label="Recent bookings">

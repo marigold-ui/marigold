@@ -1,6 +1,6 @@
 import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Radio as RACRadio } from 'react-aria-components';
+import { Radio as RACRadio } from 'react-aria-components/RadioGroup';
 import { cn, useClassNames } from '@marigold/system';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';

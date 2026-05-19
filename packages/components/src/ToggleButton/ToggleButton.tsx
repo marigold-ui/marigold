@@ -1,6 +1,6 @@
 import { use } from 'react';
-import { ToggleButton } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { ToggleButton } from 'react-aria-components/ToggleButton';
 import { useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
 import { ToggleButtonGroup } from './ToggleButtonGroup';

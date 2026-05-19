@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { DateSegment } from 'react-aria-components';
+import { DateSegment } from 'react-aria-components/DateField';
 import { cn } from '@marigold/system';
 
 export type DateSegmentProps = RAC.DateSegmentProps;

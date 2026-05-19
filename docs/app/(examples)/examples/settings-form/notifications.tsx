@@ -3,6 +3,7 @@
 import {
   Button,
   Checkbox,
+  Description,
   Form,
   Inline,
   NumberField,
@@ -11,6 +12,7 @@ import {
   Stack,
   Text,
   TextField,
+  Title,
 } from '@marigold/components';
 import { useSavedToast } from './useSavedToast';
 
@@ -24,14 +26,14 @@ export const Notifications = () => {
         showSavedToast('Notification preferences updated.');
       }}
     >
-      <Panel size="form" headingLevel={3}>
+      <Panel size="form">
         <Panel.Header>
-          <Panel.Title>Notifications</Panel.Title>
-          <Panel.Description>
+          <Title>Notifications</Title>
+          <Description>
             Choose which event activity triggers an email and how often updates
             are delivered. These defaults apply to all events unless overridden
             on an individual event.
-          </Panel.Description>
+          </Description>
         </Panel.Header>
         <Panel.Content>
           <Stack space="regular">
@@ -109,11 +111,11 @@ export const Notifications = () => {
         </Panel.Content>
         <Panel.Collapsible>
           <Panel.CollapsibleHeader>
-            <Panel.CollapsibleTitle>Quiet hours</Panel.CollapsibleTitle>
-            <Panel.CollapsibleDescription>
+            <Title>Quiet hours</Title>
+            <Description>
               Hold non-urgent digests during off-hours. Capacity warnings and
               payment failures are still delivered immediately.
-            </Panel.CollapsibleDescription>
+            </Description>
           </Panel.CollapsibleHeader>
           <Panel.CollapsibleContent>
             <Stack space="regular">

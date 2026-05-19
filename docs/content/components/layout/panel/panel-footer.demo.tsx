@@ -1,10 +1,10 @@
-import { Button, Panel, Text } from '@marigold/components';
+import { Button, Description, Panel, Text, Title } from '@marigold/components';
 
 export default () => (
   <Panel variant="destructive">
     <Panel.Header>
-      <Panel.Title>Delete organizer</Panel.Title>
-      <Panel.Description>This is permanent. There's no undo.</Panel.Description>
+      <Title>Delete organizer</Title>
+      <Description>This is permanent. There's no undo.</Description>
     </Panel.Header>
     <Panel.Content>
       <Text>

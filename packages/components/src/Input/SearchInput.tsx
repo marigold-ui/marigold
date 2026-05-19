@@ -1,5 +1,5 @@
 import type { Ref } from 'react';
-import { Button } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';

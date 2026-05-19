@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import {
   ListBox as RACAriaListBox,
   ListBoxItem as RACListBoxItem,
-} from 'react-aria-components';
+} from 'react-aria-components/ListBox';
 import { cn } from '@marigold/system';
 import { useCalendarContext } from './Context';
 

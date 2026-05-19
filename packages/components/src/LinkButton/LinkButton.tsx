@@ -1,6 +1,7 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Link, useSlottedContext } from 'react-aria-components';
+import { Link } from 'react-aria-components/Link';
+import { useSlottedContext } from 'react-aria-components/slots';
 import { cn, useClassNames } from '@marigold/system';
 import { ActionButtonContext } from '../ActionButton/Context';
 import { ActionGroupContext } from '../ActionGroup/Context';

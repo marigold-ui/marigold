@@ -2,11 +2,13 @@ import { useState } from 'react';
 import type { ComponentProps } from 'react';
 import {
   Button,
+  Description,
   Form,
   Inline,
   Panel,
   Stack,
   TextField,
+  Title,
   parseFormData,
 } from '@marigold/components';
 
@@ -31,7 +33,7 @@ export default () => {
       <Stack space="regular">
         <Panel size="form">
           <Panel.Header>
-            <Panel.Title>Event details</Panel.Title>
+            <Title>Event details</Title>
           </Panel.Header>
           <Panel.Content>
             <TextField
@@ -42,12 +44,10 @@ export default () => {
           </Panel.Content>
           <Panel.Collapsible expanded={expanded} onExpandedChange={setExpanded}>
             <Panel.CollapsibleHeader>
-              <Panel.CollapsibleTitle>
-                SEO &amp; tracking
-              </Panel.CollapsibleTitle>
-              <Panel.CollapsibleDescription>
+              <Title>SEO &amp; tracking</Title>
+              <Description>
                 Optional metadata used on the event page and in social shares.
-              </Panel.CollapsibleDescription>
+              </Description>
             </Panel.CollapsibleHeader>
             <Panel.CollapsibleContent>
               <TextField

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { Key } from '@react-types/shared';
 import {
-  Badge,
+  Description,
   Link,
   Panel,
   Stack,
@@ -11,6 +11,7 @@ import {
   Tag,
   TagField,
   Text,
+  Title,
 } from '@marigold/components';
 
 interface Partner {
@@ -35,15 +36,12 @@ export const CoOrganizers = () => {
   const [selected, setSelected] = useState<Key[]>([]);
 
   return (
-    <Panel variant="master" headingLevel={3} size="form">
+    <Panel variant="master" size="form">
       <Panel.Header>
-        <Panel.Title>Co-presenters</Panel.Title>
-        <Panel.Description>
+        <Title>Co-presenters</Title>
+        <Description>
           Partner organizations credited on the event page and tickets.
-        </Panel.Description>
-        <Panel.HeaderActions>
-          <Badge variant="master">Master</Badge>
-        </Panel.HeaderActions>
+        </Description>
       </Panel.Header>
       <Panel.Content>
         <Stack space="tight">
@@ -59,10 +57,10 @@ export const CoOrganizers = () => {
       </Panel.Content>
       <Panel.Collapsible>
         <Panel.CollapsibleHeader>
-          <Panel.CollapsibleTitle>Add to this event</Panel.CollapsibleTitle>
-          <Panel.CollapsibleDescription>
+          <Title>Add to this event</Title>
+          <Description>
             Pick partners that co-present just this event.
-          </Panel.CollapsibleDescription>
+          </Description>
         </Panel.CollapsibleHeader>
         <Panel.CollapsibleContent>
           <Stack space="regular">

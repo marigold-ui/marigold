@@ -1,4 +1,5 @@
-import RAC, { ModalOverlay } from 'react-aria-components';
+import type RAC from 'react-aria-components';
+import { ModalOverlay } from 'react-aria-components/Modal';
 import { cn, useClassNames } from '@marigold/system';
 
 // Props

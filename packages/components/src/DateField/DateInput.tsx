@@ -1,7 +1,8 @@
 import { CalendarDate } from '@internationalized/date';
 import { ReactElement } from 'react';
 import type RAC from 'react-aria-components';
-import { DateInput, Group } from 'react-aria-components';
+import { DateInput } from 'react-aria-components/DateField';
+import { Group } from 'react-aria-components/Group';
 import { cn, useClassNames } from '@marigold/system';
 import { DateSegment } from './DateSegment';
 

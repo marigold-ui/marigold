@@ -3,11 +3,13 @@
 import {
   Button,
   Checkbox,
+  Description,
   Form,
   NumberField,
   Panel,
   Stack,
   TextField,
+  Title,
 } from '@marigold/components';
 import { useSavedToast } from './useSavedToast';
 
@@ -21,12 +23,12 @@ export const RegistrationCapacity = () => {
         showSavedToast('Registration & capacity updated.');
       }}
     >
-      <Panel size="form" headingLevel={3}>
+      <Panel size="form">
         <Panel.Header>
-          <Panel.Title>Registration & capacity</Panel.Title>
-          <Panel.Description>
+          <Title>Registration & capacity</Title>
+          <Description>
             Default registration behavior and attendee limits for new events.
-          </Panel.Description>
+          </Description>
         </Panel.Header>
         <Panel.Content>
           <Stack space="regular">
@@ -54,10 +56,10 @@ export const RegistrationCapacity = () => {
         </Panel.Content>
         <Panel.Collapsible>
           <Panel.CollapsibleHeader>
-            <Panel.CollapsibleTitle>Booking policies</Panel.CollapsibleTitle>
-            <Panel.CollapsibleDescription>
+            <Title>Booking policies</Title>
+            <Description>
               Registration windows, cancellation rules, and legal requirements.
-            </Panel.CollapsibleDescription>
+            </Description>
           </Panel.CollapsibleHeader>
           <Panel.CollapsibleContent>
             <Stack space="regular">
