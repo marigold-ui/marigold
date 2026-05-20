@@ -4,3 +4,8 @@ packages:
   - docs
   - packages/*
   - themes/*
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
