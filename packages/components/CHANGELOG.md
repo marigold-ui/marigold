@@ -431,6 +431,14 @@ so future components pick up the same behavior automatically. A`@remarks` tag on
 - Updated dependencies [de34b15]
   - @marigold/system@18.0.0-beta.0
 
+## 17.5.1
+
+### Patch Changes
+
+- 3b29d91: fix(DSTSUP-252): make `Drawer` content scroll on small screens. On the mobile breakpoint the `Drawer` falls back to a `Modal`/`Dialog` overlay, but the `Modal` wrapper had no defined height. That made `Dialog`'s `h-full` collapse to the content's intrinsic height, so the `grid-template-rows: auto 1fr auto` layout and `Drawer.Content`'s `overflow-y-auto` never engaged — long content extended the drawer past the viewport and clipped both the content tail and the action bar. The mobile wrapper now uses `h-(--visual-viewport-height)` (the React Aria-recommended approach, which tracks mobile browser chrome), so the dialog is constrained to the visible viewport and `Drawer.Content` scrolls correctly while title and actions stay pinned.
+- Updated dependencies [c65d2a7]
+  - @marigold/system@17.5.1
+
 ## 17.5.0
 
 ### Minor Changes

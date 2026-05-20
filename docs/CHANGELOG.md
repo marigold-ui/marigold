@@ -483,6 +483,18 @@
   - @marigold/components@18.0.0-beta.0
   - @marigold/icons@1.3.39-beta.0
 
+## 17.5.1
+
+### Patch Changes
+
+- Updated dependencies [6517e25]
+- Updated dependencies [3b29d91]
+- Updated dependencies [c65d2a7]
+  - @marigold/theme-rui@5.3.1
+  - @marigold/components@17.5.1
+  - @marigold/system@17.5.1
+  - @marigold/icons@1.3.40
+
 ## 17.5.0
 
 ### Minor Changes
