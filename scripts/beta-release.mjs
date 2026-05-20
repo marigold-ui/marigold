@@ -38,11 +38,18 @@ if (pending.length === 0) {
   fail('No pending changesets — nothing to release.');
 }
 
-// 5. npm auth
-try {
-  await $`npm whoami`;
-} catch {
-  fail('Not logged in to npm. Run `npm login` first.');
+// 5. npm auth token present
+// `npm whoami` 403s with granular access tokens (no account-endpoint access),
+// so check for an auth token directly instead. The token must be a granular
+// access token with bypass-2FA enabled, since the @marigold/* packages require
+// either an interactive OTP or a bypass-2FA token for writes.
+const token = (
+  await $`npm config get //registry.npmjs.org/:_authToken`
+).stdout.trim();
+if (!token || token === 'undefined') {
+  fail(
+    'No npm auth token in npmrc. Add a granular token with bypass-2FA enabled to ~/.npmrc.'
+  );
 }
 
 // 6. Local in sync with origin/beta-release
@@ -73,10 +80,13 @@ await $`git add -A`;
 await $`git commit -m ${'release: version packages (beta)'}`;
 
 console.log(chalk.cyan('\n▸ Publishing to npm (tag: beta)…'));
-// `stdio: 'inherit'` so changesets' interactive 2FA OTP prompt
-// (`Enter one-time password:`) reaches the terminal — without it, zx pipes
-// stdin and the prompt never appears, making the script look hung.
-await $({ stdio: 'inherit' })`pnpm changeset publish`;
+// `CI=true` makes changesets skip its `npm profile get` pre-flight check,
+// which 403s with granular access tokens (account-endpoint access is denied).
+// The publish itself works because the granular token has bypass-2FA enabled.
+await $({
+  stdio: 'inherit',
+  env: { ...process.env, CI: 'true' },
+})`pnpm changeset publish`;
 
 console.log(chalk.cyan('\n▸ Pushing commit + tags to origin…'));
 await $`git push --follow-tags`;
