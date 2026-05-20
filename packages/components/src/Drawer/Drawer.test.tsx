@@ -1,8 +1,14 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
+import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
+import { Button } from '../Button/Button';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic } from './Drawer.stories';
+import { Drawer } from './Drawer';
+import { Basic, OneAtATime } from './Drawer.stories';
+import { registerActiveDrawer } from './drawerRegistry';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
@@ -111,4 +117,84 @@ test('uses modal on small screens', async () => {
 
   expect(screen.getByRole('dialog')).toBeInTheDocument();
   expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+});
+
+test('controlled drawers receive onOpenChange(false) when preempted', async () => {
+  const onOpenChangeA = vi.fn();
+  const onOpenChangeB = vi.fn();
+
+  const TwoControlled = () => {
+    const [openA, setOpenA] = useState(false);
+    const [openB, setOpenB] = useState(false);
+    return (
+      <>
+        <Drawer.Trigger
+          open={openA}
+          onOpenChange={next => {
+            onOpenChangeA(next);
+            setOpenA(next);
+          }}
+        >
+          <Button>Open A</Button>
+          <Drawer>
+            <Drawer.Title>Title A</Drawer.Title>
+            <Drawer.Content>Content A</Drawer.Content>
+          </Drawer>
+        </Drawer.Trigger>
+        <Drawer.Trigger
+          open={openB}
+          onOpenChange={next => {
+            onOpenChangeB(next);
+            setOpenB(next);
+          }}
+        >
+          <Button>Open B</Button>
+          <Drawer>
+            <Drawer.Title>Title B</Drawer.Title>
+            <Drawer.Content>Content B</Drawer.Content>
+          </Drawer>
+        </Drawer.Trigger>
+      </>
+    );
+  };
+
+  renderWithOverlay(
+    <MarigoldProvider theme={theme}>
+      <TwoControlled />
+    </MarigoldProvider>
+  );
+
+  await user.click(screen.getByRole('button', { name: 'Open A' }));
+  expect(await screen.findByText('Title A')).toBeInTheDocument();
+  expect(onOpenChangeA).toHaveBeenLastCalledWith(true);
+
+  await user.click(screen.getByRole('button', { name: 'Open B' }));
+  expect(await screen.findByText('Title B')).toBeInTheDocument();
+
+  await waitFor(() => expect(onOpenChangeA).toHaveBeenCalledWith(false));
+  expect(onOpenChangeB).toHaveBeenCalledWith(true);
+});
+
+test('coordination also applies on small screens (mobile path)', async () => {
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  renderWithOverlay(<OneAtATime.Component />);
+
+  await user.click(screen.getByRole('button', { name: 'Open A' }));
+  expect(await screen.findByText('Title A')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'Open B' }));
+  expect(await screen.findByText('Title B')).toBeInTheDocument();
+
+  await waitFor(() =>
+    expect(screen.queryByText('Title A')).not.toBeInTheDocument()
+  );
+});
+
+test('registry no-ops on same-handler re-registration', () => {
+  const close = vi.fn();
+  const unregister = registerActiveDrawer(close);
+  registerActiveDrawer(close);
+  unregister();
+
+  expect(close).not.toHaveBeenCalled();
 });

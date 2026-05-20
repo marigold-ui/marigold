@@ -95,6 +95,12 @@
 - 20a42b0: Rename universal spacing token from `none` to `collapsed` to avoid a Tailwind v4 collision. `--spacing-none` inside `@theme static` caused `leading-none` to resolve to `0` instead of `line-height: 1`. The new name `collapsed` is a semantic design term (cf. CSS margin collapse) that reads naturally in both gap (`space="collapsed"`) and padding (`inset="collapsed"`) contexts.
 - de34b15: chore(deps): update `react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` packages to their latest versions.
 
+## 17.5.1
+
+### Patch Changes
+
+- c65d2a7: fix(DSTSUP-253): make `cva` results assignable to `ComponentStyleFunction` under default strict TypeScript. `@marigold/system@17.5.0` shipped `cva@1.0.0-beta.4`, whose narrowed return type stopped satisfying `ComponentStyleFunction<Variants, Sizes>` once consumers enabled `strictFunctionTypes` (implied by `strict: true`). Function-parameter contravariance rejected both the dead `variant?: Variants | null` slot and the `string` vs literal-union variant mismatch, breaking every consumer theme that followed the documented `cva(...) as ThemeComponent<'Foo'>` pattern. `ComponentStyleFunction` now types `variant`/`size` as `any` — honestly reflecting the runtime contract (`useClassNames` passes `string | undefined`, `cva` falls back to base styles for unknown values) and letting narrower `cva` returns satisfy the wider theme contract. `Variants`/`Sizes`/`Additional` generics stay for backward source-compatibility. A dedicated type-level regression test (`packages/system/src/types/theme.test-d.ts`) uses a `StrictlyAssignable<Source, Target>` conditional-type helper to verify the contract under TypeScript's structural function checking, so this class of bug is caught by the regular `pnpm typecheck` even though the monorepo's base config keeps `strictFunctionTypes: false`.
+
 ## 17.5.0
 
 ### Minor Changes
