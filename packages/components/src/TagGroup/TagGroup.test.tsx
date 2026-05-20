@@ -70,23 +70,12 @@ test('renders error message when `error` is true', () => {
 test('`disabled` cascades to tags so interaction is blocked', async () => {
   const onChange = vi.fn();
   const user = userEvent.setup();
-  render(
-    <Basic.Component
-      aria-label="categories"
-      disabled
-      onChange={onChange}
-      selectionMode="multiple"
-    />
-  );
+  render(<Basic.Component disabled onChange={onChange} />);
 
   const tags = screen.getAllByRole('row');
-
-  expect(tags.every(tag => tag.getAttribute('data-disabled') === 'true')).toBe(
-    true
-  );
+  tags.forEach(tag => expect(tag).toHaveAttribute('data-disabled', 'true'));
 
   await user.click(screen.getByText('News'));
-
   expect(onChange).not.toHaveBeenCalled();
 });
 

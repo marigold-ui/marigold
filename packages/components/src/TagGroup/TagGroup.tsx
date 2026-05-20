@@ -179,12 +179,9 @@ const _TagGroup = ({
     validationState.commitValidation();
   };
 
-  // Merge consumer-provided `aria-labelledby` with our generated `labelId` so a
-  // caller passing both keeps both references.
   const ariaLabelledBy =
-    [label ? labelId : null, rest['aria-labelledby']]
-      .filter(Boolean)
-      .join(' ') || undefined;
+    [label && labelId, rest['aria-labelledby']].filter(Boolean).join(' ') ||
+    undefined;
 
   return (
     <Provider
