@@ -1,4 +1,3 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -61,8 +60,9 @@ afterEach(() => {
 });
 
 describe('computeSuggestions — static surface', () => {
-  it('completes top-level subcommands on empty input', () => {
+  test('completes top-level subcommands on empty input', () => {
     const out = computeSuggestions(['']);
+
     expect(out).toEqual(
       expect.arrayContaining([
         'docs',
@@ -74,23 +74,29 @@ describe('computeSuggestions — static surface', () => {
     );
   });
 
-  it('filters subcommands by prefix', () => {
+  test('filters subcommands by prefix `d`', () => {
     expect(computeSuggestions(['d'])).toEqual(['docs']);
+  });
+
+  test('filters subcommands by prefix `t`', () => {
     expect(computeSuggestions(['t'])).toEqual(['telemetry']);
   });
 
-  it('completes flag names when cursor word starts with --', () => {
+  test('completes flag names when cursor word starts with --', () => {
     expect(computeSuggestions(['docs', '--'])).toEqual(
       expect.arrayContaining(['--section', '--format', '--fresh', '--offline'])
     );
   });
 
-  it('filters flags by prefix', () => {
+  test('filters list flags by `--cat` prefix', () => {
     expect(computeSuggestions(['list', '--cat'])).toEqual(['--category']);
+  });
+
+  test('filters docs flags by `--form` prefix', () => {
     expect(computeSuggestions(['docs', '--form'])).toEqual(['--format']);
   });
 
-  it('completes enum values for --format', () => {
+  test('completes enum values for --format', () => {
     expect(computeSuggestions(['docs', '--format', ''])).toEqual([
       'markdown',
       'json',
@@ -98,7 +104,7 @@ describe('computeSuggestions — static surface', () => {
     ]);
   });
 
-  it('completes enum values for --section', () => {
+  test('completes enum values for --section', () => {
     expect(computeSuggestions(['docs', '--section', ''])).toEqual([
       'props',
       'usage',
@@ -107,16 +113,19 @@ describe('computeSuggestions — static surface', () => {
     ]);
   });
 
-  it('completes telemetry subcommands', () => {
+  test('completes telemetry subcommands on empty input', () => {
     expect(computeSuggestions(['telemetry', ''])).toEqual([
       'status',
       'enable',
       'disable',
     ]);
+  });
+
+  test('filters telemetry subcommands by prefix', () => {
     expect(computeSuggestions(['telemetry', 'en'])).toEqual(['enable']);
   });
 
-  it('completes shell names for completion subcommand', () => {
+  test('completes shell names for completion subcommand', () => {
     expect(computeSuggestions(['completion', ''])).toEqual([
       'bash',
       'zsh',
@@ -124,105 +133,124 @@ describe('computeSuggestions — static surface', () => {
     ]);
   });
 
-  it('returns empty for unknown subcommand', () => {
+  test('returns empty for unknown subcommand', () => {
     expect(computeSuggestions(['nonsense', ''])).toEqual([]);
   });
 });
 
 describe('computeSuggestions — manifest-driven', () => {
-  it('returns empty when manifest cache is missing (no error)', () => {
+  test('returns empty when manifest cache is missing (no error)', () => {
     expect(computeSuggestions(['docs', 'Bu'])).toEqual([]);
   });
 
-  it('completes component names from cached manifest', () => {
+  test('completes component names from cached manifest', () => {
     seedManifestCache();
+
     const out = computeSuggestions(['docs', 'Bu']);
+
     expect(out).toEqual(['Button', 'ButtonGroup']);
   });
 
-  it('returns all components on empty positional', () => {
+  test('returns all components on empty positional', () => {
     seedManifestCache();
+
     const out = computeSuggestions(['docs', '']);
+
     expect(out).toEqual(
       expect.arrayContaining(['Button', 'ButtonGroup', 'TextField'])
     );
   });
 
-  it('does not suggest a second component once one is given', () => {
+  test('does not suggest a second component once one is given', () => {
     seedManifestCache();
+
     expect(computeSuggestions(['docs', 'Button', ''])).toEqual([]);
   });
 
-  it('skips the value of a string flag when counting positionals', () => {
+  test('skips the value of a string flag when counting positionals', () => {
     seedManifestCache();
+
     // `marigold docs --format json B` — "json" is the value of --format,
     // not a positional, so the cursor word is still the first positional.
     const out = computeSuggestions(['docs', '--format', 'json', 'B']);
+
     expect(out).toEqual(['Button', 'ButtonGroup']);
   });
 
-  it('completes categories for list --category', () => {
+  test('completes categories for list --category', () => {
     seedManifestCache();
+
     const out = computeSuggestions(['list', '--category', '']);
+
     expect(out).toEqual(expect.arrayContaining(['actions', 'form']));
   });
 
-  it('returns empty for malformed manifest cache (no throw)', () => {
+  test('returns empty for malformed manifest cache (no throw)', () => {
     const file = cachePathFor(`${docsUrl()}/manifest.json`);
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, '<!DOCTYPE html><html>not json</html>');
+
     expect(computeSuggestions(['docs', 'Bu'])).toEqual([]);
   });
 });
 
 describe('runCompleteSuggest', () => {
-  it('formats output as newline-delimited with trailing newline', () => {
+  test('formats output as newline-delimited with trailing newline', () => {
     seedManifestCache();
+
     expect(runCompleteSuggest(['docs', 'Bu'])).toBe('Button\nButtonGroup\n');
   });
 
-  it('returns empty string (no newline) when there are no suggestions', () => {
+  test('returns empty string (no newline) when there are no suggestions', () => {
     expect(runCompleteSuggest(['docs', 'XYZ'])).toBe('');
   });
 });
 
 describe('runCompletion', () => {
-  it('prints the bash script', () => {
+  test('prints the bash script', () => {
     const r = runCompletion('bash');
+
     expect(r.exitCode).toBe(0);
     expect(r.output).toContain('complete -F _marigold_complete marigold');
   });
 
-  it('prints the zsh script', () => {
+  test('prints the zsh script', () => {
     const r = runCompletion('zsh');
+
     expect(r.exitCode).toBe(0);
     expect(r.output).toContain('compdef _marigold marigold');
   });
 
-  it('zsh script does not shadow the completion-provided `words` array', () => {
+  test('zsh script does not shadow the completion-provided `words` array', () => {
     // Regression guard: an earlier version did `local -a words` inside the
     // function, which shadowed zsh's outer `words` and made every TAB press
     // suggest top-level subcommands instead of component names.
     const r = runCompletion('zsh');
+
     expect(r.output).not.toMatch(/local\s+-a\s+words\b/);
   });
 
-  it('prints the fish script', () => {
+  test('prints the fish script', () => {
     const r = runCompletion('fish');
+
     expect(r.exitCode).toBe(0);
     expect(r.output).toContain(
       "complete -c marigold -f -a '(__marigold_complete)'"
     );
   });
 
-  it('shows install help when no shell is given', () => {
+  test('shows install help when no shell is given', () => {
     const r = runCompletion(undefined);
+
     expect(r.exitCode).toBe(0);
     expect(r.output).toContain('source <(marigold completion bash)');
   });
 
-  it('exits 2 for unsupported shells', () => {
+  test('exits 2 for powershell', () => {
     expect(runCompletion('powershell').exitCode).toBe(2);
+  });
+
+  test('exits 2 for cmd', () => {
     expect(runCompletion('cmd').exitCode).toBe(2);
   });
 });

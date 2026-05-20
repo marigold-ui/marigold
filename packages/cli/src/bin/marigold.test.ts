@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { vi } from 'vitest';
 import { main } from './marigold.js';
 
 // Suppress the auto-invocation guard: when `process.argv[1]` is anything other
@@ -34,10 +34,12 @@ afterEach(() => {
 });
 
 describe('main() — telemetry on validation failure', () => {
-  it('emits exitCode 1 with args when --section is invalid', async () => {
+  test('emits exitCode 1 with args when --section is invalid', async () => {
     const code = await main(['docs', 'Button', '--section', 'bogus']);
+
     expect(code).toBe(1);
     expect(emitMock).toHaveBeenCalledTimes(1);
+
     const event = emitMock.mock.calls[0][0];
     expect(event).toMatchObject({
       command: 'docs',
@@ -49,8 +51,9 @@ describe('main() — telemetry on validation failure', () => {
     });
   });
 
-  it('emits exitCode 1 when the component positional is missing', async () => {
+  test('emits exitCode 1 when the component positional is missing', async () => {
     const code = await main(['docs']);
+
     expect(code).toBe(1);
     expect(emitMock).toHaveBeenCalledTimes(1);
     expect(emitMock.mock.calls[0][0]).toMatchObject({
@@ -60,8 +63,9 @@ describe('main() — telemetry on validation failure', () => {
     });
   });
 
-  it('emits exitCode 1 when telemetry subcommand is missing', async () => {
+  test('emits exitCode 1 when telemetry subcommand is missing', async () => {
     const code = await main(['telemetry']);
+
     expect(code).toBe(1);
     expect(emitMock).toHaveBeenCalledTimes(1);
     expect(emitMock.mock.calls[0][0]).toMatchObject({
@@ -70,8 +74,9 @@ describe('main() — telemetry on validation failure', () => {
     });
   });
 
-  it('does not emit telemetry for unknown commands', async () => {
+  test('does not emit telemetry for unknown commands', async () => {
     const code = await main(['nonsense']);
+
     expect(code).toBe(1);
     expect(emitMock).not.toHaveBeenCalled();
   });

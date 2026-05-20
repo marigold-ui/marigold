@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import {
   type Manifest,
   resolveComponent,
@@ -38,55 +37,69 @@ const manifest: Manifest = {
 };
 
 describe('resolveComponent', () => {
-  it('matches exact name', () => {
+  test('matches exact name', () => {
     expect(resolveComponent(manifest, 'Button')?.component.name).toBe('Button');
   });
 
-  it('matches exact slug', () => {
+  test('matches exact slug', () => {
     expect(
       resolveComponent(manifest, 'components/form/text-field')?.component.name
     ).toBe('TextField');
   });
 
-  it('matches case-insensitive name', () => {
+  test('matches case-insensitive lowercase name', () => {
     expect(resolveComponent(manifest, 'button')?.component.name).toBe('Button');
+  });
+
+  test('matches case-insensitive uppercase name', () => {
     expect(resolveComponent(manifest, 'BUTTON')?.component.name).toBe('Button');
   });
 
-  it('matches normalized (kebab/space/underscore)', () => {
+  test('matches kebab-case name', () => {
     expect(resolveComponent(manifest, 'text-field')?.component.name).toBe(
       'TextField'
     );
+  });
+
+  test('matches name with spaces', () => {
     expect(resolveComponent(manifest, 'text field')?.component.name).toBe(
       'TextField'
     );
+  });
+
+  test('matches name with underscores', () => {
     expect(resolveComponent(manifest, 'text_field')?.component.name).toBe(
       'TextField'
     );
+  });
+
+  test('matches name with no separators', () => {
     expect(resolveComponent(manifest, 'textfield')?.component.name).toBe(
       'TextField'
     );
   });
 
-  it('matches slug tail', () => {
+  test('matches slug tail', () => {
     expect(resolveComponent(manifest, 'date-picker')?.component.name).toBe(
       'DatePicker'
     );
   });
 
-  it('returns null for unknown', () => {
+  test('returns null for unknown', () => {
     expect(resolveComponent(manifest, 'Nonexistent')).toBeNull();
   });
 });
 
 describe('suggestComponents', () => {
-  it('suggests near matches', () => {
+  test('suggests near matches', () => {
     const suggestions = suggestComponents(manifest, 'butto', 3);
+
     expect(suggestions.map(s => s.name)).toContain('Button');
   });
 
-  it('returns empty for complete misses', () => {
+  test('returns empty for complete misses', () => {
     const suggestions = suggestComponents(manifest, 'xyzqq', 3);
+
     expect(suggestions).toHaveLength(0);
   });
 });

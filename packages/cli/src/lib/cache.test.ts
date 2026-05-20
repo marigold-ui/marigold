@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { vi } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -34,10 +34,12 @@ const mockFetch = (body: string, ok = true, contentType = 'text/plain') => {
 };
 
 describe('fetchWithCache', () => {
-  it('caches successful fetches', async () => {
+  test('caches successful fetches', async () => {
     const spy = mockFetch('hello');
+
     const first = await fetchWithCache<string>('https://x/y', t => t);
     const second = await fetchWithCache<string>('https://x/y', t => t);
+
     expect(first.value).toBe('hello');
     expect(first.hit).toBe(false);
     expect(second.value).toBe('hello');
@@ -45,7 +47,7 @@ describe('fetchWithCache', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('bypasses cache with fresh=true', async () => {
+  test('bypasses cache with fresh=true', async () => {
     const spy = mockFetch('v1');
     await fetchWithCache<string>('https://x/z', t => t);
     spy.mockResolvedValue({
@@ -54,59 +56,65 @@ describe('fetchWithCache', () => {
       statusText: 'OK',
       text: async () => 'v2',
     } as unknown as Response);
+
     const result = await fetchWithCache<string>('https://x/z', t => t, {
       fresh: true,
     });
+
     expect(result.value).toBe('v2');
     expect(result.hit).toBe(false);
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
-  it('honors offline when cache exists', async () => {
+  test('honors offline when cache exists', async () => {
     mockFetch('cached');
     await fetchWithCache<string>('https://x/a', t => t);
+
     const result = await fetchWithCache<string>('https://x/a', t => t, {
       offline: true,
       fresh: true, // even with fresh, offline should use cache
     });
+
     expect(result.value).toBe('cached');
   });
 
-  it('throws in offline mode when no cache exists', async () => {
+  test('throws in offline mode when no cache exists', async () => {
     await expect(
       fetchWithCache<string>('https://x/missing', t => t, { offline: true })
     ).rejects.toThrow(/Offline mode/);
   });
 
-  it('throws on HTTP errors', async () => {
+  test('throws on HTTP errors', async () => {
     mockFetch('fail', false);
+
     await expect(fetchWithCache<string>('https://x/e', t => t)).rejects.toThrow(
       /Failed to fetch/
     );
   });
 
-  it('reports content-type and original error when parse fails', async () => {
+  test('reports content-type and original error when parse fails', async () => {
     mockFetch('<!DOCTYPE html><html></html>', true, 'text/html; charset=utf-8');
+
     await expect(
       fetchWithCache('https://x/manifest.json', t => JSON.parse(t))
     ).rejects.toThrow(/content-type: text\/html/);
   });
 
-  it('does not write the cache when parse fails', async () => {
+  test('does not write the cache when parse fails', async () => {
     mockFetch('<!DOCTYPE html>', true, 'text/html');
+
     await expect(
       fetchWithCache('https://x/bad.json', t => JSON.parse(t))
     ).rejects.toThrow();
+
     const files = fs.readdirSync(tmpDir);
     expect(files).toEqual([]);
   });
 
-  it('recovers when an existing cache entry is unparseable', async () => {
-    // Seed cache with a value that satisfies one parser…
+  test('recovers when an existing cache entry is unparseable', async () => {
     const spy = mockFetch('<!DOCTYPE html>');
     await fetchWithCache<string>('https://x/seed', t => t);
     spy.mockClear();
-    // …then call again with a parser that rejects it; it should refetch.
     spy.mockResolvedValue({
       ok: true,
       status: 200,
@@ -114,33 +122,37 @@ describe('fetchWithCache', () => {
       text: async () => '{"ok":true}',
       headers: { get: () => 'application/json' },
     } as unknown as Response);
+
     const result = await fetchWithCache(
       'https://x/seed',
       t => JSON.parse(t) as { ok: boolean }
     );
+
     expect(result.value).toEqual({ ok: true });
     expect(result.hit).toBe(false);
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('rewraps TimeoutError with a user-friendly message', async () => {
+  test('rewraps TimeoutError with a user-friendly message', async () => {
     const timeoutError = Object.assign(new Error('aborted'), {
       name: 'TimeoutError',
     });
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(timeoutError);
+
     await expect(
       fetchWithCache<string>('https://x/slow', t => t)
     ).rejects.toThrow(/Timed out fetching https:\/\/x\/slow after 10s/);
   });
 
-  it('expires entries older than TTL', async () => {
+  test('expires entries older than TTL', async () => {
     const spy = mockFetch('fresh');
     await fetchWithCache<string>('https://x/ttl', t => t, { ttlMs: 1 });
-    // Sleep briefly; cache.ts reads mtime
     await new Promise(r => setTimeout(r, 5));
+
     const result = await fetchWithCache<string>('https://x/ttl', t => t, {
       ttlMs: 1,
     });
+
     expect(result.hit).toBe(false);
     expect(spy).toHaveBeenCalledTimes(2);
   });

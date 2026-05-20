@@ -197,7 +197,7 @@ export const editNextLayout = (
   const s = new MagicString(source);
   const changes: string[] = [];
 
-  if (!hasImport) {
+  if (!hasImport && !alreadyWrapped) {
     insertImport(
       s,
       file,
@@ -213,6 +213,10 @@ export const editNextLayout = (
     s.appendLeft(start, '<Providers>');
     s.appendRight(end, '</Providers>');
     changes.push('wrapped {children} with <Providers>');
+  }
+
+  if (changes.length === 0) {
+    return { kind: 'unchanged', reason: 'layout already wrapped' };
   }
 
   return { kind: 'edited', output: s.toString(), changes };

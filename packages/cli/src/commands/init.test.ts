@@ -1,4 +1,3 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -54,7 +53,7 @@ createRoot(document.getElementById('root')!).render(<App />);
 };
 
 describe('runInit (integration, skipInstall)', () => {
-  it('wires up a Next.js project end-to-end', async () => {
+  test('wires up a Next.js project end-to-end', async () => {
     seedNextProject();
 
     await runInit({ cwd: dir, yes: true, skipInstall: true });
@@ -80,7 +79,7 @@ describe('runInit (integration, skipInstall)', () => {
     expect(postcss).toContain('@tailwindcss/postcss');
   });
 
-  it('wires up a Vite project end-to-end', async () => {
+  test('wires up a Vite project end-to-end', async () => {
     seedViteProject();
 
     await runInit({ cwd: dir, yes: true, skipInstall: true });
@@ -107,7 +106,7 @@ describe('runInit (integration, skipInstall)', () => {
     expect(css).toContain(`@import 'tailwindcss';`);
   });
 
-  it('is idempotent — second run leaves files unchanged', async () => {
+  test('is idempotent — second run leaves files unchanged', async () => {
     seedNextProject();
 
     await runInit({ cwd: dir, yes: true, skipInstall: true });
@@ -121,17 +120,17 @@ describe('runInit (integration, skipInstall)', () => {
     );
 
     await runInit({ cwd: dir, yes: true, skipInstall: true });
+
     const layoutAfter = fs.readFileSync(
       path.join(dir, 'app/layout.tsx'),
       'utf8'
     );
     const cssAfter = fs.readFileSync(path.join(dir, 'app/globals.css'), 'utf8');
-
     expect(layoutAfter).toBe(layoutBefore);
     expect(cssAfter).toBe(cssBefore);
   });
 
-  it('preserves unrelated content in the layout file', async () => {
+  test('preserves unrelated content in the layout file', async () => {
     fs.writeFileSync(path.join(dir, 'next.config.mjs'), '');
     fs.mkdirSync(path.join(dir, 'app'), { recursive: true });
     const original = `// custom banner — keep me\nimport './styles.css';\nimport { Inter } from 'next/font/google';\n\nconst inter = Inter({ subsets: ['latin'] });\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang="en" className={inter.className}>\n      <body>{children}</body>\n    </html>\n  );\n}\n`;
