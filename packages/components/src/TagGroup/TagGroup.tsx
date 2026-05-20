@@ -17,6 +17,7 @@ import type { Key, Selection, ValidationError } from '@react-types/shared';
 import { WidthProp, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
+import { TagGroupContext } from './Context';
 import { TagGroupRemoveAll } from './TagGroupRemoveAll';
 
 // Props
@@ -178,12 +179,20 @@ const _TagGroup = ({
     validationState.commitValidation();
   };
 
+  // Merge consumer-provided `aria-labelledby` with our generated `labelId` so a
+  // caller passing both keeps both references.
+  const ariaLabelledBy =
+    [label ? labelId : null, rest['aria-labelledby']]
+      .filter(Boolean)
+      .join(' ') || undefined;
+
   return (
     <Provider
       values={[
         [LabelContext, { id: labelId, elementType: 'span' }],
         [FieldErrorContext, validationState.displayValidation],
-        [FormContext, { validationBehavior }],
+        [FormContext, { ...formCtx, validationBehavior }],
+        [TagGroupContext, { disabled }],
       ]}
     >
       <FieldBase
@@ -200,7 +209,7 @@ const _TagGroup = ({
       >
         <RACTagGroup
           {...(rest as RAC.TagGroupProps)}
-          aria-labelledby={label ? labelId : rest['aria-labelledby']}
+          aria-labelledby={ariaLabelledBy}
           aria-disabled={disabled || undefined}
           selectionMode={selectionMode}
           selectedKeys={selection}
@@ -232,7 +241,7 @@ const _TagGroup = ({
             required={required}
             selectionMode={selectionMode === 'multiple' ? 'multiple' : 'single'}
             selection={selection}
-            onSelectionChange={setSelection}
+            onSelectionChange={handleSelectionChange}
             validationBehavior={validationBehavior}
             validationState={validationState}
             focusRef={tagListRef}

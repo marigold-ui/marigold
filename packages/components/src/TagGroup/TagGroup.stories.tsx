@@ -230,6 +230,7 @@ export const WithForm = meta.story({
     await userEvent.click(await canvas.findByText('Travel'));
     await userEvent.click(canvas.getByText('Gaming'));
     await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+
     await waitFor(() => {
       expect(canvas.getByTestId('submitted')).toHaveTextContent(
         'submitted: travel,gaming'
@@ -264,6 +265,7 @@ export const Required = meta.story({
   ),
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+
     await waitFor(() =>
       expect(
         canvas.getByText('Pick at least one category.')

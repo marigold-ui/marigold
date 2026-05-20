@@ -67,6 +67,29 @@ test('renders error message when `error` is true', () => {
   ).toBeInTheDocument();
 });
 
+test('`disabled` cascades to tags so interaction is blocked', async () => {
+  const onChange = vi.fn();
+  const user = userEvent.setup();
+  render(
+    <Basic.Component
+      aria-label="categories"
+      disabled
+      onChange={onChange}
+      selectionMode="multiple"
+    />
+  );
+
+  const tags = screen.getAllByRole('row');
+
+  expect(tags.every(tag => tag.getAttribute('data-disabled') === 'true')).toBe(
+    true
+  );
+
+  await user.click(screen.getByText('News'));
+
+  expect(onChange).not.toHaveBeenCalled();
+});
+
 test('can be used like a native form element', async () => {
   let data: [string, FormDataEntryValue][] = [];
   const submit = vi.fn(event => {

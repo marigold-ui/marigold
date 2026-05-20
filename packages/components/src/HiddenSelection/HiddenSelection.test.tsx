@@ -75,6 +75,7 @@ test('renders a hidden <select> that is not user-focusable', () => {
   render(<Harness selectionMode="single" />);
 
   const select = getSelect();
+
   expect(select).not.toBeNull();
   expect(select!.tabIndex).toBe(-1);
   expect(select!.getAttribute('aria-hidden')).toBe('true');
@@ -84,6 +85,7 @@ test('single mode: omits the `multiple` attribute', () => {
   render(<Harness selectionMode="single" defaultSelection={['a']} />);
 
   const select = getSelect()!;
+
   expect(select.multiple).toBe(false);
   expect(select.value).toBe('a');
 });
@@ -92,18 +94,21 @@ test('multiple mode: sets `multiple` and reflects all selected keys', () => {
   render(<Harness selectionMode="multiple" defaultSelection={['a', 'b']} />);
 
   const select = getSelect()!;
-  expect(select.multiple).toBe(true);
   const selected = Array.from(select.selectedOptions).map(o => o.value);
+
+  expect(select.multiple).toBe(true);
   expect(selected).toEqual(['a', 'b']);
 });
 
 test('selection "all" submits no values', () => {
   render(<Harness selectionMode="multiple" defaultSelection="all" />);
+
   expect(Array.from(getSelect()!.selectedOptions)).toHaveLength(0);
 });
 
 test('disabled prop is forwarded to the <select>', () => {
   render(<Harness selectionMode="single" disabled />);
+
   expect(getSelect()!.disabled).toBe(true);
 });
 
@@ -111,6 +116,7 @@ test('required + validationBehavior="native" applies the required attribute', ()
   render(
     <Harness selectionMode="multiple" required validationBehavior="native" />
   );
+
   expect(getSelect()!.required).toBe(true);
 });
 
@@ -118,6 +124,7 @@ test('required + validationBehavior="aria" does not apply the required attribute
   render(
     <Harness selectionMode="multiple" required validationBehavior="aria" />
   );
+
   expect(getSelect()!.required).toBe(false);
 });
 
@@ -130,7 +137,9 @@ test('name and form props are forwarded', () => {
       defaultSelection={['a']}
     />
   );
+
   const select = getSelect()!;
+
   expect(select.getAttribute('name')).toBe('categories');
   expect(select.getAttribute('form')).toBe('my-form');
 });
@@ -169,8 +178,8 @@ test('autofill / change events route back through onSelectionChange', () => {
     />
   );
 
-  const select = getSelect()!;
   // Simulate the browser changing the selection (e.g. form reset, autofill).
+  const select = getSelect()!;
   Array.from(select.options).forEach(option => {
     option.selected = option.value === 'a';
   });
