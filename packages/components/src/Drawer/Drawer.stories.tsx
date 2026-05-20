@@ -296,12 +296,12 @@ export const OneAtATimeNested = meta.story({
   render: args => (
     <Drawer.Trigger>
       <Button>Open A</Button>
-      <Drawer {...args}>
+      <Drawer {...args} closeButton>
         <Drawer.Title>Title A</Drawer.Title>
         <Drawer.Content>
           <Drawer.Trigger>
             <Button>Open B</Button>
-            <Drawer {...args}>
+            <Drawer {...args} closeButton>
               <Drawer.Title>Title B</Drawer.Title>
               <Drawer.Content>Content B</Drawer.Content>
             </Drawer>
