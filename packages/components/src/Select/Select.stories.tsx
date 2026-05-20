@@ -504,6 +504,22 @@ export const WithImages = meta.story({
       expect(label).toBeInTheDocument();
       expect(description).toBeInTheDocument();
     });
+
+    // Wait for remote avatars to finish loading before Chromatic snapshots,
+    // otherwise the captured frame depends on network timing.
+    await step('Wait for avatars to finish loading', async () => {
+      const imgs = await canvas.findAllByRole('img');
+      await Promise.all(
+        imgs.map(img => {
+          if (!(img instanceof HTMLImageElement)) return Promise.resolve();
+          if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+          return new Promise<void>(resolve => {
+            img.addEventListener('load', () => resolve(), { once: true });
+            img.addEventListener('error', () => resolve(), { once: true });
+          });
+        })
+      );
+    });
   },
 });
 
