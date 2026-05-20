@@ -23,8 +23,8 @@ import type {
 } from '@marigold/system';
 import { cn, createSpacingVar, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { SelectListContext } from './Context';
-import { SelectListHiddenSelect } from './SelectListHiddenSelect';
 import { SelectListOption } from './SelectListOption';
 
 export type SelectionMode = 'single' | 'multiple';
@@ -338,7 +338,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
             >
               {children}
             </RACGridList>
-            <SelectListHiddenSelect
+            <HiddenSelection
               name={name}
               form={form}
               disabled={disabled}
