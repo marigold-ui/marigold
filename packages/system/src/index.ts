@@ -23,7 +23,6 @@ export type {
 } from './hooks/useStateProps';
 export { useTheme, ThemeProvider } from './hooks/useTheme';
 export type { ThemeProviderProps } from './hooks/useTheme';
-export { useReducedMotion } from './hooks/useReducedMotion';
 export { useSmallScreen } from './hooks/useSmallScreen';
 export { extendTheme } from './hooks/extendTheme';
 export type { StylesProps } from './hooks/extendTheme';

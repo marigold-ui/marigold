@@ -4,6 +4,7 @@ import {
   cubicBezier,
   motion,
   useMotionValue,
+  useReducedMotion,
 } from 'motion/react';
 import { use } from 'react';
 import {
@@ -12,7 +13,7 @@ import {
   OverlayTriggerStateContext,
 } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-import { cn, useClassNames, useReducedMotion } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps =
   | 'isOpen'
@@ -67,7 +68,8 @@ export const TrayModal = ({
   // Skip framer-motion under reduced motion: AnimatePresence delays unmount,
   // which races with RAC's FocusScope cleanup and prevents the trigger from
   // receiving focus on close. Plain ModalOverlay unmounts synchronously, so
-  // FocusScope restores focus as designed.
+  // FocusScope restores focus as designed. Users without the preference still
+  // hit this race — follow-up needed for a full fix.
   if (reducedMotion) {
     return (
       <ModalOverlay
