@@ -57,6 +57,7 @@
     "@react-aria/interactions": "^3.28.0",
     "@react-aria/label": "^3.8.0",
     "@react-aria/landmark": "^3.1.0",
+    "@react-aria/live-announcer": "^3.5.0",
     "@react-aria/overlays": "^3.32.0",
     "@react-aria/selection": "^3.28.0",
     "@react-aria/ssr": "^3.10.0",

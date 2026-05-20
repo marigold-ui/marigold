@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -74,6 +75,124 @@ export const LongMessage = meta.story({
       </SectionMessage.Content>
     </SectionMessage>
   ),
+});
+
+// Helpers for announcer assertions
+// ---------------
+const getLog = (priority: 'polite' | 'assertive') =>
+  document.querySelector<HTMLElement>(
+    `[data-live-announcer] [role="log"][aria-live="${priority}"]`
+  );
+
+const logIncludes = (priority: 'polite' | 'assertive', text: string) =>
+  Boolean(getLog(priority)?.textContent?.includes(text));
+
+export const AnnouncesErrorAssertively = meta.story({
+  tags: ['component-test'],
+  args: { variant: 'error' },
+  render: args => (
+    <SectionMessage {...args}>
+      <SectionMessage.Title>Payment declined</SectionMessage.Title>
+      <SectionMessage.Content>
+        We could not process your card.
+      </SectionMessage.Content>
+    </SectionMessage>
+  ),
+  play: async () => {
+    await waitFor(() =>
+      expect(logIncludes('assertive', 'Payment declined')).toBe(true)
+    );
+    await waitFor(() =>
+      expect(logIncludes('assertive', 'We could not process your card.')).toBe(
+        true
+      )
+    );
+  },
+});
+
+export const AnnouncesPolitelyWithAnnounceProp = meta.story({
+  tags: ['component-test'],
+  args: { variant: 'success' },
+  render: args => (
+    <SectionMessage {...args} announce>
+      <SectionMessage.Title>Settings saved</SectionMessage.Title>
+      <SectionMessage.Content>
+        Your changes have been applied.
+      </SectionMessage.Content>
+    </SectionMessage>
+  ),
+  play: async () => {
+    await waitFor(() =>
+      expect(logIncludes('polite', 'Settings saved')).toBe(true)
+    );
+  },
+});
+
+export const DoesNotAnnounceNonErrorWithoutProp = meta.story({
+  tags: ['component-test'],
+  args: { variant: 'info' },
+  render: args => (
+    <SectionMessage {...args}>
+      <SectionMessage.Title>Quiet info banner</SectionMessage.Title>
+      <SectionMessage.Content>
+        This is a static notice that should not be announced.
+      </SectionMessage.Content>
+    </SectionMessage>
+  ),
+  play: async () => {
+    // Wait long enough for the announcer's 100ms first-call delay to elapse,
+    // then assert nothing landed in the polite log.
+    await new Promise(r => setTimeout(r, 250));
+    await expect(logIncludes('polite', 'Quiet info banner')).toBe(false);
+  },
+});
+
+export const DoesNotAnnounceErrorWhenOptedOut = meta.story({
+  tags: ['component-test'],
+  args: { variant: 'error' },
+  render: args => (
+    <SectionMessage {...args} announce={false}>
+      <SectionMessage.Title>Silent error</SectionMessage.Title>
+      <SectionMessage.Content>
+        This error should not be announced.
+      </SectionMessage.Content>
+    </SectionMessage>
+  ),
+  play: async () => {
+    await new Promise(r => setTimeout(r, 250));
+    await expect(logIncludes('assertive', 'Silent error')).toBe(false);
+  },
+});
+
+export const AnnouncesWhenControlledShown = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  args: { variant: 'success' },
+  render: args => {
+    const [shown, setShown] = useState(false);
+    return (
+      <Stack space={4} alignX="left">
+        <Button onPress={() => setShown(true)}>Show message</Button>
+        <SectionMessage {...args} announce close={shown}>
+          <SectionMessage.Title>Folder synced</SectionMessage.Title>
+          <SectionMessage.Content>
+            All files are up to date.
+          </SectionMessage.Content>
+        </SectionMessage>
+      </Stack>
+    );
+  },
+  play: async ({ canvas }) => {
+    // Hidden on mount: the polite log should not yet contain the message.
+    await new Promise(r => setTimeout(r, 250));
+    expect(logIncludes('polite', 'Folder synced')).toBe(false);
+
+    // Flip controlled visibility to shown: announcement fires.
+    await userEvent.click(canvas.getByRole('button', { name: 'Show message' }));
+    await waitFor(() =>
+      expect(logIncludes('polite', 'Folder synced')).toBe(true)
+    );
+  },
 });
 
 export const ControlledSectionMessage = meta.story({

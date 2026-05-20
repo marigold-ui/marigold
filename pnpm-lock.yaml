@@ -443,6 +443,9 @@ importers:
       '@react-aria/landmark':
         specifier: ^3.1.0
         version: 3.1.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@react-aria/live-announcer':
+        specifier: ^3.5.0
+        version: 3.5.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@react-aria/overlays':
         specifier: ^3.32.0
         version: 3.32.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -2314,6 +2317,12 @@ packages:
 
   '@react-aria/landmark@3.1.0':
     resolution: {integrity: sha512-0218hm9M2IzMpWjW/Sq0+KVmYmH5H4jmfKraLBeeaKsgEHKr9V18EBFT+6DG5P77bB9gjab5AQvZQYwWmoLCeg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-aria/live-announcer@3.5.0':
+    resolution: {integrity: sha512-1b+Txq00WQ/PJPCsZT+CI5qP86DrfFGPuJL5ifKtdMVXrxNGJWrfu7jTj6q9AbAOOXLG11BJ6blILu7sZeRPxg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -9974,6 +9983,13 @@ snapshots:
       react-dom: 19.2.6(react@19.2.6)
 
   '@react-aria/landmark@3.1.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+    dependencies:
+      '@swc/helpers': 0.5.21
+      react: 19.2.6
+      react-aria: 3.48.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      react-dom: 19.2.6(react@19.2.6)
+
+  '@react-aria/live-announcer@3.5.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
       '@swc/helpers': 0.5.21
       react: 19.2.6
