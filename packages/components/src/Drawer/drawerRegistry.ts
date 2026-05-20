@@ -1,6 +1,7 @@
 /**
  * Single-slot registry enforcing "one Drawer open at a time" across the
- * desktop (NonModal) and mobile (ModalOverlay) paths.
+ * desktop (NonModal) and mobile (ModalOverlay) paths. Nested drawers don't
+ * register — see `useDrawerCoordination`.
  *
  * Concurrent React safety:
  * - `activeClose` is never read during render — only mutated inside effect

@@ -285,8 +285,10 @@ export const OneAtATime = meta.story({
 });
 
 /**
- * DST-1407 motivating case: a trigger nested inside an open Drawer opens a
- * second Drawer. The first dismisses as the second enters.
+ * DST-1407: A trigger nested inside an open Drawer opens a second Drawer over
+ * the first. The parent stays mounted because dismissing it would also tear
+ * down the nested trigger and the new Drawer with it. "One at a time" still
+ * holds between sibling Drawers — only nested pairs are allowed to stack.
  */
 export const OneAtATimeNested = meta.story({
   tags: ['component-test'],
@@ -315,8 +317,14 @@ export const OneAtATimeNested = meta.story({
     await userEvent.click(canvas.getByRole('button', { name: 'Open B' }));
     expect(await canvas.findByText('Title B')).toBeInTheDocument();
 
+    // Parent stays open underneath the nested Drawer.
+    expect(canvas.getByText('Title A')).toBeInTheDocument();
+
+    // ESC closes only the topmost (nested) Drawer.
+    await userEvent.keyboard('{Escape}');
     await waitFor(() =>
-      expect(canvas.queryByText('Title A')).not.toBeInTheDocument()
+      expect(canvas.queryByText('Title B')).not.toBeInTheDocument()
     );
+    expect(canvas.getByText('Title A')).toBeInTheDocument();
   },
 });
