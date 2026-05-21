@@ -10,6 +10,8 @@ export interface CardMediaProps {
 export const CardMedia = ({ children }: CardMediaProps) => {
   const { classNames } = useCardContext();
   return (
-    <div className={cn('-mt-(--card-py)', classNames.media)}>{children}</div>
+    <div className={cn('-mt-(--card-py)', classNames.media)} data-card-media>
+      {children}
+    </div>
   );
 };

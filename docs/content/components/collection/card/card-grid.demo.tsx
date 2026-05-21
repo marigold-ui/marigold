@@ -10,7 +10,7 @@ import {
   Tiles,
 } from '@marigold/components';
 
-const featured = [venues[0], venues[3], venues[5]];
+const featured = venues.slice(0, 3);
 
 export default () => (
   <Tiles space="regular" tilesWidth="240px" stretch>

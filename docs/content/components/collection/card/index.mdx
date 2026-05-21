@@ -10,7 +10,7 @@ A `<Card>` represents one item in a collection, such as an event preview, a venu
 
 ## Anatomy
 
-The `<Card>` component is a compound component made up of several sub-components that map to distinct visual areas of the card.
+The card component is a compound component made up of several sub-components that map to distinct visual areas of the card.
 
 <CardAnatomy />
 
@@ -43,13 +43,13 @@ The canonical card layout is a responsive grid of items, each with its own visua
 
 <ComponentDemo name="card-grid" background="page" />
 
-The same shape works for any repeating content team directories with avatars, article previews with author metadata, or category pickers with no media at all. The identity-per-card pattern stays the same only the contents of each slot change.
+The same shape works for any repeating content, like team directories with avatars, article previews with author metadata, or category pickers with no media at all. The identity-per-card pattern stays the same; only the contents of each slot change.
 
 ### Media
 
 `Card.Media` is optional. Whether to include an image depends on whether the visual carries information.
 
-Use an image preview when each item has its own visual identity an event poster, a venue photo, a product hero. The image is part of how users recognize and choose between cards in a grid.
+Use an image preview when each item has its own visual identity, like an event poster, a venue photo, or a product hero. The image is part of how users recognize and choose between cards in a grid.
 
 <ComponentDemo name="card-elevation" background="page" />
 
@@ -79,7 +79,7 @@ Use small buttons (`<Button size="small" />`). Cards sit in tight grid cells, an
 
 ### Nested cards
 
-Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth, it's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](../../layout/stack), a [`<Divider>`](../../content/divider), or split the content into sibling sections.
+Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth; it's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](../../layout/stack), a [`<Divider>`](../../content/divider), or split the content into sibling sections.
 
 <GuidelineTiles>
   <Do>
@@ -103,7 +103,7 @@ Cards already sit on a raised surface. Nesting a card inside another card create
 
 ### Spacing and padding
 
-Card controls two kinds of spacing — the padding applied to its slots, and the gap between slots. The defaults suit most card layouts. Reach for the overrides when a card is unusually dense or unusually roomy.
+Card controls two kinds of spacing, the padding applied to its slots, and the gap between slots. The defaults suit most card layouts. Reach for the overrides when a card is unusually dense or unusually roomy.
 
 #### Padding
 
@@ -116,7 +116,7 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 #### Slot gap
 
-`space` controls the vertical gap between `Preview`, `Header`, `Body`, and `Footer`. Default `regular` works almost everywhere. Drop to `tight` when the slots should read as one dense surface, or step up to `group` when the card carries several distinct blocks that need more breathing room.
+`space` controls the vertical gap between `Media`, `Header`, `Body`, and `Footer`. Default `regular` works almost everywhere. Drop to `tight` when the slots should read as one dense surface, or step up to `group` when the card carries several distinct blocks that need more breathing room.
 
 ```tsx
 <Card space="tight">…</Card>

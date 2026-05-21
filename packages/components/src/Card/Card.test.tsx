@@ -165,6 +165,16 @@ describe('Card', () => {
 
       expect(screen.getByAltText('Landscape')).toBeInTheDocument();
     });
+
+    test('Card.Media applies negative top margin to escape card padding', () => {
+      render(<WithMedia.Component />);
+
+      const media = screen
+        .getByAltText('Landscape')
+        .closest('[data-card-media]');
+      expect(media).not.toBeNull();
+      expect(media!.className).toContain('-mt-(--card-py)');
+    });
   });
 
   describe('Variants', () => {

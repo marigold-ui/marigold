@@ -1,7 +1,12 @@
 ---
+'@marigold/components': minor
+'@marigold/theme-rui': minor
 '@marigold/docs': patch
 ---
 
-docs(DST-876): add Card usage guidelines with "When Not to Use a Card" examples
+feat(DST-876): add Card usage guidelines
 
-Adds a new "Usage guidelines" section to the Card documentation page covering when to reach for a Card, four common misuses (tabular data, simple content, stacked clutter, nested cards) with Do/Don't tiles, SVG mockup comparisons, and a decision checklist linking to alternatives like `Table`, `Panel`, `Stack`, and `Divider`.
+Renames the `Card.Preview` slot to `Card.Media` across components, theme, and docs. This is a breaking change: consumers using `<Card.Preview>`, the `data-card-preview` selector, or the `preview` theme slot key must migrate to `Card.Media`, `data-card-media`, and the `media` slot key respectively.
+
+
+Adds a "Usage" section to the Card docs covering when to use cards, media slot guidance.

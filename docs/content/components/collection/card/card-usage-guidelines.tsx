@@ -59,14 +59,14 @@ export const DoNestedMockup = () => (
  */
 export const DontNestedMockup = () => (
   <svg
-    viewBox="400 30 340 240"
+    viewBox="0 30 340 240"
     className="mx-auto h-auto w-full"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
     aria-label="A card with two nested cards inside it"
   >
     <rect
-      x="420"
+      x="20"
       y="40"
       width="320"
       height="220"
@@ -79,7 +79,7 @@ export const DontNestedMockup = () => (
       return (
         <g key={`nested-${i}`}>
           <rect
-            x="440"
+            x="40"
             y={y}
             width="280"
             height="74"
@@ -88,7 +88,7 @@ export const DontNestedMockup = () => (
             strokeWidth="2"
           />
           <rect
-            x="456"
+            x="56"
             y={y + 16}
             width="120"
             height="10"
@@ -96,7 +96,7 @@ export const DontNestedMockup = () => (
             className="fill-fd-foreground transition-colors duration-300"
           />
           <rect
-            x="456"
+            x="56"
             y={y + 36}
             width="220"
             height="6"
@@ -104,7 +104,7 @@ export const DontNestedMockup = () => (
             className="fill-fd-muted-foreground/50 transition-colors duration-300"
           />
           <rect
-            x="456"
+            x="56"
             y={y + 50}
             width="180"
             height="6"
