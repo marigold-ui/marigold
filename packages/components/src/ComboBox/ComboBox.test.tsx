@@ -1,6 +1,8 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
+import { ComboBox } from './ComboBox';
 import { Basic } from './ComboBox.stories';
 
 const user = userEvent.setup();
@@ -132,4 +134,38 @@ test('supports specific empty state text', async () => {
 
   const emptyState = await screen.findByText('No vegetables found');
   expect(emptyState).toBeInTheDocument();
+});
+
+test('calls onSelectionChange with the selected key in single mode', async () => {
+  const onSelectionChange = vi.fn();
+  renderWithOverlay(<Basic.Component onSelectionChange={onSelectionChange} />);
+
+  const input = screen.getAllByLabelText(/Label/i)[0];
+  await user.type(input, 'dog');
+  await user.click(await screen.findByRole('option', { name: 'Dog' }));
+
+  expect(onSelectionChange).toHaveBeenCalledWith('dog');
+});
+
+test('calls onSelectionChange with an array of keys in multiple mode', async () => {
+  const onSelectionChange = vi.fn();
+  renderWithOverlay(
+    <Basic.Component
+      menuTrigger="focus"
+      selectionMode="multiple"
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  const input = screen.getAllByLabelText(/Label/i)[0];
+  await user.click(input);
+  await user.click(await screen.findByRole('option', { name: 'Dog' }));
+  await user.click(input);
+  await user.click(await screen.findByRole('option', { name: 'Kangaroo' }));
+
+  expect(onSelectionChange).toHaveBeenLastCalledWith(['dog', 'kangaroo']);
+});
+
+test('exposes ComboBoxValue as ComboBox.Value', () => {
+  expect(ComboBox.Value).toBeDefined();
 });

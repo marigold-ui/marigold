@@ -20,8 +20,6 @@ import { MobileComboBox } from './MobileCombobox';
 
 export type SelectionMode = 'single' | 'multiple';
 
-// Props
-// ---------------
 type RemovedProps =
   | 'className'
   | 'style'
@@ -129,8 +127,6 @@ export interface ComboBoxProps<
   onSelectionChange?: (value: Key | Key[] | null) => void;
 }
 
-// Component
-// ---------------
 function ComboBoxBase<T extends object, M extends SelectionMode = 'single'>({
   variant,
   size,

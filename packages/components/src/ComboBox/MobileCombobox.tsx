@@ -11,8 +11,6 @@ import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
 
-// Props
-// ---------------
 interface MobileComboBoxTriggerProps<T extends object> {
   placeholder?: string;
   renderValue?: (selectedItems: T[]) => ReactNode;
@@ -26,8 +24,6 @@ interface MobileComboBoxProps<T extends object> {
   renderValue?: (selectedItems: T[]) => ReactNode;
 }
 
-// Trigger Display (for Mobile mode)
-// ---------------
 const MobileComboBoxTrigger = <T extends object>({
   placeholder,
   renderValue,
@@ -40,9 +36,7 @@ const MobileComboBoxTrigger = <T extends object>({
       <ComboBoxValue<T>
         className={cn(
           'w-full flex-1 truncate text-left text-nowrap',
-          // Error state: targets when parent FieldBase has data-error attribute
           'group-data-error/field:ui-state-error',
-          // Focus state: targets when parent Button has data-focus-visible attribute
           'group-data-focus-visible/trigger:ui-state-focus',
           inputClassNames.input
         )}
@@ -52,10 +46,7 @@ const MobileComboBoxTrigger = <T extends object>({
             return <span className="text-secondary">{placeholder}</span>;
           }
           if (renderValue) {
-            const items = selectedItems.filter(
-              (item): item is T => item != null
-            );
-            return renderValue(items);
+            return renderValue(selectedItems.filter((i): i is T => i != null));
           }
           return defaultChildren;
         }}
@@ -73,8 +64,6 @@ const MobileComboBoxTrigger = <T extends object>({
   );
 };
 
-// Component
-// ---------------
 const MobileComboBox = <T extends object>({
   placeholder,
   label,
