@@ -1,6 +1,9 @@
-import type { ReactNode, Ref } from 'react';
+import type { Key, ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { ComboBox as RACComboBox } from 'react-aria-components/ComboBox';
+import {
+  ComboBoxValue,
+  ComboBox as RACComboBox,
+} from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { WidthProp } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';
@@ -15,6 +18,8 @@ import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
 import { MobileComboBox } from './MobileCombobox';
 
+export type SelectionMode = 'single' | 'multiple';
+
 // Props
 // ---------------
 type RemovedProps =
@@ -27,11 +32,18 @@ type RemovedProps =
   | 'isReadOnly'
   | 'defaultInputValue'
   | 'inputValue'
-  | 'onInputChange';
+  | 'onInputChange'
+  | 'onChange'
+  | 'onSelectionChange'
+  | 'value'
+  | 'defaultValue';
 
-export interface ComboBoxProps
+export interface ComboBoxProps<
+  T extends object,
+  M extends SelectionMode = 'single',
+>
   extends
-    Omit<RAC.ComboBoxProps<any>, RemovedProps>,
+    Omit<RAC.ComboBoxProps<T, M>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
@@ -45,45 +57,45 @@ export interface ComboBoxProps
    * If `true`, the input is disabled.
    * @default false
    */
-  disabled?: RAC.ComboBoxProps<any>['isDisabled'];
+  disabled?: RAC.ComboBoxProps<T, M>['isDisabled'];
 
   /**
    * If `true`, the input is required.
    * @default false
    */
-  required?: RAC.ComboBoxProps<any>['isRequired'];
+  required?: RAC.ComboBoxProps<T, M>['isRequired'];
 
   /**
    * If `true`, the input is readOnly.
    * @default false
    */
-  readOnly?: RAC.ComboBoxProps<any>['isReadOnly'];
+  readOnly?: RAC.ComboBoxProps<T, M>['isReadOnly'];
 
   /**
    * If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.
    * @default false
    */
-  error?: RAC.ComboBoxProps<any>['isInvalid'];
+  error?: RAC.ComboBoxProps<T, M>['isInvalid'];
 
   /**
    * The value of the input (uncontrolled).
    */
-  defaultValue?: RAC.ComboBoxProps<any>['defaultInputValue'];
+  defaultValue?: RAC.ComboBoxProps<T, M>['defaultInputValue'];
 
   /**
    * The value of the input (controlled).
    */
-  value?: RAC.ComboBoxProps<any>['inputValue'];
+  value?: RAC.ComboBoxProps<T, M>['inputValue'];
 
   /**
    * Called when the input value changes.
    */
-  onChange?: RAC.ComboBoxProps<any>['onInputChange'];
+  onChange?: RAC.ComboBoxProps<T, M>['onInputChange'];
 
   /**
    * ReactNode or function to render the list of items.
    */
-  children?: ReactNode | ((item: any) => ReactNode);
+  children?: ReactNode | ((item: T) => ReactNode);
 
   /**
    * Set the placeholder for the select.
@@ -100,11 +112,26 @@ export interface ComboBoxProps
    * @default false
    */
   loading?: boolean;
+
+  /**
+   * Render the trigger value when one or more options are selected (mobile
+   * trigger only). Replaces the default trigger render. The placeholder still
+   * shows when nothing is selected. Must not contain focusable or interactive
+   * elements, since the trigger is itself a button.
+   */
+  renderValue?: (selectedItems: T[]) => ReactNode;
+
+  /**
+   * Handler that is called when the selection changes. In single selection
+   * mode the value is the selected key (or `null`). In multiple selection
+   * mode the value is an array of selected keys.
+   */
+  onSelectionChange?: (value: Key | Key[] | null) => void;
 }
 
 // Component
 // ---------------
-const ComboBoxBase = ({
+function ComboBoxBase<T extends object, M extends SelectionMode = 'single'>({
   variant,
   size,
   required,
@@ -115,12 +142,14 @@ const ComboBoxBase = ({
   value,
   emptyState,
   onChange,
+  onSelectionChange,
   children,
   loading,
+  renderValue,
   ref,
   ...rest
-}: ComboBoxProps & { ref?: Ref<HTMLInputElement> }) => {
-  const props: RAC.ComboBoxProps<any> = {
+}: ComboBoxProps<T, M> & { ref?: Ref<HTMLInputElement> }) {
+  const props: RAC.ComboBoxProps<T, M> = {
     isDisabled: disabled,
     isReadOnly: readOnly,
     isRequired: required,
@@ -128,6 +157,7 @@ const ComboBoxBase = ({
     defaultInputValue: defaultValue,
     inputValue: value,
     onInputChange: onChange,
+    onChange: onSelectionChange as RAC.ComboBoxProps<T, M>['onChange'],
     ...rest,
   };
 
@@ -138,10 +168,11 @@ const ComboBoxBase = ({
   return (
     <FieldBase as={RACComboBox} ref={ref} {...props}>
       {isSmallScreen ? (
-        <MobileComboBox
+        <MobileComboBox<T>
           placeholder={rest.placeholder}
           label={rest.label}
           emptyState={emptyState}
+          renderValue={renderValue}
         >
           {children}
         </MobileComboBox>
@@ -163,15 +194,17 @@ const ComboBoxBase = ({
                 )
               }
             >
-              {children}
+              {children as any}
             </ListBox>
           </Popover>
         </>
       )}
     </FieldBase>
   );
-};
+}
+
 export const ComboBox = Object.assign(ComboBoxBase, {
   Option: ListBox.Item,
   Section: ListBox.Section,
+  Value: ComboBoxValue,
 });

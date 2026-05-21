@@ -168,7 +168,7 @@ export const Basic: any = meta.story({
 export const Controlled: any = meta.story({
   tags: ['component-test'],
   render: args => {
-    const [id, setId] = useState<Key | null>(null);
+    const [id, setId] = useState<Key | Key[] | null>(null);
     return (
       <Stack>
         <ComboBox {...args} onSelectionChange={setId} label="Animals">
@@ -178,7 +178,7 @@ export const Controlled: any = meta.story({
           <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
           <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
         </ComboBox>
-        <pre data-testid="output">selected: {id?.toString()}</pre>
+        <pre data-testid="output">selected: {String(id ?? '')}</pre>
       </Stack>
     );
   },
@@ -458,6 +458,49 @@ export const LargeDataset: any = meta.story({
         expect(input).toHaveValue('Tenant 500 (item-500)');
       });
     });
+  },
+});
+
+export const Multiple: any = meta.story({
+  tags: ['component-test'],
+  args: {
+    menuTrigger: 'focus',
+  },
+  render: args => {
+    const [selected, setSelected] = useState<Key[]>([]);
+    return (
+      <Stack>
+        <ComboBox
+          {...args}
+          label="Animals"
+          selectionMode="multiple"
+          onSelectionChange={(keys: any) => setSelected([...keys])}
+        >
+          <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+          <ComboBox.Option id="cat">Cat</ComboBox.Option>
+          <ComboBox.Option id="dog">Dog</ComboBox.Option>
+          <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+          <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+        </ComboBox>
+        <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
+      </Stack>
+    );
+  },
+  play: async ({ canvas }: any) => {
+    const input = await canvas.findByRole('combobox', { name: 'Animals' });
+
+    await userEvent.click(input);
+    await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
+    await userEvent.click(input);
+    await userEvent.click(
+      await canvas.findByRole('option', { name: 'Kangaroo' })
+    );
+
+    await waitFor(() =>
+      expect(canvas.getByTestId('selected')).toHaveTextContent(
+        'selected: ["dog","kangaroo"]'
+      )
+    );
   },
 });
 

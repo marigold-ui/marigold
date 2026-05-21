@@ -56,6 +56,14 @@ The below examples will display the suggestions when the input field is focused.
 
 <ComponentDemo name="combobox-menu-trigger" />
 
+### Multiselection
+
+Sometimes you need to offer a way for users to filter and select multiple options from a list. By setting `selectionMode="multiple"` on the `<ComboBox>`, users can select more than one option from the filtered list. Selected options remain marked when the user keeps typing to refine the suggestions.
+
+Note that the input itself is used to filter the list. To display the current selection (e.g. as removable tags above the input), render `<ComboBox.Value>` or read the selected keys from your own state. On mobile, the trigger automatically shows a comma-separated list of selected items.
+
+<ComponentDemo name="combobox-multiple" />
+
 ### Item Actions
 
 The `<ComboBox.Option>` component supports an `onAction` prop that triggers a callback when the user performs an action on an item. This is useful for triggering side effects such as navigating to a detail view or opening an edit modal.
