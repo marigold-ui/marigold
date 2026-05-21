@@ -504,6 +504,55 @@ export const Multiple: any = meta.story({
   },
 });
 
+const people = [
+  { id: 'alice', name: 'Alice Johnson', role: 'Product Manager' },
+  { id: 'bob', name: 'Bob Smith', role: 'Senior Developer' },
+  { id: 'charlie', name: 'Charlie Davis', role: 'UX Designer' },
+] as const;
+
+type Person = (typeof people)[number];
+
+export const WithRenderValue: any = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    label: 'Assignees',
+    placeholder: 'Select assignees',
+    menuTrigger: 'focus',
+  },
+  render: args => (
+    <ComboBox
+      {...args}
+      items={people}
+      selectionMode="multiple"
+      defaultValue={['alice', 'bob']}
+      renderValue={(selected: Person[]) => (
+        <span data-testid="custom-value">
+          {selected.length} selected: {selected.map(p => p.name).join(', ')}
+        </span>
+      )}
+    >
+      {(person: Person) => (
+        <ComboBox.Option id={person.id} textValue={person.name}>
+          <TextValue>{person.name}</TextValue>
+          <Description>{person.role}</Description>
+        </ComboBox.Option>
+      )}
+    </ComboBox>
+  ),
+  play: async ({ canvas }: any) => {
+    const trigger = await canvas.findByRole('button');
+
+    const customValue = await within(trigger).findByTestId('custom-value');
+
+    expect(customValue).toHaveTextContent(
+      '2 selected: Alice Johnson, Bob Smith'
+    );
+  },
+});
+
 export const Mobile: any = meta.story({
   tags: ['component-test'],
   globals: {

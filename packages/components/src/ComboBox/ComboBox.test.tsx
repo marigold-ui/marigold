@@ -1,11 +1,13 @@
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { ComboBox } from './ComboBox';
-import { Basic } from './ComboBox.stories';
+import { Basic, WithRenderValue } from './ComboBox.stories';
 
 const user = userEvent.setup();
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 window.matchMedia = mockMatchMedia([]);
 
@@ -168,4 +170,15 @@ test('calls onChange with an array of keys in multiple mode', async () => {
 
 test('exposes ComboBoxValue as ComboBox.Value', () => {
   expect(ComboBox.Value).toBeDefined();
+});
+
+test('renderValue customizes the mobile trigger with selected items', () => {
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  renderWithOverlay(<WithRenderValue.Component />);
+
+  const trigger = screen.getByRole('button');
+
+  expect(within(trigger).getByTestId('custom-value')).toHaveTextContent(
+    '2 selected: Alice Johnson, Bob Smith'
+  );
 });
