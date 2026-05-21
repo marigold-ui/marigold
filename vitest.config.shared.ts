@@ -43,6 +43,8 @@ const exclude = [
   '**/icons/**',
   '**/themes/**',
   '**/packages/types/**',
+  // @marigold/cli runs node-mode tests from its own vitest config.
+  '**/packages/cli/**',
   '**/theme-plugins/**',
   '**/scripts/**',
   '**/storybook-static/**',
