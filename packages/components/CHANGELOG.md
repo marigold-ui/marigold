@@ -1,5 +1,111 @@
 # @marigold/components
 
+## 18.0.0-beta.2
+
+### Major Changes
+
+- 3a62175: feat([DST-1407]): `Drawer` enforces one open at a time.
+
+  Opening a sibling `<Drawer>` while one is already open dismisses the first.
+  Applies to desktop and mobile. The dismissed Drawer's `onOpenChange(false)`
+  is invoked so controlled-state consumers stay in sync.
+
+  A `<Drawer.Trigger>` nested _inside_ an already-open Drawer is treated as a
+  sub-flow: the nested Drawer opens over its parent and the parent stays
+  mounted. Dismissing the parent in that situation would also unmount the
+  nested trigger and tear down the new Drawer.
+
+  **Migration:** No API change. If a flow relied on multiple simultaneous
+  sibling drawers, refactor to a single drawer with switchable content, or
+  use `<Modal>` for layered interactions.
+
+### Minor Changes
+
+- d51416c: feat([DST-761]): export `useLandmark` from `@marigold/components`.
+
+  Marigold now re-exports React Aria's `useLandmark` hook (and its `AriaLandmarkRole` / `AriaLandmarkProps` types) so consumers can register custom regions as ARIA landmarks without adding `@react-aria/landmark` as a direct dependency.
+
+  ```tsx
+  import { useRef } from 'react';
+  import { useLandmark } from '@marigold/components';
+
+  const ref = useRef<HTMLElement>(null);
+  const { landmarkProps } = useLandmark(
+    { role: 'search', 'aria-label': 'Site search' },
+    ref
+  );
+  ```
+
+  A new accessibility guide on landmarks and a dedicated `useLandmark` reference page have been added to the documentation.
+
+- a59d2dd: fix([DST-1363]): make `<TagGroup>` `errorMessage` render and bridge it to form validation
+
+  `<TagGroup>` accepted `errorMessage` via `<FieldBase>` but never rendered it because RAC's `TagGroup` does not populate `FieldErrorContext`. The internal `<HelpText>` short-circuits on a missing context, so the error path was a silent no-op and `<Form>`-level validation never reached the user.
+
+  Bridges `<TagGroup>` to validation the same way `<SelectList>` does: `useFormValidationState` + `useFormValidation` on a hidden `<select>` (replacing the previous `<input type="checkbox">` shim), with `<FormContext>` inheritance for `validationBehavior`. The shared hidden control lives at `HiddenSelection/` and is now consumed by both `<SelectList>` and `<TagGroup>` so future fixes only happen once.
+
+  New props on `<TagGroup>`: `error`, `required`, `disabled`, `validate`, `validationBehavior`, `form`. Public API normalised to Marigold's convention — `isInvalid` / `isRequired` / `isDisabled` are removed and `onSelectionChange` is renamed to `onChange`. `selectionMode` now defaults to `'multiple'`. `disabled` now propagates to each `<Tag>` via context so interaction is blocked alongside the form-disabled state.
+
+  [DST-1363](https://reservix.atlassian.net/browse/DST-1363)
+
+- 9a407ef: feat([DST-753]): `SectionMessage` exposes an `announce` prop and uses react-aria's `LiveAnnouncer` to notify assistive technology.
+
+  **What changed (DST-753):**
+  - `<SectionMessage>` accepts a new `announce?: boolean` prop. When set, the message text is sent to a shared, always-mounted live region maintained by `@react-aria/live-announcer`. Priority is `polite` for `info` / `success` / `warning` and `assertive` for `error`.
+  - `announce` defaults to `true` for `variant="error"` and `false` for all other variants, preserving today's behavior for the common error case while letting consumers opt in for confirmations and informational updates.
+  - The wrapper element no longer carries `role="alert"` for the error variant. Announcements are now delegated to the singleton live announcer instead.
+  - Re-announcing the same message uses the React `key` pattern: pass a changing `key` to force a remount.
+
+  **Why:**
+
+  The previous implementation only announced the `error` variant, and it did so by adding `role="alert"` to a conditionally rendered element. Per the WAI-ARIA spec and MDN guidance, `role="alert"` should be on an element that already exists in the DOM before its content is injected, and it should not contain interactive elements. Marigold's `SectionMessage` violated both constraints (the alert was mounted together with its content, and it can contain close buttons and action links), making announcements unreliable on some screen reader / browser combinations.
+
+  The new implementation uses `@react-aria/live-announcer`, which maintains persistent polite and assertive live regions at the document root. This is the same mechanism used across React Spectrum and avoids the conditional-rendering and interactive-content pitfalls of inline `role="alert"`. It also unifies the API: opt in to announcement for any variant with a single prop.
+
+  **Additional cleanup bundled with this release (beyond DST-753):**
+  - **Close button now matches the rest of the system.** The previous theme defined a `close` slot for `SectionMessage` with bespoke overrides (`size-8`, `[&_svg]:size-6`, `text-foreground`, negative margins) that produced a visibly larger close button than every other close button in the design system. The component now renders the shared `<CloseButton>` with no overrides, so it gets the same 16px icon, focus ring, hover-opacity, and rounded-full styling as Dialog, Drawer, etc. The `close` slot has been removed from the `SectionMessage` theme type.
+  - **Component cleanup.** Dropped a stale `useButton(props, buttonRef)` call that was applying div-level props to a button, the unused `buttonRef`, and the `{...buttonProps}` spread on `<CloseButton>`. The `Button` inside `CloseButton` already provides all keyboard/press semantics.
+  - **Theme variant order normalized.** `info` (the default) is now listed first across the `container`, `content`, and `icon` slots in `theme-rui`, matching the variant table in the docs and the existing `defaultVariants` setting.
+
+  **Docs:**
+  - New anatomy SVG matching the Card / Sidebar / SelectList style; title and close button marked as optional, with content rules (no period in title, don't repeat title in body).
+  - Two realistic announcement demos: a bulk-archive form (polite, with RAC `validate` and the `key` re-announce pattern) and a server-availability save error (assertive).
+  - Added focus-management guidance for dynamic appearance and post-dismiss.
+  - Added form-summary placement rule pairing `<SectionMessage>` with field-level validation.
+  - Added action constraints (one primary action, verb+noun labels, descriptive link text).
+  - Added two-line body rule with a link-out overflow pattern for longer content.
+  - Folded the previous Position subsection into Usage; removed redundant Do/Don't tiles; renamed subsections to Dismissal / Actions / Announcements.
+  - Drive-by: typo fix in the `feedback-messages` pattern doc.
+
+  **Migration:**
+  - Code relying on `getByRole('alert')` or `[role="alert"]` selectors to find rendered `SectionMessage` error nodes needs to be updated. The message text itself is still rendered as before; only the wrapper role is gone.
+  - Consumers who previously wrapped a dynamic `<SectionMessage>` in their own `<div role="status">` or `<div aria-live="polite">` can replace that wrapper with `<SectionMessage announce>`.
+  - Custom themes that defined a `SectionMessage.close` slot will now see a type error. Remove the slot. Close button styling now flows entirely from the `CloseButton` theme.
+  - The SectionMessage's close button is visually smaller after this release (matches every other close button in Marigold). If you previously relied on the larger size, that was an inconsistency, not a feature.
+
+### Patch Changes
+
+- 2a34a64: refactor(DST-1367): Panel adopts the slot-configuration pattern
+
+  `Panel.Header` is now a single `<Provider>` that configures `HeadingContext`, `TextContext`, `ActionButtonContext`, and `ActionGroupContext` for everything nested inside it. Consumers drop slot-aware primitives directly into the header — `<Title>`, `<Description>`, and any of `<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>` — and the Panel injects level, ids, ref wiring, grid-area positioning, and the action cascade via context.
+
+  The compound sub-components that paired with `Panel.Header` are removed because slot-aware role primitives subsume their responsibilities:
+  - `<Panel.Title>` → use `<Title>`.
+  - `<Panel.Description>` → use `<Description>`.
+  - `<Panel.HeaderActions>` → drop the wrapper; the action primitives themselves (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) land in the actions grid cell via the context className that `Panel.Header` publishes.
+
+  Multiple actions belong inside an `<ActionGroup>` — the cluster claims one cell and renders as a toolbar. A raw `<Button>` inside `Panel.Header` is intentionally _not_ slot-aware: it stays as a footgun so the action primitives are the obvious choice for header chrome.
+
+  `Panel.CollapsibleHeader` adopts the same shape: `<Panel.CollapsibleTitle>` / `<Panel.CollapsibleDescription>` are removed in favour of plain `<Title>` and `<Description>` inside the header. `Panel.CollapsibleHeader` publishes slot-keyed `HeadingContext` and `TextContext` inside its disclosure trigger so the primitives render as spans (matching the heading-inside-button constraint), while the structural `<hN>` semantics come from `Panel.CollapsibleHeader` itself.
+
+  `<Description>` now honours `elementType` from its surrounding `TextContext` slot config. `Panel.Header` delivers `elementType: 'p'` so the description renders as a paragraph; `Panel.CollapsibleHeader` delivers `elementType: 'span'` so it nests cleanly inside the disclosure trigger button. Elsewhere, `<Description>` continues to render as RAC's default `<span>`.
+
+  `<Headline>` now defaults to opting out of any surrounding `HeadingContext` slot config (`slot` defaults to the no-slot opt-out instead of `undefined`). This avoids "A slot prop is required" runtime crashes when a bare `<Headline>` is rendered inside a container that publishes a slot-keyed `HeadingContext` — such as a `<Panel>` that publishes its `title` slot at the root. An explicit `slot` prop on `<Headline>` still overrides the default.
+
+- 61f917f: fix(DST-1447): restore focus to the Tray trigger on close under `prefers-reduced-motion: reduce`. `TrayModal` now skips `AnimatePresence` in that branch and renders a plain RAC `ModalOverlay`, so `FocusScope.restoreFocus` runs synchronously and the trigger reliably regains focus. Users without the preference still hit the same race — a full fix is tracked as follow-up.
+- Updated dependencies [9a407ef]
+  - @marigold/system@18.0.0-beta.2
+
 ## 18.0.0-beta.1
 
 ### Major Changes

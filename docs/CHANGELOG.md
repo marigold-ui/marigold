@@ -1,5 +1,20 @@
 # @marigold/docs
 
+## 18.0.0-beta.2
+
+### Patch Changes
+
+- Updated dependencies [3a62175]
+- Updated dependencies [2a34a64]
+- Updated dependencies [61f917f]
+- Updated dependencies [d51416c]
+- Updated dependencies [a59d2dd]
+- Updated dependencies [9a407ef]
+  - @marigold/components@18.0.0-beta.2
+  - @marigold/system@18.0.0-beta.2
+  - @marigold/theme-rui@6.0.0-beta.2
+  - @marigold/icons@2.0.0-beta.2
+
 ## 18.0.0-beta.1
 
 ### Major Changes

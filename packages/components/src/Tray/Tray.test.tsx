@@ -72,6 +72,7 @@ vi.mock('motion/react', async () => {
         },
     },
     useMotionValue: () => ({ get: () => 0, set: () => {} }),
+    useReducedMotion: () => false,
     animate: mockAnimate,
     cubicBezier: () => [0, 0, 0, 0],
   };

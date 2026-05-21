@@ -23,5 +23,5 @@ export const Card: ThemeComponent<'Card'> = {
   footer: cva({
     base: 'flex items-center gap-2',
   }),
-  preview: cva({}),
+  media: cva({}),
 };

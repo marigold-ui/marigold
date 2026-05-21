@@ -70,7 +70,7 @@ describe('Grid', () => {
       const grid = screen.getByTestId('grid');
 
       expect(grid).toHaveStyle({
-        'grid-template-areas': '"label value"\n"action description"',
+        gridTemplateAreas: '"label value"\n"action description"',
       });
     });
 

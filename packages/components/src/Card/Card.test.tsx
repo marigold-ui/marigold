@@ -7,7 +7,7 @@ import {
   WithBleedBody,
   WithBleedFooter,
   WithFooter,
-  WithPreview,
+  WithMedia,
 } from './Card.stories';
 
 describe('Card', () => {
@@ -160,14 +160,20 @@ describe('Card', () => {
       expect(footer!.className).not.toContain('px-(--card-px)');
     });
 
-    test('Card.Preview has data-card-preview and escapes container padding when first child', () => {
-      render(<WithPreview.Component />);
+    test('Card.Media renders its content', () => {
+      render(<WithMedia.Component />);
 
-      const preview = screen
+      expect(screen.getByAltText('Landscape')).toBeInTheDocument();
+    });
+
+    test('Card.Media applies negative top margin to escape card padding', () => {
+      render(<WithMedia.Component />);
+
+      const media = screen
         .getByAltText('Landscape')
-        .closest('[data-card-preview]');
-      expect(preview).not.toBeNull();
-      expect(preview!.className).toContain('-mt-(--card-py)');
+        .closest('[data-card-media]');
+      expect(media).not.toBeNull();
+      expect(media!.className).toContain('-mt-(--card-py)');
     });
   });
 
