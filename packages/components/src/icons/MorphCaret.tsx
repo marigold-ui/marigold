@@ -1,6 +1,6 @@
+import { useReducedMotion } from 'motion/react';
 import type { CSSProperties } from 'react';
 import { cn } from '@marigold/system';
-import { reducedMotion } from '../utils/reducedMotion';
 import type { IconProps } from './Icons.types';
 
 const CARET_OPEN = 'M 6 16 L 12 10 L 18 16';
@@ -17,28 +17,31 @@ export const MorphCaret = ({
   className,
   expanded = false,
   ...props
-}: MorphCaretProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-    className={cn('shrink-0', className)}
-    {...props}
-  >
-    <path
-      style={
-        {
-          d: `path("${expanded ? CARET_OPEN : CARET_CLOSED}")`,
-          transition: reducedMotion ? 'none' : `d 250ms ${MORPH_BEZIER}`,
-        } as CSSProperties
-      }
-    />
-  </svg>
-);
+}: MorphCaretProps) => {
+  const reducedMotion = useReducedMotion();
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={cn('shrink-0', className)}
+      {...props}
+    >
+      <path
+        style={
+          {
+            d: `path("${expanded ? CARET_OPEN : CARET_CLOSED}")`,
+            transition: reducedMotion ? 'none' : `d 250ms ${MORPH_BEZIER}`,
+          } as CSSProperties
+        }
+      />
+    </svg>
+  );
+};
