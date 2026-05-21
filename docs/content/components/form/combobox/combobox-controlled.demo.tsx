@@ -8,7 +8,6 @@ export default () => {
       <ComboBox
         inputValue={currentValue}
         onInputChange={setCurrentValue}
-        defaultValue="dog"
         label="Animals"
       >
         <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>

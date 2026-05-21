@@ -553,6 +553,66 @@ export const WithRenderValue: any = meta.story({
   },
 });
 
+export const MobileMultiple: any = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    label: 'Animals',
+  },
+  render: args => {
+    const [selected, setSelected] = useState<Key | Key[] | null>([]);
+    return (
+      <Stack>
+        <ComboBox {...args} selectionMode="multiple" onChange={setSelected}>
+          <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+          <ComboBox.Option id="cat">Cat</ComboBox.Option>
+          <ComboBox.Option id="dog">Dog</ComboBox.Option>
+          <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+          <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+        </ComboBox>
+        <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
+      </Stack>
+    );
+  },
+  play: async ({ canvas, step }: any) => {
+    const trigger = await canvas.findByRole('button');
+
+    await step('Open tray', async () => {
+      await userEvent.click(trigger);
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Pick first option and verify tray stays open', async () => {
+      await userEvent.click(await canvas.findByText('Dog'));
+      expect(canvas.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    await step('Pick second option and verify tray stays open', async () => {
+      await userEvent.click(await canvas.findByText('Kangaroo'));
+      expect(canvas.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    await step('Verify both selections persisted', async () => {
+      await waitFor(() =>
+        expect(canvas.getByTestId('selected')).toHaveTextContent(
+          'selected: ["dog","kangaroo"]'
+        )
+      );
+    });
+
+    await step('Dismiss tray so the story renders cleanly', async () => {
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+  },
+});
+
 export const Mobile: any = meta.story({
   tags: ['component-test'],
   globals: {

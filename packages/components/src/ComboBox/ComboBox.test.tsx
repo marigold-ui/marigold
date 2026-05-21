@@ -173,12 +173,17 @@ test('exposes ComboBoxValue as ComboBox.Value', () => {
 });
 
 test('renderValue customizes the mobile trigger with selected items', () => {
+  const previousMatchMedia = window.matchMedia;
   window.matchMedia = mockMatchMedia([smallScreenQuery]);
-  renderWithOverlay(<WithRenderValue.Component />);
+  try {
+    renderWithOverlay(<WithRenderValue.Component />);
 
-  const trigger = screen.getByRole('button');
+    const trigger = screen.getByRole('button');
 
-  expect(within(trigger).getByTestId('custom-value')).toHaveTextContent(
-    '2 selected: Alice Johnson, Bob Smith'
-  );
+    expect(within(trigger).getByTestId('custom-value')).toHaveTextContent(
+      '2 selected: Alice Johnson, Bob Smith'
+    );
+  } finally {
+    window.matchMedia = previousMatchMedia;
+  }
 });
