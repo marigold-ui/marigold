@@ -13,9 +13,9 @@ import { FormFieldAnatomy } from './form-field-anatomy';
 
 <FormFieldAnatomy />
 
-An accessible form field includes a clear label associated with its corresponding form control (`<input>`, `<select>`, ...). Additional guidance is provided by a help text, which can give extra context or instructions.
+An accessible form field includes a clear label associated with its corresponding form control (`<input>`, `<select>`, ...). Additional guidance is provided by the help text, which can give extra context or instructions.
 
-Marigold's form components let you set these through the `label`, `description`, and `errorMessages` props, alongside any control-specific props. The `description` slot doubles as the error message slot when validation fails.
+Marigold's form components let you set these through the `label`, `description` (which renders as the help text), and `errorMessages` props, alongside any control-specific props. The help text slot doubles as the error message slot when validation fails.
 
 ## Usage
 

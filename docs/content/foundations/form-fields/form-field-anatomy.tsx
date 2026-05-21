@@ -98,7 +98,7 @@ export const FormFieldAnatomy = () => (
           fontWeight="600"
           className="fill-fd-primary"
         >
-          Description
+          Help text
         </text>
       </g>
     </g>
