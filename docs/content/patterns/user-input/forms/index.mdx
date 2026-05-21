@@ -169,13 +169,15 @@ When native constraints aren't expressive enough, pass a function to the field's
 
 ### Real-time validation
 
-By default, errors appear after the user leaves the field or submits the form. Real-time validation makes sense in narrow situations like password rules, where users benefit from seeing requirements light up as they type. [Control the field](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) and set `error` and `errorMessages` yourself.
+By default, errors appear after the user leaves the field (on blur) or submits the form. That delay is deliberate: it prevents users from seeing irrelevant errors while they're still in the middle of typing a value.
+
+Real-time validation makes sense in narrow situations like password rules, where users benefit from seeing requirements light up as they type. [Control the field](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) and set `error` and `errorMessages` yourself.
 
 <ComponentDemo file="./validation-realtime.demo.tsx" />
 
 ### Server errors
 
-Client-side validation is for fast feedback; server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`, keyed by field `name`. The errors appear immediately and clear themselves when the user edits the field.
+Client-side validation is for fast feedback; server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`. Provide an object keyed by field `name`, where each value is either a string or an array of strings if a field has more than one error. The errors appear immediately and clear themselves when the user edits the field.
 
 In the demo, submitting `support@reservix.de` simulates a server-side rejection.
 
@@ -199,7 +201,7 @@ Controlled fields hold their value in React state via `value` and `onChange`. Re
 
 ### Submitting with FormData
 
-The simplest way to read a form is the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. Wrap your fields in `<Form>` and React 19's action prop will hand you the `FormData` instance directly.
+The simplest way to read a form is the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. Wrap your fields in `<Form>` and React 19's action prop will hand you the `FormData` instance directly. From there you can pass it straight to `fetch`, or convert it into a regular JavaScript object with `Object.fromEntries` for easier handling.
 
 <Callout title="Names matter">
   Every field that should be submitted needs a `name` prop. Without one, the
@@ -222,7 +224,13 @@ Marigold's form components accept `error` (boolean) and `errorMessage` (string) 
 
 ### Using react-hook-form
 
-For larger forms with many fields and rules, [react-hook-form](https://react-hook-form.com/) cuts the boilerplate and minimizes re-renders. Wrap each Marigold field with `<Controller>` so the library can track its value and validation state.
+For larger forms with many fields and rules, [react-hook-form](https://react-hook-form.com/) cuts the boilerplate and minimizes re-renders. Wrap each Marigold field with `<Controller>` so the library can bridge the field and its own state management.
+
+A few patterns worth knowing when wiring it up:
+
+- **Set `defaultValue` instead of state.** Each Controller takes a `defaultValue`, so fields stay uncontrolled and never go through an `undefined`/`null` state.
+- **Declare rules on the Controller.** Pass `rules={{ required: true }}` (and friends) to trigger validation. The Marigold field already accepts `error` and `errorMessage`, so wire those from the Controller's render props.
+- **Gate submission with `formState.isValid`.** The library exposes a single boolean for the whole form, which is handy for disabling the submit button until every field is valid.
 
 <ComponentDemo file="./building-forms-hook-form.demo.tsx" />
 
