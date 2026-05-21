@@ -14,7 +14,7 @@ import {
 } from '@marigold/components';
 
 export default () => {
-  const [selected, setSelected] = useState<Selection>(new Set());
+  const [selected, setSelected] = useState<Selection>(() => new Set());
 
   const filtered =
     selected === 'all' || (selected instanceof Set && selected.size === 0)
