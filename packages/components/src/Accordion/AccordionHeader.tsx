@@ -2,8 +2,7 @@ import { ReactNode, use } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { DisclosureStateContext } from 'react-aria-components/Disclosure';
 import { Heading } from 'react-aria-components/Heading';
-import { cn } from '@marigold/system';
-import { ChevronDown } from '../icons/ChevronDown';
+import { MorphCaret } from '../icons/MorphCaret';
 import { noSlot } from '../utils/noSlot';
 import { useAccordionContext } from './AccordionContext';
 
@@ -13,12 +12,7 @@ export interface AccordionHeaderProps {
 
 export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
   const { classNames, stickyHeader, iconPosition } = useAccordionContext();
-  /**
-   * Use context to rotate the chevron.
-   * "group-aria-expaned" is currently bugged with the RAC tailwind plugin.
-   */
   const { isExpanded } = use(DisclosureStateContext)!;
-  const chevronStyles = cn(classNames.icon, isExpanded && 'rotate-180');
 
   return (
     <div
@@ -31,11 +25,19 @@ export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
       <Heading slot={noSlot}>
         <Button slot="trigger" className={classNames.header}>
           {iconPosition === 'left' && (
-            <ChevronDown size="16" className={chevronStyles} />
+            <MorphCaret
+              size="16"
+              expanded={isExpanded}
+              className={classNames.icon}
+            />
           )}
           <div className="flex-1 items-center">{children}</div>
           {iconPosition === 'right' && (
-            <ChevronDown size="16" className={chevronStyles} />
+            <MorphCaret
+              size="16"
+              expanded={isExpanded}
+              className={classNames.icon}
+            />
           )}
         </Button>
       </Heading>
