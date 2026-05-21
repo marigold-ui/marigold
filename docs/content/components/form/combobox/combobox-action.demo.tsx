@@ -10,7 +10,7 @@ export default () => {
       <ComboBox
         label="Projects"
         menuTrigger="focus"
-        onSelectionChange={key => setSelectedKey(key as string)}
+        onChange={key => setSelectedKey(key as string)}
       >
         <ComboBox.Section key="actions" header="Actions">
           <ComboBox.Option

@@ -1,4 +1,4 @@
-import type { Key, ReactNode, Ref } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
   ComboBoxValue,
@@ -28,13 +28,7 @@ type RemovedProps =
   | 'isRequired'
   | 'isInvalid'
   | 'isReadOnly'
-  | 'defaultInputValue'
-  | 'inputValue'
-  | 'onInputChange'
-  | 'onChange'
-  | 'onSelectionChange'
-  | 'value'
-  | 'defaultValue';
+  | 'onSelectionChange';
 
 export interface ComboBoxProps<
   T extends object,
@@ -76,21 +70,6 @@ export interface ComboBoxProps<
   error?: RAC.ComboBoxProps<T, M>['isInvalid'];
 
   /**
-   * The value of the input (uncontrolled).
-   */
-  defaultValue?: RAC.ComboBoxProps<T, M>['defaultInputValue'];
-
-  /**
-   * The value of the input (controlled).
-   */
-  value?: RAC.ComboBoxProps<T, M>['inputValue'];
-
-  /**
-   * Called when the input value changes.
-   */
-  onChange?: RAC.ComboBoxProps<T, M>['onInputChange'];
-
-  /**
    * ReactNode or function to render the list of items.
    */
   children?: ReactNode | ((item: T) => ReactNode);
@@ -118,13 +97,6 @@ export interface ComboBoxProps<
    * elements, since the trigger is itself a button.
    */
   renderValue?: (selectedItems: T[]) => ReactNode;
-
-  /**
-   * Handler that is called when the selection changes. In single selection
-   * mode the value is the selected key (or `null`). In multiple selection
-   * mode the value is an array of selected keys.
-   */
-  onSelectionChange?: (value: Key | Key[] | null) => void;
 }
 
 function ComboBoxBase<T extends object, M extends SelectionMode = 'single'>({
@@ -134,11 +106,7 @@ function ComboBoxBase<T extends object, M extends SelectionMode = 'single'>({
   disabled,
   readOnly,
   error,
-  defaultValue,
-  value,
   emptyState,
-  onChange,
-  onSelectionChange,
   children,
   loading,
   renderValue,
@@ -150,10 +118,6 @@ function ComboBoxBase<T extends object, M extends SelectionMode = 'single'>({
     isReadOnly: readOnly,
     isRequired: required,
     isInvalid: error,
-    defaultInputValue: defaultValue,
-    inputValue: value,
-    onInputChange: onChange,
-    onChange: onSelectionChange as RAC.ComboBoxProps<T, M>['onChange'],
     ...rest,
   };
 

@@ -171,7 +171,7 @@ export const Controlled: any = meta.story({
     const [id, setId] = useState<Key | Key[] | null>(null);
     return (
       <Stack>
-        <ComboBox {...args} onSelectionChange={setId} label="Animals">
+        <ComboBox {...args} onChange={setId} label="Animals">
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>
           <ComboBox.Option id="dog">Dog</ComboBox.Option>
@@ -227,8 +227,8 @@ export const AsyncLoading: any = meta.story({
     });
     return (
       <ComboBox
-        value={list.filterText}
-        onChange={list.setFilterText}
+        inputValue={list.filterText}
+        onInputChange={list.setFilterText}
         items={list.items}
         label="Star Wars Character Lookup"
         {...args}
@@ -467,14 +467,14 @@ export const Multiple: any = meta.story({
     menuTrigger: 'focus',
   },
   render: args => {
-    const [selected, setSelected] = useState<Key[]>([]);
+    const [selected, setSelected] = useState<Key | Key[] | null>([]);
     return (
       <Stack>
         <ComboBox
           {...args}
           label="Animals"
           selectionMode="multiple"
-          onSelectionChange={value => setSelected(value as Key[])}
+          onChange={setSelected}
         >
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>

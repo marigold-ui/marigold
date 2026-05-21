@@ -6,9 +6,9 @@ export default () => {
   return (
     <Stack>
       <ComboBox
-        value={currentValue}
-        onChange={setCurrentValue}
-        defaultSelectedKey={3}
+        inputValue={currentValue}
+        onInputChange={setCurrentValue}
+        defaultValue="dog"
         label="Animals"
       >
         <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>

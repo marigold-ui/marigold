@@ -93,8 +93,8 @@ test('supporst showing an error', () => {
   expect(screen.getByText('Error!')).toBeInTheDocument();
 });
 
-test('supports default value', () => {
-  renderWithOverlay(<Basic.Component defaultValue="garlic" />);
+test('supports default input value', () => {
+  renderWithOverlay(<Basic.Component defaultInputValue="garlic" />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -136,24 +136,24 @@ test('supports specific empty state text', async () => {
   expect(emptyState).toBeInTheDocument();
 });
 
-test('calls onSelectionChange with the selected key in single mode', async () => {
-  const onSelectionChange = vi.fn();
-  renderWithOverlay(<Basic.Component onSelectionChange={onSelectionChange} />);
+test('calls onChange with the selected key in single mode', async () => {
+  const onChange = vi.fn();
+  renderWithOverlay(<Basic.Component onChange={onChange} />);
 
   const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'dog');
   await user.click(await screen.findByRole('option', { name: 'Dog' }));
 
-  expect(onSelectionChange).toHaveBeenCalledWith('dog');
+  expect(onChange).toHaveBeenCalledWith('dog');
 });
 
-test('calls onSelectionChange with an array of keys in multiple mode', async () => {
-  const onSelectionChange = vi.fn();
+test('calls onChange with an array of keys in multiple mode', async () => {
+  const onChange = vi.fn();
   renderWithOverlay(
     <Basic.Component
       menuTrigger="focus"
       selectionMode="multiple"
-      onSelectionChange={onSelectionChange}
+      onChange={onChange}
     />
   );
 
@@ -163,7 +163,7 @@ test('calls onSelectionChange with an array of keys in multiple mode', async () 
   await user.click(input);
   await user.click(await screen.findByRole('option', { name: 'Kangaroo' }));
 
-  expect(onSelectionChange).toHaveBeenLastCalledWith(['dog', 'kangaroo']);
+  expect(onChange).toHaveBeenLastCalledWith(['dog', 'kangaroo']);
 });
 
 test('exposes ComboBoxValue as ComboBox.Value', () => {
