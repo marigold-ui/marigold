@@ -4,7 +4,7 @@
 
 feat(DST-1462): support `selectionMode="multiple"` in `ComboBox` and align prop names with React Aria
 
-`<ComboBox>` now accepts `selectionMode="multiple"`, allowing users to filter and select more than one option from the list. The new `<ComboBox.Value>` (re-export of react-aria's `ComboBoxValue`) can be used to render the selected items in custom layouts. On mobile, the trigger automatically shows a comma-separated list of selected values.
+`<ComboBox>` now supports multi-select via `selectionMode="multiple"`, mirroring the API on `<Select>`. While at it, the props for selection vs. input filtering are renamed to match React Aria Components and `<Select>`.
 
 ```tsx
 <ComboBox label="Animals" selectionMode="multiple" onChange={setSelected}>
@@ -13,6 +13,13 @@ feat(DST-1462): support `selectionMode="multiple"` in `ComboBox` and align prop 
   <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
 </ComboBox>
 ```
+
+Additions:
+
+- New generic signature `ComboBoxProps<T, M extends SelectionMode>`; `M` defaults to `'single'`.
+- New `renderValue?: (selectedItems: T[]) => ReactNode` prop for customizing the mobile trigger when items are selected.
+- The mobile trigger uses `<ComboBoxValue>` internally, so a comma-separated list of selected items renders in both single and multi modes.
+- Re-exports react-aria's `ComboBoxValue` as `ComboBox.Value` for rendering selected items in custom layouts.
 
 **Breaking changes** — prop names now match React Aria Components and Marigold's `<Select>`:
 
