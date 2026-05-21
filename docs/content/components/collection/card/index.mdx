@@ -47,7 +47,7 @@ The same shape works for any repeating content, like team directories with avata
 
 ### Media
 
-`Card.Media` is optional. Whether to include an image depends on whether the visual carries information.
+`<Card.Media>` is optional. Whether to include an image depends on whether the visual carries information.
 
 Use an image preview when each item has its own visual identity, like an event poster, a venue photo, or a product hero. The image is part of how users recognize and choose between cards in a grid.
 
@@ -56,7 +56,7 @@ Use an image preview when each item has its own visual identity, like an event p
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Put images in `Card.Media` so they sit full-bleed at the top of the card.
+      Put images in `<Card.Media>` so they sit full-bleed at the top of the card.
     </DoDescription>
   </Do>
   <Dont>
@@ -67,13 +67,13 @@ Use an image preview when each item has its own visual identity, like an event p
   </Dont>
 </GuidelineTiles>
 
-Drop `Card.Media` when the content is text-driven, like a plan summary, a status block, or a quick stat with actions. A title and short body carry the meaning, and a generic stock image only adds noise without helping users decide.
+Drop `<Card.Media>` when the content is text-driven, like a plan summary, a status block, or a quick stat with actions. A title and short body carry the meaning, and a generic stock image only adds noise without helping users decide.
 
 <ComponentDemo name="card-minimal" background="page" />
 
 ### Footer actions
 
-Put actions in `Card.Footer` when users should be able to act on the item directly from the grid, without opening a detail page.
+Put actions in `<Card.Footer>` when users should be able to act on the item directly from the grid, without opening a detail page.
 
 Use small buttons (`<Button size="small" />`). Cards sit in tight grid cells, and small buttons match the scale of the surrounding content. Reserve default-size buttons for page-level actions outside of cards.
 
@@ -125,7 +125,7 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 #### Bleed
 
-`Card.Body` and `Card.Footer` accept a `bleed` prop that skips the card's horizontal padding for that slot. Use it for tables, media, or full-width action bars that should reach the card's edges.
+`<Card.Body>` and `<Card.Footer>` accept a `bleed` prop that skips the card's horizontal padding for that slot. Use it for tables, media, or full-width action bars that should reach the card's edges.
 
 ```tsx
 <Card>
