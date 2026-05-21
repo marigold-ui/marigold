@@ -474,7 +474,7 @@ export const Multiple: any = meta.story({
           {...args}
           label="Animals"
           selectionMode="multiple"
-          onSelectionChange={(keys: any) => setSelected([...keys])}
+          onSelectionChange={value => setSelected(value as Key[])}
         >
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>

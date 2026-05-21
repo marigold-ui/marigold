@@ -16,12 +16,12 @@ interface MobileComboBoxTriggerProps<T extends object> {
   renderValue?: (selectedItems: T[]) => ReactNode;
 }
 
-interface MobileComboBoxProps<T extends object> {
-  placeholder?: string;
+interface MobileComboBoxProps<
+  T extends object,
+> extends MobileComboBoxTriggerProps<T> {
   label?: ReactNode;
   emptyState?: ReactNode;
   children?: ReactNode | ((item: T) => ReactNode);
-  renderValue?: (selectedItems: T[]) => ReactNode;
 }
 
 const MobileComboBoxTrigger = <T extends object>({
@@ -92,7 +92,7 @@ const MobileComboBox = <T extends object>({
               )
             }
           >
-            {children as any}
+            {children}
           </ListBox>
         </Tray.Content>
         <Tray.Actions>

@@ -190,7 +190,7 @@ function ComboBoxBase<T extends object, M extends SelectionMode = 'single'>({
                 )
               }
             >
-              {children as any}
+              {children}
             </ListBox>
           </Popover>
         </>
