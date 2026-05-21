@@ -1,6 +1,6 @@
 import { startOfWeek, today } from '@internationalized/date';
 import { useMemo } from 'react';
-import { CalendarGridProps } from 'react-aria-components';
+import { CalendarGridProps } from 'react-aria-components/Calendar';
 import { useCalendarGrid } from '@react-aria/calendar';
 import { useDateFormatter, useLocale } from '@react-aria/i18n';
 import { useCalendarContext, useCalendarOrRangeState } from './Context';

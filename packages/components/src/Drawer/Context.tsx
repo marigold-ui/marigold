@@ -11,3 +11,10 @@ export const DrawerContext = createContext<DrawerContextProps>({
 });
 
 export const useDrawerContext = () => use(DrawerContext);
+
+/**
+ * `true` when an open Drawer wraps the consumer. `useDrawerCoordination`
+ * reads it to distinguish nested drawers (which must not preempt the parent)
+ * from sibling drawers (which do).
+ */
+export const DrawerNestingContext = createContext(false);

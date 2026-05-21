@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Tag } from 'react-aria-components';
+import { Tag } from 'react-aria-components/TagGroup';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
+import { useTagGroupContext } from './Context';
 import { TagGroup } from './TagGroup';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
@@ -20,9 +21,10 @@ const _Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
   let textValue = typeof children === 'string' ? children : undefined;
 
   const classNames = useClassNames({ component: 'Tag', variant, size });
+  const { disabled: groupDisabled } = useTagGroupContext();
 
   const props = {
-    isDisabled: disabled,
+    isDisabled: disabled ?? groupDisabled,
     ...rest,
   };
 

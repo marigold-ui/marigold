@@ -1,6 +1,7 @@
 import {
   Button,
   Checkbox,
+  Description,
   Form,
   Inline,
   Link,
@@ -8,16 +9,17 @@ import {
   Stack,
   TextArea,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export const ContactForm = () => (
   <Panel size="form">
     <Panel.Header>
-      <Panel.Title>Contact sales</Panel.Title>
-      <Panel.Description>
+      <Title>Contact sales</Title>
+      <Description>
         Interested in our product? Fill out the form below and our sales team
         will get in touch with you soon.
-      </Panel.Description>
+      </Description>
     </Panel.Header>
     <Panel.Content>
       <Form>

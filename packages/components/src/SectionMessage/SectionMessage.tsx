@@ -1,6 +1,6 @@
-import { type ReactNode, useRef, useState } from 'react';
-import { useButton } from '@react-aria/button';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { announce } from '@react-aria/live-announcer';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { CircleAlert } from '../icons/CircleAlert';
@@ -42,6 +42,15 @@ export interface SectionMessageProps {
    * If the message should be closed/dismissed (controlled).
    */
   close?: boolean;
+  /**
+   * Announce the message to assistive technology when it appears.
+   * Fires on mount and whenever controlled visibility (`close`) transitions
+   * from hidden to visible. Priority is `assertive` for `variant="error"` and
+   * `polite` for all other variants. To re-announce the same message without a
+   * visibility change, remount the component with a changing `key`.
+   * @default true for `variant="error"`, false otherwise.
+   */
+  announce?: boolean;
 }
 
 // Component
@@ -53,9 +62,10 @@ export const SectionMessage = ({
   closeButton,
   close,
   onCloseChange,
+  announce: announceProp,
   ...props
 }: SectionMessageProps) => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'SectionMessage',
@@ -67,7 +77,18 @@ export const SectionMessage = ({
   const [internalVisible, setInternalVisible] = useState(true);
   const isCurrentlyVisible = close ?? internalVisible;
 
-  const { buttonProps } = useButton(props, buttonRef);
+  // Re-announce on each hidden -> visible transition. Same-content re-announce
+  // without a visibility change still needs a `key` remount.
+  useEffect(() => {
+    if (!isCurrentlyVisible) return;
+    const shouldAnnounce = announceProp ?? variant === 'error';
+    if (!shouldAnnounce) return;
+    const text = containerRef.current?.textContent?.trim();
+    if (!text) return;
+    const priority = variant === 'error' ? 'assertive' : 'polite';
+    announce(text, priority);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCurrentlyVisible]);
 
   const handleClose = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -82,8 +103,8 @@ export const SectionMessage = ({
   return (
     <SectionMessageContext value={{ classNames }}>
       <div
-        role={variant === 'error' ? 'alert' : undefined}
         {...props}
+        ref={containerRef}
         className={cn('grid auto-rows-min', classNames.container)}
       >
         <div className={cn('[grid-area:icon]', classNames.icon)}>
@@ -91,10 +112,8 @@ export const SectionMessage = ({
         </div>
         {closeButton && (
           <CloseButton
-            {...buttonProps}
-            ref={buttonRef}
             aria-label={stringFormatter.format('close')}
-            className={cn('[grid-area:close]', classNames.close)}
+            className="[grid-area:close]"
             onPress={handleClose}
           />
         )}

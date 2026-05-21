@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "18.0.0-beta.1",
+  "version": "18.0.0-beta.2",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -57,6 +57,7 @@
     "@react-aria/interactions": "^3.28.0",
     "@react-aria/label": "^3.8.0",
     "@react-aria/landmark": "^3.1.0",
+    "@react-aria/live-announcer": "^3.5.0",
     "@react-aria/overlays": "^3.32.0",
     "@react-aria/selection": "^3.28.0",
     "@react-aria/ssr": "^3.10.0",
@@ -89,7 +90,7 @@
     "lucide-react": "^1.9.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "tsdown": "0.21.10"
+    "tsdown": "0.22.0"
   },
   "scripts": {
     "build": "tsdown",

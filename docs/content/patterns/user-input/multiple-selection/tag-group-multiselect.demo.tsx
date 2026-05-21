@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import type { Selection } from '@react-types/shared';
 import { Tag } from '@marigold/components';
 
 export default () => {
-  const [selected, setSelected] = useState(new Set(['parking']));
+  const [selected, setSelected] = useState<Selection>(new Set(['parking']));
 
   return (
     <>
@@ -10,7 +11,7 @@ export default () => {
         label="Amenities"
         selectionMode="multiple"
         selectedKeys={selected}
-        onSelectionChange={setSelected as any}
+        onChange={setSelected}
       >
         <Tag id="laundry">Laundry</Tag>
         <Tag id="fitness">Fitness center</Tag>

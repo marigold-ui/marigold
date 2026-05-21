@@ -1,9 +1,9 @@
 import type { ComponentProps, ReactNode, Ref } from 'react';
+import { Button } from 'react-aria-components/Button';
 import {
-  Button,
   Dialog,
   DialogTrigger as RACDialogTrigger,
-} from 'react-aria-components';
+} from 'react-aria-components/Dialog';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { Popover } from '../Overlay/Popover';

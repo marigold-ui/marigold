@@ -93,6 +93,21 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
   </Dont>
 </GuidelineTiles>
 
+### Landmarks
+
+Each App Shell slot renders semantic HTML, so the screen reader's landmark list reflects the layout automatically.
+
+| Slot                                     | Landmark        |
+| ---------------------------------------- | --------------- |
+| `<AppLayout.Header>` / `<TopNavigation>` | `banner`        |
+| `<AppLayout.Sidebar>`                    | `complementary` |
+| `<Sidebar.Nav>`                          | `navigation`    |
+| `<AppLayout.Main>`                       | `main`          |
+
+When you compose multiple navigation regions inside the header (e.g. `<TopNavigation.Middle>` plus `<TopNavigation.End>`), give each a distinct `aria-label` so they can be told apart. Each [`<Panel>`](/components/layout/panel) inside `<AppLayout.Main>` adds its own `region` landmark, labelled by its title.
+
+`F6` / `Shift + F6` cycling is opt-in via the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook. Today only `<Drawer>` opts in by default — wrap the slots above (or any custom region) with `useLandmark` to add them to the cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
+
 ### Responsive behavior
 
 `<AppLayout>` always renders the L-shape grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.

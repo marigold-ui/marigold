@@ -1,4 +1,5 @@
-import { Dialog, Modal } from 'react-aria-components';
+import { Dialog } from 'react-aria-components/Dialog';
+import { Modal } from 'react-aria-components/Modal';
 import { useId } from '@react-aria/utils';
 import { useClassNames } from '@marigold/system';
 import { Underlay } from '../Overlay/Underlay';

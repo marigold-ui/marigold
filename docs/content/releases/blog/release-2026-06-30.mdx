@@ -444,41 +444,41 @@ Every other `width` value (fractions, fixed sizes, `full`) continues to work. Th
 ```tsx
 <Panel>
   <Panel.Header>
-    <Panel.Title>Organizer info</Panel.Title>
-    <Panel.Description>
+    <Title>Organizer info</Title>
+    <Description>
       Shown on the event page and in confirmation emails.
-    </Panel.Description>
-    <Panel.HeaderActions>
-      <Button variant="secondary">Edit</Button>
-    </Panel.HeaderActions>
+    </Description>
+    <ActionButton aria-label="Edit">
+      <Pencil />
+    </ActionButton>
   </Panel.Header>
   <Panel.Content>…</Panel.Content>
   <Panel.Footer>…</Panel.Footer>
 </Panel>
 ```
 
-**Title-only Panels.** `<Panel.Title>` can sit as a direct child of `<Panel>` when the panel has only a title (no description, no header actions). `<Panel.Header>` remains the wrapper for title plus description plus actions, but a title-only panel does not need it. Accessibility (`aria-labelledby`) and horizontal padding still resolve correctly. `<Panel.Description>` and `<Panel.HeaderActions>` continue to require a `<Panel.Header>` wrapper.
+`<Panel.Header>` is a single slot-configuration boundary: it publishes the heading level, ids, grid-area positioning, and the action size/variant cascade. Drop the slot-aware role primitives (`<Title>`, `<Description>`, `<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it — no wrapper sub-components needed.
+
+**Title-only Panels.** A bare `<Title>` can sit as a direct child of `<Panel>` when the panel has only a title (no description, no actions). `<Panel.Header>` remains the layout wrapper for title plus description plus actions, but a title-only panel does not need it. Accessibility (`aria-labelledby`) and horizontal padding still resolve correctly.
 
 ```tsx
 <Panel>
-  <Panel.Title>General settings</Panel.Title>
+  <Title>General settings</Title>
   <Panel.Content>…</Panel.Content>
 </Panel>
 ```
 
-**Collapsible sections.** `<Panel.Collapsible>` mirrors the header layout for sections that fold. The entire surface is a single click target. Title and description render as spans inside the trigger `<button>`, and `aria-labelledby` and `aria-describedby` are wired up automatically. A reusable `MorphCaret` chevron animates via SVG path morphing and respects `prefers-reduced-motion`.
+**Collapsible sections.** `<Panel.Collapsible>` mirrors the header layout for sections that fold. The entire surface is a single click target. Title and description render as spans inside the trigger `<button>` (driven by the same slot-configuration pattern), and `aria-labelledby` and `aria-describedby` are wired up automatically. A reusable `MorphCaret` chevron animates via SVG path morphing and respects `prefers-reduced-motion`.
 
 ```tsx
 <Panel>
   <Panel.Header>
-    <Panel.Title>Advanced settings</Panel.Title>
+    <Title>Advanced settings</Title>
   </Panel.Header>
   <Panel.Collapsible>
     <Panel.CollapsibleHeader>
-      <Panel.CollapsibleTitle>Webhooks</Panel.CollapsibleTitle>
-      <Panel.CollapsibleDescription>
-        Outbound HTTP callbacks
-      </Panel.CollapsibleDescription>
+      <Title>Webhooks</Title>
+      <Description>Outbound HTTP callbacks</Description>
     </Panel.CollapsibleHeader>
     <Panel.CollapsibleContent>…</Panel.CollapsibleContent>
   </Panel.Collapsible>

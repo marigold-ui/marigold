@@ -1,4 +1,5 @@
-import RAC, { FileTrigger } from 'react-aria-components';
+import type RAC from 'react-aria-components';
+import { FileTrigger } from 'react-aria-components/FileTrigger';
 import { Button } from '../Button/Button';
 import { Upload } from '../icons/Upload';
 

@@ -4,20 +4,35 @@ export interface NestedStringObject {
   [key: string]: NestedStringObject | string;
 }
 
-export interface ComponentStyleFunction<
+/**
+ * A function that resolves a themed component (or component slot) to a class
+ * string.
+ *
+ * `variant` and `size` are typed as `any` deliberately: this mirrors the
+ * runtime contract — `useClassNames` calls these functions with
+ * `string | undefined` and `cva` falls back to base styles for unknown
+ * values. Using `any` also keeps `cva`'s narrower literal-union returns
+ * assignable to `ComponentStyleFunction` under TypeScript's default
+ * `strict: true` (which enables `strictFunctionTypes`). See DSTSUP-253.
+ *
+ * The `Variants`, `Sizes`, and `Additional` type parameters are retained for
+ * backward source-compatibility with existing `ComponentStyleFunction<...>`
+ * annotations; they no longer constrain the parameter shape.
+ */
+export type ComponentStyleFunction<
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Variants extends string = never,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Sizes extends string = never,
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   Additional extends { [name: string]: any } = {},
-> {
-  (
-    props?: {
-      variant?: Variants | null;
-      size?: Sizes | null;
-      className?: ClassValue;
-    } & Partial<Additional>
-  ): string;
-}
+> = (
+  props?: {
+    variant?: any;
+    size?: any;
+    className?: ClassValue;
+  } & Partial<Additional>
+) => string;
 
 export type Theme = {
   name: string;
@@ -174,7 +189,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     SectionMessage?: Record<
-      'container' | 'icon' | 'title' | 'content' | 'close',
+      'container' | 'icon' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<

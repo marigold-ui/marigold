@@ -1,5 +1,20 @@
 # @marigold/docs
 
+## 18.0.0-beta.2
+
+### Patch Changes
+
+- Updated dependencies [3a62175]
+- Updated dependencies [2a34a64]
+- Updated dependencies [61f917f]
+- Updated dependencies [d51416c]
+- Updated dependencies [a59d2dd]
+- Updated dependencies [9a407ef]
+  - @marigold/components@18.0.0-beta.2
+  - @marigold/system@18.0.0-beta.2
+  - @marigold/theme-rui@6.0.0-beta.2
+  - @marigold/icons@2.0.0-beta.2
+
 ## 18.0.0-beta.1
 
 ### Major Changes
@@ -482,6 +497,18 @@
   - @marigold/system@18.0.0-beta.0
   - @marigold/components@18.0.0-beta.0
   - @marigold/icons@1.3.39-beta.0
+
+## 17.5.1
+
+### Patch Changes
+
+- Updated dependencies [6517e25]
+- Updated dependencies [3b29d91]
+- Updated dependencies [c65d2a7]
+  - @marigold/theme-rui@5.3.1
+  - @marigold/components@17.5.1
+  - @marigold/system@17.5.1
+  - @marigold/icons@1.3.40
 
 ## 17.5.0
 

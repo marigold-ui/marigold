@@ -1,6 +1,7 @@
 import { use } from 'react';
-import { Button, ListStateContext } from 'react-aria-components';
-import type { TagGroupProps } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { ListStateContext } from 'react-aria-components/ListBox';
+import type { TagGroupProps } from 'react-aria-components/TagGroup';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { intlMessages } from '../intl/messages';
 

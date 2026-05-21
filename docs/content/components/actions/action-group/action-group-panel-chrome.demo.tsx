@@ -1,9 +1,11 @@
 import {
   ActionButton,
   ActionGroup,
+  Description,
   Panel,
   Stack,
   Text,
+  Title,
   Tooltip,
 } from '@marigold/components';
 import { Bookmark, Settings, Share2 } from '@marigold/icons';
@@ -11,32 +13,28 @@ import { Bookmark, Settings, Share2 } from '@marigold/icons';
 export default () => (
   <Panel>
     <Panel.Header>
-      <Panel.Title>Event details</Panel.Title>
-      <Panel.Description>
-        Public information visible to ticket buyers.
-      </Panel.Description>
-      <Panel.HeaderActions>
-        <ActionGroup aria-label="Event actions" size="small">
-          <Tooltip.Trigger>
-            <ActionButton aria-label="Bookmark">
-              <Bookmark />
-            </ActionButton>
-            <Tooltip>Bookmark</Tooltip>
-          </Tooltip.Trigger>
-          <Tooltip.Trigger>
-            <ActionButton aria-label="Share">
-              <Share2 />
-            </ActionButton>
-            <Tooltip>Share</Tooltip>
-          </Tooltip.Trigger>
-          <Tooltip.Trigger>
-            <ActionButton aria-label="Settings">
-              <Settings />
-            </ActionButton>
-            <Tooltip>Settings</Tooltip>
-          </Tooltip.Trigger>
-        </ActionGroup>
-      </Panel.HeaderActions>
+      <Title>Event details</Title>
+      <Description>Public information visible to ticket buyers.</Description>
+      <ActionGroup aria-label="Event actions">
+        <Tooltip.Trigger>
+          <ActionButton aria-label="Bookmark">
+            <Bookmark />
+          </ActionButton>
+          <Tooltip>Bookmark</Tooltip>
+        </Tooltip.Trigger>
+        <Tooltip.Trigger>
+          <ActionButton aria-label="Share">
+            <Share2 />
+          </ActionButton>
+          <Tooltip>Share</Tooltip>
+        </Tooltip.Trigger>
+        <Tooltip.Trigger>
+          <ActionButton aria-label="Settings">
+            <Settings />
+          </ActionButton>
+          <Tooltip>Settings</Tooltip>
+        </Tooltip.Trigger>
+      </ActionGroup>
     </Panel.Header>
     <Panel.Content>
       <Stack space="tight">

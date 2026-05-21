@@ -25,7 +25,7 @@ jobs:
       CI: true
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: pnpm/action-setup@v6.0.8
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -39,7 +39,7 @@ jobs:
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
@@ -48,7 +48,7 @@ jobs:
         run: pnpm exec playwright install
 
       - name: Cache Vite dep optimization
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules/.vite
           key: vite-deps-unit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -60,7 +60,7 @@ jobs:
 
       - name: Upload coverage artifact
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-unit-${{ matrix.shard }}
           path: coverage/coverage-final.json
@@ -83,7 +83,7 @@ jobs:
       CI: true
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: pnpm/action-setup@v6.0.8
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -97,7 +97,7 @@ jobs:
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
@@ -106,7 +106,7 @@ jobs:
         run: pnpm exec playwright install
 
       - name: Cache Vite dep optimization
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules/.vite
           key: vite-deps-sb-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -118,7 +118,7 @@ jobs:
 
       - name: Upload coverage artifact
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-storybook-${{ matrix.shard }}
           path: coverage/coverage-final.json
@@ -126,7 +126,7 @@ jobs:
       - name: Upload Accessibility Report
         id: artifact-upload-step
         if: always() && matrix.shard == 1
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: accessibility-report
           path: ./storybook/artifacts/accessibilityReport.html
@@ -159,12 +159,12 @@ jobs:
       # own subdirectory (e.g. coverage/unit/coverage-unit-1/coverage-final.json)
       # so filenames don't collide.
       - name: Download unit test coverage shards
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage-unit-*
           path: coverage/unit
       - name: Download storybook test coverage shards
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage-storybook-*
           path: coverage/storybook
@@ -252,7 +252,7 @@ jobs:
           "
 
       - name: Upload badge JSON as artifact (for debugging)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: vitest-coverage-badge
           path: artifacts/vitest-coverage-badge.json

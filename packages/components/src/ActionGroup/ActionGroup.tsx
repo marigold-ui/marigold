@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Provider, Toolbar, useContextProps } from 'react-aria-components';
+import { Toolbar } from 'react-aria-components/Toolbar';
+import { Provider, useContextProps } from 'react-aria-components/slots';
 import type { AriaLabelingProps } from '@marigold/types';
 import { ActionButtonContext } from '../ActionButton/Context';
 import type { SlotProps } from '../types';

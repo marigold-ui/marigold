@@ -4,14 +4,12 @@ import {
   cubicBezier,
   motion,
   useMotionValue,
+  useReducedMotion,
 } from 'motion/react';
 import { use } from 'react';
-import {
-  Modal,
-  ModalOverlay,
-  OverlayTriggerStateContext,
-} from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
+import { Modal, ModalOverlay } from 'react-aria-components/Modal';
 import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps =
@@ -53,16 +51,9 @@ export const TrayModal = ({
 }: TrayModalProps) => {
   const classNames = useClassNames({ component: 'Tray' });
   const state = use(OverlayTriggerStateContext);
+  const reducedMotion = useReducedMotion();
   const h = typeof window !== 'undefined' ? window.innerHeight : 0;
   const y = useMotionValue(h);
-  // Skip the slide transition under `prefers-reduced-motion` (and in
-  // Chromatic, which emulates it) so visual-regression snapshots are
-  // deterministic instead of capturing a mid-animation frame.
-  const reducedMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  const transition = reducedMotion ? { duration: 0 } : staticTransition;
-  const initialY = reducedMotion ? 0 : h;
 
   const handleOpenChange = (isOpen: boolean) => {
     onOpenChange?.(isOpen);
@@ -70,6 +61,25 @@ export const TrayModal = ({
       state?.close();
     }
   };
+
+  // Skip framer-motion under reduced motion: AnimatePresence delays unmount,
+  // which races with RAC's FocusScope cleanup and prevents the trigger from
+  // receiving focus on close. Plain ModalOverlay unmounts synchronously, so
+  // FocusScope restores focus as designed. Users without the preference still
+  // hit this race — follow-up needed for a full fix.
+  if (reducedMotion) {
+    return (
+      <ModalOverlay
+        isOpen={open}
+        onOpenChange={handleOpenChange}
+        isDismissable={dismissable}
+        isKeyboardDismissDisabled={!keyboardDismissable}
+        className={cn(classNames.overlay)}
+      >
+        <Modal className={classNames.container}>{children}</Modal>
+      </ModalOverlay>
+    );
+  }
 
   return (
     <AnimatePresence>
@@ -84,10 +94,10 @@ export const TrayModal = ({
         >
           <MotionModal
             className={classNames.container}
-            initial={{ y: initialY }}
+            initial={{ y: h }}
             animate={{ y: 0 }}
-            exit={{ y: reducedMotion ? 0 : h }}
-            transition={transition}
+            exit={{ y: h }}
+            transition={staticTransition}
             style={{ y }}
             drag="y"
             dragConstraints={{ top: 0 }}

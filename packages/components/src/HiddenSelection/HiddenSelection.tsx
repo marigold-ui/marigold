@@ -1,17 +1,16 @@
-import type { ChangeEvent, RefObject } from 'react';
-import { useCallback, useRef } from 'react';
-import { VisuallyHidden } from 'react-aria-components';
+import type { RefObject } from 'react';
+import { useRef } from 'react';
+import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
 import { useFormValidation } from '@react-aria/form';
 import type { FormValidationState } from '@react-stately/form';
 import type { Key, Selection } from '@react-types/shared';
-import type { SelectionMode } from './SelectList';
 
-export interface SelectListHiddenSelectProps {
+export interface HiddenSelectionProps {
   name?: string;
   form?: string;
   disabled?: boolean;
   required?: boolean;
-  selectionMode: SelectionMode;
+  selectionMode: 'single' | 'multiple';
   selection: Selection;
   onSelectionChange: (selection: Selection) => void;
   validationBehavior: 'aria' | 'native';
@@ -19,7 +18,15 @@ export interface SelectListHiddenSelectProps {
   focusRef: RefObject<HTMLElement | null>;
 }
 
-export const SelectListHiddenSelect = ({
+/**
+ * Shared hidden `<select>` for components that project a RAC selection state
+ * into a real form control (SelectList, TagGroup). Wires `useFormValidation`
+ * for native constraint validation and routes browser autofill / form reset
+ * back to the consumer's selection setter.
+ *
+ * @internal Not part of the public API. Used by SelectList and TagGroup.
+ */
+export const HiddenSelection = ({
   name,
   form,
   disabled,
@@ -30,7 +37,7 @@ export const SelectListHiddenSelect = ({
   validationBehavior,
   validationState,
   focusRef,
-}: SelectListHiddenSelectProps) => {
+}: HiddenSelectionProps) => {
   const selectRef = useRef<HTMLSelectElement>(null);
 
   useFormValidation(
@@ -39,28 +46,8 @@ export const SelectListHiddenSelect = ({
     selectRef
   );
 
-  // Reachable only via form reset and browser autofill — the <select> is
-  // tabIndex={-1}, aria-hidden, and inside VisuallyHidden, so users can't
-  // interact with it directly.
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      const target = e.currentTarget;
-      if (target.multiple) {
-        onSelectionChange(
-          new Set(Array.from(target.selectedOptions, o => o.value as Key))
-        );
-      } else {
-        onSelectionChange(
-          target.value ? new Set([target.value as Key]) : new Set()
-        );
-      }
-    },
-    [onSelectionChange]
-  );
-
-  // The hidden <select> can't enumerate the full key set, so when SelectList's
-  // selection is 'all' we submit no values. Visually the user sees every row
-  // selected; consumers needing to submit "all" should resolve that themselves.
+  // 'all' can't enumerate every key, so submit nothing. Consumers needing to
+  // submit "all" should resolve it to concrete keys themselves.
   const selectedKeys =
     selection === 'all' ? [] : Array.from(selection).map(String);
   const value =
@@ -78,11 +65,17 @@ export const SelectListHiddenSelect = ({
         name={name}
         form={form}
         value={value}
-        onChange={onChange}
+        onChange={e => {
+          const target = e.currentTarget;
+          const keys = Array.from(target.selectedOptions, o => o.value as Key);
+          onSelectionChange(
+            new Set(target.multiple ? keys : keys.filter(Boolean))
+          );
+        }}
       >
         <option value="" />
-        {/* No text content: keys may be opaque ids that shouldn't surface in
-            `validationMessage` / `selectedOptions[i].text` / DOM tooling. */}
+        {/* No option text — keys may be opaque ids that shouldn't surface in
+            validationMessage or DOM tooling. */}
         {selectedKeys.map(key => (
           <option key={key} value={key} />
         ))}

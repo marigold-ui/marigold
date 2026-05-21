@@ -1,12 +1,10 @@
 import type { ReactNode, Ref } from 'react';
 import { use, useMemo } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  ButtonContext,
-  Provider,
-  GridListItem as RACGridListItem,
-  TextContext,
-} from 'react-aria-components';
+import { ButtonContext } from 'react-aria-components/Button';
+import { GridListItem as RACGridListItem } from 'react-aria-components/GridList';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { cn } from '@marigold/system';
 import { useSelectListContext } from './Context';
 import { SelectionIndicator } from './SelectionIndicator';
