@@ -13,7 +13,7 @@ const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
 
   return (
     <Card stretch>
-      <Card.Preview>
+      <Card.Media>
         <div className="grid overflow-hidden rounded-[calc(var(--radius-surface)-3px)]">
           <img
             className="col-start-1 row-start-1 aspect-square w-full scale-150 object-cover"
@@ -39,7 +39,7 @@ const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
             </div>
           </div>
         </div>
-      </Card.Preview>
+      </Card.Media>
     </Card>
   );
 };
