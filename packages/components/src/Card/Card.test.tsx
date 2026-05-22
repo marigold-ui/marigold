@@ -7,11 +7,9 @@ import {
   MasterAndAdmin,
   Stretch,
   TitleOnlyWithoutHeader,
-  WithActionGroup,
   WithBleedBody,
   WithBleedFooter,
   WithFooter,
-  WithHeaderActions,
   WithMedia,
 } from './Card.stories';
 
@@ -154,20 +152,6 @@ describe('Card', () => {
       expect(header!.className).toContain('px-(--card-px)');
     });
 
-    test('Card.Header lays children out in a two-column grid', () => {
-      render(<WithHeaderActions.Component />);
-
-      const header = screen
-        .getByRole('heading', { name: 'Sommernachts-Konzert 2026' })
-        .closest('[data-card-header]')!;
-
-      expect(header.className).toContain('grid');
-      expect(header.className).toContain('grid-cols-[1fr_auto]');
-      expect(header.className).toContain(
-        "[grid-template-areas:'title_actions'_'description_actions']"
-      );
-    });
-
     test('Card.Body has data-card-body and applies horizontal padding by default', () => {
       render(<Basic.Component />);
 
@@ -270,15 +254,6 @@ describe('Card', () => {
   });
 
   describe('Description in Card.Header', () => {
-    test('lands in the description grid area', () => {
-      render(<Basic.Component />);
-
-      const description = screen.getByText(
-        'Potions Master, Head of Slytherin House.'
-      );
-      expect(description).toHaveAttribute('data-grid-area', 'description');
-    });
-
     test('renders as a <p> via the TextContext slot config', () => {
       render(<Basic.Component />);
 
@@ -286,31 +261,6 @@ describe('Card', () => {
         'Potions Master, Head of Slytherin House.'
       );
       expect(description.tagName).toBe('P');
-    });
-  });
-
-  describe('Actions in Card.Header', () => {
-    test('places a bare ActionMenu trigger in the actions grid area', () => {
-      render(<WithHeaderActions.Component />);
-
-      const trigger = screen.getByRole('button', { name: 'Event actions' });
-      expect(trigger).toHaveAttribute('data-grid-area', 'actions');
-    });
-
-    test('places an ActionGroup toolbar in the actions grid area', () => {
-      render(<WithActionGroup.Component />);
-
-      const toolbar = screen.getByRole('toolbar', {
-        name: 'Workspace actions',
-      });
-      expect(toolbar).toHaveAttribute('data-grid-area', 'actions');
-    });
-
-    test('individual ActionButtons inside the group do NOT carry the actions grid-area', () => {
-      render(<WithActionGroup.Component />);
-
-      const edit = screen.getByRole('button', { name: 'Edit' });
-      expect(edit).not.toHaveAttribute('data-grid-area', 'actions');
     });
   });
 

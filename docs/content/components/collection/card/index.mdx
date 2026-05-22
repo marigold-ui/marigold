@@ -17,7 +17,7 @@ The card component is a compound component made up of several sub-components tha
 <CardAnatomy />
 
 - **Card.Media**: Optional full-bleed area at the top, typically used for images or media.
-- **Card.Header**: Houses a `<Title>`, an optional `<Description>`, and optional action primitives (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`). The header lays these out in a two-column grid (title/description on the left, actions on the right).
+- **Card.Header**: Houses a `<Title>` and an optional `<Description>`.
 - **Card.Body**: Main content area for descriptive text or form elements.
 - **Card.Footer**: Bottom area for actions such as buttons or metadata.
 
@@ -41,19 +41,13 @@ A card represents one item in a set. Reach for it when the same type of item rep
 
 ### Header
 
-`Card.Header` is slot-aware: drop a [`<Title>`](../../content/title), an optional [`<Description>`](../../content/description), and optional actions ([`<ActionButton>`](../../actions/action-button), [`<ActionGroup>`](../../actions/action-group), [`<ActionMenu>`](../../actions/action-menu)) directly inside it. The header arranges them in a two-column grid — title and description on the left, actions on the right — and wires up the heading level, id, and accessible name automatically.
+`Card.Header` is slot-aware: drop a [`<Title>`](../../content/title) and an optional [`<Description>`](../../content/description) directly inside it. The header wires up the heading level, id, and accessible name automatically.
 
 ```tsx
 <Card>
   <Card.Header>
     <Title>Sommernachts-Konzert 2026</Title>
     <Description>Elbphilharmonie Hamburg · June 14, 2026</Description>
-    <ActionMenu aria-label="Event actions">
-      <ActionMenu.Item id="edit">Edit</ActionMenu.Item>
-      <ActionMenu.Item id="cancel" variant="destructive">
-        Cancel
-      </ActionMenu.Item>
-    </ActionMenu>
   </Card.Header>
   <Card.Body>…</Card.Body>
 </Card>
@@ -164,7 +158,6 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 - `<Card>` renders an `<article>` landmark. When a `<Title>` is present, the article is automatically labelled by it (`aria-labelledby`). Otherwise pass `aria-label` to give the card an accessible name.
 - The heading level is configurable via the `headingLevel` prop on `<Card>` (default `3`). Choose the level that fits the card's depth in the document outline.
-- Use the slot-aware action primitives (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`) inside `Card.Header` to get the correct icon-button sizing and grid placement automatically.
 
 ## Props
 

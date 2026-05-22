@@ -25,9 +25,8 @@ interface CardBaseProps extends Omit<
    * Content of the card. Typically a combination of `Card.Media`,
    * `Card.Header`, `Card.Body`, and `Card.Footer`.
    *
-   * `Card.Header` configures the slot-aware text and action primitives
-   * (`<Title>`, `<Description>`, `<ActionButton>`, `<ActionGroup>`,
-   * `<ActionMenu>`) and lays them out in a grid.
+   * `Card.Header` configures the slot-aware text primitives `<Title>`
+   * and `<Description>`.
    */
   children?: ReactNode;
   variant?: 'default' | 'master' | 'admin' | (string & {});

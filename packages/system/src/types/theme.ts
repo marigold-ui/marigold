@@ -69,7 +69,6 @@ export type Theme = {
       | 'header'
       | 'title'
       | 'description'
-      | 'actions'
       | 'body'
       | 'footer'
       | 'media',

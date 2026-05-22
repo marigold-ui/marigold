@@ -23,7 +23,6 @@ export const Card: ThemeComponent<'Card'> = {
   description: cva({
     base: 'mt-0.5 text-sm text-secondary',
   }),
-  actions: cva({}),
   body: cva({
     base: 'text-sm',
   }),

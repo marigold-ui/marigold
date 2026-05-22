@@ -1,11 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge, Button, Stack, Text } from '@marigold/components';
-import { Copy, Pencil, Trash2 } from '@marigold/icons';
-import { ActionButton } from '../ActionButton/ActionButton';
-import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Description } from '../Description/Description';
-import { ActionMenu } from '../Menu/ActionMenu';
 import { Title } from '../Title/Title';
 import { Card } from './Card';
 
@@ -79,80 +75,6 @@ Basic.test('renders an article labelled by the Title', async ({ canvas }) => {
   expect(article.getAttribute('aria-labelledby')).toBe(title.id);
 });
 
-export const WithHeaderActions = meta.story({
-  args: { children: null as never },
-  tags: ['component-test'],
-  render: args => (
-    <Card {...args}>
-      <Card.Header>
-        <Title>Sommernachts-Konzert 2026</Title>
-        <Description>
-          Elbphilharmonie Hamburg · Saturday, June 14, 2026
-        </Description>
-        <ActionMenu aria-label="Event actions">
-          <ActionMenu.Item id="duplicate">
-            <Copy />
-            Duplicate event
-          </ActionMenu.Item>
-          <ActionMenu.Item id="edit">
-            <Pencil />
-            Edit
-          </ActionMenu.Item>
-          <ActionMenu.Item id="cancel" variant="destructive">
-            <Trash2 />
-            Cancel event
-          </ActionMenu.Item>
-        </ActionMenu>
-      </Card.Header>
-      <Card.Body>
-        <Text>1,847 / 2,100 tickets sold</Text>
-      </Card.Body>
-    </Card>
-  ),
-});
-
-WithHeaderActions.test(
-  'places the ActionMenu trigger in the actions grid area',
-  async ({ canvas }) => {
-    const trigger = canvas.getByRole('button', { name: 'Event actions' });
-    expect(trigger).toHaveAttribute('data-grid-area', 'actions');
-  }
-);
-
-export const WithActionGroup = meta.story({
-  args: { children: null as never },
-  tags: ['component-test'],
-  render: args => (
-    <Card {...args}>
-      <Card.Header>
-        <Title>Team Workspace</Title>
-        <Description>Shared with three editors.</Description>
-        <ActionGroup aria-label="Workspace actions">
-          <ActionButton aria-label="Edit">
-            <Pencil />
-          </ActionButton>
-          <ActionButton aria-label="Duplicate">
-            <Copy />
-          </ActionButton>
-        </ActionGroup>
-      </Card.Header>
-      <Card.Body>
-        <Text>Three editors collaborating on this workspace.</Text>
-      </Card.Body>
-    </Card>
-  ),
-});
-
-WithActionGroup.test(
-  'renders the ActionGroup toolbar inside the actions grid cell',
-  async ({ canvas }) => {
-    const toolbar = canvas.getByRole('toolbar', {
-      name: 'Workspace actions',
-    });
-    expect(toolbar).toHaveAttribute('data-grid-area', 'actions');
-  }
-);
-
 export const HeadingLevels = meta.story({
   args: { children: null as never, headingLevel: 4 },
   tags: ['component-test'],
@@ -218,23 +140,6 @@ export const WithFooter = meta.story({
       <Card.Footer>
         <Button variant="secondary">Cancel</Button>
         <Button variant="primary">Register</Button>
-      </Card.Footer>
-    </Card>
-  ),
-});
-
-export const FooterActions = meta.story({
-  args: { children: null as never },
-  render: args => (
-    <Card {...args}>
-      <Card.Header>
-        <Title>Subscription</Title>
-      </Card.Header>
-      <Card.Body>
-        <Text>Manage the plan attached to this workspace.</Text>
-      </Card.Body>
-      <Card.Footer>
-        <ActionButton>Manage</ActionButton>
       </Card.Footer>
     </Card>
   ),
