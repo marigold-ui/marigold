@@ -19,7 +19,7 @@ import { CardMedia } from './CardMedia';
 // ---------------
 interface CardBaseProps extends Omit<
   HTMLAttributes<HTMLElement>,
-  'className' | 'style' | 'aria-label'
+  'className' | 'style'
 > {
   /**
    * Content of the card. Typically a combination of `Card.Media`,
@@ -32,9 +32,6 @@ interface CardBaseProps extends Omit<
   children?: ReactNode;
   variant?: 'default' | 'master' | 'admin' | (string & {});
   size?: string;
-
-  /** Accessible label. Required when no `<Title>` is present. */
-  'aria-label'?: string;
 
   /**
    * Base heading level for the card. A `<Title>` inside `Card.Header`

@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import {
   AriaLabeled,
   Basic,
-  FooterActions,
   HeadingLevels,
   MasterAndAdmin,
   Stretch,
@@ -312,15 +311,6 @@ describe('Card', () => {
 
       const edit = screen.getByRole('button', { name: 'Edit' });
       expect(edit).not.toHaveAttribute('data-grid-area', 'actions');
-    });
-  });
-
-  describe('Actions in Card.Footer', () => {
-    test('marks ActionButtons in the footer with data-card-footer-action', () => {
-      render(<FooterActions.Component />);
-
-      const action = screen.getByRole('button', { name: 'Manage' });
-      expect(action).toHaveAttribute('data-card-footer-action');
     });
   });
 

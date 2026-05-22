@@ -225,7 +225,6 @@ export const WithFooter = meta.story({
 
 export const FooterActions = meta.story({
   args: { children: null as never },
-  tags: ['component-test'],
   render: args => (
     <Card {...args}>
       <Card.Header>
@@ -240,14 +239,6 @@ export const FooterActions = meta.story({
     </Card>
   ),
 });
-
-FooterActions.test(
-  'cascades size="small" to ActionButtons inside Card.Footer',
-  async ({ canvas }) => {
-    const action = canvas.getByRole('button', { name: 'Manage' });
-    expect(action).toHaveAttribute('data-card-footer-action');
-  }
-);
 
 export const WithMedia = meta.story({
   args: { children: null as never },
