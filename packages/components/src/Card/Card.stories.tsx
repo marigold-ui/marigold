@@ -62,16 +62,16 @@ export const WithFooter = meta.story({
   ),
 });
 
-export const WithPreview = meta.story({
+export const WithMedia = meta.story({
   render: args => (
     <Card {...args}>
-      <Card.Preview>
+      <Card.Media>
         <img
           src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=200&fit=crop"
           alt="Landscape"
           className="block h-48 w-full object-cover"
         />
-      </Card.Preview>
+      </Card.Media>
       <Card.Header>Mountain Landscape</Card.Header>
       <Card.Body>
         <Text>

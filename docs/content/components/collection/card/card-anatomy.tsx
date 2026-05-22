@@ -3,6 +3,8 @@ export const CardAnatomy = () => (
     viewBox="40 20 640 340"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="Anatomy of a Card: Media, Header, Body, and Footer regions"
   >
     {/* Card Container */}
     <rect
@@ -174,7 +176,7 @@ export const CardAnatomy = () => (
           fontWeight="600"
           className="fill-fd-primary"
         >
-          Card.Preview
+          Card.Media
         </text>
         <text
           x="150"
