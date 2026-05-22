@@ -253,7 +253,7 @@ For complex forms with nested objects, conditional fields, or cross-field rules,
 
 ## State Management & Submission
 
-Forms need to capture user input, react to it, and hand it off when the user submits. Marigold's form components work with both uncontrolled and controlled patterns, and integrate cleanly with native `FormData`, React 19 actions, and libraries like react-hook-form.
+Forms need to capture user input, react to it, and hand it off when the user submits. Marigold's form components work with both uncontrolled and controlled patterns, and integrate cleanly with native `FormData` and React 19 actions.
 
 ### Controlled vs uncontrolled
 
@@ -277,18 +277,6 @@ The simplest way to read a form is the browser's [FormData](https://developer.mo
 Some fields only make sense after another field is set. For example, toggle "Other reason" when "Other" is selected, or show a tax ID only for business accounts. Control the parent field, read its value, and render the dependent field conditionally.
 
 <ComponentDemo file="./logical-interaction.demo.tsx" background="page" />
-
-### Using react-hook-form
-
-For larger forms with many fields and rules, [react-hook-form](https://react-hook-form.com/) cuts the boilerplate and minimizes re-renders. Wrap each Marigold field with `<Controller>` so the library can bridge the field and its own state management.
-
-A few patterns worth knowing when wiring it up:
-
-- **Set `defaultValue` instead of state.** Each Controller takes a `defaultValue`, so fields stay uncontrolled and never go through an `undefined`/`null` state.
-- **Declare rules on the Controller.** Pass `rules={{ required: true }}` (and friends) to trigger validation. The Marigold field already accepts `error` and `errorMessage`, so wire those from the Controller's render props.
-- **Gate submission with `formState.isValid`.** The library exposes a single boolean for the whole form, which is handy for disabling the submit button until every field is valid.
-
-<ComponentDemo file="./building-forms-hook-form.demo.tsx" background="page" />
 
 ### Async forms with useActionState
 
