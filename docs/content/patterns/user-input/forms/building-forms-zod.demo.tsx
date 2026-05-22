@@ -104,7 +104,7 @@ export default () => {
               name="terms"
               label="Agree to the terms"
               error={!!errors.terms}
-              errorMessage={errors.terms}
+              description={errors.terms}
             />
           </Stack>
         </Panel.Content>
