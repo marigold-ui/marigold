@@ -1,80 +1,44 @@
 import { Key, useState } from 'react';
 import {
   Button,
-  Checkbox,
-  Columns,
   Panel,
   Select,
   Stack,
-  TextField,
+  TextArea,
   Title,
 } from '@marigold/components';
 
 export default () => {
-  const [value] = useState('');
-  const [selected, setSelected] = useState<Key | null>(null);
+  const [reason, setReason] = useState<Key | null>(null);
+
   return (
     <Panel size="form">
       <Panel.Header>
-        <Title>Account Registration</Title>
+        <Title>Cancel subscription</Title>
       </Panel.Header>
       <Panel.Content>
         <Stack space={4}>
-          <Columns columns={[2, 2]} space={4}>
-            <TextField
-              label="Firstname:"
-              required
-              description="Please enter your first name."
-              placeholder="Firstname"
-              disabled
-            />
-            <TextField
-              label="Name:"
-              required
-              description="Please enter your name."
-              placeholder="Name"
-              disabled
-            />
-          </Columns>
-          <Stack space={4}>
-            <TextField
-              label="Phone:"
-              required
-              disabled
-              placeholder="Phone"
-              description="Please enter your phone number."
-              type="tel"
-            />
-            <TextField
-              label="E-Mail:"
-              description="Please enter your E-Mail adress."
-              placeholder="E-Mail"
-              required
-              disabled
-              error={
-                value.length > 0 && !/^\S+@\S+\.\S+$/.test(value) ? true : false
-              }
-              errorMessage="The field is required. Please enter a valid E-Mail adress."
-            />
-            <Select
-              label="Country:"
-              description="Please select your country."
-              onChange={setSelected}
-            >
-              <Select.Option key={'none'}>Select an option...</Select.Option>
-              <Select.Option key={'germany'}>Germany</Select.Option>
-              <Select.Option key={'austria'}>Austria</Select.Option>
-              <Select.Option key={'switzerland'}>Switzerland</Select.Option>
-            </Select>
-            {selected && selected !== 'none' && (
-              <Checkbox label="Agree to the terms" />
-            )}
-          </Stack>
+          <Select
+            label="Reason"
+            placeholder="Select a reason..."
+            description="Help us improve by telling us why you're leaving."
+            onChange={setReason}
+          >
+            <Select.Option id="price">Too expensive</Select.Option>
+            <Select.Option id="missing-feature">
+              Missing a feature
+            </Select.Option>
+            <Select.Option id="not-using">Not using it enough</Select.Option>
+            <Select.Option id="other">Other</Select.Option>
+          </Select>
+          {reason === 'other' && (
+            <TextArea label="Tell us more" rows={3} required />
+          )}
         </Stack>
       </Panel.Content>
       <Panel.Footer>
-        <Button variant="primary" type="submit" disabled>
-          Submit
+        <Button variant="primary" type="submit">
+          Cancel subscription
         </Button>
       </Panel.Footer>
     </Panel>
