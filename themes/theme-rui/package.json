@@ -60,13 +60,13 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "4.2.1",
+    "@tailwindcss/postcss": "4.3.0",
     "cross-env": "^10.0.0",
     "cssnano": "7.1.9",
     "postcss-cli": "11.0.1",
     "postcss-prefix-selector": "2.1.1",
     "shx": "^0.4.0",
-    "tailwindcss": "4.2.1",
+    "tailwindcss": "4.3.0",
     "tsdown": "0.22.0",
     "typescript": "6.0.2"
   },
