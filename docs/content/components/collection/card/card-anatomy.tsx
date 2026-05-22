@@ -53,15 +53,6 @@ export const CardAnatomy = () => (
       rx="4"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
-    {/* Header - badge placeholder */}
-    <rect
-      x="398"
-      y="146"
-      width="42"
-      height="18"
-      rx="9"
-      className="fill-fd-accent transition-colors duration-300"
-    />
 
     {/* Body - text lines */}
     <rect
