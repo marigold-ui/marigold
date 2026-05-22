@@ -4,7 +4,7 @@ export const CardAnatomy = () => (
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="Anatomy of a Card: Media, Header, Body, and Footer regions"
+    aria-label="Anatomy of a Card: Media, Header with Title and Description, Body, and Footer regions"
   >
     {/* Card Container */}
     <rect
@@ -153,6 +153,10 @@ export const CardAnatomy = () => (
     >
       {/* Preview -> left */}
       <path d="M 240 85 L 160 85" />
+      {/* Title -> left */}
+      <path d="M 260 154 L 160 154" />
+      {/* Description -> left */}
+      <path d="M 260 170 L 160 170" />
       {/* Body -> left */}
       <path d="M 240 220 L 160 220" />
       {/* Card -> top right */}
@@ -166,6 +170,8 @@ export const CardAnatomy = () => (
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="240" cy="85" r="4" />
+      <circle cx="260" cy="154" r="4" />
+      <circle cx="260" cy="170" r="4" />
       <circle cx="240" cy="220" r="4" />
       <circle cx="450" cy="50" r="4" />
       <circle cx="460" cy="156" r="4" />
@@ -186,6 +192,24 @@ export const CardAnatomy = () => (
           className="fill-fd-primary"
         >
           Card.Media
+        </text>
+        <text
+          x="150"
+          y="158"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Title
+        </text>
+        <text
+          x="150"
+          y="174"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Description
         </text>
         <text
           x="150"
