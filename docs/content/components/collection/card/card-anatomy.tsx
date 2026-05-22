@@ -38,16 +38,25 @@ export const CardAnatomy = () => (
     {/* Header - title placeholder */}
     <rect
       x="260"
-      y="150"
+      y="148"
       width="120"
-      height="14"
+      height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
+    />
+    {/* Header - description placeholder */}
+    <rect
+      x="260"
+      y="166"
+      width="160"
+      height="8"
+      rx="4"
+      className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
     {/* Header - badge placeholder */}
     <rect
       x="398"
-      y="148"
+      y="146"
       width="42"
       height="18"
       rx="9"
