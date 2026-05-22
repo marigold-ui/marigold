@@ -43,15 +43,7 @@ A card represents one item in a set. Reach for it when the same type of item rep
 
 `Card.Header` is slot-aware: drop a [`<Title>`](../../content/title) and an optional [`<Description>`](../../content/description) directly inside it. The header wires up the heading level, id, and accessible name automatically.
 
-```tsx
-<Card>
-  <Card.Header>
-    <Title>Sommernachts-Konzert 2026</Title>
-    <Description>Elbphilharmonie Hamburg · June 14, 2026</Description>
-  </Card.Header>
-  <Card.Body>…</Card.Body>
-</Card>
-```
+<ComponentDemo name="card-header" background="page" />
 
 The `Title` inside `Card.Header` renders at the card's `headingLevel` (default `3`). Override per-card with `<Card headingLevel={2}>` when the card lives at a higher position in the document outline.
 
@@ -147,7 +139,9 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 ```tsx
 <Card>
-  <Card.Header>Pricing</Card.Header>
+  <Card.Header>
+    <Title>Pricing</Title>
+  </Card.Header>
   <Card.Body bleed>
     <Table>…</Table>
   </Card.Body>
