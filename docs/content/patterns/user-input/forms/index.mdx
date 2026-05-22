@@ -263,7 +263,7 @@ Controlled fields hold their value in React state via `value` and `onChange`. Re
 
 ### Submitting with FormData
 
-The simplest way to read a form is the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. Wrap your fields in `<Form>` and React 19's action prop will hand you the `FormData` instance directly. From there you can pass it straight to `fetch`, or convert it into a regular JavaScript object with `Object.fromEntries` for easier handling.
+The simplest way to read a form is the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. Wrap your fields in `<Form>` and reach for [`parseFormData`](/components/hooks-and-utils/parseFormData), a Marigold utility that converts the submitted form into a plain JavaScript object you can pass straight to `fetch` or hand off to a validation library. It also handles repeated field names (like grouped checkboxes) by collecting them into an array.
 
 <Callout title="Names matter">
   Every field that should be submitted needs a `name` prop. Without one, the

@@ -1,4 +1,4 @@
-import { useActionState } from 'react';
+import { type FormEvent, useState } from 'react';
 import {
   Button,
   Form,
@@ -6,28 +6,20 @@ import {
   Stack,
   TextField,
   Title,
+  parseFormData,
 } from '@marigold/components';
 
-type FormState = {
-  promoCode: FormDataEntryValue | null;
-};
-
-const INITIAL_STATE: FormState = {
-  promoCode: null,
-};
-
 export default () => {
-  const [state, formAction] = useActionState<FormState, FormData>(
-    (_previousState: FormState, formData: FormData) => {
-      // Access form data by form field name
-      return { promoCode: formData.get('promocode') };
-    },
-    INITIAL_STATE
-  );
+  const [data, setData] = useState<Record<string, unknown> | null>(null);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setData(parseFormData(e));
+  };
 
   return (
     <Stack space={4}>
-      <Form action={formAction}>
+      <Form onSubmit={handleSubmit}>
         <Panel size="form">
           <Panel.Header>
             <Title>Apply promo code</Title>
@@ -42,9 +34,9 @@ export default () => {
           </Panel.Footer>
         </Panel>
       </Form>
-      {state && (
+      {data && (
         <pre>
-          <code>{JSON.stringify(state, null, 2)}</code>
+          <code>{JSON.stringify(data, null, 2)}</code>
         </pre>
       )}
     </Stack>
