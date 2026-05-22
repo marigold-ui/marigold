@@ -12,36 +12,41 @@ import {
   Title,
 } from '@marigold/components';
 
-export default () => {
-  const schemaData = z.object({
-    firstname: z.string().min(1),
-    name: z.string().min(1),
-    phone: z.string().min(6),
-    mail: z.string().email(),
-    country: z.string(),
-    terms: zfd.checkbox(),
-  });
+const schema = z.object({
+  firstname: z.string().min(1, 'Please enter your firstname.'),
+  name: z.string().min(1, 'Please enter your name.'),
+  phone: z.string().min(6, 'Please enter a valid phone number.'),
+  mail: z.string().email('Please enter a valid e-mail address.'),
+  country: z.string().min(1, 'Please select a country.'),
+  terms: zfd.checkbox().refine(v => v === true, 'You must agree to the terms.'),
+});
 
-  const [error, setError] = useState<string[]>([]);
+type FieldName = keyof z.infer<typeof schema>;
+
+export default () => {
+  const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({});
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    const errorList: Array<any> = [];
-    const formData = new FormData(e.target as HTMLFormElement);
-    const data = Object.fromEntries(formData);
-    const validatedForm = schemaData.safeParse(data);
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const result = schema.safeParse(data);
 
-    if (!validatedForm.success) {
-      validatedForm.error.issues.map(e => {
-        return errorList.push(e.path.toString());
-      });
-      setError(errorList);
-    } else {
-      alert(JSON.stringify(data));
+    if (!result.success) {
+      const fieldErrors: Partial<Record<FieldName, string>> = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as FieldName;
+        if (!fieldErrors[field]) fieldErrors[field] = issue.message;
+      }
+      setErrors(fieldErrors);
+      return;
     }
+
+    setErrors({});
+    alert(JSON.stringify(data));
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate>
       <Panel size="form">
         <Panel.Header>
           <Title>Account Registration</Title>
@@ -51,63 +56,62 @@ export default () => {
             <Columns columns={[2, 2]} space={4}>
               <TextField
                 name="firstname"
-                label="Firstname:"
-                required
+                label="Firstname"
                 description="Please enter your first name."
                 placeholder="Firstname"
-                error={error.includes('firstname')}
-                errorMessage="The field is required. Please enter your firstname."
+                error={!!errors.firstname}
+                errorMessage={errors.firstname}
               />
               <TextField
                 name="name"
-                label="Name:"
-                required
+                label="Name"
                 description="Please enter your name."
                 placeholder="Name"
-                error={error.includes('name')}
-                errorMessage="The field is required. Please enter your name."
+                error={!!errors.name}
+                errorMessage={errors.name}
               />
             </Columns>
-            <Stack space={4}>
-              <TextField
-                name="phone"
-                label="Phone:"
-                required
-                placeholder="Phone"
-                type="tel"
-                description="Please enter your phone number."
-                error={error.includes('phone')}
-                errorMessage="The field is required. Please enter a valid phone number."
-              />
-              <TextField
-                label="E-Mail:"
-                description="Please enter your E-Mail adress"
-                placeholder="E-Mail"
-                name="mail"
-                required
-                error={error.includes('mail')}
-                errorMessage="The field is required. Please enter a valid E-Mail adress."
-              />
-              <Select
-                name="country"
-                label="Country:"
-                description="Please select your country."
-              >
-                <Select.Option key={'none'}>Select an option...</Select.Option>
-                <Select.Option key={'germany'}>Germany</Select.Option>
-                <Select.Option key={'austria'}>Austria</Select.Option>
-                <Select.Option key={'switzerland'}>Switzerland</Select.Option>
-              </Select>
-              <Checkbox label="Agree to the terms" name="terms" />
-            </Stack>
+            <TextField
+              name="phone"
+              label="Phone"
+              type="tel"
+              placeholder="Phone"
+              description="Please enter your phone number."
+              error={!!errors.phone}
+              errorMessage={errors.phone}
+            />
+            <TextField
+              name="mail"
+              label="E-Mail"
+              placeholder="E-Mail"
+              description="Please enter your e-mail address."
+              error={!!errors.mail}
+              errorMessage={errors.mail}
+            />
+            <Select
+              name="country"
+              label="Country"
+              placeholder="Select a country..."
+              description="Please select your country."
+              error={!!errors.country}
+              errorMessage={errors.country}
+            >
+              <Select.Option key="germany">Germany</Select.Option>
+              <Select.Option key="austria">Austria</Select.Option>
+              <Select.Option key="switzerland">Switzerland</Select.Option>
+            </Select>
+            <Checkbox
+              name="terms"
+              label="Agree to the terms"
+              error={!!errors.terms}
+              errorMessage={errors.terms}
+            />
           </Stack>
         </Panel.Content>
         <Panel.Footer>
-          <Stack alignX="right">
-            <Button variant="primary" size="small" type="submit">
-              Submit
-            </Button>
-          </Stack>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
         </Panel.Footer>
       </Panel>
     </form>

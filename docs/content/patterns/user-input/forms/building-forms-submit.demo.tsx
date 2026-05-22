@@ -33,13 +33,13 @@ export default () => {
             <Title>Apply promo code</Title>
           </Panel.Header>
           <Panel.Content>
-            <Stack space={1} alignX="left">
-              <TextField label="Promo Code" name="promocode" width={44} />
-              <Button variant="primary" size="small" type="submit">
-                Submit
-              </Button>
-            </Stack>
+            <TextField label="Promo Code" name="promocode" width={44} />
           </Panel.Content>
+          <Panel.Footer>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Panel.Footer>
         </Panel>
       </Form>
       {state && (

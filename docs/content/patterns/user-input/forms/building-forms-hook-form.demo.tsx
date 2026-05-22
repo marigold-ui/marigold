@@ -157,16 +157,9 @@ export default () => {
           </Stack>
         </Panel.Content>
         <Panel.Footer>
-          <Stack alignX="right">
-            <Button
-              variant="primary"
-              size="small"
-              type="submit"
-              disabled={!isValid}
-            >
-              Submit
-            </Button>
-          </Stack>
+          <Button variant="primary" type="submit" disabled={!isValid}>
+            Submit
+          </Button>
         </Panel.Footer>
       </Panel>
     </form>

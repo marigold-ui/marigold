@@ -10,7 +10,6 @@ import {
   Form,
   Inline,
   Panel,
-  Stack,
   TextField,
   Title,
 } from '@marigold/components';
@@ -71,24 +70,20 @@ const App = () => {
           </Description>
         </Panel.Header>
         <Panel.Content>
-          <Stack space={4}>
-            <TextField
-              label="Email Address"
-              name="email"
-              type="email"
-              placeholder="Enter your email address"
-              description={mutation.isSuccess && <SuccessMessage />}
-              required
-            />
-            <Button
-              variant="primary"
-              type="submit"
-              loading={mutation.isPending}
-            >
-              Subscribe
-            </Button>
-          </Stack>
+          <TextField
+            label="Email Address"
+            name="email"
+            type="email"
+            placeholder="Enter your email address"
+            description={mutation.isSuccess && <SuccessMessage />}
+            required
+          />
         </Panel.Content>
+        <Panel.Footer>
+          <Button variant="primary" type="submit" loading={mutation.isPending}>
+            Subscribe
+          </Button>
+        </Panel.Footer>
       </Panel>
     </Form>
   );

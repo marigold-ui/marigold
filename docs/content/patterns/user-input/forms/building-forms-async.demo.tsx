@@ -49,36 +49,32 @@ export default () => {
         </Panel.Header>
         <Panel.Content>
           <Stack space={4}>
-            <Stack space={4}>
-              <TextField
-                type="text"
-                name="name"
-                label="Name:"
-                placeholder="Name"
-                required
-                errorMessage={({ validationDetails }) =>
-                  validationDetails.valueMissing
-                    ? 'Please enter a valid email address!'
-                    : ''
-                }
-              />
-              <TextField
-                type="email"
-                name="email"
-                label="Email:"
-                placeholder="Email"
-                required
-              />
-            </Stack>
-            <Stack alignX="right">
-              <Button type="submit" loading={isPending} variant="primary">
-                Search
-              </Button>
-            </Stack>
+            <TextField
+              type="text"
+              name="name"
+              label="Name"
+              placeholder="Name"
+              required
+              errorMessage={({ validationDetails }) =>
+                validationDetails.valueMissing ? 'Please enter a name!' : ''
+              }
+            />
+            <TextField
+              type="email"
+              name="email"
+              label="Email"
+              placeholder="Email"
+              required
+            />
             {success && <p>{success}</p>}
             {error && <p className="text-red-600">{error}</p>}
           </Stack>
         </Panel.Content>
+        <Panel.Footer>
+          <Button type="submit" loading={isPending} variant="primary">
+            Search
+          </Button>
+        </Panel.Footer>
       </Panel>
     </Form>
   );
