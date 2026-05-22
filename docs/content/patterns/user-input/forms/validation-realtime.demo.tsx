@@ -3,8 +3,9 @@ import { Panel, TextField, Title } from '@marigold/components';
 
 export default () => {
   const [password, setPassword] = useState('');
-  const errors = [];
+  const [dirty, setDirty] = useState(false);
 
+  const errors = [];
   if (password.length < 8) {
     errors.push('Password must be 8 characters or more.');
   }
@@ -15,6 +16,8 @@ export default () => {
     errors.push('Password must include at least 2 symbols.');
   }
 
+  const showErrors = dirty && errors.length > 0;
+
   return (
     <Panel size="form">
       <Panel.Header>
@@ -24,9 +27,12 @@ export default () => {
         <TextField
           label="Password"
           value={password}
-          onChange={setPassword}
-          error={errors.length > 0}
-          errorMessage={errors}
+          onChange={value => {
+            setPassword(value);
+            setDirty(true);
+          }}
+          error={showErrors}
+          errorMessage={showErrors ? errors : undefined}
         />
       </Panel.Content>
     </Panel>
