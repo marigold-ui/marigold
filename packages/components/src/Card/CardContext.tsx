@@ -1,18 +1,24 @@
+import type { RefCallback } from 'react';
 import { createContext, use } from 'react';
 import type { ThemeComponent } from '@marigold/system';
 
-export interface CardContext {
+export interface CardContextValue {
   classNames: {
     [Key in keyof ThemeComponent<'Card'>]: string;
   };
+  variant?: string;
+  titleId: string;
+  headingLevel: number;
+  hasTitle: boolean;
+  titleSlotRef: RefCallback<Element>;
 }
 
-const Context = createContext<CardContext | null>(null);
+export const CardContext = createContext<CardContextValue | null>(null);
 
-export const CardProvider = Context.Provider;
+export const CardProvider = CardContext.Provider;
 
 export const useCardContext = () => {
-  const ctx = use(Context);
+  const ctx = use(CardContext);
 
   if (ctx === null) {
     throw Error(

@@ -2,31 +2,30 @@ import {
   Badge,
   Button,
   Card,
-  Headline,
+  Description,
   Inline,
   Text,
+  Title,
 } from '@marigold/components';
 
 export default () => (
   <Card>
     <Card.Header>
-      <Inline space="related">
-        <Headline level={3}>Pro plan</Headline>
-        <Badge variant="success">Current</Badge>
-      </Inline>
+      <Title>Pro plan</Title>
+      <Description>Renews on June 1, 2026.</Description>
     </Card.Header>
     <Card.Body>
-      <Text variant="muted">
-        Unlimited events, custom branding, and priority support. Renews on June
-        1, 2026.
-      </Text>
+      <Inline space="tight" alignY="center">
+        <Badge variant="success">Current</Badge>
+        <Text variant="muted">
+          Unlimited events, custom branding, and priority support.
+        </Text>
+      </Inline>
     </Card.Body>
     <Card.Footer>
-      <Inline space="related">
-        <Button variant="ghost" size="small">
-          Manage plan
-        </Button>
-      </Inline>
+      <Button variant="ghost" size="small">
+        Manage plan
+      </Button>
     </Card.Footer>
   </Card>
 );

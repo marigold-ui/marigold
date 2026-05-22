@@ -1,23 +1,39 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
 import {
+  AriaLabeled,
   Basic,
+  FooterActions,
+  HeadingLevels,
   MasterAndAdmin,
   Stretch,
+  TitleOnlyWithoutHeader,
+  WithActionGroup,
   WithBleedBody,
   WithBleedFooter,
   WithFooter,
+  WithHeaderActions,
   WithMedia,
 } from './Card.stories';
 
+type CardHeadingLevel = 2 | 3 | 4 | 5 | 6;
+
 describe('Card', () => {
   describe('Rendering', () => {
-    test('renders header content', () => {
+    test('renders an <article> labelled by the Title', () => {
       render(<Basic.Component />);
 
-      expect(
-        screen.getAllByText(/Professor Severus Snape/)[0]
-      ).toBeInTheDocument();
+      const title = screen.getByRole('heading', {
+        name: 'Professor Severus Snape',
+      });
+      const article = screen.getByRole('article', {
+        name: 'Professor Severus Snape',
+      });
+
+      expect(title.tagName).toBe('H3');
+      expect(article.tagName).toBe('ARTICLE');
+      expect(article).toHaveAttribute('aria-labelledby', title.id);
+      expect(article).not.toHaveAttribute('aria-label');
     });
 
     test('renders body content', () => {
@@ -35,6 +51,15 @@ describe('Card', () => {
       expect(
         screen.getByRole('button', { name: 'Cancel' })
       ).toBeInTheDocument();
+    });
+
+    test('supports `aria-label` as the accessible name and omits `aria-labelledby`', () => {
+      render(<AriaLabeled.Component />);
+
+      const article = screen.getByRole('article', { name: 'Quick stats card' });
+
+      expect(article).not.toHaveAttribute('aria-labelledby');
+      expect(article).toHaveAttribute('aria-label', 'Quick stats card');
     });
   });
 
@@ -124,10 +149,24 @@ describe('Card', () => {
       render(<Basic.Component />);
 
       const header = screen
-        .getAllByText(/Professor Severus Snape/)[0]
+        .getByRole('heading', { name: 'Professor Severus Snape' })
         .closest('[data-card-header]');
       expect(header).not.toBeNull();
       expect(header!.className).toContain('px-(--card-px)');
+    });
+
+    test('Card.Header lays children out in a two-column grid', () => {
+      render(<WithHeaderActions.Component />);
+
+      const header = screen
+        .getByRole('heading', { name: 'Sommernachts-Konzert 2026' })
+        .closest('[data-card-header]')!;
+
+      expect(header.className).toContain('grid');
+      expect(header.className).toContain('grid-cols-[1fr_auto]');
+      expect(header.className).toContain(
+        "[grid-template-areas:'title_actions'_'description_actions']"
+      );
     });
 
     test('Card.Body has data-card-body and applies horizontal padding by default', () => {
@@ -174,6 +213,114 @@ describe('Card', () => {
         .closest('[data-card-media]');
       expect(media).not.toBeNull();
       expect(media!.className).toContain('-mt-(--card-py)');
+    });
+  });
+
+  describe('Title in Card.Header', () => {
+    test('defaults to an <h3>', () => {
+      render(<Basic.Component />);
+
+      const title = screen.getByRole('heading', {
+        name: 'Professor Severus Snape',
+      });
+      expect(title.tagName).toBe('H3');
+    });
+
+    test.each([2, 3, 4, 5, 6] as const)(
+      'renders an <h%i> when headingLevel=%i',
+      (level: CardHeadingLevel) => {
+        render(<Basic.Component headingLevel={level} />);
+
+        const title = screen.getByRole('heading', {
+          name: 'Professor Severus Snape',
+        });
+        expect(title.tagName).toBe(`H${level}`);
+      }
+    );
+
+    test('renders at level 4 in the HeadingLevels story', () => {
+      render(<HeadingLevels.Component />);
+
+      const title = screen.getByRole('heading', { name: 'Heading at level 4' });
+      expect(title.tagName).toBe('H4');
+    });
+
+    test('mirrors the titleId onto the heading id', () => {
+      render(<Basic.Component />);
+
+      const article = screen.getByRole('article', {
+        name: 'Professor Severus Snape',
+      });
+      const title = screen.getByRole('heading', {
+        name: 'Professor Severus Snape',
+      });
+
+      expect(title.id).toBe(article.getAttribute('aria-labelledby'));
+    });
+
+    test('labels the article when Title is used without Card.Header', () => {
+      render(<TitleOnlyWithoutHeader.Component />);
+
+      const title = screen.getByRole('heading', { name: 'Quick Settings' });
+      const article = screen.getByRole('article', { name: 'Quick Settings' });
+
+      expect(title.tagName).toBe('H3');
+      expect(article).toHaveAttribute('aria-labelledby', title.id);
+      expect(title.closest('[data-card-header]')).toBeNull();
+    });
+  });
+
+  describe('Description in Card.Header', () => {
+    test('lands in the description grid area', () => {
+      render(<Basic.Component />);
+
+      const description = screen.getByText(
+        'Potions Master, Head of Slytherin House.'
+      );
+      expect(description).toHaveAttribute('data-grid-area', 'description');
+    });
+
+    test('renders as a <p> via the TextContext slot config', () => {
+      render(<Basic.Component />);
+
+      const description = screen.getByText(
+        'Potions Master, Head of Slytherin House.'
+      );
+      expect(description.tagName).toBe('P');
+    });
+  });
+
+  describe('Actions in Card.Header', () => {
+    test('places a bare ActionMenu trigger in the actions grid area', () => {
+      render(<WithHeaderActions.Component />);
+
+      const trigger = screen.getByRole('button', { name: 'Event actions' });
+      expect(trigger).toHaveAttribute('data-grid-area', 'actions');
+    });
+
+    test('places an ActionGroup toolbar in the actions grid area', () => {
+      render(<WithActionGroup.Component />);
+
+      const toolbar = screen.getByRole('toolbar', {
+        name: 'Workspace actions',
+      });
+      expect(toolbar).toHaveAttribute('data-grid-area', 'actions');
+    });
+
+    test('individual ActionButtons inside the group do NOT carry the actions grid-area', () => {
+      render(<WithActionGroup.Component />);
+
+      const edit = screen.getByRole('button', { name: 'Edit' });
+      expect(edit).not.toHaveAttribute('data-grid-area', 'actions');
+    });
+  });
+
+  describe('Actions in Card.Footer', () => {
+    test('marks ActionButtons in the footer with data-card-footer-action', () => {
+      render(<FooterActions.Component />);
+
+      const action = screen.getByRole('button', { name: 'Manage' });
+      expect(action).toHaveAttribute('data-card-footer-action');
     });
   });
 

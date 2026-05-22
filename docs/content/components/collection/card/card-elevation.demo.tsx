@@ -2,10 +2,11 @@ import {
   Badge,
   Button,
   Card,
-  Headline,
+  Description,
   Inline,
   Stack,
   Text,
+  Title,
 } from '@marigold/components';
 
 export default () => (
@@ -18,26 +19,24 @@ export default () => (
       />
     </Card.Media>
     <Card.Header>
+      <Title>Annual Conference 2025</Title>
+      <Description>
+        A day of inspiring talks, workshops, and networking.
+      </Description>
+    </Card.Header>
+    <Card.Body>
       <Stack space="tight">
-        <Headline level={3}>Annual Conference 2025</Headline>
         <Inline space="related">
           <Badge variant="info">Music</Badge>
           <Badge variant="success">Tickets available</Badge>
         </Inline>
+        <Text variant="muted">Join us for our flagship annual event.</Text>
       </Stack>
-    </Card.Header>
-    <Card.Body>
-      <Text variant="muted">
-        Join us for a day of inspiring talks, workshops, and networking at our
-        flagship annual event.
-      </Text>
     </Card.Body>
     <Card.Footer>
-      <Inline space="related">
-        <Button variant="ghost" size="small">
-          Get tickets
-        </Button>
-      </Inline>
+      <Button variant="ghost" size="small">
+        Get tickets
+      </Button>
     </Card.Footer>
   </Card>
 );
