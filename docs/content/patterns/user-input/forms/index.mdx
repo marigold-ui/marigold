@@ -278,12 +278,6 @@ Some fields only make sense after another field is set. For example, toggle "Oth
 
 <ComponentDemo file="./logical-interaction.demo.tsx" background="page" />
 
-### Error handling
-
-Marigold's form components accept `error` (boolean) and `errorMessage` (string) props. Combine them with controlled state to display field-level errors from any source: client validation, server response, or library output.
-
-<ComponentDemo file="./error-handling.demo.tsx" background="page" />
-
 ### Using react-hook-form
 
 For larger forms with many fields and rules, [react-hook-form](https://react-hook-form.com/) cuts the boilerplate and minimizes re-renders. Wrap each Marigold field with `<Controller>` so the library can bridge the field and its own state management.
