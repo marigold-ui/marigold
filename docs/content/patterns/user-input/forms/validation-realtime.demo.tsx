@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField } from '@marigold/components';
+import { Panel, TextField, Title } from '@marigold/components';
 
 export default () => {
   const [password, setPassword] = useState('');
@@ -16,12 +16,19 @@ export default () => {
   }
 
   return (
-    <TextField
-      label="Password"
-      value={password}
-      onChange={setPassword}
-      error={errors.length > 0}
-      errorMessage={errors}
-    />
+    <Panel size="form">
+      <Panel.Header>
+        <Title>Choose a password</Title>
+      </Panel.Header>
+      <Panel.Content>
+        <TextField
+          label="Password"
+          value={password}
+          onChange={setPassword}
+          error={errors.length > 0}
+          errorMessage={errors}
+        />
+      </Panel.Content>
+    </Panel>
   );
 };

@@ -1,5 +1,12 @@
 import { useActionState } from 'react';
-import { Button, Form, Stack, TextField } from '@marigold/components';
+import {
+  Button,
+  Form,
+  Panel,
+  Stack,
+  TextField,
+  Title,
+} from '@marigold/components';
 
 type FormState = {
   promoCode: FormDataEntryValue | null;
@@ -21,12 +28,19 @@ export default () => {
   return (
     <Stack space={4}>
       <Form action={formAction}>
-        <Stack space={1} alignX="left">
-          <TextField label="Promo Code" name="promocode" width={44} />
-          <Button variant="primary" size="small" type="submit">
-            Submit
-          </Button>
-        </Stack>
+        <Panel size="form">
+          <Panel.Header>
+            <Title>Apply promo code</Title>
+          </Panel.Header>
+          <Panel.Content>
+            <Stack space={1} alignX="left">
+              <TextField label="Promo Code" name="promocode" width={44} />
+              <Button variant="primary" size="small" type="submit">
+                Submit
+              </Button>
+            </Stack>
+          </Panel.Content>
+        </Panel>
       </Form>
       {state && (
         <pre>

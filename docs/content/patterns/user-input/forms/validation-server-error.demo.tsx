@@ -7,12 +7,13 @@ import {
 import type { FormEvent } from 'react';
 import {
   Button,
+  Description,
   Form,
   Inline,
-  Inset,
+  Panel,
   Stack,
-  Text,
   TextField,
+  Title,
 } from '@marigold/components';
 import { Check } from '@marigold/icons';
 
@@ -46,28 +47,29 @@ const App = () => {
 
   return (
     <Form onSubmit={subscribe} validationErrors={validationErrors}>
-      <Inset p={8}>
-        <Stack space={7} alignX="left">
-          <Stack>
-            <Text fontSize="4xl" weight="extrabold">
-              Subscribe to our Newsletter!
-            </Text>
-            <Text>Stay updated with our latest news and updates.</Text>
+      <Panel size="form">
+        <Panel.Header>
+          <Title>Subscribe to our Newsletter</Title>
+          <Description>
+            Stay updated with our latest news and updates.
+          </Description>
+        </Panel.Header>
+        <Panel.Content>
+          <Stack space={4}>
+            <TextField
+              label="Email Address"
+              name="email"
+              type="email"
+              placeholder="Enter your email address"
+              description={mutation.isSuccess && <SuccessMessage />}
+              required
+            />
+            <Button variant="primary" type="submit">
+              Subscribe
+            </Button>
           </Stack>
-
-          <TextField
-            label="Email Address"
-            name="email"
-            type="email"
-            placeholder="Enter your email address"
-            description={mutation.isSuccess && <SuccessMessage />}
-            required
-          />
-          <Button variant="primary" type="submit">
-            Subscribe
-          </Button>
-        </Stack>
-      </Inset>
+        </Panel.Content>
+      </Panel>
     </Form>
   );
 };

@@ -125,7 +125,11 @@ Some actions belong inside the form body, next to the fields they relate to.
 - **Secondary buttons for form operations.** "Create new", "Reset", or "Save as Draft" should be visually distinct from the primary submit so people don't hit the wrong one.
 - **Put each action close to what it affects.** An action buried at the bottom of the form is easy to miss when it only matters for one specific field.
 
-<ComponentDemo file="./form-inline-actions.demo.tsx" mode="preview" />
+<ComponentDemo
+  file="./form-inline-actions.demo.tsx"
+  mode="preview"
+  background="page"
+/>
 
 ### Submit placement
 
@@ -143,103 +147,6 @@ Where you place secondary actions depends on what they do:
 Some fields are only relevant for administrators or master users. Mark and separate these from regular fields so other users aren't confused by them.
 
 See the [Admin- and Mastermark](/patterns/layout/admin-master-mark) page for the full usage guide.
-
-## Validation
-
-Validation keeps the data you collect accurate and tells users how to fix what's wrong before they hit submit. Marigold's form components plug into the browser's [constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation) API, so most of what you need comes from the platform. When that isn't enough, you can layer in custom logic, real-time feedback, server responses, or a schema library like Zod.
-
-### Built-in validation
-
-The simplest way to validate is to use native HTML constraints like `required`, `type="email"`, `minLength`, and `pattern`. The browser checks them on blur or on submit, and Marigold styles the messages to match the rest of the design instead of using the browser's defaults.
-
-Here is an email subscription form. If you submit it without entering an email address or if the entered email is invalid, an error will be displayed:
-
-<ComponentDemo file="./validation-base.demo.tsx" />
-
-### Custom messages
-
-Browser-provided messages are useful but generic. Pass a function to `errorMessages` to swap in your own copy. You only need to override the cases you care about. Anything you don't return falls back to the browser default.
-
-<ComponentDemo file="./validation-custom-message.demo.tsx" />
-
-### Custom validation
-
-When native constraints aren't expressive enough, pass a function to the field's `validate` prop. It returns one error message, or an array if you have several. The custom result replaces the native one entirely, so handle the empty case yourself when needed.
-
-<ComponentDemo file="./validation-custom-validation.demo.tsx" />
-
-### Real-time validation
-
-By default, errors appear after the user leaves the field (on blur) or submits the form. That delay is deliberate: it prevents users from seeing irrelevant errors while they're still in the middle of typing a value.
-
-Real-time validation makes sense in narrow situations like password rules, where users benefit from seeing requirements light up as they type. [Control the field](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) and set `error` and `errorMessages` yourself.
-
-<ComponentDemo file="./validation-realtime.demo.tsx" />
-
-### Server errors
-
-Client-side validation is for fast feedback; server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`. Provide an object keyed by field `name`, where each value is either a string or an array of strings if a field has more than one error. The errors appear immediately and clear themselves when the user edits the field.
-
-In the demo, submitting `support@reservix.de` simulates a server-side rejection.
-
-<ComponentDemo file="./validation-server-error.demo.tsx" />
-
-### Validation with Zod
-
-For complex forms with nested objects, conditional fields, or cross-field rules, [Zod](https://zod.dev/) keeps validation declarative. Define the schema once, infer the TypeScript type from it, and run `safeParse` on the form data before submit.
-
-<ComponentDemo file="./building-forms-zod.demo.tsx" />
-
-## State Management & Submission
-
-Forms need to capture user input, react to it, and hand it off when the user submits. Marigold's form components work with both uncontrolled and controlled patterns, and integrate cleanly with native `FormData`, React 19 actions, and libraries like react-hook-form.
-
-### Controlled vs uncontrolled
-
-Uncontrolled fields manage their own value; you read it back from the DOM (or `FormData`) at submit time. Use `defaultValue` to set an initial value. This is the simpler default: fewer renders, less code.
-
-Controlled fields hold their value in React state via `value` and `onChange`. Reach for control when the value needs to drive something else: dependent fields, real-time validation, formatting as the user types.
-
-### Submitting with FormData
-
-The simplest way to read a form is the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. Wrap your fields in `<Form>` and React 19's action prop will hand you the `FormData` instance directly. From there you can pass it straight to `fetch`, or convert it into a regular JavaScript object with `Object.fromEntries` for easier handling.
-
-<Callout title="Names matter">
-  Every field that should be submitted needs a `name` prop. Without one, the
-  value won't appear in `FormData` or in the submitted payload.
-</Callout>
-
-<ComponentDemo file="./building-forms-submit.demo.tsx" />
-
-### Conditional fields
-
-Some fields only make sense after another field is set. For example, toggle "Other reason" when "Other" is selected, or show a tax ID only for business accounts. Control the parent field, read its value, and render the dependent field conditionally.
-
-<ComponentDemo file="./logical-interaction.demo.tsx" />
-
-### Error handling
-
-Marigold's form components accept `error` (boolean) and `errorMessage` (string) props. Combine them with controlled state to display field-level errors from any source: client validation, server response, or library output.
-
-<ComponentDemo file="./error-handling.demo.tsx" />
-
-### Using react-hook-form
-
-For larger forms with many fields and rules, [react-hook-form](https://react-hook-form.com/) cuts the boilerplate and minimizes re-renders. Wrap each Marigold field with `<Controller>` so the library can bridge the field and its own state management.
-
-A few patterns worth knowing when wiring it up:
-
-- **Set `defaultValue` instead of state.** Each Controller takes a `defaultValue`, so fields stay uncontrolled and never go through an `undefined`/`null` state.
-- **Declare rules on the Controller.** Pass `rules={{ required: true }}` (and friends) to trigger validation. The Marigold field already accepts `error` and `errorMessage`, so wire those from the Controller's render props.
-- **Gate submission with `formState.isValid`.** The library exposes a single boolean for the whole form, which is handy for disabling the submit button until every field is valid.
-
-<ComponentDemo file="./building-forms-hook-form.demo.tsx" />
-
-### Async forms with useActionState
-
-In React 19, async submissions belong in actions. `useActionState` tracks the pending state for you and returns the action's result, so you don't need a separate `useState` for "is submitting" or "what did the server say".
-
-<ComponentDemo file="./building-forms-async.demo.tsx" />
 
 ## Workflow forms
 
@@ -294,6 +201,106 @@ Use for low-stakes preferences where a saved/unsaved state would feel like frict
   demo="/examples/auto-save-settings"
   code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/auto-save-settings"
 />
+
+## Validation
+
+Validation keeps the data you collect accurate and tells users how to fix what's wrong before they hit submit. Marigold's form components plug into the browser's [constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation) API, so most of what you need comes from the platform. When that isn't enough, you can layer in custom logic, real-time feedback, server responses, or a schema library like Zod.
+
+### Built-in validation
+
+The simplest way to validate is to use native HTML constraints like `required`, `type="email"`, `minLength`, and `pattern`. The browser checks them on blur or on submit, and Marigold styles the messages to match the rest of the design instead of using the browser's defaults.
+
+Here is an email subscription form. If you submit it without entering an email address or if the entered email is invalid, an error will be displayed:
+
+<ComponentDemo file="./validation-base.demo.tsx" background="page" />
+
+### Custom messages
+
+Browser-provided messages are useful but generic. Pass a function to `errorMessages` to swap in your own copy. You only need to override the cases you care about. Anything you don't return falls back to the browser default.
+
+<ComponentDemo file="./validation-custom-message.demo.tsx" background="page" />
+
+### Custom validation
+
+When native constraints aren't expressive enough, pass a function to the field's `validate` prop. It returns one error message, or an array if you have several. The custom result replaces the native one entirely, so handle the empty case yourself when needed.
+
+<ComponentDemo
+  file="./validation-custom-validation.demo.tsx"
+  background="page"
+/>
+
+### Real-time validation
+
+By default, errors appear after the user leaves the field (on blur) or submits the form. That delay is deliberate: it prevents users from seeing irrelevant errors while they're still in the middle of typing a value.
+
+Real-time validation makes sense in narrow situations like password rules, where users benefit from seeing requirements light up as they type. [Control the field](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) and set `error` and `errorMessages` yourself.
+
+<ComponentDemo file="./validation-realtime.demo.tsx" background="page" />
+
+### Server errors
+
+Client-side validation is for fast feedback; server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`. Provide an object keyed by field `name`, where each value is either a string or an array of strings if a field has more than one error. The errors appear immediately and clear themselves when the user edits the field.
+
+In the demo, submitting `support@reservix.de` simulates a server-side rejection.
+
+<ComponentDemo file="./validation-server-error.demo.tsx" background="page" />
+
+### Validation with Zod
+
+For complex forms with nested objects, conditional fields, or cross-field rules, [Zod](https://zod.dev/) keeps validation declarative. Define the schema once, infer the TypeScript type from it, and run `safeParse` on the form data before submit.
+
+<ComponentDemo file="./building-forms-zod.demo.tsx" background="page" />
+
+## State Management & Submission
+
+Forms need to capture user input, react to it, and hand it off when the user submits. Marigold's form components work with both uncontrolled and controlled patterns, and integrate cleanly with native `FormData`, React 19 actions, and libraries like react-hook-form.
+
+### Controlled vs uncontrolled
+
+Uncontrolled fields manage their own value; you read it back from the DOM (or `FormData`) at submit time. Use `defaultValue` to set an initial value. This is the simpler default: fewer renders, less code.
+
+Controlled fields hold their value in React state via `value` and `onChange`. Reach for control when the value needs to drive something else: dependent fields, real-time validation, formatting as the user types.
+
+### Submitting with FormData
+
+The simplest way to read a form is the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. Wrap your fields in `<Form>` and React 19's action prop will hand you the `FormData` instance directly. From there you can pass it straight to `fetch`, or convert it into a regular JavaScript object with `Object.fromEntries` for easier handling.
+
+<Callout title="Names matter">
+  Every field that should be submitted needs a `name` prop. Without one, the
+  value won't appear in `FormData` or in the submitted payload.
+</Callout>
+
+<ComponentDemo file="./building-forms-submit.demo.tsx" background="page" />
+
+### Conditional fields
+
+Some fields only make sense after another field is set. For example, toggle "Other reason" when "Other" is selected, or show a tax ID only for business accounts. Control the parent field, read its value, and render the dependent field conditionally.
+
+<ComponentDemo file="./logical-interaction.demo.tsx" background="page" />
+
+### Error handling
+
+Marigold's form components accept `error` (boolean) and `errorMessage` (string) props. Combine them with controlled state to display field-level errors from any source: client validation, server response, or library output.
+
+<ComponentDemo file="./error-handling.demo.tsx" background="page" />
+
+### Using react-hook-form
+
+For larger forms with many fields and rules, [react-hook-form](https://react-hook-form.com/) cuts the boilerplate and minimizes re-renders. Wrap each Marigold field with `<Controller>` so the library can bridge the field and its own state management.
+
+A few patterns worth knowing when wiring it up:
+
+- **Set `defaultValue` instead of state.** Each Controller takes a `defaultValue`, so fields stay uncontrolled and never go through an `undefined`/`null` state.
+- **Declare rules on the Controller.** Pass `rules={{ required: true }}` (and friends) to trigger validation. The Marigold field already accepts `error` and `errorMessage`, so wire those from the Controller's render props.
+- **Gate submission with `formState.isValid`.** The library exposes a single boolean for the whole form, which is handy for disabling the submit button until every field is valid.
+
+<ComponentDemo file="./building-forms-hook-form.demo.tsx" background="page" />
+
+### Async forms with useActionState
+
+In React 19, async submissions belong in actions. `useActionState` tracks the pending state for you and returns the action's result, so you don't need a separate `useState` for "is submitting" or "what did the server say".
+
+<ComponentDemo file="./building-forms-async.demo.tsx" background="page" />
 
 ## Related
 
