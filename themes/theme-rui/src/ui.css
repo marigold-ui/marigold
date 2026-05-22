@@ -46,9 +46,12 @@
 /*
  * Use for interactive UI elements like inputs, selects, and cards. Anything that
  * sits on the page background and needs a clear visual boundary.
+ *
+ * `background` is intentionally excluded from the transition list: hover/state
+ * bg flips should feel instant on high-frequency interactions (see DST-1436).
  */
 @utility ui-surface {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
+  @apply rounded-surface relative transition-[border,box-shadow];
 
   /* prettier-ignore */
   background:
@@ -68,12 +71,15 @@
   border: 1px solid transparent;
 }
 
-/* 
+/*
  * Use when the surface must stand out against the page. Toolbars, action bars,
  * or anything that uses the primary color to signal prominence.
+ *
+ * `background` is intentionally excluded from the transition list: hover/state
+ * bg flips should feel instant on high-frequency interactions (see DST-1436).
  */
 @utility ui-surface-contrast {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
+  @apply rounded-surface relative transition-[border,box-shadow];
   @apply text-primary-foreground;
 
   @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-primary)_calc(l+0.4)_c_h))];
