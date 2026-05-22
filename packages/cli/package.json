@@ -41,7 +41,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@babel/parser": "7.29.2",
+    "@babel/parser": "7.29.3",
     "@clack/prompts": "1.2.0",
     "ci-info": "4.4.0",
     "magic-string": "0.30.21",
