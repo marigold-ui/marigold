@@ -184,7 +184,7 @@ export const LongContent = meta.story({
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
     const scrollContainer = endMarker.closest(
-      '[class*="overflow-y-auto"]'
+      '[class*="ui-panel-content"]'
     ) as HTMLElement;
     const isWithin = (child: Element, parent: Element) => {
       const c = child.getBoundingClientRect();
