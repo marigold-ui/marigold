@@ -11,6 +11,7 @@ import {
   type TelemetrySubcommand,
   runTelemetry,
 } from '../commands/telemetry.js';
+import type { ValidateChecks, ValidateFormat } from '../commands/validate.js';
 import { type SubcommandName, TOP_LEVEL_NAMES } from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
@@ -56,6 +57,7 @@ ${pc.bold('Usage:')}
 ${pc.bold('Commands:')}
   docs <Component>    Fetch component documentation
   list                List available components
+  validate <file>     Validate a Marigold component file
   init                Set up Marigold in a project
   telemetry <action>  Manage telemetry (status|enable|disable)
   completion <shell>  Print shell completion script (bash|zsh|fish)
@@ -70,6 +72,10 @@ ${pc.bold('List options:')}
   --category <name>   Filter by category (actions, form, layout, ...)
   --search   <term>   Filter by name
   --format   <name>   markdown | json | plain
+
+${pc.bold('Validate options:')}
+  --checks <name>     technical | spatial | a11y | all (default: all)
+  --format <name>     markdown | json (default: markdown)
 
 ${pc.bold('Init options:')}
   --yes               Skip confirmation prompts
@@ -92,6 +98,12 @@ const isSection = (v: string): v is Section =>
 
 const isTelemetrySub = (v: string): v is TelemetrySubcommand =>
   v === 'status' || v === 'enable' || v === 'disable';
+
+const isValidateChecks = (v: string): v is ValidateChecks =>
+  v === 'technical' || v === 'spatial' || v === 'a11y' || v === 'all';
+
+const isValidateFormat = (v: string): v is ValidateFormat =>
+  v === 'json' || v === 'markdown';
 
 // Thrown by `fail()` so the existing try/catch in `main()` can handle
 // validation failures without bypassing the telemetry emit block.
@@ -123,6 +135,16 @@ const parseListCommand = (argv: string[]) =>
       format: { type: 'string' },
       fresh: { type: 'boolean', default: false },
       offline: { type: 'boolean', default: false },
+    },
+  });
+
+const parseValidateCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      checks: { type: 'string', default: 'all' },
+      format: { type: 'string', default: 'markdown' },
     },
   });
 
@@ -230,6 +252,33 @@ export const main = async (
 
       process.stdout.write(result.output);
       cacheHit = result.cacheHit;
+    } else if (command === 'validate') {
+      const { positionals, values } = parseValidateCommand(rest);
+      const [fileInput] = positionals;
+
+      telemetryArgs = {
+        checks: values.checks ?? 'all',
+        format: values.format ?? 'markdown',
+      };
+
+      if (!fileInput) fail('Usage: marigold validate <file.tsx>');
+      if (values.checks && !isValidateChecks(values.checks)) {
+        fail(`Invalid --checks: ${values.checks}`);
+      }
+      if (values.format && !isValidateFormat(values.format)) {
+        fail(`Invalid --format: ${values.format}`);
+      }
+
+      const { runValidate } = await import('../commands/validate.js');
+      const result = await runValidate({
+        file: fileInput,
+        checks: (values.checks as ValidateChecks | undefined) ?? 'all',
+        format: (values.format as ValidateFormat | undefined) ?? 'markdown',
+      });
+
+      process.stdout.write(result.output);
+      if (!result.output.endsWith('\n')) process.stdout.write('\n');
+      exitCode = result.hasErrors ? 1 : 0;
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);
       telemetryArgs = {
