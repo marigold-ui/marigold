@@ -200,15 +200,27 @@
 }
 
 /*
- * Standard panel header slot — shared by Drawer and Tray.
+ * Layout utilities for modal-style panels: Dialog, Drawer, Tray, Sidebar.
+ * They define the shared anatomy of a sectioned overlay surface — a header
+ * row with a bottom divider, a scrollable content area, and an actions row
+ * with a top divider — all sharing the same padding rhythm.
+ *
+ * Note: distinct from the Panel component, which has its own styling
+ * (themes/theme-rui/src/components/Panel.styles.ts) and does not consume
+ * these utilities.
+ *
+ * Defaults match the common case. Consumers override via composition where
+ * their identity differs (e.g., Dialog uses flex-col-reverse sm:flex-row
+ * on actions for responsive button stacking).
  */
 @utility ui-panel-header {
   @apply border-border border-b px-6 py-4;
 }
 
-/*
- * Standard panel actions slot — shared by Drawer and Tray.
- */
+@utility ui-panel-content {
+  @apply overflow-y-auto px-6 py-4 outline-none;
+}
+
 @utility ui-panel-actions {
   @apply border-border flex flex-row justify-end gap-3 border-t px-6 py-4;
 }
