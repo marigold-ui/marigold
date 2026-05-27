@@ -116,14 +116,15 @@ const testArrowNavigation = async (page: Page): Promise<ArrowNavResult[]> => {
         : 'ArrowDown';
     await page.keyboard.press(key);
 
-    const afterSelector = await page.evaluate(() => {
-      const w = window as Window & { __cssPath?: (el: Element) => string };
-      return document.activeElement ? w.__cssPath!(document.activeElement) : '';
-    });
+    const isMemberFocused = await page.evaluate((sel: string) => {
+      const g = document.querySelector(sel);
+      if (!g || !document.activeElement) return false;
+      return g.contains(document.activeElement);
+    }, group.groupSelector);
 
     results.push({
       ...group,
-      navigable: afterSelector !== beforeSelector && afterSelector !== 'body',
+      navigable: isMemberFocused,
     });
   }
 

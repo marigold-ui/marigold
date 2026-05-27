@@ -37,10 +37,13 @@ export const extractOverflowData = async (page: Page): Promise<OverflowData> =>
       const display = style.display;
       const flexWrap = style.flexWrap;
 
-      if (
+      const isWrappingFlex =
         display === 'flex' &&
-        (flexWrap === 'wrap' || flexWrap === 'wrap-reverse')
-      ) {
+        (flexWrap === 'wrap' || flexWrap === 'wrap-reverse');
+      const isWrappingGrid =
+        display === 'grid' && style.gridTemplateColumns.includes('auto-fit');
+
+      if (isWrappingFlex || isWrappingGrid) {
         const children = Array.from(el.children);
         if (children.length < 2) continue;
 

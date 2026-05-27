@@ -167,7 +167,13 @@ const startViteServer = async (workDir: string): Promise<ViteDevServer> => {
       include: ['react', 'react-dom', 'react-dom/client'],
     },
   });
-  await server.listen();
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(
+      () => reject(new Error('Vite dev server startup timed out after 15s')),
+      15_000
+    )
+  );
+  await Promise.race([server.listen(), timeout]);
   return server;
 };
 
@@ -189,8 +195,22 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       linkProjectModules(workDir, filePath);
       server = await startViteServer(workDir);
 
-      context = await browser.newContext({ viewport });
+      context = await browser.newContext({
+        viewport,
+        serviceWorkers: 'block',
+      });
       const page = await context.newPage();
+
+      await page.route('**/*', route => {
+        const url = route.request().url();
+        if (
+          url.startsWith('http://127.0.0.1') ||
+          url.startsWith('http://localhost')
+        ) {
+          return route.continue();
+        }
+        return route.abort('blockedbyclient');
+      });
 
       await page.addInitScript(() => {
         (window as unknown as Record<string, unknown>).__cssPath = (

@@ -12,6 +12,41 @@ import type { ValidationIssue } from '../types.js';
 
 const isLowercaseTag = (tagName: string): boolean => /^[a-z]/.test(tagName);
 
+const SVG_ELEMENTS = new Set([
+  'svg',
+  'path',
+  'circle',
+  'rect',
+  'line',
+  'polyline',
+  'polygon',
+  'ellipse',
+  'g',
+  'defs',
+  'use',
+  'symbol',
+  'text',
+  'tspan',
+  'clipPath',
+  'mask',
+  'pattern',
+  'linearGradient',
+  'radialGradient',
+  'stop',
+  'filter',
+  'feGaussianBlur',
+  'feOffset',
+  'feMerge',
+  'feMergeNode',
+  'foreignObject',
+  'animate',
+  'animateTransform',
+  'marker',
+  'desc',
+  'title',
+  'metadata',
+]);
+
 const hasSvgAncestor = (node: ts.Node): boolean => {
   let current = node.parent;
   while (current) {
@@ -26,7 +61,7 @@ const hasSvgAncestor = (node: ts.Node): boolean => {
 
 const isHtmlElement = (tagName: string, node: ts.Node): boolean => {
   if (!isLowercaseTag(tagName)) return false;
-  if (tagName === 'svg' || tagName === 'img') return false;
+  if (tagName === 'img' || SVG_ELEMENTS.has(tagName)) return false;
   if (hasSvgAncestor(node)) return false;
   return true;
 };

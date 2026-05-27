@@ -75,6 +75,21 @@ export const validateProps = (filePath: string): ValidationIssue[] => {
     const booleanShadows = getBooleanShadows(baseName);
 
     for (const attr of attrs.properties) {
+      if (ts.isJsxSpreadAttribute(attr)) {
+        const { line, character } = source.getLineAndCharacterOfPosition(
+          attr.getStart(source)
+        );
+        issues.push({
+          type: 'technical',
+          severity: 'warning',
+          source: 'prop-validator',
+          component: displayName,
+          message: `Spread props on <${displayName}> bypass prop validation.`,
+          suggestion: `Pass props explicitly so they can be validated against the component's API.`,
+          location: { file: relFile, line: line + 1, column: character + 1 },
+        });
+        continue;
+      }
       if (!ts.isJsxAttribute(attr)) continue;
       if (!ts.isIdentifier(attr.name)) continue;
       const name = attr.name.text;
@@ -105,7 +120,7 @@ export const validateProps = (filePath: string): ValidationIssue[] => {
           message: `Prop "${name}" does not exist on <${displayName}>.`,
           suggestion: suggested
             ? `Replace "${name}" with "${suggested}".`
-            : `Remove the prop. Available props: ${validNames.slice(0, 12).join(', ')}${validNames.length > 12 ? ', …' : ''}.`,
+            : `Remove the prop. Available props: ${validNames.slice(0, 15).join(', ')}${validNames.length > 15 ? ', …' : ''}.`,
           location,
           details: { used: name, available: validNames.slice(0, 15) },
         });

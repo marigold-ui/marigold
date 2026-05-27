@@ -186,7 +186,8 @@ const isTokenizedViaReverseMap = (
   return parts.every(part => SKIP_VALUES.has(part) || propMap.has(part));
 };
 
-const HARDCODED_VALUE = /(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|\d+px\b)/;
+const HARDCODED_VALUE =
+  /(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|lch\(|hwb\(|lab\(|color\(|\d+(?:px|em|rem|ch|vw|vh)\b)/;
 
 type InlineStyleViolation = {
   selector: string;

@@ -230,6 +230,20 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
             },
           });
         }
+
+        const duplicates = [...counts.entries()].filter(([, n]) => n > 1);
+        for (const [sub, count] of duplicates) {
+          issues.push({
+            type: 'technical',
+            severity: 'warning',
+            source: 'composition-validator',
+            component: componentName,
+            message: `<${componentName}.${sub}> is used ${count} times. Most compound components expect a single instance of each sub-component.`,
+            suggestion: `Verify that multiple <${componentName}.${sub}> instances are intentional.`,
+            location,
+            details: { subComponent: sub, count },
+          });
+        }
       }
     }
 

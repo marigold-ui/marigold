@@ -84,6 +84,7 @@ ${pc.bold('Init options:')}
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
   MARIGOLD_CACHE_TTL_MS          Override cache TTL in milliseconds
+  MARIGOLD_VALIDATE_DISABLED=1   Skip validation (exit immediately)
   MARIGOLD_TELEMETRY_DISABLED=1  Opt out of telemetry
   DO_NOT_TRACK=1                 Opt out of telemetry (standard)
 
