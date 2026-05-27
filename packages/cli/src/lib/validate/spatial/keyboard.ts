@@ -19,10 +19,18 @@ type FocusStep = {
   focusIndicatorVisible: boolean;
 };
 
+type ArrowNavResult = {
+  groupSelector: string;
+  role: string;
+  memberCount: number;
+  navigable: boolean;
+};
+
 export type KeyboardA11yData = {
   focusableElements: FocusableElement[];
   tabSequence: FocusStep[];
   unreachableElements: FocusableElement[];
+  arrowNavResults: ArrowNavResult[];
 };
 
 const INTERACTIVE_SELECTOR = [
@@ -43,6 +51,84 @@ const INTERACTIVE_SELECTOR = [
 ].join(', ');
 
 const MAX_FOCUS_ORDER_WARNINGS = 3;
+
+const ARROW_NAV_ROLES = ['radiogroup', 'tablist', 'menu', 'menubar', 'listbox'];
+
+const testArrowNavigation = async (page: Page): Promise<ArrowNavResult[]> => {
+  const groups = await page.evaluate((roles: string[]) => {
+    const w = window as Window & { __cssPath?: (el: Element) => string };
+    const cssPath = w.__cssPath!;
+    const results: Array<{
+      groupSelector: string;
+      role: string;
+      memberCount: number;
+    }> = [];
+    for (const role of roles) {
+      for (const group of document.querySelectorAll(`[role="${role}"]`)) {
+        const members = group.querySelectorAll(
+          '[role="radio"], [role="tab"], [role="menuitem"], [role="option"]'
+        );
+        if (members.length >= 2) {
+          results.push({
+            groupSelector: cssPath(group),
+            role,
+            memberCount: members.length,
+          });
+        }
+      }
+    }
+    return results;
+  }, ARROW_NAV_ROLES);
+
+  const results: ArrowNavResult[] = [];
+
+  for (const group of groups) {
+    const firstMember = await page.evaluate((sel: string) => {
+      const g = document.querySelector(sel);
+      if (!g) return null;
+      const member = g.querySelector(
+        '[role="radio"], [role="tab"], [role="menuitem"], [role="option"]'
+      );
+      return member ? (member as HTMLElement).outerHTML.slice(0, 50) : null;
+    }, group.groupSelector);
+
+    if (!firstMember) {
+      results.push({ ...group, navigable: false });
+      continue;
+    }
+
+    await page.evaluate((sel: string) => {
+      const g = document.querySelector(sel);
+      const member = g?.querySelector(
+        '[role="radio"], [role="tab"], [role="menuitem"], [role="option"]'
+      );
+      if (member instanceof HTMLElement) member.focus();
+    }, group.groupSelector);
+
+    const beforeSelector = await page.evaluate(() => {
+      const w = window as Window & { __cssPath?: (el: Element) => string };
+      return document.activeElement ? w.__cssPath!(document.activeElement) : '';
+    });
+
+    const key =
+      group.role === 'tablist' || group.role === 'menubar'
+        ? 'ArrowRight'
+        : 'ArrowDown';
+    await page.keyboard.press(key);
+
+    const afterSelector = await page.evaluate(() => {
+      const w = window as Window & { __cssPath?: (el: Element) => string };
+      return document.activeElement ? w.__cssPath!(document.activeElement) : '';
+    });
+
+    results.push({
+      ...group,
+      navigable: afterSelector !== beforeSelector && afterSelector !== 'body',
+    });
+  }
+
+  return results;
+};
 
 export const extractFocusableElements = async (
   page: Page
@@ -217,7 +303,14 @@ export const extractKeyboardA11yData = async (
     return true;
   });
 
-  return { focusableElements, tabSequence, unreachableElements };
+  const arrowNavResults = await testArrowNavigation(page);
+
+  return {
+    focusableElements,
+    tabSequence,
+    unreachableElements,
+    arrowNavResults,
+  };
 };
 
 const VERTICAL_THRESHOLD = 20;
@@ -281,6 +374,25 @@ export const keyboardA11yToValidationIssues = (
         suggestion:
           'Marigold components provide built-in focus rings via the theme. For custom elements, add an outline or box-shadow on :focus-visible.',
         details: { selector: step.selector, role: step.role },
+      });
+    }
+  }
+
+  for (const nav of data.arrowNavResults) {
+    if (!nav.navigable) {
+      issues.push({
+        type: 'a11y',
+        severity: 'warning',
+        source: 'keyboard-a11y',
+        component: nav.role,
+        message: `Arrow key navigation does not work within [role="${nav.role}"] (${nav.memberCount} members).`,
+        suggestion:
+          'Composite widgets (tabs, radio groups, menus, listboxes) should support Arrow key navigation between members per WAI-ARIA Authoring Practices.',
+        details: {
+          selector: nav.groupSelector,
+          role: nav.role,
+          memberCount: nav.memberCount,
+        },
       });
     }
   }
