@@ -64,10 +64,11 @@ describe('hasDynamicChildren recognizes iteration patterns', () => {
     );
     const issues = validateComposition(file);
     const selectIssues = issues.filter(i => i.component === 'Select');
-    for (const issue of selectIssues) {
-      if (issue.details?.dynamicChildren !== undefined) {
-        expect(issue.details.dynamicChildren).toBe(true);
-      }
+    const dynamicIssues = selectIssues.filter(
+      i => i.details?.dynamicChildren !== undefined
+    );
+    for (const issue of dynamicIssues) {
+      expect(issue.details?.dynamicChildren).toBe(true);
     }
   });
 

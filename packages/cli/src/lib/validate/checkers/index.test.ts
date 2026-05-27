@@ -35,10 +35,9 @@ describe('runTechnicalChecks', () => {
       }
     }
 
-    for (const issue of compilerIssues) {
-      if (issue.location) {
-        expect(propLines.has(issue.location.line)).toBe(false);
-      }
+    const compilerWithLocation = compilerIssues.filter(i => i.location);
+    for (const issue of compilerWithLocation) {
+      expect(propLines.has(issue.location!.line)).toBe(false);
     }
   });
 
