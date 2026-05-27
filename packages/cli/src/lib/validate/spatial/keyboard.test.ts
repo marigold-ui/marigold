@@ -182,4 +182,42 @@ describe('keyboardA11yToValidationIssues', () => {
     });
     expect(issues).toEqual([]);
   });
+
+  it('flags arrow nav as broken when focus leaves group', () => {
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      arrowNavResults: [
+        {
+          groupSelector: '[role="menu"]',
+          role: 'menu',
+          memberCount: 5,
+          navigable: false,
+        },
+      ],
+    });
+    expect(issues).toHaveLength(1);
+    expect(issues[0].severity).toBe('warning');
+    expect(issues[0].source).toBe('keyboard-a11y');
+    expect(issues[0].message).toContain('Arrow key navigation');
+    expect(issues[0].message).toContain('menu');
+    expect(issues[0].details?.memberCount).toBe(5);
+  });
+
+  it('does not flag working arrow nav within group', () => {
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      arrowNavResults: [
+        {
+          groupSelector: '[role="listbox"]',
+          role: 'listbox',
+          memberCount: 6,
+          navigable: true,
+        },
+      ],
+    });
+    const arrowIssues = issues.filter(i =>
+      i.message.includes('Arrow key navigation')
+    );
+    expect(arrowIssues).toEqual([]);
+  });
 });

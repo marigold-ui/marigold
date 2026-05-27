@@ -222,4 +222,36 @@ describe('validateProps', () => {
     const issues = validateProps(file);
     expect(issues).toEqual([]);
   });
+
+  it('warns when spread props are used on Marigold component', () => {
+    const file = tmpFile(
+      'mv-spread.tsx',
+      `import { Button } from '@marigold/components';
+const C = (props: any) => <Button {...props}>click</Button>;`
+    );
+    const issues = validateProps(file);
+    const spreadIssue = issues.find(
+      i => i.source === 'prop-validator' && i.message.includes('Spread props')
+    );
+    expect(spreadIssue).toBeDefined();
+    expect(spreadIssue?.severity).toBe('warning');
+    expect(spreadIssue?.source).toBe('prop-validator');
+  });
+
+  it('spread warning includes component name and location', () => {
+    const file = tmpFile(
+      'mv-spread-detail.tsx',
+      `import { Button } from '@marigold/components';
+const C = (props: any) => <Button {...props}>click</Button>;`
+    );
+    const issues = validateProps(file);
+    const spreadIssue = issues.find(
+      i => i.source === 'prop-validator' && i.message.includes('Spread props')
+    );
+    expect(spreadIssue).toBeDefined();
+    expect(spreadIssue?.component).toBe('Button');
+    expect(spreadIssue?.message).toContain('Button');
+    expect(spreadIssue?.location).toBeDefined();
+    expect(spreadIssue?.location?.line).toBeGreaterThan(0);
+  });
 });

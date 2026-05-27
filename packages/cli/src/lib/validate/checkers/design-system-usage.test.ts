@@ -150,4 +150,54 @@ export default App;`
     expect(divIssue).toBeDefined();
     expect(divIssue?.severity).toBe('warning');
   });
+
+  it('does not flag <img> as raw HTML', () => {
+    const file = tmpFile(
+      'dsu-img.tsx',
+      `const App = () => <img src="x" alt="y" />;
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const imgIssue = issues.find(i => i.component === 'img');
+    expect(imgIssue).toBeUndefined();
+  });
+
+  it('does not flag SVG elements like <circle>, <path>, <rect>', () => {
+    const file = tmpFile(
+      'dsu-svg.tsx',
+      `const App = () => (
+  <svg viewBox="0 0 100 100">
+    <circle cx="10" cy="10" r="5" />
+    <path d="M0 0" />
+    <rect x="0" y="0" width="10" height="10" />
+  </svg>
+);
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const svgChildIssues = issues.filter(
+      i =>
+        i.component === 'circle' ||
+        i.component === 'path' ||
+        i.component === 'rect'
+    );
+    expect(svgChildIssues).toEqual([]);
+  });
+
+  it('still flags <div> and <span> as raw HTML', () => {
+    const file = tmpFile(
+      'dsu-div-span.tsx',
+      `const App = () => <div><span>text</span></div>;
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const divIssue = issues.find(i => i.component === 'div');
+    const spanIssue = issues.find(i => i.component === 'span');
+    expect(divIssue).toBeDefined();
+    expect(divIssue?.severity).toBe('warning');
+    expect(divIssue?.source).toBe('design-system-usage');
+    expect(spanIssue).toBeDefined();
+    expect(spanIssue?.severity).toBe('warning');
+    expect(spanIssue?.source).toBe('design-system-usage');
+  });
 });

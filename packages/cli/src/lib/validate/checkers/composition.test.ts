@@ -185,4 +185,71 @@ describe('validateComposition', () => {
       expect(issue.type).toBe('technical');
     }
   });
+
+  it('warns about duplicate sub-components', () => {
+    const file = tmpFile(
+      'cv-duplicate-sub.tsx',
+      `import { Dialog } from '@marigold/components';
+const C = () => (
+  <Dialog>
+    <Dialog.Title>A</Dialog.Title>
+    <Dialog.Title>B</Dialog.Title>
+    <Dialog.Content>C</Dialog.Content>
+    <Dialog.Actions>D</Dialog.Actions>
+  </Dialog>
+);`
+    );
+    const issues = validateComposition(file);
+    const dupIssue = issues.find(
+      i =>
+        i.component === 'Dialog' &&
+        i.message.includes('Dialog.Title') &&
+        i.message.includes('2 times')
+    );
+    expect(dupIssue).toBeDefined();
+    expect(dupIssue?.severity).toBe('warning');
+    expect(dupIssue?.details?.count).toBe(2);
+    expect(dupIssue?.details?.subComponent).toBe('Title');
+  });
+
+  it('flags self-closing compound component as error', () => {
+    const file = tmpFile(
+      'cv-self-closing.tsx',
+      `import { Dialog } from '@marigold/components';
+const C = () => <Dialog />;`
+    );
+    const issues = validateComposition(file);
+    const dialogIssue = issues.find(
+      i =>
+        i.component === 'Dialog' &&
+        i.severity === 'error' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(dialogIssue).toBeDefined();
+    expect(dialogIssue?.severity).toBe('error');
+  });
+
+  it('treats Table.Section as optional per-component config', () => {
+    const file = tmpFile(
+      'cv-table-no-section.tsx',
+      `import { Table } from '@marigold/components';
+const C = () => (
+  <Table aria-label="test">
+    <Table.Header>
+      <Table.Column>Name</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      <Table.Row>
+        <Table.Cell>Alice</Table.Cell>
+      </Table.Row>
+    </Table.Body>
+  </Table>
+);`
+    );
+    const issues = validateComposition(file);
+    const sectionError = issues.find(
+      i => i.component === 'Table' && i.message.includes('Section')
+    );
+    expect(sectionError).toBeUndefined();
+  });
 });

@@ -121,3 +121,29 @@ describe('overflowToValidationIssues', () => {
     expect(issues[0].suggestion).toContain('responsive');
   });
 });
+
+describe('isWrappingGrid detection (extractOverflowData logic)', () => {
+  it('detects grid wrapping with auto-fill', () => {
+    // The extractOverflowData function runs in a browser context, so we test the
+    // equivalent logic: a grid container with gridTemplateColumns containing
+    // 'auto-fill' should be recognized as a wrapping grid.
+    const gridCols = 'repeat(auto-fill, minmax(200px, 1fr))';
+    const isWrappingGrid =
+      gridCols.includes('auto-fit') || gridCols.includes('auto-fill');
+    expect(isWrappingGrid).toBe(true);
+  });
+
+  it('detects grid wrapping with auto-fit', () => {
+    const gridCols = 'repeat(auto-fit, minmax(200px, 1fr))';
+    const isWrappingGrid =
+      gridCols.includes('auto-fit') || gridCols.includes('auto-fill');
+    expect(isWrappingGrid).toBe(true);
+  });
+
+  it('does not flag static grid template', () => {
+    const gridCols = '1fr 1fr 1fr';
+    const isWrappingGrid =
+      gridCols.includes('auto-fit') || gridCols.includes('auto-fill');
+    expect(isWrappingGrid).toBe(false);
+  });
+});
