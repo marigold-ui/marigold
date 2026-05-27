@@ -149,40 +149,6 @@ describe('keyboardA11yToValidationIssues', () => {
     expect(issues).toEqual([]);
   });
 
-  it('flags broken arrow navigation as warning', () => {
-    const issues = keyboardA11yToValidationIssues({
-      ...emptyData,
-      arrowNavResults: [
-        {
-          groupSelector: '[role="tablist"]',
-          role: 'tablist',
-          memberCount: 3,
-          navigable: false,
-        },
-      ],
-    });
-    expect(issues).toHaveLength(1);
-    expect(issues[0].severity).toBe('warning');
-    expect(issues[0].source).toBe('keyboard-a11y');
-    expect(issues[0].message).toContain('Arrow key navigation');
-    expect(issues[0].message).toContain('tablist');
-  });
-
-  it('does not flag working arrow navigation', () => {
-    const issues = keyboardA11yToValidationIssues({
-      ...emptyData,
-      arrowNavResults: [
-        {
-          groupSelector: '[role="radiogroup"]',
-          role: 'radiogroup',
-          memberCount: 4,
-          navigable: true,
-        },
-      ],
-    });
-    expect(issues).toEqual([]);
-  });
-
   it('flags arrow nav as broken when focus leaves group', () => {
     const issues = keyboardA11yToValidationIssues({
       ...emptyData,

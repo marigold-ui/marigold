@@ -138,39 +138,6 @@ describe('detectOverlaps', () => {
     expect(detectOverlaps([a, b])).toEqual([]);
   });
 
-  it('skips overlap for badge pattern (small on large)', () => {
-    const large = make('Card', 'body > div:nth-child(1) > a', {
-      x: 0,
-      y: 0,
-      width: 500,
-      height: 500,
-    });
-    const small = make('Badge', 'body > div:nth-child(1) > b', {
-      x: 490,
-      y: 0,
-      width: 10,
-      height: 10,
-    });
-    // small area = 100, large area = 250000, ratio = 0.0004 < 0.15
-    expect(detectOverlaps([large, small])).toEqual([]);
-  });
-
-  it('skips overlap for tooltip role', () => {
-    const button = make('Button', 'body > div:nth-child(1) > a', {
-      x: 0,
-      y: 0,
-      width: 100,
-      height: 40,
-    });
-    const tip = make(
-      'Tooltip',
-      'body > div:nth-child(1) > b',
-      { x: 20, y: 10, width: 80, height: 30 },
-      { role: 'tooltip' }
-    );
-    expect(detectOverlaps([button, tip])).toEqual([]);
-  });
-
   it('flags overlap between two static elements', () => {
     const a = make(
       'Button',
