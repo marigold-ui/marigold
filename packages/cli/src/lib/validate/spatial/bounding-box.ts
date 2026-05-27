@@ -11,6 +11,9 @@ export type ComponentBounds = {
   component: string;
   selector: string;
   rect: BoxRect;
+  zIndex: number;
+  position: string;
+  role: string | null;
   children: ComponentBounds[];
 };
 
@@ -37,10 +40,15 @@ export const extractBoundingBoxes = async (
         const childResults = walk(child);
         if (isInteresting(child)) {
           const r = child.getBoundingClientRect();
+          const styles = window.getComputedStyle(child);
+          const rawZ = parseInt(styles.zIndex, 10);
           result.push({
             component: componentNameOf(child),
             selector: cssPath(child),
             rect: { x: r.x, y: r.y, width: r.width, height: r.height },
+            zIndex: Number.isNaN(rawZ) ? 0 : rawZ,
+            position: styles.position,
+            role: child.getAttribute('role'),
             children: childResults,
           });
         } else {

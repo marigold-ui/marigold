@@ -179,12 +179,22 @@ export const runSpatialChecks = async (
       keyboardIssues.push(...keyboardA11yToValidationIssues(kbData));
     }
 
+    const dedup = (issues: ValidationIssue[]): ValidationIssue[] => {
+      const seen = new Set<string>();
+      return issues.filter(i => {
+        const key = `${i.source}:${i.component}:${i.message}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    };
+
     return {
-      spatialIssues,
-      styleIssues,
-      a11yIssues,
-      responsiveIssues,
-      keyboardIssues,
+      spatialIssues: dedup(spatialIssues),
+      styleIssues: dedup(styleIssues),
+      a11yIssues: dedup(a11yIssues),
+      responsiveIssues: dedup(responsiveIssues),
+      keyboardIssues: dedup(keyboardIssues),
       consoleErrors: handle.result.consoleErrors,
       pageErrors: handle.result.pageErrors,
       renderErrors: handle.result.renderErrors,

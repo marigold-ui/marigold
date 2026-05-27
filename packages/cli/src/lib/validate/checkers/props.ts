@@ -159,7 +159,7 @@ export const validateProps = (filePath: string): ValidationIssue[] => {
           const paramType = propInfo?.type ?? 'value';
           issues.push({
             type: 'technical',
-            severity: 'warning',
+            severity: 'error',
             source: 'prop-validator',
             component: displayName,
             message: `Marigold <${displayName}> ${name} passes the value directly (${paramType}), not a DOM event.`,
@@ -180,7 +180,7 @@ export const validateProps = (filePath: string): ValidationIssue[] => {
       if (!propInfo.knownValues.includes(value)) {
         issues.push({
           type: 'technical',
-          severity: 'warning',
+          severity: 'error',
           source: 'prop-validator',
           component: displayName,
           message: `Prop "${name}" value "${value}" is not a known variant for <${displayName}>.`,

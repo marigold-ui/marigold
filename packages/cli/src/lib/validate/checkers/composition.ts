@@ -44,24 +44,28 @@ const collectSubComponentUsages = (
   );
 };
 
-// Sub-components that are valid to omit — they provide optional layout
-// slots, grouping, or advanced features rather than structural requirements.
-// This can't be derived from TypeScript types because the type system
-// doesn't encode "required vs optional sub-component" semantics.
-const OPTIONAL_SUBS = new Set([
-  'Section',
-  'Group',
-  'EditableCell',
-  'Header',
-  'Sidebar',
-  'Footer',
-  'Separator',
-  'Toggle',
-  'GroupLabel',
-  'Start',
-  'Middle',
-  'End',
-]);
+// Per-component optional sub-components. The type system doesn't encode
+// "required vs optional sub-component" semantics, so this is explicit.
+// Sub-components NOT listed here are treated as required.
+const OPTIONAL_SUBS_BY_COMPONENT: Record<string, Set<string>> = {
+  Accordion: new Set(['Section', 'Group']),
+  AppShell: new Set(['Sidebar', 'Footer', 'Header']),
+  Calendar: new Set(['Header']),
+  DatePicker: new Set(['Group']),
+  Menu: new Set(['Section', 'Separator', 'GroupLabel']),
+  NavigationMenu: new Set(['Start', 'Middle', 'End', 'Separator']),
+  Select: new Set(['Section', 'Group']),
+  SplitButton: new Set(['Toggle']),
+  Table: new Set(['Header', 'EditableCell', 'Section', 'Group']),
+  Tabs: new Set(['Group']),
+  TagGroup: new Set(['Group']),
+};
+
+const GLOBAL_OPTIONAL = new Set(['Separator', 'Group', 'Section']);
+
+const isOptionalSub = (component: string, sub: string): boolean =>
+  GLOBAL_OPTIONAL.has(sub) ||
+  (OPTIONAL_SUBS_BY_COMPONENT[component]?.has(sub) ?? false);
 
 const collectAncestorSubComponents = (
   node: ts.Node,
@@ -125,39 +129,62 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
       if (ts.isIdentifier(tag) && isCompoundComponent(tag.text)) {
         compoundParents.add(tag.text);
       }
+    } else if (ts.isJsxSelfClosingElement(node)) {
+      const tag = node.tagName;
+      if (ts.isIdentifier(tag) && isCompoundComponent(tag.text)) {
+        compoundParents.add(tag.text);
+      }
     }
     ts.forEachChild(node, visit);
   };
   visit(source);
 
-  const check = (node: ts.Node): void => {
+  const getTagInfo = (
+    node: ts.Node
+  ): { tag: ts.Identifier; startPos: number } | undefined => {
     if (ts.isJsxElement(node)) {
       const tag = node.openingElement.tagName;
+      if (ts.isIdentifier(tag))
+        return { tag, startPos: node.openingElement.getStart(source) };
+    } else if (ts.isJsxSelfClosingElement(node)) {
+      const tag = node.tagName;
+      if (ts.isIdentifier(tag)) return { tag, startPos: node.getStart(source) };
+    }
+    return undefined;
+  };
 
-      if (ts.isIdentifier(tag) && isCompoundComponent(tag.text)) {
-        const componentName = tag.text;
+  const check = (node: ts.Node): void => {
+    if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
+      const info = getTagInfo(node);
+
+      if (info && isCompoundComponent(info.tag.text)) {
+        const componentName = info.tag.text;
         const knownSubs = getSubComponents(componentName);
         if (!knownSubs || knownSubs.length === 0) {
           ts.forEachChild(node, check);
           return;
         }
 
-        const isDynamic = hasDynamicChildren(node);
+        const isSelfClosing = ts.isJsxSelfClosingElement(node);
+        const isDynamic =
+          !isSelfClosing && hasDynamicChildren(node as ts.JsxElement);
 
         const counts = new Map<string, number>();
         collectAncestorSubComponents(node, componentName, counts);
-        for (const child of node.children) {
-          if (isDynamic && ts.isJsxExpression(child)) continue;
-          collectSubComponentUsages(
-            child,
-            componentName,
-            compoundParents,
-            counts
-          );
+        if (!isSelfClosing) {
+          for (const child of (node as ts.JsxElement).children) {
+            if (isDynamic && ts.isJsxExpression(child)) continue;
+            collectSubComponentUsages(
+              child,
+              componentName,
+              compoundParents,
+              counts
+            );
+          }
         }
 
         const { line, character } = source.getLineAndCharacterOfPosition(
-          node.openingElement.getStart(source)
+          info.startPos
         );
         const location = {
           file: relFile,
@@ -167,7 +194,7 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
 
         const found = [...counts.keys()];
         const missing = knownSubs.filter(
-          s => !counts.has(s) && !OPTIONAL_SUBS.has(s)
+          s => !counts.has(s) && !isOptionalSub(componentName, s)
         );
 
         if (found.length === 0 && !isDynamic) {

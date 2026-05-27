@@ -198,7 +198,7 @@ export const responsiveToValidationIssues = (
     for (const d of snap.disappearedComponents) {
       issues.push({
         type: 'spatial',
-        severity: 'warning',
+        severity: 'error',
         source: 'responsive-checker',
         component: d.component,
         message: `Component <${d.component}> has zero dimensions at ${bp.label} (${bp.width}px viewport).`,

@@ -76,7 +76,14 @@ export const extractFocusableElements = async (
       let parent = el.parentElement;
       while (parent) {
         const role = parent.getAttribute('role');
-        if (role === 'radiogroup' || role === 'tablist') {
+        if (
+          role === 'radiogroup' ||
+          role === 'tablist' ||
+          role === 'menu' ||
+          role === 'menubar' ||
+          role === 'listbox' ||
+          role === 'tree'
+        ) {
           groupParent = cssPath(parent);
           break;
         }

@@ -1,5 +1,6 @@
 import type { Page } from 'playwright';
 import {
+  ThemeCssNotFoundError,
   discoverTokenFamilies,
   loadDesignTokens,
 } from '../helpers/design-tokens.js';
@@ -113,7 +114,13 @@ const isBrowserDefault = (
 type TokenReverseMap = Map<string, Map<string, string>>;
 
 const buildTokenReverseMap = async (page: Page): Promise<TokenReverseMap> => {
-  const tokens = loadDesignTokens();
+  let tokens: Record<string, string>;
+  try {
+    tokens = loadDesignTokens();
+  } catch (err) {
+    if (err instanceof ThemeCssNotFoundError) return new Map();
+    throw err;
+  }
   if (Object.keys(tokens).length === 0) return new Map();
 
   const families = discoverTokenFamilies();
@@ -179,12 +186,54 @@ const isTokenizedViaReverseMap = (
   return parts.every(part => SKIP_VALUES.has(part) || propMap.has(part));
 };
 
+const HARDCODED_VALUE = /(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|\d+px\b)/;
+
+type InlineStyleViolation = {
+  selector: string;
+  property: string;
+  value: string;
+};
+
+const detectHardcodedInlineStyles = async (
+  page: Page
+): Promise<InlineStyleViolation[]> =>
+  page.evaluate(() => {
+    const results: Array<{
+      selector: string;
+      property: string;
+      value: string;
+    }> = [];
+    const w = window as Window & { __cssPath?: (el: Element) => string };
+    const cssPath = w.__cssPath!;
+
+    for (const el of document.querySelectorAll('[style]')) {
+      const raw = el.getAttribute('style');
+      if (!raw) continue;
+      const selector = cssPath(el);
+      for (const decl of raw.split(';')) {
+        const colon = decl.indexOf(':');
+        if (colon < 0) continue;
+        const prop = decl.slice(0, colon).trim();
+        const val = decl.slice(colon + 1).trim();
+        if (!val || val.includes('var(')) continue;
+        results.push({ selector, property: prop, value: val });
+      }
+    }
+    return results;
+  });
+
 export const checkTokenCompliance = async (
   page: Page,
   snapshots: ComputedStyleSnapshot[],
   browserDefaults?: Map<string, Set<string>>
 ): Promise<ValidationIssue[]> => {
-  const tokens = loadDesignTokens();
+  let tokens: Record<string, string>;
+  try {
+    tokens = loadDesignTokens();
+  } catch (err) {
+    if (err instanceof ThemeCssNotFoundError) return [];
+    throw err;
+  }
   if (Object.keys(tokens).length === 0) return [];
 
   const reverseMap = await buildTokenReverseMap(page);
@@ -209,5 +258,20 @@ export const checkTokenCompliance = async (
       });
     }
   }
+
+  const inlineViolations = await detectHardcodedInlineStyles(page);
+  for (const v of inlineViolations) {
+    if (!HARDCODED_VALUE.test(v.value)) continue;
+    issues.push({
+      type: 'style',
+      severity: 'warning',
+      source: 'token-compliance',
+      component: v.selector,
+      message: `Inline style "${v.property}: ${v.value}" uses a hardcoded value instead of a design token.`,
+      suggestion: `Use var(--token-name) or a Marigold component prop instead of hardcoding "${v.value}".`,
+      details: { property: v.property, value: v.value, inline: true },
+    });
+  }
+
   return issues;
 };

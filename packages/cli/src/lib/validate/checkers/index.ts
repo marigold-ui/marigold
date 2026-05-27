@@ -24,19 +24,20 @@ export const runTechnicalChecks = (
 ): TechnicalResult => {
   const propIssues = validateProps(filePath);
 
-  const propLines = new Set<number>();
+  const propPositions = new Set<string>();
   for (const issue of propIssues) {
     if (issue.location) {
-      propLines.add(issue.location.line);
-      propLines.add(issue.location.line - 1);
+      propPositions.add(`${issue.location.line}:${issue.location.column}`);
     }
   }
 
   const compileResult = compileFile(filePath);
   const compilerIssues =
-    propLines.size > 0
+    propPositions.size > 0
       ? compileResult.issues.filter(
-          i => !i.location || !propLines.has(i.location.line)
+          i =>
+            !i.location ||
+            !propPositions.has(`${i.location.line}:${i.location.column}`)
         )
       : compileResult.issues;
 

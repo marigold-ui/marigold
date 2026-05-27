@@ -26,7 +26,7 @@ const hasSvgAncestor = (node: ts.Node): boolean => {
 
 const isHtmlElement = (tagName: string, node: ts.Node): boolean => {
   if (!isLowercaseTag(tagName)) return false;
-  if (tagName === 'svg') return false;
+  if (tagName === 'svg' || tagName === 'img') return false;
   if (hasSvgAncestor(node)) return false;
   return true;
 };

@@ -11,8 +11,17 @@ export type OverlapIssue = {
   overlapPercentage: number;
 };
 
-// Below 5% overlap is typically subpixel rounding or intentional decoration (borders, shadows).
 const OVERLAP_THRESHOLD_PERCENT = 5;
+const BADGE_AREA_RATIO = 0.15;
+const OVERLAY_POSITIONS = new Set(['absolute', 'fixed']);
+const OVERLAY_ROLES = new Set([
+  'tooltip',
+  'dialog',
+  'alertdialog',
+  'menu',
+  'listbox',
+  'status',
+]);
 
 const intersectionArea = (a: ComponentBounds, b: ComponentBounds): number => {
   const x1 = Math.max(a.rect.x, b.rect.x);
@@ -23,8 +32,33 @@ const intersectionArea = (a: ComponentBounds, b: ComponentBounds): number => {
   return (x2 - x1) * (y2 - y1);
 };
 
+const areaOf = (b: ComponentBounds): number => b.rect.width * b.rect.height;
+
 const isAncestorByPath = (a: string, b: string): boolean =>
   a === b || b.startsWith(`${a} > `) || a.startsWith(`${b} > `);
+
+const isIntentionalOverlay = (
+  a: ComponentBounds,
+  b: ComponentBounds
+): boolean => {
+  // Positioned element with higher z-index overlaying a static element
+  if (OVERLAY_POSITIONS.has(a.position) && a.zIndex > b.zIndex) return true;
+  if (OVERLAY_POSITIONS.has(b.position) && b.zIndex > a.zIndex) return true;
+
+  // Overlay roles (tooltip, dialog, menu, etc.)
+  if (a.role && OVERLAY_ROLES.has(a.role)) return true;
+  if (b.role && OVERLAY_ROLES.has(b.role)) return true;
+
+  // Badge pattern: small element on top of a much larger one
+  const areaA = areaOf(a);
+  const areaB = areaOf(b);
+  if (areaA > 0 && areaB > 0) {
+    const ratio = Math.min(areaA, areaB) / Math.max(areaA, areaB);
+    if (ratio < BADGE_AREA_RATIO) return true;
+  }
+
+  return false;
+};
 
 export const detectOverlaps = (bounds: ComponentBounds[]): OverlapIssue[] => {
   const flat = flattenBounds(bounds);
@@ -35,14 +69,12 @@ export const detectOverlaps = (bounds: ComponentBounds[]): OverlapIssue[] => {
       const a = flat[i];
       const b = flat[j];
       if (isAncestorByPath(a.selector, b.selector)) continue;
+      if (isIntentionalOverlay(a, b)) continue;
 
       const area = intersectionArea(a, b);
       if (area === 0) continue;
 
-      const smaller = Math.min(
-        a.rect.width * a.rect.height,
-        b.rect.width * b.rect.height
-      );
+      const smaller = Math.min(areaOf(a), areaOf(b));
       if (smaller === 0) continue;
 
       const percent = (area / smaller) * 100;
