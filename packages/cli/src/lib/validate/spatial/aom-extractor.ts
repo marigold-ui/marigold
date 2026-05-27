@@ -138,7 +138,7 @@ export const extractAOM = async (page: Page): Promise<AOMNode[]> =>
     [...FORM_ROLE_LIST]
   );
 
-const FORM_ROLES = new Set(FORM_ROLE_LIST);
+const FORM_ROLES: Set<string> = new Set(FORM_ROLE_LIST);
 
 export const checkAccessibility = (nodes: AOMNode[]): ValidationIssue[] => {
   const issues: ValidationIssue[] = [];

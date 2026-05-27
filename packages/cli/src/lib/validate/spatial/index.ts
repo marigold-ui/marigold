@@ -23,11 +23,7 @@ import {
   wrappingToValidationIssues,
 } from './overflow.js';
 import { detectOverlaps, overlapIssuesToValidationIssues } from './overlap.js';
-import {
-  type SharedRenderer,
-  type Viewport,
-  createRenderer,
-} from './renderer.js';
+import { type SharedRenderer, type Viewport } from './renderer.js';
 import {
   extractResponsiveSnapshots,
   responsiveToValidationIssues,
@@ -41,9 +37,9 @@ export {
   createRenderer,
   type CapturedRenderError,
   type SharedRenderer,
+  type Viewport,
   type RenderHandle,
   type RenderResult,
-  type Viewport,
 } from './renderer.js';
 export {
   extractBoundingBoxes,

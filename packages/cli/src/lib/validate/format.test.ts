@@ -8,6 +8,7 @@ const sampleReport = (): Omit<ValidationReport, 'markdown'> => ({
     {
       type: 'technical',
       severity: 'error',
+      source: 'prop-validator',
       component: 'Button',
       message: 'Prop "isLoading" does not exist on <Button>.',
       suggestion: 'Replace "isLoading" with "loading".',
@@ -18,6 +19,7 @@ const sampleReport = (): Omit<ValidationReport, 'markdown'> => ({
     {
       type: 'a11y',
       severity: 'warning',
+      source: 'aom-extractor',
       component: 'TextField',
       message: 'Placeholder used as the only label.',
       suggestion: 'Add an explicit label prop.',
