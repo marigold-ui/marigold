@@ -86,7 +86,11 @@ export const validateProps = (filePath: string): ValidationIssue[] => {
           component: displayName,
           message: `Spread props on <${displayName}> bypass prop validation.`,
           suggestion: `Pass props explicitly so they can be validated against the component's API.`,
-          location: { file: relFile, line: line + 1, column: character + 1 },
+          location: {
+            file: path.relative(process.cwd(), filePath),
+            line: line + 1,
+            column: character + 1,
+          },
         });
         continue;
       }

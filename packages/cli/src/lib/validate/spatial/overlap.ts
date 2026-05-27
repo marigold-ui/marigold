@@ -41,9 +41,12 @@ const isIntentionalOverlay = (
   a: ComponentBounds,
   b: ComponentBounds
 ): boolean => {
-  // Positioned element with higher z-index overlaying a static element
-  if (OVERLAY_POSITIONS.has(a.position) && a.zIndex > b.zIndex) return true;
-  if (OVERLAY_POSITIONS.has(b.position) && b.zIndex > a.zIndex) return true;
+  const aPositioned = OVERLAY_POSITIONS.has(a.position);
+  const bPositioned = OVERLAY_POSITIONS.has(b.position);
+
+  if (aPositioned && bPositioned) return true;
+  if (aPositioned && a.zIndex > b.zIndex) return true;
+  if (bPositioned && b.zIndex > a.zIndex) return true;
 
   // Overlay roles (tooltip, dialog, menu, etc.)
   if (a.role && OVERLAY_ROLES.has(a.role)) return true;

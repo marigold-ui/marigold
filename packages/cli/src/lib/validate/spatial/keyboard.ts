@@ -105,11 +105,6 @@ const testArrowNavigation = async (page: Page): Promise<ArrowNavResult[]> => {
       if (member instanceof HTMLElement) member.focus();
     }, group.groupSelector);
 
-    const beforeSelector = await page.evaluate(() => {
-      const w = window as Window & { __cssPath?: (el: Element) => string };
-      return document.activeElement ? w.__cssPath!(document.activeElement) : '';
-    });
-
     const key =
       group.role === 'tablist' || group.role === 'menubar'
         ? 'ArrowRight'

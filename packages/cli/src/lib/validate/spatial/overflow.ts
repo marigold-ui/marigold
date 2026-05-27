@@ -40,8 +40,10 @@ export const extractOverflowData = async (page: Page): Promise<OverflowData> =>
       const isWrappingFlex =
         display === 'flex' &&
         (flexWrap === 'wrap' || flexWrap === 'wrap-reverse');
+      const gridCols = style.gridTemplateColumns;
       const isWrappingGrid =
-        display === 'grid' && style.gridTemplateColumns.includes('auto-fit');
+        display === 'grid' &&
+        (gridCols.includes('auto-fit') || gridCols.includes('auto-fill'));
 
       if (isWrappingFlex || isWrappingGrid) {
         const children = Array.from(el.children);
@@ -59,7 +61,7 @@ export const extractOverflowData = async (page: Page): Promise<OverflowData> =>
           for (const child of children) {
             totalWidth += child.getBoundingClientRect().width;
           }
-          const gap = parseFloat(style.gap) || parseFloat(style.columnGap) || 0;
+          const gap = parseFloat(style.columnGap) || parseFloat(style.gap) || 0;
           totalWidth += gap * (children.length - 1);
 
           wrapping.push({

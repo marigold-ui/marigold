@@ -167,13 +167,18 @@ const startViteServer = async (workDir: string): Promise<ViteDevServer> => {
       include: ['react', 'react-dom', 'react-dom/client'],
     },
   });
-  const timeout = new Promise<never>((_, reject) =>
-    setTimeout(
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(
       () => reject(new Error('Vite dev server startup timed out after 15s')),
       15_000
-    )
-  );
-  await Promise.race([server.listen(), timeout]);
+    );
+  });
+  try {
+    await Promise.race([server.listen(), timeout]);
+  } finally {
+    clearTimeout(timeoutId);
+  }
   return server;
 };
 
@@ -280,13 +285,11 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       };
       return handle;
     } catch (err) {
-      // Tear down any partially-constructed state, then rethrow so the
-      // caller can convert the failure into a ValidationIssue.
-      await context?.close().catch(() => undefined);
-      await server?.close().catch(() => undefined);
-      await rm(workDir, { recursive: true, force: true }).catch(
-        () => undefined
-      );
+      await Promise.allSettled([
+        context?.close(),
+        server?.close(),
+        rm(workDir, { recursive: true, force: true }),
+      ]);
       throw err;
     }
   };
