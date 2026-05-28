@@ -163,7 +163,7 @@ describe('SelectList', () => {
       const containerScope = grid.closest('.\\@container\\/selectlist');
 
       expect(containerScope).not.toBeNull();
-      expect(containerScope).toHaveClass('w-full');
+      expect(containerScope).toHaveClass('w-(--container-width)');
     });
   });
 
