@@ -77,13 +77,12 @@ const meta = preview.meta({
     },
     orientation: {
       control: { type: 'inline-radio' },
-      options: ['vertical', 'horizontal', 'responsive'],
+      options: ['vertical', 'horizontal'],
       table: {
-        type: { summary: 'vertical | horizontal | responsive' },
+        type: { summary: 'vertical | horizontal' },
         defaultValue: { summary: 'vertical' },
       },
-      description:
-        'Direction options flow and arrow keys navigate. `responsive` uses a CSS container query to switch from horizontal to vertical when the container is narrower than 640 px (configurable via `--breakpoint-sm` in the theme).',
+      description: 'Direction options flow and arrow keys navigate.',
     },
     p: paddingArgType(
       insetTokens,
