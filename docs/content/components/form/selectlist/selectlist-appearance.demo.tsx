@@ -232,7 +232,7 @@ export default ({ variant, size }: SelectListProps) => (
         <div className="col-start-2 row-span-2 flex items-start gap-4">
           <Art palette={palette} />
           <div className="flex flex-col gap-1">
-            <TextValue>
+            <TextValue as="div">
               <Inline space={2} alignY="center">
                 {price ? `${name} — ${price}` : name}
                 {badge ? (

@@ -63,7 +63,7 @@ export default () => {
           disabled={card.expired}
           textValue={card.name}
         >
-          <TextValue>
+          <TextValue as="div">
             <Inline space={2} alignY="center">
               {card.name}
               {card.badge ? (
