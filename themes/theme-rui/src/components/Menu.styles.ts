@@ -9,6 +9,11 @@ export const Menu: ThemeComponent<'Menu'> = {
       'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
     ],
   }),
+  // Two-column grid: col 1 = optional icon, col 2 = label / description.
+  // `<TextValue>` (label slot) → col 2 row 1; `<Description>` → col 2 row 2.
+  // Plain children (text nodes, `<Badge>`, etc.) auto-place into the next
+  // free cell, so items with extra inline content beyond label/description
+  // should use explicit grid-area placement.
   item: cva({
     base: [
       'relative grid grid-cols-[auto_1fr] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',

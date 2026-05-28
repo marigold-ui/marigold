@@ -330,7 +330,7 @@ export const Sections = meta.story({
       </Select.Section>
       <Select.Section header="Sci-Fi">
         <Select.Option id="star-wars">
-          <TextValue>Start Wars</TextValue>
+          <TextValue>Star Wars</TextValue>
           <Description>A long time ago, in a galaxy far, far away</Description>
         </Select.Option>
         <Select.Option id="star-trek">
