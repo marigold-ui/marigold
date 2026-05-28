@@ -6,7 +6,6 @@ import {
   SelectList,
   Stack,
   Text,
-  TextValue,
 } from '@marigold/components';
 import { Check } from '@marigold/icons';
 
@@ -137,11 +136,9 @@ export default () => (
       <SelectList.Option key={plan.id} id={plan.id} textValue={plan.name}>
         <div className="col-start-2 row-start-1">
           <Inline space={2} alignY="center">
-            <TextValue>
-              <Text weight="bold" lineHeight="loose">
-                {plan.name}
-              </Text>
-            </TextValue>
+            <Text as="span" weight="bold" lineHeight="loose">
+              {plan.name}
+            </Text>
             {plan.badge ? <Badge variant="primary">{plan.badge}</Badge> : null}
           </Inline>
         </div>

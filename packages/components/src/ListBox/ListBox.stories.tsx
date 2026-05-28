@@ -1,4 +1,7 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Description } from '../Description/Description';
+import { TextValue } from '../TextValue/TextValue';
 import { ListBox } from './ListBox';
 
 const meta = preview.meta({
@@ -23,6 +26,34 @@ export const Basic = meta.story({
       <ListBox.Item id="four">Four</ListBox.Item>
     </ListBox>
   ),
+});
+
+// Item-level label + description theme styling lands with DST-1364
+// (`ListBoxItem.tsx` TextContext merge). Until then this story renders
+// structurally correctly but without first-class description styling.
+export const WithDescription = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <ListBox aria-labelledby="listbox" selectionMode="single" {...args}>
+      <ListBox.Item id="public" textValue="Public">
+        <TextValue>Public</TextValue>
+        <Description>Anyone with the link can view.</Description>
+      </ListBox.Item>
+      <ListBox.Item id="restricted" textValue="Restricted">
+        <TextValue>Restricted</TextValue>
+        <Description>Only people you invite can view.</Description>
+      </ListBox.Item>
+    </ListBox>
+  ),
+  play: async ({ canvas }: any) => {
+    const item = canvas.getByRole('option', { name: /Restricted/ });
+    const description = canvas.getByText('Only people you invite can view.');
+
+    expect(description.id).toBeTruthy();
+    expect(item.getAttribute('aria-describedby') ?? '').toContain(
+      description.id
+    );
+  },
 });
 
 export const WithSections = meta.story({

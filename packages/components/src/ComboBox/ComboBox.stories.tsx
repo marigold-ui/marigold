@@ -284,6 +284,13 @@ export const Sections: any = meta.story({
 
     expect(s1).toBeVisible();
     expect(s2).toBeVisible();
+
+    const item = canvas.getByRole('option', { name: /Harry Potter/ });
+    const description = canvas.getByText('About the boy who lived');
+    expect(description.id).toBeTruthy();
+    expect(item.getAttribute('aria-describedby') ?? '').toContain(
+      description.id
+    );
   },
 });
 

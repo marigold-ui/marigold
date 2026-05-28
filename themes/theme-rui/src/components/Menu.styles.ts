@@ -11,9 +11,9 @@ export const Menu: ThemeComponent<'Menu'> = {
   }),
   item: cva({
     base: [
-      'relative flex cursor-pointer items-center gap-2 rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
+      'relative grid grid-cols-[auto_1fr] items-center gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
       'disabled:text-disabled',
-      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
+      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
     ],
     variants: {
       variant: {
@@ -28,6 +28,10 @@ export const Menu: ThemeComponent<'Menu'> = {
   }),
   section: cva({
     base: 'text-secondary p-2 text-xs font-medium border-t border-t-border in-first:border-t-0',
+  }),
+  label: cva({ base: 'col-start-2 row-start-1' }),
+  description: cva({
+    base: 'col-start-2 row-start-2 text-secondary text-xs',
   }),
   button: cva({
     base: [
