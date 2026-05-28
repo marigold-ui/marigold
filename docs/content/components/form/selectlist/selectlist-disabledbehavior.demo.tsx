@@ -2,10 +2,11 @@ import { useState } from 'react';
 import {
   ActionMenu,
   Badge,
+  Description,
   Inline,
   Menu,
   SelectList,
-  Text,
+  TextValue,
 } from '@marigold/components';
 
 const cards = [
@@ -62,17 +63,17 @@ export default () => {
           disabled={card.expired}
           textValue={card.name}
         >
-          <Text slot="label">
+          <TextValue>
             <Inline space={2} alignY="center">
               {card.name}
               {card.badge ? (
                 <Badge variant={card.badge.variant}>{card.badge.label}</Badge>
               ) : null}
             </Inline>
-          </Text>
-          <Text slot="description">
+          </TextValue>
+          <Description>
             {card.description} {card.expiry}.
-          </Text>
+          </Description>
           <ActionMenu variant="ghost" aria-label={`Manage ${card.name}`}>
             <Menu.Item onAction={() => alert(`Edit ${card.name}`)}>
               Edit

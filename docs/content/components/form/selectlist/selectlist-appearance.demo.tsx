@@ -1,9 +1,10 @@
 import {
   Badge,
+  Description,
   Inline,
   SelectList,
   SelectListProps,
-  Text,
+  TextValue,
 } from '@marigold/components';
 
 const palettes = {
@@ -231,15 +232,15 @@ export default ({ variant, size }: SelectListProps) => (
         <div className="col-start-2 row-span-2 flex items-start gap-4">
           <Art palette={palette} />
           <div className="flex flex-col gap-1">
-            <Text slot="label">
+            <TextValue>
               <Inline space={2} alignY="center">
                 {price ? `${name} — ${price}` : name}
                 {badge ? (
                   <Badge variant={badge.variant}>{badge.label}</Badge>
                 ) : null}
               </Inline>
-            </Text>
-            <Text slot="description">{description}</Text>
+            </TextValue>
+            <Description>{description}</Description>
           </div>
         </div>
       </SelectList.Option>

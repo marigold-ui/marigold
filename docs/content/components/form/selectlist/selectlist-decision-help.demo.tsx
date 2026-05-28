@@ -1,10 +1,12 @@
 import {
   Badge,
   ContextualHelp,
+  Description,
   Inline,
   SelectList,
   Stack,
   Text,
+  TextValue,
 } from '@marigold/components';
 import { Check } from '@marigold/icons';
 
@@ -135,9 +137,11 @@ export default () => (
       <SelectList.Option key={plan.id} id={plan.id} textValue={plan.name}>
         <div className="col-start-2 row-start-1">
           <Inline space={2} alignY="center">
-            <Text slot="label" weight="bold" lineHeight="loose">
-              {plan.name}
-            </Text>
+            <TextValue>
+              <Text weight="bold" lineHeight="loose">
+                {plan.name}
+              </Text>
+            </TextValue>
             {plan.badge ? <Badge variant="primary">{plan.badge}</Badge> : null}
           </Inline>
         </div>
@@ -151,7 +155,7 @@ export default () => (
                 {plan.period}
               </Text>
             </Stack>
-            <Text slot="description">{plan.description}</Text>
+            <Description>{plan.description}</Description>
             <Stack space={1} asList>
               {plan.features.map(feature => (
                 <Inline key={feature} space={2} alignY="center">

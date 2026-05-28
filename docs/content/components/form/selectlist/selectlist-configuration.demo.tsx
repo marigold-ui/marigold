@@ -1,5 +1,11 @@
 import { Bell, Hash, Mail, MessageSquare } from 'lucide-react';
-import { ActionMenu, Menu, SelectList, Text } from '@marigold/components';
+import {
+  ActionMenu,
+  Description,
+  Menu,
+  SelectList,
+  TextValue,
+} from '@marigold/components';
 
 const channels = [
   {
@@ -47,9 +53,9 @@ export default () => (
             aria-hidden
             className="text-secondary shrink-0"
           />
-          <Text slot="label">{channel.name}</Text>
+          <TextValue>{channel.name}</TextValue>
         </div>
-        <Text slot="description">{channel.description}</Text>
+        <Description>{channel.description}</Description>
         <div className="col-start-3 row-span-2 row-start-1 flex items-center justify-end self-center">
           <ActionMenu variant="ghost" aria-label={`Customize ${channel.name}`}>
             <Menu.Item>Set frequency…</Menu.Item>
