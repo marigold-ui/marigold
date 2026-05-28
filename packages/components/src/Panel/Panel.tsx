@@ -125,6 +125,7 @@ export const Panel = ({
       ]}
     >
       <section
+        data-panel
         aria-labelledby={!ariaLabel ? titleId : undefined}
         aria-label={ariaLabel}
         className={cn(
