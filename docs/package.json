@@ -65,7 +65,7 @@
     "@types/node": "^25.0.5",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
-    "eslint": "10.3.0",
+    "eslint": "10.4.0",
     "eslint-config-next": "16.2.6",
     "fumadocs-typescript": "^5.1.4",
     "p-limit": "7.3.0",
