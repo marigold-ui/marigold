@@ -38,7 +38,7 @@
     "dotenv": "17.4.2",
     "fumadocs-core": "^16.6.5",
     "fumadocs-mdx": "14.3.2",
-    "fumadocs-ui": "16.9.0",
+    "fumadocs-ui": "16.9.1",
     "jose": "6.2.3",
     "lucide-react": "^1.9.0",
     "mcp-handler": "1.1.0",
