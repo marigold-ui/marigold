@@ -95,7 +95,9 @@ type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
   width?: WidthProp['width'];
   /**
    * The primary orientation of the options. Controls the direction items flow
-   * and the arrow keys used to navigate between them.
+   * and the arrow keys used to navigate between them. Horizontal lists flip
+   * to a vertical stack automatically when the wrapping container is narrower
+   * than the `md` container breakpoint (~28rem).
    * @default 'vertical'
    */
   orientation?: Orientation;
@@ -315,8 +317,13 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
         isInvalid={validationState.displayValidation.isInvalid}
         isRequired={required}
         isDisabled={disabled}
+        className="@container/selectlist"
       >
         <SelectListContext value={contextValue}>
+          {/* `@container/selectlist` must live on a dedicated full-width
+              wrapper. Putting `container-type: inline-size` on the surface
+              itself applies size containment and breaks `w-fit`, which would
+              cause the flip query to fire even in wide parents. */}
           <div className={classNames.container}>
             <RACGridList
               {...(rest as RAC.GridListProps<object>)}

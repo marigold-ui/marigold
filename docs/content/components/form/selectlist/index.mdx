@@ -139,6 +139,8 @@ Set `orientation="horizontal"` to switch the layout.
 
 <ComponentDemo name="selectlist-horizontal" />
 
+A horizontally arranged list automatically flips to a vertical stack once its **wrapping container** is narrower than `28rem` (≈448px). The flip is driven by a CSS container query on the list's own wrapper, so it reacts to the parent it is rendered into a sidebar, a drawer, a narrow card not just the viewport width. Keyboard navigation continues to work in both axes after the flip.
+
 <GuidelineTiles>
   <Do>
     <DoDescription>
@@ -148,8 +150,8 @@ Set `orientation="horizontal"` to switch the layout.
   </Do>
   <Dont>
     <DontDescription>
-      Don't use horizontal for long lists, rich rows, or narrow viewports.
-      Options scrolled out of view is the worst of both shapes.
+      Don't use horizontal for long lists or rich rows that wouldn't read well
+      stacked either pick the orientation the content fits.
     </DontDescription>
   </Dont>
 </GuidelineTiles>

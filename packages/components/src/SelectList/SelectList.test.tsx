@@ -154,6 +154,17 @@ describe('SelectList', () => {
 
       expect(grid).toHaveAttribute('data-orientation', 'horizontal');
     });
+
+    test('horizontal lists are wrapped in an @container/selectlist scope', () => {
+      render(<Horizontal.Component aria-label="Test" />);
+
+      const grid = screen.getByRole('grid');
+      // eslint-disable-next-line testing-library/no-node-access
+      const containerScope = grid.closest('.\\@container\\/selectlist');
+
+      expect(containerScope).not.toBeNull();
+      expect(containerScope).toHaveClass('w-full');
+    });
   });
 
   describe('width', () => {

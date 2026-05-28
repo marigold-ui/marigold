@@ -6,6 +6,10 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'flex',
       'has-orientation-vertical:w-full',
       'has-orientation-horizontal:w-fit',
+      // When horizontal and the @container/selectlist scope is narrower than
+      // the flip threshold (md ≈ 28rem), the surface fills its parent so the
+      // stacked layout reads as a regular vertical list.
+      'has-orientation-horizontal:@max-md/selectlist:w-full',
     ],
     variants: {
       variant: {
@@ -20,6 +24,14 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'outline-0 flex',
       'orientation-vertical:w-full orientation-vertical:flex-col orientation-vertical:overflow-x-hidden orientation-vertical:overflow-y-auto',
       'orientation-horizontal:w-fit orientation-horizontal:flex-row orientation-horizontal:overflow-x-auto orientation-horizontal:overflow-y-hidden',
+      // Container-query flip: a horizontally arranged list switches to a
+      // vertical stack once the wrapping `@container/selectlist` is narrower
+      // than the md breakpoint. Keyboard navigation still works on both axes
+      // thanks to `layout="grid"` on the underlying GridList.
+      'orientation-horizontal:@max-md/selectlist:w-full',
+      'orientation-horizontal:@max-md/selectlist:flex-col',
+      'orientation-horizontal:@max-md/selectlist:overflow-x-hidden',
+      'orientation-horizontal:@max-md/selectlist:overflow-y-auto',
     ],
     variants: {
       variant: {
@@ -48,6 +60,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'transition-[border,color,background]',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'group-orientation-horizontal/list:min-w-40',
+      // Container-query flip: drop the horizontal min-width so stacked rows
+      // can take the full container width.
+      'group-orientation-horizontal/list:@max-md/selectlist:min-w-0',
     ],
     variants: {
       variant: {
@@ -58,6 +73,19 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
           'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-border',
           'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-border',
+          // Container-query flip: in narrow containers, swap horizontal
+          // rounding/borders for the vertical equivalents. Use per-corner
+          // utilities (rounded-bl / rounded-tr / etc.) so each override only
+          // touches the corner that changes. Using `rounded-l-none` here
+          // would also reset the top-left corner that we want to keep
+          // rounded — Tailwind sorts side-based utilities after corner-based
+          // ones, so the broader rule would win the cascade.
+          'group-orientation-horizontal/list:@max-md/selectlist:first:rounded-bl-none',
+          'group-orientation-horizontal/list:@max-md/selectlist:first:rounded-tr-(--selectlist-item-radius)',
+          'group-orientation-horizontal/list:@max-md/selectlist:last:rounded-tr-none',
+          'group-orientation-horizontal/list:@max-md/selectlist:last:rounded-bl-(--selectlist-item-radius)',
+          'group-orientation-horizontal/list:@max-md/selectlist:not-last:border-r-0',
+          'group-orientation-horizontal/list:@max-md/selectlist:not-last:border-b',
         ],
         bordered: [
           'ui-surface shadow-elevation-border min-h-14',

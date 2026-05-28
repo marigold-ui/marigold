@@ -77,12 +77,13 @@ const meta = preview.meta({
     },
     orientation: {
       control: { type: 'inline-radio' },
-      options: ['vertical', 'horizontal'],
+      options: ['vertical', 'horizontal', 'responsive'],
       table: {
-        type: { summary: 'vertical | horizontal' },
+        type: { summary: 'vertical | horizontal | responsive' },
         defaultValue: { summary: 'vertical' },
       },
-      description: 'Direction options flow and arrow keys navigate.',
+      description:
+        'Direction options flow and arrow keys navigate. `responsive` uses a CSS container query to switch from horizontal to vertical when the container is narrower than 640 px (configurable via `--breakpoint-sm` in the theme).',
     },
     p: paddingArgType(
       insetTokens,
@@ -488,6 +489,73 @@ export const Horizontal = meta.story({
       </SelectList.Option>
     </SelectList>
   ),
+});
+
+export const HorizontalResponsive = meta.story({
+  tags: ['component-test'],
+  args: {
+    orientation: 'horizontal',
+  },
+  render: args => (
+    <Stack space={6}>
+      <div data-testid="wide-container" style={{ width: 640 }}>
+        <SelectList
+          {...args}
+          label="Shipping speed (wide container)"
+          description="640px parent — items stay side by side."
+          defaultSelectedKeys={['standard']}
+        >
+          <SelectList.Option id="standard" textValue="Standard">
+            <Text slot="label">Standard</Text>
+            <Text slot="description">3–5 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="express" textValue="Express">
+            <Text slot="label">Express</Text>
+            <Text slot="description">1–2 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="overnight" textValue="Overnight">
+            <Text slot="label">Overnight</Text>
+            <Text slot="description">Next business day</Text>
+          </SelectList.Option>
+        </SelectList>
+      </div>
+      <div data-testid="narrow-container" style={{ width: 320 }}>
+        <SelectList
+          {...args}
+          label="Shipping speed (narrow container)"
+          description="320px parent — items stack vertically."
+          defaultSelectedKeys={['standard-narrow']}
+        >
+          <SelectList.Option id="standard-narrow" textValue="Standard">
+            <Text slot="label">Standard</Text>
+            <Text slot="description">3–5 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="express-narrow" textValue="Express">
+            <Text slot="label">Express</Text>
+            <Text slot="description">1–2 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="overnight-narrow" textValue="Overnight">
+            <Text slot="label">Overnight</Text>
+            <Text slot="description">Next business day</Text>
+          </SelectList.Option>
+        </SelectList>
+      </div>
+    </Stack>
+  ),
+  play: async ({ canvas, step }) => {
+    const wide = canvas.getByTestId('wide-container');
+    const narrow = canvas.getByTestId('narrow-container');
+    const wideList = wide.querySelector('[role="grid"]') as HTMLElement;
+    const narrowList = narrow.querySelector('[role="grid"]') as HTMLElement;
+
+    await step('wide container keeps items in a row', () => {
+      expect(getComputedStyle(wideList).flexDirection).toBe('row');
+    });
+
+    await step('narrow container flips items into a column', () => {
+      expect(getComputedStyle(narrowList).flexDirection).toBe('column');
+    });
+  },
 });
 
 const borderedMethods = [
