@@ -28,9 +28,6 @@ export const Basic = meta.story({
   ),
 });
 
-// Item-level label + description theme styling lands with DST-1364
-// (`ListBoxItem.tsx` TextContext merge). Until then this story renders
-// structurally correctly but without first-class description styling.
 export const WithDescription = meta.story({
   tags: ['component-test'],
   render: args => (
