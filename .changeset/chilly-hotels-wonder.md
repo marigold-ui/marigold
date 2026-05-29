@@ -1,7 +1,6 @@
 ---
 '@marigold/components': patch
 '@marigold/theme-rui': patch
-'@marigold/docs': patch
 ---
 
 feat([DST-1395]): **SelectList** horizontal layouts now automatically flip to a vertical stack when the wrapping container is narrower than `28rem` (~448px).
