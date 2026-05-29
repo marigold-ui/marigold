@@ -497,7 +497,7 @@ export const HorizontalResponsive = meta.story({
   },
   render: args => (
     <Stack space={6}>
-      <div data-testid="wide-container" className="w-175">
+      <div data-testid="wide-container" className="max-w-175">
         <SelectList
           {...args}
           label="Shipping speed (wide container)"
@@ -518,7 +518,7 @@ export const HorizontalResponsive = meta.story({
           </SelectList.Option>
         </SelectList>
       </div>
-      <div data-testid="medium-container" className="w-125">
+      <div data-testid="medium-container" className="max-w-125">
         <SelectList
           {...args}
           label="Shipping speed (medium container)"
