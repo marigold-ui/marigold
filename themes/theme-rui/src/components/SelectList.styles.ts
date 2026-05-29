@@ -5,7 +5,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     base: [
       'flex',
       'has-orientation-vertical:w-full',
-      'has-orientation-horizontal:w-fit',
+      'has-orientation-horizontal:w-fit has-orientation-horizontal:max-w-full',
       // When horizontal and the @container/selectlist scope is narrower than
       // 40rem, the surface fills its parent so the stacked layout reads as a
       // regular vertical list.
@@ -23,7 +23,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     base: [
       'outline-0 flex',
       'orientation-vertical:w-full orientation-vertical:flex-col orientation-vertical:overflow-x-hidden orientation-vertical:overflow-y-auto',
-      'orientation-horizontal:w-fit orientation-horizontal:flex-row orientation-horizontal:overflow-x-auto orientation-horizontal:overflow-y-hidden',
+      'orientation-horizontal:w-fit orientation-horizontal:max-w-full orientation-horizontal:flex-row orientation-horizontal:overflow-x-auto orientation-horizontal:overflow-y-hidden',
       // Container-query flip: a horizontally arranged list switches to a
       // vertical stack once the wrapping `@container/selectlist` is narrower
       // than 40rem. Keyboard navigation still works on both axes thanks to
