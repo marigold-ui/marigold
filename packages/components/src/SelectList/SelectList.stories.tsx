@@ -497,11 +497,11 @@ export const HorizontalResponsive = meta.story({
   },
   render: args => (
     <Stack space={6}>
-      <div data-testid="wide-container" style={{ width: 640 }}>
+      <div data-testid="wide-container" className="w-175">
         <SelectList
           {...args}
           label="Shipping speed (wide container)"
-          description="640px parent — items stay side by side."
+          description="700px parent items stay side by side."
           defaultSelectedKeys={['standard']}
         >
           <SelectList.Option id="standard" textValue="Standard">
@@ -518,7 +518,7 @@ export const HorizontalResponsive = meta.story({
           </SelectList.Option>
         </SelectList>
       </div>
-      <div data-testid="narrow-container" style={{ width: 320 }}>
+      <div data-testid="narrow-container" className="w-[320px]">
         <SelectList
           {...args}
           label="Shipping speed (narrow container)"

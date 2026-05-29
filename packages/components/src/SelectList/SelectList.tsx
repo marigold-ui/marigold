@@ -97,7 +97,7 @@ type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
    * The primary orientation of the options. Controls the direction items flow
    * and the arrow keys used to navigate between them. Horizontal lists flip
    * to a vertical stack automatically when the wrapping container is narrower
-   * than the `md` container breakpoint (~28rem).
+   * than 40rem.
    * @default 'vertical'
    */
   orientation?: Orientation;
