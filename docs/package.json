@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "3.1011.0",
-    "@internationalized/date": "^3.12.1",
+    "@internationalized/date": "^3.12.2",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
