@@ -1,0 +1,99 @@
+---
+title: Recommended Libraries
+description: Third-party libraries we recommend pairing with Marigold.
+badge: new
+---
+
+Marigold gives you accessible, themeable components, but a real application needs
+more than components. Over time we've recommended a handful of third-party
+libraries across our docs for things like styling, data fetching, forms,
+routing, dates, testing and fonts. This page collects them in one place so you
+can see at a glance what we recommend and decide what fits your use case.
+
+<Callout title="Optional by design">
+  None of these libraries are required to use Marigold. Pick the ones that match
+  your needs. Each entry links to the library's official documentation and to
+  where we use it in our own docs.
+</Callout>
+
+## Styling & build
+
+- **[Tailwind CSS](https://tailwindcss.com/docs/)**: Pairing Marigold with
+  Tailwind gives you the full design system as intended: smaller bundles through
+  tree-shaking and the same utility scale (spacing, colors, breakpoints) that
+  Marigold uses internally. See our
+  [installation guide](/getting-started/installation) and
+  [component principles](/foundations/component-principles).
+- **[Vite](https://vitejs.dev/)**: Our recommended build tool for new projects.
+  See the [installation guide](/getting-started/installation).
+- **[Next.js](https://nextjs.org/)**: Recommended framework when you need
+  routing, SSR or a full-stack setup. See the
+  [installation guide](/getting-started/installation).
+
+## Data fetching
+
+- **[TanStack Query](https://tanstack.com/query/latest)**: Use it when you need
+  sophisticated caching, request deduplication or background refetching. For
+  simpler cases, Marigold also exports
+  [`useAsyncList`](/components/hooks-and-utils/useAsyncListData) from
+  `@marigold/components` (see
+  [async data loading](/patterns/feedback/async-data-loading)).
+
+## Forms & validation
+
+- **[React Hook Form](https://react-hook-form.com/)**: Manages form state with
+  minimal re-renders. Wrap Marigold inputs in its `<Controller>` component to
+  connect them to the form. See
+  [form implementation](/patterns/user-input/form-implementation).
+- **[Zod](https://zod.dev/)**: TypeScript-first schema validation, useful for
+  more complex validation rules. See
+  [form implementation](/patterns/user-input/form-implementation).
+
+## Routing & URL state
+
+Marigold's [`<RouterProvider>`](/components/application/routerprovider) connects
+your router to React Aria's navigation system so components like `<Link>` stay
+accessible. It works with any of the following.
+
+- **[React Router](https://reactrouter.com/)**: Pass its `useNavigate` result to
+  `<RouterProvider>`. See [RouterProvider](/components/application/routerprovider).
+- **[TanStack Router](https://tanstack.com/router/latest)**: Type-safe routing
+  that also integrates through `<RouterProvider>`. See
+  [RouterProvider](/components/application/routerprovider).
+- **[nuqs](https://nuqs.47ng.com/)**: Manage URL state, ideal for keeping filter
+  settings in sync with the address bar. See the
+  [filter pattern](/patterns/user-input/filter).
+
+## Dates
+
+- **[`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/)**:
+  Used by our date components for correct date handling across calendars and
+  time zones, avoiding the pitfalls of the native `Date` object. It is a peer
+  dependency of the date components. See
+  [DatePicker](/components/form/datepicker) and
+  [DateField](/components/form/datefield).
+- **[date-fns](https://date-fns.org/)**: If you already use it, you can parse
+  values for Marigold's date components with `parseDate`. See
+  [DatePicker](/components/form/datepicker).
+
+## Testing
+
+Marigold components are built on accessible primitives, so we recommend testing
+them the way users interact with them: by role and label rather than
+implementation details.
+
+- **[Vitest](https://vitest.dev/)**: Our recommended test runner, fast and
+  ESM-native.
+- **[Testing Library](https://testing-library.com/docs/react-testing-library/intro/)**:
+  Query and assert on components through accessible roles and labels.
+- **[`@testing-library/user-event`](https://testing-library.com/docs/user-event/intro/)**:
+  Simulate real user interactions instead of firing raw events.
+- **[Playwright](https://playwright.dev/)**: For end-to-end and real-browser
+  testing across browsers.
+
+## Fonts
+
+- **[Inter](https://rsms.me/inter/)** (via
+  [`@fontsource-variable/inter`](https://fontsource.org/docs/getting-started/install)):
+  The font family used by the RUI theme. See the
+  [installation guide](/getting-started/installation).
