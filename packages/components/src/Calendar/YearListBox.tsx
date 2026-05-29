@@ -1,47 +1,31 @@
-import { CalendarDate } from '@internationalized/date';
 import { Dispatch, SetStateAction } from 'react';
-import { DateValue } from 'react-aria-components';
-import { useDateFormatter } from '@react-aria/i18n';
-import { useCalendarOrRangeState } from './Context';
+import { CalendarYearPicker } from 'react-aria-components';
 import { ListBox } from './ListBox';
 
 interface YearDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
-  minValue?: DateValue | null;
-  maxValue?: DateValue | null;
 }
 
-const YearListBox = ({
-  setSelectedDropdown,
-  minValue,
-  maxValue,
-}: YearDropdownProps) => {
-  const state = useCalendarOrRangeState();
-  const years: CalendarDate[] = [];
-  for (let i = -20; i <= 20; i++) {
-    years.push(state.focusedDate.add({ years: i }));
-  }
-  const formatter = useDateFormatter({
-    year: 'numeric',
-    timeZone: state.timeZone,
-  });
-
-  const minYear = minValue ? minValue.year : -Infinity;
-  const maxYear = maxValue ? maxValue.year : Infinity;
-
-  return (
-    <ListBox
-      dataTestid="yearOptions"
-      items={years}
-      isDisabled={({ year }) => year < minYear || year > maxYear}
-      isSelected={({ year }) => year === state.focusedDate.year}
-      onSelect={year => {
-        state.setFocusedDate(year);
-        setSelectedDropdown(undefined);
-      }}
-      format={year => formatter.format(year.toDate(state.timeZone))}
-    />
-  );
-};
+const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => (
+  // `visibleYears={41}` preserves the previous unbounded behavior (focused
+  // year ±20). When `minValue`/`maxValue` are set on the calendar, the picker
+  // reads them from state and only emits in-range years, so no out-of-range
+  // years are rendered.
+  <CalendarYearPicker visibleYears={41}>
+    {({ items, value, onChange }) => (
+      <ListBox
+        dataTestid="yearOptions"
+        items={items}
+        isDisabled={() => false}
+        isSelected={item => item.id === value}
+        onSelect={item => {
+          onChange(item.id);
+          setSelectedDropdown(undefined);
+        }}
+        format={item => item.formatted}
+      />
+    )}
+  </CalendarYearPicker>
+);
 
 export default YearListBox;

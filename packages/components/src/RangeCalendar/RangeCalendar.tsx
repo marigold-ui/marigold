@@ -157,20 +157,8 @@ const _RangeCalendar = <T extends DateValue>({
   }, []);
 
   const ViewMap = {
-    month: (
-      <MonthListBox
-        setSelectedDropdown={setSelectedDropdown}
-        minValue={minValue}
-        maxValue={maxValue}
-      />
-    ),
-    year: (
-      <YearListBox
-        setSelectedDropdown={setSelectedDropdown}
-        minValue={minValue}
-        maxValue={maxValue}
-      />
-    ),
+    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
+    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   const fieldErrorValue = useMemo<ContextType<typeof FieldErrorContext>>(

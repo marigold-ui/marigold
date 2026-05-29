@@ -248,8 +248,8 @@ importers:
         specifier: 3.1011.0
         version: 3.1011.0
       '@internationalized/date':
-        specifier: ^3.12.1
-        version: 3.12.1
+        specifier: ^3.12.2
+        version: 3.12.2
       '@marigold/components':
         specifier: workspace:*
         version: link:../packages/components
@@ -457,8 +457,8 @@ importers:
   packages/components:
     dependencies:
       '@internationalized/date':
-        specifier: ^3.12.1
-        version: 3.12.1
+        specifier: ^3.12.2
+        version: 3.12.2
       '@marigold/system':
         specifier: workspace:*
         version: link:../system
@@ -469,8 +469,8 @@ importers:
         specifier: ^3.15.0
         version: 3.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@react-aria/calendar':
-        specifier: ^3.10.0
-        version: 3.10.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        specifier: ^3.10.1
+        version: 3.10.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@react-aria/collections':
         specifier: 3.1.1
         version: 3.1.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -520,17 +520,17 @@ importers:
         specifier: ^3.10.0
         version: 3.10.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@react-types/button':
-        specifier: ^3.15.0
+        specifier: ^3.16.0
         version: 3.16.0(@react-spectrum/provider@3.11.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@react-types/checkbox':
-        specifier: ^3.10.0
+        specifier: ^3.11.0
         version: 3.11.0(@react-spectrum/provider@3.11.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@react-types/grid':
-        specifier: ^3.3.0
+        specifier: ^3.4.0
         version: 3.4.0(@react-spectrum/provider@3.11.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@react-types/shared':
-        specifier: ^3.34.0
-        version: 3.34.0(react@19.2.6)
+        specifier: ^3.35.0
+        version: 3.35.0(react@19.2.6)
       '@react-types/table':
         specifier: ^3.14.0
         version: 3.14.0(@react-spectrum/provider@3.11.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -538,11 +538,11 @@ importers:
         specifier: 12.39.0
         version: 12.39.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react-aria-components:
-        specifier: ^1.17.0
-        version: 1.17.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        specifier: ^1.18.0
+        version: 1.18.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react-stately:
-        specifier: ^3.45.0
-        version: 3.46.0(react@19.2.6)
+        specifier: ^3.47.0
+        version: 3.47.0(react@19.2.6)
     devDependencies:
       '@marigold/icons':
         specifier: workspace:*
@@ -1069,6 +1069,10 @@ packages:
 
   '@babel/runtime@7.28.2':
     resolution: {integrity: sha512-KHp2IflsnGywDjBWDkR9iEqiWSpc8GIi0lgTT3mOElT0PP1tG26P4tmFI2YvAdzgq9RGyoHZQEIEdZy6Ec5xCA==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.29.7':
+    resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.28.6':
@@ -2012,6 +2016,9 @@ packages:
   '@internationalized/date@3.12.1':
     resolution: {integrity: sha512-6IedsVWXyq4P9Tj+TxuU8WGWM70hYLl12nbYU8jkikVpa6WXapFazPUcHUMDMoWftIDE2ILDkFFte6W2nFCkRQ==}
 
+  '@internationalized/date@3.12.2':
+    resolution: {integrity: sha512-FY1Y+H64NDs+HAF6omlnWxm3mEpfgaCSWtL5l551ZZfImA+kGjPFgrnJrGjH6lfmLL0g8Z/mBu1R3kufeCp6Jw==}
+
   '@internationalized/message@3.1.9':
     resolution: {integrity: sha512-x03MSVTaB/4JHtW1VAYaY/2cCuBrHbWM6ZvlgpKdnSdW28tZbqpR673RJrVJyXWRw1bpgYN89Tz7ohX5tgNgPA==}
 
@@ -2929,8 +2936,8 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
-  '@react-aria/calendar@3.10.0':
-    resolution: {integrity: sha512-68Cqnp/3DcgsUmxVyhe510Hs2PfQFg+rmk2zqZMt6wwtUfsJai/OV09XU07SHEP2BmIa2RQNJ18OXzSTjPd2SA==}
+  '@react-aria/calendar@3.10.1':
+    resolution: {integrity: sha512-0QYoKYyCHFVvfOlXgftTzDttTXtbnYa0GQ6i970Rjdx/0VrMdJe2TXSm60OEISwB3w0aZWAnn3CBiDVtOYQtEw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -3115,6 +3122,11 @@ packages:
 
   '@react-types/shared@3.34.0':
     resolution: {integrity: sha512-gp6xo/s2lX54AlTjOiqwDnxA7UW79BNvI9dB9pr3LZTzRKCd1ZA+ZbgKw/ReIiWuvvVw/8QFJpnqeeFyLocMcQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-types/shared@3.35.0':
+    resolution: {integrity: sha512-iNWvuzEwANttpQpdlu8nPBtdHb0mcCMj1ZTH//iRB5E/14IAnyRlR25rxH7pNLyzHINsPGEKnWvpwDMCT6vziQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
@@ -8066,8 +8078,20 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
+  react-aria-components@1.18.0:
+    resolution: {integrity: sha512-FhRQjuDkH4WhgFv+O2sYTzK3JzdZTGpBeaqfRlfTo+DcSZzD8elJEkytHe7SDpcexVKeire8NVd7OruZHfCVoA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
   react-aria@3.48.0:
     resolution: {integrity: sha512-jQjd4rBEIMqecBaAKYJbVGK6EqIHLa5znVQ7jwFyK5vCyljoj6KhgtiahmcIPsG5vG5vEDLw+ba+bEWn6A2P4w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  react-aria@3.49.0:
+    resolution: {integrity: sha512-4+oK9FwJQWYhyA5zLfj/feOGY0zZbkE1muoF4gyxMroHVypjcYaRSTlJwvxph2zIlxt757KX6xIK2wJ5Aw1Kog==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -8129,6 +8153,11 @@ packages:
 
   react-stately@3.46.0:
     resolution: {integrity: sha512-OdxhWvHgs2L4OJGIs7hnuTr5WjjMM6enhNEAMRqiekhF8+ITvA2LRwNftOZwcogaoCslGYq5S2VQTQwnm0GbCA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  react-stately@3.47.0:
+    resolution: {integrity: sha512-H3ar+SOWP920EbVg7qWfP3fZjZiwhlEJAEJQqjt+w8oKijCwFgr0+R4941PIHscOXRNRvEOjvWilitImC0DdBg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
@@ -10124,6 +10153,8 @@ snapshots:
 
   '@babel/runtime@7.28.2': {}
 
+  '@babel/runtime@7.29.7': {}
+
   '@babel/template@7.28.6':
     dependencies:
       '@babel/code-frame': 7.29.0
@@ -10957,6 +10988,10 @@ snapshots:
     dependencies:
       '@swc/helpers': 0.5.23
 
+  '@internationalized/date@3.12.2':
+    dependencies:
+      '@swc/helpers': 0.5.23
+
   '@internationalized/message@3.1.9':
     dependencies:
       '@swc/helpers': 0.5.23
@@ -11784,7 +11819,7 @@ snapshots:
       react-aria: 3.48.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react-dom: 19.2.6(react@19.2.6)
 
-  '@react-aria/calendar@3.10.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+  '@react-aria/calendar@3.10.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
       '@swc/helpers': 0.5.23
       react: 19.2.6
@@ -12010,6 +12045,10 @@ snapshots:
       react-dom: 19.2.6(react@19.2.6)
 
   '@react-types/shared@3.34.0(react@19.2.6)':
+    dependencies:
+      react: 19.2.6
+
+  '@react-types/shared@3.35.0(react@19.2.6)':
     dependencies:
       react: 19.2.6
 
@@ -12609,7 +12648,7 @@ snapshots:
     dependencies:
       '@adobe/react-spectrum': 3.47.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@adobe/react-spectrum-ui': 1.2.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      '@babel/runtime': 7.28.2
+      '@babel/runtime': 7.29.7
       '@swc/helpers': 0.5.23
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
@@ -17665,6 +17704,17 @@ snapshots:
       react-dom: 19.2.6(react@19.2.6)
       react-stately: 3.46.0(react@19.2.6)
 
+  react-aria-components@1.18.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
+    dependencies:
+      '@internationalized/date': 3.12.2
+      '@react-types/shared': 3.35.0(react@19.2.6)
+      '@swc/helpers': 0.5.23
+      client-only: 0.0.1
+      react: 19.2.6
+      react-aria: 3.49.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      react-dom: 19.2.6(react@19.2.6)
+      react-stately: 3.47.0(react@19.2.6)
+
   react-aria@3.48.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
     dependencies:
       '@internationalized/date': 3.12.1
@@ -17677,6 +17727,20 @@ snapshots:
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
       react-stately: 3.46.0(react@19.2.6)
+      use-sync-external-store: 1.6.0(react@19.2.6)
+
+  react-aria@3.49.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
+    dependencies:
+      '@internationalized/date': 3.12.2
+      '@internationalized/number': 3.6.7
+      '@internationalized/string': 3.2.9
+      '@react-types/shared': 3.35.0(react@19.2.6)
+      '@swc/helpers': 0.5.23
+      aria-hidden: 1.2.6
+      clsx: 2.1.1
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
+      react-stately: 3.47.0(react@19.2.6)
       use-sync-external-store: 1.6.0(react@19.2.6)
 
   react-docgen-typescript@2.4.0(typescript@6.0.2):
@@ -17752,9 +17816,19 @@ snapshots:
   react-stately@3.46.0(react@19.2.6):
     dependencies:
       '@internationalized/date': 3.12.1
+      '@internationalized/number': 3.6.6
+      '@internationalized/string': 3.2.8
+      '@react-types/shared': 3.34.0(react@19.2.6)
+      '@swc/helpers': 0.5.23
+      react: 19.2.6
+      use-sync-external-store: 1.6.0(react@19.2.6)
+
+  react-stately@3.47.0(react@19.2.6):
+    dependencies:
+      '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.7
       '@internationalized/string': 3.2.9
-      '@react-types/shared': 3.34.0(react@19.2.6)
+      '@react-types/shared': 3.35.0(react@19.2.6)
       '@swc/helpers': 0.5.23
       react: 19.2.6
       use-sync-external-store: 1.6.0(react@19.2.6)

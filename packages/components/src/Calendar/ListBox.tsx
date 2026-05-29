@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useLayoutEffect, useRef } from 'react';
 import {
   ListBox as RACAriaListBox,
   ListBoxItem as RACListBoxItem,
@@ -24,12 +24,22 @@ export function ListBox<T>({
   format,
 }: ListBoxProps<T>) {
   const { classNames } = useCalendarContext();
+  const listRef = useRef<HTMLDivElement>(null);
   const selectedItemKeys = items
     .map((item, index) => (isSelected(item, index) ? String(index) : undefined))
     .filter((key): key is string => typeof key === 'string');
 
+  // RAC `autoFocus` moves keyboard focus but not the visible scroll position in
+  // a grid layout, so scroll the selected option into view when the picker opens.
+  useLayoutEffect(() => {
+    listRef.current
+      ?.querySelector('[aria-current="true"]')
+      ?.scrollIntoView({ block: 'center' });
+  }, []);
+
   return (
     <RACAriaListBox
+      ref={listRef}
       className={cn(
         'grid h-full max-h-[300px] w-full grid-cols-3 gap-y-10 overflow-y-auto p-2'
       )}
