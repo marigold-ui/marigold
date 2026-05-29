@@ -52,7 +52,7 @@
     "@marigold/tsconfig": "workspace:*",
     "@types/node": "24.10.13",
     "tsdown": "0.21.9",
-    "vitest": "4.1.6"
+    "vitest": "4.1.7"
   },
   "scripts": {
     "build": "tsdown",
