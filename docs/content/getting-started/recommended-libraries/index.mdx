@@ -5,15 +5,15 @@ badge: new
 ---
 
 Marigold gives you accessible, themeable components, but a real application needs
-more than components. Over time we've recommended a handful of third-party
+more than components. We recommend a handful of third-party
 libraries across our docs for things like styling, data fetching, forms,
 routing, dates, testing and fonts. This page collects them in one place so you
 can see at a glance what we recommend and decide what fits your use case.
 
 <Callout title="Optional by design">
-  None of these libraries are required to use Marigold. Pick the ones that match
-  your needs. Each entry links to the library's official documentation and to
-  where we use it in our own docs.
+  None of these libraries are required to use with Marigold. Pick the ones that
+  match your needs. Each entry links to the library's official documentation and
+  to where we use it in our own docs.
 </Callout>
 
 ## Styling & build
@@ -42,11 +42,17 @@ can see at a glance what we recommend and decide what fits your use case.
 ## Forms & validation
 
 - **[React Hook Form](https://react-hook-form.com/)**: Manages form state with
-  minimal re-renders. Wrap Marigold inputs in its `<Controller>` component to
-  connect them to the form. See
+  minimal re-renders. For most forms you don't need it: Marigold's `<Form>`
+  works with the native form submission and you can read the values with
+  `parseFormData` from `@marigold/components`. Only reach for React Hook Form
+  when a form gets genuinely complex (e.g. dynamic field arrays, cross-field
+  dependencies, wizard-like flows); wrap Marigold inputs in its `<Controller>`
+  component to connect them. See
   [form implementation](/patterns/user-input/form-implementation).
-- **[Zod](https://zod.dev/)**: TypeScript-first schema validation, useful for
-  more complex validation rules. See
+- **[Zod](https://zod.dev/)**: TypeScript-first schema validation. Note that
+  Marigold's form components already support validation out of the box (error
+  props and messages, plus native HTML constraints like `isRequired`), so reach
+  for Zod when you need richer, schema-based rules. See
   [form implementation](/patterns/user-input/form-implementation).
 
 ## Routing & URL state
