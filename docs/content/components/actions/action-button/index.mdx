@@ -6,7 +6,7 @@ badge: alpha
 
 The `<ActionButton>` component is a low-emphasis button intended to live inside another surface like a toolbar, a list row, the header of a `<Panel>` or `<EmptyState>`, or the chrome of a `<Dialog>`. It defaults to the `ghost` variant so the button recedes into its surroundings rather than competing with the page's primary action.
 
-For the primary action of a page or form, reach for [`<Button>`](/components/actions/button). To cluster related actions in a toolbar, use [`<ActionGroup>`](/components/actions/action-group). For the bulk-action chrome inside `<ActionBar>`, use [`<ActionBar.Button>`](/components/actions/actionbar). For more actions than fit comfortably in a row, use [`<ActionMenu>`](/components/overlay/action-menu).
+For a **standalone** primary action that isn't part of a container's chrome, reach for [`<Button>`](/components/actions/button). ActionButton _is_ used for the prominent action of a slot-configured container — most notably the page-level call to action inside a [`<Page.Header>`](/components/layout/page-header) — via `variant="primary"`, because there it must be slot-aware to claim the header's action cell. To cluster related actions in a toolbar, use [`<ActionGroup>`](/components/actions/action-group). For the bulk-action chrome inside `<ActionBar>`, use [`<ActionBar.Button>`](/components/actions/actionbar). For more actions than fit comfortably in a row, use [`<ActionMenu>`](/components/overlay/action-menu).
 
 import { ActionButtonAnatomy } from './action-button-anatomy';
 
@@ -27,18 +27,19 @@ An ActionButton is a single pressable area that fires an action. It can carry a 
 
 <AppearanceTable component={'ActionButton'} />
 
-`<ActionButton>` ships its own narrowed variant set so it stays visually aligned with [`<Button>`](/components/actions/button) but reads as low-emphasis chrome. For the bold variants (`primary`, `destructive`) reach for `<Button>` instead.
+`<ActionButton>` stays visually aligned with [`<Button>`](/components/actions/button) but is slot-aware, so it picks up the grid placement and size cascade of the container it lives in. It defaults to low-emphasis chrome; `primary` is available for the prominent action of a slot-configured container (e.g. a `<Page.Header>`).
 
 | Variant             | Description                                                    | When to use                                                                                                                   |
 | ------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `default`           | Transparent, no border or background. **The default variant.** | Toolbar actions, list-row actions, container headers, or anywhere the button should recede into the surrounding UI.           |
+| `primary`           | Filled, high-emphasis.                                         | The single prominent action of a slot-configured container — most often the page call to action in a `<Page.Header>`.         |
 | `secondary`         | Neutral button with a subtle border.                           | When the action needs slightly more visual weight than `default` without competing with a primary button on the same surface. |
 | `destructive-ghost` | Red text with no background.                                   | Low-emphasis destructive actions, like a "Remove" button on a list item.                                                      |
 | `link`              | Styled as an inline text link.                                 | Actions that should blend into surrounding text while remaining interactive.                                                  |
 
 ## Usage
 
-ActionButton is the action that belongs to a surface, not to the page. It lives inside a row, a toolbar, or a container header and recedes into that surface.
+ActionButton is the action that belongs to a slot-configured container — a row, a toolbar, or a container header — and adopts that container's placement and size. In most containers it recedes as chrome; in a `<Page.Header>` its `primary` variant is the page's prominent call to action.
 
 <GuidelineTiles>
   <Do>
@@ -49,8 +50,9 @@ ActionButton is the action that belongs to a surface, not to the page. It lives 
   </Do>
   <Dont>
     <DontDescription>
-      Don't use `<ActionButton>` for the primary action of a page or form. Use
-      [`<Button>`](/components/actions/button) instead.
+      Don't use `<ActionButton>` for a standalone primary action that isn't part
+      of a container's chrome. Use [`<Button>`](/components/actions/button)
+      instead.
     </DontDescription>
   </Dont>
 </GuidelineTiles>

@@ -4,11 +4,12 @@ description: A composition pattern for building application frames with persiste
 badge: alpha
 ---
 
-Most business applications share a common frame: a sidebar for navigation, a top bar for context and actions, and a scrollable content area. The App Shell pattern shows how to compose this frame using [`<AppLayout>`](/components/layout/app-layout), covering provider wiring, content placement decisions, and responsive strategy.
+Most business applications share a common frame: a sidebar for navigation, a top bar for context and actions, and a scrollable content area. The App Shell pattern shows how to compose this frame using [`<AppShell>`](/components/layout/app-shell), [`<Page>`](/components/layout/page), and [`<Page.Header>`](/components/layout/page-header), covering content placement decisions, the heading outline, action hierarchy, and responsive strategy.
 
 <Callout title="Looking for the component API?">
-  For props, slot details, and accessibility, see the [AppLayout component
-  page](/components/layout/app-layout).
+  For props, slot details, and accessibility, see the
+  [AppShell](/components/layout/app-shell), [Page](/components/layout/page), and
+  [Page.Header](/components/layout/page-header) component pages.
 </Callout>
 
 ## Structure
@@ -25,33 +26,39 @@ The App Shell divides the screen into three areas. The diagram below shows how t
 
 - **Sidebar:** Sits on the left and spans the full height. It holds the application logo, primary navigation links, grouped sections, and an optional footer. Users can collapse or expand it with a toggle button.
 - **Top Navigation:** Stretches across the top next to the sidebar. It should provide the sidebar toggle, breadcrumbs for orientation, and user-related controls such as account menus or status indicators.
-- **Main:** Takes up the remaining space. This is the scrollable content area where page-specific content lives, typically wrapped in spacing via `<Inset>`.
+- **Page:** Takes up the remaining space. This is the scrollable content area. Wrap it in a [`<Page>`](/components/layout/page), which renders the `main` landmark and owns the page's padding and rhythm. A page is a [`<Page.Header>`](/components/layout/page-header) followed by [`<Panel>`](/components/layout/panel)s.
 
-[`RouterProvider`](/components/application/routerprovider) handles page navigation, `Sidebar.Provider` manages the sidebar's open/collapsed state, and `AppLayout` positions everything on a CSS Grid. Place `Sidebar.Provider` _outside_ of `AppLayout` so the toggle in the header and the sidebar itself share the same state.
+[`RouterProvider`](/components/application/routerprovider) handles page navigation and `AppShell` positions everything on a CSS Grid. `AppShell` manages the sidebar's open/collapsed state internally (via `defaultSidebarOpen`), so the toggle in the header and the sidebar share state with no provider boilerplate.
 
 ```tsx
 <RouterProvider navigate={navigate}>
-  <Sidebar.Provider defaultOpen>
-    <AppLayout>
-      <AppLayout.Sidebar>
-        <Sidebar.Header>...</Sidebar.Header>
-        <Sidebar.Nav>...</Sidebar.Nav>
-        <Sidebar.Footer>...</Sidebar.Footer>
-      </AppLayout.Sidebar>
-      <AppLayout.Header>
-        <TopNavigation.Start>
-          <Sidebar.Toggle />
-        </TopNavigation.Start>
-        <TopNavigation.Middle>...</TopNavigation.Middle>
-        <TopNavigation.End>...</TopNavigation.End>
-      </AppLayout.Header>
-      <AppLayout.Main>...</AppLayout.Main>
-    </AppLayout>
-  </Sidebar.Provider>
+  <AppShell defaultSidebarOpen>
+    <Sidebar>
+      <Sidebar.Header>...</Sidebar.Header>
+      <Sidebar.Nav>...</Sidebar.Nav>
+      <Sidebar.Footer>...</Sidebar.Footer>
+    </Sidebar>
+    <TopNavigation>
+      <TopNavigation.Start>
+        <Sidebar.Toggle />
+      </TopNavigation.Start>
+      <TopNavigation.Middle>...</TopNavigation.Middle>
+      <TopNavigation.End>...</TopNavigation.End>
+    </TopNavigation>
+    <Page>
+      <Page.Header>
+        <Title>Billing</Title>
+        <Description>Manage your plan and invoices.</Description>
+        <ActionButton variant="primary">Upgrade plan</ActionButton>
+      </Page.Header>
+      <Panel>...</Panel>
+      <Panel>...</Panel>
+    </Page>
+  </AppShell>
 </RouterProvider>
 ```
 
-The order of the slot components inside `AppLayout` doesn't matter since the grid template handles positioning.
+The order of `<Sidebar>`, `<TopNavigation>`, and `<Page>` inside `AppShell` doesn't matter since the grid template handles positioning. For controlled sidebar state, render your own `<Sidebar.Provider>` around `<AppShell>` — see the [AppShell docs](/components/layout/app-shell).
 
 ### Where things go
 
@@ -97,20 +104,79 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
 
 Each App Shell slot renders semantic HTML, so the screen reader's landmark list reflects the layout automatically.
 
-| Slot                                     | Landmark        |
-| ---------------------------------------- | --------------- |
-| `<AppLayout.Header>` / `<TopNavigation>` | `banner`        |
-| `<AppLayout.Sidebar>`                    | `complementary` |
-| `<Sidebar.Nav>`                          | `navigation`    |
-| `<AppLayout.Main>`                       | `main`          |
+| Slot              | Landmark        |
+| ----------------- | --------------- |
+| `<TopNavigation>` | `banner`        |
+| `<Sidebar>`       | `complementary` |
+| `<Sidebar.Nav>`   | `navigation`    |
+| `<Page>`          | `main`          |
 
-When you compose multiple navigation regions inside the header (e.g. `<TopNavigation.Middle>` plus `<TopNavigation.End>`), give each a distinct `aria-label` so they can be told apart. Each [`<Panel>`](/components/layout/panel) inside `<AppLayout.Main>` adds its own `region` landmark, labelled by its title.
+The `<main>` landmark is labelled by the page `<h1>` from `<Page.Header>`, so screen-reader landmark navigation announces the page by its title. When you compose multiple navigation regions inside the header (e.g. `<TopNavigation.Middle>` plus `<TopNavigation.End>`), give each a distinct `aria-label` so they can be told apart. Each [`<Panel>`](/components/layout/panel) inside `<Page>` adds its own `region` landmark, labelled by its title.
 
 `F6` / `Shift + F6` cycling is opt-in via the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook. Today only `<Drawer>` opts in by default — wrap the slots above (or any custom region) with `useLandmark` to add them to the cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
 
 ### Responsive behavior
 
-`<AppLayout>` always renders the L-shape grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
+`<AppShell>` always renders the L-shape grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
+
+## Page structure
+
+Inside `<Page>`, lead with a `<Page.Header>` and follow it with the page's `<Panel>`s. `<Page>` supplies the vertical rhythm between them, so you don't wrap them in a `<Stack>` or `<Inset>`.
+
+```tsx
+<Page>
+  <Page.Header>
+    <Title>Billing</Title>
+    <Description>Manage your plan and invoices.</Description>
+    <ActionButton variant="primary">Upgrade plan</ActionButton>
+  </Page.Header>
+  <Panel>...</Panel>
+  <Panel>...</Panel>
+</Page>
+```
+
+The heading outline falls out of the defaults — no per-component configuration:
+
+| Element                            | Heading |
+| ---------------------------------- | ------- |
+| `<Title>` in `<Page.Header>`       | `h1`    |
+| `<Title>` in `<Panel.Header>`      | `h2`    |
+| `<Title>` in `<Panel.Collapsible>` | `h3`    |
+
+`<Page>` does not enforce a max-width. For form-style pages, constrain width per surface with `<Panel size="form">` rather than wrapping the whole page.
+
+## Actions hierarchy
+
+Match the action to the level it belongs to. Promote a button only as high as its scope.
+
+| Level       | Where                   | Use                                                                                           |
+| ----------- | ----------------------- | --------------------------------------------------------------------------------------------- |
+| **Page**    | `<Page.Header>`         | `<ActionButton variant="primary">` for the page's primary action; `<ActionMenu>` for overflow |
+| **Panel**   | `<Panel.Header>`        | `<ActionButton>` (icon chrome) or `<ActionMenu>` scoped to that surface                       |
+| **Row**     | inside a table/list row | `<ActionButton>` / `<ActionMenu>` scoped to the item                                          |
+| **Account** | `<TopNavigation.End>`   | account menu, notifications — global utilities, not page actions                              |
+
+A page's primary action is a prominent `<ActionButton variant="primary">` in the header; it claims the header's action slot. Don't put page actions in `<TopNavigation>` — that bar is for global utilities.
+
+## Tabs on pages
+
+When a page splits into tabbed views, render [`<Tabs>`](/components/navigation/tabs) as a sibling _below_ `<Page.Header>`, not inside it. The header keeps the page title and primary action; the tabs switch the content beneath.
+
+```tsx
+<Page>
+  <Page.Header>
+    <Title>Event settings</Title>
+  </Page.Header>
+  <Tabs>
+    <Tabs.List>...</Tabs.List>
+    <Tabs.TabPanel id="general">...</Tabs.TabPanel>
+  </Tabs>
+</Page>
+```
+
+## Empty state
+
+When a page (or a Panel within it) has no data yet, render an [`<EmptyState>`](/components/feedback/empty-state) in place of the missing content. Keep the `<Page.Header>` so the page title and primary action stay available — the empty state replaces the Panels, not the header.
 
 ## Full demo
 
@@ -126,10 +192,10 @@ A complete App Shell with sidebar navigation (including drill-down), breadcrumbs
 <TeaserList
   items={[
     {
-      title: 'AppLayout',
-      href: '../../components/layout/app-layout',
+      title: 'AppShell',
+      href: '../../components/layout/app-shell',
       caption:
-        'The grid container that positions sidebar, header, and main areas.',
+        'The grid container that positions sidebar, header, and page areas.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -143,6 +209,28 @@ A complete App Shell with sidebar navigation (including drill-down), breadcrumbs
             strokeLinecap="round"
             strokeLinejoin="round"
             d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Page',
+      href: '../../components/layout/page',
+      caption:
+        'The content area — the main landmark, page padding, and rhythm.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
           />
         </svg>
       ),

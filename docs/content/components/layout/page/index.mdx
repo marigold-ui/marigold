@@ -1,0 +1,70 @@
+---
+title: Page
+description: The content area of an AppShell — the main landmark, page padding, and vertical rhythm.
+badge: beta
+---
+
+`<Page>` is the content area of an [`<AppShell>`](/components/layout/app-shell). It renders the `<main>` landmark in the grid's `main` area and owns the page's padding and vertical rhythm. A page is typically a [`<Page.Header>`](/components/layout/page-header) followed by [`<Panel>`](/components/layout/panel)s.
+
+`<Page>` deliberately does **not** own scroll (the document scrolls) and does **not** enforce a max-width — content width is driven by `<Panel size="form">`.
+
+<Callout title="Looking for composition guidance?">
+  For where the page sits in the frame and how to structure its content, see the
+  [App Shell pattern](/patterns/layout/app-shell).
+</Callout>
+
+## Usage
+
+### Basic structure
+
+```tsx
+<Page>
+  <Page.Header>
+    <Title>Billing</Title>
+    <Description>Manage your plan and invoices.</Description>
+    <ActionButton variant="primary">Upgrade plan</ActionButton>
+  </Page.Header>
+  <Panel>{/* … */}</Panel>
+  <Panel>{/* … */}</Panel>
+</Page>
+```
+
+<ComponentDemo name="page-basic" background="page" />
+
+### Heading outline
+
+`<Page>` sets the base heading level to `1`, so a [`<Title>`](/components/content/title) inside `<Page.Header>` renders as the page `<h1>`. Each `<Panel>` below defaults to `headingLevel={2}`, so its `<Title>` renders as an `<h2>`. The outline — `h1` → `h2` → `h3` (Panel collapsibles) — falls out of the defaults with no per-component configuration.
+
+### Padding and rhythm
+
+`<Page>` applies padding (`square-relaxed` by default) and a vertical gap between its children (`group` by default). Override padding with `p`, or `px` / `py` for per-axis control (setting `p` together with `px`/`py` is a type error). Override the gap with `space`.
+
+### Accessibility
+
+- **Landmark:** `<Page>` renders a `<main>` landmark. When a `<Title>` is present in `<Page.Header>`, the `<main>` is labelled by it via `aria-labelledby`, so screen-reader landmark navigation announces the page by its title.
+- **No title:** If a page has no `<Title>`, pass an `aria-label` to `<Page>` so the `<main>` still has an accessible name.
+
+## Props
+
+<StorybookHintMessage component={'Page'} />
+
+### Page
+
+<AutoTypeTable path="Page" name="PageProps" />
+
+## Related components
+
+<ul>
+  <li>
+    [AppShell](/components/layout/app-shell): The grid frame that positions the
+    page, sidebar, and header.
+  </li>
+  <li>
+    [Page.Header](/components/layout/page-header): The page title, description,
+    and primary actions.
+  </li>
+  <li>
+    [Panel](/components/layout/panel): The titled surfaces that make up a page's
+    content.
+  </li>
+</ul>

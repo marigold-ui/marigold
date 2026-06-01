@@ -4,7 +4,7 @@ import { ArrowLeft, LifeBuoy } from 'lucide-react';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  AppLayout,
+  AppShell,
   Badge,
   Breadcrumbs,
   Inline,
@@ -108,68 +108,63 @@ export const ShellLayout = ({
 
   return (
     <RouterProvider navigate={href => router.push(href)}>
-      <Sidebar.Provider defaultOpen>
-        <AppLayout>
-          <AppLayout.Sidebar>
-            <Sidebar.Header>
-              <Inline space={2} alignY="center" noWrap>
-                <Logo className="size-8 shrink-0" />
-                <Text weight="bold" fontSize="lg">
-                  Examples
-                </Text>
-              </Inline>
-            </Sidebar.Header>
-            <Sidebar.Nav current={pathname}>
-              {config.sections.map((section, i) => [
-                ...(i > 0
-                  ? [<Sidebar.Separator key={`sep-${section.label}`} />]
-                  : []),
-                <Sidebar.GroupLabel key={`label-${section.label}`}>
-                  {section.label}
-                </Sidebar.GroupLabel>,
-                ...renderNav(section.items, config.base),
-              ])}
-            </Sidebar.Nav>
-            <Sidebar.Footer>
-              <Stack space={2} alignX="left">
-                <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
-                  <ArrowLeft />
-                  {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
-                </LinkButton>
-                <LinkButton
-                  href="/getting-started/get-in-touch"
-                  variant="ghost"
-                >
-                  <LifeBuoy />
-                  Get in touch
-                </LinkButton>
-              </Stack>
-            </Sidebar.Footer>
-          </AppLayout.Sidebar>
-          <AppLayout.Header>
-            <TopNavigation.Start>
-              <Sidebar.Toggle />
-            </TopNavigation.Start>
-            <TopNavigation.Middle>
-              <Breadcrumbs>
-                <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
-                {ancestors.map(label => (
-                  <Breadcrumbs.Item key={label} href="#">
-                    {label}
-                  </Breadcrumbs.Item>
-                ))}
-                {leaf && (
-                  <Breadcrumbs.Item href="#">{leaf.label}</Breadcrumbs.Item>
-                )}
-              </Breadcrumbs>
-            </TopNavigation.Middle>
-            <TopNavigation.End>
-              <UserSection />
-            </TopNavigation.End>
-          </AppLayout.Header>
-          <AppLayout.Main>{children}</AppLayout.Main>
-        </AppLayout>
-      </Sidebar.Provider>
+      <AppShell defaultSidebarOpen>
+        <Sidebar>
+          <Sidebar.Header>
+            <Inline space={2} alignY="center" noWrap>
+              <Logo className="size-8 shrink-0" />
+              <Text weight="bold" fontSize="lg">
+                Examples
+              </Text>
+            </Inline>
+          </Sidebar.Header>
+          <Sidebar.Nav current={pathname}>
+            {config.sections.map((section, i) => [
+              ...(i > 0
+                ? [<Sidebar.Separator key={`sep-${section.label}`} />]
+                : []),
+              <Sidebar.GroupLabel key={`label-${section.label}`}>
+                {section.label}
+              </Sidebar.GroupLabel>,
+              ...renderNav(section.items, config.base),
+            ])}
+          </Sidebar.Nav>
+          <Sidebar.Footer>
+            <Stack space={2} alignX="left">
+              <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
+                <ArrowLeft />
+                {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
+              </LinkButton>
+              <LinkButton href="/getting-started/get-in-touch" variant="ghost">
+                <LifeBuoy />
+                Get in touch
+              </LinkButton>
+            </Stack>
+          </Sidebar.Footer>
+        </Sidebar>
+        <TopNavigation>
+          <TopNavigation.Start>
+            <Sidebar.Toggle />
+          </TopNavigation.Start>
+          <TopNavigation.Middle>
+            <Breadcrumbs>
+              <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+              {ancestors.map(label => (
+                <Breadcrumbs.Item key={label} href="#">
+                  {label}
+                </Breadcrumbs.Item>
+              ))}
+              {leaf && (
+                <Breadcrumbs.Item href="#">{leaf.label}</Breadcrumbs.Item>
+              )}
+            </Breadcrumbs>
+          </TopNavigation.Middle>
+          <TopNavigation.End>
+            <UserSection />
+          </TopNavigation.End>
+        </TopNavigation>
+        {children}
+      </AppShell>
     </RouterProvider>
   );
 };

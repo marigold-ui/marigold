@@ -2,12 +2,12 @@
 
 import {
   Button,
+  Description,
   Form,
-  Headline,
   Inline,
-  Inset,
+  Page,
   Stack,
-  Text,
+  Title,
   useToast,
 } from '@marigold/components';
 import { CoOrganizers } from './coOrganizers';
@@ -31,13 +31,6 @@ const EventForm = () => {
       }}
     >
       <Stack space="group">
-        <Stack space="tight">
-          <Headline level={2}>Create event</Headline>
-          <Text>
-            Fill in the details below to set up a new event. Required fields are
-            marked with an asterisk.
-          </Text>
-        </Stack>
         <Stack space="group">
           <EventDetails />
           <LocationSettings />
@@ -56,9 +49,16 @@ const EventForm = () => {
 };
 
 const FormPage = () => (
-  <Inset p={4}>
+  <Page>
+    <Page.Header>
+      <Title>Create event</Title>
+      <Description>
+        Fill in the details below to set up a new event. Required fields are
+        marked with an asterisk.
+      </Description>
+    </Page.Header>
     <EventForm />
-  </Inset>
+  </Page>
 );
 
 export default FormPage;

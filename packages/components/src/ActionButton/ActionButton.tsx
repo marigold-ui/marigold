@@ -17,10 +17,18 @@ export interface ActionButtonProps
   extends Omit<RAC.ButtonProps, RemovedProps>, SlotProps {
   /**
    * Visual variant of the action button.
+   *
+   * `<ActionButton>` is slot-aware: inside a slot-configured container
+   * (`Panel.Header`, `Page.Header`, …) it claims the container's action
+   * cell and inherits its size cascade. The `primary` variant exists for
+   * the prominent action of such a container — e.g. the page-level call to
+   * action inside a `<Page.Header>`. For a standalone primary action that
+   * is not part of a container's chrome, reach for [`<Button>`](./button).
    * @default 'default'
    */
   variant?:
     | 'default'
+    | 'primary'
     | 'secondary'
     | 'destructive-ghost'
     | 'link'

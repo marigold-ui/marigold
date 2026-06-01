@@ -1,6 +1,6 @@
 {
   "pages": [
-    "app-layout",
+    "app-shell",
     "aside",
     "aspect",
     "breakout",
@@ -10,6 +10,8 @@
     "grid",
     "inline",
     "inset",
+    "page",
+    "page-header",
     "panel",
     "scrollable",
     "split",

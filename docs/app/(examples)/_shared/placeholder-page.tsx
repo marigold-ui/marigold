@@ -1,6 +1,6 @@
 'use client';
 
-import { Headline, Inset, Stack, Text } from '@marigold/components';
+import { Description, Page, Title } from '@marigold/components';
 
 export const PlaceholderPage = ({
   title,
@@ -9,10 +9,10 @@ export const PlaceholderPage = ({
   title: string;
   description: string;
 }) => (
-  <Inset p={4}>
-    <Stack space={2}>
-      <Headline level={2}>{title}</Headline>
-      <Text>{description}</Text>
-    </Stack>
-  </Inset>
+  <Page>
+    <Page.Header>
+      <Title>{title}</Title>
+      <Description>{description}</Description>
+    </Page.Header>
+  </Page>
 );
