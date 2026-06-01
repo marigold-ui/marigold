@@ -477,6 +477,46 @@ export const MonthDropdownTouch = meta.story({
   },
 });
 
+// Regression: the touch fix in #5479 lets `role="option"` taps bubble past the
+// dropdown overlay so they reach react-aria's window-level `pointerup`. When a
+// range selection is already in progress (a start date picked, `anchorDate`
+// set), `useRangeCalendar`'s `endDragging` then commits the range as soon as the
+// user taps a month/year option — even though they only meant to navigate.
+// This story fails on `main`: picking a month mid-selection wrongly fires
+// `onChange`. Uses a plain mouse click, so it also proves the regression is not
+// touch-only (the merged PR claimed "desktop behaviour is unchanged").
+export const MidRangeMonthSwitchRegression = meta.story({
+  tags: ['component-test'],
+  args: {
+    onChange: fn(),
+    defaultFocusedValue: new CalendarDate(2025, 8, 15),
+  },
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ args, canvasElement, userEvent, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('select a start date (range now in progress)', async () => {
+      await userEvent.click(canvas.getByLabelText(/August 15, 2025/i));
+      // the first click of a range must not commit anything yet
+      await expect(args.onChange).not.toHaveBeenCalled();
+    });
+
+    await step('open the month dropdown and pick a different month', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Aug' }));
+      const monthOptions = canvas.getByRole('listbox', {
+        name: 'monthOptions',
+      });
+      await userEvent.click(
+        within(monthOptions).getByRole('option', { name: /Mar/i })
+      );
+    });
+
+    await step('switching months must NOT commit the range', async () => {
+      await expect(args.onChange).not.toHaveBeenCalled();
+    });
+  },
+});
+
 export const TwoMonthsRangeSelection = meta.story({
   tags: ['component-test'],
   args: {
