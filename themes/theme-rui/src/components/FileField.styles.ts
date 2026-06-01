@@ -16,8 +16,8 @@ export const FileField: ThemeComponent<'FileField'> = {
           'p-4 not-data-files:justify-center',
         ],
         small: [
-          'flex items-center rounded-surface',
-          'border border-border',
+          'flex items-center',
+          'ui-surface shadow-elevation-border',
           'h-control-small px-2',
         ],
       },
