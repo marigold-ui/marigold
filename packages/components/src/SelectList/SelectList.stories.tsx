@@ -522,7 +522,7 @@ export const HorizontalResponsive = meta.story({
         <SelectList
           {...args}
           label="Shipping speed (medium container)"
-          description="500px parent items should never overflow the container."
+          description="500px parent, narrower than the 40rem breakpoint items stack vertically."
           defaultSelectedKeys={['standard-medium']}
         >
           <SelectList.Option id="standard-medium" textValue="Standard">
@@ -579,11 +579,9 @@ export const HorizontalResponsive = meta.story({
     });
 
     await step(
-      'medium container (500px) list never grows wider than its container',
+      'medium container (500px) is narrower than the 40rem breakpoint and flips to a column',
       () => {
-        const containerWidth = medium.getBoundingClientRect().width;
-        const listWidth = mediumList.getBoundingClientRect().width;
-        expect(listWidth).toBeLessThanOrEqual(containerWidth);
+        expect(getComputedStyle(mediumList).flexDirection).toBe('column');
       }
     );
   },
