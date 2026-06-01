@@ -6,9 +6,9 @@ fix(DSTSUP-255): honor minValue/maxValue in Calendar and RangeCalendar year pick
 
 The year picker used to always show 41 years (the focused year ±20) and just greyed out the
 ones outside the allowed range. With `minValue` set, it opened on a list of disabled past
-years that you had to scroll past first. Now both pickers get their lists from react-aria's
-`CalendarYearPicker`/`CalendarMonthPicker`, so out-of-range years simply aren't shown (the
-month picker still shows all twelve months).
+years that you had to scroll past first. The year list is now derived from `minValue`/`maxValue`
+(both bounds inclusive), so out-of-range years simply aren't shown, while the month picker still
+shows all twelve months with out-of-range ones disabled.
 
 When a picker opens, the selected option is now scrolled to the middle of the list instead of
 the bottom.

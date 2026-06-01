@@ -240,6 +240,61 @@ export const YearSelectionWithMinMax = meta.story({
   },
 });
 
+export const YearSelectionWithMinOnly = meta.story({
+  ...Basic.input,
+  tags: ['component-test'],
+  args: {
+    minValue: new CalendarDate(2025, 1, 1),
+    defaultValue: new CalendarDate(2025, 6, 15),
+  },
+});
+
+YearSelectionWithMinOnly.test(
+  'clamps the year list at minValue and keeps a forward window',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '2025' }));
+
+    const years = within(canvas.getByTestId('yearOptions'))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    await expect(years[0]).toBe('2025');
+    await expect(years.length).toBeGreaterThan(1);
+    await expect(canvas.queryByText('2024')).not.toBeInTheDocument();
+  }
+);
+
+export const YearSelectionWithMaxOnly = meta.story({
+  ...Basic.input,
+  tags: ['component-test'],
+  args: {
+    maxValue: new CalendarDate(2025, 12, 31),
+    defaultValue: new CalendarDate(2023, 6, 15),
+  },
+});
+
+YearSelectionWithMaxOnly.test(
+  'keeps the maxValue year reachable and renders no later years',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '2023' }));
+
+    const years = within(canvas.getByTestId('yearOptions'))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    await expect(years[years.length - 1]).toBe('2025');
+    await expect(years.length).toBeGreaterThan(1);
+    await expect(canvas.queryByText('2026')).not.toBeInTheDocument();
+
+    // The max year can actually be selected from the dropdown.
+    await userEvent.click(canvas.getByText('2025'));
+    await expect(canvas.queryByTestId('yearOptions')).not.toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: '2025' })
+    ).toBeInTheDocument();
+  }
+);
+
 export const LeapYearSelection = meta.story({
   ...Basic.input,
   tags: ['component-test'],
