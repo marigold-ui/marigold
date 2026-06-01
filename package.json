@@ -9,14 +9,6 @@
     "node": "24.x"
   },
   "packageManager": "pnpm@11.1.2",
-  "pnpm": {
-    "overrides": {
-      "@react-types/button": "~3.15.0",
-      "@react-types/checkbox": "~3.10.0",
-      "@react-types/grid": "~3.3.0",
-      "@react-types/table": "~3.13.0"
-    }
-  },
   "dependencies": {
     "@babel/core": "7.29.0",
     "@changesets/changelog-git": "0.2.1",
