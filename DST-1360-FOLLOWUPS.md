@@ -130,3 +130,41 @@ Separate tickets as needed: theme-mode toggle, command menu, focus-restore after
 ### 12. 📝 / 💄 Print styles + deep-link anchors / heading-link story
 
 Print stylesheet for app pages, and a deep-link anchor / heading-link convention for long pages.
+
+---
+
+## Research-derived follow-ups (cross-design-system survey)
+
+Added after surveying page-layout APIs across Atlassian, Shopify Polaris, GitHub Primer, IBM Carbon,
+SAP Fiori, Salesforce SLDS, Ant Design (Pro), MUI, Mantine, and Chakra. The docs PR documents the
+current behavior and recipes; these are the **API-level** gaps the survey surfaced. Each is additive
+(non-breaking).
+
+### 13. ✨ Page: explicit width affordance (`width` / `narrow`)
+
+**Finding:** _Every_ surveyed system exposes a page-level width concept — Polaris `fullWidth` /
+`narrowWidth`, Primer `containerWidth` + `Content width`, Ant `contentWidth='Fluid'|'Fixed'`,
+MUI/Chakra `Container maxWidth`, Primer's Full / Split / Interstitial page types. Marigold deliberately
+has none (width is per-surface via `Panel size="form"`), now documented in the Page "Width" section.
+
+**Decision needed:** keep per-surface-only, or add an opt-in `width`/`narrow` affordance on `Page` for
+the common single-column form/settings page (so consumers don't repeat `size="form"` on every panel).
+If added, mirror the `Panel size` token (`max-w-4xl`) so page-level and surface-level widths agree.
+
+### 14. ✨ Page.Header: status / metadata placement (supersedes part of #7)
+
+**Finding:** A status indicator next to the page title is one of the most common header features in the
+field — Polaris `titleMetadata`, Primer leading/trailing visuals, Carbon/Ant `tags`, SLDS detail-row.
+Marigold's `Page.Header` has exactly three grid areas (title / description / actions); a `<Badge>` child
+has no placement. The docs PR routes object status into a secondary "Overview" `<Panel>` (the detail
+layout), which is a legitimate pattern — but the header slot is a real gap.
+
+**Decision needed:** add a `titleMetadata`-style placement to `Page.Header` (a cell beside the title for
+a status `<Badge>` / small metadata), or formalize the secondary-panel pattern as the only answer. Fold
+into #7 (Page.Header first-class slots) when scoped.
+
+### Note on #8 (master-detail / two-column)
+
+The docs PR adds a **detail / record page demo** (`docs/app/(examples)/examples/venue`) and a "Common
+page layouts" table in the App Shell pattern — the single-object detail half of #8. The master-detail
+(list + detail in one view, with two scroll regions) half is still open.

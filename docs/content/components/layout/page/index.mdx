@@ -58,6 +58,10 @@ Page actions use the slot-aware action primitives, the same set `<Panel.Header>`
   </Dont>
 </GuidelineTiles>
 
+#### Status and metadata
+
+`<Page.Header>` has three placements only: the title, the description, and the actions. It is deliberately not a place for object status (a `<Badge>`) or at-a-glance metadata. Show those in the page body instead — typically a secondary `<Panel>` (e.g. an "Overview" panel beside the primary content). The [detail layout](/patterns/layout/app-shell#common-page-layouts) in the App Shell pattern demonstrates this primary/secondary split.
+
 ### Heading outline
 
 `<Page>` sets the base heading level to `1`, so a [`<Title>`](/components/content/title) inside `<Page.Header>` renders as the page `<h1>`. Each `<Panel>` below defaults to `headingLevel={2}`, so its `<Title>` renders as an `<h2>`. The outline — `h1` → `h2` → `h3` (Panel collapsibles) — falls out of the defaults with no per-component configuration.
@@ -65,6 +69,27 @@ Page actions use the slot-aware action primitives, the same set `<Panel.Header>`
 ### Padding and rhythm
 
 `<Page>` applies padding (`square-relaxed` by default) and a vertical gap between its children (`group` by default). Override padding with `p`, or `px` / `py` for per-axis control (setting `p` together with `px`/`py` is a type error). Override the gap with `space`.
+
+### Width
+
+`<Page>` does not impose a max-width. Content fills the `main` area, and width is decided **per surface** rather than per page — wrap form-style content in [`<Panel size="form">`](/components/layout/panel) to constrain it to a comfortable reading measure, and leave data-dense surfaces (tables, dashboards) full-width.
+
+```tsx
+// A settings page: each surface constrained to a readable measure
+<Page>
+  <Page.Header>
+    <Title>Account preferences</Title>
+  </Page.Header>
+  <Panel size="form">{/* … */}</Panel>
+  <Panel size="form">{/* … */}</Panel>
+</Page>
+```
+
+This is a deliberate departure from systems that expose a page-level `fullWidth` / `narrowWidth` switch. A real page often mixes a narrow form with a wide table; constraining per surface keeps each readable without a single page-level width fighting the exceptions.
+
+### Not sticky
+
+`<Page>` does not stick or collapse on scroll — the document scrolls and the page header scrolls away with the content. Only the [`<AppShell>`](/components/layout/app-shell) frame (sidebar and top navigation) stays pinned. This keeps native browser scroll behaviour intact and avoids the complexity of a collapse-on-scroll header.
 
 ### Page.Content
 
