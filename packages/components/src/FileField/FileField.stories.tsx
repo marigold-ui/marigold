@@ -4,8 +4,10 @@ import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
-import { makeFile } from './../test.utils';
 import { FileField } from './FileField';
+
+const makeFile = (name: string, type: string, size = 1024) =>
+  new File([new Uint8Array(size)], name, { type });
 
 const meta = preview.meta({
   title: 'Components/FileField',
@@ -127,6 +129,37 @@ export const MultipleFileUpload = meta.story({
     await expect(canvas.getByText('2.00 MB')).toBeInTheDocument();
     await expect(canvas.getByText('5.00 MB')).toBeInTheDocument();
     await expect(canvas.getByText('0.50 MB')).toBeInTheDocument();
+  },
+});
+
+export const Small = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Upload file (compact)',
+    size: 'small',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <FileField {...args} />
+    </I18nProvider>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await expect(
+      canvas.queryByRole('button', { name: 'Upload' })
+    ).toBeInTheDocument();
+
+    await expect(
+      canvas.queryByText('Drop files here', { exact: true })
+    ).not.toBeInTheDocument();
+
+    const input = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+
+    const file = makeFile('compact.pdf', 'application/pdf', 1 * 1024 * 1024);
+    await userEvent.upload(input, file);
+
+    await expect(canvas.getByText('compact.pdf')).toBeInTheDocument();
   },
 });
 
