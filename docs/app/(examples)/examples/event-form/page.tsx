@@ -31,13 +31,11 @@ const EventForm = () => {
       }}
     >
       <Stack space="group">
-        <Stack space="group">
-          <EventDetails />
-          <LocationSettings />
-          <OrganizerInfo />
-          <CoOrganizers />
-          <RegistrationSettings />
-        </Stack>
+        <EventDetails />
+        <LocationSettings />
+        <OrganizerInfo />
+        <CoOrganizers />
+        <RegistrationSettings />
         <Inline>
           <Button variant="primary" type="submit">
             Save

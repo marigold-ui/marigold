@@ -1,4 +1,4 @@
-import type { HTMLAttributes, Ref } from 'react';
+import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import { use } from 'react';
 import { SidebarContext, SidebarProvider } from '../Sidebar/Context';
 
@@ -27,7 +27,7 @@ export interface AppShellProps extends Omit<
    * `<Page>` directly as children — each owns its own grid area, so the order
    * does not matter.
    */
-  children?: React.ReactNode;
+  children?: ReactNode;
   ref?: Ref<HTMLDivElement>;
 }
 
