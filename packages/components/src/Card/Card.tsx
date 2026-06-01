@@ -122,13 +122,12 @@ export const Card = ({
   const contextValue = useMemo(
     () => ({
       classNames,
-      variant,
       titleId,
       headingLevel,
       hasTitle,
       titleSlotRef,
     }),
-    [classNames, variant, titleId, headingLevel, hasTitle, titleSlotRef]
+    [classNames, titleId, headingLevel, hasTitle, titleSlotRef]
   );
 
   return (
@@ -140,7 +139,9 @@ export const Card = ({
     >
       <article
         {...props}
-        aria-labelledby={!ariaLabel && hasTitle ? titleId : undefined}
+        aria-labelledby={
+          !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+        }
         aria-label={ariaLabel}
         className={cn(
           'flex flex-col overflow-hidden',

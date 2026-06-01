@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import {
   AriaLabeled,
   Basic,
-  HeadingLevels,
   MasterAndAdmin,
   Stretch,
   TitleOnlyWithoutHeader,
@@ -211,13 +210,6 @@ describe('Card', () => {
         expect(title.tagName).toBe(`H${level}`);
       }
     );
-
-    test('renders at level 4 in the HeadingLevels story', () => {
-      render(<HeadingLevels.Component />);
-
-      const title = screen.getByRole('heading', { name: 'Heading at level 4' });
-      expect(title.tagName).toBe('H4');
-    });
 
     test('mirrors the titleId onto the heading id', () => {
       render(<Basic.Component />);

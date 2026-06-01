@@ -15,7 +15,6 @@ export interface CardFooterProps {
 
 export const CardFooter = ({ children, bleed }: CardFooterProps) => {
   const { classNames } = useCardContext();
-
   return (
     <div
       data-card-footer

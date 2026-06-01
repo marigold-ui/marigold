@@ -6,7 +6,6 @@ export interface CardContextValue {
   classNames: {
     [Key in keyof ThemeComponent<'Card'>]: string;
   };
-  variant?: string;
   titleId: string;
   headingLevel: number;
   hasTitle: boolean;
