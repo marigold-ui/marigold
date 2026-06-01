@@ -64,6 +64,7 @@
     "@react-aria/visually-hidden": "^3.9.1",
     "@react-stately/collections": "^3.13.1",
     "@react-stately/data": "^3.16.1",
+    "@react-stately/overlays": "^3.7.1",
     "@react-stately/table": "^3.16.1",
     "@react-stately/tree": "^3.10.1",
     "@react-types/button": "~3.15.0",
@@ -72,8 +73,7 @@
     "@react-types/shared": "^3.35.0",
     "@react-types/table": "~3.13.0",
     "motion": "12.39.0",
-    "react-aria-components": "^1.18.0",
-    "react-stately": "^3.47.0"
+    "react-aria-components": "^1.18.0"
   },
   "peerDependencies": {
     "react": ">=17.0.0",

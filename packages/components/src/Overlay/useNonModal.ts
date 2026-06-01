@@ -1,5 +1,5 @@
-import type { OverlayTriggerState } from 'react-stately';
 import { useOverlay } from '@react-aria/overlays';
+import type { OverlayTriggerState } from '@react-stately/overlays';
 import type { DOMAttributes, RefObject } from '@react-types/shared';
 
 // Props
