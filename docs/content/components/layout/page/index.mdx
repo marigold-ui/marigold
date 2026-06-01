@@ -1,10 +1,10 @@
 ---
 title: Page
-description: The content area of an AppShell — the main landmark, page padding, and vertical rhythm.
+description: The content area of an AppShell — the main landmark, page header, padding, and vertical rhythm.
 badge: beta
 ---
 
-`<Page>` is the content area of an [`<AppShell>`](/components/layout/app-shell). It renders the `<main>` landmark in the grid's `main` area and owns the page's padding and vertical rhythm. A page is typically a [`<Page.Header>`](/components/layout/page-header) followed by [`<Panel>`](/components/layout/panel)s.
+`<Page>` is the content area of an [`<AppShell>`](/components/layout/app-shell). It renders the `<main>` landmark in the grid's `main` area and owns the page's padding and vertical rhythm. A page is typically a `<Page.Header>` followed by [`<Panel>`](/components/layout/panel)s.
 
 `<Page>` deliberately does **not** own scroll (the document scrolls) and does **not** enforce a max-width — content width is driven by `<Panel size="form">`.
 
@@ -31,6 +31,33 @@ badge: beta
 
 <ComponentDemo name="page-basic" background="page" />
 
+### Page.Header
+
+`<Page.Header>` is the header of a `<Page>`. Like [`<Panel.Header>`](/components/layout/panel), it is a slot-context provider: it lays out a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and optional actions in a two-column grid. It has no sub-components of its own — you compose the shared `<Title>` / `<Description>` and action primitives directly.
+
+The `<Title>` renders as the page `<h1>` (the level comes from `<Page>`'s `headingLevel`, which defaults to `1`). The `<Description>` renders as a paragraph beneath it. The `<main>` landmark is labelled by the title automatically.
+
+#### Actions
+
+Page actions use the slot-aware action primitives, the same set `<Panel.Header>` accepts: [`<ActionButton>`](/components/actions/action-button), [`<ActionGroup>`](/components/actions/action-group), and [`<ActionMenu>`](/components/overlay/action-menu). Unlike a Panel — whose header actions are low-emphasis icon chrome — a page's primary action is prominent, so reach for `<ActionButton variant="primary">`.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `<ActionButton variant="primary">` for the page's primary action so it
+      claims the header's action slot and reads as the page-level call to
+      action.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't drop a bare `<Button>` into `<Page.Header>` — it isn't slot-aware
+      and won't pick up the header's grid placement. Use the action primitives
+      above.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ### Heading outline
 
 `<Page>` sets the base heading level to `1`, so a [`<Title>`](/components/content/title) inside `<Page.Header>` renders as the page `<h1>`. Each `<Panel>` below defaults to `headingLevel={2}`, so its `<Title>` renders as an `<h2>`. The outline — `h1` → `h2` → `h3` (Panel collapsibles) — falls out of the defaults with no per-component configuration.
@@ -44,7 +71,7 @@ badge: beta
 Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optional `<Page.Content>` wrapper only when the rhythm _between_ sections should differ from the header-to-content gap — `<Page>`'s `space` then controls the header-to-content gap, and `<Page.Content space>` the gap between sections.
 
 ```tsx
-<Page space="large">
+<Page space="section">
   <Page.Header>…</Page.Header>
   <Page.Content space="regular">
     <Panel>…</Panel>
@@ -66,6 +93,10 @@ Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optio
 
 <AutoTypeTable path="Page" name="PageProps" />
 
+### Page.Header
+
+<AutoTypeTable path="Page/PageHeader" name="PageHeaderProps" />
+
 ### Page.Content
 
 <AutoTypeTable path="Page/PageContent" name="PageContentProps" />
@@ -78,11 +109,7 @@ Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optio
     page, sidebar, and header.
   </li>
   <li>
-    [Page.Header](/components/layout/page-header): The page title, description,
-    and primary actions.
-  </li>
-  <li>
     [Panel](/components/layout/panel): The titled surfaces that make up a page's
-    content.
+    content, sharing the same header composition model.
   </li>
 </ul>

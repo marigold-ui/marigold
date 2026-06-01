@@ -4,12 +4,12 @@ description: A composition pattern for building application frames with persiste
 badge: alpha
 ---
 
-Most business applications share a common frame: a sidebar for navigation, a top bar for context and actions, and a scrollable content area. The App Shell pattern shows how to compose this frame using [`<AppShell>`](/components/layout/app-shell), [`<Page>`](/components/layout/page), and [`<Page.Header>`](/components/layout/page-header), covering content placement decisions, the heading outline, action hierarchy, and responsive strategy.
+Most business applications share a common frame: a sidebar for navigation, a top bar for context and actions, and a scrollable content area. The App Shell pattern shows how to compose this frame using [`<AppShell>`](/components/layout/app-shell), [`<Page>`](/components/layout/page), and [`<Page.Header>`](/components/layout/page#pageheader), covering content placement decisions, the heading outline, action hierarchy, and responsive strategy.
 
 <Callout title="Looking for the component API?">
   For props, slot details, and accessibility, see the
-  [AppShell](/components/layout/app-shell), [Page](/components/layout/page), and
-  [Page.Header](/components/layout/page-header) component pages.
+  [AppShell](/components/layout/app-shell) and [Page](/components/layout/page)
+  (including [Page.Header](/components/layout/page#pageheader)) component pages.
 </Callout>
 
 ## Structure
@@ -26,7 +26,7 @@ The App Shell divides the screen into three areas. The diagram below shows how t
 
 - **Sidebar:** Sits on the left and spans the full height. It holds the application logo, primary navigation links, grouped sections, and an optional footer. Users can collapse or expand it with a toggle button.
 - **Top Navigation:** Stretches across the top next to the sidebar. It should provide the sidebar toggle, breadcrumbs for orientation, and user-related controls such as account menus or status indicators.
-- **Page:** Takes up the remaining space. This is the scrollable content area. Wrap it in a [`<Page>`](/components/layout/page), which renders the `main` landmark and owns the page's padding and rhythm. A page is a [`<Page.Header>`](/components/layout/page-header) followed by [`<Panel>`](/components/layout/panel)s.
+- **Page:** Takes up the remaining space. This is the scrollable content area. Wrap it in a [`<Page>`](/components/layout/page), which renders the `main` landmark and owns the page's padding and rhythm. A page is a [`<Page.Header>`](/components/layout/page#pageheader) followed by [`<Panel>`](/components/layout/panel)s.
 
 [`RouterProvider`](/components/application/routerprovider) handles page navigation and `AppShell` positions everything on a CSS Grid. `AppShell` manages the sidebar's open/collapsed state internally (via `defaultSidebarOpen`), so the toggle in the header and the sidebar share state with no provider boilerplate.
 
