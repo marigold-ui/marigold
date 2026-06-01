@@ -200,15 +200,6 @@ describe('Card', () => {
   });
 
   describe('Title in Card.Header', () => {
-    test('defaults to an <h3>', () => {
-      render(<Basic.Component />);
-
-      const title = screen.getByRole('heading', {
-        name: 'Professor Severus Snape',
-      });
-      expect(title.tagName).toBe('H3');
-    });
-
     test.each([2, 3, 4, 5, 6] as const)(
       'renders an <h%i> when headingLevel=%i',
       (level: CardHeadingLevel) => {

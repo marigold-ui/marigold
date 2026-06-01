@@ -93,6 +93,14 @@ export const Card = ({
   const classNames = useClassNames({ component: 'Card', variant, size });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
+  if (process.env.NODE_ENV !== 'production' && !ariaLabel && !hasTitle) {
+    console.warn(
+      '[Card] Renders an unnamed `article` landmark. Provide a `<Title>` ' +
+        '(inside or outside `Card.Header`) or an `aria-label` so screen ' +
+        'reader users can identify the card.'
+    );
+  }
+
   const inset = p ?? 'square-regular';
   const resolvedPx = px ?? `${inset}-x`;
   const resolvedPy = py ?? `${inset}-y`;

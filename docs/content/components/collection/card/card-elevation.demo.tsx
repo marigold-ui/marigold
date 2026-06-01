@@ -20,9 +20,7 @@ export default () => (
     </Card.Media>
     <Card.Header>
       <Title>Annual Conference 2025</Title>
-      <Description>
-        A day of inspiring talks, workshops, and networking.
-      </Description>
+      <Description>Our flagship annual event.</Description>
     </Card.Header>
     <Card.Body>
       <Stack space="tight">
@@ -30,7 +28,9 @@ export default () => (
           <Badge variant="info">Music</Badge>
           <Badge variant="success">Tickets available</Badge>
         </Inline>
-        <Text variant="muted">Join us for our flagship annual event.</Text>
+        <Text variant="muted">
+          Join us for a day of inspiring talks, workshops, and networking.
+        </Text>
       </Stack>
     </Card.Body>
     <Card.Footer>

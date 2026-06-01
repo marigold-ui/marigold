@@ -15,8 +15,6 @@ export interface CardContextValue {
 
 export const CardContext = createContext<CardContextValue | null>(null);
 
-export const CardProvider = CardContext.Provider;
-
 export const useCardContext = () => {
   const ctx = use(CardContext);
 

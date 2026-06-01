@@ -12,6 +12,9 @@ const meta = preview.meta({
     surface: false,
   },
   args: {
+    // `children` is composed via `render` on each story; this satisfies the
+    // required prop without surfacing a control (see `argTypes` below).
+    children: null as never,
     variant: 'default',
     headingLevel: 3,
     space: 'regular',
@@ -40,7 +43,6 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
   render: args => (
     <Card {...args}>
@@ -76,7 +78,7 @@ Basic.test('renders an article labelled by the Title', async ({ canvas }) => {
 });
 
 export const HeadingLevels = meta.story({
-  args: { children: null as never, headingLevel: 4 },
+  args: { headingLevel: 4 },
   tags: ['component-test'],
   render: args => (
     <Card {...args}>
@@ -94,12 +96,12 @@ HeadingLevels.test(
   'renders the Title at the configured heading level',
   async ({ canvas }) => {
     const title = canvas.getByRole('heading', { name: 'Heading at level 4' });
+
     expect(title.tagName).toBe('H4');
   }
 );
 
 export const AriaLabeled = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
   render: args => (
     <Card {...args} aria-label="Quick stats card">
@@ -117,13 +119,13 @@ AriaLabeled.test(
   'uses aria-label as the accessible name and omits aria-labelledby',
   async ({ canvas }) => {
     const article = canvas.getByRole('article', { name: 'Quick stats card' });
+
     expect(article).toHaveAttribute('aria-label', 'Quick stats card');
     expect(article).not.toHaveAttribute('aria-labelledby');
   }
 );
 
 export const WithFooter = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
   render: args => (
     <Card {...args}>
@@ -146,7 +148,6 @@ export const WithFooter = meta.story({
 });
 
 export const WithMedia = meta.story({
-  args: { children: null as never },
   render: args => (
     <Card {...args}>
       <Card.Media>
@@ -171,7 +172,6 @@ export const WithMedia = meta.story({
 
 export const Stretch = meta.story({
   args: {
-    children: null as never,
     stretch: true,
   },
   render: args => (
@@ -191,7 +191,6 @@ export const Stretch = meta.story({
 
 export const WithPaddingProp = meta.story({
   args: {
-    children: null as never,
     p: 'square-loose',
   },
   argTypes: {
@@ -224,7 +223,6 @@ export const WithPaddingProp = meta.story({
 });
 
 export const WithBleedBody = meta.story({
-  args: { children: null as never },
   render: args => (
     <Card {...args}>
       <Card.Header>
@@ -243,7 +241,6 @@ export const WithBleedBody = meta.story({
 });
 
 export const WithBleedFooter = meta.story({
-  args: { children: null as never },
   render: args => (
     <Card {...args}>
       <Card.Header>
@@ -266,7 +263,6 @@ export const WithBleedFooter = meta.story({
  * Content will have no horizontal padding. Wrap content in `Card.Body` instead.
  */
 export const BareChildrenAntiPattern = meta.story({
-  args: { children: null as never },
   render: args => (
     <Stack space={4}>
       <Card {...args} aria-label="Bare children anti-pattern">
@@ -288,7 +284,6 @@ export const BareChildrenAntiPattern = meta.story({
 });
 
 export const MasterAndAdmin = meta.story({
-  args: { children: null as never },
   render: args => (
     <Stack space={5}>
       <Card {...args} variant="master">
@@ -322,7 +317,6 @@ export const MasterAndAdmin = meta.story({
 });
 
 export const TitleOnlyWithoutHeader = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
   render: args => (
     <Card {...args}>
