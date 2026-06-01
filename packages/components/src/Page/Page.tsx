@@ -10,6 +10,7 @@ import type {
 import { cn, createSpacingVar, useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PageContext } from './Context';
+import { PageContent } from './PageContent';
 import { PageHeader } from './PageHeader';
 
 // Props
@@ -136,3 +137,4 @@ export const Page = ({
 };
 
 Page.Header = PageHeader;
+Page.Content = PageContent;

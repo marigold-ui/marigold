@@ -158,7 +158,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Page?: Record<
-      'root' | 'header' | 'title' | 'description' | 'actions',
+      'root' | 'header' | 'title' | 'description' | 'actions' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Pagination?: Record<

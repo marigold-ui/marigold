@@ -1,6 +1,6 @@
 'use client';
 
-import { Description, Page, Stack, Title } from '@marigold/components';
+import { Description, Page, Title } from '@marigold/components';
 import { Blog } from './Blog';
 import { ContactForm } from './ContactForm';
 import { ContactTiles } from './ContactTiles';
@@ -19,7 +19,7 @@ const InventoryPage = () => (
         A showcase of Marigold components in real-world layouts.
       </Description>
     </Page.Header>
-    <Stack space="section">
+    <Page.Content space="section">
       <Inventory />
       <OurMission />
       <Newsletter />
@@ -29,7 +29,7 @@ const InventoryPage = () => (
       <Settings />
       <UserTable />
       <ContactTiles />
-    </Stack>
+    </Page.Content>
   </Page>
 );
 

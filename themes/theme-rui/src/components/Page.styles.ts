@@ -11,4 +11,5 @@ export const Page: ThemeComponent<'Page'> = {
     base: 'mt-1 text-base text-secondary',
   }),
   actions: cva({}),
+  content: cva({}),
 };

@@ -39,6 +39,20 @@ badge: beta
 
 `<Page>` applies padding (`square-relaxed` by default) and a vertical gap between its children (`group` by default). Override padding with `p`, or `px` / `py` for per-axis control (setting `p` together with `px`/`py` is a type error). Override the gap with `space`.
 
+### Page.Content
+
+Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optional `<Page.Content>` wrapper only when the rhythm _between_ sections should differ from the header-to-content gap — `<Page>`'s `space` then controls the header-to-content gap, and `<Page.Content space>` the gap between sections.
+
+```tsx
+<Page space="large">
+  <Page.Header>…</Page.Header>
+  <Page.Content space="regular">
+    <Panel>…</Panel>
+    <Panel>…</Panel>
+  </Page.Content>
+</Page>
+```
+
 ### Accessibility
 
 - **Landmark:** `<Page>` renders a `<main>` landmark. When a `<Title>` is present in `<Page.Header>`, the `<main>` is labelled by it via `aria-labelledby`, so screen-reader landmark navigation announces the page by its title.
@@ -51,6 +65,10 @@ badge: beta
 ### Page
 
 <AutoTypeTable path="Page" name="PageProps" />
+
+### Page.Content
+
+<AutoTypeTable path="Page/PageContent" name="PageContentProps" />
 
 ## Related components
 

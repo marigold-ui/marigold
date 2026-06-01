@@ -63,6 +63,39 @@ export const Basic = meta.story({
 });
 
 /**
+ * Use the optional `<Page.Content>` wrapper when the rhythm between sections
+ * should differ from the header-to-content gap.
+ */
+export const WithContent = meta.story({
+  render: () => (
+    <Page space="section">
+      <Page.Header>
+        <Title>Settings</Title>
+        <Description>Workspace-wide configuration.</Description>
+      </Page.Header>
+      <Page.Content space="regular">
+        <Panel>
+          <Panel.Header>
+            <Title>Profile</Title>
+          </Panel.Header>
+          <Panel.Content>
+            <Text>Profile settings.</Text>
+          </Panel.Content>
+        </Panel>
+        <Panel>
+          <Panel.Header>
+            <Title>Security</Title>
+          </Panel.Header>
+          <Panel.Content>
+            <Text>Security settings.</Text>
+          </Panel.Content>
+        </Panel>
+      </Page.Content>
+    </Page>
+  ),
+});
+
+/**
  * Without a `<Title>`, the page must be given an `aria-label` so the `<main>`
  * landmark still has an accessible name.
  */

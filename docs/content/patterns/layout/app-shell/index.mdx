@@ -121,7 +121,7 @@ The `<main>` landmark is labelled by the page `<h1>` from `<Page.Header>`, so sc
 
 ## Page structure
 
-Inside `<Page>`, lead with a `<Page.Header>` and follow it with the page's `<Panel>`s. `<Page>` supplies the vertical rhythm between them, so you don't wrap them in a `<Stack>` or `<Inset>`.
+Inside `<Page>`, lead with a `<Page.Header>` and follow it with the page's `<Panel>`s. `<Page>` supplies the vertical rhythm between them, so you don't wrap them in a `<Stack>` or `<Inset>`. When the rhythm between sections should differ from the header-to-content gap, wrap the sections in an optional `<Page.Content>` and set its `space` (see the [Page docs](/components/layout/page)).
 
 ```tsx
 <Page>

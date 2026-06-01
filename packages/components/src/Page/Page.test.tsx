@@ -1,7 +1,8 @@
+/* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
 import { Title } from '../Title/Title';
 import { Page } from './Page';
-import { Basic, WithoutTitle } from './Page.stories';
+import { Basic, WithContent, WithoutTitle } from './Page.stories';
 
 describe('Page', () => {
   test('renders a main landmark', () => {
@@ -83,6 +84,34 @@ describe('Page.Header', () => {
         <Page.Header>
           <Title>Orphan</Title>
         </Page.Header>
+      )
+    ).toThrow(/Page sub-components must be used within a <Page> component/);
+
+    spy.mockRestore();
+  });
+});
+
+describe('Page.Content', () => {
+  test('renders its children and applies its own gap variable', () => {
+    render(<WithContent.Component />);
+
+    // Anchor off an accessible element, then walk to the content wrapper.
+    const content = screen
+      .getByRole('heading', { level: 2, name: 'Profile' })
+      .closest('[data-page-content]') as HTMLElement | null;
+
+    expect(content).not.toBeNull();
+    expect(content?.style.getPropertyValue('--page-content-gap')).not.toBe('');
+  });
+
+  test('throws when used outside a Page', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(() =>
+      render(
+        <Page.Content>
+          <span>orphan</span>
+        </Page.Content>
       )
     ).toThrow(/Page sub-components must be used within a <Page> component/);
 
