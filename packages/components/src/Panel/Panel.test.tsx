@@ -35,6 +35,15 @@ describe('Panel', () => {
       expect(region).toHaveAttribute('data-panel');
     });
 
+    test('spreads arbitrary HTML attributes onto the root <section>', () => {
+      render(<Basic.Component id="organizer-panel" data-analytics="profile" />);
+
+      const region = screen.getByRole('region', { name: 'Organizer Profile' });
+
+      expect(region).toHaveAttribute('id', 'organizer-panel');
+      expect(region).toHaveAttribute('data-analytics', 'profile');
+    });
+
     test('renders Header, Content, and Footer children in the document', () => {
       render(<Basic.Component />);
 
