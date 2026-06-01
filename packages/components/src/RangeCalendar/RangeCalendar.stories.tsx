@@ -437,6 +437,38 @@ export const YearDropdown = meta.story({
   },
 });
 
+export const YearDropdownWithMinMax = meta.story({
+  tags: ['component-test'],
+  args: {
+    minValue: new CalendarDate(2025, 1, 1),
+    maxValue: new CalendarDate(2027, 12, 31),
+    defaultValue: {
+      start: new CalendarDate(2025, 6, 5),
+      end: new CalendarDate(2025, 6, 10),
+    },
+  },
+  render: args => <RangeCalendar {...args} />,
+});
+
+YearDropdownWithMinMax.test(
+  'year picker is clamped to minValue/maxValue',
+  async ({ canvas, userEvent, step }) => {
+    await step('open the year dropdown', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: '2025' }));
+    });
+
+    await step('only in-range years are rendered', async () => {
+      const years = within(canvas.getByRole('listbox', { name: 'yearOptions' }))
+        .getAllByRole('option')
+        .map(option => option.textContent);
+
+      await expect(years).toEqual(['2025', '2026', '2027']);
+      await expect(canvas.queryByText('2024')).not.toBeInTheDocument();
+      await expect(canvas.queryByText('2028')).not.toBeInTheDocument();
+    });
+  }
+);
+
 // Regression (DSTSUP-257): tapping a month option with touch input must commit
 // the selection. An unconditional `pointerup` stopPropagation on the dropdown
 // overlay used to swallow the event before react-aria's `usePress` touch
@@ -473,6 +505,55 @@ export const MonthDropdownTouch = meta.story({
       await expect(
         canvas.getByRole('button', { name: 'Mar' })
       ).toBeInTheDocument();
+    });
+  },
+});
+
+// Regression: navigating the month/year dropdown while a range selection is in
+// progress must NOT commit the half-finished range. react-aria's
+// `useRangeCalendar` arms a window `pointerup` listener that commits the range
+// on any non-button release inside the calendar; our role="option" items would
+// trip it. The overlay guard must stop those pointerups before the window
+// listener (without breaking touch selection — see MonthDropdownTouch). Affects
+// mouse and touch; a mouse click is enough to reproduce.
+export const DropdownNavigationKeepsRangeInProgress = meta.story({
+  tags: ['component-test'],
+  args: {
+    defaultValue: {
+      start: new CalendarDate(2025, 8, 7),
+      end: new CalendarDate(2025, 8, 14),
+    },
+    onChange: fn(),
+  },
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ args, canvasElement, userEvent, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('start a new range selection (anchor only)', async () => {
+      await userEvent.click(canvas.getByLabelText(/August 20, 2025/i));
+      // Setting the anchor must not commit a value yet.
+      await expect(args.onChange).not.toHaveBeenCalled();
+    });
+
+    await step('navigate via the month dropdown mid-selection', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Aug' }));
+      const monthOptions = canvas.getByRole('listbox', {
+        name: 'monthOptions',
+      });
+      await userEvent.click(
+        within(monthOptions).getByRole('option', { name: /Mar/i })
+      );
+    });
+
+    await step('the half-finished range was not committed', async () => {
+      await expect(
+        canvas.queryByRole('listbox', { name: 'monthOptions' })
+      ).not.toBeInTheDocument();
+      await expect(
+        canvas.getByRole('button', { name: 'Mar' })
+      ).toBeInTheDocument();
+      // The dropdown only navigates; the in-progress range stays open.
+      await expect(args.onChange).not.toHaveBeenCalled();
     });
   },
 });

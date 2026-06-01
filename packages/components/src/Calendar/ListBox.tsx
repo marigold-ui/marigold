@@ -1,4 +1,4 @@
-import { ReactNode, useLayoutEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import {
   ListBox as RACAriaListBox,
   ListBoxItem as RACListBoxItem,
@@ -25,16 +25,21 @@ export function ListBox<T>({
 }: ListBoxProps<T>) {
   const { classNames } = useCalendarContext();
   const listRef = useRef<HTMLDivElement>(null);
-  const selectedItemKeys = items
-    .map((item, index) => (isSelected(item, index) ? String(index) : undefined))
-    .filter((key): key is string => typeof key === 'string');
+  const selectedItemKeys = items.flatMap((item, index) =>
+    isSelected(item, index) ? [String(index)] : []
+  );
 
-  // RAC `autoFocus` moves keyboard focus but not the visible scroll position in
-  // a grid layout, so scroll the selected option into view when the picker opens.
-  useLayoutEffect(() => {
-    listRef.current
-      ?.querySelector('[aria-current="true"]')
-      ?.scrollIntoView({ block: 'center' });
+  // RAC `autoFocus` scrolls the focused option only to the nearest edge, so we re-center it.
+  // We run from a parent-effect rAF so it's queued after RAC's own scroll (scheduled in a
+  // child-effect rAF) and wins. We target `aria-selected` (driven by `selectedKeys`) because
+  // RAC's DOM-prop filter would strip a custom attr.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      listRef.current
+        ?.querySelector('[aria-selected="true"]')
+        ?.scrollIntoView({ block: 'center' });
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   return (
@@ -52,14 +57,14 @@ export function ListBox<T>({
       {items.map((item, index) => {
         const disabled = isDisabled(item, index);
         const selected = isSelected(item, index);
+        const label = format(item, index);
         return (
           <RACListBoxItem
             key={index}
             id={String(index)}
-            textValue={String(format(item, index))}
+            textValue={String(label)}
             isDisabled={disabled}
-            aria-current={selected ? 'true' : undefined}
-            aria-label={`${format(item, index)}${
+            aria-label={`${label}${
               selected ? ' selected' : disabled ? ' not selectable' : ''
             }`}
             className={cn(
@@ -69,7 +74,7 @@ export function ListBox<T>({
             )}
             onPress={() => !disabled && onSelect(item, index)}
           >
-            {format(item, index)}
+            {label}
           </RACListBoxItem>
         );
       })}
