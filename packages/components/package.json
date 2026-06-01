@@ -75,7 +75,7 @@
     "@react-types/grid": "^3.3.0",
     "@react-types/shared": "^3.34.0",
     "@react-types/table": "^3.14.0",
-    "motion": "12.34.3",
+    "motion": "12.39.0",
     "react-aria-components": "^1.17.0",
     "react-stately": "^3.45.0"
   },

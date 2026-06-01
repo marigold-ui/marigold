@@ -1,24 +1,23 @@
 import {
   Button,
+  Description,
   Form,
-  Inset,
-  Stack,
-  Text,
+  Panel,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export default () => {
   return (
     <Form>
-      <Inset p={8}>
-        <Stack space={7} alignX="left">
-          <Stack>
-            <Text fontSize="4xl" weight="extrabold">
-              Subscribe to our Newsletter!
-            </Text>
-            <Text>Stay updated with our latest news and updates.</Text>
-          </Stack>
-
+      <Panel size="form">
+        <Panel.Header>
+          <Title>Subscribe to our Newsletter</Title>
+          <Description>
+            Stay updated with our latest news and updates.
+          </Description>
+        </Panel.Header>
+        <Panel.Content>
           <TextField
             label="Email Address"
             name="email"
@@ -26,11 +25,13 @@ export default () => {
             placeholder="Enter your email address"
             required
           />
+        </Panel.Content>
+        <Panel.Footer>
           <Button variant="primary" type="submit">
             Subscribe
           </Button>
-        </Stack>
-      </Inset>
+        </Panel.Footer>
+      </Panel>
     </Form>
   );
 };

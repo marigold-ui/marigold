@@ -7,7 +7,7 @@ export const calendarCellBase = [
   'relative flex items-center justify-center whitespace-nowrap justify-self-center',
   'my-0.5',
   'border border-transparent p-0 text-sm font-normal text-foreground',
-  'outline-offset-2 duration-150 transition-[color,background-color]',
+  'outline-offset-2 duration-150 transition-[color]',
   'data-hovered:ui-state-hover',
   'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
   'disabled:cursor-not-allowed disabled:text-disabled',

@@ -1,12 +1,10 @@
 ---
 title: Forms
-description: Guidelines for building a consistent form structure
+description: Guidelines for building accessible, consistent forms covering layout, validation, and submission
 badge: beta
 ---
 
-How you design forms affects whether people can actually use them. This page covers layout, spacing, and content organization so your forms stay consistent and accessible.
-
-For implementation details, state management, and validation, see the [Form Implementation](/patterns/user-input/form-implementation) guide.
+How you design forms affects whether people can actually use them. This page covers everything from layout and spacing to validation and submission, so your forms stay consistent, accessible, and easy to maintain.
 
 ## Layout & Structure
 
@@ -127,7 +125,11 @@ Some actions belong inside the form body, next to the fields they relate to.
 - **Secondary buttons for form operations.** "Create new", "Reset", or "Save as Draft" should be visually distinct from the primary submit so people don't hit the wrong one.
 - **Put each action close to what it affects.** An action buried at the bottom of the form is easy to miss when it only matters for one specific field.
 
-<ComponentDemo file="./form-inline-actions.demo.tsx" mode="preview" />
+<ComponentDemo
+  file="./form-inline-actions.demo.tsx"
+  mode="preview"
+  background="page"
+/>
 
 ### Submit placement
 
@@ -200,6 +202,88 @@ Use for low-stakes preferences where a saved/unsaved state would feel like frict
   code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/auto-save-settings"
 />
 
+## Validation
+
+Validation keeps the data you collect accurate and tells users how to fix what's wrong before they hit submit. Marigold's form components plug into the browser's [constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation) API, so most of what you need comes from the platform. When that isn't enough, you can layer in custom logic, real-time feedback, server responses, or a schema library like Zod.
+
+### Built-in validation
+
+The simplest way to validate is to use native HTML constraints like `required`, `type="email"`, `minLength`, and `pattern`. The browser checks them on blur or on submit, and Marigold styles the messages to match the rest of the design instead of using the browser's defaults.
+
+Here is an email subscription form. If you submit it without entering an email address or if the entered email is invalid, an error will be displayed:
+
+<ComponentDemo file="./validation-base.demo.tsx" background="page" />
+
+### Custom messages
+
+Browser-provided messages are useful but generic. Pass a function to `errorMessages` to swap in your own copy. You only need to override the cases you care about. Anything you don't return falls back to the browser default.
+
+<ComponentDemo file="./validation-custom-message.demo.tsx" background="page" />
+
+### Custom validation
+
+When native constraints aren't expressive enough, pass a function to the field's `validate` prop. It returns one error message, or an array if you have several. The custom result replaces the native one entirely, so handle the empty case yourself when needed.
+
+<ComponentDemo
+  file="./validation-custom-validation.demo.tsx"
+  background="page"
+/>
+
+### Real-time validation
+
+By default, errors appear after the user leaves the field (on blur) or submits the form. That delay is deliberate: it prevents users from seeing irrelevant errors while they're still in the middle of typing a value.
+
+Real-time validation makes sense in narrow situations like password rules, where users benefit from seeing requirements light up as they type. [Control the field](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) and set `error` and `errorMessages` yourself.
+
+<ComponentDemo file="./validation-realtime.demo.tsx" background="page" />
+
+### Server errors
+
+Client-side validation is for fast feedback; server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`. Provide an object keyed by field `name`, where each value is either a string or an array of strings if a field has more than one error. The errors appear immediately and clear themselves when the user edits the field.
+
+In the demo, submitting `support@reservix.de` simulates a server-side rejection.
+
+<ComponentDemo file="./validation-server-error.demo.tsx" background="page" />
+
+### Validation with Zod
+
+For complex forms with nested objects, conditional fields, or cross-field rules, [Zod](https://zod.dev/) keeps validation declarative. Define the schema once, infer the TypeScript type from it, and run `safeParse` on the form data before submit.
+
+<ComponentDemo file="./building-forms-zod.demo.tsx" background="page" />
+
+## State Management & Submission
+
+Forms need to capture user input, react to it, and hand it off when the user submits. Marigold's form components work with both uncontrolled and controlled patterns, and integrate cleanly with native `FormData` and React 19 actions.
+
+### Controlled vs uncontrolled
+
+Uncontrolled fields manage their own value; you read it back from the DOM (or `FormData`) at submit time. Use `defaultValue` to set an initial value. This is the simpler default: fewer renders, less code.
+
+Controlled fields hold their value in React state via `value` and `onChange`. Reach for control when the value needs to drive something else: dependent fields, real-time validation, formatting as the user types.
+
+### Submitting with FormData
+
+The simplest way to read a form is the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. Wrap your fields in `<Form>` and reach for [`parseFormData`](/components/hooks-and-utils/parseFormData), a Marigold utility that converts the submitted form into a plain JavaScript object you can pass straight to `fetch` or hand off to a validation library. It also handles repeated field names (like grouped checkboxes) by collecting them into an array.
+
+<Callout title="Names matter">
+  Every field that should be submitted needs a `name` prop. Without one, the
+  value won't appear in `FormData` or in the submitted payload.
+</Callout>
+
+<ComponentDemo file="./building-forms-submit.demo.tsx" background="page" />
+
+### Conditional fields
+
+Some fields only make sense after another field is set. For example, toggle "Other reason" when "Other" is selected, or show a tax ID only for business accounts. Control the parent field, read its value, and render the dependent field conditionally.
+
+<ComponentDemo file="./logical-interaction.demo.tsx" background="page" />
+
+### Async forms with useActionState
+
+In React 19, async submissions belong in actions. `useActionState` tracks the pending state for you and returns the action's result, so you don't need a separate `useState` for "is submitting" or "what did the server say".
+
+<ComponentDemo file="./building-forms-async.demo.tsx" background="page" />
+
 ## Related
 
 <TeaserList
@@ -207,7 +291,8 @@ Use for low-stakes preferences where a saved/unsaved state would feel like frict
     {
       title: 'Form Fields',
       href: '../../foundations/form-fields',
-      caption: 'A guide to all available form field components.',
+      caption:
+        'Anatomy, labels, help text, and field states for individual form fields.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -222,27 +307,6 @@ Use for low-stakes preferences where a saved/unsaved state would feel like frict
             strokeLinejoin="round"
             d="M3 8.25V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18V8.25m-18 0V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6ZM7.5 6h.008v.008H7.5V6Zm2.25 0h.008v.008H9.75V6Z"
           />
-        </svg>
-      ),
-    },
-    {
-      title: 'Form Implementation Guide',
-      href: '../form-implementation',
-      caption: 'Learn how to build forms.',
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
         </svg>
       ),
     },

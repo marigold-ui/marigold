@@ -45,7 +45,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'text-sm font-medium text-foreground outline-none',
       'cursor-default data-selection-mode:cursor-pointer',
       'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
-      'transition-[border,color,background]',
+      'transition-[border,color]',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'group-orientation-horizontal/list:min-w-40',
     ],
