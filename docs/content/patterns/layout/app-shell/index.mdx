@@ -58,17 +58,17 @@ The App Shell divides the screen into three areas. The diagram below shows how t
 </RouterProvider>
 ```
 
-The order of `<Sidebar>`, `<TopNavigation>`, and `<Page>` inside `AppShell` doesn't matter since the grid template handles positioning. For controlled sidebar state, render your own `<Sidebar.Provider>` around `<AppShell>` — see the [AppShell docs](/components/layout/app-shell).
+The order of `<Sidebar>`, `<TopNavigation>`, and `<Page>` inside `AppShell` doesn't matter since the grid template handles positioning. For controlled sidebar state, render your own `<Sidebar.Provider>` around `<AppShell>`. See the [AppShell docs](/components/layout/app-shell).
 
 ### Where things go
 
 Each area has a clear purpose. Mixing responsibilities between them makes the layout harder to use and harder to maintain.
 
-- **Logo placement:** Put the application logo or name in the sidebar header, not in the top navigation. The sidebar is the persistent brand anchor; the top navigation is for orientation and utility actions.
+- **Logo placement:** Put the application logo or name in the sidebar header, not in the top navigation. The sidebar is the persistent brand anchor. The top navigation is for orientation and utility actions.
 - **Primary navigation:** All section-level links belong in the sidebar. Use groups (`<Sidebar.GroupLabel>`) and separators (`<Sidebar.Separator>`) to organize them. See the [Sidebar docs](/components/navigation/sidebar) for drill-down navigation and detail page patterns.
 - **Top navigation:** The top navigation exists primarily for [breadcrumbs](/components/navigation/breadcrumbs) and [search](/components/form/search-field). Breadcrumbs go in the middle slot to show users where they are in the hierarchy. A search field can replace or complement them when global search is a core workflow. Don't place tabs, links, or secondary navigation here. That's what the sidebar is for. See the [TopNavigation docs](/components/navigation/topnavigation) for further information.
-- **Breadcrumbs, not in the page header:** Breadcrumbs describe where a page sits in the app, so they belong to the frame — which persists across navigation — not to `<Page.Header>`, which describes the page itself. This is why Marigold places them in `<TopNavigation>` rather than the page header, unlike systems that fold breadcrumbs into the page title block.
-- **Utility actions (top navigation, right side):** The end of the top navigation is reserved for user-facing utilities like account menus, notification badges, or status indicators. Keep it concise; too many items cause the navigation to overflow on smaller screens.
+- **Breadcrumbs, not in the page header:** Breadcrumbs describe where a page sits in the app, so they belong to the frame (which persists across navigation) rather than to `<Page.Header>`, which describes the page itself. This is why Marigold places them in `<TopNavigation>` rather than the page header, unlike systems that fold breadcrumbs into the page title block.
+- **Utility actions (top navigation, right side):** The end of the top navigation is reserved for user-facing utilities like account menus, notification badges, or status indicators. Keep it concise. Too many items cause the navigation to overflow on smaller screens.
 
 <GuidelineTiles>
   <Do>
@@ -114,7 +114,7 @@ Each App Shell slot renders semantic HTML, so the screen reader's landmark list 
 
 The `<main>` landmark is labelled by the page `<h1>` from `<Page.Header>`, so screen-reader landmark navigation announces the page by its title. When you compose multiple navigation regions inside the header (e.g. `<TopNavigation.Middle>` plus `<TopNavigation.End>`), give each a distinct `aria-label` so they can be told apart. Each [`<Panel>`](/components/layout/panel) inside `<Page>` adds its own `region` landmark, labelled by its title.
 
-`F6` / `Shift + F6` cycling is opt-in via the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook. Today only `<Drawer>` opts in by default — wrap the slots above (or any custom region) with `useLandmark` to add them to the cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
+`F6` / `Shift + F6` cycling is opt-in via the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook. Today only `<Drawer>` opts in by default. Wrap the slots above (or any custom region) with `useLandmark` to add them to the cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
 
 ### Responsive behavior
 
@@ -136,7 +136,7 @@ Inside `<Page>`, lead with a `<Page.Header>` and follow it with the page's `<Pan
 </Page>
 ```
 
-The heading outline falls out of the defaults — no per-component configuration:
+The heading outline falls out of the defaults, with no per-component configuration:
 
 | Element                            | Heading |
 | ---------------------------------- | ------- |
@@ -148,15 +148,15 @@ The heading outline falls out of the defaults — no per-component configuration
 
 ## Common page layouts
 
-Most application pages fall into a handful of shapes. Each is built from the same `<Page>` + `<Panel>` primitives — what differs is how many surfaces there are, how they are arranged, and how wide they run.
+Most application pages fall into a handful of shapes. Each is built from the same `<Page>` + `<Panel>` primitives. What differs is how many surfaces there are, how they are arranged, and how wide they run.
 
-| Page                     | What it is                                        | Recipe                                                                                                                                           | Example                                  |
-| ------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------- |
-| **List / index**         | Browse and filter a collection before drilling in | A single full-width `<Panel>` wrapping a toolbar, filters, and a table                                                                           | [Venues](/examples/filter)               |
-| **Detail / record**      | One object, with status and metadata              | `<Columns columns={[2, 1]}>` — a primary column of content `<Panel>`s and a secondary "Overview" `<Panel>` for status (`<Badge>`) and key fields | [Venue Detail](/examples/venue)          |
-| **Form**                 | Create or edit a single thing                     | `<Panel size="form">` surfaces (or a `<Form>`) constrained to a readable measure; primary action in the header or a submit button at the end     | [Event Form](/examples/event-form)       |
-| **Settings**             | Grouped configuration, often tabbed               | `<Tabs>` below `<Page.Header>`, each panel a stack of `<Panel size="form">` sections                                                             | [Settings Form](/examples/settings-form) |
-| **Dashboard / overview** | At-a-glance cards and summaries                   | `<Page.Content>` (or `<Columns>`) of full-width `<Panel>`s and `<Card>`s                                                                         | [Inventory](/examples/inventory)         |
+| Page                     | What it is                                        | Recipe                                                                                                                                                | Example                                  |
+| ------------------------ | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| **List / index**         | Browse and filter a collection before drilling in | A single full-width `<Panel>` wrapping a toolbar, filters, and a table                                                                                | [Venues](/examples/filter)               |
+| **Detail / record**      | One object, with status and metadata              | `<Columns columns={[2, 1]}>` with a primary column of content `<Panel>`s and a secondary "Overview" `<Panel>` for status (`<Badge>`) and key fields   | [Venue Detail](/examples/venue)          |
+| **Form**                 | Create or edit a single thing                     | `<Panel size="form">` surfaces (or a `<Form>`) constrained to a readable measure, with the primary action in the header or a submit button at the end | [Event Form](/examples/event-form)       |
+| **Settings**             | Grouped configuration, often tabbed               | `<Tabs>` below `<Page.Header>`, each panel a stack of `<Panel size="form">` sections                                                                  | [Settings Form](/examples/settings-form) |
+| **Dashboard / overview** | At-a-glance cards and summaries                   | `<Page.Content>` (or `<Columns>`) of full-width `<Panel>`s and `<Card>`s                                                                              | [Inventory](/examples/inventory)         |
 
 The **detail** layout is the one most worth internalizing: a primary column carries the object's content, and a narrower secondary column carries its status and metadata. Because `<Page.Header>` has no slot for a status badge, the object's state lives in that secondary panel, not the title row.
 
@@ -166,16 +166,16 @@ Match the action to the level it belongs to. Promote a button only as high as it
 
 | Level       | Where                   | Use                                                                                           |
 | ----------- | ----------------------- | --------------------------------------------------------------------------------------------- |
-| **Page**    | `<Page.Header>`         | `<ActionButton variant="primary">` for the page's primary action; `<ActionMenu>` for overflow |
+| **Page**    | `<Page.Header>`         | `<ActionButton variant="primary">` for the page's primary action, `<ActionMenu>` for overflow |
 | **Panel**   | `<Panel.Header>`        | `<ActionButton>` (icon chrome) or `<ActionMenu>` scoped to that surface                       |
 | **Row**     | inside a table/list row | `<ActionButton>` / `<ActionMenu>` scoped to the item                                          |
-| **Account** | `<TopNavigation.End>`   | account menu, notifications — global utilities, not page actions                              |
+| **Account** | `<TopNavigation.End>`   | account menu and notifications (global utilities, not page actions)                           |
 
-A page's primary action is a prominent `<ActionButton variant="primary">` in the header; it claims the header's action slot. Don't put page actions in `<TopNavigation>` — that bar is for global utilities.
+A page's primary action is a prominent `<ActionButton variant="primary">` in the header, claiming the header's action slot. Don't put page actions in `<TopNavigation>`, which is for global utilities.
 
 ## Tabs on pages
 
-When a page splits into tabbed views, render [`<Tabs>`](/components/navigation/tabs) as a sibling _below_ `<Page.Header>`, not inside it. The header keeps the page title and primary action; the tabs switch the content beneath.
+When a page splits into tabbed views, render [`<Tabs>`](/components/navigation/tabs) as a sibling _below_ `<Page.Header>`, not inside it. The header keeps the page title and primary action. The tabs switch the content beneath.
 
 ```tsx
 <Page>
@@ -191,7 +191,7 @@ When a page splits into tabbed views, render [`<Tabs>`](/components/navigation/t
 
 ## Empty state
 
-When a page (or a Panel within it) has no data yet, render an [`<EmptyState>`](/components/feedback/empty-state) in place of the missing content. Keep the `<Page.Header>` so the page title and primary action stay available — the empty state replaces the Panels, not the header.
+When a page (or a Panel within it) has no data yet, render an [`<EmptyState>`](/components/feedback/empty-state) in place of the missing content. Keep the `<Page.Header>` so the page title and primary action stay available. The empty state replaces the Panels, not the header.
 
 ## Full demo
 
@@ -232,7 +232,7 @@ A complete App Shell with sidebar navigation (including drill-down), breadcrumbs
       title: 'Page',
       href: '../../components/layout/page',
       caption:
-        'The content area — the main landmark, page padding, and rhythm.',
+        'The content area with the main landmark, page padding, and rhythm.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

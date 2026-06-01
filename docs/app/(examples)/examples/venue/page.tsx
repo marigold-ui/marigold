@@ -23,10 +23,10 @@ import {
 // The detail (record) page is the drill-in from the Venues list (see the
 // `filter` example). It demonstrates the canonical detail layout: a primary
 // column with the object's content and a secondary column with status and
-// metadata — the same primary/secondary split used by most design systems.
+// metadata, the same primary/secondary split used by most design systems.
 const venue = venues.find(v => v.id === '1')!;
 
-const price = `$${venue.price.from.toLocaleString()}–$${venue.price.to.toLocaleString()}`;
+const price = `$${venue.price.from.toLocaleString()} to $${venue.price.to.toLocaleString()}`;
 
 const Field = ({ label, children }: { label: string; children: string }) => (
   <Stack space="tight">
@@ -46,7 +46,7 @@ const VenuePage = () => (
     </Page.Header>
 
     <Columns columns={[2, 1]} space="group" collapseAt="60rem">
-      {/* Primary column — the object's content */}
+      {/* Primary column: the object's content */}
       <Stack space="group">
         <Panel>
           <Panel.Header>
@@ -97,7 +97,7 @@ const VenuePage = () => (
         </Panel>
       </Stack>
 
-      {/* Secondary column — status and at-a-glance metadata */}
+      {/* Secondary column: status and at-a-glance metadata */}
       <Panel>
         <Panel.Header>
           <Title>Overview</Title>
