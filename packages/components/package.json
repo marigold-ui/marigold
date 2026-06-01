@@ -50,7 +50,7 @@
     "@marigold/types": "workspace:*",
     "@react-aria/button": "^3.15.0",
     "@react-aria/calendar": "^3.10.0",
-    "@react-aria/collections": "3.1.0",
+    "@react-aria/collections": "3.1.1",
     "@react-aria/focus": "^3.22.0",
     "@react-aria/i18n": "^3.13.0",
     "@react-aria/interactions": "^3.28.0",
@@ -82,7 +82,7 @@
   "devDependencies": {
     "@marigold/icons": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "19.2.14",
+    "@types/react": "19.2.15",
     "lucide-react": "^1.7.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
