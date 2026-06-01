@@ -12,6 +12,7 @@ const meta = preview.meta({
   component: Page,
   parameters: {
     layout: 'fullscreen',
+    surface: false,
   },
 });
 
