@@ -509,13 +509,8 @@ export const MonthDropdownTouch = meta.story({
   },
 });
 
-// Regression: navigating the month/year dropdown while a range selection is in
-// progress must NOT commit the half-finished range. react-aria's
-// `useRangeCalendar` arms a window `pointerup` listener that commits the range
-// on any non-button release inside the calendar; our role="option" items would
-// trip it. The overlay guard must stop those pointerups before the window
-// listener (without breaking touch selection — see MonthDropdownTouch). Affects
-// mouse and touch; a mouse click is enough to reproduce.
+// Regression: navigating the month/year dropdown mid-range-selection must not
+// commit the half-finished range (react-aria commits on any non-button pointerup).
 export const DropdownNavigationKeepsRangeInProgress = meta.story({
   tags: ['component-test'],
   args: {

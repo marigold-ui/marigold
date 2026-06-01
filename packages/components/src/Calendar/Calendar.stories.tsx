@@ -214,8 +214,7 @@ export const YearSelectionWithMinMax = meta.story({
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('button', { name: '2020' }));
 
-    // The list is clamped to [minValue, maxValue]: only in-range years are
-    // rendered, so the user never sees unselectable years.
+    // Only in-range years are rendered.
     const years = within(canvas.getByTestId('yearOptions'))
       .getAllByRole('option')
       .map(option => option.textContent);
@@ -223,8 +222,7 @@ export const YearSelectionWithMinMax = meta.story({
     await expect(canvas.queryByText('2019')).not.toBeInTheDocument();
     await expect(canvas.queryByText('2022')).not.toBeInTheDocument();
 
-    // The focused year is marked selected so it can be scrolled into view on
-    // open (RAC drives aria-selected from selectedKeys).
+    // The focused year is marked selected.
     const focusedYear = within(canvas.getByTestId('yearOptions')).getByText(
       '2020'
     );
@@ -233,7 +231,6 @@ export const YearSelectionWithMinMax = meta.story({
       'true'
     );
 
-    // Selecting an in-range year switches the grid and closes the dropdown.
     await userEvent.click(canvas.getByText('2021'));
 
     await expect(canvas.queryByTestId('yearOptions')).not.toBeInTheDocument();
@@ -251,9 +248,7 @@ export const LeapYearSelection = meta.story({
   },
 });
 
-// Feb 29 only exists in leap years. Switching from a Feb 29 focus to a
-// non-leap year via the picker must clamp to Feb 28 instead of producing an
-// invalid date (@internationalized/date constrains it).
+// Switching from a Feb 29 focus to a non-leap year must clamp to Feb 28.
 LeapYearSelection.test(
   'selecting a non-leap year from a Feb 29 focus resolves cleanly',
   async ({ canvas, userEvent }) => {
@@ -274,18 +269,14 @@ export const YearPickerScrollsToFocused = meta.story({
   ...Basic.input,
   tags: ['component-test'],
   args: {
-    // Unbounded, so the list spans focused year ±20 and the focused year sits
-    // in the middle of a list taller than the viewport. Without a scroll fix
-    // it would open at the top and the focused year would be off-screen.
+    // Unbounded: focused year ±20, so it sits mid-list, taller than the viewport.
     defaultValue: new CalendarDate(2025, 8, 7),
   },
 });
 
-// Defect 2 (DSTSUP-255): RAC `autoFocus` moves keyboard focus but not the
-// scroll position in a grid layout, so the picker must scroll the focused
-// year into view when it opens.
+// DSTSUP-255: the focused year must be centered when the picker opens.
 YearPickerScrollsToFocused.test(
-  'opens with the focused year scrolled into the viewport',
+  'opens with the focused year centered',
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: '2025' }));
 
@@ -297,12 +288,12 @@ YearPickerScrollsToFocused.test(
     await waitFor(() => {
       const listRect = listbox.getBoundingClientRect();
       const itemRect = focused!.getBoundingClientRect();
+      const listCenter = listRect.top + listRect.height / 2;
+      const itemCenter = itemRect.top + itemRect.height / 2;
 
-      // The list actually scrolled away from the top...
+      // Selected year sits near the vertical center of the list, not at an edge.
       expect(listbox.scrollTop).toBeGreaterThan(0);
-      // ...and the focused year is fully inside the visible viewport.
-      expect(itemRect.top).toBeGreaterThanOrEqual(listRect.top);
-      expect(itemRect.bottom).toBeLessThanOrEqual(listRect.bottom);
+      expect(Math.abs(itemCenter - listCenter)).toBeLessThan(itemRect.height);
     });
   }
 );

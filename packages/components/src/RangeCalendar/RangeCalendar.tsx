@@ -140,14 +140,11 @@ const _RangeCalendar = <T extends DateValue>({
     ViewMapKeys | undefined
   >();
 
-  // react-aria's `useRangeCalendar` commits an in-progress range on any *window*
-  // `pointerup` whose target isn't a button — our role="option" items included —
-  // so navigating the month/year dropdown mid-selection would wrongly commit the
-  // half-finished range. We stop overlay pointerups at the *document*: they never
-  // reach react-aria's window listener (no stray commit), but still run through
-  // `usePress`'s document-level touch click-completion fallback, so taps commit
-  // the option on touch (DSTSUP-257). A native listener is needed because
-  // react-aria also listens natively, before React's synthetic event system.
+  // react-aria's `useRangeCalendar` commits an in-progress range on any window
+  // `pointerup` that isn't on a button (our role="option" items included). We stop
+  // overlay pointerups at the *document* so that window listener never fires, while
+  // `usePress`'s own document-level touch fallback still commits the tap (DSTSUP-257).
+  // Native listener because react-aria also listens natively, outside React's events.
   const dropdownOverlayRef = useCallback((node: HTMLDivElement | null) => {
     if (!node) return;
     const ownerDocument = node.ownerDocument;

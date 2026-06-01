@@ -29,15 +29,22 @@ export function ListBox<T>({
     isSelected(item, index) ? [String(index)] : []
   );
 
-  // RAC `autoFocus` scrolls the focused option only to the nearest edge, so we re-center it.
-  // We run from a parent-effect rAF so it's queued after RAC's own scroll (scheduled in a
-  // child-effect rAF) and wins. We target `aria-selected` (driven by `selectedKeys`) because
-  // RAC's DOM-prop filter would strip a custom attr.
+  // RAC `autoFocus` scrolls the selected option to the nearest edge; we re-center it
+  // from a parent-effect rAF so ours runs after RAC's own scroll and wins.
   useEffect(() => {
     const raf = requestAnimationFrame(() => {
-      listRef.current
-        ?.querySelector('[aria-selected="true"]')
-        ?.scrollIntoView({ block: 'center' });
+      const list = listRef.current;
+      const selected = list?.querySelector<HTMLElement>(
+        '[aria-selected="true"]'
+      );
+      if (!list || !selected) return;
+      const listRect = list.getBoundingClientRect();
+      const selectedRect = selected.getBoundingClientRect();
+      // Center within the list's own scroll area only — never scroll ancestors/the page.
+      list.scrollTop +=
+        selectedRect.top -
+        listRect.top -
+        (list.clientHeight - selected.clientHeight) / 2;
     });
     return () => cancelAnimationFrame(raf);
   }, []);

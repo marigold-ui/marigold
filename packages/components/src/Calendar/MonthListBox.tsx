@@ -11,9 +11,8 @@ const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
   const state = useCalendarOrRangeState();
   const currentYear = state.focusedDate.year;
 
-  // The month picker always renders all 12 months (the `grid-cols-3` layout
-  // depends on a fixed grid), so out-of-range months are disabled per item
-  // rather than omitted.
+  // All 12 months always render (the grid-cols-3 layout needs them), so out-of-range
+  // months are disabled per item rather than omitted.
   const minMonth =
     state.minValue && state.minValue.year === currentYear
       ? state.minValue.month
