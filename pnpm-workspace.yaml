@@ -9,3 +9,12 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
+# Pin @react-types/* to their last type-only versions. Newer releases
+# (button >=3.16, checkbox >=3.11, grid >=3.4, table >=3.14) erroneously
+# depend on the full @react-spectrum/* component packages, which drag in
+# @adobe/react-spectrum and a duplicate react-aria/react-stately copy.
+overrides:
+  '@react-types/button': ~3.15.0
+  '@react-types/checkbox': ~3.10.0
+  '@react-types/grid': ~3.3.0
+  '@react-types/table': ~3.13.0
