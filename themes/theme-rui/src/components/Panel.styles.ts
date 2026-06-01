@@ -3,16 +3,16 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const Panel: ThemeComponent<'Panel'> = {
   root: cva({
-    base: 'rounded-surface shadow-elevation-raised [--panel-accent:currentColor]',
+    base: 'rounded-surface shadow-elevation-raised [--panel-text:currentColor]',
     variants: {
       variant: {
         default: 'ui-surface',
         master:
-          'border border-access-master-accent bg-access-master/40 [--panel-accent:var(--color-access-master-foreground)]',
+          'border border-access-master-accent bg-access-master/40 [--panel-text:var(--color-access-master-foreground)]',
         admin:
-          'border border-access-admin-accent bg-access-admin/40 [--panel-accent:var(--color-access-admin-foreground)]',
+          'border border-access-admin-accent bg-access-admin/40 [--panel-text:var(--color-access-admin-foreground)]',
         destructive:
-          'border border-destructive-accent bg-destructive/40 [--panel-accent:var(--color-destructive-foreground)]',
+          'border border-destructive-accent bg-destructive/40 [--panel-text:var(--color-destructive-foreground)]',
       },
       size: {
         default: '',
@@ -26,7 +26,7 @@ export const Panel: ThemeComponent<'Panel'> = {
   }),
   header: cva({}),
   title: cva({
-    base: 'text-lg font-semibold leading-none text-(--panel-accent)',
+    base: 'text-lg font-semibold leading-none text-(--panel-text)',
   }),
   description: cva({
     base: 'mt-0.5 text-sm text-secondary',
