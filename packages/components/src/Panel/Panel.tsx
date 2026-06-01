@@ -126,7 +126,7 @@ export const Panel = ({
     >
       <section
         data-panel
-        aria-labelledby={!ariaLabel ? titleId : undefined}
+        aria-labelledby={!ariaLabel && hasTitle ? titleId : undefined}
         aria-label={ariaLabel}
         className={cn(
           'flex flex-col gap-y-(--panel-gap) pt-(--panel-py) pb-(--panel-py) has-[[data-collapsible]:last-child]:pb-0',
