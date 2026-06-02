@@ -29,6 +29,10 @@ import {
   responsiveToValidationIssues,
 } from './responsive.js';
 import {
+  extractTextSpacingData,
+  textSpacingToValidationIssues,
+} from './text-spacing.js';
+import {
   checkTokenCompliance,
   snapshotBrowserDefaults,
 } from './token-compliance.js';
@@ -76,6 +80,11 @@ export {
   keyboardA11yToValidationIssues,
   type KeyboardA11yData,
 } from './keyboard.js';
+export {
+  extractTextSpacingData,
+  textSpacingToValidationIssues,
+  type TextSpacingData,
+} from './text-spacing.js';
 
 export type SpatialResult = {
   spatialIssues: ValidationIssue[];
@@ -95,6 +104,7 @@ export type SpatialOptions = {
   enableA11y: boolean;
   enableResponsive?: boolean;
   enableKeyboardA11y?: boolean;
+  enableTextSpacing?: boolean;
   viewport: Viewport;
 };
 
@@ -157,6 +167,23 @@ export const runSpatialChecks = async (
       spatialIssues.push(...overflowToValidationIssues(overflowData.overflows));
     }
 
+    if (options.enableTextSpacing ?? options.enableA11y) {
+      try {
+        const spacingData = await extractTextSpacingData(page);
+        a11yIssues.push(...textSpacingToValidationIssues(spacingData));
+      } catch (err) {
+        a11yIssues.push({
+          type: 'a11y',
+          severity: 'warning',
+          source: 'text-spacing',
+          component: 'page',
+          message: `Text spacing check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'The text spacing check could not complete. This may indicate a page rendering issue.',
+        });
+      }
+    }
+
     if (options.enableA11y) {
       const aom = await extractAOM(page);
       a11yIssues.push(...checkAccessibility(aom));
@@ -166,13 +193,37 @@ export const runSpatialChecks = async (
     }
 
     if (options.enableResponsive ?? options.enableSpatial) {
-      const snapshots = await extractResponsiveSnapshots(page);
-      responsiveIssues.push(...responsiveToValidationIssues(snapshots));
+      try {
+        const snapshots = await extractResponsiveSnapshots(page);
+        responsiveIssues.push(...responsiveToValidationIssues(snapshots));
+      } catch (err) {
+        responsiveIssues.push({
+          type: 'spatial',
+          severity: 'warning',
+          source: 'responsive-checker',
+          component: 'page',
+          message: `Responsive check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'The responsive layout check could not complete. This may indicate a page rendering issue.',
+        });
+      }
     }
 
     if (options.enableKeyboardA11y ?? options.enableA11y) {
-      const kbData = await extractKeyboardA11yData(page);
-      keyboardIssues.push(...keyboardA11yToValidationIssues(kbData));
+      try {
+        const kbData = await extractKeyboardA11yData(page);
+        keyboardIssues.push(...keyboardA11yToValidationIssues(kbData));
+      } catch (err) {
+        keyboardIssues.push({
+          type: 'a11y',
+          severity: 'warning',
+          source: 'keyboard-a11y',
+          component: 'page',
+          message: `Keyboard accessibility check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'The keyboard check could not complete. This may indicate a page rendering or focus management issue.',
+        });
+      }
     }
 
     const dedup = (issues: ValidationIssue[]): ValidationIssue[] => {

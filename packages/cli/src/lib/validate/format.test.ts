@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { formatForLLM } from './format.js';
-import type { ValidationReport } from './types.js';
+import { type ValidationReport, emptyCoverage } from './types.js';
 
 const sampleReport = (): Omit<ValidationReport, 'markdown'> => ({
   file: 'src/Sample.tsx',
@@ -30,6 +30,7 @@ const sampleReport = (): Omit<ValidationReport, 'markdown'> => ({
     renderTimeMs: 0,
     componentsFound: ['Button', 'TextField'],
     checksRun: ['technical', 'a11y'],
+    coverage: emptyCoverage(),
   },
 });
 
@@ -54,6 +55,7 @@ describe('formatForLLM', () => {
         renderTimeMs: 0,
         componentsFound: [],
         checksRun: ['technical'],
+        coverage: emptyCoverage(),
       },
     });
     expect(md).toMatch(/— ok$/m);
@@ -154,6 +156,7 @@ describe('formatForLLM', () => {
         renderTimeMs: 0,
         componentsFound: [],
         checksRun: ['technical', 'spatial'],
+        coverage: emptyCoverage(),
       },
     });
     expect(md).toContain('checks run: technical, spatial');

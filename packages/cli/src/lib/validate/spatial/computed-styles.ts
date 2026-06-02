@@ -3,6 +3,8 @@ import { getTrackedProperties } from '../helpers/design-tokens.js';
 
 export type ComputedStyleSnapshot = {
   selector: string;
+  component: string;
+  fingerprint: string;
   styles: Record<string, string>;
 };
 
@@ -31,8 +33,18 @@ export const extractComputedStyles = async (
     { selectors: string[]; properties: string[] }
   >(
     ({ selectors, properties }) => {
+      const w = window as Window & {
+        __describeEl?: (el: Element) => {
+          component: string;
+          fingerprint: string;
+        };
+      };
+      const describeEl = w.__describeEl!;
+
       const result: Array<{
         selector: string;
+        component: string;
+        fingerprint: string;
         styles: Record<string, string>;
       }> = [];
       for (const selector of selectors) {
@@ -43,7 +55,13 @@ export const extractComputedStyles = async (
         for (const p of properties) {
           styles[p] = computed.getPropertyValue(p);
         }
-        result.push({ selector, styles });
+        const d = describeEl(el);
+        result.push({
+          selector,
+          component: d.component,
+          fingerprint: d.fingerprint,
+          styles,
+        });
       }
       return result;
     },

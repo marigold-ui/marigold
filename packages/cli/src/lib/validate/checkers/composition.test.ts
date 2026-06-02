@@ -7,7 +7,7 @@ import { validateComposition } from './composition.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string): string =>
-  path.join(__dirname, '..', '__fixtures__', name);
+  path.join(__dirname, '..', 'examples', name);
 
 const tmpFile = (name: string, content: string): string => {
   const p = path.join(os.tmpdir(), name);
@@ -34,12 +34,16 @@ describe('validateComposition', () => {
     expect(dialogIssue?.message).toContain('without any of its sub-components');
   });
 
-  it('returns warning when Dialog is missing some sub-components', () => {
+  it('does not flag partially-missing sub-components (too often optional)', () => {
+    // invalid-dialog has a Dialog (with a Trigger ancestor) but no Title/Content.
+    // Those slots are optional in practice, so a partial-missing warning would
+    // be a false positive — only a completely empty compound is an error.
     const issues = validateComposition(fixture('invalid-dialog.tsx'));
-    const dialogIssue = issues.find(i => i.component === 'Dialog');
-    expect(dialogIssue).toBeDefined();
-    expect(dialogIssue?.severity).toBe('warning');
-    expect(dialogIssue?.message).toContain('missing sub-components');
+    const missingWarning = issues.find(
+      i =>
+        i.component === 'Dialog' && i.message.includes('missing sub-components')
+    );
+    expect(missingWarning).toBeUndefined();
   });
 
   it('counts Dialog.Trigger as a parent wrapper (ancestor check)', () => {
@@ -75,12 +79,15 @@ describe('validateComposition', () => {
     expect(selectError).toBeUndefined();
   });
 
-  it('returns warning when Tabs is missing TabPanel', () => {
+  it('does not flag missing items on collection compounds', () => {
+    // Tabs is a collection compound (exposes Item/TabPanel). Collections repeat
+    // their items by design and their requirements are not statically
+    // enforceable, so a "missing TabPanel" warning would be a false positive.
     const issues = validateComposition(fixture('invalid-tabs.tsx'));
-    const tabsIssue = issues.find(i => i.component === 'Tabs');
-    expect(tabsIssue).toBeDefined();
-    expect(tabsIssue?.severity).toBe('warning');
-    expect(tabsIssue?.message).toContain('TabPanel');
+    const tabsWarning = issues.find(
+      i => i.component === 'Tabs' && i.message.includes('missing')
+    );
+    expect(tabsWarning).toBeUndefined();
   });
 
   it('finds sub-components inside render function children', () => {
@@ -136,7 +143,9 @@ describe('validateComposition', () => {
     expect(tabsAsDialogChild).toBeUndefined();
   });
 
-  it('emits warnings for missing sub-components when children are dynamic', () => {
+  it('does not emit false warnings when children are dynamic', () => {
+    // The contents of {children} cannot be analyzed statically, so a compound
+    // with only dynamic children must not be flagged as empty or incomplete.
     const file = tmpFile(
       'cv-dynamic.tsx',
       `import { Dialog } from '@marigold/components';
@@ -145,12 +154,7 @@ describe('validateComposition', () => {
       );`
     );
     const issues = validateComposition(file);
-    const dialogIssues = issues.filter(i => i.component === 'Dialog');
-    expect(dialogIssues.length).toBeGreaterThan(0);
-    for (const issue of dialogIssues) {
-      expect(issue.severity).toBe('warning');
-      expect(issue.details?.dynamicChildren).toBe(true);
-    }
+    expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
   });
 
   it('returns no issues for non-compound components', () => {

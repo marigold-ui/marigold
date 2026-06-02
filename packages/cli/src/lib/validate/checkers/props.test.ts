@@ -3,11 +3,12 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { emptyCoverage } from '../types.js';
 import { validateProps } from './props.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string): string =>
-  path.join(__dirname, '..', '__fixtures__', name);
+  path.join(__dirname, '..', 'examples', name);
 
 const tmpFile = (name: string, content: string): string => {
   const p = path.join(os.tmpdir(), name);
@@ -253,5 +254,34 @@ const C = (props: any) => <Button {...props}>click</Button>;`
     expect(spreadIssue?.message).toContain('Button');
     expect(spreadIssue?.location).toBeDefined();
     expect(spreadIssue?.location?.line).toBeGreaterThan(0);
+  });
+
+  it('tracks static vs dynamic variant coverage', () => {
+    const file = tmpFile(
+      'mv-coverage.tsx',
+      `import { Button } from '@marigold/components';
+const C = ({ v }: { v: 'primary' | 'secondary' }) => (
+  <>
+    <Button variant="primary">A</Button>
+    <Button variant={v}>B</Button>
+  </>
+);
+export default C;`
+    );
+    const coverage = emptyCoverage();
+    validateProps(file, coverage);
+    expect(coverage.staticValuesChecked).toBeGreaterThanOrEqual(1);
+    expect(coverage.dynamicValuesSkipped).toBeGreaterThanOrEqual(1);
+  });
+
+  it('counts spread props as bypassed in coverage', () => {
+    const file = tmpFile(
+      'mv-spread-coverage.tsx',
+      `import { Button } from '@marigold/components';
+const C = (props: any) => <Button {...props}>X</Button>;`
+    );
+    const coverage = emptyCoverage();
+    validateProps(file, coverage);
+    expect(coverage.spreadPropsBypassed).toBeGreaterThanOrEqual(1);
   });
 });

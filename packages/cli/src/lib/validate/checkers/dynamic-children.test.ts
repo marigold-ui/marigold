@@ -11,7 +11,7 @@ const tmpFile = (name: string, content: string): string => {
 };
 
 describe('hasDynamicChildren recognizes iteration patterns', () => {
-  it('treats {items.map(...)} as dynamic children', () => {
+  it('treats {items.map(...)} as dynamic — no false composition warning', () => {
     const file = tmpFile(
       'dc-map.tsx',
       `import { Dialog } from '@marigold/components';
@@ -23,15 +23,10 @@ describe('hasDynamicChildren recognizes iteration patterns', () => {
       );`
     );
     const issues = validateComposition(file);
-    const dialogIssues = issues.filter(i => i.component === 'Dialog');
-    expect(dialogIssues.length).toBeGreaterThan(0);
-    for (const issue of dialogIssues) {
-      expect(issue.severity).toBe('warning');
-      expect(issue.details?.dynamicChildren).toBe(true);
-    }
+    expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
   });
 
-  it('treats {items.filter().map()} chains as dynamic children', () => {
+  it('treats {items.filter().map()} chains as dynamic — no false warning', () => {
     const file = tmpFile(
       'dc-chain.tsx',
       `import { Dialog } from '@marigold/components';
@@ -43,12 +38,7 @@ describe('hasDynamicChildren recognizes iteration patterns', () => {
       );`
     );
     const issues = validateComposition(file);
-    const dialogIssues = issues.filter(i => i.component === 'Dialog');
-    expect(dialogIssues.length).toBeGreaterThan(0);
-    for (const issue of dialogIssues) {
-      expect(issue.severity).toBe('warning');
-      expect(issue.details?.dynamicChildren).toBe(true);
-    }
+    expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
   });
 
   it('treats {items.flatMap()} as dynamic children', () => {
@@ -72,7 +62,7 @@ describe('hasDynamicChildren recognizes iteration patterns', () => {
     }
   });
 
-  it('bare identifier {children} is still recognized as dynamic', () => {
+  it('bare identifier {children} is recognized as dynamic — no false warning', () => {
     const file = tmpFile(
       'dc-bare.tsx',
       `import { Dialog } from '@marigold/components';
@@ -81,12 +71,7 @@ describe('hasDynamicChildren recognizes iteration patterns', () => {
       );`
     );
     const issues = validateComposition(file);
-    const dialogIssues = issues.filter(i => i.component === 'Dialog');
-    expect(dialogIssues.length).toBeGreaterThan(0);
-    for (const issue of dialogIssues) {
-      expect(issue.severity).toBe('warning');
-      expect(issue.details?.dynamicChildren).toBe(true);
-    }
+    expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
   });
 
   it('truly empty compound component is still an error', () => {

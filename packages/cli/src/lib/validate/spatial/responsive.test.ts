@@ -12,6 +12,7 @@ const snap = (
   viewportWidth: width,
   touchTargets: [],
   disappearedComponents: [],
+  overflowCulprit: null,
   ...overrides,
 });
 
@@ -43,6 +44,41 @@ describe('responsiveToValidationIssues', () => {
     expect(issues[0].severity).toBe('warning');
   });
 
+  it('downgrades a tabular overflow culprit to a warning at mobile', () => {
+    const issues = responsiveToValidationIssues([
+      snap('mobile', 375, {
+        horizontalScrollWidth: 405,
+        overflowCulprit: {
+          component: 'table',
+          selector: 'table',
+          right: 405,
+          accessibleName: 'Upcoming events',
+          tabular: true,
+        },
+      }),
+    ]);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].severity).toBe('warning');
+    expect(issues[0].suggestion).toContain('Scrollable');
+    expect(issues[0].details?.tabular).toBe(true);
+  });
+
+  it('keeps a non-tabular mobile overflow as an error', () => {
+    const issues = responsiveToValidationIssues([
+      snap('mobile', 375, {
+        horizontalScrollWidth: 500,
+        overflowCulprit: {
+          component: 'div',
+          selector: 'div',
+          right: 500,
+          accessibleName: '',
+          tabular: false,
+        },
+      }),
+    ]);
+    expect(issues[0].severity).toBe('error');
+  });
+
   it('ignores horizontal scroll within 1px tolerance', () => {
     const issues = responsiveToValidationIssues([
       snap('mobile', 375, { horizontalScrollWidth: 376 }),
@@ -58,8 +94,8 @@ describe('responsiveToValidationIssues', () => {
             selector: 'button:nth-child(1)',
             component: 'Button',
             role: 'button',
-            width: 30,
-            height: 30,
+            width: 20,
+            height: 20,
           },
         ],
       }),
@@ -67,8 +103,8 @@ describe('responsiveToValidationIssues', () => {
     expect(issues).toHaveLength(1);
     expect(issues[0].type).toBe('a11y');
     expect(issues[0].severity).toBe('warning');
-    expect(issues[0].message).toContain('30x30');
-    expect(issues[0].message).toContain('44x44');
+    expect(issues[0].message).toContain('20x20');
+    expect(issues[0].message).toContain('24x24');
   });
 
   it('ignores touch targets at desktop', () => {

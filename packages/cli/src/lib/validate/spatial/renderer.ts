@@ -238,6 +238,30 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
           }
           return parts.join(' > ');
         };
+
+        // Describe an element for human/agent-facing findings: the nearest
+        // Marigold component name (or the tag), plus a short source-greppable
+        // fingerprint (accessible name or trimmed text) to disambiguate
+        // multiple instances of the same component.
+        (window as unknown as Record<string, unknown>).__describeEl = (
+          el: Element
+        ): { component: string; fingerprint: string } => {
+          let component = el.tagName.toLowerCase();
+          let cur: Element | null = el;
+          while (cur && cur !== document.body) {
+            const name =
+              cur.getAttribute('data-component') ??
+              cur.getAttribute('data-slot');
+            if (name) {
+              component = name;
+              break;
+            }
+            cur = cur.parentElement;
+          }
+          const ariaLabel = el.getAttribute('aria-label');
+          const text = (el.textContent ?? '').trim().replace(/\s+/g, ' ');
+          return { component, fingerprint: ariaLabel ?? text.slice(0, 40) };
+        };
       });
 
       const consoleErrors: string[] = [];

@@ -120,43 +120,6 @@ export const extractOverflowData = async (page: Page): Promise<OverflowData> =>
       }
     }
 
-    const viewportWidth = window.innerWidth;
-    for (const el of allElements) {
-      const style = window.getComputedStyle(el);
-      if (style.overflowX !== 'visible') continue;
-      if (style.visibility === 'hidden' || style.display === 'none') continue;
-      if (el.getAttribute('aria-hidden') === 'true') continue;
-
-      const rect = el.getBoundingClientRect();
-      if (rect.width <= 1 || rect.height <= 1) continue;
-      if (rect.right <= viewportWidth + 1) continue;
-
-      const children = Array.from(el.children);
-      if (children.length === 0) continue;
-
-      let maxRight = 0;
-      for (const child of children) {
-        maxRight = Math.max(maxRight, child.getBoundingClientRect().right);
-      }
-
-      if (maxRight > viewportWidth + 1) {
-        overflows.push({
-          containerSelector: cssPath(el),
-          overflow: style.overflow,
-          childrenOverflowX: true,
-          childrenOverflowY: false,
-          containerRect: {
-            width: Math.round(rect.width),
-            height: Math.round(rect.height),
-          },
-          maxChildExtent: {
-            right: Math.round(maxRight - rect.left),
-            bottom: Math.round(rect.height),
-          },
-        });
-      }
-    }
-
     return { wrapping, overflows };
   });
 

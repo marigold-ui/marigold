@@ -14,7 +14,7 @@ import {
   isMarigoldSubComponent,
 } from '../helpers/components.js';
 import { parseSource } from '../helpers/source.js';
-import type { ValidationIssue } from '../types.js';
+import type { ValidationCoverage, ValidationIssue } from '../types.js';
 
 // React Aria value-based handlers that pass a value, not a DOM event.
 // If the handler body accesses .target.value or .target.checked, it's wrong.
@@ -56,7 +56,10 @@ const suggestProp = (used: string, valid: string[]): string | undefined => {
   return undefined;
 };
 
-export const validateProps = (filePath: string): ValidationIssue[] => {
+export const validateProps = (
+  filePath: string,
+  coverage?: ValidationCoverage
+): ValidationIssue[] => {
   const source = parseSource(filePath);
 
   const issues: ValidationIssue[] = [];
@@ -76,6 +79,7 @@ export const validateProps = (filePath: string): ValidationIssue[] => {
 
     for (const attr of attrs.properties) {
       if (ts.isJsxSpreadAttribute(attr)) {
+        if (coverage) coverage.spreadPropsBypassed++;
         const { line, character } = source.getLineAndCharacterOfPosition(
           attr.getStart(source)
         );
@@ -194,7 +198,13 @@ export const validateProps = (filePath: string): ValidationIssue[] => {
       if (!propInfo?.knownValues) continue;
 
       const value = staticStringValue(attr);
-      if (value === undefined) continue;
+      if (value === undefined) {
+        // Dynamic value (e.g. variant={cond ? 'a' : 'b'}) cannot be checked
+        // against the schema. Record it so the coverage gap is visible.
+        if (coverage) coverage.dynamicValuesSkipped++;
+        continue;
+      }
+      if (coverage) coverage.staticValuesChecked++;
 
       if (!propInfo.knownValues.includes(value)) {
         issues.push({

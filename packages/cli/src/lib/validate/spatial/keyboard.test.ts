@@ -103,7 +103,7 @@ describe('keyboardA11yToValidationIssues', () => {
     });
     expect(issues).toHaveLength(1);
     expect(issues[0].severity).toBe('warning');
-    expect(issues[0].message).toContain('Focus order');
+    expect(issues[0].message).toContain('Component order inconsistency');
   });
 
   it('caps focus order warnings at 3', () => {
@@ -120,8 +120,10 @@ describe('keyboardA11yToValidationIssues', () => {
       ...emptyData,
       tabSequence,
     });
-    const orderWarnings = issues.filter(i => i.message.includes('Focus order'));
-    expect(orderWarnings.length).toBeLessThanOrEqual(3);
+    const orderWarnings = issues.filter(i =>
+      i.message.includes('Component order')
+    );
+    expect(orderWarnings).toHaveLength(3);
   });
 
   it('ignores minor vertical differences in focus order', () => {
@@ -185,5 +187,95 @@ describe('keyboardA11yToValidationIssues', () => {
       i.message.includes('Arrow key navigation')
     );
     expect(arrowIssues).toEqual([]);
+  });
+
+  it('returns no trap issues when trapResults is undefined', () => {
+    const issues = keyboardA11yToValidationIssues(emptyData);
+    const trapIssues = issues.filter(i => i.message.includes('trap'));
+    expect(trapIssues).toEqual([]);
+  });
+
+  it('flags non-escapable keyboard trap as error', () => {
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      trapResults: [
+        {
+          isTrap: true,
+          cycleLength: 3,
+          totalFocusable: 10,
+          escapable: false,
+          trapSelector: 'dialog:nth-child(1)',
+        },
+      ],
+    });
+    const trapIssues = issues.filter(i => i.message.includes('Keyboard trap'));
+    expect(trapIssues).toHaveLength(1);
+    expect(trapIssues[0].severity).toBe('error');
+    expect(trapIssues[0].message).toContain('WCAG 2.1.2');
+    expect(trapIssues[0].details?.cycleLength).toBe(3);
+  });
+
+  it('flags escapable focus cycle as warning', () => {
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      trapResults: [
+        {
+          isTrap: false,
+          cycleLength: 3,
+          totalFocusable: 10,
+          escapable: true,
+          trapSelector: 'dialog:nth-child(1)',
+        },
+      ],
+    });
+    const trapIssues = issues.filter(i => i.message.includes('trapped'));
+    expect(trapIssues).toHaveLength(1);
+    expect(trapIssues[0].severity).toBe('warning');
+  });
+
+  it('returns no issues for non-trap results', () => {
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      trapResults: [
+        {
+          isTrap: false,
+          cycleLength: 10,
+          totalFocusable: 10,
+          escapable: true,
+        },
+      ],
+    });
+    const trapIssues = issues.filter(
+      i => i.message.includes('trap') || i.message.includes('trapped')
+    );
+    expect(trapIssues).toEqual([]);
+  });
+
+  it('skips overlay roles in focus order check', () => {
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      tabSequence: [
+        {
+          index: 0,
+          selector: 'button:nth-child(1)',
+          component: 'Button',
+          role: 'dialog',
+          rect: { x: 200, y: 200, width: 100, height: 40 },
+          focusIndicatorVisible: true,
+        },
+        {
+          index: 1,
+          selector: 'input:nth-child(2)',
+          component: 'TextField',
+          role: 'textbox',
+          rect: { x: 10, y: 10, width: 200, height: 40 },
+          focusIndicatorVisible: true,
+        },
+      ],
+    });
+    const orderIssues = issues.filter(i =>
+      i.message.includes('Component order')
+    );
+    expect(orderIssues).toEqual([]);
   });
 });

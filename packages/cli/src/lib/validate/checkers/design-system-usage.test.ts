@@ -7,7 +7,7 @@ import { validateDesignSystemUsage } from './design-system-usage.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string): string =>
-  path.join(__dirname, '..', '__fixtures__', name);
+  path.join(__dirname, '..', 'examples', name);
 
 const tmpFile = (name: string, content: string): string => {
   const p = path.join(os.tmpdir(), name);

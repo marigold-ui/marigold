@@ -254,6 +254,9 @@ export const main = async (
       process.stdout.write(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'validate') {
+      if (process.env.MARIGOLD_VALIDATE_DISABLED === '1') {
+        fail('marigold validate is not available in this configuration.');
+      }
       const { positionals, values } = parseValidateCommand(rest);
       const [fileInput] = positionals;
 

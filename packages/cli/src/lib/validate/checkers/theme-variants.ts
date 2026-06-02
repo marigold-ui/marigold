@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { staticStringValue } from '../helpers/ast.js';
 import { parseSource } from '../helpers/source.js';
-import type { ValidationIssue } from '../types.js';
+import type { ValidationCoverage, ValidationIssue } from '../types.js';
 
 export type ThemeVariantMap = Map<string, Map<string, string[]>>;
 
@@ -118,7 +118,8 @@ export const loadThemeVariants = (themeDir: string): ThemeVariantMap => {
 
 export const validateThemeVariants = (
   filePath: string,
-  themeDir: string
+  themeDir: string,
+  coverage?: ValidationCoverage
 ): ValidationIssue[] => {
   const source = parseSource(filePath);
 
@@ -150,7 +151,11 @@ export const validateThemeVariants = (
         if (!validValues || validValues.length === 0) continue;
 
         const value = staticStringValue(attr);
-        if (value === undefined) continue;
+        if (value === undefined) {
+          if (coverage) coverage.dynamicValuesSkipped++;
+          continue;
+        }
+        if (coverage) coverage.staticValuesChecked++;
 
         if (!validValues.includes(value)) {
           const { line, character } = source.getLineAndCharacterOfPosition(

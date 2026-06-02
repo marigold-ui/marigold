@@ -5,7 +5,7 @@ import { runTechnicalChecks } from './index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string): string =>
-  path.join(__dirname, '..', '__fixtures__', name);
+  path.join(__dirname, '..', 'examples', name);
 
 describe('runTechnicalChecks', () => {
   it('passes both checks for a valid file', () => {

@@ -68,6 +68,12 @@ export const snapshotBrowserDefaults = async (
       const result: Record<string, Record<string, string>> = {};
       for (const tag of elements) {
         const el = document.createElement(tag);
+        // Some defaults only apply with the right attributes: an <a> is only
+        // link-colored when it has an href, inputs need a type. Without this
+        // the browser-default link color is never captured and every themed
+        // or unstyled link gets falsely flagged as an off-token color.
+        if (tag === 'a') el.setAttribute('href', '#');
+        if (tag === 'input') el.setAttribute('type', 'text');
         container.appendChild(el);
         const computed = window.getComputedStyle(el);
         const styles: Record<string, string> = {};
@@ -189,8 +195,48 @@ const isTokenizedViaReverseMap = (
 const HARDCODED_VALUE =
   /(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|lch\(|hwb\(|lab\(|color\(|\d+(?:px|em|rem|ch|vw|vh)\b)/;
 
+// Only properties where a design token is the expected source of the value.
+// Layout/positioning properties (transform, width, top, ...) and CSS custom
+// properties (--*) are deliberately excluded: components legitimately set
+// those inline (e.g. Marigold's Tiles writes `--tilesWidth` from a prop, a
+// table sets computed column widths), and they have no token equivalent.
+const TOKENIZABLE_INLINE_PROPERTIES = new Set([
+  'color',
+  'background',
+  'background-color',
+  'border-color',
+  'border-top-color',
+  'border-right-color',
+  'border-bottom-color',
+  'border-left-color',
+  'outline-color',
+  'fill',
+  'stroke',
+  'padding',
+  'padding-top',
+  'padding-right',
+  'padding-bottom',
+  'padding-left',
+  'margin',
+  'margin-top',
+  'margin-right',
+  'margin-bottom',
+  'margin-left',
+  'gap',
+  'row-gap',
+  'column-gap',
+  'border-radius',
+  'font-size',
+  'font-weight',
+  'line-height',
+  'letter-spacing',
+  'box-shadow',
+]);
+
 type InlineStyleViolation = {
   selector: string;
+  component: string;
+  fingerprint: string;
   property: string;
   value: string;
 };
@@ -201,23 +247,39 @@ const detectHardcodedInlineStyles = async (
   page.evaluate(() => {
     const results: Array<{
       selector: string;
+      component: string;
+      fingerprint: string;
       property: string;
       value: string;
     }> = [];
-    const w = window as Window & { __cssPath?: (el: Element) => string };
+    const w = window as Window & {
+      __cssPath?: (el: Element) => string;
+      __describeEl?: (el: Element) => {
+        component: string;
+        fingerprint: string;
+      };
+    };
     const cssPath = w.__cssPath!;
+    const describeEl = w.__describeEl!;
 
     for (const el of document.querySelectorAll('[style]')) {
       const raw = el.getAttribute('style');
       if (!raw) continue;
       const selector = cssPath(el);
+      const { component, fingerprint } = describeEl(el);
       for (const decl of raw.split(';')) {
         const colon = decl.indexOf(':');
         if (colon < 0) continue;
         const prop = decl.slice(0, colon).trim();
         const val = decl.slice(colon + 1).trim();
         if (!val || val.includes('var(')) continue;
-        results.push({ selector, property: prop, value: val });
+        results.push({
+          selector,
+          component,
+          fingerprint,
+          property: prop,
+          value: val,
+        });
       }
     }
     return results;
@@ -248,29 +310,46 @@ export const checkTokenCompliance = async (
       if (isBrowserDefault(snap.selector, property, value, defaults)) continue;
       if (isTokenizedViaReverseMap(property, value, reverseMap)) continue;
 
+      const fp = snap.fingerprint ? ` (“${snap.fingerprint}”)` : '';
       issues.push({
         type: 'style',
         severity: 'warning',
         source: 'token-compliance',
-        component: snap.selector,
-        message: `Computed ${property} value "${value}" does not map to a known design token.`,
+        component: snap.component,
+        message: `Computed ${property} value "${value}" on <${snap.component}>${fp} does not map to a known design token.`,
         suggestion: `If this is intentional, ignore the warning. Otherwise, use a Marigold variant or a theme-rui token instead of a hard-coded value.`,
-        details: { property, value },
+        details: {
+          property,
+          value,
+          selector: snap.selector,
+          ...(snap.fingerprint ? { fingerprint: snap.fingerprint } : {}),
+        },
       });
     }
   }
 
   const inlineViolations = await detectHardcodedInlineStyles(page);
   for (const v of inlineViolations) {
+    // CSS custom properties are the token mechanism itself, and non-tokenizable
+    // properties (transform, width, ...) have no token to use instead.
+    if (v.property.startsWith('--')) continue;
+    if (!TOKENIZABLE_INLINE_PROPERTIES.has(v.property)) continue;
     if (!HARDCODED_VALUE.test(v.value)) continue;
+    const fp = v.fingerprint ? ` (“${v.fingerprint}”)` : '';
     issues.push({
       type: 'style',
       severity: 'warning',
       source: 'token-compliance',
-      component: v.selector,
-      message: `Inline style "${v.property}: ${v.value}" uses a hardcoded value instead of a design token.`,
+      component: v.component,
+      message: `Inline style "${v.property}: ${v.value}" on <${v.component}>${fp} uses a hardcoded value instead of a design token.`,
       suggestion: `Use var(--token-name) or a Marigold component prop instead of hardcoding "${v.value}".`,
-      details: { property: v.property, value: v.value, inline: true },
+      details: {
+        property: v.property,
+        value: v.value,
+        inline: true,
+        selector: v.selector,
+        ...(v.fingerprint ? { fingerprint: v.fingerprint } : {}),
+      },
     });
   }
 

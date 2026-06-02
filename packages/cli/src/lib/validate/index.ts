@@ -2,13 +2,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { runTechnicalChecks } from './checkers/index.js';
 import { formatForLLM } from './format.js';
+import { buildComponentLocationMap } from './helpers/component-locations.js';
 import { runSpatialChecks } from './spatial/index.js';
 import { type SharedRenderer, createRenderer } from './spatial/renderer.js';
-import type {
-  ValidateOptions,
-  ValidationCheck,
-  ValidationIssue,
-  ValidationReport,
+import {
+  type ValidateOptions,
+  type ValidationCheck,
+  type ValidationIssue,
+  type ValidationReport,
+  emptyCoverage,
 } from './types.js';
 
 export type {
@@ -16,8 +18,56 @@ export type {
   ValidationCheck,
   ValidationIssue,
   ValidationReport,
+  ValidationCoverage,
 } from './types.js';
 export { isValidationCheck } from './types.js';
+
+// Dynamic checks run on the rendered DOM and have no inherent source location.
+// These sources get joined back to the source via the component-location map.
+const DYNAMIC_SOURCES = new Set([
+  'overlap-detector',
+  'overflow-detector',
+  'token-compliance',
+  'responsive-checker',
+  'keyboard-a11y',
+  'text-spacing',
+  'aom-extractor',
+]);
+
+// Attach source locations to dynamic findings by joining their component name
+// against the JSX usages in the source. A single usage pinpoints the line;
+// multiple usages are listed as candidates (to be narrowed by the finding's
+// content fingerprint). Best-effort: never throws into the validation result.
+const enrichDynamicLocations = (
+  issues: ValidationIssue[],
+  filePath: string
+): void => {
+  const needsEnrich = issues.some(
+    i =>
+      !i.location && DYNAMIC_SOURCES.has(i.source) && /^[A-Z]/.test(i.component)
+  );
+  if (!needsEnrich) return;
+
+  let locMap;
+  try {
+    locMap = buildComponentLocationMap(filePath);
+  } catch {
+    return;
+  }
+
+  for (const issue of issues) {
+    if (issue.location || !DYNAMIC_SOURCES.has(issue.source)) continue;
+    const locs = locMap.get(issue.component);
+    if (!locs || locs.length === 0) continue;
+    issue.location = locs[0];
+    if (locs.length > 1) {
+      issue.details = {
+        ...issue.details,
+        candidateLocations: locs.map(l => `${l.line}:${l.column}`),
+      };
+    }
+  }
+};
 
 const partition = (
   issues: ValidationIssue[]
@@ -59,12 +109,14 @@ const runWithRenderer = async (
   const passed: string[] = [];
   let renderTimeMs = 0;
   let componentsFound: string[] = [];
+  let coverage = emptyCoverage();
 
   if (checks.has('technical')) {
     const themeArg = options.skipTheme ? false : options.themePath;
     const technical = runTechnicalChecks(absolute, themeArg);
     issues.push(...technical.issues);
     passed.push(...technical.passed);
+    coverage = technical.coverage;
   }
 
   const fatalTechnical = issues.some(
@@ -161,10 +213,13 @@ const runWithRenderer = async (
     }
   }
 
+  enrichDynamicLocations(issues, absolute);
+
   return buildReport(absolute, issues, passed, {
     renderTimeMs,
     componentsFound,
     checksRun: Array.from(checks),
+    coverage,
   });
 };
 

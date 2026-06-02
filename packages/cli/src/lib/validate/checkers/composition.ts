@@ -44,28 +44,25 @@ const collectSubComponentUsages = (
   );
 };
 
-// Per-component optional sub-components. The type system doesn't encode
-// "required vs optional sub-component" semantics, so this is explicit.
-// Sub-components NOT listed here are treated as required.
-const OPTIONAL_SUBS_BY_COMPONENT: Record<string, Set<string>> = {
-  Accordion: new Set(['Section', 'Group']),
-  AppShell: new Set(['Sidebar', 'Footer', 'Header']),
-  Calendar: new Set(['Header']),
-  DatePicker: new Set(['Group']),
-  Menu: new Set(['Section', 'Separator', 'GroupLabel']),
-  NavigationMenu: new Set(['Start', 'Middle', 'End', 'Separator']),
-  Select: new Set(['Section', 'Group']),
-  SplitButton: new Set(['Toggle']),
-  Table: new Set(['Header', 'EditableCell', 'Section', 'Group']),
-  Tabs: new Set(['Group']),
-  TagGroup: new Set(['Group']),
-};
+// A compound that exposes a collection-item sub-component renders a variable
+// number of those children by design (a table has many columns, a select many
+// options). For such components, repetition is correct usage — duplicate
+// warnings would be false positives. This is derived from the schema's own
+// sub-component names rather than a per-component hardcoded list: the item
+// vocabulary (Item, Option, Row, Column, Cell, Tab, TabPanel) is shared across
+// React Aria collections.
+const COLLECTION_ITEM_INDICATORS = new Set([
+  'Item',
+  'Option',
+  'Row',
+  'Column',
+  'Cell',
+  'Tab',
+  'TabPanel',
+]);
 
-const GLOBAL_OPTIONAL = new Set(['Separator', 'Group', 'Section']);
-
-const isOptionalSub = (component: string, sub: string): boolean =>
-  GLOBAL_OPTIONAL.has(sub) ||
-  (OPTIONAL_SUBS_BY_COMPONENT[component]?.has(sub) ?? false);
+const isCollectionCompound = (knownSubs: string[]): boolean =>
+  knownSubs.some(s => COLLECTION_ITEM_INDICATORS.has(s));
 
 const collectAncestorSubComponents = (
   node: ts.Node,
@@ -193,10 +190,11 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
         };
 
         const found = [...counts.keys()];
-        const missing = knownSubs.filter(
-          s => !counts.has(s) && !isOptionalSub(componentName, s)
-        );
+        const collectionLike = isCollectionCompound(knownSubs);
 
+        // Only a completely empty compound is an unambiguous error. Partial
+        // "missing sub-component" findings are too often optional to flag
+        // reliably (e.g. a Dialog opened programmatically needs no Trigger).
         if (found.length === 0 && !isDynamic) {
           issues.push({
             type: 'technical',
@@ -208,41 +206,25 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
             location,
             details: { expected: knownSubs, found: [] },
           });
-        } else if (missing.length > 0) {
-          const dynamicNote = isDynamic
-            ? ' Note: dynamic children could not be fully analyzed.'
-            : '';
-          issues.push({
-            type: 'technical',
-            severity: 'warning',
-            source: 'composition-validator',
-            component: componentName,
-            message: `<${componentName}> is missing sub-components: ${missing.map(m => `<${componentName}.${m}>`).join(', ')}.${dynamicNote}`,
-            suggestion: isDynamic
-              ? `If the missing sub-components are provided via the dynamic children expression, this warning can be ignored.`
-              : `Consider adding the missing sub-components for complete functionality.`,
-            location,
-            details: {
-              expected: knownSubs,
-              found,
-              missing,
-              ...(isDynamic && { dynamicChildren: true }),
-            },
-          });
         }
 
-        const duplicates = [...counts.entries()].filter(([, n]) => n > 1);
-        for (const [sub, count] of duplicates) {
-          issues.push({
-            type: 'technical',
-            severity: 'warning',
-            source: 'composition-validator',
-            component: componentName,
-            message: `<${componentName}.${sub}> is used ${count} times. Most compound components expect a single instance of each sub-component.`,
-            suggestion: `Verify that multiple <${componentName}.${sub}> instances are intentional.`,
-            location,
-            details: { subComponent: sub, count },
-          });
+        // Duplicate-instance warnings only make sense for singleton slots
+        // (e.g. two <Dialog.Title>). Collection compounds repeat sub-components
+        // by design, so suppress the warning there to avoid false positives.
+        if (!collectionLike) {
+          const duplicates = [...counts.entries()].filter(([, n]) => n > 1);
+          for (const [sub, count] of duplicates) {
+            issues.push({
+              type: 'technical',
+              severity: 'warning',
+              source: 'composition-validator',
+              component: componentName,
+              message: `<${componentName}.${sub}> is used ${count} times. Most compound components expect a single instance of each sub-component.`,
+              suggestion: `Verify that multiple <${componentName}.${sub}> instances are intentional.`,
+              location,
+              details: { subComponent: sub, count },
+            });
+          }
         }
       }
     }

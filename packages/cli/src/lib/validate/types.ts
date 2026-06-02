@@ -21,6 +21,9 @@ export type IssueSource =
   | 'prop-validator'
   | 'compiler'
   | 'composition-validator'
+  | 'accessible-name'
+  | 'required-ancestor'
+  | 'section-header'
   | 'design-system-usage'
   | 'overlap-detector'
   | 'overflow-detector'
@@ -29,6 +32,7 @@ export type IssueSource =
   | 'aom-extractor'
   | 'responsive-checker'
   | 'keyboard-a11y'
+  | 'text-spacing'
   | 'runtime';
 
 export type ValidationIssue = {
@@ -42,6 +46,28 @@ export type ValidationIssue = {
   details?: Record<string, unknown>;
 };
 
+/**
+ * Tracks how much of the generated code could actually be validated
+ * statically. Variant/enum props with a dynamic value (e.g.
+ * `variant={cond ? 'a' : 'b'}`) cannot be checked against the schema and are
+ * skipped. Surfacing these counts makes the coverage of the syntactic
+ * analysis transparent instead of silently incomplete.
+ */
+export type ValidationCoverage = {
+  /** Variant/enum prop assignments with a static value that was checked. */
+  staticValuesChecked: number;
+  /** Variant/enum prop assignments skipped because the value was dynamic. */
+  dynamicValuesSkipped: number;
+  /** Spread attributes ({...props}) that bypassed prop validation entirely. */
+  spreadPropsBypassed: number;
+};
+
+export const emptyCoverage = (): ValidationCoverage => ({
+  staticValuesChecked: 0,
+  dynamicValuesSkipped: 0,
+  spreadPropsBypassed: 0,
+});
+
 export type ValidationReport = {
   file: string;
   errors: ValidationIssue[];
@@ -52,6 +78,7 @@ export type ValidationReport = {
     renderTimeMs: number;
     componentsFound: string[];
     checksRun: ValidationCheck[];
+    coverage: ValidationCoverage;
   };
 };
 

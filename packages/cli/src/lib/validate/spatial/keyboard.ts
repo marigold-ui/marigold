@@ -26,11 +26,20 @@ type ArrowNavResult = {
   navigable: boolean;
 };
 
+type KeyboardTrapResult = {
+  isTrap: boolean;
+  cycleLength: number;
+  totalFocusable: number;
+  escapable: boolean;
+  trapSelector?: string;
+};
+
 export type KeyboardA11yData = {
   focusableElements: FocusableElement[];
   tabSequence: FocusStep[];
   unreachableElements: FocusableElement[];
   arrowNavResults: ArrowNavResult[];
+  trapResults?: KeyboardTrapResult[];
 };
 
 const INTERACTIVE_SELECTOR = [
@@ -51,6 +60,25 @@ const INTERACTIVE_SELECTOR = [
 ].join(', ');
 
 const MAX_FOCUS_ORDER_WARNINGS = 3;
+
+// Roles that are not individual Tab targets: they are single tab stops with
+// internal arrow-key navigation (grids, tables) or structural containers.
+// Their absence from the Tab sequence is by design, not a keyboard defect.
+const NON_TAB_STOP_ROLES = new Set([
+  'grid',
+  'table',
+  'treegrid',
+  'row',
+  'rowgroup',
+  'gridcell',
+  'columnheader',
+  'rowheader',
+  'group',
+  'region',
+  'navigation',
+  'presentation',
+  'none',
+]);
 
 const ARROW_NAV_ROLES = ['radiogroup', 'tablist', 'menu', 'menubar', 'listbox'];
 
@@ -148,6 +176,12 @@ export const extractFocusableElements = async (
         if (pos !== 'fixed' && pos !== 'sticky') continue;
       }
 
+      // Only elements that are actually keyboard-focusable. A role-only match
+      // without a usable tabindex (e.g. the current breadcrumb rendered as
+      // <span role="link"> with no href, or a roving-tabindex item that is not
+      // the active one) is not a Tab stop and must not count as "unreachable".
+      if (htmlEl.tabIndex < 0) continue;
+
       const rect = el.getBoundingClientRect();
       const component =
         el.getAttribute('data-component') ??
@@ -172,6 +206,13 @@ export const extractFocusableElements = async (
         parent = parent.parentElement;
       }
 
+      // Tag with a stable index so reachability can be matched by element
+      // identity during tab traversal, not by re-deriving CSS paths (which can
+      // diverge between passes and cause false "unreachable" reports).
+      (el as HTMLElement).setAttribute(
+        'data-mv-focusable',
+        String(elements.length)
+      );
       elements.push({
         selector: cssPath(el),
         component,
@@ -198,6 +239,7 @@ const extractFocusStepData = async (
   rect: { x: number; y: number; width: number; height: number };
   focusIndicatorVisible: boolean;
   isBody: boolean;
+  focusableIndex: number;
 }> =>
   page.evaluate(() => {
     const w = window as Window & { __cssPath?: (el: Element) => string };
@@ -212,8 +254,11 @@ const extractFocusStepData = async (
         rect: { x: 0, y: 0, width: 0, height: 0 },
         focusIndicatorVisible: false,
         isBody: true,
+        focusableIndex: -1,
       };
     }
+
+    const idxAttr = el.getAttribute('data-mv-focusable');
 
     const style = window.getComputedStyle(el);
     const outlineVisible =
@@ -240,13 +285,19 @@ const extractFocusStepData = async (
       },
       focusIndicatorVisible: outlineVisible || boxShadowVisible,
       isBody: false,
+      focusableIndex: idxAttr === null ? -1 : Number(idxAttr),
     };
   });
 
 export const extractTabSequence = async (
   page: Page,
   maxSteps: number
-): Promise<{ tabSequence: FocusStep[] }> => {
+): Promise<{
+  tabSequence: FocusStep[];
+  endedByBody: boolean;
+  cycleSelector?: string;
+  reachedIndices: Set<number>;
+}> => {
   await page.evaluate(() => {
     const active = document.activeElement;
     if (active instanceof HTMLElement) active.blur();
@@ -255,13 +306,23 @@ export const extractTabSequence = async (
 
   const tabSequence: FocusStep[] = [];
   const visited = new Set<string>();
+  const reachedIndices = new Set<number>();
+  let endedByBody = false;
+  let cycleSelector: string | undefined;
 
   for (let i = 0; i < maxSteps; i++) {
     await page.keyboard.press('Tab');
     const step = await extractFocusStepData(page);
 
-    if (step.isBody) break;
-    if (visited.has(step.selector)) break;
+    if (step.isBody) {
+      endedByBody = true;
+      break;
+    }
+    if (step.focusableIndex >= 0) reachedIndices.add(step.focusableIndex);
+    if (visited.has(step.selector)) {
+      cycleSelector = step.selector;
+      break;
+    }
 
     visited.add(step.selector);
     tabSequence.push({
@@ -274,7 +335,84 @@ export const extractTabSequence = async (
     });
   }
 
-  return { tabSequence };
+  return { tabSequence, endedByBody, cycleSelector, reachedIndices };
+};
+
+const waitForLayout = (page: Page): Promise<void> =>
+  page.evaluate(
+    () =>
+      new Promise<void>(r =>
+        requestAnimationFrame(() => requestAnimationFrame(() => r()))
+      )
+  );
+
+const detectKeyboardTraps = async (
+  page: Page,
+  tabSequence: FocusStep[],
+  focusableElements: FocusableElement[],
+  cycleSelector: string
+): Promise<KeyboardTrapResult[]> => {
+  const cycleStartIdx = tabSequence.findIndex(
+    s => s.selector === cycleSelector
+  );
+  const cycleSelectors = new Set(
+    tabSequence.slice(cycleStartIdx).map(s => s.selector)
+  );
+  const cycleLength = cycleSelectors.size;
+
+  await page.keyboard.press('Escape');
+  await waitForLayout(page);
+
+  const afterEscape = await page.evaluate(
+    (cycleSels: string[]) => {
+      const el = document.activeElement;
+      const escaped = !el || el === document.body;
+      const selector = escaped ? 'body' : '';
+      const cycleElementsExist = cycleSels.some(s => document.querySelector(s));
+      const focusInCycle =
+        !escaped &&
+        el instanceof Element &&
+        cycleSels.some(s => {
+          const target = document.querySelector(s);
+          return target && (target === el || target.contains(el));
+        });
+      return { escaped, selector, cycleElementsExist, focusInCycle };
+    },
+    [...cycleSelectors]
+  );
+
+  let escapable = afterEscape.escaped || !afterEscape.cycleElementsExist;
+
+  if (!escapable) {
+    await page.keyboard.press('Tab');
+    await waitForLayout(page);
+
+    const afterTab = await page.evaluate(
+      (cycleSels: string[]) => {
+        const el = document.activeElement;
+        if (!el || el === document.body) return { inCycle: false };
+        return {
+          inCycle: cycleSels.some(s => {
+            const target = document.querySelector(s);
+            return target && (target === el || target.contains(el));
+          }),
+        };
+      },
+      [...cycleSelectors]
+    );
+
+    escapable = !afterTab.inCycle;
+  }
+
+  return [
+    {
+      isTrap: !escapable,
+      cycleLength,
+      totalFocusable: focusableElements.length,
+      escapable,
+      trapSelector: cycleSelector,
+    },
+  ];
 };
 
 export const extractKeyboardA11yData = async (
@@ -282,34 +420,54 @@ export const extractKeyboardA11yData = async (
 ): Promise<KeyboardA11yData> => {
   const focusableElements = await extractFocusableElements(page);
   const maxSteps = focusableElements.length * 2 + 5;
-  const { tabSequence } = await extractTabSequence(page, maxSteps);
-
-  const reachedSelectors = new Set(tabSequence.map(s => s.selector));
+  const tabResult = await extractTabSequence(page, maxSteps);
 
   const reachedGroups = new Set<string>();
-  for (const el of focusableElements) {
-    if (el.groupParent && reachedSelectors.has(el.selector)) {
+  focusableElements.forEach((el, i) => {
+    if (el.groupParent && tabResult.reachedIndices.has(i)) {
       reachedGroups.add(el.groupParent);
     }
-  }
+  });
 
-  const unreachableElements = focusableElements.filter(el => {
-    if (reachedSelectors.has(el.selector)) return false;
+  const unreachableElements = focusableElements.filter((el, i) => {
+    if (tabResult.reachedIndices.has(i)) return false;
     if (el.groupParent && reachedGroups.has(el.groupParent)) return false;
+    // Container/composite roles are reached via arrow keys, not Tab — they are
+    // a single tab stop or roving-tabindex managed, so absence from the Tab
+    // sequence is not a defect.
+    if (NON_TAB_STOP_ROLES.has(el.role)) return false;
     return true;
   });
 
   const arrowNavResults = await testArrowNavigation(page);
 
+  const trapResults = tabResult.cycleSelector
+    ? await detectKeyboardTraps(
+        page,
+        tabResult.tabSequence,
+        focusableElements,
+        tabResult.cycleSelector
+      )
+    : [];
+
   return {
     focusableElements,
-    tabSequence,
+    tabSequence: tabResult.tabSequence,
     unreachableElements,
     arrowNavResults,
+    trapResults,
   };
 };
 
 const VERTICAL_THRESHOLD = 20;
+
+const OVERLAY_ROLES = new Set([
+  'dialog',
+  'alertdialog',
+  'menu',
+  'tooltip',
+  'listbox',
+]);
 
 export const keyboardA11yToValidationIssues = (
   data: KeyboardA11yData
@@ -338,6 +496,9 @@ export const keyboardA11yToValidationIssues = (
   ) {
     const prev = data.tabSequence[i - 1];
     const curr = data.tabSequence[i];
+
+    if (OVERLAY_ROLES.has(prev.role) || OVERLAY_ROLES.has(curr.role)) continue;
+
     if (
       curr.rect.y < prev.rect.y - VERTICAL_THRESHOLD &&
       curr.rect.x < prev.rect.x
@@ -348,9 +509,9 @@ export const keyboardA11yToValidationIssues = (
         severity: 'warning',
         source: 'keyboard-a11y',
         component: curr.component,
-        message: `Focus order may not be logical: Tab moved from <${prev.component}> at (${prev.rect.x}, ${prev.rect.y}) to <${curr.component}> at (${curr.rect.x}, ${curr.rect.y}).`,
+        message: `Component order inconsistency: Tab moved from <${prev.component}> at (${prev.rect.x}, ${prev.rect.y}) to <${curr.component}> at (${curr.rect.x}, ${curr.rect.y}).`,
         suggestion:
-          'Check the DOM order. Prefer natural DOM order for focus sequence rather than positive tabindex values.',
+          'Reorder components in JSX to match the visual layout, or use Marigold layout components (Stack, Columns) to control both visual and DOM order.',
         details: {
           from: { component: prev.component, x: prev.rect.x, y: prev.rect.y },
           to: { component: curr.component, x: curr.rect.x, y: curr.rect.y },
@@ -390,6 +551,41 @@ export const keyboardA11yToValidationIssues = (
           memberCount: nav.memberCount,
         },
       });
+    }
+  }
+
+  if (data.trapResults) {
+    for (const trap of data.trapResults) {
+      if (trap.isTrap) {
+        issues.push({
+          type: 'a11y',
+          severity: 'error',
+          source: 'keyboard-a11y',
+          component: trap.trapSelector ?? 'unknown',
+          message: `Keyboard trap detected — focus cycles through ${trap.cycleLength} elements without reaching the rest of the page (WCAG 2.1.2).`,
+          suggestion:
+            'Ensure focus can leave this container via Tab, or provide an Escape key handler to close it.',
+          details: {
+            cycleLength: trap.cycleLength,
+            totalFocusable: trap.totalFocusable,
+            escapable: trap.escapable,
+          },
+        });
+      } else if (trap.escapable && trap.cycleLength < trap.totalFocusable) {
+        issues.push({
+          type: 'a11y',
+          severity: 'warning',
+          source: 'keyboard-a11y',
+          component: trap.trapSelector ?? 'unknown',
+          message: `Focus is trapped in a cycle of ${trap.cycleLength} elements but can be escaped via Escape key (WCAG 2.1.2).`,
+          suggestion:
+            'The Escape key handler works, but consider also allowing Tab to leave the container for better keyboard UX.',
+          details: {
+            cycleLength: trap.cycleLength,
+            totalFocusable: trap.totalFocusable,
+          },
+        });
+      }
     }
   }
 
