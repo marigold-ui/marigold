@@ -24,9 +24,10 @@ const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
 
   return (
     <CalendarMonthPicker>
-      {({ items, value, onChange }) => (
+      {({ items, value, onChange, 'aria-label': ariaLabel }) => (
         <ListBox
           dataTestid="monthOptions"
+          ariaLabel={ariaLabel}
           items={items}
           isDisabled={item => item.id < minMonth || item.id > maxMonth}
           isSelected={item => item.id === value}

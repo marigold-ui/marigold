@@ -195,7 +195,9 @@ export const MonthSelectionWithMinMax = meta.story({
 
     await userEvent.click(canvas.getByText('Feb'));
 
-    await expect(canvas.queryByTestId('monthOptions')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('listbox', { name: 'month' })
+    ).not.toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: 'Feb' })
     ).toBeInTheDocument();
@@ -215,7 +217,7 @@ export const YearSelectionWithMinMax = meta.story({
     await userEvent.click(canvas.getByRole('button', { name: '2020' }));
 
     // Only in-range years are rendered.
-    const years = within(canvas.getByTestId('yearOptions'))
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
       .getAllByRole('option')
       .map(option => option.textContent);
     await expect(years).toEqual(['2020', '2021']);
@@ -223,9 +225,9 @@ export const YearSelectionWithMinMax = meta.story({
     await expect(canvas.queryByText('2022')).not.toBeInTheDocument();
 
     // The focused year is marked selected.
-    const focusedYear = within(canvas.getByTestId('yearOptions')).getByText(
-      '2020'
-    );
+    const focusedYear = within(
+      canvas.getByRole('listbox', { name: 'year' })
+    ).getByText('2020');
     await expect(focusedYear.closest('[role="option"]')).toHaveAttribute(
       'aria-selected',
       'true'
@@ -233,7 +235,9 @@ export const YearSelectionWithMinMax = meta.story({
 
     await userEvent.click(canvas.getByText('2021'));
 
-    await expect(canvas.queryByTestId('yearOptions')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: '2021' })
     ).toBeInTheDocument();
@@ -254,7 +258,7 @@ YearSelectionWithMinOnly.test(
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: '2025' }));
 
-    const years = within(canvas.getByTestId('yearOptions'))
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
       .getAllByRole('option')
       .map(option => option.textContent);
 
@@ -278,7 +282,7 @@ YearSelectionWithMaxOnly.test(
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: '2023' }));
 
-    const years = within(canvas.getByTestId('yearOptions'))
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
       .getAllByRole('option')
       .map(option => option.textContent);
 
@@ -288,7 +292,9 @@ YearSelectionWithMaxOnly.test(
 
     // The max year can actually be selected from the dropdown.
     await userEvent.click(canvas.getByText('2025'));
-    await expect(canvas.queryByTestId('yearOptions')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: '2025' })
     ).toBeInTheDocument();
@@ -310,7 +316,9 @@ LeapYearSelection.test(
     await userEvent.click(canvas.getByRole('button', { name: '2024' }));
     await userEvent.click(canvas.getByText('2023'));
 
-    await expect(canvas.queryByTestId('yearOptions')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: '2023' })
     ).toBeInTheDocument();
@@ -329,13 +337,13 @@ export const YearPickerScrollsToFocused = meta.story({
   },
 });
 
-// DSTSUP-255: the focused year must be centered when the picker opens.
+// The focused year must be centered when the picker opens.
 YearPickerScrollsToFocused.test(
   'opens with the focused year centered',
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: '2025' }));
 
-    const listbox = canvas.getByTestId('yearOptions');
+    const listbox = canvas.getByRole('listbox', { name: 'year' });
     const focused = within(listbox)
       .getByText('2025')
       .closest('[role="option"]');

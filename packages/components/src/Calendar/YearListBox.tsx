@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { useDateFormatter } from '@react-aria/i18n';
+import { useDateFormatter, useLocale } from '@react-aria/i18n';
 import { useCalendarOrRangeState } from './Context';
 import { ListBox } from './ListBox';
 
@@ -17,6 +17,11 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
   // max year, so it would be unreachable from the dropdown. Unbounded sides keep
   // the previous focused-year ±20 window. `set({ year })` clamps invalid days
   // (e.g. Feb 29 on a non-leap target) to the last valid day of the month.
+  //
+  // When both bounds are set we render every in-range year (one option each) on
+  // purpose — that is what keeps `minValue`/`maxValue` reachable. For
+  // pathologically wide ranges this grows the DOM; virtualizing the listbox is
+  // the path forward if that ever becomes a concern.
   const minYear = state.minValue ? state.minValue.year : focusedYear - 20;
   const maxYear = state.maxValue ? state.maxValue.year : focusedYear + 20;
 
@@ -30,9 +35,18 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
     timeZone: state.timeZone,
   });
 
+  // Localized accessible name, matching what react-aria's CalendarYearPicker
+  // would expose (e.g. "year"/"Jahr"). Computed inline — this only mounts when
+  // the dropdown opens, so memoizing the lookup isn't worth a hook.
+  const { locale } = useLocale();
+  const ariaLabel =
+    new Intl.DisplayNames(locale, { type: 'dateTimeField' }).of('year') ??
+    'year';
+
   return (
     <ListBox
       dataTestid="yearOptions"
+      ariaLabel={ariaLabel}
       items={years}
       // Every rendered year is in range, so there is nothing to disable.
       isDisabled={() => false}

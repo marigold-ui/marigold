@@ -8,6 +8,7 @@ import { useCalendarContext } from './Context';
 
 interface ListBoxProps<T> {
   dataTestid: string;
+  ariaLabel: string;
   items: T[];
   isDisabled: (item: T, index: number) => boolean;
   isSelected: (item: T, index: number) => boolean;
@@ -17,6 +18,7 @@ interface ListBoxProps<T> {
 
 export function ListBox<T>({
   dataTestid,
+  ariaLabel,
   items,
   isDisabled,
   isSelected,
@@ -57,7 +59,7 @@ export function ListBox<T>({
       )}
       data-testid={dataTestid}
       selectionMode="single"
-      aria-label={dataTestid}
+      aria-label={ariaLabel}
       selectedKeys={selectedItemKeys}
       autoFocus={true}
     >

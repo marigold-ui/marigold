@@ -385,26 +385,26 @@ export const MonthDropdown = meta.story({
 
     await step('month dropdown is closed initially', async () => {
       await expect(
-        canvas.queryByRole('listbox', { name: 'monthOptions' })
+        canvas.queryByRole('listbox', { name: 'month' })
       ).not.toBeInTheDocument();
     });
 
     await step('opens when the month button is clicked', async () => {
       await userEvent.click(canvas.getByRole('button', { name: 'Aug' }));
       await expect(
-        canvas.getByRole('listbox', { name: 'monthOptions' })
+        canvas.getByRole('listbox', { name: 'month' })
       ).toBeInTheDocument();
     });
 
     await step('closes after selecting an option', async () => {
       const monthOptions = canvas.getByRole('listbox', {
-        name: 'monthOptions',
+        name: 'month',
       });
       const options = within(monthOptions).getAllByRole('option');
       await userEvent.click(options[2]);
 
       await expect(
-        canvas.queryByRole('listbox', { name: 'monthOptions' })
+        canvas.queryByRole('listbox', { name: 'month' })
       ).not.toBeInTheDocument();
     });
   },
@@ -424,14 +424,14 @@ export const YearDropdown = meta.story({
 
     await step('year dropdown is closed initially', async () => {
       await expect(
-        canvas.queryByRole('listbox', { name: 'yearOptions' })
+        canvas.queryByRole('listbox', { name: 'year' })
       ).not.toBeInTheDocument();
     });
 
     await step('opens when the year button is clicked', async () => {
       await userEvent.click(canvas.getByRole('button', { name: '2025' }));
       await expect(
-        canvas.getByRole('listbox', { name: 'yearOptions' })
+        canvas.getByRole('listbox', { name: 'year' })
       ).toBeInTheDocument();
     });
   },
@@ -458,7 +458,7 @@ YearDropdownWithMinMax.test(
     });
 
     await step('only in-range years are rendered', async () => {
-      const years = within(canvas.getByRole('listbox', { name: 'yearOptions' }))
+      const years = within(canvas.getByRole('listbox', { name: 'year' }))
         .getAllByRole('option')
         .map(option => option.textContent);
 
@@ -486,13 +486,13 @@ export const MonthDropdownTouch = meta.story({
     await step('opens the month dropdown via touch', async () => {
       await tap(canvas.getByRole('button', { name: 'Aug' }));
       await expect(
-        canvas.getByRole('listbox', { name: 'monthOptions' })
+        canvas.getByRole('listbox', { name: 'month' })
       ).toBeInTheDocument();
     });
 
     await step('commits a month selection via touch', async () => {
       const monthOptions = canvas.getByRole('listbox', {
-        name: 'monthOptions',
+        name: 'month',
       });
       const march = within(monthOptions).getByRole('option', { name: /Mar/i });
 
@@ -500,7 +500,7 @@ export const MonthDropdownTouch = meta.story({
 
       // Dropdown closes and the grid switches to the tapped month.
       await expect(
-        canvas.queryByRole('listbox', { name: 'monthOptions' })
+        canvas.queryByRole('listbox', { name: 'month' })
       ).not.toBeInTheDocument();
       await expect(
         canvas.getByRole('button', { name: 'Mar' })
@@ -533,7 +533,7 @@ export const DropdownNavigationKeepsRangeInProgress = meta.story({
     await step('navigate via the month dropdown mid-selection', async () => {
       await userEvent.click(canvas.getByRole('button', { name: 'Aug' }));
       const monthOptions = canvas.getByRole('listbox', {
-        name: 'monthOptions',
+        name: 'month',
       });
       await userEvent.click(
         within(monthOptions).getByRole('option', { name: /Mar/i })
@@ -542,7 +542,7 @@ export const DropdownNavigationKeepsRangeInProgress = meta.story({
 
     await step('the half-finished range was not committed', async () => {
       await expect(
-        canvas.queryByRole('listbox', { name: 'monthOptions' })
+        canvas.queryByRole('listbox', { name: 'month' })
       ).not.toBeInTheDocument();
       await expect(
         canvas.getByRole('button', { name: 'Mar' })
