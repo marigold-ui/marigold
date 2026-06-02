@@ -10,7 +10,7 @@
   },
   "packageManager": "pnpm@11.1.2",
   "dependencies": {
-    "@babel/core": "7.29.0",
+    "@babel/core": "7.29.7",
     "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.29.8",
     "@eslint/eslintrc": "3.3.5",
