@@ -140,18 +140,18 @@ const _RangeCalendar = <T extends DateValue>({
     ViewMapKeys | undefined
   >();
 
-  // react-aria's `useRangeCalendar` registers a window-level `pointerup`
-  // listener that commits the in-progress range when the click target is not
-  // a button. RAC's <ListBoxItem> renders with role="option", so picking a
-  // month or year would otherwise trip that commit and drop the user's first
-  // click. A native listener is required (not React's `onPointerUpCapture`)
-  // because react-aria's listener also runs on the native event, before any
-  // synthetic event would reach a React capture handler. Using a callback
-  // ref ensures the listener (re)attaches whenever the overlay node mounts,
-  // including when `visibleDuration` toggles single↔multi at runtime.
+  // react-aria's `useRangeCalendar` commits the range on any window `pointerup`
+  // whose target isn't a button, so a tap on the overlay would wrongly commit.
+  // We stop those pointerups — but must let `role="option"` taps through, or
+  // `usePress`'s touch fallback never fires and month/year selection silently
+  // fails on touch (DSTSUP-257). A native listener via callback ref is needed
+  // because react-aria also listens natively, before React's capture phase.
   const dropdownOverlayRef = useCallback((node: HTMLDivElement | null) => {
     if (!node) return;
-    const stop = (event: PointerEvent) => event.stopPropagation();
+    const stop = (event: PointerEvent) => {
+      if ((event.target as Element)?.closest('[role="option"]')) return;
+      event.stopPropagation();
+    };
     node.addEventListener('pointerup', stop);
     return () => node.removeEventListener('pointerup', stop);
   }, []);

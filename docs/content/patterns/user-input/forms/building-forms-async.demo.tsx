@@ -1,5 +1,12 @@
 import { useActionState } from 'react';
-import { Button, Form, Headline, Stack, TextField } from '@marigold/components';
+import {
+  Button,
+  Form,
+  Panel,
+  Stack,
+  TextField,
+  Title,
+} from '@marigold/components';
 
 type FormState = {
   error?: string;
@@ -35,40 +42,40 @@ export default () => {
   }, INITIAL_STATE);
 
   return (
-    <>
-      <Headline level={2}>User Search</Headline>
-      <Form action={submitAction}>
-        <Stack space={4}>
+    <Form action={submitAction}>
+      <Panel size="form">
+        <Panel.Header>
+          <Title>User Search</Title>
+        </Panel.Header>
+        <Panel.Content>
           <Stack space={4}>
             <TextField
               type="text"
               name="name"
-              label="Name:"
+              label="Name"
               placeholder="Name"
               required
               errorMessage={({ validationDetails }) =>
-                validationDetails.valueMissing
-                  ? 'Please enter a valid email address!'
-                  : ''
+                validationDetails.valueMissing ? 'Please enter a name!' : ''
               }
             />
             <TextField
               type="email"
               name="email"
-              label="Email:"
+              label="Email"
               placeholder="Email"
               required
             />
+            {success && <p>{success}</p>}
+            {error && <p className="text-red-600">{error}</p>}
           </Stack>
-          <Stack alignX="right">
-            <Button type="submit" loading={isPending} variant="primary">
-              Search
-            </Button>
-          </Stack>
-          {success && <p>{success}</p>}
-          {error && <p className="text-red-600">{error}</p>}
-        </Stack>
-      </Form>
-    </>
+        </Panel.Content>
+        <Panel.Footer>
+          <Button type="submit" loading={isPending} variant="primary">
+            Search
+          </Button>
+        </Panel.Footer>
+      </Panel>
+    </Form>
   );
 };

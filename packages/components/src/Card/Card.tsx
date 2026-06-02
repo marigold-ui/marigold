@@ -1,4 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react';
+import { useId, useMemo } from 'react';
+import { HeadingContext, Provider } from 'react-aria-components';
 import type {
   InsetSpacingTokens,
   PaddingSpacingTokens,
@@ -6,8 +8,9 @@ import type {
   SpacingTokens,
 } from '@marigold/system';
 import { cn, createSpacingVar, useClassNames } from '@marigold/system';
+import { useSlot } from '../utils/useSlot';
 import { CardBody } from './CardBody';
-import { CardProvider } from './CardContext';
+import { CardContext } from './CardContext';
 import { CardFooter } from './CardFooter';
 import { CardHeader } from './CardHeader';
 import { CardMedia } from './CardMedia';
@@ -15,12 +18,26 @@ import { CardMedia } from './CardMedia';
 // Props
 // ---------------
 interface CardBaseProps extends Omit<
-  HTMLAttributes<HTMLDivElement>,
+  HTMLAttributes<HTMLElement>,
   'className' | 'style'
 > {
+  /**
+   * Content of the card. Typically a combination of `Card.Media`,
+   * `Card.Header`, `Card.Body`, and `Card.Footer`.
+   *
+   * `Card.Header` configures the slot-aware text primitives `<Title>`
+   * and `<Description>`.
+   */
   children?: ReactNode;
-  variant?: string;
+  variant?: 'default' | 'master' | 'admin' | (string & {});
   size?: string;
+
+  /**
+   * Base heading level for the card. A `<Title>` inside `Card.Header`
+   * renders at this level.
+   * @default 3
+   */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
 
   /**
    * Stretch to fill space horizontally.
@@ -29,7 +46,7 @@ interface CardBaseProps extends Omit<
   stretch?: boolean;
 
   /**
-   * Spacing between Card slots (Preview, Header, Body, Footer).
+   * Spacing between Card slots (Media, Header, Body, Footer).
    * @default 'regular'
    */
   space?: SpaceProp<SpacingTokens>['space'];
@@ -64,22 +81,68 @@ export const Card = ({
   variant,
   size,
   stretch,
+  'aria-label': ariaLabel,
+  headingLevel = 3,
   space = 'regular',
   p,
   px,
   py,
   ...props
 }: CardProps) => {
+  const titleId = useId();
   const classNames = useClassNames({ component: 'Card', variant, size });
+  const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
+
+  if (process.env.NODE_ENV !== 'production' && !ariaLabel && !hasTitle) {
+    console.warn(
+      '[Card] Renders an unnamed `article` landmark. Provide a `<Title>` ' +
+        '(inside or outside `Card.Header`) or an `aria-label` so screen ' +
+        'reader users can identify the card.'
+    );
+  }
 
   const inset = p ?? 'square-regular';
   const resolvedPx = px ?? `${inset}-x`;
   const resolvedPy = py ?? `${inset}-y`;
 
+  const rootHeadingProps = useMemo(
+    () => ({
+      slots: {
+        title: {
+          className: cn('px-(--card-px)', classNames.title),
+          level: headingLevel,
+          id: titleId,
+          ref: titleSlotRef,
+        },
+      },
+    }),
+    [classNames.title, headingLevel, titleId, titleSlotRef]
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      classNames,
+      titleId,
+      headingLevel,
+      hasTitle,
+      titleSlotRef,
+    }),
+    [classNames, titleId, headingLevel, hasTitle, titleSlotRef]
+  );
+
   return (
-    <CardProvider value={{ classNames }}>
-      <div
+    <Provider
+      values={[
+        [CardContext, contextValue],
+        [HeadingContext, rootHeadingProps],
+      ]}
+    >
+      <article
         {...props}
+        aria-labelledby={
+          !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+        }
+        aria-label={ariaLabel}
         className={cn(
           'flex flex-col overflow-hidden',
           'gap-y-(--card-gap) py-(--card-py)',
@@ -93,8 +156,8 @@ export const Card = ({
         }}
       >
         {children}
-      </div>
-    </CardProvider>
+      </article>
+    </Provider>
   );
 };
 

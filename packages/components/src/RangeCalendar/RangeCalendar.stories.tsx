@@ -438,6 +438,46 @@ export const YearDropdown = meta.story({
   },
 });
 
+// Regression (DSTSUP-257): tapping a month option with touch input must commit
+// the selection. An unconditional `pointerup` stopPropagation on the dropdown
+// overlay used to swallow the event before react-aria's `usePress` touch
+// click-completion fallback could fire, so `onPress` never ran and the grid
+// never switched. We tap with touch pointer events (not a mouse click, which
+// always synthesizes a native click and therefore hides the bug).
+export const MonthDropdownTouch = meta.story({
+  tags: ['component-test'],
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ canvasElement, userEvent, step }) => {
+    const canvas = within(canvasElement);
+    const tap = (target: Element) =>
+      userEvent.pointer([{ keys: '[TouchA>]', target }, { keys: '[/TouchA]' }]);
+
+    await step('opens the month dropdown via touch', async () => {
+      await tap(canvas.getByRole('button', { name: 'Aug' }));
+      await expect(
+        canvas.getByRole('listbox', { name: 'monthOptions' })
+      ).toBeInTheDocument();
+    });
+
+    await step('commits a month selection via touch', async () => {
+      const monthOptions = canvas.getByRole('listbox', {
+        name: 'monthOptions',
+      });
+      const march = within(monthOptions).getByRole('option', { name: /Mar/i });
+
+      await tap(march);
+
+      // Dropdown closes and the grid switches to the tapped month.
+      await expect(
+        canvas.queryByRole('listbox', { name: 'monthOptions' })
+      ).not.toBeInTheDocument();
+      await expect(
+        canvas.getByRole('button', { name: 'Mar' })
+      ).toBeInTheDocument();
+    });
+  },
+});
+
 export const TwoMonthsRangeSelection = meta.story({
   tags: ['component-test'],
   args: {

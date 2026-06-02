@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { useId, useMemo } from 'react';
 import { HeadingContext, Provider } from 'react-aria-components';
 import type {
@@ -19,7 +19,10 @@ import { PanelHeader } from './PanelHeader';
 
 // Props
 // ---------------
-interface PanelBaseProps {
+interface PanelBaseProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  'className' | 'style'
+> {
   variant?: 'default' | 'master' | 'admin' | 'destructive' | (string & {});
   size?: 'form' | (string & {});
   /**
@@ -82,6 +85,7 @@ export const Panel = ({
   p,
   px,
   py,
+  ...props
 }: PanelProps) => {
   const titleId = useId();
   const classNames = useClassNames({ component: 'Panel', variant, size });
@@ -125,7 +129,11 @@ export const Panel = ({
       ]}
     >
       <section
-        aria-labelledby={!ariaLabel ? titleId : undefined}
+        {...props}
+        data-panel
+        aria-labelledby={
+          !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+        }
         aria-label={ariaLabel}
         className={cn(
           'flex flex-col gap-y-(--panel-gap) pt-(--panel-py) pb-(--panel-py) has-[[data-collapsible]:last-child]:pb-0',

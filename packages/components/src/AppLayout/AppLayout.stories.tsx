@@ -10,6 +10,7 @@ import { Inset } from '../Inset/Inset';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
+import { Select } from '../Select/Select';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -262,5 +263,59 @@ export const SidebarClosed = meta.story({
 
       await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     });
+  },
+});
+
+// Regression for DST-1464. The main grid track was `1fr` (= `minmax(auto, 1fr)`),
+// so any wide content — e.g. a multi-select Select trigger with many selected
+// items — pushed the main column past the viewport. Adding `min-w-0` to
+// <AppLayout.Main> lets the track shrink to available space and clip the
+// overflow at the right place.
+export const WideContentDoesNotOverflow = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <LShapeLayout>
+      <Inset p={4}>
+        <Select
+          label="Picks"
+          name="picks"
+          selectionMode="multiple"
+          width="full"
+          defaultValue={[
+            'Lord of the Rings',
+            'Star Wars',
+            'Star Trek',
+            'Firefly',
+          ]}
+        >
+          <Select.Option id="Harry Potter">
+            Harry Potter and the Philosopher’s Stone
+          </Select.Option>
+          <Select.Option id="Lord of the Rings">
+            The Lord of the Rings: The Fellowship of the Ring
+          </Select.Option>
+          <Select.Option id="Star Wars">
+            Star Wars: Episode IV – A New Hope
+          </Select.Option>
+          <Select.Option id="Star Trek">
+            Star Trek: The Original Series
+          </Select.Option>
+          <Select.Option id="Firefly">
+            Firefly: The Complete Series
+          </Select.Option>
+        </Select>
+      </Inset>
+    </LShapeLayout>
+  ),
+  play: async ({ canvasElement }) => {
+    const main = within(canvasElement).getByRole('main');
+    // The layout's grid container is the parent of the main column. With
+    // the fix, the main column shrinks to the available track width and
+    // the grid does not horizontally overflow.
+    const grid = main.parentElement!;
+    await expect(main.getBoundingClientRect().width).toBeLessThanOrEqual(
+      grid.getBoundingClientRect().width
+    );
+    await expect(grid.scrollWidth).toBeLessThanOrEqual(grid.clientWidth);
   },
 });

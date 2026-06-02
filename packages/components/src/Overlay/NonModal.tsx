@@ -3,11 +3,6 @@ import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
 import { Provider, SlotProps } from 'react-aria-components/slots';
 import { useRenderProps } from 'react-aria-components/useRenderProps';
 import type { RenderProps } from 'react-aria-components/useRenderProps';
-import {
-  OverlayTriggerProps,
-  OverlayTriggerState,
-  useOverlayTriggerState,
-} from 'react-stately';
 import { FocusScope } from '@react-aria/focus';
 import { DismissButton, Overlay } from '@react-aria/overlays';
 import { useIsSSR } from '@react-aria/ssr';
@@ -19,6 +14,11 @@ import {
   useObjectRef,
   useViewportSize,
 } from '@react-aria/utils';
+import {
+  OverlayTriggerProps,
+  OverlayTriggerState,
+  useOverlayTriggerState,
+} from '@react-stately/overlays';
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
 import type { AriaNonModalProps } from './useNonModal';
 import { useNonModal } from './useNonModal';

@@ -40,6 +40,7 @@ import {
   TextArea,
   TextField,
   TextValue,
+  Title,
 } from '@marigold/components';
 
 const venue = venues.find(v => v.id === '9')!;
@@ -119,7 +120,7 @@ export const Inventory = () => (
             </Inline>
           </Stack>
           <Stack space={6}>
-            <Card stretch>
+            <Card stretch headingLevel={4}>
               <Card.Header>
                 <Inline noWrap space={5}>
                   <img
@@ -128,10 +129,10 @@ export const Inventory = () => (
                     className="aspect-square size-16 rounded-xl object-cover"
                   />
                   <Stack>
-                    <Headline level="4">{venue.name}</Headline>
-                    <Text variant="muted" fontSize="sm" weight="light">
+                    <Title>{venue.name}</Title>
+                    <Description>
                       {venue.city}, {venue.country}
-                    </Text>
+                    </Description>
                   </Stack>
                 </Inline>
               </Card.Header>
