@@ -1,23 +1,35 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
 import {
+  AriaLabeled,
   Basic,
   MasterAndAdmin,
   Stretch,
+  TitleOnlyWithoutHeader,
   WithBleedBody,
   WithBleedFooter,
   WithFooter,
   WithMedia,
 } from './Card.stories';
 
+type CardHeadingLevel = 2 | 3 | 4 | 5 | 6;
+
 describe('Card', () => {
   describe('Rendering', () => {
-    test('renders header content', () => {
+    test('renders an <article> labelled by the Title', () => {
       render(<Basic.Component />);
 
-      expect(
-        screen.getAllByText(/Professor Severus Snape/)[0]
-      ).toBeInTheDocument();
+      const title = screen.getByRole('heading', {
+        name: 'Professor Severus Snape',
+      });
+      const article = screen.getByRole('article', {
+        name: 'Professor Severus Snape',
+      });
+
+      expect(title.tagName).toBe('H3');
+      expect(article.tagName).toBe('ARTICLE');
+      expect(article).toHaveAttribute('aria-labelledby', title.id);
+      expect(article).not.toHaveAttribute('aria-label');
     });
 
     test('renders body content', () => {
@@ -35,6 +47,15 @@ describe('Card', () => {
       expect(
         screen.getByRole('button', { name: 'Cancel' })
       ).toBeInTheDocument();
+    });
+
+    test('supports `aria-label` as the accessible name and omits `aria-labelledby`', () => {
+      render(<AriaLabeled.Component />);
+
+      const article = screen.getByRole('article', { name: 'Quick stats card' });
+
+      expect(article).not.toHaveAttribute('aria-labelledby');
+      expect(article).toHaveAttribute('aria-label', 'Quick stats card');
     });
   });
 
@@ -124,7 +145,7 @@ describe('Card', () => {
       render(<Basic.Component />);
 
       const header = screen
-        .getAllByText(/Professor Severus Snape/)[0]
+        .getByRole('heading', { name: 'Professor Severus Snape' })
         .closest('[data-card-header]');
       expect(header).not.toBeNull();
       expect(header!.className).toContain('px-(--card-px)');
@@ -174,6 +195,55 @@ describe('Card', () => {
         .closest('[data-card-media]');
       expect(media).not.toBeNull();
       expect(media!.className).toContain('-mt-(--card-py)');
+    });
+  });
+
+  describe('Title in Card.Header', () => {
+    test.each([2, 3, 4, 5, 6] as const)(
+      'renders an <h%i> when headingLevel=%i',
+      (level: CardHeadingLevel) => {
+        render(<Basic.Component headingLevel={level} />);
+
+        const title = screen.getByRole('heading', {
+          name: 'Professor Severus Snape',
+        });
+        expect(title.tagName).toBe(`H${level}`);
+      }
+    );
+
+    test('mirrors the titleId onto the heading id', () => {
+      render(<Basic.Component />);
+
+      const article = screen.getByRole('article', {
+        name: 'Professor Severus Snape',
+      });
+      const title = screen.getByRole('heading', {
+        name: 'Professor Severus Snape',
+      });
+
+      expect(title.id).toBe(article.getAttribute('aria-labelledby'));
+    });
+
+    test('labels the article when Title is used without Card.Header', () => {
+      render(<TitleOnlyWithoutHeader.Component />);
+
+      const title = screen.getByRole('heading', { name: 'Quick Settings' });
+      const article = screen.getByRole('article', { name: 'Quick Settings' });
+
+      expect(title.tagName).toBe('H3');
+      expect(article).toHaveAttribute('aria-labelledby', title.id);
+      expect(title.closest('[data-card-header]')).toBeNull();
+    });
+  });
+
+  describe('Description in Card.Header', () => {
+    test('renders as a <p> via the TextContext slot config', () => {
+      render(<Basic.Component />);
+
+      const description = screen.getByText(
+        'Potions Master, Head of Slytherin House.'
+      );
+      expect(description.tagName).toBe('P');
     });
   });
 
