@@ -4,6 +4,7 @@ import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { ActionButton } from '../ActionButton/ActionButton';
 import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Description } from '../Description/Description';
+import { LinkButton } from '../LinkButton/LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Panel } from '../Panel/Panel';
 import { Stack } from '../Stack/Stack';
@@ -70,8 +71,13 @@ export const Basic = meta.story({
 /**
  * `<Page.Header>` accepts the same action components as `<Panel.Header>`. A
  * single action sits in the header on its own. Group several buttons in an
- * `<ActionGroup>`, and collect overflow in an `<ActionMenu>`. This story shows
- * the common arrangements.
+ * `<ActionGroup>`, and collect overflow in an `<ActionMenu>`.
+ *
+ * Pick the element by what the action does. An action that acts in place is an
+ * `<ActionButton variant="primary">` (a `<button>`). An action that navigates,
+ * like a "Create" that opens a new page, is a `<LinkButton variant="primary">`
+ * (an `<a>`) that looks identical but behaves like a link. This story shows the
+ * common arrangements.
  *
  * Each example is its own `<Page>`, so the canvas intentionally renders several
  * `<main>` landmarks. The duplicate-main accessibility rule is turned off for
@@ -96,12 +102,23 @@ export const Actions = meta.story({
         </Page.Header>
       </Page>
 
-      {/* A single primary button */}
+      {/* A single primary button that acts in place (renders a <button>) */}
       <Page>
         <Page.Header>
           <Title>Single primary action</Title>
           <Description>The page's primary call to action.</Description>
           <ActionButton variant="primary">Upgrade plan</ActionButton>
+        </Page.Header>
+      </Page>
+
+      {/* A navigating primary action (renders an <a>, styled the same) */}
+      <Page>
+        <Page.Header>
+          <Title>Navigating primary action</Title>
+          <Description>A "Create" action that opens its own page.</Description>
+          <LinkButton variant="primary" href="/events/new">
+            Create event
+          </LinkButton>
         </Page.Header>
       </Page>
 
@@ -181,6 +198,12 @@ export const Actions = meta.story({
     await expect(
       canvas.getAllByRole('button', { name: 'Upgrade plan' })
     ).toHaveLength(3);
+
+    // The navigating primary is a real link (an <a>), not a button.
+    const createLink = canvas.getByRole('link', { name: 'Create event' });
+    await expect(createLink).toBeInTheDocument();
+    await expect(createLink.tagName).toBe('A');
+    await expect(createLink).toHaveAttribute('href', '/events/new');
 
     // The secondary button renders alongside the primary inside the group.
     await expect(

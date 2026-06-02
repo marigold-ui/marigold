@@ -43,21 +43,45 @@ The `<Title>` becomes the page heading (an `<h1>` by default), the `<Description
 
 #### Actions
 
-Page actions use the same action components a `<Panel.Header>` accepts: [`<ActionButton>`](/components/actions/action-button), [`<ActionGroup>`](/components/actions/action-group), and [`<ActionMenu>`](/components/overlay/action-menu). In a Panel these recede into quiet icon buttons, but a page's primary action is meant to stand out, so reach for `<ActionButton variant="primary">`.
+Page actions use the same slot-aware action components a `<Panel.Header>` accepts: [`<ActionButton>`](/components/actions/action-button), [`<LinkButton>`](/components/actions/link-button), [`<ActionGroup>`](/components/actions/action-group), and [`<ActionMenu>`](/components/overlay/action-menu). In a Panel these recede into quiet icon buttons. A page's primary action is meant to stand out, so it sits in the header as a prominent, label-sized primary button.
+
+Pick the element by what the action _does_, not by how it looks. Both forms render as the same primary button:
+
+- **Acts in place** (upgrade the plan, publish, save): use [`<ActionButton variant="primary">`](/components/actions/action-button), which renders a `<button>`.
+- **Navigates** (create a new entity that opens its own page, or move to another screen): use [`<LinkButton variant="primary">`](/components/actions/link-button), which renders an `<a>`. It looks identical to the button, but because it is a real link it behaves like one (open in a new tab, copy the address, follow with the keyboard).
+
+```tsx
+// Acts in place: a real <button>
+<Page.Header>
+  <Title>Billing</Title>
+  <ActionButton variant="primary">Upgrade plan</ActionButton>
+</Page.Header>
+
+// Navigates to a "create" page: a real <a>, styled the same
+<Page.Header>
+  <Title>Events</Title>
+  <LinkButton variant="primary" href="/events/new">
+    Create event
+  </LinkButton>
+</Page.Header>
+```
+
+A page has one prominent primary action, and it belongs to the page. Put it in the header for an action that operates on the whole screen, such as creating a new entity. For a form, the primary action is instead the submit button at the end of the form. A `<Panel>` is a surface within the page, so its header carries actions scoped to that surface rather than the page's primary call to action.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `<ActionButton variant="primary">` for the page's primary action so it
-      claims the header's action slot and reads as the page-level call to
-      action.
+      Make the page's primary action a `variant="primary"` action in the header.
+      Use an `<ActionButton>` when it acts in place, or a `<LinkButton>` when it
+      navigates (for example a "Create" action that opens a new page). Both read
+      as the same primary button.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't drop a bare `<Button>` into `<Page.Header>`. It isn't slot-aware
-      and won't pick up the header's grid placement. Use the action primitives
-      above.
+      Don't drop a bare `<Button>` into `<Page.Header>`. It isn't slot-aware and
+      won't pick up the header's grid placement. Use the slot-aware action
+      components above.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
