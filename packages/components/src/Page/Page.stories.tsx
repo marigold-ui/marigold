@@ -1,8 +1,12 @@
 import { expect, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { ActionButton } from '../ActionButton/ActionButton';
+import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Description } from '../Description/Description';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Panel } from '../Panel/Panel';
+import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
 import { Page } from './Page';
@@ -59,6 +63,136 @@ export const Basic = meta.story({
     // Primary page action is a slot-aware ActionButton.
     await expect(
       canvas.getByRole('button', { name: 'Upgrade plan' })
+    ).toBeInTheDocument();
+  },
+});
+
+/**
+ * `<Page.Header>` accepts the same action components as `<Panel.Header>`. A
+ * single action sits in the header on its own. Group several buttons in an
+ * `<ActionGroup>`, and collect overflow in an `<ActionMenu>`. This story shows
+ * the common arrangements.
+ *
+ * Each example is its own `<Page>`, so the canvas intentionally renders several
+ * `<main>` landmarks. The duplicate-main accessibility rule is turned off for
+ * this showcase only.
+ */
+export const Actions = meta.story({
+  tags: ['component-test'],
+  parameters: {
+    a11y: {
+      config: {
+        rules: [{ id: 'landmark-no-duplicate-main', enabled: false }],
+      },
+    },
+  },
+  render: () => (
+    <Stack space="section">
+      {/* No actions */}
+      <Page>
+        <Page.Header>
+          <Title>No actions</Title>
+          <Description>A header with only a title and description.</Description>
+        </Page.Header>
+      </Page>
+
+      {/* A single primary button */}
+      <Page>
+        <Page.Header>
+          <Title>Single primary action</Title>
+          <Description>The page's primary call to action.</Description>
+          <ActionButton variant="primary">Upgrade plan</ActionButton>
+        </Page.Header>
+      </Page>
+
+      {/* Two buttons, one of them primary, grouped in an ActionGroup */}
+      <Page>
+        <Page.Header>
+          <Title>Primary and secondary</Title>
+          <Description>Group multiple buttons in an ActionGroup.</Description>
+          <ActionGroup aria-label="Plan actions">
+            <ActionButton>Compare plans</ActionButton>
+            <ActionButton variant="primary">Upgrade plan</ActionButton>
+          </ActionGroup>
+        </Page.Header>
+      </Page>
+
+      {/* An overflow menu on its own */}
+      <Page>
+        <Page.Header>
+          <Title>Overflow menu</Title>
+          <Description>Collect actions in an ActionMenu.</Description>
+          <ActionMenu aria-label="Plan actions">
+            <ActionMenu.Item id="edit">
+              <Pencil />
+              Edit plan
+            </ActionMenu.Item>
+            <ActionMenu.Item id="duplicate">
+              <Copy />
+              Duplicate plan
+            </ActionMenu.Item>
+            <ActionMenu.Item id="export">
+              <Download />
+              Export invoices
+            </ActionMenu.Item>
+            <ActionMenu.Item id="cancel" variant="destructive">
+              <Trash2 />
+              Cancel plan
+            </ActionMenu.Item>
+          </ActionMenu>
+        </Page.Header>
+      </Page>
+
+      {/* A primary button with an overflow menu to its right */}
+      <Page>
+        <Page.Header>
+          <Title>Primary action with overflow</Title>
+          <Description>A button beside an overflow menu.</Description>
+          <ActionGroup aria-label="Plan actions">
+            <ActionButton variant="primary">Upgrade plan</ActionButton>
+            <ActionMenu aria-label="More plan actions">
+              <ActionMenu.Item id="duplicate">
+                <Copy />
+                Duplicate plan
+              </ActionMenu.Item>
+              <ActionMenu.Item id="export">
+                <Download />
+                Export invoices
+              </ActionMenu.Item>
+              <ActionMenu.Item id="cancel" variant="destructive">
+                <Trash2 />
+                Cancel plan
+              </ActionMenu.Item>
+            </ActionMenu>
+          </ActionGroup>
+        </Page.Header>
+      </Page>
+    </Stack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // The no-actions header renders with just its heading.
+    await expect(
+      canvas.getByRole('heading', { level: 1, name: 'No actions' })
+    ).toBeInTheDocument();
+
+    // The primary action appears in the single, grouped, and overflow examples.
+    await expect(
+      canvas.getAllByRole('button', { name: 'Upgrade plan' })
+    ).toHaveLength(3);
+
+    // The secondary button renders alongside the primary inside the group.
+    await expect(
+      canvas.getByRole('button', { name: 'Compare plans' })
+    ).toBeInTheDocument();
+
+    // Each overflow menu renders as its own trigger button.
+    await expect(
+      canvas.getByRole('button', { name: 'Plan actions' })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: 'More plan actions' })
     ).toBeInTheDocument();
   },
 });
