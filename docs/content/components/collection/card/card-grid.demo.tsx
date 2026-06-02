@@ -1,13 +1,13 @@
 import { venueTypes, venues } from '@/lib/data/venues';
 import {
   Badge,
-  Button,
   Card,
-  Headline,
+  Description,
   Inline,
   Stack,
   Text,
   Tiles,
+  Title,
 } from '@marigold/components';
 
 const featured = venues.slice(0, 3);
@@ -24,27 +24,26 @@ export default () => (
           />
         </Card.Media>
         <Card.Header>
+          <Title>{venue.name}</Title>
+          <Description>
+            {venue.city}, {venue.country}
+          </Description>
+        </Card.Header>
+        <Card.Body>
           <Stack space="tight">
-            <Headline level={3}>{venue.name}</Headline>
             <Inline space="related">
               <Badge variant="info">{venueTypes[venue.type]}</Badge>
             </Inline>
+            <Text variant="muted">
+              Up to {venue.capacity.toLocaleString()} guests
+            </Text>
           </Stack>
-        </Card.Header>
-        <Card.Body>
-          <Text variant="muted">
-            {venue.city}, {venue.country} · up to{' '}
-            {venue.capacity.toLocaleString()} guests
-          </Text>
         </Card.Body>
         <Card.Footer>
           <Inline space="related" alignY="center">
             <Text size="sm" weight="bold">
               ${venue.price.from.toLocaleString()}
             </Text>
-            <Button variant="ghost" size="small">
-              View details
-            </Button>
           </Inline>
         </Card.Footer>
       </Card>

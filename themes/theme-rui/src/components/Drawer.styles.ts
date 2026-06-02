@@ -27,6 +27,6 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
   header: cva({ base: 'ui-panel-header' }),
   title: cva({ base: 'font-semibold text-base' }),
-  content: cva({ base: 'px-6 py-4 overflow-y-auto outline-none' }),
+  content: cva({ base: 'ui-panel-content' }),
   actions: cva({ base: 'ui-panel-actions' }),
 };

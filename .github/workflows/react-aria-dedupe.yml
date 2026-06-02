@@ -1,0 +1,23 @@
+name: react-aria dedupe guard
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dedupe:
+    name: Check react-aria dedupe
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+      # Reads the committed pnpm-lock.yaml only — no install needed.
+      - name: Assert single react-aria, no @react-spectrum
+        run: node scripts/check-react-aria-dedupe.mjs
