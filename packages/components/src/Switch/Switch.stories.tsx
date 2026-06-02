@@ -92,10 +92,10 @@ export const KeyboardToggle = meta.story({
 
     await userEvent.tab();
 
-    await userEvent.keyboard('{enter}');
+    await userEvent.keyboard(' ');
     await expect(input.checked).toBeTruthy();
 
-    await userEvent.keyboard('{enter}');
+    await userEvent.keyboard(' ');
     await expect(input.checked).toBeFalsy();
   },
 });
