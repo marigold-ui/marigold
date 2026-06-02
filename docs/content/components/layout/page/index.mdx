@@ -45,6 +45,8 @@ The `<Title>` becomes the page heading (an `<h1>` by default), the `<Description
 
 Page actions use the same slot-aware action components a `<Panel.Header>` accepts: [`<ActionButton>`](/components/actions/action-button), [`<LinkButton>`](/components/actions/link-button), [`<ActionGroup>`](/components/actions/action-group), and [`<ActionMenu>`](/components/overlay/action-menu). In a Panel these recede into quiet icon buttons. A page's primary action is meant to stand out, so it sits in the header as a prominent, label-sized primary button.
 
+Wrap the actions in an [`<ActionGroup>`](/components/actions/action-group) whenever the header holds more than one — two buttons, or a button beside an overflow [`<ActionMenu>`](/components/overlay/action-menu). A single action needs no group and sits in the header on its own.
+
 Pick the element by what the action _does_, not by how it looks. Both forms render as the same primary button:
 
 - **Acts in place** (upgrade the plan, publish, save): use [`<ActionButton variant="primary">`](/components/actions/action-button), which renders a `<button>`.

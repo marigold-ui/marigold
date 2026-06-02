@@ -3,6 +3,7 @@ import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Toolbar } from 'react-aria-components/Toolbar';
 import { Provider, useContextProps } from 'react-aria-components/slots';
+import { cn } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 import { ActionButtonContext } from '../ActionButton/Context';
 import type { SlotProps } from '../types';
@@ -55,6 +56,7 @@ export const ActionGroup = ({
   );
 
   const {
+    className,
     variant,
     size,
     disabled,
@@ -75,7 +77,18 @@ export const ActionGroup = ({
         [ActionButtonContext, RESET_BUTTON_CTX],
       ]}
     >
-      <Toolbar {...props} ref={ref} orientation={orientation}>
+      <Toolbar
+        {...props}
+        ref={ref}
+        orientation={orientation}
+        className={cn(
+          // A toolbar lays out its own children: a flex row (or column)
+          // with a gap. The container only positions the group via the
+          // `className` it cascades through the slot context.
+          'gap-related flex items-center data-[orientation=vertical]:flex-col',
+          className
+        )}
+      >
         {children}
       </Toolbar>
     </Provider>

@@ -5,10 +5,10 @@ export const Page: ThemeComponent<'Page'> = {
   root: cva({}),
   header: cva({}),
   title: cva({
-    base: 'text-2xl font-bold leading-tight text-foreground',
+    base: 'text-2xl font-bold leading-none text-foreground',
   }),
   description: cva({
-    base: 'mt-1 text-base text-secondary',
+    base: 'mt-1 text-base leading-none text-secondary',
   }),
   actions: cva({}),
   content: cva({}),

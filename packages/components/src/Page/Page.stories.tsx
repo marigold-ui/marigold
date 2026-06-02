@@ -19,12 +19,22 @@ const meta = preview.meta({
     layout: 'fullscreen',
     surface: false,
   },
+  argTypes: {
+    space: {
+      control: { type: 'select' },
+      options: ['collapsed', 'tight', 'related', 'regular', 'group', 'section'],
+      description: 'Vertical rhythm between the page header and the sections.',
+    },
+  },
+  args: {
+    children: undefined,
+  } as const,
 });
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: () => (
-    <Page>
+  render: args => (
+    <Page {...args}>
       <Page.Header>
         <Title>Billing</Title>
         <Description>Manage your plan and invoices.</Description>
@@ -69,9 +79,10 @@ export const Basic = meta.story({
 });
 
 /**
- * `<Page.Header>` accepts the same action components as `<Panel.Header>`. A
- * single action sits in the header on its own. Group several buttons in an
- * `<ActionGroup>`, and collect overflow in an `<ActionMenu>`.
+ * `<Page.Header>` accepts the same action components as `<Panel.Header>`.
+ * Wrap the actions in an `<ActionGroup>` whenever the header holds more than
+ * one — two buttons, or a button beside an overflow `<ActionMenu>`. A lone
+ * action needs no group and sits in the header on its own.
  *
  * Pick the element by what the action does. An action that acts in place is an
  * `<ActionButton variant="primary">` (a `<button>`). An action that navigates,
@@ -225,8 +236,8 @@ export const Actions = meta.story({
  * should differ from the header-to-content gap.
  */
 export const WithContent = meta.story({
-  render: () => (
-    <Page space="section">
+  render: args => (
+    <Page {...args}>
       <Page.Header>
         <Title>Settings</Title>
         <Description>Workspace-wide configuration.</Description>
