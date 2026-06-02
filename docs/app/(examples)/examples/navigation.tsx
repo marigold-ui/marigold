@@ -19,7 +19,6 @@ const layout: NavSection = {
           label: 'Analytics',
           ...appShellDocs,
         },
-        { kind: 'Item', slug: 'venue', label: 'Venue Detail', ...appShellDocs },
         { kind: 'Separator' },
         {
           kind: 'Item',

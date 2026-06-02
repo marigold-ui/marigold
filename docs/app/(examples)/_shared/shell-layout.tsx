@@ -2,6 +2,7 @@
 
 import { ArrowLeft, LifeBuoy } from 'lucide-react';
 import type { PropsWithChildren, ReactNode } from 'react';
+import { useMemo, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   AppShell,
@@ -16,6 +17,7 @@ import {
   TopNavigation,
 } from '@marigold/components';
 import { Logo } from '@/ui/Logo';
+import { PageBreadcrumbContext } from './breadcrumb';
 import type { NavNode, NavSection, ShellConfig } from './shell-types';
 import { UserMenu } from './user-menu';
 
@@ -41,12 +43,27 @@ const findLeaf = (
   return null;
 };
 
+// Match the slug against nav leaves, falling back to progressively shorter path
+// prefixes. A drill-in like `users/token` has no leaf of its own, so it resolves
+// to the parent `users` leaf (`isDrillIn: true`) — the parent stays highlighted
+// and the page supplies the trailing breadcrumb label via `usePageBreadcrumb`.
 const findActive = (sections: NavSection[], slug: string) => {
-  for (const section of sections) {
-    const found = findLeaf(section.items, leaf => leaf.slug === slug);
-    if (found) return { section, ...found };
+  const segments = slug.split('/');
+  for (let end = segments.length; end >= 1; end--) {
+    const candidate = segments.slice(0, end).join('/');
+    for (const section of sections) {
+      const found = findLeaf(section.items, leaf => leaf.slug === candidate);
+      if (found) {
+        return { section, ...found, isDrillIn: end < segments.length };
+      }
+    }
   }
-  return { section: sections[0], leaf: undefined, ancestors: [] as string[] };
+  return {
+    section: sections[0],
+    leaf: undefined,
+    ancestors: [] as string[],
+    isDrillIn: false,
+  };
 };
 
 const renderNav = (items: NavNode[], base: string): ReactNode[] =>
@@ -103,8 +120,16 @@ export const ShellLayout = ({
   const pathname = usePathname();
   const router = useRouter();
 
+  // A drill-in page (e.g. a member detail) publishes its own trailing crumb.
+  const [detailLabel, setDetailLabel] = useState<string>();
+  const breadcrumbValue = useMemo(
+    () => ({ setLabel: setDetailLabel }),
+    [setDetailLabel]
+  );
+
   const slug = pathname.replace(config.base, '').replace(/^\//, '');
   const { leaf, ancestors } = findActive(config.sections, slug);
+  const leafHref = leaf?.slug ? `${config.base}/${leaf.slug}` : config.base;
 
   return (
     <RouterProvider navigate={href => router.push(href)}>
@@ -155,7 +180,13 @@ export const ShellLayout = ({
                 </Breadcrumbs.Item>
               ))}
               {leaf && (
-                <Breadcrumbs.Item href="#">{leaf.label}</Breadcrumbs.Item>
+                // On a drill-in the leaf becomes a real link back to the list.
+                <Breadcrumbs.Item href={detailLabel ? leafHref : '#'}>
+                  {leaf.label}
+                </Breadcrumbs.Item>
+              )}
+              {detailLabel && (
+                <Breadcrumbs.Item href="#">{detailLabel}</Breadcrumbs.Item>
               )}
             </Breadcrumbs>
           </TopNavigation.Middle>
@@ -163,7 +194,9 @@ export const ShellLayout = ({
             <UserSection />
           </TopNavigation.End>
         </TopNavigation>
-        {children}
+        <PageBreadcrumbContext value={breadcrumbValue}>
+          {children}
+        </PageBreadcrumbContext>
       </AppShell>
     </RouterProvider>
   );
