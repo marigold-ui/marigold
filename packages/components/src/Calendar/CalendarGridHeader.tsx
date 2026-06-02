@@ -1,40 +1,19 @@
-import { startOfWeek, today } from '@internationalized/date';
-import { useMemo } from 'react';
-import { CalendarGridProps } from 'react-aria-components';
-import { useCalendarGrid } from '@react-aria/calendar';
-import { useDateFormatter, useLocale } from '@react-aria/i18n';
-import { useCalendarContext, useCalendarOrRangeState } from './Context';
+import {
+  CalendarHeaderCell,
+  CalendarGridHeader as RACCalendarGridHeader,
+} from 'react-aria-components';
+import { useCalendarContext } from './Context';
 
-export function CalendarGridHeader(props: CalendarGridProps) {
-  const state = useCalendarOrRangeState();
-  const { headerProps } = useCalendarGrid(props, state);
-
-  const { locale } = useLocale();
-  const dayFormatter = useDateFormatter({
-    weekday: 'short',
-    timeZone: state.timeZone,
-  });
-
-  const weekDays = useMemo(() => {
-    const weekStart = startOfWeek(today(state.timeZone), locale);
-    return [...new Array(7).keys()].map(index => {
-      const date = weekStart.add({ days: index });
-      const dateDay = date.toDate(state.timeZone);
-      return dayFormatter.format(dateDay);
-    });
-  }, [locale, state.timeZone, dayFormatter]);
-
+export function CalendarGridHeader() {
   const { classNames } = useCalendarContext();
 
   return (
-    <thead {...headerProps}>
-      <tr>
-        {weekDays.map((day, index) => (
-          <th className={classNames.calendarHeader} key={index}>
-            {day.substring(0, 2)}
-          </th>
-        ))}
-      </tr>
-    </thead>
+    <RACCalendarGridHeader>
+      {day => (
+        <CalendarHeaderCell className={classNames.calendarHeader}>
+          {day.substring(0, 2)}
+        </CalendarHeaderCell>
+      )}
+    </RACCalendarGridHeader>
   );
 }
