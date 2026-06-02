@@ -20,7 +20,6 @@ import {
   Text,
   Title,
 } from '@marigold/components';
-import { usePageBreadcrumb } from '../../../_shared';
 
 // The member detail is the drill-in from the Users list (the "Detail / record"
 // layout): a primary column with the member's content and a narrower secondary
@@ -63,9 +62,6 @@ const Field = ({ label, children }: { label: string; children: ReactNode }) => (
 const UserDetailPage = () => {
   const params = useParams<{ id: string }>();
   const person = people.find(p => p.id === params.id);
-
-  // Feed the member's name to the shell as the trailing breadcrumb crumb.
-  usePageBreadcrumb(person?.name);
 
   if (!person) notFound();
 
