@@ -282,7 +282,7 @@ To visually imitate a button element that navigates (e.g., a "Cancel" action tha
 | The single most important call-to-action on a page or section | [`<Button variant="primary">`](/components/actions/button)                                                                                                                                                                                |
 | Per-row action in a list, table, or `<SelectList>` option     | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group). For actions that navigate (e.g. an "Edit" link to a detail page), use [`<LinkButton>`](/components/actions/link-button), which picks up the same cascade. |
 | Chrome on a `<Panel>`, `<Dialog>`, or `<Drawer>` header       | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group)                                                                                                                                                            |
-| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/actions/actionbar)                                                                                                                                                                                     |
+| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/collection/actionbar)                                                                                                                                                                                  |
 | Overflow when there are more actions than fit comfortably     | [`<ActionMenu>`](/components/overlay/action-menu)                                                                                                                                                                                         |
 
 ### Press Event
@@ -303,6 +303,6 @@ Each handler receives a `PressEvent`, providing details about the target and the
 
 - [ActionButton](/components/actions/action-button): A low-emphasis button for surface chrome and per-row actions.
 - [ActionGroup](/components/actions/action-group): A toolbar wrapper around a related cluster of `<ActionButton>`s.
-- [ActionBar](/components/actions/actionbar): The bar around bulk-selection actions; uses `<ActionBar.Button>` internally.
+- [ActionBar](/components/collection/actionbar): The bar around bulk-selection actions; uses `<ActionBar.Button>` internally.
 - [Link](/components/actions/link): A component to navigate to another page.
 - [LinkButton](/components/actions/link-button): A component to navigate to another page but looks like a button.
