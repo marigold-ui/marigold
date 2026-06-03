@@ -1,8 +1,8 @@
 import { expect, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
-import { ActionButton } from '../ActionButton/ActionButton';
 import { ActionGroup } from '../ActionGroup/ActionGroup';
+import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
 import { LinkButton } from '../LinkButton/LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
@@ -38,7 +38,7 @@ export const Basic = meta.story({
       <Page.Header>
         <Title>Billing</Title>
         <Description>Manage your plan and invoices.</Description>
-        <ActionButton variant="primary">Upgrade plan</ActionButton>
+        <Button variant="primary">Upgrade plan</Button>
       </Page.Header>
       <Panel>
         <Panel.Header>
@@ -71,7 +71,7 @@ export const Basic = meta.story({
     const description = canvas.getByText('Manage your plan and invoices.');
     await expect(description.tagName).toBe('P');
 
-    // Primary page action is a slot-aware ActionButton.
+    // Primary page action is a slot-aware Button.
     await expect(
       canvas.getByRole('button', { name: 'Upgrade plan' })
     ).toBeInTheDocument();
@@ -84,8 +84,8 @@ export const Basic = meta.story({
  * one — two buttons, or a button beside an overflow `<ActionMenu>`. A lone
  * action needs no group and sits in the header on its own.
  *
- * Pick the element by what the action does. An action that acts in place is an
- * `<ActionButton variant="primary">` (a `<button>`). An action that navigates,
+ * Pick the element by what the action does. An action that acts in place is a
+ * `<Button variant="primary">` (a `<button>`). An action that navigates,
  * like a "Create" that opens a new page, is a `<LinkButton variant="primary">`
  * (an `<a>`) that looks identical but behaves like a link. This story shows the
  * common arrangements.
@@ -118,7 +118,7 @@ export const Actions = meta.story({
         <Page.Header>
           <Title>Single primary action</Title>
           <Description>The page's primary call to action.</Description>
-          <ActionButton variant="primary">Upgrade plan</ActionButton>
+          <Button variant="primary">Upgrade plan</Button>
         </Page.Header>
       </Page>
 
@@ -139,8 +139,8 @@ export const Actions = meta.story({
           <Title>Primary and secondary</Title>
           <Description>Group multiple buttons in an ActionGroup.</Description>
           <ActionGroup aria-label="Plan actions">
-            <ActionButton>Compare plans</ActionButton>
-            <ActionButton variant="primary">Upgrade plan</ActionButton>
+            <Button variant="secondary">Compare plans</Button>
+            <Button variant="primary">Upgrade plan</Button>
           </ActionGroup>
         </Page.Header>
       </Page>
@@ -177,7 +177,7 @@ export const Actions = meta.story({
           <Title>Primary action with overflow</Title>
           <Description>A button beside an overflow menu.</Description>
           <ActionGroup aria-label="Plan actions">
-            <ActionButton variant="primary">Upgrade plan</ActionButton>
+            <Button variant="primary">Upgrade plan</Button>
             <ActionMenu aria-label="More plan actions">
               <ActionMenu.Item id="duplicate">
                 <Copy />

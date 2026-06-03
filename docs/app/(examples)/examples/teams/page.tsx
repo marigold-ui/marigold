@@ -5,7 +5,7 @@ import type { Person } from '@/lib/data/people';
 import { teams } from '@/lib/data/teams';
 import { Plus } from 'lucide-react';
 import {
-  ActionButton,
+  Button,
   Card,
   Description,
   Inline,
@@ -26,10 +26,10 @@ const TeamsPage = () => (
     <Page.Header>
       <Title>Teams</Title>
       <Description>Group members into teams and assign their work.</Description>
-      <ActionButton variant="primary">
+      <Button variant="primary">
         <Plus />
         Create team
-      </ActionButton>
+      </Button>
     </Page.Header>
 
     <Tiles stretch equalHeight tilesWidth="20rem" space="regular">

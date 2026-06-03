@@ -1,5 +1,5 @@
 import {
-  ActionButton,
+  Button,
   Description,
   Page,
   Panel,
@@ -12,7 +12,7 @@ export default () => (
     <Page.Header>
       <Title>Billing</Title>
       <Description>Manage your plan and invoices.</Description>
-      <ActionButton variant="primary">Upgrade plan</ActionButton>
+      <Button variant="primary">Upgrade plan</Button>
     </Page.Header>
     <Panel>
       <Panel.Header>

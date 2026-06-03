@@ -2,7 +2,6 @@
 
 import { Download } from 'lucide-react';
 import {
-  ActionButton,
   Badge,
   Button,
   DateFormat,
@@ -29,7 +28,7 @@ const BillingPage = () => (
     <Page.Header>
       <Title>Billing</Title>
       <Description>Manage your plan, payment method, and invoices.</Description>
-      <ActionButton variant="primary">Change plan</ActionButton>
+      <Button variant="primary">Change plan</Button>
     </Page.Header>
 
     <Panel>
@@ -114,9 +113,13 @@ const BillingPage = () => (
                   </Badge>
                 </Table.Cell>
                 <Table.Cell alignX="right">
-                  <ActionButton aria-label={`Download ${invoice.id}`}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Download ${invoice.id}`}
+                  >
                     <Download />
-                  </ActionButton>
+                  </Button>
                 </Table.Cell>
               </Table.Row>
             ))}

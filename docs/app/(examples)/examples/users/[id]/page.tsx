@@ -5,10 +5,10 @@ import { teamName } from '@/lib/data/teams';
 import type { ReactNode } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import {
-  ActionButton,
   ActionGroup,
   ActionMenu,
   Badge,
+  Button,
   Columns,
   DateFormat,
   Description,
@@ -71,7 +71,7 @@ const UserDetailPage = () => {
         <Title>{person.name}</Title>
         <Description>{person.position}</Description>
         <ActionGroup aria-label="Member actions">
-          <ActionButton variant="primary">Edit profile</ActionButton>
+          <Button variant="primary">Edit profile</Button>
           <ActionMenu aria-label="More actions">
             <ActionMenu.Item id="deactivate">Deactivate</ActionMenu.Item>
             <ActionMenu.Item id="remove" variant="destructive">

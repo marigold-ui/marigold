@@ -76,7 +76,7 @@ describe('Page.Header', () => {
     );
   });
 
-  test('renders a primary ActionButton in the actions slot', () => {
+  test('renders a primary Button in the actions slot', () => {
     render(<Basic.Component />);
 
     const action = screen.getByRole('button', { name: 'Upgrade plan' });

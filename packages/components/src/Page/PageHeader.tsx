@@ -1,6 +1,11 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
-import { HeadingContext, Provider, TextContext } from 'react-aria-components';
+import {
+  ButtonContext,
+  HeadingContext,
+  Provider,
+  TextContext,
+} from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { ActionButtonContext } from '../ActionButton/Context';
 import { ActionGroupContext } from '../ActionGroup/Context';
@@ -8,15 +13,14 @@ import { usePageContext } from './Context';
 
 export interface PageHeaderProps {
   /**
-   * Content of the header. Typically a `<Title>`, optional `<Description>`,
-   * and optional action primitives (`<ActionButton>`, `<ActionGroup>`,
-   * `<ActionMenu>`, `<LinkButton>`).
+   * Content of the header. Typically a `<Title>`, an optional `<Description>`,
+   * and an optional primary action: a `<Button variant="primary">`, a
+   * `<LinkButton variant="primary">`, or an `<ActionGroup>` / `<ActionMenu>`
+   * cluster.
    *
-   * Unlike `Panel.Header`, the action slot here renders prominent,
-   * label-sized actions: the page's primary call to action is an
-   * `<ActionButton variant="primary">`. Use the action primitives for header
-   * chrome — a bare `<Button>` is intentionally not slot-aware and won't pick
-   * up the size/grid cascade.
+   * Unlike `Panel.Header`, the action slot here renders a prominent,
+   * label-sized action. The header publishes the slot context, so the action
+   * lands in the action cell without any per-call placement props.
    */
   children: ReactNode;
 }
@@ -74,11 +78,24 @@ export const PageHeader = ({ children }: PageHeaderProps) => {
     [classNames.actions]
   );
 
+  // Interim stopgap until `<Button>` becomes slot-aware (DST-1360 follow-up):
+  // publish RAC's `ButtonContext` so a plain `<Button variant="primary">`
+  // claims the action cell. Mirrors `actionProps` placement, minus the
+  // ActionButton size cascade (Button keeps its own default size).
+  const buttonProps = useMemo(
+    () => ({
+      className: cn('self-center [grid-area:actions]', classNames.actions),
+      'data-grid-area': 'actions',
+    }),
+    [classNames.actions]
+  );
+
   return (
     <Provider
       values={[
         [HeadingContext, headingProps],
         [TextContext, textProps],
+        [ButtonContext, buttonProps],
         [ActionButtonContext, actionProps],
         [ActionGroupContext, actionProps],
       ]}

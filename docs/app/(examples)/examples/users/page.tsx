@@ -3,8 +3,8 @@
 import { people } from '@/lib/data/people';
 import { UserRoundPlus } from 'lucide-react';
 import {
-  ActionButton,
   Badge,
+  Button,
   DateFormat,
   Description,
   Inline,
@@ -29,10 +29,10 @@ const UsersPage = () => (
     <Page.Header>
       <Title>Users</Title>
       <Description>Manage the members of your workspace.</Description>
-      <ActionButton variant="primary">
+      <Button variant="primary">
         <UserRoundPlus />
         Invite member
-      </ActionButton>
+      </Button>
     </Page.Header>
     <Panel aria-label="Members">
       <Panel.Content bleed>

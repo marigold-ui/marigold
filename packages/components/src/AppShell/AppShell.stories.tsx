@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { LogOut, Settings, User } from '@marigold/icons';
-import { ActionButton } from '../ActionButton/ActionButton';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
+import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
@@ -131,7 +131,7 @@ const ShellFrame = ({ pageExtra }: { pageExtra?: React.ReactNode }) => {
           <Page.Header>
             <Title>{page?.label}</Title>
             <Description>{page?.description}</Description>
-            <ActionButton variant="primary">Create</ActionButton>
+            <Button variant="primary">Create</Button>
           </Page.Header>
           <Panel>
             <Panel.Header>
