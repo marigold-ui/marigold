@@ -178,6 +178,32 @@ const buildTokenReverseMap = async (page: Page): Promise<TokenReverseMap> => {
   return map;
 };
 
+// The COMPUTED-style token check (over the snapshots loop below) only fires
+// for color-family properties. A color token resolves to an exact rgb() value,
+// so a reverse-map match against the computed value is SOUND. Spacing,
+// typography and radius (line-height 25.6px, padding shorthand "8px 16px", a
+// pill's computed border-radius) are theme-derived computed pixels that rarely
+// equal a discrete token even when the value is fully token-driven; flagging
+// them produces warning volume that scales with UI size and biases the model
+// comparison. The author-written INLINE path (TOKENIZABLE_INLINE_PROPERTIES,
+// below) is broader on purpose — there a hardcoded spacing/radius value is a
+// real off-token override, not a theme-derived computed pixel.
+const COMPUTED_TOKEN_PROPERTIES = new Set([
+  'color',
+  'background-color',
+  'border-color',
+  'border-top-color',
+  'border-right-color',
+  'border-bottom-color',
+  'border-left-color',
+  'outline-color',
+  'fill',
+  'stroke',
+]);
+
+export const isComputedTokenCandidate = (property: string): boolean =>
+  COMPUTED_TOKEN_PROPERTIES.has(property);
+
 const isTokenizedViaReverseMap = (
   property: string,
   value: string,
@@ -305,6 +331,7 @@ export const checkTokenCompliance = async (
 
   for (const snap of snapshots) {
     for (const [property, rawValue] of Object.entries(snap.styles)) {
+      if (!isComputedTokenCandidate(property)) continue;
       const value = rawValue.trim();
       if (SKIP_VALUES.has(value)) continue;
       if (isBrowserDefault(snap.selector, property, value, defaults)) continue;

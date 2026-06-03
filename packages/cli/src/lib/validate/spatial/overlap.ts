@@ -11,7 +11,19 @@ export type OverlapIssue = {
   overlapPercentage: number;
 };
 
+// Overlap detection is a LAYOUT HEURISTIC, not a WCAG criterion. The thresholds
+// below are tuned to avoid flagging sub-pixel/anti-alias touches and intentional
+// overlays while still catching layout-breaking collisions.
+//
+// Minimum intersection (as % of the smaller box's area) before an overlap is
+// reported at all: below this is treated as an incidental touch/rounding.
 const OVERLAP_THRESHOLD_PERCENT = 5;
+// At or above this share of the smaller box the overlap is substantial enough
+// that content is very likely obscured -> 'error'. Between the two thresholds
+// the overlap is borderline/uncertain -> 'warning' (no error penalty).
+const MAJOR_OVERLAP_PERCENT = 25;
+// A child smaller than 15% the area of its neighbour reads as a badge/icon
+// overlay sitting on top of a larger surface, not a layout collision. Heuristic.
 const BADGE_AREA_RATIO = 0.15;
 const OVERLAY_POSITIONS = new Set(['absolute', 'fixed']);
 const OVERLAY_ROLES = new Set([
@@ -41,6 +53,11 @@ const isIntentionalOverlay = (
   a: ComponentBounds,
   b: ComponentBounds
 ): boolean => {
+  // A non-identity transform (translate/scale nudge, animation, or a popper
+  // positioned via transform rather than top/left) makes a visual overlap with
+  // the anchor intentional. react-aria overlays and nudged badges hit this.
+  if (a.transform !== 'none' || b.transform !== 'none') return true;
+
   const aPositioned = OVERLAY_POSITIONS.has(a.position);
   const bPositioned = OVERLAY_POSITIONS.has(b.position);
 
@@ -102,7 +119,13 @@ export const overlapIssuesToValidationIssues = (
 ): ValidationIssue[] =>
   overlaps.map(o => ({
     type: 'spatial' as const,
-    severity: 'error' as const,
+    // Only a substantial overlap is an 'error'; a borderline overlap (between
+    // the report threshold and the major threshold) is uncertain and surfaces
+    // as a 'warning' so it does not penalize a model for a near-miss.
+    severity:
+      o.overlapPercentage >= MAJOR_OVERLAP_PERCENT
+        ? ('error' as const)
+        : ('warning' as const),
     source: 'overlap-detector' as const,
     component: `${o.componentA} ↔ ${o.componentB}`,
     message: `Components <${o.componentA}> and <${o.componentB}> overlap by ${o.overlapArea}px² (${o.overlapPercentage}% of the smaller component).`,

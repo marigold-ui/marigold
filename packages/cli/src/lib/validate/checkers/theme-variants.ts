@@ -52,6 +52,48 @@ const extractFromCva = (
     const merged = [...new Set([...existingValues, ...values])];
     existing.set(dimName, merged);
   }
+
+  // Union in values that only appear inside `compoundVariants`. A value valid
+  // only in a compound rule (e.g. variant 'ghost' used in a compoundVariant but
+  // not listed under `variants.variant`) would otherwise be wrongly flagged as
+  // "not in theme". We ONLY enlarge the value set of an ALREADY-KNOWN dimension;
+  // a key that is not already a variant dimension is ignored (we never invent a
+  // new dimension from compoundVariants alone), and `class`/`className` keys are
+  // skipped since they hold the applied styles, not variant values.
+  const compoundProp = arg.properties.find(
+    (p): p is ts.PropertyAssignment =>
+      ts.isPropertyAssignment(p) &&
+      ts.isIdentifier(p.name) &&
+      p.name.text === 'compoundVariants'
+  );
+  if (compoundProp && ts.isArrayLiteralExpression(compoundProp.initializer)) {
+    for (const element of compoundProp.initializer.elements) {
+      if (!ts.isObjectLiteralExpression(element)) continue;
+      for (const prop of element.properties) {
+        if (!ts.isPropertyAssignment(prop)) continue;
+        const key = ts.isIdentifier(prop.name)
+          ? prop.name.text
+          : ts.isStringLiteral(prop.name)
+            ? prop.name.text
+            : undefined;
+        if (!key || key === 'class' || key === 'className') continue;
+        if (!existing.has(key)) continue; // only enlarge known dimensions
+
+        const newValues: string[] = [];
+        if (ts.isStringLiteral(prop.initializer)) {
+          newValues.push(prop.initializer.text);
+        } else if (ts.isArrayLiteralExpression(prop.initializer)) {
+          for (const item of prop.initializer.elements) {
+            if (ts.isStringLiteral(item)) newValues.push(item.text);
+          }
+        }
+        if (newValues.length === 0) continue;
+
+        const existingValues = existing.get(key) ?? [];
+        existing.set(key, [...new Set([...existingValues, ...newValues])]);
+      }
+    }
+  }
 };
 
 const parseStyleFile = (filePath: string, result: ThemeVariantMap): void => {
@@ -64,6 +106,9 @@ const parseStyleFile = (filePath: string, result: ThemeVariantMap): void => {
         if (!ts.isIdentifier(decl.name) || !decl.initializer) continue;
         const componentName = decl.name.text;
 
+        // Only the DIRECT `export const X = cva({...})` form maps to a
+        // component's JSX-prop variants: the const name is the component and the
+        // cva `variants` ARE the props an author sets (e.g. <Button variant>).
         if (ts.isCallExpression(decl.initializer)) {
           const callee = decl.initializer.expression;
           if (ts.isIdentifier(callee) && callee.text === 'cva') {
@@ -71,18 +116,13 @@ const parseStyleFile = (filePath: string, result: ThemeVariantMap): void => {
           }
         }
 
-        if (ts.isObjectLiteralExpression(decl.initializer)) {
-          for (const prop of decl.initializer.properties) {
-            if (!ts.isPropertyAssignment(prop)) continue;
-            if (
-              ts.isCallExpression(prop.initializer) &&
-              ts.isIdentifier(prop.initializer.expression) &&
-              prop.initializer.expression.text === 'cva'
-            ) {
-              extractFromCva(componentName, prop.initializer, result);
-            }
-          }
-        }
+        // The object-of-cva form (`export const Menu = { item: cva(...),
+        // button: cva(...) }`) describes INTERNAL style slots, not JSX props.
+        // Extracting them under the component name merged unrelated style groups
+        // and produced a bogus `variant` set, so <Menu variant="ghost"> was
+        // wrongly flagged "not in theme". These slot keys are not component-level
+        // variant props, so we deliberately SKIP extraction for this form
+        // (FP-over-FN tradeoff: those forms expose no JSX variant prop anyway).
       }
     }
     ts.forEachChild(node, visit);

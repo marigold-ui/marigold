@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import type { ComponentBounds } from './bounding-box.js';
-import { detectOverlaps } from './overlap.js';
+import { detectOverlaps, overlapIssuesToValidationIssues } from './overlap.js';
 
 const make = (
   component: string,
   selector: string,
   rect: { x: number; y: number; width: number; height: number },
-  overrides: Partial<Pick<ComponentBounds, 'zIndex' | 'position' | 'role'>> = {}
+  overrides: Partial<
+    Pick<ComponentBounds, 'zIndex' | 'position' | 'role' | 'transform'>
+  > = {}
 ): ComponentBounds => ({
   component,
   selector,
@@ -14,6 +16,7 @@ const make = (
   zIndex: overrides.zIndex ?? 0,
   position: overrides.position ?? 'static',
   role: overrides.role ?? null,
+  transform: overrides.transform ?? 'none',
   children: [],
 });
 
@@ -154,5 +157,53 @@ describe('detectOverlaps', () => {
     const issues = detectOverlaps([a, b]);
     expect(issues).toHaveLength(1);
     expect(issues[0].overlapPercentage).toBeGreaterThanOrEqual(5);
+  });
+
+  it('ignores an element nudged via a non-identity transform (intentional)', () => {
+    const anchor = make('Button', 'body > div:nth-child(1) > a', {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 40,
+    });
+    const nudged = make(
+      'Badge',
+      'body > div:nth-child(1) > b',
+      { x: 40, y: 0, width: 100, height: 40 },
+      { transform: 'matrix(1, 0, 0, 1, -20, -10)' }
+    );
+    expect(detectOverlaps([anchor, nudged])).toEqual([]);
+  });
+});
+
+describe('overlapIssuesToValidationIssues — severity by overlap share', () => {
+  it('emits a warning for a borderline overlap (below the major threshold)', () => {
+    const issues = overlapIssuesToValidationIssues([
+      {
+        componentA: 'Button',
+        componentB: 'Button',
+        selectorA: 'a',
+        selectorB: 'b',
+        overlapArea: 400,
+        overlapPercentage: 10,
+      },
+    ]);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].severity).toBe('warning');
+  });
+
+  it('emits an error for a substantial overlap (>= the major threshold)', () => {
+    const issues = overlapIssuesToValidationIssues([
+      {
+        componentA: 'Button',
+        componentB: 'Button',
+        selectorA: 'a',
+        selectorB: 'b',
+        overlapArea: 2000,
+        overlapPercentage: 50,
+      },
+    ]);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].severity).toBe('error');
   });
 });

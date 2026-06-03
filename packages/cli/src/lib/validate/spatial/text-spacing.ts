@@ -202,7 +202,18 @@ export const textSpacingToValidationIssues = (
     const nowClipsV = clipsVertically(after) && !wasClippingV;
     const nowClipsH = clipsHorizontally(after) && !wasClippingH;
     const nowLineClamped = hasLineClamp(after) && !wasLineClamped;
+    // WCAG 1.4.12 targets content made INACCESSIBLE by applying text spacing. A
+    // single-line ellipsis truncation (text-overflow:ellipsis + overflow-x:hidden
+    // and no line-clamp) that was ALREADY truncating before the injection is an
+    // authored design pattern (e.g. a truncating Marigold Text); the injection
+    // merely clips it a few px more. That is not a spacing failure, so exempt it.
+    // Multi-line clamp, or an element that did not truncate before, still fire.
+    const wasEllipsisTruncating =
+      before.textOverflow === 'ellipsis' &&
+      isClippingHidden(before.overflowX) &&
+      before.webkitLineClamp === 'none';
     const nowEllipsis =
+      !wasEllipsisTruncating &&
       after.textOverflow === 'ellipsis' &&
       clipsHorizontally(after) &&
       !wasClippingH;

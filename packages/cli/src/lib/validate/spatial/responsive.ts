@@ -18,6 +18,10 @@ type TouchTargetIssue = {
 type DisappearedComponent = {
   selector: string;
   component: string;
+  // Visibility state captured at extraction time so the pure builder can decide
+  // whether a 0x0 measurement is a genuine collapse or a legitimately
+  // not-rendered element (display:none, hidden Disclosure, inactive Tab panel).
+  hiddenByCss: boolean;
 };
 
 type OverflowCulprit = {
@@ -55,6 +59,28 @@ const MIN_TOUCH_TARGET_PX = 24;
 // the scrollbar width. Tolerate that to avoid flagging this rendering artifact;
 // genuine overflow is materially larger.
 const SCROLLBAR_TOLERANCE_PX = 17;
+
+// WCAG 2.5.8 spacing exception is geometric: each target gets a 24px-diameter
+// circle and the exception applies when those circles do not overlap. For
+// axis-aligned rects that means the EDGE-to-edge gap (not the centre-to-centre
+// distance, which counts each target's own radius and so over-reports
+// crowding) must be at least the required clearance. Gap is 0 when the rects
+// touch or overlap.
+export const edgeGap = (
+  a: { left: number; right: number; top: number; bottom: number },
+  b: { left: number; right: number; top: number; bottom: number }
+): number => {
+  const gapX = Math.max(0, a.left - b.right, b.left - a.right);
+  const gapY = Math.max(0, a.top - b.bottom, b.top - a.bottom);
+  return Math.hypot(gapX, gapY);
+};
+
+// A 0x0 measurement is only a genuine "disappeared" defect when the element is
+// in the visible render path. display:none / visibility:hidden / aria-hidden /
+// the hidden attribute / a collapsed Disclosure or inactive Tab panel all
+// legitimately measure 0x0 in Marigold and must not be flagged.
+export const isGenuineDisappearance = (d: DisappearedComponent): boolean =>
+  !d.hiddenByCss;
 
 const INTERACTIVE_SELECTOR = [
   'button',
@@ -125,8 +151,6 @@ const extractSnapshot = async (
         const targets: Array<{
           el: Element;
           rect: DOMRect;
-          cx: number;
-          cy: number;
         }> = [];
         for (const el of document.querySelectorAll(interactiveSelector)) {
           const style = window.getComputedStyle(el);
@@ -146,28 +170,38 @@ const extractSnapshot = async (
 
           const rect = el.getBoundingClientRect();
           if (rect.width <= 0 || rect.height <= 0) continue;
-          targets.push({
-            el,
-            rect,
-            cx: rect.x + rect.width / 2,
-            cy: rect.y + rect.height / 2,
-          });
+          targets.push({ el, rect });
         }
 
         const touchTargets: TouchTargetIssue[] = [];
         for (const t of targets) {
           if (t.rect.width >= minTouch && t.rect.height >= minTouch) continue;
 
-          // Spacing exception: an undersized target passes if a 24px-diameter
-          // circle centred on it does not reach another target — approximated
-          // as the nearest other target centre being at least minTouch away.
-          let nearest = Infinity;
+          // WCAG 2.5.8 spacing exception: an undersized target passes when its
+          // 24px clearance circle does not reach the nearest other target,
+          // measured as the EDGE-to-edge gap between the two rects (0 when they
+          // touch/overlap). Edge gap is the correct geometry — centre distance
+          // would count each target's own radius and over-report crowding.
+          let nearestGap = Infinity;
           for (const o of targets) {
             if (o === t) continue;
-            const d = Math.hypot(o.cx - t.cx, o.cy - t.cy);
-            if (d < nearest) nearest = d;
+            // Edge-to-edge gap, inlined from the exported `edgeGap` helper
+            // (the tested source of truth — evaluate() cannot import module
+            // scope). Keep this block in sync with edgeGap above.
+            const gapX = Math.max(
+              0,
+              t.rect.left - o.rect.right,
+              o.rect.left - t.rect.right
+            );
+            const gapY = Math.max(
+              0,
+              t.rect.top - o.rect.bottom,
+              o.rect.top - t.rect.bottom
+            );
+            const gap = Math.hypot(gapX, gapY);
+            if (gap < nearestGap) nearestGap = gap;
           }
-          if (nearest >= minTouch) continue;
+          if (nearestGap >= minTouch) continue;
 
           touchTargets.push({
             selector: cssPath(t.el),
@@ -190,12 +224,32 @@ const extractSnapshot = async (
 
           const rect = el.getBoundingClientRect();
           if (rect.width === 0 && rect.height === 0) {
+            // A 0x0 element is only a genuine collapse when it is in the visible
+            // render path. display:none/visibility:hidden/aria-hidden/[hidden],
+            // an ancestor hidden the same way, or a closed Disclosure
+            // (aria-expanded="false") / inactive Tab panel (<details> not open)
+            // all legitimately measure 0x0 and are NOT defects.
+            const selfHidden =
+              style.display === 'none' ||
+              style.visibility === 'hidden' ||
+              el.getAttribute('aria-hidden') === 'true' ||
+              el.hasAttribute('hidden');
+            const ancestorHidden =
+              el.closest('[hidden]') !== null ||
+              el.closest('[aria-hidden="true"]') !== null;
+            const collapsedDisclosure =
+              el.closest('[aria-expanded="false"]') !== null ||
+              el.closest('details:not([open])') !== null;
+            const hiddenByCss =
+              selfHidden || ancestorHidden || collapsedDisclosure;
+
             disappearedComponents.push({
               selector: cssPath(el),
               component:
                 el.getAttribute('data-component') ??
                 el.getAttribute('data-slot') ??
                 el.tagName.toLowerCase(),
+              hiddenByCss,
             });
           }
         }
@@ -330,6 +384,7 @@ export const responsiveToValidationIssues = (
     }
 
     for (const d of snap.disappearedComponents) {
+      if (!isGenuineDisappearance(d)) continue;
       issues.push({
         type: 'spatial',
         severity: 'error',

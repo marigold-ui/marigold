@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { keyboardA11yToValidationIssues } from './keyboard.js';
+import {
+  type FocusRingStyle,
+  hasVisibleFocusIndicator,
+  keyboardA11yToValidationIssues,
+} from './keyboard.js';
 import type { KeyboardA11yData } from './keyboard.js';
+
+const noRing: FocusRingStyle = {
+  outlineStyle: 'none',
+  outlineWidth: '0px',
+  outlineColor: 'transparent',
+  boxShadow: 'none',
+};
 
 const emptyData: KeyboardA11yData = {
   focusableElements: [],
@@ -59,7 +70,7 @@ describe('keyboardA11yToValidationIssues', () => {
     expect(issues[0].message).toContain('not reachable via Tab');
   });
 
-  it('flags missing focus indicator as error', () => {
+  it('flags missing focus indicator as warning (detection is heuristic)', () => {
     const issues = keyboardA11yToValidationIssues({
       ...emptyData,
       tabSequence: [
@@ -74,7 +85,7 @@ describe('keyboardA11yToValidationIssues', () => {
       ],
     });
     expect(issues).toHaveLength(1);
-    expect(issues[0].severity).toBe('error');
+    expect(issues[0].severity).toBe('warning');
     expect(issues[0].message).toContain('no visible focus indicator');
     expect(issues[0].message).toContain('WCAG 2.4.7');
   });
@@ -112,7 +123,7 @@ describe('keyboardA11yToValidationIssues', () => {
       selector: `el:nth-child(${i + 1})`,
       component: `El${i}`,
       role: 'button',
-      rect: { x: 200 - i * 20, y: 200 - i * 30, width: 50, height: 30 },
+      rect: { x: 400 - i * 40, y: 400 - i * 30, width: 50, height: 30 },
       focusIndicatorVisible: true,
     }));
 
@@ -149,6 +160,65 @@ describe('keyboardA11yToValidationIssues', () => {
       ],
     });
     expect(issues).toEqual([]);
+  });
+
+  it('ignores a tiny leftward offset between stacked elements', () => {
+    // x differs by only 7px (border/padding noise) while stacked vertically —
+    // this is not a real reading-order violation.
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      tabSequence: [
+        {
+          index: 0,
+          selector: 'button:nth-child(1)',
+          component: 'Button',
+          role: 'button',
+          rect: { x: 8, y: 622, width: 100, height: 40 },
+          focusIndicatorVisible: true,
+        },
+        {
+          index: 1,
+          selector: 'button:nth-child(2)',
+          component: 'Button',
+          role: 'button',
+          rect: { x: 1, y: 550, width: 100, height: 40 },
+          focusIndicatorVisible: true,
+        },
+      ],
+    });
+    expect(issues.filter(i => i.message.includes('Component order'))).toEqual(
+      []
+    );
+  });
+
+  it('does not apply reading-order heuristic to table rows', () => {
+    // <tr> has implicit role "row"; tables use 2D arrow-key navigation, not a
+    // linear reading order, so Tab from a toolbar button into a data row above
+    // it must not be flagged as out of order.
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      tabSequence: [
+        {
+          index: 0,
+          selector: 'button:nth-child(1)',
+          component: 'button',
+          role: 'button',
+          rect: { x: 200, y: 622, width: 100, height: 40 },
+          focusIndicatorVisible: true,
+        },
+        {
+          index: 1,
+          selector: 'tr:nth-child(2)',
+          component: 'tr',
+          role: 'row',
+          rect: { x: 1, y: 550, width: 400, height: 40 },
+          focusIndicatorVisible: true,
+        },
+      ],
+    });
+    expect(issues.filter(i => i.message.includes('Component order'))).toEqual(
+      []
+    );
   });
 
   it('flags arrow nav as broken when focus leaves group', () => {
@@ -277,5 +347,70 @@ describe('keyboardA11yToValidationIssues', () => {
       i.message.includes('Component order')
     );
     expect(orderIssues).toEqual([]);
+  });
+});
+
+describe('hasVisibleFocusIndicator', () => {
+  it('detects an outline ring on the element itself', () => {
+    expect(
+      hasVisibleFocusIndicator({
+        self: {
+          outlineStyle: 'solid',
+          outlineWidth: '2px',
+          outlineColor: 'rgb(0, 90, 200)',
+          boxShadow: 'none',
+        },
+      })
+    ).toBe(true);
+  });
+
+  it('detects a box-shadow ring rendered on a ::after pseudo-element', () => {
+    expect(
+      hasVisibleFocusIndicator({
+        self: noRing,
+        after: {
+          ...noRing,
+          boxShadow: '0 0 0 2px rgb(0, 90, 200)',
+        },
+      })
+    ).toBe(true);
+  });
+
+  it('detects a ring rendered on a wrapper parent element', () => {
+    expect(
+      hasVisibleFocusIndicator({
+        self: noRing,
+        parent: {
+          outlineStyle: 'solid',
+          outlineWidth: '2px',
+          outlineColor: 'rgb(0, 90, 200)',
+          boxShadow: 'none',
+        },
+      })
+    ).toBe(true);
+  });
+
+  it('returns false when none of the surfaces show a ring', () => {
+    expect(
+      hasVisibleFocusIndicator({
+        self: noRing,
+        before: noRing,
+        after: noRing,
+        parent: noRing,
+      })
+    ).toBe(false);
+  });
+
+  it('treats a zero-width / transparent outline as no ring', () => {
+    expect(
+      hasVisibleFocusIndicator({
+        self: {
+          outlineStyle: 'solid',
+          outlineWidth: '0px',
+          outlineColor: 'rgb(0, 90, 200)',
+          boxShadow: 'none',
+        },
+      })
+    ).toBe(false);
   });
 });

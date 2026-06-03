@@ -2,7 +2,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { runTechnicalChecks } from './checkers/index.js';
 import { formatForLLM } from './format.js';
-import { buildComponentLocationMap } from './helpers/component-locations.js';
+import {
+  buildComponentLocationMap,
+  buildTextFingerprintMap,
+} from './helpers/component-locations.js';
 import { runSpatialChecks } from './spatial/index.js';
 import { type SharedRenderer, createRenderer } from './spatial/renderer.js';
 import {
@@ -38,15 +41,19 @@ const DYNAMIC_SOURCES = new Set([
 // against the JSX usages in the source. A single usage pinpoints the line;
 // multiple usages are listed as candidates (to be narrowed by the finding's
 // content fingerprint). Best-effort: never throws into the validation result.
+const fingerprintOf = (issue: ValidationIssue): string | undefined => {
+  const fp = issue.details?.fingerprint;
+  return typeof fp === 'string' && fp.length > 0 ? fp : undefined;
+};
+
 const enrichDynamicLocations = (
   issues: ValidationIssue[],
   filePath: string
 ): void => {
-  const needsEnrich = issues.some(
-    i =>
-      !i.location && DYNAMIC_SOURCES.has(i.source) && /^[A-Z]/.test(i.component)
+  const dynamicUnlocated = issues.filter(
+    i => !i.location && DYNAMIC_SOURCES.has(i.source)
   );
-  if (!needsEnrich) return;
+  if (dynamicUnlocated.length === 0) return;
 
   let locMap;
   try {
@@ -55,17 +62,66 @@ const enrichDynamicLocations = (
     return;
   }
 
-  for (const issue of issues) {
-    if (issue.location || !DYNAMIC_SOURCES.has(issue.source)) continue;
-    const locs = locMap.get(issue.component);
-    if (!locs || locs.length === 0) continue;
-    issue.location = locs[0];
-    if (locs.length > 1) {
+  // Marigold emits no name-bearing attributes, so the component-name join often
+  // resolves nothing; the content fingerprint is the reliable key. Build it
+  // lazily and only if at least one finding still lacks a location after the
+  // name join AND carries a fingerprint. Best-effort: never throws.
+  let fpMap: ReturnType<typeof buildTextFingerprintMap> | null = null;
+  const getFpMap = (): ReturnType<typeof buildTextFingerprintMap> | null => {
+    if (fpMap === null) {
+      try {
+        fpMap = buildTextFingerprintMap(filePath);
+      } catch {
+        fpMap = new Map();
+      }
+    }
+    return fpMap;
+  };
+
+  for (const issue of dynamicUnlocated) {
+    // 1) Name-keyed join (still works for the rare named case and JSX tags).
+    const byName = /^[A-Z]/.test(issue.component)
+      ? locMap.get(issue.component)
+      : undefined;
+    if (byName && byName.length === 1) {
+      issue.location = byName[0];
+      continue;
+    }
+    if (byName && byName.length > 1) {
+      // Multiple same-named usages: try to disambiguate by fingerprint first.
+      const fp = fingerprintOf(issue);
+      const byFp = fp ? getFpMap()?.get(fp) : undefined;
+      if (byFp && byFp.length === 1) {
+        issue.location = byFp[0];
+        continue;
+      }
+      issue.location = byName[0];
       issue.details = {
         ...issue.details,
-        candidateLocations: locs.map(l => `${l.line}:${l.column}`),
+        candidateLocations: byName.map(l => `${l.line}:${l.column}`),
       };
+      continue;
     }
+
+    // 2) Fingerprint-only join (the common case for bare-tag components).
+    const fp = fingerprintOf(issue);
+    const byFp = fp ? getFpMap()?.get(fp) : undefined;
+    if (byFp && byFp.length === 1) {
+      issue.location = byFp[0];
+      continue;
+    }
+    if (byFp && byFp.length > 1) {
+      issue.details = {
+        ...issue.details,
+        candidateLocations: byFp.map(l => `${l.line}:${l.column}`),
+        scope: 'page',
+      };
+      continue;
+    }
+
+    // 3) Nothing resolved: make the page-level nature explicit so nothing
+    // downstream fabricates a precise line that does not exist.
+    issue.details = { ...issue.details, scope: 'page' };
   }
 };
 

@@ -1,5 +1,6 @@
 import ts from 'typescript';
 import path from 'node:path';
+import { hasAttrPresent } from '../helpers/ast.js';
 import {
   findSubComponentSuggestion,
   isMarigoldComponent,
@@ -59,10 +60,33 @@ const hasSvgAncestor = (node: ts.Node): boolean => {
   return false;
 };
 
-const isHtmlElement = (tagName: string, node: ts.Node): boolean => {
+// Documented escape hatches: native elements with no 1:1 Marigold replacement,
+// or that ARE the idiomatic accessible primitive. These are gated so we only
+// exempt the semantically-correct usage and keep warning on the lazy case:
+//   form — no Marigold form-wrapper equivalent; always exempt.
+//   br   — no component; always exempt.
+//   label — exempt only with `htmlFor` (the accessible label primitive); a bare
+//           <label> without htmlFor is still warned.
+//   a    — exempt only with `href` (a real link); a hrefless <a> is non-semantic
+//           and should prefer Marigold's <Link>, so it is still warned.
+const isExemptHtmlElement = (
+  tagName: string,
+  attrs: ts.JsxAttributes
+): boolean => {
+  if (tagName === 'form' || tagName === 'br') return true;
+  if (tagName === 'label') return hasAttrPresent(attrs, 'htmlFor');
+  if (tagName === 'a') return hasAttrPresent(attrs, 'href');
+  return false;
+};
+
+const isHtmlElement = (
+  tagName: string,
+  node: ts.JsxOpeningElement | ts.JsxSelfClosingElement
+): boolean => {
   if (!isLowercaseTag(tagName)) return false;
   if (tagName === 'img' || SVG_ELEMENTS.has(tagName)) return false;
   if (hasSvgAncestor(node)) return false;
+  if (isExemptHtmlElement(tagName, node.attributes)) return false;
   return true;
 };
 

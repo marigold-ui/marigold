@@ -54,10 +54,16 @@ if (!Component) {
       </RenderHarness>
     </StrictMode>
   );
-  // The root attribute is what Playwright waits on. We set it on the
-  // microtask after render() — by then React has committed and the DOM
-  // reflects the rendered tree.
-  queueMicrotask(() => {
-    rootElement.setAttribute('data-validation-root', 'ready');
+  // The root attribute is what Playwright waits on. A microtask fires before
+  // React 18's async commit paints and before react-aria's post-layout
+  // measurement settles, so the first bounding-box/overflow read can race a
+  // not-yet-laid-out tree and produce nondeterministic spatial findings. Two
+  // requestAnimationFrame ticks guarantee a committed paint plus one settle
+  // frame — the same idiom the spatial checkers use to wait for layout (see
+  // responsive.ts/text-spacing.ts/keyboard.ts waitForLayout).
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      rootElement.setAttribute('data-validation-root', 'ready');
+    });
   });
 }

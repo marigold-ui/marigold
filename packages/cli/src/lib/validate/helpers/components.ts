@@ -4,6 +4,7 @@ import {
   type SourceFile,
   type Type,
 } from 'ts-morph';
+import ts from 'typescript';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -253,6 +254,53 @@ export const __resetRegistryCacheForTests = (): void => {
   cachedSubComponentLookup = null;
 };
 
+/**
+ * Build a resolver that maps a JSX tag identifier *as written in the source*
+ * to the real `@marigold/components` symbol it refers to.
+ *
+ * It walks the source's import declarations once and records ONLY bindings
+ * imported from the exact module specifier `@marigold/components` whose
+ * original (pre-alias) name is a real registry component:
+ *   `import { Button }            from '@marigold/components'`  → Button → Button
+ *   `import { Button as Btn }     from '@marigold/components'`  → Btn    → Button
+ *
+ * Local shadows (`import { Button } from './ui/Button'`, `function Button(){}`)
+ * and third-party imports are NOT recorded, so callers can early-return for any
+ * tag the resolver does not know — eliminating the false "Prop X does not
+ * exist" errors that arise from validating a non-Marigold tag against the
+ * Marigold prop schema purely by name.
+ *
+ * Note: this reads import statements directly via the TS AST rather than via
+ * `collectImports` (helpers/jsx.ts), because the latter discards the alias
+ * original name (it pushes `el.name.text`), which we need here.
+ */
+export const buildMarigoldTagResolver = (
+  source: ts.SourceFile
+): Map<string, string> => {
+  const resolver = new Map<string, string>();
+
+  for (const stmt of source.statements) {
+    if (!ts.isImportDeclaration(stmt)) continue;
+    if (!ts.isStringLiteral(stmt.moduleSpecifier)) continue;
+    if (stmt.moduleSpecifier.text !== '@marigold/components') continue;
+
+    const bindings = stmt.importClause?.namedBindings;
+    if (!bindings || !ts.isNamedImports(bindings)) continue;
+
+    for (const el of bindings.elements) {
+      // `propertyName` is set only for aliased imports (`{ Name as Alias }`),
+      // in which case `el.name` is the local alias and `propertyName` the
+      // original imported name. For non-aliased imports, `el.name` is both.
+      const originalName = (el.propertyName ?? el.name).text;
+      const localName = el.name.text;
+      if (!isMarigoldComponent(originalName)) continue;
+      resolver.set(localName, originalName);
+    }
+  }
+
+  return resolver;
+};
+
 // Maps HTML event handlers to their React Aria equivalents.
 // Each entry means: if the component has the React Aria handler,
 // prefer it over the HTML one.
@@ -291,8 +339,22 @@ export const getHandlerShadows = (
   return shadows;
 };
 
+// Boolean prop pairs where the non-prefixed HTML-ism should be replaced by the
+// is-prefixed React Aria prop. This is a doc-justified ALLOWLIST, not an
+// auto-derived `x`/`isX` pair list: auto-derivation over-fires on legitimate
+// alias props. Probing the real @marigold/components .d.mts, the only auto-pairs
+// the old loop produced were `open`/`isOpen` and `dismissable`/`isDismissable`
+// (Modal — both are genuine Marigold convenience aliases, so warning was a false
+// positive) and `readOnly`/`isReadOnly` (the documented React Aria naming
+// convention). Only the latter is a real shadow. Add new pairs here only when
+// backed by docs; when unsure, leave them out (these are warnings — err fewer).
+const BOOLEAN_PREFERRED_ALTERNATIVES: ReadonlyArray<[string, string]> = [
+  ['readOnly', 'isReadOnly'],
+];
+
 /**
- * For a component, find boolean prop pairs where X and isX both exist.
+ * For a component, find boolean prop pairs from the doc-justified allowlist
+ * where BOTH the HTML-ism and its is-prefixed React Aria equivalent exist.
  * Returns a map of htmlProp → reactAriaProp (e.g. readOnly → isReadOnly).
  */
 export const getBooleanShadows = (
@@ -304,11 +366,11 @@ export const getBooleanShadows = (
   const propNames = new Set(info.props.map(p => p.name));
   const shadows = new Map<string, string>();
 
-  for (const propName of propNames) {
-    if (propName.startsWith('is') && propName.length > 2) continue;
-    const isPrefixed = 'is' + propName[0].toUpperCase() + propName.slice(1);
-    if (propNames.has(isPrefixed)) {
-      shadows.set(propName, isPrefixed);
+  for (const [htmlProp, ariaProp] of BOOLEAN_PREFERRED_ALTERNATIVES) {
+    if (propNames.has(htmlProp) && propNames.has(ariaProp)) {
+      if (!shadows.has(htmlProp)) {
+        shadows.set(htmlProp, ariaProp);
+      }
     }
   }
 

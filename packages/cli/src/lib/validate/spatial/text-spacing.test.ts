@@ -65,12 +65,14 @@ describe('textSpacingToValidationIssues', () => {
     expect(issues[0].message).toContain('horizontally');
   });
 
-  it('flags text-overflow ellipsis with horizontal clipping', () => {
+  it('flags newly-introduced ellipsis clipping (was not truncating before)', () => {
+    // Before: text-overflow:clip, not clipping. After: spacing injection turns
+    // it into an ellipsis-truncating clip — a genuine new 1.4.12 failure.
     const data: TextSpacingData = {
       before: [
         metric({
           overflowX: 'hidden',
-          textOverflow: 'ellipsis',
+          textOverflow: 'clip',
           scrollWidth: 200,
           clientWidth: 200,
         }),
@@ -87,6 +89,33 @@ describe('textSpacingToValidationIssues', () => {
     const issues = textSpacingToValidationIssues(data);
     expect(issues).toHaveLength(1);
     expect(issues[0].message).toContain('horizontally');
+  });
+
+  it('does NOT flag a designed single-line ellipsis that was already truncating', () => {
+    // A truncating Marigold Text already has text-overflow:ellipsis +
+    // overflow-x:hidden and is already clipping before injection. The injection
+    // only clips it a few px more — an authored truncation, not a spacing fail.
+    const data: TextSpacingData = {
+      before: [
+        metric({
+          overflowX: 'hidden',
+          textOverflow: 'ellipsis',
+          webkitLineClamp: 'none',
+          scrollWidth: 240,
+          clientWidth: 200,
+        }),
+      ],
+      after: [
+        metric({
+          overflowX: 'hidden',
+          textOverflow: 'ellipsis',
+          webkitLineClamp: 'none',
+          scrollWidth: 280,
+          clientWidth: 200,
+        }),
+      ],
+    };
+    expect(textSpacingToValidationIssues(data)).toHaveLength(0);
   });
 
   it('flags webkit-line-clamp clipping', () => {

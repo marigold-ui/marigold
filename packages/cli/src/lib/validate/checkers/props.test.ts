@@ -284,4 +284,75 @@ const C = (props: any) => <Button {...props}>X</Button>;`
     validateProps(file, coverage);
     expect(coverage.spreadPropsBypassed).toBeGreaterThanOrEqual(1);
   });
+
+  // Finding #1: tag resolution through the import map.
+  it('does not flag props on a local component shadowing a Marigold name', () => {
+    const file = tmpFile(
+      'mv-local-shadow.tsx',
+      `function Button(props: { foo: string }) { return null; }
+const C = () => <Button foo="x" />;`
+    );
+    const issues = validateProps(file);
+    expect(issues.filter(i => i.source === 'prop-validator')).toEqual([]);
+  });
+
+  it('does not flag props on a component imported from a local path with a Marigold name', () => {
+    const file = tmpFile(
+      'mv-local-import-shadow.tsx',
+      `import { Button } from './ui/Button';
+const C = () => <Button isLoading>x</Button>;`
+    );
+    const issues = validateProps(file);
+    expect(issues.filter(i => i.source === 'prop-validator')).toEqual([]);
+  });
+
+  it('validates an aliased real Marigold import against its real schema', () => {
+    const file = tmpFile(
+      'mv-aliased-real.tsx',
+      `import { Button as Btn } from '@marigold/components';
+const C = () => <Btn isLoading>x</Btn>;`
+    );
+    const issues = validateProps(file);
+    const issue = issues.find(
+      i => i.component === 'Btn' && i.message.includes('isLoading')
+    );
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
+    expect(issue?.suggestion).toMatch(/loading/);
+  });
+
+  it('resolves an aliased compound parent without false prop errors', () => {
+    const file = tmpFile(
+      'mv-aliased-compound.tsx',
+      `import { Select as S } from '@marigold/components';
+const C = () => (
+  <S label="p">
+    <S.Option foobar="x">o</S.Option>
+  </S>
+);`
+    );
+    const issues = validateProps(file);
+    // No false prop error on S itself (it resolves to Select, label is valid).
+    const sError = issues.find(
+      i => i.component === 'S' && i.message.includes('does not exist')
+    );
+    expect(sError).toBeUndefined();
+  });
+
+  // Finding #6: boolean-shadow allowlist must not over-fire.
+  it('does not flag open or dismissable on Modal as boolean shadows', () => {
+    const file = tmpFile(
+      'mv-modal-aliases.tsx',
+      `import { Modal } from '@marigold/components';
+const C = () => <Modal open dismissable>x</Modal>;`
+    );
+    const issues = validateProps(file);
+    const shadowIssue = issues.find(
+      i =>
+        i.component === 'Modal' &&
+        i.message.includes('shadows the React Aria prop') &&
+        (i.message.includes('"open"') || i.message.includes('"dismissable"'))
+    );
+    expect(shadowIssue).toBeUndefined();
+  });
 });

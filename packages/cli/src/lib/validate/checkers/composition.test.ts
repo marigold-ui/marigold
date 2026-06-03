@@ -256,4 +256,128 @@ const C = () => (
     );
     expect(sectionError).toBeUndefined();
   });
+
+  it('does not flag self-populating compounds used standalone', () => {
+    // <FileField multiple /> renders <FileField.Item> internally per selected
+    // file; the bare element is the canonical usage. Flagging it as "used
+    // without sub-components" is a false positive that only penalises code
+    // using the richer component.
+    const file = tmpFile(
+      'cv-filefield.tsx',
+      `import { FileField } from '@marigold/components';
+const C = () => <FileField label="Select files" multiple />;`
+    );
+    const issues = validateComposition(file);
+    const fileFieldError = issues.find(
+      i =>
+        i.component === 'FileField' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(fileFieldError).toBeUndefined();
+  });
+
+  // Finding #2: opaque dynamic children suppress the empty-compound error.
+  it('does not flag a compound with a non-iteration call child {renderContent()}', () => {
+    const file = tmpFile(
+      'cv-render-call.tsx',
+      `import { Dialog } from '@marigold/components';
+      const renderContent = () => null;
+      const C = () => <Dialog>{renderContent()}</Dialog>;`
+    );
+    const issues = validateComposition(file);
+    expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
+  });
+
+  it('does not flag a compound with {props.children}', () => {
+    const file = tmpFile(
+      'cv-props-children.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = (props: { children: React.ReactNode }) => (
+        <Dialog>{props.children}</Dialog>
+      );`
+    );
+    const issues = validateComposition(file);
+    expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
+  });
+
+  it('does not flag a compound with a conditional element child', () => {
+    const file = tmpFile(
+      'cv-conditional.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = ({ cond }: { cond: boolean }) => (
+        <Dialog>
+          {cond ? <Dialog.Content>a</Dialog.Content> : <Dialog.Title>b</Dialog.Title>}
+        </Dialog>
+      );`
+    );
+    const issues = validateComposition(file);
+    expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
+  });
+
+  it('still errors on a compound with only a static non-sub child', () => {
+    const file = tmpFile(
+      'cv-static-bare.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = () => <Dialog><p>bare</p></Dialog>;`
+    );
+    const issues = validateComposition(file);
+    const dialogError = issues.find(
+      i => i.component === 'Dialog' && i.severity === 'error'
+    );
+    expect(dialogError).toBeDefined();
+  });
+
+  // Finding #3: spread guard suppresses the empty-compound error.
+  it('does not flag a self-closing compound with spread attributes', () => {
+    const file = tmpFile(
+      'cv-spread-attr.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = (dialogProps: any) => <Dialog {...dialogProps} />;`
+    );
+    const issues = validateComposition(file);
+    const dialogError = issues.find(
+      i =>
+        i.component === 'Dialog' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(dialogError).toBeUndefined();
+  });
+
+  it('does not flag a non-self-closing compound with a spread attribute', () => {
+    const file = tmpFile(
+      'cv-spread-attr-open.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = (dialogProps: any) => (
+        <Dialog {...dialogProps}><p>bare</p></Dialog>
+      );`
+    );
+    const issues = validateComposition(file);
+    const dialogError = issues.find(
+      i =>
+        i.component === 'Dialog' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(dialogError).toBeUndefined();
+  });
+
+  it('does not warn about repeated sub-components on toolbar compounds', () => {
+    // An ActionBar is a toolbar of N action buttons; repeating
+    // <ActionBar.Button> is correct usage, not a duplicate-slot mistake.
+    const file = tmpFile(
+      'cv-actionbar.tsx',
+      `import { ActionBar } from '@marigold/components';
+const C = () => (
+  <ActionBar>
+    <ActionBar.Button>Edit</ActionBar.Button>
+    <ActionBar.Button>Copy</ActionBar.Button>
+    <ActionBar.Button>Delete</ActionBar.Button>
+  </ActionBar>
+);`
+    );
+    const issues = validateComposition(file);
+    const dupWarning = issues.find(
+      i => i.component === 'ActionBar' && i.message.includes('times')
+    );
+    expect(dupWarning).toBeUndefined();
+  });
 });

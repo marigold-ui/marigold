@@ -10,7 +10,7 @@ const tmpFile = (name: string, content: string): string => {
   return p;
 };
 
-describe('hasDynamicChildren recognizes iteration patterns', () => {
+describe('validateComposition treats opaque dynamic children as non-empty', () => {
   it('treats {items.map(...)} as dynamic — no false composition warning', () => {
     const file = tmpFile(
       'dc-map.tsx',
@@ -41,7 +41,7 @@ describe('hasDynamicChildren recognizes iteration patterns', () => {
     expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
   });
 
-  it('treats {items.flatMap()} as dynamic children', () => {
+  it('treats {items.flatMap()} children as dynamic — no false empty-compound error', () => {
     const file = tmpFile(
       'dc-flatmap.tsx',
       `import { Select } from '@marigold/components';
@@ -53,13 +53,13 @@ describe('hasDynamicChildren recognizes iteration patterns', () => {
       );`
     );
     const issues = validateComposition(file);
-    const selectIssues = issues.filter(i => i.component === 'Select');
-    const dynamicIssues = selectIssues.filter(
-      i => i.details?.dynamicChildren !== undefined
+    const emptyCompoundErrors = issues.filter(
+      i =>
+        i.component === 'Select' &&
+        i.severity === 'error' &&
+        i.message.includes('without any of its sub-components')
     );
-    for (const issue of dynamicIssues) {
-      expect(issue.details?.dynamicChildren).toBe(true);
-    }
+    expect(emptyCompoundErrors).toEqual([]);
   });
 
   it('bare identifier {children} is recognized as dynamic — no false warning', () => {

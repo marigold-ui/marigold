@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { responsiveToValidationIssues } from './responsive.js';
+import { edgeGap, responsiveToValidationIssues } from './responsive.js';
 import type { ResponsiveSnapshot } from './responsive.js';
 
 const snap = (
@@ -124,11 +124,15 @@ describe('responsiveToValidationIssues', () => {
     expect(issues).toEqual([]);
   });
 
-  it('flags disappeared components', () => {
+  it('flags a genuinely collapsed (visible) zero-dimension component', () => {
     const issues = responsiveToValidationIssues([
       snap('mobile', 375, {
         disappearedComponents: [
-          { selector: 'div:nth-child(2)', component: 'Card' },
+          {
+            selector: 'div:nth-child(2)',
+            component: 'Card',
+            hiddenByCss: false,
+          },
         ],
       }),
     ]);
@@ -136,6 +140,28 @@ describe('responsiveToValidationIssues', () => {
     expect(issues[0].type).toBe('spatial');
     expect(issues[0].message).toContain('Card');
     expect(issues[0].message).toContain('zero dimensions');
+  });
+
+  it('does NOT flag a zero-dimension element hidden via CSS/aria/disclosure', () => {
+    // display:none / visibility:hidden / aria-hidden / [hidden] / closed
+    // Disclosure / inactive Tab panel all legitimately measure 0x0.
+    const issues = responsiveToValidationIssues([
+      snap('mobile', 375, {
+        disappearedComponents: [
+          {
+            selector: 'div:nth-child(2)',
+            component: 'Disclosure',
+            hiddenByCss: true,
+          },
+          {
+            selector: 'div:nth-child(3)',
+            component: 'TabPanel',
+            hiddenByCss: true,
+          },
+        ],
+      }),
+    ]);
+    expect(issues).toEqual([]);
   });
 
   it('accumulates issues across multiple breakpoints', () => {
@@ -146,5 +172,37 @@ describe('responsiveToValidationIssues', () => {
     expect(issues).toHaveLength(2);
     expect(issues[0].message).toContain('mobile');
     expect(issues[1].message).toContain('tablet');
+  });
+});
+
+describe('edgeGap (WCAG 2.5.8 spacing geometry)', () => {
+  const rect = (left: number, top: number, w: number, h: number) => ({
+    left,
+    top,
+    right: left + w,
+    bottom: top + h,
+  });
+
+  it('is 0 when rects overlap or touch', () => {
+    expect(edgeGap(rect(0, 0, 20, 20), rect(10, 0, 20, 20))).toBe(0);
+    expect(edgeGap(rect(0, 0, 20, 20), rect(20, 0, 20, 20))).toBe(0);
+  });
+
+  it('measures the horizontal edge-to-edge gap, not centre distance', () => {
+    // Two 20px-wide targets at x=0 and x=30: centres are 30px apart, but the
+    // edges are only 10px apart (30 - 20). Edge gap < 24 => crowded/flagged.
+    const a = rect(0, 0, 20, 20);
+    const b = rect(30, 0, 20, 20);
+    expect(edgeGap(a, b)).toBe(10);
+    // Centre distance would be 30 (>=24) and wrongly clear it; edge gap does not.
+    expect(edgeGap(a, b)).toBeLessThan(24);
+  });
+
+  it('clears targets whose edges are >= the required clearance apart', () => {
+    // Same 20px targets but 50px apart => 30px edge gap, clears 24px.
+    const a = rect(0, 0, 20, 20);
+    const b = rect(50, 0, 20, 20);
+    expect(edgeGap(a, b)).toBe(30);
+    expect(edgeGap(a, b)).toBeGreaterThanOrEqual(24);
   });
 });

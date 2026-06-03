@@ -64,6 +64,24 @@ const COLLECTION_ITEM_INDICATORS = new Set([
 const isCollectionCompound = (knownSubs: string[]): boolean =>
   knownSubs.some(s => COLLECTION_ITEM_INDICATORS.has(s));
 
+// Compounds that render their item sub-components internally from data/props
+// rather than from author-written JSX. <FileField multiple /> emits a
+// <FileField.Item> per selected file at runtime — the canonical usage is the
+// bare self-closing element, and no story writes <FileField.Item> by hand. This
+// differs from Select/Table/Tabs, where the author DOES write the items, so an
+// empty one of those is still a real error. Keep this list narrow and verified.
+const SELF_POPULATING_COMPOUNDS = new Set(['FileField']);
+
+// Some compounds are designed to hold multiple instances of a sub-component
+// that is NOT part of the shared React Aria collection vocabulary above, so the
+// collection-item heuristic misses them. An ActionBar, for example, is a
+// toolbar of N action buttons — repeating <ActionBar.Button> is correct usage,
+// not a duplicate-slot mistake. Curated per parent to avoid making a generic
+// name like "Button" repeatable everywhere.
+const REPEATABLE_SUBS: Record<string, Set<string>> = {
+  ActionBar: new Set(['Button']),
+};
+
 const collectAncestorSubComponents = (
   node: ts.Node,
   parentName: string,
@@ -86,32 +104,37 @@ const collectAncestorSubComponents = (
   }
 };
 
-const ITERATION_METHODS = new Set(['map', 'filter', 'flatMap', 'reduce']);
-
-const isIterationCall = (expr: ts.Expression): boolean => {
-  if (ts.isCallExpression(expr)) {
-    const callee = expr.expression;
-    if (
-      ts.isPropertyAccessExpression(callee) &&
-      ITERATION_METHODS.has(callee.name.text)
-    ) {
-      return true;
-    }
-    // Chained calls: items.filter(...).map(...)
-    if (ts.isPropertyAccessExpression(callee)) {
-      return isIterationCall(callee.expression);
-    }
-  }
-  return false;
-};
-
-const hasDynamicChildren = (element: ts.JsxElement): boolean =>
+// A child whose content is an opaque expression — `{children}`,
+// `{renderContent()}`, `{items.map(...)}`, `{cond ? <X/> : <Y/>}` — could carry
+// the sub-components at runtime, so the absence of a static `<X.Sub>` is not
+// provable and the parent compound must not be reported empty. Inline render
+// functions (`{() => <X.Title/>}`) are intentionally NOT opaque: their body is
+// part of the AST and is walked by collectSubComponentUsages.
+//
+// This mirrors hasOpaqueDynamicChild in accessible-name.ts (the source of
+// truth). It is a strict SUPERSET of the previous bare-identifier/iteration
+// detection for JsxExpression children, so it only REMOVES false "used without
+// sub-components" errors; non-expression children (e.g. <Dialog><p/></Dialog>)
+// are still not dynamic, so the genuine empty-compound error is preserved.
+const hasOpaqueDynamicChild = (element: ts.JsxElement): boolean =>
   element.children.some(
     child =>
       ts.isJsxExpression(child) &&
       child.expression !== undefined &&
-      (ts.isIdentifier(child.expression) || isIterationCall(child.expression))
+      !ts.isArrowFunction(child.expression) &&
+      !ts.isFunctionExpression(child.expression)
   );
+
+// A spread attribute (`<X {...props} />`) may carry the sub-components / a
+// forwarded children prop, which cannot be resolved statically — so a compound
+// with a spread is left alone to avoid a false empty-compound error. Mirrors
+// the spread guards in accessible-name.ts / section-header.ts.
+const hasSpread = (node: ts.JsxElement | ts.JsxSelfClosingElement): boolean => {
+  const attrs = ts.isJsxSelfClosingElement(node)
+    ? node.attributes
+    : node.openingElement.attributes;
+  return attrs.properties.some(ts.isJsxSpreadAttribute);
+};
 
 export const validateComposition = (filePath: string): ValidationIssue[] => {
   const source = parseSource(filePath);
@@ -164,7 +187,10 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
 
         const isSelfClosing = ts.isJsxSelfClosingElement(node);
         const isDynamic =
-          !isSelfClosing && hasDynamicChildren(node as ts.JsxElement);
+          !isSelfClosing && hasOpaqueDynamicChild(node as ts.JsxElement);
+        const spread = hasSpread(
+          node as ts.JsxElement | ts.JsxSelfClosingElement
+        );
 
         const counts = new Map<string, number>();
         collectAncestorSubComponents(node, componentName, counts);
@@ -195,7 +221,15 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
         // Only a completely empty compound is an unambiguous error. Partial
         // "missing sub-component" findings are too often optional to flag
         // reliably (e.g. a Dialog opened programmatically needs no Trigger).
-        if (found.length === 0 && !isDynamic) {
+        // Self-populating compounds are exempt: they render their item children
+        // from data/props at runtime, not from author-written JSX, so an empty
+        // usage is correct rather than a missing-children error.
+        if (
+          found.length === 0 &&
+          !isDynamic &&
+          !spread &&
+          !SELF_POPULATING_COMPOUNDS.has(componentName)
+        ) {
           issues.push({
             type: 'technical',
             severity: 'error',
@@ -212,7 +246,10 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
         // (e.g. two <Dialog.Title>). Collection compounds repeat sub-components
         // by design, so suppress the warning there to avoid false positives.
         if (!collectionLike) {
-          const duplicates = [...counts.entries()].filter(([, n]) => n > 1);
+          const repeatable = REPEATABLE_SUBS[componentName];
+          const duplicates = [...counts.entries()].filter(
+            ([sub, n]) => n > 1 && !repeatable?.has(sub)
+          );
           for (const [sub, count] of duplicates) {
             issues.push({
               type: 'technical',

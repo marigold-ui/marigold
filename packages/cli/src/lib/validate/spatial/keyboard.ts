@@ -61,6 +61,37 @@ const INTERACTIVE_SELECTOR = [
 
 const MAX_FOCUS_ORDER_WARNINGS = 3;
 
+export type FocusRingStyle = {
+  outlineStyle: string;
+  outlineWidth: string;
+  outlineColor: string;
+  boxShadow: string;
+};
+
+const ringSurfaceVisible = (s: FocusRingStyle): boolean => {
+  const outlineVisible =
+    s.outlineStyle !== 'none' &&
+    parseFloat(s.outlineWidth) > 0 &&
+    s.outlineColor !== 'transparent';
+  const boxShadowVisible = s.boxShadow !== 'none' && s.boxShadow !== '';
+  return outlineVisible || boxShadowVisible;
+};
+
+// react-aria / Marigold commonly render the focus ring via a theme box-shadow
+// that may live on the element itself, on a ::before/::after pseudo-element, or
+// on a wrapper one level up. Inspecting only the active element's outline misses
+// those and yields false WCAG 2.4.7 reports, so consider all four surfaces.
+export const hasVisibleFocusIndicator = (parts: {
+  self: FocusRingStyle;
+  before?: FocusRingStyle;
+  after?: FocusRingStyle;
+  parent?: FocusRingStyle;
+}): boolean =>
+  ringSurfaceVisible(parts.self) ||
+  (parts.before ? ringSurfaceVisible(parts.before) : false) ||
+  (parts.after ? ringSurfaceVisible(parts.after) : false) ||
+  (parts.parent ? ringSurfaceVisible(parts.parent) : false);
+
 // Roles that are not individual Tab targets: they are single tab stops with
 // internal arrow-key navigation (grids, tables) or structural containers.
 // Their absence from the Tab sequence is by design, not a keyboard defect.
@@ -241,53 +272,92 @@ const extractFocusStepData = async (
   isBody: boolean;
   focusableIndex: number;
 }> =>
-  page.evaluate(() => {
-    const w = window as Window & { __cssPath?: (el: Element) => string };
-    const cssPath = w.__cssPath!;
-    const el = document.activeElement;
+  page
+    .evaluate(() => {
+      const w = window as Window & { __cssPath?: (el: Element) => string };
+      const cssPath = w.__cssPath!;
+      const el = document.activeElement;
 
-    if (!el || el === document.body) {
-      return {
-        selector: 'body',
-        component: 'body',
-        role: '',
-        rect: { x: 0, y: 0, width: 0, height: 0 },
-        focusIndicatorVisible: false,
-        isBody: true,
-        focusableIndex: -1,
+      const emptyRing = {
+        outlineStyle: 'none',
+        outlineWidth: '0px',
+        outlineColor: 'transparent',
+        boxShadow: 'none',
       };
-    }
 
-    const idxAttr = el.getAttribute('data-mv-focusable');
+      if (!el || el === document.body) {
+        return {
+          selector: 'body',
+          component: 'body',
+          role: '',
+          rect: { x: 0, y: 0, width: 0, height: 0 },
+          ring: {
+            self: emptyRing,
+            before: emptyRing,
+            after: emptyRing,
+            parent: emptyRing,
+          },
+          isBody: true,
+          focusableIndex: -1,
+        };
+      }
 
-    const style = window.getComputedStyle(el);
-    const outlineVisible =
-      style.outlineStyle !== 'none' &&
-      parseFloat(style.outlineWidth) > 0 &&
-      style.outlineColor !== 'transparent';
-    const boxShadowVisible =
-      style.boxShadow !== 'none' && style.boxShadow !== '';
+      const idxAttr = el.getAttribute('data-mv-focusable');
 
-    const rect = el.getBoundingClientRect();
+      const readRing = (
+        target: Element,
+        pseudo?: string
+      ): {
+        outlineStyle: string;
+        outlineWidth: string;
+        outlineColor: string;
+        boxShadow: string;
+      } => {
+        const s = window.getComputedStyle(target, pseudo);
+        return {
+          outlineStyle: s.outlineStyle,
+          outlineWidth: s.outlineWidth,
+          outlineColor: s.outlineColor,
+          boxShadow: s.boxShadow,
+        };
+      };
 
-    return {
-      selector: cssPath(el),
-      component:
-        el.getAttribute('data-component') ??
-        el.getAttribute('data-slot') ??
-        el.tagName.toLowerCase(),
-      role: el.getAttribute('role') ?? el.tagName.toLowerCase(),
-      rect: {
-        x: Math.round(rect.x),
-        y: Math.round(rect.y),
-        width: Math.round(rect.width),
-        height: Math.round(rect.height),
-      },
-      focusIndicatorVisible: outlineVisible || boxShadowVisible,
-      isBody: false,
-      focusableIndex: idxAttr === null ? -1 : Number(idxAttr),
-    };
-  });
+      const rect = el.getBoundingClientRect();
+
+      return {
+        selector: cssPath(el),
+        component:
+          el.getAttribute('data-component') ??
+          el.getAttribute('data-slot') ??
+          el.tagName.toLowerCase(),
+        role: el.getAttribute('role') ?? el.tagName.toLowerCase(),
+        rect: {
+          x: Math.round(rect.x),
+          y: Math.round(rect.y),
+          width: Math.round(rect.width),
+          height: Math.round(rect.height),
+        },
+        ring: {
+          self: readRing(el),
+          before: readRing(el, '::before'),
+          after: readRing(el, '::after'),
+          parent: el.parentElement ? readRing(el.parentElement) : emptyRing,
+        },
+        isBody: false,
+        focusableIndex: idxAttr === null ? -1 : Number(idxAttr),
+      };
+    })
+    .then(data => ({
+      selector: data.selector,
+      component: data.component,
+      role: data.role,
+      rect: data.rect,
+      focusIndicatorVisible: data.isBody
+        ? false
+        : hasVisibleFocusIndicator(data.ring),
+      isBody: data.isBody,
+      focusableIndex: data.focusableIndex,
+    }));
 
 export const extractTabSequence = async (
   page: Page,
@@ -460,6 +530,10 @@ export const extractKeyboardA11yData = async (
 };
 
 const VERTICAL_THRESHOLD = 20;
+// A backward jump must be meaningfully leftward, not just a few pixels of
+// border/padding offset between two elements stacked in the same column. Without
+// this, any upward Tab move in a single-column layout reads as "out of order".
+const HORIZONTAL_THRESHOLD = 20;
 
 const OVERLAY_ROLES = new Set([
   'dialog',
@@ -499,9 +573,17 @@ export const keyboardA11yToValidationIssues = (
 
     if (OVERLAY_ROLES.has(prev.role) || OVERLAY_ROLES.has(curr.role)) continue;
 
+    // Grids and tables (role=row, gridcell, …) navigate in 2D via arrow keys,
+    // not in a linear top-to-bottom reading order, so the visual-order heuristic
+    // below does not apply. These roles are already excluded from reachability
+    // checks for the same reason; skipping them here stops normal table tabbing
+    // (e.g. Tab from a toolbar button into a data row) from being flagged.
+    if (NON_TAB_STOP_ROLES.has(prev.role) || NON_TAB_STOP_ROLES.has(curr.role))
+      continue;
+
     if (
       curr.rect.y < prev.rect.y - VERTICAL_THRESHOLD &&
-      curr.rect.x < prev.rect.x
+      curr.rect.x < prev.rect.x - HORIZONTAL_THRESHOLD
     ) {
       focusOrderWarnings++;
       issues.push({
@@ -522,9 +604,14 @@ export const keyboardA11yToValidationIssues = (
 
   for (const step of data.tabSequence) {
     if (!step.focusIndicatorVisible) {
+      // Downgraded to 'warning': focus-ring detection is heuristic and still
+      // incomplete (rings can be on ::before/::after, a wrapper, or use
+      // non-outline/box-shadow techniques), so a missed indicator may be a
+      // detection gap rather than a true WCAG 2.4.7 failure. A genuinely
+      // indicator-less element still surfaces — just without an error penalty.
       issues.push({
         type: 'a11y',
-        severity: 'error',
+        severity: 'warning',
         source: 'keyboard-a11y',
         component: step.component,
         message: `Element <${step.component}> has no visible focus indicator when focused (WCAG 2.4.7).`,

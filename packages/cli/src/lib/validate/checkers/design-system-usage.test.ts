@@ -184,6 +184,70 @@ export default App;`
     expect(svgChildIssues).toEqual([]);
   });
 
+  // Finding #4: documented escape hatches must not be flagged.
+  it('does not flag <form> as raw HTML', () => {
+    const issues = validateDesignSystemUsage(fixture('complex-form.tsx'));
+    const formIssue = issues.find(i => i.component === 'form');
+    expect(formIssue).toBeUndefined();
+  });
+
+  it('does not flag <br>', () => {
+    const file = tmpFile(
+      'dsu-br.tsx',
+      `const App = () => <p>a<br />b</p>;
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const brIssue = issues.find(i => i.component === 'br');
+    expect(brIssue).toBeUndefined();
+  });
+
+  it('does not flag <label htmlFor> as raw HTML', () => {
+    const file = tmpFile(
+      'dsu-label-for.tsx',
+      `const App = () => <label htmlFor="x">Name</label>;
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const labelIssue = issues.find(i => i.component === 'label');
+    expect(labelIssue).toBeUndefined();
+  });
+
+  it('does not flag <a href> as raw HTML', () => {
+    const file = tmpFile(
+      'dsu-a-href.tsx',
+      `const App = () => <a href="/x">link</a>;
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const anchorIssue = issues.find(i => i.component === 'a');
+    expect(anchorIssue).toBeUndefined();
+  });
+
+  it('still flags <label> without htmlFor', () => {
+    const file = tmpFile(
+      'dsu-label-bare.tsx',
+      `const App = () => <label>Name</label>;
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const labelIssue = issues.find(i => i.component === 'label');
+    expect(labelIssue).toBeDefined();
+    expect(labelIssue?.severity).toBe('warning');
+  });
+
+  it('still flags <a> without href', () => {
+    const file = tmpFile(
+      'dsu-a-bare.tsx',
+      `const App = () => <a onClick={() => {}}>x</a>;
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const anchorIssue = issues.find(i => i.component === 'a');
+    expect(anchorIssue).toBeDefined();
+    expect(anchorIssue?.severity).toBe('warning');
+  });
+
   it('still flags <div> and <span> as raw HTML', () => {
     const file = tmpFile(
       'dsu-div-span.tsx',

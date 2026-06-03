@@ -6,11 +6,11 @@ import {
 } from '../helpers/ast.js';
 import {
   type ComponentPropInfo,
+  buildMarigoldTagResolver,
   getBooleanShadows,
   getComponentProps,
   getHandlerShadows,
   getSubComponentProps,
-  isMarigoldComponent,
   isMarigoldSubComponent,
 } from '../helpers/components.js';
 import { parseSource } from '../helpers/source.js';
@@ -62,18 +62,26 @@ export const validateProps = (
 ): ValidationIssue[] => {
   const source = parseSource(filePath);
 
+  // Maps each JSX tag identifier as written (honoring `import { X as Y }`
+  // aliases) to the real @marigold/components symbol. Tags not in this map are
+  // local/aliased-local/third-party components that merely share a Marigold
+  // name, and must NOT be validated against the Marigold prop schema.
+  const tagResolver = buildMarigoldTagResolver(source);
+
   const issues: ValidationIssue[] = [];
 
   const checkAttributes = (
     displayName: string,
+    resolvedName: string,
     validProps: ComponentPropInfo[],
     attrs: ts.JsxAttributes
   ): void => {
     const validNames = validProps.map(p => p.name);
     const validSet = new Set(validNames);
 
-    // The base component name (strip sub-component suffix for shadow lookups)
-    const baseName = displayName.split('.')[0];
+    // Shadow lookups use the RESOLVED real Marigold name (strip sub-component
+    // suffix). `displayName` is kept for messages so they read as written.
+    const baseName = resolvedName.split('.')[0];
     const handlerShadows = getHandlerShadows(baseName);
     const booleanShadows = getBooleanShadows(baseName);
 
@@ -226,21 +234,29 @@ export const validateProps = (
       const tag = node.tagName;
 
       if (ts.isIdentifier(tag)) {
-        if (!isMarigoldComponent(tag.text)) return ts.forEachChild(node, visit);
-        const props = getComponentProps(tag.text);
+        const resolved = tagResolver.get(tag.text);
+        if (!resolved) return ts.forEachChild(node, visit);
+        const props = getComponentProps(resolved);
         if (props && props.length > 0) {
-          checkAttributes(tag.text, props, node.attributes);
+          // Display the tag as written (e.g. <Btn>), validate against `resolved`.
+          checkAttributes(tag.text, resolved, props, node.attributes);
         }
       } else if (
         ts.isPropertyAccessExpression(tag) &&
         ts.isIdentifier(tag.expression)
       ) {
-        const parentName = tag.expression.text;
+        const parentDisplay = tag.expression.text;
         const subName = tag.name.text;
-        if (isMarigoldSubComponent(parentName, subName)) {
-          const props = getSubComponentProps(parentName, subName);
+        const resolvedParent = tagResolver.get(parentDisplay);
+        if (resolvedParent && isMarigoldSubComponent(resolvedParent, subName)) {
+          const props = getSubComponentProps(resolvedParent, subName);
           if (props && props.length > 0) {
-            checkAttributes(`${parentName}.${subName}`, props, node.attributes);
+            checkAttributes(
+              `${parentDisplay}.${subName}`,
+              `${resolvedParent}.${subName}`,
+              props,
+              node.attributes
+            );
           }
         }
       }
