@@ -45,11 +45,10 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
 
   return (
     <ListBox
-      dataTestid="yearOptions"
       ariaLabel={ariaLabel}
       items={years}
-      // Every rendered year is in range, so there is nothing to disable.
-      isDisabled={() => false}
+      // Every rendered year is in range, so `isDisabled` is omitted (defaults to
+      // nothing disabled).
       isSelected={year => year.year === focusedYear}
       onSelect={year => {
         state.setFocusedDate(year);

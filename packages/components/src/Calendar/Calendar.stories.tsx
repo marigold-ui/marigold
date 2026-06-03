@@ -167,13 +167,15 @@ export const MonthSelectionAccessibility = meta.story({
     const febOption = monthOptions.find(opt => opt.textContent === 'Feb');
     const marOption = monthOptions.find(opt => opt.textContent === 'Mar');
 
+    // Selection/disabled state is announced via RAC's `aria-selected` /
+    // `aria-disabled`; the accessible name stays the plain month name (no suffix).
     await expect(janOption).toHaveAttribute('aria-selected', 'true');
-    await expect(janOption).toHaveAttribute('aria-label', 'Jan selected');
+    await expect(janOption).toHaveAccessibleName('Jan');
 
-    await expect(febOption).toHaveAttribute('aria-label', 'Feb');
+    await expect(febOption).toHaveAccessibleName('Feb');
     await expect(febOption).not.toHaveAttribute('aria-disabled');
 
-    await expect(marOption).toHaveAttribute('aria-label', 'Mar not selectable');
+    await expect(marOption).toHaveAccessibleName('Mar');
     await expect(marOption).toHaveAttribute('aria-disabled', 'true');
   },
 });

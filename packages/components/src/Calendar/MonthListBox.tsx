@@ -26,7 +26,6 @@ const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
     <CalendarMonthPicker>
       {({ items, value, onChange, 'aria-label': ariaLabel }) => (
         <ListBox
-          dataTestid="monthOptions"
           ariaLabel={ariaLabel}
           items={items}
           isDisabled={item => item.id < minMonth || item.id > maxMonth}
@@ -35,7 +34,10 @@ const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
             onChange(item.id);
             setSelectedDropdown(undefined);
           }}
-          format={item => item.formatted.substring(0, 3)}
+          // `CalendarMonthPicker` already emits abbreviated names (default
+          // `format="short"`, e.g. "Jan"); use them as-is rather than truncating,
+          // which would mangle longer/non-Latin localized abbreviations.
+          format={item => item.formatted}
         />
       )}
     </CalendarMonthPicker>

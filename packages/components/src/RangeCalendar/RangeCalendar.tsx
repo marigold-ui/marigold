@@ -141,10 +141,13 @@ const _RangeCalendar = <T extends DateValue>({
   >();
 
   // react-aria's `useRangeCalendar` commits an in-progress range on any window
-  // `pointerup` that isn't on a button (our role="option" items included). We stop
-  // overlay pointerups at the *document* so that window listener never fires, while
-  // `usePress`'s own document-level touch fallback still commits the tap (DSTSUP-257).
-  // Native listener because react-aria also listens natively, outside React's events.
+  // `pointerup` that isn't on a button (our role="option" items included). The key
+  // detail: `usePress` listens for the touch press-end on `document`, while the
+  // range-commit listens on `window`. We stop overlay pointerups at `document` (not
+  // the node, not `window`) so both `usePress` and our guard still fire, but the
+  // `window` range-commit never does — which is exactly what keeps touch selection
+  // working (DSTSUP-257). Native listener because react-aria also listens natively,
+  // outside React's events.
   const dropdownOverlayRef = useCallback((node: HTMLDivElement | null) => {
     if (!node) return;
     const ownerDocument = node.ownerDocument;
