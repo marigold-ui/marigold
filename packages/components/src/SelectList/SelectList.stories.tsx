@@ -506,16 +506,16 @@ export const HorizontalResponsive = meta.story({
           defaultSelectedKeys={['standard']}
         >
           <SelectList.Option id="standard" textValue="Standard">
-            <Text slot="label">Standard</Text>
-            <Text slot="description">3–5 business days</Text>
+            <TextValue>Standard</TextValue>
+            <Description>3–5 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="express" textValue="Express">
-            <Text slot="label">Express</Text>
-            <Text slot="description">1–2 business days</Text>
+            <TextValue>Express</TextValue>
+            <Description>1–2 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="overnight" textValue="Overnight">
-            <Text slot="label">Overnight</Text>
-            <Text slot="description">Next business day</Text>
+            <TextValue>Overnight</TextValue>
+            <Description>Next business day</Description>
           </SelectList.Option>
         </SelectList>
       </div>
@@ -527,16 +527,16 @@ export const HorizontalResponsive = meta.story({
           defaultSelectedKeys={['standard-medium']}
         >
           <SelectList.Option id="standard-medium" textValue="Standard">
-            <Text slot="label">Standard</Text>
-            <Text slot="description">3–5 business days</Text>
+            <TextValue>Standard</TextValue>
+            <Description>3–5 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="express-medium" textValue="Express">
-            <Text slot="label">Express</Text>
-            <Text slot="description">1–2 business days</Text>
+            <TextValue>Express</TextValue>
+            <Description>1–2 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="overnight-medium" textValue="Overnight">
-            <Text slot="label">Overnight</Text>
-            <Text slot="description">Next business day</Text>
+            <TextValue>Overnight</TextValue>
+            <Description>Next business day</Description>
           </SelectList.Option>
         </SelectList>
       </div>
@@ -548,16 +548,16 @@ export const HorizontalResponsive = meta.story({
           defaultSelectedKeys={['standard-narrow']}
         >
           <SelectList.Option id="standard-narrow" textValue="Standard">
-            <Text slot="label">Standard</Text>
-            <Text slot="description">3–5 business days</Text>
+            <TextValue>Standard</TextValue>
+            <Description>3–5 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="express-narrow" textValue="Express">
-            <Text slot="label">Express</Text>
-            <Text slot="description">1–2 business days</Text>
+            <TextValue>Express</TextValue>
+            <Description>1–2 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="overnight-narrow" textValue="Overnight">
-            <Text slot="label">Overnight</Text>
-            <Text slot="description">Next business day</Text>
+            <TextValue>Overnight</TextValue>
+            <Description>Next business day</Description>
           </SelectList.Option>
         </SelectList>
       </div>
