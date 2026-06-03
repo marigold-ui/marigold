@@ -6,7 +6,7 @@ badge: new
 
 Icons in Marigold are built on [Lucide](https://lucide.dev/), with a small set
 of brand-specific icons added on top. The [Principles](#principles) and
-[Catalog](#catalog) sections cover the design language; jump to [Using icons
+[Catalog](#catalog) sections cover the design language. Jump to [Using icons
 in code](#using-icons-in-code) for installation and the API.
 
 ## Principles
@@ -23,7 +23,7 @@ size with the `size` prop, which accepts a number of pixels.
 
 Icons by themselves are not large enough to act as tap targets. Wrap an
 interactive icon in a `Button` with `variant="icon"`, or another container
-with a hit area of at least 48×48 px (Marigold target; WCAG 2.5.5 requires a
+with a hit area of at least 48×48 px (Marigold target, WCAG 2.5.5 requires a
 44×44 minimum). Don't enlarge the icon to meet the target. Keep the icon at
 its content size and pad the surrounding control.
 
@@ -36,7 +36,7 @@ Three contexts cover almost every placement:
 - **Alongside body text.** The icon picks up `text-foreground` (or
   `text-secondary` for help text) automatically.
 - **Inside a colored container** like a primary or destructive button. Apply
-  the paired `-foreground` token to the container; the icon follows.
+  the paired `-foreground` token to the container. The icon follows.
 - **Status icons** in Toast, SectionMessage, or a badge. Use the `-accent`
   variant of the status token (`text-destructive-accent`,
   `text-warning-accent`, `text-success-accent`, `text-info-accent`).
@@ -243,7 +243,7 @@ export const MyComponent = () => (
 
 `@marigold/icons` re-exports every icon from `lucide-react`, so any name listed
 on [lucide.dev](https://lucide.dev/) resolves under `@marigold/icons`. Always
-import from `@marigold/icons` — never directly from `lucide-react`.
+import from `@marigold/icons`, never directly from `lucide-react`.
 
 ### Sizing
 

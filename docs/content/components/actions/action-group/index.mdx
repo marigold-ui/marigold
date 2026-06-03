@@ -24,7 +24,7 @@ import { ActionGroupAnatomy } from './action-group-anatomy';
 
 <AppearanceTable component={'ActionGroup'} />
 
-`<ActionGroup>` has no visual styling of its own. The `variant` and `size` props cascade to every nested [`<ActionButton>`](/components/actions/action-button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. A local `variant` on a child wins over the group default; the group's `size` wins over a child's local size so the cluster stays uniform in height.
+`<ActionGroup>` has no visual styling of its own. The `variant` and `size` props cascade to every nested [`<ActionButton>`](/components/actions/action-button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. A local `variant` on a child wins over the group default. The group's `size` wins over a child's local size so the cluster stays uniform in height.
 
 ## Usage
 
