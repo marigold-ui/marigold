@@ -36,7 +36,7 @@ export default () => (
         <TextValue>{venue.name}</TextValue>
         <Description>{venue.capacity}</Description>
         {/* The nested Button inherits its size and visual weight from
-            SelectList — no `variant` or `size` needed at the call site. */}
+            SelectList, so no `variant` or `size` is needed at the call site. */}
         <Tooltip.Trigger>
           <Button
             aria-label={`Details about ${venue.name}`}
