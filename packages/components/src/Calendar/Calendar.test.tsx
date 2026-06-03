@@ -146,12 +146,14 @@ describe('Calendar', () => {
   test('renders month selection', async () => {
     render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
-    expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('listbox', { name: 'month' })
+    ).not.toBeInTheDocument();
 
     const monthSelection = screen.getByRole('button', { name: 'Jan' });
     await user.click(monthSelection);
 
-    expect(screen.getByTestId('monthOptions')).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: 'month' })).toBeInTheDocument();
   });
 
   test('select a month', async () => {
@@ -163,39 +165,41 @@ describe('Calendar', () => {
     const monthOption = screen.getByText('Feb');
     await user.click(monthOption);
 
-    expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('listbox', { name: 'month' })
+    ).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Feb' })).toBeInTheDocument();
   });
 
   test('renders year selection', async () => {
-    // Mock scrollIntoView to prevent errors in JSDOM
-    window.HTMLElement.prototype.scrollIntoView = vi.fn();
-
     render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
-    expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
 
     const yearSelection = screen.getByRole('button', { name: '2025' });
     await user.click(yearSelection);
 
-    expect(screen.getByTestId('yearOptions')).toBeInTheDocument();
+    expect(screen.getByRole('listbox', { name: 'year' })).toBeInTheDocument();
   });
 
   test('select a year', async () => {
-    // Mock scrollIntoView to prevent errors in JSDOM
-    window.HTMLElement.prototype.scrollIntoView = vi.fn();
-
     render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
-    expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
 
     const yearSelection = screen.getByRole('button', { name: '2025' });
     await user.click(yearSelection);
 
-    const yearhOption = screen.getByText('2024');
-    await user.click(yearhOption);
+    const yearOption = screen.getByText('2024');
+    await user.click(yearOption);
 
-    expect(screen.queryByTestId('yearhOptions')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '2024' })).toBeInTheDocument();
   });
 });

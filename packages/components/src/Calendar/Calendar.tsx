@@ -102,20 +102,8 @@ const _Calendar = ({
   >();
 
   const ViewMap = {
-    month: (
-      <MonthListBox
-        setSelectedDropdown={setSelectedDropdown}
-        minValue={minValue}
-        maxValue={maxValue}
-      />
-    ),
-    year: (
-      <YearListBox
-        setSelectedDropdown={setSelectedDropdown}
-        minValue={minValue}
-        maxValue={maxValue}
-      />
-    ),
+    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
+    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   if (isMultiMonth) {
