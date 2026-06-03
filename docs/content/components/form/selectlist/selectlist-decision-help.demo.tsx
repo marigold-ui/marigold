@@ -137,7 +137,8 @@ export default () => (
       <SelectList.Option key={plan.id} id={plan.id} textValue={plan.name}>
         <div className="col-start-2 row-start-1">
           <Inline space={2} alignY="center">
-            <TextValue>
+            <TextValue as="div">
+              <Text weight="bold" lineHeight="loose">
               <Text weight="bold" lineHeight="loose">
                 {plan.name}
               </Text>
