@@ -35,6 +35,11 @@ type OverflowCulprit = {
   tabular: boolean;
 };
 
+// A visible element's horizontal box at one breakpoint, keyed by a stable
+// cssPath. Used only to measure reflow between breakpoints — transient, never
+// persisted in the report.
+export type LayoutBox = { selector: string; x: number; width: number };
+
 export type ResponsiveSnapshot = {
   breakpoint: ResponsiveBreakpoint;
   horizontalScrollWidth: number;
@@ -42,6 +47,9 @@ export type ResponsiveSnapshot = {
   touchTargets: TouchTargetIssue[];
   disappearedComponents: DisappearedComponent[];
   overflowCulprit: OverflowCulprit | null;
+  // Optional: always set by the extractor; absent in hand-built test snapshots,
+  // in which case the reflow metric simply does not run.
+  layout?: LayoutBox[];
 };
 
 const BREAKPOINTS: ResponsiveBreakpoint[] = [
@@ -81,6 +89,117 @@ export const edgeGap = (
 // legitimately measure 0x0 in Marigold and must not be flagged.
 export const isGenuineDisappearance = (d: DisappearedComponent): boolean =>
   !d.hiddenByCss;
+
+const DESKTOP_WIDTH = 1280;
+
+export type WidthUtilizationOptions = {
+  /** Min. content elements for the metric to run (skips trivial layouts). */
+  minElements?: number;
+  /** Elements at/above this fraction of the viewport are full-bleed wrappers
+   *  (body / shell / full-width sections) and are excluded — they are always
+   *  ~100% wide and would mask a narrow content band. */
+  fullBleedFraction?: number;
+  /** utilization at/below which the content is flagged as not using the width. */
+  lowThreshold?: number;
+};
+
+export type WidthUtilizationResult = {
+  ran: boolean; // false = gated out (no/too-few content elements)
+  contentElements: number;
+  utilization: number; // 0..1 — fraction of viewport width COVERED by content
+  warning: boolean; // utilization <= lowThreshold on a non-trivial layout
+};
+
+// Measures how much of the DESKTOP viewport width the page's content actually
+// covers, from a single 1280px snapshot. This directly targets the "stuck in
+// mobile shape on desktop" defect: content crammed into a narrow band with
+// large empty horizontal space.
+//
+// Full-bleed wrappers (>= fullBleedFraction of the viewport — body, the shell,
+// full-width sections) are excluded; they are always ~100% wide and would mask
+// a narrow content band. Over the remaining content boxes we compute the UNION
+// of their horizontal [x, x+width] intervals (not the min..max extent), so a
+// single outlier near the right edge — e.g. a right-aligned header button —
+// cannot make a page with an empty middle look full-width. utilization = total
+// covered width / viewport width.
+//
+// Empirically this separates cleanly: a "stuck" layout covers ~0.34, a layout
+// that uses the width covers ~1.00.
+//
+// CAVEAT (thesis): the threshold is a judgement call and an intentionally
+// centred narrow max-width column (a login form, a reading column) legitimately
+// scores low — so treat this as a RELATIVE signal between configs and a soft
+// warning, not an absolute defect. Single-snapshot, so unaffected by responsive
+// DOM changes between breakpoints.
+export const computeWidthUtilization = (
+  desktop: LayoutBox[],
+  desktopViewportWidth: number,
+  options: WidthUtilizationOptions = {}
+): WidthUtilizationResult => {
+  const {
+    minElements = 8,
+    fullBleedFraction = 0.95,
+    lowThreshold = 0.6,
+  } = options;
+
+  const vw = desktopViewportWidth > 0 ? desktopViewportWidth : DESKTOP_WIDTH;
+  const content = desktop.filter(
+    b => b.width > 0 && b.width < vw * fullBleedFraction
+  );
+
+  if (content.length < minElements) {
+    return {
+      ran: false,
+      contentElements: content.length,
+      utilization: 0,
+      warning: false,
+    };
+  }
+
+  // Union the horizontal intervals so overlapping/empty regions are counted
+  // once and gaps are not counted at all.
+  const intervals = content
+    .map(b => [Math.max(0, b.x), Math.min(vw, b.x + b.width)] as const)
+    .filter(([l, r]) => r > l)
+    .sort((a, b) => a[0] - b[0]);
+
+  let covered = 0;
+  let curL = -1;
+  let curR = -1;
+  for (const [l, r] of intervals) {
+    if (l > curR) {
+      if (curR > curL) covered += curR - curL;
+      curL = l;
+      curR = r;
+    } else if (r > curR) {
+      curR = r;
+    }
+  }
+  if (curR > curL) covered += curR - curL;
+
+  const utilization = covered / vw;
+  return {
+    ran: true,
+    contentElements: content.length,
+    utilization,
+    warning: utilization <= lowThreshold,
+  };
+};
+
+// Picks the desktop (1280px) snapshot and runs computeWidthUtilization.
+// Returns null when the desktop breakpoint is missing.
+export const widthUtilizationFromSnapshots = (
+  snapshots: ResponsiveSnapshot[],
+  options: WidthUtilizationOptions = {}
+): WidthUtilizationResult | null => {
+  const desktop = snapshots.find(s => s.breakpoint.width === DESKTOP_WIDTH);
+  if (!desktop) return null;
+  return computeWidthUtilization(
+    desktop.layout ?? [],
+    desktop.viewportWidth,
+    options
+  );
+};
 
 const INTERACTIVE_SELECTOR = [
   'button',
@@ -254,12 +373,31 @@ const extractSnapshot = async (
           }
         }
 
+        // Per-element horizontal layout map for the width-utilisation metric.
+        // Same DOM at
+        // every breakpoint, so cssPath keys match across snapshots. Only visible
+        // boxes; x + width are enough to detect whether the layout adapts.
+        const layout: Array<{ selector: string; x: number; width: number }> =
+          [];
+        for (const el of document.querySelectorAll('body *')) {
+          const s = window.getComputedStyle(el);
+          if (s.display === 'none' || s.visibility === 'hidden') continue;
+          const r = el.getBoundingClientRect();
+          if (r.width <= 0 || r.height <= 0) continue;
+          layout.push({
+            selector: cssPath(el),
+            x: Math.round(r.left),
+            width: Math.round(r.width),
+          });
+        }
+
         return {
           horizontalScrollWidth: scrollWidth,
           viewportWidth,
           touchTargets,
           disappearedComponents,
           overflowCulprit,
+          layout,
         };
       },
       {
@@ -396,6 +534,28 @@ export const responsiveToValidationIssues = (
         details: { breakpoint: bp.label, selector: d.selector },
       });
     }
+  }
+
+  // Desktop width utilisation: if the page's content occupies only a narrow
+  // band of a wide viewport, it is "stuck in mobile shape" and does not use the
+  // available width. Warning only — see computeWidthUtilization for the
+  // measurement and its FP caveats.
+  const util = widthUtilizationFromSnapshots(snapshots);
+  if (util?.ran && util.warning) {
+    const pct = Math.round(util.utilization * 100);
+    issues.push({
+      type: 'spatial',
+      severity: 'warning',
+      source: 'responsive-checker',
+      component: 'page',
+      message: `Content uses only ${pct}% of the desktop width (${DESKTOP_WIDTH}px): it stays in a narrow, mobile-shaped band instead of adapting to the available space.`,
+      suggestion:
+        'Let the layout grow with the viewport using Marigold responsive primitives — <Columns collapseAt="..."> for multi-column areas, AppLayout for the shell, Stack/Inline for flow — instead of a fixed-width container. (Intentionally centred max-width reading columns are fine and may trip this; treat it as a relative signal.)',
+      details: {
+        widthUtilization: util.utilization,
+        contentElements: util.contentElements,
+      },
+    });
   }
 
   return issues;

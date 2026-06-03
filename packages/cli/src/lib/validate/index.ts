@@ -165,6 +165,7 @@ const runWithRenderer = async (
   const passed: string[] = [];
   let renderTimeMs = 0;
   let componentsFound: string[] = [];
+  let widthUtilization: number | null = null;
   let coverage = emptyCoverage();
 
   if (checks.has('technical')) {
@@ -217,6 +218,7 @@ const runWithRenderer = async (
 
       renderTimeMs = result.renderTimeMs;
       componentsFound = result.componentsFound;
+      widthUtilization = result.widthUtilization;
 
       for (const message of result.pageErrors) {
         issues.push({
@@ -276,6 +278,7 @@ const runWithRenderer = async (
     componentsFound,
     checksRun: Array.from(checks),
     coverage,
+    widthUtilization,
   });
 };
 

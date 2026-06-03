@@ -79,6 +79,12 @@ export type ValidationReport = {
     componentsFound: string[];
     checksRun: ValidationCheck[];
     coverage: ValidationCoverage;
+    // Desktop width-utilisation metric (0..1) = fraction of the 1280px viewport
+    // width covered by content. Low = "stuck in mobile shape on desktop". null
+    // when not computed (no render, spatial check off, or a trivial layout).
+    // Score-free; a RELATIVE signal across configs, not an absolute quality
+    // measure. See spatial/responsive.ts computeWidthUtilization.
+    widthUtilization?: number | null;
   };
 };
 

@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { edgeGap, responsiveToValidationIssues } from './responsive.js';
-import type { ResponsiveSnapshot } from './responsive.js';
+import {
+  computeWidthUtilization,
+  edgeGap,
+  responsiveToValidationIssues,
+} from './responsive.js';
+import type { LayoutBox, ResponsiveSnapshot } from './responsive.js';
 
 const snap = (
   label: string,
@@ -204,5 +208,67 @@ describe('edgeGap (WCAG 2.5.8 spacing geometry)', () => {
     const b = rect(50, 0, 20, 20);
     expect(edgeGap(a, b)).toBe(30);
     expect(edgeGap(a, b)).toBeGreaterThanOrEqual(24);
+  });
+});
+
+describe('computeWidthUtilization (desktop width usage)', () => {
+  // Stacked boxes at (x, width). 10 elements so the >=8 gate passes.
+  const stack = (
+    x: number,
+    width: number,
+    n = 10,
+    prefix = 'el'
+  ): LayoutBox[] =>
+    Array.from({ length: n }, (_, i) => ({
+      selector: `${prefix}-${i}`,
+      x,
+      width,
+    }));
+
+  it('high utilization, no warning when content spans the viewport', () => {
+    // Width 1200 stays just under the full-bleed cutoff (0.95 * 1280 = 1216) so
+    // it counts as content; it covers most of the width => no warning.
+    const r = computeWidthUtilization(stack(0, 1200), 1280);
+    expect(r.ran).toBe(true);
+    expect(r.utilization).toBeCloseTo(1200 / 1280, 2);
+    expect(r.warning).toBe(false);
+  });
+
+  it('low utilization + warning when content is a narrow band (stuck on desktop)', () => {
+    // Mirrors the real opus-mcp-stack/P-09 case: content ~0.34 of the width.
+    const r = computeWidthUtilization(stack(0, 436), 1280);
+    expect(r.ran).toBe(true);
+    expect(r.utilization).toBeCloseTo(436 / 1280, 2);
+    expect(r.warning).toBe(true);
+  });
+
+  it('excludes full-bleed wrappers so they do not mask a narrow band', () => {
+    // A full-width body/shell (1280) plus a narrow content column (400) —
+    // utilization must reflect the column, not the wrapper.
+    const layout = [
+      ...stack(0, 1280, 2, 'wrap'), // full-bleed, excluded
+      ...stack(0, 400, 10, 'content'),
+    ];
+    const r = computeWidthUtilization(layout, 1280);
+    expect(r.utilization).toBeCloseTo(400 / 1280, 2);
+    expect(r.warning).toBe(true);
+  });
+
+  it('uses interval union: a right-edge outlier does not fake full width', () => {
+    // Narrow column at the left + one button near the right edge. The empty
+    // middle is NOT covered, so utilization stays low (union, not min..max).
+    const layout = [
+      ...stack(0, 400, 9, 'content'),
+      { selector: 'btn', x: 1240, width: 40 },
+    ];
+    const r = computeWidthUtilization(layout, 1280);
+    expect(r.utilization).toBeCloseTo((400 + 40) / 1280, 2);
+    expect(r.warning).toBe(true);
+  });
+
+  it('does not run (no warning) on a trivially small layout', () => {
+    const r = computeWidthUtilization(stack(0, 400, 3), 1280);
+    expect(r.ran).toBe(false);
+    expect(r.warning).toBe(false);
   });
 });

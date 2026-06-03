@@ -27,6 +27,7 @@ import { type SharedRenderer, type Viewport } from './renderer.js';
 import {
   extractResponsiveSnapshots,
   responsiveToValidationIssues,
+  widthUtilizationFromSnapshots,
 } from './responsive.js';
 import {
   extractTextSpacingData,
@@ -72,8 +73,11 @@ export {
 } from './aom-extractor.js';
 export {
   extractResponsiveSnapshots,
+  widthUtilizationFromSnapshots,
+  computeWidthUtilization,
   responsiveToValidationIssues,
   type ResponsiveSnapshot,
+  type WidthUtilizationResult,
 } from './responsive.js';
 export {
   extractKeyboardA11yData,
@@ -97,6 +101,8 @@ export type SpatialResult = {
   renderErrors: { message: string; stack?: string; componentStack?: string }[];
   componentsFound: string[];
   renderTimeMs: number;
+  // Desktop width-utilisation metric (0..1) for the run; null when not computed.
+  widthUtilization: number | null;
 };
 
 export type SpatialOptions = {
@@ -123,6 +129,7 @@ export const runSpatialChecks = async (
     const responsiveIssues: ValidationIssue[] = [];
     const keyboardIssues: ValidationIssue[] = [];
     let componentsFound: string[] = [];
+    let widthUtilization: number | null = null;
 
     if (options.enableSpatial) {
       const bounds = await extractBoundingBoxes(page);
@@ -196,6 +203,8 @@ export const runSpatialChecks = async (
       try {
         const snapshots = await extractResponsiveSnapshots(page);
         responsiveIssues.push(...responsiveToValidationIssues(snapshots));
+        const util = widthUtilizationFromSnapshots(snapshots);
+        widthUtilization = util && util.ran ? util.utilization : null;
       } catch (err) {
         responsiveIssues.push({
           type: 'spatial',
@@ -247,6 +256,7 @@ export const runSpatialChecks = async (
       renderErrors: handle.result.renderErrors,
       componentsFound,
       renderTimeMs: handle.result.renderTimeMs,
+      widthUtilization,
     };
   } finally {
     await handle.close();
