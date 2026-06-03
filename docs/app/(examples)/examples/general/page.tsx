@@ -27,6 +27,7 @@ const GeneralPage = () => {
       </Page.Header>
 
       <Form
+        unstyled
         onSubmit={e => {
           e.preventDefault();
           addToast({
@@ -36,50 +37,48 @@ const GeneralPage = () => {
           });
         }}
       >
-        <Stack space="regular">
-          <Panel size="form">
-            <Panel.Header>
-              <Title>Workspace</Title>
-              <Description>
-                How your workspace appears across the product.
-              </Description>
-            </Panel.Header>
-            <Panel.Content>
-              <Stack space="regular">
-                <TextField
-                  label="Workspace name"
-                  defaultValue="Acme Inc."
-                  description="Shown in the sidebar and on shared links."
-                  width={80}
-                />
-                <TextField
-                  label="Workspace URL"
-                  defaultValue="acme"
-                  description="Your workspace lives at acme.example.com."
-                  width={56}
-                />
-                <Inline space="related">
-                  <Select label="Region" defaultValue="eu" width={44}>
-                    <Select.Option id="eu">Europe</Select.Option>
-                    <Select.Option id="us">United States</Select.Option>
-                    <Select.Option id="apac">Asia Pacific</Select.Option>
-                  </Select>
-                  <Select label="Default language" defaultValue="en" width={44}>
-                    <Select.Option id="en">English</Select.Option>
-                    <Select.Option id="de">German</Select.Option>
-                    <Select.Option id="fr">French</Select.Option>
-                  </Select>
-                </Inline>
-              </Stack>
-            </Panel.Content>
-          </Panel>
-          {/* The form's primary action sits below the panel, at the end of the form. */}
-          <Inline>
-            <Button variant="primary" type="submit">
-              Save changes
-            </Button>
-          </Inline>
-        </Stack>
+        <Panel size="form">
+          <Panel.Header>
+            <Title>Workspace</Title>
+            <Description>
+              How your workspace appears across the product.
+            </Description>
+          </Panel.Header>
+          <Panel.Content>
+            <Stack space="regular">
+              <TextField
+                label="Workspace name"
+                defaultValue="Acme Inc."
+                description="Shown in the sidebar and on shared links."
+                width={80}
+              />
+              <TextField
+                label="Workspace URL"
+                defaultValue="acme"
+                description="Your workspace lives at acme.example.com."
+                width={56}
+              />
+              <Inline space="related">
+                <Select label="Region" defaultValue="eu" width={44}>
+                  <Select.Option id="eu">Europe</Select.Option>
+                  <Select.Option id="us">United States</Select.Option>
+                  <Select.Option id="apac">Asia Pacific</Select.Option>
+                </Select>
+                <Select label="Default language" defaultValue="en" width={44}>
+                  <Select.Option id="en">English</Select.Option>
+                  <Select.Option id="de">German</Select.Option>
+                  <Select.Option id="fr">French</Select.Option>
+                </Select>
+              </Inline>
+            </Stack>
+          </Panel.Content>
+        </Panel>
+        {/* The form's primary action sits below the panel, at the end of the form. */}
+        <Inline>
+          <Button variant="primary" type="submit">
+            Save changes
+          </Button>
+        </Inline>
       </Form>
     </Page>
   );

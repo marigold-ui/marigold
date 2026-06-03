@@ -55,6 +55,7 @@ const SecurityPage = () => {
       </Page.Header>
 
       <Form
+        unstyled
         onSubmit={e => {
           e.preventDefault();
           addToast({
@@ -64,35 +65,29 @@ const SecurityPage = () => {
           });
         }}
       >
-        <Stack space="regular">
-          <Panel size="form">
-            <Panel.Header>
-              <Title>Password</Title>
-              <Description>Use at least 12 characters.</Description>
-            </Panel.Header>
-            <Panel.Content>
-              <Stack space="regular">
-                <TextField
-                  label="Current password"
-                  type="password"
-                  width={56}
-                />
-                <TextField label="New password" type="password" width={56} />
-                <TextField
-                  label="Confirm new password"
-                  type="password"
-                  width={56}
-                />
-              </Stack>
-            </Panel.Content>
-          </Panel>
-          {/* The form's primary action sits below the panel, at the end of the form. */}
-          <Inline>
-            <Button variant="primary" type="submit">
-              Update password
-            </Button>
-          </Inline>
-        </Stack>
+        <Panel size="form">
+          <Panel.Header>
+            <Title>Password</Title>
+            <Description>Use at least 12 characters.</Description>
+          </Panel.Header>
+          <Panel.Content>
+            <Stack space="regular">
+              <TextField label="Current password" type="password" width={56} />
+              <TextField label="New password" type="password" width={56} />
+              <TextField
+                label="Confirm new password"
+                type="password"
+                width={56}
+              />
+            </Stack>
+          </Panel.Content>
+        </Panel>
+        {/* The form's primary action sits below the panel, at the end of the form. */}
+        <Inline>
+          <Button variant="primary" type="submit">
+            Update password
+          </Button>
+        </Inline>
       </Form>
 
       <Panel size="form">
