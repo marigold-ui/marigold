@@ -265,6 +265,47 @@ export const WithContent = meta.story({
 });
 
 /**
+ * A page that has only a title, with no description or actions, can skip
+ * `<Page.Header>` and drop a bare `<Title>` directly inside `<Page>`. The title
+ * still becomes the page `<h1>` and names the `<main>` landmark, exactly as it
+ * does inside the header. As soon as the page needs a description or actions,
+ * reach for `<Page.Header>` so it can arrange them in the grid.
+ */
+export const TitleOnly = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Page>
+      <Title>Reports</Title>
+      <Panel>
+        <Panel.Header>
+          <Title>Summary</Title>
+        </Panel.Header>
+        <Panel.Content>
+          <Text>No page header on this screen.</Text>
+        </Panel.Content>
+      </Panel>
+    </Page>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const main = canvas.getByRole('main');
+
+    // The bare title becomes the page h1 even without <Page.Header>.
+    const h1 = canvas.getByRole('heading', { level: 1, name: 'Reports' });
+    await expect(h1).toBeInTheDocument();
+
+    // ...and still names the main landmark.
+    await expect(main).toHaveAttribute('aria-labelledby', h1.id);
+
+    // The heading outline below it is unaffected: the panel keeps its h2.
+    await expect(
+      canvas.getByRole('heading', { level: 2, name: 'Summary' })
+    ).toBeInTheDocument();
+  },
+});
+
+/**
  * Without a `<Title>`, the page must be given an `aria-label` so the `<main>`
  * landmark still has an accessible name.
  */

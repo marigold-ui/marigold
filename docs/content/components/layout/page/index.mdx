@@ -44,6 +44,10 @@ A description is a single-sentence subtitle directly under the title. Include on
 
 `<Page.Header>` is the layout wrapper that arranges title, description, and actions in a grid: the title and description on the left, the actions on the right. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any action primitives (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. It works the same way as [`<Panel.Header>`](/components/layout/panel#header), configuring slot context so each piece picks up its heading level, id wiring, and grid position from the page. There are no sub-components of its own to reach for.
 
+#### Title-only pages can skip the header
+
+When a page has only a title, with no description or actions, drop a bare [`<Title>`](/components/content/title) directly inside `<Page>` and skip the wrapper. Accessibility wires up the same way: the title becomes the page `<h1>` and names the `<main>` landmark, just as it does inside the header. As soon as the page needs a description or actions, reach for `<Page.Header>` so it can arrange them in the grid.
+
 #### Actions
 
 Page actions use the same slot-aware action components a `<Panel.Header>` accepts: [`<ActionButton>`](/components/actions/action-button), [`<LinkButton>`](/components/actions/link-button), [`<ActionGroup>`](/components/actions/action-group), and [`<ActionMenu>`](/components/overlay/action-menu). In a Panel these recede into quiet icon buttons. A page's primary action is meant to stand out, so it sits in the header as a prominent, label-sized primary button.

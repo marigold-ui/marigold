@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import { Title } from '../Title/Title';
 import { Page } from './Page';
-import { Basic, WithContent, WithoutTitle } from './Page.stories';
+import { Basic, TitleOnly, WithContent, WithoutTitle } from './Page.stories';
 
 describe('Page', () => {
   test('renders a main landmark', () => {
@@ -37,6 +37,16 @@ describe('Page', () => {
     expect(main.style.getPropertyValue('--page-px')).not.toBe('');
     expect(main.style.getPropertyValue('--page-py')).not.toBe('');
     expect(main.style.getPropertyValue('--page-gap')).not.toBe('');
+  });
+
+  test('supports a bare Title directly under Page, without Page.Header', () => {
+    render(<TitleOnly.Component />);
+
+    const main = screen.getByRole('main');
+    const h1 = screen.getByRole('heading', { level: 1, name: 'Reports' });
+
+    expect(h1).toBeInTheDocument();
+    expect(main).toHaveAttribute('aria-labelledby', h1.id);
   });
 
   test('falls back to aria-label when no Title is present', () => {
