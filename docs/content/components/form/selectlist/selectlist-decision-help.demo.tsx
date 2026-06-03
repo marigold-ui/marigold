@@ -139,7 +139,6 @@ export default () => (
           <Inline space={2} alignY="center">
             <TextValue as="div">
               <Text weight="bold" lineHeight="loose">
-              <Text weight="bold" lineHeight="loose">
                 {plan.name}
               </Text>
             </TextValue>

@@ -1,7 +1,7 @@
 ---
 '@marigold/components': patch
 '@marigold/theme-rui': patch
-'@marigold/system': patch
+'@marigold/system': minor
 ---
 
 refactor(DST-1374): use `<TextValue>` and `<Description>` for selection-container items

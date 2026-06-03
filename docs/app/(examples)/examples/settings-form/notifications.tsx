@@ -10,8 +10,8 @@ import {
   Panel,
   Select,
   Stack,
-  Text,
   TextField,
+  TextValue,
   Title,
 } from '@marigold/components';
 import { useSavedToast } from './useSavedToast';
@@ -44,22 +44,20 @@ export const Notifications = () => {
               width={64}
             >
               <Select.Option id="realtime" textValue="Immediately">
-                <Text slot="label">Immediately</Text>
-                <Text slot="description" fontSize="xs">
+                <TextValue>Immediately</TextValue>
+                <Description>
                   One email per event, sent as it happens
-                </Text>
+                </Description>
               </Select.Option>
               <Select.Option id="daily" textValue="Daily digest">
-                <Text slot="label">Daily digest</Text>
-                <Text slot="description" fontSize="xs">
+                <TextValue>Daily digest</TextValue>
+                <Description>
                   All activity bundled into one morning email
-                </Text>
+                </Description>
               </Select.Option>
               <Select.Option id="weekly" textValue="Weekly digest">
-                <Text slot="label">Weekly digest</Text>
-                <Text slot="description" fontSize="xs">
-                  A single summary sent every Monday
-                </Text>
+                <TextValue>Weekly digest</TextValue>
+                <Description>A single summary sent every Monday</Description>
               </Select.Option>
             </Select>
             <Checkbox.Group

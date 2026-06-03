@@ -261,8 +261,8 @@ export const Sections: any = meta.story({
         </ComboBox.Option>
       </ComboBox.Section>
       <ComboBox.Section header="Sci-Fi">
-        <ComboBox.Option id="star-wars" textValue="Start Wars">
-          <TextValue>Start Wars</TextValue>
+        <ComboBox.Option id="star-wars" textValue="Star Wars">
+          <TextValue>Star Wars</TextValue>
           <Description>A long time ago, in a galaxy far, far away</Description>
         </ComboBox.Option>
         <ComboBox.Option id="star-trek" textValue="Star Trek">
