@@ -115,9 +115,9 @@ A description is a single-sentence subtitle directly under the title. Include on
 
 #### The header configures its children
 
-`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any action primitives (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. The header configures slot context so each piece picks up its level, id wiring, grid position, size, and variant from the Panel — consumers don't need to set any of that themselves.
+`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any buttons (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. The header configures slot context so each piece picks up its level, id wiring, grid position, size, and variant from the Panel — consumers don't need to set any of that themselves. A bare `<Button>` is slot-aware here; opt one out of the cascade with `slot={null}`.
 
-Multiple actions belong in an `<ActionGroup>` so the cluster claims one grid cell and renders as a toolbar.
+Multiple actions belong in a `<ButtonGroup>` so the cluster claims one grid cell and renders as a toolbar.
 
 #### Title-only Panels can skip the header
 

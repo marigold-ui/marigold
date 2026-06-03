@@ -1,9 +1,8 @@
 {
   "pages": [
-    "action-button",
-    "action-group",
     "actionbar",
     "button",
+    "button-group",
     "link",
     "link-button",
     "toggle-button"

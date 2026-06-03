@@ -1,6 +1,6 @@
 import {
-  ActionButton,
-  ActionGroup,
+  Button,
+  ButtonGroup,
   Stack,
   TextArea,
   Tooltip,
@@ -9,38 +9,38 @@ import { AtSign, Image, Link, Paperclip, SmilePlus } from '@marigold/icons';
 
 export default () => (
   <Stack space="related">
-    <ActionGroup aria-label="Compose actions" size="small">
+    <ButtonGroup aria-label="Compose actions" size="small">
       <Tooltip.Trigger>
-        <ActionButton aria-label="Insert link">
+        <Button aria-label="Insert link">
           <Link />
-        </ActionButton>
+        </Button>
         <Tooltip>Insert link</Tooltip>
       </Tooltip.Trigger>
       <Tooltip.Trigger>
-        <ActionButton aria-label="Insert image">
+        <Button aria-label="Insert image">
           <Image />
-        </ActionButton>
+        </Button>
         <Tooltip>Insert image</Tooltip>
       </Tooltip.Trigger>
       <Tooltip.Trigger>
-        <ActionButton aria-label="Attach file">
+        <Button aria-label="Attach file">
           <Paperclip />
-        </ActionButton>
+        </Button>
         <Tooltip>Attach file</Tooltip>
       </Tooltip.Trigger>
       <Tooltip.Trigger>
-        <ActionButton aria-label="Mention someone">
+        <Button aria-label="Mention someone">
           <AtSign />
-        </ActionButton>
+        </Button>
         <Tooltip>Mention</Tooltip>
       </Tooltip.Trigger>
       <Tooltip.Trigger>
-        <ActionButton aria-label="Insert emoji">
+        <Button aria-label="Insert emoji">
           <SmilePlus />
-        </ActionButton>
+        </Button>
         <Tooltip>Emoji</Tooltip>
       </Tooltip.Trigger>
-    </ActionGroup>
+    </ButtonGroup>
     <TextArea aria-label="Comment" placeholder="Write a comment..." />
   </Stack>
 );

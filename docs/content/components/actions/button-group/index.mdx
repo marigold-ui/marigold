@@ -1,0 +1,82 @@
+---
+title: ButtonGroup
+description: Toolbar wrapper around a related cluster of buttons.
+badge: alpha
+---
+
+The `<ButtonGroup>` component is a toolbar wrapper around a related cluster of actions. It exposes a real `role="toolbar"` with arrow-key navigation between children, and cascades shared `size`, `variant`, and `disabled` defaults so the cluster stays visually uniform.
+
+Use `<ButtonGroup>` whenever a row, item, or surface has more than one related action. For a single action, use a [`<Button>`](/components/actions/button) directly. For more actions than fit comfortably in a toolbar, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
+
+import { ButtonGroupAnatomy } from './button-group-anatomy';
+
+## Anatomy
+
+<ButtonGroupAnatomy />
+
+- **Group:** A toolbar wrapper around a related cluster of actions.
+- **Button:** Each pressable action inside the group.
+- **LinkButton (optional):** [`<LinkButton>`](/components/actions/link-button) can sit alongside `<Button>` for actions that navigate.
+
+## Appearance
+
+<AppearanceDemo component={'ButtonGroup'} />
+
+<AppearanceTable component={'ButtonGroup'} />
+
+`<ButtonGroup>` has no visual styling of its own. The `variant` and `size` props cascade to every nested [`<Button>`](/components/actions/button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. When `variant` is unset the group cascades `ghost`, so an unconfigured cluster reads as low-emphasis chrome. Precedence is uniform: a local `variant` or `size` on a child always wins over the group default.
+
+## Usage
+
+`<ButtonGroup>` shines wherever an item, row, or surface needs a small cluster of actions. The three scenarios below cover the cases we expect to see most often.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Group related actions with `<ButtonGroup>`. Three to five actions is a
+      comfortable upper bound. Reach for `<ActionMenu>` beyond that.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't mix unrelated actions inside a single `<ButtonGroup>`. A toolbar
+      communicates that the actions belong together.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Inline row actions
+
+Lists and rows of equal-weight items often need a per-row cluster of quick actions like view, edit, and delete. Render them as a `<ButtonGroup>` so the cluster is exposed as a toolbar, arrow-key navigable, and the buttons recede into the row until the user scans for them.
+
+<ComponentDemo name="button-group-row-actions" />
+
+For destructive row actions, reach for `destructive-ghost` so the danger reads without overpowering the row. A `variant` set on the child always wins over one set on the group, so a single destructive button can sit inside an otherwise uniform cluster. When the action count grows beyond three, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
+
+### Container chrome
+
+Surfaces like `<Panel>`, `<Dialog>`, and `<Drawer>` carry their own chrome of secondary actions: bookmark, share, settings, dismiss. These actions belong to the container, not to the page, so they should stay subordinate to the container's title and to any primary `<Button>` it might host.
+
+<ComponentDemo name="button-group-panel-chrome" />
+
+The container can publish shared defaults to every `<Button>` inside via `ButtonContext`. A Panel header, for example, can publish the variant and size for every button it contains, and individual call sites stay free of repetitive props. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how container providers wire this up.
+
+### Standalone toolbar
+
+Above an editor, a comment box, or any content area that benefits from a cluster of related one-shot actions, reach for `<ButtonGroup>` as a standalone toolbar.
+
+<ComponentDemo name="button-group-toolbar" />
+
+## Props
+
+<StorybookHintMessage component={'ButtonGroup'} />
+
+### ButtonGroup
+
+<AutoTypeTable path="ButtonGroup/ButtonGroup" name="ButtonGroupProps" />
+
+## Alternative components
+
+- [Button](/components/actions/button): The button that lives inside a group; it adapts to the group's cascade.
+- [ActionMenu](/components/overlay/action-menu): Use the kebab-menu pattern when there are too many actions to fit in a Group.
+- [ActionBar](/components/actions/actionbar): Use for the bar around bulk-selection actions.

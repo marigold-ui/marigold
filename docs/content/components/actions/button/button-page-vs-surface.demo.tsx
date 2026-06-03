@@ -1,8 +1,8 @@
 import { people } from '@/lib/data/people';
 import {
-  ActionButton,
-  ActionGroup,
   Badge,
+  Button,
+  ButtonGroup,
   Description,
   Inline,
   Panel,
@@ -26,10 +26,10 @@ export default () => (
       <Description>
         People with access to this workspace and their roles.
       </Description>
-      <ActionButton variant="primary" size="default" aria-label="Invite member">
+      <Button variant="primary" size="default" aria-label="Invite member">
         <UserRoundPlus />
         Invite member
-      </ActionButton>
+      </Button>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">
@@ -56,23 +56,23 @@ export default () => (
             <Inline space="regular" alignY="center">
               <Badge variant={member.variant}>{member.role}</Badge>
               {/* Per-row chrome — recedes until scanned for. */}
-              <ActionGroup
+              <ButtonGroup
                 aria-label={`Actions for ${member.name}`}
                 size="small"
               >
                 <Tooltip.Trigger>
-                  <ActionButton aria-label="Edit role">
+                  <Button aria-label="Edit role">
                     <Pencil />
-                  </ActionButton>
+                  </Button>
                   <Tooltip>Edit role</Tooltip>
                 </Tooltip.Trigger>
                 <Tooltip.Trigger>
-                  <ActionButton variant="destructive-ghost" aria-label="Remove">
+                  <Button variant="destructive-ghost" aria-label="Remove">
                     <Trash2 />
-                  </ActionButton>
+                  </Button>
                   <Tooltip>Remove</Tooltip>
                 </Tooltip.Trigger>
-              </ActionGroup>
+              </ButtonGroup>
             </Inline>
           </Inline>
         ))}

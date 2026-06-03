@@ -1,5 +1,5 @@
 import {
-  ActionButton,
+  Button,
   Description,
   SelectList,
   TextValue,
@@ -35,15 +35,15 @@ export default () => (
       <SelectList.Option key={venue.id} id={venue.id} textValue={venue.name}>
         <TextValue>{venue.name}</TextValue>
         <Description>{venue.capacity}</Description>
-        {/* The nested ActionButton inherits its size and visual weight from
+        {/* The nested Button inherits its size and visual weight from
             SelectList — no `variant` or `size` needed at the call site. */}
         <Tooltip.Trigger>
-          <ActionButton
+          <Button
             aria-label={`Details about ${venue.name}`}
             onPress={() => alert(`Open details for ${venue.name}`)}
           >
             <Info />
-          </ActionButton>
+          </Button>
           <Tooltip>Venue details</Tooltip>
         </Tooltip.Trigger>
       </SelectList.Option>

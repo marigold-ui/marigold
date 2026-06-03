@@ -6,9 +6,9 @@ badge: alpha
 
 The `<ActionMenu>` component is the kebab-menu pattern: a trigger button with no visible label that opens a small menu of contextual quick actions. Reach for it when an item, row, or surface has a handful of actions that don't all need to be visible at once.
 
-The trigger renders as an [`<ActionButton>`](/components/actions/action-button) with an ellipsis icon. On small screens the popover is replaced by a `<Tray>` so the menu remains usable on touch devices.
+The trigger renders as a ghost [`<Button>`](/components/actions/button) with an ellipsis icon. On small screens the popover is replaced by a `<Tray>` so the menu remains usable on touch devices.
 
-For text-labelled menus that anchor primary navigation use [`<Menu>`](/components/overlay/menu) instead. For a flat group of always-visible buttons use [`<ActionGroup>`](/components/actions/action-group).
+For text-labelled menus that anchor primary navigation use [`<Menu>`](/components/overlay/menu) instead. For a flat group of always-visible buttons use [`<ButtonGroup>`](/components/actions/button-group).
 
 import { ActionMenuAnatomy } from './action-menu-anatomy';
 
@@ -16,7 +16,7 @@ import { ActionMenuAnatomy } from './action-menu-anatomy';
 
 <ActionMenuAnatomy />
 
-- **Trigger**, an `<ActionButton>` with the ellipsis icon by default.
+- **Trigger**, a ghost `<Button>` with the ellipsis icon by default.
 - **Popover** on desktop, **Tray** on mobile. The floating surface that holds the menu.
 - **Menu items**, written as `<ActionMenu.Item>`. Mark an item with `variant="destructive"` for high-impact actions.
 
@@ -94,5 +94,5 @@ A container can publish shared defaults for every ActionMenu inside. A row that 
 ## Alternative components
 
 - [Menu](/components/overlay/menu): Use for text-labelled menus where the trigger reads like a primary control.
-- [ActionButton](/components/actions/action-button): Use for always-visible contextual actions. Group several with `ActionGroup`.
+- [Button](/components/actions/button): Use for always-visible contextual actions. Group several with [`<ButtonGroup>`](/components/actions/button-group).
 - [Dialog](/components/overlay/dialog): Use when an action requires confirmation or additional input.

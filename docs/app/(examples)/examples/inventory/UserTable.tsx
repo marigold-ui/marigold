@@ -1,7 +1,6 @@
 import { people } from '@/lib/data/people';
 import { UserRoundPlus } from 'lucide-react';
 import {
-  ActionButton,
   Badge,
   Button,
   Description,
@@ -19,9 +18,9 @@ export const UserTable = () => (
         A list of all the users in your account including their name, title,
         email and role.
       </Description>
-      <ActionButton aria-label="Add user">
+      <Button aria-label="Add user">
         <UserRoundPlus />
-      </ActionButton>
+      </Button>
     </Panel.Header>
     <Panel.Content bleed>
       <Table
