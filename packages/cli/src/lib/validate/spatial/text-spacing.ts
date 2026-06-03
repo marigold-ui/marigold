@@ -227,7 +227,10 @@ export const textSpacingToValidationIssues = (
 
       issues.push({
         type: 'a11y',
-        severity: 'error',
+        // Warning, not error: detected by injecting spacing CSS and measuring a
+        // clip — a runtime heuristic, and 1.4.12 is Level AA. Not a
+        // deterministic, false-positive-free violation. See severity policy.
+        severity: 'warning',
         source: 'text-spacing',
         component: after.component,
         message: `Text content clips ${axis} when WCAG 1.4.12 text spacing is applied (WCAG 1.4.12 Text Spacing).`,

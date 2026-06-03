@@ -551,7 +551,10 @@ export const keyboardA11yToValidationIssues = (
   for (const el of data.unreachableElements) {
     issues.push({
       type: 'a11y',
-      severity: 'error',
+      // Warning, not error: reachability is measured at runtime via a simulated
+      // Tab walk (dynamic, with a history of false "unreachable" results), so it
+      // is not a deterministic, false-positive-free violation. See severity policy.
+      severity: 'warning',
       source: 'keyboard-a11y',
       component: el.component,
       message: `Interactive element <${el.component}> (${el.role}) is not reachable via Tab key.`,
@@ -646,7 +649,10 @@ export const keyboardA11yToValidationIssues = (
       if (trap.isTrap) {
         issues.push({
           type: 'a11y',
-          severity: 'error',
+          // Warning, not error: trap detection is a runtime heuristic (cycle
+          // detection + an Escape-escape probe), not a deterministic violation.
+          // See severity policy.
+          severity: 'warning',
           source: 'keyboard-a11y',
           component: trap.trapSelector ?? 'unknown',
           message: `Keyboard trap detected — focus cycles through ${trap.cycleLength} elements without reaching the rest of the page (WCAG 2.1.2).`,

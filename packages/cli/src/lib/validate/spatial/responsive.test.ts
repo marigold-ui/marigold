@@ -29,12 +29,12 @@ describe('responsiveToValidationIssues', () => {
     expect(issues).toEqual([]);
   });
 
-  it('flags horizontal scroll at mobile as error', () => {
+  it('flags horizontal scroll at mobile as a warning', () => {
     const issues = responsiveToValidationIssues([
       snap('mobile', 375, { horizontalScrollWidth: 500 }),
     ]);
     expect(issues).toHaveLength(1);
-    expect(issues[0].severity).toBe('error');
+    expect(issues[0].severity).toBe('warning');
     expect(issues[0].source).toBe('responsive-checker');
     expect(issues[0].message).toContain('mobile');
     expect(issues[0].message).toContain('125px');
@@ -67,7 +67,7 @@ describe('responsiveToValidationIssues', () => {
     expect(issues[0].details?.tabular).toBe(true);
   });
 
-  it('keeps a non-tabular mobile overflow as an error', () => {
+  it('keeps a non-tabular mobile overflow as a warning', () => {
     const issues = responsiveToValidationIssues([
       snap('mobile', 375, {
         horizontalScrollWidth: 500,
@@ -80,7 +80,7 @@ describe('responsiveToValidationIssues', () => {
         },
       }),
     ]);
-    expect(issues[0].severity).toBe('error');
+    expect(issues[0].severity).toBe('warning');
   });
 
   it('ignores horizontal scroll within 1px tolerance', () => {

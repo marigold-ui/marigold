@@ -165,9 +165,16 @@ export const checkAccessibility = (nodes: AOMNode[]): ValidationIssue[] => {
   return issues;
 };
 
+// Severity policy: axe findings are DYNAMIC (rendered) and context-dependent —
+// axe itself separates definite "violations" from "incomplete" (needs review),
+// and landmark/region rules can fire on design-system-internal markup. Under
+// the project's error rule (ERROR only for deterministic, false-positive-free,
+// hard contract / broken-code violations), no runtime a11y heuristic is an
+// error. All axe findings are therefore warnings, regardless of axe's own
+// impact rating.
 const AXE_IMPACT_TO_SEVERITY: Record<string, 'error' | 'warning'> = {
-  critical: 'error',
-  serious: 'error',
+  critical: 'warning',
+  serious: 'warning',
   moderate: 'warning',
   minor: 'warning',
 };
@@ -182,17 +189,17 @@ const MARIGOLD_RULE_MAP: Record<string, MarigoldRuleOverride> = {
   'landmark-one-main': {
     suggestion:
       'Wrap your page content in `<AppLayout>` with `<AppLayout.Main>` to provide a `<main>` landmark. Import AppLayout from `@marigold/components`.',
-    severity: 'error',
+    severity: 'warning',
   },
   'page-has-heading-one': {
     suggestion:
       'Add a `<Headline level={1}>` component for the page title — it renders an `<h1>`. Import Headline from `@marigold/components`.',
-    severity: 'error',
+    severity: 'warning',
   },
   region: {
     suggestion:
       'All page content must be inside a landmark region. Use `<AppLayout>` with `<AppLayout.Main>` for the main area, `<TopNavigation>` for the header (`<header>`), and `<Sidebar>` for side navigation (`<aside>`). Import from `@marigold/components`.',
-    severity: 'error',
+    severity: 'warning',
     dedup: true,
   },
   'landmark-banner-is-top-level': {

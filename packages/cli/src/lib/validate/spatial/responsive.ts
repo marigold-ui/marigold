@@ -455,13 +455,15 @@ export const responsiveToValidationIssues = (
           } extends to ${snap.overflowCulprit.right}px.`
         : '';
 
-      // A wide data table is WCAG 2.1.10-exempt two-dimensional content, so it
-      // is a warning (not a mobile error) and the fix is to let it scroll
-      // inside a <Scrollable> rather than reflow it like a layout block.
+      // Warning at every breakpoint: overflow is a runtime measurement gated by
+      // a scrollbar tolerance, and WCAG 2.1.10 Reflow is Level AA — not a
+      // deterministic, false-positive-free Level-A violation. (A wide data table
+      // is additionally 2.1.10-exempt 2D content; the fix there is a
+      // <Scrollable>.) See severity policy.
       const tabular = snap.overflowCulprit?.tabular ?? false;
       issues.push({
         type: 'spatial',
-        severity: tabular ? 'warning' : bp.width <= 375 ? 'error' : 'warning',
+        severity: 'warning',
         source: 'responsive-checker',
         component: snap.overflowCulprit?.component ?? 'viewport',
         message: `Content overflows viewport at ${bp.label} (${bp.width}px): scroll width ${snap.horizontalScrollWidth}px exceeds viewport by ${delta}px.${culprit}`,
@@ -525,7 +527,10 @@ export const responsiveToValidationIssues = (
       if (!isGenuineDisappearance(d)) continue;
       issues.push({
         type: 'spatial',
-        severity: 'error',
+        // Warning, not error: a 0x0 measurement is a runtime heuristic with
+        // legitimate causes (CSS/display states) that the visibility guard only
+        // mostly excludes — not a false-positive-free violation. Severity policy.
+        severity: 'warning',
         source: 'responsive-checker',
         component: d.component,
         message: `Component <${d.component}> has zero dimensions at ${bp.label} (${bp.width}px viewport).`,

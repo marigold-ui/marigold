@@ -45,7 +45,7 @@ describe('textSpacingToValidationIssues', () => {
     };
     const issues = textSpacingToValidationIssues(data);
     expect(issues).toHaveLength(1);
-    expect(issues[0].severity).toBe('error');
+    expect(issues[0].severity).toBe('warning');
     expect(issues[0].source).toBe('text-spacing');
     expect(issues[0].message).toContain('vertically');
     expect(issues[0].message).toContain('WCAG 1.4.12');

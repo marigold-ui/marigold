@@ -65,7 +65,7 @@ describe('keyboardA11yToValidationIssues', () => {
       ],
     });
     expect(issues).toHaveLength(1);
-    expect(issues[0].severity).toBe('error');
+    expect(issues[0].severity).toBe('warning');
     expect(issues[0].source).toBe('keyboard-a11y');
     expect(issues[0].message).toContain('not reachable via Tab');
   });
@@ -280,7 +280,7 @@ describe('keyboardA11yToValidationIssues', () => {
     });
     const trapIssues = issues.filter(i => i.message.includes('Keyboard trap'));
     expect(trapIssues).toHaveLength(1);
-    expect(trapIssues[0].severity).toBe('error');
+    expect(trapIssues[0].severity).toBe('warning');
     expect(trapIssues[0].message).toContain('WCAG 2.1.2');
     expect(trapIssues[0].details?.cycleLength).toBe(3);
   });
