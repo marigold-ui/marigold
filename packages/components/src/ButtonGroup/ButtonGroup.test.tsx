@@ -17,6 +17,33 @@ test('renders ButtonGroup as a toolbar', () => {
   ).toBeInTheDocument();
 });
 
+describe('layout', () => {
+  test('a standalone group lays its buttons out as a spaced flex row', () => {
+    render(<Basic.Component />);
+
+    const toolbar = screen.getByRole('toolbar', { name: 'Item actions' });
+    expect(toolbar).toHaveClass('flex', 'items-center', 'gap-1');
+  });
+
+  test('a positional className from a container coexists with the layout', () => {
+    render(
+      <Provider
+        values={[
+          [ButtonContext, { className: 'self-center [grid-area:actions]' }],
+        ]}
+      >
+        <Basic.Component />
+      </Provider>
+    );
+
+    const toolbar = screen.getByRole('toolbar', { name: 'Item actions' });
+    // Container positioning is applied to the group itself...
+    expect(toolbar).toHaveClass('[grid-area:actions]', 'self-center');
+    // ...without dropping the group's own flex layout.
+    expect(toolbar).toHaveClass('flex', 'gap-1');
+  });
+});
+
 test('cascades disabled to children inside ButtonGroup', () => {
   render(<DisabledCascade.Component />);
 

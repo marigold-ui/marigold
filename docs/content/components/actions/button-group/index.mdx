@@ -24,7 +24,7 @@ import { ButtonGroupAnatomy } from './button-group-anatomy';
 
 <AppearanceTable component={'ButtonGroup'} />
 
-`<ButtonGroup>` has no visual styling of its own. The `variant` and `size` props cascade to every nested [`<Button>`](/components/actions/button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. When `variant` is unset the group cascades `ghost`, so an unconfigured cluster reads as low-emphasis chrome. Precedence is uniform: a local `variant` or `size` on a child always wins over the group default.
+`<ButtonGroup>` carries no visual styling of its own beyond laying its buttons out as a spaced row (or column, when `orientation="vertical"`). The `variant` and `size` props cascade to every nested [`<Button>`](/components/actions/button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. When `variant` is unset the group cascades `ghost`, so an unconfigured cluster reads as low-emphasis chrome. Precedence is uniform: a local `variant` or `size` on a child always wins over the group default.
 
 ## Usage
 

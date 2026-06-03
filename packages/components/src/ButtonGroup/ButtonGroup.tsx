@@ -3,6 +3,7 @@ import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Toolbar } from 'react-aria-components/Toolbar';
 import { Provider, useContextProps } from 'react-aria-components/slots';
+import { cn } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 import { ButtonContext } from '../Button/Context';
 import type { SlotProps } from '../types';
@@ -57,6 +58,7 @@ export const ButtonGroup = ({
     size,
     disabled,
     orientation = 'horizontal',
+    className,
     children,
     ...props
   } = merged;
@@ -73,7 +75,22 @@ export const ButtonGroup = ({
 
   return (
     <Provider values={[[ButtonContext, ctx]]}>
-      <Toolbar {...props} ref={ref} orientation={orientation}>
+      <Toolbar
+        {...props}
+        ref={ref}
+        orientation={orientation}
+        className={cn(
+          // Structural layout so a standalone cluster has sensible spacing.
+          // `gap-1` matches the design system's tight-cluster convention
+          // (ActionBar selection, TagField tag group).
+          'flex gap-1',
+          orientation === 'vertical' ? 'flex-col items-start' : 'items-center',
+          // A container's positional className (e.g. Panel.Header's
+          // `self-center [grid-area:actions]`) rides along; tailwind-merge lets
+          // it override the layout where it sets the same utilities.
+          className
+        )}
+      >
         {children}
       </Toolbar>
     </Provider>
