@@ -490,6 +490,106 @@ export const Horizontal = meta.story({
   ),
 });
 
+export const HorizontalResponsive = meta.story({
+  tags: ['component-test'],
+  args: {
+    orientation: 'horizontal',
+  },
+  render: args => (
+    <Stack space={6}>
+      <div data-testid="wide-container" className="max-w-175">
+        <SelectList
+          {...args}
+          label="Shipping speed (wide container)"
+          description="700px parent items stay side by side."
+          defaultSelectedKeys={['standard']}
+        >
+          <SelectList.Option id="standard" textValue="Standard">
+            <Text slot="label">Standard</Text>
+            <Text slot="description">3–5 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="express" textValue="Express">
+            <Text slot="label">Express</Text>
+            <Text slot="description">1–2 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="overnight" textValue="Overnight">
+            <Text slot="label">Overnight</Text>
+            <Text slot="description">Next business day</Text>
+          </SelectList.Option>
+        </SelectList>
+      </div>
+      <div data-testid="medium-container" className="max-w-125">
+        <SelectList
+          {...args}
+          label="Shipping speed (medium container)"
+          description="500px parent narrower than the 640px breakpoint, so items stack vertically."
+          defaultSelectedKeys={['standard-medium']}
+        >
+          <SelectList.Option id="standard-medium" textValue="Standard">
+            <Text slot="label">Standard</Text>
+            <Text slot="description">3–5 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="express-medium" textValue="Express">
+            <Text slot="label">Express</Text>
+            <Text slot="description">1–2 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="overnight-medium" textValue="Overnight">
+            <Text slot="label">Overnight</Text>
+            <Text slot="description">Next business day</Text>
+          </SelectList.Option>
+        </SelectList>
+      </div>
+      <div data-testid="narrow-container" className="w-[320px]">
+        <SelectList
+          {...args}
+          label="Shipping speed (narrow container)"
+          description="320px parent items stack vertically."
+          defaultSelectedKeys={['standard-narrow']}
+        >
+          <SelectList.Option id="standard-narrow" textValue="Standard">
+            <Text slot="label">Standard</Text>
+            <Text slot="description">3–5 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="express-narrow" textValue="Express">
+            <Text slot="label">Express</Text>
+            <Text slot="description">1–2 business days</Text>
+          </SelectList.Option>
+          <SelectList.Option id="overnight-narrow" textValue="Overnight">
+            <Text slot="label">Overnight</Text>
+            <Text slot="description">Next business day</Text>
+          </SelectList.Option>
+        </SelectList>
+      </div>
+    </Stack>
+  ),
+  play: async ({ canvas, step }) => {
+    const wide = canvas.getByTestId('wide-container');
+    const medium = canvas.getByTestId('medium-container');
+    const narrow = canvas.getByTestId('narrow-container');
+    const wideList = wide.querySelector('[role="grid"]') as HTMLElement;
+    const mediumList = medium.querySelector('[role="grid"]') as HTMLElement;
+    const narrowList = narrow.querySelector('[role="grid"]') as HTMLElement;
+
+    await step('wide container keeps items in a row', () => {
+      expect(getComputedStyle(wideList).flexDirection).toBe('row');
+    });
+
+    await step('narrow container flips items into a column', () => {
+      expect(getComputedStyle(narrowList).flexDirection).toBe('column');
+    });
+
+    await step(
+      'medium container (500px) flips to a vertical stack (below 640px breakpoint)',
+      () => {
+        expect(getComputedStyle(mediumList).flexDirection).toBe('column');
+        const containerWidth = medium.getBoundingClientRect().width;
+        const listWidth = mediumList.getBoundingClientRect().width;
+        expect(listWidth).toBeLessThanOrEqual(containerWidth);
+      }
+    );
+  },
+});
+
 const borderedMethods = [
   {
     id: 'visa',
