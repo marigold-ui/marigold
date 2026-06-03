@@ -95,9 +95,9 @@ const renderNav = (items: NavNode[], base: string): ReactNode[] =>
   });
 
 const UserSection = () => (
-  <Inline space={2} alignY="center" noWrap>
+  <Inline space="related" alignY="center" noWrap>
     <Stack>
-      <Inline space={1} alignY="center" noWrap>
+      <Inline space="tight" alignY="center" noWrap>
         <Text size="sm" weight="bold">
           Jane Doe
         </Text>
@@ -127,7 +127,7 @@ export const ShellLayout = ({
       <AppShell defaultSidebarOpen>
         <Sidebar>
           <Sidebar.Header>
-            <Inline space={2} alignY="center" noWrap>
+            <Inline space="related" alignY="center" noWrap>
               <Logo className="size-8 shrink-0" />
               <Text weight="bold" fontSize="lg">
                 Examples
@@ -146,7 +146,7 @@ export const ShellLayout = ({
             ])}
           </Sidebar.Nav>
           <Sidebar.Footer>
-            <Stack space={2} alignX="left">
+            <Stack space="related" alignX="left">
               <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
                 <ArrowLeft />
                 {`Go to ${leaf?.docsLabel ?? 'documentation'}`}

@@ -48,7 +48,7 @@ export const Inventory = () => (
   <Panel aria-label="Component showcase">
     <Panel.Content>
       <Form autoComplete="off">
-        <Columns columns={[1, 1, 1]} space={8} collapseAt="800px">
+        <Columns columns={[1, 1, 1]} space="regular" collapseAt="800px">
           <Stack space="regular">
             <Headline level="4">Shipping Address</Headline>
             <TextField label="Full name" required />
@@ -118,10 +118,10 @@ export const Inventory = () => (
               <Button>Cancel</Button>
             </Inline>
           </Stack>
-          <Stack space={6}>
+          <Stack space="regular">
             <Card stretch>
               <Card.Header>
-                <Inline noWrap space={5}>
+                <Inline noWrap space="regular">
                   <img
                     src={venue.image}
                     alt=""
@@ -136,8 +136,8 @@ export const Inventory = () => (
                 </Inline>
               </Card.Header>
               <Card.Body>
-                <Columns columns={['fit', 1]} space={4}>
-                  <Stack alignX="right" space={1}>
+                <Columns columns={['fit', 1]} space="regular">
+                  <Stack alignX="right" space="tight">
                     <Text fontSize="sm" weight="semibold">
                       Capacity:
                     </Text>
@@ -148,7 +148,7 @@ export const Inventory = () => (
                       Amenities:
                     </Text>
                   </Stack>
-                  <Stack space={1}>
+                  <Stack space="tight">
                     <Text fontSize="sm">{venue.capacity}</Text>
                     <Text fontSize="sm">
                       <NumericFormat
@@ -167,7 +167,7 @@ export const Inventory = () => (
                 </Columns>
               </Card.Body>
             </Card>
-            <Inline space={2}>
+            <Inline space="related">
               <Badge>basic</Badge>
               <Badge variant="success">free</Badge>
               <Badge variant="error">on sale</Badge>
@@ -192,7 +192,7 @@ export const Inventory = () => (
                   id={person.id}
                   textValue={person.name}
                 >
-                  <Inline space={2} alignY="center">
+                  <Inline space="related" alignY="center">
                     <img
                       src={person.avatar}
                       alt={person.name}
@@ -228,7 +228,7 @@ export const Inventory = () => (
             </SectionMessage>
             <Switch label="Gift Wrap" defaultSelected />
           </Stack>
-          <Stack space={6}>
+          <Stack space="regular">
             <Pagination page={2} pageSize={1} totalItems={4} />
             <Tag.Group label="Venue types" onRemove={() => {}}>
               {venueTypes.map(type => (
@@ -246,7 +246,7 @@ export const Inventory = () => (
               label="Event Date"
               defaultValue={new CalendarDate(2026, 6, 3)}
             />
-            <Inline space={2} noWrap>
+            <Inline space="related" noWrap>
               <Button variant="primary">
                 <Tickets /> View tickets
               </Button>
