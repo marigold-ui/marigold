@@ -1,12 +1,16 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
+import { useContextProps } from 'react-aria-components/slots';
 import { cn, useClassNames } from '@marigold/system';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
+import type { SlotProps } from '../types';
+import { ButtonContext, type ButtonContextValue } from './Context';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
-export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
+export interface ButtonProps
+  extends Omit<RAC.ButtonProps, RemovedProps>, SlotProps {
   variant?:
     | 'primary'
     | 'secondary'
@@ -44,16 +48,30 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   ref?: Ref<HTMLButtonElement>;
 }
 
-const _Button = ({
-  children,
-  variant,
-  size,
-  disabled,
-  loading,
-  fullWidth,
-  ref,
-  ...props
-}: ButtonProps) => {
+const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
+  // Consume the Marigold-owned `ButtonContext` (NOT RAC's) so a bare `<Button>`
+  // adapts inside `<ButtonGroup>` / `<Panel.Header>`. `useContextProps` +
+  // `mergeProps` give uniform precedence: a local prop always wins over context
+  // for `variant`/`size`/`disabled`, while the positional `className` flows in
+  // from context. `slot={null}` opts out of the cascade; any other `slot` is
+  // forwarded to RAC's `<Button>` for functional slots (`close`, etc.).
+  const [merged, ref] = useContextProps(
+    inputProps as ButtonContextValue,
+    refProp,
+    ButtonContext
+  );
+
+  const {
+    children,
+    variant,
+    size,
+    disabled,
+    loading,
+    fullWidth,
+    className,
+    ...props
+  } = merged;
+
   const classNames = useClassNames({
     component: 'Button',
     variant,
@@ -65,6 +83,7 @@ const _Button = ({
       {...props}
       ref={ref}
       className={cn(
+        className,
         classNames,
         fullWidth ? 'w-full' : undefined,
         loading && 'cursor-progress!'

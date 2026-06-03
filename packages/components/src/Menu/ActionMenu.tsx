@@ -4,7 +4,6 @@ import { MenuTrigger, Menu as RACMenu } from 'react-aria-components/Menu';
 import { useContextProps } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames, useSmallScreen } from '@marigold/system';
-import { ActionButton } from '../ActionButton/ActionButton';
 import { Button } from '../Button/Button';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
@@ -38,19 +37,20 @@ export interface ActionMenuProps
    */
   placement?: PopoverProps['placement'];
 
-  // `variant` / `size` / `disabled` participate in `<ActionGroup>` cascade
-  // with the same per-prop precedence as `<ActionButton>`: size — group wins,
-  // variant — local wins, disabled — local wins (group is the default).
+  // `variant` / `size` / `disabled` participate in the `<ButtonGroup>` /
+  // `<Panel.Header>` cascade via the trigger `<Button>`, with uniform
+  // precedence: a value set here always wins over the container.
 
   /**
    * Visual variant of the trigger button.
+   * @default 'ghost'
    */
-  variant?: 'default' | 'ghost' | (string & {});
+  variant?: 'ghost' | (string & {});
 
   /**
-   * Size of the trigger button. Applied when `<ActionMenu>` is used on
-   * its own. Inside an `<ActionGroup>` the group's `size` wins so the
-   * cluster stays visually uniform.
+   * Size of the trigger button. Applied when `<ActionMenu>` is used on its
+   * own. Inside a `<ButtonGroup>`/`<Panel.Header>` it inherits the cascaded
+   * size unless set explicitly here.
    */
   size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 
@@ -113,17 +113,22 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
     >
-      <ActionButton
+      <Button
         ref={ref}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         aria-describedby={ariaDescribedBy}
         disabled={disabled}
-        variant={variant}
+        // Default the trigger to `ghost` so a standalone `<ActionMenu>` keeps
+        // the icon-button look it had as an `<ActionButton>` (whose `default`
+        // variant was Button's `ghost`). Inside `<Panel.Header>`/`<ButtonGroup>`
+        // it still picks up the cascaded `size`/positional className via the
+        // greedy `ButtonContext`.
+        variant={variant ?? 'ghost'}
         size={size}
       >
         <EllipsisVertical />
-      </ActionButton>
+      </Button>
       {isSmallScreen ? (
         <Tray>
           <Tray.Content>

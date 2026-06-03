@@ -18,13 +18,6 @@ export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
 export { useActionBar } from './ActionBar/useActionBar';
 
-export { ActionButton } from './ActionButton/ActionButton';
-export type { ActionButtonProps } from './ActionButton/ActionButton';
-export { ActionButtonContext } from './ActionButton/Context';
-
-export { ActionGroup } from './ActionGroup/ActionGroup';
-export type { ActionGroupProps } from './ActionGroup/ActionGroup';
-export { ActionGroupContext } from './ActionGroup/Context';
 export type {
   UseActionBarProps,
   UseActionBarReturn,
@@ -50,6 +43,11 @@ export type { BreakoutProps } from './Breakout/Breakout';
 
 export { Button } from './Button/Button';
 export type { ButtonProps } from './Button/Button';
+export { ButtonContext } from './Button/Context';
+export type { ButtonContextValue } from './Button/Context';
+
+export { ButtonGroup } from './ButtonGroup/ButtonGroup';
+export type { ButtonGroupProps } from './ButtonGroup/ButtonGroup';
 
 export { Calendar } from './Calendar/Calendar';
 export type { CalendarProps } from './Calendar/Calendar';

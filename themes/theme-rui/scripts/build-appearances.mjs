@@ -25,16 +25,11 @@ console.log('🎨 Generating appearances data...');
  */
 const sharedAppearances = {
   LinkButton: 'Button',
+  // `ButtonGroup` has no theme of its own; it cascades `variant`/`size` to its
+  // `Button` children (defaulting to `ghost`), so it shares Button's vocabulary.
+  ButtonGroup: 'Button',
   ToggleButtonGroup: 'ToggleButton',
   Title: 'Headline',
-  ActionButton: {
-    from: 'ActionButton',
-    variant: ['default', 'secondary', 'destructive-ghost', 'link'],
-  },
-  ActionGroup: {
-    from: 'ActionButton',
-    variant: ['default', 'secondary', 'destructive-ghost', 'link'],
-  },
   ActionMenu: 'Menu',
 };
 

@@ -2,18 +2,18 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroupContext } from '../ActionGroup/Context';
+import { ButtonContext } from '../Button/Context';
 import { usePanelContext } from './Context';
 
 export interface PanelHeaderProps {
   /**
    * Content of the header. Typically a `<Title>`, optional `<Description>`,
-   * and optional action primitives (`<ActionButton>`, `<ActionGroup>`,
-   * `<ActionMenu>`, `<LinkButton>`).
+   * and optional buttons (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`,
+   * `<LinkButton>`).
    *
-   * Use the action primitives above for header chrome — a bare `<Button>`
-   * is intentionally not slot-aware and won't pick up the size/grid cascade.
+   * A bare `<Button>` IS slot-aware here: it claims the `actions` grid cell
+   * and adopts the header's icon size + ghost variant via `ButtonContext`.
+   * Opt a button out of the cascade with `slot={null}`.
    */
   children: ReactNode;
 }
@@ -55,16 +55,17 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
     [classNames.description]
   );
 
-  // Published as the same value on `ActionButtonContext` and
-  // `ActionGroupContext` so a single `<ActionButton>` and an `<ActionGroup>`
-  // of clustered actions both claim the `actions` grid cell with the same
-  // styling. `size: 'icon'` is the correct cascade for both: a bare
-  // `<ActionButton>` renders as an icon button, and an `<ActionGroup>`
-  // propagates the size to its inner `<ActionButton>` children.
+  // A single `ButtonContext` value drives the whole button subsystem in the
+  // header. A bare `<Button>`, a `<ButtonGroup>`, an `<ActionMenu>`, and a
+  // `<LinkButton>` all claim the `actions` grid cell with the same styling.
+  // `size: 'icon'` + `variant: 'ghost'` reproduce the old `ActionButton`
+  // default look; a `<ButtonGroup>` re-provides its own context to children,
+  // so the positional className stays on the group, not its buttons.
   const actionProps = useMemo(
     () => ({
       className: cn('self-center [grid-area:actions]', classNames.actions),
       'data-grid-area': 'actions',
+      variant: 'ghost' as const,
       size: 'icon' as const,
     }),
     [classNames.actions]
@@ -75,8 +76,7 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
       values={[
         [HeadingContext, headingProps],
         [TextContext, textProps],
-        [ActionButtonContext, actionProps],
-        [ActionGroupContext, actionProps],
+        [ButtonContext, actionProps],
       ]}
     >
       <div

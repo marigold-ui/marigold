@@ -1,15 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-aria-components/slots';
-import { Basic as ActionButtonBasic } from '../ActionButton/ActionButton.stories';
-import { ActionButtonContext } from '../ActionButton/Context';
+import { Basic as ButtonBasic } from '../Button/Button.stories';
+import { ButtonContext } from '../Button/Context';
 import {
   Basic,
   CascadePrecedence,
   DisabledCascade,
   WithActionMenu,
-} from './ActionGroup.stories';
+} from './ButtonGroup.stories';
 
-test('renders ActionGroup as a toolbar', () => {
+test('renders ButtonGroup as a toolbar', () => {
   render(<Basic.Component />);
 
   expect(
@@ -17,7 +17,7 @@ test('renders ActionGroup as a toolbar', () => {
   ).toBeInTheDocument();
 });
 
-test('cascades disabled to children inside ActionGroup', () => {
+test('cascades disabled to children inside ButtonGroup', () => {
   render(<DisabledCascade.Component />);
 
   const buttons = screen.getAllByRole('button');
@@ -27,14 +27,14 @@ test('cascades disabled to children inside ActionGroup', () => {
   }
 });
 
-describe('cascade precedence', () => {
-  test('group "size" wins over a child\'s explicit size prop', () => {
+describe('cascade precedence (local always wins)', () => {
+  test('local "size" wins over the group\'s size', () => {
     render(<CascadePrecedence.Component />);
 
     const btn = screen.getByRole('button', { name: 'Outsized' });
 
-    expect(btn).toHaveClass('h-control-small');
-    expect(btn).not.toHaveClass('h-control-large');
+    expect(btn).toHaveClass('h-control-large');
+    expect(btn).not.toHaveClass('h-control-small');
   });
 
   test('local "variant" wins over the group\'s variant', () => {
@@ -51,28 +51,26 @@ describe('cascade precedence', () => {
   test('local "disabled={false}" re-enables a button inside a disabled group', () => {
     render(<CascadePrecedence.Component />);
 
-    expect(screen.getByRole('button', { name: 'Outsized' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Delete' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Save' })).not.toBeDisabled();
   });
 });
 
-test('ActionMenu trigger inside ActionGroup follows group "size" precedence', () => {
+test('ActionMenu trigger inside ButtonGroup follows local-wins size precedence', () => {
   render(<WithActionMenu.Component />);
 
   const menuTrigger = screen.getByRole('button', { name: 'More actions' });
 
-  expect(menuTrigger).toHaveClass('h-control-small');
-  expect(menuTrigger).not.toHaveClass('h-control-large');
+  // ActionMenu sets `size="large"` locally, which wins over the group's `small`.
+  expect(menuTrigger).toHaveClass('h-control-large');
+  expect(menuTrigger).not.toHaveClass('h-control-small');
 });
 
-describe('layout boundary scrub', () => {
-  test('a bare ActionButton picks up the positional className from ActionButtonContext', () => {
+describe('positional className boundary', () => {
+  test('a bare Button picks up the positional className from ButtonContext', () => {
     render(
-      <Provider values={[[ActionButtonContext, { className: 'positional' }]]}>
-        <ActionButtonBasic.Component aria-label="Bare">
-          Bare
-        </ActionButtonBasic.Component>
+      <Provider values={[[ButtonContext, { className: 'positional' }]]}>
+        <ButtonBasic.Component aria-label="Bare">Bare</ButtonBasic.Component>
       </Provider>
     );
 
@@ -81,9 +79,9 @@ describe('layout boundary scrub', () => {
     );
   });
 
-  test('ActionButtons inside an ActionGroup do NOT pick up the positional className', () => {
+  test('Buttons inside a ButtonGroup do NOT inherit the positional className', () => {
     render(
-      <Provider values={[[ActionButtonContext, { className: 'positional' }]]}>
+      <Provider values={[[ButtonContext, { className: 'positional' }]]}>
         <Basic.Component />
       </Provider>
     );

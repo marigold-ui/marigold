@@ -62,7 +62,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
 
-    ActionButton?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: Record<
       | 'container'
