@@ -1,5 +1,7 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Text } from '../Text/Text';
+import { Description } from '../Description/Description';
+import { TextValue } from '../TextValue/TextValue';
 import { ListBox } from './ListBox';
 
 const meta = preview.meta({
@@ -27,23 +29,28 @@ export const Basic = meta.story({
 });
 
 export const WithDescription = meta.story({
+  tags: ['component-test'],
   render: args => (
-    <ListBox
-      aria-labelledby="listbox"
-      selectionMode="single"
-      defaultSelectedKeys={['harry']}
-      {...args}
-    >
-      <ListBox.Item id="harry" textValue="Harry Potter">
-        <Text slot="label">Harry Potter</Text>
-        <Text slot="description">About the boy who lived</Text>
+    <ListBox aria-labelledby="listbox" selectionMode="single" {...args}>
+      <ListBox.Item id="public" textValue="Public">
+        <TextValue>Public</TextValue>
+        <Description>Anyone with the link can view.</Description>
       </ListBox.Item>
-      <ListBox.Item id="lotr" textValue="Lord of the Rings">
-        <Text slot="label">Lord of the Rings</Text>
-        <Text slot="description">In the lands of Middle earth</Text>
+      <ListBox.Item id="restricted" textValue="Restricted">
+        <TextValue>Restricted</TextValue>
+        <Description>Only people you invite can view.</Description>
       </ListBox.Item>
     </ListBox>
   ),
+  play: async ({ canvas }: any) => {
+    const item = canvas.getByRole('option', { name: /Restricted/ });
+    const description = canvas.getByText('Only people you invite can view.');
+
+    expect(description.id).toBeTruthy();
+    expect(item.getAttribute('aria-describedby') ?? '').toContain(
+      description.id
+    );
+  },
 });
 
 export const WithSections = meta.story({

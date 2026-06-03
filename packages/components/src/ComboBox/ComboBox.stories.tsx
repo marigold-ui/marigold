@@ -261,8 +261,8 @@ export const Sections: any = meta.story({
         </ComboBox.Option>
       </ComboBox.Section>
       <ComboBox.Section header="Sci-Fi">
-        <ComboBox.Option id="star-wars" textValue="Start Wars">
-          <TextValue>Start Wars</TextValue>
+        <ComboBox.Option id="star-wars" textValue="Star Wars">
+          <TextValue>Star Wars</TextValue>
           <Description>A long time ago, in a galaxy far, far away</Description>
         </ComboBox.Option>
         <ComboBox.Option id="star-trek" textValue="Star Trek">
@@ -284,6 +284,13 @@ export const Sections: any = meta.story({
 
     expect(s1).toBeVisible();
     expect(s2).toBeVisible();
+
+    const item = canvas.getByRole('option', { name: /Harry Potter/ });
+    const description = canvas.getByText('About the boy who lived');
+    expect(description.id).toBeTruthy();
+    expect(item.getAttribute('aria-describedby') ?? '').toContain(
+      description.id
+    );
   },
 });
 

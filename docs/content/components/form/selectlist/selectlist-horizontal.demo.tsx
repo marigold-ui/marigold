@@ -1,5 +1,12 @@
 import { Plane, Rocket, Truck } from 'lucide-react';
-import { Inline, SelectList, Stack, Text } from '@marigold/components';
+import {
+  Description,
+  Inline,
+  SelectList,
+  Stack,
+  Text,
+  TextValue,
+} from '@marigold/components';
 
 const speeds = [
   {
@@ -44,10 +51,10 @@ export default () => (
           <Stack space={1}>
             <Icon size={20} aria-hidden className="text-secondary shrink-0" />
             <Inline space={2} alignY="center">
-              <Text slot="label">{name}</Text>
+              <TextValue>{name}</TextValue>
               <Text weight="semibold">{price}</Text>
             </Inline>
-            <Text slot="description">{eta}</Text>
+            <Description>{eta}</Description>
           </Stack>
         </div>
       </SelectList.Option>
