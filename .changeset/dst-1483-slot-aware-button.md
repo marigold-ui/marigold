@@ -28,6 +28,9 @@ of learning a second button component.
 - Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset `ButtonContext` at their
   content root, so a header/group cascade can't leak through the portal into an
   overlay's `slot="close"` or `Dialog.Actions` buttons.
+- `<SelectList.Option>` cascades `variant: 'ghost'` to a nested `<Button>`,
+  `<LinkButton>`, or `<ActionMenu>`, so a trailing in-row action reads as
+  low-emphasis chrome without an explicit `variant`.
 
 **Migration**
 

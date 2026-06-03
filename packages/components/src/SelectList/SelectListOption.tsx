@@ -6,6 +6,7 @@ import { GridListItem as RACGridListItem } from 'react-aria-components/GridList'
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { cn } from '@marigold/system';
+import { ButtonContext as MarigoldButtonContext } from '../Button/Context';
 import { useSelectListContext } from './Context';
 import { SelectionIndicator } from './SelectionIndicator';
 
@@ -38,6 +39,12 @@ interface OptionChildrenProps {
 // Stable identity for the `parentButton` fallback so `buttonContextValue`'s
 // `useMemo` isn't invalidated every render when no parent context is set.
 const EMPTY_BUTTON_CTX: SlottedContextValue = {};
+
+// A trailing action inside an option is low-emphasis chrome, so a bare
+// Marigold `<Button>` / `<LinkButton>` / `<ActionMenu>` defaults to `ghost`.
+// (The RAC `ButtonContext` above still carries the positional className. A
+// local `variant` on the button always wins over this default.)
+const OPTION_BUTTON_CASCADE = { variant: 'ghost' };
 
 // Merge (rather than replace) RAC-provided slot configs on TextContext and
 // ButtonContext so nested `<Text slot="label">`, `<Text slot="description">`
@@ -81,6 +88,7 @@ const OptionChildren = ({
       values={[
         [TextContext, textContextValue],
         [ButtonContext, buttonContextValue],
+        [MarigoldButtonContext, OPTION_BUTTON_CASCADE],
       ]}
     >
       {children}

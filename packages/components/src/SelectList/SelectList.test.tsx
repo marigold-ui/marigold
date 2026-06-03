@@ -41,6 +41,17 @@ describe('SelectList', () => {
       expect(grid).toHaveAttribute('slot', 'test');
     });
 
+    test('cascades the ghost variant to a nested Button inside an option', () => {
+      render(<WithIconAction.Component aria-label="Payments" />);
+
+      // The story's Button sets no `variant`; the option cascades `ghost`.
+      const [button] = screen.getAllByRole('button', {
+        name: /Learn more about/,
+      });
+
+      expect(button).toHaveClass('hover:ui-state-hover-ghost');
+    });
+
     test('forwards refs to the underlying HTMLElement', () => {
       const ref: { current: HTMLDivElement | null } = { current: null };
 
