@@ -272,22 +272,9 @@ To visually imitate a button element that navigates (e.g., a "Cancel" action tha
   </Dont>
 </GuidelineTiles>
 
-### Page or surface action
-
-`<Button>` is the right call for the page-level commitment: submit, save, confirm, continue. Marigold ships a small family of related components for the cases where `<Button>` is the wrong fit, like low-emphasis actions inside rows and surfaces, bulk-selection bars, overflow menus, and navigation. Pick the component by the role of the action, not by the variant you have in mind.
-
-| Situation                                                     | Component                                                                                                                                                                                                                                  |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Submit a form, confirm a dialog, finish a wizard step         | [`<Button>`](/components/actions/button)                                                                                                                                                                                                   |
-| The single most important call-to-action on a page or section | [`<Button variant="primary">`](/components/actions/button)                                                                                                                                                                                 |
-| Per-row action in a list, table, or `<SelectList>` option     | A ghost `<Button>` inside a [`<ButtonGroup>`](/components/actions/button-group). For actions that navigate (e.g. an "Edit" link to a detail page), use [`<LinkButton>`](/components/actions/link-button), which picks up the same cascade. |
-| Chrome on a `<Panel>`, `<Dialog>`, or `<Drawer>` header       | A ghost `<Button>` (or a [`<ButtonGroup>`](/components/actions/button-group) of them) — it adapts to the container automatically                                                                                                           |
-| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/actions/actionbar)                                                                                                                                                                                      |
-| Overflow when there are more actions than fit comfortably     | [`<ActionMenu>`](/components/overlay/action-menu)                                                                                                                                                                                          |
-
 ### Surface actions
 
-The same `<Button>` that carries a page-level commitment also serves as a low-emphasis **surface action** — the chrome that belongs to a row, a toolbar, or a container header rather than to the page. Reach for `variant="ghost"` so the button recedes into its surroundings instead of competing with the page's primary action.
+`<Button>` is the right call for a page-level commitment — submit, save, confirm, continue. The same `<Button>` also serves as a low-emphasis **surface action**: the chrome that belongs to a row, a toolbar, or a container header rather than to the page. Reach for `variant="ghost"` so the button recedes into its surroundings instead of competing with the page's primary action.
 
 Anchor each surface with at most one prominent `<Button>` for the real commitment, and use ghost buttons for the repeated, low-emphasis actions around it. Cluster several with a [`<ButtonGroup>`](/components/actions/button-group).
 
@@ -314,6 +301,7 @@ Each handler receives a `PressEvent`, providing details about the target and the
 ## Alternative components
 
 - [ButtonGroup](/components/actions/button-group): A toolbar wrapper around a related cluster of buttons; cascades a shared `variant`/`size`.
+- [ActionMenu](/components/overlay/action-menu): The overflow pattern for when there are more actions than fit comfortably in a row.
 - [ActionBar](/components/actions/actionbar): The bar around bulk-selection actions; uses `<ActionBar.Button>` internally.
 - [Link](/components/actions/link): A component to navigate to another page.
 - [LinkButton](/components/actions/link-button): A component to navigate to another page but looks like a button.
