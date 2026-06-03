@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
-import { use, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import { ListBoxItem } from 'react-aria-components/ListBox';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { Check } from '../icons/Check';
+import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 import { useListBoxContext } from './Context';
 
 export type ListBoxItemProps = Omit<
@@ -17,10 +17,6 @@ export type ListBoxItemProps = Omit<
   children?: ReactNode;
 };
 
-type SlottedContextValue = {
-  slots?: Record<string, { className?: string } & Record<string, unknown>>;
-};
-
 interface ItemChildrenProps {
   children: ReactNode;
   labelClassName?: string;
@@ -28,33 +24,20 @@ interface ItemChildrenProps {
 }
 
 /**
- * Merges the `label` / `description` theme classNames into the `label` /
- * `description` slots of RAC's `TextContext`. The parent slot config is
- * spread first so RAC's `labelProps` / `descriptionProps` — including the
- * `id` it uses to wire `aria-describedby` — are preserved. Replacing the
- * slot instead of merging would break screen-reader description wiring.
+ * Injects the `label` / `description` theme classNames into RAC's
+ * `TextContext` (see {@link useMergedTextSlots}) so a nested
+ * `<Text slot="label">` / `<Text slot="description">` picks them up without
+ * relying on a fragile descendant selector on the item.
  */
 const ItemChildren = ({
   children,
   labelClassName,
   descriptionClassName,
 }: ItemChildrenProps) => {
-  const parent = use(TextContext) as SlottedContextValue | undefined;
-  const parentSlots = parent?.slots;
-
-  const value = useMemo(
-    () => ({
-      slots: {
-        ...parentSlots,
-        label: { ...(parentSlots?.label ?? {}), className: labelClassName },
-        description: {
-          ...(parentSlots?.description ?? {}),
-          className: descriptionClassName,
-        },
-      },
-    }),
-    [parentSlots, labelClassName, descriptionClassName]
-  );
+  const value = useMergedTextSlots({
+    label: labelClassName,
+    description: descriptionClassName,
+  });
 
   return (
     <Provider values={[[TextContext, value]]}>
@@ -66,7 +49,7 @@ const ItemChildren = ({
   );
 };
 
-export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
+export const _ListBoxItem = (props: ListBoxItemProps) => {
   const { classNames, virtualized } = useListBoxContext();
   return (
     <ListBoxItem

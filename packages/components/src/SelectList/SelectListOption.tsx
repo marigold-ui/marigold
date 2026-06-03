@@ -6,6 +6,10 @@ import { GridListItem as RACGridListItem } from 'react-aria-components/GridList'
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { cn } from '@marigold/system';
+import {
+  type SlottedContextValue,
+  useMergedTextSlots,
+} from '../utils/useMergedTextSlots';
 import { useSelectListContext } from './Context';
 import { SelectionIndicator } from './SelectionIndicator';
 
@@ -23,10 +27,6 @@ export interface SelectListOptionProps extends Omit<
   disabled?: RAC.GridListItemProps<object>['isDisabled'];
   ref?: Ref<HTMLDivElement>;
 }
-
-type SlottedContextValue = {
-  slots?: Record<string, { className?: string } & Record<string, unknown>>;
-};
 
 interface OptionChildrenProps {
   children: ReactNode;
@@ -49,27 +49,13 @@ const OptionChildren = ({
   descriptionClassName,
   actionClassName,
 }: OptionChildrenProps) => {
-  const parentText = use(TextContext) as SlottedContextValue | undefined;
   const parentButton = use(ButtonContext) as SlottedContextValue | undefined;
-  const parentTextSlots = parentText?.slots;
   const parentButtonValue = parentButton ?? EMPTY_BUTTON_CTX;
 
-  const textContextValue = useMemo(
-    () => ({
-      slots: {
-        ...parentTextSlots,
-        label: {
-          ...(parentTextSlots?.label ?? {}),
-          className: labelClassName,
-        },
-        description: {
-          ...(parentTextSlots?.description ?? {}),
-          className: descriptionClassName,
-        },
-      },
-    }),
-    [parentTextSlots, labelClassName, descriptionClassName]
-  );
+  const textContextValue = useMergedTextSlots({
+    label: labelClassName,
+    description: descriptionClassName,
+  });
 
   const buttonContextValue = useMemo(
     () => ({ ...parentButtonValue, className: actionClassName }),
