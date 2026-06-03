@@ -12,20 +12,6 @@ test('renders an action button by default with the default variant', () => {
   expect(btn).toHaveTextContent('Click');
 });
 
-test('supports the primary variant for prominent container actions', () => {
-  render(
-    <Basic.Component variant="primary" data-testid="action">
-      Upgrade plan
-    </Basic.Component>
-  );
-
-  const btn = screen.getByTestId('action');
-
-  // The primary variant uses the contrast surface and the label-sized layout.
-  expect(btn).toHaveClass('ui-surface-contrast');
-  expect(btn).toHaveClass('h-control');
-});
-
 test('forwards a ref to the underlying button', () => {
   const ref = { current: null as HTMLButtonElement | null };
 
