@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Badge, Inline, SelectList, Stack, Text } from '@marigold/components';
+import {
+  Badge,
+  Description,
+  Inline,
+  SelectList,
+  Stack,
+  Text,
+  TextValue,
+} from '@marigold/components';
 
 const VisaLogo = () => (
   <svg
@@ -286,21 +294,21 @@ export default () => {
               <method.Logo />
               <Stack>
                 <Inline space={2} alignY="center">
-                  <Text slot="label">{method.name}</Text>
+                  <TextValue>{method.name}</TextValue>
                   {method.badge ? (
                     <Badge variant={method.badge.variant}>
                       {method.badge.label}
                     </Badge>
                   ) : null}
                 </Inline>
-                <Text slot="description">{method.description}</Text>
+                <Description>{method.description}</Description>
               </Stack>
             </Inline>
           </div>
           <div className="col-start-3 row-span-2 self-center">
             <Stack alignX="right" alignY="center">
               <Text weight="semibold">{method.fee}</Text>
-              <Text slot="description">per transaction</Text>
+              <Description>per transaction</Description>
             </Stack>
           </div>
         </SelectList.Option>

@@ -107,6 +107,10 @@ Consider the width of the Autocomplete and keep the names of the options short a
 item
 names that occupy multiple lines are hard to perceive and should be avoided.
 
+For options that need a primary label and a secondary line, compose with `<TextValue>` and `<Description>`. The description is wired to the option's `aria-describedby` automatically.
+
+<ComponentDemo name="autocomplete-description" />
+
 <GuidelineTiles>
   <Do>
     <DoFigure>
