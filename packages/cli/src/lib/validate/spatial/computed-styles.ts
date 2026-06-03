@@ -5,6 +5,10 @@ export type ComputedStyleSnapshot = {
   selector: string;
   component: string;
   fingerprint: string;
+  // True when the element is in a disabled state. A disabled control's colors
+  // are a state treatment (the browser/theme applies an alpha/opacity), not an
+  // author-chosen value, so its computed color must not be token-checked.
+  disabled?: boolean;
   styles: Record<string, string>;
 };
 
@@ -45,6 +49,7 @@ export const extractComputedStyles = async (
         selector: string;
         component: string;
         fingerprint: string;
+        disabled: boolean;
         styles: Record<string, string>;
       }> = [];
       for (const selector of selectors) {
@@ -55,11 +60,15 @@ export const extractComputedStyles = async (
         for (const p of properties) {
           styles[p] = computed.getPropertyValue(p);
         }
+        const disabled = el.matches(
+          ':disabled, [disabled], [aria-disabled="true"], [data-disabled]'
+        );
         const d = describeEl(el);
         result.push({
           selector,
           component: d.component,
           fingerprint: d.fingerprint,
+          disabled,
           styles,
         });
       }

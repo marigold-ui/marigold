@@ -204,6 +204,16 @@ const COMPUTED_TOKEN_PROPERTIES = new Set([
 export const isComputedTokenCandidate = (property: string): boolean =>
   COMPUTED_TOKEN_PROPERTIES.has(property);
 
+// A disabled control's computed colors are a state treatment — the disabled
+// appearance composites an alpha/opacity over the base (e.g. a Marigold Button
+// with `disabled` renders rgba(…, 0.3)), so the value can never reverse-map to
+// an opaque token. That is not an author-chosen off-token color, so its
+// computed styles must not be token-checked. Author-written INLINE styles are
+// still checked separately and are unaffected by disabled state.
+export const isTokenCheckableSnapshot = (snap: {
+  disabled?: boolean;
+}): boolean => snap.disabled !== true;
+
 const isTokenizedViaReverseMap = (
   property: string,
   value: string,
@@ -330,6 +340,7 @@ export const checkTokenCompliance = async (
   const issues: ValidationIssue[] = [];
 
   for (const snap of snapshots) {
+    if (!isTokenCheckableSnapshot(snap)) continue;
     for (const [property, rawValue] of Object.entries(snap.styles)) {
       if (!isComputedTokenCandidate(property)) continue;
       const value = rawValue.trim();

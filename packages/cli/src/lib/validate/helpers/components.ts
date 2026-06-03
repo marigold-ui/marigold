@@ -301,15 +301,22 @@ export const buildMarigoldTagResolver = (
   return resolver;
 };
 
-// Maps HTML event handlers to their React Aria equivalents.
-// Each entry means: if the component has the React Aria handler,
-// prefer it over the HTML one.
+// HTML event handlers that should be replaced by their React Aria equivalent.
+// Curated, doc-justified allowlist — NOT auto-derived from "both names exist on
+// the type" (that over-fires, mirroring the boolean-shadow problem).
+// `onClick`→`onPress`/`onAction` is a genuine React Aria anti-pattern: Marigold
+// pressables expose `onPress`, never `onClick`.
+//
+// `onChange` is deliberately NOT a shadow source: Marigold *renames* React Aria
+// handlers to `onChange` as its public API (e.g. ComboBox exposes `onChange` ≙
+// `onInputChange`; Autocomplete/DatePicker likewise expose `onChange`), and
+// `onChange` vs `onSelectionChange`/`onOpenChange`/`onInputChange` are DIFFERENT
+// interactions, not synonyms — so flagging `onChange` was a false positive on
+// idiomatic usage. If a component does NOT expose `onChange`, the prop-validator
+// already reports it as an unknown prop, so nothing real is lost here.
 const HANDLER_PREFERRED_ALTERNATIVES: ReadonlyArray<[string, string]> = [
   ['onClick', 'onPress'],
   ['onClick', 'onAction'],
-  ['onChange', 'onSelectionChange'],
-  ['onChange', 'onOpenChange'],
-  ['onChange', 'onInputChange'],
   ['onSubmit', 'onAction'],
 ];
 

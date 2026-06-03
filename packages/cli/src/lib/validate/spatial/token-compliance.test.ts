@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   checkTokenCompliance,
   isComputedTokenCandidate,
+  isTokenCheckableSnapshot,
   snapshotBrowserDefaults,
 } from './token-compliance.js';
 
@@ -32,5 +33,19 @@ describe('isComputedTokenCandidate', () => {
     expect(isComputedTokenCandidate('font-size')).toBe(false);
     expect(isComputedTokenCandidate('gap')).toBe(false);
     expect(isComputedTokenCandidate('margin')).toBe(false);
+  });
+});
+
+describe('isTokenCheckableSnapshot', () => {
+  it('skips disabled elements (state-treatment colors carry alpha)', () => {
+    // A Marigold <Button disabled> renders rgba(…, 0.3) — a disabled-state
+    // composite that can never reverse-map to an opaque token. Checking it
+    // would be a false "off-token" warning on correct code.
+    expect(isTokenCheckableSnapshot({ disabled: true })).toBe(false);
+  });
+
+  it('checks non-disabled elements', () => {
+    expect(isTokenCheckableSnapshot({ disabled: false })).toBe(true);
+    expect(isTokenCheckableSnapshot({})).toBe(true);
   });
 });

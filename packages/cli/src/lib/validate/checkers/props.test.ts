@@ -104,14 +104,20 @@ describe('validateProps', () => {
     expect(issue?.suggestion).toMatch(/onPress/);
   });
 
-  it('flags onChange on Select and suggests onSelectionChange', () => {
+  it('does not flag onChange on Select (Marigold exposes onChange as its public prop)', () => {
+    // Marigold renames the React Aria selection handler to `onChange` as its
+    // documented API (Select.stories use `onChange={...}`), so `onChange` is
+    // correct usage, not a shadow of `onSelectionChange`. Flagging it was a
+    // false positive — the same rename pattern as ComboBox (onInputChange) and
+    // <Button disabled> (isDisabled).
     const issues = validateProps(fixture('event-handler-shadows.tsx'));
-    const issue = issues.find(
-      i => i.component === 'Select' && i.message.includes('onChange')
+    const shadow = issues.find(
+      i =>
+        i.component === 'Select' &&
+        i.message.includes('onChange') &&
+        i.message.includes('shadows')
     );
-    expect(issue).toBeDefined();
-    expect(issue?.severity).toBe('warning');
-    expect(issue?.suggestion).toMatch(/onSelectionChange/);
+    expect(shadow).toBeUndefined();
   });
 
   it('does not flag onChange on TextField (no React Aria alternative)', () => {
