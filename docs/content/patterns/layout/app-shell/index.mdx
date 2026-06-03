@@ -160,6 +160,10 @@ Most application pages fall into a handful of shapes. Each is built from the sam
 
 The **detail** layout is the one most worth internalizing: a primary column carries the object's content, and a narrower secondary column carries its status and metadata. Because `<Page.Header>` has no slot for a status badge, the object's state lives in that secondary panel, not the title row.
 
+**When the Overview panel earns its place.** Reach for it when the object carries a handful of facts worth scanning at a glance: its status, owner, key dates, counts, related records. It pays off on detail and record screens where the primary column runs long enough that a reader would otherwise lose track of the object's state while scrolling. Keep the split around two thirds primary to one third secondary, and let it collapse to a single column on narrow screens with [`<Columns collapseAt>`](/components/layout/columns), since a side column stacked below the fold goes unread on a phone.
+
+**When to skip it.** A screen with only one or two facts does not need a second column. An Overview panel holding a lone badge reads as an empty rail, not a summary, so put those facts inline in the primary content or leave them out. And if a single piece of state is the whole reason someone opens the screen, that is a sign it is really a status view, not a record to read.
+
 ## Actions hierarchy
 
 Match the action to the level it belongs to. Promote a button only as high as its scope.
