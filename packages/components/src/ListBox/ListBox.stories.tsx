@@ -1,4 +1,5 @@
 import preview from '.storybook/preview';
+import { Text } from '../Text/Text';
 import { ListBox } from './ListBox';
 
 const meta = preview.meta({
@@ -21,6 +22,26 @@ export const Basic = meta.story({
       <ListBox.Item id="two">Two</ListBox.Item>
       <ListBox.Item id="three">Three</ListBox.Item>
       <ListBox.Item id="four">Four</ListBox.Item>
+    </ListBox>
+  ),
+});
+
+export const WithDescription = meta.story({
+  render: args => (
+    <ListBox
+      aria-labelledby="listbox"
+      selectionMode="single"
+      defaultSelectedKeys={['harry']}
+      {...args}
+    >
+      <ListBox.Item id="harry" textValue="Harry Potter">
+        <Text slot="label">Harry Potter</Text>
+        <Text slot="description">About the boy who lived</Text>
+      </ListBox.Item>
+      <ListBox.Item id="lotr" textValue="Lord of the Rings">
+        <Text slot="label">Lord of the Rings</Text>
+        <Text slot="description">In the lands of Middle earth</Text>
+      </ListBox.Item>
     </ListBox>
   ),
 });
