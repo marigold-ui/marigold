@@ -54,65 +54,17 @@ Page actions use the same slot-aware action components a `<Panel.Header>` accept
 
 Wrap the actions in an [`<ActionGroup>`](/components/actions/action-group) whenever the header holds more than one — two buttons, or a button beside an overflow [`<ActionMenu>`](/components/overlay/action-menu). A single action needs no group and sits in the header on its own.
 
-Pick the element by what the action _does_, not by how it looks. Both forms render as the same primary button:
+Pick the element by what the action _does_, not by how it looks. Both forms render as the same primary button.
 
-- **Acts in place** (upgrade the plan, publish, save): use [`<ActionButton variant="primary">`](/components/actions/action-button), which renders a `<button>`.
-- **Navigates** (create a new entity that opens its own page, or move to another screen): use [`<LinkButton variant="primary">`](/components/actions/link-button), which renders an `<a>`. It looks identical to the button, but because it is a real link it behaves like one (open in a new tab, copy the address, follow with the keyboard).
+**Acts in place** (upgrade the plan, publish, save): use [`<ActionButton variant="primary">`](/components/actions/action-button), which renders a `<button>`.
 
-```tsx
-// Acts in place: a real <button>
-<Page.Header>
-  <Title>Billing</Title>
-  <ActionButton variant="primary">Upgrade plan</ActionButton>
-</Page.Header>
+<ComponentDemo name="page-action-acts-in-place" background="page" />
 
-// Navigates to a "create" page: a real <a>, styled the same
-<Page.Header>
-  <Title>Events</Title>
-  <LinkButton variant="primary" href="/events/new">
-    Create event
-  </LinkButton>
-</Page.Header>
-```
+**Navigates** (create a new entity that opens its own page, or move to another screen): use [`<LinkButton variant="primary">`](/components/actions/link-button), which renders an `<a>`. It looks identical to the button, but because it is a real link it behaves like one (open in a new tab, copy the address, follow with the keyboard).
+
+<ComponentDemo name="page-action-navigates" background="page" />
 
 A page has one prominent primary action, and it belongs to the page. Put it in the header for an action that operates on the whole screen, such as creating a new entity. For a form, the primary action is instead the submit button at the end of the form. A `<Panel>` is a surface within the page, so its header carries actions scoped to that surface rather than the page's primary call to action.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Make the page's primary action a `variant="primary"` action in the header.
-      Use an `<ActionButton>` when it acts in place, or a `<LinkButton>` when it
-      navigates (for example a "Create" action that opens a new page). Both read
-      as the same primary button.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't drop a bare `<Button>` into `<Page.Header>`. It isn't slot-aware and
-      won't pick up the header's grid placement. Use the slot-aware action
-      components above.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-#### Status and metadata
-
-`<Page.Header>` has three placements only: the title, the description, and the actions. It is deliberately not a place for object status (a `<Badge>`) or at-a-glance metadata. Show those in the page body instead, typically a secondary `<Panel>` (e.g. an "Overview" panel beside the primary content). The [detail layout](/patterns/layout/app-shell#common-page-layouts) in the App Shell pattern demonstrates this primary/secondary split.
-
-### Heading outline
-
-A correct heading outline is how someone on a screen reader skims a page, jumping from heading to heading to find the section they want. `<Page>` gives you that outline for free, so you never hand-pick heading levels or risk skipping one.
-
-It sets the base heading level to `1`, so a [`<Title>`](/components/content/title) inside `<Page.Header>` renders as the page `<h1>`. Each `<Panel>` below defaults to `headingLevel={2}`, so its `<Title>` renders as an `<h2>`. The outline (`h1` → `h2` → `h3` for Panel collapsibles) falls out of the defaults with no per-component configuration.
-
-### Padding and rhythm
-
-Most screens never touch these. The point of `<Page>` is that its padding and vertical rhythm come tuned, so every screen in your product shares one frame without anyone setting spacing by hand. Out of the box that is `square-relaxed` padding around the content and a `group` gap between the header and the sections beneath it.
-
-Reach for an override only when a screen has a reason the defaults cannot anticipate:
-
-- **Tighter padding** with `p` (or `px` and `py` for one axis) when the page is embedded in a surface that already supplies its own outer spacing. Set one or the other. Passing `p` together with `px` or `py` is a type error, since they would fight over the same edges.
-- **A different rhythm** with `space` when a sparse screen wants more air between the header and a lone panel, or when a dense screen reads better pulled tight.
 
 ### Width
 
@@ -131,7 +83,24 @@ Reach for an override only when a screen has a reason the defaults cannot antici
 
 This is a deliberate departure from systems that expose a page-level `fullWidth` / `narrowWidth` switch. A real page often mixes a narrow form with a wide table, and constraining per surface keeps each readable without a single page-level width fighting the exceptions.
 
-### Page.Content
+### Status and metadata
+
+The header has room for a title, a description, and the page's primary action, and nothing else. Object status (a `<Badge>` such as "Published" or "Suspended") and at-a-glance metadata (counts, dates, owners) do not belong in it. Crowding the header with them buries the one action a user came there for, and there is no slot to hold them anyway.
+
+Show them in the page body instead. On a detail or record screen, the established shape is a primary column with the main content beside a narrower secondary `<Panel>`, usually titled "Overview", that carries the status and the key facts. The [detail layout](/patterns/layout/app-shell#common-page-layouts) in the App Shell pattern walks through this primary/secondary split.
+
+<ComponentDemo name="page-status-metadata" background="page" />
+
+### Spacing
+
+Most screens never touch this. The point of `<Page>` is that its padding and vertical rhythm come tuned, so every screen in your product shares one frame without anyone setting spacing by hand. Out of the box that is `square-relaxed` padding around the content and a `group` gap between the header and the sections beneath it.
+
+Reach for an override only when a screen has a reason the defaults cannot anticipate:
+
+- **Tighter padding** with `p` (or `px` and `py` for one axis) when the page is embedded in a surface that already supplies its own outer spacing. Set one or the other. Passing `p` together with `px` or `py` is a type error, since they would fight over the same edges.
+- **A different rhythm** with `space` when a sparse screen wants more air between the header and a lone panel, or when a dense screen reads better pulled tight.
+
+### Content
 
 Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optional `<Page.Content>` wrapper only when the rhythm _between_ sections should differ from the header-to-content gap, for instance a header set well apart from a group of panels that themselves sit close together. `<Page>`'s `space` then controls the header-to-content gap, and `<Page.Content space>` the gap between sections.
 
@@ -149,6 +118,7 @@ Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optio
 
 - **Landmark:** `<Page>` renders a `<main>` landmark. When a `<Title>` is present in `<Page.Header>`, the `<main>` is labelled by it via `aria-labelledby`, so screen-reader landmark navigation announces the page by its title.
 - **No title:** If a page has no `<Title>`, pass an `aria-label` to `<Page>` so the `<main>` still has an accessible name.
+- **Heading outline:** `<Page>` sets the base heading level to `1`, so the page title renders as the `<h1>` and each `<Panel>` below it as an `<h2>` (Panel collapsibles as `<h3>`). The outline a screen-reader user skims to jump between sections falls out of these defaults, with no heading levels to set by hand.
 
 ## Props
 
