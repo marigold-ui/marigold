@@ -26,7 +26,9 @@ export default () => (
       <Description>
         People with access to this workspace and their roles.
       </Description>
-      <Button variant="primary" size="default" aria-label="Invite member">
+      {/* The page-level commitment: one prominent Button. A local `variant`
+          and `size` win over the header's ghost icon-button cascade. */}
+      <Button variant="primary" size="default">
         <UserRoundPlus />
         Invite member
       </Button>

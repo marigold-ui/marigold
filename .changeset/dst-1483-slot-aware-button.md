@@ -21,6 +21,10 @@ of learning a second button component.
   over the container. This drops the former `ActionGroup` `size`-group-wins outlier.
 - `<ButtonGroup>` cascades `variant: 'ghost'` when unset (the old ghost-cluster
   default); `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'icon'`.
+- `<ButtonGroup>` now owns a structural `flex gap-1` layout (orientation-aware), so
+  a standalone cluster is spaced correctly — `<ActionGroup>` had no layout of its
+  own. A container's positional className (e.g. Panel's `[grid-area:actions]`) still
+  rides along and positions the group.
 - Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset `ButtonContext` at their
   content root, so a header/group cascade can't leak through the portal into an
   overlay's `slot="close"` or `Dialog.Actions` buttons.
