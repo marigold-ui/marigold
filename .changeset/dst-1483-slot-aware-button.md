@@ -38,5 +38,8 @@ of learning a second button component.
 - `<ActionButton>` → `<Button>` (its `default` variant maps to `variant="ghost"`).
 - `<ActionGroup>` → `<ButtonGroup>`.
 - `ActionButtonContext` / `ActionGroupContext` → `ButtonContext`.
-- `<ActionMenu>` is unchanged (its public name stays; the trigger now uses `<Button>`
-  and still defaults to a ghost icon button).
+- `<ActionMenu>` keeps its public name. Its trigger is now a slot-aware `<Button>`
+  that inherits the cascade instead of hardcoding a variant: it renders `secondary`
+  on its own (the standalone `<Button>` baseline, matching the pre-unification look)
+  and `ghost` inside `<Panel.Header>`, `<SelectList.Option>`, or a `<ButtonGroup>`.
+  A `variant` set on the `<ActionMenu>` still wins.

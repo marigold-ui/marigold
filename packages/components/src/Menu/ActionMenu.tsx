@@ -42,10 +42,19 @@ export interface ActionMenuProps
   // precedence: a value set here always wins over the container.
 
   /**
-   * Visual variant of the trigger button.
-   * @default 'ghost'
+   * Visual variant of the trigger button. When unset, the trigger inherits the
+   * surrounding cascade: `'ghost'` inside `<Panel.Header>` / `<SelectList.Option>`,
+   * the group's variant inside `<ButtonGroup>`, or the standalone `<Button>`
+   * baseline (`'secondary'`) on its own.
    */
-  variant?: 'ghost' | (string & {});
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'destructive'
+    | 'destructive-ghost'
+    | 'ghost'
+    | 'link'
+    | (string & {});
 
   /**
    * Size of the trigger button. Applied when `<ActionMenu>` is used on its
@@ -119,12 +128,14 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
         aria-labelledby={ariaLabelledBy}
         aria-describedby={ariaDescribedBy}
         disabled={disabled}
-        // Default the trigger to `ghost` so a standalone `<ActionMenu>` keeps
-        // the icon-button look it had as an `<ActionButton>` (whose `default`
-        // variant was Button's `ghost`). Inside `<Panel.Header>`/`<ButtonGroup>`
-        // it still picks up the cascaded `size`/positional className via the
-        // greedy `ButtonContext`.
-        variant={variant ?? 'ghost'}
+        // Pass `variant`/`size` straight through so the trigger `<Button>`
+        // resolves them via `ButtonContext` like any other Marigold button:
+        // it inherits `'ghost'` inside `<Panel.Header>`/`<SelectList.Option>`,
+        // the group's variant inside `<ButtonGroup>`, and falls back to the
+        // standalone `<Button>` baseline (`'secondary'`) on its own. A `variant`
+        // set on `<ActionMenu>` still wins. (Hardcoding `'ghost'` here would
+        // break the cascade and regress the standalone look.)
+        variant={variant}
         size={size}
       >
         <EllipsisVertical />

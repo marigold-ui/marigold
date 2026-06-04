@@ -2,7 +2,7 @@ import { Button, ButtonGroup, Tooltip } from '@marigold/components';
 import { Copy, Download, Printer } from '@marigold/icons';
 
 export default () => (
-  <ButtonGroup aria-label="Report actions" variant="ghost">
+  <ButtonGroup aria-label="Report actions" variant="ghost" size="icon">
     <Tooltip.Trigger>
       <Button aria-label="Copy link">
         <Copy />

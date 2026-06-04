@@ -40,7 +40,7 @@ export default () => (
         <ButtonGroup
           aria-label={`Actions for ${event.title}`}
           variant="ghost"
-          size="small"
+          size="icon"
         >
           <Tooltip.Trigger>
             <Button aria-label="View">

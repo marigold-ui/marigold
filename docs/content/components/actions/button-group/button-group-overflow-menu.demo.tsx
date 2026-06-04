@@ -2,7 +2,7 @@ import { ActionMenu, Button, ButtonGroup, Tooltip } from '@marigold/components';
 import { Eye, Pencil } from '@marigold/icons';
 
 export default () => (
-  <ButtonGroup aria-label="Event actions" variant="ghost">
+  <ButtonGroup aria-label="Event actions" variant="ghost" size="icon">
     <Tooltip.Trigger>
       <Button aria-label="View">
         <Eye />
