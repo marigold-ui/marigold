@@ -9,7 +9,7 @@ import { AtSign, Image, Link, Paperclip, SmilePlus } from '@marigold/icons';
 
 export default () => (
   <Stack space="related">
-    <ButtonGroup aria-label="Compose actions" size="small">
+    <ButtonGroup aria-label="Compose actions" variant="ghost" size="small">
       <Tooltip.Trigger>
         <Button aria-label="Insert link">
           <Link />

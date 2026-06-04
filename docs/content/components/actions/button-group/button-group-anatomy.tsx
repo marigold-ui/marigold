@@ -87,7 +87,7 @@ export const ButtonGroupAnatomy = () => (
         fontWeight="600"
         className="fill-fd-primary"
       >
-        Button
+        Action
       </text>
     </g>
   </svg>
