@@ -26,9 +26,7 @@ export default () => (
       <Description>
         People with access to this workspace and their roles.
       </Description>
-      {/* The panel's main action: a prominent secondary Button. A local
-          `variant` and `size` win over the header's ghost icon-button cascade.
-          (`primary` is reserved for page-level commitments and form submits.) */}
+      {/* [!code highlight] */}
       <Button variant="secondary" size="default">
         <UserRoundPlus />
         Invite member
@@ -58,7 +56,6 @@ export default () => (
             </Inline>
             <Inline space="regular" alignY="center">
               <Badge variant={member.variant}>{member.role}</Badge>
-              {/* Per-row chrome that recedes until scanned for. */}
               <ButtonGroup
                 aria-label={`Actions for ${member.name}`}
                 size="small"
