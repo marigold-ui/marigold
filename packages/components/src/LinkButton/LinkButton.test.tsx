@@ -84,14 +84,17 @@ test('local variant wins over ButtonGroup variant', () => {
   expect(screen.getByTestId('link')).toHaveClass('text-destructive-accent');
 });
 
-test('inherits ghost baseline from ButtonGroup with no explicit variant', () => {
+test('inherits secondary baseline from ButtonGroup with no explicit variant', () => {
   render(
     <ButtonGroup aria-label="Row actions">
       <Basic.Component data-testid="link">Edit</Basic.Component>
     </ButtonGroup>
   );
 
-  expect(screen.getByTestId('link')).toHaveClass('hover:ui-state-hover-ghost');
+  expect(screen.getByTestId('link')).toHaveClass('shadow-elevation-border');
+  expect(screen.getByTestId('link')).not.toHaveClass(
+    'hover:ui-state-hover-ghost'
+  );
 });
 
 test('absorbs positional className from ButtonContext', () => {

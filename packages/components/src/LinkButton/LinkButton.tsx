@@ -55,8 +55,8 @@ const _LinkButton = ({
   const size = propSize ?? ctx?.size;
   const disabled = propDisabled ?? ctx?.disabled;
 
-  // Always uses `Button` styles; inside a `<ButtonGroup>` the cascaded
-  // `variant: 'ghost'` makes it render as a ghost cluster member.
+  // Always uses `Button` styles. Inside a `<ButtonGroup>` the cascaded
+  // `variant` makes it match the rest of the cluster.
   const classNames = useClassNames({
     component: 'Button',
     variant,

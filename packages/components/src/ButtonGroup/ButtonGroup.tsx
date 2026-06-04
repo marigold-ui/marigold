@@ -16,9 +16,10 @@ export interface ButtonGroupProps
    * Cascades the variant to nested buttons. A local `variant` on a child
    * (`Button`, `LinkButton`, `ActionMenu`) wins over the group default.
    *
-   * When unset, the group cascades `'ghost'` to nested buttons so an
-   * unconfigured cluster still renders as a uniform ghost cluster.
-   * @default 'ghost'
+   * When unset, the group cascades `'secondary'` to nested buttons, the same
+   * baseline as a standalone `Button`. Slot-aware parents like `Panel.Header`
+   * and `SelectList.Option` override this with a lower-emphasis variant.
+   * @default 'secondary'
    */
   variant?: string;
   /**
@@ -66,10 +67,11 @@ export const ButtonGroup = ({
   // Re-provide a FRESH `ButtonContext` to children. RAC `Provider` values
   // replace rather than merge, so this drops the positional className the group
   // just claimed and cascades only `variant`/`size`/`disabled` — reproducing
-  // the old `RESET_BUTTON_CTX` behaviour for free. Cascade `'ghost'` when unset
-  // so an unconfigured cluster renders as a ghost cluster.
+  // the old `RESET_BUTTON_CTX` behaviour for free. Cascade `'secondary'` when
+  // unset so an unconfigured cluster matches a standalone `Button`; parents
+  // that want lower emphasis (Panel.Header, SelectList.Option) pass `'ghost'`.
   const ctx = useMemo(
-    () => ({ variant: variant ?? 'ghost', size, disabled }),
+    () => ({ variant: variant ?? 'secondary', size, disabled }),
     [variant, size, disabled]
   );
 
