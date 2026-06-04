@@ -1,12 +1,12 @@
 ---
 title: ButtonGroup
 description: Toolbar wrapper around a related cluster of buttons.
-badge: alpha
+badge: beta
 ---
 
-The `<ButtonGroup>` component is a toolbar wrapper around a related cluster of actions. It exposes a real `role="toolbar"` with arrow-key navigation between children, and cascades shared `size`, `variant`, and `disabled` defaults so the cluster stays visually uniform.
+`<ButtonGroup>` gathers a small cluster of related actions into one toolbar. Reach for it whenever a row, item, or surface carries a few actions that belong together, like edit and delete on a list row, or the secondary actions in a panel header. The group keeps the buttons looking uniform and lets the user step through them with the arrow keys.
 
-Use `<ButtonGroup>` whenever a row, item, or surface has more than one related action. For a single action, use a [`<Button>`](/components/actions/button) directly. For more actions than fit comfortably in a toolbar, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
+For a single action, use a [`<Button>`](/components/actions/button) on its own. When a cluster grows past three to five actions, fold the long tail into an [`<ActionMenu>`](/components/overlay/action-menu).
 
 import { ButtonGroupAnatomy } from './button-group-anatomy';
 
@@ -17,14 +17,15 @@ import { ButtonGroupAnatomy } from './button-group-anatomy';
 - **Group:** A toolbar wrapper around a related cluster of actions.
 - **Button:** Each pressable action inside the group.
 - **LinkButton (optional):** [`<LinkButton>`](/components/actions/link-button) can sit alongside `<Button>` for actions that navigate.
+- **ActionMenu (optional):** [`<ActionMenu>`](/components/overlay/action-menu) can sit at the end of the group, folding the long tail of actions into a kebab menu once the cluster grows past three to five. It picks up the group's cascade like any other child.
 
 ## Appearance
 
-<AppearanceDemo component={'ButtonGroup'} />
+<AppearanceDemo component={'ButtonGroup'} exclude={{ variant: ['primary'] }} />
 
 <AppearanceTable component={'ButtonGroup'} />
 
-`<ButtonGroup>` carries no visual styling of its own beyond laying its buttons out as a spaced row (or column, when `orientation="vertical"`). The `variant` and `size` props cascade to every nested [`<Button>`](/components/actions/button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. When `variant` is unset the group cascades `ghost`, so an unconfigured cluster reads as low-emphasis chrome. Precedence is uniform: a local `variant` or `size` on a child always wins over the group default.
+`<ButtonGroup>` carries no visual styling of its own beyond laying its actions out as a spaced row (or a column when `orientation="vertical"`). It is [slot-aware](/foundations/component-principles#slot-driven-composition): `variant` and `size` cascade to every action inside, so the cluster stays uniform without setting props on each one. When `variant` is unset the group cascades `secondary`, the same baseline as a standalone button. A `variant` or `size` set on a child always wins over the group default.
 
 ## Usage
 
@@ -47,7 +48,7 @@ import { ButtonGroupAnatomy } from './button-group-anatomy';
 
 ### Inline row actions
 
-Lists and rows of equal-weight items often need a per-row cluster of quick actions like view, edit, and delete. Render them as a `<ButtonGroup>` so the cluster is exposed as a toolbar, arrow-key navigable, and the buttons recede into the row until the user scans for them.
+Lists and rows of equal-weight items often need a per-row cluster of quick actions like view, edit, and delete. Render them as a `<ButtonGroup>` so the cluster is exposed as a toolbar and stays arrow-key navigable. Set `variant="ghost"` so the buttons recede into the row until the user scans for them.
 
 <ComponentDemo name="button-group-row-actions" />
 
@@ -66,6 +67,27 @@ The container can publish shared defaults to every `<Button>` inside via `Button
 Above an editor, a comment box, or any content area that benefits from a cluster of related one-shot actions, reach for `<ButtonGroup>` as a standalone toolbar.
 
 <ComponentDemo name="button-group-toolbar" />
+
+### A single primary action
+
+A toolbar usually stays at one level of emphasis, so every action reads as equal-weight chrome. Some surfaces carry one action that outranks the rest, like Publish in a page header or Save in a section header. There you can promote exactly one button to `primary` so the eye lands on it, while the others stay at the group default.
+
+Set `primary` on that one button, never on the `<ButtonGroup>`. A `variant` on the group cascades to every child, which would turn the whole cluster primary and cancel the emphasis. Keep it to a single primary per toolbar.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Promote one button to `primary` when the toolbar owns the surface's main
+      action, and leave the rest at the group default.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't set `primary` on the group or on more than one button. Competing
+      primaries leave the user without a clear next step.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ## Props
 

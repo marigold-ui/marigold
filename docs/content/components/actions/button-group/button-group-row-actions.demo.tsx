@@ -37,7 +37,11 @@ export default () => (
             {event.subtitle}
           </Text>
         </Stack>
-        <ButtonGroup aria-label={`Actions for ${event.title}`} size="small">
+        <ButtonGroup
+          aria-label={`Actions for ${event.title}`}
+          variant="ghost"
+          size="small"
+        >
           <Tooltip.Trigger>
             <Button aria-label="View">
               <Eye />
