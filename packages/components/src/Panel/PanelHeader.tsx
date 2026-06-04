@@ -7,13 +7,10 @@ import { usePanelContext } from './Context';
 
 export interface PanelHeaderProps {
   /**
-   * Content of the header. Typically a `<Title>`, optional `<Description>`,
-   * and optional buttons (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`,
-   * `<LinkButton>`).
-   *
-   * A bare `<Button>` IS slot-aware here: it claims the `actions` grid cell
-   * and adopts the header's icon size + ghost variant via `ButtonContext`.
-   * Opt a button out of the cascade with `slot={null}`.
+   * Content of the header: typically a `<Title>`, optional `<Description>`, and
+   * optional actions (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`,
+   * `<LinkButton>`). Actions are slot-aware here, claiming the `actions` grid
+   * cell and adopting the header's ghost icon styling; opt out with `slot={null}`.
    */
   children: ReactNode;
 }
@@ -21,12 +18,9 @@ export interface PanelHeaderProps {
 export const PanelHeader = ({ children }: PanelHeaderProps) => {
   const { classNames, headingLevel, titleId, titleSlotRef } = usePanelContext();
 
-  // This Provider value fully replaces the `HeadingContext` published at
-  // the Panel root for descendants of the header. `level`, `id`, and `ref`
-  // are re-published (rather than inherited) because Provider values do
-  // not merge — anything we omit here would be lost for `<Title>` inside
-  // `<Panel.Header>`. The added contribution is `[grid-area:title]`, which
-  // lays the title out in the header's two-column grid.
+  // Fully replaces the Panel root's `HeadingContext` for header descendants.
+  // Provider values don't merge, so `level`/`id`/`ref` are re-published; the
+  // added `[grid-area:title]` places the title in the header grid.
   const headingProps = useMemo(
     () => ({
       slots: {
@@ -55,12 +49,9 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
     [classNames.description]
   );
 
-  // A single `ButtonContext` value drives the whole button subsystem in the
-  // header. A bare `<Button>`, a `<ButtonGroup>`, an `<ActionMenu>`, and a
-  // `<LinkButton>` all claim the `actions` grid cell with the same styling.
-  // `size: 'icon'` + `variant: 'ghost'` reproduce the old `ActionButton`
-  // default look; a `<ButtonGroup>` re-provides its own context to children,
-  // so the positional className stays on the group, not its buttons.
+  // One `ButtonContext` gives every action in the header the same ghost icon
+  // look in the `actions` grid cell. A `<ButtonGroup>` re-provides its own
+  // context, so the positional className stays on the group, not its buttons.
   const actionProps = useMemo(
     () => ({
       className: cn('self-center [grid-area:actions]', classNames.actions),

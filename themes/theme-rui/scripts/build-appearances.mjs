@@ -25,13 +25,10 @@ console.log('🎨 Generating appearances data...');
  */
 const sharedAppearances = {
   LinkButton: 'Button',
-  // `ButtonGroup` has no theme of its own; it cascades `variant`/`size` to its
-  // `Button` children (defaulting to `secondary`). It reuses Button's classes
-  // but narrows the documented vocabulary to the variants that make sense
-  // applied to a whole cluster. `primary`, `destructive`, and `link` are
-  // dropped because they belong on a single child, not the group: cascading
-  // them would turn every button primary, destructive, or link-styled.
-  // `secondary` leads, so it is the picker default.
+  // `ButtonGroup` reuses Button's classes but documents only the variants that
+  // make sense applied to a whole cluster. `primary`/`destructive`/`link` are
+  // dropped (they belong on a single child); `secondary` leads, so it is the
+  // picker default.
   ButtonGroup: {
     from: 'Button',
     variant: ['secondary', 'ghost', 'destructive-ghost'],

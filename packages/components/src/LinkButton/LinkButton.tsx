@@ -46,17 +46,16 @@ const _LinkButton = ({
   slot,
   ...props
 }: LinkButtonProps) => {
-  // `useSlottedContext` (vs `<Button>`'s `useContextProps`) sidesteps the
-  // button/anchor ref-type mismatch. Same context, same uniform precedence:
-  // a local prop always wins over the cascade. `slot={null}` opts out.
+  // `useSlottedContext` (not `useContextProps`) sidesteps the anchor/button
+  // ref mismatch. Same context and precedence as `<Button>`: a local prop
+  // wins, `slot={null}` opts out.
   const ctx = useSlottedContext(ButtonContext, slot);
 
   const variant = propVariant ?? ctx?.variant;
   const size = propSize ?? ctx?.size;
   const disabled = propDisabled ?? ctx?.disabled;
 
-  // Always uses `Button` styles. Inside a `<ButtonGroup>` the cascaded
-  // `variant` makes it match the rest of the cluster.
+  // Always uses `Button` styles so it matches the cluster's cascaded variant.
   const classNames = useClassNames({
     component: 'Button',
     variant,

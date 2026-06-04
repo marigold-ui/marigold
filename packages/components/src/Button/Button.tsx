@@ -49,12 +49,9 @@ export interface ButtonProps
 }
 
 const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
-  // Consume the Marigold-owned `ButtonContext` (NOT RAC's) so a bare `<Button>`
-  // adapts inside `<ButtonGroup>` / `<Panel.Header>`. `useContextProps` +
-  // `mergeProps` give uniform precedence: a local prop always wins over context
-  // for `variant`/`size`/`disabled`, while the positional `className` flows in
-  // from context. `slot={null}` opts out of the cascade; any other `slot` is
-  // forwarded to RAC's `<Button>` for functional slots (`close`, etc.).
+  // Consume the Marigold `ButtonContext` (NOT RAC's) so a bare `<Button>`
+  // adapts inside `<ButtonGroup>`/`<Panel.Header>`. A local prop always wins;
+  // `slot={null}` opts out, any other `slot` forwards to RAC's `<Button>`.
   const [merged, ref] = useContextProps(
     inputProps as ButtonContextValue,
     refProp,

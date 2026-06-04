@@ -37,10 +37,6 @@ export interface ActionMenuProps
    */
   placement?: PopoverProps['placement'];
 
-  // `variant` / `size` / `disabled` participate in the `<ButtonGroup>` /
-  // `<Panel.Header>` cascade via the trigger `<Button>`, with uniform
-  // precedence: a value set here always wins over the container.
-
   /**
    * Visual variant of the trigger button. When unset, the trigger inherits the
    * surrounding cascade: `'ghost'` inside `<Panel.Header>` / `<SelectList.Option>`,
@@ -128,13 +124,10 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
         aria-labelledby={ariaLabelledBy}
         aria-describedby={ariaDescribedBy}
         disabled={disabled}
-        // Pass `variant`/`size` straight through so the trigger `<Button>`
-        // resolves them via `ButtonContext` like any other Marigold button:
-        // it inherits `'ghost'` inside `<Panel.Header>`/`<SelectList.Option>`,
-        // the group's variant inside `<ButtonGroup>`, and falls back to the
-        // standalone `<Button>` baseline (`'secondary'`) on its own. A `variant`
-        // set on `<ActionMenu>` still wins. (Hardcoding `'ghost'` here would
-        // break the cascade and regress the standalone look.)
+        // Pass `variant`/`size` straight through so the trigger resolves them
+        // via `ButtonContext` like any Marigold button: ghost inside
+        // Panel.Header/SelectList.Option, the group's variant in a ButtonGroup,
+        // the standalone `secondary` baseline on its own. A local value wins.
         variant={variant}
         size={size}
       >

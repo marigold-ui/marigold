@@ -45,9 +45,8 @@ export const ButtonGroup = ({
   ref: refProp,
   ...inputProps
 }: ButtonGroupProps) => {
-  // Read the incoming `ButtonContext` (e.g. Panel.Header's `[grid-area:actions]`
-  // + `size:'icon'`) to position the GROUP itself: the positional `className`
-  // rides along in `...props` onto the `<Toolbar>`.
+  // Read the incoming `ButtonContext` (e.g. Panel.Header's positional
+  // className) to position the group itself; it rides along onto the `<Toolbar>`.
   const [merged, ref] = useContextProps(
     inputProps as ButtonGroupProps & { className?: string },
     refProp,
@@ -64,12 +63,10 @@ export const ButtonGroup = ({
     ...props
   } = merged;
 
-  // Re-provide a FRESH `ButtonContext` to children. RAC `Provider` values
-  // replace rather than merge, so this drops the positional className the group
-  // just claimed and cascades only `variant`/`size`/`disabled` — reproducing
-  // the old `RESET_BUTTON_CTX` behaviour for free. Cascade `'secondary'` when
-  // unset so an unconfigured cluster matches a standalone `Button`; parents
-  // that want lower emphasis (Panel.Header, SelectList.Option) pass `'ghost'`.
+  // Re-provide a fresh `ButtonContext` to children. RAC `Provider` values
+  // replace rather than merge, so this drops the group's positional className
+  // and cascades only `variant`/`size`/`disabled`, defaulting `variant` to
+  // `'secondary'` (parents like Panel.Header override with `'ghost'`).
   const ctx = useMemo(
     () => ({ variant: variant ?? 'secondary', size, disabled }),
     [variant, size, disabled]
@@ -82,14 +79,10 @@ export const ButtonGroup = ({
         ref={ref}
         orientation={orientation}
         className={cn(
-          // Structural layout so a standalone cluster has sensible spacing.
-          // `gap-1` matches the design system's tight-cluster convention
-          // (ActionBar selection, TagField tag group).
+          // Structural layout so a standalone cluster is spaced sensibly.
           'flex gap-1',
           orientation === 'vertical' ? 'flex-col items-start' : 'items-center',
-          // A container's positional className (e.g. Panel.Header's
-          // `self-center [grid-area:actions]`) rides along; tailwind-merge lets
-          // it override the layout where it sets the same utilities.
+          // A container's positional className rides along and can override.
           className
         )}
       >
