@@ -18,7 +18,8 @@ export const FileField: ThemeComponent<'FileField'> = {
         small: [
           'flex items-center',
           'ui-surface shadow-elevation-border',
-          'h-control-small px-2',
+          'h-control-small',
+          '[&_button]:shadow-none border-l-0',
         ],
       },
     },
