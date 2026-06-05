@@ -65,7 +65,6 @@ export interface CheckboxGroupProps
    *
    * Numeric/scale values are spacing-scale tokens, not pixels: `width={64}`
    * resolves to `calc(var(--spacing) * 64)` ~= 16rem (256px), not 64px.
-   *
    * @default full
    */
   width?: WidthProp['width'];

@@ -219,14 +219,13 @@ export const FixedWidth = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Name',
-    description: '',
     width: 64,
   },
   render: args => <TextField {...args} placeholder="Type" />,
   play: async ({ canvas, step }) => {
     await step('Input width matches the requested scale value', async () => {
       // The --field-width consumer is the `group/input` wrapper of the input.
-      const wrapper = canvas.getByRole('textbox').parentElement!;
+      const wrapper = canvas.getByRole('textbox').closest('.group\\/input')!;
       const rem = parseFloat(
         getComputedStyle(document.documentElement).fontSize
       );
