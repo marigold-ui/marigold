@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
+import { HeadingContext } from 'react-aria-components/Heading';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
 import { Description } from '../Description/Description';
+import { Title } from '../Title/Title';
 
 // Props
 // ---------------
@@ -21,6 +23,12 @@ export interface EmptyStateProps {
    * Optional action element (e.g., a button) to help users resolve the empty state.
    */
   action?: ReactNode;
+  /**
+   * Heading level of the title (h2–h6). Adjust it so the title fits into
+   * the surrounding document outline.
+   * @default 3
+   */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
   variant?: string;
   size?: string;
 }
@@ -31,16 +39,30 @@ export const EmptyState = ({
   title,
   description,
   action,
+  headingLevel = 3,
   variant,
   size,
   ...props
 }: EmptyStateProps) => {
   const classNames = useClassNames({ component: 'EmptyState', variant, size });
 
-  // Internal use of the slot-configuration vocabulary: the description is
-  // rendered through the `<Description>` primitive. `elementType: 'div'`
-  // keeps the DOM identical to the previous bespoke wrapper (`description`
-  // is a `ReactNode` and may contain block-level elements).
+  // Internal use of the slot-configuration vocabulary: the title renders as
+  // a semantic heading through the `<Title>` primitive, the description
+  // through `<Description>`. `elementType: 'div'` keeps the description's
+  // DOM identical to the previous bespoke wrapper (`description` is a
+  // `ReactNode` and may contain block-level elements).
+  const headingProps = useMemo(
+    () => ({
+      slots: {
+        title: {
+          className: classNames.title,
+          level: headingLevel,
+        },
+      },
+    }),
+    [classNames.title, headingLevel]
+  );
+
   const textProps = useMemo(
     () => ({
       slots: {
@@ -107,12 +129,15 @@ export const EmptyState = ({
           fill="#C8C8C8"
         />
       </svg>
-      <div className={classNames.title}>{title}</div>
-      {description && (
-        <Provider values={[[TextContext, textProps]]}>
-          <Description>{description}</Description>
-        </Provider>
-      )}
+      <Provider
+        values={[
+          [HeadingContext, headingProps],
+          [TextContext, textProps],
+        ]}
+      >
+        <Title>{title}</Title>
+        {description && <Description>{description}</Description>}
+      </Provider>
       {action && <div className={classNames.action}>{action}</div>}
     </div>
   );

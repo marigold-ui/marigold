@@ -17,6 +17,20 @@ test('renders with title and description', () => {
   expect(description.tagName).toBe('DIV');
 });
 
+test('renders the title as a semantic heading (default level 3)', () => {
+  render(<Basic.Component />);
+
+  const heading = screen.getByRole('heading', { name: 'No items found' });
+  expect(heading.tagName).toBe('H3');
+});
+
+test('supports configuring the heading level', () => {
+  render(<Basic.Component headingLevel={2} />);
+
+  const heading = screen.getByRole('heading', { name: 'No items found' });
+  expect(heading.tagName).toBe('H2');
+});
+
 test('renders with action buttons', () => {
   render(<WithAction.Component />);
 

@@ -10,6 +10,6 @@ feat(DST-1370): migrate `ContextualHelp`, `SectionMessage`, and `EmptyState` to 
 - New `<SectionMessage.Description>` sub-component for a short summary between title and content.
 - `ContextualHelp.Title` now uses `slot="title"`, so the popover dialog gets a proper `aria-labelledby`. The title tag changes from `<h3>` to `<h2>` (same as `Dialog.Title`); visual appearance is unchanged.
 - New `<ContextualHelp.Description>` sub-component.
-- `EmptyState` internally renders its `description` through the `<Description>` primitive. Its public API and DOM are unchanged; the description now sits 4px below the title, matching the description rhythm of the other components.
+- `EmptyState`'s `title` now renders as a semantic heading (`<h3>` by default, configurable via the new `headingLevel` prop), and its `description` renders through the `<Description>` primitive (same DOM as before, now sitting 4px below the title to match the description rhythm of the other components). The flat-props API is unchanged.
 
 Note: action/button slot configuration (`ButtonContext`) for these components follows in a separate change once the slot-aware `Button` has landed.
