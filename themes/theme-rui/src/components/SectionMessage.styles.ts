@@ -24,23 +24,11 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     },
   }),
   title: cva({ base: 'mb-1 text-sm font-medium' }),
-  // Muted relative to title and content (foreground at 80% opacity) while
-  // keeping the variant tint for contrast on the tinted backgrounds.
-  // `mb-2` pairs the description with the title: 4px (title margin) above,
-  // 8px before the content.
+  // Muted via the system-wide description token (like Panel, Card, Toast,
+  // and ContextualHelp). `mb-2` pairs the description with the title:
+  // 4px (title margin) above, 8px before the content.
   description: cva({
-    base: 'mb-2 text-sm leading-5 font-normal',
-    variants: {
-      variant: {
-        info: 'text-info-foreground/80',
-        success: 'text-success-foreground/80',
-        warning: 'text-warning-foreground/80',
-        error: 'text-destructive-foreground/80',
-      },
-    },
-    defaultVariants: {
-      variant: 'info',
-    },
+    base: 'text-secondary mb-2 text-sm leading-5 font-normal',
   }),
   content: cva({
     base: 'text-secondary text-sm leading-5 font-normal',
