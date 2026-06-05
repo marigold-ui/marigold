@@ -70,7 +70,6 @@ describe('Page', () => {
     const main = screen.getByRole('main');
     const h1 = screen.getByRole('heading', { level: 1, name: 'Billing' });
 
-    // aria-labelledby (the title) wins; the redundant aria-label is dropped.
     expect(main).toHaveAttribute('aria-labelledby', h1.id);
     expect(main).not.toHaveAttribute('aria-label');
   });
@@ -81,6 +80,7 @@ describe('Page', () => {
     render(<Unlabelled.Component />);
 
     const main = screen.getByRole('main');
+
     expect(main).not.toHaveAttribute('aria-label');
     expect(main).not.toHaveAttribute('aria-labelledby');
     expect(spy).toHaveBeenCalledWith(
