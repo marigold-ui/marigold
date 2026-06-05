@@ -24,7 +24,7 @@ import { ActionGroupAnatomy } from './action-group-anatomy';
 
 <AppearanceTable component={'ActionGroup'} />
 
-`<ActionGroup>` has no visual styling of its own. The `variant` and `size` props cascade to every nested [`<ActionButton>`](/components/actions/action-button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. A local `variant` on a child wins over the group default; the group's `size` wins over a child's local size so the cluster stays uniform in height.
+`<ActionGroup>` has no visual styling of its own. The `variant` and `size` props cascade to every nested [`<ActionButton>`](/components/actions/action-button) (and [`<LinkButton>`](/components/actions/link-button)) so the cluster stays visually uniform. A local `variant` on a child wins over the group default. The group's `size` wins over a child's local size so the cluster stays uniform in height.
 
 ## Usage
 
@@ -79,4 +79,4 @@ Above an editor, a comment box, or any content area that benefits from a cluster
 
 - [ActionButton](/components/actions/action-button): The standalone primitive that lives inside a group.
 - [ActionMenu](/components/overlay/action-menu): Use the kebab-menu pattern when there are too many actions to fit in a Group.
-- [ActionBar](/components/actions/actionbar): Use for the bar around bulk-selection actions.
+- [ActionBar](/components/collection/actionbar): Use for the bar around bulk-selection actions.
