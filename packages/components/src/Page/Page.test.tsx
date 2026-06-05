@@ -2,7 +2,13 @@
 import { render, screen } from '@testing-library/react';
 import { Title } from '../Title/Title';
 import { Page } from './Page';
-import { Basic, TitleOnly, WithContent, WithoutTitle } from './Page.stories';
+import {
+  Basic,
+  TitleOnly,
+  Unlabelled,
+  WithContent,
+  WithoutTitle,
+} from './Page.stories';
 
 describe('Page', () => {
   test('renders a main landmark', () => {
@@ -56,6 +62,32 @@ describe('Page', () => {
 
     expect(main).toHaveAttribute('aria-label', 'Reports');
     expect(main).not.toHaveAttribute('aria-labelledby');
+  });
+
+  test('does not set aria-label when a Title is present (no double label)', () => {
+    render(<Basic.Component aria-label="Ignored" />);
+
+    const main = screen.getByRole('main');
+    const h1 = screen.getByRole('heading', { level: 1, name: 'Billing' });
+
+    // aria-labelledby (the title) wins; the redundant aria-label is dropped.
+    expect(main).toHaveAttribute('aria-labelledby', h1.id);
+    expect(main).not.toHaveAttribute('aria-label');
+  });
+
+  test('warns when the main landmark has no accessible name', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(<Unlabelled.Component />);
+
+    const main = screen.getByRole('main');
+    expect(main).not.toHaveAttribute('aria-label');
+    expect(main).not.toHaveAttribute('aria-labelledby');
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringContaining('has no accessible name')
+    );
+
+    spy.mockRestore();
   });
 });
 

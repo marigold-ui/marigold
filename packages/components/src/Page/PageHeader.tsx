@@ -16,6 +16,10 @@ export interface PageHeaderProps {
    * renders a prominent, label-sized action. The header publishes the slot
    * context, so the action lands in the action cell without any per-call
    * placement props.
+   *
+   * Icon-only actions (a bare-icon `<Button>` or an `<ActionMenu>` kebab) must
+   * carry an `aria-label` for an accessible name, since the header does not
+   * supply one.
    */
   children: ReactNode;
 }

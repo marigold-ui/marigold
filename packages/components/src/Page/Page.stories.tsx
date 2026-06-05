@@ -320,3 +320,20 @@ export const WithoutTitle = meta.story({
     </Page>
   ),
 });
+
+/**
+ * Invalid usage: with neither a `<Title>` nor an `aria-label`, the `<main>`
+ * landmark has no accessible name. `<Page>` warns about this in development.
+ * Always provide one of the two (this story exists to document the warning).
+ */
+export const Unlabelled = meta.story({
+  render: () => (
+    <Page>
+      <Panel aria-label="Summary">
+        <Panel.Content>
+          <Text>No title and no aria-label.</Text>
+        </Panel.Content>
+      </Panel>
+    </Page>
+  ),
+});

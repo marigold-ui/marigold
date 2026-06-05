@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useId, useMemo } from 'react';
+import { useEffect, useId, useMemo } from 'react';
 import { HeadingContext, Provider } from 'react-aria-components';
 import type {
   InsetSpacingTokens,
@@ -109,6 +109,20 @@ export const Page = ({
     [classNames, titleId, headingLevel, hasTitle, titleSlotRef]
   );
 
+  // The `<main>` landmark must have an accessible name. It is named by the
+  // page `<Title>` (via `aria-labelledby`); when there is no title the consumer
+  // must pass `aria-label`. Warn in development if neither is present so the
+  // landmark is never silently unnamed.
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'production' && !hasTitle && !ariaLabel) {
+      console.error(
+        '<Page>: the `<main>` landmark has no accessible name. Either render a ' +
+          '`<Title>` inside the page (e.g. in `<Page.Header>`) or pass an ' +
+          '`aria-label` to `<Page>`.'
+      );
+    }
+  }, [hasTitle, ariaLabel]);
+
   return (
     <Provider
       values={[
@@ -119,7 +133,7 @@ export const Page = ({
       <main
         data-page
         aria-labelledby={hasTitle ? titleId : undefined}
-        aria-label={ariaLabel}
+        aria-label={!hasTitle ? ariaLabel : undefined}
         className={cn(
           'flex min-w-0 flex-col gap-y-(--page-gap) px-(--page-px) py-(--page-py) [grid-area:main]',
           classNames.root
