@@ -96,6 +96,15 @@ The width of form fields can be adjusted based on the context and design require
 
 Scale values may be passed either as a number or as the equivalent string — both `width={32}` and `width="32"` are valid and produce the same result. The same applies to spacing-scale props on layout components (`space`, `spaceX`, `spaceY`, `pl`, `pr`, `pt`, `pb`).
 
+Numeric values map to the spacing scale, **not** pixels: `width={64}` resolves to `calc(var(--spacing) * 64)`, roughly `16rem` (256px), not 64px. The `width` prop sizes the field element directly, so no wrapper element is needed.
+
+```tsx
+<TextField label="Name" width={64} />
+<Select label="Country" width="1/2">
+  {/* options */}
+</Select>
+```
+
 When using fixed/keywords widths the `label` and `description` won't be included in the width calculation and won't adapt to the width of the field. The text will not shrink if the field is too small to fit the text.
 
 For fraction values, the field will take up the specified fraction of the width of its parent container. This is particularly useful for creating responsive layouts where fields need to adjust based on the available space.
