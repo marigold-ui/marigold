@@ -29,7 +29,11 @@ const _CalendarGrid = ({ offset }: CalendarGridProps) => {
   const range = rangeState?.highlightedRange ?? null;
 
   return (
-    <CalendarGrid offset={offset} className={classNames.calendarGrid}>
+    <CalendarGrid
+      offset={offset}
+      weekdayStyle="short"
+      className={classNames.calendarGrid}
+    >
       <CalendarGridHeader />
       <CalendarGridBody>
         {date => {

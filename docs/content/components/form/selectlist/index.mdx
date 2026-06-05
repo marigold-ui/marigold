@@ -49,9 +49,9 @@ The right control depends on list length and how much space the field can take. 
 
 | When                                                         | Use                                                                                                              |
 | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Short list of plain text choices (3–5 items)                 | [`<Radio.Group>`](/components/form/radio) (single) or [`<Checkbox.Group>`](/components/form/checkbox) (multiple) |
+| Short list of plain text choices (3 to 5 items)              | [`<Radio.Group>`](/components/form/radio) (single) or [`<Checkbox.Group>`](/components/form/checkbox) (multiple) |
 | Each option needs decision-relevant context (up to 10 items) | `<SelectList>`                                                                                                   |
-| Space is limited, with or without rich rows (5–15 items)     | [`<Select>`](/components/form/select) (single or multiple)                                                       |
+| Space is limited, with or without rich rows (5 to 15 items)  | [`<Select>`](/components/form/select) (single or multiple)                                                       |
 | More than ~15 options, or users need to search               | [`<Combobox>`](/components/form/combobox) or [`<TagField>`](/components/form/tag-field)                          |
 
 ### Writing options
@@ -222,9 +222,9 @@ For rows with rich content like a wrapped label, a logo, or a trailing action, s
 <TeaserList
   items={[
     {
-      title: 'Form implementation guide',
-      href: '../../patterns/user-input/form-implementation',
-      caption: 'Learn how to build forms with Marigold form fields.',
+      title: 'Forms',
+      href: '../../patterns/user-input/forms',
+      caption: 'How to structure, validate, and submit forms with Marigold.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

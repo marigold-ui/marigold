@@ -46,9 +46,12 @@
 /*
  * Use for interactive UI elements like inputs, selects, and cards. Anything that
  * sits on the page background and needs a clear visual boundary.
+ *
+ * `background` is intentionally excluded from the transition list: hover/state
+ * bg flips should feel instant on high-frequency interactions (see DST-1436).
  */
 @utility ui-surface {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
+  @apply rounded-surface relative transition-[border,box-shadow];
 
   /* prettier-ignore */
   background:
@@ -68,12 +71,15 @@
   border: 1px solid transparent;
 }
 
-/* 
+/*
  * Use when the surface must stand out against the page. Toolbars, action bars,
  * or anything that uses the primary color to signal prominence.
+ *
+ * `background` is intentionally excluded from the transition list: hover/state
+ * bg flips should feel instant on high-frequency interactions (see DST-1436).
  */
 @utility ui-surface-contrast {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
+  @apply rounded-surface relative transition-[border,box-shadow];
   @apply text-primary-foreground;
 
   @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-primary)_calc(l+0.4)_c_h))];
@@ -194,15 +200,27 @@
 }
 
 /*
- * Standard panel header slot — shared by Drawer and Tray.
+ * Layout utilities for modal-style panels: Dialog, Drawer, Tray, Sidebar.
+ * They define the shared anatomy of a sectioned overlay surface — a header
+ * row with a bottom divider, a scrollable content area, and an actions row
+ * with a top divider — all sharing the same padding rhythm.
+ *
+ * Note: distinct from the Panel component, which has its own styling
+ * (themes/theme-rui/src/components/Panel.styles.ts) and does not consume
+ * these utilities.
+ *
+ * Defaults match the common case. Consumers override via composition where
+ * their identity differs (e.g., Dialog uses flex-col-reverse sm:flex-row
+ * on actions for responsive button stacking).
  */
 @utility ui-panel-header {
   @apply border-border border-b px-6 py-4;
 }
 
-/*
- * Standard panel actions slot — shared by Drawer and Tray.
- */
+@utility ui-panel-content {
+  @apply overflow-y-auto px-6 py-4 outline-none;
+}
+
 @utility ui-panel-actions {
   @apply border-border flex flex-row justify-end gap-3 border-t px-6 py-4;
 }

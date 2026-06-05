@@ -1,4 +1,10 @@
-import { ActionButton, SelectList, Text, Tooltip } from '@marigold/components';
+import {
+  ActionButton,
+  Description,
+  SelectList,
+  TextValue,
+  Tooltip,
+} from '@marigold/components';
 import { Info } from '@marigold/icons';
 
 const venues = [
@@ -27,8 +33,8 @@ export default () => (
   >
     {venues.map(venue => (
       <SelectList.Option key={venue.id} id={venue.id} textValue={venue.name}>
-        <Text slot="label">{venue.name}</Text>
-        <Text slot="description">{venue.capacity}</Text>
+        <TextValue>{venue.name}</TextValue>
+        <Description>{venue.capacity}</Description>
         {/* The nested ActionButton inherits its size and visual weight from
             SelectList — no `variant` or `size` needed at the call site. */}
         <Tooltip.Trigger>

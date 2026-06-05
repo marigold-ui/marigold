@@ -76,20 +76,20 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "4.2.1",
+    "@tailwindcss/postcss": "4.3.0",
     "cross-env": "^10.0.0",
     "cssnano": "7.1.9",
     "postcss-cli": "11.0.1",
     "postcss-prefix-selector": "2.1.1",
     "shx": "^0.4.0",
-    "tailwindcss": "4.2.1",
+    "tailwindcss": "4.3.0",
     "tsdown": "0.22.0",
     "typescript": "6.0.2"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/system": "workspace:*",
-    "tailwindcss-react-aria-components": "^2.0.1"
+    "tailwindcss-react-aria-components": "^2.1.1"
   },
   "scripts": {
     "build": "node ./scripts/build-appearances.mjs && cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/tokens.css src/variants.css src/ui.css src/preflight.css dist/"

@@ -27,6 +27,23 @@ describe('Panel', () => {
       expect(region).not.toHaveAttribute('aria-label');
     });
 
+    test('exposes a data-panel attribute on the root for external CSS targeting', () => {
+      render(<Basic.Component />);
+
+      const region = screen.getByRole('region', { name: 'Organizer Profile' });
+
+      expect(region).toHaveAttribute('data-panel');
+    });
+
+    test('spreads arbitrary HTML attributes onto the root <section>', () => {
+      render(<Basic.Component id="organizer-panel" data-analytics="profile" />);
+
+      const region = screen.getByRole('region', { name: 'Organizer Profile' });
+
+      expect(region).toHaveAttribute('id', 'organizer-panel');
+      expect(region).toHaveAttribute('data-analytics', 'profile');
+    });
+
     test('renders Header, Content, and Footer children in the document', () => {
       render(<Basic.Component />);
 

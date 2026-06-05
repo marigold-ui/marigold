@@ -57,10 +57,10 @@ The order of the slot components inside `AppLayout` doesn't matter since the gri
 
 Each area has a clear purpose. Mixing responsibilities between them makes the layout harder to use and harder to maintain.
 
-- **Logo placement:** Put the application logo or name in the sidebar header, not in the top navigation. The sidebar is the persistent brand anchor; the top navigation is for orientation and utility actions.
+- **Logo placement:** Put the application logo or name in the sidebar header, not in the top navigation. The sidebar is the persistent brand anchor. The top navigation is for orientation and utility actions.
 - **Primary navigation:** All section-level links belong in the sidebar. Use groups (`<Sidebar.GroupLabel>`) and separators (`<Sidebar.Separator>`) to organize them. See the [Sidebar docs](/components/navigation/sidebar) for drill-down navigation and detail page patterns.
 - **Top navigation:** The top navigation exists primarily for [breadcrumbs](/components/navigation/breadcrumbs) and [search](/components/form/search-field). Breadcrumbs go in the middle slot to show users where they are in the hierarchy. A search field can replace or complement them when global search is a core workflow. Don't place tabs, links, or secondary navigation here. That's what the sidebar is for. See the [TopNavigation docs](/components/navigation/topnavigation) for further information.
-- **Utility actions (top navigation, right side):** The end of the top navigation is reserved for user-facing utilities like account menus, notification badges, or status indicators. Keep it concise; too many items cause the navigation to overflow on smaller screens.
+- **Utility actions (top navigation, right side):** The end of the top navigation is reserved for user-facing utilities like account menus, notification badges, or status indicators. Keep it concise. Too many items cause the navigation to overflow on smaller screens.
 
 <GuidelineTiles>
   <Do>
@@ -106,7 +106,7 @@ Each App Shell slot renders semantic HTML, so the screen reader's landmark list 
 
 When you compose multiple navigation regions inside the header (e.g. `<TopNavigation.Middle>` plus `<TopNavigation.End>`), give each a distinct `aria-label` so they can be told apart. Each [`<Panel>`](/components/layout/panel) inside `<AppLayout.Main>` adds its own `region` landmark, labelled by its title.
 
-`F6` / `Shift + F6` cycling is opt-in via the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook. Today only `<Drawer>` opts in by default — wrap the slots above (or any custom region) with `useLandmark` to add them to the cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
+`F6` / `Shift + F6` cycling is opt-in via the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook. Today only `<Drawer>` opts in by default. Wrap the slots above (or any custom region) with `useLandmark` to add them to the cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
 
 ### Responsive behavior
 

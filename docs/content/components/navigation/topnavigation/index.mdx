@@ -37,7 +37,7 @@ The `<TopNavigation>` component organizes the top-level navigation of an applica
 
 ### Centering content in the middle slot
 
-Some layouts call for centered content in the navigation bar, such as a search field. Use the `alignX` prop on `<TopNavigation.Middle>` to horizontally center its content within the available space. Note that `alignX` only applies to the Middle slot — Start and End are always aligned to their respective edges.
+Some layouts call for centered content in the navigation bar, such as a search field. Use the `alignX` prop on `<TopNavigation.Middle>` to horizontally center its content within the available space. Note that `alignX` only applies to the Middle slot. Start and End are always aligned to their respective edges.
 
 <ComponentDemo name="topnavigation-search" background="page" />
 
@@ -57,7 +57,7 @@ For applications with multiple levels of navigation, combine `<TopNavigation>` w
   When combining `<TopNavigation>` with a `<Sidebar>`, place the application logo in the Sidebar's header rather than in the TopNavigation. This keeps the top bar focused on navigation and utility actions.
 </Callout>
 
-The `<TopNavigation.Middle>` slot adapts to your application's navigation model. We recommend using it for **Breadcrumbs** to give users a clear trail back to parent sections, or for a **search field** to provide quick access to content across the application. This flexibility lets the `<TopNavigation>` and `<Sidebar>` work as complementary layers — the top bar orients users globally, while the Sidebar guides them locally within the current section.
+The `<TopNavigation.Middle>` slot adapts to your application's navigation model. We recommend using it for **Breadcrumbs** to give users a clear trail back to parent sections, or for a **search field** to provide quick access to content across the application. This flexibility lets the `<TopNavigation>` and `<Sidebar>` work as complementary layers. The top bar orients users globally, while the Sidebar guides them locally within the current section.
 
 <GuidelineTiles>
   <Do>
@@ -76,7 +76,7 @@ The `<TopNavigation.Middle>` slot adapts to your application's navigation model.
 
 Mobile navigation should prioritize simplicity. Reduce the number of visible items and use progressive disclosure to keep the interface focused.
 
-The `<TopNavigation>` itself does not handle responsive behavior — the components placed inside it are responsible for adapting to different screen sizes. On small screens:
+The `<TopNavigation>` itself does not handle responsive behavior. The components placed inside it are responsible for adapting to different screen sizes. On small screens:
 
 - **Collapse non-essential items:** Hide labels and show icon-only actions. Use `useResponsiveValue()` or `useSmallScreen()` to control visibility at each breakpoint.
 - **Breadcrumbs:** Use fewer segments on small screens. The [Breadcrumbs](/components/navigation/breadcrumbs) component supports collapsing via the `maxVisibleItems` prop.

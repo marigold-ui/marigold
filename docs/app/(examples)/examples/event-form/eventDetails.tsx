@@ -9,9 +9,9 @@ import {
   Radio,
   Select,
   Stack,
-  Text,
   TextArea,
   TextField,
+  TextValue,
   Title,
 } from '@marigold/components';
 
@@ -63,10 +63,8 @@ export const EventDetails = () => {
           >
             {eventTypes.map(type => (
               <Select.Option key={type.id} id={type.id} textValue={type.label}>
-                <Text slot="label">{type.label}</Text>
-                <Text slot="description" fontSize="xs">
-                  {type.description}
-                </Text>
+                <TextValue>{type.label}</TextValue>
+                <Description>{type.description}</Description>
               </Select.Option>
             ))}
           </Select>

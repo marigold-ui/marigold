@@ -41,7 +41,6 @@ export const Table: ThemeComponent<'Table'> = {
   row: cva({
     base: [
       'border-border not-last:border-b',
-      'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
       'disabled:cursor-not-allowed',
       'data-hovered:cursor-pointer data-hovered:ui-state-hover',
@@ -152,7 +151,7 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'flex items-center justify-center',
       'text-secondary',
-      'size-control aspect-square rounded-surface transition-[color,background,transform]',
+      'size-control aspect-square rounded-surface transition-[color,transform]',
       'ui-interactive',
       'ui-press',
       'hover:ui-state-hover-ghost',
@@ -163,7 +162,7 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'inline-flex items-center justify-center',
       'sm:text-secondary font-medium',
-      'text-sm h-control-small sm:size-control sm:aspect-square rounded-surface transition-[color,background,transform]',
+      'text-sm h-control-small sm:size-control sm:aspect-square rounded-surface transition-[color,transform]',
       'cursor-pointer',
       'ml-1.5', // some extra spacing between buttons and field
       'focus-visible:ui-state-focus outline-none',
@@ -176,7 +175,7 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'inline-flex items-center justify-center',
       'sm:text-secondary font-medium',
-      'text-sm h-control-small sm:size-control sm:aspect-square rounded-surface transition-[color,background,transform]',
+      'text-sm h-control-small sm:size-control sm:aspect-square rounded-surface transition-[color,transform]',
       'cursor-pointer',
       'focus-visible:ui-state-focus outline-none',
       'ui-press',
