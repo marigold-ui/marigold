@@ -20,14 +20,16 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     },
   }),
   title: cva({ base: 'text-sm font-medium' }),
+  // Muted relative to title and content (foreground at 80% opacity) while
+  // keeping the variant tint for contrast on the tinted backgrounds.
   description: cva({
-    base: 'text-secondary text-sm leading-5 font-normal',
+    base: 'text-sm leading-5 font-normal',
     variants: {
       variant: {
-        info: 'text-info-foreground',
-        success: 'text-success-foreground',
-        warning: 'text-warning-foreground',
-        error: 'text-destructive-foreground',
+        info: 'text-info-foreground/80',
+        success: 'text-success-foreground/80',
+        warning: 'text-warning-foreground/80',
+        error: 'text-destructive-foreground/80',
       },
     },
     defaultVariants: {
