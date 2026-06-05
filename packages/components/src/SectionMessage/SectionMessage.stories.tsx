@@ -111,6 +111,16 @@ export const DescriptionRendersInSlot = meta.story({
     await expect(getComputedStyle(description).color).not.toBe(
       getComputedStyle(heading).color
     );
+
+    // The variant's variable assignment must win the cascade over the
+    // container's `currentColor` fallback (both are same-specificity
+    // arbitrary properties; this pins Tailwind's emit order).
+    const container = heading.parentElement!;
+    await expect(
+      getComputedStyle(container)
+        .getPropertyValue('--section-message-description')
+        .trim()
+    ).not.toBe('currentColor');
   },
 });
 

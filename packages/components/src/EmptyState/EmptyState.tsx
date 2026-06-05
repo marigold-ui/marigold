@@ -11,7 +11,8 @@ import { Title } from '../Title/Title';
 // ---------------
 export interface EmptyStateProps {
   /**
-   * Title of the empty state.
+   * Title of the empty state. Rendered inside a heading element, so pass
+   * inline content (not another heading).
    */
   title: ReactNode;
   /**
