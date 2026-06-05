@@ -8,15 +8,19 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       // rhythm is owned by the slots' margins (title `mb-1`, description
       // `mb-2`).
       "grid-cols-[min-content_auto_min-content] gap-x-4 [grid-template-areas:'icon_title_close''icon_description_description''icon_content_content']",
-      'bg-surface rounded-md border px-3 py-4',
+      // Each variant assigns the description color via `--section-message-description`
+      // (same mechanism as the Card master/admin `--card-text` variable).
+      'bg-surface rounded-md border px-3 py-4 [--section-message-description:currentColor]',
     ],
     variants: {
       variant: {
-        info: 'border-info-accent bg-info text-info-foreground',
-        success: 'border-success-accent bg-success text-success-foreground',
-        warning: 'border-warning-accent bg-warning text-warning-foreground',
+        info: 'border-info-accent bg-info text-info-foreground [--section-message-description:var(--color-info-foreground)]',
+        success:
+          'border-success-accent bg-success text-success-foreground [--section-message-description:var(--color-success-foreground)]',
+        warning:
+          'border-warning-accent bg-warning text-warning-foreground [--section-message-description:var(--color-warning-foreground)]',
         error:
-          'border-destructive-accent bg-destructive text-destructive-foreground',
+          'border-destructive-accent bg-destructive text-destructive-foreground [--section-message-description:var(--color-destructive-foreground)]',
       },
     },
     defaultVariants: {
@@ -24,11 +28,12 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     },
   }),
   title: cva({ base: 'mb-1 text-sm font-medium' }),
-  // Muted via the system-wide description token (like Panel, Card, Toast,
-  // and ContextualHelp). `mb-2` pairs the description with the title:
-  // 4px (title margin) above, 8px before the content.
+  // Consumes the variant's `--section-message-description` color, muted to
+  // 80% so the description reads quieter than title and content. `mb-2`
+  // pairs the description with the title: 4px (title margin) above, 8px
+  // before the content.
   description: cva({
-    base: 'text-secondary mb-2 text-sm leading-5 font-normal',
+    base: 'text-(--section-message-description)/80 mb-2 text-sm leading-5 font-normal',
   }),
   content: cva({
     base: 'text-secondary text-sm leading-5 font-normal',

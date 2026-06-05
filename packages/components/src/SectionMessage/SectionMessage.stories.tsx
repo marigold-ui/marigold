@@ -104,6 +104,13 @@ export const DescriptionRendersInSlot = meta.story({
     await expect(description).toBeInTheDocument();
     // Element type comes from the root's `TextContext` slot config.
     await expect(description.tagName).toBe('P');
+
+    // The description is muted (variant color via
+    // `--section-message-description` at 80%), so its computed color must
+    // differ from the title's full variant foreground.
+    await expect(getComputedStyle(description).color).not.toBe(
+      getComputedStyle(heading).color
+    );
   },
 });
 
