@@ -30,8 +30,6 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
     ],
   }),
   title: cva({ base: 'text-lg font-semibold px-5 pt-5 mb-1' }),
-  // `mb-1` pairs the description with the title: 4px (title margin) above,
-  // 8px (margin + content padding) before the content.
   description: cva({ base: 'text-secondary mb-1 text-sm px-5' }),
   content: cva({ base: 'text-sm px-5 pb-5 pt-1' }),
 };
