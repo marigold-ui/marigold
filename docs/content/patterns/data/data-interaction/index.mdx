@@ -1,0 +1,263 @@
+---
+title: Data Interaction
+description: Patterns for fetching, mutating and giving feedback with React Query and Marigold.
+badge: alpha
+---
+
+Most applications spend their time reading and writing remote data. Done ad hoc, this leads to scattered `fetch` calls, duplicated loading flags, `useEffect` chains that fight the render, and inconsistent feedback. These patterns describe how to structure data interaction with [@tanstack/react-query](https://tanstack.com/query/latest) and Marigold so that components stay readable and the experience stays predictable.
+
+The guidance here is demonstrated end to end in the [filter example](/examples/filter), which fetches from a real route handler, paginates and sorts on the server, and deletes rows with confirmation and optimistic updates.
+
+## Pages compose, hooks fetch
+
+The single most important rule is to keep data logic out of your views. A page or screen composes components. Each component owns its data through a custom hook. The component renders, the hook fetches.
+
+```tsx
+// The view composes. It never sees fetch, query keys or URL parsing.
+const VenuesPage = () => (
+  <Panel aria-label="Venues">
+    <Toolbar />
+    <VenuesTable />
+    <VenuesPagination />
+  </Panel>
+);
+```
+
+```tsx
+// The data concern lives in a hook, co-located with the feature.
+export const useVenues = () => {
+  const params = useVenueQueryParams(); // derived from URL state
+  return useQuery({
+    queryKey: venueKeys.list(params),
+    queryFn: () => fetchVenues(params),
+    placeholderData: keepPreviousData,
+  });
+};
+```
+
+Because the hook is keyed on its inputs, you can call it from more than one component. React Query deduplicates identical keys, so the table and the pagination below it share a single request and a single cache entry.
+
+## Centralize query keys
+
+A query key identifies a cache entry. When keys are written inline as raw arrays, they drift, and an invalidation in one place silently misses an entry created in another. Keep them in one factory per domain.
+
+```tsx
+export const venueKeys = {
+  all: ['venues'] as const,
+  lists: () => [...venueKeys.all, 'list'] as const,
+  list: (params: VenueQueryParams) => [...venueKeys.lists(), params] as const,
+};
+```
+
+Fold the active filter, sort and pagination into the list key. That is what lets the query refetch the right slice when the URL changes, and what lets a mutation invalidate every list at once with `venueKeys.lists()`. See [Effective React Query Keys](https://tkdodo.eu/blog/effective-react-query-keys) for the reasoning.
+
+<Callout title="Keep server params out of components">
+  UI components should never assemble query strings or know endpoint shapes.
+  Build the request inside the hook (or a small `fetchVenues` helper) so the
+  component only passes domain values like a venue id.
+</Callout>
+
+## Loading states
+
+There are two distinct loading signals, and they map to two different pieces of UI.
+
+- **`isLoading`** is the initial fetch, before any data exists. Render a skeleton or placeholder in its place.
+- **`useIsFetching()`** counts queries currently fetching, including background refetches that happen while old data is still on screen. Use it for a subtle, non-blocking indicator.
+
+```tsx
+const VenuesTable = () => {
+  const { items, isLoading } = useVenues();
+  if (isLoading) return <VenuesTableSkeleton />;
+  return <Table>{/* rows */}</Table>;
+};
+```
+
+```tsx
+// A subtle global indicator for background activity.
+const FetchingIndicator = () => {
+  const fetching = useIsFetching();
+  if (!fetching) return null;
+  return <ProgressCircle isIndeterminate aria-label="Updating" />;
+};
+```
+
+Pair this with `placeholderData: keepPreviousData` so filtering and paging keep the previous rows visible instead of flashing an empty table. For the full taxonomy of when to block, when to show inline feedback, and when to stay quiet, see the [Loading States](/patterns/feedback/loading-states) pattern.
+
+Keep skeletons next to the component they stand in for, and mirror its structure, so the two never drift apart.
+
+## Handling errors and retries
+
+Separate the two ways an error reaches the user.
+
+- For rendering, derive from state. A query exposes `isError` and `error`.
+- For side effects such as a toast or a redirect, use the mutation callbacks (`onError`), never a `useEffect` watching a flag.
+
+For queries, the cleanest approach is to let failures bubble to an error boundary that isolates the failing region rather than blanking the page. React Query's `throwOnError` does exactly that, and `useQueryErrorResetBoundary` wires the boundary's reset to a refetch so the user can retry.
+
+```tsx
+const VenuesData = () => {
+  const { reset } = useQueryErrorResetBoundary();
+  return (
+    <ErrorBoundary
+      onReset={reset}
+      fallbackRender={({ resetErrorBoundary }) => (
+        <Stack space={2} alignX="center">
+          <Text weight="bold">Could not load venues</Text>
+          <Button variant="primary" onPress={resetErrorBoundary}>
+            Try again
+          </Button>
+        </Stack>
+      )}
+    >
+      <VenuesTable />
+    </ErrorBoundary>
+  );
+};
+```
+
+The form variant of this, where a mutation returns field-level validation errors, is covered in [Server Validation](/patterns/user-input/forms).
+
+## Feedback with toasts
+
+Success and failure feedback are side effects, so they belong in mutation callbacks. Reach for Marigold's [`useToast`](/components/overlay/toast) for transient confirmation.
+
+```tsx
+const { addToast } = useToast();
+
+const mutation = useMutation({
+  mutationFn: deleteVenue,
+  onSuccess: () => addToast({ title: 'Venue deleted', variant: 'success' }),
+  onError: () =>
+    addToast({ title: 'Could not delete venue', variant: 'error' }),
+});
+```
+
+Do not mirror this with a local `loading` state or a `useEffect` that watches `isSuccess`. The mutation already exposes `isPending`, and the callback already runs once per settle.
+
+## Optimistic updates
+
+For actions that almost always succeed, update the cache before the server responds so the UI feels instant. Snapshot first, apply the change, and roll back in `onError`. Always invalidate in `onSettled` to re-sync with the server.
+
+```tsx
+useMutation({
+  mutationFn: deleteVenue,
+  onMutate: async id => {
+    await queryClient.cancelQueries({ queryKey: venueKeys.lists() });
+    const previous = queryClient.getQueriesData({
+      queryKey: venueKeys.lists(),
+    });
+    queryClient.setQueriesData({ queryKey: venueKeys.lists() }, old =>
+      removeItem(old, id)
+    );
+    return { previous };
+  },
+  onError: (_error, _id, context) => {
+    context?.previous.forEach(([key, data]) =>
+      queryClient.setQueryData(key, data)
+    );
+  },
+  onSettled: () =>
+    queryClient.invalidateQueries({ queryKey: venueKeys.lists() }),
+});
+```
+
+Cancelling in-flight queries in `onMutate` is what prevents a slower refetch from overwriting the optimistic change. See [Optimistic Updates](https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates) for the concurrent edge cases.
+
+## Destructive actions
+
+Wrap destructive mutations in a confirmation before they run. Marigold's [`useConfirmation`](/components/overlay/dialog) returns a promise that resolves to `'confirmed'` or `'cancelled'`, so the whole flow reads top to bottom.
+
+```tsx
+const confirm = useConfirmation();
+
+const remove = async (venue: Venue) => {
+  const result = await confirm({
+    variant: 'destructive',
+    title: 'Delete venue?',
+    content: `This will remove “${venue.name}”. This action cannot be undone.`,
+    confirmationLabel: 'Delete',
+  });
+  if (result === 'confirmed') mutation.mutate(venue);
+};
+```
+
+The demo below puts the pieces together: confirmation, optimistic removal, toast feedback and cache invalidation, all encapsulated in a `useDeleteProduct` hook.
+
+<ComponentDemo name="optimistic-delete" />
+
+## React Query and React Server Components
+
+The patterns above use client-side React Query, which is the right default for the highly interactive admin surfaces Marigold targets. If your application instead reads and writes through React Server Components and Server Actions, the same problems have different tools. The principles (encapsulate data logic, isolate failures, give optimistic feedback) carry over, but the mechanisms differ.
+
+| Concern        | Client + React Query                        | RSC + Server Actions                          |
+| -------------- | ------------------------------------------- | --------------------------------------------- |
+| Read           | `useQuery` in a custom hook                 | `async` Server Component fetches its own data |
+| Mutation       | `useMutation` calling an endpoint           | Server Function from a form `action`          |
+| Optimistic UI  | `onMutate` with `setQueryData` and rollback | `useOptimistic` with `useTransition`          |
+| Loading        | `isLoading` and `useIsFetching`             | `<Suspense>` with co-located skeletons        |
+| Errors / retry | `throwOnError` with an error boundary       | `error.tsx` and error boundaries              |
+| Deduplication  | Query cache keyed by query key              | `cache()` on the server                       |
+
+A useful framing from [Aurora Scharff on RSC component architecture](https://aurorascharff.no/posts/component-architecture-for-react-server-components/): pages compose, async components fetch their own data, and skeletons live beside the component they replace. That advice is paradigm independent, and it is the same shape the [filter example](/examples/filter) follows on the client.
+
+## Do's and Don'ts
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Encapsulate every data interaction in a custom hook so the UI calls
+      `useDeleteVenue(id)` instead of defining the mutation inline.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Expose raw query keys or endpoint strings inside components. Manage them
+      in a key factory and a fetch helper.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `onSuccess` and `onError` only for side effects like toasts or
+      navigation, and rely on `isPending` for in-flight state.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Use a `useEffect` to watch `isError` or `isSuccess`, or keep a separate
+      local `loading` state alongside React Query.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Demo
+
+<DemoLinks
+  demo="/examples/filter"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/filter"
+/>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Loading States',
+      href: '../../feedback/loading-states',
+      caption:
+        'When to block, when to show inline feedback, and when to stay quiet.',
+    },
+    {
+      title: 'Async Data Loading',
+      href: '../../feedback/async-data-loading',
+      caption: 'Fetching options for ComboBox and Autocomplete.',
+    },
+    {
+      title: 'Forms',
+      href: '../../user-input/forms',
+      caption: 'Server validation and mutation feedback in forms.',
+    },
+  ]}
+/>

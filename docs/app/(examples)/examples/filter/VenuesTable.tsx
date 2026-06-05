@@ -17,13 +17,15 @@ import {
   Text,
   VisuallyHidden,
 } from '@marigold/components';
-import { Download, Star } from '@marigold/icons';
+import { Download, Star, Trash2 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { exportVenuesToCsv } from './csv';
+import { useDeleteVenue } from './hooks/useDeleteVenue';
 import { useFilter } from './hooks/useFilter';
 import { useSearch } from './hooks/useSearch';
 import { type VenueSortDescriptor, useSort } from './hooks/useSort';
 import { useVenues } from './hooks/useVenues';
+import { fetchVenues } from './hooks/venuesApi';
 
 // Anchor that VenuesPagination scrolls back to so users land on the first
 // row of the new page.
@@ -64,7 +66,35 @@ const NoDataEmptyState = () => (
   </div>
 );
 
-const VenueRow = ({ venue }: { venue: Venue }) => (
+// Co-located skeleton that mirrors the table's row rhythm. Shown only for the
+// initial fetch (`isLoading`); background refetches keep the previous rows on
+// screen and surface activity through FetchingIndicator instead.
+export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
+  <div aria-hidden>
+    <VisuallyHidden role="status">Loading venues…</VisuallyHidden>
+    <Stack space={4}>
+      {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
+        <Inline key={key} space={6} alignY="center">
+          <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
+          <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
+          <div className="h-4 grow animate-pulse rounded bg-current/10" />
+          <div className="h-4 w-16 animate-pulse rounded bg-current/10" />
+          <div className="h-4 w-12 animate-pulse rounded bg-current/10" />
+        </Inline>
+      ))}
+    </Stack>
+  </div>
+);
+
+const VenueRow = ({
+  venue,
+  onDelete,
+  deleteDisabled,
+}: {
+  venue: Venue;
+  onDelete: (venue: Venue) => void;
+  deleteDisabled: boolean;
+}) => (
   <Table.Row id={venue.id}>
     <Table.Cell>
       <Text weight="medium">{venue.name}</Text>
@@ -116,6 +146,17 @@ const VenueRow = ({ venue }: { venue: Venue }) => (
         <Star className="self-center" size={14} />
       </Inline>
     </Table.Cell>
+    <Table.Cell>
+      <Button
+        variant="ghost"
+        size="small"
+        disabled={deleteDisabled}
+        aria-label={`Delete ${venue.name}`}
+        onPress={() => onDelete(venue)}
+      >
+        <Trash2 size={16} />
+      </Button>
+    </Table.Cell>
   </Table.Row>
 );
 
@@ -123,8 +164,14 @@ const VenueRow = ({ venue }: { venue: Venue }) => (
 // region id so VenuesPagination can scroll back to it on page change, plus
 // the single live region (role="status" implies aria-live="polite").
 export const VenuesTable = () => {
-  const { paged, display, totalItems, isFiltered } = useVenues();
+  const { items, params, totalItems, pageSize, isFiltered, isLoading } =
+    useVenues();
   const [sort, setSort] = useSort();
+  const { deleteVenue, isDeleting } = useDeleteVenue();
+
+  if (isLoading) {
+    return <VenuesTableSkeleton rows={pageSize} />;
+  }
 
   const summary = `${totalItems} venue${totalItems === 1 ? '' : 's'}`;
 
@@ -143,19 +190,23 @@ export const VenuesTable = () => {
             direction: d.direction,
           })
         }
-        actionBar={selectedKeys => {
-          const selected =
-            selectedKeys === 'all'
-              ? display
-              : display.filter(v => selectedKeys.has(v.id));
-          return (
-            <ActionBar>
-              <ActionBar.Button onPress={() => exportVenuesToCsv(selected)}>
-                <Download /> Export CSV
-              </ActionBar.Button>
-            </ActionBar>
-          );
-        }}
+        actionBar={selectedKeys => (
+          <ActionBar>
+            <ActionBar.Button
+              onPress={async () => {
+                // "Select all" can span pages, so fetch the full matching set
+                // (same query, no pagination) before exporting.
+                const selected =
+                  selectedKeys === 'all'
+                    ? (await fetchVenues({ ...params, pageSize: 'all' })).items
+                    : items.filter(v => selectedKeys.has(v.id));
+                exportVenuesToCsv(selected);
+              }}
+            >
+              <Download /> Export CSV
+            </ActionBar.Button>
+          </ActionBar>
+        )}
       >
         <Table.Header>
           <Table.Column id="name" rowHeader allowsSorting>
@@ -175,14 +226,22 @@ export const VenuesTable = () => {
           <Table.Column id="rating" alignX="right">
             Rating
           </Table.Column>
+          <Table.Column id="actions">
+            <VisuallyHidden>Actions</VisuallyHidden>
+          </Table.Column>
         </Table.Header>
         <Table.Body
           emptyState={() =>
             isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
           }
         >
-          {paged.map(venue => (
-            <VenueRow key={venue.id} venue={venue} />
+          {items.map(venue => (
+            <VenueRow
+              key={venue.id}
+              venue={venue}
+              onDelete={deleteVenue}
+              deleteDisabled={isDeleting}
+            />
           ))}
         </Table.Body>
       </Table>
