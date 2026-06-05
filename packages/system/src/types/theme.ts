@@ -80,7 +80,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ContextualHelp?: Record<
-      'trigger' | 'container' | 'title' | 'content',
+      'trigger' | 'container' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
@@ -195,7 +195,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     SectionMessage?: Record<
-      'container' | 'icon' | 'title' | 'content',
+      'container' | 'icon' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<

@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic } from './ContextualHelp.stories';
+import { Basic, WithDescription } from './ContextualHelp.stories';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
@@ -70,4 +70,22 @@ test('renders info variant with correct aria label', () => {
   expect(
     screen.getByRole('button', { name: 'More information' })
   ).toBeInTheDocument();
+});
+
+test('dialog is labelled by the title', () => {
+  renderWithOverlay(<Basic.Component defaultOpen />);
+
+  const dialog = screen.getByRole('dialog');
+  const heading = screen.getByRole('heading', { name: 'Whats this?' });
+
+  expect(heading).toHaveAttribute('id');
+  expect(dialog).toHaveAttribute('aria-labelledby', heading.id);
+});
+
+test('renders an optional description via the description slot', () => {
+  renderWithOverlay(<WithDescription.Component defaultOpen />);
+
+  const description = screen.getByText('A short summary of this feature.');
+  expect(description.tagName).toBe('P');
+  expect(description).toHaveClass('[grid-area:description]');
 });
