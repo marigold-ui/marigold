@@ -74,14 +74,11 @@ This keeps the JSX tree honest: every layout component in the markup signals a r
 
 <Callout title="Table is for data, not layout" type="warning">
   `Table` must never be used as a layout grid. It expresses tabular _data_ with
-  rows and columns of related values — not a way to align arbitrary elements.
-
-For arranging UI, reach for a layout component instead. In particular,
-**form fields belong in `Stack`, `Inline` or `Columns`, never in
-`Table.Cell`** — putting inputs in table cells to line them up breaks the
-named-intent model and harms accessibility.
-
-See the [Table](/components/collection/table) component for its legitimate use,
-and the [Forms](/patterns/user-input/forms) pattern for laying out fields.
-
+  rows and columns of related values, not a way to align arbitrary elements. For
+  arranging UI, reach for a layout component instead: **form fields belong in
+  `Stack`, `Inline` or `Columns`, never in `Table.Cell`**, since putting inputs
+  in table cells to line them up breaks the named-intent model and harms
+  accessibility. See the [Table](/components/collection/table) component for its
+  legitimate use, and the [Forms](/patterns/user-input/forms) pattern for laying
+  out fields.
 </Callout>

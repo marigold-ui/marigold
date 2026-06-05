@@ -115,14 +115,15 @@ A normal form has exactly **one** primary action: the submit. Everything else st
 
 Map each action to a Button variant by its role:
 
-| Action role                                           | Use                     |
-| ----------------------------------------------------- | ----------------------- |
-| Submit the form (the one primary action)              | `primary`               |
-| Supporting form operation ("Save as Draft", "Reset")  | `secondary`             |
-| Low-emphasis action that should stay quiet            | `ghost`                 |
-| Navigation away from the form (terms, privacy policy) | `<Link>`/`<LinkButton>` |
+| Action role                                           | Use                               |
+| ----------------------------------------------------- | --------------------------------- |
+| Submit the form (the one primary action)              | `primary`                         |
+| Supporting form operation ("Save as Draft", "Reset")  | `secondary`                       |
+| Low-emphasis action that should stay quiet            | `ghost`                           |
+| Destructive form action ("Delete account")            | `destructive`/`destructive-ghost` |
+| Navigation away from the form (terms, privacy policy) | `<Link>`/`<LinkButton>`           |
 
-This is the same cascade the Button component describes. See [Visual hierarchy](/components/actions/button#visual-hierarchy) for why a section gets only one primary action, and [Placement and order](/components/actions/button#placement-and-order) for how the `primary → secondary → ghost` variants line up.
+This is the same cascade the Button component describes. See [Visual hierarchy](/components/actions/button#visual-hierarchy) for why a section gets only one primary action, [Placement and order](/components/actions/button#placement-and-order) for how the `primary → secondary → ghost` variants line up, and [Destructive buttons](/components/actions/button#destructive-buttons) for when a form action carries irreversible consequences.
 
 <Callout title="Settings pages are the exception">
   Settings pages are the one place where a single page carries more than one
