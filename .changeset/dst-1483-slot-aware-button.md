@@ -21,7 +21,9 @@ of learning a second button component.
   over the container. This drops the former `ActionGroup` `size`-group-wins outlier.
 - `<ButtonGroup>` cascades `variant: 'secondary'` when unset, the same baseline
   as a standalone `<Button>`. Slot-aware parents override it where they want
-  lower emphasis: `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'icon'`.
+  lower emphasis: `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'small'`,
+  so a labelled header action stays readable. An icon-only action (a bare-icon
+  `<Button>`, an `<ActionMenu>` kebab) sets `size="icon"` to render as a square.
 - `<ButtonGroup>` now owns a structural `flex gap-1` layout (orientation-aware), so
   a standalone cluster is spaced correctly — `<ActionGroup>` had no layout of its
   own. A container's positional className (e.g. Panel's `[grid-area:actions]`) still
