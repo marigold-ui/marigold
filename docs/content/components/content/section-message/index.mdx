@@ -63,6 +63,20 @@ Use `<SectionMessage.Description>` for a short summary that sits between the tit
 
 <ComponentDemo name="section-message-description" />
 
+Each slot has a distinct role:
+
+| Slot          | Role                                                         | Example                                            |
+| ------------- | ------------------------------------------------------------ | -------------------------------------------------- |
+| `Title`       | What happened, in a few words                                | "Backup completed"                                 |
+| `Description` | One sentence of outcome or consequence, supporting the title | "All files were copied to the archive."            |
+| `Content`     | Details, instructions, next steps, links and actions         | "The next backup runs tonight at 2 am. You can..." |
+
+The description earns its place when there is also body content to separate it from. Avoid these patterns:
+
+- Don't repeat the title in the description.
+- Don't put links or actions in the description. They belong in the content.
+- If the message is a single sentence, use `<SectionMessage.Content>` alone and skip the description.
+
 ### Dismissal
 
 Make a section message dismissable when the information is useful but optional, like a confirmation or a low-urgency notice that users may want to clear once they've seen it. Keep the message persistent when users must act on it, such as for blocking errors or required steps, so guidance they still need isn't accidentally removed.

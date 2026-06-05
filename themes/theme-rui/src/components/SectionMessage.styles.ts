@@ -22,8 +22,10 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   title: cva({ base: 'text-sm font-medium' }),
   // Muted relative to title and content (foreground at 80% opacity) while
   // keeping the variant tint for contrast on the tinted backgrounds.
+  // `mb-1` pairs the description with the title: 4px row gap above,
+  // 8px total before the content.
   description: cva({
-    base: 'text-sm leading-5 font-normal',
+    base: 'mb-1 text-sm leading-5 font-normal',
     variants: {
       variant: {
         info: 'text-info-foreground/80',
