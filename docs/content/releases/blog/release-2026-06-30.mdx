@@ -448,16 +448,16 @@ Every other `width` value (fractions, fixed sizes, `full`) continues to work. Th
     <Description>
       Shown on the event page and in confirmation emails.
     </Description>
-    <ActionButton aria-label="Edit">
+    <Button aria-label="Edit">
       <Pencil />
-    </ActionButton>
+    </Button>
   </Panel.Header>
   <Panel.Content>…</Panel.Content>
   <Panel.Footer>…</Panel.Footer>
 </Panel>
 ```
 
-`<Panel.Header>` is a single slot-configuration boundary: it publishes the heading level, ids, grid-area positioning, and the action size/variant cascade. Drop the slot-aware role primitives (`<Title>`, `<Description>`, `<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it — no wrapper sub-components needed.
+`<Panel.Header>` is a single slot-configuration boundary: it publishes the heading level, ids, grid-area positioning, and the action size/variant cascade. Drop the slot-aware primitives (`<Title>`, `<Description>`, `<Button>`, `<ButtonGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it — no wrapper sub-components needed.
 
 **Title-only Panels.** A bare `<Title>` can sit as a direct child of `<Panel>` when the panel has only a title (no description, no actions). `<Panel.Header>` remains the layout wrapper for title plus description plus actions, but a title-only panel does not need it. Accessibility (`aria-labelledby`) and horizontal padding still resolve correctly.
 

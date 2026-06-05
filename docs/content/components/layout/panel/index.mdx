@@ -117,13 +117,13 @@ A description is a single-sentence subtitle directly under the title. Include on
 
 #### The header configures its children
 
-`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any action primitives (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. The header configures slot context so each piece picks up its level, id wiring, grid position, size, and variant from the Panel — consumers don't need to set any of that themselves.
+`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any buttons (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. The header configures slot context so each piece picks up its level, id wiring, grid position, size, and variant from the Panel, so consumers don't need to set any of that themselves. A bare `<Button>` is slot-aware here. Opt one out of the cascade with `slot={null}`.
 
-Multiple actions belong in an `<ActionGroup>` so the cluster claims one grid cell and renders as a toolbar.
+Multiple actions belong in a `<ButtonGroup>` so the cluster claims one grid cell and renders as a toolbar.
 
 #### Title-only Panels can skip the header
 
-When a Panel has only a title — no description, no actions — drop a bare `<Title>` directly inside `<Panel>` and skip the wrapper. Accessibility wires up the same way (`aria-labelledby` resolves to the title), and the title still aligns with the panel's horizontal padding. As soon as a Panel needs a description or actions, reach for `<Panel.Header>` so the slot context arranges them in the grid.
+When a Panel has only a title (no description, no actions), drop a bare `<Title>` directly inside `<Panel>` and skip the wrapper. Accessibility wires up the same way (`aria-labelledby` resolves to the title), and the title still aligns with the panel's horizontal padding. As soon as a Panel needs a description or actions, reach for `<Panel.Header>` so the slot context arranges them in the grid.
 
 <ComponentDemo name="panel-without-header" />
 
@@ -188,7 +188,7 @@ A Panel made entirely of Collapsibles runs into the same problem: the title labe
 
 A Panel has three places for actions, each carrying a different scope:
 
-- **Header.** For controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it. Keep the set small: one primary button, or an overflow menu when a handful of related controls belong together. More than that usually means the scope is too broad, and one of the actions probably belongs in its own Panel.
+- **Header.** For controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it. Keep the set small: one prominent button, or an overflow menu when a handful of related controls belong together. More than that usually means the scope is too broad, and one of the actions probably belongs in its own Panel.
 
 <ComponentDemo name="panel-header-actions" />
 
@@ -271,7 +271,7 @@ If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, fo
 
 ### Collapsible sections
 
-`<Panel.Collapsible>` wraps each header in a heading whose button carries `aria-expanded`. The title and description render as spans inside the trigger button so the entire header surface is a single click target; the button's accessible name comes from the title via `aria-labelledby`, and the description is linked via `aria-describedby` so screen readers announce the extra context after the name. The caret is marked `aria-hidden`, so only the title and description are read. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+`<Panel.Collapsible>` wraps each header in a heading whose button carries `aria-expanded`. The title and description render as spans inside the trigger button so the entire header surface is a single click target. The button's accessible name comes from the title via `aria-labelledby`, and the description is linked via `aria-describedby` so screen readers announce the extra context after the name. The caret is marked `aria-hidden`, so only the title and description are read. Keyboard users toggle a section with <kbd>Enter</kbd> or <kbd>Space</kbd>.
 
 ## Props
 

@@ -46,7 +46,7 @@ See the [Form Fields](../../foundations/form-fields) page for a full guide on in
 
 Beyond those, you'll likely need some of these to put a form together:
 
-- **Layout components**: [`<Stack>`](../../components/layout/stack/) and [`<Inset>`](../../components/layout/inset/) to organize fields and sections.
+- **Layout components**: [`<Stack>`](../../components/layout/stack/) and [`<Inset>`](../../components/layout/inset/) to organize fields and sections. See [Layouts](/foundations/layouts) for choosing the right layout component (and why fields never belong in a `<Table>`).
 - **Accordion**: Group fields with an [accordion](../../components/navigation/accordion/) for lengthy forms or optional fields. Use accordions for sections that can be collapsed to save space and reduce cognitive load.
 - **Buttons**: Use primary [buttons](../../components/actions/button/) for form submission, secondary for additional actions like "View PDF".
 - **Links**: Use [links](../../components/navigation/link/) for navigation to privacy policies or terms of service, not for form actions.
@@ -117,6 +117,32 @@ Accordions can also be used _within_ a section to group content. This lets users
 
 Forms usually need more than just a submit button. Links, secondary buttons, and other controls handle everything from navigation to drafts. The key is making each action easy to find and hard to confuse with the primary submit.
 
+### Action hierarchy
+
+A normal form has exactly **one** primary action: the submit. Everything else steps down the hierarchy so the primary action stays unmistakable. Giving two actions the `primary` variant makes them compete for attention and leaves people unsure which one completes the form.
+
+Map each action to a Button variant by its role:
+
+| Action role                                           | Use                               |
+| ----------------------------------------------------- | --------------------------------- |
+| Submit the form (the one primary action)              | `primary`                         |
+| Supporting form operation ("Save as Draft", "Reset")  | `secondary`                       |
+| Low-emphasis action that should stay quiet            | `ghost`                           |
+| Destructive form action ("Delete account")            | `destructive`/`destructive-ghost` |
+| Navigation away from the form (terms, privacy policy) | `<Link>`/`<LinkButton>`           |
+
+This is the same cascade the Button component describes. See [Visual hierarchy](/components/actions/button#visual-hierarchy) for why a section gets only one primary action, [Placement and order](/components/actions/button#placement-and-order) for how the `primary → secondary → ghost` variants line up, and [Destructive buttons](/components/actions/button#destructive-buttons) for when a form action carries irreversible consequences.
+
+<Callout title="Settings pages are the exception">
+  Settings pages are the one place where a single page carries more than one
+  primary action. When a page is split into independently-saving `<Panel>`s,
+  each panel is its own form and owns its own primary save button — so a
+  multi-panel settings page has one primary action _per panel_, not per page.
+  Never share one submit across panels: a save in one panel must not commit the
+  fields of another. Outside of this case, keep it to one primary action per
+  form.
+</Callout>
+
 ### Inline actions
 
 Some actions belong inside the form body, next to the fields they relate to.
@@ -133,7 +159,7 @@ Some actions belong inside the form body, next to the fields they relate to.
 
 ### Submit placement
 
-Put the submit button at the bottom of the form, aligned left. The primary button stays put; other actions arrange themselves around it.
+Put the submit button at the bottom of the form, aligned left. The primary button stays put. Other actions arrange themselves around it.
 
 Where you place secondary actions depends on what they do:
 
@@ -239,7 +265,7 @@ Real-time validation makes sense in narrow situations like password rules, where
 
 ### Server errors
 
-Client-side validation is for fast feedback; server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`. Provide an object keyed by field `name`, where each value is either a string or an array of strings if a field has more than one error. The errors appear immediately and clear themselves when the user edits the field.
+Client-side validation is for fast feedback. Server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`. Provide an object keyed by field `name`, where each value is either a string or an array of strings if a field has more than one error. The errors appear immediately and clear themselves when the user edits the field.
 
 In the demo, submitting `support@reservix.de` simulates a server-side rejection.
 
@@ -257,7 +283,7 @@ Forms need to capture user input, react to it, and hand it off when the user sub
 
 ### Controlled vs uncontrolled
 
-Uncontrolled fields manage their own value; you read it back from the DOM (or `FormData`) at submit time. Use `defaultValue` to set an initial value. This is the simpler default: fewer renders, less code.
+Uncontrolled fields manage their own value. You read it back from the DOM (or `FormData`) at submit time. Use `defaultValue` to set an initial value. This is the simpler default: fewer renders, less code.
 
 Controlled fields hold their value in React state via `value` and `onChange`. Reach for control when the value needs to drive something else: dependent fields, real-time validation, formatting as the user types.
 

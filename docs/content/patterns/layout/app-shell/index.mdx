@@ -171,8 +171,8 @@ Match the action to the level it belongs to. Promote a button only as high as it
 | Level       | Where                   | Use                                                                                     |
 | ----------- | ----------------------- | --------------------------------------------------------------------------------------- |
 | **Page**    | `<Page.Header>`         | `<Button variant="primary">` for the page's primary action, `<ActionMenu>` for overflow |
-| **Panel**   | `<Panel.Header>`        | `<ActionButton>` (icon chrome) or `<ActionMenu>` scoped to that surface                 |
-| **Row**     | inside a table/list row | `<ActionButton>` / `<ActionMenu>` scoped to the item                                    |
+| **Panel**   | `<Panel.Header>`        | `<Button>` (ghost chrome) or `<ActionMenu>` scoped to that surface                      |
+| **Row**     | inside a table/list row | `<Button>` / `<ActionMenu>` scoped to the item                                          |
 | **Account** | `<TopNavigation.End>`   | account menu and notifications (global utilities, not page actions)                     |
 
 A page's primary action is a prominent `<Button variant="primary">` in the header, claiming the header's action slot. Don't put page actions in `<TopNavigation>`, which is for global utilities.

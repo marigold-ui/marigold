@@ -1,5 +1,8 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge, Button, Stack, Text } from '@marigold/components';
+import { Description } from '../Description/Description';
+import { Title } from '../Title/Title';
 import { Card } from './Card';
 
 const meta = preview.meta({
@@ -8,27 +11,45 @@ const meta = preview.meta({
   parameters: {
     surface: false,
   },
+  args: {
+    // `children` is composed via `render` on each story; this satisfies the
+    // required prop without surfacing a control (see `argTypes` below).
+    children: null as never,
+    variant: 'default',
+    headingLevel: 3,
+    space: 'regular',
+  },
   argTypes: {
+    children: {
+      table: { disable: true },
+    },
     variant: {
-      control: {
-        type: 'radio',
-      },
+      control: { type: 'radio' },
       description: 'The variant of the card',
       options: ['default', 'master', 'admin'],
     },
+    headingLevel: {
+      control: { type: 'radio' },
+      options: [2, 3, 4, 5, 6],
+      description:
+        'Base heading level for the card. Only changes the underlying heading tag (`h2`–`h6`) for document outline and accessibility — the visual appearance stays the same.',
+      table: { defaultValue: { summary: '3' } },
+    },
     stretch: {
-      control: {
-        type: 'boolean',
-      },
+      control: { type: 'boolean' },
       description: 'Whether the card stretches to fill its container.',
     },
   },
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <Card {...args}>
-      <Card.Header>Professor Severus Snape</Card.Header>
+      <Card.Header>
+        <Title>Professor Severus Snape</Title>
+        <Description>Potions Master, Head of Slytherin House.</Description>
+      </Card.Header>
       <Card.Body>
         <Text>
           <strong>Professor Severus Snape</strong> (9 January, 1960 - 2 May,
@@ -43,10 +64,74 @@ export const Basic = meta.story({
   ),
 });
 
-export const WithFooter = meta.story({
+Basic.test('renders an article labelled by the Title', async ({ canvas }) => {
+  const title = canvas.getByRole('heading', {
+    name: 'Professor Severus Snape',
+  });
+  const article = canvas.getByRole('article', {
+    name: 'Professor Severus Snape',
+  });
+
+  expect(title.tagName).toBe('H3');
+  expect(article.tagName).toBe('ARTICLE');
+  expect(article.getAttribute('aria-labelledby')).toBe(title.id);
+});
+
+export const HeadingLevels = meta.story({
+  args: { headingLevel: 4 },
+  tags: ['component-test'],
   render: args => (
     <Card {...args}>
-      <Card.Header>Event Registration</Card.Header>
+      <Card.Header>
+        <Title>Heading at level 4</Title>
+      </Card.Header>
+      <Card.Body>
+        <Text>The Title renders as an h4 in the document outline.</Text>
+      </Card.Body>
+    </Card>
+  ),
+});
+
+HeadingLevels.test(
+  'renders the Title at the configured heading level',
+  async ({ canvas }) => {
+    const title = canvas.getByRole('heading', { name: 'Heading at level 4' });
+
+    expect(title.tagName).toBe('H4');
+  }
+);
+
+export const AriaLabeled = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Card {...args} aria-label="Quick stats card">
+      <Card.Body>
+        <Text>
+          A Card can be labelled with <code>aria-label</code> when there is no
+          visible Title.
+        </Text>
+      </Card.Body>
+    </Card>
+  ),
+});
+
+AriaLabeled.test(
+  'uses aria-label as the accessible name and omits aria-labelledby',
+  async ({ canvas }) => {
+    const article = canvas.getByRole('article', { name: 'Quick stats card' });
+
+    expect(article).toHaveAttribute('aria-label', 'Quick stats card');
+    expect(article).not.toHaveAttribute('aria-labelledby');
+  }
+);
+
+export const WithFooter = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Card {...args}>
+      <Card.Header>
+        <Title>Event Registration</Title>
+      </Card.Header>
       <Card.Body>
         <Text>
           Register for the upcoming Hogwarts Alumni Reunion. The event will take
@@ -72,12 +157,14 @@ export const WithMedia = meta.story({
           className="block h-48 w-full object-cover"
         />
       </Card.Media>
-      <Card.Header>Mountain Landscape</Card.Header>
+      <Card.Header>
+        <Title>Mountain Landscape</Title>
+        <Description>
+          Captured during a hiking trip in the Swiss Alps.
+        </Description>
+      </Card.Header>
       <Card.Body>
-        <Text>
-          A breathtaking view of the mountains at sunrise, captured during a
-          hiking trip in the Swiss Alps.
-        </Text>
+        <Text>A breathtaking view of the mountains at sunrise.</Text>
       </Card.Body>
     </Card>
   ),
@@ -89,7 +176,9 @@ export const Stretch = meta.story({
   },
   render: args => (
     <Card {...args}>
-      <Card.Header>Full Width Card</Card.Header>
+      <Card.Header>
+        <Title>Full Width Card</Title>
+      </Card.Header>
       <Card.Body>
         <Text>
           This card stretches to fill the available horizontal space in its
@@ -120,7 +209,9 @@ export const WithPaddingProp = meta.story({
   },
   render: args => (
     <Card {...args}>
-      <Card.Header>Custom Padding</Card.Header>
+      <Card.Header>
+        <Title>Custom Padding</Title>
+      </Card.Header>
       <Card.Body>
         <Text>
           This card uses the `p` prop to set inset padding. Use Storybook
@@ -134,7 +225,9 @@ export const WithPaddingProp = meta.story({
 export const WithBleedBody = meta.story({
   render: args => (
     <Card {...args}>
-      <Card.Header>Bleed Body</Card.Header>
+      <Card.Header>
+        <Title>Bleed Body</Title>
+      </Card.Header>
       <Card.Body bleed>
         <div className="bg-info/10 border-info-accent border-y px-4 py-3">
           Edge-to-edge banner — spans the full card width.
@@ -150,7 +243,9 @@ export const WithBleedBody = meta.story({
 export const WithBleedFooter = meta.story({
   render: args => (
     <Card {...args}>
-      <Card.Header>Bleed Footer</Card.Header>
+      <Card.Header>
+        <Title>Bleed Footer</Title>
+      </Card.Header>
       <Card.Body>
         <Text>The footer below uses `bleed` to span the full card width.</Text>
       </Card.Body>
@@ -170,13 +265,13 @@ export const WithBleedFooter = meta.story({
 export const BareChildrenAntiPattern = meta.story({
   render: args => (
     <Stack space={4}>
-      <Card {...args}>
+      <Card {...args} aria-label="Bare children anti-pattern">
         <Text>
           <strong>Don&apos;t do this:</strong> bare text inside `&lt;Card&gt;`
           has no horizontal padding.
         </Text>
       </Card>
-      <Card {...args}>
+      <Card {...args} aria-label="Wrapped in Card.Body">
         <Card.Body>
           <Text>
             <strong>Do this:</strong> wrap content in `Card.Body` to get proper
@@ -193,7 +288,8 @@ export const MasterAndAdmin = meta.story({
     <Stack space={5}>
       <Card {...args} variant="master">
         <Card.Header>
-          Master Access <Badge variant="master">Master</Badge>
+          <Title>Master Access</Title>
+          <Badge variant="master">Master</Badge>
         </Card.Header>
         <Card.Body>
           <Text>
@@ -205,7 +301,8 @@ export const MasterAndAdmin = meta.story({
       </Card>
       <Card {...args} variant="admin">
         <Card.Header>
-          Admin Access <Badge variant="admin">Admin</Badge>
+          <Title>Admin Access</Title>
+          <Badge variant="admin">Admin</Badge>
         </Card.Header>
         <Card.Body>
           <Text>
@@ -218,3 +315,27 @@ export const MasterAndAdmin = meta.story({
     </Stack>
   ),
 });
+
+export const TitleOnlyWithoutHeader = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Card {...args}>
+      <Title>Quick Settings</Title>
+      <Card.Body>
+        <Text>A Title used directly inside Card without a Card.Header.</Text>
+      </Card.Body>
+    </Card>
+  ),
+});
+
+TitleOnlyWithoutHeader.test(
+  'labels the article when Title is used without Card.Header',
+  async ({ canvas }) => {
+    const title = canvas.getByRole('heading', { name: 'Quick Settings' });
+    const article = canvas.getByRole('article', { name: 'Quick Settings' });
+
+    expect(title.tagName).toBe('H3');
+    expect(article).toHaveAttribute('aria-labelledby', title.id);
+    expect(title.closest('[data-card-header]')).toBeNull();
+  }
+);

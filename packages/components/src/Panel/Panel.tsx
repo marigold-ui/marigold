@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { useId, useMemo } from 'react';
 import { HeadingContext, Provider } from 'react-aria-components';
 import type {
@@ -19,15 +19,18 @@ import { PanelHeader } from './PanelHeader';
 
 // Props
 // ---------------
-interface PanelBaseProps {
+interface PanelBaseProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  'className' | 'style'
+> {
   variant?: 'default' | 'master' | 'admin' | 'destructive' | (string & {});
   size?: 'form' | (string & {});
   /**
    * Content of the panel. Typically a combination of `Panel.Header`,
    * `Panel.Content`, `Panel.Collapsible`, and `Panel.Footer`.
    *
-   * `Panel.Header` configures the slot-aware text and action primitives
-   * (`<Title>`, `<Description>`, `<ActionButton>`, `<ActionGroup>`,
+   * `Panel.Header` configures the slot-aware text and button primitives
+   * (`<Title>`, `<Description>`, `<Button>`, `<ButtonGroup>`,
    * `<ActionMenu>`, `<LinkButton>`) and lays them out in a grid.
    */
   children: ReactNode;
@@ -82,6 +85,7 @@ export const Panel = ({
   p,
   px,
   py,
+  ...props
 }: PanelProps) => {
   const titleId = useId();
   const classNames = useClassNames({ component: 'Panel', variant, size });
@@ -125,8 +129,11 @@ export const Panel = ({
       ]}
     >
       <section
+        {...props}
         data-panel
-        aria-labelledby={!ariaLabel ? titleId : undefined}
+        aria-labelledby={
+          !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+        }
         aria-label={ariaLabel}
         className={cn(
           'flex flex-col gap-y-(--panel-gap) pt-(--panel-py) pb-(--panel-py) has-[[data-collapsible]:last-child]:pb-0',

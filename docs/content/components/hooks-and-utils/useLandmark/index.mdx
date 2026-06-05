@@ -5,7 +5,7 @@ description: Register a region as an ARIA landmark and enable F6 navigation betw
 
 We re-export the `useLandmark` hook from [`react-aria`](https://react-spectrum.adobe.com/react-aria/useLandmark.html). It registers an element with React Aria's landmark controller so users can move between regions with `F6` (forward) and `Shift + F6` (backward), independent of the regular `Tab` order.
 
-Marigold's structural components (`<Page>`, `<Sidebar>`, `<TopNavigation>`, `<Panel>`) expose [ARIA landmarks](/foundations/accessibility#landmarks) through semantic HTML, so screen readers list them automatically. Today only `<Drawer>` registers with the `F6` controller — use this hook to add any other region to the cycle (search shells, feeds, co-pilot panels).
+Marigold's structural components (`<Page>`, `<Sidebar>`, `<TopNavigation>`, `<Panel>`) expose [ARIA landmarks](/foundations/accessibility#landmarks) through semantic HTML, so screen readers list them automatically. Today only `<Drawer>` registers with the `F6` controller. Use this hook to add any other region to the cycle (search shells, feeds, co-pilot panels).
 
 More information can be found in the [react-aria documentation](https://react-spectrum.adobe.com/react-aria/useLandmark.html).
 

@@ -49,9 +49,9 @@ The right control depends on list length and how much space the field can take. 
 
 | When                                                         | Use                                                                                                              |
 | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Short list of plain text choices (3–5 items)                 | [`<Radio.Group>`](/components/form/radio) (single) or [`<Checkbox.Group>`](/components/form/checkbox) (multiple) |
+| Short list of plain text choices (3 to 5 items)              | [`<Radio.Group>`](/components/form/radio) (single) or [`<Checkbox.Group>`](/components/form/checkbox) (multiple) |
 | Each option needs decision-relevant context (up to 10 items) | `<SelectList>`                                                                                                   |
-| Space is limited, with or without rich rows (5–15 items)     | [`<Select>`](/components/form/select) (single or multiple)                                                       |
+| Space is limited, with or without rich rows (5 to 15 items)  | [`<Select>`](/components/form/select) (single or multiple)                                                       |
 | More than ~15 options, or users need to search               | [`<Combobox>`](/components/form/combobox) or [`<TagField>`](/components/form/tag-field)                          |
 
 ### Writing options
@@ -139,6 +139,8 @@ Set `orientation="horizontal"` to switch the layout.
 
 <ComponentDemo name="selectlist-horizontal" />
 
+A horizontally arranged list automatically flips to a vertical stack once its **wrapping container** is narrower than `40rem` (≈640px). The flip is driven by a CSS container query on the list's own wrapper, so it reacts to the parent it is rendered into, whether a sidebar, a drawer, or a narrow card, not just the viewport width. Keyboard navigation continues to work in both axes after the flip.
+
 <GuidelineTiles>
   <Do>
     <DoDescription>
@@ -148,8 +150,8 @@ Set `orientation="horizontal"` to switch the layout.
   </Do>
   <Dont>
     <DontDescription>
-      Don't use horizontal for long lists, rich rows, or narrow viewports.
-      Options scrolled out of view is the worst of both shapes.
+      Don't use horizontal for long lists or rich rows that wouldn't read well
+      stacked. Pick the orientation the content fits.
     </DontDescription>
   </Dont>
 </GuidelineTiles>

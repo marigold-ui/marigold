@@ -28,33 +28,35 @@ Single PR delivering:
   (document scrolls) and does **not** enforce max-width (content-driven via `Panel size="form"`).
   Owns `titleId` + `useSlot` and labels `<main aria-labelledby={titleId}>`. `headingLevel` default **1**.
 - **`Page.Header`** (compound member, mirrors `Panel.Header`), a pure **slot-context provider**:
-  publishes `HeadingContext` (title → h1), `TextContext` (description → `<p>`), and
-  `ActionButtonContext` + `ActionGroupContext` (`[grid-area:actions]`, `size: 'default'`). Consumers
-  compose the shared `<Title>` / `<Description>` and slot-aware action primitives. **No** subcomponents
-  of its own (no `Page.Header.Actions` wrapper, no `Page.Title`/`Page.Description`).
+  publishes `HeadingContext` (title → h1), `TextContext` (description → `<p>`), and a single Marigold
+  `ButtonContext` (`[grid-area:actions]`, no size/variant cascade — page actions are prominent and
+  label-sized). Consumers compose the shared `<Title>` / `<Description>` and the slot-aware
+  `<Button>` / `<ButtonGroup>` / `<ActionMenu>` / `<LinkButton>`. **No** subcomponents of its own
+  (no `Page.Header.Actions` wrapper, no `Page.Title`/`Page.Description`).
 - **`Page.Header` publishes `ButtonContext`**, so a plain `<Button variant="primary">Upgrade plan</Button>`
-  inside `Page.Header` lands in the actions slot. `ActionButton` does NOT gain a `primary` variant.
-  This is an interim arrangement until `Button` becomes generally slot-aware across all surfaces (see
-  follow-up ticket #1 below).
+  inside `Page.Header` lands in the actions slot. This branch integrates **DST-1483** (slot-aware
+  `<Button>`, `<ActionGroup>` → `<ButtonGroup>`, `<ActionButton>` removed), so the single Marigold
+  `ButtonContext` is the real mechanism rather than an interim stopgap. Follow-up #1 below is therefore
+  resolved.
 
 ### Key decisions locked during grilling
 
-| Topic                                            | Decision                                                                                                                                                                                                          |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Base branch                                      | `beta-release`                                                                                                                                                                                                    |
-| Design doc `design/app-shell-page-pageheader.md` | **Not created**, referenced by the ticket but never existed. Decisions baked into code + pattern doc instead                                                                                                      |
-| PR split                                         | Single PR                                                                                                                                                                                                         |
-| `AppLayout` → `AppShell`                         | Hard rename, no deprecated alias (beta window)                                                                                                                                                                    |
-| Sidebar config surface                           | Flat `defaultSidebarOpen` + external-provider pass-through (NOT a `sidebar={{}}` object yet)                                                                                                                      |
-| `Page.Header` shape                              | Mirror `Panel.Header` exactly, compound member naming, slot provider, no wrapper                                                                                                                                  |
-| Page-level actions                               | Slot-based via `ButtonContext` in `Page.Header`, page primary action is `<Button variant="primary">` (NOT `ActionButton`; `Button` is slot-aware in `Page.Header` as an interim until it is generally slot-aware) |
-| Heading level                                    | On `Page` root (`headingLevel`, default 1), like Panel's root, NOT on `Title`                                                                                                                                     |
-| Heading outline                                  | Falls out of defaults: Page.Header `<Title>` = h1 → Panel `<Title>` = h2 → Panel.Collapsible `<Title>` = h3                                                                                                       |
-| `<main>` accessible name                         | Yes, `aria-labelledby` wired to the Page.Header `<h1>`                                                                                                                                                            |
-| Page padding / rhythm                            | `square-relaxed` / `group`                                                                                                                                                                                        |
-| Sticky header                                    | **Removed entirely**. Page has no `sticky` prop, Page.Header is never sticky                                                                                                                                      |
-| Page required in AppShell                        | Yes                                                                                                                                                                                                               |
-| form example width                               | Wrap sections in `Panel size="form"` (drop ad-hoc `max-w-xl`)                                                                                                                                                     |
+| Topic                                            | Decision                                                                                                                                                                                                                                            |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Base branch                                      | `beta-release`                                                                                                                                                                                                                                      |
+| Design doc `design/app-shell-page-pageheader.md` | **Not created**, referenced by the ticket but never existed. Decisions baked into code + pattern doc instead                                                                                                                                        |
+| PR split                                         | Single PR                                                                                                                                                                                                                                           |
+| `AppLayout` → `AppShell`                         | Hard rename, no deprecated alias (beta window)                                                                                                                                                                                                      |
+| Sidebar config surface                           | Flat `defaultSidebarOpen` + external-provider pass-through (NOT a `sidebar={{}}` object yet)                                                                                                                                                        |
+| `Page.Header` shape                              | Mirror `Panel.Header` exactly, compound member naming, slot provider, no wrapper                                                                                                                                                                    |
+| Page-level actions                               | Slot-based via the single Marigold `ButtonContext` in `Page.Header`; the page primary action is `<Button variant="primary">`. Slot-aware `<Button>` ships via DST-1483 (integrated into this branch), so this is the real mechanism, not an interim |
+| Heading level                                    | On `Page` root (`headingLevel`, default 1), like Panel's root, NOT on `Title`                                                                                                                                                                       |
+| Heading outline                                  | Falls out of defaults: Page.Header `<Title>` = h1 → Panel `<Title>` = h2 → Panel.Collapsible `<Title>` = h3                                                                                                                                         |
+| `<main>` accessible name                         | Yes, `aria-labelledby` wired to the Page.Header `<h1>`                                                                                                                                                                                              |
+| Page padding / rhythm                            | `square-relaxed` / `group`                                                                                                                                                                                                                          |
+| Sticky header                                    | **Removed entirely**. Page has no `sticky` prop, Page.Header is never sticky                                                                                                                                                                        |
+| Page required in AppShell                        | Yes                                                                                                                                                                                                                                                 |
+| form example width                               | Wrap sections in `Panel size="form"` (drop ad-hoc `max-w-xl`)                                                                                                                                                                                       |
 
 ### Notes / obsolete ticket assumptions
 
@@ -68,18 +70,14 @@ Single PR delivering:
 
 ## Follow-up tickets to create
 
-### 1. 🧩 Design-system: make `<Button>` generally slot-aware across all slot containers
+### 1. 🧩 Design-system: make `<Button>` generally slot-aware across all slot containers — ✅ RESOLVED
 
-**Why now:** DST-1360 uses `Page.Header` to publish a `ButtonContext` so `<Button variant="primary">`
-lands in the actions slot of a page header. This works for `Page.Header` today, but `Button` is not yet
-slot-aware in other slot containers (`Panel.Header`, `EmptyState`, `Dialog`/`Drawer` chrome, etc.). The
-`ActionButton` docs state "for primary CTAs, reach for `<Button>`", which is now correct for `Page.Header`
-but not yet true everywhere.
-**Scope:** Decide and document the path to making `<Button>` the single slot-aware action primitive across
-all surfaces. Audit every slot container that currently uses `ActionButtonContext` and determine whether
-`ButtonContext` should replace or complement it. Update `button-vs-action-button` demo and guidance once
-the full picture is clear. Once `Button` is generally slot-aware, the `Page.Header`-specific `ButtonContext`
-workaround can be aligned with the broader approach.
+**Resolved by DST-1483** (PR #5494), integrated into this branch. `<Button>` is now the single
+slot-aware action primitive: it consumes one Marigold-owned `ButtonContext` and adapts across every
+slot container (`Page.Header`, `Panel.Header`, `ButtonGroup`, `SelectList.Option`). `<ActionButton>` is
+removed and `<ActionGroup>` is renamed to `<ButtonGroup>`; `ActionButtonContext` / `ActionGroupContext`
+are gone, replaced by the single `ButtonContext`. Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) re-root
+the cascade via `ResetButtonContext` so it does not leak through portals. No separate ticket needed.
 
 ### 2. ✨ AppShell: skip-link
 

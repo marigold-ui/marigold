@@ -1,8 +1,8 @@
 import { expect, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
-import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
 import { LinkButton } from '../LinkButton/LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
@@ -80,7 +80,7 @@ export const Basic = meta.story({
 
 /**
  * `<Page.Header>` accepts the same action components as `<Panel.Header>`.
- * Wrap the actions in an `<ActionGroup>` whenever the header holds more than
+ * Wrap the actions in a `<ButtonGroup>` whenever the header holds more than
  * one — two buttons, or a button beside an overflow `<ActionMenu>`. A lone
  * action needs no group and sits in the header on its own.
  *
@@ -133,15 +133,15 @@ export const Actions = meta.story({
         </Page.Header>
       </Page>
 
-      {/* Two buttons, one of them primary, grouped in an ActionGroup */}
+      {/* Two buttons, one of them primary, grouped in a ButtonGroup */}
       <Page>
         <Page.Header>
           <Title>Primary and secondary</Title>
-          <Description>Group multiple buttons in an ActionGroup.</Description>
-          <ActionGroup aria-label="Plan actions">
+          <Description>Group multiple buttons in a ButtonGroup.</Description>
+          <ButtonGroup aria-label="Plan actions">
             <Button variant="secondary">Compare plans</Button>
             <Button variant="primary">Upgrade plan</Button>
-          </ActionGroup>
+          </ButtonGroup>
         </Page.Header>
       </Page>
 
@@ -150,7 +150,7 @@ export const Actions = meta.story({
         <Page.Header>
           <Title>Overflow menu</Title>
           <Description>Collect actions in an ActionMenu.</Description>
-          <ActionMenu aria-label="Plan actions">
+          <ActionMenu size="icon" aria-label="Plan actions">
             <ActionMenu.Item id="edit">
               <Pencil />
               Edit plan
@@ -176,9 +176,9 @@ export const Actions = meta.story({
         <Page.Header>
           <Title>Primary action with overflow</Title>
           <Description>A button beside an overflow menu.</Description>
-          <ActionGroup aria-label="Plan actions">
+          <ButtonGroup aria-label="Plan actions">
             <Button variant="primary">Upgrade plan</Button>
-            <ActionMenu aria-label="More plan actions">
+            <ActionMenu size="icon" aria-label="More plan actions">
               <ActionMenu.Item id="duplicate">
                 <Copy />
                 Duplicate plan
@@ -192,7 +192,7 @@ export const Actions = meta.story({
                 Cancel plan
               </ActionMenu.Item>
             </ActionMenu>
-          </ActionGroup>
+          </ButtonGroup>
         </Page.Header>
       </Page>
     </Stack>

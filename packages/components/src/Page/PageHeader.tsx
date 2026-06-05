@@ -1,35 +1,30 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
-import {
-  ButtonContext,
-  HeadingContext,
-  Provider,
-  TextContext,
-} from 'react-aria-components';
+import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroupContext } from '../ActionGroup/Context';
+import { ButtonContext } from '../Button/Context';
 import { usePageContext } from './Context';
 
 export interface PageHeaderProps {
   /**
    * Content of the header. Typically a `<Title>`, an optional `<Description>`,
    * and an optional primary action: a `<Button variant="primary">`, a
-   * `<LinkButton variant="primary">`, or an `<ActionGroup>` / `<ActionMenu>`
+   * `<LinkButton variant="primary">`, or a `<ButtonGroup>` / `<ActionMenu>`
    * cluster.
    *
-   * Unlike `Panel.Header`, the action slot here renders a prominent,
-   * label-sized action. The header publishes the slot context, so the action
-   * lands in the action cell without any per-call placement props.
+   * Unlike `Panel.Header` (low-emphasis ghost chrome), the action slot here
+   * renders a prominent, label-sized action. The header publishes the slot
+   * context, so the action lands in the action cell without any per-call
+   * placement props.
    */
   children: ReactNode;
 }
 
 /**
  * `<Page.Header>` mirrors `<Panel.Header>`: it is a slot-context provider that
- * lays out `<Title>`, `<Description>`, and action primitives in a two-column
- * grid. The title id, heading level, and slot ref come from the surrounding
- * `<Page>` so the page's `<main>` is labelled by its `<h1>`.
+ * lays out `<Title>`, `<Description>`, and actions in a two-column grid. The
+ * title id, heading level, and slot ref come from the surrounding `<Page>` so
+ * the page's `<main>` is labelled by its `<h1>`.
  */
 export const PageHeader = ({ children }: PageHeaderProps) => {
   const { classNames, headingLevel, titleId, titleSlotRef } = usePageContext();
@@ -65,24 +60,15 @@ export const PageHeader = ({ children }: PageHeaderProps) => {
     [classNames.description]
   );
 
-  // Published on both `ActionButtonContext` and `ActionGroupContext` so a
-  // single `<ActionButton>` and an `<ActionGroup>` cluster both claim the
-  // `actions` grid cell. Unlike `Panel.Header` (`size: 'icon'` chrome), page
-  // actions are label-sized, so the size cascade is `'default'`.
+  // One `ButtonContext` lets every header action (`<Button>`, `<ButtonGroup>`,
+  // `<ActionMenu>`, `<LinkButton>`) claim the `actions` grid cell. Unlike
+  // `Panel.Header` (ghost `size: 'icon'` chrome), page actions are prominent
+  // and label-sized, so neither `variant` nor `size` is cascaded: the page's
+  // primary action sets `variant="primary"` itself, and a `<ButtonGroup>`
+  // cascades its own `secondary` baseline to children. A `<ButtonGroup>`
+  // re-provides its own context, so the positional className stays on the
+  // group, not its buttons.
   const actionProps = useMemo(
-    () => ({
-      className: cn('self-center [grid-area:actions]', classNames.actions),
-      'data-grid-area': 'actions',
-      size: 'default' as const,
-    }),
-    [classNames.actions]
-  );
-
-  // Interim stopgap until `<Button>` becomes slot-aware (DST-1360 follow-up):
-  // publish RAC's `ButtonContext` so a plain `<Button variant="primary">`
-  // claims the action cell. Mirrors `actionProps` placement, minus the
-  // ActionButton size cascade (Button keeps its own default size).
-  const buttonProps = useMemo(
     () => ({
       className: cn('self-center [grid-area:actions]', classNames.actions),
       'data-grid-area': 'actions',
@@ -95,9 +81,7 @@ export const PageHeader = ({ children }: PageHeaderProps) => {
       values={[
         [HeadingContext, headingProps],
         [TextContext, textProps],
-        [ButtonContext, buttonProps],
-        [ActionButtonContext, actionProps],
-        [ActionGroupContext, actionProps],
+        [ButtonContext, actionProps],
       ]}
     >
       <div

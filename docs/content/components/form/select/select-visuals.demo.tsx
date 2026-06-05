@@ -1,6 +1,13 @@
 import type { Person } from '@/lib/data/people';
 import { people } from '@/lib/data/people';
-import { Inline, Select, Stack, Text } from '@marigold/components';
+import {
+  Description,
+  Inline,
+  Select,
+  Stack,
+  Text,
+  TextValue,
+} from '@marigold/components';
 
 export default () => (
   <Select
@@ -28,8 +35,8 @@ export default () => (
             className="size-8 rounded-full object-cover"
           />
           <Stack space={0}>
-            <Text slot="label">{person.name}</Text>
-            <Text slot="description">{person.position}</Text>
+            <TextValue>{person.name}</TextValue>
+            <Description>{person.position}</Description>
           </Stack>
         </Inline>
       </Select.Option>

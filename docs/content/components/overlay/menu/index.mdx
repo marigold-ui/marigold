@@ -75,6 +75,12 @@ In this example you can see a simple `<Menu>` with some items to select. it is u
 
 <ComponentDemo name="menu-action" />
 
+### Items with description
+
+For menu items that need a label and a secondary line, compose with `<TextValue>` and `<Description>`. The description is wired to the item's `aria-describedby` automatically and picks up the Menu theme's `description` slot styling.
+
+<ComponentDemo name="menu-description" />
+
 ### Menu with sections
 
 When you have mutliple menu items that can be categorized under different headings. This is particularly useful in complext menus with many options, you can use `<Menu.Section>` and pass `title` for the group name.
@@ -89,7 +95,7 @@ In this example the `<Menu>` has set its prop `disabeldKeys`. So you can't inter
 
 ### Looking for the kebab-menu pattern?
 
-For quick, context-specific actions on an item or row, see [`<ActionMenu>`](/components/overlay/action-menu). It uses an `<ActionButton>` as its trigger, switches to a `<Tray>` on small screens, and follows the same `<Menu.Item>` API.
+For quick, context-specific actions on an item or row, see [`<ActionMenu>`](/components/overlay/action-menu). It uses a ghost `<Button>` as its trigger, switches to a `<Tray>` on small screens, and follows the same `<Menu.Item>` API.
 
 The example below shows `<ActionMenu>` inside a table for per-row actions:
 

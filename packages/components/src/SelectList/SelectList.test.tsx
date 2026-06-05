@@ -41,6 +41,17 @@ describe('SelectList', () => {
       expect(grid).toHaveAttribute('slot', 'test');
     });
 
+    test('cascades the ghost variant to a nested Button inside an option', () => {
+      render(<WithIconAction.Component aria-label="Payments" />);
+
+      // The story's Button sets no `variant`; the option cascades `ghost`.
+      const [button] = screen.getAllByRole('button', {
+        name: /Learn more about/,
+      });
+
+      expect(button).toHaveClass('hover:ui-state-hover-ghost');
+    });
+
     test('forwards refs to the underlying HTMLElement', () => {
       const ref: { current: HTMLDivElement | null } = { current: null };
 
@@ -153,6 +164,17 @@ describe('SelectList', () => {
       const grid = screen.getByRole('grid');
 
       expect(grid).toHaveAttribute('data-orientation', 'horizontal');
+    });
+
+    test('horizontal lists are wrapped in an @container/selectlist scope', () => {
+      render(<Horizontal.Component aria-label="Test" />);
+
+      const grid = screen.getByRole('grid');
+      // eslint-disable-next-line testing-library/no-node-access
+      const containerScope = grid.closest('.\\@container\\/selectlist');
+
+      expect(containerScope).not.toBeNull();
+      expect(containerScope).toHaveClass('w-(--container-width)');
     });
   });
 

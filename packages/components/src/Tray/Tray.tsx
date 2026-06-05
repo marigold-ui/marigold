@@ -6,6 +6,7 @@ import {
 } from 'react-aria-components/Dialog';
 import { useIsHidden } from '@react-aria/collections';
 import { cn, useClassNames } from '@marigold/system';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { TrayContext } from './Context';
 import { TrayActions } from './TrayActions';
 import { TrayContent } from './TrayContent';
@@ -95,23 +96,25 @@ export const Tray = ({
 
   return (
     <TrayContext value={{ classNames }}>
-      <TrayModal
-        open={openState}
-        dismissable={dismissable}
-        onOpenChange={onOpenChange}
-        keyboardDismissable={keyboardDismissable}
-      >
-        <Dialog
-          {...props}
-          className={cn(
-            "group/tray [grid-template-areas:'drag'_'title'_'content'_'actions']",
-            classNames.container
-          )}
+      <ResetButtonContext>
+        <TrayModal
+          open={openState}
+          dismissable={dismissable}
+          onOpenChange={onOpenChange}
+          keyboardDismissable={keyboardDismissable}
         >
-          <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
-          {children}
-        </Dialog>
-      </TrayModal>
+          <Dialog
+            {...props}
+            className={cn(
+              "group/tray [grid-template-areas:'drag'_'title'_'content'_'actions']",
+              classNames.container
+            )}
+          >
+            <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
+            {children}
+          </Dialog>
+        </TrayModal>
+      </ResetButtonContext>
     </TrayContext>
   );
 };

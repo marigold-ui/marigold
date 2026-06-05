@@ -62,10 +62,15 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
 
-    ActionButton?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: Record<
-      'container' | 'header' | 'body' | 'footer' | 'media',
+      | 'container'
+      | 'header'
+      | 'title'
+      | 'description'
+      | 'body'
+      | 'footer'
+      | 'media',
       ComponentStyleFunction<string, string>
     >;
     CloseButton?: ComponentStyleFunction<string, string>;
@@ -138,7 +143,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
-      'container' | 'section' | 'item' | 'button',
+      'container' | 'section' | 'item' | 'button' | 'label' | 'description',
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
