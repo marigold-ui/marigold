@@ -5,7 +5,6 @@ export const SectionMessageContext = createContext<{
     container: string;
     icon: string;
     title: string;
-    description: string;
     content: string;
   };
 }>({} as any);
