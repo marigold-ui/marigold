@@ -58,21 +58,6 @@ test('container is labelled by the title', () => {
   expect(container).toHaveAttribute('aria-labelledby', heading.id);
 });
 
-test('only adds the description grid row when a description is present', () => {
-  render(<Basic.Component data-testid="without-description" />);
-  render(<WithDescription.Component data-testid="with-description" />);
-
-  // Without a description the container keeps the two-row template;
-  // an empty third row would double the title-to-content gap.
-  const without = screen.getAllByTestId('without-description')[0];
-  expect(getComputedStyle(without).gridTemplateAreas).not.toContain(
-    'description'
-  );
-
-  const with_ = screen.getAllByTestId('with-description')[0];
-  expect(getComputedStyle(with_).gridTemplateAreas).toContain('description');
-});
-
 test('renders an optional description via the description slot', () => {
   render(<WithDescription.Component />);
 

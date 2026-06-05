@@ -115,9 +115,6 @@ export const SectionMessage = ({
       slots: {
         description: {
           className: cn('[grid-area:description]', classNames.description),
-          // Lets the container detect the description via `:has()` and only
-          // then add the description row to its grid template.
-          'data-grid-area': 'description',
           elementType: 'p' as const,
         },
       },
