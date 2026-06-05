@@ -29,8 +29,8 @@ interface PanelBaseProps extends Omit<
    * Content of the panel. Typically a combination of `Panel.Header`,
    * `Panel.Content`, `Panel.Collapsible`, and `Panel.Footer`.
    *
-   * `Panel.Header` configures the slot-aware text and action primitives
-   * (`<Title>`, `<Description>`, `<ActionButton>`, `<ActionGroup>`,
+   * `Panel.Header` configures the slot-aware text and button primitives
+   * (`<Title>`, `<Description>`, `<Button>`, `<ButtonGroup>`,
    * `<ActionMenu>`, `<LinkButton>`) and lays them out in a grid.
    */
   children: ReactNode;

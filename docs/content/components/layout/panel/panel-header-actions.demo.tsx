@@ -1,8 +1,8 @@
 import { people } from '@/lib/data/people';
 import {
-  ActionButton,
   ActionMenu,
   Badge,
+  Button,
   Description,
   Inline,
   Panel,
@@ -26,9 +26,9 @@ export default () => (
       <Description>
         People with access to this workspace and their roles.
       </Description>
-      <ActionButton aria-label="Invite member">
+      <Button size="icon" aria-label="Invite member">
         <UserRoundPlus />
-      </ActionButton>
+      </Button>
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">

@@ -1,58 +1,53 @@
-export const ActionButtonAnatomy = () => (
+export const ButtonAnatomy = () => (
   <svg
-    viewBox="-10 0 660 170"
+    viewBox="120 100 545 120"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
-    {/* Variant 1 — label + optional icon */}
-
-    {/* Button outline */}
+    {/* Button with a label (the pressable area) */}
     <rect
-      x="240"
-      y="40"
-      width="160"
-      height="36"
-      rx="8"
+      x="250"
+      y="150"
+      width="170"
+      height="52"
+      rx="10"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
-    {/* Icon placeholder */}
+    {/* Icon placeholder (optional leading icon) */}
     <rect
-      x="256"
-      y="52"
-      width="12"
-      height="12"
+      x="272"
+      y="168"
+      width="16"
+      height="16"
       rx="3"
       className="fill-fd-foreground transition-colors duration-300"
     />
-    {/* Label placeholder */}
+    {/* Label placeholder (the text) */}
     <rect
-      x="276"
-      y="52"
-      width="108"
+      x="300"
+      y="171"
+      width="96"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
-    {/* Variant 2 — icon-only */}
-
-    {/* Icon-only button outline (square) */}
+    {/* Icon-only button (square, no label) */}
     <rect
-      x="302"
-      y="116"
-      width="36"
-      height="36"
-      rx="8"
+      x="460"
+      y="150"
+      width="52"
+      height="52"
+      rx="10"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
-    {/* Icon placeholder */}
     <rect
-      x="314"
-      y="128"
-      width="12"
-      height="12"
+      x="478"
+      y="168"
+      width="16"
+      height="16"
       rx="3"
       className="fill-fd-foreground transition-colors duration-300"
     />
@@ -65,22 +60,22 @@ export const ActionButtonAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Variant 1: Button -> left */}
-      <path d="M 240 58 L 110 58" />
-      {/* Variant 1: Icon -> top */}
-      <path d="M 262 40 L 262 18" />
-      {/* Variant 1: Label -> right */}
-      <path d="M 400 58 L 530 58" />
-      {/* Variant 2: Icon-only -> right */}
-      <path d="M 338 134 L 530 134" />
+      {/* Button -> left */}
+      <path d="M 250 176 L 185 176" />
+      {/* Icon -> up */}
+      <path d="M 280 168 L 280 124" />
+      {/* Label -> up */}
+      <path d="M 348 171 L 348 124" />
+      {/* Icon-only -> right */}
+      <path d="M 512 176 L 580 176" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="240" cy="58" r="4" />
-      <circle cx="262" cy="40" r="4" />
-      <circle cx="400" cy="58" r="4" />
-      <circle cx="338" cy="134" r="4" />
+      <circle cx="250" cy="176" r="4" />
+      <circle cx="280" cy="168" r="4" />
+      <circle cx="348" cy="171" r="4" />
+      <circle cx="512" cy="176" r="4" />
     </g>
 
     {/* Labels */}
@@ -89,41 +84,41 @@ export const ActionButtonAnatomy = () => (
       className="transition-colors duration-300"
     >
       <text
-        x="100"
-        y="62"
-        textAnchor="end"
+        x="175"
+        y="180"
         fontSize="14"
         fontWeight="600"
+        textAnchor="end"
         className="fill-fd-primary"
       >
         Button
       </text>
       <text
-        x="262"
-        y="12"
-        textAnchor="middle"
+        x="280"
+        y="116"
         fontSize="14"
         fontWeight="600"
+        textAnchor="middle"
         className="fill-fd-primary"
       >
-        Icon (optional)
+        Icon
       </text>
       <text
-        x="540"
-        y="62"
-        textAnchor="start"
+        x="348"
+        y="116"
         fontSize="14"
         fontWeight="600"
+        textAnchor="middle"
         className="fill-fd-primary"
       >
         Label
       </text>
       <text
-        x="540"
-        y="138"
-        textAnchor="start"
+        x="590"
+        y="180"
         fontSize="14"
         fontWeight="600"
+        textAnchor="start"
         className="fill-fd-primary"
       >
         Icon-only

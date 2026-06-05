@@ -6,6 +6,7 @@ import { GridListItem as RACGridListItem } from 'react-aria-components/GridList'
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { cn } from '@marigold/system';
+import { ButtonContext as MarigoldButtonContext } from '../Button/Context';
 import {
   type SlottedContextValue,
   useMergedTextSlots,
@@ -35,14 +36,17 @@ interface OptionChildrenProps {
   actionClassName?: string;
 }
 
-// Stable identity for the `parentButton` fallback so `buttonContextValue`'s
-// `useMemo` isn't invalidated every render when no parent context is set.
+// Stable identity so `buttonContextValue`'s `useMemo` isn't invalidated each
+// render when there's no parent context.
 const EMPTY_BUTTON_CTX: SlottedContextValue = {};
 
-// Merge (rather than replace) RAC-provided slot configs on TextContext and
-// ButtonContext so nested `<Text slot="label">`, `<Text slot="description">`
-// and nested `<IconButton>` / `<Button>` / `<ActionMenu>` pick up our theme
-// classNames without losing RAC's slot wiring or existing explicit props.
+// A trailing action in an option is low-emphasis chrome, so a nested Marigold
+// `<Button>`/`<LinkButton>`/`<ActionMenu>` defaults to `ghost` (a local
+// `variant` still wins).
+const OPTION_BUTTON_CASCADE = { variant: 'ghost' };
+
+// Merge (not replace) RAC's slot configs on Text/Button contexts so nested
+// slotted children pick up our theme classNames without losing RAC's wiring.
 const OptionChildren = ({
   children,
   labelClassName,
@@ -67,6 +71,7 @@ const OptionChildren = ({
       values={[
         [TextContext, textContextValue],
         [ButtonContext, buttonContextValue],
+        [MarigoldButtonContext, OPTION_BUTTON_CASCADE],
       ]}
     >
       {children}
