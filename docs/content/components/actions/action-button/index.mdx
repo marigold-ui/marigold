@@ -6,7 +6,7 @@ badge: alpha
 
 The `<ActionButton>` component is a low-emphasis button intended to live inside another surface like a toolbar, a list row, the header of a `<Panel>` or `<EmptyState>`, or the chrome of a `<Dialog>`. It defaults to the `ghost` variant so the button recedes into its surroundings rather than competing with the page's primary action.
 
-For the primary action of a page or form, reach for [`<Button>`](/components/actions/button). To cluster related actions in a toolbar, use [`<ActionGroup>`](/components/actions/action-group). For the bulk-action chrome inside `<ActionBar>`, use [`<ActionBar.Button>`](/components/actions/actionbar). For more actions than fit comfortably in a row, use [`<ActionMenu>`](/components/overlay/action-menu).
+For the primary action of a page or form, reach for [`<Button>`](/components/actions/button). To cluster related actions in a toolbar, use [`<ActionGroup>`](/components/actions/action-group). For the bulk-action chrome inside `<ActionBar>`, use [`<ActionBar.Button>`](/components/collection/actionbar). For more actions than fit comfortably in a row, use [`<ActionMenu>`](/components/overlay/action-menu).
 
 import { ActionButtonAnatomy } from './action-button-anatomy';
 
@@ -108,6 +108,6 @@ The example below shows both inhabiting the same surface. The header carries one
 - [ActionGroup](/components/actions/action-group): Use to cluster related actions in a toolbar.
 - [Button](/components/actions/button): Use for the primary action of a page or form.
 - [LinkButton](/components/actions/link-button): The navigating sibling. Drop one into the same container or `<ActionGroup>` to render an action that takes the user to another page.
-- [ActionBar](/components/actions/actionbar): Use for the bar around bulk-selection actions. The inner buttons are written as `<ActionBar.Button>`.
+- [ActionBar](/components/collection/actionbar): Use for the bar around bulk-selection actions. The inner buttons are written as `<ActionBar.Button>`.
 - [ToggleButton](/components/actions/toggle-button): Use when the button has an on/off state.
 - [ActionMenu](/components/overlay/action-menu): Use the kebab-menu pattern when there are too many actions to fit in a Group.
