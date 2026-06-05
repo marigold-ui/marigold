@@ -159,7 +159,7 @@ Some actions belong inside the form body, next to the fields they relate to.
 
 ### Submit placement
 
-Put the submit button at the bottom of the form, aligned left. The primary button stays put; other actions arrange themselves around it.
+Put the submit button at the bottom of the form, aligned left. The primary button stays put. Other actions arrange themselves around it.
 
 Where you place secondary actions depends on what they do:
 
@@ -265,7 +265,7 @@ Real-time validation makes sense in narrow situations like password rules, where
 
 ### Server errors
 
-Client-side validation is for fast feedback; server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`. Provide an object keyed by field `name`, where each value is either a string or an array of strings if a field has more than one error. The errors appear immediately and clear themselves when the user edits the field.
+Client-side validation is for fast feedback. Server-side validation is what actually protects data. Pass server errors back through the `validationErrors` prop on `<Form>`. Provide an object keyed by field `name`, where each value is either a string or an array of strings if a field has more than one error. The errors appear immediately and clear themselves when the user edits the field.
 
 In the demo, submitting `support@reservix.de` simulates a server-side rejection.
 
@@ -283,7 +283,7 @@ Forms need to capture user input, react to it, and hand it off when the user sub
 
 ### Controlled vs uncontrolled
 
-Uncontrolled fields manage their own value; you read it back from the DOM (or `FormData`) at submit time. Use `defaultValue` to set an initial value. This is the simpler default: fewer renders, less code.
+Uncontrolled fields manage their own value. You read it back from the DOM (or `FormData`) at submit time. Use `defaultValue` to set an initial value. This is the simpler default: fewer renders, less code.
 
 Controlled fields hold their value in React state via `value` and `onChange`. Reach for control when the value needs to drive something else: dependent fields, real-time validation, formatting as the user types.
 

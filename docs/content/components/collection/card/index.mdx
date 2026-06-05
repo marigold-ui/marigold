@@ -8,7 +8,7 @@ import { DoNestedMockup, DontNestedMockup } from './card-usage-guidelines';
 
 A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, body, actions) into a single, self-contained unit and sets it apart from the page through elevation or tinting.
 
-`<Card>` renders an `<article>` landmark. When a `<Title>` is present, the card is automatically labelled by it via `aria-labelledby`; otherwise pass `aria-label` to give the card an accessible name.
+`<Card>` renders an `<article>` landmark. When a `<Title>` is present, the card is automatically labelled by it via `aria-labelledby`. Otherwise pass `aria-label` to give the card an accessible name.
 
 ## Anatomy
 
@@ -37,7 +37,7 @@ The card component supports variants for general content grouping as well as acc
 
 ## Usage
 
-A card represents one item in a set. Reach for it when the same type of item repeats in a grid or list (events, products, venues, team members) and each entry links to its own detail view. Repetition is the core case — if the element doesn't repeat, a card is probably the wrong tool. If the items need sorting, filtering, or bulk actions, [`<Table>`](../table) is a better fit. For a named, non-repeating page region like "Billing" or "Team members", use [`<Panel>`](../../layout/panel) instead.
+A card represents one item in a set. Reach for it when the same type of item repeats in a grid or list (events, products, venues, team members) and each entry links to its own detail view. Repetition is the core case. If the element doesn't repeat, a card is probably the wrong tool. If the items need sorting, filtering, or bulk actions, [`<Table>`](../table) is a better fit. For a named, non-repeating page region like "Billing" or "Team members", use [`<Panel>`](../../layout/panel) instead.
 
 ### Header
 
@@ -53,7 +53,7 @@ The canonical card layout is a responsive grid of items, each with its own visua
 
 <ComponentDemo name="card-grid" background="page" />
 
-The same shape works for any repeating content, like team directories with avatars, article previews with author metadata, or category pickers with no media at all. The identity-per-card pattern stays the same; only the contents of each slot change.
+The same shape works for any repeating content, like team directories with avatars, article previews with author metadata, or category pickers with no media at all. The identity-per-card pattern stays the same. Only the contents of each slot change.
 
 ### Media
 
@@ -89,7 +89,7 @@ Use small buttons (`<Button size="small" />`). Cards sit in tight grid cells, an
 
 ### Nested cards
 
-Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth; it's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](../../layout/stack), a [`<Divider>`](../../content/divider), or split the content into sibling sections.
+Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth. It's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](../../layout/stack), a [`<Divider>`](../../content/divider), or split the content into sibling sections.
 
 <GuidelineTiles>
   <Do>
