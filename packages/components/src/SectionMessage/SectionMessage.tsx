@@ -158,13 +158,12 @@ export const SectionMessage = ({
           [TextContext, textProps],
         ]}
       >
-        {/* The container intentionally has no `role`: a landmark/region per
-            message would over-announce. The a11y win is the semantic heading
-            title; `aria-labelledby` documents the title relationship and
-            only takes effect if the container ever gains a role. */}
+        {/* `role="group"` permits naming via `aria-labelledby` (prohibited
+            on a bare `<div>`) without adding a landmark per message. */}
         <div
           {...props}
           ref={containerRef}
+          role={hasTitle ? 'group' : undefined}
           aria-labelledby={hasTitle ? titleId : undefined}
           className={cn('grid auto-rows-min', classNames.container)}
         >

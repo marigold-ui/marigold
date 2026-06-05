@@ -76,7 +76,7 @@ test('dialog is labelled by the title', () => {
   renderWithOverlay(<Basic.Component defaultOpen />);
 
   const dialog = screen.getByRole('dialog');
-  const heading = screen.getByRole('heading', { name: 'Whats this?' });
+  const heading = screen.getByRole('heading', { name: "What's this?" });
 
   expect(heading).toHaveAttribute('id');
   expect(dialog).toHaveAttribute('aria-labelledby', heading.id);

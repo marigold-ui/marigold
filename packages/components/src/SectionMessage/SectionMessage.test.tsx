@@ -49,10 +49,10 @@ test('supports configuring the heading level', () => {
   expect(heading.tagName).toBe('H2');
 });
 
-test('container is labelled by the title', () => {
-  render(<Basic.Component data-testid="messages" />);
+test('container is a group labelled by the title', () => {
+  render(<Basic.Component />);
 
-  const container = screen.getAllByTestId('messages')[0];
+  const container = screen.getAllByRole('group', { name: 'Danger Zone!' })[0];
   const heading = screen.getAllByRole('heading', { name: 'Danger Zone!' })[0];
   expect(heading).toHaveAttribute('id');
   expect(container).toHaveAttribute('aria-labelledby', heading.id);
