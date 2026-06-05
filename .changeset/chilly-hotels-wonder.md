@@ -3,4 +3,4 @@
 '@marigold/theme-rui': patch
 ---
 
-feat([DST-1395]): **SelectList** horizontal layouts now automatically flip to a vertical stack when the wrapping container is narrower than `40rem` (~640px).
+feat([DST-1339]): **FileField** gains a `size="small"` compact layout renders as a single-row input-height control (upload button + file list) instead of the full drop-zone, suited for space-constrained forms.
