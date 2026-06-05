@@ -15,7 +15,8 @@ A `<SectionMessage>` is a container with a severity icon, an optional title, the
 
 - **Container**: Wraps the message and applies the variant styling.
 - **Icon**: Variant icon that reinforces the severity.
-- **Title** _(optional)_: Short headline summarizing the message. Don't end the title with a period, and don't repeat it in the content.
+- **Title** _(optional)_: Short headline summarizing the message. Renders as a semantic heading; adjust its level with the `headingLevel` prop so it fits the surrounding document outline. Don't end the title with a period, and don't repeat it in the content.
+- **Description** _(optional)_: A short summary directly below the title.
 - **Content**: Descriptive body text. This is the required core of the message.
 - **Close button** _(optional)_: Dismiss control when `closeButton` is set.
 
@@ -55,6 +56,12 @@ Keep the message short. The body should fit within roughly two lines, and longer
     </DoDescription>
   </Do>
 </GuidelineTiles>
+
+### Description
+
+Use `<SectionMessage.Description>` for a short summary that sits between the title and the content, for example the outcome of an action, while the content carries the details.
+
+<ComponentDemo name="section-message-description" />
 
 ### Dismissal
 
@@ -119,6 +126,13 @@ Reserve assertive announcements for messages that genuinely need to interrupt. M
 <AutoTypeTable
   path="SectionMessage/SectionMessageTitle"
   name="SectionMessageTitleProps"
+/>
+
+### SectionMessage.Description
+
+<AutoTypeTable
+  path="SectionMessage/SectionMessageDescription"
+  name="SectionMessageDescriptionProps"
 />
 
 ### SectionMessage.Content
