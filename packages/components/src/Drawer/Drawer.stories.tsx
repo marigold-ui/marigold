@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
+import { ActionButton } from '../ActionButton/ActionButton';
+import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Select } from '../Select/Select';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { TextField } from '../TextField/TextField';
+import { Title } from '../Title/Title';
 import { Drawer } from './Drawer';
 
 const meta = preview.meta({
@@ -106,7 +112,7 @@ export const WithForms = meta.story({
       <Button>Configure Filter</Button>
       <Drawer {...args}>
         <Form unstyled>
-          <Drawer.Title>Filter</Drawer.Title>
+          <Title>Filter</Title>
           <Drawer.Content>
             <Stack space={8}>
               <Slider
@@ -155,7 +161,7 @@ export const LongContent = meta.story({
     <Drawer.Trigger>
       <Button>Open Drawer</Button>
       <Drawer {...args}>
-        <Drawer.Title>Long Content</Drawer.Title>
+        <Title>Long Content</Title>
         <Drawer.Content>
           <Stack space={4}>
             {Array.from({ length: 16 }, (_, i) => (
@@ -229,7 +235,7 @@ export const Controlled = meta.story({
         <Drawer.Trigger open={open} onOpenChange={onOpenChange}>
           <Button>Open Drawer</Button>
           <Drawer {...args}>
-            <Drawer.Title>Drawer Title</Drawer.Title>
+            <Title>Drawer Title</Title>
             <Drawer.Content>Drawer Content</Drawer.Content>
             <Drawer.Actions>
               <Button slot="close">Close</Button>
@@ -252,14 +258,14 @@ export const OneAtATime = meta.story({
       <Drawer.Trigger>
         <Button>Open A</Button>
         <Drawer {...args}>
-          <Drawer.Title>Title A</Drawer.Title>
+          <Title>Title A</Title>
           <Drawer.Content>Content A</Drawer.Content>
         </Drawer>
       </Drawer.Trigger>
       <Drawer.Trigger>
         <Button>Open B</Button>
         <Drawer {...args}>
-          <Drawer.Title>Title B</Drawer.Title>
+          <Title>Title B</Title>
           <Drawer.Content>Content B</Drawer.Content>
         </Drawer>
       </Drawer.Trigger>
@@ -297,12 +303,12 @@ export const OneAtATimeNested = meta.story({
     <Drawer.Trigger>
       <Button>Open A</Button>
       <Drawer {...args} closeButton>
-        <Drawer.Title>Title A</Drawer.Title>
+        <Title>Title A</Title>
         <Drawer.Content>
           <Drawer.Trigger>
             <Button>Open B</Button>
             <Drawer {...args} closeButton>
-              <Drawer.Title>Title B</Drawer.Title>
+              <Title>Title B</Title>
               <Drawer.Content>Content B</Drawer.Content>
             </Drawer>
           </Drawer.Trigger>
@@ -326,5 +332,93 @@ export const OneAtATimeNested = meta.story({
       expect(canvas.queryByText('Title B')).not.toBeInTheDocument()
     );
     expect(canvas.getByText('Title A')).toBeInTheDocument();
+  },
+});
+
+/**
+ * The slot-aware primitives `<Title>` / `<Description>` and the action
+ * primitives can be used directly. `<Drawer.Header>` groups the title and
+ * description; an `<ActionGroup>` inside `<Drawer.Actions>` picks up its
+ * defaults from the drawer root.
+ */
+export const SlotPrimitives = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Header>
+          <Title>Manage event</Title>
+          <Description>Update, duplicate, or remove this event.</Description>
+        </Drawer.Header>
+        <Drawer.Content>Choose an action below.</Drawer.Content>
+        <Drawer.Actions>
+          <ActionGroup aria-label="Event actions">
+            <ActionButton>
+              <Pencil />
+              Edit
+            </ActionButton>
+            <ActionButton>
+              <Copy />
+              Duplicate
+            </ActionButton>
+            <ActionMenu aria-label="More actions">
+              <ActionMenu.Item id="export">
+                <Download />
+                Export
+              </ActionMenu.Item>
+              <ActionMenu.Item id="delete" variant="destructive">
+                <Trash2 />
+                Delete
+              </ActionMenu.Item>
+            </ActionMenu>
+          </ActionGroup>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    await waitFor(() =>
+      expect(canvas.getByText('Manage event')).toBeInTheDocument()
+    );
+
+    expect(
+      canvas.getByRole('heading', { name: 'Manage event' })
+    ).toBeInTheDocument();
+    expect(
+      canvas.getByText('Update, duplicate, or remove this event.').tagName
+    ).toBe('P');
+    expect(
+      canvas.getByRole('toolbar', { name: 'Event actions' })
+    ).toBeInTheDocument();
+  },
+});
+
+/**
+ * A bare `<Title slot="title">` (no `<Drawer.Header>`, no description) labels
+ * the drawer landmark automatically via `aria-labelledby`.
+ */
+export const TitleOnlyWithoutHeader = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Title>Notifications</Title>
+        <Drawer.Content>You have no new notifications.</Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+
+    const drawer = await waitFor(() =>
+      canvas.getByRole('complementary', { name: 'Notifications' })
+    );
+    const title = canvas.getByRole('heading', { name: 'Notifications' });
+
+    expect(title.tagName).toBe('H2');
+    expect(drawer).toHaveAttribute('aria-labelledby', title.id);
   },
 });

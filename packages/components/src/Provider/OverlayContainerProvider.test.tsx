@@ -44,6 +44,7 @@ const theme: Theme = {
       content: cva({}),
       actions: cva({}),
       title: cva({}),
+      description: cva({}),
     },
   },
 };

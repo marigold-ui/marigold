@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
+import { ActionButton } from '../ActionButton/ActionButton';
+import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import { Title } from '../Title/Title';
 import { ConfirmationDialog } from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
@@ -78,7 +84,7 @@ export const WithForm = meta.story({
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
-          <Dialog.Title>Please log into account</Dialog.Title>
+          <Title>Please log into account</Title>
           <Dialog.Content>
             <TextField label="Username" />
             <TextField label="Password" type="password" />
@@ -112,7 +118,7 @@ export const WithFormValidation = meta.story({
           <Dialog size={size}>
             {({ close }) => (
               <>
-                <Dialog.Title>Please enter validation code</Dialog.Title>
+                <Title>Please enter validation code</Title>
                 <Dialog.Content>
                   <Form
                     id="code-form"
@@ -176,7 +182,7 @@ export const OpenFromMenu = meta.story({
         <Dialog open={open} onOpenChange={setDialogOpen} closeButton>
           {({ close }) => (
             <>
-              <Dialog.Title>Confirm delete</Dialog.Title>
+              <Title>Confirm delete</Title>
               <Dialog.Content>
                 <Text>Do you really wanna delete this?</Text>
               </Dialog.Content>
@@ -211,7 +217,7 @@ export const TextOnly = meta.story({
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
       <Dialog size={size} closeButton>
-        <Dialog.Title>Information</Dialog.Title>
+        <Title>Information</Title>
         <Dialog.Content>
           Your session will expire in 30 minutes. Save your work to avoid losing
           any unsaved changes.
@@ -233,7 +239,7 @@ export const VeryLongContent = meta.story({
       <Dialog.Trigger {...triggerArgs}>
         <Button variant="primary">Open Dialog with Long Content</Button>
         <Dialog size={size} closeButton>
-          <Dialog.Title>Terms and Conditions</Dialog.Title>
+          <Title>Terms and Conditions</Title>
           <Dialog.Content>
             <Text>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
@@ -392,5 +398,97 @@ export const VeryLongContent = meta.story({
     // Test scroll functionality - scroll to bottom
     dialogContent.scrollTop = dialogContent.scrollHeight;
     expect(dialogContent.scrollTop).toBeGreaterThan(0);
+  },
+});
+
+/**
+ * The slot-aware primitives `<Title>` / `<Description>` and the action
+ * primitives can be used directly — `<Dialog.Header>` groups the title and
+ * description, and an `<ActionGroup>` inside `<Dialog.Actions>` picks up its
+ * defaults from the dialog root.
+ */
+export const SlotPrimitives = meta.story({
+  tags: ['component-test'],
+  render: ({ size, ...args }) => (
+    <Dialog.Trigger {...args}>
+      <Button variant="primary">Open</Button>
+      <Dialog size={size} closeButton>
+        <Dialog.Header>
+          <Title>Manage event</Title>
+          <Description>Update, duplicate, or remove this event.</Description>
+        </Dialog.Header>
+        <Dialog.Content>
+          Choose an action below. Changes apply immediately.
+        </Dialog.Content>
+        <Dialog.Actions>
+          <ActionGroup aria-label="Event actions">
+            <ActionButton>
+              <Pencil />
+              Edit
+            </ActionButton>
+            <ActionButton>
+              <Copy />
+              Duplicate
+            </ActionButton>
+            <ActionMenu aria-label="More actions">
+              <ActionMenu.Item id="export">
+                <Download />
+                Export
+              </ActionMenu.Item>
+              <ActionMenu.Item id="delete" variant="destructive">
+                <Trash2 />
+                Delete
+              </ActionMenu.Item>
+            </ActionMenu>
+          </ActionGroup>
+        </Dialog.Actions>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    expect(
+      canvas.getByRole('heading', { name: 'Manage event' })
+    ).toBeInTheDocument();
+    expect(
+      canvas.getByText('Update, duplicate, or remove this event.').tagName
+    ).toBe('P');
+    expect(
+      canvas.getByRole('toolbar', { name: 'Event actions' })
+    ).toBeInTheDocument();
+  },
+});
+
+/**
+ * A bare `<Title slot="title">` (no `<Dialog.Header>`, no description) is a
+ * fully valid, accessible title — the dialog's `aria-labelledby` resolves to
+ * it automatically.
+ */
+export const TitleOnlyWithoutHeader = meta.story({
+  tags: ['component-test'],
+  render: ({ size, ...args }) => (
+    <Dialog.Trigger {...args}>
+      <Button variant="primary">Open</Button>
+      <Dialog size={size} closeButton>
+        <Title>Session expiring</Title>
+        <Dialog.Content>
+          Your session will expire in 5 minutes. Save your work to avoid losing
+          changes.
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    const dialog = await waitFor(() =>
+      canvas.getByRole('dialog', { name: 'Session expiring' })
+    );
+    const title = canvas.getByRole('heading', { name: 'Session expiring' });
+
+    expect(title.tagName).toBe('H2');
+    expect(dialog).toHaveAttribute('aria-labelledby', title.id);
   },
 });

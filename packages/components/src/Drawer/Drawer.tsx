@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
-import { use, useRef } from 'react';
+import { use, useId, useMemo, useRef } from 'react';
+import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import {
   Dialog,
   type DialogProps,
@@ -9,11 +10,17 @@ import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
+import { ActionButtonContext } from '../ActionButton/Context';
+import { ActionGroupContext } from '../ActionGroup/Context';
 import { CloseButton } from '../CloseButton/CloseButton';
+import { ActionMenuContext } from '../Menu/ActionMenuContext';
+import { useSlot } from '../utils/useSlot';
 import { intlMessages } from '../intl/messages';
 import { DrawerContext, DrawerNestingContext } from './Context';
 import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
+import { DrawerDescription } from './DrawerDescription';
+import { DrawerHeader } from './DrawerHeader';
 import { DrawerModal } from './DrawerModal';
 import { DrawerTitle } from './DrawerTitle';
 import { DrawerTrigger } from './DrawerTrigger';
@@ -67,17 +74,32 @@ export const Drawer = ({
   keyboardDismissable,
   closeButton,
   role = 'complementary',
+  'aria-label': ariaLabel,
   ...props
 }: DrawerProps) => {
   const ref = useRef<HTMLElement | null>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const titleId = useId();
   const classNames = useClassNames({
     component: 'Drawer',
     variant,
     size,
   });
+  // `hasTitle` gates the `aria-labelledby` wiring below. Unlike Card/Panel we
+  // do not emit a "missing accessible name" warning here: a Drawer renders
+  // (and runs this hook) while still closed, when its title is not mounted, so
+  // the check would fire spuriously. RAC's `<Dialog>` already warns about an
+  // unlabelled dialog at open time.
+  const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
   const ctx = use(OverlayTriggerStateContext);
+
+  // Resolve render-function children up front (mirroring `<Dialog>`) so the
+  // slot Provider below always receives plain `ReactNode`.
+  const resolvedChildren =
+    typeof children === 'function'
+      ? children({ close: ctx?.close ?? (() => {}) })
+      : children;
 
   // Called here (not in a child) so it reads the ancestor's `DrawerNestingContext`,
   // not the provider this component publishes below.
@@ -91,6 +113,41 @@ export const Drawer = ({
   const landmarkAria = useLandmark({ ...props, role }, ref);
   const landmarkProps = isSmallScreen ? {} : landmarkAria.landmarkProps;
 
+  const rootHeadingProps = useMemo(
+    () => ({
+      slots: {
+        title: {
+          className: cn(
+            '[grid-area:title]',
+            classNames.header,
+            classNames.title
+          ),
+          level: 2,
+          id: titleId,
+          ref: titleSlotRef,
+        },
+      },
+    }),
+    [classNames.header, classNames.title, titleId, titleSlotRef]
+  );
+
+  const textProps = useMemo(
+    () => ({
+      slots: {
+        description: {
+          className: classNames.description,
+          elementType: 'p' as const,
+        },
+      },
+    }),
+    [classNames.description]
+  );
+
+  const drawerContextValue = useMemo(
+    () => ({ variant, size, classNames, titleId, hasTitle, titleSlotRef }),
+    [variant, size, classNames, titleId, hasTitle, titleSlotRef]
+  );
+
   return (
     <DrawerModal
       className={classNames.overlay}
@@ -99,11 +156,15 @@ export const Drawer = ({
       data-testid="drawer-modal"
     >
       <DrawerNestingContext value={true}>
-        <DrawerContext value={{ variant, size }}>
+        <DrawerContext value={drawerContextValue}>
           <Dialog
             {...props}
             // Override RAC here so we can set an appropriate role
             {...(landmarkProps as any)}
+            aria-label={ariaLabel}
+            aria-labelledby={
+              !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+            }
             className={cn(
               'h-(--visual-viewport-height) outline-none',
               // Use single quotes, in some enviroments the class is not correctly applied otherwise
@@ -119,7 +180,19 @@ export const Drawer = ({
                 onPress={ctx?.close}
               />
             )}
-            {children}
+            <Provider
+              values={[
+                [HeadingContext, rootHeadingProps],
+                [TextContext, textProps],
+                // Reset the action contexts so the drawer owns its own action
+                // defaults rather than inheriting any from an ancestor tree.
+                [ActionButtonContext, {}],
+                [ActionGroupContext, {}],
+                [ActionMenuContext, {}],
+              ]}
+            >
+              {resolvedChildren}
+            </Provider>
           </Dialog>
         </DrawerContext>
       </DrawerNestingContext>
@@ -128,6 +201,8 @@ export const Drawer = ({
 };
 
 Drawer.Trigger = DrawerTrigger;
+Drawer.Header = DrawerHeader;
 Drawer.Title = DrawerTitle;
+Drawer.Description = DrawerDescription;
 Drawer.Content = DrawerContent;
 Drawer.Actions = DrawerActions;

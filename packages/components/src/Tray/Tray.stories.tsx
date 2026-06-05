@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Copy, Pencil } from '@marigold/icons';
+import { ActionButton } from '../ActionButton/ActionButton';
+import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
+import { Title } from '../Title/Title';
 import { Tray } from './Tray';
 
 const meta = preview.meta({
@@ -116,7 +121,7 @@ export const DismissControlsWithCallbacks = meta.story({
         <Tray.Trigger open={open} onOpenChange={onOpenChange}>
           <Button>Open Tray</Button>
           <Tray {...args} dismissable keyboardDismissable>
-            <Tray.Title>Dismiss Controls</Tray.Title>
+            <Title>Dismiss Controls</Title>
             <Tray.Content>
               <Inset p={4}>
                 <Text>
@@ -191,3 +196,89 @@ DismissControlsWithCallbacks.test(
     });
   }
 );
+
+/**
+ * The slot-aware primitives `<Title>` / `<Description>` and the action
+ * primitives can be used directly. `<Tray.Header>` groups the title and
+ * description; an `<ActionGroup>` inside `<Tray.Actions>` picks up its
+ * defaults from the tray root.
+ */
+export const SlotPrimitives = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Tray.Trigger>
+      <Button>Open Tray</Button>
+      <Tray {...args}>
+        <Tray.Header>
+          <Title>Manage event</Title>
+          <Description>Update or duplicate this event.</Description>
+        </Tray.Header>
+        <Tray.Content>
+          <Inset p={4}>
+            <Text>Choose an action below.</Text>
+          </Inset>
+        </Tray.Content>
+        <Tray.Actions>
+          <ActionGroup aria-label="Event actions">
+            <ActionButton>
+              <Pencil />
+              Edit
+            </ActionButton>
+            <ActionButton>
+              <Copy />
+              Duplicate
+            </ActionButton>
+          </ActionGroup>
+        </Tray.Actions>
+      </Tray>
+    </Tray.Trigger>
+  ),
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
+    await waitFor(() =>
+      expect(canvas.getByText('Manage event')).toBeInTheDocument()
+    );
+
+    expect(
+      canvas.getByRole('heading', { name: 'Manage event' })
+    ).toBeInTheDocument();
+    expect(canvas.getByText('Update or duplicate this event.').tagName).toBe(
+      'P'
+    );
+    expect(
+      canvas.getByRole('toolbar', { name: 'Event actions' })
+    ).toBeInTheDocument();
+  },
+});
+
+/**
+ * A bare `<Title slot="title">` (no `<Tray.Header>`, no description) labels the
+ * tray dialog automatically via `aria-labelledby`.
+ */
+export const TitleOnlyWithoutHeader = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Tray.Trigger>
+      <Button>Open Tray</Button>
+      <Tray {...args}>
+        <Title>Quick settings</Title>
+        <Tray.Content>
+          <Inset p={4}>
+            <Text>Adjust your preferences below.</Text>
+          </Inset>
+        </Tray.Content>
+      </Tray>
+    </Tray.Trigger>
+  ),
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
+
+    const tray = await waitFor(() =>
+      canvas.getByRole('dialog', { name: 'Quick settings' })
+    );
+    const title = canvas.getByRole('heading', { name: 'Quick settings' });
+
+    expect(title.tagName).toBe('H2');
+    expect(tray).toHaveAttribute('aria-labelledby', title.id);
+  },
+});
