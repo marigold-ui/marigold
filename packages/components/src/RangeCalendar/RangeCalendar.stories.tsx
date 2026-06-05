@@ -385,26 +385,26 @@ export const MonthDropdown = meta.story({
 
     await step('month dropdown is closed initially', async () => {
       await expect(
-        canvas.queryByRole('listbox', { name: 'monthOptions' })
+        canvas.queryByRole('listbox', { name: 'month' })
       ).not.toBeInTheDocument();
     });
 
     await step('opens when the month button is clicked', async () => {
       await userEvent.click(canvas.getByRole('button', { name: 'Aug' }));
       await expect(
-        canvas.getByRole('listbox', { name: 'monthOptions' })
+        canvas.getByRole('listbox', { name: 'month' })
       ).toBeInTheDocument();
     });
 
     await step('closes after selecting an option', async () => {
       const monthOptions = canvas.getByRole('listbox', {
-        name: 'monthOptions',
+        name: 'month',
       });
       const options = within(monthOptions).getAllByRole('option');
       await userEvent.click(options[2]);
 
       await expect(
-        canvas.queryByRole('listbox', { name: 'monthOptions' })
+        canvas.queryByRole('listbox', { name: 'month' })
       ).not.toBeInTheDocument();
     });
   },
@@ -424,18 +424,50 @@ export const YearDropdown = meta.story({
 
     await step('year dropdown is closed initially', async () => {
       await expect(
-        canvas.queryByRole('listbox', { name: 'yearOptions' })
+        canvas.queryByRole('listbox', { name: 'year' })
       ).not.toBeInTheDocument();
     });
 
     await step('opens when the year button is clicked', async () => {
       await userEvent.click(canvas.getByRole('button', { name: '2025' }));
       await expect(
-        canvas.getByRole('listbox', { name: 'yearOptions' })
+        canvas.getByRole('listbox', { name: 'year' })
       ).toBeInTheDocument();
     });
   },
 });
+
+export const YearDropdownWithMinMax = meta.story({
+  tags: ['component-test'],
+  args: {
+    minValue: new CalendarDate(2025, 1, 1),
+    maxValue: new CalendarDate(2027, 12, 31),
+    defaultValue: {
+      start: new CalendarDate(2025, 6, 5),
+      end: new CalendarDate(2025, 6, 10),
+    },
+  },
+  render: args => <RangeCalendar {...args} />,
+});
+
+YearDropdownWithMinMax.test(
+  'year picker is clamped to minValue/maxValue',
+  async ({ canvas, userEvent, step }) => {
+    await step('open the year dropdown', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: '2025' }));
+    });
+
+    await step('only in-range years are rendered', async () => {
+      const years = within(canvas.getByRole('listbox', { name: 'year' }))
+        .getAllByRole('option')
+        .map(option => option.textContent);
+
+      await expect(years).toEqual(['2025', '2026', '2027']);
+      await expect(canvas.queryByText('2024')).not.toBeInTheDocument();
+      await expect(canvas.queryByText('2028')).not.toBeInTheDocument();
+    });
+  }
+);
 
 // Regression (DSTSUP-257): tapping a month option with touch input must commit
 // the selection. An unconditional `pointerup` stopPropagation on the dropdown
@@ -454,13 +486,13 @@ export const MonthDropdownTouch = meta.story({
     await step('opens the month dropdown via touch', async () => {
       await tap(canvas.getByRole('button', { name: 'Aug' }));
       await expect(
-        canvas.getByRole('listbox', { name: 'monthOptions' })
+        canvas.getByRole('listbox', { name: 'month' })
       ).toBeInTheDocument();
     });
 
     await step('commits a month selection via touch', async () => {
       const monthOptions = canvas.getByRole('listbox', {
-        name: 'monthOptions',
+        name: 'month',
       });
       const march = within(monthOptions).getByRole('option', { name: /Mar/i });
 
@@ -468,11 +500,55 @@ export const MonthDropdownTouch = meta.story({
 
       // Dropdown closes and the grid switches to the tapped month.
       await expect(
-        canvas.queryByRole('listbox', { name: 'monthOptions' })
+        canvas.queryByRole('listbox', { name: 'month' })
       ).not.toBeInTheDocument();
       await expect(
         canvas.getByRole('button', { name: 'Mar' })
       ).toBeInTheDocument();
+    });
+  },
+});
+
+// Regression: navigating the month/year dropdown mid-range-selection must not
+// commit the half-finished range (react-aria commits on any non-button pointerup).
+export const DropdownNavigationKeepsRangeInProgress = meta.story({
+  tags: ['component-test'],
+  args: {
+    defaultValue: {
+      start: new CalendarDate(2025, 8, 7),
+      end: new CalendarDate(2025, 8, 14),
+    },
+    onChange: fn(),
+  },
+  render: args => <RangeCalendar {...args} />,
+  play: async ({ args, canvasElement, userEvent, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('start a new range selection (anchor only)', async () => {
+      await userEvent.click(canvas.getByLabelText(/August 20, 2025/i));
+      // Setting the anchor must not commit a value yet.
+      await expect(args.onChange).not.toHaveBeenCalled();
+    });
+
+    await step('navigate via the month dropdown mid-selection', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Aug' }));
+      const monthOptions = canvas.getByRole('listbox', {
+        name: 'month',
+      });
+      await userEvent.click(
+        within(monthOptions).getByRole('option', { name: /Mar/i })
+      );
+    });
+
+    await step('the half-finished range was not committed', async () => {
+      await expect(
+        canvas.queryByRole('listbox', { name: 'month' })
+      ).not.toBeInTheDocument();
+      await expect(
+        canvas.getByRole('button', { name: 'Mar' })
+      ).toBeInTheDocument();
+      // The dropdown only navigates; the in-progress range stays open.
+      await expect(args.onChange).not.toHaveBeenCalled();
     });
   },
 });

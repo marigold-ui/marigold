@@ -1,43 +1,46 @@
 import { Dispatch, SetStateAction } from 'react';
-import { DateValue } from 'react-aria-components';
+import { CalendarMonthPicker } from 'react-aria-components';
 import { useCalendarOrRangeState } from './Context';
 import { ListBox } from './ListBox';
-import { useFormattedMonths } from './useFormattedMonths';
 
 interface MonthDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
-  minValue?: DateValue | null;
-  maxValue?: DateValue | null;
 }
 
-const MonthListBox = ({
-  setSelectedDropdown,
-  minValue,
-  maxValue,
-}: MonthDropdownProps) => {
+const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
   const state = useCalendarOrRangeState();
-  const months = useFormattedMonths(state.timeZone, state.focusedDate);
   const currentYear = state.focusedDate.year;
 
+  // All 12 months always render (the grid-cols-3 layout needs them), so out-of-range
+  // months are disabled per item rather than omitted.
   const minMonth =
-    minValue && minValue.year === currentYear ? minValue.month : 1;
+    state.minValue && state.minValue.year === currentYear
+      ? state.minValue.month
+      : 1;
   const maxMonth =
-    maxValue && maxValue.year === currentYear ? maxValue.month : 12;
+    state.maxValue && state.maxValue.year === currentYear
+      ? state.maxValue.month
+      : 12;
 
   return (
-    <ListBox
-      dataTestid="monthOptions"
-      items={months}
-      isDisabled={(_, monthIndex) =>
-        monthIndex + 1 < minMonth || monthIndex + 1 > maxMonth
-      }
-      isSelected={(_, monthIndex) => monthIndex === state.focusedDate.month - 1}
-      onSelect={(_, monthIndex) => {
-        state.setFocusedDate(state.focusedDate.set({ month: monthIndex + 1 }));
-        setSelectedDropdown(undefined);
-      }}
-      format={month => month.substring(0, 3)}
-    />
+    <CalendarMonthPicker>
+      {({ items, value, onChange, 'aria-label': ariaLabel }) => (
+        <ListBox
+          ariaLabel={ariaLabel}
+          items={items}
+          isDisabled={item => item.id < minMonth || item.id > maxMonth}
+          isSelected={item => item.id === value}
+          onSelect={item => {
+            onChange(item.id);
+            setSelectedDropdown(undefined);
+          }}
+          // `CalendarMonthPicker` already emits abbreviated names (default
+          // `format="short"`, e.g. "Jan"); use them as-is rather than truncating,
+          // which would mangle longer/non-Latin localized abbreviations.
+          format={item => item.formatted}
+        />
+      )}
+    </CalendarMonthPicker>
   );
 };
 
