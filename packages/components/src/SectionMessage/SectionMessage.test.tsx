@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { afterEach, vi } from 'vitest';
 import { announce } from '@react-aria/live-announcer';
-import { Basic } from './SectionMessage.stories';
+import { Basic, WithDescription } from './SectionMessage.stories';
 
 vi.mock('@react-aria/live-announcer', () => ({
   announce: vi.fn(),
@@ -33,6 +33,39 @@ test('accepts a variant with parts and an icon and support grid areas', () => {
   expect(container).toHaveClass('grid');
   expect(title).toHaveClass('[grid-area:title]');
   expect(icon).toBeInTheDocument();
+});
+
+test('renders the title as a semantic heading (default level 3)', () => {
+  render(<Basic.Component />);
+
+  const heading = screen.getAllByRole('heading', { name: 'Danger Zone!' })[0];
+  expect(heading.tagName).toBe('H3');
+});
+
+test('supports configuring the heading level', () => {
+  render(<Basic.Component headingLevel={2} />);
+
+  const heading = screen.getAllByRole('heading', { name: 'Danger Zone!' })[0];
+  expect(heading.tagName).toBe('H2');
+});
+
+test('container is labelled by the title', () => {
+  render(<Basic.Component data-testid="messages" />);
+
+  const container = screen.getAllByTestId('messages')[0];
+  const heading = screen.getAllByRole('heading', { name: 'Danger Zone!' })[0];
+  expect(heading).toHaveAttribute('id');
+  expect(container).toHaveAttribute('aria-labelledby', heading.id);
+});
+
+test('renders an optional description via the description slot', () => {
+  render(<WithDescription.Component />);
+
+  const description = screen.getAllByText(
+    'All files were copied to the archive.'
+  )[0];
+  expect(description.tagName).toBe('P');
+  expect(description).toHaveClass('[grid-area:description]');
 });
 
 test('accepts error variant', () => {
