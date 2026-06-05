@@ -58,6 +58,8 @@ It is essential that the label and context around the button clearly set expecta
 
 This primary button should represent the most crucial action within that section. Having multiple primary buttons in one section can create confusion and visual clutter, as they compete for the user's attention and detract from the clarity of the intended action.
 
+For how this hierarchy applies to a form's actions, see [Action hierarchy](/patterns/user-input/forms#action-hierarchy) in the Forms pattern.
+
 <GuidelineTiles>
   <Do>
     <DoFigure>
@@ -245,6 +247,28 @@ The `loading` property must be added manually to a Button, and is intended for p
 
 <ComponentDemo name="button-loading" />
 
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use the `loading` prop on the action button to show progress, so the
+      indicator stays on the button that triggered the action.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't place a separate `<Loader>` next to a button or swap the label for a
+      loader manually. Use the built-in `loading` prop instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<Callout title="Pending state from async actions">
+  When the loading state comes from a React 19 action, let `useActionState`
+  manage the pending flag and pass it to the button. See [Async forms and
+  useActionState
+  hook](/patterns/user-input/form-implementation#async-forms-and-useactionstate-hook).
+</Callout>
+
 ### Full-width
 
 Full-width buttons are especially useful for emphasizing primary actions like submitting a form or completing a purchase, as they attract attention and create a strong visual hierarchy. They also enhance usability on mobile devices or in narrow layouts by providing a larger, easier-to-tap target.
@@ -282,7 +306,7 @@ To visually imitate a button element that navigates (e.g., a "Cancel" action tha
 | The single most important call-to-action on a page or section | [`<Button variant="primary">`](/components/actions/button)                                                                                                                                                                                |
 | Per-row action in a list, table, or `<SelectList>` option     | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group). For actions that navigate (e.g. an "Edit" link to a detail page), use [`<LinkButton>`](/components/actions/link-button), which picks up the same cascade. |
 | Chrome on a `<Panel>`, `<Dialog>`, or `<Drawer>` header       | `<ActionButton>` inside an [`<ActionGroup>`](/components/actions/action-group)                                                                                                                                                            |
-| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/actions/actionbar)                                                                                                                                                                                     |
+| Bulk-selection bar around a table                             | [`<ActionBar.Button>`](/components/collection/actionbar)                                                                                                                                                                                  |
 | Overflow when there are more actions than fit comfortably     | [`<ActionMenu>`](/components/overlay/action-menu)                                                                                                                                                                                         |
 
 ### Press Event
@@ -303,6 +327,6 @@ Each handler receives a `PressEvent`, providing details about the target and the
 
 - [ActionButton](/components/actions/action-button): A low-emphasis button for surface chrome and per-row actions.
 - [ActionGroup](/components/actions/action-group): A toolbar wrapper around a related cluster of `<ActionButton>`s.
-- [ActionBar](/components/actions/actionbar): The bar around bulk-selection actions. It uses `<ActionBar.Button>` internally.
+- [ActionBar](/components/collection/actionbar): The bar around bulk-selection actions. It uses `<ActionBar.Button>` internally.
 - [Link](/components/actions/link): A component to navigate to another page.
 - [LinkButton](/components/actions/link-button): A component to navigate to another page but looks like a button.
