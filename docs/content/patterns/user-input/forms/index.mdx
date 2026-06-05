@@ -48,7 +48,7 @@ See the [Form Fields](../../foundations/form-fields) page for a full guide on in
 
 Beyond those, you'll likely need some of these to put a form together:
 
-- **Layout components**: [`<Stack>`](../../components/layout/stack/) and [`<Inset>`](../../components/layout/inset/) to organize fields and sections.
+- **Layout components**: [`<Stack>`](../../components/layout/stack/) and [`<Inset>`](../../components/layout/inset/) to organize fields and sections. See [Layouts](/foundations/layouts) for choosing the right layout component (and why fields never belong in a `<Table>`).
 - **Accordion**: Group fields with an [accordion](../../components/navigation/accordion/) for lengthy forms or optional fields. Use accordions for sections that can be collapsed to save space and reduce cognitive load.
 - **Buttons**: Use primary [buttons](../../components/actions/button/) for form submission, secondary for additional actions like "View PDF".
 - **Links**: Use [links](../../components/navigation/link/) for navigation to privacy policies or terms of service, not for form actions.
@@ -108,6 +108,32 @@ Accordions can also be used _within_ a section to group content. This lets users
 ## Actions
 
 Forms usually need more than just a submit button. Links, secondary buttons, and other controls handle everything from navigation to drafts. The key is making each action easy to find and hard to confuse with the primary submit.
+
+### Action hierarchy
+
+A normal form has exactly **one** primary action: the submit. Everything else steps down the hierarchy so the primary action stays unmistakable. Giving two actions the `primary` variant makes them compete for attention and leaves people unsure which one completes the form.
+
+Map each action to a Button variant by its role:
+
+| Action role                                           | Use                               |
+| ----------------------------------------------------- | --------------------------------- |
+| Submit the form (the one primary action)              | `primary`                         |
+| Supporting form operation ("Save as Draft", "Reset")  | `secondary`                       |
+| Low-emphasis action that should stay quiet            | `ghost`                           |
+| Destructive form action ("Delete account")            | `destructive`/`destructive-ghost` |
+| Navigation away from the form (terms, privacy policy) | `<Link>`/`<LinkButton>`           |
+
+This is the same cascade the Button component describes. See [Visual hierarchy](/components/actions/button#visual-hierarchy) for why a section gets only one primary action, [Placement and order](/components/actions/button#placement-and-order) for how the `primary → secondary → ghost` variants line up, and [Destructive buttons](/components/actions/button#destructive-buttons) for when a form action carries irreversible consequences.
+
+<Callout title="Settings pages are the exception">
+  Settings pages are the one place where a single page carries more than one
+  primary action. When a page is split into independently-saving `<Panel>`s,
+  each panel is its own form and owns its own primary save button — so a
+  multi-panel settings page has one primary action _per panel_, not per page.
+  Never share one submit across panels: a save in one panel must not commit the
+  fields of another. Outside of this case, keep it to one primary action per
+  form.
+</Callout>
 
 ### Inline actions
 
