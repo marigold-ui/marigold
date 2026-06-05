@@ -85,3 +85,37 @@ Most layouts can be built from more than one combination of primitives. Each pri
 | [Split](../../components/layout/split)           | siblings inside an existing Inline or Stack need to be pushed to opposite ends                                    | inside Inline, between a title and its actions           |
 | [Stack](../../components/layout/stack)           | multiple elements need to flow top-to-bottom with a consistent gap                                                | skeleton of most forms and page sections                 |
 | [Tiles](../../components/layout/tiles)           | a homogeneous set of items of unknown count should fill the row at a minimum child width and reflow automatically | card grids, dashboard metric grids                       |
+
+## Reach for a layout component only with two or more children
+
+A layout component's whole job is to _arrange_ elements in relation to one another. Just like `Inline` and `Stack` express the named intent "lay these out horizontally" or "stack these vertically", that intent only exists once there is more than one thing to arrange. A layout component therefore earns its place only when it arranges **two or more children**. With a single child there is nothing to arrange, so render the element directly instead of wrapping it.
+
+```tsx
+// Don't: a layout component around a single child adds no intent
+<Stack>
+  <Card>…</Card>
+</Stack>
+
+// Do: render the element directly
+<Card>…</Card>
+```
+
+This keeps the JSX tree honest: every layout component in the markup signals a real arrangement decision, not incidental nesting.
+
+<Callout title="Padding and centering wrappers are different">
+  Components whose intent is to wrap a _single_ element — `Inset` for padding
+  and `Center` for centering — legitimately take one child. The two-or-more rule
+  applies to arrangement components like `Stack`, `Inline`, `Columns`, `Grid`
+  and `Tiles`, where a single child carries no arrangement.
+</Callout>
+
+<Callout title="Table is for data, not layout" type="warning">
+  `Table` must never be used as a layout grid. It expresses tabular _data_ with
+  rows and columns of related values, not a way to align arbitrary elements. For
+  arranging UI, reach for a layout component instead: **form fields belong in
+  `Stack`, `Inline` or `Columns`, never in `Table.Cell`**, since putting inputs
+  in table cells to line them up breaks the named-intent model and harms
+  accessibility. See the [Table](/components/collection/table) component for its
+  legitimate use, and the [Forms](/patterns/user-input/forms) pattern for laying
+  out fields.
+</Callout>

@@ -58,6 +58,8 @@ It is essential that the label and context around the button clearly set expecta
 
 This primary button should represent the most crucial action within that section. Having multiple primary buttons in one section can create confusion and visual clutter, as they compete for the user's attention and detract from the clarity of the intended action.
 
+For how this hierarchy applies to a form's actions, see [Action hierarchy](/patterns/user-input/forms#action-hierarchy) in the Forms pattern.
+
 <GuidelineTiles>
   <Do>
     <DoFigure>
@@ -244,6 +246,28 @@ When the loading state is activated, the label becomes hidden. To ensure accessi
 The `loading` property must be added manually to a Button, and is intended for processes that typically last more than 1 second.
 
 <ComponentDemo name="button-loading" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use the `loading` prop on the action button to show progress, so the
+      indicator stays on the button that triggered the action.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't place a separate `<Loader>` next to a button or swap the label for a
+      loader manually. Use the built-in `loading` prop instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<Callout title="Pending state from async actions">
+  When the loading state comes from a React 19 action, let `useActionState`
+  manage the pending flag and pass it to the button. See [Async forms and
+  useActionState
+  hook](/patterns/user-input/form-implementation#async-forms-and-useactionstate-hook).
+</Callout>
 
 ### Full-width
 
