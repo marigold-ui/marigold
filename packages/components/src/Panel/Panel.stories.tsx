@@ -146,7 +146,7 @@ export const WithHeaderActions = meta.story(() => (
         <Description>
           People with access to this workspace and their roles.
         </Description>
-        <Button aria-label="Invite member">
+        <Button size="icon" aria-label="Invite member">
           <UserRoundPlus />
         </Button>
       </Panel.Header>
@@ -189,7 +189,7 @@ export const WithHeaderActions = meta.story(() => (
         <Description>
           Connected on April 2, 2026 · Processing live payments in EUR.
         </Description>
-        <ActionMenu aria-label="Integration actions">
+        <ActionMenu size="icon" aria-label="Integration actions">
           <ActionMenu.Item id="sync">
             <RefreshCw />
             Sync now
@@ -238,7 +238,7 @@ export const WithHeaderActions = meta.story(() => (
         <Description>
           Elbphilharmonie Hamburg · Saturday, June 14, 2026 · 20:00 CEST
         </Description>
-        <ButtonGroup aria-label="Event actions">
+        <ButtonGroup size="icon" aria-label="Event actions">
           <Button aria-label="Edit event">
             <Pencil />
           </Button>
@@ -302,7 +302,7 @@ export const SlotsButtonGroup = meta.story({
       <Panel.Header>
         <Title>Stripe Payments</Title>
         <Description>Integration health and quick actions.</Description>
-        <ButtonGroup aria-label="Integration actions">
+        <ButtonGroup size="icon" aria-label="Integration actions">
           <Button aria-label="Reconnect">
             <Link2 />
           </Button>

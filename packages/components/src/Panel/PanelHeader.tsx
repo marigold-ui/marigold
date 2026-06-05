@@ -10,7 +10,8 @@ export interface PanelHeaderProps {
    * Content of the header: typically a `<Title>`, optional `<Description>`, and
    * optional actions (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`,
    * `<LinkButton>`). Actions are slot-aware here, claiming the `actions` grid
-   * cell and adopting the header's ghost icon styling; opt out with `slot={null}`.
+   * cell and adopting the header's ghost styling; an icon-only action sets
+   * `size="icon"` to render as a square. Opt out with `slot={null}`.
    */
   children: ReactNode;
 }
@@ -49,15 +50,18 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
     [classNames.description]
   );
 
-  // One `ButtonContext` gives every action in the header the same ghost icon
-  // look in the `actions` grid cell. A `<ButtonGroup>` re-provides its own
-  // context, so the positional className stays on the group, not its buttons.
+  // One `ButtonContext` gives every action in the header the same low-emphasis
+  // ghost look in the `actions` grid cell. The size cascade is `small` so a
+  // labelled action stays a readable button; icon-only actions (a bare-icon
+  // `<Button>`, an `<ActionMenu>` kebab) opt into `size="icon"` themselves so
+  // they render as a square. A `<ButtonGroup>` re-provides its own context, so
+  // the positional className stays on the group, not its buttons.
   const actionProps = useMemo(
     () => ({
       className: cn('self-center [grid-area:actions]', classNames.actions),
       'data-grid-area': 'actions',
       variant: 'ghost' as const,
-      size: 'icon' as const,
+      size: 'small' as const,
     }),
     [classNames.actions]
   );

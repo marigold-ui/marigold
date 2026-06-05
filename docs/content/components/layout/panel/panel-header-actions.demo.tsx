@@ -26,7 +26,7 @@ export default () => (
       <Description>
         People with access to this workspace and their roles.
       </Description>
-      <Button aria-label="Invite member">
+      <Button size="icon" aria-label="Invite member">
         <UserRoundPlus />
       </Button>
     </Panel.Header>

@@ -18,7 +18,7 @@ export const UserTable = () => (
         A list of all the users in your account including their name, title,
         email and role.
       </Description>
-      <Button aria-label="Add user">
+      <Button size="icon" aria-label="Add user">
         <UserRoundPlus />
       </Button>
     </Panel.Header>

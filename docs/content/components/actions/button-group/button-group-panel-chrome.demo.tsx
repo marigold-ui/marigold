@@ -15,7 +15,7 @@ export default () => (
     <Panel.Header>
       <Title>Event details</Title>
       <Description>Public information visible to ticket buyers.</Description>
-      <ButtonGroup aria-label="Event actions">
+      <ButtonGroup size="icon" aria-label="Event actions">
         <Tooltip.Trigger>
           <Button aria-label="Bookmark">
             <Bookmark />
