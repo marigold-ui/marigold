@@ -3,7 +3,11 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva({
     base: [
-      "grid-cols-[min-content_auto_min-content] gap-x-4 gap-y-1 [grid-template-areas:'icon_title_close''icon_description_description''icon_content_content']",
+      "grid-cols-[min-content_auto_min-content] gap-x-4 gap-y-1 [grid-template-areas:'icon_title_close''icon_content_content']",
+      // Only add the description row when a description is present. An empty
+      // explicit row would collapse to 0 height, but the row gaps around it
+      // would not, doubling the title-to-content spacing.
+      "has-[[data-grid-area=description]]:[grid-template-areas:'icon_title_close''icon_description_description''icon_content_content']",
       'bg-surface rounded-md border px-3 py-4',
     ],
     variants: {
