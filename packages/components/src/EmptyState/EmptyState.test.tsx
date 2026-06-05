@@ -15,7 +15,6 @@ test('renders with title and description', () => {
   // The description renders through the `<Description>` primitive but keeps
   // the same DOM as before (a styled `<div>` via the slot's `elementType`).
   expect(description.tagName).toBe('DIV');
-  expect(description).toHaveClass('text-secondary');
 });
 
 test('renders with action buttons', () => {

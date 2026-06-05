@@ -1,11 +1,12 @@
 import type { ComponentProps, ReactNode, Ref } from 'react';
 import { useMemo } from 'react';
-import { Provider, TextContext } from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
 import {
   Dialog,
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components/Dialog';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { Popover } from '../Overlay/Popover';

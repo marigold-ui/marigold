@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
-import { Provider, TextContext } from 'react-aria-components';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
 import { Description } from '../Description/Description';
 

@@ -136,7 +136,7 @@ export const WithDescription = meta.story({
     </div>
   ),
   play: async ({ canvas, userEvent }) => {
-    const helpButton = await canvas.getByLabelText(/help|hilfe/i);
+    const helpButton = canvas.getByLabelText(/help|hilfe/i);
     await userEvent.click(helpButton);
 
     const title = await canvas.findByText('Whats this?');

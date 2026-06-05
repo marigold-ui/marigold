@@ -6,7 +6,9 @@ import {
   useRef,
   useState,
 } from 'react';
-import { HeadingContext, Provider, TextContext } from 'react-aria-components';
+import { HeadingContext } from 'react-aria-components/Heading';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
 import { cn, useClassNames } from '@marigold/system';
@@ -158,8 +160,8 @@ export const SectionMessage = ({
       >
         {/* The container intentionally has no `role`: a landmark/region per
             message would over-announce. The a11y win is the semantic heading
-            title; `aria-labelledby` is set defensively for when consumers
-            pass a role via props. */}
+            title; `aria-labelledby` documents the title relationship and
+            only takes effect if the container ever gains a role. */}
         <div
           {...props}
           ref={containerRef}
