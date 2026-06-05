@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react';
+import { useMemo } from 'react';
+import { Provider, TextContext } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
+import { Description } from '../Description/Description';
 
 // Props
 // ---------------
@@ -32,6 +35,22 @@ export const EmptyState = ({
   ...props
 }: EmptyStateProps) => {
   const classNames = useClassNames({ component: 'EmptyState', variant, size });
+
+  // Internal use of the slot-configuration vocabulary: the description is
+  // rendered through the `<Description>` primitive. `elementType: 'div'`
+  // keeps the DOM identical to the previous bespoke wrapper (`description`
+  // is a `ReactNode` and may contain block-level elements).
+  const textProps = useMemo(
+    () => ({
+      slots: {
+        description: {
+          className: classNames.description,
+          elementType: 'div' as const,
+        },
+      },
+    }),
+    [classNames.description]
+  );
 
   return (
     <div className={classNames.container} {...props}>
@@ -89,7 +108,9 @@ export const EmptyState = ({
       </svg>
       <div className={classNames.title}>{title}</div>
       {description && (
-        <div className={classNames.description}>{description}</div>
+        <Provider values={[[TextContext, textProps]]}>
+          <Description>{description}</Description>
+        </Provider>
       )}
       {action && <div className={classNames.action}>{action}</div>}
     </div>
