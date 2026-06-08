@@ -3,8 +3,7 @@ import type RAC from 'react-aria-components';
 import { Link } from 'react-aria-components/Link';
 import { useSlottedContext } from 'react-aria-components/slots';
 import { cn, useClassNames } from '@marigold/system';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroupContext } from '../ActionGroup/Context';
+import { ButtonContext } from '../Button/Context';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
@@ -47,20 +46,18 @@ const _LinkButton = ({
   slot,
   ...props
 }: LinkButtonProps) => {
-  // `useSlottedContext` (vs `<ActionButton>`'s `useContextProps`) sidesteps
-  // the button/anchor ref-type mismatch; policy below mirrors `<ActionButton>`.
-  const ctxValue = useSlottedContext(ActionButtonContext, slot);
-  const groupCtx = useSlottedContext(ActionGroupContext);
+  // `useSlottedContext` (not `useContextProps`) sidesteps the anchor/button
+  // ref mismatch. Same context and precedence as `<Button>`: a local prop
+  // wins, `slot={null}` opts out.
+  const ctx = useSlottedContext(ButtonContext, slot);
 
-  // Cascade with the enclosing ActionGroup. Reads left-to-right; `size` is
-  // the outlier (group wins) so the cluster stays visually uniform.
-  const variant = propVariant ?? ctxValue?.variant ?? groupCtx?.variant;
-  const size = groupCtx?.size ?? propSize ?? ctxValue?.size;
-  const disabled = propDisabled ?? ctxValue?.disabled ?? groupCtx?.disabled;
+  const variant = propVariant ?? ctx?.variant;
+  const size = propSize ?? ctx?.size;
+  const disabled = propDisabled ?? ctx?.disabled;
 
-  // Standalone LinkButton uses Button styles; inside ActionGroup it picks up ActionButton's narrowed set.
+  // Always uses `Button` styles so it matches the cluster's cascaded variant.
   const classNames = useClassNames({
-    component: groupCtx ? 'ActionButton' : 'Button',
+    component: 'Button',
     variant,
     size,
   });
@@ -71,7 +68,7 @@ const _LinkButton = ({
       ref={ref}
       slot={slot}
       className={cn(
-        ctxValue?.className,
+        ctx?.className,
         classNames,
         fullWidth ? 'w-full' : undefined
       )}

@@ -45,7 +45,8 @@
   syntax: '*';
   inherits: false;
 }
+/* Intentionally inherits: FieldBase sets --field-width for its child field element to consume. */
 @property --field-width {
   syntax: '*';
-  inherits: false;
+  inherits: true;
 }

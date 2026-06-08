@@ -2,6 +2,7 @@ import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Modal } from 'react-aria-components/Modal';
 import { useClassNames } from '@marigold/system';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { Underlay } from './Underlay';
 
 // Props
@@ -45,9 +46,11 @@ const ModalBase = ({
       open={open}
       onOpenChange={onOpenChange}
     >
-      <Modal {...props} className={className} ref={ref}>
-        {children}
-      </Modal>
+      <ResetButtonContext>
+        <Modal {...props} className={className} ref={ref}>
+          {children}
+        </Modal>
+      </ResetButtonContext>
     </Underlay>
   );
 };

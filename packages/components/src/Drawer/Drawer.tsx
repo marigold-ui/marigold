@@ -9,6 +9,7 @@ import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
 import { DrawerContext, DrawerNestingContext } from './Context';
@@ -92,38 +93,40 @@ export const Drawer = ({
   const landmarkProps = isSmallScreen ? {} : landmarkAria.landmarkProps;
 
   return (
-    <DrawerModal
-      className={classNames.overlay}
-      open={open}
-      keyboardDismissable={keyboardDismissable}
-      data-testid="drawer-modal"
-    >
-      <DrawerNestingContext value={true}>
-        <DrawerContext value={{ variant, size }}>
-          <Dialog
-            {...props}
-            // Override RAC here so we can set an appropriate role
-            {...(landmarkProps as any)}
-            className={cn(
-              'h-(--visual-viewport-height) outline-none',
-              // Use single quotes, in some enviroments the class is not correctly applied otherwise
-              "grid [grid-template-areas:'title'_'content'_'actions']",
-              classNames.container
-            )}
-          >
-            {closeButton && (
-              <CloseButton
-                aria-label={stringFormatter.format('dismissDrawer')}
-                style={{ '--i': 0 } as CSSProperties}
-                className={cn('z-80', classNames.closeButton)}
-                onPress={ctx?.close}
-              />
-            )}
-            {children}
-          </Dialog>
-        </DrawerContext>
-      </DrawerNestingContext>
-    </DrawerModal>
+    <ResetButtonContext>
+      <DrawerModal
+        className={classNames.overlay}
+        open={open}
+        keyboardDismissable={keyboardDismissable}
+        data-testid="drawer-modal"
+      >
+        <DrawerNestingContext value={true}>
+          <DrawerContext value={{ variant, size }}>
+            <Dialog
+              {...props}
+              // Override RAC here so we can set an appropriate role
+              {...(landmarkProps as any)}
+              className={cn(
+                'h-(--visual-viewport-height) outline-none',
+                // Use single quotes, in some enviroments the class is not correctly applied otherwise
+                "grid [grid-template-areas:'title'_'content'_'actions']",
+                classNames.container
+              )}
+            >
+              {closeButton && (
+                <CloseButton
+                  aria-label={stringFormatter.format('dismissDrawer')}
+                  style={{ '--i': 0 } as CSSProperties}
+                  className={cn('z-80', classNames.closeButton)}
+                  onPress={ctx?.close}
+                />
+              )}
+              {children}
+            </Dialog>
+          </DrawerContext>
+        </DrawerNestingContext>
+      </DrawerModal>
+    </ResetButtonContext>
   );
 };
 

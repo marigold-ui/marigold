@@ -1,9 +1,9 @@
 import { Pencil, Trash2 } from 'lucide-react';
 import { Provider } from 'react-aria-components/slots';
 import preview from '.storybook/preview';
-import { ActionButton } from '../ActionButton/ActionButton';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroup } from '../ActionGroup/ActionGroup';
+import { Button } from '../Button/Button';
+import { ButtonContext } from '../Button/Context';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { LinkButton } from './LinkButton';
 
 const meta = preview.meta({
@@ -43,31 +43,31 @@ const meta = preview.meta({
 
 export const Basic: any = meta.story();
 
-export const InActionGroup = meta.story({
+export const InButtonGroup = meta.story({
   args: {
     children: undefined,
     href: undefined,
   },
   render: () => (
-    <ActionGroup aria-label="Row actions" size="small">
+    <ButtonGroup aria-label="Row actions" size="small">
       <LinkButton href="/events/1/edit" aria-label="Edit">
         <Pencil />
       </LinkButton>
-      <ActionButton variant="destructive-ghost" aria-label="Delete">
+      <Button variant="destructive-ghost" aria-label="Delete">
         <Trash2 />
-      </ActionButton>
-    </ActionGroup>
+      </Button>
+    </ButtonGroup>
   ),
 });
 
-export const InActionButtonContext = meta.story({
+export const InButtonContext = meta.story({
   args: {
     children: undefined,
     href: undefined,
   },
   render: () => (
     <Provider
-      values={[[ActionButtonContext, { variant: 'secondary', size: 'large' }]]}
+      values={[[ButtonContext, { variant: 'secondary', size: 'large' }]]}
     >
       <LinkButton href="/profile">Open profile</LinkButton>
     </Provider>

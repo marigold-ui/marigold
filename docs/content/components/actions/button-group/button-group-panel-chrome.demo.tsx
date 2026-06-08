@@ -1,6 +1,6 @@
 import {
-  ActionButton,
-  ActionGroup,
+  Button,
+  ButtonGroup,
   Description,
   Panel,
   Stack,
@@ -15,26 +15,26 @@ export default () => (
     <Panel.Header>
       <Title>Event details</Title>
       <Description>Public information visible to ticket buyers.</Description>
-      <ActionGroup aria-label="Event actions">
+      <ButtonGroup size="icon" aria-label="Event actions">
         <Tooltip.Trigger>
-          <ActionButton aria-label="Bookmark">
+          <Button aria-label="Bookmark">
             <Bookmark />
-          </ActionButton>
+          </Button>
           <Tooltip>Bookmark</Tooltip>
         </Tooltip.Trigger>
         <Tooltip.Trigger>
-          <ActionButton aria-label="Share">
+          <Button aria-label="Share">
             <Share2 />
-          </ActionButton>
+          </Button>
           <Tooltip>Share</Tooltip>
         </Tooltip.Trigger>
         <Tooltip.Trigger>
-          <ActionButton aria-label="Settings">
+          <Button aria-label="Settings">
             <Settings />
-          </ActionButton>
+          </Button>
           <Tooltip>Settings</Tooltip>
         </Tooltip.Trigger>
-      </ActionGroup>
+      </ButtonGroup>
     </Panel.Header>
     <Panel.Content>
       <Stack space="tight">
