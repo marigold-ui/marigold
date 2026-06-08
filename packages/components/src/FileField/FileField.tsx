@@ -125,7 +125,7 @@ export const FileField = ({
       {...props}
     >
       <DropZone
-        onDrop={handleDrop}
+        onDrop={isSmall ? undefined : handleDrop}
         isDisabled={disabled}
         className={classNames.dropZone}
         data-testid="dropzone"
