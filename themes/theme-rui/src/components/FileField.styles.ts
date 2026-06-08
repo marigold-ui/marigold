@@ -15,12 +15,6 @@ export const FileField: ThemeComponent<'FileField'> = {
           'border border-dashed border-border',
           'p-4 not-data-files:justify-center',
         ],
-        small: [
-          'flex items-center',
-          'ui-surface shadow-elevation-border',
-          'h-control-small',
-          '[&_button]:shadow-none border-l-0',
-        ],
       },
     },
     defaultVariants: { size: 'default' },
@@ -57,7 +51,7 @@ export const FileField: ThemeComponent<'FileField'> = {
     variants: {
       size: {
         default: 'text-xs',
-        small: 'text-[11px]',
+        small: 'text-xs',
       },
     },
     defaultVariants: { size: 'default' },

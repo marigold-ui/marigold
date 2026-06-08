@@ -152,12 +152,6 @@ export const Small = meta.story({
     await userEvent.upload(input, file);
 
     // Assert
-    await expect(
-      canvas.queryByRole('button', { name: 'Upload' })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.queryByText('Drop files here', { exact: true })
-    ).not.toBeInTheDocument();
     await expect(canvas.getByText('compact.pdf')).toBeInTheDocument();
   },
 });

@@ -124,21 +124,21 @@ export const FileField = ({
       className={classNames.container}
       {...props}
     >
-      <DropZone
-        onDrop={isSmall ? undefined : handleDrop}
-        isDisabled={disabled}
-        className={classNames.dropZone}
-        data-testid="dropzone"
-        {...props}
-      >
-        {isSmall ? (
-          <FileTrigger
-            {...fileTriggerProps}
-            label={buttonLabel}
-            disabled={disabled}
-            size={size}
-          />
-        ) : (
+      {isSmall ? (
+        <FileTrigger
+          {...fileTriggerProps}
+          label={buttonLabel}
+          disabled={disabled}
+          size={size}
+        />
+      ) : (
+        <DropZone
+          onDrop={handleDrop}
+          isDisabled={disabled}
+          className={classNames.dropZone}
+          data-testid="dropzone"
+          {...props}
+        >
           <div className={classNames.dropZoneContent}>
             <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
             <FileTrigger
@@ -147,8 +147,8 @@ export const FileField = ({
               disabled={disabled}
             />
           </div>
-        )}
-      </DropZone>
+        </DropZone>
+      )}
       {files?.map((file, index) => (
         <FileField.Item
           key={index}
