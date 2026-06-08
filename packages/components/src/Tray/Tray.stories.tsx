@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Pencil } from '@marigold/icons';
-import { ActionButton } from '../ActionButton/ActionButton';
-import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
@@ -200,7 +199,7 @@ DismissControlsWithCallbacks.test(
 /**
  * The slot-aware primitives `<Title>` / `<Description>` and the action
  * primitives can be used directly. `<Tray.Header>` groups the title and
- * description; an `<ActionGroup>` inside `<Tray.Actions>` picks up its
+ * description; a `<ButtonGroup>` inside `<Tray.Actions>` picks up its
  * defaults from the tray root.
  */
 export const SlotPrimitives = meta.story({
@@ -219,16 +218,16 @@ export const SlotPrimitives = meta.story({
           </Inset>
         </Tray.Content>
         <Tray.Actions>
-          <ActionGroup aria-label="Event actions">
-            <ActionButton>
+          <ButtonGroup aria-label="Event actions">
+            <Button>
               <Pencil />
               Edit
-            </ActionButton>
-            <ActionButton>
+            </Button>
+            <Button>
               <Copy />
               Duplicate
-            </ActionButton>
-          </ActionGroup>
+            </Button>
+          </ButtonGroup>
         </Tray.Actions>
       </Tray>
     </Tray.Trigger>

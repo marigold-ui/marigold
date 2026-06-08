@@ -2,6 +2,7 @@ import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 
 // Internal Usage Notes
 // ---------------
@@ -53,15 +54,17 @@ const PopoverBase = ({
   });
 
   return (
-    <Popover
-      ref={ref}
-      {...props}
-      className={cn('z-30 flex', classNames)}
-      placement={placement}
-      offset={offset}
-    >
-      {children}
-    </Popover>
+    <ResetButtonContext>
+      <Popover
+        ref={ref}
+        {...props}
+        className={cn('z-30 flex', classNames)}
+        placement={placement}
+        offset={offset}
+      >
+        {children}
+      </Popover>
+    </ResetButtonContext>
   );
 };
 

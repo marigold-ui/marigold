@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
-import { ActionButton } from '../ActionButton/ActionButton';
-import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
@@ -338,7 +337,7 @@ export const OneAtATimeNested = meta.story({
 /**
  * The slot-aware primitives `<Title>` / `<Description>` and the action
  * primitives can be used directly. `<Drawer.Header>` groups the title and
- * description; an `<ActionGroup>` inside `<Drawer.Actions>` picks up its
+ * description; a `<ButtonGroup>` inside `<Drawer.Actions>` picks up its
  * defaults from the drawer root.
  */
 export const SlotPrimitives = meta.story({
@@ -353,15 +352,15 @@ export const SlotPrimitives = meta.story({
         </Drawer.Header>
         <Drawer.Content>Choose an action below.</Drawer.Content>
         <Drawer.Actions>
-          <ActionGroup aria-label="Event actions">
-            <ActionButton>
+          <ButtonGroup aria-label="Event actions">
+            <Button>
               <Pencil />
               Edit
-            </ActionButton>
-            <ActionButton>
+            </Button>
+            <Button>
               <Copy />
               Duplicate
-            </ActionButton>
+            </Button>
             <ActionMenu aria-label="More actions">
               <ActionMenu.Item id="export">
                 <Download />
@@ -372,7 +371,7 @@ export const SlotPrimitives = meta.story({
                 Delete
               </ActionMenu.Item>
             </ActionMenu>
-          </ActionGroup>
+          </ButtonGroup>
         </Drawer.Actions>
       </Drawer>
     </Drawer.Trigger>

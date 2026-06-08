@@ -105,16 +105,16 @@ To avoid each container reinventing wrappers for that shape, Marigold publishes 
 - **[`<Title>`](/components/content/title)**, the heading paired with `<Description>` in container surfaces.
 - **[`<Description>`](/components/content/description)**, the help text paired with `<Title>` in containers, or with `<TextValue>` in selection items.
 - **[`<TextValue>`](/components/content/text-value)**, the accessible label inside selection items.
-- **[`<ActionButton>`](/components/actions/action-button)**, **[`<LinkButton>`](/components/actions/link-button)**, and **[`<ActionMenu>`](/components/overlay/action-menu)**, actions that pick up defaults from the surrounding container.
+- **[`<Button>`](/components/actions/button)**, **[`<LinkButton>`](/components/actions/link-button)**, and **[`<ActionMenu>`](/components/overlay/action-menu)**, actions that pick up defaults from the surrounding container.
 
-The container declares which roles it supports and what defaults each role carries (heading level, layout, default `<ActionButton>` variant). Consumers drop the primitives in without thinking about it:
+The container declares which roles it supports and what defaults each role carries (heading level, layout, default `<Button>` variant). Consumers drop the primitives in without thinking about it:
 
 ```tsx
 <Dialog>
   <Title>Delete project?</Title>
   <Description>This action cannot be undone.</Description>
-  <ActionButton>Cancel</ActionButton>
-  <ActionButton variant="destructive">Delete</ActionButton>
+  <Button>Cancel</Button>
+  <Button variant="destructive">Delete</Button>
 </Dialog>
 ```
 
@@ -139,7 +139,7 @@ One principle worth calling out here: every layout component shares the same API
 
 <ComponentDemo name="inline-buttons-layout" />
 
-In the example above, `Inline` handles the horizontal arrangement. `space` sets the gap using a semantic token (`related`); `alignX` centers the buttons horizontally. The `space` prop accepts tokens that describe the relationship between elements rather than pixel values. See [Spacing](/foundations/spacing) for the vocabulary.
+In the example above, `Inline` handles the horizontal arrangement. `space` sets the gap using a semantic token (`related`). `alignX` centers the buttons horizontally. The `space` prop accepts tokens that describe the relationship between elements rather than pixel values. See [Spacing](/foundations/spacing) for the vocabulary.
 
 <Callout title="Need something that doesn't exist?">
   If you find yourself reaching for wrapper elements or custom CSS to achieve a

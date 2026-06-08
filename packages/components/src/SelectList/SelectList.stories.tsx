@@ -1,12 +1,13 @@
 import { expect, fn, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { Stack } from '../Stack/Stack';
-import { Text } from '../Text/Text';
+import { TextValue } from '../TextValue/TextValue';
 import { Info } from '../icons/Info';
 import { SelectList } from './SelectList';
 
@@ -201,20 +202,20 @@ export const Basic = meta.story({
       defaultSelectedKeys={['credit-card']}
     >
       <SelectList.Option id="credit-card" textValue="Credit card">
-        <Text slot="label">Credit card</Text>
-        <Text slot="description">Visa, Mastercard, and Amex accepted.</Text>
+        <TextValue>Credit card</TextValue>
+        <Description>Visa, Mastercard, and Amex accepted.</Description>
       </SelectList.Option>
       <SelectList.Option id="paypal" textValue="PayPal">
-        <Text slot="label">PayPal</Text>
-        <Text slot="description">
+        <TextValue>PayPal</TextValue>
+        <Description>
           You&rsquo;ll be redirected to your PayPal account.
-        </Text>
+        </Description>
       </SelectList.Option>
       <SelectList.Option id="bank-transfer" textValue="Bank transfer">
-        <Text slot="label">Bank transfer</Text>
-        <Text slot="description">
+        <TextValue>Bank transfer</TextValue>
+        <Description>
           Transfers take 2&ndash;3 business days to clear.
-        </Text>
+        </Description>
       </SelectList.Option>
     </SelectList>
   ),
@@ -264,20 +265,20 @@ export const WithMultiSelection = meta.story({
       description="Bundle extras with your order."
     >
       <SelectList.Option id="insurance" textValue="Parcel insurance">
-        <Text slot="label">Parcel insurance</Text>
-        <Text slot="description">Covers loss or damage up to $500.</Text>
+        <TextValue>Parcel insurance</TextValue>
+        <Description>Covers loss or damage up to $500.</Description>
       </SelectList.Option>
       <SelectList.Option id="signature" textValue="Signature on delivery">
-        <Text slot="label">Signature on delivery</Text>
-        <Text slot="description">Require a signature when handed over.</Text>
+        <TextValue>Signature on delivery</TextValue>
+        <Description>Require a signature when handed over.</Description>
       </SelectList.Option>
       <SelectList.Option id="gift-wrap" textValue="Gift wrap">
-        <Text slot="label">Gift wrap</Text>
-        <Text slot="description">Premium paper and a handwritten note.</Text>
+        <TextValue>Gift wrap</TextValue>
+        <Description>Premium paper and a handwritten note.</Description>
       </SelectList.Option>
       <SelectList.Option id="notify" textValue="SMS notifications">
-        <Text slot="label">SMS notifications</Text>
-        <Text slot="description">Get live updates as your parcel moves.</Text>
+        <TextValue>SMS notifications</TextValue>
+        <Description>Get live updates as your parcel moves.</Description>
       </SelectList.Option>
     </SelectList>
   ),
@@ -345,10 +346,10 @@ export const WithIconAction = meta.story({
     >
       {(item: { id: string; name: string; description: string }) => (
         <SelectList.Option textValue={item.name}>
-          <Text slot="label">{item.name}</Text>
-          <Text slot="description">{item.description}</Text>
+          <TextValue>{item.name}</TextValue>
+          <Description>{item.description}</Description>
+          {/* No `variant` needed: SelectList.Option cascades `ghost`. */}
           <Button
-            variant="ghost"
             size="icon"
             aria-label={`Learn more about ${item.name}`}
             onPress={() => alert(`Info about ${item.name}`)}
@@ -417,8 +418,8 @@ export const WithActionMenu = meta.story({
     >
       {(item: { id: string; name: string; description: string }) => (
         <SelectList.Option textValue={item.name}>
-          <Text slot="label">{item.name}</Text>
-          <Text slot="description">{item.description}</Text>
+          <TextValue>{item.name}</TextValue>
+          <Description>{item.description}</Description>
           <ActionMenu variant="ghost" aria-label={`Manage ${item.name}`}>
             <Menu.Item onAction={() => alert(`Edit ${item.name}`)}>
               Edit
@@ -471,20 +472,20 @@ export const Horizontal = meta.story({
       defaultSelectedKeys={['standard']}
     >
       <SelectList.Option id="standard" textValue="Standard">
-        <Text slot="label">Standard</Text>
-        <Text slot="description">3–5 business days</Text>
+        <TextValue>Standard</TextValue>
+        <Description>3–5 business days</Description>
       </SelectList.Option>
       <SelectList.Option id="express" textValue="Express">
-        <Text slot="label">Express</Text>
-        <Text slot="description">1–2 business days</Text>
+        <TextValue>Express</TextValue>
+        <Description>1–2 business days</Description>
       </SelectList.Option>
       <SelectList.Option id="overnight" textValue="Overnight">
-        <Text slot="label">Overnight</Text>
-        <Text slot="description">Next business day</Text>
+        <TextValue>Overnight</TextValue>
+        <Description>Next business day</Description>
       </SelectList.Option>
       <SelectList.Option id="pickup" textValue="Pickup">
-        <Text slot="label">Pickup</Text>
-        <Text slot="description">Ready in 2 hours</Text>
+        <TextValue>Pickup</TextValue>
+        <Description>Ready in 2 hours</Description>
       </SelectList.Option>
     </SelectList>
   ),
@@ -505,16 +506,16 @@ export const HorizontalResponsive = meta.story({
           defaultSelectedKeys={['standard']}
         >
           <SelectList.Option id="standard" textValue="Standard">
-            <Text slot="label">Standard</Text>
-            <Text slot="description">3–5 business days</Text>
+            <TextValue>Standard</TextValue>
+            <Description>3–5 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="express" textValue="Express">
-            <Text slot="label">Express</Text>
-            <Text slot="description">1–2 business days</Text>
+            <TextValue>Express</TextValue>
+            <Description>1–2 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="overnight" textValue="Overnight">
-            <Text slot="label">Overnight</Text>
-            <Text slot="description">Next business day</Text>
+            <TextValue>Overnight</TextValue>
+            <Description>Next business day</Description>
           </SelectList.Option>
         </SelectList>
       </div>
@@ -526,16 +527,16 @@ export const HorizontalResponsive = meta.story({
           defaultSelectedKeys={['standard-medium']}
         >
           <SelectList.Option id="standard-medium" textValue="Standard">
-            <Text slot="label">Standard</Text>
-            <Text slot="description">3–5 business days</Text>
+            <TextValue>Standard</TextValue>
+            <Description>3–5 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="express-medium" textValue="Express">
-            <Text slot="label">Express</Text>
-            <Text slot="description">1–2 business days</Text>
+            <TextValue>Express</TextValue>
+            <Description>1–2 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="overnight-medium" textValue="Overnight">
-            <Text slot="label">Overnight</Text>
-            <Text slot="description">Next business day</Text>
+            <TextValue>Overnight</TextValue>
+            <Description>Next business day</Description>
           </SelectList.Option>
         </SelectList>
       </div>
@@ -547,16 +548,16 @@ export const HorizontalResponsive = meta.story({
           defaultSelectedKeys={['standard-narrow']}
         >
           <SelectList.Option id="standard-narrow" textValue="Standard">
-            <Text slot="label">Standard</Text>
-            <Text slot="description">3–5 business days</Text>
+            <TextValue>Standard</TextValue>
+            <Description>3–5 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="express-narrow" textValue="Express">
-            <Text slot="label">Express</Text>
-            <Text slot="description">1–2 business days</Text>
+            <TextValue>Express</TextValue>
+            <Description>1–2 business days</Description>
           </SelectList.Option>
           <SelectList.Option id="overnight-narrow" textValue="Overnight">
-            <Text slot="label">Overnight</Text>
-            <Text slot="description">Next business day</Text>
+            <TextValue>Overnight</TextValue>
+            <Description>Next business day</Description>
           </SelectList.Option>
         </SelectList>
       </div>
@@ -634,8 +635,8 @@ export const Bordered = meta.story({
             <Inline space={3} alignY="top" noWrap>
               <Logo />
               <Stack>
-                <Text slot="label">{label}</Text>
-                <Text slot="description">{description}</Text>
+                <TextValue>{label}</TextValue>
+                <Description>{description}</Description>
               </Stack>
             </Inline>
           </div>
@@ -658,16 +659,16 @@ export const WithCustomPadding = meta.story({
       defaultSelectedKeys={['standard']}
     >
       <SelectList.Option id="standard" textValue="Standard">
-        <Text slot="label">Standard</Text>
-        <Text slot="description">3–5 business days</Text>
+        <TextValue>Standard</TextValue>
+        <Description>3–5 business days</Description>
       </SelectList.Option>
       <SelectList.Option id="express" textValue="Express">
-        <Text slot="label">Express</Text>
-        <Text slot="description">1–2 business days</Text>
+        <TextValue>Express</TextValue>
+        <Description>1–2 business days</Description>
       </SelectList.Option>
       <SelectList.Option id="overnight" textValue="Overnight">
-        <Text slot="label">Overnight</Text>
-        <Text slot="description">Next business day</Text>
+        <TextValue>Overnight</TextValue>
+        <Description>Next business day</Description>
       </SelectList.Option>
     </SelectList>
   ),
@@ -704,8 +705,8 @@ export const EmptyState = meta.story({
     >
       {(item: { id: string; name: string; description: string }) => (
         <SelectList.Option textValue={item.name}>
-          <Text slot="label">{item.name}</Text>
-          <Text slot="description">{item.description}</Text>
+          <TextValue>{item.name}</TextValue>
+          <Description>{item.description}</Description>
         </SelectList.Option>
       )}
     </SelectList>
@@ -726,16 +727,16 @@ export const Disabled = meta.story({
       defaultSelectedKeys={['standard']}
     >
       <SelectList.Option id="standard" textValue="Standard">
-        <Text slot="label">Standard</Text>
-        <Text slot="description">3–5 business days</Text>
+        <TextValue>Standard</TextValue>
+        <Description>3–5 business days</Description>
       </SelectList.Option>
       <SelectList.Option id="express" textValue="Express">
-        <Text slot="label">Express</Text>
-        <Text slot="description">1–2 business days</Text>
+        <TextValue>Express</TextValue>
+        <Description>1–2 business days</Description>
       </SelectList.Option>
       <SelectList.Option id="overnight" textValue="Overnight">
-        <Text slot="label">Overnight</Text>
-        <Text slot="description">Next business day</Text>
+        <TextValue>Overnight</TextValue>
+        <Description>Next business day</Description>
       </SelectList.Option>
     </SelectList>
   ),
@@ -757,20 +758,20 @@ export const WithError = meta.story({
       errorMessage="Please choose a payment method to continue."
     >
       <SelectList.Option id="credit-card" textValue="Credit card">
-        <Text slot="label">Credit card</Text>
-        <Text slot="description">Visa, Mastercard, and Amex accepted.</Text>
+        <TextValue>Credit card</TextValue>
+        <Description>Visa, Mastercard, and Amex accepted.</Description>
       </SelectList.Option>
       <SelectList.Option id="paypal" textValue="PayPal">
-        <Text slot="label">PayPal</Text>
-        <Text slot="description">
+        <TextValue>PayPal</TextValue>
+        <Description>
           You&rsquo;ll be redirected to your PayPal account.
-        </Text>
+        </Description>
       </SelectList.Option>
       <SelectList.Option id="bank-transfer" textValue="Bank transfer">
-        <Text slot="label">Bank transfer</Text>
-        <Text slot="description">
+        <TextValue>Bank transfer</TextValue>
+        <Description>
           Transfers take 2&ndash;3 business days to clear.
-        </Text>
+        </Description>
       </SelectList.Option>
     </SelectList>
   ),
@@ -800,20 +801,16 @@ export const WithForm = meta.story({
           name="addons"
         >
           <SelectList.Option id="insurance" textValue="Parcel insurance">
-            <Text slot="label">Parcel insurance</Text>
-            <Text slot="description">Covers loss or damage up to $500.</Text>
+            <TextValue>Parcel insurance</TextValue>
+            <Description>Covers loss or damage up to $500.</Description>
           </SelectList.Option>
           <SelectList.Option id="signature" textValue="Signature on delivery">
-            <Text slot="label">Signature on delivery</Text>
-            <Text slot="description">
-              Require a signature when handed over.
-            </Text>
+            <TextValue>Signature on delivery</TextValue>
+            <Description>Require a signature when handed over.</Description>
           </SelectList.Option>
           <SelectList.Option id="gift-wrap" textValue="Gift wrap">
-            <Text slot="label">Gift wrap</Text>
-            <Text slot="description">
-              Premium paper and a handwritten note.
-            </Text>
+            <TextValue>Gift wrap</TextValue>
+            <Description>Premium paper and a handwritten note.</Description>
           </SelectList.Option>
         </SelectList>
         <Button type="submit" variant="primary">

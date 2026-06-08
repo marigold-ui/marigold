@@ -10,7 +10,7 @@
   },
   "packageManager": "pnpm@11.1.2",
   "dependencies": {
-    "@babel/core": "7.29.0",
+    "@babel/core": "7.29.7",
     "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.29.8",
     "@eslint/eslintrc": "3.3.5",
@@ -35,9 +35,9 @@
     "@types/react": "19.2.15",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
-    "@vitest/browser-playwright": "4.1.6",
-    "@vitest/coverage-v8": "4.1.6",
-    "@vitest/ui": "4.1.6",
+    "@vitest/browser-playwright": "4.1.7",
+    "@vitest/coverage-v8": "4.1.7",
+    "@vitest/ui": "4.1.7",
     "all-contributors-cli": "6.26.1",
     "autoprefixer": "10.5.0",
     "concurrently": "9.2.1",
@@ -53,10 +53,10 @@
     "storybook": "^10.3.3",
     "storybook-addon-test-codegen": "3.0.1",
     "tailwindcss": "4.3.0",
-    "turbo": "2.9.14",
+    "turbo": "2.9.16",
     "typescript": "6.0.2",
     "vite": "8.0.14",
-    "vitest": "4.1.6",
+    "vitest": "4.1.7",
     "zx": "8.8.5"
   },
   "scripts": {
@@ -93,6 +93,6 @@
   },
   "devDependencies": {
     "@storybook/addon-mcp": "^0.6.0",
-    "@vitest/coverage-istanbul": "4.1.6"
+    "@vitest/coverage-istanbul": "4.1.7"
   }
 }

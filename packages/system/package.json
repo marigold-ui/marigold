@@ -52,13 +52,13 @@
     "react-dom": ">=17.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.29.0",
+    "@babel/core": "7.29.7",
     "@marigold/tsconfig": "workspace:*",
     "@types/react": "19.2.15",
     "postcss": "8.5.15",
     "react": "19.2.6",
     "tailwindcss": "4.3.0",
-    "tsdown": "0.22.0"
+    "tsdown": "0.22.2"
   },
   "scripts": {
     "build": "tsdown src/index.ts",

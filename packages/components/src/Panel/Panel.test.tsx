@@ -224,7 +224,7 @@ describe('Panel.Header', () => {
     expect(description).toHaveAttribute('data-grid-area', 'description');
   });
 
-  test('places a bare ActionButton in the actions grid area', () => {
+  test('makes a bare Button slot-aware: places it in the actions grid area', () => {
     render(<WithHeaderActions.Component />);
 
     const action = screen.getByRole('button', { name: 'Invite member' });

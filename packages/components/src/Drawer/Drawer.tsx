@@ -10,8 +10,7 @@ import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroupContext } from '../ActionGroup/Context';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { useSlot } from '../utils/useSlot';
@@ -149,54 +148,52 @@ export const Drawer = ({
   );
 
   return (
-    <DrawerModal
-      className={classNames.overlay}
-      open={open}
-      keyboardDismissable={keyboardDismissable}
-      data-testid="drawer-modal"
-    >
-      <DrawerNestingContext value={true}>
-        <DrawerContext value={drawerContextValue}>
-          <Dialog
-            {...props}
-            // Override RAC here so we can set an appropriate role
-            {...(landmarkProps as any)}
-            aria-label={ariaLabel}
-            aria-labelledby={
-              !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
-            }
-            className={cn(
-              'h-(--visual-viewport-height) outline-none',
-              // Use single quotes, in some enviroments the class is not correctly applied otherwise
-              "grid [grid-template-areas:'title'_'content'_'actions']",
-              classNames.container
-            )}
-          >
-            {closeButton && (
-              <CloseButton
-                aria-label={stringFormatter.format('dismissDrawer')}
-                style={{ '--i': 0 } as CSSProperties}
-                className={cn('z-80', classNames.closeButton)}
-                onPress={ctx?.close}
-              />
-            )}
-            <Provider
-              values={[
-                [HeadingContext, rootHeadingProps],
-                [TextContext, textProps],
-                // Reset the action contexts so the drawer owns its own action
-                // defaults rather than inheriting any from an ancestor tree.
-                [ActionButtonContext, {}],
-                [ActionGroupContext, {}],
-                [ActionMenuContext, {}],
-              ]}
+    <ResetButtonContext>
+      <DrawerModal
+        className={classNames.overlay}
+        open={open}
+        keyboardDismissable={keyboardDismissable}
+        data-testid="drawer-modal"
+      >
+        <DrawerNestingContext value={true}>
+          <DrawerContext value={drawerContextValue}>
+            <Dialog
+              {...props}
+              // Override RAC here so we can set an appropriate role
+              {...(landmarkProps as any)}
+              aria-label={ariaLabel}
+              aria-labelledby={
+                !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+              }
+              className={cn(
+                'h-(--visual-viewport-height) outline-none',
+                // Use single quotes, in some enviroments the class is not correctly applied otherwise
+                "grid [grid-template-areas:'title'_'content'_'actions']",
+                classNames.container
+              )}
             >
-              {resolvedChildren}
-            </Provider>
-          </Dialog>
-        </DrawerContext>
-      </DrawerNestingContext>
-    </DrawerModal>
+              {closeButton && (
+                <CloseButton
+                  aria-label={stringFormatter.format('dismissDrawer')}
+                  style={{ '--i': 0 } as CSSProperties}
+                  className={cn('z-80', classNames.closeButton)}
+                  onPress={ctx?.close}
+                />
+              )}
+              <Provider
+                values={[
+                  [HeadingContext, rootHeadingProps],
+                  [TextContext, textProps],
+                  [ActionMenuContext, {}],
+                ]}
+              >
+                {resolvedChildren}
+              </Provider>
+            </Dialog>
+          </DrawerContext>
+        </DrawerNestingContext>
+      </DrawerModal>
+    </ResetButtonContext>
   );
 };
 

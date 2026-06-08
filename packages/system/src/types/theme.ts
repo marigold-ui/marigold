@@ -62,7 +62,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
 
-    ActionButton?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: Record<
       | 'container'
@@ -148,11 +147,17 @@ export type Theme = {
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
-      'container' | 'list' | 'item' | 'section' | 'header',
+      | 'container'
+      | 'list'
+      | 'item'
+      | 'section'
+      | 'header'
+      | 'label'
+      | 'description',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
-      'container' | 'section' | 'item' | 'button',
+      'container' | 'section' | 'item' | 'button' | 'label' | 'description',
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;

@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
-import { ActionButton } from '../ActionButton/ActionButton';
-import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
 import { ActionMenu } from '../Menu/ActionMenu';
@@ -404,7 +403,7 @@ export const VeryLongContent = meta.story({
 /**
  * The slot-aware primitives `<Title>` / `<Description>` and the action
  * primitives can be used directly — `<Dialog.Header>` groups the title and
- * description, and an `<ActionGroup>` inside `<Dialog.Actions>` picks up its
+ * description, and a `<ButtonGroup>` inside `<Dialog.Actions>` picks up its
  * defaults from the dialog root.
  */
 export const SlotPrimitives = meta.story({
@@ -421,15 +420,15 @@ export const SlotPrimitives = meta.story({
           Choose an action below. Changes apply immediately.
         </Dialog.Content>
         <Dialog.Actions>
-          <ActionGroup aria-label="Event actions">
-            <ActionButton>
+          <ButtonGroup aria-label="Event actions">
+            <Button>
               <Pencil />
               Edit
-            </ActionButton>
-            <ActionButton>
+            </Button>
+            <Button>
               <Copy />
               Duplicate
-            </ActionButton>
+            </Button>
             <ActionMenu aria-label="More actions">
               <ActionMenu.Item id="export">
                 <Download />
@@ -440,7 +439,7 @@ export const SlotPrimitives = meta.story({
                 Delete
               </ActionMenu.Item>
             </ActionMenu>
-          </ActionGroup>
+          </ButtonGroup>
         </Dialog.Actions>
       </Dialog>
     </Dialog.Trigger>

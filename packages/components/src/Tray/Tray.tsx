@@ -7,8 +7,7 @@ import {
 } from 'react-aria-components/Dialog';
 import { useIsHidden } from '@react-aria/collections';
 import { cn, useClassNames } from '@marigold/system';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroupContext } from '../ActionGroup/Context';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { useSlot } from '../utils/useSlot';
 import { TrayContext } from './Context';
@@ -144,39 +143,37 @@ export const Tray = ({
 
   return (
     <TrayContext value={trayContextValue}>
-      <TrayModal
-        open={openState}
-        dismissable={dismissable}
-        onOpenChange={onOpenChange}
-        keyboardDismissable={keyboardDismissable}
-      >
-        <Dialog
-          {...props}
-          aria-label={ariaLabel}
-          aria-labelledby={
-            !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
-          }
-          className={cn(
-            "group/tray [grid-template-areas:'drag'_'title'_'content'_'actions']",
-            classNames.container
-          )}
+      <ResetButtonContext>
+        <TrayModal
+          open={openState}
+          dismissable={dismissable}
+          onOpenChange={onOpenChange}
+          keyboardDismissable={keyboardDismissable}
         >
-          <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
-          <Provider
-            values={[
-              [HeadingContext, rootHeadingProps],
-              [TextContext, textProps],
-              // Reset the action contexts so the tray owns its own action
-              // defaults rather than inheriting any from an ancestor tree.
-              [ActionButtonContext, {}],
-              [ActionGroupContext, {}],
-              [ActionMenuContext, {}],
-            ]}
+          <Dialog
+            {...props}
+            aria-label={ariaLabel}
+            aria-labelledby={
+              !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+            }
+            className={cn(
+              "group/tray [grid-template-areas:'drag'_'title'_'content'_'actions']",
+              classNames.container
+            )}
           >
-            {children}
-          </Provider>
-        </Dialog>
-      </TrayModal>
+            <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
+            <Provider
+              values={[
+                [HeadingContext, rootHeadingProps],
+                [TextContext, textProps],
+                [ActionMenuContext, {}],
+              ]}
+            >
+              {children}
+            </Provider>
+          </Dialog>
+        </TrayModal>
+      </ResetButtonContext>
     </TrayContext>
   );
 };

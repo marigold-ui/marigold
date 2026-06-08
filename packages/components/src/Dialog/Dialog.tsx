@@ -7,8 +7,6 @@ import {
   Dialog as RACDialog,
 } from 'react-aria-components/Dialog';
 import { cn, useClassNames } from '@marigold/system';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroupContext } from '../ActionGroup/Context';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { Modal, ModalProps } from '../Overlay/Modal';
@@ -127,10 +125,6 @@ const InnerDialog = ({
           [DialogSlotContext, contextValue],
           [HeadingContext, rootHeadingProps],
           [TextContext, textProps],
-          // Reset the action contexts so the dialog owns its own action
-          // defaults rather than inheriting any from an ancestor tree.
-          [ActionButtonContext, {}],
-          [ActionGroupContext, {}],
           [ActionMenuContext, {}],
         ]}
       >

@@ -115,6 +115,35 @@ export const Basic: any = meta.story({
   },
 });
 
+export const WithDescription: any = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Autocomplete {...args}>
+      <Autocomplete.Option id="harry-potter" textValue="Harry Potter">
+        <TextValue>Harry Potter</TextValue>
+        <Description>About the boy who lived.</Description>
+      </Autocomplete.Option>
+      <Autocomplete.Option id="lord-of-the-rings" textValue="Lord of the Rings">
+        <TextValue>Lord of the Rings</TextValue>
+        <Description>In the lands of Middle earth.</Description>
+      </Autocomplete.Option>
+    </Autocomplete>
+  ),
+  play: async ({ canvas }: any) => {
+    const input = canvas.getByRole('combobox');
+    await userEvent.click(input);
+    await userEvent.type(input, 'harry');
+
+    const item = await canvas.findByRole('option', { name: /Harry Potter/ });
+    const optionDescription = canvas.getByText('About the boy who lived.');
+
+    expect(optionDescription.id).toBeTruthy();
+    expect(item.getAttribute('aria-describedby') ?? '').toContain(
+      optionDescription.id
+    );
+  },
+});
+
 export const WithSections: any = meta.story({
   tags: ['component-test'],
   render: args => (

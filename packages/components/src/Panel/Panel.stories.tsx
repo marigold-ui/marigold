@@ -14,10 +14,9 @@ import {
   UserRoundPlus,
 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
-import { ActionButton } from '../ActionButton/ActionButton';
-import { ActionGroup } from '../ActionGroup/ActionGroup';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
@@ -147,9 +146,9 @@ export const WithHeaderActions = meta.story(() => (
         <Description>
           People with access to this workspace and their roles.
         </Description>
-        <ActionButton aria-label="Invite member">
+        <Button size="icon" aria-label="Invite member">
           <UserRoundPlus />
-        </ActionButton>
+        </Button>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">
@@ -190,7 +189,7 @@ export const WithHeaderActions = meta.story(() => (
         <Description>
           Connected on April 2, 2026 · Processing live payments in EUR.
         </Description>
-        <ActionMenu aria-label="Integration actions">
+        <ActionMenu size="icon" aria-label="Integration actions">
           <ActionMenu.Item id="sync">
             <RefreshCw />
             Sync now
@@ -239,10 +238,10 @@ export const WithHeaderActions = meta.story(() => (
         <Description>
           Elbphilharmonie Hamburg · Saturday, June 14, 2026 · 20:00 CEST
         </Description>
-        <ActionGroup aria-label="Event actions">
-          <ActionButton aria-label="Edit event">
+        <ButtonGroup size="icon" aria-label="Event actions">
+          <Button aria-label="Edit event">
             <Pencil />
-          </ActionButton>
+          </Button>
           <ActionMenu aria-label="More event actions">
             <ActionMenu.Item id="duplicate">
               <Copy />
@@ -261,7 +260,7 @@ export const WithHeaderActions = meta.story(() => (
               Cancel event
             </ActionMenu.Item>
           </ActionMenu>
-        </ActionGroup>
+        </ButtonGroup>
       </Panel.Header>
       <Panel.Content>
         <Stack space="regular">
@@ -295,7 +294,7 @@ export const WithHeaderActions = meta.story(() => (
   </Stack>
 ));
 
-export const SlotsActionGroup = meta.story({
+export const SlotsButtonGroup = meta.story({
   args: { children: null as never },
   tags: ['component-test'],
   render: args => (
@@ -303,20 +302,20 @@ export const SlotsActionGroup = meta.story({
       <Panel.Header>
         <Title>Stripe Payments</Title>
         <Description>Integration health and quick actions.</Description>
-        <ActionGroup aria-label="Integration actions">
-          <ActionButton aria-label="Reconnect">
+        <ButtonGroup size="icon" aria-label="Integration actions">
+          <Button aria-label="Reconnect">
             <Link2 />
-          </ActionButton>
-          <ActionButton aria-label="Refresh">
+          </Button>
+          <Button aria-label="Refresh">
             <RefreshCw />
-          </ActionButton>
+          </Button>
           <ActionMenu aria-label="More">
             <ActionMenu.Item id="logs">View logs</ActionMenu.Item>
             <ActionMenu.Item id="disconnect" variant="destructive">
               Disconnect
             </ActionMenu.Item>
           </ActionMenu>
-        </ActionGroup>
+        </ButtonGroup>
       </Panel.Header>
       <Panel.Content>
         <Text>Webhook endpoint is live.</Text>
@@ -325,7 +324,7 @@ export const SlotsActionGroup = meta.story({
   ),
 });
 
-SlotsActionGroup.test(
+SlotsButtonGroup.test(
   'renders as a toolbar inside the actions grid cell',
   async ({ canvas }) => {
     const toolbar = canvas.getByRole('toolbar', {
@@ -336,7 +335,7 @@ SlotsActionGroup.test(
   }
 );
 
-SlotsActionGroup.test(
+SlotsButtonGroup.test(
   'cycles focus between actions with arrow keys',
   async ({ canvas }) => {
     const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
@@ -354,8 +353,8 @@ SlotsActionGroup.test(
   }
 );
 
-SlotsActionGroup.test(
-  'individual ActionButtons inside the group do NOT carry the actions grid-area',
+SlotsButtonGroup.test(
+  'individual Buttons inside the group do NOT carry the actions grid-area',
   async ({ canvas }) => {
     const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
 

@@ -11,9 +11,9 @@ import {
   Radio,
   Select,
   Stack,
-  Text,
   TextArea,
   TextField,
+  TextValue,
   Title,
 } from '@marigold/components';
 import { useSavedToast } from './useSavedToast';
@@ -62,10 +62,8 @@ export const GeneralSettings = () => {
                     id={type.id}
                     textValue={type.label}
                   >
-                    <Text slot="label">{type.label}</Text>
-                    <Text slot="description" fontSize="xs">
-                      {type.description}
-                    </Text>
+                    <TextValue>{type.label}</TextValue>
+                    <Description>{type.description}</Description>
                   </Select.Option>
                 ))}
               </Select>

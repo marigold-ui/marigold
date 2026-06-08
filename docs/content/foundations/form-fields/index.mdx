@@ -3,7 +3,7 @@ title: Form Fields
 description: Comprehensive guide for working with form fields
 ---
 
-Form fields are the input controls that collect data in a form, such as text fields, checkboxes, radio buttons, select fields, and text areas. Buttons are part of a form too, but they trigger actions rather than capture input — see the [Forms](/patterns/user-input/forms) pattern for guidance on submit and other actions.
+Form fields are the input controls that collect data in a form, such as text fields, checkboxes, radio buttons, select fields, and text areas. Buttons are part of a form too, but they trigger actions rather than capture input. See the [Forms](/patterns/user-input/forms) pattern for guidance on submit and other actions.
 
 Browse the full set of form components in the sidebar under **Components → Form**.
 
@@ -79,7 +79,16 @@ Help Text should be used to provide additional clarification or instructions whe
 
 The width of form fields can be adjusted based on the context and design requirements. Marigold's form components support a `width` prop that allows you to set the width of the field using keywords (`fit`, `full`, `auto`), scales (`32`, `64`, `96`), or fraction values (`1/2`, `2/3`, etc.).
 
-Scale values may be passed either as a number or as the equivalent string — both `width={32}` and `width="32"` are valid and produce the same result. The same applies to spacing-scale props on layout components (`space`, `spaceX`, `spaceY`, `pl`, `pr`, `pt`, `pb`).
+Scale values may be passed either as a number or as the equivalent string. Both `width={32}` and `width="32"` are valid and produce the same result. The same applies to spacing-scale props on layout components (`space`, `spaceX`, `spaceY`, `pl`, `pr`, `pt`, `pb`).
+
+Numeric values map to the spacing scale, **not** pixels: `width={64}` resolves to `calc(var(--spacing) * 64)`, roughly `16rem` (256px), not 64px. The `width` prop sizes the field element directly, so no wrapper element is needed.
+
+```tsx
+<TextField label="Name" width={64} />
+<Select label="Country" width="1/2">
+  {/* options */}
+</Select>
+```
 
 When using fixed/keywords widths the `label` and `description` won't be included in the width calculation and won't adapt to the width of the field. The text will not shrink if the field is too small to fit the text.
 

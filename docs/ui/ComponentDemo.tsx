@@ -2,6 +2,7 @@
 
 import { type RegistryKey, registry } from '@/.registry/demos';
 import { cn } from '@/lib/cn';
+import { transformerNotationHighlight } from '@shikijs/transformers';
 import { track } from '@vercel/analytics';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
@@ -49,6 +50,16 @@ function fileToRegistryKey(file: string): string {
   const match = normalized.match(/([^/]+)\.demo\.tsx$/);
   return match ? match[1] : normalized;
 }
+
+// Shiki options for the Code tab. Passing `options` replaces fumadocs'
+// default, so the themes are repeated here. `transformerNotationHighlight`
+// lets a demo emphasise lines with a `{/* [!code highlight] */}` marker in
+// the source itself, so the highlight tracks the line through future edits
+// (and the marker is stripped from both the rendered code and the preview).
+const codeOptions = {
+  themes: { light: 'github-light', dark: 'github-dark' },
+  transformers: [transformerNotationHighlight()],
+};
 
 // Preview wrapper component
 // ---------------
@@ -119,17 +130,19 @@ export const ComponentDemo = ({
 
   // Code only mode
   if (mode === 'code') {
-    return <DynamicCodeBlock lang="tsx" code={codeString} />;
+    return (
+      <DynamicCodeBlock lang="tsx" code={codeString} options={codeOptions} />
+    );
   }
 
   // Full mode with Preview + Code tabs
   return (
-    <DemoTabs demoKey={key}>
+    <DemoTabs>
       <Tab value="Preview" className="p-0">
         <Preview name={key} background={background} />
       </Tab>
       <Tab value="Code">
-        <DynamicCodeBlock lang="tsx" code={codeString} />
+        <DynamicCodeBlock lang="tsx" code={codeString} options={codeOptions} />
       </Tab>
     </DemoTabs>
   );
@@ -137,13 +150,7 @@ export const ComponentDemo = ({
 
 // Tracked Tabs wrapper
 // ---------------
-const DemoTabs = ({
-  demoKey,
-  children,
-}: {
-  demoKey: string;
-  children: ReactNode;
-}) => (
+const DemoTabs = ({ children }: { children: ReactNode }) => (
   <Tabs
     items={['Preview', 'Code']}
     defaultIndex={0}
