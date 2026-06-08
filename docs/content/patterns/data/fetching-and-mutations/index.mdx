@@ -51,7 +51,7 @@ Because the hook is keyed on its inputs, you can call it from more than one comp
 
 ### Centralize query keys
 
-A query key identifies a cache entry. Written inline as raw arrays inside components, keys drift, and an invalidation in one place silently misses an entry created in another. Keep them in one factory per domain, and fold the active filter, sort and pagination into the list key so a mutation can invalidate every list at once with `venueKeys.lists()`.
+A query key identifies a cache entry. Written inline as raw arrays inside components, keys drift, and an invalidation in one place silently misses an entry created in another. Keep them in one factory, co-located with the feature rather than in a global keys file, and structure the key from generic to specific. Fold the active filter, sort and pagination into the list key so a mutation can invalidate every list at once with `venueKeys.lists()`.
 
 ```tsx
 export const venueKeys = {
@@ -60,6 +60,8 @@ export const venueKeys = {
   list: (params: VenueQueryParams) => [...venueKeys.lists(), params] as const,
 };
 ```
+
+Each level builds on the one above it and stays independently accessible, so add `details()` and `detail(id)` levels the same way once a feature also fetches single records. See [Effective React Query Keys](https://tkdodo.eu/blog/effective-react-query-keys) for the full reasoning behind this structure.
 
 <GuidelineTiles>
   <Do>
