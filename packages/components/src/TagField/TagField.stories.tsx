@@ -221,6 +221,7 @@ export const Disabled = Basic.extend({
 Disabled.test('shows not-allowed cursor when disabled', async ({ canvas }) => {
   const trigger = canvas.getByRole('button');
   const style = window.getComputedStyle(trigger);
+
   await expect(style.cursor).toBe('not-allowed');
 });
 
