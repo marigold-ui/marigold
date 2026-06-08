@@ -5,9 +5,7 @@ import { I18nProvider } from '@react-aria/i18n';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
 import { FileField } from './FileField';
-
-const makeFile = (name: string, type: string, size = 1024) =>
-  new File([new Uint8Array(size)], name, { type });
+import { makeFile } from '../test.utils';
 
 const meta = preview.meta({
   title: 'Components/FileField',
