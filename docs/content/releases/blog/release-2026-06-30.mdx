@@ -21,7 +21,14 @@ changed:
   - components/form/autocomplete
   - components/form/checkbox
   - components/form/radio
+  - components/overlay/menu
   - components/overlay/tooltip
+  - components/overlay/dialog
+  - components/navigation/accordion
+  - components/collection/actionbar
+  - components/actions/button
+  - foundations/form-fields
+  - patterns/user-input/forms
   - icons
 ---
 
@@ -327,20 +334,31 @@ The discriminated union shape is unchanged: `p` is mutually exclusive with `px` 
 
 `<Card>`'s prop-based API (`padding`, `space`, etc.) is gone. Content is now composed through explicit sub-components, which makes the framing and the body responsibilities visible in the markup. A `CardContext` is set up by `<Card>`, so sub-components throw a clear error if they're rendered outside one.
 
+`<Card.Header>` is a slot provider. Drop a `<Title>` and an optional `<Description>` straight inside it and the header wires up the heading level, the id, the accessible name, and the theme classes for you. A bare `<Title>` placed directly inside `<Card>` (with no `Card.Header` wrapper) is picked up by the root as well, so a title-only card can skip the header and still get the right padding and `aria-labelledby`.
+
 ```diff
 - <Card>
 -   <SomeContent />
 - </Card>
 + <Card>
-+   <Card.Header>Title</Card.Header>
++   <Card.Header>
++     <Title>Payment method</Title>
++     <Description>Visa ending in 4242</Description>
++   </Card.Header>
 +   <Card.Body>
 +     <SomeContent />
 +   </Card.Body>
-+   <Card.Footer>Actions</Card.Footer>
++   <Card.Footer>
++     <Button>Edit</Button>
++   </Card.Footer>
 + </Card>
 ```
 
-`<Card.Preview>` is also available for media at the top of the card. With `<Panel>` now covering page-level sections, `<Card>` is the right unit for repeating collection items (a stat tile, a session row, a payment method, a team card). The [Panel docs page](/components/layout/panel) includes a side-by-side comparison.
+`<Card>` now renders an `<article>` landmark, labelled by its `<Title>` through `aria-labelledby` (or by an explicit `aria-label`). A new `headingLevel` prop (default `3`) sets the underlying heading tag, so the card slots into the document outline correctly. Variant text color flows through a new `--card-accent` custom property, so `master` and `admin` cards pick up the matching accent automatically.
+
+For media at the top of the card, use `<Card.Media>`. **This is a breaking rename:** the slot was previously `<Card.Preview>`. If you styled it through the `data-card-preview` selector or the `preview` theme slot key, move to `data-card-media` and the `media` slot key.
+
+With `<Panel>` now covering page-level sections, `<Card>` is the right unit for repeating collection items (a stat tile, a session row, a payment method, a team card). The [Panel docs page](/components/layout/panel) includes a side-by-side comparison.
 
 ### `<SelectList>` API standardized
 
@@ -437,6 +455,30 @@ Every other `width` value (fractions, fixed sizes, `full`) continues to work. Th
 
 ## Components
 
+### Slot-aware `<Button>` and `<ButtonGroup>`
+
+`<Button>` is now slot-aware: it adapts to the button container it sits in, so you reach for `<Button>` everywhere instead of learning a second action component. A Marigold-owned `ButtonContext` carries `variant`, `size`, and `disabled` down to the buttons nested inside a container, and a local prop on a button always wins over what the container sets.
+
+`<ButtonGroup>` is the new component for clustering related buttons. It owns an orientation-aware layout (a horizontal or vertical flex with a small gap) and cascades a `secondary` variant to its buttons by default, the same baseline a standalone `<Button>` already has.
+
+```tsx
+<ButtonGroup>
+  <Button>Cancel</Button>
+  <Button variant="primary">Save</Button>
+</ButtonGroup>
+```
+
+Slot-aware containers tune the cascade for their context. `<Panel.Header>` publishes a lower-emphasis `ghost` variant at `small` size and positions the buttons in its actions cell, so a labelled header action reads as chrome without you setting anything:
+
+```tsx
+<Panel.Header>
+  <Title>Organizer info</Title>
+  <Button>Edit</Button>
+</Panel.Header>
+```
+
+A button opts out of the cascade with `slot={null}`, and overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset the context at their content root, so a header or group cascade cannot leak through the portal into an overlay's own buttons.
+
 ### `<Panel>`
 
 `<Panel>` is a new compound component for page-level content sectioning. It sits between `<AppLayout>` and the content inside it. Where `<Card>` is meant for repeating collection items (a stat tile, a session row, a team card), `<Panel>` frames a full page section with a header, optional description, actions, body, and footer.
@@ -487,6 +529,8 @@ Every other `width` value (fractions, fixed sizes, `full`) continues to work. Th
 
 **Edge-to-edge content.** `<Panel.Content>` and `<Panel.CollapsibleContent>` both accept an `inset` prop using the shared semantic spacing tokens. Combined with the new `collapsed` token (below), you can render a `<Table>` or media block that bleeds out to the panel edges without hand-rolling negative margins.
 
+`<Panel>` also extends `HTMLAttributes`, so standard attributes (`id`, `data-*`, event handlers) spread onto its root `<section>`, matching the `<Card>` API. The root always carries a valueless `data-panel` attribute too, which host stylesheets can target as a stable selector (for example `:not(:has([data-panel]))`) without depending on Tailwind utility classes.
+
 The full API covering header actions, footer layouts, bleed content, danger-zone rows, controlled collapsible state, error states, and a direct `Panel` vs `Card` comparison lives on the new [Panel documentation page](/components/layout/panel).
 
 ### Universal `collapsed` spacing token
@@ -536,6 +580,34 @@ When `<FieldBase>` renders through a React Aria Components element via `as={RACC
 
 The virtualizer wrapper inside `<Select>`, `<ComboBox>`, and `<Autocomplete>` sets an inline `z-index: 0` per item, which created a stacking context the focused option's outline could not escape. Adjacent wrappers painted on top in DOM order and clipped the outline, most visible when the next item was selected. Each virtualized listbox now lifts the wrapper containing the focused option above its siblings so the outline renders fully.
 
+### `<TextValue>` and `<Description>` for selection items
+
+Items inside `<Select>`, `<SelectList>`, `<ListBox>`, `<Menu>`, `<ComboBox>`, and `<Autocomplete>` can now compose their content with the `<TextValue>` and `<Description>` primitives instead of hand-written `<Text slot="label">` and `<Text slot="description">`. The primitives are drop-in replacements that render the same underlying text with the same slots, so accessibility wiring (including `aria-describedby`) stays identical.
+
+```diff
+  <Select.Option id="anna">
+-   <Text slot="label">Anna</Text>
+-   <Text slot="description">Designer</Text>
++   <TextValue>Anna</TextValue>
++   <Description>Designer</Description>
+  </Select.Option>
+```
+
+`<Menu.Item>` gains first-class `label` and `description` theme slots and a two-column grid layout, so a menu item can render a description under its label the same way a `<SelectList.Option>` does. Plain-text and icon-plus-text menu items are unaffected.
+
+If you maintain a custom theme, the `Menu` and `ListBox` theme entries now require `label` and `description` slot keys. Add them, or `<Menu>` and `<ListBox>` items will fail the theme type check.
+
+### Animated caret in `<Accordion.Header>`
+
+`<Accordion.Header>` now uses the shared `MorphCaret` icon, the same one introduced for `<Panel.Collapsible>`. It animates between the closed and open states by morphing its SVG path and respects `prefers-reduced-motion`. The unused `ChevronDown` icon was removed.
+
+### Fixes
+
+- **Wide content overflow in `<AppLayout.Main>`.** Wide content (most visibly a `<Select selectionMode="multiple">` with several long selected items) no longer pushes the main column past the viewport. The main grid item now sets `min-w-0`, so its track can shrink and children like a truncated Select trigger clip at the right place.
+- **Responsive `<SelectList>`.** Horizontal SelectList layouts flip to a vertical stack when their container is narrower than 40rem (about 640px).
+- **SSR-safe `MorphCaret`.** The caret now reads `prefers-reduced-motion` through a hook instead of sampling it at module load, removing a hydration mismatch between server and client.
+- **`<Panel>` accessible name.** Panel only sets `aria-labelledby` when a `<Title>` is actually present, so the `<section>` landmark no longer points at an empty id when a panel has no title.
+
 ## Docs and examples
 
 v18 ships alongside a substantial pass over the documentation site. None of these affect published packages, but if you follow the docs they are worth knowing about.
@@ -548,10 +620,21 @@ v18 ships alongside a substantial pass over the documentation site. None of thes
 - **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
 - **Full data management pattern at `/examples/filter`.** A new venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`. Includes a toolbar with search and filter controls, applied filter chips for active filter display, and a paginated data table all driven by the same URL state.
 - **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, and the engineering API in one place. A new _Using icons in code_ section covers installation, importing, sizing, color (`currentColor` plus `className` is the recommended path, `color` is a literal CSS value), filled brand icons, and accessibility (auto `aria-hidden`).
+- **ActionBar docs moved into the Collection section.** `<ActionBar>` is the floating toolbar of bulk actions for the current selection in a collection, so its page now sits at [`/components/collection/actionbar`](/components/collection/actionbar) alongside `Table`, `Card`, and `Tag`, reframed around the bulk-selection context with a Related section linking back to `Table` and `Button`.
+- **Form documentation restructured.** Three pages (Form Fields, Forms, Form Implementation) are consolidated into two: [Form Fields](/foundations/form-fields) as a foundation (anatomy, label, placeholder, help text, width, field states) and [Forms](/patterns/user-input/forms) as a pattern (layout together with validation, state management, react-hook-form, and async submission).
+- **Documentation prose cleanup.** Em-dash and en-dash punctuation and prose semicolons across the component, foundation, and pattern docs are rewritten into plain sentences for easier reading. Numeric ranges now read as "N to M", while example strings that show literal component output keep their en-dash.
 
 ## Design
 
 The default theme `@marigold/theme-rui` gets a small visual pass and a CSS architecture cleanup. Existing imports of `theme.css` and `styles.css` continue to work as documented.
+
+### Dialog adopts the shared panel pattern
+
+`<Dialog>` now uses the same `ui-panel-*` utilities as `<Drawer>`, `<Tray>`, and `<Sidebar>`. Its actions gain a `border-t` divider as an interaction-zone marker, and its content picks up consistent vertical padding. The responsive button stacking specific to Dialog stays as it was, and Drawer, Tray, and Sidebar are visually unchanged.
+
+### Instant hover backgrounds
+
+Hover `background` is dropped from the transition across `ui-surface`, `Button`, `Tabs`, `Table`, `Sidebar`, `Calendar` cells, `SelectList`, and `ActionBar`. Background flips on hover now happen instantly, which makes high-frequency controls feel snappier and brings `primary` and `secondary` buttons in line with the `ghost` and `destructive` variants that were already instant. Color, border, box-shadow, and transform transitions are preserved.
 
 ### `<Checkbox>` and `<Radio>` painted with `bg-surface`
 
