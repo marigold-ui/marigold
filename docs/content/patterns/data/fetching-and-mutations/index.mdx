@@ -105,7 +105,9 @@ const FetchingIndicator = () => {
 };
 ```
 
-Pair this with `placeholderData: keepPreviousData` so filtering and paging keep the previous rows visible instead of flashing an empty table. Keep skeletons next to the component they stand in for, and mirror its structure, so the two never drift apart. For the full taxonomy of when to block, when to show inline feedback, and when to stay quiet, see the [Loading States](/patterns/feedback/loading-states) pattern.
+Pair this with `placeholderData: keepPreviousData` so filtering and paging keep the previous rows visible instead of flashing an empty table. Keep skeletons next to the component they stand in for, and mirror its structure, so the two never drift apart. Avoid flashing one for sub-second or cached responses, where a brief blank reads better than a flicker.
+
+A skeleton is a content placeholder, suited to results with a known shape like a table or list. Marigold's [Loading States](/patterns/feedback/loading-states) pattern documents the complementary options, an inline spinner inside a button and a `Loader` over a whole section, plus the rule of thumb to only show a loading state once a request runs past about a second.
 
 ### Errors and retries
 
