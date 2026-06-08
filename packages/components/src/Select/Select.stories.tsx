@@ -732,3 +732,37 @@ export const Mobile = meta.story({
     });
   },
 });
+
+/**
+ * Regression guard for DST-1482: a fixed `width` must size the field element
+ * itself (the trigger), not just the FieldBase wrapper. `width={64}` maps to the
+ * spacing scale, i.e. `calc(var(--spacing) * 64)` = 16rem (256px at default root
+ * font-size), and must drive the trigger's layout without an outer wrapper.
+ */
+export const FixedWidth = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Favorite',
+    width: 64,
+  },
+  render: args => (
+    <Select {...args} placeholder="Pick">
+      <Select.Option id="Star Wars">Star Wars</Select.Option>
+      <Select.Option id="Star Trek">Star Trek</Select.Option>
+    </Select>
+  ),
+  play: async ({ canvas, step }) => {
+    await step('Trigger width matches the requested scale value', async () => {
+      const button = canvas.getByRole('button', { name: /Favorite/i });
+      const rem = parseFloat(
+        getComputedStyle(document.documentElement).fontSize
+      );
+      // width={64} => calc(var(--spacing) * 64) = 64 * 0.25rem = 16rem
+      const expected = 16 * rem;
+      const { width } = button.getBoundingClientRect();
+
+      expect(width).toBeGreaterThan(rem * 12);
+      expect(Math.abs(width - expected)).toBeLessThanOrEqual(1);
+    });
+  },
+});
