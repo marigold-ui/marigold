@@ -21,7 +21,7 @@ export interface FileFieldProps
     Omit<RAC.DropZoneProps, RemovedProps>,
     Pick<FieldBaseProps<'input'>, 'label'> {
   variant?: string;
-  size?: string;
+  size?: 'default' | 'small' | (string & {});
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width

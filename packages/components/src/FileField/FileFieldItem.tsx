@@ -10,7 +10,8 @@ export interface FileFieldItemProps {
    * Called when the close button is pressed to remove this item.
    */
   onRemove?: () => void;
-  size?: string;
+
+  size?: 'default' | 'small' | (string & {});
 }
 
 export const FileFieldItem = ({

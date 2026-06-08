@@ -18,7 +18,7 @@ export interface FileTriggerProps extends Omit<
    */
   label: string;
   disabled?: boolean;
-  size?: string;
+  size?: 'default' | 'small' | (string & {});
 }
 
 const _FileTrigger = ({ label, disabled, size, ...rest }: FileTriggerProps) => {
