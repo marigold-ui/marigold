@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
+import { Provider } from 'react-aria-components/slots';
 import { afterEach, vi } from 'vitest';
 import { announce } from '@react-aria/live-announcer';
-import { Basic, WithDescription } from './SectionMessage.stories';
+import { ButtonContext } from '../Button/Context';
+import { Basic, WithAction, WithDescription } from './SectionMessage.stories';
 
 vi.mock('@react-aria/live-announcer', () => ({
   announce: vi.fn(),
@@ -119,6 +121,18 @@ test('does not announce when `announce={false}` overrides the error default', ()
   );
 
   expect(announce).not.toHaveBeenCalled();
+});
+
+test('scopes content action buttons from an inherited ButtonContext cascade', () => {
+  render(
+    <Provider values={[[ButtonContext, { className: 'leaked-grid' }]]}>
+      <WithAction.Component />
+    </Provider>
+  );
+
+  expect(
+    screen.getAllByRole('button', { name: 'Upgrade plan' })[0]
+  ).not.toHaveClass('leaked-grid');
 });
 
 test('allow to close message with button in message', async () => {

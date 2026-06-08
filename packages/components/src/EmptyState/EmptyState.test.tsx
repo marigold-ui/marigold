@@ -1,4 +1,6 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-aria-components/slots';
+import { ButtonContext } from '../Button/Context';
 import { Basic, WithAction } from './EmptyState.stories';
 
 test('renders with title and description', () => {
@@ -39,6 +41,18 @@ test('renders with action buttons', () => {
 
   expect(primaryButton).toBeInTheDocument();
   expect(secondaryButton).toBeInTheDocument();
+});
+
+test('scopes the action from an inherited ButtonContext cascade', () => {
+  render(
+    <Provider values={[[ButtonContext, { className: 'leaked-grid' }]]}>
+      <WithAction.Component />
+    </Provider>
+  );
+
+  expect(
+    screen.getByRole('button', { name: 'Browse Products' })
+  ).not.toHaveClass('leaked-grid');
 });
 
 test('renders SVG illustration', () => {

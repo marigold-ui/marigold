@@ -9,6 +9,7 @@ import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
+import { ButtonContext, RESET_BUTTON_CONTEXT } from '../Button/Context';
 import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
@@ -149,7 +150,16 @@ const ContextualHelpBase = ({
             [`data-${width ?? 'medium'}`]: true,
           }}
         >
-          <Provider values={[[TextContext, textProps]]}>{children}</Provider>
+          <Provider
+            values={[
+              [TextContext, textProps],
+              // Scope action buttons in the help content to a clean baseline,
+              // consistent with the `Popover`'s own `ResetButtonContext`.
+              [ButtonContext, RESET_BUTTON_CONTEXT],
+            ]}
+          >
+            {children}
+          </Provider>
         </Dialog>
       </Popover>
     </DialogTrigger>

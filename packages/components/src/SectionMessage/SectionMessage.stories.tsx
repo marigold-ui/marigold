@@ -64,6 +64,22 @@ export const WithDescription = meta.story({
   ),
 });
 
+export const WithAction = meta.story({
+  render: args => (
+    <SectionMessage {...args}>
+      <SectionMessage.Title>Storage almost full</SectionMessage.Title>
+      <SectionMessage.Content>
+        <Stack space={2} alignX="left">
+          <Text>You are using 95% of your available storage.</Text>
+          <Button variant="primary" size="small">
+            Upgrade plan
+          </Button>
+        </Stack>
+      </SectionMessage.Content>
+    </SectionMessage>
+  ),
+});
+
 export const TitleIsSemanticHeading = meta.story({
   tags: ['component-test'],
   parameters: { surface: false },

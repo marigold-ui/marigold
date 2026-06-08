@@ -4,6 +4,7 @@ import { HeadingContext } from 'react-aria-components/Heading';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
+import { ButtonContext, RESET_BUTTON_CONTEXT } from '../Button/Context';
 import { Description } from '../Description/Description';
 import { Title } from '../Title/Title';
 
@@ -134,12 +135,16 @@ export const EmptyState = ({
         values={[
           [HeadingContext, headingProps],
           [TextContext, textProps],
+          // Scope the action(s) to a clean baseline so they never inherit a
+          // surrounding container's button cascade. The `action` wrapper keeps
+          // owning placement (it positions any `ReactNode`, not just buttons).
+          [ButtonContext, RESET_BUTTON_CONTEXT],
         ]}
       >
         <Title>{title}</Title>
         {description && <Description>{description}</Description>}
+        {action && <div className={classNames.action}>{action}</div>}
       </Provider>
-      {action && <div className={classNames.action}>{action}</div>}
     </div>
   );
 };

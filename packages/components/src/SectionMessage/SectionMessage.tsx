@@ -12,6 +12,7 @@ import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
 import { cn, useClassNames } from '@marigold/system';
+import { ButtonContext, RESET_BUTTON_CONTEXT } from '../Button/Context';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { CircleAlert } from '../icons/CircleAlert';
 import { CircleCheck } from '../icons/CircleCheck';
@@ -156,6 +157,10 @@ export const SectionMessage = ({
         values={[
           [HeadingContext, headingProps],
           [TextContext, textProps],
+          // Scope action buttons placed in `.Content` to a clean baseline so
+          // they never inherit a surrounding container's button cascade (e.g. a
+          // `Panel.Header` ghost/small). No variant or positioning is imposed.
+          [ButtonContext, RESET_BUTTON_CONTEXT],
         ]}
       >
         {/* `role="group"` permits naming via `aria-labelledby` (prohibited
