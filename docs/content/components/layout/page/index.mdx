@@ -51,7 +51,7 @@ When a page has only a title, with no description or actions, drop a bare [`<Tit
 
 Page actions use [`<Button>`](/components/actions/button), [`<LinkButton>`](/components/actions/link-button), [`<ButtonGroup>`](/components/actions/button-group), and [`<ActionMenu>`](/components/overlay/action-menu). A page's primary action is meant to stand out, so it sits in the header as a prominent, label-sized primary button.
 
-Wrap the actions in a [`<ButtonGroup>`](/components/actions/button-group) whenever the header holds more than one — two buttons, or a button beside an overflow [`<ActionMenu>`](/components/overlay/action-menu). A single action needs no group and sits in the header on its own.
+Wrap the actions in a [`<ButtonGroup>`](/components/actions/button-group) whenever the header holds more than one, whether that is two buttons or a button beside an overflow [`<ActionMenu>`](/components/overlay/action-menu). A single action needs no group and sits in the header on its own.
 
 Pick the element by what the action _does_, not by how it looks. Both forms render as the same primary button.
 
@@ -92,7 +92,7 @@ Show them in the page body instead. On a detail or record screen, the establishe
 
 ### Spacing
 
-Most screens never touch this. The point of `<Page>` is that its padding and vertical rhythm come tuned, so every screen in your product shares one frame without anyone setting spacing by hand. Out of the box that is `square-relaxed` padding around the content and a `group` gap between the header and the sections beneath it.
+Most screens never need to override the spacing. The point of `<Page>` is that its padding and vertical rhythm come tuned, so every screen in your product shares one frame without anyone setting spacing by hand. Out of the box that is `square-relaxed` padding around the content and a `group` gap between the header and the sections beneath it.
 
 Reach for an override only when a screen has a reason the defaults cannot anticipate:
 
