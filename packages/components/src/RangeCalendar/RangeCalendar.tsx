@@ -140,37 +140,27 @@ const _RangeCalendar = <T extends DateValue>({
     ViewMapKeys | undefined
   >();
 
-  // react-aria's `useRangeCalendar` registers a window-level `pointerup`
-  // listener that commits the in-progress range when the click target is not
-  // a button. RAC's <ListBoxItem> renders with role="option", so picking a
-  // month or year would otherwise trip that commit and drop the user's first
-  // click. A native listener is required (not React's `onPointerUpCapture`)
-  // because react-aria's listener also runs on the native event, before any
-  // synthetic event would reach a React capture handler. Using a callback
-  // ref ensures the listener (re)attaches whenever the overlay node mounts,
-  // including when `visibleDuration` toggles single↔multi at runtime.
+  // react-aria's `useRangeCalendar` commits an in-progress range on any window
+  // `pointerup` that isn't on a button (our role="option" items included). The key
+  // detail: `usePress` listens for the touch press-end on `document`, while the
+  // range-commit listens on `window`. We stop overlay pointerups at `document` (not
+  // the node, not `window`) so both `usePress` and our guard still fire, but the
+  // `window` range-commit never does — which is exactly what keeps touch selection
+  // working (DSTSUP-257). Native listener because react-aria also listens natively,
+  // outside React's events.
   const dropdownOverlayRef = useCallback((node: HTMLDivElement | null) => {
     if (!node) return;
-    const stop = (event: PointerEvent) => event.stopPropagation();
-    node.addEventListener('pointerup', stop);
-    return () => node.removeEventListener('pointerup', stop);
+    const ownerDocument = node.ownerDocument;
+    const stop = (event: PointerEvent) => {
+      if (node.contains(event.target as Node | null)) event.stopPropagation();
+    };
+    ownerDocument.addEventListener('pointerup', stop);
+    return () => ownerDocument.removeEventListener('pointerup', stop);
   }, []);
 
   const ViewMap = {
-    month: (
-      <MonthListBox
-        setSelectedDropdown={setSelectedDropdown}
-        minValue={minValue}
-        maxValue={maxValue}
-      />
-    ),
-    year: (
-      <YearListBox
-        setSelectedDropdown={setSelectedDropdown}
-        minValue={minValue}
-        maxValue={maxValue}
-      />
-    ),
+    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
+    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   const fieldErrorValue = useMemo<ContextType<typeof FieldErrorContext>>(

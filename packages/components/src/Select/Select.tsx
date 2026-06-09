@@ -36,6 +36,12 @@ export interface SelectProps<
   variant?: string;
   size?: string;
 
+  /**
+   * Sets the width of the field.
+   *
+   * Numeric/scale values are spacing-scale tokens, not pixels: `width={64}`
+   * resolves to `calc(var(--spacing) * 64)` ~= 16rem (256px), not 64px.
+   */
   width?: WidthProp['width'];
   /**
    * Children of the select.

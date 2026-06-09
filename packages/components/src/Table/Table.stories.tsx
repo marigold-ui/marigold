@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { I18nProvider, useDragAndDrop } from 'react-aria-components';
-import { useListData } from 'react-stately';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
@@ -17,6 +16,7 @@ import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import { useListData } from '../hooks';
 import type { Selection } from '../types';
 import { Table } from './Table';
 import { TableDragPreview } from './TableDragPreview';

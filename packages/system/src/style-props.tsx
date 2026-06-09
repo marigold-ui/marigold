@@ -375,6 +375,9 @@ export type WidthProp = {
    *
    * Accepts spacing-scale values as either numbers (`4`) or their string
    * equivalents (`"4"`), fractions (`"1/2"`), and keywords (`"full"`, `"fit"`, ...).
+   *
+   * Numeric/scale values are **spacing-scale tokens, not pixels**: `width={64}`
+   * resolves to `calc(var(--spacing) * 64)` ≈ 16rem (256px), not 64px.
    */
   width?: WidthValue;
 };

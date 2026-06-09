@@ -156,7 +156,7 @@ export const MonthSelectionAccessibility = meta.story({
   args: {
     minValue: new CalendarDate(2020, 1, 15),
     maxValue: new CalendarDate(2020, 2, 15),
-    value: new CalendarDate(2020, 1, 30),
+    defaultValue: new CalendarDate(2020, 1, 30),
   },
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
@@ -167,13 +167,15 @@ export const MonthSelectionAccessibility = meta.story({
     const febOption = monthOptions.find(opt => opt.textContent === 'Feb');
     const marOption = monthOptions.find(opt => opt.textContent === 'Mar');
 
+    // Selection/disabled state is announced via RAC's `aria-selected` /
+    // `aria-disabled`; the accessible name stays the plain month name (no suffix).
     await expect(janOption).toHaveAttribute('aria-selected', 'true');
-    await expect(janOption).toHaveAttribute('aria-label', 'Jan selected');
+    await expect(janOption).toHaveAccessibleName('Jan');
 
-    await expect(febOption).toHaveAttribute('aria-label', 'Feb');
+    await expect(febOption).toHaveAccessibleName('Feb');
     await expect(febOption).not.toHaveAttribute('aria-disabled');
 
-    await expect(marOption).toHaveAttribute('aria-label', 'Mar not selectable');
+    await expect(marOption).toHaveAccessibleName('Mar');
     await expect(marOption).toHaveAttribute('aria-disabled', 'true');
   },
 });
@@ -184,7 +186,7 @@ export const MonthSelectionWithMinMax = meta.story({
   args: {
     minValue: new CalendarDate(2020, 1, 15),
     maxValue: new CalendarDate(2020, 2, 15),
-    value: new CalendarDate(2020, 1, 30),
+    defaultValue: new CalendarDate(2020, 1, 30),
   },
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
@@ -195,7 +197,9 @@ export const MonthSelectionWithMinMax = meta.story({
 
     await userEvent.click(canvas.getByText('Feb'));
 
-    await expect(canvas.queryByTestId('monthOptions')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('listbox', { name: 'month' })
+    ).not.toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: 'Feb' })
     ).toBeInTheDocument();
@@ -208,23 +212,156 @@ export const YearSelectionWithMinMax = meta.story({
   args: {
     minValue: new CalendarDate(2020, 1, 15),
     maxValue: new CalendarDate(2021, 2, 15),
-    value: new CalendarDate(2020, 1, 30),
+    defaultValue: new CalendarDate(2020, 1, 30),
   },
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('button', { name: '2020' }));
 
-    await userEvent.click(canvas.getByText('2022'));
-    await userEvent.click(canvas.getByText('2019'));
+    // Only in-range years are rendered.
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+    await expect(years).toEqual(['2020', '2021']);
+    await expect(canvas.queryByText('2019')).not.toBeInTheDocument();
+    await expect(canvas.queryByText('2022')).not.toBeInTheDocument();
+
+    // The focused year is marked selected.
+    const focusedYear = within(
+      canvas.getByRole('listbox', { name: 'year' })
+    ).getByText('2020');
+    await expect(focusedYear.closest('[role="option"]')).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
 
     await userEvent.click(canvas.getByText('2021'));
 
-    await expect(canvas.queryByTestId('yearOptions')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: '2021' })
     ).toBeInTheDocument();
   },
 });
+
+export const YearSelectionWithMinOnly = meta.story({
+  ...Basic.input,
+  tags: ['component-test'],
+  args: {
+    minValue: new CalendarDate(2025, 1, 1),
+    defaultValue: new CalendarDate(2025, 6, 15),
+  },
+});
+
+YearSelectionWithMinOnly.test(
+  'clamps the year list at minValue and keeps a forward window',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '2025' }));
+
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    await expect(years[0]).toBe('2025');
+    await expect(years.length).toBeGreaterThan(1);
+    await expect(canvas.queryByText('2024')).not.toBeInTheDocument();
+  }
+);
+
+export const YearSelectionWithMaxOnly = meta.story({
+  ...Basic.input,
+  tags: ['component-test'],
+  args: {
+    maxValue: new CalendarDate(2025, 12, 31),
+    defaultValue: new CalendarDate(2023, 6, 15),
+  },
+});
+
+YearSelectionWithMaxOnly.test(
+  'keeps the maxValue year reachable and renders no later years',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '2023' }));
+
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    await expect(years[years.length - 1]).toBe('2025');
+    await expect(years.length).toBeGreaterThan(1);
+    await expect(canvas.queryByText('2026')).not.toBeInTheDocument();
+
+    // The max year can actually be selected from the dropdown.
+    await userEvent.click(canvas.getByText('2025'));
+    await expect(
+      canvas.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: '2025' })
+    ).toBeInTheDocument();
+  }
+);
+
+export const LeapYearSelection = meta.story({
+  ...Basic.input,
+  tags: ['component-test'],
+  args: {
+    defaultValue: new CalendarDate(2024, 2, 29),
+  },
+});
+
+// Switching from a Feb 29 focus to a non-leap year must clamp to Feb 28.
+LeapYearSelection.test(
+  'selecting a non-leap year from a Feb 29 focus resolves cleanly',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '2024' }));
+    await userEvent.click(canvas.getByText('2023'));
+
+    await expect(
+      canvas.queryByRole('listbox', { name: 'year' })
+    ).not.toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: '2023' })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: 'Feb' })
+    ).toBeInTheDocument();
+  }
+);
+
+export const YearPickerScrollsToFocused = meta.story({
+  ...Basic.input,
+  tags: ['component-test'],
+  args: {
+    // Unbounded: focused year ±20, so it sits mid-list, taller than the viewport.
+    defaultValue: new CalendarDate(2025, 8, 7),
+  },
+});
+
+// The focused year must be centered when the picker opens.
+YearPickerScrollsToFocused.test(
+  'opens with the focused year centered',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '2025' }));
+
+    const listbox = canvas.getByRole('listbox', { name: 'year' });
+    const focused = within(listbox)
+      .getByText('2025')
+      .closest('[role="option"]');
+
+    await waitFor(() => {
+      const listRect = listbox.getBoundingClientRect();
+      const itemRect = focused!.getBoundingClientRect();
+      const listCenter = listRect.top + listRect.height / 2;
+      const itemCenter = itemRect.top + itemRect.height / 2;
+
+      // Selected year sits near the vertical center of the list, not at an edge.
+      expect(listbox.scrollTop).toBeGreaterThan(0);
+      expect(Math.abs(itemCenter - listCenter)).toBeLessThan(itemRect.height);
+    });
+  }
+);
 
 export const TwoMonths = meta.story({
   args: {

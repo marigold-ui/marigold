@@ -1,0 +1,83 @@
+import { vi } from 'vitest';
+import { main } from './marigold.js';
+
+// Suppress the auto-invocation guard: when `process.argv[1]` is anything other
+// than this module's file URL, the bottom of bin/marigold.ts does nothing on
+// import. Vitest's argv never matches, so importing is safe.
+
+const emitMock = vi.hoisted(() => vi.fn());
+
+vi.mock('../lib/telemetry.js', () => ({
+  emit: emitMock,
+}));
+
+vi.mock('../commands/docs.js', () => ({
+  runDocs: vi.fn(async () => ({ output: 'docs output', cacheHit: false })),
+}));
+
+vi.mock('../commands/list.js', () => ({
+  runList: vi.fn(async () => ({ output: 'list output', cacheHit: false })),
+}));
+
+let stdoutSpy: ReturnType<typeof vi.spyOn>;
+let stderrSpy: ReturnType<typeof vi.spyOn>;
+
+beforeEach(() => {
+  stdoutSpy = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
+  stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
+});
+
+afterEach(() => {
+  emitMock.mockClear();
+  stdoutSpy.mockRestore();
+  stderrSpy.mockRestore();
+});
+
+describe('main() — telemetry on validation failure', () => {
+  test('emits exitCode 1 with args when --section is invalid', async () => {
+    const code = await main(['docs', 'Button', '--section', 'bogus']);
+
+    expect(code).toBe(1);
+    expect(emitMock).toHaveBeenCalledTimes(1);
+
+    const event = emitMock.mock.calls[0][0];
+    expect(event).toMatchObject({
+      command: 'docs',
+      exitCode: 1,
+      args: expect.objectContaining({
+        component: 'Button',
+        section: 'bogus',
+      }),
+    });
+  });
+
+  test('emits exitCode 1 when the component positional is missing', async () => {
+    const code = await main(['docs']);
+
+    expect(code).toBe(1);
+    expect(emitMock).toHaveBeenCalledTimes(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'docs',
+      exitCode: 1,
+      args: expect.objectContaining({ component: '' }),
+    });
+  });
+
+  test('emits exitCode 1 when telemetry subcommand is missing', async () => {
+    const code = await main(['telemetry']);
+
+    expect(code).toBe(1);
+    expect(emitMock).toHaveBeenCalledTimes(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'telemetry',
+      exitCode: 1,
+    });
+  });
+
+  test('does not emit telemetry for unknown commands', async () => {
+    const code = await main(['nonsense']);
+
+    expect(code).toBe(1);
+    expect(emitMock).not.toHaveBeenCalled();
+  });
+});

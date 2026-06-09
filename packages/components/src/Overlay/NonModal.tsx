@@ -6,11 +6,6 @@ import {
   useRenderProps,
 } from 'react-aria-components';
 import type { RenderProps } from 'react-aria-components';
-import {
-  OverlayTriggerProps,
-  OverlayTriggerState,
-  useOverlayTriggerState,
-} from 'react-stately';
 import { FocusScope } from '@react-aria/focus';
 import { DismissButton, Overlay } from '@react-aria/overlays';
 import { useIsSSR } from '@react-aria/ssr';
@@ -22,6 +17,11 @@ import {
   useObjectRef,
   useViewportSize,
 } from '@react-aria/utils';
+import {
+  OverlayTriggerProps,
+  OverlayTriggerState,
+  useOverlayTriggerState,
+} from '@react-stately/overlays';
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
 import type { AriaNonModalProps } from './useNonModal';
 import { useNonModal } from './useNonModal';
