@@ -1,0 +1,102 @@
+---
+title: Marigold v17.6.0
+date: 2026-06-09
+type: Blog
+changed:
+  - components/form/calendar
+  - components/form/rangecalendar
+  - components/form/select
+  - components/form/textfield
+  - components/form/number-field
+  - components/form/switch
+  - components/overlay/drawer
+  - components/actions/toggle-button
+---
+
+Last release we put the docs in your editor with an MCP server. This release puts them in your terminal. `@marigold/cli` ships its first stable version, giving you (and the AI agents sitting next to you) a fast way to look up any component's real API without leaving the command line. Alongside it, there's a fix that makes the `width` prop size form fields again, a batch of calendar and date-picker fixes, and a react-aria bump that changes how `<Switch>` toggles.
+
+## CLI
+
+The big one: [`@marigold/cli`](https://www.marigold-ui.io/getting-started/usage-with-ai) is now available as a v1.0.0 package. It gives you terminal access to Marigold's documentation, component discovery, and project setup.
+
+```bash
+# Full docs for a component
+marigold docs Button
+
+# Just the props, as structured JSON (great for agents)
+marigold docs Button --section props --format json
+
+# Discover components
+marigold list --category form
+marigold list --search date
+```
+
+The commands at a glance:
+
+- **`marigold docs <Component>`** fetches component documentation, with `--section`, `--format`, `--fresh`, and `--offline` flags. It caches results for 24h and works offline.
+- **`marigold list`** lists available components, filterable by `--category` or `--search`.
+- **`marigold init`** is an interactive wizard that installs the Marigold packages, edits your CSS, wraps your app in `<Providers>`, and patches the config for Vite and Next.js projects.
+- **`marigold telemetry <status|enable|disable>`** manages anonymous telemetry.
+- **`marigold completion <bash|zsh|fish>`** prints a shell completion script for tab-completing commands, options, and component names.
+
+The CLI exists for the same reason the MCP server does: Marigold is not in any model's training set, so coding agents invent prop names that do not exist. Pointing an agent at `marigold docs <Component> --format json` gives it accurate, structured API data instead. Pair it with the MCP server from v17.5.0 and the docs now meet you both in your editor and at the command line.
+
+Remote content is sanitized at the fetch boundary so a compromised docs origin can't write to your clipboard or hijack the terminal through escape sequences.
+
+## Components
+
+### Switch toggles with Space, not Enter
+
+Following the react-aria update in this release, [`<Switch>`](/components/form/switch) now toggles with the **Space** key to match native checkbox behavior. It no longer toggles on **Enter**. This is a small behavior change, but if you have keyboard tests or muscle memory built around Enter, it's worth flagging.
+
+## Bug fixes
+
+### Field `width` prop sizes fields again
+
+Setting `width` on a field component such as [`<Select>`](/components/form/select), [`<TextField>`](/components/form/textfield), or [`<NumberField>`](/components/form/number-field) had stopped having any visible effect. The field sized to its content and you had to wrap it in an extra element to control its width. `FieldBase` hands its child a `--field-width` CSS variable to consume, but the variable had been registered as non-inheriting, so it never reached the child and `width` fell back to `auto`.
+
+`--field-width` now inherits again, restoring the intended parent-to-child handoff, while the same-element layout variables (`--width`, `--max-width`, `--height`) keep their leak protection.
+
+```tsx
+<Select label="Country" width={64}>
+  {/* ... */}
+</Select>
+```
+
+One thing worth knowing: numeric `width` values are spacing-scale tokens, not pixels. `width={64}` resolves to `calc(var(--spacing) * 64)`, which is roughly `16rem` (256px). The prop docs now say so explicitly.
+
+### Calendar and RangeCalendar year picker
+
+The year picker in [`<Calendar>`](/components/form/calendar) and [`<RangeCalendar>`](/components/form/rangecalendar) used to always render 41 years (the focused year plus or minus 20) and simply grey out the ones outside the allowed range. With `minValue` set, it opened on a list of disabled past years you had to scroll past first.
+
+The year list is now derived from `minValue` and `maxValue` (both bounds inclusive), so out-of-range years aren't shown at all, while the month picker still shows all twelve months with out-of-range ones disabled. When a picker opens, the selected option is scrolled to the middle of the list instead of the bottom, and the open picker now exposes a localized accessible name ("year" or "month") so screen readers announce it correctly.
+
+### RangeCalendar selection on touch
+
+On touch devices, tapping a month or year in the [`<RangeCalendar>`](/components/form/rangecalendar) dropdown could silently do nothing (the dropdown stayed open and the grid didn't switch), and a stray tap mid-range could wrongly finish the range. An overlay guard meant to protect against accidental range-commits was also swallowing the option tap before react-aria's click fallback could run. The guard now lets option taps through while still protecting taps on empty overlay area. Desktop mouse behavior is unchanged.
+
+### Tray focus restoration under reduced motion
+
+Under `prefers-reduced-motion: reduce`, the `<Tray>` now reliably returns focus to its trigger on close. In that branch it skips the animation wrapper and renders a plain overlay, so focus restoration runs synchronously instead of racing the exit animation.
+
+### Drawer scrolls on mobile
+
+On the mobile breakpoint, [`<Drawer>`](/components/overlay/drawer) falls back to a modal overlay, but the wrapper had no defined height. Long content extended the drawer past the viewport and clipped both the content tail and the action bar. The mobile wrapper now uses `--visual-viewport-height` (which tracks mobile browser chrome), so the drawer is constrained to the visible viewport and its content scrolls while the title and actions stay pinned.
+
+## Documentation
+
+### ToggleButton, reframed
+
+The [`<ToggleButton>`](/components/actions/toggle-button) docs have been rewritten to position it as an **action button that retains an active state**, used in toolbars, editors, and canvases. The page now states explicitly that `<ToggleButton>` is not a form field or a filter, and that `<ToggleButton.Group>` is a toolbar of independent on/off actions rather than a selection control. A new view-options demo broadens the group example beyond the formatting toolbar, the Do/Don't list is stronger, and the alternatives now point you to `Checkbox.Group`, `Switch`, `Tabs`, and `Button` when one of those is the better fit.
+
+### Recommended Libraries page
+
+There's a new [**Recommended Libraries**](/getting-started/recommended-libraries) page under Getting Started that collects, in one place, the third-party libraries we recommend pairing with Marigold. Until now those recommendations were scattered across individual component and pattern docs, so you only found them by chance. They're now grouped by purpose (styling and build, data fetching, forms and validation, routing and URL state, dates, testing, and fonts), each with a short note on when to reach for it and links to both the library's docs and our own references.
+
+## Under the hood
+
+- **react-aria update.** This release bumps the react-aria packages and `tailwindcss-react-aria-components`. The `<Switch>` Space-key behavior above rides along with it.
+
+---
+
+That's v17.6.0. With the CLI shipping alongside the MCP server, the docs now reach you in your editor and your terminal, and the agents you work with can stop guessing. Try the CLI, and let us know how it lands.

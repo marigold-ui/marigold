@@ -1,5 +1,15 @@
 # @marigold/icons
 
+## 2.0.0-beta.3
+
+### Patch Changes
+
+- Updated dependencies [141a2cc]
+- Updated dependencies [0760ecc]
+- Updated dependencies [4d20fb6]
+- Updated dependencies [334688e]
+  - @marigold/system@18.0.0-beta.3
+
 ## 2.0.0-beta.2
 
 ### Patch Changes
@@ -96,6 +106,14 @@
 - Updated dependencies [724f0ce]
 - Updated dependencies [de34b15]
   - @marigold/system@18.0.0-beta.0
+
+## 1.3.41
+
+### Patch Changes
+
+- Updated dependencies [9436cbc]
+- Updated dependencies [a289d42]
+  - @marigold/system@17.6.0
 
 ## 1.3.40
 
