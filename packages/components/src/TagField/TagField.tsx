@@ -261,7 +261,7 @@ function TagFieldBase<T extends object>({
           classNames.trigger
         )}
       >
-        <RACButton className="col-start-1 row-start-1 h-full w-full cursor-pointer opacity-0" />
+        <RACButton className="col-start-1 row-start-1 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed" />
         <div className="pointer-events-none col-start-1 row-start-1 flex flex-1 items-center justify-between gap-1 **:[[role=row]]:pointer-events-auto">
           <TagDisplay
             placeholder={placeholder}
