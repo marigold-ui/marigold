@@ -1,5 +1,56 @@
 # @marigold/components
 
+## 17.6.0
+
+### Patch Changes
+
+- 6f24f07: fix(DST-1447): restore focus to the Tray trigger on close under `prefers-reduced-motion: reduce`. `TrayModal` now skips `AnimatePresence` in that branch and renders a plain RAC `ModalOverlay`, so `FocusScope.restoreFocus` runs synchronously and the trigger reliably regains focus. Users without the preference still hit the same race — a full fix is tracked as follow-up.
+- 9436cbc: fix(DST-1482): make the `width` prop size field components again
+
+  Setting `width` on a field component (`<Select>`, `<TextField>`, `<NumberField>`, …) had no visible effect — the field sized to its content and consumers had to wrap it in an extra element. `FieldBase` sets the `--field-width` CSS variable for its child field element to consume via `w-(--field-width)`, but the variable was registered with `@property … { inherits: false }`, so it never reached the child and `width` fell back to `auto`.
+
+  `--field-width` is now registered with `inherits: true`, restoring the intended parent→child handoff. The same-element layout variables (`--width`, `--max-width`, `--height`, `--container-width`) keep their non-inheriting leak protection.
+
+  Also clarifies in the prop docs that numeric `width` values are spacing-scale tokens, not pixels: `width={64}` resolves to `calc(var(--spacing) * 64)` ≈ 16rem (256px).
+
+- 737c0a9: fix(DSTSUP-255): honor minValue/maxValue in Calendar and RangeCalendar year picker
+
+  The year picker used to always show 41 years (the focused year ±20) and just greyed out the
+  ones outside the allowed range. With `minValue` set, it opened on a list of disabled past
+  years that you had to scroll past first. The year list is now derived from `minValue`/`maxValue`
+  (both bounds inclusive), so out-of-range years simply aren't shown, while the month picker still
+  shows all twelve months with out-of-range ones disabled.
+
+  When a picker opens, the selected option is now scrolled to the middle of the list instead of
+  the bottom.
+
+  The open year/month picker now exposes a localized accessible name ("year"/"month") instead of
+  an internal identifier, so screen readers announce it correctly.
+
+  This also fixes a follow-up problem with the RangeCalendar month/year dropdown (from
+  DSTSUP-257): if you had started picking a range and then used the dropdown to jump to another
+  month or year, that tap could wrongly finish the range. The dropdown now only changes the
+  view, and picking an option still works on touch.
+
+- c619ffd: fix(DSTSUP-257): commit RangeCalendar month/year dropdown selection on touch
+
+  The dropdown overlay attached an unconditional `pointerup` `stopPropagation` listener to guard against react-aria's range-commit on overlay taps. On touch devices that also swallowed the event before react-aria's `usePress` click-completion fallback could run, so tapping a month or year never fired `onPress` and the selection was silently lost (the dropdown stayed open and the grid did not switch). The guard now skips `role="option"` targets, letting option taps bubble through while still protecting taps on empty overlay area. Desktop mouse behaviour is unchanged.
+
+- 1c5c5fd: chore: single-source NonModal's overlay state to close a cross-copy react-aria seam
+
+  `NonModal` previously created its overlay state and types from the umbrella `react-stately` while reading `OverlayTriggerStateContext` from `react-aria-components`. When a duplicate `react-aria`/`react-stately` is installed, those resolve to different copies and the overlay context silently splits — the same failure mode the `Calendar` fix addressed in this release. `useOverlayTriggerState`, `OverlayTriggerState`, and `OverlayTriggerProps` now come from the granular `@react-stately/overlays` package, matching the convention the rest of the package already follows. The umbrella `react-stately` direct dependency is dropped (its only remaining consumer, a Table story, now uses the local `useListData` re-export).
+
+- a289d42: chore(deps): update react-aria
+
+  Bumps the react-aria packages and `tailwindcss-react-aria-components` (theme-rui).
+
+  Note: following the react-aria update, `Switch` now toggles with the Space key
+  to match native checkbox behavior. It no longer toggles on Enter.
+
+- Updated dependencies [9436cbc]
+- Updated dependencies [a289d42]
+  - @marigold/system@17.6.0
+
 ## 17.5.1
 
 ### Patch Changes
