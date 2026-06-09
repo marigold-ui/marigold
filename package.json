@@ -84,8 +84,8 @@
     "typecheck:docs": "pnpm --filter @marigold/docs types:check",
     "contributor": "all-contributors",
     "changeset": "changeset",
-    "release:beta:enter": "zx scripts/beta-enter.mjs",
-    "release:beta:exit": "zx scripts/beta-exit.mjs",
+    "release:beta:prepare": "zx scripts/beta-prepare.mjs",
+    "release:beta:finish": "zx scripts/beta-finish.mjs",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install"
