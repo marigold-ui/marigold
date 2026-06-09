@@ -1,5 +1,58 @@
 # @marigold/docs
 
+## 18.0.0-beta.3
+
+### Patch Changes
+
+- bd45aee: feat(DST-876): add Card usage guidelines
+
+  Renames the `Card.Preview` slot to `Card.Media` across components, theme, and docs. This is a breaking change: consumers using `<Card.Preview>`, the `data-card-preview` selector, or the `preview` theme slot key must migrate to `Card.Media`, `data-card-media`, and the `media` slot key respectively.
+
+  Adds a "Usage" section to the Card docs covering when to use cards, media slot guidance.
+
+- 36b03b5: docs: remove dash punctuation and semicolons from documentation prose
+
+  Rewrites em-dash and en-dash punctuation and prose semicolons across the
+  component, foundation, and pattern docs into plain sentences for easier
+  reading. Numeric ranges now read as "N to M". Example strings that show
+  literal component output (date and number range formatting, filter chip
+  labels) keep their en-dash because it represents real output.
+
+- 1ca43c2: docs(DST-1487): move ActionBar docs from "Actions" into the "Collection" section
+
+  `<ActionBar>` is the floating toolbar of bulk actions for the current selection in a collection, not a generic action primitive. Its docs page moves from `components/actions/actionbar` to `components/collection/actionbar`, sitting alongside `Table`, `Card`, and `Tag`.
+  - The page description and intro are reframed around the collection/bulk-selection context, and a `Related` section now links back to `Table` and `Button`.
+  - Internal links in `ActionButton`, `ActionGroup`, `Button`, and `Drawer` are repointed to the new path. Historical release-note links are left untouched.
+
+- 11ff07a: docs(DST-1226): restructure form documentation for clarity and discoverability
+
+  Consolidates three pages (Form Fields, Forms, Form Implementation) into two:
+  - **Form Fields** (Foundation): slimmed down to anatomy, label, placeholder, help text, width, and field states. New SVG anatomy diagram replaces the static image. Validation content and the redundant component list are removed.
+  - **Forms** (Pattern): merges design/layout content with validation (native, custom, real-time, server errors, Zod) and state management (controlled vs uncontrolled, FormData submission, conditional fields, error handling, react-hook-form, async with `useActionState`).
+
+  The standalone Form Implementation page is removed, and 18 cross-references across component and pattern pages are repointed to the merged Forms page.
+
+- Updated dependencies [5945653]
+- Updated dependencies [141a2cc]
+- Updated dependencies [bd45aee]
+- Updated dependencies [16bcb56]
+- Updated dependencies [263c5e6]
+- Updated dependencies [75cab86]
+- Updated dependencies [0760ecc]
+- Updated dependencies [6430567]
+- Updated dependencies [14f1324]
+- Updated dependencies [431d4dd]
+- Updated dependencies [141a2cc]
+- Updated dependencies [4d20fb6]
+- Updated dependencies [fc9ffb1]
+- Updated dependencies [334688e]
+- Updated dependencies [334688e]
+- Updated dependencies [9cdb389]
+  - @marigold/components@18.0.0-beta.3
+  - @marigold/system@18.0.0-beta.3
+  - @marigold/theme-rui@6.0.0-beta.3
+  - @marigold/icons@2.0.0-beta.3
+
 ## 18.0.0-beta.2
 
 ### Patch Changes

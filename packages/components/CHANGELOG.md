@@ -1,5 +1,126 @@
 # @marigold/components
 
+## 18.0.0-beta.3
+
+### Minor Changes
+
+- 5945653: feat(DST-1460): animated open/close caret in `Accordion.Header`
+
+  `Accordion.Header` now uses the new `MorphCaret` icon, which smoothly animates between the closed (down) and open (up) states by morphing its SVG `d` path. Respects `prefers-reduced-motion`. The unused `ChevronDown` icon has been removed.
+
+- 141a2cc: feat(DST-1373): adopt the slot-configuration pattern in `Card`
+
+  `Card.Header` is now a slot provider: drop a `<Title>` and an optional `<Description>` directly inside it and the header wires up the heading level, id, accessible name, and theme classes automatically. A bare `<Title>` placed directly inside `<Card>` (no `Card.Header` wrapper) is also picked up by the root, so title-only cards can skip the header and still get the right padding and `aria-labelledby` wiring. `<Card>` itself now renders an `<article>` landmark and is automatically labelled by its `<Title>` via `aria-labelledby`, or by an explicit `aria-label`. A new `headingLevel` prop (default `3`) controls the underlying heading tag for the document outline.
+
+  The theme `Card` slot map gains `title` and `description` entries — the typography previously carried on the `header` slot has moved to `title`. Variant text color now flows through a new `--card-accent` CSS custom property, so `master` and `admin` cards pick up the matching accent automatically. Raw `<Stack>` / `<Headline>` composition inside `Card.Header` still renders but does not pick up the slot wiring; prefer `<Title>` / `<Description>` going forward.
+
+- bd45aee: feat(DST-876): add Card usage guidelines
+
+  Renames the `Card.Preview` slot to `Card.Media` across components, theme, and docs. This is a breaking change: consumers using `<Card.Preview>`, the `data-card-preview` selector, or the `preview` theme slot key must migrate to `Card.Media`, `data-card-media`, and the `media` slot key respectively.
+
+  Adds a "Usage" section to the Card docs covering when to use cards, media slot guidance.
+
+- 141a2cc: feat(DST-1480): forward arbitrary HTML attributes on `<Panel>`
+
+  `<Panel>` now extends `HTMLAttributes<HTMLElement>` (minus `className`/`style`) and spreads the remaining props onto its root `<section>`, matching the `<Card>` API. Consumers can now pass `id`, `data-*`, event handlers, and other standard attributes directly to a Panel.
+
+  A consumer-supplied `aria-labelledby` is preserved instead of being overwritten with `undefined` when no `<Title>` is present — the slot-owned `titleId` still wins when a `<Title>` renders. This mirrors the fallback adopted by `Card` in DST-1373.
+
+  [DST-1480](https://reservix.atlassian.net/browse/DST-1480)
+
+- 4d20fb6: feat(DST-1483): remove ActionButton in favor of a slot-aware Button (rename ActionGroup → ButtonGroup)
+
+  The beta-only `<ActionButton>` is removed. `<Button>` is now slot-aware: it adapts
+  automatically inside a button container, so you write `<Button>` everywhere instead
+  of learning a second button component.
+  - `<ActionButton>` is removed. Use `<Button>`; it adapts inside `<ButtonGroup>` and
+    `<Panel.Header>`. Opt a button out of the cascade with `slot={null}`.
+  - `<ActionGroup>` is renamed to `<ButtonGroup>`, mirroring the existing
+    `ToggleButtonGroup → ToggleButtonContext → ToggleButton` trio.
+  - A single Marigold-owned `ButtonContext` drives the cascade (replaces
+    `ActionButtonContext` + `ActionGroupContext`). RAC's own `ButtonContext`
+    (`close`/`increment`/`decrement` slots) is untouched.
+  - **Uniform precedence:** a local prop (`variant`, `size`, `disabled`) always wins
+    over the container. This drops the former `ActionGroup` `size`-group-wins outlier.
+  - `<ButtonGroup>` cascades `variant: 'secondary'` when unset, the same baseline
+    as a standalone `<Button>`. Slot-aware parents override it where they want
+    lower emphasis: `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'small'`,
+    so a labelled header action stays readable. An icon-only action (a bare-icon
+    `<Button>`, an `<ActionMenu>` kebab) sets `size="icon"` to render as a square.
+  - `<ButtonGroup>` now owns a structural `flex gap-1` layout (orientation-aware), so
+    a standalone cluster is spaced correctly — `<ActionGroup>` had no layout of its
+    own. A container's positional className (e.g. Panel's `[grid-area:actions]`) still
+    rides along and positions the group.
+  - Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset `ButtonContext` at their
+    content root, so a header/group cascade can't leak through the portal into an
+    overlay's `slot="close"` or `Dialog.Actions` buttons.
+  - `<SelectList.Option>` cascades `variant: 'ghost'` to a nested `<Button>`,
+    `<LinkButton>`, or `<ActionMenu>`, so a trailing in-row action reads as
+    low-emphasis chrome without an explicit `variant`.
+
+  **Migration**
+  - `<ActionButton>` → `<Button>` (its `default` variant maps to `variant="ghost"`).
+  - `<ActionGroup>` → `<ButtonGroup>`.
+  - `ActionButtonContext` / `ActionGroupContext` → `ButtonContext`.
+  - `<ActionMenu>` keeps its public name. Its trigger is now a slot-aware `<Button>`
+    that inherits the cascade instead of hardcoding a variant: it renders `secondary`
+    on its own (the standalone `<Button>` baseline, matching the pre-unification look)
+    and `ghost` inside `<Panel.Header>`, `<SelectList.Option>`, or a `<ButtonGroup>`.
+    A `variant` set on the `<ActionMenu>` still wins.
+
+### Patch Changes
+
+- 16bcb56: feat([DST-1395]): **SelectList** horizontal layouts now automatically flip to a vertical stack when the wrapping container is narrower than `40rem` (~640px).
+- 75cab86: feat(DST-1286): Panel renders a `data-panel` attribute on its root
+
+  The root `<section>` rendered by `<Panel>` now carries a valueless `data-panel` attribute. External stylesheets and host pages can use it as a stable selector (e.g. `:not(:has([data-panel]))`) to detect whether a Panel is present without depending on Tailwind utility classes.
+
+- 0760ecc: refactor(DST-1374): use `<TextValue>` and `<Description>` for selection-container items
+
+  Consumer-facing JSX in component stories and documentation demos for `<Select>`, `<SelectList>`, `<ListBox>`, `<Menu>`, `<ComboBox>`, and `<Autocomplete>` now composes item content with the `<TextValue>` and `<Description>` primitives instead of hand-written `<Text slot="label">` / `<Text slot="description">`. The primitives are drop-in replacements that render the same RAC `<Text>` with the same default slot values, so rendering, `aria-describedby` wiring, and accessibility are identical.
+
+  `<Menu.Item>` gains first-class `label` and `description` theme slots, mirroring `<SelectList.Option>`. `MenuItem` merges the Marigold theme classNames into RAC's `TextContext` so nested `<TextValue>` / `<Description>` pick up Menu styling without losing RAC's slot wiring. Menu items adopt a two-column grid layout (icon column + content column) so descriptions render below labels; existing plain-text and icon+text menu items are unaffected.
+
+  The `Menu` theme type in `@marigold/system` is extended with required `label` and `description` slot keys. Consumers maintaining a custom theme that overrides `Menu` will need to add these two slots to satisfy the type. `@marigold/theme-rui` is updated accordingly in this release.
+
+  No public API change on `Select.Option`, `SelectList.Option`, `ListBox.Item`, `Menu.Item`, `ComboBox.Option`, or `Autocomplete.Option`.
+
+- 14f1324: fix(DST-1467): make `MorphCaret` SSR-safe
+
+  The shared `reducedMotion` constant in `utils/reducedMotion.ts` sampled `window.matchMedia` at module evaluation, so the server bundle always resolved to `false` while a client with `prefers-reduced-motion: reduce` resolved to `true` — producing a React 19 hydration mismatch (silently absorbed in production, logged as an error in dev). `MorphCaret` now reads the preference via `useReducedMotion()` from `motion/react`, matching `SidebarToggleIcon` and `TrayModal`. The obsolete `utils/reducedMotion.ts` has been removed.
+
+- 431d4dd: fix(DST-1480): only set `aria-labelledby` on Panel when a Title is present
+
+  `<Panel>` previously rendered `aria-labelledby={titleId}` whenever no `aria-label` was given, even if no `<Title>` was present. That left the `<section>` landmark pointing at an id no element carried, producing a broken/empty accessible name.
+
+  The guard now also checks `hasTitle`, so `aria-labelledby` is only applied when a `<Title>` actually renders. This mirrors the stricter guard adopted by `Card` in DST-1373.
+
+  [DST-1480](https://reservix.atlassian.net/browse/DST-1480)
+
+- fc9ffb1: fix(DSTSUP-256): show `cursor-not-allowed` on disabled TagField
+
+  The hidden trigger button inside TagField had `cursor-pointer` hardcoded, so hovering a
+  disabled TagField showed the text/caret cursor instead of `not-allowed` — inconsistent with
+  Select and ComboBox. Added `disabled:cursor-not-allowed` to the trigger button so the cursor
+  now matches the rest of the form components.
+
+- 334688e: chore(DST-1364): migrate `ListBox` item label/description styling off descendant selectors
+
+  `ListBox` now exposes `label` and `description` as first-class theme entries, and `ListBox.Item` injects their classNames into react-aria's `TextContext` (merging rather than replacing, so RAC's `aria-describedby` wiring is preserved) instead of styling `[slot=description]` via a descendant selector on `item`. This also benefits `Select.Option`, `ComboBox.Option`, and `Autocomplete.Option`, which re-export `ListBox.Item`.
+
+  The `Theme` type in `@marigold/system` now requires `label` and `description` keys on the `ListBox` record, so custom themes implementing `ListBox` must add these entries. No public API change in `@marigold/components`; visually identical except `description` now explicitly sets `font-normal` (parity with `SelectList`).
+
+- 334688e: chore: extract shared `useMergedTextSlots` helper for RAC `TextContext` slot styling
+
+  `ListBox.Item` and `SelectList.Option` both merged `label`/`description` theme classNames into react-aria's `TextContext` (spreading the parent slot first to preserve RAC's `aria-describedby` `id`). That accessibility-critical logic — and its `SlottedContextValue` type — now lives in a single `useMergedTextSlots` hook that both consume. No public API or visual change.
+
+- 9cdb389: fix(DST-1464): keep wide content inside `<AppLayout.Main>` from overflowing the viewport. The shell grid uses `grid-cols-[auto_1fr]` and the main grid item defaulted to `min-width: auto`, so any content wider than the available track (most visibly a `<Select selectionMode="multiple">` with several long selected items) pushed the main column past the viewport and added a horizontal scrollbar. Adding `min-w-0` to `AppLayoutMain` lets the `1fr` track actually shrink, and children like `truncate` on the Select trigger can now clip at the right place.
+- Updated dependencies [141a2cc]
+- Updated dependencies [0760ecc]
+- Updated dependencies [4d20fb6]
+- Updated dependencies [334688e]
+  - @marigold/system@18.0.0-beta.3
+
 ## 18.0.0-beta.2
 
 ### Major Changes

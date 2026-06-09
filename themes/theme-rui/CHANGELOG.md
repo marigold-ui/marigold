@@ -1,5 +1,116 @@
 # @marigold/theme-rui
 
+## 6.0.0-beta.3
+
+### Minor Changes
+
+- 141a2cc: feat(DST-1373): adopt the slot-configuration pattern in `Card`
+
+  `Card.Header` is now a slot provider: drop a `<Title>` and an optional `<Description>` directly inside it and the header wires up the heading level, id, accessible name, and theme classes automatically. A bare `<Title>` placed directly inside `<Card>` (no `Card.Header` wrapper) is also picked up by the root, so title-only cards can skip the header and still get the right padding and `aria-labelledby` wiring. `<Card>` itself now renders an `<article>` landmark and is automatically labelled by its `<Title>` via `aria-labelledby`, or by an explicit `aria-label`. A new `headingLevel` prop (default `3`) controls the underlying heading tag for the document outline.
+
+  The theme `Card` slot map gains `title` and `description` entries — the typography previously carried on the `header` slot has moved to `title`. Variant text color now flows through a new `--card-accent` CSS custom property, so `master` and `admin` cards pick up the matching accent automatically. Raw `<Stack>` / `<Headline>` composition inside `Card.Header` still renders but does not pick up the slot wiring; prefer `<Title>` / `<Description>` going forward.
+
+- bd45aee: feat(DST-876): add Card usage guidelines
+
+  Renames the `Card.Preview` slot to `Card.Media` across components, theme, and docs. This is a breaking change: consumers using `<Card.Preview>`, the `data-card-preview` selector, or the `preview` theme slot key must migrate to `Card.Media`, `data-card-media`, and the `media` slot key respectively.
+
+  Adds a "Usage" section to the Card docs covering when to use cards, media slot guidance.
+
+- 263c5e6: feat(DST-1238): align Dialog with the shared `ui-panel-*` pattern
+
+  Dialog now adopts the `ui-panel-content` and `ui-panel-actions` utilities already used by Drawer, Tray, and Sidebar. Visible changes are scoped to Dialog:
+  - Actions gain a `border-t` divider as the interaction-zone marker
+  - Content gains consistent `py-4` vertical padding (was `py-1`)
+  - Actions padding becomes symmetric `py-4` (was `pt-4 pb-6`)
+  - Responsive button stacking (`flex-col-reverse sm:flex-row`) remains Dialog-specific identity
+
+  Dialog's header keeps its original treatment (`px-6 pt-6`, no border). It's a conversational opener that sits close to the message body, not a section divider above scrollable content — the ticket's "maintain unique identity where functionally necessary" guidance applies.
+
+  New `ui-panel-content` utility (`overflow-y-auto outline-none px-6 py-4`) added; adopted by Dialog and Drawer. Tray retains its compact `p-2` content padding and Sidebar retains its tighter `px-3 py-1` nav padding because those areas have intentionally tighter densities.
+
+  The `ui-panel-*` utilities are now documented with an inline docstring in `ui.css` clarifying they're for modal-style panels (Dialog/Drawer/Tray/Sidebar) and distinct from the `Panel` component.
+
+  Drawer, Tray, and Sidebar have no visual change — Drawer migrates inline padding/scroll classes to the new `ui-panel-content` utility (identical CSS output); Tray and Sidebar style files are untouched.
+
+  [DST-1238](https://reservix.atlassian.net/browse/DST-1238)
+
+- 4d20fb6: feat(DST-1483): remove ActionButton in favor of a slot-aware Button (rename ActionGroup → ButtonGroup)
+
+  The beta-only `<ActionButton>` is removed. `<Button>` is now slot-aware: it adapts
+  automatically inside a button container, so you write `<Button>` everywhere instead
+  of learning a second button component.
+  - `<ActionButton>` is removed. Use `<Button>`; it adapts inside `<ButtonGroup>` and
+    `<Panel.Header>`. Opt a button out of the cascade with `slot={null}`.
+  - `<ActionGroup>` is renamed to `<ButtonGroup>`, mirroring the existing
+    `ToggleButtonGroup → ToggleButtonContext → ToggleButton` trio.
+  - A single Marigold-owned `ButtonContext` drives the cascade (replaces
+    `ActionButtonContext` + `ActionGroupContext`). RAC's own `ButtonContext`
+    (`close`/`increment`/`decrement` slots) is untouched.
+  - **Uniform precedence:** a local prop (`variant`, `size`, `disabled`) always wins
+    over the container. This drops the former `ActionGroup` `size`-group-wins outlier.
+  - `<ButtonGroup>` cascades `variant: 'secondary'` when unset, the same baseline
+    as a standalone `<Button>`. Slot-aware parents override it where they want
+    lower emphasis: `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'small'`,
+    so a labelled header action stays readable. An icon-only action (a bare-icon
+    `<Button>`, an `<ActionMenu>` kebab) sets `size="icon"` to render as a square.
+  - `<ButtonGroup>` now owns a structural `flex gap-1` layout (orientation-aware), so
+    a standalone cluster is spaced correctly — `<ActionGroup>` had no layout of its
+    own. A container's positional className (e.g. Panel's `[grid-area:actions]`) still
+    rides along and positions the group.
+  - Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset `ButtonContext` at their
+    content root, so a header/group cascade can't leak through the portal into an
+    overlay's `slot="close"` or `Dialog.Actions` buttons.
+  - `<SelectList.Option>` cascades `variant: 'ghost'` to a nested `<Button>`,
+    `<LinkButton>`, or `<ActionMenu>`, so a trailing in-row action reads as
+    low-emphasis chrome without an explicit `variant`.
+
+  **Migration**
+  - `<ActionButton>` → `<Button>` (its `default` variant maps to `variant="ghost"`).
+  - `<ActionGroup>` → `<ButtonGroup>`.
+  - `ActionButtonContext` / `ActionGroupContext` → `ButtonContext`.
+  - `<ActionMenu>` keeps its public name. Its trigger is now a slot-aware `<Button>`
+    that inherits the cascade instead of hardcoding a variant: it renders `secondary`
+    on its own (the standalone `<Button>` baseline, matching the pre-unification look)
+    and `ghost` inside `<Panel.Header>`, `<SelectList.Option>`, or a `<ButtonGroup>`.
+    A `variant` set on the `<ActionMenu>` still wins.
+
+### Patch Changes
+
+- 16bcb56: feat([DST-1395]): **SelectList** horizontal layouts now automatically flip to a vertical stack when the wrapping container is narrower than `40rem` (~640px).
+- 0760ecc: refactor(DST-1374): use `<TextValue>` and `<Description>` for selection-container items
+
+  Consumer-facing JSX in component stories and documentation demos for `<Select>`, `<SelectList>`, `<ListBox>`, `<Menu>`, `<ComboBox>`, and `<Autocomplete>` now composes item content with the `<TextValue>` and `<Description>` primitives instead of hand-written `<Text slot="label">` / `<Text slot="description">`. The primitives are drop-in replacements that render the same RAC `<Text>` with the same default slot values, so rendering, `aria-describedby` wiring, and accessibility are identical.
+
+  `<Menu.Item>` gains first-class `label` and `description` theme slots, mirroring `<SelectList.Option>`. `MenuItem` merges the Marigold theme classNames into RAC's `TextContext` so nested `<TextValue>` / `<Description>` pick up Menu styling without losing RAC's slot wiring. Menu items adopt a two-column grid layout (icon column + content column) so descriptions render below labels; existing plain-text and icon+text menu items are unaffected.
+
+  The `Menu` theme type in `@marigold/system` is extended with required `label` and `description` slot keys. Consumers maintaining a custom theme that overrides `Menu` will need to add these two slots to satisfy the type. `@marigold/theme-rui` is updated accordingly in this release.
+
+  No public API change on `Select.Option`, `SelectList.Option`, `ListBox.Item`, `Menu.Item`, `ComboBox.Option`, or `Autocomplete.Option`.
+
+- 6430567: fix(DST-1436): drop `background` from hover transitions across `ui-surface`, `ui-surface-contrast`, `Button`, `Tabs`, `Table` (row + edit buttons), `LegacyTable`, `Sidebar` (navLink + backButton), `Calendar` cells, `SelectList`, and `ActionBar.clearButton`. Hover background flips now happen instantly, making high-frequency controls feel snappier and aligning Button variants (primary/secondary previously transitioned the background while ghost/destructive were already instant). Color, border, box-shadow, and transform transitions are preserved.
+- 334688e: chore(DST-1364): migrate `ListBox` item label/description styling off descendant selectors
+
+  `ListBox` now exposes `label` and `description` as first-class theme entries, and `ListBox.Item` injects their classNames into react-aria's `TextContext` (merging rather than replacing, so RAC's `aria-describedby` wiring is preserved) instead of styling `[slot=description]` via a descendant selector on `item`. This also benefits `Select.Option`, `ComboBox.Option`, and `Autocomplete.Option`, which re-export `ListBox.Item`.
+
+  The `Theme` type in `@marigold/system` now requires `label` and `description` keys on the `ListBox` record, so custom themes implementing `ListBox` must add these entries. No public API change in `@marigold/components`; visually identical except `description` now explicitly sets `font-normal` (parity with `SelectList`).
+
+- Updated dependencies [5945653]
+- Updated dependencies [141a2cc]
+- Updated dependencies [bd45aee]
+- Updated dependencies [16bcb56]
+- Updated dependencies [75cab86]
+- Updated dependencies [0760ecc]
+- Updated dependencies [14f1324]
+- Updated dependencies [431d4dd]
+- Updated dependencies [141a2cc]
+- Updated dependencies [4d20fb6]
+- Updated dependencies [fc9ffb1]
+- Updated dependencies [334688e]
+- Updated dependencies [334688e]
+- Updated dependencies [9cdb389]
+  - @marigold/components@18.0.0-beta.3
+  - @marigold/system@18.0.0-beta.3
+
 ## 6.0.0-beta.2
 
 ### Minor Changes
