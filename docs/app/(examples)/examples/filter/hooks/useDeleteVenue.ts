@@ -82,6 +82,9 @@ export const useDeleteVenue = () => {
         title: 'Venue deleted',
         description: `“${venue.name}” was removed.`,
         variant: 'success',
+        // Auto-dismiss success; the error toast stays until dismissed so the
+        // recovery hint can be read.
+        timeout: 5000,
       });
     },
 

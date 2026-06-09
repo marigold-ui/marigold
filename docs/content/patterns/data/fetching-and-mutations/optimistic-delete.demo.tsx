@@ -80,6 +80,10 @@ const useDeleteProduct = () => {
         title: 'Product deleted',
         description: `“${product.name}” was removed.`,
         variant: 'success',
+        // Success is reassurance, so let it auto-dismiss. The error toast below
+        // omits `timeout` on purpose, staying until dismissed so the recovery
+        // step can be read.
+        timeout: 5000,
       }),
     onSettled: () =>
       queryClient.invalidateQueries({ queryKey: productKeys.all }),
