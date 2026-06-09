@@ -561,6 +561,34 @@ left: -10000px`) so it cannot expand the document's scrollable
   - @marigold/system@18.0.0-beta.0
   - @marigold/components@18.0.0-beta.0
 
+## 5.3.2
+
+### Patch Changes
+
+- 9436cbc: fix(DST-1482): make the `width` prop size field components again
+
+  Setting `width` on a field component (`<Select>`, `<TextField>`, `<NumberField>`, …) had no visible effect — the field sized to its content and consumers had to wrap it in an extra element. `FieldBase` sets the `--field-width` CSS variable for its child field element to consume via `w-(--field-width)`, but the variable was registered with `@property … { inherits: false }`, so it never reached the child and `width` fell back to `auto`.
+
+  `--field-width` is now registered with `inherits: true`, restoring the intended parent→child handoff. The same-element layout variables (`--width`, `--max-width`, `--height`, `--container-width`) keep their non-inheriting leak protection.
+
+  Also clarifies in the prop docs that numeric `width` values are spacing-scale tokens, not pixels: `width={64}` resolves to `calc(var(--spacing) * 64)` ≈ 16rem (256px).
+
+- a289d42: chore(deps): update react-aria
+
+  Bumps the react-aria packages and `tailwindcss-react-aria-components` (theme-rui).
+
+  Note: following the react-aria update, `Switch` now toggles with the Space key
+  to match native checkbox behavior. It no longer toggles on Enter.
+
+- Updated dependencies [6f24f07]
+- Updated dependencies [9436cbc]
+- Updated dependencies [737c0a9]
+- Updated dependencies [c619ffd]
+- Updated dependencies [1c5c5fd]
+- Updated dependencies [a289d42]
+  - @marigold/components@17.6.0
+  - @marigold/system@17.6.0
+
 ## 5.3.1
 
 ### Patch Changes

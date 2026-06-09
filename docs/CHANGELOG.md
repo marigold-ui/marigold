@@ -498,6 +498,51 @@
   - @marigold/components@18.0.0-beta.0
   - @marigold/icons@1.3.39-beta.0
 
+## 17.6.0
+
+### Minor Changes
+
+- 6b40542: feat(DST-1264): add `@marigold/cli` — terminal access to Marigold docs, component discovery, and project setup.
+  - New package `@marigold/cli` with commands:
+    - `marigold docs <Component>` — fetch component documentation (supports `--section`, `--format`, `--fresh`, `--offline`)
+    - `marigold list` — list available components (supports `--category`, `--search`)
+    - `marigold init` — interactive wizard that installs Marigold packages, edits CSS, wraps the app in `Providers`, and patches the Vite config for Next.js and Vite projects
+    - `marigold telemetry <status|enable|disable>` — manage anonymous telemetry
+    - `marigold completion <bash|zsh|fish>` — print a shell completion script for tab-completing commands, options, and component names
+  - Security: sanitize remote content at the fetch boundary to strip the full ECMA-48 escape set (OSC, DCS, APC/PM/SOS, cursor) so a compromised docs origin can't write to the clipboard via OSC 52 or hijack the terminal; the OSC/DCS matchers are linear-time to avoid ReDoS on adversarial input.
+  - Docs site: extended `/api/manifest.json` with categorized components and package version; added `/api/telemetry` ingest route (Upstash Redis).
+  - CLAUDE.md: documented CLI usage for AI agents.
+
+  The CLI is designed so AI coding agents can fetch accurate Marigold API data from the terminal instead of guessing from training data. Library exports (`getComponentDocs`, `loadManifest`, …) are available for the MCP server to reuse in a later change.
+
+### Patch Changes
+
+- 7ae875a: docs(DST-1430): reframe ToggleButton as an action button, not a form field or filter
+
+  Rewrites the ToggleButton docs to position it as an action button that retains an active state, used in toolbars, editors, and canvases. The page now states explicitly that `<ToggleButton>` is not a form field or a filter, and that `<ToggleButton.Group>` is a toolbar of independent on/off actions rather than a selection control. The filter demo and the "Selection modes" section are removed; their guidance moves into a strengthened Do/Don't list and an updated Alternative components list that points readers to Checkbox.Group, Switch, Tabs, and Button. A new view-options demo broadens the group example beyond the formatting toolbar.
+
+- 8637d9f: docs(DST-982): add a recommended third-party libraries page
+
+  Adds a new "Recommended Libraries" page under Getting Started that collects the third-party libraries we recommend pairing with Marigold in one place. Until now these recommendations were scattered across individual component and pattern docs, so people only found them by chance. The page groups them by purpose (styling & build, data fetching, forms & validation, routing & URL state, dates, testing, and fonts), gives a brief note on when to use each, and links both the library's official docs and our own references. Registered in the Getting Started navigation after Installation.
+
+- a289d42: chore(deps): update react-aria
+
+  Bumps the react-aria packages and `tailwindcss-react-aria-components` (theme-rui).
+
+  Note: following the react-aria update, `Switch` now toggles with the Space key
+  to match native checkbox behavior. It no longer toggles on Enter.
+
+- Updated dependencies [6f24f07]
+- Updated dependencies [9436cbc]
+- Updated dependencies [737c0a9]
+- Updated dependencies [c619ffd]
+- Updated dependencies [1c5c5fd]
+- Updated dependencies [a289d42]
+  - @marigold/components@17.6.0
+  - @marigold/theme-rui@5.3.2
+  - @marigold/system@17.6.0
+  - @marigold/icons@1.3.41
+
 ## 17.5.1
 
 ### Patch Changes
