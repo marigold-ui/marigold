@@ -95,21 +95,35 @@ await $`git add -A`;
 await $`git commit -m ${'release: version packages (beta)'}`;
 
 console.log(chalk.cyan('\n▸ Publishing to npm (tag: beta)…'));
-// The @marigold/* packages require 2FA on publish. `CI=true` makes changesets
-// run non-interactively (skipping its `npm profile get` pre-flight, which 403s
-// with granular access tokens) — but that also means pnpm can't prompt for the
-// OTP and fails with ERR_PNPM_OTP_NON_INTERACTIVE. So capture an OTP up front
-// and pass it through explicitly. Enter it immediately before continuing, since
-// TOTP codes are only valid for ~30s. (A bypass-2FA granular token can leave
-// this blank.)
+// The @marigold/* packages require 2FA on publish. There are two valid paths,
+// and they hinge on how changesets handles OTP (see @changesets/cli
+// internalPublish): it only forwards `--otp` to pnpm when it does NOT think it
+// is running in CI (`isRequired && !isCI`). So `CI=true` and an OTP are
+// mutually exclusive — under CI it silently drops the otp and pnpm then dies
+// with ERR_PNPM_OTP_NON_INTERACTIVE.
+//
+//   • Interactive 2FA (e.g. after `npm login`): enter an OTP below. Passing
+//     `--otp` also makes changesets skip its `npm profile get` pre-flight, so
+//     we must NOT set CI in this case.
+//   • Bypass-2FA automation token: leave the OTP blank. Then we set `CI=true`
+//     to skip the `npm profile get` pre-flight, which 403s with granular
+//     access tokens.
+//
+// Enter the OTP immediately before continuing — TOTP codes are valid ~30s.
 const otp = (
   await question(
     'Enter your npm 2FA OTP code (leave blank if using a bypass-2FA token): '
   )
 ).trim();
+const env = { ...process.env };
+if (otp) {
+  delete env.CI;
+} else {
+  env.CI = 'true';
+}
 await $({
   stdio: 'inherit',
-  env: { ...process.env, CI: 'true' },
+  env,
 })`pnpm changeset publish ${otp ? ['--otp', otp] : []}`;
 
 console.log(chalk.cyan('\n▸ Pushing commit + tags to origin…'));
