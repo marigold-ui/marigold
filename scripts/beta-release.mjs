@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 // Set available globals for eslint
-/* global $, argv, chalk, fs, os, path */
+/* global $, argv, chalk, fs, os, path, question */
 
 const force = !!argv.force;
 
@@ -95,13 +95,22 @@ await $`git add -A`;
 await $`git commit -m ${'release: version packages (beta)'}`;
 
 console.log(chalk.cyan('\n▸ Publishing to npm (tag: beta)…'));
-// `CI=true` makes changesets skip its `npm profile get` pre-flight check,
-// which 403s with granular access tokens (account-endpoint access is denied).
-// The publish itself works because the granular token has bypass-2FA enabled.
+// The @marigold/* packages require 2FA on publish. `CI=true` makes changesets
+// run non-interactively (skipping its `npm profile get` pre-flight, which 403s
+// with granular access tokens) — but that also means pnpm can't prompt for the
+// OTP and fails with ERR_PNPM_OTP_NON_INTERACTIVE. So capture an OTP up front
+// and pass it through explicitly. Enter it immediately before continuing, since
+// TOTP codes are only valid for ~30s. (A bypass-2FA granular token can leave
+// this blank.)
+const otp = (
+  await question(
+    'Enter your npm 2FA OTP code (leave blank if using a bypass-2FA token): '
+  )
+).trim();
 await $({
   stdio: 'inherit',
   env: { ...process.env, CI: 'true' },
-})`pnpm changeset publish`;
+})`pnpm changeset publish ${otp ? ['--otp', otp] : []}`;
 
 console.log(chalk.cyan('\n▸ Pushing commit + tags to origin…'));
 await $`git push --follow-tags`;
