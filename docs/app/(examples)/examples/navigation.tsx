@@ -2,8 +2,8 @@ import { people } from '@/lib/data/people';
 import type { NavSection, ShellConfig } from '../_shared';
 
 const appShellDocs = {
-  docsHref: '/patterns/layout/app-shell',
-  docsLabel: 'App Shell Pattern',
+  docsHref: '/patterns/layout/app-frame',
+  docsLabel: 'App Frame Pattern',
 } as const;
 
 const layout: NavSection = {

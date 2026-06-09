@@ -1,10 +1,10 @@
 ---
-title: App Shell
-description: A composition pattern for building application frames with persistent sidebar navigation, a top bar, and scrollable content.
+title: App Frame
+description: A composition pattern for building the application frame with persistent sidebar navigation, a top bar, and scrollable content.
 badge: alpha
 ---
 
-Most business applications share a common frame: a sidebar for navigation, a top bar for context and actions, and a scrollable content area. The App Shell pattern shows how to compose this frame using [`<AppShell>`](/components/layout/app-shell), [`<Page>`](/components/layout/page), and [`<Page.Header>`](/components/layout/page#header), covering content placement decisions, the heading outline, action hierarchy, and responsive strategy.
+Most business applications share a common frame: a sidebar for navigation, a top bar for context and actions, and a scrollable content area. The App Frame pattern shows how to compose this frame using [`<AppShell>`](/components/layout/app-shell), [`<Page>`](/components/layout/page), and [`<Page.Header>`](/components/layout/page#header), covering content placement decisions, the heading outline, action hierarchy, and responsive strategy.
 
 <Callout title="Looking for the component API?">
   For props, slot details, and accessibility, see the
@@ -14,12 +14,12 @@ Most business applications share a common frame: a sidebar for navigation, a top
 
 ## Structure
 
-The App Shell divides the screen into three areas. The diagram below shows how they are arranged, and the code snippet shows how the components map to each area.
+The app frame divides the screen into three areas. The diagram below shows how they are arranged, and the code snippet shows how the components map to each area.
 
 <ImageZoom
   className="mx-auto"
   src="/app-shell/app-shell-anatomy.svg"
-  alt="App Shell Anatomy"
+  alt="App Frame Anatomy"
   width="600"
   height="400"
 />
@@ -103,7 +103,7 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
 
 ### Landmarks
 
-Each App Shell slot renders semantic HTML, so the screen reader's landmark list reflects the layout automatically.
+Each app frame slot renders semantic HTML, so the screen reader's landmark list reflects the layout automatically.
 
 | Slot              | Landmark        |
 | ----------------- | --------------- |
@@ -199,7 +199,7 @@ When a page (or a Panel within it) has no data yet, render an [`<EmptyState>`](/
 
 ## Full demo
 
-A complete App Shell with sidebar navigation (including drill-down), breadcrumbs, user menu, and scrollable content.
+A complete app frame with sidebar navigation (including drill-down), breadcrumbs, user menu, and scrollable content.
 
 <DemoLinks
   demo="/examples"

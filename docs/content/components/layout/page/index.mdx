@@ -10,7 +10,7 @@ For assistive technology, `<Page>` marks up the screen's main content region, so
 
 <Callout title="Looking for composition guidance?">
   For where a page sits in the application frame and how to structure its
-  content, see the [App Shell pattern](/patterns/layout/app-shell).
+  content, see the [App Frame pattern](/patterns/layout/app-frame).
 </Callout>
 
 ## Usage
@@ -86,7 +86,7 @@ This is a deliberate departure from systems that expose a page-level `fullWidth`
 
 The header has room for a title, a description, and the page's primary action, and nothing else. Object status (a `<Badge>` such as "Published" or "Suspended") and at-a-glance metadata (counts, dates, owners) do not belong in it. Crowding the header with them buries the one action a user came there for, and there is no slot to hold them anyway.
 
-Show them in the page body instead. On a detail or record screen, the established shape is a primary column with the main content beside a narrower secondary `<Panel>`, usually titled "Overview", that carries the status and the key facts. The [detail layout](/patterns/layout/app-shell#common-page-layouts) in the App Shell pattern walks through this primary/secondary split.
+Show them in the page body instead. On a detail or record screen, the established shape is a primary column with the main content beside a narrower secondary `<Panel>`, usually titled "Overview", that carries the status and the key facts. The [detail layout](/patterns/layout/app-frame#common-page-layouts) in the App Frame pattern walks through this primary/secondary split.
 
 <ComponentDemo name="page-status-metadata" background="page" />
 
