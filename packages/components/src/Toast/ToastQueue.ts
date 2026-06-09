@@ -21,25 +21,18 @@ export type ToastOptions = {
 
 const MINIMUM_TIMEOUT_MS = 5000;
 
-// Per-variant default timeout used when the caller does not pass one. Low
-// severity / reassurance toasts auto-dismiss, while high-severity / actionable
-// ones persist until dismissed (WCAG 2.1 SC 1.4.13 "Content on Hover or Focus").
-const DEFAULT_TIMEOUT_BY_VARIANT: Record<ToastVariant, number | undefined> = {
-  success: MINIMUM_TIMEOUT_MS,
-  info: MINIMUM_TIMEOUT_MS,
-  warning: undefined,
-  error: undefined,
-};
-
+// Only warning and error persist until dismissed (higher severity, per WCAG
+// 2.1 SC 1.4.13). Everything else auto-dismisses after the minimum.
 const resolveTimeout = (
   timeout: number | undefined,
   variant?: ToastVariant
 ) => {
-  // No explicit timeout: use the per-variant default (no variant = default).
   if (timeout === undefined) {
-    return variant ? DEFAULT_TIMEOUT_BY_VARIANT[variant] : MINIMUM_TIMEOUT_MS;
+    return variant === 'warning' || variant === 'error'
+      ? undefined
+      : MINIMUM_TIMEOUT_MS;
   }
-  // Explicit opt-out: keep the toast until it is manually dismissed.
+  // `0` or less keeps the toast until it is manually dismissed.
   if (timeout <= 0) {
     return undefined;
   }
