@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import { useEffect, useId, useMemo } from 'react';
 import { HeadingContext, Provider } from 'react-aria-components';
 import type {
@@ -7,7 +7,7 @@ import type {
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
-import { cn, createSpacingVar, useClassNames } from '@marigold/system';
+import { cn, createSpacingVar, isScale, useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PageContext } from './Context';
 import { PageContent } from './PageContent';
@@ -15,7 +15,10 @@ import { PageHeader } from './PageHeader';
 
 // Props
 // ---------------
-interface PageBaseProps {
+interface PageBaseProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  'className' | 'style'
+> {
   /**
    * Content of the page. Typically a `<Page.Header>` followed by `<Panel>`s
    * (and other page sections).
@@ -23,6 +26,8 @@ interface PageBaseProps {
   children: ReactNode;
   /** Accessible label for the page's `<main>`. Required when no `<Title>` is present. */
   'aria-label'?: string;
+  /** Ref forwarded to the underlying `<main>` landmark. */
+  ref?: Ref<HTMLElement>;
   /**
    * Base heading level for the page. A `<Title>` inside `<Page.Header>` (or a
    * bare `<Title>` directly under `<Page>`) renders at this level.
@@ -75,14 +80,17 @@ export const Page = ({
   p,
   px,
   py,
+  ref,
+  ...props
 }: PageProps) => {
   const titleId = useId();
   const classNames = useClassNames({ component: 'Page' });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
-  const inset = p ?? 'square-relaxed';
-  const resolvedPx = px ?? `${inset}-x`;
-  const resolvedPy = py ?? `${inset}-y`;
+  const inset = `${p ?? 'square-relaxed'}`;
+  const isScaleInset = isScale(inset);
+  const resolvedPx = px ?? (isScaleInset ? inset : `${inset}-x`);
+  const resolvedPy = py ?? (isScaleInset ? inset : `${inset}-y`);
 
   const rootHeadingProps = useMemo(
     () => ({
@@ -111,17 +119,23 @@ export const Page = ({
 
   // The `<main>` landmark must have an accessible name. It is named by the
   // page `<Title>` (via `aria-labelledby`); when there is no title the consumer
-  // must pass `aria-label`. Warn in development if neither is present so the
-  // landmark is never silently unnamed.
+  // must pass `aria-label` (or their own `aria-labelledby`). Warn in development
+  // if none is present so the landmark is never silently unnamed.
+  const ariaLabelledBy = props['aria-labelledby'];
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production' && !hasTitle && !ariaLabel) {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      !hasTitle &&
+      !ariaLabel &&
+      !ariaLabelledBy
+    ) {
       console.error(
         '<Page>: the `<main>` landmark has no accessible name. Either render a ' +
           '`<Title>` inside the page (e.g. in `<Page.Header>`) or pass an ' +
           '`aria-label` to `<Page>`.'
       );
     }
-  }, [hasTitle, ariaLabel]);
+  }, [hasTitle, ariaLabel, ariaLabelledBy]);
 
   return (
     <Provider
@@ -131,8 +145,10 @@ export const Page = ({
       ]}
     >
       <main
+        {...props}
+        ref={ref}
         data-page
-        aria-labelledby={hasTitle ? titleId : undefined}
+        aria-labelledby={hasTitle ? titleId : props['aria-labelledby']}
         aria-label={!hasTitle ? ariaLabel : undefined}
         className={cn(
           'flex min-w-0 flex-col gap-y-(--page-gap) px-(--page-px) py-(--page-py) [grid-area:main]',

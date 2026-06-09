@@ -337,3 +337,23 @@ export const Unlabelled = meta.story({
     </Page>
   ),
 });
+
+/**
+ * When there is no `<Title>`, a caller can still name the `<main>` landmark by
+ * passing their own `aria-labelledby` (or `aria-label`). Marigold preserves a
+ * caller-supplied `aria-labelledby` instead of overwriting it.
+ */
+export const ExternalLabel = meta.story({
+  render: () => (
+    <>
+      <h2 id="external-heading">Reports</h2>
+      <Page aria-labelledby="external-heading">
+        <Panel aria-label="Summary">
+          <Panel.Content>
+            <Text>Named by an external heading.</Text>
+          </Panel.Content>
+        </Panel>
+      </Page>
+    </>
+  ),
+});

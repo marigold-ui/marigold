@@ -1,9 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
+import type { RefObject } from 'react';
 import { Title } from '../Title/Title';
 import { Page } from './Page';
 import {
   Basic,
+  ExternalLabel,
   TitleOnly,
   Unlabelled,
   WithContent,
@@ -43,6 +45,46 @@ describe('Page', () => {
     expect(main.style.getPropertyValue('--page-px')).not.toBe('');
     expect(main.style.getPropertyValue('--page-py')).not.toBe('');
     expect(main.style.getPropertyValue('--page-gap')).not.toBe('');
+  });
+
+  test('resolves a numeric `p` to a scale-based padding on both axes', () => {
+    render(<Basic.Component p={4} />);
+
+    const main = screen.getByRole('main');
+
+    // A numeric `p` must not build a non-existent `var(--spacing-4-x)`; it is
+    // applied directly as a scale value to both axes.
+    expect(main.style.getPropertyValue('--page-px')).toBe(
+      'calc(var(--spacing) * 4)'
+    );
+    expect(main.style.getPropertyValue('--page-py')).toBe(
+      'calc(var(--spacing) * 4)'
+    );
+  });
+
+  test('forwards arbitrary DOM props onto the main landmark', () => {
+    render(<Basic.Component id="billing-page" data-analytics="billing" />);
+
+    const main = screen.getByRole('main');
+
+    expect(main).toHaveAttribute('id', 'billing-page');
+    expect(main).toHaveAttribute('data-analytics', 'billing');
+  });
+
+  test('forwards a ref to the main landmark', () => {
+    const ref: RefObject<HTMLElement | null> = { current: null };
+
+    render(<Basic.Component ref={ref} />);
+
+    expect(ref.current).toBe(screen.getByRole('main'));
+  });
+
+  test('preserves a caller-supplied aria-labelledby when no Title is present', () => {
+    render(<ExternalLabel.Component />);
+
+    const main = screen.getByRole('main');
+
+    expect(main).toHaveAttribute('aria-labelledby', 'external-heading');
   });
 
   test('supports a bare Title directly under Page, without Page.Header', () => {

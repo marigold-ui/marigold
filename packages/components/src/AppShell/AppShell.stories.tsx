@@ -111,9 +111,9 @@ const ShellFrame = ({ pageExtra }: { pageExtra?: React.ReactNode }) => {
             </Breadcrumbs>
           </TopNavigation.Middle>
           <TopNavigation.End>
-            <Inline space={2} alignY="center" noWrap>
+            <Inline space="related" alignY="center" noWrap>
               <Stack>
-                <Inline space={1} alignY="center" noWrap>
+                <Inline space="tight" alignY="center" noWrap>
                   <Text size="sm" weight="bold">
                     Jane Doe
                   </Text>
