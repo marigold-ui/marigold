@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 // Set available globals for eslint
-/* global $, argv, chalk, fs */
+/* global $, argv, chalk, fs, os, path */
 
 const force = !!argv.force;
 
@@ -43,9 +43,24 @@ if (pending.length === 0) {
 // so check for an auth token directly instead. The token must be a granular
 // access token with bypass-2FA enabled, since the @marigold/* packages require
 // either an interactive OTP or a bypass-2FA token for writes.
-const token = (
-  await $`npm config get //registry.npmjs.org/:_authToken`
-).stdout.trim();
+//
+// npm >= 11 protects `_authToken` and refuses to return it via `npm config get`
+// ("the option is protected, and cannot be retrieved in this way"), so read the
+// npmrc files directly instead.
+function readAuthToken() {
+  const files = [
+    path.join(process.cwd(), '.npmrc'),
+    path.join(os.homedir(), '.npmrc'),
+  ];
+  const re = /^\/\/registry\.npmjs\.org\/:_authToken\s*=\s*(.+)$/m;
+  for (const file of files) {
+    if (!fs.existsSync(file)) continue;
+    const match = fs.readFileSync(file, 'utf8').match(re);
+    if (match) return match[1].trim().replace(/^["']|["']$/g, '');
+  }
+  return '';
+}
+const token = readAuthToken();
 if (!token || token === 'undefined') {
   fail(
     'No npm auth token in npmrc. Add a granular token with bypass-2FA enabled to ~/.npmrc.'

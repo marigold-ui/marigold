@@ -1,5 +1,58 @@
 # @marigold/docs
 
+## 18.0.0-beta.3
+
+### Patch Changes
+
+- bd45aee: feat(DST-876): add Card usage guidelines
+
+  Renames the `Card.Preview` slot to `Card.Media` across components, theme, and docs. This is a breaking change: consumers using `<Card.Preview>`, the `data-card-preview` selector, or the `preview` theme slot key must migrate to `Card.Media`, `data-card-media`, and the `media` slot key respectively.
+
+  Adds a "Usage" section to the Card docs covering when to use cards, media slot guidance.
+
+- 36b03b5: docs: remove dash punctuation and semicolons from documentation prose
+
+  Rewrites em-dash and en-dash punctuation and prose semicolons across the
+  component, foundation, and pattern docs into plain sentences for easier
+  reading. Numeric ranges now read as "N to M". Example strings that show
+  literal component output (date and number range formatting, filter chip
+  labels) keep their en-dash because it represents real output.
+
+- 1ca43c2: docs(DST-1487): move ActionBar docs from "Actions" into the "Collection" section
+
+  `<ActionBar>` is the floating toolbar of bulk actions for the current selection in a collection, not a generic action primitive. Its docs page moves from `components/actions/actionbar` to `components/collection/actionbar`, sitting alongside `Table`, `Card`, and `Tag`.
+  - The page description and intro are reframed around the collection/bulk-selection context, and a `Related` section now links back to `Table` and `Button`.
+  - Internal links in `ActionButton`, `ActionGroup`, `Button`, and `Drawer` are repointed to the new path. Historical release-note links are left untouched.
+
+- 11ff07a: docs(DST-1226): restructure form documentation for clarity and discoverability
+
+  Consolidates three pages (Form Fields, Forms, Form Implementation) into two:
+  - **Form Fields** (Foundation): slimmed down to anatomy, label, placeholder, help text, width, and field states. New SVG anatomy diagram replaces the static image. Validation content and the redundant component list are removed.
+  - **Forms** (Pattern): merges design/layout content with validation (native, custom, real-time, server errors, Zod) and state management (controlled vs uncontrolled, FormData submission, conditional fields, error handling, react-hook-form, async with `useActionState`).
+
+  The standalone Form Implementation page is removed, and 18 cross-references across component and pattern pages are repointed to the merged Forms page.
+
+- Updated dependencies [5945653]
+- Updated dependencies [141a2cc]
+- Updated dependencies [bd45aee]
+- Updated dependencies [16bcb56]
+- Updated dependencies [263c5e6]
+- Updated dependencies [75cab86]
+- Updated dependencies [0760ecc]
+- Updated dependencies [6430567]
+- Updated dependencies [14f1324]
+- Updated dependencies [431d4dd]
+- Updated dependencies [141a2cc]
+- Updated dependencies [4d20fb6]
+- Updated dependencies [fc9ffb1]
+- Updated dependencies [334688e]
+- Updated dependencies [334688e]
+- Updated dependencies [9cdb389]
+  - @marigold/components@18.0.0-beta.3
+  - @marigold/system@18.0.0-beta.3
+  - @marigold/theme-rui@6.0.0-beta.3
+  - @marigold/icons@2.0.0-beta.3
+
 ## 18.0.0-beta.2
 
 ### Patch Changes
@@ -497,6 +550,51 @@
   - @marigold/system@18.0.0-beta.0
   - @marigold/components@18.0.0-beta.0
   - @marigold/icons@1.3.39-beta.0
+
+## 17.6.0
+
+### Minor Changes
+
+- 6b40542: feat(DST-1264): add `@marigold/cli` — terminal access to Marigold docs, component discovery, and project setup.
+  - New package `@marigold/cli` with commands:
+    - `marigold docs <Component>` — fetch component documentation (supports `--section`, `--format`, `--fresh`, `--offline`)
+    - `marigold list` — list available components (supports `--category`, `--search`)
+    - `marigold init` — interactive wizard that installs Marigold packages, edits CSS, wraps the app in `Providers`, and patches the Vite config for Next.js and Vite projects
+    - `marigold telemetry <status|enable|disable>` — manage anonymous telemetry
+    - `marigold completion <bash|zsh|fish>` — print a shell completion script for tab-completing commands, options, and component names
+  - Security: sanitize remote content at the fetch boundary to strip the full ECMA-48 escape set (OSC, DCS, APC/PM/SOS, cursor) so a compromised docs origin can't write to the clipboard via OSC 52 or hijack the terminal; the OSC/DCS matchers are linear-time to avoid ReDoS on adversarial input.
+  - Docs site: extended `/api/manifest.json` with categorized components and package version; added `/api/telemetry` ingest route (Upstash Redis).
+  - CLAUDE.md: documented CLI usage for AI agents.
+
+  The CLI is designed so AI coding agents can fetch accurate Marigold API data from the terminal instead of guessing from training data. Library exports (`getComponentDocs`, `loadManifest`, …) are available for the MCP server to reuse in a later change.
+
+### Patch Changes
+
+- 7ae875a: docs(DST-1430): reframe ToggleButton as an action button, not a form field or filter
+
+  Rewrites the ToggleButton docs to position it as an action button that retains an active state, used in toolbars, editors, and canvases. The page now states explicitly that `<ToggleButton>` is not a form field or a filter, and that `<ToggleButton.Group>` is a toolbar of independent on/off actions rather than a selection control. The filter demo and the "Selection modes" section are removed; their guidance moves into a strengthened Do/Don't list and an updated Alternative components list that points readers to Checkbox.Group, Switch, Tabs, and Button. A new view-options demo broadens the group example beyond the formatting toolbar.
+
+- 8637d9f: docs(DST-982): add a recommended third-party libraries page
+
+  Adds a new "Recommended Libraries" page under Getting Started that collects the third-party libraries we recommend pairing with Marigold in one place. Until now these recommendations were scattered across individual component and pattern docs, so people only found them by chance. The page groups them by purpose (styling & build, data fetching, forms & validation, routing & URL state, dates, testing, and fonts), gives a brief note on when to use each, and links both the library's official docs and our own references. Registered in the Getting Started navigation after Installation.
+
+- a289d42: chore(deps): update react-aria
+
+  Bumps the react-aria packages and `tailwindcss-react-aria-components` (theme-rui).
+
+  Note: following the react-aria update, `Switch` now toggles with the Space key
+  to match native checkbox behavior. It no longer toggles on Enter.
+
+- Updated dependencies [6f24f07]
+- Updated dependencies [9436cbc]
+- Updated dependencies [737c0a9]
+- Updated dependencies [c619ffd]
+- Updated dependencies [1c5c5fd]
+- Updated dependencies [a289d42]
+  - @marigold/components@17.6.0
+  - @marigold/theme-rui@5.3.2
+  - @marigold/system@17.6.0
+  - @marigold/icons@1.3.41
 
 ## 17.5.1
 

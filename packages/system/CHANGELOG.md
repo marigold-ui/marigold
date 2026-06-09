@@ -1,5 +1,71 @@
 # @marigold/system
 
+## 18.0.0-beta.3
+
+### Minor Changes
+
+- 141a2cc: feat(DST-1373): adopt the slot-configuration pattern in `Card`
+
+  `Card.Header` is now a slot provider: drop a `<Title>` and an optional `<Description>` directly inside it and the header wires up the heading level, id, accessible name, and theme classes automatically. A bare `<Title>` placed directly inside `<Card>` (no `Card.Header` wrapper) is also picked up by the root, so title-only cards can skip the header and still get the right padding and `aria-labelledby` wiring. `<Card>` itself now renders an `<article>` landmark and is automatically labelled by its `<Title>` via `aria-labelledby`, or by an explicit `aria-label`. A new `headingLevel` prop (default `3`) controls the underlying heading tag for the document outline.
+
+  The theme `Card` slot map gains `title` and `description` entries — the typography previously carried on the `header` slot has moved to `title`. Variant text color now flows through a new `--card-accent` CSS custom property, so `master` and `admin` cards pick up the matching accent automatically. Raw `<Stack>` / `<Headline>` composition inside `Card.Header` still renders but does not pick up the slot wiring; prefer `<Title>` / `<Description>` going forward.
+
+- 0760ecc: refactor(DST-1374): use `<TextValue>` and `<Description>` for selection-container items
+
+  Consumer-facing JSX in component stories and documentation demos for `<Select>`, `<SelectList>`, `<ListBox>`, `<Menu>`, `<ComboBox>`, and `<Autocomplete>` now composes item content with the `<TextValue>` and `<Description>` primitives instead of hand-written `<Text slot="label">` / `<Text slot="description">`. The primitives are drop-in replacements that render the same RAC `<Text>` with the same default slot values, so rendering, `aria-describedby` wiring, and accessibility are identical.
+
+  `<Menu.Item>` gains first-class `label` and `description` theme slots, mirroring `<SelectList.Option>`. `MenuItem` merges the Marigold theme classNames into RAC's `TextContext` so nested `<TextValue>` / `<Description>` pick up Menu styling without losing RAC's slot wiring. Menu items adopt a two-column grid layout (icon column + content column) so descriptions render below labels; existing plain-text and icon+text menu items are unaffected.
+
+  The `Menu` theme type in `@marigold/system` is extended with required `label` and `description` slot keys. Consumers maintaining a custom theme that overrides `Menu` will need to add these two slots to satisfy the type. `@marigold/theme-rui` is updated accordingly in this release.
+
+  No public API change on `Select.Option`, `SelectList.Option`, `ListBox.Item`, `Menu.Item`, `ComboBox.Option`, or `Autocomplete.Option`.
+
+- 4d20fb6: feat(DST-1483): remove ActionButton in favor of a slot-aware Button (rename ActionGroup → ButtonGroup)
+
+  The beta-only `<ActionButton>` is removed. `<Button>` is now slot-aware: it adapts
+  automatically inside a button container, so you write `<Button>` everywhere instead
+  of learning a second button component.
+  - `<ActionButton>` is removed. Use `<Button>`; it adapts inside `<ButtonGroup>` and
+    `<Panel.Header>`. Opt a button out of the cascade with `slot={null}`.
+  - `<ActionGroup>` is renamed to `<ButtonGroup>`, mirroring the existing
+    `ToggleButtonGroup → ToggleButtonContext → ToggleButton` trio.
+  - A single Marigold-owned `ButtonContext` drives the cascade (replaces
+    `ActionButtonContext` + `ActionGroupContext`). RAC's own `ButtonContext`
+    (`close`/`increment`/`decrement` slots) is untouched.
+  - **Uniform precedence:** a local prop (`variant`, `size`, `disabled`) always wins
+    over the container. This drops the former `ActionGroup` `size`-group-wins outlier.
+  - `<ButtonGroup>` cascades `variant: 'secondary'` when unset, the same baseline
+    as a standalone `<Button>`. Slot-aware parents override it where they want
+    lower emphasis: `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'small'`,
+    so a labelled header action stays readable. An icon-only action (a bare-icon
+    `<Button>`, an `<ActionMenu>` kebab) sets `size="icon"` to render as a square.
+  - `<ButtonGroup>` now owns a structural `flex gap-1` layout (orientation-aware), so
+    a standalone cluster is spaced correctly — `<ActionGroup>` had no layout of its
+    own. A container's positional className (e.g. Panel's `[grid-area:actions]`) still
+    rides along and positions the group.
+  - Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset `ButtonContext` at their
+    content root, so a header/group cascade can't leak through the portal into an
+    overlay's `slot="close"` or `Dialog.Actions` buttons.
+  - `<SelectList.Option>` cascades `variant: 'ghost'` to a nested `<Button>`,
+    `<LinkButton>`, or `<ActionMenu>`, so a trailing in-row action reads as
+    low-emphasis chrome without an explicit `variant`.
+
+  **Migration**
+  - `<ActionButton>` → `<Button>` (its `default` variant maps to `variant="ghost"`).
+  - `<ActionGroup>` → `<ButtonGroup>`.
+  - `ActionButtonContext` / `ActionGroupContext` → `ButtonContext`.
+  - `<ActionMenu>` keeps its public name. Its trigger is now a slot-aware `<Button>`
+    that inherits the cascade instead of hardcoding a variant: it renders `secondary`
+    on its own (the standalone `<Button>` baseline, matching the pre-unification look)
+    and `ghost` inside `<Panel.Header>`, `<SelectList.Option>`, or a `<ButtonGroup>`.
+    A `variant` set on the `<ActionMenu>` still wins.
+
+- 334688e: chore(DST-1364): migrate `ListBox` item label/description styling off descendant selectors
+
+  `ListBox` now exposes `label` and `description` as first-class theme entries, and `ListBox.Item` injects their classNames into react-aria's `TextContext` (merging rather than replacing, so RAC's `aria-describedby` wiring is preserved) instead of styling `[slot=description]` via a descendant selector on `item`. This also benefits `Select.Option`, `ComboBox.Option`, and `Autocomplete.Option`, which re-export `ListBox.Item`.
+
+  The `Theme` type in `@marigold/system` now requires `label` and `description` keys on the `ListBox` record, so custom themes implementing `ListBox` must add these entries. No public API change in `@marigold/components`; visually identical except `description` now explicitly sets `font-normal` (parity with `SelectList`).
+
 ## 18.0.0-beta.2
 
 ### Minor Changes
@@ -133,6 +199,25 @@
 
 - 20a42b0: Rename universal spacing token from `none` to `collapsed` to avoid a Tailwind v4 collision. `--spacing-none` inside `@theme static` caused `leading-none` to resolve to `0` instead of `line-height: 1`. The new name `collapsed` is a semantic design term (cf. CSS margin collapse) that reads naturally in both gap (`space="collapsed"`) and padding (`inset="collapsed"`) contexts.
 - de34b15: chore(deps): update `react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` packages to their latest versions.
+
+## 17.6.0
+
+### Patch Changes
+
+- 9436cbc: fix(DST-1482): make the `width` prop size field components again
+
+  Setting `width` on a field component (`<Select>`, `<TextField>`, `<NumberField>`, …) had no visible effect — the field sized to its content and consumers had to wrap it in an extra element. `FieldBase` sets the `--field-width` CSS variable for its child field element to consume via `w-(--field-width)`, but the variable was registered with `@property … { inherits: false }`, so it never reached the child and `width` fell back to `auto`.
+
+  `--field-width` is now registered with `inherits: true`, restoring the intended parent→child handoff. The same-element layout variables (`--width`, `--max-width`, `--height`, `--container-width`) keep their non-inheriting leak protection.
+
+  Also clarifies in the prop docs that numeric `width` values are spacing-scale tokens, not pixels: `width={64}` resolves to `calc(var(--spacing) * 64)` ≈ 16rem (256px).
+
+- a289d42: chore(deps): update react-aria
+
+  Bumps the react-aria packages and `tailwindcss-react-aria-components` (theme-rui).
+
+  Note: following the react-aria update, `Switch` now toggles with the Space key
+  to match native checkbox behavior. It no longer toggles on Enter.
 
 ## 17.5.1
 
