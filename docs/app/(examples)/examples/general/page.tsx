@@ -72,13 +72,12 @@ const GeneralPage = () => {
               </Inline>
             </Stack>
           </Panel.Content>
+          <Panel.Footer>
+            <Button variant="primary" type="submit">
+              Save changes
+            </Button>
+          </Panel.Footer>
         </Panel>
-        {/* The form's primary action sits below the panel, at the end of the form. */}
-        <Inline>
-          <Button variant="primary" type="submit">
-            Save changes
-          </Button>
-        </Inline>
       </Form>
     </Page>
   );

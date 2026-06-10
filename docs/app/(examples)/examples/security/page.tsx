@@ -81,13 +81,12 @@ const SecurityPage = () => {
               />
             </Stack>
           </Panel.Content>
+          <Panel.Footer>
+            <Button variant="primary" type="submit">
+              Update password
+            </Button>
+          </Panel.Footer>
         </Panel>
-        {/* The form's primary action sits below the panel, at the end of the form. */}
-        <Inline>
-          <Button variant="primary" type="submit">
-            Update password
-          </Button>
-        </Inline>
       </Form>
 
       <Panel size="form">

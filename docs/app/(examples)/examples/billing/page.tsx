@@ -52,34 +52,31 @@ const BillingPage = () => (
       </Panel.Content>
     </Panel>
 
-    <Stack space="regular">
-      <Panel>
-        <Panel.Header>
-          <Title>Payment method</Title>
-        </Panel.Header>
-        <Panel.Content>
-          <Stack space="regular">
-            <Stack space="tight">
-              <Text weight="semibold">Visa ending in 4242</Text>
-              <Text variant="muted" fontSize="sm">
-                Expires 08 / 2027
-              </Text>
-            </Stack>
-            <Divider />
-            <Stack space="tight">
-              <Text variant="muted" fontSize="xs">
-                Billing email
-              </Text>
-              <Text weight="semibold">billing@acme.example.com</Text>
-            </Stack>
+    <Panel>
+      <Panel.Header>
+        <Title>Payment method</Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space="regular">
+          <Stack space="tight">
+            <Text weight="semibold">Visa ending in 4242</Text>
+            <Text variant="muted" fontSize="sm">
+              Expires 08 / 2027
+            </Text>
           </Stack>
-        </Panel.Content>
-      </Panel>
-      {/* Panel-scoped secondary action sits below its panel. */}
-      <Inline>
+          <Divider />
+          <Stack space="tight">
+            <Text variant="muted" fontSize="xs">
+              Billing email
+            </Text>
+            <Text weight="semibold">billing@acme.example.com</Text>
+          </Stack>
+        </Stack>
+      </Panel.Content>
+      <Panel.Footer>
         <Button>Update payment method</Button>
-      </Inline>
-    </Stack>
+      </Panel.Footer>
+    </Panel>
 
     <Panel>
       <Panel.Header>
