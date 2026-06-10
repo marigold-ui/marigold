@@ -1,5 +1,9 @@
 import type { Page } from 'playwright';
 import type { ValidationIssue } from '../types.js';
+import {
+  type FocusStyleFingerprint,
+  focusIndicatorChanged,
+} from './focus-visible.js';
 
 type FocusableElement = {
   selector: string;
@@ -8,6 +12,10 @@ type FocusableElement = {
   role: string;
   rect: { x: number; y: number; width: number; height: number };
   groupParent?: string;
+  // Visual fingerprint while NOT focused. Compared against the focused
+  // fingerprint during the Tab walk to decide whether a focus indicator is
+  // perceivable (WCAG 2.4.7). Optional so hand-built test data need not set it.
+  unfocusedStyle?: FocusStyleFingerprint;
 };
 
 type FocusStep = {
@@ -17,6 +25,10 @@ type FocusStep = {
   role: string;
   rect: { x: number; y: number; width: number; height: number };
   focusIndicatorVisible: boolean;
+  // WCAG 2.4.11: focused element hidden behind sticky/fixed content. Optional so
+  // hand-built test data need not set it.
+  obscured?: boolean;
+  obscuredBy?: string | null;
 };
 
 type ArrowNavResult = {
@@ -60,37 +72,6 @@ const INTERACTIVE_SELECTOR = [
 ].join(', ');
 
 const MAX_FOCUS_ORDER_WARNINGS = 3;
-
-export type FocusRingStyle = {
-  outlineStyle: string;
-  outlineWidth: string;
-  outlineColor: string;
-  boxShadow: string;
-};
-
-const ringSurfaceVisible = (s: FocusRingStyle): boolean => {
-  const outlineVisible =
-    s.outlineStyle !== 'none' &&
-    parseFloat(s.outlineWidth) > 0 &&
-    s.outlineColor !== 'transparent';
-  const boxShadowVisible = s.boxShadow !== 'none' && s.boxShadow !== '';
-  return outlineVisible || boxShadowVisible;
-};
-
-// react-aria / Marigold commonly render the focus ring via a theme box-shadow
-// that may live on the element itself, on a ::before/::after pseudo-element, or
-// on a wrapper one level up. Inspecting only the active element's outline misses
-// those and yields false WCAG 2.4.7 reports, so consider all four surfaces.
-export const hasVisibleFocusIndicator = (parts: {
-  self: FocusRingStyle;
-  before?: FocusRingStyle;
-  after?: FocusRingStyle;
-  parent?: FocusRingStyle;
-}): boolean =>
-  ringSurfaceVisible(parts.self) ||
-  (parts.before ? ringSurfaceVisible(parts.before) : false) ||
-  (parts.after ? ringSurfaceVisible(parts.after) : false) ||
-  (parts.parent ? ringSurfaceVisible(parts.parent) : false);
 
 // Roles that are not individual Tab targets: they are single tab stops with
 // internal arrow-key navigation (grids, tables) or structural containers.
@@ -191,6 +172,11 @@ export const extractFocusableElements = async (
   page.evaluate((selector: string) => {
     const w = window as Window & { __cssPath?: (el: Element) => string };
     const cssPath = w.__cssPath!;
+    const mv = (
+      window as unknown as {
+        __mv: { focusFingerprint: (el: Element) => FocusStyleFingerprint };
+      }
+    ).__mv;
 
     const elements: FocusableElement[] = [];
     for (const el of document.querySelectorAll(selector)) {
@@ -256,6 +242,7 @@ export const extractFocusableElements = async (
           height: Math.round(rect.height),
         },
         groupParent,
+        unfocusedStyle: mv.focusFingerprint(el),
       });
     }
     return elements;
@@ -268,100 +255,89 @@ const extractFocusStepData = async (
   component: string;
   role: string;
   rect: { x: number; y: number; width: number; height: number };
-  focusIndicatorVisible: boolean;
+  focused: FocusStyleFingerprint | null;
+  obscured: boolean;
+  obscuredBy: string | null;
   isBody: boolean;
   focusableIndex: number;
 }> =>
-  page
-    .evaluate(() => {
-      const w = window as Window & { __cssPath?: (el: Element) => string };
-      const cssPath = w.__cssPath!;
-      const el = document.activeElement;
-
-      const emptyRing = {
-        outlineStyle: 'none',
-        outlineWidth: '0px',
-        outlineColor: 'transparent',
-        boxShadow: 'none',
-      };
-
-      if (!el || el === document.body) {
-        return {
-          selector: 'body',
-          component: 'body',
-          role: '',
-          rect: { x: 0, y: 0, width: 0, height: 0 },
-          ring: {
-            self: emptyRing,
-            before: emptyRing,
-            after: emptyRing,
-            parent: emptyRing,
-          },
-          isBody: true,
-          focusableIndex: -1,
-        };
+  page.evaluate(() => {
+    const w = window as Window & { __cssPath?: (el: Element) => string };
+    const cssPath = w.__cssPath!;
+    const mv = (
+      window as unknown as {
+        __mv: { focusFingerprint: (el: Element) => FocusStyleFingerprint };
       }
+    ).__mv;
+    const el = document.activeElement;
 
-      const idxAttr = el.getAttribute('data-mv-focusable');
-
-      const readRing = (
-        target: Element,
-        pseudo?: string
-      ): {
-        outlineStyle: string;
-        outlineWidth: string;
-        outlineColor: string;
-        boxShadow: string;
-      } => {
-        const s = window.getComputedStyle(target, pseudo);
-        return {
-          outlineStyle: s.outlineStyle,
-          outlineWidth: s.outlineWidth,
-          outlineColor: s.outlineColor,
-          boxShadow: s.boxShadow,
-        };
-      };
-
-      const rect = el.getBoundingClientRect();
-
+    if (!el || el === document.body) {
       return {
-        selector: cssPath(el),
-        component:
-          el.getAttribute('data-component') ??
-          el.getAttribute('data-slot') ??
-          el.tagName.toLowerCase(),
-        role: el.getAttribute('role') ?? el.tagName.toLowerCase(),
-        rect: {
-          x: Math.round(rect.x),
-          y: Math.round(rect.y),
-          width: Math.round(rect.width),
-          height: Math.round(rect.height),
-        },
-        ring: {
-          self: readRing(el),
-          before: readRing(el, '::before'),
-          after: readRing(el, '::after'),
-          parent: el.parentElement ? readRing(el.parentElement) : emptyRing,
-        },
-        isBody: false,
-        focusableIndex: idxAttr === null ? -1 : Number(idxAttr),
+        selector: 'body',
+        component: 'body',
+        role: '',
+        rect: { x: 0, y: 0, width: 0, height: 0 },
+        focused: null,
+        obscured: false,
+        obscuredBy: null,
+        isBody: true,
+        focusableIndex: -1,
       };
-    })
-    .then(data => ({
-      selector: data.selector,
-      component: data.component,
-      role: data.role,
-      rect: data.rect,
-      focusIndicatorVisible: data.isBody
-        ? false
-        : hasVisibleFocusIndicator(data.ring),
-      isBody: data.isBody,
-      focusableIndex: data.focusableIndex,
-    }));
+    }
+
+    const idxAttr = el.getAttribute('data-mv-focusable');
+    const rect = el.getBoundingClientRect();
+
+    // WCAG 2.4.11 Focus Not Obscured: is the focused element hidden behind
+    // author content that sticks in the viewport (sticky header/footer, cookie
+    // banner)? Hit-test the element's centre; if the top element there is a
+    // different node sitting inside a position:fixed/sticky container, the focus
+    // is obscured. Doing this on the real, scrolled tab path is the dynamic
+    // complement to the only existing (static, "needs review") implementation in
+    // IBM Equal Access.
+    let obscured = false;
+    let obscuredBy: string | null = null;
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const topEl = document.elementFromPoint(cx, cy);
+    if (topEl && topEl !== el && !el.contains(topEl) && !topEl.contains(el)) {
+      let cur: Element | null = topEl;
+      while (cur && cur !== document.body) {
+        const pos = window.getComputedStyle(cur).position;
+        if (pos === 'fixed' || pos === 'sticky') {
+          obscured = true;
+          obscuredBy = cssPath(cur);
+          break;
+        }
+        cur = cur.parentElement;
+      }
+    }
+
+    return {
+      selector: cssPath(el),
+      component:
+        el.getAttribute('data-component') ??
+        el.getAttribute('data-slot') ??
+        el.tagName.toLowerCase(),
+      role: el.getAttribute('role') ?? el.tagName.toLowerCase(),
+      rect: {
+        x: Math.round(rect.x),
+        y: Math.round(rect.y),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+      },
+      focused: mv.focusFingerprint(el),
+      obscured,
+      obscuredBy,
+      isBody: false,
+      focusableIndex: idxAttr === null ? -1 : Number(idxAttr),
+    };
+  });
 
 export const extractTabSequence = async (
   page: Page,
-  maxSteps: number
+  maxSteps: number,
+  unfocusedByIndex: Map<number, FocusStyleFingerprint>
 ): Promise<{
   tabSequence: FocusStep[];
   endedByBody: boolean;
@@ -395,13 +371,26 @@ export const extractTabSequence = async (
     }
 
     visited.add(step.selector);
+
+    // WCAG 2.4.7: a focus indicator is perceivable when the element's
+    // appearance changes between its unfocused baseline and its focused
+    // fingerprint. Without a baseline to compare (no captured unfocused style),
+    // default to "visible" so a missing measurement never yields a false fail.
+    const unfocused = unfocusedByIndex.get(step.focusableIndex);
+    const focusIndicatorVisible =
+      unfocused && step.focused
+        ? focusIndicatorChanged(unfocused, step.focused)
+        : true;
+
     tabSequence.push({
       index: i,
       selector: step.selector,
       component: step.component,
       role: step.role,
       rect: step.rect,
-      focusIndicatorVisible: step.focusIndicatorVisible,
+      focusIndicatorVisible,
+      obscured: step.obscured,
+      obscuredBy: step.obscuredBy,
     });
   }
 
@@ -490,7 +479,15 @@ export const extractKeyboardA11yData = async (
 ): Promise<KeyboardA11yData> => {
   const focusableElements = await extractFocusableElements(page);
   const maxSteps = focusableElements.length * 2 + 5;
-  const tabResult = await extractTabSequence(page, maxSteps);
+
+  // Index -> unfocused visual fingerprint, for the 2.4.7 focused/unfocused diff.
+  // Indices match the data-mv-focusable attribute stamped during extraction.
+  const unfocusedByIndex = new Map<number, FocusStyleFingerprint>();
+  focusableElements.forEach((el, i) => {
+    if (el.unfocusedStyle) unfocusedByIndex.set(i, el.unfocusedStyle);
+  });
+
+  const tabResult = await extractTabSequence(page, maxSteps, unfocusedByIndex);
 
   const reachedGroups = new Set<string>();
   focusableElements.forEach((el, i) => {
@@ -621,6 +618,26 @@ export const keyboardA11yToValidationIssues = (
         suggestion:
           'Marigold components provide built-in focus rings via the theme. For custom elements, add an outline or box-shadow on :focus-visible.',
         details: { selector: step.selector, role: step.role },
+      });
+    }
+  }
+
+  for (const step of data.tabSequence) {
+    if (step.obscured) {
+      issues.push({
+        type: 'a11y',
+        // Warning, not error: runtime hit-test heuristic, WCAG 2.4.11 is Level
+        // AA. See severity policy.
+        severity: 'warning',
+        source: 'keyboard-a11y',
+        component: step.component,
+        message: `Element <${step.component}> is hidden behind sticky or fixed content when it receives focus (WCAG 2.4.11).`,
+        suggestion:
+          'Keep focused elements clear of sticky headers/footers and overlays. Add scroll-margin (or scroll-padding on the scroll container) so the element scrolls into an unobscured position when focused.',
+        details: {
+          selector: step.selector,
+          obscuredBy: step.obscuredBy ?? undefined,
+        },
       });
     }
   }

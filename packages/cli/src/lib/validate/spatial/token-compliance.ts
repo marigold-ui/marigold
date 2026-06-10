@@ -269,6 +269,24 @@ const TOKENIZABLE_INLINE_PROPERTIES = new Set([
   'box-shadow',
 ]);
 
+// React Aria's `VisuallyHidden` (used internally by CheckboxGroup, RadioGroup,
+// many form components) renders a screen-reader-only element with the classic
+// clip idiom: `position:absolute; width:1px; height:1px; margin:-1px;
+// padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%)`. Those
+// inline values are an intentional a11y pattern with no token equivalent — the
+// `-1px`/`0` are part of the clip hack, not author-chosen off-token spacing.
+// Flagging them is a false positive and, worse, attributes a design-system
+// internal to the generated page. Skip the whole element when its inline style
+// carries the clip signature. NOTE: the same logic is inlined inside
+// detectHardcodedInlineStyles' page.evaluate (browser code cannot import this);
+// keep the two in sync.
+export const isVisuallyHiddenInlineStyle = (raw: string): boolean =>
+  /clip\s*:\s*rect\(\s*0/i.test(raw) ||
+  /clip-path\s*:\s*inset\(\s*50%/i.test(raw) ||
+  (/(?:^|;)\s*width\s*:\s*1px/i.test(raw) &&
+    /(?:^|;)\s*height\s*:\s*1px/i.test(raw) &&
+    /overflow\s*:\s*hidden/i.test(raw));
+
 type InlineStyleViolation = {
   selector: string;
   component: string;
@@ -301,6 +319,17 @@ const detectHardcodedInlineStyles = async (
     for (const el of document.querySelectorAll('[style]')) {
       const raw = el.getAttribute('style');
       if (!raw) continue;
+      // Skip React Aria VisuallyHidden clip elements (kept in sync with the
+      // exported isVisuallyHiddenInlineStyle helper).
+      if (
+        /clip\s*:\s*rect\(\s*0/i.test(raw) ||
+        /clip-path\s*:\s*inset\(\s*50%/i.test(raw) ||
+        (/(?:^|;)\s*width\s*:\s*1px/i.test(raw) &&
+          /(?:^|;)\s*height\s*:\s*1px/i.test(raw) &&
+          /overflow\s*:\s*hidden/i.test(raw))
+      ) {
+        continue;
+      }
       const selector = cssPath(el);
       const { component, fingerprint } = describeEl(el);
       for (const decl of raw.split(';')) {
@@ -372,6 +401,10 @@ export const checkTokenCompliance = async (
     // properties (transform, width, ...) have no token to use instead.
     if (v.property.startsWith('--')) continue;
     if (!TOKENIZABLE_INLINE_PROPERTIES.has(v.property)) continue;
+    // Reset/neutral values (0, 0px, transparent, …) are not off-token
+    // overrides; the computed path skips them via SKIP_VALUES, the inline path
+    // must too (e.g. a stray `padding: 0px` is not a token violation).
+    if (SKIP_VALUES.has(v.value)) continue;
     if (!HARDCODED_VALUE.test(v.value)) continue;
     const fp = v.fingerprint ? ` (“${v.fingerprint}”)` : '';
     issues.push({

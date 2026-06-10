@@ -14,9 +14,18 @@ import {
   extractComputedStyles,
 } from './computed-styles.js';
 import {
+  contentOnHoverFocusIssues,
+  extractContentOnHoverFocus,
+} from './content-on-hover-focus.js';
+import { driveInteractions } from './interaction-driver.js';
+import {
   extractKeyboardA11yData,
   keyboardA11yToValidationIssues,
 } from './keyboard.js';
+import {
+  extractNonTextContrast,
+  nonTextContrastToValidationIssues,
+} from './non-text-contrast.js';
 import {
   extractOverflowData,
   overflowToValidationIssues,
@@ -89,6 +98,22 @@ export {
   textSpacingToValidationIssues,
   type TextSpacingData,
 } from './text-spacing.js';
+export {
+  extractNonTextContrast,
+  nonTextContrastToValidationIssues,
+  type NonTextContrastDatum,
+} from './non-text-contrast.js';
+export {
+  extractContentOnHoverFocus,
+  contentOnHoverFocusIssues,
+  type HoverFocusObservation,
+} from './content-on-hover-focus.js';
+export {
+  driveInteractions,
+  classifyTrigger,
+  type RevealedState,
+  type Trigger,
+} from './interaction-driver.js';
 
 export type SpatialResult = {
   spatialIssues: ValidationIssue[];
@@ -111,6 +136,12 @@ export type SpatialOptions = {
   enableResponsive?: boolean;
   enableKeyboardA11y?: boolean;
   enableTextSpacing?: boolean;
+  // Open interactive overlays (menus/dialogs/…) and re-run the a11y checks on
+  // the revealed content. Defaults to enableA11y.
+  enableRevealed?: boolean;
+  // Test hover/focus-revealed content (tooltips/popovers) for WCAG 1.4.13
+  // (dismissable/hoverable/persistent). Defaults to enableA11y.
+  enableContentHoverFocus?: boolean;
   viewport: Viewport;
 };
 
@@ -197,6 +228,57 @@ export const runSpatialChecks = async (
 
       const axeIssues = await runAxeAudit(page);
       a11yIssues.push(...axeIssues);
+
+      const nonTextContrast = await extractNonTextContrast(page);
+      a11yIssues.push(...nonTextContrastToValidationIssues(nonTextContrast));
+    }
+
+    // Open interactive overlays (menus, dialogs, listboxes, disclosures) and
+    // re-run the contrast + axe checks on the revealed content, which the
+    // initial-state passes never see. Generic via the ARIA trigger contract.
+    if (options.enableRevealed ?? options.enableA11y) {
+      try {
+        const revealed = await driveInteractions(page, {
+          onOpen: async root => {
+            const out: ValidationIssue[] = [];
+            const ntc = await extractNonTextContrast(page, root);
+            out.push(...nonTextContrastToValidationIssues(ntc));
+            out.push(...(await runAxeAudit(page, root)));
+            return out.map(i => ({
+              ...i,
+              message: `${i.message} (in a revealed overlay)`,
+            }));
+          },
+        });
+        a11yIssues.push(...revealed.issues);
+      } catch (err) {
+        a11yIssues.push({
+          type: 'a11y',
+          severity: 'warning',
+          source: 'aom-extractor',
+          component: 'page',
+          message: `Revealed-content check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'Opening interactive overlays for analysis did not complete; the initial-state checks still ran.',
+        });
+      }
+    }
+
+    if (options.enableContentHoverFocus ?? options.enableA11y) {
+      try {
+        const hf = await extractContentOnHoverFocus(page);
+        a11yIssues.push(...contentOnHoverFocusIssues(hf));
+      } catch (err) {
+        a11yIssues.push({
+          type: 'a11y',
+          severity: 'warning',
+          source: 'content-on-hover-focus',
+          component: 'page',
+          message: `Hover/focus content check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'Testing hover/focus-revealed content did not complete; other checks still ran.',
+        });
+      }
     }
 
     if (options.enableResponsive ?? options.enableSpatial) {

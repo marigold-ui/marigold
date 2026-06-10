@@ -176,8 +176,8 @@ describe('detectOverlaps', () => {
   });
 });
 
-describe('overlapIssuesToValidationIssues — severity by overlap share', () => {
-  it('emits a warning for a borderline overlap (below the major threshold)', () => {
+describe('overlapIssuesToValidationIssues — severity and major flag', () => {
+  it('emits a warning for a borderline overlap and marks it as not major', () => {
     const issues = overlapIssuesToValidationIssues([
       {
         componentA: 'Button',
@@ -190,9 +190,13 @@ describe('overlapIssuesToValidationIssues — severity by overlap share', () => 
     ]);
     expect(issues).toHaveLength(1);
     expect(issues[0].severity).toBe('warning');
+    expect(issues[0].details?.major).toBe(false);
   });
 
-  it('emits an error for a substantial overlap (>= the major threshold)', () => {
+  it('keeps a substantial overlap a warning but flags details.major', () => {
+    // Overlap is a layout heuristic; per the severity policy it never becomes
+    // an error, no matter how large the overlap. The substantial case is only
+    // surfaced via details.major.
     const issues = overlapIssuesToValidationIssues([
       {
         componentA: 'Button',
@@ -204,6 +208,7 @@ describe('overlapIssuesToValidationIssues — severity by overlap share', () => 
       },
     ]);
     expect(issues).toHaveLength(1);
-    expect(issues[0].severity).toBe('error');
+    expect(issues[0].severity).toBe('warning');
+    expect(issues[0].details?.major).toBe(true);
   });
 });

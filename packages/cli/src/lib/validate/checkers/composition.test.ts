@@ -276,6 +276,87 @@ const C = () => <FileField label="Select files" multiple />;`
     expect(fileFieldError).toBeUndefined();
   });
 
+  it('does not flag a bare Checkbox (Checkbox.Group is a parent wrapper, not a child slot)', () => {
+    // Checkbox exposes Checkbox.Group, but Group is an INVERSE compound: the
+    // group wraps <Checkbox> children, it is not a required child of Checkbox.
+    // A bare <Checkbox> inside a <CheckboxGroup> is canonical usage.
+    const file = tmpFile(
+      'cv-checkbox-group.tsx',
+      `import { CheckboxGroup, Checkbox } from '@marigold/components';
+const C = () => (
+  <CheckboxGroup label="Prefs">
+    <Checkbox value="a" label="A" />
+    <Checkbox value="b" label="B" />
+  </CheckboxGroup>
+);`
+    );
+    const issues = validateComposition(file);
+    const checkboxError = issues.find(
+      i =>
+        i.component === 'Checkbox' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(checkboxError).toBeUndefined();
+  });
+
+  it('does not flag a standalone Checkbox', () => {
+    const file = tmpFile(
+      'cv-checkbox-standalone.tsx',
+      `import { Checkbox } from '@marigold/components';
+const C = () => <Checkbox value="a" label="Accept" />;`
+    );
+    const issues = validateComposition(file);
+    const checkboxError = issues.find(
+      i =>
+        i.component === 'Checkbox' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(checkboxError).toBeUndefined();
+  });
+
+  it('does not flag a Tooltip wrapped in a standalone TooltipTrigger', () => {
+    // Tooltip's only sub-component is Trigger, which is an inverse wrapper:
+    // <TooltipTrigger> takes <Tooltip> as content. The bare <Tooltip> holding
+    // text is canonical, so requiring <Tooltip.Trigger> as a child is a false
+    // positive.
+    const file = tmpFile(
+      'cv-tooltip-trigger.tsx',
+      `import { TooltipTrigger, Tooltip, Button } from '@marigold/components';
+const C = () => (
+  <TooltipTrigger>
+    <Button>Info</Button>
+    <Tooltip>Aggregate of all team members.</Tooltip>
+  </TooltipTrigger>
+);`
+    );
+    const issues = validateComposition(file);
+    const tooltipError = issues.find(
+      i =>
+        i.component === 'Tooltip' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(tooltipError).toBeUndefined();
+  });
+
+  it('does not flag a SectionMessage with plain text children', () => {
+    // SectionMessage renders its content from the `children` prop; Title and
+    // Content are optional structure. A bare message is valid usage.
+    const file = tmpFile(
+      'cv-sectionmessage.tsx',
+      `import { SectionMessage } from '@marigold/components';
+const C = () => (
+  <SectionMessage variant="info">Sprint 14 ends in 3 days.</SectionMessage>
+);`
+    );
+    const issues = validateComposition(file);
+    const smError = issues.find(
+      i =>
+        i.component === 'SectionMessage' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(smError).toBeUndefined();
+  });
+
   // Finding #2: opaque dynamic children suppress the empty-compound error.
   it('does not flag a compound with a non-iteration call child {renderContent()}', () => {
     const file = tmpFile(

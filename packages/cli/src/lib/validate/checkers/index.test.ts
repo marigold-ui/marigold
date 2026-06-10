@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { emptyCoverage } from '../types.js';
+import { compileFile } from './compiler.js';
 import { runTechnicalChecks } from './index.js';
+import { validateProps } from './props.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string): string =>
@@ -38,6 +41,30 @@ describe('runTechnicalChecks', () => {
     const compilerWithLocation = compilerIssues.filter(i => i.location);
     for (const issue of compilerWithLocation) {
       expect(propLines.has(issue.location!.line)).toBe(false);
+    }
+  });
+
+  it('dedup precondition: prop-validator and compiler agree on exact line:column for the same invalid prop', () => {
+    // Deduplication in runTechnicalChecks keys on `${line}:${column}` and drops
+    // the compiler duplicate of a prop error. That only works if both checkers
+    // report the identical position. This test pins that contract — if either
+    // checker's position computation drifts, dedup would silently stop working.
+    const file = fixture('invalid-props.tsx');
+    const propPositions = new Set(
+      validateProps(file, emptyCoverage())
+        .filter(i => i.location)
+        .map(i => `${i.location!.line}:${i.location!.column}`)
+    );
+    const compilerPositions = compileFile(file)
+      .issues.filter(i => i.location)
+      .map(i => `${i.location!.line}:${i.location!.column}`);
+
+    expect(propPositions.size).toBeGreaterThan(0);
+    expect(compilerPositions.length).toBeGreaterThan(0);
+    // every compiler error on an invalid prop sits on a position the prop
+    // validator also flagged, so dedup removes it.
+    for (const pos of compilerPositions) {
+      expect(propPositions.has(pos)).toBe(true);
     }
   });
 

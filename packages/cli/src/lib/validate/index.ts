@@ -170,14 +170,29 @@ const runWithRenderer = async (
 
   if (checks.has('technical')) {
     const themeArg = options.skipTheme ? false : options.themePath;
-    const technical = runTechnicalChecks(absolute, themeArg);
-    issues.push(...technical.issues);
-    passed.push(...technical.passed);
-    coverage = technical.coverage;
+    try {
+      const technical = runTechnicalChecks(absolute, themeArg);
+      issues.push(...technical.issues);
+      passed.push(...technical.passed);
+      coverage = technical.coverage;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      issues.push({
+        type: 'technical',
+        severity: 'error',
+        source: 'runtime',
+        component: 'Validator',
+        message: `Static analysis could not run: ${message}`,
+        suggestion:
+          'The component schema is derived from the @marigold/components type declarations. Ensure the package is installed and built.',
+      });
+    }
   }
 
   const fatalTechnical = issues.some(
-    i => i.source === 'compiler' && i.severity === 'error'
+    i =>
+      (i.source === 'compiler' || i.source === 'runtime') &&
+      i.severity === 'error'
   );
 
   const wantsRender = checks.has('spatial') || checks.has('a11y');

@@ -53,6 +53,11 @@ export type ResponsiveSnapshot = {
 };
 
 const BREAKPOINTS: ResponsiveBreakpoint[] = [
+  // 320 CSS px is the canonical WCAG 2.1.10 Reflow condition (equivalent to a
+  // 1280px viewport at 400% zoom). Content must not require horizontal
+  // scrolling here; checking it catches reflow failures the wider breakpoints
+  // miss.
+  { label: 'reflow (320px)', width: 320, height: 640 },
   { label: 'mobile', width: 375, height: 812 },
   { label: 'tablet', width: 768, height: 1024 },
   { label: 'desktop', width: 1280, height: 720 },
@@ -485,7 +490,11 @@ export const responsiveToValidationIssues = (
       });
     }
 
-    if (bp.width <= 768 && snap.touchTargets.length > 0) {
+    // Target size is a CSS-px property, so the same undersized control would be
+    // reported once per breakpoint. Assess it only on the mobile pass (the most
+    // touch-relevant viewport) so the 320 reflow pass and the 768 tablet pass do
+    // not duplicate the finding.
+    if (bp.label === 'mobile' && snap.touchTargets.length > 0) {
       const byTag = new Map<
         string,
         { count: number; minW: number; minH: number }

@@ -33,6 +33,8 @@ export type IssueSource =
   | 'responsive-checker'
   | 'keyboard-a11y'
   | 'text-spacing'
+  | 'non-text-contrast'
+  | 'content-on-hover-focus'
   | 'runtime';
 
 export type ValidationIssue = {

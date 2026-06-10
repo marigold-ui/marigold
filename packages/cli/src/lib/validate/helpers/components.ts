@@ -37,7 +37,14 @@ const findMarigoldComponentsDts = (): string => {
   // `@marigold/components` does not expose `package.json` in its `exports`
   // map, so we walk up from the resolved entry point until we find the
   // package directory, then use the canonical dist path.
-  const entry = require.resolve('@marigold/components');
+  let entry: string;
+  try {
+    entry = require.resolve('@marigold/components');
+  } catch {
+    throw new Error(
+      '@marigold/components is not installed (or not resolvable from here). The validator derives its component schema from its type declarations — install it with `pnpm add @marigold/components`.'
+    );
+  }
   let dir = path.dirname(entry);
   while (dir !== path.dirname(dir)) {
     const pkg = path.join(dir, 'package.json');

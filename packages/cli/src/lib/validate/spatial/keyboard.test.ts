@@ -1,17 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import {
-  type FocusRingStyle,
-  hasVisibleFocusIndicator,
-  keyboardA11yToValidationIssues,
-} from './keyboard.js';
+import { keyboardA11yToValidationIssues } from './keyboard.js';
 import type { KeyboardA11yData } from './keyboard.js';
-
-const noRing: FocusRingStyle = {
-  outlineStyle: 'none',
-  outlineWidth: '0px',
-  outlineColor: 'transparent',
-  boxShadow: 'none',
-};
 
 const emptyData: KeyboardA11yData = {
   focusableElements: [],
@@ -348,69 +337,44 @@ describe('keyboardA11yToValidationIssues', () => {
     );
     expect(orderIssues).toEqual([]);
   });
-});
 
-describe('hasVisibleFocusIndicator', () => {
-  it('detects an outline ring on the element itself', () => {
-    expect(
-      hasVisibleFocusIndicator({
-        self: {
-          outlineStyle: 'solid',
-          outlineWidth: '2px',
-          outlineColor: 'rgb(0, 90, 200)',
-          boxShadow: 'none',
+  it('flags a focused element obscured by sticky/fixed content (2.4.11)', () => {
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      tabSequence: [
+        {
+          index: 0,
+          selector: 'button:nth-child(1)',
+          component: 'Button',
+          role: 'button',
+          rect: { x: 10, y: 10, width: 100, height: 40 },
+          focusIndicatorVisible: true,
+          obscured: true,
+          obscuredBy: 'header:nth-child(1)',
         },
-      })
-    ).toBe(true);
+      ],
+    });
+    const obscured = issues.filter(i => i.message.includes('2.4.11'));
+    expect(obscured).toHaveLength(1);
+    expect(obscured[0].severity).toBe('warning');
+    expect(obscured[0].source).toBe('keyboard-a11y');
   });
 
-  it('detects a box-shadow ring rendered on a ::after pseudo-element', () => {
-    expect(
-      hasVisibleFocusIndicator({
-        self: noRing,
-        after: {
-          ...noRing,
-          boxShadow: '0 0 0 2px rgb(0, 90, 200)',
+  it('does not flag 2.4.11 when the focused element is not obscured', () => {
+    const issues = keyboardA11yToValidationIssues({
+      ...emptyData,
+      tabSequence: [
+        {
+          index: 0,
+          selector: 'button:nth-child(1)',
+          component: 'Button',
+          role: 'button',
+          rect: { x: 10, y: 10, width: 100, height: 40 },
+          focusIndicatorVisible: true,
+          obscured: false,
         },
-      })
-    ).toBe(true);
-  });
-
-  it('detects a ring rendered on a wrapper parent element', () => {
-    expect(
-      hasVisibleFocusIndicator({
-        self: noRing,
-        parent: {
-          outlineStyle: 'solid',
-          outlineWidth: '2px',
-          outlineColor: 'rgb(0, 90, 200)',
-          boxShadow: 'none',
-        },
-      })
-    ).toBe(true);
-  });
-
-  it('returns false when none of the surfaces show a ring', () => {
-    expect(
-      hasVisibleFocusIndicator({
-        self: noRing,
-        before: noRing,
-        after: noRing,
-        parent: noRing,
-      })
-    ).toBe(false);
-  });
-
-  it('treats a zero-width / transparent outline as no ring', () => {
-    expect(
-      hasVisibleFocusIndicator({
-        self: {
-          outlineStyle: 'solid',
-          outlineWidth: '0px',
-          outlineColor: 'rgb(0, 90, 200)',
-          boxShadow: 'none',
-        },
-      })
-    ).toBe(false);
+      ],
+    });
+    expect(issues.filter(i => i.message.includes('2.4.11'))).toEqual([]);
   });
 });

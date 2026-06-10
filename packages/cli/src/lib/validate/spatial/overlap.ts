@@ -19,8 +19,11 @@ export type OverlapIssue = {
 // reported at all: below this is treated as an incidental touch/rounding.
 const OVERLAP_THRESHOLD_PERCENT = 5;
 // At or above this share of the smaller box the overlap is substantial enough
-// that content is very likely obscured -> 'error'. Between the two thresholds
-// the overlap is borderline/uncertain -> 'warning' (no error penalty).
+// that content is very likely obscured. This is surfaced via `details.major`
+// for the agent, but the severity stays 'warning' regardless: overlap is a
+// threshold-based layout heuristic, and the severity policy keeps every
+// heuristic out of the error signal (only deterministic, FP-free, "broken"
+// findings are errors).
 const MAJOR_OVERLAP_PERCENT = 25;
 // A child smaller than 15% the area of its neighbour reads as a badge/icon
 // overlay sitting on top of a larger surface, not a layout collision. Heuristic.
@@ -119,16 +122,13 @@ export const overlapIssuesToValidationIssues = (
 ): ValidationIssue[] =>
   overlaps.map(o => ({
     type: 'spatial' as const,
-    // Only a substantial overlap is an 'error'; a borderline overlap (between
-    // the report threshold and the major threshold) is uncertain and surfaces
-    // as a 'warning' so it does not penalize a model for a near-miss.
-    severity:
-      o.overlapPercentage >= MAJOR_OVERLAP_PERCENT
-        ? ('error' as const)
-        : ('warning' as const),
+    // Overlap is a threshold-based layout heuristic, so it is always a
+    // 'warning' and never feeds the error signal. A substantial overlap is
+    // still flagged to the agent via `details.major`.
+    severity: 'warning' as const,
     source: 'overlap-detector' as const,
     component: `${o.componentA} ↔ ${o.componentB}`,
     message: `Components <${o.componentA}> and <${o.componentB}> overlap by ${o.overlapArea}px² (${o.overlapPercentage}% of the smaller component).`,
     suggestion: `Add spacing between the components. Wrap them in <Stack space={4}> or use a Marigold layout primitive (<Inline>, <Columns>) to lay them out without manual positioning.`,
-    details: { ...o },
+    details: { ...o, major: o.overlapPercentage >= MAJOR_OVERLAP_PERCENT },
   }));

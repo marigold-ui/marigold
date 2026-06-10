@@ -82,6 +82,30 @@ const REPEATABLE_SUBS: Record<string, Set<string>> = {
   ActionBar: new Set(['Button']),
 };
 
+// `X.Group` / `X.Trigger` (Checkbox.Group, Radio.Group, Tooltip.Trigger,
+// Dialog.Trigger, …) are INVERSE compounds: the Group/Trigger is a PARENT
+// wrapper that takes <X> as its child/content, not a child slot OF <X>. The
+// schema registers them as sub-components because Marigold attaches them
+// statically (`Checkbox.Group = CheckboxGroup`), but a bare <X> is valid usage —
+// the common case is <CheckboxGroup><Checkbox/></...> or
+// <TooltipTrigger>…<Tooltip>text</Tooltip></TooltipTrigger>. Treating them as
+// required children produces a false "used without sub-components" error.
+// Derived from the shared React Aria wrapper naming, not a per-component list.
+// (Removing them only suppresses the empty-compound error for components whose
+// ONLY sub-components are wrappers, e.g. Checkbox/Radio/Tooltip; Dialog keeps
+// Content/Title and is still checked.)
+const WRAPPER_SUBCOMPONENTS = new Set(['Group', 'Trigger']);
+
+// Compounds whose sub-components are OPTIONAL structure rather than the content
+// itself: the component renders its primary content from a plain `children`
+// prop, and sub-components like SectionMessage.Title / .Content only add
+// optional layout. A bare <SectionMessage>text</SectionMessage> is canonical
+// usage, so the empty-compound error is a false positive. This cannot be
+// derived from the schema — Dialog/Select also declare a `children` prop, yet
+// there the sub-components ARE the content — so the list is curated and
+// verified against the component docs.
+const OPTIONAL_SUBCOMPONENT_COMPOUNDS = new Set(['SectionMessage']);
+
 const collectAncestorSubComponents = (
   node: ts.Node,
   parentName: string,
@@ -185,6 +209,17 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
           return;
         }
 
+        // Strip grouping wrappers (X.Group): they are inverse compounds, so a
+        // component whose only sub-components are wrappers is not child-bearing
+        // and a bare <X> must not be flagged as empty.
+        const childSlotSubs = knownSubs.filter(
+          s => !WRAPPER_SUBCOMPONENTS.has(s)
+        );
+        if (childSlotSubs.length === 0) {
+          ts.forEachChild(node, check);
+          return;
+        }
+
         const isSelfClosing = ts.isJsxSelfClosingElement(node);
         const isDynamic =
           !isSelfClosing && hasOpaqueDynamicChild(node as ts.JsxElement);
@@ -228,7 +263,8 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
           found.length === 0 &&
           !isDynamic &&
           !spread &&
-          !SELF_POPULATING_COMPOUNDS.has(componentName)
+          !SELF_POPULATING_COMPOUNDS.has(componentName) &&
+          !OPTIONAL_SUBCOMPONENT_COMPOUNDS.has(componentName)
         ) {
           issues.push({
             type: 'technical',
@@ -236,9 +272,9 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
             source: 'composition-validator',
             component: componentName,
             message: `<${componentName}> is used without any of its sub-components.`,
-            suggestion: `Use compound children: ${knownSubs.map(s => `<${componentName}.${s}>`).join(', ')}.`,
+            suggestion: `Use compound children: ${childSlotSubs.map(s => `<${componentName}.${s}>`).join(', ')}.`,
             location,
-            details: { expected: knownSubs, found: [] },
+            details: { expected: childSlotSubs, found: [] },
           });
         }
 

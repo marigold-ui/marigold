@@ -232,10 +232,22 @@ const MARIGOLD_RULE_MAP: Record<string, MarigoldRuleOverride> = {
   },
 };
 
-export const runAxeAudit = async (page: Page): Promise<ValidationIssue[]> => {
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
-    .analyze();
+export const runAxeAudit = async (
+  page: Page,
+  // When set, axe analyses only this subtree — used to audit a revealed overlay
+  // (dialog/menu) that is not present in the initial render.
+  include?: string
+): Promise<ValidationIssue[]> => {
+  const builder = new AxeBuilder({ page }).withTags([
+    'wcag2a',
+    'wcag2aa',
+    'wcag21a',
+    'wcag21aa',
+    'best-practice',
+  ]);
+  const results = await (
+    include ? builder.include(include) : builder
+  ).analyze();
 
   const issues: ValidationIssue[] = [];
   const seenDedup = new Set<string>();

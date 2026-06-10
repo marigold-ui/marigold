@@ -11,6 +11,7 @@ import { copyFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
 import net from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildInstallScript } from './browser-helpers.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -263,6 +264,11 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
           return { component, fingerprint: ariaLabel ?? text.slice(0, 40) };
         };
       });
+
+      // Shared browser helpers (window.__mv). Newer checks call these instead of
+      // re-inlining their own copies; the __cssPath/__describeEl above are kept
+      // as-is for the existing checks that still reference them.
+      await page.addInitScript({ content: buildInstallScript() });
 
       const consoleErrors: string[] = [];
       const pageErrors: string[] = [];
