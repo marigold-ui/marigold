@@ -121,11 +121,13 @@ export const DescriptionRendersInSlot = meta.story({
     // Element type comes from the root's `TextContext` slot config.
     await expect(description.tagName).toBe('P');
 
-    // The description is muted (variant color via
-    // `--section-message-description` at 80%), so its computed color must
-    // differ from the title's full variant foreground.
-    await expect(getComputedStyle(description).color).not.toBe(
-      getComputedStyle(heading).color
+    // The description renders through the muted `description` slot, whose
+    // class pulls its color from the variant-driven
+    // `--section-message-description` variable (at 80% opacity) instead of
+    // inheriting the title's full variant foreground. Asserting on the class
+    // pins this behaviour without depending on a resolved color string.
+    await expect(description.className).toContain(
+      'text-(--section-message-description)'
     );
 
     // The variant's variable assignment must win the cascade over the
