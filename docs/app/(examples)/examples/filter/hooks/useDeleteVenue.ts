@@ -78,13 +78,12 @@ export const useDeleteVenue = () => {
       // Commit the deletion to the client-owned exclude set so it sticks
       // across refetches (the server is stateless).
       remove(venue.id);
+      // `success` auto-dismisses by default; the error toast above stays until
+      // dismissed (the `error` default) so the recovery hint can be read.
       addToast({
         title: 'Venue deleted',
         description: `“${venue.name}” was removed.`,
         variant: 'success',
-        // Auto-dismiss success; the error toast stays until dismissed so the
-        // recovery hint can be read.
-        timeout: 5000,
       });
     },
 
