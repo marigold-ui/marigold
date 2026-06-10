@@ -85,7 +85,7 @@ export const Basic = meta.story({
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
-        <ContextualHelp.Title>Whats this?</ContextualHelp.Title>
+        <ContextualHelp.Title>What's this?</ContextualHelp.Title>
         <ContextualHelp.Content>
           This feature explains important functions to you directly in the
           context of the page.
@@ -101,7 +101,7 @@ export const Basic = meta.story({
     const helpButton = await canvas.getByLabelText(/help|hilfe/i);
     await userEvent.click(helpButton);
 
-    expect(await canvas.findByText('Whats this?')).toBeInTheDocument();
+    expect(await canvas.findByText("What's this?")).toBeInTheDocument();
     expect(
       await canvas.findByText(
         'This feature explains important functions to you directly in the context of the page.'
@@ -118,12 +118,52 @@ export const Basic = meta.story({
   },
 });
 
+export const WithDescription = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: args => (
+    <div className="flex h-96 items-center justify-center">
+      <ContextualHelp {...args}>
+        <ContextualHelp.Title>What's this?</ContextualHelp.Title>
+        <ContextualHelp.Description>
+          A short summary of this feature.
+        </ContextualHelp.Description>
+        <ContextualHelp.Content>
+          This feature explains important functions to you directly in the
+          context of the page.
+        </ContextualHelp.Content>
+      </ContextualHelp>
+    </div>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    const helpButton = canvas.getByLabelText(/help|hilfe/i);
+    await userEvent.click(helpButton);
+
+    const title = await canvas.findByText("What's this?");
+    const description = await canvas.findByText(
+      'A short summary of this feature.'
+    );
+
+    // Element type comes from the root's `TextContext` slot config.
+    expect(description.tagName).toBe('P');
+
+    // The RAC dialog wires its `aria-labelledby` to the `slot="title"`
+    // heading and supplies the heading level (2, same as `Dialog.Title`).
+    const dialog = await canvas.findByRole('dialog');
+    expect(title.tagName).toBe('H2');
+    expect(dialog).toHaveAttribute('aria-labelledby', title.id);
+
+    // Reset
+    await userEvent.click(document.body);
+  },
+});
+
 export const LongContent = meta.story({
   parameters: { surface: false },
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
-        <ContextualHelp.Title>Whats this?</ContextualHelp.Title>
+        <ContextualHelp.Title>What's this?</ContextualHelp.Title>
         <ContextualHelp.Content>
           <Text>
             This feature explains important functions to you directly in the
