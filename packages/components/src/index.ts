@@ -6,13 +6,8 @@ export * from './hooks';
 export { Accordion } from './Accordion/Accordion';
 export type { AccordionProps } from './Accordion/Accordion';
 
-export { AppLayout } from './AppLayout/AppLayout';
-export type {
-  AppLayoutProps,
-  AppLayoutHeaderProps,
-  AppLayoutSidebarProps,
-  AppLayoutMainProps,
-} from './AppLayout/AppLayout';
+export { AppShell } from './AppShell/AppShell';
+export type { AppShellProps } from './AppShell/AppShell';
 
 export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
@@ -181,6 +176,11 @@ export type { NonModalProps } from './Overlay/NonModal';
 
 export { Underlay } from './Overlay/Underlay';
 export type { UnderlayProps } from './Overlay/Underlay';
+
+export { Page } from './Page/Page';
+export type { PageProps } from './Page/Page';
+export type { PageHeaderProps } from './Page/PageHeader';
+export type { PageContentProps } from './Page/PageContent';
 
 export { Panel } from './Panel/Panel';
 export type { PanelProps } from './Panel/Panel';

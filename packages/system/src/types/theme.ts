@@ -168,6 +168,10 @@ export type Theme = {
       | 'footer',
       ComponentStyleFunction<string, string>
     >;
+    Page?: Record<
+      'root' | 'header' | 'title' | 'description' | 'actions' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     Pagination?: Record<
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>

@@ -97,7 +97,7 @@ Landmarks are defined either by semantic HTML elements (`<main>`, `<nav>`, `<asi
 
 `F6` / `Shift + F6` keyboard cycling is a separate feature. It only works for regions registered with the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook, which wires the element into React Aria's landmark controller.
 
-The [App Shell pattern](/patterns/layout/app-shell) wires up the major landmarks via semantic HTML, so they appear in the screen reader's landmark list automatically. To make a custom region (search shell, AI assistant, activity feed) discoverable in the same list and reachable with `F6`, register it with `useLandmark`.
+The [App Frame pattern](/patterns/layout/app-frame) wires up the major landmarks via semantic HTML, so they appear in the screen reader's landmark list automatically. To make a custom region (search shell, AI assistant, activity feed) discoverable in the same list and reachable with `F6`, register it with `useLandmark`.
 
 Try the demo below. Click anywhere inside it, then use `F6` to move forward through the landmarks. Each region announces its role and accessible name to the screen reader.
 

@@ -23,8 +23,8 @@ export const Newsletter = () => (
       </Description>
     </Panel.Header>
     <Panel.Content>
-      <Columns columns={[1, 1]} space={32} collapseAt="1000px">
-        <Stack space={6}>
+      <Columns columns={[1, 1]} space="section" collapseAt="1000px">
+        <Stack space="regular">
           <Inline noWrap space="related">
             <TextField
               arial-label="Email"
@@ -34,8 +34,8 @@ export const Newsletter = () => (
             <Button variant="primary">Subscribe</Button>
           </Inline>
         </Stack>
-        <Columns columns={[1, 1]} space={8}>
-          <Container contentLength="long" space={3}>
+        <Columns columns={[1, 1]} space="regular">
+          <Container contentLength="long" space="related">
             <div className="bg-muted grid size-12 place-items-center rounded-full p-3">
               <CalendarDays className="size-full" strokeWidth={1.5} />
             </div>
@@ -45,7 +45,7 @@ export const Newsletter = () => (
               and insights.
             </Text>
           </Container>
-          <Container contentLength="long" space={3}>
+          <Container contentLength="long" space="related">
             <div className="bg-muted grid size-12 place-items-center rounded-full p-3">
               <MailCheck className="size-full" strokeWidth={1.5} />
             </div>
