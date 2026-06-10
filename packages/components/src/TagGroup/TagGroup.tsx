@@ -76,6 +76,9 @@ export interface TagGroupProps
   form?: string;
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   *
+   * Numeric/scale values are spacing-scale tokens, not pixels: `width={64}`
+   * resolves to `calc(var(--spacing) * 64)` ~= 16rem (256px), not 64px.
    * @default full
    */
   width?: WidthProp['width'];

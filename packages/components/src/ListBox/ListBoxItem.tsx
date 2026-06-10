@@ -1,7 +1,10 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { ListBoxItem } from 'react-aria-components/ListBox';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { Check } from '../icons/Check';
+import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 import { useListBoxContext } from './Context';
 
 export type ListBoxItemProps = Omit<
@@ -14,7 +17,39 @@ export type ListBoxItemProps = Omit<
   children?: ReactNode;
 };
 
-export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
+interface ItemChildrenProps {
+  children: ReactNode;
+  labelClassName?: string;
+  descriptionClassName?: string;
+}
+
+/**
+ * Injects the `label` / `description` theme classNames into RAC's
+ * `TextContext` (see {@link useMergedTextSlots}) so a nested
+ * `<Text slot="label">` / `<Text slot="description">` picks them up without
+ * relying on a fragile descendant selector on the item.
+ */
+const ItemChildren = ({
+  children,
+  labelClassName,
+  descriptionClassName,
+}: ItemChildrenProps) => {
+  const value = useMergedTextSlots({
+    label: labelClassName,
+    description: descriptionClassName,
+  });
+
+  return (
+    <Provider values={[[TextContext, value]]}>
+      <div className="selection-indicator contents">
+        <Check size={16} strokeWidth="3" className="hidden" />
+        {children}
+      </div>
+    </Provider>
+  );
+};
+
+export const _ListBoxItem = (props: ListBoxItemProps) => {
   const { classNames, virtualized } = useListBoxContext();
   return (
     <ListBoxItem
@@ -24,10 +59,12 @@ export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
       // textValue needed because ListBoxItem in this case has multiple children
       textValue={props.textValue ?? String(props.children)}
     >
-      <div className="selection-indicator contents">
-        <Check size={16} strokeWidth="3" className="hidden" />
+      <ItemChildren
+        labelClassName={classNames.label}
+        descriptionClassName={classNames.description}
+      >
         {props.children}
-      </div>
+      </ItemChildren>
     </ListBoxItem>
   );
 };

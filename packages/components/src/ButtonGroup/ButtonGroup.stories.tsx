@@ -1,17 +1,17 @@
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Edit } from '@marigold/icons';
-import { ActionButton } from '../ActionButton/ActionButton';
+import { Button } from '../Button/Button';
 import { ActionMenu } from '../Menu/ActionMenu';
-import { ActionGroup } from './ActionGroup';
+import { ButtonGroup } from './ButtonGroup';
 
 const meta = preview.meta({
-  title: 'Components/ActionGroup',
-  component: ActionGroup,
+  title: 'Components/ButtonGroup',
+  component: ButtonGroup,
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'secondary', 'destructive-ghost', 'link'],
+      options: ['ghost', 'secondary', 'destructive-ghost', 'link'],
     },
     size: {
       control: { type: 'select' },
@@ -24,13 +24,13 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   render: () => (
-    <ActionGroup aria-label="Item actions">
-      <ActionButton aria-label="Edit">
+    <ButtonGroup aria-label="Item actions">
+      <Button aria-label="Edit">
         <Edit />
-      </ActionButton>
-      <ActionButton aria-label="Duplicate">Duplicate</ActionButton>
-      <ActionButton aria-label="Delete">Delete</ActionButton>
-    </ActionGroup>
+      </Button>
+      <Button aria-label="Duplicate">Duplicate</Button>
+      <Button aria-label="Delete">Delete</Button>
+    </ButtonGroup>
   ),
   play: async ({ canvas }) => {
     const toolbar = canvas.getByRole('toolbar', { name: 'Item actions' });
@@ -44,13 +44,13 @@ export const Basic = meta.story({
 export const KeyboardNavigation = meta.story({
   tags: ['component-test'],
   render: () => (
-    <ActionGroup aria-label="Item actions">
-      <ActionButton aria-label="Edit">
+    <ButtonGroup aria-label="Item actions">
+      <Button aria-label="Edit">
         <Edit />
-      </ActionButton>
-      <ActionButton aria-label="Duplicate">Duplicate</ActionButton>
-      <ActionButton aria-label="Delete">Delete</ActionButton>
-    </ActionGroup>
+      </Button>
+      <Button aria-label="Duplicate">Duplicate</Button>
+      <Button aria-label="Delete">Delete</Button>
+    </ButtonGroup>
   ),
   play: async ({ canvas }) => {
     const [first, second, third] = canvas.getAllByRole('button');
@@ -67,10 +67,10 @@ export const KeyboardNavigation = meta.story({
 export const DisabledCascade = meta.story({
   tags: ['component-test'],
   render: () => (
-    <ActionGroup aria-label="Disabled actions" disabled>
-      <ActionButton aria-label="Edit">Edit</ActionButton>
-      <ActionButton aria-label="Delete">Delete</ActionButton>
-    </ActionGroup>
+    <ButtonGroup aria-label="Disabled actions" disabled>
+      <Button aria-label="Edit">Edit</Button>
+      <Button aria-label="Delete">Delete</Button>
+    </ButtonGroup>
   ),
   play: async ({ canvas }) => {
     const buttons = canvas.getAllByRole('button');
@@ -80,38 +80,41 @@ export const DisabledCascade = meta.story({
   },
 });
 
+// Uniform precedence: a local prop ALWAYS wins over the group — including
+// `size` (which is the change from the former `ActionGroup`, where the group
+// won `size`).
 export const CascadePrecedence = meta.story({
   tags: ['component-test'],
   render: () => (
-    <ActionGroup
+    <ButtonGroup
       aria-label="Cascade precedence"
       size="small"
-      variant="default"
+      variant="ghost"
       disabled
     >
-      <ActionButton aria-label="Outsized" size="large">
+      <Button aria-label="Outsized" size="large">
         Outsized
-      </ActionButton>
-      <ActionButton aria-label="Delete" variant="destructive-ghost">
+      </Button>
+      <Button aria-label="Delete" variant="destructive-ghost">
         Delete
-      </ActionButton>
-      <ActionButton aria-label="Save" disabled={false}>
+      </Button>
+      <Button aria-label="Save" disabled={false}>
         Save
-      </ActionButton>
-    </ActionGroup>
+      </Button>
+    </ButtonGroup>
   ),
 });
 
 export const WithActionMenu = meta.story({
   tags: ['component-test'],
   render: () => (
-    <ActionGroup aria-label="With ActionMenu" size="small" variant="default">
-      <ActionButton aria-label="Edit">Edit</ActionButton>
-      <ActionButton aria-label="Duplicate">Duplicate</ActionButton>
+    <ButtonGroup aria-label="With ActionMenu" size="small" variant="ghost">
+      <Button aria-label="Edit">Edit</Button>
+      <Button aria-label="Duplicate">Duplicate</Button>
       <ActionMenu aria-label="More actions" size="large">
         <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
         <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
       </ActionMenu>
-    </ActionGroup>
+    </ButtonGroup>
   ),
 });

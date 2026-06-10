@@ -1,6 +1,6 @@
 import {
-  ActionButton,
-  ActionGroup,
+  Button,
+  ButtonGroup,
   Inline,
   LinkButton,
   Stack,
@@ -37,11 +37,15 @@ export default () => (
             {event.subtitle}
           </Text>
         </Stack>
-        <ActionGroup aria-label={`Actions for ${event.title}`} size="small">
+        <ButtonGroup
+          aria-label={`Actions for ${event.title}`}
+          variant="ghost"
+          size="icon"
+        >
           <Tooltip.Trigger>
-            <ActionButton aria-label="View">
+            <Button aria-label="View">
               <Eye />
-            </ActionButton>
+            </Button>
             <Tooltip>View</Tooltip>
           </Tooltip.Trigger>
           <Tooltip.Trigger>
@@ -51,12 +55,12 @@ export default () => (
             <Tooltip>Edit</Tooltip>
           </Tooltip.Trigger>
           <Tooltip.Trigger>
-            <ActionButton variant="destructive-ghost" aria-label="Delete">
+            <Button variant="destructive-ghost" aria-label="Delete">
               <Trash2 />
-            </ActionButton>
+            </Button>
             <Tooltip>Delete</Tooltip>
           </Tooltip.Trigger>
-        </ActionGroup>
+        </ButtonGroup>
       </Inline>
     ))}
   </Stack>

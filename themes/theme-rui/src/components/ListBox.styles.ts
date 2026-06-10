@@ -30,8 +30,11 @@ export const ListBox: ThemeComponent<'ListBox'> = {
       'disabled:cursor-not-allowed disabled:text-disabled',
       'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
       'cursor-default data-selection-mode:cursor-pointer',
-      '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-secondary',
     ],
+  }),
+  label: cva({ base: '' }),
+  description: cva({
+    base: 'col-start-2 row-start-2 text-xs text-secondary font-normal',
   }),
   section: cva({ base: '' }),
   header: cva({

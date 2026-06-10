@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
@@ -206,4 +207,34 @@ export const WithFormValidation = meta.story({
       </Stack>
     </Form>
   ),
+});
+
+/**
+ * Regression guard for DST-1482: a fixed `width` must size the input element
+ * itself, not just the FieldBase wrapper. `width={64}` maps to the spacing
+ * scale, i.e. `calc(var(--spacing) * 64)` = 16rem (256px at default root
+ * font-size), and must drive the input's layout without an outer wrapper.
+ */
+export const FixedWidth = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Name',
+    width: 64,
+  },
+  render: args => <TextField {...args} placeholder="Type" />,
+  play: async ({ canvas, step }) => {
+    await step('Input width matches the requested scale value', async () => {
+      // The --field-width consumer is the `group/input` wrapper of the input.
+      const wrapper = canvas.getByRole('textbox').closest('.group\\/input')!;
+      const rem = parseFloat(
+        getComputedStyle(document.documentElement).fontSize
+      );
+      // width={64} => calc(var(--spacing) * 64) = 64 * 0.25rem = 16rem
+      const expected = 16 * rem;
+      const { width } = wrapper.getBoundingClientRect();
+
+      expect(width).toBeGreaterThan(rem * 12);
+      expect(Math.abs(width - expected)).toBeLessThanOrEqual(1);
+    });
+  },
 });

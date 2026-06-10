@@ -1,4 +1,4 @@
-export const ActionGroupAnatomy = () => (
+export const ButtonGroupAnatomy = () => (
   <svg
     viewBox="-10 25 660 80"
     className="mx-auto h-auto w-full max-w-[90%]"
@@ -87,7 +87,7 @@ export const ActionGroupAnatomy = () => (
         fontWeight="600"
         className="fill-fd-primary"
       >
-        ActionButton
+        Action
       </text>
     </g>
   </svg>

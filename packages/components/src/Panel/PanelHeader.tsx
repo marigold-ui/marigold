@@ -2,18 +2,16 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroupContext } from '../ActionGroup/Context';
+import { ButtonContext } from '../Button/Context';
 import { usePanelContext } from './Context';
 
 export interface PanelHeaderProps {
   /**
-   * Content of the header. Typically a `<Title>`, optional `<Description>`,
-   * and optional action primitives (`<ActionButton>`, `<ActionGroup>`,
-   * `<ActionMenu>`, `<LinkButton>`).
-   *
-   * Use the action primitives above for header chrome — a bare `<Button>`
-   * is intentionally not slot-aware and won't pick up the size/grid cascade.
+   * Content of the header: typically a `<Title>`, optional `<Description>`, and
+   * optional actions (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`,
+   * `<LinkButton>`). Actions are slot-aware here, claiming the `actions` grid
+   * cell and adopting the header's ghost styling; an icon-only action sets
+   * `size="icon"` to render as a square. Opt out with `slot={null}`.
    */
   children: ReactNode;
 }
@@ -21,12 +19,9 @@ export interface PanelHeaderProps {
 export const PanelHeader = ({ children }: PanelHeaderProps) => {
   const { classNames, headingLevel, titleId, titleSlotRef } = usePanelContext();
 
-  // This Provider value fully replaces the `HeadingContext` published at
-  // the Panel root for descendants of the header. `level`, `id`, and `ref`
-  // are re-published (rather than inherited) because Provider values do
-  // not merge — anything we omit here would be lost for `<Title>` inside
-  // `<Panel.Header>`. The added contribution is `[grid-area:title]`, which
-  // lays the title out in the header's two-column grid.
+  // Fully replaces the Panel root's `HeadingContext` for header descendants.
+  // Provider values don't merge, so `level`/`id`/`ref` are re-published; the
+  // added `[grid-area:title]` places the title in the header grid.
   const headingProps = useMemo(
     () => ({
       slots: {
@@ -55,17 +50,18 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
     [classNames.description]
   );
 
-  // Published as the same value on `ActionButtonContext` and
-  // `ActionGroupContext` so a single `<ActionButton>` and an `<ActionGroup>`
-  // of clustered actions both claim the `actions` grid cell with the same
-  // styling. `size: 'icon'` is the correct cascade for both: a bare
-  // `<ActionButton>` renders as an icon button, and an `<ActionGroup>`
-  // propagates the size to its inner `<ActionButton>` children.
+  // One `ButtonContext` gives every action in the header the same low-emphasis
+  // ghost look in the `actions` grid cell. The size cascade is `small` so a
+  // labelled action stays a readable button; icon-only actions (a bare-icon
+  // `<Button>`, an `<ActionMenu>` kebab) opt into `size="icon"` themselves so
+  // they render as a square. A `<ButtonGroup>` re-provides its own context, so
+  // the positional className stays on the group, not its buttons.
   const actionProps = useMemo(
     () => ({
       className: cn('self-center [grid-area:actions]', classNames.actions),
       'data-grid-area': 'actions',
-      size: 'icon' as const,
+      variant: 'ghost' as const,
+      size: 'small' as const,
     }),
     [classNames.actions]
   );
@@ -75,8 +71,7 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
       values={[
         [HeadingContext, headingProps],
         [TextContext, textProps],
-        [ActionButtonContext, actionProps],
-        [ActionGroupContext, actionProps],
+        [ButtonContext, actionProps],
       ]}
     >
       <div

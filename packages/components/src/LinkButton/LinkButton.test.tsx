@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-aria-components/slots';
-import { ActionButtonContext } from '../ActionButton/Context';
-import { ActionGroup } from '../ActionGroup/ActionGroup';
+import { ButtonContext } from '../Button/Context';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Basic } from './LinkButton.stories';
 
 test('renders children', () => {
@@ -28,10 +28,10 @@ test('supports fullWidth', () => {
   expect(screen.getByRole('link')).toHaveClass('w-full');
 });
 
-test('inherits variant and size from ActionButtonContext provider', () => {
+test('inherits variant and size from ButtonContext provider', () => {
   render(
     <Provider
-      values={[[ActionButtonContext, { variant: 'secondary', size: 'large' }]]}
+      values={[[ButtonContext, { variant: 'secondary', size: 'large' }]]}
     >
       <Basic.Component data-testid="link">Edit</Basic.Component>
     </Provider>
@@ -40,10 +40,10 @@ test('inherits variant and size from ActionButtonContext provider', () => {
   expect(screen.getByTestId('link')).toHaveClass('h-control-large');
 });
 
-test('explicit size overrides ActionButtonContext size', () => {
+test('explicit size overrides ButtonContext size', () => {
   render(
     <Provider
-      values={[[ActionButtonContext, { variant: 'secondary', size: 'large' }]]}
+      values={[[ButtonContext, { variant: 'secondary', size: 'large' }]]}
     >
       <Basic.Component size="small" data-testid="link">
         Edit
@@ -57,45 +57,49 @@ test('explicit size overrides ActionButtonContext size', () => {
   expect(link).not.toHaveClass('h-control-large');
 });
 
-test('inherits size from enclosing ActionGroup (group wins over local)', () => {
+test('local size wins over the enclosing ButtonGroup (uniform precedence)', () => {
   render(
-    <ActionGroup aria-label="Row actions" size="small">
+    <ButtonGroup aria-label="Row actions" size="small">
       <Basic.Component size="large" data-testid="link">
         Edit
       </Basic.Component>
-    </ActionGroup>
+    </ButtonGroup>
   );
 
-  expect(screen.getByTestId('link')).toHaveClass('h-control-small');
+  const link = screen.getByTestId('link');
+
+  expect(link).toHaveClass('h-control-large');
+  expect(link).not.toHaveClass('h-control-small');
 });
 
-test('local variant wins over ActionGroup variant', () => {
+test('local variant wins over ButtonGroup variant', () => {
   render(
-    <ActionGroup aria-label="Row actions" variant="default">
+    <ButtonGroup aria-label="Row actions" variant="ghost">
       <Basic.Component variant="destructive-ghost" data-testid="link">
         Delete
       </Basic.Component>
-    </ActionGroup>
+    </ButtonGroup>
   );
 
   expect(screen.getByTestId('link')).toHaveClass('text-destructive-accent');
 });
 
-test('inherits default baseline from ActionGroup with no explicit variant', () => {
+test('inherits secondary baseline from ButtonGroup with no explicit variant', () => {
   render(
-    <ActionGroup aria-label="Row actions">
+    <ButtonGroup aria-label="Row actions">
       <Basic.Component data-testid="link">Edit</Basic.Component>
-    </ActionGroup>
+    </ButtonGroup>
   );
 
-  expect(screen.getByTestId('link')).toHaveClass('hover:ui-state-hover-ghost');
+  expect(screen.getByTestId('link')).toHaveClass('shadow-elevation-border');
+  expect(screen.getByTestId('link')).not.toHaveClass(
+    'hover:ui-state-hover-ghost'
+  );
 });
 
-test('absorbs className from ActionButtonContext', () => {
+test('absorbs positional className from ButtonContext', () => {
   render(
-    <Provider
-      values={[[ActionButtonContext, { className: 'positional-class' }]]}
-    >
+    <Provider values={[[ButtonContext, { className: 'positional-class' }]]}>
       <Basic.Component data-testid="link">Edit</Basic.Component>
     </Provider>
   );
