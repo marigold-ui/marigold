@@ -90,7 +90,10 @@ const userInput: NavSection = {
 
 const other: NavSection = {
   label: 'Other',
-  items: [{ kind: 'Item', slug: 'inventory', label: 'Inventory' }],
+  items: [
+    { kind: 'Item', slug: 'inventory', label: 'Inventory' },
+    { kind: 'Item', slug: 'revenue-report', label: 'Revenue Report' },
+  ],
 };
 
 export const config: ShellConfig = {
