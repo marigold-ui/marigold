@@ -125,7 +125,7 @@ export const Toolbar = () => {
           </Drawer>
         </Drawer.Trigger>
       </Inline>
-      <Inline alignY="center" space={4}>
+      <Inline alignY="center" space="related">
         <FetchingIndicator />
         <ResetDemo />
       </Inline>
