@@ -47,15 +47,38 @@ describe('validateProps', () => {
     expect(issues).toHaveLength(2);
   });
 
-  it('flags an unknown variant value as a warning', () => {
+  it('does not flag a value outside a widened (open) union as an error', () => {
+    // Button.variant is `'primary' | ... | (string & {})`, so the type accepts
+    // any string. A value outside the listed literals is not a type violation
+    // — the prop validator must stay silent and leave it to the theme-variant
+    // check (which reports it as a warning against the actual theme values).
     const issues = validateProps(fixture('invalid-variant.tsx'));
+    const propError = issues.find(
+      i => i.source === 'prop-validator' && i.message.includes('"abc"')
+    );
+    expect(propError).toBeUndefined();
+  });
+
+  it('flags a value outside a closed literal union as an error', () => {
+    // Accordion.iconPosition is `'left' | 'right'` with no widening member, so
+    // the literal set is a closed contract and a value outside it is a real
+    // type error.
+    const file = tmpFile(
+      'mv-closed-union.tsx',
+      `import { Accordion } from '@marigold/components';
+const C = () => <Accordion iconPosition="middle">x</Accordion>;`
+    );
+    const issues = validateProps(file);
     const issue = issues.find(
-      i => i.component === 'Button' && i.message.includes('"abc"')
+      i =>
+        i.component === 'Accordion' &&
+        i.message.includes('"middle"') &&
+        i.source === 'prop-validator'
     );
     expect(issue).toBeDefined();
     expect(issue?.severity).toBe('error');
-    expect(issue?.suggestion).toMatch(/primary/);
-    expect(issue?.details).toMatchObject({ used: 'abc' });
+    expect(issue?.suggestion).toMatch(/left|right/);
+    expect(issue?.details).toMatchObject({ used: 'middle' });
   });
 
   it('does not flag a valid variant value', () => {

@@ -214,6 +214,13 @@ export const validateProps = (
       }
       if (coverage) coverage.staticValuesChecked++;
 
+      // A widened union like `'primary' | 'secondary' | (string & {})` lets
+      // the type accept any string, so a value outside the listed literals
+      // does not violate the type contract. Reporting it here as an error
+      // would be a false positive; the theme-variant check covers those
+      // props against the actually-defined theme values as a warning.
+      if (propInfo.openValues) continue;
+
       if (!propInfo.knownValues.includes(value)) {
         issues.push({
           type: 'technical',

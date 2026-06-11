@@ -17,6 +17,12 @@ export type ComponentPropInfo = {
   // Populated when the type is a union that contains at least one string
   // literal — e.g. 'primary' | 'secondary' | (string & {}).
   knownValues?: string[];
+  // True when the union also contains a widening member such as
+  // `(string & {})` or plain `string`. The literals are then suggestions,
+  // not a closed contract — a value outside them does not violate the type,
+  // so the prop validator must not report it as an error. The theme-variant
+  // check covers those props with a warning instead.
+  openValues?: boolean;
 };
 
 export type ComponentInfo = {
@@ -78,15 +84,30 @@ const loadDtsSource = (): SourceFile => {
   return cachedSource;
 };
 
+// A union member that accepts arbitrary strings widens the literal set:
+// plain `string`, or the autocomplete-preserving `(string & {})` idiom.
+const acceptsAnyString = (t: Type): boolean => {
+  if (t.isStringLiteral()) return false;
+  if (t.isString()) return true;
+  if (t.isIntersection())
+    return t.getIntersectionTypes().some(m => m.isString());
+  return false;
+};
+
 // Extract string literal values from a type that may be a union like
 // 'primary' | 'secondary' | (string & {}) | undefined.
 // Returns undefined when there are no string literals in the type at all.
-const extractKnownValues = (type: Type): string[] | undefined => {
+// `open` marks a widened union (see acceptsAnyString): the literals are
+// then not a closed contract, so a value outside them is not a type error.
+const extractKnownValues = (
+  type: Type
+): { values: string[]; open: boolean } | undefined => {
   const unionTypes = type.isUnion() ? type.getUnionTypes() : [type];
   const literals = unionTypes
     .filter(t => t.isStringLiteral())
     .map(t => t.getLiteralValue() as string);
-  return literals.length > 0 ? literals : undefined;
+  if (literals.length === 0) return undefined;
+  return { values: literals, open: unionTypes.some(acceptsAnyString) };
 };
 
 const propertiesFromType = (type: Type): ComponentPropInfo[] => {
@@ -97,11 +118,13 @@ const propertiesFromType = (type: Type): ComponentPropInfo[] => {
     const declarations = symbol.getDeclarations();
     const declaration = declarations[0];
     const declaredType = declaration?.getType() ?? symbol.getDeclaredType();
+    const known = extractKnownValues(declaredType);
     return {
       name: symbol.getName(),
       type: declaredType.getText().slice(0, 200),
       optional: symbol.isOptional(),
-      knownValues: extractKnownValues(declaredType),
+      knownValues: known?.values,
+      openValues: known?.open,
     };
   });
 };
