@@ -665,10 +665,12 @@ export const Mobile = meta.story({
  * Below the `sm` breakpoint, `<Select>` renders its listbox inside a `<Tray>`
  * (RAC `DialogTrigger`) instead of a `<Popover>`. The inner `<ListBox>` must
  * keep participating in the Select's list state so that picking an option still
- * fires `onChange` (value API) and updates the controlled value — exactly like
- * the desktop branch. The earlier `Mobile` story only asserted `aria-selected`,
- * which can be set without `onChange` ever firing; this story verifies the full
- * controlled flow: value update, tray auto-close, and trigger value.
+ * fires `onChange` (value API) and drives the controlled `value` prop — exactly
+ * like the desktop branch. The earlier `Mobile` story only asserted
+ * `aria-selected`, which can be set without `onChange` ever firing; this story
+ * uses a fully controlled `value`/`onChange` Select and verifies the round-trip:
+ * the controlled `value` updates, the tray auto-closes, and the trigger renders
+ * from `value`.
  */
 export const MobileControlled = meta.story({
   tags: ['component-test'],
@@ -679,13 +681,15 @@ export const MobileControlled = meta.story({
     label: 'Favorite character',
   },
   render: ({ label }) => {
-    const [selected, setSelected] = useState<any>('');
+    // Controlled via the `value` prop (single-select value API).
+    const [value, setValue] = useState<Key | null>(null);
     return (
       <Stack space={6}>
         <Select
           label={label}
           placeholder="Select your character"
-          onChange={setSelected}
+          value={value}
+          onChange={setValue}
         >
           <Select.Option id="mario">Mario</Select.Option>
           <Select.Option id="luigi">Luigi</Select.Option>
@@ -695,7 +699,7 @@ export const MobileControlled = meta.story({
           <Select.Option id="bowser">Bowser</Select.Option>
         </Select>
         <hr />
-        <pre data-testid="selected">selected: {selected}</pre>
+        <pre data-testid="value">value: {value}</pre>
       </Stack>
     );
   },
@@ -721,11 +725,9 @@ export const MobileControlled = meta.story({
       await userEvent.click(within(dialog).getByText('Peach'));
     });
 
-    await step('onChange fires and the controlled value updates', async () => {
+    await step('Controlled `value` prop updates via onChange', async () => {
       await waitFor(() =>
-        expect(canvas.getByTestId('selected')).toHaveTextContent(
-          'selected: peach'
-        )
+        expect(canvas.getByTestId('value')).toHaveTextContent('value: peach')
       );
     });
 
@@ -735,7 +737,7 @@ export const MobileControlled = meta.story({
       );
     });
 
-    await step('Trigger reflects the selected value', async () => {
+    await step('Trigger renders from the controlled `value`', async () => {
       await waitFor(() => expect(trigger).toHaveTextContent('Peach'));
     });
   },

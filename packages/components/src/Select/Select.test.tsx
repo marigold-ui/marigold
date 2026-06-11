@@ -2,7 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic, Sections } from './Select.stories';
+import { Basic, MobileControlled, Sections } from './Select.stories';
 
 const user = userEvent.setup();
 
@@ -132,29 +132,29 @@ test('error is there', () => {
 // breakpoint, `<Select>` renders its listbox inside a `<Tray>` (RAC
 // `DialogTrigger`). The inner `<ListBox>` must keep participating in the
 // Select's list state so that selecting an option still fires `onChange`
-// (value API) and updates the controlled value — exactly as on desktop.
-test('fires onChange when selecting an option in the tray (small screen)', async () => {
+// (value API) and drives the controlled `value` prop — exactly as on desktop.
+// `MobileControlled` is a fully controlled (`value`/`onChange`) Select, so the
+// assertions read selection through the `value` prop round-trip.
+test('updates the controlled `value` when selecting in the tray (small screen)', async () => {
   window.matchMedia = mockMatchMedia([SMALL_SCREEN_QUERY]);
 
-  renderWithOverlay(<Basic.Component label="Favorite" />);
+  renderWithOverlay(<MobileControlled.Component />);
 
-  const button = screen.getByLabelText(/Favorite/i);
+  const button = screen.getByLabelText(/Favorite character/i);
   await user.click(button);
 
   // On small screens the listbox is presented as a tray (dialog), not a popover.
   const dialog = await screen.findByRole('dialog');
-  await user.click(within(dialog).getByText('Star Wars'));
+  await user.click(within(dialog).getByText('Peach'));
 
-  // `onChange` fired -> the story's controlled value updated.
+  // The controlled `value` prop round-trips: onChange -> state -> value.
   await waitFor(() =>
-    expect(screen.getByTestId('selected')).toHaveTextContent(
-      'selected: Star Wars'
-    )
+    expect(screen.getByTestId('value')).toHaveTextContent('value: peach')
   );
 
-  // Single selection auto-closes the tray and the trigger reflects the value.
+  // Single selection auto-closes the tray and the trigger renders from `value`.
   await waitFor(() =>
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   );
-  expect(button).toHaveTextContent('Star Wars');
+  expect(button).toHaveTextContent('Peach');
 });
