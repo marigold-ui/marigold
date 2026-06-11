@@ -1,5 +1,6 @@
 import { people } from '@/lib/data/people';
 import type { NavSection, ShellConfig } from '../_shared';
+import { getSnapshot } from './_revenue-report/store';
 
 const appShellDocs = {
   docsHref: '/patterns/layout/app-frame',
@@ -88,6 +89,39 @@ const userInput: NavSection = {
   ],
 };
 
+const reporting: NavSection = {
+  label: 'Reporting',
+  items: [
+    {
+      kind: 'Item',
+      label: 'Umsatzreport',
+      children: [
+        {
+          kind: 'Item',
+          slug: 'revenue-report',
+          label: 'Variante A: Liste',
+          docsHref: '/patterns/layout/app-frame',
+          docsLabel: 'App Frame Pattern',
+        },
+        {
+          kind: 'Item',
+          slug: 'revenue-report-wizard',
+          label: 'Variante B: Assistent',
+          docsHref: '/patterns/user-input/forms',
+          docsLabel: 'Form Guidelines',
+        },
+        {
+          kind: 'Item',
+          slug: 'revenue-report-classic',
+          label: 'Variante C: Kombiniert',
+          docsHref: '/patterns/user-input/filter',
+          docsLabel: 'Filter Guidelines',
+        },
+      ],
+    },
+  ],
+};
+
 const other: NavSection = {
   label: 'Other',
   items: [{ kind: 'Item', slug: 'inventory', label: 'Inventory' }],
@@ -95,7 +129,14 @@ const other: NavSection = {
 
 export const config: ShellConfig = {
   base: '/examples',
-  sections: [layout, userInput, other],
-  // Label the dynamic `users/[id]` segment with the member's name.
-  resolveLabel: id => people.find(person => person.id === id)?.name,
+  sections: [layout, userInput, reporting, other],
+  // Label dynamic segments: `users/[id]` with the member's name,
+  // `revenue-report*/[id]` with the report's name, `new` with the builder.
+  resolveLabel: id => {
+    if (id === 'new') return 'Neuer Report';
+    return (
+      people.find(person => person.id === id)?.name ??
+      getSnapshot().reports.find(report => report.id === id)?.name
+    );
+  },
 };
