@@ -660,6 +660,88 @@ export const Mobile = meta.story({
 });
 
 /**
+ * Regression guard for DSTSUP-261.
+ *
+ * Below the `sm` breakpoint, `<Select>` renders its listbox inside a `<Tray>`
+ * (RAC `DialogTrigger`) instead of a `<Popover>`. The inner `<ListBox>` must
+ * keep participating in the Select's list state so that picking an option still
+ * fires `onChange` (value API) and updates the controlled value — exactly like
+ * the desktop branch. The earlier `Mobile` story only asserted `aria-selected`,
+ * which can be set without `onChange` ever firing; this story verifies the full
+ * controlled flow: value update, tray auto-close, and trigger value.
+ */
+export const MobileControlled = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    label: 'Favorite character',
+  },
+  render: ({ label }) => {
+    const [selected, setSelected] = useState<any>('');
+    return (
+      <Stack space={6}>
+        <Select
+          label={label}
+          placeholder="Select your character"
+          onChange={setSelected}
+        >
+          <Select.Option id="mario">Mario</Select.Option>
+          <Select.Option id="luigi">Luigi</Select.Option>
+          <Select.Option id="peach">Peach</Select.Option>
+          <Select.Option id="toad">Toad</Select.Option>
+          <Select.Option id="yoshi">Yoshi</Select.Option>
+          <Select.Option id="bowser">Bowser</Select.Option>
+        </Select>
+        <hr />
+        <pre data-testid="selected">selected: {selected}</pre>
+      </Stack>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    // Fail loudly if `useSmallScreen` did not pick up the mobile viewport,
+    // rather than passing a test that never exercised the tray branch.
+    expect(window.innerWidth).toBeLessThan(640);
+
+    const trigger = canvas.getByRole('button', {
+      name: /Favorite character/i,
+    });
+
+    await step('Open the tray', async () => {
+      await userEvent.click(trigger);
+      // Mobile path renders the listbox inside a tray (role="dialog").
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Select an option from the tray', async () => {
+      const dialog = canvas.getByRole('dialog');
+      await userEvent.click(within(dialog).getByText('Peach'));
+    });
+
+    await step('onChange fires and the controlled value updates', async () => {
+      await waitFor(() =>
+        expect(canvas.getByTestId('selected')).toHaveTextContent(
+          'selected: peach'
+        )
+      );
+    });
+
+    await step('Single selection auto-closes the tray', async () => {
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Trigger reflects the selected value', async () => {
+      await waitFor(() => expect(trigger).toHaveTextContent('Peach'));
+    });
+  },
+});
+
+/**
  * Regression guard for DST-1482: a fixed `width` must size the field element
  * itself (the trigger), not just the FieldBase wrapper. `width={64}` maps to the
  * spacing scale, i.e. `calc(var(--spacing) * 64)` = 16rem (256px at default root

@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
@@ -6,7 +6,16 @@ import { Basic, Sections } from './Select.stories';
 
 const user = userEvent.setup();
 
+// `useSmallScreen` matches `(width < 640px)`. By default we keep the desktop
+// (Popover) branch active; individual tests opt into the mobile (Tray) branch.
+const SMALL_SCREEN_QUERY = '(width < 640px)';
+
 window.matchMedia = mockMatchMedia([]);
+
+afterEach(() => {
+  // Reset to the desktop default in case a test forced the small-screen branch.
+  window.matchMedia = mockMatchMedia([]);
+});
 
 test('renders a field (label, helptext, select)', () => {
   render(
@@ -117,4 +126,35 @@ test('error is there', () => {
   const container = screen.getAllByText('Label')[0].parentElement;
 
   expect(container).toHaveAttribute('data-error');
+});
+
+// Regression guard for DSTSUP-261: on screens narrower than the `sm`
+// breakpoint, `<Select>` renders its listbox inside a `<Tray>` (RAC
+// `DialogTrigger`). The inner `<ListBox>` must keep participating in the
+// Select's list state so that selecting an option still fires `onChange`
+// (value API) and updates the controlled value — exactly as on desktop.
+test('fires onChange when selecting an option in the tray (small screen)', async () => {
+  window.matchMedia = mockMatchMedia([SMALL_SCREEN_QUERY]);
+
+  renderWithOverlay(<Basic.Component label="Favorite" />);
+
+  const button = screen.getByLabelText(/Favorite/i);
+  await user.click(button);
+
+  // On small screens the listbox is presented as a tray (dialog), not a popover.
+  const dialog = await screen.findByRole('dialog');
+  await user.click(within(dialog).getByText('Star Wars'));
+
+  // `onChange` fired -> the story's controlled value updated.
+  await waitFor(() =>
+    expect(screen.getByTestId('selected')).toHaveTextContent(
+      'selected: Star Wars'
+    )
+  );
+
+  // Single selection auto-closes the tray and the trigger reflects the value.
+  await waitFor(() =>
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  );
+  expect(button).toHaveTextContent('Star Wars');
 });
