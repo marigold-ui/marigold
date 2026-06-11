@@ -10,11 +10,12 @@ import { ErrorBoundary } from 'react-error-boundary';
 import {
   Button,
   Center,
-  Headline,
-  Inset,
+  Description,
+  Page,
   Panel,
   Stack,
   Text,
+  Title,
 } from '@marigold/components';
 import { AppliedFilter } from './AppliedFilter';
 import { Toolbar } from './Toolbar';
@@ -64,23 +65,23 @@ const VenuesData = () => {
 
 const FilterPage = () => (
   <DeletedVenuesProvider>
-    <Inset p={4}>
-      <Stack space={8}>
-        <Stack space={2}>
-          <Headline level={2}>Venues</Headline>
-          <Text>Browse and filter available venues for your events.</Text>
-        </Stack>
-        <Panel aria-label="Venues">
-          <Panel.Content>
-            <Stack space="regular">
-              <Toolbar />
-              <AppliedFilter />
-            </Stack>
-          </Panel.Content>
-          <VenuesData />
-        </Panel>
-      </Stack>
-    </Inset>
+    <Page>
+      <Page.Header>
+        <Title>Venues</Title>
+        <Description>
+          Browse and filter available venues for your events.
+        </Description>
+      </Page.Header>
+      <Panel aria-label="Venues">
+        <Panel.Content>
+          <Stack space="regular">
+            <Toolbar />
+            <AppliedFilter />
+          </Stack>
+        </Panel.Content>
+        <VenuesData />
+      </Panel>
+    </Page>
   </DeletedVenuesProvider>
 );
 

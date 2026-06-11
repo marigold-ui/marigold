@@ -30,7 +30,7 @@ import {
 import { useSearch } from './hooks/useSearch';
 
 const FilterForm = ({ filter }: { filter: VenueFilter }) => (
-  <Stack space={12}>
+  <Stack space="group">
     <NumberField
       label="Min. Capacity"
       name="capacity"
@@ -92,8 +92,8 @@ export const Toolbar = () => {
   };
 
   return (
-    <Inline space={2} alignX="between" alignY="center">
-      <Inline alignY="input" space={2}>
+    <Inline space="related" alignX="between" alignY="center">
+      <Inline alignY="input" space="related">
         <SearchField
           aria-label="Search venues"
           description="Search by name"

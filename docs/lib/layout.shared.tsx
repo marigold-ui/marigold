@@ -25,7 +25,7 @@ export const baseOptions = (): BaseLayoutProps => {
       },
       {
         text: 'Patterns',
-        url: '/patterns/layout/app-shell',
+        url: '/patterns/layout/app-frame',
         on: 'all',
       },
       { text: 'Releases', url: '/releases/release-notes', on: 'all' },

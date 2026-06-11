@@ -4,8 +4,8 @@ export const OurMission = () => (
   <Panel>
     <Title>Our Mission</Title>
     <Panel.Content>
-      <Columns columns={[2, 1]} space={20} collapseAt="1000px">
-        <Stack space={4}>
+      <Columns columns={[2, 1]} space="section" collapseAt="1000px">
+        <Stack space="regular">
           <Text variant="muted" fontSize="lg" weight="light">
             Our mission is to accelerate human discovery by building the
             world&apos;s most powerful and accessible data platform. We provide
@@ -20,7 +20,7 @@ export const OurMission = () => (
             insights, drive progress, and build a better future for everyone.
           </Text>
         </Stack>
-        <Stack space={8}>
+        <Stack space="regular">
           <Stack>
             <Text fontSize="4xl" weight="semibold">
               44 million
