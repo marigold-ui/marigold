@@ -70,20 +70,22 @@ const NoDataEmptyState = () => (
 // initial fetch (`isLoading`); background refetches keep the previous rows on
 // screen and surface activity through FetchingIndicator instead.
 export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
-  <div aria-hidden>
+  <>
     <VisuallyHidden role="status">Loading venues…</VisuallyHidden>
-    <Stack space={4}>
-      {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-        <Inline key={key} space={6} alignY="center">
-          <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
-          <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
-          <div className="h-4 grow animate-pulse rounded bg-current/10" />
-          <div className="h-4 w-16 animate-pulse rounded bg-current/10" />
-          <div className="h-4 w-12 animate-pulse rounded bg-current/10" />
-        </Inline>
-      ))}
-    </Stack>
-  </div>
+    <div aria-hidden>
+      <Stack space={4}>
+        {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
+          <Inline key={key} space={6} alignY="center">
+            <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
+            <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
+            <div className="h-4 grow animate-pulse rounded bg-current/10" />
+            <div className="h-4 w-16 animate-pulse rounded bg-current/10" />
+            <div className="h-4 w-12 animate-pulse rounded bg-current/10" />
+          </Inline>
+        ))}
+      </Stack>
+    </div>
+  </>
 );
 
 const VenueRow = ({

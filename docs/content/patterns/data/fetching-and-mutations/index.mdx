@@ -67,8 +67,8 @@ With the factory in place, a component passes a domain value, the hook builds th
 
 ```tsx
 // Components pass domain values. The hook owns the request, the factory the key.
-const remove = useDeleteVenue();
-remove(venue.id);
+const { deleteVenue } = useDeleteVenue();
+deleteVenue(venue);
 
 // One call invalidates every list, whatever its filters, sort or page.
 queryClient.invalidateQueries({ queryKey: venueKeys.lists() });
