@@ -4,11 +4,6 @@ description: Connect AI coding assistants to the Marigold documentation.
 badge: updated
 ---
 
-<Callout title="Internal use only">
-  The marigold-docs MCP server and the Reservix AI helpers described below are
-  intended for internal Reservix usage only.
-</Callout>
-
 Marigold can feed its documentation directly to AI coding assistants, so agents like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview) can look up component APIs, usage guidelines, and code examples instead of guessing. There are three ways to give a model access to the docs: the [MCP server](#mcp-server), the [public manifest and markdown endpoints](#manifest-and-direct-ingestion), and the [CLI](#cli). On top of that, a set of [Reservix AI helpers](#reservix-ai-helpers) wrap Marigold-specific workflows. This page also covers [prompting tips](#prompting-tips) and the [limitations](#limitations) of the integration.
 
 ## Setup
@@ -138,4 +133,4 @@ A few things the integration can't do:
 2. **The index is a build-time snapshot.** Both the MCP index and the manifest / `.md` assets are generated when the docs are built and refresh on each docs deploy. Edits to the docs won't show up until the site redeploys.
 3. **It's search, not generation.** The MCP returns relevant documentation chunks, and the agent writes the code from them. Treat its output like any AI-generated code and review it.
 
-If something looks wrong or you have suggestions, ping `#design-system` or `#cop_ai_coding` in Slack.
+If something looks wrong or you have suggestions, ping [`#design-system`](https://reservix.slack.com/archives/C02727BNZ3J) or [`#cop_ai_coding`](https://reservix.slack.com/archives/C09MLTYQSS2) in Slack.
