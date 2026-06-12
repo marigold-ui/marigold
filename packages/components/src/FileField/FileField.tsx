@@ -21,7 +21,7 @@ export interface FileFieldProps
     Omit<RAC.DropZoneProps, RemovedProps>,
     Pick<FieldBaseProps<'input'>, 'label'> {
   variant?: string;
-  size?: string;
+  size?: 'default' | 'small' | (string & {});
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -63,6 +63,8 @@ export const FileField = ({
   width,
   label,
   name,
+  size,
+  variant,
   ...props
 }: FileFieldProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
@@ -110,7 +112,11 @@ export const FileField = ({
 
   const classNames = useClassNames({
     component: 'FileField',
+    size,
+    variant,
   });
+
+  const isSmall = size === 'small';
 
   return (
     /* @ts-expect-error type intrinsic elements ("div") are not working correctly */
@@ -121,25 +127,35 @@ export const FileField = ({
       className={classNames.container}
       {...props}
     >
-      <DropZone
-        onDrop={handleDrop}
-        isDisabled={disabled}
-        className={classNames.dropZone}
-        data-testid="dropzone"
-        {...props}
-      >
-        <div className={classNames.dropZoneContent}>
-          <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
-          <FileTrigger
-            {...fileTriggerProps}
-            label={buttonLabel}
-            disabled={disabled}
-          />
-        </div>
-      </DropZone>
+      {isSmall ? (
+        <FileTrigger
+          {...fileTriggerProps}
+          label={buttonLabel}
+          disabled={disabled}
+          size={size}
+        />
+      ) : (
+        <DropZone
+          onDrop={handleDrop}
+          isDisabled={disabled}
+          className={classNames.dropZone}
+          data-testid="dropzone"
+          {...props}
+        >
+          <div className={classNames.dropZoneContent}>
+            <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
+            <FileTrigger
+              {...fileTriggerProps}
+              label={buttonLabel}
+              disabled={disabled}
+            />
+          </div>
+        </DropZone>
+      )}
       {files?.map((file, index) => (
         <FileField.Item
           key={index}
+          size={size}
           onRemove={() => {
             const updated = (files ?? []).filter((_, i) => i !== index);
             setFiles(updated);

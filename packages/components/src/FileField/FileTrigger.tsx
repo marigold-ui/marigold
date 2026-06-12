@@ -18,12 +18,13 @@ export interface FileTriggerProps extends Omit<
    */
   label: string;
   disabled?: boolean;
+  size?: 'default' | 'small' | (string & {});
 }
 
-const _FileTrigger = ({ label, disabled, ...rest }: FileTriggerProps) => {
+const _FileTrigger = ({ label, disabled, size, ...rest }: FileTriggerProps) => {
   return (
     <FileTrigger {...rest}>
-      <Button disabled={disabled}>
+      <Button disabled={disabled} size={size}>
         <Upload />
         {label}
       </Button>
