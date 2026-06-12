@@ -99,6 +99,102 @@ describe('Pagination tests', () => {
     }
   );
 
+  test('follows the controlled page prop after mount', () => {
+    const { rerender } = render(
+      <Basic.Component totalItems={100} pageSize={10} page={3} />
+    );
+
+    expect(screen.getByLabelText('Page 3')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+
+    // Parent resets the page externally, e.g. when a filter changes
+    rerender(<Basic.Component totalItems={100} pageSize={10} page={1} />);
+
+    expect(screen.getByLabelText('Page 1')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+    expect(screen.getByRole('navigation')).toHaveAttribute(
+      'aria-label',
+      'Page 1 of 10'
+    );
+  });
+
+  test('controlled: clicking a page calls onChange but the page prop stays the source of truth', async () => {
+    const onChange = vi.fn();
+    render(
+      <Basic.Component
+        totalItems={100}
+        pageSize={10}
+        page={1}
+        onChange={onChange}
+      />
+    );
+
+    await userEvent.click(screen.getByLabelText('Page 2'));
+
+    expect(onChange).toHaveBeenCalledWith(2);
+    // The parent did not update the page prop, so page 1 stays active
+    expect(screen.getByLabelText('Page 1')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+  });
+
+  test('uncontrolled: navigation updates the active page and calls onChange', async () => {
+    const onChange = vi.fn();
+    render(
+      <Basic.Component
+        totalItems={100}
+        pageSize={10}
+        defaultPage={2}
+        onChange={onChange}
+      />
+    );
+
+    await userEvent.click(screen.getByLabelText('Page 4'));
+
+    expect(onChange).toHaveBeenCalledWith(4);
+    expect(screen.getByLabelText('Page 4')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+  });
+
+  test('resets to the first page when pageSize changes', async () => {
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <Basic.Component
+        totalItems={100}
+        pageSize={10}
+        defaultPage={5}
+        onChange={onChange}
+      />
+    );
+
+    expect(screen.getByLabelText('Page 5')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+
+    rerender(
+      <Basic.Component
+        totalItems={100}
+        pageSize={20}
+        defaultPage={5}
+        onChange={onChange}
+      />
+    );
+
+    expect(onChange).toHaveBeenCalledWith(1);
+    expect(screen.getByLabelText('Page 1')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+  });
+
   test('use control labels', async () => {
     render(<WithButtonLabels.Component />);
 
