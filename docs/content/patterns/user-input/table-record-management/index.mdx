@@ -1,0 +1,227 @@
+---
+title: Table Record Management
+description: Create and edit records in data heavy tables with inline editing and drawers.
+badge: alpha
+---
+
+Most data heavy applications are built around a table of records that people create, edit, and refine throughout the day. This pattern shows how to combine the [`<Table>`](/components/collection/table) and [`<Drawer>`](/components/overlay/drawer) components for record creation and editing. It covers when to keep the work inline, when to move it into a drawer, and when a full page is the better home. It also explains how to handle the edge cases that appear once a table carries filters, sorting, and hidden columns.
+
+This pattern covers the interaction shell around a record, meaning how the user opens, fills, and saves it. For building the forms themselves, including field layout, validation, and submission, see the [Forms](/patterns/user-input/forms) pattern. For narrowing which records are shown, see the [Filter](/patterns/user-input/filter) pattern.
+
+## Choosing an approach
+
+Before reaching for a component, decide how much room the edit actually needs. The right choice depends on how much surrounding context the user has to keep in view while they work. Marigold recommends three levels, from the most contained to the most spacious.
+
+| Need                                                                                    | Use                                                                      | Why                                                                                                                                                                |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Quick single field correction such as a status toggle, a name fix, or a quantity change | **Inline edit** ([`<Table.EditableCell>`](/components/collection/table)) | Zero context switch. The user stays in the table. Best for high frequency, low complexity edits.                                                                   |
+| Creating a record or editing several fields at once                                     | **Drawer** ([`<Drawer>`](/components/overlay/drawer) and a form)         | The default. It preserves the table context through a split screen model, handles hidden columns gracefully, and supports progressive disclosure for longer forms. |
+| Exceptionally complex records such as multi step wizards or embedded sub tables         | **Full page** (a dedicated route)                                        | An escape hatch. Use it only when a drawer genuinely cannot hold the form. It removes the table from view, so the user can no longer reference existing data.      |
+
+The drawer is the default for anything beyond a single field. It keeps the table visible behind it, so the user can still read neighboring records while they work. Reserve the full page for the rare record that a drawer cannot hold, and accept that it trades away the table context to gain space.
+
+<Callout
+  type="warning"
+  title="Do not use a modal for record creation or editing"
+>
+  A modal blocks the table behind it, which is exactly the context people rely
+  on during data entry. Modals also create nested scrolling once a form grows.
+  Keep modals for confirmations, such as asking before a delete, and use a
+  drawer for everything else.
+</Callout>
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>Use a drawer as the default for creating and editing records.</li>
+        <li>
+          Keep the table readable behind the drawer so users can compare against
+          existing records.
+        </li>
+        <li>Limit inline editing to single, low risk fields.</li>
+      </ul>
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>
+          Do not open a modal to create or edit a record, because it hides the
+          data the user came to work with.
+        </li>
+        <li>Do not push a complex, multi field form into an inline cell.</li>
+        <li>Do not jump to a full page when a drawer would do.</li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<Callout type="info" title="Tables belong in a Panel">
+  Every table in these demos sits inside a [`<Panel>`](/components/layout/panel)
+  with a `bleed` content area. Bleed lets the table reach the panel edges so its
+  cell edges line up with the panel header and any toolbar above it. Always
+  present a table this way rather than on its own. See the
+  [Panel](/components/layout/panel) docs for the full structure.
+</Callout>
+
+## Inline editing
+
+Inline editing is the fastest way to change one value. The cell switches from a read view to an input view, the user commits with the save button or by pressing Enter, and cancels with the cancel button or by clicking outside. Because the user never leaves the table, neighboring rows and columns stay in view the whole time.
+
+Use [`<Table.EditableCell>`](/components/collection/table) for the columns that should be editable, and leave the rest as plain cells. The `field` prop holds the input that appears while editing, and the children hold the value shown at rest. On save, read the submitted value from the form data and update your record.
+
+<ComponentDemo file="./table-record-inline-edit.demo.tsx" />
+
+A few rules keep inline editing safe and predictable:
+
+- **Reserve it for single, low risk fields.** A status, a name, or a quantity is a good fit. Anything with complex validation, foreign key relationships, or cascading side effects belongs in a drawer.
+- **Make editable cells discoverable.** The cell shows a subtle edit affordance on hover and focus, so users can tell which values are interactive without clicking every cell to find out.
+- **Validate inline.** Keep the field constraints on the input itself, for example a required name, so an invalid value is caught before it commits and the user sees the message in place.
+
+## Drawer create and edit
+
+The drawer is the centerpiece of this pattern. It slides in from the side and holds the full form while the table stays visible behind it. This split screen model is the main reason to prefer a drawer over a modal. The user can scroll the table, read another record, and copy a value across without losing their place in the form.
+
+The same drawer handles both jobs. An "Add" button opens it with an empty form for creation. Selecting a row opens it pre-filled with that record for editing. The title and the submit behavior follow the mode, but the form layout is identical, so users learn one screen instead of two.
+
+<ComponentDemo file="./table-record-drawer-crud.demo.tsx" />
+
+Keep the experience consistent with these rules:
+
+- **Use a medium drawer for most forms.** It gives the form enough room while leaving the table readable. Move to a wider size only when the fields genuinely need it.
+- **Keep the table independently scrollable behind the drawer.** This is the core advantage over a modal, so do not let the drawer freeze or hide the data underneath.
+- **Show all relevant fields regardless of column visibility.** The form is independent of which columns the table currently shows (see [Hidden columns and form fields](#hidden-columns-and-form-fields)).
+- **Indicate which record is being edited.** Highlight the matching row in the table behind the drawer so the user keeps their bearings.
+- **Confirm before discarding unsaved changes.** Allow dismissal through the close button, but warn the user if the form has edits that would be lost.
+
+<Callout type="info" title="Layout inside the drawer">
+  Build the form with the same building blocks as any other Marigold form. Wrap
+  the fields in a `<Form>`, use `<Drawer.Title>` for the heading, `<Drawer.Content>`
+  for the fields, and `<Drawer.Actions>` for the buttons. See the [Forms](/patterns/user-input/forms)
+  pattern for field order, spacing, and the action hierarchy.
+</Callout>
+
+## Continuous entry with "Save and add another"
+
+When someone is entering a batch of records in one sitting, closing and reopening the drawer for each one adds friction. A second action, "Save and add another", commits the current record and immediately resets the form for the next one without closing the drawer. This turns record creation into a fast, repeatable loop.
+
+<ComponentDemo file="./table-record-add-another.demo.tsx" />
+
+The loop only feels good when the details are handled with care:
+
+- **Keep "Save" as the primary action.** "Save and add another" is the supporting action, so style it as secondary. The two should never compete for the same visual weight.
+- **Confirm each save without blocking.** A short toast such as "Venue created" tells the user the record landed, while the new row appearing in the table behind the drawer reinforces it.
+- **Return focus to the first field.** After the form resets, move focus back to the top so the user can start typing the next record straight away.
+- **Retain the fields that repeat.** Carry contextual values such as city or category into the next entry, and clear only the record specific fields (see [Smart field retention](#smart-field-retention)).
+
+## Handling edge cases
+
+A table that creates and edits records also filters, sorts, and paginates. These features interact in ways that can make a freshly saved record seem to vanish. The strategies below keep the user trusting what they see.
+
+### The filter paradox
+
+When a filter is active, for example "Status is Active", and the user creates a record that does not match it, for example a draft, the new record is hidden the moment it is saved. The user assumes the save failed and may try again, creating duplicates.
+
+Address it from two directions:
+
+1. **Inherit the active filters by default.** When the drawer opens for creation, pre-fill the form with values that match the current filters. If the table is filtered to "Status is Active", the new record defaults to "Active", so it stays in view after saving.
+2. **Warn before the record disappears.** If the user changes a pre-filled value to one that no longer matches the active filters, surface an inline message near the field or at the foot of the form, for example "Based on your current filters, this record will not be visible after saving." A [`<SectionMessage>`](/components/content/section-message) with the `warning` variant fits this job.
+
+The demo below starts filtered to active venues. Opening the form inherits that filter, so a new venue defaults to active and stays in view. Switch the status to draft to see the warning appear, then switch the filter to "All statuses" to watch the hidden record come back.
+
+<ComponentDemo file="./table-record-filter-paradox.demo.tsx" />
+
+Two things to avoid. Do not let the record vanish silently, because that is what destroys trust. And do not force clear all filters after a save, because that throws away the workspace the user carefully set up. Temporarily exempting the new row from the filters (a ghost row) is another option some systems use, but it adds real complexity and can confuse people who do not understand why a non matching record is showing. It is not recommended as the default.
+
+### Hidden columns and form fields
+
+People hide table columns to focus on what matters to them. The creation form still has to collect every field, including the ones behind hidden columns, so it should respect that configuration rather than rigidly following the database schema.
+
+- **Order visible fields first.** Fields that map to currently visible columns belong at the top of the form, ideally in the same left to right order as the columns. The form then mirrors the table, which gives the user cognitive continuity.
+- **Group hidden fields behind progressive disclosure.** Fields that map to hidden columns go below, inside a collapsed [`<Accordion>`](/components/navigation/accordion) section such as "Additional fields". This honors the user's intent while still surfacing every field.
+- **Keep required fields visible.** If a required field maps to a hidden column, leave it in the main section with its required indicator rather than burying it in the accordion. Only optional hidden fields belong there.
+
+For the form layout and progressive disclosure details, see the [Forms](/patterns/user-input/forms) pattern.
+
+### Sorting and pagination displacement
+
+If the table is sorted alphabetically and the user creates "Zebra Corp", the record belongs near the end of the data, perhaps many pages away. A user sitting on page one will not see it appear.
+
+Confirm the save with a [`<Toast>`](/components/overlay/toast) such as "Zebra Corp created", and consider giving the toast an action that jumps to the record's position. Do not temporarily override the sort to force the new record to the top, because that hides the real sort state and confuses the next interaction. During a "Save and add another" loop, keep the toast brief so it does not interrupt the rhythm of entry.
+
+### Smart field retention
+
+When someone enters a batch of related records, for example twenty venues in the same city, clearing every field between entries forces them to retype the same values again and again.
+
+Identify the contextual fields that tend to stay constant across a batch, such as city, category, or date, and keep them filled after "Save and add another" while clearing the record specific fields like name and capacity. Which fields count as contextual is specific to the application, so treat this as a principle rather than a fixed rule. When in doubt, clear everything, because a blank field is safer than a wrong default that slips through unnoticed.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Forms',
+      href: '/patterns/user-input/forms',
+      caption:
+        'Field order, spacing, validation, and submission for the forms inside the drawer.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 8.25V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18V8.25m-18 0V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6ZM7.5 6h.008v.008H7.5V6Zm2.25 0h.008v.008H9.75V6Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Filter',
+      href: '/patterns/user-input/filter',
+      caption:
+        'Narrow the records on display and understand the filter paradox.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Table',
+      href: '/components/collection/table',
+      caption: 'The data display, with selection, sorting, and editable cells.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M1.5 5.625c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v12.75c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 18.375V5.625ZM21 9.375A.375.375 0 0 0 20.625 9h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5Zm0 3.75a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5Zm0 3.75a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5ZM10.875 18.75a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5ZM3.375 15h7.5a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375Zm0-3.75h7.5a.375.375 0 0 0 .375-.375v-1.5A.375.375 0 0 0 10.875 9h-7.5A.375.375 0 0 0 3 9.375v1.5c0 .207.168.375.375.375Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
