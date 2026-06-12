@@ -186,27 +186,37 @@ export const resolveComponent = (
   return null;
 };
 
+// Generic "did you mean" scorer: substring match (+2) with a weak 3-char
+// prefix boost (+1), highest score first, capped at `limit`. Shared by the
+// component and example suggesters so the heuristic lives in one place.
+export const suggestByScore = <T>(
+  items: readonly T[],
+  haystackFor: (item: T) => string,
+  input: string,
+  limit = 3
+): T[] => {
+  const needle = normalize(input);
+  return items
+    .map(item => {
+      const haystack = haystackFor(item);
+      let score = 0;
+      if (haystack.includes(needle)) score += 2;
+      if (needle.length > 2 && haystack.includes(needle.slice(0, 3)))
+        score += 1;
+      return { item, score };
+    })
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(s => s.item);
+};
+
 export const suggestComponents = (
   manifest: Manifest,
   input: string,
   limit = 3
 ): ManifestComponent[] => {
-  const needle = normalize(input);
   const flat: ManifestComponent[] = [];
   for (const cat of manifest.categories) flat.push(...cat.components);
-
-  const scored = flat
-    .map(c => {
-      const name = normalize(c.name);
-      let score = 0;
-      if (name.includes(needle)) score += 2;
-      if (needle.length > 2 && name.startsWith(needle.slice(0, 3))) score += 1;
-      return { c, score };
-    })
-    .filter(s => s.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map(s => s.c);
-
-  return scored;
+  return suggestByScore(flat, c => normalize(c.name), input, limit);
 };

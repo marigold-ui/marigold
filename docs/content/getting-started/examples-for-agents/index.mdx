@@ -1,0 +1,187 @@
+---
+title: Adapting examples for agents
+description: How to take a Marigold application example and make it run in your own app, whatever framework you use.
+---
+
+Marigold's **patterns** explain how to solve a recurring UI problem, like
+refining data with a [filter](/patterns/user-input/filter) or structuring a long
+[form](/patterns/user-input/forms). **Application examples** are the runnable
+code behind those patterns: each one is a working implementation of the pattern
+it maps to, which you fetch with `marigold examples get <slug>`. Where the
+pattern page tells you _why_, the example gives you the _code_.
+
+That code is ready to run, but only on the **Next.js App Router**, the framework
+our documentation site is built on. Most projects use something else. Before an
+example will run in your app, its code needs a few small, mechanical edits, and
+those edits are the same every time. This page is that list: read it once, then
+apply it to every example you retrieve.
+
+## Before you start: you need the CLI
+
+Everything here assumes you can run `marigold examples get <slug>` and
+`marigold docs <slug>`, which come from the **`@marigold/cli`** package. Install
+it, or run it one-off with `npx`:
+
+```sh
+pnpm add -g @marigold/cli            # global
+pnpm dlx @marigold/cli examples list # one-off, no install
+```
+
+See [Usage with AI](/getting-started/usage-with-ai#cli) for the full setup and
+the other ways to feed Marigold docs to an agent.
+
+## The one idea to hold onto
+
+An example is really a **composition of Marigold components**: which components
+are used, in what order, with what props. That composition is the whole point of
+the example, and it is completely framework-agnostic. It will run anywhere.
+
+Wrapped around that composition is some **Next.js-specific packaging**: a
+client/server directive, router hooks, a page entry point, import aliases. None
+of that is the example. It is just how the code is dressed up to live on our
+docs site.
+
+So adapting an example is mostly **peeling off the packaging and keeping the
+core.** Part 1 below is the peeling. Part 2 is connecting the core to your own
+app's data.
+
+The examples below target **Vite with React Router**, the most common Marigold
+setup (it is what our starter uses). If you are on a server-rendered framework,
+the idea is identical. Just follow that framework's own client/server and
+routing conventions instead of the Vite ones shown here.
+
+## Part 1: Change the code
+
+Make the example run in your app. Every example needs the same handful of edits.
+
+### At a glance
+
+| Next.js App Router construct      | What it is             | What to do in your app                           |
+| --------------------------------- | ---------------------- | ------------------------------------------------ |
+| `'use client'` (top of file)      | Server/client boundary | Delete it (Vite apps are all client)             |
+| `import … from 'next/navigation'` | Router hooks           | Swap for your router (e.g. `react-router`)       |
+| `nuqs` URL-state hooks            | Keeps state in the URL | Add a `nuqs` adapter, or fall back to `useState` |
+| `export default` in `page.tsx`    | App Router page entry  | Rename to a named component, or inline it        |
+| `@/…` imports                     | Docs-internal modules  | Repoint to your own files (see Part 2)           |
+
+### Delete `'use client'`
+
+The `'use client'` line at the top of a file is a Next.js marker. In a Vite app
+every component is already a client component, so the marker means nothing and
+you just remove it.
+
+```tsx
+// Before
+'use client';
+
+import { Table } from '@marigold/components';
+
+// After
+import { Table } from '@marigold/components';
+```
+
+### Swap the router hooks
+
+If a file imports from `next/navigation`, replace those hooks with your router's
+equivalents. The component logic stays the same. Only the import and the call
+shape change.
+
+```tsx
+// Before (Next.js)
+// After (React Router)
+import { useLocation, useNavigate } from 'react-router';
+import { usePathname, useRouter } from 'next/navigation';
+
+const router = useRouter();
+router.push('/venues');
+
+const navigate = useNavigate();
+navigate('/venues');
+```
+
+If your app has no routing at all, you can delete these and use plain component
+state instead.
+
+### Handle URL state (`nuqs`)
+
+Some examples keep state in the URL so it can be shared or bookmarked. The
+`filter` example does this with [`nuqs`](https://nuqs.47ng.com). `nuqs` needs an
+adapter that matches your framework:
+
+```tsx
+// Vite + React Router: wrap your app once, at the root
+import { NuqsAdapter } from 'nuqs/adapters/react-router';
+```
+
+If you do not need shareable URLs, the simplest port is to replace the `nuqs`
+hooks with React's own `useState`. You lose the URL syncing, but the pattern
+works exactly the same.
+
+### Convert the page entry point
+
+Each example folder has a `page.tsx` whose component is a **default export**.
+That is the Next.js App Router's way of declaring a page. In your app you do not
+need it: render the example's component directly in your own route, or rename
+the default export to a normal named component.
+
+```tsx
+// Before (page.tsx, Next.js)
+export default function Page() {
+  return <FilterExample />;
+}
+
+// After: just use <FilterExample /> in your own route
+```
+
+The section components that `page.tsx` imports already use named exports, so
+those you keep as they are.
+
+### Repoint the `@/` imports
+
+On our docs site, `@/` points at the docs project root. Example code uses it to
+reach docs-internal modules, which do not exist in your project:
+
+- `@/lib/data/*` is **mock data**. Repoint it to your real data (covered in Part 2).
+- `@/ui/*` are docs-internal UI helpers. Replace them with your own components,
+  or inline them.
+
+Rewrite these imports to point at your own files. (You can also set up your own
+`@/` alias in `vite.config.ts` and `tsconfig.json`, but the paths behind it will
+be yours, not ours.)
+
+## Part 2: Understand what you got
+
+Once the code runs, connect it to your real app. The payload returned by
+`marigold examples get <slug>` includes metadata that tells you how.
+
+### Which files matter
+
+The payload sorts the files for you:
+
+- **`key_files`** are the load-bearing source that actually implements the
+  pattern. Port these.
+- **`scaffolding_files`** are framework glue (usually `page.tsx`). Replace them
+  with your own equivalent rather than copying them over.
+- **`peer_deps`** are the extra packages to install alongside
+  `@marigold/components` (for example `nuqs`, `zod`, `@internationalized/date`).
+
+### Replace the mock data
+
+Examples import fixtures like `@/lib/data/venues`. These are placeholders that
+only exist on our docs site. The payload's **`mock_data`** field gives you the
+**shape** of each fixture: a TypeScript type plus the names it exports.
+
+Point the import at your own data source that matches that shape (an API call, a
+store, a static module), and keep the same export names the components expect.
+The component code does not change. Only where the data comes from does.
+
+### Read the pattern for the "why"
+
+Every example lists the canonical **`patterns`** it belongs to (for example
+`user-input/filter`). The example gives you the code. The pattern doc gives you
+the reasoning, the guidelines, and when to use it. Fetch it when you want the
+intent behind the composition:
+
+```sh
+marigold docs user-input/filter
+```
