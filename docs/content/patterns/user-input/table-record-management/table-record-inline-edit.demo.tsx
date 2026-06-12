@@ -97,7 +97,11 @@ export default () => {
         <Description>Select a cell to edit its value in place.</Description>
       </Panel.Header>
       <Panel.Content bleed>
-        <Table aria-label="Venues with inline editing" variant="grid">
+        <Table
+          aria-label="Venues with inline editing"
+          variant="muted"
+          size="compact"
+        >
           <Table.Header>
             <Table.Column rowHeader>Name</Table.Column>
             <Table.Column>City</Table.Column>
