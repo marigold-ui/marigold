@@ -271,6 +271,12 @@ In the demo, submitting `support@reservix.de` simulates a server-side rejection.
 
 <ComponentDemo file="./validation-server-error.demo.tsx" background="page" />
 
+<Callout title="Wiring up mutations">
+  This demo uses `useMutation` to talk to the server. For the broader picture of
+  fetching, mutating and giving feedback with React Query, see the [Fetching and
+  Mutations](/patterns/data/fetching-and-mutations) pattern.
+</Callout>
+
 ### Validation with Zod
 
 For complex forms with nested objects, conditional fields, or cross-field rules, [Zod](https://zod.dev/) keeps validation declarative. Define the schema once, infer the TypeScript type from it, and run `safeParse` on the form data before submit.

@@ -1,6 +1,7 @@
 'use client';
 
 import { venueTraits } from '@/lib/data/venues';
+import { useQueryClient } from '@tanstack/react-query';
 import type { FormEvent } from 'react';
 import {
   Button,
@@ -16,6 +17,9 @@ import {
   parseFormData,
 } from '@marigold/components';
 import { ListFilter } from '@marigold/icons';
+import { FetchingIndicator } from './FetchingIndicator';
+import { venueKeys } from './hooks/queryKeys';
+import { useDeletedVenues } from './hooks/useDeletedVenues';
 import {
   type FilterFormData,
   MAX_CAPACITY,
@@ -88,7 +92,7 @@ export const Toolbar = () => {
   };
 
   return (
-    <Inline space="related" alignX="between">
+    <Inline space="related" alignX="between" alignY="center">
       <Inline alignY="input" space="related">
         <SearchField
           aria-label="Search venues"
@@ -121,6 +125,33 @@ export const Toolbar = () => {
           </Drawer>
         </Drawer.Trigger>
       </Inline>
+      <Inline alignY="center" space="related">
+        <FetchingIndicator />
+        <ResetDemo />
+      </Inline>
     </Inline>
+  );
+};
+
+// Restores any venues deleted this session. Deletions live in client state
+// (see useDeletedVenues), so resetting them and invalidating the list brings
+// every venue back — no server round-trip needed.
+const ResetDemo = () => {
+  const queryClient = useQueryClient();
+  const { excludedIds, reset } = useDeletedVenues();
+
+  if (excludedIds.length === 0) return null;
+
+  return (
+    <Button
+      variant="ghost"
+      size="small"
+      onPress={() => {
+        reset();
+        queryClient.invalidateQueries({ queryKey: venueKeys.lists() });
+      }}
+    >
+      Reset demo
+    </Button>
   );
 };
