@@ -6,7 +6,7 @@ import { transformerNotationHighlight } from '@shikijs/transformers';
 import { track } from '@vercel/analytics';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
-import { type ComponentType, type ReactNode } from 'react';
+import { type ComponentType, type ReactNode, useEffect, useState } from 'react';
 import {
   MarigoldProvider,
   OverlayContainerProvider,
@@ -36,6 +36,15 @@ export interface ComponentDemoProps {
    * 'surface' uses white, 'page' uses the theme's background color.
    */
   background?: 'surface' | 'page';
+  /**
+   * Render the demo only on the client, after mount. Use this for demos whose
+   * interactivity relies on overlays inside a `<Panel>` (for example a `<Table>`
+   * with editable cells), which can fail to attach their handlers under the
+   * Next.js dev server's hydration. The demo works either way in a production
+   * build; this keeps it working in local development too.
+   * @default false
+   */
+  clientOnly?: boolean;
   children?: ReactNode;
 }
 
@@ -66,11 +75,19 @@ const codeOptions = {
 const Preview = ({
   name,
   background = 'surface',
+  clientOnly = false,
 }: {
   name: RegistryKey;
   background?: 'surface' | 'page';
+  clientOnly?: boolean;
 }) => {
   const Demo: ComponentType<any> = registry[name].demo;
+
+  // When `clientOnly` is set, defer rendering the demo until after mount so the
+  // server and the first client render agree (both render nothing), avoiding the
+  // hydration path that can leave overlay handlers detached under `next dev`.
+  const [mounted, setMounted] = useState(!clientOnly);
+  useEffect(() => setMounted(true), []);
 
   return (
     <div
@@ -86,7 +103,7 @@ const Preview = ({
           )}
         >
           <div className="not-prose w-full overflow-x-auto p-4">
-            <Demo />
+            {mounted ? <Demo /> : null}
           </div>
         </MarigoldProvider>
       </OverlayContainerProvider>
@@ -101,6 +118,7 @@ export const ComponentDemo = ({
   file,
   mode = 'full',
   background,
+  clientOnly,
 }: ComponentDemoProps) => {
   // Resolve the registry key from either name or file prop
   const registryKey = name ?? (file ? fileToRegistryKey(file) : undefined);
@@ -123,7 +141,7 @@ export const ComponentDemo = ({
   if (mode === 'preview') {
     return (
       <div className="overflow-hidden rounded-xl border">
-        <Preview name={key} background={background} />
+        <Preview name={key} background={background} clientOnly={clientOnly} />
       </div>
     );
   }
@@ -139,7 +157,7 @@ export const ComponentDemo = ({
   return (
     <DemoTabs>
       <Tab value="Preview" className="p-0">
-        <Preview name={key} background={background} />
+        <Preview name={key} background={background} clientOnly={clientOnly} />
       </Tab>
       <Tab value="Code">
         <DynamicCodeBlock lang="tsx" code={codeString} options={codeOptions} />
