@@ -1,7 +1,9 @@
 import {
   type Manifest,
   resolveComponent,
+  resolvePage,
   suggestComponents,
+  suggestPages,
 } from './manifest.js';
 
 const manifest: Manifest = {
@@ -33,7 +35,25 @@ const manifest: Manifest = {
       ],
     },
   ],
-  pages: [],
+  pages: [
+    {
+      title: 'Accessibility',
+      slug: 'foundations/accessibility',
+      category: 'foundations',
+      description: 'Accessibility foundations',
+    },
+    {
+      title: 'Forms',
+      slug: 'patterns/user-input/forms',
+      category: 'patterns',
+      description: 'Form pattern',
+    },
+    {
+      title: 'Installation',
+      slug: 'getting-started/installation',
+      category: 'getting-started',
+    },
+  ],
 };
 
 describe('resolveComponent', () => {
@@ -101,5 +121,47 @@ describe('suggestComponents', () => {
     const suggestions = suggestComponents(manifest, 'xyzqq', 3);
 
     expect(suggestions).toHaveLength(0);
+  });
+});
+
+describe('resolvePage', () => {
+  test('matches a foundations page by exact slug', () => {
+    expect(resolvePage(manifest, 'foundations/accessibility')?.title).toBe(
+      'Accessibility'
+    );
+  });
+
+  test('matches a foundations page by title', () => {
+    expect(resolvePage(manifest, 'Accessibility')?.slug).toBe(
+      'foundations/accessibility'
+    );
+  });
+
+  test('matches a getting-started page case-insensitively', () => {
+    expect(resolvePage(manifest, 'installation')?.slug).toBe(
+      'getting-started/installation'
+    );
+  });
+
+  test('matches a patterns page by slug tail', () => {
+    expect(resolvePage(manifest, 'forms')?.slug).toBe(
+      'patterns/user-input/forms'
+    );
+  });
+
+  test('returns null for unknown', () => {
+    expect(resolvePage(manifest, 'nonexistent')).toBeNull();
+  });
+});
+
+describe('suggestPages', () => {
+  test('suggests near matches over title and slug', () => {
+    const suggestions = suggestPages(manifest, 'access', 3);
+
+    expect(suggestions.map(p => p.slug)).toContain('foundations/accessibility');
+  });
+
+  test('returns empty for complete misses', () => {
+    expect(suggestPages(manifest, 'xyzqq', 3)).toHaveLength(0);
   });
 });

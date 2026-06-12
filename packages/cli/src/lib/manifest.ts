@@ -24,6 +24,8 @@ export interface ManifestCategory {
 export interface ManifestPage {
   title: string;
   slug: string;
+  // Top-level slug segment, e.g. 'foundations', 'patterns', 'getting-started'.
+  category: string;
   description?: string;
 }
 
@@ -92,6 +94,7 @@ const transformManifest = (raw: RawManifest): Manifest => {
       standalonePages.push({
         title: clean(page.name) ?? slug,
         slug,
+        category: slugParts[0] ?? slug,
         description: clean(page.description),
       });
     }
@@ -209,4 +212,57 @@ export const suggestComponents = (
     .map(s => s.c);
 
   return scored;
+};
+
+// Resolve a standalone (non-component) page using the same match cascade as
+// resolveComponent, matching against the page title and slug.
+export const resolvePage = (
+  manifest: Manifest,
+  input: string
+): ManifestPage | null => {
+  const needle = normalize(input);
+  const pages = manifest.pages;
+
+  // 1. exact slug or title match
+  const exact = pages.find(p => p.slug === input || p.title === input);
+  if (exact) return exact;
+
+  // 2. case-insensitive title match
+  const ci = pages.find(p => p.title.toLowerCase() === input.toLowerCase());
+  if (ci) return ci;
+
+  // 3. normalized title match (handles kebab, spaces, underscores)
+  const norm = pages.find(p => normalize(p.title) === needle);
+  if (norm) return norm;
+
+  // 4. slug tail normalized
+  const tail = pages.find(p => {
+    const last = p.slug.split('/').at(-1) ?? '';
+    return normalize(last) === needle;
+  });
+  if (tail) return tail;
+
+  return null;
+};
+
+export const suggestPages = (
+  manifest: Manifest,
+  input: string,
+  limit = 3
+): ManifestPage[] => {
+  const needle = normalize(input);
+
+  return manifest.pages
+    .map(p => {
+      const haystack = normalize(`${p.title} ${p.slug}`);
+      let score = 0;
+      if (haystack.includes(needle)) score += 2;
+      if (needle.length > 2 && haystack.includes(needle.slice(0, 3)))
+        score += 1;
+      return { p, score };
+    })
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(s => s.p);
 };

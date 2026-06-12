@@ -1,9 +1,10 @@
 import pc from 'picocolors';
-import type { ComponentDocs } from './docs.js';
+import type { PageDocs } from './docs.js';
 import {
   type Manifest,
   type ManifestCategory,
   type ManifestComponent,
+  type ManifestPage,
   normalize,
 } from './manifest.js';
 import { stripAnsi } from './strip-ansi.js';
@@ -62,17 +63,15 @@ const renderMarkdownToTerminal = (md: string): string => {
   return out.join('\n').replace(/\n{3,}/g, '\n\n');
 };
 
-export const formatDocs = (
-  docs: ComponentDocs,
-  format: OutputFormat
-): string => {
+export const formatDocs = (docs: PageDocs, format: OutputFormat): string => {
   if (format === 'json') {
     return JSON.stringify(
       {
-        name: docs.component.name,
-        slug: docs.component.slug,
-        category: docs.category.name,
-        description: docs.component.description,
+        kind: docs.kind,
+        name: docs.name,
+        slug: docs.slug,
+        category: docs.category,
+        description: docs.description,
         section: docs.section,
         markdown: docs.markdown,
         url: docs.url,
@@ -111,6 +110,51 @@ const matchesFilter = (
   return true;
 };
 
+const matchesPageFilter = (page: ManifestPage, filter: ListFilter): boolean => {
+  if (
+    filter.category &&
+    normalize(page.category) !== normalize(filter.category)
+  )
+    return false;
+  if (filter.search) {
+    const needle = filter.search.toLowerCase();
+    const haystack =
+      `${page.title} ${page.slug} ${page.description ?? ''}`.toLowerCase();
+    if (!haystack.includes(needle)) return false;
+  }
+  return true;
+};
+
+// Humanize a top-level slug segment into a group heading, e.g.
+// 'getting-started' → 'Getting Started'.
+const pageGroupLabel = (category: string): string =>
+  category
+    .split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+
+interface PageGroup {
+  category: string;
+  label: string;
+  pages: ManifestPage[];
+}
+
+const groupPages = (pages: ManifestPage[]): PageGroup[] => {
+  const map = new Map<string, ManifestPage[]>();
+  for (const page of pages) {
+    const group = map.get(page.category) ?? [];
+    group.push(page);
+    map.set(page.category, group);
+  }
+  return [...map.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([category, group]) => ({
+      category,
+      label: pageGroupLabel(category),
+      pages: group,
+    }));
+};
+
 export const formatList = (
   manifest: Manifest,
   filter: ListFilter,
@@ -123,20 +167,31 @@ export const formatList = (
     }))
     .filter(cat => cat.components.length > 0);
 
+  const filteredPages = manifest.pages.filter(p =>
+    matchesPageFilter(p, filter)
+  );
+  const pageGroups = groupPages(filteredPages);
+
   if (format === 'json') {
     return JSON.stringify(
       {
         version: manifest.version,
         baseUrl: manifest.baseUrl,
         categories: filtered,
+        pages: filteredPages.map(p => ({
+          title: p.title,
+          slug: p.slug,
+          category: p.category,
+          description: p.description,
+        })),
       },
       null,
       2
     );
   }
 
-  if (filtered.length === 0) {
-    return 'No components match the filter.\n';
+  if (filtered.length === 0 && pageGroups.length === 0) {
+    return 'No components or pages match the filter.\n';
   }
 
   const lines: string[] = [];
@@ -148,6 +203,17 @@ export const formatList = (
       const name = format === 'plain' ? c.name : pc.bold(c.name);
       const desc = c.description ? ` — ${c.description}` : '';
       lines.push(`  ${name}${desc}`);
+    }
+  }
+  for (const group of pageGroups) {
+    const label =
+      format === 'plain' ? group.label : pc.bold(pc.cyan(group.label));
+    lines.push('');
+    lines.push(label);
+    for (const p of group.pages) {
+      const slug = format === 'plain' ? p.slug : pc.bold(p.slug);
+      const desc = p.description ? ` — ${p.description}` : '';
+      lines.push(`  ${slug}${desc}`);
     }
   }
   lines.push('');
