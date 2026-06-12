@@ -79,7 +79,7 @@ export default () => {
     field: keyof Venue,
     e: React.FormEvent<HTMLFormElement>
   ) => {
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget); // [!code highlight:9]
     const raw = formData.get(field);
     const value = field === 'capacity' ? Number(raw) : raw;
 
@@ -97,11 +97,7 @@ export default () => {
         <Description>Select a cell to edit its value in place.</Description>
       </Panel.Header>
       <Panel.Content bleed>
-        <Table
-          aria-label="Venues with inline editing"
-          variant="muted"
-          size="compact"
-        >
+        <Table aria-label="Venues with inline editing" size="compact">
           <Table.Header>
             <Table.Column rowHeader>Name</Table.Column>
             <Table.Column>City</Table.Column>
@@ -111,6 +107,7 @@ export default () => {
           <Table.Body>
             {venues.map(venue => (
               <Table.Row key={venue.id}>
+                {/* [!code highlight:14] */}
                 <Table.EditableCell
                   onSubmit={e => update(venue.id, 'name', e)}
                   field={

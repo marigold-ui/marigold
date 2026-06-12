@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import {
   Button,
   Drawer,
+  EmptyState,
   Form,
   Inline,
   NumberField,
@@ -11,10 +12,8 @@ import {
   Select,
   Stack,
   Table,
-  Text,
   TextField,
   Title,
-  useToast,
 } from '@marigold/components';
 
 interface Venue {
@@ -41,7 +40,6 @@ interface Retained {
 }
 
 export default () => {
-  const { addToast } = useToast();
   const [venues, setVenues] = useState<Venue[]>([]);
   const [open, setOpen] = useState(false);
   const [retained, setRetained] = useState<Retained>({
@@ -71,10 +69,10 @@ export default () => {
       capacity: Number(formData.get('capacity') ?? 0),
     };
 
-    setVenues(prev => [venue, ...prev]);
-    addToast({ title: `“${venue.name}” created`, variant: 'success' });
+    setVenues(prev => [...prev, venue]);
 
     if (addAnotherRef.current) {
+      // [!code highlight:8]
       // Keep the drawer open, retain the contextual fields, and remount the
       // form so the record specific fields clear and focus returns to "Name".
       setRetained({ city: venue.city, type: venue.type });
@@ -125,6 +123,7 @@ export default () => {
                 </Drawer.Content>
                 <Drawer.Actions>
                   <Button slot="close">Cancel</Button>
+                  {/* [!code highlight:9] */}
                   <Button
                     variant="secondary"
                     type="submit"
@@ -154,9 +153,11 @@ export default () => {
           <Table.Body
             items={venues}
             emptyState={() => (
-              <Text variant="muted">
-                No venues yet. Use “Add venues” to create the first one.
-              </Text>
+              <EmptyState
+                title="No venues yet"
+                description="Add your first venue to start building the list."
+                action={<Button onPress={openCreate}>Add first venue</Button>}
+              />
             )}
           >
             {venue => (

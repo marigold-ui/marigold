@@ -69,11 +69,11 @@ export default () => {
 
   // Inherit the active filter so a new record stays in view by default.
   const openCreate = () => {
-    setStatus(filter === 'active' ? 'active' : 'draft');
+    setStatus(filter === 'active' ? 'active' : 'draft'); // [!code highlight]
     setOpen(true);
   };
 
-  const willBeHidden = filter === 'active' && status !== 'active';
+  const willBeHidden = filter === 'active' && status !== 'active'; // [!code highlight]
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,12 +85,12 @@ export default () => {
       status,
     };
 
-    setVenues(prev => [venue, ...prev]);
+    setVenues(prev => [...prev, venue]);
     addToast({
-      title: `“${venue.name}” created`,
+      title: 'Venue created',
       description: willBeHidden
-        ? 'It is hidden by the current filter.'
-        : undefined,
+        ? `“${venue.name}” was saved but is hidden by the “Active only” filter.`
+        : `“${venue.name}” was added to the list.`,
       variant: willBeHidden ? 'warning' : 'success',
     });
     setOpen(false);
@@ -136,6 +136,7 @@ export default () => {
                       <Select.Option id="draft">Draft</Select.Option>
                       <Select.Option id="archived">Archived</Select.Option>
                     </Select>
+                    {/* [!code highlight:14] */}
                     {willBeHidden && (
                       <SectionMessage variant="warning">
                         <SectionMessage.Title>
