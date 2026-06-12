@@ -145,6 +145,13 @@ test('updates the controlled `value` when selecting in the tray (small screen)',
 
   // On small screens the listbox is presented as a tray (dialog), not a popover.
   const dialog = await screen.findByRole('dialog');
+
+  // DSTSUP-261 invariant: exactly one tray modal, holding the listbox. A split
+  // `HiddenContext` (dual react-aria generations) or a broken hidden-pass guard
+  // leaks a second, empty modal that `inert`s the real one.
+  expect(screen.getAllByRole('dialog')).toHaveLength(1);
+  expect(within(dialog).getByRole('listbox')).toBeInTheDocument();
+
   await user.click(within(dialog).getByText('Peach'));
 
   // The controlled `value` prop round-trips: onChange -> state -> value.

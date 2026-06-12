@@ -3,7 +3,19 @@ import userEvent from '@testing-library/user-event';
 import { renderWithOverlay } from '../test.utils';
 import { Basic, DismissControlsWithCallbacks } from './Tray.stories';
 
+// Lets individual tests drive the `useIsHidden()` guard (DSTSUP-261). Defaults
+// to `false` so the existing tests keep exercising the real modal path.
+const hiddenState = vi.hoisted(() => ({ isHidden: false }));
+vi.mock('@react-aria/collections', async importActual => {
+  const actual = await importActual<typeof import('@react-aria/collections')>();
+  return { ...actual, useIsHidden: () => hiddenState.isHidden };
+});
+
 const user = userEvent.setup();
+
+beforeEach(() => {
+  hiddenState.isHidden = false;
+});
 
 test('renders trigger button', () => {
   renderWithOverlay(<Basic.Component />);
@@ -129,4 +141,26 @@ test('small drag snaps tray back', async () => {
 
   expect(screen.getByRole('dialog')).toBeInTheDocument();
   expect(mockAnimate).toHaveBeenCalled();
+});
+
+// DSTSUP-261 hidden-pass guard contract.
+//
+// During a collection's hidden build pass, `useIsHidden()` is `true` and the
+// Tray must render its children WITHOUT mounting the portalled modal — otherwise
+// a `Select`/`ComboBox` that builds its collection through a Tray would leak an
+// empty modal into the DOM. This locks that behavior so the guard can't be
+// dropped. The provider/consumer must share one `HiddenContext` for the real
+// `useIsHidden()` to ever return `true`; when a dependency-resolution split
+// breaks that sharing, the Tray's DOM probe takes over (covered by
+// `Select.hiddenContext.test.tsx`).
+test('hidden collection pass renders children without mounting the modal', async () => {
+  hiddenState.isHidden = true;
+
+  renderWithOverlay(<Basic.Component />);
+
+  // Children render inline (so the collection can still be built) even though
+  // the trigger was never pressed...
+  expect(screen.getByText('Tray Title')).toBeInTheDocument();
+  // ...but no portalled modal/overlay is mounted during the hidden pass.
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
