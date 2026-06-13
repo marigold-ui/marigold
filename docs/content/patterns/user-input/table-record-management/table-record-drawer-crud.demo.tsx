@@ -168,6 +168,7 @@ export default () => {
   const nextIdRef = useRef(initialVenues.length + 1);
   const formRef = useRef<HTMLFormElement>(null);
   const [discardOpen, setDiscardOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const openCreate = () => {
     // [!code highlight:11]
@@ -182,9 +183,14 @@ export default () => {
     setOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = readForm(e.currentTarget);
+
+    // Simulate a short save so the pending and success states feel real. A real
+    // app would await its API call here instead of this timeout.
+    setSaving(true);
+    await new Promise(resolve => setTimeout(resolve, 600));
 
     if (mode === 'create') {
       const id = String(nextIdRef.current++);
@@ -205,6 +211,7 @@ export default () => {
       });
     }
 
+    setSaving(false);
     setOpen(false);
   };
 
@@ -271,8 +278,10 @@ export default () => {
                   <VenueForm venue={selected} />
                 </Drawer.Content>
                 <Drawer.Actions>
-                  <Button slot="close">Cancel</Button>
-                  <Button variant="primary" type="submit">
+                  <Button slot="close" disabled={saving}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" type="submit" loading={saving}>
                     Save
                   </Button>
                 </Drawer.Actions>

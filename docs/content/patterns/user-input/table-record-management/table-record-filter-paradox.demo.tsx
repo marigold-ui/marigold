@@ -62,6 +62,7 @@ export default () => {
   // The status is controlled so the form can warn the moment the user picks a
   // value that the active filter would hide.
   const [status, setStatus] = useState<Venue['status']>('active');
+  const [saving, setSaving] = useState(false);
   const nextIdRef = useRef(initialVenues.length + 1);
 
   const visible =
@@ -75,7 +76,7 @@ export default () => {
 
   const willBeHidden = filter === 'active' && status !== 'active'; // [!code highlight]
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const venue: Venue = {
@@ -85,6 +86,11 @@ export default () => {
       status,
     };
 
+    // Simulate a short save so the pending and success states feel real. A real
+    // app would await its API call here instead of this timeout.
+    setSaving(true);
+    await new Promise(resolve => setTimeout(resolve, 600));
+
     setVenues(prev => [...prev, venue]);
     addToast({
       title: 'Venue created',
@@ -93,6 +99,7 @@ export default () => {
         : `“${venue.name}” was added to the list.`,
       variant: willBeHidden ? 'warning' : 'success',
     });
+    setSaving(false);
     setOpen(false);
   };
 
@@ -154,8 +161,10 @@ export default () => {
                   </Stack>
                 </Drawer.Content>
                 <Drawer.Actions>
-                  <Button slot="close">Cancel</Button>
-                  <Button variant="primary" type="submit">
+                  <Button slot="close" disabled={saving}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" type="submit" loading={saving}>
                     Save
                   </Button>
                 </Drawer.Actions>
