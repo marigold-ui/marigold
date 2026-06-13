@@ -1,5 +1,13 @@
 // TODO: Types and options should be key value pairs not an array.
 
+// Bounds for the static demo dataset. They match the actual data range and
+// serve as the slider/number-field upper limits as well as the "no filter"
+// sentinel for price. Defined here (the dependency-free data module) so both
+// the client filter hooks and the server-side query logic can share them. If
+// the dataset ever grows or is replaced by a live API, derive these instead.
+export const MAX_CAPACITY = 50_000;
+export const MAX_PRICE = 5_000;
+
 export const venueTypes = [
   'Outdoor Venue',
   'Club or Lounge',

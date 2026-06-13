@@ -1,3 +1,4 @@
+import { MAX_CAPACITY, MAX_PRICE } from '@/lib/data/venues';
 import {
   parseAsArrayOf,
   parseAsInteger,
@@ -6,12 +7,10 @@ import {
 } from 'nuqs';
 import { usePagination } from './usePagination';
 
-// Bounds for the static demo dataset (lib/data/venues.ts). They match the
-// actual data range and serve as the slider/number-field upper limits. If
-// the dataset ever grows or gets replaced by a live API, derive these from
-// the fetched data instead.
-export const MAX_CAPACITY = 50_000;
-export const MAX_PRICE = 5_000;
+// Dataset bounds live in the data module so the server-side query logic can
+// share them; re-exported here because the filter components import them from
+// this hook.
+export { MAX_CAPACITY, MAX_PRICE };
 
 // Concrete values double as "no filter" sentinels: 0 for capacity/rating,
 // MAX_PRICE for price, [] for traits. The uncontrolled form's `defaultValue`

@@ -10,6 +10,8 @@ export default () => {
           addToast({
             title: 'Updated Settings',
             variant: 'success',
+            // Keep toasts until cleared so this demo can stack a few.
+            timeout: 0,
           })
         }
       >
