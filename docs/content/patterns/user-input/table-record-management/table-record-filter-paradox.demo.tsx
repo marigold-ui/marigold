@@ -89,7 +89,7 @@ export default () => {
     // Simulate a short save so the pending and success states feel real. A real
     // app would await its API call here instead of this timeout.
     setSaving(true);
-    await new Promise(resolve => setTimeout(resolve, 600));
+    await new Promise(resolve => setTimeout(resolve, 400));
 
     setVenues(prev => [...prev, venue]);
     addToast({
