@@ -87,7 +87,7 @@ This is particularly helpful in large datasets where the number of matching resu
 
 Counts are also useful in single select filters such as those built with radio buttons. Even though only one option can be active at a time, the numbers preview the impact before a choice is made. They also reinforce clarity when a filter is already applied, showing exactly what scope remains.
 
-Use a [Badge](/components/content/badge) inside the option's label to display the count. Always place the count inside the label, regardless of the control used. This keeps the placement consistent across filter types and ensures assistive technology announces the count together with the option.
+Keep the count visually quiet so it informs without competing with the option itself. Use a muted, smaller [Text](/components/content/text) inside the option's label rather than a heavier element like a Badge, which draws too much attention for a secondary number. Always place the count inside the label, regardless of the control used. This keeps the placement consistent across filter types and ensures assistive technology announces the count together with the option.
 
 <ComponentDemo name="filter-option-counts" />
 

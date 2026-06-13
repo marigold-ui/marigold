@@ -1,4 +1,4 @@
-import { Badge, Checkbox, Inline } from '@marigold/components';
+import { Checkbox, Inline, Text } from '@marigold/components';
 
 const categories = [
   { value: 'concert', label: 'Concerts', count: 85 },
@@ -16,7 +16,10 @@ export default () => (
         value={value}
         label={
           <Inline space={2} alignY="center">
-            {label} <Badge>{count}</Badge>
+            {label}
+            <Text variant="muted" size="sm">
+              {count}
+            </Text>
           </Inline>
         }
       />
