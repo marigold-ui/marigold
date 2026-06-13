@@ -100,6 +100,7 @@ export const Basic = meta.story({
 });
 
 export const WithForms = meta.story({
+  parameters: { surface: false },
   render: args => (
     <Drawer.Trigger>
       <Button>Configure Filter</Button>
@@ -183,7 +184,7 @@ export const LongContent = meta.story({
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
     const scrollContainer = endMarker.closest(
-      '[class*="overflow-y-auto"]'
+      '[class*="ui-panel-content"]'
     ) as HTMLElement;
     const isWithin = (child: Element, parent: Element) => {
       const c = child.getBoundingClientRect();
@@ -217,6 +218,7 @@ export const LongContent = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { surface: false },
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
@@ -238,5 +240,91 @@ export const Controlled = meta.story({
         <pre>Drawer is {open ? 'open' : 'closed'}</pre>
       </Stack>
     );
+  },
+});
+
+/** Opening a second Drawer while one is open dismisses the first. */
+export const OneAtATime = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: args => (
+    <Stack space={8} alignX="left">
+      <Drawer.Trigger>
+        <Button>Open A</Button>
+        <Drawer {...args}>
+          <Drawer.Title>Title A</Drawer.Title>
+          <Drawer.Content>Content A</Drawer.Content>
+        </Drawer>
+      </Drawer.Trigger>
+      <Drawer.Trigger>
+        <Button>Open B</Button>
+        <Drawer {...args}>
+          <Drawer.Title>Title B</Drawer.Title>
+          <Drawer.Content>Content B</Drawer.Content>
+        </Drawer>
+      </Drawer.Trigger>
+    </Stack>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open A' }));
+    expect(await canvas.findByText('Title A')).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Open B' }));
+    expect(await canvas.findByText('Title B')).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(canvas.queryByText('Title A')).not.toBeInTheDocument()
+    );
+
+    // ESC closes only the visible drawer.
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(canvas.queryByText('Title B')).not.toBeInTheDocument()
+    );
+  },
+});
+
+/**
+ * DST-1407: A trigger nested inside an open Drawer opens a second Drawer over
+ * the first. The parent stays mounted because dismissing it would also tear
+ * down the nested trigger and the new Drawer with it. "One at a time" still
+ * holds between sibling Drawers — only nested pairs are allowed to stack.
+ */
+export const OneAtATimeNested = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open A</Button>
+      <Drawer {...args} closeButton>
+        <Drawer.Title>Title A</Drawer.Title>
+        <Drawer.Content>
+          <Drawer.Trigger>
+            <Button>Open B</Button>
+            <Drawer {...args} closeButton>
+              <Drawer.Title>Title B</Drawer.Title>
+              <Drawer.Content>Content B</Drawer.Content>
+            </Drawer>
+          </Drawer.Trigger>
+        </Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open A' }));
+    expect(await canvas.findByText('Title A')).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Open B' }));
+    expect(await canvas.findByText('Title B')).toBeInTheDocument();
+
+    // Parent stays open underneath the nested Drawer.
+    expect(canvas.getByText('Title A')).toBeInTheDocument();
+
+    // ESC closes only the topmost (nested) Drawer.
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(canvas.queryByText('Title B')).not.toBeInTheDocument()
+    );
+    expect(canvas.getByText('Title A')).toBeInTheDocument();
   },
 });

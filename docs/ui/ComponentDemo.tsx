@@ -1,6 +1,8 @@
 'use client';
 
 import { type RegistryKey, registry } from '@/.registry/demos';
+import { cn } from '@/lib/cn';
+import { transformerNotationHighlight } from '@shikijs/transformers';
 import { track } from '@vercel/analytics';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
@@ -29,6 +31,11 @@ export interface ComponentDemoProps {
    * 'full' shows both in tabs (default)
    */
   mode?: 'preview' | 'code' | 'full';
+  /**
+   * Background color of the preview area.
+   * 'surface' uses white, 'page' uses the theme's background color.
+   */
+  background?: 'surface' | 'page';
   children?: ReactNode;
 }
 
@@ -44,18 +51,40 @@ function fileToRegistryKey(file: string): string {
   return match ? match[1] : normalized;
 }
 
+// Shiki options for the Code tab. Passing `options` replaces fumadocs'
+// default, so the themes are repeated here. `transformerNotationHighlight`
+// lets a demo emphasise lines with a `{/* [!code highlight] */}` marker in
+// the source itself, so the highlight tracks the line through future edits
+// (and the marker is stripped from both the rendered code and the preview).
+const codeOptions = {
+  themes: { light: 'github-light', dark: 'github-dark' },
+  transformers: [transformerNotationHighlight()],
+};
+
 // Preview wrapper component
 // ---------------
-const Preview = ({ name }: { name: RegistryKey }) => {
+const Preview = ({
+  name,
+  background = 'surface',
+}: {
+  name: RegistryKey;
+  background?: 'surface' | 'page';
+}) => {
   const Demo: ComponentType<any> = registry[name].demo;
 
   return (
     <div
       data-theme="rui"
-      className="flex min-h-[150px] w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
+      className="flex w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
     >
       <OverlayContainerProvider container="portalContainer">
-        <MarigoldProvider theme={ruiTheme} className="bg-background w-full">
+        <MarigoldProvider
+          theme={ruiTheme}
+          className={cn(
+            'min-h-37.5 w-full',
+            background === 'page' ? 'bg-background' : 'bg-white'
+          )}
+        >
           <div className="not-prose w-full overflow-x-auto p-4">
             <Demo />
           </div>
@@ -71,6 +100,7 @@ export const ComponentDemo = ({
   name,
   file,
   mode = 'full',
+  background,
 }: ComponentDemoProps) => {
   // Resolve the registry key from either name or file prop
   const registryKey = name ?? (file ? fileToRegistryKey(file) : undefined);
@@ -92,25 +122,27 @@ export const ComponentDemo = ({
   // Preview only mode
   if (mode === 'preview') {
     return (
-      <div className="overflow-hidden rounded-xl">
-        <Preview name={key} />
+      <div className="overflow-hidden rounded-xl border">
+        <Preview name={key} background={background} />
       </div>
     );
   }
 
   // Code only mode
   if (mode === 'code') {
-    return <DynamicCodeBlock lang="tsx" code={codeString} />;
+    return (
+      <DynamicCodeBlock lang="tsx" code={codeString} options={codeOptions} />
+    );
   }
 
   // Full mode with Preview + Code tabs
   return (
-    <DemoTabs demoKey={key}>
+    <DemoTabs>
       <Tab value="Preview" className="p-0">
-        <Preview name={key} />
+        <Preview name={key} background={background} />
       </Tab>
       <Tab value="Code">
-        <DynamicCodeBlock lang="tsx" code={codeString} />
+        <DynamicCodeBlock lang="tsx" code={codeString} options={codeOptions} />
       </Tab>
     </DemoTabs>
   );
@@ -118,13 +150,7 @@ export const ComponentDemo = ({
 
 // Tracked Tabs wrapper
 // ---------------
-const DemoTabs = ({
-  demoKey,
-  children,
-}: {
-  demoKey: string;
-  children: ReactNode;
-}) => (
+const DemoTabs = ({ children }: { children: ReactNode }) => (
   <Tabs
     items={['Preview', 'Code']}
     defaultIndex={0}

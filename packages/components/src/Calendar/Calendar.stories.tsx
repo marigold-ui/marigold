@@ -1,6 +1,7 @@
 import { CalendarDate, DateFormatter } from '@internationalized/date';
 import { useState } from 'react';
-import { DateValue, I18nProvider } from 'react-aria-components';
+import { DateValue } from 'react-aria-components/Calendar';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
@@ -18,6 +19,9 @@ const meta = preview.meta({
       </div>
     ),
   ],
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     disabled: {
       control: {

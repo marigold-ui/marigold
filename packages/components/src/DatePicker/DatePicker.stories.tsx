@@ -1,11 +1,14 @@
 import { CalendarDate } from '@internationalized/date';
 import { useState } from 'react';
-import type { DateValue } from 'react-aria-components';
+import type { DateValue } from 'react-aria-components/Calendar';
 import { expect, spyOn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
+import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
 import { DatePicker } from './DatePicker';
+
+const smallScreenQuery = `(width < ${theme.screens?.sm})`;
 
 const meta = preview.meta({
   title: 'Components/DatePicker',
@@ -95,7 +98,7 @@ const meta = preview.meta({
         Object.defineProperty(window, 'matchMedia', {
           writable: true,
           value: (query: string) => ({
-            matches: query === '(width < 640px)',
+            matches: query === smallScreenQuery,
             media: query,
             onchange: null,
             addListener: () => {},

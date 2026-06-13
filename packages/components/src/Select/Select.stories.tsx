@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { Form, Key } from 'react-aria-components';
+import { Form } from 'react-aria-components/Form';
+import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
+import { TextValue } from '../TextValue/TextValue';
 import { Select } from './Select';
 
 const meta = preview.meta({
@@ -216,7 +219,7 @@ export const LongItems = meta.story({
   },
   render: args => {
     return (
-      <Inset space={24}>
+      <Inset p={24}>
         <Select
           {...args}
           label="Favorite character"
@@ -265,7 +268,7 @@ export const LongItems = meta.story({
 export const LotsOfOptions = meta.story({
   render: args => {
     return (
-      <Inset space={24}>
+      <Inset p={24}>
         <Select
           {...args}
           label="Favorite character"
@@ -317,24 +320,22 @@ export const Sections = meta.story({
     <Select {...args}>
       <Select.Section header="Fantasy">
         <Select.Option id="harry-potter">
-          <Text slot="label">Harry Potter</Text>
-          <Text slot="description">About the boy who lived</Text>
+          <TextValue>Harry Potter</TextValue>
+          <Description>About the boy who lived</Description>
         </Select.Option>
         <Select.Option id="lord-of-the-rings">
-          <Text slot="label">Lord of the Rings</Text>
-          <Text slot="description">In the lands of Middle earth</Text>
+          <TextValue>Lord of the Rings</TextValue>
+          <Description>In the lands of Middle earth</Description>
         </Select.Option>
       </Select.Section>
       <Select.Section header="Sci-Fi">
         <Select.Option id="star-wars">
-          <Text slot="label">Start Wars</Text>
-          <Text slot="description">
-            A long time ago, in a galaxy far, far away
-          </Text>
+          <TextValue>Star Wars</TextValue>
+          <Description>A long time ago, in a galaxy far, far away</Description>
         </Select.Option>
         <Select.Option id="star-trek">
-          <Text slot="label">Star Trek</Text>
-          <Text slot="description">What is this</Text>
+          <TextValue>Star Trek</TextValue>
+          <Description>What is this</Description>
         </Select.Option>
       </Select.Section>
     </Select>
@@ -404,38 +405,38 @@ export const WithBadges = meta.story({
     >
       <Select.Option id="draft">
         <Inline space={3} alignY="center">
-          <Text slot="label">Draft</Text>
+          <TextValue>Draft</TextValue>
           <Badge variant="info">In Progress</Badge>
         </Inline>
-        <Text slot="description">Work in progress</Text>
+        <Description>Work in progress</Description>
       </Select.Option>
       <Select.Option id="review">
         <Inline space={3} alignY="center">
           <Text>In Review</Text>
           <Badge variant="warning">Pending</Badge>
         </Inline>
-        <Text slot="description">Awaiting review</Text>
+        <Description>Awaiting review</Description>
       </Select.Option>
       <Select.Option id="approved">
         <Inline space={3} alignY="center">
           <Text>Approved</Text>
           <Badge variant="success">Ready</Badge>
         </Inline>
-        <Text slot="description">Approved for release</Text>
+        <Description>Approved for release</Description>
       </Select.Option>
       <Select.Option id="published">
         <Inline space={3} alignY="center">
           <Text>Published</Text>
           <Badge variant="success">Live</Badge>
         </Inline>
-        <Text slot="description">Released to public</Text>
+        <Description>Released to public</Description>
       </Select.Option>
       <Select.Option id="archived">
         <Inline space={3} alignY="center">
-          <Text slot="label">Archived</Text>
+          <TextValue>Archived</TextValue>
           <Badge>Inactive</Badge>
         </Inline>
-        <Text slot="description">No longer active</Text>
+        <Description>No longer active</Description>
       </Select.Option>
     </Select>
   ),
@@ -478,9 +479,9 @@ export const WithImages = meta.story({
               alt={person.name}
               className="size-6 rounded-full object-cover"
             />
-            <Text slot="label">{person.name}</Text>
+            <TextValue>{person.name}</TextValue>
           </Inline>
-          <Text slot="description">{person.position}</Text>
+          <Description>{person.position}</Description>
         </Select.Option>
       ))}
     </Select>
@@ -565,6 +566,79 @@ export const LargeDataset = meta.story({
       });
       const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
       expect(within(button).getByText('Tenant 200 (item-200)')).toBeVisible();
+    });
+  },
+});
+
+export const WithRenderValue = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Assign to',
+    placeholder: 'Select a user',
+    width: 80,
+  },
+  render: args => (
+    <Select
+      {...args}
+      items={people}
+      renderValue={(selected: (typeof people)[number][]) => (
+        <Inline space={2} alignY="center">
+          {selected.map(person => (
+            <Inline key={person.id} space={1} alignY="center">
+              <img
+                src={person.avatar}
+                alt=""
+                className="size-5 rounded-full object-cover"
+              />
+              <Text>{person.name}</Text>
+            </Inline>
+          ))}
+        </Inline>
+      )}
+    >
+      {(person: (typeof people)[number]) => (
+        <Select.Option id={person.id} textValue={person.name}>
+          <Inline space={2} alignY="center">
+            <img
+              src={person.avatar}
+              alt={person.name}
+              className="size-6 rounded-full object-cover"
+            />
+            <TextValue>{person.name}</TextValue>
+          </Inline>
+          <Description>{person.position}</Description>
+        </Select.Option>
+      )}
+    </Select>
+  ),
+  play: async ({ args, canvas, step }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step('Trigger shows placeholder when nothing selected', async () => {
+      expect(within(trigger).getByText(args.placeholder!)).toBeVisible();
+    });
+
+    await step('Open the dropdown', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Select Bob', async () => {
+      const listbox = canvas.getByRole('listbox');
+
+      await userEvent.click(within(listbox).getByText('Bob Smith'));
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Trigger uses custom renderValue', async () => {
+      expect(within(trigger).getByText('Bob Smith')).toBeVisible();
+      expect(
+        within(trigger).queryByText('Senior Developer')
+      ).not.toBeInTheDocument();
     });
   },
 });

@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react';
 import { useState } from 'react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Checkbox } from './Checkbox';

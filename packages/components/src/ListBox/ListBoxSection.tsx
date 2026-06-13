@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Header, ListBoxSection } from 'react-aria-components';
+import { Header } from 'react-aria-components/Header';
+import { ListBoxSection } from 'react-aria-components/ListBox';
 import { cn } from '@marigold/system';
 import { useListBoxContext } from './Context';
 

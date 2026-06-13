@@ -24,7 +24,6 @@ export const browserDeps = [
   'storybook/viewport',
   // App deps used in decorators/stories
   '@tanstack/react-query',
-  'react-select',
   // Virtualizer deps (reference process.env in source)
   '@react-aria/virtualizer',
   '@react-stately/layout',
@@ -40,7 +39,6 @@ const exclude = [
   '**/*.config.*',
   '**/config/**',
   '**/docs*/**',
-  '**/icons/**',
   '**/themes/**',
   '**/packages/types/**',
   // @marigold/cli runs node-mode tests from its own vitest config.

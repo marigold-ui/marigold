@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 
 export interface DrawerContextProps {
   variant?: string;
@@ -10,4 +10,11 @@ export const DrawerContext = createContext<DrawerContextProps>({
   size: undefined,
 });
 
-export const useDrawerContext = () => useContext(DrawerContext);
+export const useDrawerContext = () => use(DrawerContext);
+
+/**
+ * `true` when an open Drawer wraps the consumer. `useDrawerCoordination`
+ * reads it to distinguish nested drawers (which must not preempt the parent)
+ * from sibling drawers (which do).
+ */
+export const DrawerNestingContext = createContext(false);

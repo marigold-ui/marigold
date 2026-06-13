@@ -1,5 +1,5 @@
 import { type ReactNode, use } from 'react';
-import { TableStateContext } from 'react-aria-components';
+import { TableStateContext } from 'react-aria-components/Table';
 import { cn, textAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 

@@ -1,4 +1,6 @@
-import { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
+import { useId, useMemo } from 'react';
+import { HeadingContext, Provider } from 'react-aria-components';
 import type {
   InsetSpacingTokens,
   PaddingSpacingTokens,
@@ -6,13 +8,36 @@ import type {
   SpacingTokens,
 } from '@marigold/system';
 import { cn, createSpacingVar, useClassNames } from '@marigold/system';
+import { useSlot } from '../utils/useSlot';
+import { CardBody } from './CardBody';
+import { CardContext } from './CardContext';
+import { CardFooter } from './CardFooter';
+import { CardHeader } from './CardHeader';
+import { CardMedia } from './CardMedia';
 
 // Props
 // ---------------
-export interface CardProps {
+interface CardBaseProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  'className' | 'style'
+> {
+  /**
+   * Content of the card. Typically a combination of `Card.Media`,
+   * `Card.Header`, `Card.Body`, and `Card.Footer`.
+   *
+   * `Card.Header` configures the slot-aware text primitives `<Title>`
+   * and `<Description>`.
+   */
   children?: ReactNode;
-  variant?: string;
+  variant?: 'default' | 'master' | 'admin' | (string & {});
   size?: string;
+
+  /**
+   * Base heading level for the card. A `<Title>` inside `Card.Header`
+   * renders at this level.
+   * @default 3
+   */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
 
   /**
    * Stretch to fill space horizontally.
@@ -21,45 +46,33 @@ export interface CardProps {
   stretch?: boolean;
 
   /**
-   * Set the spacing between child elements. You can see allowed tokens [here](../../foundations/spacing#relation-space).
+   * Spacing between Card slots (Media, Header, Body, Footer).
+   * @default 'regular'
    */
   space?: SpaceProp<SpacingTokens>['space'];
-
-  /**
-   * Padding of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   */
-  p?: SpaceProp<InsetSpacingTokens>['space'];
-
-  /**
-   * Padding horizontal (left and right) of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   */
-  px?: SpaceProp<PaddingSpacingTokens>['space'];
-
-  /**
-   * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   */
-  py?: SpaceProp<PaddingSpacingTokens>['space'];
-
-  /**
-   * Set the right padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   */
-  pr?: SpaceProp<PaddingSpacingTokens>['space'];
-
-  /**
-   * Set the left padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   */
-  pl?: SpaceProp<PaddingSpacingTokens>['space'];
-
-  /**
-   * Set the top padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   */
-  pt?: SpaceProp<PaddingSpacingTokens>['space'];
-
-  /**
-   * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/spacing#inset-padding).
-   */
-  pb?: SpaceProp<PaddingSpacingTokens>['space'];
 }
+
+/**
+ * Padding applied to the Card. Either set `p` for uniform padding, or use
+ * `px`/`py` to control the axes separately — setting both forms is a TypeScript
+ * error, mirroring the `<Panel>` component's `p` / `px`+`py` split.
+ */
+type CardPaddingProps =
+  | {
+      /** Padding on all sides. Cannot be combined with `px` or `py`. */
+      p?: SpaceProp<InsetSpacingTokens>['space'];
+      px?: never;
+      py?: never;
+    }
+  | {
+      p?: never;
+      /** Horizontal padding applied to every slot. */
+      px?: SpaceProp<PaddingSpacingTokens>['space'];
+      /** Vertical padding applied at the top and bottom of the card. */
+      py?: SpaceProp<PaddingSpacingTokens>['space'];
+    };
+
+export type CardProps = CardBaseProps & CardPaddingProps;
 
 // Component
 // ---------------
@@ -67,45 +80,88 @@ export const Card = ({
   children,
   variant,
   size,
-  space = '0',
   stretch,
+  'aria-label': ariaLabel,
+  headingLevel = 3,
+  space = 'regular',
   p,
   px,
   py,
-  pt,
-  pb,
-  pl,
-  pr,
   ...props
 }: CardProps) => {
+  const titleId = useId();
   const classNames = useClassNames({ component: 'Card', variant, size });
+  const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
+
+  if (process.env.NODE_ENV !== 'production' && !ariaLabel && !hasTitle) {
+    console.warn(
+      '[Card] Renders an unnamed `article` landmark. Provide a `<Title>` ' +
+        '(inside or outside `Card.Header`) or an `aria-label` so screen ' +
+        'reader users can identify the card.'
+    );
+  }
+
+  const inset = p ?? 'square-regular';
+  const resolvedPx = px ?? `${inset}-x`;
+  const resolvedPy = py ?? `${inset}-y`;
+
+  const rootHeadingProps = useMemo(
+    () => ({
+      slots: {
+        title: {
+          className: cn('px-(--card-px)', classNames.title),
+          level: headingLevel,
+          id: titleId,
+          ref: titleSlotRef,
+        },
+      },
+    }),
+    [classNames.title, headingLevel, titleId, titleSlotRef]
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      classNames,
+      titleId,
+      headingLevel,
+      hasTitle,
+      titleSlotRef,
+    }),
+    [classNames, titleId, headingLevel, hasTitle, titleSlotRef]
+  );
+
   return (
-    <div
-      {...props}
-      className={cn(
-        'flex flex-col gap-y-(--space)',
-        stretch ? '' : 'w-fit',
-        classNames,
-        p !== undefined && 'p-(--p)',
-        px !== undefined && 'px-(--px)',
-        py !== undefined && 'py-(--py)',
-        pr !== undefined && 'pr-(--pr)',
-        pl !== undefined && 'pl-(--pl)',
-        pb !== undefined && 'pb-(--pb)',
-        pt !== undefined && 'pt-(--pt)'
-      )}
-      style={{
-        ...createSpacingVar('space', `${space}`),
-        ...(p !== undefined ? createSpacingVar('p', `${p}`) : {}),
-        ...(px !== undefined ? createSpacingVar('px', `${px}`) : {}),
-        ...(py !== undefined ? createSpacingVar('py', `${py}`) : {}),
-        ...(pr !== undefined ? createSpacingVar('pr', `${pr}`) : {}),
-        ...(pl !== undefined ? createSpacingVar('pl', `${pl}`) : {}),
-        ...(pb !== undefined ? createSpacingVar('pb', `${pb}`) : {}),
-        ...(pt !== undefined ? createSpacingVar('pt', `${pt}`) : {}),
-      }}
+    <Provider
+      values={[
+        [CardContext, contextValue],
+        [HeadingContext, rootHeadingProps],
+      ]}
     >
-      {children}
-    </div>
+      <article
+        {...props}
+        aria-labelledby={
+          !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+        }
+        aria-label={ariaLabel}
+        className={cn(
+          'flex flex-col overflow-hidden',
+          'gap-y-(--card-gap) py-(--card-py)',
+          stretch ? '' : 'w-fit',
+          classNames.container
+        )}
+        style={{
+          ...createSpacingVar('card-px', `${resolvedPx}`),
+          ...createSpacingVar('card-py', `${resolvedPy}`),
+          ...createSpacingVar('card-gap', `${space}`),
+        }}
+      >
+        {children}
+      </article>
+    </Provider>
   );
 };
+
+Card.Header = CardHeader;
+Card.Body = CardBody;
+Card.Footer = CardFooter;
+Card.Media = CardMedia;

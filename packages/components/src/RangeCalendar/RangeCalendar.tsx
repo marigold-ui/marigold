@@ -1,10 +1,10 @@
 import { type ContextType, useCallback, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
+import { FieldErrorContext } from 'react-aria-components/FieldError';
 import {
   RangeCalendar as AriaRangeCalendar,
   DateValue,
-  FieldErrorContext,
-} from 'react-aria-components';
+} from 'react-aria-components/RangeCalendar';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from '../Calendar/CalendarGrid';
 import { CalendarHeader } from '../Calendar/CalendarHeader';

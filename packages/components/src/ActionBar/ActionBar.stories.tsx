@@ -1,7 +1,7 @@
-import { Copy, Pencil, Trash2 } from 'lucide-react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Copy, Pencil, Trash2 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Scrollable } from '../Scrollable/Scrollable';
@@ -13,6 +13,9 @@ import { ActionBar } from './ActionBar';
 const meta = preview.meta({
   title: 'Components/ActionBar',
   component: ActionBar,
+  parameters: {
+    surface: false,
+  },
   decorators: [
     Story => (
       <I18nProvider locale="en-US">
@@ -313,7 +316,7 @@ export const IntegratedWithTable = meta.story({
                 <Table.Cell>
                   <Stack space="0.5">
                     <Text weight="medium">{user.name}</Text>
-                    <Text size="xs" color="muted-foreground">
+                    <Text size="xs" color="secondary">
                       {user.handle}
                     </Text>
                   </Stack>

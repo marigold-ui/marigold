@@ -1,19 +1,24 @@
 import type { CSSProperties } from 'react';
-import { useContext, useRef } from 'react';
-import type { DialogProps } from 'react-aria-components';
-import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
+import { use, useRef } from 'react';
+import {
+  Dialog,
+  type DialogProps,
+  OverlayTriggerStateContext,
+} from 'react-aria-components/Dialog';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
-import { DrawerContext } from './Context';
+import { DrawerContext, DrawerNestingContext } from './Context';
 import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
 import { DrawerModal } from './DrawerModal';
 import { DrawerTitle } from './DrawerTitle';
 import { DrawerTrigger } from './DrawerTrigger';
+import { useDrawerCoordination } from './useDrawerCoordination';
 
 // Props
 // ---------------
@@ -73,7 +78,11 @@ export const Drawer = ({
     size,
   });
 
-  const ctx = useContext(OverlayTriggerStateContext);
+  const ctx = use(OverlayTriggerStateContext);
+
+  // Called here (not in a child) so it reads the ancestor's `DrawerNestingContext`,
+  // not the provider this component publishes below.
+  useDrawerCoordination();
 
   /**
    * On smaller screens the we render a modal dialog instead of a non-modal drawer
@@ -84,36 +93,40 @@ export const Drawer = ({
   const landmarkProps = isSmallScreen ? {} : landmarkAria.landmarkProps;
 
   return (
-    <DrawerModal
-      className={classNames.overlay}
-      open={open}
-      keyboardDismissable={keyboardDismissable}
-      data-testid="drawer-modal"
-    >
-      <DrawerContext.Provider value={{ variant, size }}>
-        <Dialog
-          {...props}
-          // Override RAC here so we can set an appropriate role
-          {...(landmarkProps as any)}
-          className={cn(
-            'h-(--visual-viewport-height) outline-none',
-            // Use single quotes, in some enviroments the class is not correctly applied otherwise
-            "grid [grid-template-areas:'title'_'content'_'actions']",
-            classNames.container
-          )}
-        >
-          {closeButton && (
-            <CloseButton
-              aria-label={stringFormatter.format('dismissDrawer')}
-              style={{ '--i': 0 } as CSSProperties}
-              className={cn('z-80', classNames.closeButton)}
-              onPress={ctx?.close}
-            />
-          )}
-          {children}
-        </Dialog>
-      </DrawerContext.Provider>
-    </DrawerModal>
+    <ResetButtonContext>
+      <DrawerModal
+        className={classNames.overlay}
+        open={open}
+        keyboardDismissable={keyboardDismissable}
+        data-testid="drawer-modal"
+      >
+        <DrawerNestingContext value={true}>
+          <DrawerContext value={{ variant, size }}>
+            <Dialog
+              {...props}
+              // Override RAC here so we can set an appropriate role
+              {...(landmarkProps as any)}
+              className={cn(
+                'h-(--visual-viewport-height) outline-none',
+                // Use single quotes, in some enviroments the class is not correctly applied otherwise
+                "grid [grid-template-areas:'title'_'content'_'actions']",
+                classNames.container
+              )}
+            >
+              {closeButton && (
+                <CloseButton
+                  aria-label={stringFormatter.format('dismissDrawer')}
+                  style={{ '--i': 0 } as CSSProperties}
+                  className={cn('z-80', classNames.closeButton)}
+                  onPress={ctx?.close}
+                />
+              )}
+              {children}
+            </Dialog>
+          </DrawerContext>
+        </DrawerNestingContext>
+      </DrawerModal>
+    </ResetButtonContext>
   );
 };
 

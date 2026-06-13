@@ -1,8 +1,9 @@
-import { Heading } from 'react-aria-components';
+import { Heading } from 'react-aria-components/Heading';
 import { useDateFormatter } from '@react-aria/i18n';
 import { IconButton } from '../IconButton/IconButton';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
+import { noSlot } from '../utils/noSlot';
 import { useCalendarContext, useCalendarOrRangeState } from './Context';
 
 export interface CalendarHeaderProps {
@@ -52,7 +53,9 @@ export const CalendarHeader = ({
           </IconButton>
         )}
       </div>
-      <Heading className={classNames.calendarHeading}>{formattedMonth}</Heading>
+      <Heading slot={noSlot} className={classNames.calendarHeading}>
+        {formattedMonth}
+      </Heading>
       <div className="flex flex-1 justify-end">
         {showNext && (
           <IconButton

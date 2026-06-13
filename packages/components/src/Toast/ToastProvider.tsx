@@ -1,8 +1,8 @@
+import type RAC from 'react-aria-components';
 import {
   UNSTABLE_ToastQueue as ToastQueue,
   UNSTABLE_ToastRegion as ToastRegion,
-} from 'react-aria-components';
-import type RAC from 'react-aria-components';
+} from 'react-aria-components/Toast';
 import { flushSync } from 'react-dom';
 import { useClassNames } from '@marigold/system';
 import { Toast } from './Toast';

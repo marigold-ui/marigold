@@ -1,8 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic, Sections } from './Select.stories';
+import { Basic, Sections, WithRenderValue } from './Select.stories';
 
 const user = userEvent.setup();
 
@@ -101,12 +101,22 @@ test('set width via props', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLButtonElement>();
-  render(
-    <Basic.Component label="Label" data-testid="select" ref={ref as any} />
-  );
+  const ref: RefObject<HTMLButtonElement | null> = { current: null };
+  render(<Basic.Component label="Label" data-testid="select" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
+});
+
+test('does not allow width="fit"', () => {
+  render(
+    // @ts-expect-error "fit" is not allowed because virtualizer controls item sizing
+    <Basic.Component label="Label" width="fit" />
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getAllByText('Label')[0].parentElement;
+
+  expect(container).not.toHaveClass('w-fit');
 });
 
 test('error is there', () => {
@@ -117,4 +127,47 @@ test('error is there', () => {
   const container = screen.getAllByText('Label')[0].parentElement;
 
   expect(container).toHaveAttribute('data-error');
+});
+
+test('renderValue replaces the trigger content for non-empty selections', () => {
+  renderWithOverlay(<WithRenderValue.Component defaultValue="alice" />);
+
+  const button = screen.getByRole('button');
+
+  expect(within(button).getByText('Alice Johnson')).toBeVisible();
+  expect(within(button).queryByText('Product Manager')).not.toBeInTheDocument();
+});
+
+test('renderValue is not used when nothing is selected (placeholder shows)', () => {
+  render(<WithRenderValue.Component />);
+
+  const button = screen.getByRole('button');
+
+  expect(button).toHaveTextContent(/Select a user/);
+});
+
+test('renderValue receives all selected items in multi-select mode', () => {
+  renderWithOverlay(
+    <WithRenderValue.Component
+      selectionMode="multiple"
+      defaultValue={['alice', 'bob']}
+    />
+  );
+
+  const button = screen.getByRole('button');
+
+  expect(within(button).getByText('Alice Johnson')).toBeVisible();
+  expect(within(button).getByText('Bob Smith')).toBeVisible();
+});
+
+test('default trigger render hides description slot', () => {
+  renderWithOverlay(
+    <Sections.Component label="Label" defaultValue="harry-potter" />
+  );
+
+  const description = within(screen.getByRole('button')).getByText(
+    'About the boy who lived'
+  );
+
+  expect(description).not.toBeVisible();
 });

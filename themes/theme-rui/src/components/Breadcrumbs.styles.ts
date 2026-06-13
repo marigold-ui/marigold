@@ -4,7 +4,7 @@ import { cva } from '@marigold/system';
 export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
   container: cva({
     base: [
-      'flex flex-wrap items-center gap-1 wrap-break-word text-sm sm:gap-1.5 text-muted-foreground',
+      'flex flex-wrap items-center gap-1 wrap-break-word text-sm sm:gap-1.5 text-secondary',
     ],
     variants: {
       variant: {
@@ -22,6 +22,8 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
     },
   }),
   item: cva({ base: 'inline-flex items-center gap-1.5 sm:gap-2.5' }),
-  link: cva({ base: 'transition-colors hover:text-foreground cursor-pointer' }),
+  link: cva({
+    base: 'transition-[color] hover:text-foreground cursor-pointer',
+  }),
   current: cva({ base: 'font-normal text-foreground' }),
 };

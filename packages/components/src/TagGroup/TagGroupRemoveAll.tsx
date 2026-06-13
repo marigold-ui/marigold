@@ -1,6 +1,7 @@
-import { useContext } from 'react';
-import { Button, ListStateContext } from 'react-aria-components';
-import type { TagGroupProps } from 'react-aria-components';
+import { use } from 'react';
+import { Button } from 'react-aria-components/Button';
+import { ListStateContext } from 'react-aria-components/ListBox';
+import type { TagGroupProps } from 'react-aria-components/TagGroup';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { intlMessages } from '../intl/messages';
 
@@ -15,7 +16,7 @@ export const TagGroupRemoveAll = ({
   className,
   onRemove,
 }: TagGroupRemoveAllProps) => {
-  const state = useContext(ListStateContext);
+  const state = use(ListStateContext);
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
 
   if (state && state.collection.size < 2) {

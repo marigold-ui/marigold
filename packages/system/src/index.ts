@@ -83,11 +83,8 @@ export type {
   VerticalAlignProp,
   SpaceProp,
   WidthProp,
-  WidthValue,
   MaxWidthProp,
-  MaxWidthValue,
   HeightProp,
-  HeightValue,
 } from './style-props';
 
 // Utils

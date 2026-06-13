@@ -1,0 +1,96 @@
+---
+title: useLandmark
+description: Register a region as an ARIA landmark and enable F6 navigation between landmarks.
+---
+
+We re-export the `useLandmark` hook from [`react-aria`](https://react-spectrum.adobe.com/react-aria/useLandmark.html). It registers an element with React Aria's landmark controller so users can move between regions with `F6` (forward) and `Shift + F6` (backward), independent of the regular `Tab` order.
+
+Marigold's structural components (`<Page>`, `<Sidebar>`, `<TopNavigation>`, `<Panel>`) expose [ARIA landmarks](/foundations/accessibility#landmarks) through semantic HTML, so screen readers list them automatically. Today only `<Drawer>` registers with the `F6` controller. Use this hook to add any other region to the cycle (search shells, feeds, co-pilot panels).
+
+More information can be found in the [react-aria documentation](https://react-spectrum.adobe.com/react-aria/useLandmark.html).
+
+## Import
+
+To import the hook you just have to use this code below.
+
+```tsx
+import { useLandmark } from '@marigold/components';
+```
+
+## Examples
+
+### Basic landmark region
+
+Pass a `role` and a ref to the DOM element that should become the landmark, then spread the returned `landmarkProps` onto that element. Use a semantic element (`<main>`, `<nav>`, `<aside>`, `<section>`, `<form>`) whenever possible. The explicit `role` is what registers the element with React Aria.
+
+```tsx
+import { useRef } from 'react';
+import { useLandmark } from '@marigold/components';
+
+const SearchRegion = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef<HTMLElement>(null);
+  const { landmarkProps } = useLandmark(
+    { role: 'search', 'aria-label': 'Site search' },
+    ref
+  );
+
+  return (
+    <section ref={ref} {...landmarkProps}>
+      {children}
+    </section>
+  );
+};
+```
+
+### Allowed roles
+
+`AriaLandmarkRole` accepts the eight ARIA landmark roles.
+
+- `main`, the primary content of the page. There should be exactly one per page.
+- `navigation`, collections of links used for navigating the page or related pages.
+- `complementary`, content that is meaningful on its own but supports the main content (e.g. a sidebar, filters).
+- `banner`, site-wide content such as the masthead or top navigation.
+- `contentinfo`, site-wide footer information.
+- `search`, a search facility.
+- `form`, a form, when it is a major region of the page. It **must** have an `aria-label` or `aria-labelledby`.
+- `region`, a generic landmark when none of the others fit. It **must** have an `aria-label` or `aria-labelledby`.
+
+### Labelling multiple landmarks of the same role
+
+When a page contains more than one landmark with the same role, give each one an accessible name so screen reader users can tell them apart.
+
+```tsx
+const ref = useRef<HTMLElement>(null);
+const { landmarkProps } = useLandmark(
+  { role: 'navigation', 'aria-label': 'Footer' },
+  ref
+);
+
+return (
+  <nav ref={ref} {...landmarkProps}>
+    {/* Footer links */}
+  </nav>
+);
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `useLandmark` for the major regions of a page (header, primary nav,
+      main content, complementary panels, search).
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't apply `useLandmark` to every section or card. It dilutes the
+      navigation list and makes the page harder to scan with a screen reader.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Related
+
+- [Accessibility, Landmarks](/foundations/accessibility#landmarks), conceptual guide and best practices.
+- [AppShell](/components/layout/app-shell) with [Page](/components/layout/page), [Sidebar](/components/navigation/sidebar), and [TopNavigation](/components/navigation/topnavigation) render `main`, `banner`, and `complementary` landmarks out of the box.
+- [Sidebar](/components/navigation/sidebar) and [TopNavigation](/components/navigation/topnavigation), expose `navigation` and `banner` landmarks.
+- [Panel](/components/layout/panel), renders a `region` landmark labelled by its title.

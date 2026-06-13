@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react';
-import type { ProgressBarProps } from 'react-aria-components';
-import { Label, ProgressBar } from 'react-aria-components';
+import { Label } from 'react-aria-components/Label';
+import {
+  ProgressBar,
+  type ProgressBarProps,
+} from 'react-aria-components/ProgressBar';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { ProgressCircleSvg } from '../ProgressCircle/ProgressCircle';

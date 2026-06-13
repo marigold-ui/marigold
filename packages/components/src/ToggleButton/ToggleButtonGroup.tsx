@@ -1,5 +1,5 @@
-import { ToggleButtonGroup } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { ToggleButtonGroup } from 'react-aria-components/ToggleButtonGroup';
 import { useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
 
@@ -31,7 +31,7 @@ export const _ToggleButtonGroup = ({
   });
 
   return (
-    <ToggleButtonContext.Provider value={{ variant, size }}>
+    <ToggleButtonContext value={{ variant, size }}>
       <ToggleButtonGroup
         className={classNames.group}
         isDisabled={disabled}
@@ -39,7 +39,7 @@ export const _ToggleButtonGroup = ({
       >
         {children}
       </ToggleButtonGroup>
-    </ToggleButtonContext.Provider>
+    </ToggleButtonContext>
   );
 };
 

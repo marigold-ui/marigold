@@ -1,5 +1,5 @@
-import { Disclosure } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Disclosure } from 'react-aria-components/Disclosure';
 import { useAccordionContext } from './AccordionContext';
 
 type RemovedProps = 'isDisabled' | 'isExpanded';

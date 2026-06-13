@@ -63,14 +63,23 @@ export type Theme = {
     >;
 
     Button?: ComponentStyleFunction<string, string>;
-    Card?: ComponentStyleFunction<string, string>;
+    Card?: Record<
+      | 'container'
+      | 'header'
+      | 'title'
+      | 'description'
+      | 'body'
+      | 'footer'
+      | 'media',
+      ComponentStyleFunction<string, string>
+    >;
     CloseButton?: ComponentStyleFunction<string, string>;
     Collapsible?: Record<
       'container' | 'trigger' | 'content',
       ComponentStyleFunction<string, string>
     >;
     ContextualHelp?: Record<
-      'trigger' | 'container' | 'title' | 'content',
+      'trigger' | 'container' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
@@ -103,6 +112,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
+    BooleanField?: Record<
+      'container' | 'description',
+      ComponentStyleFunction<string, string>
+    >;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
@@ -126,25 +139,37 @@ export type Theme = {
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
-      'container' | 'list' | 'item' | 'section' | 'header',
+      | 'container'
+      | 'list'
+      | 'item'
+      | 'section'
+      | 'header'
+      | 'label'
+      | 'description',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
-      'container' | 'section' | 'item' | 'button',
+      'container' | 'section' | 'item' | 'button' | 'label' | 'description',
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
-    MultiSelect?: Record<
-      | 'container'
-      | 'closeButton'
-      | 'field'
-      | 'input'
-      | 'icon'
-      | 'listContainer'
-      | 'list'
-      | 'option'
-      | 'tag'
-      | 'valueContainer',
+    Panel?: Record<
+      | 'root'
+      | 'header'
+      | 'title'
+      | 'description'
+      | 'actions'
+      | 'content'
+      | 'collapsible'
+      | 'collapsibleHeader'
+      | 'collapsibleTitle'
+      | 'collapsibleDescription'
+      | 'collapsibleContent'
+      | 'footer',
+      ComponentStyleFunction<string, string>
+    >;
+    Page?: Record<
+      'root' | 'header' | 'title' | 'description' | 'actions' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Pagination?: Record<
@@ -164,12 +189,22 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    SelectList?: Record<
+      | 'container'
+      | 'list'
+      | 'item'
+      | 'label'
+      | 'description'
+      | 'indicator'
+      | 'action',
+      ComponentStyleFunction<string, string>
+    >;
     NumberField?: Record<
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>
     >;
     SectionMessage?: Record<
-      'container' | 'icon' | 'title' | 'content' | 'close',
+      'container' | 'icon' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<

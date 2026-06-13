@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+  <style>
+    .label { fill: #333; }
+    .label-line { stroke: #333; }
+    @media (prefers-color-scheme: dark) {
+      .label { fill: #999; }
+      .label-line { stroke: #999; }
+    }
+  </style>
+  <defs>
+    <filter id="raised" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="0.3" stdDeviation="0.8" flood-color="#000" flood-opacity="0.28"/>
+      <feDropShadow dx="0" dy="1.4" stdDeviation="1.3" flood-color="#000" flood-opacity="0.21"/>
+    </filter>
+    <filter id="border-shadow" x="-2%" y="-4%" width="104%" height="116%">
+      <feDropShadow dx="0" dy="0.3" stdDeviation="0.3" flood-color="#000" flood-opacity="0.14"/>
+      <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#000" flood-opacity="0.12"/>
+    </filter>
+    <filter id="overlay" x="-8%" y="-8%" width="116%" height="124%">
+      <feDropShadow dx="0" dy="0.1" stdDeviation="0.1" flood-color="#000" flood-opacity="0.32"/>
+      <feDropShadow dx="0" dy="1" stdDeviation="0.9" flood-color="#000" flood-opacity="0.26"/>
+      <feDropShadow dx="-0.1" dy="4" stdDeviation="3.6" flood-color="#000" flood-opacity="0.2"/>
+      <feDropShadow dx="-0.2" dy="12" stdDeviation="10.8" flood-color="#000" flood-opacity="0.14"/>
+    </filter>
+    <!-- Chevron down icon for select -->
+    <path id="chevron" d="M0,0 L4,4 L8,0" fill="none" stroke="oklch(0.52 0.008 54)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </defs>
+
+  <!-- Page background (charcoal-100, stays visible in dark mode) -->
+  <rect x="160" y="0" width="540" height="420" rx="10" fill="oklch(0.965 0.003 54)"/>
+
+  <!-- Card (raised elevation) containing a form -->
+  <rect x="220" y="32" width="420" height="320" rx="12" fill="#fff" stroke="oklch(0.86 0.005 54)" stroke-width="1" filter="url(#raised)"/>
+
+  <!-- Card heading -->
+  <text x="252" y="76" font-size="16" font-weight="600" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">New event</text>
+  <text x="252" y="96" font-size="12" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.52 0.008 54)">Fill in the details to create your event.</text>
+
+  <!-- Event name input (border elevation) -->
+  <text x="252" y="132" font-size="12" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Event name</text>
+  <rect x="252" y="140" width="356" height="36" rx="6" fill="#fff" stroke="oklch(0.86 0.005 54)" stroke-width="1" filter="url(#border-shadow)"/>
+  <text x="264" y="163" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Summer Festival</text>
+
+  <!-- Category select (border elevation) - trigger for the menu -->
+  <text x="252" y="200" font-size="12" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Category</text>
+  <rect x="252" y="208" width="356" height="36" rx="6" fill="#fff" stroke="oklch(0.86 0.005 54)" stroke-width="1" filter="url(#border-shadow)"/>
+  <text x="264" y="231" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.52 0.008 54)">Select a category...</text>
+  <!-- Chevron icon -->
+  <use href="#chevron" x="590" y="222"/>
+
+  <!-- Menu (overlay elevation) floating over the card, partially covering the content below -->
+  <rect x="252" y="248" width="356" height="148" rx="10" fill="#fff" stroke="oklch(0.86 0.005 54)" stroke-width="1" filter="url(#overlay)"/>
+
+  <!-- Menu items -->
+  <rect x="260" y="258" width="340" height="32" rx="6" fill="#0000000a"/>
+  <text x="276" y="279" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Concert</text>
+  <text x="276" y="315" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Festival</text>
+  <text x="276" y="349" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Exhibition</text>
+  <text x="276" y="383" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Workshop</text>
+
+  <!-- ====== LEFT-SIDE ANNOTATIONS ====== -->
+
+  <!-- bg-background -->
+  <circle cx="195" cy="20" r="2.5" class="label"/>
+  <line x1="192" y1="20" x2="155" y2="20" class="label-line" stroke-width="1"/>
+  <text x="150" y="24" font-size="11" font-weight="600" class="label" text-anchor="end">bg-background</text>
+
+  <!-- overlay on menu -->
+  <circle cx="250" cy="320" r="2.5" class="label"/>
+  <line x1="247" y1="320" x2="155" y2="320" class="label-line" stroke-width="1"/>
+  <text x="150" y="310" font-size="11" font-weight="600" class="label" text-anchor="end">ui-surface</text>
+  <text x="150" y="324" font-size="11" font-weight="600" class="label" text-anchor="end">shadow-elevation-</text>
+  <text x="150" y="338" font-size="11" font-weight="600" class="label" text-anchor="end">overlay</text>
+
+  <!-- ====== RIGHT-SIDE ANNOTATIONS ====== -->
+
+  <!-- raised on card -->
+  <circle cx="642" cy="38" r="2.5" class="label"/>
+  <line x1="645" y1="38" x2="675" y2="38" class="label-line" stroke-width="1"/>
+  <text x="680" y="35" font-size="11" font-weight="600" class="label">ui-surface</text>
+  <text x="680" y="49" font-size="11" font-weight="600" class="label">shadow-elevation-raised</text>
+
+  <!-- border on input -->
+  <circle cx="610" cy="158" r="2.5" class="label"/>
+  <line x1="613" y1="158" x2="675" y2="158" class="label-line" stroke-width="1"/>
+  <text x="680" y="155" font-size="11" font-weight="600" class="label">ui-surface</text>
+  <text x="680" y="169" font-size="11" font-weight="600" class="label">shadow-elevation-border</text>
+</svg>

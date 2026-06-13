@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { I18nProvider, useDragAndDrop } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
+import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
@@ -23,6 +24,7 @@ import { TableDragPreview } from './TableDragPreview';
 
 const meta = preview.meta({
   title: 'Components/Table',
+  parameters: { bleed: true },
   decorators: [
     Story => (
       <div id="storybook-root">
@@ -165,7 +167,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>
@@ -384,7 +386,7 @@ export const WidthsAndOverflow = meta.story({
             </Table.Body>
           </Table>
         </div>
-        <p className="text-muted-foreground block text-xs">
+        <p className="text-secondary block text-xs">
           Column widths: ID 40px, Name min 100px, Status 100px, Location min
           100px, Balance min 80px.
         </p>
@@ -695,7 +697,7 @@ export const WithActions = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>

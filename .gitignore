@@ -41,5 +41,12 @@ next-env.d.ts
 # Jetbrains IDE
 .idea
 
+# Claude Code worktrees
+.claude/worktrees/
+
 # Playwright MCP
 .playwright-mcp
+
+# Vitest browser-mode failure artifacts
+**/__screenshots__
+.vitest-attachments

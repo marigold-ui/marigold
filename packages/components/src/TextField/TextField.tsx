@@ -1,6 +1,6 @@
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { TextField } from 'react-aria-components';
+import { TextField } from 'react-aria-components/TextField';
 import { WidthProp } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { Input } from '../Input/Input';
@@ -88,26 +88,32 @@ export interface TextFieldProps
    * @default none
    */
   placeholder?: string;
+  ref?: Ref<HTMLInputElement>;
 }
 
 // Component
 // ---------------
-const _TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ required, disabled, readOnly, error, ...rest }: TextFieldProps, ref) => {
-    const props: RAC.TextFieldProps = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isInvalid: error,
-      isRequired: required,
-      ...rest,
-    };
+const _TextField = ({
+  required,
+  disabled,
+  readOnly,
+  error,
+  ref,
+  ...rest
+}: TextFieldProps) => {
+  const props: RAC.TextFieldProps = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isInvalid: error,
+    isRequired: required,
+    ...rest,
+  };
 
-    return (
-      <FieldBase as={TextField} {...props}>
-        <Input ref={ref} />
-      </FieldBase>
-    );
-  }
-);
+  return (
+    <FieldBase as={TextField} {...props}>
+      <Input ref={ref} />
+    </FieldBase>
+  );
+};
 
 export { _TextField as TextField };

@@ -7,12 +7,9 @@ import {
   useReducedMotion,
 } from 'motion/react';
 import { use } from 'react';
-import {
-  Modal,
-  ModalOverlay,
-  OverlayTriggerStateContext,
-} from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
+import { Modal, ModalOverlay } from 'react-aria-components/Modal';
 import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps =

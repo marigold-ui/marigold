@@ -1,12 +1,13 @@
 import { CalendarDate } from '@internationalized/date';
-import { ReactElement, forwardRef, useContext } from 'react';
+import type { ReactElement, Ref } from 'react';
+import { use } from 'react';
 import type RAC from 'react-aria-components';
 import {
   DatePicker,
   DatePickerStateContext,
-  type DateValue,
-  Dialog,
-} from 'react-aria-components';
+} from 'react-aria-components/DatePicker';
+import type { DateValue } from 'react-aria-components/DatePicker';
+import { Dialog } from 'react-aria-components/Dialog';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -80,83 +81,79 @@ export interface DatePickerProps
   width?: WidthProp['width'];
 }
 
-const _DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
-  (
-    {
-      dateUnavailable,
-      disabled,
-      required,
-      readOnly,
-      error,
-      variant,
-      size,
-      open,
-      granularity = 'day',
-      onChange,
-      ...rest
-    },
-    ref
-  ) => {
-    const props: RAC.DatePickerProps<DateValue> = {
-      isDateUnavailable: dateUnavailable,
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isRequired: required,
-      isInvalid: error,
-      isOpen: open,
-      granularity,
-      onChange,
-      ...rest,
-    };
+const DatePickerBase = ({
+  dateUnavailable,
+  disabled,
+  required,
+  readOnly,
+  error,
+  variant,
+  size,
+  open,
+  granularity = 'day',
+  onChange,
+  ref,
+  ...rest
+}: DatePickerProps & { ref?: Ref<HTMLDivElement> }) => {
+  const props: RAC.DatePickerProps<DateValue> = {
+    isDateUnavailable: dateUnavailable,
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isRequired: required,
+    isInvalid: error,
+    isOpen: open,
+    granularity,
+    onChange,
+    ...rest,
+  };
 
-    const classNames = useClassNames({
-      component: 'DatePicker',
-      size,
-      variant,
-    });
+  const classNames = useClassNames({
+    component: 'DatePicker',
+    size,
+    variant,
+  });
 
-    const isSmallScreen = useSmallScreen();
-    const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const isSmallScreen = useSmallScreen();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    return (
-      <FieldBase
-        as={DatePicker}
-        variant={variant}
-        size={size}
-        {...props}
-        ref={ref}
-      >
-        <DatePickerWithPasteWrapper
-          onChange={onChange}
-          action={
-            <IconButton className={classNames}>
-              <CalendarIcon size="16" data-testid="action" />
-            </IconButton>
-          }
-        />
-        {isSmallScreen ? (
-          <Tray>
-            <Tray.Title>{rest.label}</Tray.Title>
-            <Tray.Content>
-              <Calendar disabled={disabled} />
-            </Tray.Content>
-            <Tray.Actions>
-              <Button slot="close">{stringFormatter.format('close')}</Button>
-            </Tray.Actions>
-          </Tray>
-        ) : (
-          <Popover>
-            <Dialog>
-              <Calendar disabled={disabled} />
-            </Dialog>
-          </Popover>
-        )}
-      </FieldBase>
-    );
-  }
-);
+  return (
+    <FieldBase
+      as={DatePicker}
+      variant={variant}
+      size={size}
+      {...props}
+      ref={ref}
+    >
+      <DatePickerWithPasteWrapper
+        onChange={onChange}
+        action={
+          <IconButton className={classNames}>
+            <CalendarIcon size="16" data-testid="action" />
+          </IconButton>
+        }
+      />
+      {isSmallScreen ? (
+        <Tray>
+          <Tray.Title>{rest.label}</Tray.Title>
+          <Tray.Content>
+            <Calendar disabled={disabled} />
+          </Tray.Content>
+          <Tray.Actions>
+            <Button slot="close">{stringFormatter.format('close')}</Button>
+          </Tray.Actions>
+        </Tray>
+      ) : (
+        <Popover>
+          <Dialog>
+            <Calendar disabled={disabled} />
+          </Dialog>
+        </Popover>
+      )}
+    </FieldBase>
+  );
+};
 
-export { _DatePicker as DatePicker };
+export { DatePickerBase as DatePicker };
 
 interface DatePickerWithPasteWrapperProps {
   onChange?: (value: RAC.DateValue | null) => void;
@@ -167,7 +164,7 @@ const DatePickerWithPasteWrapper = ({
   onChange,
   ...props
 }: DatePickerWithPasteWrapperProps) => {
-  const ctx = useContext(DatePickerStateContext);
+  const ctx = use(DatePickerStateContext);
 
   const onPaste = (date: CalendarDate) => {
     if (onChange) {

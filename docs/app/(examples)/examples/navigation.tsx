@@ -1,8 +1,9 @@
+import { people } from '@/lib/data/people';
 import type { NavSection, ShellConfig } from '../_shared';
 
 const appShellDocs = {
-  docsHref: '/patterns/layout/app-shell',
-  docsLabel: 'App Shell Pattern',
+  docsHref: '/patterns/layout/app-frame',
+  docsLabel: 'App Frame Pattern',
 } as const;
 
 const layout: NavSection = {
@@ -59,10 +60,30 @@ const userInput: NavSection = {
     },
     {
       kind: 'Item',
-      slug: 'form',
       label: 'Form',
-      docsHref: '/patterns/user-input/filter',
-      docsLabel: 'Form Guidelines',
+      children: [
+        {
+          kind: 'Item',
+          slug: 'event-form',
+          label: 'Event Form',
+          docsHref: '/patterns/user-input/forms',
+          docsLabel: 'Form Guidelines',
+        },
+        {
+          kind: 'Item',
+          slug: 'settings-form',
+          label: 'Settings Form',
+          docsHref: '/patterns/user-input/forms',
+          docsLabel: 'Form Guidelines',
+        },
+        {
+          kind: 'Item',
+          slug: 'auto-save-settings',
+          label: 'Auto-Save Settings',
+          docsHref: '/patterns/user-input/forms',
+          docsLabel: 'Form Guidelines',
+        },
+      ],
     },
   ],
 };
@@ -75,4 +96,6 @@ const other: NavSection = {
 export const config: ShellConfig = {
   base: '/examples',
   sections: [layout, userInput, other],
+  // Label the dynamic `users/[id]` segment with the member's name.
+  resolveLabel: id => people.find(person => person.id === id)?.name,
 };

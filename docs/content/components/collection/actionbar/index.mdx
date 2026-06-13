@@ -1,0 +1,83 @@
+---
+title: ActionBar
+description: Floating toolbar of bulk actions for the current selection in a collection
+badge: alpha
+---
+
+The `<ActionBar>` is a floating toolbar that surfaces bulk actions for the current selection in a collection. When users select one or more rows in a [`<Table>`](../table) (or another collection), the bar slides in, shows the selection count, and offers actions — like edit, delete, or export — that apply to every selected item at once.
+
+## Anatomy
+
+## Appearance
+
+<AppearanceDemo component="ActionBar" />
+
+<AppearanceTable component="ActionBar" />
+
+## Usage
+
+## Props
+
+<StorybookHintMessage component="ActionBar" />
+
+### ActionBar
+
+<AutoTypeTable path="ActionBar" name="ActionBarProps" />
+
+### ActionBar.Button
+
+<AutoTypeTable path="ActionBar/ActionBarButton" name="ActionBarButtonProps" />
+
+### useActionBar
+
+<AutoTypeTable path="ActionBar/useActionBar" name="UseActionBarProps" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Table',
+      href: '../table',
+      caption:
+        'The most common host for an ActionBar. Selecting rows in a Table reveals the bar with bulk actions for the selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 9h18" />
+          <path d="M3 15h18" />
+          <path d="M9 3v18" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Button',
+      href: '../../actions/button',
+      caption:
+        'ActionBar.Button is built on the same button foundation. Reach for Button for standalone actions outside a selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect x="3" y="8" width="18" height="8" rx="4" />
+        </svg>
+      ),
+    },
+  ]}
+/>
