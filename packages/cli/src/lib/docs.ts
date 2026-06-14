@@ -1,19 +1,23 @@
 import { type CacheOptions, fetchWithCache } from './cache.js';
 import { docsUrl } from './config.js';
 import {
-  type ManifestCategory,
-  type ManifestComponent,
   loadManifest,
   resolveComponent,
+  resolvePage,
   suggestComponents,
+  suggestPages,
 } from './manifest.js';
 import { sanitizeRemote } from './strip-ansi.js';
 
 export type Section = 'props' | 'usage' | 'examples' | 'all';
 
-export interface ComponentDocs {
-  component: ManifestComponent;
-  category: ManifestCategory;
+// Normalized result covering both components and standalone docs pages.
+export interface PageDocs {
+  kind: 'component' | 'page';
+  name: string;
+  slug: string;
+  category: string;
+  description?: string;
   section: Section;
   markdown: string;
   url: string;
@@ -45,29 +49,89 @@ export const sliceSection = (
   return `_Section "${section}" not found in docs._\n`;
 };
 
-export interface GetComponentDocsOptions extends CacheOptions {
+export interface GetPageDocsOptions extends CacheOptions {
   section?: Section;
 }
 
-export const getComponentDocs = async (
-  input: string,
-  options: GetComponentDocsOptions = {}
-): Promise<ComponentDocs> => {
-  const { manifest } = await loadManifest(options);
-  const resolved = resolveComponent(manifest, input);
-
-  if (!resolved) {
-    const suggestions = suggestComponents(manifest, input);
-    const hint = suggestions.length
-      ? ` Did you mean: ${suggestions.map(s => s.name).join(', ')}?`
-      : '';
-    throw new Error(`Component "${input}" not found.${hint}`);
+// Resolve the positional query to either a component or a standalone page.
+// Full slugs route by prefix (components/… → component, else page); bare
+// names try the component cascade first, then fall back to pages.
+const resolveQuery = (
+  manifest: Awaited<ReturnType<typeof loadManifest>>['manifest'],
+  input: string
+): Pick<
+  PageDocs,
+  'kind' | 'name' | 'slug' | 'category' | 'description'
+> | null => {
+  if (input.includes('/')) {
+    if (input.startsWith('components/')) {
+      const resolved = resolveComponent(manifest, input);
+      if (!resolved) return null;
+      return {
+        kind: 'component',
+        name: resolved.component.name,
+        slug: resolved.component.slug,
+        category: resolved.category.name,
+        description: resolved.component.description,
+      };
+    }
+    const page = resolvePage(manifest, input);
+    if (!page) return null;
+    return {
+      kind: 'page',
+      name: page.title,
+      slug: page.slug,
+      category: page.category,
+      description: page.description,
+    };
   }
 
-  const { component, category } = resolved;
+  const resolved = resolveComponent(manifest, input);
+  if (resolved) {
+    return {
+      kind: 'component',
+      name: resolved.component.name,
+      slug: resolved.component.slug,
+      category: resolved.category.name,
+      description: resolved.component.description,
+    };
+  }
+
+  const page = resolvePage(manifest, input);
+  if (page) {
+    return {
+      kind: 'page',
+      name: page.title,
+      slug: page.slug,
+      category: page.category,
+      description: page.description,
+    };
+  }
+
+  return null;
+};
+
+export const getPageDocs = async (
+  input: string,
+  options: GetPageDocsOptions = {}
+): Promise<PageDocs> => {
+  const { manifest } = await loadManifest(options);
+  const resolved = resolveQuery(manifest, input);
+
+  if (!resolved) {
+    const suggestions = [
+      ...suggestComponents(manifest, input).map(c => c.name),
+      ...suggestPages(manifest, input).map(p => p.slug),
+    ].slice(0, 3);
+    const hint = suggestions.length
+      ? ` Did you mean: ${suggestions.join(', ')}?`
+      : '';
+    throw new Error(`No docs page "${input}" found.${hint}`);
+  }
+
   // Use the pretty URL form (rewritten by Next to /api/md/...). The /api/md
   // route behaves differently when hit directly vs through the rewrite in dev.
-  const url = `${docsUrl()}/${component.slug}.md`;
+  const url = `${docsUrl()}/${resolved.slug}.md`;
   // Sanitize at the boundary: remote markdown can contain terminal escape
   // sequences (OSC 52 clipboard, cursor moves, DCS) that would otherwise hit
   // the user's terminal via the markdown / plain output paths.
@@ -78,11 +142,19 @@ export const getComponentDocs = async (
   );
 
   const section = options.section ?? 'all';
-  const sliced = section === 'all' ? markdown : sliceSection(markdown, section);
+  let sliced: string;
+  if (section === 'all') {
+    sliced = markdown;
+  } else if (resolved.kind === 'page' && section === 'props') {
+    // "props" is meaningless for non-component pages; emit a page-aware note
+    // instead of a generic "section not found" placeholder.
+    sliced = `_"props" is a component-only section._\n`;
+  } else {
+    sliced = sliceSection(markdown, section);
+  }
 
   return {
-    component,
-    category,
+    ...resolved,
     section,
     markdown: sliced,
     url,
