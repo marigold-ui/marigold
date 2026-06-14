@@ -19,13 +19,13 @@ The right interaction follows from two questions:
 
 A quick correction needs almost no room but full view of its row. A new record needs a complete form, yet still benefits from the table as reference. Only rarely does a task need so much space that giving up the table is worth it.
 
-| Situation                                                                                        | Use                                                                      | Why                                                                                                                                                                     |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The user spots one wrong value, such as a stale status, a typo in a name, or an off quantity     | **Inline edit** ([`<Table.EditableCell>`](/components/collection/table)) | Zero context switch. The user stays in the table. Best for high frequency, low complexity corrections.                                                                  |
-| The user creates a record or revises several fields of an existing one                           | **Drawer** ([`<Drawer>`](/components/overlay/drawer) and a form)         | The default. It preserves the table as reference through a split screen model, handles hidden columns gracefully, and supports progressive disclosure for longer forms. |
-| The record is too complex for any side panel, such as a multi step wizard or embedded sub tables | **Full page** (a dedicated route)                                        | An escape hatch. Use it only when a drawer genuinely cannot hold the form. It removes the table from view, so the user can no longer reference existing data.           |
+| Situation                                                                                                                   | Use                                                                      | Why                                                                                                                                                                                                                                                                          |
+| --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The user spots one wrong value, such as a stale status, a typo in a name, or an off quantity                                | **Inline edit** ([`<Table.EditableCell>`](/components/collection/table)) | Zero context switch. The user stays in the table. Best for high frequency, low complexity corrections.                                                                                                                                                                       |
+| The user creates a record or revises several fields of an existing one                                                      | **Drawer** ([`<Drawer>`](/components/overlay/drawer) and a form)         | The default. It preserves the table as reference through a split screen model, handles hidden columns gracefully, and supports progressive disclosure for longer forms.                                                                                                      |
+| The editing task is stepped, nested, or needs its own URL, such as a multi step wizard or a record with editable sub tables | **Full page** (a dedicated route)                                        | For tasks whose shape outgrows a panel, not for records that merely have many fields. It removes the table from view, so reserve it for tasks that do not lean on the table as reference. See [When a full page is the right choice](#when-a-full-page-is-the-right-choice). |
 
-The drawer is the default for anything beyond a single field. Reserve the full page for the rare record that a drawer cannot hold, and accept that it trades away the table context to gain space.
+The drawer is the default for anything beyond a single field. Reach for a full page when the task is stepped, nested, or needs its own URL, and accept that it trades away the table as reference to gain space and focus.
 
 <Callout
   type="warning"
@@ -95,6 +95,20 @@ The loop only feels good when the details are handled with care:
   specific fields like name and capacity. When in doubt, clear everything,
   because a blank field is safer than a wrong default.
 </Callout>
+
+## When a full page is the right choice
+
+The drawer is the default for creating and editing, and it stays the default even for records with many fields. A long form is a reason to give the drawer more room and to group optional fields behind progressive disclosure, not a reason to leave the table. The table is the reference people lean on while they work, so giving it up always has a cost.
+
+Reach for a full page (a dedicated route) when the editing task has one of these shapes, not simply when the record is large:
+
+- **The task runs across multiple steps.** A sequence of dependent steps, a wizard, or tabbed sections work poorly inside a panel. A page gives each step room and a place for a progress indicator.
+- **The record contains nested records.** When the form holds its own table or sub records, such as an order with editable line items, it has outgrown the panel and needs the structure of a page with sub sections.
+- **The task does not lean on the table.** This is the clearest signal. If the user never compares against other rows while editing, the drawer's main advantage is already gone, and a focused page serves the task better.
+- **The edit needs its own URL.** When the work has to be bookmarked, shared with a colleague, resumed after a refresh, or linked from elsewhere, it needs an address that an overlay cannot give it.
+- **The change carries heavy downstream impact.** When a save cascades into dependent records or processes and deserves a deliberate review before it commits, a page gives that review room. A drawer can already guard against lost edits, so choose a page here only when the review itself needs the space.
+
+If none of these apply, stay with the drawer. A long form on its own does not justify the move, because the field order and progressive disclosure in [When the table hides form fields](#when-the-table-hides-form-fields) absorb it without sacrificing the table. The full page is a deliberate choice for a particular kind of task, not a fallback for forms that feel big.
 
 ## When a saved record disappears
 
