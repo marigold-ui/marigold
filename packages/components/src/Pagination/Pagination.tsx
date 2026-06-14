@@ -105,7 +105,9 @@ const InnerPagination = ({
         isDisabled={isFirstPage}
         controlLabel={controlLabels?.[0]}
         position="left"
-        onKeyDown={handleKeyDown(() => setCurrentPage(currentPage - 1))}
+        onKeyDown={handleKeyDown(() =>
+          setCurrentPage(Math.max(1, currentPage - 1))
+        )}
       >
         <ChevronLeft className={icon} />
       </NavigationButton>
@@ -136,7 +138,9 @@ const InnerPagination = ({
         isDisabled={isLastPage}
         controlLabel={controlLabels?.[1]}
         position="right"
-        onKeyDown={handleKeyDown(() => setCurrentPage(currentPage + 1))}
+        onKeyDown={handleKeyDown(() =>
+          setCurrentPage(Math.min(totalPages, currentPage + 1))
+        )}
       >
         <ChevronRight className={icon} />
       </NavigationButton>

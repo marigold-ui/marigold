@@ -195,6 +195,40 @@ describe('Pagination tests', () => {
     );
   });
 
+  test('controlled: a pageSize change reports the reset via onChange(1) while the page prop stays the source of truth', () => {
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <Basic.Component
+        totalItems={100}
+        pageSize={10}
+        page={3}
+        onChange={onChange}
+      />
+    );
+
+    expect(screen.getByLabelText('Page 3')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+
+    rerender(
+      <Basic.Component
+        totalItems={100}
+        pageSize={20}
+        page={3}
+        onChange={onChange}
+      />
+    );
+
+    // In controlled mode the reset is requested via onChange(1); the parent owns
+    // `page`, so the active page stays 3 until the parent updates the prop.
+    expect(onChange).toHaveBeenCalledWith(1);
+    expect(screen.getByLabelText('Page 3')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+  });
+
   test('use control labels', async () => {
     render(<WithButtonLabels.Component />);
 
