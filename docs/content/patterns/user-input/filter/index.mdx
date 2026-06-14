@@ -119,19 +119,27 @@ Group related parameters into collapsible sections using an [Accordion](/compone
 
 <ComponentDemo name="filter-group-sections" />
 
-Be aware that collapsing comes at a cost for expert users. [Research on accordions](https://www.nngroup.com/articles/accordions-on-desktop/) shows they increase interaction cost when users need most of the content. If your users work with the majority of filter groups in every session, keep more groups expanded by default or offer an "Expand all" control.
+Be aware that collapsing comes at a cost for expert users. [Research on accordions](https://www.nngroup.com/articles/accordions-on-desktop/) shows they increase interaction cost when users need most of the content. If your users work with the majority of filter groups in every session, keep more groups expanded by default and offer an "Expand all" and "Collapse all" control so they can reveal or hide everything in a single action. [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns) recommends the same pairing: small accordion sections for each parameter group, plus an expand/collapse-all control to manage them at once.
 
 There is also an upper limit to what a slide-in panel can hold. The panel works well because the data set stays visible while filtering, but once the number of filter groups grows far beyond what fits on one or two screens of panel height, consider a dedicated filter page or full-screen dialog instead. More filters is not automatically better: revisit whether each filter earns its place before adding structure around them.
 
-### Promoting Frequently Used Filters
+### Quick Filters
 
-When usage is concentrated on a few filters, hiding them in the panel adds an unnecessary step to the most common task. Promote these filters out of the panel and place them directly in the toolbar, while the full set remains available behind the filter button.
+When usage is concentrated on a few filters, hiding them in the panel adds an unnecessary step to the most common task. Establish a two-tier hierarchy: surface the few high-value filters as quick filters directly in the toolbar, and keep the full set behind a "More filters" button that opens the panel. This pairs a small set of always-visible controls for the frequent cases with a complete panel for everything else, an approach documented by both [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/index-filters) and [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns).
 
-Promote at most 2 or 3 filters, chosen by actual usage, and prefer compact controls such as a [Select](/components/form/select) for them. Both [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/filters) and [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns) document this hybrid approach: a small set of pinned filters for the frequent cases, a complete panel for everything else.
+Promote at most 2 or 3 quick filters, chosen by actual usage, and prefer compact controls such as a [Select](/components/form/select). Quick filters apply instantly, since each represents a single quick decision, while the panel remains the place for combining several criteria and applying them together.
 
 <ComponentDemo name="filter-promoted" />
 
-Promoted filters should apply instantly, since they represent a single quick decision. The filter panel remains the place for combining several criteria and applying them together.
+#### Date Range Presets
+
+Date is one of the most common things to filter by, and relative ranges such as "Last 7 days", "Last 30 days", or "This month" cover the majority of cases. Offer these as a quick filter so the frequent ranges are one click away, without making users open a calendar and count days.
+
+Use a [Select](/components/form/select) of relative presets, applied instantly. For the cases a preset cannot express, include a "Custom range…" option that reveals an absolute range built from two [DatePicker](/components/form/datepicker) fields. Keep the Select as the single source of truth: choosing a preset clears any custom range, and entering a custom range marks the selection as "Custom". This mirrors the date filters in analytics tools such as Google Analytics and Stripe.
+
+<ComponentDemo name="filter-date-presets" />
+
+Relative date-range presets are composed in userland today. First-class support for preset shortcuts in the date picker popover is planned ([DST-1511](https://reservix.atlassian.net/browse/DST-1511)).
 
 ### Showing the Number of Active Filters
 
@@ -147,7 +155,7 @@ Batch filtering allows multiple selections to be made across different parameter
 
 Whether to apply filters instantly or in a batch is a trade-off rather than a rule. Instant updates give immediate feedback and suit exploratory refinement, but they trigger a query on every interaction. Batch apply suits combining several criteria in one go and keeps the number of requests predictable, at the price of one extra click. A practical heuristic, also used by [PatternFly](https://www.patternfly.org/patterns/filters/design-guidelines/): apply instantly when a query is cheap and fast, batch when each query is expensive or results take noticeably long to load.
 
-The filter panel in this pattern batches by design. Its form collects all changes and applies them on submit, which fits the panel's purpose of setting several criteria at once. Controls outside the panel, such as the search field or promoted filters, apply instantly.
+The filter panel in this pattern batches by design. Its form collects all changes and applies them on submit, which fits the panel's purpose of setting several criteria at once. Controls outside the panel, such as the search field or quick filters, apply instantly.
 
 ### Handling Empty States
 
@@ -165,7 +173,7 @@ The recommended approach for applied filter labels is to keep them clear and str
 
 For absolute values, pair the filter name with its exact value, for example "Status is Approved", to be concise yet precise. For relative values, add the relative term and exact dates or details, such as "Last 7 days (Aug 3 – Aug 9)", to avoid ambiguity. Use clear operators like "is", "is between", "before", "after", and "in the last" for readability. Symbols (>, =, :) can work in compact or technical views but may be less clear for broad audiences, especially with relative timeframes.
 
-Always group all selected values of one filter into a single tag, never one tag per value. "Type is Club or Lounge" reads as one decision and is removed as one, while separate "Club" and "Lounge" tags multiply quickly and obscure which filter they belong to. [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/filters) enforces the same rule.
+Always group all selected values of one filter into a single tag, never one tag per value. "Type is Club or Lounge" reads as one decision and is removed as one, while separate "Club" and "Lounge" tags multiply quickly and obscure which filter they belong to. [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/index-filters) enforces the same rule.
 
 When an applied filter contains a large number of values, avoid grouping them all into a single tag, as this makes scanning and reading difficult and disrupts consistent sizing. Instead, display only the first two or three values, then indicate the number of remaining ones with a clear count, for example "(+7 more)".
 
