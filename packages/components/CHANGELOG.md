@@ -1,5 +1,28 @@
 # @marigold/components
 
+## 17.7.0
+
+### Minor Changes
+
+- f4608c6: feat(DSTSUP-262): add `large` size to Dialog for wider layouts
+
+  `Dialog` (and `ConfirmationDialog`, which inherits the prop) now accepts `size="large"`, which sets the dialog width to `1024px` — matching the Tailwind `lg` breakpoint. Use it for content that doesn't fit the previous `medium` cap of `768px`, e.g. multi-month calendars or wider forms. The existing `min()` width formula keeps the dialog viewport-safe on smaller screens.
+
+- e0d5c7b: feat(DST-1500): default auto-dismiss timeout for toasts
+
+  `addToast` now applies a default `timeout` based on `variant` when none is given: `success`, `info` and the default variant auto-dismiss after 5000ms, while `warning` and `error` stay until dismissed. Pass an explicit `timeout` to override it (values are clamped up to a 5000ms minimum), or `timeout: 0` to keep a toast on screen until it is manually dismissed.
+
+  Behavior change: `success`, `info` and default toasts that previously stayed until dismissed now auto-dismiss after 5 seconds. Pass `timeout: 0` to restore the old behavior.
+
+### Patch Changes
+
+- 4242aa1: fix(DST-1505): re-export `I18nProvider` from `react-aria-components` to prevent locale context splits
+
+  `I18nProvider` was re-exported from `@react-aria/i18n`, which resolves `react-aria` via a caret range while `react-aria-components` pins it exactly. A consumer's lockfile can therefore install two `react-aria` copies, splitting the `I18nContext`: the locale set through Marigold's `I18nProvider` landed in one copy's context while the react-aria-components rendering Marigold's UI read the other — silently falling back to the default locale for aria labels, date/number formatting, and RTL detection.
+
+  Re-exporting `I18nProvider` from `react-aria-components` makes provider and consumers share one context by construction, regardless of how the lockfile resolves `react-aria`. Same failure class as the mobile `Select` tray bug (DSTSUP-261).
+  - @marigold/system@17.7.0
+
 ## 17.6.0
 
 ### Patch Changes
