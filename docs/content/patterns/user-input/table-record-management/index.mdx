@@ -56,7 +56,7 @@ Creating a record or revising several fields needs a real form, which raises the
 
 A drawer solves this with a split screen model. It slides in from the side and holds the full form while the table stays visible and scrollable behind it. The user can read another record, copy a value across, and come back to the form without losing their place in either.
 
-The same drawer handles both jobs. An "Add" button opens it with an empty form for creation. An "Edit" button on each row opens it pre-filled with that record for editing. The title and the submit behavior follow the mode, but the form layout is identical, so users learn one screen instead of two.
+The same drawer handles both jobs. An "Add" button opens it with an empty form for creation. An "Edit" button on each row opens it prefilled with that record for editing. The title and the submit behavior follow the mode, but the form layout is identical, so users learn one screen instead of two.
 
 <ComponentDemo file="./table-record-drawer-crud.demo.tsx" background="page" />
 
@@ -118,8 +118,8 @@ Filtering, sorting, and pagination all decide which records are in view, and a f
 
 Address it from two directions:
 
-1. **Inherit the active filters by default.** When the drawer opens for creation, pre-fill the form with values that match the current filters. If the table is filtered to "Status is Active", the new record defaults to "Active", so it stays in view after saving.
-2. **Warn before the record disappears.** If the user changes a pre-filled value to one that no longer matches the active filters, surface an inline message near the field or at the foot of the form, for example "Based on your current filters, this record will not be visible after saving." A [`<SectionMessage>`](/components/content/section-message) with the `warning` variant fits this job.
+1. **Inherit the active filters by default.** When the drawer opens for creation, prefill the form with values that match the current filters. If the table is filtered to "Status is Active", the new record defaults to "Active", so it stays in view after saving.
+2. **Warn before the record disappears.** If the user changes a prefilled value to one that no longer matches the active filters, surface an inline message near the field or at the foot of the form, for example "Based on your current filters, this record will not be visible after saving." A [`<SectionMessage>`](/components/content/section-message) with the `warning` variant fits this job.
 
 The demo below starts filtered to active venues. Opening the form inherits that filter, so a new venue defaults to active and stays in view. Switch the status to draft to see the warning appear, then switch the filter to "All statuses" to watch the hidden record come back.
 
