@@ -1,10 +1,8 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { theme } from '../../../../themes/theme-rui/src/index';
-import { MarigoldProvider } from '../Provider/MarigoldProvider';
-import { mockMatchMedia } from '../test.utils';
-import { Select } from './Select';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
+import { Basic } from './Select.stories';
 
 // DSTSUP-261 regression test.
 //
@@ -34,15 +32,12 @@ vi.mock('@react-aria/collections', async importActual => {
 const user = userEvent.setup();
 window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
-const renderSelect = () =>
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="Favorite" placeholder="Select Item">
-        <Select.Option id="Star Wars">Star Wars</Select.Option>
-        <Select.Option id="Star Trek">Star Trek</Select.Option>
-      </Select>
-    </MarigoldProvider>
-  );
+// Import the existing story instead of hand-rolling a fixture (CLAUDE.md:
+// "Don't create test fixtures/themes — import stories"). `Basic` is labelled
+// "Favorite", ships the Star Wars / Star Trek options, and wires the theme via
+// its decorator path; `renderWithOverlay` adds the portal container the tray
+// modal needs.
+const renderSelect = () => renderWithOverlay(<Basic.Component />);
 
 test('split HiddenContext (useIsHidden blind to hidden pass) does not leak a duplicate tray modal', async () => {
   // `false` everywhere mimics the Tray reading a different react-aria
