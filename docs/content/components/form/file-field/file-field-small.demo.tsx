@@ -7,6 +7,6 @@ export default () => (
       <Select.Option id="privacy">Privacy policy</Select.Option>
       <Select.Option id="contract">Contract</Select.Option>
     </Select>
-    <FileField label="Upload document" size="small" accept={['.pdf']} />
+    <FileField label="Upload files" size="small" multiple />
   </Stack>
 );
