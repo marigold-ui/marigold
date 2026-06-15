@@ -26,7 +26,7 @@ const meta = preview.meta({
         type: 'radio',
       },
       description: 'Size of the dialog',
-      options: ['default', 'xsmall', 'small', 'medium'],
+      options: ['default', 'xsmall', 'small', 'medium', 'large'],
       table: {
         type: { summary: 'string' },
       },

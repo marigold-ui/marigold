@@ -37,14 +37,24 @@ The `<ToastProvider>` Component should be in the root of your application, so it
 
 ### Simple toast
 
-A Toast should be used when you want to give users quick, non-intrusive feedback after an action, such as saving, deleting, or uploading data. It appears on the edge of the screen and should remain visible for at least 5 seconds or until the user manually dismisses it. Because it doesn't interrupt the user's workflow, a Toast is ideal for success messages, notifications, or error alerts that don't need immediate interaction. The message should be clear, concise, and easy to read.
+A Toast should be used when you want to give users quick, non-intrusive feedback after an action, such as saving, deleting, or uploading data. It appears on the edge of the screen. Because it doesn't interrupt the user's workflow, a Toast is ideal for success messages, notifications, or error alerts that don't need immediate interaction. The message should be clear, concise, and easy to read.
 
 <ComponentDemo name="toast-simple" />
 
+### Default timeouts
+
+`addToast` picks a timeout based on `variant` when you don't pass one. Low-severity, reassuring toasts auto-dismiss, while higher-severity or actionable ones stay until the user dismisses them.
+
+| Variant                    | Default behavior          |
+| -------------------------- | ------------------------- |
+| `success`, `info`, default | Auto-dismiss after 5000ms |
+| `warning`, `error`         | Stay until dismissed      |
+
+To override the default, pass `timeout`. An explicit value is honored and clamped up to the 5000ms minimum, and `timeout: 0` keeps any toast on screen until it is dismissed.
+
 ### Auto dismiss
 
-This Toast will automatically dismiss itself after a specified duration.
-This is useful for notifications that do not require user interaction and should disappear after a short time. The time is in milliseconds.
+Set `timeout` (in milliseconds) to override the per-variant default and dismiss a Toast after a specific duration. This is useful to make a `warning` or `error` clear on its own, or to extend a success toast. Values below the 5000ms minimum are clamped up.
 
 <ComponentDemo name="toast-auto-dismiss" />
 

@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "17.6.0",
+  "version": "17.7.0",
   "private": true,
   "scripts": {
     "build": "pnpm -w build:themes && pnpm build:assets && next build",
@@ -44,7 +44,7 @@
     "lucide-react": "^1.7.0",
     "mcp-handler": "1.1.0",
     "motion": "12.39.0",
-    "next": "16.2.7",
+    "next": "16.2.9",
     "nuqs": "2.8.9",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
@@ -69,7 +69,7 @@
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "eslint": "10.4.0",
-    "eslint-config-next": "16.2.7",
+    "eslint-config-next": "16.2.9",
     "fumadocs-typescript": "^5.1.4",
     "p-limit": "7.3.0",
     "postcss": "^8.5.10",
