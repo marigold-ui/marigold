@@ -1,14 +1,13 @@
-import type { ComponentDocs } from './docs.js';
+import type { PageDocs } from './docs.js';
 import { formatDocs, formatList } from './format.js';
 import type { Manifest } from './manifest.js';
 
-const docs: ComponentDocs = {
-  component: {
-    name: 'Button',
-    slug: 'components/actions/button',
-    description: 'Click me',
-  },
-  category: { name: 'actions', label: 'Actions', components: [] },
+const docs: PageDocs = {
+  kind: 'component',
+  name: 'Button',
+  slug: 'components/actions/button',
+  category: 'actions',
+  description: 'Click me',
   section: 'all',
   markdown: '# Button\n\nContent.',
   url: 'https://example.com/button.md',
@@ -42,7 +41,7 @@ describe('formatDocs', () => {
   test('strips terminal escape sequences from injected markdown', () => {
     // Defense-in-depth: even if remote sanitization were bypassed, the
     // formatter must not emit dangerous escapes in `plain` output.
-    const injected: ComponentDocs = {
+    const injected: PageDocs = {
       ...docs,
       markdown: '# Title\n\n\x1b]52;c;ZXZpbA==\x07\x1b[2J\x1b[Hgone',
     };
@@ -93,7 +92,32 @@ const manifest: Manifest = {
       ],
     },
   ],
-  pages: [],
+  pages: [
+    {
+      title: 'Accessibility',
+      slug: 'foundations/accessibility',
+      category: 'foundations',
+      description: 'A11y foundations',
+    },
+    {
+      title: 'Forms',
+      slug: 'patterns/user-input/forms',
+      category: 'patterns',
+      description: 'Form pattern',
+    },
+    {
+      title: 'Installation',
+      slug: 'getting-started/installation',
+      category: 'getting-started',
+      description: 'Install guide',
+    },
+    {
+      title: 'Form',
+      slug: 'components/form',
+      category: 'components',
+      description: 'Wrap your fields to submit user data',
+    },
+  ],
 };
 
 describe('formatList', () => {
@@ -137,6 +161,64 @@ describe('formatList', () => {
   test('reports no-match gracefully', () => {
     const out = formatList(manifest, { search: 'zzz' }, 'markdown');
 
-    expect(out).toContain('No components match');
+    expect(out).toContain('No components or pages match');
+  });
+
+  test('lists page groups by default, showing slugs', () => {
+    const out = formatList(manifest, {}, 'plain');
+
+    expect(out).toContain('Foundations');
+    expect(out).toContain('foundations/accessibility');
+    expect(out).toContain('Getting Started');
+    expect(out).toContain('getting-started/installation');
+    expect(out).toContain('Patterns');
+    expect(out).toContain('patterns/user-input/forms');
+  });
+
+  test('filters to a single page category', () => {
+    const out = formatList(manifest, { category: 'foundations' }, 'plain');
+
+    expect(out).toContain('foundations/accessibility');
+    expect(out).not.toContain('Button');
+    expect(out).not.toContain('patterns/user-input/forms');
+  });
+
+  test('matches all pattern pages via top-level category', () => {
+    const out = formatList(manifest, { category: 'patterns' }, 'plain');
+
+    expect(out).toContain('patterns/user-input/forms');
+    expect(out).not.toContain('foundations/accessibility');
+  });
+
+  test('json output includes a flat pages array with category', () => {
+    const out = formatList(manifest, { category: 'getting-started' }, 'json');
+
+    const parsed = JSON.parse(out);
+
+    expect(parsed.categories).toHaveLength(0);
+    expect(parsed.pages).toEqual([
+      {
+        title: 'Installation',
+        slug: 'getting-started/installation',
+        category: 'getting-started',
+        description: 'Install guide',
+      },
+    ]);
+  });
+
+  test('searches across page slug and description', () => {
+    const out = formatList(manifest, { search: 'a11y' }, 'plain');
+
+    expect(out).toContain('foundations/accessibility');
+    expect(out).not.toContain('Button');
+  });
+
+  test('relabels the components/ page group to avoid clashing with the taxonomy', () => {
+    const out = formatList(manifest, {}, 'plain');
+
+    expect(out).toContain('Form Overview');
+    expect(out).toContain('components/form');
+    // The raw 'components' segment must not surface as a generic group heading.
+    expect(out).not.toMatch(/^Components$/m);
   });
 });

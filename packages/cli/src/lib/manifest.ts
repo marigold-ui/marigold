@@ -24,6 +24,8 @@ export interface ManifestCategory {
 export interface ManifestPage {
   title: string;
   slug: string;
+  // Top-level slug segment, e.g. 'foundations', 'patterns', 'getting-started'.
+  category: string;
   description?: string;
 }
 
@@ -92,6 +94,7 @@ const transformManifest = (raw: RawManifest): Manifest => {
       standalonePages.push({
         title: clean(page.name) ?? slug,
         slug,
+        category: slugParts[0] ?? slug,
         description: clean(page.description),
       });
     }
@@ -154,36 +157,54 @@ export interface ResolveResult {
   category: ManifestCategory;
 }
 
+// Shared resolution cascade: exact (name or slug) → case-insensitive name →
+// normalized name → normalized slug-tail. `name` is the human label, `slug`
+// the path; both component and page resolution use the same four steps.
+const matchCascade = <T>(
+  items: T[],
+  input: string,
+  name: (item: T) => string,
+  slug: (item: T) => string
+): T | null => {
+  const needle = normalize(input);
+
+  // 1. exact slug or name match
+  const exact = items.find(i => slug(i) === input || name(i) === input);
+  if (exact) return exact;
+
+  // 2. case-insensitive name match
+  const ci = items.find(i => name(i).toLowerCase() === input.toLowerCase());
+  if (ci) return ci;
+
+  // 3. normalized name match (handles kebab, spaces, underscores)
+  const norm = items.find(i => normalize(name(i)) === needle);
+  if (norm) return norm;
+
+  // 4. slug tail normalized
+  const tail = items.find(
+    i => normalize(slug(i).split('/').at(-1) ?? '') === needle
+  );
+  if (tail) return tail;
+
+  return null;
+};
+
 export const resolveComponent = (
   manifest: Manifest,
   input: string
 ): ResolveResult | null => {
-  const needle = normalize(input);
   const flat: Array<[ManifestCategory, ManifestComponent]> = [];
   for (const cat of manifest.categories) {
     for (const c of cat.components) flat.push([cat, c]);
   }
 
-  // 1. exact slug or name match
-  const exact = flat.find(([, c]) => c.slug === input || c.name === input);
-  if (exact) return { category: exact[0], component: exact[1] };
-
-  // 2. case-insensitive name match
-  const ci = flat.find(([, c]) => c.name.toLowerCase() === input.toLowerCase());
-  if (ci) return { category: ci[0], component: ci[1] };
-
-  // 3. normalized match (handles kebab, spaces, underscores)
-  const norm = flat.find(([, c]) => normalize(c.name) === needle);
-  if (norm) return { category: norm[0], component: norm[1] };
-
-  // 4. slug tail normalized
-  const tail = flat.find(([, c]) => {
-    const last = c.slug.split('/').at(-1) ?? '';
-    return normalize(last) === needle;
-  });
-  if (tail) return { category: tail[0], component: tail[1] };
-
-  return null;
+  const match = matchCascade(
+    flat,
+    input,
+    ([, c]) => c.name,
+    ([, c]) => c.slug
+  );
+  return match ? { category: match[0], component: match[1] } : null;
 };
 
 export const suggestComponents = (
@@ -209,4 +230,39 @@ export const suggestComponents = (
     .map(s => s.c);
 
   return scored;
+};
+
+// Resolve a standalone (non-component) page using the same match cascade as
+// resolveComponent, matching against the page title and slug.
+export const resolvePage = (
+  manifest: Manifest,
+  input: string
+): ManifestPage | null =>
+  matchCascade(
+    manifest.pages,
+    input,
+    p => p.title,
+    p => p.slug
+  );
+
+export const suggestPages = (
+  manifest: Manifest,
+  input: string,
+  limit = 3
+): ManifestPage[] => {
+  const needle = normalize(input);
+
+  return manifest.pages
+    .map(p => {
+      const haystack = normalize(`${p.title} ${p.slug}`);
+      let score = 0;
+      if (haystack.includes(needle)) score += 2;
+      if (needle.length > 2 && haystack.includes(needle.slice(0, 3)))
+        score += 1;
+      return { p, score };
+    })
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(s => s.p);
 };
