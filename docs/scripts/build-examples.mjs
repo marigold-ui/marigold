@@ -61,6 +61,10 @@ const findSidecar = dir => {
   return entry ? path.join(dir, entry) : null;
 };
 
+// Reads only the top-level source files of an example folder. All examples are
+// flat by convention; if one ever nests source in a subfolder, those files are
+// not collected (and a `key_files` entry pointing into a subdir would fail
+// checkFileRefs). Make this a recursive walk if that convention changes.
 const readSourceFiles = dir =>
   fs
     .readdirSync(dir, { withFileTypes: true })

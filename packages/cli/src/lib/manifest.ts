@@ -201,7 +201,7 @@ export const suggestByScore = <T>(
       const haystack = haystackFor(item);
       let score = 0;
       if (haystack.includes(needle)) score += 2;
-      if (needle.length > 2 && haystack.includes(needle.slice(0, 3)))
+      if (needle.length > 2 && haystack.startsWith(needle.slice(0, 3)))
         score += 1;
       return { item, score };
     })

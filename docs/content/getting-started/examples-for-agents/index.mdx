@@ -89,12 +89,15 @@ shape change.
 
 ```tsx
 // Before (Next.js)
-// After (React Router)
-import { useLocation, useNavigate } from 'react-router';
 import { usePathname, useRouter } from 'next/navigation';
 
 const router = useRouter();
 router.push('/venues');
+```
+
+```tsx
+// After (React Router)
+import { useLocation, useNavigate } from 'react-router';
 
 const navigate = useNavigate();
 navigate('/venues');

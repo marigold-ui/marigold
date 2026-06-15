@@ -121,4 +121,11 @@ describe('formatExample', () => {
     expect(out).toContain('export const x = 1;');
     expect(out).toContain('getting-started/examples-for-agents');
   });
+
+  test('markdown output (default format) renders without throwing', () => {
+    const out = formatExample(detail, 'markdown');
+    expect(out.length).toBeGreaterThan(0);
+    expect(out).toContain(detail.title);
+    expect(out).toContain('examples-for-agents');
+  });
 });

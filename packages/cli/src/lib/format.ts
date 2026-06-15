@@ -246,8 +246,9 @@ const exampleToMarkdown = (example: ExampleDetail): string => {
   lines.push('');
 
   for (const file of example.files) {
+    const lang = file.path.endsWith('.tsx') ? 'tsx' : 'ts';
     lines.push(`### ${file.path}`);
-    lines.push('```tsx');
+    lines.push(`\`\`\`${lang}`);
     lines.push(file.source.trimEnd());
     lines.push('```');
     lines.push('');
@@ -267,22 +268,9 @@ export const formatExample = (
   format: OutputFormat
 ): string => {
   if (format === 'json') {
-    return JSON.stringify(
-      {
-        slug: example.slug,
-        title: example.title,
-        brief: example.brief,
-        patterns: example.patterns,
-        mockData: example.mockData,
-        keyFiles: example.keyFiles,
-        scaffoldingFiles: example.scaffoldingFiles,
-        peerDeps: example.peerDeps,
-        files: example.files,
-        url: example.url,
-      },
-      null,
-      2
-    );
+    // Serialize the whole payload: ExampleDetail is exactly the public JSON
+    // contract, so emitting it directly stays in sync if the type gains a field.
+    return JSON.stringify(example, null, 2);
   }
 
   const md = exampleToMarkdown(example);

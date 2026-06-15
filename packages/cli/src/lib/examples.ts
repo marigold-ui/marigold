@@ -167,5 +167,8 @@ export const getExample = async (
   const url = `${docsUrl()}/mcp/examples/${resolved.slug}.json`;
   const { value, hit } = await fetchWithCache(url, parseDetail, options);
 
+  // cacheHit reflects the per-example payload fetch only, not the manifest
+  // lookup above. The payload is the bulk of the work and what telemetry cares
+  // about, so we report its cache status rather than combining the two.
   return { example: { ...value, url }, cacheHit: hit };
 };
