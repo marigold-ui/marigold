@@ -295,20 +295,10 @@ export const suggestPages = (
   manifest: Manifest,
   input: string,
   limit = 3
-): ManifestPage[] => {
-  const needle = normalize(input);
-
-  return manifest.pages
-    .map(p => {
-      const haystack = normalize(`${p.title} ${p.slug}`);
-      let score = 0;
-      if (haystack.includes(needle)) score += 2;
-      if (needle.length > 2 && haystack.includes(needle.slice(0, 3)))
-        score += 1;
-      return { p, score };
-    })
-    .filter(s => s.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map(s => s.p);
-};
+): ManifestPage[] =>
+  suggestByScore(
+    manifest.pages,
+    p => normalize(`${p.title} ${p.slug}`),
+    input,
+    limit
+  );
