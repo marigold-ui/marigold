@@ -45,7 +45,12 @@
   syntax: '*';
   inherits: false;
 }
+/*
+ * Unlike the other layout vars above, `--field-width` is set on the field root
+ * but consumed by a descendant (the trigger/input via `w-(--field-width)`), so
+ * it must inherit into descendants.
+ */
 @property --field-width {
   syntax: '*';
-  inherits: false;
+  inherits: true;
 }
