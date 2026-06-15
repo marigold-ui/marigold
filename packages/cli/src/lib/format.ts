@@ -91,43 +91,54 @@ export interface ListFilter {
   search?: string;
 }
 
+// Shared list filter: optional category match (normalized) + optional search
+// substring over a caller-supplied haystack. Both component and page filtering
+// use the same two checks.
+const matchesListFilter = (
+  category: string,
+  haystack: string,
+  filter: ListFilter
+): boolean => {
+  if (filter.category && normalize(category) !== normalize(filter.category))
+    return false;
+  if (
+    filter.search &&
+    !haystack.toLowerCase().includes(filter.search.toLowerCase())
+  )
+    return false;
+  return true;
+};
+
 const matchesFilter = (
   category: ManifestCategory,
   component: ManifestComponent,
   filter: ListFilter
-): boolean => {
-  if (
-    filter.category &&
-    normalize(category.name) !== normalize(filter.category)
-  )
-    return false;
-  if (filter.search) {
-    const needle = filter.search.toLowerCase();
-    const haystack =
-      `${component.name} ${component.description ?? ''}`.toLowerCase();
-    if (!haystack.includes(needle)) return false;
-  }
-  return true;
-};
+): boolean =>
+  matchesListFilter(
+    category.name,
+    `${component.name} ${component.description ?? ''}`,
+    filter
+  );
 
-const matchesPageFilter = (page: ManifestPage, filter: ListFilter): boolean => {
-  if (
-    filter.category &&
-    normalize(page.category) !== normalize(filter.category)
-  )
-    return false;
-  if (filter.search) {
-    const needle = filter.search.toLowerCase();
-    const haystack =
-      `${page.title} ${page.slug} ${page.description ?? ''}`.toLowerCase();
-    if (!haystack.includes(needle)) return false;
-  }
-  return true;
+const matchesPageFilter = (page: ManifestPage, filter: ListFilter): boolean =>
+  matchesListFilter(
+    page.category,
+    `${page.title} ${page.slug} ${page.description ?? ''}`,
+    filter
+  );
+
+// Display-label overrides for page-group headings keyed by their top-level
+// slug segment. `components/`-rooted standalone pages (e.g. components/form)
+// would otherwise surface a generic "Components" group alongside the real
+// component taxonomy.
+const PAGE_GROUP_LABELS: Record<string, string> = {
+  components: 'Form Overview',
 };
 
 // Humanize a top-level slug segment into a group heading, e.g.
 // 'getting-started' → 'Getting Started'.
 const pageGroupLabel = (category: string): string =>
+  PAGE_GROUP_LABELS[category] ??
   category
     .split('-')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
@@ -170,7 +181,6 @@ export const formatList = (
   const filteredPages = manifest.pages.filter(p =>
     matchesPageFilter(p, filter)
   );
-  const pageGroups = groupPages(filteredPages);
 
   if (format === 'json') {
     return JSON.stringify(
@@ -189,6 +199,8 @@ export const formatList = (
       2
     );
   }
+
+  const pageGroups = groupPages(filteredPages);
 
   if (filtered.length === 0 && pageGroups.length === 0) {
     return 'No components or pages match the filter.\n';

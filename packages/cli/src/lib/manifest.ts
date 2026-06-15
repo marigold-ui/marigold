@@ -157,36 +157,54 @@ export interface ResolveResult {
   category: ManifestCategory;
 }
 
+// Shared resolution cascade: exact (name or slug) → case-insensitive name →
+// normalized name → normalized slug-tail. `name` is the human label, `slug`
+// the path; both component and page resolution use the same four steps.
+const matchCascade = <T>(
+  items: T[],
+  input: string,
+  name: (item: T) => string,
+  slug: (item: T) => string
+): T | null => {
+  const needle = normalize(input);
+
+  // 1. exact slug or name match
+  const exact = items.find(i => slug(i) === input || name(i) === input);
+  if (exact) return exact;
+
+  // 2. case-insensitive name match
+  const ci = items.find(i => name(i).toLowerCase() === input.toLowerCase());
+  if (ci) return ci;
+
+  // 3. normalized name match (handles kebab, spaces, underscores)
+  const norm = items.find(i => normalize(name(i)) === needle);
+  if (norm) return norm;
+
+  // 4. slug tail normalized
+  const tail = items.find(
+    i => normalize(slug(i).split('/').at(-1) ?? '') === needle
+  );
+  if (tail) return tail;
+
+  return null;
+};
+
 export const resolveComponent = (
   manifest: Manifest,
   input: string
 ): ResolveResult | null => {
-  const needle = normalize(input);
   const flat: Array<[ManifestCategory, ManifestComponent]> = [];
   for (const cat of manifest.categories) {
     for (const c of cat.components) flat.push([cat, c]);
   }
 
-  // 1. exact slug or name match
-  const exact = flat.find(([, c]) => c.slug === input || c.name === input);
-  if (exact) return { category: exact[0], component: exact[1] };
-
-  // 2. case-insensitive name match
-  const ci = flat.find(([, c]) => c.name.toLowerCase() === input.toLowerCase());
-  if (ci) return { category: ci[0], component: ci[1] };
-
-  // 3. normalized match (handles kebab, spaces, underscores)
-  const norm = flat.find(([, c]) => normalize(c.name) === needle);
-  if (norm) return { category: norm[0], component: norm[1] };
-
-  // 4. slug tail normalized
-  const tail = flat.find(([, c]) => {
-    const last = c.slug.split('/').at(-1) ?? '';
-    return normalize(last) === needle;
-  });
-  if (tail) return { category: tail[0], component: tail[1] };
-
-  return null;
+  const match = matchCascade(
+    flat,
+    input,
+    ([, c]) => c.name,
+    ([, c]) => c.slug
+  );
+  return match ? { category: match[0], component: match[1] } : null;
 };
 
 export const suggestComponents = (
@@ -219,31 +237,13 @@ export const suggestComponents = (
 export const resolvePage = (
   manifest: Manifest,
   input: string
-): ManifestPage | null => {
-  const needle = normalize(input);
-  const pages = manifest.pages;
-
-  // 1. exact slug or title match
-  const exact = pages.find(p => p.slug === input || p.title === input);
-  if (exact) return exact;
-
-  // 2. case-insensitive title match
-  const ci = pages.find(p => p.title.toLowerCase() === input.toLowerCase());
-  if (ci) return ci;
-
-  // 3. normalized title match (handles kebab, spaces, underscores)
-  const norm = pages.find(p => normalize(p.title) === needle);
-  if (norm) return norm;
-
-  // 4. slug tail normalized
-  const tail = pages.find(p => {
-    const last = p.slug.split('/').at(-1) ?? '';
-    return normalize(last) === needle;
-  });
-  if (tail) return tail;
-
-  return null;
-};
+): ManifestPage | null =>
+  matchCascade(
+    manifest.pages,
+    input,
+    p => p.title,
+    p => p.slug
+  );
 
 export const suggestPages = (
   manifest: Manifest,

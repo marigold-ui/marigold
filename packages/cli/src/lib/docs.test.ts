@@ -92,6 +92,17 @@ const RAW_MANIFEST = JSON.stringify({
       badge: null,
       url: '/getting-started/installation',
     },
+    {
+      // A standalone page under components/ with fewer than 3 slug segments:
+      // listed by `list` but not a component, so `docs` must resolve it via
+      // the page fallback rather than bailing on the component-cascade miss.
+      name: 'Form',
+      slug: 'components/form',
+      category: 'components',
+      description: 'Wrap your fields to submit user data',
+      badge: null,
+      url: '/components/form',
+    },
   ],
 });
 
@@ -124,6 +135,10 @@ describe('getPageDocs', () => {
     seedCache(
       `${docsUrl()}/components/actions/button.md`,
       '# Button\n\n## Props\n\nprops here.\n'
+    );
+    seedCache(
+      `${docsUrl()}/components/form.md`,
+      '# Form\n\nForm overview content.\n'
     );
   });
 
@@ -166,6 +181,15 @@ describe('getPageDocs', () => {
 
     expect(docs.kind).toBe('component');
     expect(docs.category).toBe('actions');
+  });
+
+  test('falls back to the page resolver for a components/ standalone page', async () => {
+    const docs = await getPageDocs('components/form', { offline: true });
+
+    expect(docs.kind).toBe('page');
+    expect(docs.slug).toBe('components/form');
+    expect(docs.category).toBe('components');
+    expect(docs.markdown).toContain('Form overview content');
   });
 
   test('resolves a bare component name as a component', async () => {

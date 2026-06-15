@@ -1,6 +1,9 @@
 import { type CacheOptions, fetchWithCache } from './cache.js';
 import { docsUrl } from './config.js';
 import {
+  type Manifest,
+  type ManifestPage,
+  type ResolveResult,
   loadManifest,
   resolveComponent,
   resolvePage,
@@ -53,62 +56,41 @@ export interface GetPageDocsOptions extends CacheOptions {
   section?: Section;
 }
 
-// Resolve the positional query to either a component or a standalone page.
-// Full slugs route by prefix (components/… → component, else page); bare
-// names try the component cascade first, then fall back to pages.
-const resolveQuery = (
-  manifest: Awaited<ReturnType<typeof loadManifest>>['manifest'],
-  input: string
-): Pick<
+type QueryResult = Pick<
   PageDocs,
   'kind' | 'name' | 'slug' | 'category' | 'description'
-> | null => {
-  if (input.includes('/')) {
-    if (input.startsWith('components/')) {
-      const resolved = resolveComponent(manifest, input);
-      if (!resolved) return null;
-      return {
-        kind: 'component',
-        name: resolved.component.name,
-        slug: resolved.component.slug,
-        category: resolved.category.name,
-        description: resolved.component.description,
-      };
-    }
-    const page = resolvePage(manifest, input);
-    if (!page) return null;
-    return {
-      kind: 'page',
-      name: page.title,
-      slug: page.slug,
-      category: page.category,
-      description: page.description,
-    };
-  }
+>;
 
-  const resolved = resolveComponent(manifest, input);
-  if (resolved) {
-    return {
-      kind: 'component',
-      name: resolved.component.name,
-      slug: resolved.component.slug,
-      category: resolved.category.name,
-      description: resolved.component.description,
-    };
-  }
+const fromComponent = (r: ResolveResult): QueryResult => ({
+  kind: 'component',
+  name: r.component.name,
+  slug: r.component.slug,
+  category: r.category.name,
+  description: r.component.description,
+});
+
+const fromPage = (p: ManifestPage): QueryResult => ({
+  kind: 'page',
+  name: p.title,
+  slug: p.slug,
+  category: p.category,
+  description: p.description,
+});
+
+// Resolve the positional query to either a component or a standalone page.
+// `components/…` slugs try the component cascade first, then fall through to
+// the page resolver (e.g. the `components/form` overview page, which `list`
+// advertises but is not a 3-segment component). Everything else tries the
+// component cascade, then falls back to pages.
+const resolveQuery = (
+  manifest: Manifest,
+  input: string
+): QueryResult | null => {
+  const component = resolveComponent(manifest, input);
+  if (component) return fromComponent(component);
 
   const page = resolvePage(manifest, input);
-  if (page) {
-    return {
-      kind: 'page',
-      name: page.title,
-      slug: page.slug,
-      category: page.category,
-      description: page.description,
-    };
-  }
-
-  return null;
+  return page ? fromPage(page) : null;
 };
 
 export const getPageDocs = async (

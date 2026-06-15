@@ -111,6 +111,12 @@ const manifest: Manifest = {
       category: 'getting-started',
       description: 'Install guide',
     },
+    {
+      title: 'Form',
+      slug: 'components/form',
+      category: 'components',
+      description: 'Wrap your fields to submit user data',
+    },
   ],
 };
 
@@ -205,5 +211,14 @@ describe('formatList', () => {
 
     expect(out).toContain('foundations/accessibility');
     expect(out).not.toContain('Button');
+  });
+
+  test('relabels the components/ page group to avoid clashing with the taxonomy', () => {
+    const out = formatList(manifest, {}, 'plain');
+
+    expect(out).toContain('Form Overview');
+    expect(out).toContain('components/form');
+    // The raw 'components' segment must not surface as a generic group heading.
+    expect(out).not.toMatch(/^Components$/m);
   });
 });
