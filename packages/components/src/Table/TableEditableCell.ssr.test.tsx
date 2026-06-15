@@ -22,7 +22,6 @@ afterEach(() => {
 });
 
 test('inline editing works after hydrating server-rendered markup', async () => {
-  // Arrange
   window.matchMedia = mockMatchMedia([]); // desktop → popover editor
   const user = userEvent.setup();
 
@@ -37,10 +36,8 @@ test('inline editing works after hydrating server-rendered markup', async () => 
   });
 
   try {
-    // Act
     await user.click(serverEditButton);
 
-    // Assert
     expect(serverEditButton.isConnected).toBe(true);
     await waitFor(() => {
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
