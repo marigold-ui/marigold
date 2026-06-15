@@ -191,10 +191,17 @@ export type { PaginationProps } from './Pagination/Pagination';
 export { ProgressCircle } from './ProgressCircle/ProgressCircle';
 export type { ProgressCircleProps } from './ProgressCircle/ProgressCircle';
 
-export { I18nProvider } from '@react-aria/i18n';
 export { HeadingContext } from 'react-aria-components/Heading';
 export { TextContext } from 'react-aria-components/Text';
 export { Provider } from 'react-aria-components/slots';
+// Re-exported from react-aria-components (NOT `@react-aria/i18n`) so the
+// provider writes the same `I18nContext` instance that RAC-based components
+// read. The `@react-aria/*` shell packages resolve `react-aria` via caret
+// ranges while RAC pins it exactly, so a consumer's lockfile can install two
+// `react-aria` copies — a provider from `@react-aria/i18n` would then set a
+// context RAC never reads and the locale would be silently ignored. Same
+// failure class as DSTSUP-261; see DST-1505.
+export { I18nProvider } from 'react-aria-components';
 export { useTheme, ThemeProvider } from '@marigold/system';
 export { MarigoldProvider } from './Provider/MarigoldProvider';
 export type { MarigoldProviderProps } from './Provider/MarigoldProvider';
