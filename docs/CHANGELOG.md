@@ -1,5 +1,23 @@
 # @marigold/docs
 
+## 17.7.0
+
+### Patch Changes
+
+- a42a30b: docs(DST-1377): expand "Usage with AI" page with prompting tips, helpers, and limitations
+
+  The "Usage with AI" page now covers three ways to feed Marigold docs to an AI agent (the marigold-docs MCP server, the public `manifest.json` / per-page `.md` endpoints, and the `@marigold/cli`), alongside a new Prompting tips section (the renamed-prop gotcha, naming Marigold, nudging the MCP, referencing component names), a Reservix AI helpers section surfacing rx-ai-suite (`frontend-dev`, `design-system`, `create-marigold-app`), and a Limitations section setting honest expectations plus a Slack feedback footer.
+
+- Updated dependencies [a6a1cb3]
+- Updated dependencies [f4608c6]
+- Updated dependencies [4242aa1]
+- Updated dependencies [da46e58]
+- Updated dependencies [e0d5c7b]
+  - @marigold/components@17.7.0
+  - @marigold/theme-rui@5.4.0
+  - @marigold/system@17.7.0
+  - @marigold/icons@1.3.42
+
 ## 17.6.0
 
 ### Minor Changes

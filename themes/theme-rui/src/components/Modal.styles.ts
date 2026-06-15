@@ -11,6 +11,7 @@ export const Modal: ThemeComponent<'Modal'> = cva({
       xsmall: '[--dialog-width:480px]', // "xs" breakpoint
       small: '[--dialog-width:640px]', // sm breakpoint
       medium: '[--dialog-width:768px]', // md breakpoint
+      large: '[--dialog-width:1024px]', // lg breakpoint
     },
   },
   defaultVariants: {

@@ -3,6 +3,18 @@ import userEvent from '@testing-library/user-event';
 import { renderWithOverlay } from '../test.utils';
 import { Basic, DismissControlsWithCallbacks } from './Tray.stories';
 
+// Lets the hidden-pass test drive the `useIsHidden()` guard (DSTSUP-261).
+// `vi.mock` is hoisted to module scope by Vitest, so it can't be nested inside
+// the `describe` block below — but the partial mock keeps every other export of
+// `@react-aria/collections` real and defaults `useIsHidden` to `false`, which is
+// exactly what the real hook returns outside a hidden pass. So the rest of the
+// file behaves identically; only the scoped block toggles it to `true`.
+const hiddenState = vi.hoisted(() => ({ isHidden: false }));
+vi.mock('@react-aria/collections', async importActual => {
+  const actual = await importActual<typeof import('@react-aria/collections')>();
+  return { ...actual, useIsHidden: () => hiddenState.isHidden };
+});
+
 const user = userEvent.setup();
 
 test('renders trigger button', () => {
@@ -129,4 +141,35 @@ test('small drag snaps tray back', async () => {
 
   expect(screen.getByRole('dialog')).toBeInTheDocument();
   expect(mockAnimate).toHaveBeenCalled();
+});
+
+// DSTSUP-261 hidden-pass guard contract.
+//
+// During a collection's hidden build pass, `useIsHidden()` is `true` and the
+// Tray must render its children WITHOUT mounting the portalled modal — otherwise
+// a `Select`/`ComboBox` that builds its collection through a Tray would leak an
+// empty modal into the DOM. This locks that behavior so the guard can't be
+// dropped. The provider/consumer must share one `HiddenContext` for the real
+// `useIsHidden()` to ever return `true`; when a dependency-resolution split
+// breaks that sharing, the Tray's DOM probe takes over (covered by
+// `Select.hiddenContext.test.tsx`).
+//
+// Scoped to its own block so the `useIsHidden` toggle is reset here and never
+// leaks into the tests above (the mock itself is necessarily file-scoped).
+describe('hidden collection pass', () => {
+  beforeEach(() => {
+    hiddenState.isHidden = false;
+  });
+
+  test('renders children without mounting the modal', async () => {
+    hiddenState.isHidden = true;
+
+    renderWithOverlay(<Basic.Component />);
+
+    // Children render inline (so the collection can still be built) even though
+    // the trigger was never pressed...
+    expect(screen.getByText('Tray Title')).toBeInTheDocument();
+    // ...but no portalled modal/overlay is mounted during the hidden pass.
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
 });
