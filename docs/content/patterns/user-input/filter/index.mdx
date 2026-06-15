@@ -131,6 +131,32 @@ Promote at most 2 or 3 quick filters, chosen by actual usage, and prefer compact
 
 <ComponentDemo name="filter-promoted" />
 
+<Callout title="When to promote a filter to a quick filter">
+
+- It is among the **2 or 3 most-used** filters, based on real usage data.
+- A single selection in it meaningfully narrows the data set on its own.
+- It still appears **inside the panel too**, so users who open "More filters" first can still find it.
+
+Avoid promoting a filter you cannot justify by usage. If you cannot identify the most-used few, leave everything in the panel and rely on search.
+
+</Callout>
+
+#### Labeling Quick Filters
+
+How a quick filter shows its state depends on whether it allows one value or several.
+
+For a **single select** quick filter, showing the chosen value in the trigger is fine, since only one value is ever possible. The applied filter tag for it is then optional, as the control already conveys the selection. The promoted [Select](/components/form/select) above works this way.
+
+For a **multi select** quick filter, do not list every value in the trigger. Show the dimension label with a count instead, such as "Status (2)", and let the applied filter tags carry the actual values. This keeps the trigger compact and avoids showing the same values in two places. [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns), [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/index-filters), and [IBM Carbon](https://carbondesignsystem.com/patterns/filtering/) all label the trigger by dimension and surface the chosen values separately.
+
+Build this with a [Select](/components/form/select) in `selectionMode="multiple"` and a `renderValue` that returns the label and count. Drive the options with an `items` collection so the selected values reach `renderValue`. When nothing is selected, the placeholder shows the dimension label on its own.
+
+<ComponentDemo name="filter-quick-multiselect" />
+
+#### Segmented Quick Filters
+
+For a small set of mutually exclusive options, such as a status or a view switch, a segmented control reads as a single, always-visible choice and applies instantly. A dedicated Segmented Control component is planned ([DST-765](https://reservix.atlassian.net/browse/DST-765)); until it lands, keep these options in the panel or use a single select [Select](/components/form/select) in the toolbar. Do not reach for `ToggleButtonGroup` here, as it is a group of independent action buttons, not a filter control.
+
 #### Date Range Presets
 
 Date is one of the most common things to filter by, and relative ranges such as "Last 7 days", "Last 30 days", or "This month" cover the majority of cases. Offer these as a quick filter so the frequent ranges are one click away, without making users open a calendar and count days.
@@ -175,6 +201,8 @@ For absolute values, pair the filter name with its exact value, for example "Sta
 
 Always group all selected values of one filter into a single tag, never one tag per value. "Type is Club or Lounge" reads as one decision and is removed as one, while separate "Club" and "Lounge" tags multiply quickly and obscure which filter they belong to. [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/index-filters) enforces the same rule.
 
+Keep the identifier in the tag when a value alone would be ambiguous, for example a "Draft" status and a "Draft" tag. [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns) frames this as a choice between an explicit label ("Status: Active") and an implied one ("Active"), and recommends leaning explicit as the number of filters grows.
+
 When an applied filter contains a large number of values, avoid grouping them all into a single tag, as this makes scanning and reading difficult and disrupts consistent sizing. Instead, display only the first two or three values, then indicate the number of remaining ones with a clear count, for example "(+7 more)".
 
 <ComponentDemo name="filter-applied-filter-label" />
@@ -200,6 +228,17 @@ Offering both options provides flexibility. Users can make precise adjustments b
   The "Remove all" action is automatically hidden when only one filter is
   active, as removing it individually is simpler and cleaner.
 </Callout>
+
+### Accessibility
+
+Filtering combines several interactive controls, so a few accessibility details make the difference between a pattern that works with a keyboard and screen reader and one that quietly excludes people.
+
+- **Do not turn the toolbar into a `toolbar` widget.** The [WAI-ARIA toolbar pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) makes the group a single tab stop with arrow-key navigation between controls. That conflicts with a search field, where arrow keys must move the text cursor. Compose the toolbar with [Inline](/components/layout/inline) so each control is a normal tab stop, as described in the [anatomy](#anatomy).
+- **Name a label-only trigger by its full state.** When a quick filter shows only the dimension and a count, make sure its accessible name still conveys that something is applied, for example "Status, 2 selected", rather than a bare "Status". With [Select](/components/form/select) the count rendered in the trigger is part of its accessible name; for a custom trigger, set an explicit `aria-label`.
+- **Let the controls own focus and keyboard behaviour.** Building quick filters from Marigold components such as [Select](/components/form/select), [Checkbox](/components/form/checkbox), and [Radio](/components/form/radio) gives correct roles, keyboard interaction, and focus return to the trigger on close, because they are based on react-aria. Avoid hand-rolling `role="menu"` or a custom dropdown.
+- **Announce the result of a filter change.** Applying or removing a filter changes the data set, but screen reader users get no feedback unless you announce it. Render the result count in a live region (`role="status"`, `aria-live="polite"`), for example "247 results, Status applied", so the outcome is spoken. Marigold does not yet provide a built-in region for this, so add one where the result count lives.
+
+Some details are still application specific and not settled by the design system, such as the exact roles for a multi select filter popover. When in doubt, prefer a Marigold component that already encodes the right semantics over a custom control.
 
 ## Implementation
 
