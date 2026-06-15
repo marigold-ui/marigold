@@ -16,21 +16,32 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const rootDir = path.join(__dirname, '..');
-const examplesDir = path.join(rootDir, 'app', '(examples)', 'examples');
-const patternsDir = path.join(rootDir, 'content', 'patterns');
-const outDir = path.join(rootDir, 'public', 'mcp');
-const componentsPkgPath = path.join(
-  rootDir,
-  '..',
-  'packages',
-  'components',
-  'package.json'
-);
+const docsRoot = path.join(__dirname, '..');
+
+// Production layout. Tests call buildExamples() with overrides pointing at
+// fixture directories instead.
+export const DEFAULTS = {
+  rootDir: docsRoot,
+  examplesDir: path.join(docsRoot, 'app', '(examples)', 'examples'),
+  patternsDir: path.join(docsRoot, 'content', 'patterns'),
+  outDir: path.join(docsRoot, 'public', 'mcp'),
+  componentsPkgPath: path.join(
+    docsRoot,
+    '..',
+    'packages',
+    'components',
+    'package.json'
+  ),
+};
 
 const BASE_URL = 'https://www.marigold-ui.io';
 const SIDECAR_SUFFIX = '.marigold-pattern.yaml';
 const SOURCE_EXTENSIONS = ['.tsx', '.ts'];
+
+// A schema/reference violation in a sidecar. The validators throw it; the CLI
+// runner below turns it into a non-zero exit so a bad sidecar fails CI. Tests
+// assert on it directly. Anything else propagates as an unexpected crash.
+export class BuildError extends Error {}
 
 // Schema is intentionally strict: an unknown key (e.g. `keyfiles` instead of
 // `key_files`) is a typo we want to catch at build time, not silently ignore.
@@ -48,7 +59,7 @@ const sidecarSchema = z.strictObject({
   peer_deps: z.array(z.string()).default([]),
 });
 
-const readComponentsVersion = () => {
+const readComponentsVersion = componentsPkgPath => {
   try {
     const pkg = JSON.parse(fs.readFileSync(componentsPkgPath, 'utf-8'));
     return typeof pkg.version === 'string' ? pkg.version : null;
@@ -83,11 +94,10 @@ const readSourceFiles = dir =>
     }));
 
 const fail = message => {
-  console.error(`❌ ${message}`);
-  process.exit(1);
+  throw new BuildError(message);
 };
 
-const validateSidecar = (file, raw) => {
+const validateSidecar = (rootDir, file, raw) => {
   const result = sidecarSchema.safeParse(raw);
   if (!result.success) {
     const issues = result.error.issues
@@ -102,7 +112,7 @@ const validateSidecar = (file, raw) => {
 
 // key_files / scaffolding_files must point at files that actually exist, so a
 // rename can't leave a stale reference an agent would chase.
-const checkFileRefs = (file, data, fileNames) => {
+const checkFileRefs = (rootDir, file, data, fileNames) => {
   const known = new Set(fileNames);
   const referenced = [...data.key_files, ...data.scaffolding_files];
   const missing = referenced.filter(name => !known.has(name));
@@ -137,7 +147,7 @@ const readKnownPatterns = dir => {
 // A `patterns:` ref points an agent at `marigold docs patterns/<ref>`; a typo
 // (e.g. `user-input/filterr`) would silently ship a 404-bound hint. Same intent
 // as checkFileRefs: a stale reference is a build failure, not a silent ship.
-const checkPatternRefs = (file, data, knownPatterns) => {
+const checkPatternRefs = (rootDir, file, data, knownPatterns) => {
   const missing = data.patterns.filter(ref => !knownPatterns.has(ref));
   if (missing.length > 0) {
     fail(
@@ -147,13 +157,25 @@ const checkPatternRefs = (file, data, knownPatterns) => {
   }
 };
 
-const buildExamples = () => {
+// Returns `{ manifest, skipped }`. Throws BuildError on any malformed or
+// invalid sidecar. Paths default to the production docs layout (DEFAULTS); the
+// test suite overrides them to point at fixture directories.
+export const buildExamples = (options = {}) => {
+  const {
+    rootDir = DEFAULTS.rootDir,
+    examplesDir = DEFAULTS.examplesDir,
+    patternsDir = DEFAULTS.patternsDir,
+    outDir = DEFAULTS.outDir,
+    componentsPkgPath = DEFAULTS.componentsPkgPath,
+    generatedAt = new Date().toISOString(),
+    log = console.log,
+  } = options;
+
   if (!fs.existsSync(examplesDir)) {
     fail(`Examples directory not found: ${examplesDir}`);
   }
 
-  const version = readComponentsVersion();
-  const generatedAt = new Date().toISOString();
+  const version = readComponentsVersion(componentsPkgPath);
   const knownPatterns = readKnownPatterns(patternsDir);
   const exampleOutDir = path.join(outDir, 'examples');
   fs.mkdirSync(exampleOutDir, { recursive: true });
@@ -185,14 +207,15 @@ const buildExamples = () => {
       );
     }
 
-    const data = validateSidecar(sidecarFile, raw);
+    const data = validateSidecar(rootDir, sidecarFile, raw);
     const files = readSourceFiles(dir);
     checkFileRefs(
+      rootDir,
       sidecarFile,
       data,
       files.map(f => f.path)
     );
-    checkPatternRefs(sidecarFile, data, knownPatterns);
+    checkPatternRefs(rootDir, sidecarFile, data, knownPatterns);
 
     const payload = {
       slug,
@@ -219,25 +242,45 @@ const buildExamples = () => {
     });
   }
 
+  const manifest = {
+    version,
+    generatedAt,
+    baseUrl: BASE_URL,
+    examples: manifestEntries,
+  };
+
   fs.writeFileSync(
     path.join(outDir, 'examples.json'),
-    JSON.stringify({
-      version,
-      generatedAt,
-      baseUrl: BASE_URL,
-      examples: manifestEntries,
-    })
+    JSON.stringify(manifest)
   );
 
-  console.log(
+  log(
     `📑 Built examples registry with ${manifestEntries.length} examples → ` +
       `${path.relative(rootDir, path.join(outDir, 'examples.json'))}`
   );
   if (skipped.length > 0) {
-    console.log(
+    log(
       `   Skipped ${skipped.length} folder(s) without a sidecar: ${skipped.join(', ')}`
     );
   }
+
+  return { manifest, skipped };
 };
 
-buildExamples();
+// Run when invoked directly (`node build-examples.mjs`), not when imported by a
+// test. A BuildError becomes a non-zero exit so a bad sidecar fails CI.
+const invokedDirectly =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (invokedDirectly) {
+  try {
+    buildExamples();
+  } catch (err) {
+    if (err instanceof BuildError) {
+      console.error(`❌ ${err.message}`);
+      process.exit(1);
+    }
+    throw err;
+  }
+}
