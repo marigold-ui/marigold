@@ -1,8 +1,9 @@
+import { people } from '@/lib/data/people';
 import type { NavSection, ShellConfig } from '../_shared';
 
 const appShellDocs = {
-  docsHref: '/patterns/layout/app-shell',
-  docsLabel: 'App Shell Pattern',
+  docsHref: '/patterns/layout/app-frame',
+  docsLabel: 'App Frame Pattern',
 } as const;
 
 const layout: NavSection = {
@@ -95,4 +96,6 @@ const other: NavSection = {
 export const config: ShellConfig = {
   base: '/examples',
   sections: [layout, userInput, other],
+  // Label the dynamic `users/[id]` segment with the member's name.
+  resolveLabel: id => people.find(person => person.id === id)?.name,
 };

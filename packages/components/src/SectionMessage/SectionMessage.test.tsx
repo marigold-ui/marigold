@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
+import { Provider } from 'react-aria-components/slots';
 import { afterEach, vi } from 'vitest';
 import { announce } from '@react-aria/live-announcer';
-import { Basic } from './SectionMessage.stories';
+import { ButtonContext } from '../Button/Context';
+import { Basic, WithAction, WithDescription } from './SectionMessage.stories';
 
 vi.mock('@react-aria/live-announcer', () => ({
   announce: vi.fn(),
@@ -33,6 +35,39 @@ test('accepts a variant with parts and an icon and support grid areas', () => {
   expect(container).toHaveClass('grid');
   expect(title).toHaveClass('[grid-area:title]');
   expect(icon).toBeInTheDocument();
+});
+
+test('renders the title as a semantic heading (default level 3)', () => {
+  render(<Basic.Component />);
+
+  const heading = screen.getAllByRole('heading', { name: 'Danger Zone!' })[0];
+  expect(heading.tagName).toBe('H3');
+});
+
+test('supports configuring the heading level', () => {
+  render(<Basic.Component headingLevel={2} />);
+
+  const heading = screen.getAllByRole('heading', { name: 'Danger Zone!' })[0];
+  expect(heading.tagName).toBe('H2');
+});
+
+test('container is a group labelled by the title', () => {
+  render(<Basic.Component />);
+
+  const container = screen.getAllByRole('group', { name: 'Danger Zone!' })[0];
+  const heading = screen.getAllByRole('heading', { name: 'Danger Zone!' })[0];
+  expect(heading).toHaveAttribute('id');
+  expect(container).toHaveAttribute('aria-labelledby', heading.id);
+});
+
+test('renders an optional description via the description slot', () => {
+  render(<WithDescription.Component />);
+
+  const description = screen.getAllByText(
+    'All files were copied to the archive.'
+  )[0];
+  expect(description.tagName).toBe('P');
+  expect(description).toHaveClass('[grid-area:description]');
 });
 
 test('accepts error variant', () => {
@@ -86,6 +121,18 @@ test('does not announce when `announce={false}` overrides the error default', ()
   );
 
   expect(announce).not.toHaveBeenCalled();
+});
+
+test('scopes content action buttons from an inherited ButtonContext cascade', () => {
+  render(
+    <Provider values={[[ButtonContext, { className: 'leaked-grid' }]]}>
+      <WithAction.Component />
+    </Provider>
+  );
+
+  expect(
+    screen.getAllByRole('button', { name: 'Upgrade plan' })[0]
+  ).not.toHaveClass('leaked-grid');
 });
 
 test('allow to close message with button in message', async () => {

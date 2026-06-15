@@ -136,3 +136,66 @@ describe('Toast', () => {
     expect(results[0].removeToast).toBe(results[1].removeToast);
   });
 });
+
+describe('addToast timeout resolution', () => {
+  let addSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    addSpy = vi.spyOn(queue, 'add');
+  });
+  afterEach(() => {
+    addSpy.mockRestore();
+  });
+
+  const lastTimeout = () =>
+    (addSpy.mock.calls.at(-1)?.[1] as { timeout?: number } | undefined)
+      ?.timeout;
+
+  it.each([
+    ['success', 5000],
+    ['info', 5000],
+    ['warning', undefined],
+    ['error', undefined],
+  ] as const)(
+    'uses the %s default when no timeout is passed',
+    async (variant, expected) => {
+      const { addToast } = setupToastHook();
+      await act(async () => {
+        addToast({ title: 'x', variant });
+      });
+      expect(lastTimeout()).toBe(expected);
+    }
+  );
+
+  test('defaults to 5000ms when no variant is given', async () => {
+    const { addToast } = setupToastHook();
+    await act(async () => {
+      addToast({ title: 'x' });
+    });
+    expect(lastTimeout()).toBe(5000);
+  });
+
+  test('honors an explicit timeout above the minimum', async () => {
+    const { addToast } = setupToastHook();
+    await act(async () => {
+      addToast({ title: 'x', variant: 'success', timeout: 8000 });
+    });
+    expect(lastTimeout()).toBe(8000);
+  });
+
+  test('clamps an explicit timeout up to the 5000ms minimum', async () => {
+    const { addToast } = setupToastHook();
+    await act(async () => {
+      addToast({ title: 'x', variant: 'success', timeout: 1000 });
+    });
+    expect(lastTimeout()).toBe(5000);
+  });
+
+  test('treats timeout 0 as persist (no auto-dismiss)', async () => {
+    const { addToast } = setupToastHook();
+    await act(async () => {
+      addToast({ title: 'x', variant: 'success', timeout: 0 });
+    });
+    expect(lastTimeout()).toBeUndefined();
+  });
+});

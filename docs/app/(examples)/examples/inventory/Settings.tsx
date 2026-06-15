@@ -19,8 +19,8 @@ import {
 const user = people.find(person => person.id === 'chippy')!;
 
 export const Settings = () => (
-  <Stack space={8}>
-    <Stack space={2}>
+  <Stack space="regular">
+    <Stack space="related">
       <Headline level={2}>Settings</Headline>
       <Text>
         Manage how you appear, stay secure, and what we notify you about.
@@ -47,7 +47,7 @@ export const Settings = () => (
             </Description>
           </Panel.Header>
           <Panel.Content>
-            <Columns columns={['fit', 1]} space={12}>
+            <Columns columns={['fit', 1]} space="group">
               <div className="w-32">
                 <img
                   src={user.avatar}

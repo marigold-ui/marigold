@@ -40,7 +40,7 @@ const faqs = [
 ];
 
 export const FAQ = () => (
-  <Stack space={8}>
+  <Stack space="regular">
     <Headline level={2}>Frequently asked questions</Headline>
     <Accordion variant="card" iconPosition="left">
       {faqs.map(faq => (

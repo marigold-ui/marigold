@@ -39,44 +39,44 @@ const posts = [
 ] as const;
 
 export const Blog = () => (
-  <Stack space={8}>
-    <Stack space={2}>
+  <Stack space="regular">
+    <Stack space="related">
       <Headline level={2}>From the blog</Headline>
       <Text>Learn how to grow your business with our expert advice.</Text>
     </Stack>
     <Panel aria-label="From the blog">
       <Panel.Content>
-        <Stack space={20}>
+        <Stack space="section">
           {posts.map(post => (
-            <Stack key={post.title} space={8}>
-              <Stack space={2}>
-                <Inline space={3} alignY="center">
+            <Stack key={post.title} space="regular">
+              <Stack space="related">
+                <Inline space="related" alignY="center">
                   <Text variant="muted" fontSize="sm" weight="light">
                     <DateFormat
                       value={new Date(post.date)}
                       dateStyle="medium"
                     />
                   </Text>
-                  <Inline space={1}>
+                  <Inline space="tight">
                     {post.tags.map(tag => (
                       <Badge key={tag}>{tag}</Badge>
                     ))}
                   </Inline>
                 </Inline>
-                <Container contentLength="long" space={2}>
+                <Container contentLength="long" space="related">
                   <Headline level="3">{post.title}</Headline>
                   <Text variant="muted" weight="light">
                     {post.abstract}
                   </Text>
                 </Container>
               </Stack>
-              <Inline space={6} alignY="center">
+              <Inline space="regular" alignY="center">
                 <img
                   src={post.author.avatar}
                   alt={post.author.name}
                   className="size-10 rounded-full"
                 />
-                <Stack space={1}>
+                <Stack space="tight">
                   <Text fontSize="sm">{post.author.name}</Text>
                   <Text variant="muted" fontSize="sm" weight="light">
                     {post.author.position}
