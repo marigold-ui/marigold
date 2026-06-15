@@ -230,7 +230,7 @@ export const Inventory = () => (
             <Switch label="Gift Wrap" defaultSelected />
           </Stack>
           <Stack space="regular">
-            <Pagination page={2} pageSize={1} totalItems={4} />
+            <Pagination defaultPage={2} pageSize={1} totalItems={4} />
             <Tag.Group label="Venue types" onRemove={() => {}}>
               {venueTypes.map(type => (
                 <Tag key={type} id={type}>
