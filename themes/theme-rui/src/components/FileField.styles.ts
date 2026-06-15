@@ -25,16 +25,10 @@ export const FileField: ThemeComponent<'FileField'> = {
   dropZoneLabel: cva({ base: 'text-sm font-medium' }),
   item: cva({
     base: [
-      "[grid-template-areas:'label_remove'_'description_remove'] grid-cols-[1fr_auto] gap-x-2",
+      "[grid-template-areas:'label_remove'_'description_remove'] grid-cols-[1fr_auto] gap-y-0.5 gap-x-2",
+      'p-2',
       'ui-surface shadow-elevation-border',
     ],
-    variants: {
-      size: {
-        default: 'gap-y-0.5 p-2',
-        small: 'gap-y-0 p-1',
-      },
-    },
-    defaultVariants: { size: 'default' },
   }),
   itemLabel: cva({
     base: 'truncate font-medium',
