@@ -133,4 +133,10 @@ describe('formatExample', () => {
     expect(out).toContain(detail.title);
     expect(out).toContain('examples-for-agents');
   });
+
+  test('pattern refs are emitted as fetchable `patterns/<ref>` doc slugs', () => {
+    const out = formatExample(detail, 'plain');
+
+    expect(out).toContain('marigold docs patterns/user-input/filter');
+  });
 });

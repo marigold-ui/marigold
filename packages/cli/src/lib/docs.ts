@@ -5,6 +5,7 @@ import {
   type ManifestComponent,
   loadManifest,
   resolveComponent,
+  resolvePage,
   suggestComponents,
 } from './manifest.js';
 import { sanitizeRemote } from './strip-ansi.js';
@@ -12,8 +13,14 @@ import { sanitizeRemote } from './strip-ansi.js';
 export type Section = 'props' | 'usage' | 'examples' | 'all';
 
 export interface ComponentDocs {
-  component: ManifestComponent;
-  category: ManifestCategory;
+  // Present when the slug resolves to a component page; absent for standalone
+  // pages (patterns, getting-started, …).
+  component?: ManifestComponent;
+  category?: ManifestCategory;
+  // Normalized fields populated for both component and standalone-page docs.
+  title: string;
+  slug: string;
+  description?: string;
   section: Section;
   markdown: string;
   url: string;
@@ -54,20 +61,33 @@ export const getComponentDocs = async (
   options: GetComponentDocsOptions = {}
 ): Promise<ComponentDocs> => {
   const { manifest } = await loadManifest(options);
-  const resolved = resolveComponent(manifest, input);
 
-  if (!resolved) {
+  // Components first, then standalone pages (patterns, guides) so a slug like
+  // `patterns/user-input/filter` referenced from an example resolves too.
+  const resolved = resolveComponent(manifest, input);
+  const page = resolved ? null : resolvePage(manifest, input);
+
+  const target = resolved
+    ? {
+        slug: resolved.component.slug,
+        title: resolved.component.name,
+        description: resolved.component.description,
+      }
+    : page
+      ? { slug: page.slug, title: page.title, description: page.description }
+      : null;
+
+  if (!target) {
     const suggestions = suggestComponents(manifest, input);
     const hint = suggestions.length
       ? ` Did you mean: ${suggestions.map(s => s.name).join(', ')}?`
       : '';
-    throw new Error(`Component "${input}" not found.${hint}`);
+    throw new Error(`No docs found for "${input}".${hint}`);
   }
 
-  const { component, category } = resolved;
   // Use the pretty URL form (rewritten by Next to /api/md/...). The /api/md
   // route behaves differently when hit directly vs through the rewrite in dev.
-  const url = `${docsUrl()}/${component.slug}.md`;
+  const url = `${docsUrl()}/${target.slug}.md`;
   // Sanitize at the boundary: remote markdown can contain terminal escape
   // sequences (OSC 52 clipboard, cursor moves, DCS) that would otherwise hit
   // the user's terminal via the markdown / plain output paths.
@@ -81,8 +101,11 @@ export const getComponentDocs = async (
   const sliced = section === 'all' ? markdown : sliceSection(markdown, section);
 
   return {
-    component,
-    category,
+    component: resolved?.component,
+    category: resolved?.category,
+    title: target.title,
+    slug: target.slug,
+    description: target.description,
     section,
     markdown: sliced,
     url,

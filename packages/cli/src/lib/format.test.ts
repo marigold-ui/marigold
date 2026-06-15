@@ -9,6 +9,9 @@ const docs: ComponentDocs = {
     description: 'Click me',
   },
   category: { name: 'actions', label: 'Actions', components: [] },
+  title: 'Button',
+  slug: 'components/actions/button',
+  description: 'Click me',
   section: 'all',
   markdown: '# Button\n\nContent.',
   url: 'https://example.com/button.md',
@@ -23,7 +26,26 @@ describe('formatDocs', () => {
 
     expect(parsed.name).toBe('Button');
     expect(parsed.slug).toBe('components/actions/button');
+    expect(parsed.category).toBe('actions');
     expect(parsed.markdown).toContain('# Button');
+  });
+
+  test('json output for a standalone page has a null category', () => {
+    const page: ComponentDocs = {
+      title: 'Filter pattern',
+      slug: 'patterns/user-input/filter',
+      description: 'Refining data with filters',
+      section: 'all',
+      markdown: '# Filter\n\nContent.',
+      url: 'https://example.com/patterns/user-input/filter.md',
+      cacheHit: false,
+    };
+
+    const parsed = JSON.parse(formatDocs(page, 'json'));
+
+    expect(parsed.name).toBe('Filter pattern');
+    expect(parsed.slug).toBe('patterns/user-input/filter');
+    expect(parsed.category).toBeNull();
   });
 
   test('plain output has no ANSI escapes', () => {

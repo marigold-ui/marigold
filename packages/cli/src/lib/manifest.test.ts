@@ -1,6 +1,7 @@
 import {
   type Manifest,
   resolveComponent,
+  resolvePage,
   suggestComponents,
 } from './manifest.js';
 
@@ -33,7 +34,17 @@ const manifest: Manifest = {
       ],
     },
   ],
-  pages: [],
+  pages: [
+    {
+      title: 'Filter and applied-filter chips',
+      slug: 'patterns/user-input/filter',
+      description: 'Refining data with filters',
+    },
+    {
+      title: 'Adapting examples for agents',
+      slug: 'getting-started/examples-for-agents',
+    },
+  ],
 };
 
 describe('resolveComponent', () => {
@@ -87,6 +98,40 @@ describe('resolveComponent', () => {
 
   test('returns null for unknown', () => {
     expect(resolveComponent(manifest, 'Nonexistent')).toBeNull();
+  });
+});
+
+describe('resolvePage', () => {
+  test('matches exact slug', () => {
+    expect(resolvePage(manifest, 'patterns/user-input/filter')?.slug).toBe(
+      'patterns/user-input/filter'
+    );
+  });
+
+  test('matches the getting-started slug', () => {
+    expect(
+      resolvePage(manifest, 'getting-started/examples-for-agents')?.slug
+    ).toBe('getting-started/examples-for-agents');
+  });
+
+  test('matches case-insensitive title', () => {
+    expect(resolvePage(manifest, 'adapting examples for agents')?.slug).toBe(
+      'getting-started/examples-for-agents'
+    );
+  });
+
+  test('matches slug tail', () => {
+    expect(resolvePage(manifest, 'examples-for-agents')?.slug).toBe(
+      'getting-started/examples-for-agents'
+    );
+  });
+
+  test('does not match a component slug', () => {
+    expect(resolvePage(manifest, 'components/actions/button')).toBeNull();
+  });
+
+  test('returns null for unknown', () => {
+    expect(resolvePage(manifest, 'patterns/nope')).toBeNull();
   });
 });
 

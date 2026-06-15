@@ -70,10 +70,10 @@ export const formatDocs = (
   if (format === 'json') {
     return JSON.stringify(
       {
-        name: docs.component.name,
-        slug: docs.component.slug,
-        category: docs.category.name,
-        description: docs.component.description,
+        name: docs.title,
+        slug: docs.slug,
+        category: docs.category?.name ?? null,
+        description: docs.description,
         section: docs.section,
         markdown: docs.markdown,
         url: docs.url,
@@ -196,9 +196,11 @@ const exampleToMarkdown = (example: ExampleDetail): string => {
 
   if (example.patterns.length > 0) {
     lines.push('## Patterns');
+    // Pattern refs are slugs under docs/content/patterns/, so the fetchable
+    // doc slug is `patterns/<ref>`.
     for (const p of example.patterns) {
       lines.push(
-        `- \`${p}\` — fetch the narrative with \`marigold docs ${p}\``
+        `- \`${p}\` — fetch the narrative with \`marigold docs patterns/${p}\``
       );
     }
     lines.push('');

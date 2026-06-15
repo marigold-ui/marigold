@@ -149,6 +149,39 @@ export const loadManifestSync = (): Manifest | null => {
 export const normalize = (s: string): string =>
   s.toLowerCase().replace(/[\s_-]+/g, '');
 
+// Shared "find the one thing the user meant" cascade over a flat list, keyed by
+// a slug and a human title: exact slug/title → case-insensitive title →
+// normalized (kebab/space/underscore-insensitive) slug or title → normalized
+// slug tail. Used by the page and example resolvers so the match precedence
+// lives in one place. (resolveComponent keeps its own copy: it walks a 2D
+// category/component structure and normalizes the name only, not the slug.)
+export const resolveByCascade = <T>(
+  items: readonly T[],
+  slugFor: (item: T) => string,
+  titleFor: (item: T) => string,
+  input: string
+): T | null => {
+  const needle = normalize(input);
+
+  const exact = items.find(i => slugFor(i) === input || titleFor(i) === input);
+  if (exact) return exact;
+
+  const ci = items.find(i => titleFor(i).toLowerCase() === input.toLowerCase());
+  if (ci) return ci;
+
+  const norm = items.find(
+    i => normalize(slugFor(i)) === needle || normalize(titleFor(i)) === needle
+  );
+  if (norm) return norm;
+
+  const tail = items.find(
+    i => normalize(slugFor(i).split('/').at(-1) ?? '') === needle
+  );
+  if (tail) return tail;
+
+  return null;
+};
+
 export interface ResolveResult {
   component: ManifestComponent;
   category: ManifestCategory;
@@ -185,6 +218,22 @@ export const resolveComponent = (
 
   return null;
 };
+
+// Resolve a query to a standalone page (patterns, getting-started, foundations,
+// …) — anything in the manifest that is not a component — so
+// `marigold docs patterns/user-input/filter` and
+// `marigold docs getting-started/examples-for-agents` work the same way a
+// component lookup does.
+export const resolvePage = (
+  manifest: Manifest,
+  input: string
+): ManifestPage | null =>
+  resolveByCascade(
+    manifest.pages,
+    p => p.slug,
+    p => p.title,
+    input
+  );
 
 // Generic "did you mean" scorer: substring match (+2) with a weak 3-char
 // prefix boost (+1), highest score first, capped at `limit`. Shared by the

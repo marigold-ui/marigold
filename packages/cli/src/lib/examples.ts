@@ -1,6 +1,6 @@
 import { type CacheOptions, fetchWithCache, readCacheSync } from './cache.js';
 import { docsUrl } from './config.js';
-import { normalize, suggestByScore } from './manifest.js';
+import { normalize, resolveByCascade, suggestByScore } from './manifest.js';
 import { sanitizeRemote } from './strip-ansi.js';
 
 // Lightweight manifest entry, served from /mcp/examples.json. Mirrors the
@@ -95,29 +95,20 @@ export const loadExamplesManifestSync = (): ExamplesManifest | null => {
   }
 };
 
-// Resolve a positional query to a known example, using the same match cascade
-// as the component/page resolvers: exact slug or title, case-insensitive title,
-// then normalized (kebab/space/underscore-insensitive) title.
+// Resolve a positional query to a known example, using the shared match
+// cascade (exact slug/title → case-insensitive title → normalized slug/title →
+// normalized slug tail). Example slugs are flat, so the tail step is a no-op
+// here, but sharing the resolver keeps the precedence identical to pages.
 export const resolveExample = (
   manifest: ExamplesManifest,
   input: string
-): ExampleSummary | null => {
-  const needle = normalize(input);
-  const examples = manifest.examples;
-
-  const exact = examples.find(e => e.slug === input || e.title === input);
-  if (exact) return exact;
-
-  const ci = examples.find(e => e.title.toLowerCase() === input.toLowerCase());
-  if (ci) return ci;
-
-  const norm = examples.find(
-    e => normalize(e.slug) === needle || normalize(e.title) === needle
+): ExampleSummary | null =>
+  resolveByCascade(
+    manifest.examples,
+    e => e.slug,
+    e => e.title,
+    input
   );
-  if (norm) return norm;
-
-  return null;
-};
 
 export const suggestExamples = (
   manifest: ExamplesManifest,
