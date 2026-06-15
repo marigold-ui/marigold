@@ -138,7 +138,7 @@ export const Small = meta.story({
   },
   render: args => (
     <I18nProvider locale="en-US">
-      <FileField {...args} width={'1/5'} />
+      <FileField width={'1/5'} {...args} />
     </I18nProvider>
   ),
   play: async ({ canvas, userEvent }) => {
