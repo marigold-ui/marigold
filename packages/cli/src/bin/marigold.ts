@@ -270,7 +270,13 @@ export const main = async (
       if (!sub || !isExamplesSub(sub)) {
         fail('Usage: marigold examples <list|get> [slug]');
       }
+      if (sub === 'list' && positionals.length > 1) {
+        fail('Usage: marigold examples list (takes no arguments)');
+      }
       if (sub === 'get' && !slug) {
+        fail('Usage: marigold examples get <slug>');
+      }
+      if (sub === 'get' && positionals.length > 2) {
         fail('Usage: marigold examples get <slug>');
       }
       if (values.format && !isOutputFormat(values.format)) {

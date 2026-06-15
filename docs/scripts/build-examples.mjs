@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const examplesDir = path.join(rootDir, 'app', '(examples)', 'examples');
+const patternsDir = path.join(rootDir, 'content', 'patterns');
 const outDir = path.join(rootDir, 'public', 'mcp');
 const componentsPkgPath = path.join(
   rootDir,
@@ -113,6 +114,39 @@ const checkFileRefs = (file, data, fileNames) => {
   }
 };
 
+// Every pattern slug under content/patterns/ that has an index.mdx, i.e. the
+// slugs that resolve through `marigold docs patterns/<slug>`. Used to validate
+// sidecar `patterns:` refs at build time.
+const readKnownPatterns = dir => {
+  const slugs = new Set();
+  if (!fs.existsSync(dir)) return slugs;
+  const walk = current => {
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const child = path.join(current, entry.name);
+      if (fs.existsSync(path.join(child, 'index.mdx'))) {
+        slugs.add(path.relative(dir, child).split(path.sep).join('/'));
+      }
+      walk(child);
+    }
+  };
+  walk(dir);
+  return slugs;
+};
+
+// A `patterns:` ref points an agent at `marigold docs patterns/<ref>`; a typo
+// (e.g. `user-input/filterr`) would silently ship a 404-bound hint. Same intent
+// as checkFileRefs: a stale reference is a build failure, not a silent ship.
+const checkPatternRefs = (file, data, knownPatterns) => {
+  const missing = data.patterns.filter(ref => !knownPatterns.has(ref));
+  if (missing.length > 0) {
+    fail(
+      `Sidecar ${path.relative(rootDir, file)} references pattern docs that do ` +
+        `not exist under content/patterns/: ${missing.join(', ')}`
+    );
+  }
+};
+
 const buildExamples = () => {
   if (!fs.existsSync(examplesDir)) {
     fail(`Examples directory not found: ${examplesDir}`);
@@ -120,6 +154,7 @@ const buildExamples = () => {
 
   const version = readComponentsVersion();
   const generatedAt = new Date().toISOString();
+  const knownPatterns = readKnownPatterns(patternsDir);
   const exampleOutDir = path.join(outDir, 'examples');
   fs.mkdirSync(exampleOutDir, { recursive: true });
 
@@ -157,6 +192,7 @@ const buildExamples = () => {
       data,
       files.map(f => f.path)
     );
+    checkPatternRefs(sidecarFile, data, knownPatterns);
 
     const payload = {
       slug,

@@ -140,4 +140,26 @@ describe('main() — examples command', () => {
       args: expect.objectContaining({ sub: 'get' }),
     });
   });
+
+  test('fails when `list` is given a trailing positional', async () => {
+    const code = await main(['examples', 'list', 'filter']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'examples',
+      exitCode: 1,
+      args: expect.objectContaining({ sub: 'list' }),
+    });
+  });
+
+  test('fails when `get` is given an extra positional', async () => {
+    const code = await main(['examples', 'get', 'filter', 'extra']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'examples',
+      exitCode: 1,
+      args: expect.objectContaining({ sub: 'get', slug: 'filter' }),
+    });
+  });
 });
