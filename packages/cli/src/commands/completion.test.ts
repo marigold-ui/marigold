@@ -39,6 +39,22 @@ const RAW_MANIFEST = JSON.stringify({
       badge: null,
       url: '/components/form/textfield',
     },
+    {
+      name: 'Accessibility',
+      slug: 'foundations/accessibility',
+      category: 'foundations',
+      description: null,
+      badge: null,
+      url: '/foundations/accessibility',
+    },
+    {
+      name: 'Forms',
+      slug: 'patterns/user-input/forms',
+      category: 'patterns/user-input',
+      description: null,
+      badge: null,
+      url: '/patterns/user-input/forms',
+    },
   ],
 });
 
@@ -210,6 +226,36 @@ describe('computeSuggestions — manifest-driven', () => {
     const out = computeSuggestions(['list', '--category', '']);
 
     expect(out).toEqual(expect.arrayContaining(['actions', 'form']));
+  });
+
+  test('completes page categories for list --category', () => {
+    seedManifestCache();
+
+    const out = computeSuggestions(['list', '--category', '']);
+
+    expect(out).toEqual(expect.arrayContaining(['foundations', 'patterns']));
+  });
+
+  test('completes a page slug for the docs positional', () => {
+    seedManifestCache();
+
+    const out = computeSuggestions(['docs', 'found']);
+
+    expect(out).toEqual(['foundations/accessibility']);
+  });
+
+  test('includes page slugs alongside component names on empty positional', () => {
+    seedManifestCache();
+
+    const out = computeSuggestions(['docs', '']);
+
+    expect(out).toEqual(
+      expect.arrayContaining([
+        'Button',
+        'foundations/accessibility',
+        'patterns/user-input/forms',
+      ])
+    );
   });
 
   test('returns empty for malformed manifest cache (no throw)', () => {

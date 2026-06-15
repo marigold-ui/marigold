@@ -59,8 +59,8 @@ ${pc.bold('Usage:')}
   marigold <command> [options]
 
 ${pc.bold('Commands:')}
-  docs <Component>      Fetch component documentation
-  list                  List available components
+  docs <name|slug>      Fetch docs for a component or page
+  list                  List available components and pages
   examples <action>     Browse application patterns (list | get <slug>)
   init                  Set up Marigold in a project
   telemetry <action>    Manage telemetry (status|enable|disable)
@@ -73,7 +73,8 @@ ${pc.bold('Docs options:')}
   --offline           Use only the local cache
 
 ${pc.bold('List options:')}
-  --category <name>   Filter by category (actions, form, layout, ...)
+  --category <name>   Filter by category (actions, form, foundations,
+                      patterns, getting-started, ...)
   --search   <term>   Filter by name
   --format   <name>   markdown | json | plain
 
@@ -211,7 +212,7 @@ export const main = async (
         ...(values.offline ? { offline: 'true' } : {}),
       };
 
-      if (!componentInput) fail('Usage: marigold docs <ComponentName>');
+      if (!componentInput) fail('Usage: marigold docs <name-or-slug>');
       if (values.section && !isSection(values.section)) {
         fail(`Invalid --section: ${values.section}`);
       }

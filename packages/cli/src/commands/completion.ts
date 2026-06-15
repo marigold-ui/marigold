@@ -109,8 +109,9 @@ export const computeSuggestions = (words: string[]): string[] => {
       if (flag.values) return flag.values.filter(startsWith);
       if (flag.valuesFrom === 'category') {
         const m = loadManifestSync();
-        const cats = m?.categories.map(c => c.name) ?? [];
-        return cats.filter(startsWith);
+        const componentCats = m?.categories.map(c => c.name) ?? [];
+        const pageCats = [...new Set(m?.pages.map(p => p.category) ?? [])];
+        return [...componentCats, ...pageCats].filter(startsWith);
       }
       return [];
     }
@@ -131,6 +132,9 @@ export const computeSuggestions = (words: string[]): string[] => {
     for (const cat of m.categories) {
       for (const c of cat.components) names.push(c.name);
     }
+    // Non-component pages are completed by slug (canonical `docs <slug>` form;
+    // titles can contain spaces that would break shell word completion).
+    for (const p of m.pages) names.push(p.slug);
     return names.filter(startsWith);
   }
 

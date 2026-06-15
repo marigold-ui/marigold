@@ -52,15 +52,17 @@ node packages/cli/dist/bin/marigold.mjs docs Button
 
 ## Commands
 
-### `marigold docs <Component>`
+### `marigold docs <name|slug>`
 
-Fetch and print a component's documentation.
+Fetch and print the documentation for a component or a docs page.
 
 ```sh
 marigold docs Button
 marigold docs button --section props
 marigold docs TextField --section props --format json
 marigold docs select --format plain
+marigold docs foundations/spacing
+marigold docs getting-started/installation
 ```
 
 Flags:
@@ -70,7 +72,7 @@ Flags:
 - `--fresh` — bypass the local cache
 - `--offline` — use only the local cache; fail if missing
 
-Component name input is case-insensitive (`Button`, `button`, `BUTTON` all resolve to the same component).
+Pass a component name (case-insensitive, so `Button`, `button`, `BUTTON` all resolve to the same component) or the slug of a non-component docs page (e.g. `foundations/spacing`, `getting-started/installation`). The `props` section is component-only; requesting it for a page emits a note instead.
 
 The default `markdown` output is a best-effort terminal render (headings, code
 fences, inline code, bold). For non-trivial docs prefer `--format json` (the
@@ -79,11 +81,12 @@ plain` (ANSI-stripped, ideal for piping into other tools).
 
 ### `marigold list`
 
-List all available components.
+List all available components and docs pages.
 
 ```sh
 marigold list
 marigold list --category form
+marigold list --category foundations
 marigold list --search date
 marigold list --format json
 marigold list --fresh
@@ -91,8 +94,8 @@ marigold list --fresh
 
 Flags:
 
-- `--category <name>` — filter by category (e.g. `actions`, `form`, `layout`)
-- `--search <term>` — substring filter on component names
+- `--category <name>` — filter by category, including component categories (e.g. `actions`, `form`, `layout`) and page categories (e.g. `foundations`, `patterns`, `getting-started`)
+- `--search <term>` — substring filter on component and page names
 - `--format <name>` — `markdown` (default), `json`, or `plain`
 - `--fresh` — bypass the local cache
 - `--offline` — use only the local cache; fail if missing

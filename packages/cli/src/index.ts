@@ -1,7 +1,8 @@
-export { getComponentDocs, type ComponentDocs } from './lib/docs.js';
+export { getPageDocs, type PageDocs } from './lib/docs.js';
 export {
   loadManifest,
   resolveComponent,
+  resolvePage,
   type Manifest,
   type ManifestComponent,
   type ManifestCategory,
