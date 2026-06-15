@@ -102,20 +102,44 @@ const TriggerValue = <T extends object>({
 }: {
   renderValue?: (selectedItems: T[]) => ReactNode;
 }) => {
-  if (!renderValue) {
-    return (
-      <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
-    );
-  }
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
-    <SelectValue<T> className="truncate text-nowrap">
+    <SelectValue<T>
+      className={cn(
+        'truncate text-nowrap',
+        // The default trigger render hides an option's description slot. When
+        // `renderValue` is used it controls the content, so don't interfere.
+        !renderValue && '**:[[slot=description]]:hidden'
+      )}
+    >
       {({ selectedItems, defaultChildren, isPlaceholder }) => {
-        const items = selectedItems.filter((item): item is T => item != null);
-        if (isPlaceholder || items.length === 0) {
+        // Gate on the raw selection count, not the non-null-filtered length:
+        // options driven by static children expose a `null` value, which would
+        // otherwise hide both the count and `renderValue`.
+        if (isPlaceholder) {
           return defaultChildren;
         }
-        return renderValue(items);
+
+        // `renderValue` takes over the trigger whenever there is a selection.
+        // It receives the non-null selected items (populated when the Select
+        // is driven by an `items` collection).
+        if (renderValue) {
+          const values = selectedItems.filter(
+            (item): item is T => item != null
+          );
+          return renderValue(values);
+        }
+
+        // More than one selection: show a compact "N selected" summary instead
+        // of listing every value (which overflows the trigger).
+        if (selectedItems.length > 1) {
+          return stringFormatter.format('selectedCount', {
+            count: selectedItems.length,
+          });
+        }
+
+        return defaultChildren;
       }}
     </SelectValue>
   );

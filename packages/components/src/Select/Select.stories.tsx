@@ -643,6 +643,47 @@ export const WithRenderValue = meta.story({
   },
 });
 
+export const MultiSelectSummary = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Formatting',
+    width: 64,
+  },
+  // No spread of `args` here: forcing `selectionMode="multiple"` narrows the
+  // value type, which clashes with the loosely-typed story args.
+  render: ({ label, width }) => (
+    <Select
+      label={label}
+      width={width}
+      selectionMode="multiple"
+      placeholder="Formatting"
+    >
+      <Select.Option id="bold">Bold</Select.Option>
+      <Select.Option id="italic">Italic</Select.Option>
+      <Select.Option id="underline">Underline</Select.Option>
+    </Select>
+  ),
+  play: async ({ args, canvas }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await userEvent.click(trigger);
+    await waitFor(() => canvas.getByRole('dialog'));
+
+    const dialog = canvas.getByRole('dialog');
+    await userEvent.click(within(dialog).getByText('Bold'));
+    await userEvent.click(within(dialog).getByText('Italic'));
+
+    await userEvent.click(document.body);
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+
+    // Two selections collapse to a compact "N selected" summary, rather than
+    // listing every value on the trigger.
+    expect(within(trigger).getByText('2 selected')).toBeVisible();
+  },
+});
+
 export const Mobile = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },
