@@ -687,6 +687,59 @@ export const MultiSelectSummary = meta.story({
   },
 });
 
+/**
+ * Quick-filter pattern: a multi-select whose trigger always shows the filter's
+ * dimension label ("Status") instead of the selected values, with a `Badge`
+ * communicating how many options are active. This mirrors the applied-filter
+ * tags shown elsewhere in a filter toolbar and keeps the trigger width stable
+ * regardless of how many options are selected.
+ */
+export const QuickFilter = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Select
+      aria-label="Status"
+      selectionMode="multiple"
+      placeholder="Status"
+      width={48}
+      renderValue={(_items, { count }) => (
+        <Inline space={2} alignY="center">
+          <Text>Status</Text>
+          <Badge>{count}</Badge>
+        </Inline>
+      )}
+    >
+      <Select.Option id="active">Active</Select.Option>
+      <Select.Option id="scheduled">Scheduled</Select.Option>
+      <Select.Option id="draft">Draft</Select.Option>
+      <Select.Option id="archived">Archived</Select.Option>
+    </Select>
+  ),
+  play: async ({ canvas }) => {
+    const trigger = canvas.getByRole('button', { name: /Status/i });
+
+    // Until something is selected, the trigger shows the bare label and no badge.
+    expect(within(trigger).getByText('Status')).toBeVisible();
+    expect(within(trigger).queryByText('2')).not.toBeInTheDocument();
+
+    await userEvent.click(trigger);
+    await waitFor(() => canvas.getByRole('dialog'));
+
+    const dialog = canvas.getByRole('dialog');
+    await userEvent.click(within(dialog).getByText('Active'));
+    await userEvent.click(within(dialog).getByText('Scheduled'));
+
+    await userEvent.click(document.body);
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+
+    // The dimension label stays put; the badge reflects the active option count.
+    expect(within(trigger).getByText('Status')).toBeVisible();
+    expect(within(trigger).getByText('2')).toBeVisible();
+  },
+});
+
 export const Mobile = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },
