@@ -124,54 +124,57 @@ export const FileField = ({
       className={classNames.container}
       {...props}
     >
-      {isSmall ? (
-        <FileTrigger
-          {...fileTriggerProps}
-          label={buttonLabel}
-          disabled={disabled}
-          size={size}
-        />
-      ) : (
-        <DropZone
-          onDrop={handleDrop}
-          isDisabled={disabled}
-          className={classNames.dropZone}
-          data-testid="dropzone"
-          {...props}
-        >
-          <div className={classNames.dropZoneContent}>
-            <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
-            <FileTrigger
-              {...fileTriggerProps}
-              label={buttonLabel}
-              disabled={disabled}
-            />
-          </div>
-        </DropZone>
-      )}
-      {files?.map((file, index) => (
-        <FileField.Item
-          key={index}
-          size={size}
-          onRemove={() => {
-            const updated = (files ?? []).filter((_, i) => i !== index);
-            setFiles(updated);
-            syncHiddenInput(updated);
-          }}
-        >
-          <div className={cn('[grid-area:label]', classNames.itemLabel)}>
-            {file.name}
-          </div>
-          <div
-            className={cn(
-              '[grid-area:description]',
-              classNames.itemDescription
-            )}
+      <div className="flex w-(--field-width) max-w-full min-w-0 flex-col gap-2">
+        {isSmall ? (
+          <FileTrigger
+            {...fileTriggerProps}
+            label={buttonLabel}
+            disabled={disabled}
+            size={size}
+            fullWidth
+          />
+        ) : (
+          <DropZone
+            onDrop={handleDrop}
+            isDisabled={disabled}
+            className={classNames.dropZone}
+            data-testid="dropzone"
+            {...props}
           >
-            {(file.size / 1024 / 1024).toFixed(2)} MB
-          </div>
-        </FileField.Item>
-      ))}
+            <div className={classNames.dropZoneContent}>
+              <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
+              <FileTrigger
+                {...fileTriggerProps}
+                label={buttonLabel}
+                disabled={disabled}
+              />
+            </div>
+          </DropZone>
+        )}
+        {files?.map((file, index) => (
+          <FileField.Item
+            key={index}
+            size={size}
+            onRemove={() => {
+              const updated = (files ?? []).filter((_, i) => i !== index);
+              setFiles(updated);
+              syncHiddenInput(updated);
+            }}
+          >
+            <div className={cn('[grid-area:label]', classNames.itemLabel)}>
+              {file.name}
+            </div>
+            <div
+              className={cn(
+                '[grid-area:description]',
+                classNames.itemDescription
+              )}
+            >
+              {(file.size / 1024 / 1024).toFixed(2)} MB
+            </div>
+          </FileField.Item>
+        ))}
+      </div>
       {name && (
         <input
           type="file"
