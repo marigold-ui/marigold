@@ -4,9 +4,11 @@ import { useState } from 'react';
 import {
   Badge,
   Description,
+  Inline,
   NumberField,
   Panel,
   Select,
+  Stack,
   Table,
   TextField,
   Title,
@@ -74,14 +76,15 @@ const statusVariants: Record<Venue['status'], 'success' | 'info' | 'default'> =
 export default () => {
   const [venues, setVenues] = useState(initialVenues);
 
-  const update = (
+  const update = <K extends keyof Venue>(
     id: string,
-    field: keyof Venue,
+    field: K,
     e: React.FormEvent<HTMLFormElement>
   ) => {
-    const formData = new FormData(e.currentTarget); // [!code highlight:9]
-    const raw = formData.get(field);
-    const value = field === 'capacity' ? Number(raw) : raw;
+    const formData = new FormData(e.currentTarget); // [!code highlight:10]
+    const raw = String(formData.get(field) ?? '');
+    // FormData values are stringly typed, so cast back to the field's type.
+    const value = (field === 'capacity' ? Number(raw) : raw) as Venue[K];
 
     setVenues(prev =>
       prev.map(venue =>
@@ -91,11 +94,15 @@ export default () => {
   };
 
   return (
-    <Panel>
-      <Panel.Header>
-        <Title>Venues</Title>
-        <Description>Select a cell to edit its value in place.</Description>
-      </Panel.Header>
+    <Panel aria-label="Venues">
+      <Panel.Content>
+        <Inline alignX="between" alignY="center">
+          <Stack space="tight">
+            <Title>Venues</Title>
+            <Description>Select a cell to edit its value in place.</Description>
+          </Stack>
+        </Inline>
+      </Panel.Content>
       <Panel.Content bleed>
         <Table aria-label="Venues with inline editing" size="compact">
           <Table.Header>

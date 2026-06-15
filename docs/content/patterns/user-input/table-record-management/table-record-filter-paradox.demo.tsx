@@ -15,6 +15,7 @@ import {
   Text,
   TextField,
   Title,
+  ToastProvider,
   useToast,
 } from '@marigold/components';
 
@@ -63,6 +64,7 @@ export default () => {
   // value that the active filter would hide.
   const [status, setStatus] = useState<Venue['status']>('active');
   const [saving, setSaving] = useState(false);
+  const [formKey, setFormKey] = useState(0);
   const nextIdRef = useRef(initialVenues.length + 1);
 
   const visible =
@@ -71,6 +73,7 @@ export default () => {
   // Inherit the active filter so a new record stays in view by default.
   const openCreate = () => {
     setStatus(filter === 'active' ? 'active' : 'draft'); // [!code highlight]
+    setFormKey(key => key + 1);
     setOpen(true);
   };
 
@@ -105,6 +108,7 @@ export default () => {
 
   return (
     <Panel aria-label="Venues">
+      <ToastProvider position="bottom-right" />
       <Panel.Content>
         <Inline alignX="between" alignY="center">
           <Inline space="related" alignY="center">
@@ -124,11 +128,7 @@ export default () => {
               Add venue
             </Button>
             <Drawer size="medium" closeButton>
-              <Form
-                unstyled
-                key={open ? 'open' : 'closed'}
-                onSubmit={handleSubmit}
-              >
+              <Form unstyled key={formKey} onSubmit={handleSubmit}>
                 <Drawer.Title>Add venue</Drawer.Title>
                 <Drawer.Content>
                   <Stack space="regular">
