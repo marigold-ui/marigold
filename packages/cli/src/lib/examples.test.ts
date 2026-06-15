@@ -89,12 +89,14 @@ describe('suggestExamples', () => {
 describe('formatExamplesList', () => {
   test('json output lists all examples', () => {
     const out = JSON.parse(formatExamplesList(manifest.examples, 'json'));
+
     expect(out.examples).toHaveLength(3);
     expect(out.examples[0].slug).toBe('filter');
   });
 
   test('plain output includes slugs, titles and the get hint', () => {
     const out = formatExamplesList(manifest.examples, 'plain');
+
     expect(out).toContain('filter');
     expect(out).toContain('Multi-section event form');
     expect(out).toContain('marigold examples get <slug>');
@@ -108,6 +110,7 @@ describe('formatExamplesList', () => {
 describe('formatExample', () => {
   test('json output carries the full payload', () => {
     const out = JSON.parse(formatExample(detail, 'json'));
+
     expect(out.slug).toBe('filter');
     expect(out.peerDeps).toEqual(['nuqs', 'zod']);
     expect(out.files).toHaveLength(2);
@@ -116,6 +119,7 @@ describe('formatExample', () => {
 
   test('plain output surfaces metadata, sources and the framework note', () => {
     const out = formatExample(detail, 'plain');
+
     expect(out).toContain('user-input/filter');
     expect(out).toContain('@/lib/data/venues');
     expect(out).toContain('export const x = 1;');
@@ -124,6 +128,7 @@ describe('formatExample', () => {
 
   test('markdown output (default format) renders without throwing', () => {
     const out = formatExample(detail, 'markdown');
+
     expect(out.length).toBeGreaterThan(0);
     expect(out).toContain(detail.title);
     expect(out).toContain('examples-for-agents');
