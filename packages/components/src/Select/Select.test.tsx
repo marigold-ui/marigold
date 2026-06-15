@@ -175,7 +175,7 @@ test('renderValue receives all selected items in multi-select mode', () => {
   expect(within(button).getByText('Bob Smith')).toBeVisible();
 });
 
-test('multi-select trigger summarizes more than one selection as "N selected"', async () => {
+test('renderValue receives the selection count with static children (multiple)', async () => {
   renderWithOverlay(<MultiSelectSummary.Component />);
 
   const button = screen.getByRole('button');
@@ -184,12 +184,12 @@ test('multi-select trigger summarizes more than one selection as "N selected"', 
   await user.click(await screen.findByRole('option', { name: 'Bold' }));
   await user.click(screen.getByRole('option', { name: 'Italic' }));
 
-  // Static-children options expose a `null` value; the count must still be
-  // correct because the summary gates on the raw selection length.
+  // Static-children options expose a `null` value; `details.count` must still
+  // be correct because it comes from the raw selection, not the values.
   await waitFor(() => expect(button).toHaveTextContent(/2 selected/));
 });
 
-test('multi-select trigger shows the value, not a count, for a single selection', async () => {
+test('renderValue count reflects a single selection with static children', async () => {
   renderWithOverlay(<MultiSelectSummary.Component />);
 
   const button = screen.getByRole('button');
@@ -197,8 +197,7 @@ test('multi-select trigger shows the value, not a count, for a single selection'
 
   await user.click(await screen.findByRole('option', { name: 'Bold' }));
 
-  await waitFor(() => expect(button).toHaveTextContent('Bold'));
-  expect(button).not.toHaveTextContent(/selected/);
+  await waitFor(() => expect(button).toHaveTextContent(/1 selected/));
 });
 
 test('default trigger render hides description slot', () => {

@@ -657,6 +657,9 @@ export const MultiSelectSummary = meta.story({
       width={width}
       selectionMode="multiple"
       placeholder="Formatting"
+      // Opt in to a compact summary instead of listing every value. `count`
+      // is correct even though these options are static children.
+      renderValue={(_items, { count }) => `${count} selected`}
     >
       <Select.Option id="bold">Bold</Select.Option>
       <Select.Option id="italic">Italic</Select.Option>

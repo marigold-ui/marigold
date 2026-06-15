@@ -19,6 +19,19 @@ import { intlMessages } from '../intl/messages';
 
 export type SelectionMode = 'single' | 'multiple';
 
+/**
+ * Details about the current selection, passed as the second argument to
+ * `renderValue`. Useful for summarising a multi-select trigger, e.g.
+ * `renderValue={(items, { count }) => \`${count} selected\`}`.
+ */
+export interface SelectValueDetails {
+  /**
+   * The number of selected items. Reflects the real selection even when the
+   * options are static `<Select.Option>` children (whose value is `null`).
+   */
+  count: number;
+}
+
 type RemovedProps =
   | 'children'
   | 'isInvalid'
@@ -90,56 +103,46 @@ export interface SelectProps<
   error?: boolean;
   /**
    * Render the trigger value when one or more options are selected. Replaces
-   * the default trigger render. The placeholder still shows when nothing is
-   * selected. Must not contain focusable or interactive elements, since the
-   * trigger is itself a button.
+   * the default trigger render (which lists the selected values). The
+   * placeholder still shows when nothing is selected. Receives the selected
+   * items and a `details` object ({@link SelectValueDetails}) — use
+   * `details.count` to summarise a multi-select, e.g.
+   * `renderValue={(items, { count }) => \`${count} selected\`}`. Must not
+   * contain focusable or interactive elements, since the trigger is itself a
+   * button.
    */
-  renderValue?: (selectedItems: T[]) => ReactNode;
+  renderValue?: (selectedItems: T[], details: SelectValueDetails) => ReactNode;
 }
 
 const TriggerValue = <T extends object>({
   renderValue,
 }: {
-  renderValue?: (selectedItems: T[]) => ReactNode;
+  renderValue?: (selectedItems: T[], details: SelectValueDetails) => ReactNode;
 }) => {
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  // No custom render: use react-aria's default trigger, which shows the
+  // placeholder, the single value, or a list of all selected values.
+  if (!renderValue) {
+    return (
+      <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+    );
+  }
 
   return (
-    <SelectValue<T>
-      className={cn(
-        'truncate text-nowrap',
-        // The default trigger render hides an option's description slot. When
-        // `renderValue` is used it controls the content, so don't interfere.
-        !renderValue && '**:[[slot=description]]:hidden'
-      )}
-    >
+    <SelectValue<T> className="truncate text-nowrap">
       {({ selectedItems, defaultChildren, isPlaceholder }) => {
-        // Gate on the raw selection count, not the non-null-filtered length:
-        // options driven by static children expose a `null` value, which would
-        // otherwise hide both the count and `renderValue`.
+        // Gate on the raw selection (via `isPlaceholder`), not the non-null
+        // filtered length: options driven by static children expose a `null`
+        // value, which would otherwise skip `renderValue` entirely.
         if (isPlaceholder) {
           return defaultChildren;
         }
 
-        // `renderValue` takes over the trigger whenever there is a selection.
-        // It receives the non-null selected items (populated when the Select
-        // is driven by an `items` collection).
-        if (renderValue) {
-          const values = selectedItems.filter(
-            (item): item is T => item != null
-          );
-          return renderValue(values);
-        }
+        // `selectedItems` are option *values*, which are `null` for static
+        // children — filter them for callers that map over real values, but
+        // take the count from the raw selection so it is always correct.
+        const values = selectedItems.filter((item): item is T => item != null);
 
-        // More than one selection: show a compact "N selected" summary instead
-        // of listing every value (which overflows the trigger).
-        if (selectedItems.length > 1) {
-          return stringFormatter.format('selectedCount', {
-            count: selectedItems.length,
-          });
-        }
-
-        return defaultChildren;
+        return renderValue(values, { count: selectedItems.length });
       }}
     </SelectValue>
   );
