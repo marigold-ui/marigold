@@ -196,12 +196,3 @@ test('default trigger render hides description slot', () => {
   expect(description).not.toBeVisible();
 });
 
-// The small-screen (`Tray`) branch of `renderValue` is covered by play stories
-// running in real Firefox under the `smallScreen` viewport global:
-//   - `MobileControlled`         — controlled `value` round-trip + DSTSUP-261
-//                                  single-tray-modal invariant
-//   - `MultiSelectSummaryMobile` — `count` summary with static children
-//   - `WithRenderValueMobile`    — custom trigger render, description slot hidden
-// Those were previously `mockMatchMedia`-forced unit tests here; the tray is
-// genuinely reachable from play functions, so they now live alongside their
-// desktop counterparts as interaction tests.
