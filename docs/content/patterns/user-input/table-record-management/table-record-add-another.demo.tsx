@@ -91,11 +91,11 @@ export default () => {
         <Title>Venues</Title>
         <Drawer.Trigger open={open} onOpenChange={setOpen}>
           <Button variant="primary" onPress={openCreate}>
-            Add venues
+            Add venue
           </Button>
           <Drawer size="medium" closeButton>
             <Form unstyled key={formKey} onSubmit={handleSubmit}>
-              <Drawer.Title>Add venues</Drawer.Title>
+              <Drawer.Title>Add venue</Drawer.Title>
               <Drawer.Content>
                 <Stack space="regular">
                   <TextField label="Name" name="name" required autoFocus />
