@@ -109,68 +109,71 @@ export default () => {
   return (
     <Panel aria-label="Venues">
       <ToastProvider position="bottom-right" />
+      <Panel.Header>
+        <Title>Venues</Title>
+        <Drawer.Trigger open={open} onOpenChange={setOpen}>
+          <Button variant="primary" onPress={openCreate}>
+            Add venue
+          </Button>
+          <Drawer size="medium" closeButton>
+            <Form unstyled key={formKey} onSubmit={handleSubmit}>
+              <Drawer.Title>Add venue</Drawer.Title>
+              <Drawer.Content>
+                <Stack space="regular">
+                  <TextField label="Name" name="name" required autoFocus />
+                  <TextField label="City" name="city" />
+                  <Select
+                    label="Status"
+                    value={status}
+                    onChange={key => setStatus(key as Venue['status'])}
+                  >
+                    <Select.Option id="active">Active</Select.Option>
+                    <Select.Option id="draft">Draft</Select.Option>
+                    <Select.Option id="archived">Archived</Select.Option>
+                  </Select>
+                  {/* [!code highlight:14] */}
+                  {willBeHidden && (
+                    <SectionMessage variant="warning">
+                      <SectionMessage.Title>
+                        This venue will not be visible
+                      </SectionMessage.Title>
+                      <SectionMessage.Content>
+                        <Text>
+                          The table is filtered to active venues. Saving with
+                          another status hides the new venue from the current
+                          view.
+                        </Text>
+                      </SectionMessage.Content>
+                    </SectionMessage>
+                  )}
+                </Stack>
+              </Drawer.Content>
+              <Drawer.Actions>
+                <Button slot="close" disabled={saving}>
+                  Cancel
+                </Button>
+                <Button variant="primary" type="submit" loading={saving}>
+                  Save
+                </Button>
+              </Drawer.Actions>
+            </Form>
+          </Drawer>
+        </Drawer.Trigger>
+      </Panel.Header>
+      {/* The status filter is a view control — it changes which rows are shown,
+          not the panel's identity — so it sits in a toolbar row attached to the
+          table rather than in the header alongside the title and primary action. */}
       <Panel.Content>
-        <Inline alignX="between" alignY="center">
-          <Inline space="related" alignY="center">
-            <Title>Venues</Title>
-            <Select
-              aria-label="Filter by status"
-              value={filter}
-              onChange={key => setFilter(key as 'active' | 'all')}
-              width={48}
-            >
-              <Select.Option id="active">Active only</Select.Option>
-              <Select.Option id="all">All statuses</Select.Option>
-            </Select>
-          </Inline>
-          <Drawer.Trigger open={open} onOpenChange={setOpen}>
-            <Button variant="primary" onPress={openCreate}>
-              Add venue
-            </Button>
-            <Drawer size="medium" closeButton>
-              <Form unstyled key={formKey} onSubmit={handleSubmit}>
-                <Drawer.Title>Add venue</Drawer.Title>
-                <Drawer.Content>
-                  <Stack space="regular">
-                    <TextField label="Name" name="name" required autoFocus />
-                    <TextField label="City" name="city" />
-                    <Select
-                      label="Status"
-                      value={status}
-                      onChange={key => setStatus(key as Venue['status'])}
-                    >
-                      <Select.Option id="active">Active</Select.Option>
-                      <Select.Option id="draft">Draft</Select.Option>
-                      <Select.Option id="archived">Archived</Select.Option>
-                    </Select>
-                    {/* [!code highlight:14] */}
-                    {willBeHidden && (
-                      <SectionMessage variant="warning">
-                        <SectionMessage.Title>
-                          This venue will not be visible
-                        </SectionMessage.Title>
-                        <SectionMessage.Content>
-                          <Text>
-                            The table is filtered to active venues. Saving with
-                            another status hides the new venue from the current
-                            view.
-                          </Text>
-                        </SectionMessage.Content>
-                      </SectionMessage>
-                    )}
-                  </Stack>
-                </Drawer.Content>
-                <Drawer.Actions>
-                  <Button slot="close" disabled={saving}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" type="submit" loading={saving}>
-                    Save
-                  </Button>
-                </Drawer.Actions>
-              </Form>
-            </Drawer>
-          </Drawer.Trigger>
+        <Inline alignY="center">
+          <Select
+            aria-label="Filter by status"
+            value={filter}
+            onChange={key => setFilter(key as 'active' | 'all')}
+            width={48}
+          >
+            <Select.Option id="active">Active only</Select.Option>
+            <Select.Option id="all">All statuses</Select.Option>
+          </Select>
         </Inline>
       </Panel.Content>
       <Panel.Content bleed>
