@@ -22,8 +22,7 @@ export interface DrawerHeaderProps {
  * and `ref` from the root so the accessible-name wiring keeps working.
  */
 export const DrawerHeader = ({ children }: DrawerHeaderProps) => {
-  const { variant, size, titleId, titleSlotRef } = useDrawerContext();
-  const classNames = useClassNames({ component: 'Drawer', variant, size });
+  const { classNames, titleId, titleSlotRef } = useDrawerContext();
 
   const headingProps = useMemo(
     () => ({

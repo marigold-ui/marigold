@@ -1,18 +1,11 @@
 import type { RefCallback } from 'react';
 import { createContext, use } from 'react';
-import type { ThemeComponent } from '@marigold/system';
+import type { ComponentClassNames } from '@marigold/system';
 
 export interface DrawerContextProps {
   variant?: string;
   size?: string;
-  /**
-   * Resolved theme classes and title-slot wiring shared with the Drawer
-   * sub-components. Optional because `DrawerContext` has a default value used
-   * before a `<Drawer>` publishes one.
-   */
-  classNames?: {
-    [Key in keyof ThemeComponent<'Drawer'>]: string;
-  };
+  classNames: ComponentClassNames<'Drawer'>;
   titleId?: string;
   hasTitle?: boolean;
   titleSlotRef?: RefCallback<Element>;
@@ -21,6 +14,7 @@ export interface DrawerContextProps {
 export const DrawerContext = createContext<DrawerContextProps>({
   variant: undefined,
   size: undefined,
+  classNames: {} as ComponentClassNames<'Drawer'>,
 });
 
 export const useDrawerContext = () => use(DrawerContext);
