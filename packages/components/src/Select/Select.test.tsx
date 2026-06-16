@@ -4,7 +4,6 @@ import type { RefObject } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import {
   Basic,
-  MobileControlled,
   MultiSelectSummary,
   Sections,
   WithRenderValue,
@@ -12,16 +11,11 @@ import {
 
 const user = userEvent.setup();
 
-// `useSmallScreen` matches `(width < 640px)`. By default we keep the desktop
-// (Popover) branch active; individual tests opt into the mobile (Tray) branch.
-const SMALL_SCREEN_QUERY = '(width < 640px)';
-
+// `useSmallScreen` matches `(width < 640px)`. Force the desktop (Popover) branch
+// deterministically so these unit tests do not depend on the real browser
+// window size. The small-screen (Tray) branch is covered by the `*Mobile` and
+// `MobileControlled` play stories (real Firefox, `smallScreen` viewport).
 window.matchMedia = mockMatchMedia([]);
-
-afterEach(() => {
-  // Reset to the desktop default in case a test forced the small-screen branch.
-  window.matchMedia = mockMatchMedia([]);
-});
 
 test('renders a field (label, helptext, select)', () => {
   render(
@@ -202,92 +196,12 @@ test('default trigger render hides description slot', () => {
   expect(description).not.toBeVisible();
 });
 
-// Regression guard for DSTSUP-261: on screens narrower than the `sm`
-// breakpoint, `<Select>` renders its listbox inside a `<Tray>` (RAC
-// `DialogTrigger`). The inner `<ListBox>` must keep participating in the
-// Select's list state so that selecting an option still fires `onChange`
-// (value API) and drives the controlled `value` prop — exactly as on desktop.
-// `MobileControlled` is a fully controlled (`value`/`onChange`) Select, so the
-// assertions read selection through the `value` prop round-trip.
-test('updates the controlled `value` when selecting in the tray (small screen)', async () => {
-  window.matchMedia = mockMatchMedia([SMALL_SCREEN_QUERY]);
-
-  renderWithOverlay(<MobileControlled.Component />);
-
-  const button = screen.getByLabelText(/Favorite character/i);
-  await user.click(button);
-
-  // On small screens the listbox is presented as a tray (dialog), not a popover.
-  const dialog = await screen.findByRole('dialog');
-
-  // DSTSUP-261 invariant: exactly one tray modal, holding the listbox. A split
-  // `HiddenContext` (dual react-aria generations) or a broken hidden-pass guard
-  // leaks a second, empty modal that `inert`s the real one.
-  expect(screen.getAllByRole('dialog')).toHaveLength(1);
-  expect(within(dialog).getByRole('listbox')).toBeInTheDocument();
-
-  await user.click(within(dialog).getByText('Peach'));
-
-  // The controlled `value` prop round-trips: onChange -> state -> value.
-  await waitFor(() =>
-    expect(screen.getByTestId('value')).toHaveTextContent('value: peach')
-  );
-
-  // Single selection auto-closes the tray and the trigger renders from `value`.
-  await waitFor(() =>
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  );
-  expect(button).toHaveTextContent('Peach');
-});
-
-// On small screens the trigger value is rendered inside the `Tray` branch
-// (an `IconButton`) rather than the desktop `Popover` branch. `renderValue`
-// (and its `count`) must behave identically there — the trigger summary is the
-// same `TriggerValue` component in both branches.
-test('renderValue count summarises the selection inside the tray (multiple, small screen)', async () => {
-  window.matchMedia = mockMatchMedia([SMALL_SCREEN_QUERY]);
-
-  renderWithOverlay(<MultiSelectSummary.Component />);
-
-  // Capture the trigger before opening; the tray adds its own buttons.
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  // Small screens present the options inside a tray (dialog), not a popover.
-  const dialog = await screen.findByRole('dialog');
-
-  await user.click(within(dialog).getByRole('option', { name: 'Bold' }));
-  await user.click(within(dialog).getByRole('option', { name: 'Italic' }));
-
-  // Multi-select keeps the tray open; dismiss it explicitly.
-  await user.keyboard('{Escape}');
-  await waitFor(() =>
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  );
-
-  // Static-children options expose a `null` value, but `details.count` reflects
-  // the real selection, so the opt-in summary is correct on mobile too.
-  expect(button).toHaveTextContent(/2 selected/);
-});
-
-test('renderValue replaces the trigger inside the tray (single, small screen)', async () => {
-  window.matchMedia = mockMatchMedia([SMALL_SCREEN_QUERY]);
-
-  renderWithOverlay(<WithRenderValue.Component />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const dialog = await screen.findByRole('dialog');
-  await user.click(within(dialog).getByText('Bob Smith'));
-
-  // Single selection auto-closes the tray; the custom renderValue drives the
-  // trigger, showing the name but not the option's description slot.
-  await waitFor(() =>
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  );
-  expect(within(button).getByText('Bob Smith')).toBeVisible();
-  expect(
-    within(button).queryByText('Senior Developer')
-  ).not.toBeInTheDocument();
-});
+// The small-screen (`Tray`) branch of `renderValue` is covered by play stories
+// running in real Firefox under the `smallScreen` viewport global:
+//   - `MobileControlled`         — controlled `value` round-trip + DSTSUP-261
+//                                  single-tray-modal invariant
+//   - `MultiSelectSummaryMobile` — `count` summary with static children
+//   - `WithRenderValueMobile`    — custom trigger render, description slot hidden
+// Those were previously `mockMatchMedia`-forced unit tests here; the tray is
+// genuinely reachable from play functions, so they now live alongside their
+// desktop counterparts as interaction tests.

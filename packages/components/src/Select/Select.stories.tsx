@@ -571,6 +571,37 @@ export const LargeDataset = meta.story({
   },
 });
 
+// Shared trigger summary + option markup so the desktop and mobile (tray)
+// `renderValue` stories exercise identical rendering on both branches.
+const renderUserValue = (selected: (typeof people)[number][]) => (
+  <Inline space={2} alignY="center">
+    {selected.map(person => (
+      <Inline key={person.id} space={1} alignY="center">
+        <img
+          src={person.avatar}
+          alt=""
+          className="size-5 rounded-full object-cover"
+        />
+        <Text>{person.name}</Text>
+      </Inline>
+    ))}
+  </Inline>
+);
+
+const renderUserOption = (person: (typeof people)[number]) => (
+  <Select.Option id={person.id} textValue={person.name}>
+    <Inline space={2} alignY="center">
+      <img
+        src={person.avatar}
+        alt={person.name}
+        className="size-6 rounded-full object-cover"
+      />
+      <TextValue>{person.name}</TextValue>
+    </Inline>
+    <Description>{person.position}</Description>
+  </Select.Option>
+);
+
 export const WithRenderValue = meta.story({
   tags: ['component-test'],
   args: {
@@ -579,37 +610,8 @@ export const WithRenderValue = meta.story({
     width: 80,
   },
   render: args => (
-    <Select
-      {...args}
-      items={people}
-      renderValue={(selected: (typeof people)[number][]) => (
-        <Inline space={2} alignY="center">
-          {selected.map(person => (
-            <Inline key={person.id} space={1} alignY="center">
-              <img
-                src={person.avatar}
-                alt=""
-                className="size-5 rounded-full object-cover"
-              />
-              <Text>{person.name}</Text>
-            </Inline>
-          ))}
-        </Inline>
-      )}
-    >
-      {(person: (typeof people)[number]) => (
-        <Select.Option id={person.id} textValue={person.name}>
-          <Inline space={2} alignY="center">
-            <img
-              src={person.avatar}
-              alt={person.name}
-              className="size-6 rounded-full object-cover"
-            />
-            <TextValue>{person.name}</TextValue>
-          </Inline>
-          <Description>{person.position}</Description>
-        </Select.Option>
-      )}
+    <Select {...args} items={people} renderValue={renderUserValue}>
+      {renderUserOption}
     </Select>
   ),
   play: async ({ args, canvas, step }) => {
@@ -636,6 +638,62 @@ export const WithRenderValue = meta.story({
     });
 
     await step('Trigger uses custom renderValue', async () => {
+      expect(within(trigger).getByText('Bob Smith')).toBeVisible();
+      expect(
+        within(trigger).queryByText('Senior Developer')
+      ).not.toBeInTheDocument();
+    });
+  },
+});
+
+/**
+ * Mobile counterpart of {@link WithRenderValue}: below the `sm` breakpoint the
+ * trigger value is rendered inside the `Tray` branch (an `IconButton`) rather
+ * than the desktop `Popover` branch. `renderValue` must behave identically
+ * there, since both branches render the same `TriggerValue`. Runs in real
+ * Firefox via the `smallScreen` viewport global.
+ */
+export const WithRenderValueMobile = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    label: 'Assign to',
+    placeholder: 'Select a user',
+    width: 80,
+  },
+  render: args => (
+    <Select {...args} items={people} renderValue={renderUserValue}>
+      {renderUserOption}
+    </Select>
+  ),
+  play: async ({ args, canvas, step }) => {
+    // Fail loudly if the mobile viewport did not take effect, rather than
+    // passing a test that never exercised the tray branch.
+    expect(window.innerWidth).toBeLessThan(640);
+
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step('Open the tray', async () => {
+      await userEvent.click(trigger);
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Select Bob from the tray', async () => {
+      const dialog = canvas.getByRole('dialog');
+      await userEvent.click(within(dialog).getByText('Bob Smith'));
+    });
+
+    await step('Single selection auto-closes the tray', async () => {
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Trigger uses custom renderValue (no description slot)', () => {
       expect(within(trigger).getByText('Bob Smith')).toBeVisible();
       expect(
         within(trigger).queryByText('Senior Developer')
@@ -685,6 +743,66 @@ export const MultiSelectSummary = meta.story({
     // Two selections collapse to a compact "N selected" summary, rather than
     // listing every value on the trigger.
     expect(within(trigger).getByText('2 selected')).toBeVisible();
+  },
+});
+
+/**
+ * Mobile counterpart of {@link MultiSelectSummary}: the `count`-based summary
+ * must read correctly when the options live inside the `Tray` branch. Static
+ * `<Select.Option>` children expose a `null` value, but `details.count`
+ * reflects the real selection, so the summary stays accurate on mobile too.
+ * Runs in real Firefox via the `smallScreen` viewport global.
+ */
+export const MultiSelectSummaryMobile = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    label: 'Formatting',
+    width: 64,
+  },
+  render: ({ label, width }) => (
+    <Select
+      label={label}
+      width={width}
+      selectionMode="multiple"
+      placeholder="Formatting"
+      renderValue={(_items, { count }) => `${count} selected`}
+    >
+      <Select.Option id="bold">Bold</Select.Option>
+      <Select.Option id="italic">Italic</Select.Option>
+      <Select.Option id="underline">Underline</Select.Option>
+    </Select>
+  ),
+  play: async ({ args, canvas, step }) => {
+    expect(window.innerWidth).toBeLessThan(640);
+
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step('Open the tray', async () => {
+      await userEvent.click(trigger);
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Select two options', async () => {
+      const dialog = canvas.getByRole('dialog');
+      await userEvent.click(within(dialog).getByText('Bold'));
+      await userEvent.click(within(dialog).getByText('Italic'));
+    });
+
+    await step('Multi-select keeps the tray open; dismiss it', async () => {
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Trigger shows the compact count summary', () => {
+      expect(within(trigger).getByText('2 selected')).toBeVisible();
+    });
   },
 });
 
@@ -906,6 +1024,15 @@ export const MobileControlled = meta.story({
       await waitFor(() =>
         expect(canvas.getByRole('dialog')).toBeInTheDocument()
       );
+
+      // DSTSUP-261 invariant: exactly one tray modal, holding the listbox. A
+      // split `HiddenContext` (dual react-aria generations) or a broken
+      // hidden-pass guard leaks a second, empty modal that `inert`s the real
+      // one.
+      expect(canvas.getAllByRole('dialog')).toHaveLength(1);
+      expect(
+        within(canvas.getByRole('dialog')).getByRole('listbox')
+      ).toBeInTheDocument();
     });
 
     await step('Select an option from the tray', async () => {
