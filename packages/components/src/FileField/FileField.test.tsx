@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { I18nProvider } from '@react-aria/i18n';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { makeFile } from './../test.utils';
 import { Basic, MultipleFileUpload } from './FileField.stories';
 
