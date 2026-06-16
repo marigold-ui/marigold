@@ -9,7 +9,6 @@ import {
   Description,
   Drawer,
   Form,
-  Inline,
   NumberField,
   Panel,
   Select,
@@ -253,43 +252,39 @@ export default () => {
         Your changes have not been saved. If you close the drawer now, they will
         be lost.
       </ConfirmationDialog>
-      <Panel.Content>
-        <Inline alignX="between" alignY="center">
-          <Stack space="tight">
-            <Title>Venues</Title>
-            <Description>Add a venue or edit an existing one.</Description>
-          </Stack>
-          <Drawer.Trigger open={open} onOpenChange={requestClose}>
-            <Button variant="primary" onPress={openCreate}>
-              Add venue
-            </Button>
-            <Drawer size="medium" closeButton>
-              <Form
-                unstyled
-                ref={formRef}
-                key={`${mode}-${selected?.id ?? 'new'}`}
-                onSubmit={handleSubmit}
-              >
-                <Drawer.Title>
-                  {/* [!code highlight] */}
-                  {mode === 'create' ? 'Add venue' : 'Edit venue'}
-                </Drawer.Title>
-                <Drawer.Content>
-                  <VenueForm venue={selected} />
-                </Drawer.Content>
-                <Drawer.Actions>
-                  <Button slot="close" disabled={saving}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" type="submit" loading={saving}>
-                    Save
-                  </Button>
-                </Drawer.Actions>
-              </Form>
-            </Drawer>
-          </Drawer.Trigger>
-        </Inline>
-      </Panel.Content>
+      <Panel.Header>
+        <Title>Venues</Title>
+        <Description>Add a venue or edit an existing one.</Description>
+        <Drawer.Trigger open={open} onOpenChange={requestClose}>
+          <Button variant="primary" onPress={openCreate}>
+            Add venue
+          </Button>
+          <Drawer size="medium" closeButton>
+            <Form
+              unstyled
+              ref={formRef}
+              key={`${mode}-${selected?.id ?? 'new'}`}
+              onSubmit={handleSubmit}
+            >
+              <Drawer.Title>
+                {/* [!code highlight] */}
+                {mode === 'create' ? 'Add venue' : 'Edit venue'}
+              </Drawer.Title>
+              <Drawer.Content>
+                <VenueForm venue={selected} />
+              </Drawer.Content>
+              <Drawer.Actions>
+                <Button slot="close" disabled={saving}>
+                  Cancel
+                </Button>
+                <Button variant="primary" type="submit" loading={saving}>
+                  Save
+                </Button>
+              </Drawer.Actions>
+            </Form>
+          </Drawer>
+        </Drawer.Trigger>
+      </Panel.Header>
       <Panel.Content bleed>
         <Table aria-label="Venues">
           <Table.Header>

@@ -6,7 +6,6 @@ import {
   Drawer,
   EmptyState,
   Form,
-  Inline,
   NumberField,
   Panel,
   Select,
@@ -85,63 +84,57 @@ export default () => {
 
   return (
     <Panel aria-label="Venues">
-      <Panel.Content>
-        <Inline alignX="between" alignY="center">
-          <Title>Venues</Title>
-          <Drawer.Trigger open={open} onOpenChange={setOpen}>
-            <Button variant="primary" onPress={openCreate}>
-              Add venues
-            </Button>
-            <Drawer size="medium" closeButton>
-              <Form unstyled key={formKey} onSubmit={handleSubmit}>
-                <Drawer.Title>Add venues</Drawer.Title>
-                <Drawer.Content>
-                  <Stack space="regular">
-                    <TextField label="Name" name="name" required autoFocus />
-                    <TextField
-                      label="City"
-                      name="city"
-                      defaultValue={retained.city}
-                    />
-                    <Select
-                      label="Type"
-                      name="type"
-                      defaultValue={retained.type}
-                    >
-                      <Select.Option id="outdoor">Outdoor venue</Select.Option>
-                      <Select.Option id="club">Club or lounge</Select.Option>
-                      <Select.Option id="formal">Formal venue</Select.Option>
-                      <Select.Option id="arena">Arena</Select.Option>
-                    </Select>
-                    <NumberField
-                      label="Capacity"
-                      name="capacity"
-                      minValue={0}
-                      width="1/2"
-                    />
-                  </Stack>
-                </Drawer.Content>
-                <Drawer.Actions>
-                  <Button slot="close">Cancel</Button>
-                  {/* [!code highlight:9] */}
-                  <Button
-                    variant="secondary"
-                    type="submit"
-                    onPress={() => {
-                      addAnotherRef.current = true;
-                    }}
-                  >
-                    Save & add another
-                  </Button>
-                  <Button variant="primary" type="submit">
-                    Save
-                  </Button>
-                </Drawer.Actions>
-              </Form>
-            </Drawer>
-          </Drawer.Trigger>
-        </Inline>
-      </Panel.Content>
+      <Panel.Header>
+        <Title>Venues</Title>
+        <Drawer.Trigger open={open} onOpenChange={setOpen}>
+          <Button variant="primary" onPress={openCreate}>
+            Add venues
+          </Button>
+          <Drawer size="medium" closeButton>
+            <Form unstyled key={formKey} onSubmit={handleSubmit}>
+              <Drawer.Title>Add venues</Drawer.Title>
+              <Drawer.Content>
+                <Stack space="regular">
+                  <TextField label="Name" name="name" required autoFocus />
+                  <TextField
+                    label="City"
+                    name="city"
+                    defaultValue={retained.city}
+                  />
+                  <Select label="Type" name="type" defaultValue={retained.type}>
+                    <Select.Option id="outdoor">Outdoor venue</Select.Option>
+                    <Select.Option id="club">Club or lounge</Select.Option>
+                    <Select.Option id="formal">Formal venue</Select.Option>
+                    <Select.Option id="arena">Arena</Select.Option>
+                  </Select>
+                  <NumberField
+                    label="Capacity"
+                    name="capacity"
+                    minValue={0}
+                    width="1/2"
+                  />
+                </Stack>
+              </Drawer.Content>
+              <Drawer.Actions>
+                <Button slot="close">Cancel</Button>
+                {/* [!code highlight:9] */}
+                <Button
+                  variant="secondary"
+                  type="submit"
+                  onPress={() => {
+                    addAnotherRef.current = true;
+                  }}
+                >
+                  Save & add another
+                </Button>
+                <Button variant="primary" type="submit">
+                  Save
+                </Button>
+              </Drawer.Actions>
+            </Form>
+          </Drawer>
+        </Drawer.Trigger>
+      </Panel.Header>
       <Panel.Content bleed>
         <Table aria-label="Venues">
           <Table.Header>

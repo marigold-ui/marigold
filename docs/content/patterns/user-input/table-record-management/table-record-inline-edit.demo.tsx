@@ -4,11 +4,9 @@ import { useState } from 'react';
 import {
   Badge,
   Description,
-  Inline,
   NumberField,
   Panel,
   Select,
-  Stack,
   Table,
   TextField,
   Title,
@@ -95,14 +93,10 @@ export default () => {
 
   return (
     <Panel aria-label="Venues">
-      <Panel.Content>
-        <Inline alignX="between" alignY="center">
-          <Stack space="tight">
-            <Title>Venues</Title>
-            <Description>Select a cell to edit its value in place.</Description>
-          </Stack>
-        </Inline>
-      </Panel.Content>
+      <Panel.Header>
+        <Title>Venues</Title>
+        <Description>Select a cell to edit its value in place.</Description>
+      </Panel.Header>
       <Panel.Content bleed>
         <Table aria-label="Venues with inline editing" size="compact">
           <Table.Header>
