@@ -4,7 +4,7 @@ description: How Marigold handles breakpoints, responsive values, and the minimu
 badge: new
 ---
 
-Marigold's primary target is desktop and data-dense B2B interfaces, with mobile fully supported as a secondary target down to a defined minimum width. The styling system itself is mobile-first: base styles target the smallest screens and larger breakpoints layer on as the viewport grows.
+Marigold components are responsive and adapt across screen sizes, from small phones to large desktops. The styling system is mobile-first: base styles target the smallest screens, and larger breakpoints layer on as the viewport grows.
 
 ## Breakpoints
 
@@ -31,6 +31,12 @@ For values that need to change with the screen size in JavaScript rather than CS
 
 **Marigold supports a minimum viewport width of 320px.** Components are expected to remain usable and free of overflow all the way down to that width.
 
-This is a **support floor, not a breakpoint**, and the difference matters. A breakpoint is a width where the layout _changes_, such as `sm` at 640px, whereas a support floor is simply the smallest width we promise to render correctly. Because 320px is the bottom of that range rather than a point where anything changes, there is **no `xs` breakpoint** at 320px. Instead, the unprefixed base styles (0 to 639px) carry the layout down to 320px, and the `max-sm:` variant handles any small-screen adjustments along the way.
+<Callout title="Rollout in progress" type="warning">
+
+320px support is still being rolled out, so not every component has been verified at this width yet and some may still overflow or break. If you find one, please let us know.
+
+</Callout>
+
+That makes 320px a **support floor, not a breakpoint**, and the two are easy to confuse. A breakpoint marks a width where the layout _changes_, like `sm` at 640px. A support floor is different: it is simply the smallest width we promise to render correctly. Since nothing changes at 320px, it needs **no `xs` breakpoint**. Instead, the base styles (0 to 639px) hold the layout together all the way down to 320px, with `max-sm:` covering any small-screen tweaks.
 
 When building with Marigold, test your own layouts at 320px (for example using your browser's responsive design mode) to confirm nothing overflows at the floor.
