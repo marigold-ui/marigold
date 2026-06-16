@@ -11,6 +11,7 @@ import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextValue } from '../TextValue/TextValue';
+import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden';
 import { Select } from './Select';
 
 const meta = preview.meta({
@@ -693,6 +694,11 @@ export const MultiSelectSummary = meta.story({
  * communicating how many options are active. This mirrors the applied-filter
  * tags shown elsewhere in a filter toolbar and keeps the trigger width stable
  * regardless of how many options are selected.
+ *
+ * Accessibility: the visual "Status [n]" chrome is `aria-hidden`, and a
+ * `VisuallyHidden` summary gives screen-reader users an unambiguous
+ * "Status, n selected" instead of a bare, unitless "2". The visible label is
+ * already provided by `aria-label`, so the summary only adds the count.
  */
 export const QuickFilter = meta.story({
   tags: ['component-test'],
@@ -703,10 +709,15 @@ export const QuickFilter = meta.story({
       placeholder="Status"
       width={48}
       renderValue={(_items, { count }) => (
-        <Inline space={2} alignY="center">
-          <Text>Status</Text>
-          <Badge>{count}</Badge>
-        </Inline>
+        <>
+          <span aria-hidden="true">
+            <Inline space={2} alignY="center">
+              <Text>Status</Text>
+              <Badge>{count}</Badge>
+            </Inline>
+          </span>
+          <VisuallyHidden>{`${count} selected`}</VisuallyHidden>
+        </>
       )}
     >
       <Select.Option id="active">Active</Select.Option>
@@ -737,6 +748,12 @@ export const QuickFilter = meta.story({
     // The dimension label stays put; the badge reflects the active option count.
     expect(within(trigger).getByText('Status')).toBeVisible();
     expect(within(trigger).getByText('2')).toBeVisible();
+
+    // The count is conveyed unambiguously to assistive tech via the accessible
+    // name ("Status … 2 selected"), not just the bare "2" badge.
+    expect(
+      canvas.getByRole('button', { name: /2 selected/i })
+    ).toBeInTheDocument();
   },
 });
 

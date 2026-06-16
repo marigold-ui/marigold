@@ -175,20 +175,10 @@ test('renderValue receives all selected items in multi-select mode', () => {
   expect(within(button).getByText('Bob Smith')).toBeVisible();
 });
 
-test('renderValue receives the selection count with static children (multiple)', async () => {
-  renderWithOverlay(<MultiSelectSummary.Component />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  await user.click(await screen.findByRole('option', { name: 'Bold' }));
-  await user.click(screen.getByRole('option', { name: 'Italic' }));
-
-  // Static-children options expose a `null` value; `details.count` must still
-  // be correct because it comes from the raw selection, not the values.
-  await waitFor(() => expect(button).toHaveTextContent(/2 selected/));
-});
-
+// The multi-selection "2 selected" case is covered by the `MultiSelectSummary`
+// play function (same Firefox browser env) and the small-screen tray test
+// below, so it is not duplicated here. This single-selection case is the
+// unit-level addition that the play function does not exercise.
 test('renderValue count reflects a single selection with static children', async () => {
   renderWithOverlay(<MultiSelectSummary.Component />);
 
