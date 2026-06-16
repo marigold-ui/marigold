@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
-import { cn, useClassNames } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { useDrawerContext } from './Context';
 
 export interface DrawerHeaderProps {
