@@ -1,0 +1,51 @@
+title: Component inventory showcase
+brief: >-
+  A broad "kitchen-sink" reference assembling many Marigold components into
+  real-world sections: a dense inventory form, settings tabs, a user table,
+  blog, contact form/tiles, FAQ, newsletter and a mission section. Use it as a
+  catalog of composed layouts rather than a single focused pattern.
+# No canonical pattern doc maps to this showcase yet (see DST-1421). Agents
+# should lean on the source plus the global framework-transformation note.
+patterns: []
+mock_data:
+  - alias: '@/lib/data/people'
+    shape: |
+      export const people: Array<{
+        id: string;
+        name: string;
+        position: string;
+        avatar: string;
+        email: string;
+      }>;
+  - alias: '@/lib/data/venues'
+    shape: |
+      // A single venue is read by id for the inventory card. `amenities`
+      // indexes into `amenitiesOptions`; `type` indexes into `venueTypes`.
+      export const venueTypes: readonly string[];
+      export const amenitiesOptions: readonly string[];
+      export const venues: Array<{
+        id: string;
+        name: string;
+        type: number;
+        image: string;
+        city: string;
+        country: string;
+        capacity: number;
+        price: { from: number; to: number };
+        amenities: number[];
+      }>;
+key_files:
+  - Inventory.tsx
+  - Settings.tsx
+  - UserTable.tsx
+  - Blog.tsx
+  - ContactForm.tsx
+  - ContactTiles.tsx
+  - FAQ.tsx
+  - Newsletter.tsx
+  - OurMission.tsx
+scaffolding_files:
+  - page.tsx
+peer_deps:
+  - '@internationalized/date'
+  - lucide-react

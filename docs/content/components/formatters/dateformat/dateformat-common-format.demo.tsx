@@ -1,6 +1,11 @@
 import { useState } from 'react';
-import { I18nProvider } from '@react-aria/i18n';
-import { Columns, DateFormat, Radio, Stack } from '@marigold/components';
+import {
+  Columns,
+  DateFormat,
+  I18nProvider,
+  Radio,
+  Stack,
+} from '@marigold/components';
 
 interface Locale {
   [key: string]: string;
