@@ -1,10 +1,35 @@
-import { type ReactNode, use, useId, useMemo } from 'react';
+import {
+  type ReactNode,
+  use,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type RAC from 'react-aria-components';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import {
   Dialog,
   OverlayTriggerStateContext,
 } from 'react-aria-components/Dialog';
+// `useIsHidden` and react-aria-components' `createHideableComponent` (used by
+// `Select`/`ComboBox`/etc.) both read the SAME `HiddenContext`, defined in
+// `react-aria/private/collections/Hidden`. They only share that context when
+// `react-aria` resolves to a single version across the dependency tree. RAC pins
+// `react-aria` exactly while `@react-aria/collections` uses a caret range, so a
+// consumer's lockfile can install two `react-aria` generations -> two
+// `HiddenContext` instances -> this guard reads a context the collection
+// renderer never sets -> a duplicate (empty) tray modal leaks and both modals
+// `inert` each other (DSTSUP-261). The DOM probe below covers that case.
+//
+// Why this guard exists at all: RAC's own `Popover`/`Menu` skip the hidden pass
+// internally (via RAC's bundled `react-aria`, so they can never split) — which
+// is why the desktop `Popover` path is immune. RAC's `Modal` (what `Tray` builds
+// on) has no such guard, so we add one here. The durable fix is upstream — RAC
+// guarding `Modal`'s hidden pass like `Popover`, or RAC exporting `useIsHidden`
+// — after which this guard and the `@react-aria/collections` dependency can be
+// dropped.
 import { useIsHidden } from '@react-aria/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
@@ -89,6 +114,8 @@ export const Tray = ({
   const state = use(OverlayTriggerStateContext);
   const isHidden = useIsHidden();
   const titleId = useId();
+  const probeRef = useRef<HTMLSpanElement>(null);
+  const [isDetached, setIsDetached] = useState(false);
   const classNames = useClassNames({
     component: 'Tray',
   });
@@ -135,14 +162,29 @@ export const Tray = ({
     [classNames.description]
   );
 
+  // Safety net for when `useIsHidden()` is blind to the hidden pass because of
+  // a split `HiddenContext` (two react-aria generations, see above): the hidden
+  // pass renders into a `<template>`, whose content lives in a detached
+  // DocumentFragment, so a probe rendered in place is never connected to the
+  // document. This resolves at mount — before the tray can ever open — so the
+  // modal cannot portal out of a hidden tree even when the context guard fails.
+  // Unlike the context guard, this holds regardless of how the consumer's
+  // lockfile resolves react-aria.
+  useLayoutEffect(() => {
+    if (probeRef.current && !probeRef.current.isConnected) {
+      setIsDetached(true);
+    }
+  }, []);
+
   // If we are in a hidden tree, we still need to preserve our children.
   // This is important for components like Select that need to maintain state context.
-  if (isHidden) {
+  if (isHidden || isDetached) {
     return <TrayContext value={trayContextValue}>{children}</TrayContext>;
   }
 
   return (
     <TrayContext value={trayContextValue}>
+      <span hidden ref={probeRef} />
       <ResetButtonContext>
         <TrayModal
           open={openState}

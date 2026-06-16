@@ -79,7 +79,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ContextualHelp?: Record<
-      'trigger' | 'container' | 'title' | 'content',
+      'trigger' | 'container' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
@@ -176,6 +176,10 @@ export type Theme = {
       | 'footer',
       ComponentStyleFunction<string, string>
     >;
+    Page?: Record<
+      'root' | 'header' | 'title' | 'description' | 'actions' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     Pagination?: Record<
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
@@ -208,7 +212,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     SectionMessage?: Record<
-      'container' | 'icon' | 'title' | 'content',
+      'container' | 'icon' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<

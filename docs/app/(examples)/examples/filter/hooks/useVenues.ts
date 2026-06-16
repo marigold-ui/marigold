@@ -1,68 +1,67 @@
-import { venues } from '@/lib/data/venues';
-import type { Venue } from '@/lib/data/venues';
-import { MAX_PRICE, type VenueFilter, useFilter } from './useFilter';
+import type { VenueQueryParams } from '@/lib/data/venues-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { venueKeys } from './queryKeys';
+import { useDeletedVenues } from './useDeletedVenues';
+import { useFilter } from './useFilter';
 import { usePagination } from './usePagination';
 import { useSearch } from './useSearch';
-import { type VenueSortDescriptor, useSort } from './useSort';
+import { useSort } from './useSort';
+import { fetchVenues } from './venuesApi';
 
-const matchesSearch = (venue: Venue, search: string) =>
-  venue.name.toLowerCase().includes(search.toLowerCase().trim());
-
-const filterVenues = (list: readonly Venue[], filter: VenueFilter) =>
-  list.filter(venue => {
-    // Each line short-circuits on the field's "no filter" sentinel.
-    if (filter.capacity > 0 && venue.capacity < filter.capacity) return false;
-    if (filter.price < MAX_PRICE && venue.price.to > filter.price) return false;
-    if (filter.rating > 0 && venue.rating < filter.rating) return false;
-    if (
-      filter.traits.length > 0 &&
-      !venue.traits.some(vt => filter.traits.includes(vt))
-    ) {
-      return false;
-    }
-    return true;
-  });
-
-// `sortVenues` copies its input so callers can pass readonly arrays safely;
-// don't spread again at the call site.
-const sortVenues = (list: readonly Venue[], sort: VenueSortDescriptor) => {
-  const dir = sort.direction === 'ascending' ? 1 : -1;
-  return [...list].sort((a, b) => {
-    if (sort.column === 'price') return dir * (a.price.to - b.price.to);
-    if (sort.column === 'capacity') return dir * (a.capacity - b.capacity);
-    return dir * a.name.localeCompare(b.name);
-  });
-};
-
-// Reads URL state and produces the search/filter/sort/paginate pipeline.
-// Safe to call from multiple components — nuqs deduplicates URL subscriptions,
-// and the static dataset makes recomputation negligible.
+// Encapsulates the venues list query. Components call `useVenues()` and stay
+// presentational — they never see fetch, query keys, or URL parsing. The query
+// key is derived from the live URL (nuqs) state plus the client-owned
+// `excludedIds`, so any change refetches the right slice and background
+// refetches/cache updates always target the correct entry.
+//
+// Safe to call from multiple components (table, pagination): react-query
+// deduplicates identical keys, so they share one request and one cache entry.
 export const useVenues = () => {
   const [search] = useSearch();
   const { filter, hasFilter } = useFilter();
   const [sort] = useSort();
   const [{ page, pageSize }] = usePagination();
+  const { excludedIds } = useDeletedVenues();
 
-  const searched = search
-    ? venues.filter(v => matchesSearch(v, search))
-    : venues;
-  const filtered = filterVenues(searched, filter);
-  const display = sortVenues(filtered, sort);
+  const params: VenueQueryParams = {
+    q: search || undefined,
+    capacity: filter.capacity,
+    price: filter.price,
+    rating: filter.rating,
+    traits: filter.traits,
+    column: sort.column,
+    direction: sort.direction,
+    page,
+    pageSize,
+    exclude: excludedIds,
+  };
 
-  const totalItems = display.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-  const safePage = Math.min(page, totalPages);
-  const paged = display.slice((safePage - 1) * pageSize, safePage * pageSize);
+  const query = useQuery({
+    queryKey: venueKeys.list(params),
+    queryFn: () => fetchVenues(params),
+    // Keep showing the previous page while the next one loads so filtering and
+    // paging never flash an empty table.
+    placeholderData: keepPreviousData,
+    // Surface fetch failures to the nearest error boundary (see page.tsx)
+    // instead of handling them inline in every consumer.
+    throwOnError: true,
+  });
 
+  const result = query.data;
   const isFiltered = search.length > 0 || hasFilter();
 
   return {
-    display,
-    paged,
-    totalItems,
-    totalPages,
-    safePage,
-    pageSize,
+    // `params` lets imperative actions (e.g. "export all matching") re-run the
+    // same query with a different page size.
+    params,
+    items: result?.items ?? [],
+    totalItems: result?.totalItems ?? 0,
+    totalPages: result?.totalPages ?? 1,
+    safePage: result?.safePage ?? 1,
+    pageSize: result?.pageSize ?? pageSize,
     isFiltered,
+    // `isLoading` is the initial fetch only (no data yet). Background refetches
+    // keep `data` and flip `isFetching` — surfaced globally by FetchingIndicator.
+    isLoading: query.isLoading,
   } as const;
 };

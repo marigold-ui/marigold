@@ -7,7 +7,7 @@ import type {
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
-import { cn, createSpacingVar, useClassNames } from '@marigold/system';
+import { cn, createSpacingVar, isScale, useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PanelContext } from './Context';
 import { PanelCollapsible } from './PanelCollapsible';
@@ -91,9 +91,10 @@ export const Panel = ({
   const classNames = useClassNames({ component: 'Panel', variant, size });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
-  const inset = p ?? 'square-regular';
-  const resolvedPx = px ?? `${inset}-x`;
-  const resolvedPy = py ?? `${inset}-y`;
+  const inset = `${p ?? 'square-regular'}`;
+  const isScaleInset = isScale(inset);
+  const resolvedPx = px ?? (isScaleInset ? inset : `${inset}-x`);
+  const resolvedPy = py ?? (isScaleInset ? inset : `${inset}-y`);
 
   const rootHeadingProps = useMemo(
     () => ({

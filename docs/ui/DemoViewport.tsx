@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 /**
  * Stand-in for the browser viewport in page-level component demos
- * (e.g. `AppLayout`). The preview pane isn't tall enough to let the
+ * (e.g. `AppShell`). The preview pane isn't tall enough to let the
  * real `min-h-dvh` / `h-dvh` / page-scroll behaviour play out, so this
  * wrapper turns itself into a scroll root and clamps those properties
  * to its own size.

@@ -6,13 +6,8 @@ export * from './hooks';
 export { Accordion } from './Accordion/Accordion';
 export type { AccordionProps } from './Accordion/Accordion';
 
-export { AppLayout } from './AppLayout/AppLayout';
-export type {
-  AppLayoutProps,
-  AppLayoutHeaderProps,
-  AppLayoutSidebarProps,
-  AppLayoutMainProps,
-} from './AppLayout/AppLayout';
+export { AppShell } from './AppShell/AppShell';
+export type { AppShellProps } from './AppShell/AppShell';
 
 export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
@@ -182,6 +177,11 @@ export type { NonModalProps } from './Overlay/NonModal';
 export { Underlay } from './Overlay/Underlay';
 export type { UnderlayProps } from './Overlay/Underlay';
 
+export { Page } from './Page/Page';
+export type { PageProps } from './Page/Page';
+export type { PageHeaderProps } from './Page/PageHeader';
+export type { PageContentProps } from './Page/PageContent';
+
 export { Panel } from './Panel/Panel';
 export type { PanelProps } from './Panel/Panel';
 
@@ -191,10 +191,17 @@ export type { PaginationProps } from './Pagination/Pagination';
 export { ProgressCircle } from './ProgressCircle/ProgressCircle';
 export type { ProgressCircleProps } from './ProgressCircle/ProgressCircle';
 
-export { I18nProvider } from '@react-aria/i18n';
 export { HeadingContext } from 'react-aria-components/Heading';
 export { TextContext } from 'react-aria-components/Text';
 export { Provider } from 'react-aria-components/slots';
+// Re-exported from react-aria-components (NOT `@react-aria/i18n`) so the
+// provider writes the same `I18nContext` instance that RAC-based components
+// read. The `@react-aria/*` shell packages resolve `react-aria` via caret
+// ranges while RAC pins it exactly, so a consumer's lockfile can install two
+// `react-aria` copies — a provider from `@react-aria/i18n` would then set a
+// context RAC never reads and the locale would be silently ignored. Same
+// failure class as DSTSUP-261; see DST-1505.
+export { I18nProvider } from 'react-aria-components';
 export { useTheme, ThemeProvider } from '@marigold/system';
 export { MarigoldProvider } from './Provider/MarigoldProvider';
 export type { MarigoldProviderProps } from './Provider/MarigoldProvider';

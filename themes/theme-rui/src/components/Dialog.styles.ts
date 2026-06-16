@@ -14,6 +14,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
         xsmall: '',
         small: '',
         medium: '',
+        large: '',
       },
     },
   }),

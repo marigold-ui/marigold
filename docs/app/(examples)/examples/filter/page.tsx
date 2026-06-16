@@ -5,19 +5,73 @@
 // children is intentional documentation, not a requirement.
 'use client';
 
-import { Headline, Inset, Panel, Stack, Text } from '@marigold/components';
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
+import { ErrorBoundary } from 'react-error-boundary';
+import {
+  Button,
+  Center,
+  Description,
+  Page,
+  Panel,
+  Stack,
+  Text,
+  Title,
+} from '@marigold/components';
 import { AppliedFilter } from './AppliedFilter';
 import { Toolbar } from './Toolbar';
 import { VenuesPagination } from './VenuesPagination';
 import { VenuesTable } from './VenuesTable';
+import { DeletedVenuesProvider } from './hooks/useDeletedVenues';
+
+// Isolates the data region in an error boundary. `throwOnError` on the list
+// query (useVenues) routes any fetch failure here instead of blanking the
+// page; wiring `onReset` to react-query's reset lets "Try again" clear the
+// boundary and refetch.
+const VenuesData = () => {
+  const { reset } = useQueryErrorResetBoundary();
+
+  return (
+    <ErrorBoundary
+      onReset={reset}
+      fallbackRender={({ resetErrorBoundary }) => (
+        <Panel.Content>
+          <div className="grid min-h-64 place-items-center">
+            <Center>
+              <Stack space={2} alignX="center">
+                <Text fontSize="lg" weight="bold">
+                  Could not load venues
+                </Text>
+                <Text variant="muted">
+                  Something went wrong while fetching data.
+                </Text>
+                <Button variant="primary" onPress={resetErrorBoundary}>
+                  Try again
+                </Button>
+              </Stack>
+            </Center>
+          </div>
+        </Panel.Content>
+      )}
+    >
+      <Panel.Content bleed>
+        <VenuesTable />
+      </Panel.Content>
+      <Panel.Content>
+        <VenuesPagination />
+      </Panel.Content>
+    </ErrorBoundary>
+  );
+};
 
 const FilterPage = () => (
-  <Inset p={4}>
-    <Stack space={8}>
-      <Stack space={2}>
-        <Headline level={2}>Venues</Headline>
-        <Text>Browse and filter available venues for your events.</Text>
-      </Stack>
+  <DeletedVenuesProvider>
+    <Page>
+      <Page.Header>
+        <Title>Venues</Title>
+        <Description>
+          Browse and filter available venues for your events.
+        </Description>
+      </Page.Header>
       <Panel aria-label="Venues">
         <Panel.Content>
           <Stack space="regular">
@@ -25,15 +79,10 @@ const FilterPage = () => (
             <AppliedFilter />
           </Stack>
         </Panel.Content>
-        <Panel.Content bleed>
-          <VenuesTable />
-        </Panel.Content>
-        <Panel.Content>
-          <VenuesPagination />
-        </Panel.Content>
+        <VenuesData />
       </Panel>
-    </Stack>
-  </Inset>
+    </Page>
+  </DeletedVenuesProvider>
 );
 
 export default FilterPage;
