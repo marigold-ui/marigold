@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { docsUrl, readConfig, writeConfig } from './config.js';
 import { firstExisting } from './fs-utils.js';
 
-export type CommandName = 'docs' | 'list' | 'init' | 'telemetry';
+export type CommandName = 'docs' | 'list' | 'examples' | 'init' | 'telemetry';
 
 export interface TelemetryEvent {
   event: 'cli_command';

@@ -115,6 +115,7 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
+  tags: ['component-test'],
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => {
     const [basicPage, setBasicPage] = useState(1);
 
@@ -122,6 +123,7 @@ export const Controlled = meta.story({
       <div>
         <h1>Pagination Example</h1>
         <p>Selected Page: {basicPage}</p>
+        <button onClick={() => setBasicPage(1)}>Reset to first page</button>
         <Pagination
           {...rest}
           totalItems={totalItems!}
@@ -130,6 +132,34 @@ export const Controlled = meta.story({
           onChange={setBasicPage}
         />
       </div>
+    );
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Selecting a page updates the parent state', async () => {
+      await userEvent.click(canvas.getByLabelText('Page 3'));
+
+      await expect(canvas.getByText('Selected Page: 3')).toBeInTheDocument();
+      await expect(canvas.getByLabelText('Page 3')).toHaveAttribute(
+        'data-selected',
+        'true'
+      );
+    });
+
+    await step(
+      'An external change to the page prop updates the active page',
+      async () => {
+        await userEvent.click(
+          canvas.getByRole('button', { name: 'Reset to first page' })
+        );
+
+        await expect(canvas.getByLabelText('Page 1')).toHaveAttribute(
+          'data-selected',
+          'true'
+        );
+        await expect(canvas.getByText('Selected Page: 1')).toBeInTheDocument();
+      }
     );
   },
 });

@@ -32,6 +32,10 @@ export const browserDeps = [
   // surfacing as `resolveDispatcher() is null` during renderToString/hydrateRoot.
   'react-dom/server',
   'react-dom/client',
+  // RAC subpath import used in stories/tests (see DST-1512). Without
+  // pre-bundling, the unit-tests project discovers it at runtime and
+  // re-optimizes mid-run, cascading "error loading dynamically imported module".
+  'react-aria-components/I18nProvider',
   // Virtualizer deps (reference process.env in source)
   '@react-aria/virtualizer',
   '@react-stately/layout',

@@ -361,6 +361,9 @@ importers:
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.1.0
+      yaml:
+        specifier: ^2.9.0
+        version: 2.9.0
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -522,6 +525,9 @@ importers:
       '@react-stately/tree':
         specifier: ^3.10.1
         version: 3.10.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@react-stately/utils':
+        specifier: ^3.12.1
+        version: 3.12.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@react-types/button':
         specifier: ~3.15.0
         version: 3.15.1(react@19.2.6)
@@ -2817,6 +2823,12 @@ packages:
 
   '@react-stately/tree@3.10.1':
     resolution: {integrity: sha512-npdJ+hQGR1J+yi+LOWX7zGS0B9U2SYVbvS31ZCwSMfVUUo4eV+bvLtsiocYUn3bX/EgowFI/ZYJChrIKBpROJA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
+  '@react-stately/utils@3.12.1':
+    resolution: {integrity: sha512-NqKfzrknpfwiewx7R2vk1P+CneClInPDsIhw15+jOcUYSEfej0nta4cJywuKQJ2gsPwqX/ojDNixedCve9FWGw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -10745,6 +10757,13 @@ snapshots:
       react-stately: 3.47.0(react@19.2.6)
 
   '@react-stately/tree@3.10.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+    dependencies:
+      '@swc/helpers': 0.5.23
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
+      react-stately: 3.47.0(react@19.2.6)
+
+  '@react-stately/utils@3.12.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
       '@swc/helpers': 0.5.23
       react: 19.2.6
