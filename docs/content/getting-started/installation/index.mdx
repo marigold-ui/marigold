@@ -34,6 +34,13 @@ Marigold also provides an additional package you can install as needed:
 
 - `@marigold/icons` — A set of ready-to-use icon components
 
+<Callout title="Prefer an automated setup?">
+  The [Marigold CLI](/getting-started/cli) can do the steps below for you. Run
+  [`marigold init`](/getting-started/cli#marigold-init) in an existing Next.js
+  or Vite project to install the packages, patch your CSS and config, and wrap
+  the root with `MarigoldProvider`.
+</Callout>
+
 ## Set up a Marigold project with Tailwind CSS (Recommended)
 
 Pairing Marigold with Tailwind CSS gives you the full design system as it was intended, not a frozen, pre-compiled snapshot. Tailwind tree-shakes unused styles for smaller bundles, and lets you use the same utility scale (spacing, colors, breakpoints) in your own components that Marigold uses internally. Dev tooling like IntelliSense and JIT compilation work across both Marigold and your app code, making this the most flexible and ergonomic setup for real-world projects.
