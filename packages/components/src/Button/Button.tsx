@@ -1,12 +1,16 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
+import { useContextProps } from 'react-aria-components/slots';
 import { cn, useClassNames } from '@marigold/system';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
+import type { SlotProps } from '../types';
+import { ButtonContext, type ButtonContextValue } from './Context';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
-export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
+export interface ButtonProps
+  extends Omit<RAC.ButtonProps, RemovedProps>, SlotProps {
   variant?:
     | 'primary'
     | 'secondary'
@@ -44,16 +48,27 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   ref?: Ref<HTMLButtonElement>;
 }
 
-const _Button = ({
-  children,
-  variant,
-  size,
-  disabled,
-  loading,
-  fullWidth,
-  ref,
-  ...props
-}: ButtonProps) => {
+const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
+  // Consume the Marigold `ButtonContext` (NOT RAC's) so a bare `<Button>`
+  // adapts inside `<ButtonGroup>`/`<Panel.Header>`. A local prop always wins;
+  // `slot={null}` opts out, any other `slot` forwards to RAC's `<Button>`.
+  const [merged, ref] = useContextProps(
+    inputProps as ButtonContextValue,
+    refProp,
+    ButtonContext
+  );
+
+  const {
+    children,
+    variant,
+    size,
+    disabled,
+    loading,
+    fullWidth,
+    className,
+    ...props
+  } = merged;
+
   const classNames = useClassNames({
     component: 'Button',
     variant,
@@ -65,6 +80,7 @@ const _Button = ({
       {...props}
       ref={ref}
       className={cn(
+        className,
         classNames,
         fullWidth ? 'w-full' : undefined,
         loading && 'cursor-progress!'

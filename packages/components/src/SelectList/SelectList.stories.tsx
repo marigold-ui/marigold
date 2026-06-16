@@ -348,8 +348,8 @@ export const WithIconAction = meta.story({
         <SelectList.Option textValue={item.name}>
           <TextValue>{item.name}</TextValue>
           <Description>{item.description}</Description>
+          {/* No `variant` needed: SelectList.Option cascades `ghost`. */}
           <Button
-            variant="ghost"
             size="icon"
             aria-label={`Learn more about ${item.name}`}
             onPress={() => alert(`Info about ${item.name}`)}

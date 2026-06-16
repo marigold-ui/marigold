@@ -40,7 +40,7 @@ export const VenuesPagination = () => {
         pageSize={pageSize}
         onChange={onPageChange}
       />
-      <Inline space={2} alignY="center" alignX="right">
+      <Inline space="related" alignY="center" alignX="right">
         <Text id="page-size" fontSize="sm">
           Results per page
         </Text>

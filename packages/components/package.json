@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "18.0.0-beta.2",
+  "version": "18.0.0-beta.3",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -70,7 +70,7 @@
     "@react-stately/overlays": "^3.7.1",
     "@react-stately/table": "^3.16.1",
     "@react-stately/tree": "^3.10.1",
-    "@react-stately/utils": "^3.11.0",
+    "@react-stately/utils": "^3.12.1",
     "@react-types/button": "~3.15.0",
     "@react-types/checkbox": "~3.10.0",
     "@react-types/grid": "~3.3.0",
@@ -90,7 +90,7 @@
     "lucide-react": "^1.9.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "tsdown": "0.22.0"
+    "tsdown": "0.22.2"
   },
   "scripts": {
     "build": "tsdown",

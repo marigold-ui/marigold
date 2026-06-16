@@ -74,7 +74,7 @@ export interface DialogProps
     Omit<RAC.DialogProps, 'className' | 'style' | 'render'>,
     Pick<ModalProps, 'open' | 'onOpenChange'> {
   variant?: string;
-  size?: 'xsmall' | 'small' | 'medium' | (string & {});
+  size?: 'xsmall' | 'small' | 'medium' | 'large' | (string & {});
   /**
    * Show the close button.
    */

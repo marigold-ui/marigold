@@ -1,6 +1,6 @@
 {
   "name": "@marigold/icons",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "description": "Marigold Icons (Lucide proxy + custom icons)",
   "license": "MIT",
   "keywords": [
@@ -48,7 +48,7 @@
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
     "react": "19.2.6",
-    "tsdown": "0.22.0"
+    "tsdown": "0.22.2"
   },
   "scripts": {
     "build": "tsdown src/index.ts",

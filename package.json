@@ -53,7 +53,7 @@
     "storybook": "^10.3.3",
     "storybook-addon-test-codegen": "3.0.1",
     "tailwindcss": "4.3.0",
-    "turbo": "2.9.14",
+    "turbo": "2.9.18",
     "typescript": "6.0.2",
     "vite": "8.0.14",
     "vitest": "4.1.7",
@@ -62,7 +62,7 @@
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",
     "sb": "FOLDERS=packages/components/src,packages/system/src storybook dev -p 6006 -c ./.storybook",
-    "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
+    "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" --filter \"@marigold/cli\" build",
     "build:docs": "turbo run --filter @marigold/docs... build",
     "build:sb": "storybook build --disable-telemetry -c ./.storybook -o storybook-static --stats-json",
     "build:themes": "turbo run --filter \"@marigold/theme*...\" build",

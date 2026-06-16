@@ -1,6 +1,5 @@
 export { Accordion } from './Accordion.styles';
 export { ActionBar } from './ActionBar.styles';
-export { ActionButton } from './ActionButton.styles';
 export { Autocomplete } from './Autocomplete.styles';
 export { Badge } from './Badge.styles';
 export { BooleanField } from './BooleanField.styles';
@@ -32,6 +31,7 @@ export { Menu } from './Menu.styles';
 export { Modal } from './Modal.styles';
 export { NumberField } from './NumberField.styles';
 export { Panel } from './Panel.styles';
+export { Page } from './Page.styles';
 export { Popover } from './Popover.styles';
 export { Radio } from './Radio.styles';
 export { Pagination } from './Pagination.styles';

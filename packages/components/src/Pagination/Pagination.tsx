@@ -1,6 +1,7 @@
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useControlledState } from '@react-stately/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
@@ -42,7 +43,10 @@ export interface PaginationProps {
   controlLabels?: [string, string];
 }
 
-interface InnerPaginationProps extends Omit<PaginationProps, 'totalItems'> {
+interface InnerPaginationProps extends Pick<
+  PaginationProps,
+  'pageSize' | 'controlLabels'
+> {
   currentPage: number;
   totalPages: number;
   pageRange: (number | 'ellipsis')[];
@@ -55,7 +59,6 @@ const InnerPagination = ({
   totalPages,
   pageRange,
   setCurrentPage,
-  onChange,
   controlLabels,
 }: InnerPaginationProps) => {
   const focusManager = useFocusManager();
@@ -63,27 +66,17 @@ const InnerPagination = ({
 
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages || totalPages === 0;
-  const isFirstRender = useRef(true);
-
-  const handlePageChange = useCallback(
-    (newPage: number) => {
-      setCurrentPage(newPage);
-      if (onChange) {
-        onChange(newPage);
-      }
-    },
-    [setCurrentPage, onChange]
-  );
+  const prevPageSize = useRef(pageSize);
 
   useEffect(() => {
-    /* avoid setting page 1 on first render, 
-    e.g. necessary when using page prop */
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
+    /* Only reset to page 1 when the page size actually changed, so neither
+    mounting (e.g. with the page prop) nor an unstable setter triggers it */
+    if (prevPageSize.current === pageSize) {
       return;
     }
-    handlePageChange(1);
-  }, [pageSize, handlePageChange]);
+    prevPageSize.current = pageSize;
+    setCurrentPage(1);
+  }, [pageSize, setCurrentPage]);
 
   const { icon, container } = useClassNames({
     component: 'Pagination',
@@ -107,12 +100,14 @@ const InnerPagination = ({
   return (
     <>
       <NavigationButton
-        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
         aria-label={stringFormatter.format('pagePrevious')}
         isDisabled={isFirstPage}
         controlLabel={controlLabels?.[0]}
         position="left"
-        onKeyDown={handleKeyDown(() => handlePageChange(currentPage - 1))}
+        onKeyDown={handleKeyDown(() =>
+          setCurrentPage(Math.max(1, currentPage - 1))
+        )}
       >
         <ChevronLeft className={icon} />
       </NavigationButton>
@@ -127,8 +122,8 @@ const InnerPagination = ({
                 key={pageNumber}
                 page={pageNumber}
                 selected={pageNumber === currentPage}
-                onClick={() => handlePageChange(pageNumber)}
-                onKeyDown={handleKeyDown(() => handlePageChange(pageNumber))}
+                onClick={() => setCurrentPage(pageNumber)}
+                onKeyDown={handleKeyDown(() => setCurrentPage(pageNumber))}
               />
             )
           )
@@ -138,12 +133,14 @@ const InnerPagination = ({
       </div>
 
       <NavigationButton
-        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
         aria-label={stringFormatter.format('pageNext')}
         isDisabled={isLastPage}
         controlLabel={controlLabels?.[1]}
         position="right"
-        onKeyDown={handleKeyDown(() => handlePageChange(currentPage + 1))}
+        onKeyDown={handleKeyDown(() =>
+          setCurrentPage(Math.min(totalPages, currentPage + 1))
+        )}
       >
         <ChevronRight className={icon} />
       </NavigationButton>
@@ -156,9 +153,14 @@ const _Pagination = ({
   page,
   totalItems,
   pageSize,
+  onChange,
   ...props
 }: PaginationProps) => {
-  const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
+  const [currentPage, setCurrentPage] = useControlledState(
+    page,
+    defaultPage,
+    onChange
+  );
   const totalPages = Math.ceil(totalItems / pageSize);
   const pageRange = usePageRange({ currentPage, totalPages });
   const { container } = useClassNames({ component: 'Pagination' });

@@ -62,7 +62,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
 
-    ActionButton?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: Record<
       | 'container'
@@ -80,7 +79,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ContextualHelp?: Record<
-      'trigger' | 'container' | 'title' | 'content',
+      'trigger' | 'container' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
@@ -140,7 +139,13 @@ export type Theme = {
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
-      'container' | 'list' | 'item' | 'section' | 'header',
+      | 'container'
+      | 'list'
+      | 'item'
+      | 'section'
+      | 'header'
+      | 'label'
+      | 'description',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
@@ -161,6 +166,10 @@ export type Theme = {
       | 'collapsibleDescription'
       | 'collapsibleContent'
       | 'footer',
+      ComponentStyleFunction<string, string>
+    >;
+    Page?: Record<
+      'root' | 'header' | 'title' | 'description' | 'actions' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Pagination?: Record<
@@ -195,7 +204,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     SectionMessage?: Record<
-      'container' | 'icon' | 'title' | 'content',
+      'container' | 'icon' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<

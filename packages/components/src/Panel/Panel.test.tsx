@@ -108,6 +108,21 @@ describe('Panel', () => {
       );
     });
 
+    test('numeric `p` resolves through the tailwind spacing scale on both axes', () => {
+      render(<Basic.Component p={4} />);
+
+      const region = screen.getByRole('region', { name: 'Organizer Profile' });
+
+      // A numeric `p` must not build a non-existent `var(--spacing-4-x)`; it is
+      // applied directly as a scale value to both axes.
+      expect(region.style.getPropertyValue('--panel-px')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+      expect(region.style.getPropertyValue('--panel-py')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+    });
+
     test('`p` recipe drives both --panel-px and --panel-py', () => {
       render(<CustomPadding.Component />);
 
@@ -224,7 +239,7 @@ describe('Panel.Header', () => {
     expect(description).toHaveAttribute('data-grid-area', 'description');
   });
 
-  test('places a bare ActionButton in the actions grid area', () => {
+  test('makes a bare Button slot-aware: places it in the actions grid area', () => {
     render(<WithHeaderActions.Component />);
 
     const action = screen.getByRole('button', { name: 'Invite member' });

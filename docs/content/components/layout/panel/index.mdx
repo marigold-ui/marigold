@@ -8,6 +8,8 @@ A `<Panel>` organizes page content into labeled sections. Use it to split a sett
 
 A typical page has a handful of Panels, each owning one topic: "Organizer profile", "Team members", "Billing". Every Panel has a unique title and renders as a landmark region labelled by that title, so the page outline stays meaningful to assistive tech.
 
+Panels live inside a [`<Page>`](/components/layout/page) under a [`<Page.Header>`](/components/layout/page#header). Panel's default `headingLevel={2}` assumes a page `<h1>` above it — which `<Page.Header>` provides — so the outline reads `h1` (page) → `h2` (Panel) → `h3` (Panel collapsible) with no configuration.
+
 <Callout title="Is a Panel a Card?">
   They look similar, but they're not interchangeable. A Panel owns a region of a
   page, with its own title, description, and optional actions. A Card just
@@ -115,9 +117,9 @@ A description is a single-sentence subtitle directly under the title. Include on
 
 #### The header configures its children
 
-`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any action primitives (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. The header configures slot context so each piece picks up its level, id wiring, grid position, size, and variant from the Panel, so consumers don't need to set any of that themselves.
+`Panel.Header` is the layout wrapper that arranges title, description, and actions in a grid. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any buttons (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. The header configures slot context so each piece picks up its level, id wiring, grid position, size, and variant from the Panel, so consumers don't need to set any of that themselves. A bare `<Button>` is slot-aware here. Opt one out of the cascade with `slot={null}`.
 
-Multiple actions belong in an `<ActionGroup>` so the cluster claims one grid cell and renders as a toolbar.
+Multiple actions belong in a `<ButtonGroup>` so the cluster claims one grid cell and renders as a toolbar.
 
 #### Title-only Panels can skip the header
 
@@ -186,7 +188,7 @@ A Panel made entirely of Collapsibles runs into the same problem: the title labe
 
 A Panel has three places for actions, each carrying a different scope:
 
-- **Header.** For controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it. Keep the set small: one primary button, or an overflow menu when a handful of related controls belong together. More than that usually means the scope is too broad, and one of the actions probably belongs in its own Panel.
+- **Header.** For controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it. Keep the set small: one prominent button, or an overflow menu when a handful of related controls belong together. More than that usually means the scope is too broad, and one of the actions probably belongs in its own Panel.
 
 <ComponentDemo name="panel-header-actions" />
 

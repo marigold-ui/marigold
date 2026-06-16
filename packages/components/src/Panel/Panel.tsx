@@ -7,7 +7,7 @@ import type {
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
-import { cn, createSpacingVar, useClassNames } from '@marigold/system';
+import { cn, createSpacingVar, isScale, useClassNames } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PanelContext } from './Context';
 import { PanelCollapsible } from './PanelCollapsible';
@@ -29,8 +29,8 @@ interface PanelBaseProps extends Omit<
    * Content of the panel. Typically a combination of `Panel.Header`,
    * `Panel.Content`, `Panel.Collapsible`, and `Panel.Footer`.
    *
-   * `Panel.Header` configures the slot-aware text and action primitives
-   * (`<Title>`, `<Description>`, `<ActionButton>`, `<ActionGroup>`,
+   * `Panel.Header` configures the slot-aware text and button primitives
+   * (`<Title>`, `<Description>`, `<Button>`, `<ButtonGroup>`,
    * `<ActionMenu>`, `<LinkButton>`) and lays them out in a grid.
    */
   children: ReactNode;
@@ -91,9 +91,10 @@ export const Panel = ({
   const classNames = useClassNames({ component: 'Panel', variant, size });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
-  const inset = p ?? 'square-regular';
-  const resolvedPx = px ?? `${inset}-x`;
-  const resolvedPy = py ?? `${inset}-y`;
+  const inset = `${p ?? 'square-regular'}`;
+  const isScaleInset = isScale(inset);
+  const resolvedPx = px ?? (isScaleInset ? inset : `${inset}-x`);
+  const resolvedPy = py ?? (isScaleInset ? inset : `${inset}-y`);
 
   const rootHeadingProps = useMemo(
     () => ({
