@@ -1,6 +1,13 @@
 name: Size Limit
 
-on: ['push']
+on:
+  push:
+    # Skip pushes that can't affect the bundle (mirrors build.yml). The check
+    # stays push-triggered to match its sibling CI checks (lint/test/typecheck).
+    paths-ignore:
+      - '.changeset/**'
+      - '.github/**'
+      - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
