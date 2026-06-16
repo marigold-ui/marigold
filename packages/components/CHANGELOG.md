@@ -658,6 +658,43 @@ so future components pick up the same behavior automatically. A`@remarks` tag on
 - Updated dependencies [de34b15]
   - @marigold/system@18.0.0-beta.0
 
+## 17.7.0
+
+### Minor Changes
+
+- f4608c6: feat(DSTSUP-262): add `large` size to Dialog for wider layouts
+
+  `Dialog` (and `ConfirmationDialog`, which inherits the prop) now accepts `size="large"`, which sets the dialog width to `1024px` — matching the Tailwind `lg` breakpoint. Use it for content that doesn't fit the previous `medium` cap of `768px`, e.g. multi-month calendars or wider forms. The existing `min()` width formula keeps the dialog viewport-safe on smaller screens.
+
+- e0d5c7b: feat(DST-1500): default auto-dismiss timeout for toasts
+
+  `addToast` now applies a default `timeout` based on `variant` when none is given: `success`, `info` and the default variant auto-dismiss after 5000ms, while `warning` and `error` stay until dismissed. Pass an explicit `timeout` to override it (values are clamped up to a 5000ms minimum), or `timeout: 0` to keep a toast on screen until it is manually dismissed.
+
+  Behavior change: `success`, `info` and default toasts that previously stayed until dismissed now auto-dismiss after 5 seconds. Pass `timeout: 0` to restore the old behavior.
+
+### Patch Changes
+
+- a6a1cb3: fix(DSTSUP-260): `Pagination` follows the controlled `page` prop after mount
+
+  Previously the `page` prop only seeded internal state, so external updates (e.g. resetting to page 1 on a filter change) were ignored — the page indicator and the accessible `<nav>` label kept showing the stale page. `Pagination` now uses `useControlledState` from react-stately: when `page` is set, it is the single source of truth and `onChange` reports requested page changes; `defaultPage` remains the uncontrolled initial value. As part of this, `onChange` no longer fires when the active page is selected again, and the reset-to-page-1 behavior on `pageSize` changes only triggers when `pageSize` actually changed.
+
+- 4242aa1: fix(DST-1505): re-export `I18nProvider` from `react-aria-components` to prevent locale context splits
+
+  `I18nProvider` was re-exported from `@react-aria/i18n`, which resolves `react-aria` via a caret range while `react-aria-components` pins it exactly. A consumer's lockfile can therefore install two `react-aria` copies, splitting the `I18nContext`: the locale set through Marigold's `I18nProvider` landed in one copy's context while the react-aria-components rendering Marigold's UI read the other — silently falling back to the default locale for aria labels, date/number formatting, and RTL detection.
+
+  Re-exporting `I18nProvider` from `react-aria-components` makes provider and consumers share one context by construction, regardless of how the lockfile resolves `react-aria`. Same failure class as the mobile `Select` tray bug (DSTSUP-261).
+
+- da46e58: fix(DSTSUP-261): make `Tray` immune to a split react-aria `HiddenContext` (mobile `Select` tray selecting nothing)
+
+  On a touch/mobile viewport, `Select` (and other components that fall back to a `Tray`) could open an empty bottom sheet next to the real one: tapping an option selected nothing, the trigger kept showing the placeholder, and the page was left `inert` until reload.
+
+  Root cause was a dependency-resolution split, not component logic. `Tray` guards the collection hidden pass with `useIsHidden()` from `@react-aria/collections` (which depends on `react-aria` via a caret range), while `react-aria-components` pins `react-aria` exactly and its `Select` (a `createHideableComponent`) sets the `HiddenContext` from its own copy. Both read that context from `react-aria/private/collections/Hidden`, so they only agree when `react-aria` resolves to a single version. When a consumer's lockfile resolves the two edges to different `react-aria` generations, the guard reads a context the collection renderer never sets: it never fires, a duplicate (empty) tray modal leaks into the DOM, and the two modals `inert` each other so options are no longer hit-testable.
+
+  `Tray` now verifies the hidden pass through the DOM as well: react-aria renders the hidden pass into a `<template>` element, whose content lives in a detached `DocumentFragment`. A hidden probe element rendered alongside the modal is therefore never connected to the document during the hidden pass, and the tray skips mounting its modal whenever the probe is detached. This holds no matter how the consumer's lockfile resolves `react-aria` — including future react-aria releases that would re-arm the split (`@react-aria/collections`' caret range resolves to the newest `react-aria`, while `react-aria-components` stays pinned) — so no dependency pins are needed.
+
+  The durable upstream fix is for react-aria-components' `Modal` to skip the collection hidden pass like its `Popover` already does (which is why the desktop `Popover` path was never affected), or for it to export `useIsHidden`. Once either lands, the guard in `Tray` can be reduced again.
+  - @marigold/system@17.7.0
+
 ## 17.6.0
 
 ### Patch Changes

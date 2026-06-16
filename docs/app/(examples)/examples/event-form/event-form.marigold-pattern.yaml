@@ -1,0 +1,26 @@
+title: Multi-section event form
+brief: >-
+  A long event-creation form broken into composable sections (event details,
+  location & capacity, organizer info, registration settings). Demonstrates
+  Accordion-grouped advanced settings, Inline/Stack field layout, and Card
+  master/admin marker rows inside a single Form.
+patterns:
+  - user-input/forms
+mock_data:
+  - alias: '@/lib/data/venues'
+    shape: |
+      // Only the `venues` export is used, to populate the venue Select and to
+      // derive the unique country list. Swap for the consumer's data source.
+      export const venues: Array<{
+        id: string;
+        name: string;
+        country: string;
+      }>;
+key_files:
+  - eventDetails.tsx
+  - locationSettings.tsx
+  - organizerInfo.tsx
+  - registrationSettings.tsx
+scaffolding_files:
+  - page.tsx
+peer_deps: []

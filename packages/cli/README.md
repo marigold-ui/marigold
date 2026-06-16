@@ -52,15 +52,17 @@ node packages/cli/dist/bin/marigold.mjs docs Button
 
 ## Commands
 
-### `marigold docs <Component>`
+### `marigold docs <name|slug>`
 
-Fetch and print a component's documentation.
+Fetch and print the documentation for a component or a docs page.
 
 ```sh
 marigold docs Button
 marigold docs button --section props
 marigold docs TextField --section props --format json
 marigold docs select --format plain
+marigold docs foundations/spacing
+marigold docs getting-started/installation
 ```
 
 Flags:
@@ -70,7 +72,7 @@ Flags:
 - `--fresh` — bypass the local cache
 - `--offline` — use only the local cache; fail if missing
 
-Component name input is case-insensitive (`Button`, `button`, `BUTTON` all resolve to the same component).
+Pass a component name (case-insensitive, so `Button`, `button`, `BUTTON` all resolve to the same component) or the slug of a non-component docs page (e.g. `foundations/spacing`, `getting-started/installation`). The `props` section is component-only; requesting it for a page emits a note instead.
 
 The default `markdown` output is a best-effort terminal render (headings, code
 fences, inline code, bold). For non-trivial docs prefer `--format json` (the
@@ -79,11 +81,12 @@ plain` (ANSI-stripped, ideal for piping into other tools).
 
 ### `marigold list`
 
-List all available components.
+List all available components and docs pages.
 
 ```sh
 marigold list
 marigold list --category form
+marigold list --category foundations
 marigold list --search date
 marigold list --format json
 marigold list --fresh
@@ -91,11 +94,48 @@ marigold list --fresh
 
 Flags:
 
-- `--category <name>` — filter by category (e.g. `actions`, `form`, `layout`)
-- `--search <term>` — substring filter on component names
+- `--category <name>` — filter by category, including component categories (e.g. `actions`, `form`, `layout`) and page categories (e.g. `foundations`, `patterns`, `getting-started`)
+- `--search <term>` — substring filter on component and page names
 - `--format <name>` — `markdown` (default), `json`, or `plain`
 - `--fresh` — bypass the local cache
 - `--offline` — use only the local cache; fail if missing
+
+### `marigold examples`
+
+Browse application-level reference patterns — multi-file compositions that show
+how Marigold components combine into real features (filterable tables, multi-section
+forms, component inventories).
+
+```sh
+marigold examples list                  # all available patterns
+marigold examples get filter            # one pattern's source + metadata
+marigold examples get filter --format json
+```
+
+Subcommands:
+
+- `list` — print every available example (slug, title, brief, mapped patterns)
+- `get <slug>` — fetch a single example: its source files, the canonical pattern
+  docs it maps to, the mock-data shapes it depends on, which files are
+  load-bearing vs. framework scaffolding, and its peer dependencies
+
+Flags (for `get`/`list`):
+
+- `--format <name>` — `markdown` (default), `json`, or `plain`
+- `--fresh` — bypass the local cache
+- `--offline` — use only the local cache; fail if missing
+
+Examples are authored **Next.js App Router-first**. Before adapting one to a
+different framework (e.g. Vite), read the framework-transformation note:
+
+```sh
+marigold docs getting-started/examples-for-agents
+```
+
+It covers stripping `'use client'`, swapping router/URL-state libraries, the
+default-vs-named export split, `@/` alias adjustment, and replacing the
+docs-internal mock data. The unit is the **pattern**, not the file: the CLI
+ships the primitives and the agent adapts the code to the consumer's app.
 
 ### `marigold init`
 
@@ -147,7 +187,7 @@ marigold telemetry disable
 marigold telemetry enable
 ```
 
-Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`init`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
+Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`examples`/`init`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
 
 Telemetry is automatically suppressed when:
 
@@ -163,6 +203,8 @@ Telemetry is automatically suppressed when:
 ## For AI agents
 
 When invoked by an AI coding agent, prefer `--format json` and `--section props` for structured, precise component data. See the `## Marigold CLI` section in [CLAUDE.md](https://github.com/marigold-ui/marigold/blob/main/CLAUDE.md) for recommended patterns.
+
+To adopt a whole feature pattern (rather than a single component), use `marigold examples list` to discover patterns and `marigold examples get <slug> --format json` to retrieve a pattern's source plus the metadata needed to adapt it — then read `marigold docs getting-started/examples-for-agents` once for the framework-transformation rules.
 
 The CLI detects common agent runtimes (Claude Code, Cursor, VS Code agent mode, Codex, generic `AI_AGENT=1`) via environment variables and tags telemetry accordingly, so we can prioritize the agent surface based on real usage.
 
