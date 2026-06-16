@@ -18,12 +18,23 @@ export interface FileTriggerProps extends Omit<
    */
   label: string;
   disabled?: boolean;
+  size?: 'default' | 'small' | (string & {});
+  /**
+   * If true, the button stretches to fill the available width.
+   */
+  fullWidth?: boolean;
 }
 
-const _FileTrigger = ({ label, disabled, ...rest }: FileTriggerProps) => {
+const _FileTrigger = ({
+  label,
+  disabled,
+  size,
+  fullWidth,
+  ...rest
+}: FileTriggerProps) => {
   return (
     <FileTrigger {...rest}>
-      <Button disabled={disabled}>
+      <Button disabled={disabled} size={size} fullWidth={fullWidth}>
         <Upload />
         {label}
       </Button>
