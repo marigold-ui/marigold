@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { I18nProvider } from '@react-aria/i18n';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
-import { makeFile } from './../test.utils';
+import { makeFile } from '../test.utils';
 import { FileField } from './FileField';
 
 const meta = preview.meta({
@@ -88,18 +88,16 @@ export const UploadFile = meta.story({
     label: 'Single Upload',
   },
   play: async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-
     const fileA = makeFile('a.pdf', 'application/pdf', 2 * 1024 * 1024);
 
+    // Act
     await userEvent.upload(input, fileA);
 
-    await expect(
-      canvas.queryByText('a.pdf', { exact: true })
-    ).toBeInTheDocument();
-
+    // Assert
     await expect(canvas.queryByText('a.pdf', { exact: true })).toBeVisible();
   },
 });
@@ -111,22 +109,50 @@ export const MultipleFileUpload = meta.story({
     multiple: true,
   },
   play: async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-
     const fileA = makeFile('abc.pdf', 'application/pdf', 2 * 1024 * 1024);
     const fileB = makeFile('test.txt', 'text/plain', 5 * 1024 * 1024);
     const fileC = makeFile('pic1.jpg', 'image/*', 0.5 * 1024 * 1024);
 
+    // Act
     await userEvent.upload(input, [fileA, fileB, fileC]);
 
+    // Assert
     await expect(canvas.getByText('abc.pdf')).toBeInTheDocument();
     await expect(canvas.getByText('test.txt')).toBeInTheDocument();
     await expect(canvas.getByText('pic1.jpg')).toBeInTheDocument();
     await expect(canvas.getByText('2.00 MB')).toBeInTheDocument();
     await expect(canvas.getByText('5.00 MB')).toBeInTheDocument();
     await expect(canvas.getByText('0.50 MB')).toBeInTheDocument();
+  },
+});
+
+export const Small = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Upload file (compact)',
+    size: 'small',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <FileField width={'1/5'} {...args} />
+    </I18nProvider>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    // Arrange
+    const input = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    const file = makeFile('compact.pdf', 'application/pdf', 1 * 1024 * 1024);
+
+    // Act
+    await userEvent.upload(input, file);
+
+    // Assert
+    await expect(canvas.getByText('compact.pdf')).toBeInTheDocument();
   },
 });
 
@@ -175,18 +201,18 @@ export const InForm = meta.story({
     );
   },
   play: async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-
     const file = makeFile('report.pdf', 'application/pdf', 1024 * 1024);
+
+    // Act
     await userEvent.upload(input, file);
+    await userEvent.click(canvas.getByRole('button', { name: 'Submit' }));
 
-    const submitButton = canvas.getByRole('button', { name: 'Submit' });
-    await userEvent.click(submitButton);
-
-    const result = canvas.getByTestId('submitted-files');
-    await expect(result).toBeInTheDocument();
+    // Assert
+    await expect(canvas.getByTestId('submitted-files')).toBeInTheDocument();
     await expect(
       canvas.getByText('report.pdf (1048576 bytes)')
     ).toBeInTheDocument();

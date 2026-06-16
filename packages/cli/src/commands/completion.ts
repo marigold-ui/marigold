@@ -1,5 +1,6 @@
 import {
   COMPLETION_SHELLS,
+  EXAMPLES_SUBCOMMANDS,
   SUBCOMMANDS,
   type SubcommandSpec,
   TELEMETRY_SUBCOMMANDS,
@@ -12,6 +13,7 @@ import {
   FISH_SCRIPT,
   ZSH_SCRIPT,
 } from '../lib/completion-scripts.js';
+import { loadExamplesManifestSync } from '../lib/examples.js';
 import { loadManifestSync } from '../lib/manifest.js';
 
 export type CompletionShell = (typeof COMPLETION_SHELLS)[number];
@@ -107,8 +109,9 @@ export const computeSuggestions = (words: string[]): string[] => {
       if (flag.values) return flag.values.filter(startsWith);
       if (flag.valuesFrom === 'category') {
         const m = loadManifestSync();
-        const cats = m?.categories.map(c => c.name) ?? [];
-        return cats.filter(startsWith);
+        const componentCats = m?.categories.map(c => c.name) ?? [];
+        const pageCats = [...new Set(m?.pages.map(p => p.category) ?? [])];
+        return [...componentCats, ...pageCats].filter(startsWith);
       }
       return [];
     }
@@ -129,12 +132,27 @@ export const computeSuggestions = (words: string[]): string[] => {
     for (const cat of m.categories) {
       for (const c of cat.components) names.push(c.name);
     }
+    // Non-component pages are completed by slug (canonical `docs <slug>` form;
+    // titles can contain spaces that would break shell word completion).
+    for (const p of m.pages) names.push(p.slug);
     return names.filter(startsWith);
   }
 
   if (sub.positionalKind === 'telemetry-sub') {
     if (before.length > 0) return [];
     return [...TELEMETRY_SUBCOMMANDS].filter(startsWith);
+  }
+
+  if (sub.positionalKind === 'examples-sub') {
+    // First positional: the action (list | get).
+    if (before.length === 0)
+      return [...EXAMPLES_SUBCOMMANDS].filter(startsWith);
+    // Second positional after `get`: complete known example slugs from cache.
+    if (before.length === 1 && before[0] === 'get') {
+      const m = loadExamplesManifestSync();
+      return (m?.examples.map(e => e.slug) ?? []).filter(startsWith);
+    }
+    return [];
   }
 
   if (sub.name === 'completion') {

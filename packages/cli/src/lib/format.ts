@@ -1,9 +1,11 @@
 import pc from 'picocolors';
-import type { ComponentDocs } from './docs.js';
+import type { PageDocs } from './docs.js';
+import type { ExampleDetail, ExampleSummary } from './examples.js';
 import {
   type Manifest,
   type ManifestCategory,
   type ManifestComponent,
+  type ManifestPage,
   normalize,
 } from './manifest.js';
 import { stripAnsi } from './strip-ansi.js';
@@ -62,17 +64,15 @@ const renderMarkdownToTerminal = (md: string): string => {
   return out.join('\n').replace(/\n{3,}/g, '\n\n');
 };
 
-export const formatDocs = (
-  docs: ComponentDocs,
-  format: OutputFormat
-): string => {
+export const formatDocs = (docs: PageDocs, format: OutputFormat): string => {
   if (format === 'json') {
     return JSON.stringify(
       {
-        name: docs.component.name,
-        slug: docs.component.slug,
-        category: docs.category.name,
-        description: docs.component.description,
+        kind: docs.kind,
+        name: docs.name,
+        slug: docs.slug,
+        category: docs.category,
+        description: docs.description,
         section: docs.section,
         markdown: docs.markdown,
         url: docs.url,
@@ -92,23 +92,79 @@ export interface ListFilter {
   search?: string;
 }
 
+// Shared list filter: optional category match (normalized) + optional search
+// substring over a caller-supplied haystack. Both component and page filtering
+// use the same two checks.
+const matchesListFilter = (
+  category: string,
+  haystack: string,
+  filter: ListFilter
+): boolean => {
+  if (filter.category && normalize(category) !== normalize(filter.category))
+    return false;
+  if (
+    filter.search &&
+    !haystack.toLowerCase().includes(filter.search.toLowerCase())
+  )
+    return false;
+  return true;
+};
+
 const matchesFilter = (
   category: ManifestCategory,
   component: ManifestComponent,
   filter: ListFilter
-): boolean => {
-  if (
-    filter.category &&
-    normalize(category.name) !== normalize(filter.category)
-  )
-    return false;
-  if (filter.search) {
-    const needle = filter.search.toLowerCase();
-    const haystack =
-      `${component.name} ${component.description ?? ''}`.toLowerCase();
-    if (!haystack.includes(needle)) return false;
+): boolean =>
+  matchesListFilter(
+    category.name,
+    `${component.name} ${component.description ?? ''}`,
+    filter
+  );
+
+const matchesPageFilter = (page: ManifestPage, filter: ListFilter): boolean =>
+  matchesListFilter(
+    page.category,
+    `${page.title} ${page.slug} ${page.description ?? ''}`,
+    filter
+  );
+
+// Display-label overrides for page-group headings keyed by their top-level
+// slug segment. `components/`-rooted standalone pages (e.g. components/form)
+// would otherwise surface a generic "Components" group alongside the real
+// component taxonomy.
+const PAGE_GROUP_LABELS: Record<string, string> = {
+  components: 'Form Overview',
+};
+
+// Humanize a top-level slug segment into a group heading, e.g.
+// 'getting-started' → 'Getting Started'.
+const pageGroupLabel = (category: string): string =>
+  PAGE_GROUP_LABELS[category] ??
+  category
+    .split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+
+interface PageGroup {
+  category: string;
+  label: string;
+  pages: ManifestPage[];
+}
+
+const groupPages = (pages: ManifestPage[]): PageGroup[] => {
+  const map = new Map<string, ManifestPage[]>();
+  for (const page of pages) {
+    const group = map.get(page.category) ?? [];
+    group.push(page);
+    map.set(page.category, group);
   }
-  return true;
+  return [...map.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([category, group]) => ({
+      category,
+      label: pageGroupLabel(category),
+      pages: group,
+    }));
 };
 
 export const formatList = (
@@ -123,20 +179,32 @@ export const formatList = (
     }))
     .filter(cat => cat.components.length > 0);
 
+  const filteredPages = manifest.pages.filter(p =>
+    matchesPageFilter(p, filter)
+  );
+
   if (format === 'json') {
     return JSON.stringify(
       {
         version: manifest.version,
         baseUrl: manifest.baseUrl,
         categories: filtered,
+        pages: filteredPages.map(p => ({
+          title: p.title,
+          slug: p.slug,
+          category: p.category,
+          description: p.description,
+        })),
       },
       null,
       2
     );
   }
 
-  if (filtered.length === 0) {
-    return 'No components match the filter.\n';
+  const pageGroups = groupPages(filteredPages);
+
+  if (filtered.length === 0 && pageGroups.length === 0) {
+    return 'No components or pages match the filter.\n';
   }
 
   const lines: string[] = [];
@@ -150,6 +218,144 @@ export const formatList = (
       lines.push(`  ${name}${desc}`);
     }
   }
+  for (const group of pageGroups) {
+    const label =
+      format === 'plain' ? group.label : pc.bold(pc.cyan(group.label));
+    lines.push('');
+    lines.push(label);
+    for (const p of group.pages) {
+      const slug = format === 'plain' ? p.slug : pc.bold(p.slug);
+      const desc = p.description ? ` — ${p.description}` : '';
+      lines.push(`  ${slug}${desc}`);
+    }
+  }
   lines.push('');
   return lines.join('\n');
+};
+
+export const formatExamplesList = (
+  examples: ExampleSummary[],
+  format: OutputFormat
+): string => {
+  if (format === 'json') {
+    return JSON.stringify({ examples }, null, 2);
+  }
+
+  if (examples.length === 0) {
+    return 'No examples available.\n';
+  }
+
+  const lines: string[] = [];
+  for (const e of examples) {
+    const slug = format === 'plain' ? e.slug : pc.bold(e.slug);
+    lines.push('');
+    lines.push(`${slug} — ${e.title}`);
+    lines.push(`  ${e.brief}`);
+    if (e.patterns.length > 0) {
+      const patterns = e.patterns.join(', ');
+      lines.push(
+        `  patterns: ${format === 'plain' ? patterns : pc.dim(patterns)}`
+      );
+    }
+  }
+  const hint = 'Get one with: marigold examples get <slug>';
+  lines.push('');
+  lines.push(format === 'plain' ? hint : pc.dim(hint));
+  lines.push('');
+  return lines.join('\n');
+};
+
+const exampleToMarkdown = (example: ExampleDetail): string => {
+  const lines: string[] = [];
+  lines.push(`# ${example.title}`);
+  lines.push('');
+  lines.push(example.brief);
+  lines.push('');
+
+  if (example.patterns.length > 0) {
+    lines.push('## Patterns');
+    // Pattern refs are slugs under docs/content/patterns/, so the fetchable
+    // doc slug is `patterns/<ref>`.
+    for (const p of example.patterns) {
+      lines.push(
+        `- \`${p}\` — fetch the narrative with \`marigold docs patterns/${p}\``
+      );
+    }
+    lines.push('');
+  }
+
+  if (example.peerDeps.length > 0) {
+    lines.push('## Peer dependencies');
+    lines.push('');
+    lines.push('Install alongside `@marigold/components`:');
+    for (const d of example.peerDeps) lines.push(`- \`${d}\``);
+    lines.push('');
+  }
+
+  if (example.mockData.length > 0) {
+    lines.push('## Mock data');
+    lines.push('');
+    lines.push(
+      "These aliases are docs-internal. Replace them with your app's own data " +
+        'sources matching these shapes:'
+    );
+    lines.push('');
+    for (const m of example.mockData) {
+      lines.push(`### \`${m.alias}\``);
+      lines.push('```ts');
+      lines.push(m.shape.trimEnd());
+      lines.push('```');
+      lines.push('');
+    }
+  }
+
+  lines.push('## Files');
+  lines.push('');
+  if (example.keyFiles.length > 0) {
+    lines.push(
+      `Key files: ${example.keyFiles.map(f => `\`${f}\``).join(', ')}`
+    );
+  }
+  if (example.scaffoldingFiles.length > 0) {
+    lines.push(
+      `Scaffolding (framework glue, usually replaced): ${example.scaffoldingFiles
+        .map(f => `\`${f}\``)
+        .join(', ')}`
+    );
+  }
+  lines.push('');
+
+  for (const file of example.files) {
+    const lang = file.path.endsWith('.tsx') ? 'tsx' : 'ts';
+    lines.push(`### ${file.path}`);
+    lines.push(`\`\`\`${lang}`);
+    lines.push(file.source.trimEnd());
+    lines.push('```');
+    lines.push('');
+  }
+
+  lines.push('---');
+  lines.push(
+    'Before adapting, read the framework-transformation note: ' +
+      '`marigold docs getting-started/examples-for-agents`.'
+  );
+  lines.push('');
+  return lines.join('\n');
+};
+
+export const formatExample = (
+  example: ExampleDetail,
+  format: OutputFormat
+): string => {
+  if (format === 'json') {
+    // Serialize the whole payload: ExampleDetail is exactly the public JSON
+    // contract, so emitting it directly stays in sync if the type gains a field.
+    return JSON.stringify(example, null, 2);
+  }
+
+  const md = exampleToMarkdown(example);
+  if (format === 'plain') {
+    return md;
+  }
+  return renderMarkdownToTerminal(md);
 };
