@@ -47,9 +47,6 @@ export default () => {
   });
   const [formKey, setFormKey] = useState(0);
   const nextIdRef = useRef(1);
-  // Remembers which button submitted the form so the handler knows whether to
-  // keep the drawer open for the next entry.
-  const addAnotherRef = useRef(false);
 
   const openCreate = () => {
     setRetained({ city: '', type: 'outdoor' });
@@ -59,6 +56,13 @@ export default () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Read the intent from the button that submitted the form. Deriving it from
+    // the event (instead of a ref set in onPress) keeps it correct even when a
+    // failed submit — e.g. an empty required "Name" — never reaches this handler.
+    const submitter = (e.nativeEvent as SubmitEvent)
+      .submitter as HTMLButtonElement | null;
+    const addAnother = submitter?.value === 'add-another';
+
     const formData = new FormData(e.currentTarget);
     const venue: Venue = {
       id: String(nextIdRef.current++),
@@ -70,8 +74,8 @@ export default () => {
 
     setVenues(prev => [...prev, venue]);
 
-    if (addAnotherRef.current) {
-      // [!code highlight:8]
+    if (addAnother) {
+      // [!code highlight:7]
       // Keep the drawer open, retain the contextual fields, and remount the
       // form so the record specific fields clear and focus returns to "Name".
       setRetained({ city: venue.city, type: venue.type });
@@ -79,7 +83,6 @@ export default () => {
     } else {
       setOpen(false);
     }
-    addAnotherRef.current = false;
   };
 
   return (
@@ -117,14 +120,8 @@ export default () => {
               </Drawer.Content>
               <Drawer.Actions>
                 <Button slot="close">Cancel</Button>
-                {/* [!code highlight:9] */}
-                <Button
-                  variant="secondary"
-                  type="submit"
-                  onPress={() => {
-                    addAnotherRef.current = true;
-                  }}
-                >
+                {/* [!code highlight:7] */}
+                <Button variant="secondary" type="submit" value="add-another">
                   Save & add another
                 </Button>
                 <Button variant="primary" type="submit">
