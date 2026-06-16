@@ -21,7 +21,7 @@ import type {
   SpaceProp,
   WidthProp,
 } from '@marigold/system';
-import { cn, createSpacingVar, useClassNames } from '@marigold/system';
+import { cn, createSpacingVar, isScale, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { SelectListContext } from './Context';
@@ -242,9 +242,15 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     if (p === undefined && px === undefined && py === undefined) {
       return EMPTY_STYLE;
     }
+    if (p !== undefined) {
+      const inset = `${p}`;
+      const scale = isScale(inset);
+      return {
+        ...createSpacingVar('selectlist-item-px', scale ? inset : `${inset}-x`),
+        ...createSpacingVar('selectlist-item-py', scale ? inset : `${inset}-y`),
+      };
+    }
     return {
-      ...(p !== undefined && createSpacingVar('selectlist-item-px', `${p}-x`)),
-      ...(p !== undefined && createSpacingVar('selectlist-item-py', `${p}-y`)),
       ...(px !== undefined && createSpacingVar('selectlist-item-px', `${px}`)),
       ...(py !== undefined && createSpacingVar('selectlist-item-py', `${py}`)),
     };
