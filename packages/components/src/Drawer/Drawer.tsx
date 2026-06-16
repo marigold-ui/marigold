@@ -134,7 +134,7 @@ export const Drawer = ({
     () => ({
       slots: {
         description: {
-          className: classNames.description,
+          className: cn('[grid-area:content]', classNames.description),
           elementType: 'p' as const,
         },
       },
