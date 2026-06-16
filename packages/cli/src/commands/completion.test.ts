@@ -64,6 +64,20 @@ const seedManifestCache = () => {
   fs.writeFileSync(file, RAW_MANIFEST);
 };
 
+const RAW_EXAMPLES = JSON.stringify({
+  baseUrl: 'https://www.marigold-ui.io',
+  examples: [
+    { slug: 'filter', title: 'Filter', brief: 'b', patterns: [] },
+    { slug: 'form', title: 'Form', brief: 'b', patterns: [] },
+  ],
+});
+
+const seedExamplesCache = () => {
+  const file = cachePathFor(`${docsUrl()}/mcp/examples.json`);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, RAW_EXAMPLES);
+};
+
 beforeEach(() => {
   tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'marigold-complete-test-'));
   process.env.MARIGOLD_CACHE_DIR = tmpDir;
@@ -83,6 +97,7 @@ describe('computeSuggestions — static surface', () => {
       expect.arrayContaining([
         'docs',
         'list',
+        'examples',
         'init',
         'telemetry',
         'completion',
@@ -147,6 +162,18 @@ describe('computeSuggestions — static surface', () => {
       'zsh',
       'fish',
     ]);
+  });
+
+  test('completes examples subcommands on empty input', () => {
+    expect(computeSuggestions(['examples', ''])).toEqual(['list', 'get']);
+  });
+
+  test('filters examples subcommands by prefix', () => {
+    expect(computeSuggestions(['examples', 'l'])).toEqual(['list']);
+  });
+
+  test('does not suggest a slug for `examples list`', () => {
+    expect(computeSuggestions(['examples', 'list', ''])).toEqual([]);
   });
 
   test('returns empty for unknown subcommand', () => {
@@ -237,6 +264,20 @@ describe('computeSuggestions — manifest-driven', () => {
     fs.writeFileSync(file, '<!DOCTYPE html><html>not json</html>');
 
     expect(computeSuggestions(['docs', 'Bu'])).toEqual([]);
+  });
+
+  test('completes example slugs for `examples get` from cache', () => {
+    seedExamplesCache();
+
+    expect(computeSuggestions(['examples', 'get', ''])).toEqual([
+      'filter',
+      'form',
+    ]);
+    expect(computeSuggestions(['examples', 'get', 'fi'])).toEqual(['filter']);
+  });
+
+  test('returns empty example slugs when cache is missing (no error)', () => {
+    expect(computeSuggestions(['examples', 'get', ''])).toEqual([]);
   });
 });
 

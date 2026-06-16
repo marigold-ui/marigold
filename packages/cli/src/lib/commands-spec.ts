@@ -2,7 +2,11 @@
 // completion suggester. Keep in sync with the parseArgs blocks in
 // bin/marigold.ts and the help template.
 
-export type PositionalKind = 'component' | 'category' | 'telemetry-sub';
+export type PositionalKind =
+  | 'component'
+  | 'category'
+  | 'telemetry-sub'
+  | 'examples-sub';
 
 export interface FlagSpec {
   name: string;
@@ -21,14 +25,17 @@ export interface SubcommandSpec {
 const formatValues = ['markdown', 'json', 'plain'] as const;
 const sectionValues = ['props', 'usage', 'examples', 'all'] as const;
 const telemetrySubValues = ['status', 'enable', 'disable'] as const;
+const examplesSubValues = ['list', 'get'] as const;
 const completionShellValues = ['bash', 'zsh', 'fish'] as const;
 
 export const TELEMETRY_SUBCOMMANDS = telemetrySubValues;
+export const EXAMPLES_SUBCOMMANDS = examplesSubValues;
 export const COMPLETION_SHELLS = completionShellValues;
 
 export type SubcommandName =
   | 'docs'
   | 'list'
+  | 'examples'
   | 'init'
   | 'telemetry'
   | 'completion';
@@ -49,6 +56,15 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
     flags: [
       { name: '--category', type: 'string', valuesFrom: 'category' },
       { name: '--search', type: 'string' },
+      { name: '--format', type: 'string', values: formatValues },
+      { name: '--fresh', type: 'boolean' },
+      { name: '--offline', type: 'boolean' },
+    ],
+  },
+  {
+    name: 'examples',
+    positionalKind: 'examples-sub',
+    flags: [
       { name: '--format', type: 'string', values: formatValues },
       { name: '--fresh', type: 'boolean' },
       { name: '--offline', type: 'boolean' },

@@ -37,6 +37,17 @@ const manifest: Manifest = {
   ],
   pages: [
     {
+      title: 'Filter and applied-filter chips',
+      slug: 'patterns/user-input/filter',
+      category: 'patterns',
+      description: 'Refining data with filters',
+    },
+    {
+      title: 'Adapting examples for agents',
+      slug: 'getting-started/examples-for-agents',
+      category: 'getting-started',
+    },
+    {
       title: 'Accessibility',
       slug: 'foundations/accessibility',
       category: 'foundations',
@@ -110,21 +121,35 @@ describe('resolveComponent', () => {
   });
 });
 
-describe('suggestComponents', () => {
-  test('suggests near matches', () => {
-    const suggestions = suggestComponents(manifest, 'butto', 3);
-
-    expect(suggestions.map(s => s.name)).toContain('Button');
-  });
-
-  test('returns empty for complete misses', () => {
-    const suggestions = suggestComponents(manifest, 'xyzqq', 3);
-
-    expect(suggestions).toHaveLength(0);
-  });
-});
-
 describe('resolvePage', () => {
+  test('matches exact slug', () => {
+    expect(resolvePage(manifest, 'patterns/user-input/filter')?.slug).toBe(
+      'patterns/user-input/filter'
+    );
+  });
+
+  test('matches the getting-started slug', () => {
+    expect(
+      resolvePage(manifest, 'getting-started/examples-for-agents')?.slug
+    ).toBe('getting-started/examples-for-agents');
+  });
+
+  test('matches case-insensitive title', () => {
+    expect(resolvePage(manifest, 'adapting examples for agents')?.slug).toBe(
+      'getting-started/examples-for-agents'
+    );
+  });
+
+  test('matches slug tail', () => {
+    expect(resolvePage(manifest, 'examples-for-agents')?.slug).toBe(
+      'getting-started/examples-for-agents'
+    );
+  });
+
+  test('does not match a component slug', () => {
+    expect(resolvePage(manifest, 'components/actions/button')).toBeNull();
+  });
+
   test('matches a foundations page by exact slug', () => {
     expect(resolvePage(manifest, 'foundations/accessibility')?.title).toBe(
       'Accessibility'
@@ -150,7 +175,21 @@ describe('resolvePage', () => {
   });
 
   test('returns null for unknown', () => {
-    expect(resolvePage(manifest, 'nonexistent')).toBeNull();
+    expect(resolvePage(manifest, 'patterns/nope')).toBeNull();
+  });
+});
+
+describe('suggestComponents', () => {
+  test('suggests near matches', () => {
+    const suggestions = suggestComponents(manifest, 'butto', 3);
+
+    expect(suggestions.map(s => s.name)).toContain('Button');
+  });
+
+  test('returns empty for complete misses', () => {
+    const suggestions = suggestComponents(manifest, 'xyzqq', 3);
+
+    expect(suggestions).toHaveLength(0);
   });
 });
 

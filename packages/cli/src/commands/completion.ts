@@ -1,5 +1,6 @@
 import {
   COMPLETION_SHELLS,
+  EXAMPLES_SUBCOMMANDS,
   SUBCOMMANDS,
   type SubcommandSpec,
   TELEMETRY_SUBCOMMANDS,
@@ -12,6 +13,7 @@ import {
   FISH_SCRIPT,
   ZSH_SCRIPT,
 } from '../lib/completion-scripts.js';
+import { loadExamplesManifestSync } from '../lib/examples.js';
 import { loadManifestSync } from '../lib/manifest.js';
 
 export type CompletionShell = (typeof COMPLETION_SHELLS)[number];
@@ -139,6 +141,18 @@ export const computeSuggestions = (words: string[]): string[] => {
   if (sub.positionalKind === 'telemetry-sub') {
     if (before.length > 0) return [];
     return [...TELEMETRY_SUBCOMMANDS].filter(startsWith);
+  }
+
+  if (sub.positionalKind === 'examples-sub') {
+    // First positional: the action (list | get).
+    if (before.length === 0)
+      return [...EXAMPLES_SUBCOMMANDS].filter(startsWith);
+    // Second positional after `get`: complete known example slugs from cache.
+    if (before.length === 1 && before[0] === 'get') {
+      const m = loadExamplesManifestSync();
+      return (m?.examples.map(e => e.slug) ?? []).filter(startsWith);
+    }
+    return [];
   }
 
   if (sub.name === 'completion') {

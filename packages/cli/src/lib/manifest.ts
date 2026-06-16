@@ -152,6 +152,39 @@ export const loadManifestSync = (): Manifest | null => {
 export const normalize = (s: string): string =>
   s.toLowerCase().replace(/[\s_-]+/g, '');
 
+// Shared "find the one thing the user meant" cascade over a flat list, keyed by
+// a slug and a human title: exact slug/title → case-insensitive title →
+// normalized (kebab/space/underscore-insensitive) slug or title → normalized
+// slug tail. Used by the page and example resolvers so the match precedence
+// lives in one place. (resolveComponent keeps its own copy: it walks a 2D
+// category/component structure and normalizes the name only, not the slug.)
+export const resolveByCascade = <T>(
+  items: readonly T[],
+  slugFor: (item: T) => string,
+  titleFor: (item: T) => string,
+  input: string
+): T | null => {
+  const needle = normalize(input);
+
+  const exact = items.find(i => slugFor(i) === input || titleFor(i) === input);
+  if (exact) return exact;
+
+  const ci = items.find(i => titleFor(i).toLowerCase() === input.toLowerCase());
+  if (ci) return ci;
+
+  const norm = items.find(
+    i => normalize(slugFor(i)) === needle || normalize(titleFor(i)) === needle
+  );
+  if (norm) return norm;
+
+  const tail = items.find(
+    i => normalize(slugFor(i).split('/').at(-1) ?? '') === needle
+  );
+  if (tail) return tail;
+
+  return null;
+};
+
 export interface ResolveResult {
   component: ManifestComponent;
   category: ManifestCategory;
@@ -207,62 +240,65 @@ export const resolveComponent = (
   return match ? { category: match[0], component: match[1] } : null;
 };
 
+// Resolve a query to a standalone page (patterns, getting-started, foundations,
+// …) — anything in the manifest that is not a component — so
+// `marigold docs patterns/user-input/filter` and
+// `marigold docs getting-started/examples-for-agents` work the same way a
+// component lookup does.
+export const resolvePage = (
+  manifest: Manifest,
+  input: string
+): ManifestPage | null =>
+  resolveByCascade(
+    manifest.pages,
+    p => p.slug,
+    p => p.title,
+    input
+  );
+
+// Generic "did you mean" scorer: substring match (+2) with a weak 3-char
+// prefix boost (+1), highest score first, capped at `limit`. Shared by the
+// component and example suggesters so the heuristic lives in one place.
+export const suggestByScore = <T>(
+  items: readonly T[],
+  haystackFor: (item: T) => string,
+  input: string,
+  limit = 3
+): T[] => {
+  const needle = normalize(input);
+  return items
+    .map(item => {
+      const haystack = haystackFor(item);
+      let score = 0;
+      if (haystack.includes(needle)) score += 2;
+      if (needle.length > 2 && haystack.startsWith(needle.slice(0, 3)))
+        score += 1;
+      return { item, score };
+    })
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(s => s.item);
+};
+
 export const suggestComponents = (
   manifest: Manifest,
   input: string,
   limit = 3
 ): ManifestComponent[] => {
-  const needle = normalize(input);
   const flat: ManifestComponent[] = [];
   for (const cat of manifest.categories) flat.push(...cat.components);
-
-  const scored = flat
-    .map(c => {
-      const name = normalize(c.name);
-      let score = 0;
-      if (name.includes(needle)) score += 2;
-      if (needle.length > 2 && name.startsWith(needle.slice(0, 3))) score += 1;
-      return { c, score };
-    })
-    .filter(s => s.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map(s => s.c);
-
-  return scored;
+  return suggestByScore(flat, c => normalize(c.name), input, limit);
 };
-
-// Resolve a standalone (non-component) page using the same match cascade as
-// resolveComponent, matching against the page title and slug.
-export const resolvePage = (
-  manifest: Manifest,
-  input: string
-): ManifestPage | null =>
-  matchCascade(
-    manifest.pages,
-    input,
-    p => p.title,
-    p => p.slug
-  );
 
 export const suggestPages = (
   manifest: Manifest,
   input: string,
   limit = 3
-): ManifestPage[] => {
-  const needle = normalize(input);
-
-  return manifest.pages
-    .map(p => {
-      const haystack = normalize(`${p.title} ${p.slug}`);
-      let score = 0;
-      if (haystack.includes(needle)) score += 2;
-      if (needle.length > 2 && haystack.includes(needle.slice(0, 3)))
-        score += 1;
-      return { p, score };
-    })
-    .filter(s => s.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map(s => s.p);
-};
+): ManifestPage[] =>
+  suggestByScore(
+    manifest.pages,
+    p => normalize(`${p.title} ${p.slug}`),
+    input,
+    limit
+  );

@@ -6,12 +6,17 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { runCompleteSuggest, runCompletion } from '../commands/completion.js';
 import { runDocs } from '../commands/docs.js';
+import { type ExamplesSubcommand, runExamples } from '../commands/examples.js';
 import { runList } from '../commands/list.js';
 import {
   type TelemetrySubcommand,
   runTelemetry,
 } from '../commands/telemetry.js';
-import { type SubcommandName, TOP_LEVEL_NAMES } from '../lib/commands-spec.js';
+import {
+  EXAMPLES_SUBCOMMANDS,
+  type SubcommandName,
+  TOP_LEVEL_NAMES,
+} from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
 import { emit } from '../lib/telemetry.js';
@@ -54,11 +59,12 @@ ${pc.bold('Usage:')}
   marigold <command> [options]
 
 ${pc.bold('Commands:')}
-  docs <name|slug>    Fetch docs for a component or page
-  list                List available components and pages
-  init                Set up Marigold in a project
-  telemetry <action>  Manage telemetry (status|enable|disable)
-  completion <shell>  Print shell completion script (bash|zsh|fish)
+  docs <name|slug>      Fetch docs for a component or page
+  list                  List available components and pages
+  examples <action>     Browse application patterns (list | get <slug>)
+  init                  Set up Marigold in a project
+  telemetry <action>    Manage telemetry (status|enable|disable)
+  completion <shell>    Print shell completion script (bash|zsh|fish)
 
 ${pc.bold('Docs options:')}
   --section <name>    props | usage | examples | all (default: all)
@@ -71,6 +77,11 @@ ${pc.bold('List options:')}
                       patterns, getting-started, ...)
   --search   <term>   Filter by name
   --format   <name>   markdown | json | plain
+
+${pc.bold('Examples options:')}
+  --format   <name>   markdown | json | plain (default: markdown)
+  --fresh             Bypass the local cache
+  --offline           Use only the local cache
 
 ${pc.bold('Init options:')}
   --yes               Skip confirmation prompts
@@ -127,6 +138,17 @@ const parseListCommand = (argv: string[]) =>
     },
   });
 
+const parseExamplesCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      format: { type: 'string' },
+      fresh: { type: 'boolean', default: false },
+      offline: { type: 'boolean', default: false },
+    },
+  });
+
 const parseInitCommand = (argv: string[]) =>
   parseArgs({
     args: argv,
@@ -136,6 +158,9 @@ const parseInitCommand = (argv: string[]) =>
       'skip-install': { type: 'boolean', default: false },
     },
   });
+
+const isExamplesSub = (v: string): v is ExamplesSubcommand =>
+  (EXAMPLES_SUBCOMMANDS as readonly string[]).includes(v);
 
 export const main = async (
   argv: string[] = process.argv.slice(2)
@@ -230,6 +255,45 @@ export const main = async (
       });
 
       process.stdout.write(result.output);
+      cacheHit = result.cacheHit;
+    } else if (command === 'examples') {
+      const { positionals, values } = parseExamplesCommand(rest);
+      const [sub, slug] = positionals;
+
+      telemetryArgs = {
+        sub: sub ?? '',
+        format: values.format ?? 'markdown',
+        ...(slug ? { slug } : {}),
+        ...(values.fresh ? { fresh: 'true' } : {}),
+        ...(values.offline ? { offline: 'true' } : {}),
+      };
+
+      if (!sub || !isExamplesSub(sub)) {
+        fail('Usage: marigold examples <list|get> [slug]');
+      }
+      if (sub === 'list' && positionals.length > 1) {
+        fail('Usage: marigold examples list (takes no arguments)');
+      }
+      if (sub === 'get' && !slug) {
+        fail('Usage: marigold examples get <slug>');
+      }
+      if (sub === 'get' && positionals.length > 2) {
+        fail('Usage: marigold examples get <slug>');
+      }
+      if (values.format && !isOutputFormat(values.format)) {
+        fail(`Invalid --format: ${values.format}`);
+      }
+
+      const result = await runExamples({
+        subcommand: sub,
+        slug,
+        format: (values.format as OutputFormat | undefined) ?? 'markdown',
+        fresh: values.fresh,
+        offline: values.offline,
+      });
+
+      process.stdout.write(result.output);
+      if (!result.output.endsWith('\n')) process.stdout.write('\n');
       cacheHit = result.cacheHit;
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);
