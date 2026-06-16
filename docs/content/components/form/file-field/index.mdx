@@ -48,6 +48,12 @@ This allows users to select multiple files in the file browser or drag several f
 
 <ComponentDemo name="file-field-multiple" />
 
+### Compact layout
+
+When a file field sits alongside single-line controls like `<Select>` or `<TextField>`, the default drop zone can break the visual rhythm of the form. Use `size="small"` to render a compact single-row trigger at the same height as other small form controls. The drop zone and "Drop files here" text are hidden but uploaded files still appear in the list below the trigger.
+
+<ComponentDemo name="file-field-small" />
+
 ### Restricting file types
 
 For specific use cases where only certain file types are appropriate, such as accepting only PDFs for document uploads or only images for profile pictures, use the `accept` prop to specify allowed file types. This helps prevent errors and guides users toward selecting appropriate files.
