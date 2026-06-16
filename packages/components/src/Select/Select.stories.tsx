@@ -643,6 +643,103 @@ export const WithRenderValue = meta.story({
   },
 });
 
+export const MultiSelectSummary = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Formatting',
+    width: 64,
+  },
+  // No spread of `args` here: forcing `selectionMode="multiple"` narrows the
+  // value type, which clashes with the loosely-typed story args.
+  render: ({ label, width }) => (
+    <Select
+      label={label}
+      width={width}
+      selectionMode="multiple"
+      placeholder="Formatting"
+      // Opt in to a compact summary instead of listing every value. `count`
+      // is correct even though these options are static children.
+      renderValue={(_items, { count }) => `${count} selected`}
+    >
+      <Select.Option id="bold">Bold</Select.Option>
+      <Select.Option id="italic">Italic</Select.Option>
+      <Select.Option id="underline">Underline</Select.Option>
+    </Select>
+  ),
+  play: async ({ args, canvas }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await userEvent.click(trigger);
+    await waitFor(() => canvas.getByRole('dialog'));
+
+    const dialog = canvas.getByRole('dialog');
+    await userEvent.click(within(dialog).getByText('Bold'));
+    await userEvent.click(within(dialog).getByText('Italic'));
+
+    await userEvent.click(document.body);
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+
+    // Two selections collapse to a compact "N selected" summary, rather than
+    // listing every value on the trigger.
+    expect(within(trigger).getByText('2 selected')).toBeVisible();
+  },
+});
+
+/**
+ * Quick-filter pattern: a multi-select whose trigger always shows the filter's
+ * dimension label ("Status") instead of the selected values, with a `Badge`
+ * communicating how many options are active. This mirrors the applied-filter
+ * tags shown elsewhere in a filter toolbar and keeps the trigger width stable
+ * regardless of how many options are selected.
+ */
+export const QuickFilter = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Select
+      aria-label="Status"
+      selectionMode="multiple"
+      placeholder="Status"
+      width={48}
+      renderValue={(_items, { count }) => (
+        <Inline space={2} alignY="center">
+          <Text>Status</Text>
+          <Badge>{count}</Badge>
+        </Inline>
+      )}
+    >
+      <Select.Option id="active">Active</Select.Option>
+      <Select.Option id="scheduled">Scheduled</Select.Option>
+      <Select.Option id="draft">Draft</Select.Option>
+      <Select.Option id="archived">Archived</Select.Option>
+    </Select>
+  ),
+  play: async ({ canvas }) => {
+    const trigger = canvas.getByRole('button', { name: /Status/i });
+
+    // Until something is selected, the trigger shows the bare label and no badge.
+    expect(within(trigger).getByText('Status')).toBeVisible();
+    expect(within(trigger).queryByText('2')).not.toBeInTheDocument();
+
+    await userEvent.click(trigger);
+    await waitFor(() => canvas.getByRole('dialog'));
+
+    const dialog = canvas.getByRole('dialog');
+    await userEvent.click(within(dialog).getByText('Active'));
+    await userEvent.click(within(dialog).getByText('Scheduled'));
+
+    await userEvent.click(document.body);
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+
+    // The dimension label stays put; the badge reflects the active option count.
+    expect(within(trigger).getByText('Status')).toBeVisible();
+    expect(within(trigger).getByText('2')).toBeVisible();
+  },
+});
+
 export const Mobile = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },

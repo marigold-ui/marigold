@@ -5,6 +5,7 @@ import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import {
   Basic,
   MobileControlled,
+  MultiSelectSummary,
   Sections,
   WithRenderValue,
 } from './Select.stories';
@@ -174,6 +175,31 @@ test('renderValue receives all selected items in multi-select mode', () => {
   expect(within(button).getByText('Bob Smith')).toBeVisible();
 });
 
+test('renderValue receives the selection count with static children (multiple)', async () => {
+  renderWithOverlay(<MultiSelectSummary.Component />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  await user.click(await screen.findByRole('option', { name: 'Bold' }));
+  await user.click(screen.getByRole('option', { name: 'Italic' }));
+
+  // Static-children options expose a `null` value; `details.count` must still
+  // be correct because it comes from the raw selection, not the values.
+  await waitFor(() => expect(button).toHaveTextContent(/2 selected/));
+});
+
+test('renderValue count reflects a single selection with static children', async () => {
+  renderWithOverlay(<MultiSelectSummary.Component />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  await user.click(await screen.findByRole('option', { name: 'Bold' }));
+
+  await waitFor(() => expect(button).toHaveTextContent(/1 selected/));
+});
+
 test('default trigger render hides description slot', () => {
   renderWithOverlay(
     <Sections.Component label="Label" defaultValue="harry-potter" />
@@ -222,4 +248,56 @@ test('updates the controlled `value` when selecting in the tray (small screen)',
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   );
   expect(button).toHaveTextContent('Peach');
+});
+
+// On small screens the trigger value is rendered inside the `Tray` branch
+// (an `IconButton`) rather than the desktop `Popover` branch. `renderValue`
+// (and its `count`) must behave identically there — the trigger summary is the
+// same `TriggerValue` component in both branches.
+test('renderValue count summarises the selection inside the tray (multiple, small screen)', async () => {
+  window.matchMedia = mockMatchMedia([SMALL_SCREEN_QUERY]);
+
+  renderWithOverlay(<MultiSelectSummary.Component />);
+
+  // Capture the trigger before opening; the tray adds its own buttons.
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  // Small screens present the options inside a tray (dialog), not a popover.
+  const dialog = await screen.findByRole('dialog');
+
+  await user.click(within(dialog).getByRole('option', { name: 'Bold' }));
+  await user.click(within(dialog).getByRole('option', { name: 'Italic' }));
+
+  // Multi-select keeps the tray open; dismiss it explicitly.
+  await user.keyboard('{Escape}');
+  await waitFor(() =>
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  );
+
+  // Static-children options expose a `null` value, but `details.count` reflects
+  // the real selection, so the opt-in summary is correct on mobile too.
+  expect(button).toHaveTextContent(/2 selected/);
+});
+
+test('renderValue replaces the trigger inside the tray (single, small screen)', async () => {
+  window.matchMedia = mockMatchMedia([SMALL_SCREEN_QUERY]);
+
+  renderWithOverlay(<WithRenderValue.Component />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const dialog = await screen.findByRole('dialog');
+  await user.click(within(dialog).getByText('Bob Smith'));
+
+  // Single selection auto-closes the tray; the custom renderValue drives the
+  // trigger, showing the name but not the option's description slot.
+  await waitFor(() =>
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  );
+  expect(within(button).getByText('Bob Smith')).toBeVisible();
+  expect(
+    within(button).queryByText('Senior Developer')
+  ).not.toBeInTheDocument();
 });
