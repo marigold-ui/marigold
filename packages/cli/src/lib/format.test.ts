@@ -22,7 +22,29 @@ describe('formatDocs', () => {
 
     expect(parsed.name).toBe('Button');
     expect(parsed.slug).toBe('components/actions/button');
+    expect(parsed.category).toBe('actions');
     expect(parsed.markdown).toContain('# Button');
+  });
+
+  test('json output for a standalone page includes its category', () => {
+    const page: PageDocs = {
+      kind: 'page',
+      name: 'Filter pattern',
+      slug: 'patterns/user-input/filter',
+      category: 'patterns',
+      description: 'Refining data with filters',
+      section: 'all',
+      markdown: '# Filter\n\nContent.',
+      url: 'https://example.com/patterns/user-input/filter.md',
+      cacheHit: false,
+    };
+
+    const parsed = JSON.parse(formatDocs(page, 'json'));
+
+    expect(parsed.kind).toBe('page');
+    expect(parsed.name).toBe('Filter pattern');
+    expect(parsed.slug).toBe('patterns/user-input/filter');
+    expect(parsed.category).toBe('patterns');
   });
 
   test('plain output has no ANSI escapes', () => {

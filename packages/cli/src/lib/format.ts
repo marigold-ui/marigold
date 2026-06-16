@@ -1,5 +1,6 @@
 import pc from 'picocolors';
 import type { PageDocs } from './docs.js';
+import type { ExampleDetail, ExampleSummary } from './examples.js';
 import {
   type Manifest,
   type ManifestCategory,
@@ -230,4 +231,131 @@ export const formatList = (
   }
   lines.push('');
   return lines.join('\n');
+};
+
+export const formatExamplesList = (
+  examples: ExampleSummary[],
+  format: OutputFormat
+): string => {
+  if (format === 'json') {
+    return JSON.stringify({ examples }, null, 2);
+  }
+
+  if (examples.length === 0) {
+    return 'No examples available.\n';
+  }
+
+  const lines: string[] = [];
+  for (const e of examples) {
+    const slug = format === 'plain' ? e.slug : pc.bold(e.slug);
+    lines.push('');
+    lines.push(`${slug} — ${e.title}`);
+    lines.push(`  ${e.brief}`);
+    if (e.patterns.length > 0) {
+      const patterns = e.patterns.join(', ');
+      lines.push(
+        `  patterns: ${format === 'plain' ? patterns : pc.dim(patterns)}`
+      );
+    }
+  }
+  const hint = 'Get one with: marigold examples get <slug>';
+  lines.push('');
+  lines.push(format === 'plain' ? hint : pc.dim(hint));
+  lines.push('');
+  return lines.join('\n');
+};
+
+const exampleToMarkdown = (example: ExampleDetail): string => {
+  const lines: string[] = [];
+  lines.push(`# ${example.title}`);
+  lines.push('');
+  lines.push(example.brief);
+  lines.push('');
+
+  if (example.patterns.length > 0) {
+    lines.push('## Patterns');
+    // Pattern refs are slugs under docs/content/patterns/, so the fetchable
+    // doc slug is `patterns/<ref>`.
+    for (const p of example.patterns) {
+      lines.push(
+        `- \`${p}\` — fetch the narrative with \`marigold docs patterns/${p}\``
+      );
+    }
+    lines.push('');
+  }
+
+  if (example.peerDeps.length > 0) {
+    lines.push('## Peer dependencies');
+    lines.push('');
+    lines.push('Install alongside `@marigold/components`:');
+    for (const d of example.peerDeps) lines.push(`- \`${d}\``);
+    lines.push('');
+  }
+
+  if (example.mockData.length > 0) {
+    lines.push('## Mock data');
+    lines.push('');
+    lines.push(
+      "These aliases are docs-internal. Replace them with your app's own data " +
+        'sources matching these shapes:'
+    );
+    lines.push('');
+    for (const m of example.mockData) {
+      lines.push(`### \`${m.alias}\``);
+      lines.push('```ts');
+      lines.push(m.shape.trimEnd());
+      lines.push('```');
+      lines.push('');
+    }
+  }
+
+  lines.push('## Files');
+  lines.push('');
+  if (example.keyFiles.length > 0) {
+    lines.push(
+      `Key files: ${example.keyFiles.map(f => `\`${f}\``).join(', ')}`
+    );
+  }
+  if (example.scaffoldingFiles.length > 0) {
+    lines.push(
+      `Scaffolding (framework glue, usually replaced): ${example.scaffoldingFiles
+        .map(f => `\`${f}\``)
+        .join(', ')}`
+    );
+  }
+  lines.push('');
+
+  for (const file of example.files) {
+    const lang = file.path.endsWith('.tsx') ? 'tsx' : 'ts';
+    lines.push(`### ${file.path}`);
+    lines.push(`\`\`\`${lang}`);
+    lines.push(file.source.trimEnd());
+    lines.push('```');
+    lines.push('');
+  }
+
+  lines.push('---');
+  lines.push(
+    'Before adapting, read the framework-transformation note: ' +
+      '`marigold docs getting-started/examples-for-agents`.'
+  );
+  lines.push('');
+  return lines.join('\n');
+};
+
+export const formatExample = (
+  example: ExampleDetail,
+  format: OutputFormat
+): string => {
+  if (format === 'json') {
+    // Serialize the whole payload: ExampleDetail is exactly the public JSON
+    // contract, so emitting it directly stays in sync if the type gains a field.
+    return JSON.stringify(example, null, 2);
+  }
+
+  const md = exampleToMarkdown(example);
+  if (format === 'plain') {
+    return md;
+  }
+  return renderMarkdownToTerminal(md);
 };

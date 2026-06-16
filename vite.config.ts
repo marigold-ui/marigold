@@ -17,6 +17,12 @@ export default mergeConfig(
       include: browserDeps,
     },
     resolve: {
+      // Force a single copy of React/React DOM across all entry points so a
+      // `react-dom/*` subpath (e.g. `react-dom/server` in SSR-hydration tests)
+      // can never resolve to a second instance — the root cause of
+      // `resolveDispatcher() is null`. Complements `optimizeDeps.include`,
+      // which separately prevents mid-run re-optimization churn.
+      dedupe: ['react', 'react-dom'],
       alias: {
         '.storybook': path.resolve(dirname, '.storybook'),
       },
