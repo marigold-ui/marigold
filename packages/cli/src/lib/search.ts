@@ -88,8 +88,10 @@ const cleanIndex = (raw: SearchIndex): SearchIndex => ({
     name: clean(c.name),
     description: clean(c.description),
     badge: clean(c.badge),
-    headings: c.headings.map(sanitizeRemote),
-    sections: c.sections.map(s => ({
+    // `?? []` so a partially-written or malformed index degrades to an
+    // empty field rather than throwing a cryptic "cannot read map of undefined".
+    headings: (c.headings ?? []).map(sanitizeRemote),
+    sections: (c.sections ?? []).map(s => ({
       heading: sanitizeRemote(s.heading),
       snippet: sanitizeRemote(s.snippet),
     })),
@@ -126,9 +128,10 @@ const queryTerms = (normalized: string): string[] => [
 ];
 
 // Word-aware token set for a field. Matching is per-whole-word rather than
-// substring, so `form` no longer matches `Format`. camelCase/digit boundaries
-// are also emitted as parts — "TagField" yields {tagfield, tag, field} — so a
-// `field` query still hits a component title or an inline `<TextField>` mention.
+// substring, so `form` no longer matches `Format`. camelCase boundaries
+// (a lower/digit followed by an upper) are also emitted as parts — "TagField"
+// yields {tagfield, tag, field} — so a `field` query still hits a component
+// title or an inline `<TextField>` mention.
 // Every token is plural-folded to line up with queryTerms().
 const WORD = /[a-z0-9]+/gi;
 const tokenizeField = (text: string): Set<string> => {
@@ -208,7 +211,10 @@ export const searchComponentDocs = (
     // emitted score stays a tidy relative number rather than a long float.
     score *=
       COVERAGE_FLOOR + (1 - COVERAGE_FLOOR) * (matched.size / terms.length);
-    if (phrase && haystacks.join(' ').toLowerCase().includes(phrase)) {
+    // Join on a newline (not a space) so a phrase can't straddle two fields —
+    // e.g. a name ending "date" and a snippet starting "picker…" must not
+    // synthesize a spurious "date picker" match.
+    if (phrase && haystacks.join('\n').toLowerCase().includes(phrase)) {
       score += PHRASE_BONUS;
     }
     score = Math.round(score * 100) / 100;

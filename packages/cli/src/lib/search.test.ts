@@ -326,4 +326,19 @@ describe('loadSearchIndex', () => {
     expect(index.components[0].name).toBe('Evil');
     expect(index.components[0].sections[0].snippet).toBe('beforeafter');
   });
+
+  test('tolerates a component missing headings/sections', async () => {
+    const partial = {
+      baseUrl: 'https://www.marigold-ui.io',
+      components: [
+        { slug: 'components/x/partial', name: 'Partial', description: null },
+      ],
+    };
+    seedCache(url, JSON.stringify(partial));
+
+    const { index } = await loadSearchIndex({ offline: true });
+
+    expect(index.components[0].headings).toEqual([]);
+    expect(index.components[0].sections).toEqual([]);
+  });
 });

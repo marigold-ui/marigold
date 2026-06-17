@@ -280,7 +280,7 @@ export const main = async (
         offline: values.offline,
       });
 
-      process.stdout.write(result.output);
+      writeOutput(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'search') {
       const { positionals, values } = parseSearchCommand(rest);
