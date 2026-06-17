@@ -105,11 +105,17 @@ Build this with a standalone [Checkbox](/components/form/checkbox) that controls
 
 ### Exclude Filters
 
-Exclude filters can be helpful, but they add complexity. They work best when users want nearly everything yet need to remove only a small number of items. In these situations, beginning with all items selected and then deselecting a few creates a natural flow.
+Exclude filters let users say "show everything except these" instead of naming every value they want to keep. They are genuinely useful when the set to remove is small and the set to keep is large, but they add a second way to express intent, so reach for them only when inclusion alone is awkward. There are two ways to offer exclusion, and they suit different situations.
 
-This approach produces an "All except" state that is easier to grasp. It makes intent clear in both the filter panel and the summary, reducing long lists of checkmarks while still giving a precise description of what has been excluded.
+**Deselect from a full selection.** The lightest approach needs no extra control: start with every option selected and let users uncheck the few they want gone. This produces an "All except" state that is easy to grasp, keeps the panel free of operators, and fits the common case where users want nearly everything. It reads clearly in both the filter panel and the summary, replacing a long list of checkmarks with a precise description of what has been excluded. Use it for a single checkbox group where pre-checking everything is reasonable.
 
 <ComponentDemo name="filter-exclude" />
+
+**Switch the operator from include to exclude.** When a filter needs to flip polarity on the same set of values, give it an explicit operator such as "Is any of" / "Is none of". The selected values stay put; only their meaning changes, so users can move a filter from include to exclude without re-picking. This is the model used by structured filter builders in Notion, Airtable, Linear, and Dovetail, and it scales better than deselection when the list of values to keep would be long but the list to remove is short. Prefer it inside an advanced or per-field filter builder rather than a simple panel, and offer only one of the two mechanisms per filter so there are not two ways to express the same intent.
+
+<ComponentDemo name="filter-exclude-toggle" />
+
+Whichever mechanism you choose, make the exclusion unmistakable wherever the filter is shown. Phrase the applied filter as "Type is not Bar" or "All types except Bar", never as a bare value, so the polarity is never ambiguous in the panel, in the tag, or in the control's accessible name. Switching polarity can change the result set dramatically, so apply it immediately and keep the operator visible rather than buried in an advanced menu.
 
 ### Managing Many Filters
 
