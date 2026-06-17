@@ -376,8 +376,7 @@ export const main = async (
       if (!sub || !isTelemetrySub(sub)) {
         fail('Usage: marigold telemetry <status|enable|disable>');
       }
-      const output = runTelemetry({ subcommand: sub });
-      process.stdout.write(output);
+      writeOutput(runTelemetry({ subcommand: sub }));
     } else {
       fail(`Unknown command: ${command}\n\nRun "marigold --help" for usage.`);
     }

@@ -1,4 +1,4 @@
-import { type CacheOptions, fetchWithCache } from './cache.js';
+import { type CacheOptions, FetchError, fetchWithCache } from './cache.js';
 import { docsUrl } from './config.js';
 import { sanitizeRemote } from './strip-ansi.js';
 
@@ -118,7 +118,7 @@ export const loadSearchIndex = async (
     // The index ships with the docs build, so a 404 means the docs deployment
     // predates `marigold search`. Translate the raw HTTP error into guidance
     // rather than surfacing a bare "Failed to fetch … 404 Not Found".
-    if (err instanceof Error && /:\s*404\b/.test(err.message)) {
+    if (err instanceof FetchError && err.status === 404) {
       throw new Error(
         `Search index not found at ${url}. The docs site may predate ` +
           '`marigold search` — update the docs deployment, or point ' +

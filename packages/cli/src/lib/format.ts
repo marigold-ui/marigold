@@ -386,18 +386,21 @@ export const formatSearchResults = (
   }
 
   const plain = format === 'plain';
+  // In plain mode every field is emitted bare; otherwise apply its color.
+  const paint = (text: string, color: (s: string) => string) =>
+    plain ? text : color(text);
   const lines: string[] = [];
   for (const r of results) {
     // Headline the most relevant section; fall back to the description when the
     // match came only from the title/headings (no prose snippet to show).
     const top = r.hits[0];
-    const name = plain ? r.name : pc.bold(r.name);
+    const name = paint(r.name, pc.bold);
     lines.push('');
     lines.push(top ? `${name} — ${top.heading}` : name);
     const snippet = top?.snippet ?? r.description ?? '';
-    if (snippet) lines.push(plain ? `  ${snippet}` : `  ${pc.dim(snippet)}`);
+    if (snippet) lines.push(`  ${paint(snippet, pc.dim)}`);
     const url = `${baseUrl}/${r.slug}`;
-    lines.push(plain ? `  ${url}` : `  ${pc.cyan(url)}`);
+    lines.push(`  ${paint(url, pc.cyan)}`);
   }
   lines.push('');
   return lines.join('\n');
