@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { useMemo } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
+import { useOverlayHeaderSlotProps } from '../utils/useOverlayHeaderSlotProps';
 import { useDrawerContext } from './Context';
 
 export interface DrawerHeaderProps {
@@ -23,32 +23,11 @@ export interface DrawerHeaderProps {
  */
 export const DrawerHeader = ({ children }: DrawerHeaderProps) => {
   const { classNames, titleId, titleSlotRef } = useDrawerContext();
-
-  const headingProps = useMemo(
-    () => ({
-      slots: {
-        title: {
-          className: classNames.title,
-          level: 2,
-          id: titleId,
-          ref: titleSlotRef,
-        },
-      },
-    }),
-    [classNames.title, titleId, titleSlotRef]
-  );
-
-  const textProps = useMemo(
-    () => ({
-      slots: {
-        description: {
-          className: classNames.description,
-          elementType: 'p' as const,
-        },
-      },
-    }),
-    [classNames.description]
-  );
+  const { headingProps, textProps } = useOverlayHeaderSlotProps({
+    classNames,
+    titleId,
+    titleSlotRef,
+  });
 
   return (
     <Provider
