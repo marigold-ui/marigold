@@ -166,7 +166,7 @@ export default () => {
       <Panel.Content>
         <Inline alignY="center">
           <Select
-            aria-label="Filter by status"
+            label="Status"
             value={filter}
             onChange={key => setFilter(key as 'active' | 'all')}
             width={48}
