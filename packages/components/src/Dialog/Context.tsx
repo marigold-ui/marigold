@@ -1,7 +1,7 @@
 import type { RefCallback } from 'react';
 import { createContext, use } from 'react';
 import type RAC from 'react-aria-components';
-import type { ThemeComponent } from '@marigold/system';
+import type { ComponentClassNames } from '@marigold/system';
 
 export interface DialogContextProps extends RAC.ModalOverlayProps {
   dismissable?: boolean;
@@ -16,9 +16,7 @@ export const DialogContext = createContext<DialogContextProps>({});
  * from the rest of the slot-configuration family.
  */
 export interface DialogSlotContextValue {
-  classNames: {
-    [Key in keyof ThemeComponent<'Dialog'>]: string;
-  };
+  classNames: ComponentClassNames<'Dialog'>;
   titleId: string;
   hasTitle: boolean;
   titleSlotRef: RefCallback<Element>;
