@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 // Build the docs page manifest as a static asset at public/manifest.json,
 // served directly by Next.js (no route handler, no prerender Proxy).
+//
+// Also emits public/component-search.json — a content index over the component
+// MDX used by `marigold search` to find components by what their docs say
+// (title/description/headings/section prose), not just by name.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const contentDir = path.join(rootDir, 'content');
 const outFile = path.join(rootDir, 'public', 'manifest.json');
+const searchOutFile = path.join(rootDir, 'public', 'component-search.json');
 const componentsPkgPath = path.join(
   rootDir,
   '..',
@@ -63,16 +68,140 @@ const slugsFromPath = absPath => {
   return parts;
 };
 
-const buildManifest = () => {
-  if (!fs.existsSync(contentDir)) {
-    console.error('❌ Content directory not found:', contentDir);
-    process.exit(1);
-  }
+// --- Component search index -------------------------------------------------
 
-  const entries = findMdxFiles(contentDir)
-    .map(file => ({
-      slugs: slugsFromPath(file),
-      data: parseFrontmatter(fs.readFileSync(file, 'utf-8')),
+// Body without the leading frontmatter block, so section parsing never sees it.
+export const stripFrontmatter = source =>
+  source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+
+// Strip every HTML/JSX tag, innermost-first, so nested/multiline elements
+// (e.g. a <TeaserList> whose props embed <svg><path/></svg>) are fully removed
+// rather than leaving orphan attribute/SVG fragments. The `</?[a-zA-Z]` anchor
+// means prose comparisons like "value < 10" are left alone. Bounded so a
+// pathological input can't loop forever.
+const TAG = /<\/?[a-zA-Z][^<>]*>/g;
+export const stripTags = text => {
+  let prev = text;
+  for (let i = 0; i < 20; i++) {
+    const next = prev.replace(TAG, ' ');
+    if (next === prev) break;
+    prev = next;
+  }
+  return prev;
+};
+
+// Reduce a chunk of MDX prose to plain searchable text: drop import lines, unwrap
+// inline code/links/bold to their text, then strip JSX and table scaffolding.
+// Fenced code blocks are already removed by the caller. Returns whitespace-
+// collapsed prose, capped at ~400 chars. Inline `` `<TextField>` `` refs survive
+// as the bare word "TextField".
+const SNIPPET_MAX = 400;
+export const cleanProse = text => {
+  const cleaned = stripTags(
+    text
+      // import statements (single- and multi-line `import { … } from '…'`)
+      .replace(/^[ \t]*import\b[\s\S]*?from\s+['"][^'"]+['"];?[ \t]*$/gm, '')
+      .replace(/^[ \t]*import\s.+$/gm, '')
+      // inline code → its text, minus angle brackets so `<TextField>` becomes
+      // the searchable word "TextField" and survives tag stripping below
+      .replace(/`([^`]+)`/g, (_, code) => code.replace(/[<>]/g, ''))
+      // markdown links → link text
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+  )
+    // bold / italic markers
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    // leftover heading markers from ### subsections
+    .replace(/^#{1,6}\s+/gm, '')
+    // table pipes and rule/separator runs
+    .replace(/\|/g, ' ')
+    .replace(/-{2,}/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return cleaned.length > SNIPPET_MAX
+    ? cleaned.slice(0, SNIPPET_MAX).trim()
+    : cleaned;
+};
+
+// Parse a component MDX body into the lead "Overview" prose plus its top-level
+// (`##`, not `###`) sections. `headings` keeps every real `##` heading for
+// scoring; `sections` keeps only those with surviving prose (used as hits).
+export const parseComponentDoc = body => {
+  // Drop fenced blocks up front so a `##` inside example code can't open a
+  // bogus section.
+  const lines = stripFrontmatter(body)
+    .replace(/```[\s\S]*?```/g, '')
+    .split(/\r?\n/);
+
+  const headings = [];
+  const sections = [];
+  let heading = 'Overview';
+  let buffer = [];
+
+  const flush = () => {
+    const snippet = cleanProse(buffer.join('\n'));
+    if (snippet) sections.push({ heading, snippet });
+    buffer = [];
+  };
+
+  for (const line of lines) {
+    const match = line.match(/^##\s+(?!#)(.+?)\s*$/);
+    if (match) {
+      flush();
+      heading = match[1].trim();
+      headings.push(heading);
+    } else {
+      buffer.push(line);
+    }
+  }
+  flush();
+
+  return { headings, sections };
+};
+
+const buildComponentSearch = files => {
+  const components = files
+    .filter(({ slugs }) => {
+      if (slugs.length === 0) return false;
+      if (slugs[0] !== 'components') return false;
+      if (slugs.some(s => EXCLUDED_SEGMENTS.includes(s))) return false;
+      return true;
+    })
+    .map(({ slugs, source }) => {
+      const data = parseFrontmatter(source);
+      const { headings, sections } = parseComponentDoc(source);
+      return {
+        slug: slugs.join('/'),
+        name: data.title ?? slugs.at(-1) ?? null,
+        description: data.description ?? null,
+        badge: data.badge ?? null,
+        headings,
+        sections,
+      };
+    })
+    .sort((a, b) => a.slug.localeCompare(b.slug));
+
+  fs.mkdirSync(path.dirname(searchOutFile), { recursive: true });
+  fs.writeFileSync(
+    searchOutFile,
+    JSON.stringify({
+      version: readComponentsVersion(),
+      generatedAt: new Date().toISOString(),
+      baseUrl: BASE_URL,
+      components,
+    })
+  );
+
+  console.log(
+    `🔎 Built search index with ${components.length} components → ${path.relative(rootDir, searchOutFile)}`
+  );
+};
+
+const buildManifest = files => {
+  const entries = files
+    .map(({ slugs, source }) => ({
+      slugs,
+      data: parseFrontmatter(source),
     }))
     .filter(({ slugs }) => {
       if (slugs.length === 0) return false;
@@ -110,4 +239,28 @@ const buildManifest = () => {
   );
 };
 
-buildManifest();
+// Run the build only when executed directly (`node build-manifest.mjs`), not
+// when imported — e.g. by build-manifest.test.mjs, which exercises the pure
+// content-extraction helpers above.
+const invokedDirectly =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (invokedDirectly) {
+  if (!fs.existsSync(contentDir)) {
+    console.error('❌ Content directory not found:', contentDir);
+    process.exit(1);
+  }
+
+  // Walk and read each MDX file once; the manifest and the search index are
+  // both derived from the same sources.
+  const files = findMdxFiles(contentDir).map(file => ({
+    slugs: slugsFromPath(file),
+    source: fs.readFileSync(file, 'utf-8'),
+  }));
+
+  // Manifest first (list/docs depend on it), then the search index. A real
+  // error here still fails the build so we catch index bugs in CI.
+  buildManifest(files);
+  buildComponentSearch(files);
+}

@@ -8,6 +8,7 @@ import { runCompleteSuggest, runCompletion } from '../commands/completion.js';
 import { runDocs } from '../commands/docs.js';
 import { type ExamplesSubcommand, runExamples } from '../commands/examples.js';
 import { runList } from '../commands/list.js';
+import { runSearch } from '../commands/search.js';
 import {
   type TelemetrySubcommand,
   runTelemetry,
@@ -61,6 +62,7 @@ ${pc.bold('Usage:')}
 ${pc.bold('Commands:')}
   docs <name|slug>      Fetch docs for a component or page
   list                  List available components and pages
+  search <query>        Find components by what their docs say
   examples <action>     Browse application patterns (list | get <slug>)
   init                  Set up Marigold in a project
   telemetry <action>    Manage telemetry (status|enable|disable)
@@ -77,6 +79,12 @@ ${pc.bold('List options:')}
                       patterns, getting-started, ...)
   --search   <term>   Filter by name
   --format   <name>   markdown | json | plain
+
+${pc.bold('Search options:')}
+  --limit    <n>      Max results (default: 5)
+  --format   <name>   markdown | json | plain (default: markdown)
+  --fresh             Bypass the local cache
+  --offline           Use only the local cache
 
 ${pc.bold('Examples options:')}
   --format   <name>   markdown | json | plain (default: markdown)
@@ -132,6 +140,18 @@ const parseListCommand = (argv: string[]) =>
     options: {
       category: { type: 'string' },
       search: { type: 'string' },
+      format: { type: 'string' },
+      fresh: { type: 'boolean', default: false },
+      offline: { type: 'boolean', default: false },
+    },
+  });
+
+const parseSearchCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      limit: { type: 'string' },
       format: { type: 'string' },
       fresh: { type: 'boolean', default: false },
       offline: { type: 'boolean', default: false },
@@ -255,6 +275,43 @@ export const main = async (
       });
 
       process.stdout.write(result.output);
+      cacheHit = result.cacheHit;
+    } else if (command === 'search') {
+      const { positionals, values } = parseSearchCommand(rest);
+      // Join positionals so both `search "field validation"` and the
+      // unquoted `search field validation` resolve to the same query.
+      const query = positionals.join(' ').trim();
+
+      telemetryArgs = {
+        format: values.format ?? 'markdown',
+        ...(query ? { query: 'used' } : {}),
+        ...(values.limit ? { limit: values.limit } : {}),
+        ...(values.fresh ? { fresh: 'true' } : {}),
+        ...(values.offline ? { offline: 'true' } : {}),
+      };
+
+      if (!query) fail('Usage: marigold search <query>');
+      if (values.format && !isOutputFormat(values.format)) {
+        fail(`Invalid --format: ${values.format}`);
+      }
+      let limit: number | undefined;
+      if (values.limit !== undefined) {
+        limit = Number(values.limit);
+        if (!Number.isInteger(limit) || limit < 1) {
+          fail(`Invalid --limit: ${values.limit} (must be a positive integer)`);
+        }
+      }
+
+      const result = await runSearch({
+        query,
+        limit,
+        format: (values.format as OutputFormat | undefined) ?? 'markdown',
+        fresh: values.fresh,
+        offline: values.offline,
+      });
+
+      process.stdout.write(result.output);
+      if (!result.output.endsWith('\n')) process.stdout.write('\n');
       cacheHit = result.cacheHit;
     } else if (command === 'examples') {
       const { positionals, values } = parseExamplesCommand(rest);

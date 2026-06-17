@@ -8,6 +8,7 @@ import {
   type ManifestPage,
   normalize,
 } from './manifest.js';
+import type { SearchResult } from './search.js';
 import { stripAnsi } from './strip-ansi.js';
 
 export type OutputFormat = 'markdown' | 'json' | 'plain';
@@ -358,4 +359,46 @@ export const formatExample = (
     return md;
   }
   return renderMarkdownToTerminal(md);
+};
+
+export const formatSearchResults = (
+  results: SearchResult[],
+  query: string,
+  baseUrl: string,
+  format: OutputFormat
+): string => {
+  if (format === 'json') {
+    // Exactly the documented contract: name, slug, score, hits[].
+    return JSON.stringify(
+      results.map(r => ({
+        name: r.name,
+        slug: r.slug,
+        score: r.score,
+        hits: r.hits.map(h => ({ heading: h.heading, snippet: h.snippet })),
+      })),
+      null,
+      2
+    );
+  }
+
+  if (results.length === 0) {
+    return `No components match "${query}".\n`;
+  }
+
+  const plain = format === 'plain';
+  const lines: string[] = [];
+  for (const r of results) {
+    // Headline the most relevant section; fall back to the description when the
+    // match came only from the title/headings (no prose snippet to show).
+    const top = r.hits[0];
+    const name = plain ? r.name : pc.bold(r.name);
+    lines.push('');
+    lines.push(top ? `${name} — ${top.heading}` : name);
+    const snippet = top?.snippet ?? r.description ?? '';
+    if (snippet) lines.push(plain ? `  ${snippet}` : `  ${pc.dim(snippet)}`);
+    const url = `${baseUrl}/${r.slug}`;
+    lines.push(plain ? `  ${url}` : `  ${pc.cyan(url)}`);
+  }
+  lines.push('');
+  return lines.join('\n');
 };

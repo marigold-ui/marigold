@@ -5,6 +5,7 @@
 export type PositionalKind =
   | 'component'
   | 'category'
+  | 'query'
   | 'telemetry-sub'
   | 'examples-sub';
 
@@ -35,6 +36,7 @@ export const COMPLETION_SHELLS = completionShellValues;
 export type SubcommandName =
   | 'docs'
   | 'list'
+  | 'search'
   | 'examples'
   | 'init'
   | 'telemetry'
@@ -56,6 +58,16 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
     flags: [
       { name: '--category', type: 'string', valuesFrom: 'category' },
       { name: '--search', type: 'string' },
+      { name: '--format', type: 'string', values: formatValues },
+      { name: '--fresh', type: 'boolean' },
+      { name: '--offline', type: 'boolean' },
+    ],
+  },
+  {
+    name: 'search',
+    positionalKind: 'query',
+    flags: [
+      { name: '--limit', type: 'string' },
       { name: '--format', type: 'string', values: formatValues },
       { name: '--fresh', type: 'boolean' },
       { name: '--offline', type: 'boolean' },
