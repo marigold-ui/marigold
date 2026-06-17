@@ -182,6 +182,13 @@ const parseInitCommand = (argv: string[]) =>
 const isExamplesSub = (v: string): v is ExamplesSubcommand =>
   (EXAMPLES_SUBCOMMANDS as readonly string[]).includes(v);
 
+// Write command output, guaranteeing a single trailing newline so piped/captured
+// output stays line-delimited regardless of what the renderer produced.
+const writeOutput = (output: string): void => {
+  process.stdout.write(output);
+  if (!output.endsWith('\n')) process.stdout.write('\n');
+};
+
 export const main = async (
   argv: string[] = process.argv.slice(2)
 ): Promise<number> => {
@@ -248,8 +255,7 @@ export const main = async (
         offline: values.offline,
       });
 
-      process.stdout.write(result.output);
-      if (!result.output.endsWith('\n')) process.stdout.write('\n');
+      writeOutput(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'list') {
       const { values } = parseListCommand(rest);
@@ -310,8 +316,7 @@ export const main = async (
         offline: values.offline,
       });
 
-      process.stdout.write(result.output);
-      if (!result.output.endsWith('\n')) process.stdout.write('\n');
+      writeOutput(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'examples') {
       const { positionals, values } = parseExamplesCommand(rest);
@@ -349,8 +354,7 @@ export const main = async (
         offline: values.offline,
       });
 
-      process.stdout.write(result.output);
-      if (!result.output.endsWith('\n')) process.stdout.write('\n');
+      writeOutput(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);

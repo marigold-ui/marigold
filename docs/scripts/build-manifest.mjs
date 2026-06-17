@@ -68,7 +68,17 @@ const slugsFromPath = absPath => {
   return parts;
 };
 
+// Pages excluded from every generated index (empty slug or internal-only docs).
+const isExcluded = slugs =>
+  slugs.length === 0 || slugs.some(s => EXCLUDED_SEGMENTS.includes(s));
+
 // --- Component search index -------------------------------------------------
+
+// NOTE: the MDX → searchable-prose extraction below (stripTags/cleanProse/
+// parseComponentDoc) is intentionally regex-based, matching this file's existing
+// parseFrontmatter approach. It feeds search *ranking*, not rendering, so it is
+// best-effort by design. If the component MDX grows constructs these regexes
+// can't handle, revisit with the docs site's remark/AST parser (DST-1446 follow-up).
 
 // Body without the leading frontmatter block, so section parsing never sees it.
 export const stripFrontmatter = source =>
@@ -162,14 +172,8 @@ export const parseComponentDoc = body => {
 
 const buildComponentSearch = files => {
   const components = files
-    .filter(({ slugs }) => {
-      if (slugs.length === 0) return false;
-      if (slugs[0] !== 'components') return false;
-      if (slugs.some(s => EXCLUDED_SEGMENTS.includes(s))) return false;
-      return true;
-    })
-    .map(({ slugs, source }) => {
-      const data = parseFrontmatter(source);
+    .filter(({ slugs }) => !isExcluded(slugs) && slugs[0] === 'components')
+    .map(({ slugs, source, data }) => {
       const { headings, sections } = parseComponentDoc(source);
       return {
         slug: slugs.join('/'),
@@ -200,16 +204,9 @@ const buildComponentSearch = files => {
 
 const buildManifest = files => {
   const entries = files
-    .map(({ slugs, source }) => ({
-      slugs,
-      data: parseFrontmatter(source),
-    }))
-    .filter(({ slugs }) => {
-      if (slugs.length === 0) return false;
-      if (EXCLUDED_PREFIXES.includes(slugs[0])) return false;
-      if (slugs.some(s => EXCLUDED_SEGMENTS.includes(s))) return false;
-      return true;
-    })
+    .filter(
+      ({ slugs }) => !isExcluded(slugs) && !EXCLUDED_PREFIXES.includes(slugs[0])
+    )
     .map(({ slugs, data }) => {
       const slug = slugs.join('/');
       const categoryParts = slugs.slice(0, -1);
@@ -253,12 +250,16 @@ if (invokedDirectly) {
     process.exit(1);
   }
 
-  // Walk and read each MDX file once; the manifest and the search index are
-  // both derived from the same sources.
-  const files = findMdxFiles(contentDir).map(file => ({
-    slugs: slugsFromPath(file),
-    source: fs.readFileSync(file, 'utf-8'),
-  }));
+  // Walk, read, and parse frontmatter for each MDX file once; the manifest and
+  // the search index are both derived from the same parsed sources.
+  const files = findMdxFiles(contentDir).map(file => {
+    const source = fs.readFileSync(file, 'utf-8');
+    return {
+      slugs: slugsFromPath(file),
+      source,
+      data: parseFrontmatter(source),
+    };
+  });
 
   // Manifest first (list/docs depend on it), then the search index. A real
   // error here still fails the build so we catch index bugs in CI.
