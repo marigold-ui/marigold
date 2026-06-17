@@ -194,6 +194,8 @@ describe('loadSearchIndex', () => {
 
   test('sanitizes terminal escape sequences in cached content', async () => {
     const dirty: SearchIndex = {
+      version: '\x1b[31m17.4.0\x1b[0m',
+      generatedAt: '\x1b[31m2026-06-17T00:00:00Z\x1b[0m',
       baseUrl: '\x1b[31mhttps://www.marigold-ui.io\x1b[0m',
       components: [
         {
@@ -210,6 +212,8 @@ describe('loadSearchIndex', () => {
 
     const { index } = await loadSearchIndex({ offline: true });
 
+    expect(index.version).toBe('17.4.0');
+    expect(index.generatedAt).toBe('2026-06-17T00:00:00Z');
     expect(index.baseUrl).toBe('https://www.marigold-ui.io');
     expect(index.components[0].name).toBe('Evil');
     expect(index.components[0].sections[0].snippet).toBe('beforeafter');

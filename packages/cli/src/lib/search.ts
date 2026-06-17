@@ -36,8 +36,9 @@ export interface SearchResult {
   name: string;
   description: string | null;
   score: number;
-  // Top matched sections, ranked best-first and capped at MAX_HITS_PER_RESULT —
-  // not every matching section. Scoring still uses them all (see score).
+  // The single best-matching section, emitted as evidence (capped at
+  // MAX_HITS_PER_RESULT, currently 1). Scoring still reads every section (see
+  // score), so this is a strict subset of what was matched.
   hits: SearchHit[];
 }
 
@@ -68,8 +69,8 @@ const clean = (value: string | null): string | null =>
 // Remote content reaches the terminal, so sanitize every string on load — the
 // same defense manifest.ts applies, even though we author the index ourselves.
 const cleanIndex = (raw: SearchIndex): SearchIndex => ({
-  version: raw.version,
-  generatedAt: raw.generatedAt,
+  version: raw.version ? sanitizeRemote(raw.version) : undefined,
+  generatedAt: raw.generatedAt ? sanitizeRemote(raw.generatedAt) : undefined,
   // baseUrl is printed to the terminal as a deep link, so sanitize it too.
   baseUrl: sanitizeRemote(raw.baseUrl),
   components: raw.components.map(c => ({

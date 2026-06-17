@@ -125,4 +125,20 @@ describe('parseComponentDoc', () => {
 
     expect(parseComponentDoc(withFence).headings).toEqual(['Usage']);
   });
+
+  test('a ## inside a tilde-fenced code block does not open a section', () => {
+    const withTildeFence = [
+      'Lead.',
+      '',
+      '## Usage',
+      '',
+      '~~~md',
+      '## not a real heading',
+      '~~~',
+      '',
+      'Text.',
+    ].join('\n');
+
+    expect(parseComponentDoc(withTildeFence).headings).toEqual(['Usage']);
+  });
 });

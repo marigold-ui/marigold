@@ -128,9 +128,10 @@ export const cleanProse = text => {
 // scoring; `sections` keeps only those with surviving prose (used as hits).
 export const parseComponentDoc = body => {
   // Drop fenced blocks up front so a `##` inside example code can't open a
-  // bogus section.
+  // bogus section. Both backtick and tilde fences are stripped.
   const lines = stripFrontmatter(body)
     .replace(/```[\s\S]*?```/g, '')
+    .replace(/~~~[\s\S]*?~~~/g, '')
     .split(/\r?\n/);
 
   const headings = [];
