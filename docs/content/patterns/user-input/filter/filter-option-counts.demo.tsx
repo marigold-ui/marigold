@@ -17,9 +17,7 @@ export default () => (
         label={
           <Inline space={2} alignY="center">
             {label}
-            <Text variant="muted" size="sm">
-              {count}
-            </Text>
+            <Text variant="muted">({count})</Text>
           </Inline>
         }
       />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Badge, Checkbox, Inline, Stack } from '@marigold/components';
+import { Checkbox, Inline, Stack, Text } from '@marigold/components';
 
 const channels = [
   'Box office',
@@ -17,9 +17,12 @@ export default () => {
     <Stack space={3}>
       <Checkbox
         aria-label={`Select all ${channels.length} sales channels`}
+        // Tie the standalone control to the group it toggles, so the
+        // relationship is programmatic and not left to visual proximity.
+        aria-controls="sales-channels" // [!code highlight]
         label={
           <Inline space={2} alignY="center">
-            Select all <Badge>{channels.length}</Badge>
+            Select all <Text variant="muted">({channels.length})</Text>
           </Inline>
         }
         checked={allSelected}
@@ -27,6 +30,7 @@ export default () => {
         onChange={checked => setSelected(checked ? [...channels] : [])}
       />
       <Checkbox.Group
+        id="sales-channels" // [!code highlight]
         aria-label="Sales channels"
         value={selected}
         onChange={setSelected}
