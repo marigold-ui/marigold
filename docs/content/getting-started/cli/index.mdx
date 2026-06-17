@@ -1,5 +1,5 @@
 ---
-title: CLI
+title: Marigold CLI
 description: Component docs, discovery, and project setup, straight from the terminal.
 badge: new
 ---
@@ -83,6 +83,18 @@ marigold docs foundations/spacing
 marigold docs getting-started/installation
 ```
 
+A request like `marigold docs Badge --section props` prints a focused, terminal-rendered view of just that section:
+
+```text
+Props
+
+Badge
+
+ | Prop     | Type      | Default | Description               |
+ | :------- | :-------- | :------ | :------------------------ |
+ | children | ReactNode | -       | Children of the component |
+```
+
 | Flag               | Description                               | Default    |
 | ------------------ | ----------------------------------------- | ---------- |
 | `--section <name>` | `props`, `usage`, `examples`, or `all`    | `all`      |
@@ -112,6 +124,19 @@ marigold list --format json
 marigold list --fresh
 ```
 
+Components and pages are grouped by category. For example, `marigold list --category form` prints:
+
+```text
+Form
+  Autocomplete — A searchfield that displays a dynamic list of suggestions.
+  Calendar — A date selection interface for choosing dates from a calendar view.
+  Checkbox — Component to select one or more options.
+  ComboBox — A text-field that allows the user to select values from a provided items array.
+  …
+  TextField — Component for input forms.
+  TimeField — Component for entering time in forms.
+```
+
 | Flag                | Description                                                                                                                                  | Default    |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | `--category <name>` | Filter by category: component categories (`actions`, `form`, `layout`, …) and page categories (`foundations`, `patterns`, `getting-started`) |            |
@@ -122,7 +147,7 @@ marigold list --fresh
 
 ### marigold examples
 
-Browse application-level reference patterns: multi-file compositions that show how Marigold components combine into real features (filterable tables, multi-section forms, component inventories).
+Browse application-level reference patterns: multi-file compositions that show how Marigold components combine into real features (filterable tables, multi-section forms, component inventories). For how to adapt one to your own framework, see [Adapting examples for agents](/getting-started/examples-for-agents).
 
 ```bash
 marigold examples list                    # all available patterns
@@ -171,10 +196,10 @@ It detects Next.js or Vite, then:
 3. Patches `vite.config.ts` (Vite) or writes `postcss.config.mjs` (Next.js) if missing.
 4. Wraps the root: creates `app/providers.tsx` and wraps `{children}` in `app/layout.tsx` (Next.js), or wraps `<App />` in `src/main.tsx` (Vite).
 
-<Callout title="Idempotent">
-  Edits are idempotent: re-running leaves files untouched. If a file shape can't
-  be recognized, the CLI prints a manual fallback for that step instead of
-  guessing.
+<Callout title="Safe to re-run">
+  Re-running `marigold init` leaves already-configured files untouched, so
+  running it more than once is safe. If a file's shape can't be recognized, the
+  CLI prints a manual fallback for that step instead of guessing.
 </Callout>
 
 ### marigold completion
@@ -229,7 +254,7 @@ Telemetry is automatically suppressed when:
 
 ## Configuration
 
-The CLI reads the following environment variables:
+Every variable below is **optional**, the CLI works out of the box. Set one only to override a default (e.g. point at a self-hosted docs site, change the cache TTL, or opt out of telemetry).
 
 | Variable                                                                  | Description                                                             |
 | ------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
