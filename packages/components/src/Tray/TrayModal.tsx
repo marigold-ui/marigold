@@ -13,7 +13,7 @@ import {
   OverlayTriggerStateContext,
 } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { MotionFeatures } from '../lazyMotion';
 
 type RemovedProps =
@@ -79,7 +79,7 @@ export const TrayModal = ({
         onOpenChange={handleOpenChange}
         isDismissable={dismissable}
         isKeyboardDismissDisabled={!keyboardDismissable}
-        className={cn(classNames.overlay)}
+        className={classNames.overlay}
       >
         <Modal className={classNames.container}>{children}</Modal>
       </ModalOverlay>
@@ -96,7 +96,7 @@ export const TrayModal = ({
             onOpenChange={handleOpenChange}
             isDismissable={dismissable}
             isKeyboardDismissDisabled={!keyboardDismissable}
-            className={cn(classNames.overlay)}
+            className={classNames.overlay}
           >
             <MotionModal
               className={classNames.container}
