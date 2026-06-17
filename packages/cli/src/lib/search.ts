@@ -107,12 +107,27 @@ export const loadSearchIndex = async (
   options: CacheOptions = {}
 ): Promise<LoadSearchIndexResult> => {
   const url = `${docsUrl()}/component-search.json`;
-  const { value, hit } = await fetchWithCache<SearchIndex>(
-    url,
-    text => cleanIndex(JSON.parse(text) as SearchIndex),
-    options
-  );
-  return { index: value, cacheHit: hit };
+  try {
+    const { value, hit } = await fetchWithCache<SearchIndex>(
+      url,
+      text => cleanIndex(JSON.parse(text) as SearchIndex),
+      options
+    );
+    return { index: value, cacheHit: hit };
+  } catch (err) {
+    // The index ships with the docs build, so a 404 means the docs deployment
+    // predates `marigold search`. Translate the raw HTTP error into guidance
+    // rather than surfacing a bare "Failed to fetch … 404 Not Found".
+    if (err instanceof Error && /:\s*404\b/.test(err.message)) {
+      throw new Error(
+        `Search index not found at ${url}. The docs site may predate ` +
+          '`marigold search` — update the docs deployment, or point ' +
+          'MARIGOLD_DOCS_URL at a build that includes it.',
+        { cause: err }
+      );
+    }
+    throw err;
+  }
 };
 
 // Plural fold so "buttons" matches "Button": a conservative single-trailing-"s"

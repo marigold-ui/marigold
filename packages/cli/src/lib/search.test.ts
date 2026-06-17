@@ -327,6 +327,20 @@ describe('loadSearchIndex', () => {
     expect(index.components[0].sections[0].snippet).toBe('beforeafter');
   });
 
+  test('rethrows a 404 as actionable "index not found" guidance', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: false,
+      status: 404,
+      statusText: 'Not Found',
+      text: async () => 'Not Found',
+      headers: { get: () => 'text/html' },
+    } as unknown as Response);
+
+    await expect(loadSearchIndex()).rejects.toThrow(
+      /Search index not found.*docs site may predate/s
+    );
+  });
+
   test('tolerates a component missing headings/sections', async () => {
     const partial = {
       baseUrl: 'https://www.marigold-ui.io',
