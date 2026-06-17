@@ -61,6 +61,16 @@ const DESCRIPTION_WEIGHT = 2;
 const HEADING_WEIGHT = 2;
 const SNIPPET_WEIGHT = 1;
 
+// A component matching only one of several query terms is likely incidental, so
+// its raw score is scaled by how much of the query it covers: a full-coverage
+// match keeps its weight, a 1-of-N match keeps COVERAGE_FLOOR of it. Single-term
+// queries always have coverage 1, so this is a no-op for them.
+const COVERAGE_FLOOR = 0.5;
+
+// Additive bonus when the full multi-word query appears verbatim in any field —
+// an exact phrase is strong intent that scattered term matches shouldn't outrank.
+const PHRASE_BONUS = 4;
+
 // Sanitize a nullable string while preserving null (mirrors `clean` in
 // manifest.ts).
 const clean = (value: string | null): string | null =>
@@ -103,19 +113,34 @@ export const loadSearchIndex = async (
   return { index: value, cacheHit: hit };
 };
 
-// Split a query into lowercased, whitespace-delimited terms — prose matching is
-// per-term substring, so we keep terms separate rather than collapsing them.
-const tokenize = (query: string): string[] =>
-  query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+// Plural fold so "buttons" matches "Button": a conservative single-trailing-"s"
+// trim, only on tokens long enough that the final letter is unlikely to matter.
+const stem = (token: string): string =>
+  token.length > 3 && token.endsWith('s') ? token.slice(0, -1) : token;
 
-// Count weighted substring hits for the terms against a single field.
-const scoreField = (text: string, terms: string[], weight: number): number => {
-  const haystack = text.toLowerCase();
-  let score = 0;
-  for (const term of terms) {
-    if (haystack.includes(term)) score += weight;
+// Plural-folded, de-duplicated query words from an already-normalized (trimmed,
+// lowercased) query. Whitespace-delimited — users type words, so the query
+// itself is not camelCase-split.
+const queryTerms = (normalized: string): string[] => [
+  ...new Set(normalized.split(/\s+/).filter(Boolean).map(stem)),
+];
+
+// Word-aware token set for a field. Matching is per-whole-word rather than
+// substring, so `form` no longer matches `Format`. camelCase/digit boundaries
+// are also emitted as parts — "TagField" yields {tagfield, tag, field} — so a
+// `field` query still hits a component title or an inline `<TextField>` mention.
+// Every token is plural-folded to line up with queryTerms().
+const WORD = /[a-z0-9]+/gi;
+const tokenizeField = (text: string): Set<string> => {
+  const tokens = new Set<string>();
+  for (const word of text.match(WORD) ?? []) {
+    tokens.add(stem(word.toLowerCase()));
+    const parts = word.replace(/([a-z0-9])([A-Z])/g, '$1 $2').split(/\s+/);
+    if (parts.length > 1) {
+      for (const part of parts) tokens.add(stem(part.toLowerCase()));
+    }
   }
-  return score;
+  return tokens;
 };
 
 interface ScoredSection {
@@ -129,28 +154,48 @@ export const searchComponentDocs = (
   options: SearchOptions = {}
 ): SearchResult[] => {
   const { limit = DEFAULT_SEARCH_LIMIT } = options;
-  const terms = tokenize(query);
+  // Normalize once; both the term split and the phrase check derive from it.
+  const normalized = query.trim().toLowerCase();
+  const terms = queryTerms(normalized);
   if (terms.length === 0) return [];
+  // Only multi-word queries earn a phrase bonus; a single term is already
+  // covered by the token match below.
+  const phrase = terms.length > 1 ? normalized.replace(/\s+/g, ' ') : null;
 
   const results: SearchResult[] = [];
   for (const component of index.components) {
+    const matched = new Set<string>();
+    const haystacks: string[] = [];
     let score = 0;
     const scoredSections: ScoredSection[] = [];
 
-    if (component.name) {
-      score += scoreField(component.name, terms, TITLE_WEIGHT);
-    }
-    if (component.description) {
-      score += scoreField(component.description, terms, DESCRIPTION_WEIGHT);
-    }
+    // Score one field: add `weight` per distinct query term whose whole word
+    // appears in it, recording which terms matched (for coverage) and the raw
+    // text (for the phrase check).
+    const accrue = (text: string | null, weight: number): number => {
+      if (!text) return 0;
+      haystacks.push(text);
+      const tokens = tokenizeField(text);
+      let s = 0;
+      for (const term of terms) {
+        if (tokens.has(term)) {
+          s += weight;
+          matched.add(term);
+        }
+      }
+      return s;
+    };
+
+    score += accrue(component.name, TITLE_WEIGHT);
+    score += accrue(component.description, DESCRIPTION_WEIGHT);
     // Each matching heading scores; the synthetic "Overview" label is absent
     // from `headings`, so it never inflates the ranking.
     for (const heading of component.headings) {
-      score += scoreField(heading, terms, HEADING_WEIGHT);
+      score += accrue(heading, HEADING_WEIGHT);
     }
 
     for (const sec of component.sections) {
-      const secScore = scoreField(sec.snippet, terms, SNIPPET_WEIGHT);
+      const secScore = accrue(sec.snippet, SNIPPET_WEIGHT);
       if (secScore > 0) {
         score += secScore;
         scoredSections.push({ section: sec, matches: secScore });
@@ -158,6 +203,15 @@ export const searchComponentDocs = (
     }
 
     if (score <= 0) continue;
+
+    // Scale by query coverage, then reward an exact-phrase hit. Round so the
+    // emitted score stays a tidy relative number rather than a long float.
+    score *=
+      COVERAGE_FLOOR + (1 - COVERAGE_FLOOR) * (matched.size / terms.length);
+    if (phrase && haystacks.join(' ').toLowerCase().includes(phrase)) {
+      score += PHRASE_BONUS;
+    }
+    score = Math.round(score * 100) / 100;
 
     // Most-relevant section first, then emit only the top few as evidence —
     // the full set was already used for scoring above.

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { cachePathFor } from './cache.js';
 import { docsUrl } from './config.js';
 import {
+  type SearchComponent,
   type SearchIndex,
   loadSearchIndex,
   searchComponentDocs,
@@ -140,6 +141,113 @@ describe('searchComponentDocs', () => {
     const empty: SearchIndex = { baseUrl: 'x', components: [] };
 
     expect(searchComponentDocs(empty, 'validation')).toEqual([]);
+  });
+
+  // --- word-aware / camelCase / coverage / phrase tuning -------------------
+
+  const names = (idx: SearchIndex, q: string) =>
+    searchComponentDocs(idx, q).map(r => r.name);
+
+  const make = (components: SearchIndex['components']): SearchIndex => ({
+    baseUrl: 'x',
+    components,
+  });
+
+  const empty: Omit<SearchComponent, 'slug' | 'name'> = {
+    description: null,
+    badge: null,
+    headings: [],
+    sections: [],
+  };
+
+  test('matches a camelCase title fragment (field → TagField/TextField)', () => {
+    const idx = make([
+      { ...empty, slug: 'components/form/tagfield', name: 'TagField' },
+      { ...empty, slug: 'components/form/textfield', name: 'TextField' },
+      { ...empty, slug: 'components/actions/button', name: 'Button' },
+    ]);
+
+    const result = names(idx, 'field');
+
+    expect(result).toEqual(expect.arrayContaining(['TagField', 'TextField']));
+    expect(result).not.toContain('Button');
+  });
+
+  test('whole-word matching: "form" does not match "Format"', () => {
+    const idx = make([
+      {
+        ...empty,
+        slug: 'components/x/dateformat',
+        name: 'DateFormat',
+        description: 'Format dates and times.',
+      },
+      {
+        ...empty,
+        slug: 'components/x/form',
+        name: 'Form',
+        description: 'A form wrapper.',
+      },
+    ]);
+
+    // The classic substring false positive (form ∈ Format) is gone…
+    expect(names(idx, 'form')).toEqual(['Form']);
+    // …but "format" still finds the component that is actually about formatting.
+    expect(names(idx, 'format')).toContain('DateFormat');
+  });
+
+  test('plural query matches the singular title (buttons → Button)', () => {
+    const idx = make([
+      { ...empty, slug: 'components/actions/button', name: 'Button' },
+    ]);
+
+    expect(names(idx, 'buttons')).toEqual(['Button']);
+  });
+
+  test('coverage scaling: a full-query match outranks a higher-weighted single-term match', () => {
+    const idx = make([
+      {
+        ...empty,
+        slug: 'components/x/both',
+        name: 'Both',
+        description: 'alpha beta together.',
+      },
+      {
+        ...empty,
+        slug: 'components/x/alpha',
+        name: 'Alpha', // title weight 3 for the single term "alpha"
+        description: 'only one term.',
+      },
+    ]);
+
+    const results = searchComponentDocs(idx, 'alpha beta');
+
+    expect(results.map(r => r.name)).toEqual(['Both', 'Alpha']);
+    // Alpha matched only 1 of 2 terms, so its raw title score (3) is scaled by
+    // the coverage floor: 3 * (0.5 + 0.5 * 0.5) = 2.25.
+    const alpha = results.find(r => r.name === 'Alpha');
+    expect(alpha?.score).toBeCloseTo(2.25);
+  });
+
+  test('phrase bonus: an exact adjacent phrase outranks the same terms scattered', () => {
+    const idx = make([
+      {
+        ...empty,
+        slug: 'components/x/adjacent',
+        name: 'Adjacent',
+        description: 'date picker selection.',
+      },
+      {
+        ...empty,
+        slug: 'components/x/scattered',
+        name: 'Scattered',
+        description: 'pick a date from the picker list.',
+      },
+    ]);
+
+    const results = searchComponentDocs(idx, 'date picker');
+
+    expect(results.map(r => r.name)).toEqual(['Adjacent', 'Scattered']);
+    expect(results[0].score).toBeGreaterThan(results[1].score + 1);
   });
 });
 
