@@ -1,0 +1,42 @@
+title: Filterable data table with applied-filter chips
+brief: >-
+  A searchable, filterable venues table with a Drawer-based filter form and
+  removable "applied filter" chips. Filter and search state is synced to the URL
+  query string so views are shareable and survive reloads.
+patterns:
+  - user-input/filter
+mock_data:
+  - alias: '@/lib/data/venues'
+    shape: |
+      // Replace with the consumer's own data source. `type` indexes into
+      // `venueTypes`; `amenities`/`parking` index into their option arrays.
+      export const venueTypes: readonly string[];
+      export const venueTraits: readonly string[];
+      export const amenitiesOptions: readonly string[];
+      export const parkingOptions: readonly string[];
+      export const venues: Array<{
+        id: string;
+        name: string;
+        type: number;
+        street: string;
+        city: string;
+        country: string;
+        capacity: number;
+        price: { from: number; to: number };
+        rating: number;
+        traits: string[];
+        amenities: number[];
+        parking: number[];
+      }>;
+key_files:
+  - utils.tsx
+  - toolbar.tsx
+  - applied-filter.tsx
+  - venues-view.tsx
+scaffolding_files:
+  - page.tsx
+peer_deps:
+  - '@marigold/icons'
+  - '@marigold/system'
+  - nuqs
+  - zod

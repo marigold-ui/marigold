@@ -79,6 +79,16 @@ jobs:
             }}
           # Required by Chromatic
           fetch-depth: 0
+      - name: Resolve checked-out commit
+        # The checkout above always lands on a real, persisted commit
+        # (merged squash commit on main / PR head / branch tip). We pin
+        # Chromatic to this SHA so the merge-triggered baseline build isn't
+        # tagged to GITHUB_SHA, which on pull_request events is an ephemeral
+        # test-merge ref that never enters git history — making the main
+        # baseline unusable and freezing the Chromatic ancestor at the last
+        # build that happened to have a real commit.
+        id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: pnpm/action-setup@v6.0.8 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
@@ -92,6 +102,18 @@ jobs:
       - name: Run visual regression tests on chromatic
         id: chromatic
         uses: chromaui/action@latest
+        env:
+          # Force Chromatic to record the build against the real checked-out
+          # commit instead of GITHUB_SHA, which on pull_request events is an
+          # ephemeral test-merge ref that never enters git history (making the
+          # build unusable as a baseline). The CLI only honors this override
+          # when BOTH CHROMATIC_SHA and CHROMATIC_BRANCH are set
+          # (isFromEnvironmentVariable = CHROMATIC_SHA && CHROMATIC_BRANCH);
+          # CHROMATIC_SLUG must also be passed because the override path sets
+          # `slug = CHROMATIC_SLUG` unconditionally and would otherwise clear it.
+          CHROMATIC_SHA: ${{ steps.sha.outputs.sha }}
+          CHROMATIC_BRANCH: ${{ steps.resolve-branch.outputs.branch }}
+          CHROMATIC_SLUG: ${{ github.repository }}
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           branchName: ${{ steps.resolve-branch.outputs.branch }}
