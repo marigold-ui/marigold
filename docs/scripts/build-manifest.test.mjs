@@ -57,6 +57,14 @@ describe('cleanProse', () => {
     expect(out.length).toBeLessThanOrEqual(400);
     expect(out).not.toMatch(/\s{2,}/);
   });
+
+  test('strips rule/table separators but keeps prose flags like --offline', () => {
+    expect(cleanProse('Intro --- more')).toBe('Intro more');
+    expect(cleanProse('| Col | --- | val |')).toBe('Col val');
+    expect(cleanProse('Works offline with the --offline flag.')).toBe(
+      'Works offline with the --offline flag.'
+    );
+  });
 });
 
 describe('parseComponentDoc', () => {

@@ -123,9 +123,11 @@ export const cleanProse = text => {
     .replace(/\*([^*]+)\*/g, '$1')
     // leftover heading markers from ### subsections
     .replace(/^#{1,6}\s+/gm, '')
-    // table pipes and rule/separator runs
+    // table pipes and rule/separator runs. Only collapse whitespace-bounded
+    // hyphen runs (markdown `---` rules, `| --- |` table separators) so real
+    // prose flags like `--offline` keep their leading dashes.
     .replace(/\|/g, ' ')
-    .replace(/-{2,}/g, ' ')
+    .replace(/(^|\s)-{2,}(?=\s|$)/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
   return cleaned.length > SNIPPET_MAX
