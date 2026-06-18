@@ -77,7 +77,8 @@
     "@react-types/shared": "^3.35.0",
     "@react-types/table": "~3.13.0",
     "motion": "12.39.0",
-    "react-aria-components": "^1.18.0"
+    "react-aria-components": "^1.18.0",
+    "react-select": "^5.10.2"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
@@ -86,15 +87,18 @@
   "devDependencies": {
     "@marigold/icons": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
+    "@size-limit/preset-small-lib": "^12.1.0",
     "@types/react": "19.2.15",
     "lucide-react": "^1.9.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "size-limit": "^12.1.0",
     "tsdown": "0.22.2"
   },
   "scripts": {
     "build": "tsdown",
     "watch": "tsdown --watch",
+    "size": "size-limit",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
 }
