@@ -9,6 +9,14 @@ import withMarigoldProviders from './decorators.js';
 import './styles.css';
 
 const customViewports = {
+  extraSmallScreen: {
+    name: 'Extra Small Screen (320px)',
+    styles: {
+      width: '320px',
+      height: '568px',
+    },
+    type: 'mobile' as const,
+  },
   smallScreen: {
     name: 'Small Screen (639px)',
     styles: {
