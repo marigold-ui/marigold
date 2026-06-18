@@ -77,7 +77,7 @@ export const TrayModal = ({
         onOpenChange={handleOpenChange}
         isDismissable={dismissable}
         isKeyboardDismissDisabled={!keyboardDismissable}
-        className={cn(classNames.overlay)}
+        className={cn('z-50', classNames.overlay)}
       >
         <Modal className={classNames.container}>{children}</Modal>
       </ModalOverlay>
@@ -93,7 +93,7 @@ export const TrayModal = ({
           onOpenChange={handleOpenChange}
           isDismissable={dismissable}
           isKeyboardDismissDisabled={!keyboardDismissable}
-          className={cn(classNames.overlay)}
+          className={cn('z-50', classNames.overlay)}
         >
           <MotionModal
             className={classNames.container}
