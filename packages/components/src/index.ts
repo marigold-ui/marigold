@@ -7,9 +7,11 @@ export {
   useAsyncList,
   useListData,
   useDragAndDrop,
+  useLandmark,
   DateFormat,
   NumericFormat,
 } from './hooks';
+export type { AriaLandmarkRole, AriaLandmarkProps } from './hooks';
 
 // Component exports
 export { Accordion } from './Accordion/Accordion';
