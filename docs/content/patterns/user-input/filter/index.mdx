@@ -30,6 +30,50 @@ The image below shows the main areas of the pattern, their placement within the 
 
 Filters are most valuable when a data set is too large or complex for users to easily scan in its entirety. They become especially useful when multiple parameters or categories can significantly narrow the results. Well-applied filters streamline the process of finding relevant items, reduce information overload, and enable users to complete tasks more efficiently.
 
+### Applying Filters
+
+How a filter commits its changes is one of the first decisions to get right, because the rest of the pattern is built on top of it. There are two models, and a well-built filter uses **both** &mdash; each in the place it fits.
+
+<Callout title="The default split in this pattern">
+
+- **Quick filters in the toolbar apply instantly.** Each is a single decision, so the result updates the moment the user changes it. The search field works the same way.
+- **The filter panel (the slide-in drawer) batches.** It collects changes across several parameters and applies them only when the user submits with an explicit **Apply** action.
+
+</Callout>
+
+This split is not arbitrary. It mirrors how a user works in each place: a quick filter is one fast choice that benefits from immediate feedback, while the panel is where several criteria are composed and committed together.
+
+|               | Instant (live)                                                                  | Batch (apply)                                                                              |
+| ------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Commits**   | On every change                                                                 | On an explicit Apply action                                                                |
+| **Best for**  | A single decision: one toolbar quick filter, the search field, a status switch  | Composing several criteria at once: the slide-in panel / drawer                            |
+| **Why**       | Immediate feedback; teaches what each option does; suits exploratory refinement | Predictable number of queries; one result update instead of many; suits goal-directed work |
+| **Watch out** | A query on every interaction; results visibly reflow on each change             | One extra click; a user can build a zero-result combination with no early warning          |
+
+These map to the criteria documented across [IBM Carbon](https://carbondesignsystem.com/patterns/filtering/), [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns), and [SAP Fiori](https://experience.sap.com/fiori-design-web/filter-bar/): apply instantly for a single, cheap, fast decision; batch when several criteria are combined or each query is expensive (a heuristic [PatternFly](https://www.patternfly.org/patterns/filters/design-guidelines/) uses as well). The split also tracks user intent &mdash; [Nielsen Norman Group](https://www.nngroup.com/articles/applying-filters/) ties instant filtering to exploration and batch to goal-directed work &mdash; and device: [Baymard's research](https://baymard.com/learn/ecommerce-filter-ui) finds an explicit apply step is expected on mobile and for multi-select controls, where live updates are disorienting.
+
+#### Combining instant and batch in one view
+
+Because the two models live in clearly different places &mdash; a bare control in the toolbar versus a panel with its own Apply button &mdash; using both on the same screen is a deliberate, established choice rather than an inconsistency. Real products do this widely: Airbnb, Shopify, Glassdoor, and GoFundMe all pair instant toolbar filters with a batched "more filters" panel.
+
+What makes it work is the affordance. The Apply button and the panel container signal "compose, then commit"; a bare toolbar control signals "this takes effect now". Keep that signal strong and the two models stay legible side by side.
+
+<Callout type="warn" title="Keep the two models visually distinct">
+
+The real risk is a control whose apply behavior you cannot guess by looking at it &mdash; for example a multi-select dropdown sitting in the toolbar with no apply button, next to a panel that does have one. If a control could plausibly be either, users will not know whether their change has taken effect. Make instant controls look instant, and keep batched controls inside the panel behind its Apply action.
+
+Explicit guidance on mixing the two models is thin: it is common in practice and the affordance argument holds, but at least one source ([Algolia](https://www.algolia.com/blog/ux/web-content-accessibility-guidelines-wcag-how-to-make-site-search-work-for-people-with-disabilities/)) warns against mixing, and some systems (SAP Fiori) avoid it with a single global mode. When in doubt, keep apply behavior uniform within one control group.
+
+</Callout>
+
+#### The apply action
+
+For the panel's commit control, label it clearly and tell users what they are committing to:
+
+- **Label by behavior.** Use **Apply** for a batched panel and **Done** for a panel that filters live, a convention from [IBM Carbon](https://carbondesignsystem.com/patterns/filtering/).
+- **Show the result count on the button** where the count is available, for example "Show 47 results", so users know the outcome before they commit. [Baymard](https://baymard.com/learn/ecommerce-filter-ui) finds this especially valuable on mobile, where it is the clearest way to preview impact.
+- **Announce the change to assistive technology.** Instant or batched, a filter change updates the data set silently for screen reader users. Render the new result count in a live region so the outcome is spoken &mdash; see [Accessibility](#accessibility).
+
 ### Types and Formats
 
 Filters can be presented in several formats depending on the type of data and how users are expected to interact with it. The choice of filter type should reflect the nature of the data, the available space in the interface, and the intended user workflow. Common types include:
@@ -133,7 +177,7 @@ There is also an upper limit to what a slide-in panel can hold. The panel works 
 
 When usage is concentrated on a few filters, hiding them in the panel adds an unnecessary step to the most common task. Establish a two-tier hierarchy: surface the few high-value filters as quick filters directly in the toolbar, and keep the full set behind a "More filters" button that opens the panel. This pairs a small set of always-visible controls for the frequent cases with a complete panel for everything else, an approach documented by both [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/index-filters) and [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns).
 
-Promote at most 2 or 3 quick filters, chosen by actual usage, and prefer compact controls such as a [Select](/components/form/select). Quick filters apply instantly, since each represents a single quick decision, while the panel remains the place for combining several criteria and applying them together.
+Promote at most 2 or 3 quick filters, chosen by actual usage, and prefer compact controls such as a [Select](/components/form/select). Quick filters apply instantly, since each represents a single quick decision, while the panel remains the place for combining several criteria and applying them together &mdash; see [Applying Filters](#applying-filters) for how the two models work side by side.
 
 <ComponentDemo name="filter-promoted" />
 
@@ -180,14 +224,6 @@ When the filter panel is closed, users need a reliable signal that the data set 
 Add a [Badge](/components/content/badge) with the number of active filters to the filter button. The count is always visible alongside the trigger, signals filtering at a glance, and combined with the applied filter tags gives a complete snapshot of what is narrowing the data set.
 
 <ComponentDemo name="filter-trigger-badge" />
-
-### Batch Filtering
-
-Batch filtering allows multiple selections to be made across different parameters without instantly updating the results. Instead, the data set is refreshed only when a global "apply" action is triggered.
-
-Whether to apply filters instantly or in a batch is a trade-off rather than a rule. Instant updates give immediate feedback and suit exploratory refinement, but they trigger a query on every interaction. Batch apply suits combining several criteria in one go and keeps the number of requests predictable, at the price of one extra click. A practical heuristic, also used by [PatternFly](https://www.patternfly.org/patterns/filters/design-guidelines/): apply instantly when a query is cheap and fast, batch when each query is expensive or results take noticeably long to load.
-
-The filter panel in this pattern batches by design. Its form collects all changes and applies them on submit, which fits the panel's purpose of setting several criteria at once. Controls outside the panel, such as the search field or quick filters, apply instantly.
 
 ### Handling Empty States
 
