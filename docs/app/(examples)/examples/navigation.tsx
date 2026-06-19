@@ -98,6 +98,13 @@ const reporting: NavSection = {
       children: [
         {
           kind: 'Item',
+          slug: 'revenue-report-flows',
+          label: 'Übersicht: Varianten',
+          docsHref: '/patterns/layout/app-frame',
+          docsLabel: 'App Frame Pattern',
+        },
+        {
+          kind: 'Item',
           slug: 'revenue-report',
           label: 'Variante A: Liste',
           docsHref: '/patterns/layout/app-frame',
