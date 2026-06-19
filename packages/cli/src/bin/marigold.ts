@@ -8,6 +8,7 @@ import { runCompleteSuggest, runCompletion } from '../commands/completion.js';
 import { runDocs } from '../commands/docs.js';
 import { type ExamplesSubcommand, runExamples } from '../commands/examples.js';
 import { runList } from '../commands/list.js';
+import { runSearch } from '../commands/search.js';
 import {
   type TelemetrySubcommand,
   runTelemetry,
@@ -61,6 +62,7 @@ ${pc.bold('Usage:')}
 ${pc.bold('Commands:')}
   docs <name|slug>      Fetch docs for a component or page
   list                  List available components and pages
+  search <query>        Find components by what their docs say
   examples <action>     Browse application patterns (list | get <slug>)
   init                  Set up Marigold in a project
   telemetry <action>    Manage telemetry (status|enable|disable)
@@ -77,6 +79,12 @@ ${pc.bold('List options:')}
                       patterns, getting-started, ...)
   --search   <term>   Filter by name
   --format   <name>   markdown | json | plain
+
+${pc.bold('Search options:')}
+  --limit    <n>      Max results (default: 5)
+  --format   <name>   markdown | json | plain (default: markdown)
+  --fresh             Bypass the local cache
+  --offline           Use only the local cache
 
 ${pc.bold('Examples options:')}
   --format   <name>   markdown | json | plain (default: markdown)
@@ -138,6 +146,18 @@ const parseListCommand = (argv: string[]) =>
     },
   });
 
+const parseSearchCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      limit: { type: 'string' },
+      format: { type: 'string' },
+      fresh: { type: 'boolean', default: false },
+      offline: { type: 'boolean', default: false },
+    },
+  });
+
 const parseExamplesCommand = (argv: string[]) =>
   parseArgs({
     args: argv,
@@ -161,6 +181,13 @@ const parseInitCommand = (argv: string[]) =>
 
 const isExamplesSub = (v: string): v is ExamplesSubcommand =>
   (EXAMPLES_SUBCOMMANDS as readonly string[]).includes(v);
+
+// Write command output, guaranteeing a single trailing newline so piped/captured
+// output stays line-delimited regardless of what the renderer produced.
+const writeOutput = (output: string): void => {
+  process.stdout.write(output);
+  if (!output.endsWith('\n')) process.stdout.write('\n');
+};
 
 export const main = async (
   argv: string[] = process.argv.slice(2)
@@ -228,8 +255,7 @@ export const main = async (
         offline: values.offline,
       });
 
-      process.stdout.write(result.output);
-      if (!result.output.endsWith('\n')) process.stdout.write('\n');
+      writeOutput(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'list') {
       const { values } = parseListCommand(rest);
@@ -254,7 +280,43 @@ export const main = async (
         offline: values.offline,
       });
 
-      process.stdout.write(result.output);
+      writeOutput(result.output);
+      cacheHit = result.cacheHit;
+    } else if (command === 'search') {
+      const { positionals, values } = parseSearchCommand(rest);
+      // Join positionals so both `search "field validation"` and the
+      // unquoted `search field validation` resolve to the same query.
+      const query = positionals.join(' ').trim();
+
+      telemetryArgs = {
+        format: values.format ?? 'markdown',
+        ...(query ? { query: 'used' } : {}),
+        ...(values.limit ? { limit: values.limit } : {}),
+        ...(values.fresh ? { fresh: 'true' } : {}),
+        ...(values.offline ? { offline: 'true' } : {}),
+      };
+
+      if (!query) fail('Usage: marigold search <query>');
+      if (values.format && !isOutputFormat(values.format)) {
+        fail(`Invalid --format: ${values.format}`);
+      }
+      let limit: number | undefined;
+      if (values.limit !== undefined) {
+        limit = Number(values.limit);
+        if (!Number.isInteger(limit) || limit < 1) {
+          fail(`Invalid --limit: ${values.limit} (must be a positive integer)`);
+        }
+      }
+
+      const result = await runSearch({
+        query,
+        limit,
+        format: (values.format as OutputFormat | undefined) ?? 'markdown',
+        fresh: values.fresh,
+        offline: values.offline,
+      });
+
+      writeOutput(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'examples') {
       const { positionals, values } = parseExamplesCommand(rest);
@@ -292,8 +354,7 @@ export const main = async (
         offline: values.offline,
       });
 
-      process.stdout.write(result.output);
-      if (!result.output.endsWith('\n')) process.stdout.write('\n');
+      writeOutput(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);
@@ -315,8 +376,7 @@ export const main = async (
       if (!sub || !isTelemetrySub(sub)) {
         fail('Usage: marigold telemetry <status|enable|disable>');
       }
-      const output = runTelemetry({ subcommand: sub });
-      process.stdout.write(output);
+      writeOutput(runTelemetry({ subcommand: sub }));
     } else {
       fail(`Unknown command: ${command}\n\nRun "marigold --help" for usage.`);
     }

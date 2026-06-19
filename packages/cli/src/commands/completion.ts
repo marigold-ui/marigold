@@ -155,6 +155,11 @@ export const computeSuggestions = (words: string[]): string[] => {
     return [];
   }
 
+  if (sub.positionalKind === 'query') {
+    // Free-form search query — nothing static to complete.
+    return [];
+  }
+
   if (sub.name === 'completion') {
     if (before.length > 0) return [];
     return [...COMPLETION_SHELLS].filter(startsWith);
