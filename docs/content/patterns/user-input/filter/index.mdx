@@ -32,7 +32,7 @@ Filters are most valuable when a data set is too large or complex for users to e
 
 ### Applying Filters
 
-How a filter commits its changes is one of the first decisions to get right, because the rest of the pattern is built on top of it. There are two models, and a well-built filter uses **both** &mdash; each in the place it fits.
+How a filter commits its changes is one of the first decisions to get right, because the rest of the pattern is built on top of it. There are two models, and a well-built filter uses **both**, each in the place it fits.
 
 <Callout title="The default split in this pattern">
 
@@ -47,22 +47,22 @@ This split is not arbitrary. It mirrors how a user works in each place: a quick 
 | ------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | **Commits**   | On every change                                                                 | On an explicit Apply action                                                                |
 | **Best for**  | A single decision: one toolbar quick filter, the search field, a status switch  | Composing several criteria at once: the slide-in panel / drawer                            |
-| **Why**       | Immediate feedback; teaches what each option does; suits exploratory refinement | Predictable number of queries; one result update instead of many; suits goal-directed work |
-| **Watch out** | A query on every interaction; results visibly reflow on each change             | One extra click; a user can build a zero-result combination with no early warning          |
+| **Why**       | Immediate feedback, teaches what each option does, suits exploratory refinement | Predictable number of queries, one result update instead of many, suits goal-directed work |
+| **Watch out** | A query on every interaction, and results visibly reflow on each change         | One extra click, and a user can build a zero-result combination with no early warning      |
 
-These map to the criteria documented across [IBM Carbon](https://carbondesignsystem.com/patterns/filtering/), [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns), and [SAP Fiori](https://experience.sap.com/fiori-design-web/filter-bar/): apply instantly for a single, cheap, fast decision; batch when several criteria are combined or each query is expensive (a heuristic [PatternFly](https://www.patternfly.org/patterns/filters/design-guidelines/) uses as well). The split also tracks user intent &mdash; [Nielsen Norman Group](https://www.nngroup.com/articles/applying-filters/) ties instant filtering to exploration and batch to goal-directed work &mdash; and device: [Baymard's research](https://baymard.com/learn/ecommerce-filter-ui) finds an explicit apply step is expected on mobile and for multi-select controls, where live updates are disorienting.
+The choice follows from the cost and shape of the decision. Apply instantly for a single, cheap, fast decision. Batch when several criteria are combined or each query is expensive. The split also tracks user intent, because instant filtering suits exploration while batch suits goal-directed work. On mobile, and for multi-select controls, an explicit apply step is what users expect, since live updates there are disorienting.
 
 #### Combining instant and batch in one view
 
-Because the two models live in clearly different places &mdash; a bare control in the toolbar versus a panel with its own Apply button &mdash; using both on the same screen is a deliberate, established choice rather than an inconsistency. Real products do this widely: Airbnb, Shopify, Glassdoor, and GoFundMe all pair instant toolbar filters with a batched "more filters" panel.
+Because the two models live in clearly different places, a bare control in the toolbar versus a panel with its own Apply button, using both on the same screen is a deliberate choice rather than an inconsistency. Pairing instant toolbar filters with a batched "more filters" panel is a common and well-established arrangement.
 
-What makes it work is the affordance. The Apply button and the panel container signal "compose, then commit"; a bare toolbar control signals "this takes effect now". Keep that signal strong and the two models stay legible side by side.
+What makes it work is the affordance. The Apply button and the panel container signal "compose, then commit", while a bare toolbar control signals "this takes effect now". Keep that signal strong and the two models stay legible side by side.
 
 <Callout type="warn" title="Keep the two models visually distinct">
 
-The real risk is a control whose apply behavior you cannot guess by looking at it &mdash; for example a multi-select dropdown sitting in the toolbar with no apply button, next to a panel that does have one. If a control could plausibly be either, users will not know whether their change has taken effect. Make instant controls look instant, and keep batched controls inside the panel behind its Apply action.
+The real risk is a control whose apply behavior you cannot guess by looking at it, for example a multi-select dropdown sitting in the toolbar with no apply button, next to a panel that does have one. If a control could plausibly be either, users will not know whether their change has taken effect. Make instant controls look instant, and keep batched controls inside the panel behind its Apply action.
 
-Explicit guidance on mixing the two models is thin: it is common in practice and the affordance argument holds, but at least one source ([Algolia](https://www.algolia.com/blog/ux/web-content-accessibility-guidelines-wcag-how-to-make-site-search-work-for-people-with-disabilities/)) warns against mixing, and some systems (SAP Fiori) avoid it with a single global mode. When in doubt, keep apply behavior uniform within one control group.
+Mixing the two models is not risk-free. The safe default is to keep apply behavior uniform within one control group. Only mix instant and batched controls when you can keep them visually distinct, so a user can always tell which model a control follows.
 
 </Callout>
 
@@ -70,9 +70,9 @@ Explicit guidance on mixing the two models is thin: it is common in practice and
 
 For the panel's commit control, label it clearly and tell users what they are committing to:
 
-- **Label by behavior.** Use **Apply** for a batched panel and **Done** for a panel that filters live, a convention from [IBM Carbon](https://carbondesignsystem.com/patterns/filtering/).
-- **Show the result count on the button** where the count is available, for example "Show 47 results", so users know the outcome before they commit. [Baymard](https://baymard.com/learn/ecommerce-filter-ui) finds this especially valuable on mobile, where it is the clearest way to preview impact.
-- **Announce the change to assistive technology.** Instant or batched, a filter change updates the data set silently for screen reader users. Render the new result count in a live region so the outcome is spoken &mdash; see [Accessibility](#accessibility).
+- **Label by behavior.** Use **Apply** for a batched panel and **Done** for a panel that filters live.
+- **Show the result count on the button** where the count is available, for example "Show 47 results", so users know the outcome before they commit. This is especially valuable on mobile, where it is the clearest way to preview impact.
+- **Announce the change to assistive technology.** Instant or batched, a filter change updates the data set silently for screen reader users. Render the new result count in a live region so the outcome is spoken. See [Accessibility](#accessibility) for details.
 
 ### Types and Formats
 
@@ -131,7 +131,7 @@ This is particularly helpful in large datasets where the number of matching resu
 
 Counts are also useful in single select filters such as those built with radio buttons. Even though only one option can be active at a time, the numbers preview the impact before a choice is made. They also reinforce clarity when a filter is already applied, showing exactly what scope remains.
 
-Keep the count visually quiet so it informs without competing with the option itself. Use a muted [Text](/components/content/text) inside the option's label rather than a heavier element like a Badge, which draws too much attention for a secondary number. Keep it the same size as the label so the two share a baseline and stay aligned; the muted color alone is enough to make the count recede. Always place the count inside the label, regardless of the control used. This keeps the placement consistent across filter types and ensures assistive technology announces the count together with the option.
+Keep the count visually quiet so it informs without competing with the option itself. Use a muted [Text](/components/content/text) inside the option's label rather than a heavier element like a Badge, which draws too much attention for a secondary number. Keep it the same size as the label so the two share a baseline and stay aligned. The muted color alone is enough to make the count recede. Always place the count inside the label, regardless of the control used. This keeps the placement consistent across filter types and ensures assistive technology announces the count together with the option.
 
 <ComponentDemo name="filter-option-counts" />
 
@@ -155,7 +155,7 @@ Exclude filters let users say "show everything except these" instead of naming e
 
 <ComponentDemo name="filter-exclude" />
 
-**Switch the operator from include to exclude.** When a filter needs to flip polarity on the same set of values, give it an explicit operator such as "Is any of" / "Is none of". The selected values stay put; only their meaning changes, so users can move a filter from include to exclude without re-picking. This is the model used by structured filter builders in Notion, Airtable, Linear, and Dovetail, and it scales better than deselection when the list of values to keep would be long but the list to remove is short. Prefer it inside an advanced or per-field filter builder rather than a simple panel, and offer only one of the two mechanisms per filter so there are not two ways to express the same intent.
+**Switch the operator from include to exclude.** When a filter needs to flip polarity on the same set of values, give it an explicit operator such as "Is any of" / "Is none of". The selected values stay put, and only their meaning changes, so users can move a filter from include to exclude without re-picking. This model scales better than deselection when the list of values to keep would be long but the list to remove is short. Prefer it inside an advanced or per-field filter builder rather than a simple panel, and offer only one of the two mechanisms per filter so there are not two ways to express the same intent.
 
 <ComponentDemo name="filter-exclude-toggle" />
 
@@ -165,19 +165,19 @@ Whichever mechanism you choose, make the exclusion unmistakable wherever the fil
 
 The techniques above help within a single filter, but a filter panel can also grow in the number of filters it contains. A panel with 15 or more filter groups forces users to scroll past many controls that are irrelevant to their current task, making the relevant ones harder to find.
 
-Group related parameters into collapsible sections using an [Accordion](/components/navigation/accordion) with `allowsMultipleExpanded`. Expand the most-used groups by default and collapse the rest, so the panel opens with a compact overview while every filter stays one click away. This approach is documented in [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns) and supported by [Baymard's filtering research](https://baymard.com/learn/ecommerce-filter-ui).
+Group related parameters into collapsible sections using an [Accordion](/components/navigation/accordion) with `allowsMultipleExpanded`. Expand the most-used groups by default and collapse the rest, so the panel opens with a compact overview while every filter stays one click away.
 
 <ComponentDemo name="filter-group-sections" />
 
-Be aware that collapsing comes at a cost for expert users. [Research on accordions](https://www.nngroup.com/articles/accordions-on-desktop/) shows they increase interaction cost when users need most of the content. If your users work with the majority of filter groups in every session, keep more groups expanded by default and offer an "Expand all" and "Collapse all" control so they can reveal or hide everything in a single action. [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns) recommends the same pairing: small accordion sections for each parameter group, plus an expand/collapse-all control to manage them at once.
+Be aware that collapsing comes at a cost for expert users, because it increases interaction cost when they need most of the content. If your users work with the majority of filter groups in every session, keep more groups expanded by default and offer an "Expand all" and "Collapse all" control so they can reveal or hide everything in a single action. The reliable pairing is small accordion sections for each parameter group, plus an expand and collapse all control to manage them at once.
 
 There is also an upper limit to what a slide-in panel can hold. The panel works well because the data set stays visible while filtering, but once the number of filter groups grows far beyond what fits on one or two screens of panel height, consider a dedicated filter page or full-screen dialog instead. More filters is not automatically better: revisit whether each filter earns its place before adding structure around them.
 
 ### Quick Filters
 
-When usage is concentrated on a few filters, hiding them in the panel adds an unnecessary step to the most common task. Establish a two-tier hierarchy: surface the few high-value filters as quick filters directly in the toolbar, and keep the full set behind a "More filters" button that opens the panel. This pairs a small set of always-visible controls for the frequent cases with a complete panel for everything else, an approach documented by both [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/index-filters) and [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns).
+When usage is concentrated on a few filters, hiding them in the panel adds an unnecessary step to the most common task. Establish a two-tier hierarchy: surface the few high-value filters as quick filters directly in the toolbar, and keep the full set behind a "More filters" button that opens the panel. This pairs a small set of always-visible controls for the frequent cases with a complete panel for everything else.
 
-Promote at most 2 or 3 quick filters, chosen by actual usage, and prefer compact controls such as a [Select](/components/form/select). Quick filters apply instantly, since each represents a single quick decision, while the panel remains the place for combining several criteria and applying them together &mdash; see [Applying Filters](#applying-filters) for how the two models work side by side.
+Promote at most 2 or 3 quick filters, chosen by actual usage, and prefer compact controls such as a [Select](/components/form/select). Quick filters apply instantly, since each represents a single quick decision, while the panel remains the place for combining several criteria and applying them together. See [Applying Filters](#applying-filters) for how the two models work side by side.
 
 <ComponentDemo name="filter-promoted" />
 
@@ -197,7 +197,7 @@ How a quick filter shows its state depends on whether it allows one value or sev
 
 For a **single select** quick filter, showing the chosen value in the trigger is fine, since only one value is ever possible. The applied filter tag for it is then optional, as the control already conveys the selection. The promoted [Select](/components/form/select) above works this way.
 
-For a **multi select** quick filter, do not list every value in the trigger. Show the dimension label with a count instead, such as "Status (2)", and let the applied filter tags carry the actual values. This keeps the trigger compact and avoids showing the same values in two places. [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns), [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/index-filters), and [IBM Carbon](https://carbondesignsystem.com/patterns/filtering/) all label the trigger by dimension and surface the chosen values separately.
+For a **multi select** quick filter, do not list every value in the trigger. Show the dimension label with a count instead, such as "Status (2)", and let the applied filter tags carry the actual values. This keeps the trigger compact and avoids showing the same values in two places. Label the trigger by dimension and surface the chosen values separately.
 
 Build this with a [Select](/components/form/select) in `selectionMode="multiple"` and a `renderValue` that returns the label and count. Drive the options with an `items` collection so the selected values reach `renderValue`. When nothing is selected, the placeholder shows the dimension label on its own.
 
@@ -205,13 +205,13 @@ Build this with a [Select](/components/form/select) in `selectionMode="multiple"
 
 #### Segmented Quick Filters
 
-For a small set of mutually exclusive options, such as a status or a view switch, a segmented control reads as a single, always-visible choice and applies instantly. A dedicated Segmented Control component is planned ([DST-765](https://reservix.atlassian.net/browse/DST-765)); until it lands, keep these options in the panel or use a single select [Select](/components/form/select) in the toolbar. Do not reach for `ToggleButtonGroup` here, as it is a group of independent action buttons, not a filter control.
+For a small set of mutually exclusive options, such as a status or a view switch, a segmented control reads as a single, always-visible choice and applies instantly. A dedicated Segmented Control component is planned ([DST-765](https://reservix.atlassian.net/browse/DST-765)). Until it lands, keep these options in the panel or use a single select [Select](/components/form/select) in the toolbar. Do not reach for `ToggleButtonGroup` here, as it is a group of independent action buttons, not a filter control.
 
 #### Date Range Presets
 
 Date is one of the most common things to filter by, and relative ranges such as "Last 7 days", "Last 30 days", or "This month" cover the majority of cases. Offer these as a quick filter so the frequent ranges are one click away, without making users open a calendar and count days.
 
-Use a [Select](/components/form/select) of relative presets, applied instantly. For the cases a preset cannot express, include a "Custom range…" option that reveals an absolute range built from two [DatePicker](/components/form/datepicker) fields. Keep the Select as the single source of truth: choosing a preset clears any custom range, and entering a custom range marks the selection as "Custom". This mirrors the date filters in analytics tools such as Google Analytics and Stripe.
+Use a [Select](/components/form/select) of relative presets, applied instantly. For the cases a preset cannot express, include a "Custom range…" option that reveals an absolute range built from two [DatePicker](/components/form/datepicker) fields. Keep the Select as the single source of truth: choosing a preset clears any custom range, and entering a custom range marks the selection as "Custom".
 
 <ComponentDemo name="filter-date-presets" />
 
@@ -239,17 +239,17 @@ An empty state can also occur in the applied filters area when no filters are cu
 
 The recommended approach for applied filter labels is to keep them clear and structured. Combine three parts: the _identifier_ (what is filtered, such as category, property, or type), the relative or absolute _operator_ (how it applies, for example is, is above, is between, or a direct match), and the _value_ (the number, threshold, or date).
 
-For absolute values, pair the filter name with its exact value, for example "Status is Approved", to be concise yet precise. For relative values, add the relative term and exact dates or details, such as "Last 7 days (Aug 3 – Aug 9)", to avoid ambiguity. Use clear operators like "is", "is between", "before", "after", and "in the last" for readability. Symbols (>, =, :) can work in compact or technical views but may be less clear for broad audiences, especially with relative timeframes.
+For absolute values, pair the filter name with its exact value, for example "Status is Approved", to be concise yet precise. For relative values, add the relative term and exact dates or details, such as "Last 7 days (Aug 3 to Aug 9)", to avoid ambiguity. Use clear operators like "is", "is between", "before", "after", and "in the last" for readability. Symbols (>, =, :) can work in compact or technical views but may be less clear for broad audiences, especially with relative timeframes.
 
-Always group all selected values of one filter into a single tag, never one tag per value. "Type is Club or Lounge" reads as one decision and is removed as one, while separate "Club" and "Lounge" tags multiply quickly and obscure which filter they belong to. [Shopify Polaris](https://polaris.shopify.com/components/selection-and-input/index-filters) enforces the same rule.
+Always group all selected values of one filter into a single tag, never one tag per value. "Type is Club or Lounge" reads as one decision and is removed as one, while separate "Club" and "Lounge" tags multiply quickly and obscure which filter they belong to.
 
-Keep the identifier in the tag when a value alone would be ambiguous, for example a "Draft" status and a "Draft" tag. [HashiCorp Helios](https://helios.hashicorp.design/patterns/filter-patterns) frames this as a choice between an explicit label ("Status: Active") and an implied one ("Active"), and recommends leaning explicit as the number of filters grows.
+Keep the identifier in the tag when a value alone would be ambiguous, for example a "Draft" status and a "Draft" tag. The choice is between an explicit label ("Status: Active") and an implied one ("Active"). Lean explicit as the number of filters grows.
 
 When an applied filter contains a large number of values, avoid grouping them all into a single tag, as this makes scanning and reading difficult and disrupts consistent sizing. Instead, display only the first two or three values, then indicate the number of remaining ones with a clear count, for example "(+7 more)".
 
 <ComponentDemo name="filter-applied-filter-label" />
 
-Even with one tag per filter, many active filters can stack into several rows of tags and push the data set out of view. In that case, truncate the applied filter area after one or two rows behind a "show all" control, as recommended by [Baymard](https://baymard.com/blog/how-to-design-applied-filters). Built-in support for collapsing tags in `Tag.Group` is planned ([DST-1509](https://reservix.atlassian.net/browse/DST-1509)).
+Even with one tag per filter, many active filters can stack into several rows of tags and push the data set out of view. In that case, truncate the applied filter area after one or two rows behind a "show all" control. Built-in support for collapsing tags in `Tag.Group` is planned ([DST-1509](https://reservix.atlassian.net/browse/DST-1509)).
 
 Marigold deliberately does not provide a helper to generate these labels. Label phrasing and translation depend on the application's domain and i18n setup, so they are best composed where the filter state lives. We will revisit a shared helper if demand shows up.
 
@@ -276,7 +276,7 @@ Offering both options provides flexibility. Users can make precise adjustments b
 Filtering combines several interactive controls, so a few accessibility details make the difference between a pattern that works with a keyboard and screen reader and one that quietly excludes people.
 
 - **Do not turn the toolbar into a `toolbar` widget.** The [WAI-ARIA toolbar pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) makes the group a single tab stop with arrow-key navigation between controls. That conflicts with a search field, where arrow keys must move the text cursor. Compose the toolbar with [Inline](/components/layout/inline) so each control is a normal tab stop, as described in the [anatomy](#anatomy).
-- **Name a label-only trigger by its full state.** When a quick filter shows only the dimension and a count, make sure its accessible name still conveys that something is applied, for example "Status, 2 selected", rather than a bare "Status". With [Select](/components/form/select) the count rendered in the trigger is part of its accessible name; for a custom trigger, set an explicit `aria-label`.
+- **Name a label-only trigger by its full state.** When a quick filter shows only the dimension and a count, make sure its accessible name still conveys that something is applied, for example "Status, 2 selected", rather than a bare "Status". With [Select](/components/form/select) the count rendered in the trigger is part of its accessible name. For a custom trigger, set an explicit `aria-label`.
 - **Let the controls own focus and keyboard behaviour.** Building quick filters from Marigold components such as [Select](/components/form/select), [Checkbox](/components/form/checkbox), and [Radio](/components/form/radio) gives correct roles, keyboard interaction, and focus return to the trigger on close, because they are based on react-aria. Avoid hand-rolling `role="menu"` or a custom dropdown.
 - **Announce the result of a filter change.** Applying or removing a filter changes the data set, but screen reader users get no feedback unless you announce it. Render the result count in a live region (`role="status"`, `aria-live="polite"`), for example "247 results, Status applied", so the outcome is spoken. Marigold does not yet provide a built-in region for this, so add one where the result count lives.
 - **Link a "select all" control to the group it toggles.** When the control sits outside the group, as in [Select All Options](#select-all-options), set its `aria-controls` to the group's id so the relationship is conveyed programmatically and not left to visual proximity.
