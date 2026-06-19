@@ -79,6 +79,41 @@ fences, inline code, bold). For non-trivial docs prefer `--format json` (the
 recommended path for AI agents, returns a structured payload) or `--format
 plain` (ANSI-stripped, ideal for piping into other tools).
 
+### `marigold search <query>`
+
+Find components by **what their docs say** — title, description, section
+headings, and section prose — not just by name. Returns ranked results, each
+with the most relevant snippet and a deep link. This is the discovery entry
+point: it collapses the `list` → guess → `docs` → retry loop into a single call,
+which is especially valuable for AI agents that don't yet know the component
+name.
+
+```sh
+marigold search "field validation"
+marigold search "date picker" --limit 10
+marigold search "field validation" --format json
+marigold search modal --format plain
+```
+
+Flags:
+
+- `--limit <n>` — max results (default: `5`)
+- `--format <name>` — `markdown` (default), `json`, or `plain`
+- `--fresh` — bypass the local cache
+- `--offline` — use only the local cache; fail if missing
+
+Ranking weights title ×3, description ×2, each matching heading ×2, and each
+matching section snippet ×1, with a coverage scale for partial multi-term
+matches and a bonus for exact phrase hits. `--format json` returns the
+`[{ name, slug, score, hits }]` contract (`hits` is the top matching section).
+A query with no matches exits `0` (printing a friendly message, or `[]` for
+`--format json`).
+
+The index is sourced from component docs only (not foundations, patterns, or
+getting-started pages). It ships with the docs build, so a CLI pointed at a docs
+deployment that predates this command reports that the search index is not
+available rather than failing cryptically.
+
 ### `marigold list`
 
 List all available components and docs pages.
@@ -187,7 +222,7 @@ marigold telemetry disable
 marigold telemetry enable
 ```
 
-Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`examples`/`init`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
+Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`search`/`examples`/`init`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
 
 Telemetry is automatically suppressed when:
 
@@ -202,7 +237,7 @@ Telemetry is automatically suppressed when:
 
 ## For AI agents
 
-When invoked by an AI coding agent, prefer `--format json` and `--section props` for structured, precise component data. See the `## Marigold CLI` section in [CLAUDE.md](https://github.com/marigold-ui/marigold/blob/main/CLAUDE.md) for recommended patterns.
+When invoked by an AI coding agent, prefer `--format json` and `--section props` for structured, precise component data. When you don't yet know the component name, start with `marigold search <query> --format json` to find the right component in one call, then fetch `marigold docs <Component> --section props --format json`. See the `## Marigold CLI` section in [CLAUDE.md](https://github.com/marigold-ui/marigold/blob/main/CLAUDE.md) for recommended patterns.
 
 To adopt a whole feature pattern (rather than a single component), use `marigold examples list` to discover patterns and `marigold examples get <slug> --format json` to retrieve a pattern's source plus the metadata needed to adapt it — then read `marigold docs getting-started/examples-for-agents` once for the framework-transformation rules.
 
