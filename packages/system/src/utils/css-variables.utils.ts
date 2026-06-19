@@ -148,10 +148,11 @@ const makeDimensionVar =
  * `"square-regular"`) the conventional `-x` / `-y` suffixes are appended so
  * the right axis-specific spacing variable is referenced.
  *
- * @param p - The shorthand padding prop (`InsetSpacingTokens` or a scale number).
- * @param px - Explicit horizontal padding (takes precedence over `p`).
- * @param py - Explicit vertical padding (takes precedence over `p`).
- * @param defaultInset - Fallback token used when `p` is `undefined`.
+ * @param options - Destructured options object.
+ * @param options.p - The shorthand padding prop (`InsetSpacingTokens` or a scale number).
+ * @param options.px - Explicit horizontal padding (takes precedence over `p`).
+ * @param options.py - Explicit vertical padding (takes precedence over `p`).
+ * @param options.defaultInset - Fallback token used when `p` is `undefined`.
  */
 export const resolveInsetAxes = ({
   p,

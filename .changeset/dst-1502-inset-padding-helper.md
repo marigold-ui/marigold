@@ -1,5 +1,5 @@
 ---
-'@marigold/system': patch
+'@marigold/system': minor
 '@marigold/components': patch
 ---
 
