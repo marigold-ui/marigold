@@ -25,6 +25,13 @@ export const browserDeps = [
   // App deps used in decorators/stories
   '@tanstack/react-query',
   'react-select',
+  // SSR-hydration test (TableEditableCell.ssr.test.tsx) imports these as bare
+  // specifiers — the first explicit `react-dom/server` + `react-dom/client`
+  // entry points in the suite. Without pre-bundling, Vite optimizes them
+  // mid-run, pulling a second copy of React into the server bundle and
+  // surfacing as `resolveDispatcher() is null` during renderToString/hydrateRoot.
+  'react-dom/server',
+  'react-dom/client',
   // RAC subpath import used in stories/tests (see DST-1512). Without
   // pre-bundling, the unit-tests project discovers it at runtime and
   // re-optimizes mid-run, cascading "error loading dynamically imported module".

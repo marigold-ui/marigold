@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import * as m from 'motion/react-m';
 import type { ForwardRefExoticComponent, ReactNode } from 'react';
 import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 import { Toolbar } from 'react-aria-components';
@@ -15,6 +15,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { IconButton } from '../IconButton/IconButton';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
+import { MotionFeatures } from '../lazyMotion';
 import { useActionBarContext } from './ActionBarContext';
 import { ActionButton } from './ActionButton';
 import type { ActionButtonProps } from './ActionButton';
@@ -101,49 +102,56 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
 
     return (
       <FocusScope restoreFocus>
-        <motion.div
-          layout
-          ref={ref}
-          id={id}
-          onKeyDown={onKeyDown}
-          onKeyUp={onKeyUp}
-          className={cn(
-            classNames.container,
-            'sticky bottom-(--actionbar-offset,8px) z-30 mx-auto w-max'
-          )}
-          transition={{
-            layout: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 },
-          }}
-          data-entering={isEntering || undefined}
-          data-exiting={isExiting || undefined}
-        >
-          <div className={classNames.selection}>
-            {onClearSelection && (
-              <IconButton
-                aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-                onPress={onClearSelection}
-                className={classNames.clearButton}
-              >
-                <X />
-              </IconButton>
+        <MotionFeatures>
+          <m.div
+            layout
+            ref={ref}
+            id={id}
+            onKeyDown={onKeyDown}
+            onKeyUp={onKeyUp}
+            className={cn(
+              classNames.container,
+              'sticky bottom-(--actionbar-offset,8px) z-30 mx-auto w-max'
             )}
-
-            <div className={classNames.count}>
-              {lastCount === 'all'
-                ? stringFormatter.format('selectedAll')
-                : stringFormatter.format('selectedCount', {
-                    count: lastCount,
-                  })}
-            </div>
-          </div>
-
-          <Toolbar
-            className={classNames.toolbar}
-            aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+            transition={{
+              layout: {
+                type: 'spring',
+                stiffness: 500,
+                damping: 30,
+                mass: 0.5,
+              },
+            }}
+            data-entering={isEntering || undefined}
+            data-exiting={isExiting || undefined}
           >
-            {children}
-          </Toolbar>
-        </motion.div>
+            <div className={classNames.selection}>
+              {onClearSelection && (
+                <IconButton
+                  aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+                  onPress={onClearSelection}
+                  className={classNames.clearButton}
+                >
+                  <X />
+                </IconButton>
+              )}
+
+              <div className={classNames.count}>
+                {lastCount === 'all'
+                  ? stringFormatter.format('selectedAll')
+                  : stringFormatter.format('selectedCount', {
+                      count: lastCount,
+                    })}
+              </div>
+            </div>
+
+            <Toolbar
+              className={classNames.toolbar}
+              aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+            >
+              {children}
+            </Toolbar>
+          </m.div>
+        </MotionFeatures>
 
         {/* Screen reader announcement when ActionBar appears */}
         {!isExiting && (
