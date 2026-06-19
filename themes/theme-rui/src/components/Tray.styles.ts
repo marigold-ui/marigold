@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tray: ThemeComponent<'Tray'> = {
   overlay: cva({
-    base: 'bg-black/50 fixed inset-0 z-40 flex items-end justify-center',
+    base: 'bg-black/50 fixed inset-0 flex items-end justify-center',
   }),
   container: cva({
     base: [
