@@ -79,24 +79,22 @@ Everything below is committed to the repo (`.claude/`) — so it is already
 real usage, and the gap is itself a finding (see the note below and §4 P8).
 
 ### Skills (`/command`)
-
-| Skill                          | What it does                                                                               | Adoption       |
-| ------------------------------ | ------------------------------------------------------------------------------------------ | -------------- |
-| `simplify`                     | Reduces and de-duplicates the current diff.                                                | **Heavy**      |
-| `vrt`                          | Triggers Chromatic visual regression tests.                                                | Regular        |
-| `review-pr`                    | Reviews a PR for code quality, TS, React, a11y; auto-detects whether VRT is needed.        | Regular        |
-| `typescript-codequality-check` | Post-change quality pass for `.ts`/`.tsx`.                                                 | Auto-triggered |
-| `testing-codequality-check`    | Post-change quality pass for tests/stories.                                                | Auto-triggered |
-| `component-docs-writer`        | Writes MDX docs, demos, anatomy diagrams.                                                  | Rare           |
-| `create-pr`                    | Opens a PR matching our template + Conventional Commits + DST scope; auto-ticks checklist. | Rare           |
-| `create-component`             | Scaffolds a new component with all required files.                                         | Rare           |
+| Skill | What it does | Adoption |
+|-------|--------------|----------|
+| `simplify` | Reduces and de-duplicates the current diff. | **Heavy** |
+| `vrt` | Triggers Chromatic visual regression tests. | Regular |
+| `review-pr` | Reviews a PR for code quality, TS, React, a11y; auto-detects whether VRT is needed. | Regular |
+| `typescript-codequality-check` | Post-change quality pass for `.ts`/`.tsx`. | Auto-triggered |
+| `testing-codequality-check` | Post-change quality pass for tests/stories. | Auto-triggered |
+| `component-docs-writer` | Writes MDX docs, demos, anatomy diagrams. | Rare |
+| `create-pr` | Opens a PR matching our template + Conventional Commits + DST scope; auto-ticks checklist. | Rare |
+| `create-component` | Scaffolds a new component with all required files. | Rare |
 
 ### Agents
-
-| Agent                | What it does                                     | Adoption |
-| -------------------- | ------------------------------------------------ | -------- |
-| `component-scaffold` | Creates new components with full file structure. | Unused   |
-| `a11y-audit`         | WCAG 2.1 AA audit of a component.                | Unused   |
+| Agent | What it does | Adoption |
+|-------|--------------|----------|
+| `component-scaffold` | Creates new components with full file structure. | Unused |
+| `a11y-audit` | WCAG 2.1 AA audit of a component. | Unused |
 
 > **The pattern:** the lightweight, general-purpose skills (`simplify`, and the
 > not-yet-committed `grill-me`) get heavy use, while the heavyweight scaffolding
@@ -108,7 +106,6 @@ real usage, and the gap is itself a finding (see the note below and §4 P8).
 > about it.
 
 ### Conventions encoded in `CLAUDE.md`
-
 - Marigold CLI for live component APIs (stops the model inventing prop names).
 - Full Jira (DST) ticket conventions: issue types, required custom fields,
   description template, title emoji convention.
@@ -167,7 +164,7 @@ nothing is written down. (Example from our own work: the "app chrome" vs
 plus live documentation:
 
 - maintains a **`CONTEXT.md`** domain glossary (precise definitions of terms
-  like _slot-configuration pattern_, _app chrome_, _trigger props_),
+  like *slot-configuration pattern*, *app chrome*, *trigger props*),
 - writes an **ADR** whenever a decision is hard to reverse or surprising
   without context,
 - challenges vague terms against the actual code during the session.
@@ -181,7 +178,7 @@ consistently, and the agent stops re-deriving context every session.
 
 ### P3 — `/triage-feedback` skill: one triage pass over GitHub + Vercel comments
 
-**Gap:** Feedback on a PR arrives in _two_ places — GitHub review comments and
+**Gap:** Feedback on a PR arrives in *two* places — GitHub review comments and
 Vercel preview (toolbar) comments. Resolving them is one of our most repeated
 multi-step workflows, done by hand each time, with a constant context-switch
 between the PR tab and the preview UI. Steps get missed.
@@ -193,14 +190,14 @@ sides are fully API-addressable: GitHub via `gh`, and Vercel via its MCP
 `change_toolbar_thread_resolve_status`).
 
 It triages each comment on three axes, then presents a table for approval
-_before_ acting:
+*before* acting:
 
-| Axis                                            | Values                                                          |
-| ----------------------------------------------- | --------------------------------------------------------------- |
-| **Source**                                      | GitHub review comment · Vercel toolbar thread                   |
-| **Validity** (verify against current code/diff) | confirmed · stale / already-fixed · incorrect                   |
-| **Severity**                                    | blocker · should-fix · nice-to-have · question / non-actionable |
-| **Action**                                      | apply · push back with reasoning · needs human                  |
+| Axis | Values |
+|------|--------|
+| **Source** | GitHub review comment · Vercel toolbar thread |
+| **Validity** (verify against current code/diff) | confirmed · stale / already-fixed · incorrect |
+| **Severity** | blocker · should-fix · nice-to-have · question / non-actionable |
+| **Action** | apply · push back with reasoning · needs human |
 
 Then the loop:
 
@@ -331,7 +328,7 @@ teammates about "the way we work," and dilute the set of skills worth learning.
 - **Improve** — if it's valuable but clunky/undiscoverable (e.g. `create-pr` is
   genuinely useful but rarely reached for — maybe it needs to be the default
   muscle-memory step, or merged into a `ship` skill).
-- **Document** — if it's only used rarely _by nature_ (scaffolding a component
+- **Document** — if it's only used rarely *by nature* (scaffolding a component
   is inherently infrequent), make sure people know it exists when they need it.
 - **Retire** — if hand-doing it is genuinely faster, delete it and reduce noise.
 
@@ -355,6 +352,6 @@ The same loops are close to running semi-autonomously as models improve:
 
 ---
 
-_Basis: one month of real-world usage of this workflow in the Marigold repo
+*Basis: one month of real-world usage of this workflow in the Marigold repo
 (reviewed via Claude Code's usage analytics). Detailed per-person stats omitted
-— available on request._
+— available on request.*
