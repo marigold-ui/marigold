@@ -337,8 +337,8 @@ export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
 export { SegmentedControl } from './SegmentedControl/SegmentedControl';
 export type { SegmentedControlProps } from './SegmentedControl/SegmentedControl';
 
-export { SegmentedControlItem } from './SegmentedControl/SegmentedControl';
-export type { SegmentedControlItemProps } from './SegmentedControl/SegmentedControl';
+export { SegmentedControlOption } from './SegmentedControl/SegmentedControl';
+export type { SegmentedControlOptionProps } from './SegmentedControl/SegmentedControl';
 
 export { Tray } from './Tray/Tray';
 export type { TrayProps } from './Tray/Tray';

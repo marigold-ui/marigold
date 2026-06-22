@@ -41,16 +41,6 @@ const meta = preview.meta({
         defaultValue: { summary: 'default' },
       },
     },
-    fullWidth: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Whether the items divide the available width equally',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
     disabled: {
       control: {
         type: 'boolean',
@@ -71,7 +61,6 @@ const meta = preview.meta({
   args: {
     variant: 'default',
     size: 'default',
-    fullWidth: false,
     disabled: false,
     label: 'Event status',
   },
@@ -85,11 +74,13 @@ export const Basic = meta.story({
     return (
       <>
         <SegmentedControl {...args} value={value} onChange={setValue}>
-          <SegmentedControl.Item value="upcoming">
+          <SegmentedControl.Option value="upcoming">
             Upcoming
-          </SegmentedControl.Item>
-          <SegmentedControl.Item value="past">Past</SegmentedControl.Item>
-          <SegmentedControl.Item value="drafts">Drafts</SegmentedControl.Item>
+          </SegmentedControl.Option>
+          <SegmentedControl.Option value="past">Past</SegmentedControl.Option>
+          <SegmentedControl.Option value="drafts">
+            Drafts
+          </SegmentedControl.Option>
         </SegmentedControl>
         <div data-testid="selected">Selected: {value}</div>
       </>
@@ -140,10 +131,10 @@ export const WithDescription = meta.story({
   },
   render: args => (
     <SegmentedControl {...args} defaultValue="comfortable">
-      <SegmentedControl.Item value="comfortable">
+      <SegmentedControl.Option value="comfortable">
         Comfortable
-      </SegmentedControl.Item>
-      <SegmentedControl.Item value="compact">Compact</SegmentedControl.Item>
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="compact">Compact</SegmentedControl.Option>
     </SegmentedControl>
   ),
 });
@@ -157,9 +148,11 @@ export const WithError = meta.story({
   },
   render: args => (
     <SegmentedControl {...args} defaultValue="public">
-      <SegmentedControl.Item value="public">Public</SegmentedControl.Item>
-      <SegmentedControl.Item value="unlisted">Unlisted</SegmentedControl.Item>
-      <SegmentedControl.Item value="private">Private</SegmentedControl.Item>
+      <SegmentedControl.Option value="public">Public</SegmentedControl.Option>
+      <SegmentedControl.Option value="unlisted">
+        Unlisted
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="private">Private</SegmentedControl.Option>
     </SegmentedControl>
   ),
 });
@@ -182,25 +175,30 @@ export const Ghost = meta.story({
   },
   render: args => (
     <SegmentedControl {...args} defaultValue="overview">
-      <SegmentedControl.Item value="overview">Overview</SegmentedControl.Item>
-      <SegmentedControl.Item value="activity">Activity</SegmentedControl.Item>
-      <SegmentedControl.Item value="settings">Settings</SegmentedControl.Item>
+      <SegmentedControl.Option value="overview">
+        Overview
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="activity">
+        Activity
+      </SegmentedControl.Option>
+      <SegmentedControl.Option value="settings">
+        Settings
+      </SegmentedControl.Option>
     </SegmentedControl>
   ),
 });
 
-export const FullWidth = meta.story({
+export const Width = meta.story({
   args: {
-    fullWidth: true,
     label: 'Range',
   },
   render: args => (
     <div className="w-96">
-      <SegmentedControl {...args} defaultValue="30d">
-        <SegmentedControl.Item value="7d">7d</SegmentedControl.Item>
-        <SegmentedControl.Item value="30d">30d</SegmentedControl.Item>
-        <SegmentedControl.Item value="90d">90d</SegmentedControl.Item>
-        <SegmentedControl.Item value="1y">1y</SegmentedControl.Item>
+      <SegmentedControl {...args} defaultValue="30d" width="full">
+        <SegmentedControl.Option value="7d">7d</SegmentedControl.Option>
+        <SegmentedControl.Option value="30d">30d</SegmentedControl.Option>
+        <SegmentedControl.Option value="90d">90d</SegmentedControl.Option>
+        <SegmentedControl.Option value="1y">1y</SegmentedControl.Option>
       </SegmentedControl>
     </div>
   ),
@@ -216,11 +214,13 @@ export const DisabledItem = meta.story({
 
     return (
       <SegmentedControl {...args} value={value} onChange={setValue}>
-        <SegmentedControl.Item value="public">Public</SegmentedControl.Item>
-        <SegmentedControl.Item value="unlisted">Unlisted</SegmentedControl.Item>
-        <SegmentedControl.Item value="private" disabled>
+        <SegmentedControl.Option value="public">Public</SegmentedControl.Option>
+        <SegmentedControl.Option value="unlisted">
+          Unlisted
+        </SegmentedControl.Option>
+        <SegmentedControl.Option value="private" disabled>
           Private
-        </SegmentedControl.Item>
+        </SegmentedControl.Option>
       </SegmentedControl>
     );
   },
@@ -260,10 +260,12 @@ export const InForm = meta.story({
         }}
       >
         <SegmentedControl {...args} name="status" defaultValue="active">
-          <SegmentedControl.Item value="active">Active</SegmentedControl.Item>
-          <SegmentedControl.Item value="archived">
+          <SegmentedControl.Option value="active">
+            Active
+          </SegmentedControl.Option>
+          <SegmentedControl.Option value="archived">
             Archived
-          </SegmentedControl.Item>
+          </SegmentedControl.Option>
         </SegmentedControl>
         <Button type="submit">Save</Button>
         <div data-testid="submitted">Submitted: {submitted}</div>
@@ -297,8 +299,8 @@ export const BothSurfaces = meta.story({
   },
   render: args => (
     <SegmentedControl {...args} defaultValue="list">
-      <SegmentedControl.Item value="list">List</SegmentedControl.Item>
-      <SegmentedControl.Item value="grid">Grid</SegmentedControl.Item>
+      <SegmentedControl.Option value="list">List</SegmentedControl.Option>
+      <SegmentedControl.Option value="grid">Grid</SegmentedControl.Option>
     </SegmentedControl>
   ),
 });

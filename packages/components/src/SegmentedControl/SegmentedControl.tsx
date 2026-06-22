@@ -37,11 +37,6 @@ export interface SegmentedControlProps extends Omit<
    */
   size?: 'default' | 'small' | (string & {});
   /**
-   * Whether the items divide the available width equally.
-   * @default false
-   */
-  fullWidth?: boolean;
-  /**
    * Set the label of the control.
    */
   label?: ReactNode;
@@ -74,17 +69,17 @@ export interface SegmentedControlProps extends Omit<
    */
   readOnly?: boolean;
   /**
-   * Control the width of the field.
+   * Control the width of the field. Use `"full"` to make the segments divide
+   * the available width equally (same as the former `fullWidth` prop).
    */
   width?: WidthProp['width'];
   children?: ReactNode;
   ref?: Ref<HTMLDivElement>;
 }
 
-const _SegmentedControl = ({
+function SegmentedControlBase({
   variant,
   size,
-  fullWidth,
   label,
   error,
   disabled,
@@ -95,12 +90,14 @@ const _SegmentedControl = ({
   width,
   children,
   ...rest
-}: SegmentedControlProps) => {
+}: SegmentedControlProps) {
   const classNames = useClassNames({
     component: 'SegmentedControl',
     variant,
     size,
   });
+
+  const expandWidth = !!width;
 
   const props: RAC.RadioGroupProps = {
     isDisabled: disabled,
@@ -126,31 +123,31 @@ const _SegmentedControl = ({
         role="presentation"
         className={cn(
           classNames.group,
-          fullWidth ? 'flex w-full' : 'inline-flex w-fit'
+          expandWidth ? 'flex w-full' : 'inline-flex w-fit'
         )}
       >
-        <SegmentedControlContext value={{ variant, size, fullWidth }}>
+        <SegmentedControlContext value={{ variant, size, expandWidth }}>
           {children}
         </SegmentedControlContext>
       </div>
     </FieldBase>
   );
-};
+}
 
-// SegmentedControlItem
+// SegmentedControlOption
 // ---------------
-type RemovedItemProps = 'className' | 'style' | 'render' | 'isDisabled';
+type RemovedOptionProps = 'className' | 'style' | 'render' | 'isDisabled';
 
-export interface SegmentedControlItemProps extends Omit<
+export interface SegmentedControlOptionProps extends Omit<
   RAC.RadioFieldProps,
-  RemovedItemProps
+  RemovedOptionProps
 > {
   /**
-   * The value of the item, matching the `value` of the control.
+   * The value of the option, matching the `value` of the control.
    */
   value: string;
   /**
-   * Whether the item is disabled.
+   * Whether the option is disabled.
    * @default false
    */
   disabled?: RAC.RadioFieldProps['isDisabled'];
@@ -160,13 +157,13 @@ export interface SegmentedControlItemProps extends Omit<
   ref?: Ref<HTMLDivElement>;
 }
 
-const _SegmentedControlItem = ({
+function SegmentedControlOption({
   disabled,
   variant,
   size,
   children,
   ...props
-}: SegmentedControlItemProps) => {
+}: SegmentedControlOptionProps) {
   const context = use(SegmentedControlContext);
 
   const classNames = useClassNames({
@@ -178,19 +175,19 @@ const _SegmentedControlItem = ({
   return (
     <RadioField
       isDisabled={disabled}
-      className={cn(classNames.field, context.fullWidth && 'grow basis-0')}
+      className={cn(classNames.field, context.expandWidth && 'grow basis-0')}
       {...props}
     >
       <SelectionIndicator className={classNames.indicator} />
-      <RadioButton className={classNames.item}>{children}</RadioButton>
+      <RadioButton className={classNames.option}>{children}</RadioButton>
     </RadioField>
   );
-};
+}
 
 // Compound export
 // ---------------
-const SegmentedControl = Object.assign(_SegmentedControl, {
-  Item: _SegmentedControlItem,
+export const SegmentedControl = Object.assign(SegmentedControlBase, {
+  Option: SegmentedControlOption,
 });
 
-export { SegmentedControl, _SegmentedControlItem as SegmentedControlItem };
+export { SegmentedControlOption };
