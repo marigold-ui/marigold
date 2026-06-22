@@ -38,41 +38,20 @@ While list-based components such as [SelectList](/components/form/selectlist) co
 
 ## Applying Filters
 
-How a filter commits its changes is one of the first decisions to get right, because the rest of the pattern is built on top of it. There are two models, and a well-built filter uses **both**, each in the place it fits.
+How a filter commits its changes is the first decision to get right, because the rest of the pattern builds on it. Use **both** models, each where it fits:
 
-<Callout title="The default split in this pattern">
+- **Quick filters in the toolbar apply instantly.** Each is a single decision, so the result updates the moment the user changes it, and the search field works the same way. The cost is a query on every interaction and results that reflow on each change.
+- **The filter panel (the slide-in drawer) batches.** It collects changes across several parameters and applies them only when the user submits with an explicit _Apply_ action. The cost is one extra step, and the user can assemble a zero-result combination before seeing it.
 
-- **Quick filters in the toolbar apply instantly.** Each is a single decision, so the result updates the moment the user changes it. The search field works the same way.
-- **The filter panel (the slide-in drawer) batches.** It collects changes across several parameters and applies them only when the user submits with an explicit **Apply** action.
+Apply instantly for a single, cheap decision that benefits from immediate feedback. Batch when several criteria are combined, each query is expensive, or the control is multi-select, where live updates are disorienting.
 
-</Callout>
-
-This split is not arbitrary. It mirrors how a user works in each place: a quick filter is one fast choice that benefits from immediate feedback, while the panel is where several criteria are composed and committed together.
-
-|               | Instant (live)                                                                  | Batch (apply)                                                                              |
-| ------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Commits**   | On every change                                                                 | On an explicit Apply action                                                                |
-| **Best for**  | A single decision: one toolbar quick filter, the search field, a status switch  | Composing several criteria at once: the slide-in panel / drawer                            |
-| **Why**       | Immediate feedback, teaches what each option does, suits exploratory refinement | Predictable number of queries, one result update instead of many, suits goal-directed work |
-| **Watch out** | A query on every interaction, and results visibly reflow on each change         | One extra click, and a user can build a zero-result combination with no early warning      |
-
-The choice follows from the cost and shape of the decision. Apply instantly for a single, cheap, fast decision. Batch when several criteria are combined or each query is expensive. The split also tracks user intent, because instant filtering suits exploration while batch suits goal-directed work. On mobile, and for multi-select controls, an explicit apply step is what users expect, since live updates there are disorienting.
-
-### Combining Instant and Batch in One View
-
-Because the two models live in clearly different places, a bare control in the toolbar versus a panel with its own Apply button, using both on the same screen is a deliberate choice rather than an inconsistency. Pairing instant toolbar filters with a batched "more filters" panel is a common and well-established arrangement.
-
-What makes it work is the affordance. The Apply button and the panel container signal "compose, then commit", while a bare toolbar control signals "this takes effect now". Keep that signal strong and the two models stay legible side by side.
+Using both models on one screen works as long as each control's behavior is obvious at a glance. The Apply button and the panel container signal "compose, then commit". A bare toolbar control signals "this takes effect now". Keep that signal strong and the two models stay legible side by side.
 
 <Callout type="warn" title="Keep the two models visually distinct">
 
-The real risk is a control whose apply behavior you cannot guess by looking at it, for example a multi-select dropdown sitting in the toolbar with no apply button, next to a panel that does have one. If a control could plausibly be either, users will not know whether their change has taken effect. Make instant controls look instant, and keep batched controls inside the panel behind its Apply action.
-
-Mixing the two models is not risk-free. The safe default is to keep apply behavior uniform within one control group. Only mix instant and batched controls when you can keep them visually distinct, so a user can always tell which model a control follows.
+The risk is a control whose apply behavior you cannot guess by looking at it, such as a multi-select dropdown in the toolbar with no apply button next to a panel that has one. Keep apply behavior uniform within a control group, and only mix instant and batched controls when they stay visually distinct.
 
 </Callout>
-
-### The Apply Action
 
 For the panel's commit control, label it clearly and tell users what they are committing to:
 
