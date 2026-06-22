@@ -141,6 +141,39 @@ const makeDimensionVar =
   };
 
 /**
+ * Resolves `p` / `px` / `py` inset-padding props to per-axis values.
+ *
+ * When `p` is a numeric scale value (e.g. `"4"`) the same value is used on
+ * both axes (`calc(var(--spacing) * 4)`). When it is a named token (e.g.
+ * `"square-regular"`) the conventional `-x` / `-y` suffixes are appended so
+ * the right axis-specific spacing variable is referenced.
+ *
+ * @param options - Destructured options object.
+ * @param options.p - The shorthand padding prop (`InsetSpacingTokens` or a scale number).
+ * @param options.px - Explicit horizontal padding (takes precedence over `p`).
+ * @param options.py - Explicit vertical padding (takes precedence over `p`).
+ * @param options.defaultInset - Fallback token used when `p` is `undefined`.
+ */
+export const resolveInsetAxes = ({
+  p,
+  px,
+  py,
+  defaultInset,
+}: {
+  p?: string | number;
+  px?: string | number;
+  py?: string | number;
+  defaultInset: string;
+}): { px: string; py: string } => {
+  const inset = `${p ?? defaultInset}`;
+  const scale = isScale(inset);
+  return {
+    px: `${px ?? (scale ? inset : `${inset}-x`)}`,
+    py: `${py ?? (scale ? inset : `${inset}-y`)}`,
+  };
+};
+
+/**
  * Generates a CSS custom property for width.
  *
  * Supports the spacing scale (e.g. `"4"`, `"2.5"`), fractions (e.g. `"1/2"`),
