@@ -11,11 +11,15 @@ See @README.md for project overview and @package.json for available pnpm command
 
 Before writing code that uses a Marigold component, run the CLI to get its current API. Do not guess props from training data — Marigold is not in your training set and you will invent prop names.
 
+When you don't yet know the component name, start with `search`. It ranks components by what their docs actually say (title, description, headings, prose) and returns deep links in one call, instead of the `list` → guess → `docs` → retry loop. Then fetch `docs <Component> --section props` once you've committed to a component.
+
+- `marigold search <query>` — find components by docs content (start here for discovery)
+- `marigold search "field validation" --format json` — structured ranked results for agents (`{ name, slug, score, hits }`)
 - `marigold docs <Component>` — full component docs
 - `marigold docs <Component> --section props --format json` — structured prop data (preferred for agents)
 - `marigold docs <Component> --section usage` — usage guidelines
 - `marigold list --category form` — discover form components
-- `marigold list --search date` — search by name
+- `marigold list --search date` — filter by name (substring; use `search` for content)
 
 The CLI fetches from the Marigold docs site, caches for 24h, and works offline (`--offline`). For AI use, prefer `--format json` — it returns a structured payload instead of formatted markdown.
 

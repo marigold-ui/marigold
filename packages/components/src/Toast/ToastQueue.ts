@@ -1,5 +1,45 @@
 import { ReactNode, useCallback } from 'react';
-import { queue } from './ToastProvider';
+import { UNSTABLE_ToastQueue as ToastQueue } from 'react-aria-components/Toast';
+import { flushSync } from 'react-dom';
+import type { ToastContentProps } from './Toast';
+
+let queue: ToastQueue<ToastContentProps> | undefined;
+
+/**
+ * Lazily create the shared toast queue.
+ *
+ * Constructing the queue at module scope ran on first import and touched
+ * `document` during view-transition setup, which both violated the package's
+ * `sideEffects: false` contract (hurting tree-shaking) and risked throwing
+ * during SSR. Deferring construction to first call keeps the module
+ * side-effect free while preserving the singleton: every caller — `useToast`
+ * anywhere in the tree and the single `<ToastProvider>` — shares one queue.
+ */
+export const getToastQueue = (): ToastQueue<ToastContentProps> => {
+  if (!queue) {
+    queue = new ToastQueue<ToastContentProps>({
+      // Wrap state updates in a CSS view transition.
+      wrapUpdate(fn) {
+        if (
+          typeof document !== 'undefined' &&
+          'startViewTransition' in document
+        ) {
+          const transition = document.startViewTransition(() => {
+            // eslint-disable-next-line @eslint-react/dom-no-flush-sync
+            flushSync(fn);
+          });
+          // Catch and suppress ViewTransition errors (e.g., when another
+          // transition is already running)
+          transition.ready.catch(() => {});
+          transition.finished.catch(() => {});
+        } else {
+          fn();
+        }
+      },
+    });
+  }
+  return queue;
+};
 
 export type ToastVariant = 'info' | 'success' | 'error' | 'warning';
 
@@ -43,7 +83,7 @@ const resolveTimeout = (
 export function useToast() {
   const addToast = useCallback((options: ToastOptions) => {
     const { title, description, variant, timeout, action } = options;
-    return queue.add(
+    return getToastQueue().add(
       {
         title,
         description,
@@ -54,9 +94,12 @@ export function useToast() {
     );
   }, []);
 
-  const clearToasts = useCallback(() => queue.clear(), []);
+  const clearToasts = useCallback(() => getToastQueue().clear(), []);
 
-  const removeToast = useCallback((key: string) => queue.close(key), []);
+  const removeToast = useCallback(
+    (key: string) => getToastQueue().close(key),
+    []
+  );
 
   return { addToast, clearToasts, removeToast };
 }

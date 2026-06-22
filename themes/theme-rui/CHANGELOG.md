@@ -672,6 +672,16 @@ left: -10000px`) so it cannot expand the document's scrollable
   - @marigold/system@18.0.0-beta.0
   - @marigold/components@18.0.0-beta.0
 
+## 5.4.1
+
+### Patch Changes
+
+- Updated dependencies [bdda185]
+- Updated dependencies [a609642]
+- Updated dependencies [60b6e03]
+  - @marigold/components@17.8.0
+  - @marigold/system@17.8.0
+
 ## 5.4.0
 
 ### Minor Changes

@@ -217,6 +217,72 @@ export const LongContent = meta.story({
   },
 });
 
+export const SelectInsideDrawerSmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Title>Filter</Drawer.Title>
+        <Drawer.Content>
+          <Select label="Category">
+            <Select.Option id="all">All</Select.Option>
+            <Select.Option id="classic">Classic</Select.Option>
+            <Select.Option id="rock">Rock</Select.Option>
+          </Select>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close Drawer</Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    await waitFor(() => expect(canvas.getByText('Filter')).toBeInTheDocument());
+
+    // On small screens, clicking the Select trigger opens a Tray.
+    // The Tray must render above the Drawer overlay (z-index fix for DSTSUP-263).
+    const selectTrigger = canvas.getByRole('button', { name: /category/i });
+    await userEvent.click(selectTrigger);
+
+    // Wait for the Tray to open and find an option to confirm it rendered.
+    const rockOption = await canvas.findByRole('option', { name: 'Rock' });
+    expect(rockOption).toBeInTheDocument();
+
+    // Assert z-index stacking: the Tray overlay must not sit below the Drawer overlay.
+    // Both portal directly to document.body; at equal z-index the later DOM node wins.
+    // We read the Tailwind z-* class because getComputedStyle returns "auto" in the
+    // test environment before CSS is fully resolved.
+    const tailwindZ = (el: Element) => {
+      const match = el.className.match(/\bz-(\d+)\b/);
+      return match ? parseInt(match[1], 10) : 0;
+    };
+
+    // Walk up from a descendant to find its direct child-of-body portal root.
+    const portalRoot = (el: Element): Element => {
+      let node = el;
+      while (node.parentElement && node.parentElement !== document.body) {
+        node = node.parentElement;
+      }
+      return node;
+    };
+
+    // The Tray dialog contains the Rock option; the Drawer dialog contains the title.
+    const trayPortal = portalRoot(rockOption.closest('[role="dialog"]')!);
+    const drawerPortal = portalRoot(
+      canvas.getByText('Filter').closest('[role="dialog"]')!
+    );
+
+    expect(tailwindZ(trayPortal)).toBeGreaterThanOrEqual(
+      tailwindZ(drawerPortal)
+    );
+  },
+});
+
 export const Controlled = meta.story({
   parameters: { surface: false },
   render: args => {
