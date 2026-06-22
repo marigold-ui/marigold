@@ -6,6 +6,8 @@ badge: beta
 
 In many applications, large or complex data sets can be difficult to navigate. Filtering helps users focus on what matters most by narrowing results to meet specific criteria or comparing a smaller subset of items. By removing irrelevant results, filtering improves efficiency and makes workflows smoother.
 
+Filters are most valuable when a data set is too large or complex for users to easily scan in its entirety. They become especially useful when multiple parameters or categories can significantly narrow the results. Well-applied filters streamline the process of finding relevant items, reduce information overload, and enable users to complete tasks more efficiently.
+
 ## Anatomy
 
 The filtering pattern in Marigold combines consistent layout with flexible component usage. While the overall structure remains the same, the specific components used can be adapted to the data set and the application's context. This adaptability allows the pattern to support a wide range of use cases while delivering a clear and efficient user experience.
@@ -26,11 +28,21 @@ The image below shows the main areas of the pattern, their placement within the 
 - **Data Set:** The data set is the collection of items to which filters are applied. Items that match the filter criteria are displayed, while others are hidden. This area typically takes up most of the layout because it is the primary focus for the user. Depending on the type of data, it can appear as a [table](/components/collection/table) or as items arranged in [tiles](/components/layout/tiles) and [cards](/components/content/card).
 - **Pagination:** Located below the data set, the pagination divides the filtered results into smaller, manageable pages. Placing it here keeps navigation controls close to the content they affect, provides a natural reading flow from the data to the controls, and reduces cognitive load, making it easier to browse large data sets.
 
-## Usage
+## Filter Types
 
-Filters are most valuable when a data set is too large or complex for users to easily scan in its entirety. They become especially useful when multiple parameters or categories can significantly narrow the results. Well-applied filters streamline the process of finding relevant items, reduce information overload, and enable users to complete tasks more efficiently.
+Filters can be presented in several formats depending on the type of data and how users are expected to interact with it. The choice of filter type should reflect the nature of the data, the available space in the interface, and the intended user workflow. Common types include:
 
-### Applying Filters
+| Type         | Description                                                                                                                                                                                               | Component                                    |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **Single**   | Allows only one option to be chosen from a set, such as selecting a single category or status. A radio group is typically used, as it makes the one-choice rule clear and supports quick decision-making. | [Radio](/components/form/radio)              |
+| **Multiple** | Enables users to select several options at once, for example multiple categories or attributes. Checkboxes clearly signal that multiple selections are possible and give instant visual confirmation.     | [Checkbox](/components/form/checkbox)        |
+| **Range**    | Lets users choose values within a continuous range, making it ideal for filtering quantities, prices, or measurements. Sliders provide an intuitive way to adjust values without manual input.            | [Slider](/components/form/slider)            |
+| **Min/Max**  | Provides precise control over numeric ranges by allowing exact lower and upper limits to be entered. This is useful when accuracy is important.                                                           | [NumberField](/components/form/number-field) |
+| **Contains** | Filters items based on specific words or phrases entered by the user. This method is valuable for keyword searches or partial matches.                                                                    | [TextField](/components/form/text-field)     |
+
+While list-based components such as [SelectList](/components/form/selectlist) could technically cover single and multiple selection through different selection modes, prefer the dedicated form controls listed above. Radio buttons and checkboxes communicate the selection rule visually before any interaction, integrate directly with forms, and match what users know from other applications. Reach for list-based components when a filter behaves like a searchable collection, for example hundreds of options that benefit from virtualization.
+
+## Applying Filters
 
 How a filter commits its changes is one of the first decisions to get right, because the rest of the pattern is built on top of it. There are two models, and a well-built filter uses **both**, each in the place it fits.
 
@@ -52,7 +64,7 @@ This split is not arbitrary. It mirrors how a user works in each place: a quick 
 
 The choice follows from the cost and shape of the decision. Apply instantly for a single, cheap, fast decision. Batch when several criteria are combined or each query is expensive. The split also tracks user intent, because instant filtering suits exploration while batch suits goal-directed work. On mobile, and for multi-select controls, an explicit apply step is what users expect, since live updates there are disorienting.
 
-#### Combining instant and batch in one view
+### Combining Instant and Batch in One View
 
 Because the two models live in clearly different places, a bare control in the toolbar versus a panel with its own Apply button, using both on the same screen is a deliberate choice rather than an inconsistency. Pairing instant toolbar filters with a batched "more filters" panel is a common and well-established arrangement.
 
@@ -66,7 +78,7 @@ Mixing the two models is not risk-free. The safe default is to keep apply behavi
 
 </Callout>
 
-#### The apply action
+### The Apply Action
 
 For the panel's commit control, label it clearly and tell users what they are committing to:
 
@@ -74,21 +86,11 @@ For the panel's commit control, label it clearly and tell users what they are co
 - **Show the result count on the button** where the count is available, for example "Show 47 results", so users know the outcome before they commit. This is especially valuable on mobile, where it is the clearest way to preview impact.
 - **Announce the change to assistive technology.** Instant or batched, a filter change updates the data set silently for screen reader users. Render the new result count in a live region so the outcome is spoken. See [Accessibility](#accessibility) for details.
 
-### Types and Formats
+## Designing Filter Options
 
-Filters can be presented in several formats depending on the type of data and how users are expected to interact with it. The choice of filter type should reflect the nature of the data, the available space in the interface, and the intended user workflow. Common types include:
+These guidelines cover the filters you offer and the individual options inside them: which filters to include, how to order them, and how to keep long or complex option lists usable.
 
-| Type         | Description                                                                                                                                                                                               | Component                                    |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| **Single**   | Allows only one option to be chosen from a set, such as selecting a single category or status. A radio group is typically used, as it makes the one-choice rule clear and supports quick decision-making. | [Radio](/components/form/radio)              |
-| **Multiple** | Enables users to select several options at once, for example multiple categories or attributes. Checkboxes clearly signal that multiple selections are possible and give instant visual confirmation.     | [Checkbox](/components/form/checkbox)        |
-| **Range**    | Lets users choose values within a continuous range, making it ideal for filtering quantities, prices, or measurements. Sliders provide an intuitive way to adjust values without manual input.            | [Slider](/components/form/slider)            |
-| **Min/Max**  | Provides precise control over numeric ranges by allowing exact lower and upper limits to be entered. This is useful when accuracy is important.                                                           | [NumberField](/components/form/number-field) |
-| **Contains** | Filters items based on specific words or phrases entered by the user. This method is valuable for keyword searches or partial matches.                                                                    | [TextField](/components/form/text-field)     |
-
-While list-based components such as [SelectList](/components/form/selectlist) could technically cover single and multiple selection through different selection modes, prefer the dedicated form controls listed above. Radio buttons and checkboxes communicate the selection rule visually before any interaction, integrate directly with forms, and match what users know from other applications. Reach for list-based components when a filter behaves like a searchable collection, for example hundreds of options that benefit from virtualization.
-
-### Creating Effective Filters
+### Choosing and Ordering Filters
 
 When creating filters, ensure the chosen parameters directly match actual properties or categories in the data set, so it is obvious to the user how their selections change the displayed results. Each filter's purpose should be unambiguous, allowing users to refine results in a precise and efficient way without confusion.
 
@@ -109,7 +111,7 @@ Organize filters in a logical order, such as by most-used, so they are intuitive
   </Dont>
 </GuidelineTiles>
 
-### Managing Many Options
+### Handling Many Options
 
 When a filter offers many possible options, showing them all at once can overwhelm users and make scanning difficult. A better approach is to display only the most relevant or frequently used options first, with a "show more" button to reveal the full list when needed. This keeps the panel compact, easier to read, and still allows full access when required.
 
@@ -137,7 +139,7 @@ Keep the count visually quiet so it informs without competing with the option it
 
 Whether single select or multi select, pairing counts inside the filter panel with a clear applied filter summary gives users confidence that their selections match their intent.
 
-### Select All Options
+### Select All
 
 In multi-select filters, leaving everything unchecked typically means all results are shown, so a "Select all" option is not always required. It becomes valuable in long lists where users often want nearly everything, or when a parent-child structure enables bulk toggling. In these scenarios it reduces effort and makes the common "all except a few" pattern easier to achieve.
 
@@ -147,7 +149,7 @@ Build this with a standalone [Checkbox](/components/form/checkbox) that controls
 
 <ComponentDemo name="filter-select-all" />
 
-### Exclude Filters
+### Excluding Values
 
 Exclude filters let users say "show everything except these" instead of naming every value they want to keep. They are genuinely useful when the set to remove is small and the set to keep is large, but they add a second way to express intent, so reach for them only when inclusion alone is awkward. There are two ways to offer exclusion, and they suit different situations.
 
@@ -161,9 +163,11 @@ Exclude filters let users say "show everything except these" instead of naming e
 
 Whichever mechanism you choose, make the exclusion unmistakable wherever the filter is shown. Phrase the applied filter as "Type is not Bar" or "All types except Bar", never as a bare value, so the polarity is never ambiguous in the panel, in the tag, or in the control's accessible name. Switching polarity can change the result set dramatically, so apply it immediately and keep the operator visible rather than buried in an advanced menu.
 
-### Managing Many Filters
+## Scaling to Many Filters
 
 The techniques above help within a single filter, but a filter panel can also grow in the number of filters it contains. A panel with 15 or more filter groups forces users to scroll past many controls that are irrelevant to their current task, making the relevant ones harder to find.
+
+### Grouping into Sections
 
 Group related parameters into collapsible sections using an [Accordion](/components/navigation/accordion) with `allowsMultipleExpanded`. Expand the most-used groups by default and collapse the rest, so the panel opens with a compact overview while every filter stays one click away.
 
@@ -217,23 +221,9 @@ Use a [Select](/components/form/select) of relative presets, applied instantly. 
 
 Relative date-range presets are composed in userland today. First-class support for preset shortcuts in the date picker popover is planned ([DST-1511](https://reservix.atlassian.net/browse/DST-1511)).
 
-### Showing the Number of Active Filters
+## Communicating Filter State
 
-When the filter panel is closed, users need a reliable signal that the data set is currently filtered. The applied filter area provides the details, but it can be scrolled out of view or empty space may be reclaimed by other content.
-
-Add a [Badge](/components/content/badge) with the number of active filters to the filter button. The count is always visible alongside the trigger, signals filtering at a glance, and combined with the applied filter tags gives a complete snapshot of what is narrowing the data set.
-
-<ComponentDemo name="filter-trigger-badge" />
-
-### Handling Empty States
-
-Empty states occur when no items match the applied filters, often because the criteria are too narrow, the filters conflict with each other, or the data set lacks matching values. This situation should be clearly communicated through the data set area itself, for example by displaying a clear message or visual placeholder where results would normally appear. Doing so helps users quickly understand why no results are shown and guides them toward resolving the issue. Supportive actions can include suggesting broader parameters, offering related content, or providing an easy-to-access "clear filters" control to reset the view and start fresh.
-
-<ComponentDemo name="filter-empty-state-table" />
-
-An empty state can also occur in the applied filters area when no filters are currently active. Displaying this state helps users understand that no filtering criteria are in place and that all available results are being shown.
-
-<ComponentDemo name="filter-empty-state-applied-filter" />
+Once filters are applied, the interface needs to reflect that state back to the user: how each active filter reads, how to signal filtering at a glance, how to undo it, and what to show when nothing matches.
 
 ### Applied Filter Labels
 
@@ -253,6 +243,14 @@ Even with one tag per filter, many active filters can stack into several rows of
 
 Marigold deliberately does not provide a helper to generate these labels. Label phrasing and translation depend on the application's domain and i18n setup, so they are best composed where the filter state lives. We will revisit a shared helper if demand shows up.
 
+### Active Filter Count
+
+When the filter panel is closed, users need a reliable signal that the data set is currently filtered. The applied filter area provides the details, but it can be scrolled out of view or empty space may be reclaimed by other content.
+
+Add a [Badge](/components/content/badge) with the number of active filters to the filter button. The count is always visible alongside the trigger, signals filtering at a glance, and combined with the applied filter tags gives a complete snapshot of what is narrowing the data set.
+
+<ComponentDemo name="filter-trigger-badge" />
+
 ### Reverting Filters
 
 When applied filters result in no displayed results, for example when criteria are too restrictive, conflicting, or simply no longer relevant, it is important to offer quick and accessible ways to revert them. This prevents users from becoming stuck or frustrated and allows them to continue exploring the data set with minimal effort.
@@ -271,7 +269,17 @@ Offering both options provides flexibility. Users can make precise adjustments b
   active, as removing it individually is simpler and cleaner.
 </Callout>
 
-### Accessibility
+### Empty States
+
+Empty states occur when no items match the applied filters, often because the criteria are too narrow, the filters conflict with each other, or the data set lacks matching values. This situation should be clearly communicated through the data set area itself, for example by displaying a clear message or visual placeholder where results would normally appear. Doing so helps users quickly understand why no results are shown and guides them toward resolving the issue. Supportive actions can include suggesting broader parameters, offering related content, or providing an easy-to-access "clear filters" control to reset the view and start fresh.
+
+<ComponentDemo name="filter-empty-state-table" />
+
+An empty state can also occur in the applied filters area when no filters are currently active. Displaying this state helps users understand that no filtering criteria are in place and that all available results are being shown.
+
+<ComponentDemo name="filter-empty-state-applied-filter" />
+
+## Accessibility
 
 Filtering combines several interactive controls, so a few accessibility details make the difference between a pattern that works with a keyboard and screen reader and one that quietly excludes people.
 
@@ -279,7 +287,7 @@ Filtering combines several interactive controls, so a few accessibility details 
 - **Name a label-only trigger by its full state.** When a quick filter shows only the dimension and a count, make sure its accessible name still conveys that something is applied, for example "Status, 2 selected", rather than a bare "Status". With [Select](/components/form/select) the count rendered in the trigger is part of its accessible name. For a custom trigger, set an explicit `aria-label`.
 - **Let the controls own focus and keyboard behaviour.** Building quick filters from Marigold components such as [Select](/components/form/select), [Checkbox](/components/form/checkbox), and [Radio](/components/form/radio) gives correct roles, keyboard interaction, and focus return to the trigger on close, because they are based on react-aria. Avoid hand-rolling `role="menu"` or a custom dropdown.
 - **Announce the result of a filter change.** Applying or removing a filter changes the data set, but screen reader users get no feedback unless you announce it. Render the result count in a live region (`role="status"`, `aria-live="polite"`), for example "247 results, Status applied", so the outcome is spoken. Marigold does not yet provide a built-in region for this, so add one where the result count lives.
-- **Link a "select all" control to the group it toggles.** When the control sits outside the group, as in [Select All Options](#select-all-options), set its `aria-controls` to the group's id so the relationship is conveyed programmatically and not left to visual proximity.
+- **Link a "select all" control to the group it toggles.** When the control sits outside the group, as in [Select All](#select-all), set its `aria-controls` to the group's id so the relationship is conveyed programmatically and not left to visual proximity.
 
 Some details are still application specific and not settled by the design system, such as the exact roles for a multi select filter popover. When in doubt, prefer a Marigold component that already encodes the right semantics over a custom control.
 
