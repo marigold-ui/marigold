@@ -10,7 +10,7 @@ In many applications, large or complex data sets can be difficult to navigate. F
 
 Filters are most valuable when a data set is too large or complex for users to easily scan in its entirety. They become especially useful when multiple parameters or categories can significantly narrow the results. Well-applied filters streamline the process of finding relevant items, reduce information overload, and enable users to complete tasks more efficiently.
 
-## Anatomy
+## Structure
 
 The pattern keeps a consistent layout while the controls inside it adapt to the data set. It arranges five areas: a toolbar above the data set, an applied-filter summary, the data set itself, pagination below it, and a filter panel that slides in from the right.
 
@@ -277,7 +277,7 @@ An empty state can also occur in the applied filters area when no filters are cu
 
 Filtering combines several interactive controls, so a few accessibility details make the difference between a pattern that works with a keyboard and screen reader and one that quietly excludes people.
 
-- **Do not turn the toolbar into a `toolbar` widget.** The [WAI-ARIA toolbar pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) makes the group a single tab stop with arrow-key navigation between controls. That conflicts with a search field, where arrow keys must move the text cursor. Compose the toolbar with [Inline](/components/layout/inline) so each control is a normal tab stop, as described in the [anatomy](#anatomy).
+- **Do not turn the toolbar into a `toolbar` widget.** The [WAI-ARIA toolbar pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) makes the group a single tab stop with arrow-key navigation between controls. That conflicts with a search field, where arrow keys must move the text cursor. Compose the toolbar with [Inline](/components/layout/inline) so each control is a normal tab stop, as described in the [structure](#structure).
 - **Name a label-only trigger by its full state.** When a quick filter shows only the dimension and a count, make sure its accessible name still conveys that something is applied, for example "Status, 2 selected", rather than a bare "Status". With [Select](/components/form/select) the count rendered in the trigger is part of its accessible name. For a custom trigger, set an explicit `aria-label`.
 - **Let the controls own focus and keyboard behaviour.** Building quick filters from Marigold components such as [Select](/components/form/select), [Checkbox](/components/form/checkbox), and [Radio](/components/form/radio) gives correct roles, keyboard interaction, and focus return to the trigger on close, because they are based on react-aria. Avoid hand-rolling `role="menu"` or a custom dropdown.
 - **Announce the result of a filter change.** Applying or removing a filter changes the data set, but screen reader users get no feedback unless you announce it. Render the result count in a live region (`role="status"`, `aria-live="polite"`), for example "247 results, Status applied", so the outcome is spoken. Marigold does not yet provide a built-in region for this, so add one where the result count lives.
