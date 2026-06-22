@@ -1,5 +1,5 @@
 import type { ReactNode, Ref } from 'react';
-import { use } from 'react';
+import { use, useCallback, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import {
   RadioButton,
@@ -88,6 +88,7 @@ function SegmentedControlBase({
   description,
   errorMessage,
   width,
+  onChange,
   children,
   ...rest
 }: SegmentedControlProps) {
@@ -98,6 +99,48 @@ function SegmentedControlBase({
   });
 
   const expandWidth = !!width;
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  // Keep the selected option visible when the segments overflow and scroll.
+  const scrollSelectedIntoView = useCallback((behavior: ScrollBehavior) => {
+    const container = scrollRef.current;
+    if (!container || typeof container.scrollTo !== 'function') return;
+
+    const selected = container.querySelector<HTMLElement>('[data-selected]');
+    if (!selected) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const selectedRect = selected.getBoundingClientRect();
+    const offset =
+      selectedRect.left -
+      containerRect.left -
+      (container.clientWidth - selectedRect.width) / 2;
+
+    container.scrollTo({ left: container.scrollLeft + offset, behavior });
+  }, []);
+
+  // Store the scroll container and reveal the initially selected option as soon
+  // as it mounts — a ref callback instead of an effect (it runs once the node
+  // and its options are in the DOM, with no extra render).
+  const attachScrollContainer = useCallback(
+    (node: HTMLDivElement | null) => {
+      scrollRef.current = node;
+      if (node) scrollSelectedIntoView('auto');
+    },
+    [scrollSelectedIntoView]
+  );
+
+  const handleChange = (value: string) => {
+    onChange?.(value);
+
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    requestAnimationFrame(() =>
+      scrollSelectedIntoView(reduced ? 'auto' : 'smooth')
+    );
+  };
 
   const props: RAC.RadioGroupProps = {
     isDisabled: disabled,
@@ -105,6 +148,7 @@ function SegmentedControlBase({
     isRequired: required,
     isInvalid: error,
     orientation: 'horizontal',
+    onChange: handleChange,
     ...rest,
   };
 
@@ -123,12 +167,14 @@ function SegmentedControlBase({
         role="presentation"
         className={cn(
           classNames.group,
-          expandWidth ? 'flex w-full' : 'inline-flex w-fit'
+          expandWidth ? 'flex w-full' : 'inline-flex w-fit max-w-full'
         )}
       >
-        <SegmentedControlContext value={{ variant, size, expandWidth }}>
-          {children}
-        </SegmentedControlContext>
+        <div ref={attachScrollContainer} className={classNames.list}>
+          <SegmentedControlContext value={{ variant, size, expandWidth }}>
+            {children}
+          </SegmentedControlContext>
+        </div>
       </div>
     </FieldBase>
   );

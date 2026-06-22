@@ -1,13 +1,16 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
+  // Outer track. Provides the surface (default variant). Deliberately does not
+  // clip — the inner list is the scroll container, so option focus rings can
+  // bleed past this edge without being cut off.
   group: cva({
-    base: 'group/segmented relative items-center',
+    base: 'group/segmented relative items-center rounded-surface',
     variants: {
       variant: {
         // Track matches the Switch's unselected track surface.
-        default: 'gap-0 rounded-surface bg-control',
-        ghost: 'gap-1',
+        default: 'bg-control',
+        ghost: '',
       },
       size: {
         default: 'text-sm',
@@ -19,9 +22,32 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       size: 'default',
     },
   }),
+  // Inner scroll container: lays the options out in a row and scrolls them
+  // horizontally when they overflow, with an edge-fade affordance
+  // (`ui-scroll-mask-x`). `box-content p-1 -m-1` reserves room for the option
+  // focus rings the scroll container's `overflow` would otherwise clip: the
+  // `p-1` padding is the ring room, `-m-1` bleeds the scroller a matching 4px
+  // past the track on every side so the rings overhang the track edge uniformly
+  // (instead of being cut off, or insetting the options). `box-content` keeps
+  // `w-full` equal to the track width so the options still sit flush to the
+  // track edge — the padding grows the scroller outward, not the content.
+  list: cva({
+    base: 'flex w-full items-center ui-scroll-mask-x box-content p-1 -m-1',
+    variants: {
+      variant: {
+        default: 'gap-0',
+        ghost: 'gap-1',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }),
   // Positioning context for each segment; holds the sliding indicator.
+  // `shrink-0` keeps each option at its natural width so the row overflows (and
+  // scrolls) rather than compressing the segments.
   field: cva({
-    base: 'relative inline-flex',
+    base: 'relative inline-flex shrink-0',
   }),
   // The clickable segment (a radio rendered as a button).
   option: cva({
@@ -66,7 +92,12 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     // explicit length (see variants: w-full / calc) — not derived from `inset`
     // left+right — or it falls back to an auto width that CSS can't interpolate,
     // so it would snap to its new size while only the position slides.
-    base: 'absolute z-0 transition-[translate,width] duration-200 ease-out-quint motion-reduce:transition-none',
+    //
+    // Keyboard navigation switches instantly: while an option shows its focus
+    // ring the slide would visibly lag behind the arrow keys, so dropping the
+    // transition (same `transition-property: none` mechanism as reduced motion)
+    // makes the FLIP a no-op. Pointer selection keeps the slide.
+    base: 'absolute z-0 transition-[translate,width] duration-200 ease-out-quint group-has-[[data-focus-visible]]/segmented:transition-none motion-reduce:transition-none',
     variants: {
       variant: {
         // Raised surface like the Switch thumb; ~2px inset to the track edge.

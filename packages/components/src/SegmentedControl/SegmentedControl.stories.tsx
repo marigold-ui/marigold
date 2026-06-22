@@ -128,6 +128,39 @@ export const Controlled = meta.story({
   },
 });
 
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
+
+export const Overflow = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Month',
+  },
+  render: args => (
+    <div className="w-72">
+      <SegmentedControl {...args} defaultValue="Jan">
+        {months.map(month => (
+          <SegmentedControl.Option key={month} value={month}>
+            {month}
+          </SegmentedControl.Option>
+        ))}
+      </SegmentedControl>
+    </div>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const presentation = canvasElement.querySelector(
+      '[role="presentation"]'
+    ) as HTMLElement;
+    const scroller = presentation.firstElementChild as HTMLElement;
+    const august = canvas.getByRole('radio', { name: 'Aug' });
+
+    await userEvent.click(august);
+
+    await waitFor(() => expect(scroller.scrollLeft).toBeGreaterThan(0));
+    expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+    expect(august).toBeChecked();
+  },
+});
+
 export const WithError = meta.story({
   tags: ['component-test'],
   args: {

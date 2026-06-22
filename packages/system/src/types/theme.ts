@@ -322,7 +322,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     SegmentedControl?: Record<
-      'group' | 'field' | 'option' | 'indicator',
+      'group' | 'list' | 'field' | 'option' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
     Sidebar?: Record<
