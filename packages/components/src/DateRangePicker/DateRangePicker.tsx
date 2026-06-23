@@ -188,12 +188,6 @@ interface DateRangeInputProps {
   action?: ReactElement<any>;
 }
 
-/**
- * Renders the start/end `DateInput`s inside a single field group. Each input
- * owns its own `onPaste` so the pasted value can be routed to the correct part
- * of the range via RAC's `DateRangePickerStateContext`. The single-date parser
- * is reused verbatim from `DateField/DateInput`.
- */
 const DateRangeInput = ({ action }: DateRangeInputProps) => {
   const ctx = use(DateRangePickerStateContext);
   const classNames = useClassNames({ component: 'DateField' });
