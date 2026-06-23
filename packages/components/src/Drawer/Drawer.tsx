@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { use, useId, useMemo, useRef } from 'react';
+import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import {
   Dialog,
@@ -112,34 +113,8 @@ export const Drawer = ({
   const landmarkAria = useLandmark({ ...props, role }, ref);
   const landmarkProps = isSmallScreen ? {} : landmarkAria.landmarkProps;
 
-  const rootHeadingProps = useMemo(
-    () => ({
-      slots: {
-        title: {
-          className: cn(
-            '[grid-area:title]',
-            classNames.header,
-            classNames.title
-          ),
-          level: 2,
-          id: titleId,
-          ref: titleSlotRef,
-        },
-      },
-    }),
-    [classNames.header, classNames.title, titleId, titleSlotRef]
-  );
-
-  const textProps = useMemo(
-    () => ({
-      slots: {
-        description: {
-          className: cn('[grid-area:content]', classNames.description),
-          elementType: 'p' as const,
-        },
-      },
-    }),
-    [classNames.description]
+  const { headingProps: rootHeadingProps, textProps } = useOverlayRootSlotProps(
+    { classNames, titleId, titleSlotRef }
   );
 
   const drawerContextValue = useMemo(

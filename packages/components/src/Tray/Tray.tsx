@@ -34,6 +34,7 @@ import { useIsHidden } from '@react-aria/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
+import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { useSlot } from '../utils/useSlot';
 import { TrayContext } from './Context';
 import { TrayActions } from './TrayActions';
@@ -132,34 +133,8 @@ export const Tray = ({
     [classNames, titleId, hasTitle, titleSlotRef]
   );
 
-  const rootHeadingProps = useMemo(
-    () => ({
-      slots: {
-        title: {
-          className: cn(
-            '[grid-area:title]',
-            classNames.header,
-            classNames.title
-          ),
-          level: 2,
-          id: titleId,
-          ref: titleSlotRef,
-        },
-      },
-    }),
-    [classNames.header, classNames.title, titleId, titleSlotRef]
-  );
-
-  const textProps = useMemo(
-    () => ({
-      slots: {
-        description: {
-          className: cn('[grid-area:content]', classNames.description),
-          elementType: 'p' as const,
-        },
-      },
-    }),
-    [classNames.description]
+  const { headingProps: rootHeadingProps, textProps } = useOverlayRootSlotProps(
+    { classNames, titleId, titleSlotRef }
   );
 
   // Safety net for when `useIsHidden()` is blind to the hidden pass because of

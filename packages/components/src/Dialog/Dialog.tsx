@@ -10,6 +10,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { Modal, ModalProps } from '../Overlay/Modal';
+import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { useSlot } from '../utils/useSlot';
 import { DialogContext, DialogSlotContext } from './Context';
 import { DialogActions } from './DialogActions';
@@ -47,7 +48,12 @@ const InnerDialog = ({
   });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
-  if (process.env.NODE_ENV !== 'production' && !ariaLabel && !hasTitle) {
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    !ariaLabel &&
+    !hasTitle &&
+    !props['aria-labelledby']
+  ) {
     console.warn(
       '[Dialog] Renders a dialog without an accessible name. Provide a ' +
         '`<Dialog.Title>` (or a bare `<Title slot="title">`) or an ' +
@@ -65,34 +71,8 @@ const InnerDialog = ({
   // `title` slot carries the header chrome (padding) so a title-only dialog
   // still looks like a titled bar; `<Dialog.Header>` re-publishes a stripped
   // variant when it owns the chrome itself.
-  const rootHeadingProps = useMemo(
-    () => ({
-      slots: {
-        title: {
-          className: cn(
-            '[grid-area:title]',
-            classNames.header,
-            classNames.title
-          ),
-          level: 2,
-          id: titleId,
-          ref: titleSlotRef,
-        },
-      },
-    }),
-    [classNames.header, classNames.title, titleId, titleSlotRef]
-  );
-
-  const textProps = useMemo(
-    () => ({
-      slots: {
-        description: {
-          className: cn('[grid-area:content]', classNames.description),
-          elementType: 'p' as const,
-        },
-      },
-    }),
-    [classNames.description]
+  const { headingProps: rootHeadingProps, textProps } = useOverlayRootSlotProps(
+    { classNames, titleId, titleSlotRef }
   );
 
   const contextValue = useMemo(
