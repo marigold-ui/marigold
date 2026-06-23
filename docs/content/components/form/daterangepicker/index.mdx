@@ -3,21 +3,17 @@ title: DateRangePicker
 description: Pick a start and end date through a single field.
 ---
 
+import { DateRangePickerAnatomy } from './daterangepicker-anatomy';
+
 The `<DateRangePicker>` component lets users enter or select a date range, a start date together with an end date, through a single field.
 
-Like `<DatePicker>`, it pairs a date input with a calendar popover. Clicking the calendar button opens a `<RangeCalendar>` where the user picks the two ends of the range, and both the start and the end can also be typed or pasted straight into the field.
+It keeps the start and the end of a span together in one control, so the two dates stay consistent and people can choose the whole range in a single step. The dates can be picked on a calendar or typed directly into the field.
 
 ## Anatomy
 
-The Label states the purpose of the field. Two date inputs hold the start and the end of the range, with a separator between them. The Calendar Button opens a range calendar with a Header for choosing the month and year and Next and Previous Buttons for moving between months.
+The Label states the purpose of the field. Two date inputs hold the start and the end of the range, with a separator between them. The Calendar Button opens a range calendar where the user can pick both ends visually.
 
-<ImageZoom
-  src="/datepicker/datepicker-anatomy.jpg"
-  alt="Anatomy of a date range picker"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<DateRangePickerAnatomy />
 
 ## Appearance
 
