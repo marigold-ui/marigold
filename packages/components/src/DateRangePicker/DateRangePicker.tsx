@@ -1,0 +1,248 @@
+import type { ReactElement, Ref } from 'react';
+import { use } from 'react';
+import type RAC from 'react-aria-components';
+import { DateInput as AriaDateInput } from 'react-aria-components/DateField';
+import {
+  DateRangePicker,
+  DateRangePickerStateContext,
+} from 'react-aria-components/DateRangePicker';
+import type { DateValue } from 'react-aria-components/DateRangePicker';
+import { Dialog } from 'react-aria-components/Dialog';
+import { Group } from 'react-aria-components/Group';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
+import { Button } from '../Button/Button';
+import { parseDateFromString } from '../DateField/DateInput';
+import { DateSegment } from '../DateField/DateSegment';
+import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
+import { IconButton } from '../IconButton/IconButton';
+import { Popover } from '../Overlay/Popover';
+import { RangeCalendar } from '../RangeCalendar/RangeCalendar';
+import { Tray } from '../Tray/Tray';
+import { Calendar as CalendarIcon } from '../icons/Calendar';
+import { intlMessages } from '../intl/messages';
+
+type RemovedProps =
+  | 'isDisabled'
+  | 'isDateUnavailable'
+  | 'isReadOnly'
+  | 'isRequired'
+  | 'isInvalid'
+  | 'style'
+  | 'className'
+  | 'isOpen';
+
+export interface DateRangePickerProps
+  extends
+    Omit<RAC.DateRangePickerProps<DateValue>, RemovedProps>,
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+  /**
+   * Callback that is called for each date of the calendar. If it returns true, then the date is unavailable.
+   */
+  dateUnavailable?: RAC.DateRangePickerProps<DateValue>['isDateUnavailable'];
+
+  /**
+   * If `true`, the date range picker is disabled.
+   * @default false
+   */
+  disabled?: RAC.DateRangePickerProps<DateValue>['isDisabled'];
+
+  /**
+   * If `true`, the date range picker is required.
+   * @default false
+   */
+  required?: RAC.DateRangePickerProps<DateValue>['isRequired'];
+
+  /**
+   * If `true`, the date range picker is readOnly.
+   * @default false
+   */
+  readOnly?: RAC.DateRangePickerProps<DateValue>['isReadOnly'];
+
+  /**
+   * If `true`, the field is considered invalid and if set the errorMessage is shown instead of the `description`.
+   * @default false
+   */
+  error?: RAC.DateRangePickerProps<DateValue>['isInvalid'];
+
+  /**
+   * Whether the calendar is open by default (controlled).
+   * @default false
+   */
+  open?: RAC.DateRangePickerProps<DateValue>['isOpen'];
+
+  variant?: string;
+  size?: string;
+
+  /**
+   * The number of months to display at once in the calendar popover. Up to 3 months are supported.
+   * @default { months: 1 }
+   */
+  visibleDuration?: { months: 1 | 2 | 3 };
+
+  /**
+   * Controls how the calendar pages when navigating.
+   * - 'single': Page by one month at a time
+   * - 'visible': Page by the number of visible months
+   * @default 'visible'
+   */
+  pageBehavior?: RAC.DateRangePickerProps<DateValue>['pageBehavior'];
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   *
+   * Numeric/scale values are spacing-scale tokens, not pixels: `width={64}`
+   * resolves to `calc(var(--spacing) * 64)` ~= 16rem (256px), not 64px.
+   */
+  width?: WidthProp['width'];
+}
+
+const DateRangePickerBase = ({
+  dateUnavailable,
+  disabled,
+  required,
+  readOnly,
+  error,
+  variant,
+  size,
+  open,
+  granularity = 'day',
+  visibleDuration,
+  pageBehavior,
+  onChange,
+  ref,
+  ...rest
+}: DateRangePickerProps & { ref?: Ref<HTMLDivElement> }) => {
+  const props: RAC.DateRangePickerProps<DateValue> = {
+    isDateUnavailable: dateUnavailable,
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isRequired: required,
+    isInvalid: error,
+    isOpen: open,
+    granularity,
+    onChange,
+    ...rest,
+  };
+
+  const classNames = useClassNames({
+    component: 'DateRangePicker',
+    size,
+    variant,
+  });
+
+  const isSmallScreen = useSmallScreen();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  return (
+    <FieldBase
+      as={DateRangePicker}
+      variant={variant}
+      size={size}
+      {...props}
+      ref={ref}
+    >
+      <DateRangeInput
+        action={
+          <IconButton className={classNames}>
+            <CalendarIcon size="16" data-testid="action" />
+          </IconButton>
+        }
+      />
+      {isSmallScreen ? (
+        <Tray>
+          <Tray.Title>{rest.label}</Tray.Title>
+          <Tray.Content>
+            <RangeCalendar disabled={disabled} />
+          </Tray.Content>
+          <Tray.Actions>
+            <Button slot="close">{stringFormatter.format('close')}</Button>
+          </Tray.Actions>
+        </Tray>
+      ) : (
+        <Popover>
+          <Dialog>
+            <RangeCalendar
+              disabled={disabled}
+              visibleDuration={visibleDuration}
+              pageBehavior={pageBehavior}
+            />
+          </Dialog>
+        </Popover>
+      )}
+    </FieldBase>
+  );
+};
+
+export { DateRangePickerBase as DateRangePicker };
+
+interface DateRangeInputProps {
+  action?: ReactElement<any>;
+}
+
+/**
+ * Renders the start/end `DateInput`s inside a single field group. Each input
+ * owns its own `onPaste` so the pasted value can be routed to the correct part
+ * of the range via RAC's `DateRangePickerStateContext`. The single-date parser
+ * is reused verbatim from `DateField/DateInput`.
+ */
+const DateRangeInput = ({ action }: DateRangeInputProps) => {
+  const ctx = use(DateRangePickerStateContext);
+  const classNames = useClassNames({ component: 'DateField' });
+
+  const handlePaste =
+    (part: 'start' | 'end') => (event: React.ClipboardEvent) => {
+      try {
+        const parsedDate = parseDateFromString(
+          event.clipboardData.getData('text')
+        );
+        if (parsedDate) {
+          event.preventDefault();
+          // `setDateTime` is the same commit path the start/end inputs use on
+          // their own `onChange`: it writes the pasted part into `state.value`
+          // (preserving the other part), which the controlled inputs reflect.
+          // `setDate` alone keeps an incomplete range as in-progress only and
+          // would not update the field display.
+          ctx?.setDateTime(part, parsedDate);
+        }
+      } catch (error) {
+        console.warn('Failed to parse pasted date:', error);
+      }
+    };
+
+  return (
+    <Group
+      className={cn(
+        classNames.field,
+        'w-(--field-width) max-w-full min-w-0 overflow-hidden'
+      )}
+    >
+      <div className="flex min-w-0 flex-1 items-center gap-1">
+        <div className="min-w-0" onPaste={handlePaste('start')}>
+          <AriaDateInput
+            slot="start"
+            className={cn('flex items-center', classNames.input)}
+          >
+            {segment => (
+              <DateSegment className={classNames.segment} segment={segment} />
+            )}
+          </AriaDateInput>
+        </div>
+        <span aria-hidden="true" className="text-secondary shrink-0 px-1">
+          –
+        </span>
+        <div className="min-w-0" onPaste={handlePaste('end')}>
+          <AriaDateInput
+            slot="end"
+            className={cn('flex items-center', classNames.input)}
+          >
+            {segment => (
+              <DateSegment className={classNames.segment} segment={segment} />
+            )}
+          </AriaDateInput>
+        </div>
+      </div>
+      {action}
+    </Group>
+  );
+};

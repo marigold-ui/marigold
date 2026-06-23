@@ -1,0 +1,146 @@
+---
+title: DateRangePicker
+description: Component used to pick a start and end date through a single field.
+---
+
+The `<DateRangePicker>` component lets users enter or select a date range — a start and an end date — through a single field.
+
+Like `<DatePicker>`, it pairs a date input with a calendar popover. Clicking the calendar button opens a `<RangeCalendar>` where the user can select the range, while the start and end can also be typed or pasted directly into the field.
+
+## Anatomy
+
+The Label defines the purpose of the field. Two date inputs, separated by a dash, hold the start and end of the range. Tapping the Calendar Button opens a range calendar with a Header for selecting the month and year, and Next/Previous Buttons for month navigation.
+
+<ImageZoom
+  src="/datepicker/datepicker-anatomy.jpg"
+  alt="Anatomy of date range picker"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={'DateRangePicker'} />
+
+<AppearanceTable component={'DateRangePicker'} />
+
+## Usage
+
+`<DateRangePicker>` is used when users need to select a span of time accurately — reporting periods, event windows, booking ranges, or availability filters. It standardizes input across locales and prevents invalid selections through built-in validation. Avoid it for selecting a single date (use `<DatePicker>`) or for casual input where a plain text field would suffice.
+
+### Basic Usage (uncontrolled)
+
+This example shows a regular `<DateRangePicker>` without any special props.
+
+<ComponentDemo name="date-range-picker-basic" />
+
+### Min/Max Values
+
+The `minValue` and `maxValue` props are used to perform built-in validation. This prevents the user from selecting dates outside the valid range in the calendar.
+
+<ComponentDemo name="date-range-picker-min-max" />
+
+### Controlled
+
+The `value` and `onChange` props can be used to control the `DateRangePicker`. The value is a `RangeValue<DateValue>` — an object with a `start` and `end` date.
+
+<ComponentDemo name="date-range-picker-controlled" />
+
+### Multiple Months
+
+Use `visibleDuration` to display up to three months at once in the popover, which makes selecting longer ranges easier. On small screens the calendar stacks into a single month inside a tray.
+
+<ComponentDemo name="date-range-picker-multi-month" />
+
+### Error
+
+Set `error` and provide an `errorMessage` to mark the field as invalid. The error message is shown instead of the description.
+
+<ComponentDemo name="date-range-picker-error" />
+
+### Paste Support
+
+The `<DateRangePicker>` supports pasting date values from the clipboard into either the start or end input. Paste into an input and the component parses and validates the content, setting that part of the range.
+
+**Supported date formats:**
+
+- ISO format: `2023-12-25`
+- European format: `25.12.2023` or `25/12/2023`
+- US format: `12/25/2023` or `12-25-2023`
+
+Invalid dates or unrecognized formats are ignored, ensuring data integrity.
+
+## Props
+
+<StorybookHintMessage component={'DateRangePicker'} />
+
+### DateRangePicker
+
+<AutoTypeTable path="DateRangePicker" name="DateRangePickerProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [DatePicker](/components/form/datepicker): Pick a single date through a
+    field with a calendar popover.
+  </li>
+  <li>
+    [RangeCalendar](/components/form/rangecalendar): Select a date range from an
+    always-visible calendar.
+  </li>
+  <li>
+    [DateField](/components/form/datefield): Allows users to input a date
+    directly.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Forms',
+      href: '../../patterns/user-input/forms',
+      caption: 'How to structure, validate, and submit forms with Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form Fields',
+      href: '../../foundations/form-fields',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>
