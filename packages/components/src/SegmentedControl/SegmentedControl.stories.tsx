@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Form } from 'react-aria-components/Form';
 import { expect, userEvent, waitFor } from 'storybook/test';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -116,6 +116,33 @@ export const Controlled = meta.story({
   },
 });
 
+export const DisabledOption = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'View',
+  },
+  render: args => (
+    <SegmentedControl {...args} defaultValue="list">
+      <SegmentedControl.Option value="list">List</SegmentedControl.Option>
+      <SegmentedControl.Option value="grid" disabled>
+        Grid
+      </SegmentedControl.Option>
+    </SegmentedControl>
+  ),
+  play: async ({ canvas }) => {
+    const grid = canvas.getByRole('radio', { name: 'Grid' });
+
+    await userEvent.click(grid);
+
+    await expect(grid).toBeDisabled();
+    await expect(canvas.getByRole('radio', { name: 'List' })).toBeChecked();
+  },
+});
+
+// Stress test only: this intentionally exceeds the recommended 2–5 options
+// (see the docs' "Number of options" guideline) to exercise the horizontal
+// overflow scrolling and the "keep selected option in view" behaviour. It is
+// not an example of recommended usage.
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
 
 export const Overflow = meta.story({

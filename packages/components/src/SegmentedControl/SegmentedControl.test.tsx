@@ -2,10 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { vi } from 'vitest';
-import { theme } from '@marigold/theme-rui';
-import { MarigoldProvider } from '../Provider/MarigoldProvider';
-import { SegmentedControl } from './SegmentedControl';
-import { Basic, Controlled, WithError } from './SegmentedControl.stories';
+import {
+  Basic,
+  Controlled,
+  DisabledOption,
+  WithError,
+} from './SegmentedControl.stories';
 
 const user = userEvent.setup();
 
@@ -80,16 +82,7 @@ test('disables every option when disabled', () => {
 
 test('disables only the option marked as disabled', async () => {
   const onChange = vi.fn();
-  render(
-    <MarigoldProvider theme={theme}>
-      <SegmentedControl label="View" defaultValue="list" onChange={onChange}>
-        <SegmentedControl.Option value="list">List</SegmentedControl.Option>
-        <SegmentedControl.Option value="grid" disabled>
-          Grid
-        </SegmentedControl.Option>
-      </SegmentedControl>
-    </MarigoldProvider>
-  );
+  render(<DisabledOption.Component onChange={onChange} />);
 
   await user.click(screen.getByRole('radio', { name: 'Grid' }));
 

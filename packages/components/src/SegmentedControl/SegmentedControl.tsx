@@ -98,7 +98,10 @@ function SegmentedControlBase({
     size,
   });
 
-  const expandWidth = !!width;
+  // Only `width="full"` stretches the segments to divide the available width
+  // equally. Any other width value just constrains the field box (like every
+  // other form component) and leaves the segments at their natural size.
+  const expandWidth = width === 'full';
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // Keep the selected option visible when the segments overflow and scroll.
@@ -197,25 +200,24 @@ export interface SegmentedControlOptionProps extends Omit<
    * @default false
    */
   disabled?: RAC.RadioFieldProps['isDisabled'];
-  variant?: string;
-  size?: string;
   children?: ReactNode;
   ref?: Ref<HTMLDivElement>;
 }
 
 function SegmentedControlOption({
   disabled,
-  variant,
-  size,
   children,
   ...props
 }: SegmentedControlOptionProps) {
   const context = use(SegmentedControlContext);
 
+  // `variant`/`size` are owned by the parent `<SegmentedControl>` and shared
+  // via context — a single segment cannot override them, so the whole control
+  // always stays visually consistent.
   const classNames = useClassNames({
     component: 'SegmentedControl',
-    variant: variant ?? context.variant,
-    size: size ?? context.size,
+    variant: context.variant,
+    size: context.size,
   });
 
   return (
