@@ -50,7 +50,7 @@
   "devDependencies": {
     "@babel/types": "7.29.7",
     "@marigold/tsconfig": "workspace:*",
-    "@types/node": "24.10.13",
+    "@types/node": "24.13.2",
     "tsdown": "0.22.3",
     "vitest": "4.1.9"
   },
