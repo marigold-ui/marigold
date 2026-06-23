@@ -7,7 +7,7 @@ import { DateRangePickerAnatomy } from './daterangepicker-anatomy';
 
 The `<DateRangePicker>` component lets users enter or select a date range, a start date together with an end date, through a single field.
 
-It keeps the start and the end of a span together in one control, so the two dates stay consistent and people can choose the whole range in a single step. The dates can be picked on a calendar or typed directly into the field.
+The two dates can be picked together on a calendar or typed directly into the field.
 
 ## Anatomy
 
@@ -23,34 +23,52 @@ The Label states the purpose of the field. Two date inputs hold the start and th
 
 ## Usage
 
-Reach for a `<DateRangePicker>` whenever a task depends on two dates that belong together, a beginning and an end. A booking needs an arrival and a departure, a report needs a period to summarize, a campaign needs a day to start and a day to stop. Capturing both dates in one field keeps them as a single value, makes sure the end never falls before the start, and lets people pick the whole span on one calendar instead of reasoning about two separate inputs.
+The clearest signal that you want a `<DateRangePicker>` is the span itself. When the time between the two dates is part of what the user is deciding, a trip that lasts a week, a report that covers a quarter, a campaign that runs for ten days, the two dates work as one value and people benefit from seeing the whole stretch on a single calendar.
 
-Choose a single `<DatePicker>` when only one date matters, and two independent fields when the start and the end are unrelated or one of them can stay open ended.
+Choosing both ends on the same calendar also keeps that value consistent. The end can never fall before the start, and rules like a minimum number of nights or blocked dates apply to the pair at once. Two separate fields cannot do this without extra validation, and moving between two calendars makes it easy to click the wrong day once the visible month shifts.
 
-### Selecting a range
+Use two separate date fields when only the endpoints matter on their own. Open ended filters such as everything after a date leave one end empty, unrelated dates such as when a document was issued and when it expires carry no real span between them, and dates many years apart are faster to type than to navigate. In those cases a single [DatePicker](/components/form/datepicker) or two independent fields communicate the intent more honestly.
 
-In its simplest form the component only needs a `label`. The user opens the calendar, clicks the first day, then the last day, and the field fills in both ends of the range.
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a `<DateRangePicker>` when the time between the two dates matters and
+      people benefit from seeing the whole span on one calendar, like a booking
+      or a reporting period.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use it when only the endpoints matter, when one end can stay open,
+      or when the dates are unrelated. Reach for a single
+      [DatePicker](/components/form/datepicker) or two independent fields
+      instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
-<ComponentDemo name="date-range-picker-basic" />
+The same booking captures one value on the left and two on the right. The range picker holds the whole trip in a single control and lets people pick both ends on one calendar, while the separate fields treat arrival and departure as unrelated inputs.
 
-### Reacting to the selected range
-
-Most of the time the chosen range has to drive something else, such as filtering a table or running a report. Control the value with `value` and `onChange` and read the result whenever it changes. The value is a `RangeValue<DateValue>` object with a `start` and an `end`.
-
-<ComponentDemo name="date-range-picker-controlled" />
-
-Marigold uses the `DateValue` type from [@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) rather than the native JavaScript `Date`, which avoids the timezone and parsing problems that come with `Date`. Use `parseDate` to turn an ISO string into a value for each end of the range.
+<ComponentDemo name="date-range-picker-vs-fields" />
 
 <Callout title="@internationalized/date" type="info">
-  `@internationalized/date` is a peer dependency. If it is not already in your
-  project, you need to install it.
+  Marigold represents dates with the `DateValue` type from
+  `@internationalized/date` rather than the native JavaScript `Date`, which
+  avoids the timezone and parsing problems that come with `Date`. It is a peer
+  dependency, so install it if it is not already in your project.
 </Callout>
 
-### Keeping selections inside an allowed window
+### Limiting the range
 
 Often only part of the calendar makes sense. A booking cannot start in the past, and a report cannot reach into the future. Set `minValue` and `maxValue` to fence the selectable window, and the calendar prevents anything outside it.
 
 <ComponentDemo name="date-range-picker-min-max" />
+
+### Range length
+
+A range often has rules about how long it can be, such as a stay of at least two nights or at most two weeks. Read the selected `value`, compare its `end` to its `start`, and set `error` with an `errorMessage` when the length falls outside the allowed bounds.
+
+<ComponentDemo name="date-range-picker-length" />
 
 ### Blocking unavailable dates
 
@@ -58,21 +76,27 @@ Some days inside the allowed window still cannot be chosen, such as nights that 
 
 <ComponentDemo name="date-range-picker-unavailable" />
 
-### Helping users plan longer ranges
+### Quick ranges
+
+In reporting and analytics people reach for the same spans again and again, such as the last seven days or the current month. Offer them as buttons that set the `value` directly, so users fill the field in one click and can still fine tune it on the calendar.
+
+<ComponentDemo name="date-range-picker-presets" />
+
+### Showing multiple months
 
 Ranges that stretch across several months are awkward to pick one month at a time, which is common when planning a holiday or a quarter. Set `visibleDuration` to show up to three months at once. On small screens the calendar always falls back to a single month inside a tray.
 
 <ComponentDemo name="date-range-picker-multi-month" />
 
-### Communicating problems
+### Including a time
 
-When a selection is not acceptable, tell the user why. Set `error` and provide an `errorMessage`, and the field shows the message in place of its description.
+Some ranges need a time as well as a date, such as an event that starts and ends at a set hour. Set `granularity` to `hour` or `minute` and each end of the range gains time segments.
 
-<ComponentDemo name="date-range-picker-error" />
+<ComponentDemo name="date-range-picker-time" />
 
-### Entering dates quickly
+### Accessibility
 
-People who work with dates all day often prefer the keyboard. Every segment can be edited directly, and a full date can be pasted into either the start or the end input. The component parses the pasted text, validates it, and fills in that end of the range. Pasted text is recognized in these formats:
+Picking a range on the calendar can be slow for people who rely on a keyboard or a screen reader, and people who work with dates all day often prefer to type. For both groups the field stays fully usable without ever opening the calendar. Every segment can be edited directly, and a full date can be pasted into either the start or the end input. The component parses the pasted text, validates it, and fills in that end of the range. Pasted text is recognized in these formats:
 
 - ISO format: `2023-12-25`
 - European format: `25.12.2023` or `25/12/2023`
@@ -83,8 +107,6 @@ Unrecognized or invalid text is ignored, so the field never ends up in a broken 
 ## Props
 
 <StorybookHintMessage component={'DateRangePicker'} />
-
-### DateRangePicker
 
 <AutoTypeTable path="DateRangePicker" name="DateRangePickerProps" />
 
