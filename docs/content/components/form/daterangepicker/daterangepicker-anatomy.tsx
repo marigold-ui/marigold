@@ -1,6 +1,6 @@
 export const DateRangePickerAnatomy = () => (
   <svg
-    viewBox="-20 40 780 340"
+    viewBox="-20 64 780 226"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
