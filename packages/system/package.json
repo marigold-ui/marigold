@@ -56,7 +56,7 @@
     "@marigold/tsconfig": "workspace:*",
     "@types/react": "19.2.15",
     "postcss": "8.5.15",
-    "react": "19.2.6",
+    "react": "19.2.7",
     "tailwindcss": "4.3.0",
     "tsdown": "0.22.3"
   },
