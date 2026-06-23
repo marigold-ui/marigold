@@ -5,21 +5,20 @@ import type { RangeValue } from '@react-types/shared';
 import { DateRangePicker, Stack } from '@marigold/components';
 
 export default () => {
-  const [value, setValue] = useState<RangeValue<DateValue>>({
-    start: parseDate('2023-10-29'),
-    end: parseDate('2023-11-05'),
+  const [range, setRange] = useState<RangeValue<DateValue>>({
+    start: parseDate('2024-01-01'),
+    end: parseDate('2024-01-31'),
   });
 
   return (
     <Stack space={3}>
       <DateRangePicker
-        label="Reporting Period"
-        value={value}
-        onChange={newValue => setValue(newValue!)}
+        label="Reporting period"
+        value={range} // [!code highlight]
+        onChange={value => setRange(value!)} // [!code highlight]
       />
-      <pre>
-        <strong>Selected Range: </strong>
-        {`${value.start.toString()} → ${value.end.toString()}`}
+      <pre className="text-sm">
+        {`${range.start.toString()} to ${range.end.toString()}`}
       </pre>
     </Stack>
   );

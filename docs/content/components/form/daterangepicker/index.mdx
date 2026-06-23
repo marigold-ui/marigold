@@ -1,19 +1,19 @@
 ---
 title: DateRangePicker
-description: Component used to pick a start and end date through a single field.
+description: Pick a start and end date through a single field.
 ---
 
-The `<DateRangePicker>` component lets users enter or select a date range — a start and an end date — through a single field.
+The `<DateRangePicker>` component lets users enter or select a date range, a start date together with an end date, through a single field.
 
-Like `<DatePicker>`, it pairs a date input with a calendar popover. Clicking the calendar button opens a `<RangeCalendar>` where the user can select the range, while the start and end can also be typed or pasted directly into the field.
+Like `<DatePicker>`, it pairs a date input with a calendar popover. Clicking the calendar button opens a `<RangeCalendar>` where the user picks the two ends of the range, and both the start and the end can also be typed or pasted straight into the field.
 
 ## Anatomy
 
-The Label defines the purpose of the field. Two date inputs, separated by a dash, hold the start and end of the range. Tapping the Calendar Button opens a range calendar with a Header for selecting the month and year, and Next/Previous Buttons for month navigation.
+The Label states the purpose of the field. Two date inputs hold the start and the end of the range, with a separator between them. The Calendar Button opens a range calendar with a Header for choosing the month and year and Next and Previous Buttons for moving between months.
 
 <ImageZoom
   src="/datepicker/datepicker-anatomy.jpg"
-  alt="Anatomy of date range picker"
+  alt="Anatomy of a date range picker"
   width={800}
   height={550}
   className="mx-auto block"
@@ -27,49 +27,62 @@ The Label defines the purpose of the field. Two date inputs, separated by a dash
 
 ## Usage
 
-`<DateRangePicker>` is used when users need to select a span of time accurately — reporting periods, event windows, booking ranges, or availability filters. It standardizes input across locales and prevents invalid selections through built-in validation. Avoid it for selecting a single date (use `<DatePicker>`) or for casual input where a plain text field would suffice.
+Reach for a `<DateRangePicker>` whenever a task depends on two dates that belong together, a beginning and an end. A booking needs an arrival and a departure, a report needs a period to summarize, a campaign needs a day to start and a day to stop. Capturing both dates in one field keeps them as a single value, makes sure the end never falls before the start, and lets people pick the whole span on one calendar instead of reasoning about two separate inputs.
 
-### Basic Usage (uncontrolled)
+Choose a single `<DatePicker>` when only one date matters, and two independent fields when the start and the end are unrelated or one of them can stay open ended.
 
-This example shows a regular `<DateRangePicker>` without any special props.
+### Selecting a range
+
+In its simplest form the component only needs a `label`. The user opens the calendar, clicks the first day, then the last day, and the field fills in both ends of the range.
 
 <ComponentDemo name="date-range-picker-basic" />
 
-### Min/Max Values
+### Reacting to the selected range
 
-The `minValue` and `maxValue` props are used to perform built-in validation. This prevents the user from selecting dates outside the valid range in the calendar.
-
-<ComponentDemo name="date-range-picker-min-max" />
-
-### Controlled
-
-The `value` and `onChange` props can be used to control the `DateRangePicker`. The value is a `RangeValue<DateValue>` — an object with a `start` and `end` date.
+Most of the time the chosen range has to drive something else, such as filtering a table or running a report. Control the value with `value` and `onChange` and read the result whenever it changes. The value is a `RangeValue<DateValue>` object with a `start` and an `end`.
 
 <ComponentDemo name="date-range-picker-controlled" />
 
-### Multiple Months
+Marigold uses the `DateValue` type from [@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) rather than the native JavaScript `Date`, which avoids the timezone and parsing problems that come with `Date`. Use `parseDate` to turn an ISO string into a value for each end of the range.
 
-Use `visibleDuration` to display up to three months at once in the popover, which makes selecting longer ranges easier. On small screens the calendar stacks into a single month inside a tray.
+<Callout title="@internationalized/date" type="info">
+  `@internationalized/date` is a peer dependency. If it is not already in your
+  project, you need to install it.
+</Callout>
+
+### Keeping selections inside an allowed window
+
+Often only part of the calendar makes sense. A booking cannot start in the past, and a report cannot reach into the future. Set `minValue` and `maxValue` to fence the selectable window, and the calendar prevents anything outside it.
+
+<ComponentDemo name="date-range-picker-min-max" />
+
+### Blocking unavailable dates
+
+Some days inside the allowed window still cannot be chosen, such as nights that are already booked or public holidays. Return `true` from `dateUnavailable` for any date that should be disabled.
+
+<ComponentDemo name="date-range-picker-unavailable" />
+
+### Helping users plan longer ranges
+
+Ranges that stretch across several months are awkward to pick one month at a time, which is common when planning a holiday or a quarter. Set `visibleDuration` to show up to three months at once. On small screens the calendar always falls back to a single month inside a tray.
 
 <ComponentDemo name="date-range-picker-multi-month" />
 
-### Error
+### Communicating problems
 
-Set `error` and provide an `errorMessage` to mark the field as invalid. The error message is shown instead of the description.
+When a selection is not acceptable, tell the user why. Set `error` and provide an `errorMessage`, and the field shows the message in place of its description.
 
 <ComponentDemo name="date-range-picker-error" />
 
-### Paste Support
+### Entering dates quickly
 
-The `<DateRangePicker>` supports pasting date values from the clipboard into either the start or end input. Paste into an input and the component parses and validates the content, setting that part of the range.
-
-**Supported date formats:**
+People who work with dates all day often prefer the keyboard. Every segment can be edited directly, and a full date can be pasted into either the start or the end input. The component parses the pasted text, validates it, and fills in that end of the range. Pasted text is recognized in these formats:
 
 - ISO format: `2023-12-25`
 - European format: `25.12.2023` or `25/12/2023`
 - US format: `12/25/2023` or `12-25-2023`
 
-Invalid dates or unrecognized formats are ignored, ensuring data integrity.
+Unrecognized or invalid text is ignored, so the field never ends up in a broken state.
 
 ## Props
 
@@ -87,11 +100,11 @@ Invalid dates or unrecognized formats are ignored, ensuring data integrity.
     field with a calendar popover.
   </li>
   <li>
-    [RangeCalendar](/components/form/rangecalendar): Select a date range from an
-    always-visible calendar.
+    [RangeCalendar](/components/form/rangecalendar): Select a date range from a
+    calendar that is always visible.
   </li>
   <li>
-    [DateField](/components/form/datefield): Allows users to input a date
+    [DateField](/components/form/datefield): Let users type a single date
     directly.
   </li>
 </ul>
