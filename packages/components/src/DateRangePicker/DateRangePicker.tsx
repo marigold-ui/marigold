@@ -93,6 +93,10 @@ export interface DateRangePickerProps
    *
    * Numeric/scale values are spacing-scale tokens, not pixels: `width={64}`
    * resolves to `calc(var(--spacing) * 64)` ~= 16rem (256px), not 64px.
+   *
+   * Defaults to `'fit'` so the field hugs its content (two dates plus the
+   * separator and calendar button) rather than filling the available width.
+   * @default 'fit'
    */
   width?: WidthProp['width'];
 }
@@ -109,6 +113,9 @@ const DateRangePickerBase = ({
   granularity = 'day',
   visibleDuration,
   pageBehavior,
+  // Default to a content-fitting width (two dates + separator + button)
+  // instead of the field's usual full width.
+  width = 'fit',
   onChange,
   ref,
   ...rest
@@ -139,6 +146,7 @@ const DateRangePickerBase = ({
       as={DateRangePicker}
       variant={variant}
       size={size}
+      width={width}
       {...props}
       ref={ref}
     >
@@ -217,24 +225,24 @@ const DateRangeInput = ({ action }: DateRangeInputProps) => {
         'w-(--field-width) max-w-full min-w-0 overflow-hidden'
       )}
     >
-      <div className="flex min-w-0 flex-1 items-center gap-1">
+      <div className="flex min-w-0 flex-1 items-center">
         <div className="min-w-0" onPaste={handlePaste('start')}>
           <AriaDateInput
             slot="start"
-            className={cn('flex items-center', classNames.input)}
+            className={cn('flex items-center pr-0', classNames.input)}
           >
             {segment => (
               <DateSegment className={classNames.segment} segment={segment} />
             )}
           </AriaDateInput>
         </div>
-        <span aria-hidden="true" className="text-secondary shrink-0 px-1">
+        <span aria-hidden="true" className="text-foreground shrink-0 px-1">
           –
         </span>
         <div className="min-w-0" onPaste={handlePaste('end')}>
           <AriaDateInput
             slot="end"
-            className={cn('flex items-center', classNames.input)}
+            className={cn('flex items-center pl-0', classNames.input)}
           >
             {segment => (
               <DateSegment className={classNames.segment} segment={segment} />
