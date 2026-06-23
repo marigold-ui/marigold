@@ -1,54 +1,72 @@
 import { useState } from 'react';
-import { Checkbox, SearchField, Stack, Text } from '@marigold/components';
+import { TagField } from '@marigold/components';
 
-const genres = [
-  'Blues',
-  'Classical',
-  'Country',
-  'Electronic',
-  'Folk',
-  'Hip-Hop',
-  'Indie',
-  'Jazz',
-  'Metal',
-  'Pop',
-  'Punk',
-  'Reggae',
-  'Rock',
-  'Soul',
-];
+// A long list of recognizable, equally likely values: users know the name
+// they want, so searching beats scanning or a "show more" control.
+const cities = [
+  'Amsterdam',
+  'Athens',
+  'Barcelona',
+  'Berlin',
+  'Bern',
+  'Bordeaux',
+  'Bremen',
+  'Brussels',
+  'Budapest',
+  'Cologne',
+  'Copenhagen',
+  'Dortmund',
+  'Dresden',
+  'Dublin',
+  'Düsseldorf',
+  'Edinburgh',
+  'Frankfurt',
+  'Geneva',
+  'Gothenburg',
+  'Graz',
+  'Hamburg',
+  'Hannover',
+  'Helsinki',
+  'Innsbruck',
+  'Leipzig',
+  'Lisbon',
+  'London',
+  'Lyon',
+  'Madrid',
+  'Mannheim',
+  'Marseille',
+  'Milan',
+  'Munich',
+  'Nuremberg',
+  'Oslo',
+  'Paris',
+  'Porto',
+  'Prague',
+  'Rome',
+  'Rotterdam',
+  'Salzburg',
+  'Stockholm',
+  'Stuttgart',
+  'Vienna',
+  'Warsaw',
+  'Zurich',
+].map(name => ({ id: name.toLowerCase(), label: name }));
 
 export default () => {
-  const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState(['Rock', 'Jazz']);
-
-  const visible = genres.filter(genre =>
-    genre.toLowerCase().includes(query.trim().toLowerCase())
-  );
+  const [selected, setSelected] = useState<string[]>(['berlin', 'vienna']);
 
   return (
-    <Stack space={4}>
-      <SearchField
-        aria-label="Search genres"
-        placeholder="Search genres"
-        value={query}
-        onChange={setQuery}
-      />
-      {visible.length > 0 ? (
-        <Checkbox.Group
-          aria-label="Genre"
-          value={selected}
-          onChange={setSelected}
-        >
-          {visible.map(genre => (
-            <Checkbox key={genre} value={genre} label={genre} />
-          ))}
-        </Checkbox.Group>
-      ) : (
-        <Text variant="muted" fontSize="sm" fontStyle="italic">
-          No genres match your search.
-        </Text>
+    <TagField
+      label="City"
+      placeholder="Search cities..."
+      width={80}
+      items={cities}
+      value={selected}
+      onChange={keys => setSelected([...keys].map(String))}
+    >
+      {(city: (typeof cities)[number]) => (
+        <TagField.Option id={city.id}>{city.label}</TagField.Option>
       )}
-    </Stack>
+    </TagField>
   );
 };

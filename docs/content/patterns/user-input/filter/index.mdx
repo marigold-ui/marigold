@@ -6,9 +6,7 @@ badge: beta
 
 import { FilterAnatomy } from './filter-anatomy';
 
-In many applications, large or complex data sets can be difficult to navigate. Filtering helps users focus on what matters most by narrowing results to meet specific criteria or comparing a smaller subset of items. By removing irrelevant results, filtering improves efficiency and makes workflows smoother.
-
-Filters are most valuable when a data set is too large or complex for users to easily scan in its entirety. They become especially useful when multiple parameters or categories can significantly narrow the results. Well-applied filters streamline the process of finding relevant items, reduce information overload, and enable users to complete tasks more efficiently.
+Filtering helps users focus on what matters by narrowing a data set to results that meet specific criteria. It is most valuable when the data set is too large or complex to scan in its entirety, and especially when several parameters or categories together can significantly narrow the results. Well-applied filters reduce information overload and let users find relevant items and complete tasks more efficiently.
 
 ## Structure
 
@@ -22,52 +20,11 @@ The pattern keeps a consistent layout while the controls inside it adapt to the 
 - **Data Set:** The collection being filtered, shown as a [table](/components/collection/table), [tiles](/components/layout/tiles), or [cards](/components/content/card). It takes up most of the layout.
 - **Pagination:** Splits the filtered results into pages, below the data set.
 
-## Filter Types
+## Choosing Filters
 
-Filters can be presented in several formats depending on the type of data and how users are expected to interact with it. The choice of filter type should reflect the nature of the data, the available space in the interface, and the intended user workflow. Common types include:
+Offer filters that map directly to real properties or categories in the data set, so it is clear how each selection changes the results. Give every filter an unambiguous purpose and a clear, descriptive label.
 
-| Type         | Description                                                                                                                                                                                               | Component                                    |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| **Single**   | Allows only one option to be chosen from a set, such as selecting a single category or status. A radio group is typically used, as it makes the one-choice rule clear and supports quick decision-making. | [Radio](/components/form/radio)              |
-| **Multiple** | Enables users to select several options at once, for example multiple categories or attributes. Checkboxes clearly signal that multiple selections are possible and give instant visual confirmation.     | [Checkbox](/components/form/checkbox)        |
-| **Range**    | Lets users choose values within a continuous range, making it ideal for filtering quantities, prices, or measurements. Sliders provide an intuitive way to adjust values without manual input.            | [Slider](/components/form/slider)            |
-| **Min/Max**  | Provides precise control over numeric ranges by allowing exact lower and upper limits to be entered. This is useful when accuracy is important.                                                           | [NumberField](/components/form/number-field) |
-| **Contains** | Filters items based on specific words or phrases entered by the user. This method is valuable for keyword searches or partial matches.                                                                    | [TextField](/components/form/text-field)     |
-
-While list-based components such as [SelectList](/components/form/selectlist) could technically cover single and multiple selection through different selection modes, prefer the dedicated form controls listed above. Radio buttons and checkboxes communicate the selection rule visually before any interaction, integrate directly with forms, and match what users know from other applications. Reach for list-based components when a filter behaves like a searchable collection, for example hundreds of options that benefit from virtualization.
-
-## Applying Filters
-
-How a filter commits its changes is the first decision to get right, because the rest of the pattern builds on it. Use **both** models, each where it fits:
-
-- **Quick filters in the toolbar apply instantly.** Each is a single decision, so the result updates the moment the user changes it, and the search field works the same way. The cost is a query on every interaction and results that reflow on each change.
-- **The filter panel (the slide-in drawer) batches.** It collects changes across several parameters and applies them only when the user submits with an explicit _Apply_ action. The cost is one extra step, and the user can assemble a zero-result combination before seeing it.
-
-Apply instantly for a single, cheap decision that benefits from immediate feedback. Batch when several criteria are combined, each query is expensive, or the control is multi-select, where live updates are disorienting.
-
-Using both models on one screen works as long as each control's behavior is obvious at a glance. The Apply button and the panel container signal "compose, then commit". A bare toolbar control signals "this takes effect now". Keep that signal strong and the two models stay legible side by side.
-
-<Callout type="warn" title="Keep the two models visually distinct">
-
-The risk is a control whose apply behavior you cannot guess by looking at it, such as a multi-select dropdown in the toolbar with no apply button next to a panel that has one. Keep apply behavior uniform within a control group, and only mix instant and batched controls when they stay visually distinct.
-
-</Callout>
-
-For the panel's commit control, label it clearly and tell users what they are committing to:
-
-- **Label by behavior.** Use **Apply** for a batched panel and **Done** for a panel that filters live.
-- **Show the result count on the button** where the count is available, for example "Show 47 results", so users know the outcome before they commit. This is especially valuable on mobile, where it is the clearest way to preview impact.
-- **Announce the change to assistive technology.** Instant or batched, a filter change updates the data set silently for screen reader users. Render the new result count in a live region so the outcome is spoken. See [Accessibility](#accessibility) for details.
-
-## Designing Filter Options
-
-These guidelines cover the filters you offer and the individual options inside them: which filters to include, how to order them, and how to keep long or complex option lists usable.
-
-### Choosing and Ordering Filters
-
-When creating filters, ensure the chosen parameters directly match actual properties or categories in the data set, so it is obvious to the user how their selections change the displayed results. Each filter's purpose should be unambiguous, allowing users to refine results in a precise and efficient way without confusion.
-
-Organize filters in a logical order, such as by most-used, so they are intuitive to find and apply. Use clear, descriptive labels so their purpose is immediately understood. Limit the number of filters to those that provide genuine value, keeping the interface focused, uncluttered, and easy to navigate.
+Order filters by how often they are used rather than alphabetically, so the common ones are easy to find. Limit the set to filters that provide genuine value, keeping the interface focused and easy to navigate.
 
 <GuidelineTiles>
   <Do>
@@ -84,121 +41,147 @@ Organize filters in a logical order, such as by most-used, so they are intuitive
   </Dont>
 </GuidelineTiles>
 
-### Handling Many Options
+## Filter Types
 
-When a filter offers many possible options, showing them all at once can overwhelm users and make scanning difficult. A better approach is to display only the most relevant or frequently used options first, with a "show more" button to reveal the full list when needed. This keeps the panel compact, easier to read, and still allows full access when required.
+Once you know which filters to offer, pick the control for each one. The right control depends on the shape of the data behind the filter, the space available, and how users are expected to interact with it. The common shapes and the component that fits each are:
+
+| Type         | Description                                                                                                                                                                                                                                          | Component                                    |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **Single**   | One option from a set, such as a category or status. Use a radio group when a few options are all worth showing, or a [Select](/components/form/select) when space is tight or the list is long.                                                     | [Radio](/components/form/radio)              |
+| **Multiple** | Several options at once, such as multiple categories. Checkboxes signal that more than one choice is possible. For a large set with search and removable tags, use [TagField](/components/form/tag-field) (beta).                                    | [Checkbox](/components/form/checkbox)        |
+| **Range**    | A value or span within known, static bounds, ideal for quantities, prices, or measurements. A slider adjusts one or two handles without manual input.                                                                                                | [Slider](/components/form/slider)            |
+| **Min/Max**  | Exact lower and upper numeric limits, for when precision matters more than a draggable range.                                                                                                                                                        | [NumberField](/components/form/number-field) |
+| **Contains** | A keyword or partial match typed by the user. Use [SearchField](/components/form/search-field) in the toolbar, or a [TextField](/components/form/textfield) for a field inside the panel.                                                            | [SearchField](/components/form/search-field) |
+| **Date**     | A point in time or a span. Use a date picker for a single date, and prefer relative presets such as "Last 7 days" for ranges (see [Date Range Presets](#date-presets)). A custom range uses [RangeCalendar](/components/form/rangecalendar) (alpha). | [DatePicker](/components/form/datepicker)    |
+| **Boolean**  | A single on/off condition, such as "In stock only". A switch reads as an instant on/off and suits a toolbar quick filter. Inside the panel, a single checkbox does the same job.                                                                     | [Switch](/components/form/switch)            |
+
+For these common shapes, prefer the dedicated form controls above: radio buttons and checkboxes communicate the selection rule visually before any interaction and match what users know from other applications. When the option set is too large to scan, reach for a searchable control instead. [ComboBox](/components/form/combobox) and [Autocomplete](/components/form/autocomplete) let users narrow a single choice by typing, and the list-based [SelectList](/components/form/selectlist) covers single or multiple selection for hundreds of options that benefit from virtualization.
+
+## Applying
+
+How a filter commits its changes is the first decision to get right, because the rest of the pattern builds on it. This pattern fixes the choice to where the control lives:
+
+- **Toolbar controls apply instantly.** The search field, along with any filter promoted into the toolbar as a [quick filter](#quick-filters), takes effect the moment the user changes it. The cost is a query on every interaction and results that reflow on each change.
+- **The filter panel (the slide-in drawer) batches.** It collects changes across several parameters and applies them only when the user submits with an explicit _Apply_ action. The cost is one extra step, and the user can assemble a zero-result combination before seeing it.
+
+Apply instantly for a single, cheap decision that benefits from immediate feedback. Batch when several criteria are combined, each query is expensive, or the control is multi-select, where live updates are disorienting.
+
+Because the model is tied to location, the two stay legible side by side. A bare toolbar control signals that it takes effect now, while the panel and its Apply button signal that the user composes first and commits once. Keep that boundary clean. A batched control sitting loose in the toolbar, or an instant control buried inside the panel, leaves users unable to tell whether their change has taken effect.
+
+For the panel's commit control, label it clearly and tell users what they are committing to:
+
+- **Label by behavior.** Use **Apply** for a batched panel and **Done** for a panel that filters live.
+- **Show the result count on the button** where the count is available, for example "Show 47 results", so users know the outcome before they commit. This is especially valuable on mobile, where it is the clearest way to preview impact.
+- **Announce the change to assistive technology.** Instant or batched, a filter change updates the data set silently for screen reader users. Render the new result count in a live region so the outcome is spoken. See [Accessibility](#accessibility) for details.
+
+## Designing Options
+
+These guidelines cover the individual options inside a filter: how to keep long or complex option lists usable, surface counts, and handle bulk or excluded values.
+
+### Many Options
+
+A filter with many options needs help finding the right one, and the right help depends on the shape of the list.
+
+**A few common options plus a long tail.** When most users only ever need a handful of well-known options, show those first and collapse the rest behind a "show more" control. The panel stays compact and the full list is one click away. This fits a short, browsable list where users recognise the option rather than recall it.
 
 <ComponentDemo name="filter-many-options-more" />
 
-Another helpful method is adding a filter filter, which is a small search field within the filter panel. This allows users to quickly locate specific options without scrolling through long lists. Using these techniques together makes it faster and easier to find the right criteria, reducing effort and improving the overall experience.
-
-Place a [SearchField](/components/form/search-field) above the option list and filter the rendered options as the user types. Keep the group controlled so selections persist while their options are hidden by the search.
+**A long list of recognisable values.** When the options run to dozens or hundreds of roughly equally likely values, such as cities, venues, or organisers, users already know the name they want, so scanning a list or expanding a "show more" control only slows them down. Let them search instead. [TagField](/components/form/tag-field) is built for exactly this: it pairs a search input with a virtualized option list and shows selections as removable tags, keeping a long list usable in a compact space.
 
 <ComponentDemo name="filter-options-search" />
 
-For very long option lists in a compact space, [TagField](/components/form/tag-field) provides this behavior out of the box: it combines a search input with a virtualized option list and shows selections as removable tags.
+### Option Counts
 
-### Showing Option Counts
+Displaying counts next to filter options gives users a sense of scale and helps them choose. A category labeled "Concerts (85)" or "Workshops (12)" communicates availability before the filter is even applied. Counts matter most in large data sets, so update them dynamically as filters change and keep them visible to avoid choosing options that return little or no data.
 
-Displaying counts next to filter options gives users a sense of scale and helps them make informed choices. A category labeled "Concerts (85)" or "Workshops (12)" communicates availability without the user needing to test the filter.
+They help single select filters such as radio buttons too: even with one option active at a time, the numbers preview impact before a choice and show what scope remains afterwards.
 
-This is particularly helpful in large datasets where the number of matching results can guide prioritization. Counts should update dynamically as filters are applied, so that users can see immediately how their selections affect the result set. Keeping the counts visible ensures transparency and avoids the frustration of selecting filters that return little or no data.
-
-Counts are also useful in single select filters such as those built with radio buttons. Even though only one option can be active at a time, the numbers preview the impact before a choice is made. They also reinforce clarity when a filter is already applied, showing exactly what scope remains.
-
-Keep the count visually quiet so it informs without competing with the option itself. Use a muted [Text](/components/content/text) inside the option's label rather than a heavier element like a Badge, which draws too much attention for a secondary number. Keep it the same size as the label so the two share a baseline and stay aligned. The muted color alone is enough to make the count recede. Always place the count inside the label, regardless of the control used. This keeps the placement consistent across filter types and ensures assistive technology announces the count together with the option.
+Keep the count visually quiet so it informs without competing with the option. Use a muted [Text](/components/content/text) at the same size as the label rather than a heavier Badge, and place it inside the label whatever the control, so spacing stays consistent and assistive technology announces the count together with the option.
 
 <ComponentDemo name="filter-option-counts" />
 
-Whether single select or multi select, pairing counts inside the filter panel with a clear applied filter summary gives users confidence that their selections match their intent.
+Pairing counts in the panel with a clear applied filter summary gives users confidence that their selections match their intent.
 
 ### Select All
 
-In multi-select filters, leaving everything unchecked typically means all results are shown, so a "Select all" option is not always required. It becomes valuable in long lists where users often want nearly everything, or when a parent-child structure enables bulk toggling. In these scenarios it reduces effort and makes the common "all except a few" pattern easier to achieve.
+In multi-select filters, leaving everything unchecked typically means all results are shown, so a "Select all" option is not always required. It earns its place in long lists where users often want nearly everything, or when a parent-child structure enables bulk toggling, making the common "all except a few" pattern easier to achieve.
 
-When included, "Select all" should appear above the filter options and be paired with a quick way to reset. Partial selections are communicated with an indeterminate parent state, which assistive technology announces as "mixed". Display how many items the action affects, and use accessible labels that clarify scope, such as "Select all 125 items."
-
-Build this with a standalone [Checkbox](/components/form/checkbox) that controls the group: it is checked when every option is selected, unchecked when none are, and indeterminate in between. Because the control sits outside the group rather than being one of its values, point its `aria-controls` at the group so the relationship is conveyed programmatically and not left to visual proximity. This follows the ARIA [mixed-state checkbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox-mixed/).
+When included, "Select all" should sit above the filter options, paired with a quick way to reset. Communicate partial selections with an indeterminate parent state, which assistive technology announces as "mixed", following the ARIA [mixed-state checkbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox-mixed/). Show how many items the action affects, with accessible labels that clarify scope, such as "Select all 125 items."
 
 <ComponentDemo name="filter-select-all" />
 
-### Excluding Values
+### Exclusions
 
-Exclude filters let users say "show everything except these" instead of naming every value they want to keep. They are genuinely useful when the set to remove is small and the set to keep is large, but they add a second way to express intent, so reach for them only when inclusion alone is awkward. There are two ways to offer exclusion, and they suit different situations.
+Exclude filters let users say "show everything except these" instead of naming every value to keep. They help when the set to remove is small and the set to keep is large, but they add a second way to express intent, so reach for them only when inclusion alone is awkward. There are two ways to offer exclusion.
 
-**Deselect from a full selection.** The lightest approach needs no extra control: start with every option selected and let users uncheck the few they want gone. This produces an "All except" state that is easy to grasp, keeps the panel free of operators, and fits the common case where users want nearly everything. It reads clearly in both the filter panel and the summary, replacing a long list of checkmarks with a precise description of what has been excluded. Use it for a single checkbox group where pre-checking everything is reasonable.
+**Deselect from a full selection.** The lightest approach needs no extra control: start with every option selected and let users uncheck the few they want gone. The resulting "All except" state is easy to grasp, keeps the panel free of operators, and reads clearly in both the panel and the summary. Use it for a single checkbox group where pre-checking everything is reasonable.
 
 <ComponentDemo name="filter-exclude" />
 
-**Switch the operator from include to exclude.** When a filter needs to flip polarity on the same set of values, give it an explicit operator such as "Is any of" / "Is none of". The selected values stay put, and only their meaning changes, so users can move a filter from include to exclude without re-picking. This model scales better than deselection when the list of values to keep would be long but the list to remove is short. Prefer it inside an advanced or per-field filter builder rather than a simple panel, and offer only one of the two mechanisms per filter so there are not two ways to express the same intent.
+**Switch the operator from include to exclude.** When a filter needs to flip polarity, give it an explicit operator such as "Is any of" / "Is none of". The selected values stay put and only their meaning changes, so users move from include to exclude without re-picking. This scales better than deselection when the list to keep would be long but the list to remove is short. Prefer it inside an advanced or per-field filter builder, and offer only one mechanism per filter.
 
 <ComponentDemo name="filter-exclude-toggle" />
 
-Whichever mechanism you choose, make the exclusion unmistakable wherever the filter is shown. Phrase the applied filter as "Type is not Bar" or "All types except Bar", never as a bare value, so the polarity is never ambiguous in the panel, in the tag, or in the control's accessible name. Switching polarity can change the result set dramatically, so apply it immediately and keep the operator visible rather than buried in an advanced menu.
+Whichever you choose, make the exclusion unmistakable wherever the filter appears. Phrase the applied filter as "Type is not Bar" or "All types except Bar", never a bare value, so the polarity is clear in the panel, the tag, and the accessible name. Because switching polarity can change the result set dramatically, apply it immediately and keep the operator visible.
 
-## Scaling to Many Filters
+## Scaling Up
 
-The techniques above help within a single filter, but a filter panel can also grow in the number of filters it contains. A panel with 15 or more filter groups forces users to scroll past many controls that are irrelevant to their current task, making the relevant ones harder to find.
-
-### Grouping into Sections
-
-Group related parameters into collapsible sections using an [Accordion](/components/navigation/accordion) with `allowsMultipleExpanded`. Expand the most-used groups by default and collapse the rest, so the panel opens with a compact overview while every filter stays one click away.
-
-<ComponentDemo name="filter-group-sections" />
-
-Be aware that collapsing comes at a cost for expert users, because it increases interaction cost when they need most of the content. If your users work with the majority of filter groups in every session, keep more groups expanded by default and offer an "Expand all" and "Collapse all" control so they can reveal or hide everything in a single action. The reliable pairing is small accordion sections for each parameter group, plus an expand and collapse all control to manage them at once.
-
-There is also an upper limit to what a slide-in panel can hold. The panel works well because the data set stays visible while filtering, but once the number of filter groups grows far beyond what fits on one or two screens of panel height, consider a dedicated filter page or full-screen dialog instead. More filters is not automatically better: revisit whether each filter earns its place before adding structure around them.
+The techniques above help within a single filter, but the set of filters can grow large too. Two moves keep it manageable as it grows: pull the few most-used filters out into the toolbar so the common case never requires opening the panel, then organize the rest so the panel stays easy to scan.
 
 ### Quick Filters
 
-When usage is concentrated on a few filters, hiding them in the panel adds an unnecessary step to the most common task. Establish a two-tier hierarchy: surface the few high-value filters as quick filters directly in the toolbar, and keep the full set behind a "More filters" button that opens the panel. This pairs a small set of always-visible controls for the frequent cases with a complete panel for everything else.
+When usage is concentrated on a few filters, hiding them in the panel adds an unnecessary step to the most common task. Establish a two-tier hierarchy: surface the few high-value filters as quick filters directly in the toolbar, and keep the complete set behind an "All filters" button that opens the panel. The panel stays canonical: a quick filter is a shortcut to a filter that still lives in the panel and shares its state, so anyone who opens "All filters" first still finds it.
 
-Promote at most 2 or 3 quick filters, chosen by actual usage, and prefer compact controls such as a [Select](/components/form/select). Quick filters apply instantly, since each represents a single quick decision, while the panel remains the place for combining several criteria and applying them together. See [Applying Filters](#applying-filters) for how the two models work side by side.
-
-<ComponentDemo name="filter-promoted" />
-
-<Callout title="When to promote a filter to a quick filter">
+Promote a filter to a quick filter only when both hold:
 
 - It is among the **2 or 3 most-used** filters, based on real usage data.
 - A single selection in it meaningfully narrows the data set on its own.
-- It still appears **inside the panel too**, so users who open "More filters" first can still find it.
 
-Avoid promoting a filter you cannot justify by usage. If you cannot identify the most-used few, leave everything in the panel and rely on search.
+If you cannot identify the most-used few, leave everything in the panel and rely on search rather than promoting a filter you cannot justify by usage.
 
-</Callout>
+For the controls themselves, prefer something compact such as a [Select](/components/form/select). Quick filters apply instantly, so see [Applying Filters](#applying) for how that model works alongside the panel's batched commit.
 
-#### Labeling Quick Filters
+<ComponentDemo name="filter-promoted" />
+
+#### Labeling
 
 How a quick filter shows its state depends on whether it allows one value or several.
 
 For a **single select** quick filter, showing the chosen value in the trigger is fine, since only one value is ever possible. The applied filter tag for it is then optional, as the control already conveys the selection. The promoted [Select](/components/form/select) above works this way.
 
-For a **multi select** quick filter, do not list every value in the trigger. Show the dimension label with a count instead, such as "Status (2)", and let the applied filter tags carry the actual values. This keeps the trigger compact and avoids showing the same values in two places. Label the trigger by dimension and surface the chosen values separately.
-
-Build this with a [Select](/components/form/select) in `selectionMode="multiple"` and a `renderValue` that returns the label and count. Drive the options with an `items` collection so the selected values reach `renderValue`. When nothing is selected, the placeholder shows the dimension label on its own.
+For a **multi select** quick filter, do not list every value in the trigger. Show the dimension label with a count instead, such as "Status" followed by a count badge, and let the applied filter tags carry the actual values. This keeps the trigger compact and avoids showing the same values in two places.
 
 <ComponentDemo name="filter-quick-multiselect" />
 
-#### Segmented Quick Filters
-
-For a small set of mutually exclusive options, such as a status or a view switch, a segmented control reads as a single, always-visible choice and applies instantly. A dedicated Segmented Control component is planned ([DST-765](https://reservix.atlassian.net/browse/DST-765)). Until it lands, keep these options in the panel or use a single select [Select](/components/form/select) in the toolbar. Do not reach for `ToggleButtonGroup` here, as it is a group of independent action buttons, not a filter control.
-
-#### Date Range Presets
+#### Date Presets
 
 Date is one of the most common things to filter by, and relative ranges such as "Last 7 days", "Last 30 days", or "This month" cover the majority of cases. Offer these as a quick filter so the frequent ranges are one click away, without making users open a calendar and count days.
 
-Use a [Select](/components/form/select) of relative presets, applied instantly. For the cases a preset cannot express, include a "Custom range…" option that reveals an absolute range built from two [DatePicker](/components/form/datepicker) fields. Keep the Select as the single source of truth: choosing a preset clears any custom range, and entering a custom range marks the selection as "Custom".
+For the dates a preset cannot express, include a "Custom range…" option that reveals an absolute start and end date.
 
 <ComponentDemo name="filter-date-presets" />
 
-Relative date-range presets are composed in userland today. First-class support for preset shortcuts in the date picker popover is planned ([DST-1511](https://reservix.atlassian.net/browse/DST-1511)).
+Relative date-range presets are composed in userland today.
 
-## Communicating Filter State
+### Grouping
+
+Even after the most-used filters are promoted, the panel can still hold many groups, and 15 or more forces users to scroll past controls irrelevant to their task. Group related parameters into collapsible sections with an [Accordion](/components/navigation/accordion). Expand the most-used groups by default and collapse the rest, so the panel opens with a compact overview while every filter stays one click away.
+
+<ComponentDemo name="filter-group-sections" />
+
+Collapsing has a cost for expert users, who pay extra clicks when they need most of the groups. If your users touch the majority of groups every session, keep more expanded by default and offer "Expand all" and "Collapse all" so they can reveal or hide everything at once.
+
+When the groups themselves become numerous, add a search field at the top of the panel so users can jump to a filter by name instead of scanning every section. This sits on top of the grouping, not in place of it.
+
+<ComponentDemo name="filter-search-filters" />
+
+A slide-in panel also has an upper limit. It works because the data set stays visible while filtering, but once the groups grow far beyond one or two screens of panel height, consider a dedicated filter page or full-screen dialog instead.
+
+## Filter State
 
 Once filters are applied, the interface needs to reflect that state back to the user: how each active filter reads, how to signal filtering at a glance, how to undo it, and what to show when nothing matches.
 
-### Applied Filter Labels
+### Applied Labels
 
 The recommended approach for applied filter labels is to keep them clear and structured. Combine three parts: the _identifier_ (what is filtered, such as category, property, or type), the relative or absolute _operator_ (how it applies, for example is, is above, is between, or a direct match), and the _value_ (the number, threshold, or date).
 
@@ -212,11 +195,11 @@ When an applied filter contains a large number of values, avoid grouping them al
 
 <ComponentDemo name="filter-applied-filter-label" />
 
-Even with one tag per filter, many active filters can stack into several rows of tags and push the data set out of view. In that case, truncate the applied filter area after one or two rows behind a "show all" control. Built-in support for collapsing tags in `Tag.Group` is planned ([DST-1509](https://reservix.atlassian.net/browse/DST-1509)).
+Even with one tag per filter, many active filters can stack into several rows of tags and push the data set out of view. In that case, truncate the applied filter area after one or two rows behind a "show all" control.
 
 Marigold deliberately does not provide a helper to generate these labels. Label phrasing and translation depend on the application's domain and i18n setup, so they are best composed where the filter state lives. We will revisit a shared helper if demand shows up.
 
-### Active Filter Count
+### Active Count
 
 When the filter panel is closed, users need a reliable signal that the data set is currently filtered. The applied filter area provides the details, but it can be scrolled out of view or empty space may be reclaimed by other content.
 
@@ -224,16 +207,16 @@ Add a [Badge](/components/content/badge) with the number of active filters to th
 
 <ComponentDemo name="filter-trigger-badge" />
 
-### Reverting Filters
+### Reverting
 
-When applied filters result in no displayed results, for example when criteria are too restrictive, conflicting, or simply no longer relevant, it is important to offer quick and accessible ways to revert them. This prevents users from becoming stuck or frustrated and allows them to continue exploring the data set with minimal effort.
+When filters return no results or simply become irrelevant, offer quick, accessible ways to revert them so users do not get stuck or frustrated.
 
 Two recommendations are:
 
-1. Allow the user to remove individual filters directly from the applied filters area, enabling them to quickly discard any selection that is no longer relevant and immediately see the effect on the data set without disrupting other active filters.
-2. Clear all filters at once using an action in the applied filters area. This instantly resets the filtering state and returns the view to its unfiltered default. It allows the user to remove every active filter in one simple step and immediately restore full visibility of all available data.
+1. **Remove individual filters** directly from the applied filters area, so users can discard one selection and see the effect immediately without disturbing the others.
+2. **Clear all filters at once** with a single action in the applied filters area, resetting the view to its unfiltered default in one step.
 
-Offering both options provides flexibility. Users can make precise adjustments by removing specific filters or start fresh by clearing them all.
+Offering both lets users make precise adjustments or start fresh.
 
 <ComponentDemo name="filter-revert" />
 
@@ -244,7 +227,11 @@ Offering both options provides flexibility. Users can make precise adjustments b
 
 ### Empty States
 
-Empty states occur when no items match the applied filters, often because the criteria are too narrow, the filters conflict with each other, or the data set lacks matching values. This situation should be clearly communicated through the data set area itself, for example by displaying a clear message or visual placeholder where results would normally appear. Doing so helps users quickly understand why no results are shown and guides them toward resolving the issue. Supportive actions can include suggesting broader parameters, offering related content, or providing an easy-to-access "clear filters" control to reset the view and start fresh.
+An empty state occurs when no items match the applied filters, usually because the criteria are too narrow, the filters conflict, or the data set has no matching values. Communicate it in the data set area itself, where results would normally appear, so users understand why nothing is shown and how to recover:
+
+- Show a clear message or visual placeholder in place of the results.
+- Offer supportive actions, such as suggesting broader parameters or related content.
+- Provide an easy "clear filters" control to reset the view and start fresh.
 
 <ComponentDemo name="filter-empty-state-table" />
 
@@ -268,7 +255,7 @@ Some details are still application specific and not settled by the design system
 
 The reference implementation linked in the [demo](#demo) section applies a few practices that are easy to miss but make the difference between a filter that feels robust and one that surprises users. They are described here so you can apply them in your own implementation.
 
-### Persist Filters in the URL
+### Persist in the URL
 
 Applied filters, search, sorting, and pagination should always be reflected in the URL as query parameters. This means the user can bookmark a filtered view for quick access, return to the same filtered view even after closing the browser, or share it with others by sending the link. It also preserves the exact context of a search or analysis for later reference, without the need to manually reselect filters.
 
@@ -278,7 +265,7 @@ Applied filters, search, sorting, and pagination should always be reflected in t
   components.
 </Callout>
 
-### Reset Pagination When Filters Change
+### Reset Pagination
 
 When a filter or search query changes, the result set shrinks or grows, but the current page number stays. A user on page 7 who narrows the results to 12 items would land on an empty page. Reset to the first page whenever filters or the search query change.
 
@@ -291,7 +278,7 @@ const setFilter = (next: Partial<VenueFilter>) => {
 
 Wrap the state setters so the reset cannot be forgotten at individual call sites, as `useFilter` and `useSearch` do in the reference implementation.
 
-### Keep the Filter Form in Sync
+### Sync the Form
 
 The form inside the filter panel is uncontrolled: its fields read their `defaultValue` from the current filter state once, when they mount. When a filter changes outside the panel, for example by removing an applied filter tag, the form would keep showing the stale value. Force a remount by keying the form with the filter state.
 
@@ -301,7 +288,7 @@ The form inside the filter panel is uncontrolled: its fields read their `default
 </Drawer.Content>
 ```
 
-### Treat Defaults as No Filter
+### Defaults as No Filter
 
 Some controls always carry a value even when the user does not intend to filter. A slider at its maximum or a number field at zero should mean "no filter applied". Define a sentinel value per filter and treat it as inactive: exclude it from the applied filter tags and remove it from the URL.
 
@@ -319,7 +306,7 @@ price >= MAX_PRICE ? defaultFilter.price : price;
 
 This keeps the applied filter area and the URL clean, and makes "remove filter" a simple reset to the sentinel.
 
-### Choose How Filters Enter Browser History
+### Browser History
 
 With filters in the URL, the browser's back and forward buttons can step through previous filter states. This is valuable for deliberate, batch-style changes, where each apply represents a meaningful state. It becomes noise for high-frequency updates such as typing into a search field, where every keystroke would pollute the history.
 
@@ -331,10 +318,3 @@ Use `history: 'push'` (see the nuqs [history option](https://nuqs.47ng.com/docs/
   demo="/examples/filter"
   code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/filter"
 />
-
-<Callout title="Fetching the data">
-  The example filters, sorts and paginates on the server and fetches with React
-  Query, deriving the query key from the same URL state. See the [Fetching and
-  Mutations](/patterns/data/fetching-and-mutations) pattern for how that is
-  wired up.
-</Callout>
