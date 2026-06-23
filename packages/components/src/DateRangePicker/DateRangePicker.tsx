@@ -230,7 +230,7 @@ const DateRangeInput = ({ action }: DateRangeInputProps) => {
             )}
           </AriaDateInput>
         </div>
-        <span aria-hidden="true" className="text-foreground shrink-0 px-1">
+        <span aria-hidden="true" className="text-placeholder shrink-0 px-1">
           –
         </span>
         <div className="min-w-0" onPaste={handlePaste('end')}>
