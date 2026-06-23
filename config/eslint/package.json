@@ -28,7 +28,7 @@
     "@eslint/js": "10.0.1",
     "@typescript-eslint/eslint-plugin": "8.59.4",
     "@typescript-eslint/parser": "8.59.4",
-    "@vitest/eslint-plugin": "1.6.18",
+    "@vitest/eslint-plugin": "1.6.20",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
