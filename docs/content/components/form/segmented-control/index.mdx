@@ -28,23 +28,18 @@ A `<SegmentedControl>` is a labeled track that holds two or more segments in a r
 
 <AppearanceTable component={'SegmentedControl'} />
 
-The control comes in two variants and two sizes so it fits both prominent and dense places.
+The control comes in two variants so it fits both prominent and quieter places.
 
 | Variant   | Description                                                                                         | When to use                                                                    |
 | --------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | `default` | A filled track with a raised indicator, matching the look of the [Switch](/components/form/switch). | Standalone controls above a list or table, or inside a form or card.           |
 | `ghost`   | A style without a filled track and a translucent indicator that blends into the surface behind it.  | Dense toolbars and panel headers where the control sits next to other actions. |
 
-| Size      | Description                                  | When to use                           |
-| --------- | -------------------------------------------- | ------------------------------------- |
-| `default` | Standard height, matching the input height.  | General purpose use.                  |
-| `small`   | Reduced height and text for compact layouts. | Toolbars and space constrained areas. |
-
 ## Usage
 
 A segmented control presents a few options on one horizontal track, with exactly one always selected. Because every option stays on display, people can take in the full set of choices and the current selection at a glance, which makes it a good fit for choices they return to and flip between often.
 
-Reach for a segmented control when you are changing the presentation of one set of content, not navigating to different content. It can switch a view, sort, or filter in place, or sit in a [Form](/components/form/form) as a compact field for a single choice. Common cases:
+Reach for a segmented control when you are changing the presentation of one set of content, not navigating to different content. It can switch a view, a sort order, or a filter in place, or sit in a [Form](/components/form/form) as a compact field for a single choice. Common cases:
 
 - **Filtering or scoping a list** to a subset of the same items, such as All, Active, and Archived.
 - **Sorting the same items** a different way, such as Newest, Popular, and Price.
@@ -54,7 +49,7 @@ Reach for a segmented control when you are changing the presentation of one set 
 
 In every case the underlying content is the same and only the way it is shown changes. Always start with one option selected so the control is never empty.
 
-The example below shows the same 24 events as a list, a board, and a calendar. The events never change, only their layout does, which is exactly the job a segmented control is built for.
+The example below shows the same 24 events as a list, a board, and a calendar. The events never change. Only the layout does, which is exactly the job a segmented control is built for.
 
 <ComponentDemo name="segmentedcontrol-basic" />
 
@@ -62,7 +57,7 @@ The example below shows the same 24 events as a list, a board, and a calendar. T
 
 This is the comparison worth getting right, because a segmented control and a set of [tabs](/components/navigation/tabs) can look similar but do different jobs.
 
-Tabs are navigation. Each tab reveals its own panel of content, and `<Tabs>` renders those panels for you. Switching tabs is like turning to a different page, the content under one tab is not the content under another.
+Tabs are navigation. Each tab reveals its own panel of content, and `<Tabs>` renders those panels for you. Switching tabs is like turning to a different page. The content under one tab is not the content under another.
 
 A segmented control is a setting. It reports which option is selected and renders nothing on its own. Switching a segment re-presents the same content that already sits next to the control.
 

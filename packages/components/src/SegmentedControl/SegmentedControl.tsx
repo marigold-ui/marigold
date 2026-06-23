@@ -35,7 +35,7 @@ export interface SegmentedControlProps extends Omit<
   /**
    * @default default
    */
-  size?: 'default' | 'small' | (string & {});
+  size?: 'default' | (string & {});
   /**
    * Set the label of the control.
    */

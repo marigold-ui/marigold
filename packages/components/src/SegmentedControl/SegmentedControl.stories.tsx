@@ -22,17 +22,6 @@ const meta = preview.meta({
         defaultValue: { summary: 'default' },
       },
     },
-    size: {
-      control: {
-        type: 'radio',
-      },
-      description: 'The size of the segments',
-      options: ['default', 'small'],
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'default' },
-      },
-    },
     label: {
       control: { type: 'text' },
       description: 'Set the control label',
@@ -69,7 +58,6 @@ const meta = preview.meta({
   args: {
     label: 'Event status',
     variant: 'default',
-    size: 'default',
     error: false,
     errorMessage: 'Please select an option.',
     required: false,

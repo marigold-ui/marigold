@@ -14,7 +14,6 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       },
       size: {
         default: 'text-sm',
-        small: 'text-xs',
       },
     },
     defaultVariants: {
@@ -78,7 +77,6 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       },
       size: {
         default: 'h-control px-3 [&_svg]:size-4',
-        small: 'h-control-small px-2.5 [&_svg]:size-3.5',
       },
     },
     defaultVariants: {
