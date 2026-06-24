@@ -76,8 +76,13 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       variant: {
         // Hover only brightens the label to the foreground color; the raised
         // ui-surface indicator already provides the background affordance, so
-        // no extra hover background (keeps bg flips out of the picture).
-        default: 'not-selected:hover:text-foreground',
+        // no extra hover background (keeps bg flips out of the picture). The
+        // thumb is inset 2px, so the focus radius is bumped by 2px: an inset
+        // outline's corner radius is `border-radius + outline-offset`, so
+        // `surface + 2px` and `-outline-offset-2` land the ring back on the
+        // `rounded-surface` radius — its corners sit snug against the thumb.
+        default:
+          'not-selected:hover:text-foreground focus-visible:rounded-[calc(var(--radius-surface)_+_2px)]',
         // Track-less: hover is a translucent overlay (shared helper), applied
         // on the selected item too so it stays covered while the indicator
         // slides in — no uncovered gap/flicker (matches Tabs).
