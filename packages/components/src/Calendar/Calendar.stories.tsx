@@ -333,6 +333,7 @@ LeapYearSelection.test(
 export const YearPickerScrollsToFocused = meta.story({
   ...Basic.input,
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     // Unbounded: focused year ±20, so it sits mid-list, taller than the viewport.
     defaultValue: new CalendarDate(2025, 8, 7),
@@ -342,6 +343,7 @@ export const YearPickerScrollsToFocused = meta.story({
 // The focused year must be centered when the picker opens.
 YearPickerScrollsToFocused.test(
   'opens with the focused year centered',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: '2025' }));
 

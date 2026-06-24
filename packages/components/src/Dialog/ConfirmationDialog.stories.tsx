@@ -52,6 +52,7 @@ export const WithCallbacks = meta.story({
 });
 
 export const WithAutoFocus = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     title: 'Confirm Dialog',
     confirmationLabel: 'Confirm',

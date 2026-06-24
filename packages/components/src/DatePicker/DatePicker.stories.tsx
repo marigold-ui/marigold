@@ -230,6 +230,7 @@ export const Mobile: any = meta.story({
 
 Mobile.test(
   'Mobile DatePicker interaction',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step, userEvent }: any) => {
     // Mock releasePointerCapture to handle invalid pointer IDs in Firefox tests
     const releasePointerCaptureMock = spyOn(
@@ -283,6 +284,7 @@ Mobile.test(
 
 Mobile.test(
   'Mobile DatePicker keyboard navigation',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step, userEvent }: any) => {
     const trigger = canvas.getByRole('button');
 

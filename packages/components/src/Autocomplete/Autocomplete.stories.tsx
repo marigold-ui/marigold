@@ -376,6 +376,7 @@ export const Mobile: any = meta.story({
 
 Mobile.test(
   'Mobile Autocomplete interaction',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }: any) => {
     const trigger = await canvas.findByRole('button');
 
@@ -413,6 +414,7 @@ Mobile.test(
 
 Mobile.test(
   'Mobile Autocomplete keyboard navigation',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }: any) => {
     const trigger = await canvas.findByRole('button');
 

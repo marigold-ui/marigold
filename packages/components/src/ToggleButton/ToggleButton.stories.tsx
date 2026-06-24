@@ -53,6 +53,7 @@ export const Basic = meta.story({
 
 Basic.test(
   'Clicking the toggle button updates selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     const button = canvas.getByRole('button');
 

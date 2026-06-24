@@ -158,6 +158,7 @@ export const WithIcon = meta.story({
 });
 
 export const OnPress = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     onPress: () => alert('Button clicked.'),
   },

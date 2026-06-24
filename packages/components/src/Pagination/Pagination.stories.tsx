@@ -300,6 +300,7 @@ export const WithTable = meta.story({
 
 export const KeyboardSelection = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     onChange: fn(),
   },
@@ -441,6 +442,7 @@ export const Mobile = meta.story({
 
 export const UseOnChange = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     onChange: fn(),
   },

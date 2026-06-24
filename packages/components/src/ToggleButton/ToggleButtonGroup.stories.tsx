@@ -75,35 +75,39 @@ export const Basic = meta.story({
   },
 });
 
-Basic.test('Clicking buttons updates selection', async ({ canvas, step }) => {
-  await step('Initial state - sum is selected', async () => {
-    expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-      'Selected: sum'
-    );
-  });
-
-  await step('Click median button', async () => {
-    await userEvent.click(canvas.getByText('Median'));
-
-    await waitFor(() => {
-      expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-        'Selected: median'
-      );
-    });
-  });
-
-  await step('Click sum button again', async () => {
-    const sumButton = canvas.getByText('Sum');
-
-    await userEvent.click(sumButton);
-
-    await waitFor(() => {
+Basic.test(
+  'Clicking buttons updates selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    await step('Initial state - sum is selected', async () => {
       expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
         'Selected: sum'
       );
     });
-  });
-});
+
+    await step('Click median button', async () => {
+      await userEvent.click(canvas.getByText('Median'));
+
+      await waitFor(() => {
+        expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+          'Selected: median'
+        );
+      });
+    });
+
+    await step('Click sum button again', async () => {
+      const sumButton = canvas.getByText('Sum');
+
+      await userEvent.click(sumButton);
+
+      await waitFor(() => {
+        expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+          'Selected: sum'
+        );
+      });
+    });
+  }
+);
 
 export const MultipleSelection = meta.story({
   tags: ['component-test'],

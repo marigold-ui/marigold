@@ -324,6 +324,7 @@ export const RangeSelection = meta.story({
 
 export const ReadOnlyDoesNotCommit = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     readOnly: true,
     defaultValue: {
@@ -344,6 +345,7 @@ export const ReadOnlyDoesNotCommit = meta.story({
 
 export const UnavailableBlocks = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     defaultValue: {
       start: new CalendarDate(2025, 8, 4),

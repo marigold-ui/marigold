@@ -373,6 +373,7 @@ const onActionMock = fn();
 
 export const OnAction: any = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   beforeEach: () => {
     onActionMock.mockClear();
   },
@@ -459,6 +460,7 @@ export const LargeDataset: any = meta.story({
 
 export const Mobile: any = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
