@@ -1,5 +1,4 @@
 import {
-  Children,
   type ReactElement,
   type ReactNode,
   type Ref,
@@ -8,7 +7,7 @@ import {
 } from 'react';
 import type RAC from 'react-aria-components';
 import { Toolbar as RACToolbar } from 'react-aria-components/Toolbar';
-import { mergeRefs } from '@react-aria/utils';
+import { useObjectRef } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 import { Button } from '../Button/Button';
@@ -17,6 +16,7 @@ import { LinkButton } from '../LinkButton/LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { EllipsisVertical } from '../icons/EllipsisVertical';
 import type { SlotProps } from '../types';
+import { splitChildren } from '../utils/children.utils';
 import { ToolbarGroup } from './ToolbarGroup';
 import { ToolbarSeparator } from './ToolbarSeparator';
 import { useToolbarOverflow } from './useToolbarOverflow';
@@ -95,27 +95,22 @@ interface ToolbarComponent {
   Separator: typeof ToolbarSeparator;
 }
 
-const _Toolbar = ({ children, variant, size, ref, ...props }: ToolbarProps) => {
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    !hasWarnedMissingLabel &&
-    !props['aria-label'] &&
-    !props['aria-labelledby']
-  ) {
-    hasWarnedMissingLabel = true;
-    console.warn(
-      'Marigold: <Toolbar> should have an `aria-label` or `aria-labelledby` so assistive technology can announce the region.'
-    );
-  }
-
+const ToolbarBase = ({
+  children,
+  variant,
+  size,
+  ref,
+  ...props
+}: ToolbarProps) => {
   const classNames = useClassNames({ component: 'Toolbar', variant, size });
 
-  const toolbarRef = useRef<HTMLDivElement>(null);
+  // Merge the forwarded ref into a single object ref we can also measure.
+  const toolbarRef = useObjectRef(ref);
   const hiddenRef = useRef<HTMLDivElement>(null);
 
   // Split children into pinned leading controls and a trailing run of
   // collapsible action buttons.
-  const items = Children.toArray(children);
+  const [items] = splitChildren(children);
   let splitIndex = items.length;
   while (splitIndex > 0 && isActionElement(items[splitIndex - 1])) splitIndex--;
   const pinned = items.slice(0, splitIndex);
@@ -136,15 +131,13 @@ const _Toolbar = ({ children, variant, size, ref, ...props }: ToolbarProps) => {
     actionItems.length
   );
 
-  const setRef = ref ? mergeRefs(toolbarRef, ref) : toolbarRef;
-
   const visibleActions = actionItems.slice(0, visibleCount);
   const overflowActions = actionItems.slice(visibleCount);
 
   const toolbar = (
     <RACToolbar
       {...props}
-      ref={setRef}
+      ref={toolbarRef}
       orientation="horizontal"
       className={cn(classNames.container)}
     >
@@ -189,15 +182,13 @@ const _Toolbar = ({ children, variant, size, ref, ...props }: ToolbarProps) => {
         inert
         className="pointer-events-none invisible absolute top-0 left-0 flex w-max items-center gap-2"
       >
-        {pinned.map((child, index) => (
-          <span
-            key={`pinned-${index}`}
-            data-toolbar-pinned
-            className="inline-flex"
-          >
-            {child}
-          </span>
-        ))}
+        {pinned.map(child =>
+          isValidElement(child) ? (
+            <span key={child.key} data-toolbar-pinned className="inline-flex">
+              {child}
+            </span>
+          ) : null
+        )}
         {actionItems.map(action => (
           <span key={action.id} data-toolbar-action className="inline-flex">
             {action.element}
@@ -211,6 +202,25 @@ const _Toolbar = ({ children, variant, size, ref, ...props }: ToolbarProps) => {
       </div>
     </div>
   );
+};
+
+// Thin wrapper that isolates the dev-only warn-once. Keeping it out of
+// `ToolbarBase` lets that component hold all the hooks idiomatically while the
+// module-level flag lives in a function that calls none.
+const _Toolbar = (props: ToolbarProps) => {
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    !hasWarnedMissingLabel &&
+    !props['aria-label'] &&
+    !props['aria-labelledby']
+  ) {
+    hasWarnedMissingLabel = true;
+    console.warn(
+      'Marigold: <Toolbar> should have an `aria-label` or `aria-labelledby` so assistive technology can announce the region.'
+    );
+  }
+
+  return <ToolbarBase {...props} />;
 };
 
 export const Toolbar = Object.assign(_Toolbar, {

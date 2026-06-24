@@ -1,4 +1,4 @@
-import { type RefObject, useCallback, useLayoutEffect, useState } from 'react';
+import { type RefObject, useCallback, useState } from 'react';
 import { useResizeObserver } from '@react-aria/utils';
 
 /**
@@ -10,6 +10,10 @@ import { useResizeObserver } from '@react-aria/utils';
  * trigger). Measuring there rather than from the live toolbar is what makes
  * collapsing correct in both directions: the live flex items squish as the bar
  * narrows, which would under-report widths and collapse too late.
+ *
+ * Two resize observers drive the recalculation and each fires once on mount:
+ * the toolbar reacts to the available width changing, and the hidden layer
+ * (sized to its content via `w-max`) reacts to the set of controls changing.
  */
 export const useToolbarOverflow = (
   toolbarRef: RefObject<HTMLElement | null>,
@@ -60,12 +64,7 @@ export const useToolbarOverflow = (
   }, [toolbarRef, hiddenRef, actionCount]);
 
   useResizeObserver({ ref: toolbarRef, onResize: calculate });
-
-  useLayoutEffect(() => {
-    // Defer so the hidden measurement layer is laid out first.
-    const id = requestAnimationFrame(calculate);
-    return () => cancelAnimationFrame(id);
-  }, [calculate]);
+  useResizeObserver({ ref: hiddenRef, onResize: calculate });
 
   return Math.min(visible, actionCount);
 };
