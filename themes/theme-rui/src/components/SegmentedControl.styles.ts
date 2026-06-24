@@ -23,18 +23,18 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   }),
   // Inner scroll container: lays the options out in a row and scrolls them
   // horizontally when they overflow, with an edge-fade affordance
-  // (`ui-scroll-mask-x`). `px-0.5 py-1 -my-1` reserves room for the option focus
-  // rings the scroll container's `overflow` would otherwise clip — the inset
-  // ring still reaches ~1px past the cell, so without room the first/last
-  // segment's ring is cut off at the track edges.
-  //   - Vertically, `-my-1` lets the padded scroller bleed 4px above/below the
-  //     track (nothing there to overflow), so the rings overhang cleanly.
-  //   - Horizontally we can't bleed — a negative `-mx` would push the scroll
-  //     area past the rounded corners and overflow the parent (broke at 320px) —
-  //     so `px-0.5` insets the first/last segment 2px instead, giving the ring
-  //     room *inside* the clip while the scroller stays exactly the track width.
+  // (`ui-scroll-mask-x`). `py-1 -my-1` reserves *vertical* room for the option
+  // focus rings the scroll container's `overflow` would otherwise clip: `py-1`
+  // is the ring room and `-my-1` bleeds the scroller a matching 4px above/below
+  // the track (nothing there to overflow), so the rings overhang cleanly.
+  //   - Horizontally we deliberately add no room: a negative `-mx` would push
+  //     the scroll area past the rounded corners and overflow the parent (broke
+  //     at 320px), and a positive `px` inset shifts the first/last segment in
+  //     from the track edge. We accept that the inset focus ring is clipped ~1px
+  //     at the very first/last segment's outer edge — a minor cosmetic trim that
+  //     keeps the scroller exactly the track width.
   list: cva({
-    base: 'flex w-full items-center ui-scroll-mask-x px-0.5 py-1 -my-1',
+    base: 'flex w-full items-center ui-scroll-mask-x py-1 -my-1',
     variants: {
       variant: {
         default: 'gap-0',
@@ -65,11 +65,11 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       // Keyboard focus ring mirrors `ui-state-focus` (outline-3, ring/50) but is
       // inset 2px (`-outline-offset-2`) for both variants. Inset is what lets it
       // hug the `default` thumb (which sits 2px inside the cell) instead of
-      // leaving a gap, and — because the inset ring stays inside the cell rather
-      // than drawing outward past it — it is not clipped at the track edges by
-      // the scroll container on the first/last segment (which a flush ring was,
-      // in the `ghost` variant). RAC RadioButton exposes the focus state via
-      // [data-rac][data-focus-visible].
+      // leaving a gap, and keeps most of the ring inside the cell so the scroll
+      // container only clips ~1px of it at the very first/last segment's outer
+      // edge (a flush `ghost` ring lost much more). We accept that minor trim
+      // rather than inset the segments from the track edge. RAC RadioButton
+      // exposes the focus state via [data-rac][data-focus-visible].
       'focus-visible:outline-3 focus-visible:outline-solid focus-visible:outline-ring/50 focus-visible:-outline-offset-2',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
