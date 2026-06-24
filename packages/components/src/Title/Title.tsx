@@ -24,10 +24,11 @@ declare module 'react-aria-components' {
 
 export interface TitleProps extends AriaLabelingProps, SlotProps {
   /**
-   * The heading level (h1–h6). Can also be supplied via slot context.
+   * The heading level (h1–h6), as a number or its string form. Can also be
+   * supplied via slot context.
    * @default 2
    */
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  level?: '1' | '2' | '3' | '4' | '5' | '6' | 1 | 2 | 3 | 4 | 5 | 6;
   /**
    * The element id.
    */
@@ -64,7 +65,7 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
     // the same slot config we already merged via `useContextProps`, which
     // would otherwise duplicate the slot's `className` on the rendered DOM.
     <Heading
-      level={level}
+      level={Number(level)}
       slot={noSlot}
       {...props}
       // Safe: this branch only runs when `as` is unset, so the element

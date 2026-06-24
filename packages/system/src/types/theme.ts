@@ -322,6 +322,10 @@ export type Theme = {
       'group' | 'button',
       ComponentStyleFunction<string, string>
     >;
+    SegmentedControl?: Record<
+      'group' | 'list' | 'field' | 'option' | 'indicator',
+      ComponentStyleFunction<string, string>
+    >;
     Sidebar?: Record<
       | 'root'
       | 'overlay'

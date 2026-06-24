@@ -57,7 +57,7 @@ const meta = preview.meta({
     },
     space: {
       control: { type: 'radio' },
-      options: ['none', 'tight', 'related', 'regular', 'group', 'section'],
+      options: ['collapsed', 'tight', 'related', 'regular', 'group', 'section'],
       description: 'Spacing between Panel sections.',
       table: { defaultValue: { summary: 'regular' } },
     },

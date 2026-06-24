@@ -83,8 +83,8 @@
     "postcss-prefix-selector": "2.1.1",
     "shx": "^0.4.0",
     "tailwindcss": "4.3.0",
-    "tsdown": "0.22.2",
-    "typescript": "6.0.2"
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
