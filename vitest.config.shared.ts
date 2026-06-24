@@ -32,10 +32,85 @@ export const browserDeps = [
   // surfacing as `resolveDispatcher() is null` during renderToString/hydrateRoot.
   'react-dom/server',
   'react-dom/client',
-  // RAC subpath import used in stories/tests (see DST-1512). Without
-  // pre-bundling, the unit-tests project discovers it at runtime and
-  // re-optimizes mid-run, cascading "error loading dynamically imported module".
+  // react-aria-components subpath imports (DST-1512 "RAC-first" principle).
+  // Each subpath is a SEPARATE optimizer entry — pre-bundling the meta-package
+  // does NOT cover `react-aria-components/<Subpath>`. Any subpath not listed
+  // here is discovered at runtime by browser-mode projects, which re-optimizes
+  // mid-run and cascades "error loading dynamically imported module" (the
+  // DateField/`useButton` CI flake). This list mirrors every subpath imported
+  // across packages/*/src — keep it in sync when adding new RAC subpaths.
+  'react-aria-components/Autocomplete',
+  'react-aria-components/Breadcrumbs',
+  'react-aria-components/Button',
+  'react-aria-components/Calendar',
+  'react-aria-components/Checkbox',
+  'react-aria-components/CheckboxGroup',
+  'react-aria-components/Collection',
+  'react-aria-components/ComboBox',
+  'react-aria-components/DateField',
+  'react-aria-components/DatePicker',
+  'react-aria-components/Dialog',
+  'react-aria-components/Disclosure',
+  'react-aria-components/DisclosureGroup',
+  'react-aria-components/DropZone',
+  'react-aria-components/FieldError',
+  'react-aria-components/FileTrigger',
+  'react-aria-components/Form',
+  'react-aria-components/GridList',
+  'react-aria-components/Group',
+  'react-aria-components/Header',
+  'react-aria-components/Heading',
   'react-aria-components/I18nProvider',
+  'react-aria-components/Input',
+  'react-aria-components/Label',
+  'react-aria-components/Link',
+  'react-aria-components/ListBox',
+  'react-aria-components/Menu',
+  'react-aria-components/Modal',
+  'react-aria-components/NumberField',
+  'react-aria-components/Popover',
+  'react-aria-components/Pressable',
+  'react-aria-components/ProgressBar',
+  'react-aria-components/RadioGroup',
+  'react-aria-components/RangeCalendar',
+  'react-aria-components/SearchField',
+  'react-aria-components/Select',
+  'react-aria-components/Separator',
+  'react-aria-components/Slider',
+  'react-aria-components/slots',
+  'react-aria-components/Switch',
+  'react-aria-components/Table',
+  'react-aria-components/Tabs',
+  'react-aria-components/TagGroup',
+  'react-aria-components/Text',
+  'react-aria-components/TextArea',
+  'react-aria-components/TextField',
+  'react-aria-components/TimeField',
+  'react-aria-components/Toast',
+  'react-aria-components/ToggleButton',
+  'react-aria-components/ToggleButtonGroup',
+  'react-aria-components/Toolbar',
+  'react-aria-components/Tooltip',
+  'react-aria-components/useAsyncList',
+  'react-aria-components/useDragAndDrop',
+  'react-aria-components/useListData',
+  'react-aria-components/useRenderProps',
+  'react-aria-components/Virtualizer',
+  'react-aria-components/VisuallyHidden',
+  // Bare @react-aria/* packages imported directly in src. These are split into
+  // shared optimizer chunks (e.g. @react-aria/button -> `useButton-*.js`) that
+  // are pulled in transitively by RAC subpaths; pre-bundle them so the chunk
+  // exists before the first test loads instead of being created mid-run.
+  '@react-aria/button',
+  '@react-aria/collections',
+  '@react-aria/focus',
+  '@react-aria/form',
+  '@react-aria/interactions',
+  '@react-aria/landmark',
+  '@react-aria/overlays',
+  '@react-aria/ssr',
+  '@react-aria/table',
+  '@react-aria/utils',
   // Virtualizer deps (reference process.env in source)
   '@react-aria/virtualizer',
   '@react-stately/layout',
