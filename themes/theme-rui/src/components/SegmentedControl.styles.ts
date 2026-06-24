@@ -23,17 +23,18 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   }),
   // Inner scroll container: lays the options out in a row and scrolls them
   // horizontally when they overflow, with an edge-fade affordance
-  // (`ui-scroll-mask-x`). `box-content py-1 -my-1` reserves *vertical* room for
-  // the option focus rings the scroll container's `overflow` would otherwise
-  // clip: `py-1` is the ring room and `-my-1` bleeds the scroller a matching
-  // 4px above/below the track so the rings overhang the top/bottom edge without
-  // being cut off, while `box-content` keeps `w-full` equal to the track height.
-  // The padding is intentionally vertical-only: a horizontal `-mx` would push
-  // the scroll area past the track's rounded corners, so scrolled segments would
-  // spill outside the track (and overflow the viewport on small screens). The
-  // option focus rings are inset (see `option`), so they need no horizontal room.
+  // (`ui-scroll-mask-x`). `px-0.5 py-1 -my-1` reserves room for the option focus
+  // rings the scroll container's `overflow` would otherwise clip — the inset
+  // ring still reaches ~1px past the cell, so without room the first/last
+  // segment's ring is cut off at the track edges.
+  //   - Vertically, `-my-1` lets the padded scroller bleed 4px above/below the
+  //     track (nothing there to overflow), so the rings overhang cleanly.
+  //   - Horizontally we can't bleed — a negative `-mx` would push the scroll
+  //     area past the rounded corners and overflow the parent (broke at 320px) —
+  //     so `px-0.5` insets the first/last segment 2px instead, giving the ring
+  //     room *inside* the clip while the scroller stays exactly the track width.
   list: cva({
-    base: 'flex w-full items-center ui-scroll-mask-x box-content py-1 -my-1',
+    base: 'flex w-full items-center ui-scroll-mask-x px-0.5 py-1 -my-1',
     variants: {
       variant: {
         default: 'gap-0',
