@@ -1,6 +1,17 @@
 // Core exports
 export * from './types';
-export * from './hooks';
+// Explicit named re-exports (not `export *`) so bundlers can statically see
+// which runtime values the barrel forwards from `react-aria-components` and
+// `@marigold/system`, keeping them tree-shakeable.
+export {
+  useAsyncList,
+  useListData,
+  useDragAndDrop,
+  useLandmark,
+  DateFormat,
+  NumericFormat,
+} from './hooks';
+export type { AriaLandmarkRole, AriaLandmarkProps } from './hooks';
 
 // Component exports
 export { Accordion } from './Accordion/Accordion';

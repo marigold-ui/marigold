@@ -1,4 +1,4 @@
-import { type Section, getComponentDocs } from '../lib/docs.js';
+import { type Section, getPageDocs } from '../lib/docs.js';
 import { type OutputFormat, formatDocs } from '../lib/format.js';
 
 export interface RunDocsOptions {
@@ -18,10 +18,10 @@ export const runDocs = async (
   options: RunDocsOptions
 ): Promise<RunDocsResult> => {
   if (!options.component) {
-    throw new Error('Usage: marigold docs <ComponentName>');
+    throw new Error('Usage: marigold docs <name-or-slug>');
   }
 
-  const docs = await getComponentDocs(options.component, {
+  const docs = await getPageDocs(options.component, {
     section: options.section ?? 'all',
     fresh: options.fresh,
     offline: options.offline,

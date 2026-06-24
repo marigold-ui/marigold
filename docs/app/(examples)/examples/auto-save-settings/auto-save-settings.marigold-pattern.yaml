@@ -1,0 +1,17 @@
+title: Auto-saving settings with optimistic toggles
+brief: >-
+  An account-preferences screen where each Switch saves the moment it is
+  toggled, with no save button. Toggles update optimistically and a shared hook
+  rolls the value back and raises an error Toast (with a retry action) when the
+  save fails, keeping concurrent saves race-safe.
+patterns:
+  - user-input/forms
+  - feedback/feedback-messages
+mock_data: []
+key_files:
+  - notifications.tsx
+  - privacy.tsx
+  - useAutoSaveSwitch.tsx
+scaffolding_files:
+  - page.tsx
+peer_deps: []

@@ -133,6 +133,33 @@ jobs:
           overwrite: 'true'
 
   # ---------------------------------------------------------------------------
+  # Docs build-script tests (vitest node-mode) — fast, no browser/Playwright.
+  # Covers the registry builders under docs/scripts/ (e.g. build-examples.mjs),
+  # which the browser-mode unit/storybook projects exclude.
+  # ---------------------------------------------------------------------------
+  docs-script-tests:
+    name: Docs Script Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      CI: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6.0.8
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run docs build-script tests
+        run: pnpm --filter @marigold/docs test
+
+  # ---------------------------------------------------------------------------
   # Merge coverage & report
   # ---------------------------------------------------------------------------
   coverage-report:

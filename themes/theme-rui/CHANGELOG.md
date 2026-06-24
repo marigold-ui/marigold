@@ -672,6 +672,34 @@ left: -10000px`) so it cannot expand the document's scrollable
   - @marigold/system@18.0.0-beta.0
   - @marigold/components@18.0.0-beta.0
 
+## 5.4.1
+
+### Patch Changes
+
+- Updated dependencies [bdda185]
+- Updated dependencies [a609642]
+- Updated dependencies [60b6e03]
+  - @marigold/components@17.8.0
+  - @marigold/system@17.8.0
+
+## 5.4.0
+
+### Minor Changes
+
+- f4608c6: feat(DSTSUP-262): add `large` size to Dialog for wider layouts
+
+  `Dialog` (and `ConfirmationDialog`, which inherits the prop) now accepts `size="large"`, which sets the dialog width to `1024px` — matching the Tailwind `lg` breakpoint. Use it for content that doesn't fit the previous `medium` cap of `768px`, e.g. multi-month calendars or wider forms. The existing `min()` width formula keeps the dialog viewport-safe on smaller screens.
+
+### Patch Changes
+
+- Updated dependencies [a6a1cb3]
+- Updated dependencies [f4608c6]
+- Updated dependencies [4242aa1]
+- Updated dependencies [da46e58]
+- Updated dependencies [e0d5c7b]
+  - @marigold/components@17.7.0
+  - @marigold/system@17.7.0
+
 ## 5.3.2
 
 ### Patch Changes

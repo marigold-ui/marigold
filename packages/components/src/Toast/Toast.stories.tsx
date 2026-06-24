@@ -4,8 +4,8 @@ import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
 import { Toast } from './Toast';
-import { ToastProvider, queue } from './ToastProvider';
-import { useToast } from './ToastQueue';
+import { ToastProvider } from './ToastProvider';
+import { getToastQueue, useToast } from './ToastQueue';
 
 // Toast stories use the queue API (not direct props), so we define
 // custom args that map to addToast() options rather than ToastProps.
@@ -57,7 +57,7 @@ const meta = preview.meta({
   args: defaults as unknown as Record<string, never>,
   beforeEach: () => {
     // Clear the toast queue before each story
-    queue.clear();
+    getToastQueue().clear();
   },
   decorators: [
     Story => (

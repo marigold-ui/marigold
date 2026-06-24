@@ -107,6 +107,18 @@
 - Updated dependencies [de34b15]
   - @marigold/system@18.0.0-beta.0
 
+## 1.3.43
+
+### Patch Changes
+
+- @marigold/system@17.8.0
+
+## 1.3.42
+
+### Patch Changes
+
+- @marigold/system@17.7.0
+
 ## 1.3.41
 
 ### Patch Changes

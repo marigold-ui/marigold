@@ -399,7 +399,7 @@ export const DisabledNextButton = meta.story({
 
 export const Mobile = meta.story({
   globals: {
-    viewport: { value: 'mobile1' },
+    viewport: { value: 'extraSmallScreen' },
   },
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },

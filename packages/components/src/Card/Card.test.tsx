@@ -97,6 +97,19 @@ describe('Card', () => {
       );
     });
 
+    test('numeric `p` drives both --card-px and --card-py as scale values', () => {
+      render(<Basic.Component p={4} data-testid="card" />);
+
+      const card = screen.getByTestId('card');
+
+      expect(card.style.getPropertyValue('--card-px')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+      expect(card.style.getPropertyValue('--card-py')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+    });
+
     test('`p` recipe drives both --card-px and --card-py', () => {
       render(<Basic.Component p="square-relaxed" data-testid="card" />);
 
