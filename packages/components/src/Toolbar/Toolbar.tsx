@@ -133,7 +133,6 @@ const _Toolbar = ({ children, variant, size, ref, ...props }: ToolbarProps) => {
   const visibleCount = useToolbarOverflow(
     toolbarRef,
     hiddenRef,
-    pinned.length,
     actionItems.length
   );
 
@@ -181,14 +180,24 @@ const _Toolbar = ({ children, variant, size, ref, ...props }: ToolbarProps) => {
     <div className="relative w-full">
       {toolbar}
 
-      {/* Hidden, inert measurement layer: always renders every action plus a
-          "More" trigger so the overflow calculation never loses a width. */}
+      {/* Hidden, inert measurement layer: renders every control at its natural
+          width (pinned, every action, and the "More" trigger) so the overflow
+          calculation is stable and never loses a width as the bar narrows. */}
       <div
         ref={hiddenRef}
         aria-hidden
         inert
         className="pointer-events-none invisible absolute top-0 left-0 flex w-max items-center gap-2"
       >
+        {pinned.map((child, index) => (
+          <span
+            key={`pinned-${index}`}
+            data-toolbar-pinned
+            className="inline-flex"
+          >
+            {child}
+          </span>
+        ))}
         {actionItems.map(action => (
           <span key={action.id} data-toolbar-action className="inline-flex">
             {action.element}

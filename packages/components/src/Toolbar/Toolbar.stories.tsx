@@ -1,4 +1,4 @@
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { ListFilter } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -149,16 +149,31 @@ export const Overflow = meta.story({
     </div>
   ),
   play: async ({ canvas }) => {
-    // The "More" trigger appears once measurement collapses some actions.
-    const more = await canvas.findByRole('button', { name: 'More actions' });
-    await expect(more).toBeInTheDocument();
+    const toolbar = canvas.getByRole('toolbar');
+    const container = toolbar.closest('[style*="resize"]') as HTMLElement;
+    const search = canvas.getByRole('searchbox');
 
-    // At least one trailing action has collapsed out of the bar; the pinned
-    // search field stays visible.
+    // Wide: every action fits in the bar, so there is no "More" menu.
+    container.style.width = '760px';
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole('button', { name: 'More actions' })
+      ).not.toBeInTheDocument()
+    );
+
+    // Now shrink large→small. Actions must collapse fast enough that the bar
+    // never overflows and the pinned search keeps its natural width (the
+    // reported overlap happened when a late-collapsing action squished search).
+    container.style.width = '260px';
+    await canvas.findByRole('button', { name: 'More actions' });
+    await waitFor(() => {
+      expect(toolbar.scrollWidth).toBeLessThanOrEqual(toolbar.clientWidth + 1);
+      expect(search.getBoundingClientRect().width).toBeGreaterThan(80);
+    });
+
     const stillVisible = canvas
       .getAllByRole('button')
       .filter(button => OVERFLOW_ACTIONS.includes(button.textContent ?? ''));
     await expect(stillVisible.length).toBeLessThan(OVERFLOW_ACTIONS.length);
-    await expect(canvas.getByRole('searchbox')).toBeVisible();
   },
 });
