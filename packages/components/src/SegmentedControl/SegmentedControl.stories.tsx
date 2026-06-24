@@ -176,6 +176,53 @@ export const Overflow = meta.story({
   },
 });
 
+// Regression guard for the 320px overflow report (DST-765). Pinned to the
+// 320px viewport and rendered without a width wrapper so the segments overflow
+// against the smallest supported screen. The control must scroll *inside* its
+// track: the scroll container must not bleed horizontally past the rounded
+// track edges (a negative horizontal margin used to push it 4px past each side,
+// overflowing the container and the viewport at this width).
+export const OverflowSmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  args: {
+    label: 'Month',
+  },
+  render: args => (
+    <SegmentedControl {...args} defaultValue="Jan">
+      {months.map(month => (
+        <SegmentedControl.Option key={month} value={month}>
+          {month}
+        </SegmentedControl.Option>
+      ))}
+    </SegmentedControl>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    const track = canvasElement.querySelector(
+      '[role="presentation"]'
+    ) as HTMLElement;
+    const scroller = track.firstElementChild as HTMLElement;
+
+    // The scroller overflows internally...
+    expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+
+    // ...but must stay within the rounded track horizontally (no bleed past
+    // the edges, which is what overflowed the viewport at 320px).
+    const trackRect = track.getBoundingClientRect();
+    const scrollerRect = scroller.getBoundingClientRect();
+    expect(scrollerRect.left).toBeGreaterThanOrEqual(
+      Math.floor(trackRect.left)
+    );
+    expect(scrollerRect.right).toBeLessThanOrEqual(Math.ceil(trackRect.right));
+
+    const august = canvas.getByRole('radio', { name: 'Aug' });
+    await userEvent.click(august);
+    await expect(august).toBeChecked();
+  },
+});
+
 export const WithError = meta.story({
   tags: ['component-test'],
   args: {

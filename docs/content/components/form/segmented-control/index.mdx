@@ -83,7 +83,7 @@ A quicker version of the same test: if each option feels like it deserves its ow
 
 ### Number of options
 
-A segmented control works best with **two to five** options, and five is a practical ceiling. Beyond that, the labels get cramped, the segments become hard to tap, and the control is likely to overflow its container. When you have more options, switch to a [Select](/components/form/select) to save space.
+A segmented control works best with **two to five** options, and five is a practical ceiling. Beyond that, the labels get cramped, the segments become hard to tap, and the control has to scroll to fit them. When you have more options, switch to a [Select](/components/form/select) to save space.
 
 <GuidelineTiles>
   <Do>
@@ -102,7 +102,7 @@ A segmented control works best with **two to five** options, and five is a pract
 
 ### Labels
 
-Use short, parallel labels, ideally one to three words, so every segment reads consistently and the control stays compact. Write them as nouns or noun phrases that name the option, such as Day or Newest, and avoid action verbs that make a segment look like a button. Don't shorten a label with an ellipsis or let it wrap onto a second line. If a label is too long, reword it or pick a different component. Keep the option order stable and logical, following a natural sequence such as Day, Week, Month, or ordering by importance, and never reorder options based on the current selection.
+Use short, parallel labels, ideally one to three words, so every segment reads consistently and the control stays easy to scan. Write them as nouns or noun phrases that name the option, such as Day or Newest, and avoid action verbs that make a segment look like a button. Don't shorten a label with an ellipsis or let it wrap onto a second line. If a label is too long, reword it or pick a different component. Keep the option order stable and logical, following a natural sequence such as Day, Week, Month, or ordering by importance, and never reorder options based on the current selection.
 
 <GuidelineTiles>
   <Do>
@@ -118,9 +118,9 @@ Use short, parallel labels, ideally one to three words, so every segment reads c
   </Dont>
 </GuidelineTiles>
 
-### Full width
+### Width
 
-By default the control is only as wide as its segments. Set `width="full"` to make the segments share the available width equally. This is useful inside a card, a sidebar, or a narrow panel where the control should fill its container.
+The control fills the width of its container and scrolls horizontally when the segments do not fit, so it adapts to the space it is given — a card, a sidebar, or a narrow panel — instead of overflowing. By default the segments keep their natural size and sit at the start of the track. Set `width="full"` to stretch the segments so they divide the available width equally instead.
 
 <ComponentDemo name="segmentedcontrol-full-width" />
 

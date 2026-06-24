@@ -69,8 +69,9 @@ export interface SegmentedControlProps extends Omit<
    */
   readOnly?: boolean;
   /**
-   * Control the width of the field. Use `"full"` to make the segments divide
-   * the available width equally (same as the former `fullWidth` prop).
+   * Control the width of the field box. The segments fill that width and scroll
+   * horizontally when they overflow; use `"full"` to additionally stretch the
+   * segments so they divide the width equally.
    */
   width?: WidthProp['width'];
   children?: ReactNode;
@@ -98,10 +99,12 @@ function SegmentedControlBase({
     size,
   });
 
-  // Only `width="full"` stretches the segments to divide the available width
-  // equally. Any other width value just constrains the field box (like every
-  // other form component) and leaves the segments at their natural size.
-  const expandWidth = width === 'full';
+  // The track always fills the available width (its field box) and scrolls
+  // horizontally when the segments overflow — so the control adjusts to its
+  // parent instead of forcing the parent to grow. `width="full"` additionally
+  // stretches the segments so they divide that width equally; otherwise they
+  // keep their natural size and are left-aligned.
+  const stretch = width === 'full';
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // Keep the selected option visible when the segments overflow and scroll.
@@ -166,15 +169,9 @@ function SegmentedControlBase({
       size={size}
       {...props}
     >
-      <div
-        role="presentation"
-        className={cn(
-          classNames.group,
-          expandWidth ? 'flex w-full' : 'inline-flex w-fit max-w-full'
-        )}
-      >
+      <div role="presentation" className={cn(classNames.group, 'flex w-full')}>
         <div ref={attachScrollContainer} className={classNames.list}>
-          <SegmentedControlContext value={{ variant, size, expandWidth }}>
+          <SegmentedControlContext value={{ variant, size, stretch }}>
             {children}
           </SegmentedControlContext>
         </div>
@@ -223,7 +220,7 @@ function SegmentedControlOption({
   return (
     <RadioField
       isDisabled={disabled}
-      className={cn(classNames.field, context.expandWidth && 'grow basis-0')}
+      className={cn(classNames.field, context.stretch && 'grow basis-0')}
       {...props}
     >
       <SelectionIndicator className={classNames.indicator} />

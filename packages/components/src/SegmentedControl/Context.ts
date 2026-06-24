@@ -3,7 +3,7 @@ import { createContext } from 'react';
 export interface SegmentedControlContextProps {
   variant?: string;
   size?: string;
-  expandWidth?: boolean;
+  stretch?: boolean;
 }
 
 export const SegmentedControlContext =
