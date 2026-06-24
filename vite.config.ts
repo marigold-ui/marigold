@@ -80,7 +80,11 @@ export default mergeConfig(
               // This should match your package.json script to run Storybook
               // The --no-open flag will skip the automatic opening of a browser
               storybookScript: 'pnpm storybook --no-open',
-              storybookUrl: process.env.SB_URL,
+              // Must stay truthy: the addon's in-UI test runner only treats a
+              // project as a Storybook project when `__STORYBOOK_URL__` is set
+              // (isStorybookProject), so an unset SB_URL (the case when running
+              // tests from the Storybook UI) would otherwise collect 0 tests.
+              storybookUrl: process.env.SB_URL ?? 'http://localhost:6006',
               tags: {
                 include: ['component-test'],
               },

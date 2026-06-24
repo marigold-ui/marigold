@@ -1,0 +1,186 @@
+---
+title: SegmentedControl
+description: A compact control for switching between a few options that are all visible at once.
+badge: beta
+---
+
+import { SegmentedControlAnatomy } from './segmentedcontrol-anatomy';
+
+The `<SegmentedControl>` lets people pick one option from a small set of choices that are all on display at once. It is a compact, horizontal control for switching a view, a mode, a sort order, or a filter.
+
+It is also a proper form field. It has a label, can show a description and an error message, and can be marked as required or read only, just like a [Radio.Group](/components/form/radio).
+
+## Anatomy
+
+A `<SegmentedControl>` is a labeled track that holds two or more segments in a row. Only one segment is selected at a time, marked by an indicator that moves to the chosen segment.
+
+<SegmentedControlAnatomy />
+
+- **Label:** Names the control and explains what the choice affects.
+- **Track:** The container that groups the segments into one unit.
+- **Segment:** A single option, added with `<SegmentedControl.Option>`. It holds a short text label, an icon, or both.
+- **Selection indicator:** The highlight that marks the selected segment and moves as the selection changes.
+- **Description:** Optional helper text below the track. It is replaced by the error message when something is wrong.
+
+## Appearance
+
+<AppearanceDemo component={'SegmentedControl'} />
+
+<AppearanceTable component={'SegmentedControl'} />
+
+The control comes in two variants so it fits both prominent and quieter places.
+
+| Variant   | Description                                                                                         | When to use                                                                    |
+| --------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `default` | A filled track with a raised indicator, matching the look of the [Switch](/components/form/switch). | Standalone controls above a list or table, or inside a form or card.           |
+| `ghost`   | A style without a filled track and a translucent indicator that blends into the surface behind it.  | Dense toolbars and panel headers where the control sits next to other actions. |
+
+## Usage
+
+A segmented control presents a few options on one horizontal track, with exactly one always selected. Because every option stays on display, people can take in the full set of choices and the current selection at a glance, which makes it a good fit for choices they return to and flip between often.
+
+Reach for a segmented control when you are changing the presentation of one set of content, not navigating to different content. It can switch a view, a sort order, or a filter in place, or sit in a [form](/components/form/form) as a compact field for a single choice. Common cases:
+
+- **Filtering or scoping a list** to a subset of the same items, such as All, Active, and Archived.
+- **Sorting the same items** a different way, such as Newest, Popular, and Price.
+- **Changing the time range or granularity** of the same data, such as Day, Week, and Month, or 1D, 1W, and 1M on a chart.
+- **Switching the layout** of the same content, such as a list, a board, and a calendar, or a grid and a list.
+- **Setting a mode** that changes what is shown or how the view behaves, such as a map shown as Map, Satellite, or Transit.
+
+In every case the underlying content is the same and only the way it is shown changes. Always start with one option selected so the control is never empty.
+
+The example below shows the same 24 events as a list, a board, and a calendar. The events never change. Only the layout does, which is exactly the job a segmented control is built for.
+
+<ComponentDemo name="segmentedcontrol-basic" />
+
+### Segmented control vs tabs
+
+This is the comparison worth getting right, because a segmented control and a set of [tabs](/components/navigation/tabs) can look similar but do different jobs.
+
+Tabs are navigation. Each tab reveals its own panel of content, and `<Tabs>` renders those panels for you. Switching tabs is like turning to a different page. The content under one tab is not the content under another.
+
+A segmented control is a setting. It reports which option is selected and renders nothing on its own. Switching a segment re-presents the same content that already sits next to the control.
+
+A reliable test is to ask whether two options could ever show the same item. If All and Archived could both list the same order, or List and Board could both show the same task, then the options are presentations of one set of content and a segmented control is right. If each option shows genuinely different content that would never overlap, such as Profile, Security, and Notifications, those are separate sections and tabs are right.
+
+A quicker version of the same test: if each option feels like it deserves its own page or its own link, use tabs. If the options only change the current view, use a segmented control.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a segmented control to re-present one set of content, such as
+      filtering a list or switching its layout.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use a segmented control to move between separate sections of
+      content. Use [Tabs](/components/navigation/tabs) when each option reveals
+      its own panel.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Number of options
+
+A segmented control works best with **two to five** options, and five is a practical ceiling. Beyond that, the labels get cramped, the segments become hard to tap, and the control has to scroll to fit them. When you have more options, switch to a [Select](/components/form/select) to save space.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a segmented control for two to five options that are short and can all
+      be read at a glance.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't crowd a segmented control with many options. Use a
+      [Select](/components/form/select) when the list grows beyond a handful.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Labels
+
+Use short, parallel labels, ideally one to three words, so every segment reads consistently and the control stays easy to scan. Write them as nouns or noun phrases that name the option, such as Day or Newest, and avoid action verbs that make a segment look like a button. Don't shorten a label with an ellipsis or let it wrap onto a second line. If a label is too long, reword it or pick a different component. Keep the option order stable and logical, following a natural sequence such as Day, Week, Month, or ordering by importance, and never reorder options based on the current selection.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep labels short and parallel, and keep their order stable.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use long labels or shorten them with an ellipsis. Reword the label
+      or use a [Radio.Group](/components/form/radio) instead.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Width
+
+By default the control is only as wide as its segments, so it stays compact and sits at the start of the available space. When the segments outgrow the space they are given — a card, a sidebar, or a narrow panel — the track scrolls horizontally instead of overflowing. Set `width="full"` to fill the container and stretch the segments so they divide the available width equally instead.
+
+<ComponentDemo name="segmentedcontrol-full-width" />
+
+## Accessibility
+
+`<SegmentedControl>` renders as a group of radio buttons, so it behaves like any other radio group for assistive technology. It is fully keyboard accessible.
+
+| Key                          | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `Tab`                        | Moves focus into the control, onto the selected segment, and back out as a single stop. |
+| `Arrow Left` / `Arrow Right` | Moves to the previous or next segment and selects it, so the selection follows focus.   |
+| `Arrow Up` / `Arrow Down`    | Behaves the same as the left and right arrows.                                          |
+| `Space`                      | Selects the focused segment.                                                            |
+
+Always give the control a `label` so its purpose is announced. In a toolbar or a tight layout where a visible label would be redundant, pass an `aria-label` instead. Each segment is announced with its own label and whether it is selected, and disabled segments are announced as unavailable and skipped by the arrow keys.
+
+## Props
+
+<StorybookHintMessage component={'SegmentedControl'} />
+
+### SegmentedControl
+
+<AutoTypeTable path="SegmentedControl" name="SegmentedControlProps" />
+
+### SegmentedControl.Option
+
+<AutoTypeTable path="SegmentedControl" name="SegmentedControlOptionProps" />
+
+## Alternative components
+
+- [Radio.Group](/components/form/radio): The same single choice in a vertical form layout. Use it when labels are long or need descriptions, or when there are more than a handful of options.
+- [Select](/components/form/select): Hides the options behind a dropdown. Use it for a longer list, around 5 to 15 options, or when space is tight.
+- [Tabs](/components/navigation/tabs): Moves between separate sections of content and shows the matching panel. Use it when the choice is about navigation, not setting a value.
+- [ToggleButton.Group](/components/actions/toggle-button): A toolbar of independent on and off actions where any number can be active. Use it for several choices at once rather than one exclusive choice.
+- [Switch](/components/form/switch): Turns a single setting on or off. Prefer it over a two-segment control for a simple on and off state.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Forms',
+      href: '../../patterns/user-input/forms',
+      caption: 'How to structure, validate, and submit forms with Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>
