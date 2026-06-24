@@ -1,6 +1,7 @@
 ---
 title: DateRangePicker
 description: Pick a start and end date through a single field.
+badge: beta
 ---
 
 import { DateRangePickerAnatomy } from './daterangepicker-anatomy';
@@ -26,8 +27,6 @@ The Label states the purpose of the field. Two date inputs hold the start and th
 The clearest signal that you want a `<DateRangePicker>` is the span itself. When the time between the two dates is part of what the user is deciding, a trip that lasts a week, a report that covers a quarter, a campaign that runs for ten days, the two dates work as one value and people benefit from seeing the whole stretch on a single calendar.
 
 Choosing both ends on the same calendar also keeps that value consistent. The end can never fall before the start, and rules like a minimum number of nights or blocked dates apply to the pair at once. Two separate fields cannot do this without extra validation, and moving between two calendars makes it easy to click the wrong day once the visible month shifts.
-
-Use two separate date fields when only the endpoints matter on their own. Open ended filters such as everything after a date leave one end empty, unrelated dates such as when a document was issued and when it expires carry no real span between them, and dates many years apart are faster to type than to navigate. In those cases a single [DatePicker](/components/form/datepicker) or two independent fields communicate the intent more honestly.
 
 <GuidelineTiles>
   <Do>
@@ -76,23 +75,20 @@ Some days inside the allowed window still cannot be chosen, such as nights that 
 
 <ComponentDemo name="date-range-picker-unavailable" />
 
-### Quick ranges
-
-In reporting and analytics people reach for the same spans again and again, such as the last seven days or the current month. Offer them as buttons that set the `value` directly, so users fill the field in one click and can still fine tune it on the calendar.
-
-<ComponentDemo name="date-range-picker-presets" />
-
 ### Showing multiple months
 
 Ranges that stretch across several months are awkward to pick one month at a time, which is common when planning a holiday or a quarter. Set `visibleDuration` to show up to three months at once. On small screens the calendar always falls back to a single month inside a tray.
 
 <ComponentDemo name="date-range-picker-multi-month" />
 
-### Including a time
-
-Some ranges need a time as well as a date, such as an event that starts and ends at a set hour. Set `granularity` to `hour` or `minute` and each end of the range gains time segments.
-
-<ComponentDemo name="date-range-picker-time" />
+<Callout title="Narrow screens" type="warning">
+  The field lays out two date inputs, a separator and the calendar button next
+  to each other, so it needs roughly 260px of width for its content. It holds
+  that minimum even when the surrounding layout is narrower and overflows rather
+  than crushing the inputs together. Because of this it is not suited to very
+  small viewports such as a 320px screen. Give it horizontal room, or reach for
+  a single [DatePicker](/components/form/datepicker) when space is tight.
+</Callout>
 
 ### Accessibility
 
