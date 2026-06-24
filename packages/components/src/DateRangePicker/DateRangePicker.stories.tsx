@@ -257,8 +257,8 @@ Basic.test(
     // 6 segments total: 3 for start, 3 for end (day granularity).
     const segments = canvas.getAllByRole('spinbutton');
 
-    await step('Paste a valid date into the start input', async () => {
-      firePaste(segments[0], '24.09.2025');
+    await step('Paste an ISO date into the start input', async () => {
+      firePaste(segments[0], '2025-09-24');
       await waitFor(() => {
         const updated = canvas.getAllByRole('spinbutton');
         // Year segment of the start input should reflect the pasted year.
@@ -266,12 +266,22 @@ Basic.test(
       });
     });
 
-    await step('Paste a valid date into the end input', async () => {
+    await step('Paste a European date into the end input', async () => {
       const updated = canvas.getAllByRole('spinbutton');
       firePaste(updated[3], '30.09.2025');
       await waitFor(() => {
         const next = canvas.getAllByRole('spinbutton');
         expect(next[5]).toHaveTextContent('2025');
+      });
+    });
+
+    await step('Ignore an invalid pasted value', async () => {
+      const updated = canvas.getAllByRole('spinbutton');
+      firePaste(updated[0], 'not-a-date');
+      // The start input keeps the year pasted earlier instead of breaking.
+      await waitFor(() => {
+        const next = canvas.getAllByRole('spinbutton');
+        expect(next[2]).toHaveTextContent('2025');
       });
     });
   }
