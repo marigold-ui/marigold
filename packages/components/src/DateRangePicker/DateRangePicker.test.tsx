@@ -69,6 +69,21 @@ describe('DateRangePicker', () => {
       await waitFor(() => {
         expect(screen.getByRole('application')).toBeVisible();
       });
+
+      // The story marks Sundays as unavailable. Each day cell exposes a
+      // `data-unavailable` flag, so a no-op `dateUnavailable` would set none.
+      const cells = screen.getAllByRole('gridcell');
+      const unavailable = cells.filter(
+        cell =>
+          // eslint-disable-next-line testing-library/no-node-access
+          (cell.firstChild as HTMLElement | null)?.getAttribute(
+            'data-unavailable'
+          ) === 'true'
+      );
+
+      // At least one Sunday is blocked, and it is selective — not every day.
+      expect(unavailable.length).toBeGreaterThan(0);
+      expect(unavailable.length).toBeLessThan(cells.length);
     });
   });
 });
