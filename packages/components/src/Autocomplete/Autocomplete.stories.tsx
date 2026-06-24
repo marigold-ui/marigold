@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Text } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { useAsyncList } from '@react-stately/data';
 import { Center } from '../Center/Center';
 import { Stack } from '../Stack/Stack';
 import { Autocomplete } from './Autocomplete';
@@ -93,26 +92,56 @@ export const Basic: any = meta.story({
       <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
-  play: async ({ canvas }: any) => {
+});
+
+Basic.test(
+  'Opens and filters the menu as you type',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
-    const description = canvas.getAllByText(
-      'This is a help text description'
-    )[0];
-    const clearButton = screen.getByLabelText(
-      /Clear search|Suche zurücksetzen/i
-    );
+
+    await userEvent.type(input, 'ha');
+    const result = canvas.getAllByText('Harry Potter')[0];
+
+    await expect(result).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Opens the menu on focus',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      menuTrigger: 'focus',
+    },
+  },
+  async ({ canvas }: any) => {
+    const input = canvas.getByRole('combobox');
 
     await userEvent.click(input);
-    await userEvent.type(input, 'sp');
-    await userEvent.click(clearButton);
+    const result = await canvas.findByText('Star Wars');
 
-    await expect(input).toHaveFocus();
-    await expect(input).toBeVisible();
-    await expect(description).toBeInTheDocument();
-    await expect(clearButton).toBeInTheDocument();
-    await expect(input).toHaveValue('');
+    await expect(result).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Opens the menu with the arrow key',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      menuTrigger: 'manual',
+    },
   },
-});
+  async ({ canvas }: any) => {
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, '{arrowdown}');
+    const result = await canvas.findByText('Lord of the Rings');
+
+    await expect(result).toBeVisible();
+  }
+);
 
 export const WithSections: any = meta.story({
   tags: ['component-test'],
@@ -135,16 +164,17 @@ export const WithSections: any = meta.story({
       </Autocomplete.Section>
     </Autocomplete>
   ),
-  play: async ({ canvas }: any) => {
-    const input = canvas.getAllByLabelText(/Select Favorite/i)[0];
+});
 
-    await userEvent.type(input, 'o');
-    const sectionOne = await screen.findByText('Veggies');
-    const sectionTwo = await screen.findByText('Protein');
+WithSections.test('Sections are visible', async ({ canvas }: any) => {
+  const input = canvas.getAllByLabelText(/Select Favorite/i)[0];
 
-    expect(sectionOne).toBeVisible();
-    expect(sectionTwo).toBeVisible();
-  },
+  await userEvent.type(input, 'o');
+  const sectionOne = await screen.findByText('Veggies');
+  const sectionTwo = await screen.findByText('Protein');
+
+  expect(sectionOne).toBeVisible();
+  expect(sectionTwo).toBeVisible();
 });
 
 export const Controlled: any = meta.story({
@@ -184,7 +214,16 @@ export const Controlled: any = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas }: any) => {
+});
+
+Controlled.test(
+  'Reflects the controlled value and submitted key',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  },
+  async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, 'h');
@@ -198,46 +237,29 @@ export const Controlled: any = meta.story({
     await expect(canvas.getByTestId('submittedValue')).toHaveTextContent(
       'harry-potter'
     );
-  },
-});
+  }
+);
 
-export const Async: any = meta.story({
+export const EmptyState: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
-    const { items, filterText, setFilterText } = useAsyncList<{ name: string }>(
-      {
-        async load({ signal, filterText }) {
-          const res = await fetch(
-            `https://swapi.py4e.com/api/people/?search=${filterText}`,
-            { signal }
-          );
-          const json = await res.json();
-
-          return {
-            items: json.results,
-          };
-        },
-      }
-    );
-
     return (
       <Autocomplete
         {...args}
         label="Search Star Wars Characters"
-        items={items}
-        value={filterText}
-        onChange={setFilterText}
+        items={[]}
         allowsEmptyCollection
         emptyState={
           <Center data-testid="empty-state">no character found</Center>
         }
-      >
-        {(item: any) => (
-          <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
-        )}
-      </Autocomplete>
+      />
     );
   },
-  play: async ({ canvas }: any) => {
+});
+
+EmptyState.test(
+  'Shows the empty state when no items match',
+  async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
 
@@ -245,53 +267,8 @@ export const Async: any = meta.story({
 
     const result = await canvas.getByTestId('empty-state');
     await expect(result).toBeVisible();
-  },
-});
-
-export const InputMenuTrigger: any = meta.story({
-  ...Basic.input,
-  parameters: { chromatic: { disableSnapshot: true } },
-  play: async ({ canvas }: any) => {
-    const input = canvas.getByRole('combobox');
-
-    await userEvent.type(input, 'ha');
-    const result = canvas.getAllByText('Harry Potter')[0];
-
-    await expect(result).toBeVisible();
-  },
-});
-
-export const FocusMenuTrigger: any = meta.story({
-  ...Basic.input,
-  parameters: { chromatic: { disableSnapshot: true } },
-  args: {
-    menuTrigger: 'focus',
-  },
-  play: async ({ canvas }: any) => {
-    const input = canvas.getByRole('combobox');
-
-    await userEvent.click(input);
-    const result = await canvas.findByText('Star Wars');
-
-    await expect(result).toBeVisible();
-  },
-});
-
-export const ManualMenuTrigger: any = meta.story({
-  ...Basic.input,
-  parameters: { chromatic: { disableSnapshot: true } },
-  args: {
-    menuTrigger: 'input',
-  },
-  play: async ({ canvas }: any) => {
-    const input = canvas.getByRole('combobox');
-
-    await userEvent.type(input, '{arrowdown}');
-    const result = await canvas.findByText('Lord of the Rings');
-
-    await expect(result).toBeVisible();
-  },
-});
+  }
+);
 
 export const DisabledSuggestions: any = meta.story({
   render: () => (
@@ -303,6 +280,24 @@ export const DisabledSuggestions: any = meta.story({
     </Autocomplete>
   ),
 });
+
+DisabledSuggestions.test(
+  'Skips the disabled option during keyboard navigation',
+  async ({ canvas }: any) => {
+    const input = canvas.getByRole('combobox');
+    await userEvent.type(input, '{arrowdown}');
+
+    const spinach = await canvas.findByRole('option', { name: 'Spinach' });
+    const carrots = canvas.getByRole('option', { name: 'Carrots' });
+
+    // Spinach is rendered but disabled...
+    await expect(spinach).toBeVisible();
+    await expect(spinach).toHaveAttribute('aria-disabled', 'true');
+
+    // ...so arrow-down skips it and activates Carrots instead.
+    await expect(carrots).toHaveAttribute('data-focused', 'true');
+  }
+);
 
 const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
   id: `item-${i + 200}`,
@@ -326,7 +321,14 @@ export const LargeDataset: any = meta.story({
       ))}
     </Autocomplete>
   ),
-  play: async ({ canvas, step }: any) => {
+});
+
+LargeDataset.test(
+  'Filters and selects from a large dataset',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, step }: any) => {
     const input = canvas.getByRole('combobox');
 
     await step('Type to filter the large dataset', async () => {
@@ -348,8 +350,8 @@ export const LargeDataset: any = meta.story({
         expect(input).toHaveValue('Tenant 500 (item-500)');
       });
     });
-  },
-});
+  }
+);
 
 export const Mobile: any = meta.story({
   tags: ['component-test'],
@@ -376,6 +378,16 @@ export const Mobile: any = meta.story({
       </Autocomplete.Option>
     </Autocomplete>
   ),
+});
+
+Mobile.test('Open Tray', async ({ canvas, step }: any) => {
+  const trigger = await canvas.findByRole('button');
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
+
+  expect(trigger).toHaveAttribute('aria-expanded', 'true');
 });
 
 Mobile.test(

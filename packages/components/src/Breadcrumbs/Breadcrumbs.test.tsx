@@ -4,12 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { vi } from 'vitest';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import {
-  AutoCollapse,
-  Basic,
-  Collapsed,
-  ManyItems,
-} from './Breadcrumbs.stories';
+import { AutoCollapse, Basic } from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 import { useAutoCollapse } from './useAutoCollapse';
 
@@ -34,33 +29,28 @@ test('renders items as links with separators', () => {
 });
 
 test('hides middle items behind ellipsis when collapsed', () => {
-  renderWithOverlay(<Collapsed.Component />);
+  renderWithOverlay(<Basic.Component maxVisibleItems={2} />);
 
-  expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Breadcrumb3' })).toBeInTheDocument();
   expect(
     screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
   ).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb2' })).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument();
   expect(
     screen.queryByRole('link', { name: 'Breadcrumb1' })
-  ).not.toBeInTheDocument();
-  expect(
-    screen.queryByRole('link', { name: 'Breadcrumb2' })
   ).not.toBeInTheDocument();
 });
 
 test('reveals hidden items as menu items on ellipsis click', async () => {
-  renderWithOverlay(<Collapsed.Component />);
+  renderWithOverlay(<Basic.Component maxVisibleItems={2} />);
 
   await user.click(
     screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
   );
 
+  expect(screen.getByRole('menuitem', { name: 'Home' })).toBeInTheDocument();
   expect(
     screen.getByRole('menuitem', { name: 'Breadcrumb1' })
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole('menuitem', { name: 'Breadcrumb2' })
   ).toBeInTheDocument();
 });
 
@@ -78,17 +68,14 @@ test('shows all items when maxVisibleItems is auto and space allows', () => {
 });
 
 test('shows only ellipsis and current item when collapsed to minimum', () => {
-  renderWithOverlay(<ManyItems.Component />);
+  renderWithOverlay(<Basic.Component maxVisibleItems={2} />);
 
-  expect(
-    screen.getByRole('link', { name: 'Breadcrumb 30' })
-  ).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb2' })).toBeInTheDocument();
   expect(
     screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
   ).toBeInTheDocument();
-  expect(
-    screen.queryByRole('link', { name: 'Breadcrumb 1' })
-  ).not.toBeInTheDocument();
+  // only the current item stays as a link; the rest sit behind the ellipsis
+  expect(screen.getAllByRole('link')).toHaveLength(1);
 });
 
 test('does not collapse when items fit within visible limit', () => {
