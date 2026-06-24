@@ -334,6 +334,11 @@ export type { ToggleButtonProps } from './ToggleButton/ToggleButton';
 export { ToggleButtonGroup } from './ToggleButton/ToggleButtonGroup';
 export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
 
+export { Toolbar } from './Toolbar/Toolbar';
+export type { ToolbarProps } from './Toolbar/Toolbar';
+export type { ToolbarGroupProps } from './Toolbar/ToolbarGroup';
+export type { ToolbarSeparatorProps } from './Toolbar/ToolbarSeparator';
+
 export { SegmentedControl } from './SegmentedControl/SegmentedControl';
 export type { SegmentedControlProps } from './SegmentedControl/SegmentedControl';
 

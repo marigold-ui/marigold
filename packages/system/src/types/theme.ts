@@ -57,6 +57,11 @@ export type Theme = {
     >;
     Badge?: ComponentStyleFunction<string, string>;
 
+    Toolbar?: Record<
+      'container' | 'group' | 'separator',
+      ComponentStyleFunction<string, string>
+    >;
+
     Breadcrumbs?: Record<
       'container' | 'item' | 'link' | 'current',
       ComponentStyleFunction<string, string>
