@@ -6,7 +6,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
     base: [
       'ui-button-base',
       'text-sm hover:ui-state-hover-ghost',
-      'h-9 py-2 gap-1 px-2.5',
+      'h-control py-2 gap-1 px-2.5',
       /**
        * Removes the spacing from the button when when there are hidden
        * elements (e.g. the hidden elements for accessibility).
@@ -17,7 +17,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   pageButton: cva({
     base: [
       'ui-button-base',
-      'text-sm bg-transparent size-9',
+      'text-sm bg-transparent size-control',
       'data-[selected=true]:ui-surface data-[selected=true]:shadow-elevation-border',
     ],
   }),

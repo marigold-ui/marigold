@@ -36,9 +36,6 @@ export const browserDeps = [
   // pre-bundling, the unit-tests project discovers it at runtime and
   // re-optimizes mid-run, cascading "error loading dynamically imported module".
   'react-aria-components/I18nProvider',
-  // Virtualizer deps (reference process.env in source)
-  '@react-aria/virtualizer',
-  '@react-stately/layout',
   // Test setup (extends expect at module load time)
   '@testing-library/jest-dom/vitest',
 ];
