@@ -69,9 +69,10 @@ export interface SegmentedControlProps extends Omit<
    */
   readOnly?: boolean;
   /**
-   * Control the width of the field box. The segments fill that width and scroll
-   * horizontally when they overflow; use `"full"` to additionally stretch the
-   * segments so they divide the width equally.
+   * Control the width of the field box. By default the control is sized to its
+   * content and scrolls horizontally once the segments outgrow that box; use
+   * `"full"` to fill the box and stretch the segments so they divide the width
+   * equally.
    */
   width?: WidthProp['width'];
   children?: ReactNode;
@@ -99,11 +100,12 @@ function SegmentedControlBase({
     size,
   });
 
-  // The track always fills the available width (its field box) and scrolls
-  // horizontally when the segments overflow — so the control adjusts to its
-  // parent instead of forcing the parent to grow. `width="full"` additionally
-  // stretches the segments so they divide that width equally; otherwise they
-  // keep their natural size and are left-aligned.
+  // The track is sized to its content (`w-fit`) and only grows as wide as its
+  // field box (`max-w-full`), scrolling horizontally when the segments overflow
+  // that cap — so it stays as compact as its options and never forces the
+  // parent to grow. `width="full"` is the opt-in exception: it fills the field
+  // box (`flex w-full`) and stretches the segments so they divide that width
+  // equally.
   const stretch = width === 'full';
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -169,7 +171,13 @@ function SegmentedControlBase({
       size={size}
       {...props}
     >
-      <div role="presentation" className={cn(classNames.group, 'flex w-full')}>
+      <div
+        role="presentation"
+        className={cn(
+          classNames.group,
+          stretch ? 'flex w-full' : 'inline-flex w-fit max-w-full'
+        )}
+      >
         <div ref={attachScrollContainer} className={classNames.list}>
           <SegmentedControlContext value={{ variant, size, stretch }}>
             {children}
