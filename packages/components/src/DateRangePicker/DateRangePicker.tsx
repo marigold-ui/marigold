@@ -94,8 +94,9 @@ export interface DateRangePickerProps
    * Numeric/scale values are spacing-scale tokens, not pixels: `width={64}`
    * resolves to `calc(var(--spacing) * 64)` ~= 16rem (256px), not 64px.
    *
-   * Defaults to `'fit'` so the field hugs its content (two dates plus the
-   * separator and calendar button) rather than filling the available width.
+   * When unset, the field hugs its content (`'fit'`) on larger screens and
+   * fills the available space (`'full'`) on small screens, where two dates plus
+   * the separator and calendar button would otherwise be too cramped to fit.
    * @default 'fit'
    */
   width?: WidthProp['width'];
@@ -113,9 +114,7 @@ const DateRangePickerBase = ({
   granularity = 'day',
   visibleDuration,
   pageBehavior,
-  // Default to a content-fitting width (two dates + separator + button)
-  // instead of the field's usual full width.
-  width = 'fit',
+  width,
   onChange,
   ref,
   ...rest
@@ -141,12 +140,17 @@ const DateRangePickerBase = ({
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
+  // Hug the content on larger screens, but fill the available space on small
+  // screens so the two inputs, separator and button are not cramped or clipped.
+  // Leaving the width unset lets `FieldBase` fall back to its full-width layout.
+  const resolvedWidth = width ?? (isSmallScreen ? undefined : 'fit');
+
   return (
     <FieldBase
       as={DateRangePicker}
       variant={variant}
       size={size}
-      width={width}
+      width={resolvedWidth}
       {...props}
       ref={ref}
     >
@@ -216,7 +220,10 @@ const DateRangeInput = ({ action }: DateRangeInputProps) => {
     <Group
       className={cn(
         classNames.field,
-        'w-(--field-width) max-w-full min-w-0 overflow-hidden'
+        // `min-w-fit` keeps the field at least as wide as its content (two
+        // inputs, separator and button) so it never crushes them together on
+        // narrow screens. It needs more room than fits at e.g. 320px.
+        'w-(--field-width) max-w-full min-w-fit overflow-hidden'
       )}
     >
       <div className="flex min-w-0 flex-1 items-center">
