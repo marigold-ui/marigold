@@ -1,11 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  Basic,
-  ComplexSingleSelect,
-  IconPositionLeft,
-  StickyHeader,
-} from './Accordion.stories';
+import { Basic, IconPositionLeft, StickyHeader } from './Accordion.stories';
 
 const user = userEvent.setup();
 
@@ -42,15 +37,15 @@ test('item opens content by click', async () => {
 });
 
 test('render dynamically accordion items', async () => {
-  render(<ComplexSingleSelect.Component />);
+  render(<Basic.Component />);
 
   const button = screen.queryAllByRole('button');
 
-  expect(button[0]).toHaveAttribute('aria-expanded', 'false');
+  expect(button[1]).toHaveAttribute('aria-expanded', 'false');
 
-  await user.click(button[0]);
+  await user.click(button[1]);
 
-  expect(button[0]).toHaveAttribute('aria-expanded', 'true');
+  expect(button[1]).toHaveAttribute('aria-expanded', 'true');
 });
 
 test('support default expanded keys', () => {
