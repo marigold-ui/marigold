@@ -61,27 +61,27 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       'cursor-pointer outline-none transition-[color]',
       // Text is muted by default and turns to the foreground color on selection.
       'text-secondary selected:text-foreground',
-      // Keyboard focus ring is defined per variant (below) so it can hug each
-      // variant's indicator: the `default` thumb is inset 2px, so its ring is
-      // inset to match; the `ghost` indicator fills the cell, so its ring sits
-      // flush (the shared `ui-state-focus` helper). RAC RadioButton exposes the
-      // focus state via [data-rac][data-focus-visible].
+      // Keyboard focus ring mirrors `ui-state-focus` (outline-3, ring/50) but is
+      // inset 2px (`-outline-offset-2`) for both variants. Inset is what lets it
+      // hug the `default` thumb (which sits 2px inside the cell) instead of
+      // leaving a gap, and — because the inset ring stays inside the cell rather
+      // than drawing outward past it — it is not clipped at the track edges by
+      // the scroll container on the first/last segment (which a flush ring was,
+      // in the `ghost` variant). RAC RadioButton exposes the focus state via
+      // [data-rac][data-focus-visible].
+      'focus-visible:outline-3 focus-visible:outline-solid focus-visible:outline-ring/50 focus-visible:-outline-offset-2',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
     variants: {
       variant: {
         // Hover only brightens the label to the foreground color; the raised
         // ui-surface indicator already provides the background affordance, so
-        // no extra hover background (keeps bg flips out of the picture). The
-        // focus ring mirrors `ui-state-focus` (outline-3, ring/50) but is inset
-        // 2px so it hugs the raised thumb instead of leaving a gap around it.
-        default:
-          'not-selected:hover:text-foreground focus-visible:outline-3 focus-visible:outline-solid focus-visible:outline-ring/50 focus-visible:-outline-offset-2',
+        // no extra hover background (keeps bg flips out of the picture).
+        default: 'not-selected:hover:text-foreground',
         // Track-less: hover is a translucent overlay (shared helper), applied
         // on the selected item too so it stays covered while the indicator
-        // slides in — no uncovered gap/flicker (matches Tabs). The indicator
-        // fills the cell, so the ring sits flush (shared focus helper).
-        ghost: 'hover:ui-state-hover-ghost focus-visible:ui-state-focus',
+        // slides in — no uncovered gap/flicker (matches Tabs).
+        ghost: 'hover:ui-state-hover-ghost',
       },
       size: {
         default: 'h-control px-3 [&_svg]:size-4',
