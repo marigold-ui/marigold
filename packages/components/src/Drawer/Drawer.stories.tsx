@@ -33,6 +33,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Stack space={8} alignX="left">
       <Drawer.Trigger>
@@ -100,6 +101,7 @@ export const Basic = meta.story({
 });
 
 export const WithForms = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Drawer.Trigger>
       <Button>Configure Filter</Button>

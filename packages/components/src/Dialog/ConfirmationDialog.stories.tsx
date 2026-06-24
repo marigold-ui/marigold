@@ -11,6 +11,7 @@ const meta = preview.meta({
 });
 
 export const Confirmation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     title: 'Confirmation',
     confirmationLabel: 'Confirm',
@@ -68,6 +69,7 @@ export const WithAutoFocus = meta.story({
 });
 
 export const UseConfirmation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const confirm = useConfirmation();

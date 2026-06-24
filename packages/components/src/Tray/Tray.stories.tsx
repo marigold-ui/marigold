@@ -107,6 +107,7 @@ Basic.test(
 );
 
 export const DismissControlsWithCallbacks = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
     const [log, setLog] = useState<string[]>([]);

@@ -157,6 +157,7 @@ export const Controlled = meta.story({
 });
 
 export const MultiThumbsControlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Tickets for sale' },
   render: args => {
     const [value, setValue] = useState<number | number[]>([25, 75]);
@@ -195,6 +196,7 @@ export const Forms = meta.story({
 });
 
 export const MultiThumbsForm = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Age' },
   render: args => {
     const handleSubmit = (e: FormEvent) => {

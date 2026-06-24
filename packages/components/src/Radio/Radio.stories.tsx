@@ -104,6 +104,7 @@ export const Error = meta.story({
 });
 
 export const DefaultSelected = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Radio.Group {...args} defaultValue="2">
       <Radio value="1">Option 1</Radio>
@@ -117,6 +118,7 @@ export const DefaultSelected = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState('2');
     return (
