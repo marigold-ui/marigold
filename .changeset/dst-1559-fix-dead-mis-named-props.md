@@ -1,5 +1,5 @@
 ---
-'@marigold/components': patch
+'@marigold/components': major
 ---
 
 fix(DST-1559): remove dead and mis-named props from `TextField`, `FileTrigger`, and `Loader`.
