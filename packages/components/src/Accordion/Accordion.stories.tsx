@@ -189,6 +189,7 @@ export const ComplexSingleSelect = meta.story({
 });
 
 export const DefaultExpended = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">

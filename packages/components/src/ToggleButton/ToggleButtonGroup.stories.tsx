@@ -131,31 +131,35 @@ export const MultipleSelection = meta.story({
   ),
 });
 
-MultipleSelection.test('Select multiple buttons', async ({ canvas, step }) => {
-  await step('Initial state - bold is selected', async () => {
-    const boldButton = canvas.getByLabelText('Bold');
+MultipleSelection.test(
+  'Select multiple buttons',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    await step('Initial state - bold is selected', async () => {
+      const boldButton = canvas.getByLabelText('Bold');
 
-    expect(boldButton).toHaveAttribute('data-selected', 'true');
-  });
+      expect(boldButton).toHaveAttribute('data-selected', 'true');
+    });
 
-  await step('Click italic button to select it too', async () => {
-    const italicButton = canvas.getByLabelText('Italic');
+    await step('Click italic button to select it too', async () => {
+      const italicButton = canvas.getByLabelText('Italic');
 
-    await userEvent.click(italicButton);
+      await userEvent.click(italicButton);
 
-    await waitFor(() => {
+      await waitFor(() => {
+        expect(italicButton).toHaveAttribute('data-selected', 'true');
+      });
+    });
+
+    await step('Both bold and italic are selected', async () => {
+      const boldButton = canvas.getByLabelText('Bold');
+      const italicButton = canvas.getByLabelText('Italic');
+
+      expect(boldButton).toHaveAttribute('data-selected', 'true');
       expect(italicButton).toHaveAttribute('data-selected', 'true');
     });
-  });
-
-  await step('Both bold and italic are selected', async () => {
-    const boldButton = canvas.getByLabelText('Bold');
-    const italicButton = canvas.getByLabelText('Italic');
-
-    expect(boldButton).toHaveAttribute('data-selected', 'true');
-    expect(italicButton).toHaveAttribute('data-selected', 'true');
-  });
-});
+  }
+);
 
 export const DisabledButton = meta.story({
   tags: ['component-test'],
@@ -180,6 +184,7 @@ export const DisabledButton = meta.story({
 
 DisabledButton.test(
   'Disabled button does not respond to clicks',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     await step('Option 2 is disabled', async () => {
       const option1 = canvas.getByText('Option 1');

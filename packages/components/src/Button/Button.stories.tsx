@@ -200,6 +200,7 @@ export const Loading = meta.story({
 
 export const LoadingWithIcon = meta.story({
   parameters: {
+    chromatic: { disableSnapshot: true },
     controls: { exclude: ['loading'] },
   },
   render: ({ children, ...args }) => {

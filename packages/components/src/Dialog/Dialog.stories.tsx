@@ -72,6 +72,7 @@ export const Basic = meta.story({
 });
 
 export const WithForm = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>

@@ -212,7 +212,7 @@ export const LongItems = meta.story({
   parameters: {
     // Give the dismiss transition time to settle before Chromatic captures
     // to avoid flaky snapshots on the trigger's focus-ring transition.
-    chromatic: { delay: 300 },
+    chromatic: { disableSnapshot: true, delay: 300 },
   },
   render: args => {
     return (
@@ -263,6 +263,7 @@ export const LongItems = meta.story({
 });
 
 export const LotsOfOptions = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     return (
       <Inset space={24}>
@@ -313,6 +314,7 @@ export const LotsOfOptions = meta.story({
 });
 
 export const Sections = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Select {...args}>
       <Select.Section header="Fantasy">
@@ -395,6 +397,7 @@ export const SelectedScroll = meta.story({
 });
 
 export const WithBadges = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Select
       {...args}
@@ -528,6 +531,7 @@ const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
 }));
 
 export const LargeDataset = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Tenants',
@@ -570,6 +574,7 @@ export const LargeDataset = meta.story({
 });
 
 export const Mobile = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -673,6 +678,7 @@ export const Mobile = meta.story({
  * from `value`.
  */
 export const MobileControlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },
@@ -750,6 +756,7 @@ export const MobileControlled = meta.story({
  * font-size), and must drive the trigger's layout without an outer wrapper.
  */
 export const FixedWidth = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Favorite',

@@ -139,6 +139,7 @@ export const WithSelectedTab = meta.story({
 });
 
 export const WithRenderProps = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => {
     return (

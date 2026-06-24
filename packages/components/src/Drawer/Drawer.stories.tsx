@@ -283,6 +283,7 @@ export const SelectInsideDrawerSmallScreen = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {

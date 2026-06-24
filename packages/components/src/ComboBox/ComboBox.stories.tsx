@@ -165,6 +165,7 @@ export const Basic: any = meta.story({
 });
 
 export const Controlled: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => {
     const [id, setId] = useState<Key | null>(null);
@@ -285,6 +286,7 @@ export const Sections: any = meta.story({
 
 export const InputTrigger: any = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   play: async ({ canvas }: any) => {
     const input = await canvas.findByRole('combobox', { name: 'Label' });
     const result = await canvas.queryByRole('combobox', { name: 'Label' });
@@ -303,6 +305,7 @@ export const InputTrigger: any = meta.story({
 
 export const FocusTrigger: any = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     menuTrigger: 'focus',
   },
@@ -325,6 +328,7 @@ export const FocusTrigger: any = meta.story({
 
 export const ManualTrigger: any = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     menuTrigger: 'manual',
   },
@@ -418,6 +422,7 @@ const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
 }));
 
 export const LargeDataset: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Tenants',

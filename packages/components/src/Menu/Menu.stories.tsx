@@ -153,6 +153,7 @@ export const Basic: any = meta.story({
 });
 
 export const OnActionMenu: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => {
     return (

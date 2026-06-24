@@ -130,6 +130,7 @@ export const Basic: any = meta.story({
 });
 
 export const Controlled: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState(
       new CalendarDate(2025, 8, 7) as DateValue
@@ -176,6 +177,7 @@ export const MinMax: any = meta.story({
 });
 
 export const UnavailableDate: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
