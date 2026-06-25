@@ -102,7 +102,7 @@
    * the darkest step so it stays on-palette. NOT for dividers/decoration on a
    * known surface — those use the opaque `--color-border` above.
    */
-  --color-border-surface: oklch(from var(--color-charcoal-950) l c h / 0.12);
+  --color-border-surface: oklch(from var(--color-charcoal-950) l c h / 0.1);
 
   /* --- Status: Destructive --- */
   --color-destructive: var(--color-red-100);
