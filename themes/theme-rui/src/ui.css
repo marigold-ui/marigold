@@ -19,9 +19,8 @@
   @apply px-3 py-2;
   @apply text-foreground placeholder:text-placeholder text-sm;
   /* A form field needs a clearly visible boundary, so its ui-surface ring uses
-     the opaque `border` (the same control-boundary color as Checkbox/Radio)
-     instead of the lighter decorative surface hairline. Focus (--color-ring)
-     and error (--color-destructive-accent) still override this per state. */
+     the opaque `border` (matching Checkbox/Radio). Focus and error still
+     override the ring color per state. */
   --ui-border-color: var(--color-border);
 }
 
@@ -49,61 +48,49 @@
 }
 
 /*
- * Use for interactive UI elements like inputs, selects, and cards. Anything that
- * sits on the page background and needs a clear visual boundary.
+ * Interactive surfaces that sit on the page background and need a clear
+ * boundary: inputs, selects, cards, panels.
  *
- * The boundary is a 1px translucent *outset* `ring` (Tailwind routes it through
- * `--tw-ring-shadow`, so it composes into the same `box-shadow` chain as
- * `shadow-elevation-*` without clobbering them). Two deliberate choices:
+ * The boundary is a 1px outset `ring` routed through `--tw-ring-shadow`, so it
+ * composes into the same `box-shadow` chain as `shadow-elevation-*`. Outset (not
+ * inset) so it paints above child content — a child that bleeds edge-to-edge
+ * (e.g. a Table in `Panel.Content bleed`) cannot cover it. Resting color is the
+ * translucent `--color-surface-border` hairline; state overrides via
+ * `--ui-border-color` (focus, error) are opaque.
  *
- *   - Translucent (`--color-border-surface`): the hairline composites over the
- *     ground the surface sits on, so its contrast stays consistent on white,
- *     the page background, or a tinted panel — a fixed color cannot. State
- *     overrides via `--ui-border-color` (focus, error) are opaque on purpose.
- *   - Outset (not inset): the ring sits just outside the box, so it is painted
- *     above any child content — a child that bleeds edge-to-edge (e.g. a Table
- *     in a `Panel.Content bleed`) cannot cover it, which an inset ring would.
- *
- * `background` is a plain fill (no `background-clip` trickery) and is
- * intentionally excluded from the transition list: hover/state bg flips should
- * feel instant on high-frequency interactions (see DST-1436).
+ * `background` is excluded from the transition so hover/state bg flips feel
+ * instant on high-frequency interactions (DST-1436).
  */
 @utility ui-surface {
   @apply rounded-surface relative transition-[box-shadow];
   background: var(--ui-background-color, var(--color-surface));
-  @apply ring-1 ring-[var(--ui-border-color,var(--color-border-surface))];
+  @apply ring-1 ring-[var(--ui-border-color,var(--color-surface-border))];
 }
 
 /*
- * Use when the surface must stand out against the page. Toolbars, action bars,
- * or anything that uses the primary color to signal prominence.
+ * Prominent dark surface (primary color): primary buttons, toolbars, action
+ * bars. Mirrors ui-surface — a 1px ring plus the fill — but inverted in value:
+ * the edge is a darker shade of the fill (a crisp dark hairline, no light rim)
+ * and the light is a soft glow pooled at the top of the face that fades before
+ * it reaches the edges.
  *
- * `background` is intentionally excluded from the transition list: hover/state
- * bg flips should feel instant on high-frequency interactions (see DST-1436).
+ * `background` is excluded from the transition so hover/state bg flips feel
+ * instant on high-frequency interactions (DST-1436).
  */
 @utility ui-surface-contrast {
-  @apply rounded-surface relative transition-[border,box-shadow];
+  @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
-  @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-primary)_calc(l+0.4)_c_h))];
+  @apply ring-1 ring-[oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_0.08)_c_h)];
 
   /* prettier-ignore */
   background:
-      radial-gradient(ellipse 120% 60% at 50% -25%, var(--ui-highlight-color, oklch(from var(--color-primary) calc(l + 0.4) c h)), transparent 90%),
+      radial-gradient(ellipse 72% 70% at 50% -12%, var(--ui-highlight-color, oklch(from var(--color-primary) calc(l + 0.26) c h / 0.95)), transparent 72%),
       linear-gradient(
         to bottom,
-        var(--ui-background-color, var(--color-primary)),
-        var(--ui-background-color, var(--color-primary))
-      ),
-      linear-gradient(
-        to bottom,
-        oklch(from var(--ui-border-color, var(--color-primary)) calc(l + 0.2) c h),
-        oklch(from var(--ui-border-color, var(--color-primary)) calc(l + 0.15) c h)
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l + 0.03) c h),
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l - 0.015) c h)
       );
-
-  background-clip: padding-box, padding-box, border-box;
-  background-origin: padding-box, padding-box, border-box;
-  border: 1px solid transparent;
 }
 
 /* ========================= */
@@ -123,10 +110,9 @@
 * Applies a consistent visual style for invalid elements.
 */
 @utility ui-state-error {
-  /* Recolors the ui-surface ring via --ui-border-color (opaque, so an invalid
-     field reads clearly, not as a faint translucent hairline). The focus:
-     re-assert keeps a focused-invalid field destructive instead of letting
-     ui-state-focus recolor the ring to --color-ring. */
+  /* Recolors the ui-surface ring via --ui-border-color. The focus: re-assert
+     keeps a focused-invalid field destructive instead of letting ui-state-focus
+     recolor the ring to --color-ring. */
   --ui-border-color: var(--color-destructive-accent);
   @apply shadow-destructive-accent/20;
   @apply focus:outline-destructive-accent/20 focus:[--ui-border-color:var(--color-destructive-accent)];

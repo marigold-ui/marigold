@@ -476,7 +476,7 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
         'Opaque lines on a known surface: dividers, table row and grid lines, and form-control boundaries (Input, Select, TextArea, Checkbox, Radio, …)',
     },
     {
-      name: 'border-surface',
+      name: 'surface-border',
       value: 'charcoal-950 / 10%',
       useFor:
         'The decorative edge of a raised surface, applied via the ui-surface utility (Card, Panel, Dialog, Menu, secondary Button, …)',
@@ -495,7 +495,7 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
   (grid-cell borders, stacked dividers), where translucent strokes would
   double-darken at every crossing, _and_ form-control boundaries — an input or
   checkbox edge is an affordance the user must clearly see (WCAG 1.4.11 non-text
-  contrast), so it wants the heavier opaque line. `border-surface` is
+  contrast), so it wants the heavier opaque line. `surface-border` is
   **translucent** and purely decorative: the edge of a raised surface (Card,
   Panel, Dialog, Menu). Being translucent, it composites over whatever ground it
   sits on — staying consistent on white, the page background, or a tinted panel,

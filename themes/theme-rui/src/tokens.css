@@ -93,19 +93,6 @@
   --color-border: var(--color-charcoal-300);
   --color-ring: var(--color-charcoal-600);
 
-  /*
-   * Hairline for the edge of a raised surface (ui-surface). Translucent on
-   * purpose: drawn as an outset ring, it composites over whatever ground the
-   * surface sits on, so the edge keeps a consistent contrast on white, the
-   * page background, or a tinted panel — instead of a fixed gray that reads
-   * heavy on white and washes out on gray. Built on the charcoal hue (54) via
-   * the darkest step so it stays on-palette. Decorative only: dividers, lines
-   * that overlap, and form-control boundaries all use the opaque
-   * `--color-border` above (an input edge is an affordance the user must clearly
-   * see, so it needs the heavier opaque line, like Checkbox/Radio already use).
-   */
-  --color-border-surface: oklch(from var(--color-charcoal-950) l c h / 0.1);
-
   /* --- Status: Destructive --- */
   --color-destructive: var(--color-red-100);
   --color-destructive-foreground: var(--color-red-950);
@@ -151,6 +138,14 @@
   /*        SURFACE       */
   /* ==================== */
   --color-surface: var(--color-white);
+
+  /* Decorative hairline at the edge of a raised surface (the ui-surface ring).
+     Translucent so it composites over whatever ground the surface sits on,
+     keeping consistent contrast on white, the page background, or a tinted
+     panel. Decorative only — dividers, overlapping lines, and form-control
+     boundaries use the opaque --color-border. */
+  --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
+
   --radius-surface: var(--radius-lg);
 
   /* ==================== */
@@ -162,12 +157,10 @@
       raised:  container surfaces (Card, Accordion)
       overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
 
-    The ui-surface ring owns the crisp edge, so these carry only lift. Tuned
-    "crisp": tight offsets + negative spread keep each shadow contained inside
-    its own footprint, so a dense field of elevated elements stays calm instead
-    of bleeding into a haze. Light from above (positive y, no x), low contact
-    alpha, and a warm charcoal-hued tint (instead of pure black) so the lift
-    sits into the warm-neutral ground rather than punching against it.
+    The ui-surface ring owns the crisp edge, so these carry only lift. Tight
+    offsets + negative spread keep each shadow contained in its own footprint,
+    so a dense field of elevated elements stays calm. Light from above (positive
+    y, no x), low contact alpha, warm charcoal-hued tint.
   */
   --shadow-elevation-border:
     0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
