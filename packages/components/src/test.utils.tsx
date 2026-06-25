@@ -46,9 +46,6 @@ export const renderWithOverlay = (ui: ReactNode): RenderResult => {
   return render(ui as ReactElement);
 };
 
-export const makeFile = (name: string, type: string, size = 1024) =>
-  new File([new Uint8Array(size)], name, { type });
-
 /**
  * Mock `matchMedia` for jsdom which does not implement it.
  * Returns a mock that supports the `addEventListener`/`removeEventListener`
