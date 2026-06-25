@@ -93,6 +93,9 @@ export type { DateFieldProps } from './DateField/DateField';
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
 
+export { DateRangePicker } from './DateRangePicker/DateRangePicker';
+export type { DateRangePickerProps } from './DateRangePicker/DateRangePicker';
+
 export { Description } from './Description/Description';
 export type { DescriptionProps } from './Description/Description';
 
