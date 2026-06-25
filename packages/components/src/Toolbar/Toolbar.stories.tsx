@@ -177,3 +177,54 @@ export const Overflow = meta.story({
     await expect(stillVisible.length).toBeLessThan(OVERFLOW_ACTIONS.length);
   },
 });
+
+const PINNED_FREE_ACTIONS = ['New', 'Edit', 'Copy', 'Move', 'Delete'];
+
+// A toolbar that is only collapsible buttons (no pinned controls). The overflow
+// maths has a separate path when there is nothing pinned to reserve room for,
+// so this exercises that branch end to end.
+export const OverflowWithoutPinned = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <div
+      style={{
+        width: 240,
+        minWidth: 160,
+        maxWidth: '100%',
+        resize: 'horizontal',
+        overflow: 'auto',
+        padding: 8,
+        border: '1px dashed var(--color-border, #ccc)',
+        borderRadius: 8,
+      }}
+    >
+      <Toolbar aria-label="Row actions">
+        {PINNED_FREE_ACTIONS.map(label => (
+          <Button key={label}>{label}</Button>
+        ))}
+      </Toolbar>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const toolbar = canvas.getByRole('toolbar', { name: 'Row actions' });
+    const container = toolbar.closest('[style*="resize"]') as HTMLElement;
+
+    container.style.width = '760px';
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole('button', { name: 'More actions' })
+      ).not.toBeInTheDocument()
+    );
+
+    container.style.width = '220px';
+    await canvas.findByRole('button', { name: 'More actions' });
+    await waitFor(() =>
+      expect(toolbar.scrollWidth).toBeLessThanOrEqual(toolbar.clientWidth + 1)
+    );
+
+    const stillVisible = canvas
+      .getAllByRole('button')
+      .filter(button => PINNED_FREE_ACTIONS.includes(button.textContent ?? ''));
+    await expect(stillVisible.length).toBeLessThan(PINNED_FREE_ACTIONS.length);
+  },
+});

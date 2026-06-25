@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import type { RefObject } from 'react';
 import { vi } from 'vitest';
 import {
   Basic,
@@ -20,13 +21,34 @@ test('lays children out as a horizontal flex row', () => {
   render(<KeyboardNavigation.Component />);
 
   const toolbar = screen.getByRole('toolbar', { name: 'Item actions' });
+
   expect(toolbar).toHaveClass('flex', 'w-full', 'items-center');
+});
+
+test('forwards ref to the toolbar element', () => {
+  const ref: RefObject<HTMLDivElement | null> = { current: null };
+
+  render(<Basic.Component ref={ref} />);
+
+  expect(ref.current).toBe(screen.getByRole('toolbar'));
+});
+
+test('renders trailing buttons as visible actions, not collapsed', () => {
+  render(<Basic.Component />);
+
+  expect(
+    screen.getByRole('button', { name: 'All filters' })
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: 'More actions' })
+  ).not.toBeInTheDocument();
 });
 
 test('renders a vertical separator in the horizontal bar', () => {
   render(<Basic.Component />);
 
   const separator = screen.getByRole('separator');
+
   expect(separator).toBeInTheDocument();
   expect(separator).toHaveAttribute('aria-orientation', 'vertical');
 });
@@ -41,6 +63,14 @@ describe('Toolbar.Group', () => {
     expect(
       screen.getByRole('group', { name: 'Alignment' })
     ).toBeInTheDocument();
+  });
+
+  test('leaves nested buttons enabled when not disabled', () => {
+    render(<Groups.Component />);
+
+    for (const button of screen.getAllByRole('button')) {
+      expect(button).toBeEnabled();
+    }
   });
 
   test('cascades disabled to nested buttons', () => {
@@ -61,6 +91,19 @@ describe('accessible name warning', () => {
     expect(warn).toHaveBeenCalledWith(
       expect.stringContaining('<Toolbar> should have an `aria-label`')
     );
+
+    warn.mockRestore();
+  });
+
+  test('does not warn when an accessible name is provided', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(<Basic.Component />);
+
+    expect(warn).not.toHaveBeenCalledWith(
+      expect.stringContaining('<Toolbar> should have an `aria-label`')
+    );
+
     warn.mockRestore();
   });
 });
