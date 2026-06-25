@@ -5,7 +5,6 @@ import {
   Basic,
   GroupDisabled,
   Groups,
-  KeyboardNavigation,
   WithoutAccessibleName,
 } from './Toolbar.stories';
 
@@ -18,9 +17,9 @@ test('renders with role="toolbar" and an accessible name', () => {
 });
 
 test('lays children out as a horizontal flex row', () => {
-  render(<KeyboardNavigation.Component />);
+  render(<Basic.Component />);
 
-  const toolbar = screen.getByRole('toolbar', { name: 'Item actions' });
+  const toolbar = screen.getByRole('toolbar', { name: 'Event filters' });
 
   expect(toolbar).toHaveClass('flex', 'w-full', 'items-center');
 });

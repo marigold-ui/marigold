@@ -46,27 +46,17 @@ export const Basic = meta.story({
     const toolbar = canvas.getByRole('toolbar', { name: 'Event filters' });
     await expect(toolbar).toBeInTheDocument();
     await expect(canvas.getByRole('separator')).toBeInTheDocument();
-  },
-});
 
-export const KeyboardNavigation = meta.story({
-  tags: ['component-test'],
-  render: () => (
-    <Toolbar aria-label="Item actions">
-      <Button aria-label="Edit">Edit</Button>
-      <Button aria-label="Duplicate">Duplicate</Button>
-      <Button aria-label="Delete">Delete</Button>
-    </Toolbar>
-  ),
-  play: async ({ canvas }) => {
-    const [first, second, third] = canvas.getAllByRole('button');
-    first.focus();
+    const search = canvas.getByRole('searchbox');
+    const status = canvas.getByRole('button', { name: /Status/ });
+    const filters = canvas.getByRole('button', { name: 'All filters' });
 
-    // Single tab stop; arrow keys rove between controls.
+    // Single tab stop; arrow keys rove between controls, skipping separators.
+    search.focus();
     await userEvent.keyboard('{ArrowRight}');
-    await expect(second).toHaveFocus();
+    await expect(status).toHaveFocus();
     await userEvent.keyboard('{ArrowRight}');
-    await expect(third).toHaveFocus();
+    await expect(filters).toHaveFocus();
   },
 });
 
