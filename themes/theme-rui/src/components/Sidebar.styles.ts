@@ -1,5 +1,21 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
+/**
+ * Two navigation hierarchies share one structural base:
+ *
+ * - `lifted` (default): the nav sits on the tinted `background` (charcoal-100)
+ *   and the active row lifts to a white `surface` with the translucent
+ *   `border-surface` hairline ring + `elevation-border` shadow — the same
+ *   ui-surface recipe as Card/Panel. Hierarchy via depth. Hover darkens to
+ *   `hover` (charcoal-200) so it stays visible against the tinted ground.
+ * - `quiet`: almost no fills. Idle rows recede to a muted charcoal; the active
+ *   row steps up to full `foreground` + semibold with a hairline leading tick.
+ *   Hierarchy via weight and value — lowest visual noise.
+ *
+ * Shared refinements live in the base of each slot: tighter section labels
+ * (uppercase, smaller, looser tracking, quieter color) and roomier item
+ * padding/radius.
+ */
 export const Sidebar: ThemeComponent<'Sidebar'> = {
   overlay: cva({}),
   modal: cva({
@@ -39,9 +55,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'size-control [&_svg]:size-6',
     ],
   }),
-  separator: cva({ base: 'bg-border my-1 h-px border-0' }),
+  separator: cva({ base: 'bg-border my-1.5 h-px border-0' }),
   groupLabel: cva({
-    base: 'px-2 h-7.5 pt-3 pb-0.5 mb-1 text-xs font-medium text-secondary uppercase tracking-wider',
+    base: 'px-2.5 pt-4 pb-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-charcoal-500',
   }),
   navPanel: cva({
     base: [
@@ -67,20 +83,52 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   navLink: cva({
     base: [
-      'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
-      'text-foreground/80 hover:ui-state-hover transition-[color]',
-      'data-active:bg-selected data-active:text-foreground data-active:font-medium',
+      'flex items-center gap-2 w-full px-2.5 h-9 text-sm rounded-lg',
+      'transition-[color,background-color,box-shadow]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
     ],
+    variants: {
+      variant: {
+        // Depth: active lifts to a white surface with the ui-surface hairline.
+        lifted: [
+          'text-foreground/75',
+          'hover:ui-state-hover',
+          'data-active:bg-surface data-active:text-foreground data-active:font-medium',
+          'data-active:ring-1 data-active:ring-[var(--color-border-surface)]',
+          'data-active:shadow-elevation-border',
+        ],
+        // Weight: active is full foreground + semibold with a leading tick.
+        quiet: [
+          'relative text-charcoal-500',
+          'hover:text-foreground',
+          'data-active:text-foreground data-active:font-semibold',
+          'data-active:before:absolute data-active:before:left-0 data-active:before:top-1/2',
+          'data-active:before:h-4 data-active:before:w-0.5 data-active:before:-translate-y-1/2',
+          'data-active:before:rounded-full data-active:before:bg-foreground',
+        ],
+      },
+    },
+    defaultVariants: {
+      variant: 'lifted',
+    },
   }),
   backButton: cva({
     base: [
-      'flex items-center gap-2 w-full pl-0.5 pr-2 h-9 text-sm rounded-md',
-      'text-foreground/80 hover:ui-state-hover transition-[color]',
+      'flex items-center gap-2 w-full pl-0.5 pr-2 h-9 text-sm rounded-lg',
+      'transition-[color,background-color]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
       'cursor-pointer mb-1',
     ],
+    variants: {
+      variant: {
+        lifted: 'text-foreground/75 hover:ui-state-hover',
+        quiet: 'text-charcoal-500 hover:text-foreground',
+      },
+    },
+    defaultVariants: {
+      variant: 'lifted',
+    },
   }),
 };

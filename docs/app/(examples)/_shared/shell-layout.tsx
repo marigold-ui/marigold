@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft, LifeBuoy } from 'lucide-react';
+import { parseAsStringLiteral, useQueryState } from 'nuqs';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -10,6 +11,7 @@ import {
   Inline,
   LinkButton,
   RouterProvider,
+  SegmentedControl,
   Sidebar,
   Stack,
   Text,
@@ -18,6 +20,11 @@ import {
 import { Logo } from '@/ui/Logo';
 import type { NavNode, NavSection, ShellConfig } from './shell-types';
 import { UserMenu } from './user-menu';
+
+// Sidebar nav directions to compare. Switch live via the footer control or the
+// `?sidebar=` query param (e.g. `/examples?sidebar=quiet`).
+const SIDEBAR_VARIANTS = ['lifted', 'quiet'] as const;
+type SidebarVariant = (typeof SIDEBAR_VARIANTS)[number];
 
 type LeafItem = Extract<NavNode, { kind: 'Item'; slug: string }>;
 
@@ -118,77 +125,102 @@ export const ShellLayout = ({
   const pathname = usePathname();
   const router = useRouter();
 
+  const [variant, setVariant] = useQueryState(
+    'sidebar',
+    parseAsStringLiteral(SIDEBAR_VARIANTS).withDefault('lifted')
+  );
+
   const slug = pathname.replace(config.base, '').replace(/^\//, '');
   const { leaf, ancestors, trailing } = findActive(config.sections, slug);
   const leafHref = leaf?.slug ? `${config.base}/${leaf.slug}` : config.base;
 
   return (
     <RouterProvider navigate={href => router.push(href)}>
-      <AppShell defaultSidebarOpen>
-        <Sidebar>
-          <Sidebar.Header>
-            <Inline space="related" alignY="center" noWrap>
-              <Logo className="size-8 shrink-0" />
-              <Text weight="bold" fontSize="lg">
-                Examples
-              </Text>
-            </Inline>
-          </Sidebar.Header>
-          <Sidebar.Nav current={pathname}>
-            {config.sections.map((section, i) => [
-              ...(i > 0
-                ? [<Sidebar.Separator key={`sep-${section.label}`} />]
-                : []),
-              <Sidebar.GroupLabel key={`label-${section.label}`}>
-                {section.label}
-              </Sidebar.GroupLabel>,
-              ...renderNav(section.items, config.base),
-            ])}
-          </Sidebar.Nav>
-          <Sidebar.Footer>
-            <Stack space="related" alignX="left">
-              <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
-                <ArrowLeft />
-                {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
-              </LinkButton>
-              <LinkButton href="/getting-started/get-in-touch" variant="ghost">
-                <LifeBuoy />
-                Get in touch
-              </LinkButton>
-            </Stack>
-          </Sidebar.Footer>
-        </Sidebar>
-        <TopNavigation>
-          <TopNavigation.Start>
-            <Sidebar.Toggle />
-          </TopNavigation.Start>
-          <TopNavigation.Middle>
-            <Breadcrumbs>
-              <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
-              {ancestors.map(label => (
-                <Breadcrumbs.Item key={label} href="#">
-                  {label}
-                </Breadcrumbs.Item>
-              ))}
-              {leaf && (
-                // On a drill-in the leaf becomes a real link back to the list.
-                <Breadcrumbs.Item href={trailing.length ? leafHref : '#'}>
-                  {leaf.label}
-                </Breadcrumbs.Item>
-              )}
-              {trailing.map(segment => (
-                <Breadcrumbs.Item key={segment} href="#">
-                  {config.resolveLabel?.(segment) ?? segment}
-                </Breadcrumbs.Item>
-              ))}
-            </Breadcrumbs>
-          </TopNavigation.Middle>
-          <TopNavigation.End>
-            <UserSection />
-          </TopNavigation.End>
-        </TopNavigation>
-        {children}
-      </AppShell>
+      <Sidebar.Provider variant={variant} defaultOpen>
+        <AppShell>
+          <Sidebar>
+            <Sidebar.Header>
+              <Inline space="related" alignY="center" noWrap>
+                <Logo className="size-8 shrink-0" />
+                <Text weight="bold" fontSize="lg">
+                  Examples
+                </Text>
+              </Inline>
+            </Sidebar.Header>
+            <Sidebar.Nav current={pathname}>
+              {config.sections.map((section, i) => [
+                ...(i > 0
+                  ? [<Sidebar.Separator key={`sep-${section.label}`} />]
+                  : []),
+                <Sidebar.GroupLabel key={`label-${section.label}`}>
+                  {section.label}
+                </Sidebar.GroupLabel>,
+                ...renderNav(section.items, config.base),
+              ])}
+            </Sidebar.Nav>
+            <Sidebar.Footer>
+              <Stack space="group" alignX="left">
+                <Stack space="related" alignX="left">
+                  <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
+                    <ArrowLeft />
+                    {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
+                  </LinkButton>
+                  <LinkButton
+                    href="/getting-started/get-in-touch"
+                    variant="ghost"
+                  >
+                    <LifeBuoy />
+                    Get in touch
+                  </LinkButton>
+                </Stack>
+                <SegmentedControl
+                  aria-label="Sidebar navigation style"
+                  value={variant}
+                  onChange={value => setVariant(value as SidebarVariant)}
+                  width="full"
+                >
+                  <SegmentedControl.Option value="lifted">
+                    Lifted
+                  </SegmentedControl.Option>
+                  <SegmentedControl.Option value="quiet">
+                    Quiet
+                  </SegmentedControl.Option>
+                </SegmentedControl>
+              </Stack>
+            </Sidebar.Footer>
+          </Sidebar>
+          <TopNavigation>
+            <TopNavigation.Start>
+              <Sidebar.Toggle />
+            </TopNavigation.Start>
+            <TopNavigation.Middle>
+              <Breadcrumbs>
+                <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+                {ancestors.map(label => (
+                  <Breadcrumbs.Item key={label} href="#">
+                    {label}
+                  </Breadcrumbs.Item>
+                ))}
+                {leaf && (
+                  // On a drill-in the leaf becomes a real link back to the list.
+                  <Breadcrumbs.Item href={trailing.length ? leafHref : '#'}>
+                    {leaf.label}
+                  </Breadcrumbs.Item>
+                )}
+                {trailing.map(segment => (
+                  <Breadcrumbs.Item key={segment} href="#">
+                    {config.resolveLabel?.(segment) ?? segment}
+                  </Breadcrumbs.Item>
+                ))}
+              </Breadcrumbs>
+            </TopNavigation.Middle>
+            <TopNavigation.End>
+              <UserSection />
+            </TopNavigation.End>
+          </TopNavigation>
+          {children}
+        </AppShell>
+      </Sidebar.Provider>
     </RouterProvider>
   );
 };
