@@ -1,6 +1,17 @@
 // Core exports
 export * from './types';
-export * from './hooks';
+// Explicit named re-exports (not `export *`) so bundlers can statically see
+// which runtime values the barrel forwards from `react-aria-components` and
+// `@marigold/system`, keeping them tree-shakeable.
+export {
+  useAsyncList,
+  useListData,
+  useDragAndDrop,
+  useLandmark,
+  DateFormat,
+  NumericFormat,
+} from './hooks';
+export type { AriaLandmarkRole, AriaLandmarkProps } from './hooks';
 
 // Component exports
 export { Accordion } from './Accordion/Accordion';
@@ -81,6 +92,9 @@ export type { DateFieldProps } from './DateField/DateField';
 
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
+
+export { DateRangePicker } from './DateRangePicker/DateRangePicker';
+export type { DateRangePickerProps } from './DateRangePicker/DateRangePicker';
 
 export { Description } from './Description/Description';
 export type { DescriptionProps } from './Description/Description';
@@ -322,6 +336,12 @@ export type { ToggleButtonProps } from './ToggleButton/ToggleButton';
 
 export { ToggleButtonGroup } from './ToggleButton/ToggleButtonGroup';
 export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
+
+export { SegmentedControl } from './SegmentedControl/SegmentedControl';
+export type { SegmentedControlProps } from './SegmentedControl/SegmentedControl';
+
+export { SegmentedControlOption } from './SegmentedControl/SegmentedControl';
+export type { SegmentedControlOptionProps } from './SegmentedControl/SegmentedControl';
 
 export { Tray } from './Tray/Tray';
 export type { TrayProps } from './Tray/Tray';

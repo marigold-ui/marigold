@@ -4,9 +4,9 @@ import {
   FieldError,
   FieldErrorContext,
 } from 'react-aria-components/FieldError';
-import { Text } from 'react-aria-components/Text';
 import type { ValidationResult } from '@react-types/shared';
 import { cn, useClassNames } from '@marigold/system';
+import { Description } from '../Description/Description';
 import { TriangleAlert } from '../icons/TriangleAlert';
 
 // Props
@@ -80,9 +80,7 @@ export const HelpText = ({
           );
         }}
       </FieldError>
-      {ctx && ctx.isInvalid ? null : (
-        <Text slot="description">{description}</Text>
-      )}
+      {ctx && ctx.isInvalid ? null : <Description>{description}</Description>}
     </div>
   );
 };

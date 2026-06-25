@@ -658,6 +658,76 @@ so future components pick up the same behavior automatically. A`@remarks` tag on
 - Updated dependencies [de34b15]
   - @marigold/system@18.0.0-beta.0
 
+## 17.8.0
+
+### Minor Changes
+
+- bdda185: build(DST-1315): unbundle the build output for tree-shaking
+
+  `@marigold/components` previously shipped its entire ESM build as a single concatenated barrel (`index.mjs` re-exporting 74+ components). Because every export lived in one module, bundlers could not statically prove which parts were unused, so importing a single leaf component (e.g. `Stack`) pulled in essentially the whole library. On rspack this meant ~57 kB (≈82% of the lib) for a `Stack + Text + Card` import.
+
+  The build now emits **one file per source module** (`unbundle: true`, the `preserveModules` equivalent) while keeping the `.` barrel import fully backward compatible. Consumer bundlers (rspack, vite, esbuild) can now drop unused components: the same `Stack + Text + Card` import drops to **~0.8 kB**, and a single `Button` import drops from ~57 kB to **~1.7 kB**.
+
+  ### Why a build flag alone wasn't enough (source changes explained)
+
+  Flipping `unbundle: true` is necessary but not sufficient. The old single-barrel build **concatenated every module into one file**, which hid problems that only matter once each module stands on its own and a bundler starts deciding, per module, what it can safely drop. `unbundle` exposed those problems, so the following source changes were required to make tree-shaking actually work — without them the flag delivers little or no benefit:
+  - **Toast queue: removed a module-scope side effect.** `ToastProvider` exported `const queue = new ToastQueue(...)` at module top level. That constructor runs the moment the module is imported and touches `document` (view-transition setup). The package declares `sideEffects: false`, which tells bundlers "importing any module here does nothing observable, so unused ones are safe to delete." A top-level `new` that touches `document` directly contradicts that promise: it's a real side effect on import, it can break SSR, and it makes the `sideEffects: false` claim dishonest (risking either dropped-needed-code or kept-unneeded-code depending on the bundler). Fix: construct the queue lazily on first use via `getToastQueue()`, keeping the singleton but making the module genuinely side-effect-free. (Tests, stories, and `ToastProvider` were updated to call `getToastQueue()`.)
+  - **`motion`: switched off the non-shakeable `motion` proxy.** `import { motion } from 'motion/react'` pulls motion's entire feature set, and the `motion.*` proxy is by design not tree-shakeable — referencing `motion.div` drags in the whole renderer (~34 kB). In the old concatenated barrel this cost was paid once and amortized across the whole library, so it was easy to miss. Under `unbundle`, that cost attaches to **each** module that imports `motion` (`ActionBar`, `Tabs`, `Tray`), so importing any one of them would re-pull motion's full bundle — defeating the point. Fix: use the lightweight `m` components from `motion/react-m` (tiny core, no features) and load the `domMax` feature set through a `LazyMotion` boundary via a dynamic `import()` of a local module (`motionFeatures.ts`), so bundlers split it into its own async chunk that only loads when an animated component actually renders. (The dynamic import targets a _local_ file rather than `motion/react` directly because importing the dep dynamically made vite's optimizer re-bundle mid-run and drop named exports during tests.)
+  - **`hooks` barrel: replaced `export *` with explicit named re-exports.** `export * from './hooks'` forces a bundler to pull in and consider the entire namespace of the re-exported module; explicit named re-exports let it trace precisely which symbols are reachable. Minor on its own, but `export *` chains are a classic way to silently anchor unused code.
+  - **`react-select`: externalized and declared as a dependency.** Under `unbundle`, rolldown copies any non-externalized dependency into the output per-importing-module. `react-select` (~2 MB with `@emotion`) was being **bundled into the dist without even being a declared dependency** — invisible in the old barrel, but under unbundle it bloated every chunk that referenced it. Fix: mark it `external` in `tsdown.config.ts` and add it to `dependencies` so it resolves transitively at install time. It's used only by the deprecated `Multiselect`; drop both together in the next major.
+  - **Test/mock updates that follow the source changes.** `Tray.test.tsx`'s `vi.mock('motion/react')` had to gain `LazyMotion`/`domMax`, plus a new `vi.mock('motion/react-m')` providing `create`, because `TrayModal` now imports `create` from `motion/react-m`. `Toast.test.tsx`/`Toast.stories.tsx` switched from the removed module-level `queue` export to `getToastQueue()`.
+  - **A `size-limit` budget gate** (`pnpm --filter @marigold/components size`, run in CI) was added so these wins don't silently regress — e.g. someone re-introducing a `motion` proxy import or a module-scope side effect.
+
+  No public API changes: all imports from `@marigold/components` continue to work exactly as before.
+
+### Patch Changes
+
+- a609642: chore(DST-1512): import `I18nProvider` from `react-aria-components` in remaining stories/tests/demos
+
+  Follow-up to DST-1505. Migrates the remaining `I18nProvider` imports off the `@react-aria/i18n` shell package to stay consistent with the RAC-first principle (import an API from `react-aria-components` whenever it re-exports it, so provider and consumers share one `I18nContext`). Component stories/tests now import from `react-aria-components/I18nProvider`, and docs demos use the public `@marigold/components` export. The `packages/system` formatter tests intentionally stay on `@react-aria/i18n`, because the formatters under test read locale from that package directly and `packages/system` does not depend on `react-aria-components`.
+
+- 60b6e03: fix(DST-1507): make `Table.EditableCell` inline editing work after SSR hydration
+
+  In a server-rendered app (for example Next.js), editable cells were inert after hydration: clicking a cell did not open its inline editor until an unrelated re-render (such as a window resize) happened to occur. React Aria builds the table collection in a separate render pass, and the editing state previously lived in that build pass, so the rendered cell content stayed bound to the server pass's closures and never reconnected to the live component after hydration. The editing state and overlay now live in an inner component rendered inside the `Cell`, i.e. in the collection's content pass, so interaction reconnects on its own after hydration (the same structure React Spectrum's S2 `TableView` uses).
+  - @marigold/system@17.8.0
+
+## 17.7.0
+
+### Minor Changes
+
+- f4608c6: feat(DSTSUP-262): add `large` size to Dialog for wider layouts
+
+  `Dialog` (and `ConfirmationDialog`, which inherits the prop) now accepts `size="large"`, which sets the dialog width to `1024px` — matching the Tailwind `lg` breakpoint. Use it for content that doesn't fit the previous `medium` cap of `768px`, e.g. multi-month calendars or wider forms. The existing `min()` width formula keeps the dialog viewport-safe on smaller screens.
+
+- e0d5c7b: feat(DST-1500): default auto-dismiss timeout for toasts
+
+  `addToast` now applies a default `timeout` based on `variant` when none is given: `success`, `info` and the default variant auto-dismiss after 5000ms, while `warning` and `error` stay until dismissed. Pass an explicit `timeout` to override it (values are clamped up to a 5000ms minimum), or `timeout: 0` to keep a toast on screen until it is manually dismissed.
+
+  Behavior change: `success`, `info` and default toasts that previously stayed until dismissed now auto-dismiss after 5 seconds. Pass `timeout: 0` to restore the old behavior.
+
+### Patch Changes
+
+- a6a1cb3: fix(DSTSUP-260): `Pagination` follows the controlled `page` prop after mount
+
+  Previously the `page` prop only seeded internal state, so external updates (e.g. resetting to page 1 on a filter change) were ignored — the page indicator and the accessible `<nav>` label kept showing the stale page. `Pagination` now uses `useControlledState` from react-stately: when `page` is set, it is the single source of truth and `onChange` reports requested page changes; `defaultPage` remains the uncontrolled initial value. As part of this, `onChange` no longer fires when the active page is selected again, and the reset-to-page-1 behavior on `pageSize` changes only triggers when `pageSize` actually changed.
+
+- 4242aa1: fix(DST-1505): re-export `I18nProvider` from `react-aria-components` to prevent locale context splits
+
+  `I18nProvider` was re-exported from `@react-aria/i18n`, which resolves `react-aria` via a caret range while `react-aria-components` pins it exactly. A consumer's lockfile can therefore install two `react-aria` copies, splitting the `I18nContext`: the locale set through Marigold's `I18nProvider` landed in one copy's context while the react-aria-components rendering Marigold's UI read the other — silently falling back to the default locale for aria labels, date/number formatting, and RTL detection.
+
+  Re-exporting `I18nProvider` from `react-aria-components` makes provider and consumers share one context by construction, regardless of how the lockfile resolves `react-aria`. Same failure class as the mobile `Select` tray bug (DSTSUP-261).
+
+- da46e58: fix(DSTSUP-261): make `Tray` immune to a split react-aria `HiddenContext` (mobile `Select` tray selecting nothing)
+
+  On a touch/mobile viewport, `Select` (and other components that fall back to a `Tray`) could open an empty bottom sheet next to the real one: tapping an option selected nothing, the trigger kept showing the placeholder, and the page was left `inert` until reload.
+
+  Root cause was a dependency-resolution split, not component logic. `Tray` guards the collection hidden pass with `useIsHidden()` from `@react-aria/collections` (which depends on `react-aria` via a caret range), while `react-aria-components` pins `react-aria` exactly and its `Select` (a `createHideableComponent`) sets the `HiddenContext` from its own copy. Both read that context from `react-aria/private/collections/Hidden`, so they only agree when `react-aria` resolves to a single version. When a consumer's lockfile resolves the two edges to different `react-aria` generations, the guard reads a context the collection renderer never sets: it never fires, a duplicate (empty) tray modal leaks into the DOM, and the two modals `inert` each other so options are no longer hit-testable.
+
+  `Tray` now verifies the hidden pass through the DOM as well: react-aria renders the hidden pass into a `<template>` element, whose content lives in a detached `DocumentFragment`. A hidden probe element rendered alongside the modal is therefore never connected to the document during the hidden pass, and the tray skips mounting its modal whenever the probe is detached. This holds no matter how the consumer's lockfile resolves `react-aria` — including future react-aria releases that would re-arm the split (`@react-aria/collections`' caret range resolves to the newest `react-aria`, while `react-aria-components` stays pinned) — so no dependency pins are needed.
+
+  The durable upstream fix is for react-aria-components' `Modal` to skip the collection hidden pass like its `Popover` already does (which is why the desktop `Popover` path was never affected), or for it to export `useIsHidden`. Once either lands, the guard in `Tray` can be reduced again.
+  - @marigold/system@17.7.0
+
 ## 17.6.0
 
 ### Patch Changes

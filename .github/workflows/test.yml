@@ -51,7 +51,11 @@ jobs:
         uses: actions/cache@v5
         with:
           path: node_modules/.vite
-          key: vite-deps-unit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          # Include the vitest/vite config in the key so changing the
+          # optimizeDeps include list actually busts the cache (otherwise a
+          # stale optimization is restored and the new deps are still
+          # discovered at runtime, re-introducing the re-optimization race).
+          key: vite-deps-unit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'vite.config.ts', 'vitest.config.shared.ts') }}
           restore-keys: |
             vite-deps-unit-${{ runner.os }}-
 
@@ -109,7 +113,11 @@ jobs:
         uses: actions/cache@v5
         with:
           path: node_modules/.vite
-          key: vite-deps-sb-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          # Include the vitest/vite config in the key so changing the
+          # optimizeDeps include list actually busts the cache (otherwise a
+          # stale optimization is restored and the new deps are still
+          # discovered at runtime, re-introducing the re-optimization race).
+          key: vite-deps-sb-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'vite.config.ts', 'vitest.config.shared.ts') }}
           restore-keys: |
             vite-deps-sb-${{ runner.os }}-
 
@@ -131,6 +139,33 @@ jobs:
           name: accessibility-report
           path: ./storybook/artifacts/accessibilityReport.html
           overwrite: 'true'
+
+  # ---------------------------------------------------------------------------
+  # Docs build-script tests (vitest node-mode) — fast, no browser/Playwright.
+  # Covers the registry builders under docs/scripts/ (e.g. build-examples.mjs),
+  # which the browser-mode unit/storybook projects exclude.
+  # ---------------------------------------------------------------------------
+  docs-script-tests:
+    name: Docs Script Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      CI: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6.0.8
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run docs build-script tests
+        run: pnpm --filter @marigold/docs test
 
   # ---------------------------------------------------------------------------
   # Merge coverage & report

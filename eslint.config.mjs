@@ -28,6 +28,27 @@ export default defineConfig([
     },
   },
   {
+    // Stories render in the Storybook preview, which already provides `expect`,
+    // `fn`, `userEvent`, etc. via `storybook/test`. A bare `vitest` import drags
+    // a second test runtime into the preview and breaks it with a cryptic
+    // `customEqualityTesters` error, so keep `vitest` out of story files.
+    files: ['**/*.stories.tsx'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'vitest',
+              message:
+                'Do not import from "vitest" in stories — use "storybook/test" instead (a vitest import breaks the Storybook preview with a "customEqualityTesters" error).',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     ignores: [
       '**/.next',
       '**/out',

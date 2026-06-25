@@ -6,6 +6,8 @@
     "design-principles",
     "release-phases",
     "usage-with-ai",
+    "cli",
+    "examples-for-agents",
     "recommended-libraries"
   ]
 }

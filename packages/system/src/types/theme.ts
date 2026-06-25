@@ -298,6 +298,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
+    DateRangePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: Record<
       'icon' | 'mobileTrigger',
       ComponentStyleFunction<string, string>
@@ -327,6 +328,10 @@ export type Theme = {
     >;
     ToggleButton?: Record<
       'group' | 'button',
+      ComponentStyleFunction<string, string>
+    >;
+    SegmentedControl?: Record<
+      'group' | 'list' | 'field' | 'option' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
     Sidebar?: Record<

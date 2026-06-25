@@ -127,9 +127,31 @@ const EditableCellPopover = ({
   );
 };
 
-// Component
+// EditableCellInner
 // ---------------
-export const TableEditableCell = ({
+interface TableEditableCellInnerProps extends TableEditableCellProps {
+  /**
+   * Whether the table has selection enabled. Resolved in the outer cell because
+   * `useTableOptions` is only available in React Aria's collection build pass.
+   */
+  hasSelection: boolean;
+  /** Column index, provided by the `<Cell>` render prop. */
+  columnIndex?: number | null;
+  /** Ref to the `<Cell>`, used to position and anchor the editor popover. */
+  cellRef: RefObject<HTMLTableCellElement | null>;
+}
+
+/**
+ * Holds the editing state and renders the inline editor. This lives inside the
+ * `<Cell>` render prop, i.e. in React Aria's collection *content* pass (the
+ * live, portal-rendered tree). Keeping the state here rather than in the outer
+ * `TableEditableCell` — which renders in React Aria's separate collection
+ * *build* pass — is what makes inline editing work under SSR: the build pass's
+ * rendered content is otherwise frozen to its server-render closures and never
+ * reconnects after hydration, so the editor would not open until an unrelated
+ * update happened to re-register the cell.
+ */
+const TableEditableCellInner = ({
   children,
   field,
   saving = false,
@@ -139,16 +161,16 @@ export const TableEditableCell = ({
   action,
   alignX,
   overflow: cellOverflow,
-}: TableEditableCellProps) => {
-  const { classNames, alignY = 'middle' } = useTableContext();
-  const { selectionMode } = useTableOptions();
-  const hasSelection = selectionMode !== 'none';
+  hasSelection,
+  columnIndex,
+  cellRef,
+}: TableEditableCellInnerProps) => {
+  const { classNames } = useTableContext();
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
-  const cellRef = useRef<HTMLTableCellElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   // Auto-select input/textarea content when popover/dialog opens
@@ -216,81 +238,99 @@ export const TableEditableCell = ({
   );
 
   return (
+    <>
+      <div
+        className={cn(
+          'group/editable-cell flex items-center',
+          !disabled && 'cursor-pointer'
+        )}
+        onClick={disabled ? undefined : () => setOpen(true)}
+      >
+        <TableCellContent
+          columnIndex={columnIndex}
+          alignX={alignX}
+          cellOverflow={disabled ? cellOverflow : 'truncate'}
+          className="min-w-0 flex-1"
+          allowTextSelection={!hasSelection || undefined}
+        >
+          {children}
+        </TableCellContent>
+        {!disabled && (
+          <div className="w-0 shrink-0 overflow-hidden group-has-[:focus-visible]/editable-cell:w-auto group-has-[:focus-visible]/editable-cell:overflow-visible [[role=row]:hover_&]:w-auto [[role=row]:hover_&]:overflow-visible">
+            <Button
+              className={classNames.editTrigger}
+              aria-label={stringFormatter.format('edit')}
+              onPress={() => setOpen(true)}
+            >
+              <Pencil />
+            </Button>
+          </div>
+        )}
+      </div>
+      {isSmallScreen ? (
+        <Dialog open={open} onOpenChange={handleOpenChange}>
+          <Form
+            unstyled
+            ref={handleFormRef}
+            action={action}
+            onSubmit={handleSubmit}
+          >
+            <Dialog.Title>{stringFormatter.format('editCell')}</Dialog.Title>
+            <Dialog.Content>
+              <FocusScope autoFocus restoreFocus>
+                {renderField()}
+              </FocusScope>
+            </Dialog.Content>
+            <Dialog.Actions>
+              {cancelButton}
+              {saveButton}
+            </Dialog.Actions>
+          </Form>
+        </Dialog>
+      ) : (
+        <EditableCellPopover
+          cellRef={cellRef}
+          open={open}
+          onOpenChange={handleOpenChange}
+          className={classNames.editablePopover}
+        >
+          <Form
+            unstyled
+            ref={handleFormRef}
+            action={action}
+            onSubmit={handleSubmit}
+          >
+            <FocusScope autoFocus>
+              {renderField()}
+              {cancelButton}
+              {saveButton}
+            </FocusScope>
+          </Form>
+        </EditableCellPopover>
+      )}
+    </>
+  );
+};
+
+// Component
+// ---------------
+export const TableEditableCell = (props: TableEditableCellProps) => {
+  const { classNames, alignY = 'middle' } = useTableContext();
+  // `useTableOptions` is only available in the collection build pass, so it is
+  // read here (not in the content-pass inner) and passed down.
+  const { selectionMode } = useTableOptions();
+  const hasSelection = selectionMode !== 'none';
+  const cellRef = useRef<HTMLTableCellElement>(null);
+
+  return (
     <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
       {({ columnIndex }) => (
-        <>
-          <div
-            className={cn(
-              'group/editable-cell flex items-center',
-              !disabled && 'cursor-pointer'
-            )}
-            onClick={disabled ? undefined : () => setOpen(true)}
-          >
-            <TableCellContent
-              columnIndex={columnIndex}
-              alignX={alignX}
-              cellOverflow={disabled ? cellOverflow : 'truncate'}
-              className="min-w-0 flex-1"
-              allowTextSelection={!hasSelection || undefined}
-            >
-              {children}
-            </TableCellContent>
-            {!disabled && (
-              <div className="w-0 shrink-0 overflow-hidden group-has-[:focus-visible]/editable-cell:w-auto group-has-[:focus-visible]/editable-cell:overflow-visible [[role=row]:hover_&]:w-auto [[role=row]:hover_&]:overflow-visible">
-                <Button
-                  className={classNames.editTrigger}
-                  aria-label={stringFormatter.format('edit')}
-                  onPress={() => setOpen(true)}
-                >
-                  <Pencil />
-                </Button>
-              </div>
-            )}
-          </div>
-          {isSmallScreen ? (
-            <Dialog open={open} onOpenChange={handleOpenChange}>
-              <Form
-                unstyled
-                ref={handleFormRef}
-                action={action}
-                onSubmit={handleSubmit}
-              >
-                <Dialog.Title>
-                  {stringFormatter.format('editCell')}
-                </Dialog.Title>
-                <Dialog.Content>
-                  <FocusScope autoFocus restoreFocus>
-                    {renderField()}
-                  </FocusScope>
-                </Dialog.Content>
-                <Dialog.Actions>
-                  {cancelButton}
-                  {saveButton}
-                </Dialog.Actions>
-              </Form>
-            </Dialog>
-          ) : (
-            <EditableCellPopover
-              cellRef={cellRef}
-              open={open}
-              onOpenChange={handleOpenChange}
-              className={classNames.editablePopover}
-            >
-              <Form
-                unstyled
-                ref={handleFormRef}
-                action={action}
-                onSubmit={handleSubmit}
-              >
-                <FocusScope autoFocus>
-                  {renderField()}
-                  {cancelButton}
-                  {saveButton}
-                </FocusScope>
-              </Form>
-            </EditableCellPopover>
-          )}
-        </>
+        <TableEditableCellInner
+          {...props}
+          hasSelection={hasSelection}
+          columnIndex={columnIndex}
+          cellRef={cellRef}
+        />
       )}
     </Cell>
   );

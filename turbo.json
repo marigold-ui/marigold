@@ -11,6 +11,10 @@
         "!.next/cache/**",
         "../../storybook-static/**"
       ]
+    },
+    "size": {
+      "dependsOn": ["build"],
+      "outputs": []
     }
   },
   "globalDependencies": ["tsconfig.json"]

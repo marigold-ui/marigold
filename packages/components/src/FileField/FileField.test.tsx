@@ -1,9 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { I18nProvider } from '@react-aria/i18n';
-import { makeFile } from './../test.utils';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { Basic, MultipleFileUpload } from './FileField.stories';
+import { makeFile } from './makeFile';
 
 test('renders default labels (en) for dropzone and button', () => {
   render(<Basic.Component label="Label" />);

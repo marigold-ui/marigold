@@ -14,6 +14,18 @@ export interface CachedResult<T> {
   hit: boolean;
 }
 
+// Thrown when a fetch completes but the response is not ok, carrying the HTTP
+// status as a structured field. Callers branch on `err.status` (e.g. a 404 →
+// friendlier guidance) instead of parsing the error message string.
+export class FetchError extends Error {
+  readonly status: number;
+  constructor(url: string, status: number, statusText: string) {
+    super(`Failed to fetch ${url}: ${status} ${statusText}`);
+    this.name = 'FetchError';
+    this.status = status;
+  }
+}
+
 const safeKey = (key: string): string =>
   crypto.createHash('sha256').update(key).digest('hex').slice(0, 32);
 
@@ -110,9 +122,7 @@ export const fetchWithCache = async <T = string>(
     throw err;
   }
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch ${url}: ${response.status} ${response.statusText}`
-    );
+    throw new FetchError(url, response.status, response.statusText);
   }
   const text = await response.text();
   let value: T;

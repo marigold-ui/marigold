@@ -21,7 +21,7 @@ import type {
   SpaceProp,
   WidthProp,
 } from '@marigold/system';
-import { cn, createSpacingVar, useClassNames } from '@marigold/system';
+import { cn, createSpacingVar, isScale, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { SelectListContext } from './Context';
@@ -242,9 +242,23 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     if (p === undefined && px === undefined && py === undefined) {
       return EMPTY_STYLE;
     }
+    // Intentionally diverges from resolveInsetAxes (used by Card/Page/Panel):
+    // 1. `p` short-circuits here — px/py are ignored when p is set. resolveInsetAxes
+    //    does the opposite (explicit px/py win over p via `?? `).
+    // 2. No theme-default fallback — the CSS vars cascade from the theme via the
+    //    list slot in SelectList.styles.ts, so we only write them when explicitly set.
+    // 3. Partial-axis overrides are valid — px and py are applied independently,
+    //    letting the theme fill in whichever axis the consumer leaves unset.
+    // Don't "consolidate" this with resolveInsetAxes without accounting for all three.
+    if (p !== undefined) {
+      const inset = `${p}`;
+      const scale = isScale(inset);
+      return {
+        ...createSpacingVar('selectlist-item-px', scale ? inset : `${inset}-x`),
+        ...createSpacingVar('selectlist-item-py', scale ? inset : `${inset}-y`),
+      };
+    }
     return {
-      ...(p !== undefined && createSpacingVar('selectlist-item-px', `${p}-x`)),
-      ...(p !== undefined && createSpacingVar('selectlist-item-py', `${p}-y`)),
       ...(px !== undefined && createSpacingVar('selectlist-item-px', `${px}`)),
       ...(py !== undefined && createSpacingVar('selectlist-item-py', `${py}`)),
     };

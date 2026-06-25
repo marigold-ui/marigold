@@ -222,6 +222,37 @@ export const WithPaddingProp = meta.story({
   ),
 });
 
+export const WithNumericPadding = meta.story({
+  tags: ['component-test'],
+  args: { p: 4 },
+  render: args => (
+    <Card {...args}>
+      <Card.Header>
+        <Title>Numeric Padding</Title>
+      </Card.Header>
+      <Card.Body>
+        <Text>
+          This card uses a numeric scale value (<code>p=&#123;4&#125;</code>)
+          for inset padding. Both axes should have equal spacing.
+        </Text>
+      </Card.Body>
+    </Card>
+  ),
+});
+
+WithNumericPadding.test(
+  'applies equal horizontal and vertical padding from a numeric scale value',
+  async ({ canvas }) => {
+    const article = canvas.getByRole('article');
+    const style = getComputedStyle(article);
+    expect(style.getPropertyValue('--card-px')).toBeTruthy();
+    expect(style.getPropertyValue('--card-py')).toBeTruthy();
+    expect(style.getPropertyValue('--card-px')).toBe(
+      style.getPropertyValue('--card-py')
+    );
+  }
+);
+
 export const WithBleedBody = meta.story({
   render: args => (
     <Card {...args}>
