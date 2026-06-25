@@ -18,6 +18,11 @@
   @apply h-control w-full min-w-0;
   @apply px-3 py-2;
   @apply text-foreground placeholder:text-placeholder text-sm;
+  /* A form field needs a clearly visible boundary, so its ui-surface ring uses
+     the opaque `border` (the same control-boundary color as Checkbox/Radio)
+     instead of the lighter decorative surface hairline. Focus (--color-ring)
+     and error (--color-destructive-accent) still override this per state. */
+  --ui-border-color: var(--color-border);
 }
 
 /* ========================= */

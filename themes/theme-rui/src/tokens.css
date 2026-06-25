@@ -99,8 +99,10 @@
    * surface sits on, so the edge keeps a consistent contrast on white, the
    * page background, or a tinted panel — instead of a fixed gray that reads
    * heavy on white and washes out on gray. Built on the charcoal hue (54) via
-   * the darkest step so it stays on-palette. NOT for dividers/decoration on a
-   * known surface — those use the opaque `--color-border` above.
+   * the darkest step so it stays on-palette. Decorative only: dividers, lines
+   * that overlap, and form-control boundaries all use the opaque
+   * `--color-border` above (an input edge is an affordance the user must clearly
+   * see, so it needs the heavier opaque line, like Checkbox/Radio already use).
    */
   --color-border-surface: oklch(from var(--color-charcoal-950) l c h / 0.1);
 

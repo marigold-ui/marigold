@@ -473,13 +473,13 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
       name: 'border',
       value: 'charcoal-300',
       useFor:
-        'Opaque lines on a known surface: dividers, table row and grid lines, binary-control outlines (Checkbox, Radio)',
+        'Opaque lines on a known surface: dividers, table row and grid lines, and form-control boundaries (Input, Select, TextArea, Checkbox, Radio, …)',
     },
     {
       name: 'border-surface',
       value: 'charcoal-950 / 10%',
       useFor:
-        'The edge of a raised surface, applied via the ui-surface utility (Input, Select, Card, Panel, Menu, …)',
+        'The decorative edge of a raised surface, applied via the ui-surface utility (Card, Panel, Dialog, Menu, secondary Button, …)',
     },
     {
       name: 'ring',
@@ -490,16 +490,19 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
 />
 
 <Callout title="Why two border tokens?">
-  `border` is opaque; `border-surface` is the same charcoal hue at 10% alpha.
-  The surface edge is translucent so it composites over whatever ground it sits
-  on — staying consistent on white, the page background, or a tinted panel,
-  where a fixed gray reads heavy on white and washes out on gray. `border` stays
-  opaque because it is used for lines that **overlap** (grid-cell borders,
-  stacked dividers), where translucent strokes would double-darken at every
-  crossing. `border-surface` is drawn as the outset ring inside the `ui-surface`
-  utility, not applied as a standalone border class — the outset placement is
-  what lets it composite over the ground and keeps it from being covered by
-  edge-to-edge child content.
+  Both are the charcoal hue; they differ in how the edge needs to read. `border`
+  is **opaque** and does the load-bearing work: lines that **overlap**
+  (grid-cell borders, stacked dividers), where translucent strokes would
+  double-darken at every crossing, _and_ form-control boundaries — an input or
+  checkbox edge is an affordance the user must clearly see (WCAG 1.4.11 non-text
+  contrast), so it wants the heavier opaque line. `border-surface` is
+  **translucent** and purely decorative: the edge of a raised surface (Card,
+  Panel, Dialog, Menu). Being translucent, it composites over whatever ground it
+  sits on — staying consistent on white, the page background, or a tinted panel,
+  where a fixed gray reads heavy on white and washes out on gray. It is drawn as
+  the outset ring inside `ui-surface`, not a standalone border class, so it
+  never gets covered by edge-to-edge child content; form controls (also built on
+  `ui-surface`) just override that ring color with `border` via `ui-input`.
 </Callout>
 
 ### Status colors

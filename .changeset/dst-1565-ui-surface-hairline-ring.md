@@ -13,7 +13,9 @@ Two deliberate properties of the new hairline:
 - **Translucent.** The resting color is a new `--color-border-surface` token — the charcoal hue at low alpha (`oklch(from var(--color-charcoal-950) l c h / 0.12)`). Because it is translucent, the edge composites over whatever ground the surface sits on, so its contrast stays consistent on white, the page background, or a tinted panel — where a fixed gray reads heavy on white and washes out on gray. State overrides (focus → `--color-ring`, error → `--color-destructive-accent`) remain opaque on purpose.
 - **Outset.** The ring sits just outside the box, so it is painted above child content. A child that bleeds edge-to-edge (e.g. a `Table` inside `Panel.Content bleed`) can no longer cover the left/right border — which an inset ring or a `background-clip` border did.
 
-The opaque `--color-border` token is unchanged and still used for dividers/decoration on a known surface (table rows, panel section rules), which sit on white and have no ground to adapt to.
+Form controls keep a clearly visible boundary. A field edge is an affordance the user must see (WCAG 1.4.11 non-text contrast), so the controls built on `ui-input` (Input, Select, TextArea, NumberField, DateField, TagField) override the `ui-surface` ring color with the existing opaque `--color-border` (charcoal-300) — the same boundary color Checkbox and Radio already use — rather than the lighter translucent `--color-border-surface` hairline. No new token: the decorative surface hairline stays whisper-light for Card/Panel/Dialog/Menu, while every form-control boundary now reads with one consistent opaque line.
+
+The opaque `--color-border` token is otherwise unchanged and still used for dividers/decoration on a known surface (table rows, panel section rules), which sit on white and have no ground to adapt to.
 
 Visually: the subtle 1px border gradient/bevel is intentionally dropped (a flat ring cannot gradient), the resting edge is a touch softer (translucent vs. opaque charcoal-300), and corners antialias slightly differently. `ui-surface-contrast` keeps its existing gradient treatment.
 
