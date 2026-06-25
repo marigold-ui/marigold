@@ -1,4 +1,5 @@
 import {
+  Children,
   type ReactElement,
   type ReactNode,
   type Ref,
@@ -17,7 +18,6 @@ import { LinkButton } from '../LinkButton/LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { EllipsisVertical } from '../icons/EllipsisVertical';
 import type { SlotProps } from '../types';
-import { splitChildren } from '../utils/children.utils';
 import { ToolbarGroup } from './ToolbarGroup';
 import { ToolbarSeparator } from './ToolbarSeparator';
 import { useToolbarOverflow } from './useToolbarOverflow';
@@ -115,7 +115,7 @@ const ToolbarBase = ({
   const hiddenRef = useRef<HTMLDivElement>(null);
 
   // Pinned leading controls + a trailing run of collapsible actions.
-  const [items] = splitChildren(children);
+  const items = Children.toArray(children);
   let splitIndex = items.length;
   while (splitIndex > 0 && isActionElement(items[splitIndex - 1])) splitIndex--;
   const pinned = items.slice(0, splitIndex);
