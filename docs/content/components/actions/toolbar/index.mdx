@@ -1,0 +1,99 @@
+---
+title: Toolbar
+description: A single navigable region for the controls that act on a view.
+badge: alpha
+---
+
+`<Toolbar>` gathers the controls that act on a view — a search field, a few filters, a handful of actions — into one region the keyboard treats as a single stop. Reach for it at the top of a list, table, or editor: anywhere a user needs more than a couple of controls to work with what sits below. Instead of tabbing through every field and button in turn, they land on the toolbar once and step across it with the arrow keys.
+
+For two or three related buttons on their own, a [`<ButtonGroup>`](/components/actions/button-group) is enough. When the actions apply to a selection the user has made in a collection, reach for an [`<ActionBar>`](/components/collection/actionbar) instead — it appears with the selection and clears with it. A toolbar is for the controls that are always there.
+
+import { ToolbarAnatomy } from './toolbar-anatomy';
+
+## Anatomy
+
+<ToolbarAnatomy />
+
+- **Toolbar:** The region itself. It announces the controls as a group and lets the user move across them with the arrow keys.
+- **Controls:** Everything the toolbar holds. Inputs the user reads or types into, like a search field or a filter, and actions they trigger, like buttons.
+- **Group:** An optional cluster of related controls, announced as a unit so the row reads as a few groups instead of one long run.
+- **Separator:** A quiet vertical line that sets one cluster of controls apart from the next.
+- **More:** When the bar runs out of room, its trailing actions fold into a single overflow menu and return as space allows.
+
+## Appearance
+
+<AppearanceDemo component="Toolbar" />
+
+<AppearanceTable component="Toolbar" />
+
+A toolbar carries almost no styling of its own. It lays its controls out as one spaced row and otherwise stays out of the way. `size` sets the bar's density — the spacing between its controls — but it does not resize the controls themselves, so each field and button keeps the size you give it. Keep the toolbar quiet and let it sit beneath the surface's title and its primary action.
+
+## Usage
+
+A toolbar reads left to right as one thought: the things you look through on the left, the things you do on the right. Put the inputs a user reads or types into — search, filters — first, and the actions that operate on the view after them. Give the whole region a name so assistive technology can announce what it is for.
+
+### Filtering and searching a list
+
+The most common toolbar sits above a list or table and narrows what it shows: a search field, one or two filters, and a way to reach the rest.
+
+<ComponentDemo name="toolbar-filters" />
+
+Keep search first and the filters beside it, so the eye starts where the user's attention does. When there are more filters than fit comfortably, move the long tail behind an **All filters** button that opens a [`<Drawer>`](/components/overlay/drawer), rather than crowding the bar with every option at once.
+
+### Grouping related controls
+
+When a toolbar carries several kinds of action, cluster the related ones so the row reads as a few groups instead of a long, flat line. A `<Toolbar.Group>` ties a set of controls together and announces them as a unit, and a `<Toolbar.Separator>` draws a quiet line between one cluster and the next.
+
+<ComponentDemo name="toolbar-groups" />
+
+Give every group a name, since that name is what tells assistive technology where one cluster ends and the next begins. Separators are decorative, so don't lean on them alone to convey the grouping.
+
+### Letting actions collapse when space runs short
+
+A toolbar should never wrap onto a second line or scroll sideways. When the bar runs out of room, its trailing actions fold in from the right, one at a time, into a single **More** menu, and reappear as the bar grows.
+
+<ComponentDemo name="toolbar-overflow" />
+
+Only actions collapse, and only from the right, so anything that has to stay visible belongs on the left. A search field or a filter is far too important to hide behind a menu — which is the other reason inputs come first and actions last. Order the actions by how often they are used, because the least-used ones are the first to disappear.
+
+### Accessible labels
+
+Compact toolbars lean on icon-only buttons, and an icon on its own has no text for assistive technology to read.
+
+<ComponentDemo name="toolbar-labels" />
+
+Give every icon-only button an `aria-label` with a short action phrase like `Download report`, and pair it with a [`<Tooltip>`](/components/overlay/tooltip) so sighted users find the same label on hover or focus. The two serve different audiences and both are needed. Name the toolbar itself as well, and make the name specific when the toolbar repeats per row, like `Actions for {item.name}`.
+
+<Callout title="Keep it accessible">
+  A tooltip is not a replacement for an `aria-label`. Tooltips are not reliably
+  reachable on touch devices or by every assistive technology, so the accessible
+  name has to live on the control. See [Tooltip:
+  Accessibility](/components/overlay/tooltip#accessibility).
+</Callout>
+
+### Keeping the toolbar in view
+
+On a long, scrolling view it often helps to pin the toolbar to the top so its search and filters stay within reach. A toolbar brings no positioning of its own — it sits wherever you place it — so make it stick with the layout around it. When you do, leave room at the top of the scroll area so a control the user tabs to never ends up hidden behind the pinned bar.
+
+## Props
+
+<StorybookHintMessage component="Toolbar" />
+
+### Toolbar
+
+<AutoTypeTable path="Toolbar/Toolbar" name="ToolbarProps" />
+
+### Toolbar.Group
+
+<AutoTypeTable path="Toolbar/ToolbarGroup" name="ToolbarGroupProps" />
+
+### Toolbar.Separator
+
+<AutoTypeTable path="Toolbar/ToolbarSeparator" name="ToolbarSeparatorProps" />
+
+## Alternative components
+
+- [ButtonGroup](/components/actions/button-group): Use for a small cluster of related buttons on their own, without inputs alongside them.
+- [ActionBar](/components/collection/actionbar): Use for actions that apply to a selection in a collection; it appears with the selection and clears with it.
+- [ActionMenu](/components/overlay/action-menu): The overflow menu pattern. A toolbar reaches for it automatically as its own **More** menu.
+- [Menu](/components/overlay/menu): Use for a standalone list of commands behind a single trigger, rather than a row of always-visible controls.
