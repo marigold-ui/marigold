@@ -161,29 +161,29 @@ Z-index values are centralized and standardized across the design system to ensu
 
 **Architecture**:
 
-- Z-index **numeric values** are defined as CSS custom properties in `themes/theme-rui/src/theme.css`
+- Z-index **classes** are plain Tailwind v4 numeric utilities (`z-1`, `z-30`, `z-80`, …). Tailwind v4 generates `z-<integer>` on demand, so there are no `--z-*` custom properties or `theme.css` definitions — the scale below is a shared convention, not a token set
 - Z-index **classes** are applied directly in component implementations (`packages/components/src/`), NOT in theme style files
-- This makes z-index theme-independent while keeping numeric values customizable
+- This keeps stacking order consistent and discoverable without coupling it to the theme layer
 
-**Z-Index Scale**:
+**Z-Index Scale** (the agreed convention for which utility maps to which layer):
 
-```css
+```text
 /* Content Layer (0-10) */
---z-1: 1; /* Sticky headers (Table, Accordion, ListBox) */
---z-10: 10; /* Focus states (Calendar) */
+z-1    /* Sticky headers (Table, Accordion, ListBox) */
+z-10   /* Focus states (Calendar) */
 
 /* Floating Layer (20-49) */
---z-20: 20; /* Dropdowns (Select, ComboBox) */
---z-30: 30; /* Popovers, Menus, Tooltips, ActionBar */
+z-20   /* Dropdowns (Select, ComboBox) */
+z-30   /* Popovers, Menus, Tooltips, ActionBar */
 
 /* Overlay Layer (50-79) */
---z-50: 50; /* Modal overlays, Drawer overlays, Underlay */
+z-50   /* Modal overlays, Drawer overlays, Underlay */
 
 /* Notification Layer (80-99) */
---z-80: 80; /* Toast notifications, Drawer close button */
+z-80   /* Toast notifications, Drawer close button */
 
 /* System Layer (100+) */
---z-100: 100; /* Touch hitbox utility */
+z-100  /* Touch hitbox utility */
 ```
 
 **Component Examples**:
