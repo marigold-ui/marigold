@@ -70,9 +70,11 @@
 /*
  * Prominent dark surface (primary color): primary buttons, toolbars, action
  * bars. Mirrors ui-surface — a 1px ring plus the fill — but inverted in value:
- * the edge is a darker shade of the fill (a crisp dark hairline, no light rim)
- * and the light is a soft glow pooled at the top of the face that fades before
- * it reaches the edges.
+ * the edge is a darker shade of the fill (a crisp dark hairline, no light rim).
+ * The light lives on the face: a soft glow pooled at the top that fades before
+ * it reaches the edges, plus a soft 1px highlight along the very top edge (an
+ * inset shadow, warm-tinted and at low alpha so it reads as a catch of light,
+ * not a bright rim).
  *
  * `background` is excluded from the transition so hover/state bg flips feel
  * instant on high-frequency interactions (DST-1436).
@@ -82,6 +84,7 @@
   @apply text-primary-foreground;
 
   @apply ring-1 ring-[oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_0.08)_c_h)];
+  @apply inset-shadow-[0_1px_0_0_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_0.4)_c_h_/_0.5)];
 
   /* prettier-ignore */
   background:
