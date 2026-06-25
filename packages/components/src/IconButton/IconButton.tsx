@@ -6,12 +6,6 @@ interface IconButtonProps extends RAC.ButtonProps {
   className?: string;
   variant?: 'navigation' | (string & {});
   size?: string;
-  /**
-   * Keep this button visible when placed directly in a `<Toolbar>`, so it never
-   * collapses into the toolbar's "More" menu. Ignored outside a `<Toolbar>`.
-   * @default false
-   */
-  pinned?: boolean;
 }
 
 export const IconButton = ({
@@ -19,7 +13,6 @@ export const IconButton = ({
   children,
   variant,
   size,
-  pinned,
   ...props
 }: IconButtonProps) => {
   const classNames = useClassNames({
@@ -31,7 +24,6 @@ export const IconButton = ({
   return (
     <Button
       className={cn('shrink-0 cursor-pointer outline-0', classNames, className)}
-      data-pinned={pinned || undefined}
       {...props}
     >
       {children}

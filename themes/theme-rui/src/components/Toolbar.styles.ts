@@ -22,12 +22,11 @@ export const Toolbar: ThemeComponent<'Toolbar'> = {
     base: 'flex items-center gap-1',
   }),
   actions: cva({
-    // Internal cluster the toolbar wraps around its collapsing actions. It takes
-    // the space left by the pinned controls so this region — not the pinned
-    // controls — is the one that shrinks, folding its buttons into the "More"
-    // menu (`min-w-0` allows that shrink). Actions stay packed next to the pinned
-    // controls, so there is no gap when the bar is wide.
-    base: 'flex min-w-0 flex-1 items-center',
+    // Internal cluster the toolbar renders its collapsing `<Toolbar.Action>`s
+    // into, placed where the first one appears. It packs left, right after
+    // the static controls, so there is no gap; how many buttons show (the rest
+    // fold into "More") is computed from measured widths, not from flex shrink.
+    base: 'flex items-center',
     variants: {
       size: {
         default: 'gap-2',

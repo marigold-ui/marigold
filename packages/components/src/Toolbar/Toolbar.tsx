@@ -4,7 +4,6 @@ import {
   type ReactNode,
   type Ref,
   isValidElement,
-  useEffect,
   useRef,
 } from 'react';
 import type RAC from 'react-aria-components';
@@ -13,11 +12,11 @@ import { useObjectRef } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 import { Button } from '../Button/Button';
-import { IconButton } from '../IconButton/IconButton';
-import { LinkButton } from '../LinkButton/LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
+import { Tooltip } from '../Tooltip/Tooltip';
 import { EllipsisVertical } from '../icons/EllipsisVertical';
 import type { SlotProps } from '../types';
+import { ToolbarAction, type ToolbarActionProps } from './ToolbarAction';
 import { ToolbarGroup } from './ToolbarGroup';
 import { ToolbarSeparator } from './ToolbarSeparator';
 import { useToolbarOverflow } from './useToolbarOverflow';
@@ -33,14 +32,11 @@ type RemovedProps =
 export interface ToolbarProps
   extends Omit<RAC.ToolbarProps, RemovedProps>, AriaLabelingProps, SlotProps {
   /**
-   * The controls to render — fields, buttons, `Toolbar.Group`,
-   * `Toolbar.Separator`.
-   *
-   * Action buttons (`Button`, `IconButton`, `LinkButton`) collapse, right to
-   * left, into a "More" menu when the bar runs out of room, and return as it
-   * grows. Mark one with `pinned` to keep it visible. Everything else — a
-   * search field, a select, a group — always stays put, so place the inputs
-   * first and the actions last.
+   * The controls to render. Inputs and other elements — a `SearchField`, a
+   * `Select`, a `Toolbar.Group`, a plain `Button` — stay put. Wrap an action in
+   * `<Toolbar.Action>` to let it collapse, right to left, into a "More" menu
+   * when the bar runs out of room, and return as it grows. Place the inputs
+   * first and the collapsing actions last.
    */
   children?: ReactNode;
   /**
@@ -57,38 +53,34 @@ export interface ToolbarProps
 
 interface ToolbarComponent {
   (props: ToolbarProps): ReactNode;
+  Action: typeof ToolbarAction;
   Group: typeof ToolbarGroup;
   Separator: typeof ToolbarSeparator;
 }
 
-// Props read off a collapsing action to mirror it into a menu item.
-interface ActionElementProps {
-  'aria-label'?: string;
-  children?: ReactNode;
-  onPress?: () => void;
-  pinned?: boolean;
+// A collapsing action, normalised from a `<Toolbar.Action>` descriptor.
+interface Action {
+  id: string;
+  text: string;
+  icon?: ReactNode;
+  onAction?: () => void;
+  disabled?: boolean;
 }
 
-const ACTION_TYPES: ReadonlySet<unknown> = new Set([
-  Button,
-  IconButton,
-  LinkButton,
-]);
-
-// A collapsing action: an action-type element the author has not pinned.
-const isAction = (
+// `<Toolbar.Action>` is a descriptor, not a rendered control — match it by
+// identity. Authors write it directly (never wrapped in a `<Tooltip>`), so the
+// type check is reliable, unlike sniffing a real, wrappable `<Button>`.
+const isActionElement = (
   child: ReactNode
-): child is ReactElement<ActionElementProps> =>
-  isValidElement(child) &&
-  ACTION_TYPES.has(child.type) &&
-  (child.props as ActionElementProps).pinned !== true;
+): child is ReactElement<ToolbarActionProps> =>
+  isValidElement(child) && child.type === ToolbarAction;
 
-// Derive an action's menu-item label from its visible text when no `aria-label`.
+// Derive an action's label from its children when no explicit `label` is given.
 const extractText = (node: ReactNode): string => {
   if (node == null || typeof node === 'boolean') return '';
   if (typeof node === 'string' || typeof node === 'number') return String(node);
   if (Array.isArray(node)) return node.map(extractText).join('');
-  if (isValidElement<ActionElementProps>(node))
+  if (isValidElement<{ children?: ReactNode }>(node))
     return extractText(node.props.children);
   return '';
 };
@@ -100,37 +92,31 @@ const ToolbarBase = ({
   ref,
   ...props
 }: ToolbarProps) => {
-  const classNames = useClassNames({ component: 'Toolbar', variant, size });
+  // Dev-only: the APG requires an accessible name so assistive technology can
+  // announce the region. Warned inline (no effect) to keep render idiomatic.
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    !props['aria-label'] &&
+    !props['aria-labelledby']
+  ) {
+    console.warn(
+      'Marigold: <Toolbar> should have an `aria-label` or `aria-labelledby` so assistive technology can announce the region.'
+    );
+  }
 
-  // Dev-only: the APG requires an accessible name. In an effect to keep render pure.
-  const ariaLabel = props['aria-label'];
-  const ariaLabelledby = props['aria-labelledby'];
-  useEffect(() => {
-    if (
-      process.env.NODE_ENV !== 'production' &&
-      !ariaLabel &&
-      !ariaLabelledby
-    ) {
-      console.warn(
-        'Marigold: <Toolbar> should have an `aria-label` or `aria-labelledby` so assistive technology can announce the region.'
-      );
-    }
-  }, [ariaLabel, ariaLabelledby]);
+  const classNames = useClassNames({ component: 'Toolbar', variant, size });
 
   // Object ref so we can both forward and measure it.
   const toolbarRef = useObjectRef(ref);
   const hiddenRef = useRef<HTMLDivElement>(null);
 
   const items = Children.toArray(children);
-  const firstActionIndex = items.findIndex(isAction);
+  const firstActionIndex = items.findIndex(isActionElement);
 
-  const actions = items.filter(isAction).map((element, index) => {
-    const id = element.key ?? `toolbar-action-${index}`;
-    const label =
-      element.props['aria-label'] ||
-      extractText(element.props.children).trim() ||
-      String(id);
-    return { id: String(id), label, onAction: element.props.onPress, element };
+  const actions: Action[] = items.filter(isActionElement).map(element => {
+    const { id, label, icon, onAction, disabled, children } = element.props;
+    const text = (label ?? extractText(children)).trim() || id;
+    return { id, text, icon, onAction, disabled };
   });
 
   const visibleCount = useToolbarOverflow(
@@ -140,6 +126,34 @@ const ToolbarBase = ({
   );
   const visibleActions = actions.slice(0, visibleCount);
   const overflowActions = actions.slice(visibleCount);
+
+  // The toolbar owns the in-bar rendering of an action: an icon-only button with
+  // a tooltip, or a plain text button. Actions always use the Button default
+  // (secondary) variant, so a row of actions stays visually uniform. The same
+  // control is measured (hidden) and shown, so the overflow calc matches what
+  // the user sees.
+  const renderActionButton = (action: Action) =>
+    action.icon ? (
+      <Tooltip.Trigger key={action.id}>
+        <Button
+          size="icon"
+          aria-label={action.text}
+          disabled={action.disabled}
+          onPress={action.onAction}
+        >
+          {action.icon}
+        </Button>
+        <Tooltip>{action.text}</Tooltip>
+      </Tooltip.Trigger>
+    ) : (
+      <Button
+        key={action.id}
+        disabled={action.disabled}
+        onPress={action.onAction}
+      >
+        {action.text}
+      </Button>
+    );
 
   // No collapsing actions → render children untouched, skip the measurement layer.
   if (firstActionIndex === -1) {
@@ -155,7 +169,7 @@ const ToolbarBase = ({
     );
   }
 
-  const pinned = items.filter(item => !isAction(item));
+  const staticItems = items.filter(item => !isActionElement(item));
 
   return (
     <div className="relative w-full">
@@ -166,12 +180,12 @@ const ToolbarBase = ({
         className={cn(classNames.container)}
       >
         {items.map((item, index) => {
-          // The actions cluster takes the slot of the first action and absorbs
-          // the leftover width, so the pinned controls keep their natural size.
+          // All collapsing actions render together where the first one appears,
+          // so they stay contiguous and fold from the right into "More".
           if (index === firstActionIndex) {
             return (
               <div key="toolbar-actions" className={cn(classNames.actions)}>
-                {visibleActions.map(action => action.element)}
+                {visibleActions.map(renderActionButton)}
                 {overflowActions.length > 0 && (
                   <ActionMenu
                     aria-label="More actions"
@@ -180,8 +194,12 @@ const ToolbarBase = ({
                     }
                   >
                     {overflowActions.map(action => (
-                      <ActionMenu.Item key={action.id} id={action.id}>
-                        {action.label}
+                      <ActionMenu.Item
+                        key={action.id}
+                        id={action.id}
+                        isDisabled={action.disabled}
+                      >
+                        {action.text}
                       </ActionMenu.Item>
                     ))}
                   </ActionMenu>
@@ -189,8 +207,8 @@ const ToolbarBase = ({
               </div>
             );
           }
-          // The remaining actions are rendered inside the cluster above.
-          if (isAction(item)) return null;
+          // Remaining actions are rendered in the cluster above.
+          if (isActionElement(item)) return null;
           return item;
         })}
       </RACToolbar>
@@ -205,10 +223,10 @@ const ToolbarBase = ({
         inert
         className="pointer-events-none invisible absolute top-0 left-0 flex w-max items-center gap-2"
       >
-        {pinned.map((item, index) =>
+        {staticItems.map((item, index) =>
           isValidElement(item) ? (
             <span
-              key={`pinned-${index}`}
+              key={`static-${index}`}
               data-toolbar-pinned
               className="inline-flex"
             >
@@ -218,7 +236,7 @@ const ToolbarBase = ({
         )}
         {actions.map(action => (
           <span key={action.id} data-toolbar-action className="inline-flex">
-            {action.element}
+            {renderActionButton(action)}
           </span>
         ))}
         <span data-toolbar-more className="inline-flex">
@@ -232,6 +250,7 @@ const ToolbarBase = ({
 };
 
 export const Toolbar = Object.assign(ToolbarBase, {
+  Action: ToolbarAction,
   Group: ToolbarGroup,
   Separator: ToolbarSeparator,
 }) as ToolbarComponent;

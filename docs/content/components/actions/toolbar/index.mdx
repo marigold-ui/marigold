@@ -18,7 +18,7 @@ import { ToolbarAnatomy } from './toolbar-anatomy';
 - **Controls:** Everything the toolbar holds. Inputs the user reads or types into, like a search field or a filter, and actions they trigger, like buttons.
 - **Group:** An optional cluster of related controls, announced as a unit so the row reads as a few groups instead of one long run.
 - **Separator:** A quiet vertical line that sets one cluster of controls apart from the next.
-- **More:** When the bar runs out of room, its action buttons fold into this single overflow menu, and return as space allows.
+- **More:** When the bar runs out of room, its collapsing actions (each a `<Toolbar.Action>`) fold into this single overflow menu, and return as space allows.
 
 ## Appearance
 
@@ -48,21 +48,29 @@ When a toolbar carries several kinds of action, cluster the related ones so the 
 
 Give every group a name, since that name is what tells assistive technology where one cluster ends and the next begins. Separators are decorative, so don't lean on them alone to convey the grouping.
 
+### Bringing different controls together
+
+A toolbar is not just a row of buttons. Any single, focusable control belongs in it — a search field, a [`<Switch>`](/components/form/switch), a [`<Select>`](/components/form/select), a [`<Menu>`](/components/overlay/menu) — and each joins the same single tab stop, reachable with the arrow keys. Mix them as the view needs.
+
+<ComponentDemo name="toolbar-mixed" />
+
+Keep the controls a user reads or sets — search, filters, toggles — on the left, and the actions that operate on the view on the right. Only `<Toolbar.Action>`s collapse when space runs short; inputs, toggles and menus keep their place, since a stateful control or one that opens its own overlay can't fold into a menu item. Composite, arrow-key-driven controls — a `<RadioGroup>`, a `<TagGroup>` — are best wrapped in a `<Toolbar.Group>` so their own navigation reads as a single stop.
+
 ### Letting actions collapse when space runs short
 
-A toolbar should never wrap onto a second line or scroll sideways. Its action buttons handle this on their own: when the bar runs out of room they fold in from the right, one at a time, into a single **More** menu — reappearing as the bar grows. You don't wire anything up; just place the buttons in the toolbar.
+A toolbar should never wrap onto a second line or scroll sideways. Wrap each collapsing action in a `<Toolbar.Action>`: when the bar runs out of room they fold in from the right, one at a time, into a single **More** menu — reappearing as the bar grows. A `<Toolbar.Action>` is a _description_ of an action, not a rendered button, and that is what lets the toolbar show it as a button in the bar or as an item in the menu, whichever fits.
 
 <ComponentDemo name="toolbar-overflow" />
 
-Only buttons collapse, and only from the right. The inputs you place alongside them — a search field, a filter, a separator — keep their place, so put the controls that must stay visible on the left and the actions last. Order the actions by how often they are used, because the least-used ones are the first to disappear. If one action must always stay visible — a primary **Save**, say — mark it `pinned` and it will never move into the menu.
+Only `<Toolbar.Action>`s collapse, and only from the right. Anything else in the bar — a search field, a filter, a separator, even a plain `<Button>` — keeps its place, so put the controls that must stay visible on the left and the collapsing actions last. Order the actions by how often they are used, because the least-used ones are the first to disappear. To keep an action always visible — a primary **Save**, say — use a plain `<Button>` rather than a `<Toolbar.Action>`.
 
 ### Accessible labels
 
-Compact toolbars lean on icon-only buttons, and an icon on its own has no text for assistive technology to read.
+Compact toolbars lean on icon-only actions, and an icon on its own has no text for assistive technology to read. Give a `<Toolbar.Action>` an `icon` and a `label` and the toolbar does the rest: it renders an icon-only button, sets the `label` as its `aria-label`, pairs it with a [`<Tooltip>`](/components/overlay/tooltip) so sighted users find the same label on hover or focus, and reuses that `label` if the action later collapses into the **More** menu.
 
 <ComponentDemo name="toolbar-labels" />
 
-Give every icon-only button an `aria-label` with a short action phrase like `Download report`, and pair it with a [`<Tooltip>`](/components/overlay/tooltip) so sighted users find the same label on hover or focus. The two serve different audiences and both are needed. Name the toolbar itself as well, and make the name specific when the toolbar repeats per row, like `Actions for {item.name}`.
+The `label` is required for an icon action — it is the only text assistive technology has, so make it a short action phrase like `Download report`. Name the toolbar itself as well, and make the name specific when the toolbar repeats per row, like `Actions for {item.name}`.
 
 <Callout title="Keep it accessible">
   A tooltip is not a replacement for an `aria-label`. Tooltips are not reliably
@@ -82,6 +90,10 @@ On a long, scrolling view it often helps to pin the toolbar to the top so its se
 ### Toolbar
 
 <AutoTypeTable path="Toolbar/Toolbar" name="ToolbarProps" />
+
+### Toolbar.Action
+
+<AutoTypeTable path="Toolbar/ToolbarAction" name="ToolbarActionProps" />
 
 ### Toolbar.Group
 

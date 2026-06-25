@@ -1,10 +1,12 @@
 import type { ReactNode } from 'react';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
-import { ListFilter } from '@marigold/icons';
+import { Download, ListFilter, Share2, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
+import { Menu } from '../Menu/Menu';
 import { SearchField } from '../SearchField/SearchField';
 import { Select } from '../Select/Select';
+import { Switch } from '../Switch/Switch';
 import { Toolbar } from './Toolbar';
 
 const meta = preview.meta({
@@ -108,6 +110,43 @@ export const Groups = meta.story({
   },
 });
 
+// A toolbar is not just buttons: a search field, a switch and a menu all join
+// the single tab stop and rove with the arrow keys, alongside collapsing actions.
+export const MixedControls = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Toolbar aria-label="Library">
+      <SearchField
+        aria-label="Search library"
+        placeholder="Search"
+        width={40}
+      />
+      <Switch label="Show archived" />
+      <Menu label="Sort">
+        <Menu.Item id="name">Name</Menu.Item>
+        <Menu.Item id="date">Date modified</Menu.Item>
+        <Menu.Item id="size">Size</Menu.Item>
+      </Menu>
+      <Toolbar.Separator />
+      <Toolbar.Action id="import">Import</Toolbar.Action>
+      <Toolbar.Action id="export">Export</Toolbar.Action>
+    </Toolbar>
+  ),
+  play: async ({ canvas }) => {
+    // One tab stop; arrow keys rove across every kind of control in order.
+    const search = canvas.getByRole('searchbox');
+    search.focus();
+    await userEvent.keyboard('{ArrowRight}');
+    await expect(canvas.getByRole('switch')).toHaveFocus();
+    await userEvent.keyboard('{ArrowRight}');
+    await expect(canvas.getByRole('button', { name: 'Sort' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowRight}');
+    await expect(canvas.getByRole('button', { name: 'Import' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowRight}');
+    await expect(canvas.getByRole('button', { name: 'Export' })).toHaveFocus();
+  },
+});
+
 // Resizable wrapper: drag to see overflow live; driven by width in play.
 const ResizableContainer = ({
   width,
@@ -134,7 +173,8 @@ const ResizableContainer = ({
 
 const OVERFLOW_ACTIONS = ['Export', 'Duplicate', 'Archive', 'Share', 'Delete'];
 
-// Trailing buttons collapse right-to-left into "More" when narrow; search stays.
+// `Toolbar.Action`s collapse right-to-left into "More" when narrow; the search
+// field, a plain element, always stays.
 export const Overflow = meta.story({
   tags: ['component-test'],
   render: () => (
@@ -143,7 +183,9 @@ export const Overflow = meta.story({
         <SearchField aria-label="Search" placeholder="Search" width={24} />
         <Toolbar.Separator />
         {OVERFLOW_ACTIONS.map(label => (
-          <Button key={label}>{label}</Button>
+          <Toolbar.Action key={label} id={label}>
+            {label}
+          </Toolbar.Action>
         ))}
       </Toolbar>
     </ResizableContainer>
@@ -177,16 +219,18 @@ export const Overflow = meta.story({
   },
 });
 
-const PINNED_FREE_ACTIONS = ['New', 'Edit', 'Copy', 'Move', 'Delete'];
+const ACTIONS_ONLY = ['New', 'Edit', 'Copy', 'Move', 'Delete'];
 
-// Buttons-only toolbar: exercises the overflow path with nothing pinned.
-export const OverflowWithoutPinned = meta.story({
+// Actions-only toolbar: exercises the overflow path with no static controls.
+export const OverflowActionsOnly = meta.story({
   tags: ['component-test'],
   render: () => (
     <ResizableContainer width={240}>
       <Toolbar aria-label="Row actions">
-        {PINNED_FREE_ACTIONS.map(label => (
-          <Button key={label}>{label}</Button>
+        {ACTIONS_ONLY.map(label => (
+          <Toolbar.Action key={label} id={label}>
+            {label}
+          </Toolbar.Action>
         ))}
       </Toolbar>
     </ResizableContainer>
@@ -210,35 +254,68 @@ export const OverflowWithoutPinned = meta.story({
 
     const stillVisible = canvas
       .getAllByRole('button')
-      .filter(button => PINNED_FREE_ACTIONS.includes(button.textContent ?? ''));
-    await expect(stillVisible.length).toBeLessThan(PINNED_FREE_ACTIONS.length);
+      .filter(button => ACTIONS_ONLY.includes(button.textContent ?? ''));
+    await expect(stillVisible.length).toBeLessThan(ACTIONS_ONLY.length);
   },
 });
 
-// A `pinned` action never collapses, even when the others fold into "More".
-export const PinnedAction = meta.story({
+const ICON_ACTION_LABELS = ['Download report', 'Share report', 'Delete report'];
+
+// Icon actions: from a `<Toolbar.Action>` with an `icon` + `label`, the toolbar
+// renders an icon-only button whose accessible name is the label (and pairs it
+// with a tooltip). When narrow, they collapse from the right into "More".
+export const IconActions = meta.story({
   tags: ['component-test'],
   render: () => (
-    <ResizableContainer width={240}>
-      <Toolbar aria-label="Record actions">
-        <Button>Export</Button>
-        <Button>Duplicate</Button>
-        <Button>Archive</Button>
-        <Button>Share</Button>
-        <Button pinned>Save</Button>
+    <ResizableContainer width={220}>
+      <Toolbar aria-label="Report actions">
+        <SearchField
+          aria-label="Search reports"
+          placeholder="Search"
+          width={24}
+        />
+        <Toolbar.Separator />
+        <Toolbar.Action
+          id="download"
+          label="Download report"
+          icon={<Download />}
+        />
+        <Toolbar.Action id="share" label="Share report" icon={<Share2 />} />
+        <Toolbar.Action id="delete" label="Delete report" icon={<Trash2 />} />
       </Toolbar>
     </ResizableContainer>
   ),
   play: async ({ canvas }) => {
-    const toolbar = canvas.getByRole('toolbar', { name: 'Record actions' });
+    const toolbar = canvas.getByRole('toolbar', { name: 'Report actions' });
     const container = toolbar.closest('[style*="resize"]') as HTMLElement;
 
-    container.style.width = '200px';
-    await canvas.findByRole('button', { name: 'More actions' });
+    // Wide: every icon action is a button carrying its label as accessible name.
+    container.style.width = '640px';
+    await waitFor(() => {
+      expect(
+        canvas.getByRole('button', { name: 'Download report' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('button', { name: 'Delete report' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.queryByRole('button', { name: 'More actions' })
+      ).not.toBeInTheDocument();
+    });
 
-    await waitFor(() =>
-      expect(toolbar.scrollWidth).toBeLessThanOrEqual(toolbar.clientWidth + 1)
-    );
-    await expect(canvas.getByRole('button', { name: 'Save' })).toBeVisible();
+    // Narrow: actions collapse from the right into "More" (their menu items are
+    // built from the same descriptors), and the bar never overflows.
+    container.style.width = '160px';
+    await canvas.findByRole('button', { name: 'More actions' });
+    await waitFor(() => {
+      expect(toolbar.scrollWidth).toBeLessThanOrEqual(toolbar.clientWidth + 1);
+
+      const visibleIconButtons = canvas
+        .getAllByRole('button')
+        .filter(button =>
+          ICON_ACTION_LABELS.includes(button.getAttribute('aria-label') ?? '')
+        );
+      expect(visibleIconButtons.length).toBeLessThan(ICON_ACTION_LABELS.length);
+    });
   },
 });

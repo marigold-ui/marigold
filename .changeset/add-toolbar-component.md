@@ -9,11 +9,13 @@ Adds a composable, accessible `Toolbar` for grouping mixed interactive controls
 (buttons, `SearchField`, `Select`, `TagGroup`, ...) with a single tab stop and
 arrow-key roving focus (`role="toolbar"`, horizontal orientation).
 
-- Action buttons (`Button`, `IconButton`, `LinkButton`) placed in the toolbar
-  collapse, right to left, into a "More" menu (measured automatically) when the
-  bar runs out of width, and return as space allows. Other controls, such as a
-  `SearchField` or `Select`, stay put — so place inputs on the left. Mark an
-  action `pinned` to keep it visible even when the others collapse.
+- `Toolbar.Action` describes a collapsing action. The toolbar renders it as a
+  button in the bar or, when space runs short, as an item in an automatically
+  measured "More" menu — folding right to left and returning as space allows.
+  Give it an `icon` and a `label` and the toolbar wires up an icon-only button,
+  its `aria-label`, and a tooltip for you. Everything else in the bar — a
+  `SearchField`, a `Select`, a plain `Button` — stays put, so place the inputs
+  first and use a plain `Button` for any action that must always stay visible.
 - `Toolbar.Group` clusters related controls with `role="group"` and an
   `aria-label`, and can cascade `disabled` to nested buttons.
 - `Toolbar.Separator` renders a vertical divider (`role="separator"`) between

@@ -5,7 +5,7 @@ import {
   Basic,
   GroupDisabled,
   Groups,
-  PinnedAction,
+  IconActions,
   WithoutAccessibleName,
 } from './Toolbar.stories';
 
@@ -44,12 +44,19 @@ test('renders trailing buttons as visible actions, not collapsed', () => {
   ).not.toBeInTheDocument();
 });
 
-test('renders a pinned action as a regular button, not in a menu', () => {
-  render(<PinnedAction.Component />);
+test('renders an icon action as a button labelled by its `label`', () => {
+  render(<IconActions.Component />);
 
-  expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+  // With room for all (the measurement layer reports no overflow), each icon
+  // action is a button whose accessible name comes from its `label`.
   expect(
-    screen.queryByRole('menuitem', { name: 'Save' })
+    screen.getByRole('button', { name: 'Download report' })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: 'Delete report' })
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: 'More actions' })
   ).not.toBeInTheDocument();
 });
 

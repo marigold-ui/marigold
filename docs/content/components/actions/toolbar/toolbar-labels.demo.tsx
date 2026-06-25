@@ -1,4 +1,4 @@
-import { Button, SearchField, Toolbar, Tooltip } from '@marigold/components';
+import { SearchField, Toolbar } from '@marigold/components';
 import { Download, Share2, Trash2 } from '@marigold/icons';
 
 export default () => (
@@ -9,27 +9,8 @@ export default () => (
       width={56}
     />
     <Toolbar.Separator />
-    <Tooltip.Trigger>
-      <Button variant="ghost" size="icon" aria-label="Download report">
-        <Download />
-      </Button>
-      <Tooltip>Download report</Tooltip>
-    </Tooltip.Trigger>
-    <Tooltip.Trigger>
-      <Button variant="ghost" size="icon" aria-label="Share report">
-        <Share2 />
-      </Button>
-      <Tooltip>Share report</Tooltip>
-    </Tooltip.Trigger>
-    <Tooltip.Trigger>
-      <Button
-        variant="destructive-ghost"
-        size="icon"
-        aria-label="Delete report"
-      >
-        <Trash2 />
-      </Button>
-      <Tooltip>Delete report</Tooltip>
-    </Tooltip.Trigger>
+    <Toolbar.Action id="download" label="Download report" icon={<Download />} />
+    <Toolbar.Action id="share" label="Share report" icon={<Share2 />} />
+    <Toolbar.Action id="delete" label="Delete report" icon={<Trash2 />} />
   </Toolbar>
 );

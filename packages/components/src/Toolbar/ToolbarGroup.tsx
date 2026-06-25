@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
+import { Group } from 'react-aria-components/Group';
 import { Provider } from 'react-aria-components/slots';
 import { cn, useClassNames } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
@@ -49,9 +50,9 @@ export const ToolbarGroup = ({
 
   return (
     <Provider values={[[ButtonContext, ctx]]}>
-      <div role="group" className={cn(classNames.group)} {...props}>
+      <Group className={cn(classNames.group)} {...props}>
         {children}
-      </div>
+      </Group>
     </Provider>
   );
 };

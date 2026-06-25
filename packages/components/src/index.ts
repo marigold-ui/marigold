@@ -336,6 +336,7 @@ export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
 
 export { Toolbar } from './Toolbar/Toolbar';
 export type { ToolbarProps } from './Toolbar/Toolbar';
+export type { ToolbarActionProps } from './Toolbar/ToolbarAction';
 export type { ToolbarGroupProps } from './Toolbar/ToolbarGroup';
 export type { ToolbarSeparatorProps } from './Toolbar/ToolbarSeparator';
 
