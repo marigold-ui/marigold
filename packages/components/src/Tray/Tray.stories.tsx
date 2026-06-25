@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
-import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tray } from './Tray';
