@@ -60,18 +60,6 @@ export interface TextFieldProps
   readOnly?: RAC.TextFieldProps['isReadOnly'];
 
   /**
-   * The minimum value for the input field.
-   * @default none
-   */
-  min?: HTMLInputElement['min'];
-
-  /**
-   * The maximum value for the input field.
-   * @default none
-   */
-  max?: HTMLInputElement['max'];
-
-  /**
    * The value of the input field.
    * @default none
    */
