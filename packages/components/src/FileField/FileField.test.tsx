@@ -2,8 +2,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { makeFile } from './../test.utils';
 import { Basic, MultipleFileUpload } from './FileField.stories';
+import { makeFile } from './makeFile';
 
 test('renders default labels (en) for dropzone and button', () => {
   render(<Basic.Component label="Label" />);
