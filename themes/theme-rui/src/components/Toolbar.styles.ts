@@ -22,10 +22,12 @@ export const Toolbar: ThemeComponent<'Toolbar'> = {
     base: 'flex items-center gap-1',
   }),
   actions: cva({
-    // Takes the space left by the pinned controls and right-aligns the actions;
-    // `min-w-0` lets this region (not the pinned controls) shrink so its buttons
-    // collapse into the "More" menu. `relative` anchors the measurement layer.
-    base: 'relative flex min-w-0 flex-1 items-center justify-end',
+    // Takes the space left by the pinned controls so this region (not the pinned
+    // controls) is the one that shrinks, collapsing its buttons into the "More"
+    // menu; `min-w-0` allows that shrink and `relative` anchors the measurement
+    // layer. Actions stay packed next to the pinned controls — no forced
+    // right-alignment, so there is no gap when the bar is wide.
+    base: 'relative flex min-w-0 flex-1 items-center',
     variants: {
       size: {
         default: 'gap-2',
