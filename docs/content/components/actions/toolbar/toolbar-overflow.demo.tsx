@@ -9,9 +9,11 @@ export default () => (
     <Toolbar aria-label="Document actions">
       <SearchField aria-label="Search" placeholder="Search" width={40} />
       <Toolbar.Separator />
-      {actions.map(label => (
-        <Button key={label}>{label}</Button>
-      ))}
+      <Toolbar.Actions>
+        {actions.map(label => (
+          <Button key={label}>{label}</Button>
+        ))}
+      </Toolbar.Actions>
     </Toolbar>
   </div>
 );

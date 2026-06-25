@@ -142,9 +142,11 @@ export const Overflow = meta.story({
       <Toolbar aria-label="Document actions">
         <SearchField aria-label="Search" placeholder="Search" width={24} />
         <Toolbar.Separator />
-        {OVERFLOW_ACTIONS.map(label => (
-          <Button key={label}>{label}</Button>
-        ))}
+        <Toolbar.Actions>
+          {OVERFLOW_ACTIONS.map(label => (
+            <Button key={label}>{label}</Button>
+          ))}
+        </Toolbar.Actions>
       </Toolbar>
     </ResizableContainer>
   ),
@@ -185,9 +187,11 @@ export const OverflowWithoutPinned = meta.story({
   render: () => (
     <ResizableContainer width={240}>
       <Toolbar aria-label="Row actions">
-        {PINNED_FREE_ACTIONS.map(label => (
-          <Button key={label}>{label}</Button>
-        ))}
+        <Toolbar.Actions>
+          {PINNED_FREE_ACTIONS.map(label => (
+            <Button key={label}>{label}</Button>
+          ))}
+        </Toolbar.Actions>
       </Toolbar>
     </ResizableContainer>
   ),
