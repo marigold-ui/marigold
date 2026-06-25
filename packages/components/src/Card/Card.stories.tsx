@@ -135,7 +135,8 @@ export const Basic = meta.story({
   ),
 });
 
-export const Stretch = Basic.extend({
+export const Stretch = meta.story({
+  ...Basic.input,
   args: {
     stretch: true,
   },

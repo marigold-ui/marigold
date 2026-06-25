@@ -1,8 +1,5 @@
-import { CalendarDate } from '@internationalized/date';
-import { render } from '@testing-library/react';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { TwoMonths } from '@marigold/components';
 import { Checkbox } from './Checkbox';
 
 const meta = preview.meta({
