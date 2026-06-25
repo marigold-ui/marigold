@@ -10,7 +10,6 @@ export interface FileTriggerProps extends Omit<
   RemovedProps
 > {
   allowsMultiple?: RAC.FileTriggerProps['allowsMultiple'];
-  acceptedFileType?: RAC.FileTriggerProps['acceptedFileTypes'];
   acceptDirectory?: RAC.FileTriggerProps['acceptDirectory'];
   onSelect?: RAC.FileTriggerProps['onSelect'];
   /**

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
-import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tray } from './Tray';
@@ -45,17 +44,15 @@ export const Basic = meta.story({
       <Tray {...args}>
         <Tray.Title>Tray Title</Tray.Title>
         <Tray.Content>
-          <Inset p={4}>
-            <Text>
-              This is a tray component that slides in from the bottom of the
-              screen. It's useful for mobile-friendly interactions and quick
-              actions.
-            </Text>
-            <Text>
-              Trays are commonly used for filters, settings, or contextual menus
-              on mobile devices.
-            </Text>
-          </Inset>
+          <Text>
+            This is a tray component that slides in from the bottom of the
+            screen. It's useful for mobile-friendly interactions and quick
+            actions.
+          </Text>
+          <Text>
+            Trays are commonly used for filters, settings, or contextual menus
+            on mobile devices.
+          </Text>
         </Tray.Content>
         <Tray.Actions>
           <Button slot="close">Close</Button>
@@ -118,13 +115,11 @@ export const DismissControlsWithCallbacks = meta.story({
           <Tray {...args} dismissable keyboardDismissable>
             <Tray.Title>Dismiss Controls</Tray.Title>
             <Tray.Content>
-              <Inset p={4}>
-                <Text>
-                  This tray demonstrates all dismiss methods with callback
-                  hooks. Try closing it via the close button, pressing Escape,
-                  or clicking the backdrop.
-                </Text>
-              </Inset>
+              <Text>
+                This tray demonstrates all dismiss methods with callback hooks.
+                Try closing it via the close button, pressing Escape, or
+                clicking the backdrop.
+              </Text>
             </Tray.Content>
             <Tray.Actions>
               <Button slot="close">Cancel</Button>

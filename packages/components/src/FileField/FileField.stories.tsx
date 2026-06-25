@@ -5,7 +5,7 @@ import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
 import { FileField } from './FileField';
-import { makeFile } from '../test.utils';
+import { makeFile } from './makeFile';
 
 const meta = preview.meta({
   title: 'Components/FileField',

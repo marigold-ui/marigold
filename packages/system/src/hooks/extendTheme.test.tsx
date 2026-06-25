@@ -84,8 +84,8 @@ test('Accepting styles for component with multiple slots', () => {
           <Tabs.Item id="1">tab1</Tabs.Item>
           <Tabs.Item id="2">tab2</Tabs.Item>
         </Tabs.List>
-        <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-        <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
+        <Tabs.Panel id="1">tab-1 content</Tabs.Panel>
+        <Tabs.Panel id="2">tab-2 content</Tabs.Panel>
       </Tabs>
     </ThemeProvider>
   );
@@ -126,8 +126,8 @@ test('Should support new variant and existing size', () => {
           <Tabs.Item id="1">tab1</Tabs.Item>
           <Tabs.Item id="2">tab2</Tabs.Item>
         </Tabs.List>
-        <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-        <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
+        <Tabs.Panel id="1">tab-1 content</Tabs.Panel>
+        <Tabs.Panel id="2">tab-2 content</Tabs.Panel>
       </Tabs>
     </ThemeProvider>
   );

@@ -283,3 +283,84 @@
     background-color: var(--color-scrollbar-hover);
   }
 }
+
+/* ========================= */
+/*        Scroll Mask        */
+/* ========================= */
+
+/*
+ * Registered so the fade widths can interpolate. Unregistered custom properties
+ * animate discretely (the browser treats them as untyped strings), so a
+ * `<length>` syntax is required for the scroll-driven fade to be smooth.
+ */
+@property --sc-mask-left {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --sc-mask-right {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes sc-reveal-left {
+  from {
+    --sc-mask-left: 0px;
+  }
+  to {
+    --sc-mask-left: var(--sc-mask-width);
+  }
+}
+@keyframes sc-hide-right {
+  from {
+    --sc-mask-right: var(--sc-mask-width);
+  }
+  to {
+    --sc-mask-right: 0px;
+  }
+}
+
+/*
+ * Horizontal "more content" affordance for a scrollable row: fades the leading
+ * and trailing edges in/out based on scroll position so the user can tell more
+ * items are hidden. Pure CSS via scroll-driven animations.
+ *
+ * Progressive enhancement: the fade (and scrollbar hiding) live behind
+ * `@supports`, so non-supporting browsers (e.g. Firefox) fall back to a plain
+ * scroll container with a native scrollbar — the affordance is preserved, just
+ * not as a fade. The fade is scroll-linked (driven by the user's own scroll,
+ * not autonomous), so it is intentionally not gated by `prefers-reduced-motion`.
+ */
+@utility ui-scroll-mask-x {
+  --sc-mask-width: 2.5rem;
+  --sc-scroll-buffer: 1.5rem;
+
+  overflow-x: auto;
+
+  @supports (animation-timeline: scroll()) {
+    /* Hide the scrollbar only where the fade can stand in for it. */
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    --sc-mask: linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--sc-mask-left),
+      #000 calc(100% - var(--sc-mask-right)),
+      transparent 100%
+    );
+    -webkit-mask-image: var(--sc-mask);
+    mask-image: var(--sc-mask);
+
+    animation:
+      sc-reveal-left linear both,
+      sc-hide-right linear both;
+    animation-timeline: scroll(self inline), scroll(self inline);
+    animation-range:
+      0 var(--sc-scroll-buffer),
+      calc(100% - var(--sc-scroll-buffer)) 100%;
+  }
+}
