@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { ListFilter } from '@marigold/icons';
@@ -118,27 +119,39 @@ export const Groups = meta.story({
   },
 });
 
+// A resizable wrapper so the overflow effect can be seen live in the docs (drag
+// the bottom-right corner) and driven programmatically in the play functions.
+const ResizableContainer = ({
+  width,
+  children,
+}: {
+  width: number;
+  children: ReactNode;
+}) => (
+  <div
+    style={{
+      width,
+      minWidth: 160,
+      maxWidth: '100%',
+      resize: 'horizontal',
+      overflow: 'auto',
+      padding: 8,
+      border: '1px dashed var(--color-border, #ccc)',
+      borderRadius: 8,
+    }}
+  >
+    {children}
+  </div>
+);
+
 const OVERFLOW_ACTIONS = ['Export', 'Duplicate', 'Archive', 'Share', 'Delete'];
 
 // Trailing buttons collapse, right to left, into the "More" menu when the bar
-// is too narrow; the pinned SearchField stays put. The container is resizable —
-// drag its bottom-right corner to watch actions collapse and reappear live.
-// Runs in a real browser where width measurement works.
+// is too narrow; the pinned SearchField stays put.
 export const Overflow = meta.story({
   tags: ['component-test'],
   render: () => (
-    <div
-      style={{
-        width: 280,
-        minWidth: 200,
-        maxWidth: '100%',
-        resize: 'horizontal',
-        overflow: 'auto',
-        padding: 8,
-        border: '1px dashed var(--color-border, #ccc)',
-        borderRadius: 8,
-      }}
-    >
+    <ResizableContainer width={280}>
       <Toolbar aria-label="Document actions">
         <SearchField aria-label="Search" placeholder="Search" width={24} />
         <Toolbar.Separator />
@@ -146,7 +159,7 @@ export const Overflow = meta.story({
           <Button key={label}>{label}</Button>
         ))}
       </Toolbar>
-    </div>
+    </ResizableContainer>
   ),
   play: async ({ canvas }) => {
     const toolbar = canvas.getByRole('toolbar');
@@ -186,24 +199,13 @@ const PINNED_FREE_ACTIONS = ['New', 'Edit', 'Copy', 'Move', 'Delete'];
 export const OverflowWithoutPinned = meta.story({
   tags: ['component-test'],
   render: () => (
-    <div
-      style={{
-        width: 240,
-        minWidth: 160,
-        maxWidth: '100%',
-        resize: 'horizontal',
-        overflow: 'auto',
-        padding: 8,
-        border: '1px dashed var(--color-border, #ccc)',
-        borderRadius: 8,
-      }}
-    >
+    <ResizableContainer width={240}>
       <Toolbar aria-label="Row actions">
         {PINNED_FREE_ACTIONS.map(label => (
           <Button key={label}>{label}</Button>
         ))}
       </Toolbar>
-    </div>
+    </ResizableContainer>
   ),
   play: async ({ canvas }) => {
     const toolbar = canvas.getByRole('toolbar', { name: 'Row actions' });
