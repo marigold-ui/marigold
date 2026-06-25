@@ -155,24 +155,31 @@
   /*       ELEVATION      */
   /* ==================== */
   /*
-    Three-tier shadow hierarchy (https://www.joshwcomeau.com/shadow-palette/):
+    Three-tier shadow hierarchy:
       border:  small interactive controls (Input, Checkbox, Radio, Switch, Tag, Button)
       raised:  container surfaces (Card, Accordion)
       overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
+
+    The ui-surface ring owns the crisp edge, so these carry only lift. Tuned
+    "crisp": tight offsets + negative spread keep each shadow contained inside
+    its own footprint, so a dense field of elevated elements stays calm instead
+    of bleeding into a haze. Light from above (positive y, no x), low contact
+    alpha, and a warm charcoal-hued tint (instead of pure black) so the lift
+    sits into the warm-neutral ground rather than punching against it.
   */
   --shadow-elevation-border:
-    0px 0.3px 0.3px oklch(0 0 0 / 0.14), 0px 1px 1.2px -3px oklch(0 0 0 / 0.12);
+    0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
+    0px 1px 2px -1px oklch(0.15 0.02 54 / 0.063);
 
   --shadow-elevation-raised:
-    0px 0.3px 0.8px oklch(0 0 0 / 0.28),
-    0px 1.4px 1.3px -2px oklch(0 0 0 / 0.21),
-    0px 6.7px 6px -4px oklch(0 0 0 / 0.15);
+    0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
+    0px 2px 4px -2px oklch(0.15 0.02 54 / 0.09),
+    0px 6px 10px -5px oklch(0.15 0.02 54 / 0.063);
 
   --shadow-elevation-overlay:
-    0px 0.1px 0.1px oklch(0 0 0 / 0.32),
-    0px 1px 0.9px -1.3px oklch(0 0 0 / 0.26),
-    -0.1px 4px 3.6px -2.7px oklch(0 0 0 / 0.2),
-    -0.2px 12px 10.8px -4px oklch(0 0 0 / 0.14);
+    0px 1px 2px -1px oklch(0.15 0.02 54 / 0.126),
+    0px 4px 8px -3px oklch(0.15 0.02 54 / 0.099),
+    0px 12px 22px -8px oklch(0.15 0.02 54 / 0.081);
 
   /* ==================== */
   /*        SPACING       */

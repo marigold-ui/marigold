@@ -16,3 +16,5 @@ Two deliberate properties of the new hairline:
 The opaque `--color-border` token is unchanged and still used for dividers/decoration on a known surface (table rows, panel section rules), which sit on white and have no ground to adapt to.
 
 Visually: the subtle 1px border gradient/bevel is intentionally dropped (a flat ring cannot gradient), the resting edge is a touch softer (translucent vs. opaque charcoal-300), and corners antialias slightly differently. `ui-surface-contrast` keeps its existing gradient treatment.
+
+The three elevation tokens (`--shadow-elevation-border/raised/overlay`) are retuned to match. Now that the ring owns the crisp edge, the shadows carry only lift: the harsh contact layer (previously up to `0.32` alpha) is cut sharply and the darkness spread across lighter layers, lit from above with negative spread so each shadow stays contained inside its own footprint — a dense field of elevated elements stays calm instead of bleeding into a haze. The shadow color is tinted to the warm charcoal hue instead of pure black so the lift sits into the warm-neutral ground.
