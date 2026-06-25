@@ -5,6 +5,7 @@ import {
   Basic,
   GroupDisabled,
   Groups,
+  PinnedAction,
   WithoutAccessibleName,
 } from './Toolbar.stories';
 
@@ -40,6 +41,15 @@ test('renders trailing buttons as visible actions, not collapsed', () => {
   ).toBeInTheDocument();
   expect(
     screen.queryByRole('button', { name: 'More actions' })
+  ).not.toBeInTheDocument();
+});
+
+test('renders a pinned action as a regular button, not in a menu', () => {
+  render(<PinnedAction.Component />);
+
+  expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+  expect(
+    screen.queryByRole('menuitem', { name: 'Save' })
   ).not.toBeInTheDocument();
 });
 

@@ -33,6 +33,12 @@ export interface LinkButtonProps extends Omit<RAC.LinkProps, RemovedProps> {
    * @default false
    */
   disabled?: RAC.LinkProps['isDisabled'];
+  /**
+   * Keep this button visible when placed directly in a `<Toolbar>`, so it never
+   * collapses into the toolbar's "More" menu. Ignored outside a `<Toolbar>`.
+   * @default false
+   */
+  pinned?: boolean;
   ref?: Ref<HTMLAnchorElement>;
 }
 
@@ -44,6 +50,7 @@ const _LinkButton = ({
   fullWidth,
   ref,
   slot,
+  pinned,
   ...props
 }: LinkButtonProps) => {
   // `useSlottedContext` (not `useContextProps`) sidesteps the anchor/button
@@ -67,6 +74,7 @@ const _LinkButton = ({
       {...props}
       ref={ref}
       slot={slot}
+      data-pinned={pinned || undefined}
       className={cn(
         ctx?.className,
         classNames,

@@ -142,11 +142,9 @@ export const Overflow = meta.story({
       <Toolbar aria-label="Document actions">
         <SearchField aria-label="Search" placeholder="Search" width={24} />
         <Toolbar.Separator />
-        <Toolbar.Actions>
-          {OVERFLOW_ACTIONS.map(label => (
-            <Button key={label}>{label}</Button>
-          ))}
-        </Toolbar.Actions>
+        {OVERFLOW_ACTIONS.map(label => (
+          <Button key={label}>{label}</Button>
+        ))}
       </Toolbar>
     </ResizableContainer>
   ),
@@ -187,11 +185,9 @@ export const OverflowWithoutPinned = meta.story({
   render: () => (
     <ResizableContainer width={240}>
       <Toolbar aria-label="Row actions">
-        <Toolbar.Actions>
-          {PINNED_FREE_ACTIONS.map(label => (
-            <Button key={label}>{label}</Button>
-          ))}
-        </Toolbar.Actions>
+        {PINNED_FREE_ACTIONS.map(label => (
+          <Button key={label}>{label}</Button>
+        ))}
       </Toolbar>
     </ResizableContainer>
   ),
@@ -216,5 +212,33 @@ export const OverflowWithoutPinned = meta.story({
       .getAllByRole('button')
       .filter(button => PINNED_FREE_ACTIONS.includes(button.textContent ?? ''));
     await expect(stillVisible.length).toBeLessThan(PINNED_FREE_ACTIONS.length);
+  },
+});
+
+// A `pinned` action never collapses, even when the others fold into "More".
+export const PinnedAction = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <ResizableContainer width={240}>
+      <Toolbar aria-label="Record actions">
+        <Button>Export</Button>
+        <Button>Duplicate</Button>
+        <Button>Archive</Button>
+        <Button>Share</Button>
+        <Button pinned>Save</Button>
+      </Toolbar>
+    </ResizableContainer>
+  ),
+  play: async ({ canvas }) => {
+    const toolbar = canvas.getByRole('toolbar', { name: 'Record actions' });
+    const container = toolbar.closest('[style*="resize"]') as HTMLElement;
+
+    container.style.width = '200px';
+    await canvas.findByRole('button', { name: 'More actions' });
+
+    await waitFor(() =>
+      expect(toolbar.scrollWidth).toBeLessThanOrEqual(toolbar.clientWidth + 1)
+    );
+    await expect(canvas.getByRole('button', { name: 'Save' })).toBeVisible();
   },
 });

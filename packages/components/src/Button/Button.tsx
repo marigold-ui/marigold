@@ -45,6 +45,12 @@ export interface ButtonProps
    * This disables press and hover events while retaining focusability, and announces the loading state to screen readers.
    */
   loading?: RAC.ButtonProps['isPending'];
+  /**
+   * Keep this button visible when placed directly in a `<Toolbar>`, so it never
+   * collapses into the toolbar's "More" menu. Ignored outside a `<Toolbar>`.
+   * @default false
+   */
+  pinned?: boolean;
   ref?: Ref<HTMLButtonElement>;
 }
 
@@ -66,6 +72,7 @@ const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
     loading,
     fullWidth,
     className,
+    pinned,
     ...props
   } = merged;
 
@@ -79,6 +86,7 @@ const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
     <Button
       {...props}
       ref={ref}
+      data-pinned={pinned || undefined}
       className={cn(
         className,
         classNames,
