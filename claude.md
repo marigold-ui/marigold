@@ -173,7 +173,7 @@ z-1    /* Sticky headers (Table, Accordion, ListBox) */
 z-10   /* Focus states (Calendar) */
 
 /* Floating Layer (20-49) */
-z-20   /* Dropdowns (Multiselect, Select, ComboBox) */
+z-20   /* Dropdowns (Select, ComboBox) */
 z-30   /* Popovers, Menus, Tooltips, ActionBar */
 
 /* Overlay Layer (50-79) */
