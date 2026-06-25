@@ -47,28 +47,26 @@
  * Use for interactive UI elements like inputs, selects, and cards. Anything that
  * sits on the page background and needs a clear visual boundary.
  *
- * `background` is intentionally excluded from the transition list: hover/state
- * bg flips should feel instant on high-frequency interactions (see DST-1436).
+ * The boundary is a 1px translucent *outset* `ring` (Tailwind routes it through
+ * `--tw-ring-shadow`, so it composes into the same `box-shadow` chain as
+ * `shadow-elevation-*` without clobbering them). Two deliberate choices:
+ *
+ *   - Translucent (`--color-border-surface`): the hairline composites over the
+ *     ground the surface sits on, so its contrast stays consistent on white,
+ *     the page background, or a tinted panel — a fixed color cannot. State
+ *     overrides via `--ui-border-color` (focus, error) are opaque on purpose.
+ *   - Outset (not inset): the ring sits just outside the box, so it is painted
+ *     above any child content — a child that bleeds edge-to-edge (e.g. a Table
+ *     in a `Panel.Content bleed`) cannot cover it, which an inset ring would.
+ *
+ * `background` is a plain fill (no `background-clip` trickery) and is
+ * intentionally excluded from the transition list: hover/state bg flips should
+ * feel instant on high-frequency interactions (see DST-1436).
  */
 @utility ui-surface {
-  @apply rounded-surface relative transition-[border,box-shadow];
-
-  /* prettier-ignore */
-  background:
-      linear-gradient(
-        to bottom,
-        var(--ui-background-color, var(--color-surface)),
-        var(--ui-background-color, var(--color-surface))
-      ),
-      linear-gradient(
-        to bottom,
-        var(--ui-border-color, var(--color-border)),
-        oklch(from var(--ui-border-color, var(--color-border)) calc(l - 0.1) c h)
-      );
-
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  border: 1px solid transparent;
+  @apply rounded-surface relative transition-[box-shadow];
+  background: var(--ui-background-color, var(--color-surface));
+  @apply ring-1 ring-[var(--ui-border-color,var(--color-border-surface))];
 }
 
 /*
@@ -120,9 +118,13 @@
 * Applies a consistent visual style for invalid elements.
 */
 @utility ui-state-error {
-  /* Overrides the transparent border. Gradient would get too dark. */
-  @apply border-destructive-accent shadow-destructive-accent/20;
-  @apply focus:border-destructive-accent focus:outline-destructive-accent/20;
+  /* Recolors the ui-surface ring via --ui-border-color (opaque, so an invalid
+     field reads clearly, not as a faint translucent hairline). The focus:
+     re-assert keeps a focused-invalid field destructive instead of letting
+     ui-state-focus recolor the ring to --color-ring. */
+  --ui-border-color: var(--color-destructive-accent);
+  @apply shadow-destructive-accent/20;
+  @apply focus:outline-destructive-accent/20 focus:[--ui-border-color:var(--color-destructive-accent)];
 }
 
 /*
@@ -132,6 +134,8 @@
   @apply text-disabled cursor-not-allowed;
   background: var(--color-disabled-surface);
   background-clip: border-box;
+  /* Also clears the ui-surface ring (it lives in the box-shadow chain); the
+     flat disabled fill is the boundary. */
   box-shadow: none;
 }
 

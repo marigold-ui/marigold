@@ -93,6 +93,17 @@
   --color-border: var(--color-charcoal-300);
   --color-ring: var(--color-charcoal-600);
 
+  /*
+   * Hairline for the edge of a raised surface (ui-surface). Translucent on
+   * purpose: drawn as an outset ring, it composites over whatever ground the
+   * surface sits on, so the edge keeps a consistent contrast on white, the
+   * page background, or a tinted panel — instead of a fixed gray that reads
+   * heavy on white and washes out on gray. Built on the charcoal hue (54) via
+   * the darkest step so it stays on-palette. NOT for dividers/decoration on a
+   * known surface — those use the opaque `--color-border` above.
+   */
+  --color-border-surface: oklch(from var(--color-charcoal-950) l c h / 0.12);
+
   /* --- Status: Destructive --- */
   --color-destructive: var(--color-red-100);
   --color-destructive-foreground: var(--color-red-950);
