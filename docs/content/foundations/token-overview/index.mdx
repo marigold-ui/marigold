@@ -183,7 +183,7 @@ The page is gray (`bg-background`), component panels are lighter (`bg-surface`).
 />
 
 ```tsx
-<div className="bg-surface border-border rounded-surface shadow-elevation-raised">
+<div className="bg-surface rounded-surface shadow-elevation-raised">
   Content on a white surface
 </div>
 ```
@@ -248,10 +248,11 @@ Most form controls sit on a white surface and use borders to define their shape:
 ```
 
 <Callout title="Not a default for all controls">
-  Most form controls use `bg-surface` (white) with a `border-border` outline.
-  Only reach for `bg-control` when a control communicates its state through a
-  filled background rather than a border, like switch tracks, slider tracks, and
-  similar "trough" elements.
+  Most form controls sit on `bg-surface` (white) and define their shape with a
+  border — the `ui-surface` ring for inputs and selects, `border-border` for
+  checkboxes and radios. Only reach for `bg-control` when a control communicates
+  its state through a filled background rather than a border, like switch
+  tracks, slider tracks, and similar "trough" elements.
 </Callout>
 
 <GuidelineTiles>
@@ -264,7 +265,8 @@ Most form controls sit on a white surface and use borders to define their shape:
   <Dont>
     <DontDescription>
       Don't use `bg-control` for bordered form controls like text inputs,
-      selects, or textareas. Those should use `bg-surface` with `border-border`.
+      selects, or textareas. Those should use `bg-surface` with the `ui-surface`
+      ring.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -471,7 +473,13 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
       name: 'border',
       value: 'charcoal-300',
       useFor:
-        'All borders: form controls, structural dividers, and surface containers',
+        'Opaque lines on a known surface: dividers, table row and grid lines, binary-control outlines (Checkbox, Radio)',
+    },
+    {
+      name: 'border-surface',
+      value: 'charcoal-950 / 10%',
+      useFor:
+        'The edge of a raised surface, applied via the ui-surface utility (Input, Select, Card, Panel, Menu, …)',
     },
     {
       name: 'ring',
@@ -480,6 +488,19 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
     },
   ]}
 />
+
+<Callout title="Why two border tokens?">
+  `border` is opaque; `border-surface` is the same charcoal hue at 10% alpha.
+  The surface edge is translucent so it composites over whatever ground it sits
+  on — staying consistent on white, the page background, or a tinted panel,
+  where a fixed gray reads heavy on white and washes out on gray. `border` stays
+  opaque because it is used for lines that **overlap** (grid-cell borders,
+  stacked dividers), where translucent strokes would double-darken at every
+  crossing. `border-surface` is drawn as the outset ring inside the `ui-surface`
+  utility, not applied as a standalone border class — the outset placement is
+  what lets it composite over the ground and keeps it from being covered by
+  edge-to-edge child content.
+</Callout>
 
 ### Status colors
 
