@@ -3,6 +3,7 @@ import {
   type ReactNode,
   type Ref,
   isValidElement,
+  useEffect,
   useRef,
 } from 'react';
 import type RAC from 'react-aria-components';
@@ -62,11 +63,6 @@ interface ActionElementProps {
   onPress?: () => void;
 }
 
-// Warn once, in dev, when a toolbar ships without an accessible name. The APG
-// requires `aria-label`/`aria-labelledby` when there is no visible label or
-// when multiple toolbars share a page.
-let hasWarnedMissingLabel = false;
-
 const ACTION_TYPES: ReadonlySet<unknown> = new Set([
   Button,
   IconButton,
@@ -103,6 +99,23 @@ const ToolbarBase = ({
   ...props
 }: ToolbarProps) => {
   const classNames = useClassNames({ component: 'Toolbar', variant, size });
+
+  // Dev-only a11y guidance: the APG requires an accessible name on a toolbar.
+  // Checked in an effect (not during render) so the component stays pure,
+  // mirroring how RAC warns about missing a11y props (e.g. Tag's `textValue`).
+  const ariaLabel = props['aria-label'];
+  const ariaLabelledby = props['aria-labelledby'];
+  useEffect(() => {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      !ariaLabel &&
+      !ariaLabelledby
+    ) {
+      console.warn(
+        'Marigold: <Toolbar> should have an `aria-label` or `aria-labelledby` so assistive technology can announce the region.'
+      );
+    }
+  }, [ariaLabel, ariaLabelledby]);
 
   // Merge the forwarded ref into a single object ref we can also measure.
   const toolbarRef = useObjectRef(ref);
@@ -204,26 +217,7 @@ const ToolbarBase = ({
   );
 };
 
-// Thin wrapper that isolates the dev-only warn-once. Keeping it out of
-// `ToolbarBase` lets that component hold all the hooks idiomatically while the
-// module-level flag lives in a function that calls none.
-const _Toolbar = (props: ToolbarProps) => {
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    !hasWarnedMissingLabel &&
-    !props['aria-label'] &&
-    !props['aria-labelledby']
-  ) {
-    hasWarnedMissingLabel = true;
-    console.warn(
-      'Marigold: <Toolbar> should have an `aria-label` or `aria-labelledby` so assistive technology can announce the region.'
-    );
-  }
-
-  return <ToolbarBase {...props} />;
-};
-
-export const Toolbar = Object.assign(_Toolbar, {
+export const Toolbar = Object.assign(ToolbarBase, {
   Group: ToolbarGroup,
   Separator: ToolbarSeparator,
 }) as ToolbarComponent;
