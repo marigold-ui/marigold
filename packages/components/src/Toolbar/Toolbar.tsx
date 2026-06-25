@@ -22,9 +22,7 @@ import { ToolbarGroup } from './ToolbarGroup';
 import { ToolbarSeparator } from './ToolbarSeparator';
 import { useToolbarOverflow } from './useToolbarOverflow';
 
-// `orientation` is removed because v1 is horizontal-only (width-measured
-// overflow is inherently horizontal). `className`/`style` are removed in favour
-// of `variant`/`size`. `isDisabled` is not a toolbar-level concept.
+// Horizontal-only in v1; theming via `variant`/`size`, not `className`/`style`.
 type RemovedProps =
   | 'className'
   | 'style'
@@ -35,13 +33,11 @@ type RemovedProps =
 export interface ToolbarProps
   extends Omit<RAC.ToolbarProps, RemovedProps>, AriaLabelingProps, SlotProps {
   /**
-   * The controls to render in the toolbar (buttons, fields, `Toolbar.Group`,
-   * `Toolbar.Separator`, ...).
+   * The controls to render (buttons, fields, `Toolbar.Group`, `Toolbar.Separator`).
    *
-   * A trailing run of `Button`/`IconButton`/`LinkButton` children is treated as
-   * collapsible actions: when the toolbar runs out of width they collapse,
-   * right to left, into a "More" menu. Pinned controls (fields, separators,
-   * groups) never collapse, so place inputs like a search field on the left.
+   * A trailing run of `Button`/`IconButton`/`LinkButton` collapses, right to
+   * left, into a "More" menu when width runs out. Other controls never collapse,
+   * so place inputs like a search field on the left.
    */
   children?: ReactNode;
   /**
@@ -56,7 +52,7 @@ export interface ToolbarProps
   ref?: Ref<HTMLDivElement>;
 }
 
-// Props we read off a collapsible action child to mirror it into a menu item.
+// Props read off a collapsible action to mirror it into a menu item.
 interface ActionElementProps {
   'aria-label'?: string;
   children?: ReactNode;
@@ -74,8 +70,7 @@ const isActionElement = (
 ): child is ReactElement<ActionElementProps> =>
   isValidElement(child) && ACTION_TYPES.has(child.type);
 
-// Recursively read the visible text of a node, so an action's label can be
-// derived for its menu-item twin when no `aria-label` is given.
+// Derive an action's menu-item label from its visible text when no `aria-label`.
 const extractText = (node: ReactNode): string => {
   if (node == null || typeof node === 'boolean') return '';
   if (typeof node === 'string' || typeof node === 'number') return String(node);
@@ -100,9 +95,7 @@ const ToolbarBase = ({
 }: ToolbarProps) => {
   const classNames = useClassNames({ component: 'Toolbar', variant, size });
 
-  // Dev-only a11y guidance: the APG requires an accessible name on a toolbar.
-  // Checked in an effect (not during render) so the component stays pure,
-  // mirroring how RAC warns about missing a11y props (e.g. Tag's `textValue`).
+  // Dev-only: the APG requires an accessible name. In an effect to keep render pure.
   const ariaLabel = props['aria-label'];
   const ariaLabelledby = props['aria-labelledby'];
   useEffect(() => {
@@ -117,12 +110,11 @@ const ToolbarBase = ({
     }
   }, [ariaLabel, ariaLabelledby]);
 
-  // Merge the forwarded ref into a single object ref we can also measure.
+  // Object ref so we can both forward and measure it.
   const toolbarRef = useObjectRef(ref);
   const hiddenRef = useRef<HTMLDivElement>(null);
 
-  // Split children into pinned leading controls and a trailing run of
-  // collapsible action buttons.
+  // Pinned leading controls + a trailing run of collapsible actions.
   const [items] = splitChildren(children);
   let splitIndex = items.length;
   while (splitIndex > 0 && isActionElement(items[splitIndex - 1])) splitIndex--;
@@ -179,16 +171,14 @@ const ToolbarBase = ({
     </RACToolbar>
   );
 
-  // Without collapsible actions there is nothing to measure or collapse.
   if (actionItems.length === 0) return toolbar;
 
   return (
     <div className="relative w-full">
       {toolbar}
 
-      {/* Hidden, inert measurement layer: renders every control at its natural
-          width (pinned, every action, and the "More" trigger) so the overflow
-          calculation is stable and never loses a width as the bar narrows. */}
+      {/* Inert layer measuring every control at its natural width, so the
+          overflow calc stays stable and never loses a width as the bar narrows. */}
       <div
         ref={hiddenRef}
         aria-hidden

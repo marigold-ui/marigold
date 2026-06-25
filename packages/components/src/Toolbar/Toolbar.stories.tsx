@@ -77,8 +77,7 @@ export const GroupDisabled = meta.story({
   },
 });
 
-// Anti-pattern used to exercise the dev-time guardrail: a toolbar with no
-// accessible name. Excluded from autodocs and not run as a story test.
+// Anti-pattern exercising the dev-time name warning; excluded from docs and tests.
 export const WithoutAccessibleName = meta.story({
   tags: ['!autodocs', '!test'],
   render: () => (
@@ -109,8 +108,7 @@ export const Groups = meta.story({
   },
 });
 
-// A resizable wrapper so the overflow effect can be seen live in the docs (drag
-// the bottom-right corner) and driven programmatically in the play functions.
+// Resizable wrapper: drag to see overflow live; driven by width in play.
 const ResizableContainer = ({
   width,
   children,
@@ -136,8 +134,7 @@ const ResizableContainer = ({
 
 const OVERFLOW_ACTIONS = ['Export', 'Duplicate', 'Archive', 'Share', 'Delete'];
 
-// Trailing buttons collapse, right to left, into the "More" menu when the bar
-// is too narrow; the pinned SearchField stays put.
+// Trailing buttons collapse right-to-left into "More" when narrow; search stays.
 export const Overflow = meta.story({
   tags: ['component-test'],
   render: () => (
@@ -156,7 +153,7 @@ export const Overflow = meta.story({
     const container = toolbar.closest('[style*="resize"]') as HTMLElement;
     const search = canvas.getByRole('searchbox');
 
-    // Wide: every action fits in the bar, so there is no "More" menu.
+    // Wide: everything fits, no "More".
     container.style.width = '760px';
     await waitFor(() =>
       expect(
@@ -164,9 +161,8 @@ export const Overflow = meta.story({
       ).not.toBeInTheDocument()
     );
 
-    // Now shrink large→small. Actions must collapse fast enough that the bar
-    // never overflows and the pinned search keeps its natural width (the
-    // reported overlap happened when a late-collapsing action squished search).
+    // Shrink large→small: actions must collapse before the bar overflows or the
+    // search gets squished (the reported bug).
     container.style.width = '260px';
     await canvas.findByRole('button', { name: 'More actions' });
     await waitFor(() => {
@@ -183,9 +179,7 @@ export const Overflow = meta.story({
 
 const PINNED_FREE_ACTIONS = ['New', 'Edit', 'Copy', 'Move', 'Delete'];
 
-// A toolbar that is only collapsible buttons (no pinned controls). The overflow
-// maths has a separate path when there is nothing pinned to reserve room for,
-// so this exercises that branch end to end.
+// Buttons-only toolbar: exercises the overflow path with nothing pinned.
 export const OverflowWithoutPinned = meta.story({
   tags: ['component-test'],
   render: () => (

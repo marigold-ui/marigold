@@ -11,9 +11,8 @@ export interface ToolbarGroupProps extends AriaLabelingProps {
    */
   children?: ReactNode;
   /**
-   * Disables every nested button in the group. A child can re-enable itself
-   * with `disabled={false}`. Note: only button-type controls honour the
-   * cascade; fields manage their own `disabled` state.
+   * Disables every nested button. Only button-type controls honour the cascade;
+   * fields manage their own `disabled`. A child can re-enable with `disabled={false}`.
    */
   disabled?: boolean;
   /**
@@ -45,8 +44,7 @@ export const ToolbarGroup = ({
     size,
   });
 
-  // Cascade `disabled` to nested buttons via the Marigold-owned ButtonContext,
-  // mirroring ButtonGroup. RAC `Provider` replaces rather than merges.
+  // Cascade `disabled` to nested buttons via ButtonContext (like ButtonGroup).
   const ctx = useMemo(() => ({ disabled }), [disabled]);
 
   return (

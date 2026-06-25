@@ -13,10 +13,8 @@ export interface ToolbarSeparatorProps {
 }
 
 /**
- * A visual divider between groups of controls inside a `<Toolbar>`.
- *
- * The toolbar is horizontal, so the separator is a vertical rule. It renders a
- * react-aria `Separator` (`role="separator"`, `aria-orientation="vertical"`).
+ * A vertical divider between groups of controls inside a horizontal `<Toolbar>`.
+ * Renders a react-aria `Separator` (`role="separator"`).
  */
 export const ToolbarSeparator = ({ variant, size }: ToolbarSeparatorProps) => {
   const classNames = useClassNames({
