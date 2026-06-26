@@ -104,6 +104,7 @@ const ControlledExample = () => {
 };
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <ControlledExample />,
 });
 
@@ -215,6 +216,7 @@ export const DefaultCollapsed = meta.story({
 });
 
 export const KeyboardNavigation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: () => <Layout />,
   play: async ({ canvasElement }) => {

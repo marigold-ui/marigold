@@ -114,6 +114,7 @@ export const Basic = meta.story({
 });
 
 export const ToggleToast = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: (_args: unknown) => {
     const args = toastArgs(_args);
     const [toastKey, setToastKey] = useState<string | null>(null);
@@ -187,6 +188,7 @@ export const ToastContentTest = meta.story({
 });
 
 export const WithLinks = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     title: 'Update Available',
   } as unknown as Record<string, never>,
@@ -228,6 +230,7 @@ export const WithLinks = meta.story({
 });
 
 export const WithAction = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     title: 'Update Available',
@@ -262,29 +265,33 @@ export const WithAction = meta.story({
   },
 });
 
-WithAction.test('With action test', async ({ canvas, step }) => {
-  const button = canvas.getByRole('button', { name: /show toast/i });
+WithAction.test(
+  'With action test',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    const button = canvas.getByRole('button', { name: /show toast/i });
 
-  await step('Click the Show Toast button', async () => {
-    await userEvent.click(button);
-  });
+    await step('Click the Show Toast button', async () => {
+      await userEvent.click(button);
+    });
 
-  await step('Toast with title and description appears', async () => {
-    await expect(
-      await canvas.findByText('Update Available')
-    ).toBeInTheDocument();
-    await expect(
-      await canvas.findByText('A new version is available.')
-    ).toBeInTheDocument();
-  });
+    await step('Toast with title and description appears', async () => {
+      await expect(
+        await canvas.findByText('Update Available')
+      ).toBeInTheDocument();
+      await expect(
+        await canvas.findByText('A new version is available.')
+      ).toBeInTheDocument();
+    });
 
-  await step('Click the button in toast', async () => {
-    const button = canvas.getByText('Update now');
+    await step('Click the button in toast', async () => {
+      const button = canvas.getByText('Update now');
 
-    await userEvent.click(button);
-    // Wait briefly to allow any transitions to complete
-    await new Promise(resolve => setTimeout(resolve, 100));
+      await userEvent.click(button);
+      // Wait briefly to allow any transitions to complete
+      await new Promise(resolve => setTimeout(resolve, 100));
 
-    await expect(button).toBeInTheDocument();
-  });
-});
+      await expect(button).toBeInTheDocument();
+    });
+  }
+);

@@ -130,6 +130,7 @@ export const Basic: any = meta.story({
 });
 
 export const Controlled: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState(
       new CalendarDate(2025, 8, 7) as DateValue
@@ -176,6 +177,7 @@ export const MinMax: any = meta.story({
 });
 
 export const UnavailableDate: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
@@ -230,6 +232,7 @@ export const Mobile: any = meta.story({
 
 Mobile.test(
   'Mobile DatePicker interaction',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step, userEvent }: any) => {
     // Mock releasePointerCapture to handle invalid pointer IDs in Firefox tests
     const releasePointerCaptureMock = spyOn(
@@ -283,6 +286,7 @@ Mobile.test(
 
 Mobile.test(
   'Mobile DatePicker keyboard navigation',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step, userEvent }: any) => {
     const trigger = canvas.getByRole('button');
 

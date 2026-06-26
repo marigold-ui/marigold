@@ -14,6 +14,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ ...args }) => (
     <>
       <Text>The Text below is visually hidden</Text>

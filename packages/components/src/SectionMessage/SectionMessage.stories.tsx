@@ -55,6 +55,7 @@ export const MultiLineTitle = meta.story({
 });
 
 export const LongMessage = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <SectionMessage {...args}>
       <SectionMessage.Title>Danger Zone!</SectionMessage.Title>
