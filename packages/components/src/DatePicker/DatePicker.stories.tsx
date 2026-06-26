@@ -162,22 +162,27 @@ export const Controlled: any = meta.story({
 });
 
 export const MinMax: any = meta.story({
+  args: {
+    open: true,
+  },
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
+        {...args}
         label="Date Picker"
         description="Determine min and max value for date picker"
         errorMessage="This is an error"
         minValue={new CalendarDate(2019, 6, 5)}
         maxValue={new CalendarDate(2019, 6, 20)}
-        {...args}
       />
     </I18nProvider>
   ),
 });
 
 export const UnavailableDate: any = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    open: true,
+  },
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
@@ -229,6 +234,20 @@ export const Mobile: any = meta.story({
     </I18nProvider>
   ),
 });
+
+Mobile.test(
+  'Open Tray',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }: any) => {
+    const trigger = await canvas.findByRole('button');
+
+    await userEvent.click(trigger);
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  }
+);
 
 Mobile.test(
   'Mobile DatePicker interaction',

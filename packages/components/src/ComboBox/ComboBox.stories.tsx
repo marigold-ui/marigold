@@ -137,10 +137,10 @@ export const Basic: any = meta.story({
     return (
       <I18nProvider locale="de-DE">
         <ComboBox
+          {...args}
           label="Animals"
           disabledKeys={['snake']}
           allowsEmptyCollection
-          {...args}
         >
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>
@@ -166,10 +166,9 @@ Basic.test('Shows empty state', async ({ canvas }: any) => {
 });
 
 Basic.test('Shows a selected value from list', async ({ canvas }: any) => {
-  const combobox = canvas.queryByRole('combobox', { name: 'Label' });
-  const input = await canvas.findByRole('combobox', { name: 'Label' });
+  const combobox = canvas.getByRole('combobox');
 
-  await userEvent.type(input, 'dog');
+  await userEvent.type(combobox, 'dog');
   await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
 
   await waitFor(() => expect(combobox).toHaveValue('Dog'));
@@ -181,8 +180,6 @@ Basic.test(
   'Opens with manual trigger showing a list',
   {
     parameters: { chromatic: { disableSnapshot: false } },
-  },
-  {
     args: {
       menuTrigger: 'manual',
     },
@@ -198,27 +195,23 @@ Basic.test(
 );
 
 Basic.test('Opens with input trigger', async ({ canvas }: any) => {
-  const input = await canvas.findByRole('combobox', { name: 'Label' });
-  const result = await canvas.queryByRole('combobox', { name: 'Label' });
+  const input = canvas.getByRole('combobox');
 
-  await userEvent.click(await input);
-  await userEvent.type(await input, 'ard');
+  await userEvent.click(input);
+  await userEvent.type(input, 'ard');
   await userEvent.click(
     await canvas.findByRole('option', { name: 'Aardvark' })
   );
 
-  await waitFor(() => expect(result).toBeInTheDocument());
-  await waitFor(() => expect(result).toHaveValue('Aardvark'));
-  await waitFor(() => expect(result).toBeVisible());
+  await waitFor(() => expect(input).toBeInTheDocument());
+  await waitFor(() => expect(input).toHaveValue('Aardvark'));
+  await waitFor(() => expect(input).toBeVisible());
 });
 
 Basic.test('Opens with focus trigger', async ({ canvas }: any) => {
-  const combobox = await canvas.findByRole('combobox', { name: 'Label' });
+  const combobox = canvas.getByRole('combobox');
 
-  await userEvent.type(
-    await canvas.findByRole('combobox', { name: 'Label' }),
-    'oo'
-  );
+  await userEvent.type(combobox, 'oo');
   await userEvent.click(
     await canvas.findByRole('option', { name: 'Kangaroo' })
   );

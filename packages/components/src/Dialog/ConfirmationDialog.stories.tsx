@@ -40,6 +40,9 @@ export const Basic = meta.story({
 
 Basic.test(
   'Opens with the title, content and action buttons',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
 
@@ -57,7 +60,6 @@ Basic.test(
 Basic.test(
   'Calls onConfirm and closes when the action button is pressed',
   {
-    parameters: { chromatic: { disableSnapshot: true } },
     args: { onConfirm: fn() },
   },
   async ({ canvas, args, userEvent }) => {
@@ -76,7 +78,6 @@ Basic.test(
 Basic.test(
   'Calls onCancel and closes when the cancel button is pressed',
   {
-    parameters: { chromatic: { disableSnapshot: true } },
     args: { onCancel: fn() },
   },
   async ({ canvas, args, userEvent }) => {
@@ -97,7 +98,6 @@ Basic.test(
 Basic.test(
   'Focuses the action button on open when autoFocusButton is "action"',
   {
-    parameters: { chromatic: { disableSnapshot: true } },
     args: { autoFocusButton: 'action' },
   },
   async ({ canvas, userEvent }) => {
@@ -113,7 +113,6 @@ Basic.test(
 Basic.test(
   'Focuses the cancel button on open when autoFocusButton is "cancel"',
   {
-    parameters: { chromatic: { disableSnapshot: true } },
     args: { autoFocusButton: 'cancel' },
   },
   async ({ canvas, userEvent }) => {
@@ -131,7 +130,6 @@ Basic.test(
 Basic.test(
   'useConfirmation opens a dialog from the hook and closes it on confirm',
   {
-    parameters: { chromatic: { disableSnapshot: true } },
     render: () => {
       const Demo = () => {
         const confirm = useConfirmation();

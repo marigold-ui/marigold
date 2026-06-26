@@ -512,6 +512,9 @@ export const MultipleSelection = meta.story({
 
 MultipleSelection.test(
   'Selects and removes multiple dates',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
   async ({ canvas, userEvent }) => {
     const grids = canvas.getAllByRole('grid');
     const firstGrid = within(grids[0]);

@@ -145,6 +145,7 @@ Basic.test(
 
 export const WithSections: any = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Autocomplete {...args} placeholder="Pick a food">
       <Autocomplete.Section header="Veggies">
@@ -166,19 +167,26 @@ export const WithSections: any = meta.story({
   ),
 });
 
-WithSections.test('Sections are visible', async ({ canvas }: any) => {
-  const input = canvas.getAllByLabelText(/Select Favorite/i)[0];
+WithSections.test(
+  'Sections are visible',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas }: any) => {
+    const input = canvas.getAllByLabelText(/Select Favorite/i)[0];
 
-  await userEvent.type(input, 'o');
-  const sectionOne = await screen.findByText('Veggies');
-  const sectionTwo = await screen.findByText('Protein');
+    await userEvent.type(input, 'o');
+    const sectionOne = await screen.findByText('Veggies');
+    const sectionTwo = await screen.findByText('Protein');
 
-  expect(sectionOne).toBeVisible();
-  expect(sectionTwo).toBeVisible();
-});
+    expect(sectionOne).toBeVisible();
+    expect(sectionTwo).toBeVisible();
+  }
+);
 
 export const Controlled: any = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [submitted, setSubmitted] = useState<string | number | null>('');
     const [current, setCurrent] = useState<string>('');
@@ -259,6 +267,9 @@ export const EmptyState: any = meta.story({
 
 EmptyState.test(
   'Shows the empty state when no items match',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
   async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
@@ -380,15 +391,21 @@ export const Mobile: any = meta.story({
   ),
 });
 
-Mobile.test('Open Tray', async ({ canvas, step }: any) => {
-  const trigger = await canvas.findByRole('button');
+Mobile.test(
+  'Open Tray',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, step }: any) => {
+    const trigger = await canvas.findByRole('button');
 
-  await step('Open tray by clicking trigger', async () => {
-    await userEvent.click(trigger);
-  });
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+    });
 
-  expect(trigger).toHaveAttribute('aria-expanded', 'true');
-});
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  }
+);
 
 Mobile.test(
   'Mobile Autocomplete interaction',

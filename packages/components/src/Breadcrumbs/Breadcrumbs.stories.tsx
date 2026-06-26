@@ -73,6 +73,9 @@ export const AutoCollapse = meta.story({
 
 AutoCollapse.test(
   'Collapses overflow items and reveals them under the ellipsis',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
   async ({ canvas }: any) => {
     // The middle items collapse behind an ellipsis button at this width.
     const ellipsis = await canvas.findByRole('button', {
