@@ -68,13 +68,17 @@
 }
 
 /*
- * Prominent dark surface (primary color): primary buttons, toolbars, action
- * bars. Mirrors ui-surface — a 1px ring plus the fill — but inverted in value:
- * the edge is a darker shade of the fill (a crisp dark hairline, no light rim).
- * The light lives on the face: a soft glow pooled at the top that fades before
- * it reaches the edges, plus a soft 1px highlight along the very top edge (an
- * inset shadow, warm-tinted and at low alpha so it reads as a catch of light,
- * not a bright rim).
+ * Prominent dark surface: primary buttons, toolbars, action bars. Mirrors
+ * ui-surface — a 1px ring plus the fill — but inverted in value: the edge is a
+ * darker shade of the fill (a crisp dark hairline, no light rim). The light
+ * lives on the face: a soft glow pooled at the top that fades before it reaches
+ * the edges, plus a soft 1px highlight along the very top edge (an inset shadow,
+ * tinted and at low alpha so it reads as a catch of light, not a bright rim).
+ *
+ * Every layer derives from `--ui-background-color` (falling back to the primary
+ * color), so overriding that one token retints the whole surface — that is how
+ * `ui-surface-destructive` reuses this in red and how the hover bg-flip darkens
+ * the edge and glow together.
  *
  * `background` is excluded from the transition so hover/state bg flips feel
  * instant on high-frequency interactions (DST-1436).
@@ -83,17 +87,43 @@
   @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
-  @apply ring-1 ring-[oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_0.08)_c_h)];
-  @apply inset-shadow-[0_1px_0_0_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_0.4)_c_h_/_0.5)];
+  @apply ring-1 ring-[oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h)];
+  @apply inset-shadow-[0_1px_0_0_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
 
   /* prettier-ignore */
   background:
-      radial-gradient(ellipse 72% 70% at 50% -12%, var(--ui-highlight-color, oklch(from var(--color-primary) calc(l + 0.26) c h / 0.95)), transparent 72%),
+      radial-gradient(ellipse 72% 70% at 50% -12%, var(--ui-highlight-color, oklch(from var(--ui-background-color, var(--color-primary)) calc(l + var(--contrast-glow-l)) c h / var(--contrast-glow-a))), transparent 72%),
       linear-gradient(
         to bottom,
-        oklch(from var(--ui-background-color, var(--color-primary)) calc(l + 0.03) c h),
-        oklch(from var(--ui-background-color, var(--color-primary)) calc(l - 0.015) c h)
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l + var(--contrast-fill-top-l)) c h),
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l - var(--contrast-fill-bottom-l)) c h)
       );
+}
+
+/*
+ * Destructive sibling of ui-surface-contrast: the identical dark-lift treatment
+ * (ring, glow, top highlight, gradient) retinted to the bold destructive color.
+ * Because the contrast surface reads everything off --ui-background-color, this
+ * only swaps that token and the matching foreground.
+ */
+@utility ui-surface-destructive {
+  @apply ui-surface-contrast text-destructive-bold-foreground;
+  --ui-background-color: var(--color-destructive-bold);
+}
+
+/*
+ * Light counterpart to ui-surface-contrast for neutral, medium-emphasis
+ * controls (the default/secondary Button). Builds on ui-surface — white fill,
+ * hairline ring, box-shadow chain — and adds the same top-lit gesture inverted
+ * for a light face: a faint top-down gradient plus a 1px white gloss on the top
+ * edge, so the surface reads as gently raised without going dark. The gradient
+ * starts a hair off-white (charcoal-50) so the white gloss line is visible.
+ */
+@utility ui-surface-bright {
+  @apply ui-surface;
+  /* prettier-ignore */
+  background: linear-gradient(to bottom, var(--color-charcoal-50), var(--color-charcoal-100));
+  @apply inset-shadow-[0_1px_0_0_var(--color-white)];
 }
 
 /* ========================= */

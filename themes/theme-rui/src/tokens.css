@@ -73,6 +73,8 @@
   /* --- Primary --- */
   --color-primary: var(--color-charcoal-900);
   --color-primary-foreground: var(--color-charcoal-50);
+  /* Darker primary for the hover state of the primary Button / contrast surface. */
+  --color-primary-hover: oklch(from var(--color-primary) calc(l - 0.15) c h);
 
   /* --- Neutral Backgrounds & States --- */
   --color-muted: var(--color-charcoal-50);
@@ -91,6 +93,8 @@
 
   /* --- Form Controls --- */
   --color-border: var(--color-charcoal-300);
+  /* Darker border for the hover state of bordered controls (e.g. secondary Button). */
+  --color-border-hover: oklch(from var(--color-border) calc(l - 0.1) c h);
   --color-ring: var(--color-charcoal-600);
 
   /* --- Status: Destructive --- */
@@ -99,6 +103,10 @@
   --color-destructive-accent: var(--color-red-600);
   --color-destructive-bold: var(--color-red-600);
   --color-destructive-bold-foreground: var(--color-white);
+  /* Darker destructive for the hover state of the destructive Button. */
+  --color-destructive-bold-hover: oklch(
+    from var(--color-destructive-bold) calc(l - 0.1) c h
+  );
 
   /* --- Status: Success --- */
   --color-success: var(--color-green-100);
@@ -145,6 +153,22 @@
      panel. Decorative only — dividers, overlapping lines, and form-control
      boundaries use the opaque --color-border. */
   --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
+
+  /* ui-surface-contrast recipe — the prominent dark surface (primary Button,
+     ActionBar): a crisp dark edge, a faintly top-lit fill, a glow pooled at the
+     top of the face, and a soft 1px highlight on the top edge. These are the
+     lightness deltas (`-l`) and alphas (`-a`) each layer shifts from the surface
+     fill. The colors themselves are computed in the utility, not here: every
+     layer reads the fill via `--ui-background-color` on the element, so a fill
+     override (ui-surface-destructive, hover) retints the whole surface. Hoisting
+     the resolved colors to :root would freeze them to the primary color. */
+  --contrast-edge-l: 0.08;
+  --contrast-fill-top-l: 0.03;
+  --contrast-fill-bottom-l: 0.015;
+  --contrast-glow-l: 0.22;
+  --contrast-glow-a: 0.95;
+  --contrast-highlight-l: 0.4;
+  --contrast-highlight-a: 0.5;
 
   --radius-surface: var(--radius-lg);
 
