@@ -14,7 +14,7 @@ export const Button: ThemeComponent<'Button'> = cva({
         'hover:[--ui-background-color:var(--color-primary-hover)]',
       ],
       secondary: [
-        'ui-surface-bright shadow-elevation-border',
+        'ui-surface-muted shadow-elevation-border',
         // hover/expanded replace the resting gloss gradient with a flat fill
         'hover:[background:var(--color-hover)] hover:[--ui-border-color:var(--color-border-hover)] hover:text-foreground',
         'expanded:[background:var(--color-hover)] expanded:[--ui-border-color:var(--color-border-hover)]',

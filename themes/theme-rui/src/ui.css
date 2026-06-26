@@ -112,14 +112,16 @@
 }
 
 /*
- * Light counterpart to ui-surface-contrast for neutral, medium-emphasis
- * controls (the default/secondary Button). Builds on ui-surface — white fill,
- * hairline ring, box-shadow chain — and adds the same top-lit gesture inverted
- * for a light face: a faint top-down gradient plus a 1px white gloss on the top
- * edge, so the surface reads as gently raised without going dark. The gradient
- * starts a hair off-white (charcoal-50) so the white gloss line is visible.
+ * Quiet counterpart to ui-surface-contrast for neutral, medium-emphasis
+ * controls (the default/secondary Button). Where contrast is the loud surface,
+ * this is the muted one. Builds on ui-surface — white fill, hairline ring,
+ * box-shadow chain — and adds the same top-lit gesture inverted for a light
+ * face: a faint top-down gradient plus a 1px white gloss on the top edge, so
+ * the surface reads as gently raised without going dark. The gradient starts a
+ * hair off-white (charcoal-50, i.e. --color-muted) so the white gloss is
+ * visible.
  */
-@utility ui-surface-bright {
+@utility ui-surface-muted {
   @apply ui-surface;
   /* prettier-ignore */
   background: linear-gradient(to bottom, var(--color-charcoal-50), var(--color-charcoal-100));
