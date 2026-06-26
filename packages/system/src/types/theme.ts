@@ -261,7 +261,8 @@ export type Theme = {
     Tabs?: Record<
       'container' | 'tabsList' | 'tabpanel' | 'tab' | 'tabIndicator',
       ComponentStyleFunction<string, string>
-    >;
+    > &
+      Partial<Record<'tabsListScroll', ComponentStyleFunction<string, string>>>;
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
       | 'calendar'
