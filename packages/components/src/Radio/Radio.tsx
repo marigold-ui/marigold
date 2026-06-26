@@ -50,13 +50,24 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
 );
 
 const _Radio = forwardRef<HTMLLabelElement, RadioProps>(
-  ({ value, disabled, width, children, ...props }, ref) => {
+  (
+    {
+      value,
+      disabled,
+      width,
+      children,
+      variant: variantProp,
+      size: sizeProp,
+      ...props
+    },
+    ref
+  ) => {
     const { variant, size, width: groupWidth } = useRadioGroupContext();
 
     const classNames = useClassNames({
       component: 'Radio',
-      variant: variant || props.variant,
-      size: size || props.size,
+      variant: variant || variantProp,
+      size: size || sizeProp,
     });
 
     return (
