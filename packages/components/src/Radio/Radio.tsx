@@ -28,7 +28,7 @@ export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
    * Set the radio disabled.
    * @default false
    */
-  disabled?: RAC.RadioProps['isDisabled'];
+  disabled?: RAC.RadioFieldProps['isDisabled'];
 }
 
 interface IconProps {

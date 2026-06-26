@@ -35,19 +35,19 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
    * Disables the switch.
    * @default false
    */
-  disabled?: RAC.SwitchProps['isDisabled'];
+  disabled?: RAC.SwitchFieldProps['isDisabled'];
 
   /**
    * Set the switch to read-only.
    * @default false
    */
-  readOnly?: RAC.SwitchProps['isReadOnly'];
+  readOnly?: RAC.SwitchFieldProps['isReadOnly'];
 
   /**
    * With this prop you can set the switch selected.
    * @default false
    */
-  selected?: RAC.SwitchProps['isSelected'];
+  selected?: RAC.SwitchFieldProps['isSelected'];
 }
 
 const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(

@@ -7,9 +7,10 @@ test('takes full width by default', () => {
   render(<Basic.Component />);
 
   const radio = screen.getByText('Option 1');
+  // Width lives on the RadioField wrapper, the RadioButton label's parent.
   // eslint-disable-next-line testing-library/no-node-access
-  const container = radio.closest('[data-rac]') || radio.parentElement!;
-  expect(container).toHaveClass('w-full');
+  const field = radio.closest('label')?.parentElement;
+  expect(field).toHaveClass('w-full');
 });
 
 test('forwards ref', () => {
