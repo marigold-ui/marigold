@@ -61,6 +61,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">
@@ -84,7 +85,7 @@ export const Basic = meta.story({
 });
 
 Basic.test(
-  'Basic test',
+  'collapses the previously expanded item when another is opened',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }: any) => {
     const user = userEvent.setup();
