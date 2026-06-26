@@ -1,11 +1,25 @@
 import { render, screen } from '@testing-library/react';
 import { Basic } from './Badge.stories';
 
-test('renders correctly', () => {
+// Variant order rendered by the `Basic` showcase story. Deriving the index from
+// this list (instead of a bare `[4]`) keeps the assertion pointed at the info
+// variant even if the showcase is reordered.
+const VARIANT_ORDER = [
+  'default',
+  'primary',
+  'success',
+  'warning',
+  'info',
+  'error',
+  'master',
+  'admin',
+] as const;
+
+test('renders the info variant correctly', () => {
   render(<Basic.Component />);
 
-  // Basic now renders the full variant showcase; assert the info variant's markup
-  const badge = screen.getAllByText('Status')[4];
+  // Basic renders one "Status" badge per variant; pick the info variant's markup.
+  const badge = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('info')];
 
   expect(badge).toMatchInlineSnapshot(`
     <div

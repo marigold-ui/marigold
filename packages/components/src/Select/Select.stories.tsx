@@ -211,9 +211,11 @@ export const Multiple = meta.story({
 
 export const LongItems = meta.story({
   parameters: {
-    // Give the dismiss transition time to settle before Chromatic captures
-    // to avoid flaky snapshots on the trigger's focus-ring transition.
-    chromatic: { disableSnapshot: true, delay: 300 },
+    // Snapshot disabled by the snapshot audit — the closed default state is a
+    // redundant frame already covered by the kept Select stories. The play test
+    // below still runs. (The former `delay: 300` only existed to stabilize this
+    // now-removed snapshot, so it's dropped with it.)
+    chromatic: { disableSnapshot: true },
   },
   render: args => {
     return (
