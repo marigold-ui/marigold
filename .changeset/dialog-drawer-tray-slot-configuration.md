@@ -1,7 +1,7 @@
 ---
-'@marigold/components': patch
-'@marigold/theme-rui': patch
-'@marigold/system': patch
+'@marigold/components': minor
+'@marigold/theme-rui': minor
+'@marigold/system': minor
 ---
 
 feat(DST-1369): adopt the slot-configuration pattern in `Dialog`, `Drawer`, and `Tray`

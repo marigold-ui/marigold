@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
+import { OverlayHeaderContext } from '../utils/OverlayHeaderContext';
 import { useOverlayHeaderSlotProps } from '../utils/useOverlayHeaderSlotProps';
 import { useDrawerContext } from './Context';
 
@@ -30,15 +31,17 @@ export const DrawerHeader = ({ children }: DrawerHeaderProps) => {
   });
 
   return (
-    <Provider
-      values={[
-        [HeadingContext, headingProps],
-        [TextContext, textProps],
-      ]}
-    >
-      <div className={cn('[grid-area:title]', classNames.header)}>
-        {children}
-      </div>
-    </Provider>
+    <OverlayHeaderContext value={true}>
+      <Provider
+        values={[
+          [HeadingContext, headingProps],
+          [TextContext, textProps],
+        ]}
+      >
+        <div className={cn('[grid-area:title]', classNames.header)}>
+          {children}
+        </div>
+      </Provider>
+    </OverlayHeaderContext>
   );
 };

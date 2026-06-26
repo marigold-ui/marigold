@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useIsInsideOverlayHeader } from '../utils/OverlayHeaderContext';
 import { Description } from '../Description/Description';
 
 export interface DialogDescriptionProps {
@@ -16,6 +17,14 @@ export interface DialogDescriptionProps {
  * Using both at the root level will cause them to overlap. Prefer wrapping
  * title and description together in `<Dialog.Header>`.
  */
-export const DialogDescription = ({ children }: DialogDescriptionProps) => (
-  <Description slot="description">{children}</Description>
-);
+export const DialogDescription = ({ children }: DialogDescriptionProps) => {
+  const insideHeader = useIsInsideOverlayHeader();
+  if (process.env.NODE_ENV !== 'production' && !insideHeader) {
+    console.warn(
+      '[Dialog.Description] is rendered outside of <Dialog.Header>. ' +
+        'It will land in the same grid area as <Dialog.Content> and the two will overlap. ' +
+        'Wrap your title and description in <Dialog.Header> to avoid this.'
+    );
+  }
+  return <Description slot="description">{children}</Description>;
+};

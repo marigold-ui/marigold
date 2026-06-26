@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
+import { OverlayHeaderContext } from '../utils/OverlayHeaderContext';
 import { useOverlayHeaderSlotProps } from '../utils/useOverlayHeaderSlotProps';
 import { useDialogSlotContext } from './Context';
 
@@ -33,15 +34,17 @@ export const DialogHeader = ({ children }: DialogHeaderProps) => {
   });
 
   return (
-    <Provider
-      values={[
-        [HeadingContext, headingProps],
-        [TextContext, textProps],
-      ]}
-    >
-      <div className={cn('[grid-area:title]', classNames.header)}>
-        {children}
-      </div>
-    </Provider>
+    <OverlayHeaderContext value={true}>
+      <Provider
+        values={[
+          [HeadingContext, headingProps],
+          [TextContext, textProps],
+        ]}
+      >
+        <div className={cn('[grid-area:title]', classNames.header)}>
+          {children}
+        </div>
+      </Provider>
+    </OverlayHeaderContext>
   );
 };

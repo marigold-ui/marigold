@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react';
 import { use, useId, useMemo, useRef } from 'react';
-import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import {
   Dialog,
@@ -12,6 +11,7 @@ import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
+import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { useSlot } from '../utils/useSlot';
