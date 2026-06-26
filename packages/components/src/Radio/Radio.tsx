@@ -5,14 +5,14 @@ import {
   forwardRef,
 } from 'react';
 import type RAC from 'react-aria-components';
-import { Radio } from 'react-aria-components';
+import { RadioButton, RadioField } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
 type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
-export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
+export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
   variant?: string;
   size?: string;
   /**
@@ -60,31 +60,34 @@ const _Radio = forwardRef<HTMLLabelElement, RadioProps>(
     });
 
     return (
-      <Radio
-        ref={ref}
-        className={cn(
-          'group/radio',
-          'relative flex items-center gap-[1ch]',
-          width || groupWidth || 'w-full',
-          classNames.container
-        )}
+      <RadioField
+        className={cn(width || groupWidth || 'w-full')}
         value={value}
         isDisabled={disabled}
         {...props}
       >
-        {({ isSelected }) => (
-          <>
-            <Icon
-              checked={isSelected}
-              className={cn(
-                disabled ? 'cursor-not-allowed' : 'cursor-pointer',
-                classNames.radio
-              )}
-            />
-            <div className={classNames.label}>{children}</div>
-          </>
-        )}
-      </Radio>
+        <RadioButton
+          ref={ref}
+          className={cn(
+            'group/radio',
+            'relative flex w-full items-center gap-[1ch]',
+            classNames.container
+          )}
+        >
+          {({ isSelected }) => (
+            <>
+              <Icon
+                checked={isSelected}
+                className={cn(
+                  disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+                  classNames.radio
+                )}
+              />
+              <div className={classNames.label}>{children}</div>
+            </>
+          )}
+        </RadioButton>
+      </RadioField>
     );
   }
 ) as RadioComponent;
