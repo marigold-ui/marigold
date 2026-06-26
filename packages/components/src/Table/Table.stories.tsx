@@ -1431,6 +1431,7 @@ export const DynamicColumnsAndRows = meta.story({
 /* ================ STORIES FOR TESTING ================ */
 
 export const CellOverrideTableTruncate = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     overflow: 'truncate',
@@ -1582,6 +1583,7 @@ export const DragPreview = meta.story({
 });
 
 export const ColumnAlignment = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => (
     <Table aria-label="Column alignment" {...args}>

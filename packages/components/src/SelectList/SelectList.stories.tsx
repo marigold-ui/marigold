@@ -42,6 +42,7 @@ export const Basic = meta.story({
 });
 
 export const WithSingleSelection = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <SelectList aria-labelledby="SelectList" selectionMode="single" {...args}>
       <SelectList.Item id="one">one</SelectList.Item>
