@@ -64,6 +64,16 @@ A toolbar should never wrap onto a second line or scroll sideways. Wrap each col
 
 Only `<Toolbar.Action>`s collapse, and only from the right. Anything else in the bar — a search field, a filter, a separator, even a plain `<Button>` — keeps its place, so put the controls that must stay visible on the left and the collapsing actions last. Order the actions by how often they are used, because the least-used ones are the first to disappear. To keep an action always visible — a primary **Save**, say — use a plain `<Button>` rather than a `<Toolbar.Action>`.
 
+### Icons or labels
+
+Most actions read most clearly as words, and a toolbar is no exception — but it is one of the few places where an icon-only action earns its keep. The bar is deliberately compact, its actions tend to be used often enough to be learned, and an icon keeps several of them on a single line where a row of text would overflow. The catch is that an icon is only as clear as it is recognizable, and most are not.
+
+Reach for an **icon-only** action when its symbol is genuinely conventional — a magnifier for search, a trash can for delete, a pencil for edit — and the action is common enough that people learn it quickly. Reach for a **text** action when the meaning is even slightly ambiguous, when the action is rare enough that no one will have learned its icon, or when getting it wrong is costly: a destructive or irreversible action reads more safely as words.
+
+A `<Toolbar.Action>` is one or the other — give it an `icon` and it renders icon-only (with the `label` carried into its tooltip and accessible name), or omit the icon and it renders its text. Keep a cluster consistent either way, since a row that mixes icon-only and text actions looks unfinished; group like with like. An action that has to be understood at a glance _and_ never disappear is better as a plain `<Button>` with an icon and its text side by side, which also keeps it from collapsing into **More**.
+
+For the underlying principle — an icon reinforces a label, it does not replace it — see [Button: Icons and labels](/components/actions/button#icons-and-labels).
+
 ### Accessible labels
 
 Compact toolbars lean on icon-only actions, and an icon on its own has no text for assistive technology to read. Give a `<Toolbar.Action>` an `icon` and a `label` and the toolbar does the rest: it renders an icon-only button, sets the `label` as its `aria-label`, pairs it with a [`<Tooltip>`](/components/overlay/tooltip) so sighted users find the same label on hover or focus, and reuses that `label` if the action later collapses into the **More** menu.
@@ -71,6 +81,16 @@ Compact toolbars lean on icon-only actions, and an icon on its own has no text f
 <ComponentDemo name="toolbar-labels" />
 
 The `label` is required for an icon action — it is the only text assistive technology has, so make it a short action phrase like `Download report`. Name the toolbar itself as well, and make the name specific when the toolbar repeats per row, like `Actions for {item.name}`.
+
+<Callout title="Tooltips are added for you" type="info">
+  You don't wire up the tooltip yourself. Give a `<Toolbar.Action>` an `icon` and
+  a `label` and the toolbar wraps it in a
+  [`<Tooltip>`](/components/overlay/tooltip) for you, built from that same
+  `label`. Because a `<Toolbar.Action>` is a descriptor rather than a rendered
+  control, the toolbar owns how it is shown — so don't wrap one in your own
+  `<Tooltip.Trigger>`. A text action gets no tooltip, since its label is already
+  on screen.
+</Callout>
 
 <Callout title="Keep it accessible">
   A tooltip is not a replacement for an `aria-label`. Tooltips are not reliably
