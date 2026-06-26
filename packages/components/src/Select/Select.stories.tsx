@@ -81,6 +81,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => {
     const [selected, setSelected] = useState<any>('');
@@ -210,9 +211,11 @@ export const Multiple = meta.story({
 
 export const LongItems = meta.story({
   parameters: {
-    // Give the dismiss transition time to settle before Chromatic captures
-    // to avoid flaky snapshots on the trigger's focus-ring transition.
-    chromatic: { delay: 300 },
+    // Snapshot disabled by the snapshot audit — the closed default state is a
+    // redundant frame already covered by the kept Select stories. The play test
+    // below still runs. (The former `delay: 300` only existed to stabilize this
+    // now-removed snapshot, so it's dropped with it.)
+    chromatic: { disableSnapshot: true },
   },
   render: args => {
     return (
@@ -263,6 +266,7 @@ export const LongItems = meta.story({
 });
 
 export const LotsOfOptions = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     return (
       <Inset space={24}>
@@ -313,6 +317,7 @@ export const LotsOfOptions = meta.story({
 });
 
 export const Sections = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Select {...args}>
       <Select.Section header="Fantasy">
@@ -395,6 +400,7 @@ export const SelectedScroll = meta.story({
 });
 
 export const WithBadges = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Select
       {...args}
@@ -528,6 +534,7 @@ const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
 }));
 
 export const LargeDataset = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Tenants',
@@ -570,6 +577,7 @@ export const LargeDataset = meta.story({
 });
 
 export const Mobile = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -673,6 +681,7 @@ export const Mobile = meta.story({
  * from `value`.
  */
 export const MobileControlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },
@@ -750,6 +759,7 @@ export const MobileControlled = meta.story({
  * font-size), and must drive the trigger's layout without an outer wrapper.
  */
 export const FixedWidth = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Favorite',

@@ -68,6 +68,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     children: 'This is a Headline!!',
   },

@@ -149,6 +149,7 @@ export const WithUnit = meta.story({
 });
 
 export const MinMax = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <>
       <NumberField
@@ -164,6 +165,7 @@ export const MinMax = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState(0);
     return (
@@ -179,6 +181,7 @@ export const Controlled = meta.story({
 });
 
 export const SelectOnClick = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Price',

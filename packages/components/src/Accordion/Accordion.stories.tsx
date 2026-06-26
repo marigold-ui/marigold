@@ -83,24 +83,27 @@ export const Basic = meta.story({
   ),
 });
 
-Basic.test('Basic test', async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  const user = userEvent.setup();
+Basic.test(
+  'Basic test',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const user = userEvent.setup();
 
-  const item = canvas.getByText('Informations');
-  const itemtwo = canvas.getByText('Personal Settings');
+    const item = canvas.getByText('Informations');
+    const itemtwo = canvas.getByText('Personal Settings');
 
-  await user.click(item);
-  await user.click(itemtwo);
+    await user.click(item);
+    await user.click(itemtwo);
 
-  expect(canvas.getByText('Here are some infos').parentElement).toHaveAttribute(
-    'aria-hidden',
-    'true'
-  );
-  expect(
-    canvas.getByText('Some longer Text to see if it looks good').parentElement
-  ).toHaveAttribute('aria-hidden', 'false');
-});
+    expect(
+      canvas.getByText('Here are some infos').parentElement
+    ).toHaveAttribute('aria-hidden', 'true');
+    expect(
+      canvas.getByText('Some longer Text to see if it looks good').parentElement
+    ).toHaveAttribute('aria-hidden', 'false');
+  }
+);
 
 let items = [
   {
@@ -186,6 +189,7 @@ export const ComplexSingleSelect = meta.story({
 });
 
 export const DefaultExpended = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">

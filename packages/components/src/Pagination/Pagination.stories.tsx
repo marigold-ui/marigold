@@ -115,6 +115,7 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => {
     const [basicPage, setBasicPage] = useState(1);
@@ -183,6 +184,7 @@ export const OneHundredPages = meta.story({
 
 export const NoData = meta.story({
   parameters: {
+    chromatic: { disableSnapshot: true },
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
   args: {
@@ -300,6 +302,7 @@ export const WithTable = meta.story({
 
 export const KeyboardSelection = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     onChange: fn(),
   },
@@ -375,6 +378,7 @@ export const DisabledPreviousButton = meta.story({
 });
 
 export const DisabledNextButton = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     defaultPage: 9,
@@ -441,6 +445,7 @@ export const Mobile = meta.story({
 
 export const UseOnChange = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     onChange: fn(),
   },
