@@ -92,7 +92,13 @@
   --color-disabled-surface: var(--color-charcoal-200);
 
   /* --- Form Controls --- */
-  --color-border: var(--color-charcoal-300);
+  /* The shared boundary for every control (inputs, selects, date fields,
+     checkboxes, radios). It's charcoal-300 darkened a notch so the edge reads
+     as a deliberate control boundary against a white field rather than
+     dissolving into it. Scoped to the border token on purpose — darkening the
+     charcoal-300 rung itself would also drag scrollbars and the date-segment
+     highlight, and compress the 200/300/400 ramp. */
+  --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
   /* Darker border for the hover state of bordered controls (e.g. secondary Button). */
   --color-border-hover: oklch(from var(--color-border) calc(l - 0.1) c h);
   --color-ring: var(--color-charcoal-600);
