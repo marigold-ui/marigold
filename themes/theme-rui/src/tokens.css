@@ -86,6 +86,16 @@
   --color-selected: var(--color-charcoal-300);
   --color-selected-bold: var(--color-charcoal-900);
   --color-selected-bold-foreground: var(--color-charcoal-50);
+
+  /* ToggleButton "on" = a sunken dark-gray surface. A lighter charcoal than
+     selected-bold/primary (charcoal-900) so a pressed toggle isn't mistaken for a
+     primary button. The edge is darker than the fill (derived from it, so they
+     stay coupled) to stay visible on the dark face — the faint surface-border
+     hairline vanishes here, making a grouped segment look shorter than its siblings. */
+  --color-toggle-selected: var(--color-charcoal-800);
+  --color-toggle-selected-edge: oklch(
+    from var(--color-toggle-selected) calc(l - 0.12) c h
+  );
   --color-focus-highlight: var(--color-charcoal-100);
   --color-focus-highlight-bold: var(--color-charcoal-300);
 
