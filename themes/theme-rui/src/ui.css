@@ -146,9 +146,11 @@
 * Applies a consistent visual style for invalid elements.
 */
 @utility ui-state-error {
-  /* Recolors the ui-surface ring via --ui-border-color. The focus: re-assert
-     keeps a focused-invalid field destructive instead of letting ui-state-focus
-     recolor the ring to --color-ring. */
+  /* Recolors the ui-surface ring via --ui-border-color. The focus: re-assert is a
+     specificity bump, not a duplicate: it compiles to a compound
+     `[data-invalid][data-focused]` selector that outranks ui-state-focus's
+     `[data-focused]`, so a focused-invalid field stays destructive by specificity,
+     not source order. Don't remove it. */
   --ui-border-color: var(--color-destructive-accent);
   @apply shadow-destructive-accent/20;
   @apply focus:outline-destructive-accent/20 focus:[--ui-border-color:var(--color-destructive-accent)];
