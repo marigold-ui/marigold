@@ -6,7 +6,7 @@ import {
   Basic,
   ThreeMonths,
   TwoMonths,
-  WithError,
+  WithErrorMessage,
 } from './RangeCalendar.stories';
 
 const renderWithLocale = (ui: ReactNode) =>
@@ -48,7 +48,7 @@ describe('RangeCalendar', () => {
   });
 
   test('renders error message when provided', () => {
-    renderWithLocale(<WithError.Component />);
+    renderWithLocale(<WithErrorMessage.Component />);
 
     expect(screen.getByText(/please select/i)).toBeInTheDocument();
   });
