@@ -104,8 +104,6 @@
      highlight). Caveat: at L 0.78 it's only ~2:1 on white (3:1 needs ~L 0.67,
      visibly heavier); kept lighter by design, tracked separately. */
   --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
-  /* Darker border for the hover state of bordered controls (e.g. secondary Button). */
-  --color-border-hover: oklch(from var(--color-border) calc(l - 0.1) c h);
   --color-ring: var(--color-charcoal-600);
 
   /* --- Status: Destructive --- */

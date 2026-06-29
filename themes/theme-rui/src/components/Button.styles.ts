@@ -19,8 +19,10 @@ export const Button: ThemeComponent<'Button'> = cva({
         // so the surface lifts instead of flattening; the edge stays a translucent
         // hairline, just firmed up (0.1 -> 0.2 alpha) rather than a hard opaque line.
         'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
-        // expanded (menu open) stays a flat fill to read as a held/active state, distinct from hover.
-        'expanded:[background:var(--color-hover)] expanded:[--ui-border-color:var(--color-border-hover)]',
+        // expanded (menu open) keeps the resting muted fill and only firms the edge to the
+        // same 0.2 alpha hairline — reads as engaged/open without the hover lift, so a hovered
+        // trigger (brightens) and an open one (firm edge) stay distinguishable.
+        'expanded:[--ui-border-color:var(--color-surface-border-hover)]',
       ],
       ghost: 'hover:ui-state-hover-ghost',
       destructive: [
