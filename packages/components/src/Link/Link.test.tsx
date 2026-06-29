@@ -18,21 +18,21 @@ afterEach(() => {
 
 test('supports href prop', () => {
   render(<Basic.Component href="https://example.com" />);
-  const link = screen.getByRole('link');
+  const link = screen.getAllByRole('link')[0];
 
   expect(link).toHaveAttribute('href', 'https://example.com');
 });
 
 test('supports disabled prop via aria attributes', () => {
   render(<Basic.Component disabled />);
-  const link = screen.getByRole('link');
+  const link = screen.getAllByRole('link')[0];
 
   expect(link).toHaveAttribute('aria-disabled', 'true');
 });
 
 test('supports variant prop', () => {
   render(<Basic.Component variant="secondary" />);
-  const link = screen.getByRole('link');
+  const link = screen.getAllByRole('link')[0];
 
   expect(link).toBeInTheDocument();
 });
@@ -55,7 +55,7 @@ test('renders span element when no href', () => {
 test('supports "onPress"', async () => {
   render(<Basic.Component onPress={() => {}} />);
 
-  const link = screen.getByRole('link');
+  const link = screen.getAllByRole('link')[0];
   await user.click(link);
 
   expect(warnMock).not.toHaveBeenCalled();
