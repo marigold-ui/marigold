@@ -255,6 +255,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
+    DateRangePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: Record<
       'icon' | 'mobileTrigger',
       ComponentStyleFunction<string, string>
