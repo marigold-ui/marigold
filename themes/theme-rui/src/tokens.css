@@ -205,6 +205,12 @@
     offsets + negative spread keep each shadow contained in its own footprint,
     so a dense field of elevated elements stays calm. Light from above (positive
     y, no x), low contact alpha, warm charcoal-hued tint.
+
+    The color is a literal `oklch(0.15 0.02 54 …)` rather than `oklch(from
+    var(--color-charcoal-950) …)` on purpose: `54` is the charcoal hue, but the
+    shadow's lightness/chroma are tuned independently of any palette step (a
+    shadow is not "charcoal-950 at low alpha"), so it must not track a rung. If
+    the palette hue ever shifts, update the `54` here to match.
   */
   --shadow-elevation-border:
     0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
