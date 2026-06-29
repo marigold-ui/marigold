@@ -9,6 +9,8 @@ const SearchDialog = dynamic(() => import('@/ui/SearchDialog'));
 export interface PageEntry {
   name: string;
   url: string;
+  /** Distinguishes docs pages from interactive example apps in the cmdk search. */
+  kind?: 'doc' | 'example';
 }
 
 const PagesContext = createContext<PageEntry[]>([]);
