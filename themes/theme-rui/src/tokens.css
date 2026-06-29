@@ -92,22 +92,15 @@
   --color-disabled-surface: var(--color-charcoal-200);
 
   /* --- Form Controls --- */
-  /* The opaque token for FUNCTIONAL edges: any boundary that carries meaning or
-     acts as an affordance, and therefore must stay perceivable (WCAG 1.4.11,
-     non-text contrast). Canonical case — a control boundary: controls are
-     surfaces, but their edge is an affordance, so every control overrides the
-     decorative surface rim (--color-surface-border) with this opaque line. Inputs,
-     selects and date fields (via ui-input) plus checkboxes and radios all share
-     it, so they read identically. Also used for dividers and overlapping lines
-     (grid cells, stacked rules) where a translucent stroke would double-darken.
-
-     Value: charcoal-300 darkened a notch so the edge reads as a deliberate
-     boundary on a white field instead of dissolving into it. Scoped to this
-     token, not the charcoal-300 rung — moving the rung would also drag
-     scrollbars and the date-segment highlight and compress the 200/300/400 ramp.
-     Heads up: at this lightness it measures ~2:1 on white, short of the 3:1
-     target; reaching 3:1 needs ~L 0.67, a visibly heavier line (tracked
-     separately as a design-vs-compliance call). */
+  /* Opaque FUNCTIONAL edge — a boundary that carries meaning or is an affordance,
+     so it must stay perceivable (WCAG 1.4.11). Counterpart to the decorative
+     --color-surface-border. Shared by every control boundary (inputs/selects/date
+     fields via ui-input, checkboxes/radios directly) and by dividers/grid lines,
+     where a translucent stroke would double-darken.
+     charcoal-300 darkened 0.08 L so it doesn't dissolve into a white field — on
+     the token, not the rung (which also feeds scrollbars + the date-segment
+     highlight). Caveat: at L 0.78 it's only ~2:1 on white (3:1 needs ~L 0.67,
+     visibly heavier); kept lighter by design, tracked separately. */
   --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
   /* Darker border for the hover state of bordered controls (e.g. secondary Button). */
   --color-border-hover: oklch(from var(--color-border) calc(l - 0.1) c h);
@@ -163,25 +156,22 @@
   /* ==================== */
   --color-surface: var(--color-white);
 
-  /* The DECORATIVE border of a raised surface (the ui-surface ring) — Card,
-     Panel, Dialog, Menu. Despite drawing a line, it is purely decorative: it
-     sits deliberately BELOW the non-text-contrast threshold and carries no
-     meaning, so it must NOT be used where the edge is an affordance or conveys
-     state — those take the opaque, functional --color-border (the functional vs.
-     decorative split is the whole reason these are two tokens). Translucent so
-     it composites over whatever ground the surface sits on, keeping a consistent
-     whisper-light rim on white, the page background, or a tinted panel (a fixed
-     gray would read heavy on white and wash out on gray). */
+  /* Decorative border of a raised surface (the ui-surface ring) — Card, Panel,
+     Dialog, Menu. It draws a line but is purely decorative: deliberately below
+     the non-text-contrast threshold, so never use it where the edge is an
+     affordance — those take the opaque, functional --color-border. Translucent so
+     it composites over whatever ground it sits on, staying whisper-light on white,
+     the page, or a tinted panel (a fixed gray reads heavy on white, washes out on
+     gray). */
   --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
 
-  /* ui-surface-contrast recipe — the prominent dark surface (primary Button,
-     ActionBar): a crisp dark edge, a faintly top-lit fill, a glow pooled at the
-     top of the face, and a soft 1px highlight on the top edge. These are the
-     lightness deltas (`-l`) and alphas (`-a`) each layer shifts from the surface
-     fill. The colors themselves are computed in the utility, not here: every
-     layer reads the fill via `--ui-background-color` on the element, so a fill
-     override (ui-surface-destructive, hover) retints the whole surface. Hoisting
-     the resolved colors to :root would freeze them to the primary color. */
+  /* ui-surface-contrast recipe — the dark surface (primary Button, ActionBar):
+     crisp dark edge, faintly top-lit fill, a glow pooled at the top, a soft 1px
+     top-edge highlight. These are the lightness deltas (-l) and alphas (-a) each
+     layer shifts from the fill. The colors are computed in the utility, not here:
+     each layer reads the fill via --ui-background-color on the element, so a fill
+     override (ui-surface-destructive, hover) retints everything; hoisting them to
+     :root would freeze them to the primary color. */
   --contrast-edge-l: 0.08;
   --contrast-fill-top-l: 0.03;
   --contrast-fill-bottom-l: 0.015;
@@ -206,11 +196,9 @@
     so a dense field of elevated elements stays calm. Light from above (positive
     y, no x), low contact alpha, warm charcoal-hued tint.
 
-    The color is a literal `oklch(0.15 0.02 54 …)` rather than `oklch(from
-    var(--color-charcoal-950) …)` on purpose: `54` is the charcoal hue, but the
-    shadow's lightness/chroma are tuned independently of any palette step (a
-    shadow is not "charcoal-950 at low alpha"), so it must not track a rung. If
-    the palette hue ever shifts, update the `54` here to match.
+    Color is a literal oklch, not derived from --color-charcoal-*: 54 is the
+    charcoal hue, but the shadow's L/C are tuned independently of any palette
+    step, so it must not track a rung. Update 54 if the palette hue shifts.
   */
   --shadow-elevation-border:
     0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
