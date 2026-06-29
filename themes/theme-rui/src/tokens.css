@@ -172,13 +172,13 @@
      each layer reads the fill via --ui-background-color on the element, so a fill
      override (ui-surface-destructive, hover) retints everything; hoisting them to
      :root would freeze them to the primary color. */
-  --contrast-edge-l: 0.08;
+  --contrast-edge-l: 0.04;
   --contrast-fill-top-l: 0.03;
   --contrast-fill-bottom-l: 0.015;
   --contrast-glow-l: 0.22;
   --contrast-glow-a: 0.95;
-  --contrast-highlight-l: 0.4;
-  --contrast-highlight-a: 0.5;
+  --contrast-highlight-l: 0.26;
+  --contrast-highlight-a: 0.35;
 
   --radius-surface: var(--radius-lg);
 
