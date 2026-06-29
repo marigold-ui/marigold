@@ -55,7 +55,7 @@
  * composes into the same `box-shadow` chain as `shadow-elevation-*`. Outset (not
  * inset) so it paints above child content — a child that bleeds edge-to-edge
  * (e.g. a Table in `Panel.Content bleed`) cannot cover it. Resting color is the
- * translucent, decorative `--color-surface-edge` rim; functional boundaries
+ * translucent, decorative `--color-surface-border` rim; functional boundaries
  * (form controls) and state overrides set `--ui-border-color` to an opaque color
  * (`--color-border`, focus, error).
  *
@@ -65,7 +65,7 @@
 @utility ui-surface {
   @apply rounded-surface relative transition-[box-shadow];
   background: var(--ui-background-color, var(--color-surface));
-  @apply ring-1 ring-[var(--ui-border-color,var(--color-surface-edge))];
+  @apply ring-1 ring-[var(--ui-border-color,var(--color-surface-border))];
 }
 
 /*

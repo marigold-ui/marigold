@@ -476,10 +476,10 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
         'Functional edges — any boundary that carries meaning or is an affordance, so it must stay perceivable (WCAG 1.4.11): form-control boundaries (Input, Select, TextArea, Checkbox, Radio, …) and opaque lines on a known surface (dividers, table row and grid lines)',
     },
     {
-      name: 'surface-edge',
+      name: 'surface-border',
       value: 'charcoal-950 / 10%',
       useFor:
-        'The decorative rim of a raised surface, applied via the ui-surface utility (Card, Panel, Dialog, Menu, secondary Button, …). Deliberately below the contrast threshold — never for an edge that must be seen',
+        'The decorative border of a raised surface, applied via the ui-surface utility (Card, Panel, Dialog, Menu, secondary Button, …). Deliberately below the contrast threshold — never for an edge that must be seen',
     },
     {
       name: 'ring',
@@ -489,25 +489,24 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
   ]}
 />
 
-<Callout title="Border vs. edge — pick by the job, not the location">
-  The two tokens are the same charcoal hue but encode different obligations, and
-  the names tell them apart. `border` is the **functional** line — any boundary
-  that carries meaning or is an affordance, so it must stay perceivable (WCAG
-  1.4.11 non-text contrast) and is **opaque**. It does the load-bearing work:
-  **overlapping** lines (grid-cell borders, stacked dividers), where translucent
-  strokes would double-darken at every crossing, _and_ every form-control
-  boundary. Controls are surfaces, but a control's edge is an affordance the
-  user must see, so each one overrides the surface rim with `border` via
-  `ui-input` (and Checkbox/Radio use it directly) — the rule and its exception
-  in one place. `surface-edge` is the **decorative** rim of a raised surface
-  (Card, Panel, Dialog, Menu). It is named "edge", not "border", on purpose: it
-  sits deliberately below the contrast threshold and means nothing, so it is
-  never used where the edge has to be seen. Being translucent, it composites
-  over whatever ground it sits on — staying consistent on white, the page
-  background, or a tinted panel, where a fixed gray reads heavy on white and
-  washes out on gray. It is drawn as the outset ring inside `ui-surface`, not a
-  standalone border class, so it never gets covered by edge-to-edge child
-  content.
+<Callout title="Two border tokens — pick by the job, not the location">
+  Both are the same charcoal hue, but they encode different obligations — what
+  separates them is the **job**, not their names. `border` is the **functional**
+  line: any boundary that carries meaning or is an affordance, so it must stay
+  perceivable (WCAG 1.4.11 non-text contrast) and is **opaque**. It does the
+  load-bearing work: **overlapping** lines (grid-cell borders, stacked
+  dividers), where translucent strokes would double-darken at every crossing,
+  _and_ every form-control boundary. Controls are surfaces, but a control's edge
+  is an affordance the user must see, so each one overrides the surface border
+  with `border` via `ui-input` (and Checkbox/Radio use it directly) — the rule
+  and its exception in one place. `surface-border` is **decorative**: the rim of
+  a raised surface (Card, Panel, Dialog, Menu). It still draws a line, but sits
+  deliberately below the contrast threshold and means nothing, so it is never
+  used where the edge has to be seen. Being translucent, it composites over
+  whatever ground it sits on — staying consistent on white, the page background,
+  or a tinted panel, where a fixed gray reads heavy on white and washes out on
+  gray. It is drawn as the outset ring inside `ui-surface`, not a standalone
+  border class, so it never gets covered by edge-to-edge child content.
 </Callout>
 
 ### Status colors

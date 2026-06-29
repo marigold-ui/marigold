@@ -96,7 +96,7 @@
      acts as an affordance, and therefore must stay perceivable (WCAG 1.4.11,
      non-text contrast). Canonical case — a control boundary: controls are
      surfaces, but their edge is an affordance, so every control overrides the
-     decorative surface rim (--color-surface-edge) with this opaque line. Inputs,
+     decorative surface rim (--color-surface-border) with this opaque line. Inputs,
      selects and date fields (via ui-input) plus checkboxes and radios all share
      it, so they read identically. Also used for dividers and overlapping lines
      (grid cells, stacked rules) where a translucent stroke would double-darken.
@@ -163,15 +163,16 @@
   /* ==================== */
   --color-surface: var(--color-white);
 
-  /* The DECORATIVE rim of a raised surface (the ui-surface ring) — Card, Panel,
-     Dialog, Menu. Named "edge", not "border", on purpose: it sits deliberately
-     BELOW the non-text-contrast threshold and carries no meaning, so it must not
-     be used where the edge is an affordance or conveys state — those take the
-     opaque --color-border. Translucent so it composites over whatever ground the
-     surface sits on, keeping a consistent whisper-light rim on white, the page
-     background, or a tinted panel (a fixed gray would read heavy on white and
-     wash out on gray). */
-  --color-surface-edge: oklch(from var(--color-charcoal-950) l c h / 0.1);
+  /* The DECORATIVE border of a raised surface (the ui-surface ring) — Card,
+     Panel, Dialog, Menu. Despite drawing a line, it is purely decorative: it
+     sits deliberately BELOW the non-text-contrast threshold and carries no
+     meaning, so it must NOT be used where the edge is an affordance or conveys
+     state — those take the opaque, functional --color-border (the functional vs.
+     decorative split is the whole reason these are two tokens). Translucent so
+     it composites over whatever ground the surface sits on, keeping a consistent
+     whisper-light rim on white, the page background, or a tinted panel (a fixed
+     gray would read heavy on white and wash out on gray). */
+  --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
 
   /* ui-surface-contrast recipe — the prominent dark surface (primary Button,
      ActionBar): a crisp dark edge, a faintly top-lit fill, a glow pooled at the
