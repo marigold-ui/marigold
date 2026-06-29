@@ -15,8 +15,10 @@ export const Button: ThemeComponent<'Button'> = cva({
       ],
       secondary: [
         'ui-surface-muted shadow-elevation-border',
-        // hover/expanded replace the resting gloss gradient with a flat fill
-        'hover:[background:var(--color-hover)] hover:[--ui-border-color:var(--color-border-hover)] hover:text-foreground',
+        // hover keeps the gloss gradient but brightens it a step (white -> charcoal-50)
+        // so the surface lifts instead of flattening; the opaque border carries the hover cue.
+        'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-border-hover)] hover:text-foreground',
+        // expanded (menu open) stays a flat fill to read as a held/active state, distinct from hover.
         'expanded:[background:var(--color-hover)] expanded:[--ui-border-color:var(--color-border-hover)]',
       ],
       ghost: 'hover:ui-state-hover-ghost',

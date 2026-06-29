@@ -73,8 +73,10 @@
   /* --- Primary --- */
   --color-primary: var(--color-charcoal-900);
   --color-primary-foreground: var(--color-charcoal-50);
-  /* Darker primary for the hover state of the primary Button / contrast surface. */
-  --color-primary-hover: oklch(from var(--color-primary) calc(l - 0.15) c h);
+  /* Hover for the primary Button / contrast surface: the fill brightens a touch
+     so the glow intensifies ("lights up"). Darkening instead crushed the
+     gradient + glow into a flat near-black. */
+  --color-primary-hover: oklch(from var(--color-primary) calc(l + 0.05) c h);
 
   /* --- Neutral Backgrounds & States --- */
   --color-muted: var(--color-charcoal-50);
@@ -112,9 +114,9 @@
   --color-destructive-accent: var(--color-red-600);
   --color-destructive-bold: var(--color-red-600);
   --color-destructive-bold-foreground: var(--color-white);
-  /* Darker destructive for the hover state of the destructive Button. */
+  /* Hover for the destructive Button: brightens to match primary's "light up". */
   --color-destructive-bold-hover: oklch(
-    from var(--color-destructive-bold) calc(l - 0.1) c h
+    from var(--color-destructive-bold) calc(l + 0.05) c h
   );
 
   /* --- Status: Success --- */
