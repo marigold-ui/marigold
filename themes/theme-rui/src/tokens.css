@@ -175,10 +175,10 @@
   --contrast-edge-l: 0.04;
   --contrast-fill-top-l: 0.03;
   --contrast-fill-bottom-l: 0.015;
-  --contrast-glow-l: 0.12;
-  --contrast-glow-a: 0.7;
-  --contrast-highlight-l: 0.18;
-  --contrast-highlight-a: 0.28;
+  --contrast-glow-l: 0.15;
+  --contrast-glow-a: 0.8;
+  --contrast-highlight-l: 0.26;
+  --contrast-highlight-a: 0.35;
 
   --radius-surface: var(--radius-lg);
 
