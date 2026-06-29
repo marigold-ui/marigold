@@ -166,6 +166,12 @@
      the page, or a tinted panel (a fixed gray reads heavy on white, washes out on
      gray). */
   --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
+  /* Hover for surfaces that border off the decorative hairline (secondary
+     Button): the same translucent edge, firmed up (0.1 -> 0.2 alpha) rather than
+     swapped for a hard opaque line. */
+  --color-surface-border-hover: oklch(
+    from var(--color-charcoal-950) l c h / 0.2
+  );
 
   /* ui-surface-contrast recipe — the dark surface (primary Button, ActionBar):
      crisp dark edge, faintly top-lit fill, a glow pooled at the top, a soft 1px

@@ -16,8 +16,9 @@ export const Button: ThemeComponent<'Button'> = cva({
       secondary: [
         'ui-surface-muted shadow-elevation-border',
         // hover keeps the gloss gradient but brightens it a step (white -> charcoal-50)
-        // so the surface lifts instead of flattening; the opaque border carries the hover cue.
-        'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-border-hover)] hover:text-foreground',
+        // so the surface lifts instead of flattening; the edge stays a translucent
+        // hairline, just firmed up (0.1 -> 0.2 alpha) rather than a hard opaque line.
+        'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
         // expanded (menu open) stays a flat fill to read as a held/active state, distinct from hover.
         'expanded:[background:var(--color-hover)] expanded:[--ui-border-color:var(--color-border-hover)]',
       ],
