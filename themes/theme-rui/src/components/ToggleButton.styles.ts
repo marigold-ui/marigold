@@ -17,12 +17,14 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   button: cva({
     base: [
       'ui-button-base gap-2',
-      'ui-surface shadow-elevation-border',
+      // Neutral button = the secondary Button look (muted gloss surface).
+      'ui-surface-muted shadow-elevation-border',
 
-      // States
-      'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
-      'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground selected:shadow-none',
-      'disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
+      // States — match the secondary Button. ui-surface-muted hardcodes its
+      // gradient fill, so state fills override `background` directly (not --ui-background-color).
+      'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
+      'selected:[background:var(--color-selected-bold)] selected:text-selected-bold-foreground selected:shadow-none',
+      'disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
 
       // Group: buttons share the group's outer surface and border
       'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',

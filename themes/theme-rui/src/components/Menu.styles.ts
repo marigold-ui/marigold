@@ -47,11 +47,13 @@ export const Menu: ThemeComponent<'Menu'> = {
     variants: {
       variant: {
         default: [
-          'ui-surface shadow-elevation-border',
-          'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
-          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
-          'pending:[--ui-background-color:var(--color-disabled-surface)] pending:border-0 pending:shadow-none',
-          'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
+          // Neutral trigger = the secondary Button look: muted gloss surface,
+          // brighten-on-hover, soft hairline edge, soft "held" open state.
+          'ui-surface-muted shadow-elevation-border',
+          'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
+          'disabled:border-0 disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
+          'pending:[background:var(--color-disabled-surface)] pending:border-0 pending:shadow-none',
+          'expanded:[--ui-border-color:var(--color-surface-border-hover)]',
         ],
         ghost: 'hover:ui-state-hover',
       },
