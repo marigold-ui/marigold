@@ -90,14 +90,14 @@ export const Basic = meta.story({
       />
     </Stack>
   ),
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
-    await waitFor(() =>
-      expect(canvas.getByText('Drawer Title')).toBeInTheDocument()
-    );
+});
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
-  },
+Basic.test('Open drawer', async ({ canvas, userEvent }: any) => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+
+  await waitFor(() =>
+    expect(canvas.getByText('Drawer Title')).toBeInTheDocument()
+  );
 });
 
 export const WithForms = meta.story({
@@ -149,6 +149,7 @@ export const WithForms = meta.story({
 
 export const LongContent = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -178,9 +179,14 @@ export const LongContent = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
-    expect(window.innerWidth).toBeLessThan(640);
+});
 
+LongContent.test(
+  'Long content on a small screen',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }: any) => {
     const trigger = canvas.getByRole('button', { name: 'Open Drawer' });
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
@@ -215,11 +221,13 @@ export const LongContent = meta.story({
     await waitFor(() => {
       expect(isWithin(endMarker, scrollContainer)).toBe(true);
     });
-  },
-});
+    expect(window.innerWidth).toBeLessThan(640);
+  }
+);
 
 export const SelectInsideDrawerSmallScreen = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -241,7 +249,14 @@ export const SelectInsideDrawerSmallScreen = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+SelectInsideDrawerSmallScreen.test(
+  'Shows values on a small screen',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }: any) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
     await waitFor(() => expect(canvas.getByText('Filter')).toBeInTheDocument());
 
@@ -281,8 +296,8 @@ export const SelectInsideDrawerSmallScreen = meta.story({
     expect(tailwindZ(trayPortal)).toBeGreaterThanOrEqual(
       tailwindZ(drawerPortal)
     );
-  },
-});
+  }
+);
 
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
