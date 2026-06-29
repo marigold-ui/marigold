@@ -55,8 +55,9 @@
  * composes into the same `box-shadow` chain as `shadow-elevation-*`. Outset (not
  * inset) so it paints above child content — a child that bleeds edge-to-edge
  * (e.g. a Table in `Panel.Content bleed`) cannot cover it. Resting color is the
- * translucent `--color-surface-border` hairline; state overrides via
- * `--ui-border-color` (focus, error) are opaque.
+ * translucent, decorative `--color-surface-edge` rim; functional boundaries
+ * (form controls) and state overrides set `--ui-border-color` to an opaque color
+ * (`--color-border`, focus, error).
  *
  * `background` is excluded from the transition so hover/state bg flips feel
  * instant on high-frequency interactions (DST-1436).
@@ -64,7 +65,7 @@
 @utility ui-surface {
   @apply rounded-surface relative transition-[box-shadow];
   background: var(--ui-background-color, var(--color-surface));
-  @apply ring-1 ring-[var(--ui-border-color,var(--color-surface-border))];
+  @apply ring-1 ring-[var(--ui-border-color,var(--color-surface-edge))];
 }
 
 /*

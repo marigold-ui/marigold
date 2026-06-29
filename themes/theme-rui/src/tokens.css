@@ -92,12 +92,22 @@
   --color-disabled-surface: var(--color-charcoal-200);
 
   /* --- Form Controls --- */
-  /* The shared boundary for every control (inputs, selects, date fields,
-     checkboxes, radios). It's charcoal-300 darkened a notch so the edge reads
-     as a deliberate control boundary against a white field rather than
-     dissolving into it. Scoped to the border token on purpose — darkening the
-     charcoal-300 rung itself would also drag scrollbars and the date-segment
-     highlight, and compress the 200/300/400 ramp. */
+  /* The opaque token for FUNCTIONAL edges: any boundary that carries meaning or
+     acts as an affordance, and therefore must stay perceivable (WCAG 1.4.11,
+     non-text contrast). Canonical case — a control boundary: controls are
+     surfaces, but their edge is an affordance, so every control overrides the
+     decorative surface rim (--color-surface-edge) with this opaque line. Inputs,
+     selects and date fields (via ui-input) plus checkboxes and radios all share
+     it, so they read identically. Also used for dividers and overlapping lines
+     (grid cells, stacked rules) where a translucent stroke would double-darken.
+
+     Value: charcoal-300 darkened a notch so the edge reads as a deliberate
+     boundary on a white field instead of dissolving into it. Scoped to this
+     token, not the charcoal-300 rung — moving the rung would also drag
+     scrollbars and the date-segment highlight and compress the 200/300/400 ramp.
+     Heads up: at this lightness it measures ~2:1 on white, short of the 3:1
+     target; reaching 3:1 needs ~L 0.67, a visibly heavier line (tracked
+     separately as a design-vs-compliance call). */
   --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
   /* Darker border for the hover state of bordered controls (e.g. secondary Button). */
   --color-border-hover: oklch(from var(--color-border) calc(l - 0.1) c h);
@@ -153,12 +163,15 @@
   /* ==================== */
   --color-surface: var(--color-white);
 
-  /* Decorative hairline at the edge of a raised surface (the ui-surface ring).
-     Translucent so it composites over whatever ground the surface sits on,
-     keeping consistent contrast on white, the page background, or a tinted
-     panel. Decorative only — dividers, overlapping lines, and form-control
-     boundaries use the opaque --color-border. */
-  --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
+  /* The DECORATIVE rim of a raised surface (the ui-surface ring) — Card, Panel,
+     Dialog, Menu. Named "edge", not "border", on purpose: it sits deliberately
+     BELOW the non-text-contrast threshold and carries no meaning, so it must not
+     be used where the edge is an affordance or conveys state — those take the
+     opaque --color-border. Translucent so it composites over whatever ground the
+     surface sits on, keeping a consistent whisper-light rim on white, the page
+     background, or a tinted panel (a fixed gray would read heavy on white and
+     wash out on gray). */
+  --color-surface-edge: oklch(from var(--color-charcoal-950) l c h / 0.1);
 
   /* ui-surface-contrast recipe — the prominent dark surface (primary Button,
      ActionBar): a crisp dark edge, a faintly top-lit fill, a glow pooled at the
