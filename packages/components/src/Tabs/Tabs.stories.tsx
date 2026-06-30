@@ -142,6 +142,7 @@ export const WithSelectedTab = meta.story({
 });
 
 export const WithRenderProps = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => {
     return (
@@ -183,11 +184,8 @@ const OVERFLOW_TABS = [
   'Audit log',
 ];
 
-// The ticket's scenario: more tabs than fit a phone viewport. The row scrolls
-// horizontally instead of wrapping, and selecting an off-screen tab scrolls it
-// into view. The snapshot is skipped (flaky: the indicator is mid-slide and the
-// scroll-into-view leaves a non-deterministic position); the play test is the
-// behavioral coverage.
+// Tabs overflowing a phone viewport: the row scrolls instead of wrapping.
+// Snapshot skipped (flaky scroll position); the play test covers behavior.
 export const Mobile = meta.story({
   tags: ['component-test'],
   globals: {

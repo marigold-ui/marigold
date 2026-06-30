@@ -3,7 +3,6 @@ import * as m from 'motion/react-m';
 import { useEffect, useId, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import { TabList } from 'react-aria-components/Tabs';
-import { cn } from '@marigold/system';
 import { MotionFeatures } from '../lazyMotion';
 import { useTabContext } from './Context';
 
@@ -65,7 +64,7 @@ const _TabList = (props: TabListProps) => {
           layoutScroll
           className={classNames.tabsListScroll}
         >
-          <TabList {...props} className={cn('flex', classNames.tabsList)}>
+          <TabList {...props} className={classNames.tabsList}>
             {props.children}
           </TabList>
         </m.div>
