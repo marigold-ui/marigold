@@ -270,6 +270,10 @@ export type Theme = {
       'container' | 'tabsList' | 'tabpanel' | 'tab' | 'tabIndicator',
       ComponentStyleFunction<string, string>
     > &
+      // Optional scroll container for the tab row. When a theme makes `tabsList`
+      // wider than its container (e.g. `w-max`), it must pair that with a
+      // `tabsListScroll` slot that provides the `overflow-x`, otherwise the row
+      // overflows the page instead of scrolling. See theme-rui's Tabs.styles.ts.
       Partial<Record<'tabsListScroll', ComponentStyleFunction<string, string>>>;
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<

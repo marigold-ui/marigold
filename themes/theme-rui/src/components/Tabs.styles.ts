@@ -12,6 +12,10 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   tabsListScroll: cva({
     base: 'ui-scroll-mask-x -my-1 snap-proximity scroll-px-6 overscroll-x-contain py-1 motion-safe:scroll-smooth',
   }),
+  // `w-max` lets the row grow past its container so it overflows (and scrolls)
+  // rather than wrapping; `min-w-full` keeps it filling the width when the tabs
+  // fit. This depends on `tabsListScroll` above providing the `overflow-x` — the
+  // two slots are a pair.
   tabsList: cva({
     base: [
       'text-secondary',
