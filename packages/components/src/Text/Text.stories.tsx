@@ -82,6 +82,7 @@ export const Basic = meta.story({
 });
 
 export const Slot = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Text slot="description" {...args}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse

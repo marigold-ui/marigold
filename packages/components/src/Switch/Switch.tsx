@@ -1,6 +1,7 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Switch, SwitchContext } from 'react-aria-components/Switch';
+import { SwitchFieldContext } from 'react-aria-components';
+import { SwitchButton, SwitchField } from 'react-aria-components/Switch';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Label } from '../Label/Label';
@@ -14,7 +15,7 @@ type RemovedProps =
   | 'isSelected'
   | 'slot';
 
-export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
+export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
   variant?: string;
   size?: string;
 
@@ -41,19 +42,19 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
    * Disables the switch.
    * @default false
    */
-  disabled?: RAC.SwitchProps['isDisabled'];
+  disabled?: RAC.SwitchFieldProps['isDisabled'];
 
   /**
    * Set the switch to read-only.
    * @default false
    */
-  readOnly?: RAC.SwitchProps['isReadOnly'];
+  readOnly?: RAC.SwitchFieldProps['isReadOnly'];
 
   /**
    * With this prop you can set the switch selected.
    * @default false
    */
-  selected?: RAC.SwitchProps['isSelected'];
+  selected?: RAC.SwitchFieldProps['isSelected'];
   ref?: Ref<HTMLLabelElement>;
 }
 
@@ -75,31 +76,37 @@ const _Switch = ({
     isReadOnly: readOnly,
     isSelected: selected,
     ...rest,
-  } satisfies RAC.SwitchProps;
+  } satisfies RAC.SwitchFieldProps;
   return (
     <BooleanField
       description={description}
       variant={variant}
-      context={SwitchContext}
+      context={SwitchFieldContext}
     >
-      <Switch
-        {...props}
-        ref={ref}
-        className={cn('group/switch w-(--width)', classNames.container)}
-        style={createWidthVar('width', width)}
-      >
-        {variant === 'settings' && label && (
-          <Label elementType="span">{label}</Label>
-        )}
-        <div className="relative">
-          <div className={classNames.track}>
-            <div className={classNames.thumb} />
+      {/* `SwitchField` provides the field context/`aria-describedby` wiring for
+          the new non-deprecated RAC API. `display: contents` keeps it
+          transparent to the `BooleanField` grid so the subgrid alignment of
+          label, track, and description is preserved. The width lives on the
+          `SwitchButton` (the rendered `label`), matching the standalone layout. */}
+      <SwitchField {...props} className="contents">
+        <SwitchButton
+          ref={ref}
+          className={cn('group/switch w-(--width)', classNames.container)}
+          style={createWidthVar('width', width)}
+        >
+          {variant === 'settings' && label && (
+            <Label elementType="span">{label}</Label>
+          )}
+          <div className="relative">
+            <div className={classNames.track}>
+              <div className={classNames.thumb} />
+            </div>
           </div>
-        </div>
-        {variant !== 'settings' && label && (
-          <Label elementType="span">{label}</Label>
-        )}
-      </Switch>
+          {variant !== 'settings' && label && (
+            <Label elementType="span">{label}</Label>
+          )}
+        </SwitchButton>
+      </SwitchField>
     </BooleanField>
   );
 };

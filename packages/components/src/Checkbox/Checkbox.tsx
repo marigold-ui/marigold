@@ -1,9 +1,7 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  CheckboxContext,
-  Checkbox as RACCheckbox,
-} from 'react-aria-components/Checkbox';
+import { CheckboxFieldContext } from 'react-aria-components';
+import { CheckboxButton, CheckboxField } from 'react-aria-components/Checkbox';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
@@ -53,7 +51,10 @@ export type RemovedProps =
   | 'isIndeterminate'
   | 'defaultSelected';
 
-export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
+export interface CheckboxProps extends Omit<
+  RAC.CheckboxFieldProps,
+  RemovedProps
+> {
   variant?: string;
   size?: string;
 
@@ -120,7 +121,7 @@ const _Checkbox = ({
   ref,
   ...rest
 }: CheckboxProps) => {
-  const props: RAC.CheckboxProps = {
+  const props: RAC.CheckboxFieldProps = {
     isIndeterminate: indeterminate,
     isDisabled: disabled,
     isReadOnly: readOnly,
@@ -140,27 +141,32 @@ const _Checkbox = ({
   });
 
   return (
-    <BooleanField description={description} context={CheckboxContext}>
-      <RACCheckbox
-        ref={ref}
-        className={cn(
-          'group/checkbox',
-          'data-disabled:cursor-not-allowed',
-          classNames.container
-        )}
-        {...props}
-      >
-        {({ isSelected, isIndeterminate }) => (
-          <>
-            <Icon
-              checked={isSelected}
-              indeterminate={isIndeterminate}
-              className={classNames.checkbox}
-            />
-            {label && <div className={classNames.label}>{label}</div>}
-          </>
-        )}
-      </RACCheckbox>
+    <BooleanField description={description} context={CheckboxFieldContext}>
+      {/* `CheckboxField` provides the field context/`aria-describedby` wiring
+          for the new non-deprecated RAC API. `display: contents` keeps it
+          transparent to the `BooleanField` grid so the subgrid alignment of
+          icon, label, and description is preserved. */}
+      <CheckboxField {...props} className="contents">
+        <CheckboxButton
+          ref={ref}
+          className={cn(
+            'group/checkbox',
+            'data-disabled:cursor-not-allowed',
+            classNames.container
+          )}
+        >
+          {({ isSelected, isIndeterminate }) => (
+            <>
+              <Icon
+                checked={isSelected}
+                indeterminate={isIndeterminate}
+                className={classNames.checkbox}
+              />
+              {label && <div className={classNames.label}>{label}</div>}
+            </>
+          )}
+        </CheckboxButton>
+      </CheckboxField>
     </BooleanField>
   );
 };

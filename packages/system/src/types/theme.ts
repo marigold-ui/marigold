@@ -87,7 +87,13 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<
-      'closeButton' | 'container' | 'header' | 'content' | 'actions' | 'title',
+      | 'closeButton'
+      | 'container'
+      | 'header'
+      | 'content'
+      | 'actions'
+      | 'title'
+      | 'description',
       ComponentStyleFunction<string, string>
     >;
     Divider?: ComponentStyleFunction<string, string>;
@@ -97,6 +103,7 @@ export type Theme = {
       | 'container'
       | 'header'
       | 'title'
+      | 'description'
       | 'content'
       | 'actions',
       ComponentStyleFunction<string, string>
@@ -107,6 +114,7 @@ export type Theme = {
       | 'dragHandle'
       | 'header'
       | 'title'
+      | 'description'
       | 'content'
       | 'actions',
       ComponentStyleFunction<string, string>
@@ -290,6 +298,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
+    DateRangePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: Record<
       'icon' | 'mobileTrigger',
       ComponentStyleFunction<string, string>

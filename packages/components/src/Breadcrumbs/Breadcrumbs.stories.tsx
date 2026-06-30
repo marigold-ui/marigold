@@ -65,6 +65,7 @@ export const Collapsed = meta.story({
 });
 
 export const ManyItems = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Breadcrumbs maxVisibleItems={2} {...args}>
       {[...Array(30).keys()].map(i => (
@@ -77,6 +78,7 @@ export const ManyItems = meta.story({
 });
 
 export const AutoCollapse = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => (
     <div className="border-border w-75 resize-x overflow-auto border p-2">

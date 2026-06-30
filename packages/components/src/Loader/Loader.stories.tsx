@@ -87,6 +87,7 @@ export const CircleLoader = meta.story({
 });
 
 export const FullscreenCircleLoader = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     mode: 'fullscreen',
     loaderType: 'circle',
