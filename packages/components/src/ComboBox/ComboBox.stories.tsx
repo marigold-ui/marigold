@@ -131,7 +131,7 @@ const meta = preview.meta({
   } as const,
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -151,7 +151,7 @@ export const Basic: any = meta.story({
   },
 });
 
-Basic.test('Shows empty state', async ({ canvas }: any) => {
+Basic.test('Shows empty state', async ({ canvas }) => {
   const input = canvas.getByRole('combobox');
 
   await userEvent.type(input, 'xyz');
@@ -160,7 +160,7 @@ Basic.test('Shows empty state', async ({ canvas }: any) => {
   expect(emptyState).toBeInTheDocument();
 });
 
-Basic.test('Shows a selected value from list', async ({ canvas }: any) => {
+Basic.test('Shows a selected value from list', async ({ canvas }) => {
   const combobox = canvas.getByRole('combobox');
 
   await userEvent.type(combobox, 'dog');
@@ -179,7 +179,7 @@ Basic.test(
       menuTrigger: 'manual',
     },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, '{arrowdown}');
@@ -189,7 +189,7 @@ Basic.test(
   }
 );
 
-Basic.test('Opens with input trigger', async ({ canvas }: any) => {
+Basic.test('Opens with input trigger', async ({ canvas }) => {
   const input = canvas.getByRole('combobox');
 
   await userEvent.click(input);
@@ -203,7 +203,7 @@ Basic.test('Opens with input trigger', async ({ canvas }: any) => {
   await waitFor(() => expect(input).toBeVisible());
 });
 
-Basic.test('Opens with focus trigger', async ({ canvas }: any) => {
+Basic.test('Opens with focus trigger', async ({ canvas }) => {
   const combobox = canvas.getByRole('combobox');
 
   await userEvent.type(combobox, 'oo');
@@ -216,7 +216,7 @@ Basic.test('Opens with focus trigger', async ({ canvas }: any) => {
   await waitFor(() => expect(combobox).toHaveValue('Kangaroo'));
 });
 
-export const Controlled: any = meta.story({
+export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [id, setId] = useState<Key | null>(null);
@@ -235,7 +235,7 @@ export const Controlled: any = meta.story({
   },
 });
 
-export const Sections: any = meta.story({
+export const Sections = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
@@ -271,7 +271,7 @@ Sections.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
@@ -284,7 +284,7 @@ Sections.test(
   }
 );
 
-export const DisabledKeys: any = meta.story({
+export const DisabledKeys = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
@@ -302,7 +302,7 @@ DisabledKeys.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
@@ -323,7 +323,7 @@ const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
   label: `Tenant ${i + 200} (item-${i + 200})`,
 }));
 
-export const LargeDataset: any = meta.story({
+export const LargeDataset = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
@@ -347,7 +347,7 @@ LargeDataset.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     const input = canvas.getByRole('combobox');
 
     await step('Filter the large dataset by typing', async () => {
@@ -372,7 +372,7 @@ LargeDataset.test(
   }
 );
 
-export const Mobile: any = meta.story({
+export const Mobile = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {
@@ -407,7 +407,7 @@ Mobile.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
@@ -423,7 +423,7 @@ Mobile.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
@@ -457,59 +457,54 @@ Mobile.test(
   }
 );
 
-Mobile.test(
-  'Mobile ComboBox keyboard navigation',
-  async ({ canvas, step }: any) => {
-    const trigger = await canvas.findByRole('button');
+Mobile.test('Mobile ComboBox keyboard navigation', async ({ canvas, step }) => {
+  const trigger = await canvas.findByRole('button');
 
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
 
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
-      );
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  });
+
+  await step('Verify combobox input receives focus', async () => {
+    const input = await canvas.findByRole('combobox');
+
+    await waitFor(() => expect(input).toHaveFocus());
+  });
+
+  await step('Filter options by typing', async () => {
+    await userEvent.keyboard('cat');
+
+    await waitFor(() => {
+      expect(canvas.getByText('Cat')).toBeVisible();
+      expect(canvas.queryByText('Dog')).not.toBeInTheDocument();
     });
+  });
 
-    await step('Verify combobox input receives focus', async () => {
-      const input = await canvas.findByRole('combobox');
+  await step('Navigate to option with arrow keys and select', async () => {
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+  });
 
-      await waitFor(() => expect(input).toHaveFocus());
-    });
+  await step('Close tray with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
 
-    await step('Filter options by typing', async () => {
-      await userEvent.keyboard('cat');
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
 
-      await waitFor(() => {
-        expect(canvas.getByText('Cat')).toBeVisible();
-        expect(canvas.queryByText('Dog')).not.toBeInTheDocument();
-      });
-    });
-
-    await step('Navigate to option with arrow keys and select', async () => {
-      await userEvent.keyboard('{ArrowDown}');
-      await userEvent.keyboard('{Enter}');
-    });
-
-    await step('Close tray with Escape key', async () => {
-      await userEvent.keyboard('{Escape}');
-
-      await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-      );
-    });
-
-    await step('Verify selection is displayed in trigger', async () => {
-      await waitFor(() => expect(trigger).toHaveTextContent('Cat'));
-    });
-  }
-);
+  await step('Verify selection is displayed in trigger', async () => {
+    await waitFor(() => expect(trigger).toHaveTextContent('Cat'));
+  });
+});
 
 Mobile.test(
   'Mobile ComboBox shows empty state',
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button');
 
     await step('Open tray', async () => {

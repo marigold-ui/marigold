@@ -114,7 +114,7 @@ const meta = preview.meta({
   ],
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   render: args => {
     return (
       <I18nProvider locale="de-DE">
@@ -129,7 +129,7 @@ export const Basic: any = meta.story({
   },
 });
 
-export const Controlled: any = meta.story({
+export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState(
@@ -161,7 +161,7 @@ export const Controlled: any = meta.story({
   },
 });
 
-export const MinMax: any = meta.story({
+export const MinMax = meta.story({
   args: {
     open: true,
   },
@@ -179,7 +179,7 @@ export const MinMax: any = meta.story({
   ),
 });
 
-export const UnavailableDate: any = meta.story({
+export const UnavailableDate = meta.story({
   args: {
     open: true,
   },
@@ -194,7 +194,7 @@ export const UnavailableDate: any = meta.story({
   ),
 });
 
-export const WithDefaultValue: any = meta.story({
+export const WithDefaultValue = meta.story({
   render: args => (
     <I18nProvider locale="en-US">
       <DatePicker
@@ -206,7 +206,7 @@ export const WithDefaultValue: any = meta.story({
   ),
 });
 
-export const WithError: any = meta.story({
+export const WithError = meta.story({
   args: {
     error: true,
     errorMessage: 'Whoopsie',
@@ -219,7 +219,7 @@ export const WithError: any = meta.story({
   ),
 });
 
-export const Mobile: any = meta.story({
+export const Mobile = meta.story({
   tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },
@@ -240,7 +240,7 @@ Mobile.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, userEvent }: any) => {
+  async ({ canvas, userEvent }) => {
     const trigger = await canvas.findByRole('button');
 
     await userEvent.click(trigger);
@@ -252,7 +252,7 @@ Mobile.test(
 Mobile.test(
   'Mobile DatePicker interaction',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step, userEvent }: any) => {
+  async ({ canvas, step, userEvent }) => {
     // Mock releasePointerCapture to handle invalid pointer IDs in Firefox tests
     const releasePointerCaptureMock = spyOn(
       Element.prototype,
@@ -306,7 +306,7 @@ Mobile.test(
 Mobile.test(
   'Mobile DatePicker keyboard navigation',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step, userEvent }: any) => {
+  async ({ canvas, step, userEvent }) => {
     const trigger = canvas.getByRole('button');
 
     await step('Open tray by clicking trigger', async () => {

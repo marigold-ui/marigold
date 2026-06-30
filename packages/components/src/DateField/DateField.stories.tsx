@@ -97,7 +97,7 @@ const meta = preview.meta({
   } as const,
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
     <I18nProvider locale="de-DE">
@@ -106,7 +106,7 @@ export const Basic: any = meta.story({
   ),
 });
 
-Basic.test('Date entered', async ({ canvas, userEvent }: any) => {
+Basic.test('Date entered', async ({ canvas, userEvent }) => {
   // de-DE renders the field as DD.MM.YYYY, so the segments are day, month, year.
   const [day, month, year] = canvas.getAllByRole('spinbutton');
 
@@ -129,7 +129,7 @@ Basic.test('Date entered', async ({ canvas, userEvent }: any) => {
   await expect(year).toHaveFocus();
 });
 
-export const ControlledDateField: any = meta.story({
+export const ControlledDateField = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
@@ -156,7 +156,7 @@ export const ControlledDateField: any = meta.story({
   },
 });
 
-export const BritishLocal: any = meta.story({
+export const BritishLocal = meta.story({
   render: args => (
     <I18nProvider locale="en-GB">
       <DateField {...args} />
