@@ -8,7 +8,7 @@
   "engines": {
     "node": "24.x"
   },
-  "packageManager": "pnpm@11.1.2",
+  "packageManager": "pnpm@11.8.0",
   "dependencies": {
     "@babel/core": "7.29.7",
     "@changesets/changelog-git": "0.2.1",
@@ -40,7 +40,7 @@
     "@vitest/ui": "4.1.9",
     "all-contributors-cli": "6.26.1",
     "autoprefixer": "10.5.0",
-    "concurrently": "9.2.1",
+    "concurrently": "9.2.3",
     "eslint": "10.4.0",
     "eslint-plugin-storybook": "10.4.6",
     "husky": "9.1.7",
