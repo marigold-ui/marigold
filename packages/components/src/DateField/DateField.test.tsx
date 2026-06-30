@@ -45,7 +45,7 @@ test('renders correctly', () => {
       <div
         aria-describedby="react-aria-description-0 react-aria-_r_4_"
         aria-labelledby="react-aria-_r_2_"
-        class="ui-surface shadow-elevation-border h-control flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive)] w-(--field-width) max-w-full min-w-0 overflow-hidden"
+        class="ui-surface shadow-elevation-border h-control [--ui-border-color:var(--color-border)] flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)] w-(--field-width) max-w-full min-w-0 overflow-hidden"
         data-rac=""
         data-react-aria-pressable="true"
         id="react-aria-_r_1_"
