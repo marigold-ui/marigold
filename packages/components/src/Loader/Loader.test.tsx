@@ -92,27 +92,27 @@ test('renders loader with loaderType circle', () => {
     <svg
       aria-hidden="true"
       class="flex-none animate-rotate-spinner origin-center fill-none size-20"
-      height="defaultpx"
+      height="24px"
       role="img"
-      width="defaultpx"
+      width="24px"
     >
       <circle
         class="stroke-transparent"
         cx="50%"
         cy="50%"
-        r="calc(50% - 2px)"
-        stroke-width="4"
+        r="calc(50% - 1px)"
+        stroke-width="2"
       />
       <circle
         class="animate-progress-cycle origin-center -rotate-90 stroke-foreground"
         cx="50%"
         cy="50%"
         pathLength="100"
-        r="calc(50% - 2px)"
+        r="calc(50% - 1px)"
         stroke-dasharray="100 200"
         stroke-dashoffset="0"
         stroke-linecap="round"
-        stroke-width="4"
+        stroke-width="2"
       />
     </svg>
   `);
