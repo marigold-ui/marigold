@@ -32,6 +32,11 @@ const _TabList = (props: TabListProps) => {
       return;
     }
     const onWheel = (event: WheelEvent) => {
+      // Let the browser zoom: ctrl/⌘+wheel (and trackpad pinch, which the
+      // browser reports as ctrl+wheel) must not be hijacked into scroll.
+      if (event.ctrlKey || event.metaKey) {
+        return;
+      }
       if (el.scrollWidth <= el.clientWidth) {
         return;
       }
