@@ -72,6 +72,9 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       ...rest,
     } satisfies RAC.SwitchFieldProps;
     return (
+      // Width is split across two levels: the outer SwitchField sizes itself to
+      // the `width` prop via the `--width` CSS variable, and the inner
+      // SwitchButton fills that width with `w-full`.
       <SwitchField
         {...props}
         className="w-(--width)"
