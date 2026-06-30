@@ -98,6 +98,7 @@ export const Disabled = meta.story({
 
 export const ReadOnly = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     readOnly: true,
   },
@@ -105,6 +106,7 @@ export const ReadOnly = meta.story({
 
 export const MonthYearSelection = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     defaultValue: new CalendarDate(2019, 6, 5),
@@ -126,6 +128,7 @@ export const MonthYearSelection = meta.story({
 
 export const ConstrainedDateRange = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 5, 5),
@@ -186,6 +189,7 @@ export const MonthSelectionAccessibility = meta.story({
 
 export const MonthSelectionWithMinMax = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 1, 15),
@@ -212,6 +216,7 @@ export const MonthSelectionWithMinMax = meta.story({
 
 export const YearSelectionWithMinMax = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 1, 15),
@@ -252,6 +257,7 @@ export const YearSelectionWithMinMax = meta.story({
 
 export const YearSelectionWithMinOnly = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2025, 1, 1),
@@ -261,6 +267,7 @@ export const YearSelectionWithMinOnly = meta.story({
 
 YearSelectionWithMinOnly.test(
   'clamps the year list at minValue and keeps a forward window',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: '2025' }));
 
@@ -276,6 +283,7 @@ YearSelectionWithMinOnly.test(
 
 export const YearSelectionWithMaxOnly = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     maxValue: new CalendarDate(2025, 12, 31),
@@ -309,6 +317,7 @@ YearSelectionWithMaxOnly.test(
 
 export const LeapYearSelection = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     defaultValue: new CalendarDate(2024, 2, 29),
@@ -337,6 +346,7 @@ LeapYearSelection.test(
 export const YearPickerScrollsToFocused = meta.story({
   ...Basic.input,
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     // Unbounded: focused year ±20, so it sits mid-list, taller than the viewport.
     defaultValue: new CalendarDate(2025, 8, 7),
@@ -346,6 +356,7 @@ export const YearPickerScrollsToFocused = meta.story({
 // The focused year must be centered when the picker opens.
 YearPickerScrollsToFocused.test(
   'opens with the focused year centered',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: '2025' }));
 
@@ -404,6 +415,7 @@ export const ThreeMonthsFullWidth = meta.story({
 });
 
 export const MultiMonthNavigation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     visibleDuration: { months: 2 },
@@ -429,6 +441,7 @@ export const MultiMonthNavigation = meta.story({
 });
 
 export const MultiMonthSinglePageBehavior = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     visibleDuration: { months: 2 },

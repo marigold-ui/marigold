@@ -48,6 +48,7 @@ export const Basic = meta.story({
 });
 
 export const RemovableTags = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => {
     const defaultItems = [

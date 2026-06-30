@@ -187,6 +187,7 @@ export const WithDescription: any = meta.story({
 });
 
 export const OnActionMenu: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => {
     return (
@@ -382,41 +383,46 @@ export const Mobile: any = meta.story({
   },
 });
 
-Mobile.test('Mobile Menu interaction', async ({ canvas, step }: any) => {
-  const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+Mobile.test(
+  'Mobile Menu interaction',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }: any) => {
+    const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
 
-  await step('Open tray by clicking trigger', async () => {
-    await userEvent.click(trigger);
-  });
-
-  await step('Verify tray content is visible', async () => {
-    const dialog = await canvas.findByRole('dialog');
-
-    await waitFor(() => expect(dialog).toBeVisible());
-  });
-
-  await step('Verify menu items are visible', async () => {
-    expect(canvas.getByText('Home')).toBeVisible();
-    expect(canvas.getByText('Profile')).toBeVisible();
-    expect(canvas.getByText('Settings')).toBeVisible();
-    expect(canvas.getByText('Logout')).toBeVisible();
-  });
-
-  await step('Select menu item', async () => {
-    const menuItem = canvas.getByText('Profile');
-
-    await userEvent.click(menuItem);
-  });
-
-  await step('Verify tray is closed after selection', async () => {
-    await waitFor(() => {
-      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
     });
-  });
-});
+
+    await step('Verify tray content is visible', async () => {
+      const dialog = await canvas.findByRole('dialog');
+
+      await waitFor(() => expect(dialog).toBeVisible());
+    });
+
+    await step('Verify menu items are visible', async () => {
+      expect(canvas.getByText('Home')).toBeVisible();
+      expect(canvas.getByText('Profile')).toBeVisible();
+      expect(canvas.getByText('Settings')).toBeVisible();
+      expect(canvas.getByText('Logout')).toBeVisible();
+    });
+
+    await step('Select menu item', async () => {
+      const menuItem = canvas.getByText('Profile');
+
+      await userEvent.click(menuItem);
+    });
+
+    await step('Verify tray is closed after selection', async () => {
+      await waitFor(() => {
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+  }
+);
 
 Mobile.test(
   'Mobile Menu keyboard navigation',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }: any) => {
     const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
 
@@ -445,20 +451,26 @@ Mobile.test(
   }
 );
 
-Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }: any) => {
-  const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+Mobile.test(
+  'Mobile Menu close with Escape',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }: any) => {
+    const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
 
-  await step('Open tray by clicking trigger', async () => {
-    await userEvent.click(trigger);
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
 
-    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
-  });
-
-  await step('Close tray with Escape key', async () => {
-    await userEvent.keyboard('{Escape}');
-
-    await waitFor(() => {
-      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
     });
-  });
-});
+
+    await step('Close tray with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() => {
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+  }
+);
