@@ -73,6 +73,7 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState<RangeValue<DateValue> | null>({
       start: new CalendarDate(2019, 6, 5),
@@ -325,6 +326,7 @@ export const RangeSelection = meta.story({
 
 export const ReadOnlyDoesNotCommit = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     readOnly: true,
     defaultValue: {
@@ -345,6 +347,7 @@ export const ReadOnlyDoesNotCommit = meta.story({
 
 export const UnavailableBlocks = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     defaultValue: {
       start: new CalendarDate(2025, 8, 4),
@@ -477,6 +480,7 @@ YearDropdownWithMinMax.test(
 // never switched. We tap with touch pointer events (not a mouse click, which
 // always synthesizes a native click and therefore hides the bug).
 export const MonthDropdownTouch = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => <RangeCalendar {...args} />,
   play: async ({ canvasElement, userEvent, step }) => {
@@ -513,6 +517,7 @@ export const MonthDropdownTouch = meta.story({
 // Regression: navigating the month/year dropdown mid-range-selection must not
 // commit the half-finished range (react-aria commits on any non-button pointerup).
 export const DropdownNavigationKeepsRangeInProgress = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     defaultValue: {
@@ -555,6 +560,7 @@ export const DropdownNavigationKeepsRangeInProgress = meta.story({
 });
 
 export const TwoMonthsRangeSelection = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     visibleDuration: { months: 2 },

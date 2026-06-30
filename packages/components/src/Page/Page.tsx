@@ -7,7 +7,12 @@ import type {
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
-import { cn, createSpacingVar, isScale, useClassNames } from '@marigold/system';
+import {
+  cn,
+  createSpacingVar,
+  resolveInsetAxes,
+  useClassNames,
+} from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { PageContext } from './Context';
 import { PageContent } from './PageContent';
@@ -37,7 +42,7 @@ interface PageBaseProps extends Omit<
   /**
    * Vertical rhythm between page sections (the `<Page.Header>` and the
    * `<Panel>`s below it).
-   * @default 'group'
+   * @default 'regular'
    */
   space?: SpaceProp<SpacingTokens>['space'];
 }
@@ -76,7 +81,7 @@ export const Page = ({
   children,
   'aria-label': ariaLabel,
   headingLevel = 1,
-  space = 'group',
+  space = 'regular',
   p,
   px,
   py,
@@ -87,10 +92,12 @@ export const Page = ({
   const classNames = useClassNames({ component: 'Page' });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
-  const inset = `${p ?? 'square-relaxed'}`;
-  const isScaleInset = isScale(inset);
-  const resolvedPx = px ?? (isScaleInset ? inset : `${inset}-x`);
-  const resolvedPy = py ?? (isScaleInset ? inset : `${inset}-y`);
+  const { px: resolvedPx, py: resolvedPy } = resolveInsetAxes({
+    p,
+    px,
+    py,
+    defaultInset: 'square-relaxed',
+  });
 
   const rootHeadingProps = useMemo(
     () => ({

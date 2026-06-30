@@ -100,5 +100,6 @@ export {
   isFraction,
   isScale,
   isValidCssCustomPropertyName,
+  resolveInsetAxes,
 } from './utils/css-variables.utils';
 export { get } from './utils/object.utils';

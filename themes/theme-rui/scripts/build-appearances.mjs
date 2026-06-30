@@ -36,6 +36,9 @@ const sharedAppearances = {
   ToggleButtonGroup: 'ToggleButton',
   Title: 'Headline',
   ActionMenu: 'Menu',
+  // `DateRangePicker` re-exports DatePicker's styles (see DateRangePicker.styles.ts),
+  // so it shares the same (empty) variant/size vocabulary.
+  DateRangePicker: 'DatePicker',
 };
 
 /**

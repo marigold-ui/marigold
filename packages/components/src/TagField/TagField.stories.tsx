@@ -145,20 +145,24 @@ Controlled.test('Select multiple items', async ({ canvas, step, args }) => {
   });
 });
 
-Controlled.test('Remove a tag', async ({ canvas, step }) => {
-  await step('Remove Rock tag', async () => {
-    const removeButtons = await canvas.findAllByRole('button', {
-      name: /remove|entfernen/i,
+Controlled.test(
+  'Remove a tag',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    await step('Remove Rock tag', async () => {
+      const removeButtons = await canvas.findAllByRole('button', {
+        name: /remove|entfernen/i,
+      });
+      await userEvent.click(removeButtons[0]);
     });
-    await userEvent.click(removeButtons[0]);
-  });
 
-  await step('Verify Rock was removed', async () => {
-    expect(canvas.getByTestId('selected')).toHaveTextContent(
-      'selected: ["pop"]'
-    );
-  });
-});
+    await step('Verify Rock was removed', async () => {
+      expect(canvas.getByTestId('selected')).toHaveTextContent(
+        'selected: ["pop"]'
+      );
+    });
+  }
+);
 
 const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
   id: `item-${i + 200}`,

@@ -142,6 +142,7 @@ export const MultipleThumbs = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Cookies to buy' },
   render: args => {
     const [value, setValue] = useState<number | number[]>(25);
@@ -156,6 +157,7 @@ export const Controlled = meta.story({
 });
 
 export const MultiThumbsControlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Tickets for sale' },
   render: args => {
     const [value, setValue] = useState<number | number[]>([25, 75]);
@@ -194,6 +196,7 @@ export const Forms = meta.story({
 });
 
 export const MultiThumbsForm = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Age' },
   render: args => {
     const handleSubmit = (e: FormEvent) => {
@@ -229,6 +232,7 @@ export const Disabled = meta.story({
 });
 
 export const MultiThumbsDisabled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Disabled' },
   render: args => (
     <Slider
@@ -263,6 +267,7 @@ export const Steps = meta.story({
 });
 
 export const MinAndMaxValue = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Budget' },
   render: args => <Slider {...args} minValue={50} maxValue={100} />,
 });

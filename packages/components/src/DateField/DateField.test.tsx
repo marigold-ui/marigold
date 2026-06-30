@@ -2,26 +2,8 @@ import { CalendarDate } from '@internationalized/date';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { firePaste } from '../firePaste';
 import { Basic } from './DateField.stories';
-
-/**
- * Dispatches a paste event with the given text on an element.
- * In a real browser, `userEvent.paste()` may not trigger React's onPaste
- * handler on ancestor elements reliably. We use Object.defineProperty
- * because Firefox's ClipboardEvent constructor ignores the clipboardData option.
- */
-const firePaste = (element: Element, text: string) => {
-  const pasteEvent = new Event('paste', {
-    bubbles: true,
-    cancelable: true,
-  });
-  Object.defineProperty(pasteEvent, 'clipboardData', {
-    value: {
-      getData: () => text,
-    },
-  });
-  element.dispatchEvent(pasteEvent);
-};
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();

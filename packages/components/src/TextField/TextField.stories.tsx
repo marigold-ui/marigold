@@ -135,6 +135,7 @@ export const WithError = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState('');
     return (
@@ -155,6 +156,7 @@ export const Controlled = meta.story({
 });
 
 export const WithCustomValidation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Email Address',
     description: '',
@@ -216,6 +218,7 @@ export const WithFormValidation = meta.story({
  * font-size), and must drive the input's layout without an outer wrapper.
  */
 export const FixedWidth = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Name',

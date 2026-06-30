@@ -7,7 +7,12 @@ import type {
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
-import { cn, createSpacingVar, useClassNames } from '@marigold/system';
+import {
+  cn,
+  createSpacingVar,
+  resolveInsetAxes,
+  useClassNames,
+} from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
 import { CardBody } from './CardBody';
 import { CardContext } from './CardContext';
@@ -101,9 +106,12 @@ export const Card = ({
     );
   }
 
-  const inset = p ?? 'square-regular';
-  const resolvedPx = px ?? `${inset}-x`;
-  const resolvedPy = py ?? `${inset}-y`;
+  const { px: resolvedPx, py: resolvedPy } = resolveInsetAxes({
+    p,
+    px,
+    py,
+    defaultInset: 'square-regular',
+  });
 
   const rootHeadingProps = useMemo(
     () => ({

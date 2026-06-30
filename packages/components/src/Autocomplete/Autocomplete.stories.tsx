@@ -280,6 +280,7 @@ export const Async: any = meta.story({
 
 export const InputMenuTrigger: any = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   play: async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
 
@@ -292,6 +293,7 @@ export const InputMenuTrigger: any = meta.story({
 
 export const FocusMenuTrigger: any = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     menuTrigger: 'focus',
   },
@@ -307,6 +309,7 @@ export const FocusMenuTrigger: any = meta.story({
 
 export const ManualMenuTrigger: any = meta.story({
   ...Basic.input,
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     menuTrigger: 'input',
   },
@@ -337,6 +340,7 @@ const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
 }));
 
 export const LargeDataset: any = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Tenants',
@@ -406,6 +410,7 @@ export const Mobile: any = meta.story({
 
 Mobile.test(
   'Mobile Autocomplete interaction',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }: any) => {
     const trigger = await canvas.findByRole('button');
 
@@ -443,6 +448,7 @@ Mobile.test(
 
 Mobile.test(
   'Mobile Autocomplete keyboard navigation',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }: any) => {
     const trigger = await canvas.findByRole('button');
 

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
-import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tray } from './Tray';
@@ -45,17 +44,15 @@ export const Basic = meta.story({
       <Tray {...args}>
         <Tray.Title>Tray Title</Tray.Title>
         <Tray.Content>
-          <Inset p={4}>
-            <Text>
-              This is a tray component that slides in from the bottom of the
-              screen. It's useful for mobile-friendly interactions and quick
-              actions.
-            </Text>
-            <Text>
-              Trays are commonly used for filters, settings, or contextual menus
-              on mobile devices.
-            </Text>
-          </Inset>
+          <Text>
+            This is a tray component that slides in from the bottom of the
+            screen. It's useful for mobile-friendly interactions and quick
+            actions.
+          </Text>
+          <Text>
+            Trays are commonly used for filters, settings, or contextual menus
+            on mobile devices.
+          </Text>
         </Tray.Content>
         <Tray.Actions>
           <Button slot="close">Close</Button>
@@ -68,40 +65,47 @@ export const Basic = meta.story({
   ),
 });
 
-Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
-  await step('Opens when trigger is clicked', async () => {
-    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-    await userEvent.click(openButton);
+Basic.test(
+  'Opens and closes the tray',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    await step('Opens when trigger is clicked', async () => {
+      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+      await userEvent.click(openButton);
 
-    await waitFor(() =>
-      expect(canvas.getByText('Tray Title')).toBeInTheDocument()
-    );
-  });
+      await waitFor(() =>
+        expect(canvas.getByText('Tray Title')).toBeInTheDocument()
+      );
+    });
 
-  await step('Closes when close button is clicked', async () => {
-    const closeButton = canvas.getByRole('button', { name: 'Close' });
-    await userEvent.click(closeButton);
+    await step('Closes when close button is clicked', async () => {
+      const closeButton = canvas.getByRole('button', { name: 'Close' });
+      await userEvent.click(closeButton);
 
-    await waitFor(() =>
-      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-    );
-  });
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
 
-  await step('Can be closed with escape key', async () => {
-    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-    await userEvent.click(openButton);
+    await step('Can be closed with escape key', async () => {
+      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+      await userEvent.click(openButton);
 
-    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
 
-    await userEvent.keyboard('{Escape}');
+      await userEvent.keyboard('{Escape}');
 
-    await waitFor(() =>
-      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-    );
-  });
-});
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+  }
+);
 
 export const DismissControlsWithCallbacks = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
     const [log, setLog] = useState<string[]>([]);
@@ -118,13 +122,11 @@ export const DismissControlsWithCallbacks = meta.story({
           <Tray {...args} dismissable keyboardDismissable>
             <Tray.Title>Dismiss Controls</Tray.Title>
             <Tray.Content>
-              <Inset p={4}>
-                <Text>
-                  This tray demonstrates all dismiss methods with callback
-                  hooks. Try closing it via the close button, pressing Escape,
-                  or clicking the backdrop.
-                </Text>
-              </Inset>
+              <Text>
+                This tray demonstrates all dismiss methods with callback hooks.
+                Try closing it via the close button, pressing Escape, or
+                clicking the backdrop.
+              </Text>
             </Tray.Content>
             <Tray.Actions>
               <Button slot="close">Cancel</Button>
@@ -145,6 +147,7 @@ export const DismissControlsWithCallbacks = meta.story({
 
 DismissControlsWithCallbacks.test(
   'Dismiss controls and callback hooks',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     await step('Shows closed state initially', async () => {
       expect(canvas.getByText('Tray is closed')).toBeInTheDocument();

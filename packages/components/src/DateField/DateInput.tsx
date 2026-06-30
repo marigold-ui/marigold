@@ -36,7 +36,9 @@ const extractCalendarDate = (
   }
 };
 
-const parseDateFromString = (dateString: string): CalendarDate | undefined => {
+export const parseDateFromString = (
+  dateString: string
+): CalendarDate | undefined => {
   const formats = [
     // ISO format: YYYY-MM-DD
     { regex: /^(\d{4})-(\d{1,2})-(\d{1,2})$/, order: ['year', 'month', 'day'] },

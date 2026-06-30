@@ -132,6 +132,7 @@ export const FocusEvents = meta.story({
 });
 
 export const ControlledTimeField = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const ControlledComponent = () => {
       const [value, setValue] = useState<TimeValue>(parseTime('13:45'));

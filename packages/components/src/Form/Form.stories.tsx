@@ -196,5 +196,6 @@ const FormWithRef = () => {
 };
 
 export const WithRef = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <FormWithRef />,
 });

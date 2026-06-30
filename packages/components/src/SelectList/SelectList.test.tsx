@@ -339,6 +339,19 @@ describe('SelectList', () => {
       expect(grid.style.getPropertyValue('--selectlist-item-py')).toBe('');
     });
 
+    test('numeric `p` writes both axis vars as scale values (not -x/-y suffixed)', () => {
+      render(<Basic.Component p={4} />);
+
+      const grid = screen.getByRole('grid') as HTMLElement;
+
+      expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+      expect(grid.style.getPropertyValue('--selectlist-item-py')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+    });
+
     test('uniform `p` writes both axis vars inline, deriving from the inset token', () => {
       render(<Basic.Component p="square-loose" />);
 
