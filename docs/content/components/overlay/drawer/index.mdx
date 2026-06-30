@@ -155,6 +155,12 @@ The drawer keeps the selected rows visible so users can confirm the selection wh
 
 <ComponentDemo name="drawer-bulk-edit" />
 
+### Title and description
+
+`<Drawer.Title>` and `<Drawer.Description>` are slot-aware: the heading level, id, and `aria-labelledby` wiring are handled for you. `<Drawer.Header>` is an optional layout wrapper that groups a title and description into one header zone. For a title-only drawer, drop the title straight into `<Drawer>` without a header.
+
+<ComponentDemo name="drawer-title-only" />
+
 ### Accessibility
 
 A drawer renders with the ARIA role `complementary` by default, which fits almost every use case in this guide. The `role` prop accepts any [ARIA landmark role](/foundations/accessibility#landmarks), and two exceptions are worth knowing:
