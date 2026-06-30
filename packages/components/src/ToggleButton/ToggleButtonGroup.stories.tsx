@@ -52,7 +52,6 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  args: {},
   render: args => {
     const [selectedKeys, setSelectedKeys] = useState(new Set<Key>(['sum']));
 
@@ -111,6 +110,7 @@ Basic.test(
 
 export const MultipleSelection = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'multiple',
     defaultSelectedKeys: ['bold'],
@@ -133,7 +133,7 @@ export const MultipleSelection = meta.story({
 
 MultipleSelection.test(
   'Select multiple buttons',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step }) => {
     await step('Initial state - bold is selected', async () => {
       const boldButton = canvas.getByLabelText('Bold');
@@ -163,6 +163,7 @@ MultipleSelection.test(
 
 export const DisabledButton = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [selectedKeys, setSelectedKeys] = useState(new Set<Key>());
 
@@ -184,7 +185,7 @@ export const DisabledButton = meta.story({
 
 DisabledButton.test(
   'Disabled button does not respond to clicks',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step }) => {
     await step('Option 2 is disabled', async () => {
       const option1 = canvas.getByText('Option 1');

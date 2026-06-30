@@ -181,6 +181,7 @@ export const WithCustomValidation = meta.story({
 });
 
 export const WithFormValidation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Email Address',
     description: '',
@@ -218,14 +219,19 @@ export const WithFormValidation = meta.story({
  * font-size), and must drive the input's layout without an outer wrapper.
  */
 export const FixedWidth = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Name',
     width: 64,
   },
   render: args => <TextField {...args} placeholder="Type" />,
-  play: async ({ canvas, step }) => {
+});
+
+// Story already disables its snapshot, so the test case inherits that.
+FixedWidth.test(
+  'Sizes the input to the fixed width',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     await step('Input width matches the requested scale value', async () => {
       // The --field-width consumer is the `group/input` wrapper of the input.
       const wrapper = canvas.getByRole('textbox').closest('.group\\/input')!;
@@ -239,5 +245,5 @@ export const FixedWidth = meta.story({
       expect(width).toBeGreaterThan(rem * 12);
       expect(Math.abs(width - expected)).toBeLessThanOrEqual(1);
     });
-  },
-});
+  }
+);
