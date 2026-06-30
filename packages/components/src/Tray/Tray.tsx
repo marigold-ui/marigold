@@ -1,11 +1,14 @@
 import {
   type ReactNode,
   use,
+  useId,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import type RAC from 'react-aria-components';
+import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import {
   Dialog,
   OverlayTriggerStateContext,
@@ -30,9 +33,14 @@ import {
 import { useIsHidden } from '@react-aria/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
+import { ActionMenuContext } from '../Menu/ActionMenuContext';
+import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
+import { useSlot } from '../utils/useSlot';
 import { TrayContext } from './Context';
 import { TrayActions } from './TrayActions';
 import { TrayContent } from './TrayContent';
+import { TrayDescription } from './TrayDescription';
+import { TrayHeader } from './TrayHeader';
 import { TrayModal } from './TrayModal';
 import { TrayTitle } from './TrayTitle';
 import { TrayTrigger } from './TrayTrigger';
@@ -101,17 +109,33 @@ export const Tray = ({
   dismissable = true,
   keyboardDismissable = true,
   children,
+  'aria-label': ariaLabel,
   ...props
 }: TrayProps) => {
   const state = use(OverlayTriggerStateContext);
   const isHidden = useIsHidden();
+  const titleId = useId();
   const probeRef = useRef<HTMLSpanElement>(null);
   const [isDetached, setIsDetached] = useState(false);
   const classNames = useClassNames({
     component: 'Tray',
   });
+  // `hasTitle` gates the `aria-labelledby` wiring below. We intentionally do
+  // not warn on a missing accessible name (unlike Card/Panel): a Tray runs
+  // this hook while closed, before its title mounts, so the check would fire
+  // spuriously. RAC's `<Dialog>` already warns about an unlabelled dialog.
+  const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
   const openState = open ?? state?.isOpen;
+
+  const trayContextValue = useMemo(
+    () => ({ classNames, titleId, hasTitle, titleSlotRef }),
+    [classNames, titleId, hasTitle, titleSlotRef]
+  );
+
+  const { headingProps: rootHeadingProps, textProps } = useOverlayRootSlotProps(
+    { classNames, titleId, titleSlotRef }
+  );
 
   // Safety net for when `useIsHidden()` is blind to the hidden pass because of
   // a split `HiddenContext` (two react-aria generations, see above): the hidden
@@ -130,11 +154,11 @@ export const Tray = ({
   // If we are in a hidden tree, we still need to preserve our children.
   // This is important for components like Select that need to maintain state context.
   if (isHidden || isDetached) {
-    return <TrayContext value={{ classNames }}>{children}</TrayContext>;
+    return <TrayContext value={trayContextValue}>{children}</TrayContext>;
   }
 
   return (
-    <TrayContext value={{ classNames }}>
+    <TrayContext value={trayContextValue}>
       <span hidden ref={probeRef} />
       <ResetButtonContext>
         <TrayModal
@@ -145,13 +169,25 @@ export const Tray = ({
         >
           <Dialog
             {...props}
+            aria-label={ariaLabel}
+            aria-labelledby={
+              !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+            }
             className={cn(
               "group/tray [grid-template-areas:'drag'_'title'_'content'_'actions']",
               classNames.container
             )}
           >
             <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
-            {children}
+            <Provider
+              values={[
+                [HeadingContext, rootHeadingProps],
+                [TextContext, textProps],
+                [ActionMenuContext, {}],
+              ]}
+            >
+              {children}
+            </Provider>
           </Dialog>
         </TrayModal>
       </ResetButtonContext>
@@ -160,6 +196,8 @@ export const Tray = ({
 };
 
 Tray.Trigger = TrayTrigger;
+Tray.Header = TrayHeader;
 Tray.Title = TrayTitle;
+Tray.Description = TrayDescription;
 Tray.Content = TrayContent;
 Tray.Actions = TrayActions;

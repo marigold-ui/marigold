@@ -195,4 +195,3 @@ test('default trigger render hides description slot', () => {
 
   expect(description).not.toBeVisible();
 });
-
