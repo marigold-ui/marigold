@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
-import { AsList, Basic, Nested, Stretch } from './Stack.stories';
+import { AsList, Basic } from './Stack.stories';
 
 describe('Stack', () => {
   describe('Rendering', () => {
@@ -23,7 +23,7 @@ describe('Stack', () => {
     });
 
     test('supports nesting with different spacing levels', () => {
-      render(<Nested.Component />);
+      render(<Basic.Component />);
 
       const headlines = screen.getAllByText(/spacing/);
 
@@ -31,13 +31,14 @@ describe('Stack', () => {
     });
 
     test('renders all child elements', () => {
-      render(<Stretch.Component />);
+      render(<Basic.Component />);
 
-      expect(screen.getByText(/Lirum/)).toBeInTheDocument();
-
-      expect(screen.getByText(/Larum/)).toBeInTheDocument();
-
-      expect(screen.getByText(/Löffelstiel/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Getting Started with Stack/)
+      ).toBeInTheDocument();
+      expect(screen.getByText(/With Medium Spacing/)).toBeInTheDocument();
+      expect(screen.getByText(/Part 1:/)).toBeInTheDocument();
+      expect(screen.getByText(/Part 2:/)).toBeInTheDocument();
     });
   });
 
@@ -122,13 +123,14 @@ describe('Stack', () => {
   });
 
   describe('Element types and layout', () => {
-    test('fills available space when stretch is enabled', () => {
-      render(<Stretch.Component />);
+    test('stacks its children in a flex column', () => {
+      render(<Basic.Component />);
 
-      const blocks = screen.getAllByText(/Lirum|Larum|Löffelstiel/);
-      const stack = blocks[0].parentElement;
+      const stack = screen
+        .getByText(/Getting Started with Stack/)
+        .closest('.flex-col');
 
-      expect(stack).toHaveClass('size-full');
+      expect(stack).toHaveClass('flex', 'flex-col');
     });
 
     test('renders as list element when asList is enabled', () => {
