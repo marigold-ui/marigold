@@ -101,7 +101,7 @@ export const Basic: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <I18nProvider locale="de-DE">
-      <DateField {...args} label="Date Field" />
+      <DateField {...args} />
     </I18nProvider>
   ),
 });

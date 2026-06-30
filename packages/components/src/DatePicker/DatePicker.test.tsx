@@ -370,17 +370,16 @@ test('DatePicker supports width prop', () => {
 });
 
 test('DatePicker supports data unavailable property', async () => {
-  render(
-    <UnavailableDate.Component data-testid="picker" aria-label="date picker" />
-  );
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-  const date = screen.getAllByRole('gridcell');
+  // The UnavailableDate story opens the calendar by default (open: true),
+  // so the popover is already visible — no trigger click is needed (and the
+  // open calendar renders several buttons, which would make a lookup ambiguous).
+  render(<UnavailableDate.Component aria-label="date picker" />);
 
   await waitFor(() => {
     expect(screen.getByRole('application')).toBeVisible();
   });
+
+  const date = screen.getAllByRole('gridcell');
   // eslint-disable-next-line testing-library/no-node-access
   expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });

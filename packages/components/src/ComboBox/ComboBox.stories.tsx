@@ -135,13 +135,8 @@ export const Basic: any = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
-      <I18nProvider locale="de-DE">
-        <ComboBox
-          {...args}
-          label="Animals"
-          disabledKeys={['snake']}
-          allowsEmptyCollection
-        >
+      <I18nProvider locale="en">
+        <ComboBox {...args} disabledKeys={['snake']} allowsEmptyCollection>
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>
           <ComboBox.Option id="dog">Dog</ComboBox.Option>
@@ -160,7 +155,7 @@ Basic.test('Shows empty state', async ({ canvas }: any) => {
   const input = canvas.getByRole('combobox');
 
   await userEvent.type(input, 'xyz');
-  const emptyState = await canvas.findByText('Kein Ergebnis gefunden');
+  const emptyState = await canvas.findByText('No result found');
 
   expect(emptyState).toBeInTheDocument();
 });
