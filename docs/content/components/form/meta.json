@@ -6,6 +6,7 @@
     "combobox",
     "datefield",
     "datepicker",
+    "daterangepicker",
     "file-field",
     "form",
     "multiselect",
