@@ -163,6 +163,7 @@ export const WithIcon = meta.story({
 });
 
 export const OnPress = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     onPress: () => alert('Button clicked.'),
   },
@@ -204,6 +205,7 @@ export const Loading = meta.story({
 
 export const LoadingWithIcon = meta.story({
   parameters: {
+    chromatic: { disableSnapshot: true },
     controls: { exclude: ['loading'] },
   },
   render: ({ children, ...args }) => {

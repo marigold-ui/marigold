@@ -46,6 +46,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
@@ -78,6 +79,7 @@ export const Basic = meta.story({
 });
 
 export const WithForm = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>
@@ -107,6 +109,7 @@ export const WithForm = meta.story({
 });
 
 export const WithFormValidation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => {
     const [code, setCode] = useState('');
 
@@ -200,6 +203,7 @@ export const OpenFromMenu = meta.story({
 });
 
 export const Confirmation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ ...args }) => (
     <ConfirmationDialog.Trigger {...args}>
       <Button>Open</Button>

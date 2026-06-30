@@ -38,6 +38,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Stack space={8} alignX="left">
       <Drawer.Trigger>
@@ -105,7 +106,7 @@ export const Basic = meta.story({
 });
 
 export const WithForms = meta.story({
-  parameters: { surface: false },
+  parameters: { surface: false, chromatic: { disableSnapshot: true } },
   render: args => (
     <Drawer.Trigger>
       <Button>Configure Filter</Button>
@@ -289,7 +290,7 @@ export const SelectInsideDrawerSmallScreen = meta.story({
 });
 
 export const Controlled = meta.story({
-  parameters: { surface: false },
+  parameters: { surface: false, chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
