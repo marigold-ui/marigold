@@ -33,8 +33,12 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   //     from the track edge. We accept that the inset focus ring is clipped ~1px
   //     at the very first/last segment's outer edge — a minor cosmetic trim that
   //     keeps the scroller exactly the track width.
+  //   - `motion-safe:scroll-smooth` makes the selection-reveal scroll animate
+  //     for users who allow motion and jump instantly for those who don't; the
+  //     component's `scrollTo` defers to it via `behavior: 'auto'`, so no JS
+  //     media query is needed (matches Tabs' `tabsListScroll`).
   list: cva({
-    base: 'flex w-full items-center ui-scroll-mask-x py-1 -my-1',
+    base: 'flex w-full items-center ui-scroll-mask-x py-1 -my-1 motion-safe:scroll-smooth',
     variants: {
       variant: {
         default: 'gap-0',
