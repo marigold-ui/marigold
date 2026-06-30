@@ -182,8 +182,8 @@
   );
 
   /* ui-surface-contrast recipe — the dark surface (primary Button, ActionBar):
-     crisp dark edge, faintly top-lit fill, a glow pooled at the top, a soft 1px
-     top-edge highlight. These are the lightness deltas (-l) and alphas (-a) each
+     crisp dark edge, faintly top-lit fill, a glow pooled at the top, a soft
+     blurred top-edge highlight. These are the lightness deltas (-l) and alphas (-a) each
      layer shifts from the fill. The colors are computed in the utility, not here:
      each layer reads the fill via --ui-background-color on the element, so a fill
      override (ui-surface-destructive, hover) retints everything; hoisting them to
@@ -193,8 +193,8 @@
   --contrast-fill-bottom-l: 0.015;
   --contrast-glow-l: 0.15;
   --contrast-glow-a: 0.8;
-  --contrast-highlight-l: 0.26;
-  --contrast-highlight-a: 0.35;
+  --contrast-highlight-l: 0.2;
+  --contrast-highlight-a: 0.3;
 
   --radius-surface: var(--radius-lg);
 

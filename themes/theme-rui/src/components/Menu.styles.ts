@@ -51,8 +51,8 @@ export const Menu: ThemeComponent<'Menu'> = {
           // brighten-on-hover, soft hairline edge, soft "held" open state.
           'ui-surface-muted shadow-elevation-border',
           'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
-          'disabled:border-0 disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
-          'pending:[background:var(--color-disabled-surface)] pending:border-0 pending:shadow-none',
+          'disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
+          'pending:[background:var(--color-disabled-surface)] pending:shadow-none',
           'expanded:[--ui-border-color:var(--color-surface-border-hover)]',
         ],
         ghost: 'hover:ui-state-hover',

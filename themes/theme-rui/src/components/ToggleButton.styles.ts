@@ -36,8 +36,11 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'selected:inset-shadow-[0_2px_3px_-1px_oklch(from_var(--color-charcoal-950)_l_c_h_/_0.5)]',
       'disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
 
-      // Group: buttons share the group's outer surface and border
-      'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
+      // Group: segments share the group's outer surface + ring. The 1px divider
+      // between segments is a transparent right border, removed on the last one.
+      // Only ToggleButton needs a border, so it's declared here (in-group), not on
+      // ui-button-base where it was dead weight for every other button.
+      'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-transparent in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
       'in-[.group]:disabled:border-r-border',
       'in-[.group]:focus-visible:z-10',
     ],

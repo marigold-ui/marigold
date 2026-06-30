@@ -73,7 +73,7 @@
  * ui-surface — a 1px ring plus the fill — but inverted in value: the edge is a
  * darker shade of the fill (a crisp dark hairline, no light rim). The light
  * lives on the face: a soft glow pooled at the top that fades before it reaches
- * the edges, plus a soft 1px highlight along the very top edge (an inset shadow,
+ * the edges, plus a soft, blurred highlight along the top edge (an inset shadow,
  * tinted and at low alpha so it reads as a catch of light, not a bright rim).
  *
  * Every layer derives from `--ui-background-color` (falling back to the primary
@@ -89,7 +89,7 @@
   @apply text-primary-foreground;
 
   @apply ring-1 ring-[oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h)];
-  @apply inset-shadow-[0_1px_0_0_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
+  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
 
   /* prettier-ignore */
   background:
@@ -163,9 +163,12 @@
   @apply text-disabled cursor-not-allowed;
   background: var(--color-disabled-surface);
   background-clip: border-box;
-  /* Also clears the ui-surface ring (it lives in the box-shadow chain); the
-     flat disabled fill is the boundary. */
-  box-shadow: none;
+  /* No top highlight when disabled: the inset gloss/sheen of ui-surface-muted and
+     ui-surface-contrast would otherwise sit on the flat disabled fill. Zeroing the
+     `--tw-inset-shadow` var is reliable where a raw `box-shadow: none` lost the
+     cascade to the surface utilities' own composite box-shadow. Plain surfaces and
+     inputs have no inset, so this is a no-op for them — their boundary ring stays. */
+  @apply inset-shadow-none;
 }
 
 /*
@@ -209,7 +212,6 @@
   @apply inline-flex items-center justify-center;
   @apply rounded-surface font-medium whitespace-nowrap transition-[color,box-shadow,transform];
   @apply ui-interactive;
-  @apply border border-transparent;
 
   & svg {
     pointer-events: none;
