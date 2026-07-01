@@ -1,7 +1,7 @@
 ---
 '@marigold/components': minor
 '@marigold/theme-rui': minor
-'@marigold/system': minor
+'@marigold/system': major
 ---
 
 feat(DST-1282): scroll the Tabs row horizontally when it overflows
@@ -18,4 +18,11 @@ the overflowing edges fade out (`ui-scroll-mask-x`); elsewhere it falls back to 
 plain scroll container. When all tabs fit, nothing changes visually.
 
 The sliding selection indicator stays correct while react-aria scrolls an off-screen
-tab into view (the scroll container is a `layoutScroll` motion element). No API change.
+tab into view (the scroll container is a `layoutScroll` motion element). No runtime
+API change.
+
+**Breaking change (`@marigold/system`):** the `Tabs` theme `Record` gains a new
+required `tabsListScroll` slot. It is deliberately required so a theme cannot ship
+`tabsList` (whose `w-max` triggers the overflow) without the scroll container that
+makes it behave. Custom themes that define a `Tabs` block must add a `tabsListScroll`
+entry to type-check.
