@@ -135,6 +135,7 @@ export const InlineTableActions = meta.story({
 });
 
 export const MenuWithSections = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   decorators: [
     Story => (
       <div id="storybook-root">

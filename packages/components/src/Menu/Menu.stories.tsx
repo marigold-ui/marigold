@@ -355,6 +355,7 @@ export const MultiSelection = meta.story({
 
 export const AccessSections = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <ActionMenu aria-label="Filial-Aktionen">
       <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
@@ -377,6 +378,7 @@ export const AccessSections = meta.story({
 
 AccessSections.test(
   'renders master and admin access sections',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole('button', { name: 'Filial-Aktionen' })
