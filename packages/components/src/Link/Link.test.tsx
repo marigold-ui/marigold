@@ -89,4 +89,5 @@ test('admin variant applies the key mask in the admin access color', () => {
   const link = screen.getByRole('link');
   expect(link).toHaveClass('before:[mask-image:var(--access-mask-key)]');
   expect(link).toHaveClass('before:bg-access-admin-foreground');
+  expect(link).toHaveTextContent('freigeben');
 });
