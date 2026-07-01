@@ -33,34 +33,48 @@ test('supports strokewidth with bigger size', () => {
   expect(progressCircle.firstChild).toHaveAttribute('width', '40px');
 });
 
-test.each(['default', 'large', 'fit'])(
-  'named size token "%s" resolves to a numeric SVG dimension',
-  token => {
+// A named token must not leak into the SVG length attribute as `<token>px`
+// (e.g. `defaultpx`). Named tokens resolve to the pixel dimension of their
+// theme `size-*` class so the stroke stays proportionate; `fit` has no
+// intrinsic dimension and falls back to the <SVG> default of 24.
+test.each([
+  { token: 'default', dimension: '80px', strokeWidth: '4' },
+  { token: 'large', dimension: '144px', strokeWidth: '4' },
+  { token: 'fit', dimension: '24px', strokeWidth: '2' },
+])(
+  'named size token "$token" resolves to a numeric SVG dimension',
+  ({ token, dimension }) => {
     render(<Basic.Component size={token} />);
 
     const progressCircle = screen.getByRole('progressbar');
 
-    // A named token must not leak into the SVG length attribute as `<token>px`
-    // (e.g. `defaultpx`); the rendered size comes from the theme class, while
-    // the intrinsic attribute falls back to the numeric default.
     // eslint-disable-next-line testing-library/no-node-access
-    expect(progressCircle.firstChild).toHaveAttribute('width', '24px');
+    expect(progressCircle.firstChild).toHaveAttribute('width', dimension);
     // eslint-disable-next-line testing-library/no-node-access
-    expect(progressCircle.firstChild).toHaveAttribute('height', '24px');
+    expect(progressCircle.firstChild).toHaveAttribute('height', dimension);
   }
 );
 
-test('named size token uses the numeric fallback for stroke width', () => {
-  render(<Basic.Component size="default" />);
+test.each([
+  { token: 'default', strokeWidth: '4' },
+  { token: 'large', strokeWidth: '4' },
+  { token: 'fit', strokeWidth: '2' },
+])(
+  'named size token "$token" keys the stroke width off the resolved dimension',
+  ({ token, strokeWidth }) => {
+    render(<Basic.Component size={token} />);
 
-  const progressCircle = screen.getByRole('progressbar');
-  // The stroke math keys off the resolved numeric size (24 → strokeWidth 2),
-  // not the raw token — otherwise `NaN` would leak into the attribute.
-  // eslint-disable-next-line testing-library/no-node-access
-  const circle = (progressCircle.firstChild as Element).querySelector('circle');
+    const progressCircle = screen.getByRole('progressbar');
+    // The stroke math keys off the resolved numeric size, not the raw token —
+    // otherwise `NaN` would leak into the attribute.
+    // eslint-disable-next-line testing-library/no-node-access
+    const svg = progressCircle.firstChild as Element;
+    // eslint-disable-next-line testing-library/no-node-access
+    const circle = svg.querySelector('circle');
 
-  expect(circle).toHaveAttribute('stroke-width', '2');
-});
+    expect(circle).toHaveAttribute('stroke-width', strokeWidth);
+  }
+);
 
 test('has aria label', () => {
   render(<Basic.Component />);
