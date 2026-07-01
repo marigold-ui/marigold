@@ -106,19 +106,29 @@ describe('translates a vertical mouse wheel into horizontal scroll', () => {
   const setup = ({
     scrollWidth = 1000,
     clientWidth = 200,
-  }: { scrollWidth?: number; clientWidth?: number } = {}) => {
+    scrollLeft = 0,
+  }: {
+    scrollWidth?: number;
+    clientWidth?: number;
+    scrollLeft?: number;
+  } = {}) => {
     render(<Basic.Component />);
 
-    // The scroll container is the wrapper around the tablist; it has no role of
-    // its own, so we reach it from the tablist.
-    // eslint-disable-next-line testing-library/no-node-access
-    const el = screen.getAllByRole('tablist')[0].parentElement as HTMLElement;
+    // The scroll container is the wrapper around the tablist. It carries the
+    // wheel listener and a stable `data-testid` so this doesn't couple to the
+    // motion wrapper's DOM nesting.
+    const el = screen.getAllByTestId('tabs-list-scroll')[0];
     Object.defineProperty(el, 'scrollWidth', {
       value: scrollWidth,
       configurable: true,
     });
     Object.defineProperty(el, 'clientWidth', {
       value: clientWidth,
+      configurable: true,
+    });
+    Object.defineProperty(el, 'scrollLeft', {
+      value: scrollLeft,
+      writable: true,
       configurable: true,
     });
     const scrollBy = vi.fn();
@@ -137,7 +147,7 @@ describe('translates a vertical mouse wheel into horizontal scroll', () => {
 
     wheel(el, { deltaY: 100 });
 
-    expect(scrollBy).toHaveBeenCalledWith({ left: 100, behavior: 'auto' });
+    expect(scrollBy).toHaveBeenCalledWith({ left: 100, behavior: 'instant' });
   });
 
   test('ignores the wheel when the row does not overflow', () => {
@@ -170,6 +180,27 @@ describe('translates a vertical mouse wheel into horizontal scroll', () => {
     // deltaMode 1 = lines; one notch of 3 lines -> 3 * 16px.
     wheel(el, { deltaY: 3, deltaMode: 1 });
 
-    expect(scrollBy).toHaveBeenCalledWith({ left: 48, behavior: 'auto' });
+    expect(scrollBy).toHaveBeenCalledWith({ left: 48, behavior: 'instant' });
+  });
+
+  test('lets the page scroll past the row at the end (no scroll trap)', () => {
+    // Scrolled to the far right; a further rightward wheel has nowhere to go.
+    const { el, scrollBy } = setup({ scrollLeft: 800 });
+
+    const scrolled = wheel(el, { deltaY: 100 });
+
+    expect(scrollBy).not.toHaveBeenCalled();
+    // Not cancelled, so the page can scroll instead.
+    expect(scrolled).toBe(true);
+  });
+
+  test('lets the page scroll past the row at the start (no scroll trap)', () => {
+    // At the far left; a leftward (negative) wheel has nowhere to go.
+    const { el, scrollBy } = setup({ scrollLeft: 0 });
+
+    const scrolled = wheel(el, { deltaY: -100 });
+
+    expect(scrollBy).not.toHaveBeenCalled();
+    expect(scrolled).toBe(true);
   });
 });
