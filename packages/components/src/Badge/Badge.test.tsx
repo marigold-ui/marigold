@@ -30,11 +30,14 @@ test('renders the info variant correctly', () => {
   `);
 });
 
-test('shows the lock svg', () => {
+test('master variant applies the lock mask glyph', () => {
   render(<Basic.Component />);
+  const master = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('master')];
+  expect(master).toHaveClass('before:[mask-image:var(--access-mask-lock)]');
+});
 
-  // the master and admin variants both render a lock icon
-  const svgs = screen.getAllByTestId('lock-icon');
-
-  expect(svgs.length).toBe(2);
+test('admin variant applies the key mask glyph', () => {
+  render(<Basic.Component />);
+  const admin = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('admin')];
+  expect(admin).toHaveClass('before:[mask-image:var(--access-mask-key)]');
 });

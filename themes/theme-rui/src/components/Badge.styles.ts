@@ -15,9 +15,9 @@ export const Badge: ThemeComponent<'Badge'> = cva({
       info: 'bg-info-muted text-info-muted-foreground',
       error: 'bg-destructive-muted text-destructive-muted-foreground',
       admin:
-        'text-access-admin-foreground border border-access-admin-foreground bg-background',
+        'text-access-admin-foreground border border-access-admin-foreground bg-background before:content-[""] before:inline-block before:size-4 before:mr-1 before:bg-current before:[mask-size:contain] before:[mask-repeat:no-repeat] before:[mask-position:center] before:[mask-image:var(--access-mask-key)]',
       master:
-        'text-access-master-foreground border border-access-master-foreground bg-background',
+        'text-access-master-foreground border border-access-master-foreground bg-background before:content-[""] before:inline-block before:size-4 before:mr-1 before:bg-current before:[mask-size:contain] before:[mask-repeat:no-repeat] before:[mask-position:center] before:[mask-image:var(--access-mask-lock)]',
     },
   },
   defaultVariants: {
