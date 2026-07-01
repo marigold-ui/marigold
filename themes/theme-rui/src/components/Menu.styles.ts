@@ -3,10 +3,10 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva({
     base: [
-      'ui-surface shadow-elevation-overlay w-full',
+      // The surrounding Popover (or Tray) paints the overlay surface; the menu
+      // renders flat inside it.
+      'w-full',
       'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto',
-      // In a Tray
-      'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
     ],
   }),
   // Two-column grid: col 1 = optional icon, col 2 = label / description.

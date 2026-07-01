@@ -19,10 +19,11 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva({
     base: [
       'min-h-[350px] min-w-fit ui-surface shadow-elevation-border p-2',
-      // In a Popover
-      'group-data-trigger/popover:shadow-elevation-overlay',
+      // In a Popover (DatePicker) the Popover paints the overlay surface; the
+      // calendar drops its own border + elevation. Standalone keeps the border.
+      'group-data-trigger/popover:ring-0 group-data-trigger/popover:shadow-none',
       // In a Tray
-      'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
+      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
     ],
   }),
   calendarContainer: cva({ base: 'flex flex-col gap-4 sm:flex-row' }),

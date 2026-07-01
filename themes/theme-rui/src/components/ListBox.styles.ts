@@ -4,14 +4,11 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva({
     base: [
       'flex ui-surface',
-      // Standalone
-      'not-group-data-trigger/popover:',
-      // In a Popover
-      'group-data-trigger/popover:shadow-elevation-overlay',
-      'group-data-trigger/popover:w-full',
-      'group-data-trigger/popover:overflow-hidden',
-      // In a Tray
-      'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
+      // In a Popover or Tray the container paints the surface; the list drops
+      // its own border + elevation and just fills the frame. Standalone keeps
+      // the ui-surface border.
+      'group-data-trigger/popover:ring-0 group-data-trigger/popover:shadow-none group-data-trigger/popover:w-full',
+      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:shadow-none',
     ],
   }),
   list: cva({

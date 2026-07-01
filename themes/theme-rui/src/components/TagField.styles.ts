@@ -16,10 +16,11 @@ export const TagField: ThemeComponent<'TagField'> = {
   listItems: cva({ base: 'flex flex-wrap gap-1' }),
   container: cva({
     base: [
-      'ui-surface shadow-elevation-border group/tagfield',
+      // Rendered inside the Popover, which paints the overlay surface; this is
+      // just the dropdown's inner layout.
+      'group/tagfield',
       'flex flex-col overflow-hidden gap-1.5 p-2',
       'w-(--tagfield-trigger-width)',
-      '[&_div]:shadow-none! [&_div]:border-0!',
     ],
   }),
 };
