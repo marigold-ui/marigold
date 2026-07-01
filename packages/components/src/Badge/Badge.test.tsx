@@ -23,7 +23,7 @@ test('renders the info variant correctly', () => {
 
   expect(badge).toMatchInlineSnapshot(`
     <div
-      class="inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal focus-visible:ui-state-focus outline-none has-[svg]:gap-1 bg-info-muted text-info-muted-foreground"
+      class="inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal focus-visible:ui-state-focus outline-none has-[svg]:gap-1 bg-info text-info-foreground"
     >
       Status
     </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type RAC from 'react-aria-components';
-import { Calendar, DateValue } from 'react-aria-components';
+import { Calendar, DateValue } from 'react-aria-components/Calendar';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarHeader } from './CalendarHeader';

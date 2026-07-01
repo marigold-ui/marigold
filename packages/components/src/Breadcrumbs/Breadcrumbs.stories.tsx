@@ -5,6 +5,9 @@ import { Breadcrumbs } from './Breadcrumbs';
 const meta = preview.meta({
   title: 'Components/Breadcrumbs',
   component: Breadcrumbs,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     variant: {
       control: 'radio',

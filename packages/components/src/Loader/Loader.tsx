@@ -1,4 +1,5 @@
-import { Dialog, Modal } from 'react-aria-components';
+import { Dialog } from 'react-aria-components/Dialog';
+import { Modal } from 'react-aria-components/Modal';
 import { useId } from '@react-aria/utils';
 import { useClassNames } from '@marigold/system';
 import { Underlay } from '../Overlay/Underlay';
@@ -16,8 +17,8 @@ export interface LoaderProps extends BaseLoaderProps {
    */
   mode?: 'fullscreen' | 'section';
   /**
-   * Selects the visual style of the loading indicator shown when loading is true. Accepts `xloader` or `cycle`.
-   * @default cycle
+   * Selects the visual style of the loading indicator shown when loading is true. Accepts `xloader` or `circle`.
+   * @default circle
    */
   loaderType?: LoaderVisualType;
 }

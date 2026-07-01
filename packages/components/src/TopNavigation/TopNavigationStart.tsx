@@ -1,5 +1,4 @@
 import type { ReactNode, Ref } from 'react';
-import { forwardRef } from 'react';
 import { alignment, cn } from '@marigold/system';
 import { useTopNavigationContext } from './Context';
 
@@ -15,25 +14,25 @@ export interface TopNavigationStartProps {
   children?: ReactNode;
 }
 
-export const TopNavigationStart = forwardRef(
-  (
-    { alignY = 'center', children, ...props }: TopNavigationStartProps,
-    ref: Ref<HTMLDivElement>
-  ) => {
-    const { classNames } = useTopNavigationContext();
+export const TopNavigationStart = ({
+  alignY = 'center',
+  children,
+  ref,
+  ...props
+}: TopNavigationStartProps & { ref?: Ref<HTMLDivElement> }) => {
+  const { classNames } = useTopNavigationContext();
 
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          'min-w-0 [grid-area:start]',
-          classNames.start,
-          alignY && alignment.horizontal.alignmentY[alignY]
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        'min-w-0 [grid-area:start]',
+        classNames.start,
+        alignY && alignment.horizontal.alignmentY[alignY]
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};

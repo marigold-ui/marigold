@@ -7,6 +7,7 @@ import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
+import { firePaste } from '../firePaste';
 import { DateRangePicker } from './DateRangePicker';
 
 const smallScreenQuery = `(width < ${theme.screens?.sm})`;
@@ -246,17 +247,6 @@ Basic.test(
 Basic.test(
   'pastes dates into the start and end inputs',
   async ({ canvas, step }: any) => {
-    const firePaste = (element: Element, text: string) => {
-      const pasteEvent = new Event('paste', {
-        bubbles: true,
-        cancelable: true,
-      });
-      Object.defineProperty(pasteEvent, 'clipboardData', {
-        value: { getData: () => text },
-      });
-      element.dispatchEvent(pasteEvent);
-    };
-
     // 6 segments total: 3 for start, 3 for end (day granularity).
     const segments = canvas.getAllByRole('spinbutton');
 

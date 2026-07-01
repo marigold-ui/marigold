@@ -1,11 +1,18 @@
-import { Accessibility } from 'lucide-react';
 import preview from '.storybook/preview';
+import { Accessibility } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
 import { Badge } from './Badge';
 
 const meta = preview.meta({
   title: 'Components/Badge',
   component: Badge,
+  decorators: [
+    Story => (
+      <div className="self-start">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     variant: {
       control: {

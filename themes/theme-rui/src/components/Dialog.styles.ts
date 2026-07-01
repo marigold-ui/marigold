@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Dialog: ThemeComponent<'Dialog'> = {
-  closeButton: cva({ base: ['absolute top-6 right-3', 'size-7 '] }),
+  closeButton: cva({ base: ['absolute top-6 right-3', 'size-7'] }),
   container: cva({
     base: [
       'flex flex-col gap-0 rounded-xl overflow-y-auto',
@@ -19,11 +19,12 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     },
   }),
   header: cva({
-    base: 'flex flex-col gap-1 text-center sm:text-left px-6 pt-6',
+    base: 'flex flex-col text-center sm:text-left px-6 pt-6',
   }),
   title: cva({ base: 'text-lg font-semibold mb-1' }),
-  content: cva({ base: 'text-sm px-6 py-1' }),
+  description: cva({ base: 'text-sm text-secondary' }),
+  content: cva({ base: 'ui-panel-content text-sm' }),
   actions: cva({
-    base: 'flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4',
+    base: 'ui-panel-actions flex-col-reverse sm:flex-row',
   }),
 };

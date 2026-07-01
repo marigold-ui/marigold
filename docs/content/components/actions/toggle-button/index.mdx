@@ -13,7 +13,7 @@ Use `<ToggleButton>` in toolbars, editors, and interactive surfaces, where the u
 
 `<ToggleButton>` is not a form field or a filter. It has no label, description, error message, or validation state. Reach for [Checkbox](/components/form/checkbox), [Radio](/components/form/radio), or [Switch](/components/form/switch) when you need a form field, and use a `<Checkbox.Group>` for filtering.
 
-`<ToggleButton.Group>` is a toolbar of independent on/off actions, not a selection control. Each button in the group toggles on its own, like formatting options, view options, or visible layers.
+`<ToggleButton.Group>` is a toolbar of independent on/off actions, not a selection control. Each button in the group toggles on its own, like formatting options, view options, or visible layers. When exactly one option must be selected at a time — switching a view, mode, or filter — use a [SegmentedControl](/components/form/segmented-control) instead.
 
 ## Anatomy
 
@@ -61,8 +61,10 @@ Choose a toggle button when the control should look and behave like a button, th
   </Do>
   <Dont>
     <DontDescription>
-      Don't use ToggleButton.Group for mutually exclusive choices. Use a
-      [Radio.Group](/components/form/radio) instead.
+      Don't use ToggleButton.Group for a single, mutually exclusive choice. Use
+      a [SegmentedControl](/components/form/segmented-control) to switch a view,
+      mode, or filter, or a [Radio.Group](/components/form/radio) for a choice in
+      a form.
     </DontDescription>
   </Dont>
   <Dont>
@@ -139,6 +141,7 @@ Use disabled states when an option is temporarily unavailable due to the current
 
 ## Alternative components
 
+- [SegmentedControl](/components/form/segmented-control): Use when exactly one option must always be selected from a small set, such as switching a view, mode, or filter in place.
 - [Checkbox](/components/form/checkbox): Use when selecting options within a form that requires a label, description, validation, or submission.
 - [Switch](/components/form/switch): Use when toggling a setting or preference on/off with immediate effect.
 - [Tabs](/components/navigation/tabs): Use when switching between views that involve navigation.

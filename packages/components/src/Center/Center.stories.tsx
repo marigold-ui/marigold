@@ -9,6 +9,9 @@ import { Center } from './Center';
 const meta = preview.meta({
   title: 'Components/Center',
   component: Center,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     maxWidth: {
       control: {

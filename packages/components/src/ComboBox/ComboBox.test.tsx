@@ -25,13 +25,13 @@ test('check classname slots', () => {
   const button = screen.getByRole('button');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"shrink-0 outline-0 absolute cursor-pointer pr-1 text-muted-foreground/80 right-2"`
+    `"shrink-0 outline-0 absolute cursor-pointer pr-1 text-secondary/80 right-2"`
   );
   expect(container?.className).toMatchInlineSnapshot(
     `"group/field flex min-w-0 flex-col w-auto"`
   );
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive in-field:mb-1.5 inline-flex"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
   );
 });
 
@@ -107,6 +107,15 @@ test('supports loading state', () => {
 test('hides loading state when loading is false', () => {
   renderWithOverlay(<Basic.Component label="Label" loading={false} />);
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+});
+
+test('does not allow width="fit"', () => {
+  renderWithOverlay(<Basic.Component label="Label" width="fit" />);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+
+  expect(container).not.toHaveClass('w-fit');
 });
 
 test('supports specific empty state text', async () => {

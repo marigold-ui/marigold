@@ -1,7 +1,8 @@
-import { ReactNode, forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Popover } from 'react-aria-components';
+import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 
 // Internal Usage Notes
 // ---------------
@@ -30,25 +31,30 @@ export interface PopoverProps extends Omit<
 
 // Component
 // ---------------
-const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  (
-    { keyboardDismissDisabled, placement, offset = 0, open, children, ...rest },
-    ref
-  ) => {
-    const props: RAC.PopoverProps = {
-      isKeyboardDismissDisabled: keyboardDismissDisabled,
-      isOpen: open,
-      placement,
-      ...rest,
-    };
-    const classNames = useClassNames({
-      component: 'Popover',
-      variant: placement,
-      // Make Popover as wide as trigger element
-      className: 'min-w-(--trigger-width)',
-    });
+const PopoverBase = ({
+  keyboardDismissDisabled,
+  placement,
+  offset = 0,
+  open,
+  children,
+  ref,
+  ...rest
+}: PopoverProps & { ref?: Ref<HTMLDivElement> }) => {
+  const props: RAC.PopoverProps = {
+    isKeyboardDismissDisabled: keyboardDismissDisabled,
+    isOpen: open,
+    placement,
+    ...rest,
+  };
+  const classNames = useClassNames({
+    component: 'Popover',
+    variant: placement,
+    // Make Popover as wide as trigger element
+    className: 'min-w-(--trigger-width)',
+  });
 
-    return (
+  return (
+    <ResetButtonContext>
       <Popover
         ref={ref}
         {...props}
@@ -58,8 +64,8 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       >
         {children}
       </Popover>
-    );
-  }
-);
+    </ResetButtonContext>
+  );
+};
 
-export { _Popover as Popover };
+export { PopoverBase as Popover };

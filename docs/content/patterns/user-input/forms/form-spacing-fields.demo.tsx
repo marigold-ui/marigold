@@ -22,7 +22,7 @@ export default () => {
         selected={showSpacing}
         onChange={setShowSpacing}
       />
-      <Inset spaceX={20}>
+      <Inset px={20}>
         <Stack space="group">
           <Stack space="regular">
             <Headline level={2}>Personal Information</Headline>
@@ -71,7 +71,7 @@ export default () => {
             <Select
               label="Country"
               placeholder="Select your country"
-              width={'fit'}
+              width={'1/2'}
             >
               <Select.Option id="us">United States</Select.Option>
               <Select.Option id="ca">Canada</Select.Option>

@@ -1,7 +1,7 @@
 import { LayoutGroup } from 'motion/react';
 import { useId } from 'react';
 import type RAC from 'react-aria-components';
-import { TabList } from 'react-aria-components';
+import { TabList } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
 import { MotionFeatures } from '../lazyMotion';
 import { useTabContext } from './Context';

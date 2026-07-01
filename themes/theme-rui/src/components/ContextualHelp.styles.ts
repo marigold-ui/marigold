@@ -30,5 +30,6 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
     ],
   }),
   title: cva({ base: 'text-lg font-semibold px-5 pt-5 mb-1' }),
+  description: cva({ base: 'text-secondary mb-1 text-sm px-5' }),
   content: cva({ base: 'text-sm px-5 pb-5 pt-1' }),
 };

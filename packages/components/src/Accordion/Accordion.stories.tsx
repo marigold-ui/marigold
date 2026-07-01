@@ -1,6 +1,10 @@
 import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Accessible, Parking, SettingDots } from '@marigold/icons';
+import {
+  Accessibility,
+  EllipsisVertical,
+  ParkingCircle,
+} from '@marigold/icons';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Columns } from '../Columns/Columns';
@@ -110,7 +114,7 @@ let items = [
     key: 'one',
     title: (
       <Inline space={3} alignY="center">
-        <Parking />
+        <ParkingCircle />
         <Text weight="bold">Parking passes</Text>
       </Inline>
     ),
@@ -136,7 +140,7 @@ let items = [
     key: 'two',
     title: (
       <Inline space={3} alignY="center">
-        <SettingDots />
+        <EllipsisVertical />
         <Text weight="bold">Settings</Text>
       </Inline>
     ),
@@ -151,7 +155,7 @@ let items = [
     key: 'three',
     title: (
       <Inline space={3} alignY="center">
-        <Accessible />
+        <Accessibility />
         <Text weight="bold">Handicapped parking spaces</Text>
       </Inline>
     ),
@@ -238,7 +242,7 @@ export const CoreExample = meta.story({
         <Accordion.Item key={1}>
           <Accordion.Header>
             <Inline space={2} alignX="left" alignY="center">
-              <Parking className="fill-text-info" />
+              <ParkingCircle className="fill-text-info" />
               <Text weight="bold">Parking tickets:</Text>
               <Split />
               <div className="block group-aria-expanded:hidden">

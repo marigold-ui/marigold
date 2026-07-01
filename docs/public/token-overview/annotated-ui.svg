@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 450" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+  <style>
+    .label { fill: #333; }
+    .label-line { stroke: #333; }
+    @media (prefers-color-scheme: dark) {
+      .label { fill: #999; }
+      .label-line { stroke: #999; }
+    }
+  </style>
+  <defs>
+    <filter id="raised" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#000" flood-opacity="0.07"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.05"/>
+    </filter>
+    <filter id="input-shadow" x="-2%" y="-4%" width="104%" height="116%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#000" flood-opacity="0.05"/>
+    </filter>
+    <linearGradient id="btn-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="oklch(0.22 0.008 54)"/>
+      <stop offset="100%" stop-color="oklch(0.15 0.008 54)"/>
+    </linearGradient>
+    <radialGradient id="btn-highlight" cx="50%" cy="-15%" r="80%" fx="50%" fy="-15%">
+      <stop offset="0%" stop-color="oklch(0.45 0.006 54)" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="oklch(0.15 0.008 54)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Page background (charcoal-100) -->
+  <rect x="160" y="0" width="540" height="450" rx="10" fill="oklch(0.965 0.003 54)"/>
+
+  <!-- Card (white, charcoal-300 border, raised shadow) -->
+  <rect x="260" y="44" width="340" height="370" rx="12" fill="#fff" stroke="oklch(0.86 0.005 54)" stroke-width="1" filter="url(#raised)"/>
+
+  <!-- Heading -->
+  <text x="288" y="92" font-size="16" font-weight="600" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Edit profile</text>
+
+  <!-- Description -->
+  <text x="288" y="118" font-size="12" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.52 0.008 54)">Update your personal information below.</text>
+
+  <!-- Name label -->
+  <text x="288" y="154" font-size="12" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Name</text>
+  <!-- Name input -->
+  <rect x="288" y="162" width="284" height="36" rx="6" fill="#fff" stroke="oklch(0.86 0.005 54)" stroke-width="1" filter="url(#input-shadow)"/>
+  <text x="300" y="185" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Jane Doe</text>
+
+  <!-- Muted section -->
+  <rect x="288" y="214" width="284" height="36" rx="6" fill="oklch(0.985 0.002 54)"/>
+  <text x="300" y="237" font-size="12" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Account created on March 12, 2026</text>
+
+  <!-- Email label -->
+  <text x="288" y="272" font-size="12" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Email</text>
+  <!-- Email input -->
+  <rect x="288" y="280" width="284" height="36" rx="6" fill="#fff" stroke="oklch(0.86 0.005 54)" stroke-width="1" filter="url(#input-shadow)"/>
+  <text x="300" y="303" font-size="13" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.52 0.008 54)">jane@example.com</text>
+
+  <!-- Button -->
+  <rect x="288" y="336" width="88" height="36" rx="8" fill="url(#btn-bg)"/>
+  <rect x="288" y="336" width="88" height="36" rx="8" fill="url(#btn-highlight)"/>
+  <line x1="289" y1="337" x2="375" y2="337" stroke="oklch(0.45 0.006 54)" stroke-opacity="0.25" stroke-width="1" stroke-linecap="round"/>
+  <text x="314" y="359" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.965 0.003 54)">Save</text>
+
+  <!-- ====== LEFT-SIDE ANNOTATIONS ====== -->
+  <!-- Lines go from dot leftward to x=155, text ends at x=150 (text-anchor=end) -->
+
+  <!-- bg-background: dot on page bg left edge -->
+  <circle cx="200" cy="20" r="2.5" class="label"/>
+  <line x1="197" y1="20" x2="185" y2="20" class="label-line" stroke-width="1"/>
+  <text x="180" y="24" font-size="11" font-weight="600" class="label" text-anchor="end">bg-background</text>
+
+  <!-- text-foreground: dot on heading text -->
+  <circle cx="288" cy="88" r="2.5" class="label"/>
+  <line x1="285" y1="88" x2="185" y2="88" class="label-line" stroke-width="1"/>
+  <text x="180" y="92" font-size="11" font-weight="600" class="label" text-anchor="end">text-foreground</text>
+
+  <!-- text-secondary: dot on description text -->
+  <circle cx="288" cy="114" r="2.5" class="label"/>
+  <line x1="285" y1="114" x2="185" y2="114" class="label-line" stroke-width="1"/>
+  <text x="180" y="118" font-size="11" font-weight="600" class="label" text-anchor="end">text-secondary</text>
+
+  <!-- bg-muted: dot on muted rect left edge -->
+  <circle cx="288" cy="232" r="2.5" class="label"/>
+  <line x1="285" y1="232" x2="185" y2="232" class="label-line" stroke-width="1"/>
+  <text x="180" y="236" font-size="11" font-weight="600" class="label" text-anchor="end">bg-muted</text>
+
+  <!-- bg-primary + text-primary-foreground: dot on button left edge -->
+  <circle cx="288" cy="354" r="2.5" class="label"/>
+  <line x1="285" y1="354" x2="185" y2="354" class="label-line" stroke-width="1"/>
+  <text x="180" y="351" font-size="11" font-weight="600" class="label" text-anchor="end">bg-primary</text>
+  <text x="180" y="365" font-size="11" font-weight="600" class="label" text-anchor="end">text-primary-foreground</text>
+
+  <!-- ====== RIGHT-SIDE ANNOTATIONS ====== -->
+  <!-- Lines go from dot rightward to x=705, text starts at x=710 -->
+
+  <!-- Card surface: dot on card border right edge -->
+  <circle cx="602" cy="50" r="2.5" class="label"/>
+  <line x1="605" y1="50" x2="675" y2="50" class="label-line" stroke-width="1"/>
+  <text x="680" y="47" font-size="11" font-weight="600" class="label">bg-surface</text>
+  <text x="680" y="61" font-size="11" font-weight="600" class="label">border-border</text>
+  <text x="680" y="75" font-size="11" font-weight="600" class="label">shadow-elevation-raised</text>
+
+  <!-- border-border: dot on input border right edge -->
+  <circle cx="574" cy="180" r="2.5" class="label"/>
+  <line x1="577" y1="180" x2="675" y2="180" class="label-line" stroke-width="1"/>
+  <text x="680" y="177" font-size="11" font-weight="600" class="label">border-border</text>
+  <text x="680" y="191" font-size="11" font-weight="600" class="label">shadow-elevation-border</text>
+
+  <!-- text-placeholder: dot on placeholder text -->
+  <circle cx="430" cy="299" r="2.5" class="label"/>
+  <line x1="433" y1="299" x2="675" y2="299" class="label-line" stroke-width="1"/>
+  <text x="680" y="303" font-size="11" font-weight="600" class="label">text-placeholder</text>
+</svg>

@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
-import { cn } from '@marigold/system';
-import { useSectionMessageContext } from './Context';
+import { Title } from '../Title/Title';
 
 export interface SectionMessageTitleProps {
   /**
@@ -9,9 +8,9 @@ export interface SectionMessageTitleProps {
   children?: ReactNode;
 }
 
-export const SectionMessageTitle = ({ children }: SectionMessageTitleProps) => {
-  const { classNames } = useSectionMessageContext();
-  return (
-    <div className={cn('[grid-area:title]', classNames.title)}>{children}</div>
-  );
-};
+export const SectionMessageTitle = ({ children }: SectionMessageTitleProps) => (
+  // Renders a semantic heading. Level, id, className, and grid area come
+  // from the `title` slot that the `SectionMessage` root publishes via
+  // `HeadingContext` (configurable through the root's `headingLevel` prop).
+  <Title>{children}</Title>
+);

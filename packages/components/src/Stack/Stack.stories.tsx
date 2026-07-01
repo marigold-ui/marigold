@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
 import { Card } from '../Card/Card';
@@ -11,12 +12,15 @@ import { Stack } from './Stack';
 const meta = preview.meta({
   title: 'Components/Stack',
   component: Stack,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     space: {
       control: {
         type: 'select',
       },
-      options: ['tight', 'related', 'regular', 'group', 'section'],
+      options: ['collapsed', 'tight', 'related', 'regular', 'group', 'section'],
       description: 'Responsive Style Value',
     },
     alignX: {
@@ -66,6 +70,24 @@ export const Basic = meta.story({
       </Stack>
     </div>
   ),
+});
+
+export const Collapsed = meta.story({
+  tags: ['component-test'],
+  args: {
+    space: 'collapsed',
+  },
+  render: args => (
+    <Stack data-testid="stack" {...args}>
+      <Block>Lirum</Block>
+      <Block>Larum</Block>
+      <Block>Löffelstiel!</Block>
+    </Stack>
+  ),
+  play: async ({ canvas }) => {
+    const stack = canvas.getByTestId('stack');
+    expect(getComputedStyle(stack).rowGap).toBe('0px');
+  },
 });
 
 export const Nested = meta.story({
@@ -171,23 +193,27 @@ export const WithCards = meta.story({
   render: args => (
     <Stack {...args}>
       <Card>
-        <Container>
-          <Headline level={2}>Card Title</Headline>
-          <Text>
-            This is an example of a card component used within a Stack layout.
-            Cards are useful for grouping related information together in a
-            visually distinct container.
-          </Text>
-        </Container>
+        <Card.Body>
+          <Container>
+            <Headline level={2}>Card Title</Headline>
+            <Text>
+              This is an example of a card component used within a Stack layout.
+              Cards are useful for grouping related information together in a
+              visually distinct container.
+            </Text>
+          </Container>
+        </Card.Body>
       </Card>
       <Card>
-        <Container>
-          <Headline level={2}>Another Card</Headline>
-          <Text>
-            Stacks make it easy to maintain consistent spacing between cards and
-            other components, ensuring a clean and organized layout.
-          </Text>
-        </Container>
+        <Card.Body>
+          <Container>
+            <Headline level={2}>Another Card</Headline>
+            <Text>
+              Stacks make it easy to maintain consistent spacing between cards
+              and other components, ensuring a clean and organized layout.
+            </Text>
+          </Container>
+        </Card.Body>
       </Card>
     </Stack>
   ),

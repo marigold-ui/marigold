@@ -1,0 +1,51 @@
+/*
+ * Required base rules for Marigold peer dependencies.
+ *
+ * - `html { scrollbar-gutter: stable }` reserves the scrollbar gutter so
+ *   content does not reflow when the document grows past one viewport
+ *   (or when `@react-aria/overlays` locks the page by setting
+ *   `overflow: hidden` on `<html>`).
+ * - `body { overflow-x: clip }` is defensive: prevents accidental
+ *   horizontal scroll if a descendant overflows and keeps a single
+ *   document scroll axis. `clip` (not `hidden`) avoids creating a new
+ *   scroll context that would break `position: sticky` on descendants.
+ *
+ * The body MUST stay a non-positioned, non-transformed, non-contained
+ * element. Any of `position` (other than `static`), `transform`,
+ * `contain: layout|paint|strict|content`, `filter`, `backdrop-filter`, or
+ * `will-change: transform` on the body makes it the containing block for
+ * absolute portals (Tooltip, Popover, Menu, Select dropdown). When that
+ * happens, `@react-aria/overlays`' `useOverlayPosition` takes a code path
+ * that miscomputes available space above the trigger, forcing every
+ * overlay with a `top` placement to flip to `bottom`. If you need a
+ * containing block for a specific subtree, put it on a child element
+ * (and accept that overlays inside that subtree will flip the same way).
+ *
+ * Shipped as its own file so the rules can ride inside the composed
+ * `theme.css` (for Tailwind setups) and the pre-built `styles.css` (for
+ * standalone setups) without getting rewritten by the `[data-theme="rui"]`
+ * prefixer — `html`/`body` selectors are excluded from prefixing.
+ */
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    overflow-x: clip;
+  }
+}
+
+/*
+ * Keep @keyframes animations intact so entering:/exiting:/spinner motion still
+ * works; components can opt out per-animation via motion-reduce:animate-none.
+ * Also stabilizes Chromatic VRT, which forces prefers-reduced-motion: reduce.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}

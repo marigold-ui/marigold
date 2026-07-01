@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { renderWithOverlay } from '../test.utils';
 import { Basic } from './Loader.stories';
 
@@ -37,7 +37,9 @@ test('inline uses "inverted" variant', () => {
 
   const loader = screen.getByRole('progressbar');
 
-  expect(loader).toHaveClass('grid place-items-center text-secondary size-20');
+  expect(loader).toHaveClass(
+    'grid place-items-center text-primary-foreground size-20'
+  );
 });
 
 test('translate loading message to English', () => {
@@ -90,9 +92,9 @@ test('renders loader with loaderType circle', () => {
     <svg
       aria-hidden="true"
       class="flex-none animate-rotate-spinner origin-center fill-none size-20"
-      height="defaultpx"
+      height="80px"
       role="img"
-      width="defaultpx"
+      width="80px"
     >
       <circle
         class="stroke-transparent"

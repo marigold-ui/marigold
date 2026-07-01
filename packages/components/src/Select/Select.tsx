@@ -1,13 +1,12 @@
-import { forwardRef, useState } from 'react';
+import { useState } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
+import { Button as RACButton } from 'react-aria-components/Button';
 import {
-  Button as RACButton,
   Select as ReactAriaSelect,
   SelectValue,
-} from 'react-aria-components';
+} from 'react-aria-components/Select';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { forwardRefType } from '@react-types/shared';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { FieldBase } from '../FieldBase/FieldBase';
@@ -19,6 +18,19 @@ import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
 
 export type SelectionMode = 'single' | 'multiple';
+
+/**
+ * Details about the current selection, passed as the second argument to
+ * `renderValue`. Useful for summarising a multi-select trigger, e.g.
+ * `renderValue={(items, { count }) => \`${count} selected\`}`.
+ */
+export interface SelectValueDetails {
+  /**
+   * The number of selected items. Reflects the real selection even when the
+   * options are static `<Select.Option>` children (whose value is `null`).
+   */
+  count: number;
+}
 
 type RemovedProps =
   | 'children'
@@ -37,12 +49,14 @@ export interface SelectProps<
   size?: string;
 
   /**
-   * Sets the width of the field.
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * Note: `"fit"` is not supported because the virtualizer controls item sizing.
    *
    * Numeric/scale values are spacing-scale tokens, not pixels: `width={64}`
    * resolves to `calc(var(--spacing) * 64)` ~= 16rem (256px), not 64px.
+   * @remarks `WidthProp`
    */
-  width?: WidthProp['width'];
+  width?: Exclude<WidthProp['width'], 'fit'>;
   /**
    * Children of the select.
    */
@@ -87,28 +101,69 @@ export interface SelectProps<
    * @default false
    */
   error?: boolean;
+  /**
+   * Render the trigger value when one or more options are selected. Replaces
+   * the default trigger render (which lists the selected values). The
+   * placeholder still shows when nothing is selected. Receives the selected
+   * items and a `details` object ({@link SelectValueDetails}) — use
+   * `details.count` to summarise a multi-select, e.g.
+   * `renderValue={(items, { count }) => \`${count} selected\`}`. Must not
+   * contain focusable or interactive elements, since the trigger is itself a
+   * button.
+   */
+  renderValue?: (selectedItems: T[], details: SelectValueDetails) => ReactNode;
 }
 
-const SelectBase = (forwardRef as forwardRefType)(function Select<
-  T extends object,
-  M extends SelectionMode = 'single',
->(
-  {
-    disabled,
-    required,
-    items,
-    variant,
-    size,
-    error,
-    open,
-    label,
-    children,
-    selectionMode,
-    onChange,
-    ...rest
-  }: SelectProps<T, M>,
-  ref: Ref<HTMLButtonElement>
-) {
+const TriggerValue = <T extends object>({
+  renderValue,
+}: {
+  renderValue?: (selectedItems: T[], details: SelectValueDetails) => ReactNode;
+}) => {
+  // No custom render: use react-aria's default trigger, which shows the
+  // placeholder, the single value, or a list of all selected values.
+  if (!renderValue) {
+    return (
+      <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+    );
+  }
+
+  return (
+    <SelectValue<T> className="truncate text-nowrap">
+      {({ selectedItems, defaultChildren, isPlaceholder }) => {
+        // Gate on the raw selection (via `isPlaceholder`), not the non-null
+        // filtered length: options driven by static children expose a `null`
+        // value, which would otherwise skip `renderValue` entirely.
+        if (isPlaceholder) {
+          return defaultChildren;
+        }
+
+        // `selectedItems` are option *values*, which are `null` for static
+        // children — filter them for callers that map over real values, but
+        // take the count from the raw selection so it is always correct.
+        const values = selectedItems.filter((item): item is T => item != null);
+
+        return renderValue(values, { count: selectedItems.length });
+      }}
+    </SelectValue>
+  );
+};
+
+function SelectBase<T extends object, M extends SelectionMode = 'single'>({
+  disabled,
+  required,
+  items,
+  variant,
+  size,
+  error,
+  open,
+  label,
+  children,
+  selectionMode,
+  onChange,
+  renderValue,
+  ref,
+  ...rest
+}: SelectProps<T, M> & { ref?: Ref<HTMLButtonElement> }) {
   const isSingleSelect = !selectionMode || selectionMode === 'single';
   const [trayOpen, setTrayOpen] = useState(false);
 
@@ -147,7 +202,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+            <TriggerValue<T> renderValue={renderValue} />
             <ChevronsVertical size="16" className={classNames.icon} />
           </IconButton>
           <Tray>
@@ -168,7 +223,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
+            <TriggerValue<T> renderValue={renderValue} />
             <ChevronsVertical size="16" className={classNames.icon} />
           </RACButton>
           <Popover>
@@ -180,7 +235,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
       )}
     </FieldBase>
   );
-});
+}
 
 export const Select = Object.assign(SelectBase, {
   Option: ListBox.Item,

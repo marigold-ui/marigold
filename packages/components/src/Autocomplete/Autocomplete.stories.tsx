@@ -1,11 +1,12 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
-import { Text } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Center } from '../Center/Center';
+import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
+import { TextValue } from '../TextValue/TextValue';
 import { Autocomplete } from './Autocomplete';
 
 const meta = preview.meta({
@@ -82,8 +83,8 @@ export const Basic: any = meta.story({
   render: args => (
     <Autocomplete {...args}>
       <Autocomplete.Option id="Harry Potter" textValue="Harry Potter">
-        <Text slot="label">Harry Potter</Text>
-        <Text slot="description">best series ever</Text>
+        <TextValue>Harry Potter</TextValue>
+        <Description>best series ever</Description>
       </Autocomplete.Option>
       <Autocomplete.Option id="Lord of the Rings">
         Lord of the Rings
@@ -111,6 +112,35 @@ export const Basic: any = meta.story({
     await expect(description).toBeInTheDocument();
     await expect(clearButton).toBeInTheDocument();
     await expect(input).toHaveValue('');
+  },
+});
+
+export const WithDescription: any = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Autocomplete {...args}>
+      <Autocomplete.Option id="harry-potter" textValue="Harry Potter">
+        <TextValue>Harry Potter</TextValue>
+        <Description>About the boy who lived.</Description>
+      </Autocomplete.Option>
+      <Autocomplete.Option id="lord-of-the-rings" textValue="Lord of the Rings">
+        <TextValue>Lord of the Rings</TextValue>
+        <Description>In the lands of Middle earth.</Description>
+      </Autocomplete.Option>
+    </Autocomplete>
+  ),
+  play: async ({ canvas }: any) => {
+    const input = canvas.getByRole('combobox');
+    await userEvent.click(input);
+    await userEvent.type(input, 'harry');
+
+    const item = await canvas.findByRole('option', { name: /Harry Potter/ });
+    const optionDescription = canvas.getByText('About the boy who lived.');
+
+    expect(optionDescription.id).toBeTruthy();
+    expect(item.getAttribute('aria-describedby') ?? '').toContain(
+      optionDescription.id
+    );
   },
 });
 

@@ -4,6 +4,8 @@ import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
+import { TextValue } from '../TextValue/TextValue';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
@@ -148,6 +150,38 @@ export const Basic: any = meta.story({
         'false'
       );
       expect(gryffindor).not.toBeVisible();
+    });
+  },
+});
+
+export const WithDescription: any = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Menu {...args} label="File">
+      <Menu.Item id="save" textValue="Save">
+        <TextValue>Save</TextValue>
+        <Description>Write the current document to disk.</Description>
+      </Menu.Item>
+      <Menu.Item id="save-and-exit" textValue="Save and exit">
+        <TextValue>Save and exit</TextValue>
+        <Description>Closes the editor after saving.</Description>
+      </Menu.Item>
+    </Menu>
+  ),
+  play: async ({ canvas, step }: any) => {
+    await step('Open the menu', async () => {
+      await userEvent.click(canvas.getByText('File'));
+      expect(canvas.getByText('Save and exit')).toBeVisible();
+    });
+
+    await step('Description is wired via aria-describedby', async () => {
+      const item = canvas.getByRole('menuitem', { name: /Save and exit/ });
+      const description = canvas.getByText('Closes the editor after saving.');
+
+      expect(description.id).toBeTruthy();
+      expect(item.getAttribute('aria-describedby') ?? '').toContain(
+        description.id
+      );
     });
   },
 });

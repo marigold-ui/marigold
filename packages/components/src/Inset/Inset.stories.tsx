@@ -1,5 +1,5 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
@@ -8,12 +8,16 @@ import { Text } from '../Text/Text';
 const meta = preview.meta({
   title: 'Components/Inset',
   component: Inset,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
-    space: {
+    p: {
       control: {
         type: 'select',
       },
       options: [
+        'collapsed',
         'square-tight',
         'square-snug',
         'square-regular',
@@ -32,11 +36,12 @@ const meta = preview.meta({
       ],
       description: 'set padding on all sides',
     },
-    spaceX: {
+    px: {
       control: {
         type: 'select',
       },
       options: [
+        'collapsed',
         'padding-tight',
         'padding-snug',
         'padding-regular',
@@ -45,11 +50,12 @@ const meta = preview.meta({
       ],
       description: 'set padding on left and right side',
     },
-    spaceY: {
+    py: {
       control: {
         type: 'select',
       },
       options: [
+        'collapsed',
         'padding-tight',
         'padding-snug',
         'padding-regular',
@@ -60,14 +66,14 @@ const meta = preview.meta({
     },
   },
   args: {
-    space: 'square-regular',
+    p: 'square-regular',
     children: undefined,
   } as const,
 });
 
 export const Basic = meta.story({
   render: args => (
-    <Card size="small">
+    <div className="bg-muted rounded-md">
       <Inset {...args}>
         <Headline level={3}>The Giggle Grounds</Headline>
         <Inline>
@@ -78,6 +84,22 @@ export const Basic = meta.story({
           bringing laughter to every corner of Laughville.
         </Text>
       </Inset>
-    </Card>
+    </div>
   ),
+});
+
+export const Collapsed = meta.story({
+  tags: ['component-test'],
+  args: {
+    p: 'collapsed',
+  },
+  render: args => (
+    <Inset {...args}>
+      <Text>Flush content</Text>
+    </Inset>
+  ),
+  play: async ({ canvas }) => {
+    const inset = canvas.getByText('Flush content').parentElement!;
+    expect(getComputedStyle(inset).padding).toBe('0px');
+  },
 });

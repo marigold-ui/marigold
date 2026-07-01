@@ -1,7 +1,7 @@
 'use client';
 
 import { RootProvider } from 'fumadocs-ui/provider/next';
-import { type ReactNode, createContext, useContext } from 'react';
+import { type ReactNode, createContext, use } from 'react';
 import dynamic from 'next/dynamic';
 
 const SearchDialog = dynamic(() => import('@/ui/SearchDialog'));
@@ -9,10 +9,12 @@ const SearchDialog = dynamic(() => import('@/ui/SearchDialog'));
 export interface PageEntry {
   name: string;
   url: string;
+  /** Distinguishes docs pages from interactive example apps in the cmdk search. */
+  kind?: 'doc' | 'example';
 }
 
 const PagesContext = createContext<PageEntry[]>([]);
-export const usePages = () => useContext(PagesContext);
+export const usePages = () => use(PagesContext);
 
 export const Providers = ({
   pages,

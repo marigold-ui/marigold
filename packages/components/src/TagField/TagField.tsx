@@ -1,25 +1,16 @@
 import type { Key, ReactNode, Ref } from 'react';
-import {
-  forwardRef,
-  useContext,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { use, useLayoutEffect, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
+import { Autocomplete, useFilter } from 'react-aria-components/Autocomplete';
+import { Button as RACButton } from 'react-aria-components/Button';
+import { Group } from 'react-aria-components/Group';
+import { SearchField } from 'react-aria-components/SearchField';
 import {
-  Autocomplete,
-  Group,
-  Button as RACButton,
   Select as ReactAriaSelect,
-  SearchField,
   SelectStateContext,
-  TagGroup,
-  TagList,
-  useFilter,
-} from 'react-aria-components';
+} from 'react-aria-components/Select';
+import { TagGroup, TagList } from 'react-aria-components/TagGroup';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { forwardRefType } from '@react-types/shared';
 import {
   type WidthProp,
   cn,
@@ -123,7 +114,7 @@ interface TagDisplayProps {
 }
 
 const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
-  const state = useContext(SelectStateContext);
+  const state = use(SelectStateContext);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   if (!state) {
@@ -213,24 +204,20 @@ const TagFieldDropdown = ({
 
 // Component
 // ---------------
-const _TagField = (forwardRef as forwardRefType)(function TagField<
-  T extends object,
->(
-  {
-    disabled,
-    required,
-    items,
-    variant,
-    size,
-    error,
-    open,
-    children,
-    placeholder,
-    emptyState,
-    ...rest
-  }: TagFieldProps<T>,
-  ref: Ref<HTMLDivElement>
-) {
+function TagFieldBase<T extends object>({
+  disabled,
+  required,
+  items,
+  variant,
+  size,
+  error,
+  open,
+  children,
+  placeholder,
+  emptyState,
+  ref,
+  ...rest
+}: TagFieldProps<T> & { ref?: Ref<HTMLDivElement> }) {
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const [triggerWidth, setTriggerWidth] = useState(0);
   const isSmallScreen = useSmallScreen();
@@ -274,7 +261,7 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
           classNames.trigger
         )}
       >
-        <RACButton className="col-start-1 row-start-1 h-full w-full cursor-pointer opacity-0" />
+        <RACButton className="col-start-1 row-start-1 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed" />
         <div className="pointer-events-none col-start-1 row-start-1 flex flex-1 items-center justify-between gap-1 **:[[role=row]]:pointer-events-auto">
           <TagDisplay
             placeholder={placeholder}
@@ -322,9 +309,9 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
       )}
     </FieldBase>
   );
-});
+}
 
-export const TagField = Object.assign(_TagField, {
+export const TagField = Object.assign(TagFieldBase, {
   Option: ListBox.Item,
   Section: ListBox.Section,
 });
