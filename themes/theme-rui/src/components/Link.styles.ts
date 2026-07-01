@@ -7,9 +7,9 @@ export const Link: ThemeComponent<'Link'> = cva({
       default: 'text-link font-normal',
       secondary: 'font-medium text-foreground underline hover:no-underline',
       master:
-        'text-link font-normal before:content-[""] before:inline-block before:size-4 before:mr-1 before:bg-access-master-foreground before:[mask-size:contain] before:[mask-repeat:no-repeat] before:[mask-position:center] before:[mask-image:var(--access-mask-lock)]',
+        'text-link font-normal inline-flex items-center before:content-[""] before:size-4 before:shrink-0 before:mr-1 before:bg-access-master-foreground before:[mask-size:contain] before:[mask-repeat:no-repeat] before:[mask-position:center] before:[mask-image:var(--access-mask-lock)]',
       admin:
-        'text-link font-normal before:content-[""] before:inline-block before:size-4 before:mr-1 before:bg-access-admin-foreground before:[mask-size:contain] before:[mask-repeat:no-repeat] before:[mask-position:center] before:[mask-image:var(--access-mask-key)]',
+        'text-link font-normal inline-flex items-center before:content-[""] before:size-4 before:shrink-0 before:mr-1 before:bg-access-admin-foreground before:[mask-size:contain] before:[mask-repeat:no-repeat] before:[mask-position:center] before:[mask-image:var(--access-mask-key)]',
     },
     size: {
       default: '',
