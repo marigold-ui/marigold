@@ -25,6 +25,10 @@ export const Menu: ThemeComponent<'Menu'> = {
         default:
           'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60',
         destructive: 'text-destructive-accent focus:bg-destructive-accent/10',
+        master:
+          'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60 ui-access-master',
+        admin:
+          'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60 ui-access-admin',
       },
     },
     defaultVariants: {

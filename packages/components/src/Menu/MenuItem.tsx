@@ -10,7 +10,7 @@ import { useClassNames } from '@marigold/system';
 // ---------------
 type RemovedProps = 'style' | 'className';
 export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {
-  variant?: 'destructive' | 'default' | (string & {});
+  variant?: 'destructive' | 'default' | 'master' | 'admin' | (string & {});
   size?: string;
 }
 
