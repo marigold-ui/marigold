@@ -9,6 +9,7 @@ import {
 import { SelectionIndicator } from 'react-aria-components/SelectionIndicator';
 import { type WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { useWheelScrollX } from '../utils/useWheelScrollX';
 import { SegmentedControlContext } from './Context';
 
 // SegmentedControl
@@ -109,6 +110,10 @@ function SegmentedControlBase({
   const stretch = width === 'full';
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  // Let pointer users without a trackpad reach overflowing segments by wheeling
+  // vertically over the track.
+  useWheelScrollX(scrollRef);
+
   // Keep the selected option visible when the segments overflow and scroll.
   const scrollSelectedIntoView = useCallback((behavior: ScrollBehavior) => {
     const container = scrollRef.current;
@@ -177,7 +182,11 @@ function SegmentedControlBase({
           stretch ? 'flex w-full' : 'inline-flex w-fit max-w-full'
         )}
       >
-        <div ref={attachScrollContainer} className={classNames.list}>
+        <div
+          ref={attachScrollContainer}
+          className={classNames.list}
+          data-testid="segmented-control-scroll"
+        >
           <SegmentedControlContext value={{ variant, size, stretch }}>
             {children}
           </SegmentedControlContext>
