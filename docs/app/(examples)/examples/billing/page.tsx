@@ -134,9 +134,14 @@ const BillingPage = () => {
                     </Badge>
                   </Table.Cell>
                   <Table.Cell alignX="right">
-                    <Inline space="tight" alignY="center">
+                    <Inline space="tight" alignY="center" alignX="right">
                       {invoice.status === 'failed' && (
-                        <Button size="small">Retry payment</Button>
+                        <Button
+                          size="small"
+                          aria-label={`Retry payment for ${invoice.period}`}
+                        >
+                          Retry payment
+                        </Button>
                       )}
                       <Button
                         variant="ghost"
