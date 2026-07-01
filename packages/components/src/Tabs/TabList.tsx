@@ -32,6 +32,19 @@ const _TabList = (props: TabListProps) => {
   const layoutId = useId();
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // The `tabsListScroll` slot is required by the theme type, but a JS theme, an
+  // `as Theme` cast, or a not-yet-migrated theme can still reach runtime without
+  // it. Without the slot this wrapper gets no `overflow-x`/`snap-x`, so the row
+  // blows the page wide instead of scrolling. Fail loudly in dev rather than
+  // silently, keeping the strict contract without masking it with a fallback.
+  if (process.env.NODE_ENV !== 'production' && !classNames.tabsListScroll) {
+    console.warn(
+      '[Tabs] The theme is missing the required `tabsListScroll` slot, so the ' +
+        'tab row will overflow the page instead of scrolling. Add a ' +
+        '`tabsListScroll` entry to your `Tabs` theme (see theme-rui for a reference).'
+    );
+  }
+
   // Translate a vertical mouse wheel into horizontal scroll so pointer users
   // without a trackpad can reach overflowing tabs. We only hijack the wheel
   // when the row actually overflows and the gesture is primarily vertical, so
