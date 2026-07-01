@@ -75,3 +75,16 @@ export const Inline = meta.story({
     </Text>
   ),
 });
+
+export const AccessVariants = meta.story({
+  render: () => (
+    <Stack space={2} alignX="left">
+      <Link variant="master" href="#">
+        verschieben
+      </Link>
+      <Link variant="admin" href="#">
+        freigeben
+      </Link>
+    </Stack>
+  ),
+});
