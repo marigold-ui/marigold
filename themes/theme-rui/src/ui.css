@@ -163,11 +163,16 @@
   @apply text-disabled cursor-not-allowed;
   background: var(--color-disabled-surface);
   background-clip: border-box;
+  /* Dim the boundary rather than remove it: a borderless input reads as broken,
+     but the resting opaque `--color-border` ring is too assertive for a disabled
+     control. Recolor the ui-surface ring to the muted disabled color so the
+     surface stays a flat fill with a soft, clearly-inactive edge. Overrides the
+     `ui-input` base color by variant specificity. */
+  --ui-border-color: var(--color-disabled);
   /* No top highlight when disabled: the inset gloss/sheen of ui-surface-muted and
      ui-surface-contrast would otherwise sit on the flat disabled fill. Zeroing the
      `--tw-inset-shadow` var is reliable where a raw `box-shadow: none` lost the
-     cascade to the surface utilities' own composite box-shadow. Plain surfaces and
-     inputs have no inset, so this is a no-op for them — their boundary ring stays. */
+     cascade to the surface utilities' own composite box-shadow. */
   @apply inset-shadow-none;
 }
 
