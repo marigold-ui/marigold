@@ -353,6 +353,40 @@ export const MultiSelection = meta.story({
   },
 });
 
+export const AccessSections = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <ActionMenu aria-label="Filial-Aktionen">
+      <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
+      <ActionMenu.Section title="Master-Aktionen">
+        <ActionMenu.Item id="move" variant="master">
+          Verschieben
+        </ActionMenu.Item>
+        <ActionMenu.Item id="tse" variant="master">
+          TSE anbinden
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+      <ActionMenu.Section title="Admin-Aktionen">
+        <ActionMenu.Item id="release" variant="admin">
+          Freigeben
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+    </ActionMenu>
+  ),
+});
+
+AccessSections.test(
+  'renders master and admin access sections',
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Filial-Aktionen' })
+    );
+    expect(await canvas.findByText('Master-Aktionen')).toBeVisible();
+    const move = canvas.getByText('Verschieben').closest('[role="menuitem"]');
+    expect(move).toHaveClass('before:[mask-image:var(--access-mask-lock)]');
+  }
+);
+
 export const Mobile = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },

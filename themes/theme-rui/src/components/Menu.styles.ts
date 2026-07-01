@@ -20,6 +20,10 @@ export const Menu: ThemeComponent<'Menu'> = {
         default:
           'text-foreground focus:bg-focus [&_svg]:text-muted-foreground [&_svg]:opacity-60',
         destructive: 'text-destructive focus:bg-destructive/10',
+        master:
+          'text-foreground focus:bg-focus before:content-[""] before:inline-block before:size-4 before:mr-1 before:bg-access-master-foreground before:[mask-size:contain] before:[mask-repeat:no-repeat] before:[mask-position:center] before:[mask-image:var(--access-mask-lock)]',
+        admin:
+          'text-foreground focus:bg-focus before:content-[""] before:inline-block before:size-4 before:mr-1 before:bg-access-admin-foreground before:[mask-size:contain] before:[mask-repeat:no-repeat] before:[mask-position:center] before:[mask-image:var(--access-mask-key)]',
       },
     },
     defaultVariants: {
