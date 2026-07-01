@@ -39,13 +39,13 @@ test('item opens content by click', async () => {
 test('render dynamically accordion items', async () => {
   render(<Basic.Component />);
 
-  const button = screen.queryAllByRole('button');
+  const button = screen.getByRole('button', { name: 'Personal Settings' });
 
-  expect(button[1]).toHaveAttribute('aria-expanded', 'false');
+  expect(button).toHaveAttribute('aria-expanded', 'false');
 
-  await user.click(button[1]);
+  await user.click(button);
 
-  expect(button[1]).toHaveAttribute('aria-expanded', 'true');
+  expect(button).toHaveAttribute('aria-expanded', 'true');
 });
 
 test('support default expanded keys', () => {

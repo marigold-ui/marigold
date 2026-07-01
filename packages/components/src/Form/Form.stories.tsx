@@ -164,7 +164,7 @@ export const WithRef = meta.story({
 
     return (
       <Stack space={4}>
-        <Form ref={formRef} data-testid="form-with-ref">
+        <Form ref={formRef}>
           <Stack space={5}>
             <TextField label="Name" name="name" />
             <TextField label="Email" type="email" name="email" />

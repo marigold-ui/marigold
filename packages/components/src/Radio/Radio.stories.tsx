@@ -138,7 +138,7 @@ export const CollapseAt = meta.story({
 CollapseAt.test(
   'Expands and collapses the extra options',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ step, canvas, userEvent }: any) => {
+  async ({ step, canvas, userEvent }) => {
     await step('show more', async () => {
       await userEvent.click(canvas.getByText('Show 4 more'));
 

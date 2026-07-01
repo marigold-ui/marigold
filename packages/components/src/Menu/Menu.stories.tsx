@@ -141,7 +141,7 @@ Basic.test('Opens the menu', async ({ canvas }) => {
 Basic.test(
   'Opens the menu and selects an item',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     await step('Open the menu', async () => {
       const button = canvas.getByText('Hogwarts Houses');
 
@@ -181,7 +181,7 @@ Basic.test(
       </Menu>
     ),
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole('button', { name: 'Menu with sections' })
     );
@@ -214,7 +214,7 @@ Basic.test(
       </Menu>
     ),
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole('button', { name: 'Menu with disabled keys' })
     );
@@ -257,7 +257,7 @@ Basic.test(
       </Menu>
     ),
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Links' }));
 
     // Menu items with an href render as anchors that keep their menuitem role.
@@ -287,7 +287,7 @@ Basic.test(
       </ActionMenu>
     ),
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
     await userEvent.click(canvas.getByRole('button'));
@@ -313,7 +313,7 @@ Basic.test(
       },
     },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
     const button = canvas.getByText('Hogwarts Houses');
@@ -328,7 +328,7 @@ Basic.test(
   }
 );
 
-export const MultiSelection: any = meta.story({
+export const MultiSelection = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
@@ -353,7 +353,7 @@ export const MultiSelection: any = meta.story({
   },
 });
 
-export const Mobile: any = meta.story({
+export const Mobile = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {
@@ -376,7 +376,7 @@ Mobile.test(
   // Keep the snapshot so Chromatic captures the open tray (the small-screen
   // visual state), unlike the interaction-only tests below.
   { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Mobile Menu' }));
 
     const tray = await canvas.findByRole('dialog');
@@ -389,7 +389,7 @@ Mobile.test(
   }
 );
 
-Mobile.test('Mobile Menu interaction', async ({ canvas, step }: any) => {
+Mobile.test('Mobile Menu interaction', async ({ canvas, step }) => {
   const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
 
   await step('Open tray by clicking trigger', async () => {
@@ -422,37 +422,32 @@ Mobile.test('Mobile Menu interaction', async ({ canvas, step }: any) => {
   });
 });
 
-Mobile.test(
-  'Mobile Menu keyboard navigation',
-  async ({ canvas, step }: any) => {
-    const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+Mobile.test('Mobile Menu keyboard navigation', async ({ canvas, step }) => {
+  const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
 
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
 
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
-      );
-    });
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  });
 
-    await step('Navigate menu with arrow keys', async () => {
-      await userEvent.keyboard('{ArrowDown}');
-      await userEvent.keyboard('{ArrowDown}');
-    });
+  await step('Navigate menu with arrow keys', async () => {
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{ArrowDown}');
+  });
 
-    await step('Select item with Enter key', async () => {
-      await userEvent.keyboard('{Enter}');
-    });
+  await step('Select item with Enter key', async () => {
+    await userEvent.keyboard('{Enter}');
+  });
 
-    await step('Verify tray is closed', async () => {
-      await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-      );
-    });
-  }
-);
+  await step('Verify tray is closed', async () => {
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
+});
 
-Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }: any) => {
+Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }) => {
   const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
 
   await step('Open tray by clicking trigger', async () => {

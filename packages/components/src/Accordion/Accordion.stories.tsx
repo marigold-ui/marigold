@@ -87,7 +87,7 @@ export const Basic = meta.story({
 Basic.test(
   'collapses the previously expanded item when another is opened',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const user = userEvent.setup();
 
     const item = canvas.getByText('Informations');

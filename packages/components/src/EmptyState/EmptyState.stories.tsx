@@ -108,7 +108,7 @@ WithAutocompleteAndData.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, args }: any) => {
+  async ({ canvas, args }) => {
     args.description = 'Try adjusting your search terms';
     const input = canvas.getByRole('combobox');
 

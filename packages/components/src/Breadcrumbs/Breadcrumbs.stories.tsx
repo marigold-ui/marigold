@@ -76,7 +76,7 @@ AutoCollapse.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     // The middle items collapse behind an ellipsis button at this width.
     const ellipsis = await canvas.findByRole('button', {
       name: 'These breadcrumbs are hidden',

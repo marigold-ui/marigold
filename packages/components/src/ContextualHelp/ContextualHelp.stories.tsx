@@ -97,7 +97,7 @@ export const Basic = meta.story({
   ),
 });
 
-Basic.test('Opens contextual help', async ({ canvas, userEvent }: any) => {
+Basic.test('Opens contextual help', async ({ canvas, userEvent }) => {
   const helpButton = await canvas.getByLabelText(/help|hilfe/i);
   await userEvent.click(helpButton);
 

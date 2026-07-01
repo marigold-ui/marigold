@@ -92,7 +92,7 @@ export const Basic = meta.story({
   ),
 });
 
-Basic.test('Open drawer', async ({ canvas, userEvent }: any) => {
+Basic.test('Open drawer', async ({ canvas, userEvent }) => {
   await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
 
   await waitFor(() =>
@@ -186,7 +186,7 @@ LongContent.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, userEvent }: any) => {
+  async ({ canvas, userEvent }) => {
     const trigger = canvas.getByRole('button', { name: 'Open Drawer' });
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
@@ -256,7 +256,7 @@ SelectInsideDrawerSmallScreen.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, userEvent }: any) => {
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
     await waitFor(() => expect(canvas.getByText('Filter')).toBeInTheDocument());
 

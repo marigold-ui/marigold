@@ -93,7 +93,7 @@ Basic.test(
       onPress: fn(),
     },
   },
-  async ({ canvas, args }: any) => {
+  async ({ canvas, args }) => {
     await userEvent.click(canvas.getByRole('button'));
 
     await expect(args.onPress).toHaveBeenCalled();
@@ -192,7 +192,7 @@ Loading.test(
       chromatic: { disableSnapshot: true },
     },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const button = canvas.getByRole('button');
 
     await userEvent.click(button);

@@ -76,7 +76,7 @@ const meta = preview.meta({
 });
 
 // Bad fix: Explicit type annotation prevents TS2742 by avoiding leaking inferred internal types
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
     <Autocomplete {...args}>
@@ -97,7 +97,7 @@ export const Basic: any = meta.story({
 Basic.test(
   'Opens and filters the menu as you type',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, 'ha');
@@ -115,7 +115,7 @@ Basic.test(
       menuTrigger: 'focus',
     },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.click(input);
@@ -133,7 +133,7 @@ Basic.test(
       menuTrigger: 'manual',
     },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, '{arrowdown}');
@@ -143,7 +143,7 @@ Basic.test(
   }
 );
 
-export const WithSections: any = meta.story({
+export const WithSections = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
@@ -172,7 +172,7 @@ WithSections.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input = canvas.getAllByLabelText(/Select Favorite/i)[0];
 
     await userEvent.type(input, 'o');
@@ -184,7 +184,7 @@ WithSections.test(
   }
 );
 
-export const Controlled: any = meta.story({
+export const Controlled = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
@@ -231,7 +231,7 @@ Controlled.test(
       chromatic: { disableSnapshot: true },
     },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, 'h');
@@ -248,7 +248,7 @@ Controlled.test(
   }
 );
 
-export const EmptyState: any = meta.story({
+export const EmptyState = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     return (
@@ -257,9 +257,7 @@ export const EmptyState: any = meta.story({
         label="Search Star Wars Characters"
         items={[]}
         allowsEmptyCollection
-        emptyState={
-          <Center data-testid="empty-state">no character found</Center>
-        }
+        emptyState={<Center>no character found</Center>}
       />
     );
   },
@@ -270,18 +268,18 @@ EmptyState.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
 
     await userEvent.type(input, '{arrowdown}');
 
-    const result = await canvas.getByTestId('empty-state');
+    const result = canvas.getByText('no character found');
     await expect(result).toBeVisible();
   }
 );
 
-export const DisabledSuggestions: any = meta.story({
+export const DisabledSuggestions = meta.story({
   render: () => (
     <Autocomplete label="Label" disabledKeys={['spinach']}>
       <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
@@ -294,7 +292,7 @@ export const DisabledSuggestions: any = meta.story({
 
 DisabledSuggestions.test(
   'Skips the disabled option during keyboard navigation',
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, '{arrowdown}');
 
@@ -315,7 +313,7 @@ const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
   label: `Tenant ${i + 200} (item-${i + 200})`,
 }));
 
-export const LargeDataset: any = meta.story({
+export const LargeDataset = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
@@ -339,7 +337,7 @@ LargeDataset.test(
   {
     parameters: { chromatic: { disableSnapshot: true } },
   },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     const input = canvas.getByRole('combobox');
 
     await step('Type to filter the large dataset', async () => {
@@ -364,7 +362,7 @@ LargeDataset.test(
   }
 );
 
-export const Mobile: any = meta.story({
+export const Mobile = meta.story({
   tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },
@@ -396,7 +394,7 @@ Mobile.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
@@ -410,7 +408,7 @@ Mobile.test(
 Mobile.test(
   'Mobile Autocomplete interaction',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
@@ -448,7 +446,7 @@ Mobile.test(
 Mobile.test(
   'Mobile Autocomplete keyboard navigation',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {

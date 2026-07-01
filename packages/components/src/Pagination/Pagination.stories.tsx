@@ -54,7 +54,7 @@ export const Basic = meta.story({
 Basic.test(
   'Navigates pages by click and keyboard',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent, step }: any) => {
+  async ({ canvas, userEvent, step }) => {
     await step('Select an item from pagination', async () => {
       const pageButton = canvas.getByLabelText('Page 2');
 
@@ -125,7 +125,7 @@ Basic.test(
       onChange: fn(),
     },
   },
-  async ({ canvas, userEvent, args, step }: any) => {
+  async ({ canvas, userEvent, args, step }) => {
     await step('Select page with Enter key', async () => {
       const page2 = canvas.getByLabelText('Page 2');
       page2.focus();
@@ -155,7 +155,7 @@ Basic.test(
       defaultPage: 5,
     },
   },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     await step(
       'Ellipsis is rendered when pages exceed visible range',
       async () => {
@@ -174,7 +174,7 @@ Basic.test(
       defaultPage: 2,
     },
   },
-  async ({ canvas, userEvent }: any) => {
+  async ({ canvas, userEvent }) => {
     const previousButton = canvas.getByLabelText('Previous page');
 
     await userEvent.click(previousButton);
@@ -191,7 +191,7 @@ Basic.test(
       defaultPage: 9,
     },
   },
-  async ({ canvas, userEvent }: any) => {
+  async ({ canvas, userEvent }) => {
     const nextButton = canvas.getByLabelText('Next page');
 
     await userEvent.click(nextButton);
@@ -207,7 +207,7 @@ Basic.test(
     parameters: { chromatic: { disableSnapshot: true } },
     args: { onChange: fn() },
   },
-  async ({ canvas, userEvent, args }: any) => {
+  async ({ canvas, userEvent, args }) => {
     const page2Button = canvas.getByLabelText('Page 2');
 
     await userEvent.click(page2Button);
@@ -241,7 +241,7 @@ export const Controlled = meta.story({
 
 Controlled.test(
   'Reflects and overrides the controlled page state',
-  async ({ canvas, userEvent, step }: any) => {
+  async ({ canvas, userEvent, step }) => {
     await step('Selecting a page updates the parent state', async () => {
       await userEvent.click(canvas.getByLabelText('Page 3'));
 

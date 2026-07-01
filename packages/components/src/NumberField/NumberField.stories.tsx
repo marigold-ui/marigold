@@ -116,7 +116,7 @@ Basic.test(
       defaultValue: 42,
     },
   },
-  async ({ canvas }: any) => {
+  async ({ canvas }) => {
     const input: HTMLInputElement = canvas.getByRole('textbox', {
       name: 'Price',
     });

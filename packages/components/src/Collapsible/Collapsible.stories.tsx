@@ -34,7 +34,7 @@ Basic.test(
       chromatic: { disableSnapshot: true },
     },
   },
-  async ({ canvas, step }: any) => {
+  async ({ canvas, step }) => {
     await step('expand', async () => {
       await userEvent.click(canvas.getByText('Click me'));
 
