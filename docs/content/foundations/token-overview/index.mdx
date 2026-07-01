@@ -172,12 +172,20 @@ The primary token represents the strongest visual weight in the interface. It is
 
 The page is gray (`bg-background`), component panels are lighter (`bg-surface`). This contrast creates natural visual hierarchy without relying solely on shadows and borders.
 
+Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`, a translucent decorative hairline applied through the `ui-surface` utility rather than a standalone border. See [Elevation](/foundations/elevation) for how it combines with the shadow tiers.
+
 <TokenTable
   tokens={[
     {
       name: 'surface',
       value: 'white',
       useFor: 'White component backgrounds (cards, panels, inputs, tables)',
+    },
+    {
+      name: 'surface-border',
+      value: 'charcoal-950 / 10%',
+      useFor:
+        'Decorative rim of a raised surface (Card, Panel, Dialog, Menu), applied via ui-surface. Sits below the contrast threshold, so never for an edge that must be seen',
     },
   ]}
 />
@@ -473,13 +481,7 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
       name: 'border',
       value: 'charcoal-300 (darkened)',
       useFor:
-        'Functional edges — any boundary that carries meaning or is an affordance, so it must stay perceivable (WCAG 1.4.11): form-control boundaries (Input, Select, TextArea, Checkbox, Radio, …) and opaque lines on a known surface (dividers, table row and grid lines)',
-    },
-    {
-      name: 'surface-border',
-      value: 'charcoal-950 / 10%',
-      useFor:
-        'The decorative border of a raised surface, applied via the ui-surface utility (Card, Panel, Dialog, Menu, secondary Button, …). Deliberately below the contrast threshold — never for an edge that must be seen',
+        'Functional edges: any boundary that carries meaning or is an affordance, so it must stay perceivable (WCAG 1.4.11). Covers form-control boundaries (Input, Select, TextArea, Checkbox, Radio) and opaque lines on a known surface (dividers, table row and grid lines)',
     },
     {
       name: 'ring',
@@ -489,24 +491,14 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
   ]}
 />
 
-<Callout title="Two border tokens — pick by the job, not the location">
-  Both are the same charcoal hue, but they encode different obligations — what
-  separates them is the **job**, not their names. `border` is the **functional**
-  line: any boundary that carries meaning or is an affordance, so it must stay
-  perceivable (WCAG 1.4.11 non-text contrast) and is **opaque**. It does the
-  load-bearing work: **overlapping** lines (grid-cell borders, stacked
-  dividers), where translucent strokes would double-darken at every crossing,
-  _and_ every form-control boundary. Controls are surfaces, but a control's edge
-  is an affordance the user must see, so each one overrides the surface border
-  with `border` via `ui-input` (and Checkbox/Radio use it directly) — the rule
-  and its exception in one place. `surface-border` is **decorative**: the rim of
-  a raised surface (Card, Panel, Dialog, Menu). It still draws a line, but sits
-  deliberately below the contrast threshold and means nothing, so it is never
-  used where the edge has to be seen. Being translucent, it composites over
-  whatever ground it sits on — staying consistent on white, the page background,
-  or a tinted panel, where a fixed gray reads heavy on white and washes out on
-  gray. It is drawn as the outset ring inside `ui-surface`, not a standalone
-  border class, so it never gets covered by edge-to-edge child content.
+<Callout title="Two border tokens: pick by the job">
+  Use `border` for **functional** edges. It is opaque and stays perceivable
+  (WCAG 1.4.11), so it covers every form-control boundary and overlapping lines
+  like grid cells and dividers. Controls are surfaces, but their edge is an
+  affordance, so `ui-input` overrides the surface rim with `border` (Checkbox
+  and Radio use it directly). Use `surface-border` for the **decorative** rim of
+  a raised surface. Being translucent it sits below the contrast threshold, so
+  never use it where the edge has to be seen.
 </Callout>
 
 ### Status colors

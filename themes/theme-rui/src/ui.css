@@ -48,8 +48,8 @@
 }
 
 /*
- * Interactive surfaces that sit on the page background and need a clear
- * boundary: inputs, selects, cards, panels.
+ * Surfaces that sit on the page background and need a clear boundary:
+ * inputs, selects, cards, panels.
  *
  * The boundary is a 1px outset `ring` routed through `--tw-ring-shadow`, so it
  * composes into the same `box-shadow` chain as `shadow-elevation-*`. Outset (not
@@ -119,13 +119,12 @@
  * box-shadow chain — and adds the same top-lit gesture inverted for a light
  * face: a faint top-down gradient plus a 1px white gloss on the top edge, so
  * the surface reads as gently raised without going dark. The gradient starts a
- * hair off-white (charcoal-50, i.e. --color-muted) so the white gloss is
- * visible.
+ * hair off-white (`--color-muted`) so the white gloss stays visible.
  */
 @utility ui-surface-muted {
   @apply ui-surface;
   /* prettier-ignore */
-  background: linear-gradient(to bottom, var(--color-charcoal-50), var(--color-charcoal-100));
+  background: linear-gradient(to bottom, var(--color-muted), var(--color-charcoal-100));
   @apply inset-shadow-[0_1px_0_0_var(--color-white)];
 }
 

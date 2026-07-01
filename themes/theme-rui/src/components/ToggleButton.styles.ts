@@ -17,29 +17,21 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   button: cva({
     base: [
       'ui-button-base gap-2',
-      // Neutral button = the secondary Button look (muted gloss surface).
+      // Neutral button: the secondary Button look (muted gloss surface).
       'ui-surface-muted shadow-elevation-border',
-      // Flip on/off in one frame: the fill is instant, so an animated box-shadow
-      // would smear the off-state gloss over the on-state dark fill — and the off/on
-      // shadow layer counts differ, so it can't tween cleanly anyway.
+      // Flip on/off instantly; an animated box-shadow can't tween cleanly here.
       'transition-none',
 
-      // States — match the secondary Button. ui-surface-muted hardcodes its
-      // gradient fill, so state fills override `background` directly (not --ui-background-color).
+      // Hover: match the secondary Button (muted hardcodes its fill, so override `background` directly).
       'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
-      // On = sunken dark-gray surface: drop elevation, swap the white gloss for a
-      // dark inner-top recess, and recolor the ring to a visible dark edge — the
-      // faint muted ring vanishes on a dark fill, which made a grouped segment look
-      // shorter than its neighbours.
+      // On: sunken dark-gray surface (drop elevation, dark inner-top recess, visible dark edge).
       'selected:[background:var(--color-toggle-selected)] selected:text-selected-bold-foreground',
       'selected:shadow-none selected:[--ui-border-color:var(--color-toggle-selected-edge)]',
       'selected:inset-shadow-[0_2px_3px_-1px_oklch(from_var(--color-charcoal-950)_l_c_h_/_0.5)]',
       'disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
 
-      // Group: segments share the group's outer surface + ring. The 1px divider
-      // between segments is a transparent right border, removed on the last one.
-      // Only ToggleButton needs a border, so it's declared here (in-group), not on
-      // ui-button-base where it was dead weight for every other button.
+      // Group: segments share the group's surface + ring; a transparent right border
+      // draws the 1px divider (removed on the last). Border lives here, not ui-button-base.
       'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-transparent in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
       'in-[.group]:disabled:border-r-border',
       'in-[.group]:focus-visible:z-10',
