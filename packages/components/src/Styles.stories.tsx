@@ -23,10 +23,10 @@ const Base = ({
 // A boxed surface whose rows are split by the surface-border hairline — the same
 // token as the surface ring. Dividers stay that faint hairline in every state.
 // Ink & wash: hover is a gray wash (bg-hover); selection is the quiet selected
-// wash plus an opaque ink stroke on the leading edge (inset-shadow-selection).
-// A hovered selected row shows the hover wash while the stroke keeps carrying
-// the selection — states live on orthogonal channels, so they compose instead
-// of colliding.
+// wash while the row's indicator (the check here, a checkbox/radio in real
+// components) is the one opaque ink mark. A hovered selected row shows the
+// hover wash while the indicator keeps carrying the selection — states live on
+// orthogonal channels, so they compose instead of colliding.
 const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
 
 const ListSurface = ({
@@ -46,13 +46,14 @@ const ListSurface = ({
           key={item}
           data-selected={i === selectedIndex || undefined}
           className={cn(
-            'px-3 py-2',
+            'flex items-center justify-between px-3 py-2',
             'not-last:border-surface-border not-last:border-b',
-            i === selectedIndex && 'bg-selected inset-shadow-selection',
+            i === selectedIndex && 'bg-selected',
             i === hoveredIndex && 'bg-hover'
           )}
         >
           {item}
+          {i === selectedIndex && <span aria-hidden>✓</span>}
         </div>
       ))}
     </div>
@@ -129,11 +130,13 @@ export const Surface = meta.story({
       <p className="text-secondary max-w-prose text-sm">
         Item fills painted on rows inside a surface, following the ink &amp;
         wash split: transient pointer states are gray washes, persistent
-        selection is the quiet <code>bg-selected</code> wash plus the opaque{' '}
-        <code>inset-shadow-selection</code> ink stroke on the leading edge. A
-        hovered selected row shows the hover wash under the stroke — the two
-        states never compete on lightness. <code>bg-focus-highlight</code> marks
-        keyboard focus inside menus; <code>ui-state-hover-ghost</code> (
+        selection is the quiet <code>bg-selected</code> wash while the row's
+        indicator (checkbox, radio, check) is the one opaque ink mark. A hovered
+        selected row shows the hover wash under that indicator — the two states
+        never compete on lightness. In navigation, where rows carry no
+        indicator, the <code>inset-shadow-selection</code> stroke is the ink
+        instead (see Sidebar). <code>bg-focus-highlight</code> marks keyboard
+        focus inside menus; <code>ui-state-hover-ghost</code> (
         <code>bg-current/10</code>) tints toward the current text color so a
         ghost item blends into any ground. The two boxes on the right push a
         selected / hover fill onto a whole raised surface via{' '}
@@ -143,16 +146,17 @@ export const Surface = meta.story({
         <div className="ui-surface shadow-elevation-border flex w-40 flex-col overflow-hidden text-sm">
           <div className="px-3 py-2">resting</div>
           <div className="bg-hover px-3 py-2">hover</div>
-          <div className="inset-shadow-selection bg-selected px-3 py-2">
-            selected
+          <div className="bg-selected flex justify-between px-3 py-2">
+            selected <span aria-hidden>✓</span>
           </div>
-          <div className="inset-shadow-selection bg-hover px-3 py-2">
-            selected + hover
+          <div className="bg-hover flex justify-between px-3 py-2">
+            selected + hover <span aria-hidden>✓</span>
           </div>
+          <div className="inset-shadow-selection px-3 py-2">nav / current</div>
           <div className="bg-focus-highlight px-3 py-2">focus</div>
           <div className="bg-current/10 px-3 py-2">ghost</div>
         </div>
-        <Base className="ui-surface shadow-elevation-raised inset-shadow-selection [--ui-background-color:var(--color-selected)]">
+        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-foreground)]">
           raised / selected
         </Base>
         <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-hover)]">
@@ -164,9 +168,8 @@ export const Surface = meta.story({
         Separators between rows reuse the <code>surface-border</code> hairline
         (the same token as the surface ring) in <em>every</em> state: the
         selected wash is lighter than the hairline and the selection boundary is
-        carried by the <code>inset-shadow-selection</code> ink stroke, so no
-        divider needs to darken. Hovering a selected row swaps the wash, not the
-        stroke.
+        carried by the row's inked indicator, so no divider needs to darken.
+        Hovering a selected row swaps the wash, not the indicator.
       </p>
       <Inline space="regular">
         <ListSurface label="separators" />

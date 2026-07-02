@@ -281,7 +281,7 @@ Most form controls sit on a white surface and use borders to define their shape:
 
 ### Selected
 
-Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components like SelectList, ListBox, and Sidebar highlight one item among many, so they pair a quiet `bg-selected` wash with an opaque ink stroke on the item's leading edge (`inset-shadow-selection`). The stroke, not the wash, carries the selection boundary, so it stays perceivable in every combination: the wash sits one step lighter than the `hover` fill, and hovering a selected item shows the hover wash while the stroke keeps marking the selection.
+Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components follow a "one ink mark" rule: a selected item pairs the quiet `bg-selected` wash with exactly one opaque mark. In option lists (SelectList, ListBox) that mark is the row's own indicator, the checkbox, radio, or check icon. In navigation (Sidebar), where rows carry no indicator, the current item takes the `inset-shadow-selection` stroke on its leading edge instead. The ink mark, not the wash, carries the selection boundary, so it stays perceivable in every combination: the wash sits one step lighter than the `hover` fill, and hovering a selected item shows the hover wash while the ink keeps marking the selection.
 
 <TokenTable
   tokens={[
@@ -289,7 +289,7 @@ Selection tells users which item has already been chosen. Not every selection lo
       name: 'selected',
       value: 'charcoal-100',
       useFor:
-        'Quiet selection wash for list items (SelectList, ListBox, Sidebar), paired with the inset-shadow-selection ink stroke',
+        'Quiet selection wash for list items (SelectList, ListBox, Sidebar), paired with one ink mark: the row indicator in option lists, the inset-shadow-selection stroke in navigation',
     },
     {
       name: 'selected-bold',
@@ -310,10 +310,16 @@ Selection tells users which item has already been chosen. Not every selection lo
 <div className="bg-selected-bold text-selected-bold-foreground" />
 ```
 
-**List selection** (SelectList, ListBox, Sidebar) uses the quiet wash plus the ink stroke:
+**List selection** (SelectList, ListBox) uses the quiet wash; the row's indicator is the ink:
 
 ```tsx
-<div className="selected:bg-selected selected:inset-shadow-selection" />
+<div className="selected:bg-selected" /> // + checkbox / radio / check indicator
+```
+
+**Navigation** (Sidebar), where rows have no indicator, marks the current item with the stroke:
+
+```tsx
+<a className="data-active:bg-selected data-active:inset-shadow-selection" />
 ```
 
 <GuidelineTiles>
