@@ -9,16 +9,16 @@ interface YearDropdownProps {
 
 const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
   const state = useCalendarOrRangeState();
-  const focused = state.focusedDate.year;
+  const focusedYear = state.focusedDate.year;
 
   // `CalendarYearPicker` centers a fixed `visibleYears` window on the focused
   // year and clamps it to the bounds, so size the window to reach whichever
   // bound is farther. Unbounded sides keep the focused-year ±20 window. A wide
   // both-bounds range still renders every in-range year, so virtualizing the
   // listbox is the path forward if the DOM size ever becomes a concern.
-  const min = state.minValue ? state.minValue.year : focused - 20;
-  const max = state.maxValue ? state.maxValue.year : focused + 20;
-  const visibleYears = 2 * Math.max(focused - min, max - focused) + 1;
+  const min = state.minValue ? state.minValue.year : focusedYear - 20;
+  const max = state.maxValue ? state.maxValue.year : focusedYear + 20;
+  const visibleYears = 2 * Math.max(focusedYear - min, max - focusedYear) + 1;
 
   return (
     <CalendarYearPicker visibleYears={visibleYears}>
