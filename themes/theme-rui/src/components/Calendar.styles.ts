@@ -67,10 +67,12 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   select: cva({
     base: [
       '[&svg]:text-secondary',
-      'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-border bg-surface text-sm text-foreground transition-shadow',
+      // Match the secondary Button surface: muted gloss + hairline ring + border elevation.
+      'ui-surface-muted shadow-elevation-border',
+      'flex w-full px-3 py-2 rounded-lg text-sm text-foreground',
       'focus-visible:ui-state-focus outline-none',
       'h-control',
-      'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
+      'disabled:ui-state-disabled',
       'cursor-pointer',
     ],
   }),
