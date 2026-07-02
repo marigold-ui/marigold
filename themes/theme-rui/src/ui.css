@@ -88,7 +88,11 @@
   @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
-  @apply ring-1 ring-[oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h)];
+  /* Read --ui-border-color first (falling back to the derived dark edge) so state
+     overrides — disabled, focus, error — recolor the ring here exactly as they do
+     on a plain ui-surface. Without this the contrast ring ignored those states and
+     kept a dark outline (e.g. a disabled contrast surface). */
+  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h))];
   @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
 
   /* prettier-ignore */
