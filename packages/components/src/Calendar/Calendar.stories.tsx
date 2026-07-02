@@ -248,6 +248,34 @@ Basic.test(
   }
 );
 
+// A wide bounded range must reach both ends. `CalendarYearPicker` centers a
+// fixed window on the focused year and clamps it, so `visibleYears` has to be
+// large enough to span the whole range, not just a handful of years.
+Basic.test(
+  'Reaches both ends of a wide bounded year range',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    tags: ['component-test'],
+    args: {
+      minValue: new CalendarDate(1900, 1, 1),
+      maxValue: new CalendarDate(2100, 12, 31),
+      defaultValue: new CalendarDate(2000, 6, 15),
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '2000' }));
+
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    await expect(years[0]).toBe('1900');
+    await expect(years[years.length - 1]).toBe('2100');
+    await expect(canvas.queryByText('1899')).not.toBeInTheDocument();
+    await expect(canvas.queryByText('2101')).not.toBeInTheDocument();
+  }
+);
+
 // Switching from a Feb 29 focus to a non-leap year must clamp to Feb 28.
 Basic.test(
   'Selecting a non-leap year from a Feb 29 focus resolves cleanly',
