@@ -91,8 +91,62 @@ export const Surface = meta.story({
           contrast / overlay
         </Base>
       </Inline>
-      <Headline level="3">Selected &amp; Hover Fills</Headline>
+      <Headline level="3">Muted Surface</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        <code>ui-surface-muted</code> is the neutral secondary-button /
+        menu-trigger surface — a muted gloss over the same hairline ring. It
+        brightens a step on hover (<code>ui-state-hover-muted</code>) and, when
+        held open, keeps the resting fill but firms its hairline to{' '}
+        <code>--color-surface-border-hover</code> (the <code>expanded</code>{' '}
+        look) so a hovered trigger and an open one stay distinct.{' '}
+        <code>ui-surface-destructive</code> is the contrast surface retinted to
+        the bold destructive color.
+      </p>
       <Inline space="regular">
+        <Base className="ui-surface-muted shadow-elevation-border">muted</Base>
+        <Base className="ui-surface-muted shadow-elevation-border ui-state-hover-muted">
+          muted / hover
+        </Base>
+        <Base className="ui-surface-muted shadow-elevation-border [--ui-border-color:var(--color-surface-border-hover)]">
+          muted / expanded
+        </Base>
+        <Base className="ui-surface-destructive shadow-elevation-border">
+          destructive
+        </Base>
+      </Inline>
+      <Headline level="3">Hairline</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        The decorative surface ring: the translucent{' '}
+        <code>--color-surface-border</code> at rest, firmed to{' '}
+        <code>--color-surface-border-hover</code> when a neutral control is
+        hovered or open. Both are translucent, so they composite over whatever
+        ground the surface sits on rather than painting a fixed gray.
+      </p>
+      <Inline space="regular">
+        <Base className="ui-surface">hairline</Base>
+        <Base className="ui-surface [--ui-border-color:var(--color-surface-border-hover)]">
+          hairline / hover
+        </Base>
+      </Inline>
+      <Headline level="3">Selected &amp; Hover Fills</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        Item fills painted on rows inside a surface — flat background tokens,
+        not surfaces of their own. <code>bg-selected</code> and{' '}
+        <code>bg-hover</code> sit on the white surface;{' '}
+        <code>bg-focus-highlight</code> marks keyboard focus inside menus;{' '}
+        <code>ui-state-hover-ghost</code> (<code>bg-current/10</code>) tints
+        toward the current text color so a ghost item blends into any ground.
+        The two boxes on the right push a selected / hover fill onto a whole
+        raised surface via <code>--ui-background-color</code>.
+      </p>
+      <Inline space="regular">
+        <div className="ui-surface shadow-elevation-border flex w-40 flex-col overflow-hidden text-sm">
+          <div className="px-3 py-2">resting</div>
+          <div className="bg-hover px-3 py-2">hover</div>
+          <div className="bg-selected px-3 py-2">selected</div>
+          <div className="bg-focus-highlight px-3 py-2">focus</div>
+          <div className="bg-current/10 px-3 py-2">ghost</div>
+        </div>
         <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-border)]">
           raised / selected
         </Base>
