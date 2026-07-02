@@ -124,71 +124,73 @@ export const ShellLayout = ({
 
   return (
     <RouterProvider navigate={href => router.push(href)}>
-      <AppShell defaultSidebarOpen>
-        <Sidebar>
-          <Sidebar.Header>
-            <Inline space="related" alignY="center" noWrap>
-              <Logo className="size-8 shrink-0" />
-              <Text weight="bold" fontSize="lg">
-                Examples
-              </Text>
-            </Inline>
-          </Sidebar.Header>
-          <Sidebar.Nav current={pathname}>
-            {config.sections.map((section, i) => [
-              ...(i > 0
-                ? [<Sidebar.Separator key={`sep-${section.label}`} />]
-                : []),
-              <Sidebar.GroupLabel key={`label-${section.label}`}>
-                {section.label}
-              </Sidebar.GroupLabel>,
-              ...renderNav(section.items, config.base),
-            ])}
-          </Sidebar.Nav>
-          <Sidebar.Footer>
-            <Stack space="related" alignX="left">
-              <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
-                <ArrowLeft />
-                {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
-              </LinkButton>
-              <LinkButton href="/getting-started/get-in-touch" variant="ghost">
-                <LifeBuoy />
-                Get in touch
-              </LinkButton>
-            </Stack>
-          </Sidebar.Footer>
-        </Sidebar>
-        <TopNavigation>
-          <TopNavigation.Start>
-            <Sidebar.Toggle />
-          </TopNavigation.Start>
-          <TopNavigation.Middle>
-            <Breadcrumbs>
-              <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
-              {ancestors.map(label => (
-                <Breadcrumbs.Item key={label} href="#">
-                  {label}
-                </Breadcrumbs.Item>
-              ))}
-              {leaf && (
-                // On a drill-in the leaf becomes a real link back to the list.
-                <Breadcrumbs.Item href={trailing.length ? leafHref : '#'}>
-                  {leaf.label}
-                </Breadcrumbs.Item>
-              )}
-              {trailing.map(segment => (
-                <Breadcrumbs.Item key={segment} href="#">
-                  {config.resolveLabel?.(segment) ?? segment}
-                </Breadcrumbs.Item>
-              ))}
-            </Breadcrumbs>
-          </TopNavigation.Middle>
-          <TopNavigation.End>
-            <UserSection />
-          </TopNavigation.End>
-        </TopNavigation>
-        {children}
-      </AppShell>
+      <Sidebar.Provider defaultOpen>
+        <AppShell>
+          <Sidebar>
+            <Sidebar.Header>
+              <Inline space="related" alignY="center" noWrap>
+                <Logo className="size-8 shrink-0" />
+                <Text weight="bold" fontSize="lg">
+                  Examples
+                </Text>
+              </Inline>
+            </Sidebar.Header>
+            <Sidebar.Nav current={pathname}>
+              {config.sections.map(section => [
+                <Sidebar.GroupLabel key={`label-${section.label}`}>
+                  {section.label}
+                </Sidebar.GroupLabel>,
+                ...renderNav(section.items, config.base),
+              ])}
+            </Sidebar.Nav>
+            <Sidebar.Footer>
+              <Stack space="related" alignX="left">
+                <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
+                  <ArrowLeft />
+                  {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
+                </LinkButton>
+                <LinkButton
+                  href="/getting-started/get-in-touch"
+                  variant="ghost"
+                >
+                  <LifeBuoy />
+                  Get in touch
+                </LinkButton>
+              </Stack>
+            </Sidebar.Footer>
+          </Sidebar>
+          <TopNavigation>
+            <TopNavigation.Start>
+              <Sidebar.Toggle />
+            </TopNavigation.Start>
+            <TopNavigation.Middle>
+              <Breadcrumbs>
+                <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+                {ancestors.map(label => (
+                  <Breadcrumbs.Item key={label} href="#">
+                    {label}
+                  </Breadcrumbs.Item>
+                ))}
+                {leaf && (
+                  // On a drill-in the leaf becomes a real link back to the list.
+                  <Breadcrumbs.Item href={trailing.length ? leafHref : '#'}>
+                    {leaf.label}
+                  </Breadcrumbs.Item>
+                )}
+                {trailing.map(segment => (
+                  <Breadcrumbs.Item key={segment} href="#">
+                    {config.resolveLabel?.(segment) ?? segment}
+                  </Breadcrumbs.Item>
+                ))}
+              </Breadcrumbs>
+            </TopNavigation.Middle>
+            <TopNavigation.End>
+              <UserSection />
+            </TopNavigation.End>
+          </TopNavigation>
+          {children}
+        </AppShell>
+      </Sidebar.Provider>
     </RouterProvider>
   );
 };

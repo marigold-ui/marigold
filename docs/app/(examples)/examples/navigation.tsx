@@ -20,7 +20,6 @@ const layout: NavSection = {
           label: 'Analytics',
           ...appShellDocs,
         },
-        { kind: 'Separator' },
         {
           kind: 'Item',
           label: 'Management',
