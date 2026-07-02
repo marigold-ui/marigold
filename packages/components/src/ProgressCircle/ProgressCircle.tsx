@@ -23,10 +23,28 @@ export const ProgressCircleSvg = ({
     size,
   });
 
+  // `size` may be a named token whose rendered dimensions come from the theme
+  // classes above. The <SVG> element still needs a numeric intrinsic size for
+  // its `width`/`height` attributes and the stroke math — passing a token
+  // straight through renders an invalid `width="<token>px"` attribute (e.g.
+  // `defaultpx`). Resolve named tokens to the pixel dimension of their theme
+  // `size-*` class so the stroke stays proportionate to the rendered circle;
+  // `fit` is content-sized and has no intrinsic dimension, so it (and any other
+  // non-numeric token) falls back to the <SVG> default of 24.
+  const NAMED_SIZE_DIMENSIONS: Record<string, number> = {
+    default: 80, // size-20
+    large: 144, // size-36
+  };
+
+  const numericSize = Number.parseFloat(String(size));
+  const svgSize = Number.isNaN(numericSize)
+    ? (NAMED_SIZE_DIMENSIONS[size as string] ?? 24)
+    : numericSize;
+
   let strokeWidth = 3;
-  if (size <= '24') {
+  if (svgSize <= 24) {
     strokeWidth = 2;
-  } else if (size >= '32') {
+  } else if (svgSize >= 32) {
     strokeWidth = 4;
   }
 
@@ -38,7 +56,7 @@ export const ProgressCircleSvg = ({
         'animate-rotate-spinner origin-center fill-none',
         classNames.loader
       )}
-      size={size}
+      size={svgSize}
       aria-hidden="true"
       role="img"
     >
