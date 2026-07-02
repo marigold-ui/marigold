@@ -90,7 +90,27 @@
      plus this quiet wash where a fill helps. The wash sits one step LIGHTER
      than hover so the two states never compete on the lightness axis:
      hovering a selected item shows the hover wash while the ink mark keeps
-     carrying the selection. */
+     carrying the selection.
+
+     KNOWN ISSUE — selected wash is lighter than hover (DST-1590):
+     https://reservix.atlassian.net/browse/DST-1590
+     This inverts the common convention that a committed row reads heavier than
+     one the cursor merely floats over, so a hovered unselected row can look
+     more prominent than a selected one when the indicator is out of view. We
+     keep it deliberately: the indicator (not the wash) carries the selection
+     boundary and its WCAG 1.4.11 contrast, and our light monochrome scale has
+     no room to make selected darker without breaking things. Going one step
+     darker (charcoal-300) drops secondary description text on selected rows to
+     3.6:1 — below the 4.5:1 AA minimum — and hover-on-selected (charcoal-400)
+     to 2.4:1; only white/50/100 comfortably host secondary text (200 is a
+     marginal 4.35:1). To make selected genuinely darker than hover, pick one:
+       1. Promote the description text on selected rows (charcoal-600 ->
+          charcoal-800+) so a darker fill stays AA — the Carbon/Fluent pattern.
+       2. Move selection off the lightness axis onto a hue tint (e.g. --color-
+          info), so hover (gray) and selected (tinted) never compete — costs a
+          hue the monochrome theme currently avoids.
+       3. Keep the wash quiet and lean harder on the indicator + a typographic
+          weight bump on selected labels (Ant/Apple), leaving fills as-is. */
   --color-selected: var(--color-charcoal-100);
   --color-selected-bold: var(--color-charcoal-900);
   --color-selected-bold-foreground: var(--color-charcoal-50);
