@@ -92,9 +92,9 @@ test('renders loader with loaderType circle', () => {
     <svg
       aria-hidden="true"
       class="flex-none animate-rotate-spinner origin-center fill-none size-20"
-      height="defaultpx"
+      height="80px"
       role="img"
-      width="defaultpx"
+      width="80px"
     >
       <circle
         class="stroke-transparent"

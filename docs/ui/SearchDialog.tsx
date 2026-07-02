@@ -16,7 +16,7 @@ import {
   type SearchItemType,
   type SharedProps,
 } from 'fumadocs-ui/components/dialog/search';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, LayoutDashboard } from 'lucide-react';
 import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -29,24 +29,35 @@ export default function CustomSearchDialog(props: SharedProps) {
     if (search.length === 0) return [];
 
     const normalized = search.toLowerCase();
-    const matches = pages.filter(p =>
-      p.name.toLowerCase().includes(normalized)
+    const matches = pages.filter(
+      p =>
+        p.name.toLowerCase().includes(normalized) ||
+        // Let users surface every example app by typing "example(s)" (or any
+        // substring of it), since the page names themselves don't contain it.
+        (p.kind === 'example' && 'examples'.includes(normalized))
     );
 
-    return matches.map((match, i) => ({
-      id: `quick-action-${i}`,
-      type: 'action' as const,
-      node: (
-        <div className="text-fd-muted-foreground flex h-full items-center gap-2">
-          <ArrowRight className="size-4" />
-          <p>
-            Jump to{' '}
-            <span className="text-fd-foreground font-medium">{match.name}</span>
-          </p>
-        </div>
-      ),
-      onSelect: () => router.push(match.url),
-    }));
+    return matches.map((match, i) => {
+      const isExample = match.kind === 'example';
+      const Icon = isExample ? LayoutDashboard : ArrowRight;
+
+      return {
+        id: `quick-action-${i}`,
+        type: 'action' as const,
+        node: (
+          <div className="text-fd-muted-foreground flex h-full items-center gap-2">
+            <Icon className="size-4" />
+            <p>
+              {isExample ? 'Example:' : 'Jump to'}{' '}
+              <span className="text-fd-foreground font-medium">
+                {match.name}
+              </span>
+            </p>
+          </div>
+        ),
+        onSelect: () => router.push(match.url),
+      };
+    });
   }, [router, search, pages]);
 
   const items = useMemo(() => {

@@ -2,7 +2,6 @@
 
 import { venues } from '@/lib/data/venues';
 import {
-  Badge,
   Card,
   Columns,
   Description,
@@ -21,6 +20,31 @@ const stats = [
   { label: 'Avg. rating', value: '4.6', hint: 'across 1,200 reviews' },
   { label: 'Refund rate', value: '1.2%', hint: '-0.3pt vs last month' },
 ];
+
+// Tickets sold per venue for the reporting period, keyed by venue id. This is
+// the metric the "Top venues" ranking is built on — keying by id keeps the
+// ranking correct if the underlying dataset changes.
+const ticketsSoldByVenue: Record<string, number> = {
+  '1': 4120,
+  '2': 1860,
+  '3': 920,
+  '4': 5240,
+  '5': 2670,
+  '6': 3480,
+  '7': 1530,
+  '8': 2090,
+  '9': 760,
+  '10': 4480,
+};
+
+// Highest-grossing venues this period: attach the metric, rank by it, take the top 6.
+const topVenues = venues
+  .map(venue => ({
+    ...venue,
+    ticketsSold: ticketsSoldByVenue[venue.id] ?? 0,
+  }))
+  .sort((a, b) => b.ticketsSold - a.ticketsSold)
+  .slice(0, 6);
 
 const sources = [
   { id: 's1', source: 'Direct', sessions: '18,440', share: '38%' },
@@ -59,7 +83,9 @@ const AnalyticsPage = () => (
   <Page>
     <Page.Header>
       <Title>Analytics</Title>
-      <Description>Trends, breakdowns, and reports.</Description>
+      <Description>
+        Sessions, top venues, and traffic sources for June 2026.
+      </Description>
     </Page.Header>
 
     <Tiles stretch equalHeight tilesWidth="14rem" space="regular">
@@ -72,27 +98,25 @@ const AnalyticsPage = () => (
       <Panel>
         <Panel.Header>
           <Title>Top venues</Title>
-          <Description>Largest venues by capacity.</Description>
+          <Description>Ranked by tickets sold this month.</Description>
         </Panel.Header>
         <Panel.Content bleed>
-          <Table aria-label="Top venues">
+          <Table aria-label="Top venues by tickets sold">
             <Table.Header>
               <Table.Column rowHeader>Venue</Table.Column>
               <Table.Column>City</Table.Column>
-              <Table.Column alignX="right">Capacity</Table.Column>
+              <Table.Column alignX="right">Tickets sold</Table.Column>
               <Table.Column alignX="right">Rating</Table.Column>
             </Table.Header>
             <Table.Body>
-              {venues.slice(0, 6).map(venue => (
+              {topVenues.map(venue => (
                 <Table.Row key={venue.id}>
                   <Table.Cell>{venue.name}</Table.Cell>
                   <Table.Cell>{venue.city}</Table.Cell>
                   <Table.Cell alignX="right">
-                    {venue.capacity.toLocaleString()}
+                    {venue.ticketsSold.toLocaleString()}
                   </Table.Cell>
-                  <Table.Cell alignX="right">
-                    <Badge variant="info">{`★ ${venue.rating}`}</Badge>
-                  </Table.Cell>
+                  <Table.Cell alignX="right">{`★ ${venue.rating}`}</Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
