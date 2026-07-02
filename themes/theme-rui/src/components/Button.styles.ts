@@ -11,16 +11,21 @@ export const Button: ThemeComponent<'Button'> = cva({
     variant: {
       primary: [
         'ui-surface-contrast',
-        'hover:[--ui-background-color:oklch(from_var(--color-primary)_calc(l-0.15)_c_h)]',
+        'hover:[--ui-background-color:var(--color-primary-hover)]',
       ],
       secondary: [
-        'ui-surface shadow-elevation-border',
-        'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
-        'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
+        'ui-surface-muted shadow-elevation-border',
+        // Shared neutral-button hover: brighten the gloss + firm the hairline edge.
+        'hover:ui-state-hover-muted',
+        // expanded (menu open) keeps the resting muted fill and only firms the edge, so a
+        // hovered trigger (brightens) and an open one (firm edge) stay distinguishable.
+        'expanded:[--ui-border-color:var(--color-surface-border-hover)]',
       ],
       ghost: 'hover:ui-state-hover-ghost',
-      destructive:
-        'bg-destructive-bold text-destructive-bold-foreground hover:bg-destructive-bold/70',
+      destructive: [
+        'ui-surface-destructive',
+        'hover:[--ui-background-color:var(--color-destructive-bold-hover)]',
+      ],
       'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',
       link: 'text-link ui-touch-hitbox',
     },

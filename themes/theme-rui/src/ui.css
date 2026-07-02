@@ -18,6 +18,10 @@
   @apply h-control w-full min-w-0;
   @apply px-3 py-2;
   @apply text-foreground placeholder:text-placeholder text-sm;
+  /* A form field needs a clearly visible boundary, so its ui-surface ring uses
+     the opaque `border` (matching Checkbox/Radio). Focus and error still
+     override the ring color per state. */
+  --ui-border-color: var(--color-border);
 }
 
 /* ========================= */
@@ -44,63 +48,88 @@
 }
 
 /*
- * Use for interactive UI elements like inputs, selects, and cards. Anything that
- * sits on the page background and needs a clear visual boundary.
+ * Surfaces that sit on the page background and need a clear boundary:
+ * inputs, selects, cards, panels.
  *
- * `background` is intentionally excluded from the transition list: hover/state
- * bg flips should feel instant on high-frequency interactions (see DST-1436).
+ * The boundary is a 1px outset `ring` routed through `--tw-ring-shadow`, so it
+ * composes into the same `box-shadow` chain as `shadow-elevation-*`. Outset (not
+ * inset) so it paints above child content — a child that bleeds edge-to-edge
+ * (e.g. a Table in `Panel.Content bleed`) cannot cover it. Resting color is the
+ * translucent, decorative `--color-surface-border` rim; functional boundaries
+ * (form controls) and state overrides set `--ui-border-color` to an opaque color
+ * (`--color-border`, focus, error).
+ *
+ * `background` is excluded from the transition so hover/state bg flips feel
+ * instant on high-frequency interactions (DST-1436).
  */
 @utility ui-surface {
-  @apply rounded-surface relative transition-[border,box-shadow];
-
-  /* prettier-ignore */
-  background:
-      linear-gradient(
-        to bottom,
-        var(--ui-background-color, var(--color-surface)),
-        var(--ui-background-color, var(--color-surface))
-      ),
-      linear-gradient(
-        to bottom,
-        var(--ui-border-color, var(--color-border)),
-        oklch(from var(--ui-border-color, var(--color-border)) calc(l - 0.1) c h)
-      );
-
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  border: 1px solid transparent;
+  @apply rounded-surface relative transition-[box-shadow];
+  background: var(--ui-background-color, var(--color-surface));
+  @apply ring-1 ring-[var(--ui-border-color,var(--color-surface-border))];
 }
 
 /*
- * Use when the surface must stand out against the page. Toolbars, action bars,
- * or anything that uses the primary color to signal prominence.
+ * Prominent dark surface: primary buttons, toolbars, action bars. Mirrors
+ * ui-surface — a 1px ring plus the fill — but inverted in value: the edge is a
+ * darker shade of the fill (a crisp dark hairline, no light rim). The light
+ * lives on the face: a soft glow pooled at the top that fades before it reaches
+ * the edges, plus a soft, blurred highlight along the top edge (an inset shadow,
+ * tinted and at low alpha so it reads as a catch of light, not a bright rim).
  *
- * `background` is intentionally excluded from the transition list: hover/state
- * bg flips should feel instant on high-frequency interactions (see DST-1436).
+ * Every layer derives from `--ui-background-color` (falling back to the primary
+ * color), so overriding that one token retints the whole surface — that is how
+ * `ui-surface-destructive` reuses this in red and how the hover bg-flip darkens
+ * the edge and glow together.
+ *
+ * `background` is excluded from the transition so hover/state bg flips feel
+ * instant on high-frequency interactions (DST-1436).
  */
 @utility ui-surface-contrast {
-  @apply rounded-surface relative transition-[border,box-shadow];
+  @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
-  @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-primary)_calc(l+0.4)_c_h))];
+  /* Read --ui-border-color first (falling back to the derived dark edge) so state
+     overrides — disabled, focus, error — recolor the ring here exactly as they do
+     on a plain ui-surface. Without this the contrast ring ignored those states and
+     kept a dark outline (e.g. a disabled contrast surface). */
+  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h))];
+  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
 
   /* prettier-ignore */
   background:
-      radial-gradient(ellipse 120% 60% at 50% -25%, var(--ui-highlight-color, oklch(from var(--color-primary) calc(l + 0.4) c h)), transparent 90%),
+      radial-gradient(ellipse 72% 70% at 50% -12%, var(--ui-highlight-color, oklch(from var(--ui-background-color, var(--color-primary)) calc(l + var(--contrast-glow-l)) c h / var(--contrast-glow-a))), transparent 72%),
       linear-gradient(
         to bottom,
-        var(--ui-background-color, var(--color-primary)),
-        var(--ui-background-color, var(--color-primary))
-      ),
-      linear-gradient(
-        to bottom,
-        oklch(from var(--ui-border-color, var(--color-primary)) calc(l + 0.2) c h),
-        oklch(from var(--ui-border-color, var(--color-primary)) calc(l + 0.15) c h)
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l + var(--contrast-fill-top-l)) c h),
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l - var(--contrast-fill-bottom-l)) c h)
       );
+}
 
-  background-clip: padding-box, padding-box, border-box;
-  background-origin: padding-box, padding-box, border-box;
-  border: 1px solid transparent;
+/*
+ * Destructive sibling of ui-surface-contrast: the identical dark-lift treatment
+ * (ring, glow, top highlight, gradient) retinted to the bold destructive color.
+ * Because the contrast surface reads everything off --ui-background-color, this
+ * only swaps that token and the matching foreground.
+ */
+@utility ui-surface-destructive {
+  @apply ui-surface-contrast text-destructive-bold-foreground;
+  --ui-background-color: var(--color-destructive-bold);
+}
+
+/*
+ * Quiet counterpart to ui-surface-contrast for neutral, medium-emphasis
+ * controls (the default/secondary Button). Where contrast is the loud surface,
+ * this is the muted one. Builds on ui-surface — white fill, hairline ring,
+ * box-shadow chain — and adds the same top-lit gesture inverted for a light
+ * face: a faint top-down gradient plus a 1px white gloss on the top edge, so
+ * the surface reads as gently raised without going dark. The gradient starts a
+ * hair off-white (`--color-muted`) so the white gloss stays visible.
+ */
+@utility ui-surface-muted {
+  @apply ui-surface;
+  /* prettier-ignore */
+  background: linear-gradient(to bottom, var(--color-muted), var(--color-charcoal-100));
+  @apply inset-shadow-[0_1px_0_0_var(--color-white)];
 }
 
 /* ========================= */
@@ -120,9 +149,14 @@
 * Applies a consistent visual style for invalid elements.
 */
 @utility ui-state-error {
-  /* Overrides the transparent border. Gradient would get too dark. */
-  @apply border-destructive-accent shadow-destructive-accent/20;
-  @apply focus:border-destructive-accent focus:outline-destructive-accent/20;
+  /* Recolors the ui-surface ring via --ui-border-color. The focus: re-assert is a
+     specificity bump, not a duplicate: it compiles to a compound
+     `[data-invalid][data-focused]` selector that outranks ui-state-focus's
+     `[data-focused]`, so a focused-invalid field stays destructive by specificity,
+     not source order. Don't remove it. */
+  --ui-border-color: var(--color-destructive-accent);
+  @apply shadow-destructive-accent/20;
+  @apply focus:outline-destructive-accent/20 focus:[--ui-border-color:var(--color-destructive-accent)];
 }
 
 /*
@@ -132,7 +166,16 @@
   @apply text-disabled cursor-not-allowed;
   background: var(--color-disabled-surface);
   background-clip: border-box;
-  box-shadow: none;
+  /* Dim the boundary rather than remove it: a borderless input reads as broken,
+     but a dark ring is too assertive for a disabled control. Recolor the ui-surface
+     ring to the light disabled-border so the surface stays a flat fill with a soft,
+     receding edge. Overrides the `ui-input` base color by variant specificity. */
+  --ui-border-color: var(--color-disabled-border);
+  /* No top highlight when disabled: the inset gloss/sheen of ui-surface-muted and
+     ui-surface-contrast would otherwise sit on the flat disabled fill. Zeroing the
+     `--tw-inset-shadow` var is reliable where a raw `box-shadow: none` lost the
+     cascade to the surface utilities' own composite box-shadow. */
+  @apply inset-shadow-none;
 }
 
 /*
@@ -149,6 +192,20 @@
  */
 @utility ui-state-hover-ghost {
   @apply bg-current/10;
+}
+
+/*
+ * Hover for neutral/secondary buttons (Button secondary, Menu trigger,
+ * ToggleButton): brighten the muted gloss a step (white -> charcoal-50) and firm
+ * the hairline edge (0.1 -> 0.2 alpha), so the surface lifts instead of
+ * flattening. ui-surface-muted hardcodes its fill via `background`, so this
+ * overrides `background` directly rather than a token.
+ */
+@utility ui-state-hover-muted {
+  /* prettier-ignore */
+  background: linear-gradient(to bottom, var(--color-white), var(--color-charcoal-50));
+  --ui-border-color: var(--color-surface-border-hover);
+  @apply text-foreground;
 }
 
 /*
@@ -176,7 +233,6 @@
   @apply inline-flex items-center justify-center;
   @apply rounded-surface font-medium whitespace-nowrap transition-[color,box-shadow,transform];
   @apply ui-interactive;
-  @apply border border-transparent;
 
   & svg {
     pointer-events: none;

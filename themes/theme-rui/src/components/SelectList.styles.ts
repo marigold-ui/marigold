@@ -13,7 +13,13 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        default: 'ui-surface shadow-elevation-border',
+        // A default SelectList is a form control (you pick values), so it
+        // wears the input frame — the opaque, functional --color-border — not
+        // the decorative surface hairline that Cards/Panels use. Set through
+        // the same --ui-border-color contract as ui-input, so a state that
+        // recolors the frame composes here exactly as it does on an input.
+        default:
+          'ui-surface shadow-elevation-border [--ui-border-color:var(--color-border)]',
         bordered: '',
       },
     },
@@ -68,9 +74,20 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       variant: {
         default: [
           'min-h-14',
-          'selected:bg-selected hover:ui-state-hover',
+          // Ink & wash: hover is the lighter wash; a selected row sits one step
+          // darker (bg-selected) with its own indicator (checkbox/radio/check)
+          // as the one opaque ink mark. The compound selected:hover rule
+          // outranks both single-state rules by specificity, so hovering a
+          // selected row deterministically swaps to the hover wash while the
+          // indicator keeps carrying the selection.
+          'hover:ui-state-hover selected:bg-selected selected:hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
+          // Dividers are opaque functional --color-border, matching Table's
+          // grid lines and the token rule that dividers/grid lines are
+          // functional edges. Opaque and darker than every wash, so they stay
+          // crisp against rest, hover, and the selected fill alike — the
+          // structure never dissolves into a state fill, in any state.
           'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-border',
           'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-border',
           // Container-query flip: in narrow containers, swap horizontal

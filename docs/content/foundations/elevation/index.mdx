@@ -75,6 +75,8 @@ This diagram shows how the three shadow tiers layer in a typical form layout. Th
 
 The subtlest shadow tier. Border elevation gives small interactive controls a slight lift, defining their edges against the surface they sit on. These elements combine `ui-surface` with `shadow-elevation-border`.
 
+The edge itself comes from `ui-surface`, which draws a 1px rim in the `surface-border` token (a translucent, decorative hairline) as part of the same shadow chain. Functional edges (form controls) override that rim with the opaque `border` token; see [Token Overview](/foundations/token-overview#surfaces).
+
 Because border elevation produces only a subtle shadow, these controls need a raised surface behind them to be clearly visible. Placing an input directly on the page background (`bg-background`) makes its edges nearly indistinguishable from the surrounding area. A Card or similar raised container provides the contrast that border-elevated controls rely on.
 
 <ComponentDemo name="elevation-border" />

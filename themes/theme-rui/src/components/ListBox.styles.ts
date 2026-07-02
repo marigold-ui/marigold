@@ -4,14 +4,11 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva({
     base: [
       'flex ui-surface',
-      // Standalone
-      'not-group-data-trigger/popover:',
-      // In a Popover
-      'group-data-trigger/popover:shadow-elevation-overlay',
-      'group-data-trigger/popover:w-full',
-      'group-data-trigger/popover:overflow-hidden',
-      // In a Tray
-      'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
+      // In a Popover or Tray the container paints the surface; the list drops
+      // its own border + elevation and just fills the frame. Standalone keeps
+      // the ui-surface border.
+      'group-data-trigger/popover:ring-0 group-data-trigger/popover:shadow-none group-data-trigger/popover:w-full',
+      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:shadow-none',
     ],
   }),
   list: cva({
@@ -25,8 +22,12 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     base: [
       'relative grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-foreground max-sm:min-h-11',
       '[&_.selection-indicator>svg]:invisible [&_.selection-indicator>svg]:block',
+      // Ink & wash: a selected option sits one step darker than hover
+      // (bg-selected) with the check as its one opaque ink mark. The compound
+      // selected:hover rule wins by specificity, so a hovered selected option
+      // swaps to the hover wash while the check keeps marking the selection.
       'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
-      'hover:ui-state-hover',
+      'hover:ui-state-hover selected:hover:ui-state-hover',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
       'cursor-default data-selection-mode:cursor-pointer',

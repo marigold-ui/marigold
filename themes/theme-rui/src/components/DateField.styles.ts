@@ -4,11 +4,15 @@ export const DateField: ThemeComponent<'DateField'> = {
   field: cva({
     base: [
       'ui-surface shadow-elevation-border h-control',
+      // The ring lives on this wrapper, but ui-input (which sets the opaque
+      // form-control border) is on the inner segment input. --ui-border-color
+      // does not inherit, so set it here to match Input/Select/TextArea.
+      '[--ui-border-color:var(--color-border)]',
       'flex items-center',
       'disabled:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',
       'has-focus:ui-state-focus',
-      'has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive)]',
+      'has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)]',
     ],
   }),
   input: cva({ base: ['ui-input', 'cursor-text'] }),

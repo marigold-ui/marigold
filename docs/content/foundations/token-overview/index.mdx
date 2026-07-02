@@ -172,6 +172,8 @@ The primary token represents the strongest visual weight in the interface. It is
 
 The page is gray (`bg-background`), component panels are lighter (`bg-surface`). This contrast creates natural visual hierarchy without relying solely on shadows and borders.
 
+Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`, a translucent decorative hairline applied through the `ui-surface` utility rather than a standalone border. See [Elevation](/foundations/elevation) for how it combines with the shadow tiers.
+
 <TokenTable
   tokens={[
     {
@@ -179,11 +181,17 @@ The page is gray (`bg-background`), component panels are lighter (`bg-surface`).
       value: 'white',
       useFor: 'White component backgrounds (cards, panels, inputs, tables)',
     },
+    {
+      name: 'surface-border',
+      value: 'charcoal-950 / 10%',
+      useFor:
+        'Decorative rim of a raised surface (Card, Panel, Dialog, Menu), applied via ui-surface. Sits below the contrast threshold, so never for an edge that must be seen',
+    },
   ]}
 />
 
 ```tsx
-<div className="bg-surface border-border rounded-surface shadow-elevation-raised">
+<div className="ui-surface shadow-elevation-raised">
   Content on a white surface
 </div>
 ```
@@ -248,10 +256,11 @@ Most form controls sit on a white surface and use borders to define their shape:
 ```
 
 <Callout title="Not a default for all controls">
-  Most form controls use `bg-surface` (white) with a `border-border` outline.
-  Only reach for `bg-control` when a control communicates its state through a
-  filled background rather than a border, like switch tracks, slider tracks, and
-  similar "trough" elements.
+  Most form controls sit on `bg-surface` (white) and define their shape with a
+  border: the `ui-surface` ring for inputs and selects, `border-border` for
+  checkboxes and radios. Only reach for `bg-control` when a control communicates
+  its state through a filled background rather than a border, like switch
+  tracks, slider tracks, and similar "trough" elements.
 </Callout>
 
 <GuidelineTiles>
@@ -264,21 +273,32 @@ Most form controls sit on a white surface and use borders to define their shape:
   <Dont>
     <DontDescription>
       Don't use `bg-control` for bordered form controls like text inputs,
-      selects, or textareas. Those should use `bg-surface` with `border-border`.
+      selects, or textareas. Those should use `bg-surface` with the `ui-surface`
+      ring.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
 ### Selected
 
-Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components like ListBox and Sidebar highlight one item among many, so they use a subtler `bg-selected` tint.
+Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components follow a "one ink mark" rule: a selected item pairs the `bg-selected` wash with exactly one opaque mark. In option lists (SelectList, ListBox) that mark is the row's own indicator, the checkbox, radio, or check icon. In navigation (Sidebar), where rows carry no indicator, the current item takes the `inset-shadow-selection` stroke on its leading edge instead. The ink mark, not the wash, carries the selection boundary and its WCAG 1.4.11 contrast. The wash sits one step darker than the `hover` fill, so a committed row reads heavier than one the cursor merely floats over.
+
+<Callout title="Known issue: secondary text on the selected wash (DST-1590)">
+  Because `bg-selected` is `charcoal-300`, secondary description text
+  (`text-secondary`, `charcoal-600`) on a selected row lands at 3.6:1 — below
+  the 4.5:1 AA minimum. Selection is carried by the indicator, so the failure is
+  limited to the description subtext; the fix (render selected-row descriptions
+  in `text-foreground`, or move the fill onto an alpha ramp) is tracked in
+  [DST-1590](https://reservix.atlassian.net/browse/DST-1590).
+</Callout>
 
 <TokenTable
   tokens={[
     {
       name: 'selected',
       value: 'charcoal-300',
-      useFor: 'Selection highlight for list items (ListBox, Sidebar)',
+      useFor:
+        'Selection wash for list items (SelectList, ListBox, Sidebar) — one step darker than hover — paired with one ink mark: the row indicator in option lists, the inset-shadow-selection stroke in navigation',
     },
     {
       name: 'selected-bold',
@@ -299,10 +319,16 @@ Selection tells users which item has already been chosen. Not every selection lo
 <div className="bg-selected-bold text-selected-bold-foreground" />
 ```
 
-**List selection** (ListBox, Sidebar) uses the subtle highlight:
+**List selection** (SelectList, ListBox) uses the quiet wash; the row's indicator is the ink:
 
 ```tsx
-<div className="selected:bg-selected" />
+<div className="selected:bg-selected" /> // + checkbox / radio / check indicator
+```
+
+**Navigation** (Sidebar), where rows have no indicator, marks the current item with the stroke:
+
+```tsx
+<a className="data-active:bg-selected data-active:inset-shadow-selection" />
 ```
 
 <GuidelineTiles>
@@ -469,9 +495,9 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
   tokens={[
     {
       name: 'border',
-      value: 'charcoal-300',
+      value: 'charcoal-300 (darkened)',
       useFor:
-        'All borders: form controls, structural dividers, and surface containers',
+        'Functional edges: any boundary that carries meaning or is an affordance, so it must stay perceivable (WCAG 1.4.11). Covers form-control boundaries (Input, Select, TextArea, Checkbox, Radio) and opaque lines on a known surface (dividers, table row and grid lines)',
     },
     {
       name: 'ring',
@@ -480,6 +506,16 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
     },
   ]}
 />
+
+<Callout title="Two border tokens: pick by the job">
+  Use `border` for **functional** edges. It is opaque and stays perceivable
+  (WCAG 1.4.11), so it covers every form-control boundary and overlapping lines
+  like grid cells and dividers. Controls are surfaces, but their edge is an
+  affordance, so `ui-input` overrides the surface rim with `border` (Checkbox
+  and Radio use it directly). Use `surface-border` for the **decorative** rim of
+  a raised surface. Being translucent it sits below the contrast threshold, so
+  never use it where the edge has to be seen.
+</Callout>
 
 ### Status colors
 

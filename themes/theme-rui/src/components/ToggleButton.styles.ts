@@ -17,15 +17,22 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   button: cva({
     base: [
       'ui-button-base gap-2',
-      'ui-surface shadow-elevation-border',
+      // Neutral button: the secondary Button look (muted gloss surface).
+      'ui-surface-muted shadow-elevation-border',
+      // Flip on/off instantly; an animated box-shadow can't tween cleanly here.
+      'transition-none',
 
-      // States
-      'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
-      'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground selected:shadow-none',
-      'disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
+      // Hover: shared neutral-button hover (matches secondary Button + Menu trigger).
+      'hover:ui-state-hover-muted',
+      // On: sunken dark-gray surface (drop elevation, dark inner-top recess, visible dark edge).
+      'selected:[background:var(--color-toggle-selected)] selected:text-selected-bold-foreground',
+      'selected:shadow-none selected:[--ui-border-color:var(--color-toggle-selected-edge)]',
+      'selected:inset-shadow-[0_2px_3px_-1px_oklch(from_var(--color-charcoal-950)_l_c_h_/_0.5)]',
+      // Disabled comes from ui-button-base (disabled:ui-state-disabled), same as Button.
 
-      // Group: buttons share the group's outer surface and border
-      'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
+      // Group: segments share the group's surface + ring; a transparent right border
+      // draws the 1px divider (removed on the last). Border lives here, not ui-button-base.
+      'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-transparent in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
       'in-[.group]:disabled:border-r-border',
       'in-[.group]:focus-visible:z-10',
     ],

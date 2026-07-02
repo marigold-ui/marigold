@@ -3,10 +3,10 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva({
     base: [
-      'ui-surface shadow-elevation-overlay w-full',
+      // The surrounding Popover (or Tray) paints the overlay surface; the menu
+      // renders flat inside it.
+      'w-full',
       'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto',
-      // In a Tray
-      'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
     ],
   }),
   // Two-column grid: col 1 = optional icon, col 2 = label / description.
@@ -32,7 +32,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     },
   }),
   section: cva({
-    base: 'text-secondary p-2 text-xs font-medium border-t border-t-border in-first:border-t-0',
+    base: 'text-secondary p-2 text-xs font-medium border-t border-t-surface-border in-first:border-t-0',
   }),
   label: cva({ base: 'col-start-2 row-start-1' }),
   description: cva({
@@ -47,13 +47,16 @@ export const Menu: ThemeComponent<'Menu'> = {
     variants: {
       variant: {
         default: [
-          'ui-surface shadow-elevation-border',
-          'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
-          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled-surface)]',
-          'pending:[--ui-background-color:var(--color-disabled-surface)] pending:border-0 pending:shadow-none',
-          'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
+          // Neutral trigger = the secondary Button look: muted gloss surface,
+          // brighten-on-hover, soft hairline edge, soft "held" open state. Disabled
+          // /pending come from ui-button-base (disabled:ui-state-disabled), same as Button.
+          'ui-surface-muted shadow-elevation-border',
+          'hover:ui-state-hover-muted',
+          'expanded:[--ui-border-color:var(--color-surface-border-hover)]',
         ],
-        ghost: 'hover:ui-state-hover',
+        // Same translucent ghost hover as the Button ghost variant, so every
+        // ghost control blends into any ground the same way.
+        ghost: 'hover:ui-state-hover-ghost',
       },
       size: {
         default: 'text-sm',
