@@ -37,8 +37,10 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   //     for users who allow motion and jump instantly for those who don't; the
   //     component's `scrollTo` defers to it via `behavior: 'auto'`, so no JS
   //     media query is needed (matches Tabs' `tabsListScroll`).
+  //   - `overscroll-x-contain` keeps horizontal overscroll from triggering the
+  //     browser back/forward gesture at the track ends (matches Tabs).
   list: cva({
-    base: 'flex w-full items-center ui-scroll-mask-x py-1 -my-1 motion-safe:scroll-smooth',
+    base: 'flex w-full items-center ui-scroll-mask-x py-1 -my-1 overscroll-x-contain motion-safe:scroll-smooth',
     variants: {
       variant: {
         default: 'gap-0',

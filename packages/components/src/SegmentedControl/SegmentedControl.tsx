@@ -9,6 +9,7 @@ import {
 import { SelectionIndicator } from 'react-aria-components/SelectionIndicator';
 import { type WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { useWheelScrollX } from '../utils/useWheelScrollX';
 import { SegmentedControlContext } from './Context';
 
 // SegmentedControl
@@ -108,6 +109,8 @@ function SegmentedControlBase({
   // equally.
   const stretch = width === 'full';
   const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  useWheelScrollX(scrollRef);
 
   // Keep the selected option visible when the segments overflow and scroll.
   const scrollSelectedIntoView = useCallback((behavior: ScrollBehavior) => {
