@@ -66,12 +66,12 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   }),
   select: cva({
     base: [
-      '[&svg]:text-secondary',
-      // Match the secondary Button surface: muted gloss + hairline ring + border elevation.
-      'ui-surface-muted shadow-elevation-border',
-      'flex w-full px-3 py-2 rounded-lg text-sm text-foreground',
+      '[&_svg]:text-secondary',
+      // The month/year dropdown trigger IS the secondary Button — nothing bespoke:
+      // muted surface + the shared neutral-button hover, elevation, focus, disabled.
+      'ui-surface-muted shadow-elevation-border hover:ui-state-hover-muted',
+      'flex h-control w-full px-3 py-2 rounded-lg text-sm font-medium text-foreground',
       'focus-visible:ui-state-focus outline-none',
-      'h-control',
       'disabled:ui-state-disabled',
       'cursor-pointer',
     ],

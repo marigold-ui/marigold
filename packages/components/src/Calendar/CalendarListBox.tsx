@@ -25,11 +25,7 @@ export const CalendarListBox = ({
   return (
     <button
       onClick={() => !isDisabled && setSelectedDropdown(type)}
-      className={cn(
-        buttonStyles,
-        classNames.select,
-        classNames.calendarListboxButton
-      )}
+      className={cn(buttonStyles, classNames.select)}
       data-testid={type}
       disabled={isDisabled}
       aria-label={
