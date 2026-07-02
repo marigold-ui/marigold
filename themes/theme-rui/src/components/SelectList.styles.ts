@@ -74,12 +74,12 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       variant: {
         default: [
           'min-h-14',
-          // Ink & wash: hover is a gray wash; selection is the quiet wash
-          // while the row's own indicator (checkbox/radio/check) is the one
-          // opaque ink mark. The compound selected:hover rule outranks both
-          // single-state rules by specificity, so hovering a selected row
-          // deterministically shows the hover wash while the indicator keeps
-          // carrying the selection.
+          // Ink & wash: hover is the lighter wash; a selected row sits one step
+          // darker (bg-selected) with its own indicator (checkbox/radio/check)
+          // as the one opaque ink mark. The compound selected:hover rule
+          // outranks both single-state rules by specificity, so hovering a
+          // selected row deterministically swaps to the hover wash while the
+          // indicator keeps carrying the selection.
           'hover:ui-state-hover selected:bg-selected selected:hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',

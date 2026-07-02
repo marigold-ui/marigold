@@ -69,9 +69,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       'flex items-center gap-2 w-full px-2 h-9 text-sm rounded-md',
       'text-foreground/80 hover:ui-state-hover transition-[color]',
-      // Ink & wash: the active link takes the quiet selected wash plus the
-      // opaque ink stroke on its leading edge; hovering it shows the hover
-      // wash (compound rule wins by specificity) while the stroke stays.
+      // Ink & wash: the active link takes the selected wash plus the opaque
+      // ink stroke on its leading edge, and renders its label in text-foreground
+      // (not secondary) so it stays AA on the darker wash; hovering it swaps to
+      // the hover wash (compound rule wins by specificity) while the stroke stays.
       'data-active:bg-selected data-active:inset-shadow-selection data-active:text-foreground data-active:font-medium',
       'data-active:hover:ui-state-hover',
       'motion-reduce:transition-none',

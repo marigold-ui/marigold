@@ -20,13 +20,13 @@ const Base = ({
   </div>
 );
 
-// A boxed surface whose rows are split by the surface-border hairline — the same
-// token as the surface ring. Dividers stay that faint hairline in every state.
-// Ink & wash: hover is a gray wash (bg-hover); selection is the quiet selected
-// wash while the row's indicator (the check here, a checkbox/radio in real
-// components) is the one opaque ink mark. A hovered selected row shows the
-// hover wash while the indicator keeps carrying the selection — states live on
-// orthogonal channels, so they compose instead of colliding.
+// A boxed surface whose rows are split by the opaque functional border — the
+// same token as the SelectList frame and Table grid lines, so the structure
+// stays crisp against any state fill. Ink & wash: hover is the lighter wash
+// (bg-hover, charcoal-200); a selected row sits one step darker (bg-selected,
+// charcoal-300) with its indicator (the check here, a checkbox/radio in real
+// components) as the one opaque ink mark. Hovering a selected row swaps to the
+// hover wash while the indicator keeps carrying the selection.
 const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
 
 const ListSurface = ({
@@ -47,7 +47,7 @@ const ListSurface = ({
           data-selected={i === selectedIndex || undefined}
           className={cn(
             'flex items-center justify-between px-3 py-2',
-            'not-last:border-surface-border not-last:border-b',
+            'not-last:border-border not-last:border-b',
             i === selectedIndex && 'bg-selected',
             i === hoveredIndex && 'bg-hover'
           )}
@@ -129,14 +129,14 @@ export const Surface = meta.story({
       <Headline level="3">Selected &amp; Hover Fills</Headline>
       <p className="text-secondary max-w-prose text-sm">
         Item fills painted on rows inside a surface, following the ink &amp;
-        wash split: transient pointer states are gray washes, persistent
-        selection is the quiet <code>bg-selected</code> wash while the row's
-        indicator (checkbox, radio, check) is the one opaque ink mark. A hovered
-        selected row shows the hover wash under that indicator — the two states
-        never compete on lightness. In navigation, where rows carry no
-        indicator, the <code>inset-shadow-selection</code> stroke is the ink
-        instead (see Sidebar). <code>bg-focus-highlight</code> marks keyboard
-        focus inside menus; <code>ui-state-hover-ghost</code> (
+        wash split: <code>bg-hover</code> is the lighter wash; a selected row
+        sits one step darker (<code>bg-selected</code>) with its indicator
+        (checkbox, radio, check) as the one opaque ink mark, so a committed row
+        reads heavier than a hovered one. Hovering a selected row swaps to the
+        hover wash while the indicator keeps carrying selection. In navigation,
+        where rows carry no indicator, the <code>inset-shadow-selection</code>{' '}
+        stroke is the ink instead (see Sidebar). <code>bg-focus-highlight</code>{' '}
+        marks keyboard focus inside menus; <code>ui-state-hover-ghost</code> (
         <code>bg-current/10</code>) tints toward the current text color so a
         ghost item blends into any ground. The two boxes on the right push a
         selected / hover fill onto a whole raised surface via{' '}
@@ -165,11 +165,11 @@ export const Surface = meta.story({
       </Inline>
       <Headline level="3">Separators</Headline>
       <p className="text-secondary max-w-prose text-sm">
-        Separators between rows reuse the <code>surface-border</code> hairline
-        (the same token as the surface ring) in <em>every</em> state: the
-        selected wash is lighter than the hairline and the selection boundary is
-        carried by the row's inked indicator, so no divider needs to darken.
-        Hovering a selected row swaps the wash, not the indicator.
+        Separators between rows use the opaque functional <code>border</code>{' '}
+        (the SelectList frame and Table grid-line token) in <em>every</em>{' '}
+        state. Being opaque and darker than every wash, a divider stays crisp
+        against rest, hover, and the selected fill alike — so the structure
+        never dissolves into a state fill, and no divider needs a special case.
       </p>
       <Inline space="regular">
         <ListSurface label="separators" />

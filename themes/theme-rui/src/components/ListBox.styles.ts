@@ -22,10 +22,10 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     base: [
       'relative grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-foreground max-sm:min-h-11',
       '[&_.selection-indicator>svg]:invisible [&_.selection-indicator>svg]:block',
-      // Ink & wash: selection = quiet wash + the check indicator as the one
-      // opaque ink mark; hover = gray wash. The compound selected:hover rule
-      // wins by specificity, so a hovered selected option shows the hover
-      // wash while the check keeps marking the selection.
+      // Ink & wash: a selected option sits one step darker than hover
+      // (bg-selected) with the check as its one opaque ink mark. The compound
+      // selected:hover rule wins by specificity, so a hovered selected option
+      // swaps to the hover wash while the check keeps marking the selection.
       'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
       'hover:ui-state-hover selected:hover:ui-state-hover',
       'disabled:cursor-not-allowed disabled:text-disabled',
