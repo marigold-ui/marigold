@@ -9,7 +9,7 @@ export const calendarCellBase = [
   'border border-transparent p-0 text-sm font-normal text-foreground',
   'outline-offset-2 duration-150 transition-[color]',
   'data-hovered:ui-state-hover',
-  'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
+  'focus-visible:ui-state-focus outline-none',
   'disabled:cursor-not-allowed disabled:text-disabled',
   'unavailable:cursor-not-allowed unavailable:text-disabled unavailable:line-through',
   'outside-month:hidden',

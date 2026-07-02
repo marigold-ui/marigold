@@ -233,8 +233,10 @@ function SegmentedControlOption({
       className={cn(classNames.field, context.stretch && 'grow basis-0')}
       {...props}
     >
-      <SelectionIndicator className={classNames.indicator} />
-      <RadioButton className={classNames.option}>{children}</RadioButton>
+      <SelectionIndicator className={cn(classNames.indicator, 'z-0')} />
+      <RadioButton className={cn(classNames.option, 'z-10')}>
+        {children}
+      </RadioButton>
     </RadioField>
   );
 }
