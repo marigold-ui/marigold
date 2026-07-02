@@ -1,4 +1,4 @@
-import { expect, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Switch } from './Switch';
 
@@ -65,19 +65,20 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole('switch');
-
-    await userEvent.click(button);
-
-    await expect(button).toBeChecked();
-  },
 });
 
-export const KeyboardToggle = meta.story({
-  tags: ['component-test'],
-  play: async ({ canvas }) => {
+Basic.test('Toggles on when clicked', async ({ canvas, userEvent }) => {
+  const button = canvas.getByRole('switch');
+
+  await userEvent.click(button);
+
+  await expect(button).toBeChecked();
+});
+
+Basic.test(
+  'Toggles with the Space key',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
     const input: HTMLInputElement = canvas.getByRole('switch');
 
     await userEvent.tab();
@@ -87,19 +88,20 @@ export const KeyboardToggle = meta.story({
 
     await userEvent.keyboard(' ');
     await expect(input.checked).toBeFalsy();
-  },
-});
+  }
+);
 
-export const DefaultSelected = meta.story({
-  tags: ['component-test'],
-  args: {
-    defaultSelected: true,
+Basic.test(
+  'Toggles off from the default-selected state',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { defaultSelected: true },
   },
-  play: async ({ canvas, userEvent }) => {
+  async ({ canvas, userEvent }) => {
     const input: HTMLInputElement = canvas.getByRole('switch');
 
     await userEvent.click(input);
 
     await expect(input.checked).toBeFalsy();
-  },
-});
+  }
+);

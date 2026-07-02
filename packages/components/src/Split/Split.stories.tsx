@@ -28,7 +28,7 @@ export const WithInline = meta.story({
 
 export const WithStack = meta.story({
   render: () => (
-    <div className="h-400">
+    <div className="h-96">
       <Stack space={2} stretch>
         <Block>First</Block>
         <Split />

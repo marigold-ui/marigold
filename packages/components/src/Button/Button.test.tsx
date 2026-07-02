@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { Basic, WithIcon } from './Button.stories';
+import { Basic, ButtonVariants } from './Button.stories';
 
 test('add icon in button works as expected', () => {
-  render(<WithIcon.Component>iconbutton</WithIcon.Component>);
+  render(<ButtonVariants.Component />);
 
-  const button = screen.getByText(/iconbutton/);
+  // ButtonVariants renders one button with a Facebook icon and "Submit" label.
+  const button = screen.getByText('Submit');
   const icon = screen.getByTestId(/facebook/);
 
   expect(button).toHaveClass('items-center justify-center');

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Basic, WithAction, WithLeadingIcons } from './Input.stories';
+import { Basic, WithIcons } from './Input.stories';
 
 test('applies base styles', () => {
   render(<Basic.Component data-testid="input" />);
@@ -23,7 +23,7 @@ test('supports variant and size props', () => {
 });
 
 test('renders with leading icon', () => {
-  render(<WithLeadingIcons.Component />);
+  render(<WithIcons.Component />);
   // eslint-disable-next-line testing-library/no-node-access
   const icon = document.querySelector('svg');
 
@@ -31,7 +31,7 @@ test('renders with leading icon', () => {
 });
 
 test('renders with action', () => {
-  render(<WithAction.Component />);
+  render(<WithIcons.Component />);
   const button = screen.getByRole('button');
 
   expect(button).toBeInTheDocument();

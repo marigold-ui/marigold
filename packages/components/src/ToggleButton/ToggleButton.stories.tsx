@@ -71,7 +71,7 @@ Basic.test(
   }
 );
 
-export const Controlled = meta.story({
+export const IconToggleButton = meta.story({
   render: args => {
     const [isSelected, setIsSelected] = useState(false);
 
