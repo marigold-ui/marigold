@@ -90,7 +90,9 @@ export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
 
 // Renders up to `max` badges and collapses the rest into a single "+N" badge,
 // so multi-value cells stay a consistent height instead of ballooning the row.
-// Mirrors the "+N more" truncation used by AppliedFilter.
+// Mirrors the "+N more" truncation used by AppliedFilter. The overflow badge
+// carries the hidden labels in its accessible name and native `title`, so the
+// collapsed values stay reachable via hover and screen readers.
 const BadgeList = ({
   items,
   max = 3,
@@ -98,14 +100,19 @@ const BadgeList = ({
   items: readonly string[];
   max?: number;
 }) => {
-  const overflow = items.length - max;
+  const hidden = items.slice(max);
 
   return (
     <Inline space="0.5">
       {items.slice(0, max).map(item => (
         <Badge key={item}>{item}</Badge>
       ))}
-      {overflow > 0 && <Badge>{`+${overflow}`}</Badge>}
+      {hidden.length > 0 && (
+        <span title={hidden.join(', ')}>
+          <Badge>{`+${hidden.length}`}</Badge>
+          <VisuallyHidden>{` more: ${hidden.join(', ')}`}</VisuallyHidden>
+        </span>
+      )}
     </Inline>
   );
 };
