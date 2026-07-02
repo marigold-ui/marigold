@@ -60,7 +60,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   // The clickable segment (a radio rendered as a button).
   option: cva({
     base: [
-      'relative z-10 w-full',
+      'relative w-full',
       'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium',
       // bg stays out of the transition list (DS-wide instant-bg convention,
       // see ui.css / DST-1436); only the label color animates. No press scale
@@ -115,7 +115,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     // ring the slide would visibly lag behind the arrow keys, so dropping the
     // transition (same `transition-property: none` mechanism as reduced motion)
     // makes the FLIP a no-op. Pointer selection keeps the slide.
-    base: 'absolute z-0 transition-[translate,width] duration-200 ease-out-quint group-has-[[data-focus-visible]]/segmented:transition-none motion-reduce:transition-none',
+    base: 'absolute transition-[translate,width] duration-200 ease-out-quint group-has-[[data-focus-visible]]/segmented:transition-none motion-reduce:transition-none',
     variants: {
       variant: {
         // Raised surface like the Switch thumb; ~2px inset to the track edge.

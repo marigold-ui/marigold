@@ -40,7 +40,12 @@ const ListBoxBase = ({
   const listBox = (
     <RACListBox
       {...props}
-      className={cn('overflow-y-auto', classNames.list)}
+      className={cn(
+        'overflow-y-auto',
+        classNames.list,
+        // `!` overrides the inline `z-index: 0` set by RAC's virtualizer wrapper
+        '[&_:has(>:focus-visible)]:z-1!'
+      )}
       ref={ref as Ref<HTMLDivElement>}
       // Bound the virtualized list so the Virtualizer has a viewport to
       // clip against. Without this, the list grows to fit all items and

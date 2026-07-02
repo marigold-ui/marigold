@@ -6,6 +6,7 @@ import {
   CalendarGridBody,
 } from 'react-aria-components/Calendar';
 import { RangeCalendarStateContext } from 'react-aria-components/RangeCalendar';
+import { cn } from '@marigold/system';
 import { CalendarGridHeader } from './CalendarGridHeader';
 import { useCalendarContext } from './Context';
 
@@ -44,7 +45,7 @@ const _CalendarGrid = ({ offset }: CalendarGridProps) => {
           return (
             <CalendarCell
               date={date}
-              className={classNames.calendarCell}
+              className={cn(classNames.calendarCell, 'data-focus-visible:z-10')}
               data-in-range={isInRange ? '' : undefined}
             />
           );
