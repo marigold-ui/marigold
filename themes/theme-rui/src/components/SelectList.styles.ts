@@ -13,7 +13,13 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        default: 'ui-surface shadow-elevation-border',
+        // A default SelectList is a form control (you pick values), so it
+        // wears the input frame — the opaque, functional --color-border — not
+        // the decorative surface hairline that Cards/Panels use. Set through
+        // the same --ui-border-color contract as ui-input, so a state that
+        // recolors the frame composes here exactly as it does on an input.
+        default:
+          'ui-surface shadow-elevation-border [--ui-border-color:var(--color-border)]',
         bordered: '',
       },
     },
@@ -77,11 +83,13 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'hover:ui-state-hover selected:bg-selected selected:hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
-          // Dividers stay the faint hairline in every state: the selected
-          // row's wash is lighter than the hairline and its boundary is
-          // carried by the inked indicator, so no divider needs to darken.
-          'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-surface-border',
-          'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-surface-border',
+          // Dividers are opaque functional --color-border, matching Table's
+          // grid lines and the token rule that dividers/grid lines are
+          // functional edges. Opaque and darker than every wash, so they stay
+          // crisp against rest, hover, and the selected fill alike — the
+          // structure never dissolves into a state fill, in any state.
+          'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-border',
+          'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-border',
           // Container-query flip: in narrow containers, swap horizontal
           // rounding/borders for the vertical equivalents.
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:first:rounded-bl-none',
