@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react';
 import preview from '.storybook/preview';
+import { cn } from '@marigold/system';
 import { Headline } from './Headline/Headline';
 import { Inline } from './Inline/Inline';
 import { Stack } from './Stack/Stack';
@@ -16,6 +17,44 @@ const Base = ({
     className={`grid aspect-video h-32 place-items-center text-sm ${className}`}
   >
     {children}
+  </div>
+);
+
+// A boxed surface whose rows are split by the surface-border hairline — the same
+// token as the surface ring. A selected item owns its edges (the fill is the
+// separator, so the hairline touching it is dropped); a hovered item keeps its
+// separators, mirroring SelectList behavior.
+const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
+
+const ListSurface = ({
+  label,
+  selectedIndex,
+  hoveredIndex,
+}: {
+  label: string;
+  selectedIndex?: number;
+  hoveredIndex?: number;
+}) => (
+  <div className="flex flex-col gap-1">
+    <span className="text-secondary text-xs">{label}</span>
+    <div className="ui-surface shadow-elevation-border w-56 overflow-hidden text-sm">
+      {listItems.map((item, i) => (
+        <div
+          key={item}
+          data-selected={i === selectedIndex || undefined}
+          className={cn(
+            'px-3 py-2',
+            'not-last:border-surface-border not-last:border-b',
+            i === selectedIndex && 'bg-selected',
+            i === hoveredIndex && 'bg-hover',
+            (i === selectedIndex || i + 1 === selectedIndex) &&
+              'border-b-transparent'
+          )}
+        >
+          {item}
+        </div>
+      ))}
+    </div>
   </div>
 );
 
@@ -47,6 +86,28 @@ export const Surface = meta.story({
         <Base className="ui-surface-contrast shadow-elevation-overlay">
           contrast / overlay
         </Base>
+      </Inline>
+      <Headline level="3">Selected &amp; Hover Fills</Headline>
+      <Inline space="regular">
+        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)]">
+          raised / selected
+        </Base>
+        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-hover)]">
+          raised / hover
+        </Base>
+      </Inline>
+      <Headline level="3">Separators</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        Content separators reuse the <code>surface-border</code> hairline (the
+        same token as the surface ring). A <em>selected</em> item owns its edges
+        — its fill is the separator, so the hairline touching it is dropped to
+        avoid a muddy low-contrast line. A <em>hovered</em> item keeps its
+        separators.
+      </p>
+      <Inline space="regular">
+        <ListSurface label="separators" />
+        <ListSurface label="selected item" selectedIndex={2} />
+        <ListSurface label="hovered item" hoveredIndex={2} />
       </Inline>
       <Headline level="3">Nested Surfaces</Headline>
       <p className="text-secondary max-w-prose text-sm">

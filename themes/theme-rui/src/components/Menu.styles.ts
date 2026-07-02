@@ -32,7 +32,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     },
   }),
   section: cva({
-    base: 'text-secondary p-2 text-xs font-medium border-t border-t-border in-first:border-t-0',
+    base: 'text-secondary p-2 text-xs font-medium border-t border-t-surface-border in-first:border-t-0',
   }),
   label: cva({ base: 'col-start-2 row-start-1' }),
   description: cva({

@@ -71,8 +71,15 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'selected:bg-selected hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
-          'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-border',
-          'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-border',
+          'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-surface-border',
+          'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-surface-border',
+          // Selection owns its edges: the selected fill is the separator, so the
+          // faint hairline (close in tone to the fill) would only muddy the band's
+          // edge. Drop it on the selected row and on the row directly before it.
+          'group-orientation-vertical/list:selected:not-last:border-b-transparent',
+          'group-orientation-horizontal/list:selected:not-last:border-r-transparent',
+          'group-orientation-vertical/list:[&:has(+[data-selected])]:border-b-transparent',
+          'group-orientation-horizontal/list:[&:has(+[data-selected])]:border-r-transparent',
           // Container-query flip: in narrow containers, swap horizontal
           // rounding/borders for the vertical equivalents.
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:first:rounded-bl-none',
