@@ -54,7 +54,9 @@ export const Menu: ThemeComponent<'Menu'> = {
           'hover:ui-state-hover-muted',
           'expanded:[--ui-border-color:var(--color-surface-border-hover)]',
         ],
-        ghost: 'hover:ui-state-hover',
+        // Same translucent ghost hover as the Button ghost variant, so every
+        // ghost control blends into any ground the same way.
+        ghost: 'hover:ui-state-hover-ghost',
       },
       size: {
         default: 'text-sm',

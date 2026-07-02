@@ -55,9 +55,9 @@
     Palette step mapping (charcoal, background = step 100):
 
     50  -- muted bg (subtle tint on white surfaces), primary-foreground
-    100 -- background bg, focus-highlight bg
+    100 -- background bg, focus-highlight bg, selected wash
     200 -- hover bg, disabled-surface bg
-    300 -- control fill, selected bg, borders, scrollbar
+    300 -- control fill, borders, scrollbar
     400 -- disabled (text)
     600 -- focus ring, secondary (text), placeholder
     900 -- primary text
@@ -83,9 +83,24 @@
   --color-control: var(--color-charcoal-300);
   --color-hover: var(--color-charcoal-200);
 
-  --color-selected: var(--color-charcoal-300);
+  /* Selection follows an ink & wash split: transient pointer states are gray
+     washes (hover, charcoal-200); persistent selection is drawn in ink — the
+     opaque --inset-shadow-selection stroke — plus this quiet wash where a fill
+     helps. The wash sits one step LIGHTER than hover so the two states never
+     compete on the lightness axis: hovering a selected item shows the hover
+     wash while the ink stroke keeps carrying the selection. */
+  --color-selected: var(--color-charcoal-100);
   --color-selected-bold: var(--color-charcoal-900);
   --color-selected-bold-foreground: var(--color-charcoal-50);
+
+  /* The ink stroke that marks a selected item: an opaque 3px bar on the item's
+     leading edge, drawn as an inset shadow so it joins the box-shadow chain
+     (composing with focus rings) and clips to the item's own radius. The -top
+     variant serves horizontally arranged lists, where the leading edge is the
+     top. Opaque charcoal-900 keeps the selection boundary well above the WCAG
+     1.4.11 non-text threshold regardless of any fill under it. */
+  --inset-shadow-selection: inset 3px 0 0 0 var(--color-selected-bold);
+  --inset-shadow-selection-top: inset 0 3px 0 0 var(--color-selected-bold);
 
   /* ToggleButton "on" = a sunken dark-gray surface. A lighter charcoal than
      selected-bold/primary (charcoal-900) so a pressed toggle isn't mistaken for a

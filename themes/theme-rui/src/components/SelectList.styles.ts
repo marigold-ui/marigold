@@ -68,20 +68,24 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       variant: {
         default: [
           'min-h-14',
-          'selected:bg-selected hover:ui-state-hover',
+          // Ink & wash: hover is a gray wash, selection is the quiet wash plus
+          // an opaque ink stroke on the leading edge. The compound
+          // selected:hover rule outranks both single-state rules by
+          // specificity, so hovering a selected row deterministically shows
+          // the hover wash while the ink stroke keeps marking the selection.
+          'hover:ui-state-hover selected:bg-selected selected:hover:ui-state-hover',
+          'group-orientation-vertical/list:selected:inset-shadow-selection',
+          'group-orientation-horizontal/list:@min-[40rem]/selectlist:selected:inset-shadow-selection-top',
+          // Container-query flip: stacked rows take the vertical (left-edge)
+          // stroke. @min/@max gate the two strokes so they never both match.
+          'group-orientation-horizontal/list:@max-[40rem]/selectlist:selected:inset-shadow-selection',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
+          // Dividers stay the faint hairline in every state: the selected
+          // row's wash is lighter than the hairline and its boundary is
+          // carried by the ink stroke, so no divider needs to darken.
           'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-surface-border',
           'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-surface-border',
-          // A divider touching a selected row darkens from the faint hairline to
-          // the functional --color-border: the selected fill sits too close in
-          // tone to the hairline to read against it, so both edges of the
-          // selection stay crisp. Applies to the selected row's own divider and
-          // the row directly before it (the divider on its other side).
-          'group-orientation-vertical/list:selected:not-last:border-b-border',
-          'group-orientation-horizontal/list:selected:not-last:border-r-border',
-          'group-orientation-vertical/list:[&:has(+[data-selected])]:border-b-border',
-          'group-orientation-horizontal/list:[&:has(+[data-selected])]:border-r-border',
           // Container-query flip: in narrow containers, swap horizontal
           // rounding/borders for the vertical equivalents.
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:first:rounded-bl-none',

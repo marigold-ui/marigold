@@ -21,12 +21,12 @@ const Base = ({
 );
 
 // A boxed surface whose rows are split by the surface-border hairline — the same
-// token as the surface ring. A divider between two unselected rows stays that
-// faint hairline; a divider that touches a selected row (on either side) darkens
-// to the functional --color-border, because the selected fill sits too close in
-// tone to the faint hairline and would otherwise blur its edge. Each row owns the
-// divider below it, so the rule is: darken this row's border when it — or the row
-// after it — is selected. A hovered row keeps its faint separators.
+// token as the surface ring. Dividers stay that faint hairline in every state.
+// Ink & wash: hover is a gray wash (bg-hover); selection is the quiet selected
+// wash plus an opaque ink stroke on the leading edge (inset-shadow-selection).
+// A hovered selected row shows the hover wash while the stroke keeps carrying
+// the selection — states live on orthogonal channels, so they compose instead
+// of colliding.
 const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
 
 const ListSurface = ({
@@ -47,11 +47,8 @@ const ListSurface = ({
           data-selected={i === selectedIndex || undefined}
           className={cn(
             'px-3 py-2',
-            'not-last:border-b',
-            i === selectedIndex || i + 1 === selectedIndex
-              ? 'border-b-border'
-              : 'not-last:border-surface-border',
-            i === selectedIndex && 'bg-selected',
+            'not-last:border-surface-border not-last:border-b',
+            i === selectedIndex && 'bg-selected inset-shadow-selection',
             i === hoveredIndex && 'bg-hover'
           )}
         >
@@ -130,24 +127,32 @@ export const Surface = meta.story({
       </Inline>
       <Headline level="3">Selected &amp; Hover Fills</Headline>
       <p className="text-secondary max-w-prose text-sm">
-        Item fills painted on rows inside a surface — flat background tokens,
-        not surfaces of their own. <code>bg-selected</code> and{' '}
-        <code>bg-hover</code> sit on the white surface;{' '}
-        <code>bg-focus-highlight</code> marks keyboard focus inside menus;{' '}
-        <code>ui-state-hover-ghost</code> (<code>bg-current/10</code>) tints
-        toward the current text color so a ghost item blends into any ground.
-        The two boxes on the right push a selected / hover fill onto a whole
-        raised surface via <code>--ui-background-color</code>.
+        Item fills painted on rows inside a surface, following the ink &amp;
+        wash split: transient pointer states are gray washes, persistent
+        selection is the quiet <code>bg-selected</code> wash plus the opaque{' '}
+        <code>inset-shadow-selection</code> ink stroke on the leading edge. A
+        hovered selected row shows the hover wash under the stroke — the two
+        states never compete on lightness. <code>bg-focus-highlight</code> marks
+        keyboard focus inside menus; <code>ui-state-hover-ghost</code> (
+        <code>bg-current/10</code>) tints toward the current text color so a
+        ghost item blends into any ground. The two boxes on the right push a
+        selected / hover fill onto a whole raised surface via{' '}
+        <code>--ui-background-color</code>.
       </p>
       <Inline space="regular">
         <div className="ui-surface shadow-elevation-border flex w-40 flex-col overflow-hidden text-sm">
           <div className="px-3 py-2">resting</div>
           <div className="bg-hover px-3 py-2">hover</div>
-          <div className="bg-selected px-3 py-2">selected</div>
+          <div className="inset-shadow-selection bg-selected px-3 py-2">
+            selected
+          </div>
+          <div className="inset-shadow-selection bg-hover px-3 py-2">
+            selected + hover
+          </div>
           <div className="bg-focus-highlight px-3 py-2">focus</div>
           <div className="bg-current/10 px-3 py-2">ghost</div>
         </div>
-        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-border)]">
+        <Base className="ui-surface shadow-elevation-raised inset-shadow-selection [--ui-background-color:var(--color-selected)]">
           raised / selected
         </Base>
         <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-hover)]">
@@ -156,13 +161,12 @@ export const Surface = meta.story({
       </Inline>
       <Headline level="3">Separators</Headline>
       <p className="text-secondary max-w-prose text-sm">
-        Separators between unselected rows reuse the <code>surface-border</code>{' '}
-        hairline (the same token as the surface ring). A divider that{' '}
-        <em>touches a selected row</em> darkens to the functional{' '}
-        <code>--color-border</code>, since the selected fill sits too close in
-        tone to the faint hairline to read against it — so both edges of the
-        selection stay crisp, wherever it lands. A <em>hovered</em> row keeps
-        its faint separators.
+        Separators between rows reuse the <code>surface-border</code> hairline
+        (the same token as the surface ring) in <em>every</em> state: the
+        selected wash is lighter than the hairline and the selection boundary is
+        carried by the <code>inset-shadow-selection</code> ink stroke, so no
+        divider needs to darken. Hovering a selected row swaps the wash, not the
+        stroke.
       </p>
       <Inline space="regular">
         <ListSurface label="separators" />
@@ -170,6 +174,11 @@ export const Surface = meta.story({
         <ListSurface label="middle selected" selectedIndex={2} />
         <ListSurface label="last selected" selectedIndex={3} />
         <ListSurface label="hovered item" hoveredIndex={2} />
+        <ListSurface
+          label="hovered selected"
+          selectedIndex={2}
+          hoveredIndex={2}
+        />
       </Inline>
       <Headline level="3">Nested Surfaces</Headline>
       <p className="text-secondary max-w-prose text-sm">
