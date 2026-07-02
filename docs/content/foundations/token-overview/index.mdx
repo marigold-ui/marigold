@@ -191,7 +191,7 @@ Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`
 />
 
 ```tsx
-<div className="bg-surface rounded-surface shadow-elevation-raised">
+<div className="ui-surface shadow-elevation-raised">
   Content on a white surface
 </div>
 ```
@@ -257,7 +257,7 @@ Most form controls sit on a white surface and use borders to define their shape:
 
 <Callout title="Not a default for all controls">
   Most form controls sit on `bg-surface` (white) and define their shape with a
-  border — the `ui-surface` ring for inputs and selects, `border-border` for
+  border: the `ui-surface` ring for inputs and selects, `border-border` for
   checkboxes and radios. Only reach for `bg-control` when a control communicates
   its state through a filled background rather than a border, like switch
   tracks, slider tracks, and similar "trough" elements.
