@@ -108,7 +108,11 @@
   --color-access-admin: var(--color-purple-100);
   --color-access-admin-foreground: var(--color-purple-800);
 
-  /* 
+  /* mask-image shapes for access-control glyphs (lock = master, key = admin) */
+  --access-mask-lock: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxNiIgcj0iMSIvPjxyZWN0IHg9IjMiIHk9IjEwIiB3aWR0aD0iMTgiIGhlaWdodD0iMTIiIHJ4PSIyIi8+PHBhdGggZD0iTTcgMTBWN2E1IDUgMCAwIDEgMTAgMHYzIi8+PC9zdmc+');
+  --access-mask-key: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0ibTE1LjUgNy41IDIuMyAyLjNhMSAxIDAgMCAwIDEuNCAwbDIuMS0yLjFhMSAxIDAgMCAwIDAtMS40TDE5IDQiLz48cGF0aCBkPSJtMjEgMi05LjYgOS42Ii8+PGNpcmNsZSBjeD0iNy41IiBjeT0iMTUuNSIgcj0iNS41Ii8+PC9zdmc+');
+
+  /*
     muted colors are desaturated colors of the brand color,
     they help create hierarchy for secondary text. 
     Currently used for: helptext, icons inside inputs, readonly background inside inputs, variant for text 
