@@ -73,13 +73,15 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
           'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-surface-border',
           'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-surface-border',
-          // Selection owns its edges: the selected fill is the separator, so the
-          // faint hairline (close in tone to the fill) would only muddy the band's
-          // edge. Drop it on the selected row and on the row directly before it.
-          'group-orientation-vertical/list:selected:not-last:border-b-transparent',
-          'group-orientation-horizontal/list:selected:not-last:border-r-transparent',
-          'group-orientation-vertical/list:[&:has(+[data-selected])]:border-b-transparent',
-          'group-orientation-horizontal/list:[&:has(+[data-selected])]:border-r-transparent',
+          // A divider touching a selected row darkens from the faint hairline to
+          // the functional --color-border: the selected fill sits too close in
+          // tone to the hairline to read against it, so both edges of the
+          // selection stay crisp. Applies to the selected row's own divider and
+          // the row directly before it (the divider on its other side).
+          'group-orientation-vertical/list:selected:not-last:border-b-border',
+          'group-orientation-horizontal/list:selected:not-last:border-r-border',
+          'group-orientation-vertical/list:[&:has(+[data-selected])]:border-b-border',
+          'group-orientation-horizontal/list:[&:has(+[data-selected])]:border-r-border',
           // Container-query flip: in narrow containers, swap horizontal
           // rounding/borders for the vertical equivalents.
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:first:rounded-bl-none',

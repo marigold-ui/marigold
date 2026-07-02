@@ -21,9 +21,12 @@ const Base = ({
 );
 
 // A boxed surface whose rows are split by the surface-border hairline — the same
-// token as the surface ring. A selected item owns its edges (the fill is the
-// separator, so the hairline touching it is dropped); a hovered item keeps its
-// separators, mirroring SelectList behavior.
+// token as the surface ring. A divider between two unselected rows stays that
+// faint hairline; a divider that touches a selected row (on either side) darkens
+// to the functional --color-border, because the selected fill sits too close in
+// tone to the faint hairline and would otherwise blur its edge. Each row owns the
+// divider below it, so the rule is: darken this row's border when it — or the row
+// after it — is selected. A hovered row keeps its faint separators.
 const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
 
 const ListSurface = ({
@@ -44,11 +47,12 @@ const ListSurface = ({
           data-selected={i === selectedIndex || undefined}
           className={cn(
             'px-3 py-2',
-            'not-last:border-surface-border not-last:border-b',
+            'not-last:border-b',
+            i === selectedIndex || i + 1 === selectedIndex
+              ? 'border-b-border'
+              : 'not-last:border-surface-border',
             i === selectedIndex && 'bg-selected',
-            i === hoveredIndex && 'bg-hover',
-            (i === selectedIndex || i + 1 === selectedIndex) &&
-              'border-b-transparent'
+            i === hoveredIndex && 'bg-hover'
           )}
         >
           {item}
@@ -98,15 +102,19 @@ export const Surface = meta.story({
       </Inline>
       <Headline level="3">Separators</Headline>
       <p className="text-secondary max-w-prose text-sm">
-        Content separators reuse the <code>surface-border</code> hairline (the
-        same token as the surface ring). A <em>selected</em> item owns its edges
-        — its fill is the separator, so the hairline touching it is dropped to
-        avoid a muddy low-contrast line. A <em>hovered</em> item keeps its
-        separators.
+        Separators between unselected rows reuse the <code>surface-border</code>{' '}
+        hairline (the same token as the surface ring). A divider that{' '}
+        <em>touches a selected row</em> darkens to the functional{' '}
+        <code>--color-border</code>, since the selected fill sits too close in
+        tone to the faint hairline to read against it — so both edges of the
+        selection stay crisp, wherever it lands. A <em>hovered</em> row keeps
+        its faint separators.
       </p>
       <Inline space="regular">
         <ListSurface label="separators" />
-        <ListSurface label="selected item" selectedIndex={2} />
+        <ListSurface label="first selected" selectedIndex={0} />
+        <ListSurface label="middle selected" selectedIndex={2} />
+        <ListSurface label="last selected" selectedIndex={3} />
         <ListSurface label="hovered item" hoveredIndex={2} />
       </Inline>
       <Headline level="3">Nested Surfaces</Headline>
