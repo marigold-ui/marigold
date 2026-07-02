@@ -89,7 +89,7 @@ export const Surface = meta.story({
       </Inline>
       <Headline level="3">Selected &amp; Hover Fills</Headline>
       <Inline space="regular">
-        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)]">
+        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-border)]">
           raised / selected
         </Base>
         <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-hover)]">
