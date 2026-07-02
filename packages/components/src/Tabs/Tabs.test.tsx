@@ -96,3 +96,111 @@ test('supports render prop children on Tabs.Item', async () => {
     screen.getAllByRole('tab', { name: 'General' })[0]
   ).toBeInTheDocument();
 });
+
+describe('translates a vertical mouse wheel into horizontal scroll', () => {
+  // The unit-test project loads no theme CSS, so the row is never actually
+  // scrollable here. We instead drive the handler's decision logic directly:
+  // force the overflow inputs it reads and spy on the scroll it performs. A
+  // raw WheelEvent is dispatched (not `fireEvent`) because userEvent has no
+  // wheel API. The real-CSS integration is covered by the `Mobile` play test.
+  const setup = ({
+    scrollWidth = 1000,
+    clientWidth = 200,
+    scrollLeft = 0,
+  }: {
+    scrollWidth?: number;
+    clientWidth?: number;
+    scrollLeft?: number;
+  } = {}) => {
+    render(<Basic.Component />);
+
+    // The scroll container is the wrapper around the tablist. It carries the
+    // wheel listener and a stable `data-testid` so this doesn't couple to the
+    // motion wrapper's DOM nesting.
+    const el = screen.getAllByTestId('tabs-list-scroll')[0];
+    Object.defineProperty(el, 'scrollWidth', {
+      value: scrollWidth,
+      configurable: true,
+    });
+    Object.defineProperty(el, 'clientWidth', {
+      value: clientWidth,
+      configurable: true,
+    });
+    Object.defineProperty(el, 'scrollLeft', {
+      value: scrollLeft,
+      writable: true,
+      configurable: true,
+    });
+    const scrollBy = vi.fn();
+    el.scrollBy = scrollBy;
+
+    return { el, scrollBy };
+  };
+
+  const wheel = (el: HTMLElement, init: WheelEventInit) =>
+    el.dispatchEvent(
+      new WheelEvent('wheel', { bubbles: true, cancelable: true, ...init })
+    );
+
+  test('scrolls the row on a vertical wheel when it overflows', () => {
+    const { el, scrollBy } = setup();
+
+    wheel(el, { deltaY: 100 });
+
+    expect(scrollBy).toHaveBeenCalledWith({ left: 100, behavior: 'instant' });
+  });
+
+  test('ignores the wheel when the row does not overflow', () => {
+    const { el, scrollBy } = setup({ scrollWidth: 200, clientWidth: 200 });
+
+    wheel(el, { deltaY: 100 });
+
+    expect(scrollBy).not.toHaveBeenCalled();
+  });
+
+  test('leaves ctrl+wheel to the browser so zoom is not hijacked', () => {
+    const { el, scrollBy } = setup();
+
+    wheel(el, { deltaY: 100, ctrlKey: true });
+
+    expect(scrollBy).not.toHaveBeenCalled();
+  });
+
+  test('leaves a horizontal-dominant gesture to native scroll', () => {
+    const { el, scrollBy } = setup();
+
+    wheel(el, { deltaX: 100, deltaY: 10 });
+
+    expect(scrollBy).not.toHaveBeenCalled();
+  });
+
+  test('normalizes line-unit deltas (Firefox physical mouse)', () => {
+    const { el, scrollBy } = setup();
+
+    // deltaMode 1 = lines; one notch of 3 lines -> 3 * 16px.
+    wheel(el, { deltaY: 3, deltaMode: 1 });
+
+    expect(scrollBy).toHaveBeenCalledWith({ left: 48, behavior: 'instant' });
+  });
+
+  test('lets the page scroll past the row at the end (no scroll trap)', () => {
+    // Scrolled to the far right; a further rightward wheel has nowhere to go.
+    const { el, scrollBy } = setup({ scrollLeft: 800 });
+
+    const scrolled = wheel(el, { deltaY: 100 });
+
+    expect(scrollBy).not.toHaveBeenCalled();
+    // Not cancelled, so the page can scroll instead.
+    expect(scrolled).toBe(true);
+  });
+
+  test('lets the page scroll past the row at the start (no scroll trap)', () => {
+    // At the far left; a leftward (negative) wheel has nowhere to go.
+    const { el, scrollBy } = setup({ scrollLeft: 0 });
+
+    const scrolled = wheel(el, { deltaY: -100 });
+
+    expect(scrollBy).not.toHaveBeenCalled();
+    expect(scrolled).toBe(true);
+  });
+});
