@@ -6,7 +6,6 @@ import {
   Basic,
   Controlled,
   DisabledOption,
-  Overflow,
   WithError,
 } from './SegmentedControl.stories';
 
@@ -132,65 +131,4 @@ test('forwards a ref to the group element', () => {
   render(<Basic.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLElement);
-});
-
-describe('translates a vertical mouse wheel into horizontal scroll', () => {
-  // The unit-test project loads no CSS, so the track is never actually
-  // scrollable here. We force the overflow inputs the handler reads and spy on
-  // the scroll it performs. The wheel matrix (deltaMode, scroll trap, zoom
-  // bypass) lives in useWheelScrollX.test; these cover that the hook is wired
-  // to the track element. The real-CSS integration is the `Overflow` play test.
-  const setup = ({
-    scrollWidth = 1000,
-    clientWidth = 200,
-    scrollLeft = 0,
-  }: {
-    scrollWidth?: number;
-    clientWidth?: number;
-    scrollLeft?: number;
-  } = {}) => {
-    render(<Overflow.Component />);
-
-    // The inner track carries the wheel listener and a stable `data-testid` so
-    // this doesn't couple to the field/presentation DOM nesting.
-    const el = screen.getByTestId('segmented-control-scroll');
-    Object.defineProperty(el, 'scrollWidth', {
-      value: scrollWidth,
-      configurable: true,
-    });
-    Object.defineProperty(el, 'clientWidth', {
-      value: clientWidth,
-      configurable: true,
-    });
-    Object.defineProperty(el, 'scrollLeft', {
-      value: scrollLeft,
-      writable: true,
-      configurable: true,
-    });
-    const scrollBy = vi.fn();
-    el.scrollBy = scrollBy;
-
-    return { el, scrollBy };
-  };
-
-  const wheel = (el: HTMLElement, init: WheelEventInit) =>
-    el.dispatchEvent(
-      new WheelEvent('wheel', { bubbles: true, cancelable: true, ...init })
-    );
-
-  test('scrolls the track on a vertical wheel when the segments overflow', () => {
-    const { el, scrollBy } = setup();
-
-    wheel(el, { deltaY: 100 });
-
-    expect(scrollBy).toHaveBeenCalledWith({ left: 100, behavior: 'instant' });
-  });
-
-  test('ignores the wheel when the segments do not overflow', () => {
-    const { el, scrollBy } = setup({ scrollWidth: 200, clientWidth: 200 });
-
-    wheel(el, { deltaY: 100 });
-
-    expect(scrollBy).not.toHaveBeenCalled();
-  });
 });

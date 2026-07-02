@@ -110,8 +110,6 @@ function SegmentedControlBase({
   const stretch = width === 'full';
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  // Let pointer users without a trackpad reach overflowing segments by wheeling
-  // vertically over the track.
   useWheelScrollX(scrollRef);
 
   // Keep the selected option visible when the segments overflow and scroll.
@@ -182,11 +180,7 @@ function SegmentedControlBase({
           stretch ? 'flex w-full' : 'inline-flex w-fit max-w-full'
         )}
       >
-        <div
-          ref={attachScrollContainer}
-          className={classNames.list}
-          data-testid="segmented-control-scroll"
-        >
+        <div ref={attachScrollContainer} className={classNames.list}>
           <SegmentedControlContext value={{ variant, size, stretch }}>
             {children}
           </SegmentedControlContext>

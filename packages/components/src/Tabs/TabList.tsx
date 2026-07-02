@@ -35,8 +35,6 @@ const _TabList = (props: TabListProps) => {
     );
   }
 
-  // Let pointer users without a trackpad reach overflowing tabs by wheeling
-  // vertically over the row.
   useWheelScrollX(scrollRef);
 
   return (
@@ -51,7 +49,6 @@ const _TabList = (props: TabListProps) => {
           ref={scrollRef}
           layoutScroll
           className={classNames.tabsListScroll}
-          data-testid="tabs-list-scroll"
         >
           <TabList {...props} className={cn('flex', classNames.tabsList)}>
             {props.children}
