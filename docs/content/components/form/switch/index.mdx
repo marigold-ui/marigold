@@ -71,6 +71,12 @@ Add a description when the label alone doesn't explain what toggling actually do
 
 <ComponentDemo name="switch-description" />
 
+### Error
+
+Set `error` to mark the switch as invalid and pass an `errorMessage` to explain what needs to change. The error message replaces the description while `error` is set, and it is announced to screen readers via `aria-describedby`.
+
+<ComponentDemo name="switch-error" />
+
 ### Settings and preference
 
 On dedicated settings or preference pages, switches appear as a vertical list where the label is the primary scanning element. Use `variant="settings"` for this layout: the label sits on the left and the toggle on the right.
