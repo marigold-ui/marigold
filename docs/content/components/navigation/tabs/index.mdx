@@ -64,6 +64,17 @@ navigate views without leaving the page.
   </Dont>
 </GuidelineTiles>
 
+### Overflow
+
+When more tabs are rendered than fit the available width, the tab row scrolls horizontally instead of wrapping onto a second line or widening the page. The tabs keep their natural width and the adjacent tab stays peeking past the edge so the row reads as scrollable. A vertical mouse wheel scrolls the row horizontally for pointer users without a trackpad.
+
+<Callout title="Browser support for the edge fade">
+  The fading edge that signals more tabs are hidden relies on CSS scroll-driven
+  animations. Browsers without that support (currently Firefox) fall back to a
+  plain scroll container with a native scrollbar. The scroll behavior is the
+  same in every browser. Only the affordance differs.
+</Callout>
+
 ### Arrangement of tabs
 
 Arrange tab content so the most used content is first in the list and selected by default. This maximizes visibility
