@@ -48,11 +48,10 @@ export const Menu: ThemeComponent<'Menu'> = {
       variant: {
         default: [
           // Neutral trigger = the secondary Button look: muted gloss surface,
-          // brighten-on-hover, soft hairline edge, soft "held" open state.
+          // brighten-on-hover, soft hairline edge, soft "held" open state. Disabled
+          // /pending come from ui-button-base (disabled:ui-state-disabled), same as Button.
           'ui-surface-muted shadow-elevation-border',
-          'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
-          'disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
-          'pending:[background:var(--color-disabled-surface)] pending:shadow-none',
+          'hover:ui-state-hover-muted',
           'expanded:[--ui-border-color:var(--color-surface-border-hover)]',
         ],
         ghost: 'hover:ui-state-hover',

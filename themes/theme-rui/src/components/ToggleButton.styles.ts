@@ -22,13 +22,13 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       // Flip on/off instantly; an animated box-shadow can't tween cleanly here.
       'transition-none',
 
-      // Hover: match the secondary Button (muted hardcodes its fill, so override `background` directly).
-      'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
+      // Hover: shared neutral-button hover (matches secondary Button + Menu trigger).
+      'hover:ui-state-hover-muted',
       // On: sunken dark-gray surface (drop elevation, dark inner-top recess, visible dark edge).
       'selected:[background:var(--color-toggle-selected)] selected:text-selected-bold-foreground',
       'selected:shadow-none selected:[--ui-border-color:var(--color-toggle-selected-edge)]',
       'selected:inset-shadow-[0_2px_3px_-1px_oklch(from_var(--color-charcoal-950)_l_c_h_/_0.5)]',
-      'disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
+      // Disabled comes from ui-button-base (disabled:ui-state-disabled), same as Button.
 
       // Group: segments share the group's surface + ring; a transparent right border
       // draws the 1px divider (removed on the last). Border lives here, not ui-button-base.

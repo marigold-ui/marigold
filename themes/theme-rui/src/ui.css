@@ -167,11 +167,10 @@
   background: var(--color-disabled-surface);
   background-clip: border-box;
   /* Dim the boundary rather than remove it: a borderless input reads as broken,
-     but the resting opaque `--color-border` ring is too assertive for a disabled
-     control. Recolor the ui-surface ring to the muted disabled color so the
-     surface stays a flat fill with a soft, clearly-inactive edge. Overrides the
-     `ui-input` base color by variant specificity. */
-  --ui-border-color: var(--color-disabled);
+     but a dark ring is too assertive for a disabled control. Recolor the ui-surface
+     ring to the light disabled-border so the surface stays a flat fill with a soft,
+     receding edge. Overrides the `ui-input` base color by variant specificity. */
+  --ui-border-color: var(--color-disabled-border);
   /* No top highlight when disabled: the inset gloss/sheen of ui-surface-muted and
      ui-surface-contrast would otherwise sit on the flat disabled fill. Zeroing the
      `--tw-inset-shadow` var is reliable where a raw `box-shadow: none` lost the
@@ -193,6 +192,20 @@
  */
 @utility ui-state-hover-ghost {
   @apply bg-current/10;
+}
+
+/*
+ * Hover for neutral/secondary buttons (Button secondary, Menu trigger,
+ * ToggleButton): brighten the muted gloss a step (white -> charcoal-50) and firm
+ * the hairline edge (0.1 -> 0.2 alpha), so the surface lifts instead of
+ * flattening. ui-surface-muted hardcodes its fill via `background`, so this
+ * overrides `background` directly rather than a token.
+ */
+@utility ui-state-hover-muted {
+  /* prettier-ignore */
+  background: linear-gradient(to bottom, var(--color-white), var(--color-charcoal-50));
+  --ui-border-color: var(--color-surface-border-hover);
+  @apply text-foreground;
 }
 
 /*

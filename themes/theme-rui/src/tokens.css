@@ -101,7 +101,10 @@
 
   /* --- Disabled --- */
   --color-disabled: var(--color-charcoal-400);
-  --color-disabled-surface: var(--color-charcoal-200);
+  /* Disabled controls should recede, not pop: a lighter fill + a lighter edge than
+     the enabled control, so a disabled control reads quieter than its active peers. */
+  --color-disabled-surface: var(--color-charcoal-100);
+  --color-disabled-border: var(--color-charcoal-300);
 
   /* --- Form Controls --- */
   /* Opaque FUNCTIONAL edge — a boundary that carries meaning or is an affordance,
