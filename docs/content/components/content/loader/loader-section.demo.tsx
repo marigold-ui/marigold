@@ -1,4 +1,4 @@
-import type { Venue } from '@/lib/data/venues';
+import type { VenueQueryResult } from '@/lib/data/venues-query';
 import {
   QueryClient,
   QueryClientProvider,
@@ -18,7 +18,7 @@ import {
 } from '@marigold/components';
 
 const Venues = () => {
-  const { data, status, isFetching } = useQuery<Venue[]>({
+  const { data, status, isFetching } = useQuery<VenueQueryResult>({
     queryKey: ['venues'],
     queryFn: async () => {
       const response = await fetch(`/api/venues?delay=1500&q=`);
@@ -52,7 +52,7 @@ const Venues = () => {
   return (
     <Scrollable height="300px">
       <Stack space={2}>
-        {data.map(v => (
+        {data.items.map(v => (
           <Card key={v.id}>
             <Card.Body>
               <Aside sideWidth="160px" space={8}>
