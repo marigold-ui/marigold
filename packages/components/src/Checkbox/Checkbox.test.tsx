@@ -86,6 +86,23 @@ test('associates the description with the checkbox via aria-describedby', () => 
   expect(input.getAttribute('aria-describedby')).toContain(description.id);
 });
 
+test('shows error message instead of description when error is set', () => {
+  render(
+    <Basic.Component
+      label="With Label"
+      error
+      description="Some help text"
+      errorMessage="Selection is required"
+    />
+  );
+
+  const input = screen.getByLabelText('With Label');
+
+  expect(screen.getByText('Selection is required')).toBeInTheDocument();
+  expect(screen.queryByText('Some help text')).not.toBeInTheDocument();
+  expect(input).toHaveAccessibleDescription('Selection is required');
+});
+
 test('forwards ref', () => {
   const ref: RefObject<HTMLLabelElement | null> = { current: null };
   render(<Basic.Component label="Check it" ref={ref} />);

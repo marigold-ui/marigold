@@ -33,6 +33,49 @@ test('connects description via aria-describedby', () => {
   expect(input).toHaveAccessibleDescription('Connect to nearby networks');
 });
 
+test('shows error message instead of description when error is set', () => {
+  render(
+    <Basic.Component
+      label="Wi-Fi"
+      error
+      description="Connect to nearby networks"
+      errorMessage="Wi-Fi is required"
+    />
+  );
+
+  expect(screen.getByText('Wi-Fi is required')).toBeInTheDocument();
+  expect(
+    screen.queryByText('Connect to nearby networks')
+  ).not.toBeInTheDocument();
+});
+
+test('connects error message via aria-describedby', () => {
+  render(
+    <Basic.Component label="Wi-Fi" error errorMessage="Wi-Fi is required" />
+  );
+
+  const input = screen.getByRole('switch');
+
+  expect(input).toHaveAccessibleDescription('Wi-Fi is required');
+});
+
+test('does not render help text when neither description nor error is set', () => {
+  render(<Basic.Component label="Wi-Fi" />);
+
+  const input = screen.getByRole('switch');
+
+  expect(input).not.toHaveAttribute('aria-describedby');
+});
+
+test('ignores errorMessage while error is not set', () => {
+  render(<Basic.Component label="Wi-Fi" errorMessage="Wi-Fi is required" />);
+
+  const input = screen.getByRole('switch');
+
+  expect(screen.queryByText('Wi-Fi is required')).not.toBeInTheDocument();
+  expect(input).not.toHaveAttribute('aria-describedby');
+});
+
 test('takes full width by default', () => {
   render(<Basic.Component label="Label" />);
   const switchEl = screen.getByRole('switch');

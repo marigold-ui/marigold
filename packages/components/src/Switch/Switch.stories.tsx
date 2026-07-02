@@ -55,6 +55,26 @@ const meta = preview.meta({
         defaultValue: { summary: 'undefined' },
       },
     },
+    error: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Whether the switch is invalid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'An error message shown when `error` is set',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+    },
     selected: {
       control: {
         type: 'boolean',
@@ -70,6 +90,7 @@ const meta = preview.meta({
     label: 'Default Switch',
     disabled: false,
     defaultSelected: false,
+    error: false,
   },
 });
 
@@ -114,6 +135,30 @@ export const WithDescription = meta.story({
     const switchDescribedBy = switchEl.getAttribute('aria-describedby');
 
     expect(description).toBeInTheDocument();
+    expect(switchDescribedBy).toBe(helpTextId);
+  },
+});
+
+export const WithError = meta.story({
+  tags: ['component-test'],
+  args: {
+    error: true,
+    errorMessage: 'This setting is required',
+    description: 'This is a description',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const switchEl = await canvas.findByRole('switch');
+    const errorMessage = canvas.getByText('This setting is required');
+
+    // The error message replaces the description when `error` is set.
+    expect(canvas.queryByText('This is a description')).not.toBeInTheDocument();
+
+    const helpTextId = errorMessage.closest('[id]')?.getAttribute('id');
+    const switchDescribedBy = switchEl.getAttribute('aria-describedby');
+
+    expect(errorMessage).toBeInTheDocument();
     expect(switchDescribedBy).toBe(helpTextId);
   },
 });
