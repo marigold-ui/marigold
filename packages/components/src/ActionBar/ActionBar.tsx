@@ -26,7 +26,7 @@ const actionButtonContext = { variant: 'ghost', size: 'default' } as const;
 
 export interface ActionBarProps {
   /**
-   * A list of ActionButtons to display.
+   * The action buttons to display.
    */
   children?: ReactNode;
 
