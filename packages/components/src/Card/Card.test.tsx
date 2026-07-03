@@ -167,10 +167,9 @@ describe('Card', () => {
     test('Card.Content applies horizontal padding by default', () => {
       render(<Basic.Component />);
 
-      const content = screen
-        .getByText(/was an English/)
-        .closest('div[class*="px-(--card-px)"]');
-      expect(content).not.toBeNull();
+      const content = screen.getByText(/was an English/).parentElement;
+
+      expect(content!.className).toContain('px-(--card-px)');
     });
 
     test('Card.Content with bleed opts out of horizontal padding', () => {
