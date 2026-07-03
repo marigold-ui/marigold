@@ -136,7 +136,7 @@ export const Inventory = () => (
                   </Stack>
                 </Inline>
               </Card.Header>
-              <Card.Body>
+              <Card.Content>
                 <Columns columns={['fit', 1]} space="regular">
                   <Stack alignX="right" space="tight">
                     <Text fontSize="sm" weight="semibold">
@@ -166,7 +166,7 @@ export const Inventory = () => (
                     </Text>
                   </Stack>
                 </Columns>
-              </Card.Body>
+              </Card.Content>
             </Card>
             <Inline space="related">
               <Badge>basic</Badge>

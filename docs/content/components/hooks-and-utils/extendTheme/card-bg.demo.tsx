@@ -14,7 +14,7 @@ export default () => {
   return (
     <MarigoldProvider theme={theme}>
       <Card>
-        <Card.Body>Some content</Card.Body>
+        <Card.Content>Some content</Card.Content>
       </Card>
     </MarigoldProvider>
   );

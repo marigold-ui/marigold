@@ -16,7 +16,7 @@ export const ContactTiles = () => (
     <Tiles stretch equalHeight tilesWidth="250px" space="regular">
       {people.map(person => (
         <Card key={person.id} stretch>
-          <Card.Body>
+          <Card.Content>
             <Stack space="regular" alignX="center">
               <img
                 src={person.avatar}
@@ -37,7 +37,7 @@ export const ContactTiles = () => (
                 </Text>
               </Stack>
             </Stack>
-          </Card.Body>
+          </Card.Content>
           <Card.Footer>
             <Inline alignX="center" space="tight">
               <LinkButton href="#">

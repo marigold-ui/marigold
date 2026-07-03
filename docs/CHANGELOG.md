@@ -338,7 +338,7 @@
 
   **What changed:**
   - The previous prop-based API (`padding`, `space`, etc.) has been removed.
-  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Body`, `Card.Footer`, and `Card.Preview`.
+  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Content`, `Card.Footer`, and `Card.Preview`.
   - A `CardContext` is now required — sub-components will throw an error if used outside of a `<Card>`.
 
   **Migration:**
@@ -352,7 +352,7 @@
   // After
   <Card>
     <Card.Header>Title</Card.Header>
-    <Card.Body><SomeContent /></Card.Body>
+    <Card.Content><SomeContent /></Card.Content>
     <Card.Footer>Actions</Card.Footer>
   </Card>
   ```

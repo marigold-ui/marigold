@@ -193,7 +193,7 @@ export const WithCards = meta.story({
   render: args => (
     <Stack {...args}>
       <Card>
-        <Card.Body>
+        <Card.Content>
           <Container>
             <Headline level={2}>Card Title</Headline>
             <Text>
@@ -202,10 +202,10 @@ export const WithCards = meta.story({
               visually distinct container.
             </Text>
           </Container>
-        </Card.Body>
+        </Card.Content>
       </Card>
       <Card>
-        <Card.Body>
+        <Card.Content>
           <Container>
             <Headline level={2}>Another Card</Headline>
             <Text>
@@ -213,7 +213,7 @@ export const WithCards = meta.story({
               and other components, ensuring a clean and organized layout.
             </Text>
           </Container>
-        </Card.Body>
+        </Card.Content>
       </Card>
     </Stack>
   ),

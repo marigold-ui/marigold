@@ -6,7 +6,7 @@ import {
   MasterAndAdmin,
   Stretch,
   TitleOnlyWithoutHeader,
-  WithBleedBody,
+  WithBleedContent,
   WithBleedFooter,
   WithFooter,
   WithMedia,
@@ -164,24 +164,22 @@ describe('Card', () => {
       expect(header!.className).toContain('px-(--card-px)');
     });
 
-    test('Card.Body has data-card-body and applies horizontal padding by default', () => {
+    test('Card.Content applies horizontal padding by default', () => {
       render(<Basic.Component />);
 
-      const body = screen
+      const content = screen
         .getByText(/was an English/)
-        .closest('[data-card-body]');
-      expect(body).not.toBeNull();
-      expect(body!.className).toContain('px-(--card-px)');
+        .closest('div[class*="px-(--card-px)"]');
+      expect(content).not.toBeNull();
     });
 
-    test('Card.Body with bleed opts out of horizontal padding', () => {
-      render(<WithBleedBody.Component />);
+    test('Card.Content with bleed opts out of horizontal padding', () => {
+      render(<WithBleedContent.Component />);
 
-      const body = screen
+      const padded = screen
         .getByText(/Edge-to-edge banner/)
-        .closest('[data-card-body]');
-      expect(body).not.toBeNull();
-      expect(body!.className).not.toContain('px-(--card-px)');
+        .closest('div[class*="px-(--card-px)"]');
+      expect(padded).toBeNull();
     });
 
     test('Card.Footer with bleed opts out of horizontal padding', () => {

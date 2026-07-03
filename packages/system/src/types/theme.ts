@@ -68,7 +68,7 @@ export type Theme = {
       | 'header'
       | 'title'
       | 'description'
-      | 'body'
+      | 'content'
       | 'footer'
       | 'media',
       ComponentStyleFunction<string, string>

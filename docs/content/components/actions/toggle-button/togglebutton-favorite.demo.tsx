@@ -29,7 +29,7 @@ export default () => {
     <Stack space={3}>
       {venues.slice(0, 3).map(venue => (
         <Card key={venue.id} stretch>
-          <Card.Body>
+          <Card.Content>
             <div className="flex gap-4">
               <img
                 src={venue.image}
@@ -73,7 +73,7 @@ export default () => {
                 </Inline>
               </div>
             </div>
-          </Card.Body>
+          </Card.Content>
         </Card>
       ))}
     </Stack>

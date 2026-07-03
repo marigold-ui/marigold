@@ -14,14 +14,14 @@ export default () => (
       <Title>Pro plan</Title>
       <Description>Renews on June 1, 2026.</Description>
     </Card.Header>
-    <Card.Body>
+    <Card.Content>
       <Inline space="tight" alignY="center">
         <Badge variant="success">Current</Badge>
         <Text variant="muted">
           Unlimited events, custom branding, and priority support.
         </Text>
       </Inline>
-    </Card.Body>
+    </Card.Content>
     <Card.Footer>
       <Button variant="ghost" size="small">
         Manage plan

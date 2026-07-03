@@ -66,34 +66,34 @@ export const Horizontal = meta.story({
     <Scrollable {...args}>
       <div className="flex gap-2">
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
       </div>
     </Scrollable>
@@ -148,7 +148,7 @@ export const WithTable = meta.story({
 export const ListScrolling = meta.story({
   render: args => (
     <Card>
-      <Card.Body>
+      <Card.Content>
         <Scrollable height="200px" {...args}>
           <Headline level={3}>Burger Menu</Headline>
           <List>
@@ -180,7 +180,7 @@ export const ListScrolling = meta.story({
             </List.Item>
           </List>
         </Scrollable>
-      </Card.Body>
+      </Card.Content>
     </Card>
   ),
 });
