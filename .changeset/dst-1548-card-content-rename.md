@@ -1,5 +1,6 @@
 ---
 '@marigold/components': major
+'@marigold/theme-rui': patch
 ---
 
 refactor(DST-1548): rename `Card.Body` to `Card.Content`
@@ -13,4 +14,6 @@ Aligns the Card body sub-component with `Panel.Content` and `Page.Content` so al
 + <Card.Content>...</Card.Content>
 ```
 
-The `bleed` prop and padding behavior are unchanged. Theme authors targeting the body slot must rename the `Card` theme slot key from `body` to `content`. The internal `data-card-body` attribute has been removed to match `Panel.Content`.
+The `bleed` prop and padding behavior are unchanged. The internal `data-card-body` attribute has been removed to match `Panel.Content`.
+
+In `@marigold/theme-rui` the `Card` theme slot key is renamed from `body` to `content`. Theme authors overriding this slot must rename their key accordingly.

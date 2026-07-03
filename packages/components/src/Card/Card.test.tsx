@@ -176,9 +176,10 @@ describe('Card', () => {
     test('Card.Content with bleed opts out of horizontal padding', () => {
       render(<WithBleedContent.Component />);
 
-      const content = screen.getByText(/Edge-to-edge banner/).parentElement!;
+      const content = screen.getByText(/Edge-to-edge banner/).parentElement;
 
-      expect(content.className).not.toContain('px-(--card-px)');
+      expect(content).toBeInTheDocument();
+      expect(content!.className).not.toContain('px-(--card-px)');
     });
 
     test('Card.Footer with bleed opts out of horizontal padding', () => {
