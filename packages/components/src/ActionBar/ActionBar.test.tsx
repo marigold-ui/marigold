@@ -81,6 +81,14 @@ test('has proper accessibility attributes', () => {
   expect(toolbar).toBeInTheDocument();
 });
 
+test('keeps aria-label on icon-only action buttons', () => {
+  render(<NoSelection.Component selectedItemCount={3} />);
+
+  expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Copy' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
+});
+
 test('calls onClearSelection when Escape is pressed', async () => {
   const onClearSelection = vi.fn();
 
