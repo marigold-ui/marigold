@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { CalendarYearPicker } from 'react-aria-components';
+import { CalendarYearPicker } from 'react-aria-components/Calendar';
 import { useCalendarOrRangeState } from './Context';
 import { ListBox } from './ListBox';
 
