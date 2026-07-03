@@ -135,13 +135,9 @@ export const WithDescription = meta.story({
     const canvas = within(canvasElement);
 
     const checkbox = await canvas.findByRole('checkbox');
-    const description = await canvas.queryByText('This is a description');
 
-    const helpTextId = description?.getAttribute('id');
-    const checkboxDescribedBy = checkbox.getAttribute('aria-describedby');
-
-    expect(description).toBeInTheDocument();
-    expect(checkboxDescribedBy).toBe(helpTextId);
+    expect(canvas.getByText('This is a description')).toBeInTheDocument();
+    await expect(checkbox).toHaveAccessibleDescription('This is a description');
   },
 });
 
@@ -156,15 +152,11 @@ export const WithError = meta.story({
     const canvas = within(canvasElement);
 
     const checkbox = await canvas.findByRole('checkbox');
-    const errorMessage = canvas.getByText('This selection is required');
 
     // The error message replaces the description when `error` is set.
     expect(canvas.queryByText('This is a description')).not.toBeInTheDocument();
-
-    const helpTextId = errorMessage.closest('[id]')?.getAttribute('id');
-    const checkboxDescribedBy = checkbox.getAttribute('aria-describedby');
-
-    expect(errorMessage).toBeInTheDocument();
-    expect(checkboxDescribedBy).toBe(helpTextId);
+    await expect(checkbox).toHaveAccessibleDescription(
+      'This selection is required'
+    );
   },
 });

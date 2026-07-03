@@ -92,9 +92,8 @@ const _Switch = ({
     ...rest,
   } satisfies RAC.SwitchFieldProps;
   return (
-    // `SwitchField` (rendered via `BooleanField as`) natively wires the label,
-    // `aria-describedby`, and validation state; the `SwitchButton` (the rendered
-    // `label`) carries the width, matching the standalone layout.
+    // The `SwitchButton` (the rendered `label`) carries the width, matching the
+    // standalone layout.
     <BooleanField
       as={SwitchField}
       description={description}

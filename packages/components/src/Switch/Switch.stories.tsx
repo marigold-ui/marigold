@@ -129,13 +129,9 @@ export const WithDescription = meta.story({
     const canvas = within(canvasElement);
 
     const switchEl = await canvas.findByRole('switch');
-    const description = canvas.queryByText('This is a description');
 
-    const helpTextId = description?.closest('[id]')?.getAttribute('id');
-    const switchDescribedBy = switchEl.getAttribute('aria-describedby');
-
-    expect(description).toBeInTheDocument();
-    expect(switchDescribedBy).toBe(helpTextId);
+    expect(canvas.getByText('This is a description')).toBeInTheDocument();
+    await expect(switchEl).toHaveAccessibleDescription('This is a description');
   },
 });
 
@@ -150,16 +146,12 @@ export const WithError = meta.story({
     const canvas = within(canvasElement);
 
     const switchEl = await canvas.findByRole('switch');
-    const errorMessage = canvas.getByText('This setting is required');
 
     // The error message replaces the description when `error` is set.
     expect(canvas.queryByText('This is a description')).not.toBeInTheDocument();
-
-    const helpTextId = errorMessage.closest('[id]')?.getAttribute('id');
-    const switchDescribedBy = switchEl.getAttribute('aria-describedby');
-
-    expect(errorMessage).toBeInTheDocument();
-    expect(switchDescribedBy).toBe(helpTextId);
+    await expect(switchEl).toHaveAccessibleDescription(
+      'This setting is required'
+    );
   },
 });
 

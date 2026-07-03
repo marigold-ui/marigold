@@ -43,7 +43,11 @@ export const BooleanField = <T extends ElementType>({
   size,
   children,
   ...rest
-}: BooleanFieldProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
+}: BooleanFieldProps<T> &
+  DistributiveOmit<
+    ComponentPropsWithRef<T>,
+    'as' | 'isInvalid' | 'className'
+  >) => {
   const Field = as as (props: ComponentPropsWithRef<T>) => ReactNode;
   const classNames = useClassNames({ component: 'BooleanField', variant });
 
@@ -64,7 +68,7 @@ export const BooleanField = <T extends ElementType>({
     className: hasHelpText
       ? cn('group/field group/booleanfield', classNames.container)
       : 'contents',
-    ...(hasHelpText ? { 'data-booleanfield': true } : {}),
+    'data-booleanfield': hasHelpText || undefined,
   } as ComponentPropsWithRef<T>;
 
   return (

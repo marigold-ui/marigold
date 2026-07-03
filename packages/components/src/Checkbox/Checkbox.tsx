@@ -144,8 +144,6 @@ const _Checkbox = ({
   });
 
   return (
-    // `CheckboxField` (rendered via `BooleanField as`) natively wires the label,
-    // `aria-describedby`, and validation state consumed by `HelpText`.
     <BooleanField
       as={CheckboxField}
       description={description}
