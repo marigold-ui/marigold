@@ -8,7 +8,7 @@ test('renders label and group of checkboxes', () => {
   expect(screen.getByText('Ham')).toBeInTheDocument();
   expect(screen.getByText('Salami')).toBeInTheDocument();
   expect(screen.getByText('Cheese')).toBeInTheDocument();
-  expect(screen.getByText('Tomate')).toBeInTheDocument();
+  expect(screen.getByText('Tomato')).toBeInTheDocument();
   expect(screen.getByText('Cucumber')).toBeInTheDocument();
   expect(screen.getByText('Onions')).toBeInTheDocument();
   expect(screen.getAllByRole('checkbox').length).toBe(6);

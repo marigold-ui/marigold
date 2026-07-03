@@ -171,22 +171,10 @@ export const WithMedia = meta.story({
 });
 
 export const Stretch = meta.story({
+  ...Basic.input,
   args: {
     stretch: true,
   },
-  render: args => (
-    <Card {...args}>
-      <Card.Header>
-        <Title>Full Width Card</Title>
-      </Card.Header>
-      <Card.Body>
-        <Text>
-          This card stretches to fill the available horizontal space in its
-          parent container.
-        </Text>
-      </Card.Body>
-    </Card>
-  ),
 });
 
 export const WithPaddingProp = meta.story({

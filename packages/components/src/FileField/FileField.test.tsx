@@ -2,7 +2,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { Basic, MultipleFileUpload } from './FileField.stories';
+import { Basic, UploadFile } from './FileField.stories';
 import { makeFile } from './makeFile';
 
 test('renders default labels (en) for dropzone and button', () => {
@@ -15,7 +15,7 @@ test('renders default labels (en) for dropzone and button', () => {
 test('renders German labels when locale is de-DE', () => {
   render(
     <I18nProvider locale="de-DE">
-      <MultipleFileUpload.Component label="Label" />
+      <UploadFile.Component label="Label" multiple />
     </I18nProvider>
   );
 
@@ -47,7 +47,7 @@ test('when multiple is false, only first file is kept', async () => {
 test('accepts prop filters files', async () => {
   const user = userEvent.setup();
   render(
-    <MultipleFileUpload.Component label="Label" accept={['image/*', '.pdf']} />
+    <UploadFile.Component label="Label" accept={['image/*', '.pdf']} multiple />
   );
 
   const input = document.querySelector(
@@ -67,7 +67,7 @@ test('accepts prop filters files', async () => {
 
 test('remove button removes the corresponding file', async () => {
   const user = userEvent.setup();
-  render(<MultipleFileUpload.Component />);
+  render(<UploadFile.Component multiple />);
 
   const input = document.querySelector(
     'input[type="file"]'
@@ -119,9 +119,7 @@ test('renders hidden input when name is set', () => {
 });
 
 test('hidden input has multiple attribute when multiple is true', () => {
-  render(
-    <MultipleFileUpload.Component label="Label" name="attachment" multiple />
-  );
+  render(<UploadFile.Component label="Label" name="attachment" multiple />);
 
   const hiddenInput = document.querySelector(
     'input[type="file"][name="attachment"]'
@@ -131,7 +129,7 @@ test('hidden input has multiple attribute when multiple is true', () => {
 
 test('hidden input persists after file selection', async () => {
   const user = userEvent.setup();
-  render(<MultipleFileUpload.Component label="Label" name="docs" multiple />);
+  render(<UploadFile.Component label="Label" name="docs" multiple />);
 
   const triggerInput = document.querySelector(
     'input[type="file"]:not([hidden])'
@@ -152,7 +150,7 @@ test('hidden input persists after file selection', async () => {
 
 test('hidden input persists after file removal', async () => {
   const user = userEvent.setup();
-  render(<MultipleFileUpload.Component label="Label" name="docs" multiple />);
+  render(<UploadFile.Component label="Label" name="docs" multiple />);
 
   const triggerInput = document.querySelector(
     'input[type="file"]:not([hidden])'

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
+import { I18nProvider } from '@react-aria/i18n';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
 import { Toast } from './Toast';
@@ -75,23 +76,30 @@ export const Basic = meta.story({
     const { addToast } = useToast();
     return (
       <>
-        <ToastProvider />
-        <Button
-          onPress={() =>
-            addToast({
-              title: args.title,
-              description: args.description,
-              variant: args.variant,
-              timeout: args.timeout,
-            })
-          }
-        >
-          Show Toast
-        </Button>
+        <I18nProvider locale="en">
+          <ToastProvider />
+          <Button
+            onPress={() =>
+              addToast({
+                title: args.title,
+                description: args.description,
+                variant: args.variant,
+                timeout: args.timeout,
+              })
+            }
+          >
+            Show Toast
+          </Button>
+        </I18nProvider>
       </>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+Basic.test(
+  'Shows a toast and dismisses it via the close button',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     const button = canvas.getByRole('button', { name: /show toast/i });
 
     await step('Click the Show Toast button', async () => {
@@ -113,42 +121,44 @@ export const Basic = meta.story({
       await new Promise(resolve => setTimeout(resolve, 300));
       await expect(canvas.queryByText(defaults.title)).not.toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
-export const ToggleToast = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: (_args: unknown) => {
-    const args = toastArgs(_args);
-    const [toastKey, setToastKey] = useState<string | null>(null);
-    const { addToast, removeToast } = useToast();
-    return (
-      <>
-        <ToastProvider />
-        <Button
-          onPress={() => {
-            if (!toastKey) {
-              setToastKey(
-                addToast({
-                  title: args.title,
-                  description: args.description,
-                  variant: args.variant,
-                  timeout: args.timeout,
-                })
-              );
-            } else {
-              removeToast(toastKey);
-              setToastKey(null);
-            }
-          }}
-        >
-          {toastKey ? 'Hide' : 'Show'} Toast
-        </Button>
-      </>
-    );
+Basic.test(
+  'Toggles the toast on and off with the same button',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    render: (_args: unknown) => {
+      const args = toastArgs(_args);
+      const [toastKey, setToastKey] = useState<string | null>(null);
+      const { addToast, removeToast } = useToast();
+      return (
+        <>
+          <ToastProvider />
+          <Button
+            onPress={() => {
+              if (!toastKey) {
+                setToastKey(
+                  addToast({
+                    title: args.title,
+                    description: args.description,
+                    variant: args.variant,
+                    timeout: args.timeout,
+                  })
+                );
+              } else {
+                removeToast(toastKey);
+                setToastKey(null);
+              }
+            }}
+          >
+            {toastKey ? 'Hide' : 'Show'} Toast
+          </Button>
+        </>
+      );
+    },
   },
-
-  play: async ({ canvas, step }) => {
+  async ({ canvas, step }) => {
     const button = canvas.getByRole('button', { name: /show toast/i });
 
     await step('Click the Show Toast button', async () => {
@@ -167,110 +177,102 @@ export const ToggleToast = meta.story({
       await new Promise(resolve => setTimeout(resolve, 300));
       await expect(canvas.queryByText(defaults.title)).not.toBeInTheDocument();
     });
+  }
+);
+
+Basic.test(
+  'Shows a toast with links in the description',
+  // Keep the snapshot so Chromatic captures the toast with links.
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    render: (_args: unknown) => {
+      const args = toastArgs(_args);
+      const { addToast } = useToast();
+      const description = (
+        <>
+          A new version is available.{' '}
+          <Link
+            href="https://www.marigold-ui.io/releases/release-notes"
+            target="_blank"
+          >
+            View changelog
+          </Link>{' '}
+          or{' '}
+          <Link href="https://github.com/marigold-ui/marigold">Update now</Link>
+        </>
+      );
+
+      return (
+        <>
+          <ToastProvider />
+          <Button
+            onPress={() =>
+              addToast({
+                title: args.title,
+                description,
+                variant: args.variant,
+                timeout: args.timeout,
+              })
+            }
+          >
+            Show Toast
+          </Button>
+        </>
+      );
+    },
   },
-});
+  async ({ canvas, step }) => {
+    const button = canvas.getByRole('button', { name: /show toast/i });
 
-export const ToastContentTest = meta.story({
-  render: (_args: unknown) => {
-    const args = toastArgs(_args);
-    return (
-      <div style={{ position: 'fixed', bottom: 16, right: 16 }}>
-        <Toast
-          toast={{
-            content: {
-              title: args.title,
-              description: args.description,
-              variant: args.variant,
-            },
-            key: 'toast-key',
-          }}
-        />
-      </div>
-    );
+    await step('Click the Show Toast button', async () => {
+      await userEvent.click(button);
+    });
+
+    await step('Toast appears with its links and stays open', async () => {
+      await expect(await canvas.findByText(defaults.title)).toBeInTheDocument();
+      await expect(
+        canvas.getByRole('link', { name: 'View changelog' })
+      ).toBeInTheDocument();
+      await expect(
+        canvas.getByRole('link', { name: 'Update now' })
+      ).toBeInTheDocument();
+    });
+  }
+);
+
+Basic.test(
+  'Shows a toast with an action button',
+  // Keep the snapshot so Chromatic captures the toast with its action.
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    render: (_args: unknown) => {
+      const args = toastArgs(_args);
+      const { addToast } = useToast();
+
+      return (
+        <>
+          <ToastProvider />
+          <Button
+            onPress={() =>
+              addToast({
+                title: args.title,
+                description: args.description,
+                variant: args.variant,
+                timeout: args.timeout,
+                action: (
+                  <Button size="small" variant="primary">
+                    Update now
+                  </Button>
+                ),
+              })
+            }
+          >
+            Show Toast
+          </Button>
+        </>
+      );
+    },
   },
-});
-
-export const WithLinks = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  args: {
-    title: 'Update Available',
-  } as unknown as Record<string, never>,
-  render: (_args: unknown) => {
-    const args = toastArgs(_args);
-    const { addToast } = useToast();
-    const description = (
-      <>
-        A new version is available.{' '}
-        <Link
-          href="https://www.marigold-ui.io/releases/release-notes"
-          target="_blank"
-        >
-          View changelog
-        </Link>{' '}
-        or{' '}
-        <Link href="https://github.com/marigold-ui/marigold">Update now</Link>
-      </>
-    );
-
-    return (
-      <>
-        <ToastProvider />
-        <Button
-          onPress={() =>
-            addToast({
-              title: args.title,
-              description,
-              variant: args.variant,
-              timeout: args.timeout,
-            })
-          }
-        >
-          Show Toast
-        </Button>
-      </>
-    );
-  },
-});
-
-export const WithAction = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  tags: ['component-test'],
-  args: {
-    title: 'Update Available',
-    description: 'A new version is available.',
-  } as unknown as Record<string, never>,
-  render: (_args: unknown) => {
-    const args = toastArgs(_args);
-    const { addToast } = useToast();
-
-    return (
-      <>
-        <ToastProvider />
-        <Button
-          onPress={() =>
-            addToast({
-              title: args.title,
-              description: args.description,
-              variant: args.variant,
-              timeout: args.timeout,
-              action: (
-                <Button size="small" variant="primary">
-                  Update now
-                </Button>
-              ),
-            })
-          }
-        >
-          Show Toast
-        </Button>
-      </>
-    );
-  },
-});
-
-WithAction.test(
-  'With action test',
-  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step }) => {
     const button = canvas.getByRole('button', { name: /show toast/i });
 
@@ -279,22 +281,20 @@ WithAction.test(
     });
 
     await step('Toast with title and description appears', async () => {
+      await expect(await canvas.findByText(defaults.title)).toBeInTheDocument();
       await expect(
-        await canvas.findByText('Update Available')
-      ).toBeInTheDocument();
-      await expect(
-        await canvas.findByText('A new version is available.')
+        await canvas.findByText(defaults.description)
       ).toBeInTheDocument();
     });
 
-    await step('Click the button in toast', async () => {
-      const button = canvas.getByText('Update now');
+    await step('The action button is present and clickable', async () => {
+      const action = canvas.getByRole('button', { name: 'Update now' });
 
-      await userEvent.click(button);
+      await userEvent.click(action);
       // Wait briefly to allow any transitions to complete
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      await expect(button).toBeInTheDocument();
+      await expect(action).toBeInTheDocument();
     });
   }
 );

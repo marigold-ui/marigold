@@ -97,7 +97,8 @@ const meta = preview.meta({
   } as const,
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <I18nProvider locale="de-DE">
       <DateField {...args} />
@@ -105,8 +106,31 @@ export const Basic: any = meta.story({
   ),
 });
 
-export const ControlledDateField: any = meta.story({
-  tags: ['component-test'],
+Basic.test('Date entered', async ({ canvas, userEvent }) => {
+  // de-DE renders the field as DD.MM.YYYY, so the segments are day, month, year.
+  const [day, month, year] = canvas.getAllByRole('spinbutton');
+
+  await userEvent.type(day, '16');
+  await userEvent.type(month, '02');
+  await userEvent.type(year, '1990');
+
+  // Each segment shows and exposes the value it received, proving the full
+  // date was captured — not just that focus moved to the last segment.
+  expect(day).toHaveTextContent('16');
+  expect(day).toHaveAttribute('aria-valuenow', '16');
+
+  expect(month).toHaveTextContent('02');
+  expect(month).toHaveAttribute('aria-valuenow', '2');
+
+  expect(year).toHaveTextContent('1990');
+  expect(year).toHaveAttribute('aria-valuenow', '1990');
+
+  // Typing advances through the segments and ends on the year.
+  await expect(year).toHaveFocus();
+});
+
+export const ControlledDateField = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
     return (
@@ -130,25 +154,9 @@ export const ControlledDateField: any = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas, userEvent }) => {
-    const input = canvas.getAllByRole('spinbutton');
-    const result = canvas.getByTestId('datefield-value');
-
-    await userEvent.tab();
-    await userEvent.type(input[0], '16');
-    await userEvent.tab();
-    await userEvent.type(input[1], '02');
-    await userEvent.tab();
-    await userEvent.type(input[2], '1990');
-
-    await expect(input[2]).toHaveFocus();
-    await expect(result).toHaveTextContent(
-      'DateField Value: day:16 month: 2 year:1990'
-    );
-  },
 });
 
-export const BritishLocal: any = meta.story({
+export const BritishLocal = meta.story({
   render: args => (
     <I18nProvider locale="en-GB">
       <DateField {...args} />

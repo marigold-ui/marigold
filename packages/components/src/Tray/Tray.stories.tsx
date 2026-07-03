@@ -43,6 +43,8 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Tray.Trigger>
       <Button>Open Tray</Button>
@@ -70,41 +72,52 @@ export const Basic = meta.story({
   ),
 });
 
+Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
+  await step('Opens when trigger is clicked', async () => {
+    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+    await userEvent.click(openButton);
+
+    await waitFor(() =>
+      expect(canvas.getByText('Tray Title')).toBeInTheDocument()
+    );
+  });
+
+  await step('Closes when close button is clicked', async () => {
+    const closeButton = canvas.getByRole('button', { name: 'Close' });
+    await userEvent.click(closeButton);
+
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
+
+  await step('Can be closed with escape key', async () => {
+    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+    await userEvent.click(openButton);
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
+});
+
 Basic.test(
-  'Opens and closes the tray',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  'Opens the tray',
+  // Keep the snapshot so Chromatic captures the opened tray.
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step }) => {
-    await step('Opens when trigger is clicked', async () => {
+    await step('Open the tray and keep it open', async () => {
       const openButton = canvas.getByRole('button', { name: 'Open Tray' });
       await userEvent.click(openButton);
 
-      await waitFor(() =>
-        expect(canvas.getByText('Tray Title')).toBeInTheDocument()
-      );
-    });
+      const dialog = await waitFor(() => canvas.getByRole('dialog'));
 
-    await step('Closes when close button is clicked', async () => {
-      const closeButton = canvas.getByRole('button', { name: 'Close' });
-      await userEvent.click(closeButton);
-
-      await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-      );
-    });
-
-    await step('Can be closed with escape key', async () => {
-      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-      await userEvent.click(openButton);
-
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
-      );
-
-      await userEvent.keyboard('{Escape}');
-
-      await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-      );
+      expect(dialog).toBeVisible();
+      expect(canvas.getByText('Tray Title')).toBeInTheDocument();
     });
   }
 );

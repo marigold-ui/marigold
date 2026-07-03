@@ -1,13 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-aria-components/slots';
-import { Basic, WithIcon } from './Button.stories';
+import { Basic, ButtonVariants } from './Button.stories';
 import { ButtonContext } from './Context';
 import { ResetButtonContext } from './ResetButtonContext';
 
 test('add icon in button works as expected', () => {
-  render(<WithIcon.Component>iconbutton</WithIcon.Component>);
+  render(<ButtonVariants.Component />);
 
-  const button = screen.getByText(/iconbutton/);
+  // ButtonVariants renders one button with a Facebook icon and "Submit" label.
+  const button = screen.getByText('Submit');
   const icon = screen.getByTestId(/download/);
 
   expect(button).toHaveClass('items-center justify-center');
