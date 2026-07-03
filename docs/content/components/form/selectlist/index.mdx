@@ -43,6 +43,16 @@ Hidden lists make users do invisible work. Comparing two options in a dropdown m
 
 Use `<SelectList>` when comparison is the point of the field, not when it is one step among many. That usually means a peer-level choice where each option is its own commitment, and getting it right matters more than moving through the form quickly.
 
+### Options as cards
+
+The `bordered` variant renders each option as its own outlined card with a small gap between rows, instead of a continuous surface with dividers. Reach for it when the choice is commit-level and each option is a peer the user weighs against the others, like event spaces, subscription plans, payment methods, or shipping modes. The card framing reads as "pick one of these" more strongly than a plain list, and each card has room for a thumbnail, a title, and a short description, the same anatomy as a [`<Card>`](/components/collection/card).
+
+This is also the answer whenever you catch yourself wanting a grid of selectable cards. `<Card>` renders a non-interactive `<article>` for grouping content, so it has no selection, form, or keyboard support. A bordered `<SelectList>` keeps the card look while owning the selection state, the value the form submits, and the keyboard navigation.
+
+Set `variant="bordered"` and pick a `selectionMode`. The example below takes the venue [card grid](/components/collection/card) and rebuilds it as a selectable list, laid out with `orientation="horizontal"` so the cards sit side by side. Each option keeps the same photo, title, and details, and now carries single selection and the value the form submits.
+
+<ComponentDemo name="selectlist-selectable-cards" />
+
 ### Number of options
 
 The right control depends on list length and how much space the field can take. `<SelectList>` earns its space when comparing options side by side or hosting per-row actions matters. For shorter lists of plain choices, longer lists, or when space is tight, a lighter control fits better. The table below maps common situations to the control that fits.
@@ -192,6 +202,8 @@ This two-tier model is what lets a per-row button or menu coexist with row selec
 Always give the list a `label`, or pass `aria-labelledby` when a heading nearby already names it. Without one, screen readers announce a list with no idea what it's for.
 
 For rows with rich content like a wrapped label, a logo, or a trailing action, set `textValue` on the option. Screen readers use it as the option's accessible name. Without it, the announcement collapses to whatever text fragment is reachable, which is rarely the right one.
+
+When an option carries an image, decide whether it conveys information. A decorative photo, like the venue thumbnails in the [Options as cards](#options-as-cards) example, takes `alt=""` so screen readers skip it, since the `textValue` already names the option. Give the image a real `alt` only when it says something the surrounding text does not.
 
 ## Props
 
