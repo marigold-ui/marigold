@@ -1,8 +1,8 @@
 import * as m from 'motion/react-m';
 import type { ReactNode, Ref } from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Provider } from 'react-aria-components';
 import { Toolbar } from 'react-aria-components/Toolbar';
+import { Provider } from 'react-aria-components/slots';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useKeyboard } from '@react-aria/interactions';

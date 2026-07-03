@@ -1,6 +1,6 @@
 ---
-'@marigold/components': minor
-'@marigold/theme-rui': minor
+'@marigold/components': major
+'@marigold/theme-rui': major
 ---
 
 feat(DST-1545): replace `ActionBar.Button` with a plain `<Button>` via a `ButtonContext` cascade. `ActionBar` now provides a `ghost`/`default` cascade to its toolbar, so authors place a standard `<Button>` inside the bar and it adapts to the toolbar look automatically, with the full Button API available (`disabled`, `loading`, `slot`, `size="icon"`). This mirrors the pattern already used by `Panel.Header` and `ButtonGroup`.
