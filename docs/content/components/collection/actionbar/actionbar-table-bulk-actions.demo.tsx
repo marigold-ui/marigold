@@ -1,6 +1,7 @@
 import {
   ActionBar,
   Badge,
+  Button,
   Scrollable,
   Stack,
   Table,
@@ -30,18 +31,18 @@ export default () => (
       defaultSelectedKeys={new Set(['2', '3'])}
       actionBar={() => (
         <ActionBar>
-          <ActionBar.Button onPress={() => alert('Edit')}>
+          <Button onPress={() => alert('Edit')}>
             <Pencil />
             Edit
-          </ActionBar.Button>
-          <ActionBar.Button onPress={() => alert('Copy')}>
+          </Button>
+          <Button onPress={() => alert('Copy')}>
             <Copy />
             Copy
-          </ActionBar.Button>
-          <ActionBar.Button onPress={() => alert('Delete')}>
+          </Button>
+          <Button onPress={() => alert('Delete')}>
             <Trash2 />
             Delete
-          </ActionBar.Button>
+          </Button>
         </ActionBar>
       )}
     >

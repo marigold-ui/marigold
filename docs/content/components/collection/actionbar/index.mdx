@@ -17,7 +17,7 @@ Reach for it whenever a list or [`<Table>`](/components/collection/table) lets p
 - **Selection count:** States how many items the actions will affect, so the user knows the scope before pressing anything. It reads `All items selected` when the collection's select-all is used.
 - **Clear button:** Dismisses the bar and clears the selection. Rendered only when a clear handler is available.
 - **Toolbar:** Groups the actions into a single row.
-- **Action:** Each `<ActionBar.Button>` runs one operation across the whole selection.
+- **Action:** Each action is a plain [`<Button>`](/components/actions/button) that runs one operation across the whole selection. The bar adapts it to the toolbar look automatically.
 
 ## Appearance
 
@@ -64,7 +64,7 @@ Inside the render prop you write only the actions; the selection count and the c
 
 ### Bulk editing in a drawer
 
-Some bulk actions need a few inputs before they can run, such as moving many events to a new date and venue at once. Compose an `<ActionBar.Button>` inside a [`<Drawer.Trigger>`](/components/overlay/drawer) so pressing the action opens a drawer with a small form, and apply the changes across the selection on submit.
+Some bulk actions need a few inputs before they can run, such as moving many events to a new date and venue at once. Compose a `<Button>` inside a [`<Drawer.Trigger>`](/components/overlay/drawer) so pressing the action opens a drawer with a small form, and apply the changes across the selection on submit.
 
 <ComponentDemo name="actionbar-drawer" />
 
@@ -96,9 +96,20 @@ Give every icon-only action a text label as well, either visible next to the ico
 
 <AutoTypeTable path="ActionBar" name="ActionBarProps" />
 
-### ActionBar.Button
+### Actions
 
-<AutoTypeTable path="ActionBar/ActionBarButton" name="ActionBarButtonProps" />
+Actions are plain [`<Button>`](/components/actions/button) elements. Place them directly inside the bar and it cascades the toolbar look (a `ghost` variant at the default size); a local `variant` or `size` on a button still wins. For an icon-only action, set `size="icon"` and give it an `aria-label`.
+
+```tsx
+<ActionBar selectedItemCount={3} onClearSelection={clear}>
+  <Button onPress={edit}>
+    <Pencil /> Edit
+  </Button>
+  <Button size="icon" aria-label="Delete" onPress={del}>
+    <Trash2 />
+  </Button>
+</ActionBar>
+```
 
 ### useActionBar
 
@@ -152,7 +163,7 @@ Give every icon-only action a text label as well, either visible next to the ico
       title: 'Drawer',
       href: '../../overlay/drawer',
       caption:
-        'Pair an ActionBar.Button with a Drawer when a bulk action needs a small form before it runs.',
+        'Pair a Button with a Drawer when a bulk action needs a small form before it runs.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

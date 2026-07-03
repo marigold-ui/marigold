@@ -4,6 +4,7 @@ import preview from '.storybook/preview';
 import { Copy, Pencil, Trash2 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
+import { Button } from '../Button/Button';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
@@ -62,18 +63,18 @@ export const Basic = meta.story({
   },
   render: args => (
     <ActionBar {...args}>
-      <ActionBar.Button onPress={() => alert('Edit action')}>
+      <Button onPress={() => alert('Edit action')}>
         <Pencil />
         Edit
-      </ActionBar.Button>
-      <ActionBar.Button onPress={() => alert('Copy action')}>
+      </Button>
+      <Button onPress={() => alert('Copy action')}>
         <Copy />
         Copy
-      </ActionBar.Button>
-      <ActionBar.Button onPress={() => alert('Delete action')}>
+      </Button>
+      <Button onPress={() => alert('Delete action')}>
         <Trash2 />
         Delete
-      </ActionBar.Button>
+      </Button>
     </ActionBar>
   ),
   play: async ({ args, canvas }) => {
@@ -97,14 +98,14 @@ export const WithoutClearButton = meta.story({
   },
   render: args => (
     <ActionBar {...args}>
-      <ActionBar.Button>
+      <Button>
         <Pencil />
         Edit
-      </ActionBar.Button>
-      <ActionBar.Button>
+      </Button>
+      <Button>
         <Trash2 />
         Delete
-      </ActionBar.Button>
+      </Button>
     </ActionBar>
   ),
 });
@@ -288,18 +289,18 @@ export const IntegratedWithTable = meta.story({
           }
           actionBar={() => (
             <ActionBar>
-              <ActionBar.Button onPress={() => alert('Edit')}>
+              <Button onPress={() => alert('Edit')}>
                 <Pencil />
                 Edit
-              </ActionBar.Button>
-              <ActionBar.Button onPress={() => alert('Copy')}>
+              </Button>
+              <Button onPress={() => alert('Copy')}>
                 <Copy />
                 Copy
-              </ActionBar.Button>
-              <ActionBar.Button onPress={() => alert('Delete')}>
+              </Button>
+              <Button onPress={() => alert('Delete')}>
                 <Trash2 />
                 Delete
-              </ActionBar.Button>
+              </Button>
             </ActionBar>
           )}
         >
@@ -396,15 +397,15 @@ export const NoSelection = meta.story({
     <div>
       <p>No items selected no action bar will show up</p>
       <ActionBar {...args}>
-        <ActionBar.Button aria-label="Edit">
+        <Button size="icon" aria-label="Edit">
           <Pencil />
-        </ActionBar.Button>
-        <ActionBar.Button aria-label="Copy">
+        </Button>
+        <Button size="icon" aria-label="Copy">
           <Copy />
-        </ActionBar.Button>
-        <ActionBar.Button aria-label="Delete">
+        </Button>
+        <Button size="icon" aria-label="Delete">
           <Trash2 />
-        </ActionBar.Button>
+        </Button>
       </ActionBar>
     </div>
   ),
