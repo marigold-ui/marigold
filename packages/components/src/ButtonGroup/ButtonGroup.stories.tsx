@@ -1,4 +1,4 @@
-import { expect, userEvent } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Edit } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -32,27 +32,24 @@ export const Basic = meta.story({
       <Button aria-label="Delete">Delete</Button>
     </ButtonGroup>
   ),
-  play: async ({ canvas }) => {
+});
+
+Basic.test(
+  'renders a labelled toolbar with all its buttons',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     const toolbar = canvas.getByRole('toolbar', { name: 'Item actions' });
     const buttons = canvas.getAllByRole('button');
 
     await expect(toolbar).toBeInTheDocument();
     await expect(buttons).toHaveLength(3);
-  },
-});
+  }
+);
 
-export const KeyboardNavigation = meta.story({
-  tags: ['component-test'],
-  render: () => (
-    <ButtonGroup aria-label="Item actions">
-      <Button aria-label="Edit">
-        <Edit />
-      </Button>
-      <Button aria-label="Duplicate">Duplicate</Button>
-      <Button aria-label="Delete">Delete</Button>
-    </ButtonGroup>
-  ),
-  play: async ({ canvas }) => {
+Basic.test(
+  'arrow keys move focus between buttons',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
     const [first, second, third] = canvas.getAllByRole('button');
     first.focus();
 
@@ -61,8 +58,8 @@ export const KeyboardNavigation = meta.story({
 
     await expect(second).not.toHaveFocus();
     await expect(third).toHaveFocus();
-  },
-});
+  }
+);
 
 export const DisabledCascade = meta.story({
   tags: ['component-test'],
@@ -72,19 +69,24 @@ export const DisabledCascade = meta.story({
       <Button aria-label="Delete">Delete</Button>
     </ButtonGroup>
   ),
-  play: async ({ canvas }) => {
+});
+
+DisabledCascade.test(
+  'cascades disabled to every button',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     const buttons = canvas.getAllByRole('button');
+
     for (const button of buttons) {
       await expect(button).toBeDisabled();
     }
-  },
-});
+  }
+);
 
 // Uniform precedence: a local prop ALWAYS wins over the group — including
 // `size` (which is the change from the former `ActionGroup`, where the group
 // won `size`).
 export const CascadePrecedence = meta.story({
-  tags: ['component-test'],
   render: () => (
     <ButtonGroup
       aria-label="Cascade precedence"
@@ -106,7 +108,6 @@ export const CascadePrecedence = meta.story({
 });
 
 export const WithActionMenu = meta.story({
-  tags: ['component-test'],
   render: () => (
     <ButtonGroup aria-label="With ActionMenu" size="small" variant="ghost">
       <Button aria-label="Edit">Edit</Button>

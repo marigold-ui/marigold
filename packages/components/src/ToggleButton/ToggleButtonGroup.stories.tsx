@@ -120,6 +120,7 @@ Basic.test(
 
 export const BothSurfaces = meta.story({
   parameters: {
+    parameters: { chromatic: { disableSnapshot: true } },
     surface: 'both',
   },
   args: {

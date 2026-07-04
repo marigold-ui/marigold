@@ -110,7 +110,10 @@ test('hides loading state when loading is false', () => {
 });
 
 test('does not allow width="fit"', () => {
-  renderWithOverlay(<Basic.Component label="Label" width="fit" />);
+  renderWithOverlay(
+    // @ts-expect-error - `width="fit"` is intentionally unsupported; assert it is not applied
+    <Basic.Component label="Label" width="fit" />
+  );
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;

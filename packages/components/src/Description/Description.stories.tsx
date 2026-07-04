@@ -13,6 +13,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   args: {
     children: 'Helps a user understand what the parent region is for.',
   },
@@ -21,16 +22,12 @@ export const Basic = meta.story({
   ),
 });
 
-export const Renders = meta.story({
-  tags: ['component-test'],
-  render: () => (
-    <Description>
-      Helps a user understand what the parent region is for.
-    </Description>
-  ),
-  play: async ({ canvas }) => {
+Basic.test(
+  'renders its children',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     await expect(
       canvas.getByText('Helps a user understand what the parent region is for.')
     ).toBeInTheDocument();
-  },
-});
+  }
+);

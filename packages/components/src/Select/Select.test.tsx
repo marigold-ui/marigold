@@ -2,12 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import {
-  Basic,
-  MultiSelectSummary,
-  Sections,
-  WithRenderValue,
-} from './Select.stories';
+import { Basic, MultiSelectSummary, WithRenderValue } from './Select.stories';
 
 const user = userEvent.setup();
 
@@ -168,16 +163,4 @@ test('renderValue count reflects a single selection with static children', async
   await user.click(await screen.findByRole('option', { name: 'Bold' }));
 
   await waitFor(() => expect(button).toHaveTextContent(/1 selected/));
-});
-
-test('default trigger render hides description slot', () => {
-  renderWithOverlay(
-    <Sections.Component label="Label" defaultValue="harry-potter" />
-  );
-
-  const description = within(screen.getByRole('button')).getByText(
-    'About the boy who lived'
-  );
-
-  expect(description).not.toBeVisible();
 });

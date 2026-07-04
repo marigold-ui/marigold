@@ -557,6 +557,7 @@ const renderUserOption = (person: (typeof people)[number]) => (
 
 export const WithRenderValue = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Assign to',
     placeholder: 'Select a user',
@@ -567,7 +568,11 @@ export const WithRenderValue = meta.story({
       {renderUserOption}
     </Select>
   ),
-  play: async ({ args, canvas, step }) => {
+});
+
+WithRenderValue.test(
+  'renders the selected value with a custom renderValue',
+  async ({ args, canvas, step }) => {
     const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
     await step('Trigger shows placeholder when nothing selected', async () => {
@@ -596,8 +601,8 @@ export const WithRenderValue = meta.story({
         within(trigger).queryByText('Senior Developer')
       ).not.toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 /**
  * Mobile counterpart of {@link WithRenderValue}: below the `sm` breakpoint the
@@ -608,6 +613,7 @@ export const WithRenderValue = meta.story({
  */
 export const WithRenderValueMobile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -621,7 +627,11 @@ export const WithRenderValueMobile = meta.story({
       {renderUserOption}
     </Select>
   ),
-  play: async ({ args, canvas, step }) => {
+});
+
+WithRenderValueMobile.test(
+  'renders the selected value with a custom renderValue in the tray',
+  async ({ args, canvas, step }) => {
     // Fail loudly if the mobile viewport did not take effect, rather than
     // passing a test that never exercised the tray branch.
     expect(window.innerWidth).toBeLessThan(640);
@@ -652,11 +662,12 @@ export const WithRenderValueMobile = meta.story({
         within(trigger).queryByText('Senior Developer')
       ).not.toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 export const MultiSelectSummary = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Formatting',
     width: 64,
@@ -678,7 +689,12 @@ export const MultiSelectSummary = meta.story({
       <Select.Option id="underline">Underline</Select.Option>
     </Select>
   ),
-  play: async ({ args, canvas }) => {
+});
+
+MultiSelectSummary.test(
+  'collapses multiple selections into a compact count summary',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas }) => {
     const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
     await userEvent.click(trigger);
@@ -696,8 +712,8 @@ export const MultiSelectSummary = meta.story({
     // Two selections collapse to a compact "N selected" summary, rather than
     // listing every value on the trigger.
     expect(within(trigger).getByText('2 selected')).toBeVisible();
-  },
-});
+  }
+);
 
 /**
  * Mobile counterpart of {@link MultiSelectSummary}: the `count`-based summary
@@ -708,6 +724,7 @@ export const MultiSelectSummary = meta.story({
  */
 export const MultiSelectSummaryMobile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -728,7 +745,12 @@ export const MultiSelectSummaryMobile = meta.story({
       <Select.Option id="underline">Underline</Select.Option>
     </Select>
   ),
-  play: async ({ args, canvas, step }) => {
+});
+
+MultiSelectSummaryMobile.test(
+  'shows the compact count summary from the tray branch',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas, step }) => {
     expect(window.innerWidth).toBeLessThan(640);
 
     const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
@@ -756,8 +778,8 @@ export const MultiSelectSummaryMobile = meta.story({
     await step('Trigger shows the compact count summary', () => {
       expect(within(trigger).getByText('2 selected')).toBeVisible();
     });
-  },
-});
+  }
+);
 
 /**
  * Quick-filter pattern: a multi-select whose trigger always shows the filter's
@@ -773,6 +795,7 @@ export const MultiSelectSummaryMobile = meta.story({
  */
 export const QuickFilter = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Select
       aria-label="Status"
@@ -797,7 +820,12 @@ export const QuickFilter = meta.story({
       <Select.Option id="archived">Archived</Select.Option>
     </Select>
   ),
-  play: async ({ canvas }) => {
+});
+
+QuickFilter.test(
+  'keeps the dimension label and reflects the active count in a badge',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
     const trigger = canvas.getByRole('button', { name: /Status/i });
 
     // Until something is selected, the trigger shows the bare label and no badge.
@@ -825,8 +853,8 @@ export const QuickFilter = meta.story({
     expect(
       canvas.getByRole('button', { name: /2 selected/i })
     ).toBeInTheDocument();
-  },
-});
+  }
+);
 
 export const Mobile = meta.story({
   tags: ['component-test'],

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Download, Facebook } from '@marigold/icons';
+import { Facebook } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
 

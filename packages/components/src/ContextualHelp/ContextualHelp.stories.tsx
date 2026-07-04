@@ -102,7 +102,7 @@ Basic.test('Opens contextual help', async ({ canvas, userEvent }) => {
   const helpButton = await canvas.getByLabelText(/help|hilfe/i);
   await userEvent.click(helpButton);
 
-  expect(await canvas.findByText('Whats this?')).toBeInTheDocument();
+  expect(await canvas.findByText(/What.s this\?/)).toBeInTheDocument();
   expect(
     await canvas.findByText(
       'This feature explains important functions to you directly in the context of the page.'
@@ -113,6 +113,22 @@ Basic.test('Opens contextual help', async ({ canvas, userEvent }) => {
       name: 'To the documentation',
     })
   ).toBeInTheDocument();
+});
+
+export const WithDescription = meta.story({
+  render: args => (
+    <div className="flex h-96 items-center justify-center">
+      <ContextualHelp {...args}>
+        <ContextualHelp.Title>Feature overview</ContextualHelp.Title>
+        <ContextualHelp.Description>
+          A short summary of this feature.
+        </ContextualHelp.Description>
+        <ContextualHelp.Content>
+          More detail about how this feature works.
+        </ContextualHelp.Content>
+      </ContextualHelp>
+    </div>
+  ),
 });
 
 export const WithTextField = meta.story({

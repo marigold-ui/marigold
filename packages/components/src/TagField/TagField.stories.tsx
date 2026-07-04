@@ -221,20 +221,6 @@ LargeDataset.test(
   }
 );
 
-export const Disabled = Basic.extend({
-  tags: ['component-test'],
-  args: {
-    disabled: true,
-  },
-});
-
-Disabled.test('shows not-allowed cursor when disabled', async ({ canvas }) => {
-  const trigger = canvas.getByRole('button');
-  const style = window.getComputedStyle(trigger);
-
-  await expect(style.cursor).toBe('not-allowed');
-});
-
 export const DisabledItems = Basic.extend({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -279,8 +265,22 @@ DisabledItems.test(
   }
 );
 
+DisabledItems.test(
+  'shows not-allowed cursor when disabled',
+  {
+    args: { disabled: true },
+  },
+  async ({ canvas }) => {
+    const trigger = canvas.getByRole('button');
+    const style = window.getComputedStyle(trigger);
+
+    await expect(style.cursor).toBe('not-allowed');
+  }
+);
+
 export const Mobile = Basic.extend({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },

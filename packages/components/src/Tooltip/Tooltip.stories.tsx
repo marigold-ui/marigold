@@ -1,3 +1,4 @@
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Tooltip } from './Tooltip';
@@ -64,6 +65,8 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  tags: ['component-test'],
   render: args => {
     return (
       <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] gap-2 pt-32">
@@ -78,3 +81,19 @@ export const Basic = meta.story({
     );
   },
 });
+
+// Opens the tooltip (focus-visible) and re-enables the snapshot the base story
+// disables, so Chromatic captures the tooltip in its open state.
+Basic.test(
+  'shows the tooltip on focus',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.tab();
+
+    const tooltip = await waitFor(() => canvas.getByRole('tooltip'));
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toHaveTextContent(
+      'I am a much more longer tooltip you know!'
+    );
+  }
+);

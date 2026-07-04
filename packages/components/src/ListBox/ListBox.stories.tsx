@@ -42,7 +42,14 @@ export const WithDescription = meta.story({
       </ListBox.Item>
     </ListBox>
   ),
-  play: async ({ canvas }: any) => {
+});
+
+WithDescription.test(
+  'links each item to its description via aria-describedby',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
     const item = canvas.getByRole('option', { name: /Restricted/ });
     const description = canvas.getByText('Only people you invite can view.');
 
@@ -50,8 +57,8 @@ export const WithDescription = meta.story({
     expect(item.getAttribute('aria-describedby') ?? '').toContain(
       description.id
     );
-  },
-});
+  }
+);
 
 export const WithSections = meta.story({
   render: args => (

@@ -77,6 +77,14 @@ export const Basic = meta.story({
   tags: ['component-test'],
 });
 
+export const Settings = meta.story({
+  args: {
+    variant: 'settings',
+    label: 'Email notifications',
+    description: 'Receive email notifications when someone mentions you',
+  },
+});
+
 Basic.test('Toggles on when clicked', async ({ canvas, userEvent }) => {
   const button = canvas.getByRole('switch');
 

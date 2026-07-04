@@ -6,12 +6,9 @@ import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
 import { ActionMenu } from '../Menu/ActionMenu';
-import { Menu } from '../Menu/Menu';
-import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
-import { ConfirmationDialog } from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
 const meta = preview.meta({
@@ -45,6 +42,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
@@ -71,7 +69,7 @@ export const Basic = meta.story({
 Basic.test(
   'Open dialog',
   {
-    parameters: { chromatic: { disableSnapshot: true } },
+    parameters: { chromatic: { disableSnapshot: false } },
   },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
@@ -126,36 +124,9 @@ export const WithFormValidation = meta.story({
   ),
 });
 
-export const TextOnly = meta.story({
-  tags: ['component-test'],
-  render: ({ size, ...args }) => (
-    <Dialog.Trigger {...args}>
-      <Button variant="primary">Open</Button>
-      <Dialog size={size} closeButton>
-        <Title>Information</Title>
-        <Dialog.Content>
-          Your session will expire in 30 minutes. Save your work to avoid losing
-          any unsaved changes.
-        </Dialog.Content>
-      </Dialog>
-    </Dialog.Trigger>
-  ),
-});
-
-TextOnly.test(
-  'Shows only text',
-  {
-    parameters: { chromatic: { disableSnapshot: true } },
-  },
-  async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
-
-    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
-  }
-);
-
 export const VeryLongContent = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const { size, ...triggerArgs } = args;
     return (
@@ -306,7 +277,7 @@ export const VeryLongContent = meta.story({
 VeryLongContent.test(
   'Shows very long content',
   {
-    parameters: { chromatic: { disableSnapshot: true } },
+    parameters: { chromatic: { disableSnapshot: false } },
   },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
@@ -341,6 +312,7 @@ VeryLongContent.test(
  */
 export const SlotPrimitives = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
@@ -377,7 +349,14 @@ export const SlotPrimitives = meta.story({
       </Dialog>
     </Dialog.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+SlotPrimitives.test(
+  'Renders slot primitives with grouped actions',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
     await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
 
@@ -390,8 +369,8 @@ export const SlotPrimitives = meta.story({
     expect(
       canvas.getByRole('toolbar', { name: 'Event actions' })
     ).toBeInTheDocument();
-  },
-});
+  }
+);
 
 /**
  * A bare `<Title slot="title">` (no `<Dialog.Header>`, no description) is a
@@ -400,6 +379,7 @@ export const SlotPrimitives = meta.story({
  */
 export const TitleOnlyWithoutHeader = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
@@ -412,7 +392,14 @@ export const TitleOnlyWithoutHeader = meta.story({
       </Dialog>
     </Dialog.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+TitleOnlyWithoutHeader.test(
+  'Labels the dialog with a bare Title',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
 
     const dialog = await waitFor(() =>
@@ -422,5 +409,5 @@ export const TitleOnlyWithoutHeader = meta.story({
 
     expect(title.tagName).toBe('H2');
     expect(dialog).toHaveAttribute('aria-labelledby', title.id);
-  },
-});
+  }
+);

@@ -1,4 +1,3 @@
-import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
 import { Headline } from '../Headline/Headline';

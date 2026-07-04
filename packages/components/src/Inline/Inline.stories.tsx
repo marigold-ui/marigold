@@ -65,7 +65,7 @@ export const Basic = meta.story({
     alignX: 'left',
   },
   render: args => (
-    <Inline {...args}>
+    <Inline {...args} data-testid="inline">
       <Block>Lirum</Block>
       <Block>
         Larum
@@ -79,8 +79,22 @@ export const Basic = meta.story({
   ),
 });
 
+Basic.test(
+  'collapses the gap between children to zero',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      space: 'collapsed',
+    },
+  },
+  async ({ canvas }) => {
+    const inline = canvas.getByTestId('inline');
+
+    expect(getComputedStyle(inline).gap).toBe('0px');
+  }
+);
+
 export const InputButtonAlignment = meta.story({
-  tags: ['component-test'],
   args: {
     alignY: 'input',
     space: 6,
@@ -109,27 +123,6 @@ export const InputButtonAlignment = meta.story({
         </Inline>
       </Stack>
     );
-  },
-});
-
-export const Collapsed = meta.story({
-  tags: ['component-test'],
-  parameters: {
-    surface: false,
-  },
-  args: {
-    space: 'collapsed',
-  },
-  render: args => (
-    <Inline data-testid="inline" {...args}>
-      <Block>Lirum</Block>
-      <Block>Larum</Block>
-      <Block>Löffelstiel!</Block>
-    </Inline>
-  ),
-  play: async ({ canvas }) => {
-    const inline = canvas.getByTestId('inline');
-    expect(getComputedStyle(inline).gap).toBe('0px');
   },
 });
 

@@ -80,17 +80,25 @@ export const Basic = meta.story({
       <SegmentedControl.Option value="drafts">Drafts</SegmentedControl.Option>
     </SegmentedControl>
   ),
-  play: async ({ canvas }) => {
+});
+
+Basic.test(
+  'selects an option on click',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
     const past = canvas.getByRole('radio', { name: 'Past' });
 
     await userEvent.click(past);
 
     await expect(past).toBeChecked();
-  },
-});
+  }
+);
 
 export const Controlled = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Layout',
   },
@@ -107,14 +115,18 @@ export const Controlled = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas }) => {
+});
+
+Controlled.test(
+  'reflects the selected value in controlled mode',
+  async ({ canvas }) => {
     const grid = canvas.getByRole('radio', { name: 'Grid' });
 
     await userEvent.click(grid);
 
     await expect(canvas.getByText('Selected: grid')).toBeVisible();
-  },
-});
+  }
+);
 
 export const DisabledOption = meta.story({
   tags: ['component-test'],
@@ -129,15 +141,22 @@ export const DisabledOption = meta.story({
       </SegmentedControl.Option>
     </SegmentedControl>
   ),
-  play: async ({ canvas }) => {
+});
+
+DisabledOption.test(
+  'does not select a disabled option',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
     const grid = canvas.getByRole('radio', { name: 'Grid' });
 
     await userEvent.click(grid);
 
     await expect(grid).toBeDisabled();
     await expect(canvas.getByRole('radio', { name: 'List' })).toBeChecked();
-  },
-});
+  }
+);
 
 // Stress test only: this intentionally exceeds the recommended 2–5 options
 // (see the docs' "Number of options" guideline) to exercise the horizontal
@@ -161,7 +180,14 @@ export const Overflow = meta.story({
       </SegmentedControl>
     </div>
   ),
-  play: async ({ canvas, canvasElement }) => {
+});
+
+Overflow.test(
+  'keeps the selected option in view when overflowing',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, canvasElement }) => {
     const presentation = canvasElement.querySelector(
       '[role="presentation"]'
     ) as HTMLElement;
@@ -173,8 +199,8 @@ export const Overflow = meta.story({
     await waitFor(() => expect(scroller.scrollLeft).toBeGreaterThan(0));
     expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
     expect(august).toBeChecked();
-  },
-});
+  }
+);
 
 // Regression guard for the 320px overflow report (DST-765). Pinned to the
 // 320px viewport and rendered without a width wrapper so the segments overflow
@@ -199,7 +225,14 @@ export const OverflowSmallScreen = meta.story({
       ))}
     </SegmentedControl>
   ),
-  play: async ({ canvas, canvasElement }) => {
+});
+
+OverflowSmallScreen.test(
+  'scrolls inside the track without bleeding past its edges',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, canvasElement }) => {
     const track = canvasElement.querySelector(
       '[role="presentation"]'
     ) as HTMLElement;
@@ -220,8 +253,8 @@ export const OverflowSmallScreen = meta.story({
     const august = canvas.getByRole('radio', { name: 'Aug' });
     await userEvent.click(august);
     await expect(august).toBeChecked();
-  },
-});
+  }
+);
 
 export const WithError = meta.story({
   tags: ['component-test'],
@@ -239,7 +272,14 @@ export const WithError = meta.story({
       <SegmentedControl.Option value="private">Private</SegmentedControl.Option>
     </SegmentedControl>
   ),
-  play: async ({ canvas, args }) => {
+});
+
+WithError.test(
+  'exposes the error message and aria-invalid',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, args }) => {
     const group = canvas.getByRole('radiogroup');
 
     await waitFor(() =>
@@ -247,11 +287,12 @@ export const WithError = meta.story({
     );
 
     expect(group).toHaveAttribute('aria-invalid', 'true');
-  },
-});
+  }
+);
 
 export const InForm = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Status',
   },
@@ -281,7 +322,14 @@ export const InForm = meta.story({
       </Form>
     );
   },
-  play: async ({ canvas }) => {
+});
+
+InForm.test(
+  'submits the selected value as form data',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
     const archived = canvas.getByRole('radio', { name: 'Archived' });
 
     await userEvent.click(archived);
@@ -290,7 +338,7 @@ export const InForm = meta.story({
     await waitFor(() =>
       expect(canvas.getByText('Submitted: archived')).toBeVisible()
     );
-  },
-});
+  }
+);
 
 export default meta;

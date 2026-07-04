@@ -7,9 +7,10 @@ import { ResetButtonContext } from './ResetButtonContext';
 test('add icon in button works as expected', () => {
   render(<ButtonVariants.Component />);
 
-  // ButtonVariants renders one button with a Facebook icon and "Submit" label.
-  const button = screen.getByText('Submit');
-  const icon = screen.getByTestId(/download/);
+  // ButtonVariants renders a button with a Facebook icon and "Submit" label.
+  // `surface: 'both'` renders the story on two surfaces, so scope to the first.
+  const button = screen.getAllByText('Submit')[0];
+  const icon = screen.getAllByTestId('facebook')[0];
 
   expect(button).toHaveClass('items-center justify-center');
   expect(getComputedStyle(icon).width).toBe('16px');
