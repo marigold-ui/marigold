@@ -364,3 +364,51 @@
       calc(100% - var(--sc-scroll-buffer)) 100%;
   }
 }
+
+/* ========================= */
+/*          Access           */
+/* ========================= */
+
+/*
+ * Marks content that requires elevated access rights with a small glyph
+ * (lock = master, key = admin). The glyph is generated content painted from
+ * a mask-image (see `--access-mask-*` in tokens.css), so the treatment lives
+ * entirely in the theme and works in React as well as in the generated
+ * BEM/Twig CSS.
+ *
+ * The `content` alternative text exposes the restriction to assistive
+ * technology — without it, the glyph does not appear in the accessibility
+ * tree and a restricted element is indistinguishable from a regular one
+ * (WCAG 1.1.1).
+ */
+@utility ui-access-master {
+  &::before {
+    content: '' / 'Master';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.25rem;
+    background-color: var(--color-access-master-foreground);
+    mask-image: var(--access-mask-lock);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+}
+
+@utility ui-access-admin {
+  &::before {
+    content: '' / 'Admin';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.25rem;
+    background-color: var(--color-access-admin-foreground);
+    mask-image: var(--access-mask-key);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+}

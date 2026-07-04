@@ -33,11 +33,13 @@ test('renders the info variant correctly', () => {
 test('master variant applies the lock mask glyph', () => {
   render(<Basic.Component />);
   const master = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('master')];
-  expect(master).toHaveClass('before:[mask-image:var(--access-mask-lock)]');
+
+  expect(master).toHaveClass('ui-access-master');
 });
 
 test('admin variant applies the key mask glyph', () => {
   render(<Basic.Component />);
   const admin = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('admin')];
-  expect(admin).toHaveClass('before:[mask-image:var(--access-mask-key)]');
+
+  expect(admin).toHaveClass('ui-access-admin');
 });
