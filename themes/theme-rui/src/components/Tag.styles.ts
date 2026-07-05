@@ -11,14 +11,11 @@ export const Tag: ThemeComponent<'Tag'> = {
   tag: cva({
     base: [
       'relative inline-flex items-center gap-1.75',
-      // Match the secondary Button surface: muted gloss + hairline ring + border elevation.
-      'ui-surface-muted shadow-elevation-border',
+      'ui-surface-control shadow-elevation-border',
       'font-medium text-xs',
       'h-6 px-2 cursor-default',
-      // ui-surface-muted paints via `background` (shorthand), so selected/disabled
-      // override `background` directly rather than the --ui-background-color var.
-      'selected:text-selected-bold-foreground selected:[background:var(--color-selected-bold)]',
-      'data-disabled:ui-state-disabled',
+      'selected:text-selected-bold-foreground selected:[--ui-background-color:var(--color-selected-bold)]',
+      'data-disabled:cursor-not-allowed data-disabled:text-disabled data-disabled:bg-disabled-surface',
       'focus-visible:ui-state-focus outline-none',
     ],
   }),

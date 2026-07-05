@@ -3,11 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva({
     base: [
-      'ui-surface shadow-elevation-border h-control',
-      // The ring lives on this wrapper, but ui-input (which sets the opaque
-      // form-control border) is on the inner input. --ui-border-color does not
-      // inherit, so set it here to match Input/Select/TextArea.
-      '[--ui-border-color:var(--color-border)]',
+      'ui-surface-control shadow-elevation-border h-control',
       'has-invalid:ui-state-error',
       'group-data-disabled/field:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',

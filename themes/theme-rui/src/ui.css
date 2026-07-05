@@ -78,8 +78,7 @@
  *
  * Every layer derives from `--ui-background-color` (falling back to the primary
  * color), so overriding that one token retints the whole surface — that is how
- * `ui-surface-destructive` reuses this in red and how the hover bg-flip darkens
- * the edge and glow together.
+ * the hover bg-flip darkens the edge and glow together.
  *
  * `background` is excluded from the transition so hover/state bg flips feel
  * instant on high-frequency interactions (DST-1436).
@@ -106,30 +105,23 @@
 }
 
 /*
- * Destructive sibling of ui-surface-contrast: the identical dark-lift treatment
- * (ring, glow, top highlight, gradient) retinted to the bold destructive color.
- * Because the contrast surface reads everything off --ui-background-color, this
- * only swaps that token and the matching foreground.
+ * Control surface: the interactive counterpart to ui-surface. Cards, panels and
+ * overlays wear ui-surface's soft, translucent decorative hairline; a control
+ * (input, select, field, and the neutral button family) needs a clearly visible,
+ * functional boundary that stands off the page. So it swaps the ring to the
+ * opaque --color-border (the same boundary Checkbox/Radio use) and darkens the
+ * bottom edge of that border a step: a crisp 1px inset line flush to the bottom,
+ * so the boundary reads lighter-top / darker-bottom (reviving the old gradient
+ * border) while the fill stays dead flat — the gradient lives on the border, not
+ * the surface. The line derives from --ui-border-color, so focus/error recolors
+ * carry it too; ui-state-disabled's inset-shadow-none removes it. Compose with
+ * shadow-elevation-border for lift, kept as a separate utility so the boundary
+ * and the elevation stay modular.
  */
-@utility ui-surface-destructive {
-  @apply ui-surface-contrast text-destructive-bold-foreground;
-  --ui-background-color: var(--color-destructive-bold);
-}
-
-/*
- * Quiet counterpart to ui-surface-contrast for neutral, medium-emphasis
- * controls (the default/secondary Button). Where contrast is the loud surface,
- * this is the muted one. Builds on ui-surface — white fill, hairline ring,
- * box-shadow chain — and adds the same top-lit gesture inverted for a light
- * face: a faint top-down gradient plus a 1px white gloss on the top edge, so
- * the surface reads as gently raised without going dark. The gradient starts a
- * hair off-white (`--color-muted`) so the white gloss stays visible.
- */
-@utility ui-surface-muted {
+@utility ui-surface-control {
   @apply ui-surface;
-  /* prettier-ignore */
-  background: linear-gradient(to bottom, var(--color-muted), var(--color-charcoal-100));
-  @apply inset-shadow-[0_1px_0_0_var(--color-white)];
+  --ui-border-color: var(--color-border);
+  @apply inset-shadow-[0_-1px_0_0_oklch(from_var(--ui-border-color)_calc(l_-_0.12)_c_h)];
 }
 
 /* ========================= */
@@ -171,10 +163,10 @@
      ring to the light disabled-border so the surface stays a flat fill with a soft,
      receding edge. Overrides the `ui-input` base color by variant specificity. */
   --ui-border-color: var(--color-disabled-border);
-  /* No top highlight when disabled: the inset gloss/sheen of ui-surface-muted and
-     ui-surface-contrast would otherwise sit on the flat disabled fill. Zeroing the
-     `--tw-inset-shadow` var is reliable where a raw `box-shadow: none` lost the
-     cascade to the surface utilities' own composite box-shadow. */
+  /* No top highlight when disabled: the inset sheen of ui-surface-contrast would
+     otherwise sit on the flat disabled fill. Zeroing the `--tw-inset-shadow` var is
+     reliable where a raw `box-shadow: none` lost the cascade to the surface
+     utilities' own composite box-shadow. */
   @apply inset-shadow-none;
 }
 
@@ -192,20 +184,6 @@
  */
 @utility ui-state-hover-ghost {
   @apply bg-current/10;
-}
-
-/*
- * Hover for neutral/secondary buttons (Button secondary, Menu trigger,
- * ToggleButton): brighten the muted gloss a step (white -> charcoal-50) and firm
- * the hairline edge (0.1 -> 0.2 alpha), so the surface lifts instead of
- * flattening. ui-surface-muted hardcodes its fill via `background`, so this
- * overrides `background` directly rather than a token.
- */
-@utility ui-state-hover-muted {
-  /* prettier-ignore */
-  background: linear-gradient(to bottom, var(--color-white), var(--color-charcoal-50));
-  --ui-border-color: var(--color-surface-border-hover);
-  @apply text-foreground;
 }
 
 /*

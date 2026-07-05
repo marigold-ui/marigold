@@ -89,58 +89,25 @@ export const Surface = meta.story({
           contrast / overlay
         </Base>
       </Inline>
-      <Headline level="3">Muted Surface</Headline>
-      <p className="text-secondary max-w-prose text-sm">
-        <code>ui-surface-muted</code> is the neutral secondary-button /
-        menu-trigger surface — a muted gloss over the same hairline ring. It
-        brightens a step on hover (<code>ui-state-hover-muted</code>) and, when
-        held open, keeps the resting fill but firms its hairline to{' '}
-        <code>--color-surface-border-hover</code> (the <code>expanded</code>{' '}
-        look) so a hovered trigger and an open one stay distinct.{' '}
-        <code>ui-surface-destructive</code> is the contrast surface retinted to
-        the bold destructive color.
-      </p>
-      <Inline space="regular">
-        <Base className="ui-surface-muted shadow-elevation-border">muted</Base>
-        <Base className="ui-surface-muted shadow-elevation-border ui-state-hover-muted">
-          muted / hover
-        </Base>
-        <Base className="ui-surface-muted shadow-elevation-border [--ui-border-color:var(--color-surface-border-hover)]">
-          muted / expanded
-        </Base>
-        <Base className="ui-surface-destructive shadow-elevation-border">
-          destructive
-        </Base>
-      </Inline>
       <Headline level="3">Hairline</Headline>
       <p className="text-secondary max-w-prose text-sm">
         The decorative surface ring: the translucent{' '}
-        <code>--color-surface-border</code> at rest, firmed to{' '}
-        <code>--color-surface-border-hover</code> when a neutral control is
-        hovered or open. Both are translucent, so they composite over whatever
-        ground the surface sits on rather than painting a fixed gray.
+        <code>--color-surface-border</code>. Because it is translucent it
+        composites over whatever ground the surface sits on rather than painting
+        a fixed gray.
       </p>
       <Inline space="regular">
         <Base className="ui-surface">hairline</Base>
-        <Base className="ui-surface [--ui-border-color:var(--color-surface-border-hover)]">
-          hairline / hover
-        </Base>
       </Inline>
       <Headline level="3">Selected &amp; Hover Fills</Headline>
       <p className="text-secondary max-w-prose text-sm">
-        Item fills painted on rows inside a surface, following the ink &amp;
-        wash split: <code>bg-hover</code> is the lighter wash; a selected row
-        sits one step darker (<code>bg-selected</code>) with its indicator
-        (checkbox, radio, check) as the one opaque ink mark, so a committed row
-        reads heavier than a hovered one. Hovering a selected row swaps to the
-        hover wash while the indicator keeps carrying selection. In navigation,
-        where rows carry no indicator, the <code>inset-shadow-selection</code>{' '}
-        stroke is the ink instead (see Sidebar). <code>bg-focus-highlight</code>{' '}
-        marks keyboard focus inside menus; <code>ui-state-hover-ghost</code> (
-        <code>bg-current/10</code>) tints toward the current text color so a
-        ghost item blends into any ground. The two boxes on the right push a
-        selected / hover fill onto a whole raised surface via{' '}
-        <code>--ui-background-color</code>.
+        Item fills painted on rows inside a surface. <code>bg-hover</code> is
+        the hover wash; <code>bg-selected</code> marks a selected row, one step
+        darker. <code>bg-focus-highlight</code> marks keyboard focus inside
+        menus; <code>ui-state-hover-ghost</code> (<code>bg-current/10</code>)
+        tints toward the current text color so a ghost item blends into any
+        ground. The two boxes on the right push a selected / hover fill onto a
+        whole raised surface via <code>--ui-background-color</code>.
       </p>
       <Inline space="regular">
         <div className="ui-surface shadow-elevation-border flex w-40 flex-col overflow-hidden text-sm">
@@ -149,10 +116,6 @@ export const Surface = meta.story({
           <div className="bg-selected flex justify-between px-3 py-2">
             selected <span aria-hidden>✓</span>
           </div>
-          <div className="bg-hover flex justify-between px-3 py-2">
-            selected + hover <span aria-hidden>✓</span>
-          </div>
-          <div className="inset-shadow-selection px-3 py-2">nav / current</div>
           <div className="bg-focus-highlight px-3 py-2">focus</div>
           <div className="bg-current/10 px-3 py-2">ghost</div>
         </div>

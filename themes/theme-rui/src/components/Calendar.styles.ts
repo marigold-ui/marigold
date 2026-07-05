@@ -67,12 +67,10 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   select: cva({
     base: [
       '[&_svg]:text-secondary',
-      // The month/year dropdown trigger IS the secondary Button — nothing bespoke:
-      // muted surface + the shared neutral-button hover, elevation, focus, disabled.
-      'ui-surface-muted shadow-elevation-border hover:ui-state-hover-muted',
-      'flex h-control w-full px-3 py-2 rounded-lg text-sm font-medium text-foreground',
+      'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-border bg-surface text-sm text-foreground transition-shadow',
       'focus-visible:ui-state-focus outline-none',
-      'disabled:ui-state-disabled',
+      'h-control',
+      'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
       'cursor-pointer',
     ],
   }),

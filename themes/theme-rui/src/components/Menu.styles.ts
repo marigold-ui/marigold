@@ -47,16 +47,13 @@ export const Menu: ThemeComponent<'Menu'> = {
     variants: {
       variant: {
         default: [
-          // Neutral trigger = the secondary Button look: muted gloss surface,
-          // brighten-on-hover, soft hairline edge, soft "held" open state. Disabled
-          // /pending come from ui-button-base (disabled:ui-state-disabled), same as Button.
-          'ui-surface-muted shadow-elevation-border',
-          'hover:ui-state-hover-muted',
-          'expanded:[--ui-border-color:var(--color-surface-border-hover)]',
+          // Neutral trigger = the secondary Button look. Disabled/pending come from
+          // ui-button-base (disabled:ui-state-disabled + pending:ui-state-disabled).
+          'ui-surface-control shadow-elevation-border',
+          'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
+          'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
         ],
-        // Same translucent ghost hover as the Button ghost variant, so every
-        // ghost control blends into any ground the same way.
-        ghost: 'hover:ui-state-hover-ghost',
+        ghost: 'hover:ui-state-hover',
       },
       size: {
         default: 'text-sm',
