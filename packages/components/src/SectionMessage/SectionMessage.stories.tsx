@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
@@ -149,4 +150,31 @@ export const MultiLineTitle = meta.story({
       </SectionMessage>
     </div>
   ),
+});
+
+export const ControlledSectionMessage = meta.story({
+  render: args => {
+    const [deleted, setDeleted] = useState(false);
+
+    return (
+      <Stack space={4} alignX="left">
+        <Button variant="secondary" onPress={() => setDeleted(true)}>
+          Delete item
+        </Button>
+        <SectionMessage
+          {...args}
+          variant="success"
+          closeButton
+          open={deleted}
+          onOpenChange={setDeleted}
+        >
+          <SectionMessage.Title>Item deleted</SectionMessage.Title>
+          <SectionMessage.Content>
+            The item was removed successfully. Dismiss this message or delete
+            again to bring it back.
+          </SectionMessage.Content>
+        </SectionMessage>
+      </Stack>
+    );
+  },
 });
