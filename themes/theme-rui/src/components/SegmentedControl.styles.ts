@@ -112,11 +112,13 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     base: 'absolute z-0 transition-[translate,width] duration-200 ease-out-quint group-has-[[data-focus-visible]]/segmented:transition-none motion-reduce:transition-none',
     variants: {
       variant: {
-        // Raised surface like the Switch thumb. Inset 3px (not 2px) so the
-        // ui-surface *outset* ring lands ~2px from the track edge — where the old
-        // inset border sat — instead of bleeding 1px closer after the ring move.
+        // Raised thumb styled exactly like the secondary/default Button:
+        // ui-surface-control gives it the opaque --color-border edge with the
+        // lighter-top/darker-bottom gradient, over shadow-elevation-border's lift.
+        // Inset 3px (not 2px) so the *outset* ring lands ~2px from the track edge —
+        // where the old inset border sat — instead of bleeding 1px closer.
         default:
-          'inset-y-[3px] left-[3px] w-[calc(100%-6px)] ui-surface shadow-elevation-border',
+          'inset-y-[3px] left-[3px] w-[calc(100%-6px)] ui-surface-control shadow-elevation-border',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },
