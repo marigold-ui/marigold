@@ -112,13 +112,18 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     base: 'absolute z-0 transition-[translate,width] duration-200 ease-out-quint group-has-[[data-focus-visible]]/segmented:transition-none motion-reduce:transition-none',
     variants: {
       variant: {
-        // Raised thumb styled exactly like the secondary/default Button:
-        // ui-surface-control gives it the dense --color-control-border edge with the
-        // lighter-top/darker-bottom gradient, over shadow-elevation-border's lift.
-        // Inset 3px (not 2px) so the *outset* ring lands ~2px from the track edge —
-        // where the old inset border sat — instead of bleeding 1px closer.
+        // Raised thumb styled like the secondary/default Button: ui-surface-control
+        // gives it the --color-control-border edge with the lighter-top/darker-bottom
+        // gradient, over shadow-elevation-border's lift. Inset 3px (not 2px) so the
+        // *outset* ring lands ~2px from the track edge — where the old inset border
+        // sat — instead of bleeding 1px closer.
+        //   The thumb is the one control sitting on a dark ground (the charcoal-300
+        // track), where control-border's ground-adaptive firming over-darkens the
+        // edge. The track already separates the thumb (its fill is lighter than the
+        // track), so we step the border alpha down 0.08 — token-derived, so it still
+        // tracks any change to --color-control-border. The bevel follows it down.
         default:
-          'inset-y-[3px] left-[3px] w-[calc(100%-6px)] ui-surface-control shadow-elevation-border',
+          'inset-y-[3px] left-[3px] w-[calc(100%-6px)] ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))]',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },

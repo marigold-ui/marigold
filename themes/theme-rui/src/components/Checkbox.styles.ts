@@ -4,7 +4,10 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   checkbox: cva({
     base: [
       'grid size-4 shrink-0 place-content-center rounded',
-      'border border-control-border shadow-elevation-border bg-surface',
+      // Checkbox is tiny and always on white, where control-border composites a
+      // touch lighter than the old opaque edge; a +0.06 alpha step lands it back
+      // on the old boundary weight. Derived from the token so it tracks any change.
+      'border border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.06))] shadow-elevation-border bg-surface',
       'group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none',
       'group-disabled/checkbox:group-selected/checkbox:bg-disabled-surface group-disabled/checkbox:border-disabled-surface! group-disabled/checkbox:text-disabled group-disabled/checkbox:cursor-not-allowed',
       'group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground',
