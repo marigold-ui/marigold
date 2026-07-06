@@ -113,11 +113,12 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       variant: {
         // Raised thumb styled like the secondary/default Button: ui-surface-control
         // gives it the --color-control-border edge with the lighter-top/darker-bottom
-        // gradient, over shadow-elevation-border's lift. Inset 4px top/bottom and 8px
+        // gradient, over shadow-elevation-border's lift. Inset 4px top/bottom and 10px
         // left/right so the *outset* ring sits well off the track edge, giving the
         // thumb clear breathing room inside the track.
         //   The keyboard focus ring is drawn here on the indicator (not the cell), so
         // it wraps the thumb exactly and shows the same side padding on selection.
+        // outline-offset-1 sits it flush against the thumb's 1px outset ring (no gap).
         // Selection follows focus in a radio group, so the focused option is always
         // the selected one where this indicator lives; group-has-[data-focus-visible]
         // is what the cell's own outline used before. transition-none (base) keeps the
@@ -128,7 +129,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // track), so we step the border alpha down 0.08 — token-derived, so it still
         // tracks any change to --color-control-border. The bevel follows it down.
         default:
-          'inset-y-[4px] left-[8px] w-[calc(100%-16px)] ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-2',
+          'inset-y-[4px] left-[10px] w-[calc(100%-20px)] ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },
