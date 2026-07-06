@@ -18,9 +18,8 @@
   @apply h-control w-full min-w-0;
   @apply px-3 py-2;
   @apply text-foreground placeholder:text-placeholder text-sm;
-  /* A form field needs a clearly visible boundary, so its ui-surface ring uses
-     the dense, ground-adaptive `control-border` (matching Checkbox/Radio).
-     Focus and error still override the ring color per state. */
+  /* A field needs a visible boundary, so its ui-surface ring uses the dense
+     control-border. Focus and error still override the ring color per state. */
   --ui-border-color: var(--color-control-border);
 }
 
@@ -48,19 +47,15 @@
 }
 
 /*
- * Surfaces that sit on the page background and need a clear boundary:
- * inputs, selects, cards, panels.
+ * Surfaces that sit on the page and need a boundary: inputs, selects, cards,
+ * panels. The boundary is a 1px outset `ring` in the `box-shadow` chain (so it
+ * composes with `shadow-elevation-*`), outset so an edge-to-edge child (e.g. a
+ * Table in `Panel.Content bleed`) can't cover it. Resting color is the
+ * translucent decorative `--color-surface-border`; controls and state overrides
+ * set `--ui-border-color` to an opaque color.
  *
- * The boundary is a 1px outset `ring` routed through `--tw-ring-shadow`, so it
- * composes into the same `box-shadow` chain as `shadow-elevation-*`. Outset (not
- * inset) so it paints above child content — a child that bleeds edge-to-edge
- * (e.g. a Table in `Panel.Content bleed`) cannot cover it. Resting color is the
- * translucent, decorative `--color-surface-border` rim; functional boundaries
- * (form controls) and state overrides set `--ui-border-color` to an opaque color
- * (`--color-border`, focus, error).
- *
- * `background` is excluded from the transition so hover/state bg flips feel
- * instant on high-frequency interactions (DST-1436).
+ * `background` is excluded from the transition so state bg flips feel instant
+ * (DST-1436).
  */
 @utility ui-surface {
   @apply rounded-surface relative transition-[box-shadow];
@@ -69,28 +64,23 @@
 }
 
 /*
- * Prominent dark surface: primary buttons, toolbars, action bars. Mirrors
- * ui-surface — a 1px ring plus the fill — but inverted in value: the edge is a
- * darker shade of the fill (a crisp dark hairline, no light rim). The light
- * lives on the face: a soft glow pooled at the top that fades before it reaches
- * the edges, plus a soft, blurred highlight along the top edge (an inset shadow,
- * tinted and at low alpha so it reads as a catch of light, not a bright rim).
+ * Prominent dark surface: primary buttons, action bars. Mirrors ui-surface but
+ * inverted in value — the edge is a darker shade of the fill (crisp, no light
+ * rim) and the light lives on the face: a top-pooled glow plus a soft top-edge
+ * highlight (a tinted, low-alpha inset shadow). Every layer derives from
+ * `--ui-background-color`, so overriding that one token (e.g. the hover flip)
+ * retints the whole surface.
  *
- * Every layer derives from `--ui-background-color` (falling back to the primary
- * color), so overriding that one token retints the whole surface — that is how
- * the hover bg-flip darkens the edge and glow together.
- *
- * `background` is excluded from the transition so hover/state bg flips feel
- * instant on high-frequency interactions (DST-1436).
+ * `background` is excluded from the transition so state bg flips feel instant
+ * (DST-1436).
  */
 @utility ui-surface-contrast {
   @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
   /* Read --ui-border-color first (falling back to the derived dark edge) so state
-     overrides — disabled, focus, error — recolor the ring here exactly as they do
-     on a plain ui-surface. Without this the contrast ring ignored those states and
-     kept a dark outline (e.g. a disabled contrast surface). */
+     overrides recolor the ring here exactly as on a plain ui-surface — otherwise a
+     disabled/focused/invalid contrast surface keeps its dark outline. */
   @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h))];
   @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
 
@@ -106,10 +96,9 @@
 
 /*
  * Destructive prominent surface: the destructive Button. Reuses ui-surface-contrast
- * wholesale — pointing --ui-background-color at --color-destructive-bold retints
- * every layer (glow, top-down fill, top-edge highlight, dark ring) red, so it shares
- * one mechanism with the primary Button. The text override sits inside the @apply so
- * it reliably beats the contrast utility's own foreground regardless of emit order.
+ * and points --ui-background-color at --color-destructive-bold to retint every layer
+ * red. The text override sits inside the @apply so it beats the contrast utility's
+ * foreground regardless of emit order.
  */
 @utility ui-surface-destructive {
   @apply ui-surface-contrast text-destructive-bold-foreground;
@@ -117,23 +106,14 @@
 }
 
 /*
- * Control surface: the interactive counterpart to ui-surface. Cards, panels and
- * overlays wear ui-surface's soft, translucent decorative hairline; a control
- * (input, select, field, and the neutral button family) needs a clearly visible,
- * functional boundary that stands off the page. So it swaps the ring to the
- * dense --color-control-border — the same translucent charcoal stroke as the
- * hairline, ~2.5x stronger, so it composites over whatever ground the control
- * sits on (page, white, the SegmentedControl track) instead of painting one
- * fixed gray. The bottom edge of that border is a step denser: a crisp 1px
- * inset line flush to the bottom (the same stroke at higher alpha — an alpha
- * step, since a lightness step can't darken a translucent stroke past its own
- * density), so the boundary reads lighter-top / darker-bottom (reviving the old
- * gradient border) while the fill stays dead flat — the gradient lives on the
- * border, not the surface. The line derives from --ui-border-color, so
- * focus/error recolors carry into it (opaque overrides clamp at alpha 1 and get
- * a uniform border); ui-state-disabled's inset-shadow-none removes it. Compose
- * with shadow-elevation-border for lift, kept as a separate utility so the
- * boundary and the elevation stay modular.
+ * Control surface: the interactive counterpart to ui-surface. Where a surface
+ * wears the soft decorative hairline, a control needs a boundary that stands off
+ * the page, so this swaps the ring to the dense --color-control-border and adds a
+ * crisp 1px inset line along the bottom (the same stroke a step denser, via an
+ * alpha bump). The boundary then reads lighter-top / darker-bottom while the fill
+ * stays flat — the gradient lives on the border, not the surface. The line
+ * derives from --ui-border-color, so focus/error recolor it and ui-state-disabled
+ * removes it. Compose with shadow-elevation-border for lift.
  */
 @utility ui-surface-control {
   @apply ui-surface;
@@ -158,11 +138,9 @@
 * Applies a consistent visual style for invalid elements.
 */
 @utility ui-state-error {
-  /* Recolors the ui-surface ring via --ui-border-color. The focus: re-assert is a
-     specificity bump, not a duplicate: it compiles to a compound
-     `[data-invalid][data-focused]` selector that outranks ui-state-focus's
-     `[data-focused]`, so a focused-invalid field stays destructive by specificity,
-     not source order. Don't remove it. */
+  /* Recolors the ui-surface ring. The focus: re-assert is a specificity bump (not
+     a duplicate): it compiles to `[data-invalid][data-focused]`, outranking
+     ui-state-focus so a focused-invalid field stays destructive. Don't remove it. */
   --ui-border-color: var(--color-destructive-accent);
   @apply shadow-destructive-accent/20;
   @apply focus:outline-destructive-accent/20 focus:[--ui-border-color:var(--color-destructive-accent)];
@@ -175,15 +153,11 @@
   @apply text-disabled cursor-not-allowed;
   background: var(--color-disabled-surface);
   background-clip: border-box;
-  /* Dim the boundary rather than remove it: a borderless input reads as broken,
-     but a dark ring is too assertive for a disabled control. Recolor the ui-surface
-     ring to the light disabled-border so the surface stays a flat fill with a soft,
-     receding edge. Overrides the `ui-input` base color by variant specificity. */
+  /* Dim the boundary rather than remove it: a borderless input reads as broken.
+     Recolor the ring to the light disabled-border for a soft, receding edge. */
   --ui-border-color: var(--color-disabled-border);
-  /* No top highlight when disabled: the inset sheen of ui-surface-contrast would
-     otherwise sit on the flat disabled fill. Zeroing the `--tw-inset-shadow` var is
-     reliable where a raw `box-shadow: none` lost the cascade to the surface
-     utilities' own composite box-shadow. */
+  /* No top highlight when disabled. Zeroing `--tw-inset-shadow` is reliable where a
+     raw `box-shadow: none` lost the cascade to the surface utilities' box-shadow. */
   @apply inset-shadow-none;
 }
 

@@ -13,10 +13,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        // A default SelectList is a form control (you pick values), so it wears
-        // the control surface — the dense --color-control-border boundary + depth bevel —
-        // not the decorative hairline that Cards/Panels use. State recolors
-        // (focus/error) still compose through --ui-border-color, as on an input.
+        // A default SelectList is a form control, so it wears the control surface
+        // (dense boundary + bevel), not the decorative hairline. Focus/error still
+        // recolor through --ui-border-color, as on an input.
         default: 'ui-surface-control shadow-elevation-border',
         bordered: '',
       },
@@ -75,12 +74,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'selected:bg-selected hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
-          // Dividers are the opaque structural --color-border, matching Table's
-          // grid lines and the token rule that dividers/grid lines are
-          // structural lines (opaque so crossing strokes can't stack alpha).
-          // Opaque and darker than every wash, so they stay
-          // crisp against rest, hover, and the selected fill alike — the
-          // structure never dissolves into a state fill, in any state.
+          // Dividers use the opaque structural --color-border (like Table grid
+          // lines): darker than every wash, so they stay crisp against rest,
+          // hover, and the selected fill alike.
           'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-border',
           'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-border',
           // Container-query flip: in narrow containers, swap horizontal
