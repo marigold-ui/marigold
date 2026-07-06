@@ -5,7 +5,9 @@ import { useTableContext } from './Context';
 import { Table } from './Table';
 import {
   Basic,
+  FooterTotals,
   ScrollableAndSticky,
+  StickyFooter,
   VerticalAlignment,
   WidthsAndOverflow,
 } from './Table.stories';
@@ -162,6 +164,45 @@ describe('Sticky Header', () => {
     const header = columnHeader.closest('thead');
 
     expect(header).not.toHaveClass('sticky');
+  });
+});
+
+describe('Footer', () => {
+  test('renders a semantic footer with the row content', () => {
+    render(<FooterTotals.Component />);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const footer = screen.getByText('Total').closest('tfoot');
+
+    expect(footer).toBeInTheDocument();
+  });
+
+  test('respects colSpan on footer cells', () => {
+    render(<FooterTotals.Component />);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const totalCell = screen.getByText('Total').closest('td');
+
+    expect(totalCell).toHaveAttribute('colspan', '4');
+  });
+
+  test('applies sticky class to footer', () => {
+    render(<StickyFooter.Component />);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const footer = screen.getByText('Total').closest('tfoot');
+
+    expect(footer).toHaveClass('sticky');
+    expect(footer).toHaveClass('bottom-0');
+  });
+
+  test('footer without sticky prop does not have sticky class', () => {
+    render(<FooterTotals.Component />);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const footer = screen.getByText('Total').closest('tfoot');
+
+    expect(footer).not.toHaveClass('sticky');
   });
 });
 

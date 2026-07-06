@@ -215,6 +215,7 @@ export type Theme = {
       | 'head'
       | 'column'
       | 'body'
+      | 'footer'
       | 'row'
       | 'cell'
       | 'dragHandle'
