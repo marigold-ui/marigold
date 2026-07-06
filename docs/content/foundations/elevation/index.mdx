@@ -59,10 +59,8 @@ Interactivity is **not** what separates them. Controls are always interactive, b
 
 The families are told apart by their **boundary**, not their shadow:
 
-- Surfaces wear the `ui-surface` utility, which gives them a flat white fill (`bg-surface`), rounded corners, and a whisper-light hairline rim (`surface-border`). The line hints at the edge of a section with as little visual noise as possible, because structure should guide the eye rather than compete with the content.
-- Controls wear `ui-surface-control`, which is the same surface with two changes. The rim is the clearly visible `control-border`, and the bottom edge of that border is one step denser, so the boundary reads lighter at the top and darker at the bottom (a gradient that lives on the border, never on the fill). A control must visibly stand off the page, because a clear edge is what makes it read as operable. This is backed by WCAG 1.4.11 (non-text contrast for component boundaries) and by usability research. NN/g's eye-tracking studies on weak clickability signifiers show that users spend measurably more effort on pages where controls do not look operable.
-
-Both boundaries are the same translucent charcoal stroke, and the control's is about 2.5 times denser. Because they are translucent, both composite over whatever ground the element sits on. The edge firms up on the gray page background and relaxes on white, instead of painting one fixed gray everywhere.
+- Surfaces wear `ui-surface`: a quiet hairline that hints at a section's edge without adding noise.
+- Controls wear `ui-surface-control`: a clearly visible boundary that makes the element stand off the page as something to operate.
 
 ```html
 <!-- a surface: structure, minimal noise -->
@@ -112,7 +110,7 @@ This diagram shows how the three shadow tiers layer in a typical form layout. Th
 
 The subtlest shadow tier. Border elevation gives controls a slight lift, defining their presence against the surface they sit on. These elements combine `ui-surface-control` with `shadow-elevation-border`.
 
-The edge itself comes from the boundary, not the shadow. `ui-surface-control` draws a 1px rim in the `control-border` token, with the denser bottom edge described above. The shadow only adds texture on top. See [Token Overview](/foundations/token-overview#form-controls) for the border tokens.
+The edge comes from the boundary, not the shadow. `ui-surface-control` draws the rim, and the shadow only adds a subtle lift on top. See [Token Overview](/foundations/token-overview#form-controls) for the border tokens.
 
 Because border elevation produces only a subtle shadow, these controls need a raised surface behind them to be clearly visible. Placing an input directly on the page background (`bg-background`) makes its edges nearly indistinguishable from the surrounding area. A Card or similar raised container provides the contrast that border-elevated controls rely on.
 
