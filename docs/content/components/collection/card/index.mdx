@@ -45,7 +45,7 @@ Reach for selectable cards when the user has to pick from a set of card-shaped o
 
 `<Card>` cannot do any of that. It renders a non-interactive `<article>` meant for grouping content, so making it selectable means rebuilding the whole selection layer by hand: tracking which card is active, wiring a hidden radio or checkbox so the value posts with the form, adding roving arrow-key focus across the grid, and setting the ARIA roles a screen reader needs to announce a card as "selected." That is a lot of accessibility-critical behaviour to reinvent, and it is easy to get subtly wrong.
 
-[`<SelectList>`](/components/form/selectlist#options-as-cards) with `variant="bordered"` is exactly that machinery, already built and tested. Each option renders as its own outlined card, so you keep the card look while the component owns selection state, form integration, keyboard navigation, and the "selected" announcements. Use `selectionMode="single"` for a plan or payment-method picker where one card wins, or `selectionMode="multiple"` when several cards can be active at once, such as add-ons or notification channels.
+[`<SelectList>`](../../form/selectlist#options-as-cards) with `variant="bordered"` is exactly that machinery, already built and tested. Each option renders as its own outlined card, so you keep the card look while the component owns selection state, form integration, keyboard navigation, and the "selected" announcements. Use `selectionMode="single"` for a plan or payment-method picker where one card wins, or `selectionMode="multiple"` when several cards can be active at once, such as add-ons or notification channels.
 
 ### Header
 
