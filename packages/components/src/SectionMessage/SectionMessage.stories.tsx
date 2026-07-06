@@ -98,24 +98,12 @@ WithDescription.test(
     // Element type comes from the root's `TextContext` slot config.
     await expect(description.tagName).toBe('P');
 
-    // The description renders through the muted `description` slot, whose
-    // class pulls its color from the variant-driven
-    // `--section-message-description` variable (at 80% opacity) instead of
-    // inheriting the title's full variant foreground. Asserting on the class
-    // pins this behaviour without depending on a resolved color string.
-    await expect(description.className).toContain(
-      'text-(--section-message-description)'
-    );
-
-    // The variant's variable assignment must win the cascade over the
-    // container's `currentColor` fallback (both are same-specificity
-    // arbitrary properties; this pins Tailwind's emit order).
-    const container = heading.parentElement!;
-    await expect(
-      getComputedStyle(container)
-        .getPropertyValue('--section-message-description')
-        .trim()
-    ).not.toBe('currentColor');
+    // The description renders through the muted `description` slot. On the
+    // neutral (Toast-aligned) surface it uses `text-secondary` rather than a
+    // variant-tinted color, so standard text reads consistently across
+    // variants. Asserting on the class pins this without depending on a
+    // resolved color string.
+    await expect(description.className).toContain('text-secondary');
   }
 );
 
