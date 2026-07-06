@@ -196,8 +196,8 @@
     step, so it must not track a rung. Update 54 if the palette hue shifts.
   */
   --shadow-elevation-border:
-    0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
-    0px 1px 2px -1px oklch(0.15 0.02 54 / 0.063);
+    0px 1px 8px -1px oklch(0.15 0.02 54 / 0.06),
+    0px 0.5px 0.5px -0.5px oklch(0.15 0.02 54 / 0.033);
 
   --shadow-elevation-raised:
     0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
