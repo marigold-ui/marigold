@@ -188,7 +188,7 @@ export const UnavailableDate = meta.story({
       <DatePicker
         label="Date Picker"
         defaultValue={new CalendarDate(2019, 6, 1)}
-        dateUnavailable={date => date.toDate('Europe/Berlin').getDate() !== 1}
+        dateUnavailable={date => date.day !== 1}
         {...args}
       />
     </I18nProvider>
