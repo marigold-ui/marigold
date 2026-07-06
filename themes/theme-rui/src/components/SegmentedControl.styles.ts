@@ -62,13 +62,12 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       'cursor-pointer outline-none transition-[color]',
       // Text is muted by default and turns to the foreground color on selection.
       'text-secondary selected:text-foreground',
-      // Keyboard focus ring mirrors `ui-state-focus` (outline-3, ring/50) but is
-      // inset 2px (`-outline-offset-2`) for both variants. Inset is what lets it
-      // hug the `default` thumb (which sits 2px inside the cell) instead of
-      // leaving a gap, and keeps most of the ring inside the cell so the scroll
-      // container only clips ~1px of it at the very first/last segment's outer
-      // edge (a flush `ghost` ring lost much more). We accept that minor trim
-      // rather than inset the segments from the track edge. RAC RadioButton
+      // Keyboard focus ring mirrors `ui-state-focus` (outline-3, ring/50), inset
+      // 2px (`-outline-offset-2`). This is the ghost variant's ring: ghost has no
+      // thumb, so the ring hugs the cell, and the inset keeps most of it inside so
+      // the scroll container only clips ~1px at the very first/last segment's outer
+      // edge (a flush ring lost much more). The default variant suppresses this and
+      // draws its ring on the indicator instead (see indicator). RAC RadioButton
       // exposes the focus state via [data-rac][data-focus-visible].
       'focus-visible:outline-3 focus-visible:outline-solid focus-visible:outline-ring/50 focus-visible:-outline-offset-2',
       'disabled:cursor-not-allowed disabled:text-disabled',
