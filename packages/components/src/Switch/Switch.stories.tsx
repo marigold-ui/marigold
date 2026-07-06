@@ -1,4 +1,4 @@
-import { expect, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Switch } from './Switch';
 
@@ -96,19 +96,20 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole('switch');
-
-    await userEvent.click(button);
-
-    await expect(button).toBeChecked();
-  },
 });
 
-export const KeyboardToggle = meta.story({
-  tags: ['component-test'],
-  play: async ({ canvas }) => {
+Basic.test('Toggles on when clicked', async ({ canvas, userEvent }) => {
+  const button = canvas.getByRole('switch');
+
+  await userEvent.click(button);
+
+  await expect(button).toBeChecked();
+});
+
+Basic.test(
+  'Toggles with the Space key',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
     const input: HTMLInputElement = canvas.getByRole('switch');
 
     await userEvent.tab();
@@ -118,22 +119,41 @@ export const KeyboardToggle = meta.story({
 
     await userEvent.keyboard(' ');
     await expect(input.checked).toBeFalsy();
+  }
+);
+
+Basic.test(
+  'Toggles off from the default-selected state',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { defaultSelected: true },
   },
-});
+  async ({ canvas, userEvent }) => {
+    const input: HTMLInputElement = canvas.getByRole('switch');
+
+    await userEvent.click(input);
+
+    await expect(input.checked).toBeFalsy();
+  }
+);
 
 export const WithDescription = meta.story({
+  tags: ['component-test'],
   args: {
     description: 'This is a description',
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
+WithDescription.test(
+  'Description is set and accessible',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     const switchEl = await canvas.findByRole('switch');
 
     expect(canvas.getByText('This is a description')).toBeInTheDocument();
     await expect(switchEl).toHaveAccessibleDescription('This is a description');
-  },
-});
+  }
+);
 
 export const WithError = meta.story({
   tags: ['component-test'],
@@ -142,9 +162,12 @@ export const WithError = meta.story({
     errorMessage: 'This setting is required',
     description: 'This is a description',
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
+WithError.test(
+  'Error message replaces the description',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     const switchEl = await canvas.findByRole('switch');
 
     // The error message replaces the description when `error` is set.
@@ -152,8 +175,8 @@ export const WithError = meta.story({
     await expect(switchEl).toHaveAccessibleDescription(
       'This setting is required'
     );
-  },
-});
+  }
+);
 
 export const Settings = meta.story({
   args: {

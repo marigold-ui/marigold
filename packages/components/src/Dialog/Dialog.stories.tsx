@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
@@ -67,150 +66,63 @@ export const Basic = meta.story({
       </Dialog>
     </Dialog.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+Basic.test(
+  'Open dialog',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
     await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  }
+);
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
-    await waitFor(() =>
-      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-    );
-  },
+Basic.test('Close dialog', async ({ canvas, userEvent }) => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+  await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
+
+  await waitFor(() =>
+    expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+  );
 });
 
-export const WithForm = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: ({ size, ...args }) => {
-    return (
-      <Dialog.Trigger {...args}>
-        <Button variant="primary">Open</Button>
-        <Dialog size={size} closeButton>
-          <Title>Please log into account</Title>
-          <Dialog.Content>
-            <TextField label="Username" />
-            <TextField label="Password" type="password" />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button slot="close" variant="secondary">
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              slot="close"
-              onPress={() => alert('Dialog will be closed')}
-            >
-              Login
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Dialog.Trigger>
-    );
-  },
-});
-
+// Minimal render-prop + form example. Kept as the fixture for the
+// "children as function" and "form validation" unit tests in Dialog.test.tsx.
 export const WithFormValidation = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: ({ size, ...args }) => {
-    const [code, setCode] = useState('');
-
-    return (
-      <Stack alignX="left" space={8}>
-        <Dialog.Trigger {...args} dismissable={false}>
-          <Button variant="primary">Open</Button>
-          <Dialog size={size}>
-            {({ close }) => (
-              <>
-                <Title>Please enter validation code</Title>
-                <Dialog.Content>
-                  <Form
-                    id="code-form"
-                    onSubmit={e => {
-                      e.preventDefault();
-                      const formData = new FormData(e.currentTarget);
-                      setCode(formData.get('code') as string);
-                      close();
-                    }}
-                  >
-                    <TextField label="Code" name="code" required />
-                  </Form>
-                </Dialog.Content>
-                <Dialog.Actions>
-                  <Button slot="close" variant="secondary">
-                    Cancel
-                  </Button>
-                  <Button variant="primary" type="submit" form="code-form">
-                    Submit
-                  </Button>
-                </Dialog.Actions>
-              </>
-            )}
-          </Dialog>
-        </Dialog.Trigger>
-        <pre>
-          <code>Entered code: {code}</code>
-        </pre>
-      </Stack>
-    );
-  },
-});
-
-export const OpenFromMenu = meta.story({
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [open, setDialogOpen] = useState(false);
-    const handleAction = (action: 'save' | 'delete') => {
-      switch (action) {
-        case 'save':
-          alert('saved!');
-          break;
-        case 'delete':
-          setDialogOpen(true);
-          break;
-        default:
-          throw new Error(`Unhandled action "${action}"!`);
-      }
-    };
-
-    return (
-      <>
-        <Menu onAction={handleAction} label="Settings">
-          <Menu.Item key="save" id="save">
-            Save
-          </Menu.Item>
-          <Menu.Item key="delete" id="delete">
-            Delete
-          </Menu.Item>
-        </Menu>
-        <Dialog open={open} onOpenChange={setDialogOpen} closeButton>
-          {({ close }) => (
-            <>
-              <Title>Confirm delete</Title>
-              <Dialog.Content>
-                <Text>Do you really wanna delete this?</Text>
-              </Dialog.Content>
-              <Dialog.Actions>
-                <Button slot="close">Cancel</Button>
-                <Button variant="destructive" onPress={close}>
-                  Delete
-                </Button>
-              </Dialog.Actions>
-            </>
-          )}
-        </Dialog>
-      </>
-    );
-  },
-});
-
-export const Confirmation = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: ({ ...args }) => (
-    <ConfirmationDialog.Trigger {...args}>
-      <Button>Open</Button>
-      <ConfirmationDialog title="Confirmation" confirmationLabel="Confirm">
-        Are you sure you want to proceed with this action?
-      </ConfirmationDialog>
-    </ConfirmationDialog.Trigger>
+  render: ({ size, ...args }) => (
+    <Dialog.Trigger {...args} dismissable={false}>
+      <Button variant="primary">Open</Button>
+      <Dialog size={size}>
+        {({ close }) => (
+          <>
+            <Dialog.Title>Please enter validation code</Dialog.Title>
+            <Dialog.Content>
+              <Form
+                id="code-form"
+                onSubmit={e => {
+                  e.preventDefault();
+                  close();
+                }}
+              >
+                <TextField label="Code" name="code" required />
+              </Form>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button slot="close" variant="secondary">
+                Cancel
+              </Button>
+              <Button variant="primary" type="submit" form="code-form">
+                Submit
+              </Button>
+            </Dialog.Actions>
+          </>
+        )}
+      </Dialog>
+    </Dialog.Trigger>
   ),
 });
 
@@ -228,11 +140,19 @@ export const TextOnly = meta.story({
       </Dialog>
     </Dialog.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
-    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
-  },
 });
+
+TextOnly.test(
+  'Shows only text',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  }
+);
 
 export const VeryLongContent = meta.story({
   tags: ['component-test'],
@@ -381,8 +301,17 @@ export const VeryLongContent = meta.story({
       </Dialog.Trigger>
     );
   },
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByText('Open Dialog with Long Content'));
+});
+
+VeryLongContent.test(
+  'Shows very long content',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Open Dialog with Long Content' })
+    );
 
     await waitFor(() => {
       const dialog = document.querySelector('[role="dialog"]');
@@ -401,8 +330,8 @@ export const VeryLongContent = meta.story({
     // Test scroll functionality - scroll to bottom
     dialogContent.scrollTop = dialogContent.scrollHeight;
     expect(dialogContent.scrollTop).toBeGreaterThan(0);
-  },
-});
+  }
+);
 
 /**
  * The slot-aware primitives `<Title>` / `<Description>` and the action

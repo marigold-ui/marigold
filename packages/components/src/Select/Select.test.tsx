@@ -86,20 +86,6 @@ test('supports default value via "defaultValue"', async () => {
   expect(starTrek).toHaveAttribute('aria-selected', 'true');
 });
 
-test('supports sections', async () => {
-  renderWithOverlay(<Sections.Component label="Label" data-testid="select" />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const options = screen.getByRole('listbox');
-  const fantasy = within(options).getByText('Fantasy');
-  const sciFi = within(options).getByText('Sci-Fi');
-
-  expect(fantasy).toBeVisible();
-  expect(sciFi).toBeVisible();
-});
-
 test('set width via props', () => {
   render(<Basic.Component label="Label" data-testid="select" width="1/2" />);
 

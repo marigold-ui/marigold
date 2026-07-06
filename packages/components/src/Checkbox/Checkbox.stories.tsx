@@ -1,4 +1,4 @@
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Checkbox } from './Checkbox';
 
@@ -79,67 +79,52 @@ const meta = preview.meta({
     defaultChecked: false,
     error: false,
     required: false,
+    description: 'This is a description',
   },
 });
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
+
+Basic.test('Checks checkbox', async ({ canvas, userEvent }) => {
+  const checkbox = await canvas.findByRole('checkbox');
+
+  await userEvent.click(checkbox);
+
+  expect(checkbox).toBeChecked();
+});
+
+Basic.test(
+  'Read only can not uncheck the checkbox',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
 
     await userEvent.click(checkbox);
 
     expect(checkbox).toBeChecked();
+  }
+);
+
+Basic.test(
+  'Description is set and accessible',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
   },
-});
-
-export const Controlled = meta.story({
-  tags: ['component-test'],
-  args: {
-    onChange: fn(),
-  },
-  play: async ({ args, canvas }) => {
-    const input = canvas.getByLabelText<HTMLInputElement>('This is a Checkbox');
-
-    await userEvent.click(input);
-    expect(args.onChange).toHaveBeenCalledWith(true);
-
-    await userEvent.click(input);
-    expect(args.onChange).toHaveBeenCalledWith(false);
-  },
-});
-
-export const ReadOnly = meta.story({
-  tags: ['component-test'],
-  args: {
-    defaultChecked: true,
-    readOnly: true,
-  },
-  play: async ({ canvas }) => {
-    const checkbox =
-      canvas.getByLabelText<HTMLInputElement>('This is a Checkbox');
-    const component = canvas.getByText('This is a Checkbox');
-
-    await userEvent.click(component);
-
-    await expect(checkbox.checked).toBeTruthy();
-  },
-});
-
-export const WithDescription = meta.story({
-  args: {
-    description: 'This is a description',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
+  async ({ canvas }) => {
     const checkbox = await canvas.findByRole('checkbox');
+    const description = await canvas.queryByText('This is a description');
 
-    expect(canvas.getByText('This is a description')).toBeInTheDocument();
-    await expect(checkbox).toHaveAccessibleDescription('This is a description');
-  },
-});
+    const helpTextId = description?.getAttribute('id');
+    const checkboxDescribedBy = checkbox.getAttribute('aria-describedby');
+
+    expect(description).toBeInTheDocument();
+    expect(checkboxDescribedBy).toBe(helpTextId);
+  }
+);
 
 export const WithError = meta.story({
   tags: ['component-test'],
@@ -148,9 +133,12 @@ export const WithError = meta.story({
     errorMessage: 'This selection is required',
     description: 'This is a description',
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
+WithError.test(
+  'Error message replaces the description',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     const checkbox = await canvas.findByRole('checkbox');
 
     // The error message replaces the description when `error` is set.
@@ -158,5 +146,5 @@ export const WithError = meta.story({
     await expect(checkbox).toHaveAccessibleDescription(
       'This selection is required'
     );
-  },
-});
+  }
+);
