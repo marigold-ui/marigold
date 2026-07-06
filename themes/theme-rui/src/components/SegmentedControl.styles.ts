@@ -78,14 +78,12 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // Hover only brightens the label to the foreground color; the raised
         // ui-surface indicator already provides the background affordance, so
         // no extra hover background (keeps bg flips out of the picture). The
-        // thumb sits 4px inside the cell top/bottom, so the focus ring insets to
-        // match with -outline-offset-3 (overriding the base -2; ghost keeps it,
-        // having no thumb). An inset outline's corner radius is
-        // border-radius + outline-offset, so surface + 3px lands the ring back on
-        // the rounded-surface radius. (The thumb's wider 8px side inset leaves a
-        // gap on the left and right, since one offset can't hug both.)
+        // thumb's inset is asymmetric (4px top/bottom, 8px sides), so an outline
+        // on the cell can't hug it on all sides. The focus ring is drawn on the
+        // indicator itself instead (see below), so here the cell suppresses its
+        // own outline. (Ghost keeps the base cell outline, having no thumb.)
         default:
-          'not-selected:hover:text-foreground focus-visible:-outline-offset-3 focus-visible:rounded-[calc(var(--radius-surface)_+_3px)]',
+          'not-selected:hover:text-foreground focus-visible:outline-none',
         // Track-less: hover is a translucent overlay (shared helper), applied
         // on the selected item too so it stays covered while the indicator
         // slides in — no uncovered gap/flicker (matches Tabs).
@@ -118,15 +116,20 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // gives it the --color-control-border edge with the lighter-top/darker-bottom
         // gradient, over shadow-elevation-border's lift. Inset 4px top/bottom and 8px
         // left/right so the *outset* ring sits well off the track edge, giving the
-        // thumb clear breathing room inside the track (the focus ring above tracks
-        // the 4px vertical inset).
+        // thumb clear breathing room inside the track.
+        //   The keyboard focus ring is drawn here on the indicator (not the cell), so
+        // it wraps the thumb exactly and shows the same side padding on selection.
+        // Selection follows focus in a radio group, so the focused option is always
+        // the selected one where this indicator lives; group-has-[data-focus-visible]
+        // is what the cell's own outline used before. transition-none (base) keeps the
+        // ring from lagging the slide.
         //   The thumb is the one control sitting on a dark ground (the charcoal-300
         // track), where control-border's ground-adaptive firming over-darkens the
         // edge. The track already separates the thumb (its fill is lighter than the
         // track), so we step the border alpha down 0.08 — token-derived, so it still
         // tracks any change to --color-control-border. The bevel follows it down.
         default:
-          'inset-y-[4px] left-[8px] w-[calc(100%-16px)] ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))]',
+          'inset-y-[4px] left-[8px] w-[calc(100%-16px)] ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-2',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },
