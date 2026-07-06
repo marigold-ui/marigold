@@ -78,14 +78,14 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // Hover only brightens the label to the foreground color; the raised
         // ui-surface indicator already provides the background affordance, so
         // no extra hover background (keeps bg flips out of the picture). The
-        // thumb sits 5px inside the cell top/bottom, so the focus ring insets to
-        // match with -outline-offset-4 (overriding the base -2; ghost keeps it,
+        // thumb sits 4px inside the cell top/bottom, so the focus ring insets to
+        // match with -outline-offset-3 (overriding the base -2; ghost keeps it,
         // having no thumb). An inset outline's corner radius is
-        // border-radius + outline-offset, so surface + 4px lands the ring back on
-        // the rounded-surface radius. (The thumb's 6px side inset leaves a
-        // harmless 1px gap on the left and right, since one offset can't hug both.)
+        // border-radius + outline-offset, so surface + 3px lands the ring back on
+        // the rounded-surface radius. (The thumb's wider 8px side inset leaves a
+        // gap on the left and right, since one offset can't hug both.)
         default:
-          'not-selected:hover:text-foreground focus-visible:-outline-offset-4 focus-visible:rounded-[calc(var(--radius-surface)_+_4px)]',
+          'not-selected:hover:text-foreground focus-visible:-outline-offset-3 focus-visible:rounded-[calc(var(--radius-surface)_+_3px)]',
         // Track-less: hover is a translucent overlay (shared helper), applied
         // on the selected item too so it stays covered while the indicator
         // slides in — no uncovered gap/flicker (matches Tabs).
@@ -116,17 +116,17 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       variant: {
         // Raised thumb styled like the secondary/default Button: ui-surface-control
         // gives it the --color-control-border edge with the lighter-top/darker-bottom
-        // gradient, over shadow-elevation-border's lift. Inset 5px top/bottom and 6px
+        // gradient, over shadow-elevation-border's lift. Inset 4px top/bottom and 8px
         // left/right so the *outset* ring sits well off the track edge, giving the
         // thumb clear breathing room inside the track (the focus ring above tracks
-        // the 5px vertical inset).
+        // the 4px vertical inset).
         //   The thumb is the one control sitting on a dark ground (the charcoal-300
         // track), where control-border's ground-adaptive firming over-darkens the
         // edge. The track already separates the thumb (its fill is lighter than the
         // track), so we step the border alpha down 0.08 — token-derived, so it still
         // tracks any change to --color-control-border. The bevel follows it down.
         default:
-          'inset-y-[5px] left-[6px] w-[calc(100%-12px)] ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))]',
+          'inset-y-[4px] left-[8px] w-[calc(100%-16px)] ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))]',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },
