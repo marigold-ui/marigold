@@ -121,7 +121,7 @@
 @utility ui-surface-control {
   @apply ui-surface;
   --ui-border-color: var(--color-border);
-  @apply inset-shadow-[0_-1px_0_0_oklch(from_var(--ui-border-color)_calc(l_-_0.03)_c_h)];
+  @apply inset-shadow-[0_-1px_0_0_oklch(from_var(--ui-border-color)_calc(l_-_0.06)_c_h)];
 }
 
 /* ========================= */
