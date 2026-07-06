@@ -13,10 +13,12 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        // A default SelectList is a form control, so it wears the control surface
-        // (dense boundary + bevel), not the decorative hairline. Focus/error still
-        // recolor through --ui-border-color, as on an input.
-        default: 'ui-surface-control shadow-elevation-border',
+        // A default SelectList is a boxed list: its frame edge and the internal row
+        // dividers should read as one weight, so both use the opaque --color-border.
+        // (A translucent control ring would composite lighter than the opaque
+        // dividers, so left/right wouldn't match top/bottom.)
+        default:
+          'ui-surface shadow-elevation-border [--ui-border-color:var(--color-border)]',
         bordered: '',
       },
     },
@@ -90,8 +92,11 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         ],
         bordered: [
           'ui-surface shadow-elevation-border min-h-14',
-          'selected:[--ui-border-color:var(--color-foreground)] selected:inset-shadow-[0_0_0_0.5px_var(--ui-border-color)]',
-          'disabled:selected:[--ui-border-color:var(--color-control-border)] disabled:selected:inset-shadow-none',
+          // Selected only recolors the outset ring opaque; no extra inset line, so
+          // its stroke sits at the same geometry as the unselected rows (the inset
+          // shadow made the selected border straddle the edge and look shifted).
+          'selected:[--ui-border-color:var(--color-foreground)]',
+          'disabled:selected:[--ui-border-color:var(--color-control-border)]',
           'hover:[--ui-background-color:var(--color-hover)]',
         ],
       },
