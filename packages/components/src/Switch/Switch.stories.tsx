@@ -185,11 +185,3 @@ WithError.test(
     );
   }
 );
-
-export const Settings = meta.story({
-  args: {
-    variant: 'settings',
-    label: 'Email notifications',
-    description: 'Receive email notifications when someone mentions you',
-  },
-});
