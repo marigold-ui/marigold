@@ -78,6 +78,7 @@ const meta = preview.meta({
 });
 
 export const Trigger = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     return (
       <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
@@ -98,11 +99,12 @@ export const Trigger = meta.story({
 });
 
 export const ControlledTooltipTrigger = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
     return (
       <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">
-        <Tooltip.Trigger open={open} onOpenChange={setOpen} {...args}>
+        <Tooltip.Trigger {...args} open={open} onOpenChange={setOpen}>
           <Button variant="primary">Hover Me!</Button>
           <Tooltip>
             <div>I am a much more longer tooltip you know!</div>
@@ -116,6 +118,7 @@ export const ControlledTooltipTrigger = meta.story({
 });
 
 export const Single = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     delay: 0,
   },

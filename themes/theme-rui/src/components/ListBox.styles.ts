@@ -15,11 +15,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     ],
   }),
   list: cva({
-    base: [
-      'p-1 text-sm outline-0 space-y-px overflow-y-auto w-full',
-      // `!` overrides the inline `z-index: 0` set by RAC's virtualizer wrapper
-      '[&_:has(>:focus-visible)]:z-1!',
-    ],
+    base: ['p-1 text-sm outline-0 space-y-px overflow-y-auto w-full'],
   }),
   item: cva({
     base: [
@@ -28,7 +24,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
       'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
       'hover:ui-state-hover',
       'disabled:cursor-not-allowed disabled:text-disabled',
-      'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
+      'focus-visible:ui-state-focus outline-none transition-[border,color]',
       'cursor-default data-selection-mode:cursor-pointer',
     ],
   }),

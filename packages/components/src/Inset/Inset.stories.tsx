@@ -72,9 +72,10 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <div className="bg-muted rounded-md">
-      <Inset {...args}>
+      <Inset {...args} data-testid="inset">
         <Headline level={3}>The Giggle Grounds</Headline>
         <Inline>
           <Text fontStyle="italic">Laughville | Outdoor Amphitheater</Text>
@@ -88,18 +89,16 @@ export const Basic = meta.story({
   ),
 });
 
-export const Collapsed = meta.story({
-  tags: ['component-test'],
-  args: {
-    p: 'collapsed',
+Basic.test(
+  'collapses the padding to zero',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      p: 'collapsed',
+    },
   },
-  render: args => (
-    <Inset {...args}>
-      <Text>Flush content</Text>
-    </Inset>
-  ),
-  play: async ({ canvas }) => {
-    const inset = canvas.getByText('Flush content').parentElement!;
+  async ({ canvas }) => {
+    const inset = canvas.getByTestId('inset');
     expect(getComputedStyle(inset).padding).toBe('0px');
-  },
-});
+  }
+);

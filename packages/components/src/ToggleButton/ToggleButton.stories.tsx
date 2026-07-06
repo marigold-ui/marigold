@@ -81,14 +81,36 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'applies the selected foreground styling when toggled on',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    const button = canvas.getByRole('button');
+
+    // The selected appearance is wired to react-aria's `data-selected` via the
+    // theme's `selected:*` utilities on the button.
+    expect(button).toHaveClass('selected:text-selected-bold-foreground');
+
+    const colorWhenUnselected = getComputedStyle(button).color;
+
+    await userEvent.click(button);
+
+    expect(button).toHaveAttribute('data-selected', 'true');
+    // Selecting swaps the text colour to the bold selected foreground, so the
+    // resolved colour must actually change.
+    expect(getComputedStyle(button).color).not.toBe(colorWhenUnselected);
+  }
+);
+
 export const BothSurfaces = meta.story({
   parameters: {
+    chromatic: { disableSnapshot: true },
     surface: 'both',
   },
   render: args => <ToggleButton {...args}>Toggle</ToggleButton>,
 });
 
-export const Controlled = meta.story({
+export const IconToggleButton = meta.story({
   render: args => {
     const [isSelected, setIsSelected] = useState(false);
 

@@ -1,6 +1,5 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { SwitchFieldContext } from 'react-aria-components';
 import { SwitchButton, SwitchField } from 'react-aria-components/Switch';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
@@ -13,6 +12,7 @@ type RemovedProps =
   | 'isDisabled'
   | 'isReadOnly'
   | 'isSelected'
+  | 'isInvalid'
   | 'slot';
 
 export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
@@ -28,6 +28,18 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
    * A helpful text.
    */
   description?: ReactNode;
+
+  /**
+   * If `true`, the switch is considered invalid and, if set, the `errorMessage`
+   * is shown instead of the `description`.
+   * @default false
+   */
+  error?: RAC.SwitchFieldProps['isInvalid'];
+
+  /**
+   * An error message shown when `error` is set.
+   */
+  errorMessage?: ReactNode;
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -64,6 +76,8 @@ const _Switch = ({
   width = 'full',
   label,
   description,
+  error,
+  errorMessage,
   selected,
   disabled,
   readOnly,
@@ -78,35 +92,34 @@ const _Switch = ({
     ...rest,
   } satisfies RAC.SwitchFieldProps;
   return (
+    // The `SwitchButton` (the rendered `label`) carries the width, matching the
+    // standalone layout.
     <BooleanField
+      as={SwitchField}
       description={description}
+      errorMessage={errorMessage}
+      error={error}
       variant={variant}
-      context={SwitchFieldContext}
+      size={size}
+      {...props}
     >
-      {/* `SwitchField` provides the field context/`aria-describedby` wiring for
-          the new non-deprecated RAC API. `display: contents` keeps it
-          transparent to the `BooleanField` grid so the subgrid alignment of
-          label, track, and description is preserved. The width lives on the
-          `SwitchButton` (the rendered `label`), matching the standalone layout. */}
-      <SwitchField {...props} className="contents">
-        <SwitchButton
-          ref={ref}
-          className={cn('group/switch w-(--width)', classNames.container)}
-          style={createWidthVar('width', width)}
-        >
-          {variant === 'settings' && label && (
-            <Label elementType="span">{label}</Label>
-          )}
-          <div className="relative">
-            <div className={classNames.track}>
-              <div className={classNames.thumb} />
-            </div>
+      <SwitchButton
+        ref={ref}
+        className={cn('group/switch w-(--width)', classNames.container)}
+        style={createWidthVar('width', width)}
+      >
+        {variant === 'settings' && label && (
+          <Label elementType="span">{label}</Label>
+        )}
+        <div className="relative">
+          <div className={classNames.track}>
+            <div className={classNames.thumb} />
           </div>
-          {variant !== 'settings' && label && (
-            <Label elementType="span">{label}</Label>
-          )}
-        </SwitchButton>
-      </SwitchField>
+        </div>
+        {variant !== 'settings' && label && (
+          <Label elementType="span">{label}</Label>
+        )}
+      </SwitchButton>
     </BooleanField>
   );
 };

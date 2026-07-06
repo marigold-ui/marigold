@@ -211,7 +211,7 @@ export const VenuesTable = () => {
         }
         actionBar={selectedKeys => (
           <ActionBar>
-            <ActionBar.Button
+            <Button
               onPress={async () => {
                 // "Select all" can span pages, so fetch the full matching set
                 // (same query, no pagination) before exporting.
@@ -223,7 +223,7 @@ export const VenuesTable = () => {
               }}
             >
               <Download /> Export CSV
-            </ActionBar.Button>
+            </Button>
           </ActionBar>
         )}
       >

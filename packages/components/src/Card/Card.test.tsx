@@ -1,10 +1,8 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
 import {
-  AriaLabeled,
   Basic,
   MasterAndAdmin,
-  Stretch,
   TitleOnlyWithoutHeader,
   WithBleedContent,
   WithBleedFooter,
@@ -48,15 +46,6 @@ describe('Card', () => {
         screen.getByRole('button', { name: 'Cancel' })
       ).toBeInTheDocument();
     });
-
-    test('supports `aria-label` as the accessible name and omits `aria-labelledby`', () => {
-      render(<AriaLabeled.Component />);
-
-      const article = screen.getByRole('article', { name: 'Quick stats card' });
-
-      expect(article).not.toHaveAttribute('aria-labelledby');
-      expect(article).toHaveAttribute('aria-label', 'Quick stats card');
-    });
   });
 
   describe('Layout', () => {
@@ -71,7 +60,7 @@ describe('Card', () => {
     });
 
     test('does not apply w-fit when stretch is enabled', () => {
-      render(<Stretch.Component data-testid="card" />);
+      render(<Basic.Component data-testid="card" stretch={true} />);
 
       const card = screen.getByTestId('card');
 

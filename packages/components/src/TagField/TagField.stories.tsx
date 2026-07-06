@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Key } from 'react-aria-components/TagGroup';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { I18nProvider } from '@react-aria/i18n';
 import { Stack } from '../Stack/Stack';
 import { TagField } from './TagField';
 
@@ -63,13 +64,15 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
-    <TagField {...args}>
-      <TagField.Option id="rock">Rock</TagField.Option>
-      <TagField.Option id="jazz">Jazz</TagField.Option>
-      <TagField.Option id="pop">Pop</TagField.Option>
-      <TagField.Option id="classical">Classical</TagField.Option>
-      <TagField.Option id="electronic">Electronic</TagField.Option>
-    </TagField>
+    <I18nProvider locale="en">
+      <TagField {...args}>
+        <TagField.Option id="rock">Rock</TagField.Option>
+        <TagField.Option id="jazz">Jazz</TagField.Option>
+        <TagField.Option id="pop">Pop</TagField.Option>
+        <TagField.Option id="classical">Classical</TagField.Option>
+        <TagField.Option id="electronic">Electronic</TagField.Option>
+      </TagField>
+    </I18nProvider>
   ),
 });
 
@@ -95,6 +98,7 @@ Basic.test(
 
 export const Controlled = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [selected, setSelected] = useState<Key[]>(['rock', 'pop']);
     return (
@@ -171,6 +175,7 @@ const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
 
 export const LargeDataset = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Tenants',
     placeholder: 'Search tenants...',
@@ -187,6 +192,7 @@ export const LargeDataset = meta.story({
 
 LargeDataset.test(
   'Search and select from large dataset',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step, args }) => {
     await step('Open the dropdown', async () => {
       const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
@@ -215,28 +221,66 @@ LargeDataset.test(
   }
 );
 
-export const Disabled = Basic.extend({
-  tags: ['component-test'],
-  args: {
-    disabled: true,
-  },
-});
-
-Disabled.test('shows not-allowed cursor when disabled', async ({ canvas }) => {
-  const trigger = canvas.getByRole('button');
-  const style = window.getComputedStyle(trigger);
-
-  await expect(style.cursor).toBe('not-allowed');
-});
-
 export const DisabledItems = Basic.extend({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     disabledKeys: ['classical', 'electronic'],
   },
 });
 
+DisabledItems.test(
+  'Marks disabled options and keeps enabled ones selectable',
+  // Keep the snapshot so Chromatic captures the open list with disabled items.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step, args }) => {
+    await step('Open the dropdown', async () => {
+      const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+      await userEvent.click(trigger);
+      await waitFor(() => canvas.getByRole('dialog'));
+    });
+
+    await step('Disabled options are marked aria-disabled', async () => {
+      const dialog = canvas.getByRole('dialog');
+      expect(
+        within(dialog).getByRole('option', { name: 'Classical' })
+      ).toHaveAttribute('aria-disabled', 'true');
+      expect(
+        within(dialog).getByRole('option', { name: 'Electronic' })
+      ).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    await step('Enabled options remain selectable', async () => {
+      const dialog = canvas.getByRole('dialog');
+      const rock = within(dialog).getByRole('option', { name: 'Rock' });
+      expect(rock).not.toHaveAttribute('aria-disabled', 'true');
+
+      await userEvent.click(rock);
+
+      const tagGroup = canvas.getByRole('grid', {
+        name: /selected items|ausgewählte elemente/i,
+      });
+      expect(within(tagGroup).getByText('Rock')).toBeVisible();
+    });
+  }
+);
+
+DisabledItems.test(
+  'shows not-allowed cursor when disabled',
+  {
+    args: { disabled: true },
+  },
+  async ({ canvas }) => {
+    const trigger = canvas.getByRole('button');
+    const style = window.getComputedStyle(trigger);
+
+    await expect(style.cursor).toBe('not-allowed');
+  }
+);
+
 export const Mobile = Basic.extend({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -274,3 +318,24 @@ Mobile.test('Open tray and select an item', async ({ canvas, step, args }) => {
     expect(within(tagGroup).getByText('Rock')).toBeVisible();
   });
 });
+
+Mobile.test(
+  'Shows the open tray',
+  // Keep the snapshot so Chromatic captures the opened tray.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step, args }) => {
+    await step('Open the tray', async () => {
+      const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+      await userEvent.click(trigger);
+      await waitFor(() => canvas.getByRole('dialog'));
+    });
+
+    await step('The tray shows the options and stays open', async () => {
+      const tray = canvas.getByRole('dialog');
+
+      expect(within(tray).getByRole('option', { name: 'Rock' })).toBeVisible();
+      expect(within(tray).getByRole('option', { name: 'Jazz' })).toBeVisible();
+    });
+  }
+);

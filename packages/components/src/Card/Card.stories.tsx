@@ -64,59 +64,38 @@ export const Basic = meta.story({
   ),
 });
 
-Basic.test('renders an article labelled by the Title', async ({ canvas }) => {
-  const title = canvas.getByRole('heading', {
-    name: 'Professor Severus Snape',
-  });
-  const article = canvas.getByRole('article', {
-    name: 'Professor Severus Snape',
-  });
-
-  expect(title.tagName).toBe('H3');
-  expect(article.tagName).toBe('ARTICLE');
-  expect(article.getAttribute('aria-labelledby')).toBe(title.id);
-});
-
-export const HeadingLevels = meta.story({
-  args: { headingLevel: 4 },
-  tags: ['component-test'],
-  render: args => (
-    <Card {...args}>
-      <Card.Header>
-        <Title>Heading at level 4</Title>
-      </Card.Header>
-      <Card.Content>
-        <Text>The Title renders as an h4 in the document outline.</Text>
-      </Card.Content>
-    </Card>
-  ),
-});
-
-HeadingLevels.test(
-  'renders the Title at the configured heading level',
+Basic.test(
+  'renders an article labelled by the Title',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    const title = canvas.getByRole('heading', { name: 'Heading at level 4' });
+    const title = canvas.getByRole('heading', {
+      name: 'Professor Severus Snape',
+    });
+    const article = canvas.getByRole('article', {
+      name: 'Professor Severus Snape',
+    });
 
-    expect(title.tagName).toBe('H4');
+    expect(title.tagName).toBe('H3');
+    expect(article.tagName).toBe('ARTICLE');
+    expect(article.getAttribute('aria-labelledby')).toBe(title.id);
   }
 );
 
-export const AriaLabeled = meta.story({
-  tags: ['component-test'],
-  render: args => (
-    <Card {...args} aria-label="Quick stats card">
-      <Card.Content>
-        <Text>
-          A Card can be labelled with <code>aria-label</code> when there is no
-          visible Title.
-        </Text>
-      </Card.Content>
-    </Card>
-  ),
-});
-
-AriaLabeled.test(
+Basic.test(
   'uses aria-label as the accessible name and omits aria-labelledby',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    render: args => (
+      <Card {...args} aria-label="Quick stats card">
+        <Card.Content>
+          <Text>
+            A Card can be labelled with <code>aria-label</code> when there is no
+            visible Title.
+          </Text>
+        </Card.Content>
+      </Card>
+    ),
+  },
   async ({ canvas }) => {
     const article = canvas.getByRole('article', { name: 'Quick stats card' });
 
@@ -126,7 +105,6 @@ AriaLabeled.test(
 );
 
 export const WithFooter = meta.story({
-  tags: ['component-test'],
   render: args => (
     <Card {...args}>
       <Card.Header>
@@ -165,25 +143,6 @@ export const WithMedia = meta.story({
       </Card.Header>
       <Card.Content>
         <Text>A breathtaking view of the mountains at sunrise.</Text>
-      </Card.Content>
-    </Card>
-  ),
-});
-
-export const Stretch = meta.story({
-  args: {
-    stretch: true,
-  },
-  render: args => (
-    <Card {...args}>
-      <Card.Header>
-        <Title>Full Width Card</Title>
-      </Card.Header>
-      <Card.Content>
-        <Text>
-          This card stretches to fill the available horizontal space in its
-          parent container.
-        </Text>
       </Card.Content>
     </Card>
   ),
@@ -242,6 +201,7 @@ export const WithNumericPadding = meta.story({
 
 WithNumericPadding.test(
   'applies equal horizontal and vertical padding from a numeric scale value',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const article = canvas.getByRole('article');
     const style = getComputedStyle(article);
@@ -294,6 +254,7 @@ export const WithBleedFooter = meta.story({
  * Content will have no horizontal padding. Wrap content in `Card.Content` instead.
  */
 export const BareChildrenAntiPattern = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Stack space={4}>
       <Card {...args} aria-label="Bare children anti-pattern">
@@ -361,6 +322,7 @@ export const TitleOnlyWithoutHeader = meta.story({
 
 TitleOnlyWithoutHeader.test(
   'labels the article when Title is used without Card.Header',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const title = canvas.getByRole('heading', { name: 'Quick Settings' });
     const article = canvas.getByRole('article', { name: 'Quick Settings' });

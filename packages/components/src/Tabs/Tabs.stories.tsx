@@ -1,4 +1,4 @@
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Tabs } from './Tabs';
 
@@ -51,7 +51,12 @@ export const Basic = meta.story({
       </Tabs>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+Basic.test(
+  'Activates a tab on click and shows its panel',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
     let keyboardTab: HTMLElement;
 
     await step('Arrange', async () => {
@@ -73,8 +78,8 @@ export const Basic = meta.story({
       );
       await expect(indicator).toBeVisible();
     });
-  },
-});
+  }
+);
 
 export const WithDisabledKeys = meta.story({
   render: args => {
@@ -110,6 +115,7 @@ export const WithDisabledKeys = meta.story({
 });
 
 export const WithSelectedTab = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     return (
       <Tabs aria-label="tabs" selectedKey={'settings'} {...args}>
@@ -191,9 +197,6 @@ export const Mobile = meta.story({
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
   render: args => (
     <Tabs aria-label="tabs" {...args}>
       <Tabs.List aria-label="Workspace settings">
@@ -210,7 +213,16 @@ export const Mobile = meta.story({
       ))}
     </Tabs>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+Mobile.test(
+  'scrolls the tab row and activates an overflowed tab',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  },
+  async ({ canvas, userEvent, step }) => {
     let lastTab: HTMLElement;
 
     await step('Arrange', async () => {
@@ -235,5 +247,5 @@ export const Mobile = meta.story({
       );
       await expect(indicator).toBeVisible();
     });
-  },
-});
+  }
+);
