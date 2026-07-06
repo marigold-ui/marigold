@@ -47,12 +47,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
-      | 'container'
-      | 'selection'
-      | 'count'
-      | 'toolbar'
-      | 'clearButton'
-      | 'actionButton',
+      'container' | 'selection' | 'count' | 'toolbar' | 'clearButton',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;

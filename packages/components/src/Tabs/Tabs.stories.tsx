@@ -197,9 +197,6 @@ export const Mobile = meta.story({
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
   render: args => (
     <Tabs aria-label="tabs" {...args}>
       <Tabs.List aria-label="Workspace settings">
@@ -216,7 +213,16 @@ export const Mobile = meta.story({
       ))}
     </Tabs>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+Mobile.test(
+  'scrolls the tab row and activates an overflowed tab',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  },
+  async ({ canvas, userEvent, step }) => {
     let lastTab: HTMLElement;
 
     await step('Arrange', async () => {
@@ -241,5 +247,5 @@ export const Mobile = meta.story({
       );
       await expect(indicator).toBeVisible();
     });
-  },
-});
+  }
+);
