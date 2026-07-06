@@ -172,7 +172,7 @@ The primary token represents the strongest visual weight in the interface. It is
 
 The page is gray (`bg-background`), component panels are lighter (`bg-surface`). This contrast creates natural visual hierarchy without relying solely on shadows and borders.
 
-Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`, a translucent decorative hairline applied through the `ui-surface` utility rather than a standalone border. Controls (inputs, selects, the secondary Button) use the same mechanism with the denser `control-border` — see [Form controls](#form-controls) below, and [Elevation](/foundations/elevation) for how boundaries combine with the shadow tiers.
+Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`, a translucent decorative hairline applied through the `ui-surface` utility rather than a standalone border. Controls (inputs, selects, the secondary Button) use the same mechanism with the denser `control-border`. See [Form controls](#form-controls) below, and [Elevation](/foundations/elevation) for how boundaries combine with the shadow tiers.
 
 <TokenTable
   tokens={[
@@ -281,15 +281,14 @@ Most form controls sit on a white surface and use borders to define their shape:
 
 ### Selected
 
-Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components use the quieter `bg-selected` wash paired with the row's own indicator — the checkbox, radio, or check icon — which carries the selection boundary and its WCAG 1.4.11 contrast. The wash sits one step darker than the `hover` fill, so a committed row reads heavier than one the cursor merely floats over.
+Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components use the quieter `bg-selected` wash paired with the row's own indicator (the checkbox, radio, or check icon), which carries the selection boundary and its WCAG 1.4.11 contrast. The wash sits one step darker than the `hover` fill, so a committed row reads heavier than one the cursor merely floats over.
 
-<Callout title="Known issue: secondary text on the selected wash (DST-1590)">
+<Callout title="Known issue: secondary text on the selected wash">
   Because `bg-selected` is `charcoal-300`, secondary description text
-  (`text-secondary`, `charcoal-600`) on a selected row lands at 3.6:1 — below
-  the 4.5:1 AA minimum. Selection is carried by the indicator, so the failure is
-  limited to the description subtext; the fix (render selected-row descriptions
-  in `text-foreground`, or move the fill onto an alpha ramp) is tracked in
-  [DST-1590](https://reservix.atlassian.net/browse/DST-1590).
+  (`text-secondary`, `charcoal-600`) on a selected row lands at 3.6:1, below the
+  4.5:1 AA minimum. Selection is carried by the indicator, so the failure is
+  limited to the description subtext. The fix is to render selected-row
+  descriptions in `text-foreground`, or to move the fill onto an alpha ramp.
 </Callout>
 
 <TokenTable
@@ -298,7 +297,7 @@ Selection tells users which item has already been chosen. Not every selection lo
       name: 'selected',
       value: 'charcoal-300',
       useFor:
-        'Selection wash for list items (SelectList, ListBox, Sidebar) — one step darker than hover — paired with the row indicator',
+        'Selection wash for list items (SelectList, ListBox, Sidebar), one step darker than hover, paired with the row indicator',
     },
     {
       name: 'selected-bold',
@@ -319,7 +318,7 @@ Selection tells users which item has already been chosen. Not every selection lo
 <div className="bg-selected-bold text-selected-bold-foreground" />
 ```
 
-**List selection** (SelectList, ListBox) uses the quiet wash; the row's indicator is the ink:
+**List selection** (SelectList, ListBox) uses the quiet wash. The row's indicator is the ink:
 
 ```tsx
 <div className="selected:bg-selected" /> // + checkbox / radio / check indicator
@@ -467,7 +466,7 @@ Most token pairs follow the pattern `bg-X` + `text-X-foreground`. Disabled is di
 <span className="text-disabled cursor-not-allowed">Disabled label</span>
 
 // Full disabled control (inputs, buttons)
-<input className="bg-disabled-surface text-disabled cursor-not-allowed" />;
+<input className="bg-disabled-surface text-disabled cursor-not-allowed" />
 ```
 
 The `ui-state-disabled` utility bundles background, text, and cursor into one class.
@@ -515,14 +514,14 @@ Border and outline tokens for interactive and structural elements. See [Form Fie
 
 <Callout title="Three border tokens: pick by the job">
   All three boundaries answer a different question. `control-border` marks an
-  element you **operate** — it is the same translucent charcoal stroke as
-  `surface-border` at ~2.5× the density, so it stays clearly visible and adapts
-  to the ground beneath it. `border` draws **structural lines** — dividers, grid
-  lines, section rules. It is opaque on purpose: separators are many strokes
-  drawn by many cells, and translucent strokes would render darker wherever they
-  overlap or cross. `surface-border` is the **decorative** rim of a raised
-  surface (Card, Panel, Dialog); it sits below the contrast threshold, so never
-  use it where the edge has to be seen.
+  element you **operate**. It is the same translucent charcoal stroke as
+  `surface-border` at about 2.5 times the density, so it stays clearly visible
+  and adapts to the ground beneath it. `border` draws **structural lines** such
+  as dividers, grid lines, and section rules. It is opaque on purpose, because
+  separators are many strokes drawn by many cells, and translucent strokes would
+  render darker wherever they overlap or cross. `surface-border` is the
+  **decorative** rim of a raised surface (Card, Panel, Dialog). It sits below
+  the contrast threshold, so never use it where the edge has to be seen.
 </Callout>
 
 ### Status colors
