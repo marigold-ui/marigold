@@ -51,10 +51,10 @@ export default () => (
     actionBar={() => (
       <ActionBar>
         <Drawer.Trigger>
-          <ActionBar.Button>
+          <Button>
             <Pencil />
             Edit
-          </ActionBar.Button>
+          </Button>
           <Drawer size="medium">
             <Drawer.Title>Edit selected events</Drawer.Title>
             <Drawer.Content>
