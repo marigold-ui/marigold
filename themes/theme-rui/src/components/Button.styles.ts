@@ -19,8 +19,10 @@ export const Button: ThemeComponent<'Button'> = cva({
         'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
       ],
       ghost: 'hover:ui-state-hover-ghost',
-      destructive:
-        'bg-destructive-bold text-destructive-bold-foreground hover:bg-destructive-bold/70',
+      destructive: [
+        'ui-surface-contrast text-destructive-bold-foreground [--ui-background-color:var(--color-destructive-bold)]',
+        'hover:[--ui-background-color:oklch(from_var(--color-destructive-bold)_calc(l-0.15)_c_h)]',
+      ],
       'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',
       link: 'text-link ui-touch-hitbox',
     },
