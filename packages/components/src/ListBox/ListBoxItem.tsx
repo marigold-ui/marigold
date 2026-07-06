@@ -3,6 +3,7 @@ import type RAC from 'react-aria-components';
 import { ListBoxItem } from 'react-aria-components/ListBox';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
+import { cn } from '@marigold/system';
 import { Check } from '../icons/Check';
 import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 import { useListBoxContext } from './Context';
@@ -54,7 +55,7 @@ export const _ListBoxItem = (props: ListBoxItemProps) => {
   return (
     <ListBoxItem
       {...props}
-      className={classNames.item}
+      className={cn(classNames.item, 'focus-visible:z-1')}
       style={virtualized ? { height: '100%', minHeight: 0 } : undefined}
       // textValue needed because ListBoxItem in this case has multiple children
       textValue={props.textValue ?? String(props.children)}
