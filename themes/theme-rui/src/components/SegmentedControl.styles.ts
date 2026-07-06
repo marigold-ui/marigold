@@ -8,8 +8,11 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     base: 'group/segmented relative items-center rounded-surface',
     variants: {
       variant: {
-        // Track matches the Switch's unselected track surface.
-        default: 'bg-control',
+        // Track matches the Switch's unselected track surface. px-1 gives the
+        // outermost thumb a 4px margin from the track edge on the left and right,
+        // matching the 4px top/bottom the thumb's own inset provides — so the
+        // block of segments sits inside a uniform 4px frame.
+        default: 'bg-control px-1',
         ghost: '',
       },
       size: {
@@ -89,11 +92,9 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         ghost: 'hover:ui-state-hover-ghost',
       },
       size: {
-        // px-5 (20px), not px-3: the thumb is inset 10px from the segment edge,
-        // so the label needs 20px of segment padding to keep ~10px of clear space
-        // between the text and the thumb's edge. With px-3 the thumb (10px inset)
-        // landed 2px from the text and looked squished.
-        default: 'h-control px-5 [&_svg]:size-4',
+        // The thumb fills the segment, so the option's px is the label's padding
+        // inside the thumb. px-3 (12px) keeps clear space around the label.
+        default: 'h-control px-3 [&_svg]:size-4',
       },
     },
     defaultVariants: {
@@ -117,23 +118,24 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       variant: {
         // Raised thumb styled like the secondary/default Button: ui-surface-control
         // gives it the --color-control-border edge with the lighter-top/darker-bottom
-        // gradient, over shadow-elevation-border's lift. Inset 4px top/bottom and 10px
-        // left/right so the *outset* ring sits well off the track edge, giving the
-        // thumb clear breathing room inside the track.
+        // gradient, over shadow-elevation-border's lift. The thumb fills its segment
+        // (inset-y-[4px] for the 4px top/bottom margin, but left-0 w-full horizontally)
+        // so adjacent segments' thumbs meet with no gap between them. The 4px left/right
+        // margin at the very ends comes from the track's px-1, not the thumb inset, so
+        // the between-gap (0) and the outer margin (4px) are set independently.
         //   The keyboard focus ring is drawn here on the indicator (not the cell), so
-        // it wraps the thumb exactly and shows the same side padding on selection.
-        // outline-offset-1 sits it flush against the thumb's 1px outset ring (no gap).
-        // Selection follows focus in a radio group, so the focused option is always
-        // the selected one where this indicator lives; group-has-[data-focus-visible]
-        // is what the cell's own outline used before. transition-none (base) keeps the
-        // ring from lagging the slide.
+        // it wraps the thumb exactly. outline-offset-1 sits it flush against the thumb's
+        // 1px outset ring (no gap). Selection follows focus in a radio group, so the
+        // focused option is always the selected one where this indicator lives;
+        // group-has-[data-focus-visible] is what the cell's own outline used before.
+        // transition-none (base) keeps the ring from lagging the slide.
         //   The thumb is the one control sitting on a dark ground (the charcoal-300
         // track), where control-border's ground-adaptive firming over-darkens the
         // edge. The track already separates the thumb (its fill is lighter than the
         // track), so we step the border alpha down 0.08 — token-derived, so it still
         // tracks any change to --color-control-border. The bevel follows it down.
         default:
-          'inset-y-[4px] left-[10px] w-[calc(100%-20px)] ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
+          'inset-y-[4px] left-0 w-full ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },
