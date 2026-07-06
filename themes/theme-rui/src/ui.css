@@ -105,6 +105,18 @@
 }
 
 /*
+ * Destructive prominent surface: the destructive Button. Reuses ui-surface-contrast
+ * wholesale — pointing --ui-background-color at --color-destructive-bold retints
+ * every layer (glow, top-down fill, top-edge highlight, dark ring) red, so it shares
+ * one mechanism with the primary Button. The text override sits inside the @apply so
+ * it reliably beats the contrast utility's own foreground regardless of emit order.
+ */
+@utility ui-surface-destructive {
+  @apply ui-surface-contrast text-destructive-bold-foreground;
+  --ui-background-color: var(--color-destructive-bold);
+}
+
+/*
  * Control surface: the interactive counterpart to ui-surface. Cards, panels and
  * overlays wear ui-surface's soft, translucent decorative hairline; a control
  * (input, select, field, and the neutral button family) needs a clearly visible,

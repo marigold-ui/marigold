@@ -20,7 +20,7 @@ export const Button: ThemeComponent<'Button'> = cva({
       ],
       ghost: 'hover:ui-state-hover-ghost',
       destructive: [
-        'ui-surface-contrast text-destructive-bold-foreground [--ui-background-color:var(--color-destructive-bold)]',
+        'ui-surface-destructive',
         'hover:[--ui-background-color:oklch(from_var(--color-destructive-bold)_calc(l-0.15)_c_h)]',
       ],
       'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',
