@@ -8,7 +8,7 @@ Screens are flat, but interfaces need depth. Without visual cues, every element 
 
 This matters because it directly guides attention. A raised card groups related content and separates it from the surrounding page. A floating menu signals that it is temporary and will go away. A subtle border on an input tells users where they can type. Without these depth cues, interfaces feel flat and ambiguous.
 
-Three signals work together to produce this effect: **background layers** set the color of each level, **boundaries** (borders) encode what kind of element something is, and **shadows** add visual lift to communicate how high it sits. Boundary and shadow are deliberately independent axes: an element's border says _surface or control_, its shadow says _how far off the page_ — the two compose freely and never stand in for each other.
+Three signals work together to produce this effect. **Background layers** set the color of each level, **boundaries** (borders) encode what kind of element something is, and **shadows** add visual lift to communicate how high it sits. Boundary and shadow are deliberately independent. An element's border says whether it is a surface or a control, and its shadow says how far off the page it sits. The two compose freely and never stand in for each other.
 
 <Callout title="Do I need to apply elevation manually?">
   Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct background, border, and shadow tokens internally. You only need the utility classes described on this page (`ui-surface`, `ui-surface-control`, `shadow-elevation-*`, `bg-background`, etc.) when building custom elements that aren't covered by an existing component.
@@ -47,16 +47,16 @@ Before shadows come into play, background colors establish the base layers of th
 Every elevated element in Marigold belongs to one of two families:
 
 - **Surfaces** structure the page: cards, panels, and overlays that group, separate, and contain content.
-- **Controls** are operated: buttons, form fields, segmented controls, calendars — anything the user manipulates to enter data or trigger an action.
+- **Controls** are operated. Buttons, form fields, segmented controls, and calendars are all things the user manipulates to enter data or trigger an action.
 
-Interactivity is **not** what separates them. Controls are always interactive, but a surface can be interactive too — a selectable card is still a surface. The question is the element's role: does it _contain_ content, or does the user _operate_ it?
+Interactivity is **not** what separates them. Controls are always interactive, but a surface can be interactive too. A selectable card is still a surface. The question is the element's role. Does it contain content, or does the user operate it?
 
 The families are told apart by their **boundary**, not their shadow:
 
-- Surfaces wear the `ui-surface` utility: a flat white fill (`bg-surface`), rounded corners, and a whisper-light hairline rim (`surface-border`). The line hints at the edge of a section with as little visual noise as possible — structure should guide the eye, not compete with the content.
-- Controls wear `ui-surface-control`: the same surface, but the rim is the clearly visible `control-border`, and the bottom edge of that border is one step denser — the boundary reads lighter at the top and darker at the bottom (a gradient that lives on the border, never on the fill). A control must visibly stand off the page: a clear edge is what makes it read as _operable_. This is backed by WCAG 1.4.11 (non-text contrast for component boundaries) and by usability research — NN/g's eye-tracking studies on weak clickability signifiers show users spend measurably more effort on pages where controls don't look operable.
+- Surfaces wear the `ui-surface` utility, which gives them a flat white fill (`bg-surface`), rounded corners, and a whisper-light hairline rim (`surface-border`). The line hints at the edge of a section with as little visual noise as possible, because structure should guide the eye rather than compete with the content.
+- Controls wear `ui-surface-control`, which is the same surface with two changes. The rim is the clearly visible `control-border`, and the bottom edge of that border is one step denser, so the boundary reads lighter at the top and darker at the bottom (a gradient that lives on the border, never on the fill). A control must visibly stand off the page, because a clear edge is what makes it read as operable. This is backed by WCAG 1.4.11 (non-text contrast for component boundaries) and by usability research. NN/g's eye-tracking studies on weak clickability signifiers show that users spend measurably more effort on pages where controls do not look operable.
 
-Both boundaries are the same translucent charcoal stroke — the control's is ~2.5× denser. Because they are translucent, both composite over whatever ground the element sits on: the edge firms up on the gray page background and relaxes on white, instead of painting one fixed gray everywhere.
+Both boundaries are the same translucent charcoal stroke, and the control's is about 2.5 times denser. Because they are translucent, both composite over whatever ground the element sits on. The edge firms up on the gray page background and relaxes on white, instead of painting one fixed gray everywhere.
 
 ```html
 <!-- a surface: structure, minimal noise -->
@@ -68,7 +68,7 @@ Both boundaries are the same translucent charcoal stroke — the control's is ~2
 
 Two consequences of the rule:
 
-- **The border is the operability cue; the shadow is supporting texture.** A control's border-tier shadow adds a hint of physical lift, but it never carries the affordance alone — a control stripped of its shadow (a selected ToggleButton, a segment inside a group) still reads as a control through its boundary and fill.
+- **The border is the operability cue, and the shadow is supporting texture.** A control's border-tier shadow adds a hint of physical lift, but it never carries the affordance alone. A control stripped of its shadow, such as a selected ToggleButton or a segment inside a group, still reads as a control through its boundary and fill.
 - **The boundary is required only where it is the sole cue.** A ghost button carries its affordance through its label and hover state, so it draws no border. A ListBox inside a Popover draws no boundary of its own, because the overlay frame already provides the surface. The requirement is on the system, not on every element in isolation.
 
 <GuidelineTiles>
@@ -80,15 +80,15 @@ Two consequences of the rule:
   </Do>
   <Dont>
     <DontDescription>
-      Don't put `ui-surface-control` on cards, panels, or other containers — a
-      heavy edge on a surface reads as something to click.
+      Don't put `ui-surface-control` on cards, panels, or other containers,
+      because a heavy edge on a surface reads as something to click.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
 ## Shadow tiers
 
-Elevation is split into three tiers, each serving a distinct role in the visual hierarchy. The shadow intensity increases with each tier: **border** provides a subtle lift for controls, **raised** lifts containers off the page, and **overlay** creates a strong floating effect for temporary UI. Controls sit on the _lowest_ tier by design — surfaces contain controls, so a card must read as the larger structure beneath the fields it holds. Together the tiers form a clear stacking order where every element sits at the right depth.
+Elevation is split into three tiers, each serving a distinct role in the visual hierarchy. The shadow intensity increases with each tier. **Border** provides a subtle lift for controls, **raised** lifts containers off the page, and **overlay** creates a strong floating effect for temporary UI. Controls sit on the _lowest_ tier by design, because surfaces contain controls, so a card must read as the larger structure beneath the fields it holds. Together the tiers form a clear stacking order where every element sits at the right depth.
 
 <ComponentDemo name="elevation-swatches" mode="preview" background="page" />
 
@@ -106,7 +106,7 @@ This diagram shows how the three shadow tiers layer in a typical form layout. Th
 
 The subtlest shadow tier. Border elevation gives controls a slight lift, defining their presence against the surface they sit on. These elements combine `ui-surface-control` with `shadow-elevation-border`.
 
-The edge itself comes from the boundary, not the shadow: `ui-surface-control` draws a 1px rim in the `control-border` token, with the denser bottom edge described above. The shadow only adds texture on top; see [Token Overview](/foundations/token-overview#form-controls) for the border tokens.
+The edge itself comes from the boundary, not the shadow. `ui-surface-control` draws a 1px rim in the `control-border` token, with the denser bottom edge described above. The shadow only adds texture on top. See [Token Overview](/foundations/token-overview#form-controls) for the border tokens.
 
 Because border elevation produces only a subtle shadow, these controls need a raised surface behind them to be clearly visible. Placing an input directly on the page background (`bg-background`) makes its edges nearly indistinguishable from the surrounding area. A Card or similar raised container provides the contrast that border-elevated controls rely on.
 
