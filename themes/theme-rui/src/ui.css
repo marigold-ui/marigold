@@ -19,9 +19,9 @@
   @apply px-3 py-2;
   @apply text-foreground placeholder:text-placeholder text-sm;
   /* A form field needs a clearly visible boundary, so its ui-surface ring uses
-     the opaque `border` (matching Checkbox/Radio). Focus and error still
-     override the ring color per state. */
-  --ui-border-color: var(--color-border);
+     the dense, ground-adaptive `control-border` (matching Checkbox/Radio).
+     Focus and error still override the ring color per state. */
+  --ui-border-color: var(--color-control-border);
 }
 
 /* ========================= */
@@ -121,19 +121,24 @@
  * overlays wear ui-surface's soft, translucent decorative hairline; a control
  * (input, select, field, and the neutral button family) needs a clearly visible,
  * functional boundary that stands off the page. So it swaps the ring to the
- * opaque --color-border (the same boundary Checkbox/Radio use) and darkens the
- * bottom edge of that border a step: a crisp 1px inset line flush to the bottom,
- * so the boundary reads lighter-top / darker-bottom (reviving the old gradient
- * border) while the fill stays dead flat — the gradient lives on the border, not
- * the surface. The line derives from --ui-border-color, so focus/error recolors
- * carry it too; ui-state-disabled's inset-shadow-none removes it. Compose with
- * shadow-elevation-border for lift, kept as a separate utility so the boundary
- * and the elevation stay modular.
+ * dense --color-control-border — the same translucent charcoal stroke as the
+ * hairline, ~2.5x stronger, so it composites over whatever ground the control
+ * sits on (page, white, the SegmentedControl track) instead of painting one
+ * fixed gray. The bottom edge of that border is a step denser: a crisp 1px
+ * inset line flush to the bottom (the same stroke at higher alpha — an alpha
+ * step, since a lightness step can't darken a translucent stroke past its own
+ * density), so the boundary reads lighter-top / darker-bottom (reviving the old
+ * gradient border) while the fill stays dead flat — the gradient lives on the
+ * border, not the surface. The line derives from --ui-border-color, so
+ * focus/error recolors carry into it (opaque overrides clamp at alpha 1 and get
+ * a uniform border); ui-state-disabled's inset-shadow-none removes it. Compose
+ * with shadow-elevation-border for lift, kept as a separate utility so the
+ * boundary and the elevation stay modular.
  */
 @utility ui-surface-control {
   @apply ui-surface;
-  --ui-border-color: var(--color-border);
-  @apply inset-shadow-[0_-1px_0_0_oklch(from_var(--ui-border-color)_calc(l_-_0.06)_c_h)];
+  --ui-border-color: var(--color-control-border);
+  @apply inset-shadow-[0_-1px_0_0_oklch(from_var(--ui-border-color)_l_c_h_/_calc(alpha_+_0.08))];
 }
 
 /* ========================= */

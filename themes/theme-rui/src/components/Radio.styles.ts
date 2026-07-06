@@ -18,7 +18,7 @@ export const Radio: ThemeComponent<'Radio'> = {
   radio: cva({
     base: [
       'aspect-square size-4 rounded-full',
-      'border border-border shadow-elevation-border bg-surface',
+      'border border-control-border shadow-elevation-border bg-surface',
       'group-focus-visible/radio:ui-state-focus outline-none',
       'group-disabled/radio:group-selected/radio:bg-disabled-surface group-disabled/radio:border-disabled-surface! group-disabled/radio:cursor-not-allowed',
       'group-selected/radio:border-selected-bold group-selected/radio:bg-selected-bold group-selected/radio:text-selected-bold-foreground',

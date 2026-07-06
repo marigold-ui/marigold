@@ -14,7 +14,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         // A default SelectList is a form control (you pick values), so it wears
-        // the control surface — the opaque --color-border boundary + depth bevel —
+        // the control surface — the dense --color-control-border boundary + depth bevel —
         // not the decorative hairline that Cards/Panels use. State recolors
         // (focus/error) still compose through --ui-border-color, as on an input.
         default: 'ui-surface-control shadow-elevation-border',
@@ -75,9 +75,10 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'selected:bg-selected hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
-          // Dividers are opaque functional --color-border, matching Table's
+          // Dividers are the opaque structural --color-border, matching Table's
           // grid lines and the token rule that dividers/grid lines are
-          // functional edges. Opaque and darker than every wash, so they stay
+          // structural lines (opaque so crossing strokes can't stack alpha).
+          // Opaque and darker than every wash, so they stay
           // crisp against rest, hover, and the selected fill alike — the
           // structure never dissolves into a state fill, in any state.
           'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-border',
@@ -94,7 +95,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         bordered: [
           'ui-surface shadow-elevation-border min-h-14',
           'selected:[--ui-border-color:var(--color-foreground)] selected:inset-shadow-[0_0_0_0.5px_var(--ui-border-color)]',
-          'disabled:selected:[--ui-border-color:var(--color-border)] disabled:selected:inset-shadow-none',
+          'disabled:selected:[--ui-border-color:var(--color-control-border)] disabled:selected:inset-shadow-none',
           'hover:[--ui-background-color:var(--color-hover)]',
         ],
       },

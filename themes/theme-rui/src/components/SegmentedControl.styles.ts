@@ -113,7 +113,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     variants: {
       variant: {
         // Raised thumb styled exactly like the secondary/default Button:
-        // ui-surface-control gives it the opaque --color-border edge with the
+        // ui-surface-control gives it the dense --color-control-border edge with the
         // lighter-top/darker-bottom gradient, over shadow-elevation-border's lift.
         // Inset 3px (not 2px) so the *outset* ring lands ~2px from the track edge —
         // where the old inset border sat — instead of bleeding 1px closer.

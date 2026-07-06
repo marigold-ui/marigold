@@ -50,8 +50,8 @@ export const Menu: ThemeComponent<'Menu'> = {
           // Neutral trigger = the secondary Button look. Disabled/pending come from
           // ui-button-base (disabled:ui-state-disabled + pending:ui-state-disabled).
           'ui-surface-control shadow-elevation-border',
-          'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)] hover:text-foreground',
-          'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
+          'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))] hover:text-foreground',
+          'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))]',
         ],
         ghost: 'hover:ui-state-hover',
       },

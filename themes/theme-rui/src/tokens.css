@@ -92,17 +92,32 @@
   --color-disabled-surface: var(--color-charcoal-100);
   --color-disabled-border: var(--color-charcoal-300);
 
-  /* --- Form Controls --- */
-  /* Opaque FUNCTIONAL edge — a boundary that carries meaning or is an affordance,
-     so it must stay perceivable (WCAG 1.4.11). Counterpart to the decorative
-     --color-surface-border. Shared by every control boundary (inputs/selects/date
-     fields via ui-input, checkboxes/radios directly) and by dividers/grid lines,
-     where a translucent stroke would double-darken.
-     charcoal-300 darkened 0.08 L so it doesn't dissolve into a white field — on
-     the token, not the rung (which also feeds scrollbars + the date-segment
+  /* --- Structural Lines --- */
+  /* Opaque STRUCTURAL line — dividers, grid lines, section rules, internal
+     separators (Table grids, SelectList dividers, panel header/action rules,
+     NumberField stepper edges). Opaque on purpose: separators are many strokes
+     drawn by many cells, and where translucent strokes overlap or cross, the
+     alpha stacks and intersections render darker than the runs. A control
+     BOUNDARY takes --color-control-border instead — a single closed stroke that
+     never crosses another, so it is free to be translucent.
+     charcoal-300 darkened 0.08 L so a line doesn't dissolve into a white field —
+     on the token, not the rung (which also feeds scrollbars + the date-segment
      highlight). Caveat: at L 0.78 it's only ~2:1 on white (3:1 needs ~L 0.67,
      visibly heavier); kept lighter by design, tracked separately. */
   --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
+
+  /* --- Form Controls --- */
+  /* Translucent FUNCTIONAL boundary — the edge of a control (inputs/selects/date
+     fields via ui-input + ui-surface-control, checkboxes/radios directly). The
+     same stroke as the decorative --color-surface-border, ~2.5x denser: on a
+     white field it composites to the same L 0.78 the old opaque --color-border
+     had, and because it is translucent it adapts to its ground — firmer on the
+     page background and on the SegmentedControl track (where one fixed opaque
+     gray went weak), receding on dark grounds where the control's light fill is
+     already the edge. A control boundary is an affordance the user must see
+     (WCAG 1.4.11); the same ~2:1 on-white caveat as --color-border applies.
+     State overrides (focus, error, disabled) stay opaque on purpose. */
+  --color-control-border: oklch(from var(--color-charcoal-950) l c h / 0.26);
   --color-ring: var(--color-charcoal-600);
 
   /* --- Status: Destructive --- */
@@ -154,7 +169,7 @@
   /* Decorative border of a raised surface (the ui-surface ring) — Card, Panel,
      Dialog, Menu. It draws a line but is purely decorative: deliberately below
      the non-text-contrast threshold, so never use it where the edge is an
-     affordance — those take the opaque, functional --color-border. Translucent so
+     affordance — those take the denser --color-control-border. Translucent so
      it composites over whatever ground it sits on, staying whisper-light on white,
      the page, or a tinted panel (a fixed gray reads heavy on white, washes out on
      gray). */
