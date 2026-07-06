@@ -41,7 +41,7 @@ const meta = preview.meta({
   title: 'Icons/Icon',
   component: DesignTicket,
   parameters: {
-    parameters: { chromatic: { disableSnapshot: true } },
+    chromatic: { disableSnapshot: true },
     surface: false,
   },
   argTypes: {

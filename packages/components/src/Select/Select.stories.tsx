@@ -236,6 +236,7 @@ Basic.test(
   'Opens the list grouped into sections',
   {
     parameters: { chromatic: { disableSnapshot: false } },
+    args: { defaultValue: 'harry-potter' },
     render: args => (
       <Select {...args}>
         <Select.Section header="Fantasy">
@@ -263,10 +264,20 @@ Basic.test(
       </Select>
     ),
   },
-  async ({ args, canvas }) => {
-    await userEvent.click(
-      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+  async ({ args, canvas, step }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step(
+      'Default trigger shows the text value but hides the description slot',
+      () => {
+        expect(within(trigger).getByText('Harry Potter')).toBeVisible();
+        expect(
+          within(trigger).getByText('About the boy who lived')
+        ).not.toBeVisible();
+      }
     );
+
+    await userEvent.click(trigger);
 
     const listbox = await canvas.findByRole('listbox');
     expect(within(listbox).getByText('Fantasy')).toBeVisible();
