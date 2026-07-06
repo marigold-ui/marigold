@@ -93,6 +93,7 @@ export const InButtonGroup = meta.story({
 });
 
 export const InButtonContext = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     children: undefined,
     href: undefined,

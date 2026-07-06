@@ -1,5 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
+import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { SectionMessage } from './SectionMessage';
 
@@ -37,6 +39,11 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
+  parameters: {
+    chromatic: { disableSnapshot: true },
+    surface: false,
+  },
   render: args => (
     <SectionMessage closeButton {...args}>
       <SectionMessage.Title>Danger Zone!</SectionMessage.Title>
@@ -47,7 +54,21 @@ export const Basic = meta.story({
   ),
 });
 
+Basic.test(
+  'renders the Title as a real heading element',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
+    const heading = canvas.getByRole('heading', { name: 'Danger Zone!' });
+    await expect(heading).toBeInTheDocument();
+    // Default `headingLevel` is 3.
+    await expect(heading.tagName).toBe('H3');
+  }
+);
+
 export const WithDescription = meta.story({
+  tags: ['component-test'],
   render: args => (
     <SectionMessage {...args}>
       <SectionMessage.Title>Backup completed</SectionMessage.Title>
@@ -61,59 +82,18 @@ export const WithDescription = meta.story({
   ),
 });
 
-export const WithAction = meta.story({
-  render: args => (
-    <SectionMessage {...args}>
-      <SectionMessage.Title>Storage almost full</SectionMessage.Title>
-      <SectionMessage.Content>
-        <Stack space={2} alignX="left">
-          <Text>You are using 95% of your available storage.</Text>
-          <Button variant="primary" size="small">
-            Upgrade plan
-          </Button>
-        </Stack>
-      </SectionMessage.Content>
-    </SectionMessage>
-  ),
-});
-
-export const TitleIsSemanticHeading = meta.story({
-  tags: ['component-test'],
-  parameters: { surface: false },
-  render: args => (
-    <SectionMessage {...args}>
-      <SectionMessage.Title>Semantic title</SectionMessage.Title>
-      <SectionMessage.Content>
-        The title above renders as a real heading element.
-      </SectionMessage.Content>
-    </SectionMessage>
-  ),
-  play: async ({ canvas }) => {
-    const heading = canvas.getByRole('heading', { name: 'Semantic title' });
-    await expect(heading).toBeInTheDocument();
-    // Default `headingLevel` is 3.
-    await expect(heading.tagName).toBe('H3');
+WithDescription.test(
+  'renders the Description through the muted description slot',
+  {
+    parameters: { chromatic: { disableSnapshot: true }, surface: false },
   },
-});
-
-export const DescriptionRendersInSlot = meta.story({
-  tags: ['component-test'],
-  parameters: { surface: false },
-  render: args => (
-    <SectionMessage {...args} headingLevel={2}>
-      <SectionMessage.Title>Backup completed</SectionMessage.Title>
-      <SectionMessage.Description>
-        All files were copied to the archive.
-      </SectionMessage.Description>
-    </SectionMessage>
-  ),
-  play: async ({ canvas }) => {
+  async ({ canvas }) => {
     const heading = canvas.getByRole('heading', { name: 'Backup completed' });
-    await expect(heading.tagName).toBe('H2');
-
     const description = canvas.getByText(
       'All files were copied to the archive.'
     );
+
+    await expect(heading.tagName).toBe('H3');
     await expect(description).toBeInTheDocument();
     // Element type comes from the root's `TextContext` slot config.
     await expect(description.tagName).toBe('P');
@@ -136,7 +116,24 @@ export const DescriptionRendersInSlot = meta.story({
         .getPropertyValue('--section-message-description')
         .trim()
     ).not.toBe('currentColor');
-  },
+  }
+);
+
+export const WithAction = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <SectionMessage {...args}>
+      <SectionMessage.Title>Storage almost full</SectionMessage.Title>
+      <SectionMessage.Content>
+        <Stack space={2} alignX="left">
+          <Text>You are using 95% of your available storage.</Text>
+          <Button variant="primary" size="small">
+            Upgrade plan
+          </Button>
+        </Stack>
+      </SectionMessage.Content>
+    </SectionMessage>
+  ),
 });
 
 export const MultiLineTitle = meta.story({

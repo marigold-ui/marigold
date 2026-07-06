@@ -3,8 +3,6 @@ import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
-import { Description } from '../Description/Description';
-import { TextValue } from '../TextValue/TextValue';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 

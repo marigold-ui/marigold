@@ -165,7 +165,6 @@ export const DismissControlsWithCallbacks = meta.story({
 
 DismissControlsWithCallbacks.test(
   'Dismiss controls and callback hooks',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     await step('Shows closed state initially', async () => {
       expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
@@ -221,6 +220,7 @@ DismissControlsWithCallbacks.test(
  */
 export const SlotPrimitives = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Tray.Trigger>
       <Button>Open Tray</Button>
@@ -249,7 +249,14 @@ export const SlotPrimitives = meta.story({
       </Tray>
     </Tray.Trigger>
   ),
-  play: async ({ canvas }) => {
+});
+
+SlotPrimitives.test(
+  'Renders slot primitives with grouped actions',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
     await waitFor(() =>
       expect(canvas.getByText('Manage event')).toBeInTheDocument()
@@ -264,8 +271,8 @@ export const SlotPrimitives = meta.story({
     expect(
       canvas.getByRole('toolbar', { name: 'Event actions' })
     ).toBeInTheDocument();
-  },
-});
+  }
+);
 
 /**
  * A bare `<Title slot="title">` (no `<Tray.Header>`, no description) labels the
@@ -273,6 +280,7 @@ export const SlotPrimitives = meta.story({
  */
 export const TitleOnlyWithoutHeader = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Tray.Trigger>
       <Button>Open Tray</Button>
@@ -286,7 +294,11 @@ export const TitleOnlyWithoutHeader = meta.story({
       </Tray>
     </Tray.Trigger>
   ),
-  play: async ({ canvas }) => {
+});
+
+TitleOnlyWithoutHeader.test(
+  'Labels the tray with a bare Title',
+  async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
 
     const tray = await waitFor(() =>
@@ -296,5 +308,5 @@ export const TitleOnlyWithoutHeader = meta.story({
 
     expect(title.tagName).toBe('H2');
     expect(tray).toHaveAttribute('aria-labelledby', title.id);
-  },
-});
+  }
+);
