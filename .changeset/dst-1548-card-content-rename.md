@@ -1,5 +1,6 @@
 ---
 '@marigold/components': major
+'@marigold/system': major
 '@marigold/theme-rui': patch
 ---
 
@@ -16,4 +17,4 @@ Aligns the Card body sub-component with `Panel.Content` and `Page.Content` so al
 
 The `bleed` prop and padding behavior are unchanged. The internal `data-card-body` attribute has been removed to match `Panel.Content`.
 
-In `@marigold/theme-rui` the `Card` theme slot key is renamed from `body` to `content`. Theme authors overriding this slot must rename their key accordingly.
+The `Card` theme slot key is renamed from `body` to `content` in the `@marigold/system` `Theme` type and in `@marigold/theme-rui`. Theme authors overriding this slot must rename their key accordingly.
