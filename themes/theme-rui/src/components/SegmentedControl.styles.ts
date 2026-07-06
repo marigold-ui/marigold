@@ -8,11 +8,11 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     base: 'group/segmented relative items-center rounded-surface',
     variants: {
       variant: {
-        // Track matches the Switch's unselected track surface. px-1 gives the
-        // outermost thumb a 4px margin from the track edge on the left and right,
-        // matching the 4px top/bottom the thumb's own inset provides — so the
-        // block of segments sits inside a uniform 4px frame.
-        default: 'bg-control px-1',
+        // Track matches the Switch's unselected track surface. The 4px outer
+        // margin around the segments lives on the list (px-1), not here, so the
+        // first/last thumb's focus ring stays inside the scroll container's clip
+        // region instead of being cut off at the edge.
+        default: 'bg-control',
         ghost: '',
       },
       size: {
@@ -26,18 +26,15 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   }),
   // Inner scroll container: lays the options out in a row and scrolls them
   // horizontally when they overflow, with an edge-fade affordance
-  // (`ui-scroll-mask-x`). `py-1 -my-1` reserves *vertical* room for the option
-  // focus rings the scroll container's `overflow` would otherwise clip: `py-1`
-  // is the ring room and `-my-1` bleeds the scroller a matching 4px above/below
-  // the track (nothing there to overflow), so the rings overhang cleanly.
-  //   - Horizontally we deliberately add no room: a negative `-mx` would push
-  //     the scroll area past the rounded corners and overflow the parent (broke
-  //     at 320px), and a positive `px` inset shifts the first/last segment in
-  //     from the track edge. We accept that the inset focus ring is clipped ~1px
-  //     at the very first/last segment's outer edge — a minor cosmetic trim that
-  //     keeps the scroller exactly the track width.
+  // (`ui-scroll-mask-x`). A scroll container's scrollport is its *padding* box,
+  // so padding here is room *inside* the clip region. `p-1` (4px all round) does
+  // double duty: it is the 4px margin between the segments and the track edge,
+  // and it keeps the first/last thumb's focus ring inside the clip region so the
+  // ring is not cut off at the outer edge. `-my-1` bleeds the extra vertical 4px
+  // back over the track (nothing there to overflow) so it adds no height; the
+  // horizontal 4px is real width the segments sit inside.
   list: cva({
-    base: 'flex w-full items-center ui-scroll-mask-x py-1 -my-1',
+    base: 'flex w-full items-center ui-scroll-mask-x p-1 -my-1',
     variants: {
       variant: {
         default: 'gap-0',
