@@ -3,6 +3,10 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const TagField: ThemeComponent<'TagField'> = {
   trigger: cva({
     base: [
+      // `tagfield-trigger` is a plain marker (not a utility): Tag reads it via an
+      // `in-[.tagfield-trigger]` context selector to quiet its chips inside the
+      // frame — see Tag.styles.ts.
+      'tagfield-trigger',
       'ui-surface-control shadow-elevation-border ui-input h-fit min-h-control',
       'cursor-pointer py-1',
       'group-disabled/field:ui-state-disabled',
