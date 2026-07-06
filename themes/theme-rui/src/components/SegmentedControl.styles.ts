@@ -89,7 +89,11 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         ghost: 'hover:ui-state-hover-ghost',
       },
       size: {
-        default: 'h-control px-3 [&_svg]:size-4',
+        // px-5 (20px), not px-3: the thumb is inset 10px from the segment edge,
+        // so the label needs 20px of segment padding to keep ~10px of clear space
+        // between the text and the thumb's edge. With px-3 the thumb (10px inset)
+        // landed 2px from the text and looked squished.
+        default: 'h-control px-5 [&_svg]:size-4',
       },
     },
     defaultVariants: {
