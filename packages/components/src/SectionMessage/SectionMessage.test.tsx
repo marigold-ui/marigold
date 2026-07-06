@@ -154,14 +154,14 @@ test('allow to close message with button in message', async () => {
 
 test('support controlled dismiss message', async () => {
   const Controlled = () => {
-    const [close, setClose] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return (
       <Basic.Component
         data-testid="messages"
         closeButton
-        close={!close}
-        onCloseChange={setClose}
+        open={open}
+        onOpenChange={setOpen}
       />
     );
   };
