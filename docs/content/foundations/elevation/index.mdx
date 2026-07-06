@@ -8,7 +8,13 @@ Screens are flat, but interfaces need depth. Without visual cues, every element 
 
 This matters because it directly guides attention. A raised card groups related content and separates it from the surrounding page. A floating menu signals that it is temporary and will go away. A subtle border on an input tells users where they can type. Without these depth cues, interfaces feel flat and ambiguous.
 
-Three signals work together to produce this effect. **Background layers** set the color of each level, **boundaries** (borders) encode what kind of element something is, and **shadows** add visual lift to communicate how high it sits. Boundary and shadow are deliberately independent. An element's border says whether it is a surface or a control, and its shadow says how far off the page it sits. The two compose freely and never stand in for each other.
+Three signals work together to produce this effect:
+
+- **Background layers** set the color of each level.
+- **Boundaries** (borders) encode what kind of element something is.
+- **Shadows** add visual lift to communicate how high it sits.
+
+Boundary and shadow are deliberately independent. An element's border says whether it is a surface or a control, and its shadow says how far off the page it sits. The two compose freely and never stand in for each other.
 
 <Callout title="Do I need to apply elevation manually?">
   Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct background, border, and shadow tokens internally. You only need the utility classes described on this page (`ui-surface`, `ui-surface-control`, `shadow-elevation-*`, `bg-background`, etc.) when building custom elements that aren't covered by an existing component.
