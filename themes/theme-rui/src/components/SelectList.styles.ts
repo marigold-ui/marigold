@@ -103,6 +103,10 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           // geometry as the unselected rows.
           'selected:[--ui-border-color:var(--color-foreground)]',
           'disabled:selected:[--ui-border-color:var(--color-control-border)]',
+          // Keyboard focus lands on the already-selected row (selection follows
+          // focus): keep the inner ring in the selected border color instead of
+          // flipping to the focus color, so the row still reads as selected.
+          'selected:focus-visible:inset-ring-(color:--ui-border-color)',
           'hover:[--ui-background-color:var(--color-hover)]',
         ],
       },
