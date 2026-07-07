@@ -1,0 +1,77 @@
+---
+title: Marigold v17.9.0
+date: 2026-07-07
+type: Blog
+changed:
+  - components/form/daterangepicker
+  - components/form/calendar
+  - components/form/rangecalendar
+  - components/form/select
+  - components/overlay/menu
+  - components/overlay/drawer
+  - components/navigation/tabs
+---
+
+Back in v17.5.0 we shipped `<RangeCalendar>`. Now it gets the field it was waiting for. v17.9.0 introduces `<DateRangePicker>` and completes Marigold's date family. The CLI story continues too. `marigold search` finds components by what their docs actually say, so you (and your agents) can stop guessing names.
+
+## Components
+
+### DateRangePicker
+
+The new [`<DateRangePicker>`](/components/form/daterangepicker) lets users enter or select a start and end date through a single field. It mirrors [`<DatePicker>`](/components/form/datepicker)'s API and behavior. Two date inputs sit in one field group with a calendar button that opens a [`<RangeCalendar>`](/components/form/rangecalendar) in a popover on desktop and a tray on small screens.
+
+```tsx
+<DateRangePicker
+  label="Stay"
+  visibleDuration={{ months: 2 }}
+  minValue={today(getLocalTimeZone())}
+/>
+```
+
+It supports the usual Marigold field props (`disabled`, `readOnly`, `required`, `error`, `errorMessage`, `description`, `minValue`, `maxValue`, `dateUnavailable`, `width`, `variant`, and `size`). Beyond that, each input accepts pasted dates in ISO, EU, and US formats, `granularity` adds inline time segments, and `visibleDuration` renders up to three months side by side. A matching `DateRangePicker` theme entry ships in `theme-rui`.
+
+### Calendar year dropdown, rebuilt on react-aria
+
+In v17.6.0 we made the year picker in [`<Calendar>`](/components/form/calendar) and [`<RangeCalendar>`](/components/form/rangecalendar) derive its year list from `minValue` and `maxValue`, with a hand-rolled list under the hood. That hand-rolled part is now gone. The year dropdown consumes react-aria's `CalendarYearPicker` render prop, just like the month dropdown already consumes `CalendarMonthPicker`. A June react-aria fix made `maxValue` inclusive, which unblocked this cleanup and makes the boundary year reachable.
+
+Behavior stays the same or gets better. Unbounded calendars keep the plus-minus 20-year window, bounded ranges stay fully reachable at both ends, and when only one bound is set, the open side now widens to keep that bound reachable instead of staying at a fixed 20 years.
+
+## CLI
+
+### `marigold search`
+
+`marigold docs` answers "what does this component do?", but you had to know the component's name first. Discovery meant running `list`, guessing, fetching docs, and retrying, a loop that AI agents run three to five calls deep. The new `search` command collapses that loop into a single call.
+
+```bash
+marigold search "field validation"
+
+# Structured, ranked results for agents
+marigold search "field validation" --format json
+```
+
+The command ranks results by matching your query against the docs content (title, description, section headings, and section prose), not just the component name. Each hit comes with snippets and deep links into the docs. The usual `--limit`, `--format`, `--fresh`, and `--offline` flags apply, and tab completion covers the new command.
+
+The CLI also has a proper home on the docs site now. A new [CLI page](/getting-started/cli) under Getting Started covers installation, every command with flags and examples, and configuration.
+
+## Bug fixes
+
+### Select and Menu trays open above Drawer
+
+On small screens, [`<Select>`](/components/form/select) and [`<Menu>`](/components/overlay/menu) render their options in a tray, the bottom sheet that slides up from the edge of the screen. The tray overlay sat at a lower z-index than the [`<Drawer>`](/components/overlay/drawer) overlay, so opening a Select inside a drawer put the options behind the drawer where nobody could reach them. The tray now stacks at the same level as the drawer. Since it always mounts later, it correctly appears on top.
+
+### Tabs `size` no longer advertises values that don't exist
+
+The `size` prop on [`<Tabs>`](/components/navigation/tabs) still offered `'small' | 'medium' | 'large'` literals, even though no theme has backed them for a long time. `size` now accepts a plain string, the same as `Label` and `HelpText`. The prop stays in place as a theme hook, so a consumer theme can define its own size variants without a misleading built-in union.
+
+## Design
+
+- **Rounded range-calendar highlights.** Days outside the selected range in [`<RangeCalendar>`](/components/form/rangecalendar) now round their hover and focus highlight to match the selected state, instead of showing a square highlight against the rounded endpoints. In-range cells stay square so the range fill still connects.
+
+## Under the hood
+
+- **`Checkbox`, `Switch`, and `Radio` moved to the new react-aria composition.** The three components migrated off the deprecated react-aria-components single-element exports to the `*Field` + `*Button` composition introduced in `react-aria-components@1.18.0`. The public API, behavior, and visual output stay the same. This just clears the deprecation warnings.
+- **`theme-rui` padding safelist corrected.** The `@source inline` safelist in `styles.css` still used a pre-rename spacing vocabulary, so some inset-padding utilities (like `p-squish-relaxed`) didn't resolve in places the Tailwind scanner can't see. The safelist now covers the real `square`, `squish`, and `stretch` families with the current size names.
+
+---
+
+That's v17.9.0. The date family is complete, with field, picker, and calendar components in both single-date and range flavors. And with `search`, the CLI now covers the step before `docs`, which is finding the right component in the first place. Try both and tell us what you think.
