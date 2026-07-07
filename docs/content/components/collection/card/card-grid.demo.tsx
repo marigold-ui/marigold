@@ -29,7 +29,7 @@ export default () => (
             {venue.city}, {venue.country}
           </Description>
         </Card.Header>
-        <Card.Body>
+        <Card.Content>
           <Stack space="tight">
             <Inline space="related">
               <Badge variant="info">{venueTypes[venue.type]}</Badge>
@@ -38,7 +38,7 @@ export default () => (
               Up to {venue.capacity.toLocaleString()} guests
             </Text>
           </Stack>
-        </Card.Body>
+        </Card.Content>
         <Card.Footer>
           <Inline space="related" alignY="center">
             <Text size="sm" weight="bold">
