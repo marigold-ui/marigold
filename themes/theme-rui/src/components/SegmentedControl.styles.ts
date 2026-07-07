@@ -7,9 +7,9 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     base: 'group/segmented relative items-center rounded-surface',
     variants: {
       variant: {
-        // Track matches the Switch's unselected track. The 4px vertical margin
-        // lives on the list (py-1), not here, so the thumbs' focus ring stays
-        // inside the scroll container's clip.
+        // Track matches the Switch's unselected track. The 4px outer margin lives
+        // on the list (p-1), not here, so the edge thumbs' focus ring stays inside
+        // the scroll container's clip.
         default: 'bg-control',
         ghost: '',
       },
@@ -22,26 +22,19 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       size: 'default',
     },
   }),
-  // Inner scroll container: lays the options out in a row and scrolls them
-  // horizontally when they overflow, with an edge-fade affordance
-  // (`ui-scroll-mask-x`). `py-1 -my-1` reserves *vertical* room for the option
-  // focus rings the scroll container's `overflow` would otherwise clip: `py-1`
-  // is the ring room and `-my-1` bleeds the scroller a matching 4px above/below
-  // the track (nothing there to overflow), so the rings overhang cleanly.
-  //   - Horizontally we deliberately add no room: a negative `-mx` would push
-  //     the scroll area past the rounded corners and overflow the parent (broke
-  //     at 320px), and a positive `px` inset shifts the first/last segment in
-  //     from the track edge. We accept that the inset focus ring is clipped ~1px
-  //     at the very first/last segment's outer edge — a minor cosmetic trim that
-  //     keeps the scroller exactly the track width.
-  //   - `motion-safe:scroll-smooth` makes the selection-reveal scroll animate
-  //     for users who allow motion and jump instantly for those who don't; the
-  //     component's `scrollTo` defers to it via `behavior: 'auto'`, so no JS
-  //     media query is needed (matches Tabs' `tabsListScroll`).
+  // Inner scroll container: rows the options and scrolls them horizontally on
+  // overflow, with an edge fade (`ui-scroll-mask-x`). A scrollport is the padding
+  // box, so `p-1` is room *inside* the clip: it both insets the segments 4px from
+  // the track edge and keeps the edge thumbs' focus ring from being clipped.
+  // `-my-1` cancels the vertical 4px so it adds no height (only `px` is a real
+  // inset; a negative `-mx` would overflow the rounded track — broke at 320px).
+  //   - `motion-safe:scroll-smooth` makes the selection-reveal scroll animate for
+  //     users who allow motion and jump instantly for those who don't; the
+  //     component's `scrollTo` defers to it via `behavior: 'auto'` (matches Tabs).
   //   - `overscroll-x-contain` keeps horizontal overscroll from triggering the
   //     browser back/forward gesture at the track ends (matches Tabs).
   list: cva({
-    base: 'flex w-full items-center ui-scroll-mask-x py-1 -my-1 overscroll-x-contain motion-safe:scroll-smooth',
+    base: 'flex w-full items-center ui-scroll-mask-x p-1 -my-1 overscroll-x-contain motion-safe:scroll-smooth',
     variants: {
       variant: {
         default: 'gap-0',
