@@ -13,7 +13,7 @@ A `<SectionMessage>` is a container with a severity icon, an optional title, the
 
 <SectionMessageAnatomy />
 
-- **Container**: Wraps the message on a white surface with a soft variant-colored inset glow.
+- **Container**: Wraps the message on a neutral surface with a soft variant-colored inset glow.
 - **Icon**: Variant icon that reinforces the severity.
 - **Title** _(optional)_: Short headline summarizing the message. Renders as a semantic heading; adjust its level with the `headingLevel` prop so it fits the surrounding document outline. Don't end the title with a period, and don't repeat it in the content.
 - **Description** _(optional)_: A short summary directly below the title.
@@ -26,7 +26,7 @@ A `<SectionMessage>` is a container with a severity icon, an optional title, the
 
 <AppearanceTable component={'SectionMessage'} />
 
-Every variant sits on a white surface, with the severity carried by a soft variant-colored inset glow and the colored icon rather than a tinted background. This keeps standard `<Button>` and `<Link>` actions placed inside reading correctly, and body text at full contrast. The inset glow, distinct icon shape and color, and title keep the variants distinguishable without relying on color alone.
+Every variant sits on a neutral surface, with the severity carried by a soft variant-colored inset glow and the colored icon rather than a tinted background. This keeps standard `<Button>` and `<Link>` actions placed inside reading correctly, and body text at full contrast. The inset glow, distinct icon shape and color, and title keep the variants distinguishable without relying on color alone.
 
 | Variant   | Description                                                  | When to use                                                                                   |
 | --------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |

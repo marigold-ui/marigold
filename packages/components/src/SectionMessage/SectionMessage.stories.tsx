@@ -138,3 +138,45 @@ export const MultiLineTitle = meta.story({
     </div>
   ),
 });
+
+export const WithoutTitle = meta.story({
+  tags: ['component-test'],
+  args: { closeButton: true },
+  render: args => (
+    <SectionMessage {...args}>
+      <SectionMessage.Content>
+        <Text>Hello, I am a simple message without a title.</Text>
+      </SectionMessage.Content>
+    </SectionMessage>
+  ),
+});
+
+WithoutTitle.test(
+  'aligns the leading icon and close button with the first content line',
+  {
+    parameters: { chromatic: { disableSnapshot: true }, surface: false },
+  },
+  async ({ canvas, canvasElement }) => {
+    const content = canvas.getByText(
+      'Hello, I am a simple message without a title.'
+    );
+    const closeButton = canvas.getByRole('button');
+    const icon = canvasElement.querySelector('[class*="grid-area:icon"]')!;
+
+    const centerY = (el: Element) => {
+      const { top, bottom } = el.getBoundingClientRect();
+      return (top + bottom) / 2;
+    };
+
+    // With no title the first line is the content itself. The leading icon and
+    // the close button must center on that line rather than float above it: the
+    // 24px close box used to inflate the grid row and sit ~2-4px high. The 2px
+    // tolerance absorbs sub-pixel rounding.
+    await expect(
+      Math.abs(centerY(icon) - centerY(content))
+    ).toBeLessThanOrEqual(2);
+    await expect(
+      Math.abs(centerY(closeButton) - centerY(content))
+    ).toBeLessThanOrEqual(2);
+  }
+);

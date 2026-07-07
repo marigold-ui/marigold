@@ -178,7 +178,7 @@ export const SectionMessage = ({
           {closeButton && (
             <CloseButton
               aria-label={stringFormatter.format('close')}
-              className="-mt-0.5 size-6 self-start [grid-area:close]"
+              className="ui-touch-hitbox size-5 self-start [grid-area:close]"
               onPress={handleClose}
             />
           )}
