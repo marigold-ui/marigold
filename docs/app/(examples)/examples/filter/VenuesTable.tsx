@@ -88,6 +88,35 @@ export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
   </>
 );
 
+// Renders up to `max` badges and collapses the rest into a single "+N" badge,
+// so multi-value cells stay a consistent height instead of ballooning the row.
+// Mirrors the "+N more" truncation used by AppliedFilter. The overflow badge
+// carries the hidden labels in its accessible name and native `title`, so the
+// collapsed values stay reachable via hover and screen readers.
+const BadgeList = ({
+  items,
+  max = 3,
+}: {
+  items: readonly string[];
+  max?: number;
+}) => {
+  const hidden = items.slice(max);
+
+  return (
+    <Inline space="0.5">
+      {items.slice(0, max).map(item => (
+        <Badge key={item}>{item}</Badge>
+      ))}
+      {hidden.length > 0 && (
+        <span title={hidden.join(', ')}>
+          <Badge>{`+${hidden.length}`}</Badge>
+          <VisuallyHidden>{` more: ${hidden.join(', ')}`}</VisuallyHidden>
+        </span>
+      )}
+    </Inline>
+  );
+};
+
 const VenueRow = ({
   venue,
   onDelete,
@@ -122,25 +151,13 @@ const VenueRow = ({
       />
     </Table.Cell>
     <Table.Cell>
-      <Inline space="0.5">
-        {venue.traits.map(trait => (
-          <Badge key={trait}>{trait}</Badge>
-        ))}
-      </Inline>
+      <BadgeList items={venue.traits} />
     </Table.Cell>
     <Table.Cell>
-      <Inline space="0.5">
-        {venue.amenities.map(a => (
-          <Badge key={a}>{amenitiesOptions[a]}</Badge>
-        ))}
-      </Inline>
+      <BadgeList items={venue.amenities.map(a => amenitiesOptions[a])} />
     </Table.Cell>
     <Table.Cell>
-      <Inline space="0.5">
-        {venue.parking.map(p => (
-          <Badge key={p}>{parkingOptions[p]}</Badge>
-        ))}
-      </Inline>
+      <BadgeList items={venue.parking.map(p => parkingOptions[p])} />
     </Table.Cell>
     <Table.Cell>
       <Inline space="0.5" alignX="right">
@@ -194,7 +211,7 @@ export const VenuesTable = () => {
         }
         actionBar={selectedKeys => (
           <ActionBar>
-            <ActionBar.Button
+            <Button
               onPress={async () => {
                 // "Select all" can span pages, so fetch the full matching set
                 // (same query, no pagination) before exporting.
@@ -206,7 +223,7 @@ export const VenuesTable = () => {
               }}
             >
               <Download /> Export CSV
-            </ActionBar.Button>
+            </Button>
           </ActionBar>
         )}
       >

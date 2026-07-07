@@ -3,11 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const DateField: ThemeComponent<'DateField'> = {
   field: cva({
     base: [
-      'ui-surface shadow-elevation-border h-control',
-      // The ring lives on this wrapper, but ui-input (which sets the opaque
-      // form-control border) is on the inner segment input. --ui-border-color
-      // does not inherit, so set it here to match Input/Select/TextArea.
-      '[--ui-border-color:var(--color-border)]',
+      'ui-surface-control shadow-elevation-border h-control',
       'flex items-center',
       'disabled:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',

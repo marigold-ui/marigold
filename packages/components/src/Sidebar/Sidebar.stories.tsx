@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { I18nProvider } from '@react-aria/i18n';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
@@ -16,6 +17,19 @@ const meta = preview.meta({
     layout: 'fullscreen',
     surface: false,
   },
+  decorators: [
+    Story => {
+      // The sidebar persists its open state to a cookie and seeds from it on
+      // mount, before falling back to `defaultOpen`. Reset it before each story
+      // so every story renders from its own `defaultOpen` rather than a state
+      // leaked from another story (otherwise toggling e.g. Basic would make
+      // DefaultCollapsed render expanded).
+      if (typeof document !== 'undefined') {
+        document.cookie = 'marigold:sidebar:state=;path=/;max-age=0';
+      }
+      return <Story />;
+    },
+  ],
 });
 
 const pages: Record<string, { label: string }> = {
@@ -45,52 +59,93 @@ const Layout = ({
 
   return (
     <RouterProvider navigate={setCurrentPath}>
-      <Sidebar.Provider
-        open={open}
-        onOpenChange={onOpenChange}
-        defaultOpen={defaultOpen}
-      >
-        <div className="flex h-screen">
-          <Sidebar>
-            <Sidebar.Header>
-              <Text weight="bold">Acme Inc.</Text>
-            </Sidebar.Header>
-            <Sidebar.Nav current={currentPath}>
-              <Sidebar.Item href="/overview">Overview</Sidebar.Item>
-              <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
-              <Sidebar.Separator />
-              <Sidebar.Item id="management" textValue="Management">
-                Management
-                <Sidebar.Item href="/users">Users</Sidebar.Item>
-                <Sidebar.Item href="/teams">Teams</Sidebar.Item>
-                <Sidebar.Item href="/billing">Billing</Sidebar.Item>
-              </Sidebar.Item>
-              <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
-              <Sidebar.Item href="/general">General</Sidebar.Item>
-              <Sidebar.Item href="/security">Security</Sidebar.Item>
-            </Sidebar.Nav>
-            <Sidebar.Footer>
-              <Text fontSize="xs">Footer content</Text>
-            </Sidebar.Footer>
-          </Sidebar>
-          <main className="flex-1 p-4">
-            <Sidebar.Toggle />
-            <Headline level={2}>{pages[currentPath]?.label}</Headline>
-            <Text>
-              You are viewing the <strong>{pages[currentPath]?.label}</strong>{' '}
-              page.
-            </Text>
-            {children}
-          </main>
-        </div>
-      </Sidebar.Provider>
+      <I18nProvider locale="en-US">
+        <Sidebar.Provider
+          open={open}
+          onOpenChange={onOpenChange}
+          defaultOpen={defaultOpen}
+        >
+          <div className="flex h-screen">
+            <Sidebar>
+              <Sidebar.Header>
+                <Text weight="bold">Acme Inc.</Text>
+              </Sidebar.Header>
+              <Sidebar.Nav current={currentPath}>
+                <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+                <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+                <Sidebar.Separator />
+                <Sidebar.Item id="management" textValue="Management">
+                  Management
+                  <Sidebar.Item href="/users">Users</Sidebar.Item>
+                  <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+                  <Sidebar.Item href="/billing">Billing</Sidebar.Item>
+                </Sidebar.Item>
+                <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
+                <Sidebar.Item href="/general">General</Sidebar.Item>
+                <Sidebar.Item href="/security">Security</Sidebar.Item>
+              </Sidebar.Nav>
+              <Sidebar.Footer>
+                <Text fontSize="xs">Footer content</Text>
+              </Sidebar.Footer>
+            </Sidebar>
+            <main className="flex-1 p-4">
+              <Sidebar.Toggle />
+              <Headline level={2}>{pages[currentPath]?.label}</Headline>
+              <Text>
+                You are viewing the <strong>{pages[currentPath]?.label}</strong>{' '}
+                page.
+              </Text>
+              {children}
+            </main>
+          </div>
+        </Sidebar.Provider>
+      </I18nProvider>
     </RouterProvider>
   );
 };
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: () => <Layout />,
 });
+
+Basic.test(
+  'Navigates items with arrow, Home and End keys',
+  async ({ canvas, userEvent }) => {
+    // Overview is the active item, focus it
+    const overview = canvas.getByRole('link', { name: 'Overview' });
+    await userEvent.click(overview);
+    await expect(overview).toHaveFocus();
+
+    // ArrowDown → Analytics
+    await userEvent.keyboard('{ArrowDown}');
+    const analytics = canvas.getByRole('link', { name: 'Analytics' });
+    await expect(analytics).toHaveFocus();
+
+    // ArrowDown → Management (skips separator)
+    await userEvent.keyboard('{ArrowDown}');
+    const management = canvas.getByRole('link', { name: /Management/ });
+    await expect(management).toHaveFocus();
+
+    // ArrowDown → General (skips group label)
+    await userEvent.keyboard('{ArrowDown}');
+    const general = canvas.getByRole('link', { name: 'General' });
+    await expect(general).toHaveFocus();
+
+    // End → Security (last item)
+    await userEvent.keyboard('{End}');
+    const security = canvas.getByRole('link', { name: 'Security' });
+    await expect(security).toHaveFocus();
+
+    // Home → Overview (first item)
+    await userEvent.keyboard('{Home}');
+    await expect(overview).toHaveFocus();
+
+    // ArrowUp wraps to last item (Security)
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(security).toHaveFocus();
+  }
+);
 
 const ControlledExample = () => {
   const [open, setOpen] = useState(true);
@@ -105,6 +160,7 @@ const ControlledExample = () => {
 };
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <ControlledExample />,
 });
 
@@ -213,45 +269,4 @@ export const WithActiveBranch = meta.story({
 
 export const DefaultCollapsed = meta.story({
   render: () => <Layout defaultOpen={false} />,
-});
-
-export const KeyboardNavigation = meta.story({
-  tags: ['component-test'],
-  render: () => <Layout />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // Overview is the active item, focus it
-    const overview = canvas.getByRole('link', { name: 'Overview' });
-    await userEvent.click(overview);
-    await expect(overview).toHaveFocus();
-
-    // ArrowDown → Analytics
-    await userEvent.keyboard('{ArrowDown}');
-    const analytics = canvas.getByRole('link', { name: 'Analytics' });
-    await expect(analytics).toHaveFocus();
-
-    // ArrowDown → Management (skips separator)
-    await userEvent.keyboard('{ArrowDown}');
-    const management = canvas.getByRole('link', { name: /Management/ });
-    await expect(management).toHaveFocus();
-
-    // ArrowDown → General (skips group label)
-    await userEvent.keyboard('{ArrowDown}');
-    const general = canvas.getByRole('link', { name: 'General' });
-    await expect(general).toHaveFocus();
-
-    // End → Security (last item)
-    await userEvent.keyboard('{End}');
-    const security = canvas.getByRole('link', { name: 'Security' });
-    await expect(security).toHaveFocus();
-
-    // Home → Overview (first item)
-    await userEvent.keyboard('{Home}');
-    await expect(overview).toHaveFocus();
-
-    // ArrowUp wraps to last item (Security)
-    await userEvent.keyboard('{ArrowUp}');
-    await expect(security).toHaveFocus();
-  },
 });

@@ -1,3 +1,4 @@
+import type { RefCallback } from 'react';
 import { createContext, use } from 'react';
 
 export interface TrayContextProps {
@@ -7,9 +8,13 @@ export interface TrayContextProps {
     dragHandle: string;
     header: string;
     title: string;
+    description: string;
     content: string;
     actions: string;
   };
+  titleId?: string;
+  hasTitle?: boolean;
+  titleSlotRef?: RefCallback<Element>;
 }
 
 export const TrayContext = createContext<TrayContextProps>(

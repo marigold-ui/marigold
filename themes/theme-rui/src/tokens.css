@@ -55,9 +55,9 @@
     Palette step mapping (charcoal, background = step 100):
 
     50  -- muted bg (subtle tint on white surfaces), primary-foreground
-    100 -- background bg, focus-highlight bg
-    200 -- hover bg, disabled-surface bg
-    300 -- control fill, selected bg, borders, scrollbar
+    100 -- background bg, focus-highlight bg, disabled-surface bg
+    200 -- hover bg
+    300 -- control fill, borders, scrollbar, selected bg
     400 -- disabled (text)
     600 -- focus ring, secondary (text), placeholder
     900 -- primary text
@@ -73,10 +73,6 @@
   /* --- Primary --- */
   --color-primary: var(--color-charcoal-900);
   --color-primary-foreground: var(--color-charcoal-50);
-  /* Hover for the primary Button / contrast surface: the fill brightens a touch
-     so the glow intensifies ("lights up"). Darkening instead crushed the
-     gradient + glow into a flat near-black. */
-  --color-primary-hover: oklch(from var(--color-primary) calc(l + 0.05) c h);
 
   /* --- Neutral Backgrounds & States --- */
   --color-muted: var(--color-charcoal-50);
@@ -86,34 +82,32 @@
   --color-selected: var(--color-charcoal-300);
   --color-selected-bold: var(--color-charcoal-900);
   --color-selected-bold-foreground: var(--color-charcoal-50);
-
-  /* ToggleButton "on" = a sunken dark-gray surface. A lighter charcoal than
-     selected-bold/primary (charcoal-900) so a pressed toggle isn't mistaken for a
-     primary button. The edge is darker than the fill (derived from it, so they
-     stay coupled) to stay visible on the dark face — the faint surface-border
-     hairline vanishes here, making a grouped segment look shorter than its siblings. */
-  --color-toggle-selected: var(--color-charcoal-800);
-  --color-toggle-selected-edge: oklch(
-    from var(--color-toggle-selected) calc(l - 0.12) c h
-  );
   --color-focus-highlight: var(--color-charcoal-100);
   --color-focus-highlight-bold: var(--color-charcoal-300);
 
   /* --- Disabled --- */
   --color-disabled: var(--color-charcoal-400);
-  --color-disabled-surface: var(--color-charcoal-200);
+  /* Disabled controls recede: a lighter fill and edge than an enabled control. */
+  --color-disabled-surface: var(--color-charcoal-100);
+  --color-disabled-border: var(--color-charcoal-300);
+
+  /* --- Structural Lines --- */
+  /* Structural lines: dividers, grid lines, section rules, table grids. Opaque
+     on purpose — where translucent strokes cross, the alpha stacks and
+     intersections render darker than the runs. A control boundary is one closed
+     stroke that never crosses, so it takes the translucent --color-control-border.
+     Darkened 0.08 L off charcoal-300 (on the token, not the rung) so a line
+     doesn't dissolve into a white field. */
+  --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
 
   /* --- Form Controls --- */
-  /* Opaque FUNCTIONAL edge — a boundary that carries meaning or is an affordance,
-     so it must stay perceivable (WCAG 1.4.11). Counterpart to the decorative
-     --color-surface-border. Shared by every control boundary (inputs/selects/date
-     fields via ui-input, checkboxes/radios directly) and by dividers/grid lines,
-     where a translucent stroke would double-darken.
-     charcoal-300 darkened 0.08 L so it doesn't dissolve into a white field — on
-     the token, not the rung (which also feeds scrollbars + the date-segment
-     highlight). Caveat: at L 0.78 it's only ~2:1 on white (3:1 needs ~L 0.67,
-     visibly heavier); kept lighter by design, tracked separately. */
-  --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
+  /* Functional control edge (inputs, selects, fields, checkboxes, radios). The
+     same stroke as --color-surface-border, ~2.5x denser, and translucent so it
+     adapts to its ground: firmer on the page and the SegmentedControl track,
+     receding on dark grounds where the fill already draws the edge. Measures
+     ~2:1 on white, short of WCAG 1.4.11's 3:1 — a deliberate design call; the
+     focus ring stays the perceivable affordance. State overrides stay opaque. */
+  --color-control-border: oklch(from var(--color-charcoal-950) l c h / 0.26);
   --color-ring: var(--color-charcoal-600);
 
   /* --- Status: Destructive --- */
@@ -122,10 +116,6 @@
   --color-destructive-accent: var(--color-red-600);
   --color-destructive-bold: var(--color-red-600);
   --color-destructive-bold-foreground: var(--color-white);
-  /* Hover for the destructive Button: brightens to match primary's "light up". */
-  --color-destructive-bold-hover: oklch(
-    from var(--color-destructive-bold) calc(l + 0.05) c h
-  );
 
   /* --- Status: Success --- */
   --color-success: var(--color-green-100);
@@ -166,35 +156,21 @@
   /* ==================== */
   --color-surface: var(--color-white);
 
-  /* Decorative border of a raised surface (the ui-surface ring) — Card, Panel,
-     Dialog, Menu. It draws a line but is purely decorative: deliberately below
-     the non-text-contrast threshold, so never use it where the edge is an
-     affordance — those take the opaque, functional --color-border. Translucent so
-     it composites over whatever ground it sits on, staying whisper-light on white,
-     the page, or a tinted panel (a fixed gray reads heavy on white, washes out on
-     gray). */
+  /* Decorative rim of a surface (Card, Panel, Dialog, Menu). Below the contrast
+     threshold and never load-bearing — an affordance edge takes the denser
+     --color-control-border. Translucent, so it stays whisper-light on any ground. */
   --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
-  /* Hover for surfaces that border off the decorative hairline (secondary
-     Button): the same translucent edge, firmed up (0.1 -> 0.2 alpha) rather than
-     swapped for a hard opaque line. */
-  --color-surface-border-hover: oklch(
-    from var(--color-charcoal-950) l c h / 0.2
-  );
 
-  /* ui-surface-contrast recipe — the dark surface (primary Button, ActionBar):
-     crisp dark edge, faintly top-lit fill, a glow pooled at the top, a soft 1px
-     top-edge highlight. These are the lightness deltas (-l) and alphas (-a) each
-     layer shifts from the fill. The colors are computed in the utility, not here:
-     each layer reads the fill via --ui-background-color on the element, so a fill
-     override (ui-surface-destructive, hover) retints everything; hoisting them to
-     :root would freeze them to the primary color. */
+  /* ui-surface-contrast recipe (primary Button, ActionBar): the lightness (-l)
+     and alpha (-a) deltas each layer shifts from the fill. Colors are computed in
+     the utility from --ui-background-color, so a fill override retints every layer. */
   --contrast-edge-l: 0.04;
   --contrast-fill-top-l: 0.03;
   --contrast-fill-bottom-l: 0.015;
   --contrast-glow-l: 0.15;
   --contrast-glow-a: 0.8;
-  --contrast-highlight-l: 0.26;
-  --contrast-highlight-a: 0.35;
+  --contrast-highlight-l: 0.2;
+  --contrast-highlight-a: 0.3;
 
   --radius-surface: var(--radius-lg);
 
@@ -207,18 +183,14 @@
       raised:  container surfaces (Card, Accordion)
       overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
 
-    The ui-surface ring owns the crisp edge, so these carry only lift. Tight
-    offsets + negative spread keep each shadow contained in its own footprint,
-    so a dense field of elevated elements stays calm. Light from above (positive
-    y, no x), low contact alpha, warm charcoal-hued tint.
-
-    Color is a literal oklch, not derived from --color-charcoal-*: 54 is the
-    charcoal hue, but the shadow's L/C are tuned independently of any palette
-    step, so it must not track a rung. Update 54 if the palette hue shifts.
+    The ring owns the crisp edge, so these carry only lift. Negative spread keeps
+    each shadow contained so a dense field stays calm; light from above, warm
+    charcoal-hued tint. Color is a literal oklch (hue 54), tuned independently of
+    the palette rungs — update 54 if the palette hue shifts.
   */
   --shadow-elevation-border:
-    0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
-    0px 1px 2px -1px oklch(0.15 0.02 54 / 0.063);
+    0px 1px 8px -1px oklch(0.15 0.02 54 / 0.06),
+    0px 0.5px 0.5px -0.5px oklch(0.15 0.02 54 / 0.033);
 
   --shadow-elevation-raised:
     0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),

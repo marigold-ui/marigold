@@ -1,5 +1,5 @@
 import { people } from '@/lib/data/people';
-import type { NavSection, ShellConfig } from '../_shared';
+import type { NavNode, NavSection, ShellConfig } from '../_shared';
 
 const appShellDocs = {
   docsHref: '/patterns/layout/app-frame',
@@ -98,3 +98,35 @@ export const config: ShellConfig = {
   // Label the dynamic `users/[id]` segment with the member's name.
   resolveLabel: id => people.find(person => person.id === id)?.name,
 };
+
+// Flatten the nav tree into the set of *standalone* example demos for the docs
+// cmdk search. Only standalone demos are surfaced — not the internal screens of
+// a larger demo. GroupLabels and Separators are not routes, so we skip them.
+//
+// A group with an index child (empty slug) is a single self-contained app
+// (e.g. "App Shell", whose Users/Billing/… screens are internal navigation, not
+// standalone examples): we collapse it to one entry pointing at its landing. A
+// group without an index is just a sidebar grouping (e.g. "Form"), so we recurse
+// and surface each child as its own demo.
+const collectDemos = (
+  items: NavNode[],
+  base: string
+): { name: string; url: string }[] =>
+  items.flatMap(item => {
+    if (item.kind !== 'Item') return [];
+    if (item.children) {
+      const isSelfContainedApp = item.children.some(
+        child => child.kind === 'Item' && !child.children && child.slug === ''
+      );
+      return isSelfContainedApp
+        ? [{ name: item.label, url: base }]
+        : collectDemos(item.children, base);
+    }
+    return [
+      { name: item.label, url: item.slug ? `${base}/${item.slug}` : base },
+    ];
+  });
+
+/** All standalone example demos as `{ name, url }` entries from the nav config. */
+export const examplePages = (): { name: string; url: string }[] =>
+  config.sections.flatMap(section => collectDemos(section.items, config.base));

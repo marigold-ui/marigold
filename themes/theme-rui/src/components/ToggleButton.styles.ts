@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
-    base: 'group inline-flex overflow-hidden ui-surface shadow-elevation-border',
+    base: 'group inline-flex overflow-hidden ui-surface-control shadow-elevation-border',
     variants: {
       size: {
         default: 'text-sm',
@@ -17,29 +17,20 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   button: cva({
     base: [
       'ui-button-base gap-2',
-      // Neutral button = the secondary Button look (muted gloss surface).
-      'ui-surface-muted shadow-elevation-border',
-      // Flip on/off in one frame: the fill is instant, so an animated box-shadow
-      // would smear the off-state gloss over the on-state dark fill — and the off/on
-      // shadow layer counts differ, so it can't tween cleanly anyway.
-      'transition-none',
+      // Standalone toggle = a control surface. In a group the group owns the
+      // control boundary, so the segment drops its own ring + bevel (below).
+      'ui-surface-control shadow-elevation-border',
 
-      // States — match the secondary Button. ui-surface-muted hardcodes its
-      // gradient fill, so state fills override `background` directly (not --ui-background-color).
-      'hover:[background:linear-gradient(to_bottom,var(--color-white),var(--color-charcoal-50))] hover:[--ui-border-color:var(--color-surface-border-hover)] hover:text-foreground',
-      // On = sunken dark-gray surface: drop elevation, swap the white gloss for a
-      // dark inner-top recess, and recolor the ring to a visible dark edge — the
-      // faint muted ring vanishes on a dark fill, which made a grouped segment look
-      // shorter than its neighbours.
-      'selected:[background:var(--color-toggle-selected)] selected:text-selected-bold-foreground',
-      'selected:shadow-none selected:[--ui-border-color:var(--color-toggle-selected-edge)]',
-      'selected:inset-shadow-[0_2px_3px_-1px_oklch(from_var(--color-charcoal-950)_l_c_h_/_0.5)]',
-      'disabled:shadow-none disabled:[background:var(--color-disabled-surface)]',
+      // States
+      'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))] hover:text-foreground',
+      'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground selected:shadow-none',
+      // Disabled comes from ui-button-base (disabled:ui-state-disabled), same as Button.
 
-      // Group: buttons share the group's outer surface and border
-      'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
+      // Group: segments share the group's surface + ring, so drop their own ring,
+      // bevel and elevation; a transparent right border draws the 1px divider
+      // (removed on the last). Border lives here, not ui-button-base.
+      'in-[.group]:rounded-none in-[.group]:ring-0 in-[.group]:inset-shadow-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-transparent in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
       'in-[.group]:disabled:border-r-border',
-      'in-[.group]:focus-visible:z-10',
     ],
     variants: {
       size: {

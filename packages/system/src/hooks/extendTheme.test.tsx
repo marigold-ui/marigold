@@ -35,6 +35,7 @@ const theme: Theme = {
     Tabs: {
       container: cva({ base: 'flex' }),
       tabpanel: cva({ base: 'border-3 border-solid border-red-400' }),
+      tabsListScroll: cva({ base: 'overflow-x-auto' }),
       tabsList: cva({ base: 'mb-2.5' }),
       tab: cva({
         base: [
@@ -84,8 +85,8 @@ test('Accepting styles for component with multiple slots', () => {
           <Tabs.Item id="1">tab1</Tabs.Item>
           <Tabs.Item id="2">tab2</Tabs.Item>
         </Tabs.List>
-        <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-        <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
+        <Tabs.Panel id="1">tab-1 content</Tabs.Panel>
+        <Tabs.Panel id="2">tab-2 content</Tabs.Panel>
       </Tabs>
     </ThemeProvider>
   );
@@ -126,8 +127,8 @@ test('Should support new variant and existing size', () => {
           <Tabs.Item id="1">tab1</Tabs.Item>
           <Tabs.Item id="2">tab2</Tabs.Item>
         </Tabs.List>
-        <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-        <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
+        <Tabs.Panel id="1">tab-1 content</Tabs.Panel>
+        <Tabs.Panel id="2">tab-2 content</Tabs.Panel>
       </Tabs>
     </ThemeProvider>
   );

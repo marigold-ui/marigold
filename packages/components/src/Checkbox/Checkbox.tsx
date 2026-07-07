@@ -1,9 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  CheckboxContext,
-  Checkbox as RACCheckbox,
-} from 'react-aria-components/Checkbox';
+import { CheckboxButton, CheckboxField } from 'react-aria-components/Checkbox';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
@@ -53,7 +50,10 @@ export type RemovedProps =
   | 'isIndeterminate'
   | 'defaultSelected';
 
-export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
+export interface CheckboxProps extends Omit<
+  RAC.CheckboxFieldProps,
+  RemovedProps
+> {
   variant?: string;
   size?: string;
 
@@ -89,7 +89,11 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
    * If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`.
    * @default false
    */
-  error?: boolean;
+  error?: RAC.CheckboxFieldProps['isInvalid'];
+  /**
+   * An error message shown when `error` is set.
+   */
+  errorMessage?: ReactNode;
   /**
    * Set the label of the checkbox.
    * @default none
@@ -107,6 +111,7 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
 // --------------
 const _Checkbox = ({
   error,
+  errorMessage,
   disabled,
   readOnly,
   required,
@@ -120,12 +125,11 @@ const _Checkbox = ({
   ref,
   ...rest
 }: CheckboxProps) => {
-  const props: RAC.CheckboxProps = {
+  const props: RAC.CheckboxFieldProps = {
     isIndeterminate: indeterminate,
     isDisabled: disabled,
     isReadOnly: readOnly,
     isRequired: required,
-    isInvalid: error,
     isSelected: checked,
     defaultSelected: defaultChecked,
     ...rest,
@@ -140,15 +144,21 @@ const _Checkbox = ({
   });
 
   return (
-    <BooleanField description={description} context={CheckboxContext}>
-      <RACCheckbox
+    <BooleanField
+      as={CheckboxField}
+      description={description}
+      errorMessage={errorMessage}
+      error={error}
+      size={size || group?.size}
+      {...props}
+    >
+      <CheckboxButton
         ref={ref}
         className={cn(
           'group/checkbox',
           'data-disabled:cursor-not-allowed',
           classNames.container
         )}
-        {...props}
       >
         {({ isSelected, isIndeterminate }) => (
           <>
@@ -160,7 +170,7 @@ const _Checkbox = ({
             {label && <div className={classNames.label}>{label}</div>}
           </>
         )}
-      </RACCheckbox>
+      </CheckboxButton>
     </BooleanField>
   );
 };

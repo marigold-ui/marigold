@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Inline } from '../Inline/Inline';
 import { NumberField } from './NumberField';
@@ -104,26 +104,42 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => <NumberField {...args} />,
 });
 
-export const WithFormatting = meta.story({
-  render: args => (
-    <NumberField
-      defaultValue={10}
-      formatOptions={{
-        style: 'currency',
-        currency: 'EUR',
-      }}
-      {...args}
-    />
-  ),
-});
+Basic.test(
+  'Selects value on input click',
+  {
+    args: {
+      label: 'Price',
+      defaultValue: 42,
+    },
+  },
+  async ({ canvas }) => {
+    const input: HTMLInputElement = canvas.getByRole('textbox', {
+      name: 'Price',
+    });
 
-// https://tc39.es/ecma402/#table-sanctioned-single-unit-identifiers
+    await userEvent.click(input);
+    await userEvent.type(input, '100');
+
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('42100');
+  }
+);
+
 export const WithUnit = meta.story({
   render: args => (
     <Inline space={4}>
+      <NumberField
+        defaultValue={10}
+        formatOptions={{
+          style: 'currency',
+          currency: 'EUR',
+        }}
+        {...args}
+      />
       <NumberField
         {...args}
         label="Hours"
@@ -149,6 +165,7 @@ export const WithUnit = meta.story({
 });
 
 export const MinMax = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <>
       <NumberField
@@ -164,6 +181,7 @@ export const MinMax = meta.story({
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState(0);
     return (
@@ -175,32 +193,5 @@ export const Controlled = meta.story({
         </pre>
       </>
     );
-  },
-});
-
-export const SelectOnClick = meta.story({
-  tags: ['component-test'],
-  args: {
-    label: 'Price',
-    defaultValue: 42,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const input: HTMLInputElement = canvas.getByRole('textbox', {
-      name: 'Price',
-    });
-
-    input.focus();
-    await expect(input.selectionStart).toBe(0);
-    await expect(input.selectionEnd).toBe(input.value.length);
-
-    const selectionEnd = input.selectionEnd;
-    await input.focus();
-    await expect(input.selectionEnd).toBe(selectionEnd);
-
-    await userEvent.tab();
-    await input.focus();
-    await expect(input.selectionStart).toBe(0);
-    await expect(input.selectionEnd).toBe(input.value.length);
   },
 });

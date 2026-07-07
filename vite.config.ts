@@ -5,7 +5,10 @@ import { playwright } from '@vitest/browser-playwright';
 import { defineConfig, mergeConfig } from 'vitest/config';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import configShared, { browserDeps } from './vitest.config.shared.js';
+import configShared, {
+  browserDeps,
+  browserScanEntries,
+} from './vitest.config.shared.js';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +18,7 @@ export default mergeConfig(
     plugins: [react(), tailwindcss()],
     optimizeDeps: {
       include: browserDeps,
+      entries: browserScanEntries,
     },
     resolve: {
       // Force a single copy of React/React DOM across all entry points so a
@@ -41,6 +45,7 @@ export default mergeConfig(
           },
           optimizeDeps: {
             include: browserDeps,
+            entries: browserScanEntries,
           },
           test: {
             name: 'unit-tests',
@@ -92,6 +97,7 @@ export default mergeConfig(
           },
           optimizeDeps: {
             include: browserDeps,
+            entries: browserScanEntries,
           },
           test: {
             name: 'storybook-tests',

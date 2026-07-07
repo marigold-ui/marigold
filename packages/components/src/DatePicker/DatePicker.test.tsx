@@ -2,6 +2,7 @@ import { CalendarDate } from '@internationalized/date';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { firePaste } from '../firePaste';
 import { mockMatchMedia } from '../test.utils';
 import {
   Basic,
@@ -9,25 +10,6 @@ import {
   WithDefaultValue,
   WithError,
 } from './DatePicker.stories';
-
-/**
- * Dispatches a paste event with the given text on an element.
- * In a real browser, `userEvent.paste()` may not trigger React's onPaste
- * handler on ancestor elements reliably. We use Object.defineProperty
- * because Firefox's ClipboardEvent constructor ignores the clipboardData option.
- */
-const firePaste = (element: Element, text: string) => {
-  const pasteEvent = new Event('paste', {
-    bubbles: true,
-    cancelable: true,
-  });
-  Object.defineProperty(pasteEvent, 'clipboardData', {
-    value: {
-      getData: () => text,
-    },
-  });
-  element.dispatchEvent(pasteEvent);
-};
 
 const user = userEvent.setup();
 
@@ -370,17 +352,16 @@ test('DatePicker supports width prop', () => {
 });
 
 test('DatePicker supports data unavailable property', async () => {
-  render(
-    <UnavailableDate.Component data-testid="picker" aria-label="date picker" />
-  );
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-  const date = screen.getAllByRole('gridcell');
+  // The UnavailableDate story opens the calendar by default (open: true),
+  // so the popover is already visible — no trigger click is needed (and the
+  // open calendar renders several buttons, which would make a lookup ambiguous).
+  render(<UnavailableDate.Component aria-label="date picker" />);
 
   await waitFor(() => {
     expect(screen.getByRole('application')).toBeVisible();
   });
+
+  const date = screen.getAllByRole('gridcell');
   // eslint-disable-next-line testing-library/no-node-access
   expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });

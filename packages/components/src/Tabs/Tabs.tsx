@@ -43,7 +43,7 @@ const _Tabs = ({ disabled, variant, size, ...rest }: TabsProps) => {
 };
 
 _Tabs.List = TabList;
-_Tabs.TabPanel = TabPanel;
+_Tabs.Panel = TabPanel;
 _Tabs.Item = Tab;
 
 export { _Tabs as Tabs };

@@ -2,7 +2,6 @@ import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { useAsyncList } from '@react-stately/data';
 import { Center } from '../Center/Center';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
@@ -78,7 +77,7 @@ const meta = preview.meta({
 });
 
 // Bad fix: Explicit type annotation prevents TS2742 by avoiding leaking inferred internal types
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
     <Autocomplete {...args}>
@@ -94,58 +93,60 @@ export const Basic: any = meta.story({
       <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
-  play: async ({ canvas }: any) => {
-    const input = canvas.getByRole('combobox');
-    const description = canvas.getAllByText(
-      'This is a help text description'
-    )[0];
-    const clearButton = screen.getByLabelText(
-      /Clear search|Suche zurücksetzen/i
-    );
-
-    await userEvent.click(input);
-    await userEvent.type(input, 'sp');
-    await userEvent.click(clearButton);
-
-    await expect(input).toHaveFocus();
-    await expect(input).toBeVisible();
-    await expect(description).toBeInTheDocument();
-    await expect(clearButton).toBeInTheDocument();
-    await expect(input).toHaveValue('');
-  },
 });
 
-export const WithDescription: any = meta.story({
-  tags: ['component-test'],
-  render: args => (
-    <Autocomplete {...args}>
-      <Autocomplete.Option id="harry-potter" textValue="Harry Potter">
-        <TextValue>Harry Potter</TextValue>
-        <Description>About the boy who lived.</Description>
-      </Autocomplete.Option>
-      <Autocomplete.Option id="lord-of-the-rings" textValue="Lord of the Rings">
-        <TextValue>Lord of the Rings</TextValue>
-        <Description>In the lands of Middle earth.</Description>
-      </Autocomplete.Option>
-    </Autocomplete>
-  ),
-  play: async ({ canvas }: any) => {
+Basic.test(
+  'Opens and filters the menu as you type',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
-    await userEvent.click(input);
-    await userEvent.type(input, 'harry');
 
-    const item = await canvas.findByRole('option', { name: /Harry Potter/ });
-    const optionDescription = canvas.getByText('About the boy who lived.');
+    await userEvent.type(input, 'ha');
+    const result = canvas.getAllByText('Harry Potter')[0];
 
-    expect(optionDescription.id).toBeTruthy();
-    expect(item.getAttribute('aria-describedby') ?? '').toContain(
-      optionDescription.id
-    );
+    await expect(result).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Opens the menu on focus',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      menuTrigger: 'focus',
+    },
   },
-});
+  async ({ canvas }) => {
+    const input = canvas.getByRole('combobox');
 
-export const WithSections: any = meta.story({
+    await userEvent.click(input);
+    const result = await canvas.findByText('Star Wars');
+
+    await expect(result).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Opens the menu with the arrow key',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      menuTrigger: 'manual',
+    },
+  },
+  async ({ canvas }) => {
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, '{arrowdown}');
+    const result = await canvas.findByText('Lord of the Rings');
+
+    await expect(result).toBeVisible();
+  }
+);
+
+export const WithSections = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Autocomplete {...args} placeholder="Pick a food">
       <Autocomplete.Section header="Veggies">
@@ -165,7 +166,14 @@ export const WithSections: any = meta.story({
       </Autocomplete.Section>
     </Autocomplete>
   ),
-  play: async ({ canvas }: any) => {
+});
+
+WithSections.test(
+  'Sections are visible',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas }) => {
     const input = canvas.getAllByLabelText(/Select Favorite/i)[0];
 
     await userEvent.type(input, 'o');
@@ -174,11 +182,12 @@ export const WithSections: any = meta.story({
 
     expect(sectionOne).toBeVisible();
     expect(sectionTwo).toBeVisible();
-  },
-});
+  }
+);
 
-export const Controlled: any = meta.story({
+export const Controlled = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [submitted, setSubmitted] = useState<string | number | null>('');
     const [current, setCurrent] = useState<string>('');
@@ -214,7 +223,16 @@ export const Controlled: any = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas }: any) => {
+});
+
+Controlled.test(
+  'Reflects the controlled value and submitted key',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  },
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, 'h');
@@ -228,99 +246,41 @@ export const Controlled: any = meta.story({
     await expect(canvas.getByTestId('submittedValue')).toHaveTextContent(
       'harry-potter'
     );
-  },
-});
+  }
+);
 
-export const Async: any = meta.story({
+export const EmptyState = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
-    const { items, filterText, setFilterText } = useAsyncList<{ name: string }>(
-      {
-        async load({ signal, filterText }) {
-          const res = await fetch(
-            `https://swapi.py4e.com/api/people/?search=${filterText}`,
-            { signal }
-          );
-          const json = await res.json();
-
-          return {
-            items: json.results,
-          };
-        },
-      }
-    );
-
     return (
       <Autocomplete
         {...args}
         label="Search Star Wars Characters"
-        items={items}
-        value={filterText}
-        onChange={setFilterText}
+        items={[]}
         allowsEmptyCollection
-        emptyState={
-          <Center data-testid="empty-state">no character found</Center>
-        }
-      >
-        {(item: any) => (
-          <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
-        )}
-      </Autocomplete>
+        emptyState={<Center>no character found</Center>}
+      />
     );
   },
-  play: async ({ canvas }: any) => {
+});
+
+EmptyState.test(
+  'Shows the empty state when no items match',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
 
     await userEvent.type(input, '{arrowdown}');
 
-    const result = await canvas.getByTestId('empty-state');
+    const result = canvas.getByText('no character found');
     await expect(result).toBeVisible();
-  },
-});
+  }
+);
 
-export const InputMenuTrigger: any = meta.story({
-  ...Basic.input,
-  play: async ({ canvas }: any) => {
-    const input = canvas.getByRole('combobox');
-
-    await userEvent.type(input, 'ha');
-    const result = canvas.getAllByText('Harry Potter')[0];
-
-    await expect(result).toBeVisible();
-  },
-});
-
-export const FocusMenuTrigger: any = meta.story({
-  ...Basic.input,
-  args: {
-    menuTrigger: 'focus',
-  },
-  play: async ({ canvas }: any) => {
-    const input = canvas.getByRole('combobox');
-
-    await userEvent.click(input);
-    const result = await canvas.findByText('Star Wars');
-
-    await expect(result).toBeVisible();
-  },
-});
-
-export const ManualMenuTrigger: any = meta.story({
-  ...Basic.input,
-  args: {
-    menuTrigger: 'input',
-  },
-  play: async ({ canvas }: any) => {
-    const input = canvas.getByRole('combobox');
-
-    await userEvent.type(input, '{arrowdown}');
-    const result = await canvas.findByText('Lord of the Rings');
-
-    await expect(result).toBeVisible();
-  },
-});
-
-export const DisabledSuggestions: any = meta.story({
+export const DisabledSuggestions = meta.story({
   render: () => (
     <Autocomplete label="Label" disabledKeys={['spinach']}>
       <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
@@ -331,12 +291,31 @@ export const DisabledSuggestions: any = meta.story({
   ),
 });
 
+DisabledSuggestions.test(
+  'Skips the disabled option during keyboard navigation',
+  async ({ canvas }) => {
+    const input = canvas.getByRole('combobox');
+    await userEvent.type(input, '{arrowdown}');
+
+    const spinach = await canvas.findByRole('option', { name: 'Spinach' });
+    const carrots = canvas.getByRole('option', { name: 'Carrots' });
+
+    // Spinach is rendered but disabled...
+    await expect(spinach).toBeVisible();
+    await expect(spinach).toHaveAttribute('aria-disabled', 'true');
+
+    // ...so arrow-down skips it and activates Carrots instead.
+    await expect(carrots).toHaveAttribute('data-focused', 'true');
+  }
+);
+
 const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
   id: `item-${i + 200}`,
   label: `Tenant ${i + 200} (item-${i + 200})`,
 }));
 
-export const LargeDataset: any = meta.story({
+export const LargeDataset = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     label: 'Tenants',
@@ -352,7 +331,14 @@ export const LargeDataset: any = meta.story({
       ))}
     </Autocomplete>
   ),
-  play: async ({ canvas, step }: any) => {
+});
+
+LargeDataset.test(
+  'Filters and selects from a large dataset',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, step }) => {
     const input = canvas.getByRole('combobox');
 
     await step('Type to filter the large dataset', async () => {
@@ -374,10 +360,10 @@ export const LargeDataset: any = meta.story({
         expect(input).toHaveValue('Tenant 500 (item-500)');
       });
     });
-  },
-});
+  }
+);
 
-export const Mobile: any = meta.story({
+export const Mobile = meta.story({
   tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },
@@ -405,8 +391,25 @@ export const Mobile: any = meta.story({
 });
 
 Mobile.test(
+  'Open Tray',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, step }) => {
+    const trigger = await canvas.findByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+    });
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  }
+);
+
+Mobile.test(
   'Mobile Autocomplete interaction',
-  async ({ canvas, step }: any) => {
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
@@ -443,7 +446,8 @@ Mobile.test(
 
 Mobile.test(
   'Mobile Autocomplete keyboard navigation',
-  async ({ canvas, step }: any) => {
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {

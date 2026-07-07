@@ -29,6 +29,7 @@ public
 safelist.txt
 
 favicon.png
+docs-internal/
 *.snap
 *.svg
 *.ico

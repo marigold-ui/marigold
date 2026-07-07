@@ -1,4 +1,4 @@
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import {
   Accessibility,
@@ -65,6 +65,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">
@@ -87,24 +88,26 @@ export const Basic = meta.story({
   ),
 });
 
-Basic.test('Basic test', async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  const user = userEvent.setup();
+Basic.test(
+  'collapses the previously expanded item when another is opened',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const user = userEvent.setup();
 
-  const item = canvas.getByText('Informations');
-  const itemtwo = canvas.getByText('Personal Settings');
+    const item = canvas.getByText('Informations');
+    const itemtwo = canvas.getByText('Personal Settings');
 
-  await user.click(item);
-  await user.click(itemtwo);
+    await user.click(item);
+    await user.click(itemtwo);
 
-  expect(canvas.getByText('Here are some infos').parentElement).toHaveAttribute(
-    'aria-hidden',
-    'true'
-  );
-  expect(
-    canvas.getByText('Some longer Text to see if it looks good').parentElement
-  ).toHaveAttribute('aria-hidden', 'false');
-});
+    await expect(
+      canvas.getByText('Here are some infos').parentElement
+    ).toHaveAttribute('aria-hidden', 'true');
+    await expect(
+      canvas.getByText('Some longer Text to see if it looks good').parentElement
+    ).toHaveAttribute('aria-hidden', 'false');
+  }
+);
 
 let items = [
   {
@@ -176,44 +179,6 @@ let items = [
   },
 ];
 
-export const ComplexSingleSelect = meta.story({
-  render: args => (
-    <Accordion {...args}>
-      {items.map(item => (
-        <Accordion.Item key={item.key} id={item.key}>
-          <Accordion.Header>{item.title}</Accordion.Header>
-          <Accordion.Content>{item.children}</Accordion.Content>
-        </Accordion.Item>
-      ))}
-    </Accordion>
-  ),
-});
-
-export const DefaultExpended = meta.story({
-  render: args => (
-    <Accordion {...args}>
-      <Accordion.Item id="1">
-        <Accordion.Header>Settings</Accordion.Header>
-        <Accordion.Content>
-          <Headline level={3}>Some setting options</Headline>
-        </Accordion.Content>
-      </Accordion.Item>
-      <Accordion.Item id="2">
-        <Accordion.Header>Settings</Accordion.Header>
-        <Accordion.Content>
-          <Headline level={3}>Some setting options</Headline>
-        </Accordion.Content>
-      </Accordion.Item>
-      <Accordion.Item id="3">
-        <Accordion.Header>Settings</Accordion.Header>
-        <Accordion.Content>
-          <Headline level={3}>Some setting options</Headline>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
-  ),
-});
-
 export const MultipleExpanded = meta.story({
   render: args => (
     <Accordion
@@ -260,6 +225,7 @@ export const CoreExample = meta.story({
     </div>
   ),
 });
+
 export const ButtonInHeader = meta.story({
   render: args => (
     <Stack space={8}>

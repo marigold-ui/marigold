@@ -11,7 +11,12 @@ export const Tag: ThemeComponent<'Tag'> = {
   tag: cva({
     base: [
       'relative inline-flex items-center gap-1.75',
-      'ui-surface shadow-elevation-border',
+      'ui-surface-control shadow-elevation-border',
+      // Inside a TagField the frame is already an input-styled control, so a chip
+      // in the same raised treatment reads as an input nested in an input. A Tag in
+      // the trigger sheds the lift and bottom bevel and lightens its ring a step
+      // (token-derived), leaving a quiet flat chip that still reads as a removable token.
+      'in-[.tagfield-trigger]:shadow-none in-[.tagfield-trigger]:inset-shadow-none in-[.tagfield-trigger]:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.10))]',
       'font-medium text-xs',
       'h-6 px-2 cursor-default',
       'selected:text-selected-bold-foreground selected:[--ui-background-color:var(--color-selected-bold)]',

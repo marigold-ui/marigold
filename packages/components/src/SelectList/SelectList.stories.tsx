@@ -219,7 +219,14 @@ export const Basic = meta.story({
       </SelectList.Option>
     </SelectList>
   ),
-  play: async ({ args, canvas, step }) => {
+});
+
+Basic.test(
+  'selects a single option and notifies onChange',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ args, canvas, step }) => {
     const creditRow = await canvas.findByRole('row', { name: /credit card/i });
     const paypalRow = canvas.getByRole('row', { name: /paypal/i });
 
@@ -249,11 +256,12 @@ export const Basic = meta.story({
         expect(args.onChange).not.toHaveBeenCalled();
       }
     );
-  },
-});
+  }
+);
 
 export const WithMultiSelection = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'multiple',
     onChange: fn(),
@@ -282,20 +290,30 @@ export const WithMultiSelection = meta.story({
       </SelectList.Option>
     </SelectList>
   ),
-  play: async ({ args, canvas, step }) => {
+});
+
+WithMultiSelection.test(
+  'toggles multiple options independently',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ args, canvas, step }) => {
     const insuranceRow = await canvas.findByRole('row', {
       name: /parcel insurance/i,
     });
     const giftWrapRow = canvas.getByRole('row', { name: /gift wrap/i });
+    const notify = canvas.getByRole('row', { name: /sms notifications/i });
 
     await step('clicking selects multiple rows independently', async () => {
       await userEvent.click(insuranceRow);
       await userEvent.click(giftWrapRow);
+      await userEvent.click(notify);
 
       expect(insuranceRow).toHaveAttribute('aria-selected', 'true');
       expect(giftWrapRow).toHaveAttribute('aria-selected', 'true');
+      expect(notify).toHaveAttribute('aria-selected', 'true');
       expect(args.onChange).toHaveBeenLastCalledWith(
-        expect.arrayContaining(['insurance', 'gift-wrap'])
+        expect.arrayContaining(['insurance', 'gift-wrap', 'notify'])
       );
     });
 
@@ -304,10 +322,11 @@ export const WithMultiSelection = meta.story({
 
       expect(insuranceRow).toHaveAttribute('aria-selected', 'false');
       expect(giftWrapRow).toHaveAttribute('aria-selected', 'true');
-      expect(args.onChange).toHaveBeenLastCalledWith(['gift-wrap']);
+      expect(notify).toHaveAttribute('aria-selected', 'true');
+      expect(args.onChange).toHaveBeenLastCalledWith(['gift-wrap', 'notify']);
     });
-  },
-});
+  }
+);
 
 const paymentMethods = [
   {
@@ -360,7 +379,14 @@ export const WithIconAction = meta.story({
       )}
     </SelectList>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+WithIconAction.test(
+  'fires the row action without toggling selection',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, step }) => {
     const button = await canvas.findByRole('button', {
       name: 'Learn more about Credit card',
     });
@@ -378,8 +404,8 @@ export const WithIconAction = meta.story({
     });
 
     alertSpy.mockRestore();
-  },
-});
+  }
+);
 
 const savedPayments = [
   {
@@ -435,7 +461,14 @@ export const WithActionMenu = meta.story({
       )}
     </SelectList>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+WithActionMenu.test(
+  'opens the row menu without toggling selection',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, step }) => {
     const trigger = await canvas.findByRole('button', {
       name: 'Manage Visa ending in 4242',
     });
@@ -457,10 +490,11 @@ export const WithActionMenu = meta.story({
     await step('opening the menu does not toggle the row', () => {
       expect(row).toHaveAttribute('aria-selected', 'false');
     });
-  },
-});
+  }
+);
 
 export const Horizontal = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     orientation: 'horizontal',
   },
@@ -563,7 +597,14 @@ export const HorizontalResponsive = meta.story({
       </div>
     </Stack>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+HorizontalResponsive.test(
+  'flips horizontal options to a vertical stack in a narrow container',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas, step }) => {
     const wide = canvas.getByTestId('wide-container');
     const medium = canvas.getByTestId('medium-container');
     const narrow = canvas.getByTestId('narrow-container');
@@ -588,8 +629,8 @@ export const HorizontalResponsive = meta.story({
         expect(listWidth).toBeLessThanOrEqual(containerWidth);
       }
     );
-  },
-});
+  }
+);
 
 const borderedMethods = [
   {
@@ -648,6 +689,7 @@ export const Bordered = meta.story({
 
 export const WithCustomPadding = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     p: 'square-loose',
   },
@@ -672,7 +714,14 @@ export const WithCustomPadding = meta.story({
       </SelectList.Option>
     </SelectList>
   ),
-  play: async ({ canvas }) => {
+});
+
+WithCustomPadding.test(
+  'applies the inset padding tokens to each option',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
     const standardRow = await canvas.findByRole('row', { name: /standard/i });
     expect(standardRow).toHaveClass(
       'px-(--selectlist-item-px)',
@@ -685,8 +734,8 @@ export const WithCustomPadding = meta.story({
     expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
       'var(--spacing-square-loose-y)'
     );
-  },
-});
+  }
+);
 
 export const EmptyState = meta.story({
   args: {
@@ -740,14 +789,21 @@ export const Disabled = meta.story({
       </SelectList.Option>
     </SelectList>
   ),
-  play: async ({ args, canvas }) => {
+});
+
+Disabled.test(
+  'ignores clicks while disabled',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ args, canvas }) => {
     const expressRow = await canvas.findByRole('row', { name: /express/i });
 
     await userEvent.click(expressRow);
 
     expect(args.onChange).not.toHaveBeenCalled();
-  },
-});
+  }
+);
 
 export const WithError = meta.story({
   render: args => (
@@ -779,6 +835,7 @@ export const WithError = meta.story({
 
 export const WithForm = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'multiple',
   },
@@ -820,7 +877,11 @@ export const WithForm = meta.story({
       </Stack>
     </Form>
   ),
-  play: async ({ canvas }) => {
+});
+
+WithForm.test(
+  'submits the selected values as form data',
+  async ({ canvas }) => {
     await userEvent.click(
       await canvas.findByRole('row', { name: /parcel insurance/i })
     );
@@ -831,5 +892,5 @@ export const WithForm = meta.story({
         'submitted: insurance,gift-wrap'
       );
     });
-  },
-});
+  }
+);

@@ -1,13 +1,20 @@
+import type { RefCallback } from 'react';
 import { createContext, use } from 'react';
+import type { ComponentClassNames } from '@marigold/system';
 
 export interface DrawerContextProps {
   variant?: string;
   size?: string;
+  classNames: ComponentClassNames<'Drawer'>;
+  titleId?: string;
+  hasTitle?: boolean;
+  titleSlotRef?: RefCallback<Element>;
 }
 
 export const DrawerContext = createContext<DrawerContextProps>({
   variant: undefined,
   size: undefined,
+  classNames: {} as ComponentClassNames<'Drawer'>,
 });
 
 export const useDrawerContext = () => use(DrawerContext);

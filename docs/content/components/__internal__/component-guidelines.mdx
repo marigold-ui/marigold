@@ -101,6 +101,41 @@ test('accepts a variant with parts and an icon and support grid areas', () => {
 
 [Link to latest Storybook](https://marigold-latest.vercel.app/)
 
+#### Disabling Chromatic snapshots
+
+Every story is snapshotted by Chromatic for visual regression testing by default.
+You can opt a story out with `parameters.chromatic.disableSnapshot: true`, but this
+permanently removes that story from visual coverage, so only do it when the snapshot
+adds no signal.
+
+**Disable the snapshot when:**
+
+- The story is a **visual duplicate** of another story that is still snapshotted
+  (e.g. a base/showcase frame already captures the same rendering).
+- The story shows a **closed/default trigger state** whose open/expanded visual is
+  already captured by another, kept story (e.g. `Dialog.Basic` vs. the open-state
+  Dialog stories).
+- The frame is **inherently flaky or non-deterministic** and can't be stabilized
+  (animations, time, random data) — and the same surface is covered by a stable story.
+
+**Keep the snapshot when** the story is the only one capturing a particular visual —
+a unique variant, size, open overlay, error/edge state, or layout. When in doubt, keep it.
+
+**This only turns off the snapshot.** Always keep the `play` test and any docs example —
+`disableSnapshot` does not affect them.
+
+**Mechanics:**
+
+- **Named / base stories** — add the parameter directly. Generated `.test()` children
+  inherit it via `combineParameters`, so disabling a base also disables its tests.
+- **A single generated `.test()` story** — use the 3-arg overload
+  `.test(name, annotations, fn)` so only the derivative is disabled, not its base.
+- **Re-enabling a kept child** — if a base is disabled but one of its `.test()` children
+  is the only frame capturing a state worth keeping, re-enable it explicitly with
+  `chromatic: { disableSnapshot: false }`.
+- **Don't leave dead config** — when you disable a snapshot, drop any now-unused
+  `chromatic.delay` (or similar) that only existed to stabilize the removed capture.
+
 Example of how we write stories:
 
 ```tsx
@@ -146,9 +181,9 @@ export const Basic: Story = {
     <Tabs.Item id="2">Settings</Tabs.Item>
     <Tabs.Item id="3">More</Tabs.Item>
   </Tabs.List>
-  <Tabs.TabPanel id="1">Start</Tabs.TabPanel>
-  <Tabs.TabPanel id="2">Settings</Tabs.TabPanel>
-  <Tabs.TabPanel id="3">More</Tabs.TabPanel>
+  <Tabs.Panel id="1">Start</Tabs.Panel>
+  <Tabs.Panel id="2">Settings</Tabs.Panel>
+  <Tabs.Panel id="3">More</Tabs.Panel>
 </Tabs>
 ```
 

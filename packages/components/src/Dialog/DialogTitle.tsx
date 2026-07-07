@@ -1,26 +1,17 @@
 import type { ReactNode } from 'react';
-import { Header } from 'react-aria-components/Header';
-import { Heading } from 'react-aria-components/Heading';
-import { cn, useClassNames } from '@marigold/system';
+import { Title } from '../Title/Title';
 
 export interface DialogTitleProps {
   /** Children of the component. */
   children?: ReactNode;
-  variant?: string;
-  size?: string;
 }
 
-export const DialogTitle = ({ variant, size, children }: DialogTitleProps) => {
-  const classNames = useClassNames({
-    component: 'Dialog',
-    variant,
-    size,
-  });
-  return (
-    <Header className={cn('[grid-area:title]', classNames.header)}>
-      <Heading slot="title" className={classNames.title}>
-        {children}
-      </Heading>
-    </Header>
-  );
-};
+/**
+ * Thin wrapper over the slot-aware `<Title>`. The heading level, id,
+ * `aria-labelledby` wiring, and theme classes come from the `HeadingContext`
+ * published by `<Dialog>` (or `<Dialog.Header>`), so this is equivalent to
+ * dropping a `<Title slot="title">` directly inside the dialog.
+ */
+export const DialogTitle = ({ children }: DialogTitleProps) => (
+  <Title slot="title">{children}</Title>
+);

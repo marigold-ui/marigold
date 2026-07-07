@@ -1,8 +1,5 @@
 import type { ReactNode } from 'react';
-import { Header } from 'react-aria-components/Header';
-import { Heading } from 'react-aria-components/Heading';
-import { cn } from '@marigold/system';
-import { useTrayContext } from './Context';
+import { Title } from '../Title/Title';
 
 // Props
 // ---------------
@@ -15,14 +12,12 @@ export interface TrayTitleProps {
 
 // Component
 // ---------------
-export const TrayTitle = ({ children }: TrayTitleProps) => {
-  const { classNames } = useTrayContext();
-
-  return (
-    <Header className={cn('[grid-area:title]', classNames.header)}>
-      <Heading slot="title" level={2} className={classNames.title}>
-        {children}
-      </Heading>
-    </Header>
-  );
-};
+/**
+ * Thin wrapper over the slot-aware `<Title>`. The heading level, id,
+ * `aria-labelledby` wiring, and theme classes come from the `HeadingContext`
+ * published by `<Tray>` (or `<Tray.Header>`), so this is equivalent to
+ * dropping a `<Title slot="title">` directly inside the tray.
+ */
+export const TrayTitle = ({ children }: TrayTitleProps) => (
+  <Title slot="title">{children}</Title>
+);

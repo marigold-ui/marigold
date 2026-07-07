@@ -1,4 +1,5 @@
 import preview from '.storybook/preview';
+import { Stack } from '@marigold/components';
 import { Text } from '../Text/Text';
 import { Link } from './Link';
 
@@ -51,9 +52,14 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   render: args => (
-    <Link target="_blank" {...args}>
-      Visit Marigold Docs
-    </Link>
+    <Stack space={4}>
+      <Link target="_blank" {...args}>
+        Visit Marigold Docs
+      </Link>
+      <Link target="_blank" size="small" {...args}>
+        Visit Marigold Docs (small size)
+      </Link>
+    </Stack>
   ),
 });
 

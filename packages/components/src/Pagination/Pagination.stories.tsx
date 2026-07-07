@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Inline } from '../Inline/Inline';
 import { Select } from '../Select/Select';
@@ -52,9 +52,12 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+});
 
+Basic.test(
+  'Navigates pages by click and keyboard',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
     await step('Select an item from pagination', async () => {
       const pageButton = canvas.getByLabelText('Page 2');
 
@@ -114,14 +117,114 @@ export const Basic = meta.story({
       await expect(pageButton).not.toHaveFocus();
       await expect(pageButton).toHaveAttribute('data-selected', 'true');
     });
+  }
+);
+
+Basic.test(
+  'Selects pages with Enter and Space',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      onChange: fn(),
+    },
   },
-});
+  async ({ canvas, userEvent, args, step }) => {
+    await step('Select page with Enter key', async () => {
+      const page2 = canvas.getByLabelText('Page 2');
+      page2.focus();
+      await userEvent.keyboard('{Enter}');
+
+      await expect(args.onChange).toHaveBeenCalledWith(2);
+      await expect(page2).toHaveAttribute('data-selected', 'true');
+    });
+
+    await step('Select page with Space key', async () => {
+      const page3 = canvas.getByLabelText('Page 3');
+      page3.focus();
+      await userEvent.keyboard(' ');
+
+      await expect(args.onChange).toHaveBeenCalledWith(3);
+      await expect(page3).toHaveAttribute('data-selected', 'true');
+    });
+  }
+);
+
+Basic.test(
+  'Renders ellipsis when pages exceed the visible range',
+  {
+    args: {
+      totalItems: 100,
+      pageSize: 10,
+      defaultPage: 5,
+    },
+  },
+  async ({ canvas, step }) => {
+    await step(
+      'Ellipsis is rendered when pages exceed visible range',
+      async () => {
+        // With 10 pages and current page 5, ellipsis should appear
+        const ellipses = canvas.getAllByText('…');
+        await expect(ellipses.length).toBeGreaterThan(0);
+      }
+    );
+  }
+);
+
+Basic.test(
+  'Disables the previous button on the first page',
+  {
+    args: {
+      defaultPage: 2,
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    const previousButton = canvas.getByLabelText('Previous page');
+
+    await userEvent.click(previousButton);
+
+    await expect(previousButton).not.toHaveAttribute('data-selected', 'true');
+    await expect(previousButton).toHaveAttribute('disabled');
+  }
+);
+
+Basic.test(
+  'Disables the next button on the last page',
+  {
+    args: {
+      defaultPage: 9,
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    const nextButton = canvas.getByLabelText('Next page');
+
+    await userEvent.click(nextButton);
+
+    await expect(nextButton).not.toHaveAttribute('data-selected', 'true');
+    await expect(nextButton).toHaveAttribute('disabled');
+  }
+);
+
+Basic.test(
+  'Calls onChange with the selected page',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onChange: fn() },
+  },
+  async ({ canvas, userEvent, args }) => {
+    const page2Button = canvas.getByLabelText('Page 2');
+
+    await userEvent.click(page2Button);
+
+    await expect(args.onChange).toHaveBeenCalledWith(2);
+  }
+);
 
 export const SurfaceVariants = meta.story({
   parameters: { surface: 'both' },
 });
 
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => {
     const [basicPage, setBasicPage] = useState(1);
@@ -141,9 +244,11 @@ export const Controlled = meta.story({
       </div>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+});
 
+Controlled.test(
+  'Reflects and overrides the controlled page state',
+  async ({ canvas, userEvent, step }) => {
     await step('Selecting a page updates the parent state', async () => {
       await userEvent.click(canvas.getByLabelText('Page 3'));
 
@@ -168,8 +273,8 @@ export const Controlled = meta.story({
         await expect(canvas.getByText('Selected Page: 1')).toBeInTheDocument();
       }
     );
-  },
-});
+  }
+);
 
 export const OnePage = meta.story({
   parameters: {
@@ -305,55 +410,6 @@ export const WithTable = meta.story({
   },
 });
 
-export const KeyboardSelection = meta.story({
-  tags: ['component-test'],
-  args: {
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args, step }) => {
-    const canvas = within(canvasElement);
-
-    await step('Select page with Enter key', async () => {
-      const page2 = canvas.getByLabelText('Page 2');
-      page2.focus();
-      await userEvent.keyboard('{Enter}');
-
-      await expect(args.onChange).toHaveBeenCalledWith(2);
-      await expect(page2).toHaveAttribute('data-selected', 'true');
-    });
-
-    await step('Select page with Space key', async () => {
-      const page3 = canvas.getByLabelText('Page 3');
-      page3.focus();
-      await userEvent.keyboard(' ');
-
-      await expect(args.onChange).toHaveBeenCalledWith(3);
-      await expect(page3).toHaveAttribute('data-selected', 'true');
-    });
-  },
-});
-
-export const EllipsisRendering = meta.story({
-  tags: ['component-test'],
-  args: {
-    totalItems: 100,
-    pageSize: 10,
-    defaultPage: 5,
-  },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
-    await step(
-      'Ellipsis is rendered when pages exceed visible range',
-      async () => {
-        // With 10 pages and current page 5, ellipsis should appear
-        const ellipses = canvas.getAllByText('…');
-        await expect(ellipses.length).toBeGreaterThan(0);
-      }
-    );
-  },
-});
-
 export const WithButtonLabels = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
@@ -362,38 +418,6 @@ export const WithButtonLabels = meta.story({
     totalItems: 100,
     defaultPage: 5,
     controlLabels: ['Previous', 'Next'],
-  },
-});
-
-export const DisabledPreviousButton = meta.story({
-  tags: ['component-test'],
-  args: {
-    defaultPage: 2,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const previousButton = canvas.getByLabelText('Previous page');
-
-    await userEvent.click(previousButton);
-
-    await expect(previousButton).not.toHaveAttribute('data-selected', 'true');
-    await expect(previousButton).toHaveAttribute('disabled');
-  },
-});
-
-export const DisabledNextButton = meta.story({
-  tags: ['component-test'],
-  args: {
-    defaultPage: 9,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const nextButton = canvas.getByLabelText('Next page');
-
-    await userEvent.click(nextButton);
-
-    await expect(nextButton).not.toHaveAttribute('data-selected', 'true');
-    await expect(nextButton).toHaveAttribute('disabled');
   },
 });
 
@@ -443,20 +467,5 @@ export const Mobile = meta.story({
         />
       </Stack>
     );
-  },
-});
-
-export const UseOnChange = meta.story({
-  tags: ['component-test'],
-  args: {
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-    const page2Button = canvas.getByLabelText('Page 2');
-
-    await userEvent.click(page2Button);
-
-    await expect(args.onChange).toHaveBeenCalledWith(2);
   },
 });

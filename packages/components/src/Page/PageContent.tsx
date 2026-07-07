@@ -12,7 +12,7 @@ export interface PageContentProps {
   /**
    * Vertical rhythm between the content's sections. Lets the gap _between_
    * sections differ from the `<Page>`'s header-to-content gap.
-   * @default 'group'
+   * @default 'regular'
    */
   space?: SpaceProp<SpacingTokens>['space'];
 }
@@ -24,7 +24,7 @@ export interface PageContentProps {
  */
 export const PageContent = ({
   children,
-  space = 'group',
+  space = 'regular',
 }: PageContentProps) => {
   const { classNames } = usePageContext();
 

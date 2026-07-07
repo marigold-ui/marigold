@@ -42,7 +42,7 @@ interface PageBaseProps extends Omit<
   /**
    * Vertical rhythm between page sections (the `<Page.Header>` and the
    * `<Panel>`s below it).
-   * @default 'group'
+   * @default 'regular'
    */
   space?: SpaceProp<SpacingTokens>['space'];
 }
@@ -81,7 +81,7 @@ export const Page = ({
   children,
   'aria-label': ariaLabel,
   headingLevel = 1,
-  space = 'group',
+  space = 'regular',
   p,
   px,
   py,
