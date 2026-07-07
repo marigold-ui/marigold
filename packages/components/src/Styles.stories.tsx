@@ -314,10 +314,10 @@ export const SidebarNavigation = meta.story({
               hover pill (charcoal-200)
             </Tier>
             <Tier
-              swatch="bg-surface-border/60 border border-surface-border"
-              token="border-surface-border/60"
+              swatch="bg-background border border-surface-border"
+              token="bg-background"
             >
-              every app-shell hairline
+              seamless shell — regions separate on whitespace, not lines
             </Tier>
           </Stack>
         </Inline>

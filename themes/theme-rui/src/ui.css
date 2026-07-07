@@ -389,3 +389,27 @@
       calc(100% - var(--sc-scroll-buffer)) 100%;
   }
 }
+
+@keyframes sc-edge-b {
+  to {
+    box-shadow: 0 1px 0 0 var(--color-surface-border);
+  }
+}
+
+/*
+ * Scroll-revealed bottom edge for a sticky bar in a seamless shell: at rest
+ * the bar is borderless (the shell separates on whitespace), but once page
+ * content scrolls underneath, a hairline fades in so the seam stays legible.
+ *
+ * Progressive enhancement like `ui-scroll-mask-x`: without scroll-driven
+ * animation support the bar simply stays borderless — the sticky bar's opaque
+ * background still separates it from passing content. Scroll-linked, so not
+ * gated by `prefers-reduced-motion`.
+ */
+@utility ui-scroll-edge {
+  @supports (animation-timeline: scroll()) {
+    animation: sc-edge-b linear both;
+    animation-timeline: scroll();
+    animation-range: 0 2rem;
+  }
+}

@@ -18,6 +18,13 @@ horizontal inset, section labels keep one even rhythm, and the sidebar toggle
 steps down to the small control size with a lighter icon — more rows per screen
 without losing the pill affordance.
 
-Every line in the app shell — the sidebar's content divider, header and footer,
-plus the `TopNavigation` bottom border — now shares one faint hairline (the
-translucent surface edge) instead of a heavier solid border.
+The app shell is now seamless: the sidebar divider, its header/footer hairlines
+and the `TopNavigation` bottom border are gone — shell regions separate on
+whitespace and the content panels carry the structure. The sticky
+`TopNavigation` reveals a bottom hairline only once page content scrolls
+underneath it (`ui-scroll-edge`, a scroll-driven progressive enhancement;
+non-supporting browsers simply stay borderless). The mobile sidebar drawer
+wears the overlay elevation instead of a border, `Sidebar.Separator` steps up
+to the full-strength surface hairline so the one opt-in line stays perceivable,
+and the sidebar footer quiets its links (secondary color, normal weight) so
+escape hatches never compete with navigation.
