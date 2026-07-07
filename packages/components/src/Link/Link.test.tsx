@@ -2,10 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { MockInstance, vi } from 'vitest';
-import { theme } from '@marigold/theme-rui';
-import { MarigoldProvider } from '../Provider/MarigoldProvider';
-import { Link } from './Link';
-import { Basic } from './Link.stories';
+import { AccessVariants, Basic } from './Link.stories';
 
 const user = userEvent.setup();
 
@@ -64,30 +61,18 @@ test('supports "onPress"', async () => {
   expect(warnMock).not.toHaveBeenCalled();
 });
 
-test('master variant applies the lock mask in the master access color', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Link variant="master" href="#">
-        verschieben
-      </Link>
-    </MarigoldProvider>
-  );
-  const link = screen.getByRole('link');
-  expect(link).toHaveClass('before:[mask-image:var(--access-mask-lock)]');
-  expect(link).toHaveClass('before:bg-access-master-foreground');
-  expect(link).toHaveTextContent('verschieben');
+test('master variant renders the lock glyph via the access utility', () => {
+  render(<AccessVariants.Component />);
+  const [master] = screen.getAllByRole('link');
+
+  expect(master).toHaveClass('ui-access-master');
+  expect(master).toHaveTextContent('verschieben');
 });
 
-test('admin variant applies the key mask in the admin access color', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Link variant="admin" href="#">
-        freigeben
-      </Link>
-    </MarigoldProvider>
-  );
-  const link = screen.getByRole('link');
-  expect(link).toHaveClass('before:[mask-image:var(--access-mask-key)]');
-  expect(link).toHaveClass('before:bg-access-admin-foreground');
-  expect(link).toHaveTextContent('freigeben');
+test('admin variant renders the key glyph via the access utility', () => {
+  render(<AccessVariants.Component />);
+  const [, admin] = screen.getAllByRole('link');
+
+  expect(admin).toHaveClass('ui-access-admin');
+  expect(admin).toHaveTextContent('freigeben');
 });

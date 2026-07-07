@@ -153,6 +153,9 @@ export const MenuWithSections = meta.story({
         <ActionMenu.Item id="tse" variant="master">
           TSE anbinden
         </ActionMenu.Item>
+        <ActionMenu.Item id="delete" variant="master">
+          Löschen
+        </ActionMenu.Item>
       </ActionMenu.Section>
       <ActionMenu.Section title="Admin-Aktionen">
         <ActionMenu.Item id="release" variant="admin">

@@ -366,6 +366,11 @@ export const AccessSections = meta.story({
         <ActionMenu.Item id="tse" variant="master">
           TSE anbinden
         </ActionMenu.Item>
+        {/* `variant` is a single axis: for restricted destructive actions the
+            access variant takes precedence over `destructive`. */}
+        <ActionMenu.Item id="delete" variant="master">
+          Löschen
+        </ActionMenu.Item>
       </ActionMenu.Section>
       <ActionMenu.Section title="Admin-Aktionen">
         <ActionMenu.Item id="release" variant="admin">
@@ -385,7 +390,21 @@ AccessSections.test(
     );
     expect(await canvas.findByText('Master-Aktionen')).toBeVisible();
     const move = canvas.getByText('Verschieben').closest('[role="menuitem"]');
-    expect(move).toHaveClass('before:[mask-image:var(--access-mask-lock)]');
+    expect(move).toHaveClass('ui-access-master');
+  }
+);
+
+AccessSections.test(
+  'restricted destructive actions use the access variant',
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Filial-Aktionen' })
+    );
+
+    const del = canvas.getByText('Löschen').closest('[role="menuitem"]');
+
+    expect(del).toHaveClass('ui-access-master');
+    expect(del).not.toHaveClass('text-destructive-accent');
   }
 );
 
