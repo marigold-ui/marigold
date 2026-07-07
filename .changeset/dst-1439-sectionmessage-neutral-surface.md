@@ -1,5 +1,6 @@
 ---
 '@marigold/theme-rui': minor
+'@marigold/components': patch
 ---
 
 feat(DST-1439): give `SectionMessage` a white surface with a soft inset variant glow
