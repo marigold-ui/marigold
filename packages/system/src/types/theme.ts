@@ -47,12 +47,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
-      | 'container'
-      | 'selection'
-      | 'count'
-      | 'toolbar'
-      | 'clearButton'
-      | 'actionButton',
+      'container' | 'selection' | 'count' | 'toolbar' | 'clearButton',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
@@ -266,8 +261,19 @@ export type Theme = {
       | 'action',
       ComponentStyleFunction<string, string>
     >;
+    // `tabsListScroll` is the scroll container for the tab row and owns the
+    // `overflow-x`. It is required and paired with `tabsList`: when `tabsList`
+    // is wider than its container (e.g. `w-max`) the row scrolls, otherwise it
+    // overflows the page. Making the slot required means a theme cannot ship
+    // `tabsList` without the scroll container that makes it behave. See
+    // theme-rui's Tabs.styles.ts.
     Tabs?: Record<
-      'container' | 'tabsList' | 'tabpanel' | 'tab' | 'tabIndicator',
+      | 'container'
+      | 'tabsList'
+      | 'tabsListScroll'
+      | 'tabpanel'
+      | 'tab'
+      | 'tabIndicator',
       ComponentStyleFunction<string, string>
     >;
     Underlay?: ComponentStyleFunction<string, string>;

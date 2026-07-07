@@ -110,6 +110,7 @@ export const Basic: any = meta.story({
         label="Date Range Picker"
         description="This is a description"
         errorMessage="This is an error"
+        placeholderValue={new CalendarDate(2026, 7, 1)}
         {...args}
       />
     </I18nProvider>
@@ -169,6 +170,7 @@ export const UnavailableDate: any = meta.story({
       <DateRangePicker
         label="Date Range Picker"
         dateUnavailable={date => date.toDate('Europe/Berlin').getDay() === 0}
+        placeholderValue={new CalendarDate(2026, 7, 1)}
         {...args}
       />
     </I18nProvider>
@@ -182,6 +184,7 @@ export const MultiMonth: any = meta.story({
         label="Date Range Picker"
         description="Shows up to three months at once"
         visibleDuration={{ months: 2 }}
+        placeholderValue={new CalendarDate(2026, 7, 1)}
         {...args}
       />
     </I18nProvider>

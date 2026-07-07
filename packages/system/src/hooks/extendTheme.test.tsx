@@ -35,6 +35,7 @@ const theme: Theme = {
     Tabs: {
       container: cva({ base: 'flex' }),
       tabpanel: cva({ base: 'border-3 border-solid border-red-400' }),
+      tabsListScroll: cva({ base: 'overflow-x-auto' }),
       tabsList: cva({ base: 'mb-2.5' }),
       tab: cva({
         base: [

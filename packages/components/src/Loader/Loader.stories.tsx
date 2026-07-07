@@ -37,6 +37,7 @@ const meta = preview.meta({
   args: {
     variant: undefined,
     size: 'default',
+    loaderType: 'xloader',
   },
 });
 
@@ -87,7 +88,6 @@ export const CircleLoader = meta.story({
 });
 
 export const FullscreenCircleLoader = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     mode: 'fullscreen',
     loaderType: 'circle',

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import preview from '.storybook/preview';
 import { TextArea } from './TextArea';
 
@@ -109,20 +108,4 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   render: args => <TextArea {...args} />,
-});
-
-export const Controlled = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
-    const [value, setValue] = useState('');
-    return (
-      <>
-        <TextArea {...args} value={value} onChange={setValue} />
-        <pre>
-          <strong>Input Value:</strong>
-          {value}
-        </pre>
-      </>
-    );
-  },
 });

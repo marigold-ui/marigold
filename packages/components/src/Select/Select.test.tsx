@@ -2,12 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import {
-  Basic,
-  MultiSelectSummary,
-  Sections,
-  WithRenderValue,
-} from './Select.stories';
+import { Basic, MultiSelectSummary, WithRenderValue } from './Select.stories';
 
 const user = userEvent.setup();
 
@@ -84,20 +79,6 @@ test('supports default value via "defaultValue"', async () => {
   const starTrek = within(options).getByRole('option', { name: 'Star Trek' });
 
   expect(starTrek).toHaveAttribute('aria-selected', 'true');
-});
-
-test('supports sections', async () => {
-  renderWithOverlay(<Sections.Component label="Label" data-testid="select" />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const options = screen.getByRole('listbox');
-  const fantasy = within(options).getByText('Fantasy');
-  const sciFi = within(options).getByText('Sci-Fi');
-
-  expect(fantasy).toBeVisible();
-  expect(sciFi).toBeVisible();
 });
 
 test('set width via props', () => {
@@ -182,16 +163,4 @@ test('renderValue count reflects a single selection with static children', async
   await user.click(await screen.findByRole('option', { name: 'Bold' }));
 
   await waitFor(() => expect(button).toHaveTextContent(/1 selected/));
-});
-
-test('default trigger render hides description slot', () => {
-  renderWithOverlay(
-    <Sections.Component label="Label" defaultValue="harry-potter" />
-  );
-
-  const description = within(screen.getByRole('button')).getByText(
-    'About the boy who lived'
-  );
-
-  expect(description).not.toBeVisible();
 });

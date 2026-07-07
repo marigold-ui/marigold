@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { Tag, Text } from '@marigold/components';
+import { Tag } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';
 import {
   type FilterKeys,
@@ -47,6 +47,13 @@ const getLabel = (filter: VenueFilter, key: FilterKeys): ReactNode => {
 
 export const AppliedFilter = () => {
   const { filter, removeFilter, activeFilterKeys } = useFilter();
+  const activeKeys = activeFilterKeys();
+
+  // Nothing to show at rest (the default, no-filter state) — render nothing
+  // rather than a permanent "None" row of dead space.
+  if (activeKeys.length === 0) {
+    return null;
+  }
 
   return (
     <Tag.Group
@@ -55,13 +62,8 @@ export const AppliedFilter = () => {
       // every Tag.id below is a FilterKey, so the narrower cast is safe.
       onRemove={keys => removeFilter(keys as Set<FilterKeys>)}
       removeAll
-      emptyState={() => (
-        <Text variant="muted" fontSize="sm" fontStyle="italic">
-          None
-        </Text>
-      )}
     >
-      {activeFilterKeys().map(name => (
+      {activeKeys.map(name => (
         <Tag id={name} key={name}>
           {getLabel(filter, name)}
         </Tag>

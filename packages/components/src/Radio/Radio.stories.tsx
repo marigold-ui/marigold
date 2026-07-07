@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Stack } from '../Stack/Stack';
 import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';
 
@@ -103,47 +101,6 @@ export const Error = meta.story({
   ),
 });
 
-export const DefaultSelected = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => (
-    <Radio.Group {...args} defaultValue="2">
-      <Radio value="1">Option 1</Radio>
-      <Radio value="2">Option 2</Radio>
-      <Radio value="3" disabled>
-        Option 3
-      </Radio>
-      <Radio value="4">Option 4</Radio>
-    </Radio.Group>
-  ),
-});
-
-export const Controlled = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
-    const [value, setValue] = useState('2');
-    return (
-      <Stack space={4}>
-        <Radio.Group
-          {...args}
-          description="Hier steht ein HelpText"
-          value={value}
-          onChange={setValue}
-        >
-          <Radio value="1">Option 1</Radio>
-          <Radio value="2">Option 2</Radio>
-          <Radio value="3" disabled>
-            Option 3
-          </Radio>
-          <Radio value="4">Option 4</Radio>
-        </Radio.Group>
-        <pre>
-          <code>Current value: {value}</code>
-        </pre>
-      </Stack>
-    );
-  },
-});
-
 export const CollapseAt = meta.story({
   tags: ['component-test'],
   args: {
@@ -176,7 +133,12 @@ export const CollapseAt = meta.story({
       </Radio.Group>
     </I18nProvider>
   ),
-  play: async ({ step, canvas, userEvent }) => {
+});
+
+CollapseAt.test(
+  'Expands and collapses the extra options',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ step, canvas, userEvent }) => {
     await step('show more', async () => {
       await userEvent.click(canvas.getByText('Show 4 more'));
 
@@ -194,5 +156,5 @@ export const CollapseAt = meta.story({
       expect(canvas.queryByTestId('six')).not.toBeVisible();
       expect(canvas.queryByTestId('seven')).not.toBeVisible();
     });
-  },
-});
+  }
+);

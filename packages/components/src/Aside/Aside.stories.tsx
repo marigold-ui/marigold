@@ -1,5 +1,6 @@
 import preview from '.storybook/preview';
 import { Headline } from '../Headline/Headline';
+import { Link } from '../Link/Link';
 import { List } from '../List/List';
 import { Text } from '../Text/Text';
 import { Aside } from './Aside';
@@ -60,37 +61,69 @@ const meta = preview.meta({
   } as const,
 });
 
+const GardenMain = () => (
+  <div>
+    <Headline level={1}>How to Grow Your Own Garden</Headline>
+    <Text>
+      Growing your own garden is a rewarding and relaxing activity. It allows
+      you to enjoy fresh produce and connect with nature. In this guide, we’ll
+      walk you through the steps to get started.
+    </Text>
+    <Text>
+      First, choose the right location for your garden. Make sure it gets plenty
+      of sunlight and has good soil drainage...
+    </Text>
+  </div>
+);
+
+const GardenSidebar = () => (
+  <div>
+    <Headline level={2}>Related Articles</Headline>
+    <List>
+      <List.Item>
+        <Link href="#">Top 10 Gardening Tips for Beginners</Link>
+      </List.Item>
+      <List.Item>
+        <Link href="#">The Best Tools for Gardeners</Link>
+      </List.Item>
+      <List.Item>
+        <Link href="#">How to Compost Effectively</Link>
+      </List.Item>
+    </List>
+    <Headline level={2}>Did You Know?</Headline>
+    <Text>Gardening can reduce stress and improve mental health!</Text>
+  </div>
+);
+
 export const Basic = meta.story({
   render: args => (
     <Aside {...args}>
-      <div>
-        <Headline level={1}>How to Grow Your Own Garden</Headline>
-        <Text>
-          Growing your own garden is a rewarding and relaxing activity. It
-          allows you to enjoy fresh produce and connect with nature. In this
-          guide, we’ll walk you through the steps to get started.
-        </Text>
-        <Text>
-          First, choose the right location for your garden. Make sure it gets
-          plenty of sunlight and has good soil drainage...
-        </Text>
-      </div>
-      <div>
-        <Headline level={2}>Related Articles</Headline>
-        <List>
-          <List.Item>
-            <a href="#">Top 10 Gardening Tips for Beginners</a>
-          </List.Item>
-          <List.Item>
-            <a href="#">The Best Tools for Gardeners</a>
-          </List.Item>
-          <List.Item>
-            <a href="#">How to Compost Effectively</a>
-          </List.Item>
-        </List>
-        <Headline level={2}>Did You Know?</Headline>
-        <Text>Gardening can reduce stress and improve mental health!</Text>
-      </div>
+      <GardenMain />
+      <GardenSidebar />
+    </Aside>
+  ),
+});
+
+export const SidebarLeft = meta.story({
+  args: {
+    side: 'left',
+  },
+  render: args => (
+    <Aside {...args}>
+      <GardenSidebar />
+      <GardenMain />
+    </Aside>
+  ),
+});
+
+export const WideSidebar = meta.story({
+  args: {
+    sideWidth: '300px',
+  },
+  render: args => (
+    <Aside {...args}>
+      <GardenMain />
+      <GardenSidebar />
     </Aside>
   ),
 });

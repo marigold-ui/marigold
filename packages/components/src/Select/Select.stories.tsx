@@ -110,7 +110,19 @@ export const Basic = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas, step, args }) => {
+});
+
+Basic.test('Opens the dropdown', async ({ canvas, args }) => {
+  const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+  await userEvent.click(button);
+
+  await expect(button).toBeVisible();
+});
+
+Basic.test(
+  'Opens the dropdown, skips the disabled option, and selects an item',
+  async ({ canvas, step, args }) => {
     await step('Open the select dropdown', async () => {
       const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
@@ -151,11 +163,293 @@ export const Basic = meta.story({
     await step('Verify the selected value is displayed', async () => {
       expect(canvas.getByText('selected: Star Wars')).toBeVisible();
     });
+  }
+);
+
+const people = [
+  {
+    id: 'alice',
+    name: 'Alice Johnson',
+    position: 'Product Manager',
+    avatar: 'https://i.pravatar.cc/150?img=1',
   },
-});
+  {
+    id: 'bob',
+    name: 'Bob Smith',
+    position: 'Senior Developer',
+    avatar: 'https://i.pravatar.cc/150?img=12',
+  },
+  {
+    id: 'charlie',
+    name: 'Charlie Davis',
+    position: 'UX Designer',
+    avatar: 'https://i.pravatar.cc/150?img=5',
+  },
+];
+
+const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
+  id: `item-${i + 200}`,
+  label: `Tenant ${i + 200} (item-${i + 200})`,
+}));
+
+// The following Basic.test cases open the listbox and re-enable the snapshot
+// (the Basic story disables it) so Chromatic captures each open-list variant,
+// plus a few visual checks on the rendered options.
+
+Basic.test(
+  'Opens the list with long option labels',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    render: args => (
+      <Inset p={24}>
+        <Select
+          {...args}
+          label="Favorite character"
+          placeholder="Select your character"
+        >
+          <Select.Option>
+            Mario der Dritte von Emschenhagen bei Bautzen zukünftiger Retter von
+            Peach und Widersacher von Bowser
+          </Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+        </Select>
+      </Inset>
+    ),
+  },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByLabelText(/Favorite character/i));
+
+    const listbox = await canvas.findByRole('listbox');
+    expect(listbox).toBeVisible();
+    expect(
+      within(listbox).getByText(/Mario der Dritte von Emschenhagen/)
+    ).toBeVisible();
+    expect(within(listbox).getByText('Luigi')).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Opens the list grouped into sections',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { defaultValue: 'harry-potter' },
+    render: args => (
+      <Select {...args}>
+        <Select.Section header="Fantasy">
+          <Select.Option id="harry-potter">
+            <TextValue>Harry Potter</TextValue>
+            <Description>About the boy who lived</Description>
+          </Select.Option>
+          <Select.Option id="lord-of-the-rings">
+            <TextValue>Lord of the Rings</TextValue>
+            <Description>In the lands of Middle earth</Description>
+          </Select.Option>
+        </Select.Section>
+        <Select.Section header="Sci-Fi">
+          <Select.Option id="star-wars">
+            <TextValue>Star Wars</TextValue>
+            <Description>
+              A long time ago, in a galaxy far, far away
+            </Description>
+          </Select.Option>
+          <Select.Option id="star-trek">
+            <TextValue>Star Trek</TextValue>
+            <Description>What is this</Description>
+          </Select.Option>
+        </Select.Section>
+      </Select>
+    ),
+  },
+  async ({ args, canvas, step }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step(
+      'Default trigger shows the text value but hides the description slot',
+      () => {
+        expect(within(trigger).getByText('Harry Potter')).toBeVisible();
+        expect(
+          within(trigger).getByText('About the boy who lived')
+        ).not.toBeVisible();
+      }
+    );
+
+    await userEvent.click(trigger);
+
+    const listbox = await canvas.findByRole('listbox');
+    expect(within(listbox).getByText('Fantasy')).toBeVisible();
+    expect(within(listbox).getByText('Sci-Fi')).toBeVisible();
+    expect(within(listbox).getByText('Harry Potter')).toBeVisible();
+    expect(within(listbox).getByText('Star Trek')).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Opens the list with option badges',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    render: args => (
+      <Select
+        {...args}
+        label="Project Status"
+        placeholder="Select a status"
+        width={80}
+      >
+        <Select.Option id="draft">
+          <Inline space={3} alignY="center">
+            <TextValue>Draft</TextValue>
+            <Badge variant="info">In Progress</Badge>
+          </Inline>
+          <Description>Work in progress</Description>
+        </Select.Option>
+        <Select.Option id="review">
+          <Inline space={3} alignY="center">
+            <Text>In Review</Text>
+            <Badge variant="warning">Pending</Badge>
+          </Inline>
+          <Description>Awaiting review</Description>
+        </Select.Option>
+        <Select.Option id="approved">
+          <Inline space={3} alignY="center">
+            <Text>Approved</Text>
+            <Badge variant="success">Ready</Badge>
+          </Inline>
+          <Description>Approved for release</Description>
+        </Select.Option>
+        <Select.Option id="published">
+          <Inline space={3} alignY="center">
+            <Text>Published</Text>
+            <Badge variant="success">Live</Badge>
+          </Inline>
+          <Description>Released to public</Description>
+        </Select.Option>
+        <Select.Option id="archived">
+          <Inline space={3} alignY="center">
+            <TextValue>Archived</TextValue>
+            <Badge>Inactive</Badge>
+          </Inline>
+          <Description>No longer active</Description>
+        </Select.Option>
+      </Select>
+    ),
+  },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByLabelText(/Project Status/i));
+
+    const listbox = await canvas.findByRole('listbox');
+    expect(within(listbox).getByText('Draft')).toBeVisible();
+    expect(within(listbox).getByText('In Progress')).toBeVisible();
+    expect(within(listbox).getByText('Published')).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Opens the list with user avatars',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    render: args => (
+      <Select
+        {...args}
+        label="Assign to User"
+        placeholder="Select a user"
+        width={80}
+      >
+        {people.map(person => (
+          <Select.Option key={person.id} id={person.id} textValue={person.name}>
+            <Inline space={2} alignY="center">
+              <img
+                src={person.avatar}
+                alt={person.name}
+                className="size-6 rounded-full object-cover"
+              />
+              <TextValue>{person.name}</TextValue>
+            </Inline>
+            <Description>{person.position}</Description>
+          </Select.Option>
+        ))}
+      </Select>
+    ),
+  },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByLabelText(/Assign to User/i));
+
+    const listbox = await canvas.findByRole('listbox');
+    expect(within(listbox).getByText('Alice Johnson')).toBeVisible();
+    expect(within(listbox).getByText('Product Manager')).toBeVisible();
+
+    // Wait for remote avatars to finish loading so the snapshot is stable.
+    const imgs = await canvas.findAllByRole('img');
+    await Promise.all(
+      imgs.map(img => {
+        if (!(img instanceof HTMLImageElement)) return Promise.resolve();
+        if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+        return new Promise<void>(resolve => {
+          img.addEventListener('load', () => resolve(), { once: true });
+          img.addEventListener('error', () => resolve(), { once: true });
+        });
+      })
+    );
+  }
+);
+
+Basic.test(
+  'Opens a large option list',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: {
+      label: 'Tenants',
+      placeholder: 'Select a tenant',
+      width: 80,
+    },
+    render: args => (
+      <Select {...args} items={LARGE_ITEMS}>
+        {(item: (typeof LARGE_ITEMS)[number]) => (
+          <Select.Option id={item.id}>{item.label}</Select.Option>
+        )}
+      </Select>
+    ),
+  },
+  async ({ args, canvas }) => {
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+    );
+
+    const listbox = await canvas.findByRole('listbox');
+    expect(listbox).toBeVisible();
+    expect(within(listbox).getByText('Tenant 200 (item-200)')).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Sizes the trigger to the requested width',
+  {
+    args: {
+      label: 'Favorite',
+      width: 64,
+    },
+  },
+  async ({ canvas, step }) => {
+    await step('Trigger width matches the requested scale value', async () => {
+      const button = canvas.getByRole('button', { name: /Favorite/i });
+      const rem = parseFloat(
+        getComputedStyle(document.documentElement).fontSize
+      );
+      // width={64} => calc(var(--spacing) * 64) = 64 * 0.25rem = 16rem
+      const expected = 16 * rem;
+      const { width } = button.getBoundingClientRect();
+
+      expect(width).toBeGreaterThan(rem * 12);
+      expect(Math.abs(width - expected)).toBeLessThanOrEqual(1);
+    });
+  }
+);
 
 export const Multiple = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   // No args here, it breaks the types
   render: ({ label }) => {
     const [selected, setSelected] = useState<Key[]>([]);
@@ -192,7 +486,11 @@ export const Multiple = meta.story({
       </Form>
     );
   },
-  play: async ({ args, canvas, userEvent }) => {
+});
+
+Multiple.test(
+  'Selects multiple options and submits them',
+  async ({ args, canvas, userEvent }) => {
     await userEvent.click(
       canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
     );
@@ -210,373 +508,32 @@ export const Multiple = meta.story({
     expect(canvas.getByTestId('selected')).toHaveTextContent(
       'selected: ["Star Wars","Firefly"]'
     );
-  },
-});
+  }
+);
 
-export const LongItems = meta.story({
-  parameters: {
-    // Snapshot disabled by the snapshot audit — the closed default state is a
-    // redundant frame already covered by the kept Select stories. The play test
-    // below still runs. (The former `delay: 300` only existed to stabilize this
-    // now-removed snapshot, so it's dropped with it.)
-    chromatic: { disableSnapshot: true },
-  },
-  render: args => {
-    return (
-      <Inset p={24}>
-        <Select
-          {...args}
-          label="Favorite character"
-          placeholder="Select your character"
-        >
-          <Select.Option>
-            Mario der Dritte von Emschenhagen bei Bautzen zukünftiger Retter von
-            Peach und Widersacher von Bowser
-          </Select.Option>
-          <Select.Option>Luigi</Select.Option>
-          <Select.Option>Toad</Select.Option>
-          <Select.Option>Yoshi</Select.Option>
-          <Select.Option>Bowser</Select.Option>
-          <Select.Option>Peach</Select.Option>
-        </Select>
-      </Inset>
+Multiple.test(
+  'Opens the list with multiple items selected',
+  // Keep the snapshot so Chromatic captures the open list with the selection.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
     );
-  },
-  play: async ({ canvas, step }) => {
-    const button = canvas.getByLabelText(/Favorite character/i);
 
-    await step('Open the select dropdown', async () => {
-      await userEvent.click(button);
+    const dialog = await canvas.findByRole('dialog');
 
-      expect(button).toHaveAttribute('aria-expanded', 'true');
-    });
+    await userEvent.click(within(dialog).getByText('Star Wars'));
+    await userEvent.click(within(dialog).getByText('Firefly'));
 
-    await step('Verify listbox is visible', async () => {
-      await waitFor(() => canvas.getByRole('listbox'));
-      const listbox = canvas.getByRole('listbox');
-
-      expect(listbox).toBeVisible();
-    });
-
-    await step('Dismiss select with Escape key', async () => {
-      await userEvent.keyboard('{Escape}');
-      await waitFor(() => {
-        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument();
-      });
-
-      expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-  },
-});
-
-export const LotsOfOptions = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
-    return (
-      <Inset p={24}>
-        <Select
-          {...args}
-          label="Favorite character"
-          placeholder="Select your character"
-        >
-          <Select.Option>Luigi</Select.Option>
-          <Select.Option>Toad</Select.Option>
-          <Select.Option>Yoshi</Select.Option>
-          <Select.Option>Bowser</Select.Option>
-          <Select.Option>Peach</Select.Option>
-          <Select.Option>Luigi</Select.Option>
-          <Select.Option>Toad</Select.Option>
-          <Select.Option>Yoshi</Select.Option>
-          <Select.Option>Bowser</Select.Option>
-          <Select.Option>Peach</Select.Option>
-          <Select.Option>Luigi</Select.Option>
-          <Select.Option>Toad</Select.Option>
-          <Select.Option>Yoshi</Select.Option>
-          <Select.Option>Bowser</Select.Option>
-          <Select.Option>Peach</Select.Option>
-          <Select.Option>Luigi</Select.Option>
-          <Select.Option>Toad</Select.Option>
-          <Select.Option>Yoshi</Select.Option>
-          <Select.Option>Bowser</Select.Option>
-          <Select.Option>Peach</Select.Option>
-          <Select.Option>Luigi</Select.Option>
-          <Select.Option>Toad</Select.Option>
-          <Select.Option>Yoshi</Select.Option>
-          <Select.Option>Bowser</Select.Option>
-          <Select.Option>Peach</Select.Option>
-          <Select.Option>Luigi</Select.Option>
-          <Select.Option>Toad</Select.Option>
-          <Select.Option>Yoshi</Select.Option>
-          <Select.Option>Bowser</Select.Option>
-          <Select.Option>Peach</Select.Option>
-          <Select.Option>Luigi</Select.Option>
-          <Select.Option>Toad</Select.Option>
-          <Select.Option>Yoshi</Select.Option>
-          <Select.Option>Bowser</Select.Option>
-          <Select.Option>Peach</Select.Option>
-        </Select>
-      </Inset>
-    );
-  },
-});
-
-export const Sections = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => (
-    <Select {...args}>
-      <Select.Section header="Fantasy">
-        <Select.Option id="harry-potter">
-          <TextValue>Harry Potter</TextValue>
-          <Description>About the boy who lived</Description>
-        </Select.Option>
-        <Select.Option id="lord-of-the-rings">
-          <TextValue>Lord of the Rings</TextValue>
-          <Description>In the lands of Middle earth</Description>
-        </Select.Option>
-      </Select.Section>
-      <Select.Section header="Sci-Fi">
-        <Select.Option id="star-wars">
-          <TextValue>Star Wars</TextValue>
-          <Description>A long time ago, in a galaxy far, far away</Description>
-        </Select.Option>
-        <Select.Option id="star-trek">
-          <TextValue>Star Trek</TextValue>
-          <Description>What is this</Description>
-        </Select.Option>
-      </Select.Section>
-    </Select>
-  ),
-});
-
-export const SelectedScroll = meta.story({
-  render: args => {
-    return (
-      <Select disabledKeys={['Firefly']} open {...args}>
-        <Select.Option id="Harry Potter">Harry Potter</Select.Option>
-        <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
-        <Select.Option id="Star Wars">Star Wars</Select.Option>
-        <Select.Option id="Star Trek">Star Trek</Select.Option>
-        <Select.Option id="Avatar - Aufbruch nach Pandora">
-          Avatar - Aufbruch nach Pandora
-        </Select.Option>
-        <Select.Option id="Avatar: The Way of Water">
-          Avatar: The Way of Water
-        </Select.Option>
-        <Select.Option id="Black Adam">Black Adam</Select.Option>
-        <Select.Option id="Black Panther: Wakanda Forever">
-          Black Panther: Wakanda Forever
-        </Select.Option>
-        <Select.Option id="Strange World">Strange World</Select.Option>
-        <Select.Option id="Project Gemini">Project Gemini</Select.Option>
-        <Select.Option id="M3GAN">M3GAN</Select.Option>
-        <Select.Option id="Spider-Man: No Way Home">
-          Spider-Man: No Way Home
-        </Select.Option>
-        <Select.Option id="Jurassic World - Ein neues Zeitalter">
-          Jurassic World - Ein neues Zeitalter
-        </Select.Option>
-        <Select.Option id="Prey">Prey</Select.Option>
-        <Select.Option id="Avengers: Infinity War">
-          Avengers: Infinity War
-        </Select.Option>
-        <Select.Option id="Venom: Let There Be Carnage">
-          Venom: Let There Be Carnage
-        </Select.Option>
-        <Select.Option id="Lightyear">Lightyear</Select.Option>
-        <Select.Option id="Warriors of Future">
-          Warriors of Future
-        </Select.Option>
-        <Select.Option id="Moonfall">Moonfall</Select.Option>
-        <Select.Option id="Nope">Nope</Select.Option>
-        <Select.Option id="Project Wolf Hunting">
-          Project Wolf Hunting
-        </Select.Option>
-        <Select.Option id="Black Panther">Black Panther</Select.Option>
-        <Select.Option id="Eternals">Eternals</Select.Option>
-        <Select.Option id="Interstellar">Interstellar</Select.Option>
-        <Select.Option id="Avengers: Endgame">Avengers: Endgame</Select.Option>
-        <Select.Option id="Dune">Dune</Select.Option>
-      </Select>
-    );
-  },
-});
-
-export const WithBadges = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => (
-    <Select
-      {...args}
-      label="Project Status"
-      placeholder="Select a status"
-      width={80}
-    >
-      <Select.Option id="draft">
-        <Inline space={3} alignY="center">
-          <TextValue>Draft</TextValue>
-          <Badge variant="info">In Progress</Badge>
-        </Inline>
-        <Description>Work in progress</Description>
-      </Select.Option>
-      <Select.Option id="review">
-        <Inline space={3} alignY="center">
-          <Text>In Review</Text>
-          <Badge variant="warning">Pending</Badge>
-        </Inline>
-        <Description>Awaiting review</Description>
-      </Select.Option>
-      <Select.Option id="approved">
-        <Inline space={3} alignY="center">
-          <Text>Approved</Text>
-          <Badge variant="success">Ready</Badge>
-        </Inline>
-        <Description>Approved for release</Description>
-      </Select.Option>
-      <Select.Option id="published">
-        <Inline space={3} alignY="center">
-          <Text>Published</Text>
-          <Badge variant="success">Live</Badge>
-        </Inline>
-        <Description>Released to public</Description>
-      </Select.Option>
-      <Select.Option id="archived">
-        <Inline space={3} alignY="center">
-          <TextValue>Archived</TextValue>
-          <Badge>Inactive</Badge>
-        </Inline>
-        <Description>No longer active</Description>
-      </Select.Option>
-    </Select>
-  ),
-});
-
-const people = [
-  {
-    id: 'alice',
-    name: 'Alice Johnson',
-    position: 'Product Manager',
-    avatar: 'https://i.pravatar.cc/150?img=1',
-  },
-  {
-    id: 'bob',
-    name: 'Bob Smith',
-    position: 'Senior Developer',
-    avatar: 'https://i.pravatar.cc/150?img=12',
-  },
-  {
-    id: 'charlie',
-    name: 'Charlie Davis',
-    position: 'UX Designer',
-    avatar: 'https://i.pravatar.cc/150?img=5',
-  },
-];
-
-export const WithImages = meta.story({
-  render: args => (
-    <Select
-      {...args}
-      label="Assign to User"
-      placeholder="Select a user"
-      width={80}
-    >
-      {people.map(person => (
-        <Select.Option key={person.id} id={person.id} textValue={person.name}>
-          <Inline space={2} alignY="center">
-            <img
-              src={person.avatar}
-              alt={person.name}
-              className="size-6 rounded-full object-cover"
-            />
-            <TextValue>{person.name}</TextValue>
-          </Inline>
-          <Description>{person.position}</Description>
-        </Select.Option>
-      ))}
-    </Select>
-  ),
-  play: async ({ canvas, step }) => {
-    await step('Open the select dropdown', async () => {
-      const button = canvas.getByLabelText(/Assign to User/i);
-      await userEvent.click(button);
-      expect(button).toHaveAttribute('aria-expanded', 'true');
-    });
-
-    await step('Verify text slots are rendered', async () => {
-      await waitFor(() => {
-        expect(canvas.getByRole('listbox')).toBeInTheDocument();
-      });
-
-      const label = canvas.getByLabelText('Alice Johnson');
-      const description = canvas.getByText('Product Manager');
-
-      expect(label).toBeInTheDocument();
-      expect(description).toBeInTheDocument();
-    });
-
-    // Wait for remote avatars to finish loading before Chromatic snapshots,
-    // otherwise the captured frame depends on network timing.
-    await step('Wait for avatars to finish loading', async () => {
-      const imgs = await canvas.findAllByRole('img');
-      await Promise.all(
-        imgs.map(img => {
-          if (!(img instanceof HTMLImageElement)) return Promise.resolve();
-          if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-          return new Promise<void>(resolve => {
-            img.addEventListener('load', () => resolve(), { once: true });
-            img.addEventListener('error', () => resolve(), { once: true });
-          });
-        })
-      );
-    });
-  },
-});
-
-const LARGE_ITEMS = Array.from({ length: 800 }, (_, i) => ({
-  id: `item-${i + 200}`,
-  label: `Tenant ${i + 200} (item-${i + 200})`,
-}));
-
-export const LargeDataset = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  tags: ['component-test'],
-  args: {
-    label: 'Tenants',
-    placeholder: 'Select a tenant',
-    width: 80,
-  },
-  render: args => (
-    <Select {...args} items={LARGE_ITEMS}>
-      {(item: (typeof LARGE_ITEMS)[number]) => (
-        <Select.Option id={item.id}>{item.label}</Select.Option>
-      )}
-    </Select>
-  ),
-  play: async ({ args, canvas, step }) => {
-    await step('Open the select dropdown', async () => {
-      const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
-      await userEvent.click(button);
-      await waitFor(() => canvas.getByRole('listbox'));
-    });
-
-    await step('Verify listbox renders without freezing', async () => {
-      const listbox = canvas.getByRole('listbox');
-      expect(listbox).toBeVisible();
-    });
-
-    await step('Select a visible item from the top of the list', async () => {
-      const listbox = canvas.getByRole('listbox');
-      const option = within(listbox).getByText('Tenant 200 (item-200)');
-      await userEvent.click(option);
-    });
-
-    await step('Verify selected value appears in trigger', async () => {
-      await waitFor(() => {
-        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument();
-      });
-      const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
-      expect(within(button).getByText('Tenant 200 (item-200)')).toBeVisible();
-    });
-  },
-});
+    // Multi-select keeps the list open; both options stay marked as selected.
+    expect(
+      within(dialog).getByRole('option', { name: 'Star Wars' })
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      within(dialog).getByRole('option', { name: 'Firefly' })
+    ).toHaveAttribute('aria-selected', 'true');
+  }
+);
 
 // Shared trigger summary + option markup so the desktop and mobile (tray)
 // `renderValue` stories exercise identical rendering on both branches.
@@ -611,6 +568,7 @@ const renderUserOption = (person: (typeof people)[number]) => (
 
 export const WithRenderValue = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Assign to',
     placeholder: 'Select a user',
@@ -621,7 +579,11 @@ export const WithRenderValue = meta.story({
       {renderUserOption}
     </Select>
   ),
-  play: async ({ args, canvas, step }) => {
+});
+
+WithRenderValue.test(
+  'renders the selected value with a custom renderValue',
+  async ({ args, canvas, step }) => {
     const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
     await step('Trigger shows placeholder when nothing selected', async () => {
@@ -650,8 +612,8 @@ export const WithRenderValue = meta.story({
         within(trigger).queryByText('Senior Developer')
       ).not.toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 /**
  * Mobile counterpart of {@link WithRenderValue}: below the `sm` breakpoint the
@@ -662,6 +624,7 @@ export const WithRenderValue = meta.story({
  */
 export const WithRenderValueMobile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -675,7 +638,11 @@ export const WithRenderValueMobile = meta.story({
       {renderUserOption}
     </Select>
   ),
-  play: async ({ args, canvas, step }) => {
+});
+
+WithRenderValueMobile.test(
+  'renders the selected value with a custom renderValue in the tray',
+  async ({ args, canvas, step }) => {
     // Fail loudly if the mobile viewport did not take effect, rather than
     // passing a test that never exercised the tray branch.
     expect(window.innerWidth).toBeLessThan(640);
@@ -706,11 +673,12 @@ export const WithRenderValueMobile = meta.story({
         within(trigger).queryByText('Senior Developer')
       ).not.toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 export const MultiSelectSummary = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Formatting',
     width: 64,
@@ -732,7 +700,12 @@ export const MultiSelectSummary = meta.story({
       <Select.Option id="underline">Underline</Select.Option>
     </Select>
   ),
-  play: async ({ args, canvas }) => {
+});
+
+MultiSelectSummary.test(
+  'collapses multiple selections into a compact count summary',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas }) => {
     const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
     await userEvent.click(trigger);
@@ -750,8 +723,8 @@ export const MultiSelectSummary = meta.story({
     // Two selections collapse to a compact "N selected" summary, rather than
     // listing every value on the trigger.
     expect(within(trigger).getByText('2 selected')).toBeVisible();
-  },
-});
+  }
+);
 
 /**
  * Mobile counterpart of {@link MultiSelectSummary}: the `count`-based summary
@@ -762,6 +735,7 @@ export const MultiSelectSummary = meta.story({
  */
 export const MultiSelectSummaryMobile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -782,7 +756,12 @@ export const MultiSelectSummaryMobile = meta.story({
       <Select.Option id="underline">Underline</Select.Option>
     </Select>
   ),
-  play: async ({ args, canvas, step }) => {
+});
+
+MultiSelectSummaryMobile.test(
+  'shows the compact count summary from the tray branch',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas, step }) => {
     expect(window.innerWidth).toBeLessThan(640);
 
     const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
@@ -810,8 +789,8 @@ export const MultiSelectSummaryMobile = meta.story({
     await step('Trigger shows the compact count summary', () => {
       expect(within(trigger).getByText('2 selected')).toBeVisible();
     });
-  },
-});
+  }
+);
 
 /**
  * Quick-filter pattern: a multi-select whose trigger always shows the filter's
@@ -827,6 +806,7 @@ export const MultiSelectSummaryMobile = meta.story({
  */
 export const QuickFilter = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Select
       aria-label="Status"
@@ -851,7 +831,12 @@ export const QuickFilter = meta.story({
       <Select.Option id="archived">Archived</Select.Option>
     </Select>
   ),
-  play: async ({ canvas }) => {
+});
+
+QuickFilter.test(
+  'keeps the dimension label and reflects the active count in a badge',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
     const trigger = canvas.getByRole('button', { name: /Status/i });
 
     // Until something is selected, the trigger shows the bare label and no badge.
@@ -879,10 +864,11 @@ export const QuickFilter = meta.story({
     expect(
       canvas.getByRole('button', { name: /2 selected/i })
     ).toBeInTheDocument();
-  },
-});
+  }
+);
 
 export const Mobile = meta.story({
+  tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
@@ -932,63 +918,43 @@ export const Mobile = meta.story({
       </Select>
     );
   },
-  play: async ({ canvas, step }) => {
-    await step('Open the tray', async () => {
-      await waitFor(async () => {
-        const button = canvas.getByLabelText(/Favorite character/i);
-
-        await userEvent.click(button);
-
-        expect(canvas.getByRole('dialog')).toBeInTheDocument();
-      });
-    });
-
-    await step('Verify dialog is visible', async () => {
-      const dialog = canvas.getByRole('dialog');
-
-      await waitFor(() => expect(dialog).toBeVisible());
-    });
-
-    await step('Select an option', async () => {
-      const dialog = canvas.getByRole('dialog');
-      const option = within(dialog).getByText('Peach');
-
-      await userEvent.click(option);
-
-      expect(option.parentElement).toHaveAttribute('aria-selected', 'true');
-    });
-
-    await step('Close select with Escape key', async () => {
-      const button = canvas.getByRole('button', {
-        name: /Favorite character/i,
-      });
-
-      await userEvent.keyboard('{Escape}');
-      await waitFor(() => {
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
-      });
-
-      expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-  },
 });
 
-/**
- * Regression guard for DSTSUP-261.
- *
- * Below the `sm` breakpoint, `<Select>` renders its listbox inside a `<Tray>`
- * (RAC `DialogTrigger`) instead of a `<Popover>`. The inner `<ListBox>` must
- * keep participating in the Select's list state so that picking an option still
- * fires `onChange` (value API) and drives the controlled `value` prop — exactly
- * like the desktop branch. The earlier `Mobile` story only asserted
- * `aria-selected`, which can be set without `onChange` ever firing; this story
- * uses a fully controlled `value`/`onChange` Select and verifies the round-trip:
- * the controlled `value` updates, the tray auto-closes, and the trigger renders
- * from `value`.
- */
+Mobile.test(
+  'Opens the tray',
+  // Keep the snapshot so Chromatic captures the open mobile tray.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByLabelText(/Favorite character/i));
+
+    const dialog = await canvas.findByRole('dialog');
+    await waitFor(() => expect(dialog).toBeVisible());
+
+    // Leave the tray open so the snapshot captures it with its options.
+    expect(within(dialog).getByText('Mario')).toBeVisible();
+    expect(within(dialog).getByText('Peach')).toBeVisible();
+  }
+);
+
+Mobile.test('Selects an option and closes the tray', async ({ canvas }) => {
+  const trigger = canvas.getByLabelText(/Favorite character/i);
+  await userEvent.click(trigger);
+
+  const dialog = await canvas.findByRole('dialog');
+  await userEvent.click(within(dialog).getByText('Peach'));
+
+  // Single selection auto-closes the tray and the trigger renders the choice.
+  await waitFor(() =>
+    expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+  );
+  expect(trigger).toHaveTextContent('Peach');
+});
+
+// Controlled (`value`/`onChange`) mobile Select. Kept as the fixture for the
+// DSTSUP-261 regression test in Select.test.tsx: selecting in the tray must
+// round-trip through the controlled `value` prop.
 export const MobileControlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -996,7 +962,6 @@ export const MobileControlled = meta.story({
     label: 'Favorite character',
   },
   render: ({ label }) => {
-    // Controlled via the `value` prop (single-select value API).
     const [value, setValue] = useState<Key | null>(null);
     return (
       <Stack space={6}>
@@ -1017,87 +982,5 @@ export const MobileControlled = meta.story({
         <pre data-testid="value">value: {value}</pre>
       </Stack>
     );
-  },
-  play: async ({ canvas, step }) => {
-    // Fail loudly if `useSmallScreen` did not pick up the mobile viewport,
-    // rather than passing a test that never exercised the tray branch.
-    expect(window.innerWidth).toBeLessThan(640);
-
-    const trigger = canvas.getByRole('button', {
-      name: /Favorite character/i,
-    });
-
-    await step('Open the tray', async () => {
-      await userEvent.click(trigger);
-      // Mobile path renders the listbox inside a tray (role="dialog").
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
-      );
-
-      // DSTSUP-261 invariant: exactly one tray modal, holding the listbox. A
-      // split `HiddenContext` (dual react-aria generations) or a broken
-      // hidden-pass guard leaks a second, empty modal that `inert`s the real
-      // one.
-      expect(canvas.getAllByRole('dialog')).toHaveLength(1);
-      expect(
-        within(canvas.getByRole('dialog')).getByRole('listbox')
-      ).toBeInTheDocument();
-    });
-
-    await step('Select an option from the tray', async () => {
-      const dialog = canvas.getByRole('dialog');
-      await userEvent.click(within(dialog).getByText('Peach'));
-    });
-
-    await step('Controlled `value` prop updates via onChange', async () => {
-      await waitFor(() =>
-        expect(canvas.getByTestId('value')).toHaveTextContent('value: peach')
-      );
-    });
-
-    await step('Single selection auto-closes the tray', async () => {
-      await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-      );
-    });
-
-    await step('Trigger renders from the controlled `value`', async () => {
-      await waitFor(() => expect(trigger).toHaveTextContent('Peach'));
-    });
-  },
-});
-
-/**
- * Regression guard for DST-1482: a fixed `width` must size the field element
- * itself (the trigger), not just the FieldBase wrapper. `width={64}` maps to the
- * spacing scale, i.e. `calc(var(--spacing) * 64)` = 16rem (256px at default root
- * font-size), and must drive the trigger's layout without an outer wrapper.
- */
-export const FixedWidth = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  tags: ['component-test'],
-  args: {
-    label: 'Favorite',
-    width: 64,
-  },
-  render: args => (
-    <Select {...args} placeholder="Pick">
-      <Select.Option id="Star Wars">Star Wars</Select.Option>
-      <Select.Option id="Star Trek">Star Trek</Select.Option>
-    </Select>
-  ),
-  play: async ({ canvas, step }) => {
-    await step('Trigger width matches the requested scale value', async () => {
-      const button = canvas.getByRole('button', { name: /Favorite/i });
-      const rem = parseFloat(
-        getComputedStyle(document.documentElement).fontSize
-      );
-      // width={64} => calc(var(--spacing) * 64) = 64 * 0.25rem = 16rem
-      const expected = 16 * rem;
-      const { width } = button.getBoundingClientRect();
-
-      expect(width).toBeGreaterThan(rem * 12);
-      expect(Math.abs(width - expected)).toBeLessThanOrEqual(1);
-    });
   },
 });

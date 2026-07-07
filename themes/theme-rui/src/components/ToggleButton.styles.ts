@@ -31,7 +31,6 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       // (removed on the last). Border lives here, not ui-button-base.
       'in-[.group]:rounded-none in-[.group]:ring-0 in-[.group]:inset-shadow-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-transparent in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
       'in-[.group]:disabled:border-r-border',
-      'in-[.group]:focus-visible:z-10',
     ],
     variants: {
       size: {
