@@ -20,6 +20,7 @@ import {
 } from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
+import { nearest } from '../lib/suggest.js';
 import { emit } from '../lib/telemetry.js';
 
 // Package root: dist/bin/marigold.mjs → ../.. = packages/cli/
@@ -378,7 +379,11 @@ export const main = async (
       }
       writeOutput(runTelemetry({ subcommand: sub }));
     } else {
-      fail(`Unknown command: ${command}\n\nRun "marigold --help" for usage.`);
+      const suggestion = nearest(command, TOP_LEVEL_NAMES);
+      const didYouMean = suggestion ? `\n\nDid you mean "${suggestion}"?` : '';
+      fail(
+        `Unknown command: ${command}${didYouMean}\n\nRun "marigold --help" for usage.`
+      );
     }
   } catch (err) {
     if (err instanceof Error && err.name === 'InitCancelError') {

@@ -129,9 +129,47 @@ const sweepStaleTelemetryTmpFiles = (): void => {
   }
 };
 
+// First-run disclosure. Because telemetry is opt-out, the CLI must tell the
+// user — once — that it collects anonymous usage data and how to turn it off.
+// This mirrors the .NET SDK model (on by default, but a mandatory first-run
+// notice). Printed to stderr so it never pollutes stdout/JSON output that AI
+// agents parse. The "shown" flag is persisted only after an actual print on a
+// TTY: this CLI is called mostly by non-interactive agents, so persisting on a
+// silent run would burn the one-time notice before any human ever saw it.
+//
+// Returns true when the notice was just shown on this run, so the caller can
+// suppress telemetry for that invocation — no data point is sent before the
+// user has seen the disclosure and had a chance to opt out (consent before
+// collection). Tracking begins on the next invocation.
+const showFirstRunNoticeIfNeeded = (): boolean => {
+  try {
+    const config = readConfig();
+    if (config.telemetryNoticeShown) return false;
+    if (!process.stderr.isTTY) return false;
+
+    process.stderr.write(
+      [
+        '',
+        'Marigold CLI collects anonymous usage data to help improve the tool.',
+        'No code, arguments, file contents, or personal data are collected.',
+        'Opt out any time: `marigold telemetry disable` or DO_NOT_TRACK=1',
+        '',
+      ].join('\n')
+    );
+    writeConfig({ ...config, telemetryNoticeShown: true });
+    return true;
+  } catch {
+    // Notice must never break the CLI.
+    return false;
+  }
+};
+
 export const emit = (options: EmitOptions): void => {
   if (isTelemetryDisabled()) return;
 
+  // Don't track the invocation that first disclosed telemetry — give the user a
+  // chance to opt out before any data leaves the machine.
+  if (showFirstRunNoticeIfNeeded()) return;
   sweepStaleTelemetryTmpFiles();
 
   const event: TelemetryEvent = {
