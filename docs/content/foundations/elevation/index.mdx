@@ -72,8 +72,8 @@ The families are told apart by their **boundary**, not their shadow:
 
 Two consequences of the rule:
 
-- **The border is the operability cue, and the shadow is supporting texture.** A control's border-tier shadow adds a hint of physical lift, but it never carries the affordance alone. A control stripped of its shadow, such as a selected ToggleButton or a segment inside a group, still reads as a control through its boundary and fill.
-- **The boundary is required only where it is the sole cue.** A ghost button carries its affordance through its label and hover state, so it draws no border. A ListBox inside a Popover draws no boundary of its own, because the overlay frame already provides the surface. The requirement is on the system, not on every element in isolation.
+- **The border is the operability cue, and the shadow is supporting texture.** A control's border-tier shadow adds a hint of physical lift, but it never carries the affordance alone. A control stripped of its shadow, such as a selected `<ToggleButton>` or a segment inside a group, still reads as a control through its boundary and fill.
+- **The boundary is required only where it is the sole cue.** A ghost button carries its affordance through its label and hover state, so it draws no border. A `<ListBox>` inside a `<Popover>` draws no boundary of its own, because the overlay frame already provides the surface. The requirement is on the system, not on every element in isolation.
 
 <GuidelineTiles>
   <Do>
@@ -110,7 +110,7 @@ This diagram shows how the three shadow tiers layer in a typical form layout. Th
 
 The subtlest shadow tier. Border elevation gives controls a slight lift, defining their presence against the surface they sit on. These elements combine `ui-surface-control` with `shadow-elevation-border`.
 
-The edge comes from the boundary, not the shadow. `ui-surface-control` draws the rim, and the shadow only adds a subtle lift on top. See [Token Overview](/foundations/token-overview#form-controls) for the border tokens.
+The edge comes from the boundary, not the shadow. `ui-surface-control` draws the rim, and the shadow only adds a subtle lift on top. See [Token Overview](/foundations/token-overview#borders) for the border tokens.
 
 Because border elevation produces only a subtle shadow, these controls need a raised surface behind them to be clearly visible. Placing an input directly on the page background (`bg-background`) makes its edges nearly indistinguishable from the surrounding area. A Card or similar raised container provides the contrast that border-elevated controls rely on.
 
