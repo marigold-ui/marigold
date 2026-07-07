@@ -20,7 +20,7 @@ export default (props: CardProps) => (
         {venue.city}, {venue.country}
       </Description>
     </Card.Header>
-    <Card.Body>
+    <Card.Content>
       <Stack space="tight">
         <Inline space="related">
           <Badge variant="info">{venueTypes[venue.type]}</Badge>
@@ -28,7 +28,7 @@ export default (props: CardProps) => (
         </Inline>
         <Text variant="muted">{venue.description}</Text>
       </Stack>
-    </Card.Body>
+    </Card.Content>
     <Card.Footer>
       <Inline space="regular">
         <Text size="sm" variant="muted">

@@ -6,7 +6,7 @@ description: Represents one item in a collection.
 import { CardAnatomy } from './card-anatomy';
 import { DoNestedMockup, DontNestedMockup } from './card-usage-guidelines';
 
-A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, body, actions) into a single, self-contained unit and sets it apart from the page through elevation or tinting.
+A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, content, actions) into a single, self-contained unit and sets it apart from the page through elevation or tinting.
 
 `<Card>` renders an `<article>` landmark. When a `<Title>` is present, the card is automatically labelled by it via `aria-labelledby`. Otherwise pass `aria-label` to give the card an accessible name.
 
@@ -18,7 +18,7 @@ The card component is a compound component made up of several sub-components tha
 
 - **Card.Media**: Optional full-bleed area at the top, typically used for images or media.
 - **Card.Header**: Houses a `<Title>` and an optional `<Description>`.
-- **Card.Body**: Main content area for descriptive text or form elements.
+- **Card.Content**: Main content area for descriptive text or form elements.
 - **Card.Footer**: Bottom area for actions such as buttons or metadata.
 
 ## Appearance
@@ -79,7 +79,7 @@ Use an image preview when each item has its own visual identity, like an event p
   </Do>
   <Dont>
     <DontDescription>
-      Don't nest the card's main visual inside `Card.Body`. The padding cuts the
+      Don't nest the card's main visual inside `Card.Content`. The padding cuts the
       image off from the card's edges and the framing falls apart.
     </DontDescription>
   </Dont>
@@ -134,7 +134,7 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 #### Slot gap
 
-`space` controls the vertical gap between `Media`, `Header`, `Body`, and `Footer`. Default `regular` works almost everywhere. Drop to `tight` when the slots should read as one dense surface, or step up to `group` when the card carries several distinct blocks that need more breathing room.
+`space` controls the vertical gap between `Media`, `Header`, `Content`, and `Footer`. Default `regular` works almost everywhere. Drop to `tight` when the slots should read as one dense surface, or step up to `group` when the card carries several distinct blocks that need more breathing room.
 
 ```tsx
 <Card space="tight">…</Card>
@@ -143,16 +143,16 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 #### Bleed
 
-`<Card.Body>` and `<Card.Footer>` accept a `bleed` prop that skips the card's horizontal padding for that slot. Use it for tables, media, or full-width action bars that should reach the card's edges.
+`<Card.Content>` and `<Card.Footer>` accept a `bleed` prop that skips the card's horizontal padding for that slot. Use it for tables, media, or full-width action bars that should reach the card's edges.
 
 ```tsx
 <Card>
   <Card.Header>
     <Title>Pricing</Title>
   </Card.Header>
-  <Card.Body bleed>
+  <Card.Content bleed>
     <Table>…</Table>
-  </Card.Body>
+  </Card.Content>
 </Card>
 ```
 
@@ -178,9 +178,9 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 <AutoTypeTable path="Card/CardHeader" name="CardHeaderProps" />
 
-### Card.Body
+### Card.Content
 
-<AutoTypeTable path="Card/CardBody" name="CardBodyProps" />
+<AutoTypeTable path="Card/CardContent" name="CardContentProps" />
 
 ### Card.Footer
 

@@ -37,7 +37,7 @@ export default () => (
           <Select.Option id="freelancer">Freelancer</Select.Option>
         </Select>
         <Card variant="master">
-          <Card.Body>
+          <Card.Content>
             <Select
               label={
                 <>
@@ -53,10 +53,10 @@ export default () => (
               <Select.Option id="keyaccounts">Key Accounts</Select.Option>
               <Select.Option id="regional">Regional Sales</Select.Option>
             </Select>
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card variant="admin">
-          <Card.Body>
+          <Card.Content>
             <Checkbox
               label={
                 <>
@@ -66,7 +66,7 @@ export default () => (
               description="Allow system diagnostics and data collection for this organizer to improve service quality."
               defaultChecked
             />
-          </Card.Body>
+          </Card.Content>
         </Card>
       </Stack>
     </Tabs.Panel>
