@@ -6,15 +6,20 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       "grid-cols-[min-content_auto_min-content] gap-x-4 [grid-template-areas:'icon_title_close''icon_description_close''icon_content_close']",
       'ui-surface text-foreground px-3 py-4',
     ],
+    // Neutral surface (Toast-aligned, DST-1439) so standard actions/links read
+    // correctly. The variant is carried at the edge, away from the content: a
+    // muted accent border (accent mixed 50% into the neutral border) via
+    // `--ui-border-color`, the hook `ui-surface` reads. No tinted background —
+    // a fill would re-introduce the "actions float on a colored surface" problem.
     variants: {
       variant: {
-        info: 'inset-shadow-[0_0_12px_-6px_color-mix(in_oklab,var(--color-info-accent)_35%,transparent)]',
+        info: '[--ui-border-color:color-mix(in_oklab,var(--color-info-accent)_50%,var(--color-border))]',
         success:
-          'inset-shadow-[0_0_12px_-6px_color-mix(in_oklab,var(--color-success-accent)_35%,transparent)]',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-success-accent)_50%,var(--color-border))]',
         warning:
-          'inset-shadow-[0_0_12px_-6px_color-mix(in_oklab,var(--color-warning-accent)_35%,transparent)]',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-warning-accent)_50%,var(--color-border))]',
         error:
-          'inset-shadow-[0_0_12px_-6px_color-mix(in_oklab,var(--color-destructive-accent)_35%,transparent)]',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-destructive-accent)_50%,var(--color-border))]',
       },
     },
     defaultVariants: {
