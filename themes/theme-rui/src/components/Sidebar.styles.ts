@@ -32,10 +32,13 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   root: cva({
     base: [
       'overflow-hidden',
-      // Seamless shell: no divider at all. Sidebar and page share one paper
-      // surface; the white content panels and the nav's inset pills carry the
-      // structure, not a line.
-      'bg-background ui-scrollbar',
+      // The shell keeps exactly one structural line: this divider. It bounds
+      // the nav column so right-aligned trailing marks (the branch chevrons)
+      // have an edge to anchor against — without it they float. Full hairline
+      // strength (not a dialed-down alpha) so the line stays perceivable.
+      // Everything else (header, footer, top navigation) separates on
+      // whitespace.
+      'bg-background border-r border-surface-border ui-scrollbar',
       'sm:data-[state=expanded]:w-64',
       'sm:data-[state=collapsed]:w-0',
       'sm:transition-[width] sm:duration-200 sm:ease-in-out',
