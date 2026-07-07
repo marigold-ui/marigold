@@ -178,7 +178,10 @@ export const SectionMessage = ({
           {closeButton && (
             <CloseButton
               aria-label={stringFormatter.format('close')}
-              className="[grid-area:close]"
+              // `h-5 self-start` aligns the close icon with the title's first
+              // line (matching the leading icon), instead of centering in the
+              // taller title row.
+              className="h-5 self-start [grid-area:close]"
               onPress={handleClose}
             />
           )}
