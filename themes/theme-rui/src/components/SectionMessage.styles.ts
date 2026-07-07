@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva({
     base: [
-      "grid-cols-[min-content_auto_min-content] gap-x-4 [grid-template-areas:'icon_title_close''icon_description_description''icon_content_content']",
+      "grid-cols-[min-content_auto_min-content] gap-x-4 [grid-template-areas:'icon_title_close''icon_description_close''icon_content_close']",
       'ui-surface text-foreground px-3 py-4',
     ],
     variants: {
