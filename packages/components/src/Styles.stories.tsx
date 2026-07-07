@@ -355,7 +355,7 @@ export const SidebarBackAction = meta.story({
     await expect(back).toBeVisible();
     await expect(child).toBeVisible();
 
-    // The back action and the nav rows share one inset (mx-2 + px-2.5), so
+    // The back action and the nav rows share one inset (mx-2 + px-2), so
     // their content starts on the same column — the alignment we tuned.
     const backStyle = getComputedStyle(back);
     const childStyle = getComputedStyle(child);

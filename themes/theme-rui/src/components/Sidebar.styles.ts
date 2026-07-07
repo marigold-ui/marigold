@@ -66,17 +66,16 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       'ui-button-base ui-press',
       'hover:ui-state-hover-ghost',
-      'size-control [&_svg]:size-6',
+      'size-control-small [&_svg]:size-4.5',
     ],
   }),
   separator: cva({ base: 'bg-surface-border/60 mx-3 my-1.5 h-px border-0' }),
   groupLabel: cva({
-    // Quiet caption. Label text aligns with the pill's item text (18px = mx-2 +
-    // px-2.5); a tight pb-1.5 tucks it close to the section it heads.
-    // A label that sits below a nav item gets a bigger top gap (pt-6 = 24px) so
-    // the section break is obvious; a label at the very top of a panel keeps the
-    // tighter pt-3 since there's nothing above to separate from.
-    base: 'pl-4.5 pr-3 pt-3 pb-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-secondary [&:not(:first-child)]:pt-6',
+    // Quiet caption. Label text aligns with the pill's item text (16px = mx-2 +
+    // px-2); a tight pb-1 tucks it close to the section it heads. Every label
+    // gets the same pt-4 so the groups keep one even rhythm — the dense rows
+    // make a 16px break read as a clear section boundary on its own.
+    base: 'pl-4 pr-3 pt-4 pb-1 text-[0.6875rem] font-bold uppercase tracking-[0.07em] text-secondary',
   }),
   navPanel: cva({
     base: [
@@ -104,9 +103,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   navLink: cva({
     // Each row is an inset, rounded rectangle (mx-2 → 8px whitespace to both
-    // sidebar edges) so the active fill reads as a distinct pill.
+    // sidebar edges) so the active fill reads as a distinct pill. A fixed
+    // h-7.5 (30px) keeps the list dense — more rows per screen than a
+    // padding-driven height would give.
     base: [
-      'mx-2 flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm',
+      'mx-2 flex items-center gap-2 px-2 h-7.5 rounded-lg text-sm',
       'transition-[color,background-color,box-shadow]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
@@ -121,10 +122,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   backButton: cva({
     base: [
-      // Same pill geometry as the nav rows (mx-2 + px-2.5 + h-9) so the back
-      // chevron sits on the shared 18px content column the nav text and section
+      // Same pill geometry as the nav rows (mx-2 + px-2 + h-7.5) so the back
+      // chevron sits on the shared 16px content column the nav text and section
       // labels align to, and the hover fill matches.
-      'mx-2 flex items-center gap-2 px-2.5 h-9 text-sm rounded-lg',
+      'mx-2 flex items-center gap-2 px-2 h-7.5 text-sm rounded-lg',
       // The Button label ships `font-medium`; reset it so the back action reads
       // at the same weight as a regular nav item.
       '[&_span]:font-normal',
