@@ -187,6 +187,12 @@ Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`
       useFor:
         'Decorative rim of a raised surface (Card, Panel, Dialog, Menu), applied via ui-surface. Sits below the contrast threshold, so never for an edge that must be seen',
     },
+    {
+      name: 'control-border',
+      value: 'charcoal-950 / 26%',
+      useFor:
+        'Visible boundary of a control (inputs, selects, the secondary Button), applied via ui-control. The denser sibling of surface-border, kept above the contrast threshold so the edge stays visible',
+    },
   ]}
 />
 
@@ -496,7 +502,7 @@ The `ui-state-disabled` utility bundles background, text, and cursor into one cl
 
 ### Borders
 
-Every boundary token in one place. Marigold draws element edges with five tokens, and each one answers a different question. There is the decorative rim of a surface, the visible edge of a control, that edge dimmed for a disabled control, the structural divider, and the focus ring. `surface-border` and `disabled-border` also appear in the [Surfaces](#surfaces) and [Disabled](#disabled) sections beside their fills, and they are repeated here so the whole set is discoverable at a glance. See [Form Fields](/foundations/form-fields) for component-level guidelines and [Elevation](/foundations/elevation#surfaces-and-controls) for the surface and control rule these tokens implement.
+Every boundary token in one place. Marigold draws element edges with five tokens, and each one answers a different question. There is the decorative rim of a surface, the visible edge of a control, that edge dimmed for a disabled control, the structural divider, and the focus ring. `surface-border` and `control-border` also appear in the [Surfaces](#surfaces) section, and `disabled-border` in the [Disabled](#disabled) section, and they are repeated here so the whole set is discoverable at a glance. See [Form Fields](/foundations/form-fields) for component-level guidelines and [Elevation](/foundations/elevation#surfaces-and-controls) for the surface and control rule these tokens implement.
 
 <TokenTable
   tokens={[
