@@ -50,7 +50,7 @@ export const Basic = meta.story({
         <Title>Professor Severus Snape</Title>
         <Description>Potions Master, Head of Slytherin House.</Description>
       </Card.Header>
-      <Card.Body>
+      <Card.Content>
         <Text>
           <strong>Professor Severus Snape</strong> (9 January, 1960 - 2 May,
           1998) was an English half-blood wizard serving as Potions Master
@@ -59,7 +59,7 @@ export const Basic = meta.story({
           Hogwarts School of Witchcraft and Wizardry as well as a member of the
           Order of the Phoenix and a Death Eater.
         </Text>
-      </Card.Body>
+      </Card.Content>
     </Card>
   ),
 });
@@ -87,12 +87,12 @@ Basic.test(
     parameters: { chromatic: { disableSnapshot: true } },
     render: args => (
       <Card {...args} aria-label="Quick stats card">
-        <Card.Body>
+        <Card.Content>
           <Text>
             A Card can be labelled with <code>aria-label</code> when there is no
             visible Title.
           </Text>
-        </Card.Body>
+        </Card.Content>
       </Card>
     ),
   },
@@ -110,13 +110,13 @@ export const WithFooter = meta.story({
       <Card.Header>
         <Title>Event Registration</Title>
       </Card.Header>
-      <Card.Body>
+      <Card.Content>
         <Text>
           Register for the upcoming Hogwarts Alumni Reunion. The event will take
           place on the grounds of Hogwarts School of Witchcraft and Wizardry.
           Space is limited.
         </Text>
-      </Card.Body>
+      </Card.Content>
       <Card.Footer>
         <Button variant="secondary">Cancel</Button>
         <Button variant="primary">Register</Button>
@@ -141,9 +141,9 @@ export const WithMedia = meta.story({
           Captured during a hiking trip in the Swiss Alps.
         </Description>
       </Card.Header>
-      <Card.Body>
+      <Card.Content>
         <Text>A breathtaking view of the mountains at sunrise.</Text>
-      </Card.Body>
+      </Card.Content>
     </Card>
   ),
 });
@@ -171,12 +171,12 @@ export const WithPaddingProp = meta.story({
       <Card.Header>
         <Title>Custom Padding</Title>
       </Card.Header>
-      <Card.Body>
+      <Card.Content>
         <Text>
           This card uses the `p` prop to set inset padding. Use Storybook
           controls to try different values.
         </Text>
-      </Card.Body>
+      </Card.Content>
     </Card>
   ),
 });
@@ -189,12 +189,12 @@ export const WithNumericPadding = meta.story({
       <Card.Header>
         <Title>Numeric Padding</Title>
       </Card.Header>
-      <Card.Body>
+      <Card.Content>
         <Text>
           This card uses a numeric scale value (<code>p=&#123;4&#125;</code>)
           for inset padding. Both axes should have equal spacing.
         </Text>
-      </Card.Body>
+      </Card.Content>
     </Card>
   ),
 });
@@ -213,17 +213,17 @@ WithNumericPadding.test(
   }
 );
 
-export const WithBleedBody = meta.story({
+export const WithBleedContent = meta.story({
   render: args => (
     <Card {...args}>
       <Card.Header>
-        <Title>Bleed Body</Title>
+        <Title>Bleed Content</Title>
       </Card.Header>
-      <Card.Body bleed>
+      <Card.Content bleed>
         <div className="bg-info/10 border-info-accent border-y px-4 py-3">
           Edge-to-edge banner — spans the full card width.
         </div>
-      </Card.Body>
+      </Card.Content>
       <Card.Footer>
         <Button variant="primary">Action</Button>
       </Card.Footer>
@@ -237,9 +237,9 @@ export const WithBleedFooter = meta.story({
       <Card.Header>
         <Title>Bleed Footer</Title>
       </Card.Header>
-      <Card.Body>
+      <Card.Content>
         <Text>The footer below uses `bleed` to span the full card width.</Text>
-      </Card.Body>
+      </Card.Content>
       <Card.Footer bleed>
         <div className="flex w-full justify-center border-t py-3">
           <Button variant="primary">Full-width action</Button>
@@ -251,7 +251,7 @@ export const WithBleedFooter = meta.story({
 
 /**
  * Anti-pattern: rendering bare children inside `<Card>` is unsupported.
- * Content will have no horizontal padding. Wrap content in `Card.Body` instead.
+ * Content will have no horizontal padding. Wrap content in `Card.Content` instead.
  */
 export const BareChildrenAntiPattern = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
@@ -263,13 +263,13 @@ export const BareChildrenAntiPattern = meta.story({
           has no horizontal padding.
         </Text>
       </Card>
-      <Card {...args} aria-label="Wrapped in Card.Body">
-        <Card.Body>
+      <Card {...args} aria-label="Wrapped in Card.Content">
+        <Card.Content>
           <Text>
-            <strong>Do this:</strong> wrap content in `Card.Body` to get proper
-            padding.
+            <strong>Do this:</strong> wrap content in `Card.Content` to get
+            proper padding.
           </Text>
-        </Card.Body>
+        </Card.Content>
       </Card>
     </Stack>
   ),
@@ -283,26 +283,26 @@ export const MasterAndAdmin = meta.story({
           <Title>Master Access</Title>
           <Badge variant="master">Master</Badge>
         </Card.Header>
-        <Card.Body>
+        <Card.Content>
           <Text>
             This card uses the master variant to indicate master-level access
             permissions. The border and background color change to reflect the
             access level.
           </Text>
-        </Card.Body>
+        </Card.Content>
       </Card>
       <Card {...args} variant="admin">
         <Card.Header>
           <Title>Admin Access</Title>
           <Badge variant="admin">Admin</Badge>
         </Card.Header>
-        <Card.Body>
+        <Card.Content>
           <Text>
             This card uses the admin variant to indicate admin-level access
             permissions. The border and background color change to reflect the
             access level.
           </Text>
-        </Card.Body>
+        </Card.Content>
       </Card>
     </Stack>
   ),
@@ -313,9 +313,9 @@ export const TitleOnlyWithoutHeader = meta.story({
   render: args => (
     <Card {...args}>
       <Title>Quick Settings</Title>
-      <Card.Body>
+      <Card.Content>
         <Text>A Title used directly inside Card without a Card.Header.</Text>
-      </Card.Body>
+      </Card.Content>
     </Card>
   ),
 });

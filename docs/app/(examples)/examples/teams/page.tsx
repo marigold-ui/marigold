@@ -37,7 +37,7 @@ const TeamsPage = () => (
         const members = membersOf(team.memberIds);
         return (
           <Card key={team.id} stretch>
-            <Card.Body>
+            <Card.Content>
               <Stack space="tight">
                 <Text fontSize="xl" weight="semibold">
                   {team.name}
@@ -46,7 +46,7 @@ const TeamsPage = () => (
                   {team.description}
                 </Text>
               </Stack>
-            </Card.Body>
+            </Card.Content>
             <Card.Footer>
               <Inline space="related" alignY="center" noWrap>
                 <Inline space="collapsed" alignY="center" noWrap>
