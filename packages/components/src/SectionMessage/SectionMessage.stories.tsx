@@ -1,4 +1,4 @@
-import { expect } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -124,6 +124,26 @@ export const WithAction = meta.story({
   ),
 });
 
+// Snapshot enabled: this is the only Chromatic-covered story that renders the
+// non-default variants, so the eventual merge-to-`main` VRT run captures the
+// success/warning/error borders (and the no-close-button layout) too.
+export const AllVariants = meta.story({
+  render: args => (
+    <Stack space={4}>
+      {(['info', 'success', 'warning', 'error'] as const).map(variant => (
+        <SectionMessage key={variant} {...args} variant={variant}>
+          <SectionMessage.Title>
+            {variant[0].toUpperCase() + variant.slice(1)}
+          </SectionMessage.Title>
+          <SectionMessage.Content>
+            <Text>This is a {variant} message.</Text>
+          </SectionMessage.Content>
+        </SectionMessage>
+      ))}
+    </Stack>
+  ),
+});
+
 export const MultiLineTitle = meta.story({
   render: args => (
     <div className="w-60">
@@ -178,5 +198,20 @@ WithoutTitle.test(
     await expect(
       Math.abs(centerY(closeButton) - centerY(content))
     ).toBeLessThanOrEqual(2);
+  }
+);
+
+WithoutTitle.test(
+  'dismisses the message when the close button is pressed',
+  {
+    parameters: { chromatic: { disableSnapshot: true }, surface: false },
+  },
+  async ({ canvas }) => {
+    const message = 'Hello, I am a simple message without a title.';
+    const closeButton = canvas.getByRole('button');
+
+    await userEvent.click(closeButton);
+
+    await expect(canvas.queryByText(message)).not.toBeInTheDocument();
   }
 );

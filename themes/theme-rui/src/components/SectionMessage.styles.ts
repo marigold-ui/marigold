@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva({
     base: [
-      "grid-cols-[min-content_auto_min-content] gap-x-4 [grid-template-areas:'icon_title_close''icon_description_close''icon_content_close']",
+      "grid-cols-[min-content_auto_min-content] [grid-template-areas:'icon_title_close''icon_description_close''icon_content_close']",
       'ui-surface text-foreground px-3 py-4',
     ],
     // Neutral surface (Toast-aligned, DST-1439) so standard actions/links read
@@ -34,7 +34,10 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     base: 'text-foreground text-sm leading-5 font-normal',
   }),
   icon: cva({
-    base: 'flex h-5 w-5 items-center justify-center self-start leading-none',
+    // `mr-4` (rather than a grid `gap-x`) spaces the icon from the content.
+    // The close column carries its own `ml-4` on the button, so when there is
+    // no close button the empty column contributes no phantom right gap.
+    base: 'mr-4 flex h-5 w-5 items-center justify-center self-start leading-none',
     variants: {
       variant: {
         info: 'text-info-accent',
