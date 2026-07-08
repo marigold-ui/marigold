@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Stack } from '../Stack/Stack';
-import { Text } from '../Text/Text';
 import { Multiselect } from './Multiselect';
 
 const meta = preview.meta({
-  title: 'Components/Multiselect',
+  title: 'Components/Multiselect (deprecated)',
   component: Multiselect,
   argTypes: {
     label: {
@@ -106,13 +103,6 @@ const ticketCategories = [
   { value: 'early', label: 'Early Bird Special' },
 ];
 
-const ticketPriorities = [
-  { value: 'low', label: 'Low Priority' },
-  { value: 'medium', label: 'Medium Priority' },
-  { value: 'high', label: 'High Priority' },
-  { value: 'critical', label: 'Critical Issue' },
-];
-
 export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
@@ -171,72 +161,5 @@ export const Basic = meta.story({
       await expect(input).not.toHaveFocus();
       await expect(input).toHaveAttribute('aria-expanded', 'false');
     });
-  },
-});
-
-export const Controlled = meta.story({
-  render: args => {
-    const [current, setCurrent] = useState<string>('');
-    const [selectedItems, setSelectedItems] = useState<Array<object>>([]);
-
-    return (
-      <Stack space={3}>
-        <Multiselect
-          {...args}
-          label="Ticket Priorities"
-          placeholder="Set priorities..."
-          items={ticketPriorities}
-          isOptionDisabled={(item: { value: string }) =>
-            item.value === 'critical'
-          }
-          onChange={value => setCurrent(value)}
-          onSelectionChange={(selectedValues: object[]) =>
-            setSelectedItems(selectedValues)
-          }
-          selectedItems={selectedItems}
-        />
-        <hr />
-        <pre>
-          Current Input: {current}
-          <br />
-          Selected Priorities:{' '}
-          {selectedItems
-            .map(({ value }: { value: string }) => value)
-            .join(', ')}
-        </pre>
-      </Stack>
-    );
-  },
-});
-
-const ticketTypes = [
-  { value: '1', label: 'Login Issue' },
-  { value: '2', label: 'Payment Failed' },
-  { value: '3', label: 'Bug Report' },
-  { value: '4', label: 'Feature Request' },
-  { value: '5', label: 'Account Setup' },
-  { value: '6', label: 'Performance Issue' },
-  { value: '7', label: 'Security Concern' },
-  { value: '8', label: 'API Integration' },
-];
-
-export const EmptyResult = meta.story({
-  render: args => {
-    return (
-      <Multiselect
-        {...args}
-        label="Ticket Types"
-        items={ticketTypes}
-        placeholder="select a city..."
-        emptyState={() => <Text>no result found</Text>}
-      />
-    );
-  },
-  play: async ({ canvas }) => {
-    const input = canvas.getByLabelText(/Ticket Types/i);
-    await userEvent.type(input, 'xyz');
-
-    const result = await canvas.getByText('no result found');
-    expect(result).toBeInTheDocument();
   },
 });

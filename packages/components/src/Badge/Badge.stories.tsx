@@ -45,9 +45,7 @@ const meta = preview.meta({
   },
 });
 
-export const Basic = meta.story({ render: args => <Badge {...args} /> });
-
-export const All = meta.story({
+export const Basic = meta.story({
   render: args => (
     <Stack space={2} alignX="left">
       <Badge {...args} variant="default" />
@@ -58,17 +56,9 @@ export const All = meta.story({
       <Badge {...args} variant="error" />
       <Badge {...args} variant="master" />
       <Badge {...args} variant="admin" />
+      <Badge {...args}>
+        <Accessibility />
+      </Badge>
     </Stack>
-  ),
-});
-
-export const Icon = meta.story({
-  parameters: {
-    controls: { exclude: ['children'] },
-  },
-  render: args => (
-    <Badge {...args}>
-      <Accessibility />
-    </Badge>
   ),
 });

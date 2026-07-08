@@ -18,6 +18,9 @@ console.log('🎨 Generating appearances data...');
 const sharedAppearances = {
   LinkButton: 'Button',
   ToggleButtonGroup: 'ToggleButton',
+  // `DateRangePicker` re-exports DatePicker's styles (see DateRangePicker.styles.ts),
+  // so it shares the same (empty) variant/size vocabulary.
+  DateRangePicker: 'DatePicker',
 };
 
 /**

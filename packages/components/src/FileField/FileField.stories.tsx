@@ -4,8 +4,8 @@ import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
-import { makeFile } from './../test.utils';
 import { FileField } from './FileField';
+import { makeFile } from './makeFile';
 
 const meta = preview.meta({
   title: 'Components/FileField',
@@ -63,7 +63,12 @@ export const Basic = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas }) => {
+});
+
+Basic.test(
+  'Renders the label, drop zone and upload button',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     await expect(
       canvas.queryByText('Upload file', { exact: true })
     ).toBeInTheDocument();
@@ -79,19 +84,23 @@ export const Basic = meta.story({
     await expect(
       canvas.queryByRole('button', { name: 'Upload' })
     ).toHaveTextContent('Upload');
-  },
-});
+  }
+);
 
 export const UploadFile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Single Upload',
   },
-  play: async ({ canvas, userEvent }) => {
+});
+
+UploadFile.test(
+  'Shows the uploaded file in the list',
+  async ({ canvas, userEvent }) => {
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-
     const fileA = makeFile('a.pdf', 'application/pdf', 2 * 1024 * 1024);
 
     await userEvent.upload(input, fileA);
@@ -99,18 +108,20 @@ export const UploadFile = meta.story({
     await expect(
       canvas.queryByText('a.pdf', { exact: true })
     ).toBeInTheDocument();
-
     await expect(canvas.queryByText('a.pdf', { exact: true })).toBeVisible();
-  },
-});
+  }
+);
 
-export const MultipleFileUpload = meta.story({
-  tags: ['component-test'],
-  args: {
-    label: 'Multifile Upload',
-    multiple: true,
+UploadFile.test(
+  'Shows all uploaded files with their sizes',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: {
+      label: 'Multifile Upload',
+      multiple: true,
+    },
   },
-  play: async ({ canvas, userEvent }) => {
+  async ({ canvas, userEvent }) => {
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
@@ -127,8 +138,8 @@ export const MultipleFileUpload = meta.story({
     await expect(canvas.getByText('2.00 MB')).toBeInTheDocument();
     await expect(canvas.getByText('5.00 MB')).toBeInTheDocument();
     await expect(canvas.getByText('0.50 MB')).toBeInTheDocument();
-  },
-});
+  }
+);
 
 export const Disabled = meta.story({
   args: {
@@ -139,6 +150,7 @@ export const Disabled = meta.story({
 
 export const InForm = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Upload attachment',
     name: 'attachment',
@@ -174,7 +186,12 @@ export const InForm = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas, userEvent }) => {
+});
+
+InForm.test(
+  'Submits the uploaded file with the form',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
@@ -184,11 +201,11 @@ export const InForm = meta.story({
 
     const submitButton = canvas.getByRole('button', { name: 'Submit' });
     await userEvent.click(submitButton);
-
     const result = canvas.getByTestId('submitted-files');
+
     await expect(result).toBeInTheDocument();
     await expect(
       canvas.getByText('report.pdf (1048576 bytes)')
     ).toBeInTheDocument();
-  },
-});
+  }
+);

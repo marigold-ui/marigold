@@ -38,6 +38,8 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Tray.Trigger>
       <Button>Open Tray</Button>
@@ -100,7 +102,25 @@ Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
   });
 });
 
+Basic.test(
+  'Opens the tray',
+  // Keep the snapshot so Chromatic captures the opened tray.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    await step('Open the tray and keep it open', async () => {
+      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+      await userEvent.click(openButton);
+
+      const dialog = await waitFor(() => canvas.getByRole('dialog'));
+
+      expect(dialog).toBeVisible();
+      expect(canvas.getByText('Tray Title')).toBeInTheDocument();
+    });
+  }
+);
+
 export const DismissControlsWithCallbacks = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
     const [log, setLog] = useState<string[]>([]);
@@ -144,6 +164,7 @@ export const DismissControlsWithCallbacks = meta.story({
 
 DismissControlsWithCallbacks.test(
   'Dismiss controls and callback hooks',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     await step('Shows closed state initially', async () => {
       expect(canvas.getByText('Tray is closed')).toBeInTheDocument();

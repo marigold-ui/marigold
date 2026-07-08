@@ -7,8 +7,9 @@ import type {
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import {
-  Checkbox,
-  CheckboxContext,
+  CheckboxButton,
+  CheckboxField,
+  CheckboxFieldContext,
   Provider,
   TextContext,
 } from 'react-aria-components';
@@ -37,7 +38,7 @@ const Field = ({
     <div className={className}>
       <Provider
         values={[
-          [CheckboxContext, { 'aria-describedby': descriptionId }],
+          [CheckboxFieldContext, { 'aria-describedby': descriptionId }],
           [TextContext, { id: descriptionId }],
         ]}
       >
@@ -90,7 +91,10 @@ export type RemovedProps =
   | 'isIndeterminate'
   | 'defaultSelected';
 
-export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
+export interface CheckboxProps extends Omit<
+  RAC.CheckboxFieldProps,
+  RemovedProps
+> {
   variant?: string;
   size?: string;
 
@@ -168,7 +172,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     },
     ref
   ) => {
-    const props: RAC.CheckboxProps = {
+    const props: RAC.CheckboxFieldProps = {
       isIndeterminate: indeterminate,
       isDisabled: disabled,
       isReadOnly: readOnly,
@@ -189,26 +193,27 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
 
     return (
       <Field description={description}>
-        <Checkbox
-          ref={ref}
-          className={cn(
-            'group/checkbox flex items-center',
-            'cursor-pointer data-disabled:cursor-not-allowed',
-            classNames.container
-          )}
-          {...props}
-        >
-          {({ isSelected, isIndeterminate }) => (
-            <>
-              <Icon
-                checked={isSelected}
-                indeterminate={isIndeterminate}
-                className={classNames.checkbox}
-              />
-              {label && <div className={classNames.label}>{label}</div>}
-            </>
-          )}
-        </Checkbox>
+        <CheckboxField {...props}>
+          <CheckboxButton
+            ref={ref}
+            className={cn(
+              'group/checkbox flex items-center',
+              'cursor-pointer data-disabled:cursor-not-allowed',
+              classNames.container
+            )}
+          >
+            {({ isSelected, isIndeterminate }) => (
+              <>
+                <Icon
+                  checked={isSelected}
+                  indeterminate={isIndeterminate}
+                  className={classNames.checkbox}
+                />
+                {label && <div className={classNames.label}>{label}</div>}
+              </>
+            )}
+          </CheckboxButton>
+        </CheckboxField>
       </Field>
     );
   }

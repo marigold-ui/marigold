@@ -77,6 +77,15 @@ test('supports indeterminate state', () => {
   expect(input.indeterminate).toBeTruthy();
 });
 
+test('associates the description with the checkbox via aria-describedby', () => {
+  render(<Basic.Component label="With Label" description="Some help text" />);
+
+  const input = screen.getByLabelText('With Label');
+  const description = screen.getByText('Some help text');
+
+  expect(input.getAttribute('aria-describedby')).toContain(description.id);
+});
+
 test('forwards ref', () => {
   const ref = createRef<HTMLLabelElement>();
   render(<Basic.Component label="Check it" ref={ref} />);

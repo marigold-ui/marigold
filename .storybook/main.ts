@@ -23,6 +23,7 @@ export default defineMain({
   },
   features: {
     experimentalTestSyntax: true,
+    experimentalReactComponentMeta: true,
   },
   staticDirs: ['./assets'],
   viteFinal: config => {

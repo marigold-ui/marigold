@@ -33,6 +33,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Stack space={8} alignX="left">
       <Drawer.Trigger>
@@ -89,17 +90,18 @@ export const Basic = meta.story({
       />
     </Stack>
   ),
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
-    await waitFor(() =>
-      expect(canvas.getByText('Drawer Title')).toBeInTheDocument()
-    );
+});
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
-  },
+Basic.test('Open drawer', async ({ canvas, userEvent }) => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+
+  await waitFor(() =>
+    expect(canvas.getByText('Drawer Title')).toBeInTheDocument()
+  );
 });
 
 export const WithForms = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Drawer.Trigger>
       <Button>Configure Filter</Button>
@@ -147,6 +149,7 @@ export const WithForms = meta.story({
 
 export const LongContent = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -176,9 +179,14 @@ export const LongContent = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
-    expect(window.innerWidth).toBeLessThan(640);
+});
 
+LongContent.test(
+  'Long content on a small screen',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
     const trigger = canvas.getByRole('button', { name: 'Open Drawer' });
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
@@ -213,10 +221,86 @@ export const LongContent = meta.story({
     await waitFor(() => {
       expect(isWithin(endMarker, scrollContainer)).toBe(true);
     });
+    expect(window.innerWidth).toBeLessThan(640);
+  }
+);
+
+export const SelectInsideDrawerSmallScreen = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  globals: {
+    viewport: { value: 'smallScreen' },
   },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Title>Filter</Drawer.Title>
+        <Drawer.Content>
+          <Select label="Category">
+            <Select.Option id="all">All</Select.Option>
+            <Select.Option id="classic">Classic</Select.Option>
+            <Select.Option id="rock">Rock</Select.Option>
+          </Select>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close Drawer</Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
 });
 
+SelectInsideDrawerSmallScreen.test(
+  'Shows values on a small screen',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    await waitFor(() => expect(canvas.getByText('Filter')).toBeInTheDocument());
+
+    // On small screens, clicking the Select trigger opens a Tray.
+    // The Tray must render above the Drawer overlay (z-index fix for DSTSUP-263).
+    const selectTrigger = canvas.getByRole('button', { name: /category/i });
+    await userEvent.click(selectTrigger);
+
+    // Wait for the Tray to open and find an option to confirm it rendered.
+    const rockOption = await canvas.findByRole('option', { name: 'Rock' });
+    expect(rockOption).toBeInTheDocument();
+
+    // Assert z-index stacking: the Tray overlay must not sit below the Drawer overlay.
+    // Both portal directly to document.body; at equal z-index the later DOM node wins.
+    // We read the Tailwind z-* class because getComputedStyle returns "auto" in the
+    // test environment before CSS is fully resolved.
+    const tailwindZ = (el: Element) => {
+      const match = el.className.match(/\bz-(\d+)\b/);
+      return match ? parseInt(match[1], 10) : 0;
+    };
+
+    // Walk up from a descendant to find its direct child-of-body portal root.
+    const portalRoot = (el: Element): Element => {
+      let node = el;
+      while (node.parentElement && node.parentElement !== document.body) {
+        node = node.parentElement;
+      }
+      return node;
+    };
+
+    // The Tray dialog contains the Rock option; the Drawer dialog contains the title.
+    const trayPortal = portalRoot(rockOption.closest('[role="dialog"]')!);
+    const drawerPortal = portalRoot(
+      canvas.getByText('Filter').closest('[role="dialog"]')!
+    );
+
+    expect(tailwindZ(trayPortal)).toBeGreaterThanOrEqual(
+      tailwindZ(drawerPortal)
+    );
+  }
+);
+
 export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {

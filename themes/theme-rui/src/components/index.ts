@@ -13,6 +13,7 @@ export { Collapsible } from './Collapsible.styles';
 export { ContextualHelp } from './ContextualHelp.styles';
 export { DateField } from './DateField.styles';
 export { DatePicker } from './DatePicker.styles';
+export { DateRangePicker } from './DateRangePicker.styles';
 export { Dialog } from './Dialog.styles';
 export { Divider } from './Divider.styles';
 export { Drawer } from './Drawer.styles';

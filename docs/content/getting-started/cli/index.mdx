@@ -1,0 +1,275 @@
+---
+title: Marigold CLI
+description: Component docs, discovery, and project setup, straight from the terminal.
+badge: new
+---
+
+The **`@marigold/cli`** package brings the Marigold documentation into your terminal: fetch component docs, discover components and pages, scaffold Marigold into an existing project, and more. It's useful on its own and is built to ground AI coding agents on the canonical component API.
+
+## Installation
+
+Install the CLI globally with npm or pnpm, or run it one-off with `npx`:
+
+{/* prettier-ignore-start */}
+
+<Tabs items={['npm', 'pnpm', 'npx']}>
+  <Tab value="npm">
+    Install globally so `marigold` is available everywhere:
+
+    ```bash
+    npm install -g @marigold/cli
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    Install globally with pnpm:
+
+    ```bash
+    pnpm add -g @marigold/cli
+    ```
+
+  </Tab>
+  <Tab value="npx">
+    Run a single command without installing anything:
+
+    ```bash
+    npx @marigold/cli docs Button
+    ```
+
+  </Tab>
+</Tabs>
+{/* prettier-ignore-end */}
+
+<Callout title="Requirements">
+  The CLI requires Node 22 or newer. For instant component tab-completion,
+  install it globally rather than relying on `npx` / `pnpm dlx`.
+</Callout>
+
+## Usage with AI agents
+
+AI coding agents are the CLI's primary audience. When invoked by an agent, prefer `--format json` together with `--section props` to get a structured, precise payload instead of formatted markdown:
+
+```bash
+# Structured prop data (recommended for AI agents)
+marigold docs Select --section props --format json
+
+# Discover components before writing code
+marigold list --category form
+marigold list --search date
+```
+
+To adopt a whole feature pattern rather than a single component, use `marigold examples` to discover and retrieve application-level patterns, then read the framework-transformation note once:
+
+```bash
+marigold examples list
+marigold examples get filter --format json
+marigold docs getting-started/examples-for-agents
+```
+
+The CLI detects common agent runtimes (Claude Code, Cursor, VS Code agent mode, Codex, or a generic `AI_AGENT=1`) via environment variables. For the full set of connection options (the MCP server and the public manifest / markdown endpoints), see [Usage with AI](/getting-started/usage-with-ai).
+
+## Commands
+
+### marigold docs
+
+Fetch and print the documentation for a component or a docs page.
+
+```bash
+marigold docs Button
+marigold docs button --section props
+marigold docs TextField --section props --format json
+marigold docs select --format plain
+marigold docs foundations/spacing
+marigold docs getting-started/installation
+```
+
+A request like `marigold docs Badge --section props` prints a focused, terminal-rendered view of just that section:
+
+```text
+Props
+
+Badge
+
+ | Prop     | Type      | Default | Description               |
+ | :------- | :-------- | :------ | :------------------------ |
+ | children | ReactNode | -       | Children of the component |
+```
+
+| Flag               | Description                               | Default    |
+| ------------------ | ----------------------------------------- | ---------- |
+| `--section <name>` | `props`, `usage`, `examples`, or `all`    | `all`      |
+| `--format <name>`  | `markdown`, `json`, or `plain`            | `markdown` |
+| `--fresh`          | Bypass the local cache                    |            |
+| `--offline`        | Use only the local cache, fail if missing |            |
+
+Pass a component name (case-insensitive, so `Button`, `button`, and `BUTTON` all resolve to the same component) or the slug of a non-component docs page (e.g. `foundations/spacing`, `getting-started/installation`). The `props` section is component-only. Requesting it for a page emits a note instead.
+
+<Callout title="Output formats">
+  The default `markdown` output is a best-effort terminal render. For
+  non-trivial docs prefer `--format json` (the recommended path for AI agents, a
+  structured payload) or `--format plain` (ANSI-stripped, ideal for piping into
+  other tools).
+</Callout>
+
+### marigold list
+
+List all available components and docs pages.
+
+```bash
+marigold list
+marigold list --category form
+marigold list --category foundations
+marigold list --search date
+marigold list --format json
+marigold list --fresh
+```
+
+Components and pages are grouped by category. For example, `marigold list --category form` prints:
+
+```text
+Form
+  Autocomplete — A searchfield that displays a dynamic list of suggestions.
+  Calendar — A date selection interface for choosing dates from a calendar view.
+  Checkbox — Component to select one or more options.
+  ComboBox — A text-field that allows the user to select values from a provided items array.
+  …
+  TextField — Component for input forms.
+  TimeField — Component for entering time in forms.
+```
+
+| Flag                | Description                                                                                                                                  | Default    |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `--category <name>` | Filter by category: component categories (`actions`, `form`, `layout`, …) and page categories (`foundations`, `patterns`, `getting-started`) |            |
+| `--search <term>`   | Substring filter on component and page names                                                                                                 |            |
+| `--format <name>`   | `markdown`, `json`, or `plain`                                                                                                               | `markdown` |
+| `--fresh`           | Bypass the local cache                                                                                                                       |            |
+| `--offline`         | Use only the local cache, fail if missing                                                                                                    |            |
+
+### marigold examples
+
+Browse application-level reference patterns: multi-file compositions that show how Marigold components combine into real features (filterable tables, multi-section forms, component inventories). For how to adapt one to your own framework, see [Adapting examples for agents](/getting-started/examples-for-agents).
+
+```bash
+marigold examples list                    # all available patterns
+marigold examples get filter              # one pattern's source + metadata
+marigold examples get filter --format json
+```
+
+Subcommands:
+
+- `list`: print every available example (slug, title, brief, mapped patterns)
+- `get <slug>`: fetch a single example: its source files, the canonical pattern docs it maps to, the mock-data shapes it depends on, which files are load-bearing vs. framework scaffolding, and its peer dependencies
+
+| Flag              | Description                               | Default    |
+| ----------------- | ----------------------------------------- | ---------- |
+| `--format <name>` | `markdown`, `json`, or `plain`            | `markdown` |
+| `--fresh`         | Bypass the local cache                    |            |
+| `--offline`       | Use only the local cache, fail if missing |            |
+
+<Callout title="Adapting examples">
+  Examples are authored Next.js App Router-first. Before porting one to another
+  framework, read the transformation note with `marigold docs
+  getting-started/examples-for-agents`. It covers stripping `'use client'`,
+  swapping router / URL-state libraries, the export split, `@/` alias
+  adjustments, and replacing the docs-internal mock data.
+</Callout>
+
+### marigold init
+
+Interactive wizard to set up Marigold in an existing project.
+
+```bash
+marigold init
+marigold init --yes             # skip prompts, accept Tailwind + package install
+marigold init --skip-install    # apply config edits without running the install
+```
+
+| Flag             | Description                                            | Default |
+| ---------------- | ------------------------------------------------------ | ------- |
+| `--yes`          | Skip prompts, accept the Tailwind and package install  |         |
+| `--skip-install` | Apply config edits without running the package install |         |
+
+It detects Next.js or Vite, then:
+
+1. Installs `@marigold/components`, `@marigold/system`, `@marigold/theme-rui`, plus Tailwind v4 and the framework adapter (`@tailwindcss/postcss` for Next.js, `@tailwindcss/vite` for Vite) if Tailwind isn't already present. The Tailwind install is gated behind a confirmation prompt unless `--yes` is passed.
+2. Patches your global CSS (`app/globals.css`, `src/app/globals.css`, `src/index.css`, or `styles/globals.css`) with the required `@import` and `@source` lines, preserving existing rules.
+3. Patches `vite.config.ts` (Vite) or writes `postcss.config.mjs` (Next.js) if missing.
+4. Wraps the root: creates `app/providers.tsx` and wraps `{children}` in `app/layout.tsx` (Next.js), or wraps `<App />` in `src/main.tsx` (Vite).
+
+<Callout title="Safe to re-run">
+  Re-running `marigold init` leaves already-configured files untouched, so
+  running it more than once is safe. If a file's shape can't be recognized, the
+  CLI prints a manual fallback for that step instead of guessing.
+</Callout>
+
+### marigold completion
+
+Print a tab-completion script for `bash`, `zsh`, or `fish`. Source it once per shell, or write it to your shell's completion directory for persistence.
+
+```bash
+# bash: current shell
+source <(marigold completion bash)
+
+# bash: persistent (with bash-completion installed)
+marigold completion bash > ~/.local/share/bash-completion/completions/marigold
+
+# zsh: persistent (ensure $fpath includes the dir, then run compinit)
+marigold completion zsh > "${fpath[1]}/_marigold"
+
+# fish
+marigold completion fish > ~/.config/fish/completions/marigold.fish
+```
+
+Tab-completes subcommands, flag names, enum values (e.g. `--format markdown|json|plain`), categories (`marigold list --category <TAB>`), and component names (`marigold docs <TAB>`). Component and category suggestions are sourced from the local manifest cache. Run `marigold list` once to warm it.
+
+<Callout variant="warning" title="PowerShell not supported">
+  Tab-completion is available for `bash`, `zsh`, and `fish` only. PowerShell is
+  not yet supported.
+</Callout>
+
+### marigold telemetry
+
+Opt in or out of anonymous usage telemetry.
+
+```bash
+marigold telemetry status
+marigold telemetry disable
+marigold telemetry enable
+```
+
+Telemetry is on by default and sent fire-and-forget via a detached background process. It never blocks the foreground command or surfaces network errors. Each event records the command name, CLI version, Node version, platform, exit code, a coarse duration bucket, cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent, and which flags were passed (values redacted, only flag presence or enum value is kept, and free-form `--search` terms are recorded as `used`, never the term itself).
+
+Telemetry is automatically suppressed when:
+
+- `MARIGOLD_TELEMETRY_DISABLED=1` is set
+- `DO_NOT_TRACK=1` is set ([consoledonottrack.com](https://consoledonottrack.com) standard)
+- CI is detected (via [`ci-info`](https://github.com/watson/ci-info), covering GitHub Actions, GitLab CI, CircleCI, etc.)
+
+### Global flags
+
+| Flag              | Description                     |
+| ----------------- | ------------------------------- |
+| `-h`, `--help`    | Print usage                     |
+| `-v`, `--version` | Print the installed CLI version |
+
+## Configuration
+
+Every variable below is **optional**, the CLI works out of the box. Set one only to override a default (e.g. point at a self-hosted docs site, change the cache TTL, or opt out of telemetry).
+
+| Variable                                                                  | Description                                                             |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `MARIGOLD_DOCS_URL`                                                       | Override the docs site base URL (default: `https://www.marigold-ui.io`) |
+| `MARIGOLD_CACHE_TTL_MS`                                                   | Override the default 24h cache TTL (in milliseconds)                    |
+| `MARIGOLD_CACHE_DIR`                                                      | Override the cache directory location                                   |
+| `MARIGOLD_CONFIG_DIR`                                                     | Override the config directory (telemetry preference + anonymous ID)     |
+| `MARIGOLD_TELEMETRY_DISABLED=1`                                           | Opt out of telemetry                                                    |
+| `DO_NOT_TRACK=1`                                                          | Opt out of telemetry (standard)                                         |
+| `CI`                                                                      | Auto-detected, suppresses telemetry when set                            |
+| `CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, `AI_AGENT` | When set, the run is tagged as agent-driven in telemetry                |
+
+Default cache and config locations:
+
+|            | Linux / macOS               | Windows                   |
+| ---------- | --------------------------- | ------------------------- |
+| **Cache**  | `$XDG_CACHE_HOME/marigold`  | `%LOCALAPPDATA%\marigold` |
+| **Config** | `$XDG_CONFIG_HOME/marigold` | `%APPDATA%\marigold`      |

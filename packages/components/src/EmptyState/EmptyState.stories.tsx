@@ -70,6 +70,7 @@ export const WithAction = meta.story({
 
 export const WithAutocompleteAndData = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [inputValue, setInputValue] = useState('');
 
@@ -104,7 +105,10 @@ export const WithAutocompleteAndData = meta.story({
 
 WithAutocompleteAndData.test(
   'EmptyState is shown when Autocomplete has no matching items',
-  async ({ canvas, args }: any) => {
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, args }) => {
     args.description = 'Try adjusting your search terms';
     const input = canvas.getByRole('combobox');
 

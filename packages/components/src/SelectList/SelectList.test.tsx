@@ -1,12 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
-import {
-  Action,
-  Basic,
-  WithMultiSelection,
-  WithSingleSelection,
-} from './SelectList.stories';
+import { Action, Basic, WithMultiSelection } from './SelectList.stories';
 import { SelectListAction } from './SelectListAction';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
@@ -47,7 +42,7 @@ describe('SelectList', () => {
   });
 
   test('should support focus ring-3', async () => {
-    render(<WithSingleSelection.Component />);
+    render(<Basic.Component />);
 
     let row = screen.getAllByRole('row')[0];
 

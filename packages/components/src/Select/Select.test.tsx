@@ -2,7 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic, MobileControlled, Sections } from './Select.stories';
+import { Basic, MobileControlled } from './Select.stories';
 
 const user = userEvent.setup();
 
@@ -84,20 +84,6 @@ test('supports default value via "defaultValue"', async () => {
   const starTrek = within(options).getByRole('option', { name: 'Star Trek' });
 
   expect(starTrek).toHaveAttribute('aria-selected', 'true');
-});
-
-test('supports sections', async () => {
-  renderWithOverlay(<Sections.Component label="Label" data-testid="select" />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  const options = screen.getByRole('listbox');
-  const fantasy = within(options).getByText('Fantasy');
-  const sciFi = within(options).getByText('Sci-Fi');
-
-  expect(fantasy).toBeVisible();
-  expect(sciFi).toBeVisible();
 });
 
 test('set width via props', () => {

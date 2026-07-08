@@ -75,10 +75,6 @@ export const Basic = meta.story({
       <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] gap-2 pt-32">
         <Tooltip.Trigger>
           <Button variant="primary">Hover me!</Button>
-          <Tooltip {...args}>Look at this tooltip!</Tooltip>
-        </Tooltip.Trigger>
-        <Tooltip.Trigger>
-          <Button variant="primary">Hover no! Me!</Button>
           <Tooltip {...args}>
             <div>I am a much more longer tooltip you know!</div>
             <div>I even have two lines!</div>

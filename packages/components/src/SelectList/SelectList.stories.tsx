@@ -41,20 +41,14 @@ export const Basic = meta.story({
   ),
 });
 
-export const WithSingleSelection = meta.story({
-  render: args => (
-    <SelectList aria-labelledby="SelectList" selectionMode="single" {...args}>
-      <SelectList.Item id="one">one</SelectList.Item>
-      <SelectList.Item id="two">Two</SelectList.Item>
-      <SelectList.Item id="three">Three</SelectList.Item>
-      <SelectList.Item id="four">Four</SelectList.Item>
-    </SelectList>
-  ),
-});
-
 export const WithMultiSelection = meta.story({
   render: args => (
-    <SelectList aria-labelledby="SelectList" selectionMode="multiple" {...args}>
+    <SelectList
+      {...args}
+      aria-labelledby="SelectList"
+      selectionMode="multiple"
+      defaultSelectedKeys={['venusaur', 'charizard']}
+    >
       <SelectList.Item id="charizard">Charizard</SelectList.Item>
       <SelectList.Item id="blastoise">Blastoise</SelectList.Item>
       <SelectList.Item id="venusaur">Venusaur</SelectList.Item>
@@ -72,9 +66,9 @@ let rows = [
 export const Action = meta.story({
   render: args => (
     <SelectList
+      {...args}
       aria-labelledby="SelectList"
       selectionMode="multiple"
-      {...args}
       items={rows}
     >
       {(item: { id: number; name: string }) => (

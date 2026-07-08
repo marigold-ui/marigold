@@ -49,6 +49,7 @@ export const Basic = meta.story({
 });
 
 export const Horizontal = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Inline space={4} alignY="bottom">
       <TextField label="Name" width={72} />
@@ -58,6 +59,7 @@ export const Horizontal = meta.story({
 });
 
 export const Selected = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     return (
       <Form {...args}>
@@ -155,33 +157,32 @@ export const Selected = meta.story({
   },
 });
 
-const FormWithRef = () => {
-  const formRef = useRef<HTMLFormElement>(null);
-
-  return (
-    <Stack space={4}>
-      <Form ref={formRef} data-testid="form-with-ref">
-        <Stack space={5}>
-          <TextField label="Name" name="name" />
-          <TextField label="Email" type="email" name="email" />
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Stack>
-      </Form>
-      <Button
-        onPress={() => {
-          if (formRef.current) {
-            formRef.current.reset();
-          }
-        }}
-      >
-        Reset Form
-      </Button>
-    </Stack>
-  );
-};
-
 export const WithRef = meta.story({
-  render: () => <FormWithRef />,
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => {
+    const formRef = useRef<HTMLFormElement>(null);
+
+    return (
+      <Stack space={4}>
+        <Form ref={formRef}>
+          <Stack space={5}>
+            <TextField label="Name" name="name" />
+            <TextField label="Email" type="email" name="email" />
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Stack>
+        </Form>
+        <Button
+          onPress={() => {
+            if (formRef.current) {
+              formRef.current.reset();
+            }
+          }}
+        >
+          Reset Form
+        </Button>
+      </Stack>
+    );
+  },
 });

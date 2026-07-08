@@ -6,6 +6,7 @@
 .registry
 app/mcp/out
 public/manifest.json
+public/component-search.json
 public/components/**/*.md
 public/foundations/**/*.md
 public/getting-started/**/*.md

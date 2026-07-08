@@ -1,6 +1,7 @@
 import type { PageDocs } from './docs.js';
-import { formatDocs, formatList } from './format.js';
+import { formatDocs, formatList, formatSearchResults } from './format.js';
 import type { Manifest } from './manifest.js';
+import type { SearchResult } from './search.js';
 
 const docs: PageDocs = {
   kind: 'component',
@@ -242,5 +243,50 @@ describe('formatList', () => {
     expect(out).toContain('components/form');
     // The raw 'components' segment must not surface as a generic group heading.
     expect(out).not.toMatch(/^Components$/m);
+  });
+});
+
+describe('formatSearchResults', () => {
+  // A match that scored only on title/headings carries no prose snippet, so
+  // hits is empty. Every search.ts fixture matches a section, so this edge of
+  // the documented hits contract is exercised here.
+  const titleOnlyMatch: SearchResult = {
+    slug: 'components/actions/button',
+    name: 'Button',
+    description: 'Click me',
+    score: 3,
+    hits: [],
+  };
+
+  test('emits an empty hits array in json when only the title matched', () => {
+    const out = formatSearchResults(
+      [titleOnlyMatch],
+      'button',
+      'https://example.com',
+      'json'
+    );
+    const parsed = JSON.parse(out);
+
+    expect(parsed).toEqual([
+      {
+        name: 'Button',
+        slug: 'components/actions/button',
+        score: 3,
+        hits: [],
+      },
+    ]);
+  });
+
+  test('falls back to the description when there is no prose snippet', () => {
+    const out = formatSearchResults(
+      [titleOnlyMatch],
+      'button',
+      'https://example.com',
+      'plain'
+    );
+
+    expect(out).toContain('Button');
+    expect(out).toContain('Click me');
+    expect(out).toContain('https://example.com/components/actions/button');
   });
 });

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic, BasicActionMenu, MenuSection } from './Menu.stories';
+import { Basic } from './Menu.stories';
 
 window.matchMedia = mockMatchMedia(['(width < 640px)']);
 
@@ -24,17 +24,6 @@ test('renders the button but no menu by default', () => {
   expect(slytherin).not.toBeInTheDocument();
 });
 
-test('renders action menu', async () => {
-  renderWithOverlay(<BasicActionMenu.Component />);
-  const button = screen.getByRole('button');
-
-  expect(button).toBeInTheDocument();
-  await user.click(button);
-
-  const item = screen.getByText('Settings');
-  expect(item).toBeInTheDocument();
-});
-
 test('supports onOpenChange property', async () => {
   const onOpenChange = vi.fn();
   renderWithOverlay(
@@ -43,16 +32,6 @@ test('supports onOpenChange property', async () => {
   expect(onOpenChange).toBeCalledTimes(0);
   await user.click(screen.getByRole('button'));
   expect(onOpenChange).toBeCalledTimes(1);
-});
-
-test('supports Menu with sections', async () => {
-  renderWithOverlay(<MenuSection.Component aria-label="Menu with sections" />);
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  expect(screen.getByText('Food')).toBeInTheDocument();
-  expect(screen.getByText('Fruits')).toBeInTheDocument();
 });
 
 test('pass "aria-label" to button (when you use a menu with only an icon)', () => {

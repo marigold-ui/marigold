@@ -1,6 +1,6 @@
 import { ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Switch } from 'react-aria-components';
+import { SwitchButton, SwitchField } from 'react-aria-components';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { Label } from '../Label/Label';
 
@@ -13,7 +13,7 @@ type RemovedProps =
   | 'isSelected'
   | 'slot';
 
-export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
+export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
   variant?: string;
   size?: string;
 
@@ -35,19 +35,19 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
    * Disables the switch.
    * @default false
    */
-  disabled?: RAC.SwitchProps['isDisabled'];
+  disabled?: RAC.SwitchFieldProps['isDisabled'];
 
   /**
    * Set the switch to read-only.
    * @default false
    */
-  readOnly?: RAC.SwitchProps['isReadOnly'];
+  readOnly?: RAC.SwitchFieldProps['isReadOnly'];
 
   /**
    * With this prop you can set the switch selected.
    * @default false
    */
-  selected?: RAC.SwitchProps['isSelected'];
+  selected?: RAC.SwitchFieldProps['isSelected'];
 }
 
 const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
@@ -70,24 +70,31 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       isReadOnly: readOnly,
       isSelected: selected,
       ...rest,
-    } satisfies RAC.SwitchProps;
+    } satisfies RAC.SwitchFieldProps;
     return (
-      <Switch
+      // Width is split across two levels: the outer SwitchField sizes itself to
+      // the `width` prop via the `--width` CSS variable, and the inner
+      // SwitchButton fills that width with `w-full`.
+      <SwitchField
         {...props}
-        ref={ref}
-        className={cn(
-          'group/switch flex w-(--width) items-center gap-[1ch]',
-          classNames.container
-        )}
+        className="w-(--width)"
         style={createWidthVar('width', width)}
       >
-        {label && <Label elementType="span">{label}</Label>}
-        <div className="relative">
-          <div className={classNames.track}>
-            <div className={classNames.thumb} />
+        <SwitchButton
+          ref={ref}
+          className={cn(
+            'group/switch flex w-full items-center gap-[1ch]',
+            classNames.container
+          )}
+        >
+          {label && <Label elementType="span">{label}</Label>}
+          <div className="relative">
+            <div className={classNames.track}>
+              <div className={classNames.thumb} />
+            </div>
           </div>
-        </div>
-      </Switch>
+        </SwitchButton>
+      </SwitchField>
     );
   }
 );
