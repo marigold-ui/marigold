@@ -1,8 +1,20 @@
 # Quiet Surfaces — Implementation Plan
 
 **Status:** planned, not started
-**Base:** `feat/sidebar-nav-hierarchy` (PR [#5589](https://github.com/marigold-ui/marigold/pull/5589)), which is stacked on `refa/DST-1565-ui-surface-shadow-ring` (PR #5566)
+**Jira:** [DST-1602](https://reservix.atlassian.net/browse/DST-1602) (Unplanned, under epic DST-1601)
+**Base:** `feat/sidebar-nav-hierarchy` (PR [#5589](https://github.com/marigold-ui/marigold/pull/5589)). PR #5566 (the DST-1565 rework this builds on) has **landed on `beta-release`** as a squash merge, and #5589 has been merged up to date with it — so this work now stacks directly on `feat/sidebar-nav-hierarchy`, which is clean on `beta-release`.
 **Author of the picks:** Sebastian, from three design explorations (see [Sources](#sources))
+
+> ⚠️ **Utility rename — read before touching CSS.** The canonical #5566 that
+> landed on `beta-release` renamed and restructured the surface utilities. There
+> is now one primitive, `ui-frame` (fill + rim + radius), with **sibling** roles
+> built on it — `ui-surface` (quiet decorative hairline) and `ui-control` (dense
+> control edge) — plus two standalone modeled variants, `ui-contrast` (dark cap,
+> primary/ActionBar) and `ui-contrast-destructive`. The old names this plan was
+> first written against map as: `ui-surface-contrast`→`ui-contrast`,
+> `ui-surface-control`→`ui-control`, `ui-surface-destructive`→`ui-contrast-destructive`.
+> The porcelain surface added below is named **`ui-porcelain`** to sit in that
+> family (a light-end sibling of `ui-contrast`). All steps use the new names.
 
 This is the next iteration of the surface/shadow/ring rework. It combines three
 independently explored and **picked** directions into one coherent visual move:
@@ -21,7 +33,7 @@ and the overlay shadow becomes the single, unmistakable signal for "floats
 above the page".**
 
 - **Primary / destructive buttons: unchanged.** They keep the dark modeled
-  `ui-surface-contrast` recipe. Tonal Quiet's flattened primary
+  `ui-contrast` recipe. Tonal Quiet's flattened primary
   (`--contrast-* : 0`) is explicitly **not** adopted — the modeled look was the
   anchor the secondary button was aligned _to_.
 - **Secondary button → Porcelain:** near-white convex cap (charcoal-50 gradient)
@@ -73,19 +85,20 @@ Known, accepted tradeoffs (all carried over from the picked moodboards):
 
 ## Branch & PR strategy
 
-1. Create a Jira task (DST project, `💄` style prefix), e.g.
-   `💄 Quiet surfaces: porcelain secondary, flat fields, tonal panels`.
+1. Jira task already exists: **[DST-1602](https://reservix.atlassian.net/browse/DST-1602)**
+   (`💄 Quiet surfaces: porcelain secondary button, flat fields, tonal panels`),
+   Unplanned, under epic DST-1601.
 2. Branch **from `feat/sidebar-nav-hierarchy`** (PR #5589 — the sidebar rework
    is part of this iteration's look and stays underneath it):
 
    ```sh
    git fetch origin
-   git switch -c style/DST-XXXX-quiet-surfaces origin/feat/sidebar-nav-hierarchy
+   git switch -c style/DST-1602-quiet-surfaces origin/feat/sidebar-nav-hierarchy
    ```
 
-3. Open the PR with base `feat/sidebar-nav-hierarchy` (stacked). Merge order:
-   #5566 → #5589 → this one; retarget as the stack lands (same flow as #5589's
-   PR description).
+3. Open the PR with base `feat/sidebar-nav-hierarchy` (stacked). Merge order is
+   now just **#5589 → this one** (#5566 has already landed on `beta-release`);
+   retarget to `beta-release` once #5589 merges.
 4. The three `design/*` exploration branches are reference material only —
    **never merge them**. Everything needed from them is inlined below.
 
@@ -172,7 +185,7 @@ Keep **only** the overlay tier and rewrite the elevation comment block:
 /* ==================== */
 /*
   Single-tier shadow hierarchy: nothing in normal flow casts a shadow —
-  buttons are raised caps (ui-surface-porcelain / ui-surface-contrast),
+  buttons are raised caps (ui-porcelain / ui-contrast),
   fields are flat wells, panels separate by fill against the page. The
   overlay shadow is the one lift signal (Dialog, Drawer, Menu, Popover,
   Toast, ActionBar). Color is a literal oklch (hue 54), tuned independently
@@ -195,8 +208,12 @@ strengthen it.)
 
 ### 2a. New porcelain surface utility
 
-Add after `ui-surface-destructive`, plus the non-inheriting property
-registration next to the existing `@property` block:
+`ui-porcelain` is a third standalone modeled variant in the `ui-frame` family:
+like `ui-contrast`, it does **not** `@apply ui-frame` (it draws its own ring,
+inset glint, and gradient) — it's the light-end mirror of the dark `ui-contrast`
+cap. Add it right after `ui-contrast-destructive`, plus the non-inheriting
+property registration next to the existing `@property` block (currently the
+`--ui-background-color` / `--ui-border-color` / `--ui-highlight-color` block):
 
 ```css
 @property --porcelain-edge {
@@ -206,7 +223,7 @@ registration next to the existing `@property` block:
 
 /*
  * Porcelain surface: the raised light cap for neutral button-like controls
- * (secondary Button, Menu trigger). Mirrors ui-surface-contrast at the light
+ * (secondary Button, Menu trigger). Mirrors ui-contrast at the light
  * end of the ramp: a convex fill gradient (+0.005 / −0.02 L), a modeled ring
  * one step darker than its edge base (−0.12 L), and a soft top glint
  * (+0.2 L / 0.9 alpha inset). No drop shadow — the cap itself is the lift.
@@ -217,7 +234,7 @@ registration next to the existing `@property` block:
  * `background` is excluded from the transition so state bg flips feel
  * instant (DST-1436).
  */
-@utility ui-surface-porcelain {
+@utility ui-porcelain {
   @apply rounded-surface relative transition-[box-shadow];
   @apply text-foreground;
   @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--porcelain-edge,var(--color-porcelain-edge))_calc(l_-_0.12)_c_h))];
@@ -236,52 +253,81 @@ sets `--ui-border-color` (the ring reads it first), `ui-state-disabled`
 overrides `background`, recolors the ring, and zeroes inset shadows (kills the
 glint).
 
-### 2b. Simplify `ui-surface-control` (Quiet Flat)
+### 2b. Simplify `ui-control` (Quiet Flat)
 
-Remove the engraved bottom line; the control surface becomes fill + hairline:
+`ui-control` currently composes `ui-frame`, swaps the ring to the dense
+`--color-control-border`, **and** adds an engraved bottom line (an alpha-bumped
+`inset-shadow`). Remove that engraved line — the control becomes fill + hairline
+only. The current utility is:
+
+```css
+@utility ui-control {
+  @apply ui-frame;
+  --ui-border-color: var(--color-control-border);
+  @apply inset-shadow-[0_-1px_0_0_oklch(from_var(--ui-border-color)_l_c_h_/_calc(alpha_+_0.08))];  /* ← delete this line */
+}
+```
+
+Result (also update the doc comment above it, which still describes the bottom
+bevel and "compose with shadow-elevation-border for lift"):
 
 ```css
 /*
- * Control surface: the interactive counterpart to ui-surface. Where a surface
- * wears the whisper decorative hairline, a control needs a boundary that
- * stands off the page, so this swaps the ring to the dense
- * --color-control-border. Flat by design: no engraving, no elevation — the
- * porcelain/contrast caps are the raised things, fields are wells.
+ * Control role: the operable counterpart to ui-surface, the other sibling built
+ * on ui-frame. Where a surface wears the whisper decorative hairline, a control
+ * needs a boundary that stands off the page, so this swaps the ring to the
+ * dense --color-control-border. Flat by design: no engraving, no elevation —
+ * the porcelain/contrast caps are the raised things, fields are wells.
  */
-@utility ui-surface-control {
-  @apply ui-surface;
+@utility ui-control {
+  @apply ui-frame;
   --ui-border-color: var(--color-control-border);
 }
 ```
 
 ## Step 3 — Porcelain adopters
 
-### 3a. `themes/theme-rui/src/components/Button.styles.ts` (line 16–20)
+### 3a. `themes/theme-rui/src/components/Button.styles.ts` (`secondary` variant, ~line 16–19)
 
 ```ts
 secondary: [
-  'ui-surface-porcelain',
+  'ui-porcelain',
   'hover:[--ui-background-color:var(--color-porcelain-hover)] hover:[--porcelain-edge:var(--color-porcelain-edge-hover)]',
   'expanded:[--ui-background-color:var(--color-porcelain-hover)] expanded:[--porcelain-edge:var(--color-porcelain-edge-hover)]',
 ],
 ```
 
-(replaces the `ui-surface-control shadow-elevation-border` block including its
-`hover:text-foreground` — the utility sets `text-foreground` at rest.)
+This replaces the current three-line `secondary` block, which is now:
 
-### 3b. `themes/theme-rui/src/components/Menu.styles.ts` (default trigger variant, ~line 50)
+```ts
+secondary: [
+  'ui-control shadow-elevation-border',
+  'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))] hover:text-foreground',
+  'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))]',
+],
+```
+
+(the old block's `hover:text-foreground` and control-border alpha bump both go —
+`ui-porcelain` sets `text-foreground` at rest and the edge flips via
+`--porcelain-edge`.)
+
+### 3b. `themes/theme-rui/src/components/Menu.styles.ts` (default trigger variant, line 52)
 
 The comment there says it verbatim: "Neutral trigger = the secondary Button
-look." It must move with the button — same three lines as 3a replace the
-current `ui-surface-control shadow-elevation-border` + hover/expanded flips.
+look." It must move with the button — the same three `ui-porcelain` lines as 3a
+replace the current `'ui-control shadow-elevation-border'` (line 52) + its
+hover/expanded flips.
 
 ## Step 4 — Strip `shadow-elevation-border` from every in-flow control
 
-Remove the class (and only the class) at each site. Line numbers as of
-`feat/sidebar-nav-hierarchy`; re-grep before editing:
+Remove the class (and only the class) at each site — where a site also carries
+`ui-control`/`ui-surface`, keep that and drop only `shadow-elevation-border`.
+Line numbers below are current as of `feat/sidebar-nav-hierarchy` post-#5566
+merge; re-grep before editing (the two adopters from Step 3 — `Button.styles.ts`
+and `Menu.styles.ts` — are handled there, not here):
 
 ```sh
-grep -rn "shadow-elevation-border" themes/theme-rui/src packages/components/src --include="*.ts*" | grep -v test | grep -v stories
+git grep -nE 'shadow-elevation-border' -- 'themes/theme-rui/src/components/**' 'packages/components/src/**' | grep -viE '\.test\.|\.stories\.'
 ```
 
 In `themes/theme-rui/src/components/`:
@@ -295,7 +341,7 @@ In `themes/theme-rui/src/components/`:
 | `Input.styles.ts` | 7 | |
 | `ListBox.styles.ts` | 8 | |
 | `NumberField.styles.ts` | 6 | |
-| `Pagination.styles.ts` | 21 | `data-[selected=true]:shadow-elevation-border` |
+| `Pagination.styles.ts` | 25 | drop `data-[selected=true]:shadow-elevation-border`; keep `data-[selected=true]:ui-control` |
 | `Radio.styles.ts` | 23 | |
 | `SegmentedControl.styles.ts` | 112 | thumb; also rewrite the comment at 101–102 (it references the old secondary-button recipe) |
 | `Select.styles.ts` | 7 | |
@@ -305,7 +351,7 @@ In `themes/theme-rui/src/components/`:
 | `Tag.styles.ts` | 14 | |
 | `TagField.styles.ts` | 10 | |
 | `TextArea.styles.ts` | 6 | |
-| `ToggleButton.styles.ts` | 5, 22 | see Decision D3 for porcelain adoption |
+| `ToggleButton.styles.ts` | 8, 25 | see Decision D3 for porcelain adoption |
 
 In `packages/components/src/` (⚠️ separate package → own changeset):
 
@@ -315,13 +361,16 @@ In `packages/components/src/` (⚠️ separate package → own changeset):
 
 Optional same-commit cleanup: `ToggleButton.styles.ts`'s
 `in-[.group]:inset-shadow-none` and `selected:shadow-none` become redundant
-once the engraving and elevation are gone from `ui-surface-control` — remove
-them or leave with a TODO.
+once the engraving and elevation are gone from `ui-control` — remove them or
+leave with a TODO.
 
 **Not touched** (overlay tier, stays): `ActionBar.styles.ts:9`,
 `ContextualHelp.styles.ts:28`, `Dialog.styles.ts:8`, `Drawer.styles.ts:15`,
-`Popover.styles.ts:10`, `Sidebar.styles.ts:26`, `Table.styles.ts:124+146`,
-`Toast.styles.ts:6`, `Tray.styles.ts:11`.
+`Popover.styles.ts:10`, `Sidebar.styles.ts:26` (mobile drawer's overlay —
+correct to keep; the desktop sidebar carries no in-flow shadow), `Table.styles.ts:124+146`,
+`Toast.styles.ts:6`, `Tray.styles.ts:11`. See
+[App shell interaction](#app-shell--sidebar-interaction-5589) for how the
+token changes below still reach the sidebar even though its styles aren't edited here.
 
 ## Step 5 — Strip `shadow-elevation-raised` (Tonal Quiet surfaces)
 
@@ -338,13 +387,14 @@ their opaque accent borders and are unaffected beyond losing the shadow.
 ## Step 6 — Update the internal Styles reference story
 
 `packages/components/src/Styles.stories.tsx` documents the design language
-(elevation swatches at lines ~73–92, hairline weights ~96+, surface specimens
-throughout). Update it to match:
+(elevation swatches, hairline weights, and `ui-contrast` surface specimens;
+grep for the sections — line numbers moved when #5589 added its sidebar-nav
+showcase to this file). Update it to match:
 
 - Elevation section: one `overlay` swatch instead of three tiers; a line of
   copy stating the in-flow-is-flat rule.
-- Add a porcelain swatch next to the contrast surface specimens
-  (`ui-surface-porcelain`, plus its hover-flipped variant with the
+- Add a porcelain swatch next to the `ui-contrast` surface specimens
+  (`ui-porcelain`, plus its hover-flipped variant with the
   `--ui-background-color` / `--porcelain-edge` overrides baked).
 - Remove `shadow-elevation-border/raised` from all specimen wrappers
   (grep the file — ~15 occurrences).
@@ -352,10 +402,10 @@ throughout). Update it to match:
 ## Step 7 — Update tests that assert the old classes
 
 Known asserting sites (grep for more after the strip:
-`grep -rn "shadow-elevation-border\|ui-surface-control" packages/components/src --include="*.test.tsx"`):
+`git grep -nE 'shadow-elevation-border|ui-control' -- 'packages/components/src/**/*.test.tsx'`):
 
 - `packages/components/src/LinkButton/LinkButton.test.tsx:94` —
-  `toHaveClass('shadow-elevation-border')` → `toHaveClass('ui-surface-porcelain')`
+  `toHaveClass('shadow-elevation-border')` → `toHaveClass('ui-porcelain')`
 - `packages/components/src/DateField/DateField.test.tsx:48` — inline snapshot
 - `packages/components/src/Checkbox/Checkbox.test.tsx:47` — inline snapshot
 - `packages/components/src/ToggleButton/ToggleButton.test.tsx:14,58,72` — snapshots
@@ -388,10 +438,13 @@ panel). Checklist:
   + group), SegmentedControl, Pagination, Calendar/DatePicker.
 - **Surfaces:** Card, Panel (all variants), Accordion card variant, Table in
   `Panel bleed` — panel boundary must read on the deeper page without shadow.
-- **App shell:** the Sidebar example story from #5589 — hover/selected rows on
-  the deeper page ground, header seam (`ui-scroll-edge` uses
-  `--color-surface-border`, now the whisper — verify the scrolled-under seam
-  is still legible; if not, give the utility its own denser literal).
+- **App shell (see [dedicated section](#app-shell--sidebar-interaction-5589)):**
+  the Sidebar example story from #5589. Three shell lines all key off
+  `--color-surface-border`, which drops 0.1→0.05 here — verify each survives:
+  the root divider (`border-r border-surface-border`), the opt-in `separator`
+  (`bg-surface-border`), and the `ui-scroll-edge` top-nav seam. Plus:
+  hover/selected nav rows on the deeper page ground (the idle→hover step
+  shrinks as the sidebar bg deepens to 0.945 — confirm hover still reads).
 - **Structural lines:** Table grids, panel header/actions dividers with the
   softened `--color-border` (D2).
 
@@ -461,9 +514,12 @@ Screenshot the chosen state for the PR description.
 pnpm changeset
 ```
 
-- `@marigold/theme-rui` **minor** — new porcelain surface + tokens; removed
+- `@marigold/theme-rui` **minor** — new `ui-porcelain` surface + tokens;
+  simplified `ui-control` (engraved line removed); removed
   `--shadow-elevation-border` / `--shadow-elevation-raised`; page ground,
-  surface rim, structural line, backdrop retuned; in-flow shadows removed.
+  surface rim, structural line, backdrop retuned; in-flow shadows removed;
+  app-shell structural lines (Sidebar divider/separator, `ui-scroll-edge` seam)
+  repointed to `--color-border` so they survive the whisper rim.
 - `@marigold/components` **patch** — SelectionIndicator class cleanup.
 
 ## Step 12 — VRT
@@ -471,6 +527,61 @@ pnpm changeset
 Prepare the branch and push. **Do not dispatch the VRT / Chromatic workflow —
 ask Sebastian first** (standing rule). The diff will touch nearly every
 snapshot by design; the review is where the whole move gets judged at once.
+
+---
+
+## App shell / sidebar interaction (#5589)
+
+The sidebar / app-shell rework in #5589 sits **underneath** this work and its
+styles are **not edited here** — but three token changes in Step 1 reach it
+anyway, because the shell keys off shared tokens. #5589 is otherwise correct
+as-is (nothing to change in that PR now); these are items **this** work must
+handle so the shell survives the material change. Do a focused shell pass in
+Step 8 against these:
+
+### A. `--color-surface-border` 0.1 → 0.05 halves the shell's structural lines ⚠️ (the important one)
+
+#5589 deliberately built the "seamless shell" on exactly **one** structural
+line at **full** `surface-border` strength (its comment: _"full surface-border
+strength so it stays perceivable"_). Three places depend on it, all of which
+halve when Step 1c drops the token to the 0.05 whisper:
+
+| Site | Class / rule | Role |
+| --- | --- | --- |
+| `Sidebar.styles.ts` `root` (~line 41) | `border-r border-surface-border` | the shell's one divider |
+| `Sidebar.styles.ts` `separator` (~line 87) | `bg-surface-border` | opt-in section divider |
+| `ui.css` `@keyframes sc-edge-b` (used by `ui-scroll-edge`) | `box-shadow: 0 1px 0 0 var(--color-surface-border)` | top-nav scrolled-under seam |
+
+At 0.05 these read ≈ 1.06:1 on the deepened page — effectively gone, which
+contradicts #5589's intent. The whisper rim is right for *decorative* surface
+edges; a *structural* line is a different role and should not ride the same
+token. **Recommended fix (a real edit DST-1602 must make, beyond the token
+change):** repoint these three sites from the decorative `--color-surface-border`
+to the structural `--color-border` (Step 1c gives it an opaque ≈ 1.25:1, still
+clearly stronger than the 0.05 whisper). Concretely: `border-surface-border` →
+`border-border` on `root`, `bg-surface-border` → `bg-border` on `separator`,
+and change the `sc-edge-b` keyframe to `var(--color-border)`. If 1.25:1 still
+reads too faint on the 0.945 ground, give the three a dedicated literal
+(≈ charcoal-950 / 0.14). Decide in the Step 8 shell pass; **do not silently let
+the seam vanish.**
+
+### B. `--color-background` 0.965 → 0.945 deepens the sidebar; the hover step shrinks
+
+The sidebar column is `bg-background`, so it deepens with the page (it stays
+equal to the page — the divider, not a fill delta, is what separates them, so
+that relationship holds). But the nav's idle→hover preview uses
+`bg-hover` (charcoal-200 = 0.92): the step from the column to hover shrinks from
+Δ0.045 to Δ0.025. Active (`bg-selected` charcoal-300 = 0.86) stays clearly
+distinct. Verify hover still reads on the deeper ground; if it's too subtle,
+nudge the sidebar's `hover:bg-hover` to a `hover` one rung darker locally rather
+than moving the global token.
+
+### C. Nothing to pull forward into #5589
+
+The interactions above only bite once **this** work changes the tokens, so
+#5589 lands unchanged and this work stays the next stacked iteration. Add
+`Sidebar.styles.ts` and the `sc-edge-b` keyframe in `ui.css` to this work's
+touched-files list (they are **not** in Step 4/5, which only strip shadows).
 
 ---
 
@@ -489,13 +600,13 @@ snapshot by design; the review is where the whole move gets judged at once.
   boldest Tonal Quiet ingredient (table grids, dividers). Fallback: keep the
   current `oklch(from var(--color-charcoal-300) calc(l - 0.08) c h)`;
   intermediate: opaque charcoal-300 (`0.86`, ≈ 1.5:1).
-- **D3 — ToggleButton & SegmentedControl thumb.** Both currently copy the old
-  secondary-button recipe. Primary path leaves them as **flat control
-  surfaces** (they read as controls, and the selected states do the talking).
-  Option: adopt `ui-surface-porcelain` (same classes as Step 3a; for the
-  SegmentedControl thumb replace `ui-surface-control … [--ui-border-color:…]`
-  with the porcelain utility) so everything button-shaped is a cap. Decide
-  visually in Step 8; don't mix — either both or neither.
+- **D3 — ToggleButton & SegmentedControl thumb.** Both currently use
+  `ui-control shadow-elevation-border`. Primary path leaves them as **flat
+  control surfaces** (they read as controls, and the selected states do the
+  talking). Option: adopt `ui-porcelain` (same classes as Step 3a; for the
+  SegmentedControl thumb replace `ui-control … [--ui-border-color:…]` with the
+  porcelain utility) so everything button-shaped is a cap. Decide visually in
+  Step 8; don't mix — either both or neither.
 - **D4 — Firm Edge fallback for fields.** If the 1.83:1 hairline is too faint
   on shadowless flat fields (judge dense forms in Step 8), change **one
   line** in `tokens.css`:
@@ -530,5 +641,5 @@ snapshot by design; the review is where the whole move gets judged at once.
 | Porcelain pick (G) | `design/secondary-button` @ `bf63f9a19`, `packages/components/src/SecondaryButton.stories.tsx` (story `Styles/Secondary Button → Porcelain`, direction def ~line 247) |
 | Quiet Flat / Firm Edge | `design/secondary-button` @ `2f8a90bfa`, `packages/components/src/ControlFields.stories.tsx` (directions `quiet-flat` ~line 118, `firm-edge` ~line 142) |
 | Tonal Quiet | `design/subtle-refresh` @ `491c6218c`, `packages/components/src/SubtleRefresh.stories.tsx` (story `TonalQuiet` ~line 582) |
-| Base rework | PR #5566 (`refa/DST-1565-ui-surface-shadow-ring`), PR #5589 (`feat/sidebar-nav-hierarchy`) |
+| Base rework | PR #5566 (`refa/DST-1565-ui-surface-shadow-ring`, **merged to `beta-release`** — introduced the `ui-frame`/`ui-surface`/`ui-control`/`ui-contrast` naming), PR #5589 (`feat/sidebar-nav-hierarchy`) |
 | Contrast math | WCAG relative luminance over oklch→sRGB with alpha compositing; ratios in this file were computed against white and against the new page value |
