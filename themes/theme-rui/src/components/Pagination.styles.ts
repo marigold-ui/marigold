@@ -18,7 +18,11 @@ export const Pagination: ThemeComponent<'Pagination'> = {
     base: [
       'ui-button-base',
       'text-sm bg-transparent size-control',
-      'data-[selected=true]:ui-surface-control data-[selected=true]:shadow-elevation-border',
+      // An unselected page is a ghost button, same as the prev/next arrows, so it
+      // wears the identical translucent hover. Gated to unselected: the selected
+      // page keeps its ui-control fill and must not get the ghost overlay.
+      'data-[selected=false]:hover:ui-state-hover-ghost',
+      'data-[selected=true]:ui-control data-[selected=true]:shadow-elevation-border',
     ],
   }),
   icon: cva({ base: 'h-4 w-4' }),

@@ -98,7 +98,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     base: 'absolute transition-[translate,width] duration-200 ease-out-quint group-has-[[data-focus-visible]]/segmented:transition-none motion-reduce:transition-none',
     variants: {
       variant: {
-        // Raised thumb styled like the secondary Button (ui-surface-control +
+        // Raised thumb styled like the secondary Button (ui-control +
         // shadow-elevation-border). It fills its segment horizontally (left-0
         // w-full) so adjacent thumbs meet with no gap; the 4px top/bottom margin is
         // the inset-y, and the 4px end margin comes from the track's p-1 — so the
@@ -109,7 +109,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         //   On the dark charcoal-300 track, control-border's ground-adaptive firming
         // over-darkens the edge, so the alpha is stepped down 0.08 (token-derived).
         default:
-          'inset-y-[4px] left-0 w-full ui-surface-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
+          'inset-y-[4px] left-0 w-full ui-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },

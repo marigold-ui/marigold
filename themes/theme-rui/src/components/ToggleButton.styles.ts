@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
-    base: 'group inline-flex overflow-hidden ui-surface-control shadow-elevation-border',
+    base: 'group inline-flex overflow-hidden ui-control shadow-elevation-border',
     variants: {
       size: {
         default: 'text-sm',
@@ -19,18 +19,25 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'ui-button-base gap-2',
       // Standalone toggle = a control surface. In a group the group owns the
       // control boundary, so the segment drops its own ring + bevel (below).
-      'ui-surface-control shadow-elevation-border',
+      'ui-control shadow-elevation-border',
 
       // States
       'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))] hover:text-foreground',
       'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground selected:shadow-none',
       // Disabled comes from ui-button-base (disabled:ui-state-disabled), same as Button.
 
-      // Group: segments share the group's surface + ring, so drop their own ring,
-      // bevel and elevation; a transparent right border draws the 1px divider
-      // (removed on the last). Border lives here, not ui-button-base.
-      'in-[.group]:rounded-none in-[.group]:ring-0 in-[.group]:inset-shadow-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-transparent in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
-      'in-[.group]:disabled:border-r-border',
+      // Group: segments share the group's frame + ring, so drop their own ring,
+      // bevel and elevation; an opaque right border (--color-border, the divider
+      // token) draws the 1px separator between segments, removed on the last.
+      // Border lives here, not ui-button-base.
+      'in-[.group]:rounded-none in-[.group]:ring-0 in-[.group]:inset-shadow-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-r-border in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
+      // Focus: the group is overflow-hidden, so the default outline (drawn
+      // outside the box) is clipped at the segment edges. Swap it for an inset
+      // ring that renders inside the box, lifted above neighbours' dividers. On
+      // the selected (dark) segment the ring switches to the light focus color so
+      // it stays visible on the charcoal fill. (DST-1597)
+      'in-[.group]:focus-visible:outline-none in-[.group]:focus-visible:z-10 in-[.group]:focus-visible:inset-ring-2 in-[.group]:focus-visible:inset-ring-ring/50',
+      'in-[.group]:selected:focus-visible:inset-ring-(color:--color-focus-highlight-bold)',
     ],
     variants: {
       size: {

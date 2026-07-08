@@ -10,17 +10,17 @@ export const Button: ThemeComponent<'Button'> = cva({
   variants: {
     variant: {
       primary: [
-        'ui-surface-contrast',
+        'ui-contrast',
         'hover:[--ui-background-color:oklch(from_var(--color-primary)_calc(l-0.15)_c_h)]',
       ],
       secondary: [
-        'ui-surface-control shadow-elevation-border',
+        'ui-control shadow-elevation-border',
         'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))] hover:text-foreground',
         'expanded:[--ui-background-color:var(--color-hover)] expanded:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))]',
       ],
       ghost: 'hover:ui-state-hover-ghost',
       destructive: [
-        'ui-surface-destructive',
+        'ui-contrast-destructive',
         'hover:[--ui-background-color:oklch(from_var(--color-destructive-bold)_calc(l-0.15)_c_h)]',
       ],
       'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',

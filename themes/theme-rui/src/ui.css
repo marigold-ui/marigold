@@ -11,14 +11,14 @@
 
 /*
  * Provides spacing and text styling for input elements.
- * Visual affordances (borders, backgrounds, shadows) are handled by "ui-surface".
+ * Visual affordances (borders, backgrounds, shadows) are handled by "ui-control".
  * Combine both utilities for complete input styling.
  */
 @utility ui-input {
   @apply h-control w-full min-w-0;
   @apply px-3 py-2;
   @apply text-foreground placeholder:text-placeholder text-sm;
-  /* A field needs a visible boundary, so its ui-surface ring uses the dense
+  /* A field needs a visible boundary, so its frame ring uses the dense
      control-border. Focus and error still override the ring color per state. */
   --ui-border-color: var(--color-control-border);
 }
@@ -47,24 +47,37 @@
 }
 
 /*
- * Surfaces that sit on the page and need a boundary: inputs, selects, cards,
- * panels. The boundary is a 1px outset `ring` in the `box-shadow` chain (so it
- * composes with `shadow-elevation-*`), outset so an edge-to-edge child (e.g. a
- * Table in `Panel.Content bleed`) can't cover it. Resting color is the
- * translucent decorative `--color-surface-border`; controls and state overrides
- * set `--ui-border-color` to an opaque color.
+ * ui-frame — the role-neutral primitive every raised element is built on: a
+ * fill, a 1px rim, and a radius. The rim is an outset `ring` in the `box-shadow`
+ * chain (so it composes with `shadow-elevation-*`), outset so an edge-to-edge
+ * child (e.g. a Table in `Panel.Content bleed`) can't cover it. Role is set by
+ * the boundary token, not by the primitive: the default rim is the translucent
+ * decorative `--color-surface-border`; controls swap to the denser
+ * `--color-control-border`; state overrides set `--ui-border-color` to an opaque
+ * color. ui-surface and ui-control below both compose this — neither is built on
+ * the other.
  *
  * `background` is excluded from the transition so state bg flips feel instant
  * (DST-1436).
  */
-@utility ui-surface {
+@utility ui-frame {
   @apply rounded-surface relative transition-[box-shadow];
   background: var(--ui-background-color, var(--color-surface));
   @apply ring-1 ring-[var(--ui-border-color,var(--color-surface-border))];
 }
 
 /*
- * Prominent dark surface: primary buttons, action bars. Mirrors ui-surface but
+ * Surface role: containers that structure the page — cards, panels, dialogs,
+ * menus, overlays. Wears the frame with its default translucent decorative
+ * hairline (`--color-surface-border`). Compose with shadow-elevation-raised /
+ * -overlay for depth.
+ */
+@utility ui-surface {
+  @apply ui-frame;
+}
+
+/*
+ * Prominent dark surface: primary buttons, action bars. Mirrors ui-frame but
  * inverted in value — the edge is a darker shade of the fill (crisp, no light
  * rim) and the light lives on the face: a top-pooled glow plus a soft top-edge
  * highlight (a tinted, low-alpha inset shadow). Every layer derives from
@@ -74,12 +87,12 @@
  * `background` is excluded from the transition so state bg flips feel instant
  * (DST-1436).
  */
-@utility ui-surface-contrast {
+@utility ui-contrast {
   @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
   /* Read --ui-border-color first (falling back to the derived dark edge) so state
-     overrides recolor the ring here exactly as on a plain ui-surface — otherwise a
+     overrides recolor the ring here exactly as on a plain ui-frame — otherwise a
      disabled/focused/invalid contrast surface keeps its dark outline. */
   @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h))];
   @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
@@ -95,28 +108,29 @@
 }
 
 /*
- * Destructive prominent surface: the destructive Button. Reuses ui-surface-contrast
+ * Destructive prominent surface: the destructive Button. Reuses ui-contrast
  * and points --ui-background-color at --color-destructive-bold to retint every layer
  * red. The text override sits inside the @apply so it beats the contrast utility's
  * foreground regardless of emit order.
  */
-@utility ui-surface-destructive {
-  @apply ui-surface-contrast text-destructive-bold-foreground;
+@utility ui-contrast-destructive {
+  @apply ui-contrast text-destructive-bold-foreground;
   --ui-background-color: var(--color-destructive-bold);
 }
 
 /*
- * Control surface: the interactive counterpart to ui-surface. Where a surface
- * wears the soft decorative hairline, a control needs a boundary that stands off
- * the page, so this swaps the ring to the dense --color-control-border and adds a
- * crisp 1px inset line along the bottom (the same stroke a step denser, via an
- * alpha bump). The boundary then reads lighter-top / darker-bottom while the fill
- * stays flat — the gradient lives on the border, not the surface. The line
- * derives from --ui-border-color, so focus/error recolor it and ui-state-disabled
- * removes it. Compose with shadow-elevation-border for lift.
+ * Control role: the operable counterpart to ui-surface, the other variant built
+ * on ui-frame. Where a surface wears the soft decorative hairline, a control
+ * needs a boundary that stands off the page, so this swaps the ring to the dense
+ * --color-control-border and adds a crisp 1px inset line along the bottom (the
+ * same stroke a step denser, via an alpha bump). The boundary then reads
+ * lighter-top / darker-bottom while the fill stays flat — the gradient lives on
+ * the border, not the fill. The line derives from --ui-border-color, so
+ * focus/error recolor it and ui-state-disabled removes it. Compose with
+ * shadow-elevation-border for lift.
  */
-@utility ui-surface-control {
-  @apply ui-surface;
+@utility ui-control {
+  @apply ui-frame;
   --ui-border-color: var(--color-control-border);
   @apply inset-shadow-[0_-1px_0_0_oklch(from_var(--ui-border-color)_l_c_h_/_calc(alpha_+_0.08))];
 }
