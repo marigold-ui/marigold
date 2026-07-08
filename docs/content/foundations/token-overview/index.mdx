@@ -235,7 +235,9 @@ Some elements need a subtle visual distinction from the white surface they sit o
 
 ### Control
 
-Most form controls sit on a white surface and use borders to define their shape: a text input, a select dropdown, a checkbox outline. But some controls communicate their state through a **filled background** instead of a border. The switch track is the clearest example: when OFF, the track needs to look like a solid, physical groove that the thumb can slide along. A white or transparent background would make the track disappear into the surface, while using `selected` or `disabled-surface` would send the wrong signal.
+This section covers the `control` fill token. The visible edge that gives most controls their shape comes from a different utility, `ui-control`, which is documented with the other boundaries under [Borders](#borders) and explained in [Elevation](/foundations/elevation#surfaces-and-controls).
+
+Most form controls sit on a white surface and use borders to define their shape, such as a text input, a select dropdown, or a checkbox outline. But some controls communicate their state through a **filled background** instead of a border. The switch track is the clearest example: when OFF, the track needs to look like a solid, physical groove that the thumb can slide along. A white or transparent background would make the track disappear into the surface, while using `selected` or `disabled-surface` would send the wrong signal.
 
 `control` fills this gap. It provides a medium-weight neutral background that says: "I am an interactive control in my resting state." It pairs naturally with `selected-bold` for the ON state, creating a clear before/after contrast.
 
