@@ -63,14 +63,14 @@ The families are told apart by their **boundary**, not their shadow:
 - Controls wear `ui-control`: a clearly visible boundary that makes the element stand off the page as something to operate.
 
 ```html
-<!-- a surface: structure, minimal noise -->
+<!-- a surface for structure, with minimal noise -->
 <div class="ui-surface shadow-elevation-raised">...</div>
 
-<!-- a control: clearly bounded, lowest shadow tier -->
+<!-- a control, clearly bounded, on the lowest shadow tier -->
 <div class="ui-control shadow-elevation-border">...</div>
 ```
 
-Both utilities are built on one primitive: `ui-frame` draws the shared fill, radius, and 1px rim that every raised element needs. `ui-surface` and `ui-control` are **siblings** of that frame — they differ only in which boundary token the rim wears (the quiet `surface-border` versus the denser `control-border`) and the control's subtle bottom bevel. Neither is a special case of the other: a control is not a kind of surface, it is the operable sibling.
+Both utilities are built on one primitive. `ui-frame` draws the shared fill, radius, and 1px rim that every raised element needs. `ui-surface` and `ui-control` are **siblings** of that frame. They differ only in which boundary token the rim wears (the quiet `surface-border` versus the denser `control-border`) and in the control's subtle bottom bevel. Neither is a special case of the other. A control is not a kind of surface, it is the operable sibling.
 
 Two consequences of the rule:
 

@@ -2,8 +2,8 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
-    // No `overflow-hidden`: the end segments round their own outer corners to
-    // match the frame (below), so nothing needs clipping — and clipping is what
+    // No `overflow-hidden`. The end segments round their own outer corners to
+    // match the frame (below), so nothing needs clipping, and clipping is what
     // cut off a full-height segment's focus ring (DST-1597).
     base: 'group inline-flex ui-control shadow-elevation-border',
     variants: {
@@ -29,14 +29,15 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground selected:shadow-none',
       // Disabled comes from ui-button-base (disabled:ui-state-disabled), same as Button.
 
-      // Group: segments share the group's frame + ring, so drop their own ring,
-      // bevel and elevation; an opaque right border (--color-border, the divider
-      // token) draws the 1px separator between segments, removed on the last. The
-      // end segments round their outer corners to match the frame so the group
-      // needs no overflow clip. Border lives here, not ui-button-base.
+      // In a group, segments share the group's frame + ring, so they drop their
+      // own ring, bevel and elevation. An opaque right border (--color-border,
+      // the divider token) draws the 1px separator between segments, removed on
+      // the last. The end segments round their outer corners to match the frame
+      // so the group needs no overflow clip. Border lives here, not
+      // ui-button-base.
       'in-[.group]:rounded-none in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:ring-0 in-[.group]:inset-shadow-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-r-border in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
-      // Focus: with the group no longer clipping, the standard ui-state-focus
-      // outline (from ui-button-base) renders unclipped; lift it above the
+      // Focus. With the group no longer clipping, the standard ui-state-focus
+      // outline (from ui-button-base) renders unclipped. Lift it above the
       // neighbouring segments so the full ring shows. (DST-1597)
       'in-[.group]:focus-visible:z-10',
     ],

@@ -496,7 +496,7 @@ The `ui-state-disabled` utility bundles background, text, and cursor into one cl
 
 ### Borders
 
-Every boundary token in one place. Marigold draws element edges with five tokens, each answering a different question: the decorative rim of a surface, the visible edge of a control, that edge dimmed for a disabled control, structural dividers, and the focus ring. `surface-border` and `disabled-border` also appear in the [Surfaces](#surfaces) and [Disabled](#disabled) sections beside their fills — they are repeated here so the whole set is discoverable at a glance. See [Form Fields](/foundations/form-fields) for component-level guidelines and [Elevation](/foundations/elevation#surfaces-and-controls) for the surface/control rule these tokens implement.
+Every boundary token in one place. Marigold draws element edges with five tokens, and each one answers a different question. There is the decorative rim of a surface, the visible edge of a control, that edge dimmed for a disabled control, the structural divider, and the focus ring. `surface-border` and `disabled-border` also appear in the [Surfaces](#surfaces) and [Disabled](#disabled) sections beside their fills, and they are repeated here so the whole set is discoverable at a glance. See [Form Fields](/foundations/form-fields) for component-level guidelines and [Elevation](/foundations/elevation#surfaces-and-controls) for the surface and control rule these tokens implement.
 
 <TokenTable
   tokens={[
@@ -510,19 +510,19 @@ Every boundary token in one place. Marigold draws element edges with five tokens
       name: 'control-border',
       value: 'charcoal-950 / 26%',
       useFor:
-        'The boundary of a control: inputs, selects, date fields (via ui-control), checkboxes and radios (directly). An affordance the user must see (WCAG 1.4.11)',
+        'The boundary of a control such as inputs, selects, and date fields (via ui-control), plus checkboxes and radios (directly). An affordance the user must see (WCAG 1.4.11)',
     },
     {
       name: 'disabled-border',
       value: 'charcoal-300',
       useFor:
-        'The control edge dimmed for a disabled control: a soft, receding boundary (applied via ui-state-disabled, so it dims rather than disappears)',
+        'The control edge dimmed for a disabled control, a soft receding boundary (applied via ui-state-disabled, so it dims rather than disappears)',
     },
     {
       name: 'border',
       value: 'charcoal-300 (darkened)',
       useFor:
-        'Structural lines drawn on a known surface: dividers, table row and grid lines, section rules, internal separators. Opaque so crossing strokes cannot stack',
+        'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Opaque so crossing strokes cannot stack',
     },
     {
       name: 'ring',
@@ -532,16 +532,16 @@ Every boundary token in one place. Marigold draws element edges with five tokens
   ]}
 />
 
-<Callout title="Which border token: pick by the job">
+<Callout title="Which border token to pick for the job">
   Each boundary answers a different question. `surface-border` is the
-  **decorative** rim of a raised surface (Card, Panel, Dialog); it sits below
+  **decorative** rim of a raised surface (Card, Panel, Dialog). It sits below
   the contrast threshold, so never use it where the edge has to be seen.
-  `control-border` marks an element you **operate** — the same translucent
+  `control-border` marks an element you **operate**. It is the same translucent
   charcoal stroke as `surface-border` at about 2.5 times the density, so it
   stays clearly visible and adapts to the ground beneath it. `disabled-border`
   is that control edge **dimmed** for an inactive control, receding rather than
   vanishing. `border` draws **structural lines** such as dividers, grid lines,
-  and section rules; it is opaque on purpose, because separators are many
+  and section rules. It is opaque on purpose, because separators are many
   strokes drawn by many cells and translucent strokes would render darker
   wherever they cross. `ring` is the **focus** outline, the perceivable
   affordance for keyboard users.
