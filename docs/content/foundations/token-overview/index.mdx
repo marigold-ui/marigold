@@ -662,9 +662,9 @@ Domain-specific tokens for Reservix access level indicators. Follows the same st
   ]}
 />
 
-Alongside the color tokens, the theme provides two mask-image variables that hold the glyph shapes for access marks: `--access-mask-lock` (master) and `--access-mask-key` (admin). They are consumed by the `ui-access-master` and `ui-access-admin` utilities, which render the glyph as themed generated content in the access foreground color and expose the restriction to assistive technology via CSS alternative text (`content: '' / 'Master'`). The glyphs are derived from the [lucide](https://lucide.dev) icons `lock-keyhole` and `key`.
+Alongside the color tokens, the theme provides two mask-image variables that hold the glyph shapes for access marks: `--access-mask-lock` (master) and `--access-mask-key` (admin). The `ui-access-master` and `ui-access-admin` utilities consume them to render the glyph as themed generated content in the access foreground color. On links and menu items the utilities also expose the access level to assistive technology as CSS alternative text. The glyphs are derived from the [lucide](https://lucide.dev) icons `lock-keyhole` and `key`.
 
-The `master`/`admin` variants of `Badge`, `Link`, and `Menu.Item` build on these utilities — see the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for when and how to apply them.
+The `master`/`admin` variants of `Badge`, `Link`, and `Menu.Item` build on these utilities. See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for when and how to apply them.
 
 ### Links
 

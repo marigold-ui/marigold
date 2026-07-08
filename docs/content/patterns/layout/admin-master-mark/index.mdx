@@ -60,21 +60,21 @@ Use this approach when:
 
 ### Inline actions
 
-For actions rendered as inline text links, badges are too heavy. Use the "master" or "admin" variant on `<Link>` instead. It prepends a small glyph in the corresponding access color — a lock for `master`, a key for `admin` — and exposes the restriction to assistive technology, so screen-reader users can distinguish a restricted action from a regular one.
+Badges are too heavy for actions that render as inline text links. Use the "master" or "admin" variant on the `<Link>` component instead. The variant prepends a small glyph in the matching access color, a lock for `master` and a key for `admin`. The glyph also carries the access level as alternative text, so screen reader users can tell a restricted action from a regular one.
 
 <ComponentDemo name="admin-master-mark-inline-actions" />
 
 ### Menus
 
-The same variants are available on `<ActionMenu.Item>` and render the same glyph. Additionally, group restricted items into dedicated sections (e.g. "Master actions" / "Admin actions") so the access boundary is visible at a glance — the section title conveys the access level to screen-reader users as well.
+The same variants are available on `<ActionMenu.Item>` and render the same glyph. In addition, group restricted items into dedicated sections such as "Master actions" or "Admin actions". The section title makes the access boundary visible at a glance and announces the access level to screen reader users. Restricted items should not carry an additional icon, since the glyph already occupies the item's icon slot.
 
 <ComponentDemo name="admin-master-mark-menu" />
 
 #### Combining access marks with other variants
 
-`variant` is a single axis: a menu item or link can be either `master`/`admin` **or** e.g. `destructive`, never both. This is intentional — stacking a red destructive treatment on top of the access glyph would overload a single small element with two competing signals.
+The `variant` prop is a single axis. A menu item or link can use either an access variant or another variant like `destructive`, but never both at once. This is intentional. A red destructive treatment stacked on the access glyph would put two competing signals on one small element.
 
-For a destructive action that is also restricted (e.g. a master-only "Löschen"), the access mark takes precedence: use `variant="master"` (or `variant="admin"`), as shown in the menu above. The restriction is the information a user needs _before_ choosing the action, while the destructive nature is conveyed by the action's label and should be guarded by a confirmation dialog anyway.
+For a destructive action that is also restricted the access mark takes precedence. Use `variant="master"` or `variant="admin"`, as shown in the menu above. The restriction is what a user needs to know before choosing the action. The destructive nature is conveyed by the action's label and should be guarded by a confirmation dialog anyway.
 
 ## Related
 
