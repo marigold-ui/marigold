@@ -6,6 +6,10 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     base: [
       'flex flex-col gap-0 rounded-xl overflow-y-auto',
       'ui-surface shadow-elevation-overlay ui-scrollbar',
+      // Inside a Popover (ContextualHelp) the Popover paints the overlay
+      // surface; the dialog drops its own border + elevation to avoid a double
+      // frame. As a modal (no popover ancestor) it keeps them.
+      'group-data-trigger/popover:ring-0 group-data-trigger/popover:shadow-none',
     ],
     variants: {
       variant: {},
