@@ -172,7 +172,7 @@ const DateRangePickerBase = ({
           </Tray.Actions>
         </Tray>
       ) : (
-        <Popover>
+        <Popover matchTriggerWidth={false}>
           <Dialog>
             <RangeCalendar
               disabled={disabled}

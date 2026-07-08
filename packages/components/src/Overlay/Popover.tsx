@@ -26,6 +26,14 @@ export interface PopoverProps extends Omit<
 > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
+  /**
+   * Stretch the popover to at least the trigger's width. Right for field
+   * dropdowns (Select, ComboBox) whose list should line up with the field;
+   * turn off for content-sized overlays like a calendar, whose width is its
+   * own, not the trigger's.
+   * @default true
+   */
+  matchTriggerWidth?: boolean;
   children: ReactNode;
 }
 
@@ -36,6 +44,7 @@ const PopoverBase = ({
   placement,
   offset = 0,
   open,
+  matchTriggerWidth = true,
   children,
   ref,
   ...rest
@@ -49,8 +58,9 @@ const PopoverBase = ({
   const classNames = useClassNames({
     component: 'Popover',
     variant: placement,
-    // Make Popover as wide as trigger element
-    className: 'min-w-(--trigger-width)',
+    // Match the trigger's width so field dropdowns line up with the field. A
+    // calendar sizes to its own content, so it opts out (matchTriggerWidth).
+    className: matchTriggerWidth ? 'min-w-(--trigger-width)' : undefined,
   });
 
   return (
