@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Accessibility } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
@@ -53,6 +54,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <Stack space={2} alignX="left">
       <Badge {...args} variant="default" />
@@ -69,3 +71,24 @@ export const Basic = meta.story({
     </Stack>
   ),
 });
+
+Basic.test(
+  'access badges paint the mask glyph without alternative text',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // Variant order follows the render above.
+    const badges = canvas.getAllByText('Status');
+    const master = badges[6];
+    const admin = badges[7];
+
+    const masterGlyph = window.getComputedStyle(master, '::before');
+    const adminGlyph = window.getComputedStyle(admin, '::before');
+
+    // The glyph paints from the mask image; the Badge opts out of the
+    // alternative text because its visible label is the access level itself.
+    expect(masterGlyph.maskImage).toContain('data:image/svg+xml');
+    expect(masterGlyph.content).not.toContain('Master');
+    expect(adminGlyph.maskImage).toContain('data:image/svg+xml');
+    expect(adminGlyph.content).not.toContain('Admin');
+  }
+);

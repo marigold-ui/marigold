@@ -14,7 +14,7 @@ const meta = preview.meta({
       control: {
         type: 'radio',
       },
-      options: ['default', 'secondary'],
+      options: ['default', 'secondary', 'master', 'admin'],
       description: 'Variants of the link.',
     },
     size: {

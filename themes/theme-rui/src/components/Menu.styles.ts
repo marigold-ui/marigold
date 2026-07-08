@@ -1,5 +1,16 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
+// Shared by `default` and the access variants so the icon treatment can't
+// drift between them.
+const itemBase =
+  'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60';
+
+// The access glyph occupies the icon column of the item grid: `gap-x-2`
+// gives it the same label spacing as an `<svg>` icon, and the row/self
+// placement mirrors the `[&_svg]` treatment so the glyph stays centered
+// when an item also renders a description.
+const itemAccessGlyph = 'gap-x-2 before:row-span-full before:self-center';
+
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva({
     base: [
@@ -22,13 +33,10 @@ export const Menu: ThemeComponent<'Menu'> = {
     ],
     variants: {
       variant: {
-        default:
-          'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60',
+        default: itemBase,
         destructive: 'text-destructive-accent focus:bg-destructive-accent/10',
-        master:
-          'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60 ui-access-master',
-        admin:
-          'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60 ui-access-admin',
+        master: `${itemBase} ${itemAccessGlyph} ui-access-master`,
+        admin: `${itemBase} ${itemAccessGlyph} ui-access-admin`,
       },
     },
     defaultVariants: {

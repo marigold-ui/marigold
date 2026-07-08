@@ -6,8 +6,10 @@ export const Link: ThemeComponent<'Link'> = cva({
     variant: {
       default: 'text-link font-normal',
       secondary: 'font-medium text-foreground underline hover:no-underline',
-      master: 'text-link font-normal inline-flex items-center ui-access-master',
-      admin: 'text-link font-normal inline-flex items-center ui-access-admin',
+      master:
+        'text-link font-normal inline-flex items-center ui-access-master before:mr-1',
+      admin:
+        'text-link font-normal inline-flex items-center ui-access-admin before:mr-1',
     },
     size: {
       default: '',
