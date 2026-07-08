@@ -1,5 +1,35 @@
 # @marigold/components
 
+## 17.9.0
+
+### Minor Changes
+
+- ed2d9ae: feat(DST-1551): add `DateRangePicker` component
+
+  New `<DateRangePicker>` lets users enter or select a start–end date range through a single field, mirroring `<DatePicker>`'s API and behaviour. Two date inputs (`start`/`end`) sit in one field group with a calendar button that opens a `<RangeCalendar>` in a popover on desktop and a tray on small screens. Supports per-input paste (ISO/EU/US formats), `granularity` (inline time segments), `visibleDuration` (up to three months), and the usual Marigold field props (`disabled`, `readOnly`, `required`, `error`, `errorMessage`, `description`, `minValue`, `maxValue`, `dateUnavailable`, `width`, `variant`, `size`). Adds a matching `DateRangePicker` theme entry to `theme-rui`.
+
+### Patch Changes
+
+- e686474: chore(DST-1503): Migrate `Checkbox`, `Switch`, and `Radio` off the deprecated react-aria-components single-element exports (`Checkbox`/`Switch`/`Radio`) to the `*Field` + `*Button` composition introduced in `react-aria-components@1.18.0`. This removes the `ts(6385)` deprecation warnings with no change to the public API, behavior, or visual output.
+- 2fc7b96: refactor(DST-1534): build the `Calendar` year dropdown on react-aria's `CalendarYearPicker`
+
+  The year dropdown now consumes react-aria's `CalendarYearPicker` render-prop (mirroring how the month dropdown already uses `CalendarMonthPicker`), replacing the hand-rolled year list and its localized `aria-label` workaround. This was unblocked by react-aria's June 2026 fix that makes `maxValue` inclusive, so the boundary year is reachable. Unbounded calendars keep the ±20-year window and bounded ranges stay fully reachable at both ends. When only one bound is set, the open side now widens to keep that bound reachable instead of staying at a fixed ±20 years.
+
+- 508ec2c: fix(DST-1553): drop the dead `'small' | 'medium' | 'large'` literals from `Tabs` `size`
+
+  The `size` and `variant` props on `Tabs` resolved to nothing after the RUI theme
+  size variants were removed (2025-03-04). `size` now accepts a plain `string`
+  (matching `Label` and `HelpText`) instead of advertising specific values that no
+  theme backs. The props stay in place as theme hooks, so a consumer theme can
+  define its own `size`/`variant` variants without the misleading built-in union.
+
+- 4d44517: fix: make Select and Menu overlay appear above Drawer on small screens
+
+  On small screens, `Select` and `Menu` render their options in a `Tray` (bottom sheet). The `Tray` overlay had `z-40` in the theme while the `Drawer` overlay uses `z-50`, so the tray rendered behind an open drawer and was unreachable.
+
+  Moved the `z-index` from the theme style file into the `TrayModal` component implementation (matching the project's z-index architecture rule), and raised it to `z-50`. Both the `Drawer` and `Tray` portal to `document.body`; at equal z-index, DOM order determines stacking. The `Tray` is always mounted after the `Drawer`, so it correctly appears on top.
+  - @marigold/system@17.9.0
+
 ## 17.8.0
 
 ### Minor Changes
