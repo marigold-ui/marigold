@@ -5,10 +5,10 @@ export default () => (
   <MarigoldProvider theme={theme} className="rounded-lg">
     <Inset p={6}>
       <Card>
-        <Card.Body>
+        <Card.Content>
           This card sits inside a MarigoldProvider whose root wrapper is styled
           with rounded corners via the className prop.
-        </Card.Body>
+        </Card.Content>
       </Card>
     </Inset>
   </MarigoldProvider>

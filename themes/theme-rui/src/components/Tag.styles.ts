@@ -11,7 +11,7 @@ export const Tag: ThemeComponent<'Tag'> = {
   tag: cva({
     base: [
       'relative inline-flex items-center gap-1.75',
-      'ui-surface-control shadow-elevation-border',
+      'ui-control shadow-elevation-border',
       // Inside a TagField the frame is already an input-styled control, so a chip
       // in the same raised treatment reads as an input nested in an input. A Tag in
       // the trigger sheds the lift and bottom bevel and lightens its ring a step

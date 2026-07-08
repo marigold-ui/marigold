@@ -161,7 +161,7 @@
      --color-control-border. Translucent, so it stays whisper-light on any ground. */
   --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
 
-  /* ui-surface-contrast recipe (primary Button, ActionBar): the lightness (-l)
+  /* ui-contrast recipe (primary Button, ActionBar): the lightness (-l)
      and alpha (-a) deltas each layer shifts from the fill. Colors are computed in
      the utility from --ui-background-color, so a fill override retints every layer. */
   --contrast-edge-l: 0.04;

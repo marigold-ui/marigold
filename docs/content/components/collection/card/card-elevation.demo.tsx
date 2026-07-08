@@ -22,7 +22,7 @@ export default () => (
       <Title>Annual Conference 2025</Title>
       <Description>Our flagship annual event.</Description>
     </Card.Header>
-    <Card.Body>
+    <Card.Content>
       <Stack space="tight">
         <Inline space="related">
           <Badge variant="info">Music</Badge>
@@ -32,7 +32,7 @@ export default () => (
           Join us for a day of inspiring talks, workshops, and networking.
         </Text>
       </Stack>
-    </Card.Body>
+    </Card.Content>
     <Card.Footer>
       <Button variant="ghost" size="small">
         Get tickets

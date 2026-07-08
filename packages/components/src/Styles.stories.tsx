@@ -82,14 +82,14 @@ export const Surface = meta.story({
         <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
       </Inline>
       <Inline space="regular">
-        <Base className="ui-surface-contrast">contrast</Base>
-        <Base className="ui-surface-contrast shadow-elevation-border">
+        <Base className="ui-contrast">contrast</Base>
+        <Base className="ui-contrast shadow-elevation-border">
           contrast / border
         </Base>
-        <Base className="ui-surface-contrast shadow-elevation-raised">
+        <Base className="ui-contrast shadow-elevation-raised">
           contrast / raised
         </Base>
-        <Base className="ui-surface-contrast shadow-elevation-overlay">
+        <Base className="ui-contrast shadow-elevation-overlay">
           contrast / overlay
         </Base>
       </Inline>
@@ -163,7 +163,7 @@ export const Surface = meta.story({
             nested child
           </div>
         </div>
-        <div className="ui-surface-contrast flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-background-color:var(--color-access-master-accent)] [--ui-border-color:var(--color-access-master-accent)]">
+        <div className="ui-contrast flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-background-color:var(--color-access-master-accent)] [--ui-border-color:var(--color-access-master-accent)]">
           <span className="text-xs">parent: --ui-background-color</span>
           <div className="ui-surface shadow-elevation-border text-foreground px-3 py-1 text-xs">
             nested child
@@ -196,10 +196,8 @@ export const Surface = meta.story({
         <Base className="ui-surface ui-state-readonly">readonly</Base>
       </Inline>
       <Inline space="regular">
-        <Base className="ui-surface-contrast ui-state-focus">
-          contrast / focus
-        </Base>
-        <Base className="ui-surface-contrast ui-state-disabled">
+        <Base className="ui-contrast ui-state-focus">contrast / focus</Base>
+        <Base className="ui-contrast ui-state-disabled">
           contrast / disabled
         </Base>
       </Inline>

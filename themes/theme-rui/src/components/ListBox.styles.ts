@@ -5,7 +5,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     base: [
       // Standalone, a ListBox is a form control: the control surface (opaque
       // boundary + depth bevel) plus its own elevation.
-      'flex ui-surface-control shadow-elevation-border',
+      'flex ui-control shadow-elevation-border',
       // In a Popover or Tray the frame paints the surface, so the list drops its
       // own boundary, bevel and elevation and just fills it.
       'group-data-trigger/popover:ring-0 group-data-trigger/popover:inset-shadow-none group-data-trigger/popover:shadow-none group-data-trigger/popover:w-full',

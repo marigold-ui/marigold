@@ -7,7 +7,7 @@ export const TagField: ThemeComponent<'TagField'> = {
       // `in-[.tagfield-trigger]` context selector to quiet its chips inside the
       // frame — see Tag.styles.ts.
       'tagfield-trigger',
-      'ui-surface-control shadow-elevation-border ui-input h-fit min-h-control',
+      'ui-control shadow-elevation-border ui-input h-fit min-h-control',
       'cursor-pointer py-1',
       'group-disabled/field:ui-state-disabled',
       '[&:has(>button[data-focus-visible])]:ui-state-focus',

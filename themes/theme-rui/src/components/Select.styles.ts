@@ -4,7 +4,7 @@ export const Select: ThemeComponent<'Select'> = {
   icon: cva({ base: 'text-secondary/80' }),
   select: cva({
     base: [
-      'ui-surface-control shadow-elevation-border ui-input h-control ',
+      'ui-control shadow-elevation-border ui-input h-control ',
       'cursor-pointer',
       'group-invalid/field:ui-state-error',
       'disabled:ui-state-disabled',

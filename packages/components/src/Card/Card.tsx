@@ -14,7 +14,7 @@ import {
   useClassNames,
 } from '@marigold/system';
 import { useSlot } from '../utils/useSlot';
-import { CardBody } from './CardBody';
+import { CardContent } from './CardContent';
 import { CardContext } from './CardContext';
 import { CardFooter } from './CardFooter';
 import { CardHeader } from './CardHeader';
@@ -28,7 +28,7 @@ interface CardBaseProps extends Omit<
 > {
   /**
    * Content of the card. Typically a combination of `Card.Media`,
-   * `Card.Header`, `Card.Body`, and `Card.Footer`.
+   * `Card.Header`, `Card.Content`, and `Card.Footer`.
    *
    * `Card.Header` configures the slot-aware text primitives `<Title>`
    * and `<Description>`.
@@ -51,7 +51,7 @@ interface CardBaseProps extends Omit<
   stretch?: boolean;
 
   /**
-   * Spacing between Card slots (Media, Header, Body, Footer).
+   * Spacing between Card slots (Media, Header, Content, Footer).
    * @default 'regular'
    */
   space?: SpaceProp<SpacingTokens>['space'];
@@ -170,6 +170,6 @@ export const Card = ({
 };
 
 Card.Header = CardHeader;
-Card.Body = CardBody;
+Card.Content = CardContent;
 Card.Footer = CardFooter;
 Card.Media = CardMedia;

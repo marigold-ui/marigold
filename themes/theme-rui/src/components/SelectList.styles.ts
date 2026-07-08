@@ -98,7 +98,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         bordered: [
           // Each item is a raised control: dense control-border ring + bottom
           // bevel + lift (the list pads itself so the ring isn't clipped).
-          'ui-surface-control shadow-elevation-border min-h-14',
+          'ui-control shadow-elevation-border min-h-14',
           // Selected just recolors the ring opaque, so its stroke keeps the same
           // geometry as the unselected rows.
           'selected:[--ui-border-color:var(--color-foreground)]',
