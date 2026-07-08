@@ -63,7 +63,7 @@ Reach for selectable cards when the user has to pick from a set of card-shaped o
 
 ### When the content isn't a collection
 
-When your content doesn't repeat as a set of like items, a Collection component is the wrong family. Reach for a Layout primitive instead. Use [`<Panel>`](../../layout/panel) for a unique, named page region like "Billing" or "Team members". Use [`<Stack>`](../../layout/stack) for content that shares a topic but has no per-item identity. Use [`<Tiles>`](../../layout/tiles) for a flexible grid of layout blocks rather than collection items.
+If your content doesn't repeat as a set of like items, no Collection component fits. Reach for a Layout primitive instead. A unique, named region of a page (a "Billing" section, a "Team members" block) belongs in [`<Panel>`](../../layout/panel). Content that hangs together by topic, where no single entry stands on its own, suits [`<Stack>`](../../layout/stack). And a free-flowing grid of layout blocks, rather than repeating items, is what [`<Tiles>`](../../layout/tiles) is for.
 
 Panel documents the inverse of this comparison in its [Panel vs Card](../../layout/panel#panel-vs-card) section.
 
@@ -214,7 +214,7 @@ When your content isn't a good fit for a card, one of these is usually the right
 
 <ul>
   <li>
-    [`<Table>`](../table): The other Collection component. Reach for it when
+    [`<Table>`](/components/collection/table): The other Collection component. Reach for it when
     items share the same fields and the task is comparison, sorting, or bulk
     action.
   </li>
@@ -224,19 +224,19 @@ When your content isn't a good fit for a card, one of these is usually the right
 
 <ul>
   <li>
-    [`<Panel>`](../../layout/panel): A unique, named page region like "Billing"
+    [`<Panel>`](/components/layout/panel): A unique, named page region like "Billing"
     or "Team members".
   </li>
   <li>
-    [`<Stack>`](../../layout/stack): Content that shares a topic but has no
+    [`<Stack>`](/components/layout/stack): Content that shares a topic but has no
     per-item identity.
   </li>
   <li>
-    [`<Tiles>`](../../layout/tiles): A reflowing grid of layout blocks rather
+    [`<Tiles>`](/components/layout/tiles): A reflowing grid of layout blocks rather
     than collection items.
   </li>
   <li>
-    [`<List>`](../../content/list): A simple ordered or unordered list of items.
+    [`<List>`](/components/content/list): A simple ordered or unordered list of items.
   </li>
 </ul>
 
@@ -244,7 +244,7 @@ When your content isn't a good fit for a card, one of these is usually the right
 
 <ul>
   <li>
-    [`<SelectList>`](../../form/selectlist#options-as-cards): Card-shaped options
+    [`<SelectList>`](/components/form/selectlist#options-as-cards): Card-shaped options
     the user selects in a form, with selection state and keyboard support built
     in.
   </li>
