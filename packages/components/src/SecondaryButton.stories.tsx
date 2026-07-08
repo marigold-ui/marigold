@@ -243,6 +243,40 @@ const DIRECTIONS: Direction[] = [
       'Text: foreground on 200, 13.7:1.',
     ],
   },
+  {
+    key: 'porcelain',
+    title: 'G · Porcelain (C edge × D fill)',
+    tagline:
+      'The requested hybrid: D’s near-white convex cap with C’s modeled edge instead of the keycap platform. A bright face carried by a soft derived ring and top glint — flat, no platform, no lift.',
+    // Fill is D's (charcoal-50, flips to 100 on hover). The edge is C's derived
+    // ring, but keyed to its own --btn-edge-base rather than the fill: C's edge
+    // is defined relative to a charcoal-200 ground, and deriving it from the
+    // near-white cap directly would wash it out (~1.5:1). The base darkens one
+    // rung on hover, so the edge follows the fill down exactly as it does in C.
+    fillClass:
+      '[--btn-fill:var(--color-charcoal-50)] [--btn-edge-base:var(--color-charcoal-200)] hover:[--btn-fill:var(--color-charcoal-100)] hover:[--btn-edge-base:var(--color-charcoal-300)]',
+    surface: {
+      background:
+        'linear-gradient(to bottom, oklch(from var(--btn-fill) calc(l + 0.005) c h), oklch(from var(--btn-fill) calc(l - 0.02) c h))',
+      boxShadow:
+        '0 0 0 1px oklch(from var(--btn-edge-base) calc(l - 0.12) c h), inset 0 1px 1.5px -1px oklch(from var(--btn-edge-base) calc(l + 0.2) c h / 0.9)',
+    },
+    hoverVars: {
+      '--btn-fill': 'var(--color-charcoal-100)',
+      '--btn-edge-base': 'var(--color-charcoal-300)',
+    },
+    recipe: [
+      'Fill: D verbatim — charcoal-50 cap, +0.005/−0.02 L convex gradient.',
+      'Edge: C’s modeled ring (−0.12 L) + soft top glint (+0.2 L / 0.9), keyed to charcoal-200 so it stays visible on the near-white cap.',
+      'D’s keycap platform and lift shadow dropped (that was D’s identity; here C’s edge is). Flat like C.',
+      'Hover: cap darkens 50 → 100; edge base darkens 200 → 300, so the ring firms with the fill (C’s behavior).',
+    ],
+    a11y: [
+      'Ring 1.87:1 rest / 2.31:1 hover — decorative, same register as C and the current input edge (1.83:1).',
+      'Text: foreground on the cap, worst point 15.7:1.',
+      'Cap Δ 1.11:1 vs white — on white panels the edge carries the shape; on the charcoal-100 page the cap also reads brighter than the ground.',
+    ],
+  },
 ];
 
 /* -------------------------------------------------------------------------
@@ -599,6 +633,14 @@ export const QuietTint = meta.story({
   render: () => (
     <DirectionFrame d={DIRECTIONS[5]}>
       <Specimens d={DIRECTIONS[5]} />
+    </DirectionFrame>
+  ),
+});
+
+export const Porcelain = meta.story({
+  render: () => (
+    <DirectionFrame d={DIRECTIONS[6]}>
+      <Specimens d={DIRECTIONS[6]} />
     </DirectionFrame>
   ),
 });
