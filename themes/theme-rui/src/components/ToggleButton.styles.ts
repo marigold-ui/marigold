@@ -2,7 +2,10 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
-    base: 'group inline-flex overflow-hidden ui-control shadow-elevation-border',
+    // No `overflow-hidden`: the end segments round their own outer corners to
+    // match the frame (below), so nothing needs clipping — and clipping is what
+    // cut off a full-height segment's focus ring (DST-1597).
+    base: 'group inline-flex ui-control shadow-elevation-border',
     variants: {
       size: {
         default: 'text-sm',
@@ -28,16 +31,14 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
 
       // Group: segments share the group's frame + ring, so drop their own ring,
       // bevel and elevation; an opaque right border (--color-border, the divider
-      // token) draws the 1px separator between segments, removed on the last.
-      // Border lives here, not ui-button-base.
-      'in-[.group]:rounded-none in-[.group]:ring-0 in-[.group]:inset-shadow-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-r-border in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
-      // Focus: the group is overflow-hidden, so the default outline (drawn
-      // outside the box) is clipped at the segment edges. Swap it for an inset
-      // ring that renders inside the box, lifted above neighbours' dividers. On
-      // the selected (dark) segment the ring switches to the light focus color so
-      // it stays visible on the charcoal fill. (DST-1597)
-      'in-[.group]:focus-visible:outline-none in-[.group]:focus-visible:z-10 in-[.group]:focus-visible:inset-ring-2 in-[.group]:focus-visible:inset-ring-ring/50',
-      'in-[.group]:selected:focus-visible:inset-ring-(color:--color-focus-highlight-bold)',
+      // token) draws the 1px separator between segments, removed on the last. The
+      // end segments round their outer corners to match the frame so the group
+      // needs no overflow clip. Border lives here, not ui-button-base.
+      'in-[.group]:rounded-none in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:ring-0 in-[.group]:inset-shadow-none in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-r-border in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
+      // Focus: with the group no longer clipping, the standard ui-state-focus
+      // outline (from ui-button-base) renders unclipped; lift it above the
+      // neighbouring segments so the full ring shows. (DST-1597)
+      'in-[.group]:focus-visible:z-10',
     ],
     variants: {
       size: {
