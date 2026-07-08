@@ -12,12 +12,12 @@ Three signals work together to produce this effect:
 
 - **Background layers** set the color of each level.
 - **Boundaries** (borders) encode what kind of element something is.
-- **Shadows** add visual lift to communicate how high it sits.
+- **Fill and shading** stand raised controls off the page without a shadow.
 
-Boundary and shadow are deliberately independent. An element's border says whether it is a surface or a control, and its shadow says how far off the page it sits. The two compose freely and never stand in for each other.
+Nothing in normal document flow casts a shadow. A card separates from the page by sitting on a slightly deepened background, not by a shadow beneath it. A button is a raised cap whose own shading is the lift. A field is a flat well. The one shadow left in the system marks the one thing shadows are actually for: a surface that has left the page and floats above it.
 
 <Callout title="Do I need to apply elevation manually?">
-  Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct background, border, and shadow tokens internally. You only need the utility classes described on this page (`ui-surface`, `ui-control`, `shadow-elevation-*`, `bg-background`, etc.) when building custom elements that aren't covered by an existing component.
+  Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct background, border, and shadow tokens internally. You only need the utility classes described on this page (`ui-surface`, `ui-control`, `ui-soft`, `shadow-elevation-overlay`, `bg-background`, etc.) when building custom elements that aren't covered by an existing component.
 </Callout>
 
 ## Background layers
@@ -28,7 +28,7 @@ Before shadows come into play, background colors establish the base layers of th
   tokens={[
     {
       name: 'background',
-      value: 'charcoal-100',
+      value: 'oklch(0.945 0.004 54)',
       useFor: 'Page base layer, the gray canvas behind everything',
     },
     {
@@ -57,31 +57,32 @@ Every elevated element in Marigold belongs to one of two families:
 
 Interactivity is **not** what separates them. Controls are always interactive, but a surface can be interactive too. A selectable card is still a surface. The question is the element's role. Does it contain content, or does the user operate it?
 
-The families are told apart by their **boundary**, not their shadow:
+The families are told apart by their **boundary**, not by a shadow. Nothing in normal flow casts one anymore:
 
 - Surfaces wear `ui-surface`: a quiet hairline that hints at a section's edge without adding noise.
-- Controls wear `ui-control`: a clearly visible boundary that makes the element stand off the page as something to operate.
+- Fields wear `ui-control`: a clearly visible boundary that makes the element stand off the page as something to operate. It is a flat well, not a shadow.
+- Button-like controls skip the boundary altogether and wear a raised cap instead: `ui-soft` for the light, neutral cap (secondary Button, Menu trigger) and `ui-contrast` for the dark, bold cap (primary Button, ActionBar). The cap's own gradient and edge are the lift, so it needs neither a separate boundary nor a shadow.
 
 ```html
-<!-- a surface for structure, with minimal noise -->
-<div class="ui-surface shadow-elevation-raised">...</div>
+<!-- a surface for structure, flat in normal flow -->
+<div class="ui-surface">...</div>
 
-<!-- a control, clearly bounded, on the lowest shadow tier -->
-<div class="ui-control shadow-elevation-border">...</div>
+<!-- a control, clearly bounded, and just as flat -->
+<div class="ui-control">...</div>
 ```
 
-Both utilities are built on one primitive. `ui-frame` draws the shared fill, radius, and 1px rim that every raised element needs. `ui-surface` and `ui-control` are **siblings** of that frame. They differ only in which boundary token the rim wears (the quiet `surface-border` versus the denser `control-border`) and in the control's subtle bottom bevel. Neither is a special case of the other. A control is not a kind of surface, it is the operable sibling.
+`ui-surface` and `ui-control` are built on one primitive. `ui-frame` draws the shared fill, radius, and 1px rim that every raised element needs. The two utilities are **siblings** of that frame, differing only in which boundary token the rim wears (the quiet `surface-border` versus the denser `control-border`). Neither is a special case of the other. A control is not a kind of surface, it is the operable sibling. `ui-soft` and `ui-contrast` sit outside this primitive entirely. Caps draw their own ring, glint, and fill gradient, because the lift is the whole point of the recipe.
 
 Two consequences of the rule:
 
-- **The border is the operability cue, and the shadow is supporting texture.** A control's border-tier shadow adds a hint of physical lift, but it never carries the affordance alone. A control stripped of its shadow, such as a selected `<ToggleButton>` or a segment inside a group, still reads as a control through its boundary and fill.
+- **The border is the sole operability cue for fields.** There's no shadow to lean on anymore, so a selected `<ToggleButton>` or a segment inside a group still has to read as a control through its boundary and fill alone.
 - **The boundary is required only where it is the sole cue.** A ghost button carries its affordance through its label and hover state, so it draws no border. A `<ListBox>` inside a `<Popover>` draws no boundary of its own, because the overlay frame already provides the surface. The requirement is on the system, not on every element in isolation.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Give operable elements the control boundary: `ui-control` for custom
-      fields, pickers, and button-like elements.
+      Give operable elements their boundary or cap: `ui-control` for custom
+      fields and pickers, `ui-soft`/`ui-contrast` for button-like elements.
     </DoDescription>
   </Do>
   <Dont>
@@ -92,79 +93,23 @@ Two consequences of the rule:
   </Dont>
 </GuidelineTiles>
 
-## Shadow tiers
+## The overlay shadow
 
-Elevation is split into three tiers, each serving a distinct role in the visual hierarchy. The shadow intensity increases with each tier. **Border** provides a subtle lift for controls, **raised** lifts containers off the page, and **overlay** creates a strong floating effect for temporary UI. Controls sit on the _lowest_ tier by design, because surfaces contain controls, so a card must read as the larger structure beneath the fields it holds. Together the tiers form a clear stacking order where every element sits at the right depth.
+Elevation used to run three shadow tiers. Now there is one. A button is modeled as a raised cap whose own shading is the lift: `ui-soft` for the light, neutral cap (secondary Button, Menu trigger) and `ui-contrast` for the dark, bold cap (primary Button, ActionBar). A field is a flat well built from `ui-control`, no shadow attached. A card or panel separates from the page by fill: a white surface sits on a slightly deepened page background, traced by a whisper-light decorative rim, not lifted by a shadow.
+
+That leaves shadows with exactly one job: mark a surface that has left the page and floats above it.
 
 <ComponentDemo name="elevation-swatches" mode="preview" background="page" />
 
-| Token                      | Use for                    | Components                                  |
-| -------------------------- | -------------------------- | ------------------------------------------- |
-| `shadow-elevation-border`  | Small interactive controls | Input, Checkbox, Radio, Switch, Tag, Button |
-| `shadow-elevation-raised`  | Container surfaces         | Card, Accordion                             |
-| `shadow-elevation-overlay` | Overlay elements           | Dialog, Drawer, Menu, Popover, Toast        |
+| Token                      | Use for           | Components                                      |
+| -------------------------- | ----------------- | ----------------------------------------------- |
+| `shadow-elevation-overlay` | Floating elements | Dialog, Drawer, Menu, Popover, Toast, ActionBar |
 
-This diagram shows how the three shadow tiers layer in a typical form layout. The page background (`bg-background`) is the base. A card (`shadow-elevation-raised`) groups form controls (`shadow-elevation-border`), while a floating panel (`shadow-elevation-overlay`) sits above everything.
+This diagram shows the model end to end: the page background (`bg-background`) is the base, a flat card separates from it by fill alone, flat controls and raised caps sit inside, and a floating panel (`shadow-elevation-overlay`) is the one layer that casts a shadow.
 
 ![Annotated UI showing elevation tiers on a form layout](/elevation/elevation-in-context.svg)
 
-### Border
-
-The subtlest shadow tier. Border elevation gives controls a slight lift, defining their presence against the surface they sit on. These elements combine `ui-control` with `shadow-elevation-border`.
-
-The edge comes from the boundary, not the shadow. `ui-control` draws the rim, and the shadow only adds a subtle lift on top. See [Token Overview](/foundations/token-overview#borders) for the border tokens.
-
-Because border elevation produces only a subtle shadow, these controls need a raised surface behind them to be clearly visible. Placing an input directly on the page background (`bg-background`) makes its edges nearly indistinguishable from the surrounding area. A Card or similar raised container provides the contrast that border-elevated controls rely on.
-
-<ComponentDemo name="elevation-border" />
-
-```html
-<div class="ui-control shadow-elevation-border">...</div>
-```
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Place form controls like inputs, checkboxes, and selects inside a raised
-      surface such as a Card.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't place form controls directly on the page background without a raised
-      container.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-### Raised
-
-One step higher than border. Raised elevation creates visual lift for container surfaces that group related content. Cards and accordions use this tier to stand out from the page background while staying below floating elements. The flat page background behind them is what makes the shadow visible. Without that contrast, the lift disappears.
-
-<ComponentDemo name="elevation-raised" background="page" />
-
-```html
-<div class="ui-surface shadow-elevation-raised">...</div>
-```
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Place raised surfaces on the page background (`bg-background`) so the
-      shadow creates clear visual lift.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't stack raised surfaces inside each other. The similar shadow levels
-      make them visually indistinguishable.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-### Overlay
-
-The strongest shadow tier, reserved for elements that temporarily float above the page. Dialogs, drawers, menus, popovers, and toasts use overlay elevation. Unlike the other tiers, overlays can stack on top of one another: a confirmation dialog over a menu, or a tooltip inside a drawer. They are always dismissible and often paired with a backdrop that dims the content underneath.
+Overlay elevation is reserved for elements that temporarily float above the page. Dialogs, drawers, menus, popovers, toasts, and the action bar use it. Unlike surfaces in flow, overlays can stack on top of one another: a confirmation dialog over a menu, or a tooltip inside a drawer. They are always dismissible and often paired with a backdrop that dims the content underneath.
 
 Click the button below to trigger a toast and see the overlay shadow in action.
 
@@ -183,8 +128,8 @@ Click the button below to trigger a toast and see the overlay shadow in action.
   </Do>
   <Dont>
     <DontDescription>
-      Don't use overlay elevation for persistent page content. If it's always
-      visible, use raised elevation instead.
+      Don't reach for a shadow anywhere else. Cards, panels, and controls
+      separate from the page by fill and boundary, never by casting one.
     </DontDescription>
   </Dont>
 </GuidelineTiles>

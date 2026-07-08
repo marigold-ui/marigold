@@ -27,7 +27,7 @@ export const FileField: ThemeComponent<'FileField'> = {
     base: [
       "[grid-template-areas:'label_remove'_'description_remove'] grid-cols-[1fr_auto] gap-y-0.5 gap-x-2",
       'p-2',
-      'ui-surface shadow-elevation-border',
+      'ui-surface',
     ],
   }),
   itemLabel: cva({

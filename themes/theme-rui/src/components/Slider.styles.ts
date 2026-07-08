@@ -18,7 +18,6 @@ export const Slider: ThemeComponent<'Slider'> = {
   thumb: cva({
     base: [
       'block h-5 w-5 rounded-full border-2 border-primary bg-surface',
-      'shadow-elevation-border',
       'focus-visible:ui-state-focus outline-none',
       'disabled:cursor-not-allowed disabled:border-disabled disabled:shadow-none',
     ],

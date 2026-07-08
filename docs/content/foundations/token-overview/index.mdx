@@ -99,8 +99,9 @@ The foundational layer: page background and text hierarchy.
   tokens={[
     {
       name: 'background',
-      value: 'charcoal-100',
-      useFor: 'Page-level background (<body>)',
+      value: 'oklch(0.945 0.004 54)',
+      useFor:
+        'Page-level background (<body>), a custom literal deepened off the charcoal scale so white surfaces separate by fill',
     },
     { name: 'foreground', value: 'charcoal-900', useFor: 'Primary body text' },
     {
@@ -172,7 +173,7 @@ The primary token represents the strongest visual weight in the interface. It is
 
 The page is gray (`bg-background`), component panels are lighter (`bg-surface`). This contrast creates natural visual hierarchy without relying solely on shadows and borders.
 
-Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`, a translucent decorative hairline applied through the `ui-surface` utility rather than a standalone border. Controls use the same mechanism with a denser edge, the `control-border` token covered under [Control](#control) below. See [Borders](#borders) for the full set of edge tokens, and [Elevation](/foundations/elevation) for how boundaries combine with the shadow tiers.
+Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`, a translucent decorative hairline applied through the `ui-surface` utility rather than a standalone border. Controls use the same mechanism with a denser edge, the `control-border` token covered under [Control](#control) below. See [Borders](#borders) for the full set of edge tokens, and [Elevation](/foundations/elevation) for how boundaries combine with the overlay shadow.
 
 <TokenTable
   tokens={[
@@ -183,7 +184,7 @@ Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`
     },
     {
       name: 'surface-border',
-      value: 'charcoal-950 / 10%',
+      value: 'charcoal-950 / 5%',
       useFor:
         'Decorative rim of a raised surface (Card, Panel, Dialog, Menu), applied via ui-surface. Sits below the contrast threshold, so never for an edge that must be seen',
     },
@@ -191,9 +192,7 @@ Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`
 />
 
 ```tsx
-<div className="ui-surface shadow-elevation-raised">
-  Content on a white surface
-</div>
+<div className="ui-surface">Content on a white surface</div>
 ```
 
 ### Muted
@@ -237,7 +236,7 @@ Some elements need a subtle visual distinction from the white surface they sit o
 
 Controls carry two neutral tokens. Most define their shape with a border, drawn with `control-border` through the `ui-control` utility. A few communicate their state through a filled background instead, and that resting fill is the `control` token.
 
-`control-border` is the visible edge of a bordered control such as a text input, a select, or the secondary Button. It is the denser sibling of `surface-border`, kept above the contrast threshold so the boundary is always seen. The full set of edge tokens lives under [Borders](#borders).
+`control-border` is the visible edge of a bordered control such as a text input or a select. It is the denser sibling of `surface-border`, kept above the contrast threshold so the boundary is always seen. The full set of edge tokens lives under [Borders](#borders).
 
 Some controls have no border to define them. The switch track is the clearest example. When OFF, the track needs to look like a solid, physical groove that the thumb can slide along. A white or transparent background would make it disappear into the surface, while `selected` or `disabled-surface` would send the wrong signal. `control` fills this gap with a medium-weight neutral background that reads as an interactive control in its resting state, and it pairs naturally with `selected-bold` for the ON state.
 
@@ -247,7 +246,7 @@ Some controls have no border to define them. The switch track is the clearest ex
       name: 'control-border',
       value: 'charcoal-950 / 26%',
       useFor:
-        'Visible boundary of a bordered control (inputs, selects, the secondary Button), applied via ui-control. Denser than surface-border and above the contrast threshold, so the edge stays visible',
+        'Visible boundary of a bordered control (inputs, selects), applied via ui-control. Denser than surface-border and above the contrast threshold, so the edge stays visible',
     },
     {
       name: 'control',
@@ -288,6 +287,41 @@ Some controls have no border to define them. The switch track is the clearest ex
     </DontDescription>
   </Dont>
 </GuidelineTiles>
+
+### Soft cap
+
+The secondary Button and the Menu trigger don't wear a boundary at all. They're raised caps: a convex fill gradient with the lift baked into the shading itself, no drop shadow attached. `soft` is the light, neutral cap. Its dark counterpart, `ui-contrast`, retints around `primary` and powers the primary Button and ActionBar instead.
+
+<TokenTable
+  tokens={[
+    {
+      name: 'soft',
+      value: 'charcoal-50',
+      useFor: 'Resting fill for the soft cap (secondary Button, Menu trigger)',
+    },
+    {
+      name: 'soft-hover',
+      value: 'charcoal-100',
+      useFor: 'Fill on hover and expanded states',
+    },
+    {
+      name: 'soft-edge',
+      value: 'charcoal-200',
+      useFor:
+        'Base the soft cap ring derives from (the ring itself sits one step darker, computed at render time)',
+    },
+    {
+      name: 'soft-edge-hover',
+      value: 'charcoal-300',
+      useFor: 'Edge base on hover and expanded states',
+    },
+  ]}
+/>
+
+```tsx
+// Secondary Button / Menu trigger: the soft cap
+<button className="ui-soft">Save</button>
+```
 
 ### Selected
 
@@ -510,7 +544,7 @@ Every boundary token in one place. Marigold draws element edges with five tokens
   tokens={[
     {
       name: 'surface-border',
-      value: 'charcoal-950 / 10%',
+      value: 'charcoal-950 / 5%',
       useFor:
         'Decorative rim of a raised surface (Card, Panel, Dialog, Menu), applied via ui-surface. Translucent and below the contrast threshold, so never for an edge that must be seen',
     },
@@ -528,7 +562,7 @@ Every boundary token in one place. Marigold draws element edges with five tokens
     },
     {
       name: 'border',
-      value: 'charcoal-300 (darkened)',
+      value: 'oklch(0.925 0.004 54)',
       useFor:
         'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Opaque so crossing strokes cannot stack',
     },
@@ -752,7 +786,7 @@ When a modal or tray opens, a backdrop covers the page to focus attention on the
   tokens={[
     {
       name: 'overlay-backdrop',
-      value: 'charcoal-950 / 70%',
+      value: 'charcoal-950 / 45%',
       useFor: 'Semi-transparent backdrop behind modals and trays',
     },
   ]}
@@ -788,13 +822,11 @@ Custom scrollbar tokens keep scrollbars visually consistent with the rest of the
 
 ## Elevation
 
-A three-tier shadow system creates depth without relying on borders alone.
+A single shadow marks the one layer that floats above the page. Everything else in normal flow separates by fill and boundary instead: cards and panels by a deepened page ground, buttons by a raised cap (`ui-soft`, `ui-contrast`), fields by a flat well (`ui-control`).
 
-| Token                      | Use for                    | Components                                  |
-| -------------------------- | -------------------------- | ------------------------------------------- |
-| `shadow-elevation-border`  | Small interactive controls | Input, Checkbox, Radio, Switch, Tag, Button |
-| `shadow-elevation-raised`  | Container surfaces         | Card, Accordion                             |
-| `shadow-elevation-overlay` | Floating elements          | Dialog, Drawer, Menu, Popover, Toast        |
+| Token                      | Use for           | Components                                      |
+| -------------------------- | ----------------- | ----------------------------------------------- |
+| `shadow-elevation-overlay` | Floating elements | Dialog, Drawer, Menu, Popover, Toast, ActionBar |
 
 Shadows are generated using the [Josh Comeau shadow palette technique](https://www.joshwcomeau.com/shadow-palette/) with multiple layers for natural-looking depth.
 

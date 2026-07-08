@@ -34,11 +34,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'overflow-hidden',
       // The shell keeps exactly one structural line: this divider. It bounds
       // the nav column so right-aligned trailing marks (the branch chevrons)
-      // have an edge to anchor against — without it they float. Full hairline
-      // strength (not a dialed-down alpha) so the line stays perceivable.
-      // Everything else (header, footer, top navigation) separates on
-      // whitespace.
-      'bg-background border-r border-surface-border ui-scrollbar',
+      // have an edge to anchor against — without it they float. Rides the
+      // opaque structural --color-border (not the decorative surface rim, which
+      // is now a whisper) so the line stays perceivable. Everything else
+      // (header, footer, top navigation) separates on whitespace.
+      'bg-background border-r border-border ui-scrollbar',
       'sm:data-[state=expanded]:w-64',
       'sm:data-[state=collapsed]:w-0',
       'sm:transition-[width] sm:duration-200 sm:ease-in-out',
@@ -82,9 +82,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'size-control-small [&_svg]:size-4.5',
     ],
   }),
-  // An explicit, opt-in divider — the one line the seamless shell keeps, at
-  // full surface-border strength so it stays perceivable.
-  separator: cva({ base: 'bg-surface-border mx-3 my-1.5 h-px border-0' }),
+  // An explicit, opt-in divider — the one line the seamless shell keeps, on the
+  // opaque structural --color-border so it stays perceivable (the decorative
+  // surface rim is now a whisper).
+  separator: cva({ base: 'bg-border mx-3 my-1.5 h-px border-0' }),
   groupLabel: cva({
     // Quiet caption. Label text aligns with the pill's item text (16px = mx-2 +
     // px-2); a tight pb-1 tucks it close to the section it heads. Every label

@@ -1,0 +1,38 @@
+---
+'@marigold/theme-rui': minor
+---
+
+style(DST-1602): quiet surfaces — one shadow tier, raised caps, tonal panels
+
+The next iteration of the surface/elevation model. Nothing in normal document
+flow casts a shadow anymore: the single remaining tier,
+`shadow-elevation-overlay`, means exactly one thing — a surface floats above the
+page (Dialog, Drawer, Menu, Popover, Toast, ActionBar). `shadow-elevation-border`
+and `shadow-elevation-raised` are **removed**.
+
+- **Secondary Button & Menu trigger → `ui-soft`.** A new standalone modeled
+  utility: a near-white convex cap with a modeled ring one step darker than its
+  edge base and a soft top glint — the light-end mirror of the dark `ui-contrast`
+  cap. No drop shadow; the cap itself is the lift. Backed by new tokens
+  `--color-soft`, `--color-soft-hover`, `--color-soft-edge`,
+  `--color-soft-edge-hover` and the non-inheriting `--soft-edge` property.
+- **Fields are flat wells.** `ui-control` loses its engraved bottom line and its
+  elevation; it is now fill plus the dense `--color-control-border` hairline.
+  Focus / error / disabled behavior is unchanged.
+- **Cards & panels separate by fill.** The page ground deepens to
+  `oklch(0.945 0.004 54)` (decoupled from the charcoal-100 rung) so white panels
+  read as layers by fill delta alone; the decorative rim `--color-surface-border`
+  drops to a `0.05` whisper; `Card`, `Panel`, and the `Accordion` card variant
+  lose their raised shadow.
+- **Structural lines soften.** `--color-border` becomes an opaque
+  `oklch(0.925 0.004 54)` (~1.25:1 on white). The app shell's structural lines —
+  the `Sidebar` divider and `Sidebar.Separator`, and the `ui-scroll-edge`
+  top-nav seam — are repointed from the now-whisper `--color-surface-border` to
+  this structural `--color-border` so they stay perceivable.
+- **Lighter modal backdrop.** `--color-overlay-backdrop` drops from 70% to 45%
+  now that the overlay shadow carries lift alone.
+
+Removing `--shadow-elevation-border` and `--shadow-elevation-raised` is an
+intentional cleanup of the pre-1.0 theme; the neutral Button, Menu trigger, and
+every field/control move to the new model automatically. No component API
+changes.

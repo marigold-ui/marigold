@@ -52,12 +52,13 @@
   /* To switch palette, change the charcoal references below. */
 
   /*
-    Palette step mapping (charcoal, background = step 100):
+    Palette step mapping (charcoal). The page background is no longer a rung —
+    it sits as a decoupled literal between step 100 and 200 (see --color-background).
 
-    50  -- muted bg (subtle tint on white surfaces), primary-foreground
-    100 -- background bg, focus-highlight bg, disabled-surface bg
-    200 -- hover bg
-    300 -- control fill, borders, scrollbar, selected bg
+    50  -- muted bg (subtle tint on white surfaces), primary-foreground, soft cap fill
+    100 -- focus-highlight bg, disabled-surface bg, soft cap hover fill
+    200 -- hover bg, soft cap edge
+    300 -- control fill, borders, scrollbar, selected bg, soft cap edge hover
     400 -- disabled (text)
     600 -- focus ring, secondary (text), placeholder
     900 -- primary text
@@ -65,7 +66,10 @@
   */
 
   /* --- Page Background & Text --- */
-  --color-background: var(--color-charcoal-100);
+  /* The page ground sits between rung 100 and 200: deep enough that white
+     panels read as layers by fill delta alone (1.18:1), decoupled from the
+     rung so disabled fills and hover caps keep their own values. */
+  --color-background: oklch(0.945 0.004 54);
   --color-foreground: var(--color-charcoal-900);
   --color-secondary: var(--color-charcoal-600);
   --color-placeholder: var(--color-charcoal-600);
@@ -96,9 +100,9 @@
      on purpose — where translucent strokes cross, the alpha stacks and
      intersections render darker than the runs. A control boundary is one closed
      stroke that never crosses, so it takes the translucent --color-control-border.
-     Darkened 0.08 L off charcoal-300 (on the token, not the rung) so a line
-     doesn't dissolve into a white field. */
-  --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
+     A quiet literal (~1.25:1 on white) — soft enough for the seamless shell yet
+     still opaque so it doesn't dissolve into a white field. */
+  --color-border: oklch(0.925 0.004 54);
 
   /* --- Form Controls --- */
   /* Functional control edge (inputs, selects, fields, checkboxes, radios). The
@@ -109,6 +113,16 @@
      focus ring stays the perceivable affordance. State overrides stay opaque. */
   --color-control-border: oklch(from var(--color-charcoal-950) l c h / 0.26);
   --color-ring: var(--color-charcoal-600);
+
+  /* --- Soft (raised control cap: secondary Button, Menu trigger) --- */
+  /* The light counterpart to the dark contrast surface: a near-white convex
+     cap. The edge derives from its own base (not the fill) — deriving −0.12 L
+     from the near-white cap would wash the ring out to ~1.5:1, so the base
+     sits two rungs below the cap and darkens with it on hover. */
+  --color-soft: var(--color-charcoal-50);
+  --color-soft-hover: var(--color-charcoal-100);
+  --color-soft-edge: var(--color-charcoal-200);
+  --color-soft-edge-hover: var(--color-charcoal-300);
 
   /* --- Status: Destructive --- */
   --color-destructive: var(--color-red-100);
@@ -144,7 +158,7 @@
   --color-link: var(--color-blue-600);
 
   /* --- Overlay Backdrop --- */
-  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 70%);
+  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 45%);
 
   /* --- Scrollbar --- */
   --color-scrollbar: var(--color-charcoal-300);
@@ -156,10 +170,12 @@
   /* ==================== */
   --color-surface: var(--color-white);
 
-  /* Decorative rim of a surface (Card, Panel, Dialog, Menu). Below the contrast
-     threshold and never load-bearing — an affordance edge takes the denser
-     --color-control-border. Translucent, so it stays whisper-light on any ground. */
-  --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
+  /* Decorative rim of a surface (Card, Panel, Dialog, Menu). A whisper — panel
+     boundaries are carried by the fill delta against the deepened page ground,
+     not by this rim. Never load-bearing; an affordance edge takes the denser
+     --color-control-border, a structural line takes the opaque --color-border.
+     Translucent, so it stays whisper-light on any ground. */
+  --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.05);
 
   /* ui-contrast recipe (primary Button, ActionBar): the lightness (-l)
      and alpha (-a) deltas each layer shifts from the fill. Colors are computed in
@@ -178,25 +194,13 @@
   /*       ELEVATION      */
   /* ==================== */
   /*
-    Three-tier shadow hierarchy:
-      border:  small interactive controls (Input, Checkbox, Radio, Switch, Tag, Button)
-      raised:  container surfaces (Card, Accordion)
-      overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
-
-    The ring owns the crisp edge, so these carry only lift. Negative spread keeps
-    each shadow contained so a dense field stays calm; light from above, warm
-    charcoal-hued tint. Color is a literal oklch (hue 54), tuned independently of
-    the palette rungs — update 54 if the palette hue shifts.
+    Single-tier shadow hierarchy: nothing in normal flow casts a shadow —
+    buttons are raised caps (ui-soft / ui-contrast), fields are flat wells,
+    panels separate by fill against the page. The overlay shadow is the one
+    lift signal (Dialog, Drawer, Menu, Popover, Toast, ActionBar). Color is a
+    literal oklch (hue 54), tuned independently of the palette rungs — update
+    54 if the palette hue shifts.
   */
-  --shadow-elevation-border:
-    0px 1px 8px -1px oklch(0.15 0.02 54 / 0.06),
-    0px 0.5px 0.5px -0.5px oklch(0.15 0.02 54 / 0.033);
-
-  --shadow-elevation-raised:
-    0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
-    0px 2px 4px -2px oklch(0.15 0.02 54 / 0.09),
-    0px 6px 10px -5px oklch(0.15 0.02 54 / 0.063);
-
   --shadow-elevation-overlay:
     0px 1px 2px -1px oklch(0.15 0.02 54 / 0.126),
     0px 4px 8px -3px oklch(0.15 0.02 54 / 0.099),

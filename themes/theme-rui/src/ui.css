@@ -45,6 +45,12 @@
   syntax: '*';
   inherits: false;
 }
+/* Soft cap edge base — non-inheriting so the hover flip (see Button.styles.ts)
+   stays scoped to the element it is set on. */
+@property --soft-edge {
+  syntax: '*';
+  inherits: false;
+}
 
 /*
  * ui-frame — the role-neutral primitive every raised element is built on: a
@@ -69,8 +75,9 @@
 /*
  * Surface role: containers that structure the page — cards, panels, dialogs,
  * menus, overlays. Wears the frame with its default translucent decorative
- * hairline (`--color-surface-border`). Compose with shadow-elevation-raised /
- * -overlay for depth.
+ * hairline (`--color-surface-border`). Flat in normal flow — it separates by
+ * fill against the deepened page ground; compose with shadow-elevation-overlay
+ * only when it floats (Dialog, Popover, Menu, Tray).
  */
 @utility ui-surface {
   @apply ui-frame;
@@ -119,20 +126,42 @@
 }
 
 /*
- * Control role: the operable counterpart to ui-surface, the other variant built
- * on ui-frame. Where a surface wears the soft decorative hairline, a control
- * needs a boundary that stands off the page, so this swaps the ring to the dense
- * --color-control-border and adds a crisp 1px inset line along the bottom (the
- * same stroke a step denser, via an alpha bump). The boundary then reads
- * lighter-top / darker-bottom while the fill stays flat — the gradient lives on
- * the border, not the fill. The line derives from --ui-border-color, so
- * focus/error recolor it and ui-state-disabled removes it. Compose with
- * shadow-elevation-border for lift.
+ * Soft surface: the raised light cap for neutral button-like controls
+ * (secondary Button, Menu trigger). The light-end mirror of the dark
+ * ui-contrast cap — a convex fill gradient (+0.005 / −0.02 L), a modeled ring
+ * one step darker than its edge base (−0.12 L), and a soft top glint
+ * (+0.2 L / 0.9 alpha inset). No drop shadow — the cap itself is the lift.
+ * Like ui-contrast it does not @apply ui-frame; it draws its own ring, glint
+ * and gradient. The ring reads --ui-border-color first so focus/disabled
+ * recolor it like every other surface; the edge base and fill flip via
+ * --soft-edge and --ui-background-color (e.g. the hover flip in Button.styles.ts).
+ *
+ * `background` is excluded from the transition so state bg flips feel instant
+ * (DST-1436).
+ */
+@utility ui-soft {
+  @apply rounded-surface relative transition-[box-shadow];
+  @apply text-foreground;
+  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--soft-edge,var(--color-soft-edge))_calc(l_-_0.12)_c_h))];
+  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--soft-edge,var(--color-soft-edge))_calc(l_+_0.2)_c_h_/_0.9)];
+  /* prettier-ignore */
+  background: linear-gradient(
+    to bottom,
+    oklch(from var(--ui-background-color, var(--color-soft)) calc(l + 0.005) c h),
+    oklch(from var(--ui-background-color, var(--color-soft)) calc(l - 0.02) c h)
+  );
+}
+
+/*
+ * Control role: the operable counterpart to ui-surface, the other sibling built
+ * on ui-frame. Where a surface wears the whisper decorative hairline, a control
+ * needs a boundary that stands off the page, so this swaps the ring to the
+ * dense --color-control-border. Flat by design: no engraving, no elevation —
+ * the soft/contrast caps are the raised things, fields are wells.
  */
 @utility ui-control {
   @apply ui-frame;
   --ui-border-color: var(--color-control-border);
-  @apply inset-shadow-[0_-1px_0_0_oklch(from_var(--ui-border-color)_l_c_h_/_calc(alpha_+_0.08))];
 }
 
 /* ========================= */
@@ -406,7 +435,7 @@
 
 @keyframes sc-edge-b {
   to {
-    box-shadow: 0 1px 0 0 var(--color-surface-border);
+    box-shadow: 0 1px 0 0 var(--color-border);
   }
 }
 
