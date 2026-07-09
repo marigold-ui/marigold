@@ -22,13 +22,14 @@ and `shadow-elevation-raised` are **removed**.
 - **Cards & panels separate by fill.** The page ground deepens to
   `oklch(0.945 0.004 54)` (decoupled from the charcoal-100 rung) so white panels
   read as layers by fill delta alone; the decorative rim `--color-surface-border`
-  drops to a `0.05` whisper; `Card`, `Panel`, and the `Accordion` card variant
-  lose their raised shadow.
+  settles at `0.13` (half the density of the `control-border` edge) so it still
+  traces the boundary where the fill delta nearly vanishes; `Card`, `Panel`, and
+  the `Accordion` card variant lose their raised shadow.
 - **Structural lines soften.** `--color-border` becomes an opaque
-  `oklch(0.925 0.004 54)` (~1.25:1 on white). The app shell's structural lines —
+  `oklch(0.9 0.004 54)` (~1.4:1 on white). The app shell's structural lines —
   the `Sidebar` divider and `Sidebar.Separator`, and the `ui-scroll-edge`
-  top-nav seam — are repointed from the now-whisper `--color-surface-border` to
-  this structural `--color-border` so they stay perceivable.
+  top-nav seam — are repointed from the lighter decorative `--color-surface-border`
+  to this structural `--color-border` so they stay perceivable.
 - **Lighter modal backdrop.** `--color-overlay-backdrop` drops from 70% to 45%
   now that the overlay shadow carries lift alone.
 

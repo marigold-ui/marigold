@@ -184,7 +184,7 @@ Raised surfaces (Card, Panel, Dialog, Menu) draw their rim with `surface-border`
     },
     {
       name: 'surface-border',
-      value: 'charcoal-950 / 5%',
+      value: 'charcoal-950 / 13%',
       useFor:
         'Decorative rim of a raised surface (Card, Panel, Dialog, Menu), applied via ui-surface. Sits below the contrast threshold, so never for an edge that must be seen',
     },
@@ -296,7 +296,7 @@ The secondary Button and the Menu trigger don't wear a boundary at all. They're 
   tokens={[
     {
       name: 'soft',
-      value: 'charcoal-50',
+      value: 'oklch(0.99 0.002 54)',
       useFor: 'Resting fill for the soft cap (secondary Button, Menu trigger)',
     },
     {
@@ -544,7 +544,7 @@ Every boundary token in one place. Marigold draws element edges with five tokens
   tokens={[
     {
       name: 'surface-border',
-      value: 'charcoal-950 / 5%',
+      value: 'charcoal-950 / 13%',
       useFor:
         'Decorative rim of a raised surface (Card, Panel, Dialog, Menu), applied via ui-surface. Translucent and below the contrast threshold, so never for an edge that must be seen',
     },
@@ -562,7 +562,7 @@ Every boundary token in one place. Marigold draws element edges with five tokens
     },
     {
       name: 'border',
-      value: 'oklch(0.925 0.004 54)',
+      value: 'oklch(0.9 0.004 54)',
       useFor:
         'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Opaque so crossing strokes cannot stack',
     },
@@ -579,9 +579,9 @@ Every boundary token in one place. Marigold draws element edges with five tokens
   **decorative** rim of a raised surface (Card, Panel, Dialog). It sits below
   the contrast threshold, so never use it where the edge has to be seen.
   `control-border` marks an element you **operate**. It is the same translucent
-  charcoal stroke as `surface-border` at about 2.5 times the density, so it
-  stays clearly visible and adapts to the ground beneath it. `disabled-border`
-  is that control edge **dimmed** for an inactive control, receding rather than
+  charcoal stroke as `surface-border` at about twice the density, so it stays
+  clearly visible and adapts to the ground beneath it. `disabled-border` is that
+  control edge **dimmed** for an inactive control, receding rather than
   vanishing. `border` draws **structural lines** such as dividers, grid lines,
   and section rules. It is opaque on purpose, because separators are many
   strokes drawn by many cells and translucent strokes would render darker
