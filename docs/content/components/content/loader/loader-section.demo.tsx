@@ -54,7 +54,7 @@ const Venues = () => {
       <Stack space={2}>
         {data.items.map(v => (
           <Card key={v.id}>
-            <Card.Body>
+            <Card.Content>
               <Aside sideWidth="160px" space={8}>
                 <img alt="" src={v.image} />
                 <Stack
@@ -75,7 +75,7 @@ const Venues = () => {
                   </Stack>
                 </Stack>
               </Aside>
-            </Card.Body>
+            </Card.Content>
           </Card>
         ))}
       </Stack>

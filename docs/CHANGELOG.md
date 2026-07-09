@@ -338,7 +338,7 @@
 
   **What changed:**
   - The previous prop-based API (`padding`, `space`, etc.) has been removed.
-  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Body`, `Card.Footer`, and `Card.Preview`.
+  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Content`, `Card.Footer`, and `Card.Preview`.
   - A `CardContext` is now required — sub-components will throw an error if used outside of a `<Card>`.
 
   **Migration:**
@@ -352,7 +352,7 @@
   // After
   <Card>
     <Card.Header>Title</Card.Header>
-    <Card.Body><SomeContent /></Card.Body>
+    <Card.Content><SomeContent /></Card.Content>
     <Card.Footer>Actions</Card.Footer>
   </Card>
   ```
@@ -550,6 +550,38 @@
   - @marigold/system@18.0.0-beta.0
   - @marigold/components@18.0.0-beta.0
   - @marigold/icons@1.3.39-beta.0
+
+## 17.9.0
+
+### Minor Changes
+
+- 7fc3b53: feat(DST-1446): `marigold search` to find components by docs content
+
+  Adds `marigold search <query>`, which ranks components by matching the query against their docs content (title, description, section headings, and section prose), not just the component name. This collapses the "list → guess → docs → retry" discovery loop (3 to 5 calls) that AI agents run today into a single ranked, snippet-bearing, deep-linked result.
+
+  - **CLI:** new `loadSearchIndex()` / `searchComponentDocs()` library functions and a `search` command wrapping them, with `--limit`, `--format markdown|json|plain`, `--fresh` and `--offline` (reusing the existing cache and `sanitizeRemote` — no new dependencies). Scoring weights title ×3, description ×2, each matching heading ×2, and each matching section snippet ×1. Tab completion and telemetry cover the new command. No-match exits 0 (`[]` for `--format json`).
+  - **Docs:** `build-manifest.mjs` now also emits `public/component-search.json` — a content index over the component MDX (per-component `headings` plus prose-bearing `{ heading, snippet }` sections, with JSX/imports/code-fences stripped). It is written after `manifest.json` so a content-index bug can never block the manifest that `list`/`docs` depend on.
+
+### Patch Changes
+
+- a912c89: Improve spacing between sidebar navigation sections for better visual separation.
+- c5bfbb1: docs(DST-1405): document the Marigold CLI on the docs site
+
+  Adds a new **CLI** page under Getting Started (`/getting-started/cli`). The single page covers installation (npm / pnpm / npx), usage with AI agents, every command (`docs`, `list`, `examples`, `init`, `completion`, `telemetry`) with flags and examples, and configuration (environment variables and per-OS cache / config locations). Content mirrors `packages/cli/README.md`.
+
+  Cross-links were added from the Installation page (`marigold init` as a faster setup path) and the Usage with AI page (the AI-agents section of the new CLI page).
+
+- Updated dependencies [ed2d9ae]
+- Updated dependencies [e686474]
+- Updated dependencies [2fc7b96]
+- Updated dependencies [ed2d9ae]
+- Updated dependencies [508ec2c]
+- Updated dependencies [24354a9]
+- Updated dependencies [4d44517]
+  - @marigold/components@17.9.0
+  - @marigold/theme-rui@5.5.0
+  - @marigold/system@17.9.0
+  - @marigold/icons@1.3.44
 
 ## 17.8.0
 

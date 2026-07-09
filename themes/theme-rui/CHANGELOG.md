@@ -672,6 +672,40 @@ left: -10000px`) so it cannot expand the document's scrollable
   - @marigold/system@18.0.0-beta.0
   - @marigold/components@18.0.0-beta.0
 
+## 5.5.0
+
+### Minor Changes
+
+- ed2d9ae: feat(DST-1551): add `DateRangePicker` component
+
+  New `<DateRangePicker>` lets users enter or select a start–end date range through a single field, mirroring `<DatePicker>`'s API and behaviour. Two date inputs (`start`/`end`) sit in one field group with a calendar button that opens a `<RangeCalendar>` in a popover on desktop and a tray on small screens. Supports per-input paste (ISO/EU/US formats), `granularity` (inline time segments), `visibleDuration` (up to three months), and the usual Marigold field props (`disabled`, `readOnly`, `required`, `error`, `errorMessage`, `description`, `minValue`, `maxValue`, `dateUnavailable`, `width`, `variant`, `size`). Adds a matching `DateRangePicker` theme entry to `theme-rui`.
+
+### Patch Changes
+
+- ed2d9ae: fix(DST-1551): round the `RangeCalendar` hover and focus highlight on days outside the selected range
+
+  Days outside the selected range now round their hover and focus highlight to match the selected state, instead of showing a square highlight against the rounded endpoints. In-range cells stay square so the range fill still connects seamlessly.
+
+- 24354a9: fix(DST-1560): correct the `@source inline` padding safelist to the real spacing tokens
+
+  The padding safelist in `styles.css` still used the pre-rename vocabulary `{compact, tight, regular, relaxed, spacious}`, but the spacing tokens were long ago renamed to `{tight, snug, regular, relaxed, loose}`. As a result `compact`/`spacious` force-generated dead utility classes (resolving to undefined `--spacing-*` vars), while the real `snug`/`loose` tokens were never safelisted and so were unavailable in scanner-excluded stories and in the (unscanned) docs app. The leading family-less line was also stale — it predates the `square`/`squish`/`stretch` split.
+
+  Replaced the three lines with the three inset-padding families (`square`/`squish`/`stretch`) using the real size names, so utility classes like `p-squish-relaxed` resolve to a concrete value and the full inset vocabulary is available where the scanner can't see it.
+
+- 4d44517: fix: make Select and Menu overlay appear above Drawer on small screens
+
+  On small screens, `Select` and `Menu` render their options in a `Tray` (bottom sheet). The `Tray` overlay had `z-40` in the theme while the `Drawer` overlay uses `z-50`, so the tray rendered behind an open drawer and was unreachable.
+
+  Moved the `z-index` from the theme style file into the `TrayModal` component implementation (matching the project's z-index architecture rule), and raised it to `z-50`. Both the `Drawer` and `Tray` portal to `document.body`; at equal z-index, DOM order determines stacking. The `Tray` is always mounted after the `Drawer`, so it correctly appears on top.
+
+- Updated dependencies [ed2d9ae]
+- Updated dependencies [e686474]
+- Updated dependencies [2fc7b96]
+- Updated dependencies [508ec2c]
+- Updated dependencies [4d44517]
+  - @marigold/components@17.9.0
+  - @marigold/system@17.9.0
+
 ## 5.4.1
 
 ### Patch Changes

@@ -61,34 +61,34 @@ export const Horizontal = meta.story({
     <Scrollable {...args}>
       <div className="flex gap-2">
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
       </div>
     </Scrollable>
