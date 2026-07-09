@@ -13,7 +13,7 @@ A `<SectionMessage>` is a container with a severity icon, an optional title, the
 
 <SectionMessageAnatomy />
 
-- **Container**: Wraps the message and applies the variant styling.
+- **Container**: Wraps the message on a neutral surface with a muted variant-colored border.
 - **Icon**: Variant icon that reinforces the severity.
 - **Title** _(optional)_: Short headline summarizing the message. Renders as a semantic heading; adjust its level with the `headingLevel` prop so it fits the surrounding document outline. Don't end the title with a period, and don't repeat it in the content.
 - **Description** _(optional)_: A short summary directly below the title.
@@ -26,14 +26,14 @@ A `<SectionMessage>` is a container with a severity icon, an optional title, the
 
 <AppearanceTable component={'SectionMessage'} />
 
-Each variant communicates a different level of severity, helping users quickly understand the nature of the message.
+Every variant sits on a neutral surface, with the severity carried by a muted variant-colored border and the colored icon rather than a tinted background. This keeps standard `<Button>` and `<Link>` actions placed inside reading correctly, and body text at full contrast. The colored border, distinct icon shape and color, and title keep the variants distinguishable without relying on color alone.
 
-| Variant   | Description                                                               | When to use                                                                                   |
-| --------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `info`    | Blue-tinted message for neutral information. This is the default variant. | General announcements, tips, or contextual information that doesn't require immediate action. |
-| `success` | Green-tinted message indicating a positive outcome.                       | Confirming a completed action or successful state, like a saved form or resolved issue.       |
-| `warning` | Yellow-tinted message signaling caution.                                  | Potential issues or conditions the user should be aware of before proceeding.                 |
-| `error`   | Red-tinted message for critical problems.                                 | Errors that need attention, like validation failures or system errors.                        |
+| Variant   | Description                                                  | When to use                                                                                   |
+| --------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `info`    | Blue info icon for neutral information. The default variant. | General announcements, tips, or contextual information that doesn't require immediate action. |
+| `success` | Green check icon indicating a positive outcome.              | Confirming a completed action or successful state, like a saved form or resolved issue.       |
+| `warning` | Yellow alert icon signaling caution.                         | Potential issues or conditions the user should be aware of before proceeding.                 |
+| `error`   | Red triangle icon for critical problems.                     | Errors that need attention, like validation failures or system errors.                        |
 
 ## Usage
 
