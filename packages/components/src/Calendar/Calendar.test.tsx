@@ -362,33 +362,46 @@ describe('presets on small screens', () => {
 
   test('stack items show the resolved value as a trailing sublabel', () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
-    render(<Presets.Component />);
+    render(<Presets.Component defaultPresetsOpen />);
 
     const option = screen.getByRole('option', { name: 'Kickoff' });
     expect(option).toHaveTextContent('Aug 1');
   });
 
-  test('shows presets first; Custom… opens the calendar; Back returns', async () => {
+  test('shows the grid first; Quick selection opens the list; Custom… returns', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
 
-    expect(
-      screen.getByRole('listbox', { name: 'Quick selection' })
-    ).toBeVisible();
-    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: 'Custom…' }));
     expect(screen.getByRole('grid')).toBeVisible();
     expect(
       screen.queryByRole('listbox', { name: 'Quick selection' })
     ).not.toBeInTheDocument();
-    const back = screen.getByRole('button', { name: 'Back' });
-    expect(back).toHaveFocus();
+    const open = screen.getByRole('button', { name: 'Quick selection' });
+    expect(open).not.toHaveFocus();
 
-    await user.click(back);
+    await user.click(open);
     expect(
       screen.getByRole('listbox', { name: 'Quick selection' })
     ).toBeVisible();
     expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Custom…' })).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Custom…' }));
+    expect(screen.getByRole('grid')).toBeVisible();
+    const openAgain = screen.getByRole('button', { name: 'Quick selection' });
+    expect(openAgain).toBeVisible();
+    expect(openAgain).toHaveFocus();
+  });
+
+  test('defaultPresetsOpen starts on the list; calendar view shows Back', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component defaultPresetsOpen />);
+
+    expect(
+      screen.getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Custom…' }));
+    expect(screen.getByRole('grid')).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Back' })).toBeVisible();
   });
 });

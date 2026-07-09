@@ -224,10 +224,32 @@ const PresetListBox = <T,>({
   );
 };
 
-// Back row shown in the calendar view on small screens, returning to the
-// preset list.
+// Nav row shown in the calendar view on small screens, either returning to
+// the preset list ('back', when the list is the default view) or opening it
+// ('open', when the grid is the default view).
 // ---------------
-export const PresetsBackButton = ({ onPress }: { onPress: () => void }) => {
+interface PresetsNavButtonProps {
+  onPress: () => void;
+  /**
+   * Focus the row when it mounts — set only when the view switch came from
+   * in-component navigation, never on initial mount (inline calendars must
+   * not steal focus on page load).
+   */
+  autoFocus?: boolean;
+  /**
+   * 'back' — the list is the default view (picker trays): chevron-left +
+   * "Back", reads as returning. 'open' — the grid is the default view
+   * (inline calendars): "Quick selection" + chevron-right, reads as the
+   * entry point into the preset list.
+   */
+  variant: 'back' | 'open';
+}
+
+export const PresetsNavButton = ({
+  onPress,
+  autoFocus,
+  variant,
+}: PresetsNavButtonProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const listBoxClassNames = useClassNames({ component: 'ListBox' });
 
@@ -237,16 +259,21 @@ export const PresetsBackButton = ({ onPress }: { onPress: () => void }) => {
       // required: RAC's calendar context only defines "previous"/"next"
       // slots.
       slot={null}
-      // Mounts only as a result of the user tapping "Custom…", so taking
-      // focus is expected and keeps keyboard users oriented.
-      autoFocus
+      autoFocus={autoFocus}
       onPress={onPress}
       className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
     >
-      <span className="flex items-center gap-2">
-        <ChevronLeft size={16} />
-        {stringFormatter.format('back')}
-      </span>
+      {variant === 'back' ? (
+        <span className="flex items-center gap-2">
+          <ChevronLeft size={16} />
+          {stringFormatter.format('back')}
+        </span>
+      ) : (
+        <span className="flex w-full items-center justify-between gap-3">
+          {stringFormatter.format('presets')}
+          <ChevronRight size={16} />
+        </span>
+      )}
     </AriaButton>
   );
 };

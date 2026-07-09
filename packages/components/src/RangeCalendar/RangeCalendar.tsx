@@ -16,7 +16,7 @@ import { CalendarGrid } from '../Calendar/CalendarGrid';
 import { CalendarHeader } from '../Calendar/CalendarHeader';
 import { CalendarListBox } from '../Calendar/CalendarListBox';
 import {
-  PresetsBackButton,
+  PresetsNavButton,
   RangeCalendarPresets,
 } from '../Calendar/CalendarPresets';
 import { CalendarContext } from '../Calendar/Context';
@@ -98,6 +98,13 @@ export interface RangeCalendarProps<T extends DateValue = DateValue>
    * `minValue`/`maxValue` or hit unavailable dates are disabled.
    */
   presets?: DateRangePreset[];
+  /**
+   * Whether the quick-select preset list is shown before the calendar grid
+   * on small screens. Has no effect on larger screens, where presets render
+   * as a rail beside the grid.
+   * @default false
+   */
+  defaultPresetsOpen?: boolean;
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -134,6 +141,7 @@ const _RangeCalendar = <T extends DateValue>({
   visibleDuration = { months: 1 },
   pageBehavior = 'visible',
   presets,
+  defaultPresetsOpen = false,
   ...rest
 }: RangeCalendarProps<T>) => {
   const visibleMonths = visibleDuration.months;
@@ -166,8 +174,9 @@ const _RangeCalendar = <T extends DateValue>({
   const isSmallScreen = useSmallScreen();
   const [smallScreenView, setSmallScreenView] = useState<
     'presets' | 'calendar'
-  >('presets');
-  // Focus the list only when returning from the calendar view, never on mount.
+  >(defaultPresetsOpen ? 'presets' : 'calendar');
+  // Focus the nav row only when the view switch came from in-component
+  // navigation, never on initial mount.
   const [hasNavigated, setHasNavigated] = useState(false);
 
   // react-aria's `useRangeCalendar` commits an in-progress range on any window
@@ -312,8 +321,13 @@ const _RangeCalendar = <T extends DateValue>({
                   />
                 ) : (
                   <>
-                    <PresetsBackButton
-                      onPress={() => setSmallScreenView('presets')}
+                    <PresetsNavButton
+                      variant={defaultPresetsOpen ? 'back' : 'open'}
+                      autoFocus={hasNavigated}
+                      onPress={() => {
+                        setSmallScreenView('presets');
+                        setHasNavigated(true);
+                      }}
                     />
                     <div className="relative flex min-w-0 flex-col">
                       {content}

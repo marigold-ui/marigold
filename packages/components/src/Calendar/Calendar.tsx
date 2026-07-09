@@ -11,7 +11,7 @@ import {
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarListBox } from './CalendarListBox';
-import { CalendarPresets, PresetsBackButton } from './CalendarPresets';
+import { CalendarPresets, PresetsNavButton } from './CalendarPresets';
 import { CalendarContext } from './Context';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
@@ -80,6 +80,13 @@ export interface CalendarProps extends Omit<
    * `minValue`/`maxValue` or are unavailable are disabled.
    */
   presets?: DatePreset[];
+  /**
+   * Whether the quick-select preset list is shown before the calendar grid
+   * on small screens. Has no effect on larger screens, where presets render
+   * as a rail beside the grid.
+   * @default false
+   */
+  defaultPresetsOpen?: boolean;
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -98,6 +105,7 @@ const _Calendar = ({
   visibleDuration = { months: 1 },
   pageBehavior = 'visible',
   presets,
+  defaultPresetsOpen = false,
   ...rest
 }: CalendarProps) => {
   const visibleMonths = visibleDuration?.months ?? 1;
@@ -124,8 +132,9 @@ const _Calendar = ({
   const isSmallScreen = useSmallScreen();
   const [smallScreenView, setSmallScreenView] = useState<
     'presets' | 'calendar'
-  >('presets');
-  // Focus the list only when returning from the calendar view, never on mount.
+  >(defaultPresetsOpen ? 'presets' : 'calendar');
+  // Focus the nav row only when the view switch came from in-component
+  // navigation, never on initial mount.
   const [hasNavigated, setHasNavigated] = useState(false);
 
   const ViewMap = {
@@ -223,8 +232,13 @@ const _Calendar = ({
               />
             ) : (
               <>
-                <PresetsBackButton
-                  onPress={() => setSmallScreenView('presets')}
+                <PresetsNavButton
+                  variant={defaultPresetsOpen ? 'back' : 'open'}
+                  autoFocus={hasNavigated}
+                  onPress={() => {
+                    setSmallScreenView('presets');
+                    setHasNavigated(true);
+                  }}
                 />
                 <div className="relative flex min-w-0 flex-col">{content}</div>
               </>

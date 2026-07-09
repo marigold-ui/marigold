@@ -148,7 +148,11 @@ const DatePickerBase = ({
         <Tray>
           <Tray.Title>{rest.label}</Tray.Title>
           <Tray.Content>
-            <Calendar disabled={disabled} presets={presets} />
+            <Calendar
+              disabled={disabled}
+              presets={presets}
+              defaultPresetsOpen
+            />
           </Tray.Content>
           <Tray.Actions>
             <Button slot="close">{stringFormatter.format('close')}</Button>
@@ -157,7 +161,11 @@ const DatePickerBase = ({
       ) : (
         <Popover matchTriggerWidth={false}>
           <Dialog>
-            <Calendar disabled={disabled} presets={presets} />
+            <Calendar
+              disabled={disabled}
+              presets={presets}
+              defaultPresetsOpen
+            />
           </Dialog>
         </Popover>
       )}
