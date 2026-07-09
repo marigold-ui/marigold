@@ -283,7 +283,7 @@ When a table has no data to display, whether from empty search results, filters 
   </Dont>
 </GuidelineTiles>
 
-### Sticky headers
+### Sticky headers and footers
 
 For tables with many rows that require scrolling, sticky headers keep column labels visible as users scroll through data. This helps users maintain context about what each column represents.
 
@@ -304,7 +304,11 @@ For tables with many rows that require scrolling, sticky headers keep column lab
   </Dont>
 </GuidelineTiles>
 
-### Footer totals
+Table footers can be sticky too, keeping the summary row visible while users scroll through long tables.
+
+<ComponentDemo name="table-footer-sticky" />
+
+### Display totals
 
 Use `<Table.Footer>` to display a summary row after the table body, such as totals, counts, or averages. Unlike faking a totals row with an extra `<Table.Row>` inside the body, the footer renders as a semantic `<tfoot>`, which keeps it out of the body's scroll and sticky-header semantics and is announced correctly by assistive technology.
 
@@ -325,10 +329,6 @@ Compose the summary row from `<Table.Row>` and `<Table.Cell>` just like the body
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-For long, scrollable tables, make the footer sticky so the summary stays visible while users scroll through the rows, mirroring how sticky headers keep column labels in view.
-
-<ComponentDemo name="table-footer-sticky" />
 
 ### Text selection
 

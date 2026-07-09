@@ -1,8 +1,10 @@
 import { venues } from '@/lib/data/venues';
 import { NumericFormat, Table } from '@marigold/components';
 
+const data = venues.slice(0, 5);
+
 export default () => {
-  const totalCapacity = venues.reduce((sum, venue) => sum + venue.capacity, 0);
+  const totalCapacity = data.reduce((sum, venue) => sum + venue.capacity, 0);
 
   return (
     <Table aria-label="Venues with total capacity">
@@ -12,7 +14,7 @@ export default () => {
         <Table.Column alignX="right">Capacity</Table.Column>
       </Table.Header>
       <Table.Body>
-        {venues.map(venue => (
+        {data.map(venue => (
           <Table.Row key={venue.id}>
             <Table.Cell>{venue.name}</Table.Cell>
             <Table.Cell>
