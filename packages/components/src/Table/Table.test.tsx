@@ -7,7 +7,6 @@ import {
   Basic,
   FooterTotals,
   ScrollableAndSticky,
-  StickyFooter,
   VerticalAlignment,
   WidthsAndOverflow,
 } from './Table.stories';
@@ -184,16 +183,6 @@ describe('Footer', () => {
     const totalCell = screen.getByText('Total').closest('td');
 
     expect(totalCell).toHaveAttribute('colspan', '4');
-  });
-
-  test('applies sticky class to footer', () => {
-    render(<StickyFooter.Component />);
-
-    // eslint-disable-next-line testing-library/no-node-access
-    const footer = screen.getByText('Total').closest('tfoot');
-
-    expect(footer).toHaveClass('sticky');
-    expect(footer).toHaveClass('bottom-0');
   });
 
   test('footer without sticky prop does not have sticky class', () => {

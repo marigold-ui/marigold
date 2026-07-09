@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { TableFooter as RACTableFooter } from 'react-aria-components/Table';
+import { TableFooter as RACTableFooter } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { useTableContext } from './Context';
 

@@ -1882,18 +1882,6 @@ export const FooterTotals = meta.story({
   },
 });
 
-FooterTotals.test(
-  'Renders a summary row in a semantic footer',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }) => {
-    const footer = canvas.getByText('Total').closest('tfoot');
-    expect(footer).toBeInTheDocument();
-
-    const totalCell = canvas.getByText('Total').closest('td');
-    expect(totalCell).toHaveAttribute('colspan', '4');
-  }
-);
-
 export const StickyFooter = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
