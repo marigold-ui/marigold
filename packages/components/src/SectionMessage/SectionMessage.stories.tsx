@@ -156,24 +156,24 @@ export const ControlledSectionMessage = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true }, surface: false },
   render: args => {
-    const [deleted, setDeleted] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
       <Stack space={4} alignX="left">
-        <Button variant="secondary" onPress={() => setDeleted(true)}>
-          Delete item
+        <Button variant="secondary" onPress={() => setOpen(true)}>
+          Show message
         </Button>
         <SectionMessage
           {...args}
           variant="success"
           closeButton
-          open={deleted}
-          onOpenChange={setDeleted}
+          open={open}
+          onOpenChange={setOpen}
         >
           <SectionMessage.Title>Item deleted</SectionMessage.Title>
           <SectionMessage.Content>
-            The item was removed successfully. Dismiss this message or delete
-            again to bring it back.
+            The item was removed successfully. Dismiss this message or press the
+            button again to bring it back.
           </SectionMessage.Content>
         </SectionMessage>
       </Stack>
@@ -182,12 +182,12 @@ export const ControlledSectionMessage = meta.story({
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Not shown until "Delete item" is pressed.
+    // Not shown until "Show message" is pressed.
     await expect(
       canvas.queryByRole('heading', { name: 'Item deleted' })
     ).not.toBeInTheDocument();
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Delete item' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Show message' }));
 
     const heading = canvas.getByRole('heading', { name: 'Item deleted' });
     await expect(heading).toBeInTheDocument();
