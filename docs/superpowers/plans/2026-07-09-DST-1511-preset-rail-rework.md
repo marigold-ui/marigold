@@ -1490,3 +1490,192 @@ git commit -m "chore(DST-1511): add changeset for date presets"
 - Trigger Chromatic VRT via the `/vrt` skill (user approves).
 - Run the a11y-audit agent on `CalendarPresets.tsx` + the integrated stories.
 - Deferred-findings ledger from the previous run does not apply (that code was discarded); do a final whole-branch review before PR.
+
+---
+
+### Task 10: Small-screen two-view preset flow
+
+_Added 2026-07-09 after the user's Storybook review of Tasks 1–7; executes BEFORE Tasks 8–9. Spec decision 5._
+
+On small screens, a calendar with presets must show **either** the preset list **or** the grid — starting on the list — instead of stacking both. The list gains a trailing "Custom…" entry that switches to the calendar view; the calendar view gains a top back row returning to the list. The switcher lives inside `Calendar`/`RangeCalendar`, so picker trays inherit it unchanged and tray close/reopen resets to the list. Desktop (`sm+`) is untouched (rail beside grid).
+
+**Files:**
+
+- Modify: `packages/components/src/intl/messages.ts` + `messages.test.ts` (key `presetsCustom`; back row reuses the existing `back` key)
+- Modify: `packages/components/src/Calendar/CalendarPresets.tsx` (container restructure, `onCustom`/`autoFocus` props, `PresetsCustomButton`, exported `PresetsBackButton`)
+- Modify: `packages/components/src/Calendar/Calendar.tsx`, `packages/components/src/RangeCalendar/RangeCalendar.tsx` (view state + branch)
+- Test: `packages/components/src/Calendar/Calendar.test.tsx`, `packages/components/src/RangeCalendar/RangeCalendar.test.tsx`, `packages/components/src/DatePicker/DatePicker.test.tsx`
+
+**Interfaces:**
+
+- Consumes: Task 5/6's `PresetListBox`, `CalendarPresets`, `RangeCalendarPresets`; `useSmallScreen`; ListBox theme item classes; `../icons/ChevronLeft` and `../icons/ChevronRight`.
+- Produces: `CalendarPresets`/`RangeCalendarPresets` accept `{ presets, onCustom?: () => void, autoFocus?: boolean }`; `PresetsBackButton({ onPress: () => void })` exported from `CalendarPresets.tsx`.
+
+- [ ] **Step 1: Failing intl assertions, then messages**
+
+Add to `messages.test.ts` in the de-DE preset block: `expect(de.presetsCustom).toBe('Benutzerdefiniert…');`; en-US: `expect(en.presetsCustom).toBe('Custom…');`. Run `pnpm vitest run --project=unit-tests packages/components/src/intl/messages.test.ts` → FAIL. Add the two messages (de: `presetsCustom: 'Benutzerdefiniert…',`; en: `presetsCustom: 'Custom…',` — keep the preset group's alphabetical placement). Re-run → PASS. For the back row, REUSE the existing generic `back` key (`messages.ts:8` de `'Zurück'`, `:64` en `'Back'`) — do not add a `presetsBack` key.
+
+- [ ] **Step 2: Restructure `PresetListBox` and add the two buttons**
+
+In `CalendarPresets.tsx`:
+
+1. Extend the props of `PresetListBox` (and thread through `CalendarPresets`/`RangeCalendarPresets`):
+
+```tsx
+  /**
+   * Renders a trailing "Custom…" row that hands navigation to the caller.
+   * Only supplied on small screens, where the presets and the calendar grid
+   * are alternate views.
+   */
+  onCustom?: () => void;
+  /**
+   * Focus the listbox when it (re)mounts — used when returning from the
+   * calendar view so keyboard users are not dropped. Never set on initial
+   * mount.
+   */
+  autoFocus?: boolean;
+```
+
+2. Restructure the render: the outer element becomes a `<div className={classNames.calendarPresets}>`; the `AriaListBox` inside keeps `listBoxClassNames.list` (plus `autoFocus={autoFocus}`) and its aria-label/selection props; after the list, when `onCustom` is set, render:
+
+```tsx
+{
+  onCustom ? (
+    <AriaButton
+      onPress={onCustom}
+      className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
+    >
+      <div className="selection-indicator contents">
+        <Check size={16} strokeWidth="3" className="hidden" />
+        <span className="text-link flex w-full items-center justify-between gap-3">
+          {stringFormatter.format('presetsCustom')}
+          <ChevronRight size={16} />
+        </span>
+      </div>
+    </AriaButton>
+  ) : null;
+}
+```
+
+with `import { Button as AriaButton } from 'react-aria-components/Button';`. The hidden check in the `selection-indicator` slot keeps the label aligned with the option rows. `text-link` is a real theme-rui utility (`--color-link` in `themes/theme-rui/src/tokens.css:127`, used by `Link.styles.ts`) — use it as written.
+
+3. Add the back row component (exported — the calendars render it in the calendar view):
+
+```tsx
+export const PresetsBackButton = ({ onPress }: { onPress: () => void }) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const listBoxClassNames = useClassNames({ component: 'ListBox' });
+
+  return (
+    <AriaButton
+      // Mounts only as a result of the user tapping "Custom…", so taking
+      // focus is expected and keeps keyboard users oriented.
+      autoFocus
+      onPress={onPress}
+      className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
+    >
+      <span className="flex items-center gap-2">
+        <ChevronLeft size={16} />
+        {stringFormatter.format('back')}
+      </span>
+    </AriaButton>
+  );
+};
+```
+
+- [ ] **Step 3: View switch in both calendars**
+
+In `Calendar.tsx` (and mirrored in `RangeCalendar.tsx`), add `useState` + `useSmallScreen` and replace the presets branch:
+
+```tsx
+const isSmallScreen = useSmallScreen();
+const [smallScreenView, setSmallScreenView] = useState<'presets' | 'calendar'>(
+  'presets'
+);
+// Focus the list only when returning from the calendar view, never on mount.
+const [hasNavigated, setHasNavigated] = useState(false);
+```
+
+```tsx
+{
+  presets?.length ? (
+    isSmallScreen ? (
+      smallScreenView === 'presets' ? (
+        <CalendarPresets
+          presets={presets}
+          autoFocus={hasNavigated}
+          onCustom={() => {
+            setSmallScreenView('calendar');
+            setHasNavigated(true);
+          }}
+        />
+      ) : (
+        <>
+          <PresetsBackButton onPress={() => setSmallScreenView('presets')} />
+          <div className="relative flex min-w-0 flex-col">{content}</div>
+        </>
+      )
+    ) : (
+      <>
+        <CalendarPresets presets={presets} />
+        <div className="relative flex min-w-0 flex-col">{content}</div>
+      </>
+    )
+  ) : (
+    content
+  );
+}
+```
+
+(RangeCalendar uses `RangeCalendarPresets`; keep each file's existing JSX around the branch untouched.)
+
+- [ ] **Step 4: Unit tests (small screens, `mockMatchMedia`)**
+
+In `Calendar.test.tsx`'s small-screen describe block (from Task 5), add:
+
+```tsx
+test('shows presets first; Custom… opens the calendar; Back returns', async () => {
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  render(<Presets.Component />);
+
+  expect(
+    screen.getByRole('listbox', { name: 'Quick selection' })
+  ).toBeVisible();
+  expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'Custom…' }));
+  expect(screen.getByRole('grid')).toBeVisible();
+  expect(
+    screen.queryByRole('listbox', { name: 'Quick selection' })
+  ).not.toBeInTheDocument();
+  const back = screen.getByRole('button', { name: 'Back' });
+  expect(back).toHaveFocus();
+
+  await user.click(back);
+  expect(
+    screen.getByRole('listbox', { name: 'Quick selection' })
+  ).toBeVisible();
+  expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+});
+```
+
+(Use the file's existing `user`/`userEvent` setup.) Mirror the same test in `RangeCalendar.test.tsx`. The Task 5/6 sublabel tests still pass unchanged — the list is the initial view.
+
+In `DatePicker.test.tsx`, add a tray-flow test (render the `Presets` story with small-screen matchMedia, open via the action button, assert the dialog shows the listbox first and no grid, navigate to the calendar and back). Follow the file's existing tray/overlay test patterns; if jsdom cannot exercise the tray reliably, report DONE_WITH_CONCERNS with specifics instead of forcing a flaky test.
+
+- [ ] **Step 5: Verify desktop unaffected**
+
+Run: `pnpm vitest run --project=storybook-tests packages/components/src/Calendar/Calendar.stories.tsx packages/components/src/RangeCalendar/RangeCalendar.stories.tsx packages/components/src/DatePicker/DatePicker.stories.tsx packages/components/src/DateRangePicker/DateRangePicker.stories.tsx`
+Expected: PASS — desktop rail + stays-open tests unchanged.
+
+Run: `pnpm vitest run --project=unit-tests packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker packages/components/src/intl`
+Expected: PASS.
+
+- [ ] **Step 6: Typecheck and commit**
+
+Run: `pnpm typecheck:only` — no NEW errors vs the 17-error baseline.
+
+```bash
+git add packages/components/src/intl packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker
+git commit -m "feat(DST-1511): show presets and calendar as alternate views on small screens"
+```

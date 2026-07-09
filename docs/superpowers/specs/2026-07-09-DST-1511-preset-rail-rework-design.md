@@ -33,6 +33,9 @@ below come from it.
 3. Built-in catalog is the **union** of the old and handoff catalogs.
 4. Build strategy: **salvage** the UI-agnostic layers (`presets.ts`, `usePresets.ts`,
    intl messages, their tests) from `bdc7ed2b4`; rebuild only the UI layer.
+5. (2026-07-09, after Storybook review of Tasks 1–7) Small screens use a **two-view
+   switcher** (preset list first, "Custom…" entry → calendar with back row) instead
+   of the stacked list — unified across picker trays AND inline calendars.
 
 Prior decisions that stand (from the 2026-07-08 plan): unified catalog (day keys are
 valid range presets), active preset derived by value equality (no stored state),
@@ -90,10 +93,23 @@ so pickers need no extra plumbing):
 - **Rail** (default, ≥ md): vertical column to the **left of** the calendar grid.
   Width 150px, subtle raised background (stone-50), 1px border-right, padding 8px,
   row gap 2px.
-- **Stack** (small screens): full-width list rendered **above** the calendar (inside
-  the pickers' existing Tray on mobile). Labels `text-base`; each row gets a trailing
-  resolved-value sublabel in `text-sm` muted (range "Jul 9 – 15" / "Jul 9 – Aug 2",
-  single date "Jul 9"), recomputed per render from the preset resolver.
+- **Two-view switcher** (small screens; REVISED 2026-07-09 after Storybook review):
+  instead of stacking list and grid, a calendar with presets shows **either** the
+  preset list **or** the calendar grid — starting on the list. The list renders
+  full-width rows with the check indicator and a trailing resolved-value sublabel in
+  `text-sm` muted (range "Jul 9 – 15" / "Jul 9 – Aug 2", single date "Jul 9"),
+  recomputed per render, plus a trailing **"Custom…" entry** (link-colored label,
+  trailing chevron-right; localized `presetsCustom`: en "Custom…" / de
+  "Benutzerdefiniert…") that switches to the calendar view. The calendar view is
+  topped by a full-width **back row** (chevron-left + localized `presetsBack`: en
+  "Back" / de "Zurück") returning to the list. The switcher lives inside the
+  calendars, so picker trays inherit it with no picker changes, and tray
+  close/reopen resets to the list (tray content unmounts). Focus: the back row is
+  focused when entering the calendar view; the list receives focus when returning
+  (never on initial mount, so inline calendars don't steal focus on page load).
+  Selecting a preset stays on the list (check appears); grid selection keeps
+  existing close-on-select picker behavior. Applies to ALL small-screen preset
+  contexts — picker trays and inline calendars alike.
 
 **Option row** (both variants): `flex items-center gap-2`, height 36px, padding
 `0 10px`, `radius-md`, pointer cursor. Fixed 16px leading slot containing a
