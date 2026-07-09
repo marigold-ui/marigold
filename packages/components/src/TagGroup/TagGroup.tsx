@@ -1,5 +1,5 @@
-import type { ReactNode, Ref } from 'react';
-import { useId, useMemo } from 'react';
+import type { ReactElement, ReactNode, Ref } from 'react';
+import { cloneElement, isValidElement, useId, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
 import { FormContext } from 'react-aria-components/Form';
@@ -14,11 +14,13 @@ import { useObjectRef } from '@react-aria/utils';
 import { useFormValidationState } from '@react-stately/form';
 import { useControlledState } from '@react-stately/utils';
 import type { Key, Selection, ValidationError } from '@react-types/shared';
-import { WidthProp, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
+import { splitChildren } from '../utils/children.utils';
 import { TagGroupContext } from './Context';
 import { TagGroupRemoveAll } from './TagGroupRemoveAll';
+import { TagGroupShowMore } from './TagGroupShowMore';
 
 // Props
 // ---------------
@@ -111,12 +113,24 @@ export interface TagGroupProps
    */
   onChange?: (keys: Selection) => void;
 
+  /**
+   * The number of tags to display before collapsing the rest behind a
+   * "Show more" / "Show less" toggle. Only applies to static children;
+   * ignored for dynamic collections (`items` + a render function).
+   *
+   * @default undefined
+   */
+  collapseAt?: number;
+
   ref?: Ref<HTMLDivElement>;
 }
 
 const toSelection = (
   value: Selection | Iterable<Key> | undefined
 ): Selection => (value === 'all' ? 'all' : new Set(value ?? []));
+
+const isKeySelected = (id: Key | undefined, selection: Selection): boolean =>
+  id != null && (selection === 'all' || selection.has(id));
 
 // Component
 // ---------------
@@ -144,11 +158,19 @@ const _TagGroup = ({
   onRemove,
   validate,
   validationBehavior: validationBehaviorProp,
+  collapseAt,
   ...rest
 }: TagGroupProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
   const labelId = useId();
   const tagListRef = useObjectRef(ref);
+
+  const staticChildren = typeof children === 'function' ? undefined : children;
+  const canCollapse = collapseAt !== undefined && staticChildren !== undefined;
+  const [visibleChildren, collapsedChildren] = canCollapse
+    ? splitChildren(staticChildren as ReactNode, collapseAt)
+    : [[], []];
+  const hasCollapsed = collapsedChildren.length > 0;
 
   const formCtx = useSlottedContext(FormContext);
   const validationBehavior =
@@ -161,6 +183,27 @@ const _TagGroup = ({
       : new Set(),
     value => onChange?.(value)
   );
+
+  const [expanded, setExpanded] = useState(() =>
+    collapsedChildren.some(
+      child =>
+        isValidElement(child) &&
+        isKeySelected((child.props as { id?: Key }).id, selection)
+    )
+  );
+
+  const renderedChildren = canCollapse
+    ? [
+        ...visibleChildren,
+        ...collapsedChildren.map(child =>
+          isValidElement(child)
+            ? cloneElement(child as ReactElement<{ hidden?: boolean }>, {
+                hidden: !expanded,
+              })
+            : child
+        ),
+      ]
+    : children;
 
   // Memoized so `useFormValidationState` doesn't re-validate on every render
   // when `selection` is referentially stable.
@@ -216,15 +259,25 @@ const _TagGroup = ({
           onSelectionChange={handleSelectionChange}
           onRemove={onRemove}
         >
-          <div className={classNames.container}>
-            <TagList
-              ref={tagListRef}
-              items={items}
-              className={classNames.listItems}
-              renderEmptyState={emptyState}
-            >
-              {children}
-            </TagList>
+          <div className={cn(classNames.container, 'flex gap-4 bg-blue-300')}>
+            <div className="flex gap-2">
+              <TagList
+                ref={tagListRef}
+                items={items}
+                className={classNames.listItems}
+                renderEmptyState={emptyState}
+              >
+                {renderedChildren}
+              </TagList>
+              {hasCollapsed ? (
+                <TagGroupShowMore
+                  className={classNames.showMore}
+                  count={collapsedChildren.length}
+                  expanded={expanded}
+                  onPress={() => setExpanded(prev => !prev)}
+                />
+              ) : null}
+            </div>
             {onRemove && removeAll ? (
               <TagGroupRemoveAll
                 className={classNames.removeAll}

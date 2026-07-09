@@ -232,7 +232,12 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
+      | 'container'
+      | 'tag'
+      | 'listItems'
+      | 'closeButton'
+      | 'removeAll'
+      | 'showMore',
       ComponentStyleFunction<string, string>
     >;
     TagField?: Record<

@@ -41,4 +41,13 @@ export const Tag: ThemeComponent<'Tag'> = {
       'text-link text-xs ui-touch-hitbox',
     ],
   }),
+  showMore: cva({
+    base: [
+      'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
+      'ui-press',
+      'focus-visible:ui-state-focus outline-none',
+      'cursor-pointer',
+      'text-link text-xs ui-touch-hitbox',
+    ],
+  }),
 };

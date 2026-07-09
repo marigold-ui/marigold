@@ -2,7 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Form } from '../Form/Form';
-import { Basic, WithError } from './TagGroup.stories';
+import {
+  Basic,
+  CollapseAt,
+  RemovableTags,
+  WithError,
+} from './TagGroup.stories';
 
 test('render tag group', () => {
   render(<Basic.Component aria-label="static tag group items" />);
@@ -117,4 +122,28 @@ test('can be used like a native form element', async () => {
       ],
     ]
   `);
+});
+
+test('collapseAt hides tags beyond the limit behind a toggle', () => {
+  render(<CollapseAt.Component />);
+
+  expect(screen.getByText('News')).toBeVisible();
+  expect(screen.getByText('Sports')).toBeVisible();
+  expect(screen.queryByText('Music')).not.toBeVisible();
+  expect(screen.getByText('Show 5 more')).toBeVisible();
+});
+
+test('collapseAt expands automatically when a hidden tag is selected', () => {
+  render(<CollapseAt.Component defaultSelectedKeys={['music']} />);
+
+  expect(screen.getByText('Music')).toBeVisible();
+  expect(screen.getByText('Show 5 less')).toBeVisible();
+});
+
+test('collapseAt is ignored for dynamic collections (function children)', () => {
+  render(<RemovableTags.Component collapseAt={1} />);
+
+  expect(screen.getByText('News')).toBeInTheDocument();
+  expect(screen.getByText('Shopping')).toBeInTheDocument();
+  expect(screen.queryByText(/show \d+ more/i)).not.toBeInTheDocument();
 });

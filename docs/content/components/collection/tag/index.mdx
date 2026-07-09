@@ -86,6 +86,17 @@ In addition to removing individual tags, you can also provide an option to remov
 
 <ComponentDemo name="tag-remove-all" />
 
+### Collapsing many tags
+
+When a tag group holds more tags than fit comfortably on one or two lines, stacked rows push surrounding content out of view and make the group harder to scan. Use the `collapseAt` prop to show only the first few tags, collapsing the rest behind a "Show more" toggle.
+
+<ComponentDemo name="tag-collapse" />
+
+<Callout title="Auto-Expand on Selection">
+  If a selected tag is within the collapsed section, the component renders in
+  its expanded state by default.
+</Callout>
+
 ## Props
 
 <StorybookHintMessage component={'Tag'} />
