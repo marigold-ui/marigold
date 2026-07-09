@@ -74,12 +74,18 @@ const workspaceSections = Array.from({ length: 40 }, (_, i) => ({
   label: `Section ${i + 1}`,
 }));
 
+// Tall page content so the document scrolls under the sticky TopNavigation,
+// revealing its bottom-edge hairline (`ui-scroll-edge`).
+const reportPanels = Array.from({ length: 10 }, (_, i) => i + 1);
+
 const ShellFrame = ({
   pageExtra,
   longNav = false,
+  longPage = false,
 }: {
   pageExtra?: React.ReactNode;
   longNav?: boolean;
+  longPage?: boolean;
 }) => {
   const [currentPath, setCurrentPath] = useState('/dashboard');
   // Fall back to a generic page for the synthesized long-nav routes.
@@ -171,6 +177,20 @@ const ShellFrame = ({
             </Panel.Content>
           </Panel>
           {pageExtra}
+          {longPage &&
+            reportPanels.map(n => (
+              <Panel key={n}>
+                <Panel.Header>
+                  <Title>Report {n}</Title>
+                </Panel.Header>
+                <Panel.Content>
+                  <Text>
+                    Placeholder content so the page is tall enough to scroll
+                    under the top navigation.
+                  </Text>
+                </Panel.Content>
+              </Panel>
+            ))}
         </Page>
       </AppShell>
     </RouterProvider>
@@ -303,16 +323,24 @@ export const WideContentDoesNotOverflow = meta.story({
 });
 
 /**
- * A long nav that overflows, so the sidebar's sticky header and footer show
- * their scroll-revealed seams (DST-1586). At rest the shell is seamless; scroll
- * the nav and a hairline fades in under the header, while the footer keeps its
- * top hairline until the list bottoms out. In browsers without scroll-driven
- * animations the seams fall back to an always-on hairline. Scroll-linked
- * (not autonomous), so it is intentionally not gated by reduced-motion.
+ * Both scroll axes of the shell at once (DST-1586):
+ *
+ * - **Sidebar nav** overflows, so its sticky header and footer show their
+ *   scroll-revealed seams — seamless at rest; a hairline fades in under the
+ *   header as you scroll, and the footer keeps its top hairline until the list
+ *   bottoms out.
+ * - **Page content** is tall, so the document scrolls under the sticky
+ *   `TopNavigation`, which reveals its own bottom-edge hairline
+ *   (`ui-scroll-edge`) once content passes beneath it.
+ *
+ * Both are scroll-linked (not autonomous), so intentionally not gated by
+ * reduced-motion. In browsers without scroll-driven animations the sidebar
+ * seams fall back to an always-on hairline; the top bar stays borderless (its
+ * opaque background still separates it from passing content).
  */
 export const ScrollingSidebar = meta.story({
   tags: ['component-test'],
-  render: () => <ShellFrame longNav />,
+  render: () => <ShellFrame longNav longPage />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const nav = canvas.getByRole('navigation', { name: /app navigation/i });
@@ -338,5 +366,15 @@ export const ScrollingSidebar = meta.story({
       .querySelector<HTMLElement>('[class*="ui-panel-actions"]');
     await expect(footer).not.toBeNull();
     await expect(getComputedStyle(footer!).boxShadow).not.toBe('none');
+
+    // And the page itself is tall enough to scroll under the sticky top bar —
+    // the precondition for the TopNavigation's own scroll-revealed edge (the
+    // reveal is a Chromium-only scroll-driven animation, verified visually; the
+    // test guards that the story actually exercises page scroll). The last
+    // filler panel renders below the fold.
+    await expect(canvas.getByText('Report 10')).toBeInTheDocument();
+    await expect(document.documentElement.scrollHeight).toBeGreaterThan(
+      window.innerHeight
+    );
   },
 });
