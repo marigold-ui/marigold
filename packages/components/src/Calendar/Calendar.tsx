@@ -5,6 +5,7 @@ import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarListBox } from './CalendarListBox';
+import { CalendarPresets } from './CalendarPresets';
 import { CalendarContext } from './Context';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
@@ -13,6 +14,7 @@ import {
   hasOnlyOneSelectableMonth,
   hasOnlyOneSelectableYear,
 } from './calendarListBoxSelectableCheck';
+import type { DatePreset } from './presets';
 
 // Props
 // ---------------
@@ -62,6 +64,16 @@ export interface CalendarProps extends Omit<
    * @default 'visible'
    */
   pageBehavior?: RAC.CalendarProps<DateValue>['pageBehavior'];
+  /**
+   * Quick-select presets rendered beside the calendar (stacked above the
+   * grid on small screens). Accepts built-in
+   * keys (`'today'`, `'yesterday'`, `'tomorrow'`) with localized labels, and
+   * custom presets with a `label` and a date value or resolver function.
+   * Selecting a preset sets the date; the preset matching the current
+   * selection shows as selected. Presets that fall outside
+   * `minValue`/`maxValue` or are unavailable are disabled.
+   */
+  presets?: DatePreset[];
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -79,10 +91,12 @@ const _Calendar = ({
   maxValue,
   visibleDuration = { months: 1 },
   pageBehavior = 'visible',
+  presets,
   ...rest
 }: CalendarProps) => {
   const visibleMonths = visibleDuration?.months ?? 1;
   const isMultiMonth = visibleMonths > 1;
+  const hasPresets = !!presets?.length;
 
   const props: RAC.CalendarProps<DateValue> = {
     isDisabled: disabled,
@@ -106,41 +120,62 @@ const _Calendar = ({
     year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
-  if (isMultiMonth) {
-    return (
-      <CalendarContext
-        value={{
-          classNames,
-          visibleMonths,
-          minValue,
-          maxValue,
-          disabled,
-        }}
+  const content = isMultiMonth ? (
+    <div className={classNames.calendarContainer}>
+      {[...Array(visibleMonths).keys()].map(i => (
+        <div key={i} className={classNames.calendarMonth}>
+          <CalendarHeader
+            monthOffset={i}
+            showPrevious={i === 0}
+            showNext={i === visibleMonths - 1}
+          />
+          <CalendarGrid offset={{ months: i }} />
+        </div>
+      ))}
+    </div>
+  ) : (
+    <>
+      <div
+        className={cn(
+          'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
+          selectedDropdown && 'pointer-events-auto opacity-100'
+        )}
       >
-        <Calendar
-          className={cn(
-            'relative flex w-(--width) flex-col',
-            classNames.calendar
-          )}
-          style={createWidthVar('width', width)}
-          {...props}
-        >
-          <div className={classNames.calendarContainer}>
-            {[...Array(visibleMonths).keys()].map(i => (
-              <div key={i} className={classNames.calendarMonth}>
-                <CalendarHeader
-                  monthOffset={i}
-                  showPrevious={i === 0}
-                  showNext={i === visibleMonths - 1}
-                />
-                <CalendarGrid offset={{ months: i }} />
-              </div>
-            ))}
+        {ViewMap[selectedDropdown as ViewMapKeys]}
+      </div>
+
+      <div
+        className={cn(
+          'flex flex-col',
+          selectedDropdown && 'pointer-events-none opacity-0'
+        )}
+      >
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="flex w-fit gap-4">
+            <CalendarListBox
+              key="month"
+              type="month"
+              isDisabled={
+                hasOnlyOneSelectableMonth(minValue, maxValue) ||
+                props.isDisabled
+              }
+              setSelectedDropdown={setSelectedDropdown}
+            />
+            <CalendarListBox
+              key="year"
+              type="year"
+              isDisabled={
+                hasOnlyOneSelectableYear(minValue, maxValue) || props.isDisabled
+              }
+              setSelectedDropdown={setSelectedDropdown}
+            />
           </div>
-        </Calendar>
-      </CalendarContext>
-    );
-  }
+          <MonthControls />
+        </div>
+        <CalendarGrid />
+      </div>
+    </>
+  );
 
   return (
     <CalendarContext
@@ -150,56 +185,26 @@ const _Calendar = ({
         minValue,
         maxValue,
         disabled,
+        readOnly,
       }}
     >
       <Calendar
         className={cn(
           'relative flex w-(--width) flex-col',
+          hasPresets && 'gap-4 max-sm:flex-col sm:flex-row',
           classNames.calendar
         )}
         style={createWidthVar('width', width)}
         {...props}
       >
-        <div
-          className={cn(
-            'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
-            selectedDropdown && 'pointer-events-auto opacity-100'
-          )}
-        >
-          {ViewMap[selectedDropdown as ViewMapKeys]}
-        </div>
-
-        <div
-          className={cn(
-            'flex flex-col',
-            selectedDropdown && 'pointer-events-none opacity-0'
-          )}
-        >
-          <div className="mb-6 flex items-center justify-between gap-4">
-            <div className="flex w-fit gap-4">
-              <CalendarListBox
-                key="month"
-                type="month"
-                isDisabled={
-                  hasOnlyOneSelectableMonth(minValue, maxValue) ||
-                  props.isDisabled
-                }
-                setSelectedDropdown={setSelectedDropdown}
-              />
-              <CalendarListBox
-                key="year"
-                type="year"
-                isDisabled={
-                  hasOnlyOneSelectableYear(minValue, maxValue) ||
-                  props.isDisabled
-                }
-                setSelectedDropdown={setSelectedDropdown}
-              />
-            </div>
-            <MonthControls />
-          </div>
-          <CalendarGrid />
-        </div>
+        {presets?.length ? (
+          <>
+            <CalendarPresets presets={presets} />
+            <div className="relative flex min-w-0 flex-col">{content}</div>
+          </>
+        ) : (
+          content
+        )}
       </Calendar>
     </CalendarContext>
   );

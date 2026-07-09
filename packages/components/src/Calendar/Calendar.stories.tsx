@@ -1,4 +1,10 @@
-import { CalendarDate, DateFormatter } from '@internationalized/date';
+import {
+  CalendarDate,
+  DateFormatter,
+  getLocalTimeZone,
+  isSameDay,
+  today,
+} from '@internationalized/date';
 import { useState } from 'react';
 import { DateValue } from 'react-aria-components/Calendar';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
@@ -584,5 +590,83 @@ MultipleSelection.test(
     );
     await expect(canvas.getByText('Feb 20, 2025')).toBeInTheDocument();
     await expect(canvas.getByText('Mar 5, 2025')).toBeInTheDocument();
+  }
+);
+
+export const Presets = meta.story({
+  tags: ['component-test'],
+  args: {
+    'aria-label': 'Event date',
+    onChange: fn(),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Calendar
+        {...args}
+        presets={[
+          'today',
+          'yesterday',
+          'tomorrow',
+          { label: 'Kickoff', value: new CalendarDate(2026, 8, 1) },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
+  const listbox = canvas.getByRole('listbox', { name: 'Quick selection' });
+  await expect(listbox).toBeVisible();
+  await expect(canvas.getByRole('option', { name: 'Kickoff' })).toBeVisible();
+});
+
+Presets.test(
+  'selecting a preset sets the date and marks the option selected',
+  async ({ args, canvas, userEvent }) => {
+    const option = canvas.getByRole('option', { name: 'Tomorrow' });
+    await userEvent.click(option);
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+    await expect(
+      isSameDay(date, today(getLocalTimeZone()).add({ days: 1 }))
+    ).toBe(true);
+    await expect(option).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+Presets.test(
+  'selecting a preset jumps the visible month to its date',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('option', { name: 'Kickoff' }));
+    await expect(
+      canvas.getByRole('button', { name: 'Aug' })
+    ).toBeInTheDocument();
+  }
+);
+
+export const PresetsWithMinValue = meta.story({
+  tags: ['component-test'],
+  args: {
+    'aria-label': 'Event date',
+    minValue: today(getLocalTimeZone()),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Calendar {...args} presets={['yesterday', 'today']} />
+    </I18nProvider>
+  ),
+});
+
+PresetsWithMinValue.test(
+  'a preset outside minValue/maxValue is disabled',
+  async ({ canvas }) => {
+    await expect(
+      canvas.getByRole('option', { name: 'Yesterday' })
+    ).toHaveAttribute('aria-disabled', 'true');
+    await expect(
+      canvas.getByRole('option', { name: 'Today' })
+    ).not.toHaveAttribute('aria-disabled');
   }
 );

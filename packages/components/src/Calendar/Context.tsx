@@ -14,6 +14,7 @@ export interface CalendarContextValue {
   minValue?: DateValue | null;
   maxValue?: DateValue | null;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export const CalendarContext = createContext<CalendarContextValue | null>(null);

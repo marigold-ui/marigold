@@ -4,8 +4,12 @@ import { render, screen, within } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Basic, ThreeMonths, TwoMonths } from './Calendar.stories';
+import { theme } from '@marigold/theme-rui';
+import { mockMatchMedia } from '../test.utils';
+import { Basic, Presets, ThreeMonths, TwoMonths } from './Calendar.stories';
 import { useCalendarContext, useCalendarOrRangeState } from './Context';
+
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 describe('Calendar', () => {
   const user = userEvent.setup();
@@ -347,4 +351,18 @@ test('useCalendarOrRangeState throws when used outside Calendar or RangeCalendar
   expect(() => renderHook(() => useCalendarOrRangeState())).toThrow(
     'Calendar subcomponents must be rendered inside <Calendar> or <RangeCalendar>'
   );
+});
+
+describe('presets on small screens', () => {
+  afterEach(() => {
+    window.matchMedia = mockMatchMedia([]);
+  });
+
+  test('stack items show the resolved value as a trailing sublabel', () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+
+    const option = screen.getByRole('option', { name: 'Kickoff' });
+    expect(option).toHaveTextContent('Aug 1');
+  });
 });
