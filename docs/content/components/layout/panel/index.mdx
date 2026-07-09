@@ -147,6 +147,12 @@ Tables, media, charts, and status bars are the exceptions. They look cramped whe
 
 Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it.
 
+An `<Accordion>` behaves the same way. Drop one into a bled content area and its item dividers span edge-to-edge while the header and content stay inset, aligned with the Panel title. No extra prop is needed: the Accordion picks up the Panel's horizontal padding automatically, exactly like Table cells do.
+
+Reach for this only when the Panel's body **is** a set of peer, equally-weighted sections that each expand — a per-field breakdown, a list of records each with details. For a single optional or advanced fold _alongside_ visible primary content, use [`Panel.Collapsible`](#collapsible) instead. The two aren't interchangeable: a stack of Collapsibles is exactly the anti-pattern Accordion exists to solve (see [One Collapsible per Panel](#one-collapsible-per-panel)).
+
+<ComponentDemo name="panel-bleed-accordion" />
+
 ### Collapsible
 
 Some sections have fields most users won't touch, like legacy SEO settings, import defaults, or an optional webhook URL. Hiding them by default keeps the Panel scannable for the common case, while staying one click away for anyone who needs them.

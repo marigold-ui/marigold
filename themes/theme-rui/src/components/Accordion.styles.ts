@@ -2,7 +2,12 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Accordion: ThemeComponent<'Accordion'> = {
   container: cva({
-    base: 'flex-col',
+    // Horizontal padding for header/content. Resolves to the Panel's
+    // `--panel-px` when nested inside a Panel (so a bled Panel keeps dividers
+    // edge-to-edge while header/content align with the Panel title, mirroring
+    // Table), otherwise falls back to `0px` — standalone Accordions are
+    // unchanged.
+    base: 'flex-col [--accordion-x-padding:var(--panel-px,0px)]',
     variants: {
       variant: {
         default: '',
@@ -37,7 +42,8 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     ],
     variants: {
       variant: {
-        default: 'focus-visible:ui-state-focus outline-none',
+        default:
+          'focus-visible:ui-state-focus outline-none px-(--accordion-x-padding)',
         card: 'px-4 outline-none',
       },
     },
@@ -52,9 +58,12 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     base: 'pt-1 pb-2',
     variants: {
       variant: {
-        default: '',
+        default: 'px-(--accordion-x-padding)',
         card: 'px-4',
       },
+    },
+    defaultVariants: {
+      variant: 'default',
     },
   }),
   icon: cva({
