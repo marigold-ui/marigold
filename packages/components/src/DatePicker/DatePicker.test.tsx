@@ -1,11 +1,13 @@
 import { CalendarDate } from '@internationalized/date';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
 import { firePaste } from '../firePaste';
 import { mockMatchMedia } from '../test.utils';
 import {
   Basic,
+  Presets,
   UnavailableDate,
   WithDefaultValue,
   WithError,
@@ -440,5 +442,50 @@ describe('paste handling', () => {
     expect(segments[0]).toHaveTextContent('09');
     expect(segments[1]).toHaveTextContent('24');
     expect(segments[2]).toHaveTextContent('2025');
+  });
+});
+
+describe('presets on small screens (tray)', () => {
+  const smallScreenQuery = `(width < ${theme.screens!.sm})`;
+
+  afterEach(() => {
+    window.matchMedia = mockMatchMedia([]);
+  });
+
+  test('the tray shows the preset list first; Custom… opens the calendar; Back returns', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+
+    await user.click(screen.getByRole('button'));
+    const dialog = await screen.findByRole('dialog');
+
+    expect(
+      within(dialog).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    expect(within(dialog).queryByRole('grid')).not.toBeInTheDocument();
+
+    await user.click(within(dialog).getByRole('button', { name: 'Custom…' }));
+    expect(within(dialog).getByRole('grid')).toBeVisible();
+    expect(
+      within(dialog).queryByRole('listbox', { name: 'Quick selection' })
+    ).not.toBeInTheDocument();
+    // Unlike the standalone Calendar/RangeCalendar (see their small-screen
+    // tests), the Back button does not end up focused here: RAC's
+    // `useDatePicker` hardcodes `calendarProps.autoFocus: true` for the
+    // nested `<Calendar>`, so `state.isFocused` is already `true` when the
+    // grid mounts. `useCalendarCell`'s focus-sync effect then unconditionally
+    // calls `focusWithoutScrolling` on the focused-date cell as soon as it
+    // mounts, with no guard for "something else already has focus" -
+    // stealing focus away from the Back button a tick after it mounts. This
+    // is pre-existing DatePicker/Calendar interaction, not something Task 10
+    // regresses; not asserting focus here to avoid a test that's coupled to
+    // that upstream behavior.
+    const back = within(dialog).getByRole('button', { name: 'Back' });
+
+    await user.click(back);
+    expect(
+      within(dialog).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    expect(within(dialog).queryByRole('grid')).not.toBeInTheDocument();
   });
 });

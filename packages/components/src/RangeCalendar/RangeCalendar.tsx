@@ -5,11 +5,20 @@ import {
   RangeCalendar as AriaRangeCalendar,
   DateValue,
 } from 'react-aria-components/RangeCalendar';
-import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  createWidthVar,
+  useClassNames,
+  useSmallScreen,
+} from '@marigold/system';
 import { CalendarGrid } from '../Calendar/CalendarGrid';
 import { CalendarHeader } from '../Calendar/CalendarHeader';
 import { CalendarListBox } from '../Calendar/CalendarListBox';
-import { RangeCalendarPresets } from '../Calendar/CalendarPresets';
+import {
+  PresetsBackButton,
+  RangeCalendarPresets,
+} from '../Calendar/CalendarPresets';
 import { CalendarContext } from '../Calendar/Context';
 import MonthControls from '../Calendar/MonthControls';
 import MonthListBox from '../Calendar/MonthListBox';
@@ -154,6 +163,13 @@ const _RangeCalendar = <T extends DateValue>({
     ViewMapKeys | undefined
   >();
 
+  const isSmallScreen = useSmallScreen();
+  const [smallScreenView, setSmallScreenView] = useState<
+    'presets' | 'calendar'
+  >('presets');
+  // Focus the list only when returning from the calendar view, never on mount.
+  const [hasNavigated, setHasNavigated] = useState(false);
+
   // react-aria's `useRangeCalendar` commits an in-progress range on any window
   // `pointerup` that isn't on a button (our role="option" items included). The key
   // detail: `usePress` listens for the touch press-end on `document`, while the
@@ -284,10 +300,34 @@ const _RangeCalendar = <T extends DateValue>({
             style={createWidthVar('width', width)}
           >
             {presets?.length ? (
-              <>
-                <RangeCalendarPresets presets={presets} />
-                <div className="relative flex min-w-0 flex-col">{content}</div>
-              </>
+              isSmallScreen ? (
+                smallScreenView === 'presets' ? (
+                  <RangeCalendarPresets
+                    presets={presets}
+                    autoFocus={hasNavigated}
+                    onCustom={() => {
+                      setSmallScreenView('calendar');
+                      setHasNavigated(true);
+                    }}
+                  />
+                ) : (
+                  <>
+                    <PresetsBackButton
+                      onPress={() => setSmallScreenView('presets')}
+                    />
+                    <div className="relative flex min-w-0 flex-col">
+                      {content}
+                    </div>
+                  </>
+                )
+              ) : (
+                <>
+                  <RangeCalendarPresets presets={presets} />
+                  <div className="relative flex min-w-0 flex-col">
+                    {content}
+                  </div>
+                </>
+              )
             ) : (
               content
             )}

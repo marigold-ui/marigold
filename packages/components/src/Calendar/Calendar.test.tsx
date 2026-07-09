@@ -354,6 +354,8 @@ test('useCalendarOrRangeState throws when used outside Calendar or RangeCalendar
 });
 
 describe('presets on small screens', () => {
+  const user = userEvent.setup();
+
   afterEach(() => {
     window.matchMedia = mockMatchMedia([]);
   });
@@ -364,5 +366,29 @@ describe('presets on small screens', () => {
 
     const option = screen.getByRole('option', { name: 'Kickoff' });
     expect(option).toHaveTextContent('Aug 1');
+  });
+
+  test('shows presets first; Custom… opens the calendar; Back returns', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+
+    expect(
+      screen.getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Custom…' }));
+    expect(screen.getByRole('grid')).toBeVisible();
+    expect(
+      screen.queryByRole('listbox', { name: 'Quick selection' })
+    ).not.toBeInTheDocument();
+    const back = screen.getByRole('button', { name: 'Back' });
+    expect(back).toHaveFocus();
+
+    await user.click(back);
+    expect(
+      screen.getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
   });
 });

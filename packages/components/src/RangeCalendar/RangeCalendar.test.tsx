@@ -1,5 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { theme } from '@marigold/theme-rui';
@@ -85,6 +86,8 @@ describe('RangeCalendar - Multi-month', () => {
 });
 
 describe('presets on small screens', () => {
+  const user = userEvent.setup();
+
   afterEach(() => {
     window.matchMedia = mockMatchMedia([]);
   });
@@ -97,5 +100,29 @@ describe('presets on small screens', () => {
     // Intl range formatting varies in dash/space characters across ICU
     // versions, so match loosely.
     expect(option.textContent).toMatch(/Jan 5.*11/);
+  });
+
+  test('shows presets first; Custom… opens the calendar; Back returns', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+
+    expect(
+      screen.getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Custom…' }));
+    expect(screen.getByRole('grid')).toBeVisible();
+    expect(
+      screen.queryByRole('listbox', { name: 'Quick selection' })
+    ).not.toBeInTheDocument();
+    const back = screen.getByRole('button', { name: 'Back' });
+    expect(back).toHaveFocus();
+
+    await user.click(back);
+    expect(
+      screen.getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
   });
 });

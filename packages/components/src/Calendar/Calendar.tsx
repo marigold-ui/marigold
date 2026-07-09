@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components/Calendar';
-import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  createWidthVar,
+  useClassNames,
+  useSmallScreen,
+} from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarListBox } from './CalendarListBox';
-import { CalendarPresets } from './CalendarPresets';
+import { CalendarPresets, PresetsBackButton } from './CalendarPresets';
 import { CalendarContext } from './Context';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
@@ -115,6 +121,13 @@ const _Calendar = ({
     ViewMapKeys | undefined
   >();
 
+  const isSmallScreen = useSmallScreen();
+  const [smallScreenView, setSmallScreenView] = useState<
+    'presets' | 'calendar'
+  >('presets');
+  // Focus the list only when returning from the calendar view, never on mount.
+  const [hasNavigated, setHasNavigated] = useState(false);
+
   const ViewMap = {
     month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
     year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
@@ -198,10 +211,30 @@ const _Calendar = ({
         {...props}
       >
         {presets?.length ? (
-          <>
-            <CalendarPresets presets={presets} />
-            <div className="relative flex min-w-0 flex-col">{content}</div>
-          </>
+          isSmallScreen ? (
+            smallScreenView === 'presets' ? (
+              <CalendarPresets
+                presets={presets}
+                autoFocus={hasNavigated}
+                onCustom={() => {
+                  setSmallScreenView('calendar');
+                  setHasNavigated(true);
+                }}
+              />
+            ) : (
+              <>
+                <PresetsBackButton
+                  onPress={() => setSmallScreenView('presets')}
+                />
+                <div className="relative flex min-w-0 flex-col">{content}</div>
+              </>
+            )
+          ) : (
+            <>
+              <CalendarPresets presets={presets} />
+              <div className="relative flex min-w-0 flex-col">{content}</div>
+            </>
+          )
         ) : (
           content
         )}

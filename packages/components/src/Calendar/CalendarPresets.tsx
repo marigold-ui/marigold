@@ -6,6 +6,7 @@ import {
 } from '@internationalized/date';
 import { use } from 'react';
 import type RAC from 'react-aria-components';
+import { Button as AriaButton } from 'react-aria-components/Button';
 import { CalendarStateContext } from 'react-aria-components/Calendar';
 import { DatePickerStateContext } from 'react-aria-components/DatePicker';
 import { DateRangePickerStateContext } from 'react-aria-components/DateRangePicker';
@@ -20,6 +21,8 @@ import {
 } from '@react-aria/i18n';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Check } from '../icons/Check';
+import { ChevronLeft } from '../icons/ChevronLeft';
+import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
 import { useCalendarContext } from './Context';
 import {
@@ -97,6 +100,18 @@ interface PresetListBoxProps<T> {
   formatValue: (value: T) => string;
   disabled?: boolean;
   readOnly?: boolean;
+  /**
+   * Renders a trailing "Custom…" row that hands navigation to the caller.
+   * Only supplied on small screens, where the presets and the calendar grid
+   * are alternate views.
+   */
+  onCustom?: () => void;
+  /**
+   * Focus the listbox when it (re)mounts — used when returning from the
+   * calendar view so keyboard users are not dropped. Never set on initial
+   * mount.
+   */
+  autoFocus?: boolean;
 }
 
 /**
@@ -114,6 +129,8 @@ const PresetListBox = <T,>({
   formatValue,
   disabled,
   readOnly,
+  onCustom,
+  autoFocus,
 }: PresetListBoxProps<T>) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const isSmallScreen = useSmallScreen();
@@ -140,54 +157,111 @@ const PresetListBox = <T,>({
   };
 
   return (
-    <AriaListBox
-      aria-label={stringFormatter.format('presets')}
-      selectionMode="single"
-      // Selection is derived from the calendar value; clicking the active
-      // preset again must not clear that value.
-      disallowEmptySelection
-      selectedKeys={selectedId != null ? [selectedId] : []}
-      disabledKeys={disabledKeys}
-      onSelectionChange={handleSelectionChange}
-      className={cn(listBoxClassNames.list, classNames.calendarPresets)}
-    >
-      {items.map(item => (
-        <AriaListBoxItem
-          key={item.id}
-          id={item.id}
-          textValue={item.label}
-          // The small-screen sublabel is a purely visual affordance (desktop
-          // never announces the resolved date either), so pin the
-          // accessible name to the label alone. Without this, "name from
-          // content" would fold the trailing sublabel in too, e.g.
-          // "Kickoff Aug 1" instead of "Kickoff".
-          aria-label={item.label}
-          className={listBoxClassNames.item}
+    <div className={classNames.calendarPresets}>
+      <AriaListBox
+        aria-label={stringFormatter.format('presets')}
+        selectionMode="single"
+        // Selection is derived from the calendar value; clicking the active
+        // preset again must not clear that value.
+        disallowEmptySelection
+        selectedKeys={selectedId != null ? [selectedId] : []}
+        disabledKeys={disabledKeys}
+        onSelectionChange={handleSelectionChange}
+        autoFocus={autoFocus}
+        className={listBoxClassNames.list}
+      >
+        {items.map(item => (
+          <AriaListBoxItem
+            key={item.id}
+            id={item.id}
+            textValue={item.label}
+            // The small-screen sublabel is a purely visual affordance (desktop
+            // never announces the resolved date either), so pin the
+            // accessible name to the label alone. Without this, "name from
+            // content" would fold the trailing sublabel in too, e.g.
+            // "Kickoff Aug 1" instead of "Kickoff".
+            aria-label={item.label}
+            className={listBoxClassNames.item}
+          >
+            {/* Mirrors `ListBoxItem`'s selection-indicator markup so the
+                ListBox theme's check-visibility rules apply unchanged. */}
+            <div className="selection-indicator contents">
+              <Check size={16} strokeWidth="3" className="hidden" />
+              {isSmallScreen ? (
+                <div className="flex w-full items-center justify-between gap-3">
+                  <span>{item.label}</span>
+                  <span className="text-secondary">
+                    {formatValue(item.value)}
+                  </span>
+                </div>
+              ) : (
+                item.label
+              )}
+            </div>
+          </AriaListBoxItem>
+        ))}
+      </AriaListBox>
+      {onCustom ? (
+        <AriaButton
+          // RAC's <Calendar>/<RangeCalendar> provide a `ButtonContext` whose
+          // only slots are "previous"/"next" (the grid nav arrows); an
+          // unslotted <Button> rendered anywhere in that tree would otherwise
+          // try to consume it and throw "A slot prop is required."
+          slot={null}
+          onPress={onCustom}
+          className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
         >
-          {/* Mirrors `ListBoxItem`'s selection-indicator markup so the
-              ListBox theme's check-visibility rules apply unchanged. */}
           <div className="selection-indicator contents">
             <Check size={16} strokeWidth="3" className="hidden" />
-            {isSmallScreen ? (
-              <div className="flex w-full items-center justify-between gap-3">
-                <span>{item.label}</span>
-                <span className="text-secondary">
-                  {formatValue(item.value)}
-                </span>
-              </div>
-            ) : (
-              item.label
-            )}
+            <span className="text-link flex w-full items-center justify-between gap-3">
+              {stringFormatter.format('presetsCustom')}
+              <ChevronRight size={16} />
+            </span>
           </div>
-        </AriaListBoxItem>
-      ))}
-    </AriaListBox>
+        </AriaButton>
+      ) : null}
+    </div>
+  );
+};
+
+// Back row shown in the calendar view on small screens, returning to the
+// preset list.
+// ---------------
+export const PresetsBackButton = ({ onPress }: { onPress: () => void }) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const listBoxClassNames = useClassNames({ component: 'ListBox' });
+
+  return (
+    <AriaButton
+      // See the "Custom…" button in `PresetListBox` above for why this is
+      // required: RAC's calendar context only defines "previous"/"next"
+      // slots.
+      slot={null}
+      // Mounts only as a result of the user tapping "Custom…", so taking
+      // focus is expected and keeps keyboard users oriented.
+      autoFocus
+      onPress={onPress}
+      className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
+    >
+      <span className="flex items-center gap-2">
+        <ChevronLeft size={16} />
+        {stringFormatter.format('back')}
+      </span>
+    </AriaButton>
   );
 };
 
 // CalendarPresets (single date)
 // ---------------
-export const CalendarPresets = ({ presets }: { presets: DatePreset[] }) => {
+export const CalendarPresets = ({
+  presets,
+  onCustom,
+  autoFocus,
+}: {
+  presets: DatePreset[];
+  onCustom?: () => void;
+  autoFocus?: boolean;
+}) => {
   const state = use(CalendarStateContext);
   // Present only when this calendar is rendered inside a `<DatePicker>`
   // popover. Applying a preset through the picker's own state (instead of
@@ -229,6 +303,8 @@ export const CalendarPresets = ({ presets }: { presets: DatePreset[] }) => {
       }}
       disabled={disabled}
       readOnly={readOnly}
+      onCustom={onCustom}
+      autoFocus={autoFocus}
     />
   );
 };
@@ -237,8 +313,12 @@ export const CalendarPresets = ({ presets }: { presets: DatePreset[] }) => {
 // ---------------
 export const RangeCalendarPresets = ({
   presets,
+  onCustom,
+  autoFocus,
 }: {
   presets: DateRangePreset[];
+  onCustom?: () => void;
+  autoFocus?: boolean;
 }) => {
   const state = use(RangeCalendarStateContext);
   // Present only when this calendar is rendered inside a
@@ -285,6 +365,8 @@ export const RangeCalendarPresets = ({
       }}
       disabled={disabled}
       readOnly={readOnly}
+      onCustom={onCustom}
+      autoFocus={autoFocus}
     />
   );
 };
