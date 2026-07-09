@@ -1,4 +1,5 @@
-import { expect, userEvent } from 'storybook/test';
+import { useState } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -159,6 +160,53 @@ export const MultiLineTitle = meta.story({
   ),
 });
 
+export const ControlledSectionMessage = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true }, surface: false },
+  render: args => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Stack space={4} alignX="left">
+        <Button variant="secondary" onPress={() => setOpen(true)}>
+          Show message
+        </Button>
+        <SectionMessage
+          {...args}
+          variant="success"
+          closeButton
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <SectionMessage.Title>Item deleted</SectionMessage.Title>
+          <SectionMessage.Content>
+            The item was removed successfully. Dismiss this message or press the
+            button again to bring it back.
+          </SectionMessage.Content>
+        </SectionMessage>
+      </Stack>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Not shown until "Show message" is pressed.
+    await expect(
+      canvas.queryByRole('heading', { name: 'Item deleted' })
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Show message' }));
+
+    const heading = canvas.getByRole('heading', { name: 'Item deleted' });
+    await expect(heading).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+
+    await expect(
+      canvas.queryByRole('heading', { name: 'Item deleted' })
+    ).not.toBeInTheDocument();
+  },
+});
 export const WithoutTitle = meta.story({
   tags: ['component-test'],
   args: { closeButton: true },

@@ -550,6 +550,7 @@
   - @marigold/system@18.0.0-beta.0
   - @marigold/components@18.0.0-beta.0
   - @marigold/icons@1.3.39-beta.0
+
 ## 17.9.0
 
 ### Minor Changes
