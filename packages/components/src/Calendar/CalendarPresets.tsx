@@ -8,10 +8,12 @@ import { use } from 'react';
 import type RAC from 'react-aria-components';
 import { CalendarStateContext } from 'react-aria-components/Calendar';
 import { DatePickerStateContext } from 'react-aria-components/DatePicker';
+import { DateRangePickerStateContext } from 'react-aria-components/DateRangePicker';
 import {
   ListBox as AriaListBox,
   ListBoxItem as AriaListBoxItem,
 } from 'react-aria-components/ListBox';
+import { RangeCalendarStateContext } from 'react-aria-components/RangeCalendar';
 import {
   useDateFormatter,
   useLocalizedStringFormatter,
@@ -20,8 +22,18 @@ import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Check } from '../icons/Check';
 import { intlMessages } from '../intl/messages';
 import { useCalendarContext } from './Context';
-import { type DatePreset, isOutOfBounds } from './presets';
-import { type ResolvedPreset, useDatePresets } from './usePresets';
+import {
+  type DatePreset,
+  type DateRange,
+  type DateRangePreset,
+  isOutOfBounds,
+  isSameRange,
+} from './presets';
+import {
+  type ResolvedPreset,
+  useDatePresets,
+  useDateRangePresets,
+} from './usePresets';
 
 // Helpers
 // ---------------
@@ -37,6 +49,24 @@ import { type ResolvedPreset, useDatePresets } from './usePresets';
 const isMultiSelectValue = (
   value: CalendarDate | readonly (CalendarDate | null)[] | null
 ): value is readonly (CalendarDate | null)[] => Array.isArray(value);
+
+/**
+ * Walks every day of the range so a preset can not select through blocked
+ * dates. Ranges are day-granular and preset-sized (weeks/months), so the
+ * linear scan is cheap.
+ */
+const rangeHasUnavailableDate = (
+  range: DateRange,
+  isUnavailable: (date: ReturnType<typeof toCalendarDate>) => boolean
+) => {
+  let date = toCalendarDate(range.start);
+  const end = toCalendarDate(range.end);
+  while (date.compare(end) <= 0) {
+    if (isUnavailable(date)) return true;
+    date = date.add({ days: 1 });
+  }
+  return false;
+};
 
 // Shared preset list
 // ---------------
@@ -196,6 +226,62 @@ export const CalendarPresets = ({ presets }: { presets: DatePreset[] }) => {
         // Applying the value alone doesn't move the visible grid. Jump the
         // calendar's focused date to the selection so it's actually on screen.
         state.setFocusedDate(toCalendarDate(value));
+      }}
+      disabled={disabled}
+      readOnly={readOnly}
+    />
+  );
+};
+
+// RangeCalendarPresets
+// ---------------
+export const RangeCalendarPresets = ({
+  presets,
+}: {
+  presets: DateRangePreset[];
+}) => {
+  const state = use(RangeCalendarStateContext);
+  // Present only when this calendar is rendered inside a
+  // `<DateRangePicker>` popover. Applying a preset through the picker's own
+  // state (instead of the calendar's) keeps the popover open, since it
+  // bypasses the calendar's onChange chain that the picker otherwise uses to
+  // auto-close on select.
+  const pickerState = use(DateRangePickerStateContext);
+  const { minValue, maxValue, disabled, readOnly } = useCalendarContext();
+  const resolvedPresets = useDateRangePresets(presets);
+  const dateFormatter = useDateFormatter({ month: 'short', day: 'numeric' });
+
+  if (!state) return null;
+
+  return (
+    <PresetListBox
+      resolvedPresets={resolvedPresets}
+      isActive={value =>
+        state.value?.start != null &&
+        state.value?.end != null &&
+        isSameRange(state.value, value)
+      }
+      isDisabled={value =>
+        Boolean(
+          isOutOfBounds(value, minValue, maxValue) ||
+          rangeHasUnavailableDate(value, date => state.isCellUnavailable(date))
+        )
+      }
+      formatValue={({ start, end }) =>
+        dateFormatter.formatRange(
+          toCalendarDate(start).toDate(getLocalTimeZone()),
+          toCalendarDate(end).toDate(getLocalTimeZone())
+        )
+      }
+      onSelect={value => {
+        if (pickerState) {
+          pickerState.setValue(value);
+        } else {
+          state.setValue(value);
+        }
+        // Applying the value alone doesn't move the visible grid. Jump the
+        // calendar to the range start so multi-month views show its beginning.
+        state.setFocusedDate(toCalendarDate(value.start));
       }}
       disabled={disabled}
       readOnly={readOnly}

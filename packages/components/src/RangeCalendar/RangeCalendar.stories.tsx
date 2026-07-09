@@ -1,4 +1,10 @@
-import { CalendarDate, isWeekend } from '@internationalized/date';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  isSameDay,
+  isWeekend,
+  today,
+} from '@internationalized/date';
 import { useState } from 'react';
 import { DateValue, I18nProvider } from 'react-aria-components';
 import { expect, fn, within } from 'storybook/test';
@@ -471,3 +477,110 @@ export const ThreeMonthsMobile = meta.story({
   },
   render: args => <RangeCalendar {...args} />,
 });
+
+export const Presets = meta.story({
+  tags: ['component-test'],
+  args: {
+    'aria-label': 'Period',
+    onChange: fn(),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <RangeCalendar
+        {...args}
+        presets={[
+          'today',
+          'this-week',
+          'next-7-days',
+          'next-30-days',
+          'this-month',
+          'this-quarter',
+          {
+            label: 'January 2027',
+            value: {
+              start: new CalendarDate(2027, 1, 5),
+              end: new CalendarDate(2027, 1, 11),
+            },
+          },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
+  const listbox = canvas.getByRole('listbox', { name: 'Quick selection' });
+  await expect(listbox).toBeVisible();
+  await expect(
+    canvas.getByRole('option', { name: 'This quarter' })
+  ).toBeVisible();
+});
+
+Presets.test(
+  'selecting a built-in preset sets the range and marks the option selected',
+  async ({ args, canvas, userEvent }) => {
+    const option = canvas.getByRole('option', { name: 'Next 7 days' });
+    await userEvent.click(option);
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+    const now = today(getLocalTimeZone());
+    await expect(isSameDay(range.start, now)).toBe(true);
+    await expect(isSameDay(range.end, now.add({ days: 6 }))).toBe(true);
+    await expect(option).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+Presets.test(
+  'selecting the "today" preset sets a single-day range',
+  async ({ args, canvas, userEvent }) => {
+    const option = canvas.getByRole('option', { name: 'Today' });
+    await userEvent.click(option);
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+    const now = today(getLocalTimeZone());
+    await expect(isSameDay(range.start, now)).toBe(true);
+    await expect(isSameDay(range.end, now)).toBe(true);
+  }
+);
+
+Presets.test(
+  'selecting a preset jumps the visible month to its range',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('option', { name: 'January 2027' }));
+
+    await expect(
+      canvas.getByRole('button', { name: 'Jan' })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: '2027' })
+    ).toBeInTheDocument();
+  }
+);
+
+export const PresetsWithMinValue = meta.story({
+  tags: ['component-test'],
+  args: {
+    'aria-label': 'Period',
+    minValue: today(getLocalTimeZone()),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <RangeCalendar {...args} presets={['last-7-days', 'next-7-days']} />
+    </I18nProvider>
+  ),
+});
+
+PresetsWithMinValue.test(
+  'a preset outside minValue/maxValue is disabled',
+  async ({ canvas }) => {
+    await expect(
+      canvas.getByRole('option', { name: 'Last 7 days' })
+    ).toHaveAttribute('aria-disabled', 'true');
+    await expect(
+      canvas.getByRole('option', { name: 'Next 7 days' })
+    ).not.toHaveAttribute('aria-disabled');
+  }
+);

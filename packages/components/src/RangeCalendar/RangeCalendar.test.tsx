@@ -2,12 +2,17 @@ import { CalendarDate } from '@internationalized/date';
 import { render, screen } from '@testing-library/react';
 import { ReactNode } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
+import { theme } from '@marigold/theme-rui';
+import { mockMatchMedia } from '../test.utils';
 import {
   Basic,
+  Presets,
   ThreeMonths,
   TwoMonths,
   WithErrorMessage,
 } from './RangeCalendar.stories';
+
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 const renderWithLocale = (ui: ReactNode) =>
   render(<I18nProvider locale="en-US">{ui}</I18nProvider>);
@@ -76,5 +81,21 @@ describe('RangeCalendar - Multi-month', () => {
     expect(calendar).toHaveTextContent(/May 2025/i);
     expect(calendar).toHaveTextContent(/June 2025/i);
     expect(calendar).toHaveTextContent(/July 2025/i);
+  });
+});
+
+describe('presets on small screens', () => {
+  afterEach(() => {
+    window.matchMedia = mockMatchMedia([]);
+  });
+
+  test('stack items show the resolved range as a trailing sublabel', () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+
+    const option = screen.getByRole('option', { name: 'January 2027' });
+    // Intl range formatting varies in dash/space characters across ICU
+    // versions, so match loosely.
+    expect(option.textContent).toMatch(/Jan 5.*11/);
   });
 });

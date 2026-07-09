@@ -9,6 +9,7 @@ import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from '../Calendar/CalendarGrid';
 import { CalendarHeader } from '../Calendar/CalendarHeader';
 import { CalendarListBox } from '../Calendar/CalendarListBox';
+import { RangeCalendarPresets } from '../Calendar/CalendarPresets';
 import { CalendarContext } from '../Calendar/Context';
 import MonthControls from '../Calendar/MonthControls';
 import MonthListBox from '../Calendar/MonthListBox';
@@ -17,6 +18,7 @@ import {
   hasOnlyOneSelectableMonth,
   hasOnlyOneSelectableYear,
 } from '../Calendar/calendarListBoxSelectableCheck';
+import type { DateRangePreset } from '../Calendar/presets';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 
 // Props
@@ -77,6 +79,16 @@ export interface RangeCalendarProps<T extends DateValue = DateValue>
    * @default 'visible'
    */
   pageBehavior?: RAC.RangeCalendarProps<T>['pageBehavior'];
+  /**
+   * Quick-select presets rendered beside the calendar (stacked above the
+   * grid on small screens). Accepts built-in
+   * keys (`'last-7-days'`, `'last-30-days'`, `'this-month'`) with localized
+   * labels, and custom presets with a `label` and a range value or resolver
+   * function. Selecting a preset sets the range; the preset matching the
+   * current selection is highlighted. Presets that fall outside
+   * `minValue`/`maxValue` or hit unavailable dates are disabled.
+   */
+  presets?: DateRangePreset[];
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -112,10 +124,12 @@ const _RangeCalendar = <T extends DateValue>({
   maxValue,
   visibleDuration = { months: 1 },
   pageBehavior = 'visible',
+  presets,
   ...rest
 }: RangeCalendarProps<T>) => {
   const visibleMonths = visibleDuration.months;
   const isMultiMonth = visibleMonths > 1;
+  const hasPresets = !!presets?.length;
 
   const props: RAC.RangeCalendarProps<T> = {
     isDisabled: disabled,
@@ -175,6 +189,64 @@ const _RangeCalendar = <T extends DateValue>({
     [error]
   );
 
+  const content = isMultiMonth ? (
+    <div className={classNames.calendarContainer}>
+      {[...Array(visibleMonths).keys()].map(i => (
+        <div key={i} className={classNames.calendarMonth}>
+          <CalendarHeader
+            monthOffset={i}
+            showPrevious={i === 0}
+            showNext={i === visibleMonths - 1}
+          />
+          <CalendarGrid offset={{ months: i }} />
+        </div>
+      ))}
+    </div>
+  ) : (
+    <>
+      <div
+        ref={dropdownOverlayRef}
+        className={cn(
+          'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
+          selectedDropdown && 'pointer-events-auto opacity-100'
+        )}
+      >
+        {ViewMap[selectedDropdown as ViewMapKeys]}
+      </div>
+
+      <div
+        className={cn(
+          'flex flex-col',
+          selectedDropdown && 'pointer-events-none opacity-0'
+        )}
+      >
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="flex w-fit gap-4">
+            <CalendarListBox
+              key="month"
+              type="month"
+              isDisabled={
+                hasOnlyOneSelectableMonth(minValue, maxValue) ||
+                props.isDisabled
+              }
+              setSelectedDropdown={setSelectedDropdown}
+            />
+            <CalendarListBox
+              key="year"
+              type="year"
+              isDisabled={
+                hasOnlyOneSelectableYear(minValue, maxValue) || props.isDisabled
+              }
+              setSelectedDropdown={setSelectedDropdown}
+            />
+          </div>
+          <MonthControls />
+        </div>
+        <CalendarGrid />
+      </div>
+    </>
+  );
+
   return (
     <CalendarContext
       value={{
@@ -183,6 +255,7 @@ const _RangeCalendar = <T extends DateValue>({
         minValue,
         maxValue,
         disabled,
+        readOnly,
       }}
     >
       <FieldErrorContext value={fieldErrorValue}>
@@ -205,67 +278,18 @@ const _RangeCalendar = <T extends DateValue>({
             {...props}
             className={cn(
               'relative flex w-(--width) flex-col',
+              hasPresets && 'gap-4 max-sm:flex-col sm:flex-row',
               classNames.calendar
             )}
             style={createWidthVar('width', width)}
           >
-            {isMultiMonth ? (
-              <div className={classNames.calendarContainer}>
-                {[...Array(visibleMonths).keys()].map(i => (
-                  <div key={i} className={classNames.calendarMonth}>
-                    <CalendarHeader
-                      monthOffset={i}
-                      showPrevious={i === 0}
-                      showNext={i === visibleMonths - 1}
-                    />
-                    <CalendarGrid offset={{ months: i }} />
-                  </div>
-                ))}
-              </div>
-            ) : (
+            {presets?.length ? (
               <>
-                <div
-                  ref={dropdownOverlayRef}
-                  className={cn(
-                    'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
-                    selectedDropdown && 'pointer-events-auto opacity-100'
-                  )}
-                >
-                  {ViewMap[selectedDropdown as ViewMapKeys]}
-                </div>
-
-                <div
-                  className={cn(
-                    'flex flex-col',
-                    selectedDropdown && 'pointer-events-none opacity-0'
-                  )}
-                >
-                  <div className="mb-6 flex items-center justify-between gap-4">
-                    <div className="flex w-fit gap-4">
-                      <CalendarListBox
-                        key="month"
-                        type="month"
-                        isDisabled={
-                          hasOnlyOneSelectableMonth(minValue, maxValue) ||
-                          props.isDisabled
-                        }
-                        setSelectedDropdown={setSelectedDropdown}
-                      />
-                      <CalendarListBox
-                        key="year"
-                        type="year"
-                        isDisabled={
-                          hasOnlyOneSelectableYear(minValue, maxValue) ||
-                          props.isDisabled
-                        }
-                        setSelectedDropdown={setSelectedDropdown}
-                      />
-                    </div>
-                    <MonthControls />
-                  </div>
-                  <CalendarGrid />
-                </div>
+                <RangeCalendarPresets presets={presets} />
+                <div className="relative flex min-w-0 flex-col">{content}</div>
               </>
+            ) : (
+              content
             )}
           </AriaRangeCalendar>
         </FieldBase>
