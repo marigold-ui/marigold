@@ -3,9 +3,12 @@ import { useState } from 'react';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
+import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';
+import { Inline } from '../Inline/Inline';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
+import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Sidebar } from './Sidebar';
 
@@ -270,3 +273,104 @@ export const WithActiveBranch = meta.story({
 export const DefaultCollapsed = meta.story({
   render: () => <Layout defaultOpen={false} />,
 });
+
+const badgePages: Record<string, { label: string }> = {
+  '/overview': { label: 'Overview' },
+  '/inbox': { label: 'Inbox' },
+  '/users': { label: 'Users' },
+  '/billing': { label: 'Billing' },
+  '/general': { label: 'General' },
+  '/security': { label: 'Security' },
+};
+
+/**
+ * Nav items can carry a `<Badge>` inline after their label — a count on a
+ * high-traffic destination, or an access badge (`master` / `admin`) marking a
+ * gated section. The badge text joins the item's accessible name, which reads
+ * naturally ("Inbox 12", "Billing Admin"); pass an explicit `textValue` so the
+ * collection's back-button label and type-ahead still use the plain label. The
+ * footer reuses the same access badge to show the current user's tier,
+ * mirroring the app-shell's top navigation.
+ */
+const BadgeExample = () => {
+  const [currentPath, setCurrentPath] = useState('/overview');
+
+  return (
+    <RouterProvider navigate={setCurrentPath}>
+      <I18nProvider locale="en-US">
+        <Sidebar.Provider>
+          <div className="flex h-screen">
+            <Sidebar>
+              <Sidebar.Header>
+                <Text weight="bold">Acme Inc.</Text>
+              </Sidebar.Header>
+              <Sidebar.Nav current={currentPath}>
+                <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+                <Sidebar.Item href="/inbox" textValue="Inbox">
+                  Inbox
+                  <Badge>12</Badge>
+                </Sidebar.Item>
+                <Sidebar.Item href="/users">Users</Sidebar.Item>
+                <Sidebar.GroupLabel>Administration</Sidebar.GroupLabel>
+                <Sidebar.Item href="/billing" textValue="Billing">
+                  Billing
+                  <Badge variant="admin">Admin</Badge>
+                </Sidebar.Item>
+                <Sidebar.Item href="/security" textValue="Security">
+                  Security
+                  <Badge variant="master">Master</Badge>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+              <Sidebar.Footer>
+                <Inline space="related" alignY="center" noWrap>
+                  <Stack>
+                    <Inline space="tight" alignY="center" noWrap>
+                      <Text size="sm" weight="bold">
+                        Jane Doe
+                      </Text>
+                      <Badge variant="master">Master</Badge>
+                    </Inline>
+                    <Text size="xs" variant="muted">
+                      Acme Inc.
+                    </Text>
+                  </Stack>
+                </Inline>
+              </Sidebar.Footer>
+            </Sidebar>
+            <main className="flex-1 p-4">
+              <Sidebar.Toggle />
+              <Headline level={2}>{badgePages[currentPath]?.label}</Headline>
+            </main>
+          </div>
+        </Sidebar.Provider>
+      </I18nProvider>
+    </RouterProvider>
+  );
+};
+
+export const WithBadges = meta.story({
+  tags: ['component-test'],
+  render: () => <BadgeExample />,
+});
+
+WithBadges.test(
+  'renders count and access badges inline on nav items',
+  async ({ canvas }) => {
+    // Count badge on a nav item.
+    await expect(canvas.getByText('12')).toBeVisible();
+
+    // Access badges: one admin (nav), one master on a nav item, one master in
+    // the footer user block.
+    await expect(canvas.getByText('Admin')).toBeVisible();
+    await expect(canvas.getAllByText('Master')).toHaveLength(2);
+
+    // The badge text joins the link's accessible name (informative), so the
+    // items are reachable by their label plus badge.
+    await expect(
+      canvas.getByRole('link', { name: /Inbox/ })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('link', { name: /Billing/ })
+    ).toBeInTheDocument();
+  }
+);
