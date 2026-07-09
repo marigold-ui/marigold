@@ -1835,3 +1835,180 @@ Run: `pnpm typecheck:only` — no NEW errors vs the 17-error baseline.
 git add packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker packages/components/src/DateRangePicker
 git commit -m "feat(DST-1511): default small-screen presets view by context via defaultPresetsOpen"
 ```
+
+---
+
+### Task 12: Inline quick selection opens a Tray; drop `defaultPresetsOpen`
+
+_Added 2026-07-09 (third mobile iteration); executes BEFORE Tasks 8–9. Spec decision 7._
+
+On small screens, a **standalone** `Calendar`/`RangeCalendar` with presets keeps its grid always visible; the "Quick selection" row now opens a **Marigold Tray** (bottom sheet) containing the preset list. Tapping a preset applies it AND closes the tray. Picker trays keep the Task 10/11 in-place list-first flow — the calendars now detect picker context via the RAC picker state contexts, so the `defaultPresetsOpen` prop is REMOVED entirely (it was never released; added earlier today).
+
+**Files:**
+
+- Modify: `packages/components/src/Calendar/CalendarPresets.tsx` (`onSelectionDone` callback threaded to `PresetListBox`; hide the "Custom…" row when `onCustom` is absent — already conditional)
+- Modify: `packages/components/src/Calendar/Calendar.tsx`, `packages/components/src/RangeCalendar/RangeCalendar.tsx` (remove `defaultPresetsOpen` prop; detect picker context; standalone small-screen branch renders grid + `Tray.Trigger` quick-selection row)
+- Modify: `packages/components/src/DatePicker/DatePicker.tsx`, `packages/components/src/DateRangePicker/DateRangePicker.tsx` (remove the internal `defaultPresetsOpen` pass-through)
+- Test: `packages/components/src/Calendar/Calendar.test.tsx`, `packages/components/src/RangeCalendar/RangeCalendar.test.tsx` (rewrite inline small-screen tests for the tray flow; remove `defaultPresetsOpen` tests), `packages/components/src/DatePicker/DatePicker.test.tsx` (tray list-first sentinel must pass UNCHANGED)
+
+**Interfaces:**
+
+- Consumes: `Tray` + `Tray.Trigger`/`Tray.Title`/`Tray.Content`/`Tray.Actions` from `../Tray/Tray` (`Tray.Trigger` wraps RAC `DialogTrigger` and accepts `open`; `Tray` accepts `onOpenChange`); `Button` from `../Button/Button` with `slot="close"` (mirror the pickers' tray close button and its `close` intl message); `PresetsNavButton` from Task 11; `DatePickerStateContext`/`DateRangePickerStateContext` (already imported in `CalendarPresets.tsx` — now also read in the calendars).
+- Produces: `CalendarPresets`/`RangeCalendarPresets` accept `onSelectionDone?: () => void` (called AFTER a preset value is applied); `CalendarProps`/`RangeCalendarProps` no longer have `defaultPresetsOpen`.
+
+- [ ] **Step 1: `onSelectionDone` in `CalendarPresets.tsx`**
+
+Add to `PresetListBoxProps` (and thread through both wrappers):
+
+```tsx
+  /**
+   * Called after a preset's value has been applied. The standalone
+   * small-screen tray uses this to close itself; pickers leave it unset so
+   * their overlay stays open.
+   */
+  onSelectionDone?: () => void;
+```
+
+In `handleSelectionChange`, call `onSelectionDone?.()` as the last statement after `onSelect(preset.resolve())`.
+
+- [ ] **Step 2: Picker detection + standalone tray branch in both calendars**
+
+In `Calendar.tsx`:
+
+1. Remove the `defaultPresetsOpen` prop (interface + destructuring + JSDoc).
+2. Detect picker context and manage the tray state:
+
+```tsx
+import { DatePickerStateContext } from 'react-aria-components/DatePicker';
+
+// …
+const pickerState = use(DatePickerStateContext);
+const isInPicker = pickerState != null;
+const [presetsTrayOpen, setPresetsTrayOpen] = useState(false);
+```
+
+The Task 10/11 `smallScreenView`/`hasNavigated` state stays but now only drives the picker branch; initial view is `'presets'` unconditionally (list-first is now always the picker behavior):
+
+```tsx
+const [smallScreenView, setSmallScreenView] = useState<'presets' | 'calendar'>(
+  'presets'
+);
+```
+
+3. Replace the small-screen presets branch:
+
+```tsx
+isSmallScreen ? (
+  isInPicker ? (
+    smallScreenView === 'presets' ? (
+      <CalendarPresets
+        presets={presets}
+        autoFocus={hasNavigated}
+        onCustom={() => {
+          setSmallScreenView('calendar');
+          setHasNavigated(true);
+        }}
+      />
+    ) : (
+      <>
+        <PresetsNavButton
+          variant="back"
+          autoFocus={hasNavigated}
+          onPress={() => {
+            setSmallScreenView('presets');
+            setHasNavigated(true);
+          }}
+        />
+        <div className="relative flex min-w-0 flex-col">{content}</div>
+      </>
+    )
+  ) : (
+    <>
+      <PresetsNavButton
+        variant="open"
+        onPress={() => setPresetsTrayOpen(true)}
+      />
+      <Tray.Trigger open={presetsTrayOpen} onOpenChange={setPresetsTrayOpen}>
+        <Tray>
+          <Tray.Title>{stringFormatter.format('presets')}</Tray.Title>
+          <Tray.Content>
+            <CalendarPresets
+              presets={presets}
+              onSelectionDone={() => setPresetsTrayOpen(false)}
+            />
+          </Tray.Content>
+          <Tray.Actions>
+            <Button slot="close">{stringFormatter.format('close')}</Button>
+          </Tray.Actions>
+        </Tray>
+      </Tray.Trigger>
+      <div className="relative flex min-w-0 flex-col">{content}</div>
+    </>
+  )
+) : (
+  /* desktop rail branch unchanged */
+)
+```
+
+Notes:
+
+- `useLocalizedStringFormatter(intlMessages)` may need importing into the calendars (the pickers show the exact import lines to copy).
+- RAC `DialogTrigger` normally requires a pressable first child; here the trigger row sits OUTSIDE `Tray.Trigger` with controlled `open`, because the row must keep `slot={null}` (Calendar's prev/next `ButtonContext`) and therefore cannot receive DialogTrigger's context wiring. If RAC's `DialogTrigger` complains about a missing trigger child, render the `PresetsNavButton` as the first child INSIDE `Tray.Trigger` and drop its `slot={null}` for this variant (DialogTrigger's own `ButtonContext` shadows the calendar's, so the unslotted-throw cannot occur there) — let the `onPress` come from DialogTrigger instead of manual state in that case, and report which branch you took.
+- Add `aria-expanded={presetsTrayOpen}` and `aria-haspopup="dialog"` to the quick-selection `PresetsNavButton` usage if the manual-state branch is used (extend `PresetsNavButtonProps` with optional pass-through props as needed).
+- No sublabel change: the tray list shows sublabels (it is small-screen by definition).
+
+Mirror all of this in `RangeCalendar.tsx` with `DateRangePickerStateContext`/`RangeCalendarPresets`.
+
+4. Also remove the now-dead `'open'`-variant + `defaultPresetsOpen` wiring left from Task 11 in the picker branch (nav row in pickers is always `variant="back"` now).
+
+- [ ] **Step 3: Remove the picker pass-through**
+
+In `DatePicker.tsx` and `DateRangePicker.tsx`, delete `defaultPresetsOpen` from all four embedded-calendar usages (Tray + Popover in each). Detection is automatic now.
+
+- [ ] **Step 4: Rewrite inline small-screen tests**
+
+`Calendar.test.tsx` small-screen block (keep the sublabel test but drive it through the tray; delete the `defaultPresetsOpen` test):
+
+```tsx
+test('quick selection opens a tray; selecting a preset applies and closes it', async () => {
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  render(<Presets.Component />);
+
+  expect(screen.getByRole('grid')).toBeVisible();
+  expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  const trigger = screen.getByRole('button', { name: 'Quick selection' });
+  expect(trigger).not.toHaveFocus();
+
+  await user.click(trigger);
+  const dialog = await screen.findByRole('dialog');
+  const listbox = within(dialog).getByRole('listbox', {
+    name: 'Quick selection',
+  });
+  expect(listbox).toBeVisible();
+  expect(
+    within(dialog).queryByRole('button', { name: 'Custom…' })
+  ).not.toBeInTheDocument();
+
+  await user.click(within(dialog).getByRole('option', { name: 'Tomorrow' }));
+  await waitFor(() =>
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  );
+  expect(screen.getByRole('grid')).toBeVisible();
+});
+```
+
+(Import `within`/`waitFor` from `@testing-library/react` if not present; follow the file's overlay-test setup — `renderWithOverlay` from `../test.utils` if the tray needs the portal container.) Adapt the sublabel assertion to query the option inside the opened tray. Mirror in `RangeCalendar.test.tsx`. Run:
+`pnpm vitest run --project=unit-tests packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker`
+Expected: PASS, with `DatePicker.test.tsx` untouched (sentinel).
+
+- [ ] **Step 5: Desktop regression + typecheck + commit**
+
+Run: `pnpm vitest run --project=storybook-tests packages/components/src/Calendar/Calendar.stories.tsx packages/components/src/RangeCalendar/RangeCalendar.stories.tsx packages/components/src/DatePicker/DatePicker.stories.tsx packages/components/src/DateRangePicker/DateRangePicker.stories.tsx`
+Expected: PASS (desktop rail unchanged).
+
+Run: `pnpm typecheck:only` — no NEW errors vs the 17-error baseline. Also `grep -rn "defaultPresetsOpen" packages docs themes` must return nothing.
+
+```bash
+git add packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker packages/components/src/DateRangePicker
+git commit -m "feat(DST-1511): open inline quick selection in a tray on small screens"
+```

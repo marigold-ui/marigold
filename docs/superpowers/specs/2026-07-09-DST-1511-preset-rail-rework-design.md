@@ -40,6 +40,11 @@ below come from it.
    trays list-first, inline calendars grid-first with a "Quick selection" nav row;
    `defaultPresetsOpen?: boolean` on `Calendar`/`RangeCalendar` opts inline usage
    into list-first (pickers set it internally; not exposed on the pickers).
+7. (2026-07-09, third mobile iteration) Inline "Quick selection" opens a **Marigold
+   Tray** with the preset list — tap applies and closes; no Custom…/Back inline.
+   `defaultPresetsOpen` is dropped entirely; the calendars detect picker context
+   via the RAC picker state contexts instead (supersedes the prop half of
+   decision 6).
 
 Prior decisions that stand (from the 2026-07-08 plan): unified catalog (day keys are
 valid range presets), active preset derived by value equality (no stored state),
@@ -97,29 +102,31 @@ so pickers need no extra plumbing):
 - **Rail** (default, ≥ md): vertical column to the **left of** the calendar grid.
   Width 150px, subtle raised background (stone-50), 1px border-right, padding 8px,
   row gap 2px.
-- **Two-view switcher** (small screens; REVISED 2026-07-09 after Storybook review,
-  refined same day): instead of stacking list and grid, a calendar with presets
-  shows **either** the preset list **or** the calendar grid. The **default view
-  depends on context**: inline `Calendar`/`RangeCalendar` start on the **grid**
-  (`defaultPresetsOpen?: boolean`, default `false`, opts into list-first); the
-  pickers internally render their embedded calendar with `defaultPresetsOpen`, so
-  **trays start on the list**. The list renders full-width rows with the check
-  indicator and a trailing resolved-value sublabel in `text-sm` muted (range
-  "Jul 9 – 15" / "Jul 9 – Aug 2", single date "Jul 9"), recomputed per render,
-  plus a trailing **"Custom…" entry** (link-colored label, trailing chevron-right;
-  localized `presetsCustom`: en "Custom…" / de "Benutzerdefiniert…") that switches
-  to the calendar view. The calendar view is topped by a full-width **nav row**
-  whose reading depends on the default view: when the list is the default (trays),
-  chevron-left + the existing `back` message ("Back"/"Zurück") — you navigated
-  here; when the grid is the default (inline), the existing `presets` message
-  ("Quick selection"/"Schnellauswahl") + trailing chevron-right — it is the entry
-  point into the list. The switcher lives inside the calendars, so picker trays
-  inherit it with no public picker API change, and tray close/reopen resets to the
-  default view (tray content unmounts). Focus: the nav row and the list receive
-  focus only when arrived at via in-component navigation, never on initial mount
-  (inline calendars must not steal focus on page load). Selecting a preset stays
-  on the list (check appears); grid selection keeps existing close-on-select
-  picker behavior.
+- **Small screens — context-bound presentation** (REVISED 2026-07-09, three
+  iterations): the calendars detect picker context themselves (via
+  `DatePickerStateContext`/`DateRangePickerStateContext`); no public prop.
+  - **Inside a picker tray** (list-first): the tray shows the preset list —
+    full-width rows with the check indicator and a trailing resolved-value
+    sublabel in `text-sm` muted (range "Jul 9 – 15" / "Jul 9 – Aug 2", single
+    date "Jul 9"), recomputed per render — plus a trailing **"Custom…" entry**
+    (link-colored label, trailing chevron-right; localized `presetsCustom`: en
+    "Custom…" / de "Benutzerdefiniert…") that swaps in the calendar grid,
+    topped by a full-width **back row** (chevron-left + existing `back`
+    message) returning to the list. Focus: back row and list receive focus
+    only when arrived at via navigation. Tray close/reopen resets to the list
+    (content unmounts). Selecting a preset stays open (check appears); grid
+    selection keeps existing close-on-select picker behavior.
+  - **Standalone/inline** (grid-first): the grid always renders, topped by a
+    full-width **"Quick selection" row** (existing `presets` message +
+    trailing chevron-right) that opens a **Marigold Tray** (bottom sheet,
+    `Tray.Trigger` + controlled open state) containing the preset list (same
+    rows + sublabels, no "Custom…" entry — the grid is visible beneath), a
+    `Tray.Title` ("Quick selection") and a Close action. Tapping a preset
+    applies it AND closes the tray (focus returns to the row); Close/backdrop
+    dismisses. The row is never auto-focused on mount, and the tray never
+    auto-opens (a11y).
+  - The former `defaultPresetsOpen` prop is REMOVED (an auto-open modal is an
+    a11y antipattern; picker detection replaces the internal wiring).
 
 **Option row** (both variants): `flex items-center gap-2`, height 36px, padding
 `0 10px`, `radius-md`, pointer cursor. Fixed 16px leading slot containing a
