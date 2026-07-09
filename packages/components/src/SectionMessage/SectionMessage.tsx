@@ -148,11 +148,10 @@ export const SectionMessage = ({
   }, [isOpen]);
 
   const handleClose = () => {
-    if (onOpenChange) {
-      onOpenChange(false);
-    } else {
+    if (open === undefined) {
       setInternalOpen(false);
     }
+    onOpenChange?.(false);
   };
 
   if (!isOpen) return null;

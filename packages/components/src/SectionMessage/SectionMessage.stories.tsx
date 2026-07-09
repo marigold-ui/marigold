@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect } from 'storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -153,6 +153,8 @@ export const MultiLineTitle = meta.story({
 });
 
 export const ControlledSectionMessage = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true }, surface: false },
   render: args => {
     const [deleted, setDeleted] = useState(false);
 
@@ -176,5 +178,24 @@ export const ControlledSectionMessage = meta.story({
         </SectionMessage>
       </Stack>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Not shown until "Delete item" is pressed.
+    await expect(
+      canvas.queryByRole('heading', { name: 'Item deleted' })
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete item' }));
+
+    const heading = canvas.getByRole('heading', { name: 'Item deleted' });
+    await expect(heading).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+
+    await expect(
+      canvas.queryByRole('heading', { name: 'Item deleted' })
+    ).not.toBeInTheDocument();
   },
 });

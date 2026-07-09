@@ -175,3 +175,24 @@ test('support controlled dismiss message', async () => {
   await user.click(button);
   expect(message[0]).not.toBeInTheDocument();
 });
+
+test('support uncontrolled dismiss message with onOpenChange listener', async () => {
+  const onOpenChange = vi.fn();
+
+  render(
+    <Basic.Component
+      data-testid="messages"
+      closeButton
+      onOpenChange={onOpenChange}
+    />
+  );
+  const message = screen.getAllByTestId(/messages/);
+  const button = screen.getAllByRole('button')[0];
+
+  expect(message[0]).toBeInTheDocument();
+
+  await user.click(button);
+
+  expect(onOpenChange).toHaveBeenCalledWith(false);
+  expect(message[0]).not.toBeInTheDocument();
+});
