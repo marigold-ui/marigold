@@ -80,16 +80,25 @@ export const FileField = ({
 
   // Single place that mutates the selection: keeps the hidden input in sync
   // with state so no mutation site has to remember to do it separately.
-  const commitFiles = (next: File[]) => {
-    setFiles(next);
-    syncHiddenInput(next);
+  // Takes an updater so it derives from the latest state, not a stale
+  // closure - async drops that resolve concurrently can't clobber each other.
+  const updateFiles = (update: (prev: File[]) => File[]) => {
+    setFiles(prev => {
+      const next = update(prev ?? []);
+      syncHiddenInput(next);
+      return next;
+    });
   };
 
   const mergeFiles = (incoming: File[]) => {
     // When multiple is set, add to the existing selection instead of
     // replacing it, so files picked in separate interactions accumulate.
-    const combined = multiple ? [...(files ?? []), ...incoming] : incoming;
-    commitFiles(normalizeAndLimitFiles(combined, { accept, multiple }));
+    updateFiles(prev =>
+      normalizeAndLimitFiles(multiple ? [...prev, ...incoming] : incoming, {
+        accept,
+        multiple,
+      })
+    );
   };
 
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
@@ -149,7 +158,7 @@ export const FileField = ({
         <FileField.Item
           key={index}
           onRemove={() =>
-            commitFiles((files ?? []).filter((_, i) => i !== index))
+            updateFiles(prev => prev.filter((_, i) => i !== index))
           }
         >
           <div className={cn('[grid-area:label]', classNames.itemLabel)}>
