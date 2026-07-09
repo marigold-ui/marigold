@@ -391,16 +391,11 @@ AccessSections.test(
 
     expect(await canvas.findByText('Master-Aktionen')).toBeVisible();
 
-    // The hidden "Master" label is real DOM text, so the accessible name is
-    // assertable right here (the decorative `content: ''` glyph is not).
+    // The `name` filter asserts the accessible name: the visible label plus
+    // the hidden "Master" label. The lock icon itself is decorative.
     const move = canvas.getByRole('menuitem', { name: 'Verschieben Master' });
-    const glyph = window.getComputedStyle(move, '::before');
 
-    // Enforce the rendered mechanism, not just the class: the glyph paints
-    // from the lock mask.
-    expect(move).toHaveClass('ui-access-master');
-    expect(glyph.maskImage).toContain('data:image/svg+xml');
-    expect(glyph.content).toContain('""');
+    expect(move.querySelector('svg')).toBeInTheDocument();
   }
 );
 
@@ -411,9 +406,9 @@ AccessSections.test(
       canvas.getByRole('button', { name: 'Filial-Aktionen' })
     );
 
-    const del = canvas.getByText('Löschen').closest('[role="menuitem"]');
+    const del = canvas.getByRole('menuitem', { name: 'Löschen Master' });
 
-    expect(del).toHaveClass('ui-access-master');
+    expect(del.querySelector('svg')).toBeInTheDocument();
     expect(del).not.toHaveClass('text-destructive-accent');
   }
 );

@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Stack } from '@marigold/components';
 import { Text } from '../Text/Text';
@@ -77,6 +78,7 @@ export const Inline = meta.story({
 });
 
 export const AccessVariants = meta.story({
+  tags: ['component-test'],
   render: () => (
     <Stack space={2} alignX="left">
       <Link variant="master" href="#">
@@ -88,3 +90,20 @@ export const AccessVariants = meta.story({
     </Stack>
   ),
 });
+
+AccessVariants.test(
+  'access links render the decorative icon and the hidden access label',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // The `name` filter asserts the accessible name: the visible label plus
+    // the hidden access label. `getAllBy` because the story renders on both
+    // surfaces (`surface: 'both'`).
+    const [master] = canvas.getAllByRole('link', {
+      name: 'verschieben Master',
+    });
+    const [admin] = canvas.getAllByRole('link', { name: 'freigeben Admin' });
+
+    expect(master.querySelector('svg')).toBeInTheDocument();
+    expect(admin.querySelector('svg')).toBeInTheDocument();
+  }
+);

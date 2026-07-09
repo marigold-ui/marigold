@@ -30,20 +30,19 @@ test('renders the info variant correctly', () => {
   `);
 });
 
-test('master variant applies the lock mask glyph', () => {
+// Icon rendering is covered by the Basic story test.
+test('master variant announces its visible text only', () => {
   render(<Basic.Component />);
   const master = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('master')];
 
-  expect(master).toHaveClass('ui-access-master');
   // The badge's visible text already is the access level — no hidden access
   // label may be added, or AT would announce "Status Master"-style doubles.
-  expect(master.textContent).toBe('Status');
+  expect(master).toHaveTextContent(/^Status$/);
 });
 
-test('admin variant applies the key mask glyph', () => {
+test('admin variant announces its visible text only', () => {
   render(<Basic.Component />);
   const admin = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('admin')];
 
-  expect(admin).toHaveClass('ui-access-admin');
-  expect(admin.textContent).toBe('Status');
+  expect(admin).toHaveTextContent(/^Status$/);
 });

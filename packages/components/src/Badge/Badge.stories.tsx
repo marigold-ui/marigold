@@ -73,7 +73,7 @@ export const Basic = meta.story({
 });
 
 Basic.test(
-  'access badges paint the mask glyph without an extra access label',
+  'access badges render the icon without an extra access label',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     // Variant order follows the render above.
@@ -81,15 +81,12 @@ Basic.test(
     const master = badges[6];
     const admin = badges[7];
 
-    const masterGlyph = window.getComputedStyle(master, '::before');
-    const adminGlyph = window.getComputedStyle(admin, '::before');
-
-    // The glyph paints from the mask image and stays decorative; the Badge
-    // gets no hidden access label because its visible label is the access
-    // level itself — anything more would double-announce.
-    expect(masterGlyph.maskImage).toContain('data:image/svg+xml');
+    // The icon is decorative; the Badge gets no hidden access label because
+    // its visible label is the access level itself — anything more would
+    // double-announce.
+    expect(master.querySelector('svg')).toBeInTheDocument();
     expect(master.textContent).toBe('Status');
-    expect(adminGlyph.maskImage).toContain('data:image/svg+xml');
+    expect(admin.querySelector('svg')).toBeInTheDocument();
     expect(admin.textContent).toBe('Status');
   }
 );
