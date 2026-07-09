@@ -2,7 +2,7 @@
 '@marigold/theme-rui': minor
 ---
 
-style(Sidebar): quieter navigation hierarchy and a unified app-shell hairline
+style(DST-1586): quieter sidebar navigation hierarchy and a seamless app shell
 
 The sidebar navigation now carries hierarchy with semantic tokens instead of raw
 charcoal values. The current page is an inset rounded pill (`selected` fill,
