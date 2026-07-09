@@ -5,6 +5,7 @@ import { MenuItem } from 'react-aria-components/Menu';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
+import { AccessLabel } from '../utils/AccessLabel';
 
 // Props
 // ---------------
@@ -66,12 +67,15 @@ const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
   return (
     <MenuItem {...props} className={classNames.item}>
       {renderProps => (
-        <ItemChildren
-          labelClassName={classNames.label}
-          descriptionClassName={classNames.description}
-        >
-          {typeof children === 'function' ? children(renderProps) : children}
-        </ItemChildren>
+        <>
+          <ItemChildren
+            labelClassName={classNames.label}
+            descriptionClassName={classNames.description}
+          >
+            {typeof children === 'function' ? children(renderProps) : children}
+          </ItemChildren>
+          <AccessLabel variant={variant} />
+        </>
       )}
     </MenuItem>
   );

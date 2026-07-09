@@ -14,12 +14,10 @@ export const Badge: ThemeComponent<'Badge'> = cva({
       warning: 'bg-warning text-warning-foreground',
       info: 'bg-info text-info-foreground',
       error: 'bg-destructive text-destructive-foreground',
-      // `ui-access-decorative`: the Badge's visible text is the access level
-      // itself, so the utilities' alternative text would double-announce.
       admin:
-        'text-access-admin-foreground border border-access-admin-accent bg-access-admin ui-access-admin ui-access-decorative before:mr-1',
+        'text-access-admin-foreground border border-access-admin-accent bg-access-admin ui-access-admin before:mr-1',
       master:
-        'text-access-master-foreground bg-access-master border border-access-master-accent ui-access-master ui-access-decorative before:mr-1',
+        'text-access-master-foreground bg-access-master border border-access-master-accent ui-access-master before:mr-1',
     },
   },
   defaultVariants: {

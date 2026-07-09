@@ -2,6 +2,7 @@ import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Link } from 'react-aria-components/Link';
 import { useClassNames } from '@marigold/system';
+import { AccessLabel } from '../utils/AccessLabel';
 
 type RemovedProps = 'className' | 'isDisabled' | 'slot';
 
@@ -32,7 +33,12 @@ const _Link = ({
 
   return (
     <Link {...props} ref={ref} className={classNames} isDisabled={disabled}>
-      {children}
+      {renderProps => (
+        <>
+          {typeof children === 'function' ? children(renderProps) : children}
+          <AccessLabel variant={variant} />
+        </>
+      )}
     </Link>
   );
 };

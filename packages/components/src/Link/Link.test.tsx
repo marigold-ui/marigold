@@ -61,18 +61,19 @@ test('supports "onPress"', async () => {
   expect(warnMock).not.toHaveBeenCalled();
 });
 
-test('master variant renders the lock glyph via the access utility', () => {
+// The `name` filter asserts the accessible name: the visible label plus the
+// hidden access label. `getAllBy` because Link stories render on both
+// surfaces (`surface: 'both'`).
+test('master variant renders the lock glyph and a hidden "Master" label', () => {
   render(<AccessVariants.Component />);
-  const [master] = screen.getAllByRole('link');
+  const [master] = screen.getAllByRole('link', { name: 'verschieben Master' });
 
   expect(master).toHaveClass('ui-access-master');
-  expect(master).toHaveTextContent('verschieben');
 });
 
-test('admin variant renders the key glyph via the access utility', () => {
+test('admin variant renders the key glyph and a hidden "Admin" label', () => {
   render(<AccessVariants.Component />);
-  const [, admin] = screen.getAllByRole('link');
+  const [admin] = screen.getAllByRole('link', { name: 'freigeben Admin' });
 
   expect(admin).toHaveClass('ui-access-admin');
-  expect(admin).toHaveTextContent('freigeben');
 });

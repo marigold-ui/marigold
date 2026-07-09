@@ -376,14 +376,13 @@
  * entirely in the theme and works in React as well as in the generated
  * BEM/Twig CSS.
  *
- * The `content` alternative text exposes the restriction to assistive
- * technology. Without it, the glyph does not appear in the accessibility
- * tree and a restricted element is indistinguishable from a regular one
- * (WCAG 1.1.1). The plain `content: ''` declared first is the fallback for
- * engines without the alternative-text syntax (e.g. Safari < 17.4): they
- * drop the second declaration but keep the first, so the glyph always
- * renders. "Master" and "Admin" are invariant product terms, so the
- * alternative text is not localized.
+ * The glyph is purely decorative and never enters the accessibility tree.
+ * Exposing the access level to assistive technology (WCAG 1.1.1) is the
+ * consumer's job: `Link` and `MenuItem` render a visually hidden
+ * "Master"/"Admin" label next to their visible text, while `Badge` needs
+ * nothing extra because its visible text already is the access level.
+ * Keeping the accessible name out of the CSS makes double-announcing
+ * impossible and keeps the announcement assertable in tests.
  *
  * Spacing between glyph and label is owned by the consumer (`before:mr-1`
  * on inline surfaces, grid `gap-x-2` in menu items), so the glyph aligns
@@ -392,7 +391,6 @@
 @utility ui-access-master {
   &::before {
     content: '';
-    content: '' / 'Master';
     display: inline-block;
     flex-shrink: 0;
     width: 1rem;
@@ -414,7 +412,6 @@
 @utility ui-access-admin {
   &::before {
     content: '';
-    content: '' / 'Admin';
     display: inline-block;
     flex-shrink: 0;
     width: 1rem;
@@ -428,17 +425,5 @@
     @media (forced-colors: active) {
       background-color: CanvasText;
     }
-  }
-}
-
-/*
- * Opt-out of the alternative text for surfaces whose visible label already
- * IS the access level (e.g. a Badge reading "Master"), where the alt text
- * would double-announce. Declared after the access utilities so it wins
- * the cascade at equal specificity.
- */
-@utility ui-access-decorative {
-  &::before {
-    content: '';
   }
 }

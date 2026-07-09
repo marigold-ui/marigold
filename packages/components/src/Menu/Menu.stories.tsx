@@ -391,16 +391,13 @@ AccessSections.test(
 
     expect(await canvas.findByText('Master-Aktionen')).toBeVisible();
 
-    const move = canvas
-      .getByText('Verschieben')
-      .closest<HTMLElement>('[role="menuitem"]')!;
+    // The hidden "Master" label is real DOM text, so the accessible name is
+    // assertable right here (the decorative `content: ''` glyph is not).
+    const move = canvas.getByRole('menuitem', { name: 'Verschieben Master' });
     const glyph = window.getComputedStyle(move, '::before');
 
     // Enforce the rendered mechanism, not just the class: the glyph paints
-    // from the lock mask. The "Master" alternative text is not assertable
-    // here because the test Firefox lacks the `content` alt-text syntax and
-    // uses the plain `content: ''` fallback (which this test proves keeps
-    // the glyph rendering); the accessible name was verified in Chromium.
+    // from the lock mask.
     expect(move).toHaveClass('ui-access-master');
     expect(glyph.maskImage).toContain('data:image/svg+xml');
     expect(glyph.content).toContain('""');
