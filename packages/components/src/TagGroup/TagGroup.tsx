@@ -259,7 +259,7 @@ const _TagGroup = ({
           onSelectionChange={handleSelectionChange}
           onRemove={onRemove}
         >
-          <div className={cn(classNames.container, 'flex gap-4 bg-blue-300')}>
+          <div className={cn(classNames.container, 'flex gap-8')}>
             <div className="flex gap-2">
               <TagList
                 ref={tagListRef}
