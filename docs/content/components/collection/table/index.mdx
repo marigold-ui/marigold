@@ -3,19 +3,15 @@ title: Table
 description: Display and interact with structured data in rows and columns.
 ---
 
+import { TableAnatomy } from './table-anatomy';
+
 The `<Table>` component displays structured data in a grid layout with rows and columns. It provides features for selecting, sorting, editing, and reordering data, making it ideal for applications that need to present and manipulate tabular information.
 
 Use tables when you need to display datasets where users benefit from seeing multiple records at once, comparing values across columns, or performing bulk operations on selected items. Tables work well for admin interfaces, data management screens, and dashboards where structured information needs to be organized and actionable.
 
 ## Anatomy
 
-<ImageZoom
-  src="/table/table-anatomy.jpg"
-  alt="Anatomy of Table component"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<TableAnatomy />
 
 - **Header (sticky):** Container for column headers, can stick to viewport top when scrolling.
 - **Column:** Individual column headers that can enable sorting functionality.
