@@ -56,6 +56,16 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   return fileType === t;
 };
 
+const dedupeFiles = (files: File[]): File[] => {
+  const seen = new Set<string>();
+  return files.filter(file => {
+    const key = `${file.name}:${file.size}:${file.lastModified}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 export const normalizeAndLimitFiles = (
   files: File[],
   {
@@ -66,7 +76,7 @@ export const normalizeAndLimitFiles = (
     multiple?: boolean;
   }
 ): File[] => {
-  const accepted = filterAcceptedFiles(files, accept);
+  const accepted = dedupeFiles(filterAcceptedFiles(files, accept));
 
   return multiple ? accepted : accepted.slice(0, 1);
 };

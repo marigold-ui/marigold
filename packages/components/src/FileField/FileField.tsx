@@ -78,11 +78,22 @@ export const FileField = ({
     hiddenInputRef.current.files = dt.files;
   };
 
+  // Single place that mutates the selection: keeps the hidden input in sync
+  // with state so no mutation site has to remember to do it separately.
+  const commitFiles = (next: File[]) => {
+    setFiles(next);
+    syncHiddenInput(next);
+  };
+
+  const mergeFiles = (incoming: File[]) => {
+    // When multiple is set, add to the existing selection instead of
+    // replacing it, so files picked in separate interactions accumulate.
+    const combined = multiple ? [...(files ?? []), ...incoming] : incoming;
+    commitFiles(normalizeAndLimitFiles(combined, { accept, multiple }));
+  };
+
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
-    const list = files ? Array.from(files) : [];
-    const normalized = normalizeAndLimitFiles(list, { accept, multiple });
-    setFiles(normalized);
-    syncHiddenInput(normalized);
+    mergeFiles(files ? Array.from(files) : []);
   };
 
   const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
@@ -92,9 +103,7 @@ export const FileField = ({
         .map(item => (item as RAC.FileDropItem).getFile());
       const raw = await Promise.all(filePromises);
       const files = raw.filter(Boolean) as File[];
-      const normalized = normalizeAndLimitFiles(files, { accept, multiple });
-      setFiles(normalized);
-      syncHiddenInput(normalized);
+      mergeFiles(files);
     } catch {
       // Intentionally ignore - dropped files that can't be read are skipped.
       // User sees no file appear, which is acceptable UX for invalid drops.
@@ -139,11 +148,9 @@ export const FileField = ({
       {files?.map((file, index) => (
         <FileField.Item
           key={index}
-          onRemove={() => {
-            const updated = (files ?? []).filter((_, i) => i !== index);
-            setFiles(updated);
-            syncHiddenInput(updated);
-          }}
+          onRemove={() =>
+            commitFiles((files ?? []).filter((_, i) => i !== index))
+          }
         >
           <div className={cn('[grid-area:label]', classNames.itemLabel)}>
             {file.name}
