@@ -1679,3 +1679,159 @@ Run: `pnpm typecheck:only` — no NEW errors vs the 17-error baseline.
 git add packages/components/src/intl packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker
 git commit -m "feat(DST-1511): show presets and calendar as alternate views on small screens"
 ```
+
+---
+
+### Task 11: Context-bound default view + `defaultPresetsOpen`
+
+_Added 2026-07-09 after the user's mobile re-check; executes BEFORE Tasks 8–9. Spec decision 6._
+
+Inline `Calendar`/`RangeCalendar` on small screens must start on the **grid**, not the preset list, with a "Quick selection" nav row as the entry point into the list. A new `defaultPresetsOpen?: boolean` prop (default `false`) opts into list-first; the pickers pass it internally so trays keep starting on the list. Desktop unchanged.
+
+**Files:**
+
+- Modify: `packages/components/src/Calendar/CalendarPresets.tsx` (generalize the back row into `PresetsNavButton` with `variant: 'back' | 'open'` and an `autoFocus` prop)
+- Modify: `packages/components/src/Calendar/Calendar.tsx`, `packages/components/src/RangeCalendar/RangeCalendar.tsx` (`defaultPresetsOpen` prop, initial view, nav-row variant)
+- Modify: `packages/components/src/DatePicker/DatePicker.tsx`, `packages/components/src/DateRangePicker/DateRangePicker.tsx` (pass `defaultPresetsOpen` to the embedded calendar in BOTH Tray and Popover branches; prop NOT exposed on the pickers' public API)
+- Test: `packages/components/src/Calendar/Calendar.test.tsx`, `packages/components/src/RangeCalendar/RangeCalendar.test.tsx` (update Task 10's flow tests for the new default; add `defaultPresetsOpen` tests), `packages/components/src/DatePicker/DatePicker.test.tsx` (existing tray list-first test must still pass unchanged)
+
+**Interfaces:**
+
+- Consumes: Task 10's view-state machinery (`smallScreenView`, `hasNavigated`), `PresetsBackButton` (renamed), existing intl keys `back` and `presets` (NO new intl keys).
+- Produces: `CalendarProps`/`RangeCalendarProps` gain `defaultPresetsOpen?: boolean`; `PresetsNavButton({ onPress, autoFocus?, variant: 'back' | 'open' })` exported from `CalendarPresets.tsx` (replaces `PresetsBackButton`).
+
+- [ ] **Step 1: Generalize the nav row in `CalendarPresets.tsx`**
+
+Replace `PresetsBackButton` with:
+
+```tsx
+interface PresetsNavButtonProps {
+  onPress: () => void;
+  /**
+   * Focus the row when it mounts — set only when the view switch came from
+   * in-component navigation, never on initial mount (inline calendars must
+   * not steal focus on page load).
+   */
+  autoFocus?: boolean;
+  /**
+   * 'back' — the list is the default view (picker trays): chevron-left +
+   * "Back", reads as returning. 'open' — the grid is the default view
+   * (inline calendars): "Quick selection" + chevron-right, reads as the
+   * entry point into the preset list.
+   */
+  variant: 'back' | 'open';
+}
+
+export const PresetsNavButton = ({
+  onPress,
+  autoFocus,
+  variant,
+}: PresetsNavButtonProps) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const listBoxClassNames = useClassNames({ component: 'ListBox' });
+
+  return (
+    <AriaButton
+      slot={null}
+      autoFocus={autoFocus}
+      onPress={onPress}
+      className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
+    >
+      {variant === 'back' ? (
+        <span className="flex items-center gap-2">
+          <ChevronLeft size={16} />
+          {stringFormatter.format('back')}
+        </span>
+      ) : (
+        <span className="flex w-full items-center justify-between gap-3">
+          {stringFormatter.format('presets')}
+          <ChevronRight size={16} />
+        </span>
+      )}
+    </AriaButton>
+  );
+};
+```
+
+(Keep the `slot={null}` opt-out from Task 10.) Update all imports/usages of the old name.
+
+- [ ] **Step 2: `defaultPresetsOpen` in both calendars**
+
+In `Calendar.tsx` and `RangeCalendar.tsx`:
+
+1. Add to the props interface (JSDoc included):
+
+```tsx
+  /**
+   * Whether the quick-select preset list is shown before the calendar grid
+   * on small screens. Has no effect on larger screens, where presets render
+   * as a rail beside the grid.
+   * @default false
+   */
+  defaultPresetsOpen?: boolean;
+```
+
+2. Destructure `defaultPresetsOpen` and use it for the initial view:
+
+```tsx
+const [smallScreenView, setSmallScreenView] = useState<'presets' | 'calendar'>(
+  defaultPresetsOpen ? 'presets' : 'calendar'
+);
+```
+
+3. In the small-screen calendar-view branch, replace the back row with:
+
+```tsx
+<PresetsNavButton
+  variant={defaultPresetsOpen ? 'back' : 'open'}
+  autoFocus={hasNavigated}
+  onPress={() => {
+    setSmallScreenView('presets');
+    setHasNavigated(true);
+  }}
+/>
+```
+
+(The list view's `autoFocus={hasNavigated}` and "Custom…" wiring stay exactly as in Task 10.)
+
+- [ ] **Step 3: Pickers pass it internally**
+
+In `DatePicker.tsx` and `DateRangePicker.tsx`, add `defaultPresetsOpen` (boolean shorthand) to the embedded `<Calendar …>`/`<RangeCalendar …>` in BOTH the Tray and Popover branches. Do NOT add it to the pickers' public prop interfaces.
+
+- [ ] **Step 4: Update and extend the unit tests**
+
+`Calendar.test.tsx` small-screen block:
+
+- Task 10's flow test now starts on the grid: assert grid visible + listbox absent initially, `Quick selection` button present and NOT focused (`expect(...).not.toHaveFocus()`); click it → listbox visible, grid absent, `Custom…` present; click `Custom…` → grid + `Quick selection` row again, now focused.
+- Task 5's sublabel test: render `<Presets.Component defaultPresetsOpen />` so the list shows.
+- New test:
+
+```tsx
+test('defaultPresetsOpen starts on the list; calendar view shows Back', async () => {
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  render(<Presets.Component defaultPresetsOpen />);
+
+  expect(
+    screen.getByRole('listbox', { name: 'Quick selection' })
+  ).toBeVisible();
+  await user.click(screen.getByRole('button', { name: 'Custom…' }));
+  expect(screen.getByRole('grid')).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Back' })).toBeVisible();
+});
+```
+
+Mirror the same updates in `RangeCalendar.test.tsx`. Then run the DatePicker tray test (Task 10) UNCHANGED — it must still pass (tray = list-first via the internal prop). Run:
+`pnpm vitest run --project=unit-tests packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker`
+Expected: PASS.
+
+- [ ] **Step 5: Desktop regression + typecheck + commit**
+
+Run: `pnpm vitest run --project=storybook-tests packages/components/src/Calendar/Calendar.stories.tsx packages/components/src/RangeCalendar/RangeCalendar.stories.tsx packages/components/src/DatePicker/DatePicker.stories.tsx packages/components/src/DateRangePicker/DateRangePicker.stories.tsx`
+Expected: PASS (desktop unaffected).
+
+Run: `pnpm typecheck:only` — no NEW errors vs the 17-error baseline.
+
+```bash
+git add packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker packages/components/src/DateRangePicker
+git commit -m "feat(DST-1511): default small-screen presets view by context via defaultPresetsOpen"
+```
