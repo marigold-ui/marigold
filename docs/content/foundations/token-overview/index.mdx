@@ -99,9 +99,9 @@ The foundational layer: page background and text hierarchy.
   tokens={[
     {
       name: 'background',
-      value: 'oklch(0.945 0.004 54)',
+      value: 'charcoal-100',
       useFor:
-        'Page-level background (<body>), a custom literal deepened off the charcoal scale so white surfaces separate by fill',
+        'Page-level background (<body>), gray so white surfaces separate from it by fill',
     },
     { name: 'foreground', value: 'charcoal-900', useFor: 'Primary body text' },
     {
@@ -822,7 +822,7 @@ Custom scrollbar tokens keep scrollbars visually consistent with the rest of the
 
 ## Elevation
 
-A single shadow marks the one layer that floats above the page. Everything else in normal flow separates by fill and boundary instead: cards and panels by a deepened page ground, buttons by a raised cap (`ui-soft`, `ui-contrast`), fields by a flat well (`ui-control`).
+A single shadow marks the one layer that floats above the page. Everything else in normal flow separates by fill and boundary instead: cards and panels by the gray page ground, buttons by a raised cap (`ui-soft`, `ui-contrast`), fields by a flat well (`ui-control`).
 
 | Token                      | Use for           | Components                                      |
 | -------------------------- | ----------------- | ----------------------------------------------- |

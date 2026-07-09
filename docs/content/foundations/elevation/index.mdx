@@ -14,7 +14,7 @@ Three signals work together to produce this effect:
 - **Boundaries** (borders) encode what kind of element something is.
 - **Fill and shading** stand raised controls off the page without a shadow.
 
-Nothing in normal document flow casts a shadow. A card separates from the page by sitting on a slightly deepened background, not by a shadow beneath it. A button is a raised cap whose own shading is the lift. A field is a flat well. The one shadow left in the system marks the one thing shadows are actually for: a surface that has left the page and floats above it.
+Nothing in normal document flow casts a shadow. A card separates from the page by sitting on the gray page background, not by a shadow beneath it. A button is a raised cap whose own shading is the lift. A field is a flat well. The one shadow left in the system marks the one thing shadows are actually for: a surface that has left the page and floats above it.
 
 <Callout title="Do I need to apply elevation manually?">
   Marigold components like `<Card>`, `<Dialog>`, and `<Menu>` already apply the correct background, border, and shadow tokens internally. You only need the utility classes described on this page (`ui-surface`, `ui-control`, `ui-soft`, `shadow-elevation-overlay`, `bg-background`, etc.) when building custom elements that aren't covered by an existing component.
@@ -28,7 +28,7 @@ Before shadows come into play, background colors establish the base layers of th
   tokens={[
     {
       name: 'background',
-      value: 'oklch(0.945 0.004 54)',
+      value: 'charcoal-100',
       useFor: 'Page base layer, the gray canvas behind everything',
     },
     {
@@ -95,7 +95,7 @@ Two consequences of the rule:
 
 ## The overlay shadow
 
-Elevation used to run three shadow tiers. Now there is one. A button is modeled as a raised cap whose own shading is the lift: `ui-soft` for the light, neutral cap (secondary Button, Menu trigger) and `ui-contrast` for the dark, bold cap (primary Button, ActionBar). A field is a flat well built from `ui-control`, no shadow attached. A card or panel separates from the page by fill: a white surface sits on a slightly deepened page background, traced by a whisper-light decorative rim, not lifted by a shadow.
+Elevation used to run three shadow tiers. Now there is one. A button is modeled as a raised cap whose own shading is the lift: `ui-soft` for the light, neutral cap (secondary Button, Menu trigger) and `ui-contrast` for the dark, bold cap (primary Button, ActionBar). A field is a flat well built from `ui-control`, no shadow attached. A card or panel separates from the page by fill: a white surface sits on the gray page background, traced by a quiet decorative rim, not lifted by a shadow.
 
 That leaves shadows with exactly one job: mark a surface that has left the page and floats above it.
 

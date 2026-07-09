@@ -19,8 +19,8 @@
     </radialGradient>
   </defs>
 
-  <!-- Page ground (bg-background, oklch(0.945): the gray base the white card layers over) -->
-  <rect x="160" y="0" width="540" height="450" rx="10" fill="oklch(0.945 0.004 54)"/>
+  <!-- Page ground (bg-background = charcoal-100: the gray base the white card layers over) -->
+  <rect x="160" y="0" width="540" height="450" rx="10" fill="oklch(0.965 0.003 54)"/>
 
   <!-- Card: white bg-surface separating from the ground by fill alone, traced by a whisper
        surface-border rim. No drop shadow. -->

@@ -52,11 +52,10 @@
   /* To switch palette, change the charcoal references below. */
 
   /*
-    Palette step mapping (charcoal). The page background is no longer a rung —
-    it sits as a decoupled literal between step 100 and 200 (see --color-background).
+    Palette step mapping (charcoal, background = step 100):
 
     50  -- muted bg (subtle tint on white surfaces), primary-foreground
-    100 -- focus-highlight bg, disabled-surface bg, soft cap hover fill
+    100 -- background bg, focus-highlight bg, disabled-surface bg, soft cap hover fill
     200 -- hover bg, soft cap edge
     300 -- control fill, borders, scrollbar, selected bg, soft cap edge hover
     400 -- disabled (text)
@@ -66,10 +65,7 @@
   */
 
   /* --- Page Background & Text --- */
-  /* The page ground sits between rung 100 and 200: deep enough that white
-     panels read as layers by fill delta alone (1.18:1), decoupled from the
-     rung so disabled fills and hover caps keep their own values. */
-  --color-background: oklch(0.945 0.004 54);
+  --color-background: var(--color-charcoal-100);
   --color-foreground: var(--color-charcoal-900);
   --color-secondary: var(--color-charcoal-600);
   --color-placeholder: var(--color-charcoal-600);
@@ -173,7 +169,7 @@
   --color-surface: var(--color-white);
 
   /* Decorative rim of a surface (Card, Panel, Dialog, Menu). Quiet but present:
-     panel boundaries lean on the fill delta against the deepened page ground,
+     panel boundaries lean on the fill delta against the gray page ground,
      yet the rim has to hold the edge on its own where that delta nearly vanishes
      (a white surface on a charcoal-100 ground), so it sits at half the density
      of --color-control-border rather than a pure whisper. Never load-bearing; an
@@ -204,11 +200,19 @@
     lift signal (Dialog, Drawer, Menu, Popover, Toast, ActionBar). Color is a
     literal oklch (hue 54), tuned independently of the palette rungs — update
     54 if the palette hue shifts.
+
+    Structure: a hairline ring (0.5px spread, no offset) traces the edge, then
+    three casts carry the float. The ring is what keeps the surface crisp on the
+    near-white charcoal-100 ground, where a pure diffuse cast has almost no
+    tonal delta to bite against. Because box-shadow is outset, the ring draws on
+    the page around the surface, so it defines the edge of dark surfaces (the
+    contrast ActionBar) as well as the white ones.
   */
   --shadow-elevation-overlay:
-    0px 1px 2px -1px oklch(0.15 0.02 54 / 0.126),
-    0px 4px 8px -3px oklch(0.15 0.02 54 / 0.099),
-    0px 12px 22px -8px oklch(0.15 0.02 54 / 0.081);
+    0px 0px 0px 0.5px oklch(0.15 0.02 54 / 0.075),
+    0px 1px 2px 0px oklch(0.15 0.02 54 / 0.13),
+    0px 5px 10px -3px oklch(0.15 0.02 54 / 0.11),
+    0px 16px 30px -10px oklch(0.15 0.02 54 / 0.11);
 
   /* ==================== */
   /*        SPACING       */

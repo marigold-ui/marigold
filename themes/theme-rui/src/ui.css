@@ -76,7 +76,7 @@
  * Surface role: containers that structure the page — cards, panels, dialogs,
  * menus, overlays. Wears the frame with its default translucent decorative
  * hairline (`--color-surface-border`). Flat in normal flow — it separates by
- * fill against the deepened page ground; compose with shadow-elevation-overlay
+ * fill against the gray page ground; compose with shadow-elevation-overlay
  * only when it floats (Dialog, Popover, Menu, Tray).
  */
 @utility ui-surface {

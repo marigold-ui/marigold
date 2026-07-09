@@ -29,8 +29,8 @@
     <path id="chevron" d="M0,0 L4,4 L8,0" fill="none" stroke="oklch(0.52 0.008 54)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </defs>
 
-  <!-- Page ground (bg-background, oklch(0.945): the deepened base, stays visible in dark mode) -->
-  <rect x="160" y="0" width="540" height="430" rx="10" fill="oklch(0.945 0.004 54)"/>
+  <!-- Page ground (bg-background = charcoal-100: the gray base, stays visible in dark mode) -->
+  <rect x="160" y="0" width="540" height="430" rx="10" fill="oklch(0.965 0.003 54)"/>
 
   <!-- Card: separates from the ground by fill alone (white on the deeper page), traced by a
        whisper-light surface-border rim. No drop shadow. -->
