@@ -56,10 +56,15 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   return fileType === t;
 };
 
+// Identity of a file for de-duplication and removal: two files with the same
+// name, size, and last-modified time are treated as the same file.
+export const fileKey = (file: File): string =>
+  `${file.name}:${file.size}:${file.lastModified}`;
+
 const dedupeFiles = (files: File[]): File[] => {
   const seen = new Set<string>();
   return files.filter(file => {
-    const key = `${file.name}:${file.size}:${file.lastModified}`;
+    const key = fileKey(file);
     if (seen.has(key)) return false;
     seen.add(key);
     return true;

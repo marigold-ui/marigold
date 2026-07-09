@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import RAC, { DropZone } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -6,7 +6,7 @@ import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger } from './FileTrigger';
-import { isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
+import { fileKey, isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
 
 type RemovedProps =
   | 'className'
@@ -70,25 +70,23 @@ export const FileField = ({
   const dropZoneLabel = stringFormatter.format('dropZoneLabel');
   const buttonLabel = stringFormatter.format('uploadLabel');
 
-  const syncHiddenInput = (newFiles: File[] | null) => {
+  // Single place that mutates the selection. Takes an updater so it derives
+  // from the latest state, not a stale closure - concurrent async drops can't
+  // clobber each other. The hidden input is synced from `files` in an effect
+  // below, so this updater stays pure.
+  const updateFiles = (update: (prev: File[]) => File[]) => {
+    setFiles(prev => update(prev ?? []));
+  };
+
+  // Mirror the current selection onto the hidden form input whenever it
+  // changes, driven by the committed `files` state (single source of truth).
+  useEffect(() => {
     if (!hiddenInputRef.current || !name || typeof DataTransfer === 'undefined')
       return;
     const dt = new DataTransfer();
-    newFiles?.forEach(f => dt.items.add(f));
+    files?.forEach(f => dt.items.add(f));
     hiddenInputRef.current.files = dt.files;
-  };
-
-  // Single place that mutates the selection: keeps the hidden input in sync
-  // with state so no mutation site has to remember to do it separately.
-  // Takes an updater so it derives from the latest state, not a stale
-  // closure - async drops that resolve concurrently can't clobber each other.
-  const updateFiles = (update: (prev: File[]) => File[]) => {
-    setFiles(prev => {
-      const next = update(prev ?? []);
-      syncHiddenInput(next);
-      return next;
-    });
-  };
+  }, [files, name]);
 
   const mergeFiles = (incoming: File[]) => {
     // When multiple is set, add to the existing selection instead of
@@ -154,11 +152,11 @@ export const FileField = ({
           />
         </div>
       </DropZone>
-      {files?.map((file, index) => (
+      {files?.map(file => (
         <FileField.Item
-          key={index}
+          key={fileKey(file)}
           onRemove={() =>
-            updateFiles(prev => prev.filter((_, i) => i !== index))
+            updateFiles(prev => prev.filter(f => fileKey(f) !== fileKey(file)))
           }
         >
           <div className={cn('[grid-area:label]', classNames.itemLabel)}>
