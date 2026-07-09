@@ -54,6 +54,19 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendarHeading: cva({
     base: 'text-sm font-medium',
   }),
+  calendarPresets: cva({
+    base: [
+      // Stack: full-width list above the grid on small screens.
+      'max-sm:w-full',
+      // Rail: fixed column left of the grid. Negative margins pull it flush
+      // against the calendar surface's padding so background and divider span
+      // the full height. The tray strips that padding, but the tray only
+      // shows on small screens where the stack layout applies.
+      'sm:w-40 sm:shrink-0 sm:self-stretch',
+      'sm:bg-muted sm:border-r sm:border-border',
+      'sm:-my-2 sm:-ml-2 sm:rounded-l-[inherit]',
+    ],
+  }),
   calendarListboxButton: cva({
     base: [
       'rounded-md text-sm font-medium transition-[color,box-shadow]',
