@@ -18,7 +18,7 @@ import { ActionMenuAnatomy } from './action-menu-anatomy';
 
 - **Trigger**, a [`<Button>`](/components/actions/button) with the ellipsis icon. It adopts the surrounding variant, so it is `ghost` inside a header or toolbar and `secondary` on its own.
 - **Popover** on desktop, **Tray** on mobile. The floating surface that holds the menu.
-- **Menu items**, written as `<ActionMenu.Item>`. Mark an item with `variant="destructive"` for high-impact actions, or with `variant="master"` or `variant="admin"` for actions restricted to internal roles (see the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark)).
+- **Menu items**, written as `<ActionMenu.Item>`, one per action.
 
 ## Appearance
 
@@ -30,6 +30,8 @@ import { ActionMenuAnatomy } from './action-menu-anatomy';
 <AppearanceTable component={'ActionMenu'} />
 
 ActionMenu's trigger is a slot-aware [`<Button>`](/components/actions/button). On its own it renders as the standard `secondary` button, and inside a `<Panel.Header>`, `<SelectList.Option>`, or `<ButtonGroup>` it inherits that container's `variant` and `size` so the menu blends into the row or toolbar it sits on. Set `variant` or `size` on the `<ActionMenu>` to override the inherited values.
+
+The `variant` above styles the trigger only. Menu items carry their own `variant`: mark an item with `variant="destructive"` for high-impact actions (see [Destructive actions](#destructive-actions)), or with `variant="master"` or `variant="admin"` for actions restricted to internal roles — these render a lock or key icon in the matching access color (see the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark)).
 
 ## Usage
 
