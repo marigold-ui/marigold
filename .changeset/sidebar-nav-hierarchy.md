@@ -30,3 +30,13 @@ borderless). The mobile sidebar drawer wears the overlay elevation,
 `Sidebar.Separator` steps up to the full-strength surface hairline, and the
 sidebar footer quiets its links (secondary color, normal weight) so escape
 hatches never compete with navigation.
+
+When the nav scrolls, the sidebar's own sticky header and footer reveal a seam
+so mid-list rows never butt against them without a divider. Because the nav is
+a grid sibling between the two (not their ancestor), the seam is driven by a
+named scroll timeline the nav declares, hoisted into scope for the header via
+`timeline-scope` — a set of `ui-sidebar-seam-*` utilities marked non-reusable
+since they are specific to this layout. The header seam fades in as content
+scrolls under it; the footer seam shows while content remains below and fades
+out as the list bottoms out. Without scroll-driven animation support it falls
+back to an always-on hairline.

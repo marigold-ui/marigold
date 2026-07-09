@@ -67,9 +67,26 @@ const UserMenu = () => (
   </ActionMenu>
 );
 
-const ShellFrame = ({ pageExtra }: { pageExtra?: React.ReactNode }) => {
+// A long, self-contained nav group used to force the nav into its scrolling
+// state so the sticky header/footer seams can be seen (DST-1586 review).
+const workspaceSections = Array.from({ length: 40 }, (_, i) => ({
+  href: `/section-${i + 1}`,
+  label: `Section ${i + 1}`,
+}));
+
+const ShellFrame = ({
+  pageExtra,
+  longNav = false,
+}: {
+  pageExtra?: React.ReactNode;
+  longNav?: boolean;
+}) => {
   const [currentPath, setCurrentPath] = useState('/dashboard');
-  const page = pages[currentPath];
+  // Fall back to a generic page for the synthesized long-nav routes.
+  const page = pages[currentPath] ?? {
+    label: 'Section',
+    description: 'A workspace section.',
+  };
 
   return (
     <RouterProvider navigate={setCurrentPath}>
@@ -93,6 +110,16 @@ const ShellFrame = ({ pageExtra }: { pageExtra?: React.ReactNode }) => {
             <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
             <Sidebar.Item href="/general">General</Sidebar.Item>
             <Sidebar.Item href="/security">Security</Sidebar.Item>
+            {longNav && [
+              <Sidebar.GroupLabel key="workspace-label">
+                Workspace
+              </Sidebar.GroupLabel>,
+              ...workspaceSections.map(section => (
+                <Sidebar.Item key={section.href} href={section.href}>
+                  {section.label}
+                </Sidebar.Item>
+              )),
+            ]}
           </Sidebar.Nav>
           <Sidebar.Footer>
             <Text fontSize="xs">v1.0.0</Text>
@@ -272,5 +299,44 @@ export const WideContentDoesNotOverflow = meta.story({
       grid.getBoundingClientRect().width
     );
     await expect(grid.scrollWidth).toBeLessThanOrEqual(grid.clientWidth);
+  },
+});
+
+/**
+ * A long nav that overflows, so the sidebar's sticky header and footer show
+ * their scroll-revealed seams (DST-1586). At rest the shell is seamless; scroll
+ * the nav and a hairline fades in under the header, while the footer keeps its
+ * top hairline until the list bottoms out. In browsers without scroll-driven
+ * animations the seams fall back to an always-on hairline. Scroll-linked
+ * (not autonomous), so it is intentionally not gated by reduced-motion.
+ */
+export const ScrollingSidebar = meta.story({
+  tags: ['component-test'],
+  render: () => <ShellFrame longNav />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const nav = canvas.getByRole('navigation', { name: /app navigation/i });
+
+    // The point of this story: a long nav rendered into a scroll container, so
+    // the sticky header/footer regions are actually exercised (the docs demos
+    // never scroll, so the seam behavior would otherwise go untested —
+    // DST-1586 review). Asserted viewport-independently: the nav scrolls its
+    // own overflow, and the tail of the long list is present.
+    await expect(getComputedStyle(nav).overflowY).toBe('auto');
+    await expect(
+      canvas.getByRole('link', { name: 'Section 40' })
+    ).toBeInTheDocument();
+    await expect(nav.scrollHeight).toBeGreaterThan(600);
+
+    // The footer shows its seam whenever nav content sits below it — which it
+    // does at load (nav rests at the top of an overflowing list). That holds
+    // both where scroll-driven animations run (the timeline pins the "content
+    // below" keyframe) and in the always-on fallback, so the box-shadow
+    // hairline is present here regardless of engine.
+    const footer = canvas
+      .getByRole('complementary')
+      .querySelector<HTMLElement>('[class*="ui-panel-actions"]');
+    await expect(footer).not.toBeNull();
+    await expect(getComputedStyle(footer!).boxShadow).not.toBe('none');
   },
 });

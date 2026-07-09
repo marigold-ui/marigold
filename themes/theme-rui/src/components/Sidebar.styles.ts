@@ -46,7 +46,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
-  content: cva({ base: 'sm:w-64' }),
+  // The grid wrapper hoists the nav's scroll timeline (see `nav`) into scope so
+  // both the header and footer — the header being a *preceding* sibling — can
+  // drive their scroll-revealed seams off it.
+  content: cva({ base: 'sm:w-64 ui-sidebar-seam-scope' }),
   // Two things on every grid row:
   // 1. `border-…-0`: the seamless shell separates its regions with whitespace,
   //    so the `border-b`/`border-t` that `ui-panel-*` carries for Panel is
@@ -55,23 +58,30 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   //    widest item (e.g. a long footer link) and overflowing the fixed `w-64`
   //    aside — otherwise rows (and the inset pill) get pushed past the edge,
   //    where the aside's `overflow-hidden` clips them.
+  // The header carries a scroll-revealed bottom seam: invisible while the nav
+  // rests at the top, fading in once content scrolls beneath it. On a short
+  // (non-scrolling) nav the timeline is inactive, so it stays seamless.
   header: cva({
-    base: 'ui-panel-header h-14 min-w-0 border-b-0',
+    base: 'ui-panel-header h-14 min-w-0 border-b-0 ui-sidebar-seam-header',
   }),
   nav: cva({
     base: [
       // No horizontal gutter — rows full-bleed so the active tick reaches the
       // sidebar edge. min-w-0 lets the row column collapse to the aside width.
       'flex flex-col min-w-0 py-1 overflow-y-auto outline-none',
-      'ui-scrollbar',
+      // The scroll container declares the named timeline the header/footer
+      // seams animate against.
+      'ui-scrollbar ui-sidebar-seam-timeline',
     ],
   }),
   // Footer links are ambient, not actions: a step quieter than the nav rows
   // so escape hatches never compete with navigation. (The Button label ships
-  // `font-medium`; reset it like the back action does.)
+  // `font-medium`; reset it like the back action does.) Its top seam mirrors
+  // the header's: shown while nav content remains below, fading out as the list
+  // bottoms out.
   footer: cva({
     base: [
-      'ui-panel-actions min-w-0 border-t-0',
+      'ui-panel-actions min-w-0 border-t-0 ui-sidebar-seam-footer',
       '[&_a]:text-secondary [&_a]:font-normal [&_a:hover]:text-foreground',
     ],
   }),
