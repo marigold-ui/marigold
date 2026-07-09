@@ -12,6 +12,7 @@ import { Group } from 'react-aria-components/Group';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
+import type { DateRangePreset } from '../Calendar/presets';
 import { parseDateFromString } from '../DateField/DateInput';
 import { DateSegment } from '../DateField/DateSegment';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -100,6 +101,16 @@ export interface DateRangePickerProps
    * @default 'fit'
    */
   width?: WidthProp['width'];
+
+  /**
+   * Quick-select presets rendered beside the calendar in the popover
+   * (stacked above the grid in the small-screen tray).
+   * Accepts built-in keys (`'last-7-days'`, `'last-30-days'`, `'this-month'`)
+   * with localized labels, and custom presets with a `label` and a range
+   * value or resolver function. Selecting a preset applies the range; the
+   * popover stays open.
+   */
+  presets?: DateRangePreset[];
 }
 
 const DateRangePickerBase = ({
@@ -115,6 +126,7 @@ const DateRangePickerBase = ({
   visibleDuration,
   pageBehavior,
   width,
+  presets,
   onChange,
   ref,
   ...rest
@@ -165,7 +177,7 @@ const DateRangePickerBase = ({
         <Tray>
           <Tray.Title>{rest.label}</Tray.Title>
           <Tray.Content>
-            <RangeCalendar disabled={disabled} />
+            <RangeCalendar disabled={disabled} presets={presets} />
           </Tray.Content>
           <Tray.Actions>
             <Button slot="close">{stringFormatter.format('close')}</Button>
@@ -178,6 +190,7 @@ const DateRangePickerBase = ({
               disabled={disabled}
               visibleDuration={visibleDuration}
               pageBehavior={pageBehavior}
+              presets={presets}
             />
           </Dialog>
         </Popover>

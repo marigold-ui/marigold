@@ -1,8 +1,13 @@
-import { CalendarDate } from '@internationalized/date';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  isSameDay,
+  today,
+} from '@internationalized/date';
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect, spyOn, waitFor } from 'storybook/test';
+import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
@@ -353,5 +358,38 @@ Mobile.test(
         expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
       );
     });
+  }
+);
+
+export const Presets = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Event date',
+    onChange: fn(),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <DatePicker {...args} presets={['today', 'tomorrow']} />
+    </I18nProvider>
+  ),
+});
+
+Presets.test(
+  'selecting a preset applies the date and keeps the popover open',
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    const dialog = await canvas.findByRole('dialog');
+
+    const option = within(dialog).getByRole('option', { name: 'Tomorrow' });
+    await userEvent.click(option);
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+    await expect(
+      isSameDay(date, today(getLocalTimeZone()).add({ days: 1 }))
+    ).toBe(true);
+
+    await expect(dialog).toBeVisible();
+    await expect(option).toHaveAttribute('aria-selected', 'true');
   }
 );

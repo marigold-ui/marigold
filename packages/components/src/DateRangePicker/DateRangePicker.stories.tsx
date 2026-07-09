@@ -1,8 +1,13 @@
-import { CalendarDate } from '@internationalized/date';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  isSameDay,
+  today,
+} from '@internationalized/date';
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect, spyOn, waitFor } from 'storybook/test';
+import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
@@ -312,5 +317,44 @@ Mobile.test(
     });
 
     releasePointerCaptureMock.mockRestore();
+  }
+);
+
+export const Presets = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Period',
+    onChange: fn(),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <DateRangePicker
+        {...args}
+        presets={['today', 'next-7-days', 'this-month']}
+      />
+    </I18nProvider>
+  ),
+});
+
+Presets.test(
+  'selecting a preset applies the range and keeps the popover open',
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    const dialog = await canvas.findByRole('dialog');
+
+    const option = within(dialog).getByRole('option', {
+      name: 'Next 7 days',
+    });
+    await userEvent.click(option);
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+    const now = today(getLocalTimeZone());
+    await expect(isSameDay(range.start, now)).toBe(true);
+    await expect(isSameDay(range.end, now.add({ days: 6 }))).toBe(true);
+
+    // The popover must stay open so keyboard users can keep adjusting.
+    await expect(dialog).toBeVisible();
+    await expect(option).toHaveAttribute('aria-selected', 'true');
   }
 );
