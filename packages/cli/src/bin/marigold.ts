@@ -65,6 +65,7 @@ ${pc.bold('Commands:')}
   search <query>        Find components by what their docs say
   examples <action>     Browse application patterns (list | get <slug>)
   init                  Set up Marigold in a project
+  doctor                Diagnose a project's Marigold setup
   telemetry <action>    Manage telemetry (status|enable|disable)
   completion <shell>    Print shell completion script (bash|zsh|fish)
 
@@ -95,6 +96,9 @@ ${pc.bold('Init options:')}
   --yes               Skip confirmation prompts
   --skip-install      Don't run the package install step
 
+${pc.bold('Doctor options:')}
+  --format  <name>    text | json (default: text)
+
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
   MARIGOLD_CACHE_TTL_MS          Override cache TTL in milliseconds
@@ -106,6 +110,11 @@ See https://www.marigold-ui.io for component documentation.
 
 const isOutputFormat = (v: string): v is OutputFormat =>
   v === 'markdown' || v === 'json' || v === 'plain';
+
+// Defined locally (not imported from ../commands/doctor.js) so the doctor module
+// — and its @babel/parser dependency — stays lazily loaded.
+const isDoctorFormat = (v: string): v is 'text' | 'json' =>
+  v === 'text' || v === 'json';
 
 const isSection = (v: string): v is Section =>
   v === 'props' || v === 'usage' || v === 'examples' || v === 'all';
@@ -176,6 +185,15 @@ const parseInitCommand = (argv: string[]) =>
     options: {
       yes: { type: 'boolean', default: false },
       'skip-install': { type: 'boolean', default: false },
+    },
+  });
+
+const parseDoctorCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      format: { type: 'string' },
     },
   });
 
@@ -370,6 +388,23 @@ export const main = async (
         yes: values.yes,
         skipInstall: values['skip-install'],
       });
+    } else if (command === 'doctor') {
+      const { values } = parseDoctorCommand(rest);
+      telemetryArgs = { format: values.format ?? 'text' };
+
+      if (values.format && !isDoctorFormat(values.format)) {
+        fail(`Invalid --format: ${values.format} (expected text or json)`);
+      }
+
+      // Lazy-load: doctor pulls in @babel/parser (provider detection), which we
+      // keep off the docs/list hot path agents hammer.
+      const { runDoctor } = await import('../commands/doctor.js');
+      const result = await runDoctor({
+        format: (values.format as 'text' | 'json' | undefined) ?? 'text',
+      });
+
+      writeOutput(result.output);
+      if (result.hasErrors) exitCode = 1;
     } else if (command === 'telemetry') {
       const [sub] = rest;
       telemetryArgs = sub ? { sub } : {};

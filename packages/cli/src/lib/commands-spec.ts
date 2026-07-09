@@ -27,6 +27,7 @@ const formatValues = ['markdown', 'json', 'plain'] as const;
 const sectionValues = ['props', 'usage', 'examples', 'all'] as const;
 const telemetrySubValues = ['status', 'enable', 'disable'] as const;
 const examplesSubValues = ['list', 'get'] as const;
+const doctorFormatValues = ['text', 'json'] as const;
 const completionShellValues = ['bash', 'zsh', 'fish'] as const;
 
 export const TELEMETRY_SUBCOMMANDS = telemetrySubValues;
@@ -39,6 +40,7 @@ export type SubcommandName =
   | 'search'
   | 'examples'
   | 'init'
+  | 'doctor'
   | 'telemetry'
   | 'completion';
 
@@ -88,6 +90,10 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
       { name: '--yes', type: 'boolean' },
       { name: '--skip-install', type: 'boolean' },
     ],
+  },
+  {
+    name: 'doctor',
+    flags: [{ name: '--format', type: 'string', values: doctorFormatValues }],
   },
   {
     name: 'telemetry',

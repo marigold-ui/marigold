@@ -66,6 +66,12 @@ marigold examples get filter --format json
 marigold docs getting-started/examples-for-agents
 ```
 
+When components render unstyled or throw, run `marigold doctor --format json` to diagnose the project's setup (packages, versions, provider, theme, Tailwind, React peer deps) and apply the returned `suggestion` for each issue:
+
+```bash
+marigold doctor --format json
+```
+
 The CLI detects common agent runtimes (Claude Code, Cursor, VS Code agent mode, Codex, or a generic `AI_AGENT=1`) via environment variables. For the full set of connection options (the MCP server and the public manifest / markdown endpoints), see [Usage with AI](/getting-started/usage-with-ai).
 
 ## Commands
@@ -200,6 +206,37 @@ It detects Next.js or Vite, then:
   Re-running `marigold init` leaves already-configured files untouched, so
   running it more than once is safe. If a file's shape can't be recognized, the
   CLI prints a manual fallback for that step instead of guessing.
+</Callout>
+
+### marigold doctor
+
+Diagnose why Marigold isn't working in a project. Reads the filesystem only (no network) and prints a checklist with actionable fixes, ideal when components render unstyled or throw, and for AI agents to self-diagnose and repair a setup.
+
+```bash
+marigold doctor                 # run from your project root
+marigold doctor --format json   # structured report for AI agents / CI
+```
+
+| Flag       | Description             | Default |
+| ---------- | ----------------------- | ------- |
+| `--format` | `text` or `json` output | `text`  |
+
+It checks, against the current working directory:
+
+1. **Packages installed** — `@marigold/components`, `@marigold/system`, and a theme (`@marigold/theme-rui`) are declared.
+2. **Package versions aligned** — installed `@marigold/components` and `@marigold/system` match (they are released together).
+3. **Up to date** — installed versions are the latest published (best-effort; skipped when offline).
+4. **MarigoldProvider wraps the app** — the root layout wraps the app in `<MarigoldProvider>`.
+5. **Theme passed to MarigoldProvider** — a `theme` prop is passed to the provider.
+6. **Tailwind configured for Marigold** — the CSS entry imports `tailwindcss` and `@marigold/theme-rui/theme.css`, declares `@source` for `node_modules/@marigold`, and the framework build plugin is wired up.
+7. **React version compatible** — installed React satisfies `@marigold/components`'s peer requirement.
+
+<Callout title="Safe for CI">
+  Only deterministic, definitely-broken findings (a missing core package, or a
+  components/system version mismatch) are errors; everything heuristic is a
+  warning. `marigold doctor` exits `1` only when there is an error. `--format
+  json` emits `{ errors, warnings, passed, text }`, so an agent can derive
+  health from `errors.length === 0` and act on each `suggestion`.
 </Callout>
 
 ### marigold completion
