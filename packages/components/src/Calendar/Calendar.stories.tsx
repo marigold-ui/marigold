@@ -598,6 +598,9 @@ export const Presets = meta.story({
   args: {
     'aria-label': 'Event date',
     onChange: fn(),
+    // A fixed month in the past keeps the Chromatic baseline off the moving
+    // current month and its "today" cell.
+    defaultValue: new CalendarDate(2026, 3, 12),
   },
   render: args => (
     <I18nProvider locale="en-US">
@@ -615,7 +618,10 @@ export const Presets = meta.story({
 });
 
 Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
-  const listbox = canvas.getByRole('listbox', { name: 'Quick selection' });
+  // The preset UI is lazy-loaded, so the first query must await its chunk.
+  const listbox = await canvas.findByRole('listbox', {
+    name: 'Quick selection',
+  });
   await expect(listbox).toBeVisible();
   await expect(canvas.getByRole('option', { name: 'Kickoff' })).toBeVisible();
 });
@@ -626,7 +632,7 @@ Presets.test(
   // it would diff in Chromatic every day.
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ args, canvas, userEvent }) => {
-    const option = canvas.getByRole('option', { name: 'Tomorrow' });
+    const option = await canvas.findByRole('option', { name: 'Tomorrow' });
     await userEvent.click(option);
 
     await expect(args.onChange).toHaveBeenCalledTimes(1);
@@ -642,7 +648,9 @@ Presets.test(
   'selecting a preset jumps the visible month to its date',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('option', { name: 'Kickoff' }));
+    await userEvent.click(
+      await canvas.findByRole('option', { name: 'Kickoff' })
+    );
     await expect(
       canvas.getByRole('button', { name: 'Aug' })
     ).toBeInTheDocument();
@@ -651,6 +659,10 @@ Presets.test(
 
 export const PresetsWithMinValue = meta.story({
   tags: ['component-test'],
+  // The story is relative to today by design (minValue: today disables the
+  // "Yesterday" preset), so its snapshot would diff in Chromatic every day.
+  // The play assertions below cover the disabled state.
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Event date',
     minValue: today(getLocalTimeZone()),
@@ -666,7 +678,7 @@ PresetsWithMinValue.test(
   'a preset outside minValue/maxValue is disabled',
   async ({ canvas }) => {
     await expect(
-      canvas.getByRole('option', { name: 'Yesterday' })
+      await canvas.findByRole('option', { name: 'Yesterday' })
     ).toHaveAttribute('aria-disabled', 'true');
     await expect(
       canvas.getByRole('option', { name: 'Today' })
@@ -709,7 +721,7 @@ PresetsMobile.test(
   'opens the quick selection tray',
   async ({ canvas, userEvent }) => {
     await userEvent.click(
-      canvas.getByRole('button', { name: 'Quick selection' })
+      await canvas.findByRole('button', { name: 'Quick selection' })
     );
 
     const tray = await canvas.findByRole('dialog');

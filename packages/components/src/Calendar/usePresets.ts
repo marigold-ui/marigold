@@ -29,9 +29,9 @@ const useResolvedPresets = <Key extends string, T>(
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const { locale } = useLocale();
 
-  // Memoized so the result is safe to use in effect/memo dependencies. Only
-  // the wrapper objects are stable — `resolve()` still runs fresh at call
-  // time.
+  // Memoized per input identity: callers passing an inline `presets` array
+  // recompute every render, so don't rely on the wrappers being
+  // referentially stable — `resolve()` runs fresh at call time either way.
   return useMemo(
     () =>
       presets.map(preset => {

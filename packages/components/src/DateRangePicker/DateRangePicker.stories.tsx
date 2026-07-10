@@ -345,7 +345,8 @@ Presets.test(
     await userEvent.click(canvas.getByRole('button'));
     const dialog = await canvas.findByRole('dialog');
 
-    const option = within(dialog).getByRole('option', {
+    // The preset UI is lazy-loaded, so the first query must await its chunk.
+    const option = await within(dialog).findByRole('option', {
       name: 'Next 7 days',
     });
     await userEvent.click(option);
@@ -422,7 +423,7 @@ PresetsMobile.test(
     await within(tray).findByRole('grid');
 
     await userEvent.click(
-      within(tray).getByRole('button', { name: 'Quick selection' })
+      await within(tray).findByRole('button', { name: 'Quick selection' })
     );
 
     // The preset list replaces the grid inside the same tray, topped by a

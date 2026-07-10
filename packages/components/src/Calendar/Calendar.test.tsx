@@ -364,7 +364,10 @@ describe('presets on small screens', () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
 
-    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
+    // The preset UI is lazy-loaded, so the first query must await its chunk.
+    await user.click(
+      await screen.findByRole('button', { name: 'Quick selection' })
+    );
     const dialog = await screen.findByRole('dialog');
 
     const option = within(dialog).getByRole('option', { name: 'Kickoff' });
@@ -377,7 +380,9 @@ describe('presets on small screens', () => {
 
     expect(screen.getByRole('grid')).toBeVisible();
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-    const trigger = screen.getByRole('button', { name: 'Quick selection' });
+    const trigger = await screen.findByRole('button', {
+      name: 'Quick selection',
+    });
     expect(trigger).not.toHaveFocus();
     expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
@@ -401,7 +406,9 @@ describe('presets on small screens', () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
 
-    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
+    await user.click(
+      await screen.findByRole('button', { name: 'Quick selection' })
+    );
     const dialog = await screen.findByRole('dialog');
 
     await user.click(within(dialog).getByRole('button', { name: 'Close' }));

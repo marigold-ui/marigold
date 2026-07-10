@@ -463,8 +463,11 @@ describe('presets on small screens (tray)', () => {
     expect(within(pickerTray).getByRole('grid')).toBeVisible();
     expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
 
+    // The preset UI is lazy-loaded, so the first query must await its chunk.
     await user.click(
-      within(pickerTray).getByRole('button', { name: 'Quick selection' })
+      await within(pickerTray).findByRole('button', {
+        name: 'Quick selection',
+      })
     );
     // The preset list replaces the grid within the SAME dialog — no second
     // sheet stacks on top of the picker tray.
