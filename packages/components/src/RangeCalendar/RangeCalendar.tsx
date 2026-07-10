@@ -308,7 +308,15 @@ const _RangeCalendar = <T extends DateValue>({
               hasPresets && 'gap-4 max-sm:flex-col sm:flex-row',
               classNames.calendar
             )}
-            style={createWidthVar('width', width)}
+            style={createWidthVar(
+              'width',
+              // The preset list view must span the picker tray like the
+              // inline preset sheet does; the calendar's usual fit-content
+              // width would squish the rows to their natural width.
+              isInPicker && isSmallScreen && pickerView === 'presets'
+                ? 'full'
+                : width
+            )}
           >
             {presets?.length ? (
               isSmallScreen ? (
