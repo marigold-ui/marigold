@@ -45,12 +45,18 @@ below come from it.
    `defaultPresetsOpen` is dropped entirely; the calendars detect picker context
    via the RAC picker state contexts instead (supersedes the prop half of
    decision 6).
-8. (2026-07-10, fourth mobile iteration — final) The picker trays adopt the SAME
+8. (2026-07-10, fourth mobile iteration) The picker trays adopt the SAME
    flow: tray opens on the calendar with the "Quick selection" row; the preset
    list opens as a second sheet stacked on top; tapping a preset applies and
    closes the sheet. The list-first mode, "Custom…" entry, back row, picker
    detection for presentation, and the `presetsCustom` intl key are all removed
    (supersedes the tray half of decisions 5–7).
+9. (2026-07-10, fifth mobile iteration — final) Sheet-on-sheet reads wrong in
+   practice ("the pickers have two trays"): inside a picker's tray, "Quick
+   selection" performs an in-place view switch instead (grid ⇄ preset list with
+   a Back row; selecting applies and returns to the calendar). Inline keeps the
+   Task 12/13 tray. Picker detection for presentation returns (partially
+   supersedes decision 8).
 
 Prior decisions that stand (from the 2026-07-08 plan): unified catalog (day keys are
 valid range presets), active preset derived by value equality (no stored state),
@@ -108,24 +114,32 @@ so pickers need no extra plumbing):
 - **Rail** (default, ≥ md): vertical column to the **left of** the calendar grid.
   Width 150px, subtle raised background (stone-50), 1px border-right, padding 8px,
   row gap 2px.
-- **Small screens — ONE behavior everywhere** (REVISED 2026-07-09/10, four
-  iterations; supersedes the context-bound presentation): the calendar grid
-  always renders, topped by a full-width **"Quick selection" row** (existing
-  `presets` message + trailing chevron-right, `aria-haspopup="dialog"`) that
-  opens a **Marigold Tray** (bottom sheet, `Tray.Trigger` + controlled open
-  state) containing the preset list — full-width rows with the check indicator
-  and a trailing resolved-value sublabel in `text-sm` muted (range
-  "Jul 9 – 15" / "Jul 9 – Aug 2", single date "Jul 9"), recomputed per render —
-  plus a `Tray.Title` ("Quick selection") and a Close action. Tapping a preset
-  applies the value (via the picker state inside pickers, so the picker's own
-  overlay stays open) AND closes the preset sheet; Close/backdrop/Escape
-  dismiss. Inside a picker's tray this stacks **sheet-on-sheet**: the preset
-  sheet opens above the picker tray, and closing it reveals the calendar with
-  the applied value. The row is never auto-focused on mount and the sheet
-  never auto-opens (a11y). There is NO list-first mode, NO "Custom…" entry,
-  NO back row, and NO picker detection for presentation (the `presetsCustom`
-  intl key is removed again); grid selection keeps existing close-on-select
-  picker behavior.
+- **Small screens — grid-first everywhere, context-appropriate list container**
+  (REVISED 2026-07-09/10, five iterations — final): the calendar grid always
+  renders first, topped by a full-width **"Quick selection" row** (existing
+  `presets` message + trailing chevron-right). The preset list itself —
+  full-width rows with the check indicator and a trailing resolved-value
+  sublabel in `text-sm` muted (range "Jul 9 – 15" / "Jul 9 – Aug 2", single
+  date "Jul 9"), recomputed per render — appears in a container fitting the
+  context:
+  - **Standalone/inline**: the row (`aria-haspopup="dialog"`) opens a
+    **Marigold Tray** (bottom sheet, `Tray.Trigger` + controlled open state)
+    with a `Tray.Title` ("Quick selection") and a Close action. Tapping a
+    preset applies the value AND closes the sheet; Close/backdrop/Escape
+    dismiss.
+  - **Inside a picker's tray** (detected via the RAC picker state contexts —
+    a tray inside a tray reads wrong): the row performs an **in-place view
+    switch** within the picker's existing tray — the grid is replaced by the
+    preset list, topped by a **"Back" row** (chevron-left + existing `back`
+    message) that returns without selecting. Tapping a preset applies the
+    value (via the picker state, so the picker overlay stays open) and
+    returns to the calendar view showing the result. Pressing the row moves
+    focus into the preset list; the returning grid takes focus via RAC's own
+    calendar autofocus.
+    The Quick-selection row is never auto-focused on mount and no sheet
+    auto-opens (a11y). There is NO list-first mode and NO "Custom…" entry (the
+    `presetsCustom` intl key stays removed); grid selection keeps existing
+    close-on-select picker behavior.
 
 **Option row** (both variants): `flex items-center gap-2`, height 36px, padding
 `0 10px`, `radius-md`, pointer cursor. Fixed 16px leading slot containing a

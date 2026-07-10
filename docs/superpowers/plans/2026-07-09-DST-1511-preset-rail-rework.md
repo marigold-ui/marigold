@@ -2038,3 +2038,22 @@ The picker trays drop the list-first/in-place-swap flow and behave exactly like 
 git add packages/components/src
 git commit -m "feat(DST-1511): unify small-screen quick selection as stacked preset sheet"
 ```
+
+---
+
+### Task 14: In-place quick-selection view switch inside picker trays
+
+_Added 2026-07-10 (fifth mobile iteration — final); executes BEFORE Tasks 8–9. Spec decision 9._
+
+Sheet-on-sheet reads as "two trays" inside a picker. Keep the inline Tray (Task 12/13) unchanged, but inside a picker's tray the "Quick selection" row now performs an **in-place view switch**: grid ⇄ preset list within the same dialog. The list view is topped by a "Back" row (chevron-left + existing `back` intl key) returning without selecting; selecting a preset applies the value (picker overlay stays open) and returns to the calendar view. Pressing the row focuses the preset list; the returning grid takes focus via RAC's own calendar autofocus (known Task 10 behavior).
+
+**Changes:**
+
+- `CalendarPresets.tsx`: `PresetListBox` regains an `autoFocus?: boolean` (forwarded to `AriaListBox`; set only when the list mounts from in-tray navigation); `PresetsTrayButton` generalizes to `PresetsNavButton({ variant: 'open' | 'back', onPress?: () => void })` — `slot={null}` stays; `aria-haspopup="dialog"` only when `variant === 'open'` AND no `onPress` (i.e. only as the inline tray trigger); 'back' renders ChevronLeft + `back` message (re-add the icon import).
+- `Calendar.tsx` / `RangeCalendar.tsx`: picker detection returns (`use(DatePickerStateContext)` / `use(DateRangePickerStateContext)`); picker small-screen branch is a calendar-first view switch (`pickerView: 'calendar' | 'presets'`, initial `'calendar'`): calendar view = `PresetsNavButton variant="open" onPress={→'presets'}` + content; presets view = `PresetsNavButton variant="back" onPress={→'calendar'}` + `CalendarPresets`/`RangeCalendarPresets` with `autoFocus` and `onSelectionDone={→'calendar'}`. The inline branch (Tray.Trigger + propless trigger) is untouched apart from the component rename.
+- Tests: `DatePicker.test.tsx` sentinel rewritten once more — exactly ONE dialog throughout; tray opens on grid + Quick selection row; tap → listbox replaces grid (Back row present, list focused); Back returns without selecting; reopen list, select "Tomorrow" → grid returns, tray still open, exactly 1 dialog. Standalone Calendar/RangeCalendar tests unchanged. Desktop story regression (4 files) + affected unit suites + `pnpm typecheck:only` (17-error baseline) green.
+
+```bash
+git add packages/components/src
+git commit -m "feat(DST-1511): switch picker trays to in-place quick selection view"
+```
