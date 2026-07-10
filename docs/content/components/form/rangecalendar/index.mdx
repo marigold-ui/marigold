@@ -16,6 +16,14 @@ The `<RangeCalendar>` component...
 
 ## Usage
 
+### Quick select presets
+
+Use the `presets` prop to offer common ranges as a one-click list beside the calendar. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a range value or a resolver function. Presets that fall outside `minValue`/`maxValue` or cover an unavailable date are disabled.
+
+On small screens the calendar grid renders first, topped by a "Quick selection" row. Tapping it opens the preset list in a bottom sheet, and picking a preset applies it and closes the sheet.
+
+<ComponentDemo name="range-calendar-presets" />
+
 ## Props
 
 <StorybookHintMessage component={'RangeCalendar'} />

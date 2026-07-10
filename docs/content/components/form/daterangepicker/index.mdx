@@ -90,6 +90,19 @@ Ranges that stretch across several months are awkward to pick one month at a tim
   a single [DatePicker](/components/form/datepicker) when space is tight.
 </Callout>
 
+### Quick select presets
+
+Use the `presets` prop to offer common ranges as a one-click list beside the calendar in the popover, such as "This week" or "Last 30 days" for a reporting period. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a range value or a resolver function. Presets that fall outside `minValue`/`maxValue` or cover an unavailable date are disabled.
+
+<ComponentDemo name="date-range-picker-presets" />
+
+<Callout title="Narrow screens" type="warning">
+  The picker's overlay is already a bottom sheet on small screens, so a "Quick
+  selection" row above the grid switches the sheet to the preset list in place,
+  with a Back row to return to the calendar. Picking a preset applies the range
+  and returns to the calendar, and the overlay stays open.
+</Callout>
+
 ### Accessibility
 
 Picking a range on the calendar can be slow for people who rely on a keyboard or a screen reader, and people who work with dates all day often prefer to type. For both groups the field stays fully usable without ever opening the calendar. Every segment can be edited directly, and a full date can be pasted into either the start or the end input. The component parses the pasted text, validates it, and fills in that end of the range. Pasted text is recognized in these formats:

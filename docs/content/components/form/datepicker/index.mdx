@@ -75,6 +75,20 @@ Invalid dates or unrecognized formats are ignored, ensuring data integrity.
 
 <ComponentDemo name="datepicker-paste" />
 
+### Quick select presets
+
+Use the `presets` prop to offer common dates as a one-click list beside the calendar in the popover. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a date value or a resolver function. Presets that fall outside `minValue`/`maxValue` or land on an unavailable date are disabled.
+
+The picker's overlay is already a bottom sheet on small screens, so a "Quick selection" row above the grid switches the sheet to the preset list in place, with a Back row to return to the calendar. Picking a preset applies the date and returns to the calendar, and the overlay stays open.
+
+<ComponentDemo name="date-picker-presets" />
+
+#### Combine with a second field
+
+A "From" and "To" pair of `<DatePicker>`s can each carry their own `presets`. Feed the other field's value into `minValue`/`maxValue` so the range stays valid, and pick presets independently for each end.
+
+<ComponentDemo name="date-picker-from-to-presets" />
+
 ## Props
 
 <StorybookHintMessage component={'DatePicker'} />
