@@ -108,11 +108,15 @@ When users need to select dates far in the past or future (such as a birth date 
 
 ### Quick select presets
 
-Use the `presets` prop to offer common dates as a one-click list beside the calendar. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a date value or a resolver function. Presets that fall outside `minValue`/`maxValue` or land on an unavailable date are disabled.
-
-On small screens the calendar grid renders first, topped by a "Quick selection" row. Tapping it opens the preset list in a bottom sheet, and picking a preset applies it and closes the sheet.
+Use the `presets` prop to offer common dates as a one-click list beside the calendar, such as "Today" or "Tomorrow" for a due date. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a date value or a resolver function. Presets that fall outside `minValue`/`maxValue` or land on an unavailable date are disabled.
 
 <ComponentDemo name="calendar-presets" />
+
+<Callout title="Quick select on narrow screens" type="warning">
+  On small screens the calendar grid renders first, topped by a "Quick
+  selection" row. Tapping it opens the preset list in a bottom sheet, and
+  picking a preset applies it and closes the sheet.
+</Callout>
 
 ### Accessibility
 

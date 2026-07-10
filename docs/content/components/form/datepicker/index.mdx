@@ -77,11 +77,16 @@ Invalid dates or unrecognized formats are ignored, ensuring data integrity.
 
 ### Quick select presets
 
-Use the `presets` prop to offer common dates as a one-click list beside the calendar in the popover. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a date value or a resolver function. Presets that fall outside `minValue`/`maxValue` or land on an unavailable date are disabled.
-
-The picker's overlay is already a bottom sheet on small screens, so a "Quick selection" row above the grid switches the sheet to the preset list in place, with a Back row to return to the calendar. Picking a preset applies the date and returns to the calendar, and the overlay stays open.
+Use the `presets` prop to offer common dates as a one-click list beside the calendar in the popover, such as "Today" or "Tomorrow" for a due date. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a date value or a resolver function. Presets that fall outside `minValue`/`maxValue` or land on an unavailable date are disabled.
 
 <ComponentDemo name="date-picker-presets" />
+
+<Callout title="Quick select on narrow screens" type="warning">
+  The picker's overlay is already a bottom sheet on small screens, so a "Quick
+  selection" row above the grid switches the sheet to the preset list in place,
+  with a Back row to return to the calendar. Picking a preset applies the date
+  and returns to the calendar, and the overlay stays open.
+</Callout>
 
 #### Combine with a second field
 
