@@ -201,18 +201,27 @@
     literal oklch (hue 54), tuned independently of the palette rungs — update
     54 if the palette hue shifts.
 
-    Structure: a hairline ring (0.5px spread, no offset) traces the edge, then
-    three casts carry the float. The ring is what keeps the surface crisp on the
-    near-white charcoal-100 ground, where a pure diffuse cast has almost no
-    tonal delta to bite against. Because box-shadow is outset, the ring draws on
-    the page around the surface, so it defines the edge of dark surfaces (the
-    contrast ActionBar) as well as the white ones.
+    Structure: a hairline ring (0.5px spread, no offset) traces the edge, then a
+    layered cast built on a doubling ladder (1 / 2 / 4 / 8 / 16px offset+blur)
+    carries the float. Per Comeau's "Designing Beautiful Shadows" and Ahlin's
+    layered-shadow method: the ladder gives one smooth falloff instead of a
+    blurry blob, and the alpha is concentrated on the tight contact layer then
+    tapered out (0.17 -> 0.055) — that concentration is what reads as crisp
+    rather than diffuse. Chroma sits at 0.035 (not near-grey) so it reads as a
+    warm shadow, hue-matched to the palette. The ring keeps the edge crisp on
+    the near-white charcoal-100 ground, where a pure diffuse cast has almost no
+    tonal delta to bite against; because box-shadow is outset, it draws on the
+    page around the surface, defining dark surfaces (the contrast ActionBar) as
+    well as white ones. Light is straight overhead (no x offset) so the shadow
+    is correct in every overlay position (Drawer, Popover opening any direction).
   */
   --shadow-elevation-overlay:
-    0px 0px 0px 0.5px oklch(0.15 0.02 54 / 0.075),
-    0px 1px 2px 0px oklch(0.15 0.02 54 / 0.13),
-    0px 5px 10px -3px oklch(0.15 0.02 54 / 0.11),
-    0px 16px 30px -10px oklch(0.15 0.02 54 / 0.11);
+    0px 0px 0px 0.5px oklch(0.14 0.035 54 / 0.1),
+    0px 1px 1px 0px oklch(0.14 0.035 54 / 0.17),
+    0px 2px 2px 0px oklch(0.14 0.035 54 / 0.13),
+    0px 4px 4px 0px oklch(0.14 0.035 54 / 0.1),
+    0px 8px 8px 0px oklch(0.14 0.035 54 / 0.075),
+    0px 16px 16px 0px oklch(0.14 0.035 54 / 0.055);
 
   /* ==================== */
   /*        SPACING       */
