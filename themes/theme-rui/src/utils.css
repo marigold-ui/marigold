@@ -6,22 +6,6 @@
  */
 
 /* ========================= */
-/*    Form field indicators  */
-/* ========================= */
-
-/*
- * Required-field indicator (the red "*" after a label). Kept as a named
- * utility, not inline as `after:content-["*"]`: quoted arbitrary values don't
- * survive JS compilation as extractable classes, so consumers that rescan the
- * compiled packages never generate the rule and the asterisk vanishes. See
- * DSTSUP-266.
- */
-@utility util-required-indicator {
-  --tw-content: '*';
-  content: var(--tw-content);
-}
-
-/* ========================= */
 /*    Surface & Elevation    */
 /* ========================= */
 
