@@ -32,7 +32,9 @@ export type BuiltInDateRangePresetKey =
 
 export interface CustomPreset<T> {
   /**
-   * Identifier used to key the preset. Defaults to the label.
+   * Identifier used to key the preset. Defaults to the label. Must be
+   * unique among the given presets: colliding ids make the selection
+   * ambiguous.
    */
   id?: string;
   label: string;
@@ -54,9 +56,9 @@ export type DateRangePreset = BuiltInDateRangePresetKey | CustomDateRangePreset;
 export interface BuiltInPreset<T> {
   messageKey: string;
   /**
-   * Built-in resolvers receive the active locale so week-based presets can
-   * respect the locale's first day of the week. Falls back to `en-US`, the
-   * repo's fallback message locale.
+   * Built-in resolvers receive the active locale so that presets which
+   * depend on it (currently only `this-week`'s first day of the week) can
+   * respect it. Falls back to `en-US`, the repo's fallback message locale.
    */
   resolve: (locale?: string) => T;
 }

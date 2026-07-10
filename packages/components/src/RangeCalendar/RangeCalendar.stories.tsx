@@ -518,6 +518,9 @@ Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
 
 Presets.test(
   'selecting a built-in preset sets the range and marks the option selected',
+  // Ends with "Next 7 days" selected on the current month: date-dependent,
+  // so it would diff in Chromatic every day.
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ args, canvas, userEvent }) => {
     const option = canvas.getByRole('option', { name: 'Next 7 days' });
     await userEvent.click(option);
@@ -533,6 +536,9 @@ Presets.test(
 
 Presets.test(
   'selecting the "today" preset sets a single-day range',
+  // Ends with today selected: date-dependent, so it would diff in Chromatic
+  // every day.
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ args, canvas, userEvent }) => {
     const option = canvas.getByRole('option', { name: 'Today' });
     await userEvent.click(option);
@@ -594,6 +600,10 @@ export const PresetsMobile = meta.story({
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
+  // Chromatic ignores the Storybook viewport global and captures at its
+  // 1200px default, where the small-screen UI (and this story's play)
+  // doesn't exist. Pin its capture to phone width.
+  parameters: { chromatic: { viewports: [320] } },
   args: {
     'aria-label': 'Period',
   },

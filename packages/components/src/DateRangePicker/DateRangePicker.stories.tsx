@@ -338,6 +338,9 @@ export const Presets = meta.story({
 
 Presets.test(
   'selecting a preset applies the range and keeps the popover open',
+  // Ends with the popover open on the current month with "Next 7 days"
+  // selected: date-dependent, so it would diff in Chromatic every day.
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button'));
     const dialog = await canvas.findByRole('dialog');
@@ -368,6 +371,10 @@ export const PresetsMobile = meta.story({
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
+  // Chromatic ignores the Storybook viewport global and captures at its
+  // 1200px default, where the small-screen UI (and this story's play)
+  // doesn't exist. Pin its capture to phone width.
+  parameters: { chromatic: { viewports: [320] } },
   args: {
     label: 'Period',
   },
