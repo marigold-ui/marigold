@@ -121,10 +121,7 @@ describe('presets on small screens', () => {
     expect(
       within(dialog).getByRole('listbox', { name: 'Quick selection' })
     ).toBeVisible();
-    // The grid is visible right behind the sheet — no Custom…/Back detour.
-    expect(
-      within(dialog).queryByRole('button', { name: 'Custom…' })
-    ).not.toBeInTheDocument();
+    // The grid is visible right behind the sheet.
     expect(screen.getByRole('grid')).toBeVisible();
 
     await user.click(

@@ -69,7 +69,6 @@ describe('intl messages', () => {
       expect(de.presetNext7Days).toBe('Nächste 7 Tage');
       expect(de.presetNext30Days).toBe('Nächste 30 Tage');
       expect(de.presetThisQuarter).toBe('Dieses Quartal');
-      expect(de.presetsCustom).toBe('Benutzerdefiniert…');
     });
   });
 
@@ -112,7 +111,6 @@ describe('intl messages', () => {
       expect(en.presetNext7Days).toBe('Next 7 days');
       expect(en.presetNext30Days).toBe('Next 30 days');
       expect(en.presetThisQuarter).toBe('This quarter');
-      expect(en.presetsCustom).toBe('Custom…');
     });
   });
 });

@@ -452,40 +452,34 @@ describe('presets on small screens (tray)', () => {
     window.matchMedia = mockMatchMedia([]);
   });
 
-  test('the tray shows the preset list first; Custom… opens the calendar; Back returns', async () => {
+  test('the tray shows the calendar; Quick selection opens a stacked preset sheet that applies and closes', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
 
     await user.click(screen.getByRole('button'));
-    const dialog = await screen.findByRole('dialog');
+    const pickerTray = await screen.findByRole('dialog');
 
-    expect(
-      within(dialog).getByRole('listbox', { name: 'Quick selection' })
-    ).toBeVisible();
-    expect(within(dialog).queryByRole('grid')).not.toBeInTheDocument();
+    // The picker tray opens on the calendar, same as everywhere else.
+    expect(within(pickerTray).getByRole('grid')).toBeVisible();
+    expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
 
-    await user.click(within(dialog).getByRole('button', { name: 'Custom…' }));
-    expect(within(dialog).getByRole('grid')).toBeVisible();
-    expect(
+    await user.click(
+      within(pickerTray).getByRole('button', { name: 'Quick selection' })
+    );
+    // The preset list stacks as a second sheet above the picker tray.
+    const dialogs = await screen.findAllByRole('dialog');
+    expect(dialogs).toHaveLength(2);
+    const presetSheet = dialogs.find(dialog =>
       within(dialog).queryByRole('listbox', { name: 'Quick selection' })
-    ).not.toBeInTheDocument();
-    // Unlike the standalone Calendar/RangeCalendar (see their small-screen
-    // tests), the Back button does not end up focused here: RAC's
-    // `useDatePicker` hardcodes `calendarProps.autoFocus: true` for the
-    // nested `<Calendar>`, so `state.isFocused` is already `true` when the
-    // grid mounts. `useCalendarCell`'s focus-sync effect then unconditionally
-    // calls `focusWithoutScrolling` on the focused-date cell as soon as it
-    // mounts, with no guard for "something else already has focus" -
-    // stealing focus away from the Back button a tick after it mounts. This
-    // is pre-existing DatePicker/Calendar interaction, not something Task 10
-    // regresses; not asserting focus here to avoid a test that's coupled to
-    // that upstream behavior.
-    const back = within(dialog).getByRole('button', { name: 'Back' });
+    )!;
+    expect(presetSheet).toBeDefined();
 
-    await user.click(back);
-    expect(
-      within(dialog).getByRole('listbox', { name: 'Quick selection' })
-    ).toBeVisible();
-    expect(within(dialog).queryByRole('grid')).not.toBeInTheDocument();
+    await user.click(
+      within(presetSheet).getByRole('option', { name: 'Tomorrow' })
+    );
+    // The preset sheet closes; the picker tray stays open with the applied
+    // value visible in its grid.
+    await waitFor(() => expect(screen.getAllByRole('dialog')).toHaveLength(1));
+    expect(within(pickerTray).getByRole('grid')).toBeVisible();
   });
 });

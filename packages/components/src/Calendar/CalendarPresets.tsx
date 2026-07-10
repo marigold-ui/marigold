@@ -21,7 +21,6 @@ import {
 } from '@react-aria/i18n';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Check } from '../icons/Check';
-import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
 import { useCalendarContext } from './Context';
@@ -101,21 +100,8 @@ interface PresetListBoxProps<T> {
   disabled?: boolean;
   readOnly?: boolean;
   /**
-   * Renders a trailing "Custom…" row that hands navigation to the caller.
-   * Only supplied on small screens, where the presets and the calendar grid
-   * are alternate views.
-   */
-  onCustom?: () => void;
-  /**
-   * Focus the listbox when it (re)mounts — used when returning from the
-   * calendar view so keyboard users are not dropped. Never set on initial
-   * mount.
-   */
-  autoFocus?: boolean;
-  /**
-   * Called after a preset's value has been applied. The standalone
-   * small-screen tray uses this to close itself; pickers leave it unset so
-   * their overlay stays open.
+   * Called after a preset's value has been applied. The small-screen preset
+   * tray uses this to close itself; the desktop rail leaves it unset.
    */
   onSelectionDone?: () => void;
 }
@@ -135,8 +121,6 @@ const PresetListBox = <T,>({
   formatValue,
   disabled,
   readOnly,
-  onCustom,
-  autoFocus,
   onSelectionDone,
 }: PresetListBoxProps<T>) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -175,7 +159,6 @@ const PresetListBox = <T,>({
         selectedKeys={selectedId != null ? [selectedId] : []}
         disabledKeys={disabledKeys}
         onSelectionChange={handleSelectionChange}
-        autoFocus={autoFocus}
         className={listBoxClassNames.list}
       >
         {items.map(item => (
@@ -209,61 +192,19 @@ const PresetListBox = <T,>({
           </AriaListBoxItem>
         ))}
       </AriaListBox>
-      {onCustom ? (
-        <AriaButton
-          // RAC's <Calendar>/<RangeCalendar> provide a `ButtonContext` whose
-          // only slots are "previous"/"next" (the grid nav arrows); an
-          // unslotted <Button> rendered anywhere in that tree would otherwise
-          // try to consume it and throw "A slot prop is required."
-          slot={null}
-          onPress={onCustom}
-          className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
-        >
-          <div className="selection-indicator contents">
-            <Check size={16} strokeWidth="3" className="hidden" />
-            <span className="text-link flex w-full items-center justify-between gap-3">
-              {stringFormatter.format('presetsCustom')}
-              <ChevronRight size={16} />
-            </span>
-          </div>
-        </AriaButton>
-      ) : null}
     </div>
   );
 };
 
-// Nav row shown in the calendar view on small screens, either returning to
-// the preset list ('back', when the list is the default view) or opening it
-// ('open', when the grid is the default view).
+// "Quick selection" row shown above the calendar grid on small screens — the
+// pressable child of the preset tray's `Tray.Trigger`.
 // ---------------
-interface PresetsNavButtonProps {
-  /**
-   * Press handler for the in-calendar usage (the picker trays' back row).
-   * Omit when the row is the pressable child of an overlay trigger (the
-   * standalone preset tray's `Tray.Trigger`), which supplies the press and
-   * aria wiring through RAC's `ButtonContext` instead.
-   */
-  onPress?: () => void;
-  /**
-   * Focus the row when it mounts — set only when the view switch came from
-   * in-component navigation, never on initial mount (inline calendars must
-   * not steal focus on page load).
-   */
-  autoFocus?: boolean;
-  /**
-   * 'back' — the list is the default view (picker trays): chevron-left +
-   * "Back", reads as returning. 'open' — the grid is the default view
-   * (inline calendars): "Quick selection" + chevron-right, the trigger of
-   * the standalone preset tray.
-   */
-  variant: 'back' | 'open';
-}
-
-export const PresetsNavButton = ({
-  onPress,
-  autoFocus,
-  variant,
-}: PresetsNavButtonProps) => {
+/**
+ * Rendered as the trigger child of a `Tray.Trigger` (RAC `DialogTrigger`),
+ * which supplies the press and `aria-expanded` wiring through its
+ * `PressResponder` — the row itself needs no props.
+ */
+export const PresetsTrayButton = () => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const listBoxClassNames = useClassNames({ component: 'ListBox' });
 
@@ -271,26 +212,17 @@ export const PresetsNavButton = ({
     <AriaButton
       // In the calendar tree, RAC's ButtonContext only defines "previous"/
       // "next" slots, so an unslotted button would throw — opt out. This is
-      // safe in the overlay-trigger usage too: `DialogTrigger` wires its
-      // trigger through `PressResponder` (not `ButtonContext`), which
-      // `slot={null}` does not detach.
+      // safe as the trigger child too: `DialogTrigger` wires its trigger
+      // through `PressResponder` (not `ButtonContext`), which `slot={null}`
+      // does not detach.
       slot={null}
-      autoFocus={autoFocus}
-      onPress={onPress}
-      aria-haspopup={variant === 'open' ? 'dialog' : undefined}
+      aria-haspopup="dialog"
       className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
     >
-      {variant === 'back' ? (
-        <span className="flex items-center gap-2">
-          <ChevronLeft size={16} />
-          {stringFormatter.format('back')}
-        </span>
-      ) : (
-        <span className="flex w-full items-center justify-between gap-3">
-          {stringFormatter.format('presets')}
-          <ChevronRight size={16} />
-        </span>
-      )}
+      <span className="flex w-full items-center justify-between gap-3">
+        {stringFormatter.format('presets')}
+        <ChevronRight size={16} />
+      </span>
     </AriaButton>
   );
 };
@@ -299,13 +231,9 @@ export const PresetsNavButton = ({
 // ---------------
 export const CalendarPresets = ({
   presets,
-  onCustom,
-  autoFocus,
   onSelectionDone,
 }: {
   presets: DatePreset[];
-  onCustom?: () => void;
-  autoFocus?: boolean;
   onSelectionDone?: () => void;
 }) => {
   const state = use(CalendarStateContext);
@@ -349,8 +277,6 @@ export const CalendarPresets = ({
       }}
       disabled={disabled}
       readOnly={readOnly}
-      onCustom={onCustom}
-      autoFocus={autoFocus}
       onSelectionDone={onSelectionDone}
     />
   );
@@ -360,13 +286,9 @@ export const CalendarPresets = ({
 // ---------------
 export const RangeCalendarPresets = ({
   presets,
-  onCustom,
-  autoFocus,
   onSelectionDone,
 }: {
   presets: DateRangePreset[];
-  onCustom?: () => void;
-  autoFocus?: boolean;
   onSelectionDone?: () => void;
 }) => {
   const state = use(RangeCalendarStateContext);
@@ -414,8 +336,6 @@ export const RangeCalendarPresets = ({
       }}
       disabled={disabled}
       readOnly={readOnly}
-      onCustom={onCustom}
-      autoFocus={autoFocus}
       onSelectionDone={onSelectionDone}
     />
   );
