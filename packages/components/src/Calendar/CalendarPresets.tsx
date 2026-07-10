@@ -16,6 +16,7 @@ import {
   ListBoxItem as AriaListBoxItem,
 } from 'react-aria-components/ListBox';
 import { RangeCalendarStateContext } from 'react-aria-components/RangeCalendar';
+import { Text } from 'react-aria-components/Text';
 import {
   useDateFormatter,
   useLocalizedStringFormatter,
@@ -175,26 +176,37 @@ const PresetListBox = <T,>({
             key={item.id}
             id={item.id}
             textValue={item.label}
-            // The small-screen sublabel is a purely visual affordance (desktop
-            // never announces the resolved date either), so pin the
-            // accessible name to the label alone. Without this, "name from
-            // content" would fold the trailing sublabel in too, e.g.
-            // "Kickoff Aug 1" instead of "Kickoff".
-            aria-label={item.label}
             className={listBoxClassNames.item}
           >
-            <SelectionIndicator>
-              {isSmallScreen ? (
-                <div className="flex w-full items-center justify-between gap-3">
-                  <span>{item.label}</span>
-                  <span className="text-secondary">
-                    {formatValue(item.value)}
-                  </span>
-                </div>
-              ) : (
-                item.label
-              )}
-            </SelectionIndicator>
+            {({ isSelected, isDisabled: isItemDisabled }) => (
+              <SelectionIndicator>
+                {isSmallScreen ? (
+                  <div className="flex w-full items-center justify-between gap-3">
+                    {/* RAC wires the slots to `aria-labelledby`/
+                        `aria-describedby`, so the option's accessible name
+                        stays the label alone (not "Kickoff Aug 1") while
+                        screen readers still announce the resolved date as a
+                        description. */}
+                    <Text slot="label">{item.label}</Text>
+                    <Text
+                      slot="description"
+                      className={cn(
+                        'text-secondary',
+                        // `text-secondary` fails 4.5:1 on the selected fill;
+                        // and it must not out-contrast the greyed label on
+                        // disabled rows.
+                        isSelected && 'text-foreground',
+                        isItemDisabled && 'text-disabled'
+                      )}
+                    >
+                      {formatValue(item.value)}
+                    </Text>
+                  </div>
+                ) : (
+                  item.label
+                )}
+              </SelectionIndicator>
+            )}
           </AriaListBoxItem>
         ))}
       </AriaListBox>
@@ -220,12 +232,14 @@ interface PresetsNavButtonProps {
    * that press stays within the current dialog.
    */
   opensDialog?: boolean;
+  autoFocus?: boolean;
   onPress?: () => void;
 }
 
 const PresetsNavButton = ({
   variant,
   opensDialog,
+  autoFocus,
   onPress,
 }: PresetsNavButtonProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -240,6 +254,7 @@ const PresetsNavButton = ({
       // does not detach.
       slot={null}
       onPress={onPress}
+      autoFocus={autoFocus}
       aria-haspopup={opensDialog ? 'dialog' : undefined}
       className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
     >
@@ -303,6 +318,11 @@ export const CalendarPresetsShell = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const isSmallScreen = useSmallScreen();
   const [trayOpen, setTrayOpen] = useState(false);
+  // Whether the returning calendar view should focus the "Quick selection"
+  // row. Only set by the Back path: selecting a preset re-arms the grid's
+  // own cell autofocus (via `setFocusedDate`), but Back applies nothing, so
+  // without this the focused Back row would unmount into a focus void.
+  const [focusNavRow, setFocusNavRow] = useState(false);
 
   const content = (
     <div className="relative flex min-w-0 flex-col">{children}</div>
@@ -322,7 +342,10 @@ export const CalendarPresetsShell = ({
       <>
         <PresetsNavButton
           variant="back"
-          onPress={() => onPickerViewChange('calendar')}
+          onPress={() => {
+            setFocusNavRow(true);
+            onPickerViewChange('calendar');
+          }}
         />
         {renderPresets({
           autoFocus: true,
@@ -333,7 +356,11 @@ export const CalendarPresetsShell = ({
       <>
         <PresetsNavButton
           variant="open"
-          onPress={() => onPickerViewChange('presets')}
+          autoFocus={focusNavRow}
+          onPress={() => {
+            setFocusNavRow(false);
+            onPickerViewChange('presets');
+          }}
         />
         {content}
       </>
