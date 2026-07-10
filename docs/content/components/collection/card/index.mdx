@@ -1,10 +1,15 @@
 ---
 title: Card
 description: Represents one item in a collection.
+badge: updated
 ---
 
 import { CardAnatomy } from './card-anatomy';
-import { DoNestedMockup, DontNestedMockup } from './card-usage-guidelines';
+import {
+  CardVsTableMockup,
+  DoNestedMockup,
+  DontNestedMockup,
+} from './card-usage-guidelines';
 
 A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, content, actions) into a single, self-contained unit and sets it apart from the page through elevation or tinting.
 
@@ -37,7 +42,35 @@ The card component supports variants for general content grouping as well as acc
 
 ## Usage
 
-A card represents one item in a set. Reach for it when the same type of item repeats in a grid or list (events, products, venues, team members) and each entry links to its own detail view. Repetition is the core case. If the element doesn't repeat, a card is probably the wrong tool. If the items need sorting, filtering, or bulk actions, [`<Table>`](../table) is a better fit. For a named, non-repeating page region like "Billing" or "Team members", use [`<Panel>`](../../layout/panel) instead.
+A `<Card>` displays one item in a repeating set, such as an event, a product, a venue, or a team member, where each entry has its own visual identity and links to its own detail view. Repetition is the core case. If the element doesn't repeat, a card is probably the wrong tool.
+
+`<Card>` is one of Marigold's Collection components, alongside [`<Table>`](../table). The rest of this section helps you decide when a card is the right choice, when another Collection component or a Layout primitive fits better, and how to build and lay out cards once you've settled on one.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a Layout primitive for content that doesn't repeat: [`<Panel>`](../../layout/panel)
+      for a named region like "Billing", [`<Stack>`](../../layout/stack) for topic-grouped
+      content, [`<Tiles>`](../../layout/tiles) for a reflowing grid of blocks.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't reach for `<Card>` when the content isn't a collection. A single,
+      non-repeating region isn't a card.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+Panel covers the reverse in its [Panel vs Card](../../layout/panel#panel-vs-card) section.
+
+### Card vs Table
+
+`<Card>` and [`<Table>`](../table) are both Collection components. They both display one item in a repeating set, so the choice between them is about display shape, not category.
+
+<CardVsTableMockup />
+
+Reach for [`<Table>`](../table) when items share the same fields and the user's task is comparison, sorting, filtering, or bulk action. Reach for `<Card>` when each item is recognized by its own visuals and links to a detail view, not by its position in a row.
 
 ### Selectable cards
 
@@ -185,6 +218,50 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 ### Card.Footer
 
 <AutoTypeTable path="Card/CardFooter" name="CardFooterProps" />
+
+## Alternative components
+
+When your content isn't a good fit for a card, one of these is usually the right answer.
+
+**Another Collection component**
+
+<ul>
+  <li>
+    [`<Table>`](/components/collection/table): The other Collection component. Reach for it when
+    items share the same fields and the task is comparison, sorting, or bulk
+    action.
+  </li>
+</ul>
+
+**When the content isn't a collection**
+
+<ul>
+  <li>
+    [`<Panel>`](/components/layout/panel): A unique, named page region like "Billing"
+    or "Team members".
+  </li>
+  <li>
+    [`<Stack>`](/components/layout/stack): Content that shares a topic but has no
+    per-item identity.
+  </li>
+  <li>
+    [`<Tiles>`](/components/layout/tiles): A reflowing grid of layout blocks rather
+    than collection items.
+  </li>
+  <li>
+    [`<List>`](/components/content/list): A simple ordered or unordered list of items.
+  </li>
+</ul>
+
+**When cards are selectable options**
+
+<ul>
+  <li>
+    [`<SelectList>`](/components/form/selectlist#options-as-cards): Card-shaped options
+    the user selects in a form, with selection state and keyboard support built
+    in.
+  </li>
+</ul>
 
 ## Related
 
