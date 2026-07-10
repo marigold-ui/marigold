@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components/Calendar';
+import { DatePickerStateContext } from 'react-aria-components/DatePicker';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import {
   WidthProp,
   cn,
@@ -8,6 +10,9 @@ import {
   useClassNames,
   useSmallScreen,
 } from '@marigold/system';
+import { Button } from '../Button/Button';
+import { Tray } from '../Tray/Tray';
+import { intlMessages } from '../intl/messages';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarListBox } from './CalendarListBox';
@@ -80,13 +85,6 @@ export interface CalendarProps extends Omit<
    * `minValue`/`maxValue` or are unavailable are disabled.
    */
   presets?: DatePreset[];
-  /**
-   * Whether the quick-select preset list is shown before the calendar grid
-   * on small screens. Has no effect on larger screens, where presets render
-   * as a rail beside the grid.
-   * @default false
-   */
-  defaultPresetsOpen?: boolean;
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -105,7 +103,6 @@ const _Calendar = ({
   visibleDuration = { months: 1 },
   pageBehavior = 'visible',
   presets,
-  defaultPresetsOpen = false,
   ...rest
 }: CalendarProps) => {
   const visibleMonths = visibleDuration?.months ?? 1;
@@ -130,12 +127,20 @@ const _Calendar = ({
   >();
 
   const isSmallScreen = useSmallScreen();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  // Non-null exactly when this calendar is the one embedded in a
+  // `<DatePicker>`. Inside the picker's tray the presets are the first view
+  // (in-place swap); standalone, the grid stays and the presets open in a
+  // tray of their own.
+  const pickerState = use(DatePickerStateContext);
+  const isInPicker = pickerState != null;
   const [smallScreenView, setSmallScreenView] = useState<
     'presets' | 'calendar'
-  >(defaultPresetsOpen ? 'presets' : 'calendar');
+  >('presets');
   // Focus the nav row only when the view switch came from in-component
   // navigation, never on initial mount.
   const [hasNavigated, setHasNavigated] = useState(false);
+  const [presetsTrayOpen, setPresetsTrayOpen] = useState(false);
 
   const ViewMap = {
     month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
@@ -221,25 +226,53 @@ const _Calendar = ({
       >
         {presets?.length ? (
           isSmallScreen ? (
-            smallScreenView === 'presets' ? (
-              <CalendarPresets
-                presets={presets}
-                autoFocus={hasNavigated}
-                onCustom={() => {
-                  setSmallScreenView('calendar');
-                  setHasNavigated(true);
-                }}
-              />
-            ) : (
-              <>
-                <PresetsNavButton
-                  variant={defaultPresetsOpen ? 'back' : 'open'}
+            isInPicker ? (
+              smallScreenView === 'presets' ? (
+                <CalendarPresets
+                  presets={presets}
                   autoFocus={hasNavigated}
-                  onPress={() => {
-                    setSmallScreenView('presets');
+                  onCustom={() => {
+                    setSmallScreenView('calendar');
                     setHasNavigated(true);
                   }}
                 />
+              ) : (
+                <>
+                  <PresetsNavButton
+                    variant="back"
+                    autoFocus={hasNavigated}
+                    onPress={() => {
+                      setSmallScreenView('presets');
+                      setHasNavigated(true);
+                    }}
+                  />
+                  <div className="relative flex min-w-0 flex-col">
+                    {content}
+                  </div>
+                </>
+              )
+            ) : (
+              <>
+                <Tray.Trigger
+                  open={presetsTrayOpen}
+                  onOpenChange={setPresetsTrayOpen}
+                >
+                  <PresetsNavButton variant="open" />
+                  <Tray>
+                    <Tray.Title>{stringFormatter.format('presets')}</Tray.Title>
+                    <Tray.Content>
+                      <CalendarPresets
+                        presets={presets}
+                        onSelectionDone={() => setPresetsTrayOpen(false)}
+                      />
+                    </Tray.Content>
+                    <Tray.Actions>
+                      <Button slot="close">
+                        {stringFormatter.format('close')}
+                      </Button>
+                    </Tray.Actions>
+                  </Tray>
+                </Tray.Trigger>
                 <div className="relative flex min-w-0 flex-col">{content}</div>
               </>
             )

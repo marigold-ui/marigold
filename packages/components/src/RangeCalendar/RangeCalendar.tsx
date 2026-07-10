@@ -1,10 +1,12 @@
-import { type ContextType, useCallback, useMemo, useState } from 'react';
+import { type ContextType, use, useCallback, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
+import { DateRangePickerStateContext } from 'react-aria-components/DateRangePicker';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
 import {
   RangeCalendar as AriaRangeCalendar,
   DateValue,
 } from 'react-aria-components/RangeCalendar';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import {
   WidthProp,
   cn,
@@ -12,6 +14,7 @@ import {
   useClassNames,
   useSmallScreen,
 } from '@marigold/system';
+import { Button } from '../Button/Button';
 import { CalendarGrid } from '../Calendar/CalendarGrid';
 import { CalendarHeader } from '../Calendar/CalendarHeader';
 import { CalendarListBox } from '../Calendar/CalendarListBox';
@@ -29,6 +32,8 @@ import {
 } from '../Calendar/calendarListBoxSelectableCheck';
 import type { DateRangePreset } from '../Calendar/presets';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
+import { Tray } from '../Tray/Tray';
+import { intlMessages } from '../intl/messages';
 
 // Props
 // ---------------
@@ -98,13 +103,6 @@ export interface RangeCalendarProps<T extends DateValue = DateValue>
    * `minValue`/`maxValue` or hit unavailable dates are disabled.
    */
   presets?: DateRangePreset[];
-  /**
-   * Whether the quick-select preset list is shown before the calendar grid
-   * on small screens. Has no effect on larger screens, where presets render
-   * as a rail beside the grid.
-   * @default false
-   */
-  defaultPresetsOpen?: boolean;
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -141,7 +139,6 @@ const _RangeCalendar = <T extends DateValue>({
   visibleDuration = { months: 1 },
   pageBehavior = 'visible',
   presets,
-  defaultPresetsOpen = false,
   ...rest
 }: RangeCalendarProps<T>) => {
   const visibleMonths = visibleDuration.months;
@@ -172,12 +169,20 @@ const _RangeCalendar = <T extends DateValue>({
   >();
 
   const isSmallScreen = useSmallScreen();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  // Non-null exactly when this calendar is the one embedded in a
+  // `<DateRangePicker>`. Inside the picker's tray the presets are the first
+  // view (in-place swap); standalone, the grid stays and the presets open in
+  // a tray of their own.
+  const pickerState = use(DateRangePickerStateContext);
+  const isInPicker = pickerState != null;
   const [smallScreenView, setSmallScreenView] = useState<
     'presets' | 'calendar'
-  >(defaultPresetsOpen ? 'presets' : 'calendar');
+  >('presets');
   // Focus the nav row only when the view switch came from in-component
   // navigation, never on initial mount.
   const [hasNavigated, setHasNavigated] = useState(false);
+  const [presetsTrayOpen, setPresetsTrayOpen] = useState(false);
 
   // react-aria's `useRangeCalendar` commits an in-progress range on any window
   // `pointerup` that isn't on a button (our role="option" items included). The key
@@ -310,25 +315,55 @@ const _RangeCalendar = <T extends DateValue>({
           >
             {presets?.length ? (
               isSmallScreen ? (
-                smallScreenView === 'presets' ? (
-                  <RangeCalendarPresets
-                    presets={presets}
-                    autoFocus={hasNavigated}
-                    onCustom={() => {
-                      setSmallScreenView('calendar');
-                      setHasNavigated(true);
-                    }}
-                  />
-                ) : (
-                  <>
-                    <PresetsNavButton
-                      variant={defaultPresetsOpen ? 'back' : 'open'}
+                isInPicker ? (
+                  smallScreenView === 'presets' ? (
+                    <RangeCalendarPresets
+                      presets={presets}
                       autoFocus={hasNavigated}
-                      onPress={() => {
-                        setSmallScreenView('presets');
+                      onCustom={() => {
+                        setSmallScreenView('calendar');
                         setHasNavigated(true);
                       }}
                     />
+                  ) : (
+                    <>
+                      <PresetsNavButton
+                        variant="back"
+                        autoFocus={hasNavigated}
+                        onPress={() => {
+                          setSmallScreenView('presets');
+                          setHasNavigated(true);
+                        }}
+                      />
+                      <div className="relative flex min-w-0 flex-col">
+                        {content}
+                      </div>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <Tray.Trigger
+                      open={presetsTrayOpen}
+                      onOpenChange={setPresetsTrayOpen}
+                    >
+                      <PresetsNavButton variant="open" />
+                      <Tray>
+                        <Tray.Title>
+                          {stringFormatter.format('presets')}
+                        </Tray.Title>
+                        <Tray.Content>
+                          <RangeCalendarPresets
+                            presets={presets}
+                            onSelectionDone={() => setPresetsTrayOpen(false)}
+                          />
+                        </Tray.Content>
+                        <Tray.Actions>
+                          <Button slot="close">
+                            {stringFormatter.format('close')}
+                          </Button>
+                        </Tray.Actions>
+                      </Tray>
+                    </Tray.Trigger>
                     <div className="relative flex min-w-0 flex-col">
                       {content}
                     </div>

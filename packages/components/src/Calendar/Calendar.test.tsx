@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
@@ -360,48 +360,57 @@ describe('presets on small screens', () => {
     window.matchMedia = mockMatchMedia([]);
   });
 
-  test('stack items show the resolved value as a trailing sublabel', () => {
+  test('quick selection opens a tray whose items show the resolved value as a trailing sublabel', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
-    render(<Presets.Component defaultPresetsOpen />);
+    render(<Presets.Component />);
 
-    const option = screen.getByRole('option', { name: 'Kickoff' });
+    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
+    const dialog = await screen.findByRole('dialog');
+
+    const option = within(dialog).getByRole('option', { name: 'Kickoff' });
     expect(option).toHaveTextContent('Aug 1');
   });
 
-  test('shows the grid first; Quick selection opens the list; Custom… returns', async () => {
+  test('the grid stays; selecting a preset in the tray applies and closes it', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
 
     expect(screen.getByRole('grid')).toBeVisible();
-    expect(
-      screen.queryByRole('listbox', { name: 'Quick selection' })
-    ).not.toBeInTheDocument();
-    const open = screen.getByRole('button', { name: 'Quick selection' });
-    expect(open).not.toHaveFocus();
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    const trigger = screen.getByRole('button', { name: 'Quick selection' });
+    expect(trigger).not.toHaveFocus();
+    expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
-    await user.click(open);
+    await user.click(trigger);
+    const dialog = await screen.findByRole('dialog');
     expect(
-      screen.getByRole('listbox', { name: 'Quick selection' })
+      within(dialog).getByRole('listbox', { name: 'Quick selection' })
     ).toBeVisible();
-    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Custom…' })).toBeVisible();
-
-    await user.click(screen.getByRole('button', { name: 'Custom…' }));
+    // The grid is visible right behind the sheet — no Custom…/Back detour.
+    expect(
+      within(dialog).queryByRole('button', { name: 'Custom…' })
+    ).not.toBeInTheDocument();
     expect(screen.getByRole('grid')).toBeVisible();
-    const openAgain = screen.getByRole('button', { name: 'Quick selection' });
-    expect(openAgain).toBeVisible();
-    expect(openAgain).toHaveFocus();
+
+    await user.click(within(dialog).getByRole('option', { name: 'Tomorrow' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+    expect(screen.getByRole('grid')).toBeVisible();
   });
 
-  test('defaultPresetsOpen starts on the list; calendar view shows Back', async () => {
+  test('the tray close button dismisses without selecting', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
-    render(<Presets.Component defaultPresetsOpen />);
+    render(<Presets.Component />);
 
-    expect(
-      screen.getByRole('listbox', { name: 'Quick selection' })
-    ).toBeVisible();
-    await user.click(screen.getByRole('button', { name: 'Custom…' }));
+    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
+    const dialog = await screen.findByRole('dialog');
+
+    await user.click(within(dialog).getByRole('button', { name: 'Close' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    );
     expect(screen.getByRole('grid')).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Back' })).toBeVisible();
   });
 });

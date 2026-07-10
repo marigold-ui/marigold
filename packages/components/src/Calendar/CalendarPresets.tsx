@@ -112,6 +112,12 @@ interface PresetListBoxProps<T> {
    * mount.
    */
   autoFocus?: boolean;
+  /**
+   * Called after a preset's value has been applied. The standalone
+   * small-screen tray uses this to close itself; pickers leave it unset so
+   * their overlay stays open.
+   */
+  onSelectionDone?: () => void;
 }
 
 /**
@@ -131,6 +137,7 @@ const PresetListBox = <T,>({
   readOnly,
   onCustom,
   autoFocus,
+  onSelectionDone,
 }: PresetListBoxProps<T>) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const isSmallScreen = useSmallScreen();
@@ -154,6 +161,7 @@ const PresetListBox = <T,>({
 
     // Resolve again at selection time so relative presets are never stale.
     onSelect(preset.resolve());
+    onSelectionDone?.();
   };
 
   return (
@@ -229,7 +237,13 @@ const PresetListBox = <T,>({
 // ('open', when the grid is the default view).
 // ---------------
 interface PresetsNavButtonProps {
-  onPress: () => void;
+  /**
+   * Press handler for the in-calendar usage (the picker trays' back row).
+   * Omit when the row is the pressable child of an overlay trigger (the
+   * standalone preset tray's `Tray.Trigger`), which supplies the press and
+   * aria wiring through RAC's `ButtonContext` instead.
+   */
+  onPress?: () => void;
   /**
    * Focus the row when it mounts — set only when the view switch came from
    * in-component navigation, never on initial mount (inline calendars must
@@ -239,8 +253,8 @@ interface PresetsNavButtonProps {
   /**
    * 'back' — the list is the default view (picker trays): chevron-left +
    * "Back", reads as returning. 'open' — the grid is the default view
-   * (inline calendars): "Quick selection" + chevron-right, reads as the
-   * entry point into the preset list.
+   * (inline calendars): "Quick selection" + chevron-right, the trigger of
+   * the standalone preset tray.
    */
   variant: 'back' | 'open';
 }
@@ -255,12 +269,15 @@ export const PresetsNavButton = ({
 
   return (
     <AriaButton
-      // See the "Custom…" button in `PresetListBox` above for why this is
-      // required: RAC's calendar context only defines "previous"/"next"
-      // slots.
+      // In the calendar tree, RAC's ButtonContext only defines "previous"/
+      // "next" slots, so an unslotted button would throw — opt out. This is
+      // safe in the overlay-trigger usage too: `DialogTrigger` wires its
+      // trigger through `PressResponder` (not `ButtonContext`), which
+      // `slot={null}` does not detach.
       slot={null}
       autoFocus={autoFocus}
       onPress={onPress}
+      aria-haspopup={variant === 'open' ? 'dialog' : undefined}
       className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
     >
       {variant === 'back' ? (
@@ -284,10 +301,12 @@ export const CalendarPresets = ({
   presets,
   onCustom,
   autoFocus,
+  onSelectionDone,
 }: {
   presets: DatePreset[];
   onCustom?: () => void;
   autoFocus?: boolean;
+  onSelectionDone?: () => void;
 }) => {
   const state = use(CalendarStateContext);
   // Present only when this calendar is rendered inside a `<DatePicker>`
@@ -332,6 +351,7 @@ export const CalendarPresets = ({
       readOnly={readOnly}
       onCustom={onCustom}
       autoFocus={autoFocus}
+      onSelectionDone={onSelectionDone}
     />
   );
 };
@@ -342,10 +362,12 @@ export const RangeCalendarPresets = ({
   presets,
   onCustom,
   autoFocus,
+  onSelectionDone,
 }: {
   presets: DateRangePreset[];
   onCustom?: () => void;
   autoFocus?: boolean;
+  onSelectionDone?: () => void;
 }) => {
   const state = use(RangeCalendarStateContext);
   // Present only when this calendar is rendered inside a
@@ -394,6 +416,7 @@ export const RangeCalendarPresets = ({
       readOnly={readOnly}
       onCustom={onCustom}
       autoFocus={autoFocus}
+      onSelectionDone={onSelectionDone}
     />
   );
 };

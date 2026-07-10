@@ -177,11 +177,7 @@ const DateRangePickerBase = ({
         <Tray>
           <Tray.Title>{rest.label}</Tray.Title>
           <Tray.Content>
-            <RangeCalendar
-              disabled={disabled}
-              presets={presets}
-              defaultPresetsOpen
-            />
+            <RangeCalendar disabled={disabled} presets={presets} />
           </Tray.Content>
           <Tray.Actions>
             <Button slot="close">{stringFormatter.format('close')}</Button>
@@ -195,7 +191,6 @@ const DateRangePickerBase = ({
               visibleDuration={visibleDuration}
               pageBehavior={pageBehavior}
               presets={presets}
-              defaultPresetsOpen
             />
           </Dialog>
         </Popover>
