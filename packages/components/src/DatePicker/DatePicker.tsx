@@ -13,6 +13,7 @@ import { WidthProp, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
 import type { DatePreset } from '../Calendar/presets';
+import { usePreloadPresets } from '../Calendar/usePreloadPresets';
 import { DateInput } from '../DateField/DateInput';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
@@ -127,6 +128,8 @@ const DatePickerBase = ({
 
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  usePreloadPresets(!!presets?.length);
 
   return (
     <FieldBase
