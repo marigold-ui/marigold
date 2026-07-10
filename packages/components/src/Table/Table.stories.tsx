@@ -1833,7 +1833,6 @@ ColumnAlignment.test(
 );
 
 export const FooterTotals = meta.story({
-  tags: ['component-test'],
   render: args => {
     const totalBalance = users.reduce((sum, user) => sum + user.balance, 0);
 
