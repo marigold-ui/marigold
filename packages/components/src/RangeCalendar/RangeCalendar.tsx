@@ -322,7 +322,7 @@ const _RangeCalendar = <T extends DateValue>({
             )}
             style={createWidthVar('width', width)}
           >
-            {presets?.length ? (
+            {hasPresets ? (
               // While the preset chunk loads, the bare calendar renders so
               // the grid is usable immediately; the preset UI appears once
               // resolved.

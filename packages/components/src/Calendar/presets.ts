@@ -41,6 +41,9 @@ export interface CustomPreset<T> {
   /**
    * The value the preset selects. Pass a function to resolve the value at
    * selection time, so relative presets stay correct in long-lived views.
+   * Resolvers also run on every render of the preset list (to derive the
+   * active and disabled options and the small-screen sublabels), so they
+   * must be pure and cheap.
    */
   value: T | (() => T);
 }

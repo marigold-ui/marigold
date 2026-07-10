@@ -227,7 +227,7 @@ const _Calendar = ({
         style={createWidthVar('width', width)}
         {...props}
       >
-        {presets?.length ? (
+        {hasPresets ? (
           // While the preset chunk loads, the bare calendar renders so the
           // grid is usable immediately; the preset UI appears once resolved.
           <Suspense fallback={content}>
