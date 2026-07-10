@@ -1,4 +1,4 @@
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Tabs } from './Tabs';
 
