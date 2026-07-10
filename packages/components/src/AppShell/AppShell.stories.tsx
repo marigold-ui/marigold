@@ -361,9 +361,12 @@ export const ScrollingSidebar = meta.story({
     // both where scroll-driven animations run (the timeline pins the "content
     // below" keyframe) and in the always-on fallback, so the box-shadow
     // hairline is present here regardless of engine.
+    // Anchored on the footer's structural grid slot (owned by the Sidebar.Footer
+    // component) rather than a compiled theme class, so a theme-side style rename
+    // can't silently break the lookup.
     const footer = canvas
       .getByRole('complementary')
-      .querySelector<HTMLElement>('[class*="ui-panel-actions"]');
+      .querySelector<HTMLElement>('[class*="grid-area:footer"]');
     await expect(footer).not.toBeNull();
     await expect(getComputedStyle(footer!).boxShadow).not.toBe('none');
 

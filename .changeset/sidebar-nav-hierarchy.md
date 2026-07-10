@@ -28,8 +28,9 @@ hairline only once page content scrolls underneath it (`ui-scroll-edge`, a
 scroll-driven progressive enhancement; non-supporting browsers simply stay
 borderless). The mobile sidebar drawer wears the overlay elevation,
 `Sidebar.Separator` steps up to the full-strength surface hairline, and the
-sidebar footer quiets its links (secondary color, normal weight) so escape
-hatches never compete with navigation.
+sidebar footer now sits on the same content column as the nav and quiets its
+links (secondary color, normal weight, nav-row pill on hover) so escape hatches
+read as a continuation of the nav rather than competing with it.
 
 When the nav scrolls, the sidebar's own sticky header and footer reveal a seam
 so mid-list rows never butt against them without a divider. Because the nav is

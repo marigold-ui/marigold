@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { expect } from 'storybook/test';
@@ -7,6 +8,7 @@ import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';
 import { Inline } from '../Inline/Inline';
+import { LinkButton } from '../LinkButton/LinkButton';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -372,5 +374,79 @@ WithBadges.test(
     await expect(
       canvas.getByRole('link', { name: /Billing/ })
     ).toBeInTheDocument();
+  }
+);
+
+/**
+ * The footer holds escape hatches (a link back to docs, a support link). They
+ * share the nav rows' content column and read at the same size and weight as an
+ * idle nav item, so the footer reads as a continuation of the nav rather than a
+ * separate, misaligned block.
+ */
+const FooterLinksExample = () => {
+  const [currentPath, setCurrentPath] = useState('/overview');
+
+  return (
+    <RouterProvider navigate={setCurrentPath}>
+      <I18nProvider locale="en-US">
+        <Sidebar.Provider>
+          <div className="flex h-screen">
+            <Sidebar>
+              <Sidebar.Header>
+                <Text weight="bold">Acme Inc.</Text>
+              </Sidebar.Header>
+              <Sidebar.Nav current={currentPath}>
+                <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+                <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+                <Sidebar.Item href="/users">Users</Sidebar.Item>
+              </Sidebar.Nav>
+              <Sidebar.Footer>
+                <LinkButton href="/docs" variant="ghost" size="small">
+                  <ArrowLeft />
+                  Back to docs
+                </LinkButton>
+              </Sidebar.Footer>
+            </Sidebar>
+            <main className="flex-1 p-4">
+              <Sidebar.Toggle />
+              <Headline level={2}>{pages[currentPath]?.label}</Headline>
+            </main>
+          </div>
+        </Sidebar.Provider>
+      </I18nProvider>
+    </RouterProvider>
+  );
+};
+
+export const WithFooterLinks = meta.story({
+  tags: ['component-test'],
+  render: () => <FooterLinksExample />,
+});
+
+WithFooterLinks.test(
+  'footer escape links sit on the nav content column at nav weight',
+  async ({ canvas }) => {
+    // Compare against an idle nav row (not the active pill), matching the
+    // footer link's idle treatment.
+    const navItem = canvas.getByRole('link', { name: 'Analytics' });
+    const footerLink = canvas.getByRole('link', { name: /Back to docs/ });
+
+    // Same content column: the nav-row pill and the footer link pill both start
+    // at the sidebar's 8px inset, so their left edges line up (the footer link
+    // pulls back over the container padding to reach it).
+    const navRect = navItem.getBoundingClientRect();
+    const footerRect = footerLink.getBoundingClientRect();
+    await expect(Math.abs(navRect.left - footerRect.left)).toBeLessThanOrEqual(
+      1
+    );
+
+    // The theme's `[&_a]` rules must win over the ghost button's own size/font,
+    // so the link's inset, height, size and weight all match an idle nav row.
+    const navStyle = getComputedStyle(navItem);
+    const footerStyle = getComputedStyle(footerLink);
+    await expect(footerStyle.paddingLeft).toBe(navStyle.paddingLeft);
+    await expect(footerStyle.height).toBe(navStyle.height);
+    await expect(footerStyle.fontSize).toBe(navStyle.fontSize);
+    await expect(footerStyle.fontWeight).toBe(navStyle.fontWeight);
   }
 );
