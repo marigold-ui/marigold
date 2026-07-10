@@ -358,3 +358,78 @@ Presets.test(
     await expect(option).toHaveAttribute('aria-selected', 'true');
   }
 );
+
+// Inside the small-screen picker tray, "Quick selection" swaps the grid for
+// the preset list in place. Fixed preset values (instead of the relative
+// built-ins) keep the resolved-date sublabels and the visible month stable,
+// so Chromatic can snapshot the open preset view without daily diffs.
+export const PresetsMobile = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  args: {
+    label: 'Period',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <DateRangePicker
+        {...args}
+        defaultValue={{
+          start: new CalendarDate(2027, 1, 5),
+          end: new CalendarDate(2027, 1, 11),
+        }}
+        presets={[
+          {
+            label: 'Kickoff week',
+            value: {
+              start: new CalendarDate(2027, 1, 5),
+              end: new CalendarDate(2027, 1, 11),
+            },
+          },
+          {
+            label: 'Review week',
+            value: {
+              start: new CalendarDate(2027, 1, 19),
+              end: new CalendarDate(2027, 1, 25),
+            },
+          },
+          {
+            label: 'Release month',
+            value: {
+              start: new CalendarDate(2027, 2, 1),
+              end: new CalendarDate(2027, 2, 28),
+            },
+          },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+PresetsMobile.test(
+  'switches the tray to the quick selection view',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    const tray = await canvas.findByRole('dialog');
+    await within(tray).findByRole('grid');
+
+    await userEvent.click(
+      within(tray).getByRole('button', { name: 'Quick selection' })
+    );
+
+    // The preset list replaces the grid inside the same tray, topped by a
+    // Back row.
+    await expect(
+      within(tray).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    await expect(
+      within(tray).getByRole('button', { name: 'Back' })
+    ).toBeVisible();
+    await expect(within(tray).queryByRole('grid')).not.toBeInTheDocument();
+    // The preset matching the picker value shows as selected.
+    await expect(
+      within(tray).getByRole('option', { name: 'Kickoff week' })
+    ).toHaveAttribute('aria-selected', 'true');
+  }
+);
