@@ -6,20 +6,12 @@ import {
   RangeCalendar as AriaRangeCalendar,
   DateValue,
 } from 'react-aria-components/RangeCalendar';
-import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import {
-  WidthProp,
-  cn,
-  createWidthVar,
-  useClassNames,
-  useSmallScreen,
-} from '@marigold/system';
-import { Button } from '../Button/Button';
+import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from '../Calendar/CalendarGrid';
 import { CalendarHeader } from '../Calendar/CalendarHeader';
 import { CalendarListBox } from '../Calendar/CalendarListBox';
 import {
-  PresetsNavButton,
+  CalendarPresetsShell,
   RangeCalendarPresets,
 } from '../Calendar/CalendarPresets';
 import { CalendarContext } from '../Calendar/Context';
@@ -32,8 +24,6 @@ import {
 } from '../Calendar/calendarListBoxSelectableCheck';
 import type { DateRangePreset } from '../Calendar/presets';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
-import { Tray } from '../Tray/Tray';
-import { intlMessages } from '../intl/messages';
 
 // Props
 // ---------------
@@ -94,13 +84,15 @@ export interface RangeCalendarProps<T extends DateValue = DateValue>
    */
   pageBehavior?: RAC.RangeCalendarProps<T>['pageBehavior'];
   /**
-   * Quick-select presets rendered beside the calendar (stacked above the
-   * grid on small screens). Accepts built-in
-   * keys (`'last-7-days'`, `'last-30-days'`, `'this-month'`) with localized
-   * labels, and custom presets with a `label` and a range value or resolver
-   * function. Selecting a preset sets the range; the preset matching the
-   * current selection is highlighted. Presets that fall outside
-   * `minValue`/`maxValue` or hit unavailable dates are disabled.
+   * Quick-select presets rendered as a rail beside the calendar. On small
+   * screens the grid renders first, topped by a "Quick selection" row that
+   * opens the preset list — in a tray for inline calendars; inside a
+   * picker's tray the sheet switches to the list in place. Accepts built-in
+   * keys (see `BuiltInDateRangePresetKey`) with localized labels, and custom
+   * presets with a `label` and a range value or resolver function. Selecting
+   * a preset sets the range; the preset matching the current selection shows
+   * as selected. Presets that fall outside `minValue`/`maxValue` or hit
+   * unavailable dates are disabled.
    */
   presets?: DateRangePreset[];
 }
@@ -168,8 +160,6 @@ const _RangeCalendar = <T extends DateValue>({
     ViewMapKeys | undefined
   >();
 
-  const isSmallScreen = useSmallScreen();
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   // Non-null exactly when this calendar is the one embedded in a
   // `<DateRangePicker>`. Its tray already IS a bottom sheet, so "Quick
   // selection" switches the tray content in place; standalone, it opens a
@@ -179,7 +169,6 @@ const _RangeCalendar = <T extends DateValue>({
   const [pickerView, setPickerView] = useState<'calendar' | 'presets'>(
     'calendar'
   );
-  const [presetsTrayOpen, setPresetsTrayOpen] = useState(false);
 
   // react-aria's `useRangeCalendar` commits an in-progress range on any window
   // `pointerup` that isn't on a button (our role="option" items included). The key
@@ -282,7 +271,6 @@ const _RangeCalendar = <T extends DateValue>({
         minValue,
         maxValue,
         disabled,
-        readOnly,
       }}
     >
       <FieldErrorContext value={fieldErrorValue}>
@@ -306,81 +294,25 @@ const _RangeCalendar = <T extends DateValue>({
             className={cn(
               'relative flex w-(--width) flex-col',
               hasPresets && 'gap-4 max-sm:flex-col sm:flex-row',
-              classNames.calendar
-            )}
-            style={createWidthVar(
-              'width',
               // The preset list view must span the picker tray like the
               // inline preset sheet does; the calendar's usual fit-content
               // width would squish the rows to their natural width.
-              isInPicker && isSmallScreen && pickerView === 'presets'
-                ? 'full'
-                : width
+              isInPicker && pickerView === 'presets' && 'max-sm:w-full',
+              classNames.calendar
             )}
+            style={createWidthVar('width', width)}
           >
             {presets?.length ? (
-              isSmallScreen ? (
-                isInPicker ? (
-                  pickerView === 'presets' ? (
-                    <>
-                      <PresetsNavButton
-                        variant="back"
-                        onPress={() => setPickerView('calendar')}
-                      />
-                      <RangeCalendarPresets
-                        presets={presets}
-                        autoFocus
-                        onSelectionDone={() => setPickerView('calendar')}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <PresetsNavButton
-                        variant="open"
-                        onPress={() => setPickerView('presets')}
-                      />
-                      <div className="relative flex min-w-0 flex-col">
-                        {content}
-                      </div>
-                    </>
-                  )
-                ) : (
-                  <>
-                    <Tray.Trigger
-                      open={presetsTrayOpen}
-                      onOpenChange={setPresetsTrayOpen}
-                    >
-                      <PresetsNavButton variant="open" />
-                      <Tray>
-                        <Tray.Title>
-                          {stringFormatter.format('presets')}
-                        </Tray.Title>
-                        <Tray.Content>
-                          <RangeCalendarPresets
-                            presets={presets}
-                            onSelectionDone={() => setPresetsTrayOpen(false)}
-                          />
-                        </Tray.Content>
-                        <Tray.Actions>
-                          <Button slot="close">
-                            {stringFormatter.format('close')}
-                          </Button>
-                        </Tray.Actions>
-                      </Tray>
-                    </Tray.Trigger>
-                    <div className="relative flex min-w-0 flex-col">
-                      {content}
-                    </div>
-                  </>
-                )
-              ) : (
-                <>
-                  <RangeCalendarPresets presets={presets} />
-                  <div className="relative flex min-w-0 flex-col">
-                    {content}
-                  </div>
-                </>
-              )
+              <CalendarPresetsShell
+                isInPicker={isInPicker}
+                pickerView={pickerView}
+                onPickerViewChange={setPickerView}
+                renderPresets={presetProps => (
+                  <RangeCalendarPresets presets={presets} {...presetProps} />
+                )}
+              >
+                {content}
+              </CalendarPresetsShell>
             ) : (
               content
             )}

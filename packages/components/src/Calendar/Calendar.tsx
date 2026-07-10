@@ -2,21 +2,11 @@ import { use, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components/Calendar';
 import { DatePickerStateContext } from 'react-aria-components/DatePicker';
-import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import {
-  WidthProp,
-  cn,
-  createWidthVar,
-  useClassNames,
-  useSmallScreen,
-} from '@marigold/system';
-import { Button } from '../Button/Button';
-import { Tray } from '../Tray/Tray';
-import { intlMessages } from '../intl/messages';
+import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarListBox } from './CalendarListBox';
-import { CalendarPresets, PresetsNavButton } from './CalendarPresets';
+import { CalendarPresets, CalendarPresetsShell } from './CalendarPresets';
 import { CalendarContext } from './Context';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
@@ -76,13 +66,15 @@ export interface CalendarProps extends Omit<
    */
   pageBehavior?: RAC.CalendarProps<DateValue>['pageBehavior'];
   /**
-   * Quick-select presets rendered beside the calendar (stacked above the
-   * grid on small screens). Accepts built-in
-   * keys (`'today'`, `'yesterday'`, `'tomorrow'`) with localized labels, and
-   * custom presets with a `label` and a date value or resolver function.
-   * Selecting a preset sets the date; the preset matching the current
-   * selection shows as selected. Presets that fall outside
-   * `minValue`/`maxValue` or are unavailable are disabled.
+   * Quick-select presets rendered as a rail beside the calendar. On small
+   * screens the grid renders first, topped by a "Quick selection" row that
+   * opens the preset list — in a tray for inline calendars; inside a
+   * picker's tray the sheet switches to the list in place. Accepts built-in
+   * keys (see `BuiltInDatePresetKey`) with localized labels, and custom
+   * presets with a `label` and a date value or resolver function. Selecting
+   * a preset sets the date; the preset matching the current selection shows
+   * as selected. Presets that fall outside `minValue`/`maxValue` or are
+   * unavailable are disabled.
    */
   presets?: DatePreset[];
 }
@@ -126,8 +118,6 @@ const _Calendar = ({
     ViewMapKeys | undefined
   >();
 
-  const isSmallScreen = useSmallScreen();
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   // Non-null exactly when this calendar is the one embedded in a
   // `<DatePicker>`. Its tray already IS a bottom sheet, so "Quick selection"
   // switches the tray content in place; standalone, it opens a tray of its
@@ -137,7 +127,6 @@ const _Calendar = ({
   const [pickerView, setPickerView] = useState<'calendar' | 'presets'>(
     'calendar'
   );
-  const [presetsTrayOpen, setPresetsTrayOpen] = useState(false);
 
   const ViewMap = {
     month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
@@ -209,83 +198,32 @@ const _Calendar = ({
         minValue,
         maxValue,
         disabled,
-        readOnly,
       }}
     >
       <Calendar
         className={cn(
           'relative flex w-(--width) flex-col',
           hasPresets && 'gap-4 max-sm:flex-col sm:flex-row',
-          classNames.calendar
-        )}
-        style={createWidthVar(
-          'width',
           // The preset list view must span the picker tray like the inline
           // preset sheet does; the calendar's usual fit-content width would
           // squish the rows to their natural width.
-          isInPicker && isSmallScreen && pickerView === 'presets'
-            ? 'full'
-            : width
+          isInPicker && pickerView === 'presets' && 'max-sm:w-full',
+          classNames.calendar
         )}
+        style={createWidthVar('width', width)}
         {...props}
       >
         {presets?.length ? (
-          isSmallScreen ? (
-            isInPicker ? (
-              pickerView === 'presets' ? (
-                <>
-                  <PresetsNavButton
-                    variant="back"
-                    onPress={() => setPickerView('calendar')}
-                  />
-                  <CalendarPresets
-                    presets={presets}
-                    autoFocus
-                    onSelectionDone={() => setPickerView('calendar')}
-                  />
-                </>
-              ) : (
-                <>
-                  <PresetsNavButton
-                    variant="open"
-                    onPress={() => setPickerView('presets')}
-                  />
-                  <div className="relative flex min-w-0 flex-col">
-                    {content}
-                  </div>
-                </>
-              )
-            ) : (
-              <>
-                <Tray.Trigger
-                  open={presetsTrayOpen}
-                  onOpenChange={setPresetsTrayOpen}
-                >
-                  <PresetsNavButton variant="open" />
-                  <Tray>
-                    <Tray.Title>{stringFormatter.format('presets')}</Tray.Title>
-                    <Tray.Content>
-                      <CalendarPresets
-                        presets={presets}
-                        onSelectionDone={() => setPresetsTrayOpen(false)}
-                      />
-                    </Tray.Content>
-                    <Tray.Actions>
-                      <Button slot="close">
-                        {stringFormatter.format('close')}
-                      </Button>
-                    </Tray.Actions>
-                  </Tray>
-                </Tray.Trigger>
-                <div className="relative flex min-w-0 flex-col">{content}</div>
-              </>
-            )
-          ) : (
-            <>
-              <CalendarPresets presets={presets} />
-              <div className="relative flex min-w-0 flex-col">{content}</div>
-            </>
-          )
+          <CalendarPresetsShell
+            isInPicker={isInPicker}
+            pickerView={pickerView}
+            onPickerViewChange={setPickerView}
+            renderPresets={presetProps => (
+              <CalendarPresets presets={presets} {...presetProps} />
+            )}
+          >
+            {content}
+          </CalendarPresetsShell>
         ) : (
           content
         )}

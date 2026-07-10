@@ -8,13 +8,13 @@ import {
   today,
 } from '@internationalized/date';
 import type { DateValue } from 'react-aria-components/Calendar';
+import type { DateRange } from 'react-aria-components/DateRangePicker';
 
 // Types
 // ---------------
-export interface DateRange {
-  start: DateValue;
-  end: DateValue;
-}
+// Re-exported so consumers can type custom range presets without also
+// depending on react-aria-components directly.
+export type { DateRange };
 
 export type BuiltInDatePresetKey = 'today' | 'yesterday' | 'tomorrow';
 
@@ -30,38 +30,28 @@ export type BuiltInDateRangePresetKey =
   | 'this-month'
   | 'this-quarter';
 
-export interface CustomDatePreset {
+export interface CustomPreset<T> {
   /**
    * Identifier used to key the preset. Defaults to the label.
    */
   id?: string;
   label: string;
   /**
-   * The date the preset selects. Pass a function to resolve the value at
+   * The value the preset selects. Pass a function to resolve the value at
    * selection time, so relative presets stay correct in long-lived views.
    */
-  value: DateValue | (() => DateValue);
+  value: T | (() => T);
 }
 
-export interface CustomDateRangePreset {
-  /**
-   * Identifier used to key the preset. Defaults to the label.
-   */
-  id?: string;
-  label: string;
-  /**
-   * The range the preset selects. Pass a function to resolve the value at
-   * selection time, so relative presets stay correct in long-lived views.
-   */
-  value: DateRange | (() => DateRange);
-}
+export type CustomDatePreset = CustomPreset<DateValue>;
+export type CustomDateRangePreset = CustomPreset<DateRange>;
 
 export type DatePreset = BuiltInDatePresetKey | CustomDatePreset;
 export type DateRangePreset = BuiltInDateRangePresetKey | CustomDateRangePreset;
 
 // Built-in presets
 // ---------------
-interface BuiltInPreset<T> {
+export interface BuiltInPreset<T> {
   messageKey: string;
   /**
    * Built-in resolvers receive the active locale so week-based presets can
@@ -170,13 +160,3 @@ export const builtInDateRangePresets: Record<
 // ---------------
 export const isSameRange = (a: DateRange, b: DateRange) =>
   isSameDay(a.start, b.start) && isSameDay(a.end, b.end);
-
-export const isOutOfBounds = (
-  range: DateRange,
-  minValue?: DateValue | null,
-  maxValue?: DateValue | null
-) =>
-  Boolean(
-    (minValue && range.start.compare(minValue) < 0) ||
-    (maxValue && range.end.compare(maxValue) > 0)
-  );

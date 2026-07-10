@@ -1,7 +1,10 @@
+import { useMemo } from 'react';
 import type { DateValue } from 'react-aria-components/Calendar';
 import { useLocale, useLocalizedStringFormatter } from '@react-aria/i18n';
 import { intlMessages } from '../intl/messages';
 import {
+  type BuiltInPreset,
+  type CustomPreset,
   type DatePreset,
   type DateRange,
   type DateRangePreset,
@@ -19,38 +22,37 @@ export interface ResolvedPreset<T> {
   resolve: () => T;
 }
 
-interface BuiltInPreset<T> {
-  messageKey: string;
-  resolve: (locale?: string) => T;
-}
-
-const useResolvedPresets = <
-  Key extends string,
-  Custom extends { id?: string; label: string; value: T | (() => T) },
-  T,
->(
-  presets: (Key | Custom)[],
+const useResolvedPresets = <Key extends string, T>(
+  presets: (Key | CustomPreset<T>)[],
   builtIns: Record<Key, BuiltInPreset<T>>
 ): ResolvedPreset<T>[] => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const { locale } = useLocale();
 
-  return presets.map(preset => {
-    if (typeof preset === 'string') {
-      const builtIn = builtIns[preset];
-      return {
-        id: preset,
-        label: stringFormatter.format(builtIn.messageKey),
-        resolve: () => builtIn.resolve(locale),
-      };
-    }
-    const { id, label, value } = preset;
-    return {
-      id: id ?? label,
-      label,
-      resolve: typeof value === 'function' ? (value as () => T) : () => value,
-    };
-  });
+  // Memoized so the result is safe to use in effect/memo dependencies. Only
+  // the wrapper objects are stable — `resolve()` still runs fresh at call
+  // time.
+  return useMemo(
+    () =>
+      presets.map(preset => {
+        if (typeof preset === 'string') {
+          const builtIn = builtIns[preset];
+          return {
+            id: preset,
+            label: stringFormatter.format(builtIn.messageKey),
+            resolve: () => builtIn.resolve(locale),
+          };
+        }
+        const { id, label, value } = preset;
+        return {
+          id: id ?? label,
+          label,
+          resolve:
+            typeof value === 'function' ? (value as () => T) : () => value,
+        };
+      }),
+    [presets, builtIns, stringFormatter, locale]
+  );
 };
 
 /**

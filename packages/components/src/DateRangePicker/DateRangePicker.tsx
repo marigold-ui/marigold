@@ -103,12 +103,12 @@ export interface DateRangePickerProps
   width?: WidthProp['width'];
 
   /**
-   * Quick-select presets rendered beside the calendar in the popover
-   * (stacked above the grid in the small-screen tray).
-   * Accepts built-in keys (`'last-7-days'`, `'last-30-days'`, `'this-month'`)
-   * with localized labels, and custom presets with a `label` and a range
-   * value or resolver function. Selecting a preset applies the range; the
-   * popover stays open.
+   * Quick-select presets rendered beside the calendar in the popover. In
+   * the small-screen tray, a "Quick selection" row above the grid switches
+   * the sheet to the preset list in place. Accepts built-in keys (see
+   * `BuiltInDateRangePresetKey`) with localized labels, and custom presets
+   * with a `label` and a range value or resolver function. Selecting a
+   * preset applies the range; the overlay stays open.
    */
   presets?: DateRangePreset[];
 }

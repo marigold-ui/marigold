@@ -3,7 +3,6 @@ import { vi } from 'vitest';
 import {
   builtInDatePresets,
   builtInDateRangePresets,
-  isOutOfBounds,
   isSameRange,
 } from './presets';
 
@@ -110,37 +109,6 @@ describe('isSameRange', () => {
       end: new CalendarDate(2026, 7, 9),
     };
     expect(isSameRange(a, b)).toBe(false);
-  });
-});
-
-describe('isOutOfBounds', () => {
-  const range = {
-    start: new CalendarDate(2026, 7, 2),
-    end: new CalendarDate(2026, 7, 8),
-  };
-
-  test('false without bounds', () => {
-    expect(isOutOfBounds(range)).toBe(false);
-  });
-
-  test('true when start is before minValue', () => {
-    expect(isOutOfBounds(range, new CalendarDate(2026, 7, 5))).toBe(true);
-  });
-
-  test('true when end is after maxValue', () => {
-    expect(isOutOfBounds(range, undefined, new CalendarDate(2026, 7, 5))).toBe(
-      true
-    );
-  });
-
-  test('false when range fits the bounds', () => {
-    expect(
-      isOutOfBounds(
-        range,
-        new CalendarDate(2026, 7, 1),
-        new CalendarDate(2026, 7, 31)
-      )
-    ).toBe(false);
   });
 });
 

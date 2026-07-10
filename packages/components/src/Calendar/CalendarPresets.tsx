@@ -4,7 +4,8 @@ import {
   isSameDay,
   toCalendarDate,
 } from '@internationalized/date';
-import { use } from 'react';
+import type { ReactNode } from 'react';
+import { use, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Button as AriaButton } from 'react-aria-components/Button';
 import { CalendarStateContext } from 'react-aria-components/Calendar';
@@ -20,7 +21,9 @@ import {
   useLocalizedStringFormatter,
 } from '@react-aria/i18n';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
-import { Check } from '../icons/Check';
+import { Button } from '../Button/Button';
+import { SelectionIndicator } from '../ListBox/SelectionIndicator';
+import { Tray } from '../Tray/Tray';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
@@ -29,7 +32,6 @@ import {
   type DatePreset,
   type DateRange,
   type DateRangePreset,
-  isOutOfBounds,
   isSameRange,
 } from './presets';
 import {
@@ -60,7 +62,7 @@ const isMultiSelectValue = (
  */
 const rangeHasUnavailableDate = (
   range: DateRange,
-  isUnavailable: (date: ReturnType<typeof toCalendarDate>) => boolean
+  isUnavailable: (date: CalendarDate) => boolean
 ) => {
   let date = toCalendarDate(range.start);
   const end = toCalendarDate(range.end);
@@ -85,7 +87,8 @@ interface PresetListBoxProps<T> {
   isActive: (value: T) => boolean;
   /**
    * Whether a resolved preset's value should render disabled, e.g. because
-   * it falls outside `minValue`/`maxValue` or covers an unavailable date.
+   * the calendar is disabled/read-only, the value falls outside
+   * `minValue`/`maxValue`, or it covers an unavailable date.
    */
   isDisabled: (value: T) => boolean;
   /**
@@ -98,8 +101,6 @@ interface PresetListBoxProps<T> {
    * screens, e.g. "Jul 9 – 15".
    */
   formatValue: (value: T) => string;
-  disabled?: boolean;
-  readOnly?: boolean;
   /**
    * Called after a preset's value has been applied. The small-screen preset
    * containers use this to dismiss themselves (close the inline tray, return
@@ -127,8 +128,6 @@ const PresetListBox = <T,>({
   isDisabled,
   onSelect,
   formatValue,
-  disabled,
-  readOnly,
   onSelectionDone,
   autoFocus,
 }: PresetListBoxProps<T>) => {
@@ -143,7 +142,7 @@ const PresetListBox = <T,>({
   }));
   const selectedId = items.find(item => isActive(item.value))?.id;
   const disabledKeys = items
-    .filter(item => disabled || readOnly || isDisabled(item.value))
+    .filter(item => isDisabled(item.value))
     .map(item => item.id);
 
   const handleSelectionChange = (keys: RAC.Selection) => {
@@ -184,10 +183,7 @@ const PresetListBox = <T,>({
             aria-label={item.label}
             className={listBoxClassNames.item}
           >
-            {/* Mirrors `ListBoxItem`'s selection-indicator markup so the
-                ListBox theme's check-visibility rules apply unchanged. */}
-            <div className="selection-indicator contents">
-              <Check size={16} strokeWidth="3" className="hidden" />
+            <SelectionIndicator>
               {isSmallScreen ? (
                 <div className="flex w-full items-center justify-between gap-3">
                   <span>{item.label}</span>
@@ -198,7 +194,7 @@ const PresetListBox = <T,>({
               ) : (
                 item.label
               )}
-            </div>
+            </SelectionIndicator>
           </AriaListBoxItem>
         ))}
       </AriaListBox>
@@ -217,16 +213,19 @@ interface PresetsNavButtonProps {
    */
   variant: 'open' | 'back';
   /**
-   * Press handler for the picker trays' in-place view switch. Omit when the
-   * row is the pressable child of the inline preset tray's `Tray.Trigger`
-   * (RAC `DialogTrigger`), which supplies the press and `aria-expanded`
-   * wiring through its `PressResponder`.
+   * Set when the row is the pressable child of the inline preset tray's
+   * `Tray.Trigger` (RAC `DialogTrigger`), which supplies the press and
+   * `aria-expanded` wiring through its `PressResponder` — the row then
+   * announces the dialog it opens. The picker trays' view switch omits it:
+   * that press stays within the current dialog.
    */
+  opensDialog?: boolean;
   onPress?: () => void;
 }
 
-export const PresetsNavButton = ({
+const PresetsNavButton = ({
   variant,
+  opensDialog,
   onPress,
 }: PresetsNavButtonProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -241,9 +240,7 @@ export const PresetsNavButton = ({
       // does not detach.
       slot={null}
       onPress={onPress}
-      // Only the inline usage (no explicit onPress) opens a dialog; the
-      // picker trays' view switch stays within the current dialog.
-      aria-haspopup={variant === 'open' && !onPress ? 'dialog' : undefined}
+      aria-haspopup={opensDialog ? 'dialog' : undefined}
       className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
     >
       {variant === 'back' ? (
@@ -258,6 +255,107 @@ export const PresetsNavButton = ({
         </span>
       )}
     </AriaButton>
+  );
+};
+
+// Shared layout shell
+// ---------------
+interface CalendarPresetsShellProps {
+  /**
+   * Whether the calendar is embedded in a picker. A picker's small-screen
+   * overlay already IS a bottom sheet, so "Quick selection" switches the
+   * sheet content in place; standalone calendars open a tray of their own.
+   */
+  isInPicker: boolean;
+  /**
+   * The picker sheet's current in-place view. Lifted into the calendar
+   * because its root width styling also depends on it.
+   */
+  pickerView: 'calendar' | 'presets';
+  onPickerViewChange: (view: 'calendar' | 'presets') => void;
+  /**
+   * Renders the preset list for the current container (desktop rail, inline
+   * tray, or picker in-place view). The container passes the props the list
+   * needs to dismiss it after a selection.
+   */
+  renderPresets: (props: {
+    autoFocus?: boolean;
+    onSelectionDone?: () => void;
+  }) => ReactNode;
+  /**
+   * The calendar content (header + grid).
+   */
+  children: ReactNode;
+}
+
+/**
+ * Owns the preset layout switching shared by `Calendar` and `RangeCalendar`:
+ * the desktop rail beside the grid, the inline small-screen tray, and the
+ * in-place view switch inside a picker's sheet.
+ */
+export const CalendarPresetsShell = ({
+  isInPicker,
+  pickerView,
+  onPickerViewChange,
+  renderPresets,
+  children,
+}: CalendarPresetsShellProps) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const isSmallScreen = useSmallScreen();
+  const [trayOpen, setTrayOpen] = useState(false);
+
+  const content = (
+    <div className="relative flex min-w-0 flex-col">{children}</div>
+  );
+
+  if (!isSmallScreen) {
+    return (
+      <>
+        {renderPresets({})}
+        {content}
+      </>
+    );
+  }
+
+  if (isInPicker) {
+    return pickerView === 'presets' ? (
+      <>
+        <PresetsNavButton
+          variant="back"
+          onPress={() => onPickerViewChange('calendar')}
+        />
+        {renderPresets({
+          autoFocus: true,
+          onSelectionDone: () => onPickerViewChange('calendar'),
+        })}
+      </>
+    ) : (
+      <>
+        <PresetsNavButton
+          variant="open"
+          onPress={() => onPickerViewChange('presets')}
+        />
+        {content}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Tray.Trigger open={trayOpen} onOpenChange={setTrayOpen}>
+        <PresetsNavButton variant="open" opensDialog />
+        <Tray>
+          <Tray.Title>{stringFormatter.format('presets')}</Tray.Title>
+          <Tray.Content>
+            {renderPresets({ onSelectionDone: () => setTrayOpen(false) })}
+          </Tray.Content>
+          <Tray.Actions>
+            <Button slot="close">{stringFormatter.format('close')}</Button>
+          </Tray.Actions>
+        </Tray>
+      </Tray.Trigger>
+      {content}
+    </>
   );
 };
 
@@ -278,7 +376,6 @@ export const CalendarPresets = ({
   // the calendar's) keeps the popover open, since it bypasses the calendar's
   // onChange chain that the picker otherwise uses to auto-close on select.
   const pickerState = use(DatePickerStateContext);
-  const { minValue, maxValue, disabled, readOnly } = useCalendarContext();
   const resolvedPresets = useDatePresets(presets);
   const dateFormatter = useDateFormatter({ month: 'short', day: 'numeric' });
 
@@ -290,11 +387,14 @@ export const CalendarPresets = ({
     <PresetListBox
       resolvedPresets={resolvedPresets}
       isActive={value => currentValue != null && isSameDay(currentValue, value)}
+      // `state.isInvalid` checks the calendar's `minValue`/`maxValue` — and,
+      // unlike Marigold-level props, also the bounds inherited from an
+      // enclosing picker.
       isDisabled={value =>
-        Boolean(
-          isOutOfBounds({ start: value, end: value }, minValue, maxValue) ||
-          state.isCellUnavailable(toCalendarDate(value))
-        )
+        state.isDisabled ||
+        state.isReadOnly ||
+        state.isInvalid(toCalendarDate(value)) ||
+        state.isCellUnavailable(toCalendarDate(value))
       }
       formatValue={value =>
         dateFormatter.format(toCalendarDate(value).toDate(getLocalTimeZone()))
@@ -311,8 +411,6 @@ export const CalendarPresets = ({
         // calendar's focused date to the selection so it's actually on screen.
         state.setFocusedDate(toCalendarDate(value));
       }}
-      disabled={disabled}
-      readOnly={readOnly}
       onSelectionDone={onSelectionDone}
       autoFocus={autoFocus}
     />
@@ -337,7 +435,6 @@ export const RangeCalendarPresets = ({
   // bypasses the calendar's onChange chain that the picker otherwise uses to
   // auto-close on select.
   const pickerState = use(DateRangePickerStateContext);
-  const { minValue, maxValue, disabled, readOnly } = useCalendarContext();
   const resolvedPresets = useDateRangePresets(presets);
   const dateFormatter = useDateFormatter({ month: 'short', day: 'numeric' });
 
@@ -351,11 +448,15 @@ export const RangeCalendarPresets = ({
         state.value?.end != null &&
         isSameRange(state.value, value)
       }
+      // `state.isInvalid` checks the calendar's `minValue`/`maxValue` — and,
+      // unlike Marigold-level props, also the bounds inherited from an
+      // enclosing picker.
       isDisabled={value =>
-        Boolean(
-          isOutOfBounds(value, minValue, maxValue) ||
-          rangeHasUnavailableDate(value, date => state.isCellUnavailable(date))
-        )
+        state.isDisabled ||
+        state.isReadOnly ||
+        state.isInvalid(toCalendarDate(value.start)) ||
+        state.isInvalid(toCalendarDate(value.end)) ||
+        rangeHasUnavailableDate(value, date => state.isCellUnavailable(date))
       }
       formatValue={({ start, end }) =>
         dateFormatter.formatRange(
@@ -373,8 +474,6 @@ export const RangeCalendarPresets = ({
         // calendar to the range start so multi-month views show its beginning.
         state.setFocusedDate(toCalendarDate(value.start));
       }}
-      disabled={disabled}
-      readOnly={readOnly}
       onSelectionDone={onSelectionDone}
       autoFocus={autoFocus}
     />
