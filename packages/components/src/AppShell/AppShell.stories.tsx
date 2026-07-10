@@ -340,9 +340,17 @@ export const WideContentDoesNotOverflow = meta.story({
  */
 export const ScrollingSidebar = meta.story({
   tags: ['component-test'],
+  // A behavior test, not a visual one: the seam reveals are scroll-driven and
+  // can't be captured in a static Chromatic frame, and the 40-item + 10-panel
+  // layout would only add a large, noisy snapshot over what Basic already
+  // covers. The assertions below guard the behavior instead.
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <ShellFrame longNav longPage />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
+
+ScrollingSidebar.test(
+  'scrolls both axes: nav overflow keeps the footer seam, page scrolls under the top bar',
+  async ({ canvas }) => {
     const nav = canvas.getByRole('navigation', { name: /app navigation/i });
 
     // The point of this story: a long nav rendered into a scroll container, so
@@ -379,5 +387,5 @@ export const ScrollingSidebar = meta.story({
     await expect(document.documentElement.scrollHeight).toBeGreaterThan(
       window.innerHeight
     );
-  },
-});
+  }
+);
