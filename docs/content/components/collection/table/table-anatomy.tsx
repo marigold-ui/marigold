@@ -1,5 +1,7 @@
 export const TableAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Table: sticky Header with selection checkbox and columns, Body with selectable rows and cells, and a sticky Footer summary row"
     viewBox="-60 0 950 300"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
