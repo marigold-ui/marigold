@@ -103,7 +103,7 @@ export const Table: ThemeComponent<'Table'> = {
   // <tfoot>
   footer: cva({
     base: [
-      'bg-background/90 border-border border-t',
+      'bg-surface/90 border-border border-t',
       '**:[[role=gridcell]]:font-semibold **:[[role=rowheader]]:font-semibold',
     ],
   }),
