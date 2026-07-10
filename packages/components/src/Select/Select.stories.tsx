@@ -566,6 +566,34 @@ const renderUserOption = (person: (typeof people)[number]) => (
   </Select.Option>
 );
 
+export const Sections = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Select {...args}>
+      <Select.Section header="Fantasy">
+        <Select.Option id="harry-potter">
+          <TextValue>Harry Potter</TextValue>
+          <Description>About the boy who lived</Description>
+        </Select.Option>
+        <Select.Option id="lord-of-the-rings">
+          <TextValue>Lord of the Rings</TextValue>
+          <Description>In the lands of Middle earth</Description>
+        </Select.Option>
+      </Select.Section>
+      <Select.Section header="Sci-Fi">
+        <Select.Option id="star-wars">
+          <TextValue>Star Wars</TextValue>
+          <Description>A long time ago, in a galaxy far, far away</Description>
+        </Select.Option>
+        <Select.Option id="star-trek">
+          <TextValue>Star Trek</TextValue>
+          <Description>What is this</Description>
+        </Select.Option>
+      </Select.Section>
+    </Select>
+  ),
+});
+
 export const WithRenderValue = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
