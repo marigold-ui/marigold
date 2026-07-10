@@ -452,7 +452,7 @@ describe('presets on small screens (tray)', () => {
     window.matchMedia = mockMatchMedia([]);
   });
 
-  test('the tray shows the calendar; Quick selection opens a stacked preset sheet that applies and closes', async () => {
+  test('the tray shows the calendar; Quick selection swaps to the preset list in place', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
 
@@ -466,20 +466,32 @@ describe('presets on small screens (tray)', () => {
     await user.click(
       within(pickerTray).getByRole('button', { name: 'Quick selection' })
     );
-    // The preset list stacks as a second sheet above the picker tray.
-    const dialogs = await screen.findAllByRole('dialog');
-    expect(dialogs).toHaveLength(2);
-    const presetSheet = dialogs.find(dialog =>
-      within(dialog).queryByRole('listbox', { name: 'Quick selection' })
-    )!;
-    expect(presetSheet).toBeDefined();
+    // The preset list replaces the grid within the SAME dialog — no second
+    // sheet stacks on top of the picker tray.
+    expect(screen.getAllByRole('dialog')).toHaveLength(1);
+    const list = within(pickerTray).getByRole('listbox', {
+      name: 'Quick selection',
+    });
+    expect(list).toBeVisible();
+    expect(within(pickerTray).queryByRole('grid')).not.toBeInTheDocument();
 
-    await user.click(
-      within(presetSheet).getByRole('option', { name: 'Tomorrow' })
-    );
-    // The preset sheet closes; the picker tray stays open with the applied
-    // value visible in its grid.
-    await waitFor(() => expect(screen.getAllByRole('dialog')).toHaveLength(1));
+    // Back returns to the calendar without selecting.
+    await user.click(within(pickerTray).getByRole('button', { name: 'Back' }));
     expect(within(pickerTray).getByRole('grid')).toBeVisible();
+    expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
+
+    // Selecting a preset applies the value and returns to the calendar view;
+    // the picker tray stays open throughout.
+    await user.click(
+      within(pickerTray).getByRole('button', { name: 'Quick selection' })
+    );
+    await user.click(
+      within(pickerTray).getByRole('option', { name: 'Tomorrow' })
+    );
+    await waitFor(() =>
+      expect(within(pickerTray).getByRole('grid')).toBeVisible()
+    );
+    expect(screen.getAllByRole('dialog')).toHaveLength(1);
+    expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
   });
 });

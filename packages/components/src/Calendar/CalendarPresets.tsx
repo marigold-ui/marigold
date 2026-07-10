@@ -21,6 +21,7 @@ import {
 } from '@react-aria/i18n';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Check } from '../icons/Check';
+import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
 import { useCalendarContext } from './Context';
@@ -101,9 +102,16 @@ interface PresetListBoxProps<T> {
   readOnly?: boolean;
   /**
    * Called after a preset's value has been applied. The small-screen preset
-   * tray uses this to close itself; the desktop rail leaves it unset.
+   * containers use this to dismiss themselves (close the inline tray, return
+   * a picker tray to its calendar view); the desktop rail leaves it unset.
    */
   onSelectionDone?: () => void;
+  /**
+   * Focus the listbox when it mounts — set only when the list appears as a
+   * result of in-component navigation (the picker trays' view switch), never
+   * on initial mount.
+   */
+  autoFocus?: boolean;
 }
 
 /**
@@ -122,6 +130,7 @@ const PresetListBox = <T,>({
   disabled,
   readOnly,
   onSelectionDone,
+  autoFocus,
 }: PresetListBoxProps<T>) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const isSmallScreen = useSmallScreen();
@@ -159,6 +168,7 @@ const PresetListBox = <T,>({
         selectedKeys={selectedId != null ? [selectedId] : []}
         disabledKeys={disabledKeys}
         onSelectionChange={handleSelectionChange}
+        autoFocus={autoFocus}
         className={listBoxClassNames.list}
       >
         {items.map(item => (
@@ -196,15 +206,29 @@ const PresetListBox = <T,>({
   );
 };
 
-// "Quick selection" row shown above the calendar grid on small screens — the
-// pressable child of the preset tray's `Tray.Trigger`.
+// Nav row shown above the calendar grid (or the preset list) on small
+// screens.
 // ---------------
-/**
- * Rendered as the trigger child of a `Tray.Trigger` (RAC `DialogTrigger`),
- * which supplies the press and `aria-expanded` wiring through its
- * `PressResponder` — the row itself needs no props.
- */
-export const PresetsTrayButton = () => {
+interface PresetsNavButtonProps {
+  /**
+   * 'open' — the "Quick selection" entry point (label + chevron-right).
+   * 'back' — tops the picker trays' in-place preset list (chevron-left +
+   * "Back"), returning to the calendar view without selecting.
+   */
+  variant: 'open' | 'back';
+  /**
+   * Press handler for the picker trays' in-place view switch. Omit when the
+   * row is the pressable child of the inline preset tray's `Tray.Trigger`
+   * (RAC `DialogTrigger`), which supplies the press and `aria-expanded`
+   * wiring through its `PressResponder`.
+   */
+  onPress?: () => void;
+}
+
+export const PresetsNavButton = ({
+  variant,
+  onPress,
+}: PresetsNavButtonProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const listBoxClassNames = useClassNames({ component: 'ListBox' });
 
@@ -212,17 +236,27 @@ export const PresetsTrayButton = () => {
     <AriaButton
       // In the calendar tree, RAC's ButtonContext only defines "previous"/
       // "next" slots, so an unslotted button would throw — opt out. This is
-      // safe as the trigger child too: `DialogTrigger` wires its trigger
+      // safe as a `DialogTrigger` trigger child too: the trigger is wired
       // through `PressResponder` (not `ButtonContext`), which `slot={null}`
       // does not detach.
       slot={null}
-      aria-haspopup="dialog"
+      onPress={onPress}
+      // Only the inline usage (no explicit onPress) opens a dialog; the
+      // picker trays' view switch stays within the current dialog.
+      aria-haspopup={variant === 'open' && !onPress ? 'dialog' : undefined}
       className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
     >
-      <span className="flex w-full items-center justify-between gap-3">
-        {stringFormatter.format('presets')}
-        <ChevronRight size={16} />
-      </span>
+      {variant === 'back' ? (
+        <span className="flex items-center gap-2">
+          <ChevronLeft size={16} />
+          {stringFormatter.format('back')}
+        </span>
+      ) : (
+        <span className="flex w-full items-center justify-between gap-3">
+          {stringFormatter.format('presets')}
+          <ChevronRight size={16} />
+        </span>
+      )}
     </AriaButton>
   );
 };
@@ -232,9 +266,11 @@ export const PresetsTrayButton = () => {
 export const CalendarPresets = ({
   presets,
   onSelectionDone,
+  autoFocus,
 }: {
   presets: DatePreset[];
   onSelectionDone?: () => void;
+  autoFocus?: boolean;
 }) => {
   const state = use(CalendarStateContext);
   // Present only when this calendar is rendered inside a `<DatePicker>`
@@ -278,6 +314,7 @@ export const CalendarPresets = ({
       disabled={disabled}
       readOnly={readOnly}
       onSelectionDone={onSelectionDone}
+      autoFocus={autoFocus}
     />
   );
 };
@@ -287,9 +324,11 @@ export const CalendarPresets = ({
 export const RangeCalendarPresets = ({
   presets,
   onSelectionDone,
+  autoFocus,
 }: {
   presets: DateRangePreset[];
   onSelectionDone?: () => void;
+  autoFocus?: boolean;
 }) => {
   const state = use(RangeCalendarStateContext);
   // Present only when this calendar is rendered inside a
@@ -337,6 +376,7 @@ export const RangeCalendarPresets = ({
       disabled={disabled}
       readOnly={readOnly}
       onSelectionDone={onSelectionDone}
+      autoFocus={autoFocus}
     />
   );
 };
