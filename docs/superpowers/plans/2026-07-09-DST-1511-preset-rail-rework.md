@@ -2012,3 +2012,29 @@ Run: `pnpm typecheck:only` — no NEW errors vs the 17-error baseline. Also `gre
 git add packages/components/src/Calendar packages/components/src/RangeCalendar packages/components/src/DatePicker packages/components/src/DateRangePicker
 git commit -m "feat(DST-1511): open inline quick selection in a tray on small screens"
 ```
+
+---
+
+### Task 13: Unify — picker trays adopt the sheet-on-sheet quick selection
+
+_Added 2026-07-10 (fourth mobile iteration, final); executes BEFORE Tasks 8–9. Spec decision 8._
+
+The picker trays drop the list-first/in-place-swap flow and behave exactly like standalone calendars on small screens: the tray opens on the calendar grid topped by the "Quick selection" row; pressing it opens the preset list as a **second Tray stacked on top**; tapping a preset applies the value (picker overlay stays open) and closes the preset sheet. This deletes the entire per-context machinery.
+
+**Removals:**
+
+- `Calendar.tsx`/`RangeCalendar.tsx`: `isInPicker` detection (picker state context reads + imports), `smallScreenView`, `hasNavigated` — the small-screen presets branch is the tray branch, unconditionally.
+- `CalendarPresets.tsx`: the `onCustom`/`autoFocus` props and the "Custom…" row from `PresetListBox` and both wrappers; `PresetsNavButton` collapses to a propless `PresetsTrayButton` (label from `presets` key + chevron-right + `aria-haspopup="dialog"`, `slot={null}`, press wiring via the enclosing `Tray.Trigger`'s PressResponder); `ChevronLeft` import and `back` message usage dropped.
+- `intl/messages.ts` + `messages.test.ts`: `presetsCustom` removed from both locales and both assertion blocks (added in Task 10, now unused).
+
+**Tests:**
+
+- `Calendar.test.tsx`/`RangeCalendar.test.tsx`: standalone tray tests stay; drop the now-meaningless "no Custom… inside the tray" assertions.
+- `DatePicker.test.tsx`: the tray sentinel is REWRITTEN to the unified flow — open picker on a small screen → tray dialog shows the GRID and the "Quick selection" row (no listbox yet) → pressing it opens a second dialog with the preset list → selecting a preset applies the value, closes the preset sheet, and the picker tray remains open. Old Custom…/Back tests removed.
+- Check `DateRangePicker.test.tsx` for equivalent small-screen tests and update the same way if present.
+- Desktop story regression (4 files) + full unit run + `pnpm typecheck:only` (17-error baseline) must pass. `grep -rn "presetsCustom\|PresetsNavButton\|smallScreenView\|hasNavigated\|onCustom" packages` must return nothing.
+
+```bash
+git add packages/components/src
+git commit -m "feat(DST-1511): unify small-screen quick selection as stacked preset sheet"
+```

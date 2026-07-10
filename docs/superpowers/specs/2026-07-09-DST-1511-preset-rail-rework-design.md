@@ -45,6 +45,12 @@ below come from it.
    `defaultPresetsOpen` is dropped entirely; the calendars detect picker context
    via the RAC picker state contexts instead (supersedes the prop half of
    decision 6).
+8. (2026-07-10, fourth mobile iteration — final) The picker trays adopt the SAME
+   flow: tray opens on the calendar with the "Quick selection" row; the preset
+   list opens as a second sheet stacked on top; tapping a preset applies and
+   closes the sheet. The list-first mode, "Custom…" entry, back row, picker
+   detection for presentation, and the `presetsCustom` intl key are all removed
+   (supersedes the tray half of decisions 5–7).
 
 Prior decisions that stand (from the 2026-07-08 plan): unified catalog (day keys are
 valid range presets), active preset derived by value equality (no stored state),
@@ -102,31 +108,24 @@ so pickers need no extra plumbing):
 - **Rail** (default, ≥ md): vertical column to the **left of** the calendar grid.
   Width 150px, subtle raised background (stone-50), 1px border-right, padding 8px,
   row gap 2px.
-- **Small screens — context-bound presentation** (REVISED 2026-07-09, three
-  iterations): the calendars detect picker context themselves (via
-  `DatePickerStateContext`/`DateRangePickerStateContext`); no public prop.
-  - **Inside a picker tray** (list-first): the tray shows the preset list —
-    full-width rows with the check indicator and a trailing resolved-value
-    sublabel in `text-sm` muted (range "Jul 9 – 15" / "Jul 9 – Aug 2", single
-    date "Jul 9"), recomputed per render — plus a trailing **"Custom…" entry**
-    (link-colored label, trailing chevron-right; localized `presetsCustom`: en
-    "Custom…" / de "Benutzerdefiniert…") that swaps in the calendar grid,
-    topped by a full-width **back row** (chevron-left + existing `back`
-    message) returning to the list. Focus: back row and list receive focus
-    only when arrived at via navigation. Tray close/reopen resets to the list
-    (content unmounts). Selecting a preset stays open (check appears); grid
-    selection keeps existing close-on-select picker behavior.
-  - **Standalone/inline** (grid-first): the grid always renders, topped by a
-    full-width **"Quick selection" row** (existing `presets` message +
-    trailing chevron-right) that opens a **Marigold Tray** (bottom sheet,
-    `Tray.Trigger` + controlled open state) containing the preset list (same
-    rows + sublabels, no "Custom…" entry — the grid is visible beneath), a
-    `Tray.Title` ("Quick selection") and a Close action. Tapping a preset
-    applies it AND closes the tray (focus returns to the row); Close/backdrop
-    dismisses. The row is never auto-focused on mount, and the tray never
-    auto-opens (a11y).
-  - The former `defaultPresetsOpen` prop is REMOVED (an auto-open modal is an
-    a11y antipattern; picker detection replaces the internal wiring).
+- **Small screens — ONE behavior everywhere** (REVISED 2026-07-09/10, four
+  iterations; supersedes the context-bound presentation): the calendar grid
+  always renders, topped by a full-width **"Quick selection" row** (existing
+  `presets` message + trailing chevron-right, `aria-haspopup="dialog"`) that
+  opens a **Marigold Tray** (bottom sheet, `Tray.Trigger` + controlled open
+  state) containing the preset list — full-width rows with the check indicator
+  and a trailing resolved-value sublabel in `text-sm` muted (range
+  "Jul 9 – 15" / "Jul 9 – Aug 2", single date "Jul 9"), recomputed per render —
+  plus a `Tray.Title` ("Quick selection") and a Close action. Tapping a preset
+  applies the value (via the picker state inside pickers, so the picker's own
+  overlay stays open) AND closes the preset sheet; Close/backdrop/Escape
+  dismiss. Inside a picker's tray this stacks **sheet-on-sheet**: the preset
+  sheet opens above the picker tray, and closing it reveals the calendar with
+  the applied value. The row is never auto-focused on mount and the sheet
+  never auto-opens (a11y). There is NO list-first mode, NO "Custom…" entry,
+  NO back row, and NO picker detection for presentation (the `presetsCustom`
+  intl key is removed again); grid selection keeps existing close-on-select
+  picker behavior.
 
 **Option row** (both variants): `flex items-center gap-2`, height 36px, padding
 `0 10px`, `radius-md`, pointer cursor. Fixed 16px leading slot containing a
