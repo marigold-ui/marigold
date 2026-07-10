@@ -93,7 +93,10 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
   },
   {
     name: 'doctor',
-    flags: [{ name: '--format', type: 'string', values: doctorFormatValues }],
+    flags: [
+      { name: '--format', type: 'string', values: doctorFormatValues },
+      { name: '--offline', type: 'boolean' },
+    ],
   },
   {
     name: 'telemetry',

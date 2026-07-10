@@ -26,7 +26,9 @@ describe('detectProvider', () => {
       layoutFile: null,
       inspectedFile: null,
       providerFound: false,
+      providerImported: false,
       themePassed: false,
+      themeImported: false,
     });
   });
 
@@ -39,7 +41,55 @@ describe('detectProvider', () => {
 
     const result = detectProvider(dir);
     expect(result.providerFound).toBe(true);
+    expect(result.providerImported).toBe(true);
     expect(result.themePassed).toBe(true);
+    expect(result.themeImported).toBe(true);
+  });
+
+  test('flags a MarigoldProvider that is used but not imported', () => {
+    write(
+      dir,
+      'app/layout.tsx',
+      `export default function L({ children }) {\n  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;\n}\n`
+    );
+
+    const result = detectProvider(dir);
+    expect(result.providerFound).toBe(true);
+    expect(result.providerImported).toBe(false);
+    // theme is likewise unbound here
+    expect(result.themePassed).toBe(true);
+    expect(result.themeImported).toBe(false);
+  });
+
+  test('flags a theme prop whose value is not imported', () => {
+    write(
+      dir,
+      'app/layout.tsx',
+      `import { MarigoldProvider } from '@marigold/components';\nexport default function L({ children }) {\n  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;\n}\n`
+    );
+
+    const result = detectProvider(dir);
+    expect(result.providerImported).toBe(true);
+    expect(result.themePassed).toBe(true);
+    expect(result.themeImported).toBe(false);
+  });
+
+  test('accepts a theme received as a destructured prop (not an import)', () => {
+    write(
+      dir,
+      'app/layout.tsx',
+      `import { Providers } from './providers';\nexport default function L({ children }) {\n  return <Providers>{children}</Providers>;\n}\n`
+    );
+    write(
+      dir,
+      'app/providers.tsx',
+      `import { MarigoldProvider } from '@marigold/components';\nexport function Providers({ children, theme }) {\n  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;\n}\n`
+    );
+
+    const result = detectProvider(dir);
+    expect(result.providerImported).toBe(true);
+    // `theme` is a function parameter — a real binding, not a missing import.
+    expect(result.themeImported).toBe(true);
   });
 
   test('follows the <Providers> indirection to providers.tsx', () => {

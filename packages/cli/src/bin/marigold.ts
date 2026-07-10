@@ -98,6 +98,7 @@ ${pc.bold('Init options:')}
 
 ${pc.bold('Doctor options:')}
   --format  <name>    text | json (default: text)
+  --offline           Skip the network; use only the local cache
 
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
@@ -194,6 +195,7 @@ const parseDoctorCommand = (argv: string[]) =>
     allowPositionals: true,
     options: {
       format: { type: 'string' },
+      offline: { type: 'boolean', default: false },
     },
   });
 
@@ -390,7 +392,10 @@ export const main = async (
       });
     } else if (command === 'doctor') {
       const { values } = parseDoctorCommand(rest);
-      telemetryArgs = { format: values.format ?? 'text' };
+      telemetryArgs = {
+        format: values.format ?? 'text',
+        ...(values.offline ? { offline: 'true' } : {}),
+      };
 
       if (values.format && !isDoctorFormat(values.format)) {
         fail(`Invalid --format: ${values.format} (expected text or json)`);
@@ -401,6 +406,7 @@ export const main = async (
       const { runDoctor } = await import('../commands/doctor.js');
       const result = await runDoctor({
         format: (values.format as 'text' | 'json' | undefined) ?? 'text',
+        offline: values.offline,
       });
 
       writeOutput(result.output);

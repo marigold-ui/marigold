@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -15,6 +16,16 @@ const write = (dir: string, rel: string, content: string) => {
 };
 
 const json = (obj: unknown) => JSON.stringify(obj, null, 2);
+
+// Minimal Response stand-in for mocking the best-effort manifest warm-fetch.
+const manifestResponse = (packages: Record<string, string>) =>
+  ({
+    ok: true,
+    status: 200,
+    headers: { get: () => 'application/json' },
+    text: async () =>
+      JSON.stringify({ baseUrl: 'https://example.test', packages, pages: [] }),
+  }) as unknown as Response;
 
 const PROVIDERS = `'use client';
 import { MarigoldProvider } from '@marigold/components';
@@ -112,7 +123,11 @@ describe('runDoctor', () => {
     fs.writeFileSync(file, json({ baseUrl: docsUrl(), packages, pages: [] }));
   };
 
-  const run = (format?: 'text' | 'json') => runDoctor({ cwd: dir, format });
+  // Default the shared helper to offline so existing tests stay hermetic (no
+  // manifest warm-fetch). The best-effort fetch path is covered explicitly
+  // below with a mocked fetch.
+  const run = (format?: 'text' | 'json') =>
+    runDoctor({ cwd: dir, format, offline: true });
 
   const report = async (): Promise<DoctorReport> =>
     JSON.parse((await run('json')).output) as DoctorReport;
@@ -249,6 +264,76 @@ describe('runDoctor', () => {
     expect(warningIds).not.toContain('provider-wrapper');
   });
 
+  test('errors when MarigoldProvider is rendered but not imported', async () => {
+    seedNext(dir);
+    // Provider element is present, but the import line is missing — the app
+    // throws at runtime even though the JSX "looks" wired up.
+    write(
+      dir,
+      'app/providers.tsx',
+      `'use client';\nimport theme from '@marigold/theme-rui';\nexport function Providers({ children }) {\n  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;\n}\n`
+    );
+
+    const { hasErrors } = await run();
+    const r = await report();
+    const pw = r.errors.find(e => e.check === 'provider-wrapper');
+
+    expect(hasErrors).toBe(true);
+    expect(pw?.message).toMatch(/not imported|never imported/);
+    // theme-passed is assessed independently; here the theme *is* imported, so
+    // only the provider import is flagged.
+    expect(r.warnings.map(w => w.check)).not.toContain('theme-passed');
+  });
+
+  test('reports the missing provider and theme imports together in one run', async () => {
+    seedNext(dir);
+    // Both import lines deleted — doctor should surface both fixes at once
+    // rather than revealing the theme issue only after the provider is fixed.
+    write(
+      dir,
+      'app/providers.tsx',
+      `'use client';\nexport function Providers({ children }) {\n  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;\n}\n`
+    );
+
+    const { hasErrors } = await run();
+    const { errorIds, warningIds } = checks(await report());
+
+    expect(hasErrors).toBe(true);
+    expect(errorIds).toContain('provider-wrapper');
+    expect(warningIds).toContain('theme-passed');
+  });
+
+  test('warns when the theme value is passed but not imported', async () => {
+    seedNext(dir);
+    write(
+      dir,
+      'app/providers.tsx',
+      `'use client';\nimport { MarigoldProvider } from '@marigold/components';\nexport function Providers({ children }) {\n  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;\n}\n`
+    );
+
+    const { errorIds, warningIds } = checks(await report());
+    const tp = (await report()).warnings.find(w => w.check === 'theme-passed');
+
+    expect(errorIds).not.toContain('provider-wrapper');
+    expect(warningIds).toContain('theme-passed');
+    expect(tp?.message).toMatch(/never imported/);
+  });
+
+  test('accepts a theme received as a prop instead of an import', async () => {
+    seedNext(dir);
+    // A providers component that takes `theme` as a prop is valid — the value is
+    // bound (a parameter), so doctor must not flag it as a missing import.
+    write(
+      dir,
+      'app/providers.tsx',
+      `'use client';\nimport { MarigoldProvider } from '@marigold/components';\nexport function Providers({ children, theme }) {\n  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;\n}\n`
+    );
+
+    const { warningIds } = checks(await report());
+    expect(warningIds).not.toContain('theme-passed');
+    expect(warningIds).not.toContain('provider-wrapper');
+  });
+
   test('warns when the Tailwind @source directive is missing', async () => {
     seedNext(dir);
     write(
@@ -344,6 +429,53 @@ describe('runDoctor', () => {
     const ids = [...r.errors, ...r.warnings].map(i => i.check);
     expect(ids).not.toContain('version-freshness');
     expect(r.passed).not.toContain('Up to date');
+  });
+
+  test('best-effort fetches the manifest so freshness works without priming', async () => {
+    seedNext(dir); // installed components/system 18.0.0; empty cache, unseeded
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      manifestResponse({
+        '@marigold/components': '18.2.0',
+        '@marigold/system': '18.2.0',
+        '@marigold/theme-rui': '6.0.0',
+      })
+    );
+    try {
+      // Online (no offline flag): the warm-fetch populates the cache, so the
+      // cache-only freshness check then has published versions to compare.
+      const { output } = await runDoctor({ cwd: dir, format: 'json' });
+      const parsed = JSON.parse(output) as DoctorReport;
+
+      expect(fetchSpy).toHaveBeenCalled();
+      expect(parsed.warnings.map(w => w.check)).toContain('version-freshness');
+    } finally {
+      fetchSpy.mockRestore();
+    }
+  });
+
+  test('--offline skips the network warm-fetch entirely', async () => {
+    seedNext(dir);
+    const fetchSpy = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(
+        manifestResponse({ '@marigold/components': '18.2.0' })
+      );
+    try {
+      const { output } = await runDoctor({
+        cwd: dir,
+        format: 'json',
+        offline: true,
+      });
+      const parsed = JSON.parse(output) as DoctorReport;
+
+      expect(fetchSpy).not.toHaveBeenCalled();
+      // No cached manifest and no fetch → freshness is omitted, not guessed.
+      expect(parsed.warnings.map(w => w.check)).not.toContain(
+        'version-freshness'
+      );
+    } finally {
+      fetchSpy.mockRestore();
+    }
   });
 
   test('warns that Tailwind v3 is unsupported when a v3 config is present', async () => {

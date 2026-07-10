@@ -137,7 +137,8 @@ export const checkVersionFreshness = (ctx: DoctorContext): CheckOutcome => {
 
 export const checkProviderWrapper = (ctx: DoctorContext): CheckOutcome => {
   const title = 'MarigoldProvider wraps the app';
-  const { layoutFile, providerFound } = ctx.provider;
+  const { layoutFile, inspectedFile, providerFound, providerImported } =
+    ctx.provider;
 
   if (!layoutFile) {
     return {
@@ -149,6 +150,22 @@ export const checkProviderWrapper = (ctx: DoctorContext): CheckOutcome => {
         'Could not locate a root layout to inspect for MarigoldProvider.',
       suggestion:
         'If you wrap your app in MarigoldProvider elsewhere, you can ignore this. Otherwise, run `marigold init`.',
+    };
+  }
+
+  // A `<MarigoldProvider>` element with no matching import renders nothing and
+  // throws at runtime — this is the "looks wired up but is broken" case.
+  if (providerFound && !providerImported) {
+    const where = path.relative(ctx.cwd, inspectedFile ?? layoutFile);
+    return {
+      status: 'issue',
+      title,
+      check: 'provider-wrapper',
+      severity: 'error',
+      message: `<MarigoldProvider> is used in ${where} but is never imported from @marigold/components.`,
+      suggestion:
+        "Add `import { MarigoldProvider } from '@marigold/components';` to the file.",
+      details: { imported: false },
     };
   }
 
@@ -168,26 +185,52 @@ export const checkProviderWrapper = (ctx: DoctorContext): CheckOutcome => {
 // --- (e) Theme passed to the provider -------------------------------------
 
 export const checkThemePassed = (ctx: DoctorContext): CheckOutcome => {
-  const { layoutFile, providerFound, themePassed, inspectedFile } =
-    ctx.provider;
-  // Provider-wrapper owns the "no layout" / "no provider" warnings.
-  if (!layoutFile || !providerFound) return { status: 'skip' };
+  const {
+    layoutFile,
+    providerFound,
+    themePassed,
+    themeImported,
+    inspectedFile,
+  } = ctx.provider;
+  // Provider-wrapper owns the "no layout" / "no provider" cases. When a provider
+  // *is* found we still assess its theme independently of whether the provider
+  // itself is imported — a missing provider import and a missing theme import are
+  // two separate fixes, and both should surface in one run.
+  if (!layoutFile || !providerFound) {
+    return { status: 'skip' };
+  }
 
   const title = 'Theme passed to MarigoldProvider';
-  if (themePassed) return { status: 'ok', title };
+  const where = path.relative(ctx.cwd, inspectedFile ?? layoutFile);
+  const themeFix =
+    "Import a theme and pass it: import theme from '@marigold/theme-rui'; <MarigoldProvider theme={theme}>.";
 
-  return {
-    status: 'issue',
-    title,
-    check: 'theme-passed',
-    severity: 'warning',
-    message: `<MarigoldProvider> in ${path.relative(
-      ctx.cwd,
-      inspectedFile ?? layoutFile
-    )} has no theme prop.`,
-    suggestion:
-      "Import a theme and pass it: import theme from '@marigold/theme-rui'; <MarigoldProvider theme={theme}>.",
-  };
+  if (!themePassed) {
+    return {
+      status: 'issue',
+      title,
+      check: 'theme-passed',
+      severity: 'warning',
+      message: `<MarigoldProvider> in ${where} has no theme prop.`,
+      suggestion: themeFix,
+    };
+  }
+
+  // A `theme={theme}` prop whose value has no matching import/declaration is an
+  // undefined reference — the provider renders with no theme.
+  if (!themeImported) {
+    return {
+      status: 'issue',
+      title,
+      check: 'theme-passed',
+      severity: 'warning',
+      message: `<MarigoldProvider> in ${where} is passed a theme prop whose value is never imported.`,
+      suggestion: themeFix,
+      details: { themeImported: false },
+    };
+  }
+
+  return { status: 'ok', title };
 };
 
 // --- (f) Tailwind config --------------------------------------------------
