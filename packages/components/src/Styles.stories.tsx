@@ -24,13 +24,12 @@ const Base = ({
   </div>
 );
 
-// A boxed surface whose rows are split by the opaque functional border — the
-// same token as the SelectList frame and Table grid lines, so the structure
-// stays crisp against any state fill. Ink & wash: hover is the lighter wash
-// (bg-hover, charcoal-200); a selected row sits one step darker (bg-selected,
-// charcoal-300) with its indicator (the check here, a checkbox/radio in real
-// components) as the one opaque ink mark. Hovering a selected row swaps to the
-// hover wash while the indicator keeps carrying the selection.
+// Boxed surface with rows split by the opaque functional border (the same token
+// as the SelectList frame and Table grid lines), so structure stays crisp
+// against any state fill. Hover is the lighter wash (bg-hover); a selected row
+// sits one step darker (bg-selected), its indicator (✓ here) the one opaque ink
+// mark; hovering a selected row swaps to the hover wash while the indicator
+// keeps carrying the selection.
 const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
 
 const ListSurface = ({
