@@ -14,7 +14,7 @@ import type { DrawerProps } from '@marigold/components';
 export default function (props: DrawerProps) {
   return (
     <Card>
-      <Card.Body>
+      <Card.Content>
         <Stack space="regular">
           <Stack space="regular">
             <Inline space="related" alignY="center">
@@ -81,7 +81,7 @@ export default function (props: DrawerProps) {
             </Drawer.Trigger>
           </Inline>
         </Stack>
-      </Card.Body>
+      </Card.Content>
     </Card>
   );
 }

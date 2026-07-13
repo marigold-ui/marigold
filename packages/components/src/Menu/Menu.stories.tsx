@@ -353,6 +353,66 @@ export const MultiSelection = meta.story({
   },
 });
 
+export const AccessSections = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => (
+    <ActionMenu aria-label="Filial-Aktionen">
+      <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
+      <ActionMenu.Section title="Master-Aktionen">
+        <ActionMenu.Item id="move" variant="master">
+          Verschieben
+        </ActionMenu.Item>
+        <ActionMenu.Item id="tse" variant="master">
+          TSE anbinden
+        </ActionMenu.Item>
+        {/* `variant` is a single axis: for restricted destructive actions the
+            access variant takes precedence over `destructive`. */}
+        <ActionMenu.Item id="delete" variant="master">
+          Löschen
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+      <ActionMenu.Section title="Admin-Aktionen">
+        <ActionMenu.Item id="release" variant="admin">
+          Freigeben
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+    </ActionMenu>
+  ),
+});
+
+AccessSections.test(
+  'renders master and admin access sections',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Filial-Aktionen' })
+    );
+
+    expect(await canvas.findByText('Master-Aktionen')).toBeVisible();
+
+    // The `name` filter asserts the accessible name: the visible label plus
+    // the hidden "Master" label. The lock icon itself is decorative.
+    const move = canvas.getByRole('menuitem', { name: 'Verschieben Master' });
+
+    expect(move.querySelector('svg')).toBeInTheDocument();
+  }
+);
+
+AccessSections.test(
+  'restricted destructive actions use the access variant',
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Filial-Aktionen' })
+    );
+
+    const del = canvas.getByRole('menuitem', { name: 'Löschen Master' });
+
+    expect(del.querySelector('svg')).toBeInTheDocument();
+    expect(del).not.toHaveClass('text-destructive-accent');
+  }
+);
+
 export const Mobile = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },

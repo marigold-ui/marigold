@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { MockInstance, vi } from 'vitest';
-import { Basic } from './Link.stories';
+import { AccessVariants, Basic } from './Link.stories';
 
 const user = userEvent.setup();
 
@@ -59,4 +59,22 @@ test('supports "onPress"', async () => {
   await user.click(link);
 
   expect(warnMock).not.toHaveBeenCalled();
+});
+
+// The `name` filter asserts the accessible name: the visible label plus the
+// hidden access label. `getAllBy` because Link stories render on both
+// surfaces (`surface: 'both'`). Icon rendering is covered by the
+// AccessVariants story test.
+test('master variant appends a hidden "Master" label to the accessible name', () => {
+  render(<AccessVariants.Component />);
+  const [master] = screen.getAllByRole('link', { name: 'verschieben Master' });
+
+  expect(master).toBeInTheDocument();
+});
+
+test('admin variant appends a hidden "Admin" label to the accessible name', () => {
+  render(<AccessVariants.Component />);
+  const [admin] = screen.getAllByRole('link', { name: 'freigeben Admin' });
+
+  expect(admin).toBeInTheDocument();
 });

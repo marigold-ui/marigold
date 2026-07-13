@@ -58,6 +58,24 @@ Use this approach when:
 
 <ComponentDemo name="admin-master-mark-table" />
 
+### Inline actions
+
+Badges are too heavy for actions that render as inline text links. Use the "master" or "admin" variant on the `<Link>` component instead. The variant prepends a small icon in the matching access color, a lock for `master` and a key for `admin`. The access level is also appended as visually hidden text, so screen reader users can tell a restricted action from a regular one.
+
+<ComponentDemo name="admin-master-mark-inline-actions" />
+
+### Menus
+
+The same variants are available on `<ActionMenu.Item>` and render the same icon. In addition, group restricted items into dedicated sections such as "Master actions" or "Admin actions". The section title makes the access boundary visible at a glance and announces the access level to screen reader users. Restricted items should not carry an additional icon, since the access icon already occupies the item's icon slot.
+
+<ComponentDemo name="admin-master-mark-menu" />
+
+#### Combining access marks with other variants
+
+The `variant` prop is a single axis. A menu item or link can use either an access variant or another variant like `destructive`, but never both at once. This is intentional. A red destructive treatment stacked on the access icon would put two competing signals on one small element.
+
+For a destructive action that is also restricted the access mark takes precedence. Use `variant="master"` or `variant="admin"`, as shown in the menu above. The restriction is what a user needs to know before choosing the action. The destructive nature is conveyed by the action's label and should be guarded by a confirmation dialog anyway.
+
 ## Related
 
 <TeaserList
