@@ -1,9 +1,13 @@
 import type { PropsWithChildren } from 'react';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { cn } from '@marigold/system';
 import { Headline } from './Headline/Headline';
 import { Inline } from './Inline/Inline';
+import { RouterProvider } from './RouterProvider/RouterProvider';
+import { Sidebar } from './Sidebar/Sidebar';
 import { Stack } from './Stack/Stack';
+import { Text } from './Text/Text';
 
 const meta = preview.meta({
   title: 'Styles/RUI',
@@ -221,4 +225,151 @@ export const Surface = meta.story({
       </Inline>
     </Stack>
   ),
+});
+
+/**
+ * Legend swatch: a colour chip + the token + role it plays in the sidebar nav.
+ */
+const Tier = ({
+  swatch,
+  token,
+  children,
+}: PropsWithChildren<{ swatch: string; token: string }>) => (
+  <Inline space="related" alignY="center" noWrap>
+    <span className={`size-4 shrink-0 rounded ${swatch}`} />
+    <code className="text-xs">{token}</code>
+    <Text fontSize="xs" variant="muted">
+      {children}
+    </Text>
+  </Inline>
+);
+
+const NavSpecimen = () => (
+  <RouterProvider navigate={() => {}}>
+    <Sidebar.Provider defaultOpen>
+      <div className="flex h-[28rem]">
+        <Sidebar>
+          <Sidebar.Header>
+            <Text weight="bold" fontSize="lg">
+              Acme Inc.
+            </Text>
+          </Sidebar.Header>
+          <Sidebar.Nav current="/dashboard">
+            <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+            <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+            <Sidebar.Item id="management" textValue="Management">
+              Management
+              <Sidebar.Item href="/users">Users</Sidebar.Item>
+              <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+              <Sidebar.Item href="/billing">Billing</Sidebar.Item>
+            </Sidebar.Item>
+            <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
+            <Sidebar.Item href="/general">General</Sidebar.Item>
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Nav>
+          <Sidebar.Footer>
+            <Text fontSize="xs">v2.4.0</Text>
+          </Sidebar.Footer>
+        </Sidebar>
+      </div>
+    </Sidebar.Provider>
+  </RouterProvider>
+);
+
+/**
+ * The sidebar navigation hierarchy: two charcoal tiers driven entirely by
+ * semantic tokens (no raw `charcoal-*`), the current page rendered as an inset
+ * rounded `selected` pill, and every row — nav items, section labels, and the
+ * drill-in back action — aligned to one shared content column.
+ */
+export const SidebarNavigation = meta.story({
+  parameters: { layout: 'fullscreen', surface: false },
+  render: () => (
+    <div className="p-4">
+      <Stack space="group">
+        <Headline level="3">Sidebar navigation</Headline>
+        <p className="text-secondary max-w-prose text-sm">
+          Hierarchy comes from two token-driven charcoal tiers plus the inset
+          active pill — never from raw colours. The section label stays a clear
+          tier through treatment (uppercase, smaller, heavier, tracked) rather
+          than a lighter colour, so it holds the WCAG AA 4.5:1 contrast floor.
+        </p>
+        <Inline space="section" alignY="top">
+          <div className="border-surface-border w-fit overflow-hidden rounded-lg border">
+            <NavSpecimen />
+          </div>
+          <Stack space="related">
+            <Tier swatch="bg-foreground" token="text-foreground">
+              active item + page titles (15.6:1)
+            </Tier>
+            <Tier swatch="bg-secondary" token="text-secondary">
+              idle items + section labels (4.97:1)
+            </Tier>
+            <Tier swatch="bg-selected" token="bg-selected">
+              active pill (charcoal-300)
+            </Tier>
+            <Tier swatch="bg-hover" token="bg-hover">
+              hover pill (charcoal-200)
+            </Tier>
+            <Tier
+              swatch="bg-surface-border border border-surface-border"
+              token="border-surface-border"
+            >
+              the shell&apos;s one line — the sidebar divider (chevron anchor)
+            </Tier>
+          </Stack>
+        </Inline>
+      </Stack>
+    </div>
+  ),
+});
+
+/**
+ * Drilling into a branch reveals the back action. It shares the nav rows' pill
+ * geometry, so the back chevron sits on the same content column the nav text
+ * and section labels align to — this asserts that shared inset survives.
+ */
+export const SidebarBackAction = meta.story({
+  tags: ['component-test'],
+  parameters: { layout: 'fullscreen', surface: false },
+  render: () => (
+    <div className="p-4">
+      <Stack space="group">
+        <Headline level="3">Drill-in back action</Headline>
+        <div className="border-surface-border w-fit overflow-hidden rounded-lg border">
+          <NavSpecimen />
+        </div>
+      </Stack>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Drill into the "Management" branch to reveal the back action.
+    await userEvent.click(canvas.getByRole('link', { name: /Management/ }));
+
+    const back = await canvas.findByRole('button', { name: /Management/ });
+    const child = canvas.getByRole('link', { name: 'Users' });
+    // The drill-in reveals the panel through a transition, so wait for it to
+    // settle rather than racing the reveal (findByRole resolves as soon as the
+    // node enters the a11y tree, before it is painted visible).
+    await waitFor(async () => {
+      await expect(back).toBeVisible();
+      await expect(child).toBeVisible();
+    });
+
+    // The back action and the nav rows share one inset (mx-2 + px-2), so
+    // their content starts on the same column — the alignment we tuned.
+    const backStyle = getComputedStyle(back);
+    const childStyle = getComputedStyle(child);
+    await expect(backStyle.paddingLeft).toBe(childStyle.paddingLeft);
+    await expect(backStyle.marginLeft).toBe(childStyle.marginLeft);
+
+    // ...and the back label reads at the same weight as a nav item (the
+    // Button's default `font-medium` is reset).
+    const backLabel = within(back).getByText(/Management/);
+    await expect(getComputedStyle(backLabel).fontWeight).toBe(
+      childStyle.fontWeight
+    );
+  },
 });
