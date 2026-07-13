@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export type SidebarState = 'expanded' | 'collapsed';
 
@@ -71,17 +71,8 @@ export const useSidebarState = (
     }
   }, [isMobile, isOpen, onOpenChange]);
 
-  // Keyboard shortcut: Cmd+B / Ctrl+B
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'b' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        toggleSidebar();
-      }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [toggleSidebar]);
+  // The Cmd+B / Ctrl+B shortcut is bound by SidebarProvider, which also knows
+  // whether there is a panel to toggle (see `panelAvailable` in Context).
 
   return { state, toggleSidebar };
 };

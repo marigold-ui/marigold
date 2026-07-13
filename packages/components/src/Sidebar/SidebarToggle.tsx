@@ -8,18 +8,25 @@ import { useSidebar } from './Context';
 import { SidebarToggleIcon } from './SidebarToggleIcon';
 
 export const SidebarToggle = () => {
-  const { toggleSidebar, state, classNames } = useSidebar();
+  const { toggleSidebar, state, classNames, isMobile, panelAvailable } =
+    useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const isSSR = useIsSSR();
 
   const isMac = !isSSR && /Mac|iPhone|iPad/.test(navigator.userAgent);
   const shortcut = isMac ? '⌘B' : 'Ctrl+B';
 
+  // With a rail on a direct-link page there is no section panel, so there is
+  // nothing to collapse (on mobile the toggle opens the drawer, so it stays
+  // enabled regardless).
+  const disabled = !isMobile && !panelAvailable;
+
   return (
     <Tooltip.Trigger delay={2500}>
       <Button
         aria-expanded={state === 'expanded'}
         aria-label={stringFormatter.format('toggleNavigation')}
+        isDisabled={disabled}
         onPress={toggleSidebar}
         className={cn('group/icon', classNames.toggle)}
       >

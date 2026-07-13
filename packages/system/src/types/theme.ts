@@ -354,7 +354,15 @@ export type Theme = {
       | 'navPanel'
       | 'navLink'
       | 'backButton'
-      | 'content',
+      | 'content'
+      // Two-level rail (Sidebar.Rail): persistent rail + section panel
+      | 'railRoot'
+      | 'brand'
+      | 'rail'
+      | 'railItem'
+      | 'railFooter'
+      | 'panel'
+      | 'panelTitle',
       ComponentStyleFunction<string, string>
     >;
     TopNavigation?: Record<

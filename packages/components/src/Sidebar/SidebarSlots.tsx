@@ -36,3 +36,8 @@ export const SidebarFooter = ({
     </div>
   );
 };
+
+// Brands so the rail collection builder can pick the brand/footer slots out of a
+// `Sidebar.Rail`'s children.
+SidebarHeader.__SIDEBAR_HEADER__ = true as const;
+SidebarFooter.__SIDEBAR_FOOTER__ = true as const;

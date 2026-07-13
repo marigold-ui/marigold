@@ -1,8 +1,7 @@
+import { Children, isValidElement } from 'react';
 import type { ReactNode, Ref } from 'react';
-import { Modal, ModalOverlay } from 'react-aria-components/Modal';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
-import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
 import { SidebarProvider, useSidebar } from './Context';
 import {
@@ -10,9 +9,20 @@ import {
   SidebarItem,
   SidebarSeparator,
 } from './SidebarItem';
+import { SidebarModal } from './SidebarModal';
 import { SidebarNav } from './SidebarNav';
+import { SidebarRail } from './SidebarRail';
+import { SidebarRailItem } from './SidebarRailItem';
 import { SidebarFooter, SidebarHeader } from './SidebarSlots';
 import { SidebarToggle } from './SidebarToggle';
+
+/** True when a `Sidebar.Rail` sits among the children (two-level mode). */
+const hasRailChild = (children: ReactNode): boolean =>
+  Children.toArray(children).some(
+    child =>
+      isValidElement(child) &&
+      (child.type as { __SIDEBAR_RAIL__?: boolean }).__SIDEBAR_RAIL__ === true
+  );
 
 export interface SidebarProps {
   /** The sidebar content, typically `Sidebar.Header`, `Sidebar.Nav`, and `Sidebar.Footer`. */
@@ -23,44 +33,17 @@ const SidebarBase = ({
   children,
   ref,
 }: SidebarProps & { ref?: Ref<HTMLElement> }) => {
-  const { isMobile, state, toggleSidebar, classNames } = useSidebar();
+  const { isMobile, state, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
+  // Two-level mode: `Sidebar.Rail` renders its own aside (brand + rail + panel),
+  // so pass through and let it own the layout.
+  if (hasRailChild(children)) {
+    return <>{children}</>;
+  }
+
   if (isMobile) {
-    return (
-      <ModalOverlay
-        isOpen={state === 'expanded'}
-        onOpenChange={open => !open && toggleSidebar()}
-        className={cn(
-          'fixed inset-0 z-50 h-(--visual-viewport-height)',
-          classNames.overlay
-        )}
-        isDismissable
-      >
-        <Modal className={classNames.modal}>
-          <aside
-            ref={ref}
-            aria-label={stringFormatter.format('sidebar')}
-            data-state={state}
-            className={cn('h-full [grid-area:sidebar]', classNames.root)}
-          >
-            <CloseButton
-              aria-label={stringFormatter.format('closeNavigation')}
-              className={cn('z-50', classNames.closeButton)}
-              onPress={toggleSidebar}
-            />
-            <div
-              className={cn(
-                "grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
-                classNames.content
-              )}
-            >
-              {children}
-            </div>
-          </aside>
-        </Modal>
-      </ModalOverlay>
-    );
+    return <SidebarModal ref={ref}>{children}</SidebarModal>;
   }
 
   return (
@@ -94,4 +77,6 @@ export const Sidebar = Object.assign(SidebarBase, {
   Item: SidebarItem,
   Separator: SidebarSeparator,
   Toggle: SidebarToggle,
+  Rail: SidebarRail,
+  RailItem: SidebarRailItem,
 });

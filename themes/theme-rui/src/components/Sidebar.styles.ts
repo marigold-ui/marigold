@@ -78,8 +78,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   toggle: cva({
     base: [
       'ui-button-base ui-press',
-      'hover:ui-state-hover-ghost',
+      'enabled:hover:ui-state-hover-ghost',
       'size-control-small [&_svg]:size-4.5',
+      // Inert, not gone: with a rail on a direct-link page there is no panel to
+      // collapse, so the toggle quiets down instead of inviting a dead click.
+      'disabled:text-disabled disabled:cursor-default',
     ],
   }),
   // The one line the seamless shell keeps, by opt-in. Opaque `border` so it
@@ -141,6 +144,71 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'outline-none focus-visible:ui-state-focus',
       'cursor-pointer mb-1',
       'text-secondary hover:bg-hover hover:text-foreground',
+    ],
+  }),
+
+  // ── Two-level rail (Sidebar.Rail) ──────────────────────────────────────────
+  // A persistent narrow rail of top-level destinations beside a section panel.
+  // Same quiet skin as the single column: charcoal ink, flat `selected` pill,
+  // the one opaque `border` as the sole structural line (the aside's right edge,
+  // dividing nav from content).
+  railRoot: cva({
+    base: ['overflow-hidden bg-background border-r border-border ui-scrollbar'],
+  }),
+  // Brand band across the top of the rail+panel columns; aligns to the app
+  // header row. Holds only the wordmark (no compact mark exists), so it lives
+  // where there is horizontal room instead of the narrow rail — and fades out
+  // (instead of clipping mid-letter) when the panel collapses that room away.
+  // pl-4.5: optically aligns the wordmark's left edge with the rail icons — a
+  // size-5 icon centered in the 3.5rem column starts at 18px. The band owns
+  // this gutter, so the header slot's own padding is neutralised.
+  brand: cva({
+    base: [
+      'flex items-center gap-2 min-w-0 overflow-hidden pl-4.5 pr-4',
+      '*:px-0',
+      'transition-opacity duration-200 motion-reduce:transition-none',
+      'in-data-[panel=collapsed]:opacity-0',
+    ],
+  }),
+  // The rail's scrolling item list (brand pinned above, footer below). Thin
+  // scrollbar, hidden until hover — reused from `ui-scrollbar`.
+  rail: cva({
+    base: [
+      'flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto py-1.5 ui-scrollbar',
+    ],
+  }),
+  // Icon-only square tile, centered in the rail column; the label lives in a
+  // tooltip to the right of the icon (`aria-label` carries the name).
+  railItem: cva({
+    base: [
+      'flex items-center justify-center size-10 mx-auto rounded-surface',
+      'text-secondary cursor-pointer',
+      'transition-[color,background-color] motion-reduce:transition-none',
+      'outline-none focus-visible:ui-state-focus',
+      'hover:bg-hover hover:text-foreground',
+      // Active section/link: same flat `selected` pill as a nav row.
+      'data-active:bg-selected data-active:text-foreground',
+      '[&_svg]:size-5',
+    ],
+  }),
+  railFooter: cva({ base: ['shrink-0 flex justify-center py-2'] }),
+  // The section panel beside the rail. Its left hairline is the rail/panel
+  // divider — it starts below the brand band (the band spans both columns), so
+  // the rail reads as its own strip without a second full-height line. Dropped
+  // while collapsed so it can't double up with the aside's right border.
+  panel: cva({
+    base: [
+      'flex flex-col min-h-0 overflow-hidden',
+      'border-l border-border in-data-[panel=collapsed]:border-l-0',
+    ],
+  }),
+  // Section heading atop the panel; also the focus target when the panel swaps.
+  // Sentence-case and full-strength ink — a heading, deliberately a different
+  // species from the tiny uppercase `groupLabel` captions below it.
+  panelTitle: cva({
+    base: [
+      'flex items-center h-10 mt-1 px-4 outline-none truncate',
+      'text-sm font-semibold text-foreground',
     ],
   }),
 };

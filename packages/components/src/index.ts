@@ -276,6 +276,8 @@ export type { SidebarProps } from './Sidebar/Sidebar';
 export type { SidebarProviderProps } from './Sidebar/Context';
 export type { SidebarNavProps } from './Sidebar/SidebarNav';
 export type { SidebarItemProps } from './Sidebar/SidebarItem';
+export type { SidebarRailProps } from './Sidebar/SidebarRail';
+export type { SidebarRailItemProps } from './Sidebar/SidebarRailItem';
 
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';
