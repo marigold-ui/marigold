@@ -3,8 +3,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { theme } from '@marigold/theme-rui';
-import { mockMatchMedia } from '../test.utils';
+import { mockMatchMedia, smallScreenQuery } from '../test.utils';
 import {
   Basic,
   Presets,
@@ -12,8 +11,6 @@ import {
   TwoMonths,
   WithErrorMessage,
 } from './RangeCalendar.stories';
-
-const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 const renderWithLocale = (ui: ReactNode) =>
   render(<I18nProvider locale="en-US">{ui}</I18nProvider>);

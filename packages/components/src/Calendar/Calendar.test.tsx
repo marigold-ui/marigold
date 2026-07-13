@@ -4,12 +4,9 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { theme } from '@marigold/theme-rui';
-import { mockMatchMedia } from '../test.utils';
+import { mockMatchMedia, smallScreenQuery } from '../test.utils';
 import { Basic, Presets, ThreeMonths, TwoMonths } from './Calendar.stories';
 import { useCalendarContext, useCalendarOrRangeState } from './Context';
-
-const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 describe('Calendar', () => {
   const user = userEvent.setup();

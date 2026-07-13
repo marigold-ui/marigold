@@ -2,9 +2,8 @@ import { CalendarDate } from '@internationalized/date';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { theme } from '@marigold/theme-rui';
 import { firePaste } from '../firePaste';
-import { mockMatchMedia } from '../test.utils';
+import { mockMatchMedia, smallScreenQuery } from '../test.utils';
 import {
   Basic,
   Presets,
@@ -446,8 +445,6 @@ describe('paste handling', () => {
 });
 
 describe('presets on small screens (tray)', () => {
-  const smallScreenQuery = `(width < ${theme.screens!.sm})`;
-
   afterEach(() => {
     window.matchMedia = mockMatchMedia([]);
   });
