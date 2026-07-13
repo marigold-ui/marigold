@@ -39,9 +39,14 @@ The `<Container>` component can be combined with other layout components, such a
 
 ### Alignment
 
-Using the `align` and `alignItems` prop, the `<Container>` component lets you align text and other elements to the left, center, or right, giving you flexibility in arranging content. This is helpful when you need to make some parts of the layout stand out, like centering a hero section. Good alignment makes the page look organized and improves how users experience the site.
+Because `<Container>` caps the width of its content, that content is often narrower than the space the container fills. The `alignItems` prop controls where the content sits within that space.
 
-<ComponentDemo name="container-alignment" />
+By default (`none`) it stays at the start, which suits a normal left-aligned reading column. Reach for `alignItems` when a container sits in a wide area and its content should not hug the left edge:
+
+- `center` centers the content in the container, the common choice for hero sections or a centered article on a wide page.
+- `right` pushes the content to the end, for the rarer case where it should sit against the right edge.
+
+In short, `contentLength` decides how wide the reading column is, and `alignItems` decides where that column sits.
 
 ## Props
 

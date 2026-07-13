@@ -44,9 +44,6 @@ export type { BadgeProps } from './Badge/Badge';
 export { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 export type { BreadcrumbsProps } from './Breadcrumbs/Breadcrumbs';
 
-export { Breakout } from './Breakout/Breakout';
-export type { BreakoutProps } from './Breakout/Breakout';
-
 export { Button } from './Button/Button';
 export type { ButtonProps } from './Button/Button';
 export { ButtonContext } from './Button/Context';
