@@ -91,3 +91,30 @@ test('supports iconPosition left', () => {
 
   expect(screen.getAllByText('Settings')).toHaveLength(3);
 });
+
+test('wires up the bleed inset custom properties (Panel alignment)', () => {
+  render(<Basic.Component defaultExpandedKeys={['1']} />);
+
+  const trigger = screen.getAllByRole('button')[0];
+
+  // Container sources the inset from a bled Panel's `--bleed-px`, falling back
+  // to 0px so standalone / non-bled Accordions stay unchanged.
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = trigger.closest('.flex-col')!;
+  expect(container.className).toContain(
+    '[--accordion-x-padding:var(--bleed-px,0px)]'
+  );
+
+  // Header insets itself (and its focus ring) by the inset when bled.
+  expect(trigger.className).toContain('mx-(--accordion-ring-inset)');
+  expect(trigger.className).toContain(
+    'px-[calc(var(--accordion-x-padding)-var(--accordion-ring-inset))]'
+  );
+
+  // Expanded content picks up the same inset.
+  const content = screen
+    .getByText('Here are some infos')
+    // eslint-disable-next-line testing-library/no-node-access
+    .closest('[class*="px-(--accordion-x-padding)"]');
+  expect(content).not.toBeNull();
+});
