@@ -18,49 +18,57 @@ describe('built-in presets', () => {
   });
 
   test('today resolves to the current day', () => {
-    expect(builtInDatePresets.today.resolve()).toEqual(
-      new CalendarDate(2026, 7, 8)
-    );
+    const result = builtInDatePresets.today.resolve();
+
+    expect(result).toEqual(new CalendarDate(2026, 7, 8));
   });
 
   test('yesterday resolves to the previous day', () => {
-    expect(builtInDatePresets.yesterday.resolve()).toEqual(
-      new CalendarDate(2026, 7, 7)
-    );
+    const result = builtInDatePresets.yesterday.resolve();
+
+    expect(result).toEqual(new CalendarDate(2026, 7, 7));
   });
 
   test('tomorrow resolves to the next day', () => {
-    expect(builtInDatePresets.tomorrow.resolve()).toEqual(
-      new CalendarDate(2026, 7, 9)
-    );
+    const result = builtInDatePresets.tomorrow.resolve();
+
+    expect(result).toEqual(new CalendarDate(2026, 7, 9));
   });
 
   test('last-7-days spans 7 days ending today', () => {
-    expect(builtInDateRangePresets['last-7-days'].resolve()).toEqual({
+    const range = builtInDateRangePresets['last-7-days'].resolve();
+
+    expect(range).toEqual({
       start: new CalendarDate(2026, 7, 2),
       end: new CalendarDate(2026, 7, 8),
     });
   });
 
   test('last-30-days spans 30 days ending today', () => {
-    expect(builtInDateRangePresets['last-30-days'].resolve()).toEqual({
+    const range = builtInDateRangePresets['last-30-days'].resolve();
+
+    expect(range).toEqual({
       start: new CalendarDate(2026, 6, 9),
       end: new CalendarDate(2026, 7, 8),
     });
   });
 
   test('this-month spans the current calendar month', () => {
-    expect(builtInDateRangePresets['this-month'].resolve()).toEqual({
+    const range = builtInDateRangePresets['this-month'].resolve();
+
+    expect(range).toEqual({
       start: new CalendarDate(2026, 7, 1),
       end: new CalendarDate(2026, 7, 31),
     });
   });
 
   test('every built-in has a message key', () => {
-    for (const preset of [
+    const presets = [
       ...Object.values(builtInDatePresets),
       ...Object.values(builtInDateRangePresets),
-    ]) {
+    ];
+
+    for (const preset of presets) {
       expect(preset.messageKey).toMatch(/^preset/);
     }
   });
@@ -69,10 +77,10 @@ describe('built-in presets', () => {
     '%s is a valid range preset resolving to a single-day range matching the day catalog',
     key => {
       const day = builtInDatePresets[key].resolve();
-      expect(builtInDateRangePresets[key].resolve()).toEqual({
-        start: day,
-        end: day,
-      });
+
+      const range = builtInDateRangePresets[key].resolve();
+
+      expect(range).toEqual({ start: day, end: day });
     }
   );
 
@@ -96,7 +104,10 @@ describe('isSameRange', () => {
       start: new CalendarDate(2026, 7, 1),
       end: new CalendarDate(2026, 7, 8),
     };
-    expect(isSameRange(a, b)).toBe(true);
+
+    const result = isSameRange(a, b);
+
+    expect(result).toBe(true);
   });
 
   test('false when an endpoint differs', () => {
@@ -108,7 +119,10 @@ describe('isSameRange', () => {
       start: new CalendarDate(2026, 7, 1),
       end: new CalendarDate(2026, 7, 9),
     };
-    expect(isSameRange(a, b)).toBe(false);
+
+    const result = isSameRange(a, b);
+
+    expect(result).toBe(false);
   });
 });
 
@@ -125,51 +139,65 @@ describe('handoff range presets', () => {
 
   test('this-week starts on Monday for de-DE', () => {
     setToday(2026, 7, 9); // Thursday
+
     const { start, end } =
       builtInDateRangePresets['this-week'].resolve('de-DE');
+
     expect(isSameDay(start, new CalendarDate(2026, 7, 6))).toBe(true);
     expect(isSameDay(end, new CalendarDate(2026, 7, 12))).toBe(true);
   });
 
   test('this-week starts on Sunday for en-US', () => {
     setToday(2026, 7, 9);
+
     const { start, end } =
       builtInDateRangePresets['this-week'].resolve('en-US');
+
     expect(isSameDay(start, new CalendarDate(2026, 7, 5))).toBe(true);
     expect(isSameDay(end, new CalendarDate(2026, 7, 11))).toBe(true);
   });
 
   test('next-7-days includes today', () => {
     setToday(2026, 7, 9);
+
     const { start, end } = builtInDateRangePresets['next-7-days'].resolve();
+
     expect(isSameDay(start, new CalendarDate(2026, 7, 9))).toBe(true);
     expect(isSameDay(end, new CalendarDate(2026, 7, 15))).toBe(true);
   });
 
   test('next-30-days includes today', () => {
     setToday(2026, 7, 9);
+
     const { start, end } = builtInDateRangePresets['next-30-days'].resolve();
+
     expect(isSameDay(start, new CalendarDate(2026, 7, 9))).toBe(true);
     expect(isSameDay(end, new CalendarDate(2026, 8, 7))).toBe(true);
   });
 
   test('this-quarter covers the calendar quarter of today', () => {
     setToday(2026, 7, 9);
+
     const { start, end } = builtInDateRangePresets['this-quarter'].resolve();
+
     expect(isSameDay(start, new CalendarDate(2026, 7, 1))).toBe(true);
     expect(isSameDay(end, new CalendarDate(2026, 9, 30))).toBe(true);
   });
 
   test('this-quarter at the year end resolves to Q4', () => {
     setToday(2026, 12, 31);
+
     const { start, end } = builtInDateRangePresets['this-quarter'].resolve();
+
     expect(isSameDay(start, new CalendarDate(2026, 10, 1))).toBe(true);
     expect(isSameDay(end, new CalendarDate(2026, 12, 31))).toBe(true);
   });
 
   test('this-quarter at the year start resolves to Q1', () => {
     setToday(2026, 1, 1);
+
     const { start, end } = builtInDateRangePresets['this-quarter'].resolve();
+
     expect(isSameDay(start, new CalendarDate(2026, 1, 1))).toBe(true);
     expect(isSameDay(end, new CalendarDate(2026, 3, 31))).toBe(true);
   });

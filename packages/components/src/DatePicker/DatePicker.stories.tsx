@@ -367,6 +367,7 @@ export const Presets = meta.story({
     label: 'Event date',
     onChange: fn(),
   },
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <I18nProvider locale="en-US">
       <DatePicker {...args} presets={['today', 'tomorrow']} />
@@ -378,23 +379,22 @@ Presets.test(
   'selecting a preset applies the date and keeps the popover open',
   // Ends with the popover open on the current month with "Tomorrow"
   // selected: date-dependent, so it would diff in Chromatic every day.
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button'));
     const dialog = await canvas.findByRole('dialog');
-
     // The preset UI is lazy-loaded, so the first query must await its chunk.
     const option = await within(dialog).findByRole('option', {
       name: 'Tomorrow',
     });
+
     await userEvent.click(option);
+    const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
 
     await expect(args.onChange).toHaveBeenCalledTimes(1);
-    const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
     await expect(
       isSameDay(date, today(getLocalTimeZone()).add({ days: 1 }))
     ).toBe(true);
-
     await expect(dialog).toBeVisible();
     await expect(option).toHaveAttribute('aria-selected', 'true');
   }
@@ -412,7 +412,7 @@ export const PresetsMobile = meta.story({
   // Chromatic ignores the Storybook viewport global and captures at its
   // 1200px default, where the small-screen UI (and this story's play)
   // doesn't exist. Pin its capture to phone width.
-  parameters: { chromatic: { viewports: [320] } },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
   args: {
     label: 'Event date',
   },
@@ -433,6 +433,9 @@ export const PresetsMobile = meta.story({
 
 PresetsMobile.test(
   'switches the tray to the quick selection view',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button'));
     const tray = await canvas.findByRole('dialog');

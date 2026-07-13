@@ -480,6 +480,7 @@ export const ThreeMonthsMobile = meta.story({
 
 export const Presets = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Period',
     onChange: fn(),
@@ -504,8 +505,8 @@ export const Presets = meta.story({
           {
             label: 'January 2027',
             value: {
-              start: new CalendarDate(2027, 1, 5),
-              end: new CalendarDate(2027, 1, 11),
+              start: new CalendarDate(2027, 1, 1),
+              end: new CalendarDate(2027, 1, 31),
             },
           },
         ]}
@@ -519,24 +520,22 @@ Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
   const listbox = await canvas.findByRole('listbox', {
     name: 'Quick selection',
   });
+  const option = canvas.getByRole('option', { name: 'This quarter' });
+
   await expect(listbox).toBeVisible();
-  await expect(
-    canvas.getByRole('option', { name: 'This quarter' })
-  ).toBeVisible();
+  await expect(option).toBeVisible();
 });
 
 Presets.test(
   'selecting a built-in preset sets the range and marks the option selected',
-  // Ends with "Next 7 days" selected on the current month: date-dependent,
-  // so it would diff in Chromatic every day.
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ args, canvas, userEvent }) => {
     const option = await canvas.findByRole('option', { name: 'Next 7 days' });
-    await userEvent.click(option);
 
-    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    await userEvent.click(option);
     const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
     const now = today(getLocalTimeZone());
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
     await expect(isSameDay(range.start, now)).toBe(true);
     await expect(isSameDay(range.end, now.add({ days: 6 }))).toBe(true);
     await expect(option).toHaveAttribute('aria-selected', 'true');
@@ -545,16 +544,14 @@ Presets.test(
 
 Presets.test(
   'selecting the "today" preset sets a single-day range',
-  // Ends with today selected: date-dependent, so it would diff in Chromatic
-  // every day.
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ args, canvas, userEvent }) => {
     const option = await canvas.findByRole('option', { name: 'Today' });
-    await userEvent.click(option);
 
-    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    await userEvent.click(option);
     const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
     const now = today(getLocalTimeZone());
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
     await expect(isSameDay(range.start, now)).toBe(true);
     await expect(isSameDay(range.end, now)).toBe(true);
   }
@@ -562,7 +559,7 @@ Presets.test(
 
 Presets.test(
   'selecting a preset jumps the visible month to its range',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
       await canvas.findByRole('option', { name: 'January 2027' })
@@ -597,12 +594,13 @@ export const PresetsWithMinValue = meta.story({
 PresetsWithMinValue.test(
   'a preset outside minValue/maxValue is disabled',
   async ({ canvas }) => {
-    await expect(
-      await canvas.findByRole('option', { name: 'Last 7 days' })
-    ).toHaveAttribute('aria-disabled', 'true');
-    await expect(
-      canvas.getByRole('option', { name: 'Next 7 days' })
-    ).not.toHaveAttribute('aria-disabled');
+    const pastOption = await canvas.findByRole('option', {
+      name: 'Last 7 days',
+    });
+    const futureOption = canvas.getByRole('option', { name: 'Next 7 days' });
+
+    await expect(pastOption).toHaveAttribute('aria-disabled', 'true');
+    await expect(futureOption).not.toHaveAttribute('aria-disabled');
   }
 );
 
@@ -612,13 +610,13 @@ PresetsWithMinValue.test(
 // so Chromatic can snapshot the open tray without daily diffs.
 export const PresetsMobile = meta.story({
   tags: ['component-test'],
-  globals: {
-    viewport: { value: 'extraSmallScreen' },
-  },
   // Chromatic ignores the Storybook viewport global and captures at its
   // 1200px default, where the small-screen UI (and this story's play)
   // doesn't exist. Pin its capture to phone width.
-  parameters: { chromatic: { viewports: [320] } },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
   args: {
     'aria-label': 'Period',
   },
@@ -660,12 +658,13 @@ export const PresetsMobile = meta.story({
 
 PresetsMobile.test(
   'opens the quick selection tray',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
       await canvas.findByRole('button', { name: 'Quick selection' })
     );
-
     const tray = await canvas.findByRole('dialog');
+
     await expect(
       within(tray).getByRole('listbox', { name: 'Quick selection' })
     ).toBeVisible();

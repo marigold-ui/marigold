@@ -449,7 +449,7 @@ describe('presets on small screens (tray)', () => {
     window.matchMedia = mockMatchMedia([]);
   });
 
-  test('the tray shows the calendar; Quick selection swaps to the preset list in place', async () => {
+  test('the tray opens on the calendar view', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
 
@@ -459,6 +459,13 @@ describe('presets on small screens (tray)', () => {
     // The picker tray opens on the calendar, same as everywhere else.
     expect(within(pickerTray).getByRole('grid')).toBeVisible();
     expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  test('Quick selection swaps the grid for the preset list in the same tray', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(screen.getByRole('button'));
+    const pickerTray = await screen.findByRole('dialog');
 
     // The preset UI is lazy-loaded, so the first query must await its chunk.
     await user.click(
@@ -466,28 +473,49 @@ describe('presets on small screens (tray)', () => {
         name: 'Quick selection',
       })
     );
+
     // The preset list replaces the grid within the SAME dialog — no second
     // sheet stacks on top of the picker tray.
     expect(screen.getAllByRole('dialog')).toHaveLength(1);
-    const list = within(pickerTray).getByRole('listbox', {
-      name: 'Quick selection',
-    });
-    expect(list).toBeVisible();
+    expect(
+      within(pickerTray).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
     expect(within(pickerTray).queryByRole('grid')).not.toBeInTheDocument();
+  });
 
-    // Back returns to the calendar without selecting.
+  test('Back returns to the calendar view without selecting', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(screen.getByRole('button'));
+    const pickerTray = await screen.findByRole('dialog');
+    await user.click(
+      await within(pickerTray).findByRole('button', {
+        name: 'Quick selection',
+      })
+    );
+
     await user.click(within(pickerTray).getByRole('button', { name: 'Back' }));
+
     expect(within(pickerTray).getByRole('grid')).toBeVisible();
     expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
+  });
 
-    // Selecting a preset applies the value and returns to the calendar view;
-    // the picker tray stays open throughout.
+  test('selecting a preset applies it and returns to the calendar view', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(screen.getByRole('button'));
+    const pickerTray = await screen.findByRole('dialog');
     await user.click(
-      within(pickerTray).getByRole('button', { name: 'Quick selection' })
+      await within(pickerTray).findByRole('button', {
+        name: 'Quick selection',
+      })
     );
+
     await user.click(
       within(pickerTray).getByRole('option', { name: 'Tomorrow' })
     );
+
+    // The picker tray stays open on the calendar view.
     await waitFor(() =>
       expect(within(pickerTray).getByRole('grid')).toBeVisible()
     );

@@ -98,37 +98,58 @@ describe('presets on small screens', () => {
       await screen.findByRole('button', { name: 'Quick selection' })
     );
     const dialog = await screen.findByRole('dialog');
-
     const option = within(dialog).getByRole('option', { name: 'January 2027' });
+
     // Intl range formatting varies in dash/space characters across ICU
     // versions, so match loosely.
-    expect(option.textContent).toMatch(/Jan 5.*11/);
+    expect(option.textContent).toMatch(/Jan 1.*31/);
   });
 
-  test('the grid stays; selecting a preset in the tray applies and closes it', async () => {
+  test('the quick selection trigger renders as a closed dialog trigger next to the grid', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
-    render(<Presets.Component />);
 
-    expect(screen.getByRole('grid')).toBeVisible();
-    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    render(<Presets.Component />);
+    // The preset UI is lazy-loaded, so the first query must await its chunk.
     const trigger = await screen.findByRole('button', {
       name: 'Quick selection',
     });
+
+    expect(screen.getByRole('grid')).toBeVisible();
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     expect(trigger).not.toHaveFocus();
     expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('opening the tray shows the preset list while the grid stays visible', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    const trigger = await screen.findByRole('button', {
+      name: 'Quick selection',
+    });
 
     await user.click(trigger);
     const dialog = await screen.findByRole('dialog');
+
     expect(
       within(dialog).getByRole('listbox', { name: 'Quick selection' })
     ).toBeVisible();
     // The grid is visible right behind the sheet.
     expect(screen.getByRole('grid')).toBeVisible();
+  });
+
+  test('selecting a preset in the tray applies and closes it', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(
+      await screen.findByRole('button', { name: 'Quick selection' })
+    );
+    const dialog = await screen.findByRole('dialog');
 
     await user.click(
       within(dialog).getByRole('option', { name: 'Next 7 days' })
     );
+
     await waitFor(() =>
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     );
@@ -138,13 +159,13 @@ describe('presets on small screens', () => {
   test('the tray close button dismisses without selecting', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
-
     await user.click(
       await screen.findByRole('button', { name: 'Quick selection' })
     );
     const dialog = await screen.findByRole('dialog');
 
     await user.click(within(dialog).getByRole('button', { name: 'Close' }));
+
     await waitFor(() =>
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     );

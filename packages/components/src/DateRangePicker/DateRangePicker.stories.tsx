@@ -326,6 +326,7 @@ export const Presets = meta.story({
     label: 'Period',
     onChange: fn(),
   },
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <I18nProvider locale="en-US">
       <DateRangePicker
@@ -340,23 +341,22 @@ Presets.test(
   'selecting a preset applies the range and keeps the popover open',
   // Ends with the popover open on the current month with "Next 7 days"
   // selected: date-dependent, so it would diff in Chromatic every day.
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button'));
     const dialog = await canvas.findByRole('dialog');
-
     // The preset UI is lazy-loaded, so the first query must await its chunk.
     const option = await within(dialog).findByRole('option', {
       name: 'Next 7 days',
     });
-    await userEvent.click(option);
 
-    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    await userEvent.click(option);
     const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
     const now = today(getLocalTimeZone());
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
     await expect(isSameDay(range.start, now)).toBe(true);
     await expect(isSameDay(range.end, now.add({ days: 6 }))).toBe(true);
-
     // The popover must stay open so keyboard users can keep adjusting.
     await expect(dialog).toBeVisible();
     await expect(option).toHaveAttribute('aria-selected', 'true');
@@ -375,7 +375,7 @@ export const PresetsMobile = meta.story({
   // Chromatic ignores the Storybook viewport global and captures at its
   // 1200px default, where the small-screen UI (and this story's play)
   // doesn't exist. Pin its capture to phone width.
-  parameters: { chromatic: { viewports: [320] } },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
   args: {
     label: 'Period',
   },
@@ -417,6 +417,7 @@ export const PresetsMobile = meta.story({
 
 PresetsMobile.test(
   'switches the tray to the quick selection view',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button'));
     const tray = await canvas.findByRole('dialog');

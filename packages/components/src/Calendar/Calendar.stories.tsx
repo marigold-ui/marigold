@@ -617,26 +617,31 @@ export const Presets = meta.story({
   ),
 });
 
-Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
-  // The preset UI is lazy-loaded, so the first query must await its chunk.
-  const listbox = await canvas.findByRole('listbox', {
-    name: 'Quick selection',
-  });
-  await expect(listbox).toBeVisible();
-  await expect(canvas.getByRole('option', { name: 'Kickoff' })).toBeVisible();
-});
+Presets.test(
+  'presets render as a labeled listbox',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // The preset UI is lazy-loaded, so the first query must await its chunk.
+    const listbox = await canvas.findByRole('listbox', {
+      name: 'Quick selection',
+    });
+    const option = canvas.getByRole('option', { name: 'Kickoff' });
+
+    await expect(listbox).toBeVisible();
+    await expect(option).toBeVisible();
+  }
+);
 
 Presets.test(
   'selecting a preset sets the date and marks the option selected',
-  // Ends with "Tomorrow" selected on the current month: date-dependent, so
-  // it would diff in Chromatic every day.
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ args, canvas, userEvent }) => {
     const option = await canvas.findByRole('option', { name: 'Tomorrow' });
+
     await userEvent.click(option);
+    const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
 
     await expect(args.onChange).toHaveBeenCalledTimes(1);
-    const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
     await expect(
       isSameDay(date, today(getLocalTimeZone()).add({ days: 1 }))
     ).toBe(true);
@@ -646,11 +651,11 @@ Presets.test(
 
 Presets.test(
   'selecting a preset jumps the visible month to its date',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
       await canvas.findByRole('option', { name: 'Kickoff' })
     );
+
     await expect(
       canvas.getByRole('button', { name: 'Aug' })
     ).toBeInTheDocument();
@@ -659,9 +664,6 @@ Presets.test(
 
 export const PresetsWithMinValue = meta.story({
   tags: ['component-test'],
-  // The story is relative to today by design (minValue: today disables the
-  // "Yesterday" preset), so its snapshot would diff in Chromatic every day.
-  // The play assertions below cover the disabled state.
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Event date',
@@ -676,13 +678,15 @@ export const PresetsWithMinValue = meta.story({
 
 PresetsWithMinValue.test(
   'a preset outside minValue/maxValue is disabled',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    await expect(
-      await canvas.findByRole('option', { name: 'Yesterday' })
-    ).toHaveAttribute('aria-disabled', 'true');
-    await expect(
-      canvas.getByRole('option', { name: 'Today' })
-    ).not.toHaveAttribute('aria-disabled');
+    const yesterdayOption = await canvas.findByRole('option', {
+      name: 'Yesterday',
+    });
+    const todayOption = canvas.getByRole('option', { name: 'Today' });
+
+    await expect(yesterdayOption).toHaveAttribute('aria-disabled', 'true');
+    await expect(todayOption).not.toHaveAttribute('aria-disabled');
   }
 );
 
@@ -692,13 +696,10 @@ PresetsWithMinValue.test(
 // so Chromatic can snapshot the open tray without daily diffs.
 export const PresetsMobile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
-  // Chromatic ignores the Storybook viewport global and captures at its
-  // 1200px default, where the small-screen UI (and this story's play)
-  // doesn't exist. Pin its capture to phone width.
-  parameters: { chromatic: { viewports: [320] } },
   args: {
     'aria-label': 'Event date',
   },
@@ -719,12 +720,13 @@ export const PresetsMobile = meta.story({
 
 PresetsMobile.test(
   'opens the quick selection tray',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
       await canvas.findByRole('button', { name: 'Quick selection' })
     );
-
     const tray = await canvas.findByRole('dialog');
+
     await expect(
       within(tray).getByRole('listbox', { name: 'Quick selection' })
     ).toBeVisible();

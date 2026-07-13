@@ -19,6 +19,7 @@ test('resolves built-in keys to localized labels (de-DE)', () => {
   const { result } = renderHook(() => useDateRangePresets(rangePresets), {
     wrapper: wrapper('de-DE'),
   });
+
   expect(result.current.map(p => p.label)).toEqual([
     'Letzte 7 Tage',
     'Dieser Monat',
@@ -30,15 +31,18 @@ test('resolves built-in keys to localized labels (en-US)', () => {
   const { result } = renderHook(() => useDatePresets(['today', 'yesterday']), {
     wrapper: wrapper('en-US'),
   });
+
   expect(result.current.map(p => p.label)).toEqual(['Today', 'Yesterday']);
 });
 
 test('normalizes custom presets with static values', () => {
   const value = new CalendarDate(2026, 7, 1);
+
   const { result } = renderHook(
     () => useDatePresets([{ label: 'Season start', value }]),
     { wrapper: wrapper('en-US') }
   );
+
   expect(result.current[0].id).toBe('Season start');
   expect(result.current[0].label).toBe('Season start');
   expect(result.current[0].resolve()).toEqual(value);
@@ -49,6 +53,7 @@ test('normalizes custom presets with resolver functions and explicit id', () => 
     start: new CalendarDate(2026, 7, 1),
     end: new CalendarDate(2026, 7, 14),
   };
+
   const { result } = renderHook(
     () =>
       useDateRangePresets([
@@ -56,6 +61,7 @@ test('normalizes custom presets with resolver functions and explicit id', () => 
       ]),
     { wrapper: wrapper('en-US') }
   );
+
   expect(result.current[0].id).toBe('festival');
   expect(result.current[0].resolve()).toEqual(range);
 });
@@ -83,11 +89,13 @@ test('labels the handoff range presets (en-US)', () => {
 test('resolves this-week with the active locale (de-DE starts Monday)', () => {
   vi.useFakeTimers();
   vi.setSystemTime(new Date(2026, 6, 9, 12)); // Thursday, Jul 9 2026
+
   try {
     const { result } = renderHook(() => useDateRangePresets(['this-week']), {
       wrapper: wrapper('de-DE'),
     });
     const { start, end } = result.current[0].resolve();
+
     expect(isSameDay(start, new CalendarDate(2026, 7, 6))).toBe(true);
     expect(isSameDay(end, new CalendarDate(2026, 7, 12))).toBe(true);
   } finally {
