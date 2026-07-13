@@ -339,9 +339,6 @@ export const Presets = meta.story({
 
 Presets.test(
   'selecting a preset applies the range and keeps the popover open',
-  // Ends with the popover open on the current month with "Next 7 days"
-  // selected: date-dependent, so it would diff in Chromatic every day.
-  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button'));
     const dialog = await canvas.findByRole('dialog');
