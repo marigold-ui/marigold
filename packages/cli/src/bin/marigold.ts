@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import pc from 'picocolors';
-import { readFileSync } from 'node:fs';
+import { readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -13,6 +13,7 @@ import {
   type TelemetrySubcommand,
   runTelemetry,
 } from '../commands/telemetry.js';
+import type { ValidateChecks, ValidateFormat } from '../commands/validate.js';
 import {
   EXAMPLES_SUBCOMMANDS,
   type SubcommandName,
@@ -64,6 +65,7 @@ ${pc.bold('Commands:')}
   list                  List available components and pages
   search <query>        Find components by what their docs say
   examples <action>     Browse application patterns (list | get <slug>)
+  validate <file>       Validate a Marigold component file
   init                  Set up Marigold in a project
   telemetry <action>    Manage telemetry (status|enable|disable)
   completion <shell>    Print shell completion script (bash|zsh|fish)
@@ -91,6 +93,10 @@ ${pc.bold('Examples options:')}
   --fresh             Bypass the local cache
   --offline           Use only the local cache
 
+${pc.bold('Validate options:')}
+  --checks <name>     technical | spatial | a11y | all (default: all)
+  --format <name>     text | json (default: text)
+
 ${pc.bold('Init options:')}
   --yes               Skip confirmation prompts
   --skip-install      Don't run the package install step
@@ -98,6 +104,7 @@ ${pc.bold('Init options:')}
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
   MARIGOLD_CACHE_TTL_MS          Override cache TTL in milliseconds
+  MARIGOLD_VALIDATE_DISABLED=1   Skip validation (exit immediately)
   MARIGOLD_TELEMETRY_DISABLED=1  Opt out of telemetry
   DO_NOT_TRACK=1                 Opt out of telemetry (standard)
 
@@ -112,6 +119,12 @@ const isSection = (v: string): v is Section =>
 
 const isTelemetrySub = (v: string): v is TelemetrySubcommand =>
   v === 'status' || v === 'enable' || v === 'disable';
+
+const isValidateChecks = (v: string): v is ValidateChecks =>
+  v === 'technical' || v === 'spatial' || v === 'a11y' || v === 'all';
+
+const isValidateFormat = (v: string): v is ValidateFormat =>
+  v === 'json' || v === 'text';
 
 // Thrown by `fail()` so the existing try/catch in `main()` can handle
 // validation failures without bypassing the telemetry emit block.
@@ -166,6 +179,16 @@ const parseExamplesCommand = (argv: string[]) =>
       format: { type: 'string' },
       fresh: { type: 'boolean', default: false },
       offline: { type: 'boolean', default: false },
+    },
+  });
+
+const parseValidateCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      checks: { type: 'string', default: 'all' },
+      format: { type: 'string', default: 'text' },
     },
   });
 
@@ -356,6 +379,36 @@ export const main = async (
 
       writeOutput(result.output);
       cacheHit = result.cacheHit;
+    } else if (command === 'validate') {
+      // MARIGOLD_VALIDATE_DISABLED is enforced in one place — runValidate — so
+      // the CLI and programmatic callers behave identically (it throws, which
+      // this command's catch turns into a non-zero exit).
+      const { positionals, values } = parseValidateCommand(rest);
+      const [fileInput] = positionals;
+
+      telemetryArgs = {
+        checks: values.checks ?? 'all',
+        format: values.format ?? 'markdown',
+      };
+
+      if (!fileInput) fail('Usage: marigold validate <file.tsx>');
+      if (values.checks && !isValidateChecks(values.checks)) {
+        fail(`Invalid --checks: ${values.checks}`);
+      }
+      if (values.format && !isValidateFormat(values.format)) {
+        fail(`Invalid --format: ${values.format}`);
+      }
+
+      const { runValidate } = await import('../commands/validate.js');
+      const result = await runValidate({
+        file: fileInput,
+        checks: (values.checks as ValidateChecks | undefined) ?? 'all',
+        format: (values.format as ValidateFormat | undefined) ?? 'text',
+      });
+
+      process.stdout.write(result.output);
+      if (!result.output.endsWith('\n')) process.stdout.write('\n');
+      exitCode = result.hasErrors ? 1 : 0;
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);
       telemetryArgs = {
@@ -415,9 +468,20 @@ export const main = async (
 
 // Only auto-invoke when this module is the entry point (i.e. the user ran
 // `marigold ...`). When imported from tests, `main()` is awaited explicitly.
-const isEntryPoint = process.argv[1]
-  ? fileURLToPath(import.meta.url) === path.resolve(process.argv[1])
-  : false;
+// Resolve symlinks on both sides: npm links a package's bin as a symlink, so
+// process.argv[1] is `.../.bin/marigold` while import.meta.url is the real file.
+// Comparing the raw paths would leave `main()` un-invoked — a silent no-op exit
+// 0 — for `marigold`/`npx marigold` on an npm install. (pnpm's shim passes the
+// real path, which is why this only bites npm consumers.)
+const isEntryPoint = ((): boolean => {
+  const argv1 = process.argv[1];
+  if (!argv1) return false;
+  try {
+    return realpathSync(fileURLToPath(import.meta.url)) === realpathSync(argv1);
+  } catch {
+    return false;
+  }
+})();
 if (isEntryPoint) {
   main().then(
     code => process.exit(code),

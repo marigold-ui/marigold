@@ -13,6 +13,7 @@ export type CommandName =
   | 'list'
   | 'search'
   | 'examples'
+  | 'validate'
   | 'init'
   | 'telemetry';
 

@@ -25,3 +25,5 @@ export { runExamples } from './commands/examples.js';
 export { runInit } from './commands/init.js';
 export { runTelemetry } from './commands/telemetry.js';
 export { runCompletion, runCompleteSuggest } from './commands/completion.js';
+export { runValidate } from './commands/validate.js';
+export type { ValidateChecks, ValidateFormat } from './commands/validate.js';
