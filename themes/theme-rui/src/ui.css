@@ -24,6 +24,21 @@
 }
 
 /* ========================= */
+/*    Form field indicators  */
+/* ========================= */
+
+/*
+ * Required-field indicator (the red "*" after a label). Kept as a named
+ * utility, not inline as `after:content-["*"]`: quoted arbitrary values don't
+ * survive JS compilation as extractable classes, so consumers that rescan the
+ * compiled packages never generate the rule and the asterisk vanishes. See
+ * DSTSUP-266.
+ */
+@utility ui-required-indicator {
+  content: '*';
+}
+
+/* ========================= */
 /*          Surface          */
 /* ========================= */
 
@@ -401,5 +416,98 @@
     animation-range:
       0 var(--sc-scroll-buffer),
       calc(100% - var(--sc-scroll-buffer)) 100%;
+  }
+}
+
+@keyframes sc-edge-b {
+  to {
+    box-shadow: 0 1px 0 0 var(--color-surface-border);
+  }
+}
+
+/*
+ * Scroll-revealed bottom edge for a sticky bar in a seamless shell: at rest
+ * the bar is borderless (the shell separates on whitespace), but once page
+ * content scrolls underneath, a hairline fades in so the seam stays legible.
+ *
+ * Progressive enhancement like `ui-scroll-mask-x`: without scroll-driven
+ * animation support the bar simply stays borderless — the sticky bar's opaque
+ * background still separates it from passing content. Scroll-linked, so not
+ * gated by `prefers-reduced-motion`.
+ */
+@utility ui-scroll-edge {
+  @supports (animation-timeline: scroll()) {
+    animation: sc-edge-b linear both;
+    animation-timeline: scroll();
+    animation-range: 0 2rem;
+  }
+}
+
+/*
+ * ⚠️ NOT REUSABLE — Sidebar-specific. These four `ui-sidebar-seam-*` utilities
+ * are coupled to the Sidebar's header / nav / footer grid and its private
+ * `--sidebar-nav` timeline; they are not general-purpose. (The generic
+ * counterpart is `ui-scroll-edge` above, which any sticky bar over its own
+ * ancestor scroller can use.)
+ *
+ * Scroll-revealed seams for the Sidebar's sticky header and footer that flank
+ * the scrolling nav in the seamless shell. Unlike `ui-scroll-edge` (whose bar
+ * *is* the scroller's ancestor, so an anonymous `scroll()` timeline works), the
+ * nav here is a grid *sibling* between the header and footer — so the seam is
+ * driven by a NAMED timeline the nav declares (`--sidebar-nav`, via
+ * `ui-sidebar-seam-timeline`), hoisted with `timeline-scope` on the grid
+ * wrapper (`ui-sidebar-seam-scope`) so the header — a *preceding* sibling —
+ * can reference it too.
+ *
+ *   - Header: seamless at rest; its bottom hairline fades in within the first
+ *     12px of scroll (content now passes under it).
+ *   - Footer: its top hairline shows while content remains below, then fades
+ *     out over the last 12px as the list bottoms out (nothing left to divide).
+ *
+ * The seam is a `box-shadow` hairline (like `ui-scroll-edge`), so it never
+ * affects layout and doesn't collide with the header/footer `border-*-0` that
+ * suppress the `ui-panel-*` borders. Progressive enhancement: without
+ * scroll-driven animation the `@supports not` fallback pins both seams on —
+ * the always-on hairline — so non-supporting browsers still get a divider.
+ */
+@keyframes sidebar-seam-header {
+  to {
+    box-shadow: 0 1px 0 0 var(--color-surface-border);
+  }
+}
+@keyframes sidebar-seam-footer {
+  from {
+    box-shadow: 0 -1px 0 0 var(--color-surface-border);
+  }
+  to {
+    box-shadow: 0 -1px 0 0 transparent;
+  }
+}
+
+@utility ui-sidebar-seam-scope {
+  timeline-scope: --sidebar-nav;
+}
+@utility ui-sidebar-seam-timeline {
+  scroll-timeline: --sidebar-nav block;
+}
+
+@utility ui-sidebar-seam-header {
+  @supports (animation-timeline: scroll()) {
+    animation: sidebar-seam-header linear both;
+    animation-timeline: --sidebar-nav;
+    animation-range: 0 12px;
+  }
+  @supports not (animation-timeline: scroll()) {
+    box-shadow: 0 1px 0 0 var(--color-surface-border);
+  }
+}
+@utility ui-sidebar-seam-footer {
+  @supports (animation-timeline: scroll()) {
+    animation: sidebar-seam-footer linear both;
+    animation-timeline: --sidebar-nav;
+    animation-range: calc(100% - 12px) 100%;
+  }
+  @supports not (animation-timeline: scroll()) {
+    box-shadow: 0 -1px 0 0 var(--color-surface-border);
   }
 }
