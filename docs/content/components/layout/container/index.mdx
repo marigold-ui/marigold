@@ -39,14 +39,14 @@ The `<Container>` component can be combined with other layout components, such a
 
 ### Alignment
 
-Because `<Container>` caps the width of its content, that content is often narrower than the space the container fills. The `alignItems` prop controls where the content sits within that space.
+Because `<Container>` caps the width of its content, that content is often narrower than the space the container fills. The `alignItems` prop controls where the capped content sits within that space.
 
-By default (`none`) it stays at the start, which suits a normal left-aligned reading column. Reach for `alignItems` when a container sits in a wide area and its content should not hug the left edge:
+By default (`none`) the content sits at the left edge, which suits a normal reading column. Reach for `alignItems` when a container sits in a wide area and its content should not hug the left:
 
-- `center` centers the content in the container, the common choice for hero sections or a centered article on a wide page.
-- `right` pushes the content to the end, for the rarer case where it should sit against the right edge.
+- `center` centers the content, the common choice for a hero section or a centered article on a wide page.
+- `right` moves the content to the right edge, for the rarer case where it should sit against the right.
 
-In short, `contentLength` decides how wide the reading column is, and `alignItems` decides where that column sits.
+In short, `contentLength` sets how wide the reading column is, and `alignItems` sets where that column sits.
 
 ## Props
 
