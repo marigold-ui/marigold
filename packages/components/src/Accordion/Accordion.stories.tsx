@@ -270,6 +270,13 @@ export const Disabled = meta.story({
   ),
 });
 
+const stickyHeaderActions = (
+  <Inline space={2}>
+    <Button onPress={() => alert('Do NOT click! Come on!')}>Delete</Button>
+    <Button onPress={() => alert('Do NOT click! Come on!')}>Edit</Button>
+  </Inline>
+);
+
 export const StickyHeader = meta.story({
   parameters: {
     controls: { exclude: ['iconPosition'] },
@@ -282,17 +289,9 @@ export const StickyHeader = meta.story({
       iconPosition={'left'}
     >
       <Accordion.Item id="1">
-        <Inline alignX="between">
-          <Accordion.Header>Symfonie Abo 2025/2026</Accordion.Header>
-          <Inline space={2}>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Delete
-            </Button>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Edit
-            </Button>
-          </Inline>
-        </Inline>
+        <Accordion.Header actions={stickyHeaderActions}>
+          Symfonie Abo 2025/2026
+        </Accordion.Header>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
@@ -742,17 +741,9 @@ export const StickyHeader = meta.story({
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item id="2">
-        <Inline alignX="between">
-          <Accordion.Header>Scroll Me Abo Season 25/26</Accordion.Header>
-          <Inline space={2}>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Delete
-            </Button>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Edit
-            </Button>
-          </Inline>
-        </Inline>
+        <Accordion.Header actions={stickyHeaderActions}>
+          Scroll Me Abo Season 25/26
+        </Accordion.Header>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,

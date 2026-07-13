@@ -60,8 +60,13 @@ A controlled `Accordion` can be expanded and collapsed using expandedKeys and on
 
 ### Long-form content
 
-For Accordions with a lot of content inside it is handy to use the prop `stickyHeader` to provide context. While scrolling through the content the headline stays fixed at the top of the viewport.
-The `stickyHeader` applies to the entire Accordion: `<Accordion stickyHeader={true}>...</Accordion>`.
+For Accordions with a lot of content, enable `stickyHeader` so the header keeps giving context while you scroll. The header stays pinned to the top of the nearest scroll container (the page or a scrollable ancestor) while the item content scrolls underneath it.
+
+The `stickyHeader` applies to the entire Accordion: `<Accordion stickyHeader>...</Accordion>`.
+
+When a header needs actions such as buttons, pass them to the `actions` prop of `Accordion.Header` rather than wrapping the header in a layout component. That keeps the actions inside the sticky header so they stay pinned together with the title.
+
+<ComponentDemo name="accordion-sticky" />
 
 ### Icon position
 
