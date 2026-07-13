@@ -93,6 +93,9 @@ export type { DateFieldProps } from './DateField/DateField';
 export { DatePicker } from './DatePicker/DatePicker';
 export type { DatePickerProps } from './DatePicker/DatePicker';
 
+export { DateRangePicker } from './DateRangePicker/DateRangePicker';
+export type { DateRangePickerProps } from './DateRangePicker/DateRangePicker';
+
 export { Description } from './Description/Description';
 export type { DescriptionProps } from './Description/Description';
 
@@ -333,6 +336,12 @@ export type { ToggleButtonProps } from './ToggleButton/ToggleButton';
 
 export { ToggleButtonGroup } from './ToggleButton/ToggleButtonGroup';
 export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
+
+export { SegmentedControl } from './SegmentedControl/SegmentedControl';
+export type { SegmentedControlProps } from './SegmentedControl/SegmentedControl';
+
+export { SegmentedControlOption } from './SegmentedControl/SegmentedControl';
+export type { SegmentedControlOptionProps } from './SegmentedControl/SegmentedControl';
 
 export { Tray } from './Tray/Tray';
 export type { TrayProps } from './Tray/Tray';

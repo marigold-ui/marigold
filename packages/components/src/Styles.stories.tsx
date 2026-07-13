@@ -1,8 +1,13 @@
 import type { PropsWithChildren } from 'react';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { cn } from '@marigold/system';
 import { Headline } from './Headline/Headline';
 import { Inline } from './Inline/Inline';
+import { RouterProvider } from './RouterProvider/RouterProvider';
+import { Sidebar } from './Sidebar/Sidebar';
 import { Stack } from './Stack/Stack';
+import { Text } from './Text/Text';
 
 const meta = preview.meta({
   title: 'Styles/RUI',
@@ -16,6 +21,46 @@ const Base = ({
     className={`grid aspect-video h-32 place-items-center text-sm ${className}`}
   >
     {children}
+  </div>
+);
+
+// A boxed surface whose rows are split by the opaque functional border — the
+// same token as the SelectList frame and Table grid lines, so the structure
+// stays crisp against any state fill. Ink & wash: hover is the lighter wash
+// (bg-hover, charcoal-200); a selected row sits one step darker (bg-selected,
+// charcoal-300) with its indicator (the check here, a checkbox/radio in real
+// components) as the one opaque ink mark. Hovering a selected row swaps to the
+// hover wash while the indicator keeps carrying the selection.
+const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
+
+const ListSurface = ({
+  label,
+  selectedIndex,
+  hoveredIndex,
+}: {
+  label: string;
+  selectedIndex?: number;
+  hoveredIndex?: number;
+}) => (
+  <div className="flex flex-col gap-1">
+    <span className="text-secondary text-xs">{label}</span>
+    <div className="ui-surface shadow-elevation-border w-56 overflow-hidden text-sm">
+      {listItems.map((item, i) => (
+        <div
+          key={item}
+          data-selected={i === selectedIndex || undefined}
+          className={cn(
+            'flex items-center justify-between px-3 py-2',
+            'not-last:border-border not-last:border-b',
+            i === selectedIndex && 'bg-selected',
+            i === hoveredIndex && 'bg-hover'
+          )}
+        >
+          {item}
+          {i === selectedIndex && <span aria-hidden>✓</span>}
+        </div>
+      ))}
+    </div>
   </div>
 );
 
@@ -37,16 +82,73 @@ export const Surface = meta.story({
         <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
       </Inline>
       <Inline space="regular">
-        <Base className="ui-surface-contrast">contrast</Base>
-        <Base className="ui-surface-contrast shadow-elevation-border">
+        <Base className="ui-contrast">contrast</Base>
+        <Base className="ui-contrast shadow-elevation-border">
           contrast / border
         </Base>
-        <Base className="ui-surface-contrast shadow-elevation-raised">
+        <Base className="ui-contrast shadow-elevation-raised">
           contrast / raised
         </Base>
-        <Base className="ui-surface-contrast shadow-elevation-overlay">
+        <Base className="ui-contrast shadow-elevation-overlay">
           contrast / overlay
         </Base>
+      </Inline>
+      <Headline level="3">Hairline</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        The decorative surface ring: the translucent{' '}
+        <code>--color-surface-border</code>. Because it is translucent it
+        composites over whatever ground the surface sits on rather than painting
+        a fixed gray.
+      </p>
+      <Inline space="regular">
+        <Base className="ui-surface">hairline</Base>
+      </Inline>
+      <Headline level="3">Selected &amp; Hover Fills</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        Item fills painted on rows inside a surface. <code>bg-hover</code> is
+        the hover wash; <code>bg-selected</code> marks a selected row, one step
+        darker. <code>bg-focus-highlight</code> marks keyboard focus inside
+        menus; <code>ui-state-hover-ghost</code> (<code>bg-current/10</code>)
+        tints toward the current text color so a ghost item blends into any
+        ground. The two boxes on the right push a selected / hover fill onto a
+        whole raised surface via <code>--ui-background-color</code>.
+      </p>
+      <Inline space="regular">
+        <div className="ui-surface shadow-elevation-border flex w-40 flex-col overflow-hidden text-sm">
+          <div className="px-3 py-2">resting</div>
+          <div className="bg-hover px-3 py-2">hover</div>
+          <div className="bg-selected flex justify-between px-3 py-2">
+            selected <span aria-hidden>✓</span>
+          </div>
+          <div className="bg-focus-highlight px-3 py-2">focus</div>
+          <div className="bg-current/10 px-3 py-2">ghost</div>
+        </div>
+        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-foreground)]">
+          raised / selected
+        </Base>
+        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-hover)]">
+          raised / hover
+        </Base>
+      </Inline>
+      <Headline level="3">Separators</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        Separators between rows use the opaque functional <code>border</code>{' '}
+        (the SelectList frame and Table grid-line token) in <em>every</em>{' '}
+        state. Being opaque and darker than every wash, a divider stays crisp
+        against rest, hover, and the selected fill alike — so the structure
+        never dissolves into a state fill, and no divider needs a special case.
+      </p>
+      <Inline space="regular">
+        <ListSurface label="separators" />
+        <ListSurface label="first selected" selectedIndex={0} />
+        <ListSurface label="middle selected" selectedIndex={2} />
+        <ListSurface label="last selected" selectedIndex={3} />
+        <ListSurface label="hovered item" hoveredIndex={2} />
+        <ListSurface
+          label="hovered selected"
+          selectedIndex={2}
+          hoveredIndex={2}
+        />
       </Inline>
       <Headline level="3">Nested Surfaces</Headline>
       <p className="text-secondary max-w-prose text-sm">
@@ -61,7 +163,7 @@ export const Surface = meta.story({
             nested child
           </div>
         </div>
-        <div className="ui-surface-contrast flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-background-color:var(--color-access-master-accent)] [--ui-border-color:var(--color-access-master-accent)]">
+        <div className="ui-contrast flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-background-color:var(--color-access-master-accent)] [--ui-border-color:var(--color-access-master-accent)]">
           <span className="text-xs">parent: --ui-background-color</span>
           <div className="ui-surface shadow-elevation-border text-foreground px-3 py-1 text-xs">
             nested child
@@ -94,10 +196,8 @@ export const Surface = meta.story({
         <Base className="ui-surface ui-state-readonly">readonly</Base>
       </Inline>
       <Inline space="regular">
-        <Base className="ui-surface-contrast ui-state-focus">
-          contrast / focus
-        </Base>
-        <Base className="ui-surface-contrast ui-state-disabled">
+        <Base className="ui-contrast ui-state-focus">contrast / focus</Base>
+        <Base className="ui-contrast ui-state-disabled">
           contrast / disabled
         </Base>
       </Inline>
@@ -125,4 +225,151 @@ export const Surface = meta.story({
       </Inline>
     </Stack>
   ),
+});
+
+/**
+ * Legend swatch: a colour chip + the token + role it plays in the sidebar nav.
+ */
+const Tier = ({
+  swatch,
+  token,
+  children,
+}: PropsWithChildren<{ swatch: string; token: string }>) => (
+  <Inline space="related" alignY="center" noWrap>
+    <span className={`size-4 shrink-0 rounded ${swatch}`} />
+    <code className="text-xs">{token}</code>
+    <Text fontSize="xs" variant="muted">
+      {children}
+    </Text>
+  </Inline>
+);
+
+const NavSpecimen = () => (
+  <RouterProvider navigate={() => {}}>
+    <Sidebar.Provider defaultOpen>
+      <div className="flex h-[28rem]">
+        <Sidebar>
+          <Sidebar.Header>
+            <Text weight="bold" fontSize="lg">
+              Acme Inc.
+            </Text>
+          </Sidebar.Header>
+          <Sidebar.Nav current="/dashboard">
+            <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+            <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+            <Sidebar.Item id="management" textValue="Management">
+              Management
+              <Sidebar.Item href="/users">Users</Sidebar.Item>
+              <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+              <Sidebar.Item href="/billing">Billing</Sidebar.Item>
+            </Sidebar.Item>
+            <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
+            <Sidebar.Item href="/general">General</Sidebar.Item>
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Nav>
+          <Sidebar.Footer>
+            <Text fontSize="xs">v2.4.0</Text>
+          </Sidebar.Footer>
+        </Sidebar>
+      </div>
+    </Sidebar.Provider>
+  </RouterProvider>
+);
+
+/**
+ * The sidebar navigation hierarchy: two charcoal tiers driven entirely by
+ * semantic tokens (no raw `charcoal-*`), the current page rendered as an inset
+ * rounded `selected` pill, and every row — nav items, section labels, and the
+ * drill-in back action — aligned to one shared content column.
+ */
+export const SidebarNavigation = meta.story({
+  parameters: { layout: 'fullscreen', surface: false },
+  render: () => (
+    <div className="p-4">
+      <Stack space="group">
+        <Headline level="3">Sidebar navigation</Headline>
+        <p className="text-secondary max-w-prose text-sm">
+          Hierarchy comes from two token-driven charcoal tiers plus the inset
+          active pill — never from raw colours. The section label stays a clear
+          tier through treatment (uppercase, smaller, heavier, tracked) rather
+          than a lighter colour, so it holds the WCAG AA 4.5:1 contrast floor.
+        </p>
+        <Inline space="section" alignY="top">
+          <div className="border-surface-border w-fit overflow-hidden rounded-lg border">
+            <NavSpecimen />
+          </div>
+          <Stack space="related">
+            <Tier swatch="bg-foreground" token="text-foreground">
+              active item + page titles (15.6:1)
+            </Tier>
+            <Tier swatch="bg-secondary" token="text-secondary">
+              idle items + section labels (4.97:1)
+            </Tier>
+            <Tier swatch="bg-selected" token="bg-selected">
+              active pill (charcoal-300)
+            </Tier>
+            <Tier swatch="bg-hover" token="bg-hover">
+              hover pill (charcoal-200)
+            </Tier>
+            <Tier
+              swatch="bg-surface-border border border-surface-border"
+              token="border-surface-border"
+            >
+              the shell&apos;s one line — the sidebar divider (chevron anchor)
+            </Tier>
+          </Stack>
+        </Inline>
+      </Stack>
+    </div>
+  ),
+});
+
+/**
+ * Drilling into a branch reveals the back action. It shares the nav rows' pill
+ * geometry, so the back chevron sits on the same content column the nav text
+ * and section labels align to — this asserts that shared inset survives.
+ */
+export const SidebarBackAction = meta.story({
+  tags: ['component-test'],
+  parameters: { layout: 'fullscreen', surface: false },
+  render: () => (
+    <div className="p-4">
+      <Stack space="group">
+        <Headline level="3">Drill-in back action</Headline>
+        <div className="border-surface-border w-fit overflow-hidden rounded-lg border">
+          <NavSpecimen />
+        </div>
+      </Stack>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Drill into the "Management" branch to reveal the back action.
+    await userEvent.click(canvas.getByRole('link', { name: /Management/ }));
+
+    const back = await canvas.findByRole('button', { name: /Management/ });
+    const child = canvas.getByRole('link', { name: 'Users' });
+    // The drill-in reveals the panel through a transition, so wait for it to
+    // settle rather than racing the reveal (findByRole resolves as soon as the
+    // node enters the a11y tree, before it is painted visible).
+    await waitFor(async () => {
+      await expect(back).toBeVisible();
+      await expect(child).toBeVisible();
+    });
+
+    // The back action and the nav rows share one inset (mx-2 + px-2), so
+    // their content starts on the same column — the alignment we tuned.
+    const backStyle = getComputedStyle(back);
+    const childStyle = getComputedStyle(child);
+    await expect(backStyle.paddingLeft).toBe(childStyle.paddingLeft);
+    await expect(backStyle.marginLeft).toBe(childStyle.marginLeft);
+
+    // ...and the back label reads at the same weight as a nav item (the
+    // Button's default `font-medium` is reset).
+    const backLabel = within(back).getByText(/Management/);
+    await expect(getComputedStyle(backLabel).fontWeight).toBe(
+      childStyle.fontWeight
+    );
+  },
 });

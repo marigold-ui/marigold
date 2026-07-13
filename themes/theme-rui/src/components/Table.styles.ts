@@ -136,7 +136,7 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'relative',
       'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-border',
-      'drop-target:before:z-10 drop-target:before:bg-primary',
+      'drop-target:before:bg-primary',
     ],
   }),
 

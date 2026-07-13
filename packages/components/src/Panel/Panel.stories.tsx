@@ -58,7 +58,7 @@ const meta = preview.meta({
     },
     space: {
       control: { type: 'radio' },
-      options: ['none', 'tight', 'related', 'regular', 'group', 'section'],
+      options: ['collapsed', 'tight', 'related', 'regular', 'group', 'section'],
       description: 'Spacing between Panel sections.',
       table: { defaultValue: { summary: 'regular' } },
     },
@@ -102,6 +102,9 @@ export const Basic = meta.story({
 
 Basic.test(
   'renders a labelled region with the Title as accessible name',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const title = canvas.getByRole('heading', { name: 'Organizer Profile' });
     const region = canvas.getByRole('region', { name: 'Organizer Profile' });
@@ -113,8 +116,9 @@ Basic.test(
 );
 
 export const TitleOnlyWithoutHeader = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { children: null as never },
   render: args => (
     <Panel {...args}>
       <Title>Quick Settings</Title>
@@ -296,8 +300,8 @@ export const WithHeaderActions = meta.story(() => (
 ));
 
 export const SlotsButtonGroup = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
+  args: { children: null as never },
   render: args => (
     <Panel {...args}>
       <Panel.Header>
@@ -327,6 +331,9 @@ export const SlotsButtonGroup = meta.story({
 
 SlotsButtonGroup.test(
   'renders as a toolbar inside the actions grid cell',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const toolbar = canvas.getByRole('toolbar', {
       name: 'Integration actions',
@@ -338,6 +345,9 @@ SlotsButtonGroup.test(
 
 SlotsButtonGroup.test(
   'cycles focus between actions with arrow keys',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
     const refresh = canvas.getByRole('button', { name: 'Refresh' });
@@ -356,6 +366,9 @@ SlotsButtonGroup.test(
 
 SlotsButtonGroup.test(
   'individual Buttons inside the group do NOT carry the actions grid-area',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
 
@@ -364,8 +377,8 @@ SlotsButtonGroup.test(
 );
 
 export const WithCollapsible = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
+  args: { children: null as never },
   render: args => (
     <Panel {...args}>
       <Panel.Header>
@@ -397,6 +410,9 @@ export const WithCollapsible = meta.story({
 
 WithCollapsible.test(
   'toggles aria-expanded and body visibility via click, Enter, and Space',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const trigger = canvas.getByRole('button', { name: /Advanced Options/ });
     const body = canvas.getByLabelText('Custom URL Slug');
@@ -432,6 +448,7 @@ WithCollapsible.test(
 
 export const ControlledCollapsible = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: function Render() {
     const [expanded, setExpanded] = useState(false);
     return (
@@ -467,19 +484,25 @@ ControlledCollapsible.test(
   }
 );
 
-export const AriaLabeled = meta.story(() => (
-  <Panel aria-label="Collapsible-only panel">
-    <Panel.Content>
-      <Text>
-        A Panel can be labelled with <code>aria-label</code> when there is no
-        visible title — useful for collapsible-only sections.
-      </Text>
-    </Panel.Content>
-  </Panel>
-));
+export const AriaLabeled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: function Render() {
+    return (
+      <Panel aria-label="Collapsible-only panel">
+        <Panel.Content>
+          <Text>
+            A Panel can be labelled with <code>aria-label</code> when there is
+            no visible title — useful for collapsible-only sections.
+          </Text>
+        </Panel.Content>
+      </Panel>
+    );
+  },
+});
 
 export const CollapsibleDefaultExpanded = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Panel>
       <Panel.Header>

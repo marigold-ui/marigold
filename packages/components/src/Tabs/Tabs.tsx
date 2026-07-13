@@ -17,13 +17,13 @@ export interface TabsProps extends Omit<
    * @default false
    */
   disabled?: boolean;
-  size?: 'small' | 'medium' | 'large';
+  size?: string;
   variant?: string;
 }
 
 // component
 // ----------------------
-const _Tabs = ({ disabled, variant, size = 'medium', ...rest }: TabsProps) => {
+const _Tabs = ({ disabled, variant, size, ...rest }: TabsProps) => {
   const props: RAC.TabsProps = {
     isDisabled: disabled,
     ...rest,
@@ -43,7 +43,7 @@ const _Tabs = ({ disabled, variant, size = 'medium', ...rest }: TabsProps) => {
 };
 
 _Tabs.List = TabList;
-_Tabs.TabPanel = TabPanel;
+_Tabs.Panel = TabPanel;
 _Tabs.Item = Tab;
 
 export { _Tabs as Tabs };

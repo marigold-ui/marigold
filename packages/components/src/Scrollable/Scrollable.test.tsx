@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { Scrollable } from './Scrollable';
+import { Basic } from './Scrollable.stories';
 
 test('should be rendered', () => {
   render(
-    <Scrollable data-testid="scroll">
+    <Basic.Component data-testid="scroll">
       <div>something</div>
-    </Scrollable>
+    </Basic.Component>
   );
   const scroll = screen.getByTestId('scroll');
 
@@ -15,26 +15,28 @@ test('should be rendered', () => {
 
 test('should have classNames', () => {
   render(
-    <Scrollable data-testid="scroll">
+    <Basic.Component data-testid="scroll">
       <div>something</div>
-    </Scrollable>
+    </Basic.Component>
   );
   const scroll = screen.getByTestId('scroll');
 
   expect(scroll.className).toMatchInlineSnapshot(
     `"sticky h-(--height) w-(--width) overflow-auto overscroll-auto"`
   );
-  expect(scroll.style.getPropertyValue('--width')).toBe('100%');
+  // Basic defaults to width="1/5", which maps to the fractional calc value.
+  expect(scroll.style.getPropertyValue('--width')).toBe('calc((1 / 5) * 100%)');
   expect(scroll).toBeValid();
 });
 
 test('support width and height prop', () => {
   render(
-    <Scrollable data-testid="scroll" width="1/2" height="200px">
+    <Basic.Component data-testid="scroll" width="1/2" height="200px">
       <div>something</div>
-    </Scrollable>
+    </Basic.Component>
   );
   const scroll = screen.getByTestId('scroll');
+
   expect(scroll.className).toMatchInlineSnapshot(
     `"sticky h-(--height) w-(--width) overflow-auto overscroll-auto"`
   );

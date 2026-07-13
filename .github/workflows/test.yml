@@ -25,7 +25,7 @@ jobs:
       CI: true
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6.0.8
+      - uses: pnpm/action-setup@v6.0.9
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -51,7 +51,11 @@ jobs:
         uses: actions/cache@v5
         with:
           path: node_modules/.vite
-          key: vite-deps-unit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          # Include the vitest/vite config in the key so changing the
+          # optimizeDeps include list actually busts the cache (otherwise a
+          # stale optimization is restored and the new deps are still
+          # discovered at runtime, re-introducing the re-optimization race).
+          key: vite-deps-unit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'vite.config.ts', 'vitest.config.shared.ts') }}
           restore-keys: |
             vite-deps-unit-${{ runner.os }}-
 
@@ -83,7 +87,7 @@ jobs:
       CI: true
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6.0.8
+      - uses: pnpm/action-setup@v6.0.9
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -109,7 +113,11 @@ jobs:
         uses: actions/cache@v5
         with:
           path: node_modules/.vite
-          key: vite-deps-sb-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          # Include the vitest/vite config in the key so changing the
+          # optimizeDeps include list actually busts the cache (otherwise a
+          # stale optimization is restored and the new deps are still
+          # discovered at runtime, re-introducing the re-optimization race).
+          key: vite-deps-sb-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'vite.config.ts', 'vitest.config.shared.ts') }}
           restore-keys: |
             vite-deps-sb-${{ runner.os }}-
 
@@ -147,7 +155,7 @@ jobs:
       CI: true
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6.0.8
+      - uses: pnpm/action-setup@v6.0.9
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:

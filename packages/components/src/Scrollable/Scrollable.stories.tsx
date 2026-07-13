@@ -1,10 +1,5 @@
-import { useEffect, useState } from 'react';
 import preview from '.storybook/preview';
 import { Card } from '../Card/Card';
-import { Headline } from '../Headline/Headline';
-import { List } from '../List/List';
-import { Stack } from '../Stack/Stack';
-import { Table } from '../Table/Table';
 import { Scrollable } from './Scrollable';
 
 const meta = preview.meta({
@@ -40,7 +35,7 @@ const meta = preview.meta({
   args: {},
 });
 
-export const Vertical = meta.story({
+export const Basic = meta.story({
   render: args => (
     <Scrollable height="200px" width="1/5" {...args}>
       <div>
@@ -66,121 +61,36 @@ export const Horizontal = meta.story({
     <Scrollable {...args}>
       <div className="flex gap-2">
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card>
-          <Card.Body>
+          <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
-          </Card.Body>
+          </Card.Content>
         </Card>
       </div>
     </Scrollable>
-  ),
-});
-
-export const WithTable = meta.story({
-  render: args => {
-    const [todos, setTodos] = useState<
-      { userId: string; id: string; title: string; completed: boolean }[]
-    >([]);
-    useEffect(() => {
-      fetch('https://jsonplaceholder.typicode.com/todos')
-        .then(res => res.json())
-        .then(data => setTodos(data));
-    }, []);
-    const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
-    return (
-      <>
-        <Headline level={3}>My Headline</Headline>
-        {tableHeaders.length ? (
-          <Stack space={4}>
-            <Scrollable height="200px" {...args}>
-              <Table aria-label="Todos Table" selectionMode="multiple">
-                <Table.Header>
-                  {tableHeaders.map((header, index) => (
-                    <Table.Column key={index}>{header}</Table.Column>
-                  ))}
-                </Table.Header>
-                <Table.Body>
-                  {todos.map(todo => (
-                    <Table.Row key={`${todo.title}-${todo.id}`}>
-                      <Table.Cell>{todo.id}</Table.Cell>
-                      <Table.Cell>{todo.userId}</Table.Cell>
-                      <Table.Cell>{todo.title}</Table.Cell>
-                      <Table.Cell>{JSON.stringify(todo.completed)}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-            </Scrollable>
-            <div>Some content below the table</div>
-          </Stack>
-        ) : (
-          'Loading data ⬇️ ...... '
-        )}
-      </>
-    );
-  },
-});
-
-export const ListScrolling = meta.story({
-  render: args => (
-    <Card>
-      <Card.Body>
-        <Scrollable height="200px" {...args}>
-          <Headline level={3}>Burger Menu</Headline>
-          <List>
-            <List.Item>
-              Crispy Chicken Burger
-              <List>
-                <List.Item>
-                  Hähnchen Filet im Crunchy Cornflakes Mantel
-                </List.Item>
-              </List>
-            </List.Item>
-            <List.Item>
-              Cream Cheese Chicken Burger
-              <List>
-                <List.Item>
-                  Hähnchen Filet im Crunchy Cornflakes Mantel
-                </List.Item>
-                <List.Item>Rucola</List.Item>
-                <List.Item>Frischkäse</List.Item>
-              </List>
-            </List.Item>
-            <List.Item>
-              Farmer
-              <List>
-                <List.Item>Rindfleisch</List.Item>
-                <List.Item>Bacon</List.Item>
-                <List.Item>Spiegelei</List.Item>
-              </List>
-            </List.Item>
-          </List>
-        </Scrollable>
-      </Card.Body>
-    </Card>
   ),
 });

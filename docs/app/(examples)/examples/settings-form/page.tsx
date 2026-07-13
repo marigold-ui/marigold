@@ -21,15 +21,15 @@ const SettingsFormPage = () => (
         <Tabs.Item id="registration">Registration</Tabs.Item>
         <Tabs.Item id="notifications">Notifications</Tabs.Item>
       </Tabs.List>
-      <Tabs.TabPanel id="general">
+      <Tabs.Panel id="general">
         <GeneralSettings />
-      </Tabs.TabPanel>
-      <Tabs.TabPanel id="registration">
+      </Tabs.Panel>
+      <Tabs.Panel id="registration">
         <RegistrationCapacity />
-      </Tabs.TabPanel>
-      <Tabs.TabPanel id="notifications">
+      </Tabs.Panel>
+      <Tabs.Panel id="notifications">
         <Notifications />
-      </Tabs.TabPanel>
+      </Tabs.Panel>
     </Tabs>
     <DangerZone />
   </Page>

@@ -26,7 +26,7 @@ export const Toast: ThemeComponent<'Toast'> = {
       'ml-2',
       'flex items-center justify-center',
       'size-5 rounded transition-[color,box-shadow] outline-none',
-      'focus-visible:ui-state-focus outline-none text-secondary',
+      'focus-visible:ui-state-focus outline-none text-secondary hover:text-foreground',
     ],
   }),
   icon: cva({

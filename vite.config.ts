@@ -5,7 +5,10 @@ import { playwright } from '@vitest/browser-playwright';
 import { defineConfig, mergeConfig } from 'vitest/config';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import configShared, { browserDeps } from './vitest.config.shared.js';
+import configShared, {
+  browserDeps,
+  browserScanEntries,
+} from './vitest.config.shared.js';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +18,7 @@ export default mergeConfig(
     plugins: [react(), tailwindcss()],
     optimizeDeps: {
       include: browserDeps,
+      entries: browserScanEntries,
     },
     resolve: {
       // Force a single copy of React/React DOM across all entry points so a
@@ -41,6 +45,7 @@ export default mergeConfig(
           },
           optimizeDeps: {
             include: browserDeps,
+            entries: browserScanEntries,
           },
           test: {
             name: 'unit-tests',
@@ -75,7 +80,11 @@ export default mergeConfig(
               // This should match your package.json script to run Storybook
               // The --no-open flag will skip the automatic opening of a browser
               storybookScript: 'pnpm storybook --no-open',
-              storybookUrl: process.env.SB_URL,
+              // Must stay truthy: the addon's in-UI test runner only treats a
+              // project as a Storybook project when `__STORYBOOK_URL__` is set
+              // (isStorybookProject), so an unset SB_URL (the case when running
+              // tests from the Storybook UI) would otherwise collect 0 tests.
+              storybookUrl: process.env.SB_URL ?? 'http://localhost:6006',
               tags: {
                 include: ['component-test'],
               },
@@ -88,6 +97,7 @@ export default mergeConfig(
           },
           optimizeDeps: {
             include: browserDeps,
+            entries: browserScanEntries,
           },
           test: {
             name: 'storybook-tests',

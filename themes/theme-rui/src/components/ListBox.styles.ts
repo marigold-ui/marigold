@@ -3,23 +3,17 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva({
     base: [
-      'flex ui-surface',
-      // Standalone
-      'not-group-data-trigger/popover:',
-      // In a Popover
-      'group-data-trigger/popover:shadow-elevation-overlay',
-      'group-data-trigger/popover:w-full',
-      'group-data-trigger/popover:overflow-hidden',
-      // In a Tray
-      'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
+      // Standalone, a ListBox is a form control: the control surface (opaque
+      // boundary + depth bevel) plus its own elevation.
+      'flex ui-control shadow-elevation-border',
+      // In a Popover or Tray the frame paints the surface, so the list drops its
+      // own boundary, bevel and elevation and just fills it.
+      'group-data-trigger/popover:ring-0 group-data-trigger/popover:inset-shadow-none group-data-trigger/popover:shadow-none group-data-trigger/popover:w-full',
+      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:inset-shadow-none group-[[role=dialog]]/tray:shadow-none',
     ],
   }),
   list: cva({
-    base: [
-      'p-1 text-sm outline-0 space-y-px overflow-y-auto w-full',
-      // `!` overrides the inline `z-index: 0` set by RAC's virtualizer wrapper
-      '[&_:has(>:focus-visible)]:z-1!',
-    ],
+    base: ['p-1 text-sm outline-0 space-y-px overflow-y-auto w-full'],
   }),
   item: cva({
     base: [
@@ -28,7 +22,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
       'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
       'hover:ui-state-hover',
       'disabled:cursor-not-allowed disabled:text-disabled',
-      'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
+      'focus-visible:ui-state-focus outline-none transition-[border,color]',
       'cursor-default data-selection-mode:cursor-pointer',
     ],
   }),

@@ -6,6 +6,9 @@ export const RangeCalendar: ThemeComponent<'RangeCalendar'> = {
   calendarCell: cva({
     base: [
       'h-9 w-full rounded-none',
+      // Cells outside the selected range round their hover/focus highlight to
+      // match the selected state; in-range cells stay square so the fill connects.
+      'not-data-[in-range]:data-hovered:rounded-lg not-data-[in-range]:focus-visible:rounded-lg',
       'data-[in-range]:bg-selected data-[in-range]:text-foreground',
       'selection-start:bg-selected-bold selection-start:text-selected-bold-foreground selection-start:rounded-l-lg',
       'selection-end:bg-selected-bold selection-end:text-selected-bold-foreground selection-end:rounded-r-lg',

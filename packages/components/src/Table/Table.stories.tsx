@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
@@ -189,7 +189,12 @@ export const Basic = meta.story({
       </Table.Body>
     </Table>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+Basic.test(
+  'Renders the table structure, headers and rows',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     await step('Verify table renders with correct structure', async () => {
       const table = canvas.getByRole('grid');
       expect(table).toBeInTheDocument();
@@ -214,8 +219,8 @@ export const Basic = meta.story({
       // 10 users + 1 header row = 11 rows
       expect(rows).toHaveLength(11);
     });
-  },
-});
+  }
+);
 
 export const DynamicData = meta.story({
   tags: ['component-test'],
@@ -291,7 +296,12 @@ export const DynamicData = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+DynamicData.test(
+  'Renders dynamic data and updates the selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
     await step('Verify dynamic data renders correctly', async () => {
       expect(canvas.getByText('Potter')).toBeInTheDocument();
       expect(canvas.getByText('Harry')).toBeInTheDocument();
@@ -318,8 +328,8 @@ export const DynamicData = meta.story({
         expect(selectedText).toBeInTheDocument();
       });
     });
-  },
-});
+  }
+);
 
 export const WidthsAndOverflow = meta.story({
   tags: ['component-test'],
@@ -398,7 +408,11 @@ export const WidthsAndOverflow = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+WidthsAndOverflow.test(
+  'Applies custom widths and toggles truncation',
+  async ({ canvas, userEvent, step }) => {
     await step('Verify table with custom widths renders', async () => {
       expect(canvas.getByText('ID')).toBeInTheDocument();
       expect(canvas.getByText('Ursula Weber')).toBeInTheDocument();
@@ -429,8 +443,8 @@ export const WidthsAndOverflow = meta.story({
       expect(styles.textOverflow).toBe('ellipsis');
       expect(styles.overflow).toBe('hidden');
     });
-  },
-});
+  }
+);
 
 export const Empty = meta.story({
   tags: ['component-test'],
@@ -454,7 +468,12 @@ export const Empty = meta.story({
       </Table.Body>
     </Table>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+Empty.test(
+  'Shows the empty state with headers and no data rows',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     await step('Verify empty state message is displayed', async () => {
       expect(canvas.getByText('No results found.')).toBeInTheDocument();
       expect(
@@ -473,8 +492,8 @@ export const Empty = meta.story({
       const rows = canvas.getAllByRole('row');
       expect(rows).toHaveLength(2);
     });
-  },
-});
+  }
+);
 
 export const Sorting = meta.story({
   tags: ['component-test'],
@@ -623,7 +642,12 @@ export const Sorting = meta.story({
       </>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+Sorting.test(
+  'Sorts by column ascending, descending and by other columns',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
     await step('Verify initial state (no sorting)', async () => {
       expect(canvas.getByText(/Sort:.*\/ ascending/)).toBeInTheDocument();
     });
@@ -671,8 +695,8 @@ export const Sorting = meta.story({
         ).toBeInTheDocument();
       });
     });
-  },
-});
+  }
+);
 
 export const WithActions = meta.story({
   tags: ['component-test'],
@@ -728,7 +752,12 @@ export const WithActions = meta.story({
       </Table.Body>
     </Table>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+WithActions.test(
+  'Opens and uses the row action menu',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
     await step('Verify table renders with data', async () => {
       expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
       expect(canvas.getByText('@schnitzelmeister')).toBeInTheDocument();
@@ -755,10 +784,12 @@ export const WithActions = meta.story({
       expect(canvas.queryByText('Edit')).not.toBeInTheDocument();
       expect(canvas.queryByText('Delete')).not.toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 export const ScrollableAndSticky = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const todos = Array.from({ length: 30 }, (_, i) => ({
       id: i + 1,
@@ -795,6 +826,42 @@ export const ScrollableAndSticky = meta.story({
     );
   },
 });
+
+// Keep the snapshot so Chromatic captures the scrolled state with the header
+// pinned to the top of the viewport.
+ScrollableAndSticky.test(
+  'Keeps the header sticky while scrolling',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const scrollContainer = canvas
+      .getByRole('grid')
+      .closest('.overflow-auto') as HTMLElement;
+
+    await step('Scroll the container down', async () => {
+      // The 30 rows overflow the fixed 400px height, so it can scroll.
+      expect(scrollContainer.scrollHeight).toBeGreaterThan(
+        scrollContainer.clientHeight
+      );
+
+      scrollContainer.scrollTop = 150;
+      expect(scrollContainer.scrollTop).toBeGreaterThan(0);
+    });
+
+    await step('Header stays pinned to the top of the viewport', async () => {
+      const thead = canvas
+        .getByRole('columnheader', { name: 'ID' })
+        .closest('thead') as HTMLElement;
+
+      expect(thead).toHaveClass('sticky', 'top-0');
+
+      // After scrolling, the sticky header should sit at the top edge of the
+      // scroll viewport rather than scrolling away with the rows.
+      const headerTop = thead.getBoundingClientRect().top;
+      const containerTop = scrollContainer.getBoundingClientRect().top;
+      expect(Math.abs(headerTop - containerTop)).toBeLessThan(5);
+    });
+  }
+);
 
 export const Links = meta.story({
   tags: ['component-test'],
@@ -836,7 +903,12 @@ export const Links = meta.story({
       </Table>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+Links.test(
+  'Renders rows as links with descriptions',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     await step('Verify table with links renders', async () => {
       expect(canvas.getByText('Marigold')).toBeInTheDocument();
       expect(canvas.getByText('Reservix')).toBeInTheDocument();
@@ -855,8 +927,8 @@ export const Links = meta.story({
       expect(canvas.getByText('Ticketing Platform')).toBeInTheDocument();
       expect(canvas.getByText('Event Ticketing Service')).toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 export const DragAndDrop = meta.story({
   tags: ['component-test'],
@@ -893,29 +965,36 @@ export const DragAndDrop = meta.story({
     });
 
     return (
-      <Table
-        aria-label="Reorderable files"
-        dragAndDropHooks={dragAndDropHooks}
-        {...args}
-      >
-        <Table.Header>
-          <Table.Column rowHeader>Name</Table.Column>
-          <Table.Column>Email</Table.Column>
-          <Table.Column>Location</Table.Column>
-        </Table.Header>
-        <Table.Body items={list.items}>
-          {item => (
-            <Table.Row>
-              <Table.Cell>{item.name}</Table.Cell>
-              <Table.Cell>{item.email}</Table.Cell>
-              <Table.Cell>{item.location}</Table.Cell>
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
+      <I18nProvider locale="en">
+        <Table
+          aria-label="Reorderable files"
+          dragAndDropHooks={dragAndDropHooks}
+          {...args}
+        >
+          <Table.Header>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Location</Table.Column>
+          </Table.Header>
+          <Table.Body items={list.items}>
+            {item => (
+              <Table.Row textValue={item.name}>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell>{item.location}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      </I18nProvider>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+DragAndDrop.test(
+  'Renders draggable rows in their initial order',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     await step('Verify table with drag and drop renders', async () => {
       const table = canvas.getByRole('grid');
       expect(table).toBeInTheDocument();
@@ -933,8 +1012,13 @@ export const DragAndDrop = meta.story({
     });
 
     await step('Verify rows are draggable', async () => {
-      const firstRow = canvas.getByText('Hans Müller').closest('tr');
-      expect(firstRow).toHaveAttribute('draggable', 'true');
+      // React Aria wires up drag and drop in an effect after mount, so the
+      // `draggable` attribute appears asynchronously. Wait for it instead of
+      // asserting synchronously, otherwise re-runs race the effect.
+      await waitFor(() => {
+        const firstRow = canvas.getByText('Hans Müller').closest('tr');
+        expect(firstRow).toHaveAttribute('draggable', 'true');
+      });
     });
 
     await step('Verify drop indicator has correct styling', async () => {
@@ -943,11 +1027,65 @@ export const DragAndDrop = meta.story({
       const table = canvas.getByRole('grid');
       expect(table).toBeInTheDocument();
     });
-  },
-});
+  }
+);
+
+DragAndDrop.test(
+  'Reorders rows with keyboard drag and drop',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    // Because selection is enabled, React Aria adds a focusable drag affordance
+    // ("Drag …" button) to each row for keyboard drag and drop.
+    const firstRow = canvas.getByText('Hans Müller').closest('tr')!;
+    const dragHandle = within(firstRow).getByRole('button', { name: /drag/i });
+
+    await step('Pick up the first row (Hans Müller)', async () => {
+      // Enter starts the keyboard drag and moves focus straight to a drop
+      // indicator inside the collection (Tab would leave drop navigation).
+      dragHandle.focus();
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Drop it between Fritz Schneider and Klaus Becker', async () => {
+      // Move to the topmost drop position, then arrow down until the focused
+      // indicator targets the slot between Fritz and Klaus, and drop.
+      for (let i = 0; i < 6; i++) {
+        await userEvent.keyboard('{ArrowUp}');
+      }
+
+      const target = /Fritz Schneider[\s\S]*Klaus Becker/i;
+      let dropped = false;
+
+      for (let i = 0; i < 8; i++) {
+        const label = document.activeElement?.getAttribute('aria-label') ?? '';
+
+        if (target.test(label)) {
+          await userEvent.keyboard('{Enter}');
+          dropped = true;
+          break;
+        }
+        await userEvent.keyboard('{ArrowDown}');
+      }
+
+      expect(dropped).toBe(true);
+    });
+
+    await step('Verify Hans Müller moved after Fritz Schneider', async () => {
+      await waitFor(() => {
+        const rows = canvas.getAllByRole('row');
+        expect(
+          within(rows[1]).getByText('Fritz Schneider')
+        ).toBeInTheDocument();
+        expect(within(rows[2]).getByText('Hans Müller')).toBeInTheDocument();
+        expect(within(rows[3]).getByText('Klaus Becker')).toBeInTheDocument();
+      });
+    });
+  }
+);
 
 export const AllowTextSelection = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'multiple',
   },
@@ -990,7 +1128,12 @@ export const AllowTextSelection = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+AllowTextSelection.test(
+  'Toggles text selection behavior',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
     const cell = canvas.getByText('Hans Müller');
 
     await step(
@@ -1030,11 +1173,12 @@ export const AllowTextSelection = meta.story({
         expect(selection?.toString()).toBe('Hans Müller');
       });
     });
-  },
-});
+  }
+);
 
 export const EditableCell = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [data, setData] = useState(users.slice(0, 5).map(u => ({ ...u })));
 
@@ -1141,7 +1285,11 @@ export const EditableCell = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+EditableCell.test(
+  'Edits, saves and cancels editable cells',
+  async ({ canvas, userEvent, step }) => {
     const editButtons = canvas.getAllByLabelText('Edit');
 
     await step('Open editor, verify focus and text selection', async () => {
@@ -1254,11 +1402,37 @@ export const EditableCell = meta.story({
         expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
       });
     });
-  },
-});
+  }
+);
+
+// Keep the snapshot so Chromatic captures the open inline editor.
+EditableCell.test(
+  'Opens the editor with an edited value',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('Open the first cell editor and change its value', async () => {
+      const editButtons = canvas.getAllByLabelText('Edit');
+      await userEvent.click(editButtons[0]);
+
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+      });
+
+      const nameInput = canvas.getByLabelText('Name');
+      await userEvent.clear(nameInput);
+      await userEvent.type(nameInput, 'Edited Name');
+
+      // Leave the editor open so the snapshot captures the inline editing state.
+      expect(nameInput).toHaveValue('Edited Name');
+      expect(canvas.getByRole('button', { name: 'Save' })).toBeVisible();
+      expect(canvas.getByRole('button', { name: 'Cancel' })).toBeVisible();
+    });
+  }
+);
 
 export const DynamicColumnsAndRows = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const columns = [
       { name: 'Name', id: 'name', rowHeader: true },
@@ -1335,7 +1509,11 @@ export const DynamicColumnsAndRows = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+DynamicColumnsAndRows.test(
+  'Toggles columns and adds rows',
+  async ({ canvas, userEvent, step }) => {
     await step('Verify initial columns are visible', async () => {
       expect(
         canvas.getByRole('columnheader', { name: 'Name' })
@@ -1427,12 +1605,13 @@ export const DynamicColumnsAndRows = meta.story({
         expect(rows).toHaveLength(6);
       });
     });
-  },
-});
+  }
+);
 
 /* ================ STORIES FOR TESTING ================ */
 
 export const CellOverrideTableTruncate = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: {
     overflow: 'truncate',
@@ -1455,7 +1634,12 @@ export const CellOverrideTableTruncate = meta.story({
       </Table.Body>
     </Table>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+// Story already disables its snapshot, so the test case inherits that.
+CellOverrideTableTruncate.test(
+  'Inherits the table truncate default and overrides per cell',
+  async ({ canvas, step }) => {
     await step('Verify first cell uses table default (truncate)', async () => {
       const cell = canvas.getByText(/truncate behavior/);
       expect(cell).toHaveClass('truncate');
@@ -1466,8 +1650,8 @@ export const CellOverrideTableTruncate = meta.story({
       expect(cell).toHaveClass('wrap-break-word');
       expect(cell).not.toHaveClass('truncate');
     });
-  },
-});
+  }
+);
 
 export const VerticalAlignment = meta.story({
   args: {
@@ -1545,7 +1729,12 @@ export const DragPreview = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+DragPreview.test(
+  'Renders drag previews with first item text and counts',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     await step('Verify single item renders with text and count', async () => {
       const section = canvas.getByTestId('single-item-preview');
       expect(within(section).getByText('Single Item')).toBeInTheDocument();
@@ -1580,8 +1769,8 @@ export const DragPreview = meta.story({
       expect(within(section).getByText('Item 1')).toBeInTheDocument();
       expect(within(section).getByText('3')).toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 export const ColumnAlignment = meta.story({
   tags: ['component-test'],
@@ -1610,7 +1799,13 @@ export const ColumnAlignment = meta.story({
       </Table.Body>
     </Table>
   ),
-  play: async ({ canvas, step }) => {
+});
+
+// Story already disables its snapshot, so the test case inherits that.
+ColumnAlignment.test(
+  'Inherits column alignment in cells',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     await step(
       'First column (index 0) inherits alignX from Column',
       async () => {
@@ -1634,5 +1829,5 @@ export const ColumnAlignment = meta.story({
         expect(secondCellContent).toHaveClass('text-center');
       }
     );
-  },
-});
+  }
+);

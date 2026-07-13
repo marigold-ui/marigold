@@ -22,6 +22,16 @@ test('respects an explicit "level" prop', () => {
   expect(screen.getByTestId('title').tagName).toBe('H3');
 });
 
+test('accepts the string form of "level"', () => {
+  render(
+    <Basic.Component level="3" data-testid="title">
+      Hi
+    </Basic.Component>
+  );
+
+  expect(screen.getByTestId('title').tagName).toBe('H3');
+});
+
 test('receives "level" from a HeadingContext slot', () => {
   render(
     <Provider values={[[HeadingContext, { slots: { title: { level: 4 } } }]]}>

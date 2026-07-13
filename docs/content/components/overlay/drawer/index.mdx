@@ -1,7 +1,6 @@
 ---
 title: Drawer
 description: Component for showing additional content alongside the main page.
-badge: updated
 ---
 
 import { DrawerAnatomy } from './drawer-anatomy';
@@ -154,6 +153,12 @@ Users select rows in a table, an [ActionBar](/components/collection/actionbar) a
 The drawer keeps the selected rows visible so users can confirm the selection while editing. Bulk edit stays within the single-layer rule because the fields are flat and identical across all selected records: one form applied to N rows, not N forms or nested edits. The boundary is clean: single-verb bulk actions (delete, archive, assign) belong in the action bar, while multi-field bulk edit belongs in a drawer triggered from it. Destructive bulk actions still need a confirm dialog after the verb.
 
 <ComponentDemo name="drawer-bulk-edit" />
+
+### Title and description
+
+`<Drawer.Title>` and `<Drawer.Description>` are slot-aware: the heading level, id, and `aria-labelledby` wiring are handled for you. `<Drawer.Header>` is an optional layout wrapper that groups a title and description into one header zone. For a title-only drawer, drop the title straight into `<Drawer>` without a header.
+
+<ComponentDemo name="drawer-title-only" />
 
 ### Accessibility
 

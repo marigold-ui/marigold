@@ -31,7 +31,7 @@ test('check classname slots', () => {
     `"group/field flex min-w-0 flex-col w-auto"`
   );
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
   );
 });
 
@@ -110,7 +110,10 @@ test('hides loading state when loading is false', () => {
 });
 
 test('does not allow width="fit"', () => {
-  renderWithOverlay(<Basic.Component label="Label" width="fit" />);
+  renderWithOverlay(
+    // @ts-expect-error - `width="fit"` is intentionally unsupported; assert it is not applied
+    <Basic.Component label="Label" width="fit" />
+  );
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;

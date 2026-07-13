@@ -8,7 +8,7 @@ test('renders label and group of checkboxes', () => {
   expect(screen.getByText('Ham')).toBeInTheDocument();
   expect(screen.getByText('Salami')).toBeInTheDocument();
   expect(screen.getByText('Cheese')).toBeInTheDocument();
-  expect(screen.getByText('Tomate')).toBeInTheDocument();
+  expect(screen.getByText('Tomato')).toBeInTheDocument();
   expect(screen.getByText('Cucumber')).toBeInTheDocument();
   expect(screen.getByText('Onions')).toBeInTheDocument();
   expect(screen.getAllByRole('checkbox').length).toBe(6);
@@ -143,7 +143,12 @@ test('horizontal orientation applies flex-row', () => {
 test('vertical orientation: items keep the py-1 modifier class', () => {
   render(<Basic.Component />);
 
-  expect(screen.getByTestId('one').className).toContain(
+  // The orientation padding lives on the presentational `CheckboxButton` (the
+  // rendered `label`); the consumer's `data-testid` lands on the `CheckboxField`
+  // wrapper, which is `display: contents` and carries no box of its own.
+  // eslint-disable-next-line testing-library/no-node-access
+  const button = screen.getByTestId('one').querySelector('label');
+  expect(button?.className).toContain(
     'group-data-[orientation=vertical]/checkboxgroup:py-1'
   );
 });
@@ -151,7 +156,9 @@ test('vertical orientation: items keep the py-1 modifier class', () => {
 test('horizontal orientation: items keep the px-1.5 modifier class', () => {
   render(<Basic.Component orientation="horizontal" />);
 
-  expect(screen.getByTestId('one').className).toContain(
+  // eslint-disable-next-line testing-library/no-node-access
+  const button = screen.getByTestId('one').querySelector('label');
+  expect(button?.className).toContain(
     'group-data-[orientation=horizontal]/checkboxgroup:px-1.5'
   );
 });

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Download, Facebook } from '@marigold/icons';
+import { Facebook } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
 
@@ -83,17 +83,25 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  args: {
-    onPress: fn(),
-  },
   render: args => <Button {...args}>Button</Button>,
-  play: async ({ args, canvas }) => {
-    await userEvent.click(canvas.getByText('Button'));
+});
+
+Basic.test(
+  'Calls onPress when clicked',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+    args: {
+      onPress: fn(),
+    },
+  },
+  async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('button'));
 
     await expect(args.onPress).toHaveBeenCalled();
-    await expect(canvas.getByText('Button')).toHaveTextContent('Button');
-  },
-});
+  }
+);
 
 export const ButtonVariants = meta.story({
   tags: ['component-test'],
@@ -122,18 +130,12 @@ export const ButtonVariants = meta.story({
       <Button {...args} variant="link">
         Link
       </Button>
+      <Button {...args}>
+        <Facebook size={30} data-testid="facebook" />
+        Submit
+      </Button>
     </Stack>
   ),
-  play: async ({ args, canvas }) => {
-    const buttons = canvas.getAllByRole('button');
-    await userEvent.click(buttons[0]);
-    await userEvent.click(buttons[1]);
-    await userEvent.click(buttons[2]);
-    await userEvent.click(buttons[3]);
-    await userEvent.click(buttons[4]);
-
-    await expect(args.onPress).toHaveBeenCalledTimes(5);
-  },
 });
 
 export const GhostOnBackground = meta.story({
@@ -151,21 +153,6 @@ export const GhostOnBackground = meta.story({
       </div>
     </Stack>
   ),
-});
-
-export const WithIcon = meta.story({
-  render: ({ children, ...args }) => (
-    <Button {...args}>
-      <Download data-testid="download" />
-      {children}
-    </Button>
-  ),
-});
-
-export const OnPress = meta.story({
-  args: {
-    onPress: () => alert('Button clicked.'),
-  },
 });
 
 export const FullWidth = meta.story({
@@ -202,30 +189,19 @@ export const Loading = meta.story({
   },
 });
 
-export const LoadingWithIcon = meta.story({
-  parameters: {
-    controls: { exclude: ['loading'] },
+Loading.test(
+  'Shows a spinner while loading',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
   },
-  render: ({ children, ...args }) => {
-    const [loading, setLoading] = useState<boolean>(false);
-    const handleSubmit = async () => {
-      //avoid multiple submits while loading
-      if (loading) {
-        return;
-      }
+  async ({ canvas }) => {
+    const button = canvas.getByRole('button');
 
-      setLoading(true);
-      try {
-        await new Promise<void>(resolve => setTimeout(resolve, 4000));
-      } finally {
-        setLoading(false);
-      }
-    };
-    return (
-      <Button {...args} onPress={() => handleSubmit()} loading={loading}>
-        <Facebook />
-        {children}
-      </Button>
-    );
-  },
-});
+    await userEvent.click(button);
+
+    await expect(await canvas.findByRole('progressbar')).toBeInTheDocument();
+    await expect(button).toHaveAttribute('data-pending', 'true');
+  }
+);

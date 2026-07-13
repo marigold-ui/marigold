@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Accessibility } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
@@ -52,9 +53,8 @@ const meta = preview.meta({
   },
 });
 
-export const Basic = meta.story({ render: args => <Badge {...args} /> });
-
-export const All = meta.story({
+export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <Stack space={2} alignX="left">
       <Badge {...args} variant="default" />
@@ -65,17 +65,28 @@ export const All = meta.story({
       <Badge {...args} variant="error" />
       <Badge {...args} variant="master" />
       <Badge {...args} variant="admin" />
+      <Badge {...args}>
+        <Accessibility />
+      </Badge>
     </Stack>
   ),
 });
 
-export const Icon = meta.story({
-  parameters: {
-    controls: { exclude: ['children'] },
-  },
-  render: args => (
-    <Badge {...args}>
-      <Accessibility />
-    </Badge>
-  ),
-});
+Basic.test(
+  'access badges render the icon without an extra access label',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // Variant order follows the render above.
+    const badges = canvas.getAllByText('Status');
+    const master = badges[6];
+    const admin = badges[7];
+
+    // The icon is decorative; the Badge gets no hidden access label because
+    // its visible label is the access level itself — anything more would
+    // double-announce.
+    expect(master.querySelector('svg')).toBeInTheDocument();
+    expect(master.textContent).toBe('Status');
+    expect(admin.querySelector('svg')).toBeInTheDocument();
+    expect(admin.textContent).toBe('Status');
+  }
+);

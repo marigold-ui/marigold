@@ -9,9 +9,9 @@ export default (props: TabsProps) => (
         <Tabs.Item id="past">Past</Tabs.Item>
         <Tabs.Item id="cancelled">Cancelled</Tabs.Item>
       </Tabs.List>
-      <Tabs.TabPanel id="upcoming">Upcoming events.</Tabs.TabPanel>
-      <Tabs.TabPanel id="past">Past events.</Tabs.TabPanel>
-      <Tabs.TabPanel id="cancelled">Cancelled events</Tabs.TabPanel>
+      <Tabs.Panel id="upcoming">Upcoming events.</Tabs.Panel>
+      <Tabs.Panel id="past">Past events.</Tabs.Panel>
+      <Tabs.Panel id="cancelled">Cancelled events</Tabs.Panel>
     </Tabs>
   </>
 );

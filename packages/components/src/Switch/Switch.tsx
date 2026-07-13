@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Switch, SwitchContext } from 'react-aria-components/Switch';
+import { SwitchButton, SwitchField } from 'react-aria-components/Switch';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Label } from '../Label/Label';
@@ -12,9 +12,10 @@ type RemovedProps =
   | 'isDisabled'
   | 'isReadOnly'
   | 'isSelected'
+  | 'isInvalid'
   | 'slot';
 
-export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
+export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
   variant?: string;
   size?: string;
 
@@ -29,6 +30,18 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   description?: ReactNode;
 
   /**
+   * If `true`, the switch is considered invalid and, if set, the `errorMessage`
+   * is shown instead of the `description`.
+   * @default false
+   */
+  error?: RAC.SwitchFieldProps['isInvalid'];
+
+  /**
+   * An error message shown when `error` is set.
+   */
+  errorMessage?: ReactNode;
+
+  /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    *
    * Numeric/scale values are spacing-scale tokens, not pixels: `width={64}`
@@ -41,19 +54,19 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
    * Disables the switch.
    * @default false
    */
-  disabled?: RAC.SwitchProps['isDisabled'];
+  disabled?: RAC.SwitchFieldProps['isDisabled'];
 
   /**
    * Set the switch to read-only.
    * @default false
    */
-  readOnly?: RAC.SwitchProps['isReadOnly'];
+  readOnly?: RAC.SwitchFieldProps['isReadOnly'];
 
   /**
    * With this prop you can set the switch selected.
    * @default false
    */
-  selected?: RAC.SwitchProps['isSelected'];
+  selected?: RAC.SwitchFieldProps['isSelected'];
   ref?: Ref<HTMLLabelElement>;
 }
 
@@ -63,6 +76,8 @@ const _Switch = ({
   width = 'full',
   label,
   description,
+  error,
+  errorMessage,
   selected,
   disabled,
   readOnly,
@@ -75,15 +90,20 @@ const _Switch = ({
     isReadOnly: readOnly,
     isSelected: selected,
     ...rest,
-  } satisfies RAC.SwitchProps;
+  } satisfies RAC.SwitchFieldProps;
   return (
+    // The `SwitchButton` (the rendered `label`) carries the width, matching the
+    // standalone layout.
     <BooleanField
+      as={SwitchField}
       description={description}
+      errorMessage={errorMessage}
+      error={error}
       variant={variant}
-      context={SwitchContext}
+      size={size}
+      {...props}
     >
-      <Switch
-        {...props}
+      <SwitchButton
         ref={ref}
         className={cn('group/switch w-(--width)', classNames.container)}
         style={createWidthVar('width', width)}
@@ -99,7 +119,7 @@ const _Switch = ({
         {variant !== 'settings' && label && (
           <Label elementType="span">{label}</Label>
         )}
-      </Switch>
+      </SwitchButton>
     </BooleanField>
   );
 };

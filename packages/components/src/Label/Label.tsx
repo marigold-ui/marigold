@@ -2,7 +2,7 @@ import type RAC from 'react-aria-components';
 import { Label } from 'react-aria-components/Label';
 import { cn, useClassNames } from '@marigold/system';
 
-type RemovedProps = 'className';
+type RemovedProps = 'className' | 'style';
 export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
   size?: string;
   variant?: string;

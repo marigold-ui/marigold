@@ -19,7 +19,7 @@ export default () => (
         Sales Notes <Badge variant="admin">Admin</Badge>
       </Tabs.Item>
     </Tabs.List>
-    <Tabs.TabPanel id="overview">
+    <Tabs.Panel id="overview">
       <Stack space={4}>
         <TextField
           label="Organizer Name"
@@ -37,7 +37,7 @@ export default () => (
           <Select.Option id="freelancer">Freelancer</Select.Option>
         </Select>
         <Card variant="master">
-          <Card.Body>
+          <Card.Content>
             <Select
               label={
                 <>
@@ -53,10 +53,10 @@ export default () => (
               <Select.Option id="keyaccounts">Key Accounts</Select.Option>
               <Select.Option id="regional">Regional Sales</Select.Option>
             </Select>
-          </Card.Body>
+          </Card.Content>
         </Card>
         <Card variant="admin">
-          <Card.Body>
+          <Card.Content>
             <Checkbox
               label={
                 <>
@@ -66,11 +66,11 @@ export default () => (
               description="Allow system diagnostics and data collection for this organizer to improve service quality."
               defaultChecked
             />
-          </Card.Body>
+          </Card.Content>
         </Card>
       </Stack>
-    </Tabs.TabPanel>
-    <Tabs.TabPanel id="events">
+    </Tabs.Panel>
+    <Tabs.Panel id="events">
       <Table aria-label="Event List">
         <Table.Header>
           <Table.Column rowHeader>Name</Table.Column>
@@ -111,8 +111,8 @@ export default () => (
           </Table.Row>
         </Table.Body>
       </Table>
-    </Tabs.TabPanel>
-    <Tabs.TabPanel id="sales">
+    </Tabs.Panel>
+    <Tabs.Panel id="sales">
       <List>
         <List.Item>
           Reached out at Event Business Forum 2023. Very interested in bundling
@@ -131,6 +131,6 @@ export default () => (
           side before next steps.
         </List.Item>
       </List>
-    </Tabs.TabPanel>
+    </Tabs.Panel>
   </Tabs>
 );

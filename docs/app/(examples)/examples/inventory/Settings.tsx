@@ -38,7 +38,7 @@ export const Settings = () => (
           <Bell className="size-4" /> Notifications
         </Tabs.Item>
       </Tabs.List>
-      <Tabs.TabPanel id="profile">
+      <Tabs.Panel id="profile">
         <Panel size="form">
           <Panel.Header>
             <Title>Profile</Title>
@@ -73,8 +73,8 @@ export const Settings = () => (
             </Columns>
           </Panel.Content>
         </Panel>
-      </Tabs.TabPanel>
-      <Tabs.TabPanel id="security">
+      </Tabs.Panel>
+      <Tabs.Panel id="security">
         <Panel size="form">
           <Panel.Header>
             <Title>Security</Title>
@@ -95,8 +95,8 @@ export const Settings = () => (
             </Stack>
           </Panel.Content>
         </Panel>
-      </Tabs.TabPanel>
-      <Tabs.TabPanel id="notifications">
+      </Tabs.Panel>
+      <Tabs.Panel id="notifications">
         <Panel size="form">
           <Panel.Header>
             <Title>Notifications</Title>
@@ -127,7 +127,7 @@ export const Settings = () => (
             </Stack>
           </Panel.Content>
         </Panel>
-      </Tabs.TabPanel>
+      </Tabs.Panel>
     </Tabs>
   </Stack>
 );

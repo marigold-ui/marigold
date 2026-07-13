@@ -11,7 +11,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   container: cva({
     base: [
       'w-full relative grid-rows-[auto_1fr_auto]',
-      'rounded-xl ui-surface util-scrollbar',
+      'rounded-xl ui-surface ui-scrollbar',
       'shadow-[var(--shadow-elevation-overlay),0_0_3px_1px_oklch(0_0_0/0.06)]',
       '[--ui-border-color:oklch(from_var(--color-border)_calc(l-0.1)_c_h)]',
       'h-full',
@@ -27,6 +27,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
   header: cva({ base: 'ui-panel-header' }),
   title: cva({ base: 'font-semibold text-base' }),
+  description: cva({ base: 'text-sm text-secondary mt-0.5' }),
   content: cva({ base: 'ui-panel-content' }),
   actions: cva({ base: 'ui-panel-actions' }),
 };

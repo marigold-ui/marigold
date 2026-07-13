@@ -3,12 +3,12 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const DateField: ThemeComponent<'DateField'> = {
   field: cva({
     base: [
-      'ui-surface shadow-elevation-border h-control',
+      'ui-control shadow-elevation-border h-control',
       'flex items-center',
       'disabled:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',
       'has-focus:ui-state-focus',
-      'has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive)]',
+      'has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)]',
     ],
   }),
   input: cva({ base: ['ui-input', 'cursor-text'] }),

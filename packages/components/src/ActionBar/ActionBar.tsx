@@ -2,6 +2,7 @@ import * as m from 'motion/react-m';
 import type { ReactNode, Ref } from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Toolbar } from 'react-aria-components/Toolbar';
+import { Provider } from 'react-aria-components/slots';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useKeyboard } from '@react-aria/interactions';
@@ -12,16 +13,20 @@ import {
   useResizeObserver,
 } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
+import { ButtonContext } from '../Button/Context';
 import { IconButton } from '../IconButton/IconButton';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 import { MotionFeatures } from '../lazyMotion';
-import { ActionBarButton } from './ActionBarButton';
 import { useActionBarContext } from './ActionBarContext';
+
+// Cascade a ghost/default look onto plain `<Button>` children; a local
+// `variant`/`size` still wins, so an icon-only action opts into `size="icon"`.
+const actionButtonContext = { variant: 'ghost', size: 'default' } as const;
 
 export interface ActionBarProps {
   /**
-   * A list of ActionButtons to display.
+   * The action buttons to display.
    */
   children?: ReactNode;
 
@@ -137,12 +142,14 @@ const ActionBarInner = ({
             </div>
           </div>
 
-          <Toolbar
-            className={classNames.toolbar}
-            aria-label={stringFormatter.format('bulkActionsAriaLabel')}
-          >
-            {children}
-          </Toolbar>
+          <Provider values={[[ButtonContext, actionButtonContext]]}>
+            <Toolbar
+              className={classNames.toolbar}
+              aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+            >
+              {children}
+            </Toolbar>
+          </Provider>
         </m.div>
       </MotionFeatures>
 
@@ -158,7 +165,7 @@ const ActionBarInner = ({
 
 // Outer
 // ---------------
-const ActionBarBase = ({
+const ActionBar = ({
   children,
   id,
   onClearSelection: onClearSelectionProp,
@@ -221,9 +228,5 @@ const ActionBarBase = ({
     </ActionBarInner>
   );
 };
-
-const ActionBar = Object.assign(ActionBarBase, {
-  Button: ActionBarButton,
-});
 
 export { ActionBar };

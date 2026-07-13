@@ -2,8 +2,18 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { makeFile } from './../test.utils';
-import { Basic, MultipleFileUpload } from './FileField.stories';
+import { Basic, UploadFile } from './FileField.stories';
+import { makeFile } from './makeFile';
+
+const dropFiles = (dropzone: Element, files: File[]) => {
+  const dataTransfer = new DataTransfer();
+  files.forEach(file => dataTransfer.items.add(file));
+  for (const type of ['dragenter', 'dragover', 'drop']) {
+    dropzone.dispatchEvent(
+      new DragEvent(type, { bubbles: true, cancelable: true, dataTransfer })
+    );
+  }
+};
 
 test('renders default labels (en) for dropzone and button', () => {
   render(<Basic.Component label="Label" />);
@@ -15,7 +25,7 @@ test('renders default labels (en) for dropzone and button', () => {
 test('renders German labels when locale is de-DE', () => {
   render(
     <I18nProvider locale="de-DE">
-      <MultipleFileUpload.Component label="Label" />
+      <UploadFile.Component label="Label" multiple />
     </I18nProvider>
   );
 
@@ -44,10 +54,67 @@ test('when multiple is false, only first file is kept', async () => {
   expect(screen.queryByText('pic.jpg')).not.toBeInTheDocument();
 });
 
+test('when multiple, files selected in separate interactions accumulate', async () => {
+  const user = userEvent.setup();
+  render(<UploadFile.Component multiple />);
+
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+
+  const fileA = makeFile('a.pdf', 'application/pdf');
+  const fileB = makeFile('b.pdf', 'application/pdf');
+
+  await user.upload(input, [fileA]);
+  await user.upload(input, [fileB]);
+
+  const items = screen.getAllByRole('button', { name: 'Remove file' });
+  expect(items.length).toBe(2);
+  expect(screen.getByText('a.pdf')).toBeInTheDocument();
+  expect(screen.getByText('b.pdf')).toBeInTheDocument();
+});
+
+test('when multiple, re-selecting the same file does not duplicate it', async () => {
+  const user = userEvent.setup();
+  render(<UploadFile.Component multiple />);
+
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+
+  const file = makeFile('a.pdf', 'application/pdf');
+
+  await user.upload(input, [file]);
+  await user.upload(input, [file]);
+
+  const items = screen.getAllByRole('button', { name: 'Remove file' });
+  expect(items.length).toBe(1);
+});
+
+test('when multiple is false, a later selection replaces the previous one', async () => {
+  const user = userEvent.setup();
+  render(<Basic.Component />);
+
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+
+  const fileA = makeFile('a.pdf', 'application/pdf');
+  const fileB = makeFile('b.pdf', 'application/pdf');
+
+  await user.upload(input, [fileA]);
+  await user.upload(input, [fileB]);
+
+  const items = screen.getAllByRole('button', { name: 'Remove file' });
+  expect(items.length).toBe(1);
+  expect(screen.getByText('b.pdf')).toBeInTheDocument();
+  expect(screen.queryByText('a.pdf')).not.toBeInTheDocument();
+});
+
 test('accepts prop filters files', async () => {
   const user = userEvent.setup();
   render(
-    <MultipleFileUpload.Component label="Label" accept={['image/*', '.pdf']} />
+    <UploadFile.Component label="Label" accept={['image/*', '.pdf']} multiple />
   );
 
   const input = document.querySelector(
@@ -67,7 +134,7 @@ test('accepts prop filters files', async () => {
 
 test('remove button removes the corresponding file', async () => {
   const user = userEvent.setup();
-  render(<MultipleFileUpload.Component />);
+  render(<UploadFile.Component multiple />);
 
   const input = document.querySelector(
     'input[type="file"]'
@@ -119,9 +186,7 @@ test('renders hidden input when name is set', () => {
 });
 
 test('hidden input has multiple attribute when multiple is true', () => {
-  render(
-    <MultipleFileUpload.Component label="Label" name="attachment" multiple />
-  );
+  render(<UploadFile.Component label="Label" name="attachment" multiple />);
 
   const hiddenInput = document.querySelector(
     'input[type="file"][name="attachment"]'
@@ -131,7 +196,7 @@ test('hidden input has multiple attribute when multiple is true', () => {
 
 test('hidden input persists after file selection', async () => {
   const user = userEvent.setup();
-  render(<MultipleFileUpload.Component label="Label" name="docs" multiple />);
+  render(<UploadFile.Component label="Label" name="docs" multiple />);
 
   const triggerInput = document.querySelector(
     'input[type="file"]:not([hidden])'
@@ -152,7 +217,7 @@ test('hidden input persists after file selection', async () => {
 
 test('hidden input persists after file removal', async () => {
   const user = userEvent.setup();
-  render(<MultipleFileUpload.Component label="Label" name="docs" multiple />);
+  render(<UploadFile.Component label="Label" name="docs" multiple />);
 
   const triggerInput = document.querySelector(
     'input[type="file"]:not([hidden])'
@@ -180,30 +245,31 @@ test('handles file drop on dropzone', async () => {
   const dropzone = screen.getByTestId('dropzone');
   const file = makeFile('dropped.pdf', 'application/pdf');
 
-  const dataTransfer = new DataTransfer();
-  dataTransfer.items.add(file);
-
-  const dragEnter = new DragEvent('dragenter', {
-    bubbles: true,
-    cancelable: true,
-    dataTransfer,
-  });
-  const dragOver = new DragEvent('dragover', {
-    bubbles: true,
-    cancelable: true,
-    dataTransfer,
-  });
-  const drop = new DragEvent('drop', {
-    bubbles: true,
-    cancelable: true,
-    dataTransfer,
-  });
-
-  dropzone.dispatchEvent(dragEnter);
-  dropzone.dispatchEvent(dragOver);
-  dropzone.dispatchEvent(drop);
+  dropFiles(dropzone, [file]);
 
   await waitFor(() => {
     expect(screen.getByText('dropped.pdf')).toBeInTheDocument();
   });
+});
+
+test('when multiple, a dropped file is added to already selected files', async () => {
+  const user = userEvent.setup();
+  render(<UploadFile.Component label="Label" multiple />);
+
+  const input = document.querySelector(
+    'input[type="file"]:not([hidden])'
+  ) as HTMLInputElement;
+
+  const selected = makeFile('selected.pdf', 'application/pdf');
+  await user.upload(input, [selected]);
+
+  const dropzone = screen.getByTestId('dropzone');
+  const dropped = makeFile('dropped.pdf', 'application/pdf');
+
+  dropFiles(dropzone, [dropped]);
+
+  await waitFor(() => {
+    expect(screen.getByText('dropped.pdf')).toBeInTheDocument();
+  });
+  expect(screen.getByText('selected.pdf')).toBeInTheDocument();
 });

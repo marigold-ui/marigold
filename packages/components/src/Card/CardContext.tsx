@@ -19,7 +19,7 @@ export const useCardContext = () => {
 
   if (ctx === null) {
     throw Error(
-      'You can only use Card sub-components (Card.Header, Card.Body, Card.Footer, Card.Media) within a <Card> component.'
+      'You can only use Card sub-components (Card.Header, Card.Content, Card.Footer, Card.Media) within a <Card> component.'
     );
   }
 

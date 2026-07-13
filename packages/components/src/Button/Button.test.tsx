@@ -1,14 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-aria-components/slots';
-import { Basic, WithIcon } from './Button.stories';
+import { Basic, ButtonVariants } from './Button.stories';
 import { ButtonContext } from './Context';
 import { ResetButtonContext } from './ResetButtonContext';
 
 test('add icon in button works as expected', () => {
-  render(<WithIcon.Component>iconbutton</WithIcon.Component>);
+  render(<ButtonVariants.Component />);
 
-  const button = screen.getByText(/iconbutton/);
-  const icon = screen.getByTestId(/download/);
+  // ButtonVariants renders a button with a Facebook icon and "Submit" label.
+  // `surface: 'both'` renders the story on two surfaces, so scope to the first.
+  const button = screen.getAllByText('Submit')[0];
+  const icon = screen.getAllByTestId('facebook')[0];
 
   expect(button).toHaveClass('items-center justify-center');
   expect(getComputedStyle(icon).width).toBe('16px');

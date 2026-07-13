@@ -1,7 +1,5 @@
 import { parseTime } from '@internationalized/date';
-import { useState } from 'react';
-import { TimeValue } from 'react-aria-components/TimeField';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { TimeField } from './TimeField';
 
@@ -112,46 +110,20 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => <TimeField defaultValue={parseTime('13:45:30')} {...args} />,
 });
 
-export const FocusEvents = meta.story({
-  args: {
-    defaultValue: parseTime('13:45'),
-  },
-  tags: ['component-test'],
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-    const hour = await canvas.getByLabelText('13');
+Basic.test(
+  'Focuses the hour segment on Tab',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const hour = canvas.getByLabelText('13');
 
     await step('Focus the TimeField using tab', async () => {
       await userEvent.tab();
+
       await expect(hour).toHaveFocus();
     });
-  },
-});
-
-export const ControlledTimeField = meta.story({
-  render: args => {
-    const ControlledComponent = () => {
-      const [value, setValue] = useState<TimeValue>(parseTime('13:45'));
-
-      return (
-        <>
-          <TimeField
-            {...args}
-            label="Time Field"
-            value={value}
-            onChange={newValue => setValue(newValue!)}
-          />
-          <pre>
-            <strong>TimeField Value: </strong>
-            {value?.hour} Hours {value?.minute} Minutes
-          </pre>
-        </>
-      );
-    };
-
-    return <ControlledComponent />;
-  },
-});
+  }
+);

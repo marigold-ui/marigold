@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import preview from '.storybook/preview';
 import { SearchField } from './SearchField';
 
@@ -68,26 +67,4 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   render: args => <SearchField {...args} required label="search field" />,
-});
-
-export const Controlled = meta.story({
-  render: args => {
-    const [value, setValue] = useState('');
-    return (
-      <>
-        <SearchField
-          {...args}
-          value={value}
-          onChange={setValue}
-          required
-          label="search field"
-          placeholder="Type something"
-        />
-        <pre>
-          <strong>Input Value:</strong>
-          {value}
-        </pre>
-      </>
-    );
-  },
 });
