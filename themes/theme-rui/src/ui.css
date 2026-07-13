@@ -440,54 +440,23 @@
   }
 }
 
-@keyframes sc-edge-b {
-  to {
-    box-shadow: 0 1px 0 0 var(--color-border);
-  }
-}
-
 /*
- * Scroll-revealed bottom edge for a sticky bar in a seamless shell: at rest
- * the bar is borderless (the shell separates on whitespace), but once page
- * content scrolls underneath, a hairline fades in so the seam stays legible.
+ * ⚠️ NOT REUSABLE — Sidebar-specific. Coupled to the Sidebar's nav/footer grid
+ * and its private `--sidebar-nav` timeline.
  *
- * Progressive enhancement like `ui-scroll-mask-x`: without scroll-driven
- * animation support the bar simply stays borderless — the sticky bar's opaque
- * background still separates it from passing content. Scroll-linked, so not
- * gated by `prefers-reduced-motion`.
- */
-@utility ui-scroll-edge {
-  @supports (animation-timeline: scroll()) {
-    animation: sc-edge-b linear both;
-    animation-timeline: scroll();
-    animation-range: 0 2rem;
-  }
-}
-
-/*
- * ⚠️ NOT REUSABLE — Sidebar-specific. Coupled to the Sidebar's header/nav/footer
- * grid and its private `--sidebar-nav` timeline. (The general-purpose version is
- * `ui-scroll-edge` above.)
+ * Scroll-revealed top seam for the sticky footer below the scrolling nav: a
+ * hairline shows while the list still has content below, fading out over the
+ * last 12px as it bottoms out — a quiet "more below" affordance. (The header
+ * and top bar carry a plain always-on border instead.)
  *
- * Scroll-revealed seams for the sticky header and footer flanking the scrolling
- * nav. The nav is a grid *sibling*, not the seam's ancestor, so a plain
+ * The nav is a grid *sibling* of the footer, not its ancestor, so a plain
  * `scroll()` timeline can't reach it: the nav declares a NAMED timeline
  * (`--sidebar-nav` via `ui-sidebar-seam-timeline`), hoisted with `timeline-scope`
- * on the grid wrapper (`ui-sidebar-seam-scope`) so the preceding-sibling header
- * can see it too.
- *
- *   - Header: seamless at rest; bottom hairline fades in over the first 12px.
- *   - Footer: top hairline shows until the list bottoms out, fading over the
- *     last 12px.
+ * on the grid wrapper (`ui-sidebar-seam-scope`) so the footer can resolve it.
  *
  * A `box-shadow` hairline, so it never affects layout. Without scroll-driven
- * animation the fallback pins both seams on as an always-on divider.
+ * animation the fallback pins the seam on as an always-on divider.
  */
-@keyframes sidebar-seam-header {
-  to {
-    box-shadow: 0 1px 0 0 var(--color-surface-border);
-  }
-}
 @keyframes sidebar-seam-footer {
   from {
     box-shadow: 0 -1px 0 0 var(--color-surface-border);
@@ -504,16 +473,6 @@
   scroll-timeline: --sidebar-nav block;
 }
 
-@utility ui-sidebar-seam-header {
-  @supports (animation-timeline: scroll()) {
-    animation: sidebar-seam-header linear both;
-    animation-timeline: --sidebar-nav;
-    animation-range: 0 12px;
-  }
-  @supports not (animation-timeline: scroll()) {
-    box-shadow: 0 1px 0 0 var(--color-surface-border);
-  }
-}
 @utility ui-sidebar-seam-footer {
   @supports (animation-timeline: scroll()) {
     animation: sidebar-seam-footer linear both;

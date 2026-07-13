@@ -4,10 +4,9 @@ export const TopNavigation: ThemeComponent<'TopNavigation'> = {
   container: cva({
     base: [
       'w-full min-h-14',
-      // Seamless shell: borderless at rest; once page content scrolls under
-      // the sticky bar, `ui-scroll-edge` fades in a bottom hairline so the
-      // seam stays legible (progressive enhancement, see ui.css).
-      'ui-scroll-edge',
+      // Bottom edge: the shell's structural line under the sticky bar, always
+      // on (the `border` hue, matching the sidebar's edge).
+      'border-b border-border',
       'gap-4 px-3 sm:gap-6 md:gap-8 lg:gap-12',
     ],
   }),

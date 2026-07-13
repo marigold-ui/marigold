@@ -41,23 +41,22 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
-  // Hoists the nav's scroll timeline (see `nav`) into scope so the header and
-  // footer — the header a *preceding* sibling — can drive their seams off it.
+  // Hoists the nav's scroll timeline (see `nav`) into scope so the footer — a
+  // grid sibling, not a descendant — can drive its seam off it.
   content: cva({ base: 'sm:w-64 ui-sidebar-seam-scope' }),
-  // border-b-0: regions separate on whitespace, not the border ui-panel-* adds
-  // for Panel. min-w-0: stop the grid column growing to its widest item and
-  // overflowing the fixed w-64 aside, where overflow-hidden clips rows and the
-  // pill. Seam: hidden at rest, fades in as content scrolls under the header;
-  // inactive on a short (non-scrolling) nav.
+  // Always-on bottom edge (the `border` hue, via `ui-panel-header`) so the
+  // brand row reads as a distinct header band. min-w-0: stop the grid column
+  // growing to its widest item and overflowing the fixed w-64 aside, where
+  // overflow-hidden clips rows and the pill.
   header: cva({
-    base: 'ui-panel-header h-14 min-w-0 border-b-0 ui-sidebar-seam-header',
+    base: 'ui-panel-header h-14 min-w-0',
   }),
   nav: cva({
     base: [
       // No horizontal gutter — rows full-bleed so the active tick reaches the
       // edge; min-w-0 lets the row column collapse to the aside width.
       'flex flex-col min-w-0 py-1 overflow-y-auto outline-none',
-      // Declares the named timeline the header/footer seams animate against.
+      // Declares the named timeline the footer seam animates against.
       'ui-scrollbar ui-sidebar-seam-timeline',
     ],
   }),
@@ -156,16 +155,21 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: ['overflow-hidden bg-background border-r border-border ui-scrollbar'],
   }),
   // Brand band across the top of the rail+panel columns; aligns to the app
-  // header row. Holds only the wordmark (no compact mark exists), so it lives
-  // where there is horizontal room instead of the narrow rail — and fades out
-  // (instead of clipping mid-letter) when the panel collapses that room away.
+  // header row and carries the same always-on bottom `border` as the top bar,
+  // so the two share one continuous top edge. Holds only the wordmark (no
+  // compact mark exists), so it lives where there is horizontal room instead of
+  // the narrow rail — and the whole band (wordmark and its edge) fades out,
+  // rather than clipping mid-letter, when the panel collapses that room away,
+  // leaving the collapsed rail a clean icon strip.
+  //
   // pl-4.5: optically aligns the wordmark's left edge with the rail icons — a
   // size-5 icon centered in the 3.5rem column starts at 18px. The band owns
-  // this gutter, so the header slot's own padding is neutralised.
+  // this gutter, so the header slot's own padding is neutralised (`*:px-0`).
   brand: cva({
     base: [
       'flex items-center gap-2 min-w-0 overflow-hidden pl-4.5 pr-4',
       '*:px-0',
+      'border-b border-border',
       'transition-opacity duration-200 motion-reduce:transition-none',
       'in-data-[panel=collapsed]:opacity-0',
     ],
