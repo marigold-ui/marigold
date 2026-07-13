@@ -50,9 +50,9 @@ export const AccordionHeader = ({
       className={stickyHeader ? 'bg-surface/90 sticky top-0 z-1' : undefined}
     >
       {actions ? (
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           {heading}
-          <div className="shrink-0">{actions}</div>
+          <div className={classNames.actions}>{actions}</div>
         </div>
       ) : (
         heading
