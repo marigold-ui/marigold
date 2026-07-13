@@ -392,9 +392,10 @@ export const main = async (
       });
     } else if (command === 'doctor') {
       const { values } = parseDoctorCommand(rest);
+      // Record only { format }: the pending DST-1600 GDPR/ePrivacy review scopes
+      // doctor telemetry to the output format alone, so --offline is not tracked.
       telemetryArgs = {
         format: values.format ?? 'text',
-        ...(values.offline ? { offline: 'true' } : {}),
       };
 
       if (values.format && !isDoctorFormat(values.format)) {

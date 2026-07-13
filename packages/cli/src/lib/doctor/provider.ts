@@ -147,6 +147,12 @@ const addPatternNames = (
 // parameters. A JSX reference to a name that is *not* bound here (e.g.
 // `<MarigoldProvider>` or `theme={theme}` with the import line deleted) is a
 // runtime ReferenceError: exactly the "looks wired up but is broken" case.
+//
+// Binding is deliberately approximated at file scope, not lexical scope: a name
+// bound by any function/declaration in the module counts, even if it isn't the
+// one enclosing the provider. This can only ever *suppress* a finding (treat an
+// unbound reference as bound), never raise a false-positive error, so we err
+// toward not flagging — the safe direction for a diagnostic.
 const collectBoundNames = (file: AnyNode): Set<string> => {
   const names = new Set<string>();
   walk(file, n => {
