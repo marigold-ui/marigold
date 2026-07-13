@@ -48,16 +48,21 @@ export interface SectionMessageProps {
    */
   closeButton?: boolean;
   /**
-   * Handler that is called when you need to control the dismissable message to close.
+   * Whether the message is open/visible (controlled). Pass `false` to hide the message.
    */
-  onCloseChange?: (close: boolean) => void;
+  open?: boolean;
   /**
-   * If the message should be closed/dismissed (controlled).
+   * Whether the message is open/visible by default (uncontrolled).
+   * @default true
    */
-  close?: boolean;
+  defaultOpen?: boolean;
+  /**
+   * Handler that is called when the user dismisses the message. Called with `false`.
+   */
+  onOpenChange?: (open: boolean) => void;
   /**
    * Announce the message to assistive technology when it appears.
-   * Fires on mount and whenever controlled visibility (`close`) transitions
+   * Fires on mount and whenever controlled visibility (`open`) transitions
    * from hidden to visible. Priority is `assertive` for `variant="error"` and
    * `polite` for all other variants. To re-announce the same message without a
    * visibility change, remount the component with a changing `key`.
@@ -79,8 +84,9 @@ export const SectionMessage = ({
   size,
   children,
   closeButton,
-  close,
-  onCloseChange,
+  open,
+  defaultOpen = true,
+  onOpenChange,
   announce: announceProp,
   headingLevel = 3,
   ...props
@@ -125,13 +131,13 @@ export const SectionMessage = ({
     [classNames.description]
   );
 
-  const [internalVisible, setInternalVisible] = useState(true);
-  const isCurrentlyVisible = close ?? internalVisible;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isOpen = open ?? internalOpen;
 
   // Re-announce on each hidden -> visible transition. Same-content re-announce
   // without a visibility change still needs a `key` remount.
   useEffect(() => {
-    if (!isCurrentlyVisible) return;
+    if (!isOpen) return;
     const shouldAnnounce = announceProp ?? variant === 'error';
     if (!shouldAnnounce) return;
     const text = containerRef.current?.textContent?.trim();
@@ -139,17 +145,16 @@ export const SectionMessage = ({
     const priority = variant === 'error' ? 'assertive' : 'polite';
     announce(text, priority);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCurrentlyVisible]);
+  }, [isOpen]);
 
   const handleClose = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onCloseChange && close && onCloseChange(close);
-    if (close === undefined) {
-      setInternalVisible(false);
+    if (open === undefined) {
+      setInternalOpen(false);
     }
+    onOpenChange?.(false);
   };
 
-  if (!isCurrentlyVisible) return null;
+  if (!isOpen) return null;
 
   return (
     <SectionMessageContext value={{ classNames }}>
