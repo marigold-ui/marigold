@@ -8,7 +8,7 @@ A `<Panel>` organizes page content into labeled sections. Use it to split a sett
 
 A typical page has a handful of Panels, each owning one topic: "Organizer profile", "Team members", "Billing". Every Panel has a unique title and renders as a landmark region labelled by that title, so the page outline stays meaningful to assistive tech.
 
-Panels live inside a [`<Page>`](/components/layout/page) under a [`<Page.Header>`](/components/layout/page#header). Panel's default `headingLevel={2}` assumes a page `<h1>` above it — which `<Page.Header>` provides — so the outline reads `h1` (page) → `h2` (Panel) → `h3` (Panel collapsible) with no configuration.
+Panels live inside a [`<Page>`](/components/layout/page) under a [`<Page.Header>`](/components/layout/page#header). Panel's default `headingLevel={2}` assumes a page `<h1>` above it (which `<Page.Header>` provides), so the outline reads `h1` (page) → `h2` (Panel) → `h3` (Panel collapsible) with no configuration.
 
 <Callout title="Is a Panel a Card?">
   They look similar, but they're not interchangeable. A Panel owns a region of a
