@@ -111,7 +111,7 @@ export interface DateRangePickerProps
    * with a `label` and a range value or resolver function. Selecting a
    * preset applies the range; the overlay stays open.
    */
-  presets?: DateRangePreset[];
+  presets?: readonly DateRangePreset[];
 }
 
 const DateRangePickerBase = ({

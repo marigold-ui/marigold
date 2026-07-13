@@ -90,7 +90,7 @@ export interface DatePickerProps
    * a `label` and a date value or resolver function. Selecting a preset
    * applies the date; the overlay stays open.
    */
-  presets?: DatePreset[];
+  presets?: readonly DatePreset[];
 }
 
 const DatePickerBase = ({

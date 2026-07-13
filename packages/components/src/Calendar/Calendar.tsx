@@ -90,7 +90,7 @@ export interface CalendarProps extends Omit<
    * as selected. Presets that fall outside `minValue`/`maxValue` or are
    * unavailable are disabled.
    */
-  presets?: DatePreset[];
+  presets?: readonly DatePreset[];
 }
 
 type ViewMapKeys = 'month' | 'year';

@@ -393,7 +393,7 @@ export const CalendarPresets = ({
   onSelectionDone,
   autoFocus,
 }: {
-  presets: DatePreset[];
+  presets: readonly DatePreset[];
   onSelectionDone?: () => void;
   autoFocus?: boolean;
 }) => {
@@ -451,7 +451,7 @@ export const RangeCalendarPresets = ({
   onSelectionDone,
   autoFocus,
 }: {
-  presets: DateRangePreset[];
+  presets: readonly DateRangePreset[];
   onSelectionDone?: () => void;
   autoFocus?: boolean;
 }) => {

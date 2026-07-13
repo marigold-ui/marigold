@@ -23,7 +23,7 @@ export interface ResolvedPreset<T> {
 }
 
 const useResolvedPresets = <Key extends string, T>(
-  presets: (Key | CustomPreset<T>)[],
+  presets: readonly (Key | CustomPreset<T>)[],
   builtIns: Record<Key, BuiltInPreset<T>>
 ): ResolvedPreset<T>[] => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -62,7 +62,7 @@ const useResolvedPresets = <Key extends string, T>(
  * built-in preset labels and date math.
  */
 export const useDatePresets = (
-  presets: DatePreset[]
+  presets: readonly DatePreset[]
 ): ResolvedPreset<DateValue>[] =>
   useResolvedPresets(presets, builtInDatePresets);
 
@@ -73,6 +73,6 @@ export const useDatePresets = (
  * built-in preset labels and date math.
  */
 export const useDateRangePresets = (
-  presets: DateRangePreset[]
+  presets: readonly DateRangePreset[]
 ): ResolvedPreset<DateRange>[] =>
   useResolvedPresets(presets, builtInDateRangePresets);

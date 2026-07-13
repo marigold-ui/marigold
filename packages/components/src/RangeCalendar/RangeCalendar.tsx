@@ -114,7 +114,7 @@ export interface RangeCalendarProps<T extends DateValue = DateValue>
    * as selected. Presets that fall outside `minValue`/`maxValue` or hit
    * unavailable dates are disabled.
    */
-  presets?: DateRangePreset[];
+  presets?: readonly DateRangePreset[];
 }
 
 type ViewMapKeys = 'month' | 'year';

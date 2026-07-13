@@ -11,11 +11,14 @@ const wrapper =
     <I18nProvider locale={locale}>{children}</I18nProvider>
   );
 
+// Hoisted `as const` (readonly) arrays are the natural way to share a preset
+// list; the hooks and `presets` props must keep accepting them.
+const rangePresets = ['last-7-days', 'this-month'] as const;
+
 test('resolves built-in keys to localized labels (de-DE)', () => {
-  const { result } = renderHook(
-    () => useDateRangePresets(['last-7-days', 'this-month']),
-    { wrapper: wrapper('de-DE') }
-  );
+  const { result } = renderHook(() => useDateRangePresets(rangePresets), {
+    wrapper: wrapper('de-DE'),
+  });
   expect(result.current.map(p => p.label)).toEqual([
     'Letzte 7 Tage',
     'Dieser Monat',
