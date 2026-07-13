@@ -770,6 +770,8 @@ Domain-specific tokens for Reservix access level indicators. Follows the same st
   ]}
 />
 
+The `master`/`admin` variants of `Badge`, `Link`, and `Menu.Item` mark access-restricted content with an icon (lock = master, key = admin, derived from the [lucide](https://lucide.dev) icons `lock-keyhole` and `key`) colored with the matching access foreground token. The icon is purely decorative; on links and menu items the access level is exposed to assistive technology through a visually hidden text label. See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for when and how to apply the variants.
+
 ### Links
 
 Text links use a dedicated color token to distinguish them from regular body text.

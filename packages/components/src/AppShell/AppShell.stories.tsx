@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { LogOut, Settings, User } from '@marigold/icons';
 import { Badge } from '../Badge/Badge';
@@ -200,9 +200,11 @@ const ShellFrame = ({
 export const Basic = meta.story({
   tags: ['component-test'],
   render: () => <ShellFrame />,
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+});
 
+Basic.test(
+  'renders layout areas, labels main, toggles and navigates',
+  async ({ canvas, userEvent, step }) => {
     await step('Renders all layout areas', async () => {
       await expect(canvas.getByRole('complementary')).toBeInTheDocument();
       await expect(canvas.getByRole('banner')).toBeInTheDocument();
@@ -237,8 +239,8 @@ export const Basic = meta.story({
         canvas.getByRole('heading', { level: 1, name: 'Analytics' })
       ).toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 /**
  * Controlled sidebar state via an outer `Sidebar.Provider`. `<AppShell>`
@@ -254,8 +256,11 @@ export const ControlledSidebar = meta.story({
       </Sidebar.Provider>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+});
+
+ControlledSidebar.test(
+  'toggle drives the controlled sidebar state',
+  async ({ canvas, userEvent, step }) => {
     const toggle = canvas.getByRole('button', { name: /toggle navigation/i });
 
     await step('Sidebar starts closed (controlled)', async () => {
@@ -266,8 +271,8 @@ export const ControlledSidebar = meta.story({
       await userEvent.click(toggle);
       await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     });
-  },
-});
+  }
+);
 
 // Regression for DST-1464. The `main` grid track was `1fr` (= `minmax(auto,
 // 1fr)`), so wide content pushed the column past the viewport. `<Page>`'s
@@ -312,15 +317,19 @@ export const WideContentDoesNotOverflow = meta.story({
       }
     />
   ),
-  play: async ({ canvasElement }) => {
-    const main = within(canvasElement).getByRole('main');
+});
+
+WideContentDoesNotOverflow.test(
+  'wide content does not push the main column past the viewport',
+  async ({ canvas }) => {
+    const main = canvas.getByRole('main');
     const grid = main.parentElement!;
     await expect(main.getBoundingClientRect().width).toBeLessThanOrEqual(
       grid.getBoundingClientRect().width
     );
     await expect(grid.scrollWidth).toBeLessThanOrEqual(grid.clientWidth);
-  },
-});
+  }
+);
 
 /**
  * Both scroll axes of the shell at once (DST-1586):
@@ -340,9 +349,17 @@ export const WideContentDoesNotOverflow = meta.story({
  */
 export const ScrollingSidebar = meta.story({
   tags: ['component-test'],
+  // A behavior test, not a visual one: the seam reveals are scroll-driven and
+  // can't be captured in a static Chromatic frame, and the 40-item + 10-panel
+  // layout would only add a large, noisy snapshot over what Basic already
+  // covers. The assertions below guard the behavior instead.
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <ShellFrame longNav longPage />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
+
+ScrollingSidebar.test(
+  'scrolls both axes: nav overflow keeps the footer seam, page scrolls under the top bar',
+  async ({ canvas }) => {
     const nav = canvas.getByRole('navigation', { name: /app navigation/i });
 
     // The point of this story: a long nav rendered into a scroll container, so
@@ -361,9 +378,12 @@ export const ScrollingSidebar = meta.story({
     // both where scroll-driven animations run (the timeline pins the "content
     // below" keyframe) and in the always-on fallback, so the box-shadow
     // hairline is present here regardless of engine.
+    // Anchored on the footer's structural grid slot (owned by the Sidebar.Footer
+    // component) rather than a compiled theme class, so a theme-side style rename
+    // can't silently break the lookup.
     const footer = canvas
       .getByRole('complementary')
-      .querySelector<HTMLElement>('[class*="ui-panel-actions"]');
+      .querySelector<HTMLElement>('[class*="grid-area:footer"]');
     await expect(footer).not.toBeNull();
     await expect(getComputedStyle(footer!).boxShadow).not.toBe('none');
 
@@ -376,5 +396,5 @@ export const ScrollingSidebar = meta.story({
     await expect(document.documentElement.scrollHeight).toBeGreaterThan(
       window.innerHeight
     );
-  },
-});
+  }
+);

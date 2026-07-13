@@ -1,5 +1,12 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
+const itemBase = 'text-foreground focus:bg-focus-highlight';
+
+// Muted treatment for regular item icons. Access variants don't share it:
+// their (only) icon is the access glyph, which keeps the full-opacity access
+// foreground color instead.
+const itemIconMuted = '[&_svg]:text-secondary [&_svg]:opacity-60';
+
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva({
     base: [
@@ -22,9 +29,10 @@ export const Menu: ThemeComponent<'Menu'> = {
     ],
     variants: {
       variant: {
-        default:
-          'text-foreground focus:bg-focus-highlight [&_svg]:text-secondary [&_svg]:opacity-60',
+        default: `${itemBase} ${itemIconMuted}`,
         destructive: 'text-destructive-accent focus:bg-destructive-accent/10',
+        master: `${itemBase} [&_svg]:text-access-master-foreground`,
+        admin: `${itemBase} [&_svg]:text-access-admin-foreground`,
       },
     },
     defaultVariants: {

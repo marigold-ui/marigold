@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { cn } from '@marigold/system';
 import { Headline } from './Headline/Headline';
@@ -347,8 +347,13 @@ export const SidebarBackAction = meta.story({
 
     const back = await canvas.findByRole('button', { name: /Management/ });
     const child = canvas.getByRole('link', { name: 'Users' });
-    await expect(back).toBeVisible();
-    await expect(child).toBeVisible();
+    // The drill-in reveals the panel through a transition, so wait for it to
+    // settle rather than racing the reveal (findByRole resolves as soon as the
+    // node enters the a11y tree, before it is painted visible).
+    await waitFor(async () => {
+      await expect(back).toBeVisible();
+      await expect(child).toBeVisible();
+    });
 
     // The back action and the nav rows share one inset (mx-2 + px-2), so
     // their content starts on the same column — the alignment we tuned.

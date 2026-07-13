@@ -80,9 +80,18 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // the header's: shown while nav content remains below, fading out as the list
   // bottoms out.
   footer: cva({
+    // Left-aligned footer that shares the nav's content column, rather than the
+    // right-aligned action-bar padding of `ui-panel-actions`. The container pads
+    // to the nav's 16px column for plain content (px-4). Link children echo the
+    // nav-row pill: pulled back by -mx-2 to the nav's 8px inset, then px-2 for
+    // the same 16px content column, h-7.5, rounded, quiet secondary ink lifting
+    // to foreground on a hover pill, so escape hatches read as a continuation of
+    // the nav instead of competing with it.
     base: [
-      'ui-panel-actions min-w-0 border-t-0 ui-sidebar-seam-footer',
-      '[&_a]:text-secondary [&_a]:font-normal [&_a:hover]:text-foreground',
+      'flex flex-col gap-1 min-w-0 px-4 py-2 ui-sidebar-seam-footer',
+      '[&_a]:-mx-2 [&_a]:h-7.5 [&_a]:px-2 [&_a]:rounded-surface [&_a]:text-sm',
+      '[&_a]:text-secondary [&_a]:font-normal',
+      '[&_a:hover]:bg-hover [&_a:hover]:text-foreground',
     ],
   }),
   toggle: cva({
