@@ -42,6 +42,7 @@ describe('POST /api/telemetry', () => {
     'list',
     'search',
     'examples',
+    'validate',
     'init',
     'doctor',
     'telemetry',

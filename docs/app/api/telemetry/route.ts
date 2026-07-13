@@ -12,6 +12,7 @@ const EventSchema = z.object({
     'list',
     'search',
     'examples',
+    'validate',
     'init',
     'doctor',
     'telemetry',
