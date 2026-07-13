@@ -41,14 +41,14 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@babel/parser": "8.0.0",
+    "@babel/parser": "8.0.4",
     "@clack/prompts": "1.6.0",
     "ci-info": "4.4.0",
     "magic-string": "0.30.21",
     "picocolors": "1.1.1"
   },
   "devDependencies": {
-    "@babel/types": "8.0.0",
+    "@babel/types": "8.0.4",
     "@marigold/tsconfig": "workspace:*",
     "@types/node": "24.13.2",
     "tsdown": "0.22.3",
