@@ -21,9 +21,9 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'min-h-[350px] min-w-fit ui-surface p-2',
       // In a Popover (DatePicker) the Popover paints the overlay surface; the
       // calendar drops its own ring. Standalone keeps it.
-      'group-data-trigger/popover:ring-0 group-data-trigger/popover:shadow-none',
+      'group-data-trigger/popover:ring-0',
       // In a Tray
-      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
+      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
     ],
   }),
   calendarContainer: cva({ base: 'flex flex-col gap-4 sm:flex-row' }),
@@ -67,7 +67,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   select: cva({
     base: [
       '[&_svg]:text-secondary',
-      'flex w-full px-3 py-2 rounded-lg border border-control-border bg-surface text-sm text-foreground transition-shadow',
+      'flex w-full px-3 py-2 rounded-lg border border-control-border bg-surface text-sm text-foreground',
       'focus-visible:ui-state-focus outline-none',
       'h-control',
       'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
