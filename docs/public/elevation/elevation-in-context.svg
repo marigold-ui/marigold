@@ -61,13 +61,13 @@
 
   <!-- Raised caps sitting in flow: the lift is the cap's own shading, not a shadow. -->
   <!-- Cancel: ui-soft (light neutral cap) -->
-  <rect x="414" y="366" width="90" height="36" rx="8" fill="url(#soft-bg)" stroke="oklch(0.8 0.005 54)" stroke-width="1"/>
-  <line x1="415" y1="367" x2="503" y2="367" stroke="oklch(1 0 0 / 0.9)" stroke-width="1" stroke-linecap="round"/>
-  <text x="436" y="389" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Cancel</text>
+  <rect x="414" y="362" width="90" height="40" rx="8" fill="url(#soft-bg)" stroke="oklch(0.8 0.005 54)" stroke-width="1"/>
+  <line x1="415" y1="363" x2="503" y2="363" stroke="oklch(1 0 0 / 0.9)" stroke-width="1" stroke-linecap="round"/>
+  <text x="436" y="387" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Cancel</text>
   <!-- Create: ui-contrast (dark bold cap) -->
-  <rect x="512" y="366" width="96" height="36" rx="8" fill="url(#contrast-bg)"/>
-  <line x1="513" y1="367" x2="607" y2="367" stroke="oklch(0.45 0.006 54)" stroke-opacity="0.25" stroke-width="1" stroke-linecap="round"/>
-  <text x="536" y="389" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.985 0.002 54)">Create</text>
+  <rect x="512" y="362" width="96" height="40" rx="8" fill="url(#contrast-bg)"/>
+  <line x1="513" y1="363" x2="607" y2="363" stroke="oklch(0.45 0.006 54)" stroke-opacity="0.25" stroke-width="1" stroke-linecap="round"/>
+  <text x="536" y="387" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.985 0.002 54)">Create</text>
 
   <!-- ====== LEFT-SIDE ANNOTATIONS ====== -->
 
