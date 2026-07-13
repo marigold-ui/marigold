@@ -132,10 +132,6 @@ const _Calendar = ({
     ViewMapKeys | undefined
   >();
 
-  // Non-null exactly when this calendar is the one embedded in a
-  // `<DatePicker>`. Its tray already IS a bottom sheet, so "Quick selection"
-  // switches the tray content in place; standalone, it opens a tray of its
-  // own.
   const pickerState = use(DatePickerStateContext);
   const isInPicker = pickerState != null;
   const [pickerView, setPickerView] = useState<'calendar' | 'presets'>(
@@ -218,9 +214,6 @@ const _Calendar = ({
         className={cn(
           'relative flex w-(--width) flex-col',
           hasPresets && 'gap-4 max-sm:flex-col sm:flex-row',
-          // The preset list view must span the picker tray like the inline
-          // preset sheet does; the calendar's usual fit-content width would
-          // squish the rows to their natural width.
           isInPicker && pickerView === 'presets' && 'max-sm:w-full',
           classNames.calendar
         )}
