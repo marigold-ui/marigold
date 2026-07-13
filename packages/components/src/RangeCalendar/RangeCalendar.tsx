@@ -1,12 +1,4 @@
-import {
-  type ContextType,
-  Suspense,
-  lazy,
-  use,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
+import { type ContextType, use, useCallback, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DateRangePickerStateContext } from 'react-aria-components/DateRangePicker';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
@@ -18,6 +10,10 @@ import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarGrid } from '../Calendar/CalendarGrid';
 import { CalendarHeader } from '../Calendar/CalendarHeader';
 import { CalendarListBox } from '../Calendar/CalendarListBox';
+import {
+  CalendarPresetsShell,
+  RangeCalendarPresets,
+} from '../Calendar/CalendarPresets';
 import { CalendarContext } from '../Calendar/Context';
 import MonthControls from '../Calendar/MonthControls';
 import MonthListBox from '../Calendar/MonthListBox';
@@ -28,22 +24,6 @@ import {
 } from '../Calendar/calendarListBoxSelectableCheck';
 import type { DateRangePreset } from '../Calendar/presets';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
-
-// The preset machinery pulls the `Tray` overlay stack (and through it the
-// motion runtime) plus the ListBox styling contract into the graph. Loading
-// it lazily keeps `import { RangeCalendar }` free of that cost for consumers
-// that never pass `presets` — only calendars that render presets fetch the
-// chunk.
-const CalendarPresetsShell = lazy(() =>
-  import('../Calendar/CalendarPresets.jsx').then(module => ({
-    default: module.CalendarPresetsShell,
-  }))
-);
-const RangeCalendarPresets = lazy(() =>
-  import('../Calendar/CalendarPresets.jsx').then(module => ({
-    default: module.RangeCalendarPresets,
-  }))
-);
 
 // Props
 // ---------------
@@ -323,21 +303,16 @@ const _RangeCalendar = <T extends DateValue>({
             style={createWidthVar('width', width)}
           >
             {hasPresets ? (
-              // While the preset chunk loads, the bare calendar renders so
-              // the grid is usable immediately; the preset UI appears once
-              // resolved.
-              <Suspense fallback={content}>
-                <CalendarPresetsShell
-                  isInPicker={isInPicker}
-                  pickerView={pickerView}
-                  onPickerViewChange={setPickerView}
-                  renderPresets={presetProps => (
-                    <RangeCalendarPresets presets={presets} {...presetProps} />
-                  )}
-                >
-                  {content}
-                </CalendarPresetsShell>
-              </Suspense>
+              <CalendarPresetsShell
+                isInPicker={isInPicker}
+                pickerView={pickerView}
+                onPickerViewChange={setPickerView}
+                renderPresets={presetProps => (
+                  <RangeCalendarPresets presets={presets} {...presetProps} />
+                )}
+              >
+                {content}
+              </CalendarPresetsShell>
             ) : (
               content
             )}

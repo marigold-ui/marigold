@@ -34,6 +34,6 @@ jobs:
       - name: Build packages
         run: pnpm build
 
-      # Action — fails when any component exceeds its budget in .size-limit.mjs
+      # Action — fails when any component exceeds its budget in .size-limit.json
       - name: Check bundle size
         run: pnpm --filter @marigold/components size

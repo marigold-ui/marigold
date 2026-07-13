@@ -467,11 +467,8 @@ describe('presets on small screens (tray)', () => {
     await user.click(screen.getByRole('button'));
     const pickerTray = await screen.findByRole('dialog');
 
-    // The preset UI is lazy-loaded, so the first query must await its chunk.
     await user.click(
-      await within(pickerTray).findByRole('button', {
-        name: 'Quick selection',
-      })
+      within(pickerTray).getByRole('button', { name: 'Quick selection' })
     );
 
     // The preset list replaces the grid within the SAME dialog — no second
@@ -489,9 +486,7 @@ describe('presets on small screens (tray)', () => {
     await user.click(screen.getByRole('button'));
     const pickerTray = await screen.findByRole('dialog');
     await user.click(
-      await within(pickerTray).findByRole('button', {
-        name: 'Quick selection',
-      })
+      within(pickerTray).getByRole('button', { name: 'Quick selection' })
     );
 
     await user.click(within(pickerTray).getByRole('button', { name: 'Back' }));
@@ -506,9 +501,7 @@ describe('presets on small screens (tray)', () => {
     await user.click(screen.getByRole('button'));
     const pickerTray = await screen.findByRole('dialog');
     await user.click(
-      await within(pickerTray).findByRole('button', {
-        name: 'Quick selection',
-      })
+      within(pickerTray).getByRole('button', { name: 'Quick selection' })
     );
 
     await user.click(

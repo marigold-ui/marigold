@@ -348,10 +348,7 @@ describe('presets on small screens', () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
 
-    // The preset UI is lazy-loaded, so the first query must await its chunk.
-    await user.click(
-      await screen.findByRole('button', { name: 'Quick selection' })
-    );
+    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
     const dialog = await screen.findByRole('dialog');
     const option = within(dialog).getByRole('option', { name: 'Kickoff' });
 
@@ -362,10 +359,7 @@ describe('presets on small screens', () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
     render(<Presets.Component />);
-    // The preset UI is lazy-loaded, so the first query must await its chunk.
-    const trigger = await screen.findByRole('button', {
-      name: 'Quick selection',
-    });
+    const trigger = screen.getByRole('button', { name: 'Quick selection' });
 
     expect(screen.getByRole('grid')).toBeVisible();
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
@@ -377,9 +371,7 @@ describe('presets on small screens', () => {
   test('opening the tray shows the preset list while the grid stays visible', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
-    const trigger = await screen.findByRole('button', {
-      name: 'Quick selection',
-    });
+    const trigger = screen.getByRole('button', { name: 'Quick selection' });
 
     await user.click(trigger);
     const dialog = await screen.findByRole('dialog');
@@ -394,9 +386,7 @@ describe('presets on small screens', () => {
   test('selecting a preset in the tray applies and closes it', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
-    await user.click(
-      await screen.findByRole('button', { name: 'Quick selection' })
-    );
+    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
     const dialog = await screen.findByRole('dialog');
 
     await user.click(within(dialog).getByRole('option', { name: 'Tomorrow' }));
@@ -410,9 +400,7 @@ describe('presets on small screens', () => {
   test('the tray close button dismisses without selecting', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     render(<Presets.Component />);
-    await user.click(
-      await screen.findByRole('button', { name: 'Quick selection' })
-    );
+    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
     const dialog = await screen.findByRole('dialog');
 
     await user.click(within(dialog).getByRole('button', { name: 'Close' }));

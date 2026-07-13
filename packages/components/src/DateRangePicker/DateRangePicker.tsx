@@ -13,7 +13,6 @@ import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import type { DateRangePreset } from '../Calendar/presets';
-import { usePreloadPresets } from '../Calendar/usePreloadPresets';
 import { parseDateFromString } from '../DateField/DateInput';
 import { DateSegment } from '../DateField/DateSegment';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -152,8 +151,6 @@ const DateRangePickerBase = ({
 
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-
-  usePreloadPresets(!!presets?.length);
 
   // Hug the content on larger screens, but fill the available space on small
   // screens so the two inputs, separator and button are not cramped or clipped.

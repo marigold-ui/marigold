@@ -516,10 +516,7 @@ export const Presets = meta.story({
 });
 
 Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
-  // The preset UI is lazy-loaded, so the first query must await its chunk.
-  const listbox = await canvas.findByRole('listbox', {
-    name: 'Quick selection',
-  });
+  const listbox = canvas.getByRole('listbox', { name: 'Quick selection' });
   const option = canvas.getByRole('option', { name: 'This quarter' });
 
   await expect(listbox).toBeVisible();
@@ -529,7 +526,7 @@ Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
 Presets.test(
   'selecting a built-in preset sets the range and marks the option selected',
   async ({ args, canvas, userEvent }) => {
-    const option = await canvas.findByRole('option', { name: 'Next 7 days' });
+    const option = canvas.getByRole('option', { name: 'Next 7 days' });
 
     await userEvent.click(option);
     const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
@@ -545,7 +542,7 @@ Presets.test(
 Presets.test(
   'selecting the "today" preset sets a single-day range',
   async ({ args, canvas, userEvent }) => {
-    const option = await canvas.findByRole('option', { name: 'Today' });
+    const option = canvas.getByRole('option', { name: 'Today' });
 
     await userEvent.click(option);
     const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
@@ -561,9 +558,7 @@ Presets.test(
   'selecting a preset jumps the visible month to its range',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
-    await userEvent.click(
-      await canvas.findByRole('option', { name: 'January 2027' })
-    );
+    await userEvent.click(canvas.getByRole('option', { name: 'January 2027' }));
 
     await expect(
       canvas.getByRole('button', { name: 'Jan' })
@@ -594,7 +589,7 @@ export const PresetsWithMinValue = meta.story({
 PresetsWithMinValue.test(
   'a preset outside minValue/maxValue is disabled',
   async ({ canvas }) => {
-    const pastOption = await canvas.findByRole('option', {
+    const pastOption = canvas.getByRole('option', {
       name: 'Last 7 days',
     });
     const futureOption = canvas.getByRole('option', { name: 'Next 7 days' });
@@ -661,7 +656,7 @@ PresetsMobile.test(
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
-      await canvas.findByRole('button', { name: 'Quick selection' })
+      canvas.getByRole('button', { name: 'Quick selection' })
     );
     const tray = await canvas.findByRole('dialog');
 

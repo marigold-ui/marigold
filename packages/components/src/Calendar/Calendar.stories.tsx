@@ -621,10 +621,7 @@ Presets.test(
   'presets render as a labeled listbox',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    // The preset UI is lazy-loaded, so the first query must await its chunk.
-    const listbox = await canvas.findByRole('listbox', {
-      name: 'Quick selection',
-    });
+    const listbox = canvas.getByRole('listbox', { name: 'Quick selection' });
     const option = canvas.getByRole('option', { name: 'Kickoff' });
 
     await expect(listbox).toBeVisible();
@@ -636,7 +633,7 @@ Presets.test(
   'selecting a preset sets the date and marks the option selected',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ args, canvas, userEvent }) => {
-    const option = await canvas.findByRole('option', { name: 'Tomorrow' });
+    const option = canvas.getByRole('option', { name: 'Tomorrow' });
 
     await userEvent.click(option);
     const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
@@ -652,9 +649,7 @@ Presets.test(
 Presets.test(
   'selecting a preset jumps the visible month to its date',
   async ({ canvas, userEvent }) => {
-    await userEvent.click(
-      await canvas.findByRole('option', { name: 'Kickoff' })
-    );
+    await userEvent.click(canvas.getByRole('option', { name: 'Kickoff' }));
 
     await expect(
       canvas.getByRole('button', { name: 'Aug' })
@@ -680,7 +675,7 @@ PresetsWithMinValue.test(
   'a preset outside minValue/maxValue is disabled',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    const yesterdayOption = await canvas.findByRole('option', {
+    const yesterdayOption = canvas.getByRole('option', {
       name: 'Yesterday',
     });
     const todayOption = canvas.getByRole('option', { name: 'Today' });
@@ -723,7 +718,7 @@ PresetsMobile.test(
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
-      await canvas.findByRole('button', { name: 'Quick selection' })
+      canvas.getByRole('button', { name: 'Quick selection' })
     );
     const tray = await canvas.findByRole('dialog');
 
