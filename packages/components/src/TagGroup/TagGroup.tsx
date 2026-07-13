@@ -259,12 +259,20 @@ const _TagGroup = ({
           onSelectionChange={handleSelectionChange}
           onRemove={onRemove}
         >
-          <div className={cn(classNames.container, 'flex gap-8')}>
-            <div className="flex gap-2">
+          <div className={cn(classNames.container, 'flex items-start gap-8')}>
+            {/*
+              The list wraps the tags AND the "Show more" toggle in a single
+              flex-wrap flow so the toggle follows the last visible tag instead
+              of the tag block. `TagList` is set to `display: contents` so its
+              tag rows join this wrap directly while keeping the grid role.
+            */}
+            <div
+              className={cn(classNames.listItems, 'min-w-0 grow items-center')}
+            >
               <TagList
                 ref={tagListRef}
                 items={items}
-                className={classNames.listItems}
+                className="contents"
                 renderEmptyState={emptyState}
               >
                 {renderedChildren}
@@ -278,9 +286,13 @@ const _TagGroup = ({
                 />
               ) : null}
             </div>
+            {/*
+              "Remove all" stays in its own trailing column, never mixing into
+              the tag wrap, so it reads as a distinct action from "Show more".
+            */}
             {onRemove && removeAll ? (
               <TagGroupRemoveAll
-                className={classNames.removeAll}
+                className={cn(classNames.removeAll, 'shrink-0')}
                 onRemove={onRemove}
               />
             ) : null}
