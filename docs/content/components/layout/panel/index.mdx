@@ -149,9 +149,11 @@ Tables get a small bonus: when bled, their cell edges line up with the Panel's h
 
 An `<Accordion>` behaves the same way. Drop one into a bled content area and its item dividers span edge-to-edge while the header and content stay inset, aligned with the Panel title. No extra prop is needed: the Accordion picks up the Panel's horizontal padding automatically, exactly like Table cells do.
 
-Reach for this only when the Panel's body **is** a set of peer, equally-weighted sections that each expand — a per-field breakdown, a list of records each with details. For a single optional or advanced fold _alongside_ visible primary content, use [`Panel.Collapsible`](#collapsible) instead. The two aren't interchangeable: a stack of Collapsibles is exactly the anti-pattern Accordion exists to solve (see [One Collapsible per Panel](#one-collapsible-per-panel)).
+Reach for this only when the Panel's body **is** a set of peer, equally-weighted sections that each expand: a per-field breakdown, a list of records each with details. For a single optional or advanced fold _alongside_ visible primary content, use [`Panel.Collapsible`](#collapsible) instead. The two aren't interchangeable: a stack of Collapsibles is exactly the anti-pattern Accordion exists to solve (see [One Collapsible per Panel](#one-collapsible-per-panel)).
 
 <ComponentDemo name="panel-bleed-accordion" />
+
+Two details are intentional for now: there is no divider between the `Panel.Header` and the first item, and the last item's bottom corners stay square rather than following the Panel's radius.
 
 ### Collapsible
 

@@ -46,7 +46,7 @@ export default () => (
       </Description>
     </Panel.Header>
     <Panel.Content bleed>
-      <Accordion>
+      <Accordion defaultExpandedKeys={['variant']}>
         {props.map(prop => (
           <Accordion.Item key={prop.name} id={prop.name}>
             <Accordion.Header>
