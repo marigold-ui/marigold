@@ -201,9 +201,10 @@ const SidebarRail = ({
           'motion-reduce:transition-none'
         )}
       >
-        {/* Rail column: its right border pairs with the top bar's toggle slot
-            to draw the one top-to-bottom divider. The toggle itself lives in
-            that slot (Sidebar.Toggle in TopNavigation.Start), not here. */}
+        {/* Rail column: draws the always-on divider between the rail and
+            everything to its right, starting under the top bar. The toggle
+            lives in the top bar (Sidebar.Toggle in TopNavigation.Start), not
+            here. */}
         <div className={classNames.railColumn}>
           <nav
             aria-label={ariaLabel || stringFormatter.format('railNavigation')}

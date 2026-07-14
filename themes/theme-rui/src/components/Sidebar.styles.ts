@@ -158,50 +158,28 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   // The rail column: the narrow strip of icons beside the panel. Carries the
   // always-on vertical divider (`border-r`) between the rail and everything to
-  // its right. The toggle slot in the top bar (`railToggleSlot`) draws the same
-  // line at the same offset, so together they read as one divider from viewport
-  // top to bottom. When the panel is collapsed this line is also the sidebar's
-  // right edge (the panel drops its border), so it never doubles up.
+  // its right; the top bar above has no vertical lines, so this divider starts
+  // under the bar's bottom edge (a plain T-junction). When the panel is
+  // collapsed this line is also the sidebar's right edge (the panel drops its
+  // border), so it never doubles up.
   railColumn: cva({
     base: ['flex flex-col min-h-0', 'border-r border-border'],
   }),
-  // Hosts the rail-variant toggle at the far left of the top bar, sized to the
-  // rail column (w-26 = 6.5rem) so the toggle sits exactly above the rail
-  // items. -ml-3 cancels the TopNavigation container's px-3 so the slot starts
-  // flush at the viewport edge and its `border-r` lands at 6.5rem — continuing
-  // the rail column's divider up through the header. self-stretch (not h-full)
-  // so it spans the bar even though the container only has a min-height.
-  //
-  // The `after` strip masks the top bar's own `border-b` across the slot width
-  // (a 1px `background` line sitting exactly on it), so the header divider
-  // starts at the vertical rail divider (x = 3.5rem) instead of running under
-  // the toggle. That leaves only whitespace between the toggle and the first
-  // rail item — the two read as one continuous column, and the horizontal and
-  // vertical dividers meet in a clean corner.
-  railToggleSlot: cva({
-    base: [
-      'relative flex items-center justify-center w-26 shrink-0 self-stretch -ml-3',
-      'border-r border-border',
-      'after:absolute after:inset-x-0 after:top-full after:h-px after:bg-background',
-    ],
-  }),
-  // The panel toggle, styled exactly like one of the rail's own icons — same
-  // tile (size, radius, centering, icon size), same idle `secondary` ink and
-  // the same hover treatment as a `railItem`. It is never a destination (no
-  // `data-active` pill) and, unlike a rail item, can go inert on a direct-link
-  // page (nothing to collapse), so it adds only a disabled state on top of the
-  // shared look. The icon's expand/collapse morph (SidebarToggleIcon) is
-  // unaffected.
+  // The panel toggle as a compact top-bar icon button, sitting between the
+  // wordmark and the breadcrumbs (no slot, no dividers — the bar separates its
+  // zones by spacing alone). Ghost like the bar variant but with the rail
+  // shell's icon ink: idle `secondary` lifting to `foreground`, a control-size
+  // tile, and the rail's 20px icon weight. It can go inert on a direct-link
+  // page (nothing to collapse). The icon's expand/collapse morph
+  // (SidebarToggleIcon) is unaffected.
   railToggle: cva({
     base: [
-      'flex items-center justify-center size-10 mx-auto rounded-surface cursor-pointer',
+      'ui-button-base ui-press',
+      'size-control [&_svg]:size-5',
       'text-secondary',
-      'transition-[color,background-color] motion-reduce:transition-none',
-      'outline-none focus-visible:ui-state-focus',
-      'enabled:hover:bg-hover enabled:hover:text-foreground',
+      'enabled:hover:ui-state-hover-ghost enabled:hover:text-foreground',
       // Inert on a direct-link page (nothing to collapse): no hover lift.
       'disabled:text-disabled disabled:cursor-default',
-      '[&_svg]:size-5',
     ],
   }),
   // The rail's scrolling item list (footer pinned below). Thin

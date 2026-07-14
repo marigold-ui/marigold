@@ -360,7 +360,6 @@ export type Theme = {
       | 'railRoot'
       | 'railColumn'
       | 'railToggle'
-      | 'railToggleSlot'
       | 'rail'
       | 'railItem'
       | 'railFooter'

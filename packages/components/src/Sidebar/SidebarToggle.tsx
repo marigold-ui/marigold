@@ -10,9 +10,9 @@ import { SidebarToggleIcon } from './SidebarToggleIcon';
 export interface SidebarToggleProps {
   /**
    * Visual treatment. `'bar'` (default) is the ghost button for the top
-   * navigation; `'rail'` styles it as one of the two-level rail's own icons
-   * and wraps it in a rail-width slot whose right border continues the rail's
-   * divider up through the top bar — place it first in `TopNavigation.Start`.
+   * navigation; `'rail'` is the two-level shell's variant — a compact top-bar
+   * icon button in the rail's ink and icon weight, placed between the brand
+   * and the breadcrumbs in `TopNavigation.Start`.
    * @default 'bar'
    */
   variant?: 'bar' | 'rail';
@@ -32,7 +32,7 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
   // enabled regardless).
   const disabled = !isMobile && !panelAvailable;
 
-  const toggle = (
+  return (
     <Tooltip.Trigger delay={2500}>
       <Button
         aria-expanded={state === 'expanded'}
@@ -44,22 +44,17 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
           variant === 'rail' ? classNames.railToggle : classNames.toggle
         )}
       >
-        {/* Rail variant sits among lucide rail icons (default stroke 2), so it
-            matches their weight; the bar variant keeps its lighter 1.5. */}
+        {/* Rail variant shares the shell with lucide rail icons (default
+            stroke 2), so it matches their weight; the bar variant keeps its
+            lighter 1.5. */}
         <SidebarToggleIcon
           expanded={state === 'expanded'}
           strokeWidth={variant === 'rail' ? 2 : 1.5}
         />
       </Button>
-      <Tooltip placement="right">
+      <Tooltip placement="bottom">
         {stringFormatter.format('toggleNavigationTooltip', { shortcut })}
       </Tooltip>
     </Tooltip.Trigger>
   );
-
-  if (variant === 'rail') {
-    return <div className={classNames.railToggleSlot}>{toggle}</div>;
-  }
-
-  return toggle;
 };

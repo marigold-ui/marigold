@@ -223,22 +223,21 @@ const RailShell = ({
 
             <TopNavigation>
               <TopNavigation.Start>
-                {/* The rail-variant toggle brings its own rail-width slot whose
-                    right border continues the rail's divider up through the
-                    top bar. The bar spans the full width (header-first shell),
-                    so the wordmark after it never moves when the panel
-                    collapses. On mobile the same toggle opens the drawer. */}
-                <Sidebar.Toggle variant="rail" />
+                {/* The bar spans the full width (header-first shell) with no
+                    vertical dividers: brand, toggle, and breadcrumbs are three
+                    zones separated by the start slot's spacing rhythm. The
+                    wordmark holds the fixed top-left spot and never moves when
+                    the panel collapses. On mobile the same toggle opens the
+                    drawer. */}
                 <Text weight="bold" fontSize="lg">
                   reservix
                 </Text>
-              </TopNavigation.Start>
-              <TopNavigation.Middle>
+                <Sidebar.Toggle variant="rail" />
                 <Breadcrumbs>
                   <Breadcrumbs.Item href="/uebersicht">Start</Breadcrumbs.Item>
                   <Breadcrumbs.Item href={path}>{label}</Breadcrumbs.Item>
                 </Breadcrumbs>
-              </TopNavigation.Middle>
+              </TopNavigation.Start>
               <TopNavigation.End>
                 <Text size="sm" weight="bold">
                   Mara Ellison
