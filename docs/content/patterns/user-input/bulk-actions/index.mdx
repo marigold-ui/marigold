@@ -12,6 +12,19 @@ They are also one of the most dangerous: a single press now affects many records
 
 This page walks through the pattern in the order you build it: the layout, the actions, the selection, running an action, and reporting its outcome. For managing individual records in a table, see the [Table Records](/patterns/user-input/table-record-management) pattern. For narrowing which records are shown, see the [Filter](/patterns/user-input/filter) pattern.
 
+## When to use
+
+Use bulk actions when users repeatedly apply the same operation to many similar records. The pattern earns its complexity through repetition: the more records a task touches, the more a single selection and press saves over row-by-row work.
+
+## When not to use
+
+Skip the pattern when:
+
+- **The context is single-record.** A detail page or a short list where users act on one item at a time needs a [`<Button>`](/components/actions/button) or [`<ButtonGroup>`](/components/actions/button-group), not a selection model.
+- **The operation needs a per-record decision.** If the user must review or enter something different for each record, a bulk form flattens differences that matter. Reach for the editing flows in [Table Records](/patterns/user-input/table-record-management) instead.
+- **The selection is heterogeneous.** When an action is valid for some selected records and not others, either disable it with an explanation or design the operation per record type. Silently skipping records breaks the "act on what you see" principle.
+- **The operation affects records the user cannot see.** An action whose blast radius extends beyond the visible selection, such as cascading deletes across related data, needs its impact surfaced in the confirmation, or it does not belong in a bulk flow.
+
 ## Structure
 
 The pattern arranges five areas. The collection displays the records with a checkbox column, the action bar floats above the collection while something is selected, and the confirmation dialog, drawer, and toast appear only at the moments they are needed.
@@ -154,15 +167,6 @@ Partial failure is the case that separates a robust implementation from a fragil
 The succeeded records leave the selection, the failed ones stay. The selection itself becomes the retry list, which is more durable than a toast that disappears.
 
 <ComponentDemo name="bulk-actions-partial-failure" />
-
-## When not to use
-
-Bulk actions earn their complexity only when users repeatedly apply the same operation to many similar records. Skip the pattern when:
-
-- **The context is single-record.** A detail page or a short list where users act on one item at a time needs a [`<Button>`](/components/actions/button) or [`<ButtonGroup>`](/components/actions/button-group), not a selection model.
-- **The operation needs a per-record decision.** If the user must review or enter something different for each record, a bulk form flattens differences that matter. Reach for the editing flows in [Table Records](/patterns/user-input/table-record-management) instead.
-- **The selection is heterogeneous.** When an action is valid for some selected records and not others, either disable it with an explanation or design the operation per record type. Silently skipping records breaks the "act on what you see" principle.
-- **The operation affects records the user cannot see.** An action whose blast radius extends beyond the visible selection, such as cascading deletes across related data, needs its impact surfaced in the confirmation, or it does not belong in a bulk flow.
 
 ## Accessibility
 
