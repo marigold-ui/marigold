@@ -18,7 +18,7 @@ export const TagGroupShowMore = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
 
   return (
-    <Button onPress={onPress} className={className}>
+    <Button onPress={onPress} aria-expanded={expanded} className={className}>
       {expanded
         ? stringFormatter.format('showLessCount', { count: `${count}` })
         : stringFormatter.format('showMoreCount', { count: `${count}` })}
