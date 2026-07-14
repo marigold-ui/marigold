@@ -106,6 +106,16 @@ test('sticky header wrapper and its panel share the same accordion item', () => 
   expect(stickyWrapper?.parentElement).toContainElement(panel);
 });
 
+test('header actions adopt the ghost/small ButtonContext cascade', () => {
+  render(<StickyHeader.Component />);
+
+  const [deleteButton] = screen.getAllByRole('button', { name: 'Delete' });
+
+  // `size="small"` resolves to `text-xs` (the default size is `text-sm`), so
+  // this confirms the header's `ButtonContext` reached a bare `<Button>`.
+  expect(deleteButton).toHaveClass('text-xs');
+});
+
 test('supports iconPosition left', () => {
   render(<IconPositionLeft.Component />);
 

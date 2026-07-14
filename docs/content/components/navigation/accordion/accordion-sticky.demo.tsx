@@ -2,12 +2,8 @@ import { Accordion, Button, Inline, Stack, Text } from '@marigold/components';
 
 const actions = (
   <Inline space={2}>
-    <Button size="small" onPress={() => {}}>
-      Edit
-    </Button>
-    <Button size="small" onPress={() => {}}>
-      Delete
-    </Button>
+    <Button onPress={() => {}}>Edit</Button>
+    <Button onPress={() => {}}>Delete</Button>
   </Inline>
 );
 
