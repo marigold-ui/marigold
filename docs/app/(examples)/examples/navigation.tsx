@@ -59,6 +59,13 @@ const userInput: NavSection = {
     },
     {
       kind: 'Item',
+      slug: 'bulk-actions',
+      label: 'Bulk Actions',
+      docsHref: '/patterns/user-input/bulk-actions',
+      docsLabel: 'Bulk Actions Guidelines',
+    },
+    {
+      kind: 'Item',
       label: 'Form',
       children: [
         {
