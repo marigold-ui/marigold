@@ -1,13 +1,17 @@
 'use client';
 
-import { Inline, Pagination, Text } from '@marigold/components';
+import { Inline, Pagination, Select, Split, Text } from '@marigold/components';
 import { EVENTS_REGION_ID } from './EventsTable';
 import { useEvents } from './hooks/useEvents';
-import { usePagination } from './hooks/useEventsParams';
+import { usePageSize, usePagination } from './hooks/useEventsParams';
 
+// The composition the Pagination docs prescribe: the results indicator on
+// the left, the pager centered, and the quantity selector on the right,
+// using the default text strings ("Showing X - Y of Z", "Results per page").
 export const EventsPagination = () => {
   const { safePage, pageSize, totalItems, totalPages } = useEvents();
   const [, setPage] = usePagination();
+  const [, setPageSize] = usePageSize();
 
   if (totalItems === 0) return null;
 
@@ -29,10 +33,11 @@ export const EventsPagination = () => {
   const to = Math.min(safePage * pageSize, totalItems);
 
   return (
-    <Inline alignX="between" alignY="center" space={6}>
-      <Text variant="muted" fontSize="sm">
-        Showing {from}–{to} of {totalItems}
+    <Inline alignY="center">
+      <Text fontSize="sm">
+        Showing {from} - {to} of {totalItems}
       </Text>
+      <Split />
       <Pagination
         key={totalPages}
         page={safePage}
@@ -40,6 +45,20 @@ export const EventsPagination = () => {
         pageSize={pageSize}
         onChange={onPageChange}
       />
+      <Split />
+      <Inline alignY="center" space={4}>
+        <Text fontSize="sm">Results per page</Text>
+        <Select
+          width={20}
+          aria-label="Results per page"
+          value={String(pageSize)}
+          onChange={next => setPageSize(Number(next))}
+        >
+          <Select.Option id="10">10</Select.Option>
+          <Select.Option id="20">20</Select.Option>
+          <Select.Option id="30">30</Select.Option>
+        </Select>
+      </Inline>
     </Inline>
   );
 };

@@ -4,7 +4,8 @@ brief: >-
   one operation across all of them from a floating action bar: direct publish
   with a partial-failure retry loop, multi-field bulk edit in a drawer with
   mixed-values handling, CSV export, per-record progress feedback, and a
-  confirmed destructive delete. Search, filter, and page state live in the URL;
+  confirmed destructive delete. Search, filter, page, and page-size state live
+  in the URL;
   the selection is page-bounded and clears whenever the visible scope changes.
   Each row also carries a single-record action menu for one-off operations,
   which disables while a selection is active so bulk and per-row actions never

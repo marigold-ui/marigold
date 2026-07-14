@@ -1,9 +1,13 @@
 import type { EventQueryParams } from '@/lib/data/events-query';
-import { DEFAULT_PAGE_SIZE } from '@/lib/data/events-query';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchEvents } from './eventsApi';
 import { eventKeys } from './queryKeys';
-import { usePagination, useSearch, useStatusFilter } from './useEventsParams';
+import {
+  usePageSize,
+  usePagination,
+  useSearch,
+  useStatusFilter,
+} from './useEventsParams';
 import { useSession } from './useSession';
 
 // Encapsulates the events list query. Components call `useEvents()` and stay
@@ -18,12 +22,14 @@ export const useEvents = () => {
   const [search] = useSearch();
   const [status] = useStatusFilter();
   const [page] = usePagination();
+  const [pageSize] = usePageSize();
   const { session, hasChanges } = useSession();
 
   const params: EventQueryParams = {
     q: search || undefined,
     status: status ?? undefined,
     page,
+    pageSize,
     session: hasChanges ? session : undefined,
   };
 
@@ -46,7 +52,9 @@ export const useEvents = () => {
     totalItems: result?.totalItems ?? 0,
     totalPages: result?.totalPages ?? 1,
     safePage: result?.safePage ?? 1,
-    pageSize: result?.pageSize ?? DEFAULT_PAGE_SIZE,
+    // Fall back to the URL value so the initial-load skeleton already
+    // mirrors the page size the response will have.
+    pageSize: result?.pageSize ?? pageSize,
     isFiltered,
     // `isLoading` is the initial fetch only (no data yet). Background refetches
     // keep `data` and flip `isFetching` — surfaced globally by FetchingIndicator.
