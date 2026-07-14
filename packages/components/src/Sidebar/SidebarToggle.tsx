@@ -44,7 +44,12 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
           variant === 'rail' ? classNames.railToggle : classNames.toggle
         )}
       >
-        <SidebarToggleIcon expanded={state === 'expanded'} strokeWidth={1.5} />
+        {/* Rail variant sits among lucide rail icons (default stroke 2), so it
+            matches their weight; the bar variant keeps its lighter 1.5. */}
+        <SidebarToggleIcon
+          expanded={state === 'expanded'}
+          strokeWidth={variant === 'rail' ? 2 : 1.5}
+        />
       </Button>
       <Tooltip placement="right">
         {stringFormatter.format('toggleNavigationTooltip', { shortcut })}

@@ -171,34 +171,37 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // viewport edge and its `border-r` lands at 3.5rem — continuing the rail
   // column's divider up through the header. self-stretch (not h-full) so it
   // spans the bar even though the container only has a min-height.
+  //
+  // The `after` strip masks the top bar's own `border-b` across the slot width
+  // (a 1px `background` line sitting exactly on it), so the header divider
+  // starts at the vertical rail divider (x = 3.5rem) instead of running under
+  // the toggle. That leaves only whitespace between the toggle and the first
+  // rail item — the two read as one continuous column, and the horizontal and
+  // vertical dividers meet in a clean corner.
   railToggleSlot: cva({
     base: [
-      'flex items-center justify-center w-14 shrink-0 self-stretch -ml-3',
+      'relative flex items-center justify-center w-14 shrink-0 self-stretch -ml-3',
       'border-r border-border',
+      'after:absolute after:inset-x-0 after:top-full after:h-px after:bg-background',
     ],
   }),
-  // The panel toggle, styled as one of the rail's own icons: same tile (size,
-  // radius, centering, icon size) and the same hover/focus treatment as a
-  // `railItem`. The only difference is idle presence — it sits a step dimmer
-  // than the rail's secondary ink (via opacity) so it reads as chrome rather
-  // than a destination, lifting to full strength on hover/focus. The icon's
-  // expand/collapse morph (SidebarToggleIcon) is unaffected.
+  // The panel toggle, styled exactly like one of the rail's own icons — same
+  // tile (size, radius, centering, icon size), same idle `secondary` ink and
+  // the same hover treatment as a `railItem`. It is never a destination (no
+  // `data-active` pill) and, unlike a rail item, can go inert on a direct-link
+  // page (nothing to collapse), so it adds only a disabled state on top of the
+  // shared look. The icon's expand/collapse morph (SidebarToggleIcon) is
+  // unaffected.
   railToggle: cva({
     base: [
       'flex items-center justify-center size-10 mx-auto rounded-surface cursor-pointer',
-      'transition-[color,background-color,opacity] motion-reduce:transition-none',
+      'text-secondary',
+      'transition-[color,background-color] motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
+      'enabled:hover:bg-hover enabled:hover:text-foreground',
+      // Inert on a direct-link page (nothing to collapse): no hover lift.
+      'disabled:text-disabled disabled:cursor-default',
       '[&_svg]:size-5',
-      // Idle: the rail's secondary ink, dimmed a step further — but no dimmer
-      // than 3:1 against the background (WCAG 1.4.11 non-text minimum).
-      // secondary over background: 80% ≈ 3.4:1, 60% would be ≈ 2.4:1.
-      'text-secondary opacity-80',
-      // Hover / focus: identical to a rail icon, at full strength.
-      'enabled:hover:bg-hover enabled:hover:text-foreground enabled:hover:opacity-100',
-      'focus-visible:opacity-100',
-      // Inert on a direct-link page (nothing to collapse): full-strength
-      // disabled ink, no hover lift.
-      'disabled:text-disabled disabled:opacity-100 disabled:cursor-default',
     ],
   }),
   // The rail's scrolling item list (footer pinned below). Thin
