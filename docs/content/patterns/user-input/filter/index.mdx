@@ -159,7 +159,7 @@ When an applied filter contains a large number of values, avoid grouping them al
 
 ### Collapsing Many Applied Filters
 
-With many active filter groups, stacked rows of applied filter tags can push the data set out of the viewport and make the applied filters area harder to scan. Use the [`collapseAt`](/components/collection/tag#props) prop on `Tag.Group` to show only the most recent filters and collapse the rest behind a "Show more" toggle, keeping the row height predictable regardless of how many filters are active.
+With several filters active, stacked rows of applied filter tags can push the data set out of the viewport and make the applied filters area harder to scan. Use the [`collapseAt`](/components/collection/tag#props) prop on `Tag.Group` to show only the most recent filters and collapse the rest behind a "Show more" toggle, keeping the row height predictable. The example below collapses after 3 filters.
 
 <ComponentDemo name="filter-applied-filter-collapse" />
 

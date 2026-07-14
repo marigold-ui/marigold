@@ -88,13 +88,13 @@ In addition to removing individual tags, you can also provide an option to remov
 
 ### Collapsing many tags
 
-When a tag group holds more tags than fit comfortably on one or two lines, stacked rows push surrounding content out of view and make the group harder to scan. Use the `collapseAt` prop to show only the first few tags, collapsing the rest behind a "Show more" toggle.
+Use `collapseAt` when the number of tags is unpredictable or user-generated, such as applied filters or selected categories, and could grow large enough to push surrounding content out of view. It caps the visible tags at a fixed count and moves the rest behind a "Show more" toggle, keeping the layout predictable while still giving users access to the full set.
 
 <ComponentDemo name="tag-collapse" />
 
 <Callout title="Auto-Expand on Selection">
-  If a selected tag is within the collapsed section, the component renders in
-  its expanded state by default.
+  If a tag that would normally be hidden by `collapseAt` is already selected,
+  the group starts out expanded so that tag stays visible.
 </Callout>
 
 ## Props
