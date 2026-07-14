@@ -16,7 +16,6 @@ import { useSidebar } from './Context';
 import { SidebarModal } from './SidebarModal';
 import { SidebarNav } from './SidebarNav';
 import type { SidebarNavProps } from './SidebarNav';
-import { SidebarToggle } from './SidebarToggle';
 import type { SidebarCurrent } from './collection';
 import { railToNavChildren } from './railCollection';
 import type { SidebarRailNode } from './railCollection';
@@ -24,8 +23,9 @@ import { useSidebarRailState } from './useSidebarRailState';
 
 export interface SidebarRailProps {
   /**
-   * The rail contents: `Sidebar.Header` (brand), `Sidebar.RailItem`s, and
-   * `Sidebar.Footer` (user/avatar). A `RailItem` wrapping a `Sidebar.Nav` is a
+   * The rail contents: `Sidebar.RailItem`s and `Sidebar.Footer` (user/avatar),
+   * optionally a `Sidebar.Header` shown in the mobile drawer (on desktop the
+   * brand lives in the top bar). A `RailItem` wrapping a `Sidebar.Nav` is a
    * section (shows a panel); one with only an `href` is a direct link.
    */
   children?: ReactNode;
@@ -189,27 +189,25 @@ const SidebarRail = ({
       aria-label={stringFormatter.format('sidebar')}
       data-state={state}
       className={cn(
-        'sticky top-0 h-dvh self-start [grid-area:sidebar]',
+        // The full-width top bar spans above the rail (AppShell's header-first
+        // grid), so the aside starts below it and sticks to that offset.
+        'sticky top-14 h-[calc(100dvh-3.5rem)] self-start [grid-area:sidebar]',
         classNames.railRoot
       )}
     >
       <div
         data-panel={hasPanel ? 'expanded' : 'collapsed'}
         className={cn(
-          'grid h-full grid-rows-[3.5rem_1fr]',
-          "[grid-template-areas:'rail_brand'_'rail_panel']",
+          'grid h-full',
           'grid-cols-[3.5rem_15.5rem] data-[panel=collapsed]:grid-cols-[3.5rem_0rem]',
           'transition-[grid-template-columns] duration-200 ease-in-out',
           'motion-reduce:transition-none'
         )}
       >
-        {/* Rail column: the toggle head pinned above the scrolling icon list,
-            spanning both rows so its right border is the one top-to-bottom
-            divider. */}
-        <div className={cn('[grid-area:rail]', classNames.railColumn)}>
-          <div className={classNames.railHead}>
-            <SidebarToggle variant="rail" />
-          </div>
+        {/* Rail column: its right border pairs with the top bar's toggle slot
+            to draw the one top-to-bottom divider. The toggle itself lives in
+            that slot (Sidebar.Toggle in TopNavigation.Start), not here. */}
+        <div className={classNames.railColumn}>
           <nav
             aria-label={ariaLabel || stringFormatter.format('railNavigation')}
             className="flex min-h-0 flex-1 flex-col overflow-hidden"
@@ -232,18 +230,9 @@ const SidebarRail = ({
           </nav>
         </div>
 
-        {/* Brand band above the panel (empty when the wordmark lives in the top
-            navigation instead). */}
-        <div className={cn('[grid-area:brand]', classNames.brand)}>
-          {header}
-        </div>
-
         <div
           inert={!hasPanel || undefined}
-          className={cn(
-            '[grid-area:panel] [&>nav]:min-h-0 [&>nav]:flex-1',
-            classNames.panel
-          )}
+          className={cn('[&>nav]:min-h-0 [&>nav]:flex-1', classNames.panel)}
         >
           {selectedNode?.isSection && selectedNode.nav ? (
             <>

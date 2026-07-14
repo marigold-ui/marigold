@@ -156,21 +156,25 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   railRoot: cva({
     base: ['overflow-hidden bg-background ui-scrollbar'],
   }),
-  // The rail column: the narrow strip of the toggle head + icon list, spanning
-  // the full height beside the panel. Carries the always-on vertical divider
-  // (`border-r`) between the rail and everything to its right — the one line
-  // that runs top to bottom. When the panel is collapsed this same line is the
-  // sidebar's right edge (the panel drops its border), so it never doubles up.
+  // The rail column: the narrow strip of icons beside the panel. Carries the
+  // always-on vertical divider (`border-r`) between the rail and everything to
+  // its right. The toggle slot in the top bar (`railToggleSlot`) draws the same
+  // line at the same offset, so together they read as one divider from viewport
+  // top to bottom. When the panel is collapsed this line is also the sidebar's
+  // right edge (the panel drops its border), so it never doubles up.
   railColumn: cva({
     base: ['flex flex-col min-h-0', 'border-r border-border'],
   }),
-  // Toggle head atop the rail column, aligned to the app header row (h-14) with
-  // the same always-on bottom `border` as the top bar, so the header edge runs
-  // unbroken across the toggle, the brand band and the top navigation.
-  railHead: cva({
+  // Hosts the rail-variant toggle at the far left of the top bar, sized to the
+  // rail column (w-14) so the toggle sits exactly above the rail icons. -ml-3
+  // cancels the TopNavigation container's px-3 so the slot starts flush at the
+  // viewport edge and its `border-r` lands at 3.5rem — continuing the rail
+  // column's divider up through the header. self-stretch (not h-full) so it
+  // spans the bar even though the container only has a min-height.
+  railToggleSlot: cva({
     base: [
-      'flex items-center justify-center h-14 shrink-0',
-      'border-b border-border',
+      'flex items-center justify-center w-14 shrink-0 self-stretch -ml-3',
+      'border-r border-border',
     ],
   }),
   // The panel toggle, styled as one of the rail's own icons: same tile (size,
@@ -185,8 +189,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'transition-[color,background-color,opacity] motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
       '[&_svg]:size-5',
-      // Idle: the rail's secondary ink, dimmed a step further.
-      'text-secondary opacity-60',
+      // Idle: the rail's secondary ink, dimmed a step further — but no dimmer
+      // than 3:1 against the background (WCAG 1.4.11 non-text minimum).
+      // secondary over background: 80% ≈ 3.4:1, 60% would be ≈ 2.4:1.
+      'text-secondary opacity-80',
       // Hover / focus: identical to a rail icon, at full strength.
       'enabled:hover:bg-hover enabled:hover:text-foreground enabled:hover:opacity-100',
       'focus-visible:opacity-100',
@@ -195,22 +201,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'disabled:text-disabled disabled:opacity-100 disabled:cursor-default',
     ],
   }),
-  // Brand band above the panel (not the rail): holds the wordmark, aligned to
-  // the panel's nav content (px-4, matching the section title and group labels
-  // below it). Carries the same always-on bottom `border` as the toggle head
-  // and the top bar. The whole band fades out — rather than clipping the
-  // wordmark mid-letter — when the panel collapses its column away, leaving the
-  // collapsed rail a clean icon strip under the toggle.
-  brand: cva({
-    base: [
-      'flex items-center gap-2 min-w-0 overflow-hidden px-4',
-      '*:px-0',
-      'border-b border-border',
-      'transition-opacity duration-200 motion-reduce:transition-none',
-      'in-data-[panel=collapsed]:opacity-0',
-    ],
-  }),
-  // The rail's scrolling item list (brand pinned above, footer below). Thin
+  // The rail's scrolling item list (footer pinned below). Thin
   // scrollbar, hidden until hover — reused from `ui-scrollbar`.
   rail: cva({
     base: [

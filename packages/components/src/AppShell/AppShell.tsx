@@ -1,6 +1,23 @@
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import { use } from 'react';
+import { Children, isValidElement, use } from 'react';
 import { SidebarContext, SidebarProvider } from '../Sidebar/Context';
+
+/**
+ * True when a `Sidebar.Rail` sits anywhere in the (static) element tree —
+ * two-level mode. Walks `props.children` only, so a rail hidden inside a
+ * custom component's render is not detected; compose the rail directly in
+ * the shell's tree.
+ */
+const containsRail = (children: ReactNode): boolean =>
+  Children.toArray(children).some(child => {
+    if (!isValidElement(child)) return false;
+    if (
+      (child.type as { __SIDEBAR_RAIL__?: boolean }).__SIDEBAR_RAIL__ === true
+    ) {
+      return true;
+    }
+    return containsRail((child.props as { children?: ReactNode }).children);
+  });
 
 // Props
 // ---------------
@@ -51,10 +68,20 @@ export const AppShell = ({
   // any boilerplate.
   const hasOuterProvider = use(SidebarContext) !== null;
 
+  // Two-level rail → header-first: the top bar spans the full width (so the
+  // brand in it never moves when the panel collapses) and the sidebar hangs
+  // below it. Single-column sidebar → sidebar-first: the sidebar owns the full
+  // height and the top bar starts to its right.
+  const headerFirst = containsRail(children);
+
   const grid = (
     <div
       ref={ref}
-      className="grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[3.5rem_1fr] [grid-template-areas:'sidebar_header'_'sidebar_main']"
+      className={
+        headerFirst
+          ? "grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[3.5rem_1fr] [grid-template-areas:'header_header'_'sidebar_main']"
+          : "grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[3.5rem_1fr] [grid-template-areas:'sidebar_header'_'sidebar_main']"
+      }
       {...props}
     >
       {children}

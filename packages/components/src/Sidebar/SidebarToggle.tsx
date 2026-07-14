@@ -10,7 +10,9 @@ import { SidebarToggleIcon } from './SidebarToggleIcon';
 export interface SidebarToggleProps {
   /**
    * Visual treatment. `'bar'` (default) is the ghost button for the top
-   * navigation; `'rail'` styles it as one of the two-level rail's own icons.
+   * navigation; `'rail'` styles it as one of the two-level rail's own icons
+   * and wraps it in a rail-width slot whose right border continues the rail's
+   * divider up through the top bar — place it first in `TopNavigation.Start`.
    * @default 'bar'
    */
   variant?: 'bar' | 'rail';
@@ -30,7 +32,7 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
   // enabled regardless).
   const disabled = !isMobile && !panelAvailable;
 
-  return (
+  const toggle = (
     <Tooltip.Trigger delay={2500}>
       <Button
         aria-expanded={state === 'expanded'}
@@ -49,4 +51,10 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
       </Tooltip>
     </Tooltip.Trigger>
   );
+
+  if (variant === 'rail') {
+    return <div className={classNames.railToggleSlot}>{toggle}</div>;
+  }
+
+  return toggle;
 };
