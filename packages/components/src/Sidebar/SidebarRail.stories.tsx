@@ -27,12 +27,25 @@ import { TopNavigation } from '../TopNavigation/TopNavigation';
 import { Sidebar } from './Sidebar';
 
 const meta = preview.meta({
-  title: 'Components/Sidebar/Rail',
+  // Same title as Sidebar.stories on purpose: the rail is a mode of the one
+  // Sidebar component, so its story lists as a sibling of Basic — not as a
+  // nested "Rail" folder.
+  title: 'Components/Sidebar',
   component: Sidebar.Rail,
   parameters: {
     layout: 'fullscreen',
     surface: false,
   },
+  decorators: [
+    Story => {
+      // Same reset as Sidebar.stories: the collapse state persists to a
+      // cookie, so drop it to keep state from leaking between stories.
+      if (typeof document !== 'undefined') {
+        document.cookie = 'marigold:sidebar:state=;path=/;max-age=0';
+      }
+      return <Story />;
+    },
+  ],
 });
 
 // German-first content — the labels go in verbatim, long compounds and all
@@ -44,6 +57,9 @@ const pages: Record<string, string> = {
   '/tickets/meine': 'Meine Tickets',
   '/tickets/nicht-zugewiesen': 'Nicht zugewiesen',
   '/tickets/alle': 'Alle Tickets',
+  '/tickets/archiv/geloest': 'Gelöst',
+  '/tickets/archiv/geschlossen': 'Geschlossen',
+  '/tickets/archiv/spam': 'Spam',
   '/veranstaltungen/kommende': 'Kommende',
   '/veranstaltungen/vergangene': 'Vergangene',
   '/kontakte/personen': 'Personen',
@@ -55,6 +71,8 @@ const pages: Record<string, string> = {
   '/wissensdatenbank/artikel': 'Artikel',
   '/einstellungen/allgemein': 'Allgemein',
   '/einstellungen/team': 'Team',
+  '/einstellungen/benachrichtigungen/email': 'E-Mail',
+  '/einstellungen/benachrichtigungen/push': 'Push',
 };
 
 const RailShell = ({
@@ -90,6 +108,21 @@ const RailShell = ({
                     </Sidebar.Item>
                     <Sidebar.Item href="/tickets/alle">
                       Alle Tickets
+                    </Sidebar.Item>
+                    {/* A third level: an item without href wrapping items
+                        drills the panel in (with a back row), same as in the
+                        single-column sidebar. */}
+                    <Sidebar.Item id="archiv" textValue="Archiv">
+                      Archiv
+                      <Sidebar.Item href="/tickets/archiv/geloest">
+                        Gelöst
+                      </Sidebar.Item>
+                      <Sidebar.Item href="/tickets/archiv/geschlossen">
+                        Geschlossen
+                      </Sidebar.Item>
+                      <Sidebar.Item href="/tickets/archiv/spam">
+                        Spam
+                      </Sidebar.Item>
                     </Sidebar.Item>
                   </Sidebar.Nav>
                 </Sidebar.RailItem>
@@ -157,6 +190,18 @@ const RailShell = ({
                       Allgemein
                     </Sidebar.Item>
                     <Sidebar.Item href="/einstellungen/team">Team</Sidebar.Item>
+                    <Sidebar.Item
+                      id="benachrichtigungen"
+                      textValue="Benachrichtigungen"
+                    >
+                      Benachrichtigungen
+                      <Sidebar.Item href="/einstellungen/benachrichtigungen/email">
+                        E-Mail
+                      </Sidebar.Item>
+                      <Sidebar.Item href="/einstellungen/benachrichtigungen/push">
+                        Push
+                      </Sidebar.Item>
+                    </Sidebar.Item>
                   </Sidebar.Nav>
                 </Sidebar.RailItem>
 
@@ -220,12 +265,12 @@ const RailShell = ({
   );
 };
 
-export const Basic = meta.story({
+export const Rail = meta.story({
   tags: ['component-test'],
   render: () => <RailShell />,
 });
 
-Basic.test(
+Rail.test(
   'shows two nav landmarks and swaps the panel on rail selection',
   async ({ canvas, userEvent, step }) => {
     // Rail landmark + the active section's panel landmark are both present.
@@ -259,6 +304,33 @@ Basic.test(
         await userEvent.keyboard('{Escape}');
       }
     );
+
+    await step('nested item drills the panel in and back out', async () => {
+      // Scope to the panel landmark: after navigating, the breadcrumb exposes
+      // the current page as a second role="link" with the same name.
+      const panelNav = canvas.getByRole('navigation', { name: 'Tickets' });
+
+      // Activating 'Archiv' drills into its children and navigates to its
+      // first leaf (Gelöst).
+      await userEvent.click(
+        within(panelNav).getByRole('link', { name: 'Archiv' })
+      );
+      await waitFor(() =>
+        expect(
+          within(panelNav).getByRole('link', { name: 'Gelöst' })
+        ).toHaveAttribute('aria-current', 'page')
+      );
+
+      // The back row leads to the section root again.
+      await userEvent.click(
+        within(panelNav).getByRole('button', { name: /Zurück/i })
+      );
+      await waitFor(() =>
+        expect(
+          within(panelNav).getByRole('link', { name: 'Meine Tickets' })
+        ).toBeInTheDocument()
+      );
+    });
 
     await step('select another section → panel swaps', async () => {
       await userEvent.click(canvas.getByRole('link', { name: 'Kontakte' }));

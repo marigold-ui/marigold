@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { ensureOverlayContainer, mockMatchMedia } from '../test.utils';
-import { Basic } from './SidebarRail.stories';
+import { Rail } from './SidebarRail.stories';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
@@ -27,7 +27,7 @@ afterEach(async () => {
 
 describe('Sidebar.Rail — desktop', () => {
   test('renders the rail landmark and the active section panel', () => {
-    render(<Basic.Component />);
+    render(<Rail.Component />);
 
     expect(
       screen.getByRole('navigation', { name: 'Hauptnavigation' })
@@ -43,7 +43,7 @@ describe('Sidebar.Rail — desktop', () => {
   });
 
   test('a direct-link rail item shows no panel and disables the toggle', async () => {
-    render(<Basic.Component />);
+    render(<Rail.Component />);
 
     const toggle = screen.getByRole('button', {
       name: 'Navigation umschalten',
@@ -70,7 +70,7 @@ describe('Sidebar.Rail — mobile', () => {
   test('collapses to the single-column drawer with rail items as the root', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     ensureOverlayContainer();
-    render(<Basic.Component />);
+    render(<Rail.Component />);
 
     // Drawer starts closed on mobile; the top-nav toggle opens it.
     const toggle = screen.getByRole('button', {
