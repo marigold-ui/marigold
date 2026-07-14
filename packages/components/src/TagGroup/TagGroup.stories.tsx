@@ -53,6 +53,28 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'Navigates between tags with arrow keys',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const news = canvas.getByText('News').closest('[role="row"]')!;
+    const travel = canvas.getByText('Travel').closest('[role="row"]')!;
+    const gaming = canvas.getByText('Gaming').closest('[role="row"]')!;
+
+    (news as HTMLElement).focus();
+    expect(news).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowRight}');
+    expect(travel).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowRight}');
+    expect(gaming).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowLeft}');
+    expect(travel).toHaveFocus();
+  }
+);
+
 export const RemovableTags = meta.story({
   tags: ['component-test'],
   render: args => {

@@ -10,6 +10,6 @@ Unlike those groups, `Tag.Group`'s tags are a RAC collection (selection, removal
 
 `collapseAt` only applies to static children; dynamic collections (`items` + a render function) are unaffected.
 
-When both `collapseAt` and `removeAll` are used together, "Show N more" now bottom-aligns next to the last visible tag, while "Remove all" moves to its own row below and is styled distinctly (muted, underlined) instead of matching "Show more"'s link style — the two previously looked identical despite doing very different things.
+When both `collapseAt` and `removeAll` are used together, "Show N more" bottom-aligns next to the last visible tag, while "Remove all" stays in its own trailing column so it never mixes into the tag wrap.
 
 [DST-1509](https://reservix.atlassian.net/browse/DST-1509)

@@ -1,5 +1,15 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
+// Shared by `removeAll` and `showMore`: both are inline text actions next to
+// the tag list and should look and behave identically.
+const linkAction = [
+  'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
+  'ui-press',
+  'focus-visible:ui-state-focus outline-none',
+  'cursor-pointer',
+  'text-link text-xs ui-touch-hitbox',
+];
+
 export const Tag: ThemeComponent<'Tag'> = {
   container: cva({
     base: [
@@ -33,21 +43,9 @@ export const Tag: ThemeComponent<'Tag'> = {
     ],
   }),
   removeAll: cva({
-    base: [
-      'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
-      'ui-press',
-      'focus-visible:ui-state-focus outline-none',
-      'cursor-pointer',
-      'text-link text-xs ui-touch-hitbox',
-    ],
+    base: linkAction,
   }),
   showMore: cva({
-    base: [
-      'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
-      'ui-press',
-      'focus-visible:ui-state-focus outline-none',
-      'cursor-pointer',
-      'text-link text-xs ui-touch-hitbox',
-    ],
+    base: linkAction,
   }),
 };

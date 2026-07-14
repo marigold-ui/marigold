@@ -43,11 +43,12 @@ test('exposes every tag as a keyboard-focusable grid row', () => {
   // react-aria uses `keyboardNavigationBehavior: 'tab'`, so each tag is its own
   // tab stop — that is what makes the list keyboard navigable.
   //
-  // Arrow-key navigation between tags is react-aria grid behaviour and is
-  // verified in real browsers. It is intentionally not simulated here: the
-  // TagList is rendered with `display: contents` (so the "Show more" toggle can
-  // flow inline after the last tag), and @testing-library's synthetic key
-  // events do not traverse that grid, dropping focus instead of moving it.
+  // Arrow-key navigation between tags is covered by the
+  // "Navigates between tags with arrow keys" play test in
+  // TagGroup.stories.tsx instead of here: @testing-library's synthetic key
+  // events do not traverse the `display: contents` TagList (needed so the
+  // "Show more" toggle flows inline after the last tag), dropping focus
+  // instead of moving it, while a real browser handles it correctly.
   tags.forEach(tag => expect(tag).toHaveAttribute('tabindex', '0'));
 });
 
