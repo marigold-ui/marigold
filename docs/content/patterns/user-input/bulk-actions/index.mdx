@@ -54,7 +54,7 @@ Not every operation earns a place in the action bar. Offer bulk actions for task
 
 Name every action with a verb, or a verb plus noun where the target is ambiguous, so its effect is obvious before pressing: "Publish", "Assign category", "Delete". Avoid vague labels such as "Apply" or "OK" on their own. Order the actions from safest to most consequential and place a destructive action such as delete last, visually separated from the routine ones. When a selection carries more actions than fit comfortably, move the long tail into an [`<ActionMenu>`](/components/overlay/action-menu) rather than crowding the bar.
 
-While the bar is visible, the selection is the object the user works on. Avoid competing per-row actions during that time: a row-level delete next to a bulk delete makes it unclear which scope a press affects.
+While the bar is visible, the selection is the object the user works on. Avoid competing per-row actions during that time: a row-level delete next to a bulk delete makes it unclear which scope a press affects. Bulk and per-row actions can still share a table — one-off operations belong in a row menu (see [Table Records](/patterns/user-input/table-record-management)), repetitive ones in the bar — as long as they take turns: while rows are selected, disable the row actions so the bar holds the only pressable scope.
 
 <GuidelineTiles>
   <Do>

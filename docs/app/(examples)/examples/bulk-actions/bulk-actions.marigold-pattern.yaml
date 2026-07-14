@@ -6,6 +6,9 @@ brief: >-
   mixed-values handling, CSV export, per-record progress feedback, and a
   confirmed destructive delete. Search, filter, and page state live in the URL;
   the selection is page-bounded and clears whenever the visible scope changes.
+  Each row also carries a single-record action menu for one-off operations,
+  which disables while a selection is active so bulk and per-row actions never
+  compete for the same press.
 patterns:
   - user-input/bulk-actions
 mock_data:

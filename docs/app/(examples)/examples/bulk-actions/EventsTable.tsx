@@ -2,6 +2,7 @@
 
 import type { Event, EventStatus } from '@/lib/data/events';
 import {
+  ActionMenu,
   Badge,
   Button,
   Center,
@@ -15,6 +16,7 @@ import { NumericFormat } from '@marigold/system';
 import { BulkActionBar } from './BulkActionBar';
 import { useEvents } from './hooks/useEvents';
 import { useSearch, useStatusFilter } from './hooks/useEventsParams';
+import { useRowActions } from './hooks/useRowActions';
 import { useSelection } from './hooks/useSelection';
 
 // Anchor that EventsPagination scrolls back to so users land on the first
@@ -85,6 +87,7 @@ export const EventsTableSkeleton = ({ rows = 10 }: { rows?: number }) => (
             <div className="h-4 grow animate-pulse rounded bg-current/10" />
             <div className="h-4 w-16 animate-pulse rounded bg-current/10" />
             <div className="h-4 w-12 animate-pulse rounded bg-current/10" />
+            <div className="h-4 w-6 animate-pulse rounded bg-current/10" />
           </Inline>
         ))}
       </Stack>
@@ -92,7 +95,50 @@ export const EventsTableSkeleton = ({ rows = 10 }: { rows?: number }) => (
   </>
 );
 
-const EventRow = ({ event }: { event: Event }) => (
+// Per-row menu for one-off operations (see the Table Records pattern). It
+// carries the same verbs as the bulk bar, scoped to one named event. While
+// rows are selected the bar owns the scope, so the menu disables — bulk and
+// per-row actions take turns instead of competing for the same press
+// (bulk-actions pattern, "Choosing actions").
+const RowActions = ({
+  event,
+  disabled,
+}: {
+  event: Event;
+  disabled: boolean;
+}) => {
+  const actions = useRowActions();
+
+  return (
+    <ActionMenu
+      aria-label={`Actions for ${event.name}`}
+      variant="ghost"
+      size="small"
+      disabled={disabled}
+      onAction={key => {
+        if (key === 'publish') actions.publish(event);
+        if (key === 'archive') actions.archive(event);
+        if (key === 'remind') actions.remind(event);
+        if (key === 'delete') actions.deleteEvent(event);
+      }}
+    >
+      <ActionMenu.Item id="publish">Publish</ActionMenu.Item>
+      <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
+      <ActionMenu.Item id="remind">Send reminder</ActionMenu.Item>
+      <ActionMenu.Item id="delete" variant="destructive">
+        Delete
+      </ActionMenu.Item>
+    </ActionMenu>
+  );
+};
+
+const EventRow = ({
+  event,
+  actionsDisabled,
+}: {
+  event: Event;
+  actionsDisabled: boolean;
+}) => (
   <Table.Row id={event.id}>
     <Table.Cell>
       <Text weight="medium">{event.name}</Text>
@@ -116,6 +162,9 @@ const EventRow = ({ event }: { event: Event }) => (
     <Table.Cell>
       <NumericFormat value={event.reservations} />
     </Table.Cell>
+    <Table.Cell>
+      <RowActions event={event} disabled={actionsDisabled} />
+    </Table.Cell>
   </Table.Row>
 );
 
@@ -137,6 +186,7 @@ export const EventsTable = () => {
   }
 
   const summary = `${totalItems} event${totalItems === 1 ? '' : 's'}`;
+  const hasSelection = selected === 'all' || selected.size > 0;
 
   return (
     <div id={EVENTS_REGION_ID} className="scroll-mt-4">
@@ -148,19 +198,32 @@ export const EventsTable = () => {
         onSelectionChange={setSelected}
         actionBar={() => <BulkActionBar />}
       >
+        {/* Columns with predictable short content get a fixed width; the two
+            text columns share the rest, weighted toward the event name. */}
         <Table.Header>
-          <Table.Column id="name" rowHeader>
+          <Table.Column id="name" rowHeader width="2fr" minWidth={200}>
             Event
           </Table.Column>
-          <Table.Column id="date">Date</Table.Column>
-          <Table.Column id="venue">Venue</Table.Column>
-          <Table.Column id="category">Category</Table.Column>
-          <Table.Column id="price" alignX="right">
+          <Table.Column id="date" width={120}>
+            Date
+          </Table.Column>
+          <Table.Column id="venue" width="1fr" minWidth={140}>
+            Venue
+          </Table.Column>
+          <Table.Column id="category" width={110}>
+            Category
+          </Table.Column>
+          <Table.Column id="price" alignX="right" width={80}>
             Price
           </Table.Column>
-          <Table.Column id="status">Status</Table.Column>
-          <Table.Column id="reservations" alignX="right">
+          <Table.Column id="status" width={100}>
+            Status
+          </Table.Column>
+          <Table.Column id="reservations" alignX="right" width={120}>
             Reservations
+          </Table.Column>
+          <Table.Column id="actions" width={56}>
+            <VisuallyHidden>Actions</VisuallyHidden>
           </Table.Column>
         </Table.Header>
         <Table.Body
@@ -169,7 +232,11 @@ export const EventsTable = () => {
           }
         >
           {items.map(event => (
-            <EventRow key={event.id} event={event} />
+            <EventRow
+              key={event.id}
+              event={event}
+              actionsDisabled={hasSelection}
+            />
           ))}
         </Table.Body>
       </Table>
