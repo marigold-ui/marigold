@@ -22,7 +22,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
       // wears the identical translucent hover. Gated to unselected: the selected
       // page keeps its ui-control fill and must not get the ghost overlay.
       'data-[selected=false]:hover:ui-state-hover-ghost',
-      'data-[selected=true]:ui-control data-[selected=true]:shadow-elevation-border',
+      'data-[selected=true]:ui-control',
     ],
   }),
   icon: cva({ base: 'h-4 w-4' }),
