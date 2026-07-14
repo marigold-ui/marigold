@@ -8,6 +8,7 @@ const sig = (over: Partial<TriggerSignals> = {}): TriggerSignals => ({
   hasPopoverTarget: false,
   hasAriaControls: false,
   isSummary: false,
+  hasResolvableAriaDescribedBy: false,
   ...over,
 });
 
@@ -74,5 +75,22 @@ describe('classifyTrigger', () => {
     expect(
       classifyTrigger(sig({ role: 'tab', ariaHasPopup: 'menu' }))?.kind
     ).toBe('menu');
+  });
+
+  it('classifies a resolvable aria-describedby as a hover-activated popover', () => {
+    // Regression: this was the one Activation value ('hover') that no code
+    // path ever returned, so hover-revealed content (tooltips) was never
+    // discovered by the interaction driver.
+    expect(
+      classifyTrigger(sig({ hasResolvableAriaDescribedBy: true }))
+    ).toEqual({ kind: 'popover', activation: 'hover' });
+  });
+
+  it('prioritises aria-haspopup over a resolvable aria-describedby', () => {
+    expect(
+      classifyTrigger(
+        sig({ ariaHasPopup: 'menu', hasResolvableAriaDescribedBy: true })
+      )?.activation
+    ).toBe('press');
   });
 });

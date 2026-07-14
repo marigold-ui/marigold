@@ -7,6 +7,37 @@ import type { ValidationCoverage, ValidationIssue } from '../types.js';
 
 export type ThemeVariantMap = Map<string, Map<string, string[]>>;
 
+// Resolves a JSX tag *as written* (including an alias, `{ Menu as M }`) to
+// the name it was imported under from `@marigold/components`. Deliberately
+// NOT gated on `@marigold/components` registry membership (unlike
+// `buildMarigoldTagResolver` in helpers/components.ts): `themeVariants` — the
+// actual source of truth here — is derived from the theme package's
+// `*.styles.ts` files, a separate data source from the components registry,
+// so gating on the registry would reject a real, themed component the
+// registry loader doesn't happen to recognize. The only thing that must be
+// checked is origin: is this tag actually imported from `@marigold/components`
+// (not a locally declared or third-party component sharing the name)?
+const buildMarigoldImportResolver = (
+  source: ts.SourceFile
+): Map<string, string> => {
+  const resolver = new Map<string, string>();
+  for (const stmt of source.statements) {
+    if (!ts.isImportDeclaration(stmt)) continue;
+    if (!ts.isStringLiteral(stmt.moduleSpecifier)) continue;
+    if (stmt.moduleSpecifier.text !== '@marigold/components') continue;
+
+    const bindings = stmt.importClause?.namedBindings;
+    if (!bindings || !ts.isNamedImports(bindings)) continue;
+
+    for (const el of bindings.elements) {
+      const originalName = (el.propertyName ?? el.name).text;
+      const localName = el.name.text;
+      resolver.set(localName, originalName);
+    }
+  }
+  return resolver;
+};
+
 let cachedMap: ThemeVariantMap | null = null;
 let cachedDir: string | null = null;
 
@@ -182,6 +213,14 @@ export const validateThemeVariants = (
   const themeVariants = loadThemeVariants(themeDir);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
+  // Only treat a tag as a Marigold component when it is actually imported
+  // from @marigold/components. `themeVariants` is keyed by the component's
+  // real name (extracted from the theme's *.styles.ts files), so a bare
+  // `themeVariants.get(tag.text)` lookup — with no origin check — false-
+  // positives on a locally-declared component sharing a Marigold name (e.g.
+  // a project's own `<Menu variant="...">` with an unrelated prop contract),
+  // and silently misses an aliased Marigold import.
+  const resolver = buildMarigoldImportResolver(source);
 
   const visit = (node: ts.Node): void => {
     if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -192,7 +231,8 @@ export const validateThemeVariants = (
       }
 
       const componentName = tag.text;
-      const dimensions = themeVariants.get(componentName);
+      const original = resolver.get(componentName);
+      const dimensions = original ? themeVariants.get(original) : undefined;
       if (!dimensions) {
         ts.forEachChild(node, visit);
         return;

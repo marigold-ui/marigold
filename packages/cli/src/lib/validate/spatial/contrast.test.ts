@@ -29,6 +29,16 @@ describe('parseColor', () => {
       a: 0.4,
     });
   });
+  it('parses a percentage alpha in the space / slash form', () => {
+    // Browsers can emit `rgb(r g b / 50%)`; a bare parseFloat on "50%" would
+    // yield 50 instead of 0.5, which then clamps to fully opaque downstream.
+    expect(parseColor('rgb(0 0 0 / 50%)')).toEqual({
+      r: 0,
+      g: 0,
+      b: 0,
+      a: 0.5,
+    });
+  });
   it('parses #rrggbb', () => {
     expect(parseColor('#ff8800')).toEqual({ r: 255, g: 136, b: 0, a: 1 });
   });

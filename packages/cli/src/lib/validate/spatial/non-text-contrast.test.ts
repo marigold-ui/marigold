@@ -96,4 +96,24 @@ describe('nonTextContrastToValidationIssues', () => {
     ]);
     expect(issues).toEqual([]);
   });
+
+  it('flattens through a translucent scrim to a genuinely opaque grandparent', () => {
+    // Regression: the browser-side ancestor walk used to stop at the FIRST
+    // non-fully-transparent layer (even a translucent one), so a real opaque
+    // backdrop sitting beneath a translucent scrim/tint was never collected —
+    // flattenBackground then saw no a>=1 layer and returned null
+    // (indeterminate), silently skipping a genuine 1.4.11 violation. With
+    // both layers collected (top: translucent scrim, bottom: opaque white),
+    // the violation must be reported.
+    const issues = nonTextContrastToValidationIssues([
+      {
+        ...base,
+        ancestorBackgrounds: ['rgba(255, 255, 255, 0.5)', 'rgb(255, 255, 255)'],
+        hasVisibleBorder: true,
+        borderColor: 'rgb(235, 235, 235)',
+      },
+    ]);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].message).toContain('1.4.11');
+  });
 });

@@ -118,6 +118,22 @@ export const extractNonTextContrast = async (
 
         const borderColor = firstVisibleBorderColor(style);
 
+        // A translucent (partial-alpha) background is NOT a backdrop to stop
+        // at — flattenBackground (the Node-side compositor this data feeds)
+        // only treats an a>=1 layer as the opaque base, and composites every
+        // translucent layer above it. Stopping at the first non-fully-
+        // transparent layer (as opposed to the first fully OPAQUE one) would
+        // silently drop a real opaque grandparent beneath a translucent
+        // scrim/tint, making flattenBackground return null (indeterminate)
+        // and skip a genuine contrast violation.
+        const isOpaqueBackground = (colorStr: string): boolean => {
+          const m = colorStr.match(/rgba?\(([^)]+)\)/);
+          if (!m) return false;
+          const parts = m[1].split(',').map(s => s.trim());
+          if (parts.length < 4) return true; // rgb(...) has no alpha channel: opaque
+          return parseFloat(parts[3]) >= 1;
+        };
+
         // Walk ancestors collecting background colours up to the first opaque one;
         // note whether any of them paints an image/gradient (indeterminate).
         const ancestorBackgrounds: string[] = [];
@@ -129,12 +145,8 @@ export const extractNonTextContrast = async (
           if (cs.backgroundImage && cs.backgroundImage !== 'none') {
             backdropHasImage = true;
           }
-          if (
-            cs.backgroundColor &&
-            !cs.backgroundColor.includes('rgba(0, 0, 0, 0)') &&
-            cs.backgroundColor !== 'transparent'
-          ) {
-            break; // reached an opaque-ish backdrop
+          if (cs.backgroundColor && isOpaqueBackground(cs.backgroundColor)) {
+            break; // reached a genuinely opaque backdrop
           }
           cur = cur.parentElement;
         }

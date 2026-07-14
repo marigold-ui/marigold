@@ -2,6 +2,7 @@ import ts from 'typescript';
 import path from 'node:path';
 import { hasAttrPresent, hasSpreadAttribute } from '../helpers/ast.js';
 import {
+  buildMarigoldTagResolver,
   getSubComponentProps,
   isMarigoldSubComponent,
 } from '../helpers/components.js';
@@ -24,6 +25,12 @@ export const validateSectionHeader = (filePath: string): ValidationIssue[] => {
   const source = parseSource(filePath);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
+  // Only treat a tag as a Marigold component when it is actually imported from
+  // @marigold/components, and honor aliased imports (`{ Select as S }`) by
+  // resolving to the real name. Mirrors the origin guard the composition
+  // checker uses — without it, a local or third-party `<X.Section>` false-
+  // positives, and an aliased Marigold one is silently skipped.
+  const resolver = buildMarigoldTagResolver(source);
 
   const check = (node: ts.Node): void => {
     if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -34,7 +41,10 @@ export const validateSectionHeader = (filePath: string): ValidationIssue[] => {
         tag.name.text === SECTION_SUB
       ) {
         const parent = tag.expression.text;
-        const props = getSubComponentProps(parent, SECTION_SUB);
+        const originalParent = resolver.get(parent);
+        const props = originalParent
+          ? getSubComponentProps(originalParent, SECTION_SUB)
+          : undefined;
         const acceptsHeader = props?.some(p => p.name === HEADER_PROP) ?? false;
 
         // A spread (`{...props}`) may carry the header, which cannot be
@@ -42,7 +52,8 @@ export const validateSectionHeader = (filePath: string): ValidationIssue[] => {
         const hasSpread = hasSpreadAttribute(node.attributes);
 
         if (
-          isMarigoldSubComponent(parent, SECTION_SUB) &&
+          originalParent !== undefined &&
+          isMarigoldSubComponent(originalParent, SECTION_SUB) &&
           acceptsHeader &&
           !hasSpread &&
           !hasAttrPresent(node.attributes, HEADER_PROP)

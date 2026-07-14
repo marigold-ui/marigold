@@ -21,25 +21,24 @@ const formatValue = (v: unknown): string => {
   if (typeof v === 'string') {
     return v.length > 80 ? v.slice(0, 77) + '...' : v;
   }
-  if (Array.isArray(v) && v.length > 8) {
-    const truncated = JSON.stringify(v.slice(0, 8));
-    return truncated.slice(0, -1) + ', …]';
-  }
   // The formatter must never crash on a detail value, whatever it is.
   // JSON.stringify returns the value `undefined` (not a string) for undefined,
   // functions and symbols, and it THROWS on a bigint or a circular object.
   // Render/a11y findings carry optional detail fields (e.g. an axe violation
   // with no `impact`), so fall back to String(v) in either case.
-  let s: string | undefined;
   try {
-    s = JSON.stringify(v);
+    if (Array.isArray(v) && v.length > 8) {
+      const truncated = JSON.stringify(v.slice(0, 8));
+      return truncated.slice(0, -1) + ', …]';
+    }
+    const s = JSON.stringify(v);
+    if (s === undefined) return String(v);
+    return s.length > MAX_DETAIL_LENGTH
+      ? s.slice(0, MAX_DETAIL_LENGTH - 1) + '…'
+      : s;
   } catch {
     return String(v);
   }
-  if (s === undefined) return String(v);
-  return s.length > MAX_DETAIL_LENGTH
-    ? s.slice(0, MAX_DETAIL_LENGTH - 1) + '…'
-    : s;
 };
 
 const formatDetails = (details: Record<string, unknown>): string =>

@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import path from 'node:path';
-import { isMarigoldComponent } from '../helpers/components.js';
+import { buildMarigoldTagResolver } from '../helpers/components.js';
 import { parseSource } from '../helpers/source.js';
 import type { ValidationIssue } from '../types.js';
 
@@ -15,14 +15,22 @@ export const validateLayoutUsage = (filePath: string): ValidationIssue[] => {
   const source = parseSource(filePath);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
+  // Only treat a tag as a Marigold flow layout when it is actually imported
+  // from @marigold/components. A locally declared or third-party component
+  // that happens to share a layout's name must not be held to this rule, and
+  // an aliased import (`{ Stack as S }`) must still be checked.
+  const resolver = buildMarigoldTagResolver(source);
 
   const check = (node: ts.Node): void => {
     if (ts.isJsxElement(node)) {
       const tag = node.openingElement.tagName;
+      const original = ts.isIdentifier(tag)
+        ? resolver.get(tag.text)
+        : undefined;
       if (
         ts.isIdentifier(tag) &&
-        FLOW_LAYOUTS.has(tag.text) &&
-        isMarigoldComponent(tag.text)
+        original !== undefined &&
+        FLOW_LAYOUTS.has(original)
       ) {
         let elementChildren = 0;
         let hasDynamicChild = false;

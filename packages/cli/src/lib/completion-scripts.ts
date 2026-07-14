@@ -15,7 +15,11 @@ _marigold_complete() {
   local IFS=$'\\n'
   COMPREPLY=( $(marigold __complete -- "\${words[@]}" 2>/dev/null) )
 }
-complete -F _marigold_complete marigold
+# -o default: when _marigold_complete produces no matches (e.g. \`validate\`'s
+# file positional, which this function does not resolve), fall back to
+# bash's own default completion (filenames/directories) instead of showing
+# nothing.
+complete -o default -F _marigold_complete marigold
 `;
 
 export const ZSH_SCRIPT = `# zsh completion for marigold
@@ -27,7 +31,14 @@ _marigold() {
   comp_words=("\${(@)words[2,$CURRENT]}")
   local -a completions
   completions=("\${(@f)$(marigold __complete -- "\${comp_words[@]}" 2>/dev/null)}")
-  compadd -- "\${completions[@]}"
+  # No matches from our own completer (e.g. \`validate\`'s file positional,
+  # which it does not resolve) — fall back to zsh's file completion instead
+  # of showing nothing.
+  if (( \${#completions} == 0 )); then
+    _files
+  else
+    compadd -- "\${completions[@]}"
+  fi
 }
 compdef _marigold marigold
 `;
@@ -42,5 +53,11 @@ function __marigold_complete
     marigold __complete -- "" 2>/dev/null
   end
 end
-complete -c marigold -f -a '(__marigold_complete)'
+# -f (no file completion) keeps other subcommands' suggestions (component
+# names, subcommand names, ...) free of filesystem noise. \`validate\`'s sole
+# positional is a file path, so it gets its own registration WITHOUT -f,
+# letting fish's native filename completion apply whenever
+# __marigold_complete has nothing to suggest for it.
+complete -c marigold -n 'not __fish_seen_subcommand_from validate' -f -a '(__marigold_complete)'
+complete -c marigold -n '__fish_seen_subcommand_from validate' -a '(__marigold_complete)'
 `;

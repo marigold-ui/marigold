@@ -1,5 +1,6 @@
 import { resolveThemeDir } from '../helpers/resolve-theme.js';
 import {
+  type IssueSource,
   type ValidationCoverage,
   type ValidationIssue,
   emptyCoverage,
@@ -37,12 +38,44 @@ export type TechnicalResult = {
   coverage: ValidationCoverage;
 };
 
+const checkFailureIssue = (
+  source: IssueSource,
+  label: string,
+  err: unknown
+): ValidationIssue => ({
+  type: 'technical',
+  severity: 'warning',
+  source,
+  component: 'file',
+  message: `${label} check failed: ${err instanceof Error ? err.message : String(err)}`,
+  suggestion:
+    'This check could not complete due to an internal error; other checks still ran.',
+});
+
+// Isolates a single checker so an unexpected exception (an edge-case AST
+// shape a checker's author didn't anticipate) can't silently wipe out every
+// other checker's findings for the file — it degrades to one warning for
+// just that checker instead of collapsing the whole technical pass.
+const safeCheck = (
+  source: IssueSource,
+  label: string,
+  fn: () => ValidationIssue[]
+): ValidationIssue[] => {
+  try {
+    return fn();
+  } catch (err) {
+    return [checkFailureIssue(source, label, err)];
+  }
+};
+
 export const runTechnicalChecks = (
   filePath: string,
   themePath?: string | false
 ): TechnicalResult => {
   const coverage = emptyCoverage();
-  const propIssues = validateProps(filePath, coverage);
+  const propIssues = safeCheck('prop-validator', 'Prop validation', () =>
+    validateProps(filePath, coverage)
+  );
 
   const propPositions = new Set<string>();
   for (const issue of propIssues) {
@@ -51,7 +84,16 @@ export const runTechnicalChecks = (
     }
   }
 
-  const compileResult = compileFile(filePath);
+  const compileResult = (() => {
+    try {
+      return compileFile(filePath);
+    } catch (err) {
+      return {
+        ok: false,
+        issues: [checkFailureIssue('compiler', 'TypeScript compilation', err)],
+      };
+    }
+  })();
   const compilerIssues =
     propPositions.size > 0
       ? compileResult.issues.filter(
@@ -61,20 +103,52 @@ export const runTechnicalChecks = (
         )
       : compileResult.issues;
 
-  const compositionIssues = validateComposition(filePath);
-  const accessibleNameIssues = validateAccessibleName(filePath);
-  const requiredAncestorIssues = validateRequiredAncestor(filePath);
-  const sectionHeaderIssues = validateSectionHeader(filePath);
-  const collectionIdIssues = validateCollectionId(filePath);
-  const dsUsageIssues = validateDesignSystemUsage(filePath);
-  const layoutUsageIssues = validateLayoutUsage(filePath);
-  const tableUsageIssues = validateTableUsage(filePath);
-  const componentConventionIssues = validateComponentConventions(filePath);
+  const compositionIssues = safeCheck(
+    'composition-validator',
+    'Composition',
+    () => validateComposition(filePath)
+  );
+  const accessibleNameIssues = safeCheck(
+    'accessible-name',
+    'Accessible name',
+    () => validateAccessibleName(filePath)
+  );
+  const requiredAncestorIssues = safeCheck(
+    'required-ancestor',
+    'Required ancestor',
+    () => validateRequiredAncestor(filePath)
+  );
+  const sectionHeaderIssues = safeCheck(
+    'section-header',
+    'Section header',
+    () => validateSectionHeader(filePath)
+  );
+  const collectionIdIssues = safeCheck('collection-id', 'Collection id', () =>
+    validateCollectionId(filePath)
+  );
+  const dsUsageIssues = safeCheck(
+    'design-system-usage',
+    'Design system usage',
+    () => validateDesignSystemUsage(filePath)
+  );
+  const layoutUsageIssues = safeCheck('layout-usage', 'Layout usage', () =>
+    validateLayoutUsage(filePath)
+  );
+  const tableUsageIssues = safeCheck('table-usage', 'Table usage', () =>
+    validateTableUsage(filePath)
+  );
+  const componentConventionIssues = safeCheck(
+    'component-conventions',
+    'Component conventions',
+    () => validateComponentConventions(filePath)
+  );
 
   const effectiveThemePath =
     themePath === false ? null : (themePath ?? resolveThemeDir());
   const themeIssues = effectiveThemePath
-    ? validateThemeVariants(filePath, effectiveThemePath, coverage)
+    ? safeCheck('theme-variant-validator', 'Theme variant compliance', () =>
+        validateThemeVariants(filePath, effectiveThemePath, coverage)
+      )
     : [];
 
   const issues: ValidationIssue[] = [

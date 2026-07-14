@@ -134,4 +134,36 @@ describe('validateRequiredAncestor', () => {
     );
     expect(validateRequiredAncestor(file)).toEqual([]);
   });
+
+  it('does not flag a local component that shares the Radio name', () => {
+    // A project's own <Radio> imported from a local module must not be
+    // required to carry Marigold's Radio.Group (regression: this was a
+    // false-positive error on non-Marigold components).
+    const file = tmpFile(
+      'ra-local-radio.tsx',
+      `import { Radio } from './my-radio';
+      const C = () => <Radio value="a">A</Radio>;`
+    );
+    expect(validateRequiredAncestor(file)).toEqual([]);
+  });
+
+  it('does not flag a local component that shares a Marigold sub-component name', () => {
+    const file = tmpFile(
+      'ra-local-menu-item.tsx',
+      `import { Menu } from './my-menu';
+      const C = () => <Menu.Item id="a">A</Menu.Item>;`
+    );
+    expect(validateRequiredAncestor(file)).toEqual([]);
+  });
+
+  it('still flags an aliased Marigold Radio with no Radio.Group', () => {
+    const file = tmpFile(
+      'ra-alias-radio.tsx',
+      `import { Radio as R } from '@marigold/components';
+      const C = () => <R value="a">A</R>;`
+    );
+    const issue = validateRequiredAncestor(file).find(i => i.component === 'R');
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
+  });
 });

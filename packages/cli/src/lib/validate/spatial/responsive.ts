@@ -350,12 +350,15 @@ const extractSnapshot = async (
           const rect = el.getBoundingClientRect();
           if (rect.width === 0 && rect.height === 0) {
             // A 0x0 element is only a genuine collapse when it is in the visible
-            // render path. display:none/visibility:hidden/aria-hidden/[hidden],
-            // an ancestor hidden the same way, or a closed Disclosure
+            // render path. display:none/contents/visibility:hidden/aria-hidden/
+            // [hidden], an ancestor hidden the same way, or a closed Disclosure
             // (aria-expanded="false") / inactive Tab panel (<details> not open)
-            // all legitimately measure 0x0 and are NOT defects.
+            // all legitimately measure 0x0 and are NOT defects. `display:
+            // contents` generates no box by design (a pass-through/slot
+            // wrapper) — it isn't "hidden" but is equally not a collapse.
             const selfHidden =
               style.display === 'none' ||
+              style.display === 'contents' ||
               style.visibility === 'hidden' ||
               el.getAttribute('aria-hidden') === 'true' ||
               el.hasAttribute('hidden');

@@ -137,6 +137,38 @@ describe('validateComponentConventions — manual loading-label (W10)', () => {
       )
     ).toEqual([]);
   });
+
+  it('W10: flags a German manual loading-label swap ("wird gespeichert")', () => {
+    const file = tmpFile(
+      'cc-loadlabel-de.tsx',
+      `import { Button } from '@marigold/components';
+      const C = ({ saving }: { saving: boolean }) => (
+        <Button>{saving ? 'Wird gespeichert…' : 'Speichern'}</Button>
+      );`
+    );
+    const issue = validateComponentConventions(file).find(
+      i => i.details?.manualLoadingLabel === true
+    );
+    expect(issue).toBeDefined();
+  });
+
+  it('W10: does not flag an ordinary label that merely contains the "sende" stem', () => {
+    // "Absenden" (German for "Submit") contains "senden", which contains
+    // "sende" as a substring — the unanchored regex used to false-positive on
+    // this, a regular non-loading label.
+    const file = tmpFile(
+      'cc-loadlabel-substring.tsx',
+      `import { Button } from '@marigold/components';
+      const C = ({ saving }: { saving: boolean }) => (
+        <Button>{saving ? 'Absenden' : 'Save'}</Button>
+      );`
+    );
+    expect(
+      validateComponentConventions(file).filter(
+        i => i.details?.manualLoadingLabel
+      )
+    ).toEqual([]);
+  });
 });
 
 describe('validateComponentConventions — origin resolution (W7/W10)', () => {

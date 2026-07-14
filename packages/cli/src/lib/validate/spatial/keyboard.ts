@@ -38,6 +38,16 @@ type ArrowNavResult = {
   navigable: boolean;
 };
 
+type ArrowNavGroup = {
+  groupSelector: string;
+  role: string;
+  memberCount: number;
+  // The group's own `aria-orientation`, if set. Absent when the group relies
+  // on its role's default orientation (radiogroup/menu/listbox: vertical;
+  // tablist/menubar: horizontal).
+  orientation: 'horizontal' | 'vertical' | undefined;
+};
+
 type KeyboardTrapResult = {
   isTrap: boolean;
   cycleLength: number;
@@ -94,6 +104,22 @@ const NON_TAB_STOP_ROLES = new Set([
 
 const ARROW_NAV_ROLES = ['radiogroup', 'tablist', 'menu', 'menubar', 'listbox'];
 
+const focusFirstMember = (page: Page, groupSelector: string): Promise<void> =>
+  page.evaluate((sel: string) => {
+    const g = document.querySelector(sel);
+    const member = g?.querySelector(
+      '[role="radio"], [role="tab"], [role="menuitem"], [role="option"]'
+    );
+    if (member instanceof HTMLElement) member.focus();
+  }, groupSelector);
+
+const isMemberFocused = (page: Page, groupSelector: string): Promise<boolean> =>
+  page.evaluate((sel: string) => {
+    const g = document.querySelector(sel);
+    if (!g || !document.activeElement) return false;
+    return g.contains(document.activeElement);
+  }, groupSelector);
+
 const testArrowNavigation = async (page: Page): Promise<ArrowNavResult[]> => {
   const groups = await page.evaluate((roles: string[]) => {
     const mv = (
@@ -102,21 +128,23 @@ const testArrowNavigation = async (page: Page): Promise<ArrowNavResult[]> => {
       }
     ).__mv;
     const cssPath = mv.cssPath as (el: Element) => string;
-    const results: Array<{
-      groupSelector: string;
-      role: string;
-      memberCount: number;
-    }> = [];
+    const results: ArrowNavGroup[] = [];
     for (const role of roles) {
       for (const group of document.querySelectorAll(`[role="${role}"]`)) {
         const members = group.querySelectorAll(
           '[role="radio"], [role="tab"], [role="menuitem"], [role="option"]'
         );
         if (members.length >= 2) {
+          const orientationAttr = group.getAttribute('aria-orientation');
+          const orientation =
+            orientationAttr === 'horizontal' || orientationAttr === 'vertical'
+              ? orientationAttr
+              : undefined;
           results.push({
             groupSelector: cssPath(group),
             role,
             memberCount: members.length,
+            orientation,
           });
         }
       }
@@ -137,33 +165,45 @@ const testArrowNavigation = async (page: Page): Promise<ArrowNavResult[]> => {
     }, group.groupSelector);
 
     if (!firstMember) {
-      results.push({ ...group, navigable: false });
+      results.push({
+        groupSelector: group.groupSelector,
+        role: group.role,
+        memberCount: group.memberCount,
+        navigable: false,
+      });
       continue;
     }
 
-    await page.evaluate((sel: string) => {
-      const g = document.querySelector(sel);
-      const member = g?.querySelector(
-        '[role="radio"], [role="tab"], [role="menuitem"], [role="option"]'
-      );
-      if (member instanceof HTMLElement) member.focus();
-    }, group.groupSelector);
+    // `tablist`/`menubar` default to horizontal navigation, every other group
+    // role defaults to vertical — but an explicit `aria-orientation` always
+    // wins. If the orientation-correct key doesn't move focus, fall back to
+    // the other axis before concluding the group isn't navigable: a missing/
+    // misapplied `aria-orientation` must not produce a false positive on an
+    // otherwise correctly implemented widget.
+    const defaultHorizontal =
+      group.role === 'tablist' || group.role === 'menubar';
+    const isHorizontal =
+      group.orientation === undefined
+        ? defaultHorizontal
+        : group.orientation === 'horizontal';
+    const primaryKey = isHorizontal ? 'ArrowRight' : 'ArrowDown';
+    const fallbackKey = isHorizontal ? 'ArrowDown' : 'ArrowRight';
 
-    const key =
-      group.role === 'tablist' || group.role === 'menubar'
-        ? 'ArrowRight'
-        : 'ArrowDown';
-    await page.keyboard.press(key);
+    await focusFirstMember(page, group.groupSelector);
+    await page.keyboard.press(primaryKey);
+    let navigable = await isMemberFocused(page, group.groupSelector);
 
-    const isMemberFocused = await page.evaluate((sel: string) => {
-      const g = document.querySelector(sel);
-      if (!g || !document.activeElement) return false;
-      return g.contains(document.activeElement);
-    }, group.groupSelector);
+    if (!navigable) {
+      await focusFirstMember(page, group.groupSelector);
+      await page.keyboard.press(fallbackKey);
+      navigable = await isMemberFocused(page, group.groupSelector);
+    }
 
     results.push({
-      ...group,
-      navigable: isMemberFocused,
+      groupSelector: group.groupSelector,
+      role: group.role,
+      memberCount: group.memberCount,
+      navigable,
     });
   }
 

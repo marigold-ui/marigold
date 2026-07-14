@@ -80,6 +80,50 @@ export const extractOverflowData = async (page: Page): Promise<OverflowData> =>
     ).__mv;
     const cssPath = mv.cssPath as (el: Element) => string;
 
+    // getComputedStyle().gridTemplateColumns returns the USED value — for
+    // `repeat(auto-fit, minmax(...))`/`auto-fill`, that's an expanded list of
+    // concrete pixel track sizes, never the literal "auto-fit"/"auto-fill"
+    // keyword. So the specified declaration has to be found directly: check
+    // the inline style first, then walk stylesheet rules (including inside
+    // @media/@supports groups) for a matching selector that sets it.
+    const declaresAutoFitGrid = (el: Element): boolean => {
+      const inline = (el as HTMLElement).style?.gridTemplateColumns ?? '';
+      if (/auto-fit|auto-fill/.test(inline)) return true;
+
+      const matchesRule = (rule: CSSRule): boolean => {
+        const groupRule = rule as unknown as { cssRules?: CSSRuleList };
+        if (groupRule.cssRules) {
+          for (const nested of Array.from(groupRule.cssRules)) {
+            if (matchesRule(nested)) return true;
+          }
+          return false;
+        }
+        const styleRule = rule as CSSStyleRule;
+        if (!styleRule.selectorText || !styleRule.style) return false;
+        try {
+          if (!el.matches(styleRule.selectorText)) return false;
+        } catch {
+          return false; // unsupported/invalid selector syntax
+        }
+        const value = styleRule.style.getPropertyValue('grid-template-columns');
+        return /auto-fit|auto-fill/.test(value);
+      };
+
+      for (const sheet of Array.from(document.styleSheets)) {
+        let rules: CSSRuleList;
+        try {
+          rules = sheet.cssRules;
+        } catch {
+          continue; // cross-origin stylesheet — inaccessible, skip
+        }
+        if (!rules) continue;
+        for (const rule of Array.from(rules)) {
+          if (matchesRule(rule)) return true;
+        }
+      }
+      return false;
+    };
+
     const wrapping: WrappingDetection[] = [];
     const overflows: OverflowDetection[] = [];
 
@@ -92,10 +136,7 @@ export const extractOverflowData = async (page: Page): Promise<OverflowData> =>
       const isWrappingFlex =
         display === 'flex' &&
         (flexWrap === 'wrap' || flexWrap === 'wrap-reverse');
-      const gridCols = style.gridTemplateColumns;
-      const isAutoFitGrid =
-        display === 'grid' &&
-        (gridCols.includes('auto-fit') || gridCols.includes('auto-fill'));
+      const isAutoFitGrid = display === 'grid' && declaresAutoFitGrid(el);
 
       if (isWrappingFlex || isAutoFitGrid) {
         const children = Array.from(el.children);

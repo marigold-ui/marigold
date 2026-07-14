@@ -5,6 +5,7 @@ import {
   hasOpaqueDynamicChild,
   hasSpreadAttribute,
 } from '../helpers/ast.js';
+import { buildMarigoldTagResolver } from '../helpers/components.js';
 import { parseSource } from '../helpers/source.js';
 import type { IssueSeverity, ValidationIssue } from '../types.js';
 
@@ -84,6 +85,12 @@ export const validateAccessibleName = (filePath: string): ValidationIssue[] => {
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
   const overlayByName = new Map(OVERLAYS.map(o => [o.component, o]));
+  // Only treat a tag as a Marigold overlay when it is actually imported from
+  // @marigold/components. A locally declared or third-party component that
+  // happens to share an overlay's name (e.g. a project's own `Dialog`) must
+  // not be required to carry an accessible name — that was a false-positive
+  // error. Mirrors the origin guard the composition checker uses.
+  const resolver = buildMarigoldTagResolver(source);
 
   const check = (node: ts.Node): void => {
     // Self-closing overlays are empty by definition — the composition checker
@@ -92,16 +99,15 @@ export const validateAccessibleName = (filePath: string): ValidationIssue[] => {
     if (ts.isJsxElement(node)) {
       const tag = node.openingElement.tagName;
       if (ts.isIdentifier(tag)) {
-        const overlay = overlayByName.get(tag.text);
+        const original = resolver.get(tag.text);
+        const overlay = original ? overlayByName.get(original) : undefined;
         if (overlay) {
           const named =
             hasAccessibleNameAttr(node.openingElement.attributes) ||
             hasSpreadAttribute(node.openingElement.attributes);
-          const titled = hasTitleDescendant(
-            node,
-            overlay.component,
-            overlay.titleSub
-          );
+          // Matched against `tag.text` (as written), not `overlay.component`,
+          // so an aliased import (`{ Dialog as D }`) still finds `<D.Title>`.
+          const titled = hasTitleDescendant(node, tag.text, overlay.titleSub);
           const opaque = hasOpaqueDynamicChild(node);
 
           if (!named && !titled && !opaque) {
@@ -112,9 +118,9 @@ export const validateAccessibleName = (filePath: string): ValidationIssue[] => {
               type: 'a11y',
               severity: overlay.severity,
               source: 'accessible-name',
-              component: overlay.component,
-              message: `<${overlay.component}> has no accessible name. A closed overlay is invisible to runtime a11y checks, so it must be labeled in the source.`,
-              suggestion: `Add a <${overlay.component}.${overlay.titleSub}> child or an aria-label prop, e.g. <${overlay.component} aria-label="…"> or <${overlay.component}.${overlay.titleSub}>…</${overlay.component}.${overlay.titleSub}>.`,
+              component: tag.text,
+              message: `<${tag.text}> has no accessible name. A closed overlay is invisible to runtime a11y checks, so it must be labeled in the source.`,
+              suggestion: `Add a <${tag.text}.${overlay.titleSub}> child or an aria-label prop, e.g. <${tag.text} aria-label="…"> or <${tag.text}.${overlay.titleSub}>…</${tag.text}.${overlay.titleSub}>.`,
               location: {
                 file: relFile,
                 line: line + 1,
@@ -122,7 +128,7 @@ export const validateAccessibleName = (filePath: string): ValidationIssue[] => {
               },
               details: {
                 accessibleNameAttrs: ACCESSIBLE_NAME_ATTRS,
-                titleSubComponent: `${overlay.component}.${overlay.titleSub}`,
+                titleSubComponent: `${tag.text}.${overlay.titleSub}`,
               },
             });
           }

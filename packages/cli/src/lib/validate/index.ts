@@ -221,20 +221,24 @@ const runWithRenderer = async (
           CHECK_BUDGET_MS
         );
       });
+      const spatialPromise = runSpatialChecks(
+        absolute,
+        {
+          enableSpatial: checks.has('spatial'),
+          enableA11y: checks.has('a11y'),
+          viewport: options.viewport,
+        },
+        renderer
+      );
+      // If the budget wins the race below, spatialPromise is not cancelled —
+      // it keeps running and may reject later (e.g. once the page/context is
+      // torn down) with no local awaiter. Mark it handled up front so that
+      // eventual rejection never surfaces as an unhandled promise rejection.
+      spatialPromise.catch(() => {});
+
       let result;
       try {
-        result = await Promise.race([
-          runSpatialChecks(
-            absolute,
-            {
-              enableSpatial: checks.has('spatial'),
-              enableA11y: checks.has('a11y'),
-              viewport: options.viewport,
-            },
-            renderer
-          ),
-          checkBudget,
-        ]);
+        result = await Promise.race([spatialPromise, checkBudget]);
       } finally {
         clearTimeout(checkTimer);
       }

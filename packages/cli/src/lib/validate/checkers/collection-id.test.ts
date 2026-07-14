@@ -111,4 +111,37 @@ describe('validateCollectionId', () => {
     );
     expect(validateCollectionId(file)).toEqual([]);
   });
+
+  it('does not flag a local component that shares the Select name', () => {
+    // A project's own <Select> imported from a local module must not be held
+    // to Marigold's keyed-collection-id rule (regression: this was a
+    // false-positive warning on non-Marigold components).
+    const file = tmpFile(
+      'cid-local-select.tsx',
+      `import { Select } from './my-select';
+      const C = () => (
+        <Select label="pick">
+          <Select.Option>A</Select.Option>
+        </Select>
+      );`
+    );
+    expect(validateCollectionId(file)).toEqual([]);
+  });
+
+  it('still flags an aliased Marigold Select.Option without an id', () => {
+    const file = tmpFile(
+      'cid-alias-select.tsx',
+      `import { Select as S } from '@marigold/components';
+      const C = () => (
+        <S label="pick">
+          <S.Option>A</S.Option>
+        </S>
+      );`
+    );
+    const issue = validateCollectionId(file).find(
+      i => i.component === 'S.Option'
+    );
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('warning');
+  });
 });

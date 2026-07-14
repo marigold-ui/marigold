@@ -432,7 +432,7 @@ export const main = async (
 
       telemetryArgs = {
         checks: values.checks ?? 'all',
-        format: values.format ?? 'markdown',
+        format: values.format ?? 'text',
       };
 
       if (!fileInput) fail('Usage: marigold validate <file.tsx>');

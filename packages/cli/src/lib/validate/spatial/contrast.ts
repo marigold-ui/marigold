@@ -61,10 +61,12 @@ export const parseColor = (input: string): RGBA | null => {
   if (parts.length < 3) return null;
   const channel = (s: string): number =>
     s.endsWith('%') ? (parseFloat(s) / 100) * 255 : parseFloat(s);
+  const alphaChannel = (s: string): number =>
+    s.endsWith('%') ? parseFloat(s) / 100 : parseFloat(s);
   const r = channel(parts[0]);
   const g = channel(parts[1]);
   const b = channel(parts[2]);
-  const a = parts[3] !== undefined ? parseFloat(parts[3]) : 1;
+  const a = parts[3] !== undefined ? alphaChannel(parts[3]) : 1;
   if ([r, g, b, a].some(Number.isNaN)) return null;
   return { r: clamp255(r), g: clamp255(g), b: clamp255(b), a };
 };
