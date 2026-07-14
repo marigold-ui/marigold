@@ -3,15 +3,13 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva({
     base: [
-      'flex ui-surface',
-      // Standalone
-      'not-group-data-trigger/popover:',
-      // In a Popover
-      'group-data-trigger/popover:shadow-elevation-overlay',
-      'group-data-trigger/popover:w-full',
-      'group-data-trigger/popover:overflow-hidden',
-      // In a Tray
-      'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
+      // Standalone, a ListBox is a form control: the flat control surface (its
+      // opaque control-border ring).
+      'flex ui-control',
+      // In a Popover or Tray the frame paints the surface, so the list drops its
+      // own ring and just fills it.
+      'group-data-trigger/popover:ring-0 group-data-trigger/popover:w-full',
+      'group-[[role=dialog]]/tray:ring-0',
     ],
   }),
   list: cva({

@@ -15,6 +15,7 @@ import { useFormValidationState } from '@react-stately/form';
 import { useControlledState } from '@react-stately/utils';
 import type { Key, Selection, ValidationError } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
+import { ButtonContext } from '../Button/Context';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { splitChildren } from '../utils/children.utils';
@@ -131,6 +132,10 @@ const toSelection = (
 
 const isKeySelected = (id: Key | undefined, selection: Selection): boolean =>
   id != null && (selection === 'all' || selection.has(id));
+// Cascade the link look onto the bare `<Button>` that `TagGroupRemoveAll`
+// renders. Static config, so a module-level constant (no `useMemo`). Scoped to
+// the RemoveAll render below so it never reaches the per-tag `CloseButton`s.
+const removeAllButtonContext = { variant: 'link', size: 'small' } as const;
 
 // Component
 // ---------------
@@ -295,10 +300,11 @@ const _TagGroup = ({
                 the tag wrap, so it reads as a distinct action from "Show more".
               */}
               {onRemove && removeAll ? (
-                <TagGroupRemoveAll
-                  className={cn(classNames.removeAll, 'shrink-0')}
-                  onRemove={onRemove}
-                />
+                <div className="shrink-0">
+                  <Provider values={[[ButtonContext, removeAllButtonContext]]}>
+                    <TagGroupRemoveAll onRemove={onRemove} />
+                  </Provider>
+                </div>
               ) : null}
             </div>
           ) : (
@@ -312,10 +318,9 @@ const _TagGroup = ({
                 {children}
               </TagList>
               {onRemove && removeAll ? (
-                <TagGroupRemoveAll
-                  className={classNames.removeAll}
-                  onRemove={onRemove}
-                />
+                <Provider values={[[ButtonContext, removeAllButtonContext]]}>
+                  <TagGroupRemoveAll onRemove={onRemove} />
+                </Provider>
               ) : null}
             </div>
           )}

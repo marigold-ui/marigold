@@ -18,7 +18,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variant: {
         default: ['bg-surface border-b last:border-b-0 border-border'],
         card: [
-          'ui-surface shadow-elevation-raised py-1 outline-none',
+          'ui-surface py-1 outline-none',
           // Show focus border when the trigger is focused
           'has-[[slot=trigger]:focus-visible]:ui-state-focus outline-none',
         ],
@@ -59,5 +59,17 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   }),
   icon: cva({
     base: 'pointer-events-none shrink-0 text-secondary transition-transform duration-250',
+  }),
+  actions: cva({
+    base: 'shrink-0',
+    variants: {
+      variant: {
+        default: '',
+        card: 'pe-4',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
   }),
 };

@@ -1,14 +1,15 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
-  // Outer track. Provides the surface (default variant). Deliberately does not
-  // clip — the inner list is the scroll container, so option focus rings can
-  // bleed past this edge without being cut off.
+  // Outer track. Provides the surface (default variant). Doesn't clip: the inner
+  // list is the scroll container, so option focus rings aren't cut at this edge.
   group: cva({
     base: 'group/segmented relative items-center rounded-surface',
     variants: {
       variant: {
-        // Track matches the Switch's unselected track surface.
+        // Track matches the Switch's unselected track. The 4px outer margin lives
+        // on the list (p-1), not here, so the edge thumbs' focus ring stays inside
+        // the scroll container's clip.
         default: 'bg-control',
         ghost: '',
       },
@@ -21,26 +22,19 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       size: 'default',
     },
   }),
-  // Inner scroll container: lays the options out in a row and scrolls them
-  // horizontally when they overflow, with an edge-fade affordance
-  // (`ui-scroll-mask-x`). `py-1 -my-1` reserves *vertical* room for the option
-  // focus rings the scroll container's `overflow` would otherwise clip: `py-1`
-  // is the ring room and `-my-1` bleeds the scroller a matching 4px above/below
-  // the track (nothing there to overflow), so the rings overhang cleanly.
-  //   - Horizontally we deliberately add no room: a negative `-mx` would push
-  //     the scroll area past the rounded corners and overflow the parent (broke
-  //     at 320px), and a positive `px` inset shifts the first/last segment in
-  //     from the track edge. We accept that the inset focus ring is clipped ~1px
-  //     at the very first/last segment's outer edge — a minor cosmetic trim that
-  //     keeps the scroller exactly the track width.
-  //   - `motion-safe:scroll-smooth` makes the selection-reveal scroll animate
-  //     for users who allow motion and jump instantly for those who don't; the
-  //     component's `scrollTo` defers to it via `behavior: 'auto'`, so no JS
-  //     media query is needed (matches Tabs' `tabsListScroll`).
+  // Inner scroll container: rows the options and scrolls them horizontally on
+  // overflow, with an edge fade (`ui-scroll-mask-x`). A scrollport is the padding
+  // box, so `p-1` is room *inside* the clip: it both insets the segments 4px from
+  // the track edge and keeps the edge thumbs' focus ring from being clipped.
+  // `-my-1` cancels the vertical 4px so it adds no height (only `px` is a real
+  // inset; a negative `-mx` would overflow the rounded track — broke at 320px).
+  //   - `motion-safe:scroll-smooth` makes the selection-reveal scroll animate for
+  //     users who allow motion and jump instantly for those who don't; the
+  //     component's `scrollTo` defers to it via `behavior: 'auto'` (matches Tabs).
   //   - `overscroll-x-contain` keeps horizontal overscroll from triggering the
   //     browser back/forward gesture at the track ends (matches Tabs).
   list: cva({
-    base: 'flex w-full items-center ui-scroll-mask-x py-1 -my-1 overscroll-x-contain motion-safe:scroll-smooth',
+    base: 'flex w-full items-center ui-scroll-mask-x p-1 -my-1 overscroll-x-contain motion-safe:scroll-smooth',
     variants: {
       variant: {
         default: 'gap-0',
@@ -51,9 +45,9 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       variant: 'default',
     },
   }),
-  // Positioning context for each segment; holds the sliding indicator.
-  // `shrink-0` keeps each option at its natural width so the row overflows (and
-  // scrolls) rather than compressing the segments.
+  // Positioning context for each segment; holds the sliding indicator. `shrink-0`
+  // keeps each option at natural width so the row overflows (scrolls) instead of
+  // compressing.
   field: cva({
     base: 'relative inline-flex shrink-0',
   }),
@@ -62,40 +56,30 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     base: [
       'relative w-full',
       'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium',
-      // bg stays out of the transition list (DS-wide instant-bg convention,
-      // see ui.css / DST-1436); only the label color animates. No press scale
-      // (ui-press) — the sliding indicator is the selection feedback here.
+      // Only the label color animates; bg stays out of the transition (instant-bg
+      // convention, DST-1436). No press scale — the sliding indicator is the feedback.
       'cursor-pointer outline-none transition-[color]',
       // Text is muted by default and turns to the foreground color on selection.
       'text-secondary selected:text-foreground',
-      // Keyboard focus ring mirrors `ui-state-focus` (outline-3, ring/50) but is
-      // inset 2px (`-outline-offset-2`) for both variants. Inset is what lets it
-      // hug the `default` thumb (which sits 2px inside the cell) instead of
-      // leaving a gap, and keeps most of the ring inside the cell so the scroll
-      // container only clips ~1px of it at the very first/last segment's outer
-      // edge (a flush `ghost` ring lost much more). We accept that minor trim
-      // rather than inset the segments from the track edge. RAC RadioButton
-      // exposes the focus state via [data-rac][data-focus-visible].
+      // Keyboard focus ring, inset 2px. This is the ghost variant's ring (no thumb,
+      // so it hugs the cell); the default variant suppresses it and draws the ring
+      // on the indicator instead.
       'focus-visible:outline-3 focus-visible:outline-solid focus-visible:outline-ring/50 focus-visible:-outline-offset-2',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
     variants: {
       variant: {
-        // Hover only brightens the label to the foreground color; the raised
-        // ui-surface indicator already provides the background affordance, so
-        // no extra hover background (keeps bg flips out of the picture). The
-        // thumb is inset 2px, so the focus radius is bumped by 2px: an inset
-        // outline's corner radius is `border-radius + outline-offset`, so
-        // `surface + 2px` and `-outline-offset-2` land the ring back on the
-        // `rounded-surface` radius — its corners sit snug against the thumb.
+        // Hover only brightens the label; the moving indicator is the background
+        // affordance. The focus ring is drawn on the indicator (see below), so the
+        // cell suppresses its own outline here. (Ghost keeps it, having no thumb.)
         default:
-          'not-selected:hover:text-foreground focus-visible:rounded-[calc(var(--radius-surface)_+_2px)]',
-        // Track-less: hover is a translucent overlay (shared helper), applied
-        // on the selected item too so it stays covered while the indicator
-        // slides in — no uncovered gap/flicker (matches Tabs).
+          'not-selected:hover:text-foreground focus-visible:outline-none',
+        // Track-less: hover is a translucent overlay, applied on the selected item
+        // too so it stays covered while the indicator slides in (matches Tabs).
         ghost: 'hover:ui-state-hover-ghost',
       },
       size: {
+        // The thumb fills the segment, so px is the label's padding inside it.
         default: 'h-control px-3 [&_svg]:size-4',
       },
     },
@@ -105,22 +89,28 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     },
   }),
   indicator: cva({
-    // The indicator is moved/resized by react-aria's FLIP SharedElement, which
-    // animates every property in this transition list. `width` must be an
-    // explicit length (see variants: w-full / calc) — not derived from `inset`
-    // left+right — or it falls back to an auto width that CSS can't interpolate,
-    // so it would snap to its new size while only the position slides.
+    // Moved/resized by react-aria's FLIP animation. `width` must be an explicit
+    // length (w-full / calc), not derived from inset, or it falls back to an auto
+    // width CSS can't interpolate and snaps instead of sliding.
     //
-    // Keyboard navigation switches instantly: while an option shows its focus
-    // ring the slide would visibly lag behind the arrow keys, so dropping the
-    // transition (same `transition-property: none` mechanism as reduced motion)
-    // makes the FLIP a no-op. Pointer selection keeps the slide.
+    // Keyboard nav switches instantly: dropping the transition on focus makes the
+    // FLIP a no-op so the thumb doesn't lag the arrow keys. Pointer keeps the slide.
     base: 'absolute transition-[translate,width] duration-200 ease-out-quint group-has-[[data-focus-visible]]/segmented:transition-none motion-reduce:transition-none',
     variants: {
       variant: {
-        // Raised surface like the Switch thumb; ~2px inset to the track edge.
+        // Flat control-surface thumb (ui-control): a well like the fields, not
+        // a raised cap — the moving thumb and selection do the work. It fills
+        // its segment horizontally (left-0
+        // w-full) so adjacent thumbs meet with no gap; the 4px top/bottom margin is
+        // the inset-y, and the 4px end margin comes from the track's p-1 — so the
+        // between-gap (0) and the outer margin are set independently.
+        //   The keyboard focus ring is drawn here, not on the cell, so it wraps the
+        // thumb exactly (offset-1 = flush with the thumb's 1px ring). Selection
+        // follows focus, so the focused option is always the one under this thumb.
+        //   On the dark charcoal-300 track, control-border's ground-adaptive firming
+        // over-darkens the edge, so the alpha is stepped down 0.08 (token-derived).
         default:
-          'inset-y-0.5 left-0.5 w-[calc(100%-4px)] ui-surface shadow-elevation-border',
+          'inset-y-[4px] left-0 w-full ui-control [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },

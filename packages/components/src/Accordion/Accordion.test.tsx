@@ -77,13 +77,43 @@ test('renders sticky header wrapper with expected utility classes', () => {
   });
 
   // eslint-disable-next-line testing-library/no-node-access
-  const stickyWrapper = trigger.closest('div');
+  const stickyWrapper = trigger.closest('.sticky');
 
   expect(stickyWrapper).toHaveClass('sticky');
   expect(stickyWrapper).toHaveClass('top-0');
   expect(stickyWrapper).toHaveClass('z-1');
-  expect(stickyWrapper).toHaveClass('backdrop-blur-xs');
-  expect(stickyWrapper).toHaveClass('bg-background/90');
+  expect(stickyWrapper).toHaveClass('bg-surface/90');
+});
+
+test('sticky header wrapper and its panel share the same accordion item', () => {
+  render(<StickyHeader.Component />);
+
+  const trigger = screen.getByRole('button', {
+    name: /Symfonie Abo 2025\/2026/i,
+  });
+  const panelId = trigger.getAttribute('aria-controls');
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const stickyWrapper = trigger.closest('.sticky');
+  // eslint-disable-next-line testing-library/no-node-access
+  const panel = panelId ? document.getElementById(panelId) : null;
+
+  // `position: sticky` only pins while its containing block (the parent) stays
+  // in view. Header actions must live inside `Accordion.Header` so the sticky
+  // wrapper's parent is the item that also holds the scrollable panel, rather
+  // than a short action row.
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(stickyWrapper?.parentElement).toContainElement(panel);
+});
+
+test('header actions adopt the ghost/small ButtonContext cascade', () => {
+  render(<StickyHeader.Component />);
+
+  const [deleteButton] = screen.getAllByRole('button', { name: 'Delete' });
+
+  // `size="small"` resolves to `text-xs` (the default size is `text-sm`), so
+  // this confirms the header's `ButtonContext` reached a bare `<Button>`.
+  expect(deleteButton).toHaveClass('text-xs');
 });
 
 test('supports iconPosition left', () => {

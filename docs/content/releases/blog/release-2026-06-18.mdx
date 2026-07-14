@@ -1,0 +1,72 @@
+---
+title: Marigold v17.8.0
+date: 2026-06-18
+type: Blog
+changed:
+  - components/collection/table
+  - foundations/responsive
+---
+
+This one is all about what you _don't_ ship. `@marigold/components` is now fully tree-shakeable, so your bundler only keeps the components you actually import. Alongside it, editable table cells now work in server-rendered apps, the CLI learns about examples and non-component docs pages, and there is a new Responsive Design foundations page.
+
+## Tree-shaking that actually works
+
+Until now, `@marigold/components` shipped its entire ESM build as one concatenated barrel, a single `index.mjs` that re-exported all 74-plus components. Because every export lived in one module, bundlers could not statically prove which parts were unused, so importing a single leaf component pulled in essentially the whole library. On rspack, a `Stack + Text + Card` import cost about 57 kB, roughly 82% of the library, for three layout primitives.
+
+The build now emits one file per source module, and your bundler gets to drop the rest. That same `Stack + Text + Card` import drops to about 0.8 kB. A single `Button` import goes from about 57 kB to about 1.7 kB.
+
+Nothing changes on your side. The barrel import stays fully backward compatible, so `import { Button } from '@marigold/components'` keeps working exactly as before.
+
+### Why this took more than a build flag
+
+Flipping the unbundle switch exposed everything the old concatenated build had been hiding, so a handful of source changes had to land before tree-shaking could deliver.
+
+- **The toast queue lost its module-scope side effect.** Importing the Toast module used to create the queue immediately and touch `document`. That contradicted the package's `sideEffects: false` promise and could break SSR. The queue is now created lazily on first use.
+- **Animated components dropped the `motion` proxy.** The `motion.*` proxy is by design not tree-shakeable. Referencing `motion.div` drags in the whole renderer, around 34 kB. `ActionBar`, `Tabs`, and `Tray` now use the lightweight `m` components and load the full feature set through a `LazyMotion` boundary in its own async chunk, so the animation code only loads when an animated component actually renders.
+- **`react-select` moved out of the bundle.** The build silently copied it into the dist, all 2 MB of it including `@emotion`, even though it was never a declared dependency. It is now external and properly declared. Only the deprecated `<Multiselect>` uses it, and both leave together in the next major.
+- **A `size-limit` budget gate now runs in CI.** It keeps these wins from silently regressing.
+
+## Bug fixes
+
+### Editable table cells work after SSR hydration
+
+In a server-rendered app, for example Next.js, [`<Table.EditableCell>`](/components/collection/table) was inert after hydration. Clicking a cell did not open its inline editor until an unrelated re-render, such as a window resize, happened to occur. React Aria builds the table collection in a separate render pass, and the editing state lived in that build pass, so the rendered cell content stayed bound to the server pass's closures. The editing state and overlay now live inside the cell's content pass, the same structure React Spectrum's `TableView` uses, and interaction reconnects on its own after hydration.
+
+## CLI
+
+The CLI keeps growing into the terminal-side companion to the docs site.
+
+### `marigold examples`
+
+Two new commands expose Marigold's application-level reference patterns from the terminal.
+
+```bash
+# What reference patterns exist?
+marigold examples list
+
+# Fetch one, e.g. the filtering pattern
+marigold examples get filter --format json
+```
+
+Examples ship for the `filter`, `form`, and `inventory` patterns, with the same `--format`, `--fresh`, and `--offline` flags as the other commands. There is also a framework-transformation note (`marigold docs getting-started/examples-for-agents`) that documents porting the examples from the Next.js App Router to other stacks once, instead of per example.
+
+### Docs pages beyond components
+
+`marigold docs` now resolves any docs page, not just components. You can reach Foundations, Patterns, and Getting Started pages by slug or by name.
+
+```bash
+marigold docs foundations/accessibility
+marigold docs installation
+```
+
+`marigold list` groups those pages under matching headings and accepts `--category foundations|patterns|getting-started`, and shell completion suggests page slugs. For agents, the `--format json` payload gains an additive top-level `pages` array. The existing `categories` shape is unchanged.
+
+## Documentation
+
+### Responsive Design foundations page
+
+A new [Responsive Design](/foundations/responsive) page documents Marigold's mobile-first breakpoint scale, the `useResponsiveValue` and `useSmallScreen` hooks, and the 320px minimum supported width, which is a support floor rather than a breakpoint. Storybook gains a matching "Extra Small Screen (320px)" viewport so you can test layouts at the floor.
+
+---
+
+That's v17.8.0. If your app imports a handful of Marigold components, your users just got a smaller bundle and you didn't have to change a single line. Check your bundle analyzer and tell us what the numbers look like on your end.
