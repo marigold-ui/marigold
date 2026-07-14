@@ -60,4 +60,16 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   icon: cva({
     base: 'pointer-events-none shrink-0 text-secondary transition-transform duration-250',
   }),
+  actions: cva({
+    base: 'shrink-0',
+    variants: {
+      variant: {
+        default: '',
+        card: 'pe-4',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }),
 };
