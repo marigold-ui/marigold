@@ -18,7 +18,7 @@ The pattern arranges five areas. The collection displays the records with a chec
 
 <BulkActionsAnatomy />
 
-- **Select All:** The header checkbox selects every visible row and shows an indeterminate state when only some rows are selected, following the [mixed-state checkbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox-mixed/).
+- **Select All:** The header checkbox selects every visible row and shows an indeterminate state when only some rows are selected.
 - **Selection:** Checkboxes on each row, with selected rows visually highlighted so the scope of the next action stays visible.
 - **Action Bar:** A floating [`<ActionBar>`](/components/collection/actionbar) that appears once something is selected. It states the selection count, offers the actions, and carries a clear button to dismiss the selection.
 - **Confirm Dialog:** A [`<Dialog>`](/components/overlay/dialog) that interrupts destructive actions with the exact count and impact before anything happens.
@@ -35,13 +35,13 @@ Each stage of the flow maps to an existing Marigold component, so the pattern is
 | Execution     | waits for the operation to finish      | [`<Button>`](/components/actions/button) `loading` or an inline `<ProgressCircle>` |
 | Result        | learns what happened                   | [`<Toast>`](/components/overlay/toast) plus the retained selection on failures     |
 
-## Choosing Actions
+## Choosing actions
 
-Not every operation earns a place in the action bar. Offer bulk actions for tasks users genuinely apply to many records at once, not speculatively for every operation a record supports ([Polaris](https://polaris.shopify.com/patterns/common-actions)). A bar crowded with rarely used actions slows down the frequent ones.
+Not every operation earns a place in the action bar. Offer bulk actions for tasks users genuinely apply to many records at once, not speculatively for every operation a record supports. A bar crowded with rarely used actions slows down the frequent ones.
 
 Name every action with a verb, or a verb plus noun where the target is ambiguous, so its effect is obvious before pressing: "Publish", "Assign category", "Delete". Avoid vague labels such as "Apply" or "OK" on their own. Order the actions from safest to most consequential and place a destructive action such as delete last, visually separated from the routine ones. When a selection carries more actions than fit comfortably, move the long tail into an [`<ActionMenu>`](/components/overlay/action-menu) rather than crowding the bar.
 
-While the bar is visible, the selection is the object the user works on. Avoid competing per-row actions during that time: a row-level delete next to a bulk delete makes it unclear which scope a press affects ([Carbon](https://carbondesignsystem.com/components/data-table/usage/)).
+While the bar is visible, the selection is the object the user works on. Avoid competing per-row actions during that time: a row-level delete next to a bulk delete makes it unclear which scope a press affects.
 
 <GuidelineTiles>
   <Do>
@@ -60,9 +60,7 @@ While the bar is visible, the selection is the object the user works on. Avoid c
 
 ## Selection
 
-Selection begins the flow, and it must be visible and cheap to change. Use a [`<Table>`](/components/collection/table) with `selectionMode="multiple"`: each row gets a persistent checkbox, the header checkbox selects everything visible and turns indeterminate on partial selections, and selected rows are highlighted. Keep the checkboxes always visible on desktop rather than revealing them on hover, so the capability is discoverable before the first interaction.
-
-Pass the [`<ActionBar>`](/components/collection/actionbar) through the Table's `actionBar` prop. The Table tracks the selection, shows the bar while something is selected, and hides it again when the selection is cleared. The bar states the count, so users always know how many records the next press will affect, and its clear button plus the <kbd>Escape</kbd> key offer a fast way out.
+Selection begins the flow, and it must be visible and cheap to change. Use a [`<Table>`](/components/collection/table) with `selectionMode="multiple"` and pass the [`<ActionBar>`](/components/collection/actionbar) through its `actionBar` prop. These two components cover the selection mechanics on their own, so the work in this pattern lies in the decisions around them: which actions to offer, how far the selection reaches, and what happens after a press.
 
 <ComponentDemo name="bulk-actions-selection" />
 
@@ -70,7 +68,7 @@ Pass the [`<ActionBar>`](/components/collection/actionbar) through the Table's `
 
 The selection is bounded to what the user can currently see. The select-all checkbox selects the visible rows, not the entire result set behind pagination, and there is no banner offering to extend the selection across all pages. When pagination, a filter, or a search query changes the visible set, clear the selection instead of carrying invisible rows along.
 
-This is a deliberately conservative choice. Systems that offer cross-page selection have documented exactly the failure it invites: the interface looks identical whether twenty visible rows or thousands of invisible ones are selected, and users act on records they never saw ([PatternFly](https://www.patternfly.org/patterns/bulk-selection)). Re-selecting after a page change costs a few clicks. Deleting a thousand records you did not know were selected costs much more, and there is no undo to catch it.
+This is a deliberately conservative choice. Cross-page selection invites a well-known failure: the interface looks identical whether twenty visible rows or thousands of invisible ones are selected, and users act on records they never saw. Re-selecting after a page change costs a few clicks. Deleting a thousand records you did not know were selected costs much more, and there is no undo to catch it.
 
 <ComponentDemo name="bulk-actions-scope" />
 
@@ -82,23 +80,23 @@ This is a deliberately conservative choice. Systems that offer cross-page select
   reviewable, which a hidden selection never is.
 </Callout>
 
-## Direct Actions
+## Direct actions
 
-Most bulk actions are a single verb that needs no further input: publish, pause, assign, export. Run them straight from the bar the moment they are pressed. Making users confirm a routine, recoverable operation adds friction without safety, and trains them to click through the dialogs that guard the operations that do matter ([NN/g](https://www.nngroup.com/articles/confirmation-dialog/)).
+Most bulk actions are a single verb that needs no further input: publish, pause, assign, export. Run them straight from the bar the moment they are pressed. Making users confirm a routine, recoverable operation adds friction without safety, and trains them to click through the dialogs that guard the operations that do matter.
 
 After the operation succeeds, confirm the outcome with a [`<Toast>`](/components/overlay/toast) that names the count, and clear the selection. The cleared selection signals that the job is done and prevents the previous scope from silently applying to the next action.
 
 <ComponentDemo name="bulk-actions-single-verb" />
 
-## Confirming Destructive Actions
+## Confirming destructive actions
 
-Destructive bulk actions multiply the cost of a mistake by the size of the selection, and without an undo system a confirmation dialog is the only safety net. Every destructive bulk action goes through one. Use the `useConfirmation` hook from [`<Dialog>`](/components/overlay/dialog), which queues an `alertdialog` and resolves with the user's choice.
+Destructive bulk actions multiply the cost of a mistake by the size of the selection, and without an undo system a confirmation dialog is the only safety net. Every destructive bulk action goes through one, using the `useConfirmation` hook from [`<Dialog>`](/components/overlay/dialog).
 
-A bare "Are you sure?" protects nobody. The dialog must restate what is about to happen with the exact count and a summary of the impact, so the user can catch a wrong selection at the last moment ([NN/g](https://www.nngroup.com/articles/confirmation-dialog/)):
+A bare "Are you sure?" protects nobody. The dialog must restate what is about to happen with the exact count and a summary of the impact, so the user can catch a wrong selection at the last moment:
 
 > Delete 12 events? This will cancel 47 ticket reservations and notify 138 customers.
 
-Repeat the action verb and the count in the confirm button, "Delete 12 events" rather than "OK", so the button reads as the decision it is. Focus the cancel button when the dialog opens, so pressing <kbd>Enter</kbd> out of habit chooses the safe path ([Carbon](https://carbondesignsystem.com/components/modal/usage/)).
+Repeat the action verb and the count in the confirm button, "Delete 12 events" rather than "OK", so the button reads as the decision it is. Focus the cancel button when the dialog opens, so pressing <kbd>Enter</kbd> out of habit chooses the safe path.
 
 <ComponentDemo name="bulk-actions-confirm" />
 
@@ -117,7 +115,7 @@ Repeat the action verb and the count in the confirm button, "Delete 12 events" r
   </Dont>
 </GuidelineTiles>
 
-## Editing Multiple Fields
+## Editing multiple fields
 
 Some bulk operations need input before they can run, such as moving many events to a new date and venue. A single verb cannot carry that, so the action opens a [`<Drawer>`](/components/overlay/drawer) with a small form that applies to every selected record on submit. The drawer keeps the table and the selected rows visible behind it, so users can verify the selection while they edit. The [drawer pattern](/components/overlay/drawer#multi-field-bulk-edit) covers this use case from the drawer's perspective.
 
@@ -133,11 +131,11 @@ The hard problem in a bulk-edit form is that the selected records rarely agree. 
 
 A destructive operation configured in a drawer still needs its confirm dialog after the submit, count and impact included. The drawer collects the input; it does not replace the confirmation.
 
-## Showing Progress
+## Showing progress
 
-Bulk operations in Reservix products run synchronously: the user starts the operation, watches it complete, and sees the result in the same session. There is no background-job or notification pattern to design for, which keeps the feedback model simple and tied to how long the operation takes ([NN/g](https://www.nngroup.com/articles/response-times-3-important-limits/)):
+Bulk operations in Reservix products run synchronously: the user starts the operation, watches it complete, and sees the result in the same session. There is no background-job or notification pattern to design for, which keeps the feedback model simple and tied to how long the operation takes:
 
-- **Under about two seconds**, feedback on the pressed control is enough. Set the [`<Button>`](/components/actions/button) `loading` prop; it shows a spinner, blocks further presses, and announces the busy state to assistive technology.
+- **Under about two seconds**, feedback on the pressed control is enough: set the [`<Button>`](/components/actions/button) `loading` prop.
 - **Between two and ten seconds**, show progress with a running count where the actions were, "Sending 4 of 12", so the user sees the operation moving through the selection. Keep the bar visible and the selection intact while it runs.
 - **Beyond ten seconds**, users lose attention and need a way to interrupt. No current Reservix bulk operation crosses this line; if yours does, the operation needs product-level rework rather than a bigger spinner.
 
@@ -145,11 +143,11 @@ Disable the other actions in the bar while an operation runs, so two bulk operat
 
 <ComponentDemo name="bulk-actions-progress" />
 
-## Result Feedback
+## Result feedback
 
 Every bulk operation ends with an explicit result. Success is a [`<Toast>`](/components/overlay/toast) that names the count, "12 events updated", and the selection clears because the job is done.
 
-Partial failure is the case that separates a robust implementation from a fragile one. When some records succeed and some fail, never report a bare error. Summarize the outcome with exact numbers, name the reason where it is known, and keep the failed records selected so the user can fix the cause and retry without hunting for them ([NN/g](https://www.nngroup.com/articles/error-message-guidelines/)):
+Partial failure is the case that separates a robust implementation from a fragile one. When some records succeed and some fail, never report a bare error. Summarize the outcome with exact numbers, name the reason where it is known, and keep the failed records selected so the user can fix the cause and retry without hunting for them:
 
 > 11 of 12 events updated. 1 failed: missing description. It remains selected for retry.
 
@@ -157,7 +155,7 @@ The succeeded records leave the selection, the failed ones stay. The selection i
 
 <ComponentDemo name="bulk-actions-partial-failure" />
 
-## When Not to Use
+## When not to use
 
 Bulk actions earn their complexity only when users repeatedly apply the same operation to many similar records. Skip the pattern when:
 
@@ -168,19 +166,18 @@ Bulk actions earn their complexity only when users repeatedly apply the same ope
 
 ## Accessibility
 
-The [`<ActionBar>`](/components/collection/actionbar) already implements the behavior a bulk-selection pattern is expected to have: the actions sit in a toolbar with a localized label, the bar's appearance is announced without stealing focus from the collection, and <kbd>Escape</kbd> clears the selection and returns focus. The remaining work sits in how you compose the flow:
+The [`<Table>`](/components/collection/table) selection column and the [`<ActionBar>`](/components/collection/actionbar) already cover the announcements and keyboard behavior a bulk-selection pattern is expected to have. The remaining work sits in how you compose the flow:
 
 - **Give every icon-only action a text label**, visible or via `aria-label`, so each action is announced clearly.
-- **Announce results.** A toast created through [`useToast`](/components/overlay/toast) is announced by assistive technology. Make the announcement carry the same precision as the visible message, count included.
-- **Announce running progress.** Render the "4 of 12" progress text in a live region (`aria-live="polite"`) so screen reader users hear the operation advance. The `<ProgressCircle>` next to it announces a localized loading state on its own.
-- **Keep focus on the safe path in confirm dialogs.** The confirmation dialog uses the `alertdialog` role; focus the cancel button by default for destructive actions so <kbd>Enter</kbd> does not confirm by accident.
-- **Follow the mixed-state checkbox pattern** for select-all, which the [`<Table>`](/components/collection/table) selection column already implements: assistive technology announces the partial state as "mixed".
+- **Carry the count into the result toast.** The toast text is what assistive technology announces, so the same precision reaches everyone.
+- **Announce running progress.** Render the "4 of 12" progress text in a live region (`aria-live="polite"`) so screen reader users hear the operation advance.
+- **Keep focus on the safe path in confirm dialogs.** Focus the cancel button by default for destructive actions so <kbd>Enter</kbd> does not confirm by accident.
 
 ## Implementation
 
 The demos above apply a few practices that are easy to miss but make the difference between a bulk flow that feels dependable and one that surprises users.
 
-### Derive the Acted-On Set Once
+### Derive the acted-on set once
 
 The Table's `actionBar` render prop and `onSelectionChange` hand you a `Selection`, which is either a `Set` of keys or the string `'all'` when the select-all checkbox is used. Resolve it to a concrete list of records in one place before acting, so counts, confirmation messages, and the operation itself always agree:
 
@@ -191,9 +188,9 @@ const affected = events.filter(event => keys.includes(event.id));
 
 Every message the user sees derives from `affected.length`, never from a separately tracked counter that can drift.
 
-### Clear Selection When the Scope Changes
+### Clear selection when the scope changes
 
-Pagination, filters, and search all change which rows are visible, and the selection must never outlive the view it was made in. Wrap the state setters so the reset cannot be forgotten at individual call sites, the same practice the [Filter](/patterns/user-input/filter) pattern uses for resetting pagination:
+Pagination, filters, and search all change which rows are visible, and the selection must never outlive the view it was made in. Wrap the state setters so the reset cannot be forgotten at individual call sites:
 
 ```tsx
 const changeFilter = (next: string) => {
@@ -202,7 +199,7 @@ const changeFilter = (next: string) => {
 };
 ```
 
-### Keep Failed Records Selected
+### Keep failed records selected
 
 After a partial failure, rebuild the selection from the failures. The selection becomes the retry list:
 
@@ -212,7 +209,7 @@ if (failed.length > 0) {
 }
 ```
 
-### Re-Key the Bulk-Edit Form
+### Re-key the bulk-edit form
 
 The bulk-edit form derives its initial values, shared or mixed, from the selected records when it mounts. Key the form with the selection so a changed selection produces a freshly derived form instead of stale fields:
 

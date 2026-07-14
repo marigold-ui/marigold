@@ -43,15 +43,15 @@ export default () => {
     const scope =
       affected.length === 1 ? '1 event' : `${affected.length} events`;
 
-    // The dialog names the exact count and summarizes the impact,
-    // and its confirm button repeats the action verb and count.
+    // Name the exact count and the impact, repeat the verb in the confirm
+    // button, and focus Cancel so a reflexive Enter takes the safe path.
+    // [!code highlight:8]
     const result = await confirm({
       variant: 'destructive',
       title: `Delete ${scope}?`,
       content: `This will cancel ${reservations} ticket reservations and notify the ticket buyers. This action cannot be undone.`,
       confirmationLabel: `Delete ${scope}`,
       cancelLabel: 'Cancel',
-      // Focus the safe choice so Enter does not confirm by accident.
       autoFocusButton: 'cancel',
     });
 

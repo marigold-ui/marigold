@@ -37,6 +37,9 @@ export default () => {
   const { addToast } = useToast();
 
   const applyStatus = (status: Event['status']) => {
+    // Resolve the selection to a concrete list once, so the count in the
+    // toast and the records we change can never disagree.
+    // [!code highlight:2]
     const keys =
       selected === 'all' ? events.map(event => event.id) : [...selected];
 
@@ -46,13 +49,12 @@ export default () => {
       )
     );
 
-    // Confirm the outcome and release the selection.
     const scope = keys.length === 1 ? '1 event' : `${keys.length} events`;
     addToast({
       title: `${scope} ${status === 'On sale' ? 'put on sale' : 'paused'}`,
       variant: 'success',
     });
-    setSelected(new Set());
+    setSelected(new Set()); // [!code highlight]
   };
 
   return (

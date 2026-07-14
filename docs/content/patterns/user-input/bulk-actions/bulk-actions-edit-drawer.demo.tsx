@@ -54,6 +54,7 @@ const initialEvents: Event[] = [
 ];
 
 /** The value shared by all records, or `undefined` when values differ. */
+// [!code highlight:4]
 const sharedValue = <K extends keyof Event>(records: Event[], field: K) =>
   records.every(record => record[field] === records[0]?.[field])
     ? records[0]?.[field]
@@ -75,6 +76,7 @@ const BulkEditForm = ({
   const [editPrice, setEditPrice] = useState(false);
   const [price, setPrice] = useState(sharedPrice ?? NaN);
 
+  // [!code highlight:7]
   // Implicit opt-in: a field is only applied when the user changed it.
   const changes: Partial<Event> = {};
   if (venue !== (sharedVenue ?? null) && venue) changes.venue = String(venue);
@@ -196,7 +198,7 @@ export default () => {
               <Drawer size="medium">
                 {/* Re-key the form so it derives fresh values per selection. */}
                 <BulkEditForm
-                  key={selectedIds.join('-')}
+                  key={selectedIds.join('-')} // [!code highlight]
                   affected={affected}
                   onApply={applyChanges}
                 />

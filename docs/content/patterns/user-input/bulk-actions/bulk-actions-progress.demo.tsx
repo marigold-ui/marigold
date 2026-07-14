@@ -68,6 +68,9 @@ export default () => {
         actionBar={() => (
           <ActionBar>
             {sending ? (
+              // Longer op: the running count replaces the actions in place,
+              // announced politely so it is not just a visual change.
+              // [!code highlight:6]
               <Inline space={2} alignY="center">
                 <ProgressCircle />
                 <Text aria-live="polite">
@@ -76,10 +79,13 @@ export default () => {
               </Inline>
             ) : (
               <>
+                {/* Quick op: feedback rides on the pressed button. */}
+                {/* [!code highlight:4] */}
                 <Button loading={exporting} onPress={exportSelected}>
                   <Download />
                   Export
                 </Button>
+                {/* Disable siblings so two operations can't race. */}
                 <Button disabled={exporting} onPress={sendReminders}>
                   <Send />
                   Send reminder

@@ -63,14 +63,14 @@ export default () => {
       return;
     }
 
-    // Summarize the outcome and keep only the failed records
-    // selected, so the user can fix the cause and retry.
     addToast({
       title: `${succeeded.length} of ${affected.length} events published`,
       description: `${failed.length} failed: missing description. ${failed.length === 1 ? 'It remains' : 'They remain'} selected for retry.`,
       variant: 'warning',
     });
-    setSelected(new Set(failed.map(event => event.id)));
+    // The selection becomes the retry list: drop what succeeded, keep
+    // what failed, so the next press acts on exactly the leftovers.
+    setSelected(new Set(failed.map(event => event.id))); // [!code highlight]
   };
 
   return (

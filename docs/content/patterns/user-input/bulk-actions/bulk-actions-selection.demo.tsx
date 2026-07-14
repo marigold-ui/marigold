@@ -1,10 +1,4 @@
-import {
-  ActionBar,
-  Badge,
-  Button,
-  Scrollable,
-  Table,
-} from '@marigold/components';
+import { ActionBar, Badge, Button, Table } from '@marigold/components';
 import { Archive, Tag } from '@marigold/icons';
 
 const events = [
@@ -53,43 +47,44 @@ const events = [
 ];
 
 export default () => (
-  <Scrollable height="320px">
-    <Table
-      aria-label="Events"
-      selectionMode="multiple"
-      actionBar={() => (
-        <ActionBar>
-          <Button onPress={() => alert('Assign category')}>
-            <Tag />
-            Assign category
-          </Button>
-          <Button onPress={() => alert('Archive')}>
-            <Archive />
-            Archive
-          </Button>
-        </ActionBar>
-      )}
-    >
-      <Table.Header sticky>
-        <Table.Column rowHeader>Event</Table.Column>
-        <Table.Column>Date</Table.Column>
-        <Table.Column>Venue</Table.Column>
-        <Table.Column>Status</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        {events.map(event => (
-          <Table.Row key={event.id} id={event.id}>
-            <Table.Cell>{event.name}</Table.Cell>
-            <Table.Cell>{event.date}</Table.Cell>
-            <Table.Cell>{event.venue}</Table.Cell>
-            <Table.Cell>
-              <Badge variant={event.status === 'On sale' ? 'success' : 'info'}>
-                {event.status}
-              </Badge>
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  </Scrollable>
+  <Table
+    aria-label="Events"
+    // These two props are the whole mechanism: the Table owns selection,
+    // and the bar with the actions rides along in the actionBar prop.
+    selectionMode="multiple" // [!code highlight]
+    // [!code highlight:1]
+    actionBar={() => (
+      <ActionBar>
+        <Button onPress={() => alert('Assign category')}>
+          <Tag />
+          Assign category
+        </Button>
+        <Button onPress={() => alert('Archive')}>
+          <Archive />
+          Archive
+        </Button>
+      </ActionBar>
+    )}
+  >
+    <Table.Header>
+      <Table.Column rowHeader>Event</Table.Column>
+      <Table.Column>Date</Table.Column>
+      <Table.Column>Venue</Table.Column>
+      <Table.Column>Status</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      {events.map(event => (
+        <Table.Row key={event.id} id={event.id}>
+          <Table.Cell>{event.name}</Table.Cell>
+          <Table.Cell>{event.date}</Table.Cell>
+          <Table.Cell>{event.venue}</Table.Cell>
+          <Table.Cell>
+            <Badge variant={event.status === 'On sale' ? 'success' : 'info'}>
+              {event.status}
+            </Badge>
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
 );

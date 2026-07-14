@@ -50,10 +50,10 @@ export default () => {
   const visible =
     status === 'all' ? events : events.filter(event => event.status === status);
 
-  // The selection only ever contains visible rows. When the filter
-  // changes, the visible set changes, so the selection is cleared.
+  // Clearing here, next to setStatus, is what keeps the selection from
+  // outliving the view it was made in. One wrapper, so it can't be missed.
   const changeFilter = (nextStatus: string) => {
-    setSelected(new Set());
+    setSelected(new Set()); // [!code highlight]
     setStatus(nextStatus);
   };
 
