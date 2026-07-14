@@ -12,7 +12,7 @@ export const FileField: ThemeComponent<'FileField'> = {
       size: {
         default: [
           'flex min-h-52 flex-col items-center rounded-xl',
-          'border border-dashed border-border',
+          'border border-dashed border-control-border',
           'p-4 not-data-files:justify-center',
         ],
       },

@@ -44,6 +44,7 @@ Many tokens come in pairs: a background token and a `-foreground` token for text
 - `focus-highlight`: no explicit text color set on focus
 - `focus-highlight-bold`: uses `text-foreground` (the stronger tint still meets contrast with regular text)
 - `surface`: uses `text-foreground` or `text-secondary`
+- `soft`: uses `text-foreground` (the near-white cap is light enough for regular text)
 - `secondary`, `placeholder`: these ARE text tokens, not backgrounds
 - `disabled`: primarily a text token. When a background is needed, pair with `bg-disabled-surface` (see [Disabled](#disabled) for details)
 
@@ -288,7 +289,7 @@ Some controls have no border to define them. The switch track is the clearest ex
   </Dont>
 </GuidelineTiles>
 
-### Soft cap
+### Soft
 
 The secondary Button and the Menu trigger don't wear a boundary at all. They're raised caps: a convex fill gradient with the lift baked into the shading itself, no drop shadow attached. `soft` is the light, neutral cap. Its dark counterpart, `ui-contrast`, retints around `primary` and powers the primary Button and ActionBar instead.
 

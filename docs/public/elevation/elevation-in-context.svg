@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 430" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 0 874 462" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
   <style>
     .label { fill: #333; }
     .label-line { stroke: #333; }
@@ -30,11 +30,11 @@
   </defs>
 
   <!-- Page ground (bg-background = charcoal-100: the gray base, stays visible in dark mode) -->
-  <rect x="160" y="0" width="540" height="430" rx="10" fill="oklch(0.965 0.003 54)"/>
+  <rect x="160" y="0" width="540" height="462" rx="10" fill="oklch(0.965 0.003 54)"/>
 
   <!-- Card: separates from the ground by fill alone (white on the deeper page), traced by a
        whisper-light surface-border rim. No drop shadow. -->
-  <rect x="220" y="28" width="420" height="374" rx="12" fill="#fff" stroke="oklch(0.15 0.008 54 / 0.13)" stroke-width="1"/>
+  <rect x="220" y="28" width="420" height="406" rx="12" fill="#fff" stroke="oklch(0.15 0.008 54 / 0.13)" stroke-width="1"/>
 
   <!-- Card heading -->
   <text x="252" y="70" font-size="16" font-weight="600" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">New event</text>
@@ -61,13 +61,13 @@
 
   <!-- Raised caps sitting in flow: the lift is the cap's own shading, not a shadow. -->
   <!-- Cancel: ui-soft (light neutral cap) -->
-  <rect x="414" y="366" width="90" height="36" rx="8" fill="url(#soft-bg)" stroke="oklch(0.8 0.005 54)" stroke-width="1"/>
-  <line x1="415" y1="367" x2="503" y2="367" stroke="oklch(1 0 0 / 0.9)" stroke-width="1" stroke-linecap="round"/>
-  <text x="436" y="389" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Cancel</text>
+  <rect x="414" y="362" width="90" height="40" rx="8" fill="url(#soft-bg)" stroke="oklch(0.8 0.005 54)" stroke-width="1"/>
+  <line x1="415" y1="363" x2="503" y2="363" stroke="oklch(1 0 0 / 0.9)" stroke-width="1" stroke-linecap="round"/>
+  <text x="436" y="387" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.22 0.008 54)">Cancel</text>
   <!-- Create: ui-contrast (dark bold cap) -->
-  <rect x="512" y="366" width="96" height="36" rx="8" fill="url(#contrast-bg)"/>
-  <line x1="513" y1="367" x2="607" y2="367" stroke="oklch(0.45 0.006 54)" stroke-opacity="0.25" stroke-width="1" stroke-linecap="round"/>
-  <text x="536" y="389" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.985 0.002 54)">Create</text>
+  <rect x="512" y="362" width="96" height="40" rx="8" fill="url(#contrast-bg)"/>
+  <line x1="513" y1="363" x2="607" y2="363" stroke="oklch(0.45 0.006 54)" stroke-opacity="0.25" stroke-width="1" stroke-linecap="round"/>
+  <text x="536" y="387" font-size="13" font-weight="500" font-family="system-ui, -apple-system, sans-serif" fill="oklch(0.985 0.002 54)">Create</text>
 
   <!-- ====== LEFT-SIDE ANNOTATIONS ====== -->
 
