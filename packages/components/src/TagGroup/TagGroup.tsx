@@ -15,6 +15,7 @@ import { useFormValidationState } from '@react-stately/form';
 import { useControlledState } from '@react-stately/utils';
 import type { Key, Selection, ValidationError } from '@react-types/shared';
 import { WidthProp, useClassNames } from '@marigold/system';
+import { ButtonContext } from '../Button/Context';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { TagGroupContext } from './Context';
@@ -117,6 +118,11 @@ export interface TagGroupProps
 const toSelection = (
   value: Selection | Iterable<Key> | undefined
 ): Selection => (value === 'all' ? 'all' : new Set(value ?? []));
+
+// Cascade the link look onto the bare `<Button>` that `TagGroupRemoveAll`
+// renders. Static config, so a module-level constant (no `useMemo`). Scoped to
+// the RemoveAll render below so it never reaches the per-tag `CloseButton`s.
+const removeAllButtonContext = { variant: 'link', size: 'small' } as const;
 
 // Component
 // ---------------
@@ -226,10 +232,9 @@ const _TagGroup = ({
               {children}
             </TagList>
             {onRemove && removeAll ? (
-              <TagGroupRemoveAll
-                className={classNames.removeAll}
-                onRemove={onRemove}
-              />
+              <Provider values={[[ButtonContext, removeAllButtonContext]]}>
+                <TagGroupRemoveAll onRemove={onRemove} />
+              </Provider>
             ) : null}
           </div>
         </RACTagGroup>
