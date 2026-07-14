@@ -7,7 +7,16 @@ import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarToggleIcon } from './SidebarToggleIcon';
 
-export const SidebarToggle = () => {
+export interface SidebarToggleProps {
+  /**
+   * Visual treatment. `'bar'` (default) is the ghost button for the top
+   * navigation; `'rail'` styles it as one of the two-level rail's own icons.
+   * @default 'bar'
+   */
+  variant?: 'bar' | 'rail';
+}
+
+export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
   const { toggleSidebar, state, classNames, isMobile, panelAvailable } =
     useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -28,7 +37,10 @@ export const SidebarToggle = () => {
         aria-label={stringFormatter.format('toggleNavigation')}
         isDisabled={disabled}
         onPress={toggleSidebar}
-        className={cn('group/icon', classNames.toggle)}
+        className={cn(
+          'group/icon',
+          variant === 'rail' ? classNames.railToggle : classNames.toggle
+        )}
       >
         <SidebarToggleIcon expanded={state === 'expanded'} strokeWidth={1.5} />
       </Button>

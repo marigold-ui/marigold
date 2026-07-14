@@ -24,7 +24,15 @@ import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
+import { useSidebar } from './Context';
 import { Sidebar } from './Sidebar';
+
+// The desktop toggle lives in the rail head. On mobile the rail collapses to a
+// drawer, so a toggle in the top bar is what opens it — rendered only there.
+const MobileToggle = () => {
+  const { isMobile } = useSidebar();
+  return isMobile ? <Sidebar.Toggle /> : null;
+};
 
 const meta = preview.meta({
   title: 'Components/Sidebar/Rail',
@@ -75,12 +83,6 @@ const RailShell = ({
           <AppShell>
             <Sidebar>
               <Sidebar.Rail current={path}>
-                <Sidebar.Header>
-                  <Text weight="bold" fontSize="lg">
-                    reservix
-                  </Text>
-                </Sidebar.Header>
-
                 <Sidebar.RailItem icon={<LayoutDashboard />} href="/uebersicht">
                   Übersicht
                 </Sidebar.RailItem>
@@ -176,7 +178,13 @@ const RailShell = ({
 
             <TopNavigation>
               <TopNavigation.Start>
-                <Sidebar.Toggle />
+                <MobileToggle />
+                {/* The wordmark lives in the top bar so it stays visible even
+                    when the panel collapses (the sidebar column would reclaim
+                    that space). */}
+                <Text weight="bold" fontSize="lg">
+                  reservix
+                </Text>
               </TopNavigation.Start>
               <TopNavigation.Middle>
                 <Breadcrumbs>
@@ -249,8 +257,10 @@ Basic.test(
         // Keyboard focus (focus-visible) opens the tooltip immediately — the
         // path that matters most for icon-only items. Synthetic hovers are
         // ignored by react-aria's modality guard in the headless runner, so the
-        // hover path is not assertable here. Runs first: tabbing from the story
-        // root lands on the first rail item ('Übersicht').
+        // hover path is not assertable here. The toggle in the rail head is the
+        // first tabbable, so a second tab lands on the first rail item
+        // ('Übersicht').
+        await userEvent.tab();
         await userEvent.tab();
         const tooltip = await waitFor(() => canvas.getByRole('tooltip'));
         expect(tooltip).toHaveTextContent('Übersicht');
@@ -268,7 +278,7 @@ Basic.test(
       ).toBeInTheDocument();
     });
 
-    await step('top-nav toggle collapses and expands the panel', async () => {
+    await step('rail toggle collapses and expands the panel', async () => {
       const toggle = canvas.getByRole('button', {
         name: 'Navigation umschalten',
       });

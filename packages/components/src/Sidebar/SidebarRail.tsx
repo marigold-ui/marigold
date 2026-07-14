@@ -16,6 +16,7 @@ import { useSidebar } from './Context';
 import { SidebarModal } from './SidebarModal';
 import { SidebarNav } from './SidebarNav';
 import type { SidebarNavProps } from './SidebarNav';
+import { SidebarToggle } from './SidebarToggle';
 import type { SidebarCurrent } from './collection';
 import { railToNavChildren } from './railCollection';
 import type { SidebarRailNode } from './railCollection';
@@ -196,38 +197,46 @@ const SidebarRail = ({
         data-panel={hasPanel ? 'expanded' : 'collapsed'}
         className={cn(
           'grid h-full grid-rows-[3.5rem_1fr]',
-          "[grid-template-areas:'brand_brand'_'rail_panel']",
+          "[grid-template-areas:'rail_brand'_'rail_panel']",
           'grid-cols-[3.5rem_15.5rem] data-[panel=collapsed]:grid-cols-[3.5rem_0rem]',
           'transition-[grid-template-columns] duration-200 ease-in-out',
           'motion-reduce:transition-none'
         )}
       >
+        {/* Rail column: the toggle head pinned above the scrolling icon list,
+            spanning both rows so its right border is the one top-to-bottom
+            divider. */}
+        <div className={cn('[grid-area:rail]', classNames.railColumn)}>
+          <div className={classNames.railHead}>
+            <SidebarToggle variant="rail" />
+          </div>
+          <nav
+            aria-label={ariaLabel || stringFormatter.format('railNavigation')}
+            className="flex min-h-0 flex-1 flex-col overflow-hidden"
+          >
+            <div className={classNames.rail}>
+              {nodes.map(node => (
+                <RailItemLink
+                  key={node.key}
+                  node={node}
+                  selected={selectedKey === node.key}
+                  matched={matchedKey === node.key}
+                  onActivate={() => activateRail(node)}
+                  className={classNames.railItem}
+                />
+              ))}
+            </div>
+            {footer ? (
+              <div className={classNames.railFooter}>{footer}</div>
+            ) : null}
+          </nav>
+        </div>
+
+        {/* Brand band above the panel (empty when the wordmark lives in the top
+            navigation instead). */}
         <div className={cn('[grid-area:brand]', classNames.brand)}>
           {header}
         </div>
-
-        <nav
-          aria-label={ariaLabel || stringFormatter.format('railNavigation')}
-          className={cn(
-            'flex min-h-0 flex-col overflow-hidden [grid-area:rail]'
-          )}
-        >
-          <div className={classNames.rail}>
-            {nodes.map(node => (
-              <RailItemLink
-                key={node.key}
-                node={node}
-                selected={selectedKey === node.key}
-                matched={matchedKey === node.key}
-                onActivate={() => activateRail(node)}
-                className={classNames.railItem}
-              />
-            ))}
-          </div>
-          {footer ? (
-            <div className={classNames.railFooter}>{footer}</div>
-          ) : null}
-        </nav>
 
         <div
           inert={!hasPanel || undefined}

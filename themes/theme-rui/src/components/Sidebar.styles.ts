@@ -151,23 +151,59 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // Same quiet skin as the single column: charcoal ink, flat `selected` pill,
   // the one opaque `border` as the sole structural line (the aside's right edge,
   // dividing nav from content).
+  // No right edge of its own: the sidebar's right border is drawn by the panel
+  // (expanded) or the rail column (collapsed), so the two never double up.
   railRoot: cva({
-    base: ['overflow-hidden bg-background border-r border-border ui-scrollbar'],
+    base: ['overflow-hidden bg-background ui-scrollbar'],
   }),
-  // Brand band across the top of the rail+panel columns; aligns to the app
-  // header row and carries the same always-on bottom `border` as the top bar,
-  // so the two share one continuous top edge. Holds only the wordmark (no
-  // compact mark exists), so it lives where there is horizontal room instead of
-  // the narrow rail — and the whole band (wordmark and its edge) fades out,
-  // rather than clipping mid-letter, when the panel collapses that room away,
-  // leaving the collapsed rail a clean icon strip.
-  //
-  // pl-4.5: optically aligns the wordmark's left edge with the rail icons — a
-  // size-5 icon centered in the 3.5rem column starts at 18px. The band owns
-  // this gutter, so the header slot's own padding is neutralised (`*:px-0`).
+  // The rail column: the narrow strip of the toggle head + icon list, spanning
+  // the full height beside the panel. Carries the always-on vertical divider
+  // (`border-r`) between the rail and everything to its right — the one line
+  // that runs top to bottom. When the panel is collapsed this same line is the
+  // sidebar's right edge (the panel drops its border), so it never doubles up.
+  railColumn: cva({
+    base: ['flex flex-col min-h-0', 'border-r border-border'],
+  }),
+  // Toggle head atop the rail column, aligned to the app header row (h-14) with
+  // the same always-on bottom `border` as the top bar, so the header edge runs
+  // unbroken across the toggle, the brand band and the top navigation.
+  railHead: cva({
+    base: [
+      'flex items-center justify-center h-14 shrink-0',
+      'border-b border-border',
+    ],
+  }),
+  // The panel toggle, styled as one of the rail's own icons: same tile (size,
+  // radius, centering, icon size) and the same hover/focus treatment as a
+  // `railItem`. The only difference is idle presence — it sits a step dimmer
+  // than the rail's secondary ink (via opacity) so it reads as chrome rather
+  // than a destination, lifting to full strength on hover/focus. The icon's
+  // expand/collapse morph (SidebarToggleIcon) is unaffected.
+  railToggle: cva({
+    base: [
+      'flex items-center justify-center size-10 mx-auto rounded-surface cursor-pointer',
+      'transition-[color,background-color,opacity] motion-reduce:transition-none',
+      'outline-none focus-visible:ui-state-focus',
+      '[&_svg]:size-5',
+      // Idle: the rail's secondary ink, dimmed a step further.
+      'text-secondary opacity-60',
+      // Hover / focus: identical to a rail icon, at full strength.
+      'enabled:hover:bg-hover enabled:hover:text-foreground enabled:hover:opacity-100',
+      'focus-visible:opacity-100',
+      // Inert on a direct-link page (nothing to collapse): full-strength
+      // disabled ink, no hover lift.
+      'disabled:text-disabled disabled:opacity-100 disabled:cursor-default',
+    ],
+  }),
+  // Brand band above the panel (not the rail): holds the wordmark, aligned to
+  // the panel's nav content (px-4, matching the section title and group labels
+  // below it). Carries the same always-on bottom `border` as the toggle head
+  // and the top bar. The whole band fades out — rather than clipping the
+  // wordmark mid-letter — when the panel collapses its column away, leaving the
+  // collapsed rail a clean icon strip under the toggle.
   brand: cva({
     base: [
-      'flex items-center gap-2 min-w-0 overflow-hidden pl-4.5 pr-4',
+      'flex items-center gap-2 min-w-0 overflow-hidden px-4',
       '*:px-0',
       'border-b border-border',
       'transition-opacity duration-200 motion-reduce:transition-none',
@@ -196,14 +232,15 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   railFooter: cva({ base: ['shrink-0 flex justify-center py-2'] }),
-  // The section panel beside the rail. Its left hairline is the rail/panel
-  // divider — it starts below the brand band (the band spans both columns), so
-  // the rail reads as its own strip without a second full-height line. Dropped
-  // while collapsed so it can't double up with the aside's right border.
+  // The section panel beside the rail. Its right hairline is the sidebar's
+  // right edge (dividing nav from content) — the rail column owns the
+  // rail/panel divider, so the panel only draws its outer edge. Dropped while
+  // collapsed (the column shrinks to zero) so the rail column's border becomes
+  // the single right edge, without doubling up.
   panel: cva({
     base: [
       'flex flex-col min-h-0 overflow-hidden',
-      'border-l border-border in-data-[panel=collapsed]:border-l-0',
+      'border-r border-border in-data-[panel=collapsed]:border-r-0',
     ],
   }),
   // Section heading atop the panel; also the focus target when the panel swaps.

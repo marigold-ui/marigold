@@ -53,7 +53,7 @@ describe('Sidebar.Rail — desktop', () => {
     await user.click(screen.getByRole('link', { name: 'Berichte' }));
 
     // No section panel landmark remains once a direct link is selected, and
-    // with nothing to collapse the top-nav toggle goes inert.
+    // with nothing to collapse the rail toggle goes inert.
     expect(
       screen.queryByRole('navigation', { name: 'Tickets' })
     ).not.toBeInTheDocument();
