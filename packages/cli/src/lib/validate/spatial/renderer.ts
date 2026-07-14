@@ -273,6 +273,13 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
         serviceWorkers: 'block',
       });
       cleanup.push(() => context.close());
+
+      // page.route only intercepts HTTP(S); a WebSocket (or WebRTC data
+      // channel) opened by untrusted generated code would bypass it entirely.
+      // Close every WebSocket connection attempt so the network sandbox below
+      // actually covers all egress, not just fetch/XHR/navigation.
+      await context.routeWebSocket('**/*', ws => ws.close());
+
       const page = await context.newPage();
 
       // Only the dev server's own origin may load. Untrusted generated code must

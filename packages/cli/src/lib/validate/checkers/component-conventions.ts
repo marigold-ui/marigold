@@ -39,7 +39,7 @@ const returnsJsx = (fn: ts.FunctionLikeDeclaration): boolean => {
 };
 
 const LOADING_LABEL =
-  /\b(saving|loading|submitting|sending|please wait|wird|lädt|speichert|sende)/i;
+  /\b(saving|loading|submitting|sending|please wait|wird|lädt|speichert|send(?:e|et|en)?)\b/i;
 
 export const validateComponentConventions = (
   filePath: string

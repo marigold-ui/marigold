@@ -179,6 +179,26 @@ describe('validateComposition', () => {
     expect(issues.filter(i => i.component === 'Dialog')).toEqual([]);
   });
 
+  it('does not emit false warnings when dynamic children are wrapped in a fragment', () => {
+    // Regression: `hasOpaqueDynamicChild` used to only recognize a JSX
+    // expression as a DIRECT child, not one wrapped in a fragment
+    // (`<>{children}</>` — an idiomatic pattern). Since the fragment's own
+    // children are otherwise statically empty of any `<Table.X>` tag, the
+    // "used without any of its sub-components" error used to fire even
+    // though the content is genuinely dynamic.
+    const file = tmpFile(
+      'cv-dynamic-fragment.tsx',
+      `import { Table } from '@marigold/components';
+      const C = ({ children }: { children: React.ReactNode }) => (
+        <Table aria-label="t">
+          <>{children}</>
+        </Table>
+      );`
+    );
+    const issues = validateComposition(file);
+    expect(issues.filter(i => i.component === 'Table')).toEqual([]);
+  });
+
   it('returns no issues for non-compound components', () => {
     const issues = validateComposition(fixture('valid-button.tsx'));
     expect(issues).toEqual([]);

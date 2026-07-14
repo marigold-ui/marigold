@@ -153,3 +153,46 @@ const C = () => <Foo tone="z" />;`
     expect(issue?.message).toContain('z');
   });
 });
+
+describe('theme variant check — origin resolution', () => {
+  it('does not flag a local component that shares a themed component name', () => {
+    // A project's own <Foo> imported from a local module must not be held to
+    // the theme's variant contract (regression: this was a false-positive
+    // warning matching purely by tag name).
+    const dir = makeThemeDir();
+    writeStyle(
+      dir,
+      'Foo.styles.ts',
+      `import { cva } from 'class-variance-authority';
+export const Foo = cva({ variants: { tone: { a: '' } } });`
+    );
+    const localJsx = tmpJsx(
+      `import { Foo } from './my-foo';
+const C = () => <Foo tone="not-a-real-tone" />;`
+    );
+    const issues = validateThemeVariants(localJsx, dir);
+    expect(
+      issues.find(i => i.message.includes('does not exist in the theme'))
+    ).toBeUndefined();
+  });
+
+  it('still flags an aliased Marigold import against the theme', () => {
+    const dir = makeThemeDir();
+    writeStyle(
+      dir,
+      'Foo.styles.ts',
+      `import { cva } from 'class-variance-authority';
+export const Foo = cva({ variants: { tone: { a: '' } } });`
+    );
+    const aliasJsx = tmpJsx(
+      `import { Foo as F } from '@marigold/components';
+const C = () => <F tone="z" />;`
+    );
+    const issues = validateThemeVariants(aliasJsx, dir);
+    const issue = issues.find(i =>
+      i.message.includes('does not exist in the theme')
+    );
+    expect(issue).toBeDefined();
+    expect(issue?.component).toBe('F');
+  });
+});

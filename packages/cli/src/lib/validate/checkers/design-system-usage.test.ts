@@ -75,6 +75,59 @@ export default App;`
     expect(myCardIssue).toBeUndefined();
   });
 
+  it('does not flag an aliased import of a real Marigold component', () => {
+    // Regression: `{ Button as Btn }` used to be treated as hallucinated
+    // because the bare-name registry lookup doesn't know the local alias.
+    const file = tmpFile(
+      'dsu-alias-button.tsx',
+      `import { Button as Btn } from '@marigold/components';
+const App = () => <Btn onPress={() => {}}>OK</Btn>;
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const btnIssue = issues.find(i => i.component === 'Btn');
+    expect(btnIssue).toBeUndefined();
+  });
+
+  it('does not flag a valid sub-component accessed through an aliased parent', () => {
+    // Regression: `<S.Option>` (aliased `{ Select as S }`) used to be flagged
+    // as a hallucinated sub-component because the registry lookup used the
+    // local alias "S" instead of the resolved name "Select".
+    const file = tmpFile(
+      'dsu-alias-select-option.tsx',
+      `import { Select as S } from '@marigold/components';
+const App = () => (
+  <S label="pick">
+    <S.Option id="a">A</S.Option>
+  </S>
+);
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const issue = issues.find(
+      i => i.component === 'S.Option' && i.details?.hallucinated === true
+    );
+    expect(issue).toBeUndefined();
+  });
+
+  it('still flags a genuinely hallucinated sub-component on an aliased parent', () => {
+    const file = tmpFile(
+      'dsu-alias-select-bogus.tsx',
+      `import { Select as S } from '@marigold/components';
+const App = () => (
+  <S label="pick">
+    <S.Bogus id="a">A</S.Bogus>
+  </S>
+);
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    const issue = issues.find(i => i.component === 'S.Bogus');
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
+    expect(issue?.details?.hallucinated).toBe(true);
+  });
+
   it('does not flag components imported from other packages', () => {
     const file = tmpFile(
       'dsu-third-party.tsx',

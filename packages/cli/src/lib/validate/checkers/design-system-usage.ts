@@ -2,6 +2,7 @@ import ts from 'typescript';
 import path from 'node:path';
 import { hasAttrPresent, isPascalCase } from '../helpers/ast.js';
 import {
+  buildMarigoldTagResolver,
   findSubComponentSuggestion,
   isMarigoldComponent,
   isMarigoldSubComponent,
@@ -89,9 +90,6 @@ const isHtmlElement = (
   if (isExemptHtmlElement(tagName, node.attributes)) return false;
   return true;
 };
-
-const isMarigoldModule = (moduleSpecifier: string): boolean =>
-  moduleSpecifier.startsWith('@marigold/');
 
 const HTML_ROLE: Record<string, string> = {
   div: 'layout',
@@ -210,17 +208,20 @@ export const validateDesignSystemUsage = (
 
   const importMap = buildImportMap(source);
   const localDeclarations = collectLocalDeclarations(source);
+  // Resolves a tag *as written* (including an alias, `{ Button as Btn }`) to
+  // its real @marigold/components export name. Built from the import
+  // statements directly, so — unlike a bare `isMarigoldComponent(name)`
+  // lookup — it correctly recognizes an aliased Marigold import as real, and
+  // correctly rejects a local/third-party tag that merely shares a Marigold
+  // name.
+  const resolver = buildMarigoldTagResolver(source);
 
-  // A tag is a *real* Marigold component only if the name resolves to the
-  // library — not shadowed by a local declaration and not imported from a
-  // non-Marigold module. Avoids flagging a local <Button> that happens to
-  // share a Marigold name (consistent with the hallucinated-component branch).
-  const isRealMarigoldComponent = (name: string): boolean => {
-    if (!isMarigoldComponent(name)) return false;
-    if (localDeclarations.has(name)) return false;
-    const mod = importMap.get(name);
-    return mod === undefined || isMarigoldModule(mod);
-  };
+  // A tag is a *real* Marigold component only if it resolves through an
+  // actual `@marigold/components` import — not shadowed by a local
+  // declaration and not imported from a non-Marigold module, and correctly
+  // recognized even when imported under an alias.
+  const isRealMarigoldComponent = (name: string): boolean =>
+    resolver.get(name) !== undefined;
 
   const visit = (node: ts.Node): void => {
     if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -236,9 +237,10 @@ export const validateDesignSystemUsage = (
         ts.isPropertyAccessExpression(tag) &&
         ts.isIdentifier(tag.expression)
       ) {
+        const originalParent = resolver.get(tag.expression.text);
         isMarigoldTag =
-          isRealMarigoldComponent(tag.expression.text) &&
-          isMarigoldSubComponent(tag.expression.text, tag.name.text);
+          originalParent !== undefined &&
+          isMarigoldSubComponent(originalParent, tag.name.text);
       }
 
       if (ts.isIdentifier(tag)) {
@@ -264,9 +266,13 @@ export const validateDesignSystemUsage = (
             details: { htmlElement: tagName },
           });
         } else if (isPascalCase(tagName)) {
-          // Check for hallucinated Marigold components
-          if (isMarigoldComponent(tagName)) {
-            // Valid Marigold component — skip
+          // Check for hallucinated Marigold components. Resolved through the
+          // import-aware resolver (not a bare `isMarigoldComponent(tagName)`
+          // lookup) so an aliased import (`{ Button as Btn }`) is recognized
+          // as real — a bare-name lookup would find no registry entry for
+          // "Btn" and fall through to the hallucinated-component error below.
+          if (resolver.get(tagName) !== undefined) {
+            // Valid Marigold component (possibly aliased) — skip
           } else if (localDeclarations.has(tagName)) {
             // Locally declared component — skip
           } else {
@@ -325,12 +331,16 @@ export const validateDesignSystemUsage = (
         const parentName = tag.expression.getText(source);
         const subName = tag.name.text;
 
-        // Use isRealMarigoldComponent (not the name-only isMarigoldComponent) so
-        // a locally declared or non-Marigold-imported `Table` sharing a Marigold
-        // name cannot raise a false-positive hallucinated-sub-component ERROR —
-        // symmetric with the hallucinated-component branch above.
-        if (isPascalCase(parentName) && isRealMarigoldComponent(parentName)) {
-          if (!isMarigoldSubComponent(parentName, subName)) {
+        // Resolve through the import-aware resolver (not the name-only
+        // isMarigoldComponent/isRealMarigoldComponent) so a locally declared
+        // or non-Marigold-imported `Table` sharing a Marigold name cannot
+        // raise a false-positive hallucinated-sub-component ERROR — symmetric
+        // with the hallucinated-component branch above — and so an aliased
+        // parent (`{ Select as S }`, `<S.Option>`) is checked against its
+        // real sub-component list instead of a registry lookup on "S".
+        const originalParent = resolver.get(parentName);
+        if (isPascalCase(parentName) && originalParent !== undefined) {
+          if (!isMarigoldSubComponent(originalParent, subName)) {
             const { line, character } = source.getLineAndCharacterOfPosition(
               node.getStart(source)
             );

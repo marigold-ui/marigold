@@ -31,6 +31,7 @@ export const extractBoundingBoxes = async (
       }
     ).__mv;
     const cssPath = mv.cssPath as (el: Element) => string;
+    const isHidden = mv.isHidden as (el: Element) => boolean;
 
     const isInteresting = (el: Element): boolean =>
       el.hasAttribute('data-rac') ||
@@ -50,8 +51,12 @@ export const extractBoundingBoxes = async (
         // display:block height:0; the descendants keep full bounding boxes and
         // would be measured as overlapping although nothing is visible. Once the
         // panel is expanded (interaction driver removes [hidden]) it is measured
-        // normally, so no real finding is lost.
-        if (child.hasAttribute('hidden')) continue;
+        // normally, so no real finding is lost. `isHidden` also catches
+        // display:none/visibility:hidden/aria-hidden — a component toggled
+        // invisible via visibility:hidden (show/hide without unmounting) still
+        // preserves its layout box and would otherwise be measured as
+        // overlapping a genuinely visible sibling occupying the same space.
+        if (isHidden(child)) continue;
         const childResults = walk(child);
         if (isInteresting(child)) {
           const r = child.getBoundingClientRect();

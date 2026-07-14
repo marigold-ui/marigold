@@ -223,14 +223,53 @@ export const runSpatialChecks = async (
     }
 
     if (options.enableA11y) {
-      const aom = await extractAOM(page);
-      a11yIssues.push(...checkAccessibility(aom));
+      // Each sub-check gets its own try/catch (matching every other block in
+      // this function) so, e.g., an axe-core internal error can't silently
+      // discard the AOM check's and non-text-contrast check's findings too.
+      try {
+        const aom = await extractAOM(page);
+        a11yIssues.push(...checkAccessibility(aom));
+      } catch (err) {
+        a11yIssues.push({
+          type: 'a11y',
+          severity: 'warning',
+          source: 'aom-extractor',
+          component: 'page',
+          message: `Accessibility tree check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'The accessibility object model check could not complete. This may indicate a page rendering issue.',
+        });
+      }
 
-      const axeIssues = await runAxeAudit(page);
-      a11yIssues.push(...axeIssues);
+      try {
+        const axeIssues = await runAxeAudit(page);
+        a11yIssues.push(...axeIssues);
+      } catch (err) {
+        a11yIssues.push({
+          type: 'a11y',
+          severity: 'warning',
+          source: 'aom-extractor',
+          component: 'page',
+          message: `Automated accessibility audit (axe) failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'The axe accessibility audit could not complete. This may indicate a page rendering issue.',
+        });
+      }
 
-      const nonTextContrast = await extractNonTextContrast(page);
-      a11yIssues.push(...nonTextContrastToValidationIssues(nonTextContrast));
+      try {
+        const nonTextContrast = await extractNonTextContrast(page);
+        a11yIssues.push(...nonTextContrastToValidationIssues(nonTextContrast));
+      } catch (err) {
+        a11yIssues.push({
+          type: 'a11y',
+          severity: 'warning',
+          source: 'non-text-contrast',
+          component: 'page',
+          message: `Non-text contrast check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'The non-text contrast check could not complete. This may indicate a page rendering issue.',
+        });
+      }
     }
 
     // Open interactive overlays (menus, dialogs, listboxes, disclosures) and
@@ -320,7 +359,13 @@ export const runSpatialChecks = async (
     const dedup = (issues: ValidationIssue[]): ValidationIssue[] => {
       const seen = new Set<string>();
       return issues.filter(i => {
-        const key = `${i.source}:${i.component}:${i.message}`;
+        // `details` is included because `source:component:message` alone
+        // collapses two genuinely distinct instances of the same violation
+        // (e.g. two separate <Tag> overlap pairs share identical message
+        // text) — `details` carries the per-instance selectors/coordinates
+        // that tell them apart. Location isn't available yet at this stage
+        // (assigned later by enrichDynamicLocations), so it can't be used.
+        const key = `${i.source}:${i.component}:${i.message}:${JSON.stringify(i.details)}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;

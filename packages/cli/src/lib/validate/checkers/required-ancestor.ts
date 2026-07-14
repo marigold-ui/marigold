@@ -1,8 +1,8 @@
 import ts from 'typescript';
 import path from 'node:path';
 import {
+  buildMarigoldTagResolver,
   isCompoundComponent,
-  isMarigoldComponent,
   isMarigoldSubComponent,
 } from '../helpers/components.js';
 import { parseSource } from '../helpers/source.js';
@@ -61,6 +61,12 @@ export const validateRequiredAncestor = (
   const source = parseSource(filePath);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
+  // Only treat a tag as a Marigold component when it is actually imported from
+  // @marigold/components. A locally declared or third-party component that
+  // happens to share a Marigold name must not be held to Marigold's
+  // required-ancestor rules — that was a false-positive error. Mirrors the
+  // origin guard the composition checker uses.
+  const resolver = buildMarigoldTagResolver(source);
 
   // First pass: catalogue every JSX element in the file. The detached-usage
   // rules are deliberately file-scoped, not ancestor-scoped: LLM-generated code
@@ -116,10 +122,12 @@ export const validateRequiredAncestor = (
     if (ts.isPropertyAccessExpression(tag) && ts.isIdentifier(tag.expression)) {
       const root = tag.expression.text;
       const sub = tag.name.text;
+      const originalRoot = resolver.get(root);
       if (
         sub !== PROVIDER_SUB &&
-        isCompoundComponent(root) &&
-        isMarigoldSubComponent(root, sub) &&
+        originalRoot !== undefined &&
+        isCompoundComponent(originalRoot) &&
+        isMarigoldSubComponent(originalRoot, sub) &&
         !satisfiedRoots.has(root)
       ) {
         issues.push({
@@ -138,10 +146,10 @@ export const validateRequiredAncestor = (
 
     // (b) Curated inverse: a bare item that must sit inside a named container.
     if (ts.isIdentifier(tag)) {
-      const container = REQUIRED_CONTAINER[tag.text];
+      const original = resolver.get(tag.text);
+      const container = original ? REQUIRED_CONTAINER[original] : undefined;
       if (
         container &&
-        isMarigoldComponent(tag.text) &&
         !dottedTags.has(container) &&
         !identifierTags.has(deDotted(container))
       ) {

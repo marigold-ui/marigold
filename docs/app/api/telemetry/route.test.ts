@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { TELEMETRY_COMMANDS } from './commands';
 import { POST } from './route';
 
 // Build a valid telemetry event. The `command` field is the only thing each
@@ -35,17 +36,11 @@ describe('POST /api/telemetry', () => {
     vi.stubEnv('KV_REST_API_TOKEN', '');
   });
 
-  // Mirrors the CLI's CommandName union in packages/cli/src/lib/telemetry.ts —
-  // guards against the union and the server schema silently drifting apart.
-  it.each([
-    'docs',
-    'list',
-    'search',
-    'examples',
-    'validate',
-    'init',
-    'telemetry',
-  ])('accepts a %s command event', async command => {
+  // Derived from the route's own command enum so a command added there is
+  // automatically covered here — no second hardcoded list to drift out of
+  // sync with the schema (which itself mirrors the CLI's CommandName union in
+  // packages/cli/src/lib/telemetry.ts).
+  it.each(TELEMETRY_COMMANDS)('accepts a %s command event', async command => {
     const res = await post(makeEvent(command));
 
     expect(res.status).not.toBe(400);

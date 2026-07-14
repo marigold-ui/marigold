@@ -181,6 +181,45 @@ describe('computeSuggestions — static surface', () => {
   });
 });
 
+describe('computeSuggestions — file positional (validate)', () => {
+  // Regression: `validate`'s file positional had no completion case at all —
+  // it fell through to the catch-all `return []`, so `marigold validate
+  // <TAB>` suggested nothing.
+  test('lists .tsx files and directories, ignoring other file types', () => {
+    fs.writeFileSync(path.join(tmpDir, 'Button.tsx'), '');
+    fs.writeFileSync(path.join(tmpDir, 'README.md'), '');
+    fs.mkdirSync(path.join(tmpDir, 'src'));
+
+    const out = computeSuggestions(['validate', `${tmpDir}/`]);
+
+    expect(out).toEqual([`${tmpDir}/Button.tsx`, `${tmpDir}/src/`]);
+  });
+
+  test('filters by the partial filename prefix', () => {
+    fs.writeFileSync(path.join(tmpDir, 'Button.tsx'), '');
+    fs.writeFileSync(path.join(tmpDir, 'Badge.tsx'), '');
+
+    const out = computeSuggestions(['validate', `${tmpDir}/But`]);
+
+    expect(out).toEqual([`${tmpDir}/Button.tsx`]);
+  });
+
+  test('returns empty for a nonexistent directory (no throw)', () => {
+    expect(() =>
+      computeSuggestions(['validate', `${tmpDir}/does-not-exist/`])
+    ).not.toThrow();
+    expect(
+      computeSuggestions(['validate', `${tmpDir}/does-not-exist/`])
+    ).toEqual([]);
+  });
+
+  test('does not suggest a second positional once a file is given', () => {
+    expect(
+      computeSuggestions(['validate', `${tmpDir}/Button.tsx`, ''])
+    ).toEqual([]);
+  });
+});
+
 describe('computeSuggestions — manifest-driven', () => {
   test('returns empty when manifest cache is missing (no error)', () => {
     expect(computeSuggestions(['docs', 'Bu'])).toEqual([]);
@@ -298,7 +337,9 @@ describe('runCompletion', () => {
     const r = runCompletion('bash');
 
     expect(r.exitCode).toBe(0);
-    expect(r.output).toContain('complete -F _marigold_complete marigold');
+    expect(r.output).toContain(
+      'complete -o default -F _marigold_complete marigold'
+    );
   });
 
   test('prints the zsh script', () => {
@@ -322,7 +363,13 @@ describe('runCompletion', () => {
 
     expect(r.exitCode).toBe(0);
     expect(r.output).toContain(
-      "complete -c marigold -f -a '(__marigold_complete)'"
+      "complete -c marigold -n 'not __fish_seen_subcommand_from validate' -f -a '(__marigold_complete)'"
+    );
+    // Regression: `validate`'s file positional needs fish's native filename
+    // completion to still apply, which the blanket `-f` (no-files) flag on
+    // the line above would otherwise suppress entirely.
+    expect(r.output).toContain(
+      "complete -c marigold -n '__fish_seen_subcommand_from validate' -a '(__marigold_complete)'"
     );
   });
 

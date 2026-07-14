@@ -74,4 +74,41 @@ describe('validateSectionHeader', () => {
     );
     expect(validateSectionHeader(file)).toEqual([]);
   });
+
+  it('does not flag a local component that shares the Select name', () => {
+    // A project's own <Select> imported from a local module must not be held
+    // to Marigold's required-header rule for `.Section` (regression: this was
+    // a false-positive error on non-Marigold components).
+    const file = tmpFile(
+      'sh-local-select.tsx',
+      `import { Select } from './my-select';
+      const C = () => (
+        <Select label="pick">
+          <Select.Section>
+            <Select.Option id="a">A</Select.Option>
+          </Select.Section>
+        </Select>
+      );`
+    );
+    expect(validateSectionHeader(file)).toEqual([]);
+  });
+
+  it('still flags an aliased Marigold Select.Section without a header', () => {
+    const file = tmpFile(
+      'sh-alias-select.tsx',
+      `import { Select as S } from '@marigold/components';
+      const C = () => (
+        <S label="pick">
+          <S.Section>
+            <S.Option id="a">A</S.Option>
+          </S.Section>
+        </S>
+      );`
+    );
+    const issue = validateSectionHeader(file).find(
+      i => i.component === 'S.Section'
+    );
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
+  });
 });

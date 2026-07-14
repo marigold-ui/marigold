@@ -1,7 +1,10 @@
 import ts from 'typescript';
 import path from 'node:path';
 import { hasAttrPresent, hasSpreadAttribute } from '../helpers/ast.js';
-import { isMarigoldSubComponent } from '../helpers/components.js';
+import {
+  buildMarigoldTagResolver,
+  isMarigoldSubComponent,
+} from '../helpers/components.js';
 import { parseSource } from '../helpers/source.js';
 import type { ValidationIssue } from '../types.js';
 
@@ -66,6 +69,12 @@ export const validateCollectionId = (filePath: string): ValidationIssue[] => {
   const source = parseSource(filePath);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
+  // Only treat a tag as a Marigold component when it is actually imported from
+  // @marigold/components, and honor aliased imports by resolving to the real
+  // name. Mirrors the origin guard the composition checker uses — without it,
+  // a local or third-party `<X.Item>` false-positives, and an aliased Marigold
+  // one is silently skipped.
+  const resolver = buildMarigoldTagResolver(source);
 
   const check = (node: ts.Node): void => {
     if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -77,13 +86,19 @@ export const validateCollectionId = (filePath: string): ValidationIssue[] => {
         const parent = tag.expression.text;
         const sub = tag.name.text;
         const qualified = `${parent}.${sub}`;
+        const originalParent = resolver.get(parent);
+        const originalQualified = originalParent
+          ? `${originalParent}.${sub}`
+          : undefined;
 
         // A spread ({...props}) may carry the id — cannot resolve statically.
         const hasSpread = hasSpreadAttribute(node.attributes);
 
         if (
-          KEYED_COLLECTION_ITEMS.has(qualified) &&
-          isMarigoldSubComponent(parent, sub) &&
+          originalParent !== undefined &&
+          originalQualified !== undefined &&
+          KEYED_COLLECTION_ITEMS.has(originalQualified) &&
+          isMarigoldSubComponent(originalParent, sub) &&
           !hasSpread &&
           !hasAttrPresent(node.attributes, ID_PROP) &&
           !hasAttrPresent(node.attributes, KEY_PROP) &&

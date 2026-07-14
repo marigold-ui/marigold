@@ -36,6 +36,13 @@ export type TriggerSignals = {
   hasPopoverTarget: boolean;
   hasAriaControls: boolean;
   isSummary: boolean;
+  // True only when `aria-describedby` is set AND the referenced id currently
+  // resolves to an element in the live DOM (whether visible or not) — the
+  // WAI-ARIA tooltip pattern where the tooltip is pre-rendered hidden and
+  // toggled visible on hover/focus. Checked as a DOM fact (not inferred) so a
+  // trigger is only ever classified as hover-activated when there is
+  // something concrete to reveal.
+  hasResolvableAriaDescribedBy: boolean;
 };
 
 /**
@@ -69,6 +76,11 @@ export const classifyTrigger = (
   // wired via aria-controls.
   if (s.ariaExpanded === 'false')
     return { kind: 'disclosure', activation: 'press' };
+  // A hover-revealed tooltip/popover: no press-style ARIA state, but
+  // `aria-describedby` resolves to a real (pre-rendered, hidden-until-shown)
+  // element. Checked last so a stronger press-style signal above always wins.
+  if (s.hasResolvableAriaDescribedBy)
+    return { kind: 'popover', activation: 'hover' };
   return null;
 };
 
@@ -146,7 +158,7 @@ const discoverTriggers = (page: Page): Promise<Trigger[]> =>
       // it only forwards the raw signals; the Node side re-derives kind. Here we
       // just collect candidates and their signals.
       const candidates = document.querySelectorAll(
-        '[aria-haspopup], [aria-expanded], [popovertarget], summary, [role="tab"]'
+        '[aria-haspopup], [aria-expanded], [popovertarget], summary, [role="tab"], [aria-describedby]'
       );
       const seen = new Set<string>();
       const out: Array<{
@@ -158,6 +170,7 @@ const discoverTriggers = (page: Page): Promise<Trigger[]> =>
           hasPopoverTarget: boolean;
           hasAriaControls: boolean;
           isSummary: boolean;
+          hasResolvableAriaDescribedBy: boolean;
         };
         controls: string | null;
       }> = [];
@@ -171,6 +184,7 @@ const discoverTriggers = (page: Page): Promise<Trigger[]> =>
         seen.add(selector);
 
         const controlsId = el.getAttribute('aria-controls');
+        const describedById = el.getAttribute('aria-describedby');
         out.push({
           selector,
           signals: {
@@ -180,6 +194,9 @@ const discoverTriggers = (page: Page): Promise<Trigger[]> =>
             hasPopoverTarget: el.hasAttribute('popovertarget'),
             hasAriaControls: Boolean(controlsId),
             isSummary: el.tagName === 'SUMMARY',
+            hasResolvableAriaDescribedBy: Boolean(
+              describedById && document.getElementById(describedById)
+            ),
           },
           controls: controlsId
             ? `#${(window as Window & typeof globalThis).CSS.escape(controlsId)}`

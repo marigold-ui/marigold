@@ -61,6 +61,21 @@ describe('validateAccessibleName', () => {
     expect(findDialog(file)).toBeUndefined();
   });
 
+  it('does not flag a Dialog whose opaque children are wrapped in a fragment', () => {
+    // Regression: `hasOpaqueDynamicChild` used to only recognize a JSX
+    // expression as a DIRECT child, not one wrapped in a fragment
+    // (`<>{children}</>` — an idiomatic pattern), so this false-positived as
+    // "no accessible name".
+    const file = tmpFile(
+      'an-dialog-dynamic-fragment.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = ({ children }: { children: React.ReactNode }) => (
+        <Dialog><>{children}</></Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
   it('finds a Dialog.Title inside an inline render function', () => {
     const file = tmpFile(
       'an-dialog-renderfn.tsx',
@@ -146,5 +161,36 @@ describe('validateAccessibleName', () => {
       const C = () => <Card><p>hi</p></Card>;`
     );
     expect(validateAccessibleName(file)).toEqual([]);
+  });
+
+  it('does not flag a local component that shares the Dialog name', () => {
+    // A project's own <Dialog> imported from a local module must not be
+    // required to carry an accessible name (regression: this was a
+    // false-positive error on non-Marigold overlays).
+    const file = tmpFile(
+      'an-local-dialog.tsx',
+      `import { Dialog } from './my-dialog';
+      const C = () => (
+        <Dialog>
+          <p>bare</p>
+        </Dialog>
+      );`
+    );
+    expect(validateAccessibleName(file)).toEqual([]);
+  });
+
+  it('still flags an aliased Marigold Dialog with no accessible name', () => {
+    const file = tmpFile(
+      'an-alias-dialog.tsx',
+      `import { Dialog as D } from '@marigold/components';
+      const C = () => (
+        <D>
+          <p>bare</p>
+        </D>
+      );`
+    );
+    const issue = validateAccessibleName(file).find(i => i.component === 'D');
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
   });
 });

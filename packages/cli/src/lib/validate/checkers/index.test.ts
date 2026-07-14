@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { emptyCoverage } from '../types.js';
@@ -80,5 +80,35 @@ describe('runTechnicalChecks', () => {
     expect(result.issues.length).toBeLessThan(
       propOnly.length + compilerOnly.length + propOnly.length
     );
+  });
+
+  it("isolates a checker that throws instead of discarding every other checker's findings", async () => {
+    // Regression: previously only the whole runTechnicalChecks call was
+    // guarded, so one checker throwing on an unexpected AST shape silently
+    // wiped out every other checker's results (prop errors, compiler errors,
+    // composition errors, everything) for the file.
+    vi.resetModules();
+    vi.doMock('./table-usage.js', () => ({
+      validateTableUsage: () => {
+        throw new Error('boom');
+      },
+    }));
+    const { runTechnicalChecks: runWithMock } = await import('./index.js');
+
+    const result = runWithMock(fixture('invalid-props.tsx'));
+
+    // The mocked checker's own failure surfaces as a single warning...
+    const failureIssue = result.issues.find(
+      i => i.source === 'table-usage' && i.severity === 'warning'
+    );
+    expect(failureIssue).toBeDefined();
+    expect(failureIssue?.message).toContain('Table usage check failed');
+    expect(failureIssue?.message).toContain('boom');
+    // ...but every other checker's findings (e.g. the file's real prop
+    // errors) still come through unaffected.
+    expect(result.issues.some(i => i.source === 'prop-validator')).toBe(true);
+
+    vi.doUnmock('./table-usage.js');
+    vi.resetModules();
   });
 });

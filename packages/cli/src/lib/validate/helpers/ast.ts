@@ -37,18 +37,31 @@ export const isPascalCase = (name: string): boolean =>
 export const hasSpreadAttribute = (attrs: ts.JsxAttributes): boolean =>
   attrs.properties.some(ts.isJsxSpreadAttribute);
 
+const isOpaqueExpressionChild = (child: ts.JsxChild): boolean =>
+  ts.isJsxExpression(child) &&
+  child.expression !== undefined &&
+  !ts.isArrowFunction(child.expression) &&
+  !ts.isFunctionExpression(child.expression);
+
+// A JSX fragment child (`<>{...}</>`) has no tag of its own to hide the
+// opaque expression behind, so its own children must be checked the same way
+// — recursively, in case of a fragment nested inside a fragment.
+const hasOpaqueChildIn = (children: ts.NodeArray<ts.JsxChild>): boolean =>
+  children.some(
+    child =>
+      isOpaqueExpressionChild(child) ||
+      (ts.isJsxFragment(child) && hasOpaqueChildIn(child.children))
+  );
+
 // A child whose content is an opaque runtime expression — `{children}`,
 // `{renderBody()}`, `{items.map(...)}` — may carry sub-components at runtime, so
 // the absence of a static sub-component is not provable. Inline render functions
-// (`{() => <X.Y/>}`) are NOT opaque: their body is part of the AST.
+// (`{() => <X.Y/>}`) are NOT opaque: their body is part of the AST. A fragment
+// wrapping such an expression (`<>{items.map(...)}</>` — an idiomatic pattern,
+// e.g. inside `<Table>`) is equally opaque, since the fragment itself carries
+// no sub-components.
 export const hasOpaqueDynamicChild = (element: ts.JsxElement): boolean =>
-  element.children.some(
-    child =>
-      ts.isJsxExpression(child) &&
-      child.expression !== undefined &&
-      !ts.isArrowFunction(child.expression) &&
-      !ts.isFunctionExpression(child.expression)
-  );
+  hasOpaqueChildIn(element.children);
 
 const EVENT_TARGET_PROPERTIES = new Set([
   'value',
