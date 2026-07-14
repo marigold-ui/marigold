@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Inbox,
   LayoutDashboard,
+  LifeBuoy,
   Settings,
   Ticket,
   User,
@@ -49,9 +50,9 @@ const meta = preview.meta({
 });
 
 // German-first content — the labels go in verbatim, long compounds and all
-// (Veranstaltungen, Automatisierungen, Wissensdatenbank). The rail is icon-only;
-// these labels surface as tooltips to the right of the icons and as the
-// accessible names, so length no longer constrains the rail.
+// (Veranstaltungen, Automatisierungen, Wissensdatenbank). Rail items show
+// their label under the icon: the rail is sized so "Veranstaltungen" fits on
+// one line, and the extra-long compounds hyphenate onto a second.
 const pages: Record<string, string> = {
   '/uebersicht': 'Übersicht',
   '/tickets/meine': 'Meine Tickets',
@@ -73,6 +74,8 @@ const pages: Record<string, string> = {
   '/einstellungen/team': 'Team',
   '/einstellungen/benachrichtigungen/email': 'E-Mail',
   '/einstellungen/benachrichtigungen/push': 'Push',
+  '/hilfe': 'Hilfe-Center',
+  '/profil': 'Profil',
 };
 
 const RailShell = ({
@@ -205,10 +208,15 @@ const RailShell = ({
                   </Sidebar.Nav>
                 </Sidebar.RailItem>
 
+                {/* Rail items inside the footer render pinned at the bottom of
+                    the rail — same stacked icon + label tile as the list. */}
                 <Sidebar.Footer>
-                  <Button variant="ghost" size="small">
-                    <User size={18} />
-                  </Button>
+                  <Sidebar.RailItem icon={<LifeBuoy />} href="/hilfe">
+                    Hilfe-Center
+                  </Sidebar.RailItem>
+                  <Sidebar.RailItem icon={<User />} href="/profil">
+                    Profil
+                  </Sidebar.RailItem>
                 </Sidebar.Footer>
               </Sidebar.Rail>
             </Sidebar>
@@ -290,20 +298,12 @@ Rail.test(
       within(ticketsNav).getByRole('link', { name: 'Meine Tickets' })
     ).toBeInTheDocument();
 
-    await step(
-      'an icon-only rail item shows its label as a tooltip',
-      async () => {
-        // Keyboard focus (focus-visible) opens the tooltip immediately — the
-        // path that matters most for icon-only items. Synthetic hovers are
-        // ignored by react-aria's modality guard in the headless runner, so the
-        // hover path is not assertable here. The aside precedes the top bar in
-        // the DOM, so the first tab lands on the first rail item ('Übersicht').
-        await userEvent.tab();
-        const tooltip = await waitFor(() => canvas.getByRole('tooltip'));
-        expect(tooltip).toHaveTextContent('Übersicht');
-        await userEvent.keyboard('{Escape}');
-      }
-    );
+    await step('rail items carry a visible label', async () => {
+      // The label under the icon is the accessible name — no tooltip needed.
+      const uebersicht = canvas.getByRole('link', { name: 'Übersicht' });
+      expect(uebersicht).toBeVisible();
+      expect(uebersicht).toHaveTextContent('Übersicht');
+    });
 
     await step('nested item drills the panel in and back out', async () => {
       // Scope to the panel landmark: after navigating, the breadcrumb exposes

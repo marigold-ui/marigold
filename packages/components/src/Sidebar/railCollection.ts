@@ -1,4 +1,4 @@
-import { Children, createElement, isValidElement } from 'react';
+import { Children, cloneElement, createElement, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import { SidebarItem } from './SidebarItem';
 import type { SidebarNavProps } from './SidebarNav';
@@ -38,6 +38,11 @@ export interface SidebarRailNode {
   panelTitle?: string;
   /** Section leaves (original keys) used to resolve the active ancestor. */
   leaves: { key: string; href?: string }[];
+  /**
+   * True for a `Sidebar.RailItem` declared inside `Sidebar.Footer`: rendered
+   * pinned at the bottom of the rail (same tile, same behavior).
+   */
+  inFooter?: boolean;
 }
 
 export interface SidebarRailCollection {
@@ -96,6 +101,10 @@ const separateRailChildren = (
  * slots plus one node per `Sidebar.RailItem`. Each section's nested nav is built
  * once to resolve its landing href and its leaves for active-state matching; the
  * nav element itself is kept and rendered as-is in the panel.
+ *
+ * `Sidebar.RailItem`s inside `Sidebar.Footer` become regular nodes flagged
+ * `inFooter` — same tile, same matching/selection, just pinned to the bottom of
+ * the rail. Any other footer content stays in the raw `footer` slot.
  */
 export const buildRailCollection = (
   children: ReactNode
@@ -105,17 +114,10 @@ export const buildRailCollection = (
   const nodes: SidebarRailNode[] = [];
   let counter = 0;
 
-  for (const child of Children.toArray(children)) {
-    if (isSidebarHeader(child)) {
-      header = child;
-      continue;
-    }
-    if (isSidebarFooter(child)) {
-      footer = child;
-      continue;
-    }
-    if (!isSidebarRailItem(child)) continue;
-
+  const buildNode = (
+    child: ReactElement<SidebarRailItemProps>,
+    inFooter?: boolean
+  ): SidebarRailNode => {
     const { nav, label } = separateRailChildren(child.props.children);
     const key = child.props.id || `rail-${counter++}`;
     const textValue = child.props.textValue || extractTextValue(label);
@@ -134,7 +136,7 @@ export const buildRailCollection = (
       panelTitle = nav.props['aria-label'] || textValue;
     }
 
-    nodes.push({
+    return {
       type: 'railItem',
       key,
       textValue,
@@ -147,7 +149,33 @@ export const buildRailCollection = (
       nav,
       panelTitle,
       leaves,
-    });
+      inFooter,
+    };
+  };
+
+  for (const child of Children.toArray(children)) {
+    if (isSidebarHeader(child)) {
+      header = child;
+      continue;
+    }
+    if (isSidebarFooter(child)) {
+      // Pull rail items out of the footer into first-class (pinned) nodes;
+      // whatever else the footer holds keeps rendering as the raw slot.
+      const footerKids = Children.toArray(
+        (child.props as { children?: ReactNode }).children
+      );
+      for (const kid of footerKids) {
+        if (isSidebarRailItem(kid)) nodes.push(buildNode(kid, true));
+      }
+      const rest = footerKids.filter(kid => !isSidebarRailItem(kid));
+      footer = rest.length
+        ? cloneElement(child, undefined, ...rest)
+        : undefined;
+      continue;
+    }
+    if (!isSidebarRailItem(child)) continue;
+
+    nodes.push(buildNode(child));
   }
 
   return { nodes, header, footer };

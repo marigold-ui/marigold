@@ -166,11 +166,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: ['flex flex-col min-h-0', 'border-r border-border'],
   }),
   // Hosts the rail-variant toggle at the far left of the top bar, sized to the
-  // rail column (w-14) so the toggle sits exactly above the rail icons. -ml-3
-  // cancels the TopNavigation container's px-3 so the slot starts flush at the
-  // viewport edge and its `border-r` lands at 3.5rem — continuing the rail
-  // column's divider up through the header. self-stretch (not h-full) so it
-  // spans the bar even though the container only has a min-height.
+  // rail column (w-26 = 6.5rem) so the toggle sits exactly above the rail
+  // items. -ml-3 cancels the TopNavigation container's px-3 so the slot starts
+  // flush at the viewport edge and its `border-r` lands at 6.5rem — continuing
+  // the rail column's divider up through the header. self-stretch (not h-full)
+  // so it spans the bar even though the container only has a min-height.
   //
   // The `after` strip masks the top bar's own `border-b` across the slot width
   // (a 1px `background` line sitting exactly on it), so the header divider
@@ -180,7 +180,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // vertical dividers meet in a clean corner.
   railToggleSlot: cva({
     base: [
-      'relative flex items-center justify-center w-14 shrink-0 self-stretch -ml-3',
+      'relative flex items-center justify-center w-26 shrink-0 self-stretch -ml-3',
       'border-r border-border',
       'after:absolute after:inset-x-0 after:top-full after:h-px after:bg-background',
     ],
@@ -211,21 +211,32 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto py-1.5 ui-scrollbar',
     ],
   }),
-  // Icon-only square tile, centered in the rail column; the label lives in a
-  // tooltip to the right of the icon (`aria-label` carries the name).
+  // Stacked tile: icon above a visible label, centered in the rail column.
+  // The 6.5rem rail (see the grid in SidebarRail) leaves the label 92px
+  // (6.5rem − mx-1 − px-0.5), sized so "Veranstaltungen" (87px at 11px medium)
+  // fits on one line; rarer, longer compounds (Automatisierungen) hyphenate
+  // onto a second line instead of truncating — the label is the accessible
+  // name, so it must stay readable.
   railItem: cva({
     base: [
-      'flex items-center justify-center size-10 mx-auto rounded-surface',
-      'text-secondary cursor-pointer',
+      'flex flex-col items-center justify-center gap-1 mx-1 px-0.5 py-2 rounded-surface',
+      'text-secondary text-center cursor-pointer',
       'transition-[color,background-color] motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
       'hover:bg-hover hover:text-foreground',
       // Active section/link: same flat `selected` pill as a nav row.
       'data-active:bg-selected data-active:text-foreground',
-      '[&_svg]:size-5',
+      '[&_svg]:size-5 [&_svg]:shrink-0',
+      // The label: same size as the panel's group captions, medium so it holds
+      // its own under the icon. hyphens-auto needs a `lang` on the document.
+      '[&>span]:max-w-full [&>span]:text-[0.6875rem] [&>span]:font-medium',
+      '[&>span]:leading-tight [&>span]:break-words [&>span]:hyphens-auto',
     ],
   }),
-  railFooter: cva({ base: ['shrink-0 flex justify-center py-2'] }),
+  // Pinned below the scrolling rail list. Hosts rail items (stacked tiles,
+  // same as the list — they carry their own mx/px), mirroring the list's
+  // vertical rhythm.
+  railFooter: cva({ base: ['shrink-0 flex flex-col gap-0.5 py-1.5'] }),
   // The section panel beside the rail. Its right hairline is the sidebar's
   // right edge (dividing nav from content) — the rail column owns the
   // rail/panel divider, so the panel only draws its outer edge. Dropped while

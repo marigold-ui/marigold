@@ -11,9 +11,9 @@ export interface SidebarRailItemProps {
   /** Unique key for the rail item. Needed to address a section; auto-generated if omitted. */
   id?: string;
   /**
-   * Full accessible name for the item (tooltip + `aria-label`). Auto-extracted
-   * from string children if omitted — set it explicitly when the label is not
-   * plain text.
+   * The rail label, shown under the icon (also the accessible name).
+   * Auto-extracted from string children if omitted — set it explicitly when
+   * the label is not plain text.
    */
   textValue?: string;
   /**

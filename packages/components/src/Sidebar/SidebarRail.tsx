@@ -1,6 +1,5 @@
 import { cloneElement, useEffect, useLayoutEffect, useRef } from 'react';
 import type { ReactElement, ReactNode, Ref } from 'react';
-import { Focusable } from 'react-aria-components/Focusable';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
 import {
@@ -10,7 +9,6 @@ import {
   useRouter,
 } from '@react-aria/utils';
 import { cn } from '@marigold/system';
-import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarModal } from './SidebarModal';
@@ -23,10 +21,12 @@ import { useSidebarRailState } from './useSidebarRailState';
 
 export interface SidebarRailProps {
   /**
-   * The rail contents: `Sidebar.RailItem`s and `Sidebar.Footer` (user/avatar),
-   * optionally a `Sidebar.Header` shown in the mobile drawer (on desktop the
-   * brand lives in the top bar). A `RailItem` wrapping a `Sidebar.Nav` is a
-   * section (shows a panel); one with only an `href` is a direct link.
+   * The rail contents: `Sidebar.RailItem`s, optionally a `Sidebar.Footer`
+   * whose rail items render pinned at the bottom of the rail (same tile, e.g.
+   * a help center), and optionally a `Sidebar.Header` shown in the mobile
+   * drawer (on desktop the brand lives in the top bar). A `RailItem` wrapping
+   * a `Sidebar.Nav` is a section (shows a panel); one with only an `href` is a
+   * direct link.
    */
   children?: ReactNode;
   /** Accessible label for the rail landmark. Defaults to a localized "Primary navigation". */
@@ -52,8 +52,8 @@ interface RailItemLinkProps {
 
 /**
  * A single rail destination: a plain, always-tabbable link (the rail is a flat
- * list, unlike the panel's roving tree). Icon-only — the label lives in a
- * tooltip to the right, so `aria-label` carries the accessible name.
+ * list, unlike the panel's roving tree). The icon sits above a visible label,
+ * which is also the accessible name.
  */
 const RailItemLink = ({
   node,
@@ -72,34 +72,29 @@ const RailItemLink = ({
   const ariaCurrent = matched ? (node.isSection ? 'true' : 'page') : undefined;
 
   return (
-    <Tooltip.Trigger delay={600}>
-      <Focusable>
-        <a
-          {...routerLinkProps}
-          ref={ref}
-          href={node.href}
-          role={node.href ? undefined : 'button'}
-          aria-label={node.textValue}
-          aria-current={ariaCurrent}
-          data-active={selected || undefined}
-          className={className}
-          onClick={e => {
-            const shouldNavigate = onActivate();
-            node.onPress?.();
-            // Re-clicking the active section only toggles the panel — don't let
-            // the anchor navigate away from a deeper page the user is already on.
-            if (shouldNavigate) {
-              handleLinkClick(e, router, node.href, undefined);
-            } else {
-              e.preventDefault();
-            }
-          }}
-        >
-          {node.icon}
-        </a>
-      </Focusable>
-      <Tooltip placement="right">{node.textValue}</Tooltip>
-    </Tooltip.Trigger>
+    <a
+      {...routerLinkProps}
+      ref={ref}
+      href={node.href}
+      role={node.href ? undefined : 'button'}
+      aria-current={ariaCurrent}
+      data-active={selected || undefined}
+      className={className}
+      onClick={e => {
+        const shouldNavigate = onActivate();
+        node.onPress?.();
+        // Re-clicking the active section only toggles the panel — don't let
+        // the anchor navigate away from a deeper page the user is already on.
+        if (shouldNavigate) {
+          handleLinkClick(e, router, node.href, undefined);
+        } else {
+          e.preventDefault();
+        }
+      }}
+    >
+      {node.icon}
+      <span>{node.textValue}</span>
+    </a>
   );
 };
 
@@ -145,6 +140,8 @@ const SidebarRail = ({
   const focusPendingRef = useRef(false);
 
   const hasPanel = (selectedNode?.isSection ?? false) && state === 'expanded';
+
+  const footerNodes = nodes.filter(node => node.inFooter);
 
   useLayoutEffect(() => {
     if (!focusPendingRef.current || !hasPanel) return;
@@ -199,7 +196,7 @@ const SidebarRail = ({
         data-panel={hasPanel ? 'expanded' : 'collapsed'}
         className={cn(
           'grid h-full',
-          'grid-cols-[3.5rem_15.5rem] data-[panel=collapsed]:grid-cols-[3.5rem_0rem]',
+          'grid-cols-[6.5rem_15.5rem] data-[panel=collapsed]:grid-cols-[6.5rem_0rem]',
           'transition-[grid-template-columns] duration-200 ease-in-out',
           'motion-reduce:transition-none'
         )}
@@ -213,19 +210,36 @@ const SidebarRail = ({
             className="flex min-h-0 flex-1 flex-col overflow-hidden"
           >
             <div className={classNames.rail}>
-              {nodes.map(node => (
-                <RailItemLink
-                  key={node.key}
-                  node={node}
-                  selected={selectedKey === node.key}
-                  matched={matchedKey === node.key}
-                  onActivate={() => activateRail(node)}
-                  className={classNames.railItem}
-                />
-              ))}
+              {nodes
+                .filter(node => !node.inFooter)
+                .map(node => (
+                  <RailItemLink
+                    key={node.key}
+                    node={node}
+                    selected={selectedKey === node.key}
+                    matched={matchedKey === node.key}
+                    onActivate={() => activateRail(node)}
+                    className={classNames.railItem}
+                  />
+                ))}
             </div>
-            {footer ? (
-              <div className={classNames.railFooter}>{footer}</div>
+            {/* Pinned below the scrolling list: rail items declared inside
+                Sidebar.Footer (same tile, same behavior) plus any raw footer
+                content. */}
+            {footerNodes.length > 0 || footer ? (
+              <div className={classNames.railFooter}>
+                {footerNodes.map(node => (
+                  <RailItemLink
+                    key={node.key}
+                    node={node}
+                    selected={selectedKey === node.key}
+                    matched={matchedKey === node.key}
+                    onActivate={() => activateRail(node)}
+                    className={classNames.railItem}
+                  />
+                ))}
+                {footer}
+              </div>
             ) : null}
           </nav>
         </div>
