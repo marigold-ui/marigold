@@ -4,6 +4,7 @@ import {
   ActionBar,
   ActionMenu,
   Button,
+  Divider,
   Inline,
   ProgressCircle,
   Text,
@@ -67,11 +68,7 @@ export const BulkActionBar = () => {
             <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
             <ActionMenu.Item id="remind">Send reminders</ActionMenu.Item>
           </ActionMenu>
-          <div
-            role="separator"
-            aria-orientation="vertical"
-            className="mx-1 w-px self-stretch bg-current/20"
-          />
+          <Divider orientation="vertical" />
           <Button
             disabled={actions.busy}
             onPress={() => actions.deleteEvents(affected)}

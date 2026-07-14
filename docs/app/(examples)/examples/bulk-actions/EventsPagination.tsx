@@ -1,9 +1,9 @@
 'use client';
 
-import { Pagination, Text } from '@marigold/components';
+import { Inline, Pagination, Text } from '@marigold/components';
 import { EVENTS_REGION_ID } from './EventsTable';
 import { useEvents } from './hooks/useEvents';
-import { usePagination } from './hooks/usePagination';
+import { usePagination } from './hooks/useEventsParams';
 
 export const EventsPagination = () => {
   const { safePage, pageSize, totalItems, totalPages } = useEvents();
@@ -29,7 +29,7 @@ export const EventsPagination = () => {
   const to = Math.min(safePage * pageSize, totalItems);
 
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+    <Inline alignX="between" alignY="center" space={6}>
       <Text variant="muted" fontSize="sm">
         Showing {from}–{to} of {totalItems}
       </Text>
@@ -40,7 +40,6 @@ export const EventsPagination = () => {
         pageSize={pageSize}
         onChange={onPageChange}
       />
-      <div />
-    </div>
+    </Inline>
   );
 };

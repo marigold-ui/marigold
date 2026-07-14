@@ -14,9 +14,8 @@ import {
 import { NumericFormat } from '@marigold/system';
 import { BulkActionBar } from './BulkActionBar';
 import { useEvents } from './hooks/useEvents';
-import { useSearch } from './hooks/useSearch';
+import { useSearch, useStatusFilter } from './hooks/useEventsParams';
 import { useSelection } from './hooks/useSelection';
-import { useStatusFilter } from './hooks/useStatusFilter';
 
 // Anchor that EventsPagination scrolls back to so users land on the first
 // row of the new page.

@@ -37,6 +37,33 @@ export const useBulkActions = () => {
   const onError = (title: string) => () =>
     addToast({ title, description: 'Please try again.', variant: 'error' });
 
+  // Report a finished bulk action the way the pattern prescribes. On full
+  // success, toast the count and clear the selection. On partial failure,
+  // keep exactly the failed records selected as the retry list and name the
+  // reason the server returned. Every action funnels through here, so the
+  // partial-failure behavior stays identical no matter which one triggered it
+  // (only `publish` can actually fail in this demo).
+  const report = (verb: string, total: number, result: BulkResult) => {
+    if (result.failed.length === 0) {
+      addToast({
+        title: `${scope(result.succeeded.length)} ${verb}`,
+        variant: 'success',
+      });
+      clearSelection();
+      return;
+    }
+
+    const reason = result.failed[0].reason.toLowerCase();
+    addToast({
+      title: `${result.succeeded.length} of ${total} events ${verb}`,
+      description: `${result.failed.length} failed: ${reason}. ${
+        result.failed.length === 1 ? 'It remains' : 'They remain'
+      } selected for retry.`,
+      variant: 'warning',
+    });
+    setSelected(new Set(result.failed.map(failure => failure.id)));
+  };
+
   // Publish is the direct action with the deterministic failure path: the
   // server rejects events without a venue, per record.
   const publishMutation = useMutation<BulkResult, Error, Event[]>({
@@ -44,24 +71,7 @@ export const useBulkActions = () => {
       bulkEvents({ action: 'publish', ids: events.map(e => e.id), session }),
     onSuccess: (result, events) => {
       applyOverride(result.succeeded, { status: 'On sale' });
-
-      if (result.failed.length === 0) {
-        addToast({
-          title: `${scope(result.succeeded.length)} published`,
-          variant: 'success',
-        });
-        clearSelection();
-        return;
-      }
-
-      addToast({
-        title: `${result.succeeded.length} of ${events.length} events published`,
-        description: `${result.failed.length} failed: no venue assigned. ${
-          result.failed.length === 1 ? 'It remains' : 'They remain'
-        } selected — assign a venue via Edit and retry.`,
-        variant: 'warning',
-      });
-      setSelected(new Set(result.failed.map(failure => failure.id)));
+      report('published', events.length, result);
     },
     onError: onError('Could not publish events'),
   });
@@ -69,13 +79,9 @@ export const useBulkActions = () => {
   const archiveMutation = useMutation<BulkResult, Error, Event[]>({
     mutationFn: events =>
       bulkEvents({ action: 'archive', ids: events.map(e => e.id), session }),
-    onSuccess: result => {
+    onSuccess: (result, events) => {
       applyOverride(result.succeeded, { status: 'Archived' });
-      addToast({
-        title: `${scope(result.succeeded.length)} archived`,
-        variant: 'success',
-      });
-      clearSelection();
+      report('archived', events.length, result);
     },
     onError: onError('Could not archive events'),
   });
@@ -92,13 +98,9 @@ export const useBulkActions = () => {
         changes,
         session,
       }),
-    onSuccess: (result, { changes }) => {
+    onSuccess: (result, { events, changes }) => {
       applyOverride(result.succeeded, changes);
-      addToast({
-        title: `${scope(result.succeeded.length)} updated`,
-        variant: 'success',
-      });
-      clearSelection();
+      report('updated', events.length, result);
     },
     onError: onError('Could not update events'),
   });
@@ -106,13 +108,9 @@ export const useBulkActions = () => {
   const deleteMutation = useMutation<BulkResult, Error, Event[]>({
     mutationFn: events =>
       bulkEvents({ action: 'delete', ids: events.map(e => e.id), session }),
-    onSuccess: result => {
+    onSuccess: (result, events) => {
       markDeleted(result.succeeded);
-      addToast({
-        title: `${scope(result.succeeded.length)} deleted`,
-        variant: 'success',
-      });
-      clearSelection();
+      report('deleted', events.length, result);
     },
     onError: onError('Could not delete events'),
   });

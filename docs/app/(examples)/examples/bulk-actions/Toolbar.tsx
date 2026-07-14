@@ -3,10 +3,9 @@
 import { type EventStatus, eventStatuses } from '@/lib/data/events';
 import { Button, Inline, SearchField, Select } from '@marigold/components';
 import { FetchingIndicator } from './FetchingIndicator';
-import { useSearch } from './hooks/useSearch';
+import { useSearch, useStatusFilter } from './hooks/useEventsParams';
 import { useSelection } from './hooks/useSelection';
 import { useSession } from './hooks/useSession';
-import { useStatusFilter } from './hooks/useStatusFilter';
 
 export const Toolbar = () => {
   const [search, setSearch] = useSearch();

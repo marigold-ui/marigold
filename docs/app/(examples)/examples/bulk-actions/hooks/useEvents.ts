@@ -3,10 +3,8 @@ import { DEFAULT_PAGE_SIZE } from '@/lib/data/events-query';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchEvents } from './eventsApi';
 import { eventKeys } from './queryKeys';
-import { usePagination } from './usePagination';
-import { useSearch } from './useSearch';
+import { usePagination, useSearch, useStatusFilter } from './useEventsParams';
 import { useSession } from './useSession';
-import { useStatusFilter } from './useStatusFilter';
 
 // Encapsulates the events list query. Components call `useEvents()` and stay
 // presentational — they never see fetch, query keys, or URL parsing. The
