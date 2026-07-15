@@ -54,7 +54,9 @@ The item variants apply to `<Menu.Item>`, not to the trigger. See the [Admin- an
 
 ## Usage
 
-A menu keeps secondary or advanced actions out of the way until a user asks for them, which keeps the surrounding interface calm. Every item is a single command: the user picks one, it runs, and the menu closes.
+A menu keeps secondary or advanced actions out of the way until a user asks for them, which keeps the surrounding interface calm. Every item is a single command, so the user picks one, it runs, and the menu closes. Give the `<Menu>` an `onAction` handler and each `<Menu.Item>` an `id` so you can tell which command was chosen.
+
+<ComponentDemo name="menu-action" />
 
 Order items by how often they are used, put the most common ones first, and keep labels short and free of filler verbs.
 
@@ -92,12 +94,6 @@ Ask whether the choice does something now or stores a value for later. If it act
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-### Commands and actions
-
-The most common menu is a short list of actions that each run on selection. Give the `<Menu>` an `onAction` handler and each `<Menu.Item>` an `id`, so you can tell which command was chosen.
-
-<ComponentDemo name="menu-action" />
 
 ### Grouping related items
 
