@@ -14,6 +14,7 @@ import {
   UserRoundPlus,
 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
+import { Accordion } from '../Accordion/Accordion';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
@@ -707,6 +708,72 @@ export const TableInside = meta.story(() => (
         </Table>
       </Panel.Content>
     </Panel>
+  </Stack>
+));
+
+export const AccordionInside = meta.story(() => (
+  <Stack space="regular">
+    <Panel>
+      <Panel.Header>
+        <Title>Prop values</Title>
+        <Description>
+          Accordion in a bled Panel: dividers reach the edge, header and content
+          stay aligned with the title.
+        </Description>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <Accordion defaultExpandedKeys={['variant']}>
+          <Accordion.Item id="variant">
+            <Accordion.Header>
+              <Inline space={2} alignY="center">
+                <Text>variant</Text>
+                <Badge>3</Badge>
+              </Inline>
+            </Accordion.Header>
+            <Accordion.Content>
+              <Stack space={2}>
+                <Inline alignX="between">
+                  <Text fontSize="sm">primary</Text>
+                  <Text fontSize="sm" color="secondary">
+                    63%
+                  </Text>
+                </Inline>
+                <Inline alignX="between">
+                  <Text fontSize="sm">secondary</Text>
+                  <Text fontSize="sm" color="secondary">
+                    27%
+                  </Text>
+                </Inline>
+              </Stack>
+            </Accordion.Content>
+          </Accordion.Item>
+          <Accordion.Item id="size">
+            <Accordion.Header>
+              <Inline space={2} alignY="center">
+                <Text>size</Text>
+                <Badge>2</Badge>
+              </Inline>
+            </Accordion.Header>
+            <Accordion.Content>
+              <Text fontSize="sm">default, small</Text>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion>
+      </Panel.Content>
+    </Panel>
+
+    <Accordion aria-label="Standalone accordion" defaultExpandedKeys={['a']}>
+      <Accordion.Item id="a">
+        <Accordion.Header>Standalone (unchanged)</Accordion.Header>
+        <Accordion.Content>
+          Outside a Panel the header and content have no horizontal indent.
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item id="b">
+        <Accordion.Header>Second item</Accordion.Header>
+        <Accordion.Content>Still flush to the edge.</Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
   </Stack>
 ));
 

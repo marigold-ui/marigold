@@ -43,7 +43,13 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<
-      'container' | 'item' | 'header' | 'panel' | 'content' | 'icon',
+      | 'container'
+      | 'item'
+      | 'header'
+      | 'panel'
+      | 'content'
+      | 'icon'
+      | 'actions',
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
@@ -215,6 +221,7 @@ export type Theme = {
       | 'head'
       | 'column'
       | 'body'
+      | 'footer'
       | 'row'
       | 'cell'
       | 'dragHandle'
@@ -232,7 +239,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
+      'container' | 'tag' | 'listItems' | 'closeButton',
       ComponentStyleFunction<string, string>
     >;
     TagField?: Record<

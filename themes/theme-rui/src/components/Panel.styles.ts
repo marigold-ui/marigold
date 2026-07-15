@@ -3,7 +3,7 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const Panel: ThemeComponent<'Panel'> = {
   root: cva({
-    base: 'rounded-surface shadow-elevation-raised [--panel-accent:currentColor]',
+    base: 'rounded-surface [--panel-accent:currentColor]',
     variants: {
       variant: {
         default: 'ui-surface',

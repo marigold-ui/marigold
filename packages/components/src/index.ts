@@ -276,6 +276,7 @@ export type {
   TableRowProps,
   TableCellProps,
   TableEditableCellProps,
+  TableFooterProps,
   TableDropIndicatorProps,
   TableDragPreviewProps,
 } from './Table/Table';

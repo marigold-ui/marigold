@@ -11,7 +11,7 @@ import {
   DontNestedMockup,
 } from './card-usage-guidelines';
 
-A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, content, actions) into a single, self-contained unit and sets it apart from the page through elevation or tinting.
+A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, content, actions) into a single, self-contained unit and sets it apart from the page through fill or tinting: a white card sits on the gray page background with a quiet rim, not a drop shadow.
 
 `<Card>` renders an `<article>` landmark. When a `<Title>` is present, the card is automatically labelled by it via `aria-labelledby`. Otherwise pass `aria-label` to give the card an accessible name.
 
@@ -28,17 +28,17 @@ The card component is a compound component made up of several sub-components tha
 
 ## Appearance
 
-<AppearanceDemo component={'Card'} />
+<AppearanceDemo component={'Card'} background="page" />
 
 <AppearanceTable component={'Card'} />
 
 The card component supports variants for general content grouping as well as access-level marking.
 
-| Variant   | Description                                                      | When to use                                                                                      |
-| --------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `default` | Standard card with a raised shadow. This is the default variant. | General-purpose content grouping like articles, profiles, or summaries.                          |
-| `admin`   | Card with admin-specific border and background tint.             | Grouping content visible only to admin users. [Learn more.](/patterns/layout/admin-master-mark)  |
-| `master`  | Card with master-specific border and background tint.            | Grouping content visible only to master users. [Learn more.](/patterns/layout/admin-master-mark) |
+| Variant   | Description                                                                                                                             | When to use                                                                                      |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `default` | Standard card — set off from the gray page by its lighter fill and a subtle rim rather than a drop shadow. This is the default variant. | General-purpose content grouping like articles, profiles, or summaries.                          |
+| `admin`   | Card with admin-specific border and background tint.                                                                                    | Grouping content visible only to admin users. [Learn more.](/patterns/layout/admin-master-mark)  |
+| `master`  | Card with master-specific border and background tint.                                                                                   | Grouping content visible only to master users. [Learn more.](/patterns/layout/admin-master-mark) |
 
 ## Usage
 
