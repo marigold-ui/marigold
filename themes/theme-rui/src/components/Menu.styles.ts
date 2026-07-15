@@ -14,6 +14,8 @@ export const Menu: ThemeComponent<'Menu'> = {
       // renders flat inside it.
       'w-full',
       'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto space-y-px',
+      // Breathing room around dividers (Menu.Divider is the shared <Divider>).
+      '[&_[role=separator]]:my-1',
     ],
   }),
   // Grid: col 1 = icon/checkmark, col 2 = label/description, col 3 = keyboard.

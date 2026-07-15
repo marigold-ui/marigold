@@ -569,3 +569,29 @@ WithIconsAndShortcuts.test(
     expect(canvas.getByText('⌘C')).toBeVisible();
   }
 );
+
+export const WithDividers = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Menu {...args} label="Options">
+      <Menu.Item id="new">New file</Menu.Item>
+      <Menu.Item id="open">Open</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item id="share">Share</Menu.Item>
+      <Menu.Item id="rename">Rename</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item id="delete" variant="destructive">
+        Delete
+      </Menu.Item>
+    </Menu>
+  ),
+});
+
+WithDividers.test(
+  'Separates item groups with role="separator"',
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Options' }));
+
+    expect(canvas.getAllByRole('separator')).toHaveLength(2);
+  }
+);

@@ -5,6 +5,7 @@ import { useContextProps } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
+import { Divider } from '../Divider/Divider';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
 import { Tray } from '../Tray/Tray';
@@ -157,5 +158,6 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
 
 _ActionMenu.Item = MenuItem;
 _ActionMenu.Section = MenuSection;
+_ActionMenu.Divider = Divider;
 
 export { _ActionMenu as ActionMenu };
