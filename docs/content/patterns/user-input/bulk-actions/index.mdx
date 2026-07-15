@@ -181,7 +181,7 @@ The [`<Table>`](/components/collection/table) selection column and the [`<Action
 
 The demos above apply a few practices that are easy to miss but make the difference between a bulk flow that feels dependable and one that surprises users.
 
-### Derive the acted-on set once
+### Resolve the selection to records once
 
 The Table's `actionBar` render prop and `onSelectionChange` hand you a `Selection`, which is either a `Set` of keys or the string `'all'` when the select-all checkbox is used. Resolve it to a concrete list of records in one place before acting, so counts, confirmation messages, and the operation itself always agree:
 
