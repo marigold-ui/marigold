@@ -35,13 +35,12 @@ const statusLabels: Record<string, string> = {
 
 export default () => {
   const [open, setOpen] = useState(false);
-  // The applied filter is the single source of truth. The panel edits a draft
-  // copy and only commits it on Apply (the batched model).
+  // The panel edits a draft and only commits it to `applied` on Apply.
   const [applied, setApplied] = useState<Filter>(noFilter);
   const [draft, setDraft] = useState<Filter>(noFilter);
 
   const onOpenChange = (isOpen: boolean) => {
-    // The panel always opens with the currently applied state.
+    // The panel always opens with the applied state.
     if (isOpen) {
       setDraft(applied);
     }
@@ -78,7 +77,7 @@ export default () => {
 
   return (
     <Stack space={4}>
-      {/* Filter bar: a plain layout composition, deliberately not a toolbar widget */}
+      {/* Filter bar: a plain layout composition, not a toolbar widget */}
       <Inline space="related" alignY="input">
         <SearchField
           aria-label="Search events"
@@ -126,7 +125,7 @@ export default () => {
         </Drawer.Trigger>
       </Inline>
 
-      {/* Applied filter summary: rendered only while filters are active */}
+      {/* Rendered only while filters are active */}
       {tags.length > 0 && (
         <Tag.Group label="Applied Filters" onRemove={removeTags} removeAll>
           {tags.map(tag => (

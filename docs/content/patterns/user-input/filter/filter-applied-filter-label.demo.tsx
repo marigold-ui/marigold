@@ -1,8 +1,6 @@
 import { DateFormat, Tag } from '@marigold/components';
 
-// Fixed dates and per-date formatting keep the demo deterministic. A range
-// (formatRange) hydrates differently because its separator characters vary
-// between the server's and the browser's ICU version.
+// Fixed dates and per-date formatting keep server and client output identical.
 const start = new Date(2026, 7, 3);
 const end = new Date(2026, 7, 9);
 
