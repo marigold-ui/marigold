@@ -144,6 +144,7 @@ export type Theme = {
       'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
+    Keyboard?: ComponentStyleFunction<string, string>;
     Label?: ComponentStyleFunction<string, string>;
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;

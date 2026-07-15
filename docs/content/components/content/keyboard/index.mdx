@@ -4,7 +4,7 @@ description: A hint that shows the keyboard shortcut for an action.
 badge: beta
 ---
 
-The `<Keyboard>` component renders a keyboard-shortcut hint, such as ⌘C, as a `<kbd>` element. Place it inside a `<Menu.Item>` to show the shortcut that runs that command.
+The `<Keyboard>` component renders a keyboard-shortcut hint, such as ⌘K, as a `<kbd>` element. Use it to surface the shortcut for an action, inside a `<Menu.Item>` or anywhere you reference a key, such as help text, an empty state, or a tooltip.
 
 import { KeyboardAnatomy } from './keyboard-anatomy';
 
@@ -16,17 +16,23 @@ A keyboard hint is a single `<kbd>` element with no parts of its own.
 
 ## Appearance
 
-`<Keyboard>` carries no styling of its own. Its appearance comes from the surrounding item, which keeps shortcut hints consistent across every menu. Inside a `<Menu.Item>` it renders muted and right-aligned in the item's trailing column.
+By default `<Keyboard>` renders as a small key-cap. When it sits inside a container that styles shortcut hints, such as a `<Menu.Item>`, it adopts that container's treatment instead. In a menu the hint is a flat, muted label aligned to the right, which keeps it quiet next to the command rather than competing with it.
 
-Styling is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
+This adaptation is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
 
 ## Usage
 
-Reach for `<Keyboard>` when an action has a keyboard shortcut worth teaching. The hint helps people discover the shortcut and rewards repeat use, without changing what the action does.
+Reach for `<Keyboard>` when an action has a keyboard shortcut worth surfacing. The hint helps people discover the shortcut and rewards repeat use, without changing what the action does.
+
+### On its own
+
+Use `<Keyboard>` inline wherever you reference a shortcut, such as help text, an empty state, or a tooltip. On its own it renders as a key-cap.
+
+<ComponentDemo name="keyboard-standalone" />
 
 ### Inside a menu item
 
-Add `<Keyboard>` after the item's label to show its shortcut. Set `textValue` on the `<Menu.Item>` so type-ahead matches the label and ignores the shortcut text.
+Add `<Keyboard>` after a `<Menu.Item>` label to show the command's shortcut. In a menu it renders as a flat, muted hint aligned to the right. Set `textValue` on the item so type-ahead matches the label and ignores the shortcut text.
 
 <ComponentDemo name="keyboard-in-menu-item" />
 
@@ -46,7 +52,7 @@ Add `<Keyboard>` after the item's label to show its shortcut. Set `textValue` on
 
 ## Accessibility
 
-`<Keyboard>` renders as a `<kbd>` element. Inside a `<Menu.Item>` it is wired to the item's accessible description automatically, so a screen reader announces the command's label first and the shortcut after, with no manual `aria` attributes.
+`<Keyboard>` renders as a `<kbd>` element, the semantic markup for keyboard input. Inside a `<Menu.Item>` it is wired to the item's accessible description automatically, so a screen reader announces the command's label first and the shortcut after, with no manual `aria` attributes.
 
 The hint is a convenience for sighted users. It does not register the key binding, so make sure the shortcut it shows is actually handled by your application.
 
