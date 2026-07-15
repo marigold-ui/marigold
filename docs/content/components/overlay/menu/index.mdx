@@ -139,11 +139,11 @@ Most menu items run the moment they are chosen, but some should pause first. Whe
 
 For irreversible actions, such as deleting a record or removing a member, do two things together. Mark the item with the `destructive` variant so its risk reads at a glance in the list, and open a confirmation dialog before the action runs so a mis-click cannot cause data loss. The variant is the warning and the dialog is the safeguard. The heavier the consequence, the more the confirmation should ask of the user, from a simple confirm button up to typing the name of the thing being deleted.
 
-<ComponentDemo name="menu-destructive" />
-
 Other actions are not dangerous but still need details before they can run, such as renaming an item or adding a label. Here the dialog collects that input and applies the change when the user confirms. It also keeps the menu short, since the item is only the entry point and the form lives in the dialog.
 
-<ComponentDemo name="menu-open-dialog" />
+The menu below opens a dialog both ways: "Rename" collects input, and "Delete" asks for confirmation.
+
+<ComponentDemo name="menu-dialog" />
 
 ### Disabled items
 
