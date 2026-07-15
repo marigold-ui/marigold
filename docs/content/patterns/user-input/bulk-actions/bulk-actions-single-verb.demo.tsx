@@ -59,6 +59,8 @@ export default () => {
 
   return (
     <>
+      {/* The one toast region for this page: the other bulk-actions demos
+          enqueue into the same global queue and render through it. */}
       <ToastProvider position="bottom-right" />
       <Table
         aria-label="Events"

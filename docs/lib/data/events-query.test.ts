@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { events } from './events';
-import { type EventsSession, authorizeBulk, queryEvents } from './events-query';
+import {
+  type EventsSession,
+  authorizeBulk,
+  parseSession,
+  queryEvents,
+} from './events-query';
 
 const emptySession: EventsSession = { overrides: {}, deleted: [] };
 
@@ -89,5 +94,30 @@ describe('authorizeBulk', () => {
   it('authorizes non-publish actions regardless of venue', () => {
     const result = authorizeBulk('archive', [withoutVenue.id]);
     expect(result.succeeded).toEqual([withoutVenue.id]);
+  });
+});
+
+describe('parseSession', () => {
+  const session: EventsSession = {
+    overrides: { evt: { status: 'On sale' } },
+    deleted: ['gone'],
+  };
+
+  it('parses a valid encoded payload', () => {
+    expect(parseSession(JSON.stringify(session))).toEqual(session);
+  });
+
+  it('degrades to undefined for null, malformed JSON, and bad shapes', () => {
+    expect(parseSession(null)).toBeUndefined();
+    expect(parseSession('{ not json')).toBeUndefined();
+    expect(parseSession(JSON.stringify({ overrides: 'nope' }))).toBeUndefined();
+  });
+
+  it('rejects oversized payloads before parsing', () => {
+    const huge = JSON.stringify({
+      overrides: {},
+      deleted: [`${'x'.repeat(9000)}`],
+    });
+    expect(parseSession(huge)).toBeUndefined();
   });
 });

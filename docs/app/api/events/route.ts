@@ -2,8 +2,7 @@ import type { EventStatus } from '@/lib/data/events';
 import { eventStatuses } from '@/lib/data/events';
 import {
   type EventQueryParams,
-  type EventsSession,
-  eventsSessionSchema,
+  parseSession,
   queryEvents,
 } from '@/lib/data/events-query';
 import type { NextRequest } from 'next/server';
@@ -25,23 +24,6 @@ const number = (value: string | null) => {
 
 const status = (value: string | null): EventStatus | undefined =>
   eventStatuses.find(candidate => candidate === value);
-
-// Session payloads are small (a demo visitor touches at most the 42 fixture
-// rows); the size cap just keeps the parser from chewing on garbage. Anything
-// invalid degrades to "no session" instead of failing the request.
-const MAX_SESSION_LENGTH = 8192;
-
-export const parseSession = (
-  value: string | null
-): EventsSession | undefined => {
-  if (!value || value.length > MAX_SESSION_LENGTH) return undefined;
-  try {
-    const parsed = eventsSessionSchema.safeParse(JSON.parse(value));
-    return parsed.success ? parsed.data : undefined;
-  } catch {
-    return undefined;
-  }
-};
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 

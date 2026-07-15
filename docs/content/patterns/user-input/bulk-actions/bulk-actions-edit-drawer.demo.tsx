@@ -132,7 +132,7 @@ const BulkEditForm = ({
               formatOptions={{ style: 'currency', currency: 'EUR' }}
             />
           </Stack>
-          <Text size="sm" color="secondary" aria-live="polite">
+          <Text fontSize="sm" variant="muted" aria-live="polite">
             {changedFields.length === 0
               ? 'No changes yet. Untouched fields stay as they are.'
               : `Will update ${changedFields.join(' and ')} on all selected events.`}

@@ -3,7 +3,7 @@
 import type { Event } from '@/lib/data/events';
 import type { BulkResult, EventChanges } from '@/lib/data/events-query';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { type PropsWithChildren, createContext, use, useState } from 'react';
 import { useConfirmation, useToast } from '@marigold/components';
 import { exportEventsToCsv } from '../csv';
 import { bulkEvents } from './eventsApi';
@@ -13,6 +13,12 @@ import { useSession } from './useSession';
 // Encapsulates every bulk operation: server round-trip → session commit →
 // toast → selection handling. Components call `publish(affected)` and stay
 // presentational.
+//
+// Exposed through a provider, not a plain hook, so the whole page shares one
+// instance. That matters for `busy`: TanStack Query's pending state is
+// per-hook-instance, so a second `useBulkActions()` (e.g. in the edit drawer)
+// would run its mutation invisibly to the bar and leave Publish/Delete
+// pressable mid-edit. One instance keeps "one operation at a time" honest.
 //
 // Selection handling follows the bulk-actions pattern: a fully successful
 // operation clears the selection (the job is done), a partial failure
@@ -25,7 +31,21 @@ const scope = (count: number) => (count === 1 ? '1 event' : `${count} events`);
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const useBulkActions = () => {
+interface BulkActionsApi {
+  publish: (events: Event[]) => void;
+  archive: (events: Event[]) => void;
+  applyEdit: (events: Event[], changes: EventChanges) => void;
+  deleteEvents: (events: Event[]) => void;
+  exportSelected: (events: Event[]) => void;
+  sendReminders: (events: Event[]) => void;
+  exporting: boolean;
+  sending: { done: number; total: number } | undefined;
+  busy: boolean;
+}
+
+const BulkActionsContext = createContext<BulkActionsApi | null>(null);
+
+export const BulkActionsProvider = ({ children }: PropsWithChildren) => {
   const { addToast } = useToast();
   const confirm = useConfirmation();
   const { session, applyOverride, markDeleted } = useSession();
@@ -193,16 +213,31 @@ export const useBulkActions = () => {
     exporting ||
     sending !== undefined;
 
-  return {
-    publish: (events: Event[]) => publishMutation.mutate(events),
-    archive: (events: Event[]) => archiveMutation.mutate(events),
-    applyEdit: (events: Event[], changes: EventChanges) =>
-      updateMutation.mutate({ events, changes }),
+  // The value is rebuilt each render rather than memoized: the provider only
+  // re-renders when the selection, the session, or a bulk operation's state
+  // changes — each of which its consumers (the bar, the drawer) must already
+  // reflect. There is no unrelated render to guard against.
+  const value: BulkActionsApi = {
+    publish: events => publishMutation.mutate(events),
+    archive: events => archiveMutation.mutate(events),
+    applyEdit: (events, changes) => updateMutation.mutate({ events, changes }),
     deleteEvents: deleteWithConfirmation,
     exportSelected,
     sendReminders,
     exporting,
     sending,
     busy,
-  } as const;
+  };
+
+  return <BulkActionsContext value={value}>{children}</BulkActionsContext>;
+};
+
+export const useBulkActions = () => {
+  const context = use(BulkActionsContext);
+  if (context === null) {
+    throw new Error(
+      'useBulkActions must be used within a <BulkActionsProvider>'
+    );
+  }
+  return context;
 };

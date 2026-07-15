@@ -1,5 +1,5 @@
 import { type EventStatus, eventStatuses } from '@/lib/data/events';
-import { DEFAULT_PAGE_SIZE } from '@/lib/data/events-query';
+import { DEFAULT_PAGE_SIZE, PAGE_SIZES } from '@/lib/data/events-query';
 import {
   parseAsInteger,
   parseAsString,
@@ -32,12 +32,18 @@ export const usePagination = () => {
 
 export const usePageSize = () => {
   const [, setPage] = usePagination();
-  const [pageSize, setPageSizeState] = useQueryState(
+  const [rawPageSize, setPageSizeState] = useQueryState(
     'pageSize',
     parseAsInteger
       .withDefault(DEFAULT_PAGE_SIZE)
       .withOptions({ history: 'push' })
   );
+
+  // A hand-edited URL can carry any integer, so snap it to an offered size:
+  // otherwise `?pageSize=5000` would render a 5,000-row loading skeleton.
+  const pageSize = (PAGE_SIZES as readonly number[]).includes(rawPageSize)
+    ? rawPageSize
+    : DEFAULT_PAGE_SIZE;
 
   // A new page size reshuffles which rows land on every page, so it is a
   // scope change like the others. The default stays out of the URL.

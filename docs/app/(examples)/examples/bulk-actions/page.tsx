@@ -20,6 +20,7 @@ import {
 import { EventsPagination } from './EventsPagination';
 import { EventsTable } from './EventsTable';
 import { Toolbar } from './Toolbar';
+import { BulkActionsProvider } from './hooks/useBulkActions';
 import { SelectionProvider } from './hooks/useSelection';
 import { SessionProvider } from './hooks/useSession';
 
@@ -66,21 +67,26 @@ const EventsData = () => {
 const BulkActionsPage = () => (
   <SessionProvider>
     <SelectionProvider>
-      <Page>
-        <Page.Header>
-          <Title>Events</Title>
-          <Description>
-            Select events in the table and run one operation across all of them
-            — publish, edit, export, or delete.
-          </Description>
-        </Page.Header>
-        <Panel aria-label="Events">
-          <Panel.Content>
-            <Toolbar />
-          </Panel.Content>
-          <EventsData />
-        </Panel>
-      </Page>
+      {/* One bulk-actions instance for the whole page (see useBulkActions):
+          the bar and the edit drawer share its `busy` state. It sits inside
+          the session and selection providers because it reads both. */}
+      <BulkActionsProvider>
+        <Page>
+          <Page.Header>
+            <Title>Events</Title>
+            <Description>
+              Select events in the table and run one operation across all of
+              them — publish, edit, export, or delete.
+            </Description>
+          </Page.Header>
+          <Panel aria-label="Events">
+            <Panel.Content>
+              <Toolbar />
+            </Panel.Content>
+            <EventsData />
+          </Panel>
+        </Page>
+      </BulkActionsProvider>
     </SelectionProvider>
   </SessionProvider>
 );

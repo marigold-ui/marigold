@@ -1,7 +1,12 @@
 import type { Event } from '@/lib/data/events';
 
 const escapeCsv = (value: unknown) => {
-  const str = String(value ?? '');
+  const raw = String(value ?? '');
+  // Neutralize spreadsheet formula injection: a leading =, +, -, or @ makes
+  // Excel/Sheets evaluate the cell as a formula. Prefix with a single quote so
+  // a user-entered event name stays literal text. (A reference implementation
+  // teams copy should be safe by default.)
+  const str = /^[=+\-@\t\r]/.test(raw) ? `'${raw}` : raw;
   return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
 };
 

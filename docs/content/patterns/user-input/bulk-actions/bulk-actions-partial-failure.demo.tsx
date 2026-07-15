@@ -102,7 +102,7 @@ export default () => {
                 {event.hasDescription ? (
                   'Complete'
                 ) : (
-                  <Text color="secondary">Missing</Text>
+                  <Text variant="muted">Missing</Text>
                 )}
               </Table.Cell>
               <Table.Cell>

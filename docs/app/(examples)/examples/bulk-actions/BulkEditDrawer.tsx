@@ -140,6 +140,9 @@ export const BulkEditDrawer = ({
   /** Disabled while a sibling bulk operation runs (see BulkActionBar). */
   disabled?: boolean;
 }) => {
+  // Reads the page's single BulkActionsProvider instance, the same one the
+  // bar uses, so the edit shares the bar's `busy` flag — two instances would
+  // let the bar's actions stay pressable while the edit is in flight.
   const actions = useBulkActions();
 
   return (

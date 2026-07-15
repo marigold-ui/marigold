@@ -41,6 +41,28 @@ export type EventChanges = z.infer<typeof eventChangesSchema>;
 export type EventOverride = z.infer<typeof eventOverrideSchema>;
 export type EventsSession = z.infer<typeof eventsSessionSchema>;
 
+// Session payloads are small (a demo visitor touches at most the 42 fixture
+// rows); the size cap just keeps the parser from chewing on garbage. Anything
+// invalid degrades to "no session" instead of failing the request.
+const MAX_SESSION_LENGTH = 8192;
+
+/**
+ * Parse the URL-encoded session payload the client resends with every request,
+ * tolerating anything malformed. Lives here beside the schema (rather than in
+ * the route file, which should export only handlers) so it is unit-testable.
+ */
+export const parseSession = (
+  value: string | null
+): EventsSession | undefined => {
+  if (!value || value.length > MAX_SESSION_LENGTH) return undefined;
+  try {
+    const parsed = eventsSessionSchema.safeParse(JSON.parse(value));
+    return parsed.success ? parsed.data : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
 export interface EventQueryParams {
   /** Free-text search, matched against the event name and venue. */
   q?: string;
@@ -60,7 +82,9 @@ export interface EventQueryResult {
   pageSize: number;
 }
 
-export const DEFAULT_PAGE_SIZE = 10;
+/** Page sizes offered by the quantity selector; the first is the default. */
+export const PAGE_SIZES = [10, 20, 30] as const;
+export const DEFAULT_PAGE_SIZE = PAGE_SIZES[0];
 
 /** The fixture with this visitor's session changes and deletions applied. */
 export const applySession = (session?: EventsSession): Event[] => {

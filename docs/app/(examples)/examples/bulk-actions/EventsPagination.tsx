@@ -1,5 +1,6 @@
 'use client';
 
+import { PAGE_SIZES } from '@/lib/data/events-query';
 import { Inline, Pagination, Select, Split, Text } from '@marigold/components';
 import { EVENTS_REGION_ID } from './EventsTable';
 import { useEvents } from './hooks/useEvents';
@@ -54,9 +55,11 @@ export const EventsPagination = () => {
           value={String(pageSize)}
           onChange={next => setPageSize(Number(next))}
         >
-          <Select.Option id="10">10</Select.Option>
-          <Select.Option id="20">20</Select.Option>
-          <Select.Option id="30">30</Select.Option>
+          {PAGE_SIZES.map(size => (
+            <Select.Option key={size} id={String(size)}>
+              {size}
+            </Select.Option>
+          ))}
         </Select>
       </Inline>
     </Inline>
