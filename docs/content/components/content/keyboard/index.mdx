@@ -1,0 +1,64 @@
+---
+title: Keyboard
+description: A hint that shows the keyboard shortcut for an action.
+badge: alpha
+---
+
+The `<Keyboard>` component renders a keyboard-shortcut hint, such as ⌘C, as a `<kbd>` element. Place it inside a `<Menu.Item>` to show the shortcut that runs that command.
+
+import { KeyboardAnatomy } from './keyboard-anatomy';
+
+## Anatomy
+
+<KeyboardAnatomy />
+
+A keyboard hint is a single `<kbd>` element with no parts of its own.
+
+## Appearance
+
+`<Keyboard>` carries no styling of its own. Its appearance comes from the surrounding item, which keeps shortcut hints consistent across every menu. Inside a `<Menu.Item>` it renders muted and right-aligned in the item's trailing column.
+
+Styling is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
+
+## Usage
+
+Reach for `<Keyboard>` when an action has a keyboard shortcut worth teaching. The hint helps people discover the shortcut and rewards repeat use, without changing what the action does.
+
+### Inside a menu item
+
+Add `<Keyboard>` after the item's label to show its shortcut. Set `textValue` on the `<Menu.Item>` so type-ahead matches the label and ignores the shortcut text.
+
+<ComponentDemo name="keyboard-in-menu-item" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Show a shortcut only when the action has one, and match the hint to the
+      real key binding.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `<Keyboard>` as decoration or for text that isn't a shortcut.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Accessibility
+
+`<Keyboard>` renders as a `<kbd>` element. Inside a `<Menu.Item>` it is wired to the item's accessible description automatically, so a screen reader announces the command's label first and the shortcut after, with no manual `aria` attributes.
+
+The hint is a convenience for sighted users. It does not register the key binding, so make sure the shortcut it shows is actually handled by your application.
+
+## Props
+
+<StorybookHintMessage component="Keyboard" />
+
+### Keyboard
+
+<AutoTypeTable path="Keyboard" name="KeyboardProps" />
+
+## Alternative components
+
+- [Menu](/components/overlay/menu): The most common home for keyboard hints, on its command items.
+- [TextValue](/components/content/text-value): The item label that a shortcut sits beside.
