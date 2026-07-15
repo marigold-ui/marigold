@@ -192,7 +192,7 @@ type MarigoldRuleOverride = {
 const MARIGOLD_RULE_MAP: Record<string, MarigoldRuleOverride> = {
   'landmark-one-main': {
     suggestion:
-      'Wrap your page content in `<AppLayout>` with `<AppLayout.Main>` to provide a `<main>` landmark. Import AppLayout from `@marigold/components`.',
+      'Wrap your page content in `<Page>` to provide a `<main>` landmark. Import Page from `@marigold/components`.',
     severity: 'warning',
   },
   'page-has-heading-one': {
@@ -202,7 +202,7 @@ const MARIGOLD_RULE_MAP: Record<string, MarigoldRuleOverride> = {
   },
   region: {
     suggestion:
-      'All page content must be inside a landmark region. Use `<AppLayout>` with `<AppLayout.Main>` for the main area, `<TopNavigation>` for the header (`<header>`), and `<Sidebar>` for side navigation (`<aside>`). Import from `@marigold/components`.',
+      'All page content must be inside a landmark region. Use `<Page>` for the main area, `<TopNavigation>` for the header (`<header>`), and `<Sidebar>` for side navigation (`<aside>`). Import from `@marigold/components`.',
     severity: 'warning',
     dedup: true,
   },
@@ -212,7 +212,7 @@ const MARIGOLD_RULE_MAP: Record<string, MarigoldRuleOverride> = {
   },
   'landmark-main-is-top-level': {
     suggestion:
-      'Place `<AppLayout.Main>` (renders `<main>`) at the top level of the page layout, not nested inside another landmark.',
+      'Place `<Page>` (renders `<main>`) at the top level of the page layout, not nested inside another landmark.',
   },
   'landmark-unique': {
     suggestion:
@@ -232,7 +232,7 @@ const MARIGOLD_RULE_MAP: Record<string, MarigoldRuleOverride> = {
   },
   'landmark-no-duplicate-main': {
     suggestion:
-      'Only use one `<AppLayout.Main>` per page — it renders a `<main>` landmark.',
+      'Only use one `<Page>` per page — it renders a `<main>` landmark.',
   },
 };
 

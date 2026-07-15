@@ -23,16 +23,15 @@ export const REQUIRED_CONTAINER: Readonly<Record<string, string>> = {
 // Some hosts render a root component internally, so its sub-components may be
 // written directly inside the host with no literal `<Root>` element. This is
 // documented behaviour, not an error:
-//   - AppLayout.Sidebar renders a Sidebar internally, AppLayout.Header renders
-//     a TopNavigation internally (marigold-ui.io/components/layout/app-layout).
 //   - ActionMenu is a ready-made Menu trigger, so its <Menu.Item>s live inside
 //     <ActionMenu> rather than <Menu> (marigold-ui.io/components/overlay/menu).
-// Hosts may be written either as a dotted sub (`AppLayout.Sidebar`) or a flat
-// component (`ActionMenu`); when the host appears, its provided root counts as
-// present.
+// Hosts may be written either as a dotted sub (`X.Y`) or a flat component
+// (`ActionMenu`); when the host appears, its provided root counts as present.
+// AppLayout (which used this pattern for its Sidebar/Header) was replaced by
+// AppShell (DST-1360), which has no compound sub-components at all — its docs
+// have callers place <Sidebar>, <TopNavigation>, and <Page> as flat children
+// directly, so no HOST_PROVIDES entry is needed for it.
 export const HOST_PROVIDES: Readonly<Record<string, string>> = {
-  'AppLayout.Sidebar': 'Sidebar',
-  'AppLayout.Header': 'TopNavigation',
   ActionMenu: 'Menu',
 };
 
@@ -99,8 +98,12 @@ export const validateRequiredAncestor = (
   collect(source);
 
   // Roots that are present either literally (`<Sidebar>`) or because a host
-  // that renders them internally appears in the file (`<AppLayout.Sidebar>`,
-  // `<ActionMenu>`).
+  // that renders them internally appears in the file. A host is usually a
+  // flat component (`<ActionMenu>`, checked via identifierTags below), but a
+  // HOST_PROVIDES key can itself be a dotted sub-component (`<X.Y>`), checked
+  // via dottedTags — no current entry uses that form (the one that used to,
+  // `AppLayout.Sidebar`, was removed with AppLayout itself), so that branch
+  // has no exerciser today, but it stays correct for a host written that way.
   const satisfiedRoots = new Set(identifierTags);
   for (const [host, providedRoot] of Object.entries(HOST_PROVIDES)) {
     if (dottedTags.has(host) || identifierTags.has(host)) {
