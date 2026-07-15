@@ -40,12 +40,17 @@ export const InsideListBoxItem = meta.story({
       </ListBoxItem>
     </ListBox>
   ),
-  play: async ({ canvas }) => {
+});
+
+InsideListBoxItem.test(
+  'resolves each option accessible name from its TextValue',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     await expect(
       await canvas.findByRole('option', { name: 'Apple' })
     ).toBeInTheDocument();
     await expect(
       canvas.getByRole('option', { name: 'Banana' })
     ).toBeInTheDocument();
-  },
-});
+  }
+);

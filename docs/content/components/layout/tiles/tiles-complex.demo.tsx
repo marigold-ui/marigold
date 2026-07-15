@@ -8,12 +8,12 @@ export default () => (
         <Card.Media>
           <img src={venue.image} alt={venue.name} width={200} height={200} />
         </Card.Media>
-        <Card.Body>
+        <Card.Content>
           <Stack space={2} alignX="center">
             <Headline level={3}>{venue.name}</Headline>
             <Text>{venue.description}</Text>
           </Stack>
-        </Card.Body>
+        </Card.Content>
       </Card>
     ))}
   </Tiles>

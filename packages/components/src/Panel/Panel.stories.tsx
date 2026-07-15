@@ -14,6 +14,7 @@ import {
   UserRoundPlus,
 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
+import { Accordion } from '../Accordion/Accordion';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
@@ -101,6 +102,9 @@ export const Basic = meta.story({
 
 Basic.test(
   'renders a labelled region with the Title as accessible name',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const title = canvas.getByRole('heading', { name: 'Organizer Profile' });
     const region = canvas.getByRole('region', { name: 'Organizer Profile' });
@@ -112,8 +116,9 @@ Basic.test(
 );
 
 export const TitleOnlyWithoutHeader = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { children: null as never },
   render: args => (
     <Panel {...args}>
       <Title>Quick Settings</Title>
@@ -295,8 +300,8 @@ export const WithHeaderActions = meta.story(() => (
 ));
 
 export const SlotsButtonGroup = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
+  args: { children: null as never },
   render: args => (
     <Panel {...args}>
       <Panel.Header>
@@ -326,6 +331,9 @@ export const SlotsButtonGroup = meta.story({
 
 SlotsButtonGroup.test(
   'renders as a toolbar inside the actions grid cell',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const toolbar = canvas.getByRole('toolbar', {
       name: 'Integration actions',
@@ -337,6 +345,9 @@ SlotsButtonGroup.test(
 
 SlotsButtonGroup.test(
   'cycles focus between actions with arrow keys',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
     const refresh = canvas.getByRole('button', { name: 'Refresh' });
@@ -355,6 +366,9 @@ SlotsButtonGroup.test(
 
 SlotsButtonGroup.test(
   'individual Buttons inside the group do NOT carry the actions grid-area',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const reconnect = canvas.getByRole('button', { name: 'Reconnect' });
 
@@ -363,8 +377,8 @@ SlotsButtonGroup.test(
 );
 
 export const WithCollapsible = meta.story({
-  args: { children: null as never },
   tags: ['component-test'],
+  args: { children: null as never },
   render: args => (
     <Panel {...args}>
       <Panel.Header>
@@ -396,6 +410,9 @@ export const WithCollapsible = meta.story({
 
 WithCollapsible.test(
   'toggles aria-expanded and body visibility via click, Enter, and Space',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
   async ({ canvas }) => {
     const trigger = canvas.getByRole('button', { name: /Advanced Options/ });
     const body = canvas.getByLabelText('Custom URL Slug');
@@ -431,6 +448,7 @@ WithCollapsible.test(
 
 export const ControlledCollapsible = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: function Render() {
     const [expanded, setExpanded] = useState(false);
     return (
@@ -466,19 +484,25 @@ ControlledCollapsible.test(
   }
 );
 
-export const AriaLabeled = meta.story(() => (
-  <Panel aria-label="Collapsible-only panel">
-    <Panel.Content>
-      <Text>
-        A Panel can be labelled with <code>aria-label</code> when there is no
-        visible title — useful for collapsible-only sections.
-      </Text>
-    </Panel.Content>
-  </Panel>
-));
+export const AriaLabeled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: function Render() {
+    return (
+      <Panel aria-label="Collapsible-only panel">
+        <Panel.Content>
+          <Text>
+            A Panel can be labelled with <code>aria-label</code> when there is
+            no visible title — useful for collapsible-only sections.
+          </Text>
+        </Panel.Content>
+      </Panel>
+    );
+  },
+});
 
 export const CollapsibleDefaultExpanded = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Panel>
       <Panel.Header>
@@ -684,6 +708,72 @@ export const TableInside = meta.story(() => (
         </Table>
       </Panel.Content>
     </Panel>
+  </Stack>
+));
+
+export const AccordionInside = meta.story(() => (
+  <Stack space="regular">
+    <Panel>
+      <Panel.Header>
+        <Title>Prop values</Title>
+        <Description>
+          Accordion in a bled Panel: dividers reach the edge, header and content
+          stay aligned with the title.
+        </Description>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <Accordion defaultExpandedKeys={['variant']}>
+          <Accordion.Item id="variant">
+            <Accordion.Header>
+              <Inline space={2} alignY="center">
+                <Text>variant</Text>
+                <Badge>3</Badge>
+              </Inline>
+            </Accordion.Header>
+            <Accordion.Content>
+              <Stack space={2}>
+                <Inline alignX="between">
+                  <Text fontSize="sm">primary</Text>
+                  <Text fontSize="sm" color="secondary">
+                    63%
+                  </Text>
+                </Inline>
+                <Inline alignX="between">
+                  <Text fontSize="sm">secondary</Text>
+                  <Text fontSize="sm" color="secondary">
+                    27%
+                  </Text>
+                </Inline>
+              </Stack>
+            </Accordion.Content>
+          </Accordion.Item>
+          <Accordion.Item id="size">
+            <Accordion.Header>
+              <Inline space={2} alignY="center">
+                <Text>size</Text>
+                <Badge>2</Badge>
+              </Inline>
+            </Accordion.Header>
+            <Accordion.Content>
+              <Text fontSize="sm">default, small</Text>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion>
+      </Panel.Content>
+    </Panel>
+
+    <Accordion aria-label="Standalone accordion" defaultExpandedKeys={['a']}>
+      <Accordion.Item id="a">
+        <Accordion.Header>Standalone (unchanged)</Accordion.Header>
+        <Accordion.Content>
+          Outside a Panel the header and content have no horizontal indent.
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item id="b">
+        <Accordion.Header>Second item</Accordion.Header>
+        <Accordion.Content>Still flush to the edge.</Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
   </Stack>
 ));
 

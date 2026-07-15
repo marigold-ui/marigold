@@ -1,0 +1,80 @@
+---
+title: Marigold v17.7.0
+date: 2026-06-15
+type: Blog
+changed:
+  - components/overlay/dialog
+  - components/overlay/toast
+  - components/navigation/pagination
+  - components/form/select
+---
+
+v17.7.0 is a classic mid-cycle release. You get two small features you'll actually use, a wider `<Dialog>` and sensible auto-dismiss defaults for toasts, plus a batch of bug fixes that goes after a whole class of sneaky dependency-resolution problems. If your mobile `<Select>` ever opened an empty bottom sheet, or your app quietly ignored the locale you set, this one is for you.
+
+## Components
+
+### Dialog gets a `large` size
+
+[`<Dialog>`](/components/overlay/dialog) (and `<ConfirmationDialog>`, which inherits the prop) now accepts `size="large"`. It caps the dialog width at `1024px`, the same as the Tailwind `lg` breakpoint. Reach for it when content doesn't fit the `medium` cap of `768px`, for example multi-month calendars or wider forms.
+
+```tsx
+<Dialog size="large">
+  <Dialog.Title>Plan your stay</Dialog.Title>
+  <Dialog.Content>{/* room for a two-month calendar */}</Dialog.Content>
+</Dialog>
+```
+
+The existing `min()` width formula still applies, so a large dialog stays viewport-safe on smaller screens.
+
+### Toasts auto-dismiss by default
+
+`addToast` now picks a default `timeout` based on `variant` when you don't pass one. Reassuring toasts (`success`, `info`, and the default variant) auto-dismiss after 5 seconds. Higher-severity ones (`warning` and `error`) stay until the user dismisses them.
+
+```tsx
+// Auto-dismisses after 5 seconds
+addToast({ title: 'Changes saved', variant: 'success' });
+
+// Stays until dismissed
+addToast({ title: 'Import failed', variant: 'error' });
+
+// Opt out of auto-dismiss
+addToast({ title: 'Changes saved', variant: 'success', timeout: 0 });
+```
+
+An explicit `timeout` still wins, though anything below 5000ms gets bumped up to that minimum so a toast never disappears before anyone can read it. **This is a behavior change.** `success`, `info`, and default toasts that used to stay on screen now auto-dismiss after 5 seconds. Pass `timeout: 0` to restore the old behavior. The [Toast docs](/components/overlay/toast) have the full timeout rules.
+
+## Bug fixes
+
+### Mobile Select tray could select nothing
+
+On touch viewports, [`<Select>`](/components/form/select) (and other components that fall back to a `<Tray>`) could open an empty bottom sheet next to the real one. Tapping an option selected nothing, the trigger kept showing the placeholder, and the page stayed inert until a reload.
+
+The root cause was dependency resolution, not component logic. `<Tray>` and react-aria-components read the same internal context through different dependency edges. When a consumer's lockfile resolved those edges to two different copies of `react-aria`, the two sides stopped agreeing, a duplicate (and empty) tray modal leaked into the DOM, and the two modals made each other inert.
+
+`<Tray>` now verifies react-aria's hidden collection pass through the DOM itself. The fix holds no matter how your lockfile resolves `react-aria`, and it keeps holding for future react-aria releases that would re-arm the split. Desktop popovers were never affected.
+
+### Locales no longer get lost
+
+The same failure class with a different symptom. Marigold re-exported `I18nProvider` from `@react-aria/i18n`, so a lockfile with two `react-aria` copies could split the locale context. The locale you set through Marigold's `I18nProvider` landed in one copy while the components rendering your UI read the other. Aria labels, date and number formatting, and RTL detection all fell back silently to the default locale.
+
+The re-export now comes from `react-aria-components`, which makes provider and consumers share one context by construction. You don't have to change anything.
+
+### Pagination follows the controlled `page` prop
+
+Previously, the `page` prop on [`<Pagination>`](/components/navigation/pagination) only seeded internal state. External updates, for example resetting to page 1 when a filter changes, had no effect, and the page indicator kept showing the stale page. `page` is now a proper controlled prop. When set, it is the single source of truth, `onChange` reports requested page changes, and `defaultPage` remains the uncontrolled initial value.
+
+Two related cleanups ride along. `onChange` no longer fires when the active page is selected again, and the reset-to-page-1 behavior only triggers when `pageSize` actually changed.
+
+### CLI ships its compiled files again
+
+If you installed `@marigold/cli` right after last release and the `marigold` command pointed at a missing entry file, sorry about that. The release build filter excluded the CLI package, so the published tarball shipped without its `dist/` output. We now build the CLI before publishing, and a fresh install works as advertised.
+
+## Documentation
+
+### Usage with AI, expanded
+
+The [Usage with AI](/getting-started/usage-with-ai) page now covers the three ways to feed Marigold docs to an AI agent. You can point it at the marigold-docs MCP server, at the public `manifest.json` and per-page `.md` endpoints, or at the `@marigold/cli`. New sections collect prompting tips (the renamed-prop gotcha, naming Marigold explicitly, nudging the agent toward the MCP), introduce the Reservix AI helpers from rx-ai-suite, and set honest expectations about what the tooling can and cannot do.
+
+---
+
+That's v17.7.0. The tray and locale fixes close out a bug class that had been biting apps through their lockfiles rather than their code. Those are our favorite kind of fixes, the kind you never have to think about again. Let us know how it lands.

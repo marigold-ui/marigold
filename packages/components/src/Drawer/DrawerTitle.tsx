@@ -1,35 +1,19 @@
-import type { CSSProperties, ReactNode } from 'react';
-import { Header } from 'react-aria-components/Header';
-import { Heading } from 'react-aria-components/Heading';
-import { cn, useClassNames } from '@marigold/system';
-import { DrawerContext } from './Context';
+import type { ReactNode } from 'react';
+import { Title } from '../Title/Title';
 
 export interface DrawerTitleProps {
-  variant?: string;
-  size?: string;
-
   /**
    * Children of the component.
    */
   children?: ReactNode;
 }
 
-export const DrawerTitle = ({ variant, size, children }: DrawerTitleProps) => {
-  const classNames = useClassNames({
-    component: 'Drawer',
-    size,
-    variant,
-    context: DrawerContext,
-  });
-
-  return (
-    <Header
-      className={cn('[grid-area:title]', classNames.header)}
-      style={{ '--i': 0 } as CSSProperties}
-    >
-      <Heading slot="title" level={2} className={classNames.title}>
-        {children}
-      </Heading>
-    </Header>
-  );
-};
+/**
+ * Thin wrapper over the slot-aware `<Title>`. The heading level, id,
+ * `aria-labelledby` wiring, and theme classes come from the `HeadingContext`
+ * published by `<Drawer>` (or `<Drawer.Header>`), so this is equivalent to
+ * dropping a `<Title slot="title">` directly inside the drawer.
+ */
+export const DrawerTitle = ({ children }: DrawerTitleProps) => (
+  <Title slot="title">{children}</Title>
+);

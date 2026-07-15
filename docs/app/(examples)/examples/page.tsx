@@ -65,7 +65,7 @@ const Stat = ({
   hint: string;
 }) => (
   <Card stretch>
-    <Card.Body>
+    <Card.Content>
       <Stack space="tight">
         <Text variant="muted" fontSize="sm">
           {label}
@@ -77,7 +77,7 @@ const Stat = ({
           {hint}
         </Text>
       </Stack>
-    </Card.Body>
+    </Card.Content>
   </Card>
 );
 

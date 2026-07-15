@@ -1,7 +1,7 @@
 import { Columns, Container, Headline, Text } from '@marigold/components';
 
 export default () => (
-  <Container space={6} align="center" alignItems="center">
+  <Container space={6} alignItems="center">
     <Headline level="3">Sunny the marigold</Headline>
     <Columns columns={[1, 1]} space={8}>
       <Text>

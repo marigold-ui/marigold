@@ -44,7 +44,7 @@ test('check if all slot class names are applied correctly', () => {
     `"group/checkbox data-disabled:cursor-not-allowed grid grid-cols-[auto_1fr] gap-x-2 items-start cursor-pointer read-only:cursor-default group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full group-data-[orientation=vertical]/checkboxgroup:py-1 group-data-[orientation=horizontal]/checkboxgroup:px-1.5"`
   );
   expect(getVisibleCheckbox()?.className).toMatchInlineSnapshot(
-    `"grow-0 basis-4 items-center justify-center p-px border-solid grid size-4 shrink-0 place-content-center rounded border border-border shadow-elevation-border bg-surface group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none group-disabled/checkbox:group-selected/checkbox:bg-disabled-surface group-disabled/checkbox:border-disabled-surface! group-disabled/checkbox:text-disabled group-disabled/checkbox:cursor-not-allowed group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground group-[indeterminate]/checkbox:border-selected-bold group-[indeterminate]/checkbox:bg-selected-bold group-[indeterminate]/checkbox:text-selected-bold-foreground group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface"`
+    `"grow-0 basis-4 items-center justify-center p-px border-solid grid size-4 shrink-0 place-content-center rounded border border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.06))] bg-surface group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none group-disabled/checkbox:group-selected/checkbox:bg-disabled-surface group-disabled/checkbox:border-disabled-surface! group-disabled/checkbox:text-disabled group-disabled/checkbox:cursor-not-allowed group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground group-[indeterminate]/checkbox:border-selected-bold group-[indeterminate]/checkbox:bg-selected-bold group-[indeterminate]/checkbox:text-selected-bold-foreground group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface"`
   );
   expect(label.className).toMatchInlineSnapshot(
     `"flex items-center gap-1 text-sm leading-4 group-[&]/checkboxgroup:font-normal font-medium text-foreground group-disabled/checkbox:text-disabled"`
@@ -75,6 +75,32 @@ test('supports indeterminate state', () => {
   const input = screen.getByLabelText<HTMLInputElement>('With Label');
 
   expect(input.indeterminate).toBeTruthy();
+});
+
+test('associates the description with the checkbox via aria-describedby', () => {
+  render(<Basic.Component label="With Label" description="Some help text" />);
+
+  const input = screen.getByLabelText('With Label');
+  const description = screen.getByText('Some help text');
+
+  expect(input.getAttribute('aria-describedby')).toContain(description.id);
+});
+
+test('shows error message instead of description when error is set', () => {
+  render(
+    <Basic.Component
+      label="With Label"
+      error
+      description="Some help text"
+      errorMessage="Selection is required"
+    />
+  );
+
+  const input = screen.getByLabelText('With Label');
+
+  expect(screen.getByText('Selection is required')).toBeInTheDocument();
+  expect(screen.queryByText('Some help text')).not.toBeInTheDocument();
+  expect(input).toHaveAccessibleDescription('Selection is required');
 });
 
 test('forwards ref', () => {

@@ -30,7 +30,11 @@ export const TableDropIndicator = ({
   return (
     <DropIndicator
       {...props}
-      className={cn('transform-gpu', classNames.dropIndicator)}
+      className={cn(
+        'transform-gpu',
+        classNames.dropIndicator,
+        'drop-target:before:z-10'
+      )}
     />
   );
 };

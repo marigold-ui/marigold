@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Select } from '../Select/Select';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { TextField } from '../TextField/TextField';
+import { Title } from '../Title/Title';
 import { Drawer } from './Drawer';
 
 const meta = preview.meta({
@@ -33,6 +38,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Stack space={8} alignX="left">
@@ -90,15 +96,21 @@ export const Basic = meta.story({
       />
     </Stack>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+Basic.test(
+  'Open drawer',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+
     await waitFor(() =>
       expect(canvas.getByText('Drawer Title')).toBeInTheDocument()
     );
-
-    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
-  },
-});
+  }
+);
 
 export const WithForms = meta.story({
   parameters: { surface: false, chromatic: { disableSnapshot: true } },
@@ -107,7 +119,7 @@ export const WithForms = meta.story({
       <Button>Configure Filter</Button>
       <Drawer {...args}>
         <Form unstyled>
-          <Drawer.Title>Filter</Drawer.Title>
+          <Title>Filter</Title>
           <Drawer.Content>
             <Stack space={8}>
               <Slider
@@ -149,6 +161,7 @@ export const WithForms = meta.story({
 
 export const LongContent = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -156,7 +169,7 @@ export const LongContent = meta.story({
     <Drawer.Trigger>
       <Button>Open Drawer</Button>
       <Drawer {...args}>
-        <Drawer.Title>Long Content</Drawer.Title>
+        <Title>Long Content</Title>
         <Drawer.Content>
           <Stack space={4}>
             {Array.from({ length: 16 }, (_, i) => (
@@ -178,9 +191,14 @@ export const LongContent = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
-    expect(window.innerWidth).toBeLessThan(640);
+});
 
+LongContent.test(
+  'Long content on a small screen',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
     const trigger = canvas.getByRole('button', { name: 'Open Drawer' });
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
@@ -215,11 +233,13 @@ export const LongContent = meta.story({
     await waitFor(() => {
       expect(isWithin(endMarker, scrollContainer)).toBe(true);
     });
-  },
-});
+    expect(window.innerWidth).toBeLessThan(640);
+  }
+);
 
 export const SelectInsideDrawerSmallScreen = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -241,7 +261,14 @@ export const SelectInsideDrawerSmallScreen = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+SelectInsideDrawerSmallScreen.test(
+  'Shows values on a small screen',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
     await waitFor(() => expect(canvas.getByText('Filter')).toBeInTheDocument());
 
@@ -281,8 +308,8 @@ export const SelectInsideDrawerSmallScreen = meta.story({
     expect(tailwindZ(trayPortal)).toBeGreaterThanOrEqual(
       tailwindZ(drawerPortal)
     );
-  },
-});
+  }
+);
 
 export const Controlled = meta.story({
   parameters: { surface: false, chromatic: { disableSnapshot: true } },
@@ -296,7 +323,7 @@ export const Controlled = meta.story({
         <Drawer.Trigger open={open} onOpenChange={onOpenChange}>
           <Button>Open Drawer</Button>
           <Drawer {...args}>
-            <Drawer.Title>Drawer Title</Drawer.Title>
+            <Title>Drawer Title</Title>
             <Drawer.Content>Drawer Content</Drawer.Content>
             <Drawer.Actions>
               <Button slot="close">Close</Button>
@@ -313,26 +340,30 @@ export const Controlled = meta.story({
 /** Opening a second Drawer while one is open dismisses the first. */
 export const OneAtATime = meta.story({
   tags: ['component-test'],
-  parameters: { surface: false },
+  parameters: { surface: false, chromatic: { disableSnapshot: true } },
   render: args => (
     <Stack space={8} alignX="left">
       <Drawer.Trigger>
         <Button>Open A</Button>
         <Drawer {...args}>
-          <Drawer.Title>Title A</Drawer.Title>
+          <Title>Title A</Title>
           <Drawer.Content>Content A</Drawer.Content>
         </Drawer>
       </Drawer.Trigger>
       <Drawer.Trigger>
         <Button>Open B</Button>
         <Drawer {...args}>
-          <Drawer.Title>Title B</Drawer.Title>
+          <Title>Title B</Title>
           <Drawer.Content>Content B</Drawer.Content>
         </Drawer>
       </Drawer.Trigger>
     </Stack>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+OneAtATime.test(
+  'Opening a second drawer dismisses the first',
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open A' }));
     expect(await canvas.findByText('Title A')).toBeInTheDocument();
 
@@ -348,8 +379,8 @@ export const OneAtATime = meta.story({
     await waitFor(() =>
       expect(canvas.queryByText('Title B')).not.toBeInTheDocument()
     );
-  },
-});
+  }
+);
 
 /**
  * DST-1407: A trigger nested inside an open Drawer opens a second Drawer over
@@ -359,17 +390,17 @@ export const OneAtATime = meta.story({
  */
 export const OneAtATimeNested = meta.story({
   tags: ['component-test'],
-  parameters: { surface: false },
+  parameters: { surface: false, chromatic: { disableSnapshot: true } },
   render: args => (
     <Drawer.Trigger>
       <Button>Open A</Button>
       <Drawer {...args} closeButton>
-        <Drawer.Title>Title A</Drawer.Title>
+        <Title>Title A</Title>
         <Drawer.Content>
           <Drawer.Trigger>
             <Button>Open B</Button>
             <Drawer {...args} closeButton>
-              <Drawer.Title>Title B</Drawer.Title>
+              <Title>Title B</Title>
               <Drawer.Content>Content B</Drawer.Content>
             </Drawer>
           </Drawer.Trigger>
@@ -377,7 +408,11 @@ export const OneAtATimeNested = meta.story({
       </Drawer>
     </Drawer.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+OneAtATimeNested.test(
+  'A nested drawer stacks over its parent',
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open A' }));
     expect(await canvas.findByText('Title A')).toBeInTheDocument();
 
@@ -393,5 +428,109 @@ export const OneAtATimeNested = meta.story({
       expect(canvas.queryByText('Title B')).not.toBeInTheDocument()
     );
     expect(canvas.getByText('Title A')).toBeInTheDocument();
-  },
+  }
+);
+
+/**
+ * The slot-aware primitives `<Title>` / `<Description>` and the action
+ * primitives can be used directly. `<Drawer.Header>` groups the title and
+ * description; a `<ButtonGroup>` inside `<Drawer.Actions>` picks up its
+ * defaults from the drawer root.
+ */
+export const SlotPrimitives = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Header>
+          <Title>Manage event</Title>
+          <Description>Update, duplicate, or remove this event.</Description>
+        </Drawer.Header>
+        <Drawer.Content>Choose an action below.</Drawer.Content>
+        <Drawer.Actions>
+          <ButtonGroup aria-label="Event actions">
+            <Button>
+              <Pencil />
+              Edit
+            </Button>
+            <Button>
+              <Copy />
+              Duplicate
+            </Button>
+            <ActionMenu aria-label="More actions">
+              <ActionMenu.Item id="export">
+                <Download />
+                Export
+              </ActionMenu.Item>
+              <ActionMenu.Item id="delete" variant="destructive">
+                <Trash2 />
+                Delete
+              </ActionMenu.Item>
+            </ActionMenu>
+          </ButtonGroup>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
 });
+
+SlotPrimitives.test(
+  'Renders slot primitives with grouped actions',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    await waitFor(() =>
+      expect(canvas.getByText('Manage event')).toBeInTheDocument()
+    );
+
+    expect(
+      canvas.getByRole('heading', { name: 'Manage event' })
+    ).toBeInTheDocument();
+    expect(
+      canvas.getByText('Update, duplicate, or remove this event.').tagName
+    ).toBe('P');
+    expect(
+      canvas.getByRole('toolbar', { name: 'Event actions' })
+    ).toBeInTheDocument();
+  }
+);
+
+/**
+ * A bare `<Title slot="title">` (no `<Drawer.Header>`, no description) labels
+ * the drawer landmark automatically via `aria-labelledby`.
+ */
+export const TitleOnlyWithoutHeader = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Title>Notifications</Title>
+        <Drawer.Content>You have no new notifications.</Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+TitleOnlyWithoutHeader.test(
+  'Labels the drawer with a bare Title',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+
+    const drawer = await waitFor(() =>
+      canvas.getByRole('complementary', { name: 'Notifications' })
+    );
+    const title = canvas.getByRole('heading', { name: 'Notifications' });
+
+    expect(title.tagName).toBe('H2');
+    expect(drawer).toHaveAttribute('aria-labelledby', title.id);
+  }
+);

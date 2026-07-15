@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   ActionBar,
+  Button,
   Checkbox,
   CheckboxGroup,
   Stack,
@@ -29,14 +30,14 @@ export default () => {
         selectedItemCount={selected.length}
         onClearSelection={() => setSelected([])}
       >
-        <ActionBar.Button onPress={() => alert('Download')}>
+        <Button onPress={() => alert('Download')}>
           <Download />
           Download
-        </ActionBar.Button>
-        <ActionBar.Button onPress={() => alert('Delete')}>
+        </Button>
+        <Button onPress={() => alert('Delete')}>
           <Trash2 />
           Delete
-        </ActionBar.Button>
+        </Button>
       </ActionBar>
     </Stack>
   );

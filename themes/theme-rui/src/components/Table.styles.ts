@@ -99,6 +99,15 @@ export const Table: ThemeComponent<'Table'> = {
 
   // <tbody>
   body: cva({}),
+
+  // <tfoot>
+  footer: cva({
+    base: [
+      'bg-surface/90 border-border border-t',
+      '**:[[role=gridcell]]:font-semibold **:[[role=rowheader]]:font-semibold',
+    ],
+  }),
+
   cell: cva({
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',
@@ -136,7 +145,7 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'relative',
       'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-border',
-      'drop-target:before:z-10 drop-target:before:bg-primary',
+      'drop-target:before:bg-primary',
     ],
   }),
 

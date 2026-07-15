@@ -26,6 +26,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     onChange: fn(),
   },
@@ -37,18 +38,22 @@ export const Basic = meta.story({
       <Tag id="shopping">Shopping</Tag>
     </Tag.Group>
   ),
-  play: async ({ args, canvas, userEvent }) => {
+});
+
+Basic.test(
+  'Selects multiple tags',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByText('News'));
     await userEvent.click(canvas.getByText('Gaming'));
 
     expect(args.onChange).toHaveBeenCalledWith(
       expect.objectContaining(new Set(['news', 'gaming']))
     );
-  },
-});
+  }
+);
 
 export const RemovableTags = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => {
     const defaultItems = [
@@ -74,7 +79,12 @@ export const RemovableTags = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas, userEvent }) => {
+});
+
+RemovableTags.test(
+  'Removes individual tags and resets',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
     const news = canvas.getByText('News');
     const shopping = canvas.getByText('Shopping');
 
@@ -83,10 +93,8 @@ export const RemovableTags = meta.story({
 
     await waitFor(() => expect(news).not.toBeInTheDocument());
     await waitFor(() => expect(shopping).not.toBeInTheDocument());
-
-    await userEvent.click(canvas.getByText('Reset'));
-  },
-});
+  }
+);
 
 export const RemovableAllTags = meta.story({
   tags: ['component-test'],
@@ -148,6 +156,7 @@ RemovableAllTags.test('Remove all tags test', async ({ canvas, userEvent }) => {
 
 RemovableAllTags.test(
   'Remove all button is hidden when fewer than 2 tags remain',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     // Start with 4 tags, "Remove all" should be visible
     expect(canvas.getByText('Remove all')).toBeInTheDocument();
@@ -197,6 +206,7 @@ export const WithError = meta.story({
 
 export const WithForm = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Form
       onSubmit={e => {
@@ -227,7 +237,12 @@ export const WithForm = meta.story({
       </Stack>
     </Form>
   ),
-  play: async ({ canvas }) => {
+});
+
+WithForm.test(
+  'submits the selected tags as form data',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     await userEvent.click(await canvas.findByText('Travel'));
     await userEvent.click(canvas.getByText('Gaming'));
     await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
@@ -237,8 +252,8 @@ export const WithForm = meta.story({
         'submitted: travel,gaming'
       );
     });
-  },
-});
+  }
+);
 
 export const Required = meta.story({
   tags: ['component-test'],
@@ -264,7 +279,12 @@ export const Required = meta.story({
       </Stack>
     </Form>
   ),
-  play: async ({ canvas }) => {
+});
+
+Required.test(
+  'shows the validation error when submitted without a selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
 
     await waitFor(() =>
@@ -272,5 +292,5 @@ export const Required = meta.story({
         canvas.getByText('Pick at least one category.')
       ).toBeInTheDocument()
     );
-  },
-});
+  }
+);

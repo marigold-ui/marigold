@@ -115,9 +115,11 @@ const BreadcrumbsBase = ({
           return (
             <RACBreadcrumb key="ellipsis" className={breadcrumbsItem}>
               <BreadcrumbEllipsis hiddenItems={hiddenItems} />
+              {/* Separator size is owned by the theme's Breadcrumbs `item`
+                  slot (`[&_svg]:size-*`, scaled per size variant), which wins
+                  over any width/height on the SVG — so no `size` prop here. */}
               <ChevronRight
                 aria-hidden="true"
-                size={16}
                 data-testid="breadcrumb-chevronright"
               />
             </RACBreadcrumb>
@@ -142,7 +144,6 @@ const BreadcrumbsBase = ({
                 {!isCurrent && (
                   <ChevronRight
                     aria-hidden="true"
-                    size={16}
                     data-testid="breadcrumb-chevronright"
                   />
                 )}

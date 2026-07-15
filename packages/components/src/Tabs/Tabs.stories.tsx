@@ -1,4 +1,4 @@
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Tabs } from './Tabs';
 
@@ -51,7 +51,12 @@ export const Basic = meta.story({
       </Tabs>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+Basic.test(
+  'Activates a tab on click and shows its panel',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
     let keyboardTab: HTMLElement;
 
     await step('Arrange', async () => {
@@ -73,8 +78,8 @@ export const Basic = meta.story({
       );
       await expect(indicator).toBeVisible();
     });
-  },
-});
+  }
+);
 
 export const WithDisabledKeys = meta.story({
   render: args => {
@@ -110,6 +115,7 @@ export const WithDisabledKeys = meta.story({
 });
 
 export const WithSelectedTab = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     return (
       <Tabs aria-label="tabs" selectedKey={'settings'} {...args}>
@@ -172,3 +178,74 @@ export const WithRenderProps = meta.story({
     );
   },
 });
+
+const OVERFLOW_TABS = [
+  'Overview',
+  'Activity',
+  'Notifications',
+  'Integrations',
+  'Permissions',
+  'Billing',
+  'Advanced',
+  'Audit log',
+];
+
+// Tabs overflowing a phone viewport: the row scrolls instead of wrapping.
+// Snapshot skipped (flaky scroll position); the play test covers behavior.
+export const Mobile = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  render: args => (
+    <Tabs aria-label="tabs" {...args}>
+      <Tabs.List aria-label="Workspace settings">
+        {OVERFLOW_TABS.map(label => (
+          <Tabs.Item key={label} id={label}>
+            {label}
+          </Tabs.Item>
+        ))}
+      </Tabs.List>
+      {OVERFLOW_TABS.map(label => (
+        <Tabs.Panel key={label} id={label}>
+          {label} settings panel.
+        </Tabs.Panel>
+      ))}
+    </Tabs>
+  ),
+});
+
+Mobile.test(
+  'scrolls the tab row and activates an overflowed tab',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  },
+  async ({ canvas, userEvent, step }) => {
+    let lastTab: HTMLElement;
+
+    await step('Arrange', async () => {
+      // Fail loudly if the mobile viewport did not apply, rather than pass a
+      // test that never actually overflowed.
+      expect(window.innerWidth).toBeLessThan(640);
+      lastTab = await waitFor(
+        () => canvas.getAllByRole('tab', { name: 'Audit log' })[0]
+      );
+    });
+
+    await step('Act', async () => {
+      await userEvent.click(lastTab!);
+    });
+
+    await step('Assert', async () => {
+      await expect(
+        canvas.getAllByText('Audit log settings panel.')[0]
+      ).toBeVisible();
+      const indicator = await waitFor(
+        () => canvas.getAllByTestId('tab-indicator')[0]
+      );
+      await expect(indicator).toBeVisible();
+    });
+  }
+);

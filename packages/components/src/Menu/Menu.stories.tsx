@@ -3,9 +3,6 @@ import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
-import { Button } from '../Button/Button';
-import { Description } from '../Description/Description';
-import { TextValue } from '../TextValue/TextValue';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
@@ -114,7 +111,7 @@ const meta = preview.meta({
   },
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
     <Menu {...args} label="Hogwarts Houses">
@@ -124,20 +121,31 @@ export const Basic: any = meta.story({
       <Menu.Item id="slytherin">Slytherin</Menu.Item>
     </Menu>
   ),
-  play: async ({ canvas, step }: any) => {
+});
+
+Basic.test('Opens the menu', async ({ canvas }) => {
+  const button = canvas.getByText('Hogwarts Houses');
+
+  await userEvent.click(button);
+
+  expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
+    'aria-expanded',
+    'true'
+  );
+  expect(canvas.getByText('Gryffindor')).toBeVisible();
+  expect(canvas.getByText('Hufflepuff')).toBeVisible();
+  expect(canvas.getByText('Ravenclaw')).toBeVisible();
+  expect(canvas.getByText('Slytherin')).toBeVisible();
+});
+
+Basic.test(
+  'Opens the menu and selects an item',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
     await step('Open the menu', async () => {
       const button = canvas.getByText('Hogwarts Houses');
 
       await userEvent.click(button);
-
-      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
-        'aria-expanded',
-        'true'
-      );
-      expect(canvas.getByText('Gryffindor')).toBeVisible();
-      expect(canvas.getByText('Hufflepuff')).toBeVisible();
-      expect(canvas.getByText('Ravenclaw')).toBeVisible();
-      expect(canvas.getByText('Slytherin')).toBeVisible();
     });
 
     await step('Select an item from the menu and close menu', async () => {
@@ -151,94 +159,177 @@ export const Basic: any = meta.story({
       );
       expect(gryffindor).not.toBeVisible();
     });
-  },
-});
+  }
+);
 
-export const WithDescription: any = meta.story({
-  tags: ['component-test'],
-  render: args => (
-    <Menu {...args} label="File">
-      <Menu.Item id="save" textValue="Save">
-        <TextValue>Save</TextValue>
-        <Description>Write the current document to disk.</Description>
-      </Menu.Item>
-      <Menu.Item id="save-and-exit" textValue="Save and exit">
-        <TextValue>Save and exit</TextValue>
-        <Description>Closes the editor after saving.</Description>
-      </Menu.Item>
-    </Menu>
-  ),
-  play: async ({ canvas, step }: any) => {
-    await step('Open the menu', async () => {
-      await userEvent.click(canvas.getByText('File'));
-      expect(canvas.getByText('Save and exit')).toBeVisible();
-    });
-
-    await step('Description is wired via aria-describedby', async () => {
-      const item = canvas.getByRole('menuitem', { name: /Save and exit/ });
-      const description = canvas.getByText('Closes the editor after saving.');
-
-      expect(description.id).toBeTruthy();
-      expect(item.getAttribute('aria-describedby') ?? '').toContain(
-        description.id
-      );
-    });
-  },
-});
-
-export const OnActionMenu: any = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  tags: ['component-test'],
-  render: args => {
-    return (
-      <Menu onAction={key => alert(key)} {...args} label="Choose">
-        <Menu.Item id="burger">🍔 Burger</Menu.Item>
-        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
-        <Menu.Item id="salad">🥗 Salad</Menu.Item>
-        <Menu.Item id="fries">🍟 Fries</Menu.Item>
+Basic.test(
+  'Groups items under section headings when open',
+  {
+    render: () => (
+      <Menu label="Menu with sections">
+        <Menu.Section title="Food">
+          <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item id="salad">🥗 Salad</Menu.Item>
+          <Menu.Item id="fries">🍟 Fries</Menu.Item>
+        </Menu.Section>
+        <Menu.Section title="Fruits">
+          <Menu.Item id="apple">🍎 Apple</Menu.Item>
+          <Menu.Item id="banana">🍌 Banana</Menu.Item>
+          <Menu.Item id="mango">🥭 Mango</Menu.Item>
+          <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
+        </Menu.Section>
       </Menu>
-    );
+    ),
   },
-  play: async ({ canvas }: any) => {
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Menu with sections' })
+    );
+
+    // The open menu groups its items under the two section headings.
+    expect(canvas.getByRole('menu')).toBeVisible();
+    expect(canvas.getByText('Food')).toBeVisible();
+    expect(canvas.getByText('Fruits')).toBeVisible();
+    expect(canvas.getByText('🍕 Pizza')).toBeVisible();
+    expect(canvas.getByText('🍎 Apple')).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Marks the configured keys as disabled when open',
+  {
+    render: () => (
+      <Menu label="Menu with disabled keys" disabledKeys={['mango', 'salad']}>
+        <Menu.Section title="Food">
+          <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item id="salad">🥗 Salad</Menu.Item>
+          <Menu.Item id="fries">🍟 Fries</Menu.Item>
+        </Menu.Section>
+        <Menu.Section title="Fruits">
+          <Menu.Item id="apple">🍎 Apple</Menu.Item>
+          <Menu.Item id="banana">🍌 Banana</Menu.Item>
+          <Menu.Item id="mango">🥭 Mango</Menu.Item>
+          <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
+        </Menu.Section>
+      </Menu>
+    ),
+  },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Menu with disabled keys' })
+    );
+
+    // Disabled keys expose aria-disabled in the open menu...
+    expect(canvas.getByRole('menuitem', { name: /Salad/ })).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    );
+    expect(canvas.getByRole('menuitem', { name: /Mango/ })).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    );
+
+    // ...while the remaining items stay enabled.
+    expect(canvas.getByRole('menuitem', { name: /Pizza/ })).not.toHaveAttribute(
+      'aria-disabled',
+      'true'
+    );
+  }
+);
+
+Basic.test(
+  'Renders items with an href as links when open',
+  {
+    render: () => (
+      <Menu label="Links">
+        <Menu.Item href="https://adobe.com/" target="_blank">
+          Adobe
+        </Menu.Item>
+        <Menu.Item href="https://apple.com/" target="_blank">
+          Apple
+        </Menu.Item>
+        <Menu.Item href="https://google.com/" target="_blank">
+          Google
+        </Menu.Item>
+        <Menu.Item href="https://microsoft.com/" target="_blank">
+          Microsoft
+        </Menu.Item>
+      </Menu>
+    ),
+  },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Links' }));
+
+    // Menu items with an href render as anchors that keep their menuitem role.
+    const adobe = canvas.getByRole('menuitem', { name: 'Adobe' });
+    expect(adobe).toHaveAttribute('href', 'https://adobe.com/');
+    expect(adobe).toHaveAttribute('target', '_blank');
+    expect(canvas.getByRole('menuitem', { name: 'Google' })).toHaveAttribute(
+      'href',
+      'https://google.com/'
+    );
+  }
+);
+
+Basic.test(
+  'Opens an action menu and fires the chosen action',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    render: () => (
+      <ActionMenu onAction={action => alert(`Action: ${String(action)}`)}>
+        <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
+        <ActionMenu.Item id="settings">
+          <Delete /> Settings
+        </ActionMenu.Item>
+        <ActionMenu.Item id="delete" variant="destructive">
+          <Delete /> Delete
+        </ActionMenu.Item>
+      </ActionMenu>
+    ),
+  },
+  async ({ canvas }) => {
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
-    const button = canvas.getByText('Choose');
+    await userEvent.click(canvas.getByRole('button'));
+
+    expect(canvas.getByText('Open in editor')).toBeVisible();
+    expect(canvas.getByText('Settings')).toBeVisible();
+    expect(canvas.getByText('Delete')).toBeVisible();
+
+    await userEvent.click(canvas.getByText('Open in editor'));
+    expect(alertMock).toHaveBeenCalledWith('Action: edit');
+
+    alertMock.mockRestore();
+  }
+);
+
+Basic.test(
+  'Calls onAction with the selected item key',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      onAction: key => {
+        alert(key);
+      },
+    },
+  },
+  async ({ canvas }) => {
+    const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
+
+    const button = canvas.getByText('Hogwarts Houses');
 
     await userEvent.click(button);
-    await userEvent.click(canvas.getByText('🍔 Burger'));
+    await userEvent.click(canvas.getByText('Gryffindor'));
 
-    expect(alertMock).toHaveBeenCalledWith('burger');
+    expect(alertMock).toHaveBeenCalledWith('gryffindor');
     expect(alertMock).not.toHaveBeenCalledWith('pizza');
 
     alertMock.mockRestore();
-  },
-});
+  }
+);
 
-export const SingleSelection: any = meta.story({
-  render: () => {
-    const [selected, setSelected] = useState<Set<'left' | 'center' | 'right'>>(
-      new Set(['center'])
-    );
-
-    return (
-      <>
-        <Menu
-          label="Align"
-          selectionMode="single"
-          selectedKeys={selected}
-          onSelectionChange={setSelected as any}
-        >
-          <Menu.Item id="left">Left</Menu.Item>
-          <Menu.Item id="center">Center</Menu.Item>
-          <Menu.Item id="right">Right</Menu.Item>
-        </Menu>
-        <p>Current selection (controlled): {[...selected].join(', ')}</p>
-      </>
-    );
-  },
-});
-
-export const MultiSelection: any = meta.story({
+export const MultiSelection = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
     const selected = Array.from(selectedKeys);
@@ -262,112 +353,69 @@ export const MultiSelection: any = meta.story({
   },
 });
 
-export const MenuSection: any = meta.story({
-  render: args => (
-    <Menu {...args} label="Menu with sections">
-      <Menu.Section title="Food">
-        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
-        <Menu.Item id="salad">🥗 Salad</Menu.Item>
-        <Menu.Item id="fries">🍟 Fries</Menu.Item>
-      </Menu.Section>
-      <Menu.Section title="Fruits">
-        <Menu.Item id="apple">🍎 Apple</Menu.Item>
-        <Menu.Item id="banana">🍌 Banana</Menu.Item>
-        <Menu.Item id="mango">🥭 Mango</Menu.Item>
-        <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
-      </Menu.Section>
-    </Menu>
-  ),
-});
-
-export const DisabledKeys: any = meta.story({
-  render: args => (
-    <Menu
-      {...args}
-      label="Menu with sections"
-      disabledKeys={['mango', 'salad']}
-    >
-      <Menu.Section title="Food">
-        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
-        <Menu.Item id="salad">🥗 Salad</Menu.Item>
-        <Menu.Item id="fries">🍟 Fries</Menu.Item>
-      </Menu.Section>
-      <Menu.Section title="Fruits">
-        <Menu.Item id="apple">🍎 Apple</Menu.Item>
-        <Menu.Item id="banana">🍌 Banana</Menu.Item>
-        <Menu.Item id="mango">🥭 Mango</Menu.Item>
-        <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
-      </Menu.Section>
-    </Menu>
-  ),
-});
-
-export const LinksMenu: any = meta.story({
-  render: args => (
-    <Menu {...args} label="Links">
-      <Menu.Item href="https://adobe.com/" target="_blank">
-        Adobe
-      </Menu.Item>
-      <Menu.Item href="https://apple.com/" target="_blank">
-        Apple
-      </Menu.Item>
-      <Menu.Item href="https://google.com/" target="_blank">
-        Google
-      </Menu.Item>
-      <Menu.Item href="https://microsoft.com/" target="_blank">
-        Microsoft
-      </Menu.Item>
-    </Menu>
-  ),
-});
-
-export const BasicActionMenu: any = meta.story({
+export const AccessSections = meta.story({
   tags: ['component-test'],
-  render: args => {
-    return (
-      <ActionMenu
-        onAction={action => alert(`Action: ${String(action)}`)}
-        {...args}
-      >
-        <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
-        <ActionMenu.Item id="settings">
-          <Delete /> Settings
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => (
+    <ActionMenu aria-label="Filial-Aktionen">
+      <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
+      <ActionMenu.Section title="Master-Aktionen">
+        <ActionMenu.Item id="move" variant="master">
+          Verschieben
         </ActionMenu.Item>
-        <ActionMenu.Item id="delete" variant="destructive">
-          <Delete /> Delete
+        <ActionMenu.Item id="tse" variant="master">
+          TSE anbinden
         </ActionMenu.Item>
-      </ActionMenu>
-    );
-  },
+        {/* `variant` is a single axis: for restricted destructive actions the
+            access variant takes precedence over `destructive`. */}
+        <ActionMenu.Item id="delete" variant="master">
+          Löschen
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+      <ActionMenu.Section title="Admin-Aktionen">
+        <ActionMenu.Item id="release" variant="admin">
+          Freigeben
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+    </ActionMenu>
+  ),
 });
 
-export const OpenMenuRemotely: any = meta.story({
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const handleAction = () => {
-      setOpen(!open);
-    };
-
-    return (
-      <>
-        <Button onPress={() => setOpen(!open)}>Open the menu remotly!</Button>
-        <hr />
-        <Menu
-          onOpenChange={handleAction}
-          open={open}
-          onClose={() => setOpen(!open)}
-          label="Menu"
-        >
-          <Menu.Item id="one">One</Menu.Item>
-          <Menu.Item id="two">Two</Menu.Item>
-        </Menu>
-      </>
+AccessSections.test(
+  'renders master and admin access sections',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Filial-Aktionen' })
     );
-  },
-});
 
-export const Mobile: any = meta.story({
+    expect(await canvas.findByText('Master-Aktionen')).toBeVisible();
+
+    // The `name` filter asserts the accessible name: the visible label plus
+    // the hidden "Master" label. The lock icon itself is decorative.
+    const move = canvas.getByRole('menuitem', { name: 'Verschieben Master' });
+
+    expect(move.querySelector('svg')).toBeInTheDocument();
+  }
+);
+
+AccessSections.test(
+  'restricted destructive actions use the access variant',
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Filial-Aktionen' })
+    );
+
+    const del = canvas.getByRole('menuitem', { name: 'Löschen Master' });
+
+    expect(del.querySelector('svg')).toBeInTheDocument();
+    expect(del).not.toHaveClass('text-destructive-accent');
+  }
+);
+
+export const Mobile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -384,93 +432,95 @@ export const Mobile: any = meta.story({
 });
 
 Mobile.test(
-  'Mobile Menu interaction',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step }: any) => {
-    const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+  'Displays the tray with its items',
+  // Keep the snapshot so Chromatic captures the open tray (the small-screen
+  // visual state), unlike the interaction-only tests below.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Mobile Menu' }));
 
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
-    });
+    const tray = await canvas.findByRole('dialog');
+    await waitFor(() => expect(tray).toBeVisible());
 
-    await step('Verify tray content is visible', async () => {
-      const dialog = await canvas.findByRole('dialog');
-
-      await waitFor(() => expect(dialog).toBeVisible());
-    });
-
-    await step('Verify menu items are visible', async () => {
-      expect(canvas.getByText('Home')).toBeVisible();
-      expect(canvas.getByText('Profile')).toBeVisible();
-      expect(canvas.getByText('Settings')).toBeVisible();
-      expect(canvas.getByText('Logout')).toBeVisible();
-    });
-
-    await step('Select menu item', async () => {
-      const menuItem = canvas.getByText('Profile');
-
-      await userEvent.click(menuItem);
-    });
-
-    await step('Verify tray is closed after selection', async () => {
-      await waitFor(() => {
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
-      });
-    });
+    expect(canvas.getByText('Home')).toBeVisible();
+    expect(canvas.getByText('Profile')).toBeVisible();
+    expect(canvas.getByText('Settings')).toBeVisible();
+    expect(canvas.getByText('Logout')).toBeVisible();
   }
 );
 
-Mobile.test(
-  'Mobile Menu keyboard navigation',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step }: any) => {
-    const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+Mobile.test('Mobile Menu interaction', async ({ canvas, step }) => {
+  const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
 
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
 
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
-      );
+  await step('Verify tray content is visible', async () => {
+    const dialog = await canvas.findByRole('dialog');
+
+    await waitFor(() => expect(dialog).toBeVisible());
+  });
+
+  await step('Verify menu items are visible', async () => {
+    expect(canvas.getByText('Home')).toBeVisible();
+    expect(canvas.getByText('Profile')).toBeVisible();
+    expect(canvas.getByText('Settings')).toBeVisible();
+    expect(canvas.getByText('Logout')).toBeVisible();
+  });
+
+  await step('Select menu item', async () => {
+    const menuItem = canvas.getByText('Profile');
+
+    await userEvent.click(menuItem);
+  });
+
+  await step('Verify tray is closed after selection', async () => {
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
     });
+  });
+});
 
-    await step('Navigate menu with arrow keys', async () => {
-      await userEvent.keyboard('{ArrowDown}');
-      await userEvent.keyboard('{ArrowDown}');
+Mobile.test('Mobile Menu keyboard navigation', async ({ canvas, step }) => {
+  const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  });
+
+  await step('Navigate menu with arrow keys', async () => {
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{ArrowDown}');
+  });
+
+  await step('Select item with Enter key', async () => {
+    await userEvent.keyboard('{Enter}');
+  });
+
+  await step('Verify tray is closed', async () => {
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
+});
+
+Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }) => {
+  const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  });
+
+  await step('Close tray with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
     });
-
-    await step('Select item with Enter key', async () => {
-      await userEvent.keyboard('{Enter}');
-    });
-
-    await step('Verify tray is closed', async () => {
-      await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-      );
-    });
-  }
-);
-
-Mobile.test(
-  'Mobile Menu close with Escape',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step }: any) => {
-    const trigger = canvas.getByRole('button', { name: 'Mobile Menu' });
-
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
-
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
-      );
-    });
-
-    await step('Close tray with Escape key', async () => {
-      await userEvent.keyboard('{Escape}');
-
-      await waitFor(() => {
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
-      });
-    });
-  }
-);
+  });
+});

@@ -1,13 +1,13 @@
 import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Radio as RACRadio } from 'react-aria-components/RadioGroup';
+import { RadioButton, RadioField } from 'react-aria-components/RadioGroup';
 import { cn, useClassNames } from '@marigold/system';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
 type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
-export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
+export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
   variant?: string;
   size?: string;
   /**
@@ -23,7 +23,7 @@ export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
    * Set the radio disabled.
    * @default false
    */
-  disabled?: RAC.RadioProps['isDisabled'];
+  disabled?: RAC.RadioFieldProps['isDisabled'];
   ref?: Ref<HTMLLabelElement>;
 }
 
@@ -50,6 +50,8 @@ const _Radio = ({
   disabled,
   width,
   children,
+  variant: variantProp,
+  size: sizeProp,
   ref,
   ...props
 }: RadioProps) => {
@@ -57,36 +59,39 @@ const _Radio = ({
 
   const classNames = useClassNames({
     component: 'Radio',
-    variant: variant || props.variant,
-    size: size || props.size,
+    variant: variant || variantProp,
+    size: size || sizeProp,
   });
 
   return (
-    <RACRadio
-      ref={ref}
-      className={cn(
-        'group/radio',
-        'relative flex items-start',
-        width || groupWidth || 'w-full',
-        classNames.container
-      )}
+    <RadioField
+      className={cn(width || groupWidth || 'w-full')}
       value={value}
       isDisabled={disabled}
       {...props}
     >
-      {({ isSelected }) => (
-        <>
-          <Icon
-            checked={isSelected}
-            className={cn(
-              disabled ? 'cursor-not-allowed' : 'cursor-pointer',
-              classNames.radio
-            )}
-          />
-          <div className={classNames.label}>{children}</div>
-        </>
-      )}
-    </RACRadio>
+      <RadioButton
+        ref={ref}
+        className={cn(
+          'group/radio',
+          'relative flex w-full items-start',
+          classNames.container
+        )}
+      >
+        {({ isSelected }) => (
+          <>
+            <Icon
+              checked={isSelected}
+              className={cn(
+                disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+                classNames.radio
+              )}
+            />
+            <div className={classNames.label}>{children}</div>
+          </>
+        )}
+      </RadioButton>
+    </RadioField>
   );
 };
 

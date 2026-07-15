@@ -7,7 +7,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'flex items-center justify-between justify-items-center gap-16',
       'px-6 py-3',
       'shadow-elevation-overlay',
-      'ui-surface-contrast',
+      'ui-contrast',
       'rounded-full font-medium',
       'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
@@ -35,13 +35,6 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'focus-visible:ui-state-focus outline-none',
       'disabled:ui-state-disabled',
       '[&_svg]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
-    ],
-  }),
-  actionButton: cva({
-    base: [
-      'ui-button-base gap-2 items-center justify-center',
-      'hover:ui-state-hover-ghost',
-      'text-sm h-control p-squish-relaxed [&_svg]:size-4',
     ],
   }),
 };

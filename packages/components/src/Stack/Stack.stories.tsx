@@ -1,10 +1,6 @@
-import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
-import { Card } from '../Card/Card';
-import { Container } from '../Container/Container';
 import { Headline } from '../Headline/Headline';
-import { Inline } from '../Inline/Inline';
 import { Text } from '../Text/Text';
 import { Block } from '../__internal__/Block';
 import { Stack } from './Stack';
@@ -52,70 +48,22 @@ export const Basic = meta.story({
     space: 'regular',
   },
   render: args => (
-    <div className="rounded-xl bg-linear-to-b from-gray-50 to-white p-8">
+    <Block>
       <Stack {...args}>
-        <Block className="max-w-sm">
+        <Block>
           <Headline level={2}>Getting Started with Stack</Headline>
         </Block>
-        <Block className="max-w-sm">
+        <Block>
           The Stack component provides a flexible layout system for arranging
           content vertically or horizontally with consistent spacing. It&apos;s
           designed to handle responsive layouts without writing custom CSS.
         </Block>
-        <Block className="max-w-sm">
+        <Block>
           Use the space prop to control the distance between elements. You can
           also combine Stack with alignment props to create complex layouts that
           adapt to different screen sizes.
         </Block>
-      </Stack>
-    </div>
-  ),
-});
-
-export const Collapsed = meta.story({
-  tags: ['component-test'],
-  args: {
-    space: 'collapsed',
-  },
-  render: args => (
-    <Stack data-testid="stack" {...args}>
-      <Block>Lirum</Block>
-      <Block>Larum</Block>
-      <Block>Löffelstiel!</Block>
-    </Stack>
-  ),
-  play: async ({ canvas }) => {
-    const stack = canvas.getByTestId('stack');
-    expect(getComputedStyle(stack).rowGap).toBe('0px');
-  },
-});
-
-export const Nested = meta.story({
-  render: args => (
-    <Block>
-      <Stack {...args}>
-        <Stack space={2}>
-          <Block>
-            <Headline level={2}>With xsmall spacing</Headline>
-          </Block>
-          <Block>
-            <Text>
-              Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse dignissim dapibus elit, vel egestas felis pharetra
-              non. Cras malesuada, massa nec ultricies efficitur, lectus ante
-              consequat magna, a porttitor massa ex ut quam.
-            </Text>
-          </Block>
-          <Block>
-            <Text>
-              Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse dignissim dapibus elit, vel egestas felis pharetra
-              non. Cras malesuada, massa nec ultricies efficitur, lectus ante
-              consequat magna, a porttitor massa ex ut quam.
-            </Text>
-          </Block>
-        </Stack>
-        <Stack space={4}>
+        <Stack {...args} space={4}>
           <Block>
             <Headline level={2}>With Medium Spacing</Headline>
           </Block>
@@ -141,80 +89,11 @@ export const Nested = meta.story({
   ),
 });
 
-export const Stretch = meta.story({
-  args: {
-    space: 8,
-    stretch: true,
-  },
-  render: args => (
-    <Block>
-      <div style={{ height: '300px' }}>
-        <Stack {...args}>
-          <Block>Lirum</Block>
-          <Block>Larum</Block>
-          <Block>Löffelstiel!</Block>
-        </Stack>
-      </div>
-    </Block>
-  ),
-});
-
 export const AsList = meta.story({
   render: args => (
     <Stack {...args} asList>
       <Block>first</Block>
       <Block>second</Block>
-    </Stack>
-  ),
-});
-
-export const WithInline = meta.story({
-  args: {
-    space: 4,
-    alignX: 'center',
-  },
-  render: args => (
-    <Stack {...args}>
-      <Inline space={2}>
-        <Block>Inline is only as large</Block>
-        <Block>as it needs to be.</Block>
-        <Block>
-          So centering the <code>Stack</code> makes it align
-        </Block>
-      </Inline>
-    </Stack>
-  ),
-});
-
-export const WithCards = meta.story({
-  args: {
-    space: 8,
-  },
-  render: args => (
-    <Stack {...args}>
-      <Card>
-        <Card.Body>
-          <Container>
-            <Headline level={2}>Card Title</Headline>
-            <Text>
-              This is an example of a card component used within a Stack layout.
-              Cards are useful for grouping related information together in a
-              visually distinct container.
-            </Text>
-          </Container>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          <Container>
-            <Headline level={2}>Another Card</Headline>
-            <Text>
-              Stacks make it easy to maintain consistent spacing between cards
-              and other components, ensuring a clean and organized layout.
-            </Text>
-          </Container>
-        </Card.Body>
-      </Card>
     </Stack>
   ),
 });

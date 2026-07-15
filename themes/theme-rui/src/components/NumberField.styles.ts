@@ -3,12 +3,12 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva({
     base: [
-      'ui-surface shadow-elevation-border h-control',
+      'ui-control h-control',
       'has-invalid:ui-state-error',
       'group-data-disabled/field:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',
       'has-focus:ui-state-focus outline-none',
-      'has-focus:has-invalid:outline-destructive/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive)]',
+      'has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)]',
     ],
   }),
   stepper: cva({

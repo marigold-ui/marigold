@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Card: ThemeComponent<'Card'> = {
   container: cva({
-    base: 'rounded-surface shadow-elevation-raised [--card-text:currentColor]',
+    base: 'rounded-surface [--card-text:currentColor]',
     variants: {
       variant: {
         default: 'ui-surface',
@@ -23,7 +23,7 @@ export const Card: ThemeComponent<'Card'> = {
   description: cva({
     base: 'mt-0.5 text-sm text-secondary',
   }),
-  body: cva({
+  content: cva({
     base: 'text-sm',
   }),
   footer: cva({

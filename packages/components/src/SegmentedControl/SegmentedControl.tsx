@@ -9,6 +9,7 @@ import {
 import { SelectionIndicator } from 'react-aria-components/SelectionIndicator';
 import { type WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { useWheelScrollX } from '../utils/useWheelScrollX';
 import { SegmentedControlContext } from './Context';
 
 // SegmentedControl
@@ -109,6 +110,8 @@ function SegmentedControlBase({
   const stretch = width === 'full';
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  useWheelScrollX(scrollRef);
+
   // Keep the selected option visible when the segments overflow and scroll.
   const scrollSelectedIntoView = useCallback((behavior: ScrollBehavior) => {
     const container = scrollRef.current;
@@ -129,11 +132,12 @@ function SegmentedControlBase({
 
   // Store the scroll container and reveal the initially selected option as soon
   // as it mounts — a ref callback instead of an effect (it runs once the node
-  // and its options are in the DOM, with no extra render).
+  // and its options are in the DOM, with no extra render). The first paint must
+  // never animate, so this reveal is `'instant'` regardless of motion settings.
   const attachScrollContainer = useCallback(
     (node: HTMLDivElement | null) => {
       scrollRef.current = node;
-      if (node) scrollSelectedIntoView('auto');
+      if (node) scrollSelectedIntoView('instant');
     },
     [scrollSelectedIntoView]
   );
@@ -141,13 +145,11 @@ function SegmentedControlBase({
   const handleChange = (value: string) => {
     onChange?.(value);
 
-    const reduced =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    requestAnimationFrame(() =>
-      scrollSelectedIntoView(reduced ? 'auto' : 'smooth')
-    );
+    // Defer to the next frame so the newly-selected option's geometry has
+    // settled, then reveal it. `behavior: 'auto'` follows the container's CSS
+    // `scroll-behavior` (`motion-safe:scroll-smooth`), so it animates when
+    // motion is allowed and jumps under reduced motion — no JS media query.
+    requestAnimationFrame(() => scrollSelectedIntoView('auto'));
   };
 
   const props: RAC.RadioGroupProps = {
@@ -231,8 +233,10 @@ function SegmentedControlOption({
       className={cn(classNames.field, context.stretch && 'grow basis-0')}
       {...props}
     >
-      <SelectionIndicator className={classNames.indicator} />
-      <RadioButton className={classNames.option}>{children}</RadioButton>
+      <SelectionIndicator className={cn(classNames.indicator, 'z-0')} />
+      <RadioButton className={cn(classNames.option, 'z-10')}>
+        {children}
+      </RadioButton>
     </RadioField>
   );
 }
