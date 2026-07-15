@@ -30,7 +30,7 @@ mock_data:
       }>;
 key_files:
   - VenuesTable.tsx
-  - Toolbar.tsx
+  - FilterBar.tsx
   - AppliedFilter.tsx
   - VenuesPagination.tsx
   - FetchingIndicator.tsx

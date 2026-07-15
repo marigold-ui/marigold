@@ -15,7 +15,7 @@ export const FilterAnatomy = () => (
       strokeWidth="2"
     />
 
-    {/* Toolbar: search field */}
+    {/* Filter bar: search field */}
     <rect
       x="170"
       y="62"
@@ -33,7 +33,7 @@ export const FilterAnatomy = () => (
       rx="3"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
-    {/* Toolbar: filter trigger button */}
+    {/* Filter bar: filter trigger button */}
     <rect
       x="366"
       y="62"
@@ -385,7 +385,7 @@ export const FilterAnatomy = () => (
           fontWeight="600"
           className="fill-fd-primary"
         >
-          Toolbar
+          Filter Bar
         </text>
         <text
           x="130"

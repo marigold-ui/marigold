@@ -82,7 +82,7 @@ const FilterForm = ({ filter }: { filter: VenueFilter }) => (
   </Stack>
 );
 
-export const Toolbar = () => {
+export const FilterBar = () => {
   const [search, setSearch] = useSearch();
   const { filter, setFilterFromForm } = useFilter();
 

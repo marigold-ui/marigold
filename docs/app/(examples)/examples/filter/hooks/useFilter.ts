@@ -25,7 +25,7 @@ export const defaultFilter = {
 export type FilterKeys = keyof typeof defaultFilter;
 export type VenueFilter = typeof defaultFilter;
 
-// Shape produced by parseFormData on the FilterForm in Toolbar.tsx.
+// Shape produced by parseFormData on the FilterForm in FilterBar.tsx.
 export type FilterFormData = {
   capacity?: string;
   price?: string;
