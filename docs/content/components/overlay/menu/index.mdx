@@ -129,7 +129,9 @@ Selected rows show a checkmark and a highlighted background, aligned like `<List
 
 <ComponentDemo name="menu-selection" />
 
-This is the one case where a menu row carries state, and it works because the row itself is the toggle. The moment a row needs its own control beside the label, such as a switch, a second button, or a link, it stops being a command and a menu is the wrong container. Screen readers cannot reach controls nested inside a menu item, so reach for a surface that holds arbitrary, interactive content instead.
+This is the one case where a menu row carries state, and it works because the whole row is the control. Clicking anywhere on the row flips the setting, and the checkmark only shows whether it is on. There is no separate switch inside the row to aim at, just the row itself.
+
+The moment a row needs its own control beside the label, such as a switch to flip or a link to follow, it becomes content that holds controls rather than a single command, and a menu is the wrong container. A menu item cannot expose interactive children to a screen reader or to keyboard focus, so use a surface built for arbitrary content instead.
 
 ### Destructive actions
 
