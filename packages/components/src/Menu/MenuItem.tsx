@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { use, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import { MenuItem } from 'react-aria-components/Menu';
 import { TextContext } from 'react-aria-components/Text';
@@ -7,6 +6,7 @@ import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
 import { AccessIcon } from '../utils/AccessIcon';
 import { AccessLabel } from '../utils/AccessLabel';
+import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 
 // Props
 // ---------------
@@ -15,10 +15,6 @@ export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {
   variant?: 'destructive' | 'default' | 'master' | 'admin' | (string & {});
   size?: string;
 }
-
-type SlottedContextValue = {
-  slots?: Record<string, { className?: string } & Record<string, unknown>>;
-};
 
 interface ItemChildrenProps {
   children: ReactNode;
@@ -30,35 +26,18 @@ interface ItemChildrenProps {
 // nested `<TextValue>` / `<Description>` (or `<Text slot="label">` /
 // `<Text slot="description">`) inside a `Menu.Item` pick up our theme
 // classNames without losing RAC's slot wiring (most notably `id` for
-// `aria-describedby`).
+// `aria-describedby`). Shared with `ListBox.Item` via `useMergedTextSlots`.
 const ItemChildren = ({
   children,
   labelClassName,
   descriptionClassName,
 }: ItemChildrenProps) => {
-  const parentText = use(TextContext) as SlottedContextValue | undefined;
-  const parentTextSlots = parentText?.slots;
+  const value = useMergedTextSlots({
+    label: labelClassName,
+    description: descriptionClassName,
+  });
 
-  const textContextValue = useMemo(
-    () => ({
-      slots: {
-        ...parentTextSlots,
-        label: {
-          ...(parentTextSlots?.label ?? {}),
-          className: labelClassName,
-        },
-        description: {
-          ...(parentTextSlots?.description ?? {}),
-          className: descriptionClassName,
-        },
-      },
-    }),
-    [parentTextSlots, labelClassName, descriptionClassName]
-  );
-
-  return (
-    <Provider values={[[TextContext, textContextValue]]}>{children}</Provider>
-  );
+  return <Provider values={[[TextContext, value]]}>{children}</Provider>;
 };
 
 // Component
