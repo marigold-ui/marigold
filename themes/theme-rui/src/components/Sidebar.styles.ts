@@ -13,7 +13,16 @@ import { type ThemeComponent, cva } from '@marigold/system';
  * Extra top space on section labels separates groups without dividers.
  */
 export const Sidebar: ThemeComponent<'Sidebar'> = {
-  overlay: cva({}),
+  overlay: cva({
+    base: [
+      // The rail's mobile drawer is a partial sheet: dim the page behind it
+      // so the exposed strip reads as backdrop (tap to dismiss). The default
+      // full-width sheet has nothing to dim.
+      'data-partial:bg-overlay-backdrop',
+      'data-partial:entering:animate-fade-in data-partial:exiting:animate-fade-out',
+      'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
+    ],
+  }),
   modal: cva({
     base: [
       'flex h-full *:flex-1',
@@ -201,16 +210,13 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // cannot re-wrap while the column width animates.
   //
   // Collapsing folds the label row (grid-rows auto 1fr → auto 0fr) with the
-  // same 200ms ease-in-out as the column width, so tiles settle into a dense
-  // even icon-only pitch (2.25rem tiles) and the icons glide — never jump —
-  // into place.
+  // same 200ms ease-in-out as the column width, while py grows 2 → 3 so each
+  // icon-only tile is a 2.75rem (44px) hit target — the WCAG 2.5.5 minimum —
+  // and the icons glide — never jump — into place.
   //
-  // The hover/selected pill and the focus ring live on a `before:` indicator
-  // layer decoupled from the tile box (the SelectionIndicator idea from
-  // SegmentedControl, as a pseudo-element): expanded it fills the
-  // content-hugging tile; collapsed it is a control-size (2.25rem) square
-  // around the 20px icon — 8px of air on all four sides. Its inset morphs in
-  // sync with the fold.
+  // The hover/selected pill and the focus ring sit on the tile itself, so
+  // the visible affordance always matches the clickable area exactly — in
+  // both states the whole content-hugging tile is the pill.
   //
   // The label fades instead of unmounting: out fast (100ms, no delay) so no
   // half-clipped text rides the folding row; in late (150ms after a 100ms
@@ -224,27 +230,19 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // off-center. The icon–label gap is a row-gap (not a margin/padding on
       // the label: both leak into the folded 0fr track) and folds to 0 in the
       // same transition.
-      'relative isolate grid grid-cols-[minmax(0,1fr)] justify-items-center mx-1 px-0.5 py-2',
+      'grid grid-cols-[minmax(0,1fr)] justify-items-center mx-1 px-0.5 py-2',
       'grid-rows-[auto_1fr] gap-y-1',
       'in-data-[state=collapsed]:grid-rows-[auto_0fr] in-data-[state=collapsed]:gap-y-0',
-      'transition-[grid-template-rows,row-gap,color] duration-200 ease-in-out',
+      'in-data-[state=collapsed]:py-3',
+      'transition-[grid-template-rows,row-gap,padding,color,background-color] duration-200 ease-in-out',
       'motion-reduce:transition-none',
       'text-secondary text-center cursor-pointer',
-      'outline-none',
+      'outline-none rounded-surface',
       'hover:text-foreground data-active:text-foreground',
-      // The indicator layer (see block comment above). Collapsed: a 2.25rem
-      // square centered on the icon — 50%-based insets keep it icon-centered
-      // no matter how wide the tile actually is (a visible rail scrollbar
-      // narrows the tiles), bottom pins its height to the control size.
-      'before:absolute before:-z-10 before:inset-0 before:rounded-surface',
-      'before:transition-[inset,background-color] before:duration-200 before:ease-in-out',
-      'motion-reduce:before:transition-none',
-      'in-data-[state=collapsed]:before:inset-x-[calc(50%-1.125rem)]',
-      'in-data-[state=collapsed]:before:bottom-[calc(100%-2.25rem)]',
-      'hover:before:bg-hover',
+      'hover:bg-hover',
       // Active section/link: same flat `selected` fill as a nav row.
-      'data-active:before:bg-selected',
-      'focus-visible:before:ui-state-focus',
+      'data-active:bg-selected',
+      'focus-visible:ui-state-focus',
       '[&_svg]:size-5 [&_svg]:shrink-0',
       // The label: same size as the panel's group captions, medium so it holds
       // its own under the icon. It is the foldable grid row: min-h-0 +

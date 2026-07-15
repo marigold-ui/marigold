@@ -9,6 +9,12 @@ import { useSidebar } from './Context';
 export interface SidebarModalProps {
   children?: ReactNode;
   ref?: Ref<HTMLElement>;
+  /**
+   * Renders the drawer as a partial-width sheet floating over a dimmed page
+   * (the two-level rail's mobile shell) instead of the default full-width
+   * sheet. Tapping the exposed backdrop dismisses.
+   */
+  partial?: boolean;
 }
 
 /**
@@ -17,7 +23,7 @@ export interface SidebarModalProps {
  * `Sidebar` and the two-level `Sidebar.Rail` so both collapse to the same
  * drawer on small screens.
  */
-export const SidebarModal = ({ children, ref }: SidebarModalProps) => {
+export const SidebarModal = ({ children, partial, ref }: SidebarModalProps) => {
   const { state, toggleSidebar, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -25,13 +31,17 @@ export const SidebarModal = ({ children, ref }: SidebarModalProps) => {
     <ModalOverlay
       isOpen={state === 'expanded'}
       onOpenChange={open => !open && toggleSidebar()}
+      // The theme's overlay recipe reads this to paint the dimmed backdrop.
+      data-partial={partial || undefined}
       className={cn(
         'fixed inset-0 z-50 h-(--visual-viewport-height)',
         classNames.overlay
       )}
       isDismissable
     >
-      <Modal className={classNames.modal}>
+      {/* Partial: the modal hugs its content so the backdrop stays exposed —
+          a pointer down there counts as an outside interaction (dismiss). */}
+      <Modal className={cn(classNames.modal, partial && 'w-[min(88vw,24rem)]')}>
         <aside
           ref={ref}
           aria-label={stringFormatter.format('sidebar')}

@@ -1,5 +1,6 @@
 import { cloneElement, useLayoutEffect, useRef } from 'react';
 import type { ReactElement, ReactNode, Ref } from 'react';
+import { Focusable } from 'react-aria-components/Focusable';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
 import {
@@ -9,13 +10,12 @@ import {
   useRouter,
 } from '@react-aria/utils';
 import { cn } from '@marigold/system';
+import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarModal } from './SidebarModal';
-import { SidebarNav } from './SidebarNav';
 import type { SidebarNavProps } from './SidebarNav';
 import type { SidebarCurrent } from './collection';
-import { railToNavChildren } from './railCollection';
 import type { SidebarRailNode } from './railCollection';
 import { useSidebarRailState } from './useSidebarRailState';
 
@@ -48,10 +48,10 @@ interface RailItemLinkProps {
   /** Runs on activation; returns whether the click should still navigate. */
   onActivate: () => boolean;
   /**
-   * Icon-only rail: adds a native title as the hover hint. The label itself
-   * stays mounted — the theme folds its row away and fades it to opacity-0
-   * (still the accessible name), so the tiles glide into the dense icon-only
-   * pitch instead of jumping.
+   * Icon-only rail: enables the tooltip as the hover/focus hint. The label
+   * itself stays mounted — the theme folds its row away and fades it to
+   * opacity-0 (still the accessible name), so the tiles glide into the dense
+   * icon-only pitch instead of jumping.
    */
   collapsed: boolean;
   className: string;
@@ -79,31 +79,37 @@ const RailItemLink = ({
   // item that is itself the page announces `page`.
   const ariaCurrent = matched ? (node.isSection ? 'true' : 'page') : undefined;
 
+  // The trigger stays mounted in both states (only `disabled` flips) so the
+  // anchor never remounts mid-collapse, which would cut the glide transition.
   return (
-    <a
-      {...routerLinkProps}
-      ref={ref}
-      href={node.href}
-      role={node.href ? undefined : 'button'}
-      aria-current={ariaCurrent}
-      data-active={selected || undefined}
-      title={collapsed ? node.textValue : undefined}
-      className={className}
-      onClick={e => {
-        const shouldNavigate = onActivate();
-        node.onPress?.();
-        // Re-clicking the active section only toggles the panel — don't let
-        // the anchor navigate away from a deeper page the user is already on.
-        if (shouldNavigate) {
-          handleLinkClick(e, router, node.href, undefined);
-        } else {
-          e.preventDefault();
-        }
-      }}
-    >
-      {node.icon}
-      <span>{node.textValue}</span>
-    </a>
+    <Tooltip.Trigger disabled={!collapsed}>
+      <Focusable>
+        <a
+          {...routerLinkProps}
+          ref={ref}
+          href={node.href}
+          role={node.href ? undefined : 'button'}
+          aria-current={ariaCurrent}
+          data-active={selected || undefined}
+          className={className}
+          onClick={e => {
+            const shouldNavigate = onActivate();
+            node.onPress?.();
+            // Re-clicking the active section only toggles the panel — don't let
+            // the anchor navigate away from a deeper page the user is already on.
+            if (shouldNavigate) {
+              handleLinkClick(e, router, node.href, undefined);
+            } else {
+              e.preventDefault();
+            }
+          }}
+        >
+          {node.icon}
+          <span>{node.textValue}</span>
+        </a>
+      </Focusable>
+      <Tooltip placement="right">{node.textValue}</Tooltip>
+    </Tooltip.Trigger>
   );
 };
 
@@ -139,7 +145,10 @@ const SidebarRail = ({
   // selection never sets it, so focus is never stolen unprompted.
   const focusPendingRef = useRef(false);
 
-  const hasPanel = (selectedNode?.isSection ?? false) && state === 'expanded';
+  // On mobile `state` means drawer visibility, not panel visibility — inside
+  // the open drawer the active section's panel is always shown.
+  const hasPanel =
+    (selectedNode?.isSection ?? false) && (isMobile || state === 'expanded');
 
   const footerNodes = nodes.filter(node => node.inFooter);
 
@@ -149,11 +158,35 @@ const SidebarRail = ({
     titleRef.current?.focus({ focusVisible: isFocusVisible() } as FocusOptions);
   }, [hasPanel, selectedKey]);
 
+  // The mobile drawer renders no RAC Dialog, so nothing autofocuses on open —
+  // move focus to the panel heading (or the first rail link on a page without
+  // a panel) so Escape and screen readers land inside the modal right away.
+  const mobileBodyRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (!isMobile || state !== 'expanded') return;
+    const target =
+      titleRef.current ?? mobileBodyRef.current?.querySelector('a');
+    target?.focus({ focusVisible: isFocusVisible() } as FocusOptions);
+  }, [isMobile, state]);
+
   // Returns whether the click should navigate (false = re-click toggle only).
   const activateRail = (node: SidebarRailNode): boolean => {
     if (!node.isSection) {
       selectRail(node.key);
+      // Mobile: the link leaves the page, so the drawer leaves with it.
+      if (isMobile) toggleSidebar();
       return true;
+    }
+    if (isMobile) {
+      // The drawer shows rail and panel side by side, so a section tap only
+      // retargets the panel — navigating would close the drawer before the
+      // user picks a leaf. Re-tapping the active section is a no-op (there
+      // is no hidden panel to toggle).
+      if (node.key !== selectedKey) {
+        selectRail(node.key);
+        focusPendingRef.current = true;
+      }
+      return false;
     }
     if (node.key === selectedKey) {
       // Re-click the active section: toggle the panel (VS Code model).
@@ -168,14 +201,92 @@ const SidebarRail = ({
     return true;
   };
 
-  // Mobile: collapse to the single-column drawer with rail items as the root
-  // level (sections drill in, opening on the active section).
+  // The rail column is identical in both shells; only the icon-only collapse
+  // is desktop's (the drawer always shows labels, so tooltips stay disabled).
+  const railColumn = (collapsed: boolean) => (
+    <div className={classNames.railColumn}>
+      <nav
+        aria-label={ariaLabel || stringFormatter.format('railNavigation')}
+        className="flex min-h-0 flex-1 flex-col overflow-hidden"
+      >
+        <div className={classNames.rail}>
+          {nodes
+            .filter(node => !node.inFooter)
+            .map(node => (
+              <RailItemLink
+                key={node.key}
+                node={node}
+                selected={selectedKey === node.key}
+                matched={matchedKey === node.key}
+                onActivate={() => activateRail(node)}
+                collapsed={collapsed}
+                className={classNames.railItem}
+              />
+            ))}
+        </div>
+        {/* Pinned below the scrolling list: rail items declared inside
+            Sidebar.Footer (same tile, same behavior) plus any raw footer
+            content. */}
+        {footerNodes.length > 0 || footer ? (
+          <div className={classNames.railFooter}>
+            {footerNodes.map(node => (
+              <RailItemLink
+                key={node.key}
+                node={node}
+                selected={selectedKey === node.key}
+                matched={matchedKey === node.key}
+                onActivate={() => activateRail(node)}
+                collapsed={collapsed}
+                className={classNames.railItem}
+              />
+            ))}
+            {footer}
+          </div>
+        ) : null}
+      </nav>
+    </div>
+  );
+
+  const panelBody =
+    selectedNode?.isSection && selectedNode.nav ? (
+      <>
+        <h2 ref={titleRef} tabIndex={-1} className={classNames.panelTitle}>
+          {selectedNode.panelTitle}
+        </h2>
+        {cloneElement(selectedNode.nav as ReactElement<SidebarNavProps>, {
+          current,
+        })}
+      </>
+    ) : null;
+
+  // Mobile: the drawer contains a miniature of the desktop layout — the
+  // icon+label rail on its left edge, the active section's panel beside it.
+  // Section taps swap the panel in place; leaf links close the drawer (via
+  // SidebarPanel's own mobile handling).
   if (isMobile) {
     return (
-      <SidebarModal ref={ref}>
+      <SidebarModal ref={ref} partial>
         {header}
-        <SidebarNav current={current}>{railToNavChildren(nodes)}</SidebarNav>
-        {footer}
+        <div
+          ref={mobileBodyRef}
+          // The rail is never icon-only inside the drawer; the tiles read
+          // this ancestor state for their label row.
+          data-state="expanded"
+          className="grid h-full min-h-0 grid-cols-[6.5rem_1fr] [grid-area:content]"
+        >
+          {railColumn(false)}
+          <div
+            className={cn(
+              '[&>nav]:min-h-0 [&>nav]:flex-1',
+              classNames.panel,
+              // The drawer's edge is the boundary here — the desktop panel
+              // divider would double it.
+              'border-r-0'
+            )}
+          >
+            {panelBody}
+          </div>
+        </div>
       </SidebarModal>
     );
   }
@@ -212,66 +323,13 @@ const SidebarRail = ({
             everything to its right, starting under the top bar. The toggle
             lives in the top bar (Sidebar.Toggle in TopNavigation.Start), not
             here. */}
-        <div className={classNames.railColumn}>
-          <nav
-            aria-label={ariaLabel || stringFormatter.format('railNavigation')}
-            className="flex min-h-0 flex-1 flex-col overflow-hidden"
-          >
-            <div className={classNames.rail}>
-              {nodes
-                .filter(node => !node.inFooter)
-                .map(node => (
-                  <RailItemLink
-                    key={node.key}
-                    node={node}
-                    selected={selectedKey === node.key}
-                    matched={matchedKey === node.key}
-                    onActivate={() => activateRail(node)}
-                    collapsed={state === 'collapsed'}
-                    className={classNames.railItem}
-                  />
-                ))}
-            </div>
-            {/* Pinned below the scrolling list: rail items declared inside
-                Sidebar.Footer (same tile, same behavior) plus any raw footer
-                content. */}
-            {footerNodes.length > 0 || footer ? (
-              <div className={classNames.railFooter}>
-                {footerNodes.map(node => (
-                  <RailItemLink
-                    key={node.key}
-                    node={node}
-                    selected={selectedKey === node.key}
-                    matched={matchedKey === node.key}
-                    onActivate={() => activateRail(node)}
-                    collapsed={state === 'collapsed'}
-                    className={classNames.railItem}
-                  />
-                ))}
-                {footer}
-              </div>
-            ) : null}
-          </nav>
-        </div>
+        {railColumn(state === 'collapsed')}
 
         <div
           inert={!hasPanel || undefined}
           className={cn('[&>nav]:min-h-0 [&>nav]:flex-1', classNames.panel)}
         >
-          {selectedNode?.isSection && selectedNode.nav ? (
-            <>
-              <h2
-                ref={titleRef}
-                tabIndex={-1}
-                className={classNames.panelTitle}
-              >
-                {selectedNode.panelTitle}
-              </h2>
-              {cloneElement(selectedNode.nav as ReactElement<SidebarNavProps>, {
-                current,
-              })}
-            </>
-          ) : null}
+          {panelBody}
         </div>
       </div>
     </aside>

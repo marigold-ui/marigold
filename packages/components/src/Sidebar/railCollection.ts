@@ -1,6 +1,5 @@
-import { Children, cloneElement, createElement, isValidElement } from 'react';
+import { Children, cloneElement, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
-import { SidebarItem } from './SidebarItem';
 import type { SidebarNavProps } from './SidebarNav';
 import type { SidebarRailItemProps } from './SidebarRailItem';
 import {
@@ -234,23 +233,3 @@ export const resolveActiveRail = (
   const matched = matchLeaves(tagged, current).values().next().value;
   return matched ? (owner.get(matched) ?? null) : null;
 };
-
-/**
- * Flatten rail nodes into single-column `Sidebar.Nav` children for the mobile
- * drawer: each rail item becomes a root row (icon + label), a section carries
- * its nav's items as nested children so the existing drill-down handles them.
- */
-export const railToNavChildren = (nodes: SidebarRailNode[]): ReactNode[] =>
-  nodes.map(node =>
-    createElement(
-      SidebarItem,
-      node.isSection
-        ? { key: node.key, id: node.key, textValue: node.textValue }
-        : { key: node.key, href: node.href, textValue: node.textValue },
-      node.icon,
-      ...node.label,
-      ...(node.isSection && node.nav
-        ? Children.toArray(node.nav.props.children)
-        : [])
-    )
-  );

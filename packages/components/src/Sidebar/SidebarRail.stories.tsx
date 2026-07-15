@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
@@ -85,6 +85,17 @@ const RailShell = ({
 }) => {
   const [path, setPath] = useState(initialPath);
   const label = pages[path] ?? 'Seite';
+
+  // The mobile drawer portals outside the story's `lang="de"` wrapper, which
+  // silently disables `hyphens: auto` on the rail tiles. A real app sets the
+  // document language, so mirror that here (and restore it afterwards).
+  useEffect(() => {
+    const previous = document.documentElement.lang;
+    document.documentElement.lang = 'de';
+    return () => {
+      document.documentElement.lang = previous;
+    };
+  }, []);
 
   return (
     // id="storybook-root": portal target for overlays (tooltips) — the vitest
@@ -373,5 +384,69 @@ Rail.test(
         expect(toggle).toHaveAttribute('aria-expanded', 'true');
       }
     );
+  }
+);
+
+// Mobile: the drawer contains a miniature of the desktop layout — the
+// icon+label rail on its left edge, the active section's panel beside it.
+// No drill-in and no back button at the top level; section taps swap the
+// panel in place, leaf links and direct links close the drawer.
+export const RailMobile = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  render: () => <RailShell />,
+});
+
+RailMobile.test(
+  'drawer shows the rail and the active section panel side by side',
+  async ({ canvas, userEvent, step }) => {
+    const toggle = canvas.getByRole('button', {
+      name: 'Navigation umschalten',
+    });
+
+    await step('toggle opens the drawer with both levels visible', async () => {
+      expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await userEvent.click(toggle);
+
+      expect(
+        await canvas.findByRole('navigation', { name: 'Hauptnavigation' })
+      ).toBeInTheDocument();
+      const panelNav = canvas.getByRole('navigation', { name: 'Tickets' });
+      expect(
+        within(panelNav).getByRole('link', { name: 'Meine Tickets' })
+      ).toBeInTheDocument();
+    });
+
+    await step('section tap swaps the panel in place', async () => {
+      await userEvent.click(canvas.getByRole('link', { name: 'Kontakte' }));
+
+      const kontakteNav = await canvas.findByRole('navigation', {
+        name: 'Kontakte',
+      });
+      expect(
+        within(kontakteNav).getByRole('link', { name: 'Personen' })
+      ).toBeInTheDocument();
+      // The drawer stays open — only the panel retargeted.
+      expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await step('leaf tap navigates and closes the drawer', async () => {
+      await userEvent.click(canvas.getByRole('link', { name: 'Personen' }));
+      await waitFor(() =>
+        expect(toggle).toHaveAttribute('aria-expanded', 'false')
+      );
+    });
+
+    await step('a direct-link rail item closes the drawer too', async () => {
+      await userEvent.click(toggle);
+      await userEvent.click(
+        await canvas.findByRole('link', { name: 'Berichte' })
+      );
+      await waitFor(() =>
+        expect(toggle).toHaveAttribute('aria-expanded', 'false')
+      );
+    });
   }
 );
