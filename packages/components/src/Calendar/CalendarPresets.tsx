@@ -178,35 +178,21 @@ const PresetListBox = <T,>({
             textValue={item.label}
             className={listBoxClassNames.item}
           >
-            {({ isSelected, isDisabled: isItemDisabled }) => (
-              <SelectionIndicator>
-                {isSmallScreen ? (
-                  <div className="flex w-full items-center justify-between gap-3">
-                    {/* RAC wires the slots to `aria-labelledby`/
-                        `aria-describedby`, so the option's accessible name
-                        stays the label alone (not "Kickoff Aug 1") while
-                        screen readers still announce the resolved date as a
-                        description. */}
-                    <Text slot="label">{item.label}</Text>
-                    <Text
-                      slot="description"
-                      className={cn(
-                        'text-secondary',
-                        // `text-secondary` fails 4.5:1 on the selected fill;
-                        // and it must not out-contrast the greyed label on
-                        // disabled rows.
-                        isSelected && 'text-foreground',
-                        isItemDisabled && 'text-disabled'
-                      )}
-                    >
-                      {formatValue(item.value)}
-                    </Text>
-                  </div>
-                ) : (
-                  item.label
-                )}
-              </SelectionIndicator>
-            )}
+            <SelectionIndicator>
+              {isSmallScreen ? (
+                <div className="flex w-full items-center justify-between gap-3">
+                  {/* RAC wires the slots to `aria-labelledby`/
+                      `aria-describedby`, so the option's accessible name
+                      stays the label alone (not "Kickoff Aug 1") while
+                      screen readers still announce the resolved date as a
+                      description. */}
+                  <Text slot="label">{item.label}</Text>
+                  <Text slot="description">{formatValue(item.value)}</Text>
+                </div>
+              ) : (
+                item.label
+              )}
+            </SelectionIndicator>
           </AriaListBoxItem>
         ))}
       </AriaListBox>

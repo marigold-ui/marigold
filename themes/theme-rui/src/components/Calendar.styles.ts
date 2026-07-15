@@ -65,6 +65,9 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'sm:w-40 sm:shrink-0 sm:self-stretch',
       'sm:bg-muted sm:border-r sm:border-border',
       'sm:-my-2 sm:-ml-2 sm:rounded-l-[inherit]',
+      '[&_[slot=description]]:text-secondary',
+      '[&_[data-selected]_[slot=description]]:text-foreground',
+      '[&_[data-disabled]_[slot=description]]:text-disabled',
     ],
   }),
   calendarListboxButton: cva({
