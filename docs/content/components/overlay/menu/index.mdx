@@ -157,7 +157,11 @@ A disabled item stays visible and is marked disabled for assistive technology, b
 
 ### Kebab menus
 
-For per-row or per-item actions, use the [`<ActionMenu>`](/components/overlay/action-menu) companion. It shows a compact ghost trigger, switches to a `<Tray>` on small screens, and takes the same `<Menu.Item>` API.
+A kebab menu is the "⋮" overflow trigger that gathers the actions for one specific item, such as a table row, a card, or a list entry. Use the [`<ActionMenu>`](/components/overlay/action-menu) companion for it. It shows a compact icon-only ghost trigger, switches to a `<Tray>` on small screens, and takes the same `<Menu.Item>` API as `<Menu>`.
+
+Reach for it when an item has more actions than you can or should show inline. Rather than crowd every row with buttons, keep the one or two primary actions visible and move the rest behind the kebab, so the row stays scannable and the actions still have a predictable home. This scales especially well in tables and long lists, where a full set of buttons on every row would be overwhelming.
+
+Because a kebab hides its actions behind an extra click, keep it for secondary actions and never bury a single primary action behind one, since a lone action should just be a button. Give the trigger an `aria-label` such as "Row actions", since an icon-only button has no visible text, and place the kebab in the same spot on every row so people learn where to find it.
 
 <ComponentDemo name="menu-action-table" />
 
