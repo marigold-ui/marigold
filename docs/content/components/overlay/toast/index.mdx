@@ -35,6 +35,14 @@ Each variant uses a distinct icon color to signal the nature of the notification
 
 The `<ToastProvider>` Component should be in the root of your application, so it can be used anywhere in your app. You can use the `addToast` function to add a Toast to the Toaster. The Toast will appear at the bottom right of the screen by default. With the position prop you can change the position of all Toasts.
 
+<Callout type="info" title="Mount the provider once">
+  Every toast shares one global queue, so `addToast` works from anywhere — you
+  don't need a provider nearby, and a single `<ToastProvider>` renders them all.
+  Mounting more than one renders every toast multiple times and creates
+  duplicate notification landmarks (React Aria warns about this in the console),
+  so keep it to a single instance at the root of your app.
+</Callout>
+
 ### Simple toast
 
 A Toast should be used when you want to give users quick, non-intrusive feedback after an action, such as saving, deleting, or uploading data. It appears on the edge of the screen. Because it doesn't interrupt the user's workflow, a Toast is ideal for success messages, notifications, or error alerts that don't need immediate interaction. The message should be clear, concise, and easy to read.
