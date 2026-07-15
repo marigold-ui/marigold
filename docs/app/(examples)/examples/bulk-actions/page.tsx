@@ -76,7 +76,7 @@ const BulkActionsPage = () => (
             <Title>Events</Title>
             <Description>
               Select events in the table and run one operation across all of
-              them — publish, edit, export, or delete.
+              them.
             </Description>
           </Page.Header>
           <Panel aria-label="Events">
