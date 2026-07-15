@@ -1,9 +1,9 @@
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-import { use } from 'react';
 import {
   KeyboardContext,
   Keyboard as RACKeyboard,
 } from 'react-aria-components/Keyboard';
+import { useSlottedContext } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'style';
@@ -20,7 +20,7 @@ export interface KeyboardProps extends Omit<
 // context also carries the id used for the container's aria-describedby.
 const _Keyboard = (props: KeyboardProps) => {
   const classNames = useClassNames({ component: 'Keyboard' });
-  const context = use(KeyboardContext) as { className?: string } | null;
+  const context = useSlottedContext(KeyboardContext);
 
   return (
     <RACKeyboard
