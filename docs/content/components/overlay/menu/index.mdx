@@ -74,6 +74,14 @@ Menus can speed up interactions for advanced users who are already familiar with
       the start of the menu.
     </DoDescription>
   </Do>
+  <Dont>
+    <DontDescription>
+      Put interactive controls such as a switch, a second button, or a link
+      inside a menu item. Menu items are single commands, and screen readers
+      cannot reach controls nested inside them. Use a surface that holds
+      arbitrary content for that case.
+    </DontDescription>
+  </Dont>
 </GuidelineTiles>
 
 ### Simple menu with action
@@ -88,11 +96,23 @@ For menu items that need a label and a secondary line, compose with `<TextValue>
 
 <ComponentDemo name="menu-description" />
 
+### Menu items with icons and keyboard shortcuts
+
+Add a leading icon and a trailing `<Keyboard>` shortcut hint so actions are quicker to scan and recognise. Compose `<Menu.Item>` with an icon, a `<TextValue>` label, and `<Keyboard>` for the shortcut. Set `textValue` on the item so type-ahead matches the label instead of the shortcut text.
+
+<ComponentDemo name="menu-shortcuts" />
+
 ### Menu with sections
 
 When you have mutliple menu items that can be categorized under different headings. This is particularly useful in complext menus with many options, you can use `<Menu.Section>` and pass `title` for the group name.
 
 <ComponentDemo name="menu-section" />
+
+### Grouping with dividers
+
+Use `<Menu.Divider>` to separate groups of actions with an unlabelled line. Reach for a divider when the grouping is clear from context and a heading would be redundant. Use `<Menu.Section>` instead when each group needs a visible label.
+
+<ComponentDemo name="menu-divider" />
 
 ### Disabled menu items
 
@@ -118,7 +138,7 @@ This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu
 
 Use `multiple` selection mode when you want to allow users to select multiple options at once, providing flexibility in situations where multiple choices are valid and necessary.
 
-Here you can see how the `selectionMode` from `<Menu>` works. In this example the `selectionMode` is set to `multiple`. If you open the items you can see a selected item.
+Set `selectionMode` to `"single"` or `"multiple"` and selected items render a checkmark and a highlighted row, aligned like `<ListBox>`. React-aria gives each item the matching `menuitemcheckbox` or `menuitemradio` role, so this is the right choice for toggling a menu's own rows, such as showing or hiding table columns.
 
 <ComponentDemo name="menu-selection" />
 
