@@ -195,10 +195,7 @@ export const BaseLoader = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   const className = useClassNames({ component: 'Loader', variant, size });
 
-  // The localized "loading" message is only a fallback: apply it solely when the
-  // consumer supplies no accessible name of any kind (`aria-label`,
-  // `aria-labelledby`, or a visible `children` label). This keeps the consumer's
-  // label winning and avoids emitting a redundant `aria-label` next to it.
+  // Localized label is only a fallback; let a consumer's label win.
   const hasLabel = ariaLabel || ariaLabelledby || children;
 
   return (
