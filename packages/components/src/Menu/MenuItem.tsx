@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
+import { KeyboardContext } from 'react-aria-components/Keyboard';
 import { MenuItem } from 'react-aria-components/Menu';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
@@ -7,6 +8,7 @@ import { useClassNames } from '@marigold/system';
 import { Check } from '../icons/Check';
 import { AccessIcon } from '../utils/AccessIcon';
 import { AccessLabel } from '../utils/AccessLabel';
+import { useMergedKeyboardSlot } from '../utils/useMergedKeyboardSlot';
 import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 
 // Props
@@ -21,21 +23,33 @@ interface ItemChildrenProps {
   children: ReactNode;
   labelClassName?: string;
   descriptionClassName?: string;
+  keyboardClassName?: string;
 }
 
-// Inject label/description theme classNames into RAC's TextContext (merge,
-// not replace, to keep aria-describedby wiring). Shared with ListBox.Item.
+// Inject label/description/keyboard theme classNames into RAC's Text and
+// Keyboard contexts (merge, not replace, to keep aria-describedby wiring).
 const ItemChildren = ({
   children,
   labelClassName,
   descriptionClassName,
+  keyboardClassName,
 }: ItemChildrenProps) => {
-  const value = useMergedTextSlots({
+  const textValue = useMergedTextSlots({
     label: labelClassName,
     description: descriptionClassName,
   });
+  const keyboardValue = useMergedKeyboardSlot(keyboardClassName);
 
-  return <Provider values={[[TextContext, value]]}>{children}</Provider>;
+  return (
+    <Provider
+      values={[
+        [TextContext, textValue],
+        [KeyboardContext, keyboardValue],
+      ]}
+    >
+      {children}
+    </Provider>
+  );
 };
 
 // Component
@@ -54,6 +68,7 @@ const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
           <ItemChildren
             labelClassName={classNames.label}
             descriptionClassName={classNames.description}
+            keyboardClassName={classNames.keyboard}
           >
             {typeof children === 'function' ? children(renderProps) : children}
           </ItemChildren>

@@ -2,7 +2,14 @@ import { useState } from 'react';
 import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
-import { Delete } from '@marigold/icons';
+import {
+  ClipboardPaste,
+  Copy,
+  Delete,
+  Scissors,
+  Trash2,
+} from '@marigold/icons';
+import { Keyboard } from '../Keyboard/Keyboard';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
@@ -524,3 +531,41 @@ Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }) => {
     });
   });
 });
+
+export const WithIconsAndShortcuts = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Menu {...args} label="Edit">
+      <Menu.Item id="cut">
+        <Scissors />
+        Cut
+        <Keyboard>⌘X</Keyboard>
+      </Menu.Item>
+      <Menu.Item id="copy">
+        <Copy />
+        Copy
+        <Keyboard>⌘C</Keyboard>
+      </Menu.Item>
+      <Menu.Item id="paste">
+        <ClipboardPaste />
+        Paste
+        <Keyboard>⌘V</Keyboard>
+      </Menu.Item>
+      <Menu.Item id="delete" variant="destructive">
+        <Trash2 />
+        Delete
+        <Keyboard>⌘⌫</Keyboard>
+      </Menu.Item>
+    </Menu>
+  ),
+});
+
+WithIconsAndShortcuts.test(
+  'Renders keyboard shortcut hints alongside item icons',
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Edit' }));
+
+    expect(canvas.getByRole('menuitem', { name: /Copy/ })).toBeVisible();
+    expect(canvas.getByText('⌘C')).toBeVisible();
+  }
+);

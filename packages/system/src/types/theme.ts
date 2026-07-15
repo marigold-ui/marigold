@@ -158,7 +158,13 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
-      'container' | 'section' | 'item' | 'button' | 'label' | 'description',
+      | 'container'
+      | 'section'
+      | 'item'
+      | 'button'
+      | 'label'
+      | 'description'
+      | 'keyboard',
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
