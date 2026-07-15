@@ -113,7 +113,11 @@ Compose a `<Menu.Item>` with an icon, a [`<TextValue>`](/components/content/text
 
 ### Adding a description line
 
-Some actions need a word of explanation. Add a [`<Description>`](/components/content/description) next to the `<TextValue>` label for a quiet second line. The description is wired to the item's accessible description automatically, so screen readers announce the label first and the detail after.
+A label names an action, but it cannot always carry the action's consequence or tell two similar items apart. When the label alone would leave people guessing, add a [`<Description>`](/components/content/description) next to the `<TextValue>` label for a quiet second line that explains what the action does or warns what it costs, such as "Closes the editor after saving" or "Reverts unsaved edits. Cannot be undone."
+
+Use a description sparingly. It earns its place when it removes real doubt, so reserve it for the few items that need it rather than adding one to every row, where the extra text would slow scanning and bury the labels. Keep each one to a single line.
+
+The description is wired to the item's accessible description automatically, so a screen reader announces the label first and the detail after, with no `aria` attributes to set by hand.
 
 <ComponentDemo name="menu-description" />
 
