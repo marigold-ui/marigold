@@ -44,8 +44,10 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showMore: 'Mehr anzeigen',
     showMoreCount: vars => `${vars?.count} weitere anzeigen`,
     toggleNavigation: 'Navigation umschalten',
-    toggleNavigationTooltip: (vars: Variables) =>
-      `Navigation ein-/ausblenden (${vars?.shortcut})`,
+    collapseSidebarTooltip: (vars: Variables) =>
+      `Seitenleiste einklappen (${vars?.shortcut})`,
+    expandSidebarTooltip: (vars: Variables) =>
+      `Seitenleiste ausklappen (${vars?.shortcut})`,
     uploadLabel: 'Hochladen',
   },
   'en-US': {
@@ -90,8 +92,10 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showMore: 'Show more',
     showMoreCount: vars => `Show ${vars?.count} more`,
     toggleNavigation: 'Toggle navigation',
-    toggleNavigationTooltip: (vars: Variables) =>
-      `Toggle navigation (${vars?.shortcut})`,
+    collapseSidebarTooltip: (vars: Variables) =>
+      `Collapse sidebar (${vars?.shortcut})`,
+    expandSidebarTooltip: (vars: Variables) =>
+      `Expand sidebar (${vars?.shortcut})`,
     uploadLabel: 'Upload',
   },
 };

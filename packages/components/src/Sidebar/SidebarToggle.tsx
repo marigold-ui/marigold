@@ -19,25 +19,24 @@ export interface SidebarToggleProps {
 }
 
 export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
-  const { toggleSidebar, state, classNames, isMobile, panelAvailable } =
-    useSidebar();
+  const { toggleSidebar, state, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const isSSR = useIsSSR();
 
   const isMac = !isSSR && /Mac|iPhone|iPad/.test(navigator.userAgent);
   const shortcut = isMac ? '⌘B' : 'Ctrl+B';
 
-  // With a rail on a direct-link page there is no section panel, so there is
-  // nothing to collapse (on mobile the toggle opens the drawer, so it stays
-  // enabled regardless).
-  const disabled = !isMobile && !panelAvailable;
+  const expanded = state === 'expanded';
 
   return (
     <Tooltip.Trigger delay={2500}>
       <Button
-        aria-expanded={state === 'expanded'}
+        // Stable accessible name (a toggle button); direction lives in
+        // aria-expanded and the tooltip. Always live: collapse now also
+        // narrows the rail to icon-only, so there is something to do on every
+        // page — including a direct-link page with no section panel.
+        aria-expanded={expanded}
         aria-label={stringFormatter.format('toggleNavigation')}
-        isDisabled={disabled}
         onPress={toggleSidebar}
         className={cn(
           'group/icon',
@@ -48,12 +47,15 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
             stroke 2), so it matches their weight; the bar variant keeps its
             lighter 1.5. */}
         <SidebarToggleIcon
-          expanded={state === 'expanded'}
+          expanded={expanded}
           strokeWidth={variant === 'rail' ? 2 : 1.5}
         />
       </Button>
       <Tooltip placement="bottom">
-        {stringFormatter.format('toggleNavigationTooltip', { shortcut })}
+        {stringFormatter.format(
+          expanded ? 'collapseSidebarTooltip' : 'expandSidebarTooltip',
+          { shortcut }
+        )}
       </Tooltip>
     </Tooltip.Trigger>
   );

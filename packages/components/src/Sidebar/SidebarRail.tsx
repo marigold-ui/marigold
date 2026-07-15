@@ -1,4 +1,4 @@
-import { cloneElement, useEffect, useLayoutEffect, useRef } from 'react';
+import { cloneElement, useLayoutEffect, useRef } from 'react';
 import type { ReactElement, ReactNode, Ref } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
@@ -47,6 +47,12 @@ interface RailItemLinkProps {
   matched: boolean;
   /** Runs on activation; returns whether the click should still navigate. */
   onActivate: () => boolean;
+  /**
+   * Icon-only rail: adds a native title as the hover hint. The label itself
+   * stays mounted — the theme fades it to opacity-0 (still the accessible
+   * name) inside a fixed-size box, so hiding it never shifts the icons.
+   */
+  collapsed: boolean;
   className: string;
 }
 
@@ -60,6 +66,7 @@ const RailItemLink = ({
   selected,
   matched,
   onActivate,
+  collapsed,
   className,
 }: RailItemLinkProps) => {
   const ref = useObjectRef<HTMLAnchorElement>();
@@ -79,6 +86,7 @@ const RailItemLink = ({
       role={node.href ? undefined : 'button'}
       aria-current={ariaCurrent}
       data-active={selected || undefined}
+      title={collapsed ? node.textValue : undefined}
       className={className}
       onClick={e => {
         const shouldNavigate = onActivate();
@@ -111,8 +119,7 @@ const SidebarRail = ({
   current,
   ref,
 }: SidebarRailProps) => {
-  const { classNames, isMobile, state, toggleSidebar, setPanelAvailable } =
-    useSidebar();
+  const { classNames, isMobile, state, toggleSidebar } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const {
@@ -124,14 +131,6 @@ const SidebarRail = ({
     selectedNode,
     selectRail,
   } = useSidebarRailState({ children, current });
-
-  // Tell Sidebar.Toggle / Cmd+B whether there is a panel to collapse: a
-  // direct-link selection has no section panel, so the toggle goes inert.
-  const sectionSelected = selectedNode?.isSection ?? false;
-  useEffect(() => {
-    setPanelAvailable(sectionSelected);
-    return () => setPanelAvailable(true);
-  }, [sectionSelected, setPanelAvailable]);
 
   const titleRef = useRef<HTMLHeadingElement>(null);
   // Set when a user rail action should move focus to the panel heading; the
@@ -193,10 +192,17 @@ const SidebarRail = ({
       )}
     >
       <div
+        data-state={state}
         data-panel={hasPanel ? 'expanded' : 'collapsed'}
         className={cn(
           'grid h-full',
-          'grid-cols-[6.5rem_15.5rem] data-[panel=collapsed]:grid-cols-[6.5rem_0rem]',
+          // Two independent axes. Rail column: full width (icon + label) when
+          // expanded, an icon-only strip when collapsed — reclaiming space for
+          // the page. Panel column: only has width while a section panel is
+          // showing (a direct-link page has none, in either state).
+          '[--rail-w:6.5rem] data-[state=collapsed]:[--rail-w:4rem]',
+          '[--panel-w:15.5rem] data-[panel=collapsed]:[--panel-w:0rem]',
+          'grid-cols-[var(--rail-w)_var(--panel-w)]',
           'transition-[grid-template-columns] duration-200 ease-in-out',
           'motion-reduce:transition-none'
         )}
@@ -220,6 +226,7 @@ const SidebarRail = ({
                     selected={selectedKey === node.key}
                     matched={matchedKey === node.key}
                     onActivate={() => activateRail(node)}
+                    collapsed={state === 'collapsed'}
                     className={classNames.railItem}
                   />
                 ))}
@@ -236,6 +243,7 @@ const SidebarRail = ({
                     selected={selectedKey === node.key}
                     matched={matchedKey === node.key}
                     onActivate={() => activateRail(node)}
+                    collapsed={state === 'collapsed'}
                     className={classNames.railItem}
                   />
                 ))}

@@ -162,8 +162,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // under the bar's bottom edge (a plain T-junction). When the panel is
   // collapsed this line is also the sidebar's right edge (the panel drops its
   // border), so it never doubles up.
+  // overflow-x-clip: labels keep a fixed width while the column width
+  // animates (see railItem), so they briefly overhang the narrowing column —
+  // clip instead of letting them bleed across the divider into the panel.
   railColumn: cva({
-    base: ['flex flex-col min-h-0', 'border-r border-border'],
+    base: ['flex flex-col min-h-0 overflow-x-clip', 'border-r border-border'],
   }),
   // The panel toggle as a compact top-bar icon button, sitting between the
   // wordmark and the breadcrumbs (no slot, no dividers — the bar separates its
@@ -184,31 +187,68 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   // The rail's scrolling item list (footer pinned below). Thin
   // scrollbar, hidden until hover — reused from `ui-scrollbar`.
+  // overflow-x-hidden: the fixed-width labels overhang the collapsed column;
+  // without it the scroll container would grow a horizontal scrollbar.
   rail: cva({
     base: [
-      'flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto py-1.5 ui-scrollbar',
+      'flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-1.5 ui-scrollbar',
     ],
   }),
   // Stacked tile: icon above a visible label, centered in the rail column.
-  // The 6.5rem rail (see the grid in SidebarRail) leaves the label 92px
-  // (6.5rem − mx-1 − px-0.5), sized so "Veranstaltungen" (87px at 11px medium)
-  // fits on one line; rarer, longer compounds (Automatisierungen) hyphenate
-  // onto a second line instead of truncating — the label is the accessible
-  // name, so it must stay readable.
+  // Uniform geometry so collapsing NEVER moves an icon vertically: every
+  // label gets a fixed two-line box (h-[2lh]) at a fixed width (5.75rem —
+  // the tile's content width at the expanded 6.5rem rail, sized so
+  // "Veranstaltungen" fits one line and longer compounds like
+  // "Automatisierungen" hyphenate onto the second). Fixed height means
+  // hiding the label frees no vertical space; fixed width means the text
+  // cannot re-wrap while the column width animates. Collapse therefore only
+  // changes the rail's width.
+  //
+  // The hover/selected pill and the focus ring live on a `before:` indicator
+  // layer decoupled from the tile box (the SelectionIndicator idea from
+  // SegmentedControl, as a pseudo-element): expanded it fills the tile;
+  // collapsed it shrinks to a control-size (2.25rem) square around the 20px
+  // icon — 8px of air on all four sides — instead of ghosting over the
+  // hidden label. Its inset morphs with the same 200ms ease-in-out as the
+  // column width, so pill and rail move as one.
+  //
+  // The label fades instead of unmounting: out fast (100ms, no delay) so no
+  // half-clipped text rides the narrowing column; in late (150ms after a
+  // 100ms delay) so it only reappears once the column has most of its width
+  // back. opacity-0 (unlike sr-only) keeps it in the accessibility tree as
+  // the accessible name. hyphens-auto needs a `lang` on the document.
   railItem: cva({
     base: [
-      'flex flex-col items-center justify-center gap-1 mx-1 px-0.5 py-2 rounded-surface',
+      'relative isolate flex flex-col items-center justify-center gap-1 mx-1 px-0.5 py-2',
       'text-secondary text-center cursor-pointer',
-      'transition-[color,background-color] motion-reduce:transition-none',
-      'outline-none focus-visible:ui-state-focus',
-      'hover:bg-hover hover:text-foreground',
-      // Active section/link: same flat `selected` pill as a nav row.
-      'data-active:bg-selected data-active:text-foreground',
+      'transition-colors motion-reduce:transition-none',
+      'outline-none',
+      'hover:text-foreground data-active:text-foreground',
+      // The indicator layer (see block comment above). Collapsed: a 2.25rem
+      // square centered on the icon — 50%-based insets keep it icon-centered
+      // no matter how wide the tile actually is (a visible rail scrollbar
+      // narrows the tiles), bottom pins its height to the control size.
+      'before:absolute before:-z-10 before:inset-0 before:rounded-surface',
+      'before:transition-[inset,background-color] before:duration-200 before:ease-in-out',
+      'motion-reduce:before:transition-none',
+      'in-data-[state=collapsed]:before:inset-x-[calc(50%-1.125rem)]',
+      'in-data-[state=collapsed]:before:bottom-[calc(100%-2.25rem)]',
+      'hover:before:bg-hover',
+      // Active section/link: same flat `selected` fill as a nav row.
+      'data-active:before:bg-selected',
+      'focus-visible:before:ui-state-focus',
       '[&_svg]:size-5 [&_svg]:shrink-0',
       // The label: same size as the panel's group captions, medium so it holds
-      // its own under the icon. hyphens-auto needs a `lang` on the document.
-      '[&>span]:max-w-full [&>span]:text-[0.6875rem] [&>span]:font-medium',
-      '[&>span]:leading-tight [&>span]:break-words [&>span]:hyphens-auto',
+      // its own under the icon.
+      '[&>span]:w-[5.75rem] [&>span]:h-[2lh] [&>span]:shrink-0',
+      '[&>span]:text-[0.6875rem] [&>span]:font-medium [&>span]:leading-tight',
+      '[&>span]:break-words [&>span]:hyphens-auto',
+      // Fade choreography (see block comment above).
+      '[&>span]:transition-opacity [&>span]:duration-150 [&>span]:delay-100 [&>span]:ease-out',
+      'in-data-[state=collapsed]:[&>span]:opacity-0',
+      'in-data-[state=collapsed]:[&>span]:duration-100',
+      'in-data-[state=collapsed]:[&>span]:delay-0',
+      'motion-reduce:[&>span]:transition-none',
     ],
   }),
   // Pinned below the scrolling rail list. Hosts rail items (stacked tiles,

@@ -355,17 +355,22 @@ Rail.test(
     });
 
     await step(
-      'toggle goes inert on a direct-link page (no panel)',
+      'toggle stays live on a direct-link page (narrows the rail)',
       async () => {
         await userEvent.click(canvas.getByRole('link', { name: 'Berichte' }));
         const toggle = canvas.getByRole('button', {
           name: 'Navigation umschalten',
         });
-        expect(toggle).toBeDisabled();
-
-        // Selecting a section again restores the panel and the toggle.
-        await userEvent.click(canvas.getByRole('link', { name: 'Tickets' }));
+        // No section panel here, but collapse still has an effect: it narrows
+        // the rail to an icon-only strip.
         expect(toggle).toBeEnabled();
+        expect(toggle).toHaveAttribute('aria-expanded', 'true');
+        await userEvent.click(toggle);
+        expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+        // Selecting a section from the collapsed rail re-expands the panel.
+        await userEvent.click(canvas.getByRole('link', { name: 'Tickets' }));
+        expect(toggle).toHaveAttribute('aria-expanded', 'true');
       }
     );
   }

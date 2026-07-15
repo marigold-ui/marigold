@@ -1,4 +1,4 @@
-import { createContext, use, useEffect, useMemo, useState } from 'react';
+import { createContext, use, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';
@@ -12,13 +12,6 @@ export interface SidebarContextValue {
   toggleSidebar: () => void;
   isMobile: boolean;
   classNames: ComponentClassNames<'Sidebar'>;
-  /**
-   * Whether there is anything for `Sidebar.Toggle` / Cmd+B to collapse. Always
-   * true in single-column mode; a rail lowers it while a direct link (no
-   * section panel) is selected on desktop.
-   */
-  panelAvailable: boolean;
-  setPanelAvailable: (available: boolean) => void;
 }
 
 export const SidebarContext = createContext<SidebarContextValue | null>(null);
@@ -64,22 +57,19 @@ export const SidebarProvider = ({
     isMobile,
   });
 
-  const [panelAvailable, setPanelAvailable] = useState(true);
-
-  // Keyboard shortcut: Cmd+B / Ctrl+B. Lives here (not in useSidebarState) so
-  // it can respect `panelAvailable` — with a rail on a direct-link page there
-  // is no panel to collapse, so the shortcut is inert like the toggle button.
-  const toggleDisabled = !isMobile && !panelAvailable;
+  // Keyboard shortcut: Cmd+B / Ctrl+B. Always toggles — collapse narrows the
+  // rail to icon-only even on a direct-link page (no section panel), so the
+  // shortcut always has an effect.
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'b' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        if (!toggleDisabled) toggleSidebar();
+        toggleSidebar();
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [toggleSidebar, toggleDisabled]);
+  }, [toggleSidebar]);
 
   const value = useMemo(
     () => ({
@@ -87,10 +77,8 @@ export const SidebarProvider = ({
       toggleSidebar,
       isMobile,
       classNames,
-      panelAvailable,
-      setPanelAvailable,
     }),
-    [state, toggleSidebar, isMobile, classNames, panelAvailable]
+    [state, toggleSidebar, isMobile, classNames]
   );
 
   return <SidebarContext value={value}>{children}</SidebarContext>;

@@ -71,8 +71,7 @@ export const useSidebarState = (
     }
   }, [isMobile, isOpen, onOpenChange]);
 
-  // The Cmd+B / Ctrl+B shortcut is bound by SidebarProvider, which also knows
-  // whether there is a panel to toggle (see `panelAvailable` in Context).
+  // The Cmd+B / Ctrl+B shortcut is bound by SidebarProvider.
 
   return { state, toggleSidebar };
 };

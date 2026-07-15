@@ -42,7 +42,7 @@ describe('Sidebar.Rail — desktop', () => {
     );
   });
 
-  test('a direct-link rail item shows no panel and disables the toggle', async () => {
+  test('a direct-link rail item shows no panel but the toggle stays live', async () => {
     render(<Rail.Component />);
 
     const toggle = screen.getByRole('button', {
@@ -52,15 +52,19 @@ describe('Sidebar.Rail — desktop', () => {
 
     await user.click(screen.getByRole('link', { name: 'Berichte' }));
 
-    // No section panel landmark remains once a direct link is selected, and
-    // with nothing to collapse the rail toggle goes inert.
+    // No section panel landmark remains once a direct link is selected...
     expect(
       screen.queryByRole('navigation', { name: 'Tickets' })
     ).not.toBeInTheDocument();
-    expect(toggle).toBeDisabled();
 
-    // Cmd+B is equally inert — the expanded/collapsed state does not flip.
+    // ...but the toggle stays live: collapse now narrows the rail to an
+    // icon-only strip, so it has an effect even with no panel to hide.
+    expect(toggle).toBeEnabled();
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+    // Cmd+B is equally live.
     await user.keyboard('{Meta>}b{/Meta}');
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
