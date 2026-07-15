@@ -2,13 +2,7 @@ import { useState } from 'react';
 import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
-import {
-  ClipboardPaste,
-  Copy,
-  Delete,
-  Scissors,
-  Trash2,
-} from '@marigold/icons';
+import { ClipboardPaste, Copy, Delete, Scissors } from '@marigold/icons';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
@@ -336,6 +330,7 @@ Basic.test(
 );
 
 export const MultiSelection = meta.story({
+  tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
@@ -359,6 +354,22 @@ export const MultiSelection = meta.story({
     );
   },
 });
+
+MultiSelection.test(
+  'Toggles selection and exposes the checkbox role',
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Choose' }));
+
+    const burger = canvas.getByRole('menuitemcheckbox', { name: /Burger/ });
+    expect(burger).toHaveAttribute('aria-checked', 'false');
+
+    await userEvent.click(burger);
+
+    expect(
+      canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+    ).toHaveAttribute('aria-checked', 'true');
+  }
+);
 
 export const AccessSections = meta.story({
   tags: ['component-test'],
@@ -532,7 +543,7 @@ Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }) => {
   });
 });
 
-export const WithIconsAndShortcuts = meta.story({
+export const Advanced = meta.story({
   tags: ['component-test'],
   render: args => (
     <Menu {...args} label="Edit">
@@ -551,8 +562,9 @@ export const WithIconsAndShortcuts = meta.story({
         Paste
         <Keyboard>⌘V</Keyboard>
       </Menu.Item>
+      <Menu.Divider />
       <Menu.Item id="delete" variant="destructive">
-        <Trash2 />
+        <Delete />
         Delete
         <Keyboard>⌘⌫</Keyboard>
       </Menu.Item>
@@ -560,38 +572,13 @@ export const WithIconsAndShortcuts = meta.story({
   ),
 });
 
-WithIconsAndShortcuts.test(
-  'Renders keyboard shortcut hints alongside item icons',
+Advanced.test(
+  'Renders icons, keyboard shortcuts, and a divider',
   async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Edit' }));
 
     expect(canvas.getByRole('menuitem', { name: /Copy/ })).toBeVisible();
     expect(canvas.getByText('⌘C')).toBeVisible();
-  }
-);
-
-export const WithDividers = meta.story({
-  tags: ['component-test'],
-  render: args => (
-    <Menu {...args} label="Options">
-      <Menu.Item id="new">New file</Menu.Item>
-      <Menu.Item id="open">Open</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item id="share">Share</Menu.Item>
-      <Menu.Item id="rename">Rename</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item id="delete" variant="destructive">
-        Delete
-      </Menu.Item>
-    </Menu>
-  ),
-});
-
-WithDividers.test(
-  'Separates item groups with role="separator"',
-  async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Options' }));
-
-    expect(canvas.getAllByRole('separator')).toHaveLength(2);
+    expect(canvas.getByRole('separator')).toBeInTheDocument();
   }
 );
