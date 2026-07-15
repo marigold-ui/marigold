@@ -574,12 +574,20 @@ export const Advanced = meta.story({
 });
 
 Advanced.test(
-  'Renders icons, keyboard shortcuts, and a divider',
+  'Renders icons and a divider, and wires the shortcut to the item description',
   async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Edit' }));
 
-    expect(canvas.getByRole('menuitem', { name: /Copy/ })).toBeVisible();
-    expect(canvas.getByText('⌘C')).toBeVisible();
+    const copyItem = canvas.getByRole('menuitem', { name: /Copy/ });
+    const shortcut = canvas.getByText('⌘C');
+
+    expect(copyItem).toBeVisible();
+    expect(shortcut).toBeVisible();
     expect(canvas.getByRole('separator')).toBeInTheDocument();
+
+    // The shortcut <kbd> is the item's accessible description via aria-describedby.
+    expect(shortcut.tagName).toBe('KBD');
+    expect(shortcut.id).toBeTruthy();
+    expect(copyItem.getAttribute('aria-describedby')).toContain(shortcut.id);
   }
 );
