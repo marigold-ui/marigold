@@ -5,7 +5,6 @@ import { Menu, MenuTrigger } from 'react-aria-components/Menu';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
-import { Divider } from '../Divider/Divider';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
 import { Tray } from '../Tray/Tray';
@@ -105,4 +104,3 @@ export { _Menu as Menu };
 
 _Menu.Item = MenuItem;
 _Menu.Section = MenuSection;
-_Menu.Divider = Divider;

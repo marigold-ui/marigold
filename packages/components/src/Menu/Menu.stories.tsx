@@ -3,6 +3,7 @@ import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { ClipboardPaste, Copy, Delete, Scissors } from '@marigold/icons';
+import { Divider } from '../Divider/Divider';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
@@ -562,7 +563,7 @@ export const Advanced = meta.story({
         Paste
         <Keyboard>⌘V</Keyboard>
       </Menu.Item>
-      <Menu.Divider />
+      <Divider />
       <Menu.Item id="delete" variant="destructive">
         <Delete />
         Delete
