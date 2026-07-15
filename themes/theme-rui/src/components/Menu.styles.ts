@@ -13,7 +13,7 @@ export const Menu: ThemeComponent<'Menu'> = {
       // The surrounding Popover (or Tray) paints the overlay surface; the menu
       // renders flat inside it.
       'w-full',
-      'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto',
+      'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto space-y-px',
     ],
   }),
   // Two-column grid: col 1 = optional icon, col 2 = label / description.
@@ -26,6 +26,9 @@ export const Menu: ThemeComponent<'Menu'> = {
       'relative grid grid-cols-[auto_1fr] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
       'disabled:text-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
+      // Selection visuals (checkmark reserves col 1, row highlights). Like ListBox.
+      '[&_.selection-indicator]:invisible [&_.selection-indicator]:text-foreground [&_.selection-indicator]:opacity-100',
+      'selected:bg-selected selected:[&_.selection-indicator]:visible',
     ],
     variants: {
       variant: {

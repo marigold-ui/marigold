@@ -4,6 +4,7 @@ import { MenuItem } from 'react-aria-components/Menu';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
+import { Check } from '../icons/Check';
 import { AccessIcon } from '../utils/AccessIcon';
 import { AccessLabel } from '../utils/AccessLabel';
 import { useMergedTextSlots } from '../utils/useMergedTextSlots';
@@ -22,11 +23,8 @@ interface ItemChildrenProps {
   descriptionClassName?: string;
 }
 
-// Merge (rather than replace) RAC-provided slot configs on TextContext so
-// nested `<TextValue>` / `<Description>` (or `<Text slot="label">` /
-// `<Text slot="description">`) inside a `Menu.Item` pick up our theme
-// classNames without losing RAC's slot wiring (most notably `id` for
-// `aria-describedby`). Shared with `ListBox.Item` via `useMergedTextSlots`.
+// Inject label/description theme classNames into RAC's TextContext (merge,
+// not replace, to keep aria-describedby wiring). Shared with ListBox.Item.
 const ItemChildren = ({
   children,
   labelClassName,
@@ -49,6 +47,10 @@ const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
       {renderProps => (
         <>
           <AccessIcon variant={variant} />
+          {/* Checkmark only in selection mode; keeps command menus unchanged. */}
+          {renderProps.selectionMode !== 'none' && (
+            <Check size={16} strokeWidth="3" className="selection-indicator" />
+          )}
           <ItemChildren
             labelClassName={classNames.label}
             descriptionClassName={classNames.description}
