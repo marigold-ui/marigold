@@ -8,7 +8,7 @@ A `<Panel>` organizes page content into labeled sections. Use it to split a sett
 
 A typical page has a handful of Panels, each owning one topic: "Organizer profile", "Team members", "Billing". Every Panel has a unique title and renders as a landmark region labelled by that title, so the page outline stays meaningful to assistive tech.
 
-Panels live inside a [`<Page>`](/components/layout/page) under a [`<Page.Header>`](/components/layout/page#header). Panel's default `headingLevel={2}` assumes a page `<h1>` above it — which `<Page.Header>` provides — so the outline reads `h1` (page) → `h2` (Panel) → `h3` (Panel collapsible) with no configuration.
+Panels live inside a [`<Page>`](/components/layout/page) under a [`<Page.Header>`](/components/layout/page#header). Panel's default `headingLevel={2}` assumes a page `<h1>` above it (which `<Page.Header>` provides), so the outline reads `h1` (page) → `h2` (Panel) → `h3` (Panel collapsible) with no configuration.
 
 <Callout title="Is a Panel a Card?">
   They look similar, but they're not interchangeable. A Panel owns a region of a
@@ -148,6 +148,14 @@ Tables, media, charts, and status bars are the exceptions. They look cramped whe
 <ComponentDemo name="panel-bleed" />
 
 Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it.
+
+An `<Accordion>` behaves the same way. Drop one into a bled content area and its item dividers span edge-to-edge while the header and content stay inset, aligned with the Panel title. No extra prop is needed: the Accordion picks up the Panel's horizontal padding automatically, exactly like Table cells do.
+
+Reach for this only when the Panel's body **is** a set of peer, equally-weighted sections that each expand: a per-field breakdown, a list of records each with details. For a single optional or advanced fold _alongside_ visible primary content, use [`Panel.Collapsible`](#collapsible) instead. The two aren't interchangeable: a stack of Collapsibles is exactly the anti-pattern Accordion exists to solve (see [One Collapsible per Panel](#one-collapsible-per-panel)).
+
+<ComponentDemo name="panel-bleed-accordion" />
+
+Two details are intentional for now: there is no divider between the `Panel.Header` and the first item, and the last item's bottom corners stay square rather than following the Panel's radius.
 
 ### Collapsible
 

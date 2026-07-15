@@ -21,7 +21,16 @@ export const PanelContent = ({ children, bleed }: PanelContentProps) => {
   const { classNames } = usePanelContext();
 
   return (
-    <div className={cn(!bleed && 'px-(--panel-px)', classNames.content)}>
+    <div
+      className={cn(
+        // When bled, drop the horizontal padding and publish `--bleed-px` so
+        // edge-aware children (Table, Accordion) can inset their own content
+        // to stay aligned with the Panel title while backgrounds/dividers
+        // reach the Panel border.
+        bleed ? '[--bleed-px:var(--panel-px)]' : 'px-(--panel-px)',
+        classNames.content
+      )}
+    >
       {children}
     </div>
   );
