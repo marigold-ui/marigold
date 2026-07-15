@@ -55,9 +55,9 @@
     Palette step mapping (charcoal, background = step 100):
 
     50  -- muted bg (subtle tint on white surfaces), primary-foreground
-    100 -- background bg, focus-highlight bg, disabled-surface bg
-    200 -- hover bg
-    300 -- control fill, borders, scrollbar, selected bg
+    100 -- background bg, focus-highlight bg, disabled-surface bg, soft cap hover fill
+    200 -- hover bg, soft cap edge
+    300 -- control fill, borders, scrollbar, selected bg, soft cap edge hover
     400 -- disabled (text)
     600 -- focus ring, secondary (text), placeholder
     900 -- primary text
@@ -96,19 +96,31 @@
      on purpose — where translucent strokes cross, the alpha stacks and
      intersections render darker than the runs. A control boundary is one closed
      stroke that never crosses, so it takes the translucent --color-control-border.
-     Darkened 0.08 L off charcoal-300 (on the token, not the rung) so a line
-     doesn't dissolve into a white field. */
-  --color-border: oklch(from var(--color-charcoal-300) calc(l - 0.08) c h);
+     A quiet literal (~1.4:1 on white) — soft enough for the seamless shell yet
+     still opaque so it doesn't dissolve into a white field. */
+  --color-border: oklch(0.9 0.004 54);
 
   /* --- Form Controls --- */
   /* Functional control edge (inputs, selects, fields, checkboxes, radios). The
-     same stroke as --color-surface-border, ~2.5x denser, and translucent so it
+     same stroke as --color-surface-border, twice as dense, and translucent so it
      adapts to its ground: firmer on the page and the SegmentedControl track,
      receding on dark grounds where the fill already draws the edge. Measures
      ~2:1 on white, short of WCAG 1.4.11's 3:1 — a deliberate design call; the
      focus ring stays the perceivable affordance. State overrides stay opaque. */
   --color-control-border: oklch(from var(--color-charcoal-950) l c h / 0.26);
   --color-ring: var(--color-charcoal-600);
+
+  /* --- Soft (raised control cap: secondary Button, Menu trigger) --- */
+  /* The light counterpart to the dark contrast surface: a near-white convex
+     cap. The fill is a literal just above rung 50 so the cap reads a touch
+     whiter than a muted fill without dragging rung 50 with it. The edge derives
+     from its own base (not the fill) — deriving −0.12 L from the near-white cap
+     would wash the ring out to ~1.5:1, so the base sits below the cap and
+     darkens with it on hover. */
+  --color-soft: oklch(0.99 0.002 54);
+  --color-soft-hover: var(--color-charcoal-100);
+  --color-soft-edge: var(--color-charcoal-200);
+  --color-soft-edge-hover: var(--color-charcoal-300);
 
   /* --- Status: Destructive --- */
   --color-destructive: var(--color-red-100);
@@ -144,7 +156,7 @@
   --color-link: var(--color-blue-600);
 
   /* --- Overlay Backdrop --- */
-  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 70%);
+  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 45%);
 
   /* --- Scrollbar --- */
   --color-scrollbar: var(--color-charcoal-300);
@@ -156,10 +168,14 @@
   /* ==================== */
   --color-surface: var(--color-white);
 
-  /* Decorative rim of a surface (Card, Panel, Dialog, Menu). Below the contrast
-     threshold and never load-bearing — an affordance edge takes the denser
-     --color-control-border. Translucent, so it stays whisper-light on any ground. */
-  --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.1);
+  /* Decorative rim of a surface (Card, Panel, Dialog, Menu). Quiet but present:
+     panel boundaries lean on the fill delta against the gray page ground,
+     yet the rim has to hold the edge on its own where that delta nearly vanishes
+     (a white surface on a charcoal-100 ground), so it sits at half the density
+     of --color-control-border rather than a pure whisper. Never load-bearing; an
+     affordance edge takes the denser --color-control-border, a structural line
+     takes the opaque --color-border. Translucent, so it adapts to any ground. */
+  --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.13);
 
   /* ui-contrast recipe (primary Button, ActionBar): the lightness (-l)
      and alpha (-a) deltas each layer shifts from the fill. Colors are computed in
@@ -178,29 +194,34 @@
   /*       ELEVATION      */
   /* ==================== */
   /*
-    Three-tier shadow hierarchy:
-      border:  small interactive controls (Input, Checkbox, Radio, Switch, Tag, Button)
-      raised:  container surfaces (Card, Accordion)
-      overlay: floating elements (Dialog, Drawer, Menu, Popover, Toast)
+    Single-tier shadow hierarchy: nothing in normal flow casts a shadow —
+    buttons are raised caps (ui-soft / ui-contrast), fields are flat wells,
+    panels separate by fill against the page. The overlay shadow is the one
+    lift signal (Dialog, Drawer, Menu, Popover, Toast, ActionBar). Color is a
+    literal oklch (hue 54), tuned independently of the palette rungs — update
+    54 if the palette hue shifts.
 
-    The ring owns the crisp edge, so these carry only lift. Negative spread keeps
-    each shadow contained so a dense field stays calm; light from above, warm
-    charcoal-hued tint. Color is a literal oklch (hue 54), tuned independently of
-    the palette rungs — update 54 if the palette hue shifts.
+    Structure: a hairline ring (0.5px spread, no offset) traces the edge, then a
+    layered cast built on a doubling ladder (1 / 2 / 4 / 8 / 16px offset+blur)
+    carries the float. Per Comeau's "Designing Beautiful Shadows" and Ahlin's
+    layered-shadow method: the ladder gives one smooth falloff instead of a
+    blurry blob, and the alpha is concentrated on the tight contact layer then
+    tapered out (0.17 -> 0.055) — that concentration is what reads as crisp
+    rather than diffuse. Chroma sits at 0.035 (not near-grey) so it reads as a
+    warm shadow, hue-matched to the palette. The ring keeps the edge crisp on
+    the near-white charcoal-100 ground, where a pure diffuse cast has almost no
+    tonal delta to bite against; because box-shadow is outset, it draws on the
+    page around the surface, defining dark surfaces (the contrast ActionBar) as
+    well as white ones. Light is straight overhead (no x offset) so the shadow
+    is correct in every overlay position (Drawer, Popover opening any direction).
   */
-  --shadow-elevation-border:
-    0px 1px 8px -1px oklch(0.15 0.02 54 / 0.06),
-    0px 0.5px 0.5px -0.5px oklch(0.15 0.02 54 / 0.033);
-
-  --shadow-elevation-raised:
-    0px 1px 1px -0.5px oklch(0.15 0.02 54 / 0.108),
-    0px 2px 4px -2px oklch(0.15 0.02 54 / 0.09),
-    0px 6px 10px -5px oklch(0.15 0.02 54 / 0.063);
-
   --shadow-elevation-overlay:
-    0px 1px 2px -1px oklch(0.15 0.02 54 / 0.126),
-    0px 4px 8px -3px oklch(0.15 0.02 54 / 0.099),
-    0px 12px 22px -8px oklch(0.15 0.02 54 / 0.081);
+    0px 0px 0px 0.5px oklch(0.14 0.035 54 / 0.1),
+    0px 1px 1px 0px oklch(0.14 0.035 54 / 0.17),
+    0px 2px 2px 0px oklch(0.14 0.035 54 / 0.13),
+    0px 4px 4px 0px oklch(0.14 0.035 54 / 0.1),
+    0px 8px 8px 0px oklch(0.14 0.035 54 / 0.075),
+    0px 16px 16px 0px oklch(0.14 0.035 54 / 0.055);
 
   /* ==================== */
   /*        SPACING       */

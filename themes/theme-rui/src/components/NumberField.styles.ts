@@ -3,7 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva({
     base: [
-      'ui-control shadow-elevation-border h-control',
+      'ui-control h-control',
       'has-invalid:ui-state-error',
       'group-data-disabled/field:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',

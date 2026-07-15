@@ -3,25 +3,22 @@ title: Table
 description: Display and interact with structured data in rows and columns.
 ---
 
+import { TableAnatomy } from './table-anatomy';
+
 The `<Table>` component displays structured data in a grid layout with rows and columns. It provides features for selecting, sorting, editing, and reordering data, making it ideal for applications that need to present and manipulate tabular information.
 
 Use tables when you need to display datasets where users benefit from seeing multiple records at once, comparing values across columns, or performing bulk operations on selected items. Tables work well for admin interfaces, data management screens, and dashboards where structured information needs to be organized and actionable.
 
 ## Anatomy
 
-<ImageZoom
-  src="/table/table-anatomy.jpg"
-  alt="Anatomy of Table component"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<TableAnatomy />
 
 - **Header (sticky):** Container for column headers, can stick to viewport top when scrolling.
 - **Column:** Individual column headers that can enable sorting functionality.
 - **Selection checkbox:** Checkbox for selecting individual rows or all rows at once.
 - **Row (selectable):** Individual table rows that can be selected, clicked, or dragged.
 - **Cell:** Standard cell containing data, text, or components.
+- **Footer (sticky):** Optional summary row rendered after the body, can stick to the viewport bottom when scrolling.
 
 ## Appearance
 
@@ -282,7 +279,7 @@ When a table has no data to display, whether from empty search results, filters 
   </Dont>
 </GuidelineTiles>
 
-### Sticky headers
+### Sticky headers and footers
 
 For tables with many rows that require scrolling, sticky headers keep column labels visible as users scroll through data. This helps users maintain context about what each column represents.
 
@@ -299,6 +296,32 @@ For tables with many rows that require scrolling, sticky headers keep column lab
     <DontDescription>
       Don't make headers sticky for short tables where all rows fit on screen
       without scrolling.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+Table footers can be sticky too, keeping the summary row visible while users scroll through long tables.
+
+<ComponentDemo name="table-footer-sticky" />
+
+### Display totals
+
+Use `<Table.Footer>` to display a summary row after the table body, such as totals, counts, or averages. Unlike faking a totals row with an extra `<Table.Row>` inside the body, the footer renders as a semantic `<tfoot>`, which keeps it out of the body's scroll and sticky-header semantics and is announced correctly by assistive technology.
+
+Compose the summary row from `<Table.Row>` and `<Table.Cell>` just like the body, using `colSpan` to span a label across multiple columns.
+
+<ComponentDemo name="table-footer" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a footer for a single, table-wide summary row like totals or counts.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use a footer to add another data row, use `<Table.Body>` for
+      records.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -374,6 +397,10 @@ Mark the column that best identifies each row, typically a name, title, or ID co
 ### Table.EditableCell
 
 <AutoTypeTable path="Table/TableEditableCell" name="TableEditableCellProps" />
+
+### Table.Footer
+
+<AutoTypeTable path="Table/TableFooter" name="TableFooterProps" />
 
 ## Alternative components
 
