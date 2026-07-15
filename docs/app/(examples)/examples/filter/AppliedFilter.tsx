@@ -1,5 +1,11 @@
 'use client';
 
+import {
+  amenitiesOptions,
+  parkingOptions,
+  seatingTypeOptions,
+  venueTypes,
+} from '@/lib/data/venues';
 import type { ReactNode } from 'react';
 import { Tag } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';
@@ -8,6 +14,16 @@ import {
   type VenueFilter,
   useFilter,
 } from './hooks/useFilter';
+
+// Groups all values of one filter into a single label, truncated as
+// "a, b (+N more)" so tags keep a consistent size.
+const formatValues = (values: string[]) =>
+  values.length <= 3
+    ? values.join(', ')
+    : `${values.slice(0, 2).join(', ')} (+${values.length - 2} more)`;
+
+const fromOptions = (indexes: number[], options: readonly string[]) =>
+  formatValues(indexes.map(i => options[i]).filter(Boolean));
 
 // Called only for keys returned by activeFilterKeys(), so the value is
 // guaranteed not to match its default sentinel.
@@ -32,16 +48,17 @@ const getLabel = (filter: VenueFilter, key: FilterKeys): ReactNode => {
         </>
       );
     case 'traits':
-      return (
-        <>
-          Traits:{' '}
-          {filter.traits.length <= 3
-            ? filter.traits.join(', ')
-            : `${filter.traits.slice(0, 2).join(', ')} (+${filter.traits.length - 2} more)`}
-        </>
-      );
+      return <>Traits: {formatValues(filter.traits)}</>;
     case 'rating':
       return <>Min. Rating: {filter.rating} ★</>;
+    case 'types':
+      return <>Type: {fromOptions(filter.types, venueTypes)}</>;
+    case 'amenities':
+      return <>Amenities: {fromOptions(filter.amenities, amenitiesOptions)}</>;
+    case 'parking':
+      return <>Parking: {fromOptions(filter.parking, parkingOptions)}</>;
+    case 'seating':
+      return <>Seating: {fromOptions(filter.seating, seatingTypeOptions)}</>;
   }
 };
 

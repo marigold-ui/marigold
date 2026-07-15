@@ -20,6 +20,9 @@ const number = (value: string | null) => {
   return Number.isFinite(n) ? n : undefined;
 };
 
+const numberArray = (values: string[]) =>
+  values.map(Number).filter(Number.isFinite);
+
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const GET = async (request: NextRequest) => {
@@ -31,6 +34,10 @@ export const GET = async (request: NextRequest) => {
     price: number(searchParams.get('price')),
     rating: number(searchParams.get('rating')),
     traits: searchParams.getAll('traits'),
+    types: numberArray(searchParams.getAll('types')),
+    amenities: numberArray(searchParams.getAll('amenities')),
+    parking: numberArray(searchParams.getAll('parking')),
+    seating: numberArray(searchParams.getAll('seating')),
     column: (searchParams.get('column') as VenueSortColumn) ?? undefined,
     direction:
       (searchParams.get('direction') as VenueSortDirection) ?? undefined,

@@ -20,6 +20,10 @@ export const defaultFilter = {
   price: MAX_PRICE,
   traits: [] as string[],
   rating: 0,
+  types: [] as number[],
+  amenities: [] as number[],
+  parking: [] as number[],
+  seating: [] as number[],
 };
 
 export type FilterKeys = keyof typeof defaultFilter;
@@ -31,6 +35,10 @@ export type FilterFormData = {
   price?: string;
   traits?: string | string[];
   rating?: string;
+  types?: string | string[];
+  amenities?: string | string[];
+  parking?: string | string[];
+  seating?: string | string[];
 };
 
 const filterKeys = Object.keys(defaultFilter) as FilterKeys[];
@@ -50,6 +58,25 @@ const toArray = (value: string | string[] | undefined): string[] => {
   return value ? [value] : [];
 };
 
+const toNumberArray = (value: string | string[] | undefined): number[] =>
+  toArray(value).map(Number).filter(Number.isFinite);
+
+// Coerces raw form data and folds in the slider's "max value = no filter"
+// rule. Pure, so the result-count preview can reuse it outside the hook.
+export const formToFilter = (data: FilterFormData): VenueFilter => {
+  const price = toPositiveNumber(data.price, defaultFilter.price);
+  return {
+    capacity: toPositiveNumber(data.capacity, defaultFilter.capacity),
+    price: price >= MAX_PRICE ? defaultFilter.price : price,
+    traits: toArray(data.traits),
+    rating: toPositiveNumber(data.rating, defaultFilter.rating),
+    types: toNumberArray(data.types),
+    amenities: toNumberArray(data.amenities),
+    parking: toNumberArray(data.parking),
+    seating: toNumberArray(data.seating),
+  };
+};
+
 export const useFilter = () => {
   const [, setPagination] = usePagination();
   const [filter, _setFilter] = useQueryStates(
@@ -58,6 +85,16 @@ export const useFilter = () => {
       price: parseAsInteger.withDefault(defaultFilter.price),
       traits: parseAsArrayOf(parseAsString).withDefault(defaultFilter.traits),
       rating: parseAsInteger.withDefault(defaultFilter.rating),
+      types: parseAsArrayOf(parseAsInteger).withDefault(defaultFilter.types),
+      amenities: parseAsArrayOf(parseAsInteger).withDefault(
+        defaultFilter.amenities
+      ),
+      parking: parseAsArrayOf(parseAsInteger).withDefault(
+        defaultFilter.parking
+      ),
+      seating: parseAsArrayOf(parseAsInteger).withDefault(
+        defaultFilter.seating
+      ),
     },
     { history: 'push' }
   );
@@ -67,17 +104,8 @@ export const useFilter = () => {
     return _setFilter(next);
   };
 
-  // Coerces raw form data and folds in the slider's "max value = no filter"
-  // rule, so callers don't need to repeat either.
-  const setFilterFromForm = (data: FilterFormData) => {
-    const price = toPositiveNumber(data.price, defaultFilter.price);
-    return setFilter({
-      capacity: toPositiveNumber(data.capacity, defaultFilter.capacity),
-      price: price >= MAX_PRICE ? defaultFilter.price : price,
-      traits: toArray(data.traits),
-      rating: toPositiveNumber(data.rating, defaultFilter.rating),
-    });
-  };
+  const setFilterFromForm = (data: FilterFormData) =>
+    setFilter(formToFilter(data));
 
   const removeFilter = (keys: Set<FilterKeys>) =>
     setFilter(

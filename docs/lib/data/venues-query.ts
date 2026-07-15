@@ -22,6 +22,14 @@ export interface VenueQueryParams {
   rating?: number;
   /** Venue must carry at least one of these traits. `[]` means "no filter". */
   traits?: string[];
+  /** Venue type indexes (into `venueTypes`). `[]` means "no filter". */
+  types?: number[];
+  /** Venue must offer ALL of these amenity indexes. `[]` means "no filter". */
+  amenities?: number[];
+  /** Venue must offer at least one of these parking indexes. */
+  parking?: number[];
+  /** Venue must offer at least one of these seating type indexes. */
+  seating?: number[];
   column?: VenueSortColumn;
   direction?: VenueSortDirection;
   /** 1-based page. */
@@ -58,6 +66,12 @@ const compareVenues = (
 
 const DEFAULT_PAGE_SIZE = 5;
 
+// Widen the per-venue literal array types so `.includes` accepts any number.
+const hasAny = (offered: readonly number[], wanted: number[]) =>
+  wanted.some(value => offered.includes(value));
+const hasAll = (offered: readonly number[], wanted: number[]) =>
+  wanted.every(value => offered.includes(value));
+
 /**
  * Pure search → filter → sort → paginate pipeline over the static venue
  * fixture. Deterministic and side-effect free, so it can run on the server and
@@ -72,6 +86,10 @@ export const queryVenues = (
     price = MAX_PRICE,
     rating = 0,
     traits = [],
+    types = [],
+    amenities = [],
+    parking = [],
+    seating = [],
     column = 'name',
     direction = 'ascending',
     page = 1,
@@ -90,6 +108,16 @@ export const queryVenues = (
     if (price < MAX_PRICE && venue.price.to > price) return false;
     if (rating > 0 && venue.rating < rating) return false;
     if (traits.length > 0 && !venue.traits.some(t => traits.includes(t))) {
+      return false;
+    }
+    if (types.length > 0 && !types.includes(venue.type)) return false;
+    // Amenities are requirements, so a venue must offer all of them. The
+    // other multi-selects widen the result instead (match any).
+    if (amenities.length > 0 && !hasAll(venue.amenities, amenities)) {
+      return false;
+    }
+    if (parking.length > 0 && !hasAny(venue.parking, parking)) return false;
+    if (seating.length > 0 && !hasAny(venue.seatingTypes, seating)) {
       return false;
     }
     return true;

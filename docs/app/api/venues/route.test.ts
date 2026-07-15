@@ -39,4 +39,32 @@ describe('GET /api/venues', () => {
       body.items.every(v => v.name.toLowerCase().includes(term.toLowerCase()))
     ).toBe(true);
   });
+
+  it('filters by type (match any)', async () => {
+    const body = await get('?pageSize=all&types=0&types=2');
+    expect(body.items.length).toBeGreaterThan(0);
+    expect(body.items.every(v => [0, 2].includes(v.type))).toBe(true);
+  });
+
+  // Widens the per-venue literal array types so `.includes` accepts any number.
+  const has = (list: readonly number[], value: number) => list.includes(value);
+
+  it('filters by amenities (must offer all)', async () => {
+    const body = await get('?pageSize=all&amenities=0&amenities=6');
+    expect(
+      body.items.every(v => has(v.amenities, 0) && has(v.amenities, 6))
+    ).toBe(true);
+  });
+
+  it('filters by parking and seating (match any)', async () => {
+    const body = await get('?pageSize=all&parking=0&seating=1');
+    expect(
+      body.items.every(v => has(v.parking, 0) && has(v.seatingTypes, 1))
+    ).toBe(true);
+  });
+
+  it('ignores non-numeric option indexes', async () => {
+    const body = await get('?pageSize=all&types=abc');
+    expect(body.totalItems).toBe(venues.length);
+  });
 });

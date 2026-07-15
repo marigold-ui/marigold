@@ -24,6 +24,10 @@ const toSearchParams = (params: VenueQueryParams) => {
 
   // Repeatable params — one entry each, read server-side with `getAll`.
   params.traits?.forEach(trait => search.append('traits', trait));
+  params.types?.forEach(type => search.append('types', String(type)));
+  params.amenities?.forEach(a => search.append('amenities', String(a)));
+  params.parking?.forEach(p => search.append('parking', String(p)));
+  params.seating?.forEach(s => search.append('seating', String(s)));
   params.exclude?.forEach(id => search.append('exclude', id));
 
   return search;
