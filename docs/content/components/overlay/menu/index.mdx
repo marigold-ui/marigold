@@ -147,7 +147,11 @@ The menu below opens a dialog both ways: "Rename" collects input, and "Delete" a
 
 ### Disabled items
 
-Disable an item with `disabledKeys` when the action belongs here but is temporarily unavailable, such as "Undo" with nothing to undo. Omit the item entirely when it never applies in this context, rather than showing it disabled with no explanation. Each `<Menu.Item>` needs an `id` for `disabledKeys` to reference.
+A disabled item is worth showing only when the action belongs in this menu but is not available right now and the user could make it available. "Paste" with an empty clipboard or "Undo" with nothing to undo are the classic cases. The item stays in its usual place so people learn where it lives, and its dimmed state signals that it exists but is not ready yet. A menu whose shape stays stable is easier to learn than one whose items appear and disappear.
+
+Reach for it sparingly. If an action never applies in the current context, or the user will never be allowed to run it, omit the item rather than leave a permanently dead row, which is only noise. When the reason for disabling is not obvious from the surrounding state, explain it, either in the item's description or nearby, because a disabled control with no explanation leaves people guessing why they cannot use it.
+
+A disabled item stays visible and is marked disabled for assistive technology, but it cannot be activated and does not fire `onAction`. Set it with `disabledKeys` on the `<Menu>`, which references each item by its `id`.
 
 <ComponentDemo name="menu-disabled" />
 
