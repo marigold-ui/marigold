@@ -133,15 +133,15 @@ This is the one case where a menu row carries state, and it works because the wh
 
 The moment a row needs its own control beside the label, such as a switch to flip or a link to follow, it becomes content that holds controls rather than a single command, and a menu is the wrong container. A menu item cannot expose interactive children to a screen reader or to keyboard focus, so use a surface built for arbitrary content instead.
 
-### Destructive actions
+### Opening a dialog
 
-Mark an irreversible action, such as deleting a record, with the `destructive` variant so its risk reads at a glance. Always confirm the action in a [`<Dialog>`](/components/overlay/dialog) before it runs, so a mis-click cannot cause data loss.
+Most menu items run the moment they are chosen, but some should pause first. When an action is destructive or needs more input, open a [`<Dialog>`](/components/overlay/dialog) from the item rather than acting straight away. Selecting the item closes the menu and opens the dialog, where the user confirms or fills in the details before anything happens.
+
+For irreversible actions, such as deleting a record or removing a member, do two things together. Mark the item with the `destructive` variant so its risk reads at a glance in the list, and open a confirmation dialog before the action runs so a mis-click cannot cause data loss. The variant is the warning and the dialog is the safeguard. The heavier the consequence, the more the confirmation should ask of the user, from a simple confirm button up to typing the name of the thing being deleted.
 
 <ComponentDemo name="menu-destructive" />
 
-### Opening a dialog from an item
-
-When an action needs more input or a confirmation, open a [`<Dialog>`](/components/overlay/dialog) from the item. Selecting the item closes the menu and opens the dialog, where the user completes or confirms the task.
+Other actions are not dangerous but still need details before they can run, such as renaming an item or adding a label. Here the dialog collects that input and applies the change when the user confirms. It also keeps the menu short, since the item is only the entry point and the form lives in the dialog.
 
 <ComponentDemo name="menu-open-dialog" />
 
