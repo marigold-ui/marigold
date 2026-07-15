@@ -97,7 +97,11 @@ Ask whether the choice does something now or stores a value for later. If it act
 
 ### Grouping related items
 
-When a menu holds several kinds of action, group them so the list stays scannable. Use a `<Menu.Section>` with a `title` when each group needs a visible heading, and a `<Divider>` when the split is obvious and a heading would only add noise, such as setting a destructive action apart from the rest. The two can work together in the same menu.
+A short menu needs no grouping, but once it holds several kinds of action the list gets harder to scan. Grouping breaks it into chunks a reader takes in at a glance, so they find the action they want without reading every row.
+
+Use a `<Menu.Section>` with a `title` when the groups have names worth showing, such as "Game day" and "Support" or "Edit" and "Share". The heading labels the group for everyone and gives assistive technology a named group to move through, which helps most when a menu is long or spans more than one topic. Reach for a `<Divider>` instead when the split is obvious and a label would only repeat what the items already say, such as setting a destructive "Delete" apart from the actions above it. A divider is a quiet break, not a named region.
+
+The two can work together: label the main groups with sections, then use a divider to set a standalone action such as Delete or Sign out apart from them. Keep grouping in proportion to the menu, though. A handful of items reads fine as one list, and splitting it into tiny groups adds structure no one needs.
 
 <ComponentDemo name="menu-grouping" />
 
