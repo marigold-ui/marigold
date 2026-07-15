@@ -103,9 +103,28 @@ When a menu holds several kinds of action, group them so the list stays scannabl
 
 ### Icons and keyboard shortcuts
 
-Leading icons help users recognise an action at a glance, and a trailing keyboard-shortcut hint teaches the faster path for repeat use. Compose a `<Menu.Item>` with an icon, a [`<TextValue>`](/components/content/text-value) label, and a [`<Keyboard>`](/components/content/keyboard) shortcut. Set `textValue` on the item so type-ahead matches the label rather than the shortcut text.
+A leading icon lets people recognise a familiar action by its shape before they read the label, which speeds up scanning in a menu they open often. Reach for icons when an action has a well-known symbol, such as cut, copy, or paste. Give every item in a group an icon rather than only some, so the group reads as one set instead of a ragged mix, and skip icons for abstract actions where a vague or invented symbol slows recognition instead of helping it.
+
+A trailing keyboard-shortcut hint teaches the faster path and rewards repeat use, so the menu becomes a place where people pick up shortcuts rather than one they keep returning to. Show a hint only for an action that has a real, working key binding, and make it match the binding exactly. A hint for a shortcut the application does not handle is worse than none, because it teaches a key that does nothing.
+
+Compose a `<Menu.Item>` with an icon, a [`<TextValue>`](/components/content/text-value) label, and a [`<Keyboard>`](/components/content/keyboard) shortcut. Set `textValue` on the item so type-ahead matches the label rather than the shortcut text.
 
 <ComponentDemo name="menu-shortcuts" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use icons for actions with a familiar symbol, and give every item in the
+      group one so they read as a set.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't show a shortcut the application doesn't handle. A hint that leads
+      nowhere teaches the wrong key.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Adding a description line
 
