@@ -1,7 +1,7 @@
 import { Button } from 'react-aria-components/Button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useIsSSR } from '@react-aria/ssr';
-import { cn } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
@@ -23,6 +23,15 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const isSSR = useIsSSR();
 
+  // The rail variant is a standard icon Button under the hood: it composes
+  // the Button recipe (ghost/icon) for the control-size hitbox, ghost hover,
+  // and press feedback, with the rail's ink layered on via `railToggle`.
+  const iconButtonClassNames = useClassNames({
+    component: 'Button',
+    variant: 'ghost',
+    size: 'icon',
+  });
+
   const isMac = !isSSR && /Mac|iPhone|iPad/.test(navigator.userAgent);
   const shortcut = isMac ? '⌘B' : 'Ctrl+B';
 
@@ -40,7 +49,9 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
         onPress={toggleSidebar}
         className={cn(
           'group/icon',
-          variant === 'rail' ? classNames.railToggle : classNames.toggle
+          variant === 'rail'
+            ? cn(iconButtonClassNames, classNames.railToggle)
+            : classNames.toggle
         )}
       >
         {/* Rail variant shares the shell with lucide rail icons (default

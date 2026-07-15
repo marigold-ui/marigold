@@ -49,8 +49,9 @@ interface RailItemLinkProps {
   onActivate: () => boolean;
   /**
    * Icon-only rail: adds a native title as the hover hint. The label itself
-   * stays mounted — the theme fades it to opacity-0 (still the accessible
-   * name) inside a fixed-size box, so hiding it never shifts the icons.
+   * stays mounted — the theme folds its row away and fades it to opacity-0
+   * (still the accessible name), so the tiles glide into the dense icon-only
+   * pitch instead of jumping.
    */
   collapsed: boolean;
   className: string;

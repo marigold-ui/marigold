@@ -168,21 +168,19 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   railColumn: cva({
     base: ['flex flex-col min-h-0 overflow-x-clip', 'border-r border-border'],
   }),
-  // The panel toggle as a compact top-bar icon button, sitting between the
-  // wordmark and the breadcrumbs (no slot, no dividers — the bar separates its
-  // zones by spacing alone). Ghost like the bar variant but with the rail
-  // shell's icon ink: idle `secondary` lifting to `foreground`, a control-size
-  // tile, and the rail's 20px icon weight. It can go inert on a direct-link
-  // page (nothing to collapse). The icon's expand/collapse morph
-  // (SidebarToggleIcon) is unaffected.
+  // The panel toggle in the top bar, between the wordmark and the
+  // breadcrumbs. It IS an icon Button (Button.styles.ts ghost/icon —
+  // SidebarToggle composes those classes underneath), so it inherits the
+  // standard control-size square hitbox, ghost hover, and press feedback.
+  // This recipe only layers the rail shell's deltas on top: `secondary` ink
+  // lifting to `foreground`, the rail's 20px icon weight, and shrink-0 so
+  // the top bar's flex Start zone can never squeeze the square below its
+  // hitbox (it sits next to shrinking breadcrumbs).
   railToggle: cva({
     base: [
-      'ui-button-base ui-press',
-      'size-control [&_svg]:size-5',
-      'text-secondary',
-      'enabled:hover:ui-state-hover-ghost enabled:hover:text-foreground',
-      // Inert on a direct-link page (nothing to collapse): no hover lift.
-      'disabled:text-disabled disabled:cursor-default',
+      'shrink-0',
+      'text-secondary hover:text-foreground',
+      '[&_svg]:size-5',
     ],
   }),
   // The rail's scrolling item list (footer pinned below). Thin
@@ -195,33 +193,43 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   // Stacked tile: icon above a visible label, centered in the rail column.
-  // Uniform geometry so collapsing NEVER moves an icon vertically: every
-  // label gets a fixed two-line box (h-[2lh]) at a fixed width (5.75rem —
-  // the tile's content width at the expanded 6.5rem rail, sized so
-  // "Veranstaltungen" fits one line and longer compounds like
-  // "Automatisierungen" hyphenate onto the second). Fixed height means
-  // hiding the label frees no vertical space; fixed width means the text
-  // cannot re-wrap while the column width animates. Collapse therefore only
-  // changes the rail's width.
+  // Content-hugging geometry: the tile is exactly icon + label + even py-2,
+  // so the pill never covers empty space (a one-line label makes a shorter
+  // tile than a hyphenated two-line one) and the gap between tiles is
+  // constant regardless of line count. The label keeps a fixed width
+  // (5.75rem — the tile's content width at the expanded 6.5rem rail) so it
+  // cannot re-wrap while the column width animates.
+  //
+  // Collapsing folds the label row (grid-rows auto 1fr → auto 0fr) with the
+  // same 200ms ease-in-out as the column width, so tiles settle into a dense
+  // even icon-only pitch (2.25rem tiles) and the icons glide — never jump —
+  // into place.
   //
   // The hover/selected pill and the focus ring live on a `before:` indicator
   // layer decoupled from the tile box (the SelectionIndicator idea from
-  // SegmentedControl, as a pseudo-element): expanded it fills the tile;
-  // collapsed it shrinks to a control-size (2.25rem) square around the 20px
-  // icon — 8px of air on all four sides — instead of ghosting over the
-  // hidden label. Its inset morphs with the same 200ms ease-in-out as the
-  // column width, so pill and rail move as one.
+  // SegmentedControl, as a pseudo-element): expanded it fills the
+  // content-hugging tile; collapsed it is a control-size (2.25rem) square
+  // around the 20px icon — 8px of air on all four sides. Its inset morphs in
+  // sync with the fold.
   //
   // The label fades instead of unmounting: out fast (100ms, no delay) so no
-  // half-clipped text rides the narrowing column; in late (150ms after a
-  // 100ms delay) so it only reappears once the column has most of its width
-  // back. opacity-0 (unlike sr-only) keeps it in the accessibility tree as
-  // the accessible name. hyphens-auto needs a `lang` on the document.
+  // half-clipped text rides the folding row; in late (150ms after a 100ms
+  // delay) so it only reappears once the tile has most of its size back.
+  // opacity-0 (unlike sr-only) keeps it in the accessibility tree as the
+  // accessible name. hyphens-auto needs a `lang` on the document.
   railItem: cva({
     base: [
-      'relative isolate flex flex-col items-center justify-center gap-1 mx-1 px-0.5 py-2',
+      // grid-cols-[minmax(0,1fr)]: cap the implicit column at the tile width —
+      // otherwise the fixed-width label sizes the column and drags the icon
+      // off-center. The icon–label gap is a row-gap (not a margin/padding on
+      // the label: both leak into the folded 0fr track) and folds to 0 in the
+      // same transition.
+      'relative isolate grid grid-cols-[minmax(0,1fr)] justify-items-center mx-1 px-0.5 py-2',
+      'grid-rows-[auto_1fr] gap-y-1',
+      'in-data-[state=collapsed]:grid-rows-[auto_0fr] in-data-[state=collapsed]:gap-y-0',
+      'transition-[grid-template-rows,row-gap,color] duration-200 ease-in-out',
+      'motion-reduce:transition-none',
       'text-secondary text-center cursor-pointer',
-      'transition-colors motion-reduce:transition-none',
       'outline-none',
       'hover:text-foreground data-active:text-foreground',
       // The indicator layer (see block comment above). Collapsed: a 2.25rem
@@ -239,8 +247,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'focus-visible:before:ui-state-focus',
       '[&_svg]:size-5 [&_svg]:shrink-0',
       // The label: same size as the panel's group captions, medium so it holds
-      // its own under the icon.
-      '[&>span]:w-[5.75rem] [&>span]:h-[2lh] [&>span]:shrink-0',
+      // its own under the icon. It is the foldable grid row: min-h-0 +
+      // overflow-hidden let the 0fr row actually clip it.
+      '[&>span]:w-[5.75rem] [&>span]:min-h-0 [&>span]:overflow-hidden',
       '[&>span]:text-[0.6875rem] [&>span]:font-medium [&>span]:leading-tight',
       '[&>span]:break-words [&>span]:hyphens-auto',
       // Fade choreography (see block comment above).
