@@ -137,7 +137,7 @@ This is the one case where a menu row carries state, and it works because the wh
 
 The moment a row needs its own control beside the label, such as a switch to flip or a link to follow, it becomes content that holds controls rather than a single command, and a menu is the wrong container. A menu item cannot expose interactive children to a screen reader or to keyboard focus, so use a surface built for arbitrary content instead.
 
-### Opening a dialog
+### Confirming and collecting input
 
 Most menu items run the moment they are chosen, but some should pause first. When an action is destructive or needs more input, open a [`<Dialog>`](/components/overlay/dialog) from the item rather than acting straight away. Selecting the item closes the menu and opens the dialog, where the user confirms or fills in the details before anything happens.
 
