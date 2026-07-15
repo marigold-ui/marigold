@@ -8,7 +8,7 @@ The `<Menu>` component presents a list of commands behind a trigger. Reach for i
 
 A `<Menu>` owns its trigger button and opens a floating list of `<Menu.Item>`s. Group related items with a `<Menu.Section>` or a `<Divider>`, and use the [`<ActionMenu>`](/components/overlay/action-menu) companion when you want a compact kebab-style trigger for per-row or per-item actions.
 
-On small screens a `<Menu>` opens as a bottom [`<Tray>`](/components/overlay/drawer) instead of a floating list, so it stays comfortable to reach on touch.
+On small screens a `<Menu>` opens as a bottom sheet instead of a floating list, so it stays comfortable to reach on touch.
 
 import { MenuAnatomy } from './menu-anatomy';
 
@@ -161,7 +161,7 @@ A disabled item stays visible and is marked disabled for assistive technology, b
 
 ### Kebab menus
 
-A kebab menu gathers the actions for one specific item, such as a table row, a card, or a list entry, behind a compact "⋮" trigger. Build it with the [`<ActionMenu>`](/components/overlay/action-menu) companion: it shows an icon-only trigger, drops into a [`<Tray>`](/components/overlay/drawer) on small screens, and takes the same `<Menu.Item>` API as `<Menu>`. Its `variant` sets how much the trigger stands out. Use `ghost` so it blends into a busy row, which is the usual choice for a kebab, or leave the default when it should read as a normal button.
+A kebab menu gathers the actions for one specific item, such as a table row, a card, or a list entry, behind a compact "⋮" trigger. Build it with the [`<ActionMenu>`](/components/overlay/action-menu) companion: it shows an icon-only trigger, drops into a bottom sheet on small screens, and takes the same `<Menu.Item>` API as `<Menu>`. Its `variant` sets how much the trigger stands out. Use `ghost` so it blends into a busy row, which is the usual choice for a kebab, or leave the default when it should read as a normal button.
 
 Reach for it when an item has more actions than you can or should show inline. Rather than crowd every row with buttons, keep the one or two primary actions visible and move the rest behind the kebab, so the row stays scannable and the actions still have a predictable home. This scales especially well in tables and long lists, where a full set of buttons on every row would be overwhelming.
 
