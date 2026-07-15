@@ -18,12 +18,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // The renderer module gets bundled into dist/, so __dirname is `dist/` after
 // build but `src/lib/validate/spatial/` in source. The harness lives at
-// ../../harness relative to spatial/ in source, and at dist/harness in dist.
+// ../../../harness relative to spatial/ in source (packages/cli/src/harness),
+// and at dist/harness in dist.
 const findHarnessDir = (): string => {
   const candidates = [
     path.resolve(__dirname, 'harness'),
     path.resolve(__dirname, '..', 'harness'),
     path.resolve(__dirname, '..', '..', 'harness'),
+    path.resolve(__dirname, '..', '..', '..', 'harness'),
   ];
   for (const c of candidates) {
     if (fs.existsSync(path.join(c, 'index.html'))) return c;

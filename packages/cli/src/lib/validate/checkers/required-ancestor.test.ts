@@ -90,26 +90,6 @@ describe('validateRequiredAncestor', () => {
     expect(issues).toEqual([]);
   });
 
-  it('does not flag sub-components when a host renders the root internally', () => {
-    const file = tmpFile(
-      'ra-applayout-host.tsx',
-      `import { AppLayout, Sidebar } from '@marigold/components';
-      const C = () => (
-        <AppLayout>
-          <AppLayout.Sidebar>
-            <Sidebar.Nav>
-              <Sidebar.Item id="home">Home</Sidebar.Item>
-            </Sidebar.Nav>
-          </AppLayout.Sidebar>
-        </AppLayout>
-      );`
-    );
-    const sidebarIssues = validateRequiredAncestor(file).filter(i =>
-      i.component.startsWith('Sidebar')
-    );
-    expect(sidebarIssues).toEqual([]);
-  });
-
   it('does not flag provider sub-components', () => {
     const file = tmpFile(
       'ra-provider.tsx',

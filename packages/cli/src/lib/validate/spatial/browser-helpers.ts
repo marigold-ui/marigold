@@ -54,6 +54,15 @@ export const describeEl = (
 // mechanism. Centralises the visibility predicate the checks each re-implemented
 // inline. Does NOT walk ancestors — callers that need ancestor-hidden semantics
 // compose this with `el.closest(...)`.
+//
+// bounding-box.ts deliberately does NOT use this: aria-hidden is an
+// accessibility-tree signal, not a rendering one, so an aria-hidden element
+// can still be fully visible and genuinely overlap a sibling — folding it in
+// would make that visual overlap check produce false negatives. It also needs
+// display:none/[hidden] (no override possible) and visibility:hidden (author
+// can override on a descendant) to prune differently, which this single
+// boolean can't express. See bounding-box.ts's own isRenderSuppressed/
+// isInvisible before reusing this here.
 export const isHidden = (el: Element): boolean => {
   const style = window.getComputedStyle(el);
   return (

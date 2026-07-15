@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { resolveThemeCss } from './resolve-theme.js';
 
 export type DesignTokenMap = Record<string, string>;
@@ -6,6 +7,38 @@ export type DesignTokenMap = Record<string, string>;
 let cachedTokens: DesignTokenMap | null = null;
 
 const TOKEN_DECL = /--([a-zA-Z0-9_-]+):\s*([^;}\n]+);?/g;
+
+// Matches a local (`./`, `../`) `@import`, either the bare-string form
+// (`@import './x.css';`) or the `url(...)` form (`@import url('./x.css');`),
+// each optionally followed by trailing media descriptors before the `;`
+// (`@import './x.css' screen;`). Group 1 captures the url() path, group 2 the
+// bare-string path — exactly one of the two is set per match.
+const LOCAL_IMPORT =
+  /@import\s+(?:url\(\s*['"]?(\.\.?\/[^'")]+)['"]?\s*\)|['"](\.\.?\/[^'"]+)['"])[^;]*;?/g;
+
+// theme-rui's theme.css is a thin consumer entry point: it declares no tokens
+// itself and only `@import`s the partials that do (tokens.css, ui.css, …), so
+// reading it verbatim always yields zero tokens. Inline every local (`./`,
+// `../`) `@import` recursively, relative to the importing file, so the
+// concatenated CSS actually contains the `@theme`/`:root` blocks the token
+// scan looks for. `seen` guards against re-visiting a file via more than one
+// import path (self-import is a pathological edge case, not something a real
+// theme build produces, but the guard is cheap).
+export const resolveCssImports = (
+  cssPath: string,
+  seen = new Set<string>()
+): string => {
+  const absolute = path.resolve(cssPath);
+  if (seen.has(absolute)) return '';
+  seen.add(absolute);
+  const dir = path.dirname(absolute);
+  const raw = fs.readFileSync(absolute, 'utf-8');
+  return raw.replace(
+    LOCAL_IMPORT,
+    (_match, urlPath: string | undefined, quotedPath: string | undefined) =>
+      resolveCssImports(path.join(dir, (urlPath ?? quotedPath)!), seen)
+  );
+};
 
 // Restrict token extraction to `:root` / `@theme` blocks. A custom property
 // declared inside a component or utility selector is NOT a design token, and
@@ -66,7 +99,7 @@ export const loadDesignTokens = (): DesignTokenMap => {
     throw new ThemeCssNotFoundError();
   }
 
-  const css = extractTokenScopes(fs.readFileSync(themeCss, 'utf-8'));
+  const css = extractTokenScopes(resolveCssImports(themeCss));
   const raw: DesignTokenMap = {};
   for (const m of css.matchAll(TOKEN_DECL)) {
     raw[m[1]] = m[2].trim();

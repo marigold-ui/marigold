@@ -568,7 +568,7 @@ export const responsiveToValidationIssues = (
       component: 'page',
       message: `Content uses only ${pct}% of the desktop width (${DESKTOP_WIDTH}px): it stays in a narrow, mobile-shaped band instead of adapting to the available space.`,
       suggestion:
-        'Let the layout grow with the viewport using Marigold responsive primitives — <Columns collapseAt="..."> for multi-column areas, AppLayout for the shell, Stack/Inline for flow — instead of a fixed-width container. (Intentionally centred max-width reading columns are fine and may trip this; treat it as a relative signal.)',
+        'Let the layout grow with the viewport using Marigold responsive primitives — <Columns collapseAt="..."> for multi-column areas, AppShell for the shell, Stack/Inline for flow — instead of a fixed-width container. (Intentionally centred max-width reading columns are fine and may trip this; treat it as a relative signal.)',
       details: {
         widthUtilization: util.utilization,
         contentElements: util.contentElements,
