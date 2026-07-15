@@ -123,27 +123,13 @@ The description is wired to the item's accessible description automatically, so 
 
 ### Toggling options
 
-When a menu's own rows are things to switch on and off, such as which columns a table shows, set `selectionMode` to `"single"` or `"multiple"`. Selected items render a checkmark and a highlighted row, and react-aria gives each item the matching `menuitemcheckbox` or `menuitemradio` role so the state is announced correctly. The menu stays open while the user toggles.
+Sometimes a menu's own rows are settings to switch on and off rather than commands to run once, such as which columns a table shows, which layers are visible, or how a list is sorted. Set `selectionMode` to `"single"` or `"multiple"` and each row becomes a toggle. Use `"multiple"` for independent switches where any number can be on at once, which react-aria exposes as a `menuitemcheckbox` on each row, and `"single"` for a set where exactly one is active at a time, such as a sort order, where each row becomes a `menuitemradio`.
+
+Selected rows show a checkmark and a highlighted background, aligned like `<ListBox>`. The menu stays open as the user works, so they can flip several toggles in one visit instead of reopening it for each change.
 
 <ComponentDemo name="menu-selection" />
 
-This is the one case where a menu row carries state, and it works because the row itself is the toggle. If a row instead needs its own switch, second button, or link, it is no longer a menu.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use selection mode to toggle a menu's own rows, so the row itself is the
-      control.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't place a switch, a second button, or a link inside a menu item.
-      Screen readers cannot reach controls nested in a command, so use a surface
-      that holds arbitrary content instead.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+This is the one case where a menu row carries state, and it works because the row itself is the toggle. The moment a row needs its own control beside the label, such as a switch, a second button, or a link, it stops being a command and a menu is the wrong container. Screen readers cannot reach controls nested inside a menu item, so reach for a surface that holds arbitrary, interactive content instead.
 
 ### Destructive actions
 
