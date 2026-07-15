@@ -188,21 +188,27 @@ export const BaseLoader = ({
   size,
   children,
   'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
   loaderType = 'circle',
   ...props
 }: BaseLoaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   const className = useClassNames({ component: 'Loader', variant, size });
 
+  // The localized "loading" message is only a fallback: apply it solely when the
+  // consumer supplies no accessible name of any kind (`aria-label`,
+  // `aria-labelledby`, or a visible `children` label). This keeps the consumer's
+  // label winning and avoids emitting a redundant `aria-label` next to it.
+  const hasLabel = ariaLabel || ariaLabelledby || children;
+
   return (
     <ProgressBar
       className={className.container}
       isIndeterminate
       aria-label={
-        ariaLabel || children
-          ? ariaLabel
-          : stringFormatter.format('loadingMessage')
+        hasLabel ? ariaLabel : stringFormatter.format('loadingMessage')
       }
+      aria-labelledby={ariaLabelledby}
       {...props}
     >
       {loaderType === 'xloader' ? (

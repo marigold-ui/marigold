@@ -32,6 +32,20 @@ test('render custom label', () => {
   expect(label).toBeInTheDocument();
 });
 
+test('respects a consumer-provided aria-labelledby without a redundant aria-label', () => {
+  render(
+    <>
+      <span id="loader-label">Saving changes</span>
+      <Basic.Component aria-labelledby="loader-label" />
+    </>
+  );
+
+  const loader = screen.getByRole('progressbar');
+
+  expect(loader).toHaveAttribute('aria-labelledby', 'loader-label');
+  expect(loader).not.toHaveAttribute('aria-label');
+});
+
 test('inline uses "inverted" variant', () => {
   render(<Basic.Component mode="section">Loading...</Basic.Component>);
 

@@ -90,10 +90,16 @@ export const ProgressCircle = ({
   ...props
 }: ProgressCircleProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  // The localized "loading" message is only a fallback: it fills the accessible
+  // name when the consumer provides none. Placing it before `{...props}` lets a
+  // caller's `aria-label`/`aria-labelledby` win instead of being overwritten.
+  const hasLabel = props['aria-label'] || props['aria-labelledby'];
   return (
     <ProgressBar
+      aria-label={
+        hasLabel ? undefined : stringFormatter.format('loadingMessage')
+      }
       {...props}
-      aria-label={stringFormatter.format('loadingMessage')}
       isIndeterminate
     >
       <ProgressCircleSvg size={size} />
