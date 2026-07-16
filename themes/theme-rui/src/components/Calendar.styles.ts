@@ -27,7 +27,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     ],
   }),
   calendarContainer: cva({ base: 'flex flex-col gap-4 sm:flex-row' }),
-  calendarMonth: cva({ base: 'min-w-[250px] sm:flex-1' }),
+  calendarMonth: cva({ base: 'min-w-0 sm:min-w-[250px] sm:flex-1' }),
   calendarCell: cva({
     base: [
       'size-9 rounded-lg',
