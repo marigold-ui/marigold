@@ -3,6 +3,8 @@ import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
+import { Description } from '../Description/Description';
+import { TextValue } from '../TextValue/TextValue';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
@@ -410,6 +412,41 @@ AccessSections.test(
 
     expect(del.querySelector('svg')).toBeInTheDocument();
     expect(del).not.toHaveClass('text-destructive-accent');
+  }
+);
+
+export const DisabledWithDescription = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Menu {...args} label="Sharing options" disabledKeys={['restricted']}>
+      <Menu.Item id="public" textValue="Public">
+        <TextValue>Public</TextValue>
+        <Description>Anyone with the link can view.</Description>
+      </Menu.Item>
+      <Menu.Item id="restricted" textValue="Restricted">
+        <TextValue>Restricted</TextValue>
+        <Description>Only people you invite can view.</Description>
+      </Menu.Item>
+    </Menu>
+  ),
+});
+
+DisabledWithDescription.test(
+  'dims the description of a disabled item',
+  // Keep the snapshot so Chromatic captures the open menu with the disabled
+  // item's dimmed description.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Sharing options' })
+    );
+
+    const restricted = await canvas.findByRole('menuitem', {
+      name: /Restricted/,
+    });
+
+    expect(restricted).toHaveAttribute('aria-disabled', 'true');
   }
 );
 
