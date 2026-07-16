@@ -159,8 +159,8 @@ const _Calendar = ({
           selectedDropdown && 'pointer-events-none opacity-0'
         )}
       >
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div className="flex w-fit gap-4">
+        <div className="mb-6 flex items-center justify-between gap-4 max-sm:gap-2">
+          <div className="flex w-fit gap-4 max-sm:gap-3">
             <CalendarListBox
               key="month"
               type="month"
@@ -199,7 +199,9 @@ const _Calendar = ({
       <Calendar
         className={cn(
           'relative flex w-(--width) flex-col',
-          hasPresets && 'gap-4 max-sm:flex-col sm:flex-row',
+          // gap-3 below `sm`: with gap-4 a 5-week month overflows the picker
+          // tray's content area by 3px at 320x568, drawing a needless scrollbar.
+          hasPresets && 'gap-4 max-sm:flex-col max-sm:gap-3 sm:flex-row',
           isInPicker && pickerView === 'presets' && 'max-sm:w-full',
           classNames.calendar
         )}

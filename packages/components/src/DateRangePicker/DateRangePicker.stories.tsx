@@ -380,29 +380,29 @@ export const PresetsMobile = meta.story({
       <DateRangePicker
         {...args}
         defaultValue={{
-          start: new CalendarDate(2027, 1, 5),
-          end: new CalendarDate(2027, 1, 11),
+          start: new CalendarDate(2027, 3, 2),
+          end: new CalendarDate(2027, 3, 8),
         }}
         presets={[
           {
             label: 'Kickoff week',
             value: {
-              start: new CalendarDate(2027, 1, 5),
-              end: new CalendarDate(2027, 1, 11),
+              start: new CalendarDate(2027, 3, 2),
+              end: new CalendarDate(2027, 3, 8),
             },
           },
           {
             label: 'Review week',
             value: {
-              start: new CalendarDate(2027, 1, 19),
-              end: new CalendarDate(2027, 1, 25),
+              start: new CalendarDate(2027, 3, 16),
+              end: new CalendarDate(2027, 3, 22),
             },
           },
           {
             label: 'Release month',
             value: {
-              start: new CalendarDate(2027, 2, 1),
-              end: new CalendarDate(2027, 2, 28),
+              start: new CalendarDate(2027, 4, 1),
+              end: new CalendarDate(2027, 4, 30),
             },
           },
         ]}

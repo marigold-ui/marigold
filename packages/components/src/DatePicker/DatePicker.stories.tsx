@@ -413,11 +413,11 @@ export const PresetsMobile = meta.story({
     <I18nProvider locale="en-US">
       <DatePicker
         {...args}
-        defaultValue={new CalendarDate(2027, 1, 5)}
+        defaultValue={new CalendarDate(2027, 3, 2)}
         presets={[
-          { label: 'Kickoff', value: new CalendarDate(2027, 1, 5) },
-          { label: 'Review', value: new CalendarDate(2027, 1, 19) },
-          { label: 'Release', value: new CalendarDate(2027, 2, 2) },
+          { label: 'Kickoff', value: new CalendarDate(2027, 3, 2) },
+          { label: 'Review', value: new CalendarDate(2027, 3, 16) },
+          { label: 'Release', value: new CalendarDate(2027, 3, 30) },
         ]}
       />
     </I18nProvider>
