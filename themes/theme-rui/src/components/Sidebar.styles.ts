@@ -20,7 +20,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // full-width sheet has nothing to dim.
       'data-partial:bg-overlay-backdrop',
       'data-partial:entering:animate-fade-in data-partial:exiting:animate-fade-out',
-      'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
     ],
   }),
   modal: cva({
@@ -58,7 +57,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // growing to its widest item and overflowing the fixed w-64 aside, where
   // overflow-hidden clips rows and the pill.
   header: cva({
-    base: 'ui-panel-header h-14 min-w-0',
+    base: 'ui-panel-header h-topbar min-w-0',
   }),
   nav: cva({
     base: [
@@ -270,6 +269,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   panel: cva({
     base: [
       'flex flex-col min-h-0 overflow-hidden',
+      // The nav fills the panel below the heading and clips its own overflow.
+      '[&>nav]:flex-1 [&>nav]:min-h-0',
       'border-r border-border in-data-[panel=collapsed]:border-r-0',
     ],
   }),

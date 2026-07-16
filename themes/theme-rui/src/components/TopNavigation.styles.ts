@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const TopNavigation: ThemeComponent<'TopNavigation'> = {
   container: cva({
     base: [
-      'w-full min-h-14',
+      'w-full min-h-topbar',
       // Bottom edge: the shell's structural line under the sticky bar, always
       // on (the `border` hue, matching the sidebar's edge).
       'border-b border-border',

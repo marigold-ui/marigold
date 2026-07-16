@@ -19,9 +19,7 @@ import { SidebarToggle } from './SidebarToggle';
 /** True when a `Sidebar.Rail` sits among the children (two-level mode). */
 const hasRailChild = (children: ReactNode): boolean =>
   Children.toArray(children).some(
-    child =>
-      isValidElement(child) &&
-      (child.type as { __SIDEBAR_RAIL__?: boolean }).__SIDEBAR_RAIL__ === true
+    child => isValidElement(child) && child.type === SidebarRail
   );
 
 export interface SidebarProps {

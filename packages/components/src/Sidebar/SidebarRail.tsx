@@ -276,13 +276,9 @@ const SidebarRail = ({
         >
           {railColumn(false)}
           <div
-            className={cn(
-              '[&>nav]:min-h-0 [&>nav]:flex-1',
-              classNames.panel,
-              // The drawer's edge is the boundary here — the desktop panel
-              // divider would double it.
-              'border-r-0'
-            )}
+            // The drawer's edge is the boundary here — the desktop panel
+            // divider would double it.
+            className={cn(classNames.panel, 'border-r-0')}
           >
             {panelBody}
           </div>
@@ -295,11 +291,14 @@ const SidebarRail = ({
     <aside
       ref={ref}
       aria-label={stringFormatter.format('sidebar')}
+      // AppShell's grid switches to the header-first template when it sees
+      // this attribute (pure CSS, via `:has()`).
+      data-rail=""
       data-state={state}
       className={cn(
         // The full-width top bar spans above the rail (AppShell's header-first
         // grid), so the aside starts below it and sticks to that offset.
-        'sticky top-14 h-[calc(100dvh-3.5rem)] self-start [grid-area:sidebar]',
+        'top-topbar sticky h-[calc(100dvh-var(--spacing-topbar))] self-start [grid-area:sidebar]',
         classNames.railRoot
       )}
     >
@@ -325,18 +324,12 @@ const SidebarRail = ({
             here. */}
         {railColumn(state === 'collapsed')}
 
-        <div
-          inert={!hasPanel || undefined}
-          className={cn('[&>nav]:min-h-0 [&>nav]:flex-1', classNames.panel)}
-        >
+        <div inert={!hasPanel || undefined} className={classNames.panel}>
           {panelBody}
         </div>
       </div>
     </aside>
   );
 };
-
-// Brand so `Sidebar` can detect a two-level rail among its children and delegate.
-SidebarRail.__SIDEBAR_RAIL__ = true as const;
 
 export { SidebarRail };

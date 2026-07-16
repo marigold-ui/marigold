@@ -16,7 +16,7 @@ export const SidebarHeader = ({
     <div
       ref={ref}
       className={cn(
-        'flex h-14 items-center [grid-area:header]',
+        'h-topbar flex items-center [grid-area:header]',
         classNames.header
       )}
     >
