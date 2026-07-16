@@ -2,7 +2,7 @@
 
 import { venueTraits } from '@/lib/data/venues';
 import { useQueryClient } from '@tanstack/react-query';
-import type { FormEvent } from 'react';
+import { type FormEvent, useState } from 'react';
 import {
   Button,
   Drawer,
@@ -86,6 +86,18 @@ export const Toolbar = () => {
   const [search, setSearch] = useSearch();
   const { filter, setFilterFromForm } = useFilter();
 
+  // The field is controlled so it reflects external resets — the empty state's
+  // "Clear all filters" changes the URL, not this input. Search still applies
+  // on submit (not per keystroke), so `text` stays local until the user
+  // commits it. Syncing during render, rather than re-keying, keeps the cursor
+  // in place on submit instead of remounting the field.
+  const [text, setText] = useState(search);
+  const [committed, setCommitted] = useState(search);
+  if (search !== committed) {
+    setCommitted(search);
+    setText(search);
+  }
+
   const onFilterSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFilterFromForm(parseFormData<FilterFormData>(e));
@@ -99,7 +111,8 @@ export const Toolbar = () => {
           description="Search by name"
           width={64}
           autoComplete="off"
-          defaultValue={search}
+          value={text}
+          onChange={setText}
           onSubmit={setSearch}
           onClear={() => setSearch('')}
         />
