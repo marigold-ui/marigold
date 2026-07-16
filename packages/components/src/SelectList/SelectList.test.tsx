@@ -327,6 +327,17 @@ describe('SelectList', () => {
       expect(label).toBeInTheDocument();
       expect(row).toBeInTheDocument();
     });
+
+    test('applies the action slot placement to a trailing action button', () => {
+      render(<WithIconAction.Component />);
+
+      const action = screen.getByRole('button', {
+        name: /learn more about credit card/i,
+      });
+
+      // Action spans both rows so a tall control doesn't stretch the title row and gap the description.
+      expect(action).toHaveClass('col-start-3', 'row-span-2');
+    });
   });
 
   describe('item padding', () => {

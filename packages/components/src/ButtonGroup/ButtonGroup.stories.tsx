@@ -112,6 +112,20 @@ export const WithActionMenu = meta.story({
     <ButtonGroup aria-label="With ActionMenu" size="small" variant="ghost">
       <Button aria-label="Edit">Edit</Button>
       <Button aria-label="Duplicate">Duplicate</Button>
+      <ActionMenu aria-label="More actions">
+        <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
+        <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
+      </ActionMenu>
+    </ButtonGroup>
+  ),
+});
+
+// Not snapshotted: deliberately oversizes the trigger to exercise local-wins precedence (the default inheriting look lives in `WithActionMenu`).
+export const ActionMenuLocalSize = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => (
+    <ButtonGroup aria-label="Item actions" size="small" variant="ghost">
+      <Button aria-label="Edit">Edit</Button>
       <ActionMenu aria-label="More actions" size="large">
         <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
         <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
