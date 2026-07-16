@@ -64,7 +64,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'grid-cols-[auto_1fr_auto]',
       'grid-rows-[minmax(1.25rem,auto)_auto]',
       'text-sm font-medium text-foreground outline-none',
-      'cursor-default data-selection-mode:cursor-pointer',
+      'cursor-default not-disabled:data-selection-mode:cursor-pointer',
       'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
       'transition-[border,color]',
       'disabled:cursor-not-allowed disabled:text-disabled',

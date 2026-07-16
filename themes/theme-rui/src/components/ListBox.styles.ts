@@ -23,7 +23,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
       'hover:ui-state-hover',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'focus-visible:ui-state-focus outline-none transition-[border,color]',
-      'cursor-default data-selection-mode:cursor-pointer',
+      'cursor-default not-disabled:data-selection-mode:cursor-pointer',
     ],
   }),
   label: cva({ base: '' }),
