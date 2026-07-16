@@ -1,10 +1,10 @@
 ---
 title: ListView
-description: Show a list of things the user operates in place — toggle, dismiss, open a row menu, follow a link — while staying on the page.
+description: Show a list of things the user operates in place, without leaving the page.
 badge: beta
 ---
 
-A `<ListView>` renders a non-form list of rows the user acts on without leaving the page: mute a notification, dismiss an alert, rename a resource, flip a setting. Unlike [`<SelectList>`](/components/form/selectlist) or [`<Select>`](/components/form/select), a `<ListView>` never becomes a submitted value — there is no selection, no hidden input, no `name`/`form`/`validate`. It exists purely so rows can host interactive controls (a `<Switch>`, an `<IconButton>`, an `<ActionMenu>`, a link) with correct grid semantics and keyboard navigation.
+A `<ListView>` renders a non-form list of rows the user acts on without leaving the page, like muting a notification or renaming a resource. Unlike [`<SelectList>`](/components/form/selectlist) or [`<Select>`](/components/form/select), a `<ListView>` never becomes a submitted value: there is no selection, no hidden input, no `name`/`form`/`validate`. It exists so rows can host interactive controls, such as a `<Switch>` or `<ActionMenu>`, with correct grid semantics and keyboard navigation.
 
 ## Anatomy
 
@@ -13,9 +13,9 @@ A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` 
 - **List:** The grid container. Requires `aria-label` or `aria-labelledby`.
 - **Item:** A single row (`role="row"`). Not selectable or toggleable by ListView itself.
 - **Leading content:** An optional icon or image before the row's text.
-- **Text value:** The row's primary text, authored with `<TextValue>` (or `<Title>` for a heading-like row — see [Accessibility](#accessibility)).
+- **Text value:** The row's primary text, authored with `<TextValue>` (or `<Title>` for a heading-like row; see [Accessibility](#accessibility)).
 - **Description:** Optional secondary text below the text value.
-- **Trailing controls:** One or more interactive controls — `<Switch>`, `<IconButton>`, `<ActionMenu>`, a link — positioned at the end of the row.
+- **Trailing controls:** One or more interactive controls, such as a `<Switch>` or `<ActionMenu>`, positioned at the end of the row.
 
 ## Appearance
 
@@ -37,7 +37,7 @@ Marigold has several list-shaped components. Picking the wrong one either strips
 | Compare rows across columns                                  | [`<Table>`](/components/collection/table)                                             |
 | Operate items in place (toggle / dismiss / act), staying put | `<ListView>`                                                                          |
 
-`<ListView>`'s closest neighbor is a non-form selection list built on `ListBox`/`option` semantics: `listbox`/`option` forbids focusable controls inside a row, since the row itself is the only target (click it to pick). `<ListView>` uses `grid`/`row`/`gridcell` semantics instead, which is required once rows hold controls. They are not redundant — `listbox`/`option` is the lighter, correct semantic for pure selection (a grid announcing every pick-one row is needlessly verbose for screen readers), while `grid`/`row` is what interactive rows require.
+`<ListView>`'s closest neighbor is a non-form selection list built on `ListBox`/`option` semantics, where the row itself is the only focusable target. `<ListView>` uses `grid`/`row`/`gridcell` semantics instead, which is required once rows hold their own focusable controls.
 
 <GuidelineTiles>
   <Do>
@@ -49,7 +49,7 @@ Marigold has several list-shaped components. Picking the wrong one either strips
   <Dont>
     <DontDescription>
       Don't use `<ListView>` when clicking the row itself is the only
-      interaction — that's a selection list (`<ListBox>` or `<SelectList>`),
+      interaction, that's a selection list (`<ListBox>` or `<SelectList>`),
       not `<ListView>`.
     </DontDescription>
   </Dont>
@@ -59,7 +59,7 @@ For a very short list (roughly 5 rows or fewer) where each row has at most one c
 
 ### Notifications and activity feeds
 
-The most common `<ListView>` shape: a title, a timestamp, and one or two per-row actions. This is the pattern behind a notifications panel — see it in context on the [Popover](/components/overlay/popover) docs.
+The most common `<ListView>` shape: a title, a timestamp, and one or two per-row actions. See it in context on the [Popover](/components/overlay/popover) docs.
 
 <ComponentDemo name="listview-notifications" />
 
@@ -71,7 +71,7 @@ When a row needs more than one action (rename, share, delete), group them behind
 
 ### Settings lists
 
-A row whose only control is a `<Switch>`, operated in place — no submit button, no navigation.
+A row whose only control is a `<Switch>`, operated in place. No submit button, no navigation.
 
 <ComponentDemo name="listview-settings" />
 
@@ -90,7 +90,7 @@ When the collection is empty, render a placeholder via the `emptyState` prop, th
   </Do>
   <Dont>
     <DontDescription>
-      Don't leave the list area blank — an empty surface gives users no signal
+      Don't leave the list area blank. An empty surface gives users no signal
       whether the system is loading, broken, or simply empty.
     </DontDescription>
   </Dont>
@@ -102,11 +102,11 @@ When the collection is empty, render a placeholder via the `emptyState` prop, th
 
 - Arrow keys move focus between rows.
 - Tab reaches any interactive control inside the focused row.
-- Rows are never selectable or toggleable by `<ListView>` itself — operating a nested control is the only interaction a row exposes.
+- Rows are never selectable or toggleable by `<ListView>` itself; operating a nested control is the only interaction a row exposes.
 
 Always give the list an `aria-label`, or pass `aria-labelledby` when a heading nearby already names it.
 
-For rows with rich content — a wrapped label, an icon, a trailing control — set `textValue` on the item. Screen readers use it as the row's accessible name.
+For rows with rich content, such as a wrapped label or an icon, set `textValue` on the item. Screen readers use it as the row's accessible name.
 
 <Callout title="Author row text with the dedicated slot components">
   Use `<TextValue>` and `<Description>`, never a raw `<Text slot="…">`.
@@ -114,7 +114,7 @@ For rows with rich content — a wrapped label, an icon, a trailing control — 
   thin wrappers resolve correctly without any extra wiring.
 </Callout>
 
-`<Title>` renders a real `<h1>`–`<h6>`. A list must not emit one document heading per row — that destroys the heading outline for screen reader users navigating by heading. `<ListView.Item>` forces every nested `<Title>` to render as a `<span>` instead, so it's safe to reach for when a row is genuinely heading-like; the default row text remains `<TextValue>`.
+`<Title>` renders a real `<h1>`–`<h6>`. A list must not emit one document heading per row; that destroys the heading outline for screen reader users navigating by heading. `<ListView.Item>` forces every nested `<Title>` to render as a `<span>` instead, so it's safe to reach for when a row is genuinely heading-like. The default row text remains `<TextValue>`.
 
 ## Props
 
@@ -131,7 +131,7 @@ For rows with rich content — a wrapped label, an icon, a trailing control — 
 ## Alternative components
 
 - [List](/components/content/list): Use for a static, presentational list with no roles, keyboard model, or interactive rows.
-- ListBox: Marigold's non-form selection list (used internally by [Combobox](/components/form/combobox) and [Select](/components/form/select)). Use when clicking a row is the only interaction — pure selection, not operating controls in place.
+- ListBox: Marigold's non-form selection list (used internally by [Combobox](/components/form/combobox) and [Select](/components/form/select)). Use when clicking a row is the only interaction: pure selection, not operating controls in place.
 - [SelectList](/components/form/selectlist): Use when the selection becomes a submitted form value.
 - [Select](/components/form/select): Use for a compact single/multi-select form field.
 - [Table](/components/collection/table): Use when each row is a record with multiple columns of structured data to compare, not a flat list of operable items.
@@ -165,7 +165,7 @@ For rows with rich content — a wrapped label, an icon, a trailing control — 
     {
       title: 'ActionBar',
       href: '/components/collection/actionbar',
-      caption: 'The basis for a future bulk-action increment on selection.',
+      caption: 'Bulk actions on top of a selection.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -186,8 +186,7 @@ For rows with rich content — a wrapped label, an icon, a trailing control — 
     {
       title: 'Form fields',
       href: '../../foundations/form-fields',
-      caption:
-        'How form fields work in Marigold — and why ListView is not one.',
+      caption: 'How form fields work in Marigold, and why ListView is not one.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
