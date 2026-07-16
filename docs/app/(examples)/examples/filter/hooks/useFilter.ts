@@ -47,6 +47,10 @@ const filterKeys = Object.keys(defaultFilter) as FilterKeys[];
 const isActive = (filter: VenueFilter, key: FilterKeys) =>
   `${filter[key]}` !== `${defaultFilter[key]}`;
 
+// Pure, so the panel can count active filters in a draft as well.
+export const activeKeys = (filter: VenueFilter): FilterKeys[] =>
+  filterKeys.filter(key => isActive(filter, key));
+
 const toPositiveNumber = (value: string | undefined, fallback: number) => {
   if (!value) return fallback;
   const n = Number(value);
@@ -118,7 +122,7 @@ export const useFilter = () => {
 
   const hasFilter = () => filterKeys.some(k => isActive(filter, k));
 
-  const activeFilterKeys = () => filterKeys.filter(k => isActive(filter, k));
+  const activeFilterKeys = () => activeKeys(filter);
 
   return {
     filter,

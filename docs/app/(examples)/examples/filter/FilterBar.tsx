@@ -21,7 +21,6 @@ import {
   NumberField,
   Radio,
   SearchField,
-  SegmentedControl,
   Select,
   Slider,
   Stack,
@@ -36,9 +35,12 @@ import { venueKeys } from './hooks/queryKeys';
 import { useDeletedVenues } from './hooks/useDeletedVenues';
 import {
   type FilterFormData,
+  type FilterKeys,
   MAX_CAPACITY,
   MAX_PRICE,
   type VenueFilter,
+  activeKeys,
+  formToFilter,
   useFilter,
 } from './hooks/useFilter';
 import { useFilterPreview } from './hooks/useFilterPreview';
@@ -81,18 +83,38 @@ const OptionGroup = ({
   </Checkbox.Group>
 );
 
+// Which filter keys live in which panel section, for the header badges.
+const SECTION_KEYS: Record<string, FilterKeys[]> = {
+  essentials: ['types', 'capacity', 'price'],
+  quality: ['rating', 'traits'],
+  facilities: ['amenities', 'parking', 'seating'],
+};
+
+// Collapsed sections must not hide active filters, so each header carries the
+// number of active filters inside it.
+const SectionHeader = ({ title, count }: { title: string; count: number }) => (
+  <Accordion.Header>
+    <Inline space={2} alignY="center">
+      {title}
+      {count > 0 && <Badge>{count}</Badge>}
+    </Inline>
+  </Accordion.Header>
+);
+
 // The panel groups its filters into collapsible sections so it opens with a
 // compact overview; the most-used group is expanded by default.
 const FilterForm = ({
   filter,
   facets,
+  sectionCounts,
 }: {
   filter: VenueFilter;
   facets?: VenueFacets;
+  sectionCounts: Record<string, number>;
 }) => (
   <Accordion allowsMultipleExpanded defaultExpandedKeys={['essentials']}>
     <Accordion.Item id="essentials">
-      <Accordion.Header>Essentials</Accordion.Header>
+      <SectionHeader title="Essentials" count={sectionCounts.essentials} />
       <Accordion.Content>
         <Stack space="group">
           <OptionGroup
@@ -128,7 +150,7 @@ const FilterForm = ({
     </Accordion.Item>
 
     <Accordion.Item id="quality">
-      <Accordion.Header>Quality</Accordion.Header>
+      <SectionHeader title="Quality" count={sectionCounts.quality} />
       <Accordion.Content>
         <Stack space="group">
           {/* Same tiers as the quick filter in the bar — both edit the same
@@ -162,7 +184,7 @@ const FilterForm = ({
     </Accordion.Item>
 
     <Accordion.Item id="facilities">
-      <Accordion.Header>Facilities</Accordion.Header>
+      <SectionHeader title="Facilities" count={sectionCounts.facilities} />
       <Accordion.Content>
         <Stack space="group">
           <OptionGroup
@@ -239,22 +261,23 @@ const TypeQuickFilter = () => {
   );
 };
 
+// A field-shaped control, so the bar reads as one family of inputs. Single
+// select, so the trigger simply shows the chosen value.
 const RatingQuickFilter = () => {
   const { filter, setFilter } = useFilter();
 
   return (
-    <SegmentedControl
+    <Select
       aria-label="Minimum rating"
-      // Fields default to full width, which would break the single-row bar.
-      width="fit"
+      width={36}
       value={String(filter.rating)}
-      onChange={value => setFilter({ rating: Number(value) })}
+      onChange={key => setFilter({ rating: Number(key) })}
     >
-      <SegmentedControl.Option value="0">Any rating</SegmentedControl.Option>
-      <SegmentedControl.Option value="3">3+ ★</SegmentedControl.Option>
-      <SegmentedControl.Option value="4">4+ ★</SegmentedControl.Option>
-      <SegmentedControl.Option value="5">5 ★</SegmentedControl.Option>
-    </SegmentedControl>
+      <Select.Option id="0">Any rating</Select.Option>
+      <Select.Option id="3">3+ ★</Select.Option>
+      <Select.Option id="4">4+ ★</Select.Option>
+      <Select.Option id="5">5 ★</Select.Option>
+    </Select>
   );
 };
 
@@ -270,6 +293,15 @@ export const FilterBar = () => {
   const [draft, setDraft] = useState<FilterFormData | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { resultCount, facets } = useFilterPreview(draft, open);
+
+  // Section badges follow the draft, like the preview queries.
+  const draftActive = activeKeys(draft ? formToFilter(draft) : filter);
+  const sectionCounts = Object.fromEntries(
+    Object.entries(SECTION_KEYS).map(([section, keys]) => [
+      section,
+      keys.filter(key => draftActive.includes(key)).length,
+    ])
+  );
 
   const onOpenChange = (isOpen: boolean) => {
     if (!isOpen) setDraft(null);
@@ -326,6 +358,7 @@ export const FilterBar = () => {
                     key={JSON.stringify(filter)}
                     filter={filter}
                     facets={facets}
+                    sectionCounts={sectionCounts}
                   />
                 </div>
               </Drawer.Content>

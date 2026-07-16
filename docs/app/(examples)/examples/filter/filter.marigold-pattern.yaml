@@ -1,11 +1,11 @@
 title: Filterable data table with quick filters and applied-filter chips
 brief: >-
   A searchable, filterable venues table with instant quick filters in the
-  filter bar (multi-select Select, SegmentedControl), a Drawer-based filter
-  form grouped into Accordion sections with live per-option counts and a
-  "Show N results" preview on Apply, and removable "applied filter" chips.
-  Filter and search state is synced to the URL query string so views are
-  shareable and survive reloads.
+  filter bar (multi-select and single-select Selects), a Drawer-based filter
+  form grouped into Accordion sections with active-count badges, live
+  per-option counts and a "Show N results" preview on Apply, and removable
+  "applied filter" chips. Filter and search state is synced to the URL query
+  string so views are shareable and survive reloads.
 patterns:
   - user-input/filter
 mock_data:

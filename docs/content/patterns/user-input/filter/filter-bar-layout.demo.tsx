@@ -10,8 +10,17 @@ import { ListFilter } from '@marigold/icons';
 
 export default () => (
   <Inline space="related" alignX="between" alignY="input">
-    {/* One row: search, quick filters, then the panel trigger */}
+    {/* One row: scope switch first, then search, quick filters, panel trigger */}
     <Inline space="related" alignY="input">
+      {/* Fields default to full width, "fit" keeps the control in the row */}
+      {/* [!code highlight] */}
+      <SegmentedControl aria-label="Status" width="fit" defaultValue="all">
+        <SegmentedControl.Option value="all">All</SegmentedControl.Option>
+        <SegmentedControl.Option value="active">Active</SegmentedControl.Option>
+        <SegmentedControl.Option value="archived">
+          Archived
+        </SegmentedControl.Option>
+      </SegmentedControl>
       <SearchField
         aria-label="Search events"
         placeholder="Search events"
@@ -22,15 +31,6 @@ export default () => (
         <Select.Option id="festivals">Festivals</Select.Option>
         <Select.Option id="theater">Theater</Select.Option>
       </Select>
-      {/* Fields default to full width, "fit" keeps the control in the row */}
-      {/* [!code highlight] */}
-      <SegmentedControl aria-label="Status" width="fit" defaultValue="all">
-        <SegmentedControl.Option value="all">All</SegmentedControl.Option>
-        <SegmentedControl.Option value="active">Active</SegmentedControl.Option>
-        <SegmentedControl.Option value="archived">
-          Archived
-        </SegmentedControl.Option>
-      </SegmentedControl>
       <Button>
         <ListFilter /> All filters
       </Button>

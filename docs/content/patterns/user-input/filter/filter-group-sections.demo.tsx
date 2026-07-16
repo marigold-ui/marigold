@@ -1,9 +1,27 @@
-import { Accordion, Checkbox, Radio, Slider } from '@marigold/components';
+import {
+  Accordion,
+  Badge,
+  Checkbox,
+  Inline,
+  Radio,
+  Slider,
+} from '@marigold/components';
+
+// The badge on a header counts the active filters inside the section, so a
+// collapsed section still reveals that it holds state.
+const SectionHeader = ({ title, count }: { title: string; count?: number }) => (
+  <Accordion.Header>
+    <Inline space={2} alignY="center">
+      {title}
+      {count ? <Badge>{count}</Badge> : null} {/* [!code highlight] */}
+    </Inline>
+  </Accordion.Header>
+);
 
 export default () => (
   <Accordion allowsMultipleExpanded defaultExpandedKeys={['category']}>
     <Accordion.Item id="category">
-      <Accordion.Header>Category</Accordion.Header>
+      <SectionHeader title="Category" count={1} />
       <Accordion.Content>
         <Checkbox.Group aria-label="Category" defaultValue={['concert']}>
           <Checkbox value="concert" label="Concerts" />
@@ -14,7 +32,7 @@ export default () => (
       </Accordion.Content>
     </Accordion.Item>
     <Accordion.Item id="price">
-      <Accordion.Header>Max. Price</Accordion.Header>
+      <SectionHeader title="Max. Price" />
       <Accordion.Content>
         <Slider
           aria-label="Maximum price"
@@ -31,9 +49,9 @@ export default () => (
       </Accordion.Content>
     </Accordion.Item>
     <Accordion.Item id="status">
-      <Accordion.Header>Status</Accordion.Header>
+      <SectionHeader title="Status" count={1} />
       <Accordion.Content>
-        <Radio.Group aria-label="Status">
+        <Radio.Group aria-label="Status" defaultValue="draft">
           <Radio value="published">Published</Radio>
           <Radio value="draft">Draft</Radio>
           <Radio value="archived">Archived</Radio>
@@ -41,7 +59,7 @@ export default () => (
       </Accordion.Content>
     </Accordion.Item>
     <Accordion.Item id="channel">
-      <Accordion.Header>Sales Channel</Accordion.Header>
+      <SectionHeader title="Sales Channel" />
       <Accordion.Content>
         <Checkbox.Group aria-label="Sales channel">
           <Checkbox value="web" label="Web shop" />
