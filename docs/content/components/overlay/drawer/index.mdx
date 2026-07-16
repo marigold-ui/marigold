@@ -152,6 +152,8 @@ Users select rows in a table, an [ActionBar](/components/collection/actionbar) a
 
 The drawer keeps the selected rows visible so users can confirm the selection while editing. Bulk edit stays within the single-layer rule because the fields are flat and identical across all selected records: one form applied to N rows, not N forms or nested edits. The boundary is clean: single-verb bulk actions (delete, archive, assign) belong in the action bar, while multi-field bulk edit belongs in a drawer triggered from it. Destructive bulk actions still need a confirm dialog after the verb.
 
+The [Bulk Actions pattern](/patterns/user-input/bulk-actions#editing-multiple-fields) covers the full flow around this drawer, including how to handle mixed values across the selection, opt-in editing per field, and partial failures on save.
+
 <ComponentDemo name="drawer-bulk-edit" />
 
 ### Title and description
