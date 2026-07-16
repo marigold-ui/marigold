@@ -1,3 +1,5 @@
+import { recordTelemetryEvent } from '@/app/api/telemetry/record';
+import type { TelemetryEvent } from '@/app/api/telemetry/schema';
 import {
   AWS_REGION,
   TITAN_DIMENSIONS,
@@ -11,8 +13,10 @@ import type { AuthInfo } from '@modelcontextprotocol/sdk/server/auth/types.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { createMcpHandler, withMcpAuth } from 'mcp-handler';
 import { z } from 'zod';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import { after } from 'next/server';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -135,6 +139,19 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
   }));
 }
 
+// ─── Telemetry ────────────────────────────────────────────────────────────────
+
+// One-way HMAC of the caller's Keycloak `sub` claim — never the raw claim,
+// which identifies a Reservix employee. Returns null (skip emitting telemetry
+// for this call) when the secret isn't configured, mirroring the existing
+// "Redis unconfigured → skip silently" behavior in the telemetry route rather
+// than falling back to an unkeyed hash.
+const hashCallerId = (sub: string): string | null => {
+  const secret = process.env.MCP_TELEMETRY_HASH_SECRET;
+  if (!secret) return null;
+  return crypto.createHmac('sha256', secret).update(sub).digest('hex');
+};
+
 // ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
 
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
@@ -169,63 +186,134 @@ const verifyToken = async (
   }
 };
 
+// ─── search_docs ─────────────────────────────────────────────────────────────
+
+const SEARCH_DOCS_DESCRIPTION = [
+  'Search the Marigold Design System documentation using semantic similarity.',
+  'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
+  'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
+  'Returns the most relevant documentation sections ranked by similarity to the query.',
+  'Query must be a natural language question or keyword phrase (max 1000 characters).',
+].join(' ');
+
+const SEARCH_DOCS_SCHEMA = {
+  query: z
+    .string()
+    .min(1)
+    .max(1000)
+    .describe(
+      'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
+    ),
+  limit: z
+    .number()
+    .int()
+    .min(3)
+    .max(10)
+    .default(5)
+    .describe(
+      'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
+    ),
+};
+
+// Exported separately from the MCP tool registration below so it can be unit
+// tested directly. Driving this through the real MCP transport/auth chain in
+// a test hits a module-load-time OIDC/JWKS config that can't be worked around
+// by mocking `jose` alone (verifyToken's own try/catch swallows the resulting
+// invalid-URL error and just returns undefined, which 401s before this ever
+// runs) — calling the exported function directly sidesteps that chain
+// entirely, which isn't what this ticket needs to verify anyway.
+export const searchDocsHandler = async (
+  { query, limit }: { query: string; limit: number },
+  extra: { authInfo?: AuthInfo }
+) => {
+  const startedAt = Date.now();
+
+  // Fire telemetry via `after()` — runs once the response has been sent, so
+  // it never delays the actual search response. `latencyMs` and the rest of
+  // the event are computed and built into a plain object BEFORE calling
+  // after() — not inside its callback, where Date.now() would measure time
+  // until the deferred callback happens to run (post-response) rather than
+  // the actual embed+search duration, and where the closure would otherwise
+  // keep this whole call's scope (including `extra`'s raw AuthInfo) alive for
+  // as long as the deferred write takes instead of just the small event.
+  //
+  // The whole thing is wrapped in its own try/catch so nothing here can ever
+  // affect the response above it — even a synchronous throw from after()
+  // itself (it requires an active request scope and can throw outside one)
+  // is swallowed rather than propagating into the surrounding try/catch and
+  // turning a successful search into a reported failure, or vice versa.
+  // Skipped entirely (no event emitted) when there's no caller sub or no
+  // hash secret configured, mirroring the telemetry route's own
+  // "unconfigured → skip silently" behavior rather than logging a
+  // partial/insecure event.
+  const emitTelemetry = (
+    success: boolean,
+    topMatch?: { file: string; heading: string }
+  ) => {
+    try {
+      const sub = extra.authInfo?.clientId;
+      const hashedCallerId = sub ? hashCallerId(sub) : null;
+      if (!hashedCallerId) return;
+
+      const event: TelemetryEvent = {
+        event: 'mcp_tool_call',
+        tool: 'search_docs',
+        hashedCallerId,
+        latencyMs: Date.now() - startedAt,
+        success,
+        topMatchFile: topMatch?.file,
+        topMatchHeading: topMatch?.heading,
+      };
+
+      after(async () => {
+        const result = await recordTelemetryEvent(event);
+        if (result !== 'recorded') {
+          console.warn(`[MCP] search_docs telemetry not recorded: ${result}`);
+        }
+      });
+    } catch (err) {
+      console.error('[MCP] search_docs telemetry emission failed:', err);
+    }
+  };
+
+  try {
+    const queryVec = await embedQuery(query.trim());
+    const results = search(queryVec, getStore(), limit);
+
+    emitTelemetry(true, results[0]?.metadata);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(results, null, 2),
+        },
+      ],
+    };
+  } catch (err) {
+    console.error('[MCP] search_docs error:', err);
+    emitTelemetry(false);
+    return {
+      isError: true,
+      content: [
+        {
+          type: 'text' as const,
+          text: 'Search temporarily unavailable.',
+        },
+      ],
+    };
+  }
+};
+
 // ─── MCP Handler ────────────────────────────────────────────────────────────
 
 const handler = createMcpHandler(
   server => {
     server.tool(
       'search_docs',
-      [
-        'Search the Marigold Design System documentation using semantic similarity.',
-        'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
-        'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
-        'Returns the most relevant documentation sections ranked by similarity to the query.',
-        'Query must be a natural language question or keyword phrase (max 1000 characters).',
-      ].join(' '),
-      {
-        query: z
-          .string()
-          .min(1)
-          .max(1000)
-          .describe(
-            'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
-          ),
-        limit: z
-          .number()
-          .int()
-          .min(3)
-          .max(10)
-          .default(5)
-          .describe(
-            'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
-          ),
-      },
-      async ({ query, limit }) => {
-        try {
-          const queryVec = await embedQuery(query.trim());
-          const results = search(queryVec, getStore(), limit);
-
-          return {
-            content: [
-              {
-                type: 'text' as const,
-                text: JSON.stringify(results, null, 2),
-              },
-            ],
-          };
-        } catch (err) {
-          console.error('[MCP] search_docs error:', err);
-          return {
-            isError: true,
-            content: [
-              {
-                type: 'text' as const,
-                text: 'Search temporarily unavailable.',
-              },
-            ],
-          };
-        }
-      }
+      SEARCH_DOCS_DESCRIPTION,
+      SEARCH_DOCS_SCHEMA,
+      searchDocsHandler
     );
   },
   {
