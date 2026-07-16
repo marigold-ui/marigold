@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
+import { Accordion } from '../Accordion/Accordion';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -532,5 +533,59 @@ TitleOnlyWithoutHeader.test(
 
     expect(title.tagName).toBe('H2');
     expect(drawer).toHaveAttribute('aria-labelledby', title.id);
+  }
+);
+
+/**
+ * `<Drawer.Content bleed>` drops the horizontal padding and publishes
+ * `--bleed-px`, letting edge-aware children like `Accordion` span the full
+ * width: item dividers reach the Drawer edges while the header text stays
+ * aligned with the Drawer title.
+ */
+export const BleedAccordion = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: false } },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Title>Settings</Title>
+        <Drawer.Content bleed>
+          <Accordion defaultExpandedKeys={['general']}>
+            <Accordion.Item id="general">
+              <Accordion.Header>General</Accordion.Header>
+              <Accordion.Content>
+                Language, timezone and appearance.
+              </Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item id="notifications">
+              <Accordion.Header>Notifications</Accordion.Header>
+              <Accordion.Content>
+                Email and push notification preferences.
+              </Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item id="privacy">
+              <Accordion.Header>Privacy</Accordion.Header>
+              <Accordion.Content>
+                Control who can see your activity.
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion>
+        </Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+BleedAccordion.test(
+  'Opens the drawer with a full-width Accordion',
+  async ({ canvas, userEvent }) => {
+    // Smoke-tests the demo/interaction. The `--bleed-px` class wiring is
+    // asserted in Drawer.test.tsx (the canonical place, like Panel/Accordion).
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+
+    expect(
+      await canvas.findByRole('button', { name: 'General' })
+    ).toBeInTheDocument();
   }
 );

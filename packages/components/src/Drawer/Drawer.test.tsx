@@ -7,7 +7,7 @@ import { Button } from '../Button/Button';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Drawer } from './Drawer';
-import { Basic, OneAtATime } from './Drawer.stories';
+import { Basic, BleedAccordion, OneAtATime } from './Drawer.stories';
 import { registerActiveDrawer } from './drawerRegistry';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
@@ -197,4 +197,32 @@ test('registry no-ops on same-handler re-registration', () => {
   unregister();
 
   expect(close).not.toHaveBeenCalled();
+});
+
+test('`bleed` content drops the padding and publishes --bleed-px', async () => {
+  renderWithOverlay(<BleedAccordion.Component />);
+
+  await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+  const header = await screen.findByRole('button', { name: 'General' });
+
+  // The content wrapper opts out of the padded `ui-panel-content` and instead
+  // publishes `--bleed-px` (matching the drawer's `px-6`) so edge-aware
+  // children can inset their own content while dividers reach the edges. Match
+  // where the var is *set* (`[--bleed-px:`), not where the Accordion reads it.
+  // eslint-disable-next-line testing-library/no-node-access
+  const content = header.closest('[class*="[--bleed-px:"]')!;
+  expect(content).not.toBeNull();
+  expect(content.className).not.toContain('ui-panel-content');
+  expect(content.className).toContain('[--bleed-px:calc(var(--spacing)*6)]');
+});
+
+test('non-bled content keeps the padded ui-panel-content', async () => {
+  renderWithOverlay(<Basic.Component />);
+
+  await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+  const paragraph = await screen.findByText(/Once upon a time/);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const content = paragraph.closest('[class*="ui-panel-content"]');
+  expect(content).not.toBeNull();
 });
