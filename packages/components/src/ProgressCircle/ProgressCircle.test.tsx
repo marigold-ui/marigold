@@ -92,6 +92,17 @@ test('respects a consumer-provided aria-label', () => {
   expect(progressCircle).toHaveAttribute('aria-label', 'Sending reminders');
 });
 
+test('falls back to the localized label when aria-label is explicitly undefined', () => {
+  // A conditional label (`aria-label={cond ? '…' : undefined}`) puts the key
+  // `aria-label: undefined` into props. The fallback must still apply so the
+  // progressbar always has an accessible name.
+  render(<Basic.Component aria-label={undefined} />);
+
+  const progressCircle = screen.getByRole('progressbar');
+
+  expect(progressCircle).toHaveAttribute('aria-label', 'Loading...');
+});
+
 test('respects a consumer-provided aria-labelledby without a redundant aria-label', () => {
   render(
     <>

@@ -92,6 +92,32 @@ test('renders fullscreen loader with modal overlay', () => {
   expect(dialog).toBeInTheDocument();
 });
 
+test('fullscreen dialog is named by the loader fallback when no label is given', () => {
+  renderWithOverlay(<Basic.Component mode="fullscreen" />);
+
+  // The Dialog references the loader node, which carries the localized
+  // fallback label — so the modal is never left unnamed.
+  const dialog = screen.getByRole('dialog');
+
+  expect(dialog).toHaveAccessibleName('Loading...');
+});
+
+test('fullscreen dialog is named by a consumer-provided aria-labelledby', () => {
+  renderWithOverlay(
+    <>
+      <span id="loader-label">Saving changes</span>
+      <Basic.Component mode="fullscreen" aria-labelledby="loader-label" />
+    </>
+  );
+
+  // A consumer `aria-labelledby` suppresses the loader's own `aria-label`, and
+  // the accname spec won't follow a second `labelledby` hop — so the Dialog
+  // must reference the consumer's element directly to stay named.
+  const dialog = screen.getByRole('dialog');
+
+  expect(dialog).toHaveAccessibleName('Saving changes');
+});
+
 test('renders loader with loaderType circle', () => {
   render(<Basic.Component loaderType="circle" />);
 
