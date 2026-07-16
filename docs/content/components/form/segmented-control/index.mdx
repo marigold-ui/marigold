@@ -120,7 +120,9 @@ Use short, parallel labels, ideally one to three words, so every segment reads c
 
 ### Width
 
-By default the control is only as wide as its segments, so it stays compact and sits at the start of the available space. When the segments outgrow the space they are given — a card, a sidebar, or a narrow panel — the track scrolls horizontally instead of overflowing. Set `width="full"` to fill the container and stretch the segments so they divide the available width equally instead.
+The track is only as wide as its segments, so the control looks compact and sits at the start of the available space. The field box around it still spans the full container width by default, like every form field. In a horizontal composition such as a [filter bar](/patterns/user-input/filter#bar-layout), set `width="fit"` so the control claims only the width of its track and leaves the rest of the row to its neighbors.
+
+When the segments outgrow the space they are given, such as a card, a sidebar, or a narrow panel, the track scrolls horizontally instead of overflowing. Set `width="full"` to fill the container and stretch the segments so they divide the available width equally instead.
 
 <ComponentDemo name="segmentedcontrol-full-width" />
 

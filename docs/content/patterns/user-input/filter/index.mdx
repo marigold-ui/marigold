@@ -15,7 +15,7 @@ The pattern keeps a consistent layout while the controls inside it adapt to the 
 <FilterAnatomy />
 
 - **Filter Panel:** Slides in from the right and holds the filter controls. It overlaps the content without blocking it, so the data set stays visible while filtering.
-- **Filter Bar:** Sits above the data set with the search field and the button that opens the filter panel. Built as a layout composition with [Inline](/components/layout/inline).
+- **Filter Bar:** A single horizontal row above the data set with the search field and the button that opens the filter panel. Built as a layout composition with [Inline](/components/layout/inline).
 - **Applied Filter:** Lists the filters currently in use and offers a single action to clear them all.
 - **Data Set:** The collection being filtered, shown as a [table](/components/collection/table), [tiles](/components/layout/tiles), or [cards](/components/content/card). It takes up most of the layout.
 - **Pagination:** Splits the filtered results into pages, below the data set.
@@ -146,6 +146,35 @@ If you cannot identify the most-used few, leave everything in the panel and rely
 For the controls themselves, prefer something compact such as a [Select](/components/form/select), or a [SegmentedControl](/components/form/segmented-control) when a single dimension with a few values, such as All, Active, and Archived, deserves to stay visible at all times. Quick filters apply instantly, so see [Applying Filters](#applying) for how that model works alongside the panel's batched commit.
 
 <ComponentDemo name="filter-promoted" />
+
+#### Bar Layout
+
+Quick filters make the filter bar a real layout concern. Keep it to a **single horizontal row**: the search field first, then the quick filters, then the "All filters" button that opens the panel. Indicators or view actions sit at the far end, right-aligned. Compose the row with [Inline](/components/layout/inline) and `alignY="input"` so inputs and buttons line up.
+
+A single row only works when every control in it stays compact:
+
+- **Give every field an explicit width.** Form fields stretch to the full container width by default, and a single full-width field breaks the row. Size fields in the bar to their content instead, for example `width={36}` on a [Select](/components/form/select) or `width="fit"` on a [SegmentedControl](/components/form/segmented-control).
+- **No visible labels or helper text.** A label above a control or a `description` below it adds a second line and breaks the row's alignment. The search field carries a placeholder, a quick filter labels itself through its placeholder or selected value, and every control still needs an `aria-label`.
+- **Mind the width of always-visible options.** A [SegmentedControl](/components/form/segmented-control) pays for keeping its options visible with horizontal space, and its labels must never wrap or truncate. Keep it to a few short segments. When the row gets tight, a [Select](/components/form/select) offers the same choice at a fraction of the width.
+
+<ComponentDemo name="filter-bar-layout" />
+
+When the quick filters outgrow the row, do not let the bar wrap. A second row pushes the data set down and shifts the layout whenever the bar changes. Demote the least-used quick filter back to the panel instead. Demotion is free, since the panel holds every filter anyway. The same logic covers narrow viewports: keep the search field and the "All filters" button, drop the quick filters, and everything stays reachable through the panel.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep the filter bar to one row of compact, equally tall controls with
+      explicit widths.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Do not let the bar wrap to a second row or add helper text below a
+      control. Move a quick filter back to the panel when space runs out.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 #### Labeling
 

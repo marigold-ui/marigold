@@ -216,6 +216,8 @@ const RatingQuickFilter = () => {
   return (
     <SegmentedControl
       aria-label="Minimum rating"
+      // Fields default to full width, which would break the single-row bar.
+      width="fit"
       value={String(filter.rating)}
       onChange={value => setFilter({ rating: Number(value) })}
     >
@@ -266,7 +268,7 @@ export const FilterBar = () => {
       <Inline alignY="input" space="related">
         <SearchField
           aria-label="Search venues"
-          description="Search by name"
+          placeholder="Search venues"
           width={56}
           autoComplete="off"
           defaultValue={search}
