@@ -17,6 +17,18 @@ const makeEvent = (command: string) => ({
   anonymousId: '00000000-0000-4000-8000-000000000000',
 });
 
+// Build a valid mcp_tool_call event. Mirrors makeEvent's "vary one field"
+// approach — `tool` is the only thing tests below change.
+const makeMcpEvent = (tool: string) => ({
+  event: 'mcp_tool_call',
+  tool,
+  hashedCallerId: 'a'.repeat(64),
+  latencyMs: 120,
+  success: true,
+  topMatchFile: 'Button.mdx',
+  topMatchHeading: 'Usage',
+});
+
 const post = (body: unknown) =>
   POST(
     new Request('http://localhost/api/telemetry', {
@@ -53,6 +65,28 @@ describe('POST /api/telemetry', () => {
 
   it('rejects an unknown command with 400', async () => {
     const res = await post(makeEvent('bogus'));
+
+    expect(res.status).toBe(400);
+  });
+
+  it('accepts a valid mcp_tool_call event', async () => {
+    const res = await post(makeMcpEvent('search_docs'));
+
+    expect(res.status).not.toBe(400);
+  });
+
+  it('rejects an mcp_tool_call event with an unknown tool with 400', async () => {
+    const res = await post(makeMcpEvent('bogus_tool'));
+
+    expect(res.status).toBe(400);
+  });
+
+  it('rejects an mcp_tool_call event missing a required field with 400', async () => {
+    const event = makeMcpEvent('search_docs');
+    const { hashedCallerId, ...rest } = event;
+    void hashedCallerId;
+
+    const res = await post(rest);
 
     expect(res.status).toBe(400);
   });
