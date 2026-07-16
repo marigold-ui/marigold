@@ -24,6 +24,13 @@ describe('compareVersions', () => {
     expect(compareVersions('18.0.0-beta.3', '18.0.0-beta.4')).toBe(0);
   });
 
+  test('ignores build metadata (including a hyphen inside it)', () => {
+    // A `-` in `+build-5` must not be read as a prerelease tag, or the version
+    // would sort below its own stable release and trigger a false "outdated".
+    expect(compareVersions('1.0.0+build-5', '1.0.0')).toBe(0);
+    expect(compareVersions('1.0.0+build-5', '1.0.0-beta.3')).toBe(1);
+  });
+
   test('returns 0 when either side is unparseable', () => {
     expect(compareVersions('not-a-version', '1.0.0')).toBe(0);
     expect(compareVersions('1.0.0', 'latest')).toBe(0);

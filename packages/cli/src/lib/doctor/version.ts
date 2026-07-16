@@ -13,7 +13,10 @@ const parse = (version: string): Parsed | null => {
   if (!m) return null;
   return {
     parts: [Number(m[1]), Number(m[2]), Number(m[3])],
-    prerelease: /[-]/.test(version),
+    // Only a `-` in the version core marks a prerelease. Build metadata (`+…`)
+    // is ignored for precedence per semver, and may itself contain a hyphen
+    // (e.g. `1.0.0+build-5`), so strip it before testing.
+    prerelease: /-/.test(version.split('+')[0]),
   };
 };
 

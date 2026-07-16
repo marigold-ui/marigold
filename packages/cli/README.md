@@ -193,16 +193,18 @@ Edits are idempotent — re-running leaves files untouched. If a file shape can'
 
 ### `marigold doctor`
 
-Diagnose why Marigold isn't working in a project. Reads the filesystem only (no network) and prints a checklist with actionable fixes.
+Diagnose why Marigold isn't working in a project and print a checklist with actionable fixes. All checks read the filesystem only; the freshness check additionally makes a short, best-effort fetch of the docs manifest (skipped with `--offline`).
 
 ```sh
 marigold doctor                 # run from your project root
 marigold doctor --format json   # structured report for AI agents / CI
+marigold doctor --offline       # skip the network; freshness uses the cache only
 ```
 
 Flags:
 
 - `--format <name>` — `text` (default) or `json`
+- `--offline` — skip the network; the freshness check uses the cache only
 
 Checks, run against the current working directory:
 

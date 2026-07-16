@@ -311,8 +311,9 @@ describe('runDoctor', () => {
       `'use client';\nimport { MarigoldProvider } from '@marigold/components';\nexport function Providers({ children }) {\n  return <MarigoldProvider theme={theme}>{children}</MarigoldProvider>;\n}\n`
     );
 
-    const { errorIds, warningIds } = checks(await report());
-    const tp = (await report()).warnings.find(w => w.check === 'theme-passed');
+    const r = await report();
+    const { errorIds, warningIds } = checks(r);
+    const tp = r.warnings.find(w => w.check === 'theme-passed');
 
     expect(errorIds).not.toContain('provider-wrapper');
     expect(warningIds).toContain('theme-passed');
@@ -342,10 +343,9 @@ describe('runDoctor', () => {
       `@import 'tailwindcss';\n@import '@marigold/theme-rui/theme.css';\n`
     );
 
-    const { warningIds } = checks(await report());
-    const tw = (await report()).warnings.find(
-      w => w.check === 'tailwind-config'
-    );
+    const r = await report();
+    const { warningIds } = checks(r);
+    const tw = r.warnings.find(w => w.check === 'tailwind-config');
     expect(warningIds).toContain('tailwind-config');
     expect(tw?.message).toContain('@source');
   });

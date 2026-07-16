@@ -391,13 +391,20 @@ export const main = async (
         skipInstall: values['skip-install'],
       });
     } else if (command === 'doctor') {
-      const { values } = parseDoctorCommand(rest);
+      const { positionals, values } = parseDoctorCommand(rest);
       // Record only { format }: the pending DST-1600 GDPR/ePrivacy review scopes
       // doctor telemetry to the output format alone, so --offline is not tracked.
+      // Clamp to a known enum value so an invalid `--format` never leaks the raw
+      // string into telemetry (validation below runs after telemetryArgs is set).
       telemetryArgs = {
-        format: values.format ?? 'text',
+        format: isDoctorFormat(values.format ?? 'text')
+          ? (values.format ?? 'text')
+          : 'invalid',
       };
 
+      if (positionals.length > 0) {
+        fail('Usage: marigold doctor (takes no arguments)');
+      }
       if (values.format && !isDoctorFormat(values.format)) {
         fail(`Invalid --format: ${values.format} (expected text or json)`);
       }

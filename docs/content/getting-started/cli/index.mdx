@@ -210,16 +210,18 @@ It detects Next.js or Vite, then:
 
 ### marigold doctor
 
-Diagnose why Marigold isn't working in a project. Reads the filesystem only (no network) and prints a checklist with actionable fixes, ideal when components render unstyled or throw, and for AI agents to self-diagnose and repair a setup.
+Diagnose why Marigold isn't working in a project and print a checklist with actionable fixes, ideal when components render unstyled or throw, and for AI agents to self-diagnose and repair a setup. All checks read the filesystem only; the freshness check additionally makes a short, best-effort fetch of the docs manifest (skipped with `--offline`).
 
 ```bash
 marigold doctor                 # run from your project root
 marigold doctor --format json   # structured report for AI agents / CI
+marigold doctor --offline       # skip the network; freshness uses the cache only
 ```
 
-| Flag       | Description             | Default |
-| ---------- | ----------------------- | ------- |
-| `--format` | `text` or `json` output | `text`  |
+| Flag        | Description                                               | Default |
+| ----------- | --------------------------------------------------------- | ------- |
+| `--format`  | `text` or `json` output                                   | `text`  |
+| `--offline` | Skip the network; the freshness check uses the cache only |         |
 
 It checks, against the current working directory:
 

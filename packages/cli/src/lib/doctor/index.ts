@@ -8,8 +8,10 @@ import type { DoctorContext, DoctorIssue, DoctorReport } from './types.js';
 
 export type { DoctorReport, DoctorIssue } from './types.js';
 
-/** Thrown when doctor can't run at all (e.g. no package.json at cwd). Distinct
- * from a health-check error so the bin layer surfaces it as a usage failure. */
+/** Thrown when doctor can't run at all (e.g. no package.json at cwd), as opposed
+ * to a health-check finding. The bin layer treats it like any other thrown error
+ * (prints the message, exits 1); the distinct type is a semantic marker for
+ * callers that embed doctor. */
 export class DoctorUsageError extends Error {}
 
 const buildContext = (cwd: string): DoctorContext => {
