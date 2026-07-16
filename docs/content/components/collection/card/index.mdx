@@ -13,7 +13,7 @@ import {
 
 A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, content, actions) into a single, self-contained unit and sets it apart from the page through fill or tinting: a white card sits on the gray page background with a quiet rim, not a drop shadow.
 
-`<Card>` renders an `<article>` landmark. When a `<Title>` is present, the card is automatically labelled by it via `aria-labelledby`. Otherwise pass `aria-label` to give the card an accessible name.
+`<Card>` renders an `<article>` landmark, labelled by its `<Title>` so the card stays identifiable to assistive tech.
 
 ## Anatomy
 
@@ -201,7 +201,7 @@ Always give a card a name. A `<Card>` with neither a `<Title>` nor an `aria-labe
 
 ### Heading levels
 
-The card's heading level comes from the `headingLevel` prop on `<Card>` (default `3`). The default assumes a card grid living under a page-level `<h2>`, so a card title at `<h3>` keeps the document outline clean: page heading, then section heading, then card title.
+The card's heading level comes from the `headingLevel` prop on `<Card>` (default `3`). The default assumes a card grid living under a section-level `<h2>`, so a card title at `<h3>` keeps the document outline clean: page heading, then section heading, then card title.
 
 If the grid sits deeper in the page, inside a `<Tabs>` panel or a `<Panel headingLevel={3}>`, step the card title down with `<Card headingLevel={4}>` so the outline still nests correctly.
 
