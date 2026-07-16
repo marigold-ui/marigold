@@ -11,6 +11,7 @@ export const venueKeys = {
   all: ['venues'] as const,
   lists: () => [...venueKeys.all, 'list'] as const,
   list: (params: VenueQueryParams) => [...venueKeys.lists(), params] as const,
-  counts: () => [...venueKeys.all, 'count'] as const,
-  count: (params: VenueQueryParams) => [...venueKeys.counts(), params] as const,
+  previews: () => [...venueKeys.all, 'preview'] as const,
+  preview: (params: VenueQueryParams) =>
+    [...venueKeys.previews(), params] as const,
 };

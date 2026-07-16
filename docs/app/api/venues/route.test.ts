@@ -1,10 +1,12 @@
 import { venues } from '@/lib/data/venues';
-import type { VenueQueryResult } from '@/lib/data/venues-query';
+import type { VenueFacets, VenueQueryResult } from '@/lib/data/venues-query';
 import { describe, expect, it } from 'vitest';
 import { NextRequest } from 'next/server';
 import { GET } from './route';
 
-const get = async (query: string): Promise<VenueQueryResult> => {
+const get = async (
+  query: string
+): Promise<VenueQueryResult & { facets?: VenueFacets }> => {
   const response = await GET(
     new NextRequest(`http://localhost/api/venues${query}`)
   );
@@ -66,5 +68,45 @@ describe('GET /api/venues', () => {
   it('ignores non-numeric option indexes', async () => {
     const body = await get('?pageSize=all&types=abc');
     expect(body.totalItems).toBe(venues.length);
+  });
+
+  it('omits facets unless requested', async () => {
+    const body = await get('?pageSize=all');
+    expect(body.facets).toBeUndefined();
+  });
+
+  it('returns plain frequencies as facets when nothing is filtered', async () => {
+    const body = await get('?pageSize=all&facets=true');
+    const expected = venues.filter(v => v.type === 0).length;
+    expect(body.facets?.types[0]).toBe(expected);
+  });
+
+  it('facet counts ignore their own dimension (match any)', async () => {
+    // With type 0 selected, the count for type 1 must stay unaffected.
+    const body = await get('?pageSize=all&facets=true&types=0');
+    const expected = venues.filter(v => v.type === 1).length;
+    expect(body.facets?.types[1]).toBe(expected);
+  });
+
+  it('facet counts apply the other dimensions', async () => {
+    // Type counts respect the rating filter, and vice versa.
+    const body = await get('?pageSize=all&facets=true&rating=4');
+    const expected = venues.filter(v => v.type === 0 && v.rating >= 4).length;
+    expect(body.facets?.types[0]).toBe(expected);
+  });
+
+  it('amenity facet counts preview adding the option (match all)', async () => {
+    // With amenity 0 required, the count for amenity 1 previews requiring both.
+    const body = await get('?pageSize=all&facets=true&amenities=0');
+    const expected = venues.filter(
+      v => has(v.amenities, 0) && has(v.amenities, 1)
+    ).length;
+    expect(body.facets?.amenities[1]).toBe(expected);
+  });
+
+  it('rating facet counts ignore the rating filter itself', async () => {
+    const body = await get('?pageSize=all&facets=true&rating=5');
+    const expected = venues.filter(v => v.rating >= 3).length;
+    expect(body.facets?.rating[3]).toBe(expected);
   });
 });

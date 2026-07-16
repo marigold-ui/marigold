@@ -1,14 +1,13 @@
-import type { VenueQueryParams } from '@/lib/data/venues-query';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { venueKeys } from './queryKeys';
 import { useDeletedVenues } from './useDeletedVenues';
 import { type FilterFormData, formToFilter, useFilter } from './useFilter';
 import { useSearch } from './useSearch';
-import { fetchVenues } from './venuesApi';
+import { type FetchVenuesParams, fetchVenues } from './venuesApi';
 
 // Debounce keyed by content, so a NumberField being typed into only fires
-// one count query instead of one per keystroke.
+// one preview query instead of one per keystroke.
 const useDebouncedValue = <T>(value: T, ms: number): T => {
   const [debounced, setDebounced] = useState(value);
   const serialized = JSON.stringify(value);
@@ -22,13 +21,14 @@ const useDebouncedValue = <T>(value: T, ms: number): T => {
 };
 
 /**
- * Live result count for the drawer's draft filter state, so the Apply button
- * can preview the outcome ("Show 4 results") before the user commits.
+ * Live preview of the drawer's draft filter state, from one debounced query:
+ * the total result count for the Apply button ("Show 4 results") and the
+ * per-option facet counts shown next to the panel's options.
  *
- * Runs the same query as the list with `pageSize: 1`, we only read
- * `totalItems`. Returns `undefined` until the first count arrives.
+ * Runs the same query as the list with `pageSize: 1` and `facets: true`.
+ * Both values are `undefined` until the first preview arrives.
  */
-export const useResultCount = (
+export const useFilterPreview = (
   draft: FilterFormData | null,
   enabled: boolean
 ) => {
@@ -42,19 +42,20 @@ export const useResultCount = (
     300
   );
 
-  const params: VenueQueryParams = {
+  const params: FetchVenuesParams = {
     q: search || undefined,
     ...draftFilter,
     pageSize: 1,
     exclude: excludedIds,
+    facets: true,
   };
 
   const { data } = useQuery({
-    queryKey: venueKeys.count(params),
+    queryKey: venueKeys.preview(params),
     queryFn: () => fetchVenues(params),
     enabled,
     placeholderData: keepPreviousData,
   });
 
-  return data?.totalItems;
+  return { resultCount: data?.totalItems, facets: data?.facets };
 };

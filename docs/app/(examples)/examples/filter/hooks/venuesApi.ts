@@ -1,11 +1,21 @@
 import type {
+  VenueFacets,
   VenueQueryParams,
   VenueQueryResult,
 } from '@/lib/data/venues-query';
 
+export interface FetchVenuesParams extends VenueQueryParams {
+  /** Include per-option facet counts in the response. */
+  facets?: boolean;
+}
+
+export interface FetchVenuesResult extends VenueQueryResult {
+  facets?: VenueFacets;
+}
+
 // Builds the query string for the venues endpoint. Kept separate from the
 // hooks so both the list query and the CSV "select all" export can share it.
-const toSearchParams = (params: VenueQueryParams) => {
+const toSearchParams = (params: FetchVenuesParams) => {
   const search = new URLSearchParams();
 
   const set = (key: string, value: string | number | undefined) => {
@@ -30,12 +40,14 @@ const toSearchParams = (params: VenueQueryParams) => {
   params.seating?.forEach(s => search.append('seating', String(s)));
   params.exclude?.forEach(id => search.append('exclude', id));
 
+  if (params.facets) search.set('facets', 'true');
+
   return search;
 };
 
 export const fetchVenues = async (
-  params: VenueQueryParams
-): Promise<VenueQueryResult> => {
+  params: FetchVenuesParams
+): Promise<FetchVenuesResult> => {
   const response = await fetch(`/api/venues?${toSearchParams(params)}`);
   if (!response.ok) {
     throw new Error(`Failed to load venues (${response.status})`);

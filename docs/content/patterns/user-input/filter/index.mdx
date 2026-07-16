@@ -104,6 +104,8 @@ Keep the count visually quiet so it informs without competing with the option. U
 
 <ComponentDemo name="filter-option-counts" />
 
+Dynamic counts also need the right query per option. For a filter that matches **any** of its selected options, count each option with every other filter applied but the option's own group ignored. Otherwise the first selection in a group would drop all of its siblings to zero. For a filter that must match **all** selected options, such as a list of required amenities, count with the current selection plus the candidate option, so the number previews exactly what selecting it returns.
+
 Pairing counts in the panel with a clear applied filter summary gives users confidence that their selections match their intent.
 
 ### Select All

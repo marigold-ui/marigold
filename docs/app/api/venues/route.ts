@@ -2,6 +2,7 @@ import {
   type VenueQueryParams,
   type VenueSortColumn,
   type VenueSortDirection,
+  computeVenueFacets,
   queryVenues,
 } from '@/lib/data/venues-query';
 import type { NextRequest } from 'next/server';
@@ -56,5 +57,12 @@ export const GET = async (request: NextRequest) => {
     await sleep(Math.min(delay, 5000));
   }
 
-  return Response.json(queryVenues(params));
+  const result = queryVenues(params);
+
+  // `?facets=true` adds per-option counts for the filter panel.
+  if (searchParams.get('facets') === 'true') {
+    return Response.json({ ...result, facets: computeVenueFacets(params) });
+  }
+
+  return Response.json(result);
 };

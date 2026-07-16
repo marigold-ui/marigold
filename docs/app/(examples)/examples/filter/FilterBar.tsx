@@ -7,6 +7,7 @@ import {
   venueTraits,
   venueTypes,
 } from '@/lib/data/venues';
+import type { VenueFacets } from '@/lib/data/venues-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { type FormEvent, useRef, useState } from 'react';
 import {
@@ -25,6 +26,7 @@ import {
   Slider,
   Stack,
   Tag,
+  Text,
   VisuallyHidden,
   parseFormData,
 } from '@marigold/components';
@@ -39,8 +41,19 @@ import {
   type VenueFilter,
   useFilter,
 } from './hooks/useFilter';
-import { useResultCount } from './hooks/useResultCount';
+import { useFilterPreview } from './hooks/useFilterPreview';
 import { useSearch } from './hooks/useSearch';
+
+// Muted count inside the label, so assistive tech announces it with the option.
+const withCount = (label: string, count?: number) =>
+  count === undefined ? (
+    label
+  ) : (
+    <Inline space={2} alignY="center">
+      {label}
+      <Text variant="muted">({count})</Text>
+    </Inline>
+  );
 
 // Index-based checkbox group over one of the option arrays. Values are the
 // option indexes as strings, matching how the venue records reference them.
@@ -49,22 +62,34 @@ const OptionGroup = ({
   name,
   options,
   selected,
+  counts,
 }: {
   label: string;
   name: string;
   options: readonly string[];
   selected: number[];
+  counts?: number[];
 }) => (
   <Checkbox.Group label={label} name={name} defaultValue={selected.map(String)}>
     {options.map((option, index) => (
-      <Checkbox key={option} value={String(index)} label={option} />
+      <Checkbox
+        key={option}
+        value={String(index)}
+        label={withCount(option, counts?.[index])}
+      />
     ))}
   </Checkbox.Group>
 );
 
 // The panel groups its filters into collapsible sections so it opens with a
 // compact overview; the most-used group is expanded by default.
-const FilterForm = ({ filter }: { filter: VenueFilter }) => (
+const FilterForm = ({
+  filter,
+  facets,
+}: {
+  filter: VenueFilter;
+  facets?: VenueFacets;
+}) => (
   <Accordion allowsMultipleExpanded defaultExpandedKeys={['essentials']}>
     <Accordion.Item id="essentials">
       <Accordion.Header>Essentials</Accordion.Header>
@@ -75,6 +100,7 @@ const FilterForm = ({ filter }: { filter: VenueFilter }) => (
             name="types"
             options={venueTypes}
             selected={filter.types}
+            counts={facets?.types}
           />
           <NumberField
             label="Min. Capacity"
@@ -115,9 +141,9 @@ const FilterForm = ({ filter }: { filter: VenueFilter }) => (
               filter.rating === 0 ? undefined : String(filter.rating)
             }
           >
-            <Radio value="3">3+ ★</Radio>
-            <Radio value="4">4+ ★</Radio>
-            <Radio value="5">5 ★</Radio>
+            <Radio value="3">{withCount('3+ ★', facets?.rating[3])}</Radio>
+            <Radio value="4">{withCount('4+ ★', facets?.rating[4])}</Radio>
+            <Radio value="5">{withCount('5 ★', facets?.rating[5])}</Radio>
           </Radio.Group>
           <Tag.Group
             label="Traits"
@@ -144,18 +170,21 @@ const FilterForm = ({ filter }: { filter: VenueFilter }) => (
             name="amenities"
             options={amenitiesOptions}
             selected={filter.amenities}
+            counts={facets?.amenities}
           />
           <OptionGroup
             label="Parking"
             name="parking"
             options={parkingOptions}
             selected={filter.parking}
+            counts={facets?.parking}
           />
           <OptionGroup
             label="Seating"
             name="seating"
             options={seatingTypeOptions}
             selected={filter.seating}
+            counts={facets?.seating}
           />
         </Stack>
       </Accordion.Content>
@@ -240,7 +269,7 @@ export const FilterBar = () => {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<FilterFormData | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const resultCount = useResultCount(draft, open);
+  const { resultCount, facets } = useFilterPreview(draft, open);
 
   const onOpenChange = (isOpen: boolean) => {
     if (!isOpen) setDraft(null);
@@ -293,7 +322,11 @@ export const FilterBar = () => {
                   onPointerUp={updateDraft}
                   onKeyUp={updateDraft}
                 >
-                  <FilterForm key={JSON.stringify(filter)} filter={filter} />
+                  <FilterForm
+                    key={JSON.stringify(filter)}
+                    filter={filter}
+                    facets={facets}
+                  />
                 </div>
               </Drawer.Content>
               <Drawer.Actions>
