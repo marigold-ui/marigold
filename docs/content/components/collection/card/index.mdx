@@ -191,9 +191,41 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 ## Accessibility
 
-- `<Card>` renders an `<article>` landmark. When a `<Title>` is present, the article is automatically labelled by it (`aria-labelledby`). Otherwise pass `aria-label` to give the card an accessible name.
-- Always give a card an accessible name. A `<Card>` with neither a `<Title>` nor an `aria-label` produces an **unnamed** `article` landmark, which screen reader users cannot identify. In development, Card logs a `console.warn` when both are missing.
-- The heading level is configurable via the `headingLevel` prop on `<Card>` (default `3`). Choose the level that fits the card's depth in the document outline.
+Card renders an `<article>` and wires up its accessible name and heading level, so most of the work is handled for you. Give every card a name, pick the heading level that fits the page, and add list semantics when cards repeat in a grid.
+
+### Labeling
+
+`<Card>` renders an `<article>` landmark. When a `<Title>` is present, the article is automatically labelled by it (`aria-labelledby`). Otherwise pass `aria-label` on the `<Card>` to give it an accessible name.
+
+Always give a card a name. A `<Card>` with neither a `<Title>` nor an `aria-label` produces an **unnamed** `article` landmark, which screen reader users cannot identify. In development, Card logs a `console.warn` when both are missing.
+
+### Heading levels
+
+The card's heading level comes from the `headingLevel` prop on `<Card>` (default `3`). The default assumes a card grid living under a page-level `<h2>`, so a card title at `<h3>` keeps the document outline clean: page heading, then section heading, then card title.
+
+If the grid sits deeper in the page, inside a `<Tabs>` panel or a `<Panel headingLevel={3}>`, step the card title down with `<Card headingLevel={4}>` so the outline still nests correctly.
+
+### Collection semantics
+
+A card rarely appears alone. The canonical use is a grid of cards, and a repeating collection is semantically a list. Because `<Tiles>` accepts a `role` and an `aria-label`, mark the grid as a list and wrap each card in an element with `role="listitem"`. Assistive technology then announces the item count and lets the user step through the set:
+
+```tsx
+<Tiles
+  role="list"
+  aria-label="Venues"
+  space="regular"
+  tilesWidth="240px"
+  stretch
+>
+  {venues.map(venue => (
+    <div role="listitem" key={venue.id}>
+      <Card>…</Card>
+    </div>
+  ))}
+</Tiles>
+```
+
+The roles are set explicitly rather than on native `<ul>` and `<li>` tags. A `<ul>` styled as a grid usually carries `list-style: none`, and in Safari that removes the list's semantics. An explicit `role="list"` on the `<Tiles>` grid is not affected, so the list markup holds. Since `<Card>` is not polymorphic today, the list structure lives on the wrapper, not on the card. The card grid demo earlier on this page shows the per-card composition. Wrap that grid as shown here to add the collection semantics.
 
 ## Props
 
