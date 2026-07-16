@@ -357,20 +357,27 @@ export const MultiSelection = meta.story({
 });
 
 MultiSelection.test(
-  'Toggles selection and exposes the checkbox role',
+  'Exposes the checkbox role in an unchecked state',
   async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Choose' }));
 
-    const burger = canvas.getByRole('menuitemcheckbox', { name: /Burger/ });
-    expect(burger).toHaveAttribute('aria-checked', 'false');
-
-    await userEvent.click(burger);
-
     expect(
       canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
-    ).toHaveAttribute('aria-checked', 'true');
+    ).toHaveAttribute('aria-checked', 'false');
   }
 );
+
+MultiSelection.test('Toggles selection on click', async ({ canvas }) => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Choose' }));
+
+  await userEvent.click(
+    canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+  );
+
+  expect(
+    canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+  ).toHaveAttribute('aria-checked', 'true');
+});
 
 export const AccessSections = meta.story({
   tags: ['component-test'],
@@ -546,6 +553,7 @@ Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }) => {
 
 export const Advanced = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Menu {...args} label="Edit">
       <Menu.Item id="cut">
@@ -575,6 +583,7 @@ export const Advanced = meta.story({
 
 Advanced.test(
   'Renders icons and a divider, and wires the shortcut to the item description',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Edit' }));
 

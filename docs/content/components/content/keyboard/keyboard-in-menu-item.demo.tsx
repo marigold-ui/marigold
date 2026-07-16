@@ -1,5 +1,5 @@
 import { Keyboard, Menu, TextValue } from '@marigold/components';
-import { Copy } from '@marigold/icons';
+import { ClipboardPaste, Copy } from '@marigold/icons';
 
 export default () => (
   <Menu label="Edit">
@@ -9,6 +9,7 @@ export default () => (
       <Keyboard>⌘C</Keyboard>
     </Menu.Item>
     <Menu.Item id="paste" textValue="Paste">
+      <ClipboardPaste />
       <TextValue>Paste</TextValue>
       <Keyboard>⌘V</Keyboard>
     </Menu.Item>
