@@ -289,15 +289,15 @@
  * these.
  */
 @utility ui-panel-header {
-  @apply border-border border-b px-6 py-4;
+  @apply border-border border-b px-(--ui-panel-px) py-4;
 }
 
 @utility ui-panel-content {
-  @apply overflow-y-auto px-6 py-4 outline-none;
+  @apply overflow-y-auto px-(--ui-panel-px) py-4 outline-none;
 }
 
 @utility ui-panel-actions {
-  @apply border-border flex flex-row justify-end gap-3 border-t px-6 py-4;
+  @apply border-border flex flex-row justify-end gap-3 border-t px-(--ui-panel-px) py-4;
 }
 
 /* ========================= */

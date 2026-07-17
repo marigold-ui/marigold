@@ -12,6 +12,7 @@ import { ActionMenu } from '../Menu/ActionMenu';
 import { Select } from '../Select/Select';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
+import { Table } from '../Table/Table';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
 import { Drawer } from './Drawer';
@@ -544,7 +545,9 @@ TitleOnlyWithoutHeader.test(
  */
 export const BleedAccordion = meta.story({
   tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: false } },
+  // Base story renders the closed drawer (trigger only), where the bleed isn't
+  // visible — skip it and let the `.test()` snapshot the opened drawer.
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Drawer.Trigger>
       <Button>Open Drawer</Button>
@@ -579,6 +582,11 @@ export const BleedAccordion = meta.story({
 
 BleedAccordion.test(
   'Opens the drawer with a full-width Accordion',
+  {
+    // Re-enable the snapshot on the opened drawer so Chromatic captures the
+    // bled Accordion (dividers reaching the edges, headers aligned to title).
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
   async ({ canvas, userEvent }) => {
     // Smoke-tests the demo/interaction. The `--bleed-px` class wiring is
     // asserted in Drawer.test.tsx (the canonical place, like Panel/Accordion).
@@ -586,6 +594,66 @@ BleedAccordion.test(
 
     expect(
       await canvas.findByRole('button', { name: 'General' })
+    ).toBeInTheDocument();
+  }
+);
+
+/**
+ * A `Table` is the other edge-aware child: inside a bled content area its row
+ * backgrounds and dividers span the full width, while the first/last cells
+ * inset to `--bleed-px` so their text lines up with the Drawer title. Table
+ * reads the generic `--bleed-px` (after the Panel-only `--panel-px`), so it
+ * aligns here without any Table-side prop.
+ */
+export const BleedTable = meta.story({
+  tags: ['component-test'],
+  // Base story renders the closed drawer (trigger only) — snapshot the opened
+  // drawer from the `.test()` instead.
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Title>Attendees</Title>
+        <Drawer.Content bleed>
+          <Table aria-label="Attendees">
+            <Table.Header>
+              <Table.Column rowHeader>Name</Table.Column>
+              <Table.Column>Role</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>Ada Lovelace</Table.Cell>
+                <Table.Cell>Organizer</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>Alan Turing</Table.Cell>
+                <Table.Cell>Speaker</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>Grace Hopper</Table.Cell>
+                <Table.Cell>Guest</Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+BleedTable.test(
+  'Opens the drawer with a full-width Table',
+  {
+    // Re-enable the snapshot on the opened drawer so Chromatic captures the
+    // bled Table (row dividers reaching the edges, cell text aligned to title).
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+
+    expect(
+      await canvas.findByRole('grid', { name: 'Attendees' })
     ).toBeInTheDocument();
   }
 );

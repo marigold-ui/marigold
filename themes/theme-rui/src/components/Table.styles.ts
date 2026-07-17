@@ -4,9 +4,11 @@ export const Table: ThemeComponent<'Table'> = {
   table: cva({
     base: [
       'text-sm bg-surface',
-      // Edge padding for Panel integration — resolves to --panel-px
-      // when inside a Panel with bleed, otherwise falls back to --cell-x-padding
-      '[--cell-edge-padding:var(--panel-px,var(--cell-x-padding))]',
+      // Edge padding for bled-surface integration. Prefers the Panel's
+      // always-present `--panel-px`; falls back to the generic `--bleed-px`
+      // published by other bled containers (e.g. `Drawer.Content bleed`), then
+      // to the plain `--cell-x-padding` for a standalone table.
+      '[--cell-edge-padding:var(--panel-px,var(--bleed-px,var(--cell-x-padding)))]',
     ],
     variants: {
       variant: {
