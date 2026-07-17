@@ -44,14 +44,8 @@ export const DrawerContent = ({
     <div
       className={cn(
         '[grid-area:content]',
-        // The unbled path uses the shared `ui-panel-content` utility
-        // (`overflow-y-auto px-(--ui-panel-px) py-4 outline-none`). When bled
-        // we keep the scroll/vertical rhythm but drop the horizontal padding
-        // and re-publish that same `--ui-panel-px` as `--bleed-px`, so
-        // edge-aware children inset themselves to align with the Drawer title
-        // (also `--ui-panel-px`, via `ui-panel-header`) while their
-        // dividers/backgrounds reach the edges. Sourcing both from the one
-        // token keeps them in lock-step if the surface padding ever changes.
+        // Bled: drop the padding and re-publish `--ui-panel-px` as `--bleed-px`
+        // so edge-aware children inset to align with the title.
         bleed
           ? 'overflow-y-auto py-4 outline-none [--bleed-px:var(--ui-panel-px)]'
           : classNames.content

@@ -205,10 +205,7 @@ test('`bleed` content drops the padding and publishes --bleed-px', async () => {
   await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
   const header = await screen.findByRole('button', { name: 'General' });
 
-  // The content wrapper opts out of the padded `ui-panel-content` and instead
-  // re-publishes the surface padding token as `--bleed-px` so edge-aware
-  // children can inset their own content while dividers reach the edges. Match
-  // where the var is *set* (`[--bleed-px:`), not where the Accordion reads it.
+  // Match where the var is *set* (`[--bleed-px:`), not where a child reads it.
   // eslint-disable-next-line testing-library/no-node-access
   const content = header.closest('[class*="[--bleed-px:"]')!;
   expect(content).not.toBeNull();

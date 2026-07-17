@@ -243,12 +243,7 @@
   --spacing-group: --spacing(12);
   --spacing-section: --spacing(24);
 
-  /*
-   * Horizontal padding shared by the sectioned overlay surfaces
-   * (`ui-panel-header` / `ui-panel-content` / `ui-panel-actions` → Dialog,
-   * Drawer, Tray). Kept as one token so a bled surface can publish `--bleed-px`
-   * from the exact same value instead of re-hardcoding it in the component.
-   */
+  /* Shared horizontal padding for the `ui-panel-*` overlay surfaces. */
   --ui-panel-px: --spacing(6);
 
   /* Padding spacing */

@@ -545,8 +545,6 @@ TitleOnlyWithoutHeader.test(
  */
 export const BleedAccordion = meta.story({
   tags: ['component-test'],
-  // Base story renders the closed drawer (trigger only), where the bleed isn't
-  // visible — skip it and let the `.test()` snapshot the opened drawer.
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Drawer.Trigger>
@@ -583,13 +581,9 @@ export const BleedAccordion = meta.story({
 BleedAccordion.test(
   'Opens the drawer with a full-width Accordion',
   {
-    // Re-enable the snapshot on the opened drawer so Chromatic captures the
-    // bled Accordion (dividers reaching the edges, headers aligned to title).
     parameters: { chromatic: { disableSnapshot: false } },
   },
   async ({ canvas, userEvent }) => {
-    // Smoke-tests the demo/interaction. The `--bleed-px` class wiring is
-    // asserted in Drawer.test.tsx (the canonical place, like Panel/Accordion).
     await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
 
     expect(
@@ -599,16 +593,11 @@ BleedAccordion.test(
 );
 
 /**
- * A `Table` is the other edge-aware child: inside a bled content area its row
- * backgrounds and dividers span the full width, while the first/last cells
- * inset to `--bleed-px` so their text lines up with the Drawer title. Table
- * reads the generic `--bleed-px` (after the Panel-only `--panel-px`), so it
- * aligns here without any Table-side prop.
+ * A `Table` is the other edge-aware child: in a bled content area its row
+ * dividers span the full width while cell text stays aligned with the title.
  */
 export const BleedTable = meta.story({
   tags: ['component-test'],
-  // Base story renders the closed drawer (trigger only) — snapshot the opened
-  // drawer from the `.test()` instead.
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Drawer.Trigger>
@@ -645,8 +634,6 @@ export const BleedTable = meta.story({
 BleedTable.test(
   'Opens the drawer with a full-width Table',
   {
-    // Re-enable the snapshot on the opened drawer so Chromatic captures the
-    // bled Table (row dividers reaching the edges, cell text aligned to title).
     parameters: { chromatic: { disableSnapshot: false } },
   },
   async ({ canvas, userEvent }) => {
