@@ -120,7 +120,9 @@ export const WithActionMenu = meta.story({
   ),
 });
 
-// Not snapshotted: deliberately oversizes the trigger to exercise local-wins precedence (the default inheriting look lives in `WithActionMenu`).
+// Fixture for the "local size wins" unit test, so not snapshotted. The ActionMenu
+// sets an explicit `size="large"` that must beat the group's `small`, which
+// `WithActionMenu` (its trigger inherits the group size) can't assert.
 export const ActionMenuLocalSize = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
