@@ -387,6 +387,23 @@ Rail.test(
   }
 );
 
+// Controlled: an outer `Sidebar.Provider` owns the collapse state (e.g. an app
+// syncing it to user preferences). Mirrors the single column's `Controlled`
+// story; exercised by the unit tests, so no snapshot or component test needed.
+const RailControlledExample = () => {
+  const [open, setOpen] = useState(true);
+  return (
+    <Sidebar.Provider open={open} onOpenChange={setOpen}>
+      <RailShell />
+    </Sidebar.Provider>
+  );
+};
+
+export const RailControlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => <RailControlledExample />,
+});
+
 // Mobile: the drawer contains a miniature of the desktop layout — the
 // icon+label rail on its left edge, the active section's panel beside it.
 // No drill-in and no back button at the top level; section taps swap the
