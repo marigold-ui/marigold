@@ -270,9 +270,13 @@ const SidebarRail = ({
         <div
           ref={mobileBodyRef}
           // The rail is never icon-only inside the drawer; the tiles read
-          // this ancestor state for their label row.
+          // this ancestor state for their label row (and railLayout resolves
+          // --rail-w to its expanded width).
           data-state="expanded"
-          className="grid h-full min-h-0 grid-cols-[6.5rem_1fr] [grid-area:content]"
+          className={cn(
+            'grid h-full min-h-0 grid-cols-[var(--rail-w)_1fr] [grid-area:content]',
+            classNames.railLayout
+          )}
         >
           {railColumn(false)}
           <div
@@ -305,17 +309,11 @@ const SidebarRail = ({
       <div
         data-state={state}
         data-panel={hasPanel ? 'expanded' : 'collapsed'}
+        // Column widths (and their collapse transition) come from the theme's
+        // railLayout recipe as --rail-w/--panel-w; the grid only consumes them.
         className={cn(
-          'grid h-full',
-          // Two independent axes. Rail column: full width (icon + label) when
-          // expanded, an icon-only strip when collapsed — reclaiming space for
-          // the page. Panel column: only has width while a section panel is
-          // showing (a direct-link page has none, in either state).
-          '[--rail-w:6.5rem] data-[state=collapsed]:[--rail-w:4rem]',
-          '[--panel-w:15.5rem] data-[panel=collapsed]:[--panel-w:0rem]',
-          'grid-cols-[var(--rail-w)_var(--panel-w)]',
-          'transition-[grid-template-columns] duration-200 ease-in-out',
-          'motion-reduce:transition-none'
+          'grid h-full grid-cols-[var(--rail-w)_var(--panel-w)]',
+          classNames.railLayout
         )}
       >
         {/* Rail column: draws the always-on divider between the rail and

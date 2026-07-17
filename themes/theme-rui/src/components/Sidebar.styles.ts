@@ -29,6 +29,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // Mobile drawer floats over the page, so it takes overlay elevation; on
       // desktop the sidebar is structure and stays flat.
       'shadow-elevation-overlay',
+      // Partial (rail-in-drawer) sheet: hug the content so the backdrop stays
+      // exposed as a tap-to-dismiss strip. `data-partial` sits on the overlay.
+      'in-data-partial:w-[min(88vw,24rem)]',
       'entering:animate-slide-in-left',
       'exiting:animate-slide-out-left exiting:[--slide-out-duration:0.1s]',
       'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
@@ -160,6 +163,22 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // (expanded) or the rail column (collapsed), so the two never double up.
   railRoot: cva({
     base: ['overflow-hidden bg-background'],
+  }),
+  // The rail shell's dimensions, on the grid that lays rail and panel side by
+  // side (the component's `grid-cols` consumes the vars — same split as the
+  // single column's `w-64` in `root`). Two independent axes: the rail column
+  // is full width (icon + label) when expanded and an icon-only strip when
+  // collapsed; the panel column only has width while a section panel shows.
+  // In the mobile drawer only `--rail-w` is read (the panel takes `1fr`), and
+  // the drawer always renders expanded, so the collapsed value never applies.
+  railLayout: cva({
+    base: [
+      '[--rail-w:6.5rem] data-[state=collapsed]:[--rail-w:4rem]',
+      '[--panel-w:15.5rem] data-[panel=collapsed]:[--panel-w:0rem]',
+      // Same 200ms glide as the tiles' label fold (railItem).
+      'transition-[grid-template-columns] duration-200 ease-in-out',
+      'motion-reduce:transition-none',
+    ],
   }),
   // The rail column: the narrow strip of icons beside the panel. Carries the
   // always-on vertical divider (`border-r`) between the rail and everything to

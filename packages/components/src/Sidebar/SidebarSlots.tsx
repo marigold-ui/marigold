@@ -16,7 +16,8 @@ export const SidebarHeader = ({
     <div
       ref={ref}
       className={cn(
-        'h-topbar flex items-center [grid-area:header]',
+        // Height comes from the theme's header recipe (h-topbar).
+        'flex items-center [grid-area:header]',
         classNames.header
       )}
     >

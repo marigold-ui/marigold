@@ -39,9 +39,10 @@ export const SidebarModal = ({ children, partial, ref }: SidebarModalProps) => {
       )}
       isDismissable
     >
-      {/* Partial: the modal hugs its content so the backdrop stays exposed —
-          a pointer down there counts as an outside interaction (dismiss). */}
-      <Modal className={cn(classNames.modal, partial && 'w-[min(88vw,24rem)]')}>
+      {/* Partial: the theme narrows the modal (via the overlay's data-partial)
+          so the backdrop stays exposed — a pointer down there counts as an
+          outside interaction (dismiss). */}
+      <Modal className={classNames.modal}>
         <aside
           ref={ref}
           aria-label={stringFormatter.format('sidebar')}

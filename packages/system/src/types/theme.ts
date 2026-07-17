@@ -358,6 +358,7 @@ export type Theme = {
       | 'content'
       // Two-level rail (Sidebar.Rail): persistent rail + section panel
       | 'railRoot'
+      | 'railLayout'
       | 'railColumn'
       | 'railToggle'
       | 'rail'
