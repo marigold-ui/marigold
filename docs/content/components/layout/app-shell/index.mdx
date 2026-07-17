@@ -38,6 +38,8 @@ Place [`<Sidebar>`](/components/navigation/sidebar), [`<TopNavigation>`](/compon
 
 <ComponentDemo name="app-shell-basic" background="page" />
 
+When the sidebar is a [two-level rail](/components/navigation/sidebar#two-level-navigation) (`Sidebar.Rail`), `<AppShell>` switches its grid automatically: the top bar spans the full width of the viewport and the rail hangs below it, so the brand in the bar never moves when the section panel collapses. There is no prop for this — the layout follows the sidebar you compose.
+
 ### Sidebar state
 
 `<AppShell>` manages the sidebar's open/collapsed state for you. It wraps its children in a `Sidebar.Provider` internally. Pass `defaultSidebarOpen` to start expanded. The sidebar toggle in the header and the sidebar share this state automatically, with no provider boilerplate.

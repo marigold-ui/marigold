@@ -60,6 +60,8 @@ The app frame divides the screen into three areas. The diagram below shows how t
 
 The order of `<Sidebar>`, `<TopNavigation>`, and `<Page>` inside `AppShell` doesn't matter since the grid template handles positioning. For controlled sidebar state, render your own `<Sidebar.Provider>` around `<AppShell>`. See the [AppShell docs](/components/layout/app-shell).
 
+For applications organized into several sections that each carry their own sub-navigation, swap the single-column sidebar for the [two-level rail](/components/navigation/sidebar#two-level-navigation) (`Sidebar.Rail`). The frame stays the same, with two differences: `AppShell` automatically stretches the top bar across the full width (the rail hangs below it), and the brand moves from the sidebar header into `TopNavigation.Start`, next to `<Sidebar.Toggle variant="rail" />`.
+
 ### Where things go
 
 Each area has a clear purpose. Mixing responsibilities between them makes the layout harder to use and harder to maintain.
@@ -118,7 +120,7 @@ The `<main>` landmark is labelled by the page `<h1>` from `<Page.Header>`, so sc
 
 ### Responsive behavior
 
-`<AppShell>` always renders the L-shape grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
+`<AppShell>` always renders its grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile; a [two-level rail](/components/navigation/sidebar#two-level-navigation) becomes a drawer showing the rail and the active section panel side by side. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
 
 ## Page structure
 
