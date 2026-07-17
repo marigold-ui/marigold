@@ -20,8 +20,9 @@ test('renders loader with different size', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const icon = loader.querySelector('svg');
 
-  expect(loader).toHaveClass('size-36');
-  expect(icon).toHaveClass('size-full');
+  // The spinner carries the size; the container wraps it content-sized.
+  expect(loader).toHaveClass('size-fit');
+  expect(icon).toHaveClass('size-36');
 });
 
 test('render custom label', () => {
@@ -52,7 +53,7 @@ test('inline uses "inverted" variant', () => {
   const loader = screen.getByRole('progressbar');
 
   expect(loader).toHaveClass(
-    'grid place-items-center text-primary-foreground size-20'
+    'grid place-items-center gap-2 text-primary-foreground size-fit'
   );
 });
 
