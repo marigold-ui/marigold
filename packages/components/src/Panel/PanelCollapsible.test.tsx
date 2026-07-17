@@ -97,7 +97,7 @@ describe('Panel.CollapsibleHeader', () => {
     render(<WithCollapsible.Component />);
 
     const trigger = screen.getByRole('button', { name: /Advanced Options/ });
-    const caret = trigger.querySelector('svg') as SVGSVGElement;
+    const caret = trigger.querySelector('svg')!;
 
     expect(caret).toHaveAttribute('width', '16');
     expect(caret).toHaveClass('text-secondary');
