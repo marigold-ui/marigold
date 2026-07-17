@@ -172,3 +172,22 @@ describe('useSidebarRailState', () => {
     expect(result.current.selectedKey).toBe('veranstaltungen');
   });
 });
+
+describe('fragments', () => {
+  test('buildRailCollection collects rail items wrapped in fragments', () => {
+    const { nodes } = buildRailCollection(
+      <>
+        <SidebarRailItem id="a" icon={<i />} href="/a">
+          A
+        </SidebarRailItem>
+        <>
+          <SidebarRailItem id="b" icon={<i />} href="/b">
+            B
+          </SidebarRailItem>
+        </>
+      </>
+    );
+
+    expect(nodes.map(node => node.key)).toEqual(['a', 'b']);
+  });
+});

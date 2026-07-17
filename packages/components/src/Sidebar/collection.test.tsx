@@ -441,3 +441,45 @@ describe('applyCurrent', () => {
     expect(nested?.type === 'item' && nested.active).toBe(true);
   });
 });
+
+describe('fragments', () => {
+  test('buildCollection collects items wrapped in fragments', () => {
+    const collection = buildCollection(
+      <>
+        <SidebarItem id="a" href="/a">
+          A
+        </SidebarItem>
+        <>
+          <SidebarGroupLabel>Group</SidebarGroupLabel>
+          <SidebarItem id="b" href="/b">
+            B
+          </SidebarItem>
+        </>
+      </>
+    );
+
+    expect(collection.rootNodes.map(node => node.type)).toEqual([
+      'item',
+      'groupLabel',
+      'item',
+    ]);
+    expect(collection.getItem('b')).toBeDefined();
+  });
+
+  test('buildCollection collects fragment-wrapped children of a branch', () => {
+    const collection = buildCollection(
+      <SidebarItem id="branch" textValue="Branch">
+        Branch
+        <>
+          <SidebarItem id="nested" href="/nested">
+            Nested
+          </SidebarItem>
+        </>
+      </SidebarItem>
+    );
+
+    const branch = collection.getItem('branch');
+    expect(branch?.type === 'item' && branch.children).toHaveLength(1);
+    expect(collection.getItem('nested')).toBeDefined();
+  });
+});

@@ -1,4 +1,4 @@
-import { Children, isValidElement } from 'react';
+import { isValidElement } from 'react';
 import type { ReactNode, Ref } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
@@ -15,10 +15,11 @@ import { SidebarRail } from './SidebarRail';
 import { SidebarRailItem } from './SidebarRailItem';
 import { SidebarFooter, SidebarHeader } from './SidebarSlots';
 import { SidebarToggle } from './SidebarToggle';
+import { flattenChildren } from './collection';
 
 /** True when a `Sidebar.Rail` sits among the children (two-level mode). */
 const hasRailChild = (children: ReactNode): boolean =>
-  Children.toArray(children).some(
+  flattenChildren(children).some(
     child => isValidElement(child) && child.type === SidebarRail
   );
 

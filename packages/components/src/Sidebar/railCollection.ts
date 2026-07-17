@@ -1,4 +1,4 @@
-import { Children, cloneElement, isValidElement } from 'react';
+import { cloneElement, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { SidebarNavProps } from './SidebarNav';
 import type { SidebarRailItemProps } from './SidebarRailItem';
@@ -7,6 +7,7 @@ import {
   collectLeaves,
   extractTextValue,
   firstLeafHref,
+  flattenChildren,
   matchLeaves,
 } from './collection';
 import type { SidebarCurrent } from './collection';
@@ -84,7 +85,7 @@ const separateRailChildren = (
   let nav: ReactElement<SidebarNavProps> | undefined;
   const label: ReactNode[] = [];
 
-  for (const child of Children.toArray(children)) {
+  for (const child of flattenChildren(children)) {
     if (isSidebarNav(child)) {
       nav = child;
     } else {
@@ -152,7 +153,7 @@ export const buildRailCollection = (
     };
   };
 
-  for (const child of Children.toArray(children)) {
+  for (const child of flattenChildren(children)) {
     if (isSidebarHeader(child)) {
       header = child;
       continue;
@@ -160,7 +161,7 @@ export const buildRailCollection = (
     if (isSidebarFooter(child)) {
       // Pull rail items out of the footer into first-class (pinned) nodes;
       // whatever else the footer holds keeps rendering as the raw slot.
-      const footerKids = Children.toArray(
+      const footerKids = flattenChildren(
         (child.props as { children?: ReactNode }).children
       );
       for (const kid of footerKids) {

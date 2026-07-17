@@ -1,4 +1,4 @@
-import { Children, isValidElement } from 'react';
+import { Children, Fragment, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { SidebarGroupLabelProps, SidebarItemProps } from './SidebarItem';
 
@@ -54,6 +54,26 @@ const isSidebarGroupLabel = (
     .__SIDEBAR_GROUP_LABEL__ === true;
 
 /**
+ * Flatten children like `Children.toArray`, but additionally unwrap
+ * `<Fragment>`s: `toArray` treats a fragment as a single opaque element, so
+ * nav items wrapped in one (e.g. returned from a helper as `<>…</>`) would
+ * silently fall through the type guards and vanish from the collection.
+ */
+export const flattenChildren = (children: ReactNode): ReactNode[] => {
+  const result: ReactNode[] = [];
+  for (const child of Children.toArray(children)) {
+    if (isValidElement(child) && child.type === Fragment) {
+      result.push(
+        ...flattenChildren((child.props as { children?: ReactNode }).children)
+      );
+    } else {
+      result.push(child);
+    }
+  }
+  return result;
+};
+
+/**
  * Extract a text value from children. If any child is a string,
  * concatenate them. Otherwise return empty string (user should
  * provide textValue explicitly).
@@ -79,7 +99,7 @@ const separateChildren = (
   const itemChildren: ReactNode[] = [];
   const triggerContent: ReactNode[] = [];
 
-  const flat = Children.toArray(children);
+  const flat = flattenChildren(children);
   for (const child of flat) {
     if (
       isSidebarItem(child) ||
@@ -341,7 +361,7 @@ const buildNodes = (
 export const buildCollection = (children: ReactNode): SidebarCollection => {
   const counter = { value: 0 };
   const index = new Map<string, SidebarNode>();
-  const rootNodes = buildNodes(Children.toArray(children), counter, index);
+  const rootNodes = buildNodes(flattenChildren(children), counter, index);
 
   return {
     rootNodes,
