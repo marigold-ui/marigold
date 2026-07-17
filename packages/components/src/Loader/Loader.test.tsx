@@ -32,6 +32,20 @@ test('render custom label', () => {
   expect(label).toBeInTheDocument();
 });
 
+test('respects a consumer-provided aria-labelledby without a redundant aria-label', () => {
+  render(
+    <>
+      <span id="loader-label">Saving changes</span>
+      <Basic.Component aria-labelledby="loader-label" />
+    </>
+  );
+
+  const loader = screen.getByRole('progressbar');
+
+  expect(loader).toHaveAttribute('aria-labelledby', 'loader-label');
+  expect(loader).not.toHaveAttribute('aria-label');
+});
+
 test('inline uses "inverted" variant', () => {
   render(<Basic.Component mode="section">Loading...</Basic.Component>);
 
@@ -76,6 +90,32 @@ test('renders fullscreen loader with modal overlay', () => {
 
   expect(loader).toBeInTheDocument();
   expect(dialog).toBeInTheDocument();
+});
+
+test('fullscreen dialog is named by the loader fallback when no label is given', () => {
+  renderWithOverlay(<Basic.Component mode="fullscreen" />);
+
+  // The Dialog references the loader node, which carries the localized
+  // fallback label — so the modal is never left unnamed.
+  const dialog = screen.getByRole('dialog');
+
+  expect(dialog).toHaveAccessibleName('Loading...');
+});
+
+test('fullscreen dialog is named by a consumer-provided aria-labelledby', () => {
+  renderWithOverlay(
+    <>
+      <span id="loader-label">Saving changes</span>
+      <Basic.Component mode="fullscreen" aria-labelledby="loader-label" />
+    </>
+  );
+
+  // A consumer `aria-labelledby` suppresses the loader's own `aria-label`, and
+  // the accname spec won't follow a second `labelledby` hop — so the Dialog
+  // must reference the consumer's element directly to stay named.
+  const dialog = screen.getByRole('dialog');
+
+  expect(dialog).toHaveAccessibleName('Saving changes');
 });
 
 test('renders loader with loaderType circle', () => {
