@@ -29,7 +29,7 @@ const OrderList = () => (
     <Headline level={2}>Orders</Headline>
     <Table aria-label="Orders" selectionMode="none">
       <Table.Header>
-        <Table.Column>Order</Table.Column>
+        <Table.Column rowHeader>Order</Table.Column>
         <Table.Column>Customer</Table.Column>
         <Table.Column>Total</Table.Column>
       </Table.Header>
