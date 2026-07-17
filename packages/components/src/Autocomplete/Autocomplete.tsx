@@ -29,7 +29,7 @@ interface AutocompleteInputProps {
    * A `value` will be passed if the submission is a custom value (e.g. a user types then presses enter).
    * If the input is a selected item, `value` will be `null`.
    */
-  onSubmit?: (key: Key | null, value: string | null) => void;
+  onSubmit?: (value: string | null, key: Key | null) => void;
 
   /**
    * Called when the clear button is pressed.
@@ -77,7 +77,7 @@ const AutocompleteInput = ({
         }
         if (e.key === 'Enter') {
           if (state?.selectionManager.focusedKey === null) {
-            onSubmit?.(null, state?.inputValue);
+            onSubmit?.(state?.inputValue, null);
           }
         }
       }}
@@ -229,7 +229,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     ref
   ) => {
     const props: RAC.ComboBoxProps<object> = {
-      onSelectionChange: key => key !== null && onSubmit?.(key, null),
+      onSelectionChange: key => key !== null && onSubmit?.(null, key),
       defaultInputValue: defaultValue,
       inputValue: value,
       onInputChange: onChange,
