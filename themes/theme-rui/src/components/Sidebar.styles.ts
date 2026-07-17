@@ -254,9 +254,17 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'text-secondary text-center cursor-pointer',
       'outline-none rounded-surface',
       'hover:text-foreground data-active:text-foreground',
-      'hover:bg-hover',
-      // Active section/link: same flat `selected` fill as a nav row.
-      'data-active:bg-selected',
+      // A fill marks the current page, ink marks its ancestors: the tile is
+      // ~3× the leaf pill's area, so giving the section ancestor the same
+      // `selected` fill would outweigh the actual current page. While the
+      // panel is open, the panel title + leaf pill already carry the location,
+      // so the ancestor speaks through its `foreground` ink alone. The fill
+      // returns exactly when the tile is the only visible marker: a
+      // direct-link tile that IS the page (`selected`), or the active section
+      // on the icon-only collapsed rail (`hover`, one step quieter). Hover is
+      // ink-lift only, keeping fills exclusive to active states.
+      'in-data-[state=collapsed]:data-active:bg-hover',
+      'aria-[current=page]:bg-selected',
       'focus-visible:ui-state-focus',
       '[&_svg]:size-5 [&_svg]:shrink-0',
       // The label: same size as the panel's group captions, medium so it holds

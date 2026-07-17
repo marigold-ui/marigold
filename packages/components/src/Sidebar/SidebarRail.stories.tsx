@@ -114,6 +114,9 @@ const RailShell = ({
                 <Sidebar.RailItem icon={<Ticket />} id="tickets">
                   Tickets
                   <Sidebar.Nav aria-label="Tickets">
+                    {/* Group labels work inside a section panel exactly like in
+                        the single-column sidebar. */}
+                    <Sidebar.GroupLabel>Ansichten</Sidebar.GroupLabel>
                     <Sidebar.Item href="/tickets/meine">
                       Meine Tickets
                     </Sidebar.Item>
@@ -123,6 +126,7 @@ const RailShell = ({
                     <Sidebar.Item href="/tickets/alle">
                       Alle Tickets
                     </Sidebar.Item>
+                    <Sidebar.GroupLabel>Verwaltung</Sidebar.GroupLabel>
                     {/* A third level: an item without href wrapping items
                         drills the panel in (with a back row), same as in the
                         single-column sidebar. */}
@@ -200,10 +204,12 @@ const RailShell = ({
                 <Sidebar.RailItem icon={<Settings />} id="einstellungen">
                   Einstellungen
                   <Sidebar.Nav aria-label="Einstellungen">
+                    <Sidebar.GroupLabel>Arbeitsbereich</Sidebar.GroupLabel>
                     <Sidebar.Item href="/einstellungen/allgemein">
                       Allgemein
                     </Sidebar.Item>
                     <Sidebar.Item href="/einstellungen/team">Team</Sidebar.Item>
+                    <Sidebar.GroupLabel>Persönlich</Sidebar.GroupLabel>
                     <Sidebar.Item
                       id="benachrichtigungen"
                       textValue="Benachrichtigungen"
