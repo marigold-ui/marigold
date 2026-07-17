@@ -21,8 +21,8 @@ export const Menu: ThemeComponent<'Menu'> = {
   // Grid: col 1 = icon/checkmark, col 2 = label/description, col 3 = keyboard.
   item: cva({
     base: [
-      'relative grid grid-cols-[auto_1fr_auto] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
-      'disabled:text-disabled',
+      'group/option relative grid grid-cols-[auto_1fr_auto] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
+      'disabled:cursor-not-allowed disabled:text-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
       // Selection visuals like ListBox: checkmark reserves col 1, row highlights on select. Don't also add a leading icon.
       '[&_.selection-indicator]:invisible [&_.selection-indicator]:text-foreground [&_.selection-indicator]:opacity-100',
@@ -45,7 +45,7 @@ export const Menu: ThemeComponent<'Menu'> = {
   }),
   label: cva({ base: 'col-start-2 row-start-1' }),
   description: cva({
-    base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal',
+    base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-disabled/option:text-disabled',
   }),
   // Shortcut hint, right-aligned in col 3 and vertically centered.
   keyboard: cva({

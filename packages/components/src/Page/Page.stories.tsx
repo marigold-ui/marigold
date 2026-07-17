@@ -139,8 +139,8 @@ export const Actions = meta.story({
           <Title>Primary and secondary</Title>
           <Description>Group multiple buttons in a ButtonGroup.</Description>
           <ButtonGroup aria-label="Plan actions">
-            <Button variant="secondary">Compare plans</Button>
             <Button variant="primary">Upgrade plan</Button>
+            <Button variant="secondary">Compare plans</Button>
           </ButtonGroup>
         </Page.Header>
       </Page>
