@@ -60,6 +60,7 @@
     300 -- control fill, borders, scrollbar, selected bg, soft cap edge hover
     400 -- disabled (text)
     600 -- focus ring, secondary (text), placeholder
+    700 -- secondary-bold (text): emphasized body/idle nav labels
     900 -- primary text
     950 -- primary action, scrollbar hover
   */
@@ -68,6 +69,10 @@
   --color-background: var(--color-charcoal-100);
   --color-foreground: var(--color-charcoal-900);
   --color-secondary: var(--color-charcoal-600);
+  /* Emphatic sibling of `secondary` (cf. `selected`/`selected-bold`): text that
+     must out-rank quiet captions without reaching full-strength `foreground` —
+     e.g. idle, interactive sidebar nav labels sitting above `groupLabel`s. */
+  --color-secondary-bold: var(--color-charcoal-700);
   --color-placeholder: var(--color-charcoal-600);
 
   /* --- Primary --- */

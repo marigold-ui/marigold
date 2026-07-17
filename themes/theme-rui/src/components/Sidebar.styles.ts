@@ -98,8 +98,12 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   groupLabel: cva({
     // Quiet caption aligned to the pill's item text (16px). pt-4 on every label
     // gives groups an even rhythm; the dense rows make that gap read as a
-    // section break on its own.
-    base: 'pl-4 pr-3 pt-4 pb-1 text-[0.6875rem] font-bold uppercase tracking-[0.07em] text-secondary',
+    // section break on its own. When a label leads the panel (first child, no
+    // back button or item above it) that section-break gap has nothing to
+    // separate from, so drop it to `pt-[5px]` — the item row's own centering
+    // offset ((h-7.5 − text line-height) / 2) — so the first caption's text
+    // starts exactly where a first item's text would.
+    base: 'pl-4 pr-3 pt-4 first:pt-[5px] pb-1 text-[0.6875rem] font-bold uppercase tracking-[0.07em] text-secondary',
   }),
   navPanel: cva({
     base: [
@@ -132,9 +136,14 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'transition-[color,background-color,box-shadow]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
-      // Idle: `secondary`; hover previews the pill in `hover` and lifts to
-      // `foreground`.
-      'text-secondary hover:bg-hover hover:text-foreground',
+      // Idle: `secondary-bold` (charcoal-700), a deliberate step above the
+      // `secondary` (charcoal-600) `groupLabel` captions — the clickable rows
+      // must clearly out-rank the passive section labels, which at charcoal-600
+      // already sit at the WCAG-AA floor for their 11px size and cannot go
+      // lighter. `foreground` here would flatten idle against the active row's
+      // ink; `secondary-bold` is the intermediate the ramp otherwise lacks.
+      // Hover previews the pill in `hover` and lifts to `foreground`.
+      'text-secondary-bold hover:bg-hover hover:text-foreground',
       // Active: flat `selected` pill + `foreground` text at medium weight.
       'data-active:bg-selected data-active:font-medium data-active:text-foreground',
     ],
