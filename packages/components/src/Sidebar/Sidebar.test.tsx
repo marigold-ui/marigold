@@ -1098,3 +1098,78 @@ describe('Sidebar.Nav `current` integration', () => {
     expect(linkByText('Analytics')).not.toHaveAttribute('aria-current');
   });
 });
+
+describe('link activation', () => {
+  test('an onPress-only item activates with Enter and Space', async () => {
+    const handlePress = vi.fn();
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav>
+                <Sidebar.Item href="/home">Home</Sidebar.Item>
+                <Sidebar.Item onPress={handlePress}>Log out</Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+
+    // No href → rendered as <a role="button">, which gets no native
+    // keyboard activation from the browser.
+    const item = screen.getByRole('button', { name: 'Log out' });
+    item.focus();
+
+    await user.keyboard('{Enter}');
+    expect(handlePress).toHaveBeenCalledTimes(1);
+
+    await user.keyboard(' ');
+    expect(handlePress).toHaveBeenCalledTimes(2);
+  });
+
+  test('a modified click leaves navigation to the browser and skips side effects', async () => {
+    const navigate = vi.fn();
+    render(
+      <RouterProvider navigate={navigate}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav>
+                <Sidebar.Item id="settings" textValue="Settings">
+                  Settings
+                  <Sidebar.Item href="/general">General</Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+
+    // The branch trigger wraps its text in a span, so query by role (the
+    // root panel is active, not inert).
+    const trigger = screen.getByRole('link', { name: 'Settings' });
+
+    // Observe (last in the bubble chain) whether anything upstream prevented
+    // the browser's default new-tab open; then prevent it ourselves so jsdom
+    // does not attempt a real navigation.
+    let prevented: boolean | null = null;
+    const observe = (e: MouseEvent) => {
+      prevented = e.defaultPrevented;
+      e.preventDefault();
+    };
+    document.addEventListener('click', observe);
+    await user.keyboard('{Control>}');
+    await user.click(trigger);
+    await user.keyboard('{/Control}');
+    document.removeEventListener('click', observe);
+
+    // The browser owns the click: no client routing, no drill-in.
+    expect(prevented).toBe(false);
+    expect(navigate).not.toHaveBeenCalled();
+    const rootPanel = closest(trigger, '[data-position]');
+    expect(rootPanel).toHaveAttribute('data-position', 'active');
+  });
+});

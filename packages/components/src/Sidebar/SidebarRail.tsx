@@ -16,6 +16,7 @@ import { useSidebar } from './Context';
 import { SidebarModal } from './SidebarModal';
 import type { SidebarNavProps } from './SidebarNav';
 import type { SidebarCurrent } from './collection';
+import { activateOnEnterOrSpace, isModifiedClick } from './linkActivation';
 import type { SidebarRailNode } from './railCollection';
 import { useSidebarRailState } from './useSidebarRailState';
 
@@ -93,6 +94,9 @@ const RailItemLink = ({
           data-active={selected || undefined}
           className={className}
           onClick={e => {
+            // Browser-owned clicks (new tab/window) keep native anchor
+            // behavior; rail state (selection, panel, drawer) stays untouched.
+            if (node.href && isModifiedClick(e)) return;
             const shouldNavigate = onActivate();
             node.onPress?.();
             // Re-clicking the active section only toggles the panel — don't let
@@ -103,6 +107,7 @@ const RailItemLink = ({
               e.preventDefault();
             }
           }}
+          onKeyDown={node.href ? undefined : activateOnEnterOrSpace}
         >
           {node.icon}
           <span>{node.textValue}</span>

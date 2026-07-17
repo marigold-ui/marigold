@@ -2,7 +2,9 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { ensureOverlayContainer, mockMatchMedia } from '../test.utils';
+import { Sidebar } from './Sidebar';
 import { Rail, RailControlled } from './SidebarRail.stories';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
@@ -327,5 +329,99 @@ describe('Sidebar.Rail — mobile', () => {
 
     const first = await screen.findByRole('link', { name: 'Übersicht' });
     await waitFor(() => expect(first).toHaveFocus());
+  });
+});
+
+describe('modified clicks & keyboard activation', () => {
+  /**
+   * Observe (last in the bubble chain) whether anything upstream prevented the
+   * browser's default new-tab open; then prevent it ourselves so jsdom does
+   * not attempt a real navigation.
+   */
+  const observeNativeClick = () => {
+    const result = { prevented: null as boolean | null };
+    const observe = (e: MouseEvent) => {
+      result.prevented = e.defaultPrevented;
+      e.preventDefault();
+    };
+    document.addEventListener('click', observe);
+    return {
+      result,
+      stop: () => document.removeEventListener('click', observe),
+    };
+  };
+
+  test('ctrl+click on another section opens natively without swapping the panel', async () => {
+    render(<Rail.Component />);
+
+    const veranstaltungen = screen.getByRole('link', {
+      name: 'Veranstaltungen',
+    });
+    const { result, stop } = observeNativeClick();
+    await user.keyboard('{Control>}');
+    await user.click(veranstaltungen);
+    await user.keyboard('{/Control}');
+    stop();
+
+    // The browser owns the click; the Tickets panel is still the visible one.
+    expect(result.prevented).toBe(false);
+    expect(
+      screen.getByRole('navigation', { name: 'Tickets' })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('navigation', { name: 'Veranstaltungen' })
+    ).not.toBeInTheDocument();
+  });
+
+  test('ctrl+click on the active section is not swallowed and does not toggle the panel', async () => {
+    render(<Rail.Component />);
+
+    const tickets = screen.getByRole('link', { name: 'Tickets' });
+    const toggle = screen.getByRole('button', {
+      name: 'Navigation umschalten',
+    });
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+    const { result, stop } = observeNativeClick();
+    await user.keyboard('{Control>}');
+    await user.click(tickets);
+    await user.keyboard('{/Control}');
+    stop();
+
+    // Re-clicking the active section normally toggles the panel and prevents
+    // navigation — a browser-owned click must do neither.
+    expect(result.prevented).toBe(false);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('an onPress-only rail item activates with Enter and Space', async () => {
+    const handlePress = vi.fn();
+    render(
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Rail current="/tickets">
+              <Sidebar.RailItem id="tickets" icon={<i />} href="/tickets">
+                Tickets
+              </Sidebar.RailItem>
+              <Sidebar.RailItem id="support" icon={<i />} onPress={handlePress}>
+                Support
+              </Sidebar.RailItem>
+            </Sidebar.Rail>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    );
+
+    // No href and no section nav → rendered as <a role="button">, which gets
+    // no native keyboard activation from the browser.
+    const item = screen.getByRole('button', { name: 'Support' });
+    item.focus();
+
+    await user.keyboard('{Enter}');
+    expect(handlePress).toHaveBeenCalledTimes(1);
+
+    await user.keyboard(' ');
+    expect(handlePress).toHaveBeenCalledTimes(2);
   });
 });
