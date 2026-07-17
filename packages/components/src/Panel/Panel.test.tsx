@@ -330,9 +330,15 @@ describe('Panel.Content', () => {
     render(<TableInside.Component />);
 
     const table = screen.getByRole('grid', { name: 'Recent orders' });
-    const contentWrapper = table.parentElement!;
+    // The content wrapper is an ancestor of the table (RAC wraps the table in
+    // a ResizableTableContainer), so walk up to it.
+    const contentWrapper = table.closest('[class*="--bleed-px"]')!;
 
+    expect(contentWrapper).not.toBeNull();
     expect(contentWrapper.className).not.toContain('px-(--panel-px)');
+    // Publishes `--bleed-px` so edge-aware children (Table, Accordion) can
+    // inset their own content while dividers/backgrounds reach the border.
+    expect(contentWrapper.className).toContain('[--bleed-px:var(--panel-px)]');
   });
 });
 

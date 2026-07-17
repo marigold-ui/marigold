@@ -8,6 +8,7 @@ describe('examplePages', () => {
     expect(examplePages()).toEqual([
       { name: 'App Shell', url: '/examples' },
       { name: 'Filter', url: '/examples/filter' },
+      { name: 'Bulk Actions', url: '/examples/bulk-actions' },
       { name: 'Event Form', url: '/examples/event-form' },
       { name: 'Settings Form', url: '/examples/settings-form' },
       { name: 'Auto-Save Settings', url: '/examples/auto-save-settings' },

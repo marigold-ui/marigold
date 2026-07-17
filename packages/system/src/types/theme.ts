@@ -43,7 +43,13 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<
-      'container' | 'item' | 'header' | 'panel' | 'content' | 'icon',
+      | 'container'
+      | 'item'
+      | 'header'
+      | 'panel'
+      | 'content'
+      | 'icon'
+      | 'actions',
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
