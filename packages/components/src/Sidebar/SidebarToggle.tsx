@@ -1,6 +1,6 @@
 import { Button } from 'react-aria-components/Button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useIsSSR } from '@react-aria/ssr';
+import { isAppleDevice } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
@@ -21,7 +21,6 @@ export interface SidebarToggleProps {
 export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
   const { toggleSidebar, state, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const isSSR = useIsSSR();
 
   // The rail variant is a standard icon Button under the hood: it composes
   // the Button recipe (ghost/icon) for the control-size hitbox, ghost hover,
@@ -32,8 +31,9 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
     size: 'icon',
   });
 
-  const isMac = !isSSR && /Mac|iPhone|iPad/.test(navigator.userAgent);
-  const shortcut = isMac ? '⌘B' : 'Ctrl+B';
+  // SSR-safe (false on the server); the tooltip only renders on interaction,
+  // so there is no hydration concern.
+  const shortcut = isAppleDevice() ? '⌘B' : 'Ctrl+B';
 
   const expanded = state === 'expanded';
 

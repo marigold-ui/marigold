@@ -87,9 +87,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'ui-button-base ui-press',
       'enabled:hover:ui-state-hover-ghost',
       'size-control-small [&_svg]:size-4.5',
-      // Inert, not gone: with a rail on a direct-link page there is no panel to
-      // collapse, so the toggle quiets down instead of inviting a dead click.
-      'disabled:text-disabled disabled:cursor-default',
     ],
   }),
   // The one line the seamless shell keeps, by opt-in. Opaque `border` so it
@@ -162,7 +159,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // No right edge of its own: the sidebar's right border is drawn by the panel
   // (expanded) or the rail column (collapsed), so the two never double up.
   railRoot: cva({
-    base: ['overflow-hidden bg-background ui-scrollbar'],
+    base: ['overflow-hidden bg-background'],
   }),
   // The rail column: the narrow strip of icons beside the panel. Carries the
   // always-on vertical divider (`border-r`) between the rail and everything to
@@ -279,8 +276,13 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // species from the tiny uppercase `groupLabel` captions below it.
   panelTitle: cva({
     base: [
-      'flex items-center h-10 mt-1 px-4 outline-none truncate',
-      'text-sm font-semibold text-foreground',
+      // Centered via line-height, not flex: `text-overflow: ellipsis` only
+      // works on block containers, so a flex heading would clip mid-glyph
+      // without the ellipsis. `leading-10` after `text-sm` — tailwind-merge
+      // treats a font-size as also setting line-height and drops earlier
+      // `leading-*` classes.
+      'h-10 mt-1 px-4 outline-none truncate',
+      'text-sm font-semibold text-foreground leading-10',
     ],
   }),
 };
