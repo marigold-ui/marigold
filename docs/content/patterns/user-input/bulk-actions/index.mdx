@@ -118,12 +118,13 @@ The demo pairs the table with the [`<Pagination>`](/components/navigation/pagina
   reviewable, which a hidden selection never is.
 
 If a product decision nevertheless requires acting on every matching record,
-the only safe shape is a two-step disclosure: the checkbox selects the page as
-usual, and a separate, explicitly worded control ("Select all 3,200 results
-matching this filter") extends the scope. That control states the exact count,
-the operation carries a stated upper limit instead of a silent truncation, and
-the confirmation restates the full count before anything runs. The header
-checkbox itself must never jump to the full result set.
+the only safe shape is a disclosure in two steps. The checkbox selects the page
+as usual, and a separate, explicitly worded control ("Select all 3,200 results
+matching this filter") extends the scope. That control states the exact count.
+The operation has a clear upper limit that the interface shows instead of
+silently cutting records off, and the confirmation repeats the full count
+before anything runs. The header checkbox itself must never jump to the full
+result set.
 
 </Callout>
 
@@ -176,7 +177,7 @@ The hard problem in a bulk-edit form is that the selected records rarely agree. 
 
 <ComponentDemo name="bulk-actions-edit-drawer" />
 
-A destructive operation configured in a drawer still needs its confirm dialog after the submit, count and impact included. The drawer collects the input; it does not replace the confirmation.
+A destructive operation configured in a drawer still needs its confirm dialog after the submit, count and impact included. The drawer collects the input but does not replace the confirmation.
 
 ## Showing progress
 
@@ -184,7 +185,7 @@ Bulk operations in Reservix products run synchronously: the user starts the oper
 
 - **Under about two seconds**, feedback on the pressed control is enough: set the [`<Button>`](/components/actions/button) `loading` prop.
 - **Between two and ten seconds**, show progress with a running count where the actions were, "Sending 4 of 12", so the user sees the operation moving through the selection. Keep the bar visible and the selection intact while it runs.
-- **Beyond ten seconds**, users lose attention and need a way to interrupt. No current Reservix bulk operation crosses this line; if yours does, the operation needs product-level rework rather than a bigger spinner.
+- **Beyond ten seconds**, users lose attention and need a way to interrupt. No current Reservix bulk operation crosses this line. If yours does, the operation needs product-level rework rather than a bigger spinner.
 
 Disable the other actions in the bar while an operation runs, so two bulk operations cannot race on the same selection. For the general feedback vocabulary of spinners and skeletons, see the [Loading States](/patterns/feedback/loading-states) pattern.
 
@@ -200,7 +201,7 @@ Partial failure is the case that separates a robust implementation from a fragil
 
 The succeeded records leave the selection, the failed ones stay. The selection itself becomes the retry list, which is more durable than a toast that disappears.
 
-Staleness is a failure like any other. A record that a colleague edited or removed between selection and execution is skipped by the server, not silently substituted, and the report names it the same way: "2 events were changed by someone else and were skipped." What the user selected and what the operation touched must never quietly diverge.
+Staleness is a failure like any other. When a colleague edits or removes a record between selection and execution, the server skips it and the report names it like any other failure: "2 events were changed by someone else and were skipped." What the user selected and what the operation touched must never quietly drift apart.
 
 <ComponentDemo name="bulk-actions-partial-failure" />
 
@@ -226,7 +227,7 @@ const keys = selected === 'all' ? events.map(event => event.id) : [...selected];
 const affected = events.filter(event => keys.includes(event.id));
 ```
 
-Every message the user sees derives from `affected.length`, never from a separately tracked counter that can drift. Two properties of this resolution carry safety weight. The selection is a set of record ids, never row positions, so a table that re-sorts or refreshes between selection and press cannot shift the selection onto different rows. And the server receives this explicit id list, never an instruction to re-run the current filter: a re-run query silently sweeps in records that started matching after the user made their selection.
+Every message the user sees derives from `affected.length`, never from a separately tracked counter that can drift. Resolving this way also protects against two subtle mistakes. The selection is a set of record ids, not row positions, so a table that re-sorts or refreshes between selecting and pressing cannot shift the selection onto different rows. The server also receives this exact list of ids, never an instruction to run the current filter again. A query that runs again would quietly include records that only started matching after the user made their selection.
 
 ### Clear selection when the scope changes
 
@@ -251,7 +252,7 @@ if (failed.length > 0) {
 
 ### Step back when a page empties
 
-A destructive bulk action can remove every row of the current page, and only a bulk action can: single-record deletes empty a page one row at a time, a bulk delete does it in one press. When that happens the page index points past the end of the data and a naive implementation strands the user on an empty page, sometimes without pagination controls to escape it. Clamp the page after the records are gone:
+A destructive bulk action can remove every row of the current page in a single press. When that happens the page index points past the end of the data, and a naive implementation strands the user on an empty page, sometimes without pagination controls to escape it. Clamp the page after the records are gone:
 
 ```tsx
 const lastPage = Math.max(1, Math.ceil(remaining.length / pageSize));

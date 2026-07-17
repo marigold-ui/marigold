@@ -35,7 +35,7 @@ Pagination is used to divide large datasets into discrete pages, making them man
 
 Use pagination when the amount of dataset results would be too overwhelming for one page, either for the user or the system performance.
 
-Prefer pagination over infinite scrolling when users work on the data rather than browse it. A page is a stable, bounded view: users can reason about "these rows", return to them, and select them for an action. Infinite scrolling suits passive consumption, but it makes any "select all" ambiguous between what is visible, what has loaded so far, and what matches the query, which is why task-oriented tables in Marigold paginate.
+Prefer pagination over infinite scrolling when users work on the data rather than browse it. A page is a stable, bounded view. Users can reason about "these rows", return to them, and select them for an action. Infinite scrolling suits passive browsing. For tables where users select rows and act on them it creates ambiguity, because "select all" could mean what is visible, what has loaded so far, or everything that matches the query. This is why task-oriented tables in Marigold paginate.
 
 Pagination is not a replacement for search, filter or sort functionality, but rather a complementary feature.
 
