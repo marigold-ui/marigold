@@ -32,9 +32,12 @@ test('renders with leading icon', () => {
 
 test('constrains the leading icon to 16px so it stays clear of the text', () => {
   render(<WithIcons.Component />);
-  // The leading icon is the first svg (before the action button's icon).
+  const action = screen.getByRole('button');
+  // The leading icon is the svg rendered outside the trailing action button.
   // eslint-disable-next-line testing-library/no-node-access
-  const icon = document.querySelector('svg');
+  const icon = [...document.querySelectorAll('svg')].find(
+    svg => !action.contains(svg)
+  );
 
   expect(icon).toHaveClass('size-4');
 });
