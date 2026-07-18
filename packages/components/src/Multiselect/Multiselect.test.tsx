@@ -53,7 +53,7 @@ test('Allow styling container & input via theme', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const field = screen.getByText('Ticket Categories').parentElement;
   expect(field?.className).toMatchInlineSnapshot(
-    `"space-y-2 group/field w-full"`
+    `"space-y-2 group/field w-(--field-width) max-w-full min-w-0"`
   );
 
   const input = screen.getByDisplayValue('General Admission');

@@ -6,7 +6,7 @@ import {
 } from 'react';
 import type RAC from 'react-aria-components';
 import { RadioButton, RadioField } from 'react-aria-components';
-import { cn, useClassNames } from '@marigold/system';
+import { cn, createWidthVar, useClassNames } from '@marigold/system';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -62,7 +62,7 @@ const _Radio = forwardRef<HTMLLabelElement, RadioProps>(
     },
     ref
   ) => {
-    const { variant, size, width: groupWidth } = useRadioGroupContext();
+    const { variant, size } = useRadioGroupContext();
 
     const classNames = useClassNames({
       component: 'Radio',
@@ -70,9 +70,16 @@ const _Radio = forwardRef<HTMLLabelElement, RadioProps>(
       size: size || sizeProp,
     });
 
+    // `groupWidth` is already applied to the group's FieldBase container, so an
+    // individual Radio only needs to compute its own CSS variable when it has
+    // its own `width` (i.e. used standalone, outside a Radio.Group). Reusing
+    // `groupWidth` here would resize against an already-resized container.
     return (
       <RadioField
-        className={cn(width || groupWidth || 'w-full')}
+        className={cn(
+          width ? 'w-(--field-width) max-w-full min-w-0' : 'w-full'
+        )}
+        style={width ? createWidthVar('field-width', `${width}`) : undefined}
         value={value}
         isDisabled={disabled}
         {...props}
