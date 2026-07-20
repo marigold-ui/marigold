@@ -66,6 +66,13 @@ const userInput: NavSection = {
     },
     {
       kind: 'Item',
+      slug: 'pick',
+      label: 'Pick',
+      docsHref: '/patterns/user-input/pick',
+      docsLabel: 'Pick Guidelines',
+    },
+    {
+      kind: 'Item',
       label: 'Form',
       children: [
         {
