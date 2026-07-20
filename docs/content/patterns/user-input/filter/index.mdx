@@ -192,11 +192,9 @@ For a **multi select** quick filter, do not list every value in the trigger. Sho
 
 Date is one of the most common things to filter by, and relative ranges such as "Last 7 days", "Last 30 days", or "This month" cover the majority of cases. Offer these as a quick filter so the frequent ranges are one click away, without making users open a calendar and count days.
 
-For the dates a preset cannot express, include a "Custom range…" option that reveals an absolute start and end date.
+Reach for the [DateRangePicker](/components/form/daterangepicker) [quick select presets](/components/form/daterangepicker#quick-select-presets) rather than building your own list. Pass the built-in keys, such as `last-7-days` or `this-month`, and each renders with a localized label and correct date math. For a range a preset cannot express, the same popover keeps a calendar beside the list, so a custom range needs no extra control. Where your ranges are specific to the domain, custom presets take a `label` and a value or a resolver function.
 
 <ComponentDemo name="filter-date-presets" />
-
-{/* TODO(DST-1511): presets are userland today, PR #5631 adds them to the design system. Once it lands, update this section and the filter-date-presets demo to use the built-in presets. */}
 
 ### Grouping
 
