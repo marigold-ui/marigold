@@ -295,6 +295,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
+      | 'calendarPresets'
       | 'select',
       ComponentStyleFunction<string, string>
     >;
@@ -308,6 +309,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
+      | 'calendarPresets'
       | 'select',
       ComponentStyleFunction<string, string>
     >;

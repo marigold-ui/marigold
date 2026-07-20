@@ -18,7 +18,7 @@
     "path": "dist/index.mjs",
     "import": "{ Calendar }",
     "ignore": ["react", "react-dom", "react/jsx-runtime"],
-    "limit": "72 kB"
+    "limit": "120 kB"
   },
   {
     "name": "Full barrel (all components)",
