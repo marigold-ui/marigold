@@ -77,9 +77,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variant: 'default',
     },
   }),
-  icon: cva({
-    base: 'pointer-events-none shrink-0 text-secondary transition-transform duration-250',
-  }),
+  icon: cva({ base: 'pointer-events-none text-secondary' }),
   actions: cva({
     base: 'shrink-0',
     variants: {
