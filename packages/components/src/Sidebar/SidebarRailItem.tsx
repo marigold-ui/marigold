@@ -39,5 +39,7 @@ export interface SidebarRailItemProps {
 
 const _SidebarRailItem = (_props: SidebarRailItemProps): ReactElement | null =>
   null;
+
 _SidebarRailItem.__SIDEBAR_RAIL_ITEM__ = true as const;
+
 export const SidebarRailItem = _SidebarRailItem;

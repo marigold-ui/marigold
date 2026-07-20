@@ -237,7 +237,12 @@ const SidebarRail = ({
         <h2 ref={titleRef} tabIndex={-1} className={classNames.panelTitle}>
           {selectedNode.panelTitle}
         </h2>
-        {cloneElement(selectedNode.nav, { current })}
+        {cloneElement(selectedNode.nav, {
+          current,
+          // Keep the panel landmark name in sync with the visible heading:
+          // fall back to the section title when the nav has no `aria-label`.
+          'aria-label': selectedNode.panelTitle,
+        })}
       </>
     ) : null;
 

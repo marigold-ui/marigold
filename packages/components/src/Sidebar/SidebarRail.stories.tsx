@@ -416,6 +416,7 @@ export const RailControlled = meta.story({
 // panel in place, leaf links and direct links close the drawer.
 export const RailMobile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },

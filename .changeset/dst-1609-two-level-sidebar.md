@@ -31,3 +31,6 @@ links close the drawer.
 - The `TopNavigation` bottom edge is now an always-on border. The non-reusable
   `ui-scroll-edge` and `ui-sidebar-seam-header` utilities are removed — the sticky
   bar and the sidebar header carry a plain border instead.
+- The `AppShell` header row is now sized `auto` (was a fixed `3.5rem`), so a shell
+  without a `TopNavigation` no longer reserves an empty header band — the row
+  collapses to the height of its content.
