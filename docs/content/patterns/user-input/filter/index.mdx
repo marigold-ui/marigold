@@ -212,6 +212,18 @@ When the groups themselves become numerous, add a search field at the top of the
 
 A slide-in panel also has an upper limit. It works because the data set stays visible while filtering, but once the groups grow far beyond one or two screens of panel height, consider a dedicated filter page or full-screen dialog instead.
 
+## Small Screens
+
+On small screens the pattern converges on the filter view users know from mobile commerce: a slim bar over the results and a full-screen panel for everything else. The [bar layout](#bar-layout) guidance covers what the bar sheds on narrow viewports. What changes beyond the bar is the panel's role, and one property it silently loses.
+
+The panel fills the screen, so the data set is no longer visible while filtering. On desktop the current results stay in view for context while the user composes a change, but on a small screen the result count on the commit button is the only feedback before committing, which is why [Applying](#applying) calls it most valuable on mobile. Treat it as required there, not as an enhancement.
+
+With the quick filters gone, opening the panel is the only way to reach any filter, so what the panel shows first carries more weight. Keep the most-used [groups](#grouping) expanded, so the frequent filters sit directly under the thumb instead of behind another tap.
+
+The controls themselves need no separate mobile design. Field overlays turn into bottom sheets on small screens, including the preset list of a date range quick filter, so a panel composed of Marigold form components adapts on its own.
+
+Applied filter tags compete with the data set for a much shorter viewport, and grouped tags wrap sooner on a narrow screen. Truncate the [applied filter area](#applied-labels) after one row instead of two, and rely on the badge on the filter button as the always-visible signal that results are filtered.
+
 ## Filter State
 
 Once filters are applied, the interface needs to reflect that state back to the user: how each active filter reads, how to signal filtering at a glance, how to undo it, and what to show when nothing matches.
