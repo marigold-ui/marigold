@@ -1,0 +1,303 @@
+---
+title: Bulk Actions
+description: Let users select many records and act on all of them at once.
+badge: beta
+---
+
+import { BulkActionsAnatomy } from './bulk-actions-anatomy';
+
+Bulk actions let users select several records in a collection and run one operation across all of them, such as deleting outdated events, pausing ticket sales, or moving many events to a new venue at once. They turn a repetitive row-by-row chore into a single decision, which makes them one of the highest-leverage patterns in data-heavy admin interfaces.
+
+They are also one of the most dangerous: a single press now affects many records. The pattern therefore follows one defining principle: **users act only on what they can see.** Every stage below reinforces it, from a selection that never silently includes hidden rows, to a confirmation that names the exact count, to a result message that reports precisely what happened. If you are unsure about a design decision within this pattern, ask whether the user can still see what they are about to touch.
+
+This page walks through the pattern in the order you build it: the layout, the actions, the selection, running an action, and reporting its outcome. For managing individual records in a table, see the [Table Records](/patterns/user-input/table-record-management) pattern. For narrowing which records are shown, see the [Filter](/patterns/user-input/filter) pattern.
+
+## When to use
+
+Use bulk actions when users repeatedly apply the same operation to many similar records. The pattern earns its complexity through repetition: the more records a task touches, the more a single selection and press saves over row-by-row work.
+
+## When not to use
+
+Skip the pattern when:
+
+- **The context is single-record.** A detail page or a short list where users act on one item at a time needs a [`<Button>`](/components/actions/button) or [`<ButtonGroup>`](/components/actions/button-group), not a selection model.
+- **The operation needs a per-record decision.** If the user must review or enter something different for each record, a bulk form flattens differences that matter. Reach for the editing flows in [Table Records](/patterns/user-input/table-record-management) instead.
+- **The selection is heterogeneous.** When an action is valid for some selected records and not others, either disable it with an explanation or design the operation per record type. Silently skipping records breaks the "act on what you see" principle.
+- **The operation affects records the user cannot see.** An action whose blast radius extends beyond the visible selection, such as cascading deletes across related data, needs its impact surfaced in the confirmation, or it does not belong in a bulk flow.
+
+## Structure
+
+The pattern arranges five areas. The collection displays the records with a checkbox column, the action bar floats above the collection while something is selected, and the confirmation dialog, drawer, and toast appear only at the moments they are needed.
+
+<BulkActionsAnatomy />
+
+- **Select All:** The header checkbox selects every visible row and shows an indeterminate state when only some rows are selected.
+- **Selection:** Checkboxes on each row, with selected rows visually highlighted so the scope of the next action stays visible.
+- **Action Bar:** A floating [`<ActionBar>`](/components/collection/actionbar) that appears once something is selected. It states the selection count, offers the actions, and carries a clear button to dismiss the selection.
+- **Confirm Dialog:** A [`<Dialog>`](/components/overlay/dialog) that interrupts destructive actions with the exact count and impact before anything happens.
+- **Result Toast:** A [`<Toast>`](/components/overlay/toast) that reports the outcome after the operation completes.
+
+Each stage of the flow maps to an existing Marigold component, so the pattern is composed rather than installed:
+
+| Stage         | The user...                            | Built with                                                                         |
+| ------------- | -------------------------------------- | ---------------------------------------------------------------------------------- |
+| Selection     | picks the records to act on            | [`<Table>`](/components/collection/table) with `selectionMode="multiple"`          |
+| Action choice | picks an operation for the selection   | [`<ActionBar>`](/components/collection/actionbar) via the Table's `actionBar` prop |
+| Configuration | fills in values for a multi-field edit | [`<Drawer>`](/components/overlay/drawer) opened from an action                     |
+| Confirmation  | approves a destructive operation       | [`<Dialog>`](/components/overlay/dialog) via the `useConfirmation` hook            |
+| Execution     | waits for the operation to finish      | [`<Button>`](/components/actions/button) `loading` or an inline `<ProgressCircle>` |
+| Result        | learns what happened                   | [`<Toast>`](/components/overlay/toast) plus the retained selection on failures     |
+
+## Choosing actions
+
+Not every operation earns a place in the action bar. Offer bulk actions for tasks users genuinely apply to many records at once, not speculatively for every operation a record supports. A bar crowded with rarely used actions slows down the frequent ones.
+
+Name every action with a verb, or a verb plus noun where the target is ambiguous, so its effect is obvious before pressing: "Publish", "Assign category", "Delete". Avoid vague labels such as "Apply" or "OK" on their own. Order the actions from safest to most consequential and place a destructive action such as delete last, visually separated from the routine ones. When a selection carries more actions than fit comfortably, move the long tail into an [`<ActionMenu>`](/components/overlay/action-menu) rather than crowding the bar.
+
+While the bar is visible, the selection is the object the user works on. Avoid competing per-row actions during that time: a row-level delete next to a bulk delete makes it unclear which scope a press affects. Bulk and per-row actions can still share a table when they take turns: one-off operations belong in a row menu (see [Table Records](/patterns/user-input/table-record-management)), repetitive ones in the bar, and while rows are selected the row actions disable so the bar holds the only pressable scope.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Offer a few high-value actions with clear verb labels, ordered from safe
+      to destructive.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't mirror every single-record operation into the bar or mix bulk and
+      per-row actions for the same verb at the same time.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Selection
+
+Selection begins the flow, and it must be visible and cheap to change. Use a [`<Table>`](/components/collection/table) with `selectionMode="multiple"` and pass the [`<ActionBar>`](/components/collection/actionbar) through its `actionBar` prop. These two components cover the selection mechanics on their own, so the work in this pattern lies in the decisions around them: which actions to offer, how far the selection reaches, and what happens after a press.
+
+<ComponentDemo name="bulk-actions-selection" />
+
+### Scope
+
+The selection is bounded to what the user can currently see. The select-all checkbox selects the visible rows, not the entire result set behind pagination, and there is no banner offering to extend the selection across all pages. When pagination, a filter, or a search query changes the visible set, clear the selection instead of carrying invisible rows along.
+
+This is a deliberately conservative choice. Cross-page selection invites a well-known failure: the interface looks identical whether twenty visible rows or thousands of invisible ones are selected, and users act on records they never saw. Re-selecting after a page change costs a few clicks. Deleting a thousand records you did not know were selected costs much more, and there is no undo to catch it.
+
+<ComponentDemo name="bulk-actions-scope" />
+
+<Callout title="Working with very large sets" type="info">
+  When users regularly need to act on more records than fit on a page, do not
+  reach for cross-page selection. Give them a filter that narrows the set to
+  exactly the records in question, then let them select all visible results. The
+  [Filter](/patterns/user-input/filter) pattern keeps the acted-on set
+  reviewable, which a hidden selection never is.
+</Callout>
+
+## Direct actions
+
+Most bulk actions are a single verb that needs no further input: publish, pause, assign, export. Run them straight from the bar the moment they are pressed. Making users confirm a routine, recoverable operation adds friction without safety, and trains them to click through the dialogs that guard the operations that do matter.
+
+After the operation succeeds, confirm the outcome with a [`<Toast>`](/components/overlay/toast) that names the count, and clear the selection. The cleared selection signals that the job is done and prevents the previous scope from silently applying to the next action.
+
+<ComponentDemo name="bulk-actions-single-verb" />
+
+## Confirming destructive actions
+
+Destructive bulk actions multiply the cost of a mistake by the size of the selection, and without an undo system a confirmation dialog is the only safety net. Every destructive bulk action goes through one, using the `useConfirmation` hook from [`<Dialog>`](/components/overlay/dialog).
+
+A bare "Are you sure?" protects nobody. The dialog must restate what is about to happen with the exact count and a summary of the impact, so the user can catch a wrong selection at the last moment:
+
+> Delete 12 events? This will cancel 47 ticket reservations and notify 138 customers.
+
+Repeat the action verb and the count in the confirm button, "Delete 12 events" rather than "OK", so the button reads as the decision it is. Focus the cancel button when the dialog opens, so pressing <kbd>Enter</kbd> out of habit chooses the safe path.
+
+<ComponentDemo name="bulk-actions-confirm" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Confirm destructive bulk actions with the exact count and impact, and
+      repeat the verb in the confirm button.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't confirm routine, recoverable actions. Overused dialogs train users
+      to click through the one that matters.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Editing multiple fields
+
+Some bulk operations need input before they can run, such as moving many events to a new date and venue. A single verb cannot carry that, so the action opens a [`<Drawer>`](/components/overlay/drawer) with a small form that applies to every selected record on submit. The drawer keeps the table and the selected rows visible behind it, so users can verify the selection while they edit. The [drawer pattern](/components/overlay/drawer#multi-field-bulk-edit) covers this use case from the drawer's perspective.
+
+The hard problem in a bulk-edit form is that the selected records rarely agree. Three events may share a venue but differ in price. Be honest about it:
+
+- **Never pre-fill a field with one record's value when the values differ.** A form that shows the first record's price invites the user to unknowingly overwrite the other eleven.
+- **Show mixed values explicitly.** Leave the field empty with a "Multiple values" placeholder, a convention long established in professional editing tools. When all records agree, pre-filling the shared value is safe and helpful.
+- **Apply only what the user touched.** Untouched fields keep each record's original value. Filling in a field is the opt-in.
+- **Gate high-stakes fields behind an explicit opt-in.** For a field where an accidental overwrite is expensive, such as prices, require a checkbox to enable editing at all. The extra step is the point.
+- **Show what will change before it happens.** Indicate the edited fields, and label the submit button with the scope: "Apply to 12 events". Inside the drawer the action bar's count is out of sight, so the button restates it at the moment of commit.
+
+<ComponentDemo name="bulk-actions-edit-drawer" />
+
+A destructive operation configured in a drawer still needs its confirm dialog after the submit, count and impact included. The drawer collects the input; it does not replace the confirmation.
+
+## Showing progress
+
+Bulk operations in Reservix products run synchronously: the user starts the operation, watches it complete, and sees the result in the same session. There is no background-job or notification pattern to design for, which keeps the feedback model simple and tied to how long the operation takes:
+
+- **Under about two seconds**, feedback on the pressed control is enough: set the [`<Button>`](/components/actions/button) `loading` prop.
+- **Between two and ten seconds**, show progress with a running count where the actions were, "Sending 4 of 12", so the user sees the operation moving through the selection. Keep the bar visible and the selection intact while it runs.
+- **Beyond ten seconds**, users lose attention and need a way to interrupt. No current Reservix bulk operation crosses this line; if yours does, the operation needs product-level rework rather than a bigger spinner.
+
+Disable the other actions in the bar while an operation runs, so two bulk operations cannot race on the same selection. For the general feedback vocabulary of spinners and skeletons, see the [Loading States](/patterns/feedback/loading-states) pattern.
+
+<ComponentDemo name="bulk-actions-progress" />
+
+## Result feedback
+
+Every bulk operation ends with an explicit result. Success is a [`<Toast>`](/components/overlay/toast) that names the count, "12 events updated", and the selection clears because the job is done.
+
+Partial failure is the case that separates a robust implementation from a fragile one. When some records succeed and some fail, never report a bare error. Summarize the outcome with exact numbers, name the reason where it is known, and keep the failed records selected so the user can fix the cause and retry without hunting for them:
+
+> 11 of 12 events updated. 1 failed: missing description. It remains selected for retry.
+
+The succeeded records leave the selection, the failed ones stay. The selection itself becomes the retry list, which is more durable than a toast that disappears.
+
+<ComponentDemo name="bulk-actions-partial-failure" />
+
+## Accessibility
+
+The [`<Table>`](/components/collection/table) selection column and the [`<ActionBar>`](/components/collection/actionbar) already cover the announcements and keyboard behavior a bulk-selection pattern is expected to have. The remaining work sits in how you compose the flow:
+
+- **Give every icon-only action a text label**, visible or via `aria-label`, so each action is announced clearly.
+- **Carry the count into the result toast.** The toast text is what assistive technology announces, so the same precision reaches everyone.
+- **Announce running progress.** Render the "4 of 12" progress text in a live region (`aria-live="polite"`) so screen reader users hear the operation advance.
+- **Keep focus on the safe path in confirm dialogs.** Focus the cancel button by default for destructive actions so <kbd>Enter</kbd> does not confirm by accident.
+
+## Implementation
+
+The demos above apply a few practices that are easy to miss but make the difference between a bulk flow that feels dependable and one that surprises users.
+
+### Resolve the selection to records once
+
+The Table's `actionBar` render prop and `onSelectionChange` hand you a `Selection`, which is either a `Set` of keys or the string `'all'` when the select-all checkbox is used. Resolve it to a concrete list of records in one place before acting, so counts, confirmation messages, and the operation itself always agree:
+
+```tsx
+const keys = selected === 'all' ? events.map(event => event.id) : [...selected];
+const affected = events.filter(event => keys.includes(event.id));
+```
+
+Every message the user sees derives from `affected.length`, never from a separately tracked counter that can drift.
+
+### Clear selection when the scope changes
+
+Pagination, filters, and search all change which rows are visible, and the selection must never outlive the view it was made in. Wrap the state setters so the reset cannot be forgotten at individual call sites:
+
+```tsx
+const changeFilter = (next: string) => {
+  setSelected(new Set());
+  setStatus(next);
+};
+```
+
+### Keep failed records selected
+
+After a partial failure, rebuild the selection from the failures. The selection becomes the retry list:
+
+```tsx
+if (failed.length > 0) {
+  setSelected(new Set(failed.map(event => event.id)));
+}
+```
+
+### Re-key the bulk-edit form
+
+The bulk-edit form derives its initial values, shared or mixed, from the selected records when it mounts. Key the form with the selection so a changed selection produces a freshly derived form instead of stale fields:
+
+```tsx
+<Drawer size="medium">
+  <BulkEditForm key={selectedIds.join('-')} affected={affected} />
+</Drawer>
+```
+
+## Demo
+
+<DemoLinks
+  demo="/examples/bulk-actions"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/bulk-actions"
+/>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'ActionBar',
+      href: '/components/collection/actionbar',
+      caption:
+        'The floating toolbar that carries the bulk actions for the current selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect x="3" y="9" width="18" height="7" rx="2" />
+          <path d="M7 12.5h.01" />
+          <path d="M11 12.5h6" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Table Records',
+      href: '/patterns/user-input/table-record-management',
+      caption:
+        'Creating, correcting, and maintaining individual records in data heavy tables.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 9h18" />
+          <path d="M3 15h18" />
+          <path d="M9 3v18" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Filter',
+      href: '/patterns/user-input/filter',
+      caption:
+        'Narrow the visible set before selecting, and understand why scope changes clear the selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+        </svg>
+      ),
+    },
+  ]}
+/>
