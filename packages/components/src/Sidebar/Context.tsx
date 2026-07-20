@@ -57,9 +57,8 @@ export const SidebarProvider = ({
     isMobile,
   });
 
-  // Keyboard shortcut: Cmd+B / Ctrl+B. Always toggles — collapse narrows the
-  // rail to icon-only even on a direct-link page (no section panel), so the
-  // shortcut always has an effect.
+  // Cmd+B / Ctrl+B. Always toggles — even on a direct-link page (no panel),
+  // collapse still narrows the rail to icons.
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'b' && (e.metaKey || e.ctrlKey)) {

@@ -219,9 +219,9 @@ export const resolveActiveRail = (
     return null;
   }
 
-  // Flatten every matchable href into synthetic leaves, tracking which rail item
-  // owns each, then run the shared longest-prefix matcher and trace the winner
-  // back to its rail item. Synthetic keys avoid any collision with user ids.
+  // Flatten every matchable href into synthetic leaves (keys namespaced to
+  // avoid user-id collisions), tracking each leaf's owning rail item, then run
+  // the shared matcher and trace the winner back to its owner.
   const tagged: { key: string; href?: string }[] = [];
   const owner = new Map<string, string>();
   let index = 0;
@@ -239,8 +239,8 @@ export const resolveActiveRail = (
     }
   }
 
-  // Cross-section duplicates never hit `resolveCurrent`'s per-nav warning
-  // (only the selected section's nav renders), so check the whole rail here.
+  // `resolveCurrent`'s per-nav warning never sees cross-section duplicates
+  // (only one nav renders), so check the whole rail here.
   if (process.env.NODE_ENV !== 'production') {
     const seen = new Map<string, string>();
     for (const leaf of tagged) {

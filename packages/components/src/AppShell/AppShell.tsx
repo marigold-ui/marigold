@@ -55,14 +55,11 @@ export const AppShell = ({
   const grid = (
     <div
       ref={ref}
-      // The header row is `auto`: it takes its height from `<TopNavigation>`
-      // (`min-h-topbar` via the theme), so the shell never hardcodes it.
-      //
-      // Single-column sidebar → sidebar-first: the sidebar owns the full
-      // height and the top bar starts to its right. Two-level rail (detected
-      // in CSS via the aside's `data-rail`) → header-first: the top bar spans
-      // the full width — so the brand in it never moves when the panel
-      // collapses — and the rail hangs below it.
+      // The header row is `auto` — its height comes from `<TopNavigation>`.
+      // Single-column sidebar → sidebar-first (sidebar full height, top bar to
+      // its right). Two-level rail (detected via the aside's `data-rail`) →
+      // header-first: the top bar spans full width so its brand never moves
+      // when the panel collapses, and the rail hangs below it.
       className={cn(
         'grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[auto_1fr]',
         "[grid-template-areas:'sidebar_header'_'sidebar_main']",

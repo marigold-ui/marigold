@@ -22,17 +22,16 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
   const { toggleSidebar, state, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  // The rail variant is a standard icon Button under the hood: it composes
-  // the Button recipe (ghost/icon) for the control-size hitbox, ghost hover,
-  // and press feedback, with the rail's ink layered on via `railToggle`.
+  // The rail variant is a standard icon Button (ghost/icon recipe) with the
+  // rail's ink layered on via `railToggle`.
   const iconButtonClassNames = useClassNames({
     component: 'Button',
     variant: 'ghost',
     size: 'icon',
   });
 
-  // SSR-safe (false on the server); the tooltip only renders on interaction,
-  // so there is no hydration concern.
+  // SSR-safe (false on the server); the tooltip renders only on interaction,
+  // so no hydration concern.
   const shortcut = isAppleDevice() ? '⌘B' : 'Ctrl+B';
 
   const expanded = state === 'expanded';
@@ -40,10 +39,9 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
   return (
     <Tooltip.Trigger delay={2500}>
       <Button
-        // Stable accessible name (a toggle button); direction lives in
-        // aria-expanded and the tooltip. Always live: collapse now also
-        // narrows the rail to icon-only, so there is something to do on every
-        // page — including a direct-link page with no section panel.
+        // Stable accessible name; direction lives in aria-expanded and the
+        // tooltip. Always live — collapse also narrows the rail to icons, so it
+        // acts on every page.
         aria-expanded={expanded}
         aria-label={stringFormatter.format('toggleNavigation')}
         onPress={toggleSidebar}
@@ -54,9 +52,8 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
             : classNames.toggle
         )}
       >
-        {/* Rail variant shares the shell with lucide rail icons (default
-            stroke 2), so it matches their weight; the bar variant keeps its
-            lighter 1.5. */}
+        {/* Rail variant matches the lucide rail icons' stroke 2; the bar
+            variant keeps its lighter 1.5. */}
         <SidebarToggleIcon
           expanded={expanded}
           strokeWidth={variant === 'rail' ? 2 : 1.5}

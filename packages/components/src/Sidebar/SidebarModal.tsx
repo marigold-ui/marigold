@@ -39,9 +39,8 @@ export const SidebarModal = ({ children, partial, ref }: SidebarModalProps) => {
       )}
       isDismissable
     >
-      {/* Partial: the theme narrows the modal (via the overlay's data-partial)
-          so the backdrop stays exposed — a pointer down there counts as an
-          outside interaction (dismiss). */}
+      {/* Partial: the theme narrows the modal so the backdrop stays exposed;
+          a pointer down there is an outside interaction (dismiss). */}
       <Modal className={classNames.modal}>
         <aside
           ref={ref}

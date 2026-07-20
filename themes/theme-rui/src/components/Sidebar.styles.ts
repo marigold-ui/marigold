@@ -15,9 +15,8 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const Sidebar: ThemeComponent<'Sidebar'> = {
   overlay: cva({
     base: [
-      // The rail's mobile drawer is a partial sheet: dim the page behind it
-      // so the exposed strip reads as backdrop (tap to dismiss). The default
-      // full-width sheet has nothing to dim.
+      // Partial (rail) drawer: dim the page so the exposed strip reads as a
+      // tap-to-dismiss backdrop. The full-width sheet has nothing to dim.
       'data-partial:bg-overlay-backdrop',
       'data-partial:entering:animate-fade-in data-partial:exiting:animate-fade-out',
     ],
@@ -29,8 +28,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // Mobile drawer floats over the page, so it takes overlay elevation; on
       // desktop the sidebar is structure and stays flat.
       'shadow-elevation-overlay',
-      // Partial (rail-in-drawer) sheet: hug the content so the backdrop stays
-      // exposed as a tap-to-dismiss strip. `data-partial` sits on the overlay.
+      // Partial (rail) sheet: hug the content so the backdrop strip stays
+      // exposed (`data-partial` sits on the overlay).
       'in-data-partial:w-[min(88vw,24rem)]',
       'entering:animate-slide-in-left',
       'exiting:animate-slide-out-left exiting:[--slide-out-duration:0.1s]',
@@ -55,10 +54,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // Hoists the nav's scroll timeline (see `nav`) into scope so the footer — a
   // grid sibling, not a descendant — can drive its seam off it.
   content: cva({ base: 'sm:w-64 ui-sidebar-seam-scope' }),
-  // Always-on bottom edge (the `border` hue, via `ui-panel-header`) so the
-  // brand row reads as a distinct header band. min-w-0: stop the grid column
-  // growing to its widest item and overflowing the fixed w-64 aside, where
-  // overflow-hidden clips rows and the pill.
+  // Always-on bottom edge (via `ui-panel-header`) so the brand row reads as a
+  // header band. min-w-0: keep the grid column from overflowing the w-64 aside.
   header: cva({
     base: 'ui-panel-header h-topbar min-w-0',
   }),
@@ -96,13 +93,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // stays perceivable (the surface rim is now faint).
   separator: cva({ base: 'bg-border mx-3 my-1.5 h-px border-0' }),
   groupLabel: cva({
-    // Quiet caption aligned to the pill's item text (16px). pt-4 on every label
-    // gives groups an even rhythm; the dense rows make that gap read as a
-    // section break on its own. When a label leads the panel (first child, no
-    // back button or item above it) that section-break gap has nothing to
-    // separate from, so drop it to `pt-[5px]` — the item row's own centering
-    // offset ((h-7.5 − text line-height) / 2) — so the first caption's text
-    // starts exactly where a first item's text would.
+    // Quiet caption aligned to the pill's item text (16px). pt-4 gives groups
+    // an even rhythm that reads as a section break. A leading caption has
+    // nothing above to separate from, so drop to `first:pt-[5px]` — the item
+    // row's centering offset — so its text lines up with a first item's.
     base: 'pl-4 pr-3 pt-4 first:pt-[5px] pb-1 text-[0.6875rem] font-bold uppercase tracking-[0.07em] text-secondary',
   }),
   navPanel: cva({
@@ -136,13 +130,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'transition-[color,background-color,box-shadow]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
-      // Idle: `secondary-bold` (charcoal-700), a deliberate step above the
-      // `secondary` (charcoal-600) `groupLabel` captions — the clickable rows
-      // must clearly out-rank the passive section labels, which at charcoal-600
-      // already sit at the WCAG-AA floor for their 11px size and cannot go
-      // lighter. `foreground` here would flatten idle against the active row's
-      // ink; `secondary-bold` is the intermediate the ramp otherwise lacks.
-      // Hover previews the pill in `hover` and lifts to `foreground`.
+      // Idle `secondary-bold` (charcoal-700): clickable rows must out-rank the
+      // `secondary` groupLabel captions, which already sit at the AA floor for
+      // 11px and can't go lighter. `foreground` would flatten idle against the
+      // active row. Hover lifts to `foreground`.
       'text-secondary-bold hover:bg-hover hover:text-foreground',
       // Active: flat `selected` pill + `foreground` text at medium weight.
       'data-active:bg-selected data-active:font-medium data-active:text-foreground',
@@ -164,22 +155,17 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
 
   // ── Two-level rail (Sidebar.Rail) ──────────────────────────────────────────
-  // A persistent narrow rail of top-level destinations beside a section panel.
-  // Same quiet skin as the single column: charcoal ink, flat `selected` pill,
-  // the one opaque `border` as the sole structural line (the aside's right edge,
-  // dividing nav from content).
-  // No right edge of its own: the sidebar's right border is drawn by the panel
-  // (expanded) or the rail column (collapsed), so the two never double up.
+  // A narrow rail of top-level destinations beside a section panel. Same quiet
+  // skin as the single column. The sidebar's sole right edge is drawn by the
+  // panel (expanded) or the rail column (collapsed), never both — so railRoot
+  // has no border of its own.
   railRoot: cva({
     base: ['overflow-hidden bg-background'],
   }),
-  // The rail shell's dimensions, on the grid that lays rail and panel side by
-  // side (the component's `grid-cols` consumes the vars — same split as the
-  // single column's `w-64` in `root`). Two independent axes: the rail column
-  // is full width (icon + label) when expanded and an icon-only strip when
-  // collapsed; the panel column only has width while a section panel shows.
-  // In the mobile drawer only `--rail-w` is read (the panel takes `1fr`), and
-  // the drawer always renders expanded, so the collapsed value never applies.
+  // Column widths the component's `grid-cols` consumes. Two independent axes:
+  // `--rail-w` collapses the rail to an icon strip; `--panel-w` goes to 0 when
+  // no section panel shows. The mobile drawer reads only `--rail-w` (always
+  // expanded), so the collapsed value never applies there.
   railLayout: cva({
     base: [
       '[--rail-w:var(--spacing-rail)] data-[state=collapsed]:[--rail-w:var(--spacing-rail-collapsed)]',
@@ -189,26 +175,15 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:transition-none',
     ],
   }),
-  // The rail column: the narrow strip of icons beside the panel. Carries the
-  // always-on vertical divider (`border-r`) between the rail and everything to
-  // its right; the top bar above has no vertical lines, so this divider starts
-  // under the bar's bottom edge (a plain T-junction). When the panel is
-  // collapsed this line is also the sidebar's right edge (the panel drops its
-  // border), so it never doubles up.
-  // overflow-x-clip: labels keep a fixed width while the column width
-  // animates (see railItem), so they briefly overhang the narrowing column —
-  // clip instead of letting them bleed across the divider into the panel.
+  // Carries the always-on vertical divider (`border-r`) between rail and panel.
+  // overflow-x-clip: fixed-width labels overhang the narrowing column mid-
+  // animation (see railItem) — clip them instead of bleeding across the divider.
   railColumn: cva({
     base: ['flex flex-col min-h-0 overflow-x-clip', 'border-r border-border'],
   }),
-  // The panel toggle in the top bar, between the wordmark and the
-  // breadcrumbs. It IS an icon Button (Button.styles.ts ghost/icon —
-  // SidebarToggle composes those classes underneath), so it inherits the
-  // standard control-size square hitbox, ghost hover, and press feedback.
-  // This recipe only layers the rail shell's deltas on top: `secondary` ink
-  // lifting to `foreground`, the rail's 20px icon weight, and shrink-0 so
-  // the top bar's flex Start zone can never squeeze the square below its
-  // hitbox (it sits next to shrinking breadcrumbs).
+  // The top-bar panel toggle. SidebarToggle already composes the icon Button
+  // base (hitbox, ghost hover, press); this only adds the rail deltas: quieter
+  // ink, 20px icon, and shrink-0 so shrinking breadcrumbs can't squeeze it.
   railToggle: cva({
     base: [
       'shrink-0',
@@ -216,46 +191,26 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       '[&_svg]:size-5',
     ],
   }),
-  // The rail's scrolling item list (footer pinned below). Thin
-  // scrollbar, hidden until hover — reused from `ui-scrollbar`.
-  // overflow-x-hidden: the fixed-width labels overhang the collapsed column;
-  // without it the scroll container would grow a horizontal scrollbar.
+  // The scrolling item list (footer pinned below). overflow-x-hidden: the
+  // fixed-width labels would otherwise grow a horizontal scrollbar.
   rail: cva({
     base: [
       'flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-1.5 ui-scrollbar',
     ],
   }),
-  // Stacked tile: icon above a visible label, centered in the rail column.
-  // Content-hugging geometry: the tile is exactly icon + label + even py-2,
-  // so the pill never covers empty space (a one-line label makes a shorter
-  // tile than a hyphenated two-line one) and the gap between tiles is
-  // constant regardless of line count. The label keeps a fixed width — the
-  // tile's content width at the *expanded* rail: `--spacing-rail` minus the
-  // tile's horizontal chrome (mx-1 + px-0.5 per side = 0.75rem). Deliberately
-  // derived from the token, not the animating `--rail-w`, so the label cannot
-  // re-wrap while the column width transitions.
+  // Stacked tile: icon above a visible label. Content-hugging so the pill never
+  // covers empty space and tile spacing is constant regardless of label lines.
   //
-  // Collapsing folds the label row (grid-rows auto 1fr → auto 0fr) with the
-  // same 200ms ease-in-out as the column width, while py grows 2 → 3 so each
-  // icon-only tile is a 2.75rem (44px) hit target — the WCAG 2.5.5 minimum —
-  // and the icons glide — never jump — into place.
+  // Collapsing folds the label row (grid-rows auto 1fr → 0fr) while py grows
+  // 2 → 3, keeping each icon-only tile a 44px WCAG 2.5.5 hit target.
   //
-  // The hover/selected pill and the focus ring sit on the tile itself, so
-  // the visible affordance always matches the clickable area exactly — in
-  // both states the whole content-hugging tile is the pill.
-  //
-  // The label fades instead of unmounting: out fast (100ms, no delay) so no
-  // half-clipped text rides the folding row; in late (150ms after a 100ms
-  // delay) so it only reappears once the tile has most of its size back.
-  // opacity-0 (unlike sr-only) keeps it in the accessibility tree as the
-  // accessible name. hyphens-auto needs a `lang` on the document.
+  // The label fades rather than unmounts — opacity-0 (not sr-only) keeps it in
+  // the a11y tree as the accessible name. hyphens-auto needs a document `lang`.
   railItem: cva({
     base: [
-      // grid-cols-[minmax(0,1fr)]: cap the implicit column at the tile width —
-      // otherwise the fixed-width label sizes the column and drags the icon
-      // off-center. The icon–label gap is a row-gap (not a margin/padding on
-      // the label: both leak into the folded 0fr track) and folds to 0 in the
-      // same transition.
+      // Cap the column at tile width so the fixed-width label can't drag the
+      // icon off-center. Icon–label gap is a row-gap so it folds with the row
+      // (a margin/padding would leak into the 0fr track).
       'grid grid-cols-[minmax(0,1fr)] justify-items-center mx-1 px-0.5 py-2',
       'grid-rows-[auto_1fr] gap-y-1',
       'in-data-[state=collapsed]:grid-rows-[auto_0fr] in-data-[state=collapsed]:gap-y-0',
@@ -265,26 +220,22 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'text-secondary text-center cursor-pointer',
       'outline-none rounded-surface',
       'hover:text-foreground data-active:text-foreground',
-      // A fill marks the current page, ink marks its ancestors: the tile is
-      // ~3× the leaf pill's area, so giving the section ancestor the same
-      // `selected` fill would outweigh the actual current page. While the
-      // panel is open, the panel title + leaf pill already carry the location,
-      // so the ancestor speaks through its `foreground` ink alone. The fill
-      // returns exactly when the tile is the only visible marker: a
-      // direct-link tile that IS the page (`selected`), or the active section
-      // on the icon-only collapsed rail (`hover`, one step quieter). Hover is
-      // ink-lift only, keeping fills exclusive to active states.
+      // Fill = current page, ink = ancestor. A section ancestor is ink-only
+      // (its big tile would outweigh the leaf pill), except when the tile is
+      // the sole marker: a direct-link page (`selected`) or the active section
+      // on the collapsed rail (`hover`). Hover elsewhere is ink-lift only.
       'in-data-[state=collapsed]:data-active:bg-hover',
       'aria-[current=page]:bg-selected',
       'focus-visible:ui-state-focus',
       '[&_svg]:size-5 [&_svg]:shrink-0',
-      // The label: same size as the panel's group captions, medium so it holds
-      // its own under the icon. It is the foldable grid row: min-h-0 +
-      // overflow-hidden let the 0fr row actually clip it.
+      // Label: caption size. Fixed width = expanded rail minus tile chrome
+      // (--spacing-rail − 0.75rem), from the token not the animating --rail-w so
+      // it can't re-wrap mid-collapse. min-h-0 + overflow-hidden let the 0fr
+      // row clip it.
       '[&>span]:w-[calc(var(--spacing-rail)-0.75rem)] [&>span]:min-h-0 [&>span]:overflow-hidden',
       '[&>span]:text-[0.6875rem] [&>span]:font-medium [&>span]:leading-tight',
       '[&>span]:break-words [&>span]:hyphens-auto',
-      // Fade choreography (see block comment above).
+      // Fade out fast (no half-clipped text on the folding row), in late.
       '[&>span]:transition-opacity [&>span]:duration-150 [&>span]:delay-100 [&>span]:ease-out',
       'in-data-[state=collapsed]:[&>span]:opacity-0',
       'in-data-[state=collapsed]:[&>span]:duration-100',
@@ -292,15 +243,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:[&>span]:transition-none',
     ],
   }),
-  // Pinned below the scrolling rail list. Hosts rail items (stacked tiles,
-  // same as the list — they carry their own mx/px), mirroring the list's
-  // vertical rhythm.
+  // Pinned below the scrolling list; same tiles, same rhythm.
   railFooter: cva({ base: ['shrink-0 flex flex-col gap-0.5 py-1.5'] }),
-  // The section panel beside the rail. Its right hairline is the sidebar's
-  // right edge (dividing nav from content) — the rail column owns the
-  // rail/panel divider, so the panel only draws its outer edge. Dropped while
-  // collapsed (the column shrinks to zero) so the rail column's border becomes
-  // the single right edge, without doubling up.
+  // The section panel. Draws the sidebar's outer right edge; dropped when
+  // collapsed so the rail column's border becomes the single edge (see
+  // railRoot).
   panel: cva({
     base: [
       'flex flex-col min-h-0 overflow-hidden',
@@ -310,15 +257,12 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   // Section heading atop the panel; also the focus target when the panel swaps.
-  // Sentence-case and full-strength ink — a heading, deliberately a different
-  // species from the tiny uppercase `groupLabel` captions below it.
+  // Full-strength ink, deliberately distinct from the uppercase groupLabels.
   panelTitle: cva({
     base: [
-      // Centered via line-height, not flex: `text-overflow: ellipsis` only
-      // works on block containers, so a flex heading would clip mid-glyph
-      // without the ellipsis. `leading-10` after `text-sm` — tailwind-merge
-      // treats a font-size as also setting line-height and drops earlier
-      // `leading-*` classes.
+      // Centered via line-height, not flex: ellipsis needs a block container.
+      // `leading-10` after `text-sm` — tailwind-merge drops earlier `leading-*`
+      // when a font-size sets its own line-height.
       'h-10 mt-1 px-4 outline-none truncate',
       'text-sm font-semibold text-foreground leading-10',
     ],

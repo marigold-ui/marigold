@@ -69,13 +69,12 @@ const RailItemLink = ({
   const router = useRouter();
   const routerLinkProps = useLinkProps({ href: node.href });
 
-  // The leaf is the true current page (marked in the panel); a section rail item
-  // is only its ancestor, so it announces `true`, not `page`. A direct-link rail
-  // item that is itself the page announces `page`.
+  // A section is only the current page's ancestor (`true`); a direct-link item
+  // that is the page announces `page`. The leaf itself is marked in the panel.
   const ariaCurrent = matched ? (node.isSection ? 'true' : 'page') : undefined;
 
-  // The trigger stays mounted in both states (only `disabled` flips) so the
-  // anchor never remounts mid-collapse, which would cut the glide transition.
+  // Keep the trigger mounted (only `disabled` flips) so the anchor doesn't
+  // remount mid-collapse and cut the glide transition.
   return (
     <Tooltip.Trigger disabled={!collapsed}>
       <Focusable>
@@ -87,13 +86,12 @@ const RailItemLink = ({
           data-active={selected || undefined}
           className={className}
           onClick={e => {
-            // Browser-owned clicks (new tab/window) keep native anchor
-            // behavior; rail state (selection, panel, drawer) stays untouched.
+            // New-tab/window clicks: let the browser navigate, touch no state.
             if (node.href && isModifiedClick(e)) return;
             const shouldNavigate = onActivate();
             node.onPress?.();
-            // Re-clicking the active section only toggles the panel — don't let
-            // the anchor navigate away from a deeper page the user is already on.
+            // Re-clicking the active section only toggles the panel — don't
+            // navigate away from the deeper page the user is on.
             if (shouldNavigate) {
               handleLinkClick(e, router, node.href, undefined);
             } else {
@@ -138,13 +136,13 @@ const SidebarRail = ({
   } = useSidebarRailState({ children, current });
 
   const titleRef = useRef<HTMLHeadingElement>(null);
-  // Set when a user rail action should move focus to the panel heading; the
-  // effect below acts on it once the panel is shown. Route-driven or mount
-  // selection never sets it, so focus is never stolen unprompted.
+  // Set by a user action that should focus the panel heading; the effect below
+  // consumes it once the panel shows. Route/mount changes never set it, so
+  // focus is never stolen unprompted.
   const focusPendingRef = useRef(false);
 
-  // On mobile `state` means drawer visibility, not panel visibility — inside
-  // the open drawer the active section's panel is always shown.
+  // On mobile `state` is drawer visibility; the open drawer always shows the
+  // active section's panel.
   const hasPanel =
     (selectedNode?.isSection ?? false) && (isMobile || state === 'expanded');
 
@@ -156,9 +154,9 @@ const SidebarRail = ({
     titleRef.current?.focus({ focusVisible: isFocusVisible() } as FocusOptions);
   }, [hasPanel, selectedKey]);
 
-  // The mobile drawer renders no RAC Dialog, so nothing autofocuses on open —
-  // move focus to the panel heading (or the first rail link on a page without
-  // a panel) so Escape and screen readers land inside the modal right away.
+  // The drawer has no RAC Dialog to autofocus, so move focus to the panel
+  // heading (or first rail link, if no panel) — Escape and screen readers must
+  // land inside the modal.
   const mobileBodyRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     if (!isMobile || state !== 'expanded') return;
@@ -167,9 +165,8 @@ const SidebarRail = ({
     target?.focus({ focusVisible: isFocusVisible() } as FocusOptions);
   }, [isMobile, state]);
 
-  // Returns whether the click should navigate (false = re-click toggle only).
-  // The decision matrix lives in `resolveRailActivation` (pure, unit-tested);
-  // this only maps its result onto the rail's state and refs.
+  // Maps `resolveRailActivation`'s decision onto state/refs; returns whether
+  // the click should navigate.
   const activateRail = (node: SidebarRailNode): boolean => {
     const action = resolveRailActivation(node, {
       isMobile,
@@ -182,8 +179,8 @@ const SidebarRail = ({
     return action.navigate;
   };
 
-  // The rail column is identical in both shells; only the icon-only collapse
-  // is desktop's (the drawer always shows labels, so tooltips stay disabled).
+  // Same column in both shells; only desktop collapses to icons (the drawer
+  // always shows labels, so its tooltips stay disabled).
   const railColumn = (collapsed: boolean) => (
     <div className={classNames.railColumn}>
       <nav
@@ -205,9 +202,7 @@ const SidebarRail = ({
               />
             ))}
         </div>
-        {/* Pinned below the scrolling list: rail items declared inside
-            Sidebar.Footer (same tile, same behavior) plus any raw footer
-            content. */}
+        {/* Pinned below the list: footer rail items plus any raw footer content. */}
         {footerNodes.length > 0 || footer ? (
           <div className={classNames.railFooter}>
             {footerNodes.map(node => (
@@ -238,19 +233,17 @@ const SidebarRail = ({
       </>
     ) : null;
 
-  // Mobile: the drawer contains a miniature of the desktop layout — the
-  // icon+label rail on its left edge, the active section's panel beside it.
-  // Section taps swap the panel in place; leaf links close the drawer (via
-  // SidebarPanel's own mobile handling).
+  // Mobile: a miniature of the desktop layout — rail on the left, active
+  // section's panel beside it. Section taps swap the panel; leaf links close
+  // the drawer.
   if (isMobile) {
     return (
       <SidebarModal ref={ref} partial>
         {header}
         <div
           ref={mobileBodyRef}
-          // The rail is never icon-only inside the drawer; the tiles read
-          // this ancestor state for their label row (and railLayout resolves
-          // --rail-w to its expanded width).
+          // The drawer rail is never icon-only: tiles read this state for their
+          // labels, and railLayout resolves --rail-w to expanded.
           data-state="expanded"
           className={cn(
             'grid h-full min-h-0 grid-cols-[var(--rail-w)_1fr] [grid-area:content]',
@@ -259,8 +252,7 @@ const SidebarRail = ({
         >
           {railColumn(false)}
           <div
-            // The drawer's edge is the boundary here — the desktop panel
-            // divider would double it.
+            // The drawer edge is the boundary; drop the panel divider.
             className={cn(classNames.panel, 'border-r-0')}
           >
             {panelBody}
@@ -274,13 +266,12 @@ const SidebarRail = ({
     <aside
       ref={ref}
       aria-label={stringFormatter.format('sidebar')}
-      // AppShell's grid switches to the header-first template when it sees
-      // this attribute (pure CSS, via `:has()`).
+      // AppShell's `:has()` grid switches to header-first on this attribute.
       data-rail=""
       data-state={state}
       className={cn(
-        // The full-width top bar spans above the rail (AppShell's header-first
-        // grid), so the aside starts below it and sticks to that offset.
+        // The full-width top bar sits above the rail, so the aside starts below
+        // it and sticks to that offset.
         'top-topbar sticky h-[calc(100dvh-var(--spacing-topbar))] self-start [grid-area:sidebar]',
         classNames.railRoot
       )}
@@ -288,17 +279,14 @@ const SidebarRail = ({
       <div
         data-state={state}
         data-panel={hasPanel ? 'expanded' : 'collapsed'}
-        // Column widths (and their collapse transition) come from the theme's
-        // railLayout recipe as --rail-w/--panel-w; the grid only consumes them.
+        // Column widths + transition come from railLayout (--rail-w/--panel-w).
         className={cn(
           'grid h-full grid-cols-[var(--rail-w)_var(--panel-w)]',
           classNames.railLayout
         )}
       >
-        {/* Rail column: draws the always-on divider between the rail and
-            everything to its right, starting under the top bar. The toggle
-            lives in the top bar (Sidebar.Toggle in TopNavigation.Start), not
-            here. */}
+        {/* The toggle lives in the top bar (Sidebar.Toggle in
+            TopNavigation.Start), not here. */}
         {railColumn(state === 'collapsed')}
 
         <div inert={!hasPanel || undefined} className={classNames.panel}>
@@ -309,8 +297,8 @@ const SidebarRail = ({
   );
 };
 
-// Brand for `Sidebar`'s rail-mode detection — reference identity (`child.type
-// === SidebarRail`) breaks across HOC wrappers and duplicate package installs.
+// Brand for rail-mode detection — reference identity breaks across HOC wrappers
+// and duplicate package installs.
 SidebarRail.__SIDEBAR_RAIL__ = true as const;
 
 export { SidebarRail };

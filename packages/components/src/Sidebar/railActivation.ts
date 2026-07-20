@@ -30,8 +30,7 @@ export const resolveRailActivation = (
   { isMobile, selectedKey, state }: RailActivationContext
 ): RailActivation => {
   if (!node.isSection) {
-    // Direct link: navigate. On mobile the link leaves the page, so the
-    // drawer leaves with it.
+    // Direct link navigates; on mobile it leaves the page, so close the drawer.
     return {
       select: true,
       toggle: isMobile,
@@ -41,10 +40,9 @@ export const resolveRailActivation = (
   }
 
   if (isMobile) {
-    // The drawer shows rail and panel side by side, so a section tap only
-    // retargets the panel — navigating would close the drawer before the
-    // user picks a leaf. Re-tapping the active section is a no-op (there
-    // is no hidden panel to toggle).
+    // The drawer shows both levels, so a section tap only retargets the panel —
+    // navigating would close the drawer first. Re-tapping the active one is a
+    // no-op (nothing to toggle).
     const isSwitch = node.key !== selectedKey;
     return {
       select: isSwitch,
@@ -55,8 +53,7 @@ export const resolveRailActivation = (
   }
 
   if (node.key === selectedKey) {
-    // Re-click the active section: toggle the panel (VS Code model); when
-    // expanding, move focus into the revealed panel.
+    // Re-click toggles the panel (VS Code model); focus it when expanding.
     return {
       select: false,
       toggle: true,
@@ -65,7 +62,7 @@ export const resolveRailActivation = (
     };
   }
 
-  // Switch section: swap the panel, ensure it is open, move focus to it.
+  // Switch section: swap the panel, open it if collapsed, focus it.
   return {
     select: true,
     toggle: state === 'collapsed',
