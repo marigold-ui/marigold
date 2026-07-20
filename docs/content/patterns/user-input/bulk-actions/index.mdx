@@ -85,12 +85,47 @@ This is a deliberately conservative choice. Cross-page selection invites a well-
 
 <ComponentDemo name="bulk-actions-scope" />
 
+### Pagination
+
+Pagination puts the scope rule under the most pressure, because the select-all checkbox becomes ambiguous: does it select the rows on screen, or every row the query matched? Users guess wrong in both directions, and either wrong guess is expensive. In this pattern the answer is fixed: **the header checkbox selects the current page, nothing more.** A single click must never grow the selection beyond the rows the user can see, and no click selects records on pages the user never opened.
+
+Moving to another page is a scope change like filtering, so it clears the selection, and the clearing must be perceivable: the action bar with its count disappears, which tells the user their selection is gone before they can act on a stale one. Changing the page size or the sort order swaps which rows are visible in the same way and clears the selection too. What must never happen is the silent middle ground, where rows checked on page one invisibly remain selected while the user looks at page two. The interface would show an unchecked page while the next press still reaches the hidden rows.
+
+The demo pairs the table with the [`<Pagination>`](/components/navigation/pagination) component. The clearing wrapper around the page setter is the same one the scope demo uses for filters:
+
+<ComponentDemo name="bulk-actions-pagination" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Bound select-all to the visible page and clear the selection visibly when
+      the page, page size, or sort order changes.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't carry an invisible selection across pages or let a single click
+      select records on pages the user never opened.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 <Callout title="Working with very large sets" type="info">
   When users regularly need to act on more records than fit on a page, do not
   reach for cross-page selection. Give them a filter that narrows the set to
   exactly the records in question, then let them select all visible results. The
   [Filter](/patterns/user-input/filter) pattern keeps the acted-on set
   reviewable, which a hidden selection never is.
+
+If a product decision nevertheless requires acting on every matching record,
+the only safe shape is a disclosure in two steps. The checkbox selects the page
+as usual, and a separate, explicitly worded control ("Select all 3,200 results
+matching this filter") extends the scope. That control states the exact count.
+The operation has a clear upper limit that the interface shows instead of
+silently cutting records off, and the confirmation repeats the full count
+before anything runs. The header checkbox itself must never jump to the full
+result set.
+
 </Callout>
 
 ## Direct actions
@@ -142,7 +177,7 @@ The hard problem in a bulk-edit form is that the selected records rarely agree. 
 
 <ComponentDemo name="bulk-actions-edit-drawer" />
 
-A destructive operation configured in a drawer still needs its confirm dialog after the submit, count and impact included. The drawer collects the input; it does not replace the confirmation.
+A destructive operation configured in a drawer still needs its confirm dialog after the submit, count and impact included. The drawer collects the input but does not replace the confirmation.
 
 ## Showing progress
 
@@ -150,7 +185,7 @@ Bulk operations in Reservix products run synchronously: the user starts the oper
 
 - **Under about two seconds**, feedback on the pressed control is enough: set the [`<Button>`](/components/actions/button) `loading` prop.
 - **Between two and ten seconds**, show progress with a running count where the actions were, "Sending 4 of 12", so the user sees the operation moving through the selection. Keep the bar visible and the selection intact while it runs.
-- **Beyond ten seconds**, users lose attention and need a way to interrupt. No current Reservix bulk operation crosses this line; if yours does, the operation needs product-level rework rather than a bigger spinner.
+- **Beyond ten seconds**, users lose attention and need a way to interrupt. No current Reservix bulk operation crosses this line. If yours does, the operation needs product-level rework rather than a bigger spinner.
 
 Disable the other actions in the bar while an operation runs, so two bulk operations cannot race on the same selection. For the general feedback vocabulary of spinners and skeletons, see the [Loading States](/patterns/feedback/loading-states) pattern.
 
@@ -165,6 +200,8 @@ Partial failure is the case that separates a robust implementation from a fragil
 > 11 of 12 events updated. 1 failed: missing description. It remains selected for retry.
 
 The succeeded records leave the selection, the failed ones stay. The selection itself becomes the retry list, which is more durable than a toast that disappears.
+
+Staleness is a failure like any other. When a colleague edits or removes a record between selection and execution, the server skips it and the report names it like any other failure: "2 events were changed by someone else and were skipped." What the user selected and what the operation touched must never quietly drift apart.
 
 <ComponentDemo name="bulk-actions-partial-failure" />
 
@@ -190,11 +227,11 @@ const keys = selected === 'all' ? events.map(event => event.id) : [...selected];
 const affected = events.filter(event => keys.includes(event.id));
 ```
 
-Every message the user sees derives from `affected.length`, never from a separately tracked counter that can drift.
+Every message the user sees derives from `affected.length`, never from a separately tracked counter that can drift. Resolving this way also protects against two subtle mistakes. The selection is a set of record ids, not row positions, so a table that re-sorts or refreshes between selecting and pressing cannot shift the selection onto different rows. The server also receives this exact list of ids, never an instruction to run the current filter again. A query that runs again would quietly include records that only started matching after the user made their selection.
 
 ### Clear selection when the scope changes
 
-Pagination, filters, and search all change which rows are visible, and the selection must never outlive the view it was made in. Wrap the state setters so the reset cannot be forgotten at individual call sites:
+Pagination, page size, sorting, filters, and search all change which rows are visible, and the selection must never outlive the view it was made in. Wrap the state setters so the reset cannot be forgotten at individual call sites:
 
 ```tsx
 const changeFilter = (next: string) => {
@@ -210,6 +247,17 @@ After a partial failure, rebuild the selection from the failures. The selection 
 ```tsx
 if (failed.length > 0) {
   setSelected(new Set(failed.map(event => event.id)));
+}
+```
+
+### Step back when a page empties
+
+A destructive bulk action can remove every row of the current page in a single press. When that happens the page index points past the end of the data, and a naive implementation strands the user on an empty page, sometimes without pagination controls to escape it. Clamp the page after the records are gone:
+
+```tsx
+const lastPage = Math.max(1, Math.ceil(remaining.length / pageSize));
+if (page > lastPage) {
+  setPage(lastPage);
 }
 ```
 
