@@ -145,7 +145,7 @@ Promote a filter to a quick filter only when both hold:
 
 If you cannot identify the most-used few, leave everything in the panel and rely on search rather than promoting a filter you cannot justify by usage.
 
-For the controls themselves, use something compact and field shaped, such as a [Select](/components/form/select), so the bar reads as one family of inputs. A [SegmentedControl](/components/form/segmented-control) is not a quick filter but a scope switch: it recasts the whole view along one dominant dimension, such as All, Active, and Archived, and sits at the start of the bar, apart from the field cluster. Quick filters apply instantly, so see [Applying Filters](#applying) for how that model works alongside the panel's batched commit.
+For the controls themselves, use something compact and field shaped, such as a [Select](/components/form/select), so the bar reads as one family of inputs. A [SegmentedControl](/components/form/segmented-control) is not a quick filter but a scope switch: it answers which set the user is looking at, such as All, Active, and Archived events, while the filters narrow within that set. Because it re-bases the whole view rather than adding one more condition, it sits at the start of the bar, apart from the field cluster, and its label names the view rather than a filter dimension. Quick filters apply instantly, so see [Applying Filters](#applying) for how that model works alongside the panel's batched commit.
 
 <ComponentDemo name="filter-promoted" />
 

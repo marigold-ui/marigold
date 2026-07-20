@@ -12,9 +12,10 @@ export default () => (
   <Inline space="related" alignX="between" alignY="input">
     {/* One row: scope switch first, then search, quick filters, panel trigger */}
     <Inline space="related" alignY="input">
-      {/* Fields default to full width, "fit" keeps the control in the row */}
+      {/* Scope switch, not a filter: it re-bases which events the bar filters */}
+      {/* within, so it leads the row. "fit" keeps it to its track width. */}
       {/* [!code highlight] */}
-      <SegmentedControl aria-label="Status" width="fit" defaultValue="all">
+      <SegmentedControl aria-label="Event scope" width="fit" defaultValue="all">
         <SegmentedControl.Option value="all">All</SegmentedControl.Option>
         <SegmentedControl.Option value="active">Active</SegmentedControl.Option>
         <SegmentedControl.Option value="archived">
