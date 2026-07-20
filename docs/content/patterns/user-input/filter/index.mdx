@@ -14,11 +14,11 @@ The pattern keeps a consistent layout while the controls inside it adapt to the 
 
 <FilterAnatomy />
 
-- **Filter Panel:** Slides in from the right and holds the filter controls. It overlaps the content without blocking it, so the data set stays visible while filtering.
 - **Filter Bar:** A single horizontal row above the data set with the search field and the button that opens the filter panel. Built as a layout composition with [Inline](/components/layout/inline).
 - **Applied Filter:** Lists the filters currently in use and offers a single action to clear them all.
 - **Data Set:** The collection being filtered, shown as a [table](/components/collection/table), [tiles](/components/layout/tiles), or [cards](/components/content/card). It takes up most of the layout.
 - **Pagination:** Splits the filtered results into pages, below the data set.
+- **Filter Panel:** Slides in from the right and holds the filter controls. It overlaps the content without blocking it, so the data set stays visible while filtering.
 
 The demo shows the areas working together in miniature: the search sits in the filter bar, the panel collects filter changes behind the _Filter_ button and commits them with _Apply_, and applied filters appear as removable tags.
 
@@ -28,13 +28,13 @@ The demo shows the areas working together in miniature: the search sits in the f
 
 Offer filters that map directly to real properties or categories in the data set, so it is clear how each selection changes the results. Give every filter an unambiguous purpose and a clear, descriptive label.
 
-Order filters by how often they are used rather than alphabetically, so the common ones are easy to find. Limit the set to filters that provide genuine value, keeping the interface focused and easy to navigate.
+Limit the set to filters that provide genuine value. Every filter costs scanning time and adds a way to reach an empty result, so a dimension that few users ever touch earns its place in the data model, not in the panel.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Order filter options by most-used to help users find relevant choices
-      quickly.
+      Order filters by how often they are used, so the common ones are easy to
+      find.
     </DoDescription>
   </Do>
   <Dont>
@@ -49,15 +49,15 @@ Order filters by how often they are used rather than alphabetically, so the comm
 
 Once you know which filters to offer, pick the control for each one. The right control depends on the shape of the data behind the filter, the space available, and how users are expected to interact with it. The common shapes and the component that fits each are:
 
-| Type         | Description                                                                                                                                                                                                                                                                                                                                                            | Component                                    |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| **Single**   | One option from a set, such as a category or status. Use a radio group when a few options are all worth showing, or a [Select](/components/form/select) when space is tight or the list is long. A [SegmentedControl](/components/form/segmented-control) (beta) fits only the special case where the choice scopes the whole view, such as All, Active, and Archived. | [Radio](/components/form/radio)              |
-| **Multiple** | Several options at once, such as multiple categories. Checkboxes signal that more than one choice is possible. For a large set with search and removable tags, use [TagField](/components/form/tag-field) (beta).                                                                                                                                                      | [Checkbox](/components/form/checkbox)        |
-| **Range**    | A value or span within known, static bounds, ideal for quantities, prices, or measurements. A slider adjusts one or two handles without manual input.                                                                                                                                                                                                                  | [Slider](/components/form/slider)            |
-| **Min/Max**  | Exact lower and upper numeric limits, for when precision matters more than a draggable range.                                                                                                                                                                                                                                                                          | [NumberField](/components/form/number-field) |
-| **Contains** | A keyword or partial match typed by the user. Use [SearchField](/components/form/search-field) in the filter bar, or a [TextField](/components/form/textfield) for a field inside the panel.                                                                                                                                                                           | [SearchField](/components/form/search-field) |
-| **Date**     | A point in time or a span. Use a date picker for a single date, and prefer relative presets such as "Last 7 days" for ranges (see [Date Range Presets](#date-presets)). A custom range uses [RangeCalendar](/components/form/rangecalendar) (alpha).                                                                                                                   | [DatePicker](/components/form/datepicker)    |
-| **Boolean**  | A single on/off condition, such as "In stock only". A switch reads as an instant on/off and suits a quick filter in the filter bar. Inside the panel, a single checkbox does the same job.                                                                                                                                                                             | [Switch](/components/form/switch)            |
+| Type         | Description                                                                                                                                                                                                                                                                                                                                   | Component                                    |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **Single**   | One option from a set, such as a category or status. Use a radio group when a few options are all worth showing, or a [Select](/components/form/select) when space is tight or the list is long. A [SegmentedControl](/components/form/segmented-control) (beta) is a scope switch rather than a filter, see [Quick Filters](#quick-filters). | [Radio](/components/form/radio)              |
+| **Multiple** | Several options at once, such as multiple categories. Checkboxes signal that more than one choice is possible. For a large set with search and removable tags, use [TagField](/components/form/tag-field) (beta).                                                                                                                             | [Checkbox](/components/form/checkbox)        |
+| **Range**    | A value or span within known, static bounds, ideal for quantities, prices, or measurements. A slider adjusts one or two handles without manual input.                                                                                                                                                                                         | [Slider](/components/form/slider)            |
+| **Min/Max**  | Exact lower and upper numeric limits, for when precision matters more than a draggable range.                                                                                                                                                                                                                                                 | [NumberField](/components/form/number-field) |
+| **Contains** | A keyword or partial match typed by the user. Use [SearchField](/components/form/search-field) in the filter bar, or a [TextField](/components/form/textfield) for a field inside the panel.                                                                                                                                                  | [SearchField](/components/form/search-field) |
+| **Date**     | A point in time or a span. Use a date picker for a single date, and prefer relative presets such as "Last 7 days" for ranges (see [Date Range Presets](#date-presets)). A custom range uses [RangeCalendar](/components/form/rangecalendar) (alpha).                                                                                          | [DatePicker](/components/form/datepicker)    |
+| **Boolean**  | A single on/off condition, such as "In stock only". A switch reads as an instant on/off and suits a quick filter in the filter bar. Inside the panel, a single checkbox does the same job.                                                                                                                                                    | [Switch](/components/form/switch)            |
 
 For these common shapes, prefer the dedicated form controls above: radio buttons and checkboxes communicate the selection rule visually before any interaction and match what users know from other applications. When the option set is too large to scan, reach for a searchable control instead. [ComboBox](/components/form/combobox) and [Autocomplete](/components/form/autocomplete) let users narrow a single choice by typing, and the list-based [SelectList](/components/form/selectlist) covers single or multiple selection for hundreds of options that benefit from virtualization.
 
@@ -65,7 +65,7 @@ For these common shapes, prefer the dedicated form controls above: radio buttons
 
 How a filter commits its changes is the first decision to get right, because the rest of the pattern builds on it. This pattern fixes the choice to where the control lives:
 
-- **Filter bar controls apply instantly.** The search field, along with any filter promoted into the filter bar as a [quick filter](#quick-filters), takes effect the moment the user changes it. The cost is a query on every interaction and results that reflow on each change.
+- **Filter bar controls apply instantly.** The search field, along with any filter promoted into the filter bar as a [quick filter](#quick-filters), takes effect the moment the user changes it. Instant means no separate Apply step, not per keystroke: a search field still commits on Enter, so half-typed terms never churn the results. The cost is a query on every interaction and results that reflow on each change.
 - **The filter panel (the slide-in drawer) batches.** It collects changes across several parameters and applies them only when the user submits with an explicit _Apply_ action. The cost is one extra step, and the user can assemble a zero-result combination before seeing it.
 
 Apply instantly for a single, cheap decision that benefits from immediate feedback. Batch when several criteria are combined, each query is expensive, or the control is multi-select, where live updates are disorienting.
@@ -74,7 +74,7 @@ Because the model is tied to location, the two stay legible side by side. A bare
 
 For the panel's commit control, label it clearly and tell users what they are committing to:
 
-- **Label by behavior.** Use **Apply** for a batched panel and **Done** for a panel that filters live.
+- **Label by behavior.** Use **Apply**: it matches the panel's batched model. If your panel deviates and filters live, label the closing action **Done** instead, so the button never promises a commit that already happened.
 - **Show the result count on the button** where the count is available, for example "Show 47 results", so users know the outcome before they commit. This is especially valuable on mobile, where it is the clearest way to preview impact.
 - **Announce the change to assistive technology.** Instant or batched, a filter change updates the data set silently for screen reader users. Render the new result count in a live region so the outcome is spoken. See [Accessibility](#accessibility) for details.
 
@@ -278,7 +278,7 @@ Filtering combines several interactive controls, so a few accessibility details 
 
 - **Do not give the filter bar `toolbar` semantics.** The [WAI-ARIA toolbar pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) makes the group a single tab stop with arrow-key roving focus between controls. The filter bar is dominated by inputs, and a search field needs its arrow keys for the text cursor, so roving focus breaks it. Compose the filter bar with [Inline](/components/layout/inline) so each control is a normal tab stop, as described in the [structure](#structure).
 - **Name a label-only trigger by its full state.** When a quick filter shows only the dimension and a count, make sure its accessible name still conveys that something is applied, for example "Status, 2 selected", rather than a bare "Status". With [Select](/components/form/select) the count rendered in the trigger is part of its accessible name. For a custom trigger, set an explicit `aria-label`.
-- **Let the controls own focus and keyboard behaviour.** Building quick filters from Marigold components such as [Select](/components/form/select), [Checkbox](/components/form/checkbox), and [Radio](/components/form/radio) gives correct roles, keyboard interaction, and focus return to the trigger on close, because they are based on react-aria. Avoid hand-rolling `role="menu"` or a custom dropdown.
+- **Let the controls own focus and keyboard behaviour.** Building quick filters from Marigold components such as [Select](/components/form/select), [Checkbox](/components/form/checkbox), and [Radio](/components/form/radio) gives correct roles, keyboard interaction, and focus return to the trigger on close. Avoid hand-rolling `role="menu"` or a custom dropdown.
 - **Announce the result of a filter change.** Applying or removing a filter changes the data set, but screen reader users get no feedback unless you announce it. Render the result count in a live region (`role="status"`, `aria-live="polite"`), for example "247 results, Status applied", so the outcome is spoken. Marigold does not yet provide a built-in region for this, so add one where the result count lives.
 - **Link a "select all" control to the group it toggles.** When the control sits outside the group, as in [Select All](#select-all), set its `aria-controls` to the group's id so the relationship is conveyed programmatically and not left to visual proximity.
 
@@ -292,7 +292,7 @@ The reference implementation linked in the [demo](#demo) section applies a few p
 
 Applied filters, search, sorting, and pagination should always be reflected in the URL as query parameters. This means the user can bookmark a filtered view for quick access, return to the same filtered view even after closing the browser, or share it with others by sending the link. It also preserves the exact context of a search or analysis for later reference, without the need to manually reselect filters.
 
-<Callout title="Recommendated Library">
+<Callout title="Recommended Library">
   Use [nuqs](https://nuqs.47ng.com/) to manage URL state. This makes it easy to
   keep filter settings in sync with the address bar and share them between
   components.
@@ -320,6 +320,28 @@ The form inside the filter panel is uncontrolled: its fields read their `default
   <FilterForm key={JSON.stringify(filter)} filter={filter} />
 </Drawer.Content>
 ```
+
+### Preview the Draft
+
+A batched panel that shows "Show 47 results" on its Apply button, or [option counts](#option-counts) that follow the user's picks, must query the **draft** state of the form, not the applied filter. The applied filter only changes on submit, so previews built on it lag one commit behind.
+
+Read the form into a draft on every interaction. The panel form is uncontrolled, so there is no state to subscribe to; instead, listen broadly on a wrapper around the fields and take a `FormData` snapshot. Defer the read by one tick so the interaction has been committed to the DOM before the snapshot is taken.
+
+```tsx
+const updateDraft = () => {
+  setTimeout(() => {
+    if (formRef.current) setDraft(readFormData(formRef.current));
+  }, 0);
+};
+
+<div onChange={updateDraft} onPointerUp={updateDraft} onKeyUp={updateDraft}>
+  <FilterForm ... />
+</div>;
+```
+
+These broad events over-report, so debounce the draft before querying, keyed by content rather than by reference, so typing into a number field fires one query instead of one per keystroke.
+
+One query serves the whole preview: request only the totals (`pageSize: 1`) plus the per-option counts, and feed the result count to the Apply button and the counts to the options. Keep the previous data visible while the next preview loads, so the numbers update in place instead of flashing empty. See `useFilterPreview` in the reference implementation for the complete hook.
 
 ### Defaults as No Filter
 
