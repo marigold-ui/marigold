@@ -58,7 +58,7 @@
     "postcss": "8.5.16",
     "react": "19.2.7",
     "tailwindcss": "4.3.2",
-    "tsdown": "0.22.4"
+    "tsdown": "0.22.9"
   },
   "scripts": {
     "build": "tsdown src/index.ts",
