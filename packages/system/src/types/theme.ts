@@ -240,7 +240,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'container' | 'tag' | 'listItems' | 'closeButton',
+      'container' | 'tag' | 'listItems' | 'closeButton' | 'showMore',
       ComponentStyleFunction<string, string>
     >;
     TagField?: Record<
