@@ -54,5 +54,7 @@ export const Panel: ThemeComponent<'Panel'> = {
   collapsibleContent: cva({
     base: 'overflow-clip h-(--disclosure-panel-height) transition-[height] duration-250',
   }),
+  // Match the Accordion chevron: a muted caret. `MorphCaret` already bakes in `shrink-0`.
+  collapsibleIcon: cva({ base: 'pointer-events-none text-secondary' }),
   footer: cva({}),
 };

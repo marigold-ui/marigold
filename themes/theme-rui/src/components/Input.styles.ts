@@ -11,7 +11,8 @@ export const Input: ThemeComponent<'Input'> = {
       'focus:ui-state-focus outline-none',
       'group-read-only/field:cursor-default',
       'group-data-icon/input:pl-8',
-      'group-data-action/input:pr-7',
+      // Reserve the control-sized action box so text never slides under it.
+      'group-data-action/input:pr-control',
 
       // [type=file] styles
       '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-surface [&[type=file]]:h-[calc(var(--spacing-control)-2px)] [&[type=file]]:pl-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-secondary',
@@ -27,9 +28,14 @@ export const Input: ThemeComponent<'Input'> = {
   }),
   icon: cva({
     base: [
-      'pointer-events-none left-2.5',
+      'pointer-events-none left-2.5 size-4',
       'text-secondary disabled:text-disabled',
     ],
   }),
-  action: cva({ base: ['text-secondary pr-1 right-2'] }),
+  // A flush, control-sized centered box: any trailing action (icon button,
+  // chevron, clear button, spinner) pins to the right edge and centers its
+  // 16px icon at the same inset as the leading icon.
+  action: cva({
+    base: 'right-0 text-secondary flex size-control items-center justify-center',
+  }),
 };
