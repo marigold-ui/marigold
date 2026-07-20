@@ -242,6 +242,13 @@
    * sidebar's brand row, and the rail's sticky offset all derive from it. */
   --spacing-topbar: 3.5rem;
 
+  /* The two-level sidebar's column widths: the rail (expanded / icon-only
+   * collapsed) and the section panel beside it. The rail tiles' fixed label
+   * width is derived from the expanded value. */
+  --spacing-rail: 6.5rem;
+  --spacing-rail-collapsed: 4rem;
+  --spacing-rail-panel: 15.5rem;
+
   /* Universal: no spacing (works for gap, padding, and inset recipes) */
   --spacing-collapsed: --spacing(0);
 

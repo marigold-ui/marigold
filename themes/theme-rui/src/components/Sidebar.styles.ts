@@ -182,8 +182,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // the drawer always renders expanded, so the collapsed value never applies.
   railLayout: cva({
     base: [
-      '[--rail-w:6.5rem] data-[state=collapsed]:[--rail-w:4rem]',
-      '[--panel-w:15.5rem] data-[panel=collapsed]:[--panel-w:0rem]',
+      '[--rail-w:var(--spacing-rail)] data-[state=collapsed]:[--rail-w:var(--spacing-rail-collapsed)]',
+      '[--panel-w:var(--spacing-rail-panel)] data-[panel=collapsed]:[--panel-w:0rem]',
       // Same 200ms glide as the tiles' label fold (railItem).
       'transition-[grid-template-columns] duration-200 ease-in-out',
       'motion-reduce:transition-none',
@@ -229,9 +229,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // Content-hugging geometry: the tile is exactly icon + label + even py-2,
   // so the pill never covers empty space (a one-line label makes a shorter
   // tile than a hyphenated two-line one) and the gap between tiles is
-  // constant regardless of line count. The label keeps a fixed width
-  // (5.75rem — the tile's content width at the expanded 6.5rem rail) so it
-  // cannot re-wrap while the column width animates.
+  // constant regardless of line count. The label keeps a fixed width — the
+  // tile's content width at the *expanded* rail: `--spacing-rail` minus the
+  // tile's horizontal chrome (mx-1 + px-0.5 per side = 0.75rem). Deliberately
+  // derived from the token, not the animating `--rail-w`, so the label cannot
+  // re-wrap while the column width transitions.
   //
   // Collapsing folds the label row (grid-rows auto 1fr → auto 0fr) with the
   // same 200ms ease-in-out as the column width, while py grows 2 → 3 so each
@@ -279,7 +281,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // The label: same size as the panel's group captions, medium so it holds
       // its own under the icon. It is the foldable grid row: min-h-0 +
       // overflow-hidden let the 0fr row actually clip it.
-      '[&>span]:w-[5.75rem] [&>span]:min-h-0 [&>span]:overflow-hidden',
+      '[&>span]:w-[calc(var(--spacing-rail)-0.75rem)] [&>span]:min-h-0 [&>span]:overflow-hidden',
       '[&>span]:text-[0.6875rem] [&>span]:font-medium [&>span]:leading-tight',
       '[&>span]:break-words [&>span]:hyphens-auto',
       // Fade choreography (see block comment above).
