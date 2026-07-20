@@ -174,6 +174,7 @@ export type Theme = {
       | 'collapsibleTitle'
       | 'collapsibleDescription'
       | 'collapsibleContent'
+      | 'collapsibleIcon'
       | 'footer',
       ComponentStyleFunction<string, string>
     >;
