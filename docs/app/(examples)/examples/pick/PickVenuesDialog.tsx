@@ -157,7 +157,7 @@ const PickBody = ({
           Cancel
         </Button>
         <Button variant="primary" onPress={() => onConfirm(ids)}>
-          {confirmLabel} ({ids.length})
+          {confirmLabel} {ids.length} {ids.length === 1 ? 'venue' : 'venues'}
         </Button>
       </Dialog.Actions>
     </>

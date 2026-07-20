@@ -218,7 +218,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
           Cancel
         </Button>
         <Button variant="primary" onPress={() => onConfirm(selected)}>
-          Add ({staged.length})
+          Add {staged.length} {staged.length === 1 ? 'venue' : 'venues'}
         </Button>
       </Dialog.Actions>
     </>

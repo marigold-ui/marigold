@@ -58,10 +58,10 @@
 
   <!-- Divider + footer -->
   <line x1="290" y1="426" x2="570" y2="426" stroke="#dee2e6" stroke-width="2" />
-  <rect x="404" y="446" width="74" height="34" rx="8" fill="#ffffff" stroke="#868e96" stroke-width="1.5" />
-  <text x="441" y="468" font-size="14" fill="#495057" text-anchor="middle">Cancel</text>
-  <rect x="488" y="446" width="82" height="34" rx="8" fill="#1e1e1e" />
-  <text x="529" y="468" font-size="14" fill="#ffffff" text-anchor="middle">Add (3)</text>
+  <rect x="378" y="446" width="74" height="34" rx="8" fill="#ffffff" stroke="#868e96" stroke-width="1.5" />
+  <text x="415" y="468" font-size="14" fill="#495057" text-anchor="middle">Cancel</text>
+  <rect x="462" y="446" width="108" height="34" rx="8" fill="#1e1e1e" />
+  <text x="516" y="468" font-size="14" fill="#ffffff" text-anchor="middle">Add 3 records</text>
 
   <!-- Labels: left -->
   <g font-size="18" fill="#1e1e1e">

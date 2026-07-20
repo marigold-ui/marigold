@@ -72,7 +72,7 @@ The dialog is the pattern's default surface, and the most composed, so it is the
 - **Search:** A [`<SearchField>`](/components/form/search-field) that finds records by name as the user types, narrowing the visible rows without touching what is already staged.
 - **Filter controls (optional):** Criteria such as status or type, placed beside the search to slice a large pool further. The demo below pairs a type filter with the search.
 - **Results collection:** The matching records, shown as a [`<Table>`](/components/collection/table) when they carry detail worth scanning, such as a city and a capacity, or a plain list when the label is all there is. Checking a row stages it.
-- **Commit footer:** A cancel action discards the staged set and a primary action commits it, with the staged count carried in the primary button's label, "Add (3)".
+- **Commit footer:** A cancel action discards the staged set and a primary action commits it, with the staged count carried in the primary button's label, "Add 3 venues".
 
 The example below adds venues from a searchable, filterable, multi-select table, starting from nothing selected.
 
@@ -80,7 +80,7 @@ The example below adds venues from a searchable, filterable, multi-select table,
 
 A few details make the dialog trustworthy:
 
-- **Name the outcome in the commit button, and carry the count.** The primary action reads "Add (3)" rather than a generic "OK", so the user knows both what will happen and how much they are committing. Compose this button by hand from the staged count. The [`<ActionBar>`](/components/collection/actionbar) is built for floating bulk actions on a table, not for a dialog's commit footer, so it is the wrong fit here.
+- **Name the outcome in the commit button, and carry the count.** The primary action reads "Add 3 venues" rather than a generic "OK", so the user knows both what will happen and how much they are committing. Compose this button by hand from the staged count. The [`<ActionBar>`](/components/collection/actionbar) is built for floating bulk actions on a table, not for a dialog's commit footer, so it is the wrong fit here.
 - **Never clear staged selections while filtering.** Typing in the search narrows the visible rows, but records staged earlier stay staged even when they scroll out of view. Clearing them on every keystroke would make the pick impossible. This is the same tension as the filter paradox in [Table Records](/patterns/user-input/table-record-management).
 - **Show records the way the user recognizes them.** When a record carries detail worth scanning, such as a city or a capacity, give the collection columns with a [`<Table>`](/components/collection/table) rather than a bare name. A plain list is enough when the label stands on its own.
 - **Offer select all for bulk picks.** A header control that selects every row, shown in a mixed state while the selection is partial, saves the user from working through a long list by hand. Keep it paired with search and filters so "all" applies to a sensibly narrowed set.

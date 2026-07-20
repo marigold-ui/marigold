@@ -66,7 +66,8 @@ const PickCategoriesBody = ({ initial, onConfirm }: PickBodyProps) => {
           Cancel
         </Button>
         <Button variant="primary" onPress={() => onConfirm(selected)}>
-          Add ({selected.length})
+          Add {selected.length}{' '}
+          {selected.length === 1 ? 'category' : 'categories'}
         </Button>
       </Dialog.Actions>
     </>
