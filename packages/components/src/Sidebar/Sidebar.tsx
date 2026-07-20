@@ -20,11 +20,19 @@ import { flattenChildren } from './collection';
 /** True when a `Sidebar.Rail` sits among the children (two-level mode). */
 const hasRailChild = (children: ReactNode): boolean =>
   flattenChildren(children).some(
-    child => isValidElement(child) && child.type === SidebarRail
+    child =>
+      isValidElement(child) &&
+      // Brand check (not reference identity) — safe across HOCs and bundles,
+      // same as the other slot markers in the collection builders.
+      (child.type as { __SIDEBAR_RAIL__?: boolean }).__SIDEBAR_RAIL__ === true
   );
 
 export interface SidebarProps {
-  /** The sidebar content, typically `Sidebar.Header`, `Sidebar.Nav`, and `Sidebar.Footer`. */
+  /**
+   * The sidebar content, typically `Sidebar.Header`, `Sidebar.Nav`, and
+   * `Sidebar.Footer`. With a `Sidebar.Rail` child (two-level mode), the rail
+   * renders its own layout and `<Sidebar>` becomes a pure passthrough.
+   */
   children?: ReactNode;
 }
 

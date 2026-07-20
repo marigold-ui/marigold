@@ -1123,9 +1123,11 @@ describe('link activation', () => {
     item.focus();
 
     await user.keyboard('{Enter}');
+
     expect(handlePress).toHaveBeenCalledTimes(1);
 
     await user.keyboard(' ');
+
     expect(handlePress).toHaveBeenCalledTimes(2);
   });
 
@@ -1151,7 +1153,6 @@ describe('link activation', () => {
     // The branch trigger wraps its text in a span, so query by role (the
     // root panel is active, not inert).
     const trigger = screen.getByRole('link', { name: 'Settings' });
-
     // Observe (last in the bubble chain) whether anything upstream prevented
     // the browser's default new-tab open; then prevent it ourselves so jsdom
     // does not attempt a real navigation.
@@ -1161,6 +1162,7 @@ describe('link activation', () => {
       e.preventDefault();
     };
     document.addEventListener('click', observe);
+
     await user.keyboard('{Control>}');
     await user.click(trigger);
     await user.keyboard('{/Control}');

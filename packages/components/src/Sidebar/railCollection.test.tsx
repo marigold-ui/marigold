@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react';
+import { vi } from 'vitest';
 import { SidebarItem } from './SidebarItem';
 import { SidebarNav } from './SidebarNav';
 import { SidebarRailItem } from './SidebarRailItem';
@@ -36,12 +37,14 @@ const rail = () => [
 describe('buildRailCollection', () => {
   test('extracts the brand and footer slots', () => {
     const { header, footer } = buildRailCollection(rail());
+
     expect(header).toBeDefined();
     expect(footer).toBeDefined();
   });
 
   test('builds one node per RailItem, skipping slots', () => {
     const { nodes } = buildRailCollection(rail());
+
     expect(nodes.map(n => n.key)).toEqual([
       'uebersicht',
       'tickets',
@@ -51,6 +54,7 @@ describe('buildRailCollection', () => {
 
   test('classifies direct links vs sections', () => {
     const { nodes } = buildRailCollection(rail());
+
     const [uebersicht, tickets] = nodes;
     expect(uebersicht.isSection).toBe(false);
     expect(uebersicht.nav).toBeUndefined();
@@ -60,12 +64,14 @@ describe('buildRailCollection', () => {
 
   test('carries the icon and extracts the text value from string children', () => {
     const { nodes } = buildRailCollection(rail());
+
     expect(nodes[0].icon).toBeDefined();
     expect(nodes[0].textValue).toBe('Übersicht');
   });
 
   test('resolves a section href to its first leaf when none is given', () => {
     const { nodes } = buildRailCollection(rail());
+
     expect(nodes.find(n => n.key === 'tickets')?.href).toBe('/tickets/meine');
   });
 
@@ -78,11 +84,15 @@ describe('buildRailCollection', () => {
         </SidebarNav>
       </SidebarRailItem>,
     ];
-    expect(buildRailCollection(jsx).nodes[0].href).toBe('/tickets');
+
+    const { nodes } = buildRailCollection(jsx);
+
+    expect(nodes[0].href).toBe('/tickets');
   });
 
   test('derives the panel title from the nav aria-label', () => {
     const { nodes } = buildRailCollection(rail());
+
     expect(nodes.find(n => n.key === 'tickets')?.panelTitle).toBe('Tickets');
   });
 });
@@ -90,25 +100,38 @@ describe('buildRailCollection', () => {
 describe('resolveActiveRail (string mode)', () => {
   test('matches a section by one of its leaves', () => {
     const col = buildRailCollection(rail());
-    expect(resolveActiveRail(col, '/tickets/alle')).toBe('tickets');
+
+    const matched = resolveActiveRail(col, '/tickets/alle');
+
+    expect(matched).toBe('tickets');
   });
 
   test('matches a section by a deeper segment prefix', () => {
     const col = buildRailCollection(rail());
-    expect(resolveActiveRail(col, '/tickets/meine/42')).toBe('tickets');
+
+    const matched = resolveActiveRail(col, '/tickets/meine/42');
+
+    expect(matched).toBe('tickets');
   });
 
   test('matches a direct-link rail item', () => {
     const col = buildRailCollection(rail());
-    expect(resolveActiveRail(col, '/uebersicht')).toBe('uebersicht');
+
+    const matched = resolveActiveRail(col, '/uebersicht');
+
+    expect(matched).toBe('uebersicht');
   });
 
   test('returns null when nothing matches', () => {
     const col = buildRailCollection(rail());
-    expect(resolveActiveRail(col, '/unbekannt')).toBeNull();
+
+    const matched = resolveActiveRail(col, '/unbekannt');
+
+    expect(matched).toBeNull();
   });
 
   test('longest prefix wins across rail items', () => {
+    // /reports/weekly is a longer, more specific match than the /reports link.
     const jsx = [
       <SidebarRailItem key="a" id="a" icon={<i />} href="/reports">
         A
@@ -121,24 +144,83 @@ describe('resolveActiveRail (string mode)', () => {
       </SidebarRailItem>,
     ];
     const col = buildRailCollection(jsx);
-    // /reports/weekly is a longer, more specific match than the /reports link.
-    expect(resolveActiveRail(col, '/reports/weekly/2026')).toBe('b');
+
+    const matched = resolveActiveRail(col, '/reports/weekly/2026');
+
+    expect(matched).toBe('b');
   });
 });
 
 describe('resolveActiveRail (function mode)', () => {
   test('returns the first rail item whose leaf the predicate accepts', () => {
     const col = buildRailCollection(rail());
-    const active = resolveActiveRail(
+
+    const matched = resolveActiveRail(
       col,
       href => href === '/veranstaltungen/kommende'
     );
-    expect(active).toBe('veranstaltungen');
+
+    expect(matched).toBe('veranstaltungen');
   });
 
   test('returns null when the predicate accepts nothing', () => {
     const col = buildRailCollection(rail());
-    expect(resolveActiveRail(col, () => false)).toBeNull();
+
+    const matched = resolveActiveRail(col, () => false);
+
+    expect(matched).toBeNull();
+  });
+});
+
+describe('resolveActiveRail (explicit active)', () => {
+  const jsx = () => [
+    <SidebarRailItem key="a" id="a" icon={<i />} href="/a">
+      A
+    </SidebarRailItem>,
+    <SidebarRailItem key="b" id="b" icon={<i />} href="/b" active>
+      B
+    </SidebarRailItem>,
+  ];
+
+  test('an active rail item wins over href matching', () => {
+    const col = buildRailCollection(jsx());
+
+    const matched = resolveActiveRail(col, '/a');
+
+    expect(matched).toBe('b');
+  });
+
+  test('resolves without a current value', () => {
+    const col = buildRailCollection(jsx());
+
+    const matched = resolveActiveRail(col, undefined);
+
+    expect(matched).toBe('b');
+  });
+});
+
+describe('duplicate hrefs', () => {
+  test('warns in dev when rail destinations share an href', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const jsx = [
+      <SidebarRailItem key="a" id="a" icon={<i />} href="/reports">
+        A
+      </SidebarRailItem>,
+      <SidebarRailItem key="b" id="b" icon={<i />}>
+        B
+        <SidebarNav aria-label="B">
+          <SidebarItem href="/reports">Reports</SidebarItem>
+        </SidebarNav>
+      </SidebarRailItem>,
+    ];
+    const col = buildRailCollection(jsx);
+
+    resolveActiveRail(col, '/somewhere');
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringContaining('share the same href')
+    );
+    spy.mockRestore();
   });
 });
 
@@ -147,6 +229,7 @@ describe('useSidebarRailState', () => {
     const { result } = renderHook(() =>
       useSidebarRailState({ children: rail(), current: '/tickets/alle' })
     );
+
     expect(result.current.matchedKey).toBe('tickets');
     expect(result.current.selectedKey).toBe('tickets');
     expect(result.current.selectedNode?.key).toBe('tickets');
@@ -156,6 +239,7 @@ describe('useSidebarRailState', () => {
     const { result } = renderHook(() =>
       useSidebarRailState({ children: rail(), current: '/unbekannt' })
     );
+
     expect(result.current.matchedKey).toBeNull();
     expect(result.current.selectedKey).toBe('tickets');
   });
@@ -168,6 +252,7 @@ describe('useSidebarRailState', () => {
     expect(result.current.selectedKey).toBe('tickets');
 
     rerender({ current: '/veranstaltungen/kommende' });
+
     expect(result.current.matchedKey).toBe('veranstaltungen');
     expect(result.current.selectedKey).toBe('veranstaltungen');
   });
@@ -175,7 +260,7 @@ describe('useSidebarRailState', () => {
 
 describe('fragments', () => {
   test('buildRailCollection collects rail items wrapped in fragments', () => {
-    const { nodes } = buildRailCollection(
+    const jsx = (
       <>
         <SidebarRailItem id="a" icon={<i />} href="/a">
           A
@@ -187,6 +272,8 @@ describe('fragments', () => {
         </>
       </>
     );
+
+    const { nodes } = buildRailCollection(jsx);
 
     expect(nodes.map(node => node.key)).toEqual(['a', 'b']);
   });

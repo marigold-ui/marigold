@@ -44,45 +44,41 @@ describe('Sidebar.Rail — desktop', () => {
     );
   });
 
-  test('a direct-link rail item shows no panel but the toggle stays live', async () => {
+  test('a direct-link rail item shows no panel', async () => {
     render(<Rail.Component />);
-
-    const toggle = screen.getByRole('button', {
-      name: 'Navigation umschalten',
-    });
-    expect(toggle).toBeEnabled();
 
     await user.click(screen.getByRole('link', { name: 'Berichte' }));
 
-    // No section panel landmark remains once a direct link is selected...
     expect(
       screen.queryByRole('navigation', { name: 'Tickets' })
     ).not.toBeInTheDocument();
+  });
 
-    // ...but the toggle stays live: collapse now narrows the rail to an
-    // icon-only strip, so it has an effect even with no panel to hide.
-    expect(toggle).toBeEnabled();
-    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  test('the toggle stays live on a direct-link page — collapse narrows the rail to icons', async () => {
+    render(<Rail.Component />);
+    const toggle = screen.getByRole('button', {
+      name: 'Navigation umschalten',
+    });
+    await user.click(screen.getByRole('link', { name: 'Berichte' }));
+
     await user.click(toggle);
+
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
-    // Cmd+B is equally live.
     await user.keyboard('{Meta>}b{/Meta}');
+
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
 
   test('a direct-link rail item announces `page` once it is current', async () => {
     render(<Rail.Component />);
-
     const berichte = screen.getByRole('link', { name: 'Berichte' });
-    // Not the current page yet — the Tickets section is (as `true`, since a
-    // section is only the ancestor of the actual page).
     expect(berichte).not.toHaveAttribute('aria-current');
 
     await user.click(berichte);
 
-    // The direct link IS the page, so it announces `page`, and the former
-    // section ancestor drops its marker.
+    // The direct link IS the page, so it announces `page` (not the section
+    // ancestor's `true`), and the former ancestor drops its marker.
     await waitFor(() =>
       expect(berichte).toHaveAttribute('aria-current', 'page')
     );
@@ -156,7 +152,7 @@ describe('Sidebar.Rail — panel focus management', () => {
       name: 'Navigation umschalten',
     });
 
-    await user.click(toggle); // collapse the panel
+    await user.click(toggle);
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
     await user.click(screen.getByRole('link', { name: 'Tickets' }));
@@ -174,10 +170,9 @@ describe('Sidebar.Rail — tooltips on the collapsed rail', () => {
       name: 'Navigation umschalten',
     });
 
-    await user.click(toggle); // collapse → icon-only rail
+    await user.click(toggle);
 
-    // Hovering an icon-only tile surfaces the label as a tooltip after the
-    // trigger's warmup delay (1s).
+    // The tooltip surfaces after the trigger's warmup delay (1s).
     await user.hover(screen.getByRole('link', { name: 'Profil' }));
     await vi.advanceTimersByTimeAsync(1500);
 
@@ -191,9 +186,9 @@ describe('Sidebar.Rail — tooltips on the collapsed rail', () => {
 
     // First Tab lands on the first rail tile (the aside precedes the top bar).
     await user.tab();
-    expect(screen.getByRole('link', { name: 'Übersicht' })).toHaveFocus();
-
     await vi.advanceTimersByTimeAsync(2000);
+
+    expect(screen.getByRole('link', { name: 'Übersicht' })).toHaveFocus();
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 });
@@ -206,14 +201,14 @@ describe('Sidebar.Rail — controlled state', () => {
     });
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
-    // Toggle → onOpenChange → external state flips → rail collapses.
     await user.click(toggle);
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
     // Controlled mode leaves persistence to the owner — no cookie write.
     expect(document.cookie).not.toContain('marigold:sidebar:state=collapsed');
 
     await user.click(toggle);
+
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
 });
@@ -236,6 +231,7 @@ describe('Sidebar.Rail — mobile', () => {
 
   test('the drawer shows the rail and the active section panel side by side', async () => {
     render(<Rail.Component />);
+
     await openDrawer();
 
     // Both levels at once — the miniature of the desktop layout, not the old
@@ -260,7 +256,6 @@ describe('Sidebar.Rail — mobile', () => {
 
     await user.click(screen.getByRole('link', { name: 'Kontakte' }));
 
-    // Panel retargeted without navigating away or closing the drawer.
     expect(
       await screen.findByRole('navigation', { name: 'Kontakte' })
     ).toBeInTheDocument();
@@ -268,10 +263,17 @@ describe('Sidebar.Rail — mobile', () => {
       screen.queryByRole('navigation', { name: 'Tickets' })
     ).not.toBeInTheDocument();
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  });
 
-    // Re-tapping the active section is a no-op — the panel is always visible
-    // in the drawer, so there is nothing to toggle.
+  test('re-tapping the active section in the drawer is a no-op', async () => {
+    render(<Rail.Component />);
+    const toggle = await openDrawer();
     await user.click(screen.getByRole('link', { name: 'Kontakte' }));
+    await screen.findByRole('navigation', { name: 'Kontakte' });
+
+    await user.click(screen.getByRole('link', { name: 'Kontakte' }));
+
+    // The panel is always visible in the drawer, so there is nothing to toggle.
     expect(
       screen.getByRole('navigation', { name: 'Kontakte' })
     ).toBeInTheDocument();
@@ -309,6 +311,7 @@ describe('Sidebar.Rail — mobile', () => {
 
   test('opening the drawer moves focus to the panel heading', async () => {
     render(<Rail.Component />);
+
     await openDrawer();
 
     // The Dialog-less drawer autofocuses nothing on its own — the rail moves
@@ -320,11 +323,10 @@ describe('Sidebar.Rail — mobile', () => {
   test('on a page without a panel, focus falls to the first rail link', async () => {
     render(<Rail.Component />);
     const toggle = await openDrawer();
-
-    // Navigate to the direct-link page (closes the drawer), then reopen: no
-    // section is selected, so there is no panel heading to focus.
+    // Navigating to the direct-link page closes the drawer and leaves no
+    // section selected, so the reopened drawer has no panel heading to focus.
     await user.click(screen.getByRole('link', { name: 'Berichte' }));
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
     await user.click(toggle);
 
     const first = await screen.findByRole('link', { name: 'Übersicht' });
@@ -353,11 +355,11 @@ describe('modified clicks & keyboard activation', () => {
 
   test('ctrl+click on another section opens natively without swapping the panel', async () => {
     render(<Rail.Component />);
-
     const veranstaltungen = screen.getByRole('link', {
       name: 'Veranstaltungen',
     });
     const { result, stop } = observeNativeClick();
+
     await user.keyboard('{Control>}');
     await user.click(veranstaltungen);
     await user.keyboard('{/Control}');
@@ -375,14 +377,13 @@ describe('modified clicks & keyboard activation', () => {
 
   test('ctrl+click on the active section is not swallowed and does not toggle the panel', async () => {
     render(<Rail.Component />);
-
     const tickets = screen.getByRole('link', { name: 'Tickets' });
     const toggle = screen.getByRole('button', {
       name: 'Navigation umschalten',
     });
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
-
     const { result, stop } = observeNativeClick();
+
     await user.keyboard('{Control>}');
     await user.click(tickets);
     await user.keyboard('{/Control}');
@@ -419,9 +420,50 @@ describe('modified clicks & keyboard activation', () => {
     item.focus();
 
     await user.keyboard('{Enter}');
+
     expect(handlePress).toHaveBeenCalledTimes(1);
 
     await user.keyboard(' ');
+
     expect(handlePress).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('explicit active override', () => {
+  test('an active section wins over href matching and selects its panel', () => {
+    render(
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            {/* The URL matches "Tickets", but the explicit flag outranks it. */}
+            <Sidebar.Rail current="/tickets/meine">
+              <Sidebar.RailItem id="tickets" icon={<i />}>
+                Tickets
+                <Sidebar.Nav aria-label="Tickets">
+                  <Sidebar.Item href="/tickets/meine">
+                    Meine Tickets
+                  </Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar.RailItem>
+              <Sidebar.RailItem id="hilfe" icon={<i />} active>
+                Hilfe
+                <Sidebar.Nav aria-label="Hilfe">
+                  <Sidebar.Item href="/hilfe/faq">FAQ</Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar.RailItem>
+            </Sidebar.Rail>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    );
+
+    expect(screen.getByRole('link', { name: 'Hilfe' })).toHaveAttribute(
+      'aria-current',
+      'true'
+    );
+    expect(screen.getByRole('link', { name: 'Tickets' })).not.toHaveAttribute(
+      'aria-current'
+    );
+    expect(screen.getByRole('heading', { name: 'Hilfe' })).toBeInTheDocument();
   });
 });

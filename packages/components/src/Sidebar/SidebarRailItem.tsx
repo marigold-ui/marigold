@@ -24,7 +24,11 @@ export interface SidebarRailItemProps {
   href?: string;
   /** Click handler. */
   onPress?: () => void;
-  /** Whether this rail item represents the active section/destination. */
+  /**
+   * Marks this rail item as the current destination, overriding href matching —
+   * the escape hatch for a page the URL can't identify. The item announces
+   * `aria-current` and, for a section, its panel is selected.
+   */
   active?: boolean;
   /**
    * The rail label (plain text) plus, for a section, a nested `Sidebar.Nav`

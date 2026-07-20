@@ -9,6 +9,7 @@ import {
   firstLeafHref,
   flattenChildren,
   matchLeaves,
+  normalizePath,
 } from './collection';
 import type { SidebarCurrent } from './collection';
 
@@ -184,6 +185,10 @@ export const buildRailCollection = (
 /**
  * Resolve which rail item is the active ancestor of the current page.
  *
+ * - An explicit `active` flag on a `Sidebar.RailItem` always wins — the escape
+ *   hatch for a destination the URL can't identify (mirrors `Sidebar.Item`'s
+ *   `active`). It works with or without a `current` value; the first flagged
+ *   item in document order wins.
  * - **String mode** matches globally so the *longest* segment-prefix across all
  *   rail items wins, mirroring the single-column nav (`resolveCurrent`).
  * - **Function mode** returns the first rail item with a leaf (or direct-link
@@ -196,6 +201,9 @@ export const resolveActiveRail = (
   collection: SidebarRailCollection,
   current: SidebarCurrent | undefined
 ): string | null => {
+  const explicit = collection.nodes.find(node => node.active);
+  if (explicit) return explicit.key;
+
   if (current === undefined) return null;
 
   if (typeof current === 'function') {
@@ -228,6 +236,27 @@ export const resolveActiveRail = (
       const tag = `leaf-${index++}`;
       tagged.push({ key: tag, href: node.href });
       owner.set(tag, node.key);
+    }
+  }
+
+  // Cross-section duplicates never hit `resolveCurrent`'s per-nav warning
+  // (only the selected section's nav renders), so check the whole rail here.
+  if (process.env.NODE_ENV !== 'production') {
+    const seen = new Map<string, string>();
+    for (const leaf of tagged) {
+      if (!leaf.href) continue;
+      const href = normalizePath(leaf.href);
+      const existing = seen.get(href);
+      if (existing !== undefined) {
+        console.error(
+          `[Sidebar] Multiple rail destinations share the same href "${href}" ` +
+            `(rail items: "${owner.get(existing)}", "${owner.get(leaf.key)}"). ` +
+            `Active state matching will pick the first in document order. ` +
+            `Each destination should have a unique href.`
+        );
+      } else {
+        seen.set(href, leaf.key);
+      }
     }
   }
 

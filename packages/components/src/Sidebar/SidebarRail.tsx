@@ -1,22 +1,17 @@
 import { cloneElement, useLayoutEffect, useRef } from 'react';
-import type { ReactElement, ReactNode, Ref } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { Focusable } from 'react-aria-components/Focusable';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
-import {
-  handleLinkClick,
-  useLinkProps,
-  useObjectRef,
-  useRouter,
-} from '@react-aria/utils';
+import { handleLinkClick, useLinkProps, useRouter } from '@react-aria/utils';
 import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarModal } from './SidebarModal';
-import type { SidebarNavProps } from './SidebarNav';
 import type { SidebarCurrent } from './collection';
 import { activateOnEnterOrSpace, isModifiedClick } from './linkActivation';
+import { resolveRailActivation } from './railActivation';
 import type { SidebarRailNode } from './railCollection';
 import { useSidebarRailState } from './useSidebarRailState';
 
@@ -71,7 +66,6 @@ const RailItemLink = ({
   collapsed,
   className,
 }: RailItemLinkProps) => {
-  const ref = useObjectRef<HTMLAnchorElement>();
   const router = useRouter();
   const routerLinkProps = useLinkProps({ href: node.href });
 
@@ -87,7 +81,6 @@ const RailItemLink = ({
       <Focusable>
         <a
           {...routerLinkProps}
-          ref={ref}
           href={node.href}
           role={node.href ? undefined : 'button'}
           aria-current={ariaCurrent}
@@ -175,35 +168,18 @@ const SidebarRail = ({
   }, [isMobile, state]);
 
   // Returns whether the click should navigate (false = re-click toggle only).
+  // The decision matrix lives in `resolveRailActivation` (pure, unit-tested);
+  // this only maps its result onto the rail's state and refs.
   const activateRail = (node: SidebarRailNode): boolean => {
-    if (!node.isSection) {
-      selectRail(node.key);
-      // Mobile: the link leaves the page, so the drawer leaves with it.
-      if (isMobile) toggleSidebar();
-      return true;
-    }
-    if (isMobile) {
-      // The drawer shows rail and panel side by side, so a section tap only
-      // retargets the panel — navigating would close the drawer before the
-      // user picks a leaf. Re-tapping the active section is a no-op (there
-      // is no hidden panel to toggle).
-      if (node.key !== selectedKey) {
-        selectRail(node.key);
-        focusPendingRef.current = true;
-      }
-      return false;
-    }
-    if (node.key === selectedKey) {
-      // Re-click the active section: toggle the panel (VS Code model).
-      if (state === 'collapsed') focusPendingRef.current = true; // expanding
-      toggleSidebar();
-      return false;
-    }
-    // Switch section: swap the panel, ensure it is open, move focus to it.
-    selectRail(node.key);
-    if (state === 'collapsed') toggleSidebar();
-    focusPendingRef.current = true;
-    return true;
+    const action = resolveRailActivation(node, {
+      isMobile,
+      selectedKey,
+      state,
+    });
+    if (action.select) selectRail(node.key);
+    if (action.focusPanel) focusPendingRef.current = true;
+    if (action.toggle) toggleSidebar();
+    return action.navigate;
   };
 
   // The rail column is identical in both shells; only the icon-only collapse
@@ -258,9 +234,7 @@ const SidebarRail = ({
         <h2 ref={titleRef} tabIndex={-1} className={classNames.panelTitle}>
           {selectedNode.panelTitle}
         </h2>
-        {cloneElement(selectedNode.nav as ReactElement<SidebarNavProps>, {
-          current,
-        })}
+        {cloneElement(selectedNode.nav, { current })}
       </>
     ) : null;
 
@@ -334,5 +308,9 @@ const SidebarRail = ({
     </aside>
   );
 };
+
+// Brand for `Sidebar`'s rail-mode detection — reference identity (`child.type
+// === SidebarRail`) breaks across HOC wrappers and duplicate package installs.
+SidebarRail.__SIDEBAR_RAIL__ = true as const;
 
 export { SidebarRail };
