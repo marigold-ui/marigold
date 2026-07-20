@@ -43,14 +43,17 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
   // Hoists the nav's scroll timeline (see `nav`) into scope so the header and
   // footer — the header a *preceding* sibling — can drive their seams off it.
-  content: cva({ base: 'sm:w-64 ui-sidebar-seam-scope' }),
+  // --seam-color tints the seam with the faint surface rim, not the opaque default.
+  content: cva({
+    base: 'sm:w-64 ui-scroll-seam-scope [--seam-color:var(--color-surface-border)]',
+  }),
   // border-b-0: regions separate on whitespace, not the border ui-panel-* adds
   // for Panel. min-w-0: stop the grid column growing to its widest item and
   // overflowing the fixed w-64 aside, where overflow-hidden clips rows and the
   // pill. Seam: hidden at rest, fades in as content scrolls under the header;
   // inactive on a short (non-scrolling) nav.
   header: cva({
-    base: 'ui-panel-header h-14 min-w-0 border-b-0 ui-sidebar-seam-header',
+    base: 'ui-panel-header h-14 min-w-0 border-b-0 ui-scroll-seam-header',
   }),
   nav: cva({
     base: [
@@ -58,7 +61,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // edge; min-w-0 lets the row column collapse to the aside width.
       'flex flex-col min-w-0 py-1 overflow-y-auto outline-none',
       // Declares the named timeline the header/footer seams animate against.
-      'ui-scrollbar ui-sidebar-seam-timeline',
+      'ui-scrollbar ui-scroll-seam-timeline',
     ],
   }),
   // Ambient escape hatches, a step quieter than nav rows so they never compete
@@ -69,7 +72,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // header's, fading out as the list bottoms out.
   footer: cva({
     base: [
-      'flex flex-col gap-1 min-w-0 px-4 py-2 ui-sidebar-seam-footer',
+      'flex flex-col gap-1 min-w-0 px-4 py-2 ui-scroll-seam-footer',
       '[&_a]:-mx-2 [&_a]:h-7.5 [&_a]:px-2 [&_a]:rounded-surface [&_a]:text-sm',
       '[&_a]:text-secondary [&_a]:font-normal',
       '[&_a:hover]:bg-hover [&_a:hover]:text-foreground',
