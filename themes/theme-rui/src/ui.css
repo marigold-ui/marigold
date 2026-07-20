@@ -455,6 +455,10 @@
  * animation support the bar simply stays borderless — the sticky bar's opaque
  * background still separates it from passing content. Scroll-linked, so not
  * gated by `prefers-reduced-motion`.
+ *
+ * Only works when the bar is a *descendant* of the scroller (its own ancestor
+ * scrolls). For the sibling case — a header/footer flanking a scrolling body
+ * that is a grid sibling, not an ancestor — use `ui-scroll-seam-*` below.
  */
 @utility ui-scroll-edge {
   @supports (animation-timeline: scroll()) {
@@ -465,62 +469,63 @@
 }
 
 /*
- * ⚠️ NOT REUSABLE — Sidebar-specific. Coupled to the Sidebar's header/nav/footer
- * grid and its private `--sidebar-nav` timeline. (The general-purpose version is
- * `ui-scroll-edge` above.)
- *
- * Scroll-revealed seams for the sticky header and footer flanking the scrolling
- * nav. The nav is a grid *sibling*, not the seam's ancestor, so a plain
- * `scroll()` timeline can't reach it: the nav declares a NAMED timeline
- * (`--sidebar-nav` via `ui-sidebar-seam-timeline`), hoisted with `timeline-scope`
- * on the grid wrapper (`ui-sidebar-seam-scope`) so the preceding-sibling header
- * can see it too.
+ * Scroll-revealed seams for a sticky header/footer that flank a scrolling body
+ * which is a grid *sibling* (not an ancestor) of them, so an anonymous
+ * `scroll()` timeline (as `ui-scroll-edge` uses) can't reach it. The scroller
+ * declares a NAMED timeline (`--scroll-seam` via `ui-scroll-seam-timeline`),
+ * hoisted with `timeline-scope` on the common grid wrapper
+ * (`ui-scroll-seam-scope`) so a preceding-sibling header can reference it too.
  *
  *   - Header: seamless at rest; bottom hairline fades in over the first 12px.
- *   - Footer: top hairline shows until the list bottoms out, fading over the
+ *   - Footer: top hairline shows until the body bottoms out, fading over the
  *     last 12px.
  *
- * A `box-shadow` hairline, so it never affects layout. Without scroll-driven
- * animation the fallback pins both seams on as an always-on divider.
+ * Consumers: Dialog (header only), Sidebar (header + footer). The hairline
+ * color is `--seam-color` (default `--color-border`). The Sidebar overrides it
+ * to `--color-surface-border` on its grid wrapper. A `box-shadow` hairline, so
+ * it never affects layout. Sharing one timeline name across components is safe:
+ * each `timeline-scope` confines resolution to its own subtree, and Dialogs
+ * render in an overlay portal (never nested in the Sidebar's scope). Without
+ * scroll-driven animation the fallback pins the seam on as an always-on divider.
  */
-@keyframes sidebar-seam-header {
+@keyframes scroll-seam-header {
   to {
-    box-shadow: 0 1px 0 0 var(--color-surface-border);
+    box-shadow: 0 1px 0 0 var(--seam-color, var(--color-border));
   }
 }
-@keyframes sidebar-seam-footer {
+@keyframes scroll-seam-footer {
   from {
-    box-shadow: 0 -1px 0 0 var(--color-surface-border);
+    box-shadow: 0 -1px 0 0 var(--seam-color, var(--color-border));
   }
   to {
     box-shadow: 0 -1px 0 0 transparent;
   }
 }
 
-@utility ui-sidebar-seam-scope {
-  timeline-scope: --sidebar-nav;
+@utility ui-scroll-seam-scope {
+  timeline-scope: --scroll-seam;
 }
-@utility ui-sidebar-seam-timeline {
-  scroll-timeline: --sidebar-nav block;
+@utility ui-scroll-seam-timeline {
+  scroll-timeline: --scroll-seam block;
 }
 
-@utility ui-sidebar-seam-header {
+@utility ui-scroll-seam-header {
   @supports (animation-timeline: scroll()) {
-    animation: sidebar-seam-header linear both;
-    animation-timeline: --sidebar-nav;
+    animation: scroll-seam-header linear both;
+    animation-timeline: --scroll-seam;
     animation-range: 0 12px;
   }
   @supports not (animation-timeline: scroll()) {
-    box-shadow: 0 1px 0 0 var(--color-surface-border);
+    box-shadow: 0 1px 0 0 var(--seam-color, var(--color-border));
   }
 }
-@utility ui-sidebar-seam-footer {
+@utility ui-scroll-seam-footer {
   @supports (animation-timeline: scroll()) {
-    animation: sidebar-seam-footer linear both;
-    animation-timeline: --sidebar-nav;
+    animation: scroll-seam-footer linear both;
+    animation-timeline: --scroll-seam;
     animation-range: calc(100% - 12px) 100%;
   }
   @supports not (animation-timeline: scroll()) {
-    box-shadow: 0 -1px 0 0 var(--color-surface-border);
+    box-shadow: 0 -1px 0 0 var(--seam-color, var(--color-border));
   }
 }

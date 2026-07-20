@@ -6,6 +6,7 @@ import {
   Disabled,
   EmptyState,
   Horizontal,
+  WithActionMenu,
   WithError,
   WithIconAction,
   WithMultiSelection,
@@ -326,6 +327,26 @@ describe('SelectList', () => {
 
       expect(label).toBeInTheDocument();
       expect(row).toBeInTheDocument();
+    });
+
+    test('applies the action slot placement to a trailing action button', () => {
+      render(<WithIconAction.Component />);
+
+      const action = screen.getByRole('button', {
+        name: /learn more about credit card/i,
+      });
+
+      // Action spans both rows so a tall control doesn't stretch the title row and gap the description.
+      expect(action).toHaveClass('col-start-3', 'row-span-2');
+    });
+
+    test('applies the action slot placement to a trailing ActionMenu trigger', () => {
+      render(<WithActionMenu.Component />);
+
+      // ActionMenu's trigger reads the Marigold ButtonContext through a different chain than a plain Button.
+      const trigger = screen.getAllByRole('button', { name: /manage/i })[0];
+
+      expect(trigger).toHaveClass('col-start-3', 'row-span-2');
     });
   });
 
