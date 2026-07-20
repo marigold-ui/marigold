@@ -1175,3 +1175,57 @@ describe('link activation', () => {
     expect(rootPanel).toHaveAttribute('data-position', 'active');
   });
 });
+
+describe('roving tab stop follows the route', () => {
+  const Nav = ({ current }: { current: string }) => (
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav current={current}>
+              <Sidebar.Item href="/a">A</Sidebar.Item>
+              <Sidebar.Item href="/b">B</Sidebar.Item>
+              <Sidebar.Item href="/c">C</Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
+  );
+
+  test('an external route change re-syncs the tab stop to the current page', async () => {
+    const { rerender } = render(<Nav current="/a" />);
+    // The current page is the panel's single tab stop.
+    expect(screen.getByRole('link', { name: 'A' })).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
+
+    await user.tab();
+    await user.keyboard('{ArrowDown}{ArrowDown}');
+
+    // The user has roved focus down; that item takes over the tab stop.
+    expect(screen.getByRole('link', { name: 'C' })).toHaveFocus();
+    expect(screen.getByRole('link', { name: 'C' })).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
+    expect(screen.getByRole('link', { name: 'A' })).toHaveAttribute(
+      'tabindex',
+      '-1'
+    );
+
+    rerender(<Nav current="/b" />);
+
+    // Navigating elsewhere moves the tab stop to the new current page, not the
+    // stale roved item.
+    expect(screen.getByRole('link', { name: 'B' })).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
+    expect(screen.getByRole('link', { name: 'C' })).toHaveAttribute(
+      'tabindex',
+      '-1'
+    );
+  });
+});

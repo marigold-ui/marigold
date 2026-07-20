@@ -25,6 +25,9 @@ links close the drawer.
   `--spacing-rail` / `--spacing-rail-collapsed` / `--spacing-rail-panel`.
 - Idle single-column nav labels darken a step (new `--color-secondary-bold` token,
   charcoal-700) so they clearly out-rank the quiet group-label captions.
+- Keyboard: the rail supports arrow-key (and Home/End) movement on top of its flat
+  tab order, and the section panel's tab stop re-syncs to the current page when the
+  route changes, so Tab re-enters at the active item.
 - The `TopNavigation` bottom edge is now an always-on border. The non-reusable
   `ui-scroll-edge` and `ui-sidebar-seam-header` utilities are removed — the sticky
   bar and the sidebar header carry a plain border instead.

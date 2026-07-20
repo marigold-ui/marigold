@@ -136,6 +136,36 @@ describe('Sidebar.Rail — Ctrl+B keyboard shortcut (non-meta, ctrlKey)', () => 
   });
 });
 
+describe('Sidebar.Rail — arrow-key navigation', () => {
+  test('arrow keys move between tiles on top of flat tabbing', async () => {
+    render(<Rail.Component />);
+    await user.tab();
+    const uebersicht = screen.getByRole('link', { name: 'Übersicht' });
+    expect(uebersicht).toHaveFocus();
+
+    await user.keyboard('{ArrowDown}');
+
+    expect(screen.getByRole('link', { name: 'Tickets' })).toHaveFocus();
+
+    await user.keyboard('{ArrowUp}');
+
+    expect(uebersicht).toHaveFocus();
+  });
+
+  test('End and Home jump across the whole rail, including the pinned footer', async () => {
+    render(<Rail.Component />);
+    await user.tab();
+
+    await user.keyboard('{End}');
+
+    expect(screen.getByRole('link', { name: 'Profil' })).toHaveFocus();
+
+    await user.keyboard('{Home}');
+
+    expect(screen.getByRole('link', { name: 'Übersicht' })).toHaveFocus();
+  });
+});
+
 describe('Sidebar.Rail — panel focus management', () => {
   test('switching sections moves focus to the panel heading', async () => {
     render(<Rail.Component />);

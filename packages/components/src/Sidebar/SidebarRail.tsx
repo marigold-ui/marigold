@@ -13,6 +13,7 @@ import type { SidebarCurrent } from './collection';
 import { activateOnEnterOrSpace, isModifiedClick } from './linkActivation';
 import { resolveRailActivation } from './railActivation';
 import type { SidebarRailNode } from './railCollection';
+import { usePanelKeyboard } from './useSidebarNav';
 import { useSidebarRailState } from './useSidebarRailState';
 
 export interface SidebarRailProps {
@@ -148,6 +149,11 @@ const SidebarRail = ({
 
   const footerNodes = nodes.filter(node => node.inFooter);
 
+  // Arrow keys (+ Home/End) move between tiles on top of the rail's flat
+  // tabbing — every tile stays a tab stop (no roving), arrows are a shortcut.
+  const railNavRef = useRef<HTMLElement>(null);
+  const { onKeyDown: onRailKeyDown } = usePanelKeyboard(railNavRef);
+
   useLayoutEffect(() => {
     if (!focusPendingRef.current || !hasPanel) return;
     focusPendingRef.current = false;
@@ -184,8 +190,10 @@ const SidebarRail = ({
   const railColumn = (collapsed: boolean) => (
     <div className={classNames.railColumn}>
       <nav
+        ref={railNavRef}
         aria-label={ariaLabel || stringFormatter.format('railNavigation')}
         className="flex min-h-0 flex-1 flex-col overflow-hidden"
+        onKeyDown={onRailKeyDown}
       >
         <div className={classNames.rail}>
           {nodes
