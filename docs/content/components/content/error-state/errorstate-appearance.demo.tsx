@@ -1,7 +1,8 @@
-import { Button, ErrorState } from '@marigold/components';
+import { Button, ErrorState, ErrorStateProps } from '@marigold/components';
 
-export default () => (
+export default (props: ErrorStateProps) => (
   <ErrorState
+    {...props}
     title="We can't load this data"
     description="Something went wrong on our side. Your data is safe."
     action={
