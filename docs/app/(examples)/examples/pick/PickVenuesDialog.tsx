@@ -103,6 +103,7 @@ const PickBody = ({
           {stagedVenues.length > 0 && (
             <Tag.Group
               label={`Staged (${stagedVenues.length})`}
+              selectionMode="none"
               onRemove={unstage}
             >
               {stagedVenues.map(venue => (

@@ -167,7 +167,11 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
               the search and filter are doing, including when the list below is
               empty. Removing a chip unstages that venue. */}
           {staged.length > 0 && (
-            <Tag.Group label={`Staged (${staged.length})`} onRemove={unstage}>
+            <Tag.Group
+              label={`Staged (${staged.length})`}
+              selectionMode="none"
+              onRemove={unstage}
+            >
               {staged.map(venue => (
                 <Tag key={venue.id} id={venue.id}>
                   {venue.name}
