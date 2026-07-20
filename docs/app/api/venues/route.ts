@@ -35,6 +35,8 @@ export const GET = async (request: NextRequest) => {
     price: number(searchParams.get('price')),
     rating: number(searchParams.get('rating')),
     traits: searchParams.getAll('traits'),
+    city: searchParams.getAll('city'),
+    available: searchParams.getAll('available'),
     types: numberArray(searchParams.getAll('types')),
     amenities: numberArray(searchParams.getAll('amenities')),
     parking: numberArray(searchParams.getAll('parking')),

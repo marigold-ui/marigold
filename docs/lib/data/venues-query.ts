@@ -30,6 +30,13 @@ export interface VenueQueryParams {
   rating?: number;
   /** Venue must carry at least one of these traits. `[]` means "no filter". */
   traits?: string[];
+  /** Venue must be in one of these cities. `[]` means "no filter". */
+  city?: string[];
+  /**
+   * `[start, end]` ISO dates; the venue's next available date must fall
+   * within the range. `[]` (or anything but a pair) means "no filter".
+   */
+  available?: string[];
   /** Venue type indexes (into `venueTypes`). `[]` means "no filter". */
   types?: number[];
   /** Venue must offer ALL of these amenity indexes. `[]` means "no filter". */
@@ -95,6 +102,8 @@ const buildVenuePredicate = (
     price = MAX_PRICE,
     rating = 0,
     traits = [],
+    city = [],
+    available = [],
     types = [],
     amenities = [],
     parking = [],
@@ -113,6 +122,14 @@ const buildVenuePredicate = (
     if (price < MAX_PRICE && venue.price.to > price) return false;
     if (skip !== 'rating' && rating > 0 && venue.rating < rating) return false;
     if (traits.length > 0 && !venue.traits.some(t => traits.includes(t))) {
+      return false;
+    }
+    if (city.length > 0 && !city.includes(venue.city)) return false;
+    // ISO dates compare correctly as strings.
+    if (
+      available.length === 2 &&
+      (venue.nextAvailable < available[0] || venue.nextAvailable > available[1])
+    ) {
       return false;
     }
     if (skip !== 'types' && types.length > 0 && !types.includes(venue.type)) {

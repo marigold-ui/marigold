@@ -21,6 +21,10 @@ export const defaultFilter = {
   traits: [] as string[],
   rating: 0,
   types: [] as number[],
+  city: [] as string[],
+  // `[start, end]` ISO dates, or `[]` for "no filter". One key for the whole
+  // range, so it reads as one filter: one applied tag, removed as one.
+  available: [] as string[],
   amenities: [] as number[],
   parking: [] as number[],
   seating: [] as number[],
@@ -36,6 +40,9 @@ export type FilterFormData = {
   traits?: string | string[];
   rating?: string;
   types?: string | string[];
+  city?: string | string[];
+  availableStart?: string;
+  availableEnd?: string;
   amenities?: string | string[];
   parking?: string | string[];
   seating?: string | string[];
@@ -75,6 +82,12 @@ export const formToFilter = (data: FilterFormData): VenueFilter => {
     traits: toArray(data.traits),
     rating: toPositiveNumber(data.rating, defaultFilter.rating),
     types: toNumberArray(data.types),
+    city: toArray(data.city),
+    // A half-filled range is not a filter yet: both dates or nothing.
+    available:
+      data.availableStart && data.availableEnd
+        ? [data.availableStart, data.availableEnd]
+        : defaultFilter.available,
     amenities: toNumberArray(data.amenities),
     parking: toNumberArray(data.parking),
     seating: toNumberArray(data.seating),
@@ -90,6 +103,10 @@ export const useFilter = () => {
       traits: parseAsArrayOf(parseAsString).withDefault(defaultFilter.traits),
       rating: parseAsInteger.withDefault(defaultFilter.rating),
       types: parseAsArrayOf(parseAsInteger).withDefault(defaultFilter.types),
+      city: parseAsArrayOf(parseAsString).withDefault(defaultFilter.city),
+      available: parseAsArrayOf(parseAsString).withDefault(
+        defaultFilter.available
+      ),
       amenities: parseAsArrayOf(parseAsInteger).withDefault(
         defaultFilter.amenities
       ),

@@ -65,6 +65,28 @@ describe('GET /api/venues', () => {
     ).toBe(true);
   });
 
+  it('filters by city (match any)', async () => {
+    const city = venues[0].city;
+    const body = await get(`?pageSize=all&city=${encodeURIComponent(city)}`);
+    expect(body.items.length).toBeGreaterThan(0);
+    expect(body.items.every(v => v.city === city)).toBe(true);
+  });
+
+  it('filters by availability range', async () => {
+    // A range that covers exactly the first venue's next available date.
+    const date = venues[0].nextAvailable;
+    const body = await get(`?pageSize=all&available=${date}&available=${date}`);
+    expect(body.items.length).toBeGreaterThan(0);
+    expect(body.items.every(v => v.nextAvailable === date)).toBe(true);
+  });
+
+  it('ignores a half-open availability range', async () => {
+    const body = await get(
+      `?pageSize=all&available=${venues[0].nextAvailable}`
+    );
+    expect(body.totalItems).toBe(venues.length);
+  });
+
   it('ignores non-numeric option indexes', async () => {
     const body = await get('?pageSize=all&types=abc');
     expect(body.totalItems).toBe(venues.length);

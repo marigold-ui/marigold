@@ -8,7 +8,7 @@ import {
 } from '@/lib/data/venues';
 import type { ReactNode } from 'react';
 import { Tag } from '@marigold/components';
-import { NumericFormat } from '@marigold/system';
+import { DateFormat, NumericFormat } from '@marigold/system';
 import {
   type FilterKeys,
   type VenueFilter,
@@ -24,6 +24,10 @@ const formatValues = (values: string[]) =>
 
 const fromOptions = (indexes: number[], options: readonly string[]) =>
   formatValues(indexes.map(i => options[i]).filter(Boolean));
+
+// Parse an ISO date as local midnight, so the formatted day never shifts
+// across timezones the way `new Date('YYYY-MM-DD')` (UTC midnight) can.
+const toLocalDate = (iso: string) => new Date(`${iso}T00:00:00`);
 
 // Called only for keys returned by activeFilterKeys(), so the value is
 // guaranteed not to match its default sentinel.
@@ -53,6 +57,21 @@ const getLabel = (filter: VenueFilter, key: FilterKeys): ReactNode => {
       return <>Min. Rating: {filter.rating} ★</>;
     case 'types':
       return <>Type: {fromOptions(filter.types, venueTypes)}</>;
+    case 'city':
+      return <>City: {formatValues(filter.city)}</>;
+    case 'available':
+      return (
+        <>
+          Available:{' '}
+          <DateFormat
+            value={[
+              toLocalDate(filter.available[0]),
+              toLocalDate(filter.available[1]),
+            ]}
+            dateStyle="medium"
+          />
+        </>
+      );
     case 'amenities':
       return <>Amenities: {fromOptions(filter.amenities, amenitiesOptions)}</>;
     case 'parking':

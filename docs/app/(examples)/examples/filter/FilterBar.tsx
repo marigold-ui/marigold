@@ -4,17 +4,20 @@ import {
   amenitiesOptions,
   parkingOptions,
   seatingTypeOptions,
+  venueCities,
   venueTraits,
   venueTypes,
 } from '@/lib/data/venues';
 import type { VenueFacets } from '@/lib/data/venues-query';
+import { parseDate } from '@internationalized/date';
 import { useQueryClient } from '@tanstack/react-query';
-import { type FormEvent, useRef, useState } from 'react';
+import { type SubmitEvent, useRef, useState } from 'react';
 import {
   Accordion,
   Badge,
   Button,
   Checkbox,
+  DateRangePicker,
   Drawer,
   Form,
   Inline,
@@ -25,6 +28,7 @@ import {
   Slider,
   Stack,
   Tag,
+  TagField,
   Text,
   VisuallyHidden,
   parseFormData,
@@ -85,10 +89,16 @@ const OptionGroup = ({
 
 // Which filter keys live in which panel section, for the header badges.
 const SECTION_KEYS: Record<string, FilterKeys[]> = {
-  essentials: ['types', 'capacity', 'price'],
+  essentials: ['types', 'city', 'available', 'capacity', 'price'],
   quality: ['rating', 'traits'],
   facilities: ['amenities', 'parking', 'seating'],
 };
+
+// `[start, end]` ISO strings from the URL → a DateRangePicker range value.
+const toDateRange = (available: string[]) =>
+  available.length === 2
+    ? { start: parseDate(available[0]), end: parseDate(available[1]) }
+    : null;
 
 // Collapsed sections must not hide active filters, so each header carries the
 // number of active filters inside it.
@@ -107,10 +117,17 @@ const FilterForm = ({
   filter,
   facets,
   sectionCounts,
+  onDraftChange,
 }: {
   filter: VenueFilter;
   facets?: VenueFacets;
   sectionCounts: Record<string, number>;
+  /**
+   * TagField and DateRangePicker render their overlays in portals, outside
+   * the wrapper that listens for draft changes (see FilterBar), so they
+   * report changes through their own onChange instead.
+   */
+  onDraftChange: () => void;
 }) => (
   <Accordion allowsMultipleExpanded defaultExpandedKeys={['essentials']}>
     <Accordion.Item id="essentials">
@@ -123,6 +140,26 @@ const FilterForm = ({
             options={venueTypes}
             selected={filter.types}
             counts={facets?.types}
+          />
+          <TagField
+            label="City"
+            name="city"
+            placeholder="Search cities..."
+            defaultValue={filter.city}
+            onChange={onDraftChange}
+          >
+            {venueCities.map(city => (
+              <TagField.Option key={city} id={city}>
+                {city}
+              </TagField.Option>
+            ))}
+          </TagField>
+          <DateRangePicker
+            label="Available between"
+            startName="availableStart"
+            endName="availableEnd"
+            defaultValue={toDateRange(filter.available)}
+            onChange={onDraftChange}
           />
           <NumberField
             label="Min. Capacity"
@@ -281,6 +318,28 @@ const RatingQuickFilter = () => {
   );
 };
 
+// Date is a frequent filter, so it earns a spot in the bar. The built-in
+// presets put the common ranges one click away; the calendar in the same
+// popover covers everything else.
+const AvailabilityQuickFilter = () => {
+  const { filter, setFilter } = useFilter();
+
+  return (
+    <DateRangePicker
+      aria-label="Availability"
+      presets={['next-7-days', 'next-30-days', 'this-month', 'this-quarter']}
+      value={toDateRange(filter.available)}
+      onChange={range =>
+        setFilter({
+          available: range
+            ? [range.start.toString(), range.end.toString()]
+            : [],
+        })
+      }
+    />
+  );
+};
+
 export const FilterBar = () => {
   const [search, setSearch] = useSearch();
   const { filter, setFilterFromForm, activeFilterKeys } = useFilter();
@@ -318,7 +377,7 @@ export const FilterBar = () => {
     }, 0);
   };
 
-  const onFilterSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onFilterSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFilterFromForm(parseFormData<FilterFormData>(e));
     setOpen(false);
@@ -338,6 +397,7 @@ export const FilterBar = () => {
         />
         <TypeQuickFilter />
         <RatingQuickFilter />
+        <AvailabilityQuickFilter />
         <Drawer.Trigger open={open} onOpenChange={onOpenChange}>
           <Button>
             <ListFilter /> All filters
@@ -359,6 +419,7 @@ export const FilterBar = () => {
                     filter={filter}
                     facets={facets}
                     sectionCounts={sectionCounts}
+                    onDraftChange={updateDraft}
                   />
                 </div>
               </Drawer.Content>

@@ -34,6 +34,8 @@ const toSearchParams = (params: FetchVenuesParams) => {
 
   // Repeatable params — one entry each, read server-side with `getAll`.
   params.traits?.forEach(trait => search.append('traits', trait));
+  params.city?.forEach(city => search.append('city', city));
+  params.available?.forEach(date => search.append('available', date));
   params.types?.forEach(type => search.append('types', String(type)));
   params.amenities?.forEach(a => search.append('amenities', String(a)));
   params.parking?.forEach(p => search.append('parking', String(p)));

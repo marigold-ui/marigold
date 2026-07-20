@@ -30,6 +30,8 @@ export const useVenues = () => {
     rating: filter.rating,
     traits: filter.traits,
     types: filter.types,
+    city: filter.city,
+    available: filter.available,
     amenities: filter.amenities,
     parking: filter.parking,
     seating: filter.seating,
