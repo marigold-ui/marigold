@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Basic, Error } from './Radio.stories';
+import { Basic, Error, WithOwnWidth } from './Radio.stories';
 
 // Tests
 // ---------------
@@ -51,4 +51,26 @@ test('radio group can be horizontal', () => {
 
   const group = screen.getByTestId('group');
   expect(group).toHaveClass('flex-row');
+});
+
+test('applies width variable when set directly on an individual radio', () => {
+  render(<WithOwnWidth.Component />);
+
+  const radio = screen.getByRole('radio', { name: 'Option 1' });
+  // eslint-disable-next-line testing-library/no-node-access
+  const field = radio.closest('div[data-rac]') as HTMLElement;
+  expect(field).toHaveClass('w-(--field-width)');
+  expect(field.style.getPropertyValue('--field-width')).toBe(
+    'calc((1 / 2) * 100%)'
+  );
+});
+
+test('does not re-apply width on individual radios inside a sized group', () => {
+  render(<Basic.Component width="1/2" />);
+
+  const radio = screen.getByRole('radio', { name: 'Option 1' });
+  // eslint-disable-next-line testing-library/no-node-access
+  const field = radio.closest('div[data-rac]');
+  expect(field).toHaveClass('w-full');
+  expect(field).not.toHaveClass('w-(--field-width)');
 });
