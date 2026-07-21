@@ -104,6 +104,8 @@ The page itself scrolls. `<AppShell>` does not create an interior scroll contain
 
 Page-level scroll keeps native browser behaviour (mobile URL-bar collapse, pull-to-refresh, scroll restoration on back/forward, `Cmd+F` find-in-page, and anchor links) working without extra wiring.
 
+By default the shell claims the full viewport height. To render it inside a bounded container instead, for example an embedded preview, set the `--ui-viewport-height` custom property on a wrapper element. The shell and its sidebar then size against that value instead of `100dvh`. The demos on this page use it to fit the preview pane.
+
 <GuidelineTiles>
   <Dont>
     <DontDescription>

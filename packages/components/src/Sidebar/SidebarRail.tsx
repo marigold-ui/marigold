@@ -291,8 +291,9 @@ const SidebarRail = ({
       data-state={state}
       className={cn(
         // The full-width top bar sits above the rail, so the aside starts below
-        // it and sticks to that offset.
-        'top-topbar sticky h-[calc(100dvh-var(--spacing-topbar))] self-start [grid-area:sidebar]',
+        // it and sticks to that offset. --ui-viewport-height lets a bounded
+        // container (docs demos, embedded shells) stand in for the viewport.
+        'top-topbar sticky h-[calc(var(--ui-viewport-height,100dvh)-var(--spacing-topbar))] self-start [grid-area:sidebar]',
         classNames.railRoot
       )}
     >

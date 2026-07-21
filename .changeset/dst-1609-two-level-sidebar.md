@@ -34,3 +34,7 @@ and links close the drawer.
 - The `AppShell` header row is now sized `auto` (was a fixed `3.5rem`), so a shell
   without a `TopNavigation` no longer reserves an empty header band, so the row
   collapses to the height of its content.
+- The shell's viewport-height claims (`AppShell` grid, sidebar and rail asides) read
+  the new `--ui-viewport-height` custom property with a `100dvh` fallback. Set it on a
+  wrapper to render the shell inside a bounded container (embedded previews, demos)
+  instead of the browser viewport. Nothing changes when it is unset.

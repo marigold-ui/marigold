@@ -61,7 +61,9 @@ export const AppShell = ({
       // header-first: the top bar spans full width so its brand never moves
       // when the panel collapses, and the rail hangs below it.
       className={cn(
-        'grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[auto_1fr]',
+        // --ui-viewport-height lets a bounded container (docs demos, embedded
+        // shells) stand in for the browser viewport the shell normally fills.
+        'grid min-h-[var(--ui-viewport-height,100dvh)] grid-cols-[auto_1fr] grid-rows-[auto_1fr]',
         "[grid-template-areas:'sidebar_header'_'sidebar_main']",
         "[&:has([data-rail])]:[grid-template-areas:'header_header'_'sidebar_main']"
       )}

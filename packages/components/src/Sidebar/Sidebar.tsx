@@ -59,7 +59,9 @@ const SidebarBase = ({
       aria-label={stringFormatter.format('sidebar')}
       data-state={state}
       className={cn(
-        'sticky top-0 h-dvh self-start [grid-area:sidebar]',
+        // --ui-viewport-height lets a bounded container (docs demos, embedded
+        // shells) stand in for the browser viewport the sidebar normally fills.
+        'sticky top-0 h-[var(--ui-viewport-height,100dvh)] self-start [grid-area:sidebar]',
         classNames.root
       )}
     >
