@@ -11,7 +11,7 @@
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
     "postinstall": "fumadocs-mdx && pnpm build:registry",
     "lint": "eslint",
-    "build:assets": "concurrently -n registry,changelog,manifest,examples,types 'pnpm build:registry' 'pnpm build:changelog' 'pnpm build:manifest' 'pnpm build:examples' 'pnpm build:types' && pnpm build:md",
+    "build:assets": "concurrently -n registry,changelog,manifest,examples,types \"pnpm build:registry\" \"pnpm build:changelog\" \"pnpm build:manifest\" \"pnpm build:examples\" \"pnpm build:types\" && pnpm build:md",
     "build:registry": "node scripts/build-registry.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs",
     "build:types": "tsx scripts/build-types.ts",

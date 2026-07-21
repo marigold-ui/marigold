@@ -4,11 +4,15 @@ description: Show a list of things the user operates in place, without leaving t
 badge: beta
 ---
 
-A `<ListView>` renders a non-form list of rows the user acts on without leaving the page, like muting a notification or renaming a resource. Unlike [`<SelectList>`](/components/form/selectlist) or [`<Select>`](/components/form/select), a `<ListView>` never becomes a submitted value: there is no selection, no hidden input, no `name`/`form`/`validate`. It exists so rows can host interactive controls, such as a `<Switch>` or `<ActionMenu>`, with correct grid semantics and keyboard navigation.
+import { ListViewAnatomy } from './listview-anatomy';
+
+A `<ListView>` renders a list of rows the user acts on in place, like muting a notification. Each row can host its own interactive controls, such as a `<Switch>` or `<ActionMenu>`, backed by grid semantics so arrow keys move focus between rows and tab reaches the controls inside one.
 
 ## Anatomy
 
 A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` rows. Each row is authored as flat children: an optional leading icon or image, the row's text (`<TextValue>`/`<Description>`, or `<Title>` for a heading-like row), and optional trailing controls.
+
+<ListViewAnatomy />
 
 - **List:** The grid container. Requires `aria-label` or `aria-labelledby`.
 - **Item:** A single row (`role="row"`). Not selectable or toggleable by ListView itself.
@@ -25,47 +29,41 @@ A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` 
 
 ## Usage
 
-### Which list component?
+`<ListView>` shows up wherever a list needs to stay interactive after it renders, flipping a setting or sharing a document without leaving the page. It fits rows that need their own controls, like a switch or a menu, operated directly instead of through a link to another screen.
 
-Marigold has several list-shaped components. Picking the wrong one either strips accessibility semantics your rows need, or adds semantics they don't. Match the component to what the user does with a row:
+Each row owns its own state and its own controls, so actions typically fire per row rather than as a batch. The rest of this section covers the row shapes `<ListView>` supports most often, and how to tell it apart from Marigold's other list-shaped components.
 
-| The user is going to…                                        | Component                                                                             |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
-| Read a static list                                           | [`<List>`](/components/content/list)                                                  |
-| Pick one/some from a set (it becomes a value)                | [`<SelectList>`](/components/form/selectlist) / [`<Select>`](/components/form/select) |
-| Fire a command that closes the surface                       | [`<Menu>`](/components/actions/menu)                                                  |
-| Compare rows across columns                                  | [`<Table>`](/components/collection/table)                                             |
-| Operate items in place (toggle / dismiss / act), staying put | `<ListView>`                                                                          |
+### `<ListView>` vs. selection lists
 
-`<ListView>`'s closest neighbor is a non-form selection list built on `ListBox`/`option` semantics, where the row itself is the only focusable target. `<ListView>` uses `grid`/`row`/`gridcell` semantics instead, which is required once rows hold their own focusable controls.
+`<ListView>`'s closest neighbor is [`<SelectList>`](/components/form/selectlist), where the row itself is the only focusable target. `<ListView>` gives each row its own `grid`/`row`/`gridcell` semantics instead, which is required once rows hold their own focusable controls.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Reach for `<ListView>` when a row needs its own button, switch, or menu
-      that the user operates without navigating away.
+      Reach for `<ListView>` over `<SelectList>` once a row needs its own
+      focusable button, switch, or menu, `<SelectList>` rows are only
+      clickable as a whole and can't host separate controls.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't use `<ListView>` when clicking the row itself is the only
-      interaction, that's a selection list (`<ListBox>` or `<SelectList>`),
-      not `<ListView>`.
+      Don't use `<ListView>` when clicking a row picks a value, 
+      selection is `<SelectList>`'s job, not `<ListView>`'s.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
-For a very short list (roughly 5 rows or fewer) where each row has at most one control, a plain `<Stack>` of focusable rows is lighter and perfectly fine. `<ListView>` earns its keep on longer lists, or rows with multiple controls, where roving keyboard navigation and consistent list accessibility actually pay off.
-
 ### Notifications and activity feeds
 
-The most common `<ListView>` shape: a title, a timestamp, and one or two per-row actions. See it in context on the [Popover](/components/overlay/popover) docs.
+The most common `<ListView>` shape: a title, a timestamp, and one or two per-row actions.
 
 <ComponentDemo name="listview-notifications" />
 
 ### Resource lists with a row menu
 
-When a row needs more than one action (rename, share, delete), group them behind a single `<ActionMenu>` instead of placing multiple icon buttons side by side.
+When a row needs more than one action (rename, share, delete), group them behind a single `<ActionMenu>` instead of placing multiple icon buttons side by side. This is the shape most file managers, document lists, and team member lists take: each row names a resource, and the row menu is the only way to act on it.
+
+Reach for a row menu once a row's actions no longer fit as one or two icon buttons, or once the action set differs per row (a shared file might offer "leave", an owned one "delete"). `<ListView>` gives the menu trigger its own `gridcell`, so arrow-key navigation lands on the trigger without also making the row itself selectable.
 
 <ComponentDemo name="listview-resource-menu" />
 
@@ -73,11 +71,16 @@ When a row needs more than one action (rename, share, delete), group them behind
 
 A row whose only control is a `<Switch>`, operated in place. No submit button, no navigation.
 
+Use the `<ListView>` settings pattern when it's a flat list of independent
+on/off toggles that have nothing to do with each other, don't need
+validation, and each one fires its own save immediately when flipped (e.g. a
+notification preferences list).
+
 <ComponentDemo name="listview-settings" />
 
 ### Empty state
 
-When the collection is empty, render a placeholder via the `emptyState` prop, the same pattern used by `<SelectList>` and `<Table>`.
+Every list eventually has nothing to show, whether that's a notification feed with nothing new, a resource list cleared out, or a settings list filtered down to no matches. Render a placeholder via the `emptyState` prop instead of leaving the grid blank.
 
 <ComponentDemo name="listview-empty-state" />
 
@@ -102,7 +105,7 @@ When the collection is empty, render a placeholder via the `emptyState` prop, th
 
 - Arrow keys move focus between rows.
 - Tab reaches any interactive control inside the focused row.
-- Rows are never selectable or toggleable by `<ListView>` itself; operating a nested control is the only interaction a row exposes.
+- Rows are never selectable or toggleable by `<ListView>` itself. Operating a nested control is the only interaction a row exposes.
 
 Always give the list an `aria-label`, or pass `aria-labelledby` when a heading nearby already names it.
 
@@ -131,11 +134,11 @@ For rows with rich content, such as a wrapped label or an icon, set `textValue` 
 ## Alternative components
 
 - [List](/components/content/list): Use for a static, presentational list with no roles, keyboard model, or interactive rows.
-- ListBox: Marigold's non-form selection list (used internally by [Combobox](/components/form/combobox) and [Select](/components/form/select)). Use when clicking a row is the only interaction: pure selection, not operating controls in place.
 - [SelectList](/components/form/selectlist): Use when the selection becomes a submitted form value.
 - [Select](/components/form/select): Use for a compact single/multi-select form field.
 - [Table](/components/collection/table): Use when each row is a record with multiple columns of structured data to compare, not a flat list of operable items.
-- [Menu](/components/actions/menu): Use for a set of commands that close the surface on activation.
+- [Menu](/components/overlay/menu): Use for a set of commands that close the surface on activation.
+- [Card](/components/collection/card): Use to present one item, like an event or a product, as a self-contained visual unit.
 
 ## Related
 
