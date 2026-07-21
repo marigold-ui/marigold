@@ -220,6 +220,32 @@ export const matchLeaves = (
 };
 
 /**
+ * Dev-only guard against leaves that resolve to the same normalized href —
+ * `matchLeaves` would silently pick the first in document order. Shared by
+ * the single-column nav (`resolveCurrent`) and the rail (`resolveActiveRail`);
+ * `format` renders the collision in the caller's vocabulary (leaf keys vs
+ * rail items).
+ */
+export const warnDuplicateHrefs = (
+  leaves: readonly { key: string; href?: string }[],
+  format: (href: string, firstKey: string, duplicateKey: string) => string
+): void => {
+  if (process.env.NODE_ENV === 'production') return;
+
+  const seen = new Map<string, string>();
+  for (const leaf of leaves) {
+    if (!leaf.href) continue;
+    const href = normalizePath(leaf.href);
+    const existing = seen.get(href);
+    if (existing !== undefined) {
+      console.error(format(href, existing, leaf.key));
+    } else {
+      seen.set(href, leaf.key);
+    }
+  }
+};
+
+/**
  * Resolve the set of active leaf keys for a given `current` value. Walks leaves
  * only — branches participate via `findActiveBranch`. See `matchLeaves` for the
  * matching rules.
@@ -232,23 +258,15 @@ export const resolveCurrent = (
 
   const leaves = collectLeaves(collection.rootNodes);
 
-  if (process.env.NODE_ENV !== 'production' && typeof current !== 'function') {
-    const seen = new Map<string, string>();
-    for (const leaf of leaves) {
-      if (!leaf.href) continue;
-      const href = normalizePath(leaf.href);
-      const existing = seen.get(href);
-      if (existing !== undefined) {
-        console.error(
-          `[Sidebar] Multiple leaf items share the same href "${href}" ` +
-            `(keys: "${existing}", "${leaf.key}"). Active state matching ` +
-            `will pick the first item in document order. Each leaf nav ` +
-            `item should have a unique href.`
-        );
-      } else {
-        seen.set(href, leaf.key);
-      }
-    }
+  if (typeof current !== 'function') {
+    warnDuplicateHrefs(
+      leaves,
+      (href, first, duplicate) =>
+        `[Sidebar] Multiple leaf items share the same href "${href}" ` +
+        `(keys: "${first}", "${duplicate}"). Active state matching ` +
+        `will pick the first item in document order. Each leaf nav ` +
+        `item should have a unique href.`
+    );
   }
 
   return matchLeaves(leaves, current);

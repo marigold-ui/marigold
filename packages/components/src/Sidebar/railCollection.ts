@@ -9,7 +9,7 @@ import {
   firstLeafHref,
   flattenChildren,
   matchLeaves,
-  normalizePath,
+  warnDuplicateHrefs,
 } from './collection';
 import type { SidebarCurrent } from './collection';
 
@@ -238,24 +238,14 @@ export const resolveActiveRail = (
 
   // `resolveCurrent`'s per-nav warning never sees cross-section duplicates
   // (only one nav renders), so check the whole rail here.
-  if (process.env.NODE_ENV !== 'production') {
-    const seen = new Map<string, string>();
-    for (const leaf of tagged) {
-      if (!leaf.href) continue;
-      const href = normalizePath(leaf.href);
-      const existing = seen.get(href);
-      if (existing !== undefined) {
-        console.error(
-          `[Sidebar] Multiple rail destinations share the same href "${href}" ` +
-            `(rail items: "${owner.get(existing)}", "${owner.get(leaf.key)}"). ` +
-            `Active state matching will pick the first in document order. ` +
-            `Each destination should have a unique href.`
-        );
-      } else {
-        seen.set(href, leaf.key);
-      }
-    }
-  }
+  warnDuplicateHrefs(
+    tagged,
+    (href, first, duplicate) =>
+      `[Sidebar] Multiple rail destinations share the same href "${href}" ` +
+      `(rail items: "${owner.get(first)}", "${owner.get(duplicate)}"). ` +
+      `Active state matching will pick the first in document order. ` +
+      `Each destination should have a unique href.`
+  );
 
   const matched = matchLeaves(tagged, current).values().next().value;
   return matched ? (owner.get(matched) ?? null) : null;
