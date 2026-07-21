@@ -12,6 +12,7 @@ import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
+import type { DatePreset } from '../Calendar/presets';
 import { DateInput } from '../DateField/DateInput';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
@@ -79,6 +80,16 @@ export interface DatePickerProps
    * resolves to `calc(var(--spacing) * 64)` ~= 16rem (256px), not 64px.
    */
   width?: WidthProp['width'];
+
+  /**
+   * Quick-select presets rendered beside the calendar in the popover. In
+   * the small-screen tray, a "Quick selection" row above the grid switches
+   * the sheet to the preset list in place. Accepts built-in keys (see
+   * `BuiltInDatePresetKey`) with localized labels, and custom presets with
+   * a `label` and a date value or resolver function. Selecting a preset
+   * applies the date; the overlay stays open.
+   */
+  presets?: readonly DatePreset[];
 }
 
 const DatePickerBase = ({
@@ -91,6 +102,7 @@ const DatePickerBase = ({
   size,
   open,
   granularity = 'day',
+  presets,
   onChange,
   ref,
   ...rest
@@ -136,7 +148,7 @@ const DatePickerBase = ({
         <Tray>
           <Tray.Title>{rest.label}</Tray.Title>
           <Tray.Content>
-            <Calendar disabled={disabled} />
+            <Calendar disabled={disabled} presets={presets} />
           </Tray.Content>
           <Tray.Actions>
             <Button slot="close">{stringFormatter.format('close')}</Button>
@@ -145,7 +157,7 @@ const DatePickerBase = ({
       ) : (
         <Popover matchTriggerWidth={false}>
           <Dialog>
-            <Calendar disabled={disabled} />
+            <Calendar disabled={disabled} presets={presets} />
           </Dialog>
         </Popover>
       )}

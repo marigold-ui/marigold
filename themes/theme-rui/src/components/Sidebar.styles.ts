@@ -51,11 +51,16 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
-  // Hoists the nav's scroll timeline (see `nav`) into scope so the footer — a
-  // grid sibling, not a descendant — can drive its seam off it.
-  content: cva({ base: 'sm:w-64 ui-sidebar-seam-scope' }),
+  // Hoists the shared scroll-seam timeline (see `nav`) into scope so the footer
+  // — a grid sibling, not a descendant — can drive its seam off it. --seam-color
+  // tints that footer seam with the faint surface rim, not the opaque default.
+  content: cva({
+    base: 'sm:w-64 ui-scroll-seam-scope [--seam-color:var(--color-surface-border)]',
+  }),
   // Always-on bottom edge (via `ui-panel-header`) so the brand row reads as a
-  // header band. min-w-0: keep the grid column from overflowing the w-64 aside.
+  // header band, consistent with the rail's full-width top bar. h-topbar shares
+  // the --spacing-topbar token with TopNavigation and the rail's sticky offset.
+  // min-w-0: keep the grid column from overflowing the w-64 aside.
   header: cva({
     base: 'ui-panel-header h-topbar min-w-0',
   }),
@@ -65,7 +70,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // edge; min-w-0 lets the row column collapse to the aside width.
       'flex flex-col min-w-0 py-1 overflow-y-auto outline-none',
       // Declares the named timeline the footer seam animates against.
-      'ui-scrollbar ui-sidebar-seam-timeline',
+      'ui-scrollbar ui-scroll-seam-timeline',
     ],
   }),
   // Ambient escape hatches, a step quieter than nav rows so they never compete
@@ -76,7 +81,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // header's, fading out as the list bottoms out.
   footer: cva({
     base: [
-      'flex flex-col gap-1 min-w-0 px-4 py-2 ui-sidebar-seam-footer',
+      'flex flex-col gap-1 min-w-0 px-4 py-2 ui-scroll-seam-footer',
       '[&_a]:-mx-2 [&_a]:h-7.5 [&_a]:px-2 [&_a]:rounded-surface [&_a]:text-sm',
       '[&_a]:text-secondary [&_a]:font-normal',
       '[&_a:hover]:bg-hover [&_a:hover]:text-foreground',

@@ -106,6 +106,22 @@ When users need to select dates far in the past or future (such as a birth date 
   </Dont>
 </GuidelineTiles>
 
+### Quick select presets
+
+Use the `presets` prop to offer common dates as a one-click list beside the calendar, such as "Today" or "Tomorrow" for a due date. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a date value or a resolver function. Presets that fall outside `minValue`/`maxValue` or land on an unavailable date are disabled.
+
+`Calendar` accepts the single-date built-ins: `today`, `yesterday` and `tomorrow`. Range keys such as `this-week` or `last-30-days` are only available on [DateRangePicker](/components/form/daterangepicker) and [RangeCalendar](/components/form/rangecalendar), where a preset selects a range instead of a single day.
+
+For custom presets, pass `value` as a function when the date is relative to now (for example "In two weeks"), so it resolves at selection time instead of when the view first rendered. A plain value is right for fixed dates. If you provide several custom presets, give each a unique `id`: it defaults to the `label`, so two presets sharing a label would collide.
+
+<ComponentDemo name="calendar-presets" />
+
+<Callout title="Quick select on narrow screens" type="warning">
+  On small screens the calendar grid renders first, topped by a "Quick
+  selection" row. Tapping it opens the preset list in a bottom sheet, and
+  picking a preset applies it and closes the sheet.
+</Callout>
+
 ### Accessibility
 
 The `<Calendar>` is built on [React Aria](https://react-spectrum.adobe.com/react-aria/) and provides full keyboard navigation and screen reader support out of the box.

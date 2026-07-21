@@ -65,6 +65,20 @@ describe('intl messages', () => {
         'Seitenleiste ausklappen (Ctrl+B)'
       );
     });
+
+    test('preset messages are strings', () => {
+      expect(de.presets).toBe('Schnellauswahl');
+      expect(de.presetLast7Days).toBe('Letzte 7 Tage');
+      expect(de.presetLast30Days).toBe('Letzte 30 Tage');
+      expect(de.presetThisMonth).toBe('Dieser Monat');
+      expect(de.presetToday).toBe('Heute');
+      expect(de.presetYesterday).toBe('Gestern');
+      expect(de.presetTomorrow).toBe('Morgen');
+      expect(de.presetThisWeek).toBe('Diese Woche');
+      expect(de.presetNext7Days).toBe('Nächste 7 Tage');
+      expect(de.presetNext30Days).toBe('Nächste 30 Tage');
+      expect(de.presetThisQuarter).toBe('Dieses Quartal');
+    });
   });
 
   describe('en-US', () => {
@@ -99,6 +113,20 @@ describe('intl messages', () => {
         vars: Record<string, string>
       ) => string;
       expect(fn({ shortcut: 'Ctrl+B' })).toBe('Expand sidebar (Ctrl+B)');
+    });
+
+    test('preset messages are strings', () => {
+      expect(en.presets).toBe('Quick selection');
+      expect(en.presetLast7Days).toBe('Last 7 days');
+      expect(en.presetLast30Days).toBe('Last 30 days');
+      expect(en.presetThisMonth).toBe('This month');
+      expect(en.presetToday).toBe('Today');
+      expect(en.presetYesterday).toBe('Yesterday');
+      expect(en.presetTomorrow).toBe('Tomorrow');
+      expect(en.presetThisWeek).toBe('This week');
+      expect(en.presetNext7Days).toBe('Next 7 days');
+      expect(en.presetNext30Days).toBe('Next 30 days');
+      expect(en.presetThisQuarter).toBe('This quarter');
     });
   });
 });

@@ -174,6 +174,7 @@ export type Theme = {
       | 'collapsibleTitle'
       | 'collapsibleDescription'
       | 'collapsibleContent'
+      | 'collapsibleIcon'
       | 'footer',
       ComponentStyleFunction<string, string>
     >;
@@ -239,7 +240,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'container' | 'tag' | 'listItems' | 'closeButton',
+      'container' | 'tag' | 'listItems' | 'closeButton' | 'showMore',
       ComponentStyleFunction<string, string>
     >;
     TagField?: Record<
@@ -294,6 +295,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
+      | 'calendarPresets'
       | 'select',
       ComponentStyleFunction<string, string>
     >;
@@ -307,6 +309,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
+      | 'calendarPresets'
       | 'select',
       ComponentStyleFunction<string, string>
     >;
