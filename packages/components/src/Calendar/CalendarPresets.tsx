@@ -169,7 +169,11 @@ const PresetListBox = <T,>({
         disabledKeys={disabledKeys}
         onSelectionChange={handleSelectionChange}
         autoFocus={autoFocus}
-        className={listBoxClassNames.list}
+        // Small screens: negate the list's `p-1` (`-mx-1`) so rows span the tray
+        // edge-to-edge and align with the full-width nav row; the gutter stays,
+        // still keeping each row's focus outline from clipping. Desktop rail keeps
+        // the inset.
+        className={cn(listBoxClassNames.list, isSmallScreen && '-mx-1 w-auto')}
       >
         {items.map(item => (
           <AriaListBoxItem
