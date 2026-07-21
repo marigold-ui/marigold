@@ -218,8 +218,15 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
         <Button variant="secondary" slot="close">
           Cancel
         </Button>
-        <Button variant="primary" onPress={() => onConfirm(selected)}>
-          Add {staged.length} {staged.length === 1 ? 'venue' : 'venues'}
+        {/* At least one venue is required, so an empty set can never commit. */}
+        <Button
+          variant="primary"
+          disabled={staged.length === 0}
+          onPress={() => onConfirm(selected)}
+        >
+          {staged.length === 0
+            ? 'Add venues'
+            : `Add ${staged.length} ${staged.length === 1 ? 'venue' : 'venues'}`}
         </Button>
       </Dialog.Actions>
     </>
@@ -228,14 +235,40 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
 
 export default () => {
   const [added, setAdded] = useState<Set<Key>>(new Set());
-  const addedNames = venues
-    .filter(venue => added.has(venue.id))
-    .map(venue => venue.name);
+  const addedVenues = venues.filter(venue => added.has(venue.id));
+
+  const removeVenue = (keys: Set<Key>) => {
+    setAdded(prev => {
+      const next = new Set<Key>(prev);
+      keys.forEach(key => next.delete(key));
+      return next;
+    });
+  };
 
   return (
-    <Stack space={5} alignX="left">
+    <Stack space={4} alignX="left">
+      {/* The committed set lives on the host task as removable tags: drop one here, or reopen (pre-staged) to change the set. */}
+      {addedVenues.length > 0 ? (
+        <Tag.Group
+          label="Selected venues"
+          selectionMode="none"
+          onRemove={removeVenue}
+          collapseAt={6}
+        >
+          {addedVenues.map(venue => (
+            <Tag key={venue.id} id={venue.id}>
+              {venue.name}
+            </Tag>
+          ))}
+        </Tag.Group>
+      ) : (
+        <Text>No venues added yet.</Text>
+      )}
+
       <Dialog.Trigger>
-        <Button variant="primary">Add venues</Button>
+        <Button variant={addedVenues.length > 0 ? 'secondary' : 'primary'}>
+          {addedVenues.length > 0 ? 'Edit selection' : 'Add venues'}
+        </Button>
         {/* Switch to size="fullscreen" for this content-heavy pick once that Dialog size ships. */}
         <Dialog size="large" closeButton>
           {({ close }) => (
@@ -249,11 +282,6 @@ export default () => {
           )}
         </Dialog>
       </Dialog.Trigger>
-      <Text>
-        {addedNames.length === 0
-          ? 'No venues added yet.'
-          : `Added: ${addedNames.join(', ')}`}
-      </Text>
     </Stack>
   );
 };

@@ -194,8 +194,15 @@ const PickCountriesBody = ({ initial, onConfirm }: PickBodyProps) => {
         <Button variant="secondary" slot="close">
           Cancel
         </Button>
-        <Button variant="primary" onPress={() => onConfirm(selected)}>
-          Add {staged.length} {staged.length === 1 ? 'country' : 'countries'}
+        {/* At least one country is required, so an empty set can never commit. */}
+        <Button
+          variant="primary"
+          disabled={staged.length === 0}
+          onPress={() => onConfirm(selected)}
+        >
+          {staged.length === 0
+            ? 'Add countries'
+            : `Add ${staged.length} ${staged.length === 1 ? 'country' : 'countries'}`}
         </Button>
       </Dialog.Actions>
     </>

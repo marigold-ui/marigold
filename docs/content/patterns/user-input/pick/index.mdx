@@ -20,6 +20,16 @@ The two look alike because both use a search field and both end in a smaller set
 
 One picture keeps them apart. Filtering is turning a camera lens, you change what you _see_ and the collection itself stays put. Picking is filling a basket, you change what you _have_ and leave with it.
 
+The same split, side by side: filtering narrows the collection until the view itself is the answer, while picking enumerates records and commits them as a set carried out.
+
+<ImageZoom
+  className="mx-auto"
+  src="/pick/filter-vs-pick.svg"
+  alt="Two side-by-side flows: a filter journey that narrows a collection until the view is the result, and a pick journey that checks records and commits them as a set"
+  width="700"
+  height="446"
+/>
+
 <Callout type="warning" title="When not to use a pick">
   Picking is for choosing records, not changing them. To create or edit a
   record's fields, use a drawer as described in the [Table
@@ -63,14 +73,6 @@ The searchable-field tier in action: a [`<TagField>`](/components/form/tag-field
 
 The dialog is the pattern's default surface, and the most composed, so it is the one worth laying out part by part. It gathers every piece of a pick into one focused place that floats over the page rather than navigating away: a trigger opens it, the user searches and stages records, and a commit footer ends the task.
 
-<ImageZoom
-  className="mx-auto"
-  src="/pick/pick-anatomy.svg"
-  alt="Anatomy of a pick dialog"
-  width="440"
-  height="300"
-/>
-
 - **Trigger:** The button in the host task that opens the dialog, such as "Add venues". Nothing is staged until the user opens it and commits.
 - **Title:** Names what is being picked, such as "Select venues".
 - **Search:** A [`<SearchField>`](/components/form/search-field) that finds records by name as the user types, narrowing the visible rows without touching what is already staged.
@@ -85,6 +87,7 @@ The example below adds venues from a searchable, filterable, multi-select table,
 A few details make the dialog trustworthy:
 
 - **Name the outcome in the commit button, and carry the count.** The primary action reads "Add 3 venues" rather than a generic "OK", so the user knows both what will happen and how much they are committing. Compose this button by hand from the staged count. The [`<ActionBar>`](/components/collection/actionbar) is built for floating bulk actions on a table, not for a dialog's commit footer, so it is the wrong fit here.
+- **Bound the selection when the task requires it.** Most picks need at least one record, so disable the commit until something is staged. An empty set can then never be committed by accident, and at zero the button reads "Add venues" and stays disabled rather than offering a clickable "Add 0 venues". If a pick also caps how many may be chosen, make the ceiling visible before it is reached, stop further checks once it is, and say why the rest are blocked, so the limit reads as a rule and not a bug.
 - **Never clear staged selections while filtering.** Typing in the search narrows the visible rows, but records staged earlier stay staged even when they scroll out of view. Clearing them on every keystroke would make the pick impossible. This is the same tension as the filter paradox in [Table Records](/patterns/user-input/table-record-management).
 - **Show records the way the user recognizes them.** When a record carries detail worth scanning, such as a city or a capacity, give the collection columns with a [`<Table>`](/components/collection/table) rather than a bare name. A plain list is enough when the label stands on its own.
 - **Offer select all for bulk picks.** A header control that selects every row, shown in a mixed state while the selection is partial, saves the user from working through a long list by hand. Keep it paired with search and filters so "all" applies to a sensibly narrowed set.
@@ -129,6 +132,8 @@ At that point you have crossed from picking into the [Bulk Actions](/patterns/us
 The flow lives here only as a signpost. Whenever a pick dialog is tempting for records already in view, ask what the selection is for. If you are operating on the records rather than gathering them to use elsewhere, stay on the page and follow Bulk Actions, which covers selection scope, confirmation, progress, and partial-failure feedback in full.
 
 ## After the selection
+
+The commit hands the set back to the host task, which has to show it. Echo the chosen records where the pick was triggered, as a rail of removable [`<Tag.Group>`](/components/collection/tag) tags or a short list, so the result stays visible without reopening the dialog. Removing a tag drops that record in place, while the trigger becomes an "Edit selection" button that reopens the pick with the set already staged. Because it reopens staged rather than empty, editing a pick feels the same as making one. The venue demo above does both.
 
 A committed pick has an afterlife, and the two kinds need different care.
 
@@ -242,9 +247,4 @@ The example is a report that owns its picked venues: choose venues and the commi
 
 ---
 
-- TODO: replace the draft anatomy SVG (`/pick/pick-anatomy.svg`) with a Figma-authored diagram (now shown under "The pick dialog").
-- TODO: demo and guidance for echoing the committed set back in the host task, using removable tags (`TagGroup`) or a list, with a way to re-open and edit the selection.
-- TODO: guidance on requiring a minimum selection (disable the commit at 0) and capping a maximum.
 - TODO: when `size="fullscreen"` lands (DST-1643, in review), switch the pick dialog demo + `/examples/pick` to it, drop "(in progress)" from the Sizing callout, and rescope the routed-page tier to picks that need their own URL or appear in several places (not merely "too tall for a dialog").
-- TODO: keyboard and focus notes: focus the search on open, Escape cancels, and the integrated search-to-list arrow-key navigation that is still a component gap.
-- TODO: consider a side-by-side "two flows" visual (filter journey vs pick journey) in Filter vs Pick, adapted from the research explainer.
