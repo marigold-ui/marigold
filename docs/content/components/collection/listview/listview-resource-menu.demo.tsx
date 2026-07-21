@@ -15,7 +15,7 @@ export default () => (
       <ActionMenu aria-label="Quarterly report actions">
         <ActionMenu.Item>Rename</ActionMenu.Item>
         <ActionMenu.Item>Share</ActionMenu.Item>
-        <ActionMenu.Item>Delete</ActionMenu.Item>
+        <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
       </ActionMenu>
     </ListView.Item>
     <ListView.Item id="roadmap" textValue="Roadmap">
@@ -25,7 +25,7 @@ export default () => (
       <ActionMenu aria-label="Roadmap actions">
         <ActionMenu.Item>Rename</ActionMenu.Item>
         <ActionMenu.Item>Share</ActionMenu.Item>
-        <ActionMenu.Item>Delete</ActionMenu.Item>
+        <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
       </ActionMenu>
     </ListView.Item>
   </ListView>
