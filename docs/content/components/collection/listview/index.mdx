@@ -55,7 +55,9 @@ Each row owns its own state and its own controls, so actions typically fire per 
 
 ### Notifications and activity feeds
 
-The most common `<ListView>` shape: a title, a timestamp, and one or two per-row actions.
+A build finished, a review was requested, a deploy succeeded: notification and activity feeds surface a stream of events that people scan for what's new, then act on immediately, muting a noisy thread or dismissing a stale one, without opening the item or leaving the page.
+
+Reach for `<ListView>` here because each row needs its own controls, a `<Switch>` to mute or a `<Button>` to dismiss, operated in place. That's the line between this and a plain list: the action stays scoped to the row instead of sending the reader to a details screen. Give each row a short label for the event and whatever supporting detail helps the reader act, such as when it happened.
 
 <ComponentDemo name="listview-notifications" />
 
