@@ -157,6 +157,12 @@ When an applied filter contains a large number of values, avoid grouping them al
 // TODO: should we make a helps to create these labels? this could also do i18n
 ```
 
+### Collapsing Applied Filters
+
+With several filters active, stacked rows of applied filter tags can push the data set out of the viewport and make the applied filters area harder to scan. Use the [`collapseAt`](/components/collection/tag#props) prop on `Tag.Group` to show only the most recent filters and collapse the rest behind a "Show more" toggle, keeping the row height predictable. The example below collapses after 3 filters.
+
+<ComponentDemo name="filter-applied-filter-collapse" />
+
 ### Reverting Filters
 
 When applied filters result in no displayed results, for example when criteria are too restrictive, conflicting, or simply no longer relevant, it is important to offer quick and accessible ways to revert them. This prevents users from becoming stuck or frustrated and allows them to continue exploring the data set with minimal effort.
