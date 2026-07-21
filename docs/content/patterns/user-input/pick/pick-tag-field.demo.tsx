@@ -20,7 +20,7 @@ const performers = [
 ];
 
 export default () => {
-  // The selection is the committed set: the chips update live, so this tier
+  // The selection is the committed set: the tags update live, so this tier
   // needs no explicit commit step the way the dialog does.
   const [lineup, setLineup] = useState<Key[]>([]);
 

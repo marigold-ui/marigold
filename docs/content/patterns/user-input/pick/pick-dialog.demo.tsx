@@ -163,9 +163,9 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
             </Select>
           </Inline>
 
-          {/* The staged set stays on screen as removable chips no matter what
+          {/* The staged set stays on screen as removable tags no matter what
               the search and filter are doing, including when the list below is
-              empty. Removing a chip unstages that venue. */}
+              empty. Removing a tag unstages that venue. */}
           {staged.length > 0 && (
             <Tag.Group
               label={`Staged (${staged.length})`}
