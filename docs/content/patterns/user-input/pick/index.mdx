@@ -71,14 +71,11 @@ The searchable-field tier in action: a [`<TagField>`](/components/form/tag-field
 
 ## The pick dialog
 
-The dialog is the pattern's default surface, and the most composed, so it is the one worth laying out part by part. It gathers every piece of a pick into one focused place that floats over the page rather than navigating away: a trigger opens it, the user searches and stages records, and a commit footer ends the task.
+The dialog is the pattern's default surface and the most composed, so it is worth walking through part by part. It gathers a pick into one focused place that floats over the page rather than navigating away, its parts stacked in a predictable order from the trigger that opens it down to the footer that ends it.
 
-- **Trigger:** The button in the host task that opens the dialog, such as "Add venues". Nothing is staged until the user opens it and commits.
-- **Title:** Names what is being picked, such as "Select venues".
-- **Search:** A [`<SearchField>`](/components/form/search-field) that finds records by name as the user types, narrowing the visible rows without touching what is already staged.
-- **Filter controls (optional):** Criteria such as status or type, placed beside the search to slice a large pool further. The demo below pairs a type filter with the search.
-- **Results collection:** The matching records, shown as a [`<Table>`](/components/collection/table) when they carry detail worth scanning, such as a city and a capacity, or a plain list when the label is all there is. Checking a row stages it.
-- **Commit footer:** A cancel action discards the staged set and a primary action commits it, with the staged count carried in the primary button's label, "Add 3 venues".
+A trigger in the host task opens the dialog, such as an "Add venues" button, and nothing is staged until the user opens it and commits. Inside, a title names what is being picked, such as "Select venues". Below the title, a [`<SearchField>`](/components/form/search-field) finds records by name as the user types and narrows the visible rows without touching what is already staged. Optional filter controls sit beside it, criteria such as status or type that slice a large pool further.
+
+The matching records form the results collection, shown as a [`<Table>`](/components/collection/table) when they carry detail worth scanning, such as a city and a capacity, or a plain list when the label is all there is. Checking a row stages it. A commit footer ends the task, where a cancel action discards the staged set and a primary action commits it, carrying the staged count in its label, "Add 3 venues".
 
 The example below adds venues from a searchable, filterable, multi-select table, starting from nothing selected.
 
@@ -95,11 +92,11 @@ A few details make the dialog trustworthy:
 
 ### A list when the label is enough
 
-Not every pick needs a table. When the records are just labels, with no columns worth scanning, a [`<SelectList>`](/components/form/selectlist) is the lighter collection: a multi-select list of names, checked to stage and committed the same way. Reach for it over a [`<Table>`](/components/collection/table) whenever a row would only ever hold one cell.
+Not every pick needs a table. When you choose a record by its name, with at most a supporting line and no grid of comparable detail to scan across rows, a [`<SelectList>`](/components/form/selectlist) is the lighter collection: a multi-select list, checked to stage and committed the same way. An option can still carry a little more than a bare label, such as a name over an email, and it stays a list. Reach for a [`<Table>`](/components/collection/table) only once the records carry several attributes worth comparing side by side.
 
 <ComponentDemo name="pick-select-list" />
 
-Only the collection changes. This pick carries the same search, region filter, removable staged-tag rail, and empty state as the venue dialog above. What differs is the results collection: a plain list of country names instead of a table, since there is no per-row detail worth columns.
+Only the collection changes. This pick grants a set of people access and carries the same search, filter, removable staged-tag rail, and empty state as the venue dialog above. What differs is the results collection: a list of people, each a name over an email, instead of a table, since there is no grid of per-row detail to compare.
 
 ### Filters and empty states
 

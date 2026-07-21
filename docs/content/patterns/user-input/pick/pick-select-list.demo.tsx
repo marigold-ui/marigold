@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import type { Key } from '@react-types/shared';
 import {
   Button,
+  Description,
   Dialog,
   EmptyState,
   Inline,
@@ -12,93 +13,121 @@ import {
   Stack,
   Tag,
   Text,
+  TextValue,
 } from '@marigold/components';
 
-interface Country {
+interface Person {
   id: string;
   name: string;
-  region: string;
+  email: string;
+  team: string;
 }
 
-// A stand-in for the couple hundred countries a real availability picker faces.
-const countries: Country[] = [
-  { id: 'germany', name: 'Germany', region: 'Europe' },
-  { id: 'france', name: 'France', region: 'Europe' },
-  { id: 'spain', name: 'Spain', region: 'Europe' },
-  { id: 'italy', name: 'Italy', region: 'Europe' },
-  { id: 'netherlands', name: 'Netherlands', region: 'Europe' },
-  { id: 'belgium', name: 'Belgium', region: 'Europe' },
-  { id: 'austria', name: 'Austria', region: 'Europe' },
-  { id: 'switzerland', name: 'Switzerland', region: 'Europe' },
-  { id: 'sweden', name: 'Sweden', region: 'Europe' },
-  { id: 'poland', name: 'Poland', region: 'Europe' },
-  { id: 'portugal', name: 'Portugal', region: 'Europe' },
-  { id: 'ireland', name: 'Ireland', region: 'Europe' },
-  { id: 'united-states', name: 'United States', region: 'Americas' },
-  { id: 'canada', name: 'Canada', region: 'Americas' },
-  { id: 'mexico', name: 'Mexico', region: 'Americas' },
-  { id: 'brazil', name: 'Brazil', region: 'Americas' },
-  { id: 'argentina', name: 'Argentina', region: 'Americas' },
-  { id: 'chile', name: 'Chile', region: 'Americas' },
-  { id: 'colombia', name: 'Colombia', region: 'Americas' },
-  { id: 'japan', name: 'Japan', region: 'Asia' },
-  { id: 'south-korea', name: 'South Korea', region: 'Asia' },
-  { id: 'india', name: 'India', region: 'Asia' },
-  { id: 'singapore', name: 'Singapore', region: 'Asia' },
-  { id: 'thailand', name: 'Thailand', region: 'Asia' },
-  { id: 'indonesia', name: 'Indonesia', region: 'Asia' },
-  { id: 'philippines', name: 'Philippines', region: 'Asia' },
-  { id: 'south-africa', name: 'South Africa', region: 'Africa' },
-  { id: 'nigeria', name: 'Nigeria', region: 'Africa' },
-  { id: 'kenya', name: 'Kenya', region: 'Africa' },
-  { id: 'egypt', name: 'Egypt', region: 'Africa' },
-  { id: 'morocco', name: 'Morocco', region: 'Africa' },
-  { id: 'australia', name: 'Australia', region: 'Oceania' },
-  { id: 'new-zealand', name: 'New Zealand', region: 'Oceania' },
+// A stand-in for the directory a real access picker searches through.
+const people: Person[] = [
   {
-    id: 'united-arab-emirates',
-    name: 'United Arab Emirates',
-    region: 'Middle East',
+    id: 'mara-lindqvist',
+    name: 'Mara Lindqvist',
+    email: 'mara.lindqvist@northwind.co',
+    team: 'Engineering',
   },
-  { id: 'israel', name: 'Israel', region: 'Middle East' },
-  { id: 'turkey', name: 'Turkey', region: 'Middle East' },
+  {
+    id: 'diego-fuentes',
+    name: 'Diego Fuentes',
+    email: 'diego.fuentes@northwind.co',
+    team: 'Engineering',
+  },
+  {
+    id: 'priya-nair',
+    name: 'Priya Nair',
+    email: 'priya.nair@northwind.co',
+    team: 'Engineering',
+  },
+  {
+    id: 'tomasz-kowalski',
+    name: 'Tomasz Kowalski',
+    email: 'tomasz.kowalski@northwind.co',
+    team: 'Engineering',
+  },
+  {
+    id: 'yuki-tanaka',
+    name: 'Yuki Tanaka',
+    email: 'yuki.tanaka@northwind.co',
+    team: 'Design',
+  },
+  {
+    id: 'amara-okafor',
+    name: 'Amara Okafor',
+    email: 'amara.okafor@northwind.co',
+    team: 'Design',
+  },
+  {
+    id: 'lena-hofmann',
+    name: 'Lena Hofmann',
+    email: 'lena.hofmann@northwind.co',
+    team: 'Design',
+  },
+  {
+    id: 'sofia-rossi',
+    name: 'Sofia Rossi',
+    email: 'sofia.rossi@northwind.co',
+    team: 'Marketing',
+  },
+  {
+    id: 'ben-carter',
+    name: 'Ben Carter',
+    email: 'ben.carter@northwind.co',
+    team: 'Marketing',
+  },
+  {
+    id: 'noah-weiss',
+    name: 'Noah Weiss',
+    email: 'noah.weiss@northwind.co',
+    team: 'Sales',
+  },
+  {
+    id: 'ingrid-sorensen',
+    name: 'Ingrid Sørensen',
+    email: 'ingrid.sorensen@northwind.co',
+    team: 'Sales',
+  },
+  {
+    id: 'hana-kim',
+    name: 'Hana Kim',
+    email: 'hana.kim@northwind.co',
+    team: 'Support',
+  },
 ];
 
-const regions = [
-  'Europe',
-  'Americas',
-  'Asia',
-  'Africa',
-  'Oceania',
-  'Middle East',
-];
+const teams = ['Engineering', 'Design', 'Marketing', 'Sales', 'Support'];
 
 interface PickBodyProps {
   initial: Set<Key>;
   onConfirm: (keys: Set<Key>) => void;
 }
 
-const PickCountriesBody = ({ initial, onConfirm }: PickBodyProps) => {
+const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
   const [search, setSearch] = useState('');
-  const [region, setRegion] = useState<Key | null>('all');
+  const [team, setTeam] = useState<Key | null>('all');
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
 
   const results = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return countries.filter(country => {
+    return people.filter(person => {
       const matchesSearch =
-        !query || country.name.toLowerCase().includes(query);
-      const matchesRegion =
-        region == null || region === 'all' || country.region === region;
-      return matchesSearch && matchesRegion;
+        !query ||
+        `${person.name} ${person.email}`.toLowerCase().includes(query);
+      const matchesTeam =
+        team == null || team === 'all' || person.team === team;
+      return matchesSearch && matchesTeam;
     });
-  }, [search, region]);
+  }, [search, team]);
 
   // SelectList reports the visible selection as a Key[]. Merge it with the
   // staged keys that are currently filtered out of view, so narrowing the list
-  // by search or region never drops what is already staged.
+  // by search or team never drops what is already staged.
   const onChange = (keys: Key[]) => {
-    const visibleIds = new Set(results.map(country => country.id));
+    const visibleIds = new Set(results.map(person => person.id));
     setSelected(prev => {
       const offView = [...prev].filter(key => !visibleIds.has(String(key)));
       return new Set<Key>([...offView, ...keys]);
@@ -115,33 +144,33 @@ const PickCountriesBody = ({ initial, onConfirm }: PickBodyProps) => {
 
   // Derived from `selected` alone, so the staged tags are independent of the
   // search and filter and survive the list narrowing to nothing.
-  const staged = countries.filter(country => selected.has(country.id));
+  const staged = people.filter(person => selected.has(person.id));
 
   return (
     <>
-      <Dialog.Title>Select countries</Dialog.Title>
+      <Dialog.Title>Select people</Dialog.Title>
       <Dialog.Content>
         <Stack space={4}>
-          {/* Search and the region filter narrow the visible rows together;
+          {/* Search and the team filter narrow the visible rows together;
               neither touches the staged selection tracked in `selected`. */}
           <Inline space={2} alignY="input">
             <SearchField
-              aria-label="Search countries"
-              placeholder="Search countries"
+              aria-label="Search people"
+              placeholder="Search by name or email"
               value={search}
               onChange={setSearch}
               width={56}
             />
             <Select
-              aria-label="Filter by region"
-              value={region}
-              onChange={setRegion}
+              aria-label="Filter by team"
+              value={team}
+              onChange={setTeam}
               width={40}
             >
-              <Select.Option id="all">All regions</Select.Option>
-              {regions.map(r => (
-                <Select.Option key={r} id={r}>
-                  {r}
+              <Select.Option id="all">All teams</Select.Option>
+              {teams.map(t => (
+                <Select.Option key={t} id={t}>
+                  {t}
                 </Select.Option>
               ))}
             </Select>
@@ -149,41 +178,42 @@ const PickCountriesBody = ({ initial, onConfirm }: PickBodyProps) => {
 
           {/* The staged set stays on screen as removable tags no matter what
               the search and filter are doing, including when the list below is
-              empty. Removing a tag unstages that country. */}
+              empty. Removing a tag unstages that person. */}
           {staged.length > 0 && (
             <Tag.Group
               label={`Staged (${staged.length})`}
               selectionMode="none"
               onRemove={unstage}
             >
-              {staged.map(country => (
-                <Tag key={country.id} id={country.id}>
-                  {country.name}
+              {staged.map(person => (
+                <Tag key={person.id} id={person.id}>
+                  {person.name}
                 </Tag>
               ))}
             </Tag.Group>
           )}
 
-          {/* Countries are labels with no detail worth scanning, so the results
-              collection is a SelectList rather than a Table. Only the
-              collection differs from the venue pick above. */}
+          {/* People are labels with a supporting email, not a grid of columns,
+              so the results collection is a SelectList rather than a Table.
+              Only the collection differs from the venue pick above. */}
           <Scrollable height="288px">
             <SelectList
-              aria-label="Countries"
+              aria-label="People"
               selectionMode="multiple"
               items={results}
               selectedKeys={selected}
               onChange={onChange}
               emptyState={
                 <EmptyState
-                  title="No countries match"
-                  description="Try a different search or region. Anything you already staged stays listed above."
+                  title="No people match"
+                  description="Try a different search or team. Anyone you already staged stays listed above."
                 />
               }
             >
-              {(country: Country) => (
-                <SelectList.Option id={country.id}>
-                  {country.name}
+              {(person: Person) => (
+                <SelectList.Option id={person.id} textValue={person.name}>
+                  <TextValue>{person.name}</TextValue>
+                  <Description>{person.email}</Description>
                 </SelectList.Option>
               )}
             </SelectList>
@@ -194,15 +224,15 @@ const PickCountriesBody = ({ initial, onConfirm }: PickBodyProps) => {
         <Button variant="secondary" slot="close">
           Cancel
         </Button>
-        {/* At least one country is required, so an empty set can never commit. */}
+        {/* At least one person is required, so an empty set can never commit. */}
         <Button
           variant="primary"
           disabled={staged.length === 0}
           onPress={() => onConfirm(selected)}
         >
           {staged.length === 0
-            ? 'Add countries'
-            : `Add ${staged.length} ${staged.length === 1 ? 'country' : 'countries'}`}
+            ? 'Add people'
+            : `Add ${staged.length} ${staged.length === 1 ? 'person' : 'people'}`}
         </Button>
       </Dialog.Actions>
     </>
@@ -211,17 +241,17 @@ const PickCountriesBody = ({ initial, onConfirm }: PickBodyProps) => {
 
 export default () => {
   const [added, setAdded] = useState<Set<Key>>(new Set());
-  const addedNames = countries
-    .filter(country => added.has(country.id))
-    .map(country => country.name);
+  const addedNames = people
+    .filter(person => added.has(person.id))
+    .map(person => person.name);
 
   return (
     <Stack space={5} alignX="left">
       <Dialog.Trigger>
-        <Button variant="primary">Add countries</Button>
+        <Button variant="primary">Add people</Button>
         <Dialog size="medium" closeButton>
           {({ close }) => (
-            <PickCountriesBody
+            <PickPeopleBody
               initial={added}
               onConfirm={keys => {
                 setAdded(keys);
@@ -233,8 +263,8 @@ export default () => {
       </Dialog.Trigger>
       <Text>
         {addedNames.length === 0
-          ? 'No countries added yet.'
-          : `Available in ${addedNames.length}: ${addedNames.join(', ')}`}
+          ? 'No people added yet.'
+          : `Access granted to: ${addedNames.join(', ')}`}
       </Text>
     </Stack>
   );
